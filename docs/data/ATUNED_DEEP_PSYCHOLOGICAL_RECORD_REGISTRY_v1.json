@@ -8889,13 +8889,15 @@
           "name": "primary_source_extraction",
           "status": "complete",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 The Seven Affirmations (#ch22)"
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "Extracted source name and concise definition for Empyrean Consciousness from the eight-domain Conscious Domain sequence."
+            "The v341 source crosswalk records the label \"Empyrean Consciousness\" and the current paraphrased definition: Awareness aligned with Source; pattern, truth, and coherence across time, energy, and matter. Not a chakra zone, but the unified field containing all zones; the state from which the other seven emerge and to which they return.",
+            "The source text is represented here as a paraphrase, not a verbatim quotation."
           ],
           "conflicts": [
-            "The chapter also contains Pattern Consciousness, Story Consciousness, and Imperium Consciousness; these are separate entries and are not merged into the eight-record roster."
+            "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
           ]
         },
         {
@@ -8903,14 +8905,13 @@
           "name": "independent_corroboration_and_contradiction",
           "status": "blocked",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22, seven affirmations and eight-domain explanation"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (SOURCE OS CANON v1.0.0, source build MOB_Complete_v184.html; historical comparison only, not independent confirmation of Conscious Domain semantics)."
           ],
           "findings": [
-            "Cross-checked Empyrean Consciousness against the chapter's framing that seven chakra-zone affirmations map to seven of eight domains, with Empyrean as the unified field. The source distinguishes the eight-domain sequence from additional consciousness entries."
+            "Compared source provenance: available SOURCE OS CANON is built from v184, not v341, and does not establish the eight Conscious Domain definitions or their affirmations."
           ],
           "conflicts": [
-            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence.",
-            "Status blocked: no independent external source was used in this cycle; same-file cross-section checking is not equivalent to an independent research source."
+            "No independent source corroborating this record's exact definition or assigned affirmation has been verified. Do not treat the v184 canon as corroboration of v341 Conscious Domain content."
           ]
         },
         {
@@ -8918,23 +8919,28 @@
           "name": "synthesis_and_cross_record_consistency",
           "status": "in_progress",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "The source-backed name and definition summary for Empyrean Consciousness are retained. The record is consistent with the eight-domain inventory; no new parent/child or affirmation edge is inferred."
+            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
           ],
           "conflicts": [
-            "Canonical approval remains pending. Preserve source excerpt/provenance and do not merge Pattern, Story, or Imperium Consciousness into this roster."
+            "The authoritative affirmation assignment is still missing; canonical review remains open."
           ]
         }
       ],
       "unresolvedQuestions": [
         "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
         "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source.",
-        "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence."
+        "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence.",
+        "Recover and inspect the exact v341 source excerpt for this record; record a line/anchor-level quotation or faithful extract.",
+        "Locate an independent source or explicit second edition that corroborates the definition; if none exists, record the lack of corroboration rather than forcing pass 2 complete.",
+        "Recover the exact source-assigned affirmation, if one exists; leave affirmation unresolved until explicit evidence is found.",
+        "Complete cross-record synthesis without assuming chakra order proves an affirmation or mapping."
       ],
-      "notes": [],
+      "notes": [
+        "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -8963,10 +8969,10 @@
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "Empyrean Consciousness",
-        "fam": "deep_psychological.conscious_domains",
+        "fam": "conscious_domains",
         "def": "Awareness aligned with Source; pattern, truth, and coherence across time, energy, and matter. Not a chakra zone, but the unified field containing all zones; the state from which the other seven emerge and to which they return.",
         "body": "SOURCE-EXTRACTED SUMMARY — Awareness aligned with Source; pattern, truth, and coherence across time, energy, and matter. Not a chakra zone, but the unified field containing all zones; the state from which the other seven emerge and to which they return. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
-        "affirmation": "SOURCE GAP — authoritative affirmation not recovered; do not invent.",
+        "affirmation": null,
         "links": [],
         "sourceRefs": [
           "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
@@ -8976,31 +8982,45 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "The v341 source crosswalk records the label \"Empyrean Consciousness\" and the current paraphrased definition: Awareness aligned with Source; pattern, truth, and coherence across time, energy, and matter. Not a chakra zone, but the unified field containing all zones; the state from which the other seven emerge and to which they return.",
+              "The source text is represented here as a paraphrase, not a verbatim quotation."
+            ],
             "conflicts": [
-              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+              "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
             ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "blocked",
+            "sources": [
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (SOURCE OS CANON v1.0.0, source build MOB_Complete_v184.html; historical comparison only, not independent confirmation of Conscious Domain semantics)."
+            ],
+            "findings": [
+              "Compared source provenance: available SOURCE OS CANON is built from v184, not v341, and does not establish the eight Conscious Domain definitions or their affirmations."
+            ],
             "conflicts": [
-              "Independent corroboration not yet performed for the current record content."
+              "No independent source corroborating this record's exact definition or assigned affirmation has been verified. Do not treat the v184 canon as corroboration of v341 Conscious Domain content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "in_progress",
+            "sources": [
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
+            ],
             "conflicts": [
-              "Cross-record synthesis and owner/canon ruling not yet completed."
+              "The authoritative affirmation assignment is still missing; canonical review remains open."
             ]
           }
         ]
@@ -9009,7 +9029,9 @@
         "schemaDefined": true,
         "sourceBacked": true,
         "contentStatus": "source_extracted_cross_record_review_pending",
-        "missingFields": [],
+        "missingFields": [
+          "affirmation"
+        ],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
         "canonicalApproval": "pending",
@@ -9060,13 +9082,15 @@
           "name": "primary_source_extraction",
           "status": "complete",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 The Seven Affirmations (#ch22)"
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "Extracted source name and concise definition for Crown Consciousness from the eight-domain Conscious Domain sequence."
+            "The v341 source crosswalk records the label \"Crown Consciousness\" and the current paraphrased definition: Honoring the word one gives to oneself and others; the crown as a two-way interface receiving from Source without distortion.",
+            "The source text is represented here as a paraphrase, not a verbatim quotation."
           ],
           "conflicts": [
-            "The chapter also contains Pattern Consciousness, Story Consciousness, and Imperium Consciousness; these are separate entries and are not merged into the eight-record roster."
+            "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
           ]
         },
         {
@@ -9074,14 +9098,13 @@
           "name": "independent_corroboration_and_contradiction",
           "status": "blocked",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22, seven affirmations and eight-domain explanation"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (SOURCE OS CANON v1.0.0, source build MOB_Complete_v184.html; historical comparison only, not independent confirmation of Conscious Domain semantics)."
           ],
           "findings": [
-            "Cross-checked Crown Consciousness against the chapter's framing that seven chakra-zone affirmations map to seven of eight domains, with Empyrean as the unified field. The source distinguishes the eight-domain sequence from additional consciousness entries."
+            "Compared source provenance: available SOURCE OS CANON is built from v184, not v341, and does not establish the eight Conscious Domain definitions or their affirmations."
           ],
           "conflicts": [
-            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence.",
-            "Status blocked: no independent external source was used in this cycle; same-file cross-section checking is not equivalent to an independent research source."
+            "No independent source corroborating this record's exact definition or assigned affirmation has been verified. Do not treat the v184 canon as corroboration of v341 Conscious Domain content."
           ]
         },
         {
@@ -9089,14 +9112,13 @@
           "name": "synthesis_and_cross_record_consistency",
           "status": "in_progress",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "The source-backed name and definition summary for Crown Consciousness are retained. The record is consistent with the eight-domain inventory; no new parent/child or affirmation edge is inferred."
+            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
           ],
           "conflicts": [
-            "Canonical approval remains pending. Preserve source excerpt/provenance and do not merge Pattern, Story, or Imperium Consciousness into this roster."
+            "The authoritative affirmation assignment is still missing; canonical review remains open."
           ]
         }
       ],
@@ -9104,9 +9126,15 @@
         "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
         "Canonical name, definition, body, and affirmation are not recovered from inspected sources.",
         "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source.",
-        "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence."
+        "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence.",
+        "Recover and inspect the exact v341 source excerpt for this record; record a line/anchor-level quotation or faithful extract.",
+        "Locate an independent source or explicit second edition that corroborates the definition; if none exists, record the lack of corroboration rather than forcing pass 2 complete.",
+        "Recover the exact source-assigned affirmation, if one exists; leave affirmation unresolved until explicit evidence is found.",
+        "Complete cross-record synthesis without assuming chakra order proves an affirmation or mapping."
       ],
-      "notes": [],
+      "notes": [
+        "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -9135,7 +9163,7 @@
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "Crown Consciousness",
-        "fam": "deep_psychological.conscious_domains",
+        "fam": "conscious_domains",
         "def": "Honoring the word one gives to oneself and others; the crown as a two-way interface receiving from Source without distortion.",
         "body": "SOURCE-EXTRACTED SUMMARY — Honoring the word one gives to oneself and others; the crown as a two-way interface receiving from Source without distortion. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
         "affirmation": "SOURCE GAP — authoritative affirmation not recovered; do not invent.",
@@ -9148,31 +9176,45 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "The v341 source crosswalk records the label \"Crown Consciousness\" and the current paraphrased definition: Honoring the word one gives to oneself and others; the crown as a two-way interface receiving from Source without distortion.",
+              "The source text is represented here as a paraphrase, not a verbatim quotation."
+            ],
             "conflicts": [
-              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+              "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
             ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "blocked",
+            "sources": [
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (SOURCE OS CANON v1.0.0, source build MOB_Complete_v184.html; historical comparison only, not independent confirmation of Conscious Domain semantics)."
+            ],
+            "findings": [
+              "Compared source provenance: available SOURCE OS CANON is built from v184, not v341, and does not establish the eight Conscious Domain definitions or their affirmations."
+            ],
             "conflicts": [
-              "Independent corroboration not yet performed for the current record content."
+              "No independent source corroborating this record's exact definition or assigned affirmation has been verified. Do not treat the v184 canon as corroboration of v341 Conscious Domain content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "in_progress",
+            "sources": [
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
+            ],
             "conflicts": [
-              "Cross-record synthesis and owner/canon ruling not yet completed."
+              "The authoritative affirmation assignment is still missing; canonical review remains open."
             ]
           }
         ]
@@ -9181,7 +9223,9 @@
         "schemaDefined": true,
         "sourceBacked": true,
         "contentStatus": "source_extracted_cross_record_review_pending",
-        "missingFields": [],
+        "missingFields": [
+          "affirmation"
+        ],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
         "canonicalApproval": "pending",
@@ -9231,13 +9275,15 @@
           "name": "primary_source_extraction",
           "status": "complete",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 The Seven Affirmations (#ch22)"
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "Extracted source name and concise definition for Perception Consciousness from the eight-domain Conscious Domain sequence."
+            "The v341 source crosswalk records the label \"Perception Consciousness\" and the current paraphrased definition: Conscious awareness in every moment; the recognition axis is open and behavior is no longer running automatically.",
+            "The source text is represented here as a paraphrase, not a verbatim quotation."
           ],
           "conflicts": [
-            "The chapter also contains Pattern Consciousness, Story Consciousness, and Imperium Consciousness; these are separate entries and are not merged into the eight-record roster."
+            "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
           ]
         },
         {
@@ -9245,14 +9291,13 @@
           "name": "independent_corroboration_and_contradiction",
           "status": "blocked",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22, seven affirmations and eight-domain explanation"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (SOURCE OS CANON v1.0.0, source build MOB_Complete_v184.html; historical comparison only, not independent confirmation of Conscious Domain semantics)."
           ],
           "findings": [
-            "Cross-checked Perception Consciousness against the chapter's framing that seven chakra-zone affirmations map to seven of eight domains, with Empyrean as the unified field. The source distinguishes the eight-domain sequence from additional consciousness entries."
+            "Compared source provenance: available SOURCE OS CANON is built from v184, not v341, and does not establish the eight Conscious Domain definitions or their affirmations."
           ],
           "conflicts": [
-            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence.",
-            "Status blocked: no independent external source was used in this cycle; same-file cross-section checking is not equivalent to an independent research source."
+            "No independent source corroborating this record's exact definition or assigned affirmation has been verified. Do not treat the v184 canon as corroboration of v341 Conscious Domain content."
           ]
         },
         {
@@ -9260,14 +9305,13 @@
           "name": "synthesis_and_cross_record_consistency",
           "status": "in_progress",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "The source-backed name and definition summary for Perception Consciousness are retained. The record is consistent with the eight-domain inventory; no new parent/child or affirmation edge is inferred."
+            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
           ],
           "conflicts": [
-            "Canonical approval remains pending. Preserve source excerpt/provenance and do not merge Pattern, Story, or Imperium Consciousness into this roster."
+            "The authoritative affirmation assignment is still missing; canonical review remains open."
           ]
         }
       ],
@@ -9275,9 +9319,15 @@
         "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
         "Canonical name, definition, body, and affirmation are not recovered from inspected sources.",
         "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source.",
-        "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence."
+        "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence.",
+        "Recover and inspect the exact v341 source excerpt for this record; record a line/anchor-level quotation or faithful extract.",
+        "Locate an independent source or explicit second edition that corroborates the definition; if none exists, record the lack of corroboration rather than forcing pass 2 complete.",
+        "Recover the exact source-assigned affirmation, if one exists; leave affirmation unresolved until explicit evidence is found.",
+        "Complete cross-record synthesis without assuming chakra order proves an affirmation or mapping."
       ],
-      "notes": [],
+      "notes": [
+        "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -9306,7 +9356,7 @@
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "Perception Consciousness",
-        "fam": "deep_psychological.conscious_domains",
+        "fam": "conscious_domains",
         "def": "Conscious awareness in every moment; the recognition axis is open and behavior is no longer running automatically.",
         "body": "SOURCE-EXTRACTED SUMMARY — Conscious awareness in every moment; the recognition axis is open and behavior is no longer running automatically. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
         "affirmation": "SOURCE GAP — authoritative affirmation not recovered; do not invent.",
@@ -9319,31 +9369,45 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "The v341 source crosswalk records the label \"Perception Consciousness\" and the current paraphrased definition: Conscious awareness in every moment; the recognition axis is open and behavior is no longer running automatically.",
+              "The source text is represented here as a paraphrase, not a verbatim quotation."
+            ],
             "conflicts": [
-              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+              "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
             ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "blocked",
+            "sources": [
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (SOURCE OS CANON v1.0.0, source build MOB_Complete_v184.html; historical comparison only, not independent confirmation of Conscious Domain semantics)."
+            ],
+            "findings": [
+              "Compared source provenance: available SOURCE OS CANON is built from v184, not v341, and does not establish the eight Conscious Domain definitions or their affirmations."
+            ],
             "conflicts": [
-              "Independent corroboration not yet performed for the current record content."
+              "No independent source corroborating this record's exact definition or assigned affirmation has been verified. Do not treat the v184 canon as corroboration of v341 Conscious Domain content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "in_progress",
+            "sources": [
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
+            ],
             "conflicts": [
-              "Cross-record synthesis and owner/canon ruling not yet completed."
+              "The authoritative affirmation assignment is still missing; canonical review remains open."
             ]
           }
         ]
@@ -9352,7 +9416,9 @@
         "schemaDefined": true,
         "sourceBacked": true,
         "contentStatus": "source_extracted_cross_record_review_pending",
-        "missingFields": [],
+        "missingFields": [
+          "affirmation"
+        ],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
         "canonicalApproval": "pending",
@@ -9402,13 +9468,15 @@
           "name": "primary_source_extraction",
           "status": "complete",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 The Seven Affirmations (#ch22)"
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "Extracted source name and concise definition for Truth Consciousness from the eight-domain Conscious Domain sequence."
+            "The v341 source crosswalk records the label \"Truth Consciousness\" and the current paraphrased definition: Absolute truth in speech, perception, and behavior; truth integrity defended automatically.",
+            "The source text is represented here as a paraphrase, not a verbatim quotation."
           ],
           "conflicts": [
-            "The chapter also contains Pattern Consciousness, Story Consciousness, and Imperium Consciousness; these are separate entries and are not merged into the eight-record roster."
+            "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
           ]
         },
         {
@@ -9416,14 +9484,13 @@
           "name": "independent_corroboration_and_contradiction",
           "status": "blocked",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22, seven affirmations and eight-domain explanation"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (SOURCE OS CANON v1.0.0, source build MOB_Complete_v184.html; historical comparison only, not independent confirmation of Conscious Domain semantics)."
           ],
           "findings": [
-            "Cross-checked Truth Consciousness against the chapter's framing that seven chakra-zone affirmations map to seven of eight domains, with Empyrean as the unified field. The source distinguishes the eight-domain sequence from additional consciousness entries."
+            "Compared source provenance: available SOURCE OS CANON is built from v184, not v341, and does not establish the eight Conscious Domain definitions or their affirmations."
           ],
           "conflicts": [
-            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence.",
-            "Status blocked: no independent external source was used in this cycle; same-file cross-section checking is not equivalent to an independent research source."
+            "No independent source corroborating this record's exact definition or assigned affirmation has been verified. Do not treat the v184 canon as corroboration of v341 Conscious Domain content."
           ]
         },
         {
@@ -9431,14 +9498,13 @@
           "name": "synthesis_and_cross_record_consistency",
           "status": "in_progress",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "The source-backed name and definition summary for Truth Consciousness are retained. The record is consistent with the eight-domain inventory; no new parent/child or affirmation edge is inferred."
+            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
           ],
           "conflicts": [
-            "Canonical approval remains pending. Preserve source excerpt/provenance and do not merge Pattern, Story, or Imperium Consciousness into this roster."
+            "The authoritative affirmation assignment is still missing; canonical review remains open."
           ]
         }
       ],
@@ -9446,9 +9512,15 @@
         "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
         "Canonical name, definition, body, and affirmation are not recovered from inspected sources.",
         "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source.",
-        "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence."
+        "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence.",
+        "Recover and inspect the exact v341 source excerpt for this record; record a line/anchor-level quotation or faithful extract.",
+        "Locate an independent source or explicit second edition that corroborates the definition; if none exists, record the lack of corroboration rather than forcing pass 2 complete.",
+        "Recover the exact source-assigned affirmation, if one exists; leave affirmation unresolved until explicit evidence is found.",
+        "Complete cross-record synthesis without assuming chakra order proves an affirmation or mapping."
       ],
-      "notes": [],
+      "notes": [
+        "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -9477,7 +9549,7 @@
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "Truth Consciousness",
-        "fam": "deep_psychological.conscious_domains",
+        "fam": "conscious_domains",
         "def": "Absolute truth in speech, perception, and behavior; truth integrity defended automatically.",
         "body": "SOURCE-EXTRACTED SUMMARY — Absolute truth in speech, perception, and behavior; truth integrity defended automatically. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
         "affirmation": "SOURCE GAP — authoritative affirmation not recovered; do not invent.",
@@ -9490,31 +9562,45 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "The v341 source crosswalk records the label \"Truth Consciousness\" and the current paraphrased definition: Absolute truth in speech, perception, and behavior; truth integrity defended automatically.",
+              "The source text is represented here as a paraphrase, not a verbatim quotation."
+            ],
             "conflicts": [
-              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+              "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
             ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "blocked",
+            "sources": [
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (SOURCE OS CANON v1.0.0, source build MOB_Complete_v184.html; historical comparison only, not independent confirmation of Conscious Domain semantics)."
+            ],
+            "findings": [
+              "Compared source provenance: available SOURCE OS CANON is built from v184, not v341, and does not establish the eight Conscious Domain definitions or their affirmations."
+            ],
             "conflicts": [
-              "Independent corroboration not yet performed for the current record content."
+              "No independent source corroborating this record's exact definition or assigned affirmation has been verified. Do not treat the v184 canon as corroboration of v341 Conscious Domain content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "in_progress",
+            "sources": [
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
+            ],
             "conflicts": [
-              "Cross-record synthesis and owner/canon ruling not yet completed."
+              "The authoritative affirmation assignment is still missing; canonical review remains open."
             ]
           }
         ]
@@ -9523,7 +9609,9 @@
         "schemaDefined": true,
         "sourceBacked": true,
         "contentStatus": "source_extracted_cross_record_review_pending",
-        "missingFields": [],
+        "missingFields": [
+          "affirmation"
+        ],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
         "canonicalApproval": "pending",
@@ -9573,13 +9661,15 @@
           "name": "primary_source_extraction",
           "status": "complete",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 The Seven Affirmations (#ch22)"
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "Extracted source name and concise definition for Heart Consciousness from the eight-domain Conscious Domain sequence."
+            "The v341 source crosswalk records the label \"Heart Consciousness\" and the current paraphrased definition: Equal compassion toward self and others; a stable perceptual state that cannot be contracted by other people's broadcasts.",
+            "The source text is represented here as a paraphrase, not a verbatim quotation."
           ],
           "conflicts": [
-            "The chapter also contains Pattern Consciousness, Story Consciousness, and Imperium Consciousness; these are separate entries and are not merged into the eight-record roster."
+            "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
           ]
         },
         {
@@ -9587,14 +9677,13 @@
           "name": "independent_corroboration_and_contradiction",
           "status": "blocked",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22, seven affirmations and eight-domain explanation"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (SOURCE OS CANON v1.0.0, source build MOB_Complete_v184.html; historical comparison only, not independent confirmation of Conscious Domain semantics)."
           ],
           "findings": [
-            "Cross-checked Heart Consciousness against the chapter's framing that seven chakra-zone affirmations map to seven of eight domains, with Empyrean as the unified field. The source distinguishes the eight-domain sequence from additional consciousness entries."
+            "Compared source provenance: available SOURCE OS CANON is built from v184, not v341, and does not establish the eight Conscious Domain definitions or their affirmations."
           ],
           "conflicts": [
-            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence.",
-            "Status blocked: no independent external source was used in this cycle; same-file cross-section checking is not equivalent to an independent research source."
+            "No independent source corroborating this record's exact definition or assigned affirmation has been verified. Do not treat the v184 canon as corroboration of v341 Conscious Domain content."
           ]
         },
         {
@@ -9602,14 +9691,13 @@
           "name": "synthesis_and_cross_record_consistency",
           "status": "in_progress",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "The source-backed name and definition summary for Heart Consciousness are retained. The record is consistent with the eight-domain inventory; no new parent/child or affirmation edge is inferred."
+            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
           ],
           "conflicts": [
-            "Canonical approval remains pending. Preserve source excerpt/provenance and do not merge Pattern, Story, or Imperium Consciousness into this roster."
+            "The authoritative affirmation assignment is still missing; canonical review remains open."
           ]
         }
       ],
@@ -9617,9 +9705,15 @@
         "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
         "Canonical name, definition, body, and affirmation are not recovered from inspected sources.",
         "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source.",
-        "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence."
+        "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence.",
+        "Recover and inspect the exact v341 source excerpt for this record; record a line/anchor-level quotation or faithful extract.",
+        "Locate an independent source or explicit second edition that corroborates the definition; if none exists, record the lack of corroboration rather than forcing pass 2 complete.",
+        "Recover the exact source-assigned affirmation, if one exists; leave affirmation unresolved until explicit evidence is found.",
+        "Complete cross-record synthesis without assuming chakra order proves an affirmation or mapping."
       ],
-      "notes": [],
+      "notes": [
+        "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -9648,7 +9742,7 @@
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "Heart Consciousness",
-        "fam": "deep_psychological.conscious_domains",
+        "fam": "conscious_domains",
         "def": "Equal compassion toward self and others; a stable perceptual state that cannot be contracted by other people's broadcasts.",
         "body": "SOURCE-EXTRACTED SUMMARY — Equal compassion toward self and others; a stable perceptual state that cannot be contracted by other people's broadcasts. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
         "affirmation": "SOURCE GAP — authoritative affirmation not recovered; do not invent.",
@@ -9661,31 +9755,45 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "The v341 source crosswalk records the label \"Heart Consciousness\" and the current paraphrased definition: Equal compassion toward self and others; a stable perceptual state that cannot be contracted by other people's broadcasts.",
+              "The source text is represented here as a paraphrase, not a verbatim quotation."
+            ],
             "conflicts": [
-              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+              "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
             ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "blocked",
+            "sources": [
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (SOURCE OS CANON v1.0.0, source build MOB_Complete_v184.html; historical comparison only, not independent confirmation of Conscious Domain semantics)."
+            ],
+            "findings": [
+              "Compared source provenance: available SOURCE OS CANON is built from v184, not v341, and does not establish the eight Conscious Domain definitions or their affirmations."
+            ],
             "conflicts": [
-              "Independent corroboration not yet performed for the current record content."
+              "No independent source corroborating this record's exact definition or assigned affirmation has been verified. Do not treat the v184 canon as corroboration of v341 Conscious Domain content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "in_progress",
+            "sources": [
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
+            ],
             "conflicts": [
-              "Cross-record synthesis and owner/canon ruling not yet completed."
+              "The authoritative affirmation assignment is still missing; canonical review remains open."
             ]
           }
         ]
@@ -9694,7 +9802,9 @@
         "schemaDefined": true,
         "sourceBacked": true,
         "contentStatus": "source_extracted_cross_record_review_pending",
-        "missingFields": [],
+        "missingFields": [
+          "affirmation"
+        ],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
         "canonicalApproval": "pending",
@@ -9744,13 +9854,15 @@
           "name": "primary_source_extraction",
           "status": "complete",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 The Seven Affirmations (#ch22)"
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "Extracted source name and concise definition for Value Consciousness from the eight-domain Conscious Domain sequence."
+            "The v341 source crosswalk records the label \"Value Consciousness\" and the current paraphrased definition: Embodiment of worth and desire fulfillment; creativity flowing and desires recognized and honored.",
+            "The source text is represented here as a paraphrase, not a verbatim quotation."
           ],
           "conflicts": [
-            "The chapter also contains Pattern Consciousness, Story Consciousness, and Imperium Consciousness; these are separate entries and are not merged into the eight-record roster."
+            "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
           ]
         },
         {
@@ -9758,14 +9870,13 @@
           "name": "independent_corroboration_and_contradiction",
           "status": "blocked",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22, seven affirmations and eight-domain explanation"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (SOURCE OS CANON v1.0.0, source build MOB_Complete_v184.html; historical comparison only, not independent confirmation of Conscious Domain semantics)."
           ],
           "findings": [
-            "Cross-checked Value Consciousness against the chapter's framing that seven chakra-zone affirmations map to seven of eight domains, with Empyrean as the unified field. The source distinguishes the eight-domain sequence from additional consciousness entries."
+            "Compared source provenance: available SOURCE OS CANON is built from v184, not v341, and does not establish the eight Conscious Domain definitions or their affirmations."
           ],
           "conflicts": [
-            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence.",
-            "Status blocked: no independent external source was used in this cycle; same-file cross-section checking is not equivalent to an independent research source."
+            "No independent source corroborating this record's exact definition or assigned affirmation has been verified. Do not treat the v184 canon as corroboration of v341 Conscious Domain content."
           ]
         },
         {
@@ -9773,14 +9884,13 @@
           "name": "synthesis_and_cross_record_consistency",
           "status": "in_progress",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "The source-backed name and definition summary for Value Consciousness are retained. The record is consistent with the eight-domain inventory; no new parent/child or affirmation edge is inferred."
+            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
           ],
           "conflicts": [
-            "Canonical approval remains pending. Preserve source excerpt/provenance and do not merge Pattern, Story, or Imperium Consciousness into this roster."
+            "The authoritative affirmation assignment is still missing; canonical review remains open."
           ]
         }
       ],
@@ -9788,9 +9898,15 @@
         "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
         "Canonical name, definition, body, and affirmation are not recovered from inspected sources.",
         "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source.",
-        "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence."
+        "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence.",
+        "Recover and inspect the exact v341 source excerpt for this record; record a line/anchor-level quotation or faithful extract.",
+        "Locate an independent source or explicit second edition that corroborates the definition; if none exists, record the lack of corroboration rather than forcing pass 2 complete.",
+        "Recover the exact source-assigned affirmation, if one exists; leave affirmation unresolved until explicit evidence is found.",
+        "Complete cross-record synthesis without assuming chakra order proves an affirmation or mapping."
       ],
-      "notes": [],
+      "notes": [
+        "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -9819,7 +9935,7 @@
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "Value Consciousness",
-        "fam": "deep_psychological.conscious_domains",
+        "fam": "conscious_domains",
         "def": "Embodiment of worth and desire fulfillment; creativity flowing and desires recognized and honored.",
         "body": "SOURCE-EXTRACTED SUMMARY — Embodiment of worth and desire fulfillment; creativity flowing and desires recognized and honored. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
         "affirmation": "SOURCE GAP — authoritative affirmation not recovered; do not invent.",
@@ -9832,31 +9948,45 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "The v341 source crosswalk records the label \"Value Consciousness\" and the current paraphrased definition: Embodiment of worth and desire fulfillment; creativity flowing and desires recognized and honored.",
+              "The source text is represented here as a paraphrase, not a verbatim quotation."
+            ],
             "conflicts": [
-              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+              "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
             ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "blocked",
+            "sources": [
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (SOURCE OS CANON v1.0.0, source build MOB_Complete_v184.html; historical comparison only, not independent confirmation of Conscious Domain semantics)."
+            ],
+            "findings": [
+              "Compared source provenance: available SOURCE OS CANON is built from v184, not v341, and does not establish the eight Conscious Domain definitions or their affirmations."
+            ],
             "conflicts": [
-              "Independent corroboration not yet performed for the current record content."
+              "No independent source corroborating this record's exact definition or assigned affirmation has been verified. Do not treat the v184 canon as corroboration of v341 Conscious Domain content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "in_progress",
+            "sources": [
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
+            ],
             "conflicts": [
-              "Cross-record synthesis and owner/canon ruling not yet completed."
+              "The authoritative affirmation assignment is still missing; canonical review remains open."
             ]
           }
         ]
@@ -9865,7 +9995,9 @@
         "schemaDefined": true,
         "sourceBacked": true,
         "contentStatus": "source_extracted_cross_record_review_pending",
-        "missingFields": [],
+        "missingFields": [
+          "affirmation"
+        ],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
         "canonicalApproval": "pending",
@@ -9915,13 +10047,15 @@
           "name": "primary_source_extraction",
           "status": "complete",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 The Seven Affirmations (#ch22)"
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "Extracted source name and concise definition for Royal Consciousness from the eight-domain Conscious Domain sequence."
+            "The v341 source crosswalk records the label \"Royal Consciousness\" and the current paraphrased definition: Sovereignty, courage, leadership, and responsibility for one's own reality; power that does not need to dominate.",
+            "The source text is represented here as a paraphrase, not a verbatim quotation."
           ],
           "conflicts": [
-            "The chapter also contains Pattern Consciousness, Story Consciousness, and Imperium Consciousness; these are separate entries and are not merged into the eight-record roster."
+            "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
           ]
         },
         {
@@ -9929,14 +10063,13 @@
           "name": "independent_corroboration_and_contradiction",
           "status": "blocked",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22, seven affirmations and eight-domain explanation"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (SOURCE OS CANON v1.0.0, source build MOB_Complete_v184.html; historical comparison only, not independent confirmation of Conscious Domain semantics)."
           ],
           "findings": [
-            "Cross-checked Royal Consciousness against the chapter's framing that seven chakra-zone affirmations map to seven of eight domains, with Empyrean as the unified field. The source distinguishes the eight-domain sequence from additional consciousness entries."
+            "Compared source provenance: available SOURCE OS CANON is built from v184, not v341, and does not establish the eight Conscious Domain definitions or their affirmations."
           ],
           "conflicts": [
-            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence.",
-            "Status blocked: no independent external source was used in this cycle; same-file cross-section checking is not equivalent to an independent research source."
+            "No independent source corroborating this record's exact definition or assigned affirmation has been verified. Do not treat the v184 canon as corroboration of v341 Conscious Domain content."
           ]
         },
         {
@@ -9944,14 +10077,13 @@
           "name": "synthesis_and_cross_record_consistency",
           "status": "in_progress",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "The source-backed name and definition summary for Royal Consciousness are retained. The record is consistent with the eight-domain inventory; no new parent/child or affirmation edge is inferred."
+            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
           ],
           "conflicts": [
-            "Canonical approval remains pending. Preserve source excerpt/provenance and do not merge Pattern, Story, or Imperium Consciousness into this roster."
+            "The authoritative affirmation assignment is still missing; canonical review remains open."
           ]
         }
       ],
@@ -9959,9 +10091,15 @@
         "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
         "Canonical name, definition, body, and affirmation are not recovered from inspected sources.",
         "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source.",
-        "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence."
+        "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence.",
+        "Recover and inspect the exact v341 source excerpt for this record; record a line/anchor-level quotation or faithful extract.",
+        "Locate an independent source or explicit second edition that corroborates the definition; if none exists, record the lack of corroboration rather than forcing pass 2 complete.",
+        "Recover the exact source-assigned affirmation, if one exists; leave affirmation unresolved until explicit evidence is found.",
+        "Complete cross-record synthesis without assuming chakra order proves an affirmation or mapping."
       ],
-      "notes": [],
+      "notes": [
+        "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -9990,7 +10128,7 @@
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "Royal Consciousness",
-        "fam": "deep_psychological.conscious_domains",
+        "fam": "conscious_domains",
         "def": "Sovereignty, courage, leadership, and responsibility for one's own reality; power that does not need to dominate.",
         "body": "SOURCE-EXTRACTED SUMMARY — Sovereignty, courage, leadership, and responsibility for one's own reality; power that does not need to dominate. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
         "affirmation": "SOURCE GAP — authoritative affirmation not recovered; do not invent.",
@@ -10003,31 +10141,45 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "The v341 source crosswalk records the label \"Royal Consciousness\" and the current paraphrased definition: Sovereignty, courage, leadership, and responsibility for one's own reality; power that does not need to dominate.",
+              "The source text is represented here as a paraphrase, not a verbatim quotation."
+            ],
             "conflicts": [
-              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+              "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
             ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "blocked",
+            "sources": [
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (SOURCE OS CANON v1.0.0, source build MOB_Complete_v184.html; historical comparison only, not independent confirmation of Conscious Domain semantics)."
+            ],
+            "findings": [
+              "Compared source provenance: available SOURCE OS CANON is built from v184, not v341, and does not establish the eight Conscious Domain definitions or their affirmations."
+            ],
             "conflicts": [
-              "Independent corroboration not yet performed for the current record content."
+              "No independent source corroborating this record's exact definition or assigned affirmation has been verified. Do not treat the v184 canon as corroboration of v341 Conscious Domain content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "in_progress",
+            "sources": [
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
+            ],
             "conflicts": [
-              "Cross-record synthesis and owner/canon ruling not yet completed."
+              "The authoritative affirmation assignment is still missing; canonical review remains open."
             ]
           }
         ]
@@ -10036,7 +10188,9 @@
         "schemaDefined": true,
         "sourceBacked": true,
         "contentStatus": "source_extracted_cross_record_review_pending",
-        "missingFields": [],
+        "missingFields": [
+          "affirmation"
+        ],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
         "canonicalApproval": "pending",
@@ -10086,13 +10240,15 @@
           "name": "primary_source_extraction",
           "status": "complete",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 The Seven Affirmations (#ch22)"
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "Extracted source name and concise definition for Creative Consciousness from the eight-domain Conscious Domain sequence."
+            "The v341 source crosswalk records the label \"Creative Consciousness\" and the current paraphrased definition: Freedom to create without resistance; survival patterns no longer consume creative output.",
+            "The source text is represented here as a paraphrase, not a verbatim quotation."
           ],
           "conflicts": [
-            "The chapter also contains Pattern Consciousness, Story Consciousness, and Imperium Consciousness; these are separate entries and are not merged into the eight-record roster."
+            "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
           ]
         },
         {
@@ -10100,14 +10256,13 @@
           "name": "independent_corroboration_and_contradiction",
           "status": "blocked",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22, seven affirmations and eight-domain explanation"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (SOURCE OS CANON v1.0.0, source build MOB_Complete_v184.html; historical comparison only, not independent confirmation of Conscious Domain semantics)."
           ],
           "findings": [
-            "Cross-checked Creative Consciousness against the chapter's framing that seven chakra-zone affirmations map to seven of eight domains, with Empyrean as the unified field. The source distinguishes the eight-domain sequence from additional consciousness entries."
+            "Compared source provenance: available SOURCE OS CANON is built from v184, not v341, and does not establish the eight Conscious Domain definitions or their affirmations."
           ],
           "conflicts": [
-            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence.",
-            "Status blocked: no independent external source was used in this cycle; same-file cross-section checking is not equivalent to an independent research source."
+            "No independent source corroborating this record's exact definition or assigned affirmation has been verified. Do not treat the v184 canon as corroboration of v341 Conscious Domain content."
           ]
         },
         {
@@ -10115,14 +10270,13 @@
           "name": "synthesis_and_cross_record_consistency",
           "status": "in_progress",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "The source-backed name and definition summary for Creative Consciousness are retained. The record is consistent with the eight-domain inventory; no new parent/child or affirmation edge is inferred."
+            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
           ],
           "conflicts": [
-            "Canonical approval remains pending. Preserve source excerpt/provenance and do not merge Pattern, Story, or Imperium Consciousness into this roster."
+            "The authoritative affirmation assignment is still missing; canonical review remains open."
           ]
         }
       ],
@@ -10130,9 +10284,15 @@
         "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
         "Canonical name, definition, body, and affirmation are not recovered from inspected sources.",
         "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source.",
-        "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence."
+        "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence.",
+        "Recover and inspect the exact v341 source excerpt for this record; record a line/anchor-level quotation or faithful extract.",
+        "Locate an independent source or explicit second edition that corroborates the definition; if none exists, record the lack of corroboration rather than forcing pass 2 complete.",
+        "Recover the exact source-assigned affirmation, if one exists; leave affirmation unresolved until explicit evidence is found.",
+        "Complete cross-record synthesis without assuming chakra order proves an affirmation or mapping."
       ],
-      "notes": [],
+      "notes": [
+        "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -10161,7 +10321,7 @@
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "Creative Consciousness",
-        "fam": "deep_psychological.conscious_domains",
+        "fam": "conscious_domains",
         "def": "Freedom to create without resistance; survival patterns no longer consume creative output.",
         "body": "SOURCE-EXTRACTED SUMMARY — Freedom to create without resistance; survival patterns no longer consume creative output. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
         "affirmation": "SOURCE GAP — authoritative affirmation not recovered; do not invent.",
@@ -10174,31 +10334,45 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "The v341 source crosswalk records the label \"Creative Consciousness\" and the current paraphrased definition: Freedom to create without resistance; survival patterns no longer consume creative output.",
+              "The source text is represented here as a paraphrase, not a verbatim quotation."
+            ],
             "conflicts": [
-              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+              "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
             ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "blocked",
+            "sources": [
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (SOURCE OS CANON v1.0.0, source build MOB_Complete_v184.html; historical comparison only, not independent confirmation of Conscious Domain semantics)."
+            ],
+            "findings": [
+              "Compared source provenance: available SOURCE OS CANON is built from v184, not v341, and does not establish the eight Conscious Domain definitions or their affirmations."
+            ],
             "conflicts": [
-              "Independent corroboration not yet performed for the current record content."
+              "No independent source corroborating this record's exact definition or assigned affirmation has been verified. Do not treat the v184 canon as corroboration of v341 Conscious Domain content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "in_progress",
+            "sources": [
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
+            ],
             "conflicts": [
-              "Cross-record synthesis and owner/canon ruling not yet completed."
+              "The authoritative affirmation assignment is still missing; canonical review remains open."
             ]
           }
         ]
@@ -10207,7 +10381,9 @@
         "schemaDefined": true,
         "sourceBacked": true,
         "contentStatus": "source_extracted_cross_record_review_pending",
-        "missingFields": [],
+        "missingFields": [
+          "affirmation"
+        ],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
         "canonicalApproval": "pending",
