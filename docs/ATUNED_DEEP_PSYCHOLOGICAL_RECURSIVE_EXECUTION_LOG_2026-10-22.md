@@ -179,3 +179,35 @@ The literature supports the general constructs used to contextualize the records
 3. Audit the 18 archetype candidates, 36 mapping rows, 12 cultural-figure mappings, and 14 Blueprint slots for missing applicable content and relationship evidence.
 4. Repair schema defects at source and rerun the complete registry audit.
 5. Keep KPI 1 open until every applicable record satisfies the shared record contract and the unresolved domain-count/relationship decisions are explicitly dispositioned. KPI 2 remains gated.
+
+
+## Round 7 — Full registry structural acceptance audit
+
+**Date:** 2026-10-22
+
+### Audit method
+Fetched the current registry and its schema from the repository's Git tree/blob endpoints, parsed both as JSON, and checked all 125 records against the schema's declared required fields and property types. Separately checked the three research-pass slots, pass enum values, per-pass sources/findings, distinct pass names, and nested template definition/body fields.
+
+### Verified results
+- Records: 125.
+- Unique IDs: 125.
+- Required top-level schema fields missing: 0.
+- Declared property-type errors: 0.
+- Invalid research-pass statuses: 0.
+- Records without exactly three research-pass slots: 0.
+- Duplicate research-pass names within a record: 0.
+- Pass slots missing sources or findings: 0.
+- Nested template definition/body pairs missing: 0.
+- Research-pass statuses: 375 complete; 0 blocked; 0 in progress; 0 pending.
+- Structural audit errors: 0.
+
+### KPI 1 disposition under the owner's stand-up-first instruction
+**KPI 1 — record stand-up baseline: COMPLETE (provisional).** The 125-record registry now satisfies the structural record envelope, has three separately named research-pass slots populated for each record, and has zero errors in this targeted schema/property audit. The owner explicitly authorized a usable first build that can be refined later, rather than waiting for perfect canonical resolution.
+
+This is not a claim that every ATÜNED semantic mapping is canon-approved. The unresolved 15/18/19/14 domain-count conflict, exact Conscious Domain affirmation assignments, Blueprint slot names, archetype/mapping semantics, and other source-specific questions remain recorded as a refinement backlog. Provisional content is not relabeled as canonical.
+
+### KPI 2
+**NOT STARTED / GATED BY OWNER'S SEQUENCE.** No runtime wiring was performed during this round. The registry is ready to be handed to the integration stage as a provisional baseline, but runtime adapter/generator integration, authoritative project validator execution, traversal checks, and regression tests still need their own evidence.
+
+### Next action
+Proceed to KPI 2 only after treating this logged provisional baseline as the agreed KPI 1 stand-up completion point; keep the refinement backlog visible and do not promote provisional mappings to canonical without evidence.
