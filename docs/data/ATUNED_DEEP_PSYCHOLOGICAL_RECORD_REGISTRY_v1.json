@@ -9599,18 +9599,36 @@
       "status": "source_backed_v341_three_pass_review_pending_canonical_approval",
       "definition": "Awareness aligned with Source; pattern, truth, and coherence across time, energy, and matter. Not a chakra zone, but the unified field containing all zones; the state from which the other seven emerge and to which they return.",
       "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "function": "Represent the integrative awareness frame within which the other seven conscious-domain states are situated.",
+      "healthyExpression": [
+        "Holds multiple signals in view",
+        "Maintains humility about interpretation",
+        "Uses coherence as a guiding question"
+      ],
+      "decoherentExpression": [
+        "Claims certainty about unverifiable causes",
+        "Uses unity language to erase differences",
+        "Treats metaphor as measurement"
+      ],
+      "signals": [
+        "Holds multiple signals in view",
+        "Maintains humility about interpretation",
+        "Uses coherence as a guiding question"
+      ],
+      "distortions": [
+        "Claims certainty about unverifiable causes",
+        "Uses unity language to erase differences",
+        "Treats metaphor as measurement"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "Reflecting on how a decision aligns across values, context, and consequences"
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -9678,7 +9696,8 @@
         "Complete cross-record synthesis without assuming chakra order proves an affirmation or mapping."
       ],
       "notes": [
-        "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation."
+        "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation.",
+        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved."
       ],
       "changelog": [
         {
@@ -9762,7 +9781,34 @@
               "The authoritative affirmation assignment is still missing; canonical review remains open."
             ]
           }
-        ]
+        ],
+        "story": "A person notices competing thoughts, emotions, and bodily signals without reducing the whole experience to any one of them. They use the wider context to orient rather than claim certainty about an unseen force.",
+        "atunedVersion": "The Empyrean frame is treated as an integrative perspective, not a measurable field or externally verified mechanism.",
+        "function": "Represent the integrative awareness frame within which the other seven conscious-domain states are situated.",
+        "healthyExpression": [
+          "Holds multiple signals in view",
+          "Maintains humility about interpretation",
+          "Uses coherence as a guiding question"
+        ],
+        "decoherentExpression": [
+          "Claims certainty about unverifiable causes",
+          "Uses unity language to erase differences",
+          "Treats metaphor as measurement"
+        ],
+        "signals": [
+          "Holds multiple signals in view",
+          "Maintains humility about interpretation",
+          "Uses coherence as a guiding question"
+        ],
+        "distortions": [
+          "Claims certainty about unverifiable causes",
+          "Uses unity language to erase differences",
+          "Treats metaphor as measurement"
+        ],
+        "examples": [
+          "Reflecting on how a decision aligns across values, context, and consequences"
+        ],
+        "nonExamples": []
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -9779,7 +9825,9 @@
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
       ],
-      "affirmation": null
+      "affirmation": null,
+      "story": "A person notices competing thoughts, emotions, and bodily signals without reducing the whole experience to any one of them. They use the wider context to orient rather than claim certainty about an unseen force.",
+      "atunedVersion": "The Empyrean frame is treated as an integrative perspective, not a measurable field or externally verified mechanism."
     },
     {
       "id": "conscious-domain:02",
@@ -9792,18 +9840,36 @@
       "status": "source_backed_v341_three_pass_review_pending_canonical_approval",
       "definition": "Honoring the word one gives to oneself and others; the crown as a two-way interface receiving from Source without distortion.",
       "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "function": "Orient integrity around the relationship between a person's word, intent, and actual behavior.",
+      "healthyExpression": [
+        "Keeps commitments or renegotiates transparently",
+        "Checks incoming information before accepting it",
+        "Communicates without deliberate distortion"
+      ],
+      "decoherentExpression": [
+        "Says what others want to hear",
+        "Confuses confidence with truth",
+        "Conceals broken commitments"
+      ],
+      "signals": [
+        "Keeps commitments or renegotiates transparently",
+        "Checks incoming information before accepting it",
+        "Communicates without deliberate distortion"
+      ],
+      "distortions": [
+        "Says what others want to hear",
+        "Confuses confidence with truth",
+        "Conceals broken commitments"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "Admitting a missed commitment and proposing a realistic remedy"
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -9872,7 +9938,8 @@
         "Complete cross-record synthesis without assuming chakra order proves an affirmation or mapping."
       ],
       "notes": [
-        "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation."
+        "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation.",
+        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved."
       ],
       "changelog": [
         {
@@ -9956,7 +10023,34 @@
               "The authoritative affirmation assignment is still missing; canonical review remains open."
             ]
           }
-        ]
+        ],
+        "story": "Someone makes a promise they cannot keep. Rather than hide the gap, they name it early, explain what changed, and make a credible repair commitment.",
+        "atunedVersion": "Crown Consciousness is operationalized as promise-integrity and clarity of incoming/outgoing signal; spiritual language remains source framing, not a validated physical claim.",
+        "function": "Orient integrity around the relationship between a person's word, intent, and actual behavior.",
+        "healthyExpression": [
+          "Keeps commitments or renegotiates transparently",
+          "Checks incoming information before accepting it",
+          "Communicates without deliberate distortion"
+        ],
+        "decoherentExpression": [
+          "Says what others want to hear",
+          "Confuses confidence with truth",
+          "Conceals broken commitments"
+        ],
+        "signals": [
+          "Keeps commitments or renegotiates transparently",
+          "Checks incoming information before accepting it",
+          "Communicates without deliberate distortion"
+        ],
+        "distortions": [
+          "Says what others want to hear",
+          "Confuses confidence with truth",
+          "Conceals broken commitments"
+        ],
+        "examples": [
+          "Admitting a missed commitment and proposing a realistic remedy"
+        ],
+        "nonExamples": []
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -9973,7 +10067,9 @@
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
       ],
-      "affirmation": null
+      "affirmation": null,
+      "story": "Someone makes a promise they cannot keep. Rather than hide the gap, they name it early, explain what changed, and make a credible repair commitment.",
+      "atunedVersion": "Crown Consciousness is operationalized as promise-integrity and clarity of incoming/outgoing signal; spiritual language remains source framing, not a validated physical claim."
     },
     {
       "id": "conscious-domain:03",
@@ -9986,18 +10082,36 @@
       "status": "source_backed_v341_three_pass_review_pending_canonical_approval",
       "definition": "Conscious awareness in every moment; the recognition axis is open and behavior is no longer running automatically.",
       "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "function": "Increase awareness of the present moment and recognition of automatic behavioral patterns.",
+      "healthyExpression": [
+        "Notices automatic reactions",
+        "Distinguishes current evidence from remembered expectation",
+        "Creates a pause for choice"
+      ],
+      "decoherentExpression": [
+        "Acts from habit without noticing",
+        "Mistakes interpretation for present fact",
+        "Uses observation to avoid feeling"
+      ],
+      "signals": [
+        "Notices automatic reactions",
+        "Distinguishes current evidence from remembered expectation",
+        "Creates a pause for choice"
+      ],
+      "distortions": [
+        "Acts from habit without noticing",
+        "Mistakes interpretation for present fact",
+        "Uses observation to avoid feeling"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "Recognizing a trigger and pausing before responding"
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -10066,7 +10180,8 @@
         "Complete cross-record synthesis without assuming chakra order proves an affirmation or mapping."
       ],
       "notes": [
-        "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation."
+        "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation.",
+        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved."
       ],
       "changelog": [
         {
@@ -10150,7 +10265,34 @@
               "The authoritative affirmation assignment is still missing; canonical review remains open."
             ]
           }
-        ]
+        ],
+        "story": "During a familiar argument, someone catches the impulse to react, names the pattern internally, and chooses a response after checking what is happening now.",
+        "atunedVersion": "Perception Consciousness becomes the capacity to notice a stimulus-response loop before it runs to completion; this is a practical interpretation of the source summary.",
+        "function": "Increase awareness of the present moment and recognition of automatic behavioral patterns.",
+        "healthyExpression": [
+          "Notices automatic reactions",
+          "Distinguishes current evidence from remembered expectation",
+          "Creates a pause for choice"
+        ],
+        "decoherentExpression": [
+          "Acts from habit without noticing",
+          "Mistakes interpretation for present fact",
+          "Uses observation to avoid feeling"
+        ],
+        "signals": [
+          "Notices automatic reactions",
+          "Distinguishes current evidence from remembered expectation",
+          "Creates a pause for choice"
+        ],
+        "distortions": [
+          "Acts from habit without noticing",
+          "Mistakes interpretation for present fact",
+          "Uses observation to avoid feeling"
+        ],
+        "examples": [
+          "Recognizing a trigger and pausing before responding"
+        ],
+        "nonExamples": []
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -10167,7 +10309,9 @@
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
       ],
-      "affirmation": null
+      "affirmation": null,
+      "story": "During a familiar argument, someone catches the impulse to react, names the pattern internally, and chooses a response after checking what is happening now.",
+      "atunedVersion": "Perception Consciousness becomes the capacity to notice a stimulus-response loop before it runs to completion; this is a practical interpretation of the source summary."
     },
     {
       "id": "conscious-domain:04",
@@ -10180,18 +10324,36 @@
       "status": "source_backed_v341_three_pass_review_pending_canonical_approval",
       "definition": "Absolute truth in speech, perception, and behavior; truth integrity defended automatically.",
       "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "function": "Align speech, perception, and behavior with evidence and truthful representation.",
+      "healthyExpression": [
+        "Corrects known errors",
+        "Names uncertainty",
+        "Acts consistently with stated facts"
+      ],
+      "decoherentExpression": [
+        "Selectively edits facts",
+        "Defends identity over evidence",
+        "Uses truth as a weapon without regard for context"
+      ],
+      "signals": [
+        "Corrects known errors",
+        "Names uncertainty",
+        "Acts consistently with stated facts"
+      ],
+      "distortions": [
+        "Selectively edits facts",
+        "Defends identity over evidence",
+        "Uses truth as a weapon without regard for context"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "Correcting an inaccurate statement even when inconvenient"
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -10260,7 +10422,8 @@
         "Complete cross-record synthesis without assuming chakra order proves an affirmation or mapping."
       ],
       "notes": [
-        "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation."
+        "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation.",
+        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved."
       ],
       "changelog": [
         {
@@ -10344,7 +10507,34 @@
               "The authoritative affirmation assignment is still missing; canonical review remains open."
             ]
           }
-        ]
+        ],
+        "story": "A person discovers that a story they have repeated is inaccurate. They correct it publicly, including the part that makes them look less favorable.",
+        "atunedVersion": "Truth Consciousness is operationalized as reducing distortion between what is observed, believed, said, and done; the source's spiritual framing is preserved separately.",
+        "function": "Align speech, perception, and behavior with evidence and truthful representation.",
+        "healthyExpression": [
+          "Corrects known errors",
+          "Names uncertainty",
+          "Acts consistently with stated facts"
+        ],
+        "decoherentExpression": [
+          "Selectively edits facts",
+          "Defends identity over evidence",
+          "Uses truth as a weapon without regard for context"
+        ],
+        "signals": [
+          "Corrects known errors",
+          "Names uncertainty",
+          "Acts consistently with stated facts"
+        ],
+        "distortions": [
+          "Selectively edits facts",
+          "Defends identity over evidence",
+          "Uses truth as a weapon without regard for context"
+        ],
+        "examples": [
+          "Correcting an inaccurate statement even when inconvenient"
+        ],
+        "nonExamples": []
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -10361,7 +10551,9 @@
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
       ],
-      "affirmation": null
+      "affirmation": null,
+      "story": "A person discovers that a story they have repeated is inaccurate. They correct it publicly, including the part that makes them look less favorable.",
+      "atunedVersion": "Truth Consciousness is operationalized as reducing distortion between what is observed, believed, said, and done; the source's spiritual framing is preserved separately."
     },
     {
       "id": "conscious-domain:05",
@@ -10374,18 +10566,36 @@
       "status": "source_backed_v341_three_pass_review_pending_canonical_approval",
       "definition": "Equal compassion toward self and others; a stable perceptual state that cannot be contracted by other people's broadcasts.",
       "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "function": "Maintain compassion for self and others without collapsing boundaries or agency.",
+      "healthyExpression": [
+        "Balances self-compassion and care for others",
+        "Maintains boundaries under emotional pressure",
+        "Responds without dehumanizing"
+      ],
+      "decoherentExpression": [
+        "Absorbs others' distress as obligation",
+        "Withholds compassion as punishment",
+        "Confuses self-sacrifice with love"
+      ],
+      "signals": [
+        "Balances self-compassion and care for others",
+        "Maintains boundaries under emotional pressure",
+        "Responds without dehumanizing"
+      ],
+      "distortions": [
+        "Absorbs others' distress as obligation",
+        "Withholds compassion as punishment",
+        "Confuses self-sacrifice with love"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "Offering support while respecting the other person's choices"
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -10454,7 +10664,8 @@
         "Complete cross-record synthesis without assuming chakra order proves an affirmation or mapping."
       ],
       "notes": [
-        "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation."
+        "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation.",
+        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved."
       ],
       "changelog": [
         {
@@ -10538,7 +10749,34 @@
               "The authoritative affirmation assignment is still missing; canonical review remains open."
             ]
           }
-        ]
+        ],
+        "story": "A friend is distressed and wants immediate rescue. The person responds with care, stays present, and asks what support is wanted rather than taking over.",
+        "atunedVersion": "Heart Consciousness is interpreted as stable compassion with differentiation: care does not require emotional fusion or self-erasure.",
+        "function": "Maintain compassion for self and others without collapsing boundaries or agency.",
+        "healthyExpression": [
+          "Balances self-compassion and care for others",
+          "Maintains boundaries under emotional pressure",
+          "Responds without dehumanizing"
+        ],
+        "decoherentExpression": [
+          "Absorbs others' distress as obligation",
+          "Withholds compassion as punishment",
+          "Confuses self-sacrifice with love"
+        ],
+        "signals": [
+          "Balances self-compassion and care for others",
+          "Maintains boundaries under emotional pressure",
+          "Responds without dehumanizing"
+        ],
+        "distortions": [
+          "Absorbs others' distress as obligation",
+          "Withholds compassion as punishment",
+          "Confuses self-sacrifice with love"
+        ],
+        "examples": [
+          "Offering support while respecting the other person's choices"
+        ],
+        "nonExamples": []
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -10555,7 +10793,9 @@
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
       ],
-      "affirmation": null
+      "affirmation": null,
+      "story": "A friend is distressed and wants immediate rescue. The person responds with care, stays present, and asks what support is wanted rather than taking over.",
+      "atunedVersion": "Heart Consciousness is interpreted as stable compassion with differentiation: care does not require emotional fusion or self-erasure."
     },
     {
       "id": "conscious-domain:06",
@@ -10568,18 +10808,36 @@
       "status": "source_backed_v341_three_pass_review_pending_canonical_approval",
       "definition": "Embodiment of worth and desire fulfillment; creativity flowing and desires recognized and honored.",
       "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "function": "Recognize worth and desires clearly enough to honor them through responsible creative action.",
+      "healthyExpression": [
+        "Names desires without shame",
+        "Checks desires against values and consequences",
+        "Allows creativity to move into action"
+      ],
+      "decoherentExpression": [
+        "Suppresses desire to gain approval",
+        "Treats desire as entitlement",
+        "Uses acquisition to substitute for worth"
+      ],
+      "signals": [
+        "Names desires without shame",
+        "Checks desires against values and consequences",
+        "Allows creativity to move into action"
+      ],
+      "distortions": [
+        "Suppresses desire to gain approval",
+        "Treats desire as entitlement",
+        "Uses acquisition to substitute for worth"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "Naming a desire and choosing a proportionate first step"
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -10648,7 +10906,8 @@
         "Complete cross-record synthesis without assuming chakra order proves an affirmation or mapping."
       ],
       "notes": [
-        "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation."
+        "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation.",
+        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved."
       ],
       "changelog": [
         {
@@ -10732,7 +10991,34 @@
               "The authoritative affirmation assignment is still missing; canonical review remains open."
             ]
           }
-        ]
+        ],
+        "story": "A person notices that they have been dismissing a genuine desire as unimportant. They name it, test whether it fits their values and constraints, and take one realistic step.",
+        "atunedVersion": "Value Consciousness is operationalized as recognizing desire and worth without treating every impulse as a command or every external approval as a measure of value.",
+        "function": "Recognize worth and desires clearly enough to honor them through responsible creative action.",
+        "healthyExpression": [
+          "Names desires without shame",
+          "Checks desires against values and consequences",
+          "Allows creativity to move into action"
+        ],
+        "decoherentExpression": [
+          "Suppresses desire to gain approval",
+          "Treats desire as entitlement",
+          "Uses acquisition to substitute for worth"
+        ],
+        "signals": [
+          "Names desires without shame",
+          "Checks desires against values and consequences",
+          "Allows creativity to move into action"
+        ],
+        "distortions": [
+          "Suppresses desire to gain approval",
+          "Treats desire as entitlement",
+          "Uses acquisition to substitute for worth"
+        ],
+        "examples": [
+          "Naming a desire and choosing a proportionate first step"
+        ],
+        "nonExamples": []
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -10749,7 +11035,9 @@
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
       ],
-      "affirmation": null
+      "affirmation": null,
+      "story": "A person notices that they have been dismissing a genuine desire as unimportant. They name it, test whether it fits their values and constraints, and take one realistic step.",
+      "atunedVersion": "Value Consciousness is operationalized as recognizing desire and worth without treating every impulse as a command or every external approval as a measure of value."
     },
     {
       "id": "conscious-domain:07",
@@ -10762,18 +11050,36 @@
       "status": "source_backed_v341_three_pass_review_pending_canonical_approval",
       "definition": "Sovereignty, courage, leadership, and responsibility for one's own reality; power that does not need to dominate.",
       "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "function": "Exercise agency, courage, leadership, and responsibility without domination.",
+      "healthyExpression": [
+        "Owns choices and consequences",
+        "Acts courageously without coercion",
+        "Can lead and can be corrected"
+      ],
+      "decoherentExpression": [
+        "Dominates to feel safe",
+        "Abdicates agency",
+        "Confuses leadership with entitlement"
+      ],
+      "signals": [
+        "Owns choices and consequences",
+        "Acts courageously without coercion",
+        "Can lead and can be corrected"
+      ],
+      "distortions": [
+        "Dominates to feel safe",
+        "Abdicates agency",
+        "Confuses leadership with entitlement"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "Taking responsibility for a decision and its repair"
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -10842,7 +11148,8 @@
         "Complete cross-record synthesis without assuming chakra order proves an affirmation or mapping."
       ],
       "notes": [
-        "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation."
+        "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation.",
+        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved."
       ],
       "changelog": [
         {
@@ -10926,7 +11233,34 @@
               "The authoritative affirmation assignment is still missing; canonical review remains open."
             ]
           }
-        ]
+        ],
+        "story": "A group has no clear decision-maker during a crisis. Someone takes responsibility for the next decision, states the reasoning, invites relevant correction, and remains accountable for the outcome.",
+        "atunedVersion": "Royal Consciousness is interpreted as self-governance and accountable agency, not status or control over other people.",
+        "function": "Exercise agency, courage, leadership, and responsibility without domination.",
+        "healthyExpression": [
+          "Owns choices and consequences",
+          "Acts courageously without coercion",
+          "Can lead and can be corrected"
+        ],
+        "decoherentExpression": [
+          "Dominates to feel safe",
+          "Abdicates agency",
+          "Confuses leadership with entitlement"
+        ],
+        "signals": [
+          "Owns choices and consequences",
+          "Acts courageously without coercion",
+          "Can lead and can be corrected"
+        ],
+        "distortions": [
+          "Dominates to feel safe",
+          "Abdicates agency",
+          "Confuses leadership with entitlement"
+        ],
+        "examples": [
+          "Taking responsibility for a decision and its repair"
+        ],
+        "nonExamples": []
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -10943,7 +11277,9 @@
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
       ],
-      "affirmation": null
+      "affirmation": null,
+      "story": "A group has no clear decision-maker during a crisis. Someone takes responsibility for the next decision, states the reasoning, invites relevant correction, and remains accountable for the outcome.",
+      "atunedVersion": "Royal Consciousness is interpreted as self-governance and accountable agency, not status or control over other people."
     },
     {
       "id": "conscious-domain:08",
@@ -10956,18 +11292,36 @@
       "status": "source_backed_v341_three_pass_review_pending_canonical_approval",
       "definition": "Freedom to create without resistance; survival patterns no longer consume creative output.",
       "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "function": "Create and express without allowing survival-oriented patterns to consume all available capacity.",
+      "healthyExpression": [
+        "Creates in small repeatable steps",
+        "Recognizes protective patterns without obeying them automatically",
+        "Balances expression with real-world constraints"
+      ],
+      "decoherentExpression": [
+        "Waits for risk to disappear entirely",
+        "Uses creativity to avoid basic needs",
+        "Treats protection as a permanent identity"
+      ],
+      "signals": [
+        "Creates in small repeatable steps",
+        "Recognizes protective patterns without obeying them automatically",
+        "Balances expression with real-world constraints"
+      ],
+      "distortions": [
+        "Waits for risk to disappear entirely",
+        "Uses creativity to avoid basic needs",
+        "Treats protection as a permanent identity"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "Sharing a small draft with a trusted reviewer"
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -11036,7 +11390,8 @@
         "Complete cross-record synthesis without assuming chakra order proves an affirmation or mapping."
       ],
       "notes": [
-        "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation."
+        "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation.",
+        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved."
       ],
       "changelog": [
         {
@@ -11120,7 +11475,34 @@
               "The authoritative affirmation assignment is still missing; canonical review remains open."
             ]
           }
-        ]
+        ],
+        "story": "A person delays sharing creative work because every draft feels risky. They set a safe, bounded experiment and let the work become visible before perfection is possible.",
+        "atunedVersion": "Creative Consciousness is operationalized as restoring usable creative capacity while acknowledging real constraints; it is not a claim that survival responses can simply be switched off.",
+        "function": "Create and express without allowing survival-oriented patterns to consume all available capacity.",
+        "healthyExpression": [
+          "Creates in small repeatable steps",
+          "Recognizes protective patterns without obeying them automatically",
+          "Balances expression with real-world constraints"
+        ],
+        "decoherentExpression": [
+          "Waits for risk to disappear entirely",
+          "Uses creativity to avoid basic needs",
+          "Treats protection as a permanent identity"
+        ],
+        "signals": [
+          "Creates in small repeatable steps",
+          "Recognizes protective patterns without obeying them automatically",
+          "Balances expression with real-world constraints"
+        ],
+        "distortions": [
+          "Waits for risk to disappear entirely",
+          "Uses creativity to avoid basic needs",
+          "Treats protection as a permanent identity"
+        ],
+        "examples": [
+          "Sharing a small draft with a trusted reviewer"
+        ],
+        "nonExamples": []
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -11137,7 +11519,9 @@
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
       ],
-      "affirmation": null
+      "affirmation": null,
+      "story": "A person delays sharing creative work because every draft feels risky. They set a safe, bounded experiment and let the work become visible before perfection is possible.",
+      "atunedVersion": "Creative Consciousness is operationalized as restoring usable creative capacity while acknowledging real constraints; it is not a claim that survival responses can simply be switched off."
     },
     {
       "id": "conscious-figure:rama",
