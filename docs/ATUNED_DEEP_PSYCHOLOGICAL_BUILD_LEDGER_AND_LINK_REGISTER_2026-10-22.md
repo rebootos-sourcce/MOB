@@ -104,3 +104,10 @@ For each build cycle, record: date, branch/commit SHA, exact paths changed, link
 - v341 gives 19 source domain labels grouped 5/5/5/4 under Architect, Engine, Weaver, Witness. It also gives all eight Conscious Domain names and definitions. See the [23-Record Source Crosswalk](ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md) for the extracted inventory, SHA, and unresolved contradiction.
 - Source contradiction: v341 lists 19 labels but also states Power (Directed Force) and Architect (Rulership) are separate domains, while Architect is not a member of the displayed 19-label list. This requires an owner ruling; do not silently change the count or list.
 - Updated closure state: v341 recovered; eight consciousness source names found; 19 domain labels found; 15-to-19 behavioral crosswalk, three-pass evidence completion, source contradiction adjudication, schema/runtime tests, and automated link checks remain open.
+
+
+## 2026-10-22 — registry records updated from v341
+- Updated all eight Conscious Domain registry records with v341 source-backed names and concise definition summaries. Source extraction is recorded; independent corroboration, synthesis, and canonical approval remain pending. Registry commit: [507d730](https://github.com/rebootos-sourcce/MOB/commit/507d730b837d1ed26ca5a33a7ce879d80574b843).
+- Added v341 source provenance and unapproved candidate crosswalk notes to all 15 behavioral-domain records without replacing their provisional definitions or promoting mappings. Registry commit: [1ef9d6f](https://github.com/rebootos-sourcce/MOB/commit/1ef9d6faf5ec3207ee7c69bf96954f141fc2e18d).
+- Crosswalk corrected to reflect that v341 was found in the conversation upload, not in repository tree search. Source SHA-256: `79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4`.
+- Remaining: pass 2 and 3 for all 23 records, adjudicate domain label mismatch and Architect/Rulership contradiction, schema/runtime validation, graph traversal, and automated link check.
