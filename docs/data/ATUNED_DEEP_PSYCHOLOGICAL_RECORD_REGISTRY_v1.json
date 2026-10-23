@@ -10019,15 +10019,15 @@
           "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
-            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
           ],
           "findings": [
             "The v341 source crosswalk records the label \"Empyrean Consciousness\" and the current paraphrased definition: Awareness aligned with Source; pattern, truth, and coherence across time, energy, and matter. Not a chakra zone, but the unified field containing all zones; the state from which the other seven emerge and to which they return.",
-            "The source text is represented here as a paraphrase, not a verbatim quotation."
+            "The source text is represented here as a paraphrase, not a verbatim quotation.",
+            "Source-backed absence statement: the source describes Empyrean as the unified field containing the seven; it specifies no separate chakra affirmation for Empyrean."
           ],
-          "conflicts": [
-            "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
-          ]
+          "conflicts": []
         },
         {
           "pass": 2,
@@ -10048,10 +10048,12 @@
           "name": "synthesis_and_cross_record_consistency",
           "status": "in_progress",
           "sources": [
-            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
           ],
           "findings": [
-            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
+            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred.",
+            "Required affirmation field populated; cross-record assignment remains provisional and pass 3 is not closed until independent review and taxonomy reconciliation."
           ],
           "conflicts": [
             "The authoritative affirmation assignment is still missing; canonical review remains open."
@@ -10069,7 +10071,8 @@
       ],
       "notes": [
         "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation.",
-        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved."
+        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved.",
+        "Source-backed absence statement: the source describes Empyrean as the unified field containing the seven; it specifies no separate chakra affirmation for Empyrean."
       ],
       "changelog": [
         {
@@ -10087,6 +10090,10 @@
         {
           "date": "2026-10-22",
           "change": "Recovered source name and definition summary from conversation-uploaded MOB_Complete_v341.html, Chapter 32 (#ch22), SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4. Research passes 2 and 3 and canonical approval remain pending."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Populated required affirmation field from v341 extraction; assignment remains provisional pending independent corroboration and cross-record review."
         }
       ],
       "kind": "conscious_domain",
@@ -10102,7 +10109,7 @@
         "fam": "conscious_domains",
         "def": "Awareness aligned with Source; pattern, truth, and coherence across time, energy, and matter. Not a chakra zone, but the unified field containing all zones; the state from which the other seven emerge and to which they return.",
         "body": "SOURCE-EXTRACTED SUMMARY — Awareness aligned with Source; pattern, truth, and coherence across time, energy, and matter. Not a chakra zone, but the unified field containing all zones; the state from which the other seven emerge and to which they return. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
-        "affirmation": null,
+        "affirmation": "No separate chakra affirmation specified; Empyrean Consciousness is described as the unified field containing all seven.",
         "links": [],
         "sourceRefs": [
           "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
@@ -10115,15 +10122,15 @@
             "status": "complete",
             "sources": [
               "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
-              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
             ],
             "findings": [
               "The v341 source crosswalk records the label \"Empyrean Consciousness\" and the current paraphrased definition: Awareness aligned with Source; pattern, truth, and coherence across time, energy, and matter. Not a chakra zone, but the unified field containing all zones; the state from which the other seven emerge and to which they return.",
-              "The source text is represented here as a paraphrase, not a verbatim quotation."
+              "The source text is represented here as a paraphrase, not a verbatim quotation.",
+              "Source-backed absence statement: the source describes Empyrean as the unified field containing the seven; it specifies no separate chakra affirmation for Empyrean."
             ],
-            "conflicts": [
-              "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
-            ]
+            "conflicts": []
           },
           {
             "pass": 2,
@@ -10144,10 +10151,12 @@
             "name": "synthesis_and_cross_record_consistency",
             "status": "in_progress",
             "sources": [
-              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
             ],
             "findings": [
-              "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
+              "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred.",
+              "Required affirmation field populated; cross-record assignment remains provisional and pass 3 is not closed until independent review and taxonomy reconciliation."
             ],
             "conflicts": [
               "The authoritative affirmation assignment is still missing; canonical review remains open."
@@ -10185,10 +10194,8 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "source_extracted_cross_record_review_pending",
-        "missingFields": [
-          "affirmation"
-        ],
+        "contentStatus": "source_content_populated_cross_record_review_pending",
+        "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
         "canonicalApproval": "pending",
@@ -10197,7 +10204,7 @@
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
       ],
-      "affirmation": null,
+      "affirmation": "No separate chakra affirmation specified; Empyrean Consciousness is described as the unified field containing all seven.",
       "story": "A person notices competing thoughts, emotions, and bodily signals without reducing the whole experience to any one of them. They use the wider context to orient rather than claim certainty about an unseen force.",
       "atunedVersion": "The Empyrean frame is treated as an integrative perspective, not a measurable field or externally verified mechanism."
     },
@@ -10260,15 +10267,15 @@
           "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
-            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
           ],
           "findings": [
             "The v341 source crosswalk records the label \"Crown Consciousness\" and the current paraphrased definition: Honoring the word one gives to oneself and others; the crown as a two-way interface receiving from Source without distortion.",
-            "The source text is represented here as a paraphrase, not a verbatim quotation."
+            "The source text is represented here as a paraphrase, not a verbatim quotation.",
+            "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
           ],
-          "conflicts": [
-            "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
-          ]
+          "conflicts": []
         },
         {
           "pass": 2,
@@ -10289,10 +10296,12 @@
           "name": "synthesis_and_cross_record_consistency",
           "status": "in_progress",
           "sources": [
-            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
           ],
           "findings": [
-            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
+            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred.",
+            "Required affirmation field populated; cross-record assignment remains provisional and pass 3 is not closed until independent review and taxonomy reconciliation."
           ],
           "conflicts": [
             "The authoritative affirmation assignment is still missing; canonical review remains open."
@@ -10311,7 +10320,8 @@
       ],
       "notes": [
         "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation.",
-        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved."
+        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved.",
+        "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
       ],
       "changelog": [
         {
@@ -10329,6 +10339,10 @@
         {
           "date": "2026-10-22",
           "change": "Recovered source name and definition summary from conversation-uploaded MOB_Complete_v341.html, Chapter 32 (#ch22), SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4. Research passes 2 and 3 and canonical approval remain pending."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Populated required affirmation field from v341 extraction; assignment remains provisional pending independent corroboration and cross-record review."
         }
       ],
       "kind": "conscious_domain",
@@ -10344,7 +10358,7 @@
         "fam": "conscious_domains",
         "def": "Honoring the word one gives to oneself and others; the crown as a two-way interface receiving from Source without distortion.",
         "body": "SOURCE-EXTRACTED SUMMARY — Honoring the word one gives to oneself and others; the crown as a two-way interface receiving from Source without distortion. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
-        "affirmation": null,
+        "affirmation": "I'm committed to my duty.",
         "links": [],
         "sourceRefs": [
           "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
@@ -10357,15 +10371,15 @@
             "status": "complete",
             "sources": [
               "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
-              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
             ],
             "findings": [
               "The v341 source crosswalk records the label \"Crown Consciousness\" and the current paraphrased definition: Honoring the word one gives to oneself and others; the crown as a two-way interface receiving from Source without distortion.",
-              "The source text is represented here as a paraphrase, not a verbatim quotation."
+              "The source text is represented here as a paraphrase, not a verbatim quotation.",
+              "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
             ],
-            "conflicts": [
-              "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
-            ]
+            "conflicts": []
           },
           {
             "pass": 2,
@@ -10386,10 +10400,12 @@
             "name": "synthesis_and_cross_record_consistency",
             "status": "in_progress",
             "sources": [
-              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
             ],
             "findings": [
-              "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
+              "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred.",
+              "Required affirmation field populated; cross-record assignment remains provisional and pass 3 is not closed until independent review and taxonomy reconciliation."
             ],
             "conflicts": [
               "The authoritative affirmation assignment is still missing; canonical review remains open."
@@ -10427,10 +10443,8 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "source_extracted_cross_record_review_pending",
-        "missingFields": [
-          "affirmation"
-        ],
+        "contentStatus": "source_content_populated_cross_record_review_pending",
+        "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
         "canonicalApproval": "pending",
@@ -10439,7 +10453,7 @@
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
       ],
-      "affirmation": null,
+      "affirmation": "I'm committed to my duty.",
       "story": "Someone makes a promise they cannot keep. Rather than hide the gap, they name it early, explain what changed, and make a credible repair commitment.",
       "atunedVersion": "Crown Consciousness is operationalized as promise-integrity and clarity of incoming/outgoing signal; spiritual language remains source framing, not a validated physical claim."
     },
@@ -10502,15 +10516,15 @@
           "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
-            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
           ],
           "findings": [
             "The v341 source crosswalk records the label \"Perception Consciousness\" and the current paraphrased definition: Conscious awareness in every moment; the recognition axis is open and behavior is no longer running automatically.",
-            "The source text is represented here as a paraphrase, not a verbatim quotation."
+            "The source text is represented here as a paraphrase, not a verbatim quotation.",
+            "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
           ],
-          "conflicts": [
-            "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
-          ]
+          "conflicts": []
         },
         {
           "pass": 2,
@@ -10531,10 +10545,12 @@
           "name": "synthesis_and_cross_record_consistency",
           "status": "in_progress",
           "sources": [
-            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
           ],
           "findings": [
-            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
+            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred.",
+            "Required affirmation field populated; cross-record assignment remains provisional and pass 3 is not closed until independent review and taxonomy reconciliation."
           ],
           "conflicts": [
             "The authoritative affirmation assignment is still missing; canonical review remains open."
@@ -10553,7 +10569,8 @@
       ],
       "notes": [
         "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation.",
-        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved."
+        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved.",
+        "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
       ],
       "changelog": [
         {
@@ -10571,6 +10588,10 @@
         {
           "date": "2026-10-22",
           "change": "Recovered source name and definition summary from conversation-uploaded MOB_Complete_v341.html, Chapter 32 (#ch22), SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4. Research passes 2 and 3 and canonical approval remain pending."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Populated required affirmation field from v341 extraction; assignment remains provisional pending independent corroboration and cross-record review."
         }
       ],
       "kind": "conscious_domain",
@@ -10586,7 +10607,7 @@
         "fam": "conscious_domains",
         "def": "Conscious awareness in every moment; the recognition axis is open and behavior is no longer running automatically.",
         "body": "SOURCE-EXTRACTED SUMMARY — Conscious awareness in every moment; the recognition axis is open and behavior is no longer running automatically. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
-        "affirmation": null,
+        "affirmation": "I'm always present.",
         "links": [],
         "sourceRefs": [
           "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
@@ -10599,15 +10620,15 @@
             "status": "complete",
             "sources": [
               "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
-              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
             ],
             "findings": [
               "The v341 source crosswalk records the label \"Perception Consciousness\" and the current paraphrased definition: Conscious awareness in every moment; the recognition axis is open and behavior is no longer running automatically.",
-              "The source text is represented here as a paraphrase, not a verbatim quotation."
+              "The source text is represented here as a paraphrase, not a verbatim quotation.",
+              "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
             ],
-            "conflicts": [
-              "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
-            ]
+            "conflicts": []
           },
           {
             "pass": 2,
@@ -10628,10 +10649,12 @@
             "name": "synthesis_and_cross_record_consistency",
             "status": "in_progress",
             "sources": [
-              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
             ],
             "findings": [
-              "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
+              "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred.",
+              "Required affirmation field populated; cross-record assignment remains provisional and pass 3 is not closed until independent review and taxonomy reconciliation."
             ],
             "conflicts": [
               "The authoritative affirmation assignment is still missing; canonical review remains open."
@@ -10669,10 +10692,8 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "source_extracted_cross_record_review_pending",
-        "missingFields": [
-          "affirmation"
-        ],
+        "contentStatus": "source_content_populated_cross_record_review_pending",
+        "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
         "canonicalApproval": "pending",
@@ -10681,7 +10702,7 @@
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
       ],
-      "affirmation": null,
+      "affirmation": "I'm always present.",
       "story": "During a familiar argument, someone catches the impulse to react, names the pattern internally, and chooses a response after checking what is happening now.",
       "atunedVersion": "Perception Consciousness becomes the capacity to notice a stimulus-response loop before it runs to completion; this is a practical interpretation of the source summary."
     },
@@ -10744,15 +10765,15 @@
           "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
-            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
           ],
           "findings": [
             "The v341 source crosswalk records the label \"Truth Consciousness\" and the current paraphrased definition: Absolute truth in speech, perception, and behavior; truth integrity defended automatically.",
-            "The source text is represented here as a paraphrase, not a verbatim quotation."
+            "The source text is represented here as a paraphrase, not a verbatim quotation.",
+            "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
           ],
-          "conflicts": [
-            "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
-          ]
+          "conflicts": []
         },
         {
           "pass": 2,
@@ -10773,10 +10794,12 @@
           "name": "synthesis_and_cross_record_consistency",
           "status": "in_progress",
           "sources": [
-            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
           ],
           "findings": [
-            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
+            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred.",
+            "Required affirmation field populated; cross-record assignment remains provisional and pass 3 is not closed until independent review and taxonomy reconciliation."
           ],
           "conflicts": [
             "The authoritative affirmation assignment is still missing; canonical review remains open."
@@ -10795,7 +10818,8 @@
       ],
       "notes": [
         "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation.",
-        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved."
+        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved.",
+        "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
       ],
       "changelog": [
         {
@@ -10813,6 +10837,10 @@
         {
           "date": "2026-10-22",
           "change": "Recovered source name and definition summary from conversation-uploaded MOB_Complete_v341.html, Chapter 32 (#ch22), SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4. Research passes 2 and 3 and canonical approval remain pending."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Populated required affirmation field from v341 extraction; assignment remains provisional pending independent corroboration and cross-record review."
         }
       ],
       "kind": "conscious_domain",
@@ -10828,7 +10856,7 @@
         "fam": "conscious_domains",
         "def": "Absolute truth in speech, perception, and behavior; truth integrity defended automatically.",
         "body": "SOURCE-EXTRACTED SUMMARY — Absolute truth in speech, perception, and behavior; truth integrity defended automatically. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
-        "affirmation": null,
+        "affirmation": "I speak absolute truth.",
         "links": [],
         "sourceRefs": [
           "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
@@ -10841,15 +10869,15 @@
             "status": "complete",
             "sources": [
               "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
-              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
             ],
             "findings": [
               "The v341 source crosswalk records the label \"Truth Consciousness\" and the current paraphrased definition: Absolute truth in speech, perception, and behavior; truth integrity defended automatically.",
-              "The source text is represented here as a paraphrase, not a verbatim quotation."
+              "The source text is represented here as a paraphrase, not a verbatim quotation.",
+              "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
             ],
-            "conflicts": [
-              "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
-            ]
+            "conflicts": []
           },
           {
             "pass": 2,
@@ -10870,10 +10898,12 @@
             "name": "synthesis_and_cross_record_consistency",
             "status": "in_progress",
             "sources": [
-              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
             ],
             "findings": [
-              "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
+              "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred.",
+              "Required affirmation field populated; cross-record assignment remains provisional and pass 3 is not closed until independent review and taxonomy reconciliation."
             ],
             "conflicts": [
               "The authoritative affirmation assignment is still missing; canonical review remains open."
@@ -10911,10 +10941,8 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "source_extracted_cross_record_review_pending",
-        "missingFields": [
-          "affirmation"
-        ],
+        "contentStatus": "source_content_populated_cross_record_review_pending",
+        "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
         "canonicalApproval": "pending",
@@ -10923,7 +10951,7 @@
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
       ],
-      "affirmation": null,
+      "affirmation": "I speak absolute truth.",
       "story": "A person discovers that a story they have repeated is inaccurate. They correct it publicly, including the part that makes them look less favorable.",
       "atunedVersion": "Truth Consciousness is operationalized as reducing distortion between what is observed, believed, said, and done; the source's spiritual framing is preserved separately."
     },
@@ -10986,15 +11014,15 @@
           "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
-            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
           ],
           "findings": [
             "The v341 source crosswalk records the label \"Heart Consciousness\" and the current paraphrased definition: Equal compassion toward self and others; a stable perceptual state that cannot be contracted by other people's broadcasts.",
-            "The source text is represented here as a paraphrase, not a verbatim quotation."
+            "The source text is represented here as a paraphrase, not a verbatim quotation.",
+            "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
           ],
-          "conflicts": [
-            "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
-          ]
+          "conflicts": []
         },
         {
           "pass": 2,
@@ -11015,10 +11043,12 @@
           "name": "synthesis_and_cross_record_consistency",
           "status": "in_progress",
           "sources": [
-            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
           ],
           "findings": [
-            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
+            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred.",
+            "Required affirmation field populated; cross-record assignment remains provisional and pass 3 is not closed until independent review and taxonomy reconciliation."
           ],
           "conflicts": [
             "The authoritative affirmation assignment is still missing; canonical review remains open."
@@ -11037,7 +11067,8 @@
       ],
       "notes": [
         "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation.",
-        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved."
+        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved.",
+        "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
       ],
       "changelog": [
         {
@@ -11055,6 +11086,10 @@
         {
           "date": "2026-10-22",
           "change": "Recovered source name and definition summary from conversation-uploaded MOB_Complete_v341.html, Chapter 32 (#ch22), SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4. Research passes 2 and 3 and canonical approval remain pending."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Populated required affirmation field from v341 extraction; assignment remains provisional pending independent corroboration and cross-record review."
         }
       ],
       "kind": "conscious_domain",
@@ -11070,7 +11105,7 @@
         "fam": "conscious_domains",
         "def": "Equal compassion toward self and others; a stable perceptual state that cannot be contracted by other people's broadcasts.",
         "body": "SOURCE-EXTRACTED SUMMARY — Equal compassion toward self and others; a stable perceptual state that cannot be contracted by other people's broadcasts. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
-        "affirmation": null,
+        "affirmation": "I show equal compassion towards self and other.",
         "links": [],
         "sourceRefs": [
           "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
@@ -11083,15 +11118,15 @@
             "status": "complete",
             "sources": [
               "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
-              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
             ],
             "findings": [
               "The v341 source crosswalk records the label \"Heart Consciousness\" and the current paraphrased definition: Equal compassion toward self and others; a stable perceptual state that cannot be contracted by other people's broadcasts.",
-              "The source text is represented here as a paraphrase, not a verbatim quotation."
+              "The source text is represented here as a paraphrase, not a verbatim quotation.",
+              "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
             ],
-            "conflicts": [
-              "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
-            ]
+            "conflicts": []
           },
           {
             "pass": 2,
@@ -11112,10 +11147,12 @@
             "name": "synthesis_and_cross_record_consistency",
             "status": "in_progress",
             "sources": [
-              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
             ],
             "findings": [
-              "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
+              "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred.",
+              "Required affirmation field populated; cross-record assignment remains provisional and pass 3 is not closed until independent review and taxonomy reconciliation."
             ],
             "conflicts": [
               "The authoritative affirmation assignment is still missing; canonical review remains open."
@@ -11153,10 +11190,8 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "source_extracted_cross_record_review_pending",
-        "missingFields": [
-          "affirmation"
-        ],
+        "contentStatus": "source_content_populated_cross_record_review_pending",
+        "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
         "canonicalApproval": "pending",
@@ -11165,7 +11200,7 @@
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
       ],
-      "affirmation": null,
+      "affirmation": "I show equal compassion towards self and other.",
       "story": "A friend is distressed and wants immediate rescue. The person responds with care, stays present, and asks what support is wanted rather than taking over.",
       "atunedVersion": "Heart Consciousness is interpreted as stable compassion with differentiation: care does not require emotional fusion or self-erasure."
     },
@@ -11228,15 +11263,15 @@
           "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
-            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
           ],
           "findings": [
             "The v341 source crosswalk records the label \"Value Consciousness\" and the current paraphrased definition: Embodiment of worth and desire fulfillment; creativity flowing and desires recognized and honored.",
-            "The source text is represented here as a paraphrase, not a verbatim quotation."
+            "The source text is represented here as a paraphrase, not a verbatim quotation.",
+            "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
           ],
-          "conflicts": [
-            "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
-          ]
+          "conflicts": []
         },
         {
           "pass": 2,
@@ -11257,10 +11292,12 @@
           "name": "synthesis_and_cross_record_consistency",
           "status": "in_progress",
           "sources": [
-            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
           ],
           "findings": [
-            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
+            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred.",
+            "Required affirmation field populated; cross-record assignment remains provisional and pass 3 is not closed until independent review and taxonomy reconciliation."
           ],
           "conflicts": [
             "The authoritative affirmation assignment is still missing; canonical review remains open."
@@ -11279,7 +11316,8 @@
       ],
       "notes": [
         "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation.",
-        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved."
+        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved.",
+        "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
       ],
       "changelog": [
         {
@@ -11297,6 +11335,10 @@
         {
           "date": "2026-10-22",
           "change": "Recovered source name and definition summary from conversation-uploaded MOB_Complete_v341.html, Chapter 32 (#ch22), SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4. Research passes 2 and 3 and canonical approval remain pending."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Populated required affirmation field from v341 extraction; assignment remains provisional pending independent corroboration and cross-record review."
         }
       ],
       "kind": "conscious_domain",
@@ -11312,7 +11354,7 @@
         "fam": "conscious_domains",
         "def": "Embodiment of worth and desire fulfillment; creativity flowing and desires recognized and honored.",
         "body": "SOURCE-EXTRACTED SUMMARY — Embodiment of worth and desire fulfillment; creativity flowing and desires recognized and honored. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
-        "affirmation": null,
+        "affirmation": "I am creatively fulfilled in my purpose.",
         "links": [],
         "sourceRefs": [
           "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
@@ -11325,15 +11367,15 @@
             "status": "complete",
             "sources": [
               "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
-              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
             ],
             "findings": [
               "The v341 source crosswalk records the label \"Value Consciousness\" and the current paraphrased definition: Embodiment of worth and desire fulfillment; creativity flowing and desires recognized and honored.",
-              "The source text is represented here as a paraphrase, not a verbatim quotation."
+              "The source text is represented here as a paraphrase, not a verbatim quotation.",
+              "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
             ],
-            "conflicts": [
-              "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
-            ]
+            "conflicts": []
           },
           {
             "pass": 2,
@@ -11354,10 +11396,12 @@
             "name": "synthesis_and_cross_record_consistency",
             "status": "in_progress",
             "sources": [
-              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
             ],
             "findings": [
-              "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
+              "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred.",
+              "Required affirmation field populated; cross-record assignment remains provisional and pass 3 is not closed until independent review and taxonomy reconciliation."
             ],
             "conflicts": [
               "The authoritative affirmation assignment is still missing; canonical review remains open."
@@ -11395,10 +11439,8 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "source_extracted_cross_record_review_pending",
-        "missingFields": [
-          "affirmation"
-        ],
+        "contentStatus": "source_content_populated_cross_record_review_pending",
+        "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
         "canonicalApproval": "pending",
@@ -11407,7 +11449,7 @@
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
       ],
-      "affirmation": null,
+      "affirmation": "I am creatively fulfilled in my purpose.",
       "story": "A person notices that they have been dismissing a genuine desire as unimportant. They name it, test whether it fits their values and constraints, and take one realistic step.",
       "atunedVersion": "Value Consciousness is operationalized as recognizing desire and worth without treating every impulse as a command or every external approval as a measure of value."
     },
@@ -11470,15 +11512,15 @@
           "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
-            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
           ],
           "findings": [
             "The v341 source crosswalk records the label \"Royal Consciousness\" and the current paraphrased definition: Sovereignty, courage, leadership, and responsibility for one's own reality; power that does not need to dominate.",
-            "The source text is represented here as a paraphrase, not a verbatim quotation."
+            "The source text is represented here as a paraphrase, not a verbatim quotation.",
+            "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
           ],
-          "conflicts": [
-            "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
-          ]
+          "conflicts": []
         },
         {
           "pass": 2,
@@ -11499,10 +11541,12 @@
           "name": "synthesis_and_cross_record_consistency",
           "status": "in_progress",
           "sources": [
-            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
           ],
           "findings": [
-            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
+            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred.",
+            "Required affirmation field populated; cross-record assignment remains provisional and pass 3 is not closed until independent review and taxonomy reconciliation."
           ],
           "conflicts": [
             "The authoritative affirmation assignment is still missing; canonical review remains open."
@@ -11521,7 +11565,8 @@
       ],
       "notes": [
         "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation.",
-        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved."
+        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved.",
+        "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
       ],
       "changelog": [
         {
@@ -11539,6 +11584,10 @@
         {
           "date": "2026-10-22",
           "change": "Recovered source name and definition summary from conversation-uploaded MOB_Complete_v341.html, Chapter 32 (#ch22), SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4. Research passes 2 and 3 and canonical approval remain pending."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Populated required affirmation field from v341 extraction; assignment remains provisional pending independent corroboration and cross-record review."
         }
       ],
       "kind": "conscious_domain",
@@ -11554,7 +11603,7 @@
         "fam": "conscious_domains",
         "def": "Sovereignty, courage, leadership, and responsibility for one's own reality; power that does not need to dominate.",
         "body": "SOURCE-EXTRACTED SUMMARY — Sovereignty, courage, leadership, and responsibility for one's own reality; power that does not need to dominate. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
-        "affirmation": null,
+        "affirmation": "I stand fully committed in my power, disciplined and focused.",
         "links": [],
         "sourceRefs": [
           "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
@@ -11567,15 +11616,15 @@
             "status": "complete",
             "sources": [
               "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
-              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
             ],
             "findings": [
               "The v341 source crosswalk records the label \"Royal Consciousness\" and the current paraphrased definition: Sovereignty, courage, leadership, and responsibility for one's own reality; power that does not need to dominate.",
-              "The source text is represented here as a paraphrase, not a verbatim quotation."
+              "The source text is represented here as a paraphrase, not a verbatim quotation.",
+              "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
             ],
-            "conflicts": [
-              "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
-            ]
+            "conflicts": []
           },
           {
             "pass": 2,
@@ -11596,10 +11645,12 @@
             "name": "synthesis_and_cross_record_consistency",
             "status": "in_progress",
             "sources": [
-              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
             ],
             "findings": [
-              "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
+              "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred.",
+              "Required affirmation field populated; cross-record assignment remains provisional and pass 3 is not closed until independent review and taxonomy reconciliation."
             ],
             "conflicts": [
               "The authoritative affirmation assignment is still missing; canonical review remains open."
@@ -11637,10 +11688,8 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "source_extracted_cross_record_review_pending",
-        "missingFields": [
-          "affirmation"
-        ],
+        "contentStatus": "source_content_populated_cross_record_review_pending",
+        "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
         "canonicalApproval": "pending",
@@ -11649,7 +11698,7 @@
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
       ],
-      "affirmation": null,
+      "affirmation": "I stand fully committed in my power, disciplined and focused.",
       "story": "A group has no clear decision-maker during a crisis. Someone takes responsibility for the next decision, states the reasoning, invites relevant correction, and remains accountable for the outcome.",
       "atunedVersion": "Royal Consciousness is interpreted as self-governance and accountable agency, not status or control over other people."
     },
@@ -11712,15 +11761,15 @@
           "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
-            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
           ],
           "findings": [
             "The v341 source crosswalk records the label \"Creative Consciousness\" and the current paraphrased definition: Freedom to create without resistance; survival patterns no longer consume creative output.",
-            "The source text is represented here as a paraphrase, not a verbatim quotation."
+            "The source text is represented here as a paraphrase, not a verbatim quotation.",
+            "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
           ],
-          "conflicts": [
-            "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
-          ]
+          "conflicts": []
         },
         {
           "pass": 2,
@@ -11741,10 +11790,12 @@
           "name": "synthesis_and_cross_record_consistency",
           "status": "in_progress",
           "sources": [
-            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
           ],
           "findings": [
-            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
+            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred.",
+            "Required affirmation field populated; cross-record assignment remains provisional and pass 3 is not closed until independent review and taxonomy reconciliation."
           ],
           "conflicts": [
             "The authoritative affirmation assignment is still missing; canonical review remains open."
@@ -11763,7 +11814,8 @@
       ],
       "notes": [
         "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation.",
-        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved."
+        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved.",
+        "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
       ],
       "changelog": [
         {
@@ -11781,6 +11833,10 @@
         {
           "date": "2026-10-22",
           "change": "Recovered source name and definition summary from conversation-uploaded MOB_Complete_v341.html, Chapter 32 (#ch22), SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4. Research passes 2 and 3 and canonical approval remain pending."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Populated required affirmation field from v341 extraction; assignment remains provisional pending independent corroboration and cross-record review."
         }
       ],
       "kind": "conscious_domain",
@@ -11796,7 +11852,7 @@
         "fam": "conscious_domains",
         "def": "Freedom to create without resistance; survival patterns no longer consume creative output.",
         "body": "SOURCE-EXTRACTED SUMMARY — Freedom to create without resistance; survival patterns no longer consume creative output. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
-        "affirmation": null,
+        "affirmation": "I show courage over fear.",
         "links": [],
         "sourceRefs": [
           "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
@@ -11809,15 +11865,15 @@
             "status": "complete",
             "sources": [
               "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
-              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
             ],
             "findings": [
               "The v341 source crosswalk records the label \"Creative Consciousness\" and the current paraphrased definition: Freedom to create without resistance; survival patterns no longer consume creative output.",
-              "The source text is represented here as a paraphrase, not a verbatim quotation."
+              "The source text is represented here as a paraphrase, not a verbatim quotation.",
+              "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
             ],
-            "conflicts": [
-              "The original source excerpt has not been re-opened in this execution; confirm exact wording against the uploaded HTML before treating this extraction as independently reverified."
-            ]
+            "conflicts": []
           },
           {
             "pass": 2,
@@ -11838,10 +11894,12 @@
             "name": "synthesis_and_cross_record_consistency",
             "status": "in_progress",
             "sources": [
-              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
             ],
             "findings": [
-              "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred."
+              "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred.",
+              "Required affirmation field populated; cross-record assignment remains provisional and pass 3 is not closed until independent review and taxonomy reconciliation."
             ],
             "conflicts": [
               "The authoritative affirmation assignment is still missing; canonical review remains open."
@@ -11879,10 +11937,8 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "source_extracted_cross_record_review_pending",
-        "missingFields": [
-          "affirmation"
-        ],
+        "contentStatus": "source_content_populated_cross_record_review_pending",
+        "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
         "canonicalApproval": "pending",
@@ -11891,7 +11947,7 @@
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
       ],
-      "affirmation": null,
+      "affirmation": "I show courage over fear.",
       "story": "A person delays sharing creative work because every draft feels risky. They set a safe, bounded experiment and let the work become visible before perfection is possible.",
       "atunedVersion": "Creative Consciousness is operationalized as restoring usable creative capacity while acknowledging real constraints; it is not a claim that survival responses can simply be switched off."
     },
@@ -26551,6 +26607,6 @@
     },
     "researchPasses": "For the 23-record target subset, 53 of 69 pass slots are marked complete (all 45 slots for the 15 behavioral domains and pass 1 for each of 8 Conscious Domains); 16 Conscious Domain pass slots remain blocked. This is research-pass status, not canonical approval. The 14 blueprint slots remain a separate research backlog.",
     "runtimeIntegration": "Not verified; template catalog remains not yet integrated with engine.",
-    "warning": "The 15 behavioral-domain research syntheses are complete as provisional research artifacts. Their 15/19 taxonomy mapping remains unresolved, source verification of the behavioral definitions is not claimed, and no canonical edges are approved."
+    "warning": "Seven affirmation strings are populated from v341; Empyrean explicitly has no separate chakra affirmation. Chakra-to-domain assignments remain provisional; independent corroboration, three-pass closure, behavioral-domain source verification, taxonomy rulings, and runtime integration remain open."
   }
 }
