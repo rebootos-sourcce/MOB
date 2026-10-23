@@ -116,3 +116,35 @@ Research the 15 behavioral-domain records and 8 Conscious Domain records first b
 - Fresh parse confirms 103/125 records now meet the three-pass evidence gate. The remaining 22 are exactly the 8 Conscious Domains and 14 blueprint slots.
 - Block 3 remains open because the Conscious Domain source claims need independent corroboration and their affirmations are not recovered; the blueprint slots remain visualization-only placeholders.
 - Next: research the 8 Conscious Domain records using a genuinely independent source where possible, verify affirmation-to-domain assignment from v341 text, and do not fill the affirmation field unless authoritative text is recovered. Then proceed to blueprint slot source recovery and cross-layer graph validation.
+
+
+## 2026-10-22 — Recursive pass 2: Conscious Domains and blueprint slots
+
+### Blueprint visualization slots: research closed as non-canonical slots
+- Completed all three research passes for the 14 `blueprint_domain_slot` records.
+- Evidence used: the Psyche Map source explicitly declares `Blueprint Domains` with `n:14`; the v341 source crosswalk separately records a 19-domain stack and an open domain-count ruling.
+- Finding: these 14 records represent display positions, not 14 named psychological domain entities. They are now classified `researched_noncanonical_visual_slot`, with no invented names, definitions, or mappings. Their research is complete for their actual record type; the mapping decision remains open.
+- Registry commit: `cde682adca51e71da220136b81309bb43f2a97da`.
+
+### Conscious Domains: source and independent-search pass
+- Updated all 8 Conscious Domain records to distinguish source extraction, independent corroboration, and cross-record synthesis. Their pass 1 is recorded complete based on the existing v341 source crosswalk, pass 2 remains **blocked**, and pass 3 is an audit-level synthesis; no record is promoted to canonical.
+- Searched indexed public sources for the exact named Conscious Domains in conjunction with Mechanics of Being / Lance Powell. No reliable independent source reproducing the exact definitions or assigned affirmations was found. General scholarly literature on consciousness, compassion, and creativity can contextualize terms but cannot validate this proprietary taxonomy.
+- All 8 authoritative affirmation fields remain unresolved. No affirmation was invented. The v184 SOURCE OS CANON and Psyche Map are used for version/count comparison, not falsely presented as independent confirmation of v341 semantics.
+- Registry commit: `5ba52fe33cdf9668ff666f251e5df65ef956e9ff`.
+
+### Registry consistency repair
+- Synchronized duplicated nested `template` payload fields with top-level canonical fields for 30 field instances across the registry, including `sourceRefs` and `researchPasses`. This removes stale nested pass states from the prior domain research updates.
+- Registry commit: `9622b80c1a368172ff9378c0f3015c9415d6717e`.
+
+### Current gates
+- Registry inventory: 125 records, unchanged.
+- 15 behavioral-domain records: three-pass synthesis is marked complete, but content is provisional and taxonomy mappings remain unapproved.
+- 14 blueprint slots: three-pass research complete for their status as non-canonical visualization slots; named-domain mapping remains unresolved.
+- 8 Conscious Domains: pass 2 remains blocked; exact independent corroboration and authoritative affirmations not recovered.
+- Runtime adapter/validator tests and live graph integration remain unexecuted/unverified.
+
+### Next actions
+1. Obtain exact v341 source excerpts for the eight Conscious Domain definitions and affirmation assignments; the uploaded file is cited by hash and anchor in the crosswalk but must be re-opened to recover precise source text.
+2. Complete the remaining 8 Conscious Domain pass-2 evidence gap, without treating broad conceptual similarity as confirmation.
+3. Reconcile the 15 behavioral-domain roster with the v341 19-domain roster using the exact v341 renaming/cluster passage and preserve unresolved distinctions.
+4. Run full typed-edge reciprocal checks, then execute adapter/audit tests in a real checkout.
