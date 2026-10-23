@@ -111,3 +111,66 @@ For each build cycle, record: date, branch/commit SHA, exact paths changed, link
 - Added v341 source provenance and unapproved candidate crosswalk notes to all 15 behavioral-domain records without replacing their provisional definitions or promoting mappings. Registry commit: [1ef9d6f](https://github.com/rebootos-sourcce/MOB/commit/1ef9d6faf5ec3207ee7c69bf96954f141fc2e18d).
 - Crosswalk corrected to reflect that v341 was found in the conversation upload, not in repository tree search. Source SHA-256: `79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4`.
 - Remaining: pass 2 and 3 for all 23 records, adjudicate domain label mismatch and Architect/Rulership contradiction, schema/runtime validation, graph traversal, and automated link check.
+
+
+## 2026-10-22 — v341 record-level crosswalk execution
+
+This entry supersedes earlier ledger lines that say the exact v341 file has not been recovered. The file was already attached to the conversation and was materialized and inspected directly.
+
+### Source and implementation commits
+- Source artifact: conversation upload `MOB_Complete_v341.html`, 16,417,226 bytes, SHA-256 `79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4`.
+- Registry pass metadata commit: [3bf815f](https://github.com/rebootos-sourcce/MOB/commit/3bf815f0ef50ab706ac57bb4d32c7c12eb122136).
+- Record-level crosswalk classifications commit: [e6b8bb2](https://github.com/rebootos-sourcce/MOB/commit/e6b8bb25254b524ab23518662cfce8f8abae4207).
+- TDD execution update commit: [4c8e9f0](https://github.com/rebootos-sourcce/MOB/commit/4c8e9f0df44caa7124288c98ce067e5d11a10c39).
+- Registry path: [ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json](data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json).
+- Source crosswalk: [ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md](ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md).
+- Primary TDD: [ATUNED_DEEP_PSYCHOLOGICAL_RECORD_FORMAT_TDD_v1.md](ATUNED_DEEP_PSYCHOLOGICAL_RECORD_FORMAT_TDD_v1.md).
+
+### What changed
+- Reviewed the exact 23 target records: 15 behavioral-domain records and eight Conscious Domain records.
+- Recorded the v341 19-domain roster grouped as Architect 5, Engine 5, Weaver 5, Witness 4.
+- Classified all 15 owner-stated behavioral labels with explicit candidate status and closure conditions. None was promoted to a canonical mapping.
+- Recorded source extraction as complete for all eight Conscious Domain records, blocked independent corroboration where no independent source was established, and left synthesis/approval open.
+- Preserved the v341 contradiction: the text describes “Architect (Rulership)” as separate from Power, but Architect is not a member label in the displayed 19-domain list. Owner ruling required.
+- Documented that v341 attributes its twelve-archetype descriptions to Carol Pearson's formalization and practitioner observation, and says Jung did not enumerate this same twelve-item list.
+
+### Acceptance-gate status
+| Gate | Status | Evidence / remaining work |
+|---|---|---|
+| DP-01 exact v341 source recovery | COMPLETE | Conversation-upload file hash and chapter anchors recorded in crosswalk. |
+| DP-02 enumerate 23 target IDs | COMPLETE | Registry still has 125 total records; 15 behavioral + 8 Conscious Domain IDs identified. |
+| DP-03 taxonomy reconciliation | IN PROGRESS | 15 candidate classifications recorded; mappings unapproved; Architect/Rulership contradiction and compound labels need owner ruling. |
+| DP-04 three distinct research passes | IN PROGRESS | Pass 1 and cross-version comparison recorded for behavioral domains; behavioral synthesis remains open. Conscious pass 2 blocked pending independent source. |
+| DP-05 Conscious Domain source names/definitions | SOURCE EXTRACTION COMPLETE | Eight names and concise definitions source-backed; exact affirmation relations and independent corroboration still open. |
+| DP-06 schema validation | NOT RUN | Run validator and record command, output, exit code. |
+| DP-07 adapter execution | NOT RUN | Execute Node adapter and inspect output/count reconciliation. |
+| DP-08 generator/validator integration | NOT VERIFIED | No integration evidence committed. |
+| DP-09 typed edges and forward/backward traversal | NOT RUN | Add/execute automated tests. |
+| DP-10 regression suite | NOT RUN | Run relevant suite and record skips/failures. |
+| DP-11 Markdown links/source anchors | NOT RUN | Automated link check not executed; do not claim all links resolve. |
+| DP-12 TDD/ledger synchronization | UPDATED THIS CYCLE | Crosswalk, TDD, ledger, and registry updated in separate commits; re-fetch and verify current blobs before next write. |
+
+### Exact source anchors
+- Chapter 12 Stacking Architecture: `#ch17` — four directive clusters and the 19-domain list.
+- Chapter 28 The Domains: `#ch-domains` — observed count of nineteen and the author's explicit withdrawal of an earlier derivation of eighteen.
+- Chapter 32 The Seven Affirmations: `#ch22` — eight Conscious Domain names/definitions, seven chakra-zone affirmations, and additional Pattern/Story/Imperium Consciousness entries.
+
+### Mandatory next actions
+1. Fetch the current registry and schema blobs; run actual JSON Schema validation against all 125 records. Fix any schema violations caused by this cycle before further edits.
+2. Run the existing audit program and adapter; record exact commands, outputs, exit codes, and current commit.
+3. Resolve the v341 19-label/Architect-Rulership contradiction with the project owner; do not invent a 20th label or silently reinterpret a root as a member domain.
+4. Obtain independent source material for the eight Conscious Domain records or explicitly retain pass 2 as blocked.
+5. Complete the three-pass research and adjudication evidence for all 23 records, then add runtime traversal and regression coverage.
+6. Run a link/anchor audit and fix links that fail.
+
+### Current metrics
+- Registry records: 125.
+- Target records enumerated: 23/23.
+- v341 domain labels inventoried: 19/19.
+- Conscious Domain names/definition summaries extracted: 8/8.
+- Behavioral candidate classifications documented: 15/15.
+- Canonical behavioral mappings approved: 0/15.
+- Conscious independent corroboration complete: 0/8.
+- Schema/runtime/link tests verified in this cycle: 0.
+- Confidence in file identity and extracted roster: 0.98.
+- Confidence in final semantic mapping: not scored; owner rulings and independent corroboration remain open.
