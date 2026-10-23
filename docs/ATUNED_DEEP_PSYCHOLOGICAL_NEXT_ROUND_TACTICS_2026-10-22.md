@@ -59,3 +59,8 @@ P3: UI/consumer compatibility, regression coverage, docs and link integrity.
 - Runtime integration proven by automated tests, not inferred from adapter output.
 - Regression and link/path checks pass from a fresh checkout.
 - TDD, ledger, crosswalk, execution log, and handshake agree on commit and status.
+
+
+## Current technical blockers and immediate tactical sequence
+
+The current repository fetch confirms the template catalog is still marked proposed/not integrated with the engine. The adapter source explicitly emits a separate typed registry and does not inject it into the experiential graph. The registry fetch returned blob SHA `2f47266825d79274ea1a10274e26d1bba99718bf` but an empty content body; retrieve the actual JSON through a raw/blob route before editing or recounting. The audit program says exit 0 is inventory reporting, not closure; run strict mode and the project validator/tests. No runtime or graph test is claimed as run in this update. Opposites remain out of scope.
