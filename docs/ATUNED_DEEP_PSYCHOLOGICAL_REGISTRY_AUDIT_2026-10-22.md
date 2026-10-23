@@ -137,3 +137,16 @@ No canonical names, definitions, affirmations, or mapping edges were invented to
 
 ### Correction — adapter predicate exactness
 The adapter does not treat an empty array as missing. A prior sentence in this audit addendum incorrectly said 103 records were flagged by the adapter; that number was produced by a separate stricter local diagnostic which counted empty arrays. The adapter-equivalent result is 8 records, each a Conscious Domain missing `affirmation`. The 23 registry content-status gaps and the 37 three-pass evidence-gate backlog remain separate metrics.
+
+
+## 2026-10-22 — Research pass 3 completed for the 15 behavioral domains
+
+The registry now records pass 3 as `complete` for all 15 behavioral-domain records. Each pass already contained at least one v341 source reference, a record-specific candidate classification/finding, and an explicit unresolved taxonomy/alias conflict. This is completion of the research synthesis, **not** approval of any mapping or verification of the provisional behavioral definitions. Their content remains provisional, with canonical approval pending.
+
+- New registry blob SHA: `de50d80b932701dd73f8df596420bf5bbdb219af`.
+- Fresh full-blob parse: 125 records, 125 unique IDs.
+- Records meeting the strict three-pass evidence gate: 103/125 (up from 88).
+- Remaining strict research backlog: 22 records, consisting of 8 Conscious Domains and 14 blueprint visualization slots.
+- Content-status metadata remains 102 `complete`, 15 `provisional_content_populated`, and 8 `source_extracted_cross_record_review_pending`.
+- Conscious Domain pass 2 remains blocked because same-file comparison is not independent corroboration; all eight lack authoritative affirmation text and must not receive invented affirmations.
+- Blueprint slots remain non-canonical visualization placeholders. No names or definitions were fabricated.
