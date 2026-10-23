@@ -93,3 +93,35 @@ Committed registry edit `3ff0cb0b1a0fda7502aaa0f9061bde4784799b25` to `docs/data
 ### Round 3 limitation
 
 The seven chakra-to-domain assignments are still an inferred crosswalk, not canonical approval. This repair removes the missing-field defect but does not close the Conscious Domain research gate. The 15 behavioral domains remain provisional and source-unverified. KPI 1 remains open; KPI 2 remains gated.
+
+
+## Round 4 — Provisional Blueprint slot population and external research
+
+**Date:** 2026-10-22
+
+### Committed changes
+- Registry commit: `1e915568f88fb1eab731e239a893def723a44b7a`
+- External research note commit: `efe962a9262af32aaa01ce9ed4b911c04269d822`
+- Registry blob SHA after slot population: `a90d0eb566910b9de8c1ba915681bd7ae7d07f7e`
+- Registry path: `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json`
+- Research note: `docs/ATUNED_DEEP_PSYCHOLOGICAL_EXTERNAL_RESEARCH_PASSES_2026-10-22.md`
+
+### Work completed
+1. Populated provisional definition/body/function/examples/non-examples and nested template payloads for all 14 Blueprint visualization slots. They remain explicitly non-canonical slots; no canonical domain names were invented.
+2. Ran three research rounds at the category/synthesis level: v341 primary-source roster review; independent conceptual research using APA Dictionary, IEP, and Stanford Encyclopedia of Philosophy references; then synthesis against the 15 owner-stated labels and 19 v341 labels.
+3. Recorded per-domain provisional conceptual synthesis for all 15 behavioral domains, external source references, and the limits of what those sources establish.
+4. Verified the updated registry by fetching its Git blob and parsing the JSON: 125 records, 125 unique IDs, 14/14 blueprint slots with provisional definition/body in record and template, 15/15 behavioral domains with definition/body, and 8/8 Conscious Domains with definition/body.
+
+### Explicit limits
+- The three research rounds documented here are a category-level research synthesis, not proof that every record has three independent scholarly sources. The external sources support general concepts and do not establish the private ATÜNED taxonomy.
+- Canonical names for the 14 blueprint slots remain unrecovered; they are visualization positions, not verified domain entities.
+- The v341 19-domain list contains a naming/count contradiction that remains open. The 15 owner-stated labels are not forced into one-to-one equivalence.
+- The registry still contains other records with empty definition/body fields where those fields are not applicable to mapping rows or where source/semantic closure remains open; a record-family-aware audit is required before reporting global content completeness.
+- KPI 1 remains OPEN. KPI 2 remains gated and no runtime wiring was performed.
+
+### Next execution
+1. Audit every remaining record family against the shared schema and its applicable template, separating domain records from mapping rows and visualization placeholders.
+2. Inspect and repair any record that lacks required content, source evidence, or pass findings.
+3. Reconcile all 15 behavioral domains against v341 and preserve unmatched/conflicting labels explicitly.
+4. Complete evidence-backed research-pass review for the full 125-record registry.
+5. Re-run the full audit and publish record-level counts and failures. Do not claim KPI 1 closure until every applicable record passes.
