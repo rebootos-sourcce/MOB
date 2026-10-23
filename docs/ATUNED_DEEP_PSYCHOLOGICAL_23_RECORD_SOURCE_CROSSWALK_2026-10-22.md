@@ -107,3 +107,72 @@ Do not treat lexical overlap as equivalence. Do not infer that Rulership and Ord
 - Runtime integration verified: no.
 - Confidence in inventory and extracted v184 metadata: 0.97.
 - Confidence in any proposed semantic crosswalk: deliberately unscored until source evidence and owner ruling exist.
+
+
+---
+
+## Source-recovery correction and v341 extraction — 2026-10-22
+
+**Supersedes the earlier statement that the v341 source was unavailable.** The user-uploaded conversation file `MOB_Complete_v341.html` was present in the conversation upload inventory and has now been materialized and inspected directly. The earlier repository-only search was insufficient and the request to upload it again was an error.
+
+### Source identity and integrity
+- Exact uploaded filename: `MOB_Complete_v341.html`
+- File size: 16,417,226 bytes
+- SHA-256: `79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4`
+- HTML title: `The Mechanics of Being: A Codex of Soul Mechanics, Lance Powell`
+- Verified in-source headings/anchors:
+  - Chapter 12 Stacking Architecture: HTML element ID `ch17` (confirm anchor against source DOM before code linking)
+  - Chapter 28 The Domains: `#ch-domains`
+  - Chapter 32 The Seven Affirmations: `#ch22`
+- The file is the authoritative source artifact for this extraction. The older SOURCE OS CANON at v184 remains useful only as a historical/secondary artifact and must not override v341.
+
+### V341 source: 19 domain labels, grouped by directive cluster
+Chapter 12's “Domains · 19 domains” stack description lists these labels:
+
+| Cluster | v341 source labels | Count |
+|---|---|---:|
+| Architect (Order) | Knowledge; Justice; Imperium; Duty; Fate | 5 |
+| Engine (Dynamics) | Power; Creation; Dissolution; Sacrifice; Death | 5 |
+| Weaver (Connection) | Love; Communication; Healing; Provision; Play | 5 |
+| Witness (Awareness) | Nature; Trickster; Mystery; Guardian | 4 |
+| **Total listed** |  | **19** |
+
+Chapter 28, “The Domains,” explicitly says there are nineteen and withdraws an earlier promise to derive eighteen. It states that the 19-count is field observation, not a derivation, and says the 19 × 9 = 171 saboteur-matrix count is arithmetic rather than evidence for the domains.
+
+**Important internal source inconsistency requiring an owner ruling:** the same stack passage says seven names were renamed and names the surviving simple labels as Dissolution, Love, Imperium, Communication, Healing, Sacrifice, and Duty. It also says “Power (Directed Force) and Architect (Rulership) stand as separate domains,” while the displayed 19-label cluster list contains Power and Imperium but does not list Architect as a separate member. Do not silently resolve this inconsistency by adding, removing, or renaming a domain. Record it as an explicit source contradiction for adjudication.
+
+### V341 source: eight Conscious Domain names and definitions
+Chapter 32, “The Seven Affirmations,” directly states that seven chakra-zone affirmations map to seven of eight domains and that Empyrean Consciousness is the unified field containing the seven. The source then names and defines all eight:
+
+| Registry ID | V341 source name | Source-defined summary | Evidence status |
+|---|---|---|---|
+| `conscious-domain:01` | Empyrean Consciousness | Awareness aligned with Source; pattern, truth, and coherence across time, energy, and matter; unified field containing all zones, not a chakra zone | Name and definition found |
+| `conscious-domain:02` | Crown Consciousness | Honoring one's word; crown as two-way interface receiving from Source without distortion | Name and definition found |
+| `conscious-domain:03` | Perception Consciousness | Conscious awareness in each moment; recognition axis open, no longer automatic | Name and definition found |
+| `conscious-domain:04` | Truth Consciousness | Truth in speech, perception, and behavior; automatic defense of truth integrity | Name and definition found |
+| `conscious-domain:05` | Heart Consciousness | Equal compassion toward self and others; a perceptual state not contracted by others' broadcasts | Name and definition found |
+| `conscious-domain:06` | Value Consciousness | Worth and desire fulfillment; creativity flowing and desires recognized and honored | Name and definition found |
+| `conscious-domain:07` | Royal Consciousness | Sovereignty, courage, leadership, responsibility for one's reality; power without domination | Name and definition found |
+| `conscious-domain:08` | Creative Consciousness | Freedom to create without resistance; survival patterns no longer consuming creative output | Name and definition found |
+
+The seven explicit chakra-zone affirmation statements are separately located in the same chapter under “P21 · The Seven Affirmations · Crown to Root · Locked” and repeated in “P22 · Crown to Root · Daily Sequence.” These are source-backed text, but do not infer a one-to-one mapping from the registry's eight records without checking its schema and source relation fields.
+
+The chapter also contains three additional consciousness entries—Pattern Consciousness, Story Consciousness, and Imperium Consciousness—with their own affirmations. The source calls these entries out separately after the eight-domain sequence. Do not merge these three into the eight-domain roster without an explicit source ruling; capture them as related consciousness concepts pending taxonomy adjudication.
+
+### Crosswalk status after v341 inspection
+- v341 source recovered, version identified by filename/title: **yes**.
+- Source SHA-256 recorded: **yes**.
+- 15 behavioral-domain IDs enumerated: **yes**.
+- 8 Conscious Domain IDs mapped to source names: **8/8**.
+- The 19 source domain labels enumerated: **19/19**.
+- Canonical mappings from the 15 registry behavioral-domain records to the 19 source labels: **not yet adjudicated**. The labels have substantial source evidence, but equivalence is not assumed.
+- Source contradiction around “Architect (Rulership)” versus the 19-label list: **open; owner ruling required**.
+- All three independent research passes for each of 23 records: **not yet evidenced complete**.
+- Runtime/schema/integration tests: **not run by this source extraction**.
+
+### Required next work
+1. Correct the eight Conscious Domain registry records to the source-backed names above only after confirming their existing record schema and update mechanism; retain source excerpt/provenance.
+2. Produce the 15-to-19 behavioral-domain crosswalk with explicit statuses: exact match, alias stated by source, plausible but unapproved, no counterpart, contradiction, or unresolved.
+3. Capture the relevant v341 passages and exact HTML anchors in per-record evidence fields or a linked evidence appendix; do not copy long source prose wholesale where concise quotations and claim-level paraphrase suffice.
+4. Resolve the Architect/Rulership versus Imperium issue with an explicit owner ruling before canonical approval.
+5. Run schema validation, adapter tests, runtime traversal, and link checks; record command, result, and commit.
