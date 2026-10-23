@@ -285,3 +285,12 @@ See the [23-record source crosswalk](ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_
 3. Do not merge Pattern Consciousness, Story Consciousness, or Imperium Consciousness into the eight-record Conscious Domain roster without a source/owner ruling.
 4. Do not mark independent corroboration complete for the Conscious Domain records until a genuinely independent source has been inspected.
 5. Schema validation, adapter execution, runtime integration, forward/backward traversal, regression tests, and automated link checks remain NOT RUN / NOT VERIFIED unless separate evidence is committed.
+
+
+### 2026-10-22 target record schema-shape check
+
+Registry commit [be3efd4](https://github.com/rebootos-sourcce/MOB/commit/be3efd44fd3a8e2cd86c4d5d10932318d8ffc2af) added the required `templateValidation.status` field to all 23 target records. A targeted structural check against the schema's declared required fields, types, array bounds, and enum constraints reported 0 shape errors for those 23 records and 0 invalid research-pass enum values.
+
+**Do not mark full registry schema validation passed.** The same check found 140 existing errors in the other records of the 125-record registry: missing `templateValidation.status` fields and non-string `signals` values in some archetype records. The checker was a targeted structural check, not the repository's own audit program or a standards-complete JSON Schema implementation. Run the project validator and reconcile these legacy-shape mismatches before claiming full schema conformance.
+
+The crosswalk records this distinction and the current registry SHA. Adapter execution, runtime integration, graph traversal, regression, and automated link checking remain not run/not verified.
