@@ -377,6 +377,16 @@ if(typeof module!=='undefined'&&module.exports){
                   journeyClaim:journeyClaim, journeyClaimCheck:journeyClaimCheck,
                   releaseVerify:releaseVerify, releaseVerifyAt:releaseVerifyAt,
                   RV_METRIC:RV_METRIC, RV_ANSWERS:RV_ANSWERS, RV_SAY:RV_SAY,
+  /* the codes, engine/codes.js and engine/data/codes.js: one fixed code per
+     thing the engine names and the door every label goes through. The
+     tables are exported as the live objects so the gate holds them both
+     ways, and codeTables so it can hand codesCheck a copy with one broken. */
+                  CODE_SOURCES:CODE_SOURCES, CODE_KINDS:CODE_KINDS, CODE_FAMILY:CODE_FAMILY,
+                  CODE_STRUCT:CODE_STRUCT, CODE_ARCH:CODE_ARCH, CODE_EMOTION:CODE_EMOTION,
+                  CODE_ALIAS:CODE_ALIAS, CODE_UNMAPPED:CODE_UNMAPPED, CODE_RETIRED:CODE_RETIRED,
+                  codeKey:codeKey, codeOf:codeOf, codeKind:codeKind, codeName:codeName,
+                  codeList:codeList, codeOfEntry:codeOfEntry, codeEmotionOf:codeEmotionOf,
+                  codesCheck:codesCheck, codeTables:codeTables,
   /* util */      clamp:clamp, leaves:(typeof leaves==='function'?leaves:null)
  };
 }

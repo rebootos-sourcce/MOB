@@ -8965,5 +8965,179 @@ g('CRISIS · the button a person presses: three numbers, each with its sentence 
  ok(!/—/.test(JSON.stringify([L,S])),'and no em dash anywhere in them');
 }
 
+g('ID · one fixed code per thing the engine names, and one door every label goes through');
+/* PHASE ONE OF THE CONTENT LIBRARY, 23 October, engine/codes.js and
+   engine/data/codes.js. Identity and plumbing only: nothing here moves a
+   number, and compute() and trace.js do not read it yet. A code never
+   changes and a name may, so the codes asserted below are typed on purpose:
+   they are the identities being frozen, and a gate that read them back off
+   the table it tests would hold nothing. Counts are read off the run. */
+{
+ const {codeOf,codeKind,codeName,codeList,codeOfEntry,codeEmotionOf,codesCheck,codeTables,
+        SABDEF,LAW_DEFAULT}=E;
+ /* the live tables hold, every check at once */
+ const probs=codesCheck();
+ ok(probs.length===0,'codesCheck finds nothing wrong with the live tables, found '+probs.length+': '+JSON.stringify(probs.slice(0,6)));
+ /* AND EACH CHECK BITES. A copy of the tables with one thing broken, and the
+    check must name the thing. The live tables are never touched. */
+ const bites=(what,mut,word)=>{const t=Object.assign({},codeTables()); mut(t); const p=codesCheck(t);
+  ok(p.some(x=>x.indexOf(word)>=0),'the check catches '+what+', got '+JSON.stringify(p.slice(0,3)));};
+ bites('an alias that points at no code',t=>{t.CODE_ALIAS=t.CODE_ALIAS.concat([['canon','saboteur','Kontroller','S99','a test row']]);},'S99');
+ bites('a family renamed in HCX_LIB and not in CODE_FAMILY',t=>{t.HCX_LIB=t.HCX_LIB.map(h=>h.nm==='Collapse'?Object.assign({},h,{nm:'Kollapse'}):h);},'Kollapse');
+ bites('two ARCH rows swapped, which would re-point every stored p.soul.arcs',t=>{const a=t.ARCH.slice(),x=a[2];a[2]=a[3];a[3]=x;t.ARCH=a;},'ARCH[2]');
+ bites('a row for every source that shadows a MOB name',t=>{t.CODE_ALIAS=t.CODE_ALIAS.concat([['any','address','Entitlement','8','a test row']]);},'Entitlement');
+ bites('an unmapped row a code now answers',t=>{t.CODE_UNMAPPED=t.CODE_UNMAPPED.concat([['mob','saboteur','Judge','a test row']]);},'Judge');
+ bites('a retired name that is still a code',t=>{t.CODE_RETIRED=t.CODE_RETIRED.concat([['mob','saboteur','Stickler','2026-10-23','a test row']]);},'Stickler');
+ bites('an inferred cluster renamed off the rule',t=>{t.ALL_SAB=t.ALL_SAB.map(s=>s.nm==='Heart Mourner'?Object.assign({},s,{nm:'Heart Weeper'}):s);},'Heart Weeper');
+ bites('a library row that kept the old name of S02',t=>{t.SAB_LIB=t.SAB_LIB.map(s=>s.nm==='Micromanager'?Object.assign({},s,{nm:'Controller'}):s);},'Controller');
+ bites('a child emotion renamed in CHILD and not frozen',t=>{t.CHILD=t.CHILD.map(c=>c.nm==='Sad'?Object.assign({},c,{nm:'Sorrow'}):c);},'Sorrow');
+ bites('a structure code given twice',t=>{t.CODE_STRUCT=t.CODE_STRUCT.concat([['X01','A Copy','complex',t.CODE_STRUCT.filter(r=>r[2]==='complex').length,'I']]);},'X01 twice');
+
+ const is=(label,hint,code,m)=>{const r=codeOf(label,hint);
+  ok(r.ok&&r.code===code,m+': '+JSON.stringify(label)+(hint?' '+JSON.stringify(hint):'')+' is '+code+', got '+JSON.stringify(r.ok?r.code:r.why));};
+ const no=(label,hint,word,m)=>{const r=codeOf(label,hint);
+  ok(!r.ok&&r.why.indexOf(word)>=0,m+': '+JSON.stringify(label)+(hint?' '+JSON.stringify(hint):'')+' is refused naming '+JSON.stringify(word)+', got '+JSON.stringify(r.ok?r.code:r.why));};
+ /* saboteurs, and every spelling of one */
+ ok(SABDEF.micromanager.c==='S02'&&SABDEF.skeptic.c==='S17'&&SABDEF.avoider.c==='S33','the saboteur codes are SABDEF\'s own, kept');
+ is('Micromanager',null,'S02','the name the reading prints');
+ is('Controller',null,'S02','the owner renamed S02 on 18 October, and the old name still finds it');
+ is('Controller',{source:'canon'},'S02','canon.json still prints Controller');
+ is('Sceptic',{source:'book'},'S17','the book spells Skeptic once with a c');
+ is('The Negotiator',{source:'book'},'S01','the book\'s The is not part of the name');
+ no('Superior',null,'2026-10-22','a retired saboteur is refused with its day');
+ no('The Withholder',{source:'app'},'Avoider','the app\'s 33rd row is no code, and says why');
+ /* one word for several things is never picked, always named */
+ no('Collapse',null,'ambiguous','Collapse is a family, a canon.json complex and an address');
+ is('Collapse',{kind:'family'},'K3','as a family');
+ is('Collapse',{source:'canon',kind:'structure'},'X12','as canon.json\'s complex');
+ is('Collapse',{kind:'address'},String(NODES.find(n=>n.k==='Collapse').i),'as an address');
+ is('Mania',{kind:'pole'},'K3o','a pole is its family\'s code and o');
+ no('Narcissism',null,'ambiguous','Narcissism is the book\'s cluster I and canon.json\'s Narcissistic');
+ is('Narcissism',{kind:'family'},'K1','as a family, Grandiosity');
+ is('Narcissism',{kind:'structure'},'X04','as a structure, Narcissistic');
+ no('Innocent',null,'ambiguous','Innocent is a saboteur and an archetype');
+ no('Fear',null,'ambiguous','Fear is a child emotion and address 1');
+ is('Fear',{kind:'emotion'},'Fear','a child emotion\'s code is its CHILD name');
+ is('Fear',{kind:'address'},'1','and address 1 is Fear');
+ /* BLAME DISPLACEMENT AND ANTISOCIAL ARE TWO, by decision, written in
+    engine/data/codes.js: a merge later is an alias, a split later is not */
+ is('Blame Displacement',{source:'canon'},'X02','Blame Displacement');
+ is('Antisocial',{source:'canon'},'X06','and Antisocial is its own code');
+ is('Dark Triad',null,'X30','Dark Triad');
+ {const d=codeOf('X30'); ok(d.ok&&d.filed==='hyper_complex'&&d.tag==='I','and it stays filed where canon.json files it, inferred, '+JSON.stringify(d));}
+ /* the same label means another thing in another source */
+ is('Entitlement',{source:'canon',kind:'address'},'8','canon.json\'s Entitlement is address 8');
+ is('Entitlement',{kind:'address'},'38','MOB\'s is 38');
+ no('Entitlement',{source:'book'},'ambiguous','the book uses it for address 8 and as a band axis');
+ is('109',{source:'canon'},'112','canon.json numbers the field nodes another way');
+ is('109',null,'109','MOB\'s own 109 is its own');
+ is('Soul Star',{source:'canon'},'109','and spells Sol Star Soul Star');
+ is('Doubt of Source',{source:'canon'},'88','canon.json writes Source for God');
+ no('Doubt of Source',null,'not a code','and that spelling is only canon.json\'s');
+ no('112',{source:'nodes112'},'PARAM SHIVA','nodes_112\'s 112 is not said to be Gaia Gateway');
+ /* clusters, overshot readings, pairs, by rule */
+ const dead=(()=>{for(const b of BANDS)for(const e of E.CODE_EMOTION)if(!W.some(n=>n.b===b&&n.cf===e))return [b,e];return null;})();
+ ok(dead!==null,'some seat carries no address of some emotion, so a cluster can be coded and not live');
+ if(dead){const r=codeOf(codeName('S.'+E.B2K[dead[0]]+'.'+dead[1]));
+  ok(r.ok&&r.kind==='cluster'&&r.live===false,'a cluster the node map cannot make still has its code, and says it is not live: '+JSON.stringify(r));}
+ is('Micromanager overshot',null,'S02.over','an overshot reading is its code and .over');
+ is('Micromanager + Judge',null,'S02+S11','a pair is its two codes');
+ is('Judge + Micromanager',null,'S02+S11','whichever is heavier today');
+ no('Judge + Judge',null,'with itself','one voice counted twice is not a pair');
+ is('Collapse / Mania',null,'K3/K3o','a pair of families is its two codes');
+ /* archetypes and emotions */
+ is('Caretaker',null,'AR04','Caretaker is Caregiver');
+ no('Rebel',null,'ambiguous','Rebel is an archetype and a retired saboteur');
+ is('Rebel',{kind:'archetype'},'AR03','as an archetype');
+ no('Rebel',{kind:'saboteur'},'open ruling 6','as a saboteur it has no code, and says whose ruling');
+ no('Outlaw',null,'owner\'s call','Outlaw is no code until he says whether it is Rebel');
+ is('Sadness',{kind:'emotion'},'Sad','Sadness is the Sad axis');
+ no('Joy',{kind:'emotion'},'REROUTE','Joy is a charge label routed by rule, not a child emotion');
+ /* bad input is refused, never thrown */
+ const loop={}; loop.self=loop;
+ [[null,null,'string'],['',null,'string'],[loop,null,'string'],[BigInt(7),null,'string'],
+  ['Judge',{source:'nowhere'},'source'],['Judge',{kind:'nothing'},'kind'],['Judge',{kind:[]},'kind'],
+  ['Judge',{kind:loop},'kind']].forEach(x=>{let r; try{r=codeOf(x[0],x[1]);}catch(e){r={ok:false,why:'threw '+e.message};}
+  ok(r&&!r.ok&&r.why.indexOf(x[2])>=0&&r.why.indexOf('threw')<0,'a bad '+x[2]+' is refused by name, '+JSON.stringify(r));});
+ is(38,null,'38','an address given as a number');
+ no('Nobody overshot',null,'what it overshoots','an overshot reading of nothing is refused, and says which part');
+ [[null,'object with a name'],[{kind:'zz',nm:'Judge'},'sab, cx, hy or sup']].forEach(x=>{const r=codeOfEntry(x[0]);
+  ok(!r.ok&&r.why.indexOf(x[1])>=0,'an entry that is not one a reading makes is refused by name, '+JSON.stringify(r));});
+ ok(!codeEmotionOf('nowhere').ok&&/not one NODES holds/.test(codeEmotionOf('nowhere').why)&&codeEmotionOf('38').code===E.BY[38].cf,
+  'codeEmotionOf refuses what is not an address, and reads a number written as text');
+
+ /* THE LEDGER. Every code this layer was born with, 23 October, and the name
+    it was born on, in code order. This is the freeze, and it is not a count:
+    a new code may be added after the last, and a thing may be renamed when a
+    CODE_ALIAS row keeps the old name finding it, but no code here may ever
+    answer for anything else. codesCheck holds each table's shape and cannot
+    see two codes trade places; this can. Addresses are their own NODES
+    numbers and are held by codesCheck. */
+ const born=[];
+ [['saboteur','S',2,'Negotiator|Micromanager|Victim|Perfectionist|Pleaser|Hyper-Achiever|Hyper-Rational|Hyper-Vigilant|Restless|Stickler|Judge|Deflector|Dramatizer|Worrywart|Loner|People-Pleaser|Skeptic|Dreamer|Procrastinator|Imposter|Aggressor|Martyr|Cynic|Manipulator|Overthinker|Escapist|Nihilist|Innocent|Pessimist|Catastrophizer|Enabler|Control Freak|Avoider'],
+  ['family','K',1,'Grandiosity|Predatory|Collapse|Rigidity|Dysregulation|Dissociation'],
+  ['structure','X',2,'Dominance Enforcement|Blame Displacement|Superiority-Persecution|Narcissistic|Machiavellian Tactics|Antisocial|Oscillation|Abandonment Reactivity|Rigidity|Attention Seeking|Threat Scanning|Collapse|Scatter|Anticipatory Freeze|Catastrophic Bracing|Meaning Withdrawal|Retreat|Cold Analysis|Self-Erasure|Sacrificial Ledger|Exploitation|Standard Enforcement|Imposture|Malignant Narcissism|Sociopathy|Psychopathy|Machiavellianism|Megalomania|Malignant Grandiosity|Dark Triad|Persecutory Collapse'],
+  ['archetype','AR',2,'Warrior|Sage|Rebel|Caregiver|Creator|Magician|Ruler|Explorer|Lover|Jester|Everyman|Innocent']
+ ].forEach(([kind,pre,w,names])=>names.split('|').forEach((nm,i)=>born.push([pre+String(i+1).padStart(w,'0'),nm,kind])));
+ 'Self-erasure|Enabling|Mania|Indiscriminate|Numbness|Enmeshment'.split('|').forEach((nm,i)=>born.push(['K'+(i+1)+'o',nm,'pole']));
+ 'Fear|Anger|Shame|Disgust|Apathy|Shock|Sad|Surprise|Anticipation'.split('|').forEach(nm=>born.push([nm,nm,'emotion']));
+ /* a cluster's code is its seat's key and its emotion. The key is B2K's, so
+    the seven keys are frozen here; the noun is display and is read live. */
+ [['Root','root'],['Sacral','sacral'],['Solar','solar'],['Heart','heart'],['Throat','throat'],['3rd Eye','eye'],['Crown','crown'],
+  ['Diffuse','diffuse']].forEach(([b,k])=>born.push(['S.'+k+'.Fear',b+' '+E.INFER_NOUN.Fear,'cluster']));
+ const moved=born.filter(([c,nm,k])=>{const r=codeOf(nm,{kind:k});return !(r.ok&&r.code===c);});
+ ok(moved.length===0,'every one of the '+born.length+' codes this layer was born with still answers to the name it was born on, moved: '
+  +JSON.stringify(moved.slice(0,6).map(([c,nm,k])=>nm+' was '+c+', now '+(codeOf(nm,{kind:k}).code||'nothing'))));
+
+ /* ROUND TRIP. Every code the tables list comes back from its own name and kind. */
+ const all=codeList(), back=all.filter(c=>{const r=codeOf(codeName(c),{kind:codeKind(c)});return !(r.ok&&r.code===c);});
+ ok(all.length>0&&back.length===0,'every one of the '+all.length+' listed codes comes back from its own name and kind, off: '+JSON.stringify(back.slice(0,6)));
+
+ /* EVERY NAME A READING PRINTS has one code, of its rung's kind, and a
+    pair's code is made of its own parts' codes. The worked examples, uniform
+    fields with and without the opposite, and seeded random fields. */
+ const rd=p=>{S.doms=[p.dom];S.arcs=[p.a1,p.a2];S.roots=[];buildSoul();
+  CHARGES.forEach(c=>{S.charge[c]=p.c[c]||0;S.replace[c]=(p.rep&&p.rep[c])||0;});
+  const LS=LAWSET[p.nm]||{_:LAW_DEFAULT};
+  SINAMES.forEach(l=>S.law[l]=LS[l]!==undefined?LS[l]:(LS._!==undefined?LS._:LAW_DEFAULT)); lawsIn();
+  return compute();};
+ const R=PEOPLE.map(rd);
+ for(let h=0;h<=10;h++)for(let o=0;o<=10;o+=5)R.push(reset(h,o,6));
+ let seed=2310; const rnd=()=>{seed=(seed*1103515245+12345)%2147483648;return seed/2147483648;};
+ for(let i=0;i<300;i++){reset(0,0,6);
+  CHARGES.forEach(c=>{S.charge[c]=Math.round(rnd()*100)/10;S.replace[c]=Math.round(rnd()*100)/10;});
+  SINAMES.forEach(l=>S.law[l]=Math.round(rnd()*10)); lawsIn(); R.push(compute());}
+ const seen={}, byName={}, byCode={}, refused=[], partsOff=[]; let entries=0;
+ const sortedOf=nm=>/ \/ /.test(nm)?nm.split(' / ').sort().join(' / '):/ \+ /.test(nm)?nm.split(' + ').sort().join(' + '):nm;
+ R.forEach(r=>['sabs','cxs','hys','sups'].forEach(l=>r[l].forEach(o=>{entries++;
+  const c=codeOfEntry(o);
+  if(!c.ok){refused.push(o.kind+' '+o.nm+': '+c.why);return;}
+  seen[c.kind]=(seen[c.kind]||0)+1;
+  (byName[o.nm]=byName[o.nm]||new Set()).add(c.code);
+  (byCode[c.code]=byCode[c.code]||new Set()).add(sortedOf(o.nm));
+  if(o.kind==='cx'||o.kind==='sup'){const pc=o.parts.map(q=>codeOfEntry(q).code).sort();
+   if(JSON.stringify(pc)!==JSON.stringify(c.parts))partsOff.push(o.nm+' is '+c.code+' and its parts are '+pc.join(', '));}})));
+ ok(refused.length===0,'every one of the '+entries+' entries of '+R.length+' readings resolves to a code of its rung\'s kind, refused: '+JSON.stringify(refused.slice(0,6)));
+ ok(['saboteur','cluster','overshot','pair','family','pole','family-pair'].every(k=>seen[k]>0),
+  'and the sweep reached every kind a reading can print, so it tested each, seen: '+JSON.stringify(seen));
+ const twoCodes=Object.keys(byName).filter(n=>byName[n].size>1), twoNames=Object.keys(byCode).filter(c=>byCode[c].size>1);
+ ok(twoCodes.length===0,'no name carries two codes, of '+Object.keys(byName).length+' names, '+JSON.stringify(twoCodes.slice(0,4)));
+ ok(twoNames.length===0,'and no code carries two names but for a pair\'s order, of '+Object.keys(byCode).length+' codes, '+JSON.stringify(twoNames.slice(0,4)));
+ ok(partsOff.length===0,'a pair\'s code is its own parts\' codes, off: '+JSON.stringify(partsOff.slice(0,4)));
+
+ /* THE ONE FETTER ASSIGNMENT RULE. The library reads an address's child
+    emotion through codeEmotionOf, and it answers n.cf, which is what the
+    reading reads, at every body address. A field node and an address with
+    no charge are refused by name, never given one. */
+ const offRule=W.filter(n=>{const r=codeEmotionOf(n.i);return n.cf?!(r.ok&&r.code===n.cf):r.ok;});
+ ok(offRule.length===0,'codeEmotionOf is n.cf at every one of the '+W.length+' body addresses, off: '+JSON.stringify(offRule.map(n=>n.i)));
+ const field=NODES.filter(n=>/^Field/.test(n.b)), bare=W.filter(n=>!n.cf);
+ ok(field.length>0&&field.every(n=>{const r=codeEmotionOf(n.i);return !r.ok&&/field node/.test(r.why);}),
+  'a field node is refused by name, it carries no child emotion');
+ ok(bare.every(n=>{const r=codeEmotionOf(n.i);return !r.ok&&/carries no charge/.test(r.why);}),
+  'and a body address with no charge on the node map is refused by name, '+JSON.stringify(bare.map(n=>n.i)));
+ reset(0,0,6);
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');
 process.exit(F?1:0);
