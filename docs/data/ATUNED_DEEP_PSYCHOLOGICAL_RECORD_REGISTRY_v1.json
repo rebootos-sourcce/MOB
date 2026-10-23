@@ -20622,11 +20622,11 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_01",
       "seat": null,
       "fam": "visualization slot only",
-      "def": null,
-      "body": null,
-      "definition": null,
-      "essence": null,
-      "function": null,
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A reserved position in the Blueprint Domains visualization. It preserves layout capacity while the canonical domain roster and mapping remain unresolved.",
+      "body": "PROVISIONAL — A reserved position in the Blueprint Domains visualization. It preserves layout capacity while the canonical domain roster and mapping remain unresolved. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A reserved position in the Blueprint Domains visualization. It preserves layout capacity while the canonical domain roster and mapping remain unresolved.",
+      "essence": "A reserved position in the Blueprint Domains visualization. It preserves layout capacity while the canonical domain roster and mapping remain unresolved.",
+      "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
       "decoherentExpression": [],
       "signals": [],
@@ -20638,8 +20638,12 @@
       "links": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Render the slot with an unresolved/provisional label and preserve its stable ID."
+      ],
+      "nonExamples": [
+        "Assigning a guessed canonical domain name or treating the slot index as proof of taxonomy membership."
+      ],
       "safetyNotes": [],
       "templateId": "TPL-BLUEPRINT-DOMAIN-VISUAL-SLOT-V1",
       "template": {
@@ -20647,7 +20651,8 @@
         "fam": "visualization slot only",
         "links": [],
         "sourceRefs": [
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
@@ -20699,16 +20704,19 @@
               "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
-        ]
+        ],
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A reserved position in the Blueprint Domains visualization. It preserves layout capacity while the canonical domain roster and mapping remain unresolved.",
+        "body": "PROVISIONAL — A reserved position in the Blueprint Domains visualization. It preserves layout capacity while the canonical domain roster and mapping remain unresolved. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": false,
-        "contentStatus": "complete",
+        "contentStatus": "provisional_content_populated",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "status": "source_review_complete"
+        "status": "provisional_visual_slot_content",
+        "canonicalApproval": "not_applicable_visualization_slot"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -20778,12 +20786,17 @@
       ],
       "notes": [
         "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
-        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping.",
+        "2026-10-22: Provisional explanatory content added to stand up the slot record without inventing a canonical domain name. Research and owner mapping decision remain open."
       ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
       "slotOnly": true
@@ -20801,11 +20814,11 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_02",
       "seat": null,
       "fam": "visualization slot only",
-      "def": null,
-      "body": null,
-      "definition": null,
-      "essence": null,
-      "function": null,
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A non-canonical visualization placeholder used to maintain stable indexing. It must not be interpreted as a named psychological construct.",
+      "body": "PROVISIONAL — A non-canonical visualization placeholder used to maintain stable indexing. It must not be interpreted as a named psychological construct. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A non-canonical visualization placeholder used to maintain stable indexing. It must not be interpreted as a named psychological construct.",
+      "essence": "A non-canonical visualization placeholder used to maintain stable indexing. It must not be interpreted as a named psychological construct.",
+      "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
       "decoherentExpression": [],
       "signals": [],
@@ -20817,8 +20830,12 @@
       "links": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Render the slot with an unresolved/provisional label and preserve its stable ID."
+      ],
+      "nonExamples": [
+        "Assigning a guessed canonical domain name or treating the slot index as proof of taxonomy membership."
+      ],
       "safetyNotes": [],
       "templateId": "TPL-BLUEPRINT-DOMAIN-VISUAL-SLOT-V1",
       "template": {
@@ -20826,7 +20843,8 @@
         "fam": "visualization slot only",
         "links": [],
         "sourceRefs": [
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
@@ -20878,16 +20896,19 @@
               "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
-        ]
+        ],
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A non-canonical visualization placeholder used to maintain stable indexing. It must not be interpreted as a named psychological construct.",
+        "body": "PROVISIONAL — A non-canonical visualization placeholder used to maintain stable indexing. It must not be interpreted as a named psychological construct. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": false,
-        "contentStatus": "complete",
+        "contentStatus": "provisional_content_populated",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "status": "source_review_complete"
+        "status": "provisional_visual_slot_content",
+        "canonicalApproval": "not_applicable_visualization_slot"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -20957,12 +20978,17 @@
       ],
       "notes": [
         "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
-        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping.",
+        "2026-10-22: Provisional explanatory content added to stand up the slot record without inventing a canonical domain name. Research and owner mapping decision remain open."
       ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
       "slotOnly": true
@@ -20980,11 +21006,11 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_03",
       "seat": null,
       "fam": "visualization slot only",
-      "def": null,
-      "body": null,
-      "definition": null,
-      "essence": null,
-      "function": null,
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A placeholder for a future source-backed domain-to-blueprint mapping. No parent, child, or semantic equivalence is implied.",
+      "body": "PROVISIONAL — A placeholder for a future source-backed domain-to-blueprint mapping. No parent, child, or semantic equivalence is implied. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A placeholder for a future source-backed domain-to-blueprint mapping. No parent, child, or semantic equivalence is implied.",
+      "essence": "A placeholder for a future source-backed domain-to-blueprint mapping. No parent, child, or semantic equivalence is implied.",
+      "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
       "decoherentExpression": [],
       "signals": [],
@@ -20996,8 +21022,12 @@
       "links": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Render the slot with an unresolved/provisional label and preserve its stable ID."
+      ],
+      "nonExamples": [
+        "Assigning a guessed canonical domain name or treating the slot index as proof of taxonomy membership."
+      ],
       "safetyNotes": [],
       "templateId": "TPL-BLUEPRINT-DOMAIN-VISUAL-SLOT-V1",
       "template": {
@@ -21005,7 +21035,8 @@
         "fam": "visualization slot only",
         "links": [],
         "sourceRefs": [
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
@@ -21057,16 +21088,19 @@
               "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
-        ]
+        ],
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A placeholder for a future source-backed domain-to-blueprint mapping. No parent, child, or semantic equivalence is implied.",
+        "body": "PROVISIONAL — A placeholder for a future source-backed domain-to-blueprint mapping. No parent, child, or semantic equivalence is implied. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": false,
-        "contentStatus": "complete",
+        "contentStatus": "provisional_content_populated",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "status": "source_review_complete"
+        "status": "provisional_visual_slot_content",
+        "canonicalApproval": "not_applicable_visualization_slot"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -21136,12 +21170,17 @@
       ],
       "notes": [
         "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
-        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping.",
+        "2026-10-22: Provisional explanatory content added to stand up the slot record without inventing a canonical domain name. Research and owner mapping decision remain open."
       ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
       "slotOnly": true
@@ -21159,11 +21198,11 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_04",
       "seat": null,
       "fam": "visualization slot only",
-      "def": null,
-      "body": null,
-      "definition": null,
-      "essence": null,
-      "function": null,
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A visualization-only position in the Blueprint layer. Its existence establishes display capacity, not the number of canonical domains.",
+      "body": "PROVISIONAL — A visualization-only position in the Blueprint layer. Its existence establishes display capacity, not the number of canonical domains. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A visualization-only position in the Blueprint layer. Its existence establishes display capacity, not the number of canonical domains.",
+      "essence": "A visualization-only position in the Blueprint layer. Its existence establishes display capacity, not the number of canonical domains.",
+      "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
       "decoherentExpression": [],
       "signals": [],
@@ -21175,8 +21214,12 @@
       "links": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Render the slot with an unresolved/provisional label and preserve its stable ID."
+      ],
+      "nonExamples": [
+        "Assigning a guessed canonical domain name or treating the slot index as proof of taxonomy membership."
+      ],
       "safetyNotes": [],
       "templateId": "TPL-BLUEPRINT-DOMAIN-VISUAL-SLOT-V1",
       "template": {
@@ -21184,7 +21227,8 @@
         "fam": "visualization slot only",
         "links": [],
         "sourceRefs": [
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
@@ -21236,16 +21280,19 @@
               "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
-        ]
+        ],
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A visualization-only position in the Blueprint layer. Its existence establishes display capacity, not the number of canonical domains.",
+        "body": "PROVISIONAL — A visualization-only position in the Blueprint layer. Its existence establishes display capacity, not the number of canonical domains. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": false,
-        "contentStatus": "complete",
+        "contentStatus": "provisional_content_populated",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "status": "source_review_complete"
+        "status": "provisional_visual_slot_content",
+        "canonicalApproval": "not_applicable_visualization_slot"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -21315,12 +21362,17 @@
       ],
       "notes": [
         "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
-        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping.",
+        "2026-10-22: Provisional explanatory content added to stand up the slot record without inventing a canonical domain name. Research and owner mapping decision remain open."
       ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
       "slotOnly": true
@@ -21338,11 +21390,11 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_05",
       "seat": null,
       "fam": "visualization slot only",
-      "def": null,
-      "body": null,
-      "definition": null,
-      "essence": null,
-      "function": null,
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A stable slot reserved for later source reconciliation and owner review. Canonical naming is intentionally withheld pending evidence.",
+      "body": "PROVISIONAL — A stable slot reserved for later source reconciliation and owner review. Canonical naming is intentionally withheld pending evidence. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A stable slot reserved for later source reconciliation and owner review. Canonical naming is intentionally withheld pending evidence.",
+      "essence": "A stable slot reserved for later source reconciliation and owner review. Canonical naming is intentionally withheld pending evidence.",
+      "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
       "decoherentExpression": [],
       "signals": [],
@@ -21354,8 +21406,12 @@
       "links": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Render the slot with an unresolved/provisional label and preserve its stable ID."
+      ],
+      "nonExamples": [
+        "Assigning a guessed canonical domain name or treating the slot index as proof of taxonomy membership."
+      ],
       "safetyNotes": [],
       "templateId": "TPL-BLUEPRINT-DOMAIN-VISUAL-SLOT-V1",
       "template": {
@@ -21363,7 +21419,8 @@
         "fam": "visualization slot only",
         "links": [],
         "sourceRefs": [
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
@@ -21415,16 +21472,19 @@
               "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
-        ]
+        ],
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A stable slot reserved for later source reconciliation and owner review. Canonical naming is intentionally withheld pending evidence.",
+        "body": "PROVISIONAL — A stable slot reserved for later source reconciliation and owner review. Canonical naming is intentionally withheld pending evidence. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": false,
-        "contentStatus": "complete",
+        "contentStatus": "provisional_content_populated",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "status": "source_review_complete"
+        "status": "provisional_visual_slot_content",
+        "canonicalApproval": "not_applicable_visualization_slot"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -21494,12 +21554,17 @@
       ],
       "notes": [
         "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
-        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping.",
+        "2026-10-22: Provisional explanatory content added to stand up the slot record without inventing a canonical domain name. Research and owner mapping decision remain open."
       ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
       "slotOnly": true
@@ -21517,11 +21582,11 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_06",
       "seat": null,
       "fam": "visualization slot only",
-      "def": null,
-      "body": null,
-      "definition": null,
-      "essence": null,
-      "function": null,
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A placeholder for a future crosswalk row. Any eventual mapping must cite source evidence and retain uncertainty until adjudicated.",
+      "body": "PROVISIONAL — A placeholder for a future crosswalk row. Any eventual mapping must cite source evidence and retain uncertainty until adjudicated. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A placeholder for a future crosswalk row. Any eventual mapping must cite source evidence and retain uncertainty until adjudicated.",
+      "essence": "A placeholder for a future crosswalk row. Any eventual mapping must cite source evidence and retain uncertainty until adjudicated.",
+      "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
       "decoherentExpression": [],
       "signals": [],
@@ -21533,8 +21598,12 @@
       "links": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Render the slot with an unresolved/provisional label and preserve its stable ID."
+      ],
+      "nonExamples": [
+        "Assigning a guessed canonical domain name or treating the slot index as proof of taxonomy membership."
+      ],
       "safetyNotes": [],
       "templateId": "TPL-BLUEPRINT-DOMAIN-VISUAL-SLOT-V1",
       "template": {
@@ -21542,7 +21611,8 @@
         "fam": "visualization slot only",
         "links": [],
         "sourceRefs": [
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
@@ -21594,16 +21664,19 @@
               "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
-        ]
+        ],
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A placeholder for a future crosswalk row. Any eventual mapping must cite source evidence and retain uncertainty until adjudicated.",
+        "body": "PROVISIONAL — A placeholder for a future crosswalk row. Any eventual mapping must cite source evidence and retain uncertainty until adjudicated. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": false,
-        "contentStatus": "complete",
+        "contentStatus": "provisional_content_populated",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "status": "source_review_complete"
+        "status": "provisional_visual_slot_content",
+        "canonicalApproval": "not_applicable_visualization_slot"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -21673,12 +21746,17 @@
       ],
       "notes": [
         "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
-        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping.",
+        "2026-10-22: Provisional explanatory content added to stand up the slot record without inventing a canonical domain name. Research and owner mapping decision remain open."
       ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
       "slotOnly": true
@@ -21696,11 +21774,11 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_07",
       "seat": null,
       "fam": "visualization slot only",
-      "def": null,
-      "body": null,
-      "definition": null,
-      "essence": null,
-      "function": null,
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A stable sequence position for visualization and testing. The sequence number is not a canonical domain identifier.",
+      "body": "PROVISIONAL — A stable sequence position for visualization and testing. The sequence number is not a canonical domain identifier. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A stable sequence position for visualization and testing. The sequence number is not a canonical domain identifier.",
+      "essence": "A stable sequence position for visualization and testing. The sequence number is not a canonical domain identifier.",
+      "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
       "decoherentExpression": [],
       "signals": [],
@@ -21712,8 +21790,12 @@
       "links": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Render the slot with an unresolved/provisional label and preserve its stable ID."
+      ],
+      "nonExamples": [
+        "Assigning a guessed canonical domain name or treating the slot index as proof of taxonomy membership."
+      ],
       "safetyNotes": [],
       "templateId": "TPL-BLUEPRINT-DOMAIN-VISUAL-SLOT-V1",
       "template": {
@@ -21721,7 +21803,8 @@
         "fam": "visualization slot only",
         "links": [],
         "sourceRefs": [
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
@@ -21773,16 +21856,19 @@
               "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
-        ]
+        ],
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A stable sequence position for visualization and testing. The sequence number is not a canonical domain identifier.",
+        "body": "PROVISIONAL — A stable sequence position for visualization and testing. The sequence number is not a canonical domain identifier. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": false,
-        "contentStatus": "complete",
+        "contentStatus": "provisional_content_populated",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "status": "source_review_complete"
+        "status": "provisional_visual_slot_content",
+        "canonicalApproval": "not_applicable_visualization_slot"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -21852,12 +21938,17 @@
       ],
       "notes": [
         "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
-        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping.",
+        "2026-10-22: Provisional explanatory content added to stand up the slot record without inventing a canonical domain name. Research and owner mapping decision remain open."
       ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
       "slotOnly": true
@@ -21875,11 +21966,11 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_08",
       "seat": null,
       "fam": "visualization slot only",
-      "def": null,
-      "body": null,
-      "definition": null,
-      "essence": null,
-      "function": null,
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A coverage placeholder to prevent a visual item from being omitted during inventory. It does not assert a separate domain exists.",
+      "body": "PROVISIONAL — A coverage placeholder to prevent a visual item from being omitted during inventory. It does not assert a separate domain exists. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A coverage placeholder to prevent a visual item from being omitted during inventory. It does not assert a separate domain exists.",
+      "essence": "A coverage placeholder to prevent a visual item from being omitted during inventory. It does not assert a separate domain exists.",
+      "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
       "decoherentExpression": [],
       "signals": [],
@@ -21891,8 +21982,12 @@
       "links": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Render the slot with an unresolved/provisional label and preserve its stable ID."
+      ],
+      "nonExamples": [
+        "Assigning a guessed canonical domain name or treating the slot index as proof of taxonomy membership."
+      ],
       "safetyNotes": [],
       "templateId": "TPL-BLUEPRINT-DOMAIN-VISUAL-SLOT-V1",
       "template": {
@@ -21900,7 +21995,8 @@
         "fam": "visualization slot only",
         "links": [],
         "sourceRefs": [
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
@@ -21952,16 +22048,19 @@
               "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
-        ]
+        ],
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A coverage placeholder to prevent a visual item from being omitted during inventory. It does not assert a separate domain exists.",
+        "body": "PROVISIONAL — A coverage placeholder to prevent a visual item from being omitted during inventory. It does not assert a separate domain exists. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": false,
-        "contentStatus": "complete",
+        "contentStatus": "provisional_content_populated",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "status": "source_review_complete"
+        "status": "provisional_visual_slot_content",
+        "canonicalApproval": "not_applicable_visualization_slot"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -22031,12 +22130,17 @@
       ],
       "notes": [
         "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
-        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping.",
+        "2026-10-22: Provisional explanatory content added to stand up the slot record without inventing a canonical domain name. Research and owner mapping decision remain open."
       ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
       "slotOnly": true
@@ -22054,11 +22158,11 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_09",
       "seat": null,
       "fam": "visualization slot only",
-      "def": null,
-      "body": null,
-      "definition": null,
-      "essence": null,
-      "function": null,
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A reserved position awaiting evidence linking a named source construct to the Blueprint layer.",
+      "body": "PROVISIONAL — A reserved position awaiting evidence linking a named source construct to the Blueprint layer. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A reserved position awaiting evidence linking a named source construct to the Blueprint layer.",
+      "essence": "A reserved position awaiting evidence linking a named source construct to the Blueprint layer.",
+      "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
       "decoherentExpression": [],
       "signals": [],
@@ -22070,8 +22174,12 @@
       "links": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Render the slot with an unresolved/provisional label and preserve its stable ID."
+      ],
+      "nonExamples": [
+        "Assigning a guessed canonical domain name or treating the slot index as proof of taxonomy membership."
+      ],
       "safetyNotes": [],
       "templateId": "TPL-BLUEPRINT-DOMAIN-VISUAL-SLOT-V1",
       "template": {
@@ -22079,7 +22187,8 @@
         "fam": "visualization slot only",
         "links": [],
         "sourceRefs": [
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
@@ -22131,16 +22240,19 @@
               "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
-        ]
+        ],
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A reserved position awaiting evidence linking a named source construct to the Blueprint layer.",
+        "body": "PROVISIONAL — A reserved position awaiting evidence linking a named source construct to the Blueprint layer. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": false,
-        "contentStatus": "complete",
+        "contentStatus": "provisional_content_populated",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "status": "source_review_complete"
+        "status": "provisional_visual_slot_content",
+        "canonicalApproval": "not_applicable_visualization_slot"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -22210,12 +22322,17 @@
       ],
       "notes": [
         "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
-        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping.",
+        "2026-10-22: Provisional explanatory content added to stand up the slot record without inventing a canonical domain name. Research and owner mapping decision remain open."
       ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
       "slotOnly": true
@@ -22233,11 +22350,11 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_10",
       "seat": null,
       "fam": "visualization slot only",
-      "def": null,
-      "body": null,
-      "definition": null,
-      "essence": null,
-      "function": null,
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A placeholder for a potential relationship to be researched. No relationship is asserted by this record.",
+      "body": "PROVISIONAL — A placeholder for a potential relationship to be researched. No relationship is asserted by this record. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A placeholder for a potential relationship to be researched. No relationship is asserted by this record.",
+      "essence": "A placeholder for a potential relationship to be researched. No relationship is asserted by this record.",
+      "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
       "decoherentExpression": [],
       "signals": [],
@@ -22249,8 +22366,12 @@
       "links": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Render the slot with an unresolved/provisional label and preserve its stable ID."
+      ],
+      "nonExamples": [
+        "Assigning a guessed canonical domain name or treating the slot index as proof of taxonomy membership."
+      ],
       "safetyNotes": [],
       "templateId": "TPL-BLUEPRINT-DOMAIN-VISUAL-SLOT-V1",
       "template": {
@@ -22258,7 +22379,8 @@
         "fam": "visualization slot only",
         "links": [],
         "sourceRefs": [
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
@@ -22310,16 +22432,19 @@
               "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
-        ]
+        ],
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A placeholder for a potential relationship to be researched. No relationship is asserted by this record.",
+        "body": "PROVISIONAL — A placeholder for a potential relationship to be researched. No relationship is asserted by this record. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": false,
-        "contentStatus": "complete",
+        "contentStatus": "provisional_content_populated",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "status": "source_review_complete"
+        "status": "provisional_visual_slot_content",
+        "canonicalApproval": "not_applicable_visualization_slot"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -22389,12 +22514,17 @@
       ],
       "notes": [
         "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
-        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping.",
+        "2026-10-22: Provisional explanatory content added to stand up the slot record without inventing a canonical domain name. Research and owner mapping decision remain open."
       ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
       "slotOnly": true
@@ -22412,11 +22542,11 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_11",
       "seat": null,
       "fam": "visualization slot only",
-      "def": null,
-      "body": null,
-      "definition": null,
-      "essence": null,
-      "function": null,
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A stable slot used to test that all visualization positions render and validate even before canonical mapping is known.",
+      "body": "PROVISIONAL — A stable slot used to test that all visualization positions render and validate even before canonical mapping is known. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A stable slot used to test that all visualization positions render and validate even before canonical mapping is known.",
+      "essence": "A stable slot used to test that all visualization positions render and validate even before canonical mapping is known.",
+      "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
       "decoherentExpression": [],
       "signals": [],
@@ -22428,8 +22558,12 @@
       "links": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Render the slot with an unresolved/provisional label and preserve its stable ID."
+      ],
+      "nonExamples": [
+        "Assigning a guessed canonical domain name or treating the slot index as proof of taxonomy membership."
+      ],
       "safetyNotes": [],
       "templateId": "TPL-BLUEPRINT-DOMAIN-VISUAL-SLOT-V1",
       "template": {
@@ -22437,7 +22571,8 @@
         "fam": "visualization slot only",
         "links": [],
         "sourceRefs": [
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
@@ -22489,16 +22624,19 @@
               "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
-        ]
+        ],
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A stable slot used to test that all visualization positions render and validate even before canonical mapping is known.",
+        "body": "PROVISIONAL — A stable slot used to test that all visualization positions render and validate even before canonical mapping is known. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": false,
-        "contentStatus": "complete",
+        "contentStatus": "provisional_content_populated",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "status": "source_review_complete"
+        "status": "provisional_visual_slot_content",
+        "canonicalApproval": "not_applicable_visualization_slot"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -22568,12 +22706,17 @@
       ],
       "notes": [
         "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
-        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping.",
+        "2026-10-22: Provisional explanatory content added to stand up the slot record without inventing a canonical domain name. Research and owner mapping decision remain open."
       ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
       "slotOnly": true
@@ -22591,11 +22734,11 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_12",
       "seat": null,
       "fam": "visualization slot only",
-      "def": null,
-      "body": null,
-      "definition": null,
-      "essence": null,
-      "function": null,
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A placeholder for reconciling source versions and competing domain counts. It must remain non-canonical until a decision is recorded.",
+      "body": "PROVISIONAL — A placeholder for reconciling source versions and competing domain counts. It must remain non-canonical until a decision is recorded. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A placeholder for reconciling source versions and competing domain counts. It must remain non-canonical until a decision is recorded.",
+      "essence": "A placeholder for reconciling source versions and competing domain counts. It must remain non-canonical until a decision is recorded.",
+      "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
       "decoherentExpression": [],
       "signals": [],
@@ -22607,8 +22750,12 @@
       "links": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Render the slot with an unresolved/provisional label and preserve its stable ID."
+      ],
+      "nonExamples": [
+        "Assigning a guessed canonical domain name or treating the slot index as proof of taxonomy membership."
+      ],
       "safetyNotes": [],
       "templateId": "TPL-BLUEPRINT-DOMAIN-VISUAL-SLOT-V1",
       "template": {
@@ -22616,7 +22763,8 @@
         "fam": "visualization slot only",
         "links": [],
         "sourceRefs": [
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
@@ -22668,16 +22816,19 @@
               "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
-        ]
+        ],
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A placeholder for reconciling source versions and competing domain counts. It must remain non-canonical until a decision is recorded.",
+        "body": "PROVISIONAL — A placeholder for reconciling source versions and competing domain counts. It must remain non-canonical until a decision is recorded. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": false,
-        "contentStatus": "complete",
+        "contentStatus": "provisional_content_populated",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "status": "source_review_complete"
+        "status": "provisional_visual_slot_content",
+        "canonicalApproval": "not_applicable_visualization_slot"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -22747,12 +22898,17 @@
       ],
       "notes": [
         "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
-        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping.",
+        "2026-10-22: Provisional explanatory content added to stand up the slot record without inventing a canonical domain name. Research and owner mapping decision remain open."
       ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
       "slotOnly": true
@@ -22770,11 +22926,11 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_13",
       "seat": null,
       "fam": "visualization slot only",
-      "def": null,
-      "body": null,
-      "definition": null,
-      "essence": null,
-      "function": null,
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A reserved Blueprint visualization position for later integration. Runtime wiring is deferred until KPI 1 acceptance.",
+      "body": "PROVISIONAL — A reserved Blueprint visualization position for later integration. Runtime wiring is deferred until KPI 1 acceptance. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A reserved Blueprint visualization position for later integration. Runtime wiring is deferred until KPI 1 acceptance.",
+      "essence": "A reserved Blueprint visualization position for later integration. Runtime wiring is deferred until KPI 1 acceptance.",
+      "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
       "decoherentExpression": [],
       "signals": [],
@@ -22786,8 +22942,12 @@
       "links": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Render the slot with an unresolved/provisional label and preserve its stable ID."
+      ],
+      "nonExamples": [
+        "Assigning a guessed canonical domain name or treating the slot index as proof of taxonomy membership."
+      ],
       "safetyNotes": [],
       "templateId": "TPL-BLUEPRINT-DOMAIN-VISUAL-SLOT-V1",
       "template": {
@@ -22795,7 +22955,8 @@
         "fam": "visualization slot only",
         "links": [],
         "sourceRefs": [
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
@@ -22847,16 +23008,19 @@
               "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
-        ]
+        ],
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A reserved Blueprint visualization position for later integration. Runtime wiring is deferred until KPI 1 acceptance.",
+        "body": "PROVISIONAL — A reserved Blueprint visualization position for later integration. Runtime wiring is deferred until KPI 1 acceptance. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": false,
-        "contentStatus": "complete",
+        "contentStatus": "provisional_content_populated",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "status": "source_review_complete"
+        "status": "provisional_visual_slot_content",
+        "canonicalApproval": "not_applicable_visualization_slot"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -22926,12 +23090,17 @@
       ],
       "notes": [
         "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
-        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping.",
+        "2026-10-22: Provisional explanatory content added to stand up the slot record without inventing a canonical domain name. Research and owner mapping decision remain open."
       ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
       "slotOnly": true
@@ -22949,11 +23118,11 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_14",
       "seat": null,
       "fam": "visualization slot only",
-      "def": null,
-      "body": null,
-      "definition": null,
-      "essence": null,
-      "function": null,
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A final inventory placeholder ensuring all fourteen declared visualization positions are represented without inventing domain names.",
+      "body": "PROVISIONAL — A final inventory placeholder ensuring all fourteen declared visualization positions are represented without inventing domain names. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A final inventory placeholder ensuring all fourteen declared visualization positions are represented without inventing domain names.",
+      "essence": "A final inventory placeholder ensuring all fourteen declared visualization positions are represented without inventing domain names.",
+      "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
       "decoherentExpression": [],
       "signals": [],
@@ -22965,8 +23134,12 @@
       "links": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Render the slot with an unresolved/provisional label and preserve its stable ID."
+      ],
+      "nonExamples": [
+        "Assigning a guessed canonical domain name or treating the slot index as proof of taxonomy membership."
+      ],
       "safetyNotes": [],
       "templateId": "TPL-BLUEPRINT-DOMAIN-VISUAL-SLOT-V1",
       "template": {
@@ -22974,7 +23147,8 @@
         "fam": "visualization slot only",
         "links": [],
         "sourceRefs": [
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
@@ -23026,16 +23200,19 @@
               "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
-        ]
+        ],
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A final inventory placeholder ensuring all fourteen declared visualization positions are represented without inventing domain names.",
+        "body": "PROVISIONAL — A final inventory placeholder ensuring all fourteen declared visualization positions are represented without inventing domain names. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": false,
-        "contentStatus": "complete",
+        "contentStatus": "provisional_content_populated",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "status": "source_review_complete"
+        "status": "provisional_visual_slot_content",
+        "canonicalApproval": "not_applicable_visualization_slot"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -23105,12 +23282,17 @@
       ],
       "notes": [
         "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
-        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping.",
+        "2026-10-22: Provisional explanatory content added to stand up the slot record without inventing a canonical domain name. Research and owner mapping decision remain open."
       ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
       "slotOnly": true
@@ -26504,7 +26686,8 @@
       "rootMembershipEdges": 18,
       "domainCountRulingResolved": false
     },
-    "lastSourceRecovery": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+    "lastSourceRecovery": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+    "latestRoundNote": "2026-10-22: Populated explanatory definition/body/function and template payload for all 14 blueprint visualization slots. This does not supply canonical names or close the domain-count/mapping decision."
   },
   "layerVisualizationInventory": [
     {
