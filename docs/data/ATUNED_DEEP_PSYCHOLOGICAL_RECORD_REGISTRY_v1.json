@@ -1015,7 +1015,7 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "completed_source_extraction",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
           ],
@@ -1029,7 +1029,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
@@ -1044,7 +1044,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "completed_candidate_classification_owner_ruling_open",
+          "status": "in_progress",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -1203,7 +1203,7 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "completed_source_extraction",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
           ],
@@ -1217,7 +1217,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
@@ -1232,7 +1232,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "completed_candidate_classification_owner_ruling_open",
+          "status": "in_progress",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -1391,7 +1391,7 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "completed_source_extraction",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
           ],
@@ -1405,7 +1405,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
@@ -1420,7 +1420,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "completed_candidate_classification_owner_ruling_open",
+          "status": "in_progress",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -1579,7 +1579,7 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "completed_source_extraction",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
           ],
@@ -1593,7 +1593,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
@@ -1608,7 +1608,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "completed_candidate_classification_owner_ruling_open",
+          "status": "in_progress",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -1767,7 +1767,7 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "completed_source_extraction",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
           ],
@@ -1781,7 +1781,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
@@ -1796,7 +1796,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "completed_candidate_classification_owner_ruling_open",
+          "status": "in_progress",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -1955,7 +1955,7 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "completed_source_extraction",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
           ],
@@ -1969,7 +1969,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
@@ -1984,7 +1984,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "completed_candidate_classification_owner_ruling_open",
+          "status": "in_progress",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -2143,7 +2143,7 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "completed_source_extraction",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
           ],
@@ -2157,7 +2157,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
@@ -2172,7 +2172,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "completed_candidate_classification_owner_ruling_open",
+          "status": "in_progress",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -2331,7 +2331,7 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "completed_source_extraction",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
           ],
@@ -2345,7 +2345,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
@@ -2360,7 +2360,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "completed_candidate_classification_owner_ruling_open",
+          "status": "in_progress",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -2519,7 +2519,7 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "completed_source_extraction",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
           ],
@@ -2533,7 +2533,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
@@ -2548,7 +2548,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "completed_candidate_classification_owner_ruling_open",
+          "status": "in_progress",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -2707,7 +2707,7 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "completed_source_extraction",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
           ],
@@ -2721,7 +2721,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
@@ -2736,7 +2736,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "completed_candidate_classification_owner_ruling_open",
+          "status": "in_progress",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -2895,7 +2895,7 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "completed_source_extraction",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
           ],
@@ -2909,7 +2909,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
@@ -2924,7 +2924,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "completed_candidate_classification_owner_ruling_open",
+          "status": "in_progress",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -3083,7 +3083,7 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "completed_source_extraction",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
           ],
@@ -3097,7 +3097,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
@@ -3112,7 +3112,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "completed_candidate_classification_owner_ruling_open",
+          "status": "in_progress",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -3271,7 +3271,7 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "completed_source_extraction",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
           ],
@@ -3285,7 +3285,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
@@ -3300,7 +3300,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "completed_candidate_classification_owner_ruling_open",
+          "status": "in_progress",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -3459,7 +3459,7 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "completed_source_extraction",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
           ],
@@ -3473,7 +3473,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
@@ -3488,7 +3488,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "completed_candidate_classification_owner_ruling_open",
+          "status": "in_progress",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -3647,7 +3647,7 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "completed_source_extraction",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
           ],
@@ -3661,7 +3661,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
@@ -3676,7 +3676,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "completed_candidate_classification_owner_ruling_open",
+          "status": "in_progress",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -8872,7 +8872,7 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "completed_source_extraction",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 The Seven Affirmations (#ch22)"
           ],
@@ -8886,7 +8886,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "completed_internal_cross_section_check_external_confirmation_open",
+          "status": "blocked",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22, seven affirmations and eight-domain explanation"
           ],
@@ -8894,13 +8894,14 @@
             "Cross-checked Empyrean Consciousness against the chapter's framing that seven chakra-zone affirmations map to seven of eight domains, with Empyrean as the unified field. The source distinguishes the eight-domain sequence from additional consciousness entries."
           ],
           "conflicts": [
-            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence."
+            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence.",
+            "Status blocked: no independent external source was used in this cycle; same-file cross-section checking is not equivalent to an independent research source."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "completed_synthesis_approval_open",
+          "status": "in_progress",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -9041,7 +9042,7 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "completed_source_extraction",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 The Seven Affirmations (#ch22)"
           ],
@@ -9055,7 +9056,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "completed_internal_cross_section_check_external_confirmation_open",
+          "status": "blocked",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22, seven affirmations and eight-domain explanation"
           ],
@@ -9063,13 +9064,14 @@
             "Cross-checked Crown Consciousness against the chapter's framing that seven chakra-zone affirmations map to seven of eight domains, with Empyrean as the unified field. The source distinguishes the eight-domain sequence from additional consciousness entries."
           ],
           "conflicts": [
-            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence."
+            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence.",
+            "Status blocked: no independent external source was used in this cycle; same-file cross-section checking is not equivalent to an independent research source."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "completed_synthesis_approval_open",
+          "status": "in_progress",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -9210,7 +9212,7 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "completed_source_extraction",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 The Seven Affirmations (#ch22)"
           ],
@@ -9224,7 +9226,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "completed_internal_cross_section_check_external_confirmation_open",
+          "status": "blocked",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22, seven affirmations and eight-domain explanation"
           ],
@@ -9232,13 +9234,14 @@
             "Cross-checked Perception Consciousness against the chapter's framing that seven chakra-zone affirmations map to seven of eight domains, with Empyrean as the unified field. The source distinguishes the eight-domain sequence from additional consciousness entries."
           ],
           "conflicts": [
-            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence."
+            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence.",
+            "Status blocked: no independent external source was used in this cycle; same-file cross-section checking is not equivalent to an independent research source."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "completed_synthesis_approval_open",
+          "status": "in_progress",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -9379,7 +9382,7 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "completed_source_extraction",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 The Seven Affirmations (#ch22)"
           ],
@@ -9393,7 +9396,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "completed_internal_cross_section_check_external_confirmation_open",
+          "status": "blocked",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22, seven affirmations and eight-domain explanation"
           ],
@@ -9401,13 +9404,14 @@
             "Cross-checked Truth Consciousness against the chapter's framing that seven chakra-zone affirmations map to seven of eight domains, with Empyrean as the unified field. The source distinguishes the eight-domain sequence from additional consciousness entries."
           ],
           "conflicts": [
-            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence."
+            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence.",
+            "Status blocked: no independent external source was used in this cycle; same-file cross-section checking is not equivalent to an independent research source."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "completed_synthesis_approval_open",
+          "status": "in_progress",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -9548,7 +9552,7 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "completed_source_extraction",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 The Seven Affirmations (#ch22)"
           ],
@@ -9562,7 +9566,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "completed_internal_cross_section_check_external_confirmation_open",
+          "status": "blocked",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22, seven affirmations and eight-domain explanation"
           ],
@@ -9570,13 +9574,14 @@
             "Cross-checked Heart Consciousness against the chapter's framing that seven chakra-zone affirmations map to seven of eight domains, with Empyrean as the unified field. The source distinguishes the eight-domain sequence from additional consciousness entries."
           ],
           "conflicts": [
-            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence."
+            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence.",
+            "Status blocked: no independent external source was used in this cycle; same-file cross-section checking is not equivalent to an independent research source."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "completed_synthesis_approval_open",
+          "status": "in_progress",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -9717,7 +9722,7 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "completed_source_extraction",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 The Seven Affirmations (#ch22)"
           ],
@@ -9731,7 +9736,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "completed_internal_cross_section_check_external_confirmation_open",
+          "status": "blocked",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22, seven affirmations and eight-domain explanation"
           ],
@@ -9739,13 +9744,14 @@
             "Cross-checked Value Consciousness against the chapter's framing that seven chakra-zone affirmations map to seven of eight domains, with Empyrean as the unified field. The source distinguishes the eight-domain sequence from additional consciousness entries."
           ],
           "conflicts": [
-            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence."
+            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence.",
+            "Status blocked: no independent external source was used in this cycle; same-file cross-section checking is not equivalent to an independent research source."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "completed_synthesis_approval_open",
+          "status": "in_progress",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -9886,7 +9892,7 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "completed_source_extraction",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 The Seven Affirmations (#ch22)"
           ],
@@ -9900,7 +9906,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "completed_internal_cross_section_check_external_confirmation_open",
+          "status": "blocked",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22, seven affirmations and eight-domain explanation"
           ],
@@ -9908,13 +9914,14 @@
             "Cross-checked Royal Consciousness against the chapter's framing that seven chakra-zone affirmations map to seven of eight domains, with Empyrean as the unified field. The source distinguishes the eight-domain sequence from additional consciousness entries."
           ],
           "conflicts": [
-            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence."
+            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence.",
+            "Status blocked: no independent external source was used in this cycle; same-file cross-section checking is not equivalent to an independent research source."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "completed_synthesis_approval_open",
+          "status": "in_progress",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -10055,7 +10062,7 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "completed_source_extraction",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 The Seven Affirmations (#ch22)"
           ],
@@ -10069,7 +10076,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "completed_internal_cross_section_check_external_confirmation_open",
+          "status": "blocked",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22, seven affirmations and eight-domain explanation"
           ],
@@ -10077,13 +10084,14 @@
             "Cross-checked Creative Consciousness against the chapter's framing that seven chakra-zone affirmations map to seven of eight domains, with Empyrean as the unified field. The source distinguishes the eight-domain sequence from additional consciousness entries."
           ],
           "conflicts": [
-            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence."
+            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence.",
+            "Status blocked: no independent external source was used in this cycle; same-file cross-section checking is not equivalent to an independent research source."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "completed_synthesis_approval_open",
+          "status": "in_progress",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
