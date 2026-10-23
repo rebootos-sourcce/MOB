@@ -44,8 +44,10 @@
 
    CHECKED AGAINST THE BUILD FROM BEFORE THIS CHANGE FIRST, the standing
    rule: run with LANDING_HTML at the build from a4c2872b, it fails the cold
-   open, the named opening and the wordmark, each by name, and passes the
-   memory and every first landing, which did not change.
+   open, the named opening, the wordmark and the press on Discover from the
+   first landing, each by name (there, Summary sat inside Discover, so the
+   press went back to Summary), and passes the memory and every first
+   landing, which did not change.
 
    No count is typed into this file. Read the counts off the run.
    ============================================================ */
