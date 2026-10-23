@@ -150,3 +150,16 @@ The registry now records pass 3 as `complete` for all 15 behavioral-domain recor
 - Content-status metadata remains 102 `complete`, 15 `provisional_content_populated`, and 8 `source_extracted_cross_record_review_pending`.
 - Conscious Domain pass 2 remains blocked because same-file comparison is not independent corroboration; all eight lack authoritative affirmation text and must not receive invented affirmations.
 - Blueprint slots remain non-canonical visualization placeholders. No names or definitions were fabricated.
+
+
+## 2026-10-22 — Recursive pass 2 results and explicit source gaps
+
+- The registry remains 125 records / 125 unique IDs.
+- 117/125 records now have three research passes marked complete with source and finding entries. This includes 14 blueprint records whose research is complete specifically as non-canonical visualization slots; it does **not** mean there are 14 named domains.
+- The 15 behavioral-domain records have three-pass synthesis marked complete but remain provisional; the 15-to-19-domain crosswalk is not approved.
+- The eight Conscious Domains remain the sole three-pass research backlog: pass 1 is source-crosswalk extraction, pass 2 is blocked because no independent source was found that corroborates their exact proprietary definitions/affirmations, and pass 3 is not closed until the source/affirmation gap is resolved.
+- All eight Conscious Domain `affirmation` fields are now explicitly null in both top-level and nested template payloads, and the template validation records the missing field. This is an honest schema gap, not an empty-string workaround.
+- The available SOURCE OS CANON is derived from v184 and cannot independently validate the v341 Conscious Domain taxonomy. Generic scholarly literature can contextualize consciousness/compassion/creativity but does not establish the exact proprietary definitions.
+- Registry commit: `68d2346c0150b934c786c932ef75d5ef140cb23e`.
+- Static dangling-reference scan still returns zero for `parentId`, `childIds`, `links`, `upstreamInfluenceIds`, and `downstreamEffectIds`; runtime graph behavior is not verified.
+- Runtime integration, executed Node tests, complete typed-edge reciprocity, and final regression remain open.
