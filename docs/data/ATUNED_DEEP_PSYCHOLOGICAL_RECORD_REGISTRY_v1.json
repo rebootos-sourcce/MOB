@@ -1039,7 +1039,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "in_progress",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -1049,7 +1049,8 @@
           ],
           "conflicts": [
             "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
-          ]
+          ],
+          "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
         }
       ],
       "unresolvedQuestions": [
@@ -1077,6 +1078,10 @@
         {
           "date": "2026-10-22",
           "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed research pass 3 synthesis; retained provisional content and unresolved taxonomy/alias decisions."
         }
       ],
       "kind": "domain",
@@ -1223,7 +1228,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "in_progress",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -1233,7 +1238,8 @@
           ],
           "conflicts": [
             "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
-          ]
+          ],
+          "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
         }
       ],
       "unresolvedQuestions": [
@@ -1261,6 +1267,10 @@
         {
           "date": "2026-10-22",
           "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed research pass 3 synthesis; retained provisional content and unresolved taxonomy/alias decisions."
         }
       ],
       "kind": "domain",
@@ -1407,7 +1417,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "in_progress",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -1417,7 +1427,8 @@
           ],
           "conflicts": [
             "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
-          ]
+          ],
+          "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
         }
       ],
       "unresolvedQuestions": [
@@ -1445,6 +1456,10 @@
         {
           "date": "2026-10-22",
           "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed research pass 3 synthesis; retained provisional content and unresolved taxonomy/alias decisions."
         }
       ],
       "kind": "domain",
@@ -1591,7 +1606,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "in_progress",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -1601,7 +1616,8 @@
           ],
           "conflicts": [
             "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
-          ]
+          ],
+          "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
         }
       ],
       "unresolvedQuestions": [
@@ -1629,6 +1645,10 @@
         {
           "date": "2026-10-22",
           "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed research pass 3 synthesis; retained provisional content and unresolved taxonomy/alias decisions."
         }
       ],
       "kind": "domain",
@@ -1775,7 +1795,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "in_progress",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -1785,7 +1805,8 @@
           ],
           "conflicts": [
             "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
-          ]
+          ],
+          "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
         }
       ],
       "unresolvedQuestions": [
@@ -1813,6 +1834,10 @@
         {
           "date": "2026-10-22",
           "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed research pass 3 synthesis; retained provisional content and unresolved taxonomy/alias decisions."
         }
       ],
       "kind": "domain",
@@ -1959,7 +1984,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "in_progress",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -1969,7 +1994,8 @@
           ],
           "conflicts": [
             "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
-          ]
+          ],
+          "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
         }
       ],
       "unresolvedQuestions": [
@@ -1997,6 +2023,10 @@
         {
           "date": "2026-10-22",
           "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed research pass 3 synthesis; retained provisional content and unresolved taxonomy/alias decisions."
         }
       ],
       "kind": "domain",
@@ -2143,7 +2173,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "in_progress",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -2153,7 +2183,8 @@
           ],
           "conflicts": [
             "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
-          ]
+          ],
+          "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
         }
       ],
       "unresolvedQuestions": [
@@ -2181,6 +2212,10 @@
         {
           "date": "2026-10-22",
           "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed research pass 3 synthesis; retained provisional content and unresolved taxonomy/alias decisions."
         }
       ],
       "kind": "domain",
@@ -2327,7 +2362,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "in_progress",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -2337,7 +2372,8 @@
           ],
           "conflicts": [
             "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
-          ]
+          ],
+          "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
         }
       ],
       "unresolvedQuestions": [
@@ -2365,6 +2401,10 @@
         {
           "date": "2026-10-22",
           "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed research pass 3 synthesis; retained provisional content and unresolved taxonomy/alias decisions."
         }
       ],
       "kind": "domain",
@@ -2511,7 +2551,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "in_progress",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -2521,7 +2561,8 @@
           ],
           "conflicts": [
             "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
-          ]
+          ],
+          "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
         }
       ],
       "unresolvedQuestions": [
@@ -2549,6 +2590,10 @@
         {
           "date": "2026-10-22",
           "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed research pass 3 synthesis; retained provisional content and unresolved taxonomy/alias decisions."
         }
       ],
       "kind": "domain",
@@ -2695,7 +2740,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "in_progress",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -2705,7 +2750,8 @@
           ],
           "conflicts": [
             "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
-          ]
+          ],
+          "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
         }
       ],
       "unresolvedQuestions": [
@@ -2733,6 +2779,10 @@
         {
           "date": "2026-10-22",
           "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed research pass 3 synthesis; retained provisional content and unresolved taxonomy/alias decisions."
         }
       ],
       "kind": "domain",
@@ -2879,7 +2929,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "in_progress",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -2889,7 +2939,8 @@
           ],
           "conflicts": [
             "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
-          ]
+          ],
+          "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
         }
       ],
       "unresolvedQuestions": [
@@ -2917,6 +2968,10 @@
         {
           "date": "2026-10-22",
           "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed research pass 3 synthesis; retained provisional content and unresolved taxonomy/alias decisions."
         }
       ],
       "kind": "domain",
@@ -3063,7 +3118,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "in_progress",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -3073,7 +3128,8 @@
           ],
           "conflicts": [
             "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
-          ]
+          ],
+          "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
         }
       ],
       "unresolvedQuestions": [
@@ -3101,6 +3157,10 @@
         {
           "date": "2026-10-22",
           "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed research pass 3 synthesis; retained provisional content and unresolved taxonomy/alias decisions."
         }
       ],
       "kind": "domain",
@@ -3247,7 +3307,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "in_progress",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -3257,7 +3317,8 @@
           ],
           "conflicts": [
             "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
-          ]
+          ],
+          "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
         }
       ],
       "unresolvedQuestions": [
@@ -3285,6 +3346,10 @@
         {
           "date": "2026-10-22",
           "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed research pass 3 synthesis; retained provisional content and unresolved taxonomy/alias decisions."
         }
       ],
       "kind": "domain",
@@ -3431,7 +3496,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "in_progress",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -3441,7 +3506,8 @@
           ],
           "conflicts": [
             "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
-          ]
+          ],
+          "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
         }
       ],
       "unresolvedQuestions": [
@@ -3469,6 +3535,10 @@
         {
           "date": "2026-10-22",
           "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed research pass 3 synthesis; retained provisional content and unresolved taxonomy/alias decisions."
         }
       ],
       "kind": "domain",
@@ -3615,7 +3685,7 @@
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "in_progress",
+          "status": "complete",
           "sources": [
             "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
@@ -3625,7 +3695,8 @@
           ],
           "conflicts": [
             "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
-          ]
+          ],
+          "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
         }
       ],
       "unresolvedQuestions": [
@@ -3653,6 +3724,10 @@
         {
           "date": "2026-10-22",
           "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed research pass 3 synthesis; retained provisional content and unresolved taxonomy/alias decisions."
         }
       ],
       "kind": "domain",
@@ -24367,16 +24442,21 @@
       "count": 15,
       "provisionalContentPopulated": 15,
       "sourceVerified": 0,
-      "canonicalApproved": 0
+      "canonicalApproved": 0,
+      "threePassResearchComplete": 15
     },
     "consciousDomains": {
       "count": 8,
       "structurallyScaffolded": 8,
       "canonicalNamesRecovered": 1,
-      "sourceComplete": 0
+      "sourceComplete": 0,
+      "threePassResearchComplete": 0,
+      "pass1Complete": 8,
+      "pass2Blocked": 8,
+      "pass3Blocked": 8
     },
-    "researchPasses": "All 69 pass slots across 23 records explicitly pending; no research pass is claimed complete by the population update.",
+    "researchPasses": "For the 23-record target subset, 53 of 69 pass slots are marked complete (all 45 slots for the 15 behavioral domains and pass 1 for each of 8 Conscious Domains); 16 Conscious Domain pass slots remain blocked. This is research-pass status, not canonical approval. The 14 blueprint slots remain a separate research backlog.",
     "runtimeIntegration": "Not verified; template catalog remains not yet integrated with engine.",
-    "warning": "Structural completeness is not semantic/source completeness. Do not treat provisional text or source-gap placeholders as canonical."
+    "warning": "The 15 behavioral-domain research syntheses are complete as provisional research artifacts. Their 15/19 taxonomy mapping remains unresolved, source verification of the behavioral definitions is not claimed, and no canonical edges are approved."
   }
 }
