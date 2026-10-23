@@ -77,3 +77,28 @@ No claim of completion until every required node is present or has an explicit g
 
 ### Next action, without fabricating results
 Obtain the registry bytes via a working raw-file or Git blob retrieval path, then run the adapter and audit program in an executable repository checkout. Compare the adapter's field-level results with `templateValidation`, produce exact ID-level discrepancy files, and only then repair records. Do not mark the project complete based on the current static review.
+
+
+## 2026-10-22 — Recursive execution pass 1: full registry successfully parsed
+
+### Work executed
+- Retrieved the current registry's complete JSON content through Git blob API using blob SHA `0e08a2ab98cef7f4ac925d3322793627f6a5be31`; parsed it directly in the execution environment.
+- Verified declared count = measured count = unique ID count = **125**. The family counts reconcile to 125.
+- Ran a static scan over `parentId`, `childIds`, `upstreamInfluenceIds`, `downstreamEffectIds`, `links`, and relationship `fromId/toId` endpoints: zero dangling IDs. Explicit parentId/childIds reciprocity scan: zero mismatches.
+- Audited the three-pass research slots per record. All 125 records have three slots; 88 have all three pass statuses marked complete; 37 fail the evidence gate because one or more passes are blocked/in progress or lack the required evidence fields. These 37 are 15 behavioral domains, 8 Conscious Domains, and 14 blueprint visualization slots.
+- Reconciled the template metadata: 102 records are marked `complete`, 15 `provisional_content_populated`, and 8 `source_extracted_cross_record_review_pending`. Thus 23 records remain not complete by the registry's own content status.
+- The adapter's simplistic non-empty check flags 103 records because empty `links` arrays are included among template fields. This is not equivalent to the 23 content-status gaps. Do not add fabricated links merely to make that counter zero; the catalog/adapter must distinguish required nonempty scalar content from optional/empty relationship collections.
+- Updated the static registry audit with exact research backlog IDs/pass states and corrected definitions of each metric. Audit commit: `7dbd4618f0dfa82ab1cee40c171c3c6e1fc8a969`.
+
+### Block gates
+- **Block 1:** PASS for registry count, unique IDs, family inventory, and static edge existence; source-file inventory/branch metadata capture remains partial.
+- **Block 2:** PARTIAL. Registry statuses and required-template-field behavior identified; adapter/catalog field policy needs correction and execution tests remain open.
+- **Block 3:** OPEN. Need exact v341 source evidence per record. The SOURCE OS CANON is demonstrably built from v184 and cannot substitute for v341 or settle the taxonomy conflict.
+- **Block 4:** PARTIAL static outgoing-reference scan only; complete typed/cardinality forward traversal not run.
+- **Block 5:** PARTIAL explicit parent/child reciprocity only; complete reverse traversal and edge-type audit not run.
+- **Block 6:** OPEN. No claim that Node tests were executed; there is no checked-out runtime in this tool execution.
+- **Block 7:** PARTIAL; audit document updated, no registry semantic repair made.
+- **Block 8:** NOT STARTED.
+
+### Next batch
+Research the 15 behavioral-domain records and 8 Conscious Domain records first because their required content is visibly incomplete. For each record: (1) extract exact claims and section anchors from v341, (2) independently corroborate and search for contradictions, (3) synthesize an ATÜNED-facing definition/story/operational description while marking interpretation vs source fact, then validate all cross-record links. The 14 blueprint slots remain visualization-only placeholders until an authoritative source names them. No canonical mapping will be guessed.
