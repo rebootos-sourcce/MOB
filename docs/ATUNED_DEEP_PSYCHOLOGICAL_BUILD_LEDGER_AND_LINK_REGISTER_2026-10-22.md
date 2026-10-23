@@ -209,3 +209,11 @@ New handoff entry points:
 - Primary TDD: `docs/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_FORMAT_TDD_v1.md`
 
 Plan: three distinct strategy reviews, eight execution blocks, and four recursive rounds that repeat on failure. This is a planning/documentation milestone only; the full recursive audit and runtime closure remain open. Before execution, re-fetch current HEAD and verify all historical counts, paths, SHAs, source identity, test commands, and statuses. Every future cycle must log exact commits, commands, exit codes, evidence links, affected IDs, and residual blockers. Never claim background execution or closure without results.
+
+
+## Executive continuation artifacts — 2026-10-22 evening
+
+- [Executive Handshake v2](ATUNED_DEEP_PSYCHOLOGICAL_EXECUTIVE_HANDSHAKE_v2_2026-10-22.md) — consolidated mission, current technology state, source constraints, acceptance gates, and continuation sequence.
+- [Next-Round Tactics](ATUNED_DEEP_PSYCHOLOGICAL_NEXT_ROUND_TACTICS_2026-10-22.md) — three strategy reviews, eight blocks, four minimum recursive rounds, per-record content gate, and priority order.
+
+The latest artifact fetch confirmed the template catalog remains proposed/not engine-integrated and the adapter source does not inject records into the experiential graph. The registry fetch returned a blob SHA but an empty content body; the next executor must recover the actual JSON before making a new inventory claim. No tests or runtime traversal were executed in this documentation cycle. Keep the overall state OPEN until fresh inventory, authoritative validation, runtime integration, traversal, regression, and link checks are evidenced.
