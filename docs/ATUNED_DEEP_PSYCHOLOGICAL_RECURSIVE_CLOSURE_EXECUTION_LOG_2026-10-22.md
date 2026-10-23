@@ -53,3 +53,27 @@ No claim of completion until every required node is present or has an explicit g
 - A fresh-fetch verification and automated Markdown link/source-anchor test have not yet been run in this cycle.
 - No registry repair, schema execution, runtime integration, graph traversal, or regression test is claimed by this documentation update.
 - The overall recursive closure remains OPEN. The next execution step is a fresh current-HEAD fetch of the registry/schema/catalog/generator/validator/adapter/tests, followed by actual baseline inventory and defect classification.
+
+
+## 2026-10-22 — Continued independent review (fresh fetch)
+
+### New findings from code and documentation cross-check
+- Re-fetched the current default-branch tree and the execution log, closure plan, code-to-registry contract, registry audit program, and adapter.
+- The registry fetch again returned an empty content body with blob SHA `0e08a2ab98cef7f4ac925d3322793627f6a5be31`. This connector response does not provide the JSON bytes needed for an independent parse. The 125-record count therefore remains a reported baseline, not a fresh parse in this pass.
+- The adapter's `missingFields` calculation checks whether each assigned template field exists and is non-null/non-empty-string; the registry audit program instead treats `templateValidation.contentStatus !== 'complete'` or a nonempty `templateValidation.missingFields` list as incomplete. These are different checks and must not be conflated.
+- The adapter explicitly reports `runtimeIntegrated: false`; it creates a separate typed registry and does not connect these records to the experiential Nerve-to-Super-Complex graph.
+- The audit program documents that ordinary exit 0 means the inventory parsed, not that closure criteria passed; `--strict` is the intended gate for incomplete records, insufficient research evidence, duplicate/missing IDs, dangling references, and absent runtime integration.
+- The previously committed audit summary and the later field-presence report differ materially on incomplete-record counts (23 vs. 0). This is a report-consistency defect requiring reconciliation against the actual current registry and the exact definition of “complete.” Neither count is promoted to a verified truth until the full JSON can be parsed and both audit definitions are reconciled.
+- The closure plan remains the governing scope: all record families and all cross-layer edges, not only the 23-record domain subset; eight execution blocks and four recursive rounds; no forced reconciliation of the 15/18/19/14 taxonomies.
+
+### Block progress after this review
+- Block 1: PARTIAL — current tree and code paths identified; registry bytes still unavailable from this connector response.
+- Block 2: OPEN — identified inconsistent completeness semantics; full registry schema execution remains unrun.
+- Block 3: OPEN — source reconciliation remains unresolved.
+- Blocks 4–5: OPEN — no complete forward/reverse graph traversal has been executed.
+- Block 6: OPEN — source code inspected, but Node execution and tests have not been run in a checkout/runtime.
+- Block 7: PARTIAL — execution log updated with the discrepancy and exact next gate.
+- Block 8: NOT STARTED.
+
+### Next action, without fabricating results
+Obtain the registry bytes via a working raw-file or Git blob retrieval path, then run the adapter and audit program in an executable repository checkout. Compare the adapter's field-level results with `templateValidation`, produce exact ID-level discrepancy files, and only then repair records. Do not mark the project complete based on the current static review.
