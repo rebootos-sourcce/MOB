@@ -305,3 +305,28 @@ The current execution strategy and next-thread handshake are now defined in:
 The strategy requires three distinct strategy reviews (source/inventory fidelity; independent challenge/defect classification; synthesis/dependency/safety) followed by eight execution blocks and four repeatable recursive rounds. Four rounds are a minimum plan, not a hard stop: any failed gate reopens its owning block. The handshake explicitly directs the next thread to re-fetch current HEAD, inspect the prior thread/folder only for missing context, and continue from the first failed or unverified gate.
 
 The current baseline figures in this TDD remain historical until re-fetched. Do not treat the plan or handshake as evidence that source research, schema repair, runtime integration, graph traversal, regression, or link checking passed. Preserve the v341 taxonomy contradiction and unapproved mappings. Update the TDD, registry, crosswalk, execution log, and ledger together after each meaningful build cycle.
+
+
+## Executive continuation update — 2026-10-22 evening
+
+### Current artifact observations
+- Schema blob SHA observed: `e7518232167ff881b442cbd24db181af7a5d7c50`.
+- Template catalog blob SHA observed: `ea76c12766f29f9a51a6ccefface85d3b3437e52`; its declared status remains `PROPOSED_FOR_DEEP_PSYCHOLOGICAL_REGISTRY_NOT_YET_INTEGRATED_WITH_ENGINE`.
+- Adapter blob SHA observed: `71a508808fdf9b9641491886f058d4e25b7d513d`; source explicitly says it emits a separate typed registry and does not inject records into the experiential graph.
+- Audit program blob SHA observed: `f95910bf499328783cca652a9ef798cc823a5ef8`; exit 0 means inventory was parsed/reported, not closure. Exercise `--strict` as well.
+- Registry file fetch returned blob SHA `2f47266825d79274ea1a10274e26d1bba99718bf` with an empty content body. No fresh count or parse is claimed from that fetch. Retrieve actual JSON via a raw/blob route before editing.
+
+### Current engineering assessment
+The template catalog is not engine-integrated and the adapter remains separate from the experiential graph. Runtime wiring, forward/backward traversal, regression, and automated link checks are not demonstrated by the inspected code/logs. A record's template assignment is metadata until the authoritative generator/validator consumes it.
+
+### Next round — mandatory tactics
+1. Re-fetch default branch HEAD and the registry using a retrieval method that returns the JSON body. Record commit/blob SHA, byte length, parsed count, family counts, duplicate IDs, and parse result.
+2. Compare every record against the schema and correct type-specific template. Preserve established Fetter/Saboteur/Complex/Super-Complex conventions; do not flatten rich records into generic prose.
+3. Run the authoritative validator, adapter, project test suite, graph/path checks, and link checker. Record exact commands, exit codes, and outputs. Commands not executed remain NOT RUN with reason.
+4. Complete three distinct research passes per record and proposed edge. Keep v341/v184 separate and preserve the 14/15/18/19 taxonomy conflict until evidence and owner decisions resolve it.
+5. Define/review the registry-to-runtime mapping contract before integrating the adapter. Test forward/reverse traversal, missing nodes, dangling/invalid edges, cycles where prohibited, reachability, and regression.
+6. Repair authoritative sources, regenerate derived artifacts, and update registry, crosswalk, audit, ledger, plan, execution log, TDD, and handshake together.
+7. Repeat failed blocks recursively. Do not close on populated prose, a successful inventory-only exit code, or template assignment alone.
+
+### Closure decision
+Status remains **OPEN / NOT VERIFIED**. This documentation pass did not freshly parse the registry, execute tests, or demonstrate runtime integration. Opposites remain out of scope.
