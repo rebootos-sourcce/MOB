@@ -8069,12 +8069,14 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
    TABFOLD no longer answers TAB.ANALYTICS with Summary, the same line Games
    came out of when it was unfolded the first time.
 
-   Summary still reads last of the three Discover doors, on the ruling that
-   put it there: "then my intake then my summary." Analytics reads after it,
-   his own order, so Discover was Story, Avatar, Summary, Analytics and the
-   bar still closes the loop on Embody. Round OD moved the body map
-   into Discover as Intake and round OG moved it back to Play as Body; see
-   the note above TAB.ENERGY's own entry in TABDEF. */
+   Summary read last of the three Discover doors, on the ruling that put it
+   there: "then my intake then my summary." Analytics read after it, his own
+   order, so Discover was Story, Avatar, Summary, Analytics and the bar still
+   closes the loop on Embody. Round OD moved the body map into Discover as
+   Intake and round OG moved it back to Play as Body; see the note above
+   TAB.ENERGY's own entry in TABDEF. On 23 October all four left Discover for
+   Play, keeping that order, and Discover became the journal page alone; see
+   the note above SECTIONS. */
 /* THE MENU RULE, ruled. One word, and the word names exactly what the surface
    does. Not what it is about, not what it belongs to. What it does.
 
@@ -8121,6 +8123,49 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
    Tools section was built on his earlier pass and taken out on this one.
    Only .sec and the order of this array moved. No TAB integer changed, and
    the gate holds every one to its value. */
+/* AND THEN DISCOVER WAS THE JOURNAL ALONE, AND THE APP OPENS ON IT. Recorded
+   23 October 2026. His words, across two messages: "I want to get rid of the
+   Story or move the Story link. Sorry, attach the Story link to Discover. So
+   we're removing the word Story. We're keeping the word Discover... the app
+   opens on Discover. So when you click Discover, you only get the journal and
+   the imprints and the release. If I click on play, then I get all the other
+   tools." And, on whether that changes the rule: "Yeah, I've changed that
+   rule. The most important portions of the app are core loop. The core loop
+   is discover, play, flow, and embody. That really is the journal to the
+   release. Plus the ritual."
+
+   WHAT HIS THREE WORDS ARE, read off the code rather than guessed. The
+   journal, the imprints and the release are the Story page's own three
+   columns, and they have carried exactly those three names since round QB,
+   his words: "I want journal, the word journal and prints and release"
+   (stMark, ui/storyui.js). The middle column is the imprints as the journal
+   reads them, and its bank opens the record of every imprint held (impRender,
+   ui/imprints.js). The third column is the release, and its Run opens the
+   real release card (ui/release.js). Summary and Analytics are readings of
+   the whole field, not the imprints, and the release was never hidden: it is
+   the third column. So nothing new is built for either word. Discover is that
+   one page, and the section is its door.
+
+   ONE DOOR, AND IT IS THE SECTION. door:'section' on the entry says so, and
+   three things read it. Above the phone width the bar shows no second door
+   under Discover, because the section button already is one, and a door
+   reading Discover under a button reading Discover is one word printed
+   twice. The phone has no section buttons, so its menu shows the door once,
+   as the menu's first line. The folded bar on a phone names the section
+   alone. The name is the section's own word because "we're keeping the word
+   Discover". The integer, the id story and the class tab-story stay, on the
+   rule the Body and Character renames follow: they are identity, never the
+   name a person reads.
+
+   PLAY IS EVERY OTHER TOOL, in two orders he gave and none invented here: his
+   Play order first, Field, Body, Compass, Character (rounds LE and OG), then
+   the four that leave Discover in the order they stood in it, Avatar,
+   Summary, Intake, Analytics (rounds LV and OG). Checked against what each
+   page does before it moved: the Avatar builds who a person is becoming and
+   borrows the journal's commit for it, the Intake page is the diagnostic's
+   questions, and neither is the journal, the imprints or the release. No
+   integer moved, and Play still opens on Field the first time it is pressed.
+   tests/functional.js holds every placement by name. */
 const SECTIONS=[
  {k:'discover', nm:'Discover'},
  {k:'play',     nm:'Play'},
@@ -8139,33 +8184,16 @@ const SECTIONS=[
     switch is off, which is how nearly everyone will see it. */
  {k:'practitioner', nm:'Practitioner', mode:'practitioner'}];
 const TABDEF=[
- /* Discover opens on the Story, "start right immediately on my journal":
-    secGo sends a first visit to a section's first entry, so being first here
-    is what makes it the opening. */
- {k:TAB.STORY,   id:'story', nm:'Story',     cls:'tab-story',   sec:'discover'},
- /* TAB.INTAKE is the Avatar and keeps that name. The integer's own name is
-    history, from when this surface was the intake; the door called Intake
-    below is a different tab, TAB.ENERGY. Two integers, one word each. */
- {k:TAB.INTAKE,  id:'iq',    nm:'Avatar',    cls:'tab-intake',  sec:'discover'},
- /* Summary last in Discover, on his own correction: "then my intake then my
-    summary". */
- {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary', sec:'discover'},
- /* THE INTAKE PAGE IS BACK, round OG. His words: "we'll do the intake questions
-    at the very end for now, just restore the intake page." It is the
-    questions, on a page of their own, after Summary and before Analytics, the
-    place round OD named for it. The body map is Body, in Play: this is not
-    that surface and never was. Integer 13, appended, host #iqp, which
-    borrows #iqbody from intakeui.js the way the Avatar's menu does. What it
-    asks, and how, is the redesign he put last. */
- {k:TAB.QUESTIONS, id:'iqp',  nm:'Intake',    cls:'tab-questions', sec:'discover'},
- /* ANALYTICS, RIGHT AFTER SUMMARY, his own order at round LV: "so it'll go
-    story, avatar, summary, analytics." Integer 4, unfolded: see the note
-    above TABDEF. #ana is body.html's own sibling of #sum now, never nested
-    inside it, and anaRender in ui/analytics.js is unchanged. */
- {k:TAB.ANALYTICS, id:'ana', nm:'Analytics', cls:'tab-analytics', sec:'discover'},
+ /* DISCOVER'S ONE DOOR, 23 October: the journal, the imprints and the release,
+    which are this page's three columns. See the note above SECTIONS. Being
+    first here is still what makes it the opening of its section, since secGo
+    sends a first visit to a section's first entry, and TABHOME below is where
+    the app itself opens. */
+ {k:TAB.STORY,   id:'story', nm:'Discover',  cls:'tab-story',   sec:'discover', door:'section'},
  /* "I want to move all the tools to play. And then get rid of the tools
-    tab." The instruments are Play now, and the app still opens on the Field,
-    so Play is the section pressed at start. */
+    tab." The instruments are Play. The app opened on the Field and Play was
+    the section pressed at start until 23 October; it opens on Discover now,
+    see TABHOME. */
  {k:TAB.FIELD,   id:'cv',    nm:'Field',     cls:'tab-field',   sec:'play'},
  /* BODY, BETWEEN FIELD AND COMPASS, round OG, reversing round OD. OD moved
     this surface to Discover and called it Intake on a misreading of his
@@ -8196,6 +8224,28 @@ const TABDEF=[
     drawn inside the host is new too (ui/character.js); the figure the
     comment above describes is gone from this door. */
  {k:TAB.MASKS,   id:'masksview', nm:'Character', cls:'tab-masksview', sec:'play'},
+ /* THE FOUR THAT LEFT DISCOVER, 23 October, after his Play order and in the
+    order they stood in Discover. See the note above SECTIONS. */
+ /* TAB.INTAKE is the Avatar and keeps that name. The integer's own name is
+    history, from when this surface was the intake; the door called Intake
+    below is a different tab, TAB.QUESTIONS. Two integers, one word each. */
+ {k:TAB.INTAKE,  id:'iq',    nm:'Avatar',    cls:'tab-intake',  sec:'play'},
+ /* Summary after the Avatar, the order his own correction gave it in Discover:
+    "then my intake then my summary". */
+ {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary', sec:'play'},
+ /* THE INTAKE PAGE IS BACK, round OG. His words: "we'll do the intake questions
+    at the very end for now, just restore the intake page." It is the
+    questions, on a page of their own, after Summary and before Analytics, the
+    place round OD named for it. The body map is Body, in Play: this is not
+    that surface and never was. Integer 13, appended, host #iqp, which
+    borrows #iqbody from intakeui.js the way the Avatar's menu does. What it
+    asks, and how, is the redesign he put last. */
+ {k:TAB.QUESTIONS, id:'iqp',  nm:'Intake',    cls:'tab-questions', sec:'play'},
+ /* ANALYTICS, RIGHT AFTER SUMMARY, his own order at round LV: "so it'll go
+    story, avatar, summary, analytics." Integer 4, unfolded: see the note
+    above TABDEF. #ana is body.html's own sibling of #sum now, never nested
+    inside it, and anaRender in ui/analytics.js is unchanged. */
+ {k:TAB.ANALYTICS, id:'ana', nm:'Analytics', cls:'tab-analytics', sec:'play'},
  /* "Flow is ritual and accountability." The Ritual tab carries both the
     building of a ritual and the accountability for keeping it, so the whole
     tab moves and nothing is split. */
@@ -8271,6 +8321,21 @@ const TABREAL=function(k){
     the summary, which is the folded-surface bug in a new costume. */
  if(TABEXTRA[k])return k;
  return TAB.SUMMARY;};
+/* WHERE THE APP OPENS, NAMED ONCE. Recorded 23 October 2026, his words: "the
+   app opens on Discover", and "The most important portions of the app are
+   core loop... That really is the journal to the release." So home is
+   Discover's one door, the journal page, integer 0.
+
+   ONE NAME, BECAUSE FOUR PLACES DECIDED IT. The default on S below, the boot's
+   opening step (ui/ui.js), the wordmark's home (ui/panels.js) and the landing
+   when the practitioner door shuts under a person (ui/practitioner.js) each
+   named a tab of their own. The boot's own note records what that costs: a
+   default changed in one place looked right in the source and did nothing on
+   screen. All four read this now, so the next ruling on the opening is one
+   line here. The one first landing (tabLandFirst, ui/panels.js) names Summary
+   and not this, on purpose: his 9 October ruling and the gift's line stand on
+   it, and the reasoning is written there. tests/landing.js holds both. */
+const TABHOME=TAB.STORY;
 
 /* ============================================================
    STATE
@@ -8288,6 +8353,13 @@ const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
     doors have to be reachable from here, which they are: the rail prints
     them on every tab but Summary, which was written for exactly this case
     and is the reason the change is safe. */
+ /* AND THEN ON DISCOVER, 23 October, which reverses the Field: see TABHOME
+    above. The default here is TABHOME so it cannot disagree with the boot's
+    step again. A stranger's first screen is the journal now, and the first
+    of the four doors (startHTML, ui/component.js) is the page itself: its
+    door data-start story opens exactly this surface. The other three are
+    drills printed on Summary and in the rail of the tools, which are in
+    Play: one press to Play opens the Field with them in its rail. */
  /* AND IT OPENS WITH EVERY LAYER ON. view was 1, Patterns, so the glass bar
     opened with Domains, Masks, Archetypes and the four chain tiers off, and
     since one set of switches drives all three pictures, Frames and Dial
@@ -8296,7 +8368,7 @@ const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
     on. Yeah, everything should start on." 3 is Blueprint, the preset that is
     every layer in LAYADD, so the first frame draws all of it and a press on
     the bar takes a layer away rather than having to find it. */
- theme:'dark',hover:null,pin:null,t:0,replace:{},view:3,who:0,tab:TAB.FIELD,
+ theme:'dark',hover:null,pin:null,t:0,replace:{},view:3,who:0,tab:TABHOME,
  /* atom: the one story weight being held on the wheel, past the fetter
     layer. {i:node id, ei:entry index}, or null for none held. View state,
     like pin and hover, so it is not persisted and not validated. */

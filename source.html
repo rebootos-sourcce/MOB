@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2423 a4c2872b 2026-10-23 03:27"><head><meta charset="utf-8">
+<html lang="en" data-build="v2428 a83a2b00 2026-10-23 09:47"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -1099,7 +1099,15 @@ body.lumen{
  /* KT added the line below. A section key with no line here is not hidden,
     it shows every group at once, so a new section in SECTIONS needs its line
     in this list; the functional gate presses every section and fails on it. */
- .top[data-sec="embody"] #tabbar .tabgrp:not([data-sec="embody"]){display:none}}
+ .top[data-sec="embody"] #tabbar .tabgrp:not([data-sec="embody"]){display:none}
+ /* A SECTION THAT IS ITS OWN DOOR SHOWS NO SECOND DOOR, 23 October. Discover
+    opens the journal page itself (door:'section', engine/core.js), so the
+    button under it would be Discover printed under Discover. It stays in the
+    markup, because on a phone it is the only way in, and because every route
+    that presses a tab by its integer still finds it. Not shown is not
+    focusable, so the keyboard meets the section button once and not a second
+    copy of it. */
+ #tabbar .tabtop[data-door="section"]{display:none}}
 /* THE SECOND TIER IS A ROW OF ITS OWN, UNDER THE FIRST. KT in TASKS.md, his
    words: "the navigation was it keeps unnesting right that's not what I want
    I wanted to open up a secondary navigation underneath." The tabs sat on the
@@ -1112,7 +1120,13 @@ body.lumen{
 
    So the strip takes a line of its own beneath the bar, the full width, and
    stays there on every surface: the second tier is always open and only its
-   contents change with the section. It is forced onto that line by its 100%
+   contents change with the section. ONE SECTION HAS NOTHING TO OPEN, since
+   23 October: Discover is its own door (engine/core.js), so under it the
+   strip holds no tab and folds to its hairline, and the journal page takes
+   the line. That is his model of the bar read straight, a section "opens up
+   a secondary navigation underneath" and this one has none; measured at
+   1600, the stage starts 44px higher on Discover than under Play, and the
+   section buttons, where the press lands, do not move. It is forced onto that line by its 100%
    basis. It once had to beat the status rule, which gave the strip a basis
    of 0 while a message showed and fit it back onto the first line; the status
    moved to the message dock at the bottom on 2 October and that rule went
@@ -7992,6 +8006,11 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
  .top.navopen #tabbar{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));
   flex:1 1 100%;overflow:visible;border-bottom:0;mask-image:none;-webkit-mask-image:none}
  .top.navopen #tabbar .tabtop{justify-content:center}
+ /* DISCOVER IS THE MENU'S FIRST LINE, 23 October. Its section is its door
+    (engine/core.js), and the phone has no section buttons, so the door
+    carries the section's word and mark itself, once, across the whole row and
+    with no heading over it, ahead of Play's heading and its tools. */
+ .top.navopen #tabbar .tabtop[data-door="section"]{grid-column:1/-1}
  /* the sections are the main menu's headings here, KC, so every tab is one
     press from anywhere; the first tier's own row leaves the phone bar */
  .top .secbar{display:none}
@@ -8001,6 +8020,10 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
  /* the folded bar names the section, quietly, then the surface */
  .top .navtog .navsec{display:flex;align-items:baseline;gap:9px}
  .top .navtog #navsec{color:var(--dim);font-weight:400;font-size:13px}
+ /* empty on a section that is its own door, Discover since 23 October, whose
+    word is in the surface's slot (secPaint, ui/panels.js); an empty item
+    would still take the row's gap */
+ .top .navtog #navsec:empty{display:none}
  /* the search opens across the bar under the first row, where it has the
     width a phone does not have beside the circles */
  .top .srch{position:static}
@@ -8632,7 +8655,7 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
        apply, and the dots take --um from the sheet. The boot card carries the
        same drawing at its own size. -->
   <button class="brand" id="brand" type="button"
-   title="Home. Takes you back to the field."><svg class="bn" viewBox="-2 -2 655.5 136"
+   title="Home. Takes you back to Discover, where you write what happened."><svg class="bn" viewBox="-2 -2 655.5 136"
    role="img" aria-label="Atuned" focusable="false"><g fill="none" stroke="currentColor"
    stroke-width="19" stroke-linecap="butt" stroke-linejoin="round"><path
    d="M 9.5 80 A 42 42 0 1 0 93.5 80 A 42 42 0 1 0 9.5 80"/><path
@@ -8682,8 +8705,8 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
        in the quiet colour first, then the surface a person is on. Both are
        repainted by setTab in ui/panels.js. -->
   <button type="button" class="vt navtog" id="navtog" aria-expanded="false"
-   aria-controls="tabbar"><span class="navsec"><span id="navsec">Play</span><span
-   class="n" id="navnow">Field</span></span>
+   aria-controls="tabbar"><span class="navsec"><span id="navsec"></span><span
+   class="n" id="navnow">Discover</span></span>
    <svg class="chev" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
     <path d="M6 9.5l6 5.5 6-5.5"/></svg></button>
   <!-- AN ICON FOR EVERY TAB, AND THE NAMES FOLD. Round JZ, his words: "I want
@@ -8707,8 +8730,9 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
        once start up has said which that is. A start up that never arrives
        leaves every group showing, so a failed boot still has all its doors.
 
-       Play is pressed here because the app opens on Field, which is in it.
-       At KT the bar grew from three sections to the loop's four, Discover,
+       Discover is pressed here because the app opens on it, 23 October, his
+       words: "the app opens on Discover". Play was pressed here while the app
+       opened on the Field. At KT the bar grew from three sections to the loop's four, Discover,
        Play, Flow and Embody, and the instruments went into Play. The groups
        below are in TABDEF's order, which a gate holds them to button by
        button, and the tabs are a row of their own under the sections, in
@@ -8742,10 +8766,16 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
   <input type="checkbox" id="tabnames" class="tabnames-i" checked
    aria-label="Fold the menu" title="Fold the menu to its icons, or open it again">
   <div class="secbar" id="secbar" role="group" aria-label="Sections">
-   <button type="button" class="secb" data-sec="discover" aria-pressed="false"
-    title="Discover. Story, Avatar, Summary, Intake and Analytics."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.8 12c2.4-4.2 5.5-6.3 9.2-6.3s6.8 2.1 9.2 6.3c-2.4 4.2-5.5 6.3-9.2 6.3S5.2 16.2 2.8 12z"/><circle cx="12" cy="12" r="2.9"/></svg><span class="sn">Discover</span></button>
-   <button type="button" class="secb" data-sec="play" aria-pressed="true"
-    title="Play. Field, Body, Compass and Character."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M10.2 8.6l5.2 3.4-5.2 3.4z"/></svg><span class="sn">Play</span></button>
+   <!-- DISCOVER IS ITS OWN DOOR, 23 October. His words: "attach the Story link
+        to Discover. So we're removing the word Story. We're keeping the word
+        Discover." So this button opens the journal page and its title says
+        what is there, the three columns in the glossary's own terms: journal,
+        imprints, release (engine/data/gloss.js). engine/core.js has the
+        ruling in full, at SECTIONS. -->
+   <button type="button" class="secb" data-sec="discover" aria-pressed="true"
+    title="Discover. Write what happened, see where it lands in your body, and release it."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.8 12c2.4-4.2 5.5-6.3 9.2-6.3s6.8 2.1 9.2 6.3c-2.4 4.2-5.5 6.3-9.2 6.3S5.2 16.2 2.8 12z"/><circle cx="12" cy="12" r="2.9"/></svg><span class="sn">Discover</span></button>
+   <button type="button" class="secb" data-sec="play" aria-pressed="false"
+    title="Play. Field, Body, Compass, Character, Avatar, Summary, Intake and Analytics."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M10.2 8.6l5.2 3.4-5.2 3.4z"/></svg><span class="sn">Play</span></button>
    <button type="button" class="secb" data-sec="flow" aria-pressed="false"
     title="Flow. Ritual sets what you will do. Accountability shows what you did."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.2c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0M3 14.8c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0"/></svg><span class="sn">Flow</span></button>
    <button type="button" class="secb" data-sec="embody" aria-pressed="false"
@@ -8778,8 +8808,27 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
        has. Discover's still listed four tabs after Analytics came back as a
        fifth. tests/tabtips.js holds both and fails by name. -->
   <div id="tabbar" style="display:flex;gap:5px;flex-wrap:wrap">
-   <div class="tabgrp" data-sec="discover" role="group" aria-label="Discover"><span class="tabgrp-hd" aria-hidden="true">Discover</span>
-    <button type="button" class="vt tabtop" data-tabk="0" aria-pressed="false" title="Story. Write what happened, in your own words."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8.5L18 7v13.5H6z"/><path d="M14.5 3.5V7H18M9 11h6M9 14h6M9 17h3.5"/></svg><span class="n">Story</span></button>
+   <!-- DISCOVER'S ONE DOOR, 23 October. Integer 0, the journal page, whose
+        three columns are the journal, the imprints and the release. The
+        section is the door (door:'section' in engine/core.js). Above the phone
+        width this button is not shown: the Discover button over it already
+        opens the page, and a second Discover under the first is one word
+        printed twice. On a phone the section buttons leave the bar and the
+        menu's groups are the doors, so here this is the one way in, the menu's
+        first line, wearing the section's own mark and word with no heading
+        over it. One drawing per named thing: the page mark Story wore went
+        with the word. -->
+   <div class="tabgrp" data-sec="discover" data-door="section" role="group" aria-label="Discover">
+    <button type="button" class="vt tabtop" data-tabk="0" data-door="section" aria-pressed="true" title="Discover. Write what happened, see where it lands in your body, and release it."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.8 12c2.4-4.2 5.5-6.3 9.2-6.3s6.8 2.1 9.2 6.3c-2.4 4.2-5.5 6.3-9.2 6.3S5.2 16.2 2.8 12z"/><circle cx="12" cy="12" r="2.9"/></svg><span class="n">Discover</span></button>
+   </div>
+   <!-- PLAY IS EVERY OTHER TOOL, 23 October: "If I click on play, then I get
+        all the other tools." His Play order first, then the four that left
+        Discover in the order they stood there. engine/core.js has it. -->
+   <div class="tabgrp" data-sec="play" role="group" aria-label="Play"><span class="tabgrp-hd" aria-hidden="true">Play</span>
+    <button type="button" class="vt tabtop" data-tabk="2" aria-pressed="false" title="Field. Everything you carry, on one wheel."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="5.6"/><circle cx="12" cy="12" r="2"/></svg><span class="n">Field</span></button>
+    <button type="button" class="vt tabtop" data-tabk="3" aria-pressed="false" title="Body. Each place in your body, and what is held there."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.8" r="2.1"/><path d="M12 8.2v7M12 15.2l-3.2 5.6M12 15.2l3.2 5.6M6.2 10.4h11.6"/></svg><span class="n">Body</span></button>
+    <button type="button" class="vt tabtop" data-tabk="8" aria-pressed="false" title="Compass. Where you sit on each quality, from clean to upside down."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M15.2 8.8l-1.9 4.5-4.5 1.9 1.9-4.5z"/></svg><span class="n">Compass</span></button>
+    <button type="button" class="vt tabtop" data-tabk="11" aria-pressed="false" title="Character. The masks read so far, and the character they make together."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h16v4.5a8 8 0 01-16 0zM8.2 11.4h2.6M13.2 11.4h2.6"/></svg><span class="n">Character</span></button>
     <button type="button" class="vt tabtop" data-tabk="5" aria-pressed="false" title="Avatar. Say who you are becoming, and see how far you have come."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="9.2" r="2.7"/><path d="M7.4 18.2c.9-2.6 2.5-3.9 4.6-3.9s3.7 1.3 4.6 3.9"/></svg><span class="n">Avatar</span></button>
     <button type="button" class="vt tabtop" data-tabk="1" aria-pressed="false" title="Summary. Everything read so far, and what to do first."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 6h15M4.5 12h11M4.5 18h7"/></svg><span class="n">Summary</span></button>
     <button type="button" class="vt tabtop" data-tabk="13" aria-pressed="false" title="Intake. Answer the questions about you."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h14v15H5z"/><path d="M8.5 9h7M8.5 12h7M8.5 15h4"/><circle cx="6.6" cy="9" r=".5"/><circle cx="6.6" cy="12" r=".5"/><circle cx="6.6" cy="15" r=".5"/></svg><span class="n">Intake</span></button>
@@ -8787,12 +8836,6 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
          analytics." Integer 4, TAB.ANALYTICS, unfolded from Summary on the
          Games template. engine/core.js has the ruling in full. -->
     <button type="button" class="vt tabtop" data-tabk="4" aria-pressed="false" title="Analytics. Follow each pattern down to what holds it in place."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 20V10M11 20V4M17.5 20v-7"/></svg><span class="n">Analytics</span></button>
-   </div>
-   <div class="tabgrp" data-sec="play" role="group" aria-label="Play"><span class="tabgrp-hd" aria-hidden="true">Play</span>
-    <button type="button" class="vt tabtop" data-tabk="2" aria-pressed="true" title="Field. Everything you carry, on one wheel."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="5.6"/><circle cx="12" cy="12" r="2"/></svg><span class="n">Field</span></button>
-    <button type="button" class="vt tabtop" data-tabk="3" aria-pressed="false" title="Body. Each place in your body, and what is held there."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.8" r="2.1"/><path d="M12 8.2v7M12 15.2l-3.2 5.6M12 15.2l3.2 5.6M6.2 10.4h11.6"/></svg><span class="n">Body</span></button>
-    <button type="button" class="vt tabtop" data-tabk="8" aria-pressed="false" title="Compass. Where you sit on each quality, from clean to upside down."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M15.2 8.8l-1.9 4.5-4.5 1.9 1.9-4.5z"/></svg><span class="n">Compass</span></button>
-    <button type="button" class="vt tabtop" data-tabk="11" aria-pressed="false" title="Character. The masks read so far, and the character they make together."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h16v4.5a8 8 0 01-16 0zM8.2 11.4h2.6M13.2 11.4h2.6"/></svg><span class="n">Character</span></button>
    </div>
    <div class="tabgrp" data-sec="flow" role="group" aria-label="Flow"><span class="tabgrp-hd" aria-hidden="true">Flow</span>
     <button type="button" class="vt tabtop" data-tabk="10" aria-pressed="false" title="Ritual. Build a ritual, do it, and see what you kept."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.4c.9 2.9 4.6 4.9 4.6 9.3a4.6 4.6 0 0 1-9.2 0c0-2.3 1.1-3.7 2.3-4.8.3 1.5 1 2.4 2 2.7-.5-2.8 0-5.1.3-7.2z"/><path d="M8 21h8"/></svg><span class="n">Ritual</span></button>
@@ -17445,12 +17488,14 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
    TABFOLD no longer answers TAB.ANALYTICS with Summary, the same line Games
    came out of when it was unfolded the first time.
 
-   Summary still reads last of the three Discover doors, on the ruling that
-   put it there: "then my intake then my summary." Analytics reads after it,
-   his own order, so Discover was Story, Avatar, Summary, Analytics and the
-   bar still closes the loop on Embody. Round OD moved the body map
-   into Discover as Intake and round OG moved it back to Play as Body; see
-   the note above TAB.ENERGY's own entry in TABDEF. */
+   Summary read last of the three Discover doors, on the ruling that put it
+   there: "then my intake then my summary." Analytics read after it, his own
+   order, so Discover was Story, Avatar, Summary, Analytics and the bar still
+   closes the loop on Embody. Round OD moved the body map into Discover as
+   Intake and round OG moved it back to Play as Body; see the note above
+   TAB.ENERGY's own entry in TABDEF. On 23 October all four left Discover for
+   Play, keeping that order, and Discover became the journal page alone; see
+   the note above SECTIONS. */
 /* THE MENU RULE, ruled. One word, and the word names exactly what the surface
    does. Not what it is about, not what it belongs to. What it does.
 
@@ -17497,6 +17542,49 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
    Tools section was built on his earlier pass and taken out on this one.
    Only .sec and the order of this array moved. No TAB integer changed, and
    the gate holds every one to its value. */
+/* AND THEN DISCOVER WAS THE JOURNAL ALONE, AND THE APP OPENS ON IT. Recorded
+   23 October 2026. His words, across two messages: "I want to get rid of the
+   Story or move the Story link. Sorry, attach the Story link to Discover. So
+   we're removing the word Story. We're keeping the word Discover... the app
+   opens on Discover. So when you click Discover, you only get the journal and
+   the imprints and the release. If I click on play, then I get all the other
+   tools." And, on whether that changes the rule: "Yeah, I've changed that
+   rule. The most important portions of the app are core loop. The core loop
+   is discover, play, flow, and embody. That really is the journal to the
+   release. Plus the ritual."
+
+   WHAT HIS THREE WORDS ARE, read off the code rather than guessed. The
+   journal, the imprints and the release are the Story page's own three
+   columns, and they have carried exactly those three names since round QB,
+   his words: "I want journal, the word journal and prints and release"
+   (stMark, ui/storyui.js). The middle column is the imprints as the journal
+   reads them, and its bank opens the record of every imprint held (impRender,
+   ui/imprints.js). The third column is the release, and its Run opens the
+   real release card (ui/release.js). Summary and Analytics are readings of
+   the whole field, not the imprints, and the release was never hidden: it is
+   the third column. So nothing new is built for either word. Discover is that
+   one page, and the section is its door.
+
+   ONE DOOR, AND IT IS THE SECTION. door:'section' on the entry says so, and
+   three things read it. Above the phone width the bar shows no second door
+   under Discover, because the section button already is one, and a door
+   reading Discover under a button reading Discover is one word printed
+   twice. The phone has no section buttons, so its menu shows the door once,
+   as the menu's first line. The folded bar on a phone names the section
+   alone. The name is the section's own word because "we're keeping the word
+   Discover". The integer, the id story and the class tab-story stay, on the
+   rule the Body and Character renames follow: they are identity, never the
+   name a person reads.
+
+   PLAY IS EVERY OTHER TOOL, in two orders he gave and none invented here: his
+   Play order first, Field, Body, Compass, Character (rounds LE and OG), then
+   the four that leave Discover in the order they stood in it, Avatar,
+   Summary, Intake, Analytics (rounds LV and OG). Checked against what each
+   page does before it moved: the Avatar builds who a person is becoming and
+   borrows the journal's commit for it, the Intake page is the diagnostic's
+   questions, and neither is the journal, the imprints or the release. No
+   integer moved, and Play still opens on Field the first time it is pressed.
+   tests/functional.js holds every placement by name. */
 const SECTIONS=[
  {k:'discover', nm:'Discover'},
  {k:'play',     nm:'Play'},
@@ -17515,33 +17603,16 @@ const SECTIONS=[
     switch is off, which is how nearly everyone will see it. */
  {k:'practitioner', nm:'Practitioner', mode:'practitioner'}];
 const TABDEF=[
- /* Discover opens on the Story, "start right immediately on my journal":
-    secGo sends a first visit to a section's first entry, so being first here
-    is what makes it the opening. */
- {k:TAB.STORY,   id:'story', nm:'Story',     cls:'tab-story',   sec:'discover'},
- /* TAB.INTAKE is the Avatar and keeps that name. The integer's own name is
-    history, from when this surface was the intake; the door called Intake
-    below is a different tab, TAB.ENERGY. Two integers, one word each. */
- {k:TAB.INTAKE,  id:'iq',    nm:'Avatar',    cls:'tab-intake',  sec:'discover'},
- /* Summary last in Discover, on his own correction: "then my intake then my
-    summary". */
- {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary', sec:'discover'},
- /* THE INTAKE PAGE IS BACK, round OG. His words: "we'll do the intake questions
-    at the very end for now, just restore the intake page." It is the
-    questions, on a page of their own, after Summary and before Analytics, the
-    place round OD named for it. The body map is Body, in Play: this is not
-    that surface and never was. Integer 13, appended, host #iqp, which
-    borrows #iqbody from intakeui.js the way the Avatar's menu does. What it
-    asks, and how, is the redesign he put last. */
- {k:TAB.QUESTIONS, id:'iqp',  nm:'Intake',    cls:'tab-questions', sec:'discover'},
- /* ANALYTICS, RIGHT AFTER SUMMARY, his own order at round LV: "so it'll go
-    story, avatar, summary, analytics." Integer 4, unfolded: see the note
-    above TABDEF. #ana is body.html's own sibling of #sum now, never nested
-    inside it, and anaRender in ui/analytics.js is unchanged. */
- {k:TAB.ANALYTICS, id:'ana', nm:'Analytics', cls:'tab-analytics', sec:'discover'},
+ /* DISCOVER'S ONE DOOR, 23 October: the journal, the imprints and the release,
+    which are this page's three columns. See the note above SECTIONS. Being
+    first here is still what makes it the opening of its section, since secGo
+    sends a first visit to a section's first entry, and TABHOME below is where
+    the app itself opens. */
+ {k:TAB.STORY,   id:'story', nm:'Discover',  cls:'tab-story',   sec:'discover', door:'section'},
  /* "I want to move all the tools to play. And then get rid of the tools
-    tab." The instruments are Play now, and the app still opens on the Field,
-    so Play is the section pressed at start. */
+    tab." The instruments are Play. The app opened on the Field and Play was
+    the section pressed at start until 23 October; it opens on Discover now,
+    see TABHOME. */
  {k:TAB.FIELD,   id:'cv',    nm:'Field',     cls:'tab-field',   sec:'play'},
  /* BODY, BETWEEN FIELD AND COMPASS, round OG, reversing round OD. OD moved
     this surface to Discover and called it Intake on a misreading of his
@@ -17572,6 +17643,28 @@ const TABDEF=[
     drawn inside the host is new too (ui/character.js); the figure the
     comment above describes is gone from this door. */
  {k:TAB.MASKS,   id:'masksview', nm:'Character', cls:'tab-masksview', sec:'play'},
+ /* THE FOUR THAT LEFT DISCOVER, 23 October, after his Play order and in the
+    order they stood in Discover. See the note above SECTIONS. */
+ /* TAB.INTAKE is the Avatar and keeps that name. The integer's own name is
+    history, from when this surface was the intake; the door called Intake
+    below is a different tab, TAB.QUESTIONS. Two integers, one word each. */
+ {k:TAB.INTAKE,  id:'iq',    nm:'Avatar',    cls:'tab-intake',  sec:'play'},
+ /* Summary after the Avatar, the order his own correction gave it in Discover:
+    "then my intake then my summary". */
+ {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary', sec:'play'},
+ /* THE INTAKE PAGE IS BACK, round OG. His words: "we'll do the intake questions
+    at the very end for now, just restore the intake page." It is the
+    questions, on a page of their own, after Summary and before Analytics, the
+    place round OD named for it. The body map is Body, in Play: this is not
+    that surface and never was. Integer 13, appended, host #iqp, which
+    borrows #iqbody from intakeui.js the way the Avatar's menu does. What it
+    asks, and how, is the redesign he put last. */
+ {k:TAB.QUESTIONS, id:'iqp',  nm:'Intake',    cls:'tab-questions', sec:'play'},
+ /* ANALYTICS, RIGHT AFTER SUMMARY, his own order at round LV: "so it'll go
+    story, avatar, summary, analytics." Integer 4, unfolded: see the note
+    above TABDEF. #ana is body.html's own sibling of #sum now, never nested
+    inside it, and anaRender in ui/analytics.js is unchanged. */
+ {k:TAB.ANALYTICS, id:'ana', nm:'Analytics', cls:'tab-analytics', sec:'play'},
  /* "Flow is ritual and accountability." The Ritual tab carries both the
     building of a ritual and the accountability for keeping it, so the whole
     tab moves and nothing is split. */
@@ -17647,6 +17740,21 @@ const TABREAL=function(k){
     the summary, which is the folded-surface bug in a new costume. */
  if(TABEXTRA[k])return k;
  return TAB.SUMMARY;};
+/* WHERE THE APP OPENS, NAMED ONCE. Recorded 23 October 2026, his words: "the
+   app opens on Discover", and "The most important portions of the app are
+   core loop... That really is the journal to the release." So home is
+   Discover's one door, the journal page, integer 0.
+
+   ONE NAME, BECAUSE FOUR PLACES DECIDED IT. The default on S below, the boot's
+   opening step (ui/ui.js), the wordmark's home (ui/panels.js) and the landing
+   when the practitioner door shuts under a person (ui/practitioner.js) each
+   named a tab of their own. The boot's own note records what that costs: a
+   default changed in one place looked right in the source and did nothing on
+   screen. All four read this now, so the next ruling on the opening is one
+   line here. The one first landing (tabLandFirst, ui/panels.js) names Summary
+   and not this, on purpose: his 9 October ruling and the gift's line stand on
+   it, and the reasoning is written there. tests/landing.js holds both. */
+const TABHOME=TAB.STORY;
 
 /* ============================================================
    STATE
@@ -17664,6 +17772,13 @@ const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
     doors have to be reachable from here, which they are: the rail prints
     them on every tab but Summary, which was written for exactly this case
     and is the reason the change is safe. */
+ /* AND THEN ON DISCOVER, 23 October, which reverses the Field: see TABHOME
+    above. The default here is TABHOME so it cannot disagree with the boot's
+    step again. A stranger's first screen is the journal now, and the first
+    of the four doors (startHTML, ui/component.js) is the page itself: its
+    door data-start story opens exactly this surface. The other three are
+    drills printed on Summary and in the rail of the tools, which are in
+    Play: one press to Play opens the Field with them in its rail. */
  /* AND IT OPENS WITH EVERY LAYER ON. view was 1, Patterns, so the glass bar
     opened with Domains, Masks, Archetypes and the four chain tiers off, and
     since one set of switches drives all three pictures, Frames and Dial
@@ -17672,7 +17787,7 @@ const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
     on. Yeah, everything should start on." 3 is Blueprint, the preset that is
     every layer in LAYADD, so the first frame draws all of it and a press on
     the bar takes a layer away rather than having to find it. */
- theme:'dark',hover:null,pin:null,t:0,replace:{},view:3,who:0,tab:TAB.FIELD,
+ theme:'dark',hover:null,pin:null,t:0,replace:{},view:3,who:0,tab:TABHOME,
  /* atom: the one story weight being held on the wheel, past the fetter
     layer. {i:node id, ei:entry index}, or null for none held. View state,
     like pin and hover, so it is not persisted and not validated. */
@@ -45405,7 +45520,7 @@ function chRailHtml(r){
  var pc=CHC.PCOL[li], hexc='#'+pc.map(function(v){return ('0'+Math.round(v).toString(16)).slice(-2);}).join('');
  var SF=seatField(), AF=addrField();
  var h='<div class="chr">';
- if(unread)h+='<p class="chr-note">Nothing read yet, so the field is dark and the cloud is plain. Write what happened on the Story page and it starts to answer.</p>';
+ if(unread)h+='<p class="chr-note">Nothing read yet, so the field is dark and the cloud is plain. Write what happened in Discover and it starts to answer.</p>';
  /* the leading pattern, what the mask does, and the one line the stage used to
     carry as a caption */
  /* AN UNREAD PROFILE LEADS WITH NOTHING. It printed "Leading pattern, Fear
@@ -45591,7 +45706,7 @@ function chDrill(m){
   +'<div class="ad-sub">Worn over the '+esc(chSeats(m))+'</div>'
   +'<div class="pm-eye">What it does</div><p class="ad-p">'+esc(chSentence('It '+m.v))+'</p>';
  if(r.unread){
-  h+='<p class="ad-p">Nothing read yet, so this mask is plain. Write what happened on the Story page and it starts to fill.</p>';
+  h+='<p class="ad-p">Nothing read yet, so this mask is plain. Write what happened in Discover and it starts to fill.</p>';
   rdShell(h);return;}
  var seats=SF.filter(function(s){return m.b.indexOf(s.seat)>=0;});
  h+='<div class="pm-eye">The seats it covers</div><div class="chr-seats">'+seats.map(function(s){
@@ -48726,7 +48841,7 @@ function tutRender(){
     +'entries are quiet.</p>')
     +'<p class="ob-p ob-dim">Longer entries, or ones with a feeling named in '
     +'them, usually give it more to find. You can always write another in '
-    +'the Story tab later.</p>';
+    +'Discover later.</p>';
   }else{
    body='<p class="ob-p">You wrote:</p>'
     +'<p class="ob-p ob-dim">&ldquo;'+esc(c.text.length>220?c.text.slice(0,220)+'…':c.text)+'&rdquo;</p>'
@@ -48780,7 +48895,7 @@ function tutRender(){
        +'<span>'+esc(x[1])+'</span></div>';}).join('')
     +'</div>'
     +'<p class="ob-p ob-dim">This is not just this one moment. Something runs '
-    +'through it, and this is what the Field and the Story tab track over '
+    +'through it, and this is what the Field and Discover track over '
     +'time.</p>';}
   out=tutCard('How it runs through you',body,
    '<button type="button" class="btn pri" data-tut="next">Next</button>');
@@ -69071,13 +69186,52 @@ $('allLaw').addEventListener('input',function(e){toYou();
    arriving in a link from the funnel (recordLinkBoot) and the first run
    closing (obClose), and happens once per device. A person who has landed
    once opens on wherever they left off, and a device that has never had
-   either fact opens on the Field, as it always did.
+   either fact opens on TABHOME, which was the Field until 23 October and is
+   Discover since.
 
    Settings and the practitioner page are never remembered: Settings has no
    door of its own, and the practitioner page is a switch a person may have
    turned off since. Analytics and Games are folded surfaces, so what is kept
    is the tab that carries them (TABREAL). A store that is blocked or throws
-   costs the memory and never the start up. */
+   costs the memory and never the start up.
+
+   THE APP OPENS ON DISCOVER, AND THE ONE FIRST LANDING STAYS ON SUMMARY.
+   23 October 2026. His words: "the app opens on Discover. So when you click
+   Discover, you only get the journal and the imprints and the release", and
+   "The most important portions of the app are core loop... That really is
+   the journal to the release." So a device with no memory opens on TABHOME
+   (engine/core.js), Discover's journal page, and every open after the first
+   landing is still wherever the person left off. The first landing itself,
+   once per device, at the funnel's link and at the first run closing, stays
+   on Summary. A default taken by the UX seat and his to overrule. The
+   reasons:
+
+     The 9 October ruling above is his and is about exactly this moment, a
+     first time user arriving from the funnel, where the 23 October ruling is
+     about where the app opens in general and names nothing of the funnel.
+     The specific one is kept until he says otherwise; nothing he said on 23
+     October takes it back.
+     A built feature stands on it. The gift's line, "Your gift: 100
+     patterns, no card. Everything is open.", is drawn on Summary as the
+     page a new person lands on (sumGift, ui/summary.js), so that their first
+     screen is their reading, opened and not a shop, and tests/gift.js holds
+     the line there, on the first screen, from the quiz's own link. Landing
+     on Discover would take the line off a new person's first screen, and
+     putting it on the journal page is a change to his approved layout that
+     nobody asked for. In alpha, "existing features complete" wins.
+     Weighed against it, and measured when this was built: landing a first
+     arrival on Discover worked, the status line said the record loaded and
+     the release column offered three of the record's held addresses with
+     Run lit, and the funnel's own door sells that page ("The app reads every
+     story you write and shows where each one sits in the body. Then it runs
+     a release", viewDoor, funnel/quiz.html). It was the first cut of this
+     change and was reversed for the two reasons above.
+
+   What it costs: "the app opens on Discover" is true on every open but one,
+   the first arrival, which sees its reading and the gift on Summary, in
+   Play, with Discover the first section on the bar. To send the first arrival to
+   Discover too is one line, the setTab below, once the gift's line has a
+   place on the journal page. */
 var TAB_KEY='source.tab', TAB_LANDED_KEY='source.landed';
 function tabKnown(k){
  var all=[].concat(typeof TABDEF!=='undefined'?TABDEF:[], typeof TABEXTRA!=='undefined'?TABEXTRA:[]);
@@ -69435,8 +69589,15 @@ function secPaint(i){
  if(sec){SEC_LAST[sec]=TABREAL(i); if(top)top.setAttribute('data-sec',sec);}
  document.querySelectorAll('#secbar .secb').forEach(function(b){
   b.setAttribute('aria-pressed',b.getAttribute('data-sec')===sec);});
+ /* A SECTION THAT IS ITS OWN DOOR IS NAMED ONCE, 23 October. The folded bar
+    on a phone reads the section quietly, then the surface in the pressed
+    tab's accent. Discover's surface is the section (door:'section',
+    engine/core.js), so its word goes in the surface's slot, where it reads
+    as the place a person is on, and the quiet slot is left empty rather than
+    printing Discover twice. head.html takes the empty slot out of the row. */
  var ns=$('navsec'); if(ns){var e=SECTIONS.filter(function(x){return x.k===sec;})[0];
-  ns.textContent=e?e.nm:'';}
+  var own=TABDEF.filter(function(T){return T.k===TABREAL(i);})[0];
+  ns.textContent=(e&&!(own&&own.door==='section'))?e.nm:'';}
  secAlign();}
 /* THE SECOND TIER STARTS UNDER THE FIRST, LETTER ON LETTER. KT, his words:
    "they start pixel for pixel, directly underneath like text-wise, font-wise,
@@ -69641,12 +69802,13 @@ LIGHTINGS.forEach(function(t,i){
  document.addEventListener('keydown',function(e){
   if(e.key==='Escape'&&top.classList.contains('navopen')){set(false);tog.focus();}});})();
 /* ---- THE WORDMARK GOES HOME ----
-   Home is the field. It is the instrument, it is where the app opens on the
-   owner's ruling, and it is what clicking the name of the product asks for. */
+   Home is where the app opens on the owner's ruling, and it is what clicking
+   the name of the product asks for. It was the Field while the app opened
+   there; it is Discover since 23 October, TABHOME in engine/core.js. */
 (function(){
  var b=$('brand'); if(!b)return;
- /* home is where the app opens, and the app opens on Field */
- b.addEventListener('click',function(){setTab(TAB.FIELD);});})();
+ /* home is where the app opens */
+ b.addEventListener('click',function(){setTab(TABHOME);});})();
 /* the font tuner is gone on the owner's ruling. one face, narrower, no
    per person override to keep working across every surface. */
 
@@ -70127,7 +70289,8 @@ function recordLinkBoot(){
   try{ recordLanded(); }
   catch(e){ try{ if(window.console)console.error('[atuned] redraw after a linked record',e); }catch(e2){} }
   /* THE FIRST ARRIVAL FROM THE FUNNEL LANDS ON SUMMARY, once per device, so the
-     first thing a person sees is their own reading. See tabLandFirst. */
+     first thing a person sees is their own reading and the gift's line. The
+     app opens on Discover otherwise, since 23 October. See tabLandFirst. */
   try{ tabLandFirst(); }catch(e){}
   /* A quiz-imported record skips onboarding, which is otherwise the first
      caller of the anonymous first-visit session. Start that same session
@@ -74257,13 +74420,18 @@ function pracPaint(){
   .forEach(function(e){e.style.display=on?'':'none';});
  if(on)return;
  var top=document.querySelector('.top');
+ /* the bar and the person go home, TABHOME in engine/core.js: Play and the
+    Field while the app opened there, Discover since 23 October. Discover's
+    one door is its section, so its row has no tab to line up and secAlign
+    below returns without measuring, which is correct: nothing is left under
+    the section that went. */
  if(top&&top.getAttribute('data-sec')==='practitioner'){
-  var k=SECOF(TAB.FIELD), pb=document.querySelector('#secbar .secb[data-sec="'+k+'"]');
+  var k=SECOF(TABHOME), pb=document.querySelector('#secbar .secb[data-sec="'+k+'"]');
   top.setAttribute('data-sec',k);
   if(pb&&typeof secAlign==='function'&&!document.querySelector('#secbar .secb[aria-pressed="true"]')){
    pb.setAttribute('aria-pressed','true'); secAlign(); pb.setAttribute('aria-pressed','false');}}
  if(typeof SEC_LAST!=='undefined')delete SEC_LAST.practitioner;
- if(S.tab===TAB.PRACTITIONER)setTab(TAB.FIELD);}
+ if(S.tab===TAB.PRACTITIONER)setTab(TABHOME);}
 
 /* ============================================================
    PR1 TO PR4, round PT: the client list, the reading from structure, private
@@ -77635,7 +77803,10 @@ function obClose(how){
     Summary, once per device. See tabLandFirst in ui/panels.js. */
  if(!keep&&typeof tabLandFirst==='function'){ try{ tabLandFirst(); }catch(e){} }
  if(typeof render==='function')render();
- if(left&&typeof status==='function')status('Nothing committed. Your words wait in the Story tab.');}
+ /* the place is Discover since 23 October, his words: "we're removing the
+    word Story. We're keeping the word Discover." A story is still what a
+    person writes; only the page's name moved. */
+ if(left&&typeof status==='function')status('Nothing committed. Your words wait in Discover.');}
 
 /* ============================================================
    THE JOURNEY RECORD, THE HOST'S HALF. F13. engine/journey.js decides and
@@ -78506,9 +78677,9 @@ function obBridgeCard(){
  return obCard('Next','Nothing to release yet.',
   (c&&c.ok&&c.k
    ?'<p class="ob-p">You did not say yes to any place, so nothing from this story goes into a release. '
-    +'Your words are kept. You can always write another in the Story tab.</p>'
+    +'Your words are kept. You can always write another in Discover.</p>'
    :'<p class="ob-p">This entry did not carry enough charge to name a release yet. '
-    +'That is fine. You can always write another in the Story tab.</p>'),
+    +'That is fine. You can always write another in Discover.</p>'),
   '<button type="button" class="btn pri" data-ob="done">Go in</button>');}
 /* the bridge's empty body, split by why it is empty: nothing read, or read
    and nothing said yes to. Same title slot, the value carries the state. */
@@ -81055,11 +81226,14 @@ step('field view',function(){FVIEW=fviewGet(); fviewPaint(S.tab);});
    switch read on after a reload while the door stayed shut. Its own step, so
    a throw here costs the door and not the start up. */
 step('practitioner door',function(){pracPaint();});
-/* THE OPENING SURFACE IS WHERE THIS DEVICE LEFT OFF, and the Field when it has
-   never left anywhere. The first arrival from the funnel is sent to Summary
-   by tabLandFirst in ui/panels.js, once. The ruling of 19 September that the
-   app opens on the Field stands for a device with no memory. */
-step('opening surface',function(){var k=(typeof tabRead==='function')?tabRead():null; setTab(k===null?TAB.FIELD:k);});
+/* THE OPENING SURFACE IS WHERE THIS DEVICE LEFT OFF, and TABHOME when it has
+   never left anywhere. TABHOME is Discover since 23 October, his words: "the
+   app opens on Discover" (engine/core.js). It was the Field from 19 September,
+   and the note above says why this step and the default on S must name the
+   same surface: they both read TABHOME now. The first arrival from the funnel
+   or the first run is still sent to Summary, once, by tabLandFirst in
+   ui/panels.js, which says why. */
+step('opening surface',function(){var k=(typeof tabRead==='function')?tabRead():null; setTab(k===null?TABHOME:k);});
 /* LOGIN, AFTER THE BOOT SHEET HAS GONE so the two do not stack. Round MH
    and MI, ui/login.js: the login screen is the return door, met on every
    boot, and onboarding behind it is still met once, gated on its own flag
@@ -81120,5 +81294,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005346978"></div>
+<div id="eof" hidden data-len="005358996"></div>
 </body></html>
