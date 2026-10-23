@@ -66,3 +66,70 @@ Do not invent definitions, affirmations, canonical names, or mapping semantics t
 | Overall closure | OPEN — NOT COMPLETE |
 
 This audit supersedes earlier estimates of the registry denominator. It does not claim content, research, semantic wiring, or runtime closure.
+
+
+## 2026-10-22 — Fresh full-blob recursive audit
+
+### Reproducible baseline
+- Registry blob fetched by exact Git blob SHA: `0e08a2ab98cef7f4ac925d3322793627f6a5be31`.
+- Parsed current registry JSON: 125 records; declared count 125; unique IDs 125; duplicate or missing IDs: 0.
+- Record families: roots 4, behavioral domains 15, archetype candidates 18, conscious domains 8, cultural-figure mappings 12, archetype/domain mappings 18, archetype/fetter/seat mappings 18, blueprint visualization slots 14, canonical-domain candidates 18.
+- `templateValidation.contentStatus`: {"complete":102,"provisional_content_populated":15,"source_extracted_cross_record_review_pending":8}.
+- All 125 records have exactly three research-pass slots and nonempty top-level `sourceRefs`, `sourceClaims`, and `sourceIds` arrays. However, only 88/125 satisfy the stronger evidence gate that all three passes are marked complete and each has at least one source and finding. 37 records remain below that gate.
+- Cross-record target scan across `parentId`, `childIds`, `upstreamInfluenceIds`, `downstreamEffectIds`, `links`, and relationship `fromId/toId` fields found no dangling IDs. Parent/child reciprocity check found no mismatches for explicit `parentId/childIds` edges. This is a structural scan, not proof of semantic correctness or runtime behavior.
+- The adapter's current template-field check flags 103 records with at least one empty/null template payload field, principally empty `links` arrays. This count is distinct from the 23 records whose `templateValidation.contentStatus` is not `complete`; the adapter is treating every catalog field as non-empty-required, including arrays that may legitimately be empty. The catalog/adapter policy must be clarified before using the adapter count as the definition of content completeness.
+
+### Exact records not yet meeting the three-pass evidence gate
+| Record ID | Pass states |
+|---|---|
+| `domain:01` | P1:complete, P2:complete, P3:in_progress |
+| `domain:02` | P1:complete, P2:complete, P3:in_progress |
+| `domain:03` | P1:complete, P2:complete, P3:in_progress |
+| `domain:04` | P1:complete, P2:complete, P3:in_progress |
+| `domain:05` | P1:complete, P2:complete, P3:in_progress |
+| `domain:06` | P1:complete, P2:complete, P3:in_progress |
+| `domain:07` | P1:complete, P2:complete, P3:in_progress |
+| `domain:08` | P1:complete, P2:complete, P3:in_progress |
+| `domain:09` | P1:complete, P2:complete, P3:in_progress |
+| `domain:10` | P1:complete, P2:complete, P3:in_progress |
+| `domain:11` | P1:complete, P2:complete, P3:in_progress |
+| `domain:12` | P1:complete, P2:complete, P3:in_progress |
+| `domain:13` | P1:complete, P2:complete, P3:in_progress |
+| `domain:14` | P1:complete, P2:complete, P3:in_progress |
+| `domain:15` | P1:complete, P2:complete, P3:in_progress |
+| `conscious-domain:01` | P1:complete, P2:blocked, P3:in_progress |
+| `conscious-domain:02` | P1:complete, P2:blocked, P3:in_progress |
+| `conscious-domain:03` | P1:complete, P2:blocked, P3:in_progress |
+| `conscious-domain:04` | P1:complete, P2:blocked, P3:in_progress |
+| `conscious-domain:05` | P1:complete, P2:blocked, P3:in_progress |
+| `conscious-domain:06` | P1:complete, P2:blocked, P3:in_progress |
+| `conscious-domain:07` | P1:complete, P2:blocked, P3:in_progress |
+| `conscious-domain:08` | P1:complete, P2:blocked, P3:in_progress |
+| `blueprint-domain-slot:01` | P1:complete, P2:blocked, P3:blocked |
+| `blueprint-domain-slot:02` | P1:complete, P2:blocked, P3:blocked |
+| `blueprint-domain-slot:03` | P1:complete, P2:blocked, P3:blocked |
+| `blueprint-domain-slot:04` | P1:complete, P2:blocked, P3:blocked |
+| `blueprint-domain-slot:05` | P1:complete, P2:blocked, P3:blocked |
+| `blueprint-domain-slot:06` | P1:complete, P2:blocked, P3:blocked |
+| `blueprint-domain-slot:07` | P1:complete, P2:blocked, P3:blocked |
+| `blueprint-domain-slot:08` | P1:complete, P2:blocked, P3:blocked |
+| `blueprint-domain-slot:09` | P1:complete, P2:blocked, P3:blocked |
+| `blueprint-domain-slot:10` | P1:complete, P2:blocked, P3:blocked |
+| `blueprint-domain-slot:11` | P1:complete, P2:blocked, P3:blocked |
+| `blueprint-domain-slot:12` | P1:complete, P2:blocked, P3:blocked |
+| `blueprint-domain-slot:13` | P1:complete, P2:blocked, P3:blocked |
+| `blueprint-domain-slot:14` | P1:complete, P2:blocked, P3:blocked |
+
+### Audit interpretation correction
+The previous audit narrative reported 103 records with passes 2 and 3 complete. The fresh JSON shows only 88 records with all three pass statuses complete; the stronger evidence gate above is 88. Those are different metrics and must be named separately. The 15 behavioral-domain records have pass 3 marked `in_progress`; the eight Conscious Domain records include blocked pass 2 and in-progress pass 3; all fourteen blueprint slots have blocked pass 2 and pass 3. These are the known 37-record research backlog.
+
+### Execution state
+- Block 1: PASS for fresh JSON inventory, stable ID count, family counts, and static edge existence checks; repository tree/file SHA capture and source inventory remain partial.
+- Block 2: PARTIAL. 102 records are marked complete in registry metadata and 23 are not. The template catalog's non-empty-array policy needs a field-by-field contract decision; no content is auto-filled merely to satisfy empty `links` arrays.
+- Block 3: OPEN. Source citations are present but research-pass completion and source-to-record semantic validation remain open for 37 records. The 15/18/19/14 taxonomy conflict remains unresolved.
+- Blocks 4–5: PARTIAL static edge-existence and explicit parent/child reciprocity scan only; runtime traversal and full edge-type/cardinality audit not run.
+- Block 6: OPEN; Node adapter/audit program and test suite have not been executed in a checkout.
+- Block 7: OPEN for record repairs; this audit addendum is a documentation correction only.
+- Block 8: NOT STARTED.
+
+No canonical names, definitions, affirmations, or mapping edges were invented to improve counts. The next content batch is the 15 behavioral domains and 8 Conscious Domains, using the exact v341 source plus independently corroborating sources and preserving unresolved mappings as unresolved.
