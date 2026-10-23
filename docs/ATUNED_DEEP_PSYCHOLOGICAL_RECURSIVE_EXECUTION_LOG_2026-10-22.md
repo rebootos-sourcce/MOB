@@ -64,3 +64,18 @@ The HTML also contains separate Pattern, Story, and Imperium Consciousness entri
 ## Acceptance discipline
 
 A populated field is not necessarily a source-backed field. A completed pass flag is not necessarily completed research. A record existing in the registry is not proof that the psychological layer is complete. A static graph scan is not proof of runtime traversal. Record every finding with evidence, version/commit, test output, and unresolved limitations.
+
+
+## Round 2 — Conscious Domain and affirmation extraction completed
+
+Created `docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md` in commit `493e2052045a36ecad5756c8fbd04ebc7b234291`.
+
+The extraction preserves all eight Conscious Domain names and descriptions, the seven locked May 2026 affirmations verbatim, and the two alternate truth-affirmation phrasings found in the narrative. It distinguishes the source-stated relationship from the inferred chakra-to-domain crosswalk. The crosswalk is explicitly not marked canonical or owner-approved.
+
+Local source file SHA-256: `79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4`.
+
+### Round 2 result and remaining gates
+
+- **Completed:** verbatim extraction of the seven locked affirmation strings; extraction of eight domain descriptions; explicit documentation of source variants and taxonomy uncertainty.
+- **Not yet completed:** linking these extracted items to actual registry IDs; applying record edits; extracting/source-anchoring all 15 behavioral domains; validating research-pass evidence across 125 records; schema/adapter/runtime test execution.
+- **Important distinction:** creating the source extraction document does not close KPI 1. It supplies source evidence for the next record-level repair and crosswalk pass.
