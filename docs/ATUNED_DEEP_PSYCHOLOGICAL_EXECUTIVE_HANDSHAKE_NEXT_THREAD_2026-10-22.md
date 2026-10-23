@@ -80,3 +80,17 @@ The project is not closed until every required record and edge is accounted for;
 
 ## Status declaration
 This handshake is a continuation contract, not evidence of closure. Do not tell the user the item is off the plate until the acceptance matrix passes. A truthful checkpoint with exact blockers is better than a false completion claim.
+
+
+## Owner design update — behavioral energy and psychospiritual mask (2026-10-22)
+
+The TDD now captures the owner’s conceptual model. Canonical names and definitions are guiding posts; the target construct is the behavioral energy behind the label. A person may express degrees of many archetypal energies, with primary/secondary/tertiary dominance rather than mutually exclusive types.
+
+Working cascade (not yet a proven linear stack): root programming → behavioral domains → archetypal energies → super-complex influence/drivers → mask state → observable expression/action. The owner explicitly questions whether super-complexes are a separate layer; the working proposal is typed influence/modulator edges rather than forced parent-child placement.
+
+**Mask definition (owner-stated, to be operationalized):** a psychospiritual state change combining egoic/psychological identification or protection with essential/spiritual energy that remains visible. Shadow is part of the mask but not necessarily the whole mask. An unrecognized energy such as an inner Warrior may remain visible through a gap in the mask. Mask removal is hypothesized to let dominant energies express more naturally. Capture triggers, protective strategy, identity state, shadow relation, obscured/distorted signal, residual visible energy, transition, and observable action. Exact binary poles are not defined; do not invent them.
+
+Read section 11 of docs/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_FORMAT_TDD_v1.md before editing registry/schema/template files. This model is not runtime-wired or validated, and it does not mean KPI 1 is complete.
+
+### Turn-by-turn change-control requirement
+For every meaningful user turn or execution round that changes requirements, definitions, taxonomy, record content, or implementation: (1) capture semantic intent in the execution log; (2) update the TDD first, distinguishing source, owner statement, and hypothesis; (3) update registry/schema/template/crosswalk as appropriate; (4) update ledger, defect register, and handshake; (5) run available audits and record exact results or mark NOT RUN; (6) verify commit and paths before reporting progress. This is a repository process requirement, not a claim that a separate background agent is running. ChatGPT cannot guarantee autonomous monitoring of future turns unless a connected scheduled/agent workflow is explicitly configured.
