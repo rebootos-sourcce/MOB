@@ -1782,11 +1782,14 @@ step('field view',function(){FVIEW=fviewGet(); fviewPaint(S.tab);});
    switch read on after a reload while the door stayed shut. Its own step, so
    a throw here costs the door and not the start up. */
 step('practitioner door',function(){pracPaint();});
-/* THE OPENING SURFACE IS WHERE THIS DEVICE LEFT OFF, and the Field when it has
-   never left anywhere. The first arrival from the funnel is sent to Summary
-   by tabLandFirst in ui/panels.js, once. The ruling of 19 September that the
-   app opens on the Field stands for a device with no memory. */
-step('opening surface',function(){var k=(typeof tabRead==='function')?tabRead():null; setTab(k===null?TAB.FIELD:k);});
+/* THE OPENING SURFACE IS WHERE THIS DEVICE LEFT OFF, and TABHOME when it has
+   never left anywhere. TABHOME is Discover since 23 October, his words: "the
+   app opens on Discover" (engine/core.js). It was the Field from 19 September,
+   and the note above says why this step and the default on S must name the
+   same surface: they both read TABHOME now. The first arrival from the funnel
+   or the first run is still sent to Summary, once, by tabLandFirst in
+   ui/panels.js, which says why. */
+step('opening surface',function(){var k=(typeof tabRead==='function')?tabRead():null; setTab(k===null?TABHOME:k);});
 /* LOGIN, AFTER THE BOOT SHEET HAS GONE so the two do not stack. Round MH
    and MI, ui/login.js: the login screen is the return door, met on every
    boot, and onboarding behind it is still met once, gated on its own flag

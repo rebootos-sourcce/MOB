@@ -1099,7 +1099,15 @@ body.lumen{
  /* KT added the line below. A section key with no line here is not hidden,
     it shows every group at once, so a new section in SECTIONS needs its line
     in this list; the functional gate presses every section and fails on it. */
- .top[data-sec="embody"] #tabbar .tabgrp:not([data-sec="embody"]){display:none}}
+ .top[data-sec="embody"] #tabbar .tabgrp:not([data-sec="embody"]){display:none}
+ /* A SECTION THAT IS ITS OWN DOOR SHOWS NO SECOND DOOR, 23 October. Discover
+    opens the journal page itself (door:'section', engine/core.js), so the
+    button under it would be Discover printed under Discover. It stays in the
+    markup, because on a phone it is the only way in, and because every route
+    that presses a tab by its integer still finds it. Not shown is not
+    focusable, so the keyboard meets the section button once and not a second
+    copy of it. */
+ #tabbar .tabtop[data-door="section"]{display:none}}
 /* THE SECOND TIER IS A ROW OF ITS OWN, UNDER THE FIRST. KT in TASKS.md, his
    words: "the navigation was it keeps unnesting right that's not what I want
    I wanted to open up a secondary navigation underneath." The tabs sat on the
@@ -1112,7 +1120,13 @@ body.lumen{
 
    So the strip takes a line of its own beneath the bar, the full width, and
    stays there on every surface: the second tier is always open and only its
-   contents change with the section. It is forced onto that line by its 100%
+   contents change with the section. ONE SECTION HAS NOTHING TO OPEN, since
+   23 October: Discover is its own door (engine/core.js), so under it the
+   strip holds no tab and folds to its hairline, and the journal page takes
+   the line. That is his model of the bar read straight, a section "opens up
+   a secondary navigation underneath" and this one has none; measured at
+   1600, the stage starts 44px higher on Discover than under Play, and the
+   section buttons, where the press lands, do not move. It is forced onto that line by its 100%
    basis. It once had to beat the status rule, which gave the strip a basis
    of 0 while a message showed and fit it back onto the first line; the status
    moved to the message dock at the bottom on 2 October and that rule went
@@ -7992,6 +8006,11 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
  .top.navopen #tabbar{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));
   flex:1 1 100%;overflow:visible;border-bottom:0;mask-image:none;-webkit-mask-image:none}
  .top.navopen #tabbar .tabtop{justify-content:center}
+ /* DISCOVER IS THE MENU'S FIRST LINE, 23 October. Its section is its door
+    (engine/core.js), and the phone has no section buttons, so the door
+    carries the section's word and mark itself, once, across the whole row and
+    with no heading over it, ahead of Play's heading and its tools. */
+ .top.navopen #tabbar .tabtop[data-door="section"]{grid-column:1/-1}
  /* the sections are the main menu's headings here, KC, so every tab is one
     press from anywhere; the first tier's own row leaves the phone bar */
  .top .secbar{display:none}
@@ -8001,6 +8020,10 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
  /* the folded bar names the section, quietly, then the surface */
  .top .navtog .navsec{display:flex;align-items:baseline;gap:9px}
  .top .navtog #navsec{color:var(--dim);font-weight:400;font-size:13px}
+ /* empty on a section that is its own door, Discover since 23 October, whose
+    word is in the surface's slot (secPaint, ui/panels.js); an empty item
+    would still take the row's gap */
+ .top .navtog #navsec:empty{display:none}
  /* the search opens across the bar under the first row, where it has the
     width a phone does not have beside the circles */
  .top .srch{position:static}

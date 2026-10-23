@@ -899,6 +899,15 @@ for(const nm of people){
  const i=people.indexOf(nm);
  await page.evaluate(n=>loadP(n),i);
  await page.evaluate(()=>setTab(TAB.FIELD)); await page.waitForTimeout(80);
+ /* THE FIELD'S ENTRANCE IS NOT THE FIGURE. Since 23 October the app opens on
+    Discover, so this is the first time the page enters the Field and its
+    once a session entrance (enterStart, ui/wheel.js, 900ms) plays here, where
+    before it had played at start up and was long over. Measured that day:
+    the first person read 105, 91, 105 and 129 hit targets mid entrance and
+    181, 136, 150 and 162 once it was over, every other person unchanged. So
+    the count waits for the entrance to end, read off enterOver, and is a
+    count of the figure and not of the animation. */
+ await page.waitForFunction(()=>typeof enterOver!=='function'||enterOver(),null,{timeout:5000});
  let hits=[];
  for(let v=0;v<4;v++){
   const n=await page.evaluate(vv=>{S.view=vv;render();return HIT.length;},v);
@@ -2658,16 +2667,22 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
    press:{}};
   for(const s of LOOP){
    document.querySelector('#secbar .secb[data-sec="'+s.k+'"]').click(); await wait();
-   const want=TABDEF.filter(t=>t.sec===s.k).map(t=>t.k);
-   out.press[s.k]={landed:want.indexOf(S.tab)>=0, shown:JSON.stringify(vis())===JSON.stringify(want),
-    pressed:JSON.stringify(pressedSec())===JSON.stringify([s.k])};
+   /* A SECTION THAT IS ITS OWN DOOR, 23 October: Discover opens the journal
+      page and its row shows no second door above the phone width, so the row
+      is held to the section's doors less the one the section button already
+      is (door:'section' in engine/core.js) */
+   const all=TABDEF.filter(t=>t.sec===s.k), want=all.filter(t=>t.door!=='section').map(t=>t.k);
+   out.press[s.k]={landed:all.some(t=>t.k===S.tab), shown:JSON.stringify(vis())===JSON.stringify(want),
+    pressed:JSON.stringify(pressedSec())===JSON.stringify([s.k]),
+    selfDoor:all.length===1&&all[0].door==='section'};
    /* the row and the letter, above the phone width where the bar is a row */
    if(innerWidth>720){
     const sn=document.querySelector('#secbar .secb[data-sec="'+s.k+'"] .sn').getBoundingClientRect();
     const t0=[...document.querySelectorAll('#tabbar .tabtop')].filter(b=>b.offsetParent)[0];
-    const tn=t0.querySelector('.n').getBoundingClientRect();
-    out.press[s.k].below=tn.top>=sn.bottom;
-    out.press[s.k].dx=Math.round((tn.left-sn.left)*10)/10;}}
+    if(!t0)out.press[s.k].empty=true;
+    else{const tn=t0.querySelector('.n').getBoundingClientRect();
+     out.press[s.k].below=tn.top>=sn.bottom;
+     out.press[s.k].dx=Math.round((tn.left-sn.left)*10)/10;}}}
   out.first={};
   for(const s of LOOP){SEC_LAST={}; setTab(TAB.SETTINGS);
    document.querySelector('#secbar .secb[data-sec="'+s.k+'"]').click(); await wait();
@@ -2682,6 +2697,15 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
   /* LE, his order, in the engine and in the markup: "field intake compass mask" */
   out.play=TABDEF.filter(t=>t.sec==='play').map(t=>t.nm).join(',')+' / '
    +[...document.querySelectorAll('.tabgrp[data-sec="play"] .tabtop .n')].map(n=>n.textContent).join(',');
+  /* 23 October, his words: "attach the Story link to Discover. So we're
+     removing the word Story." Discover's group, in the engine and in the
+     markup, and the word Story on no name, mark or title on the bar */
+  out.discover={def:TABDEF.filter(t=>t.sec==='discover').map(t=>t.k+':'+t.nm+':'+(t.door||'')).join(','),
+   btn:[...document.querySelectorAll('.tabgrp[data-sec="discover"] .tabtop')].map(b=>b.getAttribute('data-tabk')+':'
+    +b.querySelector('.n').textContent+':'+(b.getAttribute('data-door')||'')).join(','),
+   home:typeof TABHOME==='undefined'?null:TABHOME,
+   story:[...document.querySelectorAll('#secbar .secb, #tabbar .tabtop, #navtog')].filter(b=>/\bstory\b/i.test(
+    b.textContent+' '+(b.getAttribute('title')||'')+' '+(b.getAttribute('aria-label')||''))).map(b=>b.textContent.trim())};
   out.placed={avatar:SECOF(TAB.INTAKE),summary:SECOF(TAB.SUMMARY),intake:SECOF(TAB.QUESTIONS),story:SECOF(TAB.STORY),
    know:SECOF(TAB.KNOW),ritual:SECOF(TAB.RITUAL),acct:SECOF(TAB.ACCOUNT),field:SECOF(TAB.FIELD),
    body:SECOF(TAB.ENERGY),compass:SECOF(TAB.COMPASS),masks:SECOF(TAB.MASKS),games:SECOF(TAB.GAMES),
@@ -2708,23 +2732,31 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
   'the first tier is discover, play, flow, embody, in his order, and with practitioner mode off those four are all the bar shows, '+JSON.stringify(nav.shownKeys));
  ok(JSON.stringify(nav.secKeys)==='["discover","play","flow","embody","practitioner"]'&&JSON.stringify(nav.barKeys)===JSON.stringify(nav.secKeys),
   'LL: Practitioner is a fifth section after the loop, in the engine and the markup alike, '+JSON.stringify(nav.barKeys));
- ok(JSON.stringify(nav.placed)==='{"avatar":"discover","summary":"discover","intake":"discover","story":"discover","know":"embody","ritual":"flow","acct":"flow","field":"play","body":"play","compass":"play","masks":"play","games":null,"clients":"practitioner"}',
+ ok(JSON.stringify(nav.placed)==='{"avatar":"play","summary":"play","intake":"play","story":"discover","know":"embody","ritual":"flow","acct":"flow","field":"play","body":"play","compass":"play","masks":"play","games":null,"clients":"practitioner"}',
   /* round OG reverses round OD: the body map is Body, in Play, between Field
      and Compass. His words: "Body should be between field and compass...
-     the intake that you call intake is body." engine/core.js has it. */
-  'OG: Story, Avatar, Summary and Intake in Discover, Field, Body, Compass and Character in Play, Ritual and Accountability in Flow, Knowledge in Embody, Games hidden, Clients in Practitioner, '+JSON.stringify(nav.placed));
- ok(nav.play==='Field,Body,Compass,Character / Field,Body,Compass,Character',
-  'Play reads in his order, Field, Body, Compass, Character, in the engine and the bar alike, '+nav.play);
- ok(JSON.stringify(nav.first)==='{"discover":"Story","play":"Field","flow":"Ritual","embody":"Knowledge"}',
-  'a first visit to each section opens its first tab, and Discover opens on the Story, '+JSON.stringify(nav.first));
+     the intake that you call intake is body." And 23 October: "when you
+     click Discover, you only get the journal and the imprints and the
+     release. If I click on play, then I get all the other tools."
+     engine/core.js has both. */
+  '23 October: the journal page alone in Discover, Field, Body, Compass, Character, Avatar, Summary and Intake in Play, Ritual and Accountability in Flow, Knowledge in Embody, Games hidden, Clients in Practitioner, '+JSON.stringify(nav.placed));
+ ok(nav.play==='Field,Body,Compass,Character,Avatar,Summary,Intake,Analytics / Field,Body,Compass,Character,Avatar,Summary,Intake,Analytics',
+  'Play reads his order, Field, Body, Compass, Character, then the four that left Discover in the order they stood there, in the engine and the bar alike, '+nav.play);
+ ok(nav.discover.def==='0:Discover:section'&&nav.discover.btn==='0:Discover:section'&&nav.discover.home===0,
+  '23 October: Discover has one door, the journal page, named Discover and marked as the section\'s own, in the engine and the markup, and it is where the app opens, '+JSON.stringify(nav.discover));
+ ok(nav.discover.story.length===0,'and the word Story is on no name, mark or title on the bar: '+JSON.stringify(nav.discover.story));
+ ok(JSON.stringify(nav.first)==='{"discover":"Discover","play":"Field","flow":"Ritual","embody":"Knowledge"}',
+  'a first visit to each section opens its first tab, Discover the journal page and Play the Field, '+JSON.stringify(nav.first));
  ok(nav.unsectioned.length===0,'every tab sits in a section, unsectioned: '+nav.unsectioned.join(', '));
  ok(nav.misgrouped.length===0,'and every button sits in its own section\'s group, misgrouped: '+nav.misgrouped.join(', '));
- ok(nav.secof.analytics==='discover'&&nav.secof.settings===null,
+ ok(nav.secof.analytics==='play'&&nav.secof.settings===null,
   'a folded surface answers with its carrier\'s section and Settings with none, '+JSON.stringify(nav.secof));
  Object.keys(nav.press).forEach(k=>{const p=nav.press[k];
   ok(p.landed&&p.shown&&p.pressed,k+': pressing it opens a tab in it, shows exactly its tabs and presses it alone, '+JSON.stringify(p));
   if(p.dx!==undefined)ok(p.below&&Math.abs(p.dx)<=1,
-   k+': its tabs are a row below it, the first tab\'s word starting under its first letter, off by '+p.dx+'px');});
+   k+': its tabs are a row below it, the first tab\'s word starting under its first letter, off by '+p.dx+'px');
+  /* an empty row is only right under a section that is its own door */
+  if(p.empty)ok(p.selfDoor,k+': its row is empty because the section is its own door, '+JSON.stringify(p));});
  ok(nav.remembers,'a section goes back to the tab last used in it');
  ok(nav.settings.pressed===0&&nav.settings.shown>0,'Settings presses no section and leaves the last section\'s tabs in sight, '+JSON.stringify(nav.settings));
  ok(JSON.stringify(nav.folded)==='["discover:hidden","play:visible","flow:hidden","embody:hidden"]',
@@ -2838,11 +2870,11 @@ console.log('\n=== practitioner mode: the switch, the fifth section and the sket
   const vis=()=>[...document.querySelectorAll('#tabbar .tabtop')].filter(b=>b.offsetParent).length;
   /* shut by a change of profile while standing on the page: the switch lives
      on the device, so shutting it while standing on the page shuts the door
-     under the person, and they land on the Field rather than on a page with
-     no door */
+     under the person, and they land home rather than on a page with no door.
+     Home was the Field; it is Discover since 23 October (TABHOME). */
   setTab(TAB.PRACTITIONER); await wait();
   pracSwitch(false); await wait();
-  o.landed=S.tab===TAB.FIELD;
+  o.landed=S.tab===TAB.STORY;
   o.secOff=document.querySelector('.top').getAttribute('data-sec');
   pracSwitch(true); await wait();
   /* and shut by the switch, having come to Account from the page, which is
@@ -2856,18 +2888,23 @@ console.log('\n=== practitioner mode: the switch, the fifth section and the sket
    .filter(b=>getComputedStyle(b).display!=='none').map(b=>b.getAttribute('data-sec'));
   o.sec=document.querySelector('.top').getAttribute('data-sec');
   o.row=vis();
+  o.selfDoor=TABDEF.filter(t=>t.sec===o.sec).every(t=>t.door==='section');
   /* and the row sits under the section it now shows, the first cut left it
      at Practitioner's offset, x 596 at 1600, under nothing */
   const t0=[...document.querySelectorAll('#tabbar .tabtop')].filter(b=>b.offsetParent)[0];
   const sn=$q('#secbar .secb[data-sec="'+o.sec+'"] .sn');
   o.dx=t0&&sn?Math.round((t0.querySelector('.n').getBoundingClientRect().left-sn.getBoundingClientRect().left)*10)/10:null;
   return o;});
- ok(o2.landed&&o2.secOff==='play',
-  'shut while standing on Clients, the person lands on the Field and the bar on Play, '+JSON.stringify(o2));
+ ok(o2.landed&&o2.secOff==='discover',
+  'shut while standing on Clients, the person lands home on Discover and the bar on Discover, '+JSON.stringify(o2));
  ok(o2.swOff==='false'&&o2.stored===false&&JSON.stringify(o2.shown)==='["discover","play","flow","embody"]',
   'switched off in Account, the bar is the loop\'s four again with nothing left over, '+JSON.stringify(o2.shown));
- ok(o2.sec!=='practitioner'&&o2.row>0&&o2.dx!==null&&Math.abs(o2.dx)<=1,
-  'and the row under the bar is not left pointing at the section that went, section '+o2.sec+', '+o2.row+' tabs in sight, off its first letter by '+o2.dx+'px');
+ /* home is Discover since 23 October, a section that is its own door, so the
+    row under it holds no tab and there is no letter to line one up under:
+    what is held is that it is not left pointing at the section that went */
+ ok(o2.sec!=='practitioner'&&(o2.selfDoor?o2.row===0:(o2.row>0&&o2.dx!==null&&Math.abs(o2.dx)<=1)),
+  'and the row under the bar is not left pointing at the section that went, section '+o2.sec+', '+o2.row+' tabs in sight'
+  +(o2.selfDoor?', the section being its own door':', off its first letter by '+o2.dx+'px'));
  await pr.close();}
 
 console.log('\n=== the build says which build it is, and how much of it arrived ===');
@@ -3259,10 +3296,11 @@ console.log('\n=== the record file has a door, and it opens on the record contro
 }
 
 console.log('\n=== the Intake page is back, and the questions are on it (round OG) ===');
-/* His words: "just restore the intake page." A Discover door of its own after
-   Summary, hosting the diagnostic's questions. Opened, the questions are in
-   #iqp and in view; the Avatar still draws them in its own menu and takes the
-   host back. */
+/* His words: "just restore the intake page." A door of its own after Summary,
+   hosting the diagnostic's questions; in Discover then, in Play since 23
+   October with the rest of the tools. Opened, the questions are in #iqp and
+   in view; the Avatar still draws them in its own menu and takes the host
+   back. */
 const ipg=await page.evaluate(async()=>{
  const wait=()=>new Promise(r=>setTimeout(r,250)), o={};
  loadP(GORDON()); setTab(TAB.QUESTIONS); render(); await wait();
@@ -3271,7 +3309,7 @@ const ipg=await page.evaluate(async()=>{
  o.shown=getComputedStyle(h).display!=='none'&&r.width>300&&r.height>300;
  o.inside=!!q&&q.parentNode===h&&!q.hidden;
  o.laws=h.querySelectorAll('[data-law]').length;
- o.btn=[...document.querySelectorAll('.tabgrp[data-sec="discover"] .tabtop .n')].map(n=>n.textContent).join(',');
+ o.btn=[...document.querySelectorAll('.tabgrp[data-sec="play"] .tabtop .n')].map(n=>n.textContent).join(',');
  o.pressed=document.querySelector('.tabtop[data-tabk="13"]').getAttribute('aria-pressed');
  o.avatarHidden=getComputedStyle(document.getElementById('iq')).display==='none';
  setTab(TAB.INTAKE); render(); await wait();
@@ -3281,7 +3319,7 @@ const ipg=await page.evaluate(async()=>{
  setTab(TAB.FIELD); render();
  return o;});
 ok(ipg.shown&&ipg.inside&&ipg.laws>=21&&ipg.avatarHidden,'Intake opens its own page with the questions on it, '+JSON.stringify(ipg));
-ok(ipg.btn==='Story,Avatar,Summary,Intake,Analytics'&&ipg.pressed==='true','Discover reads Story, Avatar, Summary, Intake, Analytics and the Intake door is pressed, '+ipg.btn);
+ok(ipg.btn==='Field,Body,Compass,Character,Avatar,Summary,Intake,Analytics'&&ipg.pressed==='true','Play reads Field, Body, Compass, Character, Avatar, Summary, Intake, Analytics and the Intake door is pressed, '+ipg.btn);
 ok(ipg.avatarOwns&&ipg.again>=21,'the Avatar still takes its page back and the questions come back to the Intake, '+JSON.stringify({a:ipg.avatarOwns,again:ipg.again}));
 
 console.log('\n=== the profile is a menu, and the glow fills the frame (round OI) ===');
@@ -4218,7 +4256,8 @@ ok(tiers.small===0,'every control on the tiers meets the 44 pixel floor, '+tiers
  const tabs=await pa.$$eval('.tabtop',a=>a.map(x=>x.textContent.trim()));
  const go=async nm=>{await pa.$$eval('.tabtop',(a,i)=>a[i].click(),
    tabs.findIndex(t=>new RegExp(nm,'i').test(t))); await pa.waitForTimeout(600);};
- await go('Story');
+ /* the journal page's door reads Discover since 23 October */
+ await go('Discover');
  await pa.fill('#sttext','I was humiliated in the meeting and I said nothing. '
   +'My chest went tight and I felt ashamed the rest of the day.');
  await pa.waitForTimeout(450);
@@ -4503,7 +4542,7 @@ await ph.goto(FILE,{waitUntil:'load'}); await booted(ph); await ph.waitForTimeou
    heaviest of the four, so the phone is measured with the most drawn. */
 await ph.evaluate(()=>{const i=PEOPLE.findIndex(x=>x.nm==='Lance 15');
  if(i<0)throw new Error('Lance 15 is not in the roster any more');loadP(i);});
-for(const [nm,t] of [['story',0],['summary',1],['field',2],['body',3],['intake',5],
+for(const [nm,t] of [['discover',0],['summary',1],['field',2],['body',3],['intake',5],
                      ['know',6],['games',7],['compass',8],['settings',9]]){
  const o=await ph.evaluate(async t=>{setTab(t);await new Promise(r=>setTimeout(r,420));
   return {b:document.body.scrollWidth,h:document.documentElement.scrollWidth,w:innerWidth};},t);
@@ -7251,9 +7290,17 @@ console.log('\n=== GO: the Field lands with its column shut, two names changed, 
    already start at full depth." Each on a real first visit, #landing, so the
    seed every other block gets is not here to hide the default. */
 {
+ /* THE FIRST VISIT TO THE FIELD, since 23 October. The app opens on Discover
+    now (TABHOME, engine/core.js), so a first visit reaches the Field by going
+    there, and that is what is measured: the Field's own defaults on the first
+    visit it gets, with nothing stored. Through setTab and not a press, since
+    a press inside the first moment after start up can be dropped (see the
+    settle note in tests/landing.js), and this block is about the Field. */
  const land=async(w,h)=>{const cx=await browser.newContext({viewport:{width:w,height:h}});
   const pg=await cx.newPage(); const err=[]; pg.on('pageerror',e=>err.push('PAGEERROR: '+e.message));
-  await pg.goto(FILE+'#landing',{waitUntil:'load'}); await booted(pg); return {cx,pg,err};};
+  await pg.goto(FILE+'#landing',{waitUntil:'load'}); await booted(pg);
+  await pg.evaluate(()=>{setTab(TAB.FIELD);render();}); await pg.waitForTimeout(300);
+  return {cx,pg,err};};
  const wide=await land(1600,1000);
  const a=await wide.pg.evaluate(()=>{const F=document.getElementById('fbar'),
    lay=k=>F.querySelector('.fb-full [data-fb='+k+']'), dv=F.querySelector('[data-fb=depth] .val');
@@ -7266,7 +7313,7 @@ console.log('\n=== GO: the Field lands with its column shut, two names changed, 
    stale:names.filter(n=>/^(Seats|Gates)$/.test(n)),
    view:S.view,custom:LAYSET,ring:dv.getAttribute('stroke-dasharray'),
    togMark:F.querySelector('.fb-tog svg').innerHTML,foldMark:document.querySelector('#lfold svg').innerHTML};});
- ok(a.tab&&a.lshut&&a.stored===null,'a first visit at 1600 lands on the Field with the left column shut and nothing stored, '+JSON.stringify({lshut:a.lshut,stored:a.stored}));
+ ok(a.tab&&a.lshut&&a.stored===null,'a first visit to the Field at 1600 finds the left column shut and nothing stored, '+JSON.stringify({lshut:a.lshut,stored:a.stored}));
  ok(a.energetics&&a.left==='Root Energetics','the left rail keeps Root Energetics, closed, '+a.left);
  ok(a.esum==='Energetic summary','and the summary keeps its own name, Energetic summary, so no two sections share one, '+a.esum);
  ok(a.seats==='Assemblage points'&&a.gates==='Laws of Action'&&!a.stale.length,'the bar says Assemblage points and Laws of Action, and neither old word, '+JSON.stringify([a.seats,a.gates,a.stale]));

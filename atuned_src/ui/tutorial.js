@@ -223,7 +223,7 @@ function tutRender(){
     +'entries are quiet.</p>')
     +'<p class="ob-p ob-dim">Longer entries, or ones with a feeling named in '
     +'them, usually give it more to find. You can always write another in '
-    +'the Story tab later.</p>';
+    +'Discover later.</p>';
   }else{
    body='<p class="ob-p">You wrote:</p>'
     +'<p class="ob-p ob-dim">&ldquo;'+esc(c.text.length>220?c.text.slice(0,220)+'…':c.text)+'&rdquo;</p>'
@@ -277,7 +277,7 @@ function tutRender(){
        +'<span>'+esc(x[1])+'</span></div>';}).join('')
     +'</div>'
     +'<p class="ob-p ob-dim">This is not just this one moment. Something runs '
-    +'through it, and this is what the Field and the Story tab track over '
+    +'through it, and this is what the Field and Discover track over '
     +'time.</p>';}
   out=tutCard('How it runs through you',body,
    '<button type="button" class="btn pri" data-tut="next">Next</button>');

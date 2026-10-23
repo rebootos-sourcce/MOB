@@ -430,6 +430,29 @@ leaving that setting empty is what closes tier four on the server side. The refe
 server to build (TASKS.md AK6). The terms still carry 9 placeholders and need
 a lawyer before they go live.
 
+## 2026-10-23 · owner · Discover, the opening, and the word Story
+
+said: "attach the Story link to Discover. So we're removing the word Story.
+We're keeping the word Discover... the app opens on Discover. So when you
+click Discover, you only get the journal and the imprints and the release. If
+I click on play, then I get all the other tools." Then: "Yeah, I've changed
+that rule. The most important portions of the app are core loop... That
+really is the journal to the release. Plus the ritual."
+read: the journal, the imprints and the release are the three columns of the
+page that was called Story, named so since round QB. Discover is that page,
+the section button is its door, every other tool goes to Play, and the app
+opens on Discover. The UX seat took one default on top, his to overrule: the
+first arrival from the funnel or the first run keeps its one landing on
+Summary, his 9 October ruling, because the gift's line stands on it.
+change: branch atuned/mvp-alpha-recursive-execution, the commit that adds
+this entry. engine/core.js (TABDEF, TABHOME), ui/panels.js (tabLandFirst),
+the bar in shell/body.html, and every line of copy that named the Story page.
+DECISIONS.md, 23 October, has the ruling and the default in full.
+measure: on 23 October, at 1600, a stranger's first screen is the journal,
+reached with no press where it took one from the Field, and the stage starts
+44px higher on Discover than under Play. tests/landing.js fails by name on
+the build from before.
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.

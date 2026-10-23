@@ -698,7 +698,10 @@ function obClose(how){
     Summary, once per device. See tabLandFirst in ui/panels.js. */
  if(!keep&&typeof tabLandFirst==='function'){ try{ tabLandFirst(); }catch(e){} }
  if(typeof render==='function')render();
- if(left&&typeof status==='function')status('Nothing committed. Your words wait in the Story tab.');}
+ /* the place is Discover since 23 October, his words: "we're removing the
+    word Story. We're keeping the word Discover." A story is still what a
+    person writes; only the page's name moved. */
+ if(left&&typeof status==='function')status('Nothing committed. Your words wait in Discover.');}
 
 /* ============================================================
    THE JOURNEY RECORD, THE HOST'S HALF. F13. engine/journey.js decides and
@@ -1569,9 +1572,9 @@ function obBridgeCard(){
  return obCard('Next','Nothing to release yet.',
   (c&&c.ok&&c.k
    ?'<p class="ob-p">You did not say yes to any place, so nothing from this story goes into a release. '
-    +'Your words are kept. You can always write another in the Story tab.</p>'
+    +'Your words are kept. You can always write another in Discover.</p>'
    :'<p class="ob-p">This entry did not carry enough charge to name a release yet. '
-    +'That is fine. You can always write another in the Story tab.</p>'),
+    +'That is fine. You can always write another in Discover.</p>'),
   '<button type="button" class="btn pri" data-ob="done">Go in</button>');}
 /* the bridge's empty body, split by why it is empty: nothing read, or read
    and nothing said yes to. Same title slot, the value carries the state. */

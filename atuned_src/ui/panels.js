@@ -96,13 +96,52 @@ $('allLaw').addEventListener('input',function(e){toYou();
    arriving in a link from the funnel (recordLinkBoot) and the first run
    closing (obClose), and happens once per device. A person who has landed
    once opens on wherever they left off, and a device that has never had
-   either fact opens on the Field, as it always did.
+   either fact opens on TABHOME, which was the Field until 23 October and is
+   Discover since.
 
    Settings and the practitioner page are never remembered: Settings has no
    door of its own, and the practitioner page is a switch a person may have
    turned off since. Analytics and Games are folded surfaces, so what is kept
    is the tab that carries them (TABREAL). A store that is blocked or throws
-   costs the memory and never the start up. */
+   costs the memory and never the start up.
+
+   THE APP OPENS ON DISCOVER, AND THE ONE FIRST LANDING STAYS ON SUMMARY.
+   23 October 2026. His words: "the app opens on Discover. So when you click
+   Discover, you only get the journal and the imprints and the release", and
+   "The most important portions of the app are core loop... That really is
+   the journal to the release." So a device with no memory opens on TABHOME
+   (engine/core.js), Discover's journal page, and every open after the first
+   landing is still wherever the person left off. The first landing itself,
+   once per device, at the funnel's link and at the first run closing, stays
+   on Summary. A default taken by the UX seat and his to overrule. The
+   reasons:
+
+     The 9 October ruling above is his and is about exactly this moment, a
+     first time user arriving from the funnel, where the 23 October ruling is
+     about where the app opens in general and names nothing of the funnel.
+     The specific one is kept until he says otherwise; nothing he said on 23
+     October takes it back.
+     A built feature stands on it. The gift's line, "Your gift: 100
+     patterns, no card. Everything is open.", is drawn on Summary as the
+     page a new person lands on (sumGift, ui/summary.js), so that their first
+     screen is their reading, opened and not a shop, and tests/gift.js holds
+     the line there, on the first screen, from the quiz's own link. Landing
+     on Discover would take the line off a new person's first screen, and
+     putting it on the journal page is a change to his approved layout that
+     nobody asked for. In alpha, "existing features complete" wins.
+     Weighed against it, and measured when this was built: landing a first
+     arrival on Discover worked, the status line said the record loaded and
+     the release column offered three of the record's held addresses with
+     Run lit, and the funnel's own door sells that page ("The app reads every
+     story you write and shows where each one sits in the body. Then it runs
+     a release", viewDoor, funnel/quiz.html). It was the first cut of this
+     change and was reversed for the two reasons above.
+
+   What it costs: "the app opens on Discover" is true on every open but one,
+   the first arrival, which sees its reading and the gift on Summary, in
+   Play, with Discover the first section on the bar. To send the first arrival to
+   Discover too is one line, the setTab below, once the gift's line has a
+   place on the journal page. */
 var TAB_KEY='source.tab', TAB_LANDED_KEY='source.landed';
 function tabKnown(k){
  var all=[].concat(typeof TABDEF!=='undefined'?TABDEF:[], typeof TABEXTRA!=='undefined'?TABEXTRA:[]);
@@ -460,8 +499,15 @@ function secPaint(i){
  if(sec){SEC_LAST[sec]=TABREAL(i); if(top)top.setAttribute('data-sec',sec);}
  document.querySelectorAll('#secbar .secb').forEach(function(b){
   b.setAttribute('aria-pressed',b.getAttribute('data-sec')===sec);});
+ /* A SECTION THAT IS ITS OWN DOOR IS NAMED ONCE, 23 October. The folded bar
+    on a phone reads the section quietly, then the surface in the pressed
+    tab's accent. Discover's surface is the section (door:'section',
+    engine/core.js), so its word goes in the surface's slot, where it reads
+    as the place a person is on, and the quiet slot is left empty rather than
+    printing Discover twice. head.html takes the empty slot out of the row. */
  var ns=$('navsec'); if(ns){var e=SECTIONS.filter(function(x){return x.k===sec;})[0];
-  ns.textContent=e?e.nm:'';}
+  var own=TABDEF.filter(function(T){return T.k===TABREAL(i);})[0];
+  ns.textContent=(e&&!(own&&own.door==='section'))?e.nm:'';}
  secAlign();}
 /* THE SECOND TIER STARTS UNDER THE FIRST, LETTER ON LETTER. KT, his words:
    "they start pixel for pixel, directly underneath like text-wise, font-wise,
@@ -666,12 +712,13 @@ LIGHTINGS.forEach(function(t,i){
  document.addEventListener('keydown',function(e){
   if(e.key==='Escape'&&top.classList.contains('navopen')){set(false);tog.focus();}});})();
 /* ---- THE WORDMARK GOES HOME ----
-   Home is the field. It is the instrument, it is where the app opens on the
-   owner's ruling, and it is what clicking the name of the product asks for. */
+   Home is where the app opens on the owner's ruling, and it is what clicking
+   the name of the product asks for. It was the Field while the app opened
+   there; it is Discover since 23 October, TABHOME in engine/core.js. */
 (function(){
  var b=$('brand'); if(!b)return;
- /* home is where the app opens, and the app opens on Field */
- b.addEventListener('click',function(){setTab(TAB.FIELD);});})();
+ /* home is where the app opens */
+ b.addEventListener('click',function(){setTab(TABHOME);});})();
 /* the font tuner is gone on the owner's ruling. one face, narrower, no
    per person override to keep working across every surface. */
 
@@ -1152,7 +1199,8 @@ function recordLinkBoot(){
   try{ recordLanded(); }
   catch(e){ try{ if(window.console)console.error('[atuned] redraw after a linked record',e); }catch(e2){} }
   /* THE FIRST ARRIVAL FROM THE FUNNEL LANDS ON SUMMARY, once per device, so the
-     first thing a person sees is their own reading. See tabLandFirst. */
+     first thing a person sees is their own reading and the gift's line. The
+     app opens on Discover otherwise, since 23 October. See tabLandFirst. */
   try{ tabLandFirst(); }catch(e){}
   /* A quiz-imported record skips onboarding, which is otherwise the first
      caller of the anonymous first-visit session. Start that same session

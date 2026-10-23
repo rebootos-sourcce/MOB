@@ -41,7 +41,7 @@ We do not have a copy of any of it. If you clear your browser's data or lose the
 
 Nobody else can see it. The app has no way to show your record to anyone yet. If we add one, it will work only after you say yes, it will list who can see what, and one press will take it back.
 
-The button **Is this a crisis?** sends nothing and reads nothing you write. It shows three numbers that reach a trained person or emergency help. Pressing one opens your phone's own dialler or messages, so the call or text goes from your phone and never through us. Its other choice, Talk it through, opens your journal, the Story page where you write. The journal stays on your device, and no person reads it.
+The button **Is this a crisis?** sends nothing and reads nothing you write. It shows three numbers that reach a trained person or emergency help. Pressing one opens your phone's own dialler or messages, so the call or text goes from your phone and never through us. Its other choice, Talk it through, opens your journal, on the Discover page where you write. The journal stays on your device, and no person reads it.
 
 The free quiz on atuned.world keeps your answers in your browser too, so you can stop and come back. The quiz sends nothing. A story typed into the quiz is held only while the page is open. When the quiz opens the app, your answers ride in the link after a # sign, and a browser never sends that part of a link anywhere.
 
