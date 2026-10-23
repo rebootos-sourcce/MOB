@@ -199,3 +199,13 @@ This entry supersedes earlier ledger lines that say the exact v341 file has not 
 | Owner ruling on Architect/Rulership and compound labels | OPEN |
 | Repository audit script / adapter / runtime traversal / regression | NOT RUN |
 | Automated Markdown link and anchor checker | NOT RUN |
+
+
+## Executive three-pass recursive closure strategy — 2026-10-22
+
+New handoff entry points:
+- Strategy: `docs/ATUNED_DEEP_PSYCHOLOGICAL_THREE-PASS_RECURSIVE_CLOSURE_STRATEGY_2026-10-22.md`
+- Executive handshake: `docs/ATUNED_DEEP_PSYCHOLOGICAL_EXECUTIVE_HANDSHAKE_NEXT_THREAD_2026-10-22.md`
+- Primary TDD: `docs/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_FORMAT_TDD_v1.md`
+
+Plan: three distinct strategy reviews, eight execution blocks, and four recursive rounds that repeat on failure. This is a planning/documentation milestone only; the full recursive audit and runtime closure remain open. Before execution, re-fetch current HEAD and verify all historical counts, paths, SHAs, source identity, test commands, and statuses. Every future cycle must log exact commits, commands, exit codes, evidence links, affected IDs, and residual blockers. Never claim background execution or closure without results.
