@@ -484,7 +484,7 @@ const DESCENT=[
   gate:'Malignancy begins where harm to others becomes instrumental.',
   content:{
    inferred:false, inferenceBasis:'The higher-order placement and brief description are explicitly source-defined in this DESCENT registry. Detailed behavior and opposite are research-informed expansions, not diagnoses.',
-   behavior:'May use strategic impression management, selective disclosure, deception, cynical assumptions, or interpersonal leverage to pursue an outcome. Empathy may be used instrumentally rather than to guide care; research does not support treating every person with this trait as identical.',
+   behavior:'May use strategic impression management, selective disclosure, deception, cynical assumptions, or a hold over other people to pursue an outcome. Empathy may be used instrumentally rather than to guide care; research does not support treating every person with this trait as identical.',
    triggerMechanism:'A desired outcome, competition, perceived vulnerability, or distrust can shift the decision rule from mutual agreement toward control of information and other people’s choices.',
    livedExample:'During a disagreement, the person privately tells each colleague a different version of events to isolate an opponent and secure a decision, while presenting the move as neutral problem-solving.',
    impact:'Undermines informed consent, stable trust, fair collaboration, and shared decision-making; apparent cooperation can become difficult to distinguish from tactical compliance.',
@@ -504,7 +504,7 @@ const DESCENT=[
   refer:true,
   content:{
    inferred:false, inferenceBasis:'The super-complex placement and core phrasing are explicitly source-defined in this DESCENT registry. The added behavioral template is research-informed and must not be used to diagnose an individual.',
-   behavior:'The source model describes harm-related feedback as structurally unavailable or not constraining choice. In real-world research, psychopathy is a complex construct with varied measures; do not infer it from a single action, conflict, or perceived lack of warmth.',
+   behavior:'The source model describes harm-related feedback as structurally unavailable or not constraining choice. In real-world research, psychopathy is a complex pattern with varied measures; do not infer it from a single action, conflict, or perceived lack of warmth.',
    triggerMechanism:'In the source model, a choice point occurs where another person’s welfare would normally constrain an action, but the anticipated harm does not function as a meaningful stop signal. This is a model description, not a validated clinical mechanism for an individual.',
    livedExample:'A decision-maker recognizes that a choice will predictably injure another person, but treats that injury as irrelevant to the decision and proceeds without meaningful consideration of consent, responsibility, or repair.',
    impact:'If this pattern is present, ordinary appeals to shared feeling may not be sufficient to protect others; prioritize boundaries, accountability, documented decisions, and appropriate professional support.',

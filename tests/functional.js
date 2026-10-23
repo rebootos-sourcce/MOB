@@ -2231,6 +2231,26 @@ const pole=await page.evaluate(()=>{
  const txt=()=>(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ');
  runPoleDrill('up'); o.up=txt();
  runPoleDrill('dn'); o.dn=txt();
+ /* A DESCENT RECORD IS NEVER PAINTED, 23 October. The voice gate sets
+    content.researchPasses and content.inferenceBasis aside as a record about
+    the copy (NOT_COPY in .claude/skills/atuned-voice/check.py), on the ground
+    that nothing that ships reads them, and its guard can only see a read by
+    name. This measures the paint. The dark read is the one route a DESCENT
+    entry has to a screen, so every string of those two records is looked for
+    in what this drill draws, its text and every attribute, and none may be
+    there. What it does paint, each step's name and its title, is looked for
+    first: a probe that cannot find what is there proves nothing about what
+    is not. */
+ {const el=document.getElementById('rdrill'), seen=[el.textContent];
+  el.querySelectorAll('*').forEach(n=>{for(const a of n.attributes)seen.push(a.value);});
+  const paint=seen.join('\n'), rec=[];
+  (function walk(v){if(typeof v==='string')rec.push(v);
+   else if(v&&typeof v==='object')Object.values(v).forEach(walk);})
+   (DESCENT.map(d=>[d.content&&d.content.researchPasses,d.content&&d.content.inferenceBasis]));
+  o.steps=DESCENT.length;
+  o.stepsPainted=DESCENT.filter(d=>paint.indexOf(d.nm)>=0&&paint.indexOf(d.d)>=0).length;
+  o.recordStrings=rec.length;
+  o.recordPainted=rec.filter(t=>t.length>=12&&paint.indexOf(t)>=0);}
  /* a row on either roster opens that axis with both poles on it */
  runPoleDrill('up');
  const row=document.querySelector('#rdrill [data-mirror]');
@@ -2277,6 +2297,10 @@ ok(pole.dark===true,'the heaviest case reads malignant and decoherent at once, C
 ok(/licensed clinician/.test(pole.dn),'and the referral is on the surface, not only in the book');
 ok(/reading of what is running, not of who/.test(pole.dn),
  'said as a reading of what runs rather than a label on a person');
+ok(pole.steps>0&&pole.stepsPainted===pole.steps,'the dark read paints every step of the descent by name and title, '
+ +pole.stepsPainted+' of '+pole.steps+', so the probe below can see a DESCENT string');
+ok(pole.recordStrings>0&&pole.recordPainted.length===0,'and paints none of the '+pole.recordStrings
+ +' strings of the research record the voice gate sets aside, painted '+JSON.stringify(pole.recordPainted.slice(0,2)));
 /* and none of it is shown to somebody it is not true of */
 ok(pole.cleanDark===false,'a cleared field does not read as the descent, CQ '
  +pole.cleanCQ+' malignant '+pole.cleanMal);
