@@ -86,3 +86,12 @@ For each build cycle, record: date, branch/commit SHA, exact paths changed, link
 - Runtime integration verified: no.
 - Link checker executed in this cycle: no; this document establishes the required protocol, not a completed link audit.
 - Confidence in this baseline as a documentation ledger: 0.91. Confidence in semantic/source closure: low until v341 source and record-level evidence are verified.
+
+
+## 2026-10-22 — exact 23-record inventory and source crosswalk
+- Added [23-Record Source Crosswalk](ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md), commit [59ad29d](https://github.com/rebootos-sourcce/MOB/commit/59ad29d03efd0621c3607f31b7bfea6a45152b9c).
+- Retrieved the 1,067,012-character registry through its Git blob endpoint and parsed it. Confirmed 125 records and enumerated all 15 `domain:01`–`domain:15` IDs plus all eight `conscious-domain:01`–`conscious-domain:08` IDs.
+- Retrieved and parsed SOURCE OS CANON at `rebootos-sourcce/Reboot-OS/atuned/data/canon.json`, blob SHA `27a7a178de1e87252fa8e59554a66735dbeb0aed`. Its metadata identifies source build `MOB_Complete_v184.html`, not v341. It groups 18 domain labels: Architect (5), Engine (5), Weaver (4), Witness (4), and records the open ruling “18 in the book, 15 in the compilation, 14 in the blueprint file.”
+- No `MOB_Complete_v341.html` was found in the MOB default-branch tree. Exact v341 source recovery remains a blocker; no claim is made that v341 content has been verified.
+- Crosswalk preserves likely lexical leads as unapproved candidates only. Canonical semantic mappings approved: 0/23.
+- Next action: recover the actual v341 source (or verifiable v341 export), then record exact section/heading/anchor and hash for every evidence claim. Until then, do not invent canonical definitions, names, or affirmations.
