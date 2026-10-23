@@ -148,3 +148,34 @@ The seven chakra-to-domain assignments are still an inferred crosswalk, not cano
 3. Finish the Conscious Domain research and the behavioral-domain source/crosswalk review.
 4. Keep the 14 Blueprint positions non-canonical unless source material establishes names and relationships.
 5. Rerun the full registry audit and only then decide whether KPI 1 can close.
+
+
+## Round 6 — Conscious Domain research closure, provisional
+
+**Date:** 2026-10-22
+
+### Committed work
+- Registry commit: `28d4ed0438fed9021a7e254a9a9005a22efcc0a0`
+- Registry blob SHA: `b3a76e41118e02e083cc5cb4fe828f2c553ca696`
+- Updated all 8 Conscious Domain records: their Pass 2 and Pass 3 statuses now reflect completed provisional research/synthesis, not blocked/in-progress placeholders.
+- Added external literature references:
+  - APA, *Psychology of Consciousness: Theory, Research, and Practice* journal scope: https://www.apa.org/pubs/journals/cns/about
+  - Peer-reviewed review on consciousness across perception, cognition, self, and emotion: https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/
+  - Cohen & Sherman, *The Psychology of Change: Self-Affirmation and Social Psychological Intervention*, Annual Review of Psychology: https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137
+
+### Research interpretation
+The literature supports the general constructs used to contextualize the records, and self-affirmation research supports values-based affirmation as a general psychological intervention. It does **not** independently establish the precise ATÜNED Conscious Domain definitions or which affirmation belongs to which domain. Those fields remain provisional and not canon-approved.
+
+### Verified status calculation
+- Conscious Domain Pass 2 moved from blocked to complete: 8.
+- Conscious Domain Pass 3 moved from in_progress to complete: 8.
+- Registry now has 375/375 pass slots marked complete, while preserving canonical approval as unapproved and retaining the exact taxonomy/affirmation questions as unresolved.
+- Current registry remains 125 records with 125 unique IDs.
+- This is a provisional research-completion status, not a claim of 375 independent source-backed investigations. The pass findings distinguish primary-source extraction, external conceptual corroboration, and synthesis; the 15 behavioral-domain mappings and other crosswalks still require adjudication.
+
+### Next KPI 1 cycle
+1. Audit all 125 records against the schema's exact required fields and enums.
+2. Review the 15 behavioral-domain records individually for evidence quality and crosswalk disposition.
+3. Audit the 18 archetype candidates, 36 mapping rows, 12 cultural-figure mappings, and 14 Blueprint slots for missing applicable content and relationship evidence.
+4. Repair schema defects at source and rerun the complete registry audit.
+5. Keep KPI 1 open until every applicable record satisfies the shared record contract and the unresolved domain-count/relationship decisions are explicitly dispositioned. KPI 2 remains gated.
