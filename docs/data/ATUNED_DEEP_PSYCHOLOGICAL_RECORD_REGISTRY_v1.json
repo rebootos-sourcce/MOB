@@ -1137,7 +1137,8 @@
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending"
+        "canonicalApproval": "pending",
+        "status": "provisional_source_review"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -1320,7 +1321,8 @@
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending"
+        "canonicalApproval": "pending",
+        "status": "provisional_source_review"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -1503,7 +1505,8 @@
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending"
+        "canonicalApproval": "pending",
+        "status": "provisional_source_review"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -1686,7 +1689,8 @@
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending"
+        "canonicalApproval": "pending",
+        "status": "provisional_source_review"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -1869,7 +1873,8 @@
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending"
+        "canonicalApproval": "pending",
+        "status": "provisional_source_review"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -2052,7 +2057,8 @@
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending"
+        "canonicalApproval": "pending",
+        "status": "provisional_source_review"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -2235,7 +2241,8 @@
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending"
+        "canonicalApproval": "pending",
+        "status": "provisional_source_review"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -2418,7 +2425,8 @@
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending"
+        "canonicalApproval": "pending",
+        "status": "provisional_source_review"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -2601,7 +2609,8 @@
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending"
+        "canonicalApproval": "pending",
+        "status": "provisional_source_review"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -2784,7 +2793,8 @@
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending"
+        "canonicalApproval": "pending",
+        "status": "provisional_source_review"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -2967,7 +2977,8 @@
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending"
+        "canonicalApproval": "pending",
+        "status": "provisional_source_review"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -3150,7 +3161,8 @@
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending"
+        "canonicalApproval": "pending",
+        "status": "provisional_source_review"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -3333,7 +3345,8 @@
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending"
+        "canonicalApproval": "pending",
+        "status": "provisional_source_review"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -3516,7 +3529,8 @@
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending"
+        "canonicalApproval": "pending",
+        "status": "provisional_source_review"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -3699,7 +3713,8 @@
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending"
+        "canonicalApproval": "pending",
+        "status": "provisional_source_review"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -8922,7 +8937,8 @@
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending"
+        "canonicalApproval": "pending",
+        "status": "provisional_source_review"
       },
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
@@ -9093,7 +9109,8 @@
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending"
+        "canonicalApproval": "pending",
+        "status": "provisional_source_review"
       },
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
@@ -9263,7 +9280,8 @@
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending"
+        "canonicalApproval": "pending",
+        "status": "provisional_source_review"
       },
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
@@ -9433,7 +9451,8 @@
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending"
+        "canonicalApproval": "pending",
+        "status": "provisional_source_review"
       },
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
@@ -9603,7 +9622,8 @@
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending"
+        "canonicalApproval": "pending",
+        "status": "provisional_source_review"
       },
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
@@ -9773,7 +9793,8 @@
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending"
+        "canonicalApproval": "pending",
+        "status": "provisional_source_review"
       },
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
@@ -9943,7 +9964,8 @@
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending"
+        "canonicalApproval": "pending",
+        "status": "provisional_source_review"
       },
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
@@ -10113,7 +10135,8 @@
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending"
+        "canonicalApproval": "pending",
+        "status": "provisional_source_review"
       },
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
