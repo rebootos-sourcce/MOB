@@ -37,11 +37,27 @@
       "status": "source_backed_grouping_open_domain_count_ruling",
       "definition": "The SOURCE OS CANON groups 5 domain labels under Architect (Order). The source establishes the grouping but does not provide a full semantic definition of the root itself.",
       "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "function": "Organize reality through distinctions, structure, responsibility, and principled order.",
+      "healthyExpression": [
+        "Clear distinctions and priorities",
+        "Accountable stewardship",
+        "Consistent principles that remain revisable"
+      ],
+      "decoherentExpression": [
+        "Rigid rule-following",
+        "Control for its own sake",
+        "Certainty that refuses new evidence"
+      ],
+      "signals": [
+        "Clear distinctions and priorities",
+        "Accountable stewardship",
+        "Consistent principles that remain revisable"
+      ],
+      "distortions": [
+        "Rigid rule-following",
+        "Control for its own sake",
+        "Certainty that refuses new evidence"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -100,7 +116,9 @@
         }
       ],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "Building a fair decision process that can be audited"
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -160,7 +178,8 @@
         "Recover a full source definition of this root beyond its parenthetical category label."
       ],
       "notes": [
-        "Owner-stated seat association is retained separately; the SOURCE OS CANON table does not establish that seat mapping."
+        "Owner-stated seat association is retained separately; the SOURCE OS CANON table does not establish that seat mapping.",
+        "ATÜNED-facing story and interpretation are provisional synthesis; source canon establishes root grouping, not full semantic definition."
       ],
       "changelog": [
         {
@@ -252,7 +271,34 @@
               "The root's full definition and final domain denominator remain subject to the open ruling."
             ]
           }
-        ]
+        ],
+        "story": "A group is overwhelmed by competing priorities. Someone clarifies the facts, names the rules that matter, assigns responsibility, and keeps the structure open to correction when reality changes.",
+        "atunedVersion": "Provisional ATÜNED interpretation: Architect represents coherent ordering—turning perception into distinctions, decisions, and accountable structure. Its failure mode is control detached from truth or service.",
+        "function": "Organize reality through distinctions, structure, responsibility, and principled order.",
+        "healthyExpression": [
+          "Clear distinctions and priorities",
+          "Accountable stewardship",
+          "Consistent principles that remain revisable"
+        ],
+        "decoherentExpression": [
+          "Rigid rule-following",
+          "Control for its own sake",
+          "Certainty that refuses new evidence"
+        ],
+        "signals": [
+          "Clear distinctions and priorities",
+          "Accountable stewardship",
+          "Consistent principles that remain revisable"
+        ],
+        "distortions": [
+          "Rigid rule-following",
+          "Control for its own sake",
+          "Certainty that refuses new evidence"
+        ],
+        "examples": [
+          "Building a fair decision process that can be audited"
+        ],
+        "nonExamples": []
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -265,7 +311,9 @@
       },
       "sourceIds": [
         "canon.json@27a7a178de1e87252fa8e59554a66735dbeb0aed"
-      ]
+      ],
+      "story": "A group is overwhelmed by competing priorities. Someone clarifies the facts, names the rules that matter, assigns responsibility, and keeps the structure open to correction when reality changes.",
+      "atunedVersion": "Provisional ATÜNED interpretation: Architect represents coherent ordering—turning perception into distinctions, decisions, and accountable structure. Its failure mode is control detached from truth or service."
     },
     {
       "id": "root:engine",
@@ -278,11 +326,27 @@
       "status": "source_backed_grouping_open_domain_count_ruling",
       "definition": "The SOURCE OS CANON groups 5 domain labels under Engine (Dynamics). The source establishes the grouping but does not provide a full semantic definition of the root itself.",
       "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "function": "Mobilize energy and change through directed force, creation, dissolution, and consequential action.",
+      "healthyExpression": [
+        "Directed energy",
+        "Creation matched to capacity",
+        "Necessary endings with responsibility"
+      ],
+      "decoherentExpression": [
+        "Scattered effort",
+        "Coercive force",
+        "Destruction without transition"
+      ],
+      "signals": [
+        "Directed energy",
+        "Creation matched to capacity",
+        "Necessary endings with responsibility"
+      ],
+      "distortions": [
+        "Scattered effort",
+        "Coercive force",
+        "Destruction without transition"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -341,7 +405,9 @@
         }
       ],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "Ending an ineffective process and redirecting its resources"
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -401,7 +467,8 @@
         "Recover a full source definition of this root beyond its parenthetical category label."
       ],
       "notes": [
-        "Owner-stated seat association is retained separately; the SOURCE OS CANON table does not establish that seat mapping."
+        "Owner-stated seat association is retained separately; the SOURCE OS CANON table does not establish that seat mapping.",
+        "ATÜNED-facing story and interpretation are provisional synthesis; source canon establishes root grouping, not full semantic definition."
       ],
       "changelog": [
         {
@@ -493,7 +560,34 @@
               "The root's full definition and final domain denominator remain subject to the open ruling."
             ]
           }
-        ]
+        ],
+        "story": "A project has lost momentum. The team identifies what to activate, what to build, and what must end, then directs effort toward the next viable state.",
+        "atunedVersion": "Provisional ATÜNED interpretation: Engine represents coherent dynamics—energy translated into purposeful movement and change. Its failure mode is force without direction or change without integration.",
+        "function": "Mobilize energy and change through directed force, creation, dissolution, and consequential action.",
+        "healthyExpression": [
+          "Directed energy",
+          "Creation matched to capacity",
+          "Necessary endings with responsibility"
+        ],
+        "decoherentExpression": [
+          "Scattered effort",
+          "Coercive force",
+          "Destruction without transition"
+        ],
+        "signals": [
+          "Directed energy",
+          "Creation matched to capacity",
+          "Necessary endings with responsibility"
+        ],
+        "distortions": [
+          "Scattered effort",
+          "Coercive force",
+          "Destruction without transition"
+        ],
+        "examples": [
+          "Ending an ineffective process and redirecting its resources"
+        ],
+        "nonExamples": []
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -506,7 +600,9 @@
       },
       "sourceIds": [
         "canon.json@27a7a178de1e87252fa8e59554a66735dbeb0aed"
-      ]
+      ],
+      "story": "A project has lost momentum. The team identifies what to activate, what to build, and what must end, then directs effort toward the next viable state.",
+      "atunedVersion": "Provisional ATÜNED interpretation: Engine represents coherent dynamics—energy translated into purposeful movement and change. Its failure mode is force without direction or change without integration."
     },
     {
       "id": "root:weaver",
@@ -519,11 +615,27 @@
       "status": "source_backed_grouping_open_domain_count_ruling",
       "definition": "The SOURCE OS CANON groups 4 domain labels under Weaver (Connection). The source establishes the grouping but does not provide a full semantic definition of the root itself.",
       "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "function": "Connect people, needs, resources, and processes through reciprocal exchange and repair.",
+      "healthyExpression": [
+        "Reciprocity",
+        "Repair and reconnection",
+        "Connection that preserves difference"
+      ],
+      "decoherentExpression": [
+        "One-way extraction",
+        "Boundary collapse",
+        "Avoiding truth to preserve harmony"
+      ],
+      "signals": [
+        "Reciprocity",
+        "Repair and reconnection",
+        "Connection that preserves difference"
+      ],
+      "distortions": [
+        "One-way extraction",
+        "Boundary collapse",
+        "Avoiding truth to preserve harmony"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -572,7 +684,9 @@
         }
       ],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "Restoring a strained partnership through explicit needs and agreements"
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -632,7 +746,8 @@
         "Recover a full source definition of this root beyond its parenthetical category label."
       ],
       "notes": [
-        "Owner-stated seat association is retained separately; the SOURCE OS CANON table does not establish that seat mapping."
+        "Owner-stated seat association is retained separately; the SOURCE OS CANON table does not establish that seat mapping.",
+        "ATÜNED-facing story and interpretation are provisional synthesis; source canon establishes root grouping, not full semantic definition."
       ],
       "changelog": [
         {
@@ -721,7 +836,34 @@
               "The root's full definition and final domain denominator remain subject to the open ruling."
             ]
           }
-        ]
+        ],
+        "story": "Two groups are working at cross-purposes. Someone makes the dependencies visible, restores communication, and helps them exchange what each needs without erasing their differences.",
+        "atunedVersion": "Provisional ATÜNED interpretation: Weaver represents coherent relationship—connection that allows exchange, care, and play without collapsing boundaries. Its failure mode is enmeshment, extraction, or connection without truth.",
+        "function": "Connect people, needs, resources, and processes through reciprocal exchange and repair.",
+        "healthyExpression": [
+          "Reciprocity",
+          "Repair and reconnection",
+          "Connection that preserves difference"
+        ],
+        "decoherentExpression": [
+          "One-way extraction",
+          "Boundary collapse",
+          "Avoiding truth to preserve harmony"
+        ],
+        "signals": [
+          "Reciprocity",
+          "Repair and reconnection",
+          "Connection that preserves difference"
+        ],
+        "distortions": [
+          "One-way extraction",
+          "Boundary collapse",
+          "Avoiding truth to preserve harmony"
+        ],
+        "examples": [
+          "Restoring a strained partnership through explicit needs and agreements"
+        ],
+        "nonExamples": []
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -734,7 +876,9 @@
       },
       "sourceIds": [
         "canon.json@27a7a178de1e87252fa8e59554a66735dbeb0aed"
-      ]
+      ],
+      "story": "Two groups are working at cross-purposes. Someone makes the dependencies visible, restores communication, and helps them exchange what each needs without erasing their differences.",
+      "atunedVersion": "Provisional ATÜNED interpretation: Weaver represents coherent relationship—connection that allows exchange, care, and play without collapsing boundaries. Its failure mode is enmeshment, extraction, or connection without truth."
     },
     {
       "id": "root:witness",
@@ -747,11 +891,27 @@
       "status": "source_backed_grouping_open_domain_count_ruling",
       "definition": "The SOURCE OS CANON groups 4 domain labels under Witness (Awareness). The source establishes the grouping but does not provide a full semantic definition of the root itself.",
       "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "function": "Bring awareness to what is present, including nature, disruption, mystery, and protective boundaries.",
+      "healthyExpression": [
+        "Present-moment observation",
+        "Discernment under uncertainty",
+        "Respect for natural feedback"
+      ],
+      "decoherentExpression": [
+        "Premature certainty",
+        "Detachment used to avoid participation",
+        "Treating speculation as fact"
+      ],
+      "signals": [
+        "Present-moment observation",
+        "Discernment under uncertainty",
+        "Respect for natural feedback"
+      ],
+      "distortions": [
+        "Premature certainty",
+        "Detachment used to avoid participation",
+        "Treating speculation as fact"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -800,7 +960,9 @@
         }
       ],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "Separating direct observations from interpretations during an investigation"
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -860,7 +1022,8 @@
         "Recover a full source definition of this root beyond its parenthetical category label."
       ],
       "notes": [
-        "Owner-stated seat association is retained separately; the SOURCE OS CANON table does not establish that seat mapping."
+        "Owner-stated seat association is retained separately; the SOURCE OS CANON table does not establish that seat mapping.",
+        "ATÜNED-facing story and interpretation are provisional synthesis; source canon establishes root grouping, not full semantic definition."
       ],
       "changelog": [
         {
@@ -949,7 +1112,34 @@
               "The root's full definition and final domain denominator remain subject to the open ruling."
             ]
           }
-        ]
+        ],
+        "story": "A familiar system behaves unexpectedly. Rather than force the old explanation, someone observes the pattern, questions assumptions, and remains curious while testing what is actually happening.",
+        "atunedVersion": "Provisional ATÜNED interpretation: Witness represents coherent awareness—seeing signals before reacting and staying open to what is not yet understood. Its failure mode is detached observation, credulity, or dismissing experience too early.",
+        "function": "Bring awareness to what is present, including nature, disruption, mystery, and protective boundaries.",
+        "healthyExpression": [
+          "Present-moment observation",
+          "Discernment under uncertainty",
+          "Respect for natural feedback"
+        ],
+        "decoherentExpression": [
+          "Premature certainty",
+          "Detachment used to avoid participation",
+          "Treating speculation as fact"
+        ],
+        "signals": [
+          "Present-moment observation",
+          "Discernment under uncertainty",
+          "Respect for natural feedback"
+        ],
+        "distortions": [
+          "Premature certainty",
+          "Detachment used to avoid participation",
+          "Treating speculation as fact"
+        ],
+        "examples": [
+          "Separating direct observations from interpretations during an investigation"
+        ],
+        "nonExamples": []
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -962,7 +1152,9 @@
       },
       "sourceIds": [
         "canon.json@27a7a178de1e87252fa8e59554a66735dbeb0aed"
-      ]
+      ],
+      "story": "A familiar system behaves unexpectedly. Rather than force the old explanation, someone observes the pattern, questions assumptions, and remains curious while testing what is actually happening.",
+      "atunedVersion": "Provisional ATÜNED interpretation: Witness represents coherent awareness—seeing signals before reacting and staying open to what is not yet understood. Its failure mode is detached observation, credulity, or dismissing experience too early."
     },
     {
       "id": "domain:01",
