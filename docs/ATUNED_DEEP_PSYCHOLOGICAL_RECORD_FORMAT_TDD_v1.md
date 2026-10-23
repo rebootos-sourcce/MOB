@@ -265,3 +265,23 @@ Do not continue describing v341 as unavailable. The unresolved problem is no lon
 
 ## 2026-10-22 — registry populated from recovered v341 source
 The uploaded v341 file has been extracted (SHA-256 `79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4`). The registry now holds source-backed name/definition summaries for all eight Conscious Domain IDs, and v341 provenance plus unapproved candidate mapping notes on all fifteen behavioral-domain IDs. The summaries are not a substitute for the source itself; retain the source hash and chapter anchor in each record. Research passes 2–3 and canonical approval remain pending. Do not mark the overall task complete until the 15-to-19 domain crosswalk and the source's Architect (Rulership)/Imperium contradiction are adjudicated, all 23 records have the required three distinct evidence passes, and schema/runtime/traversal/link tests have actually been run and logged.
+
+
+## 2026-10-22 v341 source-review execution update
+
+The uploaded source `MOB_Complete_v341.html` was materialized from the current conversation and inspected. SHA-256: `79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4`. Relevant verified anchors are Chapter 12 Stacking Architecture (`#ch17`), Chapter 28 The Domains (`#ch-domains`), and Chapter 32 The Seven Affirmations (`#ch22`).
+
+See the [23-record source crosswalk](ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md) for the per-ID candidate classifications and source notes.
+
+### Research pass implementation state
+- The 15 behavioral-domain records now record source extraction, a cross-version comparison against the historical v184 CANON, and a synthesis/classification pass. Their third pass remains `in_progress` because mappings are unapproved and the source has unresolved naming/count contradictions.
+- The eight Conscious Domain records now record source extraction and a synthesis stage. Their independent corroboration pass is `blocked` until an independent source is available; an internal cross-section check must not be mislabeled as independent corroboration.
+- Registry research pass status values use the schema enum only: `pending`, `in_progress`, `complete`, or `blocked`.
+- Registry update commit: [3bf815f](https://github.com/rebootos-sourcce/MOB/commit/3bf815f0ef50ab706ac57bb4d32c7c12eb122136). Crosswalk update commit: [e6b8bb2](https://github.com/rebootos-sourcce/MOB/commit/e6b8bb25254b524ab23518662cfce8f8abae4207).
+
+### Do not close the following gates
+1. Do not approve any 15-to-19 mapping until the owner rules the compound labels and root/domain ambiguity.
+2. Do not treat the v184 CANON as v341 or as a superior authority.
+3. Do not merge Pattern Consciousness, Story Consciousness, or Imperium Consciousness into the eight-record Conscious Domain roster without a source/owner ruling.
+4. Do not mark independent corroboration complete for the Conscious Domain records until a genuinely independent source has been inspected.
+5. Schema validation, adapter execution, runtime integration, forward/backward traversal, regression tests, and automated link checks remain NOT RUN / NOT VERIFIED unless separate evidence is committed.
