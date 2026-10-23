@@ -320,7 +320,7 @@ def find_unit(file, rx, layer=None):
 
 REAL = [
     ('atuned_src/ui/release.js', r'^that I am$', 'flow', 'DISCOVER'),
-    ('atuned_src/ui/storyui.js', r'^Nothing committed on a worked example', 'status', 'DISCOVER'),
+    ('atuned_src/ui/personas.js', r'^A worked example shows every reading and runs nothing', 'information', 'none'),
     ('atuned_src/ui/storyui.js', r'^What happened\. Write it', 'discovery', 'DISCOVER'),
     ('atuned_src/ui/fieldbar.js', r'^Your 112 addresses\. Each mark', 'tooltip', 'PLAY'),
     ('atuned_src/ui/summary.js', r'^There is no birth data on file', 'mirror', 'DISCOVER'),

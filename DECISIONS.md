@@ -2954,3 +2954,41 @@ His words, 17 October: "knock out that percent framework... the percent is how w
 - **The line at 4 reads 40%.** A charge "reaches 4 and starts to cost your body" becomes "reaches 40%".
 - **The one cap stays at 10** (several entries added up at one address print as a percent of 10). Unchanged from phase 1, still open for him.
 - **The release screen waits for its own rebuild.** Its results page and carousel are being rebuilt by another seat, so `ui/release.js` is not touched by phase 2; the percent items it needs are listed in the phase 2 plan for that seat.
+
+## The full stack, nerve to Character, ruled 23 October
+
+His words, close to verbatim, called canon and ordered locked in: "Our
+stack goes psychophysical, that's nerve, to super complex, deep
+psychological, it's our archetypes to domains, and then we have our
+energetic... From fetter to super complex. After the super complex are
+the masks. The mask layer is the hybrid. Then one up from that is the
+archetype to the spiritual. And then at the very top is the character.
+So the whole thing goes from nerve to character."
+
+This settles the one point every earlier reconciliation this session left
+open. Super complex and Character are not the same rung. The ordered
+stack, bottom to top:
+
+1. Nerve (node, fetter), the psychophysical floor.
+2. Saboteur, complex, hyper complex.
+3. **Super complex.** Two or more hyper complexes combined. This is the
+   rung the running engine currently builds and calls Character; it is
+   being renamed, not newly invented, since the arithmetic (two hyper
+   complexes pairing) already exists and already matches his
+   description.
+4. Masks, "the hybrid" layer.
+5. Archetype through domain, "deep psychological," running up to what he
+   calls the spiritual.
+6. **Character, at the very top.** Above masks and above archetype
+   through the spiritual, not a direct pairing of two hyper complexes.
+   His own 27 September words already on record, "the character is a
+   total sum of the all of it," read correctly under this ruling as the
+   whole person, everything below it taken together, not a fourth
+   rung's arithmetic.
+
+Open, not decided here, his to rule on when asked rather than guessed at:
+exactly where the "energetic" band he named sits against this ordered
+list, since the explicit sequence he gave does not mention it by name a
+second time; and what Character computes, if it needs to compute
+anything beyond naming the whole reading, now that it is no longer the
+super complex arithmetic. Both logged as open rather than assumed.
