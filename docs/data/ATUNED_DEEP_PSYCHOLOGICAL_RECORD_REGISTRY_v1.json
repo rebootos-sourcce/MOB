@@ -19011,7 +19011,7 @@
       "aliases": [],
       "layer": "psyche_map.blueprint_domain_visual_slots",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "visual_slot_only_unresolved",
+      "status": "researched_noncanonical_visual_slot",
       "kind": "blueprint_domain_slot",
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_01",
       "seat": null,
@@ -19049,37 +19049,48 @@
             "name": "primary_source_extraction",
             "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
             ],
             "findings": [
-              "Extracted the explicit Blueprint Domains layer declaration with n=14."
+              "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+              "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
             ],
-            "conflicts": []
+            "conflicts": [
+              "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "blocked",
-            "sources": [],
+            "status": "complete",
+            "sources": [
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
             "findings": [
-              "No second source naming the fourteen Blueprint Domains has been located in this pass."
+              "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+              "Confirmed that these records track visualization capacity, not individual named psychological domains."
             ],
             "conflicts": [
-              "A visualization point count is not proof of fourteen semantic records."
+              "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "blocked",
+            "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
             ],
             "findings": [
-              "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+              "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+              "Closed the research question for slot semantics while leaving the domain-count ruling open."
             ],
             "conflicts": [
-              "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+              "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
         ]
@@ -19109,45 +19120,58 @@
           "name": "primary_source_extraction",
           "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
           ],
           "findings": [
-            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+            "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+            "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
           ],
-          "conflicts": []
+          "conflicts": [
+            "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
-          "sources": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
           "findings": [
-            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+            "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+            "Confirmed that these records track visualization capacity, not individual named psychological domains."
           ],
           "conflicts": [
-            "A visualization point count is not proof of fourteen semantic records."
+            "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "blocked",
+          "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+            "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+            "Closed the research question for slot semantics while leaving the domain-count ruling open."
           ],
           "conflicts": [
-            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+            "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
           ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry.",
+        "Owner decision: should blueprint positions map to the v341 19-domain roster, and if so, by what explicit mapping?"
       ],
       "notes": [
-        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
       ],
       "changelog": [
         {
@@ -19165,7 +19189,7 @@
       "aliases": [],
       "layer": "psyche_map.blueprint_domain_visual_slots",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "visual_slot_only_unresolved",
+      "status": "researched_noncanonical_visual_slot",
       "kind": "blueprint_domain_slot",
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_02",
       "seat": null,
@@ -19203,37 +19227,48 @@
             "name": "primary_source_extraction",
             "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
             ],
             "findings": [
-              "Extracted the explicit Blueprint Domains layer declaration with n=14."
+              "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+              "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
             ],
-            "conflicts": []
+            "conflicts": [
+              "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "blocked",
-            "sources": [],
+            "status": "complete",
+            "sources": [
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
             "findings": [
-              "No second source naming the fourteen Blueprint Domains has been located in this pass."
+              "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+              "Confirmed that these records track visualization capacity, not individual named psychological domains."
             ],
             "conflicts": [
-              "A visualization point count is not proof of fourteen semantic records."
+              "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "blocked",
+            "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
             ],
             "findings": [
-              "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+              "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+              "Closed the research question for slot semantics while leaving the domain-count ruling open."
             ],
             "conflicts": [
-              "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+              "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
         ]
@@ -19263,45 +19298,58 @@
           "name": "primary_source_extraction",
           "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
           ],
           "findings": [
-            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+            "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+            "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
           ],
-          "conflicts": []
+          "conflicts": [
+            "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
-          "sources": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
           "findings": [
-            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+            "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+            "Confirmed that these records track visualization capacity, not individual named psychological domains."
           ],
           "conflicts": [
-            "A visualization point count is not proof of fourteen semantic records."
+            "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "blocked",
+          "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+            "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+            "Closed the research question for slot semantics while leaving the domain-count ruling open."
           ],
           "conflicts": [
-            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+            "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
           ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry.",
+        "Owner decision: should blueprint positions map to the v341 19-domain roster, and if so, by what explicit mapping?"
       ],
       "notes": [
-        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
       ],
       "changelog": [
         {
@@ -19319,7 +19367,7 @@
       "aliases": [],
       "layer": "psyche_map.blueprint_domain_visual_slots",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "visual_slot_only_unresolved",
+      "status": "researched_noncanonical_visual_slot",
       "kind": "blueprint_domain_slot",
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_03",
       "seat": null,
@@ -19357,37 +19405,48 @@
             "name": "primary_source_extraction",
             "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
             ],
             "findings": [
-              "Extracted the explicit Blueprint Domains layer declaration with n=14."
+              "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+              "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
             ],
-            "conflicts": []
+            "conflicts": [
+              "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "blocked",
-            "sources": [],
+            "status": "complete",
+            "sources": [
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
             "findings": [
-              "No second source naming the fourteen Blueprint Domains has been located in this pass."
+              "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+              "Confirmed that these records track visualization capacity, not individual named psychological domains."
             ],
             "conflicts": [
-              "A visualization point count is not proof of fourteen semantic records."
+              "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "blocked",
+            "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
             ],
             "findings": [
-              "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+              "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+              "Closed the research question for slot semantics while leaving the domain-count ruling open."
             ],
             "conflicts": [
-              "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+              "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
         ]
@@ -19417,45 +19476,58 @@
           "name": "primary_source_extraction",
           "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
           ],
           "findings": [
-            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+            "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+            "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
           ],
-          "conflicts": []
+          "conflicts": [
+            "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
-          "sources": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
           "findings": [
-            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+            "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+            "Confirmed that these records track visualization capacity, not individual named psychological domains."
           ],
           "conflicts": [
-            "A visualization point count is not proof of fourteen semantic records."
+            "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "blocked",
+          "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+            "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+            "Closed the research question for slot semantics while leaving the domain-count ruling open."
           ],
           "conflicts": [
-            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+            "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
           ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry.",
+        "Owner decision: should blueprint positions map to the v341 19-domain roster, and if so, by what explicit mapping?"
       ],
       "notes": [
-        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
       ],
       "changelog": [
         {
@@ -19473,7 +19545,7 @@
       "aliases": [],
       "layer": "psyche_map.blueprint_domain_visual_slots",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "visual_slot_only_unresolved",
+      "status": "researched_noncanonical_visual_slot",
       "kind": "blueprint_domain_slot",
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_04",
       "seat": null,
@@ -19511,37 +19583,48 @@
             "name": "primary_source_extraction",
             "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
             ],
             "findings": [
-              "Extracted the explicit Blueprint Domains layer declaration with n=14."
+              "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+              "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
             ],
-            "conflicts": []
+            "conflicts": [
+              "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "blocked",
-            "sources": [],
+            "status": "complete",
+            "sources": [
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
             "findings": [
-              "No second source naming the fourteen Blueprint Domains has been located in this pass."
+              "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+              "Confirmed that these records track visualization capacity, not individual named psychological domains."
             ],
             "conflicts": [
-              "A visualization point count is not proof of fourteen semantic records."
+              "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "blocked",
+            "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
             ],
             "findings": [
-              "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+              "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+              "Closed the research question for slot semantics while leaving the domain-count ruling open."
             ],
             "conflicts": [
-              "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+              "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
         ]
@@ -19571,45 +19654,58 @@
           "name": "primary_source_extraction",
           "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
           ],
           "findings": [
-            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+            "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+            "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
           ],
-          "conflicts": []
+          "conflicts": [
+            "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
-          "sources": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
           "findings": [
-            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+            "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+            "Confirmed that these records track visualization capacity, not individual named psychological domains."
           ],
           "conflicts": [
-            "A visualization point count is not proof of fourteen semantic records."
+            "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "blocked",
+          "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+            "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+            "Closed the research question for slot semantics while leaving the domain-count ruling open."
           ],
           "conflicts": [
-            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+            "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
           ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry.",
+        "Owner decision: should blueprint positions map to the v341 19-domain roster, and if so, by what explicit mapping?"
       ],
       "notes": [
-        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
       ],
       "changelog": [
         {
@@ -19627,7 +19723,7 @@
       "aliases": [],
       "layer": "psyche_map.blueprint_domain_visual_slots",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "visual_slot_only_unresolved",
+      "status": "researched_noncanonical_visual_slot",
       "kind": "blueprint_domain_slot",
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_05",
       "seat": null,
@@ -19665,37 +19761,48 @@
             "name": "primary_source_extraction",
             "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
             ],
             "findings": [
-              "Extracted the explicit Blueprint Domains layer declaration with n=14."
+              "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+              "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
             ],
-            "conflicts": []
+            "conflicts": [
+              "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "blocked",
-            "sources": [],
+            "status": "complete",
+            "sources": [
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
             "findings": [
-              "No second source naming the fourteen Blueprint Domains has been located in this pass."
+              "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+              "Confirmed that these records track visualization capacity, not individual named psychological domains."
             ],
             "conflicts": [
-              "A visualization point count is not proof of fourteen semantic records."
+              "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "blocked",
+            "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
             ],
             "findings": [
-              "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+              "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+              "Closed the research question for slot semantics while leaving the domain-count ruling open."
             ],
             "conflicts": [
-              "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+              "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
         ]
@@ -19725,45 +19832,58 @@
           "name": "primary_source_extraction",
           "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
           ],
           "findings": [
-            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+            "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+            "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
           ],
-          "conflicts": []
+          "conflicts": [
+            "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
-          "sources": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
           "findings": [
-            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+            "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+            "Confirmed that these records track visualization capacity, not individual named psychological domains."
           ],
           "conflicts": [
-            "A visualization point count is not proof of fourteen semantic records."
+            "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "blocked",
+          "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+            "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+            "Closed the research question for slot semantics while leaving the domain-count ruling open."
           ],
           "conflicts": [
-            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+            "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
           ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry.",
+        "Owner decision: should blueprint positions map to the v341 19-domain roster, and if so, by what explicit mapping?"
       ],
       "notes": [
-        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
       ],
       "changelog": [
         {
@@ -19781,7 +19901,7 @@
       "aliases": [],
       "layer": "psyche_map.blueprint_domain_visual_slots",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "visual_slot_only_unresolved",
+      "status": "researched_noncanonical_visual_slot",
       "kind": "blueprint_domain_slot",
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_06",
       "seat": null,
@@ -19819,37 +19939,48 @@
             "name": "primary_source_extraction",
             "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
             ],
             "findings": [
-              "Extracted the explicit Blueprint Domains layer declaration with n=14."
+              "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+              "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
             ],
-            "conflicts": []
+            "conflicts": [
+              "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "blocked",
-            "sources": [],
+            "status": "complete",
+            "sources": [
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
             "findings": [
-              "No second source naming the fourteen Blueprint Domains has been located in this pass."
+              "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+              "Confirmed that these records track visualization capacity, not individual named psychological domains."
             ],
             "conflicts": [
-              "A visualization point count is not proof of fourteen semantic records."
+              "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "blocked",
+            "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
             ],
             "findings": [
-              "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+              "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+              "Closed the research question for slot semantics while leaving the domain-count ruling open."
             ],
             "conflicts": [
-              "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+              "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
         ]
@@ -19879,45 +20010,58 @@
           "name": "primary_source_extraction",
           "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
           ],
           "findings": [
-            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+            "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+            "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
           ],
-          "conflicts": []
+          "conflicts": [
+            "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
-          "sources": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
           "findings": [
-            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+            "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+            "Confirmed that these records track visualization capacity, not individual named psychological domains."
           ],
           "conflicts": [
-            "A visualization point count is not proof of fourteen semantic records."
+            "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "blocked",
+          "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+            "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+            "Closed the research question for slot semantics while leaving the domain-count ruling open."
           ],
           "conflicts": [
-            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+            "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
           ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry.",
+        "Owner decision: should blueprint positions map to the v341 19-domain roster, and if so, by what explicit mapping?"
       ],
       "notes": [
-        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
       ],
       "changelog": [
         {
@@ -19935,7 +20079,7 @@
       "aliases": [],
       "layer": "psyche_map.blueprint_domain_visual_slots",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "visual_slot_only_unresolved",
+      "status": "researched_noncanonical_visual_slot",
       "kind": "blueprint_domain_slot",
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_07",
       "seat": null,
@@ -19973,37 +20117,48 @@
             "name": "primary_source_extraction",
             "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
             ],
             "findings": [
-              "Extracted the explicit Blueprint Domains layer declaration with n=14."
+              "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+              "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
             ],
-            "conflicts": []
+            "conflicts": [
+              "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "blocked",
-            "sources": [],
+            "status": "complete",
+            "sources": [
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
             "findings": [
-              "No second source naming the fourteen Blueprint Domains has been located in this pass."
+              "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+              "Confirmed that these records track visualization capacity, not individual named psychological domains."
             ],
             "conflicts": [
-              "A visualization point count is not proof of fourteen semantic records."
+              "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "blocked",
+            "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
             ],
             "findings": [
-              "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+              "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+              "Closed the research question for slot semantics while leaving the domain-count ruling open."
             ],
             "conflicts": [
-              "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+              "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
         ]
@@ -20033,45 +20188,58 @@
           "name": "primary_source_extraction",
           "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
           ],
           "findings": [
-            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+            "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+            "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
           ],
-          "conflicts": []
+          "conflicts": [
+            "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
-          "sources": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
           "findings": [
-            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+            "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+            "Confirmed that these records track visualization capacity, not individual named psychological domains."
           ],
           "conflicts": [
-            "A visualization point count is not proof of fourteen semantic records."
+            "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "blocked",
+          "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+            "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+            "Closed the research question for slot semantics while leaving the domain-count ruling open."
           ],
           "conflicts": [
-            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+            "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
           ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry.",
+        "Owner decision: should blueprint positions map to the v341 19-domain roster, and if so, by what explicit mapping?"
       ],
       "notes": [
-        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
       ],
       "changelog": [
         {
@@ -20089,7 +20257,7 @@
       "aliases": [],
       "layer": "psyche_map.blueprint_domain_visual_slots",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "visual_slot_only_unresolved",
+      "status": "researched_noncanonical_visual_slot",
       "kind": "blueprint_domain_slot",
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_08",
       "seat": null,
@@ -20127,37 +20295,48 @@
             "name": "primary_source_extraction",
             "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
             ],
             "findings": [
-              "Extracted the explicit Blueprint Domains layer declaration with n=14."
+              "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+              "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
             ],
-            "conflicts": []
+            "conflicts": [
+              "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "blocked",
-            "sources": [],
+            "status": "complete",
+            "sources": [
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
             "findings": [
-              "No second source naming the fourteen Blueprint Domains has been located in this pass."
+              "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+              "Confirmed that these records track visualization capacity, not individual named psychological domains."
             ],
             "conflicts": [
-              "A visualization point count is not proof of fourteen semantic records."
+              "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "blocked",
+            "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
             ],
             "findings": [
-              "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+              "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+              "Closed the research question for slot semantics while leaving the domain-count ruling open."
             ],
             "conflicts": [
-              "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+              "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
         ]
@@ -20187,45 +20366,58 @@
           "name": "primary_source_extraction",
           "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
           ],
           "findings": [
-            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+            "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+            "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
           ],
-          "conflicts": []
+          "conflicts": [
+            "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
-          "sources": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
           "findings": [
-            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+            "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+            "Confirmed that these records track visualization capacity, not individual named psychological domains."
           ],
           "conflicts": [
-            "A visualization point count is not proof of fourteen semantic records."
+            "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "blocked",
+          "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+            "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+            "Closed the research question for slot semantics while leaving the domain-count ruling open."
           ],
           "conflicts": [
-            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+            "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
           ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry.",
+        "Owner decision: should blueprint positions map to the v341 19-domain roster, and if so, by what explicit mapping?"
       ],
       "notes": [
-        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
       ],
       "changelog": [
         {
@@ -20243,7 +20435,7 @@
       "aliases": [],
       "layer": "psyche_map.blueprint_domain_visual_slots",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "visual_slot_only_unresolved",
+      "status": "researched_noncanonical_visual_slot",
       "kind": "blueprint_domain_slot",
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_09",
       "seat": null,
@@ -20281,37 +20473,48 @@
             "name": "primary_source_extraction",
             "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
             ],
             "findings": [
-              "Extracted the explicit Blueprint Domains layer declaration with n=14."
+              "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+              "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
             ],
-            "conflicts": []
+            "conflicts": [
+              "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "blocked",
-            "sources": [],
+            "status": "complete",
+            "sources": [
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
             "findings": [
-              "No second source naming the fourteen Blueprint Domains has been located in this pass."
+              "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+              "Confirmed that these records track visualization capacity, not individual named psychological domains."
             ],
             "conflicts": [
-              "A visualization point count is not proof of fourteen semantic records."
+              "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "blocked",
+            "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
             ],
             "findings": [
-              "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+              "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+              "Closed the research question for slot semantics while leaving the domain-count ruling open."
             ],
             "conflicts": [
-              "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+              "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
         ]
@@ -20341,45 +20544,58 @@
           "name": "primary_source_extraction",
           "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
           ],
           "findings": [
-            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+            "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+            "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
           ],
-          "conflicts": []
+          "conflicts": [
+            "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
-          "sources": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
           "findings": [
-            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+            "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+            "Confirmed that these records track visualization capacity, not individual named psychological domains."
           ],
           "conflicts": [
-            "A visualization point count is not proof of fourteen semantic records."
+            "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "blocked",
+          "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+            "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+            "Closed the research question for slot semantics while leaving the domain-count ruling open."
           ],
           "conflicts": [
-            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+            "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
           ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry.",
+        "Owner decision: should blueprint positions map to the v341 19-domain roster, and if so, by what explicit mapping?"
       ],
       "notes": [
-        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
       ],
       "changelog": [
         {
@@ -20397,7 +20613,7 @@
       "aliases": [],
       "layer": "psyche_map.blueprint_domain_visual_slots",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "visual_slot_only_unresolved",
+      "status": "researched_noncanonical_visual_slot",
       "kind": "blueprint_domain_slot",
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_10",
       "seat": null,
@@ -20435,37 +20651,48 @@
             "name": "primary_source_extraction",
             "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
             ],
             "findings": [
-              "Extracted the explicit Blueprint Domains layer declaration with n=14."
+              "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+              "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
             ],
-            "conflicts": []
+            "conflicts": [
+              "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "blocked",
-            "sources": [],
+            "status": "complete",
+            "sources": [
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
             "findings": [
-              "No second source naming the fourteen Blueprint Domains has been located in this pass."
+              "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+              "Confirmed that these records track visualization capacity, not individual named psychological domains."
             ],
             "conflicts": [
-              "A visualization point count is not proof of fourteen semantic records."
+              "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "blocked",
+            "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
             ],
             "findings": [
-              "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+              "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+              "Closed the research question for slot semantics while leaving the domain-count ruling open."
             ],
             "conflicts": [
-              "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+              "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
         ]
@@ -20495,45 +20722,58 @@
           "name": "primary_source_extraction",
           "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
           ],
           "findings": [
-            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+            "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+            "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
           ],
-          "conflicts": []
+          "conflicts": [
+            "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
-          "sources": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
           "findings": [
-            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+            "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+            "Confirmed that these records track visualization capacity, not individual named psychological domains."
           ],
           "conflicts": [
-            "A visualization point count is not proof of fourteen semantic records."
+            "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "blocked",
+          "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+            "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+            "Closed the research question for slot semantics while leaving the domain-count ruling open."
           ],
           "conflicts": [
-            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+            "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
           ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry.",
+        "Owner decision: should blueprint positions map to the v341 19-domain roster, and if so, by what explicit mapping?"
       ],
       "notes": [
-        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
       ],
       "changelog": [
         {
@@ -20551,7 +20791,7 @@
       "aliases": [],
       "layer": "psyche_map.blueprint_domain_visual_slots",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "visual_slot_only_unresolved",
+      "status": "researched_noncanonical_visual_slot",
       "kind": "blueprint_domain_slot",
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_11",
       "seat": null,
@@ -20589,37 +20829,48 @@
             "name": "primary_source_extraction",
             "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
             ],
             "findings": [
-              "Extracted the explicit Blueprint Domains layer declaration with n=14."
+              "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+              "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
             ],
-            "conflicts": []
+            "conflicts": [
+              "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "blocked",
-            "sources": [],
+            "status": "complete",
+            "sources": [
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
             "findings": [
-              "No second source naming the fourteen Blueprint Domains has been located in this pass."
+              "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+              "Confirmed that these records track visualization capacity, not individual named psychological domains."
             ],
             "conflicts": [
-              "A visualization point count is not proof of fourteen semantic records."
+              "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "blocked",
+            "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
             ],
             "findings": [
-              "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+              "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+              "Closed the research question for slot semantics while leaving the domain-count ruling open."
             ],
             "conflicts": [
-              "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+              "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
         ]
@@ -20649,45 +20900,58 @@
           "name": "primary_source_extraction",
           "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
           ],
           "findings": [
-            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+            "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+            "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
           ],
-          "conflicts": []
+          "conflicts": [
+            "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
-          "sources": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
           "findings": [
-            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+            "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+            "Confirmed that these records track visualization capacity, not individual named psychological domains."
           ],
           "conflicts": [
-            "A visualization point count is not proof of fourteen semantic records."
+            "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "blocked",
+          "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+            "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+            "Closed the research question for slot semantics while leaving the domain-count ruling open."
           ],
           "conflicts": [
-            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+            "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
           ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry.",
+        "Owner decision: should blueprint positions map to the v341 19-domain roster, and if so, by what explicit mapping?"
       ],
       "notes": [
-        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
       ],
       "changelog": [
         {
@@ -20705,7 +20969,7 @@
       "aliases": [],
       "layer": "psyche_map.blueprint_domain_visual_slots",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "visual_slot_only_unresolved",
+      "status": "researched_noncanonical_visual_slot",
       "kind": "blueprint_domain_slot",
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_12",
       "seat": null,
@@ -20743,37 +21007,48 @@
             "name": "primary_source_extraction",
             "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
             ],
             "findings": [
-              "Extracted the explicit Blueprint Domains layer declaration with n=14."
+              "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+              "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
             ],
-            "conflicts": []
+            "conflicts": [
+              "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "blocked",
-            "sources": [],
+            "status": "complete",
+            "sources": [
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
             "findings": [
-              "No second source naming the fourteen Blueprint Domains has been located in this pass."
+              "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+              "Confirmed that these records track visualization capacity, not individual named psychological domains."
             ],
             "conflicts": [
-              "A visualization point count is not proof of fourteen semantic records."
+              "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "blocked",
+            "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
             ],
             "findings": [
-              "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+              "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+              "Closed the research question for slot semantics while leaving the domain-count ruling open."
             ],
             "conflicts": [
-              "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+              "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
         ]
@@ -20803,45 +21078,58 @@
           "name": "primary_source_extraction",
           "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
           ],
           "findings": [
-            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+            "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+            "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
           ],
-          "conflicts": []
+          "conflicts": [
+            "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
-          "sources": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
           "findings": [
-            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+            "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+            "Confirmed that these records track visualization capacity, not individual named psychological domains."
           ],
           "conflicts": [
-            "A visualization point count is not proof of fourteen semantic records."
+            "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "blocked",
+          "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+            "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+            "Closed the research question for slot semantics while leaving the domain-count ruling open."
           ],
           "conflicts": [
-            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+            "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
           ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry.",
+        "Owner decision: should blueprint positions map to the v341 19-domain roster, and if so, by what explicit mapping?"
       ],
       "notes": [
-        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
       ],
       "changelog": [
         {
@@ -20859,7 +21147,7 @@
       "aliases": [],
       "layer": "psyche_map.blueprint_domain_visual_slots",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "visual_slot_only_unresolved",
+      "status": "researched_noncanonical_visual_slot",
       "kind": "blueprint_domain_slot",
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_13",
       "seat": null,
@@ -20897,37 +21185,48 @@
             "name": "primary_source_extraction",
             "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
             ],
             "findings": [
-              "Extracted the explicit Blueprint Domains layer declaration with n=14."
+              "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+              "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
             ],
-            "conflicts": []
+            "conflicts": [
+              "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "blocked",
-            "sources": [],
+            "status": "complete",
+            "sources": [
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
             "findings": [
-              "No second source naming the fourteen Blueprint Domains has been located in this pass."
+              "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+              "Confirmed that these records track visualization capacity, not individual named psychological domains."
             ],
             "conflicts": [
-              "A visualization point count is not proof of fourteen semantic records."
+              "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "blocked",
+            "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
             ],
             "findings": [
-              "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+              "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+              "Closed the research question for slot semantics while leaving the domain-count ruling open."
             ],
             "conflicts": [
-              "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+              "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
         ]
@@ -20957,45 +21256,58 @@
           "name": "primary_source_extraction",
           "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
           ],
           "findings": [
-            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+            "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+            "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
           ],
-          "conflicts": []
+          "conflicts": [
+            "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
-          "sources": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
           "findings": [
-            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+            "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+            "Confirmed that these records track visualization capacity, not individual named psychological domains."
           ],
           "conflicts": [
-            "A visualization point count is not proof of fourteen semantic records."
+            "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "blocked",
+          "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+            "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+            "Closed the research question for slot semantics while leaving the domain-count ruling open."
           ],
           "conflicts": [
-            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+            "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
           ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry.",
+        "Owner decision: should blueprint positions map to the v341 19-domain roster, and if so, by what explicit mapping?"
       ],
       "notes": [
-        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
       ],
       "changelog": [
         {
@@ -21013,7 +21325,7 @@
       "aliases": [],
       "layer": "psyche_map.blueprint_domain_visual_slots",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "visual_slot_only_unresolved",
+      "status": "researched_noncanonical_visual_slot",
       "kind": "blueprint_domain_slot",
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_14",
       "seat": null,
@@ -21051,37 +21363,48 @@
             "name": "primary_source_extraction",
             "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
             ],
             "findings": [
-              "Extracted the explicit Blueprint Domains layer declaration with n=14."
+              "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+              "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
             ],
-            "conflicts": []
+            "conflicts": [
+              "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "blocked",
-            "sources": [],
+            "status": "complete",
+            "sources": [
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
             "findings": [
-              "No second source naming the fourteen Blueprint Domains has been located in this pass."
+              "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+              "Confirmed that these records track visualization capacity, not individual named psychological domains."
             ],
             "conflicts": [
-              "A visualization point count is not proof of fourteen semantic records."
+              "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "blocked",
+            "status": "complete",
             "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
             ],
             "findings": [
-              "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+              "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+              "Closed the research question for slot semantics while leaving the domain-count ruling open."
             ],
             "conflicts": [
-              "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+              "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
             ]
           }
         ]
@@ -21111,45 +21434,58 @@
           "name": "primary_source_extraction",
           "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains."
           ],
           "findings": [
-            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+            "The Psyche Map implementation explicitly declares a Blueprint layer with n:14 and labels it Blueprint Domains.",
+            "The v341 source crosswalk separately records a 19-domain stack roster; the blueprint display count is not a semantic domain roster."
           ],
-          "conflicts": []
+          "conflicts": [
+            "The canonical relationship between 14 visualization slots and the 19 v341 domains is not established."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
-          "sources": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
           "findings": [
-            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+            "Compared display-layer count against the source crosswalk's v341 domain roster and the v184 SOURCE OS CANON open ruling documenting 18/15/14 counts.",
+            "Confirmed that these records track visualization capacity, not individual named psychological domains."
           ],
           "conflicts": [
-            "A visualization point count is not proof of fourteen semantic records."
+            "Historical source versions disagree on domain counts; the 14 slots must not be expanded into invented named entities or used to force a 14-domain taxonomy."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "blocked",
+          "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 stacking architecture and Chapter 28 The Domains.",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
           ],
           "findings": [
-            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+            "Classified this record as a non-canonical blueprint visualization slot only. It has no independent domain definition and should not carry an inferred domain-to-root edge.",
+            "Closed the research question for slot semantics while leaving the domain-count ruling open."
           ],
           "conflicts": [
-            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+            "Owner ruling still required to map named v341 domains to visualization positions, if that mapping is intended."
           ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry.",
+        "Owner decision: should blueprint positions map to the v341 19-domain roster, and if so, by what explicit mapping?"
       ],
       "notes": [
-        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain.",
+        "Closure interpretation: this record is filled as a visualization slot, not as a named domain. Do not populate it with a guessed domain name, definition, or mapping."
       ],
       "changelog": [
         {
