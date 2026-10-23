@@ -975,16 +975,26 @@
       "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with acquiring, evaluating, organizing, and applying understanding.",
       "essence": null,
-      "function": null,
+      "function": "Build and apply accurate understanding in service of orientation and choice.",
       "healthyExpression": [
-        "In coherent expression, a person seeks reliable information, distinguishes observation from assumption, updates beliefs when evidence changes, and applies learning with appropriate humility"
+        "Questions what would change the current belief",
+        "Separates observation from inference",
+        "Updates a decision when evidence changes"
       ],
       "decoherentExpression": [
-        "certainty without evidence, information hoarding, intellectual avoidance, or using knowledge to dominate rather than understand"
+        "Certainty without evidence",
+        "Information hoarding",
+        "Using expertise to dominate"
       ],
-      "signals": [],
+      "signals": [
+        "Questions what would change the current belief",
+        "Separates observation from inference",
+        "Updates a decision when evidence changes"
+      ],
       "distortions": [
-        "certainty without evidence, information hoarding, intellectual avoidance, or using knowledge to dominate rather than understand"
+        "Certainty without evidence",
+        "Information hoarding",
+        "Using expertise to dominate"
       ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
@@ -992,8 +1002,12 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Revising a plan after checking primary evidence"
+      ],
+      "nonExamples": [
+        "Repeating a claim because it feels familiar"
+      ],
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -1064,7 +1078,8 @@
         "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
       "notes": [
-        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval.",
+        "Story and ATÜNED-facing interpretation added as provisional synthesis; not a source quotation or canonical definition."
       ],
       "changelog": [
         {
@@ -1154,6 +1169,35 @@
             ],
             "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
+        ],
+        "story": "A person notices that a confident assumption is contradicted by new evidence. They check the source, revise the belief, and make a better decision without treating correction as humiliation.",
+        "atunedVersion": "Knowledge is coherent when perception, evidence, and action stay aligned. It decoheres when certainty protects identity from feedback.",
+        "function": "Build and apply accurate understanding in service of orientation and choice.",
+        "healthyExpression": [
+          "Questions what would change the current belief",
+          "Separates observation from inference",
+          "Updates a decision when evidence changes"
+        ],
+        "decoherentExpression": [
+          "Certainty without evidence",
+          "Information hoarding",
+          "Using expertise to dominate"
+        ],
+        "signals": [
+          "Questions what would change the current belief",
+          "Separates observation from inference",
+          "Updates a decision when evidence changes"
+        ],
+        "distortions": [
+          "Certainty without evidence",
+          "Information hoarding",
+          "Using expertise to dominate"
+        ],
+        "examples": [
+          "Revising a plan after checking primary evidence"
+        ],
+        "nonExamples": [
+          "Repeating a claim because it feels familiar"
         ]
       },
       "templateValidation": {
@@ -1168,7 +1212,9 @@
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
-      ]
+      ],
+      "story": "A person notices that a confident assumption is contradicted by new evidence. They check the source, revise the belief, and make a better decision without treating correction as humiliation.",
+      "atunedVersion": "Knowledge is coherent when perception, evidence, and action stay aligned. It decoheres when certainty protects identity from feedback."
     },
     {
       "id": "domain:02",
@@ -1181,16 +1227,26 @@
       "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with transmitting meaning and exchanging information, resources, attention, or value between people and systems.",
       "essence": null,
-      "function": null,
+      "function": "Make intent legible and exchange information, attention, resources, or value reciprocally.",
       "healthyExpression": [
-        "makes intent legible, listens for the other party's actual meaning, checks understanding, and supports reciprocal exchange"
+        "Checks what the other person understood",
+        "Names intent and limits clearly",
+        "Tracks reciprocity in exchange"
       ],
       "decoherentExpression": [
-        "withholding, manipulation, noise, one-way extraction, or mistaking volume for clarity"
+        "Manipulative ambiguity",
+        "One-way extraction",
+        "Mistaking volume for clarity"
       ],
-      "signals": [],
+      "signals": [
+        "Checks what the other person understood",
+        "Names intent and limits clearly",
+        "Tracks reciprocity in exchange"
+      ],
       "distortions": [
-        "withholding, manipulation, noise, one-way extraction, or mistaking volume for clarity"
+        "Manipulative ambiguity",
+        "One-way extraction",
+        "Mistaking volume for clarity"
       ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
@@ -1198,8 +1254,12 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Summarizing an agreement and asking for correction"
+      ],
+      "nonExamples": [
+        "Assuming silence means agreement"
+      ],
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -1270,7 +1330,8 @@
         "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
       "notes": [
-        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval.",
+        "Story and ATÜNED-facing interpretation added as provisional synthesis; not a source quotation or canonical definition."
       ],
       "changelog": [
         {
@@ -1360,6 +1421,35 @@
             ],
             "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
+        ],
+        "story": "Two collaborators leave a tense meeting with different interpretations. One restates the shared goal, checks what each person heard, and makes the next exchange explicit.",
+        "atunedVersion": "Communication is coherent when signal survives transmission and feedback corrects distortion. It decoheres when volume, ambiguity, withholding, or manipulation replaces mutual understanding.",
+        "function": "Make intent legible and exchange information, attention, resources, or value reciprocally.",
+        "healthyExpression": [
+          "Checks what the other person understood",
+          "Names intent and limits clearly",
+          "Tracks reciprocity in exchange"
+        ],
+        "decoherentExpression": [
+          "Manipulative ambiguity",
+          "One-way extraction",
+          "Mistaking volume for clarity"
+        ],
+        "signals": [
+          "Checks what the other person understood",
+          "Names intent and limits clearly",
+          "Tracks reciprocity in exchange"
+        ],
+        "distortions": [
+          "Manipulative ambiguity",
+          "One-way extraction",
+          "Mistaking volume for clarity"
+        ],
+        "examples": [
+          "Summarizing an agreement and asking for correction"
+        ],
+        "nonExamples": [
+          "Assuming silence means agreement"
         ]
       },
       "templateValidation": {
@@ -1374,7 +1464,9 @@
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
-      ]
+      ],
+      "story": "Two collaborators leave a tense meeting with different interpretations. One restates the shared goal, checks what each person heard, and makes the next exchange explicit.",
+      "atunedVersion": "Communication is coherent when signal survives transmission and feedback corrects distortion. It decoheres when volume, ambiguity, withholding, or manipulation replaces mutual understanding."
     },
     {
       "id": "domain:03",
@@ -1387,16 +1479,26 @@
       "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with mobilizing will, energy, and effort toward a chosen aim.",
       "essence": null,
-      "function": null,
+      "function": "Mobilize will and effort toward a chosen aim with proportionate force.",
       "healthyExpression": [
-        "applies proportionate force with clear direction, awareness of consequences, and the ability to stop or redirect when conditions change"
+        "Can state the immediate objective",
+        "Applies effort proportionately",
+        "Can pause or redirect"
       ],
       "decoherentExpression": [
-        "coercion, scattered effort, passivity disguised as restraint, or force detached from purpose"
+        "Coercion",
+        "Scattered effort",
+        "Passivity disguised as restraint"
       ],
-      "signals": [],
+      "signals": [
+        "Can state the immediate objective",
+        "Applies effort proportionately",
+        "Can pause or redirect"
+      ],
       "distortions": [
-        "coercion, scattered effort, passivity disguised as restraint, or force detached from purpose"
+        "Coercion",
+        "Scattered effort",
+        "Passivity disguised as restraint"
       ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
@@ -1404,8 +1506,12 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Taking one decisive step against the primary blocker"
+      ],
+      "nonExamples": [
+        "Increasing pressure without checking effects"
+      ],
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -1476,7 +1582,8 @@
         "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
       "notes": [
-        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval.",
+        "Story and ATÜNED-facing interpretation added as provisional synthesis; not a source quotation or canonical definition."
       ],
       "changelog": [
         {
@@ -1566,6 +1673,35 @@
             ],
             "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
+        ],
+        "story": "A difficult task stalls. Instead of escalating pressure everywhere, a person identifies the one constraint that matters, applies focused effort, then stops to assess the result.",
+        "atunedVersion": "Directed Force is coherent when will, energy, and action share a target and remain adjustable to feedback. It decoheres when force becomes coercion or activity loses its aim.",
+        "function": "Mobilize will and effort toward a chosen aim with proportionate force.",
+        "healthyExpression": [
+          "Can state the immediate objective",
+          "Applies effort proportionately",
+          "Can pause or redirect"
+        ],
+        "decoherentExpression": [
+          "Coercion",
+          "Scattered effort",
+          "Passivity disguised as restraint"
+        ],
+        "signals": [
+          "Can state the immediate objective",
+          "Applies effort proportionately",
+          "Can pause or redirect"
+        ],
+        "distortions": [
+          "Coercion",
+          "Scattered effort",
+          "Passivity disguised as restraint"
+        ],
+        "examples": [
+          "Taking one decisive step against the primary blocker"
+        ],
+        "nonExamples": [
+          "Increasing pressure without checking effects"
         ]
       },
       "templateValidation": {
@@ -1580,7 +1716,9 @@
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
-      ]
+      ],
+      "story": "A difficult task stalls. Instead of escalating pressure everywhere, a person identifies the one constraint that matters, applies focused effort, then stops to assess the result.",
+      "atunedVersion": "Directed Force is coherent when will, energy, and action share a target and remain adjustable to feedback. It decoheres when force becomes coercion or activity loses its aim."
     },
     {
       "id": "domain:04",
@@ -1593,16 +1731,26 @@
       "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with stewardship, governance, boundaries, structure, and coordinated responsibility.",
       "essence": null,
-      "function": null,
+      "function": "Coordinate systems through stewardship, structure, boundaries, and accountable authority.",
       "healthyExpression": [
-        "creates understandable rules, accepts accountability, distributes responsibility appropriately, and uses authority to maintain a workable system rather than elevate the ruler"
+        "Roles and boundaries are explicit",
+        "Authority accepts accountability",
+        "Rules can be reviewed against outcomes"
       ],
       "decoherentExpression": [
-        "domination, rigidity, arbitrary control, abdication, or confusing compliance with integrity"
+        "Domination",
+        "Rigid control",
+        "Abdicating responsibility"
       ],
-      "signals": [],
+      "signals": [
+        "Roles and boundaries are explicit",
+        "Authority accepts accountability",
+        "Rules can be reviewed against outcomes"
+      ],
       "distortions": [
-        "domination, rigidity, arbitrary control, abdication, or confusing compliance with integrity"
+        "Domination",
+        "Rigid control",
+        "Abdicating responsibility"
       ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
@@ -1610,8 +1758,12 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Creating a transparent decision process"
+      ],
+      "nonExamples": [
+        "Demanding compliance without explaining purpose"
+      ],
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -1682,7 +1834,8 @@
         "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
       "notes": [
-        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval.",
+        "Story and ATÜNED-facing interpretation added as provisional synthesis; not a source quotation or canonical definition."
       ],
       "changelog": [
         {
@@ -1772,6 +1925,35 @@
             ],
             "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
+        ],
+        "story": "A team repeatedly misses handoffs. The lead clarifies ownership and decision rights, invites challenge to the rules, and reviews whether the new structure actually helps.",
+        "atunedVersion": "Rulership and Order is coherent when structure serves the system and authority remains accountable. It decoheres when control serves the controller or rules replace judgment.",
+        "function": "Coordinate systems through stewardship, structure, boundaries, and accountable authority.",
+        "healthyExpression": [
+          "Roles and boundaries are explicit",
+          "Authority accepts accountability",
+          "Rules can be reviewed against outcomes"
+        ],
+        "decoherentExpression": [
+          "Domination",
+          "Rigid control",
+          "Abdicating responsibility"
+        ],
+        "signals": [
+          "Roles and boundaries are explicit",
+          "Authority accepts accountability",
+          "Rules can be reviewed against outcomes"
+        ],
+        "distortions": [
+          "Domination",
+          "Rigid control",
+          "Abdicating responsibility"
+        ],
+        "examples": [
+          "Creating a transparent decision process"
+        ],
+        "nonExamples": [
+          "Demanding compliance without explaining purpose"
         ]
       },
       "templateValidation": {
@@ -1786,7 +1968,9 @@
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
-      ]
+      ],
+      "story": "A team repeatedly misses handoffs. The lead clarifies ownership and decision rights, invites challenge to the rules, and reviews whether the new structure actually helps.",
+      "atunedVersion": "Rulership and Order is coherent when structure serves the system and authority remains accountable. It decoheres when control serves the controller or rules replace judgment."
     },
     {
       "id": "domain:05",
@@ -1799,16 +1983,26 @@
       "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with bringing an intention or possibility into an observable form.",
       "essence": null,
-      "function": null,
+      "function": "Translate an intention or possibility into an observable form that can meet reality.",
       "healthyExpression": [
-        "converts ideas into useful outcomes through deliberate choices, resources, iteration, and contact with reality"
+        "Defines a testable next step",
+        "Turns ideas into artifacts",
+        "Uses feedback to iterate"
       ],
       "decoherentExpression": [
-        "endless ideation without delivery, premature action without grounding, attachment to appearances, or claiming authorship without responsibility for effects"
+        "Endless ideation",
+        "Ungrounded haste",
+        "Performative output"
       ],
-      "signals": [],
+      "signals": [
+        "Defines a testable next step",
+        "Turns ideas into artifacts",
+        "Uses feedback to iterate"
+      ],
       "distortions": [
-        "endless ideation without delivery, premature action without grounding, attachment to appearances, or claiming authorship without responsibility for effects"
+        "Endless ideation",
+        "Ungrounded haste",
+        "Performative output"
       ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
@@ -1816,8 +2010,12 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Testing a small prototype before scaling"
+      ],
+      "nonExamples": [
+        "Calling an idea complete because it is exciting"
+      ],
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -1888,7 +2086,8 @@
         "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
       "notes": [
-        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval.",
+        "Story and ATÜNED-facing interpretation added as provisional synthesis; not a source quotation or canonical definition."
       ],
       "changelog": [
         {
@@ -1978,6 +2177,35 @@
             ],
             "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
+        ],
+        "story": "A creator has a promising idea but keeps refining it privately. They build a small version, test it with real users, and let feedback shape the next iteration.",
+        "atunedVersion": "Creation and Manifestation is coherent when intention becomes grounded output through action and feedback. It decoheres through endless ideation, premature execution, or attachment to appearance over effect.",
+        "function": "Translate an intention or possibility into an observable form that can meet reality.",
+        "healthyExpression": [
+          "Defines a testable next step",
+          "Turns ideas into artifacts",
+          "Uses feedback to iterate"
+        ],
+        "decoherentExpression": [
+          "Endless ideation",
+          "Ungrounded haste",
+          "Performative output"
+        ],
+        "signals": [
+          "Defines a testable next step",
+          "Turns ideas into artifacts",
+          "Uses feedback to iterate"
+        ],
+        "distortions": [
+          "Endless ideation",
+          "Ungrounded haste",
+          "Performative output"
+        ],
+        "examples": [
+          "Testing a small prototype before scaling"
+        ],
+        "nonExamples": [
+          "Calling an idea complete because it is exciting"
         ]
       },
       "templateValidation": {
@@ -1992,7 +2220,9 @@
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
-      ]
+      ],
+      "story": "A creator has a promising idea but keeps refining it privately. They build a small version, test it with real users, and let feedback shape the next iteration.",
+      "atunedVersion": "Creation and Manifestation is coherent when intention becomes grounded output through action and feedback. It decoheres through endless ideation, premature execution, or attachment to appearance over effect."
     },
     {
       "id": "domain:06",
@@ -2005,16 +2235,26 @@
       "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with ending, dismantling, releasing, or changing forms that no longer serve their purpose.",
       "essence": null,
-      "function": null,
+      "function": "End, dismantle, release, or transform forms whose purpose has expired.",
       "healthyExpression": [
-        "distinguishes necessary endings from reactive damage, removes obsolete structures with care, and makes room for a viable next state"
+        "Can name what no longer serves",
+        "Separates salvageable from obsolete",
+        "Plans a responsible transition"
       ],
       "decoherentExpression": [
-        "indiscriminate destruction, avoidance of necessary endings, attachment to decay, or treating harm as transformation merely because something changed"
+        "Indiscriminate destruction",
+        "Avoiding necessary endings",
+        "Romanticizing damage"
       ],
-      "signals": [],
+      "signals": [
+        "Can name what no longer serves",
+        "Separates salvageable from obsolete",
+        "Plans a responsible transition"
+      ],
       "distortions": [
-        "indiscriminate destruction, avoidance of necessary endings, attachment to decay, or treating harm as transformation merely because something changed"
+        "Indiscriminate destruction",
+        "Avoiding necessary endings",
+        "Romanticizing damage"
       ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
@@ -2022,8 +2262,12 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Retiring a broken workflow while preserving working components"
+      ],
+      "nonExamples": [
+        "Burning down a system to escape discomfort"
+      ],
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -2094,7 +2338,8 @@
         "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
       "notes": [
-        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval.",
+        "Story and ATÜNED-facing interpretation added as provisional synthesis; not a source quotation or canonical definition."
       ],
       "changelog": [
         {
@@ -2184,6 +2429,35 @@
             ],
             "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
+        ],
+        "story": "A process once useful now creates repeated errors. The team identifies what must end, protects what still works, and creates a transition plan rather than destroying everything in frustration.",
+        "atunedVersion": "Destruction and Transformation is coherent when endings are deliberate, proportionate, and make room for a viable next state. It decoheres when damage is mistaken for progress or necessary endings are avoided.",
+        "function": "End, dismantle, release, or transform forms whose purpose has expired.",
+        "healthyExpression": [
+          "Can name what no longer serves",
+          "Separates salvageable from obsolete",
+          "Plans a responsible transition"
+        ],
+        "decoherentExpression": [
+          "Indiscriminate destruction",
+          "Avoiding necessary endings",
+          "Romanticizing damage"
+        ],
+        "signals": [
+          "Can name what no longer serves",
+          "Separates salvageable from obsolete",
+          "Plans a responsible transition"
+        ],
+        "distortions": [
+          "Indiscriminate destruction",
+          "Avoiding necessary endings",
+          "Romanticizing damage"
+        ],
+        "examples": [
+          "Retiring a broken workflow while preserving working components"
+        ],
+        "nonExamples": [
+          "Burning down a system to escape discomfort"
         ]
       },
       "templateValidation": {
@@ -2198,7 +2472,9 @@
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
-      ]
+      ],
+      "story": "A process once useful now creates repeated errors. The team identifies what must end, protects what still works, and creates a transition plan rather than destroying everything in frustration.",
+      "atunedVersion": "Destruction and Transformation is coherent when endings are deliberate, proportionate, and make room for a viable next state. It decoheres when damage is mistaken for progress or necessary endings are avoided."
     },
     {
       "id": "domain:07",
@@ -2211,16 +2487,26 @@
       "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with relational bonding, care, intimacy, belonging, and connection across difference.",
       "essence": null,
-      "function": null,
+      "function": "Create relational connection while preserving truth, boundaries, and individual agency.",
       "healthyExpression": [
-        "combines care with truthful boundaries, recognizes the other as distinct, and supports connection without erasing agency"
+        "Care is paired with boundaries",
+        "Difference can be tolerated",
+        "Needs are communicated directly"
       ],
       "decoherentExpression": [
-        "possession, enmeshment, conditional affection, chronic withdrawal, or self-erasure in exchange for belonging"
+        "Enmeshment",
+        "Possessiveness",
+        "Conditional affection"
       ],
-      "signals": [],
+      "signals": [
+        "Care is paired with boundaries",
+        "Difference can be tolerated",
+        "Needs are communicated directly"
+      ],
       "distortions": [
-        "possession, enmeshment, conditional affection, chronic withdrawal, or self-erasure in exchange for belonging"
+        "Enmeshment",
+        "Possessiveness",
+        "Conditional affection"
       ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
@@ -2228,8 +2514,12 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Offering support without taking over responsibility"
+      ],
+      "nonExamples": [
+        "Agreeing from fear of losing belonging"
+      ],
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -2300,7 +2590,8 @@
         "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
       "notes": [
-        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval.",
+        "Story and ATÜNED-facing interpretation added as provisional synthesis; not a source quotation or canonical definition."
       ],
       "changelog": [
         {
@@ -2390,6 +2681,35 @@
             ],
             "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
+        ],
+        "story": "A friend asks for support that would overextend the other person. The response remains caring while naming a limit and offering a realistic alternative.",
+        "atunedVersion": "Love and Connection is coherent when care includes the reality of both people. It decoheres when belonging requires possession, self-erasure, or withdrawal from honest contact.",
+        "function": "Create relational connection while preserving truth, boundaries, and individual agency.",
+        "healthyExpression": [
+          "Care is paired with boundaries",
+          "Difference can be tolerated",
+          "Needs are communicated directly"
+        ],
+        "decoherentExpression": [
+          "Enmeshment",
+          "Possessiveness",
+          "Conditional affection"
+        ],
+        "signals": [
+          "Care is paired with boundaries",
+          "Difference can be tolerated",
+          "Needs are communicated directly"
+        ],
+        "distortions": [
+          "Enmeshment",
+          "Possessiveness",
+          "Conditional affection"
+        ],
+        "examples": [
+          "Offering support without taking over responsibility"
+        ],
+        "nonExamples": [
+          "Agreeing from fear of losing belonging"
         ]
       },
       "templateValidation": {
@@ -2404,7 +2724,9 @@
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
-      ]
+      ],
+      "story": "A friend asks for support that would overextend the other person. The response remains caring while naming a limit and offering a realistic alternative.",
+      "atunedVersion": "Love and Connection is coherent when care includes the reality of both people. It decoheres when belonging requires possession, self-erasure, or withdrawal from honest contact."
     },
     {
       "id": "domain:08",
@@ -2417,16 +2739,26 @@
       "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with repair, recovery, reintegration, and the restoration of functional capacity after disruption.",
       "essence": null,
-      "function": null,
+      "function": "Support repair and recovery while restoring function and respecting limits.",
       "healthyExpression": [
-        "identifies what is injured or depleted, respects limits and time, supports repair, and distinguishes recovery from concealment of symptoms"
+        "Names the injury or depletion",
+        "Matches repair to actual need",
+        "Respects recovery limits"
       ],
       "decoherentExpression": [
-        "rescuing without consent, rushing recovery, denying damage, or making a permanent identity out of an injury"
+        "Rescuing without consent",
+        "Rushing recovery",
+        "Denial of damage"
       ],
-      "signals": [],
+      "signals": [
+        "Names the injury or depletion",
+        "Matches repair to actual need",
+        "Respects recovery limits"
+      ],
       "distortions": [
-        "rescuing without consent, rushing recovery, denying damage, or making a permanent identity out of an injury"
+        "Rescuing without consent",
+        "Rushing recovery",
+        "Denial of damage"
       ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
@@ -2434,8 +2766,12 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Making a repair plan with the affected person"
+      ],
+      "nonExamples": [
+        "Declaring a problem healed because it is inconvenient"
+      ],
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -2506,7 +2842,8 @@
         "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
       "notes": [
-        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval.",
+        "Story and ATÜNED-facing interpretation added as provisional synthesis; not a source quotation or canonical definition."
       ],
       "changelog": [
         {
@@ -2596,6 +2933,35 @@
             ],
             "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
+        ],
+        "story": "After a serious setback, a person stops pretending nothing happened. They identify what was harmed, accept help, set a sustainable pace, and check whether function is returning.",
+        "atunedVersion": "Healing and Restoration is coherent when repair responds to actual damage and respects time, consent, and capacity. It decoheres when recovery is rushed, concealed, or turned into a permanent identity.",
+        "function": "Support repair and recovery while restoring function and respecting limits.",
+        "healthyExpression": [
+          "Names the injury or depletion",
+          "Matches repair to actual need",
+          "Respects recovery limits"
+        ],
+        "decoherentExpression": [
+          "Rescuing without consent",
+          "Rushing recovery",
+          "Denial of damage"
+        ],
+        "signals": [
+          "Names the injury or depletion",
+          "Matches repair to actual need",
+          "Respects recovery limits"
+        ],
+        "distortions": [
+          "Rescuing without consent",
+          "Rushing recovery",
+          "Denial of damage"
+        ],
+        "examples": [
+          "Making a repair plan with the affected person"
+        ],
+        "nonExamples": [
+          "Declaring a problem healed because it is inconvenient"
         ]
       },
       "templateValidation": {
@@ -2610,7 +2976,9 @@
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
-      ]
+      ],
+      "story": "After a serious setback, a person stops pretending nothing happened. They identify what was harmed, accept help, set a sustainable pace, and check whether function is returning.",
+      "atunedVersion": "Healing and Restoration is coherent when repair responds to actual damage and respects time, consent, and capacity. It decoheres when recovery is rushed, concealed, or turned into a permanent identity."
     },
     {
       "id": "domain:09",
@@ -2623,16 +2991,26 @@
       "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with relinquishing something of value, entering difficult experience, and extracting learning without glorifying suffering.",
       "essence": null,
-      "function": null,
+      "function": "Make meaning from chosen cost and difficult experience without glorifying suffering.",
       "healthyExpression": [
-        "distinguishes chosen cost from coerced loss, remains honest about consequences, and allows difficulty to deepen discernment where learning is possible"
+        "Names the actual cost",
+        "Distinguishes choice from coercion",
+        "Extracts learning without romanticizing pain"
       ],
       "decoherentExpression": [
-        "martyrdom, self-abandonment, avoidable suffering, or treating pain as proof of wisdom"
+        "Martyrdom",
+        "Self-abandonment",
+        "Pain-as-proof"
       ],
-      "signals": [],
+      "signals": [
+        "Names the actual cost",
+        "Distinguishes choice from coercion",
+        "Extracts learning without romanticizing pain"
+      ],
       "distortions": [
-        "martyrdom, self-abandonment, avoidable suffering, or treating pain as proof of wisdom"
+        "Martyrdom",
+        "Self-abandonment",
+        "Pain-as-proof"
       ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
@@ -2640,8 +3018,12 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Leaving a harmful role and documenting the lesson"
+      ],
+      "nonExamples": [
+        "Staying in harm to appear devoted"
+      ],
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -2712,7 +3094,8 @@
         "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
       "notes": [
-        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval.",
+        "Story and ATÜNED-facing interpretation added as provisional synthesis; not a source quotation or canonical definition."
       ],
       "changelog": [
         {
@@ -2802,6 +3185,35 @@
             ],
             "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
+        ],
+        "story": "A person leaves a status position that conflicts with their values. They acknowledge the real cost, distinguish what was chosen from what was imposed, and carry forward the learning without treating pain as proof of virtue.",
+        "atunedVersion": "Sacrifice and Wisdom Through Descent is coherent when cost is consciously chosen or honestly faced and produces discernment without idealizing harm. It decoheres through martyrdom or avoidable suffering.",
+        "function": "Make meaning from chosen cost and difficult experience without glorifying suffering.",
+        "healthyExpression": [
+          "Names the actual cost",
+          "Distinguishes choice from coercion",
+          "Extracts learning without romanticizing pain"
+        ],
+        "decoherentExpression": [
+          "Martyrdom",
+          "Self-abandonment",
+          "Pain-as-proof"
+        ],
+        "signals": [
+          "Names the actual cost",
+          "Distinguishes choice from coercion",
+          "Extracts learning without romanticizing pain"
+        ],
+        "distortions": [
+          "Martyrdom",
+          "Self-abandonment",
+          "Pain-as-proof"
+        ],
+        "examples": [
+          "Leaving a harmful role and documenting the lesson"
+        ],
+        "nonExamples": [
+          "Staying in harm to appear devoted"
         ]
       },
       "templateValidation": {
@@ -2816,7 +3228,9 @@
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
-      ]
+      ],
+      "story": "A person leaves a status position that conflicts with their values. They acknowledge the real cost, distinguish what was chosen from what was imposed, and carry forward the learning without treating pain as proof of virtue.",
+      "atunedVersion": "Sacrifice and Wisdom Through Descent is coherent when cost is consciously chosen or honestly faced and produces discernment without idealizing harm. It decoheres through martyrdom or avoidable suffering."
     },
     {
       "id": "domain:10",
@@ -2829,16 +3243,26 @@
       "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with truthful representation, fair treatment, proportionate accountability, and alignment between claims and evidence.",
       "essence": null,
-      "function": null,
+      "function": "Align claims and treatment with evidence, fairness, and proportionate accountability.",
       "healthyExpression": [
-        "tests claims against evidence, applies standards consistently, acknowledges uncertainty, and repairs harm without reducing people to their worst actions"
+        "Checks claims against evidence",
+        "Applies standards consistently",
+        "Allows correction and repair"
       ],
       "decoherentExpression": [
-        "selective truth, vengeance presented as justice, double standards, or certainty used to suppress inquiry"
+        "Selective truth",
+        "Double standards",
+        "Punishment without inquiry"
       ],
-      "signals": [],
+      "signals": [
+        "Checks claims against evidence",
+        "Applies standards consistently",
+        "Allows correction and repair"
+      ],
       "distortions": [
-        "selective truth, vengeance presented as justice, double standards, or certainty used to suppress inquiry"
+        "Selective truth",
+        "Double standards",
+        "Punishment without inquiry"
       ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
@@ -2846,8 +3270,12 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Correcting a false claim and repairing its consequences"
+      ],
+      "nonExamples": [
+        "Changing the standard based on who is involved"
+      ],
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -2918,7 +3346,8 @@
         "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
       "notes": [
-        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval.",
+        "Story and ATÜNED-facing interpretation added as provisional synthesis; not a source quotation or canonical definition."
       ],
       "changelog": [
         {
@@ -3008,6 +3437,35 @@
             ],
             "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
+        ],
+        "story": "A dispute reveals that a popular teammate caused harm. The group checks the facts, applies the same standard it would apply to anyone else, and creates a repair path without excusing or dehumanizing.",
+        "atunedVersion": "Justice and Truth is coherent when evidence, standards, speech, and repair align. It decoheres when vengeance masquerades as justice or certainty suppresses inquiry.",
+        "function": "Align claims and treatment with evidence, fairness, and proportionate accountability.",
+        "healthyExpression": [
+          "Checks claims against evidence",
+          "Applies standards consistently",
+          "Allows correction and repair"
+        ],
+        "decoherentExpression": [
+          "Selective truth",
+          "Double standards",
+          "Punishment without inquiry"
+        ],
+        "signals": [
+          "Checks claims against evidence",
+          "Applies standards consistently",
+          "Allows correction and repair"
+        ],
+        "distortions": [
+          "Selective truth",
+          "Double standards",
+          "Punishment without inquiry"
+        ],
+        "examples": [
+          "Correcting a false claim and repairing its consequences"
+        ],
+        "nonExamples": [
+          "Changing the standard based on who is involved"
         ]
       },
       "templateValidation": {
@@ -3022,7 +3480,9 @@
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
-      ]
+      ],
+      "story": "A dispute reveals that a popular teammate caused harm. The group checks the facts, applies the same standard it would apply to anyone else, and creates a repair path without excusing or dehumanizing.",
+      "atunedVersion": "Justice and Truth is coherent when evidence, standards, speech, and repair align. It decoheres when vengeance masquerades as justice or certainty suppresses inquiry."
     },
     {
       "id": "domain:11",
@@ -3035,16 +3495,26 @@
       "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with exposing assumptions, interrupting stale patterns, and introducing alternative perspectives through play, inversion, or disruption.",
       "essence": null,
-      "function": null,
+      "function": "Expose assumptions and interrupt stale patterns through accountable challenge or reframing.",
       "healthyExpression": [
-        "uses surprise and challenge to reveal blind spots while remaining accountable for impact"
+        "Can name the assumption being challenged",
+        "Challenge creates a useful new option",
+        "Owns the impact of disruption"
       ],
       "decoherentExpression": [
-        "chaos for its own sake, humiliation, deception that destroys trust, or reflexively opposing structure without offering insight"
+        "Chaos for its own sake",
+        "Humiliation",
+        "Opposition without insight"
       ],
-      "signals": [],
+      "signals": [
+        "Can name the assumption being challenged",
+        "Challenge creates a useful new option",
+        "Owns the impact of disruption"
+      ],
       "distortions": [
-        "chaos for its own sake, humiliation, deception that destroys trust, or reflexively opposing structure without offering insight"
+        "Chaos for its own sake",
+        "Humiliation",
+        "Opposition without insight"
       ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
@@ -3052,8 +3522,12 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Reframing a stuck question so the team can test a new path"
+      ],
+      "nonExamples": [
+        "Derailing a conversation to gain attention"
+      ],
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -3124,7 +3598,8 @@
         "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
       "notes": [
-        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval.",
+        "Story and ATÜNED-facing interpretation added as provisional synthesis; not a source quotation or canonical definition."
       ],
       "changelog": [
         {
@@ -3214,6 +3689,35 @@
             ],
             "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
+        ],
+        "story": "A meeting repeats the same unproductive argument. Someone names the hidden assumption and offers a playful alternative that opens the problem without humiliating the people involved.",
+        "atunedVersion": "Trickster and Disruption is coherent when disruption reveals a blind spot and creates new options. It decoheres when chaos, deception, or humiliation becomes the goal.",
+        "function": "Expose assumptions and interrupt stale patterns through accountable challenge or reframing.",
+        "healthyExpression": [
+          "Can name the assumption being challenged",
+          "Challenge creates a useful new option",
+          "Owns the impact of disruption"
+        ],
+        "decoherentExpression": [
+          "Chaos for its own sake",
+          "Humiliation",
+          "Opposition without insight"
+        ],
+        "signals": [
+          "Can name the assumption being challenged",
+          "Challenge creates a useful new option",
+          "Owns the impact of disruption"
+        ],
+        "distortions": [
+          "Chaos for its own sake",
+          "Humiliation",
+          "Opposition without insight"
+        ],
+        "examples": [
+          "Reframing a stuck question so the team can test a new path"
+        ],
+        "nonExamples": [
+          "Derailing a conversation to gain attention"
         ]
       },
       "templateValidation": {
@@ -3228,7 +3732,9 @@
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
-      ]
+      ],
+      "story": "A meeting repeats the same unproductive argument. Someone names the hidden assumption and offers a playful alternative that opens the problem without humiliating the people involved.",
+      "atunedVersion": "Trickster and Disruption is coherent when disruption reveals a blind spot and creates new options. It decoheres when chaos, deception, or humiliation becomes the goal."
     },
     {
       "id": "domain:12",
@@ -3241,16 +3747,26 @@
       "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with ecological awareness, embodied feedback, natural processes, and intelligence that emerges through relationship with living systems.",
       "essence": null,
-      "function": null,
+      "function": "Learn from embodied feedback, ecological conditions, and interdependent living systems.",
       "healthyExpression": [
-        "observes conditions, respects interdependence and limits, and adapts to feedback rather than forcing every process into an abstract plan"
+        "Observes before imposing a plan",
+        "Tracks interdependence and limits",
+        "Adapts to feedback"
       ],
       "decoherentExpression": [
-        "domination of living systems, romanticizing nature, ignoring practical constraints, or treating instinct as infallible"
+        "Domination of living systems",
+        "Romanticizing nature",
+        "Treating instinct as infallible"
       ],
-      "signals": [],
+      "signals": [
+        "Observes before imposing a plan",
+        "Tracks interdependence and limits",
+        "Adapts to feedback"
+      ],
       "distortions": [
-        "domination of living systems, romanticizing nature, ignoring practical constraints, or treating instinct as infallible"
+        "Domination of living systems",
+        "Romanticizing nature",
+        "Treating instinct as infallible"
       ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
@@ -3258,8 +3774,12 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Changing a process after observing its real conditions"
+      ],
+      "nonExamples": [
+        "Ignoring evidence because a choice feels natural"
+      ],
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -3330,7 +3850,8 @@
         "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
       "notes": [
-        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval.",
+        "Story and ATÜNED-facing interpretation added as provisional synthesis; not a source quotation or canonical definition."
       ],
       "changelog": [
         {
@@ -3420,6 +3941,35 @@
             ],
             "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
+        ],
+        "story": "A plan keeps failing because it ignores the team's actual energy and the environment's constraints. The person observes the pattern, adapts the schedule, and tests a more sustainable rhythm.",
+        "atunedVersion": "Nature and Organic Intelligence is coherent when plans stay responsive to living conditions and feedback. It decoheres when instinct is treated as infallible or systems are forced to fit abstractions.",
+        "function": "Learn from embodied feedback, ecological conditions, and interdependent living systems.",
+        "healthyExpression": [
+          "Observes before imposing a plan",
+          "Tracks interdependence and limits",
+          "Adapts to feedback"
+        ],
+        "decoherentExpression": [
+          "Domination of living systems",
+          "Romanticizing nature",
+          "Treating instinct as infallible"
+        ],
+        "signals": [
+          "Observes before imposing a plan",
+          "Tracks interdependence and limits",
+          "Adapts to feedback"
+        ],
+        "distortions": [
+          "Domination of living systems",
+          "Romanticizing nature",
+          "Treating instinct as infallible"
+        ],
+        "examples": [
+          "Changing a process after observing its real conditions"
+        ],
+        "nonExamples": [
+          "Ignoring evidence because a choice feels natural"
         ]
       },
       "templateValidation": {
@@ -3434,7 +3984,9 @@
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
-      ]
+      ],
+      "story": "A plan keeps failing because it ignores the team's actual energy and the environment's constraints. The person observes the pattern, adapts the schedule, and tests a more sustainable rhythm.",
+      "atunedVersion": "Nature and Organic Intelligence is coherent when plans stay responsive to living conditions and feedback. It decoheres when instinct is treated as infallible or systems are forced to fit abstractions."
     },
     {
       "id": "domain:13",
@@ -3447,16 +3999,26 @@
       "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with engaging uncertainty, hidden causes, ambiguity, and phenomena not yet fully understood.",
       "essence": null,
-      "function": null,
+      "function": "Engage ambiguity and unknowns with curiosity, discernment, and epistemic humility.",
       "healthyExpression": [
-        "can remain curious without prematurely closing the question, distinguishes direct experience from interpretation, and holds uncertainty without surrendering discernment"
+        "Separates experience from explanation",
+        "Considers competing hypotheses",
+        "Can say what remains unknown"
       ],
       "decoherentExpression": [
-        "credulity, conspiratorial certainty, avoidance disguised as mysticism, or dismissing all unknowns before examination"
+        "Credulity",
+        "Conspiratorial certainty",
+        "Premature dismissal"
       ],
-      "signals": [],
+      "signals": [
+        "Separates experience from explanation",
+        "Considers competing hypotheses",
+        "Can say what remains unknown"
+      ],
       "distortions": [
-        "credulity, conspiratorial certainty, avoidance disguised as mysticism, or dismissing all unknowns before examination"
+        "Credulity",
+        "Conspiratorial certainty",
+        "Premature dismissal"
       ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
@@ -3464,8 +4026,12 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Keeping an observation log while testing explanations"
+      ],
+      "nonExamples": [
+        "Treating an unexplained event as proof of a preferred theory"
+      ],
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -3536,7 +4102,8 @@
         "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
       "notes": [
-        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval.",
+        "Story and ATÜNED-facing interpretation added as provisional synthesis; not a source quotation or canonical definition."
       ],
       "changelog": [
         {
@@ -3626,6 +4193,35 @@
             ],
             "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
+        ],
+        "story": "An unusual experience invites a dramatic explanation. The person records what happened, separates observation from interpretation, explores alternatives, and leaves the question open where evidence is insufficient.",
+        "atunedVersion": "Mystery and the Unseen is coherent when uncertainty stays open to inquiry without being collapsed into either credulity or dismissal. It decoheres when speculation becomes certainty.",
+        "function": "Engage ambiguity and unknowns with curiosity, discernment, and epistemic humility.",
+        "healthyExpression": [
+          "Separates experience from explanation",
+          "Considers competing hypotheses",
+          "Can say what remains unknown"
+        ],
+        "decoherentExpression": [
+          "Credulity",
+          "Conspiratorial certainty",
+          "Premature dismissal"
+        ],
+        "signals": [
+          "Separates experience from explanation",
+          "Considers competing hypotheses",
+          "Can say what remains unknown"
+        ],
+        "distortions": [
+          "Credulity",
+          "Conspiratorial certainty",
+          "Premature dismissal"
+        ],
+        "examples": [
+          "Keeping an observation log while testing explanations"
+        ],
+        "nonExamples": [
+          "Treating an unexplained event as proof of a preferred theory"
         ]
       },
       "templateValidation": {
@@ -3640,7 +4236,9 @@
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
-      ]
+      ],
+      "story": "An unusual experience invites a dramatic explanation. The person records what happened, separates observation from interpretation, explores alternatives, and leaves the question open where evidence is insufficient.",
+      "atunedVersion": "Mystery and the Unseen is coherent when uncertainty stays open to inquiry without being collapsed into either credulity or dismissal. It decoheres when speculation becomes certainty."
     },
     {
       "id": "domain:14",
@@ -3653,16 +4251,26 @@
       "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with sustained commitment to a value, practice, or source of meaning expressed through responsible action.",
       "essence": null,
-      "function": null,
+      "function": "Translate declared commitments and sources of meaning into sustained, responsible action.",
       "healthyExpression": [
-        "aligns repeated action with declared commitments, remains open to correction, and measures devotion by integrity rather than display"
+        "Actions track declared commitments",
+        "Practice is sustained without display",
+        "Means remain accountable to values"
       ],
       "decoherentExpression": [
-        "fanaticism, obedience without discernment, performative virtue, or using a noble purpose to excuse harmful means"
+        "Fanaticism",
+        "Obedience without discernment",
+        "Performative virtue"
       ],
-      "signals": [],
+      "signals": [
+        "Actions track declared commitments",
+        "Practice is sustained without display",
+        "Means remain accountable to values"
+      ],
       "distortions": [
-        "fanaticism, obedience without discernment, performative virtue, or using a noble purpose to excuse harmful means"
+        "Fanaticism",
+        "Obedience without discernment",
+        "Performative virtue"
       ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
@@ -3670,8 +4278,12 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Keeping a difficult promise while renegotiating honestly when circumstances change"
+      ],
+      "nonExamples": [
+        "Using a noble cause to excuse harm"
+      ],
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -3742,7 +4354,8 @@
         "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
       "notes": [
-        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval.",
+        "Story and ATÜNED-facing interpretation added as provisional synthesis; not a source quotation or canonical definition."
       ],
       "changelog": [
         {
@@ -3832,6 +4445,35 @@
             ],
             "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
+        ],
+        "story": "A person says integrity matters but repeatedly avoids a difficult conversation. They choose one honest action, accept its consequences, and review whether their practice matches their stated value.",
+        "atunedVersion": "Devotion and Right Action is coherent when repeated behavior expresses a value while remaining open to correction. It decoheres when loyalty overrides discernment or noble ends excuse harmful means.",
+        "function": "Translate declared commitments and sources of meaning into sustained, responsible action.",
+        "healthyExpression": [
+          "Actions track declared commitments",
+          "Practice is sustained without display",
+          "Means remain accountable to values"
+        ],
+        "decoherentExpression": [
+          "Fanaticism",
+          "Obedience without discernment",
+          "Performative virtue"
+        ],
+        "signals": [
+          "Actions track declared commitments",
+          "Practice is sustained without display",
+          "Means remain accountable to values"
+        ],
+        "distortions": [
+          "Fanaticism",
+          "Obedience without discernment",
+          "Performative virtue"
+        ],
+        "examples": [
+          "Keeping a difficult promise while renegotiating honestly when circumstances change"
+        ],
+        "nonExamples": [
+          "Using a noble cause to excuse harm"
         ]
       },
       "templateValidation": {
@@ -3846,7 +4488,9 @@
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
-      ]
+      ],
+      "story": "A person says integrity matters but repeatedly avoids a difficult conversation. They choose one honest action, accept its consequences, and review whether their practice matches their stated value.",
+      "atunedVersion": "Devotion and Right Action is coherent when repeated behavior expresses a value while remaining open to correction. It decoheres when loyalty overrides discernment or noble ends excuse harmful means."
     },
     {
       "id": "domain:15",
@@ -3859,16 +4503,26 @@
       "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with exploration, experimentation, spontaneous creativity, humor, and the intrinsic pleasure of participation.",
       "essence": null,
-      "function": null,
+      "function": "Enable exploration, experimentation, humor, and creative participation in context.",
       "healthyExpression": [
-        "permits curiosity and invention while staying aware of context, consent, and consequences"
+        "Experiments without demanding certainty",
+        "Humor increases connection rather than status",
+        "Can return to responsibility after play"
       ],
       "decoherentExpression": [
-        "compulsive distraction, avoidance of responsibility, mockery that degrades others, or suppressing play until all outcomes are guaranteed"
+        "Compulsive distraction",
+        "Avoiding responsibility",
+        "Humiliation disguised as humor"
       ],
-      "signals": [],
+      "signals": [
+        "Experiments without demanding certainty",
+        "Humor increases connection rather than status",
+        "Can return to responsibility after play"
+      ],
       "distortions": [
-        "compulsive distraction, avoidance of responsibility, mockery that degrades others, or suppressing play until all outcomes are guaranteed"
+        "Compulsive distraction",
+        "Avoiding responsibility",
+        "Humiliation disguised as humor"
       ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
@@ -3876,8 +4530,12 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
-      "nonExamples": [],
+      "examples": [
+        "Running a small playful experiment to unlock a stuck process"
+      ],
+      "nonExamples": [
+        "Using jokes to silence someone else's concern"
+      ],
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -3948,7 +4606,8 @@
         "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
       "notes": [
-        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval.",
+        "Story and ATÜNED-facing interpretation added as provisional synthesis; not a source quotation or canonical definition."
       ],
       "changelog": [
         {
@@ -4038,6 +4697,35 @@
             ],
             "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
+        ],
+        "story": "A group is stuck trying to avoid every mistake. One member proposes a low-stakes experiment, invites play, and keeps the boundaries clear enough that everyone can participate safely.",
+        "atunedVersion": "Play and Creative Delight is coherent when curiosity opens possibility without abandoning context or responsibility. It decoheres when distraction replaces engagement or humor degrades others.",
+        "function": "Enable exploration, experimentation, humor, and creative participation in context.",
+        "healthyExpression": [
+          "Experiments without demanding certainty",
+          "Humor increases connection rather than status",
+          "Can return to responsibility after play"
+        ],
+        "decoherentExpression": [
+          "Compulsive distraction",
+          "Avoiding responsibility",
+          "Humiliation disguised as humor"
+        ],
+        "signals": [
+          "Experiments without demanding certainty",
+          "Humor increases connection rather than status",
+          "Can return to responsibility after play"
+        ],
+        "distortions": [
+          "Compulsive distraction",
+          "Avoiding responsibility",
+          "Humiliation disguised as humor"
+        ],
+        "examples": [
+          "Running a small playful experiment to unlock a stuck process"
+        ],
+        "nonExamples": [
+          "Using jokes to silence someone else's concern"
         ]
       },
       "templateValidation": {
@@ -4052,7 +4740,9 @@
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
-      ]
+      ],
+      "story": "A group is stuck trying to avoid every mistake. One member proposes a low-stakes experiment, invites play, and keeps the boundaries clear enough that everyone can participate safely.",
+      "atunedVersion": "Play and Creative Delight is coherent when curiosity opens possibility without abandoning context or responsibility. It decoheres when distraction replaces engagement or humor degrades others."
     },
     {
       "id": "archetype:candidate:warrior",
