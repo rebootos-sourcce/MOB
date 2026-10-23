@@ -1915,8 +1915,9 @@ function sniffStory(text){
   /* EVERY POSITIVE CANDIDATE, S3 of the 9 October sniffer audit. This was
      sliced to SAB_SHOW here, so the domain layer decided what a screen shows
      and a seventh candidate was not in the output for anything to read.
-     SAB_SHOW is what a renderer slices to; no screen renders this list yet,
-     the tutorial reads only offer. */
+     SAB_SHOW is what a renderer slices to; no screen renders this list yet.
+     The one screen that read this aggregate at all was the Day One tutorial,
+     and it read only offer; it was removed on 23 October. */
   saboteurs: sniffSaboteurs(axes),
   laws:      sniffLaws(text),
   flow:      sniffFlow(text),

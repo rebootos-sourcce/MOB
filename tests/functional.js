@@ -5180,7 +5180,7 @@ console.log('\n=== the welcome after paying shows once and says the loop ===');
  const o=await tp.evaluate(async()=>{
   const wait=ms=>new Promise(r=>setTimeout(r,ms));
   loadP(0);
-  const first=paidWelcomeOpen(), h=document.getElementById('tutorial');
+  const first=paidWelcomeOpen(), h=document.getElementById('paidwelcome');
   const txt=h.textContent, shown=getComputedStyle(h).display;
   document.getElementById('pwgo').click(); await wait(700);
   return {first,txt,shown,hidden:getComputedStyle(h).display,onStory:S.tab===TAB.STORY,again:paidWelcomeOpen(),flag:!!(CURP.ui&&CURP.ui.paidWelcomed)};});

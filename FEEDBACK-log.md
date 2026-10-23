@@ -453,6 +453,22 @@ reached with no press where it took one from the Field, and the stage starts
 44px higher on Discover than under Play. tests/landing.js fails by name on
 the build from before.
 
+## 2026-10-23 · owner · the second onboarding
+
+said: "Check to see if there's a second onboarding. Right now, there's been
+two onboardings. There's the one that we see, and there's a hidden one. I want
+that hidden one completely removed. We're not doing that anymore."
+read: the one that is seen is the onboarding, ui/onboard.js, which opens once
+behind the login door. The hidden one is the Day One tutorial, ui/tutorial.js:
+a second first run on the same stage that no arrival opened, behind a switch
+that defaulted off and a replay button in Account.
+change: branch dani/remove-day-one-tutorial, the commit that adds this entry.
+The module, its switch, its Account row, its poses and the gate sections that
+walked it are gone. The welcome after paying keeps the host it borrowed, as
+#paidwelcome. DECISIONS.md, 23 October, has what was kept and why.
+measure: tests/onboarding2.js section 2 reads the running page for every
+part of the tutorial and fails by name on 45fe5649, the build from before.
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.

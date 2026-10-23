@@ -479,8 +479,8 @@ function relOpp(n){
    run has no story behind it and its answer carries none.
 
    mini says the run is the mini release a card has just promised, the one
-   onbMiniPlan planned for the onboarding bridge and the Day One tutorial.
-   Neither door said so before, so this opened their twelve lines at the dose
+   onbMiniPlan planned for the onboarding bridge, and until 23 October for
+   the Day One tutorial too. Neither door said so before, so this opened their twelve lines at the dose
    a person last picked, a hundred by default, and the screen after "Your
    first release is 4 lines" said four hundred over 28 minutes (M28). A mini
    run is said ONB_MINI_DOSE times a line, which is the ruled twelve lines

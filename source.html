@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2433 45fe5649 2026-10-23 15:25"><head><meta charset="utf-8">
+<html lang="en" data-build="v2435 ad218edd 2026-10-23 16:58"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -6946,7 +6946,7 @@ body.punch .ob-mk-tk{display:none}
    THE STAGE, ROUND QH. ui/onboard.js's header carries the account: the sheet
    is a full screen with three depths, the body is one object moved by poses,
    and the card is the only thing replaced. Everything here is scoped to .obx,
-   because #login and #tutorial wear the same .ob and .ob-card and are not
+   because #login and #paidwelcome wear the same .ob and .ob-card and are not
    part of this round.
 
    THE POSES ARE DESIGN VALUES, per step and per width, and the script reads
@@ -7480,46 +7480,18 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
  .obx-fill,.obx .ob-dot,.obx-fn,.obx-glow::before{transition:none}
  .obx.ob-leaving{transition:none}}
 /* ============================================================
-   THE DAY ONE TUTORIAL ON THE STAGE, ROUND QJ. ui/tutorial.js's header has
-   the account: the tutorial stands on the stage above, built by the same
-   obStage and changed step by step through the same obSwap, so every rule
-   above already moves it and the reduced block above already stills it.
-   What is here is only what is the tutorial's own: five poses, which names
-   show, and its chain. No keyframe below is new; the chain's rows rise on
-   obxRise, the first run's own.
-
-   THE POSES ARE READ BY data-ts AND NEVER data-step, so not one of the first
-   run's eight poses, its names or its way out rules reach this sheet because
-   two numbers happen to match.
+   THE CHAIN, ROUND QJ, AND NOW THE END CARD'S. It was drawn for the Day One
+   tutorial, which stood on this stage until 23 October, when the owner ruled
+   it removed: "I want that hidden one completely removed. We're not doing
+   that anymore." Its five poses and its way of hiding the app went with it.
+   The chain stays, because the first run's own end card, Here is what you
+   made (obEndCard, ui/onboard.js), draws its rows in it. No keyframe below
+   is new; the rows rise on obxRise, the first run's own.
    ============================================================ */
-body.tut-on .app,body.tut-on #bgaura{visibility:hidden}
-/* Journal: the hero, the body whole with its seven seats named down its side,
-   the map before anything is written on it, held at 96 per cent. Discover:
-   the entry has landed, and the body comes the last four per cent forward,
-   on the camera's own two per cent backswing, so the press winds up, the
-   body lands at 640ms and the seats ignite on it from 420ms, a consequence
-   of the commit and not a second event. Measured before this: Journal and
-   Discover both stood at 1, the body did not move on the one step where
-   the words become charge, and only the ring turned. The ring turns its
-   eighth, and only the seats the words lit keep a name.
-   Understand steps back a little so the chain beside it is the thing read.
-   Release comes forward. Flow steps back, the walk handed on to practice. */
-.tutx[data-ts="0"]{--k:0;--fs:.96;--fo:1;--ro:1;--ax:27vw}
-.tutx[data-ts="1"]{--k:1;--fs:1;--fo:1;--ro:.86;--ax:27vw}
-.tutx[data-ts="2"]{--k:2;--fs:.94;--fo:.8;--ro:.7;--ax:26vw}
-.tutx[data-ts="3"]{--k:3;--fs:1;--fo:1;--ro:1;--ax:27vw}
-.tutx[data-ts="4"]{--k:4;--fs:.9;--fo:.62;--ro:.6;--ax:25vw}
-.obx.tutx[data-ts="0"] .obx-fn{opacity:1}
-/* a name never stands without its meaning (round PO): where a name shows, the
-   anatomy line under it shows too */
-.obx.tutx[data-ts="0"] .obx-fn i,.obx.tutx .obx-fn.on i{display:block}
-/* the steps that carry their own way out, Skip the tutorial, Not now and
-   Done, do not need a second one in the corner */
-.tutx[data-ts="0"] .obx-x,.tutx[data-ts="3"] .obx-x,.tutx[data-ts="4"] .obx-x{visibility:hidden}
 /* THE CHAIN, a thread and not a table. The bordered grid was the old card's
-   chrome inside a stage that has none. Four stations down one line, the
-   seat's own ring on the body's row, so the row and the lit seat on the
-   figure are visibly the same place. */
+   chrome inside a stage that has none. Its stations run down one line, the
+   seat's own ring on the row that names a seat, so the row and the lit seat
+   on the figure are visibly the same place. */
 .obx .ob-grid{display:block;position:relative;background:none;border:0;border-radius:0;overflow:visible;
  margin:26px 0 20px;padding-left:28px}
 .obx .ob-grid::before{content:'';position:absolute;left:5.5px;top:9px;bottom:26px;width:1px;
@@ -7534,13 +7506,6 @@ body.tut-on .app,body.tut-on #bgaura{visibility:hidden}
 .obx-enter .ob-grid>.ob-g{animation:obxRise .44s cubic-bezier(.22,1,.36,1) both;
  animation-delay:calc(var(--d0) + var(--si,0) * 70ms + var(--ci,0) * 80ms)}
 @media(max-width:899px){
- /* narrow: the words take the screen on every step and the body is the
-    emblem over them, still lit where the entry landed, as the first run's
-    own reading steps do. Named in the card, so not beside the emblem. */
- .obx.tutx[data-ts]{--fs:.5;--ax:50vw;--ay:calc(62px + var(--fh) * .2353);--st:calc(62px + var(--fh) * .5 + 6px)}
- .obx.tutx[data-ts="2"],.obx.tutx[data-ts="4"]{--fo:.62}
- .obx.tutx .obx-fn,.obx.tutx[data-ts="0"] .obx-fn{opacity:0}
- .obx.tutx.obx-in-arrive .obx-fn{animation:none}
  .obx .ob-grid{margin:18px 0 14px}
  .obx .ob-g{padding-bottom:14px}}
 @media (prefers-reduced-motion:reduce){
@@ -7549,7 +7514,7 @@ body.tut-on .app,body.tut-on #bgaura{visibility:hidden}
     slid 4px on hover. The document wide *{transition:none!important} does
     not reach it, because * matches no pseudo element. Seen as the one running
     animation on the stage when a new Next lands under a pointer that has not
-    moved, on this sheet and on the first run's alike. */
+    moved. */
  .obx .btn.pri::after{transition:none}}
 .s-lens{display:grid;gap:1px;background:var(--edge);border:1px solid var(--edge);
  border-radius:var(--r);overflow:hidden}
@@ -8367,11 +8332,11 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
      It signs in against the account server through ui/auth.js, and it
      always offers a way through without an account, ui/login.js. -->
 <div id="login" class="ob" style="display:none"></div>
-<!-- THE DAY ONE TUTORIAL. A sheet, the same family as onboarding: met once
-     behind the door, replayable from the account area, round NF. It writes
-     the person's first entry through the Story tab's own real commit
-     (ui/storyui.js's stCommit), never a simulated reading. -->
-<div id="tutorial" class="ob" style="display:none"></div>
+<!-- THE WELCOME AFTER PAYING, ui/auth.js paidWelcomeOpen. A sheet of the same
+     family, shown once when a plan goes live. Until 23 October this host was
+     the Day One tutorial's and the welcome borrowed it; the owner ruled that
+     sequence removed, so the host is the welcome's own. -->
+<div id="paidwelcome" class="ob" style="display:none"></div>
 <!-- ============================================================
      THE BOOT. THE BODY BECOMES THE FIELD, AND THE CAMERA GOES IN.
 
@@ -15010,9 +14975,10 @@ const ONB_MINI_ADDRS=3;
    (REVIEW-onboarding/pass1/devops-qa.md, "Dose 1 is 12 lines, the ruled mini
    release, but it needs a typed number") and 28:02 at one, where Angela left
    (M28). Twelve lines spoken is the plan said once. ui/release.js opens a run
-   handed over by the onboarding or the Day One tutorial at this dose, and
-   both cards say it, so the count is this number times ONB_MINI_ADDRS times
-   RUN_MIN and is typed nowhere else. */
+   handed over by the onboarding at this dose, and its card says it, so the
+   count is this number times ONB_MINI_ADDRS times RUN_MIN and is typed
+   nowhere else. (The Day One tutorial handed over at this dose too, until it
+   was removed on 23 October.) */
 const ONB_MINI_DOSE=1;
 /* THE FOUR CHANNELS A RUN SAYS AN ADDRESS DOWN, as meter keys: side then track,
    release first and reframe after, the order the release card walks them
@@ -15095,10 +15061,15 @@ const JOURNEY_SRC=['funnel','app'];
    typed beside it). release is the hand off to the first release, and end is
    the card after it that shows what the person made. */
 const JOURNEY_WALK=['arrive','ask','settle','feel','body','story','mirror','next','release','end'];
-/* THE TWO DOORS INTO THE FIRST RELEASE: the onboarding sheet, and the Day One
-   tutorial (ui/tutorial.js). The walk says which, because the two plan the
-   release from different lists: the sheet from the places the person said yes
-   to, the tutorial from what the story read. */
+/* THE DOORS INTO THE FIRST RELEASE, as a walk may name them. The onboarding
+   sheet is the one door. The Day One tutorial (ui/tutorial.js) was the other,
+   and the owner ruled it removed on 23 October: "I want that hidden one
+   completely removed. We're not doing that anymore." Nothing writes
+   'tutorial' now, and it stays on this list on purpose: the list is what the
+   boundary accepts, and a record carrying an older value is read, never
+   refused (engine/journey.js). The walk says which door, because the two plan
+   the release from different lists: the sheet from the places the person said
+   yes to, a tutorial walk from what the story read (obBridgeCard). */
 const JOURNEY_DOORS=['onboarding','tutorial'];
 
 try{window.__at&&window.__at('engine/data/onboarding.js');}catch(e){}
@@ -28238,8 +28209,9 @@ function sniffStory(text){
   /* EVERY POSITIVE CANDIDATE, S3 of the 9 October sniffer audit. This was
      sliced to SAB_SHOW here, so the domain layer decided what a screen shows
      and a seventh candidate was not in the output for anything to read.
-     SAB_SHOW is what a renderer slices to; no screen renders this list yet,
-     the tutorial reads only offer. */
+     SAB_SHOW is what a renderer slices to; no screen renders this list yet.
+     The one screen that read this aggregate at all was the Day One tutorial,
+     and it read only offer; it was removed on 23 October. */
   saboteurs: sniffSaboteurs(axes),
   laws:      sniffLaws(text),
   flow:      sniffFlow(text),
@@ -46728,15 +46700,15 @@ function stFound(){
    Two writers for one commit is the same mistake setTab's own history
    warns against, a thing read in one table and written from two; this is one
    function, called from both. Returns what happened rather than only acting,
-   so a caller that is not the button itself (the tutorial) can act on a real
-   result instead of re-deriving it. */
+   so a caller that is not the button itself (the onboarding's commit) can
+   act on a real result instead of re-deriving it. */
 function stCommit(){
  /* AN ENTRY THAT READS AS NOTHING IS STILL THE PERSON'S OWN WORDS, round NZ,
     21.I1. This used to refuse the whole commit whenever the sniffer found no
     imprint, which is a UI gate and not the boundary: validateProfile already
     accepts an entry with imprints:0 and empty bands (engine/schema.js). Four
     of his own example sentences measured nothing here, "I keep putting off
-    the conversation" among them, and the Day One tutorial runs this same
+    the conversation" among them, and the Day One tutorial ran this same
     path, so a first entry exactly like one of his own examples was dropped
     on day one while the card beside it said "it is not a problem with what
     you wrote." The TDDs this product is built from rule it directly: "the
@@ -46812,9 +46784,8 @@ function stCommit(){
   entT=ent.t;}
   /* the draft these words were is taken off in the same write that puts the
      entry on, so a reload never offers back a story already committed. Only
-     when it is these words: onboarding and the tutorial commit their own text
-     through here, and a half written story waiting on the Story page is not
-     theirs to clear. */
+     when it is these words: onboarding commits its own text through here,
+     and a half written story waiting on the Story page is not its to clear. */
   var wasDraft=CURP.story.draft===ST_TEXT;
   if(wasDraft)delete CURP.story.draft;
   stDraftStop();
@@ -48819,401 +48790,6 @@ function stMic(){
    ' Typing works.','fail'); }}
 
 try{window.__at&&window.__at('ui/storyui.js');}catch(e){}
-/* ============================================================
-   THE DAY ONE TUTORIAL. Round NF, his own ruling at round NE: "the day
-   one tutorial has to start with the journal, right, journal is the
-   beginning of the journey." DESIGN-onboarding-narrative.md section 7
-   through 13 is the storyboard this walks: Discover, Play folded into
-   Discover's own framing since the tutorial is one entry and not a
-   session, Understand, Release, Flow.
-
-   WHAT THIS IS NOT: a simulated reading built from invented categories.
-   Every number and name on these screens comes from the real engine,
-   read off the exact same commit the Story tab's own Apply button
-   makes (ui/storyui.js's stCommit, factored out for this). A person's
-   first entry is a real entry, not a rehearsal, so it is written to
-   their field once, for real, the moment they continue past it.
-
-   THE TUTORIAL LIVES IN THE PROFILE, TOGGLEABLE AND REPLAYABLE, same
-   rule as onboarding, ui/account.js's own line: "and it does not spend
-   real charge." That line is true of the sheet itself, never of the
-   entry typed into it: the entry is real and costs whatever any entry
-   costs. What is free to repeat is walking someone through what an
-   entry does, not the entry's own effect.
-
-   ROUND PS: IT NOW REACHES A FIRST RELEASE. This used to describe the
-   release step and stop; "Go to Ritual" was the only button that went
-   anywhere. The gap was named directly: "neither the onboarding nor the
-   Day One tutorial reaches a first release today." The Release step below
-   now hands the real offer's node to relPick, ui/release.js's own one
-   release entry every other door in the product uses, never a second
-   engine, so a person who presses Begin on day one is in the real release
-   card, running the real walker, for the real charge this entry actually
-   carries.
-
-   J0, SAID HERE TOO, BECAUSE IT IS THE SAME GAP ATUNED_SRC/UI/ONBOARD.JS
-   NAMES. tutCommit below is the first place a stranger's own words, typed
-   on day one, are handed to parseStory. No distress check of any kind
-   stands ahead of it. See onboard.js's own header for why nothing is
-   added here that only looks like one.
-   ============================================================ */
-var TUT={open:false, step:0, text:'', commit:null, deep:null, replay:false, parsed:null, plan:null, shown:-1, leaveT:null};
-/* ============================================================
-   THE STAGE, ROUND QJ. His words, on the first run's rebuild: "Continue full
-   build in the style. For the funnel, onboarding, tutorial... Make this
-   priority." This sheet was the last first run surface still opening as the
-   old popup card over a dimmed app, which is exactly what the onboarding's
-   welcome was before round QH took it full screen.
-
-   SO IT STANDS ON THAT STAGE, AND NOT ON A COPY OF IT. obStage, obSwap,
-   obCard, obGhost, obPushOut and obRailAt are ui/onboard.js's own: the far
-   wash, the ring of the 112, the body with its seats, the arrival (the
-   spine climbs, the seats pop as its tip passes, the outline pours from the
-   crown, the ring winds in), the Field's 4.2 second breath at rest, the
-   ghost out and the rise in on a change of step, the pulse up the spine,
-   and the push through on the way out. Not one keyframe is new. What is the
-   tutorial's own is its five poses, in shell/head.html under .tutx, and
-   which seats it lights.
-
-   THE LIGHT CARRIES THE ENTRY. A seat lights only where this entry put
-   weight, read off the same commit the words on the card are read off: the
-   two places What this found names, the one the chain names, and the plan's
-   own addresses on Release and Flow. Nothing is lit before the commit,
-   because nothing has been read. So the commit, which is the moment the
-   words become charge in the field, is the moment the body lights, root to
-   crown on the boot's beat, and a person can see where it landed with the
-   words still rising beside it.
-
-   REDUCED MOTION GETS THE END STATE: no arrival, no ghost, no camera, no
-   breath, no pulse. Every one of those is already held under the stage's
-   own reduced block, and the script paths all ask obCalm first.
-   ============================================================ */
-var TUT_N=5;
-/* the rail's names: the storyboard's own, this file's header, in order */
-var TUT_STEPNM=['Journal','Discover','Understand','Release','Flow'];
-
-/* THE JOURNEY RECORD ON THIS DOOR, F13. The Day One tutorial is the other
-   door into the first release, so on a first run it writes the same record
-   the onboarding sheet writes (engine/journey.js): that it started, the story
-   it read, and the hand off, with the meter's counts at that moment. After the
-   release, the end of the first run is the onboarding stage's end card
-   whichever door led there, so a first run whose release has landed, or whose
-   hand off came from this door and never ran, is put back on that stage. A
-   replay from Settings writes nothing and resumes nothing, as before. */
-function tutJourney(replay){
- TUT.rec=false;
- if(replay||typeof journeyRead!=='function'||typeof CURP==='undefined'||!CURP)return false;
- if(typeof S!=='undefined'&&S.who!==0)return false;
- var jr=journeyRead(CURP);
- if(jr.at==='end'||(jr.at==='next'&&jr.door==='tutorial'))return true;
- if(!jr.first)return false;
- TUT.rec=true;
- var r=journeyLog(CURP,'tutorial_started',null,{door:'tutorial'});
- if(!r.ok&&typeof obJyFail==='function')obJyFail(r.why);
- if(!pSave()&&typeof status==='function')
-  status('This browser would not save. If the page reloads, the first run starts over.','fail');
- return false;}
-function tutOpen(replay){
- var h=document.getElementById('tutorial'); if(!h)return;
- if(tutJourney(!!replay)&&typeof obOpen==='function'){ obOpen(false); return; }
- TUT.open=true; TUT.step=0; TUT.text=''; TUT.commit=null; TUT.deep=null; TUT.replay=!!replay; TUT.parsed=null; TUT.plan=null;
- TUT.shown=-1;
- if(TUT.leaveT){ clearTimeout(TUT.leaveT); TUT.leaveT=null; }
- h.classList.remove('ob-leaving');
- /* a fresh stage on every open, so the arrival plays from its first frame */
- h.innerHTML=''; h.classList.remove('obx','obx-lit','obx-in-arrive');
- h.classList.add('tutx');
- if(typeof obStage==='function')obStage(h,TUT_N,'data-tut="skip"');
- /* the running app goes out of the picture while the stage is up */
- document.body.classList.add('tut-on');
- tutRender();
- h.style.display='flex';
- if(typeof obPenWidth==='function')obPenWidth(h);
- var f=h.querySelector('.obx-slot textarea,.obx-slot button'); if(f)f.focus({preventScroll:true});}
-/* the login.js hook already calls tutorialOpen(); this is the real name,
-   kept short for the five screens below that call it on themselves. */
-function tutorialOpen(replay){ tutOpen(replay); }
-
-var TUT_LEAVE_MS=520;
-function tutClose(){
- var h=document.getElementById('tutorial'); if(!h)return;
- TUT.open=false; h.classList.add('ob-leaving');
- document.body.classList.remove('tut-on');
- /* the first run's own way out: the body goes forward past the camera */
- if(typeof obPushOut==='function')obPushOut(h);
- TUT.leaveT=setTimeout(function(){ TUT.leaveT=null; if(TUT.open)return;
-  h.style.display='none'; h.classList.remove('ob-leaving','obx','tutx','obx-lit','obx-in-arrive');
-  h.removeAttribute('data-ts'); h.removeAttribute('data-dir'); h.innerHTML=''; },TUT_LEAVE_MS);
- /* EVERY WRITE THAT CAN FAIL REPORTS, the same lesson onboard.js's own
-    obClose carries: a flag that silently fails to save reopens the sheet
-    on every launch with no explanation a person can act on. */
- try{
-  if(CURP){ if(!CURP.ui||typeof CURP.ui!=='object')CURP.ui={}; CURP.ui.tutorialSeen=true;
-   if(!pSave()&&typeof status==='function')
-    status('This browser would not save. The tutorial will open again.','fail'); }
- }catch(e){
-  if(typeof status==='function')
-   status('This browser would not save. The tutorial will open again.','fail'); }
- if(typeof render==='function')render();}
-
-/* THE CARD IS THE STAGE'S COLUMN NOW, round QJ: obCard's eyebrow, its
-   headline a word to a masked line, the body, the actions. The five dots it
-   carried are the stage's rail at the top of the screen, which fills as the
-   run goes. nsteps is kept in the signature so no caller has to change. */
-function tutCard(title,body,acts,nsteps){
- return obCard('Day one',title,body,acts);}
-
-/* WHICH SEATS THIS STEP LIGHTS, read off what the card on the same step
-   prints and nothing else. Seat names are the node's own .b, the band the
-   word lit, the same name the stage's seats carry. */
-function tutLitNow(){
- var s=TUT.step, c=TUT.commit, kept=(c&&c.ok&&c.k&&c.kept)||[], lit=[];
- var add=function(b){ if(b&&BANDS.indexOf(b)>=0&&lit.indexOf(b)<0)lit.push(b); };
- if(s===1){ add(kept[0]&&kept[0].b); add(kept[1]&&kept[1].b); }
- else if(s===2){ add(kept[0]&&kept[0].b); }
- else if(s>=3){
-  var pl=TUT.plan;
-  if(pl&&pl.ok)pl.addrs.forEach(function(i){ add(BY[i]&&BY[i].b); });
-  else{ var off=(TUT.deep&&TUT.deep.offer&&TUT.deep.offer[0])||null;
-   if(off&&kept.length)add(kept[0].b); }}
- return {lit:lit, pick:null, mark:null};}
-
-/* THE PERSON'S OWN WORD, AND ONLY A NAME THE WORDS GAVE. S4 of the 9 October
-   sniffer audit, ruling 5. This read .k as "the word itself", and .k is the
-   ADDRESS name, so the card put an address in quotation marks as if the
-   person had written it: measured, "I was furious" printed around the word
-   "Pride", and "My father died last year" around the word "Martyrdom", the
-   exact corpse parseStory's own inferred flag was written to stop. And it
-   said "named" with the address's fetter whether or not the words named it.
-
-   Now the word is the person's own letters at that seat, off marksOf and
-   only what counts (not a word said with a no, not someone else's), and
-   "named" carries the fetter the words named, off a non inferred imprint,
-   or is not said. .b is the seat. Nothing here is invented. */
-function tutSeatLine(n){
- if(!n)return '';
- var p=TUT.parsed, t=(TUT.commit&&TUT.commit.text)||TUT.text||'', ws=[];
- if(p&&t&&typeof marksOf==='function')marksOf(t,p).forEach(function(m){
-  if(m.bn!==n.b||m.neg||m.other||m.coh)return;
-  var w=t.slice(m.s,m.e); if(ws.indexOf(w)<0)ws.push(w);});
- var im=p?p.imprints.filter(function(x){return x.node===n.i&&!x.inferred&&x.fetter;})[0]:null;
- return 'at your <b>'+esc(n.b||'')+'</b>'
-  +(ws.length?', around '+(ws.length>1?'the words ':'the word ')
-    +ws.slice(0,2).map(function(w){return '&ldquo;'+esc(w)+'&rdquo;';}).join(' and '):'')
-  +(im?', named <b>'+esc(im.fetter)+'</b>':'');}
-
-function tutRender(){
- var h=document.getElementById('tutorial'); if(!h)return;
- var s=TUT.step, out='';
- if(s===0){
-  out=tutCard('Let’s look at something from your journal.',
-   '<p class="ob-p">Write one thing that happened today or recently. A '
-   +'sentence or two is enough.</p>'
-   /* THE OWNER'S LINE, 16 October: use feeling words, use descriptive words,
-      no ambiguity, "the clearer the emotion, the clearer the targeting".
-      Checked against parseStory before it was written: a named feeling
-      ("ashamed") lands as one clean reading at one seat, a vague phrase
-      ("a rough day") is read as a loose guess, and body words scatter the
-      reading across seats, so the card asks for the feeling and gives the
-      example as a placeholder, which is never saved as the person's own. */
-   +'<p class="ob-p">Name the feeling in one plain word, like afraid, '
-   +'ashamed, furious or numb. Not fine, off or rough: those could mean '
-   +'anything. The clearer the feeling, the clearer where it lands in your '
-   +'body.</p>'
-   +'<div class="ob-f"><textarea id="tuttext" rows="4" placeholder="For example: My boss shouted at me in front of the team. I felt ashamed."></textarea></div>',
-   '<button type="button" class="btn pri" data-tut="commit">Continue</button>'
-   +'<button type="button" class="btn" data-tut="skip">Skip the tutorial</button>');
- }
- else if(s===1){
-  var c=TUT.commit, kept=(c&&c.kept)||[];
-  var body;
-  /* 21.I1, round NZ: stCommit now keeps an entry that read as nothing
-     instead of refusing it, so c.ok is true here even with nothing caught.
-     The honest empty copy below still needs c.k, the count it actually
-     found, not just that the entry was kept. */
-  if(!c||!c.ok||!c.k){
-   /* HONEST EMPTY, the same rule the signal test already keeps: nothing
-      caught is a real answer, not a failure to paper over. And a word read
-      and set aside is not nothing, S1 and S2: "He shouted at me" names a word
-      and holds it as someone else's, so the engine's own asideSay line says
-      what was set aside and why, the line the Story page prints. */
-   var aside=(TUT.parsed&&c&&c.text&&typeof asideSay==='function')?asideSay(asideOf(c.text,TUT.parsed)):'';
-   body=(aside?'<p class="ob-p">'+esc(aside)+'</p>'
-    :'<p class="ob-p">Nothing in that one lit anything the engine could '
-    +'name. That happens, and it is not a problem with what you wrote. Some '
-    +'entries are quiet.</p>')
-    +'<p class="ob-p ob-dim">Longer entries, or ones with a feeling named in '
-    +'them, usually give it more to find. You can always write another in '
-    +'Discover later.</p>';
-  }else{
-   body='<p class="ob-p">You wrote:</p>'
-    +'<p class="ob-p ob-dim">&ldquo;'+esc(c.text.length>220?c.text.slice(0,220)+'…':c.text)+'&rdquo;</p>'
-    +'<p class="ob-p">This separates into its own components. What stood out '
-    +(kept[0]?tutSeatLine(kept[0]):'landed')+'.</p>'
-    +(kept[1]?'<p class="ob-p">And a second place, '+tutSeatLine(kept[1])+'.</p>':'')
-    +'<p class="ob-p ob-dim">That is Discover: not labelling you, revealing '
-    +'what is actually there.</p>';}
-  out=tutCard('What this found',body,
-   '<button type="button" class="btn pri" data-tut="next">Next</button>');
- }
- else if(s===2){
-  var c=TUT.commit, d=TUT.deep, kept=(c&&c.kept)||[], off=(d&&d.offer&&d.offer[0])||null;
-  var body;
-  if(!c||!c.ok||!c.k){
-   body='<p class="ob-p">With nothing named yet, there is no chain to draw '
-    +'from this one. The next entry that lands somewhere will have one.</p>';
-  }else{
-   /* THE STORY IS THE FETTER THE READING PUT HERE, never the address's own.
-      This printed kept[0].cf, the fetter the ADDRESS carries in the 112
-      table, and the two part on a stated word: "I am exhausted." reads as
-      apathy, stated, and parseStory seats it at the solar seat's first
-      address, Pride, whose own fetter is anger. So the card said Story,
-      Anger, over a cost line about the Apathy axis. The imprint that put
-      kept[0] on this card carries what the words gave, the same list
-      tutSeatLine reads on the card before. */
-   var im0=(kept[0]&&TUT.parsed)?TUT.parsed.imprints.filter(function(x){return x.node===kept[0].i&&x.fetter;})[0]:null;
-   body='<p class="ob-p">A situation can trigger a story. The story can move '
-    +'the body. The body can shape behaviour. The behaviour can repeat the '
-    +'situation.</p>'
-    +'<div class="ob-grid">'
-    +[['Situation', c.text.length>60?c.text.slice(0,60)+'…':c.text],
-      ['Story', im0?im0.fetter:'not named'],
-      /* ONE WORD, THE PRODUCT'S OWN, WITH ITS MEANING ON IT. These read
-         "Body response" and "What it costs", and the voice gate failed both
-         as a figure's label of more than one word. The row prints a seat, and
-         seat is the name every other surface uses; "Body response" was a
-         second name for it. The last row prints how much charge one axis
-         carries and where, which is charge, and both words already have
-         their sentence in engine/data/gloss.js, so the meaning rides on the
-         label as the one tooltip and no new sentence is written. The carrier
-         is the b itself: a span inside it would take the value's ink from
-         .obx .ob-g span. */
-      ['Seat', kept[0]?kept[0].b:'not named'],
-      ['Charge', off?off.because[0]:'not enough here yet to say']]
-     /* the body's row wears its seat's colour, the seat lit on the figure
-        beside it (round QJ): the same place, said twice in one picture */
-     .map(function(x,j){var sb=(j===2&&kept[0]&&BANDS.indexOf(kept[0].b)>=0)?kept[0].b:null;
-       var tip=unpAttr(x[0].toLowerCase(),null,x[0]);
-       return '<div class="ob-g'+(sb?' ob-g-seat" style="--c:'+seatCol(sb):'')+'"><b'+(tip?' class="tipu"'+tip:'')+'>'+esc(x[0])+'</b>'
-       +'<span>'+esc(x[1])+'</span></div>';}).join('')
-    +'</div>'
-    +'<p class="ob-p ob-dim">This is not just this one moment. Something runs '
-    +'through it, and this is what the Field and Discover track over '
-    +'time.</p>';}
-  out=tutCard('How it runs through you',body,
-   '<button type="button" class="btn pri" data-tut="next">Next</button>');
- }
- else if(s===3){
-  var c=TUT.commit, d=TUT.deep, kept=(c&&c.kept)||[], off=(d&&d.offer&&d.offer[0])||null;
-  /* THE FIRST RELEASE'S SIZE, F5: the same plan and the same sentence as the
-     onboarding bridge (ui/onboard.js, obMini), so both doors into a first
-     release open the ruled twelve lines and say the true count. */
-  var pl=TUT.plan=(off&&kept.length&&typeof obMini==='function')?obMini(obImprints(TUT.parsed)):null;
-  var go=!!(pl&&pl.ok);
-  var body;
-  if(off&&kept.length){
-   /* named only when the words named it, S4: an offer's axis can come from
-      an inferred imprint, the seat's modal fetter, which the words did not
-      name. Then it is the axis the engine read the seat as. */
-   var offNamed=!!(TUT.parsed&&TUT.parsed.imprints.some(function(x){return !x.inferred&&x.fetter===off.axis;}));
-   body='<p class="ob-p">This entry is heavy enough to show up in your Field '
-    +'as something to work with: at the <b>'+esc(off.region||off.address||'')
-    +'</b>, '+(offNamed?'named':'read as')+' <b>'+esc(off.axis)+'</b>'
-    +(off.replacement?', with <b>'+esc(off.replacement)+'</b> waiting as its replacement':'')
-    +'.</p>'
-    +'<p class="ob-p ob-dim">'+esc(off.because[0])+'</p>'
-    +'<p class="ob-p">The release protocol does not tell you to let it go. '
-    +'It knows the story, the pattern and where it sits, and it picks a way '
-    +'to work with exactly that. This one is real: pressing Begin opens it '
-    +'on what this entry just wrote.</p>'
-    +(go?obMiniSay(pl,typeof journeyRead==='function'?journeyRead(CURP).first:true)
-     +(typeof obGiftSay==='function'?obGiftSay(pl):'')
-     :(typeof obMiniWhy==='function'&&obMiniWhy(pl)?'<p class="ob-p">'+obMiniWhy(pl)+'</p>':''));
-  }else{
-   body='<p class="ob-p">This particular entry did not carry enough charge '
-    +'to name a release yet. That is fine, most days will have one that '
-    +'does, and nothing is lost by writing a quiet one.</p>';}
-  /* THE REAL HAND OFF, round PS. kept's own node ids, read exactly as the
-     mirror in onboard.js reads them, never a second engine and never a
-     guess built from off's own axis name: relPick takes node ids and kept
-     already carries them. */
-  out=tutCard('Release',body,
-   (off&&kept.length&&go
-     ?'<button type="button" class="btn pri" data-tut="release">Begin the release</button>'
-       +'<button type="button" class="btn" data-tut="next">Not now</button>'
-       +'<button type="button" class="btn" data-tut="field">See it in your Field</button>'
-     :'<button type="button" class="btn pri" data-tut="next">Next</button>'));
- }
- else {
-  out=tutCard('Flow',
-   '<p class="ob-p">Insight and release are not the end of it. Flow turns '
-   +'what just happened into something repeatable: a practice tied to this '
-   +'exact pattern, not a generic habit.</p>'
-   +'<p class="ob-p ob-dim">Noticing the moment a pattern starts, returning '
-   +'attention to the body, working the same release again. The ritual '
-   +'builder holds what is yours to practice.</p>',
-   '<button type="button" class="btn pri" data-tut="ritual">Go to Ritual</button>'
-   +'<button type="button" class="btn" data-tut="done">Done</button>');
- }
- /* ROUND QJ: onto the stage, through the first run's own change of step */
- if(typeof obStage==='function')obStage(h,TUT_N,'data-tut="skip"');
- var sw=obSwap(h,out,{s:s, shown:TUT.shown, attr:'data-ts', lit:tutLitNow(),
-  rail:function(h){ obRailAt(h,TUT.step,TUT_N,TUT_STEPNM); }});
- TUT.shown=s;
- var ta=document.getElementById('tuttext');
- if(ta){ta.oninput=function(){
-   var go=h.querySelector('.obx-slot [data-tut="commit"]'); if(go)go.disabled=!ta.value.trim();};
-  ta.value=TUT.text; ta.focus({preventScroll:true});}
- else if(sw.moved&&!sw.arrive){ var hd=sw.card&&sw.card.querySelector('.ob-h'); if(hd)hd.focus({preventScroll:true}); }
- var f=sw.card&&sw.card.querySelector('.ob-scroll'); if(f)f.scrollTop=0;}
-
-/* ---- the one commit this sheet makes, through the real path ---- */
-function tutCommit(){
- var ta=document.getElementById('tuttext'); if(!ta)return;
- var v=ta.value; TUT.text=v;
- if(!v.trim())return;
- /* the exact two lines the Story tab's own textarea runs on every
-    keystroke, run once here instead of on each one. */
- ST_TEXT=v; ST_PARSED=v.trim()?parseStory(v):null;
- TUT.parsed=ST_PARSED; TUT.plan=null;
- var r=stCommit();
- TUT.commit=r;
- if(r.ok){
-  TUT.deep=(typeof sniffStory==='function')?sniffStory(r.text):null;
-  /* F13: that a story was given and how much it read, never its words */
-  if(TUT.rec&&typeof journeyLog==='function'){
-   [['story_submitted',{words:v.trim().split(/\s+/).filter(Boolean).length}],['story_signal_generated',{found:r.k}]]
-    .forEach(function(x){var q=journeyLog(CURP,x[0],null,x[1]); if(!q.ok&&typeof obJyFail==='function')obJyFail(q.why);});
-   if(!pSave()&&typeof status==='function')
-    status('This browser would not save. If the page reloads, the first run starts over.','fail');}
- }
- TUT.step=1; tutRender();}
-
-addEventListener('click',function(e){
- if(!TUT.open)return;
- var t=e.target&&e.target.closest?e.target:null; if(!t)return;
- var b=t.closest?t.closest('[data-tut]'):null; if(!b)return;
- var k=b.getAttribute('data-tut');
- if(k==='commit'){ tutCommit(); return; }
- if(k==='next'){ TUT.step++; tutRender(); return; }
- if(k==='release'){
-  /* the plan's addresses, never every address the entry read (F5), and mini,
-     so the release opens at the size this card just said (M28) */
-  var pl=TUT.plan||(typeof obMini==='function'?obMini(obImprints(TUT.parsed)):null), ids=(pl&&pl.ok)?pl.addrs:[];
-  /* F13: the hand off, written the way the onboarding sheet writes its own */
-  if(TUT.rec&&ids.length&&typeof obHandOff==='function')
-   obHandOff(pl,'tutorial',(TUT.commit&&TUT.commit.ok)?TUT.commit.t:null);
-  tutClose();
-  if(ids.length&&typeof relPick==='function')
-   relPick(ids,{mini:true,story_t:(TUT.commit&&TUT.commit.ok&&TUT.commit.t)?TUT.commit.t:null});
-  return;}
- if(k==='field'){ tutClose(); if(typeof setTab==='function'&&typeof TAB!=='undefined')setTab(TAB.FIELD); return; }
- if(k==='ritual'){ tutClose(); if(typeof setTab==='function'&&typeof TAB!=='undefined')setTab(TAB.RITUAL); return; }
- if(k==='skip'||k==='done'){ tutClose(); return; }});
-addEventListener('keydown',function(e){
- if(TUT.open&&e.key==='Escape')tutClose();});
-
-try{window.__at&&window.__at('ui/tutorial.js');}catch(e){}
 /* ============================================================
    SUMMARY. Five lenses. None of them store anything; each is a pure
    function of soul, axes and laws, so they cannot drift from what the
@@ -56173,8 +55749,8 @@ function relOpp(n){
    run has no story behind it and its answer carries none.
 
    mini says the run is the mini release a card has just promised, the one
-   onbMiniPlan planned for the onboarding bridge and the Day One tutorial.
-   Neither door said so before, so this opened their twelve lines at the dose
+   onbMiniPlan planned for the onboarding bridge, and until 23 October for
+   the Day One tutorial too. Neither door said so before, so this opened their twelve lines at the dose
    a person last picked, a hundred by default, and the screen after "Your
    first release is 4 lines" said four hundred over 28 minutes (M28). A mini
    run is said ONB_MINI_DOSE times a line, which is the ruled twelve lines
@@ -72281,19 +71857,14 @@ function authBillingBack(){
    tell them to do the loop, go to the journal, input stories, and get used to
    using the software ten minutes a day until you no longer need it." Shown
    once per profile, only when the plan is live after a checkout return, and
-   never for a managed or cancelled return. It rides the tutorial's own sheet
-   host, which is idle at that moment. The flag is a ui fact, so it survives a
-   load. */
+   never for a managed or cancelled return. Its sheet host is its own,
+   #paidwelcome in shell/body.html. It borrowed the Day One tutorial's host
+   until 23 October, when that sequence was removed, so nothing else ever
+   stands on this one. The flag is a ui fact, so it survives a load. */
 function paidWelcomeOpen(){
- var h=document.getElementById('tutorial'); if(!h)return false;
+ var h=document.getElementById('paidwelcome'); if(!h)return false;
  if(CURP&&CURP.ui&&CURP.ui.paidWelcomed)return false;
- if(typeof TUT!=='undefined'&&TUT.open)return false;
- /* the tutorial's stage leaves its classes on the host until its own exit
-    has run (ui/tutorial.js, tutClose); this card is the old sheet and must
-    not open wearing them, nor be wiped by that exit's timer */
- if(typeof TUT!=='undefined'&&TUT.leaveT){ clearTimeout(TUT.leaveT); TUT.leaveT=null; }
- document.body.classList.remove('tut-on');
- h.classList.remove('ob-leaving','obx','tutx','obx-lit','obx-in-arrive');
+ h.classList.remove('ob-leaving');
  h.innerHTML='<div class="ob-card" role="dialog" aria-modal="true" aria-label="You are in">'
   +'<div class="ob-wash" aria-hidden="true"></div><div class="ob-scroll">'
   +'<span class="pm-eye">Paid</span>'
@@ -72800,14 +72371,12 @@ function accAccount(){
     profile, toggleable and replayable, and it does not spend real charge."
     The onboarding is the same: nothing it does writes to the nine axes, so
     running it again costs nothing and can be offered without a warning. */
+ /* ONE OPENING, 23 October. A second row here, "Replay the Day One
+    tutorial", was the only door that sequence had: nothing opened it on any
+    arrival. The owner: "I want that hidden one completely removed. We're not
+    doing that anymore." The row went with ui/tutorial.js. */
  h+=accGroup('The opening',
-   accAct('Run the signal test again','acob',{btn:'Open it'})
-   /* THE TUTORIAL IS THE SAME RULE. Round NF: built on the same promise as
-      the signal test above, replayable and no charge of its own; what it
-      walks through is the real commit of whatever is typed into it, same as
-      the Story tab's own Apply, so running it again is a real entry each
-      time rather than a rehearsal. */
-   +accAct('Replay the Day One tutorial','actut',{btn:'Open it'}));
+   accAct('Run the signal test again','acob',{btn:'Open it'}));
  /* PRACTITIONER MODE, round LL: "Add a practitioner mode to the profile."
     Account and not Display, because it changes what a person is in the
     product, a practitioner with clients, and not how the screen looks; and
@@ -73333,9 +72902,6 @@ function accWire(){
  var ob=$('acob'); if(ob)ob.onclick=function(){
   if(typeof sheetShut==='function')sheetShut();
   if(typeof obOpen==='function')obOpen(true);};
- var tu=$('actut'); if(tu)tu.onclick=function(){
-  if(typeof sheetShut==='function')sheetShut();
-  if(typeof tutorialOpen==='function')tutorialOpen(true);};
  /* the same three steps and the same setter as the bar menu. Two doors onto
     one setter is not a duplicate: one is for changing it while looking at the
     instrument, the other for finding it when you do not know where it is. */
@@ -77341,13 +76907,13 @@ try{window.__at&&window.__at('ui/crisis.js');}catch(e){}
    WHERE IT WOULD JUST REPEAT: humble and warm, the same flow for both
    arrivals, replayable from the profile. One thing changed on purpose.
    "it does not spend real charge" was true of the sheet and is still true
-   of the sheet; it was never true of a real entry typed into it, which
-   ui/tutorial.js's own header already states for the Day One tutorial: "the
-   entry is real and costs whatever any entry costs." The reviewed design
-   ends in a real release, which is the engine actually moving charge, so
-   this flow now carries a real entry the same way the tutorial does, through
-   the exact same functions the Story tab's own Apply button calls. Nothing
-   here is a second writer.
+   of the sheet; it was never true of a real entry typed into it, which the
+   Day One tutorial's header said of that sequence (ui/tutorial.js, removed
+   23 October): "the entry is real and costs whatever any entry costs." The
+   reviewed design ends in a real release, which is the engine actually
+   moving charge, so this flow carries a real entry the same way the tutorial
+   did, through the exact same functions the Story tab's own Apply button
+   calls. Nothing here is a second writer.
 
    THE SIGNAL TEST, round MP's breath script, is gone from this sheet. It was
    the thing it asked a stranger to do before a story existed to read; the
@@ -77357,8 +76923,8 @@ try{window.__at&&window.__at('ui/crisis.js');}catch(e){}
    the old six slides of Reel A were cut from the mockup itself.
 
    WHAT THIS IS NOT: a second parser. The mirror's one real-engine line comes
-   from parseStory and stCommit, read exactly as the Story tab and the Day
-   One tutorial already read them. Nothing here guesses a feeling or a place
+   from parseStory and stCommit, read exactly as the Story tab reads them.
+   Nothing here guesses a feeling or a place
    from a word list of its own; the taps the person makes are kept as exactly
    that, a tap, never dressed up as something the engine found.
 
@@ -77720,10 +77286,10 @@ function obRing(){
    to the top of the screen, because a rail that is redrawn with each card
    cannot show the run so far filling. The wordmark is the bar's own, cloned
    from the document rather than drawn a second time. */
-/* ROUND QJ: the Day One tutorial stands on this same stage (ui/tutorial.js),
-   so the count of stations and the way out are the caller's. Called with
-   only a host it is the first run's stage exactly as it was: eight stations
-   and a Not now that answers to data-ob. */
+/* ROUND QJ: the count of stations and the way out are the caller's, because
+   the Day One tutorial stood on this same stage until it was removed on 23
+   October. The first run calls it with only a host: eight stations and a Not
+   now that answers to data-ob. */
 function obStage(h,n,xattr){
  if(h.querySelector('.obx-slot'))return;
  var own=!!xattr;
@@ -77742,10 +77308,11 @@ function obStage(h,n,xattr){
   +Array.from({length:n}).map(function(_,i){
     return '<span class="ob-dot" style="--k:'+i+'"></span>';}).join('')+'</div>'
   +'<span class="obx-step"></span></div>'
-  /* IS THIS A CRISIS, 16 October, on the first run's stage only, in the top
-     bar beside Not now so it stands on every step and not on one card. The
-     Day One tutorial stands on this stage with its own way out (xattr) and
-     is left as it was. ui/crisis.js has the panel. */
+  /* IS THIS A CRISIS, 16 October, in the top bar beside Not now so it stands
+     on every step and not on one card. The one caller that passed its own
+     way out (xattr) and went without it was the Day One tutorial, removed 23
+     October, so every stage drawn now carries it. ui/crisis.js has the
+     panel. */
   +(own?'':crisisBtn('obx-crx'))
   +'<button type="button" class="obx-x" '+xattr+'>Not now</button>'
   +'</div>'
@@ -77779,8 +77346,9 @@ function obLitNow(){
    not ignited again, so an answer on the mirror that redraws the card does
    not fire every seat a second time. Ignition order is root to crown on the
    boot's 90ms beat, starting after the body has landed in its new pose. */
-/* now, when given, is the caller's own {lit, pick, mark}: the tutorial lights
-   the seats its own entry read, through this same ignition. */
+/* now, when given, is the caller's own {lit, pick, mark}. The first run gives
+   none and lights off obLitNow; the caller that gave one was the Day One
+   tutorial, removed 23 October. */
 function obFigSync(h,delay,now){
  now=now||obLitNow(); var on={}, k=0, calm=obCalm();
  /* A PREVIEW NEVER OUTLIVES ITS STEP. Found in the frame capture, which
@@ -77860,9 +77428,7 @@ function obGhost(h,old,dir){
  g.setAttribute('aria-hidden','true'); g.inert=true;
  [g].concat([].slice.call(g.querySelectorAll('*'))).forEach(function(e){
   if(e.id)e.removeAttribute('id');
-  /* data-tut too: the tutorial's ghost is made here, and a copy of its Next
-     must never be a second Next */
-  [].slice.call(e.attributes).forEach(function(a){if(/^data-(ob|tut)/.test(a.name))e.removeAttribute(a.name);});});
+  [].slice.call(e.attributes).forEach(function(a){if(/^data-ob/.test(a.name))e.removeAttribute(a.name);});});
  g.style.left=r.left+'px'; g.style.top=r.top+'px'; g.style.width=r.width+'px'; g.style.height=r.height+'px';
  h.appendChild(g);
  var gs=g.querySelector('.ob-scroll'); if(gs)gs.scrollTop=y;
@@ -77882,7 +77448,7 @@ function obStagger(card){
  var inn=card.querySelector('.obx-in'); if(!inn)return;
  [].slice.call(inn.children).forEach(function(c,i){
   c.style.setProperty('--si',Math.min(i,7));
-  /* .ob-g is the tutorial's chain, four rows that take the chips' own count */
+  /* .ob-g is the end card's chain, rows that take the chips' own count */
   [].slice.call(c.querySelectorAll('.ob-seat,.ob-g')).forEach(function(x,j){x.style.setProperty('--ci',j);});});}
 /* the headline, one word to a masked line, so it rises out of its own baseline.
    textContent is the title exactly: the spaces stay as text between the words. */
@@ -77964,7 +77530,8 @@ function obOpen(replay){
    rather than a fade: the body goes forward and past the camera, the boot's
    own exit (bxPush), so leaving the first run reads as going in. */
 var OB_LEAVE_MS=520;
-/* the push, on its own so the tutorial's way out is this one and not a copy */
+/* the push, on its own since round QJ, when the Day One tutorial (removed 23
+   October) left the stage the same way */
 function obPushOut(h){
  if(obCalm())return;
  try{
@@ -78171,8 +77738,8 @@ addEventListener('click',function(e){
  var t=e.target&&e.target.closest?e.target.closest('#relclose'):null;
  if(t)setTimeout(obAfterRelease,0);});
 
-/* ---- the card shell. nsteps carries over tutorial.js's own pattern,
-   because a sheet of a fixed four steps is no longer the only one. ---- */
+/* ---- the card shell. The count of steps is the rail's (obRailAt), so the
+   card itself carries none. ---- */
 /* A LABEL IS TITLE CASED AND A SENTENCE IS NOT, and this card was printing a
    sentence as a title. .pm-eye carries text-transform:capitalize, and
    shell/head.html states the rule beside it: "A label is a short name for a
@@ -78264,9 +77831,9 @@ function obChips(items,attr,sel,withNotSure){
    +'<span class="ob-seat-n">Not sure</span></button>':'')
   +'</div>';}
 
-/* ROUND QH'S CHANGE OF STEP, on its own since round QJ so the Day One
-   tutorial changes step through this one and not through a copy of it. The
-   card goes into the stage's slot. On a change of step the old card leaves
+/* ROUND QH'S CHANGE OF STEP, on its own since round QJ, when the Day One
+   tutorial (removed 23 October) changed step through it too. The card goes
+   into the stage's slot. On a change of step the old card leaves
    as a ghost and the new one rises; on a redraw of the same step, an answer
    on the mirror, it is swapped where it stands, because a person who pressed
    Yes has not gone anywhere. o.s is the step, o.shown the step on screen (-1
@@ -78438,8 +78005,8 @@ function obRender(){
    /* SKIP, the verb for what this does: it clears any pending read and goes
       on to the next step with no story. It read "I would rather not say",
       five words in the person's voice on a button, from the round PP mockup
-      and never ruled, and the brief's button rule flagged it. Skip is the
-      word the tutorial already uses for the same act. */
+      and never ruled, and the brief's button rule flagged it. Skip was the
+      word the Day One tutorial used for the same act. */
    +'<button type="button" class="btn" data-ob="storyskip">Skip</button>'
    +'<button type="button" class="btn" data-ob="back">Back</button>');
  }
@@ -78749,13 +78316,15 @@ function obAdjust(){
    relPlan builds the same twelve keys the card counted (tests/onboarding2.js
    holds the two equal), and every number on the card is read off the plan.
 
-   The Day One tutorial is the other door into the same first release and
-   calls the same two functions, so there is one size and one sentence.
+   The Day One tutorial was the other door into the same first release and
+   called the same two functions until it was removed on 23 October, so
+   there was one size and one sentence, and the first run is the one door now.
    ============================================================ */
-/* THE SIGNAL IS A LIST, and the caller says which list. The Day One tutorial
-   has no per address answer, so it passes parseStory's imprints. This sheet
-   passes its yes rows (F4): only an address the person said yes to can be
-   planned, so a no or an unanswered guess never reaches relPick. */
+/* THE SIGNAL IS A LIST, and the caller says which list. A walk the Day One
+   tutorial handed off has no per address answer, so obBridgeCard passes
+   parseStory's imprints for it. This sheet passes its yes rows (F4): only an
+   address the person said yes to can be planned, so a no or an unanswered
+   guess never reaches relPick. */
 function obMini(list){
  if(typeof onbMiniPlan!=='function'||typeof CURP==='undefined'||!CURP)return {ok:false, why:'no record'};
  var ims=Array.isArray(list)?list:[];
@@ -78814,8 +78383,7 @@ function obMiniSay(pl,first,yes){
    and a dose of a hundred. Round PA rules that the onboarding's release
    screens match what the software does, so this says what it does: the line
    is said ONB_MINI_DOSE times, the voice is relVoiceOn, the very function the
-   walker asks, and the rest is REL_SETTLE_S. The Day One tutorial says the
-   same through obMiniSay, so both doors make one promise.
+   walker asks, and the rest is REL_SETTLE_S.
 
    NO LONGER THAN THE SENTENCE IT REPLACED. A first cut also said where the
    voice switch is, and at 390 by 844 that pushed Begin the release from 834
@@ -78860,9 +78428,13 @@ function obPlanMarks(pl){
     +'<span class="ob-plan-v">'+ln+(ln===1?' line':' lines')+'</span></div>';}).join('')
   +'</div>';}
 function obBridgeCard(){
- /* THE TUTORIAL'S DOOR, back on this card after a reload, F13: its entry has
-    no yes rows, so its plan is read off what the story read, as the tutorial's
-    own Release card reads it. Every other door plans from the yes rows. */
+ /* THE TUTORIAL'S DOOR, back on this card after a reload, F13: a walk the Day
+    One tutorial handed off has no yes rows, so its plan is read off what the
+    story read, as that sequence's own Release card read it. The tutorial was
+    removed on 23 October and nothing writes this door now. It stays a legal
+    door (JOURNEY_DOORS, engine/data/onboarding.js), so a record that carries
+    one still loads and resumes here, and tests/journey2.js holds that. Every
+    other walk plans from the yes rows. */
  var tut=(OB.door==='tutorial');
  var c=OB.commit, yes=(c&&c.ok&&!tut)?obYesSignal():[];
  /* the plan reads the yes rows, F4's answers, never the raw story read */
@@ -78886,8 +78458,8 @@ function obBridgeCard(){
   return obCard('Next','Nothing new to release yet.',
    '<p class="ob-p">'+obMiniWhy(pl,true)+'</p>',
    '<button type="button" class="btn pri" data-ob="done">Go in</button>');
- /* HONEST EMPTY, the same rule the signal test and the tutorial already
-    keep: nothing to release is a real answer, not a failure to paper over. */
+ /* HONEST EMPTY, the same rule the signal test already keeps: nothing to
+    release is a real answer, not a failure to paper over. */
  return obCard('Next','Nothing to release yet.',
   (c&&c.ok&&c.k
    ?'<p class="ob-p">You did not say yes to any place, so nothing from this story goes into a release. '
@@ -79241,24 +78813,23 @@ var DEV_SKIP=false;
 (function(){
  try{ DEV_SKIP=/(?:^|[?&])dev=1(?:&|$)/.test(location.search||''); }catch(e){}
 })();
-/* THE TWO SWITCHES BEHIND THE DOOR, ROUND MP. His words: "the login
-   screen should give me the options, I want onboarding and tutorial,
-   if they're both off then it skips straight to dashboard, if one is
-   on it plays one versus the other." These only matter once DEV_SKIP
-   above has already let the login screen show; DEV_SKIP itself still
-   bypasses both of these along with the door.
+/* THE SWITCH BEHIND THE DOOR, ROUND MP. His words: "the login screen
+   should give me the options, I want onboarding and tutorial, if they're
+   both off then it skips straight to dashboard, if one is on it plays one
+   versus the other." It only matters once DEV_SKIP above has already let
+   the login screen show; DEV_SKIP itself still bypasses it along with the
+   door.
 
-   THE TUTORIAL IS REAL NOW, ROUND NF. ui/tutorial.js wires tutorialOpen
-   in, so the switch is enabled rather than disabled and pretending to
-   work. Its own default stays off: onboarding is still the established
-   first-run flow and nothing this round changes which of the two meets
-   a stranger by default, only that the switch to see the other one for
-   testing is no longer a dead control. Which of the two a real person
-   meets on a genuine first run, and whether the tutorial should follow
-   onboarding rather than only substitute for it, is still open and is
-   named as open rather than decided here. */
+   ONE SWITCH, 23 October. The other was DEV_PLAY_TUTORIAL, for the Day One
+   tutorial (ui/tutorial.js), a second first run on the onboarding's own
+   stage. It defaulted off, and the panel that could turn it on was
+   deactivated at round RI, so no arrival ever met that sequence: its one
+   door was a replay button in Account. The owner: "I want that hidden one
+   completely removed. We're not doing that anymore." The tutorial, this
+   switch and that button are gone, which answers the question this
+   paragraph used to leave open, which of the two a stranger meets: the
+   onboarding, and only the onboarding. */
 var DEV_PLAY_ONBOARDING=true;
-var DEV_PLAY_TUTORIAL=false;
 /* A PASSWORD SUGGESTION IS A LOCAL ONE. Sixteen characters, one from
    each of four sets, the rest filled from all four combined and
    shuffled, so every suggestion actually contains a lower case letter,
@@ -79518,16 +79089,10 @@ function loginBoot(){
 /* WHAT HAPPENS BEHIND THE DOOR, whichever way through it a person came:
    a sign in, a new account, or continuing without one. */
 function loginEnter(){
- /* ROUND NF: ui/tutorial.js wires tutorialOpen in for real, so this branch
-    now runs. The switch defaults off, so a genuine first run still meets
-    onboarding unless the developer option is turned on to test the other
-    one; this is a testing fork, not yet the sequencing a real person
-    gets by default. */
- if(DEV_PLAY_TUTORIAL&&typeof tutorialOpen==='function'){ tutorialOpen(); return; }
  if(!DEV_PLAY_ONBOARDING)return;
  if(typeof obOpen!=='function')return;
  /* onboarding is still met once, never on a return visit: the login
-    above is the door met every time, this is the tutorial behind it. */
+    above is the door met every time, this is the first run behind it. */
  var seen=false;
  /* the flag lives with the other ui facts: a field outside them was dropped
     at the profile boundary on the next load, so the first run replayed on
@@ -79560,8 +79125,8 @@ try{window.__at&&window.__at('ui/login.js');}catch(e){}
    settles, the question can move onto it, through valueFeltRecord, which
    stays the one writer either way.
 
-   IT WAITS ITS TURN. The login door, onboarding and the tutorial are dialogs
-   of their own. The sheet is the shared one, so this opens only when the
+   IT WAITS ITS TURN. The login door, onboarding and the welcome after paying
+   are dialogs of their own. The sheet is the shared one, so this opens only when the
    boot sheet has lifted (afterBoot), no dialog is standing, and the shared
    sheet is free, and it waits for that to hold for a moment, so a door that
    closes and another that opens straight after do not let it in between.
@@ -81510,5 +81075,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005372056"></div>
+<div id="eof" hidden data-len="005346438"></div>
 </body></html>

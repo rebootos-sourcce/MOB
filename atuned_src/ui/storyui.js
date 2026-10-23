@@ -490,15 +490,15 @@ function stFound(){
    Two writers for one commit is the same mistake setTab's own history
    warns against, a thing read in one table and written from two; this is one
    function, called from both. Returns what happened rather than only acting,
-   so a caller that is not the button itself (the tutorial) can act on a real
-   result instead of re-deriving it. */
+   so a caller that is not the button itself (the onboarding's commit) can
+   act on a real result instead of re-deriving it. */
 function stCommit(){
  /* AN ENTRY THAT READS AS NOTHING IS STILL THE PERSON'S OWN WORDS, round NZ,
     21.I1. This used to refuse the whole commit whenever the sniffer found no
     imprint, which is a UI gate and not the boundary: validateProfile already
     accepts an entry with imprints:0 and empty bands (engine/schema.js). Four
     of his own example sentences measured nothing here, "I keep putting off
-    the conversation" among them, and the Day One tutorial runs this same
+    the conversation" among them, and the Day One tutorial ran this same
     path, so a first entry exactly like one of his own examples was dropped
     on day one while the card beside it said "it is not a problem with what
     you wrote." The TDDs this product is built from rule it directly: "the
@@ -574,9 +574,8 @@ function stCommit(){
   entT=ent.t;}
   /* the draft these words were is taken off in the same write that puts the
      entry on, so a reload never offers back a story already committed. Only
-     when it is these words: onboarding and the tutorial commit their own text
-     through here, and a half written story waiting on the Story page is not
-     theirs to clear. */
+     when it is these words: onboarding commits its own text through here,
+     and a half written story waiting on the Story page is not its to clear. */
   var wasDraft=CURP.story.draft===ST_TEXT;
   if(wasDraft)delete CURP.story.draft;
   stDraftStop();

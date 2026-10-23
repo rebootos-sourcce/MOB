@@ -1,5 +1,5 @@
 /* ============================================================
-   THE ONBOARDING AND DAY ONE TUTORIAL GATE, ROUND PS.
+   THE ONBOARDING GATE, ROUND PS.
 
    WHY THIS FILE EXISTS. The reviewed, merged mockup (mockups/onboarding-v2/)
    was wired into real code this round: arrive, the twelve starting points,
@@ -8,9 +8,9 @@
    far before: its own onboarding block stopped at the old four step signal
    test and asserted, by name, that the sheet "wrote nothing to the nine
    axes" (round MP's ruling for that sheet). This flow now carries a real
-   entry, on purpose, the same way the Day One tutorial already does, so a
-   gate that still asserted the old shape would be asserting a product this
-   repository no longer ships. This file is the new shape's own gate.
+   entry, on purpose, the same way the Day One tutorial did, so a gate that
+   still asserted the old shape would be asserting a product this repository
+   no longer ships. This file is the new shape's own gate.
 
    WHAT IT WALKS, both through the real door (ui/login.js), never through
    ?dev=1, because "login through a real release" is the thing asked for and
@@ -21,17 +21,23 @@
         handing real node ids to ui/release.js's one entry, relPick, which is
         then run to its own real cooldown, exactly as tests/design.js already
         proves the release card does.
-     2  the Day One tutorial, the other path into the same first run, to the
-        same real release, through the same relPick.
+     2  THE DAY ONE TUTORIAL IS DELETED, NOT HIDDEN, 23 October. It walked
+        here as the other path into the same first run until the owner ruled
+        it removed: "I want that hidden one completely removed. We're not
+        doing that anymore." No arrival opened it; its one door was a replay
+        button in Account. So this holds that nothing of it is left on the
+        page: no name of it, no rule of its poses, no sheet host of its own,
+        and no row in Account, the way tests/voice.js holds the browser
+        voice deleted. Checked first against the build from before the
+        removal, 45fe5649, where those four fail by name.
      3  that the mirror's one real-engine line is actually read off
         parseStory and not a scripted stand-in: a sentence the engine reads
-        as nothing prints the same honest-empty line the tutorial already
-        uses, and a sentence it reads fully prints the node it actually
-        found, checked against what parseStory itself returns for that exact
-        string.
+        as nothing prints the honest-empty line, and a sentence it reads
+        fully prints the node it actually found, checked against what
+        parseStory itself returns for that exact string.
 
      4  THE FIRST RELEASE'S SIZE, F5 in REVIEW-funnel/FINAL-SPEC.md, ruled
-        round PA: "The mini release is 12 lines." Both doors hand relPick
+        round PA: "The mini release is 12 lines." The onboarding hands relPick
         the plan onbMiniPlan made and never every address the story read,
         the run the release card builds is exactly the twelve keys the plan
         counted, the card prints that count and not the count of addresses,
@@ -432,104 +438,94 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
  await page.close();
 }
 
-console.log('\n=== the Day One tutorial reaches the same real release ===');
+console.log('\n=== the Day One tutorial is deleted, not hidden (23 October) ===');
 {
+ /* THE HIDDEN ONE. The owner, 23 October: "I want that hidden one completely
+    removed. We're not doing that anymore." It was the Day One tutorial
+    (ui/tutorial.js), a second first run on this stage that no arrival
+    opened, behind a switch that defaulted off and a replay button in
+    Account. Read off the running page and not off the file, because the
+    build's own comments say what was removed and why, and a comment is not
+    the product. Every check but the last fails on 45fe5649, the build from
+    before the removal: it carried tutorialOpen, TUT and the rest, the five
+    poses under .tutx, the #tutorial host, and the Account row #actut. */
  const page=await browser.newPage({viewport:{width:1600,height:1000}});
  const errs=[]; page.on('pageerror',e=>errs.push(e.message));
  await page.goto(FILE+'?dev=1',{waitUntil:'load'}); await booted(page);
- await page.evaluate(()=>{ loadP(0); CURP.ui=CURP.ui||{}; CURP.ui.tutorialSeen=false; });
- await page.evaluate(SHRINK);
- const open=await page.evaluate(()=>{tutorialOpen(true); return TUT.open;});
- ok(open,'the tutorial opens');
- await page.fill('#tuttext',REAL_STORY);
- await page.click('[data-tut="commit"]'); await page.waitForTimeout(80);
- const commit=await page.evaluate(()=>({ok:TUT.commit&&TUT.commit.ok,k:TUT.commit&&TUT.commit.k,
-  i0:(TUT.commit&&TUT.commit.kept&&TUT.commit.kept[0])?TUT.commit.kept[0].i:null,
-  kept:(TUT.commit&&TUT.commit.kept||[]).map(n=>n.i)}));
- ok(commit.ok&&commit.k>0,'the same real engine reads the same real entry, k='+commit.k);
- await page.click('[data-tut="next"]'); await page.waitForTimeout(60);  /* what this found -> how it runs through you */
- await page.click('[data-tut="next"]'); await page.waitForTimeout(60);  /* -> release */
- const rbtn=await page.evaluate(()=>!!document.querySelector('[data-tut="release"]'));
- ok(rbtn,'the Release step now offers a real Begin, the gap this round closes');
- await page.click('[data-tut="release"]'); await page.waitForTimeout(150);
- const rel=await page.evaluate(()=>({open:RUN.open,queueI:(RUN.queue||[]).map(n=>n.i),tutClosed:!TUT.open}));
- ok(rel.open&&rel.tutClosed,'the Day One tutorial hands off to the real release and closes its own sheet');
- ok(rel.queueI.length&&rel.queueI.indexOf(commit.i0)>=0||rel.queueI.length&&rel.queueI.every(i=>commit.kept.indexOf(i)>=0),
-  'on nodes the tutorial just found');
- /* F5 on the second door: the same plan, the same size. */
- const tpl=await page.evaluate(()=>({pl:TUT.plan||null,queue:(RUN.queue||[]).map(n=>n.i),plan:(RUN.plan||[]).slice()}));
- ok(tpl.pl&&tpl.pl.ok&&tpl.queue.length<=3&&JSON.stringify(tpl.queue)===JSON.stringify(tpl.pl.addrs),
-  'the tutorial hands over the plan\'s addresses, at most three, out of '+commit.kept.length+' read: '+JSON.stringify(tpl.queue));
- ok(tpl.pl&&tpl.plan.length<=12&&JSON.stringify(tpl.plan)===JSON.stringify(tpl.pl.keys),
-  'and the run is the plan\'s lines, '+tpl.plan.length+' of them');
- const d=await page.$('#reldose');
- if(d){await d.evaluate(el=>{el.value='1';el.dispatchEvent(new Event('change'));});}
- await page.click('#relgo');
- await page.waitForFunction(()=>RUN.phase==='done'&&RUN.cool>=COOLING.length,
-  null,{timeout:60000}).catch(()=>{});
- const after=await page.evaluate(()=>({phase:RUN.phase,cool:RUN.cool,coolOf:COOLING.length,
-  meter:(CURP.meter&&CURP.meter.relLines)||0}));
- ok(after.phase==='done'&&after.cool>=after.coolOf,
-  'the Day One tutorial reaches a real first release, phase '+after.phase);
- ok(after.meter>0,'a real line is recorded released off the tutorial path too, got '+after.meter);
- ok(errs.length===0,'no script error the whole way through: '+errs.slice(0,3).join(' | '));
+ const live=await page.evaluate(()=>{
+  const names=Object.getOwnPropertyNames(window).filter(k=>/^(tut[A-Z]|tutorial[A-Z]|TUT($|_)|DEV_PLAY_TUTORIAL$)/.test(k));
+  const css=[], walk=list=>list.forEach(r=>{
+   if(r.selectorText&&/tutx|tut-on/.test(r.selectorText))css.push(r.selectorText);
+   if(r.cssRules)walk([].slice.call(r.cssRules));});
+  [].slice.call(document.styleSheets).forEach(sh=>{ try{ walk([].slice.call(sh.cssRules)); }catch(e){} });
+  return {names:names, css:css, host:!!document.getElementById('tutorial'),
+   welcome:!!document.getElementById('paidwelcome'), tut:document.querySelectorAll('[data-tut]').length};});
+ ok(live.names.length===0,'no name of the tutorial is left on the page: '+JSON.stringify(live.names));
+ ok(live.css.length===0,'no rule of its poses is left in the style: '+JSON.stringify(live.css.slice(0,3)));
+ ok(!live.host&&live.welcome&&live.tut===0,'its sheet host is gone, and the welcome after paying has a host of its own: '
+  +JSON.stringify({host:live.host,welcome:live.welcome,tut:live.tut}));
+ const acc=await page.evaluate(()=>{ setTab(TAB.SETTINGS);
+  const s=document.getElementById('settings')||document.body;
+  return {ob:!!document.getElementById('acob'), tut:!!document.getElementById('actut'), dayone:/Day One/i.test(s.innerText||'')};});
+ ok(acc.ob&&!acc.tut&&!acc.dayone,'Account offers the onboarding again and nothing else: '+JSON.stringify(acc));
+ ok(errs.length===0,'no script error: '+errs.slice(0,3).join(' | '));
  await page.close();
 }
 
-console.log('\n=== the Day One tutorial stands on the first run\'s stage, lit only where its entry landed (round QJ) ===');
-/* The tutorial opened as the old popup card over a dimmed app after the
-   first run had gone full screen. It now stands on the same stage (obStage,
-   obSwap). Held here: it fills the viewport with no card chrome, its rail has
-   five stations, nothing is lit before the commit, the seats lit after it
-   are exactly the seats the commit's own kept nodes name, the step change
-   leaves a ghost that carries no live control, and with reduced motion set
-   nothing on it runs at all, pseudo elements included. */
+console.log('\n=== the first run\'s own stage: no chrome, a ghost with no live control, still under reduced motion (round QJ) ===');
+/* HELD ON THE DAY ONE TUTORIAL'S WALK UNTIL 23 OCTOBER. That sequence stood
+   on this same stage (obStage, obSwap) and was the only walk these checks
+   rode; it was removed that day. The stage is the first run's and still does
+   every one of them, so they ride the first run now: it fills the viewport
+   with no card chrome, its rail has the first run's stations, nothing is lit
+   on arrival, a step change leaves a ghost that carries no live control, the
+   rail and the pose follow the step, Not now takes the stage down and gives
+   the host back plain, and with reduced motion set nothing on it runs at
+   all, pseudo elements included. Opened as a replay, obOpen(true), so no
+   record is written. */
 for(const calm of [false,true]){
  const ctx=await browser.newContext({viewport:{width:1600,height:1000},reducedMotion:calm?'reduce':'no-preference'});
  const page=await ctx.newPage();
  const errs=[]; page.on('pageerror',e=>errs.push(e.message));
  await page.goto(FILE+'?dev=1',{waitUntil:'load'}); await booted(page);
  const tag=calm?'reduced motion: ':'';
- const running=()=>page.evaluate(()=>{const h=document.getElementById('tutorial');
+ const running=()=>page.evaluate(()=>{const h=document.getElementById('ob');
   return document.getAnimations().filter(a=>a.playState==='running'&&a.effect&&a.effect.target&&h.contains(a.effect.target))
    .map(a=>(a.animationName||a.transitionProperty||'script')+(a.effect.pseudoElement||'')).slice(0,6);});
- await page.evaluate(()=>{ loadP(0); CURP.ui=CURP.ui||{}; CURP.ui.tutorialSeen=false; tutorialOpen(true); });
+ await page.evaluate(()=>{ loadP(0); obOpen(true); });
  await page.waitForTimeout(calm?60:2600);
- const s0=await page.evaluate(()=>{const h=document.getElementById('tutorial'), r=h.getBoundingClientRect(),
-   c=h.querySelector('.ob-card'), cs=c?getComputedStyle(c):null;
+ const s0=await page.evaluate(()=>{const h=document.getElementById('ob'), r=h.getBoundingClientRect(),
+   c=h.querySelector('.obx-slot .ob-card'), cs=c?getComputedStyle(c):null;
   return {full:r.width===innerWidth&&r.height===innerHeight, stage:h.classList.contains('obx'),
    border:cs?cs.borderTopWidth:'-', bg:cs?cs.backgroundColor:'-', dots:h.querySelectorAll('.obx-rail .ob-dot').length,
-   inCard:c?c.querySelectorAll('.ob-dot,.ob-wash').length:-1, lit:h.querySelectorAll('.obx-near .obx-s.on').length,
+   n:OB_NSTEPS, inCard:c?c.querySelectorAll('.ob-dot,.ob-wash').length:-1, lit:h.querySelectorAll('.obx-near .obx-s.on').length,
    appHidden:getComputedStyle(document.querySelector('.app')).visibility==='hidden'};});
- ok(s0.full&&s0.stage,tag+'the tutorial fills the viewport on the stage, '+JSON.stringify(s0));
+ ok(s0.full&&s0.stage,tag+'the first run fills the viewport on the stage, '+JSON.stringify(s0));
  ok(s0.border==='0px'&&/rgba\(0, 0, 0, 0\)|transparent/.test(s0.bg)&&s0.inCard===0,
   tag+'no card chrome: no border, no fill, no wash and no dots inside the column, '+s0.border+' '+s0.bg+' '+s0.inCard);
- ok(s0.dots===5&&s0.appHidden,tag+'five stations on the rail and the app out of the picture, '+s0.dots);
- ok(s0.lit===0,tag+'nothing is lit before anything is written, '+s0.lit);
+ ok(s0.dots===s0.n&&s0.appHidden,tag+'the first run\'s '+s0.n+' stations on the rail and the app out of the picture, '+s0.dots);
+ ok(s0.lit===0,tag+'nothing is lit on arrival, '+s0.lit);
  if(calm)ok((await running()).length===0,tag+'nothing runs on arrival, '+JSON.stringify(await running()));
- await page.fill('#tuttext',REAL_STORY);
- await page.click('[data-tut="commit"]'); await page.waitForTimeout(calm?60:120);
- const s1=await page.evaluate(()=>({lit:[...document.querySelectorAll('#tutorial .obx-near .obx-s.on')].map(e=>e.getAttribute('data-obseat')).sort(),
-  want:[...new Set((TUT.commit.kept||[]).slice(0,2).map(n=>n.b))].sort(),
-  ghosts:document.querySelectorAll('#tutorial .obx-ghost').length,
-  ghostLive:document.querySelectorAll('#tutorial .obx-ghost [data-tut],#tutorial .obx-ghost [id]').length}));
- ok(s1.want.length>0&&JSON.stringify(s1.lit)===JSON.stringify(s1.want),
-  tag+'the commit lights exactly the seats What this found names, '+JSON.stringify(s1));
+ await page.click('#ob .obx-slot [data-ob="next"]'); await page.waitForTimeout(calm?60:120);
+ const s1=await page.evaluate(()=>({step:OB.step,
+  ghosts:document.querySelectorAll('#ob .obx-ghost').length,
+  ghostLive:document.querySelectorAll('#ob .obx-ghost [data-ob],#ob .obx-ghost [id]').length}));
  if(calm){
   ok(s1.ghosts===0,tag+'no ghost is made, '+s1.ghosts);
   ok((await running()).length===0,tag+'nothing runs on the step change, '+JSON.stringify(await running()));}
- else ok(s1.ghosts===1&&s1.ghostLive===0,tag+'the old card leaves as one ghost with no live control or id in it, '+JSON.stringify(s1));
- for(const k of [2,3,4]){
-  await page.click('#tutorial .obx-slot [data-tut="next"]'); await page.waitForTimeout(calm?60:120);
-  if(calm)ok((await running()).length===0,tag+'nothing runs on step '+(k+1)+', even under a pointer that has not moved: '+JSON.stringify(await running()));}
- const s4=await page.evaluate(()=>({step:TUT.step, ts:document.getElementById('tutorial').getAttribute('data-ts'),
-  name:(document.querySelector('#tutorial .obx-step')||{}).textContent||''}));
- ok(s4.step===4&&s4.ts==='4'&&/Step 5 of 5/.test(s4.name),tag+'the rail and the pose follow the step, '+JSON.stringify(s4));
- await page.click('#tutorial .obx-slot [data-tut="done"]'); await page.waitForTimeout(700);
- const out=await page.evaluate(()=>{const h=document.getElementById('tutorial');
+ else ok(s1.step===1&&s1.ghosts===1&&s1.ghostLive===0,tag+'the old card leaves as one ghost with no live control or id in it, '+JSON.stringify(s1));
+ /* Ask moves on the pick, Settle on Continue, Feel on the pick */
+ for(const sel of ['[data-obpick="0"]','[data-ob="next"]','[data-obfeel="0"]']){
+  await page.click('#ob .obx-slot '+sel); await page.waitForTimeout(calm?60:120);
+  if(calm)ok((await running()).length===0,tag+'nothing runs on the step after '+sel+', even under a pointer that has not moved: '+JSON.stringify(await running()));}
+ const s4=await page.evaluate(()=>({step:OB.step, ds:document.getElementById('ob').getAttribute('data-step'),
+  name:(document.querySelector('#ob .obx-step')||{}).textContent||''}));
+ ok(s4.step===4&&s4.ds==='4'&&new RegExp('Step 5 of '+s0.n+'(?!\\d)').test(s4.name),tag+'the rail and the pose follow the step, '+JSON.stringify(s4));
+ await page.click('#ob .obx-top [data-ob="skip"]'); await page.waitForTimeout(700);
+ const out=await page.evaluate(()=>{const h=document.getElementById('ob');
   return {shown:getComputedStyle(h).display, cls:h.className, app:getComputedStyle(document.querySelector('.app')).visibility};});
- ok(out.shown==='none'&&!/obx|tutx/.test(out.cls)&&out.app!=='hidden',
-  tag+'Done takes the stage down and gives the host back plain, '+JSON.stringify(out));
+ ok(out.shown==='none'&&!/obx/.test(out.cls)&&out.app!=='hidden',
+  tag+'Not now takes the stage down and gives the host back plain, '+JSON.stringify(out));
  ok(errs.length===0,tag+'no script error, '+errs.slice(0,3).join(' | '));
  await ctx.close();}
 
@@ -549,14 +545,22 @@ console.log('\n=== what changed: every answer kept across a reload, Skip and lea
   const errs=[]; page.on('pageerror',e=>errs.push(e.message));
   await page.goto(FILE+'?dev=1',{waitUntil:'load'}); await booted(page);
   const tag=how==='answer'?want:'no answer, by '+how;
-  await page.evaluate(()=>{ loadP(0); CURP.ui=CURP.ui||{}; CURP.ui.tutorialSeen=false; });
+  /* THE COMMIT AND THE HAND OFF. This rode the Day One tutorial's screens
+     until that sequence was removed on 23 October. It now makes the same two
+     calls those screens made, and nothing more: the Story page's own commit
+     (stCommit) and the first release's own plan (obMini), handed to the
+     release's one entry, relPick, as the mini release with the entry it came
+     from. The release card under test is the same card, run the same way. */
   await page.evaluate(SHRINK);
-  await page.evaluate(()=>tutorialOpen(true));
-  await page.fill('#tuttext',REAL_STORY);
-  await page.click('[data-tut="commit"]'); await page.waitForTimeout(60);
-  await page.click('[data-tut="next"]'); await page.waitForTimeout(40);
-  await page.click('[data-tut="next"]'); await page.waitForTimeout(40);
-  await page.click('[data-tut="release"]'); await page.waitForTimeout(120);
+  /* the read is kept before the commit, as the tutorial kept it: stCommit
+     clears ST_PARSED once the entry is on (ui/storyui.js) */
+  const handed=await page.evaluate(story=>{ loadP(0);
+   const ps=parseStory(story); ST_TEXT=story; ST_PARSED=ps; const c=stCommit();
+   const pl=(c&&c.ok)?obMini(obImprints(ps)):null;
+   if(pl&&pl.ok)relPick(pl.addrs,{mini:true,story_t:c.t});
+   return {committed:!!(c&&c.ok&&c.k), planned:!!(pl&&pl.ok), open:!!(typeof RUN!=='undefined'&&RUN.open)};},REAL_STORY);
+  ok(handed.committed&&handed.planned&&handed.open,tag+': the story is committed and its first release opens: '+JSON.stringify(handed));
+  await page.waitForTimeout(120);
   const d=await page.$('#reldose');
   if(d){await d.evaluate(el=>{el.value='1';el.dispatchEvent(new Event('change'));});}
   await page.click('#relgo');
@@ -606,8 +610,7 @@ console.log('\n=== the mirror is checked against the engine directly, never trus
 {
  /* THE TOOL AGAINST A KNOWN CASE, so this file does not repeat the lesson
     CLAUDE.md names: reproduce before trusting. A sentence with nothing for
-    the sniffer to read prints the honest-empty line, the same words the
-    Day One tutorial already uses for the same case, never a fabricated
+    the sniffer to read prints the honest-empty line, never a fabricated
     finding. */
  const page=await browser.newPage({viewport:{width:1600,height:1000}});
  await page.goto(FILE+'?dev=1',{waitUntil:'load'}); await booted(page);

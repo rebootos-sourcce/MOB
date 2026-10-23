@@ -76,24 +76,23 @@ var DEV_SKIP=false;
 (function(){
  try{ DEV_SKIP=/(?:^|[?&])dev=1(?:&|$)/.test(location.search||''); }catch(e){}
 })();
-/* THE TWO SWITCHES BEHIND THE DOOR, ROUND MP. His words: "the login
-   screen should give me the options, I want onboarding and tutorial,
-   if they're both off then it skips straight to dashboard, if one is
-   on it plays one versus the other." These only matter once DEV_SKIP
-   above has already let the login screen show; DEV_SKIP itself still
-   bypasses both of these along with the door.
+/* THE SWITCH BEHIND THE DOOR, ROUND MP. His words: "the login screen
+   should give me the options, I want onboarding and tutorial, if they're
+   both off then it skips straight to dashboard, if one is on it plays one
+   versus the other." It only matters once DEV_SKIP above has already let
+   the login screen show; DEV_SKIP itself still bypasses it along with the
+   door.
 
-   THE TUTORIAL IS REAL NOW, ROUND NF. ui/tutorial.js wires tutorialOpen
-   in, so the switch is enabled rather than disabled and pretending to
-   work. Its own default stays off: onboarding is still the established
-   first-run flow and nothing this round changes which of the two meets
-   a stranger by default, only that the switch to see the other one for
-   testing is no longer a dead control. Which of the two a real person
-   meets on a genuine first run, and whether the tutorial should follow
-   onboarding rather than only substitute for it, is still open and is
-   named as open rather than decided here. */
+   ONE SWITCH, 23 October. The other was DEV_PLAY_TUTORIAL, for the Day One
+   tutorial (ui/tutorial.js), a second first run on the onboarding's own
+   stage. It defaulted off, and the panel that could turn it on was
+   deactivated at round RI, so no arrival ever met that sequence: its one
+   door was a replay button in Account. The owner: "I want that hidden one
+   completely removed. We're not doing that anymore." The tutorial, this
+   switch and that button are gone, which answers the question this
+   paragraph used to leave open, which of the two a stranger meets: the
+   onboarding, and only the onboarding. */
 var DEV_PLAY_ONBOARDING=true;
-var DEV_PLAY_TUTORIAL=false;
 /* A PASSWORD SUGGESTION IS A LOCAL ONE. Sixteen characters, one from
    each of four sets, the rest filled from all four combined and
    shuffled, so every suggestion actually contains a lower case letter,
@@ -353,16 +352,10 @@ function loginBoot(){
 /* WHAT HAPPENS BEHIND THE DOOR, whichever way through it a person came:
    a sign in, a new account, or continuing without one. */
 function loginEnter(){
- /* ROUND NF: ui/tutorial.js wires tutorialOpen in for real, so this branch
-    now runs. The switch defaults off, so a genuine first run still meets
-    onboarding unless the developer option is turned on to test the other
-    one; this is a testing fork, not yet the sequencing a real person
-    gets by default. */
- if(DEV_PLAY_TUTORIAL&&typeof tutorialOpen==='function'){ tutorialOpen(); return; }
  if(!DEV_PLAY_ONBOARDING)return;
  if(typeof obOpen!=='function')return;
  /* onboarding is still met once, never on a return visit: the login
-    above is the door met every time, this is the tutorial behind it. */
+    above is the door met every time, this is the first run behind it. */
  var seen=false;
  /* the flag lives with the other ui facts: a field outside them was dropped
     at the profile boundary on the next load, so the first run replayed on

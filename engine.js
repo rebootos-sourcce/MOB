@@ -4963,9 +4963,10 @@ const ONB_MINI_ADDRS=3;
    (REVIEW-onboarding/pass1/devops-qa.md, "Dose 1 is 12 lines, the ruled mini
    release, but it needs a typed number") and 28:02 at one, where Angela left
    (M28). Twelve lines spoken is the plan said once. ui/release.js opens a run
-   handed over by the onboarding or the Day One tutorial at this dose, and
-   both cards say it, so the count is this number times ONB_MINI_ADDRS times
-   RUN_MIN and is typed nowhere else. */
+   handed over by the onboarding at this dose, and its card says it, so the
+   count is this number times ONB_MINI_ADDRS times RUN_MIN and is typed
+   nowhere else. (The Day One tutorial handed over at this dose too, until it
+   was removed on 23 October.) */
 const ONB_MINI_DOSE=1;
 /* THE FOUR CHANNELS A RUN SAYS AN ADDRESS DOWN, as meter keys: side then track,
    release first and reframe after, the order the release card walks them
@@ -5048,10 +5049,15 @@ const JOURNEY_SRC=['funnel','app'];
    typed beside it). release is the hand off to the first release, and end is
    the card after it that shows what the person made. */
 const JOURNEY_WALK=['arrive','ask','settle','feel','body','story','mirror','next','release','end'];
-/* THE TWO DOORS INTO THE FIRST RELEASE: the onboarding sheet, and the Day One
-   tutorial (ui/tutorial.js). The walk says which, because the two plan the
-   release from different lists: the sheet from the places the person said yes
-   to, the tutorial from what the story read. */
+/* THE DOORS INTO THE FIRST RELEASE, as a walk may name them. The onboarding
+   sheet is the one door. The Day One tutorial (ui/tutorial.js) was the other,
+   and the owner ruled it removed on 23 October: "I want that hidden one
+   completely removed. We're not doing that anymore." Nothing writes
+   'tutorial' now, and it stays on this list on purpose: the list is what the
+   boundary accepts, and a record carrying an older value is read, never
+   refused (engine/journey.js). The walk says which door, because the two plan
+   the release from different lists: the sheet from the places the person said
+   yes to, a tutorial walk from what the story read (obBridgeCard). */
 const JOURNEY_DOORS=['onboarding','tutorial'];
 /* ============================================================
    THE CRISIS BUTTON'S WORDS AND NUMBERS, 16 October. His words: "Maybe [the
@@ -18147,8 +18153,9 @@ function sniffStory(text){
   /* EVERY POSITIVE CANDIDATE, S3 of the 9 October sniffer audit. This was
      sliced to SAB_SHOW here, so the domain layer decided what a screen shows
      and a seventh candidate was not in the output for anything to read.
-     SAB_SHOW is what a renderer slices to; no screen renders this list yet,
-     the tutorial reads only offer. */
+     SAB_SHOW is what a renderer slices to; no screen renders this list yet.
+     The one screen that read this aggregate at all was the Day One tutorial,
+     and it read only offer; it was removed on 23 October. */
   saboteurs: sniffSaboteurs(axes),
   laws:      sniffLaws(text),
   flow:      sniffFlow(text),

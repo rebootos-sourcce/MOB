@@ -22,13 +22,13 @@
    WHERE IT WOULD JUST REPEAT: humble and warm, the same flow for both
    arrivals, replayable from the profile. One thing changed on purpose.
    "it does not spend real charge" was true of the sheet and is still true
-   of the sheet; it was never true of a real entry typed into it, which
-   ui/tutorial.js's own header already states for the Day One tutorial: "the
-   entry is real and costs whatever any entry costs." The reviewed design
-   ends in a real release, which is the engine actually moving charge, so
-   this flow now carries a real entry the same way the tutorial does, through
-   the exact same functions the Story tab's own Apply button calls. Nothing
-   here is a second writer.
+   of the sheet; it was never true of a real entry typed into it, which the
+   Day One tutorial's header said of that sequence (ui/tutorial.js, removed
+   23 October): "the entry is real and costs whatever any entry costs." The
+   reviewed design ends in a real release, which is the engine actually
+   moving charge, so this flow carries a real entry the same way the tutorial
+   did, through the exact same functions the Story tab's own Apply button
+   calls. Nothing here is a second writer.
 
    THE SIGNAL TEST, round MP's breath script, is gone from this sheet. It was
    the thing it asked a stranger to do before a story existed to read; the
@@ -38,8 +38,8 @@
    the old six slides of Reel A were cut from the mockup itself.
 
    WHAT THIS IS NOT: a second parser. The mirror's one real-engine line comes
-   from parseStory and stCommit, read exactly as the Story tab and the Day
-   One tutorial already read them. Nothing here guesses a feeling or a place
+   from parseStory and stCommit, read exactly as the Story tab reads them.
+   Nothing here guesses a feeling or a place
    from a word list of its own; the taps the person makes are kept as exactly
    that, a tap, never dressed up as something the engine found.
 
@@ -401,10 +401,10 @@ function obRing(){
    to the top of the screen, because a rail that is redrawn with each card
    cannot show the run so far filling. The wordmark is the bar's own, cloned
    from the document rather than drawn a second time. */
-/* ROUND QJ: the Day One tutorial stands on this same stage (ui/tutorial.js),
-   so the count of stations and the way out are the caller's. Called with
-   only a host it is the first run's stage exactly as it was: eight stations
-   and a Not now that answers to data-ob. */
+/* ROUND QJ: the count of stations and the way out are the caller's, because
+   the Day One tutorial stood on this same stage until it was removed on 23
+   October. The first run calls it with only a host: eight stations and a Not
+   now that answers to data-ob. */
 function obStage(h,n,xattr){
  if(h.querySelector('.obx-slot'))return;
  var own=!!xattr;
@@ -423,10 +423,11 @@ function obStage(h,n,xattr){
   +Array.from({length:n}).map(function(_,i){
     return '<span class="ob-dot" style="--k:'+i+'"></span>';}).join('')+'</div>'
   +'<span class="obx-step"></span></div>'
-  /* IS THIS A CRISIS, 16 October, on the first run's stage only, in the top
-     bar beside Not now so it stands on every step and not on one card. The
-     Day One tutorial stands on this stage with its own way out (xattr) and
-     is left as it was. ui/crisis.js has the panel. */
+  /* IS THIS A CRISIS, 16 October, in the top bar beside Not now so it stands
+     on every step and not on one card. The one caller that passed its own
+     way out (xattr) and went without it was the Day One tutorial, removed 23
+     October, so every stage drawn now carries it. ui/crisis.js has the
+     panel. */
   +(own?'':crisisBtn('obx-crx'))
   +'<button type="button" class="obx-x" '+xattr+'>Not now</button>'
   +'</div>'
@@ -460,8 +461,9 @@ function obLitNow(){
    not ignited again, so an answer on the mirror that redraws the card does
    not fire every seat a second time. Ignition order is root to crown on the
    boot's 90ms beat, starting after the body has landed in its new pose. */
-/* now, when given, is the caller's own {lit, pick, mark}: the tutorial lights
-   the seats its own entry read, through this same ignition. */
+/* now, when given, is the caller's own {lit, pick, mark}. The first run gives
+   none and lights off obLitNow; the caller that gave one was the Day One
+   tutorial, removed 23 October. */
 function obFigSync(h,delay,now){
  now=now||obLitNow(); var on={}, k=0, calm=obCalm();
  /* A PREVIEW NEVER OUTLIVES ITS STEP. Found in the frame capture, which
@@ -541,9 +543,7 @@ function obGhost(h,old,dir){
  g.setAttribute('aria-hidden','true'); g.inert=true;
  [g].concat([].slice.call(g.querySelectorAll('*'))).forEach(function(e){
   if(e.id)e.removeAttribute('id');
-  /* data-tut too: the tutorial's ghost is made here, and a copy of its Next
-     must never be a second Next */
-  [].slice.call(e.attributes).forEach(function(a){if(/^data-(ob|tut)/.test(a.name))e.removeAttribute(a.name);});});
+  [].slice.call(e.attributes).forEach(function(a){if(/^data-ob/.test(a.name))e.removeAttribute(a.name);});});
  g.style.left=r.left+'px'; g.style.top=r.top+'px'; g.style.width=r.width+'px'; g.style.height=r.height+'px';
  h.appendChild(g);
  var gs=g.querySelector('.ob-scroll'); if(gs)gs.scrollTop=y;
@@ -563,7 +563,7 @@ function obStagger(card){
  var inn=card.querySelector('.obx-in'); if(!inn)return;
  [].slice.call(inn.children).forEach(function(c,i){
   c.style.setProperty('--si',Math.min(i,7));
-  /* .ob-g is the tutorial's chain, four rows that take the chips' own count */
+  /* .ob-g is the end card's chain, rows that take the chips' own count */
   [].slice.call(c.querySelectorAll('.ob-seat,.ob-g')).forEach(function(x,j){x.style.setProperty('--ci',j);});});}
 /* the headline, one word to a masked line, so it rises out of its own baseline.
    textContent is the title exactly: the spaces stay as text between the words. */
@@ -645,7 +645,8 @@ function obOpen(replay){
    rather than a fade: the body goes forward and past the camera, the boot's
    own exit (bxPush), so leaving the first run reads as going in. */
 var OB_LEAVE_MS=520;
-/* the push, on its own so the tutorial's way out is this one and not a copy */
+/* the push, on its own since round QJ, when the Day One tutorial (removed 23
+   October) left the stage the same way */
 function obPushOut(h){
  if(obCalm())return;
  try{
@@ -852,8 +853,8 @@ addEventListener('click',function(e){
  var t=e.target&&e.target.closest?e.target.closest('#relclose'):null;
  if(t)setTimeout(obAfterRelease,0);});
 
-/* ---- the card shell. nsteps carries over tutorial.js's own pattern,
-   because a sheet of a fixed four steps is no longer the only one. ---- */
+/* ---- the card shell. The count of steps is the rail's (obRailAt), so the
+   card itself carries none. ---- */
 /* A LABEL IS TITLE CASED AND A SENTENCE IS NOT, and this card was printing a
    sentence as a title. .pm-eye carries text-transform:capitalize, and
    shell/head.html states the rule beside it: "A label is a short name for a
@@ -945,9 +946,9 @@ function obChips(items,attr,sel,withNotSure){
    +'<span class="ob-seat-n">Not sure</span></button>':'')
   +'</div>';}
 
-/* ROUND QH'S CHANGE OF STEP, on its own since round QJ so the Day One
-   tutorial changes step through this one and not through a copy of it. The
-   card goes into the stage's slot. On a change of step the old card leaves
+/* ROUND QH'S CHANGE OF STEP, on its own since round QJ, when the Day One
+   tutorial (removed 23 October) changed step through it too. The card goes
+   into the stage's slot. On a change of step the old card leaves
    as a ghost and the new one rises; on a redraw of the same step, an answer
    on the mirror, it is swapped where it stands, because a person who pressed
    Yes has not gone anywhere. o.s is the step, o.shown the step on screen (-1
@@ -1119,8 +1120,8 @@ function obRender(){
    /* SKIP, the verb for what this does: it clears any pending read and goes
       on to the next step with no story. It read "I would rather not say",
       five words in the person's voice on a button, from the round PP mockup
-      and never ruled, and the brief's button rule flagged it. Skip is the
-      word the tutorial already uses for the same act. */
+      and never ruled, and the brief's button rule flagged it. Skip was the
+      word the Day One tutorial used for the same act. */
    +'<button type="button" class="btn" data-ob="storyskip">Skip</button>'
    +'<button type="button" class="btn" data-ob="back">Back</button>');
  }
@@ -1430,13 +1431,15 @@ function obAdjust(){
    relPlan builds the same twelve keys the card counted (tests/onboarding2.js
    holds the two equal), and every number on the card is read off the plan.
 
-   The Day One tutorial is the other door into the same first release and
-   calls the same two functions, so there is one size and one sentence.
+   The Day One tutorial was the other door into the same first release and
+   called the same two functions until it was removed on 23 October, so
+   there was one size and one sentence, and the first run is the one door now.
    ============================================================ */
-/* THE SIGNAL IS A LIST, and the caller says which list. The Day One tutorial
-   has no per address answer, so it passes parseStory's imprints. This sheet
-   passes its yes rows (F4): only an address the person said yes to can be
-   planned, so a no or an unanswered guess never reaches relPick. */
+/* THE SIGNAL IS A LIST, and the caller says which list. A walk the Day One
+   tutorial handed off has no per address answer, so obBridgeCard passes
+   parseStory's imprints for it. This sheet passes its yes rows (F4): only an
+   address the person said yes to can be planned, so a no or an unanswered
+   guess never reaches relPick. */
 function obMini(list){
  if(typeof onbMiniPlan!=='function'||typeof CURP==='undefined'||!CURP)return {ok:false, why:'no record'};
  var ims=Array.isArray(list)?list:[];
@@ -1495,8 +1498,7 @@ function obMiniSay(pl,first,yes){
    and a dose of a hundred. Round PA rules that the onboarding's release
    screens match what the software does, so this says what it does: the line
    is said ONB_MINI_DOSE times, the voice is relVoiceOn, the very function the
-   walker asks, and the rest is REL_SETTLE_S. The Day One tutorial says the
-   same through obMiniSay, so both doors make one promise.
+   walker asks, and the rest is REL_SETTLE_S.
 
    NO LONGER THAN THE SENTENCE IT REPLACED. A first cut also said where the
    voice switch is, and at 390 by 844 that pushed Begin the release from 834
@@ -1541,9 +1543,13 @@ function obPlanMarks(pl){
     +'<span class="ob-plan-v">'+ln+(ln===1?' line':' lines')+'</span></div>';}).join('')
   +'</div>';}
 function obBridgeCard(){
- /* THE TUTORIAL'S DOOR, back on this card after a reload, F13: its entry has
-    no yes rows, so its plan is read off what the story read, as the tutorial's
-    own Release card reads it. Every other door plans from the yes rows. */
+ /* THE TUTORIAL'S DOOR, back on this card after a reload, F13: a walk the Day
+    One tutorial handed off has no yes rows, so its plan is read off what the
+    story read, as that sequence's own Release card read it. The tutorial was
+    removed on 23 October and nothing writes this door now. It stays a legal
+    door (JOURNEY_DOORS, engine/data/onboarding.js), so a record that carries
+    one still loads and resumes here, and tests/journey2.js holds that. Every
+    other walk plans from the yes rows. */
  var tut=(OB.door==='tutorial');
  var c=OB.commit, yes=(c&&c.ok&&!tut)?obYesSignal():[];
  /* the plan reads the yes rows, F4's answers, never the raw story read */
@@ -1567,8 +1573,8 @@ function obBridgeCard(){
   return obCard('Next','Nothing new to release yet.',
    '<p class="ob-p">'+obMiniWhy(pl,true)+'</p>',
    '<button type="button" class="btn pri" data-ob="done">Go in</button>');
- /* HONEST EMPTY, the same rule the signal test and the tutorial already
-    keep: nothing to release is a real answer, not a failure to paper over. */
+ /* HONEST EMPTY, the same rule the signal test already keeps: nothing to
+    release is a real answer, not a failure to paper over. */
  return obCard('Next','Nothing to release yet.',
   (c&&c.ok&&c.k
    ?'<p class="ob-p">You did not say yes to any place, so nothing from this story goes into a release. '

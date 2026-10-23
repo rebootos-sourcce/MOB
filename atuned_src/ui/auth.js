@@ -1019,19 +1019,14 @@ function authBillingBack(){
    tell them to do the loop, go to the journal, input stories, and get used to
    using the software ten minutes a day until you no longer need it." Shown
    once per profile, only when the plan is live after a checkout return, and
-   never for a managed or cancelled return. It rides the tutorial's own sheet
-   host, which is idle at that moment. The flag is a ui fact, so it survives a
-   load. */
+   never for a managed or cancelled return. Its sheet host is its own,
+   #paidwelcome in shell/body.html. It borrowed the Day One tutorial's host
+   until 23 October, when that sequence was removed, so nothing else ever
+   stands on this one. The flag is a ui fact, so it survives a load. */
 function paidWelcomeOpen(){
- var h=document.getElementById('tutorial'); if(!h)return false;
+ var h=document.getElementById('paidwelcome'); if(!h)return false;
  if(CURP&&CURP.ui&&CURP.ui.paidWelcomed)return false;
- if(typeof TUT!=='undefined'&&TUT.open)return false;
- /* the tutorial's stage leaves its classes on the host until its own exit
-    has run (ui/tutorial.js, tutClose); this card is the old sheet and must
-    not open wearing them, nor be wiped by that exit's timer */
- if(typeof TUT!=='undefined'&&TUT.leaveT){ clearTimeout(TUT.leaveT); TUT.leaveT=null; }
- document.body.classList.remove('tut-on');
- h.classList.remove('ob-leaving','obx','tutx','obx-lit','obx-in-arrive');
+ h.classList.remove('ob-leaving');
  h.innerHTML='<div class="ob-card" role="dialog" aria-modal="true" aria-label="You are in">'
   +'<div class="ob-wash" aria-hidden="true"></div><div class="ob-scroll">'
   +'<span class="pm-eye">Paid</span>'

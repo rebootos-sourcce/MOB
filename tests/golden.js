@@ -831,7 +831,7 @@ async function door(browser, SITE, cut, giftAt) {
   await Q.booted();
   const back = await Q.waitSaid(/Tier one is on this record/, 8000);
   ok(!!back, 'back from Stripe, the app says the plan is on the record, ' + J(back), 'paid, and the app still reads Free');
-  const welcome = await page.waitForFunction(() => { const h = document.getElementById('tutorial');
+  const welcome = await page.waitForFunction(() => { const h = document.getElementById('paidwelcome');
     return h && h.style.display !== 'none' && /You are in/.test(h.innerText) ? true : null; }, null, { timeout: 6000 }).then(() => true, () => false);
   ok(welcome, 'and the welcome after paying opens');
   ok(await page.evaluate(() => location.search.indexOf('billing=') < 0), 'and the return is off the address, so a reload never replays it');
@@ -841,7 +841,10 @@ async function door(browser, SITE, cut, giftAt) {
   ok(!!(sv.rec && sv.rec.plan && sv.rec.plan.tier === 'one' && E.planState(sv.rec.plan) === 'live'), 'after a reload the saved record carries tier one, live: '
     + J(sv.rec && sv.rec.plan && { t: sv.rec.plan.tier, s: sv.rec.plan.status }));
   ok(!!sv.rec && E.planOf(sv.rec.plan).k === 'one', 'and the plan in force reads tier one');
-  ok(await page.evaluate(() => !(document.getElementById('tutorial') && /You are in/.test(document.getElementById('tutorial').innerText))), 'and the welcome never opens twice');
+  /* the host is looked up first and must exist, so a renamed host fails here
+     instead of passing on a null */
+  ok(await page.evaluate(() => { const h = document.getElementById('paidwelcome');
+    return !!h && !/You are in/.test(h.innerText); }), 'and the welcome never opens twice');
 
   station(8, 'Q: quit: cancel the plan, sign out, delete the record');
   await Q.click('#profbtn'); await Q.click('[data-pms="billing"]');
