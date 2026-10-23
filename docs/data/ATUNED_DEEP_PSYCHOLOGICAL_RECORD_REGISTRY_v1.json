@@ -4977,7 +4977,9 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "In conflict: You are calm and decisive while others panic. You take the hit so someone else does not."
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -5046,7 +5048,8 @@
         "Recover the original dictation artifact to independently verify the module's provenance note."
       ],
       "notes": [
-        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure.",
+        "Story and ATÜNED interpretation synthesized from existing archetype description, origin, healthy/decoherent expressions, and signals; not a source quotation."
       ],
       "changelog": [
         {
@@ -5189,6 +5192,11 @@
               "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
             ]
           }
+        ],
+        "story": "Illustrative pattern narrative (provisional): It installed early, in a moment where being seen meant being in danger. The body learned to arm first and ask later. In present-day behavior, this can appear as: In conflict: You are calm and decisive while others panic. You take the hit so someone else does not. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+        "atunedVersion": "ATÜNED interpretation (provisional): Protection through force. The will to act under threat. Healthy expression: Courage. You move first. Distortion to watch: It blocks rest. Stillness feels like exposure.",
+        "examples": [
+          "In conflict: You are calm and decisive while others panic. You take the hit so someone else does not."
         ]
       },
       "templateValidation": {
@@ -5252,7 +5260,9 @@
       ],
       "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><path d=\"M50 24 L68 60 L50 51 L32 60 Z\" fill=\"STRc\"/>",
       "band": "Solar plexus",
-      "flagged": false
+      "flagged": false,
+      "story": "Illustrative pattern narrative (provisional): It installed early, in a moment where being seen meant being in danger. The body learned to arm first and ask later. In present-day behavior, this can appear as: In conflict: You are calm and decisive while others panic. You take the hit so someone else does not. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+      "atunedVersion": "ATÜNED interpretation (provisional): Protection through force. The will to act under threat. Healthy expression: Courage. You move first. Distortion to watch: It blocks rest. Stillness feels like exposure."
     },
     {
       "id": "archetype:candidate:orphan",
@@ -5295,7 +5305,9 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "In closeness: You keep a measured distance so any loss will cost less."
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -5364,7 +5376,8 @@
         "Recover the original dictation artifact to independently verify the module's provenance note."
       ],
       "notes": [
-        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure.",
+        "Story and ATÜNED interpretation synthesized from existing archetype description, origin, healthy/decoherent expressions, and signals; not a source quotation."
       ],
       "changelog": [
         {
@@ -5491,6 +5504,11 @@
               "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
             ]
           }
+        ],
+        "story": "Illustrative pattern narrative (provisional): It set when a need went unmet long enough that needing itself felt dangerous. In present-day behavior, this can appear as: In closeness: You keep a measured distance so any loss will cost less. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+        "atunedVersion": "ATÜNED interpretation (provisional): Survival without rescue. Belonging earned the hard way. Healthy expression: Resilience. You endure what breaks others. Distortion to watch: It blocks closeness. You leave before you are left.",
+        "examples": [
+          "In closeness: You keep a measured distance so any loss will cost less."
         ]
       },
       "templateValidation": {
@@ -5538,7 +5556,9 @@
       ],
       "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><circle cx=\"50\" cy=\"46\" r=\"16\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/><path d=\"M34 46 a16 8 0 0 0 32 0\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/>",
       "band": "Heart",
-      "flagged": false
+      "flagged": false,
+      "story": "Illustrative pattern narrative (provisional): It set when a need went unmet long enough that needing itself felt dangerous. In present-day behavior, this can appear as: In closeness: You keep a measured distance so any loss will cost less. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+      "atunedVersion": "ATÜNED interpretation (provisional): Survival without rescue. Belonging earned the hard way. Healthy expression: Resilience. You endure what breaks others. Distortion to watch: It blocks closeness. You leave before you are left."
     },
     {
       "id": "archetype:candidate:innocent",
@@ -5578,7 +5598,9 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "In new rooms: When active, you enter open. When quiet, you scan for threat first."
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -5647,7 +5669,8 @@
         "Recover the original dictation artifact to independently verify the module's provenance note."
       ],
       "notes": [
-        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure.",
+        "Story and ATÜNED interpretation synthesized from existing archetype description, origin, healthy/decoherent expressions, and signals; not a source quotation."
       ],
       "changelog": [
         {
@@ -5764,6 +5787,11 @@
               "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
             ]
           }
+        ],
+        "story": "Illustrative pattern narrative (provisional): It quiets when trust is broken often enough that openness starts to feel naive. In present-day behavior, this can appear as: In new rooms: When active, you enter open. When quiet, you scan for threat first. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+        "atunedVersion": "ATÜNED interpretation (provisional): Open trust. The belief that things can be good. Healthy expression: Faith. You expect the good. Distortion to watch: It blocks discernment. You look away from what is real.",
+        "examples": [
+          "In new rooms: When active, you enter open. When quiet, you scan for threat first."
         ]
       },
       "templateValidation": {
@@ -5803,7 +5831,9 @@
       ],
       "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><circle cx=\"50\" cy=\"46\" r=\"15\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/>",
       "band": "Root",
-      "flagged": false
+      "flagged": false,
+      "story": "Illustrative pattern narrative (provisional): It quiets when trust is broken often enough that openness starts to feel naive. In present-day behavior, this can appear as: In new rooms: When active, you enter open. When quiet, you scan for threat first. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+      "atunedVersion": "ATÜNED interpretation (provisional): Open trust. The belief that things can be good. Healthy expression: Faith. You expect the good. Distortion to watch: It blocks discernment. You look away from what is real."
     },
     {
       "id": "archetype:candidate:caregiver",
@@ -5843,7 +5873,9 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "With others: You sense what people need before they say it."
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -5912,7 +5944,8 @@
         "Recover the original dictation artifact to independently verify the module's provenance note."
       ],
       "notes": [
-        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure.",
+        "Story and ATÜNED interpretation synthesized from existing archetype description, origin, healthy/decoherent expressions, and signals; not a source quotation."
       ],
       "changelog": [
         {
@@ -6029,6 +6062,11 @@
               "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
             ]
           }
+        ],
+        "story": "Illustrative pattern narrative (provisional): It quiets when giving once cost too much, or when your own needs were never met in return. In present-day behavior, this can appear as: With others: You sense what people need before they say it. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+        "atunedVersion": "ATÜNED interpretation (provisional): Tending. Feeling another need as your own. Healthy expression: Generosity that holds people up. Distortion to watch: It blocks self-care. Your needs come last.",
+        "examples": [
+          "With others: You sense what people need before they say it."
         ]
       },
       "templateValidation": {
@@ -6068,7 +6106,9 @@
       ],
       "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><path d=\"M36 60 Q50 28 64 60\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/><circle cx=\"50\" cy=\"38\" r=\"4\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/>",
       "band": "Heart",
-      "flagged": false
+      "flagged": false,
+      "story": "Illustrative pattern narrative (provisional): It quiets when giving once cost too much, or when your own needs were never met in return. In present-day behavior, this can appear as: With others: You sense what people need before they say it. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+      "atunedVersion": "ATÜNED interpretation (provisional): Tending. Feeling another need as your own. Healthy expression: Generosity that holds people up. Distortion to watch: It blocks self-care. Your needs come last."
     },
     {
       "id": "archetype:candidate:explorer",
@@ -6108,7 +6148,9 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "In routine: You feel the walls. The same path drains you."
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -6177,7 +6219,8 @@
         "Recover the original dictation artifact to independently verify the module's provenance note."
       ],
       "notes": [
-        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure.",
+        "Story and ATÜNED interpretation synthesized from existing archetype description, origin, healthy/decoherent expressions, and signals; not a source quotation."
       ],
       "changelog": [
         {
@@ -6294,6 +6337,11 @@
               "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
             ]
           }
+        ],
+        "story": "Illustrative pattern narrative (provisional): It quiets when staying put became the safer bet, or when movement once meant escape. In present-day behavior, this can appear as: In routine: You feel the walls. The same path drains you. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+        "atunedVersion": "ATÜNED interpretation (provisional): The open road. Movement as freedom. Healthy expression: Freedom. You need no permission. Distortion to watch: It blocks arrival. You never land.",
+        "examples": [
+          "In routine: You feel the walls. The same path drains you."
         ]
       },
       "templateValidation": {
@@ -6333,7 +6381,9 @@
       ],
       "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><path d=\"M50 28 L50 64 M50 46 L66 36 M50 46 L34 36\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/>",
       "band": "Sacral",
-      "flagged": false
+      "flagged": false,
+      "story": "Illustrative pattern narrative (provisional): It quiets when staying put became the safer bet, or when movement once meant escape. In present-day behavior, this can appear as: In routine: You feel the walls. The same path drains you. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+      "atunedVersion": "ATÜNED interpretation (provisional): The open road. Movement as freedom. Healthy expression: Freedom. You need no permission. Distortion to watch: It blocks arrival. You never land."
     },
     {
       "id": "archetype:candidate:outlaw",
@@ -6373,7 +6423,9 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "When cornered: It surges. You will burn the structure rather than submit."
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -6442,7 +6494,8 @@
         "Recover the original dictation artifact to independently verify the module's provenance note."
       ],
       "notes": [
-        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure.",
+        "Story and ATÜNED interpretation synthesized from existing archetype description, origin, healthy/decoherent expressions, and signals; not a source quotation."
       ],
       "changelog": [
         {
@@ -6559,6 +6612,11 @@
               "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
             ]
           }
+        ],
+        "story": "Illustrative pattern narrative (provisional): It flares where power was used against you and rules protected the wrong people. In present-day behavior, this can appear as: When cornered: It surges. You will burn the structure rather than submit. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+        "atunedVersion": "ATÜNED interpretation (provisional): Breaking the rigged game. Refusal of false order. Healthy expression: Liberation. You break what must break. Distortion to watch: It blocks belonging. You burn bridges you need.",
+        "examples": [
+          "When cornered: It surges. You will burn the structure rather than submit."
         ]
       },
       "templateValidation": {
@@ -6598,7 +6656,9 @@
       ],
       "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><path d=\"M34 56 L66 32 M44 32 L66 32 L66 54\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/>",
       "band": "Solar plexus",
-      "flagged": false
+      "flagged": false,
+      "story": "Illustrative pattern narrative (provisional): It flares where power was used against you and rules protected the wrong people. In present-day behavior, this can appear as: When cornered: It surges. You will burn the structure rather than submit. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+      "atunedVersion": "ATÜNED interpretation (provisional): Breaking the rigged game. Refusal of false order. Healthy expression: Liberation. You break what must break. Distortion to watch: It blocks belonging. You burn bridges you need."
     },
     {
       "id": "archetype:candidate:lover",
@@ -6638,7 +6698,9 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "In attraction: Desire waits behind the guard rather than moving freely."
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -6707,7 +6769,8 @@
         "Recover the original dictation artifact to independently verify the module's provenance note."
       ],
       "notes": [
-        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure.",
+        "Story and ATÜNED interpretation synthesized from existing archetype description, origin, healthy/decoherent expressions, and signals; not a source quotation."
       ],
       "changelog": [
         {
@@ -6824,6 +6887,11 @@
               "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
             ]
           }
+        ],
+        "story": "Illustrative pattern narrative (provisional): It quiets when desire once made you unsafe, or when wanting led to loss. In present-day behavior, this can appear as: In attraction: Desire waits behind the guard rather than moving freely. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+        "atunedVersion": "ATÜNED interpretation (provisional): Bonding. Desire and devotion. Healthy expression: Passion that moves you. Distortion to watch: It blocks wholeness. You lose yourself in another.",
+        "examples": [
+          "In attraction: Desire waits behind the guard rather than moving freely."
         ]
       },
       "templateValidation": {
@@ -6863,7 +6931,9 @@
       ],
       "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><path d=\"M50 60 C34 46 38 32 50 39 C62 32 66 46 50 60 Z\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/>",
       "band": "Heart",
-      "flagged": false
+      "flagged": false,
+      "story": "Illustrative pattern narrative (provisional): It quiets when desire once made you unsafe, or when wanting led to loss. In present-day behavior, this can appear as: In attraction: Desire waits behind the guard rather than moving freely. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+      "atunedVersion": "ATÜNED interpretation (provisional): Bonding. Desire and devotion. Healthy expression: Passion that moves you. Distortion to watch: It blocks wholeness. You lose yourself in another."
     },
     {
       "id": "archetype:candidate:creator",
@@ -6903,7 +6973,9 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "In the work: Ideas come, but finishing stalls under the weight of not-yet-perfect."
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -6972,7 +7044,8 @@
         "Recover the original dictation artifact to independently verify the module's provenance note."
       ],
       "notes": [
-        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure.",
+        "Story and ATÜNED interpretation synthesized from existing archetype description, origin, healthy/decoherent expressions, and signals; not a source quotation."
       ],
       "changelog": [
         {
@@ -7089,6 +7162,11 @@
               "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
             ]
           }
+        ],
+        "story": "Illustrative pattern narrative (provisional): It quiets when making was judged, or when the work was never safe to show. In present-day behavior, this can appear as: In the work: Ideas come, but finishing stalls under the weight of not-yet-perfect. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+        "atunedVersion": "ATÜNED interpretation (provisional): Making. Bringing the new into form. Healthy expression: Imagination without limit. Distortion to watch: It blocks finishing. Nothing is ever enough.",
+        "examples": [
+          "In the work: Ideas come, but finishing stalls under the weight of not-yet-perfect."
         ]
       },
       "templateValidation": {
@@ -7128,7 +7206,9 @@
       ],
       "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><path d=\"M50 26 L64 52 L36 52 Z M50 36 L50 64\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/>",
       "band": "Throat",
-      "flagged": false
+      "flagged": false,
+      "story": "Illustrative pattern narrative (provisional): It quiets when making was judged, or when the work was never safe to show. In present-day behavior, this can appear as: In the work: Ideas come, but finishing stalls under the weight of not-yet-perfect. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+      "atunedVersion": "ATÜNED interpretation (provisional): Making. Bringing the new into form. Healthy expression: Imagination without limit. Distortion to watch: It blocks finishing. Nothing is ever enough."
     },
     {
       "id": "archetype:candidate:jester",
@@ -7168,7 +7248,9 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "In tension: You break it with humor, sometimes before it can be felt."
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -7237,7 +7319,8 @@
         "Recover the original dictation artifact to independently verify the module's provenance note."
       ],
       "notes": [
-        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure.",
+        "Story and ATÜNED interpretation synthesized from existing archetype description, origin, healthy/decoherent expressions, and signals; not a source quotation."
       ],
       "changelog": [
         {
@@ -7354,6 +7437,11 @@
               "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
             ]
           }
+        ],
+        "story": "Illustrative pattern narrative (provisional): It quiets when seriousness became unsafe, so the laugh became the hiding place. In present-day behavior, this can appear as: In tension: You break it with humor, sometimes before it can be felt. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+        "atunedVersion": "ATÜNED interpretation (provisional): Play. The truth a joke can carry. Healthy expression: Levity that lifts a room. Distortion to watch: It blocks depth. You deflect with the laugh.",
+        "examples": [
+          "In tension: You break it with humor, sometimes before it can be felt."
         ]
       },
       "templateValidation": {
@@ -7393,7 +7481,9 @@
       ],
       "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><path d=\"M36 52 Q50 62 64 52 M42 38 Q50 33 58 38\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/>",
       "band": "Sacral",
-      "flagged": false
+      "flagged": false,
+      "story": "Illustrative pattern narrative (provisional): It quiets when seriousness became unsafe, so the laugh became the hiding place. In present-day behavior, this can appear as: In tension: You break it with humor, sometimes before it can be felt. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+      "atunedVersion": "ATÜNED interpretation (provisional): Play. The truth a joke can carry. Healthy expression: Levity that lifts a room. Distortion to watch: It blocks depth. You deflect with the laugh."
     },
     {
       "id": "archetype:candidate:sage",
@@ -7433,7 +7523,9 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "In a crisis: When active, you find the long view. When quiet, the Warrior acts before you can."
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -7502,7 +7594,8 @@
         "Recover the original dictation artifact to independently verify the module's provenance note."
       ],
       "notes": [
-        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure.",
+        "Story and ATÜNED interpretation synthesized from existing archetype description, origin, healthy/decoherent expressions, and signals; not a source quotation."
       ],
       "changelog": [
         {
@@ -7619,6 +7712,11 @@
               "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
             ]
           }
+        ],
+        "story": "Illustrative pattern narrative (provisional): It quiets when survival runs hot, because reflection needs room the threat does not allow. In present-day behavior, this can appear as: In a crisis: When active, you find the long view. When quiet, the Warrior acts before you can. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+        "atunedVersion": "ATÜNED interpretation (provisional): Perspective. Truth beneath the noise. Healthy expression: Perspective. You see the whole. Distortion to watch: It blocks feeling. You watch instead of live.",
+        "examples": [
+          "In a crisis: When active, you find the long view. When quiet, the Warrior acts before you can."
         ]
       },
       "templateValidation": {
@@ -7658,7 +7756,9 @@
       ],
       "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><circle cx=\"50\" cy=\"46\" r=\"13\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/><circle cx=\"50\" cy=\"46\" r=\"4\" fill=\"STRc\"/>",
       "band": "Third eye",
-      "flagged": false
+      "flagged": false,
+      "story": "Illustrative pattern narrative (provisional): It quiets when survival runs hot, because reflection needs room the threat does not allow. In present-day behavior, this can appear as: In a crisis: When active, you find the long view. When quiet, the Warrior acts before you can. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+      "atunedVersion": "ATÜNED interpretation (provisional): Perspective. Truth beneath the noise. Healthy expression: Perspective. You see the whole. Distortion to watch: It blocks feeling. You watch instead of live."
     },
     {
       "id": "archetype:candidate:magician",
@@ -7698,7 +7798,9 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "With influence: You sense leverage but hesitate to use it openly."
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -7767,7 +7869,8 @@
         "Recover the original dictation artifact to independently verify the module's provenance note."
       ],
       "notes": [
-        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure.",
+        "Story and ATÜNED interpretation synthesized from existing archetype description, origin, healthy/decoherent expressions, and signals; not a source quotation."
       ],
       "changelog": [
         {
@@ -7884,6 +7987,11 @@
               "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
             ]
           }
+        ],
+        "story": "Illustrative pattern narrative (provisional): It quiets where power was punished, so it learned to keep its hand hidden. In present-day behavior, this can appear as: With influence: You sense leverage but hesitate to use it openly. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+        "atunedVersion": "ATÜNED interpretation (provisional): Transformation. Working with hidden law. Healthy expression: Vision. You change reality. Distortion to watch: It blocks honesty. You hide your hand.",
+        "examples": [
+          "With influence: You sense leverage but hesitate to use it openly."
         ]
       },
       "templateValidation": {
@@ -7923,7 +8031,9 @@
       ],
       "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><path d=\"M50 28 L50 62 M36 38 L64 54 M64 38 L36 54\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/>",
       "band": "Third eye",
-      "flagged": false
+      "flagged": false,
+      "story": "Illustrative pattern narrative (provisional): It quiets where power was punished, so it learned to keep its hand hidden. In present-day behavior, this can appear as: With influence: You sense leverage but hesitate to use it openly. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+      "atunedVersion": "ATÜNED interpretation (provisional): Transformation. Working with hidden law. Healthy expression: Vision. You change reality. Distortion to watch: It blocks honesty. You hide your hand."
     },
     {
       "id": "archetype:candidate:ruler",
@@ -7963,7 +8073,9 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "In a system: You see what is broken and want to fix the structure."
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -8032,7 +8144,8 @@
         "Recover the original dictation artifact to independently verify the module's provenance note."
       ],
       "notes": [
-        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure.",
+        "Story and ATÜNED interpretation synthesized from existing archetype description, origin, healthy/decoherent expressions, and signals; not a source quotation."
       ],
       "changelog": [
         {
@@ -8149,6 +8262,11 @@
               "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
             ]
           }
+        ],
+        "story": "Illustrative pattern narrative (provisional): It quiets when control once failed, so it guards a position instead of governing one. In present-day behavior, this can appear as: In a system: You see what is broken and want to fix the structure. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+        "atunedVersion": "ATÜNED interpretation (provisional): Order. Responsibility for the whole. Healthy expression: Authority. You hold the structure. Distortion to watch: It blocks trust. You must control everything.",
+        "examples": [
+          "In a system: You see what is broken and want to fix the structure."
         ]
       },
       "templateValidation": {
@@ -8188,7 +8306,9 @@
       ],
       "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><path d=\"M36 56 L36 40 L44 47 L50 36 L56 47 L64 40 L64 56 Z\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/>",
       "band": "Crown",
-      "flagged": false
+      "flagged": false,
+      "story": "Illustrative pattern narrative (provisional): It quiets when control once failed, so it guards a position instead of governing one. In present-day behavior, this can appear as: In a system: You see what is broken and want to fix the structure. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+      "atunedVersion": "ATÜNED interpretation (provisional): Order. Responsibility for the whole. Healthy expression: Authority. You hold the structure. Distortion to watch: It blocks trust. You must control everything."
     },
     {
       "id": "archetype:candidate:hero",
@@ -8228,7 +8348,9 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "In a challenge: You rise, and the rising feels like the only safe place to stand."
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -8297,7 +8419,8 @@
         "Recover owner dictation or approved source and review this web-researched placeholder before treating its prose as canonical."
       ],
       "notes": [
-        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure.",
+        "Story and ATÜNED interpretation synthesized from existing archetype description, origin, healthy/decoherent expressions, and signals; not a source quotation."
       ],
       "changelog": [
         {
@@ -8414,6 +8537,11 @@
               "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
             ]
           }
+        ],
+        "story": "Illustrative pattern narrative (provisional): It installed where proving yourself once meant survival, so effort became identity. In present-day behavior, this can appear as: In a challenge: You rise, and the rising feels like the only safe place to stand. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+        "atunedVersion": "ATÜNED interpretation (provisional): Rising to the call. Becoming capable through the trial. Healthy expression: Courage to take on what is hard. Distortion to watch: It blocks rest. Worth is earned, never given.",
+        "examples": [
+          "In a challenge: You rise, and the rising feels like the only safe place to stand."
         ]
       },
       "templateValidation": {
@@ -8453,7 +8581,9 @@
       ],
       "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><path d=\"M32 60 L50 28 L68 60 Z\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/><path d=\"M50 28 L50 38 L58 34 Z\" fill=\"STRc\"/>",
       "band": "Solar plexus",
-      "flagged": true
+      "flagged": true,
+      "story": "Illustrative pattern narrative (provisional): It installed where proving yourself once meant survival, so effort became identity. In present-day behavior, this can appear as: In a challenge: You rise, and the rising feels like the only safe place to stand. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+      "atunedVersion": "ATÜNED interpretation (provisional): Rising to the call. Becoming capable through the trial. Healthy expression: Courage to take on what is hard. Distortion to watch: It blocks rest. Worth is earned, never given."
     },
     {
       "id": "archetype:candidate:everyman",
@@ -8493,7 +8623,9 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "In a group: You read the room and match it, before you know what you actually think."
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -8562,7 +8694,8 @@
         "Recover owner dictation or approved source and review this web-researched placeholder before treating its prose as canonical."
       ],
       "notes": [
-        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure.",
+        "Story and ATÜNED interpretation synthesized from existing archetype description, origin, healthy/decoherent expressions, and signals; not a source quotation."
       ],
       "changelog": [
         {
@@ -8679,6 +8812,11 @@
               "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
             ]
           }
+        ],
+        "story": "Illustrative pattern narrative (provisional): It quiets when standing out once cost belonging, so blending in became the safer shape. In present-day behavior, this can appear as: In a group: You read the room and match it, before you know what you actually think. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+        "atunedVersion": "ATÜNED interpretation (provisional): Belonging. A place at the table, shared with ordinary people. Healthy expression: Connection that crosses difference. Distortion to watch: It blocks difference. Standing apart feels like danger.",
+        "examples": [
+          "In a group: You read the room and match it, before you know what you actually think."
         ]
       },
       "templateValidation": {
@@ -8718,7 +8856,9 @@
       ],
       "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><circle cx=\"40\" cy=\"52\" r=\"7\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/><circle cx=\"60\" cy=\"52\" r=\"7\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/><circle cx=\"50\" cy=\"38\" r=\"7\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/>",
       "band": "Heart",
-      "flagged": true
+      "flagged": true,
+      "story": "Illustrative pattern narrative (provisional): It quiets when standing out once cost belonging, so blending in became the safer shape. In present-day behavior, this can appear as: In a group: You read the room and match it, before you know what you actually think. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+      "atunedVersion": "ATÜNED interpretation (provisional): Belonging. A place at the table, shared with ordinary people. Healthy expression: Connection that crosses difference. Distortion to watch: It blocks difference. Standing apart feels like danger."
     },
     {
       "id": "archetype:candidate:mentor",
@@ -8758,7 +8898,9 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "When asked: You want to hand over the whole map, not just the next step."
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -8827,7 +8969,8 @@
         "Recover owner dictation or approved source and review this web-researched placeholder before treating its prose as canonical."
       ],
       "notes": [
-        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure.",
+        "Story and ATÜNED interpretation synthesized from existing archetype description, origin, healthy/decoherent expressions, and signals; not a source quotation."
       ],
       "changelog": [
         {
@@ -8944,6 +9087,11 @@
               "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
             ]
           }
+        ],
+        "story": "Illustrative pattern narrative (provisional): It quiets when guidance once went unheard, or being right stopped being enough. In present-day behavior, this can appear as: When asked: You want to hand over the whole map, not just the next step. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+        "atunedVersion": "ATÜNED interpretation (provisional): Guidance. Wisdom passed on, not held. Healthy expression: Wisdom offered freely. Distortion to watch: It blocks listening. Your view outranks theirs before they have spoken.",
+        "examples": [
+          "When asked: You want to hand over the whole map, not just the next step."
         ]
       },
       "templateValidation": {
@@ -8983,7 +9131,9 @@
       ],
       "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><path d=\"M50 26 L58 38 L58 56 L50 66 L42 56 L42 38 Z\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/><circle cx=\"50\" cy=\"46\" r=\"4\" fill=\"STRc\"/>",
       "band": "Third eye",
-      "flagged": true
+      "flagged": true,
+      "story": "Illustrative pattern narrative (provisional): It quiets when guidance once went unheard, or being right stopped being enough. In present-day behavior, this can appear as: When asked: You want to hand over the whole map, not just the next step. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+      "atunedVersion": "ATÜNED interpretation (provisional): Guidance. Wisdom passed on, not held. Healthy expression: Wisdom offered freely. Distortion to watch: It blocks listening. Your view outranks theirs before they have spoken."
     },
     {
       "id": "archetype:candidate:shadowarch",
@@ -9023,7 +9173,9 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "In others: What you cannot stand in someone else is often what you buried in yourself."
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -9092,7 +9244,8 @@
         "Recover owner dictation or approved source and review this web-researched placeholder before treating its prose as canonical."
       ],
       "notes": [
-        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure.",
+        "Story and ATÜNED interpretation synthesized from existing archetype description, origin, healthy/decoherent expressions, and signals; not a source quotation."
       ],
       "changelog": [
         {
@@ -9209,6 +9362,11 @@
               "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
             ]
           }
+        ],
+        "story": "Illustrative pattern narrative (provisional): It formed wherever a real part of you got punished for showing, so it went underground instead of away. In present-day behavior, this can appear as: In others: What you cannot stand in someone else is often what you buried in yourself. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+        "atunedVersion": "ATÜNED interpretation (provisional): What was disowned. The self you built a wall around. Healthy expression: Access to your full range, not just the acceptable half. Distortion to watch: It blocks wholeness. A part of you stays exiled.",
+        "examples": [
+          "In others: What you cannot stand in someone else is often what you buried in yourself."
         ]
       },
       "templateValidation": {
@@ -9248,7 +9406,9 @@
       ],
       "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><path d=\"M50 22a24 24 0 1 0 0 48 24 24 0 0 1 0-48z\" fill=\"STRc\"/>",
       "band": "Solar plexus",
-      "flagged": true
+      "flagged": true,
+      "story": "Illustrative pattern narrative (provisional): It formed wherever a real part of you got punished for showing, so it went underground instead of away. In present-day behavior, this can appear as: In others: What you cannot stand in someone else is often what you buried in yourself. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+      "atunedVersion": "ATÜNED interpretation (provisional): What was disowned. The self you built a wall around. Healthy expression: Access to your full range, not just the acceptable half. Distortion to watch: It blocks wholeness. A part of you stays exiled."
     },
     {
       "id": "archetype:candidate:shapeshifter",
@@ -9288,7 +9448,9 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "Across people: You are a different person with each one, and none of them are quite lying."
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -9357,7 +9519,8 @@
         "Recover owner dictation or approved source and review this web-researched placeholder before treating its prose as canonical."
       ],
       "notes": [
-        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure.",
+        "Story and ATÜNED interpretation synthesized from existing archetype description, origin, healthy/decoherent expressions, and signals; not a source quotation."
       ],
       "changelog": [
         {
@@ -9474,6 +9637,11 @@
               "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
             ]
           }
+        ],
+        "story": "Illustrative pattern narrative (provisional): It quiets when one true shape once was not safe, so staying undefined became the shelter. In present-day behavior, this can appear as: Across people: You are a different person with each one, and none of them are quite lying. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+        "atunedVersion": "ATÜNED interpretation (provisional): Adaptation. Becoming whatever the moment requires. Healthy expression: Real adaptability. You meet people where they are. Distortion to watch: It blocks a stable self. There is no fixed ground to stand on.",
+        "examples": [
+          "Across people: You are a different person with each one, and none of them are quite lying."
         ]
       },
       "templateValidation": {
@@ -9513,7 +9681,9 @@
       ],
       "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><circle cx=\"45\" cy=\"40\" r=\"11\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/><path d=\"M38 58 Q54 50 62 62 Q50 68 38 58Z\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/>",
       "band": "Sacral",
-      "flagged": true
+      "flagged": true,
+      "story": "Illustrative pattern narrative (provisional): It quiets when one true shape once was not safe, so staying undefined became the shelter. In present-day behavior, this can appear as: Across people: You are a different person with each one, and none of them are quite lying. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+      "atunedVersion": "ATÜNED interpretation (provisional): Adaptation. Becoming whatever the moment requires. Healthy expression: Real adaptability. You meet people where they are. Distortion to watch: It blocks a stable self. There is no fixed ground to stand on."
     },
     {
       "id": "archetype:candidate:healer",
@@ -9553,7 +9723,9 @@
       "childIds": [],
       "relationships": [],
       "interactions": [],
-      "examples": [],
+      "examples": [
+        "With others’ pain: You recognize it instantly and move to meet it."
+      ],
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
@@ -9622,7 +9794,8 @@
         "Recover owner dictation or approved source and review this web-researched placeholder before treating its prose as canonical."
       ],
       "notes": [
-        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure.",
+        "Story and ATÜNED interpretation synthesized from existing archetype description, origin, healthy/decoherent expressions, and signals; not a source quotation."
       ],
       "changelog": [
         {
@@ -9739,6 +9912,11 @@
               "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
             ]
           }
+        ],
+        "story": "Illustrative pattern narrative (provisional): It quiets when the wound never got tended, so it kept tending everyone else’s instead. In present-day behavior, this can appear as: With others’ pain: You recognize it instantly and move to meet it. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+        "atunedVersion": "ATÜNED interpretation (provisional): Transforming pain into medicine. Healthy expression: Compassion earned the hard way, not performed. Distortion to watch: It blocks self-tending. Your wound stays open while you close everyone else’s.",
+        "examples": [
+          "With others’ pain: You recognize it instantly and move to meet it."
         ]
       },
       "templateValidation": {
@@ -9778,7 +9956,9 @@
       ],
       "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><path d=\"M34 50 Q50 66 66 50\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/><path d=\"M40 50 Q50 40 60 50\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/>",
       "band": "Heart",
-      "flagged": true
+      "flagged": true,
+      "story": "Illustrative pattern narrative (provisional): It quiets when the wound never got tended, so it kept tending everyone else’s instead. In present-day behavior, this can appear as: With others’ pain: You recognize it instantly and move to meet it. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
+      "atunedVersion": "ATÜNED interpretation (provisional): Transforming pain into medicine. Healthy expression: Compassion earned the hard way, not performed. Distortion to watch: It blocks self-tending. Your wound stays open while you close everyone else’s."
     },
     {
       "id": "conscious-domain:01",
