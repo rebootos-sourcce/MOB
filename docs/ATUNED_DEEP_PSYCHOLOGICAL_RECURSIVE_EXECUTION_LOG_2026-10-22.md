@@ -79,3 +79,17 @@ Local source file SHA-256: `79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f8073
 - **Completed:** verbatim extraction of the seven locked affirmation strings; extraction of eight domain descriptions; explicit documentation of source variants and taxonomy uncertainty.
 - **Not yet completed:** linking these extracted items to actual registry IDs; applying record edits; extracting/source-anchoring all 15 behavioral domains; validating research-pass evidence across 125 records; schema/adapter/runtime test execution.
 - **Important distinction:** creating the source extraction document does not close KPI 1. It supplies source evidence for the next record-level repair and crosswalk pass.
+
+
+## Round 3 — Conscious Domain registry repair
+
+Committed registry edit `3ff0cb0b1a0fda7502aaa0f9061bde4784799b25` to `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json`.
+
+- Populated the required top-level and nested-template `affirmation` fields for all eight `conscious-domain:*` records.
+- Copied the seven affirmation strings from the locked v341 sequence; recorded an explicit no-separate-affirmation statement for Empyrean rather than inventing an eighth affirmation.
+- Added provenance/limitations notes and updated missing-field metadata for the affirmation field.
+- Re-fetched and parsed the committed JSON: 125 records remain present; all eight Conscious Domain affirmation fields are populated in both locations; all eight remain research-open (Pass 1 complete, Pass 2 blocked, Pass 3 in progress).
+
+### Round 3 limitation
+
+The seven chakra-to-domain assignments are still an inferred crosswalk, not canonical approval. This repair removes the missing-field defect but does not close the Conscious Domain research gate. The 15 behavioral domains remain provisional and source-unverified. KPI 1 remains open; KPI 2 remains gated.
