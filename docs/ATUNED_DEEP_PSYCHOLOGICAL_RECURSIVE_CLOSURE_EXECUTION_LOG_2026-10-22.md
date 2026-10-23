@@ -159,3 +159,14 @@ Research the 15 behavioral-domain records and 8 Conscious Domain records first b
 - Strict three-pass evidence gate: 117/125. The 14 blueprint records are complete as non-canonical visualization slots. Eight Conscious Domains remain blocked at independent corroboration; their missing `affirmation` fields remain explicit and unfilled rather than fabricated.
 - Content statuses: 102 complete, 15 provisional-content-populated, 8 source-extracted/cross-record-review-pending.
 - This is a custom static regression, not execution of the repository validator, adapter, test suite, runtime traversal, or integration. Runtime remains not yet wired.
+
+
+## 2026-10-22 — Content batch: 23 domain records enriched
+
+- Added a record-specific illustrative story and an ATÜNED-facing operational interpretation to all 15 behavioral-domain records. Also populated function, healthy/decoherent expressions, signals, distortions, examples, and non-examples. These are explicitly provisional syntheses, not source quotations or canonical definitions.
+- Added equivalent provisional stories and operational interpretations to all 8 Conscious Domain records. Their source-defined names and paraphrased definitions remain distinct from these interpretations; the missing authoritative affirmation fields remain null.
+- Registry commits: `cb85991de9f2fb1c0a6d0cc7c35825b3d0d3081b` (15 behavioral domains), `9e8c0c00bfef04a72c64c738756df3ef4de03a16` (8 Conscious Domains).
+- Fresh blob SHA after content batch: `c9d28427be5d5b78257c960d4230a5858dc0daab`.
+- Fresh static checks: 125 records / 125 unique IDs; required status field gaps 0; invalid signal types 0; dangling references 0; nested template mirrors have 0 mismatches for keys present in both layers; 117 records pass the strict three-pass gate; 8 Conscious Domains remain blocked at pass 2.
+- The 15 behavioral domains remain marked provisional because the 15-to-19 taxonomy mapping and owner rulings are unresolved. The 14 blueprint records remain researched non-canonical visualization slots, not named domains.
+- Runtime adapter/validator/tests and actual app graph integration remain unverified. The template catalog has not yet been updated to formalize the new optional story/ATÜNED interpretation fields; the registry carries these fields as explicit extensions pending schema integration.
