@@ -125,3 +125,26 @@ The seven chakra-to-domain assignments are still an inferred crosswalk, not cano
 3. Reconcile all 15 behavioral domains against v341 and preserve unmatched/conflicting labels explicitly.
 4. Complete evidence-backed research-pass review for the full 125-record registry.
 5. Re-run the full audit and publish record-level counts and failures. Do not claim KPI 1 closure until every applicable record passes.
+
+
+## Round 5 — Complete shared record/template content envelope
+
+**Date:** 2026-10-22
+
+### Committed change
+- Registry commit: `c7ecca2ffe2dafcf2bff67b600fd2ea93fca8cb1`
+- Registry blob SHA: `34d2e66e5cfbddb42875ae87799636c1edf442dc`
+
+### Result
+- Filled the 48 missing nested `template.body` fields from the corresponding existing record bodies, preserving the record's current provisional/source status and provenance. This applied to 12 cultural-figure mappings and 36 archetype mapping rows.
+- Re-fetched the committed registry by blob SHA and parsed it.
+- Verified 125 records, 125 unique IDs, 125/125 top-level definition/body pairs, 125/125 nested template definition/body pairs, 125/125 three-pass slots, and no missing nested template bodies.
+- The registry contains 375 pass slots with source and finding fields present, but the status audit is not closed: 359 pass slots are marked complete, 8 blocked, and 8 in progress. These flags still require evidence-quality review and do not establish three independently corroborated passes per record.
+- Canonical approval remains 0 records. This is intentional for mapping families and unresolved taxonomy; content population is not canonical approval.
+
+### Next execution
+1. Verify pass-by-pass evidence quality rather than counting nonempty metadata.
+2. Resolve or explicitly disposition the eight blocked and eight in-progress pass slots.
+3. Finish the Conscious Domain research and the behavioral-domain source/crosswalk review.
+4. Keep the 14 Blueprint positions non-canonical unless source material establishes names and relationships.
+5. Rerun the full registry audit and only then decide whether KPI 1 can close.
