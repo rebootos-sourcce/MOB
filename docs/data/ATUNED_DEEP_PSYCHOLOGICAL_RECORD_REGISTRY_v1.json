@@ -260,7 +260,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "canon.json@27a7a178de1e87252fa8e59554a66735dbeb0aed"
@@ -500,7 +501,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "canon.json@27a7a178de1e87252fa8e59554a66735dbeb0aed"
@@ -727,7 +729,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "canon.json@27a7a178de1e87252fa8e59554a66735dbeb0aed"
@@ -954,7 +957,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "canon.json@27a7a178de1e87252fa8e59554a66735dbeb0aed"
@@ -4075,18 +4079,9 @@
         "It blocks receiving. You cannot let others carry you."
       ],
       "signals": [
-        {
-          "context": "In conflict",
-          "description": "You are calm and decisive while others panic. You take the hit so someone else does not."
-        },
-        {
-          "context": "At rest",
-          "description": "You cannot fully stand down. Stillness reads as exposure, so you stay scanning."
-        },
-        {
-          "context": "When seen",
-          "description": "Attention triggers the guard. Praise and threat land in the same place."
-        }
+        "In conflict: You are calm and decisive while others panic. You take the hit so someone else does not.",
+        "At rest: You cannot fully stand down. Stillness reads as exposure, so you stay scanning.",
+        "When seen: Attention triggers the guard. Praise and threat land in the same place."
       ],
       "distortions": [
         "It blocks rest. Stillness feels like exposure.",
@@ -4210,18 +4205,9 @@
           "It blocks receiving. You cannot let others carry you."
         ],
         "signals": [
-          {
-            "context": "In conflict",
-            "description": "You are calm and decisive while others panic. You take the hit so someone else does not."
-          },
-          {
-            "context": "At rest",
-            "description": "You cannot fully stand down. Stillness reads as exposure, so you stay scanning."
-          },
-          {
-            "context": "When seen",
-            "description": "Attention triggers the guard. Praise and threat land in the same place."
-          }
+          "In conflict: You are calm and decisive while others panic. You take the hit so someone else does not.",
+          "At rest: You cannot fully stand down. Stillness reads as exposure, so you stay scanning.",
+          "When seen: Attention triggers the guard. Praise and threat land in the same place."
         ],
         "fetters": [
           {
@@ -4329,7 +4315,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
@@ -4410,18 +4397,9 @@
         "It blocks belonging. You stay the outsider on purpose."
       ],
       "signals": [
-        {
-          "context": "In closeness",
-          "description": "You keep a measured distance so any loss will cost less."
-        },
-        {
-          "context": "Under stress",
-          "description": "You withdraw and handle it alone before anyone can fail you."
-        },
-        {
-          "context": "When cared for",
-          "description": "Care feels suspect. You wait for the catch."
-        }
+        "In closeness: You keep a measured distance so any loss will cost less.",
+        "Under stress: You withdraw and handle it alone before anyone can fail you.",
+        "When cared for: Care feels suspect. You wait for the catch."
       ],
       "distortions": [
         "It blocks closeness. You leave before you are left.",
@@ -4545,18 +4523,9 @@
           "It blocks belonging. You stay the outsider on purpose."
         ],
         "signals": [
-          {
-            "context": "In closeness",
-            "description": "You keep a measured distance so any loss will cost less."
-          },
-          {
-            "context": "Under stress",
-            "description": "You withdraw and handle it alone before anyone can fail you."
-          },
-          {
-            "context": "When cared for",
-            "description": "Care feels suspect. You wait for the catch."
-          }
+          "In closeness: You keep a measured distance so any loss will cost less.",
+          "Under stress: You withdraw and handle it alone before anyone can fail you.",
+          "When cared for: Care feels suspect. You wait for the catch."
         ],
         "fetters": [
           {
@@ -4648,7 +4617,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
@@ -4712,14 +4682,8 @@
         "It blocks growth. Denial keeps you small."
       ],
       "signals": [
-        {
-          "context": "In new rooms",
-          "description": "When active, you enter open. When quiet, you scan for threat first."
-        },
-        {
-          "context": "With promises",
-          "description": "You weigh whether to believe, where you once simply believed."
-        }
+        "In new rooms: When active, you enter open. When quiet, you scan for threat first.",
+        "With promises: You weigh whether to believe, where you once simply believed."
       ],
       "distortions": [
         "It blocks discernment. You look away from what is real.",
@@ -4841,14 +4805,8 @@
           "It blocks growth. Denial keeps you small."
         ],
         "signals": [
-          {
-            "context": "In new rooms",
-            "description": "When active, you enter open. When quiet, you scan for threat first."
-          },
-          {
-            "context": "With promises",
-            "description": "You weigh whether to believe, where you once simply believed."
-          }
+          "In new rooms: When active, you enter open. When quiet, you scan for threat first.",
+          "With promises: You weigh whether to believe, where you once simply believed."
         ],
         "fetters": [
           {
@@ -4932,7 +4890,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
@@ -4988,14 +4947,8 @@
         "It blocks rest. You give until empty."
       ],
       "signals": [
-        {
-          "context": "With others",
-          "description": "You sense what people need before they say it."
-        },
-        {
-          "context": "With yourself",
-          "description": "Your own needs sit last on the list, often unnamed."
-        }
+        "With others: You sense what people need before they say it.",
+        "With yourself: Your own needs sit last on the list, often unnamed."
       ],
       "distortions": [
         "It blocks self-care. Your needs come last.",
@@ -5117,14 +5070,8 @@
           "It blocks rest. You give until empty."
         ],
         "signals": [
-          {
-            "context": "With others",
-            "description": "You sense what people need before they say it."
-          },
-          {
-            "context": "With yourself",
-            "description": "Your own needs sit last on the list, often unnamed."
-          }
+          "With others: You sense what people need before they say it.",
+          "With yourself: Your own needs sit last on the list, often unnamed."
         ],
         "fetters": [
           {
@@ -5208,7 +5155,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
@@ -5264,14 +5212,8 @@
         "It blocks depth. You move before it gets real."
       ],
       "signals": [
-        {
-          "context": "In routine",
-          "description": "You feel the walls. The same path drains you."
-        },
-        {
-          "context": "In the new",
-          "description": "You come alive, but it can tip into never landing."
-        }
+        "In routine: You feel the walls. The same path drains you.",
+        "In the new: You come alive, but it can tip into never landing."
       ],
       "distortions": [
         "It blocks arrival. You never land.",
@@ -5393,14 +5335,8 @@
           "It blocks depth. You move before it gets real."
         ],
         "signals": [
-          {
-            "context": "In routine",
-            "description": "You feel the walls. The same path drains you."
-          },
-          {
-            "context": "In the new",
-            "description": "You come alive, but it can tip into never landing."
-          }
+          "In routine: You feel the walls. The same path drains you.",
+          "In the new: You come alive, but it can tip into never landing."
         ],
         "fetters": [
           {
@@ -5484,7 +5420,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
@@ -5540,14 +5477,8 @@
         "It blocks peace. You fight when you could rest."
       ],
       "signals": [
-        {
-          "context": "When cornered",
-          "description": "It surges. You will burn the structure rather than submit."
-        },
-        {
-          "context": "After",
-          "description": "It hides again, often having burned something you needed."
-        }
+        "When cornered: It surges. You will burn the structure rather than submit.",
+        "After: It hides again, often having burned something you needed."
       ],
       "distortions": [
         "It blocks belonging. You burn bridges you need.",
@@ -5669,14 +5600,8 @@
           "It blocks peace. You fight when you could rest."
         ],
         "signals": [
-          {
-            "context": "When cornered",
-            "description": "It surges. You will burn the structure rather than submit."
-          },
-          {
-            "context": "After",
-            "description": "It hides again, often having burned something you needed."
-          }
+          "When cornered: It surges. You will burn the structure rather than submit.",
+          "After: It hides again, often having burned something you needed."
         ],
         "fetters": [
           {
@@ -5760,7 +5685,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
@@ -5816,14 +5742,8 @@
         "It blocks self-worth. You only feel real when wanted."
       ],
       "signals": [
-        {
-          "context": "In attraction",
-          "description": "Desire waits behind the guard rather than moving freely."
-        },
-        {
-          "context": "In a bond",
-          "description": "You can lose your edges, or hold them so tight nothing lands."
-        }
+        "In attraction: Desire waits behind the guard rather than moving freely.",
+        "In a bond: You can lose your edges, or hold them so tight nothing lands."
       ],
       "distortions": [
         "It blocks wholeness. You lose yourself in another.",
@@ -5945,14 +5865,8 @@
           "It blocks self-worth. You only feel real when wanted."
         ],
         "signals": [
-          {
-            "context": "In attraction",
-            "description": "Desire waits behind the guard rather than moving freely."
-          },
-          {
-            "context": "In a bond",
-            "description": "You can lose your edges, or hold them so tight nothing lands."
-          }
+          "In attraction: Desire waits behind the guard rather than moving freely.",
+          "In a bond: You can lose your edges, or hold them so tight nothing lands."
         ],
         "fetters": [
           {
@@ -6036,7 +5950,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
@@ -6092,14 +6007,8 @@
         "It blocks joy. Making becomes proving."
       ],
       "signals": [
-        {
-          "context": "In the work",
-          "description": "Ideas come, but finishing stalls under the weight of not-yet-perfect."
-        },
-        {
-          "context": "In showing",
-          "description": "Exposure of the unfinished feels like exposure of you."
-        }
+        "In the work: Ideas come, but finishing stalls under the weight of not-yet-perfect.",
+        "In showing: Exposure of the unfinished feels like exposure of you."
       ],
       "distortions": [
         "It blocks finishing. Nothing is ever enough.",
@@ -6221,14 +6130,8 @@
           "It blocks joy. Making becomes proving."
         ],
         "signals": [
-          {
-            "context": "In the work",
-            "description": "Ideas come, but finishing stalls under the weight of not-yet-perfect."
-          },
-          {
-            "context": "In showing",
-            "description": "Exposure of the unfinished feels like exposure of you."
-          }
+          "In the work: Ideas come, but finishing stalls under the weight of not-yet-perfect.",
+          "In showing: Exposure of the unfinished feels like exposure of you."
         ],
         "fetters": [
           {
@@ -6312,7 +6215,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
@@ -6368,14 +6272,8 @@
         "It blocks grief. You will not sit with the pain."
       ],
       "signals": [
-        {
-          "context": "In tension",
-          "description": "You break it with humor, sometimes before it can be felt."
-        },
-        {
-          "context": "When serious",
-          "description": "Being seen without the joke feels like being seen wounded."
-        }
+        "In tension: You break it with humor, sometimes before it can be felt.",
+        "When serious: Being seen without the joke feels like being seen wounded."
       ],
       "distortions": [
         "It blocks depth. You deflect with the laugh.",
@@ -6497,14 +6395,8 @@
           "It blocks grief. You will not sit with the pain."
         ],
         "signals": [
-          {
-            "context": "In tension",
-            "description": "You break it with humor, sometimes before it can be felt."
-          },
-          {
-            "context": "When serious",
-            "description": "Being seen without the joke feels like being seen wounded."
-          }
+          "In tension: You break it with humor, sometimes before it can be felt.",
+          "When serious: Being seen without the joke feels like being seen wounded."
         ],
         "fetters": [
           {
@@ -6588,7 +6480,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
@@ -6644,14 +6537,8 @@
         "It blocks intimacy. Distance feels safer than presence."
       ],
       "signals": [
-        {
-          "context": "In a crisis",
-          "description": "When active, you find the long view. When quiet, the Warrior acts before you can."
-        },
-        {
-          "context": "In feeling",
-          "description": "You may watch the emotion instead of being in it."
-        }
+        "In a crisis: When active, you find the long view. When quiet, the Warrior acts before you can.",
+        "In feeling: You may watch the emotion instead of being in it."
       ],
       "distortions": [
         "It blocks feeling. You watch instead of live.",
@@ -6773,14 +6660,8 @@
           "It blocks intimacy. Distance feels safer than presence."
         ],
         "signals": [
-          {
-            "context": "In a crisis",
-            "description": "When active, you find the long view. When quiet, the Warrior acts before you can."
-          },
-          {
-            "context": "In feeling",
-            "description": "You may watch the emotion instead of being in it."
-          }
+          "In a crisis: When active, you find the long view. When quiet, the Warrior acts before you can.",
+          "In feeling: You may watch the emotion instead of being in it."
         ],
         "fetters": [
           {
@@ -6864,7 +6745,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
@@ -6920,14 +6802,8 @@
         "It blocks power. You keep it underground."
       ],
       "signals": [
-        {
-          "context": "With influence",
-          "description": "You sense leverage but hesitate to use it openly."
-        },
-        {
-          "context": "In change",
-          "description": "You can transform a situation, or quietly steer it from behind."
-        }
+        "With influence: You sense leverage but hesitate to use it openly.",
+        "In change: You can transform a situation, or quietly steer it from behind."
       ],
       "distortions": [
         "It blocks honesty. You hide your hand.",
@@ -7049,14 +6925,8 @@
           "It blocks power. You keep it underground."
         ],
         "signals": [
-          {
-            "context": "With influence",
-            "description": "You sense leverage but hesitate to use it openly."
-          },
-          {
-            "context": "In change",
-            "description": "You can transform a situation, or quietly steer it from behind."
-          }
+          "With influence: You sense leverage but hesitate to use it openly.",
+          "In change: You can transform a situation, or quietly steer it from behind."
         ],
         "fetters": [
           {
@@ -7140,7 +7010,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
@@ -7196,14 +7067,8 @@
         "It blocks rest. You carry it all alone."
       ],
       "signals": [
-        {
-          "context": "In a system",
-          "description": "You see what is broken and want to fix the structure."
-        },
-        {
-          "context": "Under threat",
-          "description": "Control tightens into rigidity rather than steady command."
-        }
+        "In a system: You see what is broken and want to fix the structure.",
+        "Under threat: Control tightens into rigidity rather than steady command."
       ],
       "distortions": [
         "It blocks trust. You must control everything.",
@@ -7325,14 +7190,8 @@
           "It blocks rest. You carry it all alone."
         ],
         "signals": [
-          {
-            "context": "In a system",
-            "description": "You see what is broken and want to fix the structure."
-          },
-          {
-            "context": "Under threat",
-            "description": "Control tightens into rigidity rather than steady command."
-          }
+          "In a system: You see what is broken and want to fix the structure.",
+          "Under threat: Control tightens into rigidity rather than steady command."
         ],
         "fetters": [
           {
@@ -7416,7 +7275,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
@@ -7472,14 +7332,8 @@
         "It blocks help. Accepting it feels like losing the title."
       ],
       "signals": [
-        {
-          "context": "In a challenge",
-          "description": "You rise, and the rising feels like the only safe place to stand."
-        },
-        {
-          "context": "At rest",
-          "description": "Stopping feels like falling behind, so you find the next mountain."
-        }
+        "In a challenge: You rise, and the rising feels like the only safe place to stand.",
+        "At rest: Stopping feels like falling behind, so you find the next mountain."
       ],
       "distortions": [
         "It blocks rest. Worth is earned, never given.",
@@ -7601,14 +7455,8 @@
           "It blocks help. Accepting it feels like losing the title."
         ],
         "signals": [
-          {
-            "context": "In a challenge",
-            "description": "You rise, and the rising feels like the only safe place to stand."
-          },
-          {
-            "context": "At rest",
-            "description": "Stopping feels like falling behind, so you find the next mountain."
-          }
+          "In a challenge: You rise, and the rising feels like the only safe place to stand.",
+          "At rest: Stopping feels like falling behind, so you find the next mountain."
         ],
         "fetters": [
           {
@@ -7692,7 +7540,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
@@ -7748,14 +7597,8 @@
         "It blocks identity. You become whoever the room needs."
       ],
       "signals": [
-        {
-          "context": "In a group",
-          "description": "You read the room and match it, before you know what you actually think."
-        },
-        {
-          "context": "Alone",
-          "description": "Your own preference is hard to locate under everyone else’s."
-        }
+        "In a group: You read the room and match it, before you know what you actually think.",
+        "Alone: Your own preference is hard to locate under everyone else’s."
       ],
       "distortions": [
         "It blocks difference. Standing apart feels like danger.",
@@ -7877,14 +7720,8 @@
           "It blocks identity. You become whoever the room needs."
         ],
         "signals": [
-          {
-            "context": "In a group",
-            "description": "You read the room and match it, before you know what you actually think."
-          },
-          {
-            "context": "Alone",
-            "description": "Your own preference is hard to locate under everyone else’s."
-          }
+          "In a group: You read the room and match it, before you know what you actually think.",
+          "Alone: Your own preference is hard to locate under everyone else’s."
         ],
         "fetters": [
           {
@@ -7968,7 +7805,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
@@ -8024,14 +7862,8 @@
         "It blocks being taught. You forget you are still learning too."
       ],
       "signals": [
-        {
-          "context": "When asked",
-          "description": "You want to hand over the whole map, not just the next step."
-        },
-        {
-          "context": "When ignored",
-          "description": "The correction hardens. Certainty replaces curiosity."
-        }
+        "When asked: You want to hand over the whole map, not just the next step.",
+        "When ignored: The correction hardens. Certainty replaces curiosity."
       ],
       "distortions": [
         "It blocks listening. Your view outranks theirs before they have spoken.",
@@ -8153,14 +7985,8 @@
           "It blocks being taught. You forget you are still learning too."
         ],
         "signals": [
-          {
-            "context": "When asked",
-            "description": "You want to hand over the whole map, not just the next step."
-          },
-          {
-            "context": "When ignored",
-            "description": "The correction hardens. Certainty replaces curiosity."
-          }
+          "When asked: You want to hand over the whole map, not just the next step.",
+          "When ignored: The correction hardens. Certainty replaces curiosity."
         ],
         "fetters": [
           {
@@ -8244,7 +8070,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
@@ -8300,14 +8127,8 @@
         "It blocks peace. The buried part keeps knocking."
       ],
       "signals": [
-        {
-          "context": "In others",
-          "description": "What you cannot stand in someone else is often what you buried in yourself."
-        },
-        {
-          "context": "Under pressure",
-          "description": "What was pushed down comes out sideways, not on your terms."
-        }
+        "In others: What you cannot stand in someone else is often what you buried in yourself.",
+        "Under pressure: What was pushed down comes out sideways, not on your terms."
       ],
       "distortions": [
         "It blocks wholeness. A part of you stays exiled.",
@@ -8429,14 +8250,8 @@
           "It blocks peace. The buried part keeps knocking."
         ],
         "signals": [
-          {
-            "context": "In others",
-            "description": "What you cannot stand in someone else is often what you buried in yourself."
-          },
-          {
-            "context": "Under pressure",
-            "description": "What was pushed down comes out sideways, not on your terms."
-          }
+          "In others: What you cannot stand in someone else is often what you buried in yourself.",
+          "Under pressure: What was pushed down comes out sideways, not on your terms."
         ],
         "fetters": [
           {
@@ -8520,7 +8335,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
@@ -8576,14 +8392,8 @@
         "It blocks intimacy. Closeness needs a self that holds still."
       ],
       "signals": [
-        {
-          "context": "Across people",
-          "description": "You are a different person with each one, and none of them are quite lying."
-        },
-        {
-          "context": "Alone",
-          "description": "Without an audience, it is hard to find which shape is actually yours."
-        }
+        "Across people: You are a different person with each one, and none of them are quite lying.",
+        "Alone: Without an audience, it is hard to find which shape is actually yours."
       ],
       "distortions": [
         "It blocks a stable self. There is no fixed ground to stand on.",
@@ -8705,14 +8515,8 @@
           "It blocks intimacy. Closeness needs a self that holds still."
         ],
         "signals": [
-          {
-            "context": "Across people",
-            "description": "You are a different person with each one, and none of them are quite lying."
-          },
-          {
-            "context": "Alone",
-            "description": "Without an audience, it is hard to find which shape is actually yours."
-          }
+          "Across people: You are a different person with each one, and none of them are quite lying.",
+          "Alone: Without an audience, it is hard to find which shape is actually yours."
         ],
         "fetters": [
           {
@@ -8796,7 +8600,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
@@ -8852,14 +8657,8 @@
         "It blocks boundaries. You take on pain that is not yours to carry."
       ],
       "signals": [
-        {
-          "context": "With others’ pain",
-          "description": "You recognize it instantly and move to meet it."
-        },
-        {
-          "context": "With your own",
-          "description": "It waits, because someone else’s always seems to need you first."
-        }
+        "With others’ pain: You recognize it instantly and move to meet it.",
+        "With your own: It waits, because someone else’s always seems to need you first."
       ],
       "distortions": [
         "It blocks self-tending. Your wound stays open while you close everyone else’s.",
@@ -8981,14 +8780,8 @@
           "It blocks boundaries. You take on pain that is not yours to carry."
         ],
         "signals": [
-          {
-            "context": "With others’ pain",
-            "description": "You recognize it instantly and move to meet it."
-          },
-          {
-            "context": "With your own",
-            "description": "It waits, because someone else’s always seems to need you first."
-          }
+          "With others’ pain: You recognize it instantly and move to meet it.",
+          "With your own: It waits, because someone else’s always seems to need you first."
         ],
         "fetters": [
           {
@@ -9072,7 +8865,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
@@ -10818,7 +10612,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
@@ -10988,7 +10783,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
@@ -11158,7 +10954,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
@@ -11328,7 +11125,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
@@ -11498,7 +11296,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
@@ -11668,7 +11467,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
@@ -11838,7 +11638,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
@@ -12008,7 +11809,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
@@ -12178,7 +11980,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
@@ -12348,7 +12151,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
@@ -12518,7 +12322,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
@@ -12688,7 +12493,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
@@ -12861,7 +12667,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
@@ -13037,7 +12844,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
@@ -13213,7 +13021,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
@@ -13389,7 +13198,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
@@ -13565,7 +13375,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
@@ -13741,7 +13552,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
@@ -13917,7 +13729,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
@@ -14093,7 +13906,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
@@ -14269,7 +14083,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
@@ -14445,7 +14260,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
@@ -14621,7 +14437,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
@@ -14797,7 +14614,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
@@ -14973,7 +14791,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
@@ -15149,7 +14968,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
@@ -15325,7 +15145,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
@@ -15501,7 +15322,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
@@ -15677,7 +15499,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
@@ -15853,7 +15676,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
@@ -16040,7 +15864,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
@@ -16229,7 +16054,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
@@ -16418,7 +16244,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
@@ -16607,7 +16434,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
@@ -16796,7 +16624,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
@@ -16985,7 +16814,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
@@ -17174,7 +17004,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
@@ -17363,7 +17194,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
@@ -17552,7 +17384,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
@@ -17741,7 +17574,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
@@ -17930,7 +17764,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
@@ -18119,7 +17954,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
@@ -18308,7 +18144,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
@@ -18497,7 +18334,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
@@ -18686,7 +18524,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
@@ -18875,7 +18714,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
@@ -19064,7 +18904,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
@@ -19253,7 +19094,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceIds": [
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
@@ -19363,7 +19205,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -19541,7 +19384,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -19719,7 +19563,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -19897,7 +19742,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -20075,7 +19921,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -20253,7 +20100,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -20431,7 +20279,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -20609,7 +20458,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -20787,7 +20637,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -20965,7 +20816,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -21143,7 +20995,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -21321,7 +21174,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -21499,7 +21353,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -21677,7 +21532,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
@@ -21867,7 +21723,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
@@ -22052,7 +21909,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
@@ -22237,7 +22095,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
@@ -22422,7 +22281,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
@@ -22607,7 +22467,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
@@ -22792,7 +22653,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
@@ -22977,7 +22839,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
@@ -23162,7 +23025,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
@@ -23347,7 +23211,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
@@ -23532,7 +23397,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
@@ -23717,7 +23583,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
@@ -23902,7 +23769,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
@@ -24087,7 +23955,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
@@ -24272,7 +24141,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
@@ -24457,7 +24327,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
@@ -24642,7 +24513,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
@@ -24827,7 +24699,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
@@ -25012,7 +24885,8 @@
         "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "status": "source_review_complete"
       },
       "sourceRefs": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
