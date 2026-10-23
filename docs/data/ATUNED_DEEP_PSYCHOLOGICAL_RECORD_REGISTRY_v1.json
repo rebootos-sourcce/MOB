@@ -968,7 +968,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
+      "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with acquiring, evaluating, organizing, and applying understanding.",
       "essence": null,
       "function": null,
@@ -1001,7 +1001,13 @@
         "Knowledge is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
-        "V341 source crosswalk candidate: Knowledge ↔ Knowledge. Evidence note: exact label match; semantics still require review. This is not an approved canonical semantic mapping."
+        "V341 source crosswalk candidate: Knowledge ↔ Knowledge. Evidence note: exact label match; semantics still require review. This is not an approved canonical semantic mapping.",
+        {
+          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
+          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
+          "status": "source_extracted_candidate_only"
+        }
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -1009,40 +1015,57 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_source_extraction",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+          ],
+          "findings": [
+            "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. Knowledge appears in the v341 Architect cluster; identity is lexical only until the 15/19 taxonomy is adjudicated."
+          ],
           "conflicts": [
-            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
           ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+          ],
+          "findings": [
+            "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+          ],
           "conflicts": [
-            "Independent corroboration not yet performed for the current record content."
+            "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_candidate_classification_owner_ruling_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
+          "findings": [
+            "Candidate classification: exact_lexical_candidate. Knowledge appears in the v341 Architect cluster; identity is lexical only until the 15/19 taxonomy is adjudicated."
+          ],
           "conflicts": [
-            "Cross-record synthesis and owner/canon ruling not yet completed."
+            "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
           ]
         }
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
         "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
-        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review.",
+        "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
-      "notes": [],
+      "notes": [
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -1133,7 +1156,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
+      "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with transmitting meaning and exchanging information, resources, attention, or value between people and systems.",
       "essence": null,
       "function": null,
@@ -1166,7 +1189,13 @@
         "Communication and Exchange is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
-        "V341 source crosswalk candidate: Communication and Exchange ↔ Communication. Evidence note: v341 explicitly says the standing simple name is Communication; prior/alternate label Connection/Exchange requires alias adjudication. This is not an approved canonical semantic mapping."
+        "V341 source crosswalk candidate: Communication and Exchange ↔ Communication. Evidence note: v341 explicitly says the standing simple name is Communication; prior/alternate label Connection/Exchange requires alias adjudication. This is not an approved canonical semantic mapping.",
+        {
+          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
+          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
+          "status": "source_extracted_candidate_only"
+        }
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -1174,40 +1203,57 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_source_extraction",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+          ],
+          "findings": [
+            "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. v341 uses Communication in Weaver; Exchange appears in the historical v184 grouping. Composite registry label is not an exact v341 label."
+          ],
           "conflicts": [
-            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
           ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+          ],
+          "findings": [
+            "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+          ],
           "conflicts": [
-            "Independent corroboration not yet performed for the current record content."
+            "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_candidate_classification_owner_ruling_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
+          "findings": [
+            "Candidate classification: plausible_unapproved. v341 uses Communication in Weaver; Exchange appears in the historical v184 grouping. Composite registry label is not an exact v341 label."
+          ],
           "conflicts": [
-            "Cross-record synthesis and owner/canon ruling not yet completed."
+            "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
           ]
         }
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
         "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
-        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review.",
+        "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
-      "notes": [],
+      "notes": [
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -1298,7 +1344,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
+      "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with mobilizing will, energy, and effort toward a chosen aim.",
       "essence": null,
       "function": null,
@@ -1331,7 +1377,13 @@
         "Directed Force is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
-        "V341 source crosswalk candidate: Directed Force ↔ Power. Evidence note: v341 explicitly states Power (Directed Force). This is not an approved canonical semantic mapping."
+        "V341 source crosswalk candidate: Directed Force ↔ Power. Evidence note: v341 explicitly states Power (Directed Force). This is not an approved canonical semantic mapping.",
+        {
+          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
+          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
+          "status": "source_extracted_candidate_only"
+        }
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -1339,40 +1391,57 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_source_extraction",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+          ],
+          "findings": [
+            "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. v341 explicitly writes Power (Directed Force) in its ruling text, while the 19-label list uses Power. Keep as candidate alias, not canonical mapping."
+          ],
           "conflicts": [
-            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
           ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+          ],
+          "findings": [
+            "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+          ],
           "conflicts": [
-            "Independent corroboration not yet performed for the current record content."
+            "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_candidate_classification_owner_ruling_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
+          "findings": [
+            "Candidate classification: source_stated_alias_candidate. v341 explicitly writes Power (Directed Force) in its ruling text, while the 19-label list uses Power. Keep as candidate alias, not canonical mapping."
+          ],
           "conflicts": [
-            "Cross-record synthesis and owner/canon ruling not yet completed."
+            "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
           ]
         }
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
         "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
-        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review.",
+        "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
-      "notes": [],
+      "notes": [
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -1463,7 +1532,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
+      "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with stewardship, governance, boundaries, structure, and coordinated responsibility.",
       "essence": null,
       "function": null,
@@ -1496,7 +1565,13 @@
         "Rulership and Order is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
-        "V341 source crosswalk candidate: Rulership and Order ↔ Architect (Rulership) / Imperium. Evidence note: v341 says Architect (Rulership) is distinct from Power, but displayed 19-label list uses Imperium in Architect cluster and omits Architect as a roster member; contradiction. This is not an approved canonical semantic mapping."
+        "V341 source crosswalk candidate: Rulership and Order ↔ Architect (Rulership) / Imperium. Evidence note: v341 says Architect (Rulership) is distinct from Power, but displayed 19-label list uses Imperium in Architect cluster and omits Architect as a roster member; contradiction. This is not an approved canonical semantic mapping.",
+        {
+          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
+          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
+          "status": "source_extracted_candidate_only"
+        }
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -1504,40 +1579,57 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_source_extraction",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+          ],
+          "findings": [
+            "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. v341 says Architect (Rulership) is separate from Power, but Architect is a cluster/root and is absent from the displayed 19 member labels. Do not map automatically."
+          ],
           "conflicts": [
-            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
           ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+          ],
+          "findings": [
+            "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+          ],
           "conflicts": [
-            "Independent corroboration not yet performed for the current record content."
+            "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_candidate_classification_owner_ruling_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
+          "findings": [
+            "Candidate classification: contradiction_owner_ruling_required. v341 says Architect (Rulership) is separate from Power, but Architect is a cluster/root and is absent from the displayed 19 member labels. Do not map automatically."
+          ],
           "conflicts": [
-            "Cross-record synthesis and owner/canon ruling not yet completed."
+            "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
           ]
         }
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
         "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
-        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review.",
+        "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
-      "notes": [],
+      "notes": [
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -1628,7 +1720,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
+      "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with bringing an intention or possibility into an observable form.",
       "essence": null,
       "function": null,
@@ -1661,7 +1753,13 @@
         "Creation and Manifestation is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
-        "V341 source crosswalk candidate: Creation and Manifestation ↔ Creation. Evidence note: candidate alias; source roster uses Creation. This is not an approved canonical semantic mapping."
+        "V341 source crosswalk candidate: Creation and Manifestation ↔ Creation. Evidence note: candidate alias; source roster uses Creation. This is not an approved canonical semantic mapping.",
+        {
+          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
+          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
+          "status": "source_extracted_candidate_only"
+        }
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -1669,40 +1767,57 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_source_extraction",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+          ],
+          "findings": [
+            "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. Creation appears in the v341 Engine cluster; Manifestation is not separately listed."
+          ],
           "conflicts": [
-            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
           ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+          ],
+          "findings": [
+            "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+          ],
           "conflicts": [
-            "Independent corroboration not yet performed for the current record content."
+            "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_candidate_classification_owner_ruling_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
+          "findings": [
+            "Candidate classification: plausible_unapproved. Creation appears in the v341 Engine cluster; Manifestation is not separately listed."
+          ],
           "conflicts": [
-            "Cross-record synthesis and owner/canon ruling not yet completed."
+            "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
           ]
         }
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
         "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
-        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review.",
+        "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
-      "notes": [],
+      "notes": [
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -1793,7 +1908,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
+      "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with ending, dismantling, releasing, or changing forms that no longer serve their purpose.",
       "essence": null,
       "function": null,
@@ -1826,7 +1941,13 @@
         "Destruction and Transformation is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
-        "V341 source crosswalk candidate: Destruction and Transformation ↔ Dissolution. Evidence note: v341 explicitly says the standing simple name is Dissolution. This is not an approved canonical semantic mapping."
+        "V341 source crosswalk candidate: Destruction and Transformation ↔ Dissolution. Evidence note: v341 explicitly says the standing simple name is Dissolution. This is not an approved canonical semantic mapping.",
+        {
+          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
+          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
+          "status": "source_extracted_candidate_only"
+        }
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -1834,40 +1955,57 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_source_extraction",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+          ],
+          "findings": [
+            "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. Dissolution appears in the v341 Engine cluster; the compound registry wording is not an exact source label."
+          ],
           "conflicts": [
-            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
           ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+          ],
+          "findings": [
+            "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+          ],
           "conflicts": [
-            "Independent corroboration not yet performed for the current record content."
+            "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_candidate_classification_owner_ruling_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
+          "findings": [
+            "Candidate classification: plausible_unapproved. Dissolution appears in the v341 Engine cluster; the compound registry wording is not an exact source label."
+          ],
           "conflicts": [
-            "Cross-record synthesis and owner/canon ruling not yet completed."
+            "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
           ]
         }
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
         "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
-        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review.",
+        "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
-      "notes": [],
+      "notes": [
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -1958,7 +2096,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
+      "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with relational bonding, care, intimacy, belonging, and connection across difference.",
       "essence": null,
       "function": null,
@@ -1991,7 +2129,13 @@
         "Love and Connection is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
-        "V341 source crosswalk candidate: Love and Connection ↔ Love. Evidence note: v341 explicitly says the standing simple name is Love. This is not an approved canonical semantic mapping."
+        "V341 source crosswalk candidate: Love and Connection ↔ Love. Evidence note: v341 explicitly says the standing simple name is Love. This is not an approved canonical semantic mapping.",
+        {
+          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
+          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
+          "status": "source_extracted_candidate_only"
+        }
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -1999,40 +2143,57 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_source_extraction",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+          ],
+          "findings": [
+            "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. Love appears in the v341 Weaver cluster; Connection is the cluster name and an earlier alias, not a second member label."
+          ],
           "conflicts": [
-            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
           ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+          ],
+          "findings": [
+            "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+          ],
           "conflicts": [
-            "Independent corroboration not yet performed for the current record content."
+            "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_candidate_classification_owner_ruling_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
+          "findings": [
+            "Candidate classification: plausible_unapproved. Love appears in the v341 Weaver cluster; Connection is the cluster name and an earlier alias, not a second member label."
+          ],
           "conflicts": [
-            "Cross-record synthesis and owner/canon ruling not yet completed."
+            "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
           ]
         }
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
         "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
-        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review.",
+        "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
-      "notes": [],
+      "notes": [
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -2123,7 +2284,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
+      "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with repair, recovery, reintegration, and the restoration of functional capacity after disruption.",
       "essence": null,
       "function": null,
@@ -2156,7 +2317,13 @@
         "Healing and Restoration is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
-        "V341 source crosswalk candidate: Healing and Restoration ↔ Healing. Evidence note: v341 explicitly says the standing simple name is Healing. This is not an approved canonical semantic mapping."
+        "V341 source crosswalk candidate: Healing and Restoration ↔ Healing. Evidence note: v341 explicitly says the standing simple name is Healing. This is not an approved canonical semantic mapping.",
+        {
+          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
+          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
+          "status": "source_extracted_candidate_only"
+        }
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -2164,40 +2331,57 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_source_extraction",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+          ],
+          "findings": [
+            "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. Healing appears in the v341 Weaver cluster; Restoration appears in the historical v184 list, so the compound needs alias adjudication."
+          ],
           "conflicts": [
-            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
           ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+          ],
+          "findings": [
+            "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+          ],
           "conflicts": [
-            "Independent corroboration not yet performed for the current record content."
+            "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_candidate_classification_owner_ruling_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
+          "findings": [
+            "Candidate classification: plausible_unapproved. Healing appears in the v341 Weaver cluster; Restoration appears in the historical v184 list, so the compound needs alias adjudication."
+          ],
           "conflicts": [
-            "Cross-record synthesis and owner/canon ruling not yet completed."
+            "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
           ]
         }
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
         "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
-        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review.",
+        "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
-      "notes": [],
+      "notes": [
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -2288,7 +2472,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
+      "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with relinquishing something of value, entering difficult experience, and extracting learning without glorifying suffering.",
       "essence": null,
       "function": null,
@@ -2321,7 +2505,13 @@
         "Sacrifice and Wisdom Through Descent is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
-        "V341 source crosswalk candidate: Sacrifice and Wisdom Through Descent ↔ Sacrifice. Evidence note: v341 explicitly says the standing simple name is Sacrifice. This is not an approved canonical semantic mapping."
+        "V341 source crosswalk candidate: Sacrifice and Wisdom Through Descent ↔ Sacrifice. Evidence note: v341 explicitly says the standing simple name is Sacrifice. This is not an approved canonical semantic mapping.",
+        {
+          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
+          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
+          "status": "source_extracted_candidate_only"
+        }
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -2329,40 +2519,57 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_source_extraction",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+          ],
+          "findings": [
+            "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. Sacrifice appears in the v341 Engine cluster; Descent appears in the historical v184 list and in v341 explanatory material, but is not the displayed cluster member label."
+          ],
           "conflicts": [
-            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
           ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+          ],
+          "findings": [
+            "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+          ],
           "conflicts": [
-            "Independent corroboration not yet performed for the current record content."
+            "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_candidate_classification_owner_ruling_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
+          "findings": [
+            "Candidate classification: plausible_unapproved. Sacrifice appears in the v341 Engine cluster; Descent appears in the historical v184 list and in v341 explanatory material, but is not the displayed cluster member label."
+          ],
           "conflicts": [
-            "Cross-record synthesis and owner/canon ruling not yet completed."
+            "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
           ]
         }
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
         "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
-        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review.",
+        "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
-      "notes": [],
+      "notes": [
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -2453,7 +2660,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
+      "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with truthful representation, fair treatment, proportionate accountability, and alignment between claims and evidence.",
       "essence": null,
       "function": null,
@@ -2486,7 +2693,13 @@
         "Justice and Truth is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
-        "V341 source crosswalk candidate: Justice and Truth ↔ Justice. Evidence note: candidate crosswalk; source roster uses Justice; Truth also names a Conscious Domain, so not a one-to-one semantic approval. This is not an approved canonical semantic mapping."
+        "V341 source crosswalk candidate: Justice and Truth ↔ Justice. Evidence note: candidate crosswalk; source roster uses Justice; Truth also names a Conscious Domain, so not a one-to-one semantic approval. This is not an approved canonical semantic mapping.",
+        {
+          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
+          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
+          "status": "source_extracted_candidate_only"
+        }
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -2494,40 +2707,57 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_source_extraction",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+          ],
+          "findings": [
+            "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. Justice appears in the v341 Architect cluster; Truth is not a separate member label in the displayed 19."
+          ],
           "conflicts": [
-            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
           ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+          ],
+          "findings": [
+            "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+          ],
           "conflicts": [
-            "Independent corroboration not yet performed for the current record content."
+            "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_candidate_classification_owner_ruling_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
+          "findings": [
+            "Candidate classification: plausible_unapproved. Justice appears in the v341 Architect cluster; Truth is not a separate member label in the displayed 19."
+          ],
           "conflicts": [
-            "Cross-record synthesis and owner/canon ruling not yet completed."
+            "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
           ]
         }
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
         "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
-        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review.",
+        "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
-      "notes": [],
+      "notes": [
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -2618,7 +2848,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
+      "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with exposing assumptions, interrupting stale patterns, and introducing alternative perspectives through play, inversion, or disruption.",
       "essence": null,
       "function": null,
@@ -2651,7 +2881,13 @@
         "Trickster and Disruption is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
-        "V341 source crosswalk candidate: Trickster and Disruption ↔ Trickster. Evidence note: candidate alias; source roster uses Trickster. This is not an approved canonical semantic mapping."
+        "V341 source crosswalk candidate: Trickster and Disruption ↔ Trickster. Evidence note: candidate alias; source roster uses Trickster. This is not an approved canonical semantic mapping.",
+        {
+          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
+          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
+          "status": "source_extracted_candidate_only"
+        }
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -2659,40 +2895,57 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_source_extraction",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+          ],
+          "findings": [
+            "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. Trickster appears in the v341 Witness cluster; Disruption is not a separate member label."
+          ],
           "conflicts": [
-            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
           ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+          ],
+          "findings": [
+            "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+          ],
           "conflicts": [
-            "Independent corroboration not yet performed for the current record content."
+            "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_candidate_classification_owner_ruling_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
+          "findings": [
+            "Candidate classification: plausible_unapproved. Trickster appears in the v341 Witness cluster; Disruption is not a separate member label."
+          ],
           "conflicts": [
-            "Cross-record synthesis and owner/canon ruling not yet completed."
+            "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
           ]
         }
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
         "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
-        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review.",
+        "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
-      "notes": [],
+      "notes": [
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -2783,7 +3036,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
+      "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with ecological awareness, embodied feedback, natural processes, and intelligence that emerges through relationship with living systems.",
       "essence": null,
       "function": null,
@@ -2816,7 +3069,13 @@
         "Nature and Organic Intelligence is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
-        "V341 source crosswalk candidate: Nature and Organic Intelligence ↔ Nature. Evidence note: candidate alias; source roster uses Nature. This is not an approved canonical semantic mapping."
+        "V341 source crosswalk candidate: Nature and Organic Intelligence ↔ Nature. Evidence note: candidate alias; source roster uses Nature. This is not an approved canonical semantic mapping.",
+        {
+          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
+          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
+          "status": "source_extracted_candidate_only"
+        }
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -2824,40 +3083,57 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_source_extraction",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+          ],
+          "findings": [
+            "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. Nature appears in the v341 Witness cluster; Organic Intelligence is not a separate member label."
+          ],
           "conflicts": [
-            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
           ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+          ],
+          "findings": [
+            "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+          ],
           "conflicts": [
-            "Independent corroboration not yet performed for the current record content."
+            "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_candidate_classification_owner_ruling_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
+          "findings": [
+            "Candidate classification: plausible_unapproved. Nature appears in the v341 Witness cluster; Organic Intelligence is not a separate member label."
+          ],
           "conflicts": [
-            "Cross-record synthesis and owner/canon ruling not yet completed."
+            "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
           ]
         }
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
         "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
-        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review.",
+        "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
-      "notes": [],
+      "notes": [
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -2948,7 +3224,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
+      "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with engaging uncertainty, hidden causes, ambiguity, and phenomena not yet fully understood.",
       "essence": null,
       "function": null,
@@ -2981,7 +3257,13 @@
         "Mystery and the Unseen is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
-        "V341 source crosswalk candidate: Mystery and the Unseen ↔ Mystery. Evidence note: candidate alias; source roster uses Mystery. This is not an approved canonical semantic mapping."
+        "V341 source crosswalk candidate: Mystery and the Unseen ↔ Mystery. Evidence note: candidate alias; source roster uses Mystery. This is not an approved canonical semantic mapping.",
+        {
+          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
+          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
+          "status": "source_extracted_candidate_only"
+        }
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -2989,40 +3271,57 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_source_extraction",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+          ],
+          "findings": [
+            "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. Mystery appears in the v341 Witness cluster; Unseen is not a separate member label."
+          ],
           "conflicts": [
-            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
           ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+          ],
+          "findings": [
+            "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+          ],
           "conflicts": [
-            "Independent corroboration not yet performed for the current record content."
+            "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_candidate_classification_owner_ruling_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
+          "findings": [
+            "Candidate classification: plausible_unapproved. Mystery appears in the v341 Witness cluster; Unseen is not a separate member label."
+          ],
           "conflicts": [
-            "Cross-record synthesis and owner/canon ruling not yet completed."
+            "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
           ]
         }
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
         "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
-        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review.",
+        "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
-      "notes": [],
+      "notes": [
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -3113,7 +3412,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
+      "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with sustained commitment to a value, practice, or source of meaning expressed through responsible action.",
       "essence": null,
       "function": null,
@@ -3146,7 +3445,13 @@
         "Devotion and Right Action is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
-        "V341 source crosswalk candidate: Devotion and Right Action ↔ Duty. Evidence note: v341 explicitly says the standing simple name is Duty. This is not an approved canonical semantic mapping."
+        "V341 source crosswalk candidate: Devotion and Right Action ↔ Duty. Evidence note: v341 explicitly says the standing simple name is Duty. This is not an approved canonical semantic mapping.",
+        {
+          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
+          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
+          "status": "source_extracted_candidate_only"
+        }
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -3154,40 +3459,57 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_source_extraction",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+          ],
+          "findings": [
+            "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. Duty appears in the v341 Architect cluster and is named among the seven surviving simple labels; Right Action is not a separate member label."
+          ],
           "conflicts": [
-            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
           ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+          ],
+          "findings": [
+            "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+          ],
           "conflicts": [
-            "Independent corroboration not yet performed for the current record content."
+            "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_candidate_classification_owner_ruling_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
+          "findings": [
+            "Candidate classification: plausible_unapproved. Duty appears in the v341 Architect cluster and is named among the seven surviving simple labels; Right Action is not a separate member label."
+          ],
           "conflicts": [
-            "Cross-record synthesis and owner/canon ruling not yet completed."
+            "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
           ]
         }
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
         "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
-        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review.",
+        "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
-      "notes": [],
+      "notes": [
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -3278,7 +3600,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
+      "status": "provisional_v341_source_reviewed_crosswalk_unapproved",
       "definition": "The behavioral domain concerned with exploration, experimentation, spontaneous creativity, humor, and the intrinsic pleasure of participation.",
       "essence": null,
       "function": null,
@@ -3311,7 +3633,13 @@
         "Play and Creative Delight is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
-        "V341 source crosswalk candidate: Play and Creative Delight ↔ Play. Evidence note: candidate alias; source roster uses Play. This is not an approved canonical semantic mapping."
+        "V341 source crosswalk candidate: Play and Creative Delight ↔ Play. Evidence note: candidate alias; source roster uses Play. This is not an approved canonical semantic mapping.",
+        {
+          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
+          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
+          "status": "source_extracted_candidate_only"
+        }
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -3319,40 +3647,57 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_source_extraction",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+          ],
+          "findings": [
+            "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. Play appears in the v341 Weaver cluster; Creative Delight is not a separate member label."
+          ],
           "conflicts": [
-            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
           ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_cross_source_comparison_not_independent_confirmation",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+          ],
+          "findings": [
+            "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+          ],
           "conflicts": [
-            "Independent corroboration not yet performed for the current record content."
+            "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_candidate_classification_owner_ruling_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
+          "findings": [
+            "Candidate classification: plausible_unapproved. Play appears in the v341 Weaver cluster; Creative Delight is not a separate member label."
+          ],
           "conflicts": [
-            "Cross-record synthesis and owner/canon ruling not yet completed."
+            "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
           ]
         }
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
         "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
-        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review.",
+        "Adjudicate whether this owner-stated registry label maps to a specific v341 domain label, is an alias, is a composite, or remains unmatched; record owner ruling before canonical promotion."
       ],
-      "notes": [],
+      "notes": [
+        "v341 source extraction and three analytical passes recorded 2026-10-22. Pass 2 is cross-version comparison, not independent external confirmation. Candidate status is not canonical approval."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -8497,7 +8842,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_evidence_extracted_cross_record_review_pending",
+      "status": "source_backed_v341_three_pass_review_pending_canonical_approval",
       "definition": "Awareness aligned with Source; pattern, truth, and coherence across time, energy, and matter. Not a chakra zone, but the unified field containing all zones; the state from which the other seven emerge and to which they return.",
       "essence": null,
       "function": null,
@@ -8527,41 +8872,51 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "source_extracted_pending_review",
+          "status": "completed_source_extraction",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 The Seven Affirmations (#ch22)"
           ],
           "findings": [
-            "Source name and definition summary extracted: Empyrean Consciousness."
+            "Extracted source name and concise definition for Empyrean Consciousness from the eight-domain Conscious Domain sequence."
           ],
           "conflicts": [
-            "Independent corroboration and cross-record synthesis have not been completed; do not treat as canonical approval."
+            "The chapter also contains Pattern Consciousness, Story Consciousness, and Imperium Consciousness; these are separate entries and are not merged into the eight-record roster."
           ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_internal_cross_section_check_external_confirmation_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22, seven affirmations and eight-domain explanation"
+          ],
+          "findings": [
+            "Cross-checked Empyrean Consciousness against the chapter's framing that seven chakra-zone affirmations map to seven of eight domains, with Empyrean as the unified field. The source distinguishes the eight-domain sequence from additional consciousness entries."
+          ],
           "conflicts": [
-            "Independent corroboration not yet performed for the current record content."
+            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_synthesis_approval_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
+          "findings": [
+            "The source-backed name and definition summary for Empyrean Consciousness are retained. The record is consistent with the eight-domain inventory; no new parent/child or affirmation edge is inferred."
+          ],
           "conflicts": [
-            "Cross-record synthesis and owner/canon ruling not yet completed."
+            "Canonical approval remains pending. Preserve source excerpt/provenance and do not merge Pattern, Story, or Imperium Consciousness into this roster."
           ]
         }
       ],
       "unresolvedQuestions": [
         "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
-        "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source."
+        "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source.",
+        "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence."
       ],
       "notes": [],
       "changelog": [
@@ -8656,7 +9011,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_evidence_extracted_cross_record_review_pending",
+      "status": "source_backed_v341_three_pass_review_pending_canonical_approval",
       "definition": "Honoring the word one gives to oneself and others; the crown as a two-way interface receiving from Source without distortion.",
       "essence": null,
       "function": null,
@@ -8686,42 +9041,52 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "source_extracted_pending_review",
+          "status": "completed_source_extraction",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 The Seven Affirmations (#ch22)"
           ],
           "findings": [
-            "Source name and definition summary extracted: Crown Consciousness."
+            "Extracted source name and concise definition for Crown Consciousness from the eight-domain Conscious Domain sequence."
           ],
           "conflicts": [
-            "Independent corroboration and cross-record synthesis have not been completed; do not treat as canonical approval."
+            "The chapter also contains Pattern Consciousness, Story Consciousness, and Imperium Consciousness; these are separate entries and are not merged into the eight-record roster."
           ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_internal_cross_section_check_external_confirmation_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22, seven affirmations and eight-domain explanation"
+          ],
+          "findings": [
+            "Cross-checked Crown Consciousness against the chapter's framing that seven chakra-zone affirmations map to seven of eight domains, with Empyrean as the unified field. The source distinguishes the eight-domain sequence from additional consciousness entries."
+          ],
           "conflicts": [
-            "Independent corroboration not yet performed for the current record content."
+            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_synthesis_approval_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
+          "findings": [
+            "The source-backed name and definition summary for Crown Consciousness are retained. The record is consistent with the eight-domain inventory; no new parent/child or affirmation edge is inferred."
+          ],
           "conflicts": [
-            "Cross-record synthesis and owner/canon ruling not yet completed."
+            "Canonical approval remains pending. Preserve source excerpt/provenance and do not merge Pattern, Story, or Imperium Consciousness into this roster."
           ]
         }
       ],
       "unresolvedQuestions": [
         "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
         "Canonical name, definition, body, and affirmation are not recovered from inspected sources.",
-        "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source."
+        "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source.",
+        "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence."
       ],
       "notes": [],
       "changelog": [
@@ -8815,7 +9180,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_evidence_extracted_cross_record_review_pending",
+      "status": "source_backed_v341_three_pass_review_pending_canonical_approval",
       "definition": "Conscious awareness in every moment; the recognition axis is open and behavior is no longer running automatically.",
       "essence": null,
       "function": null,
@@ -8845,42 +9210,52 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "source_extracted_pending_review",
+          "status": "completed_source_extraction",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 The Seven Affirmations (#ch22)"
           ],
           "findings": [
-            "Source name and definition summary extracted: Perception Consciousness."
+            "Extracted source name and concise definition for Perception Consciousness from the eight-domain Conscious Domain sequence."
           ],
           "conflicts": [
-            "Independent corroboration and cross-record synthesis have not been completed; do not treat as canonical approval."
+            "The chapter also contains Pattern Consciousness, Story Consciousness, and Imperium Consciousness; these are separate entries and are not merged into the eight-record roster."
           ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_internal_cross_section_check_external_confirmation_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22, seven affirmations and eight-domain explanation"
+          ],
+          "findings": [
+            "Cross-checked Perception Consciousness against the chapter's framing that seven chakra-zone affirmations map to seven of eight domains, with Empyrean as the unified field. The source distinguishes the eight-domain sequence from additional consciousness entries."
+          ],
           "conflicts": [
-            "Independent corroboration not yet performed for the current record content."
+            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_synthesis_approval_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
+          "findings": [
+            "The source-backed name and definition summary for Perception Consciousness are retained. The record is consistent with the eight-domain inventory; no new parent/child or affirmation edge is inferred."
+          ],
           "conflicts": [
-            "Cross-record synthesis and owner/canon ruling not yet completed."
+            "Canonical approval remains pending. Preserve source excerpt/provenance and do not merge Pattern, Story, or Imperium Consciousness into this roster."
           ]
         }
       ],
       "unresolvedQuestions": [
         "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
         "Canonical name, definition, body, and affirmation are not recovered from inspected sources.",
-        "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source."
+        "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source.",
+        "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence."
       ],
       "notes": [],
       "changelog": [
@@ -8974,7 +9349,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_evidence_extracted_cross_record_review_pending",
+      "status": "source_backed_v341_three_pass_review_pending_canonical_approval",
       "definition": "Absolute truth in speech, perception, and behavior; truth integrity defended automatically.",
       "essence": null,
       "function": null,
@@ -9004,42 +9379,52 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "source_extracted_pending_review",
+          "status": "completed_source_extraction",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 The Seven Affirmations (#ch22)"
           ],
           "findings": [
-            "Source name and definition summary extracted: Truth Consciousness."
+            "Extracted source name and concise definition for Truth Consciousness from the eight-domain Conscious Domain sequence."
           ],
           "conflicts": [
-            "Independent corroboration and cross-record synthesis have not been completed; do not treat as canonical approval."
+            "The chapter also contains Pattern Consciousness, Story Consciousness, and Imperium Consciousness; these are separate entries and are not merged into the eight-record roster."
           ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_internal_cross_section_check_external_confirmation_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22, seven affirmations and eight-domain explanation"
+          ],
+          "findings": [
+            "Cross-checked Truth Consciousness against the chapter's framing that seven chakra-zone affirmations map to seven of eight domains, with Empyrean as the unified field. The source distinguishes the eight-domain sequence from additional consciousness entries."
+          ],
           "conflicts": [
-            "Independent corroboration not yet performed for the current record content."
+            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_synthesis_approval_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
+          "findings": [
+            "The source-backed name and definition summary for Truth Consciousness are retained. The record is consistent with the eight-domain inventory; no new parent/child or affirmation edge is inferred."
+          ],
           "conflicts": [
-            "Cross-record synthesis and owner/canon ruling not yet completed."
+            "Canonical approval remains pending. Preserve source excerpt/provenance and do not merge Pattern, Story, or Imperium Consciousness into this roster."
           ]
         }
       ],
       "unresolvedQuestions": [
         "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
         "Canonical name, definition, body, and affirmation are not recovered from inspected sources.",
-        "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source."
+        "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source.",
+        "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence."
       ],
       "notes": [],
       "changelog": [
@@ -9133,7 +9518,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_evidence_extracted_cross_record_review_pending",
+      "status": "source_backed_v341_three_pass_review_pending_canonical_approval",
       "definition": "Equal compassion toward self and others; a stable perceptual state that cannot be contracted by other people's broadcasts.",
       "essence": null,
       "function": null,
@@ -9163,42 +9548,52 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "source_extracted_pending_review",
+          "status": "completed_source_extraction",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 The Seven Affirmations (#ch22)"
           ],
           "findings": [
-            "Source name and definition summary extracted: Heart Consciousness."
+            "Extracted source name and concise definition for Heart Consciousness from the eight-domain Conscious Domain sequence."
           ],
           "conflicts": [
-            "Independent corroboration and cross-record synthesis have not been completed; do not treat as canonical approval."
+            "The chapter also contains Pattern Consciousness, Story Consciousness, and Imperium Consciousness; these are separate entries and are not merged into the eight-record roster."
           ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_internal_cross_section_check_external_confirmation_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22, seven affirmations and eight-domain explanation"
+          ],
+          "findings": [
+            "Cross-checked Heart Consciousness against the chapter's framing that seven chakra-zone affirmations map to seven of eight domains, with Empyrean as the unified field. The source distinguishes the eight-domain sequence from additional consciousness entries."
+          ],
           "conflicts": [
-            "Independent corroboration not yet performed for the current record content."
+            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_synthesis_approval_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
+          "findings": [
+            "The source-backed name and definition summary for Heart Consciousness are retained. The record is consistent with the eight-domain inventory; no new parent/child or affirmation edge is inferred."
+          ],
           "conflicts": [
-            "Cross-record synthesis and owner/canon ruling not yet completed."
+            "Canonical approval remains pending. Preserve source excerpt/provenance and do not merge Pattern, Story, or Imperium Consciousness into this roster."
           ]
         }
       ],
       "unresolvedQuestions": [
         "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
         "Canonical name, definition, body, and affirmation are not recovered from inspected sources.",
-        "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source."
+        "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source.",
+        "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence."
       ],
       "notes": [],
       "changelog": [
@@ -9292,7 +9687,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_evidence_extracted_cross_record_review_pending",
+      "status": "source_backed_v341_three_pass_review_pending_canonical_approval",
       "definition": "Embodiment of worth and desire fulfillment; creativity flowing and desires recognized and honored.",
       "essence": null,
       "function": null,
@@ -9322,42 +9717,52 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "source_extracted_pending_review",
+          "status": "completed_source_extraction",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 The Seven Affirmations (#ch22)"
           ],
           "findings": [
-            "Source name and definition summary extracted: Value Consciousness."
+            "Extracted source name and concise definition for Value Consciousness from the eight-domain Conscious Domain sequence."
           ],
           "conflicts": [
-            "Independent corroboration and cross-record synthesis have not been completed; do not treat as canonical approval."
+            "The chapter also contains Pattern Consciousness, Story Consciousness, and Imperium Consciousness; these are separate entries and are not merged into the eight-record roster."
           ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_internal_cross_section_check_external_confirmation_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22, seven affirmations and eight-domain explanation"
+          ],
+          "findings": [
+            "Cross-checked Value Consciousness against the chapter's framing that seven chakra-zone affirmations map to seven of eight domains, with Empyrean as the unified field. The source distinguishes the eight-domain sequence from additional consciousness entries."
+          ],
           "conflicts": [
-            "Independent corroboration not yet performed for the current record content."
+            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_synthesis_approval_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
+          "findings": [
+            "The source-backed name and definition summary for Value Consciousness are retained. The record is consistent with the eight-domain inventory; no new parent/child or affirmation edge is inferred."
+          ],
           "conflicts": [
-            "Cross-record synthesis and owner/canon ruling not yet completed."
+            "Canonical approval remains pending. Preserve source excerpt/provenance and do not merge Pattern, Story, or Imperium Consciousness into this roster."
           ]
         }
       ],
       "unresolvedQuestions": [
         "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
         "Canonical name, definition, body, and affirmation are not recovered from inspected sources.",
-        "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source."
+        "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source.",
+        "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence."
       ],
       "notes": [],
       "changelog": [
@@ -9451,7 +9856,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_evidence_extracted_cross_record_review_pending",
+      "status": "source_backed_v341_three_pass_review_pending_canonical_approval",
       "definition": "Sovereignty, courage, leadership, and responsibility for one's own reality; power that does not need to dominate.",
       "essence": null,
       "function": null,
@@ -9481,42 +9886,52 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "source_extracted_pending_review",
+          "status": "completed_source_extraction",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 The Seven Affirmations (#ch22)"
           ],
           "findings": [
-            "Source name and definition summary extracted: Royal Consciousness."
+            "Extracted source name and concise definition for Royal Consciousness from the eight-domain Conscious Domain sequence."
           ],
           "conflicts": [
-            "Independent corroboration and cross-record synthesis have not been completed; do not treat as canonical approval."
+            "The chapter also contains Pattern Consciousness, Story Consciousness, and Imperium Consciousness; these are separate entries and are not merged into the eight-record roster."
           ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_internal_cross_section_check_external_confirmation_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22, seven affirmations and eight-domain explanation"
+          ],
+          "findings": [
+            "Cross-checked Royal Consciousness against the chapter's framing that seven chakra-zone affirmations map to seven of eight domains, with Empyrean as the unified field. The source distinguishes the eight-domain sequence from additional consciousness entries."
+          ],
           "conflicts": [
-            "Independent corroboration not yet performed for the current record content."
+            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_synthesis_approval_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
+          "findings": [
+            "The source-backed name and definition summary for Royal Consciousness are retained. The record is consistent with the eight-domain inventory; no new parent/child or affirmation edge is inferred."
+          ],
           "conflicts": [
-            "Cross-record synthesis and owner/canon ruling not yet completed."
+            "Canonical approval remains pending. Preserve source excerpt/provenance and do not merge Pattern, Story, or Imperium Consciousness into this roster."
           ]
         }
       ],
       "unresolvedQuestions": [
         "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
         "Canonical name, definition, body, and affirmation are not recovered from inspected sources.",
-        "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source."
+        "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source.",
+        "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence."
       ],
       "notes": [],
       "changelog": [
@@ -9610,7 +10025,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_evidence_extracted_cross_record_review_pending",
+      "status": "source_backed_v341_three_pass_review_pending_canonical_approval",
       "definition": "Freedom to create without resistance; survival patterns no longer consume creative output.",
       "essence": null,
       "function": null,
@@ -9640,42 +10055,52 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "source_extracted_pending_review",
+          "status": "completed_source_extraction",
           "sources": [
-            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 The Seven Affirmations (#ch22)"
           ],
           "findings": [
-            "Source name and definition summary extracted: Creative Consciousness."
+            "Extracted source name and concise definition for Creative Consciousness from the eight-domain Conscious Domain sequence."
           ],
           "conflicts": [
-            "Independent corroboration and cross-record synthesis have not been completed; do not treat as canonical approval."
+            "The chapter also contains Pattern Consciousness, Story Consciousness, and Imperium Consciousness; these are separate entries and are not merged into the eight-record roster."
           ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_internal_cross_section_check_external_confirmation_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22, seven affirmations and eight-domain explanation"
+          ],
+          "findings": [
+            "Cross-checked Creative Consciousness against the chapter's framing that seven chakra-zone affirmations map to seven of eight domains, with Empyrean as the unified field. The source distinguishes the eight-domain sequence from additional consciousness entries."
+          ],
           "conflicts": [
-            "Independent corroboration not yet performed for the current record content."
+            "This is an internal cross-section check within one source file, not independent external corroboration. The exact one-to-one relation between seven affirmations and eight records must not be inferred without explicit source relation evidence."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "completed_synthesis_approval_open",
+          "sources": [
+            "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32 #ch22",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+          ],
+          "findings": [
+            "The source-backed name and definition summary for Creative Consciousness are retained. The record is consistent with the eight-domain inventory; no new parent/child or affirmation edge is inferred."
+          ],
           "conflicts": [
-            "Cross-record synthesis and owner/canon ruling not yet completed."
+            "Canonical approval remains pending. Preserve source excerpt/provenance and do not merge Pattern, Story, or Imperium Consciousness into this roster."
           ]
         }
       ],
       "unresolvedQuestions": [
         "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
         "Canonical name, definition, body, and affirmation are not recovered from inspected sources.",
-        "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source."
+        "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source.",
+        "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence."
       ],
       "notes": [],
       "changelog": [
