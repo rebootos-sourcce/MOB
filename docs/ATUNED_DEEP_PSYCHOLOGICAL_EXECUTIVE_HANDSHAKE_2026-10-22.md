@@ -170,3 +170,40 @@ Do not report 100% merely because a registry contains 125 records or all records
 ## 9. First instruction to the next agent
 
 Start with Phase A. Run the committed audit script and existing repository checks in the actual repository environment. Capture the output. Fix and rerun any failures. Then recover canonical source content and close the measured content/taxonomy gaps before wiring the records into runtime. Do not stop after writing a plan; make repository changes, run tests, and report exact evidence after each stage.
+
+## Prime Directive and Two Completion KPIs — Owner Priority (2026-10-22)
+
+**Priority rule:** The prime directive is to complete the ATÜNED psychological layer to its defined acceptance standard. That is the first and controlling KPI. Work that does not directly complete, validate, or unblock that objective is lower priority and must not displace it. Documentation, analysis, plans, populated placeholders, and progress reports are support work—not substitutes for completion.
+
+### KPI 1 — Complete the layer (prime directive; target 100%)
+
+Close the entire defined scope against evidence-based acceptance criteria:
+- all required records and fields complete with source provenance;
+- three substantive research passes completed for every applicable record and relationship;
+- source and taxonomy conflicts explicitly reconciled or documented as owner-decision blockers;
+- schema, template, identity, reference, and semantic validation passing;
+- all required relationships and crosswalks accounted for and approved where evidence supports approval;
+- documentation reflects the actual tested state.
+
+A record is not complete merely because it exists, has a template, or has a status flag. A research pass is not complete without its evidence and findings. Do not declare this KPI complete while required content or acceptance checks remain open.
+
+### KPI 2 — Wire it all up (end-to-end integration; target 100%)
+
+After and alongside only the prerequisite work needed to unblock KPI 1, integrate the completed, validated records into the ATÜNED engine:
+- connect the psychological layer to the existing architecture without breaking Nerve-to-Super-Complex behavior;
+- integrate the registry/adapter with the real generator and validator path;
+- establish and test all required references and graph relationships;
+- prove forward and backward traversal through the applicable layers;
+- run regression and integration tests and verify runtime output against the canonical registry.
+
+A successful static scan or build alone does not satisfy this KPI; the integration and traversal tests must run and pass.
+
+### Execution priority and sequencing
+
+1. **KPI 1 first:** establish a reproducible baseline, close record/source/research/taxonomy gaps, and validate the full registry.
+2. **KPI 2 second:** wire the validated layer into the runtime and prove connectivity, traversal, and non-regression.
+3. Run the final full audit across both KPIs, fix failures, and repeat until both acceptance matrices pass or a specific external/owner dependency is documented.
+4. Keep a live scoreboard with numerator/denominator, evidence links, blockers, and last-tested commit. Never substitute activity counts for completion.
+
+The two KPIs are the governing definition of success: **(1) complete the layer; (2) wire the layer up.** If a proposed task does not advance one of these KPIs or remove a concrete blocker, defer it.
+
