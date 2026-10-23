@@ -95,3 +95,12 @@ For each build cycle, record: date, branch/commit SHA, exact paths changed, link
 - No `MOB_Complete_v341.html` was found in the MOB default-branch tree. Exact v341 source recovery remains a blocker; no claim is made that v341 content has been verified.
 - Crosswalk preserves likely lexical leads as unapproved candidates only. Canonical semantic mappings approved: 0/23.
 - Next action: recover the actual v341 source (or verifiable v341 export), then record exact section/heading/anchor and hash for every evidence claim. Until then, do not invent canonical definitions, names, or affirmations.
+
+
+## 2026-10-22 — v341 source recovered from conversation upload
+- **Correction:** the earlier repository-only search missed the uploaded source file. `MOB_Complete_v341.html` was already attached to this conversation. It has now been materialized and inspected directly; do not ask the user to upload it again.
+- File size: 16,417,226 bytes. SHA-256: `79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4`.
+- Source headings verified: Chapter 28 “The Domains” (`#ch-domains`) and Chapter 32 “The Seven Affirmations” (`#ch22`). Chapter 12’s stacking-architecture container ID must be rechecked before publishing an anchor.
+- v341 gives 19 source domain labels grouped 5/5/5/4 under Architect, Engine, Weaver, Witness. It also gives all eight Conscious Domain names and definitions. See the [23-Record Source Crosswalk](ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md) for the extracted inventory, SHA, and unresolved contradiction.
+- Source contradiction: v341 lists 19 labels but also states Power (Directed Force) and Architect (Rulership) are separate domains, while Architect is not a member of the displayed 19-label list. This requires an owner ruling; do not silently change the count or list.
+- Updated closure state: v341 recovered; eight consciousness source names found; 19 domain labels found; 15-to-19 behavioral crosswalk, three-pass evidence completion, source contradiction adjudication, schema/runtime tests, and automated link checks remain open.
