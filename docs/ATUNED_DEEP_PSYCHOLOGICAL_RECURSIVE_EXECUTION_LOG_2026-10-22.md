@@ -211,3 +211,23 @@ This is not a claim that every ATÜNED semantic mapping is canon-approved. The u
 
 ### Next action
 Proceed to KPI 2 only after treating this logged provisional baseline as the agreed KPI 1 stand-up completion point; keep the refinement backlog visible and do not promote provisional mappings to canonical without evidence.
+
+
+## Round 4 — Owner model clarification: behavioral energy and mask state
+
+### Owner-stated intent captured
+- Names and definitions are guiding posts; the core target is behavioral energy behind the construct.
+- People express degrees of multiple archetypal energies. Primary, secondary, and tertiary are dominance rankings, not exclusive categories.
+- The owner sees a cascade from root programming through behavioral domains into archetypes, with super-complexes possibly functioning as energetic drivers rather than a discrete sequential layer.
+- Masks are proposed as a psychospiritual state change: egoic/psychological identification and adaptation interacting with essential/spiritual energy that remains visible.
+- Shadow is part of the mask but not necessarily identical to it. Unrecognized energy may remain visible through a “gap” in the mask.
+- Childhood/root programming may express over time as ideology; this is stored as a developmental proposition, not deterministic fact.
+
+### Documentation action
+Added section 11 to the record-format TDD and a corresponding owner-model section to the executive handshake. The TDD defines the working graph, proposed record semantics, acceptance tests, implementation order, and evidence/status distinctions.
+
+### Interpretation guardrails
+The mask-as-state model and super-complex-as-influence model are working interpretations, not verified runtime semantics. No universal binary poles or canonical super-complex/archetype edges were invented. This documentation change does not establish record completeness or three evidence-backed passes. A turn-by-turn update process is documented; no separate autonomous agent is running in the background merely because the instruction is written down.
+
+### Validation status
+Documentation update only. Schema, registry, templates, runtime, and tests have not been changed or executed in this round. KPI 1 remains OPEN until the full record acceptance matrix is re-audited.
