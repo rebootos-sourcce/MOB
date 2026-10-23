@@ -12106,7 +12106,8 @@
               "No independent source defining the table's intended meaning was located; mapping semantics and any crosswalk remain unresolved."
             ]
           }
-        ]
+        ],
+        "body": "CDOMAIN source row maps this figure to Duty; the meaning of the mapping is not yet established."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -12277,7 +12278,8 @@
               "No independent source defining the table's intended meaning was located; mapping semantics and any crosswalk remain unresolved."
             ]
           }
-        ]
+        ],
+        "body": "CDOMAIN source row maps this figure to Play; the meaning of the mapping is not yet established."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -12448,7 +12450,8 @@
               "No independent source defining the table's intended meaning was located; mapping semantics and any crosswalk remain unresolved."
             ]
           }
-        ]
+        ],
+        "body": "CDOMAIN source row maps this figure to Knowledge; the meaning of the mapping is not yet established."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -12619,7 +12622,8 @@
               "No independent source defining the table's intended meaning was located; mapping semantics and any crosswalk remain unresolved."
             ]
           }
-        ]
+        ],
+        "body": "CDOMAIN source row maps this figure to Devotion; the meaning of the mapping is not yet established."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -12790,7 +12794,8 @@
               "No independent source defining the table's intended meaning was located; mapping semantics and any crosswalk remain unresolved."
             ]
           }
-        ]
+        ],
+        "body": "CDOMAIN source row maps this figure to Mystery; the meaning of the mapping is not yet established."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -12961,7 +12966,8 @@
               "No independent source defining the table's intended meaning was located; mapping semantics and any crosswalk remain unresolved."
             ]
           }
-        ]
+        ],
+        "body": "CDOMAIN source row maps this figure to Justice; the meaning of the mapping is not yet established."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -13132,7 +13138,8 @@
               "No independent source defining the table's intended meaning was located; mapping semantics and any crosswalk remain unresolved."
             ]
           }
-        ]
+        ],
+        "body": "CDOMAIN source row maps this figure to Love; the meaning of the mapping is not yet established."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -13303,7 +13310,8 @@
               "No independent source defining the table's intended meaning was located; mapping semantics and any crosswalk remain unresolved."
             ]
           }
-        ]
+        ],
+        "body": "CDOMAIN source row maps this figure to Creation; the meaning of the mapping is not yet established."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -13474,7 +13482,8 @@
               "No independent source defining the table's intended meaning was located; mapping semantics and any crosswalk remain unresolved."
             ]
           }
-        ]
+        ],
+        "body": "CDOMAIN source row maps this figure to Nature; the meaning of the mapping is not yet established."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -13645,7 +13654,8 @@
               "No independent source defining the table's intended meaning was located; mapping semantics and any crosswalk remain unresolved."
             ]
           }
-        ]
+        ],
+        "body": "CDOMAIN source row maps this figure to Power; the meaning of the mapping is not yet established."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -13816,7 +13826,8 @@
               "No independent source defining the table's intended meaning was located; mapping semantics and any crosswalk remain unresolved."
             ]
           }
-        ]
+        ],
+        "body": "CDOMAIN source row maps this figure to Healing; the meaning of the mapping is not yet established."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -13987,7 +13998,8 @@
               "No independent source defining the table's intended meaning was located; mapping semantics and any crosswalk remain unresolved."
             ]
           }
-        ]
+        ],
+        "body": "CDOMAIN source row maps this figure to Architect; the meaning of the mapping is not yet established."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -14161,7 +14173,8 @@
               "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
             ]
           }
-        ]
+        ],
+        "body": "Source-table mapping: Warrior → Power. The target taxonomy and semantic relationship remain unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -14338,7 +14351,8 @@
               "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
             ]
           }
-        ]
+        ],
+        "body": "Source-table mapping: Caregiver → Healing. The target taxonomy and semantic relationship remain unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -14515,7 +14529,8 @@
               "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
             ]
           }
-        ]
+        ],
+        "body": "Source-table mapping: Creator → Creation. The target taxonomy and semantic relationship remain unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -14692,7 +14707,8 @@
               "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
             ]
           }
-        ]
+        ],
+        "body": "Source-table mapping: Sage → Knowledge. The target taxonomy and semantic relationship remain unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -14869,7 +14885,8 @@
               "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
             ]
           }
-        ]
+        ],
+        "body": "Source-table mapping: Jester → Play. The target taxonomy and semantic relationship remain unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -15046,7 +15063,8 @@
               "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
             ]
           }
-        ]
+        ],
+        "body": "Source-table mapping: Lover → Love. The target taxonomy and semantic relationship remain unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -15223,7 +15241,8 @@
               "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
             ]
           }
-        ]
+        ],
+        "body": "Source-table mapping: Magician → Mystery. The target taxonomy and semantic relationship remain unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -15400,7 +15419,8 @@
               "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
             ]
           }
-        ]
+        ],
+        "body": "Source-table mapping: Innocent → Nature. The target taxonomy and semantic relationship remain unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -15577,7 +15597,8 @@
               "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
             ]
           }
-        ]
+        ],
+        "body": "Source-table mapping: Outlaw → Destruction. The target taxonomy and semantic relationship remain unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -15754,7 +15775,8 @@
               "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
             ]
           }
-        ]
+        ],
+        "body": "Source-table mapping: Ruler → Architect. The target taxonomy and semantic relationship remain unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -15931,7 +15953,8 @@
               "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
             ]
           }
-        ]
+        ],
+        "body": "Source-table mapping: Explorer → Nature. The target taxonomy and semantic relationship remain unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -16108,7 +16131,8 @@
               "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
             ]
           }
-        ]
+        ],
+        "body": "Source-table mapping: Orphan → Guardian. The target taxonomy and semantic relationship remain unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -16285,7 +16309,8 @@
               "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
             ]
           }
-        ]
+        ],
+        "body": "Source-table mapping: Hero → Power. The target taxonomy and semantic relationship remain unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -16462,7 +16487,8 @@
               "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
             ]
           }
-        ]
+        ],
+        "body": "Source-table mapping: Everyman → Communication. The target taxonomy and semantic relationship remain unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -16639,7 +16665,8 @@
               "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
             ]
           }
-        ]
+        ],
+        "body": "Source-table mapping: Mentor → Knowledge. The target taxonomy and semantic relationship remain unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -16816,7 +16843,8 @@
               "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
             ]
           }
-        ]
+        ],
+        "body": "Source-table mapping: Shadow → Death. The target taxonomy and semantic relationship remain unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -16993,7 +17021,8 @@
               "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
             ]
           }
-        ]
+        ],
+        "body": "Source-table mapping: Shapeshifter → Trickster. The target taxonomy and semantic relationship remain unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -17170,7 +17199,8 @@
               "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
             ]
           }
-        ]
+        ],
+        "body": "Source-table mapping: Healer → Healing. The target taxonomy and semantic relationship remain unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -17358,7 +17388,8 @@
               "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
             ]
           }
-        ]
+        ],
+        "body": "Source-table tuple: Warrior → Controller @ solar. The tuple's semantic status remains unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -17548,7 +17579,8 @@
               "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
             ]
           }
-        ]
+        ],
+        "body": "Source-table tuple: Caregiver → Pleaser @ heart. The tuple's semantic status remains unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -17738,7 +17770,8 @@
               "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
             ]
           }
-        ]
+        ],
+        "body": "Source-table tuple: Creator → Stickler @ throat. The tuple's semantic status remains unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -17928,7 +17961,8 @@
               "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
             ]
           }
-        ]
+        ],
+        "body": "Source-table tuple: Sage → Hyper-Rational @ eye. The tuple's semantic status remains unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -18118,7 +18152,8 @@
               "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
             ]
           }
-        ]
+        ],
+        "body": "Source-table tuple: Jester → Restless @ sacral. The tuple's semantic status remains unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -18308,7 +18343,8 @@
               "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
             ]
           }
-        ]
+        ],
+        "body": "Source-table tuple: Lover → Hyper-Vigilant @ heart. The tuple's semantic status remains unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -18498,7 +18534,8 @@
               "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
             ]
           }
-        ]
+        ],
+        "body": "Source-table tuple: Magician → Victim @ eye. The tuple's semantic status remains unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -18688,7 +18725,8 @@
               "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
             ]
           }
-        ]
+        ],
+        "body": "Source-table tuple: Innocent → Restless @ root. The tuple's semantic status remains unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -18878,7 +18916,8 @@
               "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
             ]
           }
-        ]
+        ],
+        "body": "Source-table tuple: Outlaw → Judge @ solar. The tuple's semantic status remains unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -19068,7 +19107,8 @@
               "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
             ]
           }
-        ]
+        ],
+        "body": "Source-table tuple: Ruler → Hyper-Achiever @ crown. The tuple's semantic status remains unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -19258,7 +19298,8 @@
               "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
             ]
           }
-        ]
+        ],
+        "body": "Source-table tuple: Explorer → Restless @ sacral. The tuple's semantic status remains unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -19448,7 +19489,8 @@
               "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
             ]
           }
-        ]
+        ],
+        "body": "Source-table tuple: Orphan → Worrywart @ heart. The tuple's semantic status remains unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -19638,7 +19680,8 @@
               "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
             ]
           }
-        ]
+        ],
+        "body": "Source-table tuple: Hero → Hyper-Achiever @ solar. The tuple's semantic status remains unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -19828,7 +19871,8 @@
               "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
             ]
           }
-        ]
+        ],
+        "body": "Source-table tuple: Everyman → Pleaser @ heart. The tuple's semantic status remains unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -20018,7 +20062,8 @@
               "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
             ]
           }
-        ]
+        ],
+        "body": "Source-table tuple: Mentor → Stickler @ eye. The tuple's semantic status remains unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -20208,7 +20253,8 @@
               "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
             ]
           }
-        ]
+        ],
+        "body": "Source-table tuple: Shadow → Judge @ solar. The tuple's semantic status remains unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -20398,7 +20444,8 @@
               "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
             ]
           }
-        ]
+        ],
+        "body": "Source-table tuple: Shapeshifter → Restless @ sacral. The tuple's semantic status remains unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -20588,7 +20635,8 @@
               "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
             ]
           }
-        ]
+        ],
+        "body": "Source-table tuple: Healer → Hyper-Vigilant @ heart. The tuple's semantic status remains unverified."
       },
       "templateValidation": {
         "schemaDefined": true,
