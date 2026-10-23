@@ -77,7 +77,7 @@ This audit supersedes earlier estimates of the registry denominator. It does not
 - `templateValidation.contentStatus`: {"complete":102,"provisional_content_populated":15,"source_extracted_cross_record_review_pending":8}.
 - All 125 records have exactly three research-pass slots and nonempty top-level `sourceRefs`, `sourceClaims`, and `sourceIds` arrays. However, only 88/125 satisfy the stronger evidence gate that all three passes are marked complete and each has at least one source and finding. 37 records remain below that gate.
 - Cross-record target scan across `parentId`, `childIds`, `upstreamInfluenceIds`, `downstreamEffectIds`, `links`, and relationship `fromId/toId` fields found no dangling IDs. Parent/child reciprocity check found no mismatches for explicit `parentId/childIds` edges. This is a structural scan, not proof of semantic correctness or runtime behavior.
-- The adapter's current template-field check flags 103 records with at least one empty/null template payload field, principally empty `links` arrays. This count is distinct from the 23 records whose `templateValidation.contentStatus` is not `complete`; the adapter is treating every catalog field as non-empty-required, including arrays that may legitimately be empty. The catalog/adapter policy must be clarified before using the adapter count as the definition of content completeness.
+- The earlier draft of this audit incorrectly counted empty arrays as missing fields. Recomputing against the adapter's exact predicate (field absent, null/undefined, or empty string; empty arrays are allowed) finds **8 records with missing adapter-required fields**, exactly `conscious-domain:01` through `conscious-domain:08`, each missing `affirmation`. All 125 template assignments resolve to a catalog template and all 125 record/template `kind` pairs match. This exact-predicate check is static analysis of the registry and catalog; the Node adapter itself has not been executed.
 
 ### Exact records not yet meeting the three-pass evidence gate
 | Record ID | Pass states |
@@ -133,3 +133,7 @@ The previous audit narrative reported 103 records with passes 2 and 3 complete. 
 - Block 8: NOT STARTED.
 
 No canonical names, definitions, affirmations, or mapping edges were invented to improve counts. The next content batch is the 15 behavioral domains and 8 Conscious Domains, using the exact v341 source plus independently corroborating sources and preserving unresolved mappings as unresolved.
+
+
+### Correction — adapter predicate exactness
+The adapter does not treat an empty array as missing. A prior sentence in this audit addendum incorrectly said 103 records were flagged by the adapter; that number was produced by a separate stricter local diagnostic which counted empty arrays. The adapter-equivalent result is 8 records, each a Conscious Domain missing `affirmation`. The 23 registry content-status gaps and the 37 three-pass evidence-gate backlog remain separate metrics.
