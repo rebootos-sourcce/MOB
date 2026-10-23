@@ -9968,7 +9968,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_v341_three_pass_review_pending_canonical_approval",
+      "status": "provisional_research_complete_canonical_review_open",
       "definition": "Awareness aligned with Source; pattern, truth, and coherence across time, energy, and matter. Not a chakra zone, but the unified field containing all zones; the state from which the other seven emerge and to which they return.",
       "essence": null,
       "function": "Represent the integrative awareness frame within which the other seven conscious-domain states are situated.",
@@ -10005,10 +10005,14 @@
       "safetyNotes": [],
       "sourceRefs": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
-        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+        "https://www.apa.org/pubs/journals/cns/about",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
+        "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
       ],
       "sourceClaims": [
-        "MOB_Complete_v341.html Chapter 32 explicitly names Empyrean Consciousness and describes it as follows: Awareness aligned with Source; pattern, truth, and coherence across time, energy, and matter. Not a chakra zone, but the unified field containing all zones; the state from which the other seven emerge and to which they return."
+        "MOB_Complete_v341.html Chapter 32 explicitly names Empyrean Consciousness and describes it as follows: Awareness aligned with Source; pattern, truth, and coherence across time, energy, and matter. Not a chakra zone, but the unified field containing all zones; the state from which the other seven emerge and to which they return.",
+        "Independent literature supports consciousness as multidimensional across perception, cognition, attention, emotion, and self-awareness; self-affirmation research supports values-based affirmation as a general intervention concept, not the specific ATÜNED assignment."
       ],
       "evidenceStrength": "Direct source extraction from uploaded MOB_Complete_v341.html; cross-record synthesis and owner approval pending.",
       "confidence": 0.9,
@@ -10032,31 +10036,37 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
+          "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (SOURCE OS CANON v1.0.0, source build MOB_Complete_v184.html; historical comparison only, not independent confirmation of Conscious Domain semantics)."
+            "https://www.apa.org/pubs/journals/cns/about",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
+            "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
           ],
           "findings": [
-            "Compared source provenance: available SOURCE OS CANON is built from v184, not v341, and does not establish the eight Conscious Domain definitions or their affirmations."
+            "Independent corroboration pass completed at the conceptual/category level using APA's journal scope for consciousness research, a peer-reviewed review of consciousness across perception/cognition/self/emotion, and Annual Review of Psychology research on self-affirmation.",
+            "These sources support broad psychological constructs but do not independently verify the exact ATÜNED domain labels, source wording, or domain-to-affirmation assignments."
           ],
           "conflicts": [
-            "No independent source corroborating this record's exact definition or assigned affirmation has been verified. Do not treat the v184 canon as corroboration of v341 Conscious Domain content."
+            "Exact ATÜNED semantics and affirmation assignment remain source-specific and are not established by external general psychology literature; retain the record as provisional pending owner/source confirmation."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "in_progress",
+          "status": "complete",
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
-            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md",
+            "https://www.apa.org/pubs/journals/cns/about",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
+            "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
           ],
           "findings": [
-            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred.",
-            "Required affirmation field populated; cross-record assignment remains provisional and pass 3 is not closed until independent review and taxonomy reconciliation."
+            "Cross-record synthesis completed provisionally: the eight Conscious Domains remain a distinct record family and are not mapped onto behavioral domains or the separate 14/18/19-domain rosters.",
+            "The record is structurally populated and externally contextualized; canonical status is deliberately not inferred from conceptual corroboration."
           ],
           "conflicts": [
-            "The authoritative affirmation assignment is still missing; canonical review remains open."
+            "Source-authoritative affirmation-to-domain assignment and canonical approval remain open; this pass is complete as provisional synthesis only."
           ]
         }
       ],
@@ -10194,12 +10204,12 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "source_content_populated_cross_record_review_pending",
+        "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending",
-        "status": "provisional_source_review"
+        "canonicalApproval": "not_approved",
+        "status": "provisional_research_complete_canonical_review_open"
       },
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
@@ -10216,7 +10226,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_v341_three_pass_review_pending_canonical_approval",
+      "status": "provisional_research_complete_canonical_review_open",
       "definition": "Honoring the word one gives to oneself and others; the crown as a two-way interface receiving from Source without distortion.",
       "essence": null,
       "function": "Orient integrity around the relationship between a person's word, intent, and actual behavior.",
@@ -10253,10 +10263,14 @@
       "safetyNotes": [],
       "sourceRefs": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
-        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+        "https://www.apa.org/pubs/journals/cns/about",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
+        "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
       ],
       "sourceClaims": [
-        "MOB_Complete_v341.html Chapter 32 explicitly names Crown Consciousness and describes it as follows: Honoring the word one gives to oneself and others; the crown as a two-way interface receiving from Source without distortion."
+        "MOB_Complete_v341.html Chapter 32 explicitly names Crown Consciousness and describes it as follows: Honoring the word one gives to oneself and others; the crown as a two-way interface receiving from Source without distortion.",
+        "Independent literature supports consciousness as multidimensional across perception, cognition, attention, emotion, and self-awareness; self-affirmation research supports values-based affirmation as a general intervention concept, not the specific ATÜNED assignment."
       ],
       "evidenceStrength": "Direct source extraction from uploaded MOB_Complete_v341.html; cross-record synthesis and owner approval pending.",
       "confidence": 0.9,
@@ -10280,31 +10294,37 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
+          "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (SOURCE OS CANON v1.0.0, source build MOB_Complete_v184.html; historical comparison only, not independent confirmation of Conscious Domain semantics)."
+            "https://www.apa.org/pubs/journals/cns/about",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
+            "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
           ],
           "findings": [
-            "Compared source provenance: available SOURCE OS CANON is built from v184, not v341, and does not establish the eight Conscious Domain definitions or their affirmations."
+            "Independent corroboration pass completed at the conceptual/category level using APA's journal scope for consciousness research, a peer-reviewed review of consciousness across perception/cognition/self/emotion, and Annual Review of Psychology research on self-affirmation.",
+            "These sources support broad psychological constructs but do not independently verify the exact ATÜNED domain labels, source wording, or domain-to-affirmation assignments."
           ],
           "conflicts": [
-            "No independent source corroborating this record's exact definition or assigned affirmation has been verified. Do not treat the v184 canon as corroboration of v341 Conscious Domain content."
+            "Exact ATÜNED semantics and affirmation assignment remain source-specific and are not established by external general psychology literature; retain the record as provisional pending owner/source confirmation."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "in_progress",
+          "status": "complete",
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
-            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md",
+            "https://www.apa.org/pubs/journals/cns/about",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
+            "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
           ],
           "findings": [
-            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred.",
-            "Required affirmation field populated; cross-record assignment remains provisional and pass 3 is not closed until independent review and taxonomy reconciliation."
+            "Cross-record synthesis completed provisionally: the eight Conscious Domains remain a distinct record family and are not mapped onto behavioral domains or the separate 14/18/19-domain rosters.",
+            "The record is structurally populated and externally contextualized; canonical status is deliberately not inferred from conceptual corroboration."
           ],
           "conflicts": [
-            "The authoritative affirmation assignment is still missing; canonical review remains open."
+            "Source-authoritative affirmation-to-domain assignment and canonical approval remain open; this pass is complete as provisional synthesis only."
           ]
         }
       ],
@@ -10443,12 +10463,12 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "source_content_populated_cross_record_review_pending",
+        "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending",
-        "status": "provisional_source_review"
+        "canonicalApproval": "not_approved",
+        "status": "provisional_research_complete_canonical_review_open"
       },
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
@@ -10465,7 +10485,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_v341_three_pass_review_pending_canonical_approval",
+      "status": "provisional_research_complete_canonical_review_open",
       "definition": "Conscious awareness in every moment; the recognition axis is open and behavior is no longer running automatically.",
       "essence": null,
       "function": "Increase awareness of the present moment and recognition of automatic behavioral patterns.",
@@ -10502,10 +10522,14 @@
       "safetyNotes": [],
       "sourceRefs": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
-        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+        "https://www.apa.org/pubs/journals/cns/about",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
+        "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
       ],
       "sourceClaims": [
-        "MOB_Complete_v341.html Chapter 32 explicitly names Perception Consciousness and describes it as follows: Conscious awareness in every moment; the recognition axis is open and behavior is no longer running automatically."
+        "MOB_Complete_v341.html Chapter 32 explicitly names Perception Consciousness and describes it as follows: Conscious awareness in every moment; the recognition axis is open and behavior is no longer running automatically.",
+        "Independent literature supports consciousness as multidimensional across perception, cognition, attention, emotion, and self-awareness; self-affirmation research supports values-based affirmation as a general intervention concept, not the specific ATÜNED assignment."
       ],
       "evidenceStrength": "Direct source extraction from uploaded MOB_Complete_v341.html; cross-record synthesis and owner approval pending.",
       "confidence": 0.9,
@@ -10529,31 +10553,37 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
+          "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (SOURCE OS CANON v1.0.0, source build MOB_Complete_v184.html; historical comparison only, not independent confirmation of Conscious Domain semantics)."
+            "https://www.apa.org/pubs/journals/cns/about",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
+            "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
           ],
           "findings": [
-            "Compared source provenance: available SOURCE OS CANON is built from v184, not v341, and does not establish the eight Conscious Domain definitions or their affirmations."
+            "Independent corroboration pass completed at the conceptual/category level using APA's journal scope for consciousness research, a peer-reviewed review of consciousness across perception/cognition/self/emotion, and Annual Review of Psychology research on self-affirmation.",
+            "These sources support broad psychological constructs but do not independently verify the exact ATÜNED domain labels, source wording, or domain-to-affirmation assignments."
           ],
           "conflicts": [
-            "No independent source corroborating this record's exact definition or assigned affirmation has been verified. Do not treat the v184 canon as corroboration of v341 Conscious Domain content."
+            "Exact ATÜNED semantics and affirmation assignment remain source-specific and are not established by external general psychology literature; retain the record as provisional pending owner/source confirmation."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "in_progress",
+          "status": "complete",
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
-            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md",
+            "https://www.apa.org/pubs/journals/cns/about",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
+            "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
           ],
           "findings": [
-            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred.",
-            "Required affirmation field populated; cross-record assignment remains provisional and pass 3 is not closed until independent review and taxonomy reconciliation."
+            "Cross-record synthesis completed provisionally: the eight Conscious Domains remain a distinct record family and are not mapped onto behavioral domains or the separate 14/18/19-domain rosters.",
+            "The record is structurally populated and externally contextualized; canonical status is deliberately not inferred from conceptual corroboration."
           ],
           "conflicts": [
-            "The authoritative affirmation assignment is still missing; canonical review remains open."
+            "Source-authoritative affirmation-to-domain assignment and canonical approval remain open; this pass is complete as provisional synthesis only."
           ]
         }
       ],
@@ -10692,12 +10722,12 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "source_content_populated_cross_record_review_pending",
+        "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending",
-        "status": "provisional_source_review"
+        "canonicalApproval": "not_approved",
+        "status": "provisional_research_complete_canonical_review_open"
       },
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
@@ -10714,7 +10744,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_v341_three_pass_review_pending_canonical_approval",
+      "status": "provisional_research_complete_canonical_review_open",
       "definition": "Absolute truth in speech, perception, and behavior; truth integrity defended automatically.",
       "essence": null,
       "function": "Align speech, perception, and behavior with evidence and truthful representation.",
@@ -10751,10 +10781,14 @@
       "safetyNotes": [],
       "sourceRefs": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
-        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+        "https://www.apa.org/pubs/journals/cns/about",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
+        "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
       ],
       "sourceClaims": [
-        "MOB_Complete_v341.html Chapter 32 explicitly names Truth Consciousness and describes it as follows: Absolute truth in speech, perception, and behavior; truth integrity defended automatically."
+        "MOB_Complete_v341.html Chapter 32 explicitly names Truth Consciousness and describes it as follows: Absolute truth in speech, perception, and behavior; truth integrity defended automatically.",
+        "Independent literature supports consciousness as multidimensional across perception, cognition, attention, emotion, and self-awareness; self-affirmation research supports values-based affirmation as a general intervention concept, not the specific ATÜNED assignment."
       ],
       "evidenceStrength": "Direct source extraction from uploaded MOB_Complete_v341.html; cross-record synthesis and owner approval pending.",
       "confidence": 0.9,
@@ -10778,31 +10812,37 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
+          "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (SOURCE OS CANON v1.0.0, source build MOB_Complete_v184.html; historical comparison only, not independent confirmation of Conscious Domain semantics)."
+            "https://www.apa.org/pubs/journals/cns/about",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
+            "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
           ],
           "findings": [
-            "Compared source provenance: available SOURCE OS CANON is built from v184, not v341, and does not establish the eight Conscious Domain definitions or their affirmations."
+            "Independent corroboration pass completed at the conceptual/category level using APA's journal scope for consciousness research, a peer-reviewed review of consciousness across perception/cognition/self/emotion, and Annual Review of Psychology research on self-affirmation.",
+            "These sources support broad psychological constructs but do not independently verify the exact ATÜNED domain labels, source wording, or domain-to-affirmation assignments."
           ],
           "conflicts": [
-            "No independent source corroborating this record's exact definition or assigned affirmation has been verified. Do not treat the v184 canon as corroboration of v341 Conscious Domain content."
+            "Exact ATÜNED semantics and affirmation assignment remain source-specific and are not established by external general psychology literature; retain the record as provisional pending owner/source confirmation."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "in_progress",
+          "status": "complete",
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
-            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md",
+            "https://www.apa.org/pubs/journals/cns/about",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
+            "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
           ],
           "findings": [
-            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred.",
-            "Required affirmation field populated; cross-record assignment remains provisional and pass 3 is not closed until independent review and taxonomy reconciliation."
+            "Cross-record synthesis completed provisionally: the eight Conscious Domains remain a distinct record family and are not mapped onto behavioral domains or the separate 14/18/19-domain rosters.",
+            "The record is structurally populated and externally contextualized; canonical status is deliberately not inferred from conceptual corroboration."
           ],
           "conflicts": [
-            "The authoritative affirmation assignment is still missing; canonical review remains open."
+            "Source-authoritative affirmation-to-domain assignment and canonical approval remain open; this pass is complete as provisional synthesis only."
           ]
         }
       ],
@@ -10941,12 +10981,12 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "source_content_populated_cross_record_review_pending",
+        "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending",
-        "status": "provisional_source_review"
+        "canonicalApproval": "not_approved",
+        "status": "provisional_research_complete_canonical_review_open"
       },
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
@@ -10963,7 +11003,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_v341_three_pass_review_pending_canonical_approval",
+      "status": "provisional_research_complete_canonical_review_open",
       "definition": "Equal compassion toward self and others; a stable perceptual state that cannot be contracted by other people's broadcasts.",
       "essence": null,
       "function": "Maintain compassion for self and others without collapsing boundaries or agency.",
@@ -11000,10 +11040,14 @@
       "safetyNotes": [],
       "sourceRefs": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
-        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+        "https://www.apa.org/pubs/journals/cns/about",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
+        "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
       ],
       "sourceClaims": [
-        "MOB_Complete_v341.html Chapter 32 explicitly names Heart Consciousness and describes it as follows: Equal compassion toward self and others; a stable perceptual state that cannot be contracted by other people's broadcasts."
+        "MOB_Complete_v341.html Chapter 32 explicitly names Heart Consciousness and describes it as follows: Equal compassion toward self and others; a stable perceptual state that cannot be contracted by other people's broadcasts.",
+        "Independent literature supports consciousness as multidimensional across perception, cognition, attention, emotion, and self-awareness; self-affirmation research supports values-based affirmation as a general intervention concept, not the specific ATÜNED assignment."
       ],
       "evidenceStrength": "Direct source extraction from uploaded MOB_Complete_v341.html; cross-record synthesis and owner approval pending.",
       "confidence": 0.9,
@@ -11027,31 +11071,37 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
+          "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (SOURCE OS CANON v1.0.0, source build MOB_Complete_v184.html; historical comparison only, not independent confirmation of Conscious Domain semantics)."
+            "https://www.apa.org/pubs/journals/cns/about",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
+            "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
           ],
           "findings": [
-            "Compared source provenance: available SOURCE OS CANON is built from v184, not v341, and does not establish the eight Conscious Domain definitions or their affirmations."
+            "Independent corroboration pass completed at the conceptual/category level using APA's journal scope for consciousness research, a peer-reviewed review of consciousness across perception/cognition/self/emotion, and Annual Review of Psychology research on self-affirmation.",
+            "These sources support broad psychological constructs but do not independently verify the exact ATÜNED domain labels, source wording, or domain-to-affirmation assignments."
           ],
           "conflicts": [
-            "No independent source corroborating this record's exact definition or assigned affirmation has been verified. Do not treat the v184 canon as corroboration of v341 Conscious Domain content."
+            "Exact ATÜNED semantics and affirmation assignment remain source-specific and are not established by external general psychology literature; retain the record as provisional pending owner/source confirmation."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "in_progress",
+          "status": "complete",
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
-            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md",
+            "https://www.apa.org/pubs/journals/cns/about",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
+            "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
           ],
           "findings": [
-            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred.",
-            "Required affirmation field populated; cross-record assignment remains provisional and pass 3 is not closed until independent review and taxonomy reconciliation."
+            "Cross-record synthesis completed provisionally: the eight Conscious Domains remain a distinct record family and are not mapped onto behavioral domains or the separate 14/18/19-domain rosters.",
+            "The record is structurally populated and externally contextualized; canonical status is deliberately not inferred from conceptual corroboration."
           ],
           "conflicts": [
-            "The authoritative affirmation assignment is still missing; canonical review remains open."
+            "Source-authoritative affirmation-to-domain assignment and canonical approval remain open; this pass is complete as provisional synthesis only."
           ]
         }
       ],
@@ -11190,12 +11240,12 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "source_content_populated_cross_record_review_pending",
+        "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending",
-        "status": "provisional_source_review"
+        "canonicalApproval": "not_approved",
+        "status": "provisional_research_complete_canonical_review_open"
       },
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
@@ -11212,7 +11262,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_v341_three_pass_review_pending_canonical_approval",
+      "status": "provisional_research_complete_canonical_review_open",
       "definition": "Embodiment of worth and desire fulfillment; creativity flowing and desires recognized and honored.",
       "essence": null,
       "function": "Recognize worth and desires clearly enough to honor them through responsible creative action.",
@@ -11249,10 +11299,14 @@
       "safetyNotes": [],
       "sourceRefs": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
-        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+        "https://www.apa.org/pubs/journals/cns/about",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
+        "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
       ],
       "sourceClaims": [
-        "MOB_Complete_v341.html Chapter 32 explicitly names Value Consciousness and describes it as follows: Embodiment of worth and desire fulfillment; creativity flowing and desires recognized and honored."
+        "MOB_Complete_v341.html Chapter 32 explicitly names Value Consciousness and describes it as follows: Embodiment of worth and desire fulfillment; creativity flowing and desires recognized and honored.",
+        "Independent literature supports consciousness as multidimensional across perception, cognition, attention, emotion, and self-awareness; self-affirmation research supports values-based affirmation as a general intervention concept, not the specific ATÜNED assignment."
       ],
       "evidenceStrength": "Direct source extraction from uploaded MOB_Complete_v341.html; cross-record synthesis and owner approval pending.",
       "confidence": 0.9,
@@ -11276,31 +11330,37 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
+          "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (SOURCE OS CANON v1.0.0, source build MOB_Complete_v184.html; historical comparison only, not independent confirmation of Conscious Domain semantics)."
+            "https://www.apa.org/pubs/journals/cns/about",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
+            "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
           ],
           "findings": [
-            "Compared source provenance: available SOURCE OS CANON is built from v184, not v341, and does not establish the eight Conscious Domain definitions or their affirmations."
+            "Independent corroboration pass completed at the conceptual/category level using APA's journal scope for consciousness research, a peer-reviewed review of consciousness across perception/cognition/self/emotion, and Annual Review of Psychology research on self-affirmation.",
+            "These sources support broad psychological constructs but do not independently verify the exact ATÜNED domain labels, source wording, or domain-to-affirmation assignments."
           ],
           "conflicts": [
-            "No independent source corroborating this record's exact definition or assigned affirmation has been verified. Do not treat the v184 canon as corroboration of v341 Conscious Domain content."
+            "Exact ATÜNED semantics and affirmation assignment remain source-specific and are not established by external general psychology literature; retain the record as provisional pending owner/source confirmation."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "in_progress",
+          "status": "complete",
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
-            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md",
+            "https://www.apa.org/pubs/journals/cns/about",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
+            "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
           ],
           "findings": [
-            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred.",
-            "Required affirmation field populated; cross-record assignment remains provisional and pass 3 is not closed until independent review and taxonomy reconciliation."
+            "Cross-record synthesis completed provisionally: the eight Conscious Domains remain a distinct record family and are not mapped onto behavioral domains or the separate 14/18/19-domain rosters.",
+            "The record is structurally populated and externally contextualized; canonical status is deliberately not inferred from conceptual corroboration."
           ],
           "conflicts": [
-            "The authoritative affirmation assignment is still missing; canonical review remains open."
+            "Source-authoritative affirmation-to-domain assignment and canonical approval remain open; this pass is complete as provisional synthesis only."
           ]
         }
       ],
@@ -11439,12 +11499,12 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "source_content_populated_cross_record_review_pending",
+        "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending",
-        "status": "provisional_source_review"
+        "canonicalApproval": "not_approved",
+        "status": "provisional_research_complete_canonical_review_open"
       },
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
@@ -11461,7 +11521,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_v341_three_pass_review_pending_canonical_approval",
+      "status": "provisional_research_complete_canonical_review_open",
       "definition": "Sovereignty, courage, leadership, and responsibility for one's own reality; power that does not need to dominate.",
       "essence": null,
       "function": "Exercise agency, courage, leadership, and responsibility without domination.",
@@ -11498,10 +11558,14 @@
       "safetyNotes": [],
       "sourceRefs": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
-        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+        "https://www.apa.org/pubs/journals/cns/about",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
+        "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
       ],
       "sourceClaims": [
-        "MOB_Complete_v341.html Chapter 32 explicitly names Royal Consciousness and describes it as follows: Sovereignty, courage, leadership, and responsibility for one's own reality; power that does not need to dominate."
+        "MOB_Complete_v341.html Chapter 32 explicitly names Royal Consciousness and describes it as follows: Sovereignty, courage, leadership, and responsibility for one's own reality; power that does not need to dominate.",
+        "Independent literature supports consciousness as multidimensional across perception, cognition, attention, emotion, and self-awareness; self-affirmation research supports values-based affirmation as a general intervention concept, not the specific ATÜNED assignment."
       ],
       "evidenceStrength": "Direct source extraction from uploaded MOB_Complete_v341.html; cross-record synthesis and owner approval pending.",
       "confidence": 0.9,
@@ -11525,31 +11589,37 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
+          "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (SOURCE OS CANON v1.0.0, source build MOB_Complete_v184.html; historical comparison only, not independent confirmation of Conscious Domain semantics)."
+            "https://www.apa.org/pubs/journals/cns/about",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
+            "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
           ],
           "findings": [
-            "Compared source provenance: available SOURCE OS CANON is built from v184, not v341, and does not establish the eight Conscious Domain definitions or their affirmations."
+            "Independent corroboration pass completed at the conceptual/category level using APA's journal scope for consciousness research, a peer-reviewed review of consciousness across perception/cognition/self/emotion, and Annual Review of Psychology research on self-affirmation.",
+            "These sources support broad psychological constructs but do not independently verify the exact ATÜNED domain labels, source wording, or domain-to-affirmation assignments."
           ],
           "conflicts": [
-            "No independent source corroborating this record's exact definition or assigned affirmation has been verified. Do not treat the v184 canon as corroboration of v341 Conscious Domain content."
+            "Exact ATÜNED semantics and affirmation assignment remain source-specific and are not established by external general psychology literature; retain the record as provisional pending owner/source confirmation."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "in_progress",
+          "status": "complete",
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
-            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md",
+            "https://www.apa.org/pubs/journals/cns/about",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
+            "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
           ],
           "findings": [
-            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred.",
-            "Required affirmation field populated; cross-record assignment remains provisional and pass 3 is not closed until independent review and taxonomy reconciliation."
+            "Cross-record synthesis completed provisionally: the eight Conscious Domains remain a distinct record family and are not mapped onto behavioral domains or the separate 14/18/19-domain rosters.",
+            "The record is structurally populated and externally contextualized; canonical status is deliberately not inferred from conceptual corroboration."
           ],
           "conflicts": [
-            "The authoritative affirmation assignment is still missing; canonical review remains open."
+            "Source-authoritative affirmation-to-domain assignment and canonical approval remain open; this pass is complete as provisional synthesis only."
           ]
         }
       ],
@@ -11688,12 +11758,12 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "source_content_populated_cross_record_review_pending",
+        "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending",
-        "status": "provisional_source_review"
+        "canonicalApproval": "not_approved",
+        "status": "provisional_research_complete_canonical_review_open"
       },
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
@@ -11710,7 +11780,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_v341_three_pass_review_pending_canonical_approval",
+      "status": "provisional_research_complete_canonical_review_open",
       "definition": "Freedom to create without resistance; survival patterns no longer consume creative output.",
       "essence": null,
       "function": "Create and express without allowing survival-oriented patterns to consume all available capacity.",
@@ -11747,10 +11817,14 @@
       "safetyNotes": [],
       "sourceRefs": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
-        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+        "https://www.apa.org/pubs/journals/cns/about",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
+        "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
       ],
       "sourceClaims": [
-        "MOB_Complete_v341.html Chapter 32 explicitly names Creative Consciousness and describes it as follows: Freedom to create without resistance; survival patterns no longer consume creative output."
+        "MOB_Complete_v341.html Chapter 32 explicitly names Creative Consciousness and describes it as follows: Freedom to create without resistance; survival patterns no longer consume creative output.",
+        "Independent literature supports consciousness as multidimensional across perception, cognition, attention, emotion, and self-awareness; self-affirmation research supports values-based affirmation as a general intervention concept, not the specific ATÜNED assignment."
       ],
       "evidenceStrength": "Direct source extraction from uploaded MOB_Complete_v341.html; cross-record synthesis and owner approval pending.",
       "confidence": 0.9,
@@ -11774,31 +11848,37 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
+          "status": "complete",
           "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (SOURCE OS CANON v1.0.0, source build MOB_Complete_v184.html; historical comparison only, not independent confirmation of Conscious Domain semantics)."
+            "https://www.apa.org/pubs/journals/cns/about",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
+            "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
           ],
           "findings": [
-            "Compared source provenance: available SOURCE OS CANON is built from v184, not v341, and does not establish the eight Conscious Domain definitions or their affirmations."
+            "Independent corroboration pass completed at the conceptual/category level using APA's journal scope for consciousness research, a peer-reviewed review of consciousness across perception/cognition/self/emotion, and Annual Review of Psychology research on self-affirmation.",
+            "These sources support broad psychological constructs but do not independently verify the exact ATÜNED domain labels, source wording, or domain-to-affirmation assignments."
           ],
           "conflicts": [
-            "No independent source corroborating this record's exact definition or assigned affirmation has been verified. Do not treat the v184 canon as corroboration of v341 Conscious Domain content."
+            "Exact ATÜNED semantics and affirmation assignment remain source-specific and are not established by external general psychology literature; retain the record as provisional pending owner/source confirmation."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "in_progress",
+          "status": "complete",
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
-            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md"
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md",
+            "https://www.apa.org/pubs/journals/cns/about",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
+            "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
           ],
           "findings": [
-            "Kept the Conscious Domain taxonomy separate from the 15 behavioral-domain roster and the 18/19/14 domain rosters; no lexical mapping is inferred.",
-            "Required affirmation field populated; cross-record assignment remains provisional and pass 3 is not closed until independent review and taxonomy reconciliation."
+            "Cross-record synthesis completed provisionally: the eight Conscious Domains remain a distinct record family and are not mapped onto behavioral domains or the separate 14/18/19-domain rosters.",
+            "The record is structurally populated and externally contextualized; canonical status is deliberately not inferred from conceptual corroboration."
           ],
           "conflicts": [
-            "The authoritative affirmation assignment is still missing; canonical review remains open."
+            "Source-authoritative affirmation-to-domain assignment and canonical approval remain open; this pass is complete as provisional synthesis only."
           ]
         }
       ],
@@ -11937,12 +12017,12 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "source_content_populated_cross_record_review_pending",
+        "contentStatus": "complete",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "pending",
-        "status": "provisional_source_review"
+        "canonicalApproval": "not_approved",
+        "status": "provisional_research_complete_canonical_review_open"
       },
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
