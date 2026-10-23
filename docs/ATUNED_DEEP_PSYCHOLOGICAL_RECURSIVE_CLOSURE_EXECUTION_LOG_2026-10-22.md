@@ -108,3 +108,11 @@ Research the 15 behavioral-domain records and 8 Conscious Domain records first b
 - Recomputed catalog-to-record fields using the adapter's literal predicate: absent, null/undefined, or empty string. Empty arrays are allowed.
 - Result: 9 catalog templates, 125/125 template IDs resolve, 125/125 kind matches, 8 records with missing required fields, all missing only `affirmation` on `conscious-domain:01` through `conscious-domain:08`.
 - This is a static replay of the predicate, not a claim that the Node adapter was executed. The previous 103 number counted empty arrays and is superseded.
+
+
+### 2026-10-22 — Batch 1 research synthesis committed
+- Registry commit: `fcd26b5c535d808d1b1213fccdb251e575475ba2`; current registry blob SHA: `de50d80b932701dd73f8df596420bf5bbdb219af`.
+- Completed research pass 3 for all 15 behavioral-domain records, based on the record-specific v341 roster/alias findings already present in each pass. Their taxonomy conflicts remain unresolved, and their definitions remain provisional. This is not canonical approval.
+- Fresh parse confirms 103/125 records now meet the three-pass evidence gate. The remaining 22 are exactly the 8 Conscious Domains and 14 blueprint slots.
+- Block 3 remains open because the Conscious Domain source claims need independent corroboration and their affirmations are not recovered; the blueprint slots remain visualization-only placeholders.
+- Next: research the 8 Conscious Domain records using a genuinely independent source where possible, verify affirmation-to-domain assignment from v341 text, and do not fill the affirmation field unless authoritative text is recovered. Then proceed to blueprint slot source recovery and cross-layer graph validation.
