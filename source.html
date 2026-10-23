@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2429 799264c0 2026-10-23 09:51"><head><meta charset="utf-8">
+<html lang="en" data-build="v2432 555af05c 2026-10-23 11:31"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -8419,13 +8419,151 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
      Reduced motion gets the end state, which for a boot is the instrument:
      the sheet is never shown and ui/panels.js removes it at once.
      ============================================================ -->
+<!-- ============================================================
+     THE SHEET'S PRESS, DECIDED ON THE SHEET'S OWN CLOCK. 23 October.
+
+     The owner: "Find why presses right after boot are dropped." Reproduced
+     first, on the live file served in pieces the way a browser reads it,
+     with one real press per load swept across the boot: a press in the
+     first second of the overture went through the sheet to a frame that had
+     nothing listening, and a press while the app was already coming into
+     view was eaten as a skip with nothing left to skip. tests/boot.js
+     section 4 holds both.
+
+     Both were one fault. The sheet is pointer-events:none and fades on a CSS
+     clock that starts on its first painted frame, but the press it owns was
+     taken by a listener in ui/panels.js, which does not exist until the
+     whole start up has arrived and run, and was let go only when the script
+     heard animationend, a frame or more after the fade had finished on
+     screen. Those frames are the heaviest of the session, because the
+     Field's entrance starts with the fade, so under load the floor timer
+     let it go instead, up to 200ms after the sheet was invisible
+     (tests/design.js gate 11 measured exactly that on 2 October).
+
+     So the press is decided here, ahead of the sheet in the document, so
+     this is listening before the sheet can ever be painted, and it is
+     decided by the press's own time against the fade's own start, both on
+     the page's clock. A press made while the overture was still standing is
+     the skip, as ruled: it is taken here, its click is eaten, and it does
+     not also press the app. A press made once the sheet had begun to leave
+     by itself is not a skip, because there is nothing left to skip, and it
+     goes to the app untouched. A skip that arrives before the start up has
+     run is held, not dropped, and ui/panels.js acts on it the moment the
+     start up says it finished, which is when data-boot reads ok.
+
+     AND THE SHEET DOES NOT LEAVE BEFORE THERE IS SOMETHING TO PRESS. When
+     the start up runs longer than the overture, on a slow connection or a
+     slow phone, the CSS fade used to lift the sheet on time over a frame
+     with nothing in it and nothing listening, which is the preview pane
+     lesson in CLAUDE.md again, now costing presses. So while the start up
+     runs, the fade is paused, and the moment it finishes the fade is put
+     back exactly where it was, its own start time restored, so a start up
+     that finishes in time changes nothing a person can see. One that runs
+     past the fade's time leaves the sheet standing on its closing black
+     beat, and then the fade plays whole from its own start, its own length
+     and curve. With no script at all none of this runs, so the sheet still
+     clears itself, as ruled.
+
+     Its own script block, like the guard after it, so a fault in the main
+     block cannot take it down, and it touches nothing but the press and the
+     moment the sheet may leave.
+     ============================================================ -->
+<script>
+(function(){
+ try{
+  var root=document.documentElement;
+  var OK=null, ACT=null, RETIME=null, HELD=null, TAKEN=false, HELDFADE=null;
+  var fadeOf=function(el){
+   try{var a=el.getAnimations();
+    for(var i=0;i<a.length;i++)if(a[i].animationName==='bootOut')return a[i];}catch(e){}
+   return null;};
+  /* WAS THE SHEET STANDING WHEN THE PERSON PRESSED. Asked at the press's own
+     timestamp, never at the moment the script gets round to it, because the
+     script can hear a press long after it was made, on a page busy with the
+     fade's own heavy frames, and only the moment of the press says what was
+     on screen. (The fade itself runs on the main thread: it animates
+     visibility, which Chrome reports it cannot composite.) A browser that
+     cannot say gets the old answer, standing. */
+  var standing=function(ts){
+   var el=document.getElementById('boot'); if(!el)return false;
+   var cs=getComputedStyle(el);
+   if(cs.display==='none'||cs.visibility==='hidden')return false;
+   var f=fadeOf(el);
+   if(!f||f.startTime==null)return true;
+   return ts<f.startTime+f.effect.getComputedTiming().delay;};
+  var eat=function(ev){ev.stopPropagation(); if(ev.cancelable)ev.preventDefault();};
+  /* NOTHING HERE MAY THROW. It runs before the guard and the guard reads an
+     error from this document as the instrument's own, so a throw from a
+     press handler before start up would put the false "stopped" message up,
+     the exact alarm tests/boot.js section 1 exists to keep down. */
+  var act=function(p){try{ACT(p);}catch(e){}};
+  var trap=function(e){
+   try{
+    if(TAKEN)return;
+    /* the sheet has gone and the start up is done: nothing left to decide */
+    if(OK!==null&&!document.getElementById('boot')){TAKEN=true;
+     removeEventListener('pointerdown',trap,true); removeEventListener('keydown',trap,true); return;}
+    /* the developer button on the sheet always means skip while it is there */
+    var dev=!!(e.target&&e.target.id==='devskip');
+    if(!dev&&!standing(e.timeStamp))return;
+    TAKEN=true;
+    /* click is a separate event and is sent whatever happened to the
+       pointerdown before it, so the one click after the skip is eaten too,
+       and the eater does not wait for ever for a click that never comes */
+    if(e.type==='pointerdown'){
+     e.stopPropagation();
+     addEventListener('click',eat,{once:true,capture:true});
+     setTimeout(function(){removeEventListener('click',eat,true);},700);}
+    var p={dev:dev};
+    if(ACT&&OK!==null)act(p); else HELD=p;
+   }catch(x){}};
+  addEventListener('pointerdown',trap,true);
+  addEventListener('keydown',trap,true);
+  /* THE HOLD. The moment the overture is on the clock, while the start up
+     has not finished, the fade is paused, seconds before it is due, and a
+     paused fade has no start time, so a press while it is held is a skip
+     like any other. Paused at once and not by a timer set just ahead of
+     the fade, because that was measured racing: a pause takes effect on the
+     next frame and not on the call, and under load the fade began before
+     the pause did, the sheet at 0.95 and fading. tests/boot.js section 4
+     caught it on 23 October, and a probe then held it in 4 of 12 loaded
+     runs. Paused this early, the pause is down long before it matters. */
+  var watch=function(){
+   try{
+    if(OK!==null)return;
+    var el=document.getElementById('boot');
+    if(!el){requestAnimationFrame(watch); return;}
+    var f=fadeOf(el); if(!f)return;
+    if(f.startTime==null){requestAnimationFrame(watch); return;}
+    HELDFADE={f:f,s0:f.startTime}; f.pause();
+   }catch(x){}};
+  try{requestAnimationFrame(watch);}catch(e){}
+  /* the start up finished. The fade is put back exactly where it was, its
+     own start time restored, so a start up that finished in time changes
+     nothing a person can see; if its time has already come, it plays whole
+     from its own start, now. Then a skip held from before the start up is
+     acted on, or the floor in ui/panels.js is read again off the fade. */
+  var ready=function(){
+   if(OK!==null||root.getAttribute('data-boot')!=='ok')return;
+   OK=performance.now();
+   if(HELDFADE){var h=HELDFADE; HELDFADE=null;
+    try{var d=h.f.effect.getComputedTiming().delay;
+     if(performance.now()<h.s0+d)h.f.startTime=h.s0;
+     else{h.f.currentTime=d; h.f.play();}}catch(x){}}
+   if(ACT&&HELD){var p=HELD; HELD=null; act(p);}
+   else if(RETIME){try{RETIME();}catch(x){}}};
+  try{new MutationObserver(ready).observe(root,{attributes:true,attributeFilter:['data-boot']});}catch(e){}
+  window.__bootPress=function(skip,retime){ACT=skip; RETIME=retime||null; ready();};
+ }catch(e){}
+})();
+</script>
 <div id="boot" class="boot bx" aria-hidden="true">
  <!-- THE DEVELOPER SKIP. His words: "just put it as a developer button, on
       the upper right hand corner. And if it's pressed, it's just skips."
       .boot itself is pointer-events:none so a press anywhere else still
-      falls through to the skip gesture already wired in ui/panels.js; this
-      one control opts itself back in to be pressable, and ui/login.js reads
-      the flag it sets. -->
+      falls through to the skip gesture, decided in the block just above;
+      this one control opts itself back in to be pressable, and ui/login.js
+      reads the flag it sets. -->
  <button type="button" id="devskip" class="dev-skip">Skip</button>
  <!-- BOOT FIGURE BEGIN. Written by tools/bootgeo.js off engine.js. Do not edit by hand. -->
  <div class="bx-stage">
@@ -70654,9 +70792,12 @@ function helpSheet(){
 /* ---- THE BOOT CLEARS ITSELF ----
 
    The fade is CSS and the removal is not: an element at opacity 0 still
-   covers the app, still takes pointer events, and is still in the tab order,
-   so a boot that only animates out is a transparent sheet over a working
-   instrument. It is taken out of the document when it is done.
+   covers the app and is still in the tab order, so a boot that only animates
+   out is a transparent sheet over a working instrument. It is taken out of
+   the document when it is done. (It does not take the pointer, and has not
+   since .boot became pointer-events:none: a press always went through it,
+   which is why which press counts as the skip is decided by time, in
+   shell/body.html, and not by what the press landed on.)
 
    Reduced motion has no animation to end on, so that case is handled by the
    timer rather than by the event. The timer is the floor in every case, so a
@@ -70696,8 +70837,14 @@ var BOOT_FLOOR_AT=0;
     runs the sheet's animations can still be pending, with no start time, and
     a floor measured from here would sit late by however long the first frame
     took; ready is the promise that it has started, and the floor is set again
-    from its real clock then. */
- var ft=0;
+    from its real clock then.
+
+    AND READ AGAIN WHEN THE FADE IS PUT BACK ON THE CLOCK, 23 October. When
+    the start up runs longer than the overture, shell/body.html holds the
+    fade until it is done and then plays it whole from its own start, so the
+    end this read first is no longer the end. retime is that read, handed to
+    shell/body.html with the skip below. */
+ var ft=0, retime=function(){};
  function floor(ms){ clearTimeout(ft); BOOT_FLOOR_AT=performance.now()+ms; ft=setTimeout(clear,ms); }
  floor(5450);
  try{ var fade=el.getAnimations().filter(function(a){return a.animationName==='bootOut';})[0];
@@ -70707,8 +70854,9 @@ var BOOT_FLOOR_AT=0;
        frame's, which during a long script is well behind now, so the end is
        taken from the start time and not from the current time */
     var end=fade.effect.getComputedTiming().endTime;
-    floor(Math.max(0,(fade.startTime!=null?fade.startTime+end-performance.now():end-(fade.currentTime||0)))+200); };
-   set(); if(fade.pending&&fade.ready)fade.ready.then(set,function(){}); } }catch(e){}
+    floor(Math.max(0,(fade.startTime!=null?fade.startTime+end-performance.now():end-(fade.currentTime||0)))+200);
+    if(fade.pending&&fade.ready)fade.ready.then(set,function(){}); };
+   set(); retime=set; } }catch(e){}
  /* AND THERE IS A WAY OUT. Anything over 600ms needs one, and this is five
     seconds. It is the overture and it is worth watching, so it is not
     skipped automatically on a return visit and no flag is stored: a person
@@ -70725,33 +70873,31 @@ var BOOT_FLOOR_AT=0;
     Taken in the capture phase and stopped there, so the first press does one
     thing. Nothing else changes: the sheet still clears itself with no script
     at all, which is the ruling this whole block exists to keep. */
- /* Stopping pointerdown is not enough, and the first version of this fix was
-    wrong for that reason: click is a separate event and is dispatched whatever
-    happened to the pointerdown that preceded it. Measured after that fix, a
-    press over the Energetics tab still moved the surface from 2 to 5. The
-    click that follows the skip is swallowed once, in capture, and only that
-    one. */
- var eat=function(ev){ ev.stopPropagation(); if(ev.cancelable)ev.preventDefault(); };
- var skip=function(e){ if(gone)return;
-  /* THE DEVELOPER BUTTON IS THE ONE PRESS IN THIS SHEET THAT MEANS SOMETHING
-     OF ITS OWN, round MH and MI, ui/login.js. Read here rather than left to
-     its own listener on the button: the capture below stops every pointerdown
-     from reaching anything past this handler, on purpose, so a skip-press can
-     never also act on the tab strip underneath the sheet, and a listener on
-     the button itself would never see the same press. Set before that stop,
-     so it is set whichever of pointerdown or keydown got it here. */
-  if(e&&e.target&&e.target.id==='devskip'&&typeof DEV_SKIP!=='undefined'){ DEV_SKIP=true;
+ /* WHICH PRESS IS THE SKIP IS DECIDED IN shell/body.html NOW, 23 October,
+    and this is only what a skip does. The capture used to be registered
+    here, which is only once the whole main script has arrived and begun to
+    run: 824ms after the sheet was first painted when measured here, and as
+    long as the file takes to arrive on a slow connection. And it was let go
+    when this block heard the fade end, which is a frame or more after the
+    fade has ended on screen. A press in either gap was lost: in the first
+    it reached a frame with nothing listening, in the second it was eaten
+    as a skip over an app already in view. The capture, the stop and
+    the swallowed click (click is a separate event, sent whatever happened to
+    the pointerdown before it: measured once as a press over the Energetics
+    tab still moving the surface from 2 to 5) are all there now, ahead of the
+    sheet, and a skip that came before this block existed is handed over the
+    moment the start up finishes.
+
+    THE DEVELOPER BUTTON IS THE ONE PRESS IN THIS SHEET THAT MEANS SOMETHING
+    OF ITS OWN, round MH and MI, ui/login.js. Its press is stopped with every
+    other skip, so a listener on the button itself would never see it; the
+    capture says whether the press was on it, and the flag is set here. */
+ var skip=function(p){ if(gone)return;
+  if(p&&p.dev&&typeof DEV_SKIP!=='undefined'){ DEV_SKIP=true;
    if(typeof loginClose==='function'&&typeof LOGIN!=='undefined'&&LOGIN.open)loginClose(); }
-  if(e&&e.type==='pointerdown'){
-   e.stopPropagation();
-   addEventListener('click',eat,{once:true,capture:true});
-   /* and if no click ever arrives, the listener does not sit there waiting to
-      eat an unrelated one later. */
-   setTimeout(function(){removeEventListener('click',eat,true);},700); }
   el.style.transition='opacity .18s cubic-bezier(.4,0,1,1)';
   el.style.opacity='0'; lift(); setTimeout(clear,190); };
- addEventListener('pointerdown',skip,{once:true,capture:true});
- addEventListener('keydown',skip,{once:true,capture:true});
+ if(typeof __bootPress==='function')__bootPress(skip,function(){try{retime();}catch(e){}});
  var rm=(typeof matchMedia==='function')&&matchMedia('(prefers-reduced-motion:reduce)').matches;
  if(rm)clear();})();
 
@@ -81364,5 +81510,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005363737"></div>
+<div id="eof" hidden data-len="005372056"></div>
 </body></html>
