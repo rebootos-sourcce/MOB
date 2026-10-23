@@ -4206,10 +4206,10 @@ ok(!/\b(level|rank|better|worse|behind|lower|beginner|advanced|mastery)\b/i.test
 ok(/Your tier\s*Free/.test(tiers.text)&&/You see your own reading, without what is running it/.test(tiers.text),
  'the page says first which tier the person has and what it shows: '+tiers.text.slice(0,260));
 ok(/Unlocks saboteurs/.test(tiers.rowSees.one||'')&&/Unlocks complexes/.test(tiers.rowSees.two||'')
- &&/Unlocks hyper complexes, character, the registers and the masks/.test(tiers.rowSees.three||'')
+ &&/Unlocks hyper complexes, super complexes, the registers and the masks/.test(tiers.rowSees.three||'')
  &&/Shows everything the tier below shows/.test(tiers.rowSees.four||''),
  'every other tier says what it unlocks to see, off the table: '+JSON.stringify(tiers.rowSees));
-ok(/Does not show saboteurs, complexes, hyper complexes and character/.test(tiers.rowSees.free||''),
+ok(/Does not show saboteurs, complexes, hyper complexes and super complexes/.test(tiers.rowSees.free||''),
  'and free says what it leaves out');
 ok(!/kundalini/i.test(tiers.text),'the Kundalini has no surface yet, so no tier is sold on it');
 ok(/Locked: saboteurs, unlocked on tier one and above/.test(tiers.text),
@@ -7457,6 +7457,13 @@ await require('./flowtools.js').flowGate(browser,FILE,ok,booted);
    run holds it through the same code. */
 console.log('\n=== analytics: every figure a door, the chain walked down to the fetter and back ===');
 await require('./anatrail.js').anaTrailGate(browser,FILE,ok,booted);
+
+/* ONE CHARACTER ON SCREEN, tests/stackname.js, 23 October. His ruling: the
+   rung where two hyper complexes join is the super complex, and Character is
+   the whole of it, at the very top. A file of its own so it can run alone,
+   called here so a full run holds it too. */
+console.log('\n=== one Character on screen: the rung is the super complex, ruled 23 October ===');
+await require('./stackname.js').stackNameGate(browser,FILE,ok,booted);
 
 /* THE HEADS PACKAGE, 9 October: case, the tab tooltips and Help's build
    stamp. Each is a file of its own that runs alone, called

@@ -88,8 +88,13 @@ function suite(T,E,ok,g){
  ok(J(CH)===J(CT),'the chain is section 16\'s derived only block, got '+J(CH)+' against '+J(CT));
  ok(Array.isArray(E.PR_NODE)&&CH.length>0&&CH.every(t=>E.PR_NODE.indexOf(t)<0),
   'no rung is in the practice build\'s own vocabulary, so no intent it emits can name one');
- ok(['address','fetter','nerve','super_complex','super complex'].every(t=>T.TRACE_NODE_TYPES.indexOf(t)<0),
-  'the chain renames nothing: an address and a fetter stay a pattern, and super complex is no type, because it names Psychopathy');
+ ok(['address','fetter','nerve','character','super complex'].every(t=>T.TRACE_NODE_TYPES.indexOf(t)<0),
+  'the chain renames nothing it should not: an address and a fetter stay a pattern, and character is no type, because Character is the whole reading and not a rung');
+ /* THE OWNER'S WORD FOR THE FOURTH RUNG, 23 October: "From fetter to super
+    complex... And then at the very top is the character." Held by the
+    document's block above as well; this names the ruling. */
+ ok(CH.length===4&&CH[3]==='super_complex'&&CH[2]==='hyper_complex',
+  'the fourth rung is super_complex, one above hyper_complex, got '+J(CH));
  ok(ET&&ET.length&&J(T.TRACE_EDGE_TYPES)===J(ET),'edge types are section 17, got '+J(T.TRACE_EDGE_TYPES)+' against '+J(ET));
  ok(ST&&ST.length===5&&J(T.TRACE_SRC)===J(ST),'provenance is section 26, got '+J(T.TRACE_SRC)+' against '+J(ST));
  ok(T.TRACE_EDGE_TYPES.indexOf('related_to')<0,'there is no generic related_to');
@@ -525,14 +530,14 @@ function suite(T,E,ok,g){
   ok(ui.indexOf('source text')>=0&&ui.indexOf('Configured seat-tone reference')>=0,'marker UI exposes source context and the qualified seat-tone reference');
  }
 
- g('TG11c · the chain, nerve to character, read off the reading');
+ g('TG11c · the chain, nerve to super-complex, read off the reading');
  tg11c:{
   const P=loadedRec(E);
   ok(!!P,'the loaded record passes the boundary');
   if(!P)return;
   const RD=E.read(JSON.parse(J(P))).reading;
-  const LIST={saboteur:'sabs',complex:'cxs',hyper_complex:'hys',character:'sups'};
-  const BELOW={complex:'saboteur',hyper_complex:'complex',character:'hyper_complex'};
+  const LIST={saboteur:'sabs',complex:'cxs',hyper_complex:'hys',super_complex:'sups'};
+  const BELOW={complex:'saboteur',hyper_complex:'complex',super_complex:'hyper_complex'};
   const typeOf=k=>T.traceSplit(k).type, isRung=t=>CH.indexOf(t)>=0;
   /* THE KNOWN CASE FIRST. If this record ever stops reaching the top rung,
      the checks below prove less than they say, and this says so, then
@@ -565,11 +570,12 @@ function suite(T,E,ok,g){
   const got=new Set(ce.map(e=>e.from+' > '+e.to));
   ok(want.size===got.size&&got.size===ce.length&&[...want].every(k=>got.has(k)),
    'one edge per part the reading counted, '+ce.length+' edges against '+want.size+' parts');
-  /* NERVE TO CHARACTER, the owner's words for 22 October, as a path */
+  /* NERVE TO SUPER-COMPLEX, the chain's part of the owner's "from nerve to
+     character" (23 October), as a path */
   const top=RD.sups[0], hy=top.parts[0], cx=hy.parts[0], sb=cx.parts[0], addr=sb.parts[0].i;
-  const walk=T.tracePath(G,'pattern:'+addr,'character:'+top.nm);
+  const walk=T.tracePath(G,'pattern:'+addr,'super_complex:'+top.nm);
   ok(!!walk&&walk.length===4&&walk.every(s=>s.edge==='supports'&&s.src==='inferred'),
-   'an address reaches its character in four steps, one per rung, got '+J(walk));
+   'an address reaches its super-complex in four steps, one per rung, got '+J(walk));
   const nerve=G.nodes.find(n=>n.type==='pattern'&&n.id===String(addr));
   ok(!!nerve&&nerve.src==='known'&&typeof nerve.seat==='string'&&'nerve' in nerve,
    'and it starts at the pattern node that carries the address\'s seat and nerve, not a type of its own');
@@ -646,9 +652,18 @@ function suite(T,E,ok,g){
   ok(!!ve&&!ve.ok&&(ve.errs||[]).some(x=>/^edges\[0\] /.test(x)&&x.indexOf('read off the reading')>=0),
    'and a stored edge to one, by name, got '+J(ve&&ve.errs));
   const vp=JSON.parse(J(E.saveProfile(E.blankProfile('tg11c'))));
-  vp.trace={nodes:[{type:'character',id:'Rigidity / Dysregulation',src:'inferred'}],edges:[]};
+  vp.trace={nodes:[{type:'super_complex',id:'Rigidity / Dysregulation',src:'inferred'}],edges:[]};
   const vr=E.validateProfile(vp);
-  ok(!vr.ok&&vr.errs.some(x=>/^trace\.nodes\[0\]/.test(x)),'the profile boundary refuses a record carrying a rung, under trace., got '+J(vr.errs).slice(0,200));
+  ok(!vr.ok&&vr.errs.some(x=>/^trace\.nodes\[0\]/.test(x)&&x.indexOf('read off the reading')>=0),
+   'the profile boundary refuses a record carrying a rung, under trace., by name, got '+J(vr.errs).slice(0,200));
+  /* THE OLD NAME OF THE FOURTH RUNG, before 23 October. A record carrying one
+     was refused as a rung then and is refused as no type now: refused either
+     way, by name, so no record that passed the boundary on either side of
+     the rename can carry it. */
+  vp.trace={nodes:[{type:'character',id:'Rigidity / Dysregulation',src:'inferred'}],edges:[]};
+  const vc=E.validateProfile(vp);
+  ok(!vc.ok&&vc.errs.some(x=>/^trace\.nodes\[0\]/.test(x)&&x.indexOf('character')>=0),
+   'and a record carrying a node of the old name, character, is refused by that name, got '+J(vc.errs).slice(0,200));
   const raw=JSON.parse(J(P));
   raw.trace={v:1,nodes:[{type:'saboteur',id:RD.sabs[0].nm,src:'inferred'}],edges:[{from:pk,to:sk,edge:'supports',src:'user_confirmed'}]};
   const RG=T.traceFromRecord(raw,undefined,RD);
@@ -820,7 +835,11 @@ function mutants(E){
   ['a stored rung passes the boundary', Object.assign({},X,{validateTrace:function(o){
     const r=E.validateTrace(o);
     if(!r.ok&&r.errs.length&&r.errs.every(x=>/read off the reading/.test(x)))return {ok:true,errs:[],trace:o};
-    return r;}})]];}
+    return r;}})],
+  /* the rename, 23 October: a build that kept the fourth rung's old name */
+  ['the fourth rung keeps its old name, character', Object.assign({},X,{
+    TRACE_CHAIN:E.TRACE_CHAIN.map(t=>t==='super_complex'?'character':t),
+    TRACE_NODE_TYPES:E.TRACE_NODE_TYPES.map(t=>t==='super_complex'?'character':t)})]];}
 
 function run(E,ok,g){
  /* the known good case first */

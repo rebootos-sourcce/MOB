@@ -2838,7 +2838,7 @@ function quadrant(outward,organized,CQ){
 
    Organised means the pattern has compounded. "It starts small, gets
    conditioned, and becomes who we are." The engine already walks that chain:
-   loose saboteurs, then complexes, then hyper complexes, then character. The
+   loose saboteurs, then complexes, then hyper complexes, then super complexes. The
    share of what is running that has climbed that chain is how conditioned it
    is, which is the thing the word organised was reaching for. */
 const ORG_W={sab:0.2, cx:0.5, hy:0.8, sup:1};
@@ -2911,7 +2911,10 @@ const AGES=[
  {a:4,  k:'the first building',   q:'What did you make things out of, and what did you always make?'},
  {a:5,  k:'the first favourite',  q:'What was your favourite, and what was the one you were against?'},
  {a:6,  k:'the first collection', q:'What did you collect, and what made one of them better than another?'},
- {a:7,  k:'the first character',  q:'Who did you pretend to be, and who did you refuse to be?'},
+ /* role and not character, 23 October: Character is the whole person now,
+    the page and the top of the stack, and a year's label may not be a
+    second thing called that on the same screen */
+ {a:7,  k:'the first role',       q:'Who did you pretend to be, and who did you refuse to be?'},
  {a:8,  k:'the first side',       q:'What did you take a side on, at school or at home, that other children took the other side of?'},
  {a:9,  k:'the first mastery',    q:'What were you the one who was good at it, and who was better?'},
  {a:10, k:'the first team',       q:'What were you part of, and who were they against?'},
@@ -5176,7 +5179,14 @@ var UNPACK_BASE={
  'fetter':'A fetter is a named pattern that sits at one address and fires when something matches it.',
  'complex':'A complex is two saboteurs from the same family joined into one pattern.',
  'hyper complex':'A hyper complex forms when complexes of the same family run together, one ring further in than a complex.',
- 'character':'Character is the innermost ring, formed when two hyper complexes run together and are heavy enough.',
+ /* THE FOURTH RUNG AND THE TOP ARE TWO WORDS, ruled 23 October. The sentence
+    character carried until then was the rung's, and it moves to super
+    complex unchanged in what it says. Character is his "total sum of the all
+    of it" (27 September), the top of the stack above the masks and above
+    what a person was born with (DECISIONS.md, "The full stack, nerve to
+    Character"), listed bottom to top in his order. */
+ 'super complex':'A super complex forms when two hyper complexes run together and are heavy enough, one ring further in than a hyper complex.',
+ 'character':'Character is the whole of you, added up: your charge, the patterns running on it, your masks and what you were born with.',
  'saboteur':'A saboteur is a named habit that runs on the charge held at several addresses at once.',
  'mask':'A mask is a way of showing up, such as Child or Teen, read from the weight held at a group of seats.',
  'axis':'An axis is a feeling and its opposite, such as fear and trust, and the instrument reads how much of the first is held and how much of the second is in place.',
@@ -5680,11 +5690,12 @@ const CRISIS_SAY={
                   two codes, sorted, joined by +. Order free, so the same two
                   saboteurs are one code whichever is heavier today.
      family-pair  compute()'s fourth rung, its sups, two families or poles:
-                  the two codes, sorted, joined by /. trace.js and the Field
-                  bar name this rung Character. The owner's 19 October
-                  proposal and his 23 October dictation put a super-complex
-                  below Character, so the kind is named for what it is made
-                  of and carries neither word.
+                  the two codes, sorted, joined by /. The owner ruled on 23
+                  October that this rung is the super complex and that
+                  Character is the whole of it, at the top, so trace.js
+                  names it super_complex and every surface super complex.
+                  The kind keeps the name it was given for what it is made
+                  of, because a kind is identity and the code never moved.
      address      the NODES number, as a string. Already the identity a
                   record stores, so the code is that number and nothing else.
      emotion      the CHILD name. Already the key p.axes and the trace's
@@ -5725,7 +5736,7 @@ const CODE_KINDS=[
  ['pole','a family done past the point where it helps, from FAM_POLE'],
  ['structure','a complex or hyper-complex of canon.json, whichever register it is filed in'],
  ['pair','the complex compute() makes of two saboteurs of one family'],
- ['family-pair','the fourth rung compute() makes, its sups, of two families or poles. trace.js names it Character'],
+ ['family-pair','the super complex, the fourth rung compute() makes, its sups, of two families or poles'],
  ['address','an address of NODES'],
  ['emotion','a child emotion of CHILD'],
  ['archetype','an archetype of ARCH']];
@@ -6004,7 +6015,7 @@ var PCT_KIND={
     a complex and a hyper the mean of their parts (compute.js:362 and 369), and
     the body map clamps the same w at 10 (ui/map.js:2036) */
  chain:     {lo:0, hi:10, src:'engine/core.js', find:'w:Math.min(10, parts.reduce(',
-             say:'the weight of a saboteur, complex, hyper complex or character layer'},
+             say:'the weight of a saboteur, complex, hyper complex or super complex'},
  /* compute.js:296, and poleMean is the mean of it over the somatic set */
  pole:      {lo:0, hi:10, src:'engine/compute.js', find:'n.pole = clamp(n.rep - n.held,0,10);',
              say:'how far the opposite outweighs the charge'},
@@ -8217,12 +8228,19 @@ const TABDEF=[
  /* THE DOOR IS CHARACTER NOW, round LP, his words: "and all of those form
     the character. So that's the character page. Let's rename masks there to
     character. And then all the masks will just be the masks." The six grids
-    on it are the masks; the page they make is the character, which is also
-    the word the chain already uses for its top tier. Integer 11, the id
-    masksview and the class tab-masksview stay, on the rule the Body rename
+    on it are the masks; the page they make is the character. Integer 11, the
+    id masksview and the class tab-masksview stay, on the rule the Body rename
     above follows: they are identity, never the name a person reads. What is
     drawn inside the host is new too (ui/character.js); the figure the
-    comment above describes is gone from this door. */
+    comment above describes is gone from this door.
+
+    THE PAGE KEEPS THE WORD, 23 October. The chain's top rung was called
+    character as well until he ruled that rung the super complex and put
+    Character at the very top of the stack, the whole person, above the
+    masks and above archetype through domain (DECISIONS.md, "The full stack,
+    nerve to Character"). This page draws the whole person, the masks and
+    what is running them, so it stays the one thing on screen called
+    Character, and the rung gave the word up rather than the page. */
  {k:TAB.MASKS,   id:'masksview', nm:'Character', cls:'tab-masksview', sec:'play'},
  /* THE FOUR THAT LEFT DISCOVER, 23 October, after his Play order and in the
     order they stood in Discover. See the note above SECTIONS. */
@@ -9516,7 +9534,7 @@ function childFound(r){
    the 112 addresses (the fetters), the domains, the archetypes, the laws,
    the gates and the shadow. That is PLAN_ALWAYS below. What a tier buys is
    how far up the chain from a fetter a person may look: saboteur, complex,
-   hyper complex, character. And two surfaces that express what is running
+   hyper complex, super complex. And two surfaces that express what is running
    somebody rather than listing it, the Compass's Registers (the point cloud)
    and the Character page's masks, which sit on the same ladder.
 
@@ -9560,8 +9578,15 @@ function childFound(r){
    unlocks the point cloud." That is the Compass's Registers view, so reg is
    tier three. He has not named a tier for the masks, which he listed with
    "how the point cloud is expressed or the child masks", so the masks are
-   PROPOSED at tier three, where the character layer that lights them sits.
-   That one is still open, and moving it is one word in this table. */
+   PROPOSED at tier three, where the super complex that lights them sits.
+   That one is still open, and moving it is one word in this table.
+
+   THE FOURTH RUNG IS super complexes, 23 October. It was character, and the
+   owner ruled the word for the rung above the hyper complex is super complex
+   and that Character is the whole of it, at the top (DECISIONS.md, "The
+   full stack, nerve to Character"). k stays sup, because a key is identity;
+   nm and what moved, so every tier row and lock sentence built off this
+   table says the new word and none says Character for a rung. */
 const SIGHT=[
  {k:'sab', nm:'saboteurs', need:'one', layer:true,
   what:'Which saboteurs are running on your charge.'},
@@ -9569,8 +9594,8 @@ const SIGHT=[
   what:'Where your saboteurs join into complexes.'},
  {k:'hy', nm:'hyper complexes', need:'three', layer:true,
   what:'Where your complexes join into hyper complexes.'},
- {k:'sup', nm:'character', need:'three', layer:true,
-  what:'The character your whole chain builds up into.'},
+ {k:'sup', nm:'super complexes', need:'three', layer:true,
+  what:'Where your hyper complexes join into super complexes.'},
  {k:'kund', nm:'the Kundalini', need:'two', layer:false, built:false,
   what:'How far the Kundalini has risen up your seven seats.'},
  {k:'reg', nm:'the registers', need:'three', layer:false,
@@ -10617,12 +10642,13 @@ function boundaryCross(text){
                               practised and nothing ever recorded it
      saboteur, complex,       derived, inferred, and only from a reading
      hyper_complex,           handed in: one node per rung compute()
-     character                already built, r.sabs, r.cxs, r.hys and
+     super_complex            already built, r.sabs, r.cxs, r.hys and
                               r.sups. Never stored and never confirmed
      a part supports its rung derived, inferred. The reading's own parts:
                               an address supports a saboteur, a saboteur
                               a complex, a complex a hyper-complex, and a
-                              hyper-complex a character (THE CHAIN, below)
+                              hyper-complex a super-complex (THE CHAIN,
+                              below)
      everything else          STORED in p.trace: the practice objects'
                               stubs and every edge a person confirmed, a
                               proposal they have not yet answered, and a
@@ -10656,20 +10682,39 @@ var TRACE_V=1;
    3, 22 October: derived story→signal-impression→fetter and canonical
    address→fetter membership are added to the graph read.
    4, 22 October: the chain. A reading made by read() from this record,
-   handed in, adds its four rungs, saboteur to character, and the parts
+   handed in, adds its four rungs, saboteur to super complex, and the parts
    each rung was built from. A graph read with no reading holds what 3
-   held, under this number. */
+   held, under this number.
+   Still 4 after 23 October, on purpose. That day the fourth rung's type
+   was renamed, character to super_complex, on the owner's ruling (below).
+   A rename is not a new derivation: the same rungs come off the same lists
+   with the same edges. And no graph the product builds or stores holds a
+   rung, because a day's graph is read with no reading and every door
+   refuses the chain's types. So a day stamped 4 means what it meant, and a
+   new number would only stop an older build opening a newer record. */
 var TRACE_ALG=4;
 
 /* THE CHAIN'S FOUR RUNGS, in the order they stack, TDD section 16's second
-   block. Derived only: see THE CHAIN, below. Named as the product already
-   names them (TIERNM in ui/ui.js, the Character page), written as
-   identifiers. The fourth is character and never "super complex", because
-   that already names Psychopathy (engine/data/compass.js, its kind), and
-   one word may not name two things. The address and the fetter are not
-   here and never will be: both are a pattern (tracePatternWhy), and a type
-   of their own would stop every stored pattern key resolving. */
-var TRACE_CHAIN=['saboteur','complex','hyper_complex','character'];
+   block. Derived only: see THE CHAIN, below. Named as the product names
+   them on screen (TIERNM in ui/ui.js), written as identifiers.
+
+   THE FOURTH IS super_complex, RULED 23 OCTOBER. His words, in DECISIONS.md
+   under "The full stack, nerve to Character": "From fetter to super complex.
+   After the super complex are the masks... And then at the very top is the
+   character." It was character until that day, and this comment said it
+   could never be super complex because that word already names
+   Psychopathy's kind in the descent (engine/data/compass.js). The ruling
+   took that reason away. The descent files Narcissism as a complex,
+   Machiavellianism as a hyper complex and Psychopathy as a super complex:
+   the word names the rung each one sits on, and this is that rung, so one
+   word still names one thing. Character is no type at all. It is the whole
+   person, every rung and every layer above them taken together, which is
+   the whole reading and not one node in it.
+
+   The address and the fetter are not here and never will be: both are a
+   pattern (tracePatternWhy), and a type of their own would stop every
+   stored pattern key resolving. */
+var TRACE_CHAIN=['saboteur','complex','hyper_complex','super_complex'];
 /* TDD section 16, exactly: its first block, the types that may be added,
    then its second, the chain. */
 var TRACE_NODE_TYPES=['story','impression','pattern','goal','behavior','protocol',
@@ -10762,7 +10807,7 @@ var TRACE_RULES=[
  ['pattern','supports','saboteur','16 and 17, the chain: a cluster of addresses co-firing'],
  ['saboteur','supports','complex','16 and 17, the chain: two saboteurs of one family compounded'],
  ['complex','supports','hyper_complex','16 and 17, the chain: a family\'s complexes compounded'],
- ['hyper_complex','supports','character','16 and 17, the chain: two hyper-complexes paired'],
+ ['hyper_complex','supports','super_complex','16 and 17, the chain: two hyper-complexes paired'],
  /* section 12 and 13: observation and the somatic state */
  ['practice_event','produces','observation','12, source observation'],
  ['observation','supports','evidence','12, source observation'],
@@ -10879,8 +10924,8 @@ var TRACE_NEEDS={
   why:'a complex is saboteurs compounded, and no saboteur is counted toward this one'}],
  hyper_complex:[{dir:'in',edges:['supports'],types:['complex'],
   why:'a hyper-complex is complexes compounded, and no complex is counted toward this one'}],
- character:[{dir:'in',edges:['supports'],types:['hyper_complex'],
-  why:'a character is hyper-complexes paired, and no hyper-complex is counted toward this one'}]};
+ super_complex:[{dir:'in',edges:['supports'],types:['hyper_complex'],
+  why:'a super-complex is hyper-complexes paired, and no hyper-complex is counted toward this one'}]};
 
 /* ---------- keys ---------- */
 /* A key is type and id. A type never holds a colon, so the first colon
@@ -10958,16 +11003,19 @@ function traceNodeWhy(type,id,src){
  return null;}
 
 /* ============================================================
-   THE CHAIN. Nerve to character, as edges the graph can walk.
+   THE CHAIN. Nerve to super-complex, as edges the graph can walk.
 
    compute() already builds four rungs from the addresses up, and each
    rung holds the rung below it as its parts: a saboteur is a cluster of
    addresses co-firing (r.sabs), a complex is two saboteurs of one family
    compounded (r.cxs), a hyper-complex is a family's complexes compounded
-   (r.hys), and a character is two hyper-complexes paired (r.sups). This
+   (r.hys), and a super-complex is two hyper-complexes paired (r.sups). This
    file adds no rung and moves no threshold. It writes down, one typed
    edge each, which part the reading counted toward which rung, so a path
-   from an address to a character is a path tracePath can find.
+   from an address to a super-complex is a path tracePath can find. Above
+   the chain the owner's stack goes on, masks, then archetype through
+   domain, then Character, the whole of it (DECISIONS.md, 23 October).
+   None of those is a rung compute() pairs, so none is a type here.
 
    DERIVED ONLY. A rung exists because a reading of a field says so, on
    that read, and for no other reason. So nothing but the derivation may
@@ -10992,7 +11040,7 @@ var TRACE_CHAIN_OF=[
  {type:'saboteur', list:'sabs', why:'the reading counted this address toward this saboteur, a cluster of addresses co-firing. A registration, not a cause'},
  {type:'complex', list:'cxs', why:'the reading compounded this saboteur with another of its family into this complex. A registration, not a cause'},
  {type:'hyper_complex', list:'hys', why:'the reading compounded this complex into its family\'s hyper-complex. A registration, not a cause'},
- {type:'character', list:'sups', why:'the reading paired this hyper-complex with another into this character. A registration, not a cause'}];
+ {type:'super_complex', list:'sups', why:'the reading paired this hyper-complex with another into this super-complex. A registration, not a cause'}];
 /* why a type may not come in through a door, or null */
 function traceChainWhy(type){
  return TRACE_CHAIN.indexOf(type)>=0
@@ -11510,7 +11558,7 @@ function traceReadingWhy(p,r){
    them from. */
 function traceChainAttrs(type,x){
  var a={w:typeof x.w==='number'&&isFinite(x.w)?Math.round(x.w*10)/10:null};
- if(type==='character')return a;
+ if(type==='super_complex')return a;
  a.family=type==='hyper_complex'?x.nm:(typeof x.hcx==='string'?x.hcx:null);
  a.over=!!x.over;
  if(type==='saboteur')a.unnamed=!!x.unnamed;
@@ -11526,7 +11574,7 @@ function traceChainAttrs(type,x){
 
    reading is optional, and is the reading read() made of this same record
    (THE READING HANDED IN, above). With one, the graph carries the chain,
-   saboteur to character, read off its four lists. Without one there is no
+   saboteur to super-complex, read off its four lists. Without one there is no
    chain, which is every caller written before 22 October, and their
    graphs hold what they held. Same record and same reading, same graph.
 
@@ -12089,7 +12137,12 @@ function saveProfile(p){
    reverted the same day. validateProfile reads m as 0 to CQ_MODEL, so a row
    stamped 3 is refused at the boundary by name, and the record carrying it
    with it, because import is all or nothing. No committed build ever carried
-   model 3, so only a local build of this branch could have written one. */
+   model 3, so only a local build of this branch could have written one.
+
+   ch IS THE SUPER COMPLEX COUNT, r.sups. The key is from when that rung was
+   called character, which the owner retired for it on 23 October. It stays
+   ch, because it is on every history row a record already holds and a key
+   is identity; only the label a person reads beside it moved. */
 function snapshot(p){
  var r=compute();
  return {t:new Date().toISOString(), m:CQ_MODEL, cq:Math.round(r.CQ*10)/10,

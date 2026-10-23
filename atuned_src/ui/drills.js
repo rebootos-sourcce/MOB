@@ -173,7 +173,7 @@ function runDrill(o){
  var oppOf=function(f){var c=CHILD.filter(function(x){return x.nm===f;})[0];return c?c.opp:'';};
  var opps=fets.map(oppOf).filter(Boolean);
  var inst=fets.filter(function(f){return (S.replace[f]||0)>=4;});
- var TN={sup:'Character layer',hy:'Hyper-complex',cx:'Complex',sab:'Saboteur'};
+ var TN={sup:'Super-complex',hy:'Hyper-complex',cx:'Complex',sab:'Saboteur'};
  var h='<div class="pm-eye">'+(TN[o.kind]||'Pattern')+(o.over?', overshot':'')+'</div>'
   +'<div class="ad-nm">'+esc(o.nm)+'</div>'
   +(o.auth?'<div class="ad-sub">'+esc(o.auth)+'</div>':'')
@@ -190,7 +190,7 @@ function runDrill(o){
      defining the thing by what it is not and the second deferring its subject
      by two words and then explaining itself with a which. Same length, one
      gloss gone, and it starts on the noun. */
-  +(o.kind==='sup'?' A character layer costs more than it looks like it should, '
+  +(o.kind==='sup'?' A super-complex costs more than it looks like it should, '
    +'because you cannot see it as separate from you.':'')
   +(o.score?' Matched at <b>'+o.score+'%</b>'
     +(o.exact?', every charge inside its range.':'.'):'')+'</p>'

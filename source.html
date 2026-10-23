@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2428 a83a2b00 2026-10-23 09:47"><head><meta charset="utf-8">
+<html lang="en" data-build="v2429 799264c0 2026-10-23 09:51"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -12219,7 +12219,7 @@ function quadrant(outward,organized,CQ){
 
    Organised means the pattern has compounded. "It starts small, gets
    conditioned, and becomes who we are." The engine already walks that chain:
-   loose saboteurs, then complexes, then hyper complexes, then character. The
+   loose saboteurs, then complexes, then hyper complexes, then super complexes. The
    share of what is running that has climbed that chain is how conditioned it
    is, which is the thing the word organised was reaching for. */
 const ORG_W={sab:0.2, cx:0.5, hy:0.8, sup:1};
@@ -12294,7 +12294,10 @@ const AGES=[
  {a:4,  k:'the first building',   q:'What did you make things out of, and what did you always make?'},
  {a:5,  k:'the first favourite',  q:'What was your favourite, and what was the one you were against?'},
  {a:6,  k:'the first collection', q:'What did you collect, and what made one of them better than another?'},
- {a:7,  k:'the first character',  q:'Who did you pretend to be, and who did you refuse to be?'},
+ /* role and not character, 23 October: Character is the whole person now,
+    the page and the top of the stack, and a year's label may not be a
+    second thing called that on the same screen */
+ {a:7,  k:'the first role',       q:'Who did you pretend to be, and who did you refuse to be?'},
  {a:8,  k:'the first side',       q:'What did you take a side on, at school or at home, that other children took the other side of?'},
  {a:9,  k:'the first mastery',    q:'What were you the one who was good at it, and who was better?'},
  {a:10, k:'the first team',       q:'What were you part of, and who were they against?'},
@@ -14581,7 +14584,14 @@ var UNPACK_BASE={
  'fetter':'A fetter is a named pattern that sits at one address and fires when something matches it.',
  'complex':'A complex is two saboteurs from the same family joined into one pattern.',
  'hyper complex':'A hyper complex forms when complexes of the same family run together, one ring further in than a complex.',
- 'character':'Character is the innermost ring, formed when two hyper complexes run together and are heavy enough.',
+ /* THE FOURTH RUNG AND THE TOP ARE TWO WORDS, ruled 23 October. The sentence
+    character carried until then was the rung's, and it moves to super
+    complex unchanged in what it says. Character is his "total sum of the all
+    of it" (27 September), the top of the stack above the masks and above
+    what a person was born with (DECISIONS.md, "The full stack, nerve to
+    Character"), listed bottom to top in his order. */
+ 'super complex':'A super complex forms when two hyper complexes run together and are heavy enough, one ring further in than a hyper complex.',
+ 'character':'Character is the whole of you, added up: your charge, the patterns running on it, your masks and what you were born with.',
  'saboteur':'A saboteur is a named habit that runs on the charge held at several addresses at once.',
  'mask':'A mask is a way of showing up, such as Child or Teen, read from the weight held at a group of seats.',
  'axis':'An axis is a feeling and its opposite, such as fear and trust, and the instrument reads how much of the first is held and how much of the second is in place.',
@@ -15091,11 +15101,12 @@ try{window.__at&&window.__at('engine/data/crisis.js');}catch(e){}
                   two codes, sorted, joined by +. Order free, so the same two
                   saboteurs are one code whichever is heavier today.
      family-pair  compute()'s fourth rung, its sups, two families or poles:
-                  the two codes, sorted, joined by /. trace.js and the Field
-                  bar name this rung Character. The owner's 19 October
-                  proposal and his 23 October dictation put a super-complex
-                  below Character, so the kind is named for what it is made
-                  of and carries neither word.
+                  the two codes, sorted, joined by /. The owner ruled on 23
+                  October that this rung is the super complex and that
+                  Character is the whole of it, at the top, so trace.js
+                  names it super_complex and every surface super complex.
+                  The kind keeps the name it was given for what it is made
+                  of, because a kind is identity and the code never moved.
      address      the NODES number, as a string. Already the identity a
                   record stores, so the code is that number and nothing else.
      emotion      the CHILD name. Already the key p.axes and the trace's
@@ -15136,7 +15147,7 @@ const CODE_KINDS=[
  ['pole','a family done past the point where it helps, from FAM_POLE'],
  ['structure','a complex or hyper-complex of canon.json, whichever register it is filed in'],
  ['pair','the complex compute() makes of two saboteurs of one family'],
- ['family-pair','the fourth rung compute() makes, its sups, of two families or poles. trace.js names it Character'],
+ ['family-pair','the super complex, the fourth rung compute() makes, its sups, of two families or poles'],
  ['address','an address of NODES'],
  ['emotion','a child emotion of CHILD'],
  ['archetype','an archetype of ARCH']];
@@ -15417,7 +15428,7 @@ var PCT_KIND={
     a complex and a hyper the mean of their parts (compute.js:362 and 369), and
     the body map clamps the same w at 10 (ui/map.js:2036) */
  chain:     {lo:0, hi:10, src:'engine/core.js', find:'w:Math.min(10, parts.reduce(',
-             say:'the weight of a saboteur, complex, hyper complex or character layer'},
+             say:'the weight of a saboteur, complex, hyper complex or super complex'},
  /* compute.js:296, and poleMean is the mean of it over the somatic set */
  pole:      {lo:0, hi:10, src:'engine/compute.js', find:'n.pole = clamp(n.rep - n.held,0,10);',
              say:'how far the opposite outweighs the charge'},
@@ -17636,12 +17647,19 @@ const TABDEF=[
  /* THE DOOR IS CHARACTER NOW, round LP, his words: "and all of those form
     the character. So that's the character page. Let's rename masks there to
     character. And then all the masks will just be the masks." The six grids
-    on it are the masks; the page they make is the character, which is also
-    the word the chain already uses for its top tier. Integer 11, the id
-    masksview and the class tab-masksview stay, on the rule the Body rename
+    on it are the masks; the page they make is the character. Integer 11, the
+    id masksview and the class tab-masksview stay, on the rule the Body rename
     above follows: they are identity, never the name a person reads. What is
     drawn inside the host is new too (ui/character.js); the figure the
-    comment above describes is gone from this door. */
+    comment above describes is gone from this door.
+
+    THE PAGE KEEPS THE WORD, 23 October. The chain's top rung was called
+    character as well until he ruled that rung the super complex and put
+    Character at the very top of the stack, the whole person, above the
+    masks and above archetype through domain (DECISIONS.md, "The full stack,
+    nerve to Character"). This page draws the whole person, the masks and
+    what is running them, so it stays the one thing on screen called
+    Character, and the rung gave the word up rather than the page. */
  {k:TAB.MASKS,   id:'masksview', nm:'Character', cls:'tab-masksview', sec:'play'},
  /* THE FOUR THAT LEFT DISCOVER, 23 October, after his Play order and in the
     order they stood in Discover. See the note above SECTIONS. */
@@ -18943,7 +18961,7 @@ try{window.__at&&window.__at('engine/compute.js');}catch(e){}
    the 112 addresses (the fetters), the domains, the archetypes, the laws,
    the gates and the shadow. That is PLAN_ALWAYS below. What a tier buys is
    how far up the chain from a fetter a person may look: saboteur, complex,
-   hyper complex, character. And two surfaces that express what is running
+   hyper complex, super complex. And two surfaces that express what is running
    somebody rather than listing it, the Compass's Registers (the point cloud)
    and the Character page's masks, which sit on the same ladder.
 
@@ -18987,8 +19005,15 @@ try{window.__at&&window.__at('engine/compute.js');}catch(e){}
    unlocks the point cloud." That is the Compass's Registers view, so reg is
    tier three. He has not named a tier for the masks, which he listed with
    "how the point cloud is expressed or the child masks", so the masks are
-   PROPOSED at tier three, where the character layer that lights them sits.
-   That one is still open, and moving it is one word in this table. */
+   PROPOSED at tier three, where the super complex that lights them sits.
+   That one is still open, and moving it is one word in this table.
+
+   THE FOURTH RUNG IS super complexes, 23 October. It was character, and the
+   owner ruled the word for the rung above the hyper complex is super complex
+   and that Character is the whole of it, at the top (DECISIONS.md, "The
+   full stack, nerve to Character"). k stays sup, because a key is identity;
+   nm and what moved, so every tier row and lock sentence built off this
+   table says the new word and none says Character for a rung. */
 const SIGHT=[
  {k:'sab', nm:'saboteurs', need:'one', layer:true,
   what:'Which saboteurs are running on your charge.'},
@@ -18996,8 +19021,8 @@ const SIGHT=[
   what:'Where your saboteurs join into complexes.'},
  {k:'hy', nm:'hyper complexes', need:'three', layer:true,
   what:'Where your complexes join into hyper complexes.'},
- {k:'sup', nm:'character', need:'three', layer:true,
-  what:'The character your whole chain builds up into.'},
+ {k:'sup', nm:'super complexes', need:'three', layer:true,
+  what:'Where your hyper complexes join into super complexes.'},
  {k:'kund', nm:'the Kundalini', need:'two', layer:false, built:false,
   what:'How far the Kundalini has risen up your seven seats.'},
  {k:'reg', nm:'the registers', need:'three', layer:false,
@@ -20048,12 +20073,13 @@ try{window.__at&&window.__at('engine/avatar.js');}catch(e){}
                               practised and nothing ever recorded it
      saboteur, complex,       derived, inferred, and only from a reading
      hyper_complex,           handed in: one node per rung compute()
-     character                already built, r.sabs, r.cxs, r.hys and
+     super_complex            already built, r.sabs, r.cxs, r.hys and
                               r.sups. Never stored and never confirmed
      a part supports its rung derived, inferred. The reading's own parts:
                               an address supports a saboteur, a saboteur
                               a complex, a complex a hyper-complex, and a
-                              hyper-complex a character (THE CHAIN, below)
+                              hyper-complex a super-complex (THE CHAIN,
+                              below)
      everything else          STORED in p.trace: the practice objects'
                               stubs and every edge a person confirmed, a
                               proposal they have not yet answered, and a
@@ -20087,20 +20113,39 @@ var TRACE_V=1;
    3, 22 October: derived story→signal-impression→fetter and canonical
    address→fetter membership are added to the graph read.
    4, 22 October: the chain. A reading made by read() from this record,
-   handed in, adds its four rungs, saboteur to character, and the parts
+   handed in, adds its four rungs, saboteur to super complex, and the parts
    each rung was built from. A graph read with no reading holds what 3
-   held, under this number. */
+   held, under this number.
+   Still 4 after 23 October, on purpose. That day the fourth rung's type
+   was renamed, character to super_complex, on the owner's ruling (below).
+   A rename is not a new derivation: the same rungs come off the same lists
+   with the same edges. And no graph the product builds or stores holds a
+   rung, because a day's graph is read with no reading and every door
+   refuses the chain's types. So a day stamped 4 means what it meant, and a
+   new number would only stop an older build opening a newer record. */
 var TRACE_ALG=4;
 
 /* THE CHAIN'S FOUR RUNGS, in the order they stack, TDD section 16's second
-   block. Derived only: see THE CHAIN, below. Named as the product already
-   names them (TIERNM in ui/ui.js, the Character page), written as
-   identifiers. The fourth is character and never "super complex", because
-   that already names Psychopathy (engine/data/compass.js, its kind), and
-   one word may not name two things. The address and the fetter are not
-   here and never will be: both are a pattern (tracePatternWhy), and a type
-   of their own would stop every stored pattern key resolving. */
-var TRACE_CHAIN=['saboteur','complex','hyper_complex','character'];
+   block. Derived only: see THE CHAIN, below. Named as the product names
+   them on screen (TIERNM in ui/ui.js), written as identifiers.
+
+   THE FOURTH IS super_complex, RULED 23 OCTOBER. His words, in DECISIONS.md
+   under "The full stack, nerve to Character": "From fetter to super complex.
+   After the super complex are the masks... And then at the very top is the
+   character." It was character until that day, and this comment said it
+   could never be super complex because that word already names
+   Psychopathy's kind in the descent (engine/data/compass.js). The ruling
+   took that reason away. The descent files Narcissism as a complex,
+   Machiavellianism as a hyper complex and Psychopathy as a super complex:
+   the word names the rung each one sits on, and this is that rung, so one
+   word still names one thing. Character is no type at all. It is the whole
+   person, every rung and every layer above them taken together, which is
+   the whole reading and not one node in it.
+
+   The address and the fetter are not here and never will be: both are a
+   pattern (tracePatternWhy), and a type of their own would stop every
+   stored pattern key resolving. */
+var TRACE_CHAIN=['saboteur','complex','hyper_complex','super_complex'];
 /* TDD section 16, exactly: its first block, the types that may be added,
    then its second, the chain. */
 var TRACE_NODE_TYPES=['story','impression','pattern','goal','behavior','protocol',
@@ -20193,7 +20238,7 @@ var TRACE_RULES=[
  ['pattern','supports','saboteur','16 and 17, the chain: a cluster of addresses co-firing'],
  ['saboteur','supports','complex','16 and 17, the chain: two saboteurs of one family compounded'],
  ['complex','supports','hyper_complex','16 and 17, the chain: a family\'s complexes compounded'],
- ['hyper_complex','supports','character','16 and 17, the chain: two hyper-complexes paired'],
+ ['hyper_complex','supports','super_complex','16 and 17, the chain: two hyper-complexes paired'],
  /* section 12 and 13: observation and the somatic state */
  ['practice_event','produces','observation','12, source observation'],
  ['observation','supports','evidence','12, source observation'],
@@ -20310,8 +20355,8 @@ var TRACE_NEEDS={
   why:'a complex is saboteurs compounded, and no saboteur is counted toward this one'}],
  hyper_complex:[{dir:'in',edges:['supports'],types:['complex'],
   why:'a hyper-complex is complexes compounded, and no complex is counted toward this one'}],
- character:[{dir:'in',edges:['supports'],types:['hyper_complex'],
-  why:'a character is hyper-complexes paired, and no hyper-complex is counted toward this one'}]};
+ super_complex:[{dir:'in',edges:['supports'],types:['hyper_complex'],
+  why:'a super-complex is hyper-complexes paired, and no hyper-complex is counted toward this one'}]};
 
 /* ---------- keys ---------- */
 /* A key is type and id. A type never holds a colon, so the first colon
@@ -20389,16 +20434,19 @@ function traceNodeWhy(type,id,src){
  return null;}
 
 /* ============================================================
-   THE CHAIN. Nerve to character, as edges the graph can walk.
+   THE CHAIN. Nerve to super-complex, as edges the graph can walk.
 
    compute() already builds four rungs from the addresses up, and each
    rung holds the rung below it as its parts: a saboteur is a cluster of
    addresses co-firing (r.sabs), a complex is two saboteurs of one family
    compounded (r.cxs), a hyper-complex is a family's complexes compounded
-   (r.hys), and a character is two hyper-complexes paired (r.sups). This
+   (r.hys), and a super-complex is two hyper-complexes paired (r.sups). This
    file adds no rung and moves no threshold. It writes down, one typed
    edge each, which part the reading counted toward which rung, so a path
-   from an address to a character is a path tracePath can find.
+   from an address to a super-complex is a path tracePath can find. Above
+   the chain the owner's stack goes on, masks, then archetype through
+   domain, then Character, the whole of it (DECISIONS.md, 23 October).
+   None of those is a rung compute() pairs, so none is a type here.
 
    DERIVED ONLY. A rung exists because a reading of a field says so, on
    that read, and for no other reason. So nothing but the derivation may
@@ -20423,7 +20471,7 @@ var TRACE_CHAIN_OF=[
  {type:'saboteur', list:'sabs', why:'the reading counted this address toward this saboteur, a cluster of addresses co-firing. A registration, not a cause'},
  {type:'complex', list:'cxs', why:'the reading compounded this saboteur with another of its family into this complex. A registration, not a cause'},
  {type:'hyper_complex', list:'hys', why:'the reading compounded this complex into its family\'s hyper-complex. A registration, not a cause'},
- {type:'character', list:'sups', why:'the reading paired this hyper-complex with another into this character. A registration, not a cause'}];
+ {type:'super_complex', list:'sups', why:'the reading paired this hyper-complex with another into this super-complex. A registration, not a cause'}];
 /* why a type may not come in through a door, or null */
 function traceChainWhy(type){
  return TRACE_CHAIN.indexOf(type)>=0
@@ -20941,7 +20989,7 @@ function traceReadingWhy(p,r){
    them from. */
 function traceChainAttrs(type,x){
  var a={w:typeof x.w==='number'&&isFinite(x.w)?Math.round(x.w*10)/10:null};
- if(type==='character')return a;
+ if(type==='super_complex')return a;
  a.family=type==='hyper_complex'?x.nm:(typeof x.hcx==='string'?x.hcx:null);
  a.over=!!x.over;
  if(type==='saboteur')a.unnamed=!!x.unnamed;
@@ -20957,7 +21005,7 @@ function traceChainAttrs(type,x){
 
    reading is optional, and is the reading read() made of this same record
    (THE READING HANDED IN, above). With one, the graph carries the chain,
-   saboteur to character, read off its four lists. Without one there is no
+   saboteur to super-complex, read off its four lists. Without one there is no
    chain, which is every caller written before 22 October, and their
    graphs hold what they held. Same record and same reading, same graph.
 
@@ -21522,7 +21570,12 @@ function saveProfile(p){
    reverted the same day. validateProfile reads m as 0 to CQ_MODEL, so a row
    stamped 3 is refused at the boundary by name, and the record carrying it
    with it, because import is all or nothing. No committed build ever carried
-   model 3, so only a local build of this branch could have written one. */
+   model 3, so only a local build of this branch could have written one.
+
+   ch IS THE SUPER COMPLEX COUNT, r.sups. The key is from when that rung was
+   called character, which the owner retired for it on 23 October. It stays
+   ch, because it is on every history row a record already holds and a key
+   is identity; only the label a person reads beside it moved. */
 function snapshot(p){
  var r=compute();
  return {t:new Date().toISOString(), m:CQ_MODEL, cq:Math.round(r.CQ*10)/10,
@@ -33026,7 +33079,7 @@ const svgI=function(p){return '<svg viewBox="0 0 24 24">'+p+'</svg>';};
    rail's stack tabs, railStack in ui/ui.js, and the glass bar needs the same
    four for its own switches: one concept, one mark, on every surface, which
    two copies of a path cannot promise. Two locked rings a saboteur, three a
-   complex, a lattice a hyper complex, a ring in a ring the character layer. */
+   complex, a lattice a hyper complex, a ring in a ring the super complex. */
 const CHAINGLYPH={
  sab:'M8.6 4.8a3.4 3.4 0 013.4 3.4v3.4a3.4 3.4 0 01-6.8 0V8.2a3.4 3.4 0 013.4-3.4'
   +'M15.4 12.4a3.4 3.4 0 013.4 3.4a3.4 3.4 0 01-6.8 0a3.4 3.4 0 013.4-3.4',
@@ -34030,7 +34083,7 @@ function crbNode(n,size,o){o=o||{};
  var f=fmtPct('weight',n.sq);
  return crBadge(n.b, pct('weight',n.sq)||0, Object.assign({size:size||'sm', raw:f,
   title:n.k+', '+n.b.toLowerCase()+' seat. '+(f!==PCT_DASH?f+' left after the opposite':'Nothing held.')},o));}
-/* a saboteur, complex, hyper or character layer, on the registry's chain kind.
+/* a saboteur, complex, hyper or super complex, on the registry's chain kind.
    hot:p.w>=9 stays as the caller's word, and cr() keeps it off the arc because
    the figure is a percent; overshot is said in the title. */
 function crPat(p,size,o){o=o||{};
@@ -36378,7 +36431,9 @@ function lockGift(){
    subscription lapses, a record is swapped, the gift runs out. */
 function lockSees(k){ return planSees(lockPlan(),k,lockGift()); }
 /* the same question for a layer key on the glass bar, which names its rungs
-   saboteurs, complexes, hyper and character */
+   saboteurs, complexes, hyper and character. character is the super complex
+   switch: the key kept the rung's old name when the owner gave the word
+   Character to the whole of it, 23 October, because a key is identity */
 const LOCK_OF_LAYER={saboteurs:'sab',complexes:'cx',hyper:'hy',character:'sup',
  sab:'sab',cx:'cx',hy:'hy',sup:'sup',masks:'mask',mask:'mask',registers:'reg',reg:'reg'};
 function lockFor(layer){ return LOCK_OF_LAYER[layer]||null; }
@@ -37271,7 +37326,7 @@ function verpArrows(cr0){
      Charge      the three quotients and the addresses carrying them
      Patterns    the saboteurs, which is what the rail has always called them
      Chains      how a pattern compounds into a complex, a hyper complex and
-                 a character layer. Drawn as chords, which is why the word
+                 a super complex. Drawn as chords, which is why the word
                  survives at all
      Blueprint   domains and laws, and this one already landed. It named
                  masks as well until they left the Field for the Body's
@@ -37287,8 +37342,8 @@ const VIEWS=[
   tip:'What you are carrying, and where. The core is coherence, the ring is your 112 addresses, the wash is shadow weight.'},
  {k:'B',nm:'Patterns',  layers:'charge, plus the seats named and the saboteurs',
   tip:'The saboteurs running on top of the charge. Each bead is one, and the threads show which addresses built it.'},
- {k:'C',nm:'Chains',    layers:'patterns, plus complexes, hyper, character, archetypes',
-  tip:'How a pattern compounds. Saboteur into complex into hyper complex into character, inward, each built from the one outside it.'},
+ {k:'C',nm:'Chains',    layers:'patterns, plus complexes, hyper, super, archetypes',
+  tip:'How a pattern compounds. Saboteur into complex into hyper complex into super complex, inward, each built from the one outside it.'},
  {k:'D',nm:'Blueprint', layers:'chains, plus 19 domains, 21 laws',
   tip:'What was there before any of it. Nineteen domains, and the twenty one laws underneath the whole reading.'}];
 
@@ -37338,7 +37393,10 @@ const WHEEL_ZOOM_MAX=7;
 /* MASKS ARE NOT A LAYER. They were the second switch at Blueprint, a ring
    band on all three pictures, and he ruled them off every sub menu and onto
    the figure, CH in TASKS.md. The Body page draws them, bmDrawMasks in
-   ui/map.js, and nothing here or on the glass bar switches them. */
+   ui/map.js, and nothing here or on the glass bar switches them.
+   The key character is the super complexes' switch. It kept the rung's old
+   name on 23 October, when the owner gave the word Character to the whole
+   of it, because a key is identity; ui/fieldbar.js says why in full. */
 const LAYADD=[['addresses','laws','gates','shadow','stories'],['seats','saboteurs'],
  ['complexes','hyper','character','archetypes'],['domains']];
 var LAYSET=null;
@@ -37362,7 +37420,7 @@ function layReached(){var out={},on=layChosen(),z=S.zoom||1,extra=0;
  return out;}
 /* WHAT IS DRAWN IS WHAT IS CHOSEN, AND WHAT THE PLAN MAY SEE. The tier ruling of
    1 October: a person below tier one cannot see what is running them, and the
-   saboteur, complex, hyper and character layers are the Field's picture of
+   saboteur, complex, hyper and super complex layers are the Field's picture of
    exactly that. Taken out here, after the person's own set and after what zoom
    brings in, so there is one place a locked layer stops being drawn and the
    wheel, Frames and Dial all inherit it, because all three ask layVisible and
@@ -37579,7 +37637,7 @@ function enterSeat(b){
    thread from an address to the pattern it builds hangs taut or slack by the
    person's susceptibility at that address, n.susc, the Domain Matrix, which
    the chord notes in drawWheel below define as this product's tension; each
-   thread further in, pattern to complex to hyper complex to character,
+   thread further in, pattern to complex to hyper complex to super complex,
    hangs by the weight of the thing at its outer end. That is geometry: it
    reads when you look for it and says nothing when you do not.
 
@@ -37918,7 +37976,7 @@ function drawWheel0(r,L){
      two are meant to be read together and not collapsed into one: a heavy,
      taut thread both pulses fast and shakes, a light, slack one does
      neither. Only saboteurs, complexes and hyper complexes carry it, the
-     three tiers he named; character threads keep the old still geometry.
+     three tiers he named; super complex threads keep the old still geometry.
 
      THE SHAPE. The control point is the one place a shake reads as the
      whole thread's own tension moving, where jitter added at the beads
@@ -38471,7 +38529,7 @@ const FLAYS=[
  {k:'patterns',nm:'Patterns',d:frCirc(15.6,8.4,3.2)+'M13.3 10.7L5 19',
   tip:'The saboteurs running on the charge, threaded to the addresses that built them.'},
  {k:'chains',nm:'Chains',d:frCirc(5.4,18.6,1.6)+frCirc(11,13,2.3)+frCirc(17.4,6.6,3)+'M6.6 17.4l2.8-2.8M12.7 11.3l2.6-2.6',
-  tip:'How a pattern compounds: complex, hyper complex, character, inward.'},
+  tip:'How a pattern compounds: complex, hyper complex, super complex, inward.'},
  {k:'laws',nm:'Laws',d:frCirc(12,12,2.4)+frTicks(7,5.2,10,[1,.6,.9,.45,.8,.55,.95]),
   tip:'The twenty one laws, set by seat. Their sum is the number at the centre.'},
  {k:'gates',nm:'Gates',d:frCirc(12,12,3.1)+'M12 8.9V3.6M9.6 6L12 3.6 14.4 6M12 15.1v5.3',
@@ -39188,7 +39246,7 @@ function frFrames(M,r){
    P.push('<circle data-h="'+M.hid({k:'sab',o:s})+'" cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+rb.toFixed(1)+'"'
     +(s.unnamed?' fill="'+frRgb(M.ground)+'" stroke="'+frRgb(c)+'" stroke-width="1.5"':' fill="'+frRgb(c)+'"')+'/>');});})();
 
- /* chains. complexes, hyper complexes, character, each a frame further in.
+ /* chains. complexes, hyper complexes, super complexes, each a frame further in.
     The threads bow toward the core, because a chain is a pattern compounding
     inward, and drawn straight they ran across the frame as loose string. */
  frChains(M,r,at,[['cx',r.cxs,M.tCx,ring(D.cx),'Solar',3.4,1.5,'sab',M.ixSab,.30],
@@ -39220,7 +39278,7 @@ function frFrames(M,r){
 /* EACH TIER CARRIES ITS OWN CLASS, T-<tier>, and each thread the class of the
    tier at its far end as well, F-<tier>. The three tiers were one group under
    one switch, and the glass bar gives complexes, hyper complexes and
-   character a switch each; a thread is drawn when both its ends are, so a
+   super complexes a switch each; a thread is drawn when both its ends are, so a
    thread leaves with either. */
 function frChains(M,r,at,tiers,th,sc,frames){
  tiers.forEach(function(T){var key=T[0],list=T[1],ts=T[2],tr=T[3],c=M.seat(T[4]),rb=T[5],wd=T[6],from=at[T[7]],ixf=T[8],pull=T[9];
@@ -39420,7 +39478,7 @@ function frCallouts(M,r,P){
  if(ARCH[r.pi])push('archetypes',P.archAt[r.pi],ARCH[r.pi].nm,'First archetype',M.accent,P.hitOf['a'+r.pi]);
  /* the selected domain is not called out: the left rail already names it, and
     a fifth name in one corner reached the dial's own outer ring */
- r.sups.forEach(function(o,k){push('chains',P.at.sup[k],o.nm,'Character layer',M.seat('Root'),P.hitOf['u'+k]);});
+ r.sups.forEach(function(o,k){push('chains',P.at.sup[k],o.nm,'Super complex',M.seat('Root'),P.hitOf['u'+k]);});
  var shut=SI.map(function(l,i){return {l:l,i:i,v:+S.law[l.nm]||0};})
   .filter(function(x){return typeof lawIn!=='function'||lawIn(x.l.nm);})
   .sort(function(a,b){return a.v-b.v;})[0];
@@ -39735,11 +39793,18 @@ const VICON=[
    thing two things. The rest of the product still says seat in about a
    hundred and twenty places, and whether that sweep goes product wide is his
    call, asked in the round's report rather than done here by default.
-   Character keeps its name: Character to Masks would have put two buttons on
-   this bar with one name while masks was a layer here. It is not one now:
-   he ruled the masks off every sub menu and onto the Body's figure, CH in
-   TASKS.md, so the bar carries no Masks switch and bmDrawMasks in
-   ui/map.js draws them.
+   Masks is not a switch here: he ruled the masks off every sub menu and
+   onto the Body's figure, CH in TASKS.md, so the bar carries no Masks
+   switch and bmDrawMasks in ui/map.js draws them.
+
+   THE INNERMOST RING IS SUPER COMPLEXES, 23 October. It was Character, and
+   he ruled that the rung where two hyper complexes join is the super
+   complex and that Character is the whole of it, at the very top
+   (DECISIONS.md, "The full stack, nerve to Character"). The Character page
+   draws that whole, so it keeps the word and this switch gave it up. The
+   key stays character: it is identity, compared by the gates, by lockFor
+   and by the stylesheet's off-character rule, and never shown or stored,
+   so renaming it would move nothing a person sees.
 
    LAWS AND ACTION ARE NAMED NOW, 22 October: one scheme for the three sets
    of laws, so Laws is the Laws of Moral Integrity and Action is the Laws of
@@ -39764,8 +39829,8 @@ const FB_LAYERS=[
   tip:'Where saboteurs join. Each complex is built from the saboteurs outside it.'},
  {k:'hyper',g:'run',nm:'Hyper complexes',ic:CHAINGLYPH.hy,
   tip:'Where complexes join, one ring further in.'},
- {k:'character',g:'run',nm:'Character',ic:CHAINGLYPH.sup,
-  tip:'The innermost ring. What the whole chain builds up into.'},
+ {k:'character',g:'run',nm:'Super complexes',ic:CHAINGLYPH.sup,
+  tip:'Where two hyper complexes join, the innermost ring.'},
  {k:'archetypes',g:'run',nm:'Archetypes',ic:fbFlay('archetypes'),
   tip:'The twelve archetypes, each set at the assemblage point it runs through.'},
  {k:'domains',g:'before',nm:'Domains',ic:fbFlay('domains'),
@@ -40463,7 +40528,7 @@ function pmMarks(r){
      /* never o.sub. On a hyper-complex that is the clinical correspondence,
         "bipolar · ADHD", and ui.js keeps it off a person's screen by name:
         mapshelf.js recorded this row as the one place still printing it. */
-     sub:o.over?'overshot':(o.kind==='sup'?'character layer':'hyper-complex')};});
+     sub:o.over?'overshot':(o.kind==='sup'?'super-complex':'hyper-complex')};});
  /* NO MASKS LAYER. The six masks were a layer here, one press away in the
     row above the figure, drawn as rings at the end of arcs like a pattern.
     Ruled against in CH, TASKS.md: "I don't want that overlay on a sub menu,
@@ -40918,7 +40983,7 @@ function renderMap(r){
     surface: a person looked at a body and read a list.
 
     The names were always in the right rail as well, under Fetters, Saboteurs,
-    Complexes, Hyper and Character, with their counts and their weights and a
+    Complexes, Hyper and Super, with their counts and their weights and a
     drill on every row. So the body was carrying a second copy of a list that
     already had a better home four inches to the right.
 
@@ -43915,7 +43980,7 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
 
    One press, one door, and every kind goes to the drill that already exists
    for it, which is the rule the codex already keeps in kbOpen. A saboteur,
-   a complex, a hyper-complex and a character layer are the same objects the
+   a complex, a hyper-complex and a super-complex are the same objects the
    Field and the codex open with runDrill, so they open with runDrill here:
    the shelf had a second, shorter renderer for them, which is two places for
    one reading to disagree, and it printed the clinical correspondence that
@@ -49518,7 +49583,7 @@ function sumChain(r){
     a false count, and a row of four zeros says the chain is empty. */
  return '<div class="pm-eye">The chain</div><div class="s-chain">'
   +[['saboteurs',r.sabs.length,'sab'],['complexes',r.cxs.length,'cx'],
-    ['hyper',r.hys.length,'hy'],['character',r.sups.length,'sup']].filter(function(x){
+    ['hyper',r.hys.length,'hy'],['super',r.sups.length,'sup']].filter(function(x){
    return lockSees(x[2]);}).map(function(x){
    return '<span class="s-ch"><b>'+x[1]+'</b>'+x[0]+'</span>';}).join('')+'</div>'
   +(r.locked&&r.locked.length?lockPanelHtml(r.locked[0],{brief:true}):'');}
@@ -50959,16 +51024,16 @@ function anaRender(){
   /* nothing of the chain is visible on this plan: the chart's place says so
      rather than printing "nothing here" over a chain somebody has */
   ?'<div class="ab-f"><div class="pm-eye">What is running</div>'+lockPanelHtml('sab',{brief:true})+'</div>'
-  :anaField('What is running','blue saboteur, gold complex, orange hyper, red character',
+  :anaField('What is running','blue saboteur, gold complex, orange hyper, red super',
   /* THE SIXTEEN HEAVIEST, NOT THE FIRST SIXTEEN, round RB. The list is in
-     ring order, character first, so on a deep chain the cut at sixteen took
-     every character layer, hyper and complex and no saboteur at all: Gordon
+     ring order, super complex first, so on a deep chain the cut at sixteen took
+     every super complex, hyper and complex and no saboteur at all: Gordon
      drew sixteen bubbles and none in the blue the key names. Sorted by
      weight, the chart shows what the eyebrow says, what is running hardest. */
   [].concat(r.sups,r.hys,r.cxs,r.sabs).sort(function(a,b){return b.w-a.w;}).slice(0,16).map(function(o){
    /* the kind's own colour at every weight, 17 October: a bubble printing a
       percent never takes the alarm (DECISIONS.md, the default taken), and red
-      here was also the key's colour for a character layer */
+      here was also the key's colour for a super complex */
    return {k:'chain',nm:o.nm,v:o.w,f:fmtPct('chain',o.w),c:TIER[o.kind]||PAL.Throat};}),300,210));
  out+=anaField('The nine axes','',
   CHILD.map(function(c){return {k:'axis',nm:c.nm,v:Math.max(0.3,S.charge[c.nm]||0),f:fmtPct('charge',S.charge[c.nm]||0),
@@ -51128,7 +51193,7 @@ function anaHotRows(L,t){
    so a person can go down and come back up the same way. The chain is the
    engine's own and nothing is invented here (engine/compute.js, compute):
 
-     character layer  two hyper-complexes running together
+     super-complex    two hyper-complexes running together
      hyper-complex    the complexes of one family
      complex          two saboteurs of one family
      saboteur         a group of addresses charged at once
@@ -51148,7 +51213,7 @@ function anaHotRows(L,t){
    name. ANA_TRAIL is the steps that led there.
    ============================================================ */
 var ANA_TRAIL=[];
-var ANA_KIND={sup:['character','Character layer'],hy:['hyper complex','Hyper-complex'],
+var ANA_KIND={sup:['super complex','Super-complex'],hy:['hyper complex','Hyper-complex'],
  cx:['complex','Complex'],sab:['saboteur','Saboteur']};
 function anaKey(k,nm){return esc(k+'|'+nm);}
 function anaPl(n,one,many){return n+' '+(n===1?one:many);}
@@ -51299,7 +51364,7 @@ function anaChainCard(r,o){
   +'It runs on <b>'+anaPl(lv.length,'fetter','fetters')+'</b> at the '+anaAnd(bs.map(function(b){return b==='3rd Eye'?'3rd eye':b.toLowerCase();}))
   +(bs.length===1?' seat':' seats')+'. '+anaHeldSay(lv)+' '+made
   +(o.kind==='sab'&&o.score?' Matched at <b>'+o.score+'%</b>, a measure of how closely your feelings fit the ranges this saboteur is defined by.':'')
-  +(o.kind==='sup'?' A character layer costs more than it looks like it should, because you cannot see it as separate from you.':'')
+  +(o.kind==='sup'?' A super-complex costs more than it looks like it should, because you cannot see it as separate from you.':'')
   +'</p>';
  if(o.kind==='sab'&&typeof kbSabBlock==='function')h+=kbSabBlock(String(o.nm).replace(/ overshot$/,''));
  if(o.kind!=='sab'&&o.parts&&o.parts.length){
@@ -51411,7 +51476,7 @@ function anaCellCard(r,nm){
  return h+(list.length?anaRunning(r,list,'Running here'):'');}
 /* one ring of the chain, every pattern on it */
 var ANA_RUNG={fet:['fetter','Fetters'],sab:['saboteur','Saboteurs'],cx:['complex','Complexes'],
- hy:['hyper complex','Hyper-complexes'],sup:['character','Character layers']};
+ hy:['hyper complex','Hyper-complexes'],sup:['super complex','Super-complexes']};
 function anaRungCard(r,nm){
  var R=ANA_RUNG[nm]; if(!R)return null;
  var h=anaHead('The chain',R[1]);
@@ -51535,7 +51600,7 @@ function anaSessCard(r,nm){
  h+='<p class="ad-p">Every figure this session kept. '+(p?(same?'Each change is against the session before it.'
    :'The session before was worked out a different way, so no change is shown against it.'):'This is the first session on the record.')+'</p>'
   +'<div class="ana-dls">'+row('Coherence','cq',1,'cq')+row('Shadow','dq',1,'dq')+row('Held','loaded',0)
-  +row('Saboteurs','sab',0)+row('Complexes','cx',0)+row('Hyper-complexes','hy',0)+row('Character','ch',0)
+  +row('Saboteurs','sab',0)+row('Complexes','cx',0)+row('Hyper-complexes','hy',0)+row('Super-complexes','ch',0)
   +row('Overshoot','jq',2,'overshoot')+row('Installed','pole',2,'pole')+'</div>'
   +(x.tier?'<p class="ad-p">The band read <b>'+esc(String(x.tier).toLowerCase())+'</b>.</p>':'')
   +(x.arch?'<p class="ad-p">The leading archetype was <b>'+esc(x.arch)+'</b>.</p>':'');
@@ -51631,7 +51696,7 @@ addEventListener('keydown',function(e){
                     darker a square, the more charge is left on the fetters
                     at that seat holding that feeling. The two edges add
                     each row and each column up.
-     The chain      how many patterns sit on each ring, fetter to character
+     The chain      how many patterns sit on each ring, fetter to super complex
 
    Nothing on an unread field, for the reason Running hot gives: the hero
    already says nothing is entered, and six dashes say it six more times.
@@ -56626,7 +56691,7 @@ function relSecond(){
    running, and a list read then would leave out the ones the run did
    the most to. An overshot entry is left out: it is the installed
    opposite driven past where it helps, and a release does not work
-   on it. The character layer is left out because he named three
+   on it. The super complex is left out because he named three
    tiers and not four. Kept as names and numbers, never as the live
    objects, which the next compute() rewrites.
    ============================================================ */
@@ -65408,7 +65473,10 @@ function coneNames(side){
     stage's own glass (.cn-pan in the sheet), and the pane is the figure and
     its overlays and nothing else. Still .cn-nms and still .cn-nr, so every
     gate that finds a row by those names finds it where it was. */
- return '<div class="cn-pan cn-nms cn-nms-'+side+'" role="group" aria-label="Characters, '
+ /* "Teachers", the word the rows themselves use (engine/data/gloss.js,
+    teacher). This said Characters, which a screen reader then read as a
+    second thing called character beside the Character page. */
+ return '<div class="cn-pan cn-nms cn-nms-'+side+'" role="group" aria-label="Teachers, '
   +(side==='l'?'the first half of the axes, and of the poles on no axis'
     :'the second half of the axes, and of the poles on no axis')+'">'
   +half.map(function(x){
@@ -66282,7 +66350,7 @@ function runDrill(o){
  var oppOf=function(f){var c=CHILD.filter(function(x){return x.nm===f;})[0];return c?c.opp:'';};
  var opps=fets.map(oppOf).filter(Boolean);
  var inst=fets.filter(function(f){return (S.replace[f]||0)>=4;});
- var TN={sup:'Character layer',hy:'Hyper-complex',cx:'Complex',sab:'Saboteur'};
+ var TN={sup:'Super-complex',hy:'Hyper-complex',cx:'Complex',sab:'Saboteur'};
  var h='<div class="pm-eye">'+(TN[o.kind]||'Pattern')+(o.over?', overshot':'')+'</div>'
   +'<div class="ad-nm">'+esc(o.nm)+'</div>'
   +(o.auth?'<div class="ad-sub">'+esc(o.auth)+'</div>':'')
@@ -66299,7 +66367,7 @@ function runDrill(o){
      defining the thing by what it is not and the second deferring its subject
      by two words and then explaining itself with a which. Same length, one
      gloss gone, and it starts on the noun. */
-  +(o.kind==='sup'?' A character layer costs more than it looks like it should, '
+  +(o.kind==='sup'?' A super-complex costs more than it looks like it should, '
    +'because you cannot see it as separate from you.':'')
   +(o.score?' Matched at <b>'+o.score+'%</b>'
     +(o.exact?', every charge inside its range.':'.'):'')+'</p>'
@@ -68820,7 +68888,7 @@ function recRender(){
   +recRow('Saboteurs',a.sab,b.sab,0,true)
   +recRow('Complexes',a.cx,b.cx,0,true)
   +recRow('Hyper',a.hy,b.hy,0,true)
-  +recRow('Character',a.ch,b.ch,0,true);
+  +recRow('Super',a.ch,b.ch,0,true);
 
  var moved=[];
  /* a null tier is a row written while CQ was still filling, which has no word to compare.
@@ -79527,7 +79595,7 @@ function describe(h,r,still){
    +'</b><hr><b>Click to select, shift-click to add.</b>';}
  var o=h.o; if(!o)return '';
  var f=leaves(o);
- var nm={sab:'saboteur',cx:'complex',hy:'hyper-complex',sup:'character layer'}[h.k];
+ var nm={sab:'saboteur',cx:'complex',hy:'hyper-complex',sup:'super-complex'}[h.k];
  if(!nm)return '';
  return '<u>'+nm+'</u> <b>'+esc(o.nm)+'</b>'+(o.unnamed?' <em>inferred</em>':(SAB_PI.indexOf(o.nm)>=0?' <em>Positive Intelligence</em>':''))+'<hr>'
   /* never o.sub: on a hyper-complex that is the clinical correspondence,
@@ -80257,7 +80325,7 @@ function railFold(){
 /* The one line that is always on screen: coherence, the tier it names, and
    how much of the field is carrying. Everything else folds behind a label. */
 /* The stack. Under the reading, a row of tabs: the nine fetters, then the
-   saboteurs, complexes, hyper complexes and character layers running now.
+   saboteurs, complexes, hyper complexes and super complexes running now.
    Every row shows both halves of its pole: the charge held on the left and
    the coherent opposite installed on the right. A row is a door to the
    drill. The stack was five count lines. */
@@ -80270,8 +80338,10 @@ function railStack(r){
  /* THE STACK CARRIES ITS SYMBOLS. Every named thing in this product has a
     glyph and these five rungs were the last strip without one. The glyphs are
     the chain itself: one ring is a fetter, two locked rings a saboteur, three
-    a complex, a lattice a hyper complex, and a filled silhouette the character
-    layer, which is the one a person cannot see as separate from themselves. */
+    a complex, a lattice a hyper complex, and a ring in a ring the super
+    complex, which is the one a person cannot see as separate from themselves.
+    Its tab read Character until the owner's ruling of 23 October gave that
+    word to the whole of it, the Character page; the key stays sup. */
  var TABS=[
   /* the key is 'fet' and stays 'fet': a key is identity and identity is
      never renamed here. The label is what a person reads and it moves. */
@@ -80282,7 +80352,7 @@ function railStack(r){
   ['sab','Saboteurs',r.sabs.length,CHAINGLYPH.sab],
   ['cx','Complexes',r.cxs.length,CHAINGLYPH.cx],
   ['hy','Hyper',r.hys.length,CHAINGLYPH.hy],
-  ['sup','Character',r.sups.length,CHAINGLYPH.sup]];
+  ['sup','Super',r.sups.length,CHAINGLYPH.sup]];
  var h='<div class="stk-tabs" role="tablist">'+TABS.map(function(t){
   return '<button type="button" role="tab" class="stk-t'+(STACK_TAB===t[0]?' on':'')+'" data-st="'+t[0]+'" '
    +'aria-selected="'+(STACK_TAB===t[0])+'" title="'+esc(t[1])+'">'
@@ -80872,7 +80942,7 @@ function render(){
     +'and deeper ones, bend it more.')+'">distortion <b>'+fmtPct('distortion',r.dist,{unread:r.unread})+'</b></span>';
  /* what is running */
  const rows=[].concat(r.sups,r.hys,r.cxs,r.sabs);
- const TIERNM={sup:'Character',hy:'Hyper-complex',cx:'Complex',sab:'Saboteur'};
+ const TIERNM={sup:'Super-complex',hy:'Hyper-complex',cx:'Complex',sab:'Saboteur'};
  const TIERC={sup:PAL.Root,hy:PAL.Sacral,cx:PAL.Solar,sab:PAL.Throat};
  const NOTE={sup:'you cannot see it as separate from you',hy:'others see it, you do not',
   cx:'two saboteurs compounded',sab:'a cluster of addresses co-firing'};
@@ -80940,7 +81010,7 @@ function render(){
        badge now, crBadge, the ring filled to the weight over ten and the
        figure in its pill at the lower right. The mark inside is the tier's
        own, CHAINGLYPH, the one the glass bar and the stack tabs give the same
-       four, because this list mixes character, hyper complexes, complexes and
+       four, because this list mixes super complexes, hyper complexes, complexes and
        saboteurs and a name alone does not say which. The ring is the seat the
        pattern sits on. An overshoot or a weight past nine went to the alarm
        colour until 17 October; see the note on the badge below. */
@@ -81294,5 +81364,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005358996"></div>
+<div id="eof" hidden data-len="005363737"></div>
 </body></html>

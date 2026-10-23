@@ -35,11 +35,12 @@
                   two codes, sorted, joined by +. Order free, so the same two
                   saboteurs are one code whichever is heavier today.
      family-pair  compute()'s fourth rung, its sups, two families or poles:
-                  the two codes, sorted, joined by /. trace.js and the Field
-                  bar name this rung Character. The owner's 19 October
-                  proposal and his 23 October dictation put a super-complex
-                  below Character, so the kind is named for what it is made
-                  of and carries neither word.
+                  the two codes, sorted, joined by /. The owner ruled on 23
+                  October that this rung is the super complex and that
+                  Character is the whole of it, at the top, so trace.js
+                  names it super_complex and every surface super complex.
+                  The kind keeps the name it was given for what it is made
+                  of, because a kind is identity and the code never moved.
      address      the NODES number, as a string. Already the identity a
                   record stores, so the code is that number and nothing else.
      emotion      the CHILD name. Already the key p.axes and the trace's
@@ -80,7 +81,7 @@ const CODE_KINDS=[
  ['pole','a family done past the point where it helps, from FAM_POLE'],
  ['structure','a complex or hyper-complex of canon.json, whichever register it is filed in'],
  ['pair','the complex compute() makes of two saboteurs of one family'],
- ['family-pair','the fourth rung compute() makes, its sups, of two families or poles. trace.js names it Character'],
+ ['family-pair','the super complex, the fourth rung compute() makes, its sups, of two families or poles'],
  ['address','an address of NODES'],
  ['emotion','a child emotion of CHILD'],
  ['archetype','an archetype of ARCH']];

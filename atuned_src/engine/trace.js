@@ -36,12 +36,13 @@
                               practised and nothing ever recorded it
      saboteur, complex,       derived, inferred, and only from a reading
      hyper_complex,           handed in: one node per rung compute()
-     character                already built, r.sabs, r.cxs, r.hys and
+     super_complex            already built, r.sabs, r.cxs, r.hys and
                               r.sups. Never stored and never confirmed
      a part supports its rung derived, inferred. The reading's own parts:
                               an address supports a saboteur, a saboteur
                               a complex, a complex a hyper-complex, and a
-                              hyper-complex a character (THE CHAIN, below)
+                              hyper-complex a super-complex (THE CHAIN,
+                              below)
      everything else          STORED in p.trace: the practice objects'
                               stubs and every edge a person confirmed, a
                               proposal they have not yet answered, and a
@@ -75,20 +76,39 @@ var TRACE_V=1;
    3, 22 October: derived story→signal-impression→fetter and canonical
    address→fetter membership are added to the graph read.
    4, 22 October: the chain. A reading made by read() from this record,
-   handed in, adds its four rungs, saboteur to character, and the parts
+   handed in, adds its four rungs, saboteur to super complex, and the parts
    each rung was built from. A graph read with no reading holds what 3
-   held, under this number. */
+   held, under this number.
+   Still 4 after 23 October, on purpose. That day the fourth rung's type
+   was renamed, character to super_complex, on the owner's ruling (below).
+   A rename is not a new derivation: the same rungs come off the same lists
+   with the same edges. And no graph the product builds or stores holds a
+   rung, because a day's graph is read with no reading and every door
+   refuses the chain's types. So a day stamped 4 means what it meant, and a
+   new number would only stop an older build opening a newer record. */
 var TRACE_ALG=4;
 
 /* THE CHAIN'S FOUR RUNGS, in the order they stack, TDD section 16's second
-   block. Derived only: see THE CHAIN, below. Named as the product already
-   names them (TIERNM in ui/ui.js, the Character page), written as
-   identifiers. The fourth is character and never "super complex", because
-   that already names Psychopathy (engine/data/compass.js, its kind), and
-   one word may not name two things. The address and the fetter are not
-   here and never will be: both are a pattern (tracePatternWhy), and a type
-   of their own would stop every stored pattern key resolving. */
-var TRACE_CHAIN=['saboteur','complex','hyper_complex','character'];
+   block. Derived only: see THE CHAIN, below. Named as the product names
+   them on screen (TIERNM in ui/ui.js), written as identifiers.
+
+   THE FOURTH IS super_complex, RULED 23 OCTOBER. His words, in DECISIONS.md
+   under "The full stack, nerve to Character": "From fetter to super complex.
+   After the super complex are the masks... And then at the very top is the
+   character." It was character until that day, and this comment said it
+   could never be super complex because that word already names
+   Psychopathy's kind in the descent (engine/data/compass.js). The ruling
+   took that reason away. The descent files Narcissism as a complex,
+   Machiavellianism as a hyper complex and Psychopathy as a super complex:
+   the word names the rung each one sits on, and this is that rung, so one
+   word still names one thing. Character is no type at all. It is the whole
+   person, every rung and every layer above them taken together, which is
+   the whole reading and not one node in it.
+
+   The address and the fetter are not here and never will be: both are a
+   pattern (tracePatternWhy), and a type of their own would stop every
+   stored pattern key resolving. */
+var TRACE_CHAIN=['saboteur','complex','hyper_complex','super_complex'];
 /* TDD section 16, exactly: its first block, the types that may be added,
    then its second, the chain. */
 var TRACE_NODE_TYPES=['story','impression','pattern','goal','behavior','protocol',
@@ -181,7 +201,7 @@ var TRACE_RULES=[
  ['pattern','supports','saboteur','16 and 17, the chain: a cluster of addresses co-firing'],
  ['saboteur','supports','complex','16 and 17, the chain: two saboteurs of one family compounded'],
  ['complex','supports','hyper_complex','16 and 17, the chain: a family\'s complexes compounded'],
- ['hyper_complex','supports','character','16 and 17, the chain: two hyper-complexes paired'],
+ ['hyper_complex','supports','super_complex','16 and 17, the chain: two hyper-complexes paired'],
  /* section 12 and 13: observation and the somatic state */
  ['practice_event','produces','observation','12, source observation'],
  ['observation','supports','evidence','12, source observation'],
@@ -298,8 +318,8 @@ var TRACE_NEEDS={
   why:'a complex is saboteurs compounded, and no saboteur is counted toward this one'}],
  hyper_complex:[{dir:'in',edges:['supports'],types:['complex'],
   why:'a hyper-complex is complexes compounded, and no complex is counted toward this one'}],
- character:[{dir:'in',edges:['supports'],types:['hyper_complex'],
-  why:'a character is hyper-complexes paired, and no hyper-complex is counted toward this one'}]};
+ super_complex:[{dir:'in',edges:['supports'],types:['hyper_complex'],
+  why:'a super-complex is hyper-complexes paired, and no hyper-complex is counted toward this one'}]};
 
 /* ---------- keys ---------- */
 /* A key is type and id. A type never holds a colon, so the first colon
@@ -377,16 +397,19 @@ function traceNodeWhy(type,id,src){
  return null;}
 
 /* ============================================================
-   THE CHAIN. Nerve to character, as edges the graph can walk.
+   THE CHAIN. Nerve to super-complex, as edges the graph can walk.
 
    compute() already builds four rungs from the addresses up, and each
    rung holds the rung below it as its parts: a saboteur is a cluster of
    addresses co-firing (r.sabs), a complex is two saboteurs of one family
    compounded (r.cxs), a hyper-complex is a family's complexes compounded
-   (r.hys), and a character is two hyper-complexes paired (r.sups). This
+   (r.hys), and a super-complex is two hyper-complexes paired (r.sups). This
    file adds no rung and moves no threshold. It writes down, one typed
    edge each, which part the reading counted toward which rung, so a path
-   from an address to a character is a path tracePath can find.
+   from an address to a super-complex is a path tracePath can find. Above
+   the chain the owner's stack goes on, masks, then archetype through
+   domain, then Character, the whole of it (DECISIONS.md, 23 October).
+   None of those is a rung compute() pairs, so none is a type here.
 
    DERIVED ONLY. A rung exists because a reading of a field says so, on
    that read, and for no other reason. So nothing but the derivation may
@@ -411,7 +434,7 @@ var TRACE_CHAIN_OF=[
  {type:'saboteur', list:'sabs', why:'the reading counted this address toward this saboteur, a cluster of addresses co-firing. A registration, not a cause'},
  {type:'complex', list:'cxs', why:'the reading compounded this saboteur with another of its family into this complex. A registration, not a cause'},
  {type:'hyper_complex', list:'hys', why:'the reading compounded this complex into its family\'s hyper-complex. A registration, not a cause'},
- {type:'character', list:'sups', why:'the reading paired this hyper-complex with another into this character. A registration, not a cause'}];
+ {type:'super_complex', list:'sups', why:'the reading paired this hyper-complex with another into this super-complex. A registration, not a cause'}];
 /* why a type may not come in through a door, or null */
 function traceChainWhy(type){
  return TRACE_CHAIN.indexOf(type)>=0
@@ -929,7 +952,7 @@ function traceReadingWhy(p,r){
    them from. */
 function traceChainAttrs(type,x){
  var a={w:typeof x.w==='number'&&isFinite(x.w)?Math.round(x.w*10)/10:null};
- if(type==='character')return a;
+ if(type==='super_complex')return a;
  a.family=type==='hyper_complex'?x.nm:(typeof x.hcx==='string'?x.hcx:null);
  a.over=!!x.over;
  if(type==='saboteur')a.unnamed=!!x.unnamed;
@@ -945,7 +968,7 @@ function traceChainAttrs(type,x){
 
    reading is optional, and is the reading read() made of this same record
    (THE READING HANDED IN, above). With one, the graph carries the chain,
-   saboteur to character, read off its four lists. Without one there is no
+   saboteur to super-complex, read off its four lists. Without one there is no
    chain, which is every caller written before 22 October, and their
    graphs hold what they held. Same record and same reading, same graph.
 

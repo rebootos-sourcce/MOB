@@ -242,16 +242,16 @@ function anaRender(){
   /* nothing of the chain is visible on this plan: the chart's place says so
      rather than printing "nothing here" over a chain somebody has */
   ?'<div class="ab-f"><div class="pm-eye">What is running</div>'+lockPanelHtml('sab',{brief:true})+'</div>'
-  :anaField('What is running','blue saboteur, gold complex, orange hyper, red character',
+  :anaField('What is running','blue saboteur, gold complex, orange hyper, red super',
   /* THE SIXTEEN HEAVIEST, NOT THE FIRST SIXTEEN, round RB. The list is in
-     ring order, character first, so on a deep chain the cut at sixteen took
-     every character layer, hyper and complex and no saboteur at all: Gordon
+     ring order, super complex first, so on a deep chain the cut at sixteen took
+     every super complex, hyper and complex and no saboteur at all: Gordon
      drew sixteen bubbles and none in the blue the key names. Sorted by
      weight, the chart shows what the eyebrow says, what is running hardest. */
   [].concat(r.sups,r.hys,r.cxs,r.sabs).sort(function(a,b){return b.w-a.w;}).slice(0,16).map(function(o){
    /* the kind's own colour at every weight, 17 October: a bubble printing a
       percent never takes the alarm (DECISIONS.md, the default taken), and red
-      here was also the key's colour for a character layer */
+      here was also the key's colour for a super complex */
    return {k:'chain',nm:o.nm,v:o.w,f:fmtPct('chain',o.w),c:TIER[o.kind]||PAL.Throat};}),300,210));
  out+=anaField('The nine axes','',
   CHILD.map(function(c){return {k:'axis',nm:c.nm,v:Math.max(0.3,S.charge[c.nm]||0),f:fmtPct('charge',S.charge[c.nm]||0),
@@ -411,7 +411,7 @@ function anaHotRows(L,t){
    so a person can go down and come back up the same way. The chain is the
    engine's own and nothing is invented here (engine/compute.js, compute):
 
-     character layer  two hyper-complexes running together
+     super-complex    two hyper-complexes running together
      hyper-complex    the complexes of one family
      complex          two saboteurs of one family
      saboteur         a group of addresses charged at once
@@ -431,7 +431,7 @@ function anaHotRows(L,t){
    name. ANA_TRAIL is the steps that led there.
    ============================================================ */
 var ANA_TRAIL=[];
-var ANA_KIND={sup:['character','Character layer'],hy:['hyper complex','Hyper-complex'],
+var ANA_KIND={sup:['super complex','Super-complex'],hy:['hyper complex','Hyper-complex'],
  cx:['complex','Complex'],sab:['saboteur','Saboteur']};
 function anaKey(k,nm){return esc(k+'|'+nm);}
 function anaPl(n,one,many){return n+' '+(n===1?one:many);}
@@ -582,7 +582,7 @@ function anaChainCard(r,o){
   +'It runs on <b>'+anaPl(lv.length,'fetter','fetters')+'</b> at the '+anaAnd(bs.map(function(b){return b==='3rd Eye'?'3rd eye':b.toLowerCase();}))
   +(bs.length===1?' seat':' seats')+'. '+anaHeldSay(lv)+' '+made
   +(o.kind==='sab'&&o.score?' Matched at <b>'+o.score+'%</b>, a measure of how closely your feelings fit the ranges this saboteur is defined by.':'')
-  +(o.kind==='sup'?' A character layer costs more than it looks like it should, because you cannot see it as separate from you.':'')
+  +(o.kind==='sup'?' A super-complex costs more than it looks like it should, because you cannot see it as separate from you.':'')
   +'</p>';
  if(o.kind==='sab'&&typeof kbSabBlock==='function')h+=kbSabBlock(String(o.nm).replace(/ overshot$/,''));
  if(o.kind!=='sab'&&o.parts&&o.parts.length){
@@ -694,7 +694,7 @@ function anaCellCard(r,nm){
  return h+(list.length?anaRunning(r,list,'Running here'):'');}
 /* one ring of the chain, every pattern on it */
 var ANA_RUNG={fet:['fetter','Fetters'],sab:['saboteur','Saboteurs'],cx:['complex','Complexes'],
- hy:['hyper complex','Hyper-complexes'],sup:['character','Character layers']};
+ hy:['hyper complex','Hyper-complexes'],sup:['super complex','Super-complexes']};
 function anaRungCard(r,nm){
  var R=ANA_RUNG[nm]; if(!R)return null;
  var h=anaHead('The chain',R[1]);
@@ -818,7 +818,7 @@ function anaSessCard(r,nm){
  h+='<p class="ad-p">Every figure this session kept. '+(p?(same?'Each change is against the session before it.'
    :'The session before was worked out a different way, so no change is shown against it.'):'This is the first session on the record.')+'</p>'
   +'<div class="ana-dls">'+row('Coherence','cq',1,'cq')+row('Shadow','dq',1,'dq')+row('Held','loaded',0)
-  +row('Saboteurs','sab',0)+row('Complexes','cx',0)+row('Hyper-complexes','hy',0)+row('Character','ch',0)
+  +row('Saboteurs','sab',0)+row('Complexes','cx',0)+row('Hyper-complexes','hy',0)+row('Super-complexes','ch',0)
   +row('Overshoot','jq',2,'overshoot')+row('Installed','pole',2,'pole')+'</div>'
   +(x.tier?'<p class="ad-p">The band read <b>'+esc(String(x.tier).toLowerCase())+'</b>.</p>':'')
   +(x.arch?'<p class="ad-p">The leading archetype was <b>'+esc(x.arch)+'</b>.</p>':'');
@@ -914,7 +914,7 @@ addEventListener('keydown',function(e){
                     darker a square, the more charge is left on the fetters
                     at that seat holding that feeling. The two edges add
                     each row and each column up.
-     The chain      how many patterns sit on each ring, fetter to character
+     The chain      how many patterns sit on each ring, fetter to super complex
 
    Nothing on an unread field, for the reason Running hot gives: the hero
    already says nothing is entered, and six dashes say it six more times.

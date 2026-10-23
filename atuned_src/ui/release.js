@@ -1135,7 +1135,7 @@ function relSecond(){
    running, and a list read then would leave out the ones the run did
    the most to. An overshot entry is left out: it is the installed
    opposite driven past where it helps, and a release does not work
-   on it. The character layer is left out because he named three
+   on it. The super complex is left out because he named three
    tiers and not four. Kept as names and numbers, never as the live
    objects, which the next compute() rewrites.
    ============================================================ */

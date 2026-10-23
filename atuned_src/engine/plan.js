@@ -32,7 +32,7 @@
    the 112 addresses (the fetters), the domains, the archetypes, the laws,
    the gates and the shadow. That is PLAN_ALWAYS below. What a tier buys is
    how far up the chain from a fetter a person may look: saboteur, complex,
-   hyper complex, character. And two surfaces that express what is running
+   hyper complex, super complex. And two surfaces that express what is running
    somebody rather than listing it, the Compass's Registers (the point cloud)
    and the Character page's masks, which sit on the same ladder.
 
@@ -76,8 +76,15 @@
    unlocks the point cloud." That is the Compass's Registers view, so reg is
    tier three. He has not named a tier for the masks, which he listed with
    "how the point cloud is expressed or the child masks", so the masks are
-   PROPOSED at tier three, where the character layer that lights them sits.
-   That one is still open, and moving it is one word in this table. */
+   PROPOSED at tier three, where the super complex that lights them sits.
+   That one is still open, and moving it is one word in this table.
+
+   THE FOURTH RUNG IS super complexes, 23 October. It was character, and the
+   owner ruled the word for the rung above the hyper complex is super complex
+   and that Character is the whole of it, at the top (DECISIONS.md, "The
+   full stack, nerve to Character"). k stays sup, because a key is identity;
+   nm and what moved, so every tier row and lock sentence built off this
+   table says the new word and none says Character for a rung. */
 const SIGHT=[
  {k:'sab', nm:'saboteurs', need:'one', layer:true,
   what:'Which saboteurs are running on your charge.'},
@@ -85,8 +92,8 @@ const SIGHT=[
   what:'Where your saboteurs join into complexes.'},
  {k:'hy', nm:'hyper complexes', need:'three', layer:true,
   what:'Where your complexes join into hyper complexes.'},
- {k:'sup', nm:'character', need:'three', layer:true,
-  what:'The character your whole chain builds up into.'},
+ {k:'sup', nm:'super complexes', need:'three', layer:true,
+  what:'Where your hyper complexes join into super complexes.'},
  {k:'kund', nm:'the Kundalini', need:'two', layer:false, built:false,
   what:'How far the Kundalini has risen up your seven seats.'},
  {k:'reg', nm:'the registers', need:'three', layer:false,

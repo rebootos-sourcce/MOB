@@ -83,7 +83,7 @@ function describe(h,r,still){
    +'</b><hr><b>Click to select, shift-click to add.</b>';}
  var o=h.o; if(!o)return '';
  var f=leaves(o);
- var nm={sab:'saboteur',cx:'complex',hy:'hyper-complex',sup:'character layer'}[h.k];
+ var nm={sab:'saboteur',cx:'complex',hy:'hyper-complex',sup:'super-complex'}[h.k];
  if(!nm)return '';
  return '<u>'+nm+'</u> <b>'+esc(o.nm)+'</b>'+(o.unnamed?' <em>inferred</em>':(SAB_PI.indexOf(o.nm)>=0?' <em>Positive Intelligence</em>':''))+'<hr>'
   /* never o.sub: on a hyper-complex that is the clinical correspondence,
@@ -813,7 +813,7 @@ function railFold(){
 /* The one line that is always on screen: coherence, the tier it names, and
    how much of the field is carrying. Everything else folds behind a label. */
 /* The stack. Under the reading, a row of tabs: the nine fetters, then the
-   saboteurs, complexes, hyper complexes and character layers running now.
+   saboteurs, complexes, hyper complexes and super complexes running now.
    Every row shows both halves of its pole: the charge held on the left and
    the coherent opposite installed on the right. A row is a door to the
    drill. The stack was five count lines. */
@@ -826,8 +826,10 @@ function railStack(r){
  /* THE STACK CARRIES ITS SYMBOLS. Every named thing in this product has a
     glyph and these five rungs were the last strip without one. The glyphs are
     the chain itself: one ring is a fetter, two locked rings a saboteur, three
-    a complex, a lattice a hyper complex, and a filled silhouette the character
-    layer, which is the one a person cannot see as separate from themselves. */
+    a complex, a lattice a hyper complex, and a ring in a ring the super
+    complex, which is the one a person cannot see as separate from themselves.
+    Its tab read Character until the owner's ruling of 23 October gave that
+    word to the whole of it, the Character page; the key stays sup. */
  var TABS=[
   /* the key is 'fet' and stays 'fet': a key is identity and identity is
      never renamed here. The label is what a person reads and it moves. */
@@ -838,7 +840,7 @@ function railStack(r){
   ['sab','Saboteurs',r.sabs.length,CHAINGLYPH.sab],
   ['cx','Complexes',r.cxs.length,CHAINGLYPH.cx],
   ['hy','Hyper',r.hys.length,CHAINGLYPH.hy],
-  ['sup','Character',r.sups.length,CHAINGLYPH.sup]];
+  ['sup','Super',r.sups.length,CHAINGLYPH.sup]];
  var h='<div class="stk-tabs" role="tablist">'+TABS.map(function(t){
   return '<button type="button" role="tab" class="stk-t'+(STACK_TAB===t[0]?' on':'')+'" data-st="'+t[0]+'" '
    +'aria-selected="'+(STACK_TAB===t[0])+'" title="'+esc(t[1])+'">'
@@ -1428,7 +1430,7 @@ function render(){
     +'and deeper ones, bend it more.')+'">distortion <b>'+fmtPct('distortion',r.dist,{unread:r.unread})+'</b></span>';
  /* what is running */
  const rows=[].concat(r.sups,r.hys,r.cxs,r.sabs);
- const TIERNM={sup:'Character',hy:'Hyper-complex',cx:'Complex',sab:'Saboteur'};
+ const TIERNM={sup:'Super-complex',hy:'Hyper-complex',cx:'Complex',sab:'Saboteur'};
  const TIERC={sup:PAL.Root,hy:PAL.Sacral,cx:PAL.Solar,sab:PAL.Throat};
  const NOTE={sup:'you cannot see it as separate from you',hy:'others see it, you do not',
   cx:'two saboteurs compounded',sab:'a cluster of addresses co-firing'};
@@ -1496,7 +1498,7 @@ function render(){
        badge now, crBadge, the ring filled to the weight over ten and the
        figure in its pill at the lower right. The mark inside is the tier's
        own, CHAINGLYPH, the one the glass bar and the stack tabs give the same
-       four, because this list mixes character, hyper complexes, complexes and
+       four, because this list mixes super complexes, hyper complexes, complexes and
        saboteurs and a name alone does not say which. The ring is the seat the
        pattern sits on. An overshoot or a weight past nine went to the alarm
        colour until 17 October; see the note on the badge below. */

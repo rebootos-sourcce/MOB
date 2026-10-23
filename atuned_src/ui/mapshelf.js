@@ -102,7 +102,7 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
 
    One press, one door, and every kind goes to the drill that already exists
    for it, which is the rule the codex already keeps in kbOpen. A saboteur,
-   a complex, a hyper-complex and a character layer are the same objects the
+   a complex, a hyper-complex and a super-complex are the same objects the
    Field and the codex open with runDrill, so they open with runDrill here:
    the shelf had a second, shorter renderer for them, which is two places for
    one reading to disagree, and it printed the clinical correspondence that

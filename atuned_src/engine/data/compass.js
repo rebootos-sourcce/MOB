@@ -688,7 +688,7 @@ function quadrant(outward,organized,CQ){
 
    Organised means the pattern has compounded. "It starts small, gets
    conditioned, and becomes who we are." The engine already walks that chain:
-   loose saboteurs, then complexes, then hyper complexes, then character. The
+   loose saboteurs, then complexes, then hyper complexes, then super complexes. The
    share of what is running that has climbed that chain is how conditioned it
    is, which is the thing the word organised was reaching for. */
 const ORG_W={sab:0.2, cx:0.5, hy:0.8, sup:1};

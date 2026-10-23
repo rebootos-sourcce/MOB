@@ -313,7 +313,12 @@ function saveProfile(p){
    reverted the same day. validateProfile reads m as 0 to CQ_MODEL, so a row
    stamped 3 is refused at the boundary by name, and the record carrying it
    with it, because import is all or nothing. No committed build ever carried
-   model 3, so only a local build of this branch could have written one. */
+   model 3, so only a local build of this branch could have written one.
+
+   ch IS THE SUPER COMPLEX COUNT, r.sups. The key is from when that rung was
+   called character, which the owner retired for it on 23 October. It stays
+   ch, because it is on every history row a record already holds and a key
+   is identity; only the label a person reads beside it moved. */
 function snapshot(p){
  var r=compute();
  return {t:new Date().toISOString(), m:CQ_MODEL, cq:Math.round(r.CQ*10)/10,

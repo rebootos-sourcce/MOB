@@ -14,8 +14,9 @@
 
      AT1  every bubble, tile, square, ring count, law bar and session bar on
           the page is a door, and each one opens a card in Selection
-     AT2  the chain is walked the engine's way, character to hyper-complex to
-          complex to saboteur, each card listing exactly its own parts
+     AT2  the chain is walked the engine's way, super-complex to hyper-complex
+          to complex to saboteur, each card listing exactly its own parts, and
+          the top rung's ring and card call it a super complex (23 October)
      AT3  the walk goes on past the saboteur to a fetter, and past the fetter
           to its feeling, with every step kept in the trail
      AT4  a step in the trail goes back to that step and drops the rest
@@ -80,7 +81,7 @@ async function anaTrailGate(browser,FILE,ok,booted){
    const st=await pg.evaluate(()=>({pick:ANA_PICK,shown:document.getElementById('rdrill').style.display!=='none'}));
    ok(st.pick===null&&!st.shown,'AT7: '+tag+'a second press on the same bubble puts the card down, '+JSON.stringify(st));}
 
-  /* ---- AT2, AT3: walk the chain from the character ring ---- */
+  /* ---- AT2, AT3: walk the chain from the super-complex ring ---- */
   await open('#ana .ana-rung[data-ana="rung|sup"]');
   const walk=[];
   for(let i=0;i<6;i++){
@@ -96,13 +97,19 @@ async function anaTrailGate(browser,FILE,ok,booted){
      const m=/fetters? at the [^.]*\. (\d+) (?:is|are) held|None is held/.exec(card);
      heldSay=m?(m[1]?+m[1]:0):null;}
     return {k:P.k,kind:o?o.kind:null,nm:P.nm,trail:ANA_TRAIL.length,rows,want,held,heldSay,
-     old:/held addresses across/.test(card)};});
+     old:/held addresses across/.test(card),
+     sup:/\bsuper[- ]complex(es)?\b/i.test(card),character:/\bcharacter\b/i.test(card)};});
    walk.push(st);
    if(st.kind==='sab'||st.k!=='chain'&&st.k!=='rung')break;
    const next=st.rows[0]; if(!next)break;
    await pg.click('#rdrill .ad-r[data-ana="chain|'+next.replace(/"/g,'\\"')+'"]'); await pg.waitForTimeout(120);}
   const kinds=walk.filter(s=>s.kind).map(s=>s.kind);
-  ok(JSON.stringify(kinds)==='["sup","hy","cx","sab"]','AT2: '+tag+'the walk runs character, hyper-complex, complex, saboteur, '+JSON.stringify(kinds));
+  ok(JSON.stringify(kinds)==='["sup","hy","cx","sab"]','AT2: '+tag+'the walk runs super-complex, hyper-complex, complex, saboteur, '+JSON.stringify(kinds));
+  /* THE TOP RUNG'S WORD, ruled 23 October: the rung is the super complex and
+     Character is the whole of it, so no card on the walk says Character */
+  const top=walk.filter(s=>s.k==='rung'||s.kind==='sup');
+  ok(top.length>=2&&top.every(s=>s.sup),'AT2: '+tag+'the ring and the card it opens call the rung a super complex, '+JSON.stringify(top.map(s=>({k:s.k,kind:s.kind,sup:s.sup}))));
+  ok(walk.every(s=>!s.character),'AT2: '+tag+'and no card on the walk says Character, '+JSON.stringify(walk.filter(s=>s.character).map(s=>s.k+' '+s.nm)));
   walk.filter(s=>s.want).forEach(s=>ok(JSON.stringify(s.rows.slice(0,s.want.length))===JSON.stringify(s.want),
    'AT2: '+tag+s.kind+' '+s.nm+' lists exactly its own parts, '+JSON.stringify({rows:s.rows,want:s.want})));
   walk.filter(s=>s.kind).forEach(s=>ok(s.heldSay===s.held&&!s.old,

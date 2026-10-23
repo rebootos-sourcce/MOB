@@ -119,7 +119,7 @@ var PCT_KIND={
     a complex and a hyper the mean of their parts (compute.js:362 and 369), and
     the body map clamps the same w at 10 (ui/map.js:2036) */
  chain:     {lo:0, hi:10, src:'engine/core.js', find:'w:Math.min(10, parts.reduce(',
-             say:'the weight of a saboteur, complex, hyper complex or character layer'},
+             say:'the weight of a saboteur, complex, hyper complex or super complex'},
  /* compute.js:296, and poleMean is the mean of it over the somatic set */
  pole:      {lo:0, hi:10, src:'engine/compute.js', find:'n.pole = clamp(n.rep - n.held,0,10);',
              say:'how far the opposite outweighs the charge'},

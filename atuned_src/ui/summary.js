@@ -505,7 +505,7 @@ function sumChain(r){
     a false count, and a row of four zeros says the chain is empty. */
  return '<div class="pm-eye">The chain</div><div class="s-chain">'
   +[['saboteurs',r.sabs.length,'sab'],['complexes',r.cxs.length,'cx'],
-    ['hyper',r.hys.length,'hy'],['character',r.sups.length,'sup']].filter(function(x){
+    ['hyper',r.hys.length,'hy'],['super',r.sups.length,'sup']].filter(function(x){
    return lockSees(x[2]);}).map(function(x){
    return '<span class="s-ch"><b>'+x[1]+'</b>'+x[0]+'</span>';}).join('')+'</div>'
   +(r.locked&&r.locked.length?lockPanelHtml(r.locked[0],{brief:true}):'');}

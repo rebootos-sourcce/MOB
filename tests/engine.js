@@ -388,7 +388,7 @@ r=compute();
 ok(r.sabs.length>0,'saboteurs fire');
 ok(r.cxs.every(c=>c.parts.length===2),'a complex is exactly two saboteurs');
 ok(r.hys.every(h=>h.parts.length>=1),'a hyper-complex draws on complexes');
-ok(r.sups.every(u=>u.parts.length===2),'a character layer is two hyper');
+ok(r.sups.every(u=>u.parts.length===2),'a super complex is two hyper complexes');
 ok(r.cxs.every(c=>c.parts.every(p=>r.sabs.includes(p))),'complexes only cite live saboteurs');
 ok(r.hys.every(h=>h.parts.every(p=>r.cxs.includes(p))),'hyper only cite live complexes');
 /* Professional hidden and not calculated, round NE, his own correction:
@@ -2207,7 +2207,7 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
  const {organisedShare,ORG_W}=E;
  ok(organisedShare([])===null,'an empty chain has no reading');
  ok(organisedShare([{kind:'sab',w:5}])===ORG_W.sab,'a named saboteur is already conditioning');
- ok(organisedShare([{kind:'sup',w:5}])===1,'character is fully conditioned');
+ ok(organisedShare([{kind:'sup',w:5}])===1,'a super complex is fully conditioned');
  /* DEPTH REACHED, NOT MASS SPLIT. A weighted mean read everybody as loose,
     because a field carries many saboteurs and one hyper complex, so the many
     dragged the mean down and nothing ever reached the organised half. A hyper
@@ -2461,13 +2461,13 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
  /* SIGHT BY TIER. Ruled 1 October, reversing "sight is not for sale": everybody
     sees their own reading down to the 112 addresses, and the chain above them
     is bought. Free sees no saboteurs, tier one sees saboteurs, tier two adds
-    complexes, tiers three and four add hyper complexes and character. */
+    complexes, tiers three and four add hyper complexes and super complexes. */
  const mk=k=>({tier:k,status:'active'}), t1=mk('one'), t3=mk('three');
  const seen=k=>SEE_ORDER.filter(r=>planSees(mk(k),r)).join();
  ok(seen('free')==='','free sees no rung of the chain, got '+seen('free'));
  ok(seen('one')==='sab','tier one sees saboteurs and nothing above them, got '+seen('one'));
  ok(seen('two')==='sab,cx','tier two adds complexes, got '+seen('two'));
- ok(seen('three')==='sab,cx,hy,sup','tier three adds hyper complexes and character, got '+seen('three'));
+ ok(seen('three')==='sab,cx,hy,sup','tier three adds hyper complexes and super complexes, got '+seen('three'));
  ok(seen('four')===seen('three'),'tier four sees what tier three sees, and buys the lead suite instead');
  /* the three that are not rungs. The registers are the point cloud, ruled tier
     three by the owner on 1 October. The Kundalini is ruled tier two and has no
@@ -2494,7 +2494,7 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
     stack: a tier that sees a rung sees every rung below it, because each rung
     is built from the one before. */
  ok(SIGHT.every(g=>TIER_KEYS.indexOf(g.need)>0),'every row names a paid tier that exists as its need');
- ok(SEE_ORDER.join()==='sab,cx,hy,sup','the rungs are saboteur, complex, hyper, character, in chain order');
+ ok(SEE_ORDER.join()==='sab,cx,hy,sup','the rungs are saboteur, complex, hyper complex, super complex, in chain order');
  ok(SEE_ORDER.every((k,i)=>i===0||planRank(planNeed(k).k)>=planRank(planNeed(SEE_ORDER[i-1]).k)),
   'and the tier a rung needs never falls as the chain goes up');
  ok(SIGHT.every(g=>typeof g.what==='string'&&g.what.length>10&&!/\u2014/.test(g.what)),'every row says in a sentence what is locked');
@@ -2510,7 +2510,7 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
  ok(planAdds('free').length===0,'free adds nothing, it is the floor');
  ok(planAdds('one').map(g=>g.k).join()==='sab','tier one adds saboteurs');
  ok(planAdds('two').map(g=>g.k).join()==='cx','tier two adds complexes, and not the Kundalini, which has no surface to sell');
- ok(planAdds('three').map(g=>g.k).join()==='hy,sup,reg,mask','tier three adds hyper complexes, character, the registers and the masks');
+ ok(planAdds('three').map(g=>g.k).join()==='hy,sup,reg,mask','tier three adds hyper complexes, super complexes, the registers and the masks');
  ok(planAdds('four').length===0,'tier four adds no sight over tier three');
  ok(planSeesAt('three').length===SIGHT.filter(g=>g.built!==false).length&&planSeesAt('free').length===0&&planSeesAt('nonsense').length===0,
   'what a tier sees is every built row at or below it, and a tier that does not exist sees none');
@@ -2545,13 +2545,13 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
   ok(g.all&&g.locked.length===0&&SIGHT.every(r=>g.sees[r.k]===true),'inside the gift every row of SIGHT is seen and nothing is locked');
   ok(g.tier==='free'&&g.gift===true&&planOf(null).k==='free','and the rung in force is still free: the gift opens sight and moves nobody up the ladder');
   ok(SEE_ORDER.every(r=>planSees(null,r,true))&&planSees(null,'reg',true)&&planSees(null,'mask',true),
-   'saboteurs, complexes, hyper complexes, character, the registers and the masks are all visible on the gift');
+   'saboteurs, complexes, hyper complexes, super complexes, the registers and the masks are all visible on the gift');
   ok(planSees(null,'nonsense',true)===false,'a key SIGHT does not hold is still not visible, gift or not');
   ok(SEE_ORDER.every(r=>!planSees(null,r,false)&&!planSees(null,r)),'with the gift spent, or not asked, free sees exactly what it saw before');
   ok(planSight(mk('one'),true).all&&planSight(mk('one'),false).locked.map(x=>x.k).join()==='cx,hy,sup,reg,mask',
    'a paid tier inside the gift sees everything, and after it sees its own rung');
   ok(planNextSight(null,true)===null&&planNextSight(null,false).to.k==='one','inside the gift there is no next rung of sight to name');
-  ok(E.planSightSay(null,true)==='your own reading, with saboteurs, complexes, hyper complexes, character, the registers and the masks, while your gift lasts',
+  ok(E.planSightSay(null,true)==='your own reading, with saboteurs, complexes, hyper complexes, super complexes, the registers and the masks, while your gift lasts',
    'what the gift sees is said off the table, '+E.planSightSay(null,true));
   ok(planUpgrade(null)&&planUpgrade(null).to.k==='one'&&E.planBuyable('one')&&!E.planBuyable('gift'),
    'the gift buys nothing and is never bought: the ladder and checkout read the plan alone');}
@@ -7474,6 +7474,17 @@ g('PO · unpack every symbol: the meaning table and the pole meanings');
    +'and these carry none: '+JSON.stringify(left.map(g=>g.t)));}
  ok(unpackOf('Brow','seat')===T['seat:3rd eye']&&unpackKey('Virgo','sign')==='sign:virgo'&&unpackOf('nothing at all')==='',
   'the lookup folds case, reads Brow as the 3rd Eye, and returns nothing for a term it does not hold');
+ /* THE FOURTH RUNG AND THE TOP ARE TWO WORDS, ruled 23 October (DECISIONS.md,
+    "The full stack, nerve to Character"). The rung where two hyper complexes
+    join is the super complex, so its sentence says how it forms, and
+    Character is the whole of it, so its sentence is the whole and never a
+    ring of the chain. The tier table names the rung by the same word. */
+ ok(/two hyper complexes/.test(T['super complex']||'')&&/ring/.test(T['super complex']||''),
+  'the super complex has a sentence, and it is the rung, two hyper complexes one ring further in, got '+JSON.stringify(T['super complex']));
+ ok(!!T['character']&&!/\bring\b|hyper complex/i.test(T['character'])&&/masks/.test(T['character']),
+  'and Character is the whole of it, the masks and everything under them, never a ring of the chain, got '+JSON.stringify(T['character']));
+ ok(E.SIGHT.filter(x=>x.k==='sup').length===1&&E.SIGHT.filter(x=>x.k==='sup').every(x=>x.nm==='super complexes'&&!/character/i.test(x.what)),
+  'the tier table names the rung super complexes and never Character, got '+JSON.stringify(E.SIGHT.filter(x=>x.k==='sup')));
  /* the sentence a family builds reads off the table it describes, so it cannot drift */
  ok(T['earth'].indexOf('Taurus, Virgo and Capricorn')>=0&&T['fire'].indexOf('Aries, Leo and Sagittarius')>=0
   &&T['air'].indexOf('Gemini, Libra and Aquarius')>=0&&T['water'].indexOf('Cancer, Scorpio and Pisces')>=0,

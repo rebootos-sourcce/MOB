@@ -295,12 +295,19 @@ const TABDEF=[
  /* THE DOOR IS CHARACTER NOW, round LP, his words: "and all of those form
     the character. So that's the character page. Let's rename masks there to
     character. And then all the masks will just be the masks." The six grids
-    on it are the masks; the page they make is the character, which is also
-    the word the chain already uses for its top tier. Integer 11, the id
-    masksview and the class tab-masksview stay, on the rule the Body rename
+    on it are the masks; the page they make is the character. Integer 11, the
+    id masksview and the class tab-masksview stay, on the rule the Body rename
     above follows: they are identity, never the name a person reads. What is
     drawn inside the host is new too (ui/character.js); the figure the
-    comment above describes is gone from this door. */
+    comment above describes is gone from this door.
+
+    THE PAGE KEEPS THE WORD, 23 October. The chain's top rung was called
+    character as well until he ruled that rung the super complex and put
+    Character at the very top of the stack, the whole person, above the
+    masks and above archetype through domain (DECISIONS.md, "The full stack,
+    nerve to Character"). This page draws the whole person, the masks and
+    what is running them, so it stays the one thing on screen called
+    Character, and the rung gave the word up rather than the page. */
  {k:TAB.MASKS,   id:'masksview', nm:'Character', cls:'tab-masksview', sec:'play'},
  /* THE FOUR THAT LEFT DISCOVER, 23 October, after his Play order and in the
     order they stood in Discover. See the note above SECTIONS. */

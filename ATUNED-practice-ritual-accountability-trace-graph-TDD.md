@@ -822,13 +822,17 @@ Added 22 October 2026. Four more node types are read off a reading and are never
 saboteur
 complex
 hyper_complex
-character
+super_complex
 ```
 
 - `saboteur`: a cluster of addresses co-firing, the reading's `sabs`.
 - `complex`: two saboteurs of one family compounded, the reading's `cxs`.
 - `hyper_complex`: a family's complexes compounded, the reading's `hys`.
-- `character`: two hyper-complexes paired, the reading's `sups`. Character is the product's own name for the fourth rung, the Character page's. It is never called super complex here, because super complex already names Psychopathy in the Compass's descent registry, and one word may not name two things.
+- `super_complex`: two hyper-complexes paired, the reading's `sups`.
+
+Renamed 23 October 2026, on the owner's ruling recorded in `DECISIONS.md` under "The full stack, nerve to Character": "From fetter to super complex. After the super complex are the masks... And then at the very top is the character." The fourth type was `character` for one day, named for the Character page, and this section said it could never be called super complex because that word already names Psychopathy in the Compass's descent registry. The ruling removes that reason. The descent files Narcissism as a complex, Machiavellianism as a hyper complex and Psychopathy as a super complex, so the word names the rung each one sits on, and this is that rung. One word still names one thing.
+
+Character is not a node type. It is the whole person, every rung here and every layer the owner puts above them (the masks, then archetype through domain) taken together, which is the whole reading and not one node in it. A record that carries a `character` node is refused as naming no type, the same refusal any unknown type gets.
 
 A rung is derived only. It is made when a reading that `read()` stamped with this record's id is handed to `traceFromRecord`, and at no other time. Every door that adds to a graph refuses the four by name: the public add functions, `traceApply`, `validateTrace` and the stored layer. The practice build's own list of node types does not hold them, so a practice intent cannot name one. A rung is always `inferred` and is never promoted to `user_confirmed`, because it is the arithmetic's reading of a field and not a claim a person made.
 
@@ -874,10 +878,10 @@ Added 22 October 2026. The chain adds no edge type. Each rung is held to the par
 pattern supports saboteur
 saboteur supports complex
 complex supports hyper_complex
-hyper_complex supports character
+hyper_complex supports super_complex
 ```
 
-These four edges are `inferred`, like the rungs at their ends, and are never `user_confirmed`. A path from an address to a character is four of them, one per rung.
+These four edges are `inferred`, like the rungs at their ends, and are never `user_confirmed`. A path from an address to a super complex is four of them, one per rung.
 
 ---
 

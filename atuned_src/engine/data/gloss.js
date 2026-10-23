@@ -146,7 +146,14 @@ var UNPACK_BASE={
  'fetter':'A fetter is a named pattern that sits at one address and fires when something matches it.',
  'complex':'A complex is two saboteurs from the same family joined into one pattern.',
  'hyper complex':'A hyper complex forms when complexes of the same family run together, one ring further in than a complex.',
- 'character':'Character is the innermost ring, formed when two hyper complexes run together and are heavy enough.',
+ /* THE FOURTH RUNG AND THE TOP ARE TWO WORDS, ruled 23 October. The sentence
+    character carried until then was the rung's, and it moves to super
+    complex unchanged in what it says. Character is his "total sum of the all
+    of it" (27 September), the top of the stack above the masks and above
+    what a person was born with (DECISIONS.md, "The full stack, nerve to
+    Character"), listed bottom to top in his order. */
+ 'super complex':'A super complex forms when two hyper complexes run together and are heavy enough, one ring further in than a hyper complex.',
+ 'character':'Character is the whole of you, added up: your charge, the patterns running on it, your masks and what you were born with.',
  'saboteur':'A saboteur is a named habit that runs on the charge held at several addresses at once.',
  'mask':'A mask is a way of showing up, such as Child or Teen, read from the weight held at a group of seats.',
  'axis':'An axis is a feeling and its opposite, such as fear and trust, and the instrument reads how much of the first is held and how much of the second is in place.',

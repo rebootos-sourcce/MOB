@@ -102,7 +102,9 @@ function lockGift(){
    subscription lapses, a record is swapped, the gift runs out. */
 function lockSees(k){ return planSees(lockPlan(),k,lockGift()); }
 /* the same question for a layer key on the glass bar, which names its rungs
-   saboteurs, complexes, hyper and character */
+   saboteurs, complexes, hyper and character. character is the super complex
+   switch: the key kept the rung's old name when the owner gave the word
+   Character to the whole of it, 23 October, because a key is identity */
 const LOCK_OF_LAYER={saboteurs:'sab',complexes:'cx',hyper:'hy',character:'sup',
  sab:'sab',cx:'cx',hy:'hy',sup:'sup',masks:'mask',mask:'mask',registers:'reg',reg:'reg'};
 function lockFor(layer){ return LOCK_OF_LAYER[layer]||null; }

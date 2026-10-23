@@ -86,11 +86,18 @@ const VICON=[
    thing two things. The rest of the product still says seat in about a
    hundred and twenty places, and whether that sweep goes product wide is his
    call, asked in the round's report rather than done here by default.
-   Character keeps its name: Character to Masks would have put two buttons on
-   this bar with one name while masks was a layer here. It is not one now:
-   he ruled the masks off every sub menu and onto the Body's figure, CH in
-   TASKS.md, so the bar carries no Masks switch and bmDrawMasks in
-   ui/map.js draws them.
+   Masks is not a switch here: he ruled the masks off every sub menu and
+   onto the Body's figure, CH in TASKS.md, so the bar carries no Masks
+   switch and bmDrawMasks in ui/map.js draws them.
+
+   THE INNERMOST RING IS SUPER COMPLEXES, 23 October. It was Character, and
+   he ruled that the rung where two hyper complexes join is the super
+   complex and that Character is the whole of it, at the very top
+   (DECISIONS.md, "The full stack, nerve to Character"). The Character page
+   draws that whole, so it keeps the word and this switch gave it up. The
+   key stays character: it is identity, compared by the gates, by lockFor
+   and by the stylesheet's off-character rule, and never shown or stored,
+   so renaming it would move nothing a person sees.
 
    LAWS AND ACTION ARE NAMED NOW, 22 October: one scheme for the three sets
    of laws, so Laws is the Laws of Moral Integrity and Action is the Laws of
@@ -115,8 +122,8 @@ const FB_LAYERS=[
   tip:'Where saboteurs join. Each complex is built from the saboteurs outside it.'},
  {k:'hyper',g:'run',nm:'Hyper complexes',ic:CHAINGLYPH.hy,
   tip:'Where complexes join, one ring further in.'},
- {k:'character',g:'run',nm:'Character',ic:CHAINGLYPH.sup,
-  tip:'The innermost ring. What the whole chain builds up into.'},
+ {k:'character',g:'run',nm:'Super complexes',ic:CHAINGLYPH.sup,
+  tip:'Where two hyper complexes join, the innermost ring.'},
  {k:'archetypes',g:'run',nm:'Archetypes',ic:fbFlay('archetypes'),
   tip:'The twelve archetypes, each set at the assemblage point it runs through.'},
  {k:'domains',g:'before',nm:'Domains',ic:fbFlay('domains'),
