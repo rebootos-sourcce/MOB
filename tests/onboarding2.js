@@ -412,7 +412,12 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
     on each released pattern's row as what the person said, and the graph
     counts it as evidence for nothing. Every row is listed so the check does
     not depend on which four come first. */
+ /* ON THE FIELD, where that rail draws: loopPaint in ui/loopread.js fills it
+    only while the Field is the tab. The app opened on the Field when this was
+    written and opens on Discover since 23 October (TABHOME, engine/core.js),
+    so the check goes to the Field the way a person does, then reads its rail. */
  const lp=await page.evaluate(q=>{
+  if(typeof setTab==='function')setTab(TAB.FIELD);
   if(typeof LP!=='undefined'){LP.all=true; if(typeof loopRepaint==='function')loopRepaint();}
   const L=loopRead(CURP), rows=L.patterns.filter(x=>q.indexOf(x.address)>=0);
   const side=document.getElementById('loopside');
