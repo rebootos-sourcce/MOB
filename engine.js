@@ -72,21 +72,73 @@ const NODES=
    a named row: the Hubris move alone moves Sofia's and Lance 15's and
    decides which way Gordon's goes, and Ana's Grandiosity complex,
    Hyper-Achiever with the solar cluster that 33 and 48 joined, crosses 6.5,
-   the line for one complex to make a hyper-complex, by a tenth.
-   Their families were not re-grounded. By the method below six of the
-   thirteen would move: Micromanager and Judge to Grandiosity, which
-   translates the Narcissism TULA puts them in; Hyper-Vigilant to Rigidity
-   or Collapse, OCPD or anxiety; Avoider and Worrywart to Collapse, anxiety;
-   Loner to Collapse, depression. That would move the hyper-complex each of
-   them compounds into, which is a separate question, and it is left open.
+   the line for one complex to make a hyper-complex, by a tenth. The compass
+   moved too: the share of what is running that points at other people
+   crossed one half for Derek and Ana, so both read The Devil where they
+   read Turned inward.
 
    THE FAMILY. The owner's TULA notes ("Emotions & Saboteurs & Hyper
    Personalities", April 2026) list the saboteurs each hyper-complex
    personality comes from, and HCX_LIB's sub names the personalities each
-   family translates. For the rows added on 22 October, where TULA names one
-   family it is used; where it names two, the family whose d describes the
-   saboteur's own SABDEF behaviour is used and both are named; where it
-   names none, the nearest canon sibling decides and the note says which.
+   family translates. Every row's family follows them. Where TULA names one
+   family it is used. Where it names two, the family whose d describes the
+   saboteur's own behaviour is used and both are named. Where it names none,
+   the note says what decides: a canon sibling the saboteur's own words or
+   charges point to, or the family whose d describes what it does.
+
+   THE FAMILIES OF THE FIRST THIRTEEN FOLLOWED, 22 October, after their
+   addresses, because the owner asked for them to match TULA. Six moved:
+   Micromanager from Rigidity and Judge from Predatory to Grandiosity, which
+   translates the Narcissism TULA builds from the Controller, the
+   Hyper-Achiever and the Judge; Avoider from Dissociation and Worrywart from
+   Dysregulation to Collapse, which translates TULA's Anxiety disorders;
+   Loner from Dissociation to Collapse, TULA's Depression; and
+   Hyper-Vigilant from Dysregulation to Rigidity. None of the six had a
+   family TULA names for it. The other seven already had one TULA names,
+   or where it names none, one a sibling or their own behaviour decides,
+   and each note now says which.
+
+   HYPER-VIGILANT IS THE ONE OF THE SIX TULA NAMES TWICE: OCPD, which
+   HCX_LIB translates as Rigidity, and Anxiety disorders, which it
+   translates as Collapse. Its behaviour decides. Its definition is "Continuous anxiety
+   about potential dangers. Constant risk management.", its sentence "The
+   threat is always just ahead.", TULA's own line "Always on edge, expecting
+   threats". That is a field held braced with everything under watch, which
+   is Rigidity's d, "nothing is allowed out of its cell, including you".
+   Collapse's d, "the structure gives way downward and stays down", is the
+   one thing it does not do. TULA's two lines split the same way: OCPD is "a
+   preoccupation with orderliness, perfectionism, and control", Anxiety
+   disorders "a tendency to avoid challenging situations", and the
+   Hyper-Vigilant manages the risk in a situation rather than avoiding it.
+   HCX_LIB's Rigidity also translates paranoia, the first word of its
+   SABAUTH. The case for Collapse is the word anxiety, in its definition and
+   in Collapse's translations, and that word names its charge, not its
+   behaviour. Measured, the choice matters: with Collapse, 4 of the 16
+   worked examples would read differently from this, Ana's compass among
+   them, Turned inward where with Rigidity it reads The Devil.
+
+   FOUR ROWS OF THE FIRST PASS TOOK THEIR FAMILY FROM ONE OF THE SIX, so the
+   method was run on them again. Catastrophizer and Overthinker follow the
+   Worrywart to Collapse: SABDEF calls the Worrywart the Catastrophizer on a
+   smaller scale, and the Overthinker's note named the Worrywart its nearest
+   sibling, where Imposter, on the Overthinker's own two charges, is
+   Collapse too. Escapist stays Dissociation and Control Freak stays
+   Rigidity, each now on a reason its note gives: Avoider's own definition
+   separates it from the Escapist, and Control Freak's other half, the
+   Hyper-Vigilant, is Rigidity. Rows per family went from Collapse 9,
+   Dysregulation 7, Predatory 5, Rigidity 4, Dissociation 4 and Grandiosity
+   3 to Collapse 14, Grandiosity 5, Predatory 4, Rigidity 4, Dysregulation 3
+   and Dissociation 2. tests/engine.js, SL, holds every family TULA names,
+   each choice where it names two, and each sibling a family follows.
+   On the worked examples 8 of the 16 read differently and the mask moves
+   for 7 of them: Derek from Dysregulation to Collapse, James from Predatory
+   and Collapse to Predatory and Grandiosity, Ana from Rigidity and
+   Grandiosity to Collapse and Rigidity, Tomas from Dissociation and
+   Dysregulation to Dysregulation and Collapse, Gordon from Predatory and
+   Dissociation to Predatory and Rigidity, Lance 15 from Dissociation and
+   Predatory to Predatory and Grandiosity, Lance 50 from Rigidity and
+   Dysregulation to Rigidity and Collapse. Derek's compass goes back to
+   Turned inward. Ana's stays The Devil. CQ does not move for anyone.
 
    ONE IS FLAGGED AND NOT WIRED: INNOCENT, S28. Its canon row is one low band,
    fear 2 to 4, and the addresses that say what it does, refusal to see, are
@@ -143,15 +195,22 @@ const SAB_LIB=[
     "do-as-I-say mechanism" its definition layers in. It was 4, 36 and 50:
     50 Resentment carries Anger, which gave anger two of three under a higher
     fear band, and 50 stays the Victim's. The owner renamed Controller to
-    Micromanager on 18 October in canon.js. */
- {"nm":"Micromanager","nids":[4,42,36],"hcx":"Rigidity"},
+    Micromanager on 18 October in canon.js. Grandiosity, moved from
+    Rigidity: TULA builds Narcissism from the Controller, the Hyper-Achiever
+    and the Judge, with Entitlement and Justification on top, and its own
+    definition says "Entitlement provides the justification". */
+ {"nm":"Micromanager","nids":[4,42,36],"hcx":"Grandiosity"},
  /* S03 Victim, sadness, anger and apathy, its sadness band the highest. 6
     Victimhood, agency into blame, "this keeps happening to me"; 44
     Unworthiness, the self-loathing SABAUTH names, which carries Sad because
     canon.js reads UNWORTH as a heart key; 50 Resentment at the heart, pain
     held, the resentment TULA's line gives it beside sadness. It was 6, 50 and
     3: 3 Guilt carries Shame, which its row does not key on. 54 Martyrdom,
-    which its definition names, is the Martyr's, and 44 keeps the two apart. */
+    which its definition names, is the Martyr's, and 44 keeps the two apart.
+    Collapse, as it came: TULA puts it in Bipolar, BPD and Depression, which
+    HCX_LIB translates as Dysregulation once and Collapse twice, and "this
+    keeps happening to me" is a structure given way and staying down,
+    Collapse's d. */
  {"nm":"Victim","nids":[6,44,50],"hcx":"Collapse"},
  /* S04 Perfectionist, disgust and anger, its disgust band the higher. TULA:
     "driven by an aversion to imperfection". 37 Judgment, "imperfections in
@@ -161,7 +220,8 @@ const SAB_LIB=[
     name, carries Fear and 45 Anxiety carries Anticipation. The node map's
     Fear at 40 and SABAUTH's "fear of failure" read it as fear, where its
     row and TULA's line read disgust and anger; the canon row decides here,
-    and the disagreement between the owner's sources is left open. */
+    and the disagreement between the owner's sources is left open. Rigidity,
+    as it came: TULA, OCPD. */
  {"nm":"Perfectionist","nids":[37,84,97],"hcx":"Rigidity"},
  /* S05 Pleaser, apathy and fear, its fear band the higher, 3 to 8 against 3
     to 5. 5 Insecurity, belonging into dependency, "to gain acceptance", the
@@ -170,14 +230,16 @@ const SAB_LIB=[
     denial, TULA's "sometimes neglecting personal needs". It was 66, 2 and 65,
     all three Shame, and not one of them was on its own charges. 66 People
     Pleasing is the most literal and stays People-Pleaser's, whose row
-    carries shame. Leaving 2 and 66 ends the pair it shared with Imposter. */
+    carries shame. Leaving 2 and 66 ends the pair it shared with Imposter.
+    Collapse, as it came: TULA names no family for it, and People-Pleaser,
+    the sibling that shares its name, is Collapse by TULA's BPD. */
  {"nm":"Pleaser","nids":[5,1,30],"hcx":"Collapse"},
  /* S06 Hyper-Achiever, apathy and fear, both bands centred at 6, so either
     may take two. 40 Perfectionism, idealism into rigidity, the "fear of
     being ordinary"; 17 Addiction, craving, the "workaholic", "overwork"; 24
     Avoidance Of Pleasure, "when rest is available", refused. It was 33, 40
     and 48: 33 Pride and 48 Superiority carry Anger, which its row does not
-    key on. */
+    key on. Grandiosity, as it came: TULA, Narcissism. */
  {"nm":"Hyper-Achiever","nids":[40,17,24],"hcx":"Grandiosity"},
  /* S08 Hyper-Vigilant, fear and anger, its fear band the higher. 83 Paranoia
     and 1 Fear are its SABAUTH word for word; 78 Distrust, for when "trust is
@@ -185,48 +247,62 @@ const SAB_LIB=[
     which still has to find it in its band. It was 79, 1 and 82: 79
     Hypervigilance, its own name, carries Anticipation, because canon.js
     reads HYPERVIGIL as anticipation, and 82 Projection carries Disgust.
-    SABAUTH's third word, Panic, is 15 Panic, which carries Surprise. */
- {"nm":"Hyper-Vigilant","nids":[83,1,78],"hcx":"Dysregulation"},
+    SABAUTH's third word, Panic, is 15 Panic, which carries Surprise.
+    Rigidity, moved from Dysregulation, which TULA does not name for it.
+    TULA names two, OCPD for Rigidity and Anxiety disorders for Collapse;
+    the header says why its behaviour decides for Rigidity. */
+ {"nm":"Hyper-Vigilant","nids":[83,1,78],"hcx":"Rigidity"},
  /* S11 Judge, disgust, anger and apathy, its disgust band the highest. 37
     Judgment, its own name and SABAUTH's "othering"; 82 Projection, othering
     into blame, "someone is responsible for this"; 80 Dogma, belief into
     rigidity, "certainty without evidence". It was 37, 48 and 82: 48
     Superiority carries Anger, which gave anger two of three under a higher
-    disgust band. */
- {"nm":"Judge","nids":[37,82,80],"hcx":"Predatory"},
+    disgust band. Grandiosity, moved from Predatory: TULA builds Narcissism
+    from the Controller, the Hyper-Achiever and the Judge, and rests it on
+    the difference in value a judge sees between itself and the judged. */
+ {"nm":"Judge","nids":[37,82,80],"hcx":"Grandiosity"},
  /* S33 Avoider, apathy and fear, its apathy band the higher. 1 Fear, threat
     into avoidance, the "fear of confrontation"; 92 Spiritual Escapism,
     presence into bypass, "not present for it"; 86 Idealism, fantasy into
     denial of reality, SABAUTH's "delusion", "if I stay unaware". It was 1,
     14 and 89: 89 Hubris carries Anger, and 14 Escapism is the Escapist's,
     the line its own definition draws: "not fleeing discomfort the way the
-    Escapist does". */
- {"nm":"Avoider","nids":[1,92,86],"hcx":"Dissociation"},
+    Escapist does". Collapse, moved from Dissociation: TULA, Anxiety
+    disorders, "a tendency to avoid challenging situations", and HCX_LIB's
+    Collapse translates anxiety. */
+ {"nm":"Avoider","nids":[1,92,86],"hcx":"Collapse"},
  /* S14 Worrywart, fear and sadness, its fear band the higher. 83 Paranoia,
     narrative spinning, the "rehearsal of disaster", "worst-case scenarios";
     7 Scarcity, resources into hoarding, the "illusion of preparedness"; 56
     Closed Heart, vulnerability into armour, "worrying is preparation". It
     was 45, 1 and 3: 45 Anxiety carries Anticipation and 3 Guilt carries
     Shame. 1 Fear is its SABAUTH word and could not stay: beside 83 it is
-    Hyper-Vigilant's pair, beside 7 it is Catastrophizer's. */
- {"nm":"Worrywart","nids":[83,7,56],"hcx":"Dysregulation"},
+    Hyper-Vigilant's pair, beside 7 it is Catastrophizer's. Collapse, moved
+    from Dysregulation: TULA, Anxiety disorders, "excessive worry", and
+    HCX_LIB's Collapse translates anxiety. */
+ {"nm":"Worrywart","nids":[83,7,56],"hcx":"Collapse"},
  /* S15 Loner, sadness and fear, its sadness band the higher. 53 Separation,
     unity into isolation, "withdraws from contact"; 56 Closed Heart,
     vulnerability into armour, SABAUTH's "fear of intimacy" and its
     definition's "independence as defense"; 78 Distrust, SABAUTH's first
     word. It was 55, 1 and 49: 49 Hatred carries Anger. 61 Rejection, the
     "fear of rejection" its definition names, answers one phrase where 56
-    answers two, so 56 takes the place. */
- {"nm":"Loner","nids":[53,56,78],"hcx":"Dissociation"},
+    answers two, so 56 takes the place. Collapse, moved from Dissociation:
+    TULA, Depression, and HCX_LIB's Collapse translates depression. */
+ {"nm":"Loner","nids":[53,56,78],"hcx":"Collapse"},
  /* S27 Nihilist, disgust and sadness, its disgust band the higher. 91
     Nihilism, its own name, the "refusal of meaning"; 90 Spiritual Pride,
     insight into superiority, the "contempt" SABAUTH names; 77 Cynicism,
     clarity into dismissal, "despair worn as clarity". It was 91, 88 and 90:
-    88 Doubt Of God carries Anger, its Resentment label routed by REROUTE. */
+    88 Doubt Of God carries Anger, its Resentment label routed by REROUTE.
+    Collapse, as it came: TULA names no family for it, and its definition
+    removes "the foundation of meaning", the structure given way, which is
+    Collapse's d. */
  {"nm":"Nihilist","nids":[91,90,77],"hcx":"Collapse"},
  /* S21 Aggressor, anger and apathy, unchanged: all three carry Anger, its
     higher band, and they are its SABAUTH in order, 36 Anger for aggression,
-    49 Hatred for cruelty, 38 Entitlement for self-importance. */
+    49 Hatred for cruelty, 38 Entitlement for self-importance. Predatory, as
+    it came: TULA, Antisocial. */
  {"nm":"Aggressor","nids":[36,49,38],"hcx":"Predatory"},
  /* S20 Imposter, shame and fear, its shame band the higher. 107
     Self-Exclusion, belonging into disconnection, "they will find out I do
@@ -234,7 +310,10 @@ const SAB_LIB=[
     dismissal, the "discounting of evidence". It was 2, 45 and 66: 45 Anxiety
     carries Anticipation, the "anticipation of exposure" SABAUTH names and
     its row does not key on. 66 People Pleasing, the fraud it fears it is,
-    answers less closely than 85 and stays People-Pleaser's. */
+    answers less closely than 85 and stays People-Pleaser's. Collapse, as it
+    came: TULA puts it in BPD and ADHD, Collapse and Dysregulation, and a
+    competence it believes "unearned and discoverable as fraud" is worth
+    giving way, Collapse's d, where nothing in it swings. */
  {"nm":"Imposter","nids":[107,2,85],"hcx":"Collapse"},
  /* S01 Negotiator, fear and apathy. 85 Doubt and 11 Resistance are the doubt
     SABAUTH names and the pause its trigger names, change held off one more
@@ -339,9 +418,13 @@ const SAB_LIB=[
  /* S25 Overthinker, fear and shame. 85 Doubt, intuition dismissed; 83
     Paranoia, the narrative spinning a loop is; 46 Self-Judgment, the inner
     war. 81 Overanalysis and 79 Hypervigilance name it outright and carry
-    Shock and Anticipation, which its row does not key on. Dysregulation:
-    TULA names no family; Worrywart, its nearest sibling, is Dysregulation. */
- {"nm":"Overthinker","nids":[85,83,46],"hcx":"Dysregulation"},
+    Shock and Anticipation, which its row does not key on. Collapse, moved
+    from Dysregulation with its sibling: TULA names no family for it, and
+    the Worrywart, its nearest sibling, is Collapse now by TULA's Anxiety
+    disorders. Imposter, which runs on the same two charges, fear and
+    shame, is Collapse, and the Overthinker's SABAUTH opens on anxiety,
+    which HCX_LIB's Collapse translates. */
+ {"nm":"Overthinker","nids":[85,83,46],"hcx":"Collapse"},
  /* S26 Escapist, apathy and fear, and the one row that does not lean the
     way its bands do. Its fear band is the higher, 6 to 8 against apathy 4 to
     6, and of the addresses carrying Fear only 1 Fear, threat into
@@ -357,8 +440,12 @@ const SAB_LIB=[
     as the one exception by name. Root and sacral, the seats SNIFFER_SPEC
     gives the Explorer it pairs with. It shares 1 with Avoider and nothing
     more, and 14, the line Avoider's definition draws between them, is its
-    own. Dissociation: TULA names no family; Avoider is Dissociation, and
-    leaving before the feeling finishes is the outline left empty. */
+    own. Dissociation: TULA names no family for it. This note first leaned
+    on Avoider being Dissociation, and Avoider is Collapse now by TULA's
+    Anxiety disorders; but Avoider's own definition separates the two, so it
+    does not carry the Escapist with it. What decides is its own behaviour:
+    leaving before the feeling finishes is the outline left with nobody in
+    it, Dissociation's d, and HCX_LIB's Dissociation translates withdrawal. */
  {"nm":"Escapist","nids":[14,27,1],"hcx":"Dissociation"},
  /* S29 Pessimist, sadness and fear, its sadness band the higher. 91
     Nihilism, the first word of its SABAUTH; 83 Paranoia, narrative spinning,
@@ -372,9 +459,10 @@ const SAB_LIB=[
  /* S30 Catastrophizer, fear and sadness. 1 Fear, instinct and threat; 7
     Scarcity, resources, the threat to survival its definition jumps to; 16
     Collapse, structure gone, "this will destroy everything". All three at the
-    root. Dysregulation: TULA names no family; SABDEF calls the Worrywart the
-    same thing on a smaller scale, and Worrywart is Dysregulation. */
- {"nm":"Catastrophizer","nids":[1,7,16],"hcx":"Dysregulation"},
+    root. Collapse, moved from Dysregulation with its sibling: TULA names no
+    family for it, SABDEF calls the Worrywart the same thing on a smaller
+    scale, and the Worrywart is Collapse now by TULA's Anxiety disorders. */
+ {"nm":"Catastrophizer","nids":[1,7,16],"hcx":"Collapse"},
  /* S31 Enabler, apathy and shame, its shame band the higher, so two shame
     addresses and one apathy, the reverse of People-Pleaser, whose charges are
     the same two. 65 Self-Silencing, you see it and you do not say it; 31 Need
@@ -387,10 +475,14 @@ const SAB_LIB=[
  /* S32 Control Freak, fear, anger and anticipation. 45 Anxiety at the
     adrenal medulla, the sustained sympathetic activation its definition ends
     on; 41 Force, control over flow; 78 Distrust, distrust of others' hands.
-    It shares no address with Micromanager or Hyper-Vigilant, the two it is
-    composed of. Rigidity: TULA names no family; SABDEF says what separates it
-    from Hyper-Vigilant is the scan organised around its own agency, which is
-    Micromanager's Rigidity. */
+    Of the two it is composed of it shares one address with Hyper-Vigilant,
+    78, since that row was re-grounded, and none with Micromanager.
+    Rigidity: TULA names no family for it. This note first gave the reason
+    as Micromanager's Rigidity, and Micromanager is Grandiosity now by
+    TULA's Narcissism. Its other half, Hyper-Vigilant, is Rigidity by TULA's
+    OCPD, and its own drill names the state, the jaw, the shoulders and the
+    diaphragm already locked: nothing allowed out of its cell, Rigidity's d.
+    It stays. */
  {"nm":"Control Freak","nids":[45,41,78],"hcx":"Rigidity"}];
 /* THE CLINICAL NAMES ARE NOT SHOWN TO THE PERSON THEY ARE ABOUT.
 
