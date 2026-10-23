@@ -1002,12 +1002,7 @@
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
         "V341 source crosswalk candidate: Knowledge ↔ Knowledge. Evidence note: exact label match; semantics still require review. This is not an approved canonical semantic mapping.",
-        {
-          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
-          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
-          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
-          "status": "source_extracted_candidate_only"
-        }
+        "v341 source label/root membership extracted; proposed registry equivalence remains unapproved. Source: conversation upload MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 #ch17 and Chapter 28 #ch-domains."
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -1190,12 +1185,7 @@
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
         "V341 source crosswalk candidate: Communication and Exchange ↔ Communication. Evidence note: v341 explicitly says the standing simple name is Communication; prior/alternate label Connection/Exchange requires alias adjudication. This is not an approved canonical semantic mapping.",
-        {
-          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
-          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
-          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
-          "status": "source_extracted_candidate_only"
-        }
+        "v341 source label/root membership extracted; proposed registry equivalence remains unapproved. Source: conversation upload MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 #ch17 and Chapter 28 #ch-domains."
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -1378,12 +1368,7 @@
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
         "V341 source crosswalk candidate: Directed Force ↔ Power. Evidence note: v341 explicitly states Power (Directed Force). This is not an approved canonical semantic mapping.",
-        {
-          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
-          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
-          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
-          "status": "source_extracted_candidate_only"
-        }
+        "v341 source label/root membership extracted; proposed registry equivalence remains unapproved. Source: conversation upload MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 #ch17 and Chapter 28 #ch-domains."
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -1566,12 +1551,7 @@
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
         "V341 source crosswalk candidate: Rulership and Order ↔ Architect (Rulership) / Imperium. Evidence note: v341 says Architect (Rulership) is distinct from Power, but displayed 19-label list uses Imperium in Architect cluster and omits Architect as a roster member; contradiction. This is not an approved canonical semantic mapping.",
-        {
-          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
-          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
-          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
-          "status": "source_extracted_candidate_only"
-        }
+        "v341 source label/root membership extracted; proposed registry equivalence remains unapproved. Source: conversation upload MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 #ch17 and Chapter 28 #ch-domains."
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -1754,12 +1734,7 @@
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
         "V341 source crosswalk candidate: Creation and Manifestation ↔ Creation. Evidence note: candidate alias; source roster uses Creation. This is not an approved canonical semantic mapping.",
-        {
-          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
-          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
-          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
-          "status": "source_extracted_candidate_only"
-        }
+        "v341 source label/root membership extracted; proposed registry equivalence remains unapproved. Source: conversation upload MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 #ch17 and Chapter 28 #ch-domains."
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -1942,12 +1917,7 @@
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
         "V341 source crosswalk candidate: Destruction and Transformation ↔ Dissolution. Evidence note: v341 explicitly says the standing simple name is Dissolution. This is not an approved canonical semantic mapping.",
-        {
-          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
-          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
-          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
-          "status": "source_extracted_candidate_only"
-        }
+        "v341 source label/root membership extracted; proposed registry equivalence remains unapproved. Source: conversation upload MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 #ch17 and Chapter 28 #ch-domains."
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -2130,12 +2100,7 @@
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
         "V341 source crosswalk candidate: Love and Connection ↔ Love. Evidence note: v341 explicitly says the standing simple name is Love. This is not an approved canonical semantic mapping.",
-        {
-          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
-          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
-          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
-          "status": "source_extracted_candidate_only"
-        }
+        "v341 source label/root membership extracted; proposed registry equivalence remains unapproved. Source: conversation upload MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 #ch17 and Chapter 28 #ch-domains."
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -2318,12 +2283,7 @@
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
         "V341 source crosswalk candidate: Healing and Restoration ↔ Healing. Evidence note: v341 explicitly says the standing simple name is Healing. This is not an approved canonical semantic mapping.",
-        {
-          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
-          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
-          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
-          "status": "source_extracted_candidate_only"
-        }
+        "v341 source label/root membership extracted; proposed registry equivalence remains unapproved. Source: conversation upload MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 #ch17 and Chapter 28 #ch-domains."
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -2506,12 +2466,7 @@
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
         "V341 source crosswalk candidate: Sacrifice and Wisdom Through Descent ↔ Sacrifice. Evidence note: v341 explicitly says the standing simple name is Sacrifice. This is not an approved canonical semantic mapping.",
-        {
-          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
-          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
-          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
-          "status": "source_extracted_candidate_only"
-        }
+        "v341 source label/root membership extracted; proposed registry equivalence remains unapproved. Source: conversation upload MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 #ch17 and Chapter 28 #ch-domains."
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -2694,12 +2649,7 @@
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
         "V341 source crosswalk candidate: Justice and Truth ↔ Justice. Evidence note: candidate crosswalk; source roster uses Justice; Truth also names a Conscious Domain, so not a one-to-one semantic approval. This is not an approved canonical semantic mapping.",
-        {
-          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
-          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
-          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
-          "status": "source_extracted_candidate_only"
-        }
+        "v341 source label/root membership extracted; proposed registry equivalence remains unapproved. Source: conversation upload MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 #ch17 and Chapter 28 #ch-domains."
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -2882,12 +2832,7 @@
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
         "V341 source crosswalk candidate: Trickster and Disruption ↔ Trickster. Evidence note: candidate alias; source roster uses Trickster. This is not an approved canonical semantic mapping.",
-        {
-          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
-          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
-          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
-          "status": "source_extracted_candidate_only"
-        }
+        "v341 source label/root membership extracted; proposed registry equivalence remains unapproved. Source: conversation upload MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 #ch17 and Chapter 28 #ch-domains."
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -3070,12 +3015,7 @@
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
         "V341 source crosswalk candidate: Nature and Organic Intelligence ↔ Nature. Evidence note: candidate alias; source roster uses Nature. This is not an approved canonical semantic mapping.",
-        {
-          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
-          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
-          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
-          "status": "source_extracted_candidate_only"
-        }
+        "v341 source label/root membership extracted; proposed registry equivalence remains unapproved. Source: conversation upload MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 #ch17 and Chapter 28 #ch-domains."
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -3258,12 +3198,7 @@
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
         "V341 source crosswalk candidate: Mystery and the Unseen ↔ Mystery. Evidence note: candidate alias; source roster uses Mystery. This is not an approved canonical semantic mapping.",
-        {
-          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
-          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
-          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
-          "status": "source_extracted_candidate_only"
-        }
+        "v341 source label/root membership extracted; proposed registry equivalence remains unapproved. Source: conversation upload MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 #ch17 and Chapter 28 #ch-domains."
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -3446,12 +3381,7 @@
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
         "V341 source crosswalk candidate: Devotion and Right Action ↔ Duty. Evidence note: v341 explicitly says the standing simple name is Duty. This is not an approved canonical semantic mapping.",
-        {
-          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
-          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
-          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
-          "status": "source_extracted_candidate_only"
-        }
+        "v341 source label/root membership extracted; proposed registry equivalence remains unapproved. Source: conversation upload MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 #ch17 and Chapter 28 #ch-domains."
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
@@ -3634,12 +3564,7 @@
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
         "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
         "V341 source crosswalk candidate: Play and Creative Delight ↔ Play. Evidence note: candidate alias; source roster uses Play. This is not an approved canonical semantic mapping.",
-        {
-          "claim": "v341 source label/root membership extracted; proposed registry equivalence remains unapproved",
-          "source": "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
-          "section": "Chapter 12 Stacking Architecture (#ch17), Domains stack; Chapter 28 The Domains (#ch-domains)",
-          "status": "source_extracted_candidate_only"
-        }
+        "v341 source label/root membership extracted; proposed registry equivalence remains unapproved. Source: conversation upload MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 #ch17 and Chapter 28 #ch-domains."
       ],
       "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
