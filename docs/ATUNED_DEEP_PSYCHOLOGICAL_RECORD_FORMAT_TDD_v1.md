@@ -248,3 +248,10 @@ This ledger is the AI-to-AI continuity index for the current build. It lists the
 - Ledger link: [Build ledger and link register](ATUNED_DEEP_PSYCHOLOGICAL_BUILD_LEDGER_AND_LINK_REGISTER_2026-10-22.md).
 - The repository population report describes the 23-record structural population update at commit [f8faa88b31341b56d50dcc1751d483f9dad19675](https://github.com/rebootos-sourcce/MOB/commit/f8faa88b31341b56d50dcc1751d483f9dad19675).
 - This documentation update does not claim that the canonical content, adapter execution, generator/validator integration, runtime traversal, or link checker has passed.
+
+
+## 2026-10-22 source crosswalk gate
+
+The exact 23 target IDs and source taxonomy discrepancy are recorded in [ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md](ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md). This is an inventory and research plan, not canonical approval.
+
+The available SOURCE OS CANON identifies its source build as `MOB_Complete_v184.html`, not v341, and records an unresolved domain-count ruling: 18 in the book, 15 in the compilation, and 14 in the blueprint file. The exact v341 source has not been located in the MOB default-branch tree. Do not claim v341 extraction is complete until the actual v341 source/export, version marker, content hash, and relevant section anchors are verified. The 15 behavioral-domain IDs and eight Conscious Domain IDs are enumerated, but canonical source-to-record mappings approved by this crosswalk remain 0/23. Runtime integration and tests are separate, unverified gates.
