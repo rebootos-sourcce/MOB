@@ -17,6 +17,8 @@
     "Raised 17 October: pct 3148 with slice 2 (Summary, section S2), read off its green run on claude/percent-phase-2-s2 at 53f6f792. The slice 1 build read 2878 passed, 46 failed against it.",
     "Raised 17 October: pct 3238 with slice 3 (Analytics and the record, section S3), read off its green run on claude/percent-phase-2-s3 at f19e9d85. The slice 2 build read 3168 passed, 22 failed against it.",
     "Raised 23 October: landing 15 to 20, with the Discover opening (a clean device opens on Discover with it pressed, the opening is named once as TABHOME, the wordmark goes home to Discover, a press on Discover from the first landing opens the journal page, and a device that remembers another surface is still moved to Summary by its first link), read off its green run on the branch atuned/mvp-alpha-recursive-execution, the build carrying that change. The build from a4c2872b fails it on the cold open, the named opening, the wordmark and the press on Discover from the first landing.",
+    "Raised 23 October: boot 13 to 28, for the fifteen checks of section 4, a press is never lost to the boot sheet (the owner: \"Find why presses right after boot are dropped\"), read off three green local runs of tests/boot.js on the fixed build, branch atuned/mvp-alpha-recursive-execution. The build from a4c2872b, before the fix, read 18 passed, 10 failed against it on each of three runs.",
+    "Raised 23 October: boot 28 to 29, for the check that the sheet's fade and its opening beat start on one frame, which section 4 now reads the overture's clock off while the fade is held. Read off three green local runs on the build that holds the fade from the start. The build at 6343fd46, before the fix, read 19 passed, 10 failed against it on each of three runs.",
     "Raise a floor by editing this file on purpose, in the same change that adds the checks, from a green run. Never lower one to get green. Nothing writes this file.",
     "expected_red_max is the most expected red a gate may print. tools/floors.js fails a gate above its ceiling, and fails a gate that prints an expected red count with no ceiling here, so a failing check cannot be let off as expected red unseen. Added empty on 9 October: the lead sets each value from a clean full run, as printed, and until then the engine's floor step fails by name. It drops to 0 in the change that turns the expected reds green."
   ],
@@ -29,7 +31,7 @@
   "floors": {
     "engine": 5804,
     "funnel-package": 44,
-    "boot": 13,
+    "boot": 29,
     "collide": 388,
     "funnel": 657,
     "design": 192,

@@ -1496,9 +1496,12 @@ function helpSheet(){
 /* ---- THE BOOT CLEARS ITSELF ----
 
    The fade is CSS and the removal is not: an element at opacity 0 still
-   covers the app, still takes pointer events, and is still in the tab order,
-   so a boot that only animates out is a transparent sheet over a working
-   instrument. It is taken out of the document when it is done.
+   covers the app and is still in the tab order, so a boot that only animates
+   out is a transparent sheet over a working instrument. It is taken out of
+   the document when it is done. (It does not take the pointer, and has not
+   since .boot became pointer-events:none: a press always went through it,
+   which is why which press counts as the skip is decided by time, in
+   shell/body.html, and not by what the press landed on.)
 
    Reduced motion has no animation to end on, so that case is handled by the
    timer rather than by the event. The timer is the floor in every case, so a
@@ -1538,8 +1541,14 @@ var BOOT_FLOOR_AT=0;
     runs the sheet's animations can still be pending, with no start time, and
     a floor measured from here would sit late by however long the first frame
     took; ready is the promise that it has started, and the floor is set again
-    from its real clock then. */
- var ft=0;
+    from its real clock then.
+
+    AND READ AGAIN WHEN THE FADE IS PUT BACK ON THE CLOCK, 23 October. When
+    the start up runs longer than the overture, shell/body.html holds the
+    fade until it is done and then plays it whole from its own start, so the
+    end this read first is no longer the end. retime is that read, handed to
+    shell/body.html with the skip below. */
+ var ft=0, retime=function(){};
  function floor(ms){ clearTimeout(ft); BOOT_FLOOR_AT=performance.now()+ms; ft=setTimeout(clear,ms); }
  floor(5450);
  try{ var fade=el.getAnimations().filter(function(a){return a.animationName==='bootOut';})[0];
@@ -1549,8 +1558,9 @@ var BOOT_FLOOR_AT=0;
        frame's, which during a long script is well behind now, so the end is
        taken from the start time and not from the current time */
     var end=fade.effect.getComputedTiming().endTime;
-    floor(Math.max(0,(fade.startTime!=null?fade.startTime+end-performance.now():end-(fade.currentTime||0)))+200); };
-   set(); if(fade.pending&&fade.ready)fade.ready.then(set,function(){}); } }catch(e){}
+    floor(Math.max(0,(fade.startTime!=null?fade.startTime+end-performance.now():end-(fade.currentTime||0)))+200);
+    if(fade.pending&&fade.ready)fade.ready.then(set,function(){}); };
+   set(); retime=set; } }catch(e){}
  /* AND THERE IS A WAY OUT. Anything over 600ms needs one, and this is five
     seconds. It is the overture and it is worth watching, so it is not
     skipped automatically on a return visit and no flag is stored: a person
@@ -1567,33 +1577,31 @@ var BOOT_FLOOR_AT=0;
     Taken in the capture phase and stopped there, so the first press does one
     thing. Nothing else changes: the sheet still clears itself with no script
     at all, which is the ruling this whole block exists to keep. */
- /* Stopping pointerdown is not enough, and the first version of this fix was
-    wrong for that reason: click is a separate event and is dispatched whatever
-    happened to the pointerdown that preceded it. Measured after that fix, a
-    press over the Energetics tab still moved the surface from 2 to 5. The
-    click that follows the skip is swallowed once, in capture, and only that
-    one. */
- var eat=function(ev){ ev.stopPropagation(); if(ev.cancelable)ev.preventDefault(); };
- var skip=function(e){ if(gone)return;
-  /* THE DEVELOPER BUTTON IS THE ONE PRESS IN THIS SHEET THAT MEANS SOMETHING
-     OF ITS OWN, round MH and MI, ui/login.js. Read here rather than left to
-     its own listener on the button: the capture below stops every pointerdown
-     from reaching anything past this handler, on purpose, so a skip-press can
-     never also act on the tab strip underneath the sheet, and a listener on
-     the button itself would never see the same press. Set before that stop,
-     so it is set whichever of pointerdown or keydown got it here. */
-  if(e&&e.target&&e.target.id==='devskip'&&typeof DEV_SKIP!=='undefined'){ DEV_SKIP=true;
+ /* WHICH PRESS IS THE SKIP IS DECIDED IN shell/body.html NOW, 23 October,
+    and this is only what a skip does. The capture used to be registered
+    here, which is only once the whole main script has arrived and begun to
+    run: 824ms after the sheet was first painted when measured here, and as
+    long as the file takes to arrive on a slow connection. And it was let go
+    when this block heard the fade end, which is a frame or more after the
+    fade has ended on screen. A press in either gap was lost: in the first
+    it reached a frame with nothing listening, in the second it was eaten
+    as a skip over an app already in view. The capture, the stop and
+    the swallowed click (click is a separate event, sent whatever happened to
+    the pointerdown before it: measured once as a press over the Energetics
+    tab still moving the surface from 2 to 5) are all there now, ahead of the
+    sheet, and a skip that came before this block existed is handed over the
+    moment the start up finishes.
+
+    THE DEVELOPER BUTTON IS THE ONE PRESS IN THIS SHEET THAT MEANS SOMETHING
+    OF ITS OWN, round MH and MI, ui/login.js. Its press is stopped with every
+    other skip, so a listener on the button itself would never see it; the
+    capture says whether the press was on it, and the flag is set here. */
+ var skip=function(p){ if(gone)return;
+  if(p&&p.dev&&typeof DEV_SKIP!=='undefined'){ DEV_SKIP=true;
    if(typeof loginClose==='function'&&typeof LOGIN!=='undefined'&&LOGIN.open)loginClose(); }
-  if(e&&e.type==='pointerdown'){
-   e.stopPropagation();
-   addEventListener('click',eat,{once:true,capture:true});
-   /* and if no click ever arrives, the listener does not sit there waiting to
-      eat an unrelated one later. */
-   setTimeout(function(){removeEventListener('click',eat,true);},700); }
   el.style.transition='opacity .18s cubic-bezier(.4,0,1,1)';
   el.style.opacity='0'; lift(); setTimeout(clear,190); };
- addEventListener('pointerdown',skip,{once:true,capture:true});
- addEventListener('keydown',skip,{once:true,capture:true});
+ if(typeof __bootPress==='function')__bootPress(skip,function(){try{retime();}catch(e){}});
  var rm=(typeof matchMedia==='function')&&matchMedia('(prefers-reduced-motion:reduce)').matches;
  if(rm)clear();})();
 
