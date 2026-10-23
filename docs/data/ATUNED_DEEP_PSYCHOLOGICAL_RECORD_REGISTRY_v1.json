@@ -1100,38 +1100,55 @@
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+          "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+            ],
+            "findings": [
+              "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. Knowledge appears in the v341 Architect cluster; identity is lexical only until the 15/19 taxonomy is adjudicated."
+            ],
             "conflicts": [
-              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+              "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
             ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+            ],
+            "findings": [
+              "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+            ],
             "conflicts": [
-              "Independent corroboration not yet performed for the current record content."
+              "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "Candidate classification: exact_lexical_candidate. Knowledge appears in the v341 Architect cluster; identity is lexical only until the 15/19 taxonomy is adjudicated."
+            ],
             "conflicts": [
-              "Cross-record synthesis and owner/canon ruling not yet completed."
-            ]
+              "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
+            ],
+            "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
         ]
       },
@@ -1289,38 +1306,55 @@
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+          "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+            ],
+            "findings": [
+              "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. v341 uses Communication in Weaver; Exchange appears in the historical v184 grouping. Composite registry label is not an exact v341 label."
+            ],
             "conflicts": [
-              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+              "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
             ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+            ],
+            "findings": [
+              "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+            ],
             "conflicts": [
-              "Independent corroboration not yet performed for the current record content."
+              "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "Candidate classification: plausible_unapproved. v341 uses Communication in Weaver; Exchange appears in the historical v184 grouping. Composite registry label is not an exact v341 label."
+            ],
             "conflicts": [
-              "Cross-record synthesis and owner/canon ruling not yet completed."
-            ]
+              "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
+            ],
+            "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
         ]
       },
@@ -1478,38 +1512,55 @@
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+          "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+            ],
+            "findings": [
+              "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. v341 explicitly writes Power (Directed Force) in its ruling text, while the 19-label list uses Power. Keep as candidate alias, not canonical mapping."
+            ],
             "conflicts": [
-              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+              "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
             ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+            ],
+            "findings": [
+              "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+            ],
             "conflicts": [
-              "Independent corroboration not yet performed for the current record content."
+              "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "Candidate classification: source_stated_alias_candidate. v341 explicitly writes Power (Directed Force) in its ruling text, while the 19-label list uses Power. Keep as candidate alias, not canonical mapping."
+            ],
             "conflicts": [
-              "Cross-record synthesis and owner/canon ruling not yet completed."
-            ]
+              "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
+            ],
+            "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
         ]
       },
@@ -1667,38 +1718,55 @@
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+          "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+            ],
+            "findings": [
+              "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. v341 says Architect (Rulership) is separate from Power, but Architect is a cluster/root and is absent from the displayed 19 member labels. Do not map automatically."
+            ],
             "conflicts": [
-              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+              "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
             ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+            ],
+            "findings": [
+              "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+            ],
             "conflicts": [
-              "Independent corroboration not yet performed for the current record content."
+              "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "Candidate classification: contradiction_owner_ruling_required. v341 says Architect (Rulership) is separate from Power, but Architect is a cluster/root and is absent from the displayed 19 member labels. Do not map automatically."
+            ],
             "conflicts": [
-              "Cross-record synthesis and owner/canon ruling not yet completed."
-            ]
+              "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
+            ],
+            "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
         ]
       },
@@ -1856,38 +1924,55 @@
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+          "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+            ],
+            "findings": [
+              "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. Creation appears in the v341 Engine cluster; Manifestation is not separately listed."
+            ],
             "conflicts": [
-              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+              "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
             ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+            ],
+            "findings": [
+              "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+            ],
             "conflicts": [
-              "Independent corroboration not yet performed for the current record content."
+              "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "Candidate classification: plausible_unapproved. Creation appears in the v341 Engine cluster; Manifestation is not separately listed."
+            ],
             "conflicts": [
-              "Cross-record synthesis and owner/canon ruling not yet completed."
-            ]
+              "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
+            ],
+            "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
         ]
       },
@@ -2045,38 +2130,55 @@
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+          "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+            ],
+            "findings": [
+              "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. Dissolution appears in the v341 Engine cluster; the compound registry wording is not an exact source label."
+            ],
             "conflicts": [
-              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+              "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
             ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+            ],
+            "findings": [
+              "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+            ],
             "conflicts": [
-              "Independent corroboration not yet performed for the current record content."
+              "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "Candidate classification: plausible_unapproved. Dissolution appears in the v341 Engine cluster; the compound registry wording is not an exact source label."
+            ],
             "conflicts": [
-              "Cross-record synthesis and owner/canon ruling not yet completed."
-            ]
+              "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
+            ],
+            "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
         ]
       },
@@ -2234,38 +2336,55 @@
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+          "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+            ],
+            "findings": [
+              "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. Love appears in the v341 Weaver cluster; Connection is the cluster name and an earlier alias, not a second member label."
+            ],
             "conflicts": [
-              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+              "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
             ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+            ],
+            "findings": [
+              "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+            ],
             "conflicts": [
-              "Independent corroboration not yet performed for the current record content."
+              "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "Candidate classification: plausible_unapproved. Love appears in the v341 Weaver cluster; Connection is the cluster name and an earlier alias, not a second member label."
+            ],
             "conflicts": [
-              "Cross-record synthesis and owner/canon ruling not yet completed."
-            ]
+              "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
+            ],
+            "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
         ]
       },
@@ -2423,38 +2542,55 @@
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+          "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+            ],
+            "findings": [
+              "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. Healing appears in the v341 Weaver cluster; Restoration appears in the historical v184 list, so the compound needs alias adjudication."
+            ],
             "conflicts": [
-              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+              "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
             ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+            ],
+            "findings": [
+              "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+            ],
             "conflicts": [
-              "Independent corroboration not yet performed for the current record content."
+              "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "Candidate classification: plausible_unapproved. Healing appears in the v341 Weaver cluster; Restoration appears in the historical v184 list, so the compound needs alias adjudication."
+            ],
             "conflicts": [
-              "Cross-record synthesis and owner/canon ruling not yet completed."
-            ]
+              "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
+            ],
+            "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
         ]
       },
@@ -2612,38 +2748,55 @@
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+          "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+            ],
+            "findings": [
+              "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. Sacrifice appears in the v341 Engine cluster; Descent appears in the historical v184 list and in v341 explanatory material, but is not the displayed cluster member label."
+            ],
             "conflicts": [
-              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+              "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
             ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+            ],
+            "findings": [
+              "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+            ],
             "conflicts": [
-              "Independent corroboration not yet performed for the current record content."
+              "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "Candidate classification: plausible_unapproved. Sacrifice appears in the v341 Engine cluster; Descent appears in the historical v184 list and in v341 explanatory material, but is not the displayed cluster member label."
+            ],
             "conflicts": [
-              "Cross-record synthesis and owner/canon ruling not yet completed."
-            ]
+              "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
+            ],
+            "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
         ]
       },
@@ -2801,38 +2954,55 @@
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+          "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+            ],
+            "findings": [
+              "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. Justice appears in the v341 Architect cluster; Truth is not a separate member label in the displayed 19."
+            ],
             "conflicts": [
-              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+              "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
             ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+            ],
+            "findings": [
+              "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+            ],
             "conflicts": [
-              "Independent corroboration not yet performed for the current record content."
+              "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "Candidate classification: plausible_unapproved. Justice appears in the v341 Architect cluster; Truth is not a separate member label in the displayed 19."
+            ],
             "conflicts": [
-              "Cross-record synthesis and owner/canon ruling not yet completed."
-            ]
+              "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
+            ],
+            "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
         ]
       },
@@ -2990,38 +3160,55 @@
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+          "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+            ],
+            "findings": [
+              "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. Trickster appears in the v341 Witness cluster; Disruption is not a separate member label."
+            ],
             "conflicts": [
-              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+              "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
             ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+            ],
+            "findings": [
+              "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+            ],
             "conflicts": [
-              "Independent corroboration not yet performed for the current record content."
+              "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "Candidate classification: plausible_unapproved. Trickster appears in the v341 Witness cluster; Disruption is not a separate member label."
+            ],
             "conflicts": [
-              "Cross-record synthesis and owner/canon ruling not yet completed."
-            ]
+              "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
+            ],
+            "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
         ]
       },
@@ -3179,38 +3366,55 @@
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+          "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+            ],
+            "findings": [
+              "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. Nature appears in the v341 Witness cluster; Organic Intelligence is not a separate member label."
+            ],
             "conflicts": [
-              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+              "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
             ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+            ],
+            "findings": [
+              "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+            ],
             "conflicts": [
-              "Independent corroboration not yet performed for the current record content."
+              "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "Candidate classification: plausible_unapproved. Nature appears in the v341 Witness cluster; Organic Intelligence is not a separate member label."
+            ],
             "conflicts": [
-              "Cross-record synthesis and owner/canon ruling not yet completed."
-            ]
+              "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
+            ],
+            "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
         ]
       },
@@ -3368,38 +3572,55 @@
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+          "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+            ],
+            "findings": [
+              "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. Mystery appears in the v341 Witness cluster; Unseen is not a separate member label."
+            ],
             "conflicts": [
-              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+              "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
             ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+            ],
+            "findings": [
+              "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+            ],
             "conflicts": [
-              "Independent corroboration not yet performed for the current record content."
+              "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "Candidate classification: plausible_unapproved. Mystery appears in the v341 Witness cluster; Unseen is not a separate member label."
+            ],
             "conflicts": [
-              "Cross-record synthesis and owner/canon ruling not yet completed."
-            ]
+              "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
+            ],
+            "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
         ]
       },
@@ -3557,38 +3778,55 @@
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+          "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+            ],
+            "findings": [
+              "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. Duty appears in the v341 Architect cluster and is named among the seven surviving simple labels; Right Action is not a separate member label."
+            ],
             "conflicts": [
-              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+              "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
             ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+            ],
+            "findings": [
+              "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+            ],
             "conflicts": [
-              "Independent corroboration not yet performed for the current record content."
+              "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "Candidate classification: plausible_unapproved. Duty appears in the v341 Architect cluster and is named among the seven surviving simple labels; Right Action is not a separate member label."
+            ],
             "conflicts": [
-              "Cross-record synthesis and owner/canon ruling not yet completed."
-            ]
+              "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
+            ],
+            "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
         ]
       },
@@ -3746,38 +3984,55 @@
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+          "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+          "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
         ],
         "researchPasses": [
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4"
+            ],
+            "findings": [
+              "Extracted the v341 four-cluster, 19-label roster and checked the Chapter 28 statement that the count is nineteen. Play appears in the v341 Weaver cluster; Creative Delight is not a separate member label."
+            ],
             "conflicts": [
-              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+              "The compound owner-stated registry label is not always an exact v341 member label; see linked 23-record crosswalk."
             ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json (source build MOB_Complete_v184.html; historical comparison only)"
+            ],
+            "findings": [
+              "Compared v341's 19-label roster and alias ruling with the historical v184 source-canon grouping. The historical source reports a different 18-label roster; this comparison confirms taxonomy drift, not equivalence."
+            ],
             "conflicts": [
-              "Independent corroboration not yet performed for the current record content."
+              "v184 is not v341 and cannot override v341. The 18/15/14 count dispute and seven-name alias ruling remain unresolved."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "pending",
-            "sources": [],
-            "findings": [],
+            "status": "complete",
+            "sources": [
+              "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
+            ],
+            "findings": [
+              "Candidate classification: plausible_unapproved. Play appears in the v341 Weaver cluster; Creative Delight is not a separate member label."
+            ],
             "conflicts": [
-              "Cross-record synthesis and owner/canon ruling not yet completed."
-            ]
+              "No canonical edge or alias is approved. Preserve the provisional definition and unresolved taxonomy status until owner ruling."
+            ],
+            "completionNote": "Three-pass research synthesis completed for this record. Taxonomy/alias conflicts remain explicitly unresolved; this does not approve a canonical mapping."
           }
         ]
       },
