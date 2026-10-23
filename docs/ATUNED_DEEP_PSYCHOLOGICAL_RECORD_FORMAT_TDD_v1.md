@@ -330,3 +330,62 @@ The template catalog is not engine-integrated and the adapter remains separate f
 
 ### Closure decision
 Status remains **OPEN / NOT VERIFIED**. This documentation pass did not freshly parse the registry, execute tests, or demonstrate runtime integration. Opposites remain out of scope.
+
+
+---
+
+## 11. Owner design clarification — behavioral energy, masks, and super-complex relationship (2026-10-22)
+
+**Status:** Owner-stated conceptual model captured; implementation semantics are a proposed design interpretation pending validation against existing record schemas and engine behavior. Do not silently present proposed edges as implemented.
+
+### 11.1 Guiding-post rule
+Canonical names and definitions are guiding posts, not the full construct. They orient retrieval and keep taxonomy legible, but the record must also describe the behavioral energy: the recurring motivational, attention, and action pattern that becomes visible in behavior. Warrior and Sage are examples. People are not mutually exclusive types; each person can express degrees of many energies, with primary, secondary, and potentially tertiary expression. Support ranked or weighted multi-energy profiles rather than one-hot classification.
+
+Keep these concepts distinct: canonical name/label; guiding-post definition; behavioral energy (motivational pull, attention bias, action tendency, adaptive and distorted expression); per-person expression profile; and provenance. Do not force scores to sum to 100 unless a later product decision requires it.
+
+### 11.2 Proposed cascade
+The owner describes a cascade from root programming into archetypes and then super-complexes, while questioning whether super-complexes are a discrete layer or energetic drivers. Best-fit working interpretation is a causal/influence graph, not a guaranteed linear stack:
+1. Root programming / root complexes — deep organizing assumptions and constraints.
+2. Behavioral domains — broad fields in which root programming becomes behaviorally legible.
+3. Archetypal energies — reusable patterns of motivation, attention, agency, and action; multiple energies can coexist at different strengths.
+4. Super-complexes as energetic drivers (working hypothesis) — influences/modulators that may amplify, suppress, distort, or redirect archetypal expression. Prefer typed influence edges over forced parent-child placement unless source evidence or engine contracts require otherwise.
+5. Mask state — a psychospiritual state of identification/adaptation connecting egoic/psychological adaptation with essential/spiritual energy that remains visible.
+6. Observable expression/action — what a person says, chooses, does, avoids, or repeats. Assess coherence by tracing signal to action without replacing the existing coherence model.
+
+This is a working architecture. Do not infer direct parentage from the sequence. If the schema only supports parent/child links, extend it deliberately rather than encoding influence as false parentage.
+
+### 11.3 Mask model — state-change semantics
+Owner formulation: the mask is a state change associated with binary states of identification. It can blend psychological/egoic adaptation with spiritual/essential energy. Shadow is part of the mask but not necessarily the whole mask. The ego may not recognize an inner energy (e.g., Warrior), while that energy remains visible through a gap in the mask. Removing masks is hypothesized to let dominant energies express more naturally.
+
+Operationalize without overclaiming:
+- Treat a mask as a contextual state/condition record or stateful relation, not automatically a permanent personality trait.
+- Record trigger/context, adopted identity or protective strategy, shadow relation, what is obscured or distorted, visible residual energy, and observable behavior/outcome.
+- Use named binary poles only when the owner/source defines them. Do not invent a universal binary or assume every mask has only two possible states.
+- Treat “light through a hole” as a metaphor for residual/visible energy that remains observable when not consciously identified with or integrated. This is a hypothesis, not a clinically validated mechanism.
+- Model mask removal as a possible state transition that may reduce distortion and increase congruent expression; do not assume it always has a positive outcome.
+- Saboteurs and super-complexes may influence mask formation/maintenance, but those are separate typed edges requiring evidence.
+
+### 11.4 Root programming and ideology over time
+Owner-stated developmental proposition: a child has root programming first, which becomes expressed over time as ideology. Store this as a temporal-development hypothesis with developmental origin, sequence, later ideological expression, evidence, and confidence where supported. Do not treat ideology as inevitable or deterministic; preserve context, feedback, mediation, and alternative pathways.
+
+### 11.5 Record and relationship contract
+Where applicable, records should represent behavioralEnergy, adaptiveExpression, distortedExpression, motivationalPull, attentionBias, actionTendency, maskState or maskStateRef, visibleResidualEnergy, and developmentalSequence. Influence edges should identify source, target, relation type, direction, evidence references, confidence, and status. These are semantic requirements, not a claim that the fields already exist; inspect and migrate schema/templates/generator compatibly before declaring validation success.
+
+### 11.6 Acceptance tests
+1. A profile can represent at least three archetypal energies with distinct ranks/intensities without collapsing into one exclusive type.
+2. Archetype records contain a guiding-post definition, behavioral-energy description, adaptive/distorted expression, provenance, and explicit research status.
+3. A super-complex can influence multiple energies without requiring a single parent-child chain.
+4. A mask can be modeled as a contextual state transition linked to shadow, visible energy, and action without equating those concepts.
+5. State changes can be traced through influence edges to changed behavior; missing/unsupported edges are reported.
+6. Root-to-ideology paths remain evidence-qualified hypotheses, not deterministic claims.
+7. Validators distinguish missing content, provisional hypotheses, owner-stated concepts, and source-verified semantics.
+8. Relation types receive suitable consistency checks and do not create false parentage.
+
+### 11.7 Implementation order and status
+First preserve this model in documentation; then audit schema, templates, adapter, generator, and validator; populate provisional owner-stated content; research affected records in three distinct passes, using independent external sources where ATÜNED sources are silent; run structural audits; and only after record acceptance wire influence edges/state transitions into runtime. General research can inform a provisional model but cannot validate owner-specific claims by itself.
+
+**Owner-stated:** graded multi-archetype expression; root-to-ideology developmental proposition; masks as psychospiritual state changes; shadow as part of mask; residual energy visible through gaps; super-complexes possibly as energetic drivers.
+**Working interpretation:** influence/modulator edges and contextual mask-state records.
+**Not established:** exact binary poles, canonical super-complex/archetype edges, quantitative scoring, clinical validity, deterministic development, and current runtime schema support.
+
+Do not close KPI 1 from this conceptual addition alone. It is a TDD update, not evidence that all records are populated, researched three times, or validated.
