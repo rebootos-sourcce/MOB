@@ -27528,7 +27528,8 @@
       "sourceRefs": [
         "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
         "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
-        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+        "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
       ],
       "sourceIds": [
         "MOB_Complete_v341.html#domain-roster:architect:knowledge"
@@ -27556,10 +27557,12 @@
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
             "Reboot-OS/atuned/data/canon.json; SOURCE OS CANON v1.0.0 built from v184",
-            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928"
+            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928",
+            "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
           ],
           "findings": [
-            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:01. Crosswalk status: EXACT_LEXICAL_CANDIDATE_NOT_APPROVED."
+            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:01. Crosswalk status: EXACT_LEXICAL_CANDIDATE_NOT_APPROVED.",
+            "Comparative pass inspected the v336 description for this matching label. It is version comparison only; the v341-specific wording remains unverified."
           ]
         },
         {
@@ -27571,7 +27574,8 @@
             "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
           ],
           "findings": [
-            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted."
+            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted.",
+            "Adversarial check: v336 cannot be silently substituted for v341; keep the source-version-specific definition gap open."
           ]
         }
       ],
@@ -27658,6 +27662,12 @@
             ]
           }
         ]
+      },
+      "comparativeSourceReview": {
+        "sourceVersion": "MOB_Complete_v336",
+        "sourceSha256": "a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542",
+        "status": "REVIEWED_COMPARATIVE_ONLY_NOT_SUBSTITUTED",
+        "note": "Matching domain label and Clear/Distorted/Templates descriptions were inspected in v336. The wording is not represented as v341 content; exact v341 definitions remain unverified."
       }
     },
     {
@@ -27678,7 +27688,8 @@
       "sourceRefs": [
         "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
         "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
-        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+        "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
       ],
       "sourceIds": [
         "MOB_Complete_v341.html#domain-roster:architect:justice"
@@ -27706,10 +27717,12 @@
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
             "Reboot-OS/atuned/data/canon.json; SOURCE OS CANON v1.0.0 built from v184",
-            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928"
+            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928",
+            "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
           ],
           "findings": [
-            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:10. Crosswalk status: PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED."
+            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:10. Crosswalk status: PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED.",
+            "Comparative pass inspected the v336 description for this matching label. It is version comparison only; the v341-specific wording remains unverified."
           ]
         },
         {
@@ -27721,7 +27734,8 @@
             "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
           ],
           "findings": [
-            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted."
+            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted.",
+            "Adversarial check: v336 cannot be silently substituted for v341; keep the source-version-specific definition gap open."
           ]
         }
       ],
@@ -27808,6 +27822,12 @@
             ]
           }
         ]
+      },
+      "comparativeSourceReview": {
+        "sourceVersion": "MOB_Complete_v336",
+        "sourceSha256": "a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542",
+        "status": "REVIEWED_COMPARATIVE_ONLY_NOT_SUBSTITUTED",
+        "note": "Matching domain label and Clear/Distorted/Templates descriptions were inspected in v336. The wording is not represented as v341 content; exact v341 definitions remain unverified."
       }
     },
     {
@@ -27828,7 +27848,8 @@
       "sourceRefs": [
         "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
         "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
-        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+        "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
       ],
       "sourceIds": [
         "MOB_Complete_v341.html#domain-roster:architect:imperium"
@@ -27856,10 +27877,12 @@
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
             "Reboot-OS/atuned/data/canon.json; SOURCE OS CANON v1.0.0 built from v184",
-            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928"
+            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928",
+            "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
           ],
           "findings": [
-            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: none established. Crosswalk status: ROOT_DOMAIN_DISTINCTION_OPEN."
+            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: none established. Crosswalk status: ROOT_DOMAIN_DISTINCTION_OPEN.",
+            "Comparative pass inspected the v336 description for this matching label. It is version comparison only; the v341-specific wording remains unverified."
           ]
         },
         {
@@ -27871,7 +27894,8 @@
             "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
           ],
           "findings": [
-            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted."
+            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted.",
+            "Adversarial check: v336 cannot be silently substituted for v341; keep the source-version-specific definition gap open."
           ]
         }
       ],
@@ -27956,6 +27980,12 @@
             ]
           }
         ]
+      },
+      "comparativeSourceReview": {
+        "sourceVersion": "MOB_Complete_v336",
+        "sourceSha256": "a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542",
+        "status": "REVIEWED_COMPARATIVE_ONLY_NOT_SUBSTITUTED",
+        "note": "Matching domain label and Clear/Distorted/Templates descriptions were inspected in v336. The wording is not represented as v341 content; exact v341 definitions remain unverified."
       }
     },
     {
@@ -27976,7 +28006,8 @@
       "sourceRefs": [
         "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
         "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
-        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+        "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
       ],
       "sourceIds": [
         "MOB_Complete_v341.html#domain-roster:architect:duty"
@@ -28004,10 +28035,12 @@
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
             "Reboot-OS/atuned/data/canon.json; SOURCE OS CANON v1.0.0 built from v184",
-            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928"
+            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928",
+            "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
           ],
           "findings": [
-            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:14. Crosswalk status: PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED."
+            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:14. Crosswalk status: PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED.",
+            "Comparative pass inspected the v336 description for this matching label. It is version comparison only; the v341-specific wording remains unverified."
           ]
         },
         {
@@ -28019,7 +28052,8 @@
             "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
           ],
           "findings": [
-            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted."
+            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted.",
+            "Adversarial check: v336 cannot be silently substituted for v341; keep the source-version-specific definition gap open."
           ]
         }
       ],
@@ -28106,6 +28140,12 @@
             ]
           }
         ]
+      },
+      "comparativeSourceReview": {
+        "sourceVersion": "MOB_Complete_v336",
+        "sourceSha256": "a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542",
+        "status": "REVIEWED_COMPARATIVE_ONLY_NOT_SUBSTITUTED",
+        "note": "Matching domain label and Clear/Distorted/Templates descriptions were inspected in v336. The wording is not represented as v341 content; exact v341 definitions remain unverified."
       }
     },
     {
@@ -28126,7 +28166,8 @@
       "sourceRefs": [
         "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
         "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
-        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+        "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
       ],
       "sourceIds": [
         "MOB_Complete_v341.html#domain-roster:architect:fate"
@@ -28154,10 +28195,12 @@
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
             "Reboot-OS/atuned/data/canon.json; SOURCE OS CANON v1.0.0 built from v184",
-            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928"
+            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928",
+            "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
           ],
           "findings": [
-            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: none established. Crosswalk status: NO_EXACT_CURRENT_MANUSCRIPT_CANDIDATE."
+            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: none established. Crosswalk status: NO_EXACT_CURRENT_MANUSCRIPT_CANDIDATE.",
+            "Comparative pass inspected the v336 description for this matching label. It is version comparison only; the v341-specific wording remains unverified."
           ]
         },
         {
@@ -28169,7 +28212,8 @@
             "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
           ],
           "findings": [
-            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted."
+            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted.",
+            "Adversarial check: v336 cannot be silently substituted for v341; keep the source-version-specific definition gap open."
           ]
         }
       ],
@@ -28254,6 +28298,12 @@
             ]
           }
         ]
+      },
+      "comparativeSourceReview": {
+        "sourceVersion": "MOB_Complete_v336",
+        "sourceSha256": "a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542",
+        "status": "REVIEWED_COMPARATIVE_ONLY_NOT_SUBSTITUTED",
+        "note": "Matching domain label and Clear/Distorted/Templates descriptions were inspected in v336. The wording is not represented as v341 content; exact v341 definitions remain unverified."
       }
     },
     {
@@ -28274,7 +28324,8 @@
       "sourceRefs": [
         "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
         "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
-        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+        "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
       ],
       "sourceIds": [
         "MOB_Complete_v341.html#domain-roster:engine:power"
@@ -28302,10 +28353,12 @@
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
             "Reboot-OS/atuned/data/canon.json; SOURCE OS CANON v1.0.0 built from v184",
-            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928"
+            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928",
+            "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
           ],
           "findings": [
-            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:03. Crosswalk status: POWER_DIRECTED_FORCE_ALIAS_CANDIDATE_NOT_APPROVED."
+            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:03. Crosswalk status: POWER_DIRECTED_FORCE_ALIAS_CANDIDATE_NOT_APPROVED.",
+            "Comparative pass inspected the v336 description for this matching label. It is version comparison only; the v341-specific wording remains unverified."
           ]
         },
         {
@@ -28317,7 +28370,8 @@
             "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
           ],
           "findings": [
-            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted."
+            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted.",
+            "Adversarial check: v336 cannot be silently substituted for v341; keep the source-version-specific definition gap open."
           ]
         }
       ],
@@ -28404,6 +28458,12 @@
             ]
           }
         ]
+      },
+      "comparativeSourceReview": {
+        "sourceVersion": "MOB_Complete_v336",
+        "sourceSha256": "a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542",
+        "status": "REVIEWED_COMPARATIVE_ONLY_NOT_SUBSTITUTED",
+        "note": "Matching domain label and Clear/Distorted/Templates descriptions were inspected in v336. The wording is not represented as v341 content; exact v341 definitions remain unverified."
       }
     },
     {
@@ -28424,7 +28484,8 @@
       "sourceRefs": [
         "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
         "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
-        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+        "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
       ],
       "sourceIds": [
         "MOB_Complete_v341.html#domain-roster:engine:creation"
@@ -28452,10 +28513,12 @@
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
             "Reboot-OS/atuned/data/canon.json; SOURCE OS CANON v1.0.0 built from v184",
-            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928"
+            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928",
+            "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
           ],
           "findings": [
-            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:05. Crosswalk status: PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED."
+            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:05. Crosswalk status: PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED.",
+            "Comparative pass inspected the v336 description for this matching label. It is version comparison only; the v341-specific wording remains unverified."
           ]
         },
         {
@@ -28467,7 +28530,8 @@
             "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
           ],
           "findings": [
-            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted."
+            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted.",
+            "Adversarial check: v336 cannot be silently substituted for v341; keep the source-version-specific definition gap open."
           ]
         }
       ],
@@ -28554,6 +28618,12 @@
             ]
           }
         ]
+      },
+      "comparativeSourceReview": {
+        "sourceVersion": "MOB_Complete_v336",
+        "sourceSha256": "a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542",
+        "status": "REVIEWED_COMPARATIVE_ONLY_NOT_SUBSTITUTED",
+        "note": "Matching domain label and Clear/Distorted/Templates descriptions were inspected in v336. The wording is not represented as v341 content; exact v341 definitions remain unverified."
       }
     },
     {
@@ -28574,7 +28644,8 @@
       "sourceRefs": [
         "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
         "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
-        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+        "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
       ],
       "sourceIds": [
         "MOB_Complete_v341.html#domain-roster:engine:dissolution"
@@ -28602,10 +28673,12 @@
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
             "Reboot-OS/atuned/data/canon.json; SOURCE OS CANON v1.0.0 built from v184",
-            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928"
+            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928",
+            "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
           ],
           "findings": [
-            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:06. Crosswalk status: RENEWAL_TRANSFORMATION_LABEL_VARIANT_NOT_APPROVED."
+            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:06. Crosswalk status: RENEWAL_TRANSFORMATION_LABEL_VARIANT_NOT_APPROVED.",
+            "Comparative pass inspected the v336 description for this matching label. It is version comparison only; the v341-specific wording remains unverified."
           ]
         },
         {
@@ -28617,7 +28690,8 @@
             "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
           ],
           "findings": [
-            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted."
+            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted.",
+            "Adversarial check: v336 cannot be silently substituted for v341; keep the source-version-specific definition gap open."
           ]
         }
       ],
@@ -28704,6 +28778,12 @@
             ]
           }
         ]
+      },
+      "comparativeSourceReview": {
+        "sourceVersion": "MOB_Complete_v336",
+        "sourceSha256": "a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542",
+        "status": "REVIEWED_COMPARATIVE_ONLY_NOT_SUBSTITUTED",
+        "note": "Matching domain label and Clear/Distorted/Templates descriptions were inspected in v336. The wording is not represented as v341 content; exact v341 definitions remain unverified."
       }
     },
     {
@@ -28724,7 +28804,8 @@
       "sourceRefs": [
         "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
         "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
-        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+        "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
       ],
       "sourceIds": [
         "MOB_Complete_v341.html#domain-roster:engine:sacrifice"
@@ -28752,10 +28833,12 @@
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
             "Reboot-OS/atuned/data/canon.json; SOURCE OS CANON v1.0.0 built from v184",
-            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928"
+            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928",
+            "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
           ],
           "findings": [
-            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:09. Crosswalk status: PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED."
+            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:09. Crosswalk status: PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED.",
+            "Comparative pass inspected the v336 description for this matching label. It is version comparison only; the v341-specific wording remains unverified."
           ]
         },
         {
@@ -28767,7 +28850,8 @@
             "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
           ],
           "findings": [
-            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted."
+            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted.",
+            "Adversarial check: v336 cannot be silently substituted for v341; keep the source-version-specific definition gap open."
           ]
         }
       ],
@@ -28854,6 +28938,12 @@
             ]
           }
         ]
+      },
+      "comparativeSourceReview": {
+        "sourceVersion": "MOB_Complete_v336",
+        "sourceSha256": "a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542",
+        "status": "REVIEWED_COMPARATIVE_ONLY_NOT_SUBSTITUTED",
+        "note": "Matching domain label and Clear/Distorted/Templates descriptions were inspected in v336. The wording is not represented as v341 content; exact v341 definitions remain unverified."
       }
     },
     {
@@ -28874,7 +28964,8 @@
       "sourceRefs": [
         "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
         "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
-        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+        "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
       ],
       "sourceIds": [
         "MOB_Complete_v341.html#domain-roster:engine:death"
@@ -28902,10 +28993,12 @@
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
             "Reboot-OS/atuned/data/canon.json; SOURCE OS CANON v1.0.0 built from v184",
-            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928"
+            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928",
+            "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
           ],
           "findings": [
-            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: none established. Crosswalk status: NO_EXACT_CURRENT_MANUSCRIPT_CANDIDATE."
+            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: none established. Crosswalk status: NO_EXACT_CURRENT_MANUSCRIPT_CANDIDATE.",
+            "Comparative pass inspected the v336 description for this matching label. It is version comparison only; the v341-specific wording remains unverified."
           ]
         },
         {
@@ -28917,7 +29010,8 @@
             "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
           ],
           "findings": [
-            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted."
+            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted.",
+            "Adversarial check: v336 cannot be silently substituted for v341; keep the source-version-specific definition gap open."
           ]
         }
       ],
@@ -29002,6 +29096,12 @@
             ]
           }
         ]
+      },
+      "comparativeSourceReview": {
+        "sourceVersion": "MOB_Complete_v336",
+        "sourceSha256": "a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542",
+        "status": "REVIEWED_COMPARATIVE_ONLY_NOT_SUBSTITUTED",
+        "note": "Matching domain label and Clear/Distorted/Templates descriptions were inspected in v336. The wording is not represented as v341 content; exact v341 definitions remain unverified."
       }
     },
     {
@@ -29022,7 +29122,8 @@
       "sourceRefs": [
         "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
         "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
-        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+        "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
       ],
       "sourceIds": [
         "MOB_Complete_v341.html#domain-roster:weaver:love"
@@ -29050,10 +29151,12 @@
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
             "Reboot-OS/atuned/data/canon.json; SOURCE OS CANON v1.0.0 built from v184",
-            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928"
+            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928",
+            "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
           ],
           "findings": [
-            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:07. Crosswalk status: PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED."
+            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:07. Crosswalk status: PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED.",
+            "Comparative pass inspected the v336 description for this matching label. It is version comparison only; the v341-specific wording remains unverified."
           ]
         },
         {
@@ -29065,7 +29168,8 @@
             "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
           ],
           "findings": [
-            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted."
+            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted.",
+            "Adversarial check: v336 cannot be silently substituted for v341; keep the source-version-specific definition gap open."
           ]
         }
       ],
@@ -29152,6 +29256,12 @@
             ]
           }
         ]
+      },
+      "comparativeSourceReview": {
+        "sourceVersion": "MOB_Complete_v336",
+        "sourceSha256": "a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542",
+        "status": "REVIEWED_COMPARATIVE_ONLY_NOT_SUBSTITUTED",
+        "note": "Matching domain label and Clear/Distorted/Templates descriptions were inspected in v336. The wording is not represented as v341 content; exact v341 definitions remain unverified."
       }
     },
     {
@@ -29172,7 +29282,8 @@
       "sourceRefs": [
         "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
         "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
-        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+        "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
       ],
       "sourceIds": [
         "MOB_Complete_v341.html#domain-roster:weaver:communication"
@@ -29200,10 +29311,12 @@
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
             "Reboot-OS/atuned/data/canon.json; SOURCE OS CANON v1.0.0 built from v184",
-            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928"
+            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928",
+            "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
           ],
           "findings": [
-            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:02. Crosswalk status: PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED."
+            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:02. Crosswalk status: PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED.",
+            "Comparative pass inspected the v336 description for this matching label. It is version comparison only; the v341-specific wording remains unverified."
           ]
         },
         {
@@ -29215,7 +29328,8 @@
             "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
           ],
           "findings": [
-            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted."
+            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted.",
+            "Adversarial check: v336 cannot be silently substituted for v341; keep the source-version-specific definition gap open."
           ]
         }
       ],
@@ -29302,6 +29416,12 @@
             ]
           }
         ]
+      },
+      "comparativeSourceReview": {
+        "sourceVersion": "MOB_Complete_v336",
+        "sourceSha256": "a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542",
+        "status": "REVIEWED_COMPARATIVE_ONLY_NOT_SUBSTITUTED",
+        "note": "Matching domain label and Clear/Distorted/Templates descriptions were inspected in v336. The wording is not represented as v341 content; exact v341 definitions remain unverified."
       }
     },
     {
@@ -29322,7 +29442,8 @@
       "sourceRefs": [
         "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
         "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
-        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+        "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
       ],
       "sourceIds": [
         "MOB_Complete_v341.html#domain-roster:weaver:healing"
@@ -29350,10 +29471,12 @@
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
             "Reboot-OS/atuned/data/canon.json; SOURCE OS CANON v1.0.0 built from v184",
-            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928"
+            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928",
+            "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
           ],
           "findings": [
-            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:08. Crosswalk status: PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED."
+            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:08. Crosswalk status: PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED.",
+            "Comparative pass inspected the v336 description for this matching label. It is version comparison only; the v341-specific wording remains unverified."
           ]
         },
         {
@@ -29365,7 +29488,8 @@
             "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
           ],
           "findings": [
-            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted."
+            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted.",
+            "Adversarial check: v336 cannot be silently substituted for v341; keep the source-version-specific definition gap open."
           ]
         }
       ],
@@ -29452,6 +29576,12 @@
             ]
           }
         ]
+      },
+      "comparativeSourceReview": {
+        "sourceVersion": "MOB_Complete_v336",
+        "sourceSha256": "a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542",
+        "status": "REVIEWED_COMPARATIVE_ONLY_NOT_SUBSTITUTED",
+        "note": "Matching domain label and Clear/Distorted/Templates descriptions were inspected in v336. The wording is not represented as v341 content; exact v341 definitions remain unverified."
       }
     },
     {
@@ -29472,7 +29602,8 @@
       "sourceRefs": [
         "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
         "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
-        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+        "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
       ],
       "sourceIds": [
         "MOB_Complete_v341.html#domain-roster:weaver:provision"
@@ -29500,10 +29631,12 @@
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
             "Reboot-OS/atuned/data/canon.json; SOURCE OS CANON v1.0.0 built from v184",
-            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928"
+            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928",
+            "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
           ],
           "findings": [
-            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: none established. Crosswalk status: NO_EXACT_CURRENT_MANUSCRIPT_CANDIDATE."
+            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: none established. Crosswalk status: NO_EXACT_CURRENT_MANUSCRIPT_CANDIDATE.",
+            "Comparative pass inspected the v336 description for this matching label. It is version comparison only; the v341-specific wording remains unverified."
           ]
         },
         {
@@ -29515,7 +29648,8 @@
             "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
           ],
           "findings": [
-            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted."
+            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted.",
+            "Adversarial check: v336 cannot be silently substituted for v341; keep the source-version-specific definition gap open."
           ]
         }
       ],
@@ -29600,6 +29734,12 @@
             ]
           }
         ]
+      },
+      "comparativeSourceReview": {
+        "sourceVersion": "MOB_Complete_v336",
+        "sourceSha256": "a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542",
+        "status": "REVIEWED_COMPARATIVE_ONLY_NOT_SUBSTITUTED",
+        "note": "Matching domain label and Clear/Distorted/Templates descriptions were inspected in v336. The wording is not represented as v341 content; exact v341 definitions remain unverified."
       }
     },
     {
@@ -29620,7 +29760,8 @@
       "sourceRefs": [
         "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
         "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
-        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+        "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
       ],
       "sourceIds": [
         "MOB_Complete_v341.html#domain-roster:weaver:play"
@@ -29648,10 +29789,12 @@
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
             "Reboot-OS/atuned/data/canon.json; SOURCE OS CANON v1.0.0 built from v184",
-            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928"
+            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928",
+            "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
           ],
           "findings": [
-            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:15. Crosswalk status: PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED."
+            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:15. Crosswalk status: PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED.",
+            "Comparative pass inspected the v336 description for this matching label. It is version comparison only; the v341-specific wording remains unverified."
           ]
         },
         {
@@ -29663,7 +29806,8 @@
             "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
           ],
           "findings": [
-            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted."
+            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted.",
+            "Adversarial check: v336 cannot be silently substituted for v341; keep the source-version-specific definition gap open."
           ]
         }
       ],
@@ -29750,6 +29894,12 @@
             ]
           }
         ]
+      },
+      "comparativeSourceReview": {
+        "sourceVersion": "MOB_Complete_v336",
+        "sourceSha256": "a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542",
+        "status": "REVIEWED_COMPARATIVE_ONLY_NOT_SUBSTITUTED",
+        "note": "Matching domain label and Clear/Distorted/Templates descriptions were inspected in v336. The wording is not represented as v341 content; exact v341 definitions remain unverified."
       }
     },
     {
@@ -29770,7 +29920,8 @@
       "sourceRefs": [
         "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
         "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
-        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+        "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
       ],
       "sourceIds": [
         "MOB_Complete_v341.html#domain-roster:witness:nature"
@@ -29798,10 +29949,12 @@
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
             "Reboot-OS/atuned/data/canon.json; SOURCE OS CANON v1.0.0 built from v184",
-            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928"
+            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928",
+            "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
           ],
           "findings": [
-            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:12. Crosswalk status: PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED."
+            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:12. Crosswalk status: PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED.",
+            "Comparative pass inspected the v336 description for this matching label. It is version comparison only; the v341-specific wording remains unverified."
           ]
         },
         {
@@ -29813,7 +29966,8 @@
             "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
           ],
           "findings": [
-            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted."
+            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted.",
+            "Adversarial check: v336 cannot be silently substituted for v341; keep the source-version-specific definition gap open."
           ]
         }
       ],
@@ -29900,6 +30054,12 @@
             ]
           }
         ]
+      },
+      "comparativeSourceReview": {
+        "sourceVersion": "MOB_Complete_v336",
+        "sourceSha256": "a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542",
+        "status": "REVIEWED_COMPARATIVE_ONLY_NOT_SUBSTITUTED",
+        "note": "Matching domain label and Clear/Distorted/Templates descriptions were inspected in v336. The wording is not represented as v341 content; exact v341 definitions remain unverified."
       }
     },
     {
@@ -29920,7 +30080,8 @@
       "sourceRefs": [
         "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
         "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
-        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+        "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
       ],
       "sourceIds": [
         "MOB_Complete_v341.html#domain-roster:witness:trickster"
@@ -29948,10 +30109,12 @@
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
             "Reboot-OS/atuned/data/canon.json; SOURCE OS CANON v1.0.0 built from v184",
-            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928"
+            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928",
+            "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
           ],
           "findings": [
-            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:11. Crosswalk status: PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED."
+            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:11. Crosswalk status: PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED.",
+            "Comparative pass inspected the v336 description for this matching label. It is version comparison only; the v341-specific wording remains unverified."
           ]
         },
         {
@@ -29963,7 +30126,8 @@
             "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
           ],
           "findings": [
-            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted."
+            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted.",
+            "Adversarial check: v336 cannot be silently substituted for v341; keep the source-version-specific definition gap open."
           ]
         }
       ],
@@ -30050,6 +30214,12 @@
             ]
           }
         ]
+      },
+      "comparativeSourceReview": {
+        "sourceVersion": "MOB_Complete_v336",
+        "sourceSha256": "a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542",
+        "status": "REVIEWED_COMPARATIVE_ONLY_NOT_SUBSTITUTED",
+        "note": "Matching domain label and Clear/Distorted/Templates descriptions were inspected in v336. The wording is not represented as v341 content; exact v341 definitions remain unverified."
       }
     },
     {
@@ -30070,7 +30240,8 @@
       "sourceRefs": [
         "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
         "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
-        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+        "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
       ],
       "sourceIds": [
         "MOB_Complete_v341.html#domain-roster:witness:mystery"
@@ -30098,10 +30269,12 @@
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
             "Reboot-OS/atuned/data/canon.json; SOURCE OS CANON v1.0.0 built from v184",
-            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928"
+            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928",
+            "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
           ],
           "findings": [
-            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:13. Crosswalk status: PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED."
+            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: domain:13. Crosswalk status: PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED.",
+            "Comparative pass inspected the v336 description for this matching label. It is version comparison only; the v341-specific wording remains unverified."
           ]
         },
         {
@@ -30113,7 +30286,8 @@
             "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
           ],
           "findings": [
-            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted."
+            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted.",
+            "Adversarial check: v336 cannot be silently substituted for v341; keep the source-version-specific definition gap open."
           ]
         }
       ],
@@ -30200,6 +30374,12 @@
             ]
           }
         ]
+      },
+      "comparativeSourceReview": {
+        "sourceVersion": "MOB_Complete_v336",
+        "sourceSha256": "a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542",
+        "status": "REVIEWED_COMPARATIVE_ONLY_NOT_SUBSTITUTED",
+        "note": "Matching domain label and Clear/Distorted/Templates descriptions were inspected in v336. The wording is not represented as v341 content; exact v341 definitions remain unverified."
       }
     },
     {
@@ -30220,7 +30400,8 @@
       "sourceRefs": [
         "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
         "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
-        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+        "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
       ],
       "sourceIds": [
         "MOB_Complete_v341.html#domain-roster:witness:guardian"
@@ -30248,10 +30429,12 @@
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
             "Reboot-OS/atuned/data/canon.json; SOURCE OS CANON v1.0.0 built from v184",
-            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928"
+            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928",
+            "MOB_Complete_v336(2).html (Library file file_0000000009dc81f5b5b71701062dcae8), SHA-256 a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542"
           ],
           "findings": [
-            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: none established. Crosswalk status: NO_EXACT_CURRENT_MANUSCRIPT_CANDIDATE."
+            "Compared this label with the v184 18-label roster and the current manuscript's 15-domain list. Candidate: none established. Crosswalk status: NO_EXACT_CURRENT_MANUSCRIPT_CANDIDATE.",
+            "Comparative pass inspected the v336 description for this matching label. It is version comparison only; the v341-specific wording remains unverified."
           ]
         },
         {
@@ -30263,7 +30446,8 @@
             "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
           ],
           "findings": [
-            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted."
+            "Adversarial review: do not collapse the 19-label v341 roster into the 18-label v184 taxonomy, 15 current-manuscript headings, or 14 Blueprint slots. Standalone definition and semantic equivalence remain unverified; no edge promoted.",
+            "Adversarial check: v336 cannot be silently substituted for v341; keep the source-version-specific definition gap open."
           ]
         }
       ],
@@ -30348,6 +30532,12 @@
             ]
           }
         ]
+      },
+      "comparativeSourceReview": {
+        "sourceVersion": "MOB_Complete_v336",
+        "sourceSha256": "a7ede7afe94e823f61559b9e7ba4ac5633609153c543a960dfff58b716c74542",
+        "status": "REVIEWED_COMPARATIVE_ONLY_NOT_SUBSTITUTED",
+        "note": "Matching domain label and Clear/Distorted/Templates descriptions were inspected in v336. The wording is not represented as v341 content; exact v341 definitions remain unverified."
       }
     },
     {
@@ -30891,7 +31081,8 @@
       "standaloneDefinitionsExtracted": 0,
       "crosswalksApproved": 0,
       "threePassResearchComplete": 19,
-      "note": "Records capture exact v341 label/cluster membership; standalone definitions are not present in the accessible durable crosswalk extract. No v184/current-manuscript equivalence is assumed."
+      "note": "Records capture exact v341 label/cluster membership; standalone definitions are not present in the accessible durable crosswalk extract. No v184/current-manuscript equivalence is assumed.",
+      "comparativeSourceReviewedFromV336": 19
     },
     "relatedConsciousnessCandidates": {
       "records": 3,
@@ -31041,8 +31232,9 @@
       "recordsWithCanonicalAssignmentUnresolved": 8,
       "recordsWithCrossVersionCrosswalkUnresolved": 34,
       "blueprintSlotsCountAsCompleteOnlyAsVisualizationSlots": 14,
-      "note": "Roster-candidate records are complete for their declared source-record role; standalone definitions/cross-version semantic identities remain unresolved where not in the accessible source extract.",
-      "relatedConceptRosterPlacementUnresolved": 3
+      "note": "The 19 v341 roster records have source-backed labels, clusters, and three-pass crosswalk research. The raw v341 standalone definitions remain unverified; v336 was reviewed as a comparison only, not substituted.",
+      "relatedConceptRosterPlacementUnresolved": 3,
+      "v341RosterDefinitionGap": 19
     },
     "linkAudit": {
       "recordsWithEmptyLinksAudited": 125,
@@ -31056,7 +31248,9 @@
       "standaloneDefinitionsExtracted": 0,
       "threePassResearchComplete": 19,
       "crosswalksApproved": 0,
-      "note": "Source-roster candidate records preserve v341 labels and cluster membership separately from v184 and current-manuscript records."
+      "note": "All 19 roster labels/clusters are source-backed from the v341 crosswalk. The v336 artifact was inspected as a comparison, but its wording was not substituted; exact v341 definitions remain unverified.",
+      "comparativeDefinitionsCapturedFromV336": 0,
+      "comparativeSourceReviewedFromV336": 19
     },
     "relatedConsciousnessCandidates": {
       "count": 3,
