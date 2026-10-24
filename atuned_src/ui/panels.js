@@ -1361,10 +1361,16 @@ function planSection(m,o){
     never outcome, at the conservative end of the book's own range. */
  var worth=o.brief?'':planWorth(al.inGift?GIFT_N:t.grant);
  if(worth)h+='<p class="sh-p">'+esc(worth)+'</p>';
- h+='<div class="sh-act">'
+ /* MANAGE BILLING ONLY FOR A RECORD THAT NAMES A PAID TIER, live or ended, 24
+    October (planNamesPaid, engine/plan.js). On a record that has never paid it
+    could only be refused, "there is no paid plan on this account yet", beside
+    a line promising a page to change tier, replace a card or stop. */
+ var billed=planNamesPaid(pl);
+ if(up||billed)h+='<div class="sh-act">'
   +(up?'<button class="btn pri" id="planup" data-tier="'+esc(up.to.k)+'">Move to '
     +esc(planNmIn(up.to))+'</button>':'')
-  +'<button class="btn" id="planman">Manage billing</button></div>'
+  +(billed?'<button class="btn" id="planman">Manage billing</button>':'')+'</div>';
+ h+=''
   /* WHAT THE BUTTON OPENS, said before it is pressed. Manage billing used to
      answer "not built yet" on a press, so the line beside it only said where
      payment was not. It opens Stripe's own page now, through authPlanPortal,
@@ -1379,8 +1385,8 @@ function planSection(m,o){
      ui/auth.js reads the plan back onto this record, so all three are named.
      STRIPE-SETUP.md switches plan changes on in the portal for the same
      reason. */
-  +'<p class="sh-p dim">Manage billing opens the payment page, where you can change tier, '
-  +'replace a card or stop. Nothing about a card is ever held on this device, and the record '
+  +'<p class="sh-p dim">'+(billed?'Manage billing opens the payment page, where you can change tier, '
+  +'replace a card or stop. ':'')+'Nothing about a card is ever held on this device, and the record '
   +'carries no customer number.</p>'
   +'</div>';
  return h;}

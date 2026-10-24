@@ -196,6 +196,17 @@ function planBuyable(k){
    refused by the server exactly as they were: that route is left as it stood. */
 const PLAN_CHECKOUT_OPEN=false;
 function planCheckoutOpen(){ return PLAN_CHECKOUT_OPEN===true; }
+/* WHETHER THE RECORD NAMES A PAID TIER, live or ended, 24 October. The plan
+   sheet offered Manage billing to everybody, and a person who had never paid
+   pressed it to be told by the server "there is no paid plan on this account
+   yet, so there is no billing to manage" (QA pass of 23 October, P3-4). A
+   record that names a paid rung, in force or stopped, belongs to somebody who
+   has had a plan and has a payment page to go to; free, the gift, no plan and
+   a key this build does not know do not. planFromServer makes the same test
+   inline as wasPaid, and is left untouched because the pay cycle walk runs a
+   pinned copy of it (tests/money.js, group 5). */
+function planNamesPaid(pl){
+ return !!(pl&&typeof pl==='object'&&PLAN_BY[pl.tier]&&pl.tier!=='free'&&pl.tier!=='gift');}
 /* THE GIFT'S SIZE, NAMED ONCE. It is the gift row's grant above. planAllowance
    carried its own literal 100 in five places beside that row, which is the same
    number held twice and one edit away from two answers. */

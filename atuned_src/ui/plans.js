@@ -178,9 +178,12 @@ function planTiersHtml(){
     server heard a finished checkout and nothing else. It hears a tier changed
     on Stripe's page now, so moving down is true again; panels.js planSection
     carries the reason beside its own line. */
+ /* "MANAGE BILLING ABOVE" ONLY WHERE IT IS ABOVE, 24 October: Your plan draws
+    Manage billing only for a record that names a paid tier (planNamesPaid,
+    engine/plan.js), so the sentence that points at it goes with it. */
  foot.push('Each price is charged once a month until you stop. You pay on a separate payment page, '
-  +'and nothing is charged until you confirm there. '
-  +'Moving down or stopping goes through Manage billing above, and stopping deletes nothing.');
+  +'and nothing is charged until you confirm there.'
+  +(planNamesPaid(pl)?' Moving down or stopping goes through Manage billing above, and stopping deletes nothing.':''));
  h+='<div class="ac-gf">'+foot.map(function(s){return '<p>'+esc(s)+'</p>';}).join('')
   +(signed?'':'<div class="pt-acts"><button class="btn" type="button" id="ptacc">Go to account</button></div>')
   +'</div></div>';

@@ -2720,6 +2720,14 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
  ok(E.planBuyable('four')===(E.PLAN_BY.four.built!==false),'tier four can be bought exactly when it is built');
  ok(!E.planBuyable('free')&&!E.planBuyable('gift')&&!E.planBuyable('nonsense')&&!E.planBuyable(undefined),
   'free, the gift and a key this build does not know are never bought');
+ /* planNamesPaid, 24 October: Manage billing is drawn only for a record that
+    names a paid tier, in force or stopped (P3-4 of the 23 October QA pass) */
+ ok(E.planNamesPaid({tier:'one',status:'active'})&&E.planNamesPaid({tier:'two',status:'canceled'})
+  &&E.planNamesPaid({tier:'four',status:'past_due'}),
+  'a record naming a paid tier names one whether it is live, stopped or late');
+ ok(!E.planNamesPaid(null)&&!E.planNamesPaid({tier:'free',status:''})&&!E.planNamesPaid({tier:'gift'})
+  &&!E.planNamesPaid({tier:'nine',status:'active'})&&!E.planNamesPaid('one'),
+  'no plan, free, the gift, a key this build does not know and a bare string name no paid tier');
  /* closing a rung moves nobody: a record on tier four still reads tier four */
  ok(E.planOf({tier:'four',status:'active'}).k==='four','a record already on tier four still reads tier four');
  /* THE TOP RUNG IS NAMED PRACTITIONER, ruled 17 October: "There are four

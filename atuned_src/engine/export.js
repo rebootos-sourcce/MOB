@@ -44,7 +44,7 @@ if(typeof module!=='undefined'&&module.exports){
                  planNextSight:planNextSight, planAllowance:planAllowance,
                  planWeeks:planWeeks, planFreeFrom:planFreeFrom, GIFT_N:GIFT_N, WEEK_MS:WEEK_MS, planInGift:planInGift,
                  planUpgrade:planUpgrade, planBuyable:planBuyable, RUN_MAX:RUN_MAX, RUN_MIN:RUN_MIN,
-                 PLAN_CHECKOUT_OPEN:PLAN_CHECKOUT_OPEN, planCheckoutOpen:planCheckoutOpen,
+                 PLAN_CHECKOUT_OPEN:PLAN_CHECKOUT_OPEN, planCheckoutOpen:planCheckoutOpen, planNamesPaid:planNamesPaid,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  PLAN_PRICE:PLAN_PRICE, planPrice:planPrice, planLadder:planLadder,

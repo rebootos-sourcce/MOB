@@ -3759,10 +3759,22 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
      real button for both refusals, because the press goes PLAN_HOST, then
      authPlanPortal, then status. The yes is read off authPlanPortal itself,
      because pressing it would navigate this page to the URL. */
+  /* P3-4, 24 October: Manage billing is drawn only on a record that names a
+     paid tier, live or ended (planNamesPaid), so the server's refusals are
+     pressed on a stopped tier one record, which is what a person who paid and
+     stopped holds; on the blank record nothing is drawn to press */
+  const STOPPED={tier:'one',status:'canceled',granted:0,carried:0,base:100,
+   since:'2036-10-01T00:00:00.000Z',until:'2036-11-01T00:00:00.000Z',ends:null};
+  const keptManPlan=CURP.plan;
+  profileSheet();
+  o.manFree={button:!!document.getElementById('planman'),
+   line:/Manage billing opens/.test((document.getElementById('sheet-card')||{}).textContent||'')};
+  sheetShut();
   const pressMan=async()=>{
-   const was=said()[0]; profileSheet(); document.getElementById('planman').click();
+   const was=said()[0]; CURP.plan=STOPPED; profileSheet();
+   const b=document.getElementById('planman'); if(b)b.click();
    for(let i=0;i<160&&said()[0]===was;i++)await wait(25);
-   const s=said(); sheetShut(); return s;};
+   const s=said(); sheetShut(); CURP.plan=keptManPlan; return b?s:['no Manage billing on a stopped record','fail'];};
   authForget(); status('probe, before Manage billing signed out');
   o.manOut=await pressMan();
   authKeep({token:'t-probe',email:'probe@example.invalid'}); status('probe, before Manage billing with no plan');
@@ -3865,6 +3877,8 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
  ok(o.manNone[0]==='There is no paid plan on this account yet, so there is no billing to manage.'&&o.manNone[1]==='fail',
   'with nothing bought it says the server\'s own reason, got '+JSON.stringify(o.manNone));
  ok(!/not built|email support/i.test(o.manOut[0]+o.manNone[0]),'and neither answer says Manage billing is unbuilt');
+ ok(o.manFree&&!o.manFree.button&&!o.manFree.line,
+  'P3-4: a record that has never paid is offered no Manage billing, and no line saying what it opens, got '+JSON.stringify(o.manFree));
  ok(seen.some(s=>s.m==='POST'&&s.u==='/v1/billing/portal'&&s.auth==='Bearer t-probe'),
   'the request carries the session and nothing else names the account');
  ok(o.manPaid&&o.manPaid.ok&&o.manPaid.url==='https://billing.stripe.test/1',
@@ -4130,6 +4144,7 @@ const tiers=await page.evaluate(async()=>{
     #planup in the closed sheet, and a document lookup found that one */
  o.planup=!!(pane&&pane.querySelector('#planup'));
  o.planman=!!(pane&&pane.querySelector('#planman'));
+ o.foot=((g&&g.querySelector('.ac-gf'))||{}).textContent||'';
  /* a press goes through the seam with the tier on the button */
  let called=null;
  bindPlan(function(what,tier){called={what:what,tier:tier};});
@@ -4143,6 +4158,8 @@ const tiers=await page.evaluate(async()=>{
  CURP.plan={tier:'two',status:'active',granted:800,carried:0,base:100,since:null,until:null};
  renderAccount();
  const g2=document.getElementById('plantiers');
+ o.planman2=!!document.querySelector('#settings .ac-pane #planman');
+ o.foot2=(g2.querySelector('.ac-gf')||{}).textContent||'';
  o.presses2=[...g2.querySelectorAll('[data-ptier]')].map(b=>b.getAttribute('data-ptier'));
  o.now2=[...g2.querySelectorAll('.pt-row.on .pt-nm')].map(e=>e.textContent);
  /* a press on a live plan goes to the portal, never a second checkout */
@@ -4156,6 +4173,7 @@ const tiers=await page.evaluate(async()=>{
  o.calledDue=called;
  /* an ended plan is free again, so a press is a checkout */
  CURP.plan.status='canceled'; renderAccount();
+ o.planmanEnded=!!document.querySelector('#settings .ac-pane #planman');
  called=null;
  const b3c=document.querySelector('#plantiers [data-ptier="three"]'); if(b3c)b3c.click();
  o.calledEnded=called;
@@ -4238,7 +4256,15 @@ ok(/Does not show saboteurs, complexes, hyper complexes and super complexes/.tes
 ok(!/kundalini/i.test(tiers.text),'the Kundalini has no surface yet, so no tier is sold on it');
 ok(/Locked: saboteurs, unlocked on tier one and above/.test(tiers.text),
  'a free person is told what is locked and which tier opens each, in the lock\'s own words');
-ok(/Manage billing/.test(tiers.paneText)&&tiers.planman,'Your plan keeps Manage billing above the tiers');
+/* P3-4, 24 October: Manage billing only for a record that names a paid tier,
+   live or ended (planNamesPaid, engine/plan.js). On the free record above it
+   could only have been refused. */
+ok(!tiers.planman&&!/Manage billing/.test(tiers.paneText),
+ 'P3-4: a free record\'s Your plan carries no Manage billing, and nothing on the pane points at one');
+ok(tiers.planman2&&tiers.planmanEnded,
+ 'P3-4: a record that names a paid tier, live or ended, keeps Manage billing above the tiers, '+JSON.stringify([tiers.planman2,tiers.planmanEnded]));
+ok(!/Manage billing above/.test(tiers.foot)&&/Manage billing above/.test(tiers.foot2),
+ 'P3-4: and the foot points at Manage billing only where it is above it, '+JSON.stringify([tiers.foot,tiers.foot2]));
 ok(!tiers.planup,'and drops its own Move to, because the tiers below carry every press');
 ok((tiers.paneText.match(/On every tier/g)||[]).length===1,
  'what is on every tier is said once on the pane, not twice');
