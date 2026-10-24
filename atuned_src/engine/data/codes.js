@@ -50,6 +50,35 @@
                   p.soul.arcs stores the ARCH index and p.avatar.arch the ARCH
                   name, so ARCH's order and names are both identity today.
 
+   THE REGISTERS PORTED ON 24 OCTOBER, engine/data/registers.js. Each of
+   those rows carries its own code, the c field, as SABDEF's rows do: the
+   tables are this repository's own now, and a second table of codes beside
+   each one would be a copy to keep in step by hand.
+     charge-ladder    CHARGE_LADDER's c, LD01 and up, in canon.json's order.
+                      canon.json names no ladder, so the name is the charge
+                      and the word ladder, by rule: fear ladder.
+     ladder-word      composed by rule and never listed: the ladder's code, a
+                      dot, and the step from 1, LD05.6. A word is not a name
+                      the door answers for, because canon.json puts some
+                      words on two ladders. ladderPlaces(word) answers with
+                      every place.
+     amplifier        AMPLIFIER's c, AM01 and up. Most carry their address's
+                      name, so that name now means two things, an address and
+                      an amplifier, and the door asks which.
+     body-quadrant    BODY_QUADRANT's c, BQ01 and up. The Compass's quadrant()
+                      is not a body quadrant and has no code.
+     organ            ORGAN's c, OG01 and up.
+     derived-measure  DERIVED_MEASURE's c, DM01 and up. Awareness and Flow are
+                      laws of HARM as well, Awareness is one of the six gates,
+                      and Vitality is a reading, and none of those has a code
+                      yet. So the door names the measure alone for now, and
+                      when laws and gates are coded the bare word becomes
+                      ambiguous, which is the true answer.
+     sign             CODE_SIGN below, ZS01 and up, from Aries, the order
+                      astro.js counts the ecliptic in.
+     animal           CODE_ANIMAL below, CA01 and up, from Rat, the order of
+                      the cycle.
+
    THE THREE ROW TABLES. Each row names its source, from CODE_SOURCES, or a
    list of them, or any.
      CODE_ALIAS     [source, kind, label, code, why]. A label that source
@@ -67,7 +96,7 @@
    ============================================================ */
 const CODE_SOURCES=[
  ['mob','this repository: its own tables, SNIFFER_SPEC.md and DESCENT'],
- ['canon','reboot-os atuned/data/canon.json, SOURCE OS CANON 1.0.0, issued 8 September by the owner, md5 7e844c0d'],
+ ['canon','reboot-os atuned/data/canon.json, SOURCE OS CANON 1.0.0, issued 8 September by the owner, md5 7e844c0d, the copy held at vendor/reboot-os/canon.json'],
  ['book','The Mechanics of Being v192, reboot-os atuned/data/corpus/MOB_Complete_v192.txt, md5 3d2671d9'],
  ['app','the reboot-os app tables, atuned/data/canon_tables: SAB33, SABAUTH, HYPER, NODEREG'],
  ['nodes112','reboot-os atuned/data/nodes_112.json'],
@@ -84,7 +113,15 @@ const CODE_KINDS=[
  ['family-pair','the super complex, the fourth rung compute() makes, its sups, of two families or poles'],
  ['address','an address of NODES'],
  ['emotion','a child emotion of CHILD'],
- ['archetype','an archetype of ARCH']];
+ ['archetype','an archetype of ARCH'],
+ ['charge-ladder','one of canon.json\'s charges, with its words from the mildest to the strongest'],
+ ['ladder-word','one word on one step of a charge ladder'],
+ ['amplifier','an address canon.json names as an amplifier'],
+ ['body-quadrant','a quarter of the body, right or left by front or back'],
+ ['organ','an organ of canon.json\'s organs register'],
+ ['derived-measure','one of canon.json\'s derived measures'],
+ ['sign','a sign of the zodiac'],
+ ['animal','an animal of the Chinese calendar']];
 
 /* [code, MOB's name, the book's cluster numeral]. HCX_LIB is the same six in
    the same order today, and the gate holds the names, not the order, so a
@@ -150,6 +187,20 @@ const CODE_STRUCT=[
 const CODE_ARCH=[['AR01','Warrior'],['AR02','Sage'],['AR03','Rebel'],['AR04','Caregiver'],
  ['AR05','Creator'],['AR06','Magician'],['AR07','Ruler'],['AR08','Explorer'],['AR09','Lover'],
  ['AR10','Jester'],['AR11','Everyman'],['AR12','Innocent']];
+
+/* [code, ZSIGN's name], in the order astro.js counts the ecliptic, so
+   signOf()'s index k is row k. ZSIGN counts from Aquarius and is read through
+   birth.js's ZI, and codesCheck holds row k to ZSIGN[ZI[k]]. */
+const CODE_SIGN=[['ZS01','Aries'],['ZS02','Taurus'],['ZS03','Gemini'],['ZS04','Cancer'],
+ ['ZS05','Leo'],['ZS06','Virgo'],['ZS07','Libra'],['ZS08','Scorpio'],['ZS09','Sagittarius'],
+ ['ZS10','Capricorn'],['ZS11','Aquarius'],['ZS12','Pisces']];
+
+/* [code, CHINESE's name], in the order of the cycle, from Rat. CHINESE is
+   indexed by the year mod 12, and 2020 is a Rat year, so codesCheck holds
+   row k to CHINESE[(2020 + k) mod 12]. */
+const CODE_ANIMAL=[['CA01','Rat'],['CA02','Ox'],['CA03','Tiger'],['CA04','Rabbit'],
+ ['CA05','Dragon'],['CA06','Snake'],['CA07','Horse'],['CA08','Goat'],['CA09','Monkey'],
+ ['CA10','Rooster'],['CA11','Dog'],['CA12','Pig']];
 
 /* the child emotions, frozen. The gate holds CHILD and CHARGES to it both ways. */
 const CODE_EMOTION=['Fear','Anger','Shame','Disgust','Apathy','Shock','Sad','Surprise','Anticipation'];

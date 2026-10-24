@@ -42,9 +42,11 @@
    ============================================================ */
 
 /* LADDERS, canon.json registers.ladders. For each of canon.json's charges,
-   nine words from the mildest to the strongest. A word is not the name of
-   one thing: some words sit on two ladders (node tools/canon-port.js report
-   says which), so ladderPlaces(word) answers with every place a word sits.
+   nine words from the mildest to the strongest. A word's code is its
+   ladder's and its step, LD05.6 for the sixth fear word, composed by rule in
+   engine/codes.js and never listed, because a word is not the name of one
+   thing: some words sit on two ladders (node tools/canon-port.js report says
+   which). ladderPlaces(word) answers with every place a word sits.
 
    NOT C3_LADDER, which is the 3C card spec's one intensity ladder across
    every charge (engine/data/cards.js), and not the age ladder or the paid
@@ -224,8 +226,8 @@ const DERIVED_MEASURE=[
    UNDER ONE OF canon.json's LOCKS: "Display-only overlay. Failed a
    permutation test for convergence at p = 1.000. Never enters a number." The
    gate holds it: compute() reads the same with every vector here scrambled.
-   The signs and animals are the ones ZSIGN and CHINESE hold. The
-   archetypes are canon.json's labels:
+   The signs and animals are the ones ZSIGN and CHINESE hold, and each has a
+   code (CODE_SIGN, CODE_ANIMAL). The archetypes are canon.json's labels:
    Orphan and Outlaw have no code here until he rules on the jungian twelve,
    and Caretaker is AR04, Caregiver. */
 const ASTRO_OVERLAY={

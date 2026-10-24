@@ -49,14 +49,17 @@ function codeTables(){
   CHG2FET:CHG2FET,REROUTE:REROUTE,
   CODE_SOURCES:CODE_SOURCES,CODE_KINDS:CODE_KINDS,CODE_FAMILY:CODE_FAMILY,CODE_STRUCT:CODE_STRUCT,
   CODE_ARCH:CODE_ARCH,CODE_EMOTION:CODE_EMOTION,CODE_ALIAS:CODE_ALIAS,CODE_UNMAPPED:CODE_UNMAPPED,
-  CODE_RETIRED:CODE_RETIRED};}
+  CODE_RETIRED:CODE_RETIRED,
+  CHARGE_LADDER:CHARGE_LADDER,AMPLIFIER:AMPLIFIER,BODY_QUADRANT:BODY_QUADRANT,ORGAN:ORGAN,
+  DERIVED_MEASURE:DERIVED_MEASURE,CHARGE_QUADRANT:CHARGE_QUADRANT,ASTRO_OVERLAY:ASTRO_OVERLAY,
+  CODE_SIGN:CODE_SIGN,CODE_ANIMAL:CODE_ANIMAL,ZSIGN:ZSIGN,ZI:ZI,CHINESE:CHINESE,HARM:HARM};}
 
 /* THE INDEX. Built from the tables and never stored in them. codeOf keeps
    one for the live tables, which do not change after load. codesCheck builds
    its own from whatever tables it is handed. */
 function codeIndexOf(t){
  var ix={code:Object.create(null),name:Object.create(null),rows:Object.create(null),
-  cluster:Object.create(null),live:Object.create(null),t:t};
+  cluster:Object.create(null),live:Object.create(null),ladder:Object.create(null),t:t};
  var put=function(code,kind,nm,more){var e={code:code,kind:kind,nm:nm};
   if(more)Object.keys(more).forEach(function(k){e[k]=more[k];}); ix.code[code]=e;};
  var named=function(label,code){var k=codeKey(label); if(!k)return;
@@ -82,6 +85,17 @@ function codeIndexOf(t){
  t.NODES.forEach(function(n){var c=String(n.i); put(c,'address',n.k,{n:n.i}); named(n.k,c);});
  t.CODE_EMOTION.forEach(function(e){put(e,'emotion',e); named(e,e);});
  t.CODE_ARCH.forEach(function(r,i){put(r[0],'archetype',r[1],{index:i}); named(r[1],r[0]);});
+ /* the registers ported on 24 October, each row carrying its own code. A
+    ladder is named by rule, its charge and the word ladder, since canon.json
+    names none, and its words are reached by rule in codeParse. */
+ t.CHARGE_LADDER.forEach(function(l){var nm=l.ch+' ladder';
+  put(l.c,'charge-ladder',nm,{charge:l.ch,steps:l.w.length}); named(nm,l.c); ix.ladder[l.c]=l.w.slice();});
+ t.AMPLIFIER.forEach(function(r){put(r.c,'amplifier',r.nm,{address:r.i,tag:r.tag}); named(r.nm,r.c);});
+ t.BODY_QUADRANT.forEach(function(r){put(r.c,'body-quadrant',r.nm,{side:r.side,face:r.face}); named(r.nm,r.c);});
+ t.ORGAN.forEach(function(r){put(r.c,'organ',r.nm,{side:r.side}); named(r.nm,r.c);});
+ t.DERIVED_MEASURE.forEach(function(r){put(r.c,'derived-measure',r.nm,{charge:r.ch,law:r.el}); named(r.nm,r.c);});
+ t.CODE_SIGN.forEach(function(r,i){put(r[0],'sign',r[1],{index:i}); named(r[1],r[0]);});
+ t.CODE_ANIMAL.forEach(function(r,i){put(r[0],'animal',r[1],{index:i}); named(r[1],r[0]);});
  /* the rows. A row for several sources is one row per source here. */
  var row=function(type,src,kind,label,code,why,date){
   [].concat(src).forEach(function(s){var k=codeKey(label);
@@ -116,6 +130,11 @@ function codeParse(ix,code){
   if(!b||(b.kind!=='saboteur'&&b.kind!=='cluster'))return null;
   var ov={code:code,kind:'overshot',nm:b.nm+' overshot',of:b.code};
   if(b.kind==='cluster')ov.live=b.live; return ov;}
+ /* a word on a ladder: the ladder's code, a dot and its step, counted from 1
+    and written without a leading nought, in that one spelling */
+ var w=/^(LD\d{2})\.([1-9]\d*)$/.exec(code);
+ if(w&&ix.ladder[w[1]]){var words=ix.ladder[w[1]], s=+w[2];
+  return s<=words.length?{code:code,kind:'ladder-word',nm:words[s-1],of:w[1],step:s}:null;}
  return null;}
 function codeTwo(ix,code,sep,say,kinds,kind){
  var p=code.split(sep); if(p.length!==2||!(p[0]<p[1]))return null;
@@ -246,7 +265,7 @@ function codesCheckInto(t,out){
  ['mob','any'].forEach(function(s){if(srcIds.indexOf(s)<0)no('CODE_SOURCES has no '+s);});
  t.CODE_SOURCES.concat(t.CODE_KINDS).forEach(function(r){
   if(typeof r[1]!=='string'||!r[1].trim())no(r[0]+' says nothing about what it is');});
- var used={overshot:1,pair:1,'family-pair':1};
+ var used={overshot:1,pair:1,'family-pair':1,'ladder-word':1};
  Object.keys(ix.code).forEach(function(c){used[ix.code[c].kind]=1;});
  kindIds.forEach(function(k){if(!used[k])no('CODE_KINDS names '+k+', and no code is of that kind');});
  Object.keys(used).forEach(function(k){if(kindIds.indexOf(k)<0)no('a code is of the kind '+k+', which CODE_KINDS does not name');});
@@ -339,6 +358,93 @@ function codesCheckInto(t,out){
  dupes(ids).forEach(function(i){no('NODES carries the address '+i+' twice');});
  for(var i=1;i<=ids.length;i++)if(ids.indexOf(i)<0){no('NODES skips the address '+i); break;}
  dupes(t.NODES.map(function(n){return codeKey(n.k);})).forEach(function(k){no('NODES gives two addresses the name '+k);});
+
+ /* THE REGISTERS PORTED ON 24 OCTOBER. Each table's codes run without a
+    gap, each row carries every field of its kind, and each row's parent is
+    a thing this repository holds: a ladder's charge reads as a child
+    emotion or is refused by a row that says why, an amplifier stands on a
+    body address, a quadrant's name is its side and face, a route runs from
+    a ladder's charge to a quadrant, a measure's law is HARM's, and the
+    overlay keys only signs, animals and archetypes. */
+ var str=function(v){return typeof v==='string'&&!!v.trim();};
+ var listed=function(nm){if(Array.isArray(t[nm])&&t[nm].length)return true; no(nm+' is not a list of rows'); return false;};
+ [['CHARGE_LADDER','LD'],['AMPLIFIER','AM'],['BODY_QUADRANT','BQ'],['ORGAN','OG'],['DERIVED_MEASURE','DM']].forEach(function(p){
+  if(listed(p[0])){run(t[p[0]].map(function(r){return r&&r.c;}),p[1],2,p[0]);
+   if(p[0]!=='CHARGE_LADDER')dupes(t[p[0]].map(function(r){return codeKey(r&&r.nm);})).forEach(function(n){no(p[0]+' names '+n+' twice');});}});
+ var charges=listed('CHARGE_LADDER')?t.CHARGE_LADDER.map(function(l){return l.ch;}):[];
+ dupes(charges).forEach(function(c){no('CHARGE_LADDER gives the charge '+c+' two ladders');});
+ (t.CHARGE_LADDER||[]).forEach(function(l,i){var first=t.CHARGE_LADDER[0];
+  if(!str(l.ch))no('CHARGE_LADDER row '+l.c+' names no charge');
+  if(!Array.isArray(l.w)||!l.w.length||!l.w.every(str)){no('the '+l.ch+' ladder is not a list of words'); return;}
+  if(i&&Array.isArray(first.w)&&l.w.length!==first.w.length)
+   no('the '+l.ch+' ladder has '+l.w.length+' steps and the '+first.ch+' ladder has '+first.w.length+', so the ladders are not one template');
+  dupes(l.w.map(codeKey)).forEach(function(w){no('the '+l.ch+' ladder carries '+w+' on two steps');});
+  var r=res(l.ch,{source:'canon',kind:'emotion'});
+  if(!r.ok&&r.kind!=='emotion')no('the '+l.ch+' ladder\'s charge is neither a child emotion nor refused by a row that says why: '+r.why);});
+ (t.AMPLIFIER||[]).forEach(function(r){var n=byI[r.i];
+  if(!str(r.nm))no('AMPLIFIER row '+r.c+' has no name');
+  if(!n)no('the amplifier '+r.nm+' stands on the address '+JSON.stringify(r.i)+', which NODES does not hold');
+  else if(String(n.b).indexOf('Field')===0)no('the amplifier '+r.nm+' stands on '+n.i+', a field node outside the body');
+  if(['R','I','G'].indexOf(r.tag)<0)no('the amplifier '+r.nm+' is tagged '+JSON.stringify(r.tag)+', which is not R, I or G');});
+ var sides=['right','left'], faces=['front','back'], twoWay={};
+ (t.BODY_QUADRANT||[]).forEach(function(r){
+  ['nm','layer','theme','regions','symptoms','patterns'].forEach(function(f){if(!str(r[f]))no('the body quadrant '+r.c+' has no '+f);});
+  if(sides.indexOf(r.side)<0||faces.indexOf(r.face)<0){
+   no('the body quadrant '+r.nm+' is on the side '+JSON.stringify(r.side)+' and the face '+JSON.stringify(r.face)+', where a side is right or left and a face is front or back'); return;}
+  var k=r.side+' '+r.face; if(twoWay[k])no('two body quadrants are '+k); twoWay[k]=true;
+  if(codeKey(r.nm)!==k)no('the body quadrant '+r.nm+' is '+k+' by its side and face, and its name says otherwise');});
+ if(t.BODY_QUADRANT&&t.BODY_QUADRANT.length!==sides.length*faces.length)
+  no('BODY_QUADRANT has '+t.BODY_QUADRANT.length+' rows, and right and left by front and back is '+sides.length*faces.length);
+ var organSides=['centre','right','left','full surface'];
+ (t.ORGAN||[]).forEach(function(r){
+  ['nm','issue','voice'].forEach(function(f){if(!str(r[f]))no('the organ '+r.c+' has no '+f);});
+  if(organSides.indexOf(r.side)<0)no('the organ '+r.nm+' is on the side '+JSON.stringify(r.side)+', which is not '+organSides.join(', '));});
+ var quads=(t.BODY_QUADRANT||[]).map(function(r){return r.nm;}), CQd=t.CHARGE_QUADRANT||{};
+ Object.keys(CQd).forEach(function(k){
+  if(charges.indexOf(k)<0)no('CHARGE_QUADRANT routes '+k+', which no ladder is for, so the two registers do not share one set of charges');
+  if(quads.indexOf(CQd[k])<0)no('CHARGE_QUADRANT routes '+k+' to '+JSON.stringify(CQd[k])+', which is not a body quadrant');});
+ charges.forEach(function(c){if(!Object.prototype.hasOwnProperty.call(CQd,c))no('the '+c+' ladder\'s charge has no route in CHARGE_QUADRANT');});
+ var harm={}; (t.HARM||[]).forEach(function(h){harm[h.c]=h.t;});
+ (t.DERIVED_MEASURE||[]).forEach(function(r){
+  if(!str(r.nm))no('DERIVED_MEASURE row '+r.c+' has no name');
+  if(charges.indexOf(r.ch)<0)no('the derived measure '+r.nm+' pairs with '+JSON.stringify(r.ch)+', which no ladder is for');
+  if(r.el===null)return;
+  if(harm[r.el]===undefined)no('the derived measure '+r.nm+' cites '+JSON.stringify(r.el)+', which is not a code of HARM');
+  else if(codeKey(harm[r.el])!==codeKey(r.nm))no('the derived measure '+r.nm+' cites '+r.el+', which HARM names '+harm[r.el]);});
+ /* the overlay: each vector one whole number per dim, keyed by what the
+    codes hold, and each charge one a ladder is for */
+ var A=t.ASTRO_OVERLAY;
+ var signs=t.CODE_SIGN.map(function(r){return r[1];}), animals=t.CODE_ANIMAL.map(function(r){return r[1];});
+ if(!A||typeof A!=='object')no('ASTRO_OVERLAY is missing');
+ else{
+  var dims=A.dims;
+  if(!Array.isArray(dims)||!dims.length||!dims.every(str)){no('ASTRO_OVERLAY has no dims to read its vectors by'); dims=null;}
+  else dupes(dims).forEach(function(d){no('ASTRO_OVERLAY names the dim '+d+' twice');});
+  var vecs=function(nm){var o=A[nm];
+   if(!o||typeof o!=='object'||Array.isArray(o)){no('ASTRO_OVERLAY has no '+nm); return [];}
+   Object.keys(o).forEach(function(k){var v=o[k];
+    if(!Array.isArray(v)||(dims&&v.length!==dims.length)||!v.every(function(x){return typeof x==='number'&&Math.floor(x)===x;}))
+     no('ASTRO_OVERLAY '+nm+' gives '+k+' '+JSON.stringify(v)+', which is not one whole number for each dim');});
+   return Object.keys(o);};
+  var same=function(nm,keys,want,what){
+   keys.filter(function(x){return want.indexOf(x)<0;}).forEach(function(x){no('ASTRO_OVERLAY '+nm+' keys '+x+', which is not '+what);});
+   want.filter(function(x){return keys.indexOf(x)<0;}).forEach(function(x){no('ASTRO_OVERLAY '+nm+' has nothing for '+x);});};
+  same('west',vecs('west'),signs,'a sign the codes hold');
+  same('east',vecs('east'),animals,'an animal the codes hold');
+  vecs('archetype_vectors').forEach(function(k){var r=res(k,{source:'canon',kind:'archetype'});
+   if(!r.ok&&r.kind!=='archetype')no('ASTRO_OVERLAY gives a vector to '+k+', which is neither an archetype nor refused by a row that says why: '+r.why);});
+  var lm=A.load_map&&typeof A.load_map==='object'?A.load_map:{};
+  same('load_map',Object.keys(lm),signs.concat(animals),'a sign or an animal');
+  Object.keys(lm).forEach(function(k){if(charges.indexOf(lm[k])<0)no('ASTRO_OVERLAY load_map gives '+k+' the charge '+JSON.stringify(lm[k])+', which no ladder is for');});}
+ /* signs and animals, held to the tables the birth readings count by */
+ run(t.CODE_SIGN.map(function(r){return r[0];}),'ZS',2,'CODE_SIGN');
+ run(t.CODE_ANIMAL.map(function(r){return r[0];}),'CA',2,'CODE_ANIMAL');
+ if(t.CODE_SIGN.length!==t.ZSIGN.length)no('CODE_SIGN has '+t.CODE_SIGN.length+' rows and ZSIGN has '+t.ZSIGN.length);
+ t.CODE_SIGN.forEach(function(r,k){var z=t.ZSIGN[t.ZI[k]];
+  if(!z||z[2]!==r[1])no('CODE_SIGN row '+k+' is '+r[1]+', and the sign astro.js counts '+k+' from Aries is '+(z?z[2]:'missing')+', read through ZI');});
+ if(t.CODE_ANIMAL.length!==t.CHINESE.length)no('CODE_ANIMAL has '+t.CODE_ANIMAL.length+' rows and CHINESE has '+t.CHINESE.length);
+ t.CODE_ANIMAL.forEach(function(r,k){var a=t.CHINESE[(2020+k)%t.CHINESE.length];
+  if(a!==r[1])no('CODE_ANIMAL row '+k+' is '+r[1]+', and the animal of '+(2020+k)+' is '+a+', as birth.js reads CHINESE');});
 
  /* a name may not take the shape of a rule, and a cluster name is no other
     code's, so a name and a rule never answer for one label */

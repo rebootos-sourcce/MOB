@@ -385,6 +385,7 @@ if(typeof module!=='undefined'&&module.exports){
                   CODE_SOURCES:CODE_SOURCES, CODE_KINDS:CODE_KINDS, CODE_FAMILY:CODE_FAMILY,
                   CODE_STRUCT:CODE_STRUCT, CODE_ARCH:CODE_ARCH, CODE_EMOTION:CODE_EMOTION,
                   CODE_ALIAS:CODE_ALIAS, CODE_UNMAPPED:CODE_UNMAPPED, CODE_RETIRED:CODE_RETIRED,
+                  CODE_SIGN:CODE_SIGN, CODE_ANIMAL:CODE_ANIMAL,
                   codeKey:codeKey, codeOf:codeOf, codeKind:codeKind, codeName:codeName,
                   codeList:codeList, codeOfEntry:codeOfEntry, codeEmotionOf:codeEmotionOf,
                   codesCheck:codesCheck, codeTables:codeTables,

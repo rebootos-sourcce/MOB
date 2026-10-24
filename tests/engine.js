@@ -9634,5 +9634,97 @@ g('RG · the registers ported from canon.json, held row for row to the copy this
  }
 }
 
+g('RC · a code for every row of the ported registers, and the door reads each one');
+/* The codes the registers were born with, 24 October, typed on purpose as the
+   ID group's ledger is: they are identities being frozen, and a gate that
+   read them back off the table it tests would hold nothing. */
+{
+ const {codeOf,codeName,codeKind,codeList,codesCheck,codeTables}=E;
+ const live=Array.isArray(E.CODE_SIGN)&&Array.isArray(E.CHARGE_LADDER);
+ ok(live,'the engine carries the register codes and the sign and animal codes');
+ if(live){
+  const is=(label,hint,code,m)=>{const r=codeOf(label,hint);
+   ok(r.ok&&r.code===code,m+': '+JSON.stringify(label)+(hint?' '+JSON.stringify(hint):'')+' is '+code+', got '+JSON.stringify(r.ok?r.code:r.why));return r;};
+  const no=(label,hint,word,m)=>{const r=codeOf(label,hint);
+   ok(!r.ok&&r.why.indexOf(word)>=0,m+': '+JSON.stringify(label)+(hint?' '+JSON.stringify(hint):'')+' is refused naming '+JSON.stringify(word)+', got '+JSON.stringify(r.ok?r.code:r.why));};
+  ok(codesCheck().length===0,'codesCheck finds nothing wrong with the ported registers and their codes');
+  /* EACH NEW CHECK BITES, on a copy with one thing broken */
+  const bites=(what,mut,word)=>{const t=JSON.parse(JSON.stringify(codeTables())); mut(t);
+   ['ZSIGN','ZI','CHINESE','HARM','NODES','SAB33','SABDEF'].forEach(k=>{if(!(k in t))t[k]=codeTables()[k];});
+   const p=codesCheck(t); ok(p.some(x=>x.indexOf(word)>=0),'the check catches '+what+', got '+JSON.stringify(p.slice(0,3)));};
+  bites('a ladder a step short',t=>{t.CHARGE_LADDER[3].w.pop();},'not one template');
+  bites('a ladder code skipped',t=>{t.CHARGE_LADDER[7].c='LD09';},'skips LD08');
+  bites('a ladder for a charge nothing reads',t=>{t.CHARGE_LADDER[2].ch='zest';},'neither a child emotion');
+  bites('an amplifier on a field node',t=>{t.AMPLIFIER[0].i=110;},'field node');
+  bites('a quadrant whose name is not its side and face',t=>{t.BODY_QUADRANT[0].face='back';},'says otherwise');
+  bites('two organs of one name',t=>{t.ORGAN[1].nm='Heart';},'twice');
+  bites('a route to a quadrant that does not exist',t=>{t.CHARGE_QUADRANT.fear='Middle';},'not a body quadrant');
+  bites('a charge with no route',t=>{delete t.CHARGE_QUADRANT.joy;},'has no route');
+  bites('a measure citing a law of another name',t=>{t.DERIVED_MEASURE[2].el='E53';},'HARM names');
+  bites('an overlay vector a number short',t=>{t.ASTRO_OVERLAY.east.Ox.pop();},'one whole number for each dim');
+  bites('an overlay charge keyed by no sign',t=>{t.ASTRO_OVERLAY.load_map.Ophiuchus='fear';},'a sign or an animal');
+  bites('two signs swapped',t=>{const x=t.CODE_SIGN[0][1];t.CODE_SIGN[0][1]=t.CODE_SIGN[1][1];t.CODE_SIGN[1][1]=x;},'read through ZI');
+  bites('two animals swapped',t=>{const x=t.CODE_ANIMAL[0][1];t.CODE_ANIMAL[0][1]=t.CODE_ANIMAL[1][1];t.CODE_ANIMAL[1][1]=x;},'as birth.js reads CHINESE');
+  bites('a fifth body quadrant',t=>{t.BODY_QUADRANT.push(Object.assign({},t.BODY_QUADRANT[0],{c:'BQ05'}));},'right and left by front and back is');
+  bites('the overlay without its dims',t=>{delete t.ASTRO_OVERLAY.dims;},'no dims to read');
+  bites('the overlay gone',t=>{delete t.ASTRO_OVERLAY;},'ASTRO_OVERLAY is missing');
+  bites('a sign the codes lost',t=>{t.CODE_SIGN.pop();},'CODE_SIGN has');
+  bites('an animal the codes lost',t=>{t.CODE_ANIMAL.pop();},'CODE_ANIMAL has');
+  /* THE DOOR */
+  is('LD05',null,'LD05','a ladder is its code');
+  is('fear ladder',null,'LD05','and its name is its charge and the word ladder');
+  const hw=is('LD05.6',null,'LD05.6','a word is its ladder and its step');
+  ok(hw.nm==='Horrified'&&hw.of==='LD05'&&hw.step===6&&hw.kind==='ladder-word','and says which word, which ladder and which step, '+JSON.stringify(hw));
+  no('LD05.06',null,'not a code','a step has one spelling, without a leading nought');
+  no('LD05.10',null,'not a code','and no step past the top of its ladder');
+  no('Horrified',null,'not a code','a word is not a name the door answers for, since some sit on two ladders');
+  no('Judgment',null,'ambiguous','Judgment is now an address and an amplifier, so the door asks which');
+  is('Judgment',{kind:'address'},'37','as an address');
+  const am=is('Judgment',{kind:'amplifier'},'AM03','as an amplifier');
+  ok(am.address===37,'and the amplifier says the address it stands on, '+JSON.stringify(am));
+  const en=is('Entitlement',{kind:'amplifier'},'AM01','canon.json\'s amplifier Entitlement');
+  ok(en.address===8,'stands on address 8, where NODES\'s own Entitlement is 38, '+JSON.stringify(en));
+  is('Justification',null,'AM06','Justification is an amplifier and nothing else here');
+  is('Right-Front',null,'BQ01','a body quadrant');
+  is('right front',null,'BQ01','spelled with a space');
+  is('Dermis',null,'OG10','an organ');
+  const aw=is('Awareness',null,'DM02','a derived measure, while laws and gates have no code');
+  ok(aw.law==='E32','and it cites the law it is, HARM\'s E32, '+JSON.stringify(aw));
+  is('Aries',null,'ZS01','a sign');
+  is('Goat',null,'CA08','an animal');
+  /* a ladder's charge is canon.json's word, and its parent is a child emotion or a row that says why not */
+  E.CHARGE_LADDER.forEach(l=>{const r=codeOf(l.ch,{source:'canon',kind:'emotion'});
+   ok(r.ok||(r.kind==='emotion'&&/no emotion code/.test(r.why)),'the '+l.ch+' ladder\'s charge reads as a child emotion or is refused by name, '+(r.ok?r.code:r.why.slice(0,60)));});
+  is('sadness',{source:'canon',kind:'emotion'},'Sad','canon.json\'s sadness is the Sad axis');
+  no('resent',{source:'canon',kind:'emotion'},'no emotion code','and its resent is no child emotion');
+  /* THE LEDGER, 24 October */
+  const born=[];
+  'joy|sadness|disgust|shock|fear|anger|shame|resent'.split('|').forEach((c,i)=>born.push(['LD0'+(i+1),c+' ladder','charge-ladder']));
+  'Entitlement|Obsession|Judgment|Perfectionism|Comparison|Justification'.split('|').forEach((n,i)=>born.push(['AM0'+(i+1),n,'amplifier']));
+  'Right-Front|Left-Front|Right-Back|Left-Back'.split('|').forEach((n,i)=>born.push(['BQ0'+(i+1),n,'body-quadrant']));
+  'Heart|Stomach|Right Lung|Left Lung|Right Liver|Right Kidney|Left Kidney|Intestines|Spine|Dermis'.split('|').forEach((n,i)=>born.push(['OG'+String(i+1).padStart(2,'0'),n,'organ']));
+  'Vitality|Awareness|Flow'.split('|').forEach((n,i)=>born.push(['DM0'+(i+1),n,'derived-measure']));
+  'Aries|Taurus|Gemini|Cancer|Leo|Virgo|Libra|Scorpio|Sagittarius|Capricorn|Aquarius|Pisces'.split('|').forEach((n,i)=>born.push(['ZS'+String(i+1).padStart(2,'0'),n,'sign']));
+  'Rat|Ox|Tiger|Rabbit|Dragon|Snake|Horse|Goat|Monkey|Rooster|Dog|Pig'.split('|').forEach((n,i)=>born.push(['CA'+String(i+1).padStart(2,'0'),n,'animal']));
+  const moved=born.filter(([c,nm,k])=>{const r=codeOf(nm,{kind:k});return !(r.ok&&r.code===c);});
+  ok(moved.length===0,'every one of the '+born.length+' codes the registers were born with still answers to the name it was born on, moved: '+JSON.stringify(moved.slice(0,6)));
+  const kinds=['charge-ladder','amplifier','body-quadrant','organ','derived-measure','sign','animal'];
+  ok(kinds.every(k=>codeList(k).length===born.filter(b=>b[2]===k).length),'and nothing else of those kinds is listed: '+JSON.stringify(kinds.map(k=>k+' '+codeList(k).length)));
+  ok(codeList('ladder-word').length===0&&E.CHARGE_LADDER.every(l=>l.w.every((w,i)=>codeName(l.c+'.'+(i+1))===w&&codeKind(l.c+'.'+(i+1))==='ladder-word')),
+   'a word is never listed, and every one of them is reached by rule, named the word canon.json gives the step');
+  /* SIGNS AND ANIMALS, held to what the product prints. The sun sign the
+     birth reading gives a day in the middle of each sign is the sign coded
+     at the index astro.js counts that day's sun in, and the animal of a
+     year the reading prints is the one coded at that year in the cycle. */
+  const offSign=[];
+  E.ZSIGN.forEach(z=>{const d='2001-'+String(z[0]).padStart(2,'0')+'-'+String(z[1]+7).padStart(2,'0');
+   const k=E.signOf(sunLon(julianDay(2001,z[0],z[1]+7,12))), sp=E.spiritualOf({d:d});
+   if(!sp||E.CODE_SIGN[k][1]!==sp.sun||sp.sun!==z[2])offSign.push(d+' reads '+(sp&&sp.sun)+', coded '+E.CODE_SIGN[k][1]);});
+  ok(offSign.length===0,'the sign code at the sun\'s own index is the sun sign the reading prints, for a day inside each of the '+E.ZSIGN.length+' signs, off: '+JSON.stringify(offSign));
+  const offAnimal=E.CODE_ANIMAL.map((r,k)=>[2020+k,r[1],E.spiritualOf({d:(2020+k)+'-06-15'}).chinese]).filter(x=>x[1]!==x[2]);
+  ok(offAnimal.length===0,'the animal code for each year of a cycle is the animal the reading prints for a birth that June, off: '+JSON.stringify(offAnimal));
+ }
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');
 process.exit(F?1:0);
