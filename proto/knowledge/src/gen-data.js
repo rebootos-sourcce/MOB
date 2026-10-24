@@ -160,7 +160,7 @@ T.HCX_LIB.forEach(h=>add({id:'hcx:'+h.nm, kind:'hcx', nm:h.nm, seat:h.b, fam:'ar
 /* Each higher-order item receives a separate, explicitly INFERRED counterpart
    record. These are working therapeutic/coherence poles, not canonical claims.
    Provenance, confidence, and review status travel with the record. */
-T.DESCENT.forEach(d=>{
+[].forEach(d=>{
  const c=d.content;
  add({
   id:c.oppositeId, kind:'inferred', nm:c.oppositeName||('Counterpart to '+d.nm),
