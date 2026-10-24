@@ -439,9 +439,11 @@ const sourceToRuntimeId=new Map([
  ...(psychRegistry.records||[]).map(r=>[r.id,'psych:'+r.id]),
  ...(superRegistry.records||[]).map(r=>[r.id,'super:'+r.id])
 ]);
-const relationshipEdges=[...adaptedPsych.relationshipEdges,...adaptedSuper.relationshipEdges].map(edge=>{
- if(edge.toId&&sourceToRuntimeId.has(edge.toId))return {...edge,toId:sourceToRuntimeId.get(edge.toId),targetRegistry:'combined_runtime',validationStatus:'cross_registry_target_resolved'};
- return edge;
+const relationshipEdges=[...adaptedPsych.relationshipEdges,...adaptedSuper.relationshipEdges,...(crossRegistryEdgeRegister.relationshipEdges||[])].map(edge=>{
+ const fromId=sourceToRuntimeId.get(edge.fromId)||edge.fromId;
+ const toId=sourceToRuntimeId.get(edge.toId)||edge.toId;
+ const crossRegistryResolved=fromId!==edge.fromId||toId!==edge.toId;
+ return {...edge,fromId,toId,targetRegistry:crossRegistryResolved?'combined_runtime':edge.targetRegistry,validationStatus:crossRegistryResolved?'cross_registry_target_resolved':(edge.validationStatus||'imported_not_semantically_verified')};
 });
 const allById=new Map(E.map(e=>[e.id,e]));
 for(const edge of relationshipEdges){
