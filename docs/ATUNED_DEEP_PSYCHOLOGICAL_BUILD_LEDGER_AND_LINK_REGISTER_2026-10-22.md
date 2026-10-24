@@ -249,3 +249,10 @@ The latest artifact fetch confirmed the template catalog remains proposed/not en
 - This TDD and ledger updated to keep the handoff consistent.
 
 **Not claimed:** the Node script has not been executed in the repository runtime; no runtime integration or CI test is claimed; no KPI is certified at 100% project-wide. Next execution block is source verification for the 15 behavioral domains and the two blocked passes for each Conscious Domain, followed by generator/validator integration and graph tests.
+
+
+### Follow-on integration pass — 2026-10-24
+- Updated `proto/knowledge/src/gen-data.js` to embed the registry and template catalog in separate `KBD.deepPsychologicalRegistry` and `KBD.deepPsychologicalTemplateCatalog` namespaces. Existing experiential graph entries are not merged with provisional records.
+- Updated `proto/knowledge/src/validate-templates.js` to validate the embedded registry's template fields, unique IDs, pass status, link/reference integrity, and unresolved closure counts. Added an opt-in `--strict-deep-psychological` gate that fails while content or graph closure remains open.
+- Updated `proto/knowledge/src/adapt-psychological-registry.js` to preserve relationship audit and affirmation-source metadata.
+- The integration is **not runtime-verified**: this connector cannot execute the repository's Node scripts. Next gate is to run `node proto/knowledge/src/gen-data.js`, `node proto/knowledge/src/validate-templates.js`, and `node proto/knowledge/src/validate-templates.js --strict-deep-psychological` in a real checkout, inspect outputs/exit codes, fix defects, then run the regression suite.
