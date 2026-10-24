@@ -57,7 +57,7 @@ module.exports = function adaptPsychologicalRegistry(registry, catalog, options 
         .filter((id) => id && id !== source.id && sourceIds.has(id))
         .map(runtimeId),
       parentId: source.parentId && sourceIds.has(source.parentId) ? runtimeId(source.parentId) : null,
-      childIds: (source.childIds || []).filter((id) => sourceIds.has(id)).map((id) => 'psych:' + id),
+      childIds: (source.childIds || []).filter((id) => sourceIds.has(id)).map(runtimeId),
       relationships: source.relationships || [],
       sourceRefs: source.sourceRefs || [],
       sourceClaims: source.sourceClaims || [],
