@@ -429,9 +429,11 @@ E.forEach(e=>{
 
 const psychRegistry=JSON.parse(fs.readFileSync(path.join(ROOT,'docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json'),'utf8'));
 const psychCatalog=JSON.parse(fs.readFileSync(path.join(ROOT,'docs/data/ATUNED_DEEP_PSYCHOLOGICAL_TEMPLATE_CATALOG_v1.json'),'utf8'));
-const adaptedPsych=require('./psychological-runtime-adapter')(psychRegistry,psychCatalog);
-if(adaptedPsych.errors.length)throw new Error('Deep Psyche adapter errors: '+JSON.stringify(adaptedPsych.errors));
-E.push(...adaptedPsych.entries);
+const superRegistry=JSON.parse(fs.readFileSync(path.join(ROOT,'docs/data/ATUNED_SUPERCOMPLEX_CANDIDATE_REGISTRY_v1.json'),'utf8'));
+const adaptedPsych=require('./psychological-runtime-adapter')(psychRegistry,psychCatalog,{namespace:'psych'});
+const adaptedSuper=require('./psychological-runtime-adapter')(superRegistry,psychCatalog,{namespace:'super'});
+if(adaptedPsych.errors.length||adaptedSuper.errors.length)throw new Error('Registry adapter errors: '+JSON.stringify({deep:adaptedPsych.errors,supercomplex:adaptedSuper.errors}));
+E.push(...adaptedPsych.entries,...adaptedSuper.entries);
 const icp=JSON.parse(fs.readFileSync(path.join(__dirname,'icp.json'),'utf8'));
 const out={entries:E, pal:T.PAL, glyph:T.SEATGLYPH, bands:T.BANDS, icp:icp,
  relationshipEdges:adaptedPsych.relationshipEdges,
