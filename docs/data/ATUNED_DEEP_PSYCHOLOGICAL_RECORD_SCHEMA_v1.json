@@ -440,10 +440,244 @@
       "items": {
         "type": "object"
       }
+    },
+    "runtimeKind": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceStatus": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "childNames": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "behavior": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "triggerMechanism": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "livedExample": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "impact": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "practice": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "oppositeId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "oppositeDefinition": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "oppositeStatus": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "compositionStatus": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "composition": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ownerStatedStatus": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "membershipStatus": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "inversionCandidates": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "axis": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "upName": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "upDescription": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "downName": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "downDescription": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "question": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "circleNumber": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "governorName": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sin": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "see": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "pattern": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "bodyAnchor": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceClaimedType": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceClaimedLayer": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ownerRuling": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "expectedCount": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "memberNames": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "blockingDependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "requiredNextAction": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceFamily": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceRole": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceSequence": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "researchStatus": {
+      "type": [
+        "string",
+        "null"
+      ]
     }
   },
   "additionalProperties": true,
-  "version": "1.3.0",
+  "version": "1.4.0",
   "allOf": [
     {
       "if": {
@@ -586,6 +820,261 @@
           "contradictoryStatements",
           "affectedRecordIds",
           "requiredRuling",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "complex"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceStatus",
+          "childNames",
+          "behavior",
+          "triggerMechanism",
+          "livedExample",
+          "impact",
+          "practice",
+          "oppositeId",
+          "oppositeDefinition",
+          "oppositeStatus",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "hypercomplex"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceStatus",
+          "childNames",
+          "compositionStatus",
+          "composition",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "supercomplex_candidate"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "ownerStatedStatus",
+          "sourceClaimedLayer",
+          "membershipStatus",
+          "inversionCandidates",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "mirror_pair"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "axis",
+          "seat",
+          "upName",
+          "upDescription",
+          "downName",
+          "downDescription",
+          "question",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "mirror_figure_candidate"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceFamily",
+          "sourceRole",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "circle_candidate"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "circleNumber",
+          "governorName",
+          "sin",
+          "see",
+          "pattern",
+          "bodyAnchor",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "blueprint_pattern"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceClaimedType",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "cascade_state"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceClaimedType",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "descent_candidate"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceClaimedLayer",
+          "ownerRuling",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "roster_requirement"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "expectedCount",
+          "memberNames",
+          "sourceEvidenceStatus",
+          "canonicalStatus",
+          "requiredNextAction",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "source_gap"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceEvidenceStatus",
+          "canonicalStatus",
+          "blockingDependencies",
+          "requiredNextAction",
           "sourceRefs",
           "sourceClaims",
           "researchPasses"
