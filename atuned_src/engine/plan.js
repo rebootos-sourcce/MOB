@@ -192,8 +192,9 @@ function planBuyable(k){
    IT DOES NOT CLOSE THE SERVER AND IT DOES NOT OPEN IT. The server's switch is
    the gate; this is the instrument saying the same thing before anybody
    presses. Opening paying is two words, this one and the server's, in the same
-   release. Billing's own Move to presses still go through planOpen and are
-   refused by the server exactly as they were: that route is left as it stood. */
+   release. Billing's tiers (ui/plans.js) ask the same question since 24 October
+   and say "Opens soon" where each Move to sat; until then they kept their
+   presses, and each one could only be refused (P2-1 of the 23 October QA pass). */
 const PLAN_CHECKOUT_OPEN=false;
 function planCheckoutOpen(){ return PLAN_CHECKOUT_OPEN===true; }
 /* WHETHER THE RECORD NAMES A PAID TIER, live or ended, 24 October. The plan

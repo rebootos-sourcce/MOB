@@ -318,6 +318,12 @@ async function door(browser, SITE, cut, giftAt) {
   await ctx.addInitScript(api => {
     Object.defineProperty(window, 'AUTH_API', { get() { return api; }, set() {}, configurable: false });
   }, API);
+  /* THE DAY PAYING OPENS. The build ships with checkout closed
+     (PLAN_CHECKOUT_OPEN, engine/plan.js), and since 24 October Billing then
+     offers no press (P2-1). This walk pays, so it opens the paywall's own
+     harness seam (PAYWALL_PAY_OPEN, ui/paywall.js), read once at load. It is not
+     a way to pay: in production the server's own switch answers the press. */
+  await ctx.addInitScript(() => { window.PAYWALL_PAY_OPEN = true; });
   const page = await ctx.newPage();
   const errs = [], cerrs = [];
   page.on('pageerror', e => errs.push(String(e && e.message || e)));

@@ -4121,7 +4121,7 @@ const tiers=await page.evaluate(async()=>{
  CURP.plan={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null};
  ACC_OPEN='billing'; setTab(TAB.SETTINGS); renderAccount();
  await new Promise(r=>setTimeout(r,80));
- const g=document.getElementById('plantiers');
+ let g=document.getElementById('plantiers');
  o.there=!!g;
  o.rows=g?[...g.querySelectorAll('.pt-row')].map(r=>r.querySelector('.pt-nm').textContent):[];
  o.now=g?[...g.querySelectorAll('.pt-row.on .pt-nm')].map(e=>e.textContent):[];
@@ -4145,6 +4145,18 @@ const tiers=await page.evaluate(async()=>{
  o.planup=!!(pane&&pane.querySelector('#planup'));
  o.planman=!!(pane&&pane.querySelector('#planman'));
  o.foot=((g&&g.querySelector('.ac-gf'))||{}).textContent||'';
+ /* P2-1, 24 October: checkout is closed in this build, so no rung carries a
+    press and each says the paywall's own word where its press sat. The rest of
+    this block opens the paywall's harness seam (PW_PAY_SEAM, ui/paywall.js),
+    which is what tests/paywall.js measures the open sheet with, so the presses
+    are held as they will be the day paying opens. Closed again at the end. */
+ o.closedPay=(typeof pwPayOpen==='function')&&pwPayOpen();
+ o.pressesClosed=o.presses.slice();
+ o.goClosed={one:o.rowGo.one,two:o.rowGo.two,three:o.rowGo.three};
+ PW_PAY_SEAM=true; renderAccount();
+ g=document.getElementById('plantiers');
+ o.presses=[...g.querySelectorAll('[data-ptier]')].map(b=>b.getAttribute('data-ptier'));
+ o.footOpen=(g.querySelector('.ac-gf')||{}).textContent||'';
  /* a press goes through the seam with the tier on the button */
  let called=null;
  bindPlan(function(what,tier){called={what:what,tier:tier};});
@@ -4190,6 +4202,7 @@ const tiers=await page.evaluate(async()=>{
  o.small=[...g2.querySelectorAll('button')].filter(b=>{const r=b.getBoundingClientRect();
   return r.width>0&&r.height<44;}).length;
  bindPlan(keptHost);
+ PW_PAY_SEAM=false;
  CURP.plan=kept; CURP.meter.unique=keptU; ACC_OPEN='account';
  return o;});
 ok(tiers.there,'Billing carries the tiers group');
@@ -4197,8 +4210,18 @@ ok(tiers.there,'Billing carries the tiers group');
 ok(JSON.stringify(tiers.rows)===JSON.stringify(['Free','Tier one','Tier two','Tier three','Practitioner']),
  'one row per tier, in ladder order, the gift left out: '+JSON.stringify(tiers.rows));
 ok(JSON.stringify(tiers.now)==='["Free"]','the tier in force is marked, and only it: '+JSON.stringify(tiers.now));
+/* P2-1, 24 October: Billing reads the paywall's answer to whether paying is
+   open (pwPayOpen), so while it is closed it sells nothing the sheet says is
+   closed, and says nothing about charging */
+ok(!tiers.closedPay&&tiers.pressesClosed.length===0,
+ 'P2-1: with checkout closed, as this build ships, Billing offers no Move to at all: '+JSON.stringify(tiers.pressesClosed));
+ok(['one','two','three'].every(k=>tiers.goClosed[k]==='Opens soon'),
+ 'P2-1: and each rung the paywall calls closed says the paywall\'s own "Opens soon" where its press sat: '+JSON.stringify(tiers.goClosed));
+ok(!/charged|payment page|needs a sign in/.test(tiers.foot)&&/charged once a month/.test(tiers.footOpen),
+ 'P2-1: the foot says nothing about charging or a press while closed, and says when a price is charged once open: '
+ +JSON.stringify([tiers.foot,tiers.footOpen]));
 ok(tiers.presses.join()===(tiers.closed4?'one,two,three':'one,two,three,four'),
- 'from free every paid tier that can be bought has a press: '+tiers.presses.join());
+ 'once paying opens (the paywall\'s seam), from free every paid tier that can be bought has a press: '+tiers.presses.join());
 /* TIER FOUR IS CLOSED UNTIL BUILT, round PK, enforced round RB */
 if(tiers.closed4){
  ok(tiers.rowGo.four==='Opens with the lead suite','the closed rung says "Opens with the lead suite" where the press was: '+JSON.stringify(tiers.rowGo.four));
