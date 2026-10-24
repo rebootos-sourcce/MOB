@@ -780,6 +780,7 @@ function authCheck(){
      Stripe, and the payment still happened, so it says where the plan is */
   if(back==='done')status('Payment finished. Log in from Account to bring the plan onto this record.','fail');
   return Promise.resolve(null);}
+ AUTH_PLAN_READ_AT=Date.now();
  return authCall('GET','/v1/me',null,s.token).then(function(r){
   var acc=r.body&&r.body.account;
   var redraw=function(){
@@ -793,6 +794,7 @@ function authCheck(){
    /* the same answer carries the plan, so the boot check reads it without a
       second request */
    authPlanBack(back,r.body.billing);
+   authPlanArm();
    profileSyncStart();
    return 'ok';}
   if(r.status===401){
@@ -1000,9 +1002,53 @@ function authPlanTake(b){
 function authPlanRead(){
  var s=authSession();
  if(!s)return Promise.resolve({ok:false, took:'signed out'});
+ AUTH_PLAN_READ_AT=Date.now();
  return authCall('GET','/v1/me',null,s.token).then(function(r){
   if(!r.ok||!r.body)return {ok:false, took:'unread', status:r.status};
-  return {ok:true, took:authPlanTake(r.body.billing)};});}
+  var took=authPlanTake(r.body.billing);
+  authPlanArm();
+  return {ok:true, took:took};});}
+/* A PAGE LEFT OPEN ACROSS A RENEWAL, 24 October (P2-2 of the 23 October QA
+   pass). The plan was read off the server only at boot, after a sign in and on
+   the way back from Stripe, and the record's own end date ends any renewal it
+   has not read three days after the period (planPast and PLAN_GRACE_MS,
+   engine/plan.js). That is right for a device signed out or offline, which is
+   what it was built for, and it was wrong for a signed in page that was simply
+   never reloaded: a tab kept open showed a person whose card had just renewed
+   "On Free" and "State ended", with the layers they pay for locked, until a
+   reload. Measured eight runs in eight, and coming back to the tab sent no
+   request.
+
+   So while signed in the plan is read again when the page comes back into
+   view or gains focus, at most once an hour, and once on a timer a minute
+   before the grace runs out, so the last word before an unread renewal reads
+   as an ending is the server's. A stopped plan (ends) needs no timer: it ends
+   on its day whatever the server says next. */
+var AUTH_PLAN_EVERY_MS=3600*1000, AUTH_PLAN_TIMER=null, AUTH_PLAN_READ_AT=Date.now();
+/* setTimeout holds at most 2^31 - 1 milliseconds, about 24.8 days, and a
+   longer wait fires at once, so a longer one is armed in steps */
+var AUTH_TIMER_MAX=2147483647;
+/* when the timer should read, as a time, or null when nothing needs one */
+function authPlanDue(){
+ if(!authSession()||typeof CURP==='undefined'||!CURP||!CURP.plan)return null;
+ var pl=CURP.plan;
+ if(planState(pl)!=='live'||pl.ends)return null;
+ var u=(typeof pl.until==='string')?Date.parse(pl.until):NaN; if(!isFinite(u))return null;
+ var at=u+PLAN_GRACE_MS-60000;
+ return at>Date.now()?at:null;}
+function authPlanArm(){
+ if(AUTH_PLAN_TIMER){ clearTimeout(AUTH_PLAN_TIMER); AUTH_PLAN_TIMER=null; }
+ var at=authPlanDue(); if(at===null)return;
+ AUTH_PLAN_TIMER=setTimeout(function(){ AUTH_PLAN_TIMER=null;
+  if(Date.now()<at-1000){ authPlanArm(); return; }
+  authPlanRead(); },Math.min(Math.max(0,at-Date.now()),AUTH_TIMER_MAX));}
+function authPlanWake(){
+ try{ if(document.visibilityState&&document.visibilityState!=='visible')return; }catch(e){}
+ if(!authSession()||Date.now()-AUTH_PLAN_READ_AT<AUTH_PLAN_EVERY_MS)return;
+ authPlanRead();}
+if(typeof addEventListener==='function'){
+ addEventListener('focus',authPlanWake);
+ try{ document.addEventListener('visibilitychange',authPlanWake); }catch(e){}}
 /* ?billing= is what the server sends Stripe back to (createCheckout and
    createPortal in reboot-os). Read once and removed, keeping every other
    parameter, so ?dev=1 and a hash survive. */

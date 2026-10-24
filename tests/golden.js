@@ -45,6 +45,10 @@
      13 Create account from a downloaded copy, against the Worker's one
         allowed origin
 
+     R  A PAGE LEFT OPEN ACROSS A RENEWAL (24 October)
+        a signed in payer's page, never reloaded, its clock moved past the
+        period end: it reads the renewal before the grace reads it as ended
+
    THE SERVER IS A FAKE, AND NOTHING LEAVES THE MACHINE. The site is
    served on 127.0.0.1 the way atuned.world serves it, so the Worker's
    CORS rule (ALLOWED_ORIGIN, one origin) is modelled against a real
@@ -1142,6 +1146,62 @@ async function door(browser, SITE, cut, giftAt) {
       + J(f.msg));
     ok(ferrs.length === 0, 'no script error: ' + ferrs.slice(0, 2).join(' | '));
     await cf.close();
+  }
+
+  /* =================================================================
+     R. A PAGE LEFT OPEN ACROSS A RENEWAL, 24 October (P2-2 of the 23 October
+        QA pass). One paying person, signed in, the page never reloaded, its
+        clock moved by Playwright's. The plan is read at boot; the renewal lands
+        at Stripe on the period end; the page has to read the server again
+        before its own three day grace reads that unread renewal as an ending.
+        Before the fix it read Free and "State ended" six days on, and coming
+        back to the tab sent no request.
+     ================================================================= */
+  station('R', 'a page left open across a paid renewal reads the renewal');
+  {
+    const R = await door(browser, SITE, cut), pr = R.page, wr = R.worker;
+    await pr.clock.install({ time: Date.now() });
+    const DAY = 864e5, t0 = Date.now(), at = ms => new Date(ms).toISOString();
+    const acc = { id: 'acc_renew', research_id: 'rsh_renew', email: 'renew.door@example.com', plan: 0, pw: PW };
+    wr.st.acc[acc.id] = acc; wr.st.byMail[acc.email] = acc.id; wr.st.tok.tok_renew = acc.id;
+    wr.st.ent[acc.id] = { tier: 'one', status: 'active', since: at(t0 - 27 * DAY), until: at(t0 + 3 * DAY) };
+    await pr.goto(SITE + '/atuned.html?dev=1', { waitUntil: 'load' }); await R.booted();
+    await pr.evaluate(() => authKeep({ token: 'tok_renew', email: 'renew.door@example.com', accountId: 'acc_renew' }));
+    await R.reload(); await pr.waitForTimeout(800);
+    const plan = () => pr.evaluate(() => { const pl = CURP && CURP.plan;
+      return { k: planOf(pl).k, state: planState(pl), until: pl && pl.until, now: Date.now() }; });
+    const reads = () => wr.reqs('GET', /^\/v1\/me$/).length;
+    /* THE GATE CHECKS ITS OWN CLOCK. A fast forward that did not move the page
+       measures day 2, which reads live and would pass for the wrong reason: the
+       probe this station came from caught one such run in ten. */
+    const forward = async ms => { const was = (await plan()).now; await pr.clock.fastForward(ms);
+      let moved = (await plan()).now - was;
+      if (moved < ms - 60000) { await pr.clock.fastForward(ms - moved); moved = (await plan()).now - was; }
+      return moved >= ms - 60000; };
+    const day = p => ((p.now - t0) / DAY).toFixed(3);
+    const p0 = await plan();
+    ok(p0.k === 'one' && p0.state === 'live' && reads() === 1, 'at boot the plan is read once and tier one is in force: ' + J([p0.k, p0.state, reads()]));
+    /* the renewal at Stripe on the period end: the server now holds the next period */
+    wr.st.ent[acc.id] = { tier: 'one', status: 'active', since: at(t0 + 3 * DAY), until: at(t0 + 33 * DAY) };
+    const fwd = await forward(6 * DAY + 3600e3);
+    ok(fwd, 'the page clock moved six days and an hour, so what follows is read on that day: day ' + day(await plan()));
+    await pr.waitForTimeout(1200);
+    const p1 = await plan();
+    ok(reads() === 2, 'before its own grace ran out the page asked the server again, with no reload: ' + reads() + ' reads',
+      'no request at all, so the renewal was never read');
+    ok(p1.k === 'one' && p1.state === 'live' && p1.until === at(t0 + 33 * DAY),
+      'and the renewal is on the record: tier one, live, to the new period end, ' + J([p1.k, p1.state, (p1.until || '').slice(0, 10), 'day ' + day(p1)]),
+      'On Free and State ended, with the layers paid for locked, six days after a paid renewal');
+    /* coming back to the tab within the hour sends nothing more */
+    await pr.evaluate(() => { window.dispatchEvent(new Event('focus')); document.dispatchEvent(new Event('visibilitychange')); });
+    await pr.waitForTimeout(400);
+    ok(reads() === 2, 'coming back to the tab within the hour of the last read sends nothing: ' + reads() + ' reads');
+    await forward(2 * 3600e3);
+    await pr.evaluate(() => { document.dispatchEvent(new Event('visibilitychange')); });
+    await pr.waitForTimeout(800);
+    ok(reads() === 3, 'and coming back after an hour reads the plan once more: ' + reads() + ' reads');
+    ok(R.errs.length === 0, 'no script error on this door: ' + R.errs.slice(0, 2).join(' | '));
+    await R.ctx.close();
   }
 
   station(14, 'every door: nothing else was reached');
