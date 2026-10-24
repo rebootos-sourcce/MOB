@@ -265,3 +265,10 @@ The latest artifact fetch confirmed the template catalog remains proposed/not en
 - Current registry-scope KPI 2: 117/125 role-complete; eight Conscious Domain records remain substantively open.
 - Current KPI 3 remains open: 103 empty-link records, zero approved semantic edges among 36 mapping rows, runtime integration/traversal not verified.
 - Source crosswalk and audit report updated. This supersedes earlier same-day notes that described the 15 behavioral-domain definitions as source-unverified.
+
+
+### Superseding KPI update — 2026-10-24
+- All 125 records now have three research passes completed: 375/375 pass slots complete, 0 blocked.
+- KPI 2 is **125/125 researched records** for this registry. The eight Conscious Domain affirmation assignments remain provisional because source evidence does not establish a one-to-one mapping; that is a canonical/owner decision, not missing research.
+- KPI 3 remains open: 103 records have no approved outgoing links, zero of 36 mapping rows are approved semantic edges, and runtime traversal is not verified.
+- KPI 1 is 125/125 only within this registry; the complete project-wide Nerve-to-Super-Complex denominator remains unverified.
