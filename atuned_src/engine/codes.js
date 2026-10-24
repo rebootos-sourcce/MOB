@@ -371,7 +371,7 @@ function codesCheckInto(t,out){
  [['CHARGE_LADDER','LD'],['AMPLIFIER','AM'],['BODY_QUADRANT','BQ'],['ORGAN','OG'],['DERIVED_MEASURE','DM']].forEach(function(p){
   if(listed(p[0])){run(t[p[0]].map(function(r){return r&&r.c;}),p[1],2,p[0]);
    if(p[0]!=='CHARGE_LADDER')dupes(t[p[0]].map(function(r){return codeKey(r&&r.nm);})).forEach(function(n){no(p[0]+' names '+n+' twice');});}});
- var charges=listed('CHARGE_LADDER')?t.CHARGE_LADDER.map(function(l){return l.ch;}):[];
+ var charges=Array.isArray(t.CHARGE_LADDER)?t.CHARGE_LADDER.map(function(l){return l.ch;}):[];
  dupes(charges).forEach(function(c){no('CHARGE_LADDER gives the charge '+c+' two ladders');});
  (t.CHARGE_LADDER||[]).forEach(function(l,i){var first=t.CHARGE_LADDER[0];
   if(!str(l.ch))no('CHARGE_LADDER row '+l.c+' names no charge');

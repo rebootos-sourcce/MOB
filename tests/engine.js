@@ -9670,6 +9670,9 @@ g('RC · a code for every row of the ported registers, and the door reads each o
   bites('the overlay gone',t=>{delete t.ASTRO_OVERLAY;},'ASTRO_OVERLAY is missing');
   bites('a sign the codes lost',t=>{t.CODE_SIGN.pop();},'CODE_SIGN has');
   bites('an animal the codes lost',t=>{t.CODE_ANIMAL.pop();},'CODE_ANIMAL has');
+  {const t=JSON.parse(JSON.stringify(codeTables())); ['ZSIGN','ZI','CHINESE','HARM','NODES','SAB33','SABDEF'].forEach(k=>{if(!(k in t))t[k]=codeTables()[k];});
+   t.CHARGE_LADDER=[]; const p=codesCheck(t).filter(x=>x==='CHARGE_LADDER is not a list of rows');
+   ok(p.length===1,'an empty ladder table is named once, not once for each check that reads it, got '+p.length);}
   /* THE DOOR */
   is('LD05',null,'LD05','a ladder is its code');
   is('fear ladder',null,'LD05','and its name is its charge and the word ladder');
