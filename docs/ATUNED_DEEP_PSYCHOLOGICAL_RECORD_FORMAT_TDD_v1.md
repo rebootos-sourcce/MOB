@@ -406,3 +406,9 @@ The record-level audit is maintained in [KPI Closure Audit](ATUNED_DEEP_PSYCHOLO
 
 ### New required control
 Do not treat `templateValidation.missingFields` as the sole source of truth for template coverage. The audit must compare every actual record against every field in its assigned template, separately count provisional semantic content, and distinguish empty-but-valid link arrays from verified graph edges. Keep KPI 3 open until source-supported edges are adjudicated and runtime traversal tests pass.
+
+
+### 2026-10-24 implementation update — data namespace integration
+The generator now embeds the Deep Psychological registry and template catalog in separate properties of `KBD`. This is data-contract integration, not yet full graph integration. The existing Nerve-to-Super-Complex `entries` array remains unchanged to prevent unapproved taxonomic mappings from being promoted.
+
+The template validator now reports the embedded registry's structural/reference/content state and supports `--strict-deep-psychological`. The strict gate is expected to fail until substantive content and relationship closure are complete. Runtime execution and regression testing remain required before this integration is accepted.
