@@ -1,7 +1,7 @@
 {
   "catalogId": "atuned.deep_psychological.template_catalog",
-  "version": "1.1.0",
-  "status": "PROPOSED_FOR_DEEP_PSYCHOLOGICAL_REGISTRY_WITH_BEHAVIORAL_ENERGY_FIELDS_NOT_YET_ENGINE_INTEGRATED",
+  "version": "1.2.0",
+  "status": "SOURCE_ROSTER_AND_RELATIONSHIP_EDGE_TEMPLATES_ADDED; RUNTIME_INTEGRATION_PENDING",
   "purpose": "Explicit template assignments for the deep-psychological registry. Behavioral-domain records include research-informed behavioral-energy fields; the catalog remains separate from the experiential runtime until integration is implemented and tested.",
   "templates": [
     {
@@ -152,6 +152,121 @@
         "researchPasses"
       ],
       "description": "Non-canonical visualization slot used only to track an unresolved count; not a domain entity."
+    },
+    {
+      "id": "TPL-SOURCE-LABEL-V1",
+      "kind": "source_label",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "body",
+        "links",
+        "sourceLabel",
+        "sourceCluster",
+        "sourceVersion",
+        "sourceLocator",
+        "sourceExcerpt",
+        "sourceEvidenceStatus",
+        "canonicalStatus",
+        "crosswalkStatus",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "templateValidation"
+      ],
+      "description": "Source roster label preserved as a record without inferred semantic equivalence."
+    },
+    {
+      "id": "TPL-SOURCE-ARCH12-LABEL-V1",
+      "kind": "source_arch12_label",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "body",
+        "links",
+        "sourceLabel",
+        "sourceVersion",
+        "sourceLocator",
+        "sourceEvidenceStatus",
+        "canonicalStatus",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "templateValidation"
+      ],
+      "description": "Source label from the historical/current ARCH12 table; not assumed identical to the v341 archetype roster."
+    },
+    {
+      "id": "TPL-CONSCIOUS-AFFIRMATION-V1",
+      "kind": "conscious_affirmation",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "body",
+        "links",
+        "affirmationText",
+        "chakra",
+        "sequence",
+        "variants",
+        "sourceVersion",
+        "sourceLocator",
+        "sourceEvidenceStatus",
+        "canonicalStatus",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "templateValidation"
+      ],
+      "description": "Exact source affirmation record; candidate mapping to Conscious Domains remains a separate edge decision."
+    },
+    {
+      "id": "TPL-RELATED-CONSCIOUSNESS-CONCEPT-V1",
+      "kind": "related_consciousness_concept",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "body",
+        "links",
+        "sourceLabel",
+        "description",
+        "affirmationText",
+        "sourceVersion",
+        "sourceLocator",
+        "sourceEvidenceStatus",
+        "canonicalStatus",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "templateValidation"
+      ],
+      "description": "Related consciousness concept preserved separately from the eight-domain roster; version-specific cross-check remains explicit."
+    },
+    {
+      "id": "TPL-SOURCE-CONTRADICTION-V1",
+      "kind": "source_contradiction",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "body",
+        "links",
+        "contradictoryStatements",
+        "affectedRecordIds",
+        "requiredRuling",
+        "sourceVersion",
+        "sourceLocator",
+        "sourceEvidenceStatus",
+        "canonicalStatus",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "templateValidation"
+      ],
+      "description": "Contradictory source claims retained as a record; must not be silently reconciled."
     }
   ]
 }
