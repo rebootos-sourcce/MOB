@@ -418,3 +418,7 @@ The template validator now reports the embedded registry's structural/reference/
 The 15 behavioral-domain records are no longer classified as source-unverified content. Three research passes per record are complete using `MOB-Manuscript/index.html` blob `24dea9c95112fe83073e58ef4cb14d7eb5de9928`, Chapter 12, cross-checked against SOURCE OS CANON v1.0.0 built from v184 and the v341 crosswalk. The source artifact does not declare its version label; it is not silently treated as v341.
 
 Current registry-scope KPI 2 is **117/125 role-complete**, with **8 Conscious Domain records still substantively open**. The 15 behavioral-domain crosswalks remain unapproved, and domain 06 has an explicit label variant (“Destruction and Renewal” in the current manuscript versus “Destruction and Transformation” in the registry). KPI 3 remains open: 103 records have empty links arrays, 0/36 mapping rows are approved semantic edges, and runtime graph traversal is not verified.
+
+
+### Superseding registry-scope KPI result — 2026-10-24
+After completing the three research passes for all eight Conscious Domain records, KPI 2 is **125/125 researched records** for this registry. The eight individual affirmation-to-domain assignments remain provisional; that is an owner/canonical crosswalk decision, not an unperformed research pass. KPI 3 remains open because semantic relationships are not yet fully approved or runtime-traversed. Project-wide KPI 1 remains unverified until the full Nerve-to-Super-Complex inventory is reconciled.
