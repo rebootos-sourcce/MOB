@@ -1,7 +1,7 @@
 # ATÜNED Deep Psychological Layer — Three-Pass Depth Research Update
 **Audit date:** 2026-10-24  
 **Branch:** `work/deep-psyche-recursive-closure-2026-10-24`  
-**Registry version:** 1.1.0  
+**Registry version:** 1.3.0  
 **Scope of this pass:** the 15 owner-stated behavioral-domain records; no canonical taxonomy promotion.
 
 ## Operating rules applied
@@ -14,14 +14,14 @@
 7. Content fields describe provisional behavioral energy: motivational pull, attention bias, action tendency, adaptive expression, and distorted expression. These are research-informed operational interpretations, not source-verbatim ATÜNED claims.
 
 ## Execution summary
-- Registry: **125 records**, matching the declared count.
-- Current record families: roots 4; owner-stated behavioral domains 15; archetype candidates 18; Conscious Domains 8; cultural-figure mapping rows 12; archetype/domain mapping rows 18; archetype/fetter/seat mapping rows 18; Blueprint visualization slots 14; SOURCE OS CANON domain candidates 18.
-- Registry template/content status: **125/125 complete** after applying type-appropriate status; this is not canonical approval.
-- Research-pass slots: **125/125 have exactly three passes marked complete**. This pass adds independent external depth and adversarial review to the 15 behavioral-domain records; it does not retrospectively claim that all other records were freshly re-researched on this date.
+- Registry: **156 records**, matching the declared count.
+- Current record families: roots 4; owner-stated behavioral domains 15; archetype candidates 18; Conscious Domains 8; cultural-figure mapping rows 12; archetype/domain mapping rows 18; archetype/fetter/seat mapping rows 18; Blueprint visualization slots 14; SOURCE OS CANON domain candidates 18; v341 domain-roster labels 19; locked affirmations 7; related consciousness concepts 3; source contradictions 2.
+- Registry template/content status: **156/156 complete** after applying type-appropriate status; this is not canonical approval.
+- Research-pass slots: **156/156 have exactly three passes marked complete**. This execution adds independent external depth and adversarial review to the 15 behavioral-domain records and 8 Conscious Domain records, plus source/cross-version review for the 19-label v341 roster, 7 affirmations, 3 related concepts, and 2 source contradictions. It does not retrospectively claim that every historical record was freshly re-researched on this date.
 - Behavioral-domain depth pass: **15/15 updated** with independent source references, a synthesis, explicit limitations, behavioral-energy fields, adaptive/distorted expressions, and pass-2/pass-3 review dates.
 - Blueprint slots: **14/14 remain explicitly noncanonical visualization-slot records**; their names remain unresolved. They are complete as slot records, not as named psychological domains.
-- Structural check: **0 missing required template fields, 0 missing new behavioral-energy fields, 0 pass-slot failures, 0 dangling IDs** in the fetched registry snapshot.
-- Canonical crosswalk: **0/36 ARCHDOM/ARCH18 mapping rows promoted to semantic edges**. This remains correct because source-row presence does not prove taxonomy equivalence.
+- Structural check: **0 missing required template fields, 0 missing new behavioral-energy fields, 0 pass-slot failures, 0 duplicate IDs, 0 dangling record links, 0 invalid in-subsystem edge endpoints** in the fetched registry snapshot.
+- Typed relationship register: **130 edges**: 18 source-table membership edges, 56 source-row references, 10 unresolved source targets, 15 owner-stated-domain crosswalk candidates, 7 affirmation-to-domain candidates, 3 source-adjacency-only edges, and 21 issue-tracking edges. **0** candidate crosswalks were promoted to canonical semantic edges.
 - Runtime integration, forward/reverse traversal, full engine validator, and regression tests: **not run / not verified in this execution**.
 
 ## Record-by-record research matrix
@@ -58,3 +58,20 @@
 3. Represent source-table mappings and unresolved candidate crosswalks as typed, provenance-bearing relationship records without promoting them to semantic/canonical edges.
 4. Integrate the psychological registry into generator and validator using a separate namespace and explicit relation types.
 5. Run schema validation, adapter checks, forward/reverse traversal, reciprocal-edge checks, regression tests, and independent fresh-fetch review; log commands and outputs.
+
+
+## Additional source-roster and relationship-record pass — 2026-10-24
+
+The registry now uses schema/template catalog **1.3.0**. Template payloads are derived projections and are no longer duplicated in the source registry; the adapter rebuilds them from top-level record fields and the template catalog.
+
+### Added source-backed records
+- **19 v341 domain-roster labels** across Architect (Order), Engine (Dynamics), Weaver (Connection), and Witness (Awareness). Labels are preserved as source-roster records, not treated as equivalent to the owner-stated 15-domain registry.
+- **7 exact affirmation records** with chakra label, sequence, and locked text. The two alternate Throat wordings are retained as variants and do not replace the locked string.
+- **3 related consciousness concepts** — Pattern, Story, and Imperium — kept separate from the eight Conscious Domains. Their names are supported by the v341 extraction crosswalk; their detailed descriptions currently come from the secondary MOB-Manuscript snapshot and remain pending exact v341 text verification.
+- **2 source-contradiction records**: the Architect/Rulership versus Imperium roster contradiction, and the archetype roster/version-count mismatch. Neither is silently reconciled.
+
+### Relationship register
+The 130-edge register is typed and provenance-bearing. Candidate crosswalks and source-row references are represented without treating them as canonical parentage. Edges with unresolved target labels remain explicit blockers; null targets are intentional and accompanied by a status and label.
+
+### Scope caveat
+The 156-record registry is a typed Deep Psyche/source-roster subsystem, not the full project denominator. It does not yet include the separate 108-record Fetter deep-template library, 33-record Saboteur library, 9 complex/hyper/super template rows, 972 address-register prompts, or the full runtime graph in one reconciled inventory. KPI 1 is therefore not certified globally. Runtime integration and tests remain open.
