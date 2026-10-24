@@ -9719,10 +9719,22 @@ function planBuyable(k){
    IT DOES NOT CLOSE THE SERVER AND IT DOES NOT OPEN IT. The server's switch is
    the gate; this is the instrument saying the same thing before anybody
    presses. Opening paying is two words, this one and the server's, in the same
-   release. Billing's own Move to presses still go through planOpen and are
-   refused by the server exactly as they were: that route is left as it stood. */
+   release. Billing's tiers (ui/plans.js) ask the same question since 24 October
+   and say "Opens soon" where each Move to sat; until then they kept their
+   presses, and each one could only be refused (P2-1 of the 23 October QA pass). */
 const PLAN_CHECKOUT_OPEN=false;
 function planCheckoutOpen(){ return PLAN_CHECKOUT_OPEN===true; }
+/* WHETHER THE RECORD NAMES A PAID TIER, live or ended, 24 October. The plan
+   sheet offered Manage billing to everybody, and a person who had never paid
+   pressed it to be told by the server "there is no paid plan on this account
+   yet, so there is no billing to manage" (QA pass of 23 October, P3-4). A
+   record that names a paid rung, in force or stopped, belongs to somebody who
+   has had a plan and has a payment page to go to; free, the gift, no plan and
+   a key this build does not know do not. planFromServer makes the same test
+   inline as wasPaid, and is left untouched because the pay cycle walk runs a
+   pinned copy of it (tests/money.js, group 5). */
+function planNamesPaid(pl){
+ return !!(pl&&typeof pl==='object'&&PLAN_BY[pl.tier]&&pl.tier!=='free'&&pl.tier!=='gift');}
 /* THE GIFT'S SIZE, NAMED ONCE. It is the gift row's grant above. planAllowance
    carried its own literal 100 in five places beside that row, which is the same
    number held twice and one edit away from two answers. */
@@ -22757,11 +22769,11 @@ if(typeof module!=='undefined'&&module.exports){
                  planNextSight:planNextSight, planAllowance:planAllowance,
                  planWeeks:planWeeks, planFreeFrom:planFreeFrom, GIFT_N:GIFT_N, WEEK_MS:WEEK_MS, planInGift:planInGift,
                  planUpgrade:planUpgrade, planBuyable:planBuyable, RUN_MAX:RUN_MAX, RUN_MIN:RUN_MIN,
-                 PLAN_CHECKOUT_OPEN:PLAN_CHECKOUT_OPEN, planCheckoutOpen:planCheckoutOpen,
+                 PLAN_CHECKOUT_OPEN:PLAN_CHECKOUT_OPEN, planCheckoutOpen:planCheckoutOpen, planNamesPaid:planNamesPaid,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  PLAN_PRICE:PLAN_PRICE, planPrice:planPrice, planLadder:planLadder,
-                 planFromServer:planFromServer,
+                 planFromServer:planFromServer, planMoneyBad:planMoneyBad,
                  LEAD_SEES:LEAD_SEES, LEAD_HIDDEN:LEAD_HIDDEN, leadSees:leadSees,
                  EQUIV:EQUIV, EQUIV_NONE:EQUIV_NONE, equivOf:equivOf, planWorth:planWorth,
   /* ages */     AGES:AGES, AGE_TEST:AGE_TEST, AGE_LO:AGE_LO, AGE_HI:AGE_HI,
