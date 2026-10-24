@@ -172,9 +172,13 @@ function anaRender(){
       and this said the second when it only knew the first. A field with load
       spread under the line reported "Nothing is carrying" beside a tier word
       earned by that same load. It now says which of the two is true. */
-    :(r.heaviest?'Nothing is above '+unp('the line')+'. The heaviest is <b>'+esc(r.heaviest.k)
-      +'</b>, at the '
-      +String(r.heaviest.b).toLowerCase()+'.':'Nothing is carrying.'))
+    /* the feeling and not the address's name, P0-3 of the inference audit:
+       words never name an address, and the address names are character
+       labels the node table chose. The place is left out with it, because
+       the place comes from the same table. */
+    :(r.heaviest?'Nothing is above '+unp('the line')+'. The heaviest address is carrying <b>'
+      +esc((typeof ritCfWord==='function')?ritCfWord(r.heaviest.cf):String(r.heaviest.cf||'').toLowerCase())
+      +'</b>.':'Nothing is carrying.'))
    /* only against a row the same arithmetic wrote. A row from before 25
       September holds It*Ig/Rz, and the gap to the laws over 210 is the
       formula changing, not the person moving. */

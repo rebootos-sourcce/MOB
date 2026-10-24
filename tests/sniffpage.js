@@ -180,7 +180,10 @@ require('./net.js').guardBrowser(browser);
        the Imprints page's pending pills. Each is driven through its own
        renderer with the same stories. */
     const STORIES = ['I was furious.', 'I am exhausted.', 'My father died last year.',
-      'I was scared and my chest went tight.', 'I am exhausted and furious.'];
+      'I was scared and my chest went tight.', 'I am exhausted and furious.',
+      /* the grief named, which is when the pill printed Martyrdom: the bare
+         sentence above names no feeling and was always folded */
+      'My father died last year and I still cannot stop crying.'];
     const CLAIM = /(you named|you said|your words named|named by (the|your) words)\s+(.{0,60})/ig;
     /* AXES is the nine axis names. Three of them, Fear, Shame and Anger, are
        also address names, and "your words named anger" is a true sentence
@@ -220,6 +223,28 @@ require('./net.js').guardBrowser(browser);
       'and passes a title that names what the words named, not the address');
     ok(judge(ADDR, 'I was furious.', 'around the word “Pride”', []).length === 1, 'and catches an address quoted as the person\'s word');
     ok(judge(ADDR, 'I was furious.', 'You named Pride.', []).length === 1, 'and catches "you named" an address the story does not hold');
+    /* THE CLAIM, NOT ONLY THE WORDING, P0-3 of the inference audit, 23
+       October. The rule above fails a surface only when it says "you said",
+       "you named" or quotes the address. Summary's first card made the same
+       claim with none of those words, "Release this first: Victimhood" after
+       three entries about a father's death, and the journal's pill printed
+       Martyrdom with its only disclosure in a hover title. So the surfaces
+       that print an address as what a person holds are held to the claim
+       itself: no address name the story's letters do not contain, whatever
+       sentence it sits in. Fear, Shame and Anger are address names and also
+       the true word for the feeling, so the nine feelings are not counted.
+       The onboarding mirror and the quiz's story cards print an address as a
+       question, with Yes and Not me beside it, and stay under the rule above. */
+    const foreignIn = (story, label) => {
+      const low = ' ' + String(story).toLowerCase().replace(/[^a-z]+/g, ' ') + ' ';
+      const lab = ' ' + String(label).toLowerCase().replace(/[^a-z]+/g, ' ') + ' ';
+      return ADDR.filter(a => { const w = ' ' + a.toLowerCase().replace(/[^a-z]+/g, ' ').trim() + ' ';
+        return AXES.indexOf(a.toLowerCase()) < 0 && low.indexOf(w) < 0 && lab.indexOf(w) >= 0; }); };
+    ok(foreignIn('My father died last year.', 'Release this first Victimhood').join() === 'Victimhood',
+      'the claim check catches a known bad card, Victimhood for a father\'s death');
+    ok(foreignIn('My father died last year.', 'Release this first Sadness').length === 0
+      && foreignIn('I was afraid.', 'Fear +2.1').length === 0 && foreignIn('I felt pride.', 'Pride +1.5').length === 0,
+      'and passes the feeling the words named, and an address name the person wrote');
     for (const t of STORIES) {
       await type(p, t);
       const story = await p.evaluate(() => ({
@@ -227,6 +252,9 @@ require('./net.js').guardBrowser(browser);
         pills: [...document.querySelectorAll('#stimps .st-pill')].map(e => ({ text: e.textContent, title: e.getAttribute('title') || '' })) }));
       const a = judge(ADDR, t, story.list, story.pills);
       ok(a.length === 0, 'Story page list, ' + JSON.stringify(t) + ': ' + (a.join('; ') || 'clean'));
+      const pc = foreignIn(t, story.pills.map(x => x.text).join(' | '));
+      ok(pc.length === 0 && story.pills.length > 0, 'Story page pills print the feeling and no address the story does not hold, '
+        + JSON.stringify(t) + ': ' + (pc.join(', ') || story.pills.map(x => x.text).join(' | ')));
       const other = await p.evaluate(tt => {
         const ps = parseStory(tt);
         const ob = (typeof obReadOf === 'function') ? obReadOf(ps, 'story', {}).map(obGroup).join('') : '';
@@ -245,7 +273,36 @@ require('./net.js').guardBrowser(browser);
     const ip = await p.evaluate(() => [...document.querySelectorAll('.ip.ghost')].map(e => ({ text: e.textContent, title: e.getAttribute('title') || '' })));
     const c = judge(ADDR, 'I was furious.', ip.map(x => x.title).join(' '), ip);
     ok(c.length === 0, 'Imprints page pending pills: ' + (c.join('; ') || 'clean, ' + ip.length + ' pills'));
+    const ic = foreignIn('I was furious.', ip.map(x => x.text).join(' | '));
+    ok(ic.length === 0 && ip.length > 0, 'Imprints page pending pills print the feeling and no address: '
+      + (ic.join(', ') || ip.map(x => x.text).join(' | ')));
     await p.cx.close();
+
+    /* Analytics and Summary, after real commits on a fresh profile. One grief
+       entry leaves nothing above the line, which is when Analytics names the
+       heaviest address; three put it above, which is when Summary's first
+       card names it. */
+    {
+      const ps = await open(browser, 1600, 1000);
+      const GRIEF = 'My father died last year and I still cannot stop crying.';
+      const commit = () => ps.evaluate(tt => { ST_TEXT = tt; ST_PARSED = parseStory(tt); const c = stCommit(); return !!(c && c.ok); }, GRIEF);
+      ok(await commit(), 'a grief entry commits on a fresh profile');
+      const ana = await ps.evaluate(() => { setTab(TAB.ANALYTICS); render(); return (document.getElementById('ana') || {}).textContent || ''; });
+      const al = (ana.match(/The heaviest[^.]*\./) || [''])[0];
+      const ac = foreignIn(GRIEF, al);
+      ok(!!al && ac.length === 0, 'Analytics names the feeling the heaviest address carries and no address: ' + JSON.stringify(al) + (ac.length ? ' ' + ac.join(', ') : ''));
+      ok(await commit() && await commit(), 'two more grief entries commit');
+      const sum = await ps.evaluate(() => { setTab(TAB.SUMMARY); render();
+        const feel = CHARGES.map(c => { const w = ritCfWord(c); return w.charAt(0).toUpperCase() + w.slice(1); });
+        const cards = [...document.querySelectorAll('.s-out')].map(e => ({ eye: ((e.querySelector('.pm-eye') || {}).textContent || '').trim(),
+          nm: ((e.querySelector('.s-out-n') || {}).textContent || '').trim(), sub: ((e.querySelector('.s-out-s') || {}).textContent || '').trim() }));
+        return { feel, card: cards.filter(c => /^release this first$/i.test(c.eye))[0] || null }; });
+      const sc = sum.card ? foreignIn(GRIEF, sum.card.nm + ' ' + sum.card.sub) : ['no card'];
+      ok(!!sum.card && sc.length === 0 && sum.feel.indexOf(sum.card.nm) >= 0,
+        'Summary\'s first card names the feeling, not an address: ' + JSON.stringify(sum.card) + (sc.length ? ' ' + sc.join(', ') : ''));
+      ok(!ps.errs.length, 'no page errors through the commits, Analytics and Summary: ' + ps.errs.join(' | '));
+      await ps.cx.close();
+    }
 
     /* THE DAY ONE TUTORIAL'S TWO CARDS were driven here too, its first card
        through the rule above and its second card's chain through a check of

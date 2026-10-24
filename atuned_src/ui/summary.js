@@ -1037,6 +1037,13 @@ function sumNine(){
 /* WHAT THIS STATE CALLS FOR. ritFor is a pure function of the reading and has
    only ever been called from inside the ritual overlay, which opens after a
    release run, which means a person who has not run one has never seen it. */
+/* the feeling an address carries, as a name: the ritual calendar's own word
+   for it (ritCfWord, ui/ritcal.js), so "Sad" reads Sadness and no second
+   word is made for one feeling */
+function sumFeel(n){
+ var cf=n&&n.cf; if(!cf)return (n&&n.k)||'';
+ var w=(typeof ritCfWord==='function')?ritCfWord(cf):String(cf).toLowerCase();
+ return w.charAt(0).toUpperCase()+w.slice(1);}
 function sumOutput(r){
  var rit=(typeof ritFor==='function')?ritFor(r):null;
  var m=(typeof meterRead==='function')?meterRead(CURP):null;
@@ -1082,8 +1089,18 @@ function sumOutput(r){
      product should not spend a person's fifteen minutes pretending otherwise. */
   +(function(){
     var THIN=1.5;
-    if(hot)return card('Release this first',hot.k,
-     hot.b+' seat, holding '+fmtPct('weight',hot.sq)
+    /* THE FEELING, NOT THE ADDRESS'S NAME, P0-3 of the inference audit, 23
+       October. This card printed the address, "Release this first:
+       Victimhood, Root seat", after three entries about a father's death,
+       and "Escapism" after three of "I am exhausted". Words never name an
+       address: which one is heaviest is the node table and the blueprint
+       domain choosing, and the address names are character labels. So the
+       card names the feeling the address carries, and leaves the place out
+       until the owner rules where a story's charge lands, because today the
+       place comes from that same table. The address keeps its name on its
+       own drill and on the release card. */
+    if(hot)return card('Release this first',sumFeel(hot),
+     'Your heaviest address holds it, at '+fmtPct('weight',hot.sq)
       /* ROUND RG. "Points of expression" was a term of art on the same page
          where Expression is a numerology number, so one word meant two
          things a scroll apart. The headroom is coherence held back by the
@@ -1095,9 +1112,8 @@ function sumOutput(r){
       +(r.unread||!r.complete||fmtPct('expression',rhead)===PCT_DASH?''
         :'. What you carry holds back about '+fmtPct('expression',rhead)+' of your coherence, and release can give it back'),
      '<button class="btn s-oact" data-sout="rel" data-n="'+hot.i+'">Run a release</button>');
-    if(r.heaviest&&(r.unread||rhead>=THIN))return card('Release this first',r.heaviest.k,
-     r.heaviest.b+' seat, below the line, at '+fmtPct('weight',r.heaviest.sq)
-      +'. The heaviest thing you are holding',
+    if(r.heaviest&&(r.unread||rhead>=THIN))return card('Release this first',sumFeel(r.heaviest),
+     'Your heaviest address is carrying it, below the line, at '+fmtPct('weight',r.heaviest.sq),
      '<button class="btn s-oact" data-sout="rel" data-n="'+r.heaviest.i+'">Run a release</button>');
     /* four words, so it is a label. "now" was the fifth and it was carrying
        nothing: the whole surface is the reading now. */

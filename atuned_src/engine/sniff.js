@@ -855,8 +855,10 @@ function parseStory(text){
    var sa=statedAt[h.band]=statedAt[h.band]||{};
    sa[h.fet]=(sa[h.fet]||0)+Math.abs(h.amt||0);}
   else if(adjAt[h.at]){
+   /* the amount the word carried, and not only that it named something, so
+      the word can keep its charge below when its seat cannot house it */
    var oa=ownAt[h.band]=ownAt[h.band]||{};
-   oa[adjAt[h.at]]=true;}});
+   oa[adjAt[h.at]]=(oa[adjAt[h.at]]||0)+Math.abs(h.amt||0);}});
  Object.keys(byBand).forEach(function(k){
   var bn=K2BAND[k]; if(!bn) return;
   var all=W.filter(function(n){return n.b===bn&&n.cf;});
@@ -899,7 +901,26 @@ function parseStory(text){
      one thing the sentence actually said and fall back to Anger. The charge
      still lands on the seat, because that is where the body holds it, and the
      reading keeps the name the word gave it. */
-  var here=statedAt[k]||{};
+  var here=Object.assign({},statedAt[k]||{});
+  /* AND SO DOES A FEELING THE WORD'S OWN ADJECTIVE NAMES, P0-1 of the
+     inference audit, 23 October. The survival above covered only a fetter
+     LEX states outright. A word whose own adjective names its feeling lost
+     to the quarter rule whenever its seat held few addresses for it:
+     measured, 23 of the 171 single feeling words were filed mostly under a
+     feeling they do not name. "I feel disconnected and hollow" names apathy,
+     the crown holds one apathy address and eight anger ones, so about 90
+     per cent of it was filed as anger; three such entries read anger at 10
+     and the Compass named the writer The Devil. "Tense" went to disgust and
+     "anxious" to fear. The quarter rule is right for a feeling named
+     elsewhere in the sentence, which is the grief filed as shame it was
+     written to stop. The word's own adjective is the plainest evidence the
+     sentence has, so it survives the same way a stated fetter does. A
+     feeling its seat does house, a quarter or more, reads exactly as
+     before. */
+  var own=ownAt[k]||{};
+  Object.keys(own).forEach(function(f){
+   if(here[f]!==undefined)return;
+   if(all.filter(function(n){return n.cf===f;}).length<all.length*0.25)here[f]=own[f];});
   var hereF=Object.keys(here).sort(function(a,b){return here[b]-here[a];});
   var stateHere=hereF.length>0;
   /* the intensity curve is 0-30ish. normalise to a 0-10 charge delta. */

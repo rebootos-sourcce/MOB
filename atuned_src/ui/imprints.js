@@ -30,12 +30,17 @@ function impGhosts(){
      read as four findings. They are one reading: the seat, the fetter, and the
      amount that lands on it, which is their sum. A named ghost keeps one pill
      per address, because each of those carries its own name. */
-  var key=(im.inferred||off)?('f|'+n.b+'|'+im.fetter):('n|'+im.node);
+  /* AND A NAMED GHOST FOLDS THE SAME WAY, P0-3 of the inference audit, 23
+     October. It kept one pill per address under the address's own name, so a
+     sentence that named grief printed Martyrdom. The words named the feeling
+     and the engine picked the addresses, so a named ghost is one pill for
+     its seat and feeling too, and says the feeling. */
+  var key='f|'+n.b+'|'+im.fetter;
   if(out[key]){out[key].amt=Math.round((out[key].amt+im.amt)*10)/10; out[key].n++; return;}
   /* inferred carries through, because the chip is the first place a person
      reads what the instrument thinks their sentence was about. */
   out[key]={node:n,amt:im.amt,inferred:!!im.inferred||off,fet:im.fetter||null,
-   stated:off,n:1};
+   stated:off,named:!im.inferred&&!off,n:1};
   order.push(key);});
  return order.map(function(k){return out[k];});}
 function painOf(n,bandLoad){
@@ -110,7 +115,9 @@ function impPill(n,maxW,IX,ghost,inferred){
  var fl=(gx&&gx.fet)||n.cf||n.b, seat=String(n.b).toLowerCase();
  var lbl=(ghost&&inferred)?fl:n.k;
  var ttl=(ghost&&inferred)
-   ? ((gx&&gx.stated)
+   ? ((gx&&gx.named)
+     ? fl+' at the '+seat+'. Your words named '+String(fl).toLowerCase()+'.'
+     : (gx&&gx.stated)
      ? fl+' at the '+seat+'. Your words named '+String(fl).toLowerCase()
        +' and this seat has no address for it, so the charge lands on the seat.'
      : fl+' at the '+seat
@@ -120,7 +127,7 @@ function impPill(n,maxW,IX,ghost,inferred){
    : title;
  if(kid)ttl=kid.ax+' sits here. '+ttl;
  return '<button class="ip'+(on?' on':'')+(hot?' hot':'')+(ghost?' ghost':'')
-  +(ghost&&inferred?' infer':'')
+  +(ghost&&inferred&&!(gx&&gx.named)?' infer':'')
   +(kid?' kid':'')
   +(installed?' inst':'')+'" data-imp="'+n.i+'" '
   +'style="--c:'+c+';font-size:'+fs+'px;padding:'+pad+'px '+(+pad+7)+'px" '
@@ -241,7 +248,7 @@ function impRender(){
     +(gs.length?', '+gs.length+' pending':'')+'</em></div>';
    /* two maps, because ghost is passed as the amount and is a number. The
       inferred flag rides beside it rather than being smuggled onto a float. */
-   var gl={},gi={};gs.forEach(function(x){gl[x.node.i]=x.amt;gi[x.node.i]=x.inferred?x:false;});
+   var gl={},gi={};gs.forEach(function(x){gl[x.node.i]=x.amt;gi[x.node.i]=x;});
    h+=cloud(seg.concat(gs.map(function(x){return x.node;})),gl,gi);});
  } else if(IMP_GROUP==='charge'){
   CHILD.forEach(function(c){

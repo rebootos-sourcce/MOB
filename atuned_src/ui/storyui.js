@@ -1948,12 +1948,16 @@ function stListPaint(){
      which does not carry the fetter, so "I am exhausted" printed Pride.
      A stated imprint now folds to its fetter like an inferred one, because
      it has no address of its own, and each title says what the words did. */
+  /* AND A NAMED IMPRINT FOLDS TOO, P0-3 of the inference audit, 23 October.
+     It printed the address, so "My father died last year" showed a pill
+     reading Martyrdom, and the one sentence saying the engine chose it sat in
+     a hover title a phone never shows. The words named the feeling and only
+     the feeling, so every pill prints the feeling at its seat. */
   l.imps.slice().sort(function(a,b){return b.amt-a.amt;}).forEach(function(im){
-   if(im.inferred||im.stated){var fk=(im.stated?'s:':'i:')+im.band+':'+im.fetter;
-    if(!fold[fk]){fold[fk]={label:STV.sort==='charge'?im.band:im.fetter,amt:0,inf:true,st:!!im.stated,
-     band:im.band,fet:im.fetter};pills.push(fold[fk]);}
-    fold[fk].amt+=im.amt;}
-   else pills.push({label:im.name,amt:im.amt,inf:false,band:im.band,fet:im.fetter});});
+   var fk=(im.stated?'s:':im.inferred?'i:':'n:')+im.band+':'+im.fetter;
+   if(!fold[fk]){fold[fk]={label:STV.sort==='charge'?im.band:im.fetter,amt:0,inf:!!(im.inferred||im.stated),
+    st:!!im.stated,band:im.band,fet:im.fetter};pills.push(fold[fk]);}
+   fold[fk].amt+=im.amt;});
   /* THE "ONLY FROM" WARNING IS GONE, S1, because its case is. It was written
      for a seat charged by parseStory from words srcHear set aside, the two
      halves of the engine disagreeing. Since S1 a word said with a no charges
@@ -1969,7 +1973,7 @@ function stListPaint(){
     return '<span class="st-pill'+(q.inf?' inf':'')+(ST_SEEN[k]?'':' new')+'" style="--c:'+seatCol(q.band)+'" '
      +'title="'+esc(q.st?'Your words named '+String(q.fet||'').toLowerCase()+'. This seat has no address for it, so the charge stays at the seat.'
       :q.inf?'The seat was read. The words did not name this address.'
-      :'Your words named '+String(q.fet||'').toLowerCase()+'. The engine picked this address for it.')+'">'
+      :'Your words named '+String(q.fet||'').toLowerCase()+'.')+'">'
      +'<span class="st-ring"></span>'+esc(q.label)+' <small>+'+(Math.round(q.amt*10)/10)+'</small></span>';}).join('')
    +'</div></div>';});
  ST_SEEN=seen; box.innerHTML=o;

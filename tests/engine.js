@@ -8770,6 +8770,40 @@ g('OWN WORD · a second emotion word never erases a stated one, each keeps its o
  ok(one.length===4&&one.every(i=>i.fetter==='Anger'&&i.from==='solar'),'a lone anger word is still four Anger addresses at the solar plexus');
 }
 
+g('OWN NAMED · a feeling the word\'s own adjective names survives a seat that cannot house it');
+/* P0-1 of the inference audit, 23 October. "I feel disconnected and hollow"
+   names apathy. The crown holds one apathy address and eight anger ones, so
+   the quarter rule filed about 90 per cent of it as anger, measured on
+   77928172: three such entries read anger at 10 and, with the laws answered
+   at 3, the Compass named the writer The Devil. A stated fetter already
+   survived a seat that cannot house it. A word's own named feeling now does
+   too, and a feeling named elsewhere in the sentence still meets the quarter
+   rule, which is the grief filed as shame it was written to stop. */
+{
+ const fresh=()=>{E.loadProfile(E.blankProfile('ownnamed'));};
+ const fets=t=>{fresh();return [...new Set(E.parseStory(t).imprints.map(i=>i.fetter))].sort().join(',');};
+ const applied=t=>{fresh();return E.applyStory(t).applied||{};};
+ ok(fets('I feel disconnected and hollow')==='Apathy','disconnected and hollow read apathy and nothing else, '+fets('I feel disconnected and hollow'));
+ const d=applied('I feel disconnected and hollow');
+ ok((d.Apathy||0)>0&&!((d.Anger||0)>0),'and the charge lands on apathy with none on anger, '+JSON.stringify(d));
+ ok(fets('I am dissociating again')==='Apathy','dissociating reads apathy, '+fets('I am dissociating again'));
+ ok(fets('I feel unheard')==='Apathy','unheard reads apathy and not disgust, '+fets('I feel unheard'));
+ ok(fets('I am so tense')==='Anticipation','tense reads anticipation and not disgust, '+fets('I am so tense'));
+ ok(fets('I am anxious')==='Anticipation','anxious reads anticipation, the feeling the engine\'s own table gives anxiety, '+fets('I am anxious'));
+ /* the cases the quarter rule exists for, unchanged */
+ fresh();
+ const gs=E.parseStory('My father died and I feel ashamed').imprints;
+ ok(gs.filter(i=>i.from==='heart').every(i=>i.fetter==='Sad')&&gs.some(i=>i.fetter==='Shame'),
+  'grief stays sadness at the heart beside a shame word, '+JSON.stringify(gs.map(i=>i.from+'/'+i.fetter)));
+ ok(fets('I am angry')==='Anger'&&fets('I am terrified')==='Fear','a feeling its seat houses reads exactly as before');
+ /* and the reading that went wrong downstream */
+ const p=E.blankProfile('ownnamed3'); SINAMES.forEach(l=>{p.laws[l]=3;}); E.loadProfile(p);
+ for(let i=0;i<3;i++)E.applyStory('I feel disconnected and hollow');
+ const r=compute();
+ ok(!((S.charge.Anger||0)>0)&&r.balance.lean<0&&!(r.gov&&r.gov.nm==='The Devil'),
+  'three entries of it read inward, with no anger and no Devil, '+JSON.stringify({anger:S.charge.Anger,lean:r.balance.lean,gov:r.gov&&r.gov.nm}));
+}
+
 g('SEED SHARE · the share of the field that is still the seed is measured from the real blank');
 /* seedShare measured the seed from a blank of 3 after the blank moved to 0,
    so at e9ca1ae an ESTJ seed plus one story read 0.36 where the seed put
