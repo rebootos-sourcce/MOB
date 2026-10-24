@@ -3,7 +3,9 @@
 /* Pure adapter: project source-registry records into the runtime namespace.
    The caller supplies parsed registry and catalog objects; this module has no
    filesystem or process side effects. */
-module.exports = function adaptPsychologicalRegistry(registry, catalog) {
+module.exports = function adaptPsychologicalRegistry(registry, catalog, options = {}) {
+  const namespace = options.namespace || 'psych';
+  const runtimeId = (id) => namespace + ':' + id;
   const records = Array.isArray(registry.records) ? registry.records : [];
   const sourceIds = new Set(records.map((record) => record.id));
   const templateById = new Map((catalog.templates || []).map((template) => [template.id, template]));
