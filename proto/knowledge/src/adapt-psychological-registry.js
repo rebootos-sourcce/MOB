@@ -19,11 +19,14 @@ function readJson(file) {
 }
 const registry = readJson(registryPath);
 const catalog = readJson(catalogPath);
+const relationshipEdges = Array.isArray(registry.relationshipEdges) ? registry.relationshipEdges : [];
 const templateById = new Map((catalog.templates || []).map(t => [t.id, t]));
 const ids = new Set();
 const errors = [];
 const warnings = [];
 const entries = [];
+const edgeIds = new Set();
+const edgeErrors = [];
 
 for (const source of (registry.records || [])) {
   if (!source || typeof source.id !== 'string' || !source.id) {
@@ -93,6 +96,13 @@ for (const entry of entries) {
   for (const target of entry.childIds) if (!ids.has(target)) errors.push(entry.id + ': dangling childId ' + target);
   if (entry.parentId && !ids.has(entry.parentId)) errors.push(entry.id + ': dangling parentId ' + entry.parentId);
 }
+for (const edge of relationshipEdges) {
+  if (!edge.edgeId || edgeIds.has(edge.edgeId)) edgeErrors.push({ edgeId: edge.edgeId || null, issue: 'missing_or_duplicate_edge_id' });
+  edgeIds.add(edge.edgeId);
+  if (!ids.has(edge.fromId)) edgeErrors.push({ edgeId: edge.edgeId, issue: 'source_record_missing', fromId: edge.fromId });
+  if (edge.toId && edge.targetRegistry === 'deep_psychological_registry' && !ids.has(edge.toId)) edgeErrors.push({ edgeId: edge.edgeId, issue: 'target_record_missing', toId: edge.toId });
+  if (!edge.toId && (!edge.toLabel || !edge.status)) edgeErrors.push({ edgeId: edge.edgeId, issue: 'unresolved_target_needs_label_and_status' });
+}
 const result = {
   schema: 'atuned.deep_psychological.engine_adapter.v1',
   status: errors.length ? 'FAIL' : (warnings.length ? 'PASS_WITH_CONTENT_GAPS' : 'PASS'),
@@ -101,7 +111,10 @@ const result = {
   uniqueIdCount: ids.size,
   templateAssignedCount: entries.filter(e => e.templateId && e.template).length,
   structurallyIncompleteCount: entries.filter(e => e.templateValidation.missingFields.length).length,
-  errors, warnings, entries
+  errors, warnings, entries,
+  relationshipEdges,
+  relationshipEdgeCount: relationshipEdges.length,
+  relationshipEdgeErrors: edgeErrors
 };
 const outIndex = process.argv.indexOf('--out');
 const outPath = outIndex >= 0 ? process.argv[outIndex + 1] : null;
@@ -112,6 +125,7 @@ console.log(JSON.stringify({
   status: result.status, runtimeIntegrated: false, recordCount: result.recordCount,
   uniqueIdCount: result.uniqueIdCount, templateAssignedCount: result.templateAssignedCount,
   structurallyIncompleteCount: result.structurallyIncompleteCount,
-  errorCount: errors.length, warningCount: warnings.length
+  errorCount: errors.length, warningCount: warnings.length,
+  relationshipEdgeCount: relationshipEdges.length, relationshipEdgeErrorCount: edgeErrors.length
 }, null, 2));
 if (errors.length) process.exitCode = 1;
