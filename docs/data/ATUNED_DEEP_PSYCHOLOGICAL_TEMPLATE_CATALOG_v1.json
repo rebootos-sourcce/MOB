@@ -1,6 +1,6 @@
 {
   "catalogId": "atuned.deep_psychological.template_catalog",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "status": "COMPLEX_HYPERCOMPLEX_AND_SUPERCOMPLEX_CANDIDATE_TEMPLATES_ADDED",
   "purpose": "Explicit template assignments for the deep-psychological registry. Behavioral-domain records include research-informed behavioral-energy fields; the catalog remains separate from the experiential runtime until integration is implemented and tested.",
   "templates": [
@@ -542,6 +542,67 @@
         "templateValidation"
       ],
       "description": "Named inversion label from a source family; kept separate from MIRROR figures and Super-Complex entities unless an approved crosswalk exists."
+    },
+    {
+      "id": "TPL-HYPERCOMPLEX-MODE-V1",
+      "kind": "hypercomplex_mode",
+      "fields": [
+        "nm",
+        "fam",
+        "cluster",
+        "def",
+        "body",
+        "behavior",
+        "triggerMechanism",
+        "livedExample",
+        "impact",
+        "practice",
+        "inferred",
+        "inferenceBasis",
+        "confidence",
+        "reviewStatus",
+        "oppositeId",
+        "oppositeDefinition",
+        "oppositeStatus",
+        "narrativeSource",
+        "researchSources",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "links",
+        "templateValidation"
+      ],
+      "description": "Source-defined framework mode, distinct from canonical Hyper-Complex entity records; opposite is a provisional inferred counterpart."
+    },
+    {
+      "id": "TPL-INFERRED-COUNTERPART-V1",
+      "kind": "inferred",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "body",
+        "inferred",
+        "inferenceBasis",
+        "behavior",
+        "triggerMechanism",
+        "livedExample",
+        "impact",
+        "practice",
+        "oppositeId",
+        "oppositeDefinition",
+        "oppositeStatus",
+        "confidence",
+        "reviewStatus",
+        "narrativeSource",
+        "researchSources",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "links",
+        "templateValidation"
+      ],
+      "description": "Provisional inferred counterpart record. Never treat as canonical or as a clinical claim without evidence and review."
     }
   ]
 }
