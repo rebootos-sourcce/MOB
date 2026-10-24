@@ -415,3 +415,29 @@ See [Three-Pass Research Depth Pass — 2026-10-24](ATUNED_DEEP_PSYCHOLOGICAL_TH
 4. The full denominator across the existing experiential Nerve-to-Super-Complex graph and the separate typed psychological registry must be inventoried and reconciled.
 5. The psychological registry remains separate from the experiential runtime. Generator/validator integration, forward and reverse traversal, reciprocal-edge tests, regression tests, and independent fresh-fetch closure have **not** been run in this execution.
 6. Do not report the three KPIs as 100% until the full layer denominator is proven, content/research acceptance is independently checked, and every required relationship is represented and validated. Current static results establish record/template population in this 125-record registry, not full-project closure.
+
+
+---
+
+## 13. Registry expansion and typed-edge inventory — 2026-10-24
+
+**Registry schema/template version:** 1.3.0  
+**Record count:** 156 declared / 156 parsed.  
+**Typed relationship register:** 130 edges.  
+**Overall closure:** OPEN; runtime integration and full-project denominator remain unverified.
+
+### Source-roster records now explicit
+- 19 v341 domain-roster labels, kept separate from the 15 owner-stated behavioral-domain records and the 18 historical SOURCE OS CANON domain candidates.
+- 7 locked affirmation records, including separate alternate wording for Throat.
+- 3 related consciousness concept records (Pattern, Story, Imperium). Names are crosswalk-backed; detailed text comes from a secondary manuscript snapshot and is not represented as verified v341 wording.
+- 2 open source-contradiction records: Architect/Rulership versus Imperium, and the archetype roster/version-count mismatch.
+- 130 provenance-bearing typed edges: source memberships, source-row references, candidate crosswalks, affirmation candidates, source adjacency, and contradiction issue edges. Unresolved targets remain explicit.
+
+### Schema adjustment
+The source registry no longer stores a duplicated `template` payload. That payload is a projection computed by the adapter from top-level source fields and the versioned template catalog. This removes a drift point; generated runtime entries still carry the projected template and its validation result.
+
+### Acceptance boundary
+- All 156 records have unique IDs, three pass slots marked complete, and no template missing-field entries in the registry snapshot.
+- All 130 edge records have a resolvable source record; any unresolved target is explicit as a null target plus a target label/status.
+- This is **not** global KPI closure. The 108 Fetter deep-template library, 33 Saboteur records, 9 complex/hyper/super template rows, 972 address-register prompts, and full runtime graph are not yet merged into one complete denominator.
+- The registry is not yet integrated into the experiential generator output. The Node audit, graph traversal, reciprocal-edge checks, and regression suite have not been executed on a checkout.
