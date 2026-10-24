@@ -16906,6 +16906,37 @@ var WHO_OPEN=['and','but','then','when','while','because','cause','so','after','
  'now','today','yesterday','tonight','again','also','just','still','even','suddenly','finally','later'];
 var WHO_LOSS=['died','death','dying','passed away','grief','mourning','mourn','bereaved','loss','funeral',
  'buried','widowed','miscarriage','stillborn','grieving'];
+/* A NAME THAT STARTS ITS SENTENCE, P1-1 of the inference audit, 23 October.
+   The rule above reads a capital that does not start its sentence, and named
+   the one that does in GAPS: "Sarah screamed at me and I froze" put Sarah's
+   screaming on the writer as the writer's own anger, and that is how most
+   people begin a sentence about someone. A capitalised first word is now
+   unclear, held and shown with its sentence ("Write it with I if it is
+   yours"), unless it is a word this reader already knows: a pronoun or a
+   person word, a word in the lexicon or the degree table, a clause opener or
+   a negator, a place in the body, or one of the common first words below,
+   which are what a sentence about the writer's own day starts on. Holding a
+   writer's own word costs them one line of text; scoring Sarah's anger on
+   them costs the reading. */
+var WHO_OPENER=['the','a','an','this','that','these','those','it','its','there','here','what','which','who',
+ 'whose','why','how','where','when','everything','nothing','something','anything','everyone','someone',
+ 'anyone','everybody','somebody','nobody','all','some','most','many','much','more','less','one','each',
+ 'every','both','either','neither','no','yes','ok','okay','well','oh','today','tonight','yesterday',
+ 'tomorrow','morning','afternoon','evening','night','week','weekend','day','last','next','first','then',
+ 'after','before','during','since','later','earlier','again','still','even','just','only','also','maybe',
+ 'perhaps','probably','really','honestly','sometimes','often','always','usually','never','work','life',
+ 'home','school','things','sleep','money','dinner','lunch','breakfast','traffic','weather','coffee','job',
+ 'monday','tuesday','wednesday','thursday','friday','saturday','sunday','january','february','march',
+ 'april','may','june','july','august','september','october','november','december'];
+function whoKnown(w){
+ var own=function(o){return Object.prototype.hasOwnProperty.call(o,w);};
+ if(own(LEX)||own(ADJ2CHG)||own(LEXMOD))return true;
+ if([WHO_ME,WHO_SUBJ,WHO_POSS,WHO_OBJ,WHO_YOU,WHO_DET,WHO_OPEN,WHO_LOSS,WHO_OPENER,SOMA_PLACE_WORDS,LEXKIN]
+  .some(function(l){return l.indexOf(w)>=0;}))return true;
+ if(typeof SRC_NEG!=='undefined'&&SRC_NEG.indexOf(w)>=0)return true;
+ return Object.keys(SRC_DIM_CUE).some(function(k){return SRC_DIM_CUE[k].indexOf(w)>=0;});}
+function whoStartName(t,ws,j){
+ return (j===0||ws[j-1].c!==ws[j].c)&&/^[A-Z][a-z]+$/.test(t.slice(ws[j].s,ws[j].e))&&!whoKnown(ws[j].w);}
 function whoLoss(h){
  var m=LEXMETA[h.t];
  return WHO_LOSS.indexOf(h.t)>=0||!!(m&&m.from&&WHO_LOSS.indexOf(m.from)>=0);}
@@ -16932,7 +16963,8 @@ function whoOf(t,ws,i){
   if(WHO_POSS.indexOf(w)>=0&&whoOpens(ws,j))return {k:j,j:j};
   if(WHO_YOU.indexOf(w)>=0&&whoOpens(ws,j))return {k:j,j:j,unclear:true};
   if(j>0&&ws[j-1].c===ws[j].c&&/^[A-Z][a-z]+$/.test(t.slice(ws[j].s,ws[j].e))&&whoOpens(ws,j))
-   return {k:j,j:j};}
+   return {k:j,j:j};
+  if(whoStartName(t,ws,j))return {k:j,j:j,unclear:true};}
  return null;}
 function sniffWho(t,nm,hits){
  var ws=null, byAt=null;
@@ -18119,7 +18151,8 @@ function lawActor(t,ws,i){
    if(k>0&&ws[k-1].g===g&&WHO_DET.indexOf(ws[k-1].w)>=0)k--;
    if(whoOpens(ws,k))return 'other';
    j=k; continue;}
-  if(j>0&&ws[j-1].c===ws[j].c&&/^[A-Z][a-z]+$/.test(t.slice(ws[j].s,ws[j].e))&&whoOpens(ws,j))return 'other';}
+  if(j>0&&ws[j-1].c===ws[j].c&&/^[A-Z][a-z]+$/.test(t.slice(ws[j].s,ws[j].e))&&whoOpens(ws,j))return 'other';
+  if(whoStartName(t,ws,j))return 'unclear';}
  return 'none';}
 function lawWriter(t,src){
  var ws=wordsOf(t,normMap(t));

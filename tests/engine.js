@@ -8222,6 +8222,18 @@ g('S2 · a charge word about someone else is kept, listed, and never scored on t
  ok(oth(mf).length===1&&oth(mf)[0].t==='shouted'&&mf.hits.some(h=>h.t==='froze'),
   'one sentence, two people: her shouting is held and my freezing is read, '+say('When my mother shouted I froze.'));
  ok(held('Then Sarah screamed at me.','sarah'),'a name opening a clause is someone else: '+say('Then Sarah screamed at me.'));
+ /* A NAME THAT STARTS ITS SENTENCE, P1-1 of the inference audit, 23 October.
+    It was read as the writer's, named in GAPS: "Sarah screamed at me and I
+    froze" put Sarah's screaming on the writer. A capitalised first word the
+    reader does not know is unclear now, held and said so, and the writer's
+    own word after "I" in the same sentence still reads. */
+ const sf=parseStory('Sarah screamed at me and I froze.');
+ ok(oth(sf).length===1&&oth(sf)[0].unclear===true&&oth(sf)[0].who==='sarah'&&sf.hits.some(h=>h.t==='froze'),
+  'a name starting its sentence is held as unclear, and my freezing is read: '+say('Sarah screamed at me and I froze.'));
+ ok(held('Sarah was furious.','sarah')&&held('Mark yelled at me.','mark'),'and so is a name alone before the word: '+say('Sarah was furious.'));
+ ["Work was awful.","Today was awful.","Traffic was awful.","Monday was awful.","Everything was terrible.","It was terrifying."]
+  .forEach(t=>ok(writer(t),'a common first word is not a name, and the sentence is the writer\'s: '+say(t)));
+ ok(E.sniffLaws('Sarah lied to me.').every(l=>l.law!=='Truth'),'and the law reader holds her lie the same way');
  ok(writer('I went to London and felt terrified.'),'and a capital after a word like "to" is a place, not a person: '+say('I went to London and felt terrified.'));
  const ha=parseStory('Her anger scared me.');
  ok(oth(ha).length>=1&&sum(ha.bands)===0,'her anger is hers, and "her anger scared me" has her anger as its subject: '+say('Her anger scared me.'));
