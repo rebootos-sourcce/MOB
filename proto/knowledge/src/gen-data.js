@@ -434,6 +434,14 @@ const adaptedPsych=require('./psychological-runtime-adapter')(psychRegistry,psyc
 const adaptedSuper=require('./psychological-runtime-adapter')(superRegistry,psychCatalog,{namespace:'super'});
 if(adaptedPsych.errors.length||adaptedSuper.errors.length)throw new Error('Registry adapter errors: '+JSON.stringify({deep:adaptedPsych.errors,supercomplex:adaptedSuper.errors}));
 E.push(...adaptedPsych.entries,...adaptedSuper.entries);
+const sourceToRuntimeId=new Map([
+ ...(psychRegistry.records||[]).map(r=>[r.id,'psych:'+r.id]),
+ ...(superRegistry.records||[]).map(r=>[r.id,'super:'+r.id])
+]);
+const relationshipEdges=[...adaptedPsych.relationshipEdges,...adaptedSuper.relationshipEdges].map(edge=>{
+ if(edge.toId&&sourceToRuntimeId.has(edge.toId))return {...edge,toId:sourceToRuntimeId.get(edge.toId),targetRegistry:'combined_runtime',validationStatus:'cross_registry_target_resolved'};
+ return edge;
+});
 const icp=JSON.parse(fs.readFileSync(path.join(__dirname,'icp.json'),'utf8'));
 const out={entries:E, pal:T.PAL, glyph:T.SEATGLYPH, bands:T.BANDS, icp:icp,
  relationshipEdges:adaptedPsych.relationshipEdges,
