@@ -337,7 +337,8 @@ for(const w of [[1680,1020],[1440,960],[1280,900],[1180,820],[2560,1400]]){
    Measured as a press at each control's centre, the way a hand lands, and not
    as a rectangle compared with a rectangle.
    ============================================================ */
-console.log('\n=== Story: every visible control takes a press, short windows too ===');
+/* the journal page, named Discover since 23 October; the integer is still TAB.STORY */
+console.log('\n=== Discover: every visible control takes a press, short windows too ===');
 for(const w of [[1366,657],[1280,600],[1600,700],[1600,1000],[390,844]]){
  await p.setViewportSize({width:w[0],height:w[1]});await p.waitForTimeout(200);
  await p.evaluate(()=>{loadP(0);setTab(TAB.STORY);render();});await p.waitForTimeout(400);
@@ -357,7 +358,7 @@ for(const w of [[1366,657],[1280,600],[1600,700],[1600,1000],[390,844]]){
    if(h!==el&&!el.contains(h))out.bad.push((el.id?'#'+el.id:el.tagName.toLowerCase()+'.'+String(el.className).split(' ')[0])
     +' "'+(el.textContent||el.value||'').trim().slice(0,18)+'" at '+Math.round(y)+'px under '+(h?(h.id?'#'+h.id:h.tagName.toLowerCase()):'nothing'));});
   return out;});
- ok(r.n>0&&r.bad.length===0,'Story at '+w[0]+' by '+w[1]+': each of '+r.n+' visible controls takes a press at its centre'
+ ok(r.n>0&&r.bad.length===0,'Discover at '+w[0]+' by '+w[1]+': each of '+r.n+' visible controls takes a press at its centre'
   +(r.bad.length?': '+r.bad.join('; '):''));}
 await p.setViewportSize({width:1680,height:1020});await p.waitForTimeout(160);
 

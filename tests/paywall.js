@@ -353,6 +353,28 @@ async function page(browser,W,H,o){
    ok(after===before&&P.req.length===0&&P.err.length===0,tag+'wrote nothing, sent nothing, no page errors, '+P.err.slice(0,2).join(' | '));
    await P.ctx.close();}
 
+  /* 4c. A PAYER STILL INSIDE THE GIFT, 24 October (P3-6 of the 23 October QA
+     pass). The gift's own sheet said "no card" to somebody paying by card and
+     carried no way to stop or change the plan. A payer gets the paying sheet,
+     with the gift's line beside it, and the Stop route a live plan carries. */
+  {const P=await page(browser,W,H,{tier:'one',signed:true,pay:false,gift:true}), pg=P.pg, tag='@'+W+' paying, inside the gift: ';
+   const g=await pg.evaluate(()=>{
+    const inGift=lockGift(), live=planState(CURP.plan)==='live'; paywallOpen(null,null);
+    const s=document.querySelector('#paywall .pw-sheet'), t=s.textContent.replace(/\s+/g,' ');
+    const r={inGift, live, gift:s.classList.contains('pw-gift'), stop:!!s.querySelector('[data-pwact="portal"]'),
+     line:(s.querySelector('.pw-gline')||{}).textContent||'', want:PW_W.giftPaid, noCard:/no card/i.test(t),
+     here:!!s.querySelector('.pw-c.now')};
+    return r;});
+   ok(g.inGift&&g.live&&!g.gift,tag+'a live tier one inside the gift meets the paying sheet, not the gift\'s own, '+JSON.stringify(g));
+   ok(g.stop&&g.here,tag+'with its tier marked and the Stop or change plan route a live plan carries');
+   ok(g.line===g.want&&!g.noCard,tag+'and the gift\'s line beside it, with no claim about a card, '+JSON.stringify(g.line));
+   const bad=await pg.evaluate(()=>__pw.fit()), small=await pg.evaluate(m=>__pw.targets(m),TAP), cn=await pg.evaluate(()=>__pw.contrast());
+   ok(bad.length===0,tag+'fits one screen, '+bad.slice(0,3).join(' | '));
+   ok(small.length===0,tag+'every target is at least '+TAP+', '+small.slice(0,3).join(' | '));
+   ok(cn.lowT.length===0&&cn.lowM.length===0,tag+'text and marks hold their floors, lowest text '+cn.minT.toFixed(2)+', mark '+cn.minM.toFixed(2));
+   ok(P.err.length===0,tag+'no page errors, '+P.err.slice(0,2).join(' | '));
+   await P.ctx.close();}
+
   /* 3 . contrast in every lighting, read off LIGHTINGS */
   {const P=await page(browser,W,H,{tier:'free',signed:true,pay:true}), pg=P.pg;
    const L=await pg.evaluate(()=>LIGHTINGS.map(l=>l[0]));

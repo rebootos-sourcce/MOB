@@ -211,6 +211,33 @@ require('./net.js').guardBrowser(b);
   'on a phone: their words, then what to do, then the Reading, then the drivers, '+JSON.stringify(ph));
  ok(ph.loop===null||ph.loop>ph.storyEnd,'and the patterns no longer jump above the story');
 
+ console.log('\n=== S4: the primary saboteur sits where its addresses are ===');
+ /* SYSTEMS AUDIT SG-05, 24 October. The impact line printed the third column
+    of ARCH18 as the primary saboteur's seat, which held none of its addresses
+    in 9 of the 18 rows: the Caregiver read "primary saboteur, at the heart"
+    while Pleaser's addresses sit at the root and the sacral. The line and its
+    colour read the addresses now. What it should say is read here off SAB_LIB
+    and the node table directly, not through the helper the page uses. */
+ const s4=await p.evaluate(()=>{
+  loadP(0); setTab(TAB.INTAKE); AV.sub='arch';
+  const lib=nm=>{let s=null; SAB_LIB.forEach(x=>{if(KB_KEY(x.nm)===KB_KEY(nm))s=x;}); return s;};
+  const out={n:0, off:[]};
+  AV_ROSTER.forEach(a=>{ if(!a.sab)return;
+   AV.arch=a.nm; AV.sig=''; renderAvatar();
+   const s=lib(a.sab), cnt={}; if(s)s.nids.forEach(i=>{cnt[BY[i].b]=(cnt[BY[i].b]||0)+1;});
+   const seats=BANDS.filter(b=>cnt[b]);
+   const most=seats.reduce((m,b)=>m===null||cnt[b]>cnt[m]?b:m,null);
+   const el=document.querySelector('.av-imp-v>span'), box=document.querySelector('.av-imp');
+   const t=el?el.textContent.replace(/\s+/g,' ').trim():'';
+   const say=seats.length?'its addresses at '+unpackList(seats.map(b=>AV_THE[b])):'primary saboteur';
+   const col=box?box.style.getPropertyValue('--s').trim():'';
+   out.n++;
+   if(!el||t.indexOf(say)<0||/primary saboteur, at /.test(t)||(most&&col!==seatCol(most)))
+    out.off.push(a.nm+' ('+a.sab+'): "'+t+'" coloured '+col+', want "'+say+'" coloured by '+most);});
+  return out;});
+ ok(s4.n>0&&s4.off.length===0,'every archetype\'s impact line puts its primary saboteur where its own addresses sit, '
+  +'coloured by the seat holding most of them, of '+s4.n+': '+s4.off.slice(0,3).join(' | '));
+
  ok(errs.length===0,'no page errors, '+errs.join(' | '));
  await b.close();
  console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');

@@ -149,15 +149,16 @@ put the child straight inside the parent and the parent's renderer, which
 writes the whole innerHTML of its host, deleted the child on the way past. The
 functional gate caught it.
 
-**The app opens on the Field, ruled 19 September, reversing Summary.**
-`core.js` has `tab:TAB.FIELD` and `ui.js` calls `setTab(TAB.FIELD)`. This
-paragraph said Summary for longer than it was true, which a first run audit
-caught. The rest of it still holds and is the reason it is still written down. Anything
-that renders there renders to somebody who has entered nothing. Both surfaces
-that print a reading now silence themselves on `r.unread` and show the four
-doors instead, and Summary empties itself on the way out so a hidden surface
-never sits in the document asserting a stale reading.
-And on 9 October he ruled the first arrival: a first time visitor, from the funnel's link or the first run closing, lands on Summary once, with their reading on it, and every open after that is wherever they left off (`tabLandFirst`, `tabKeep`, `tabRead` in `ui/panels.js`; `source.tab` and `source.landed` in the browser store, never the record). A device with no memory still opens on the Field, so this paragraph's ruling stands for it. `tests/landing.js` holds it.
+**The app opens on Discover, ruled 23 October, reversing the Field.**
+`core.js` has `const TABHOME=TAB.STORY` and the initial state carries
+`tab:TABHOME`. This paragraph said Field for longer than it was true, which
+Emmy's 23 October audit caught: the paragraph below still describes the
+ruling it replaced. Anything that renders on a surface with no reading
+renders to somebody who has entered nothing. Both surfaces that print a
+reading silence themselves on `r.unread` and show the four doors instead, and
+Summary empties itself on the way out so a hidden surface never sits in the
+document asserting a stale reading.
+And on 9 October he ruled the first arrival: a first time visitor, from the funnel's link or the first run closing, lands on Summary once, with their reading on it, and every open after that is wherever they left off (`tabLandFirst`, `tabKeep`, `tabRead` in `ui/panels.js`; `source.tab` and `source.landed` in the browser store, never the record). A device with no memory now opens on Discover, which is TABHOME, so this paragraph's first-arrival ruling for a returning device still stands, only the default itself moved. `tests/landing.js` holds it.
 
 **The engine may not touch the host.** No `document`, `window`, `navigator`,
 `localStorage`, `fetch`, `new Image`. `hostfree.py` enforces it after

@@ -45,6 +45,10 @@
      13 Create account from a downloaded copy, against the Worker's one
         allowed origin
 
+     R  A PAGE LEFT OPEN ACROSS A RENEWAL (24 October)
+        a signed in payer's page, never reloaded, its clock moved past the
+        period end: it reads the renewal before the grace reads it as ended
+
    THE SERVER IS A FAKE, AND NOTHING LEAVES THE MACHINE. The site is
    served on 127.0.0.1 the way atuned.world serves it, so the Worker's
    CORS rule (ALLOWED_ORIGIN, one origin) is modelled against a real
@@ -146,7 +150,11 @@ function fakeWorker(origin, giftAt) {
     selectedGroundId: s.selectedGroundId || null, starterGiftId: null, tutorialCompleted: !!s.tutorialCompleted,
     firstReleaseId: s.firstReleaseId || null, verificationId: s.verificationId || null, version: s.version,
     createdAt: s.createdAt, updatedAt: s.updatedAt });
-  const billing = a => { const e = st.ent[a.id]; return e ? { tier: e.tier, status: e.status, since: e.since, until: e.until, store: 'stripe' } : null; };
+  /* ends is sent while the plan is in force and null after, as the real
+     server's billingOf sends it (Reboot-OS src/store.js) */
+  const billing = a => { const e = st.ent[a.id]; if (!e) return null;
+    const live = e.status === 'active' || e.status === 'trialing' || e.status === 'past_due';
+    return { tier: e.tier, status: e.status, since: e.since, until: e.until, store: 'stripe', ends: live ? (e.ends || null) : null }; };
   function handle(method, url, headers, raw) {
     const res = route(method, url, headers, raw);
     st.reqs[st.reqs.length - 1].status = res.status;
@@ -260,10 +268,22 @@ function fakeWorker(origin, giftAt) {
   /* what Stripe's webhook would have told the Worker */
   const paid = () => { const c = st.checkout; if (!c) return false;
     st.ent[c.account] = { tier: c.tier, status: 'active', since: now(), until: new Date(Date.now() + 30 * 864e5).toISOString() }; return true; };
+  /* CANCELLED AT THE PERIOD END, the way the portal does (Reboot-OS
+     tools/stripe-portal.mjs, subscription_cancel at_period_end), 24 October,
+     P3-3 of the 23 October QA pass. This wrote canceled inside the paid period,
+     an immediate cancel the deployed portal never makes, so station 8 passed on
+     a path production does not take. Now the plan stays active and the server
+     names the day it ends (billingOf's ends); endsIn moves the server's
+     calendar to the period's last moments, and over() is Stripe deleting the
+     subscription once the period has run out. */
   const cancelled = () => { const c = st.portal; if (!c || !st.ent[c.account]) return false;
+    st.ent[c.account].ends = st.ent[c.account].until; return true; };
+  const endsIn = ms => { const c = st.portal; if (!c || !st.ent[c.account]) return null;
+    const e = st.ent[c.account]; e.until = e.ends = new Date(Date.now() + ms).toISOString(); return e.ends; };
+  const over = () => { const c = st.portal; if (!c || !st.ent[c.account]) return false;
     st.ent[c.account].status = 'canceled'; return true; };
   const reqs = (meth, re) => st.reqs.filter(q => q.method === meth && re.test(q.path));
-  return { st, handle, paid, cancelled, reqs };
+  return { st, handle, paid, cancelled, endsIn, over, reqs };
 }
 
 /* ---------------- the site, served the way atuned.world serves it ---------------- */
@@ -318,6 +338,12 @@ async function door(browser, SITE, cut, giftAt) {
   await ctx.addInitScript(api => {
     Object.defineProperty(window, 'AUTH_API', { get() { return api; }, set() {}, configurable: false });
   }, API);
+  /* THE DAY PAYING OPENS. The build ships with checkout closed
+     (PLAN_CHECKOUT_OPEN, engine/plan.js), and since 24 October Billing then
+     offers no press (P2-1). This walk pays, so it opens the paywall's own
+     harness seam (PAYWALL_PAY_OPEN, ui/paywall.js), read once at load. It is not
+     a way to pay: in production the server's own switch answers the press. */
+  await ctx.addInitScript(() => { window.PAYWALL_PAY_OPEN = true; });
   const page = await ctx.newPage();
   const errs = [], cerrs = [];
   page.on('pageerror', e => errs.push(String(e && e.message || e)));
@@ -831,7 +857,7 @@ async function door(browser, SITE, cut, giftAt) {
   await Q.booted();
   const back = await Q.waitSaid(/Tier one is on this record/, 8000);
   ok(!!back, 'back from Stripe, the app says the plan is on the record, ' + J(back), 'paid, and the app still reads Free');
-  const welcome = await page.waitForFunction(() => { const h = document.getElementById('tutorial');
+  const welcome = await page.waitForFunction(() => { const h = document.getElementById('paidwelcome');
     return h && h.style.display !== 'none' && /You are in/.test(h.innerText) ? true : null; }, null, { timeout: 6000 }).then(() => true, () => false);
   ok(welcome, 'and the welcome after paying opens');
   ok(await page.evaluate(() => location.search.indexOf('billing=') < 0), 'and the return is off the address, so a reload never replays it');
@@ -841,7 +867,10 @@ async function door(browser, SITE, cut, giftAt) {
   ok(!!(sv.rec && sv.rec.plan && sv.rec.plan.tier === 'one' && E.planState(sv.rec.plan) === 'live'), 'after a reload the saved record carries tier one, live: '
     + J(sv.rec && sv.rec.plan && { t: sv.rec.plan.tier, s: sv.rec.plan.status }));
   ok(!!sv.rec && E.planOf(sv.rec.plan).k === 'one', 'and the plan in force reads tier one');
-  ok(await page.evaluate(() => !(document.getElementById('tutorial') && /You are in/.test(document.getElementById('tutorial').innerText))), 'and the welcome never opens twice');
+  /* the host is looked up first and must exist, so a renamed host fails here
+     instead of passing on a null */
+  ok(await page.evaluate(() => { const h = document.getElementById('paidwelcome');
+    return !!h && !/You are in/.test(h.innerText); }), 'and the welcome never opens twice');
 
   station(8, 'Q: quit: cancel the plan, sign out, delete the record');
   await Q.click('#profbtn'); await Q.click('[data-pms="billing"]');
@@ -853,11 +882,29 @@ async function door(browser, SITE, cut, giftAt) {
   const po = wq.reqs('POST', /^\/v1\/billing\/portal$/);
   ok(po.length === 1 && po[0].me === accQ.id, 'it asks the server for the billing portal, signed in');
   ok(page.url().indexOf(PORTAL + '/') === 0, 'and the browser goes to the portal page the server named', 'Manage billing does nothing');
+  /* cancelled at the period end, as the portal does (P3-3, 24 October): the
+     plan stays on to the end of the month paid for, and the app says the day */
   wq.cancelled();
   await page.goto(SITE + '/atuned.html?billing=managed', { waitUntil: 'load' });
   await Q.booted();
-  const ended = await Q.waitSaid(/Tier one has ended, so this record reads Free now\./, 8000);
-  ok(!!ended && /^fail\|/.test(ended), 'back from the portal, the app says the plan has ended, on a held line: ' + J(ended), 'cancelled, and the app still reads tier one');
+  const stops = await Q.waitSaid(/Tier one stops on [^.]+\. It stays on until then, and Manage billing turns it back on\./, 8000);
+  ok(!!stops && /^ok\|/.test(stops), 'back from the portal, the app says the day the plan stops and that it stays on until then: ' + J(stops),
+    'stopped, and the app says nothing');
+  sv = await Q.saved();
+  const stopAt = wq.st.ent[accQ.id] && wq.st.ent[accQ.id].until;
+  ok(!!(sv.rec && sv.rec.plan && E.planState(sv.rec.plan) === 'live' && sv.rec.plan.ends === stopAt && E.planOf(sv.rec.plan).k === 'one'),
+    'and the record keeps tier one on, to the day it stops: ' + J(sv.rec && sv.rec.plan && { t: sv.rec.plan.tier, s: sv.rec.plan.status, ends: sv.rec.plan.ends }));
+  await Q.click('#profbtn'); await Q.click('[data-pms="billing"]');
+  await page.waitForTimeout(300);
+  const endsLine = await page.evaluate(() => { const r = [...document.querySelectorAll('#settings .sh-row')].filter(x => /^State/.test(x.innerText))[0]; return r ? r.innerText : null; });
+  ok(/ends /.test(endsLine || ''), 'and Billing\'s State row says when it ends, ' + J(endsLine));
+  /* the month runs out: the server's calendar moves to the period's last
+     seconds, the page reads that, and its own clock passes the end */
+  const endAt = Date.parse(wq.endsIn(4000));
+  await Q.reload();
+  while (Date.now() < endAt + 600) await page.waitForTimeout(200);
+  /* and Stripe deletes the subscription at the period end */
+  wq.over();
   await Q.reload();
   sv = await Q.saved();
   ok(!!(sv.rec && sv.rec.plan && E.planState(sv.rec.plan) === 'ended' && E.planOf(sv.rec.plan).k === 'free'),
@@ -935,6 +982,10 @@ async function door(browser, SITE, cut, giftAt) {
   ok(await Q.click('#acdel'), 'Delete this record is there to press');
   const del = await Q.waitSaid(/is deleted from this browser, the only place it was held\./, 6000);
   ok(!!del && del.indexOf(goneName) >= 0, 'and it says what it deleted and where, ' + J(del), 'no word of what went');
+  /* the profile it lands on is the default one, named You, and was said "You is
+     open." until 24 October (ui/account.js, accOpenSay) */
+  ok(!!del && /Your own profile is open\.$/.test(del) && !/\bYou is open\./.test(del),
+    'and the profile it opens is said as the person\'s own, never "You is open.": ' + J(del), 'You is open.');
   await Q.reload();
   sv = await Q.saved();
   ok(!!sv.list && !sv.list.some(p => p && p.id === goneId), 'after a reload the record is gone from this browser');
@@ -1129,6 +1180,62 @@ async function door(browser, SITE, cut, giftAt) {
       + J(f.msg));
     ok(ferrs.length === 0, 'no script error: ' + ferrs.slice(0, 2).join(' | '));
     await cf.close();
+  }
+
+  /* =================================================================
+     R. A PAGE LEFT OPEN ACROSS A RENEWAL, 24 October (P2-2 of the 23 October
+        QA pass). One paying person, signed in, the page never reloaded, its
+        clock moved by Playwright's. The plan is read at boot; the renewal lands
+        at Stripe on the period end; the page has to read the server again
+        before its own three day grace reads that unread renewal as an ending.
+        Before the fix it read Free and "State ended" six days on, and coming
+        back to the tab sent no request.
+     ================================================================= */
+  station('R', 'a page left open across a paid renewal reads the renewal');
+  {
+    const R = await door(browser, SITE, cut), pr = R.page, wr = R.worker;
+    await pr.clock.install({ time: Date.now() });
+    const DAY = 864e5, t0 = Date.now(), at = ms => new Date(ms).toISOString();
+    const acc = { id: 'acc_renew', research_id: 'rsh_renew', email: 'renew.door@example.com', plan: 0, pw: PW };
+    wr.st.acc[acc.id] = acc; wr.st.byMail[acc.email] = acc.id; wr.st.tok.tok_renew = acc.id;
+    wr.st.ent[acc.id] = { tier: 'one', status: 'active', since: at(t0 - 27 * DAY), until: at(t0 + 3 * DAY) };
+    await pr.goto(SITE + '/atuned.html?dev=1', { waitUntil: 'load' }); await R.booted();
+    await pr.evaluate(() => authKeep({ token: 'tok_renew', email: 'renew.door@example.com', accountId: 'acc_renew' }));
+    await R.reload(); await pr.waitForTimeout(800);
+    const plan = () => pr.evaluate(() => { const pl = CURP && CURP.plan;
+      return { k: planOf(pl).k, state: planState(pl), until: pl && pl.until, now: Date.now() }; });
+    const reads = () => wr.reqs('GET', /^\/v1\/me$/).length;
+    /* THE GATE CHECKS ITS OWN CLOCK. A fast forward that did not move the page
+       measures day 2, which reads live and would pass for the wrong reason: the
+       probe this station came from caught one such run in ten. */
+    const forward = async ms => { const was = (await plan()).now; await pr.clock.fastForward(ms);
+      let moved = (await plan()).now - was;
+      if (moved < ms - 60000) { await pr.clock.fastForward(ms - moved); moved = (await plan()).now - was; }
+      return moved >= ms - 60000; };
+    const day = p => ((p.now - t0) / DAY).toFixed(3);
+    const p0 = await plan();
+    ok(p0.k === 'one' && p0.state === 'live' && reads() === 1, 'at boot the plan is read once and tier one is in force: ' + J([p0.k, p0.state, reads()]));
+    /* the renewal at Stripe on the period end: the server now holds the next period */
+    wr.st.ent[acc.id] = { tier: 'one', status: 'active', since: at(t0 + 3 * DAY), until: at(t0 + 33 * DAY) };
+    const fwd = await forward(6 * DAY + 3600e3);
+    ok(fwd, 'the page clock moved six days and an hour, so what follows is read on that day: day ' + day(await plan()));
+    await pr.waitForTimeout(1200);
+    const p1 = await plan();
+    ok(reads() === 2, 'before its own grace ran out the page asked the server again, with no reload: ' + reads() + ' reads',
+      'no request at all, so the renewal was never read');
+    ok(p1.k === 'one' && p1.state === 'live' && p1.until === at(t0 + 33 * DAY),
+      'and the renewal is on the record: tier one, live, to the new period end, ' + J([p1.k, p1.state, (p1.until || '').slice(0, 10), 'day ' + day(p1)]),
+      'On Free and State ended, with the layers paid for locked, six days after a paid renewal');
+    /* coming back to the tab within the hour sends nothing more */
+    await pr.evaluate(() => { window.dispatchEvent(new Event('focus')); document.dispatchEvent(new Event('visibilitychange')); });
+    await pr.waitForTimeout(400);
+    ok(reads() === 2, 'coming back to the tab within the hour of the last read sends nothing: ' + reads() + ' reads');
+    await forward(2 * 3600e3);
+    await pr.evaluate(() => { document.dispatchEvent(new Event('visibilitychange')); });
+    await pr.waitForTimeout(800);
+    ok(reads() === 3, 'and coming back after an hour reads the plan once more: ' + reads() + ' reads');
+    ok(R.errs.length === 0, 'no script error on this door: ' + R.errs.slice(0, 2).join(' | '));
+    await R.ctx.close();
   }
 
   station(14, 'every door: nothing else was reached');

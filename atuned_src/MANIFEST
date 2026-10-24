@@ -20,6 +20,7 @@ engine/data/intakemore.js
 engine/data/gloss.js
 engine/data/onboarding.js
 engine/data/crisis.js
+engine/data/codes.js
 engine/pct.js
 engine/verp.js
 engine/lexicon.js
@@ -51,6 +52,7 @@ engine/ladder.js
 engine/daily.js
 engine/outbox.js
 engine/profiles.js
+engine/codes.js
 engine/export.js
 engine/charfield.js
 engine/ritex.js
@@ -69,7 +71,6 @@ ui/chcloud.js
 ui/character.js
 ui/imprints.js
 ui/storyui.js
-ui/tutorial.js
 ui/summary.js
 ui/daily.js
 ui/analytics.js

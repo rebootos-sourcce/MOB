@@ -13,8 +13,8 @@
    settles, the question can move onto it, through valueFeltRecord, which
    stays the one writer either way.
 
-   IT WAITS ITS TURN. The login door, onboarding and the tutorial are dialogs
-   of their own. The sheet is the shared one, so this opens only when the
+   IT WAITS ITS TURN. The login door, onboarding and the welcome after paying
+   are dialogs of their own. The sheet is the shared one, so this opens only when the
    boot sheet has lifted (afterBoot), no dialog is standing, and the shared
    sheet is free, and it waits for that to hold for a moment, so a door that
    closes and another that opens straight after do not let it in between.

@@ -102,11 +102,11 @@ function cqRamp(cq){
 /* ============================================================
    THE CORE ATOMIZES.
 
-   The core is CQ, and CQ is not a primitive. It is intention times
-   integrity over resistance, and every one of those is a sum over
-   things the instrument already measures. A solid disc with a number
-   on it was the one place in this product where a figure was drawn
-   as though it had no parts.
+   The core is CQ, and CQ is not a primitive. It is the 21 Laws of
+   Moral Integrity summed over 210, ruled 25 September (cqSum,
+   engine/compute.js), and every law is a score the instrument already
+   holds. A solid disc with a number on it was the one place in this
+   product where a figure was drawn as though it had no parts.
 
    So zoom resolves it, the same way zoom already resolves the depth
    ladder outside it. Three layers, each a real decomposition, each
@@ -623,10 +623,12 @@ function verpArrows(cr0){
  lo.forEach(function(v,i){gate(v,i,lo.length,false);});
  if(evid){
   var top=V.slice().sort(function(a,b){return b.pct-a.pct;})[0];
+  /* a second line under this read "costs x0.70 on everything held", the
+     multiplier the action drill printed too. Nothing held is multiplied by a
+     gate (engine/verp.js), so both are gone. */
   if(top.pct>=34){
    txt('defaults to '+top.nm.toLowerCase(),CX,CY+rr+R+22,13,
-    top.side==='higher'?hx(PAL.Heart):hx(PAL.Root),.95,600);
-   txt('costs \u00d7'+top.mult.toFixed(2)+' on everything held',CX,CY+rr+R+38,11,INK(),.5,400);}}}
+    top.side==='higher'?hx(PAL.Heart):hx(PAL.Root),.95,600);}}}
 
 /* ============================================================
    THE WHEEL, four depths. A complexity ladder, not four skins.
@@ -652,7 +654,7 @@ function verpArrows(cr0){
      Charge      the three quotients and the addresses carrying them
      Patterns    the saboteurs, which is what the rail has always called them
      Chains      how a pattern compounds into a complex, a hyper complex and
-                 a character layer. Drawn as chords, which is why the word
+                 a super complex. Drawn as chords, which is why the word
                  survives at all
      Blueprint   domains and laws, and this one already landed. It named
                  masks as well until they left the Field for the Body's
@@ -668,8 +670,8 @@ const VIEWS=[
   tip:'What you are carrying, and where. The core is coherence, the ring is your 112 addresses, the wash is shadow weight.'},
  {k:'B',nm:'Patterns',  layers:'charge, plus the seats named and the saboteurs',
   tip:'The saboteurs running on top of the charge. Each bead is one, and the threads show which addresses built it.'},
- {k:'C',nm:'Chains',    layers:'patterns, plus complexes, hyper, character, archetypes',
-  tip:'How a pattern compounds. Saboteur into complex into hyper complex into character, inward, each built from the one outside it.'},
+ {k:'C',nm:'Chains',    layers:'patterns, plus complexes, hyper, super, archetypes',
+  tip:'How a pattern compounds. Saboteur into complex into hyper complex into super complex, inward, each built from the one outside it.'},
  {k:'D',nm:'Blueprint', layers:'chains, plus 19 domains, 21 laws',
   tip:'What was there before any of it. Nineteen domains, and the twenty one laws underneath the whole reading.'}];
 
@@ -719,7 +721,10 @@ const WHEEL_ZOOM_MAX=7;
 /* MASKS ARE NOT A LAYER. They were the second switch at Blueprint, a ring
    band on all three pictures, and he ruled them off every sub menu and onto
    the figure, CH in TASKS.md. The Body page draws them, bmDrawMasks in
-   ui/map.js, and nothing here or on the glass bar switches them. */
+   ui/map.js, and nothing here or on the glass bar switches them.
+   The key character is the super complexes' switch. It kept the rung's old
+   name on 23 October, when the owner gave the word Character to the whole
+   of it, because a key is identity; ui/fieldbar.js says why in full. */
 const LAYADD=[['addresses','laws','gates','shadow','stories'],['seats','saboteurs'],
  ['complexes','hyper','character','archetypes'],['domains']];
 var LAYSET=null;
@@ -743,7 +748,7 @@ function layReached(){var out={},on=layChosen(),z=S.zoom||1,extra=0;
  return out;}
 /* WHAT IS DRAWN IS WHAT IS CHOSEN, AND WHAT THE PLAN MAY SEE. The tier ruling of
    1 October: a person below tier one cannot see what is running them, and the
-   saboteur, complex, hyper and character layers are the Field's picture of
+   saboteur, complex, hyper and super complex layers are the Field's picture of
    exactly that. Taken out here, after the person's own set and after what zoom
    brings in, so there is one place a locked layer stops being drawn and the
    wheel, Frames and Dial all inherit it, because all three ask layVisible and
@@ -960,7 +965,7 @@ function enterSeat(b){
    thread from an address to the pattern it builds hangs taut or slack by the
    person's susceptibility at that address, n.susc, the Domain Matrix, which
    the chord notes in drawWheel below define as this product's tension; each
-   thread further in, pattern to complex to hyper complex to character,
+   thread further in, pattern to complex to hyper complex to super complex,
    hangs by the weight of the thing at its outer end. That is geometry: it
    reads when you look for it and says nothing when you do not.
 
@@ -1299,7 +1304,7 @@ function drawWheel0(r,L){
      two are meant to be read together and not collapsed into one: a heavy,
      taut thread both pulses fast and shakes, a light, slack one does
      neither. Only saboteurs, complexes and hyper complexes carry it, the
-     three tiers he named; character threads keep the old still geometry.
+     three tiers he named; super complex threads keep the old still geometry.
 
      THE SHAPE. The control point is the one place a shake reads as the
      whole thread's own tension moving, where jitter added at the beads

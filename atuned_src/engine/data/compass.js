@@ -469,7 +469,7 @@ const DESCENT=[
    livedExample:'In a team discussion, another person receives credit. The person experiences this as a threat to rank, reframes the other person as incompetent, redirects the discussion toward their own contribution, and struggles to acknowledge the other person’s work.',
    impact:'Can reduce mutuality, trust, feedback quality, and capacity to repair harm when other people’s needs are treated as secondary to protecting self-image.',
    practice:'Pause before defending rank. State the observable facts, name the impact on the other person, acknowledge one valid point or contribution without qualification, and ask what repair or shared outcome is needed.',
-   oppositeName:'Grounded Self-Worth', oppositeId:'opposite:Narcissism', oppositeDefinition:'Grounded self-worth with humility, reciprocal empathy, accountability, and respect for others as equally real—not self-erasure or self-contempt.',
+   oppositeName:'Grounded Self-Worth', oppositeId:'opposite:Narcissism', oppositeDefinition:'Grounded self-worth with humility, reciprocal empathy, accountability, and respect for others as equally real, not self-erasure or self-contempt.',
    oppositeStatus:'inferred-working-counterpart; not asserted as a canonical one-to-one opposite',
    confidence:0.78, reviewStatus:'external-research-pass-A-done; semantic-pass-B-and-adversarial-pass-C-pending',
    researchSources:['https://www.psychiatry.org/News-room/APA-Blogs/What-Is-Narcissistic-Personality-Disorder','https://pmc.ncbi.nlm.nih.gov/articles/PMC4415495/','https://pubmed.ncbi.nlm.nih.gov/34860434/','https://www.sciencedirect.com/science/article/pii/S0092656622001428','https://pubmed.ncbi.nlm.nih.gov/35913765/'],
@@ -484,7 +484,7 @@ const DESCENT=[
   gate:'Malignancy begins where harm to others becomes instrumental.',
   content:{
    inferred:false, inferenceBasis:'The higher-order placement and brief description are explicitly source-defined in this DESCENT registry. Detailed behavior and opposite are research-informed expansions, not diagnoses.',
-   behavior:'May use strategic impression management, selective disclosure, deception, cynical assumptions, or interpersonal leverage to pursue an outcome. Empathy may be used instrumentally rather than to guide care; research does not support treating every person with this trait as identical.',
+   behavior:'May use strategic impression management, selective disclosure, deception, cynical assumptions, or a hold over other people to pursue an outcome. Empathy may be used instrumentally rather than to guide care; research does not support treating every person with this trait as identical.',
    triggerMechanism:'A desired outcome, competition, perceived vulnerability, or distrust can shift the decision rule from mutual agreement toward control of information and other people’s choices.',
    livedExample:'During a disagreement, the person privately tells each colleague a different version of events to isolate an opponent and secure a decision, while presenting the move as neutral problem-solving.',
    impact:'Undermines informed consent, stable trust, fair collaboration, and shared decision-making; apparent cooperation can become difficult to distinguish from tactical compliance.',
@@ -504,7 +504,7 @@ const DESCENT=[
   refer:true,
   content:{
    inferred:false, inferenceBasis:'The super-complex placement and core phrasing are explicitly source-defined in this DESCENT registry. The added behavioral template is research-informed and must not be used to diagnose an individual.',
-   behavior:'The source model describes harm-related feedback as structurally unavailable or not constraining choice. In real-world research, psychopathy is a complex construct with varied measures; do not infer it from a single action, conflict, or perceived lack of warmth.',
+   behavior:'The source model describes harm-related feedback as structurally unavailable or not constraining choice. In real-world research, psychopathy is a complex pattern with varied measures; do not infer it from a single action, conflict, or perceived lack of warmth.',
    triggerMechanism:'In the source model, a choice point occurs where another person’s welfare would normally constrain an action, but the anticipated harm does not function as a meaningful stop signal. This is a model description, not a validated clinical mechanism for an individual.',
    livedExample:'A decision-maker recognizes that a choice will predictably injure another person, but treats that injury as irrelevant to the decision and proceeds without meaningful consideration of consent, responsibility, or repair.',
    impact:'If this pattern is present, ordinary appeals to shared feeling may not be sufficient to protect others; prioritize boundaries, accountability, documented decisions, and appropriate professional support.',
@@ -533,6 +533,16 @@ function mirrorAt(seatLoad, seatIg){
  var clear=1-clamp(seatLoad,0,10)/10;
  var honest=clamp(seatIg,0,10)/10;
  return Math.round(clamp(clear*0.62+honest*0.38,0,1)*100);}
+/* ONE READER, FOR ALL FOUR CALLERS. mirrorAt took seatIg on a 0 to 10 scale
+   and every caller typed out bandIg(seat) by hand to get it, which seeds an
+   unanswered law to 6. compassAt reads a row from compute()'s own seatRows()
+   instead, which carries an honest ig, null when the seat has nothing
+   answered. NULL IS AN ANSWER: a seat that has not been answered reads as
+   not yet read, the way the rest of this file already treats a null. */
+function compassAt(row){
+ if(!row)return null;
+ if(row.ig==null)return null;
+ return mirrorAt(row.weight*10, row.ig*10);}
 /* THE DARK READ. The owner's rule: malignant plus decoherent on the
    same axis is the configuration to name. Neither alone is it. A
    high malignant share in a coherent field is a hard week; a
@@ -678,7 +688,7 @@ function quadrant(outward,organized,CQ){
 
    Organised means the pattern has compounded. "It starts small, gets
    conditioned, and becomes who we are." The engine already walks that chain:
-   loose saboteurs, then complexes, then hyper complexes, then character. The
+   loose saboteurs, then complexes, then hyper complexes, then super complexes. The
    share of what is running that has climbed that chain is how conditioned it
    is, which is the thing the word organised was reaching for. */
 const ORG_W={sab:0.2, cx:0.5, hy:0.8, sup:1};

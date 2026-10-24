@@ -172,9 +172,13 @@ function anaRender(){
       and this said the second when it only knew the first. A field with load
       spread under the line reported "Nothing is carrying" beside a tier word
       earned by that same load. It now says which of the two is true. */
-    :(r.heaviest?'Nothing is above '+unp('the line')+'. The heaviest is <b>'+esc(r.heaviest.k)
-      +'</b>, at the '
-      +String(r.heaviest.b).toLowerCase()+'.':'Nothing is carrying.'))
+    /* the feeling and not the address's name, P0-3 of the inference audit:
+       words never name an address, and the address names are character
+       labels the node table chose. The place is left out with it, because
+       the place comes from the same table. */
+    :(r.heaviest?'Nothing is above '+unp('the line')+'. The heaviest address is carrying <b>'
+      +esc((typeof ritCfWord==='function')?ritCfWord(r.heaviest.cf):String(r.heaviest.cf||'').toLowerCase())
+      +'</b>.':'Nothing is carrying.'))
    /* only against a row the same arithmetic wrote. A row from before 25
       September holds It*Ig/Rz, and the gap to the laws over 210 is the
       formula changing, not the person moving. */
@@ -242,16 +246,16 @@ function anaRender(){
   /* nothing of the chain is visible on this plan: the chart's place says so
      rather than printing "nothing here" over a chain somebody has */
   ?'<div class="ab-f"><div class="pm-eye">What is running</div>'+lockPanelHtml('sab',{brief:true})+'</div>'
-  :anaField('What is running','blue saboteur, gold complex, orange hyper, red character',
+  :anaField('What is running','blue saboteur, gold complex, orange hyper, red super',
   /* THE SIXTEEN HEAVIEST, NOT THE FIRST SIXTEEN, round RB. The list is in
-     ring order, character first, so on a deep chain the cut at sixteen took
-     every character layer, hyper and complex and no saboteur at all: Gordon
+     ring order, super complex first, so on a deep chain the cut at sixteen took
+     every super complex, hyper and complex and no saboteur at all: Gordon
      drew sixteen bubbles and none in the blue the key names. Sorted by
      weight, the chart shows what the eyebrow says, what is running hardest. */
   [].concat(r.sups,r.hys,r.cxs,r.sabs).sort(function(a,b){return b.w-a.w;}).slice(0,16).map(function(o){
    /* the kind's own colour at every weight, 17 October: a bubble printing a
       percent never takes the alarm (DECISIONS.md, the default taken), and red
-      here was also the key's colour for a character layer */
+      here was also the key's colour for a super complex */
    return {k:'chain',nm:o.nm,v:o.w,f:fmtPct('chain',o.w),c:TIER[o.kind]||PAL.Throat};}),300,210));
  out+=anaField('The nine axes','',
   CHILD.map(function(c){return {k:'axis',nm:c.nm,v:Math.max(0.3,S.charge[c.nm]||0),f:fmtPct('charge',S.charge[c.nm]||0),
@@ -285,7 +289,7 @@ function anaRender(){
     to every time" was the section describing itself under its own heading.
     The twenty one bars are the count, and the scale is said once, where it
     is answered, in the intake's key. */
- out+='<div class="pm-eye" style="margin-top:20px">Moral integrity</div>'
+ out+='<div class="pm-eye" style="margin-top:20px">Laws of Moral Integrity</div>'
   +'<div class="ana-laws">';
  laws.forEach(function(l){
   /* a bar is a button now, round RB, and opens its law in the trail */
@@ -311,7 +315,7 @@ function anaRender(){
      attribute here, where an unescaped quote breaks out of it. esc() closes that. */
   /* and a session is a button, round RB: its whole row opens in the trail,
      every figure the snapshot kept and how far each moved from the one before */
-  H.forEach(function(x,i){out+='<button type="button" class="ana-px" data-ana="sess|'+i+'" title="CQ '+fmtPct('cq',x.cq)+', heaviest at the '+esc(String(x.dark).toLowerCase())
+  H.forEach(function(x,i){out+='<button type="button" class="ana-px" data-ana="sess|'+i+'" title="'+(x.m===CQ_MODEL?'CQ ':'Historical CQ (model '+String(x.m)+', not comparable) ')+fmtPct('cq',x.cq)+', heaviest at the '+esc(String(x.dark).toLowerCase())
    +'"><u style="height:'+Math.max(6,Math.round(x.cq/100*50))+'px;background:'
    +seatCol(x.dark)+'"></u></button>';});
   out+='</div>';}
@@ -411,7 +415,7 @@ function anaHotRows(L,t){
    so a person can go down and come back up the same way. The chain is the
    engine's own and nothing is invented here (engine/compute.js, compute):
 
-     character layer  two hyper-complexes running together
+     super-complex    two hyper-complexes running together
      hyper-complex    the complexes of one family
      complex          two saboteurs of one family
      saboteur         a group of addresses charged at once
@@ -431,7 +435,7 @@ function anaHotRows(L,t){
    name. ANA_TRAIL is the steps that led there.
    ============================================================ */
 var ANA_TRAIL=[];
-var ANA_KIND={sup:['character','Character layer'],hy:['hyper complex','Hyper-complex'],
+var ANA_KIND={sup:['super complex','Super-complex'],hy:['hyper complex','Hyper-complex'],
  cx:['complex','Complex'],sab:['saboteur','Saboteur']};
 function anaKey(k,nm){return esc(k+'|'+nm);}
 function anaPl(n,one,many){return n+' '+(n===1?one:many);}
@@ -582,7 +586,7 @@ function anaChainCard(r,o){
   +'It runs on <b>'+anaPl(lv.length,'fetter','fetters')+'</b> at the '+anaAnd(bs.map(function(b){return b==='3rd Eye'?'3rd eye':b.toLowerCase();}))
   +(bs.length===1?' seat':' seats')+'. '+anaHeldSay(lv)+' '+made
   +(o.kind==='sab'&&o.score?' Matched at <b>'+o.score+'%</b>, a measure of how closely your feelings fit the ranges this saboteur is defined by.':'')
-  +(o.kind==='sup'?' A character layer costs more than it looks like it should, because you cannot see it as separate from you.':'')
+  +(o.kind==='sup'?' A super-complex costs more than it looks like it should, because you cannot see it as separate from you.':'')
   +'</p>';
  if(o.kind==='sab'&&typeof kbSabBlock==='function')h+=kbSabBlock(String(o.nm).replace(/ overshot$/,''));
  if(o.kind!=='sab'&&o.parts&&o.parts.length){
@@ -629,7 +633,9 @@ function anaSeatCard(r,nm){
   +(s2.hot===1?' is':'es are')+' held here.</p>';
  /* the laws seated here, as doors, round RB. They were chips that went nowhere. */
  var laws=SI.filter(function(l){return l.b===bn;});
- h+='<div class="pm-eye">Moral integrity seated here</div><div class="ad-rows">'+laws.map(function(l){
+ /* plain: six words is a sentence, not a label, by the capitalize rule in
+    shell/head.html, so it keeps the case it is written in */
+ h+='<div class="pm-eye plain">Laws of Moral Integrity seated here</div><div class="ad-rows">'+laws.map(function(l){
   var read=(typeof lawIn!=='function')||lawIn(l.nm), v=S.law[l.nm];
   return '<button type="button" class="ad-r" data-ana="'+anaKey('law',l.nm)+'" title="'+esc('Open '+l.nm)+'">'
    +crBadge(bn,read?pct('law',v)||0:0,{size:'sm',raw:read?fmtPct('law',v):'\u2013',title:l.nm+(read?'':', not read yet')})
@@ -656,12 +662,19 @@ function anaArchCard(r,nm){
  var ai=-1; ARCH.forEach(function(x,i){if(x.nm===nm)ai=i;});
  /* ARCH names it Rebel and the eighteen name it Outlaw. one row, two names. */
  var a18=ARCH18.filter(function(x){return x[0]===nm||(nm==='Rebel'&&x[0]==='Outlaw');})[0];
+ /* WHERE THE PRIMARY SABOTEUR SITS IS WHERE ITS ADDRESSES ARE, 24 October,
+    systems audit SG-05. This printed the third column of ARCH18 as its seat,
+    which named none of its addresses' seats in 9 of the 18 rows, so the card
+    put Pleaser at the heart while the body map drew it at the root and the
+    sacral. sabSeats (engine/core.js) reads them off SAB_LIB. */
+ var sbs=a18?sabSeats(a18[1]):[];
  var h=anaHead('Archetype',nm,(ai===r.pi?'primary, how the soul expresses':'not your primary'));
  h+='<p class="ad-p">'+esc((ARCH[ai]||{}).v||'')+'. <b>'
   /* how fully it is expressed, ruled 16 October; the lean against the
      strongest still orders the archetypes and is printed nowhere */
   +fmtPct('archetype',archExpr(ai))+'</b> expressed. Charge held at its seat pulls it down, and a release lifts it.'
-  +(a18?' Its primary saboteur is <b>'+esc(a18[1])+'</b>, seated at the '+a18[2].toLowerCase()+'.':'')
+  +(a18?' Its primary saboteur is <b>'+esc(a18[1])+'</b>'
+   +(sbs.length?', and its '+unp('address','addresses')+' sit at '+esc(unpackList(sbs.map(srcSeatSay))):'')+'.':'')
   +' The archetype does not change. Release clears what bends it on the way out.</p>';
  /* and when that saboteur is running, it is a door */
  var run=a18&&lockSees('sab')?anaFind(r,a18[1]):null;
@@ -692,7 +705,7 @@ function anaCellCard(r,nm){
  return h+(list.length?anaRunning(r,list,'Running here'):'');}
 /* one ring of the chain, every pattern on it */
 var ANA_RUNG={fet:['fetter','Fetters'],sab:['saboteur','Saboteurs'],cx:['complex','Complexes'],
- hy:['hyper complex','Hyper-complexes'],sup:['character','Character layers']};
+ hy:['hyper complex','Hyper-complexes'],sup:['super complex','Super-complexes']};
 function anaRungCard(r,nm){
  var R=ANA_RUNG[nm]; if(!R)return null;
  var h=anaHead('The chain',R[1]);
@@ -816,7 +829,7 @@ function anaSessCard(r,nm){
  h+='<p class="ad-p">Every figure this session kept. '+(p?(same?'Each change is against the session before it.'
    :'The session before was worked out a different way, so no change is shown against it.'):'This is the first session on the record.')+'</p>'
   +'<div class="ana-dls">'+row('Coherence','cq',1,'cq')+row('Shadow','dq',1,'dq')+row('Held','loaded',0)
-  +row('Saboteurs','sab',0)+row('Complexes','cx',0)+row('Hyper-complexes','hy',0)+row('Character','ch',0)
+  +row('Saboteurs','sab',0)+row('Complexes','cx',0)+row('Hyper-complexes','hy',0)+row('Super-complexes','ch',0)
   +row('Overshoot','jq',2,'overshoot')+row('Installed','pole',2,'pole')+'</div>'
   +(x.tier?'<p class="ad-p">The band read <b>'+esc(String(x.tier).toLowerCase())+'</b>.</p>':'')
   +(x.arch?'<p class="ad-p">The leading archetype was <b>'+esc(x.arch)+'</b>.</p>':'');
@@ -912,7 +925,7 @@ addEventListener('keydown',function(e){
                     darker a square, the more charge is left on the fetters
                     at that seat holding that feeling. The two edges add
                     each row and each column up.
-     The chain      how many patterns sit on each ring, fetter to character
+     The chain      how many patterns sit on each ring, fetter to super complex
 
    Nothing on an unread field, for the reason Running hot gives: the hero
    already says nothing is entered, and six dashes say it six more times.

@@ -28,7 +28,7 @@ const svgI=function(p){return '<svg viewBox="0 0 24 24">'+p+'</svg>';};
    rail's stack tabs, railStack in ui/ui.js, and the glass bar needs the same
    four for its own switches: one concept, one mark, on every surface, which
    two copies of a path cannot promise. Two locked rings a saboteur, three a
-   complex, a lattice a hyper complex, a ring in a ring the character layer. */
+   complex, a lattice a hyper complex, a ring in a ring the super complex. */
 const CHAINGLYPH={
  sab:'M8.6 4.8a3.4 3.4 0 013.4 3.4v3.4a3.4 3.4 0 01-6.8 0V8.2a3.4 3.4 0 013.4-3.4'
   +'M15.4 12.4a3.4 3.4 0 013.4 3.4a3.4 3.4 0 01-6.8 0a3.4 3.4 0 013.4-3.4',
@@ -1032,7 +1032,7 @@ function crbNode(n,size,o){o=o||{};
  var f=fmtPct('weight',n.sq);
  return crBadge(n.b, pct('weight',n.sq)||0, Object.assign({size:size||'sm', raw:f,
   title:n.k+', '+n.b.toLowerCase()+' seat. '+(f!==PCT_DASH?f+' left after the opposite':'Nothing held.')},o));}
-/* a saboteur, complex, hyper or character layer, on the registry's chain kind.
+/* a saboteur, complex, hyper or super complex, on the registry's chain kind.
    hot:p.w>=9 stays as the caller's word, and cr() keeps it off the arc because
    the figure is a percent; overshot is said in the title. */
 function crPat(p,size,o){o=o||{};

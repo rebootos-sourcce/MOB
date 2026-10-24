@@ -162,6 +162,26 @@ function charSeatState(means,igs,c,out){
   .sort(function(a,b){return o.lk[b]-o.lk[a]||a-b;}).slice(0,3);
  return o;}
 
+/* THE AURIC FIELD. Ruled 22 October: the total of the energy body is the
+   biofield, how it shows outward is the auric field, driven by how open or
+   closed each chakra is, and the canon's own words for it are "the torus
+   field in expression". This was already computed, under no name, every
+   time the Character page drew its torus. No new arithmetic: it is
+   charSeatState read with compute()'s own honest seatRows() rather than
+   bandIg, so a seat nobody has answered for does not swell the field on a
+   guess either. r is a compute() result. */
+function auricField(r){
+ var rows=r.seats, means=rows.map(function(s){return s.weight;}),
+  igs=rows.map(function(s){return s.ig;});
+ var st=charSeatState(means,igs,clamp(r.CQ/100,0,1));
+ var seats=rows.map(function(s,k){
+  return {seat:s.seat, open:st.open[k], closed:st.sh[k], leak:st.lk[k]};});
+ return {seats:seats, leaks:st.leaks.map(function(k){return rows[k].seat;}),
+  /* biofield: the plain mean of how open the seven seats are, 0 to 1. "the
+     total energy body added up into one field" read as one number on this
+     scale, not a literal sum of seven fractions to a ceiling of seven. */
+  biofield:seats.reduce(function(a,s){return a+s.open;},0)/seats.length};}
+
 /* THE TORUS OSCILLATES, AND VITALITY SETS HOW. Round PE: "its oscillation, a
    breathing of radius and a slow wave along its height, has an amplitude and a
    rate driven directly by the Vitality reading", the one the left menu prints,

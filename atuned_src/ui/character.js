@@ -365,7 +365,7 @@ function chRailHtml(r){
  var pc=CHC.PCOL[li], hexc='#'+pc.map(function(v){return ('0'+Math.round(v).toString(16)).slice(-2);}).join('');
  var SF=seatField(), AF=addrField();
  var h='<div class="chr">';
- if(unread)h+='<p class="chr-note">Nothing read yet, so the field is dark and the cloud is plain. Write what happened on the Story page and it starts to answer.</p>';
+ if(unread)h+='<p class="chr-note">Nothing read yet, so the field is dark and the cloud is plain. Write what happened in Discover and it starts to answer.</p>';
  /* the leading pattern, what the mask does, and the one line the stage used to
     carry as a caption */
  /* AN UNREAD PROFILE LEADS WITH NOTHING. It printed "Leading pattern, Fear
@@ -551,7 +551,7 @@ function chDrill(m){
   +'<div class="ad-sub">Worn over the '+esc(chSeats(m))+'</div>'
   +'<div class="pm-eye">What it does</div><p class="ad-p">'+esc(chSentence('It '+m.v))+'</p>';
  if(r.unread){
-  h+='<p class="ad-p">Nothing read yet, so this mask is plain. Write what happened on the Story page and it starts to fill.</p>';
+  h+='<p class="ad-p">Nothing read yet, so this mask is plain. Write what happened in Discover and it starts to fill.</p>';
   rdShell(h);return;}
  var seats=SF.filter(function(s){return m.b.indexOf(s.seat)>=0;});
  h+='<div class="pm-eye">The seats it covers</div><div class="chr-seats">'+seats.map(function(s){

@@ -170,6 +170,42 @@ function lawNow(nm){return lawLift(S.law[nm],lawWork(nm));}
    would be if every open law landed at ten, through this same sum, so the
    two ends of the range are the engine's arithmetic and never a copy of it. */
 function cqSum(open){return SINAMES.reduce((a,l)=>a+(lawIn(l)?lawNow(l):(open||0)),0)/210*100;}
+/* THE SEESAW, AT MODULE LEVEL so exCeiling can read it too. Will can only
+   push the tipping point up from 5 toward 6, never down: moving it the
+   other way breaks the rule that "paralysed" pulls at least a hundred times
+   harder than "a little tense" at every level of will.
+   ONE CURVE, NOT TWO. This is leverPull moved right by w and divided by its
+   own value at 10, so 10 still pulls 1. It was a second copy of the bell,
+   free to drift from the fitted one with nothing tying them. leverPull keeps
+   its body, because engine/pct.js cites it word for word. Will has no
+   measurement anywhere in this engine yet, so every caller passes 0, and at
+   0 this is leverPull to the bit: v minus 0 is v, and leverPull(10) is
+   exactly 1. tests/engine.js 36b holds the bit. */
+function leverPullWill(v,w){return leverPull(v-w)/leverPull(10-w);}
+/* ============================================================
+   THE SEVEN CHAKRA WEIGHTS. weight is DQ's own rule, held per seat instead
+   of over the whole body: the seat's addresses' SQ summed, over ten times
+   how many addresses it has, so it reads 0 to 1 the same way DQ reads 0 to
+   100. over is the same sum read through jq, the overshoot. open is 1 minus
+   weight. pull is the seat's own share of PULL, what the torus reads.
+
+   ig IS HONEST, UNLIKE bandIg. bandIg seeds an unanswered law to 6 so the sq
+   relief and the Ig/It readouts always have a number, and that seeding is
+   correct for them. It is wrong for anything shown as a position, because a
+   seat nobody has answered for would still print a confident place on the
+   Compass and swell the torus on the strength of a guess nobody gave. So
+   seatRows takes the mean of lawNow over only the laws this seat has
+   answered, and null when it has none. Null is an answer, not a zero. */
+function seatRows(){
+ return BANDS.map(function(b){
+  var g=W.filter(function(n){return n.b===b;});
+  var weight=g.length?g.reduce(function(a,n){return a+n.sq;},0)/(10*g.length):0;
+  var over=g.length?g.reduce(function(a,n){return a+n.jq;},0)/(10*g.length):0;
+  var pull=g.length?g.reduce(function(a,n){return a+leverPullWill(n.sq,0);},0)/g.length:0;
+  var laws=SI.filter(function(l){return l.b===b&&lawIn(l.nm);});
+  var ig=laws.length?laws.reduce(function(a,l){return a+lawNow(l.nm);},0)/laws.length/10:null;
+  return {seat:b, n:g.length, weight:weight, over:over,
+   open:clamp(1-weight,0,1), pull:pull, ig:ig};});}
 /* ============================================================
    WHERE THE FINISHED CQ CAN STILL LAND, read off what is unanswered.
 
@@ -325,28 +361,76 @@ function compute(){
  const sabs=[];
  /* ONE SABOTEUR, ONE ENTRY. SAB33's range match and the library's own fixed
     address groups can name the same saboteur from two different tests, eg
-    Controller matches both a fear/anger RANGE and its own three addresses.
-    Named twice, it pairs with itself into "Controller + Controller" below.
-    The stronger of the two readings wins; the weaker is dropped, not kept
-    as a second voice. */
+    Micromanager matches both a fear/anger RANGE and its own three addresses.
+    Named twice, it pairs with itself into "Micromanager + Micromanager"
+    below. The stronger of the two readings wins; the weaker is dropped, not
+    kept as a second voice.
+
+    BY IDENTITY, NOT BY SPELLING, 22 October. The merge keyed on s.nm, so it
+    only caught a saboteur both tables spelled the same way. The owner's
+    rename of S02 on 18 October reached SAB33 and not the library, and from
+    then one saboteur printed as two, Micromanager off the range and
+    Controller off its addresses, each in its own family, and the merge could
+    not see it because the spellings differed. The rename is finished in every
+    table now, and the merge keys on KB_KEY, the identity SABDEF and SABCARD
+    already use, so a future spelling drift still makes one entry.
+    tests/engine.js, ND, holds both halves.
+
+    AND ONE FAMILY. The range route took its family from FAM_OF, the family of
+    its first charge, and the address route from the library row. Where the
+    two differ, the family, and so the complex the saboteur could join,
+    flipped with whichever reading was heavier. A saboteur with a library row
+    now takes that row's family from either route, through SAB_LIB_BY in
+    core.js. FAM_OF still answers for a range match with no library row. */
  const sabByNm={};
  const pushSab=function(s){
-  const ex=sabByNm[s.nm];
-  if(ex){if(s.w<=ex.w)return; sabs[sabs.indexOf(ex)]=s;sabByNm[s.nm]=s;return;}
-  sabByNm[s.nm]=s;sabs.push(s);};
+  const id=KB_KEY(s.nm), ex=sabByNm[id];
+  if(ex){if(s.w<=ex.w)return; sabs[sabs.indexOf(ex)]=s;sabByNm[id]=s;return;}
+  sabByNm[id]=s;sabs.push(s);};
  /* SAB33: 33 named saboteurs matched on charge RANGES. */
+ /* anticipation is spelled out because SAB33 spells it out: a row led by it
+    fell through this map to Collapse. No row leads with it today. */
+ const SAB_FET={fear:'Fear',anger:'Anger',shame:'Shame',disgust:'Disgust',apathy:'Apathy',
+  shock:'Shock',sadness:'Sad',surprise:'Surprise',anticipation:'Anticipation',anxiety:'Anticipation'};
  sab33Detect().forEach(function(d){
-  const parts=W.filter(n=>n.b===d.band&&n.sq>=3).sort((a,b)=>b.sq-a.sq).slice(0,4);
+  /* THE SEAT'S ADDRESSES THAT CARRY THE SABOTEUR'S OWN CHARGES, P1-6 of the
+     inference audit, 23 October. This took any address at the seat at 3 or
+     more, whatever it carried, so a fear row was confirmed by apathy load
+     and drawn there: measured on 77928172, 44 per cent of this route's names
+     were placed only on addresses carrying none of their own charges. The
+     address route's rule 2 already says an address must carry one of the
+     row's own charges, and this route now keeps it too. */
+  const ownFet=d.charges.map(c=>SAB_FET[c]);
+  const parts=W.filter(n=>n.b===d.band&&n.sq>=3&&ownFet.indexOf(n.cf)>=0).sort((a,b)=>b.sq-a.sq).slice(0,4);
   if(!parts.length)return;
-  const key=d.charges[0]==='anxiety'?'Anticipation':
-   ({fear:'Fear',anger:'Anger',shame:'Shame',disgust:'Disgust',apathy:'Apathy',
-     shock:'Shock',sadness:'Sad',surprise:'Surprise'})[d.charges[0]];
-  pushSab({kind:'sab',nm:d.nm,hcx:FAM_OF[key]||'Collapse',named:true,
+  const key=SAB_FET[d.charges[0]];
+  const own=SAB_LIB_BY[KB_KEY(d.nm)];
+  pushSab({kind:'sab',nm:d.nm,hcx:own?own.hcx:(FAM_OF[key]||'Collapse'),named:true,
    score:d.score,exact:d.exact,charges:d.charges,auth:SABAUTH[d.nm]||null,
    parts,w:d.w,ang:meanAng(parts.map(n=>n.ang))});});
+ /* THE ADDRESS ROUTE ASKS THE BAND, 22 October. A library row was named when
+    its three addresses averaged 3.7, whatever the saboteur's own bands said.
+    SNIFFER_SPEC section 3, which the owner rules is canon: "A saboteur is a
+    configuration of fetters at specific intensities, not a thing. Break the
+    co-mingling and the saboteur is gone." Measured on the worked examples,
+    19 of the route's 34 names were saboteurs whose own configuration was off
+    the band ramp entirely, and the rows nodes.js added on 22 October add 38
+    more without this check. So a row with a SAB33 row is named here only
+    while sabFetters, the ramp canon.js already carries for the sniffer, is
+    above zero on the exact charge. The ramp is lenient on purpose: it only
+    reaches zero two points under a band and three points over it, the
+    stretch where the canon says a saboteur is forming or fading. Inside its
+    own band nothing changes: the sweep named every row inside its band
+    exactly as often with this as without it. An inferred cluster has no band
+    and is not asked. The
+    overshot reading below is the opposite installed past 6, not the held
+    configuration, so it is not asked either. */
+ const sabL=sabLevels(true);
+ const formed=function(s){const row=s.unnamed?null:SAB33_BY[KB_KEY(s.nm)];
+  return !row||sabFetters(row[1],sabL)>0;};
  ALL_SAB.forEach(s=>{const parts=s.nids.map(i=>BY[i]).filter(Boolean);
   const w=parts.reduce((a,n)=>a+n.sq,0)/parts.length;
-  if(w>=3.7)pushSab({kind:'sab',nm:s.nm,hcx:s.hcx,unnamed:!!s.unnamed,parts,w,
+  if(w>=3.7&&formed(s))pushSab({kind:'sab',nm:s.nm,hcx:s.hcx,unnamed:!!s.unnamed,parts,w,
    auth:SABAUTH[s.nm]||null,ang:meanAng(parts.map(n=>n.ang))});
   /* the same cluster, overshot. a voice that will not stop rather than one that shuts. */
   const j=parts.reduce((a,n)=>a+n.jq,0)/parts.length;
@@ -414,42 +498,60 @@ function compute(){
  /* THE SIX AXES multiply what every held pattern costs. Detachment is the
     cheapest gate at 0.60, attachment the most expensive at 1.35. No story
     means no gate evidence, so the factor is 1 and nothing changes.
-    Resistance is still computed and reported, because the gates drill names
-    it, but it divides nothing any more: the owner ruled CQ is the 21 laws and
-    nothing else, and verpFactor stops multiplying anything in CQ with it. */
+    Resistance, Rz, is still computed and returned, and it divides nothing:
+    the owner ruled CQ is the 21 laws and nothing else. Rz is the only place
+    the six gates' multiplier lands, and no surface reads it, which
+    engine/verp.js says the same way from its side. */
  const _vf=verpFactor();
  const Rz=Math.max(1,(1+DQ*0.05)*_vf);
  /* ============================================================
     CQ, THE 21 LAWS SUMMED OVER 210. Ruled 25 September, fitted by the ten
-    thousand run simulation (AZ5, DECISIONS.md "The CQ model, fitted").
+    thousand run simulation (AZ5, DECISIONS.md "The CQ model, fitted"),
+    and ruled again, as a direct answer to the owner's own restated
+    formula, 22 October: Coherence equals Integrity times Intention
+    divided by Resistance runs for real as the shape of Expression below,
+    not as a second division inside CQ itself. CQ stays pure.
 
-    This was clamp(It*Ig/Rz). Ig was the law mean and It was the band mean of
-    the same 21 laws, so the laws were counted twice and CQ went as their
-    square: every law at 5 read 25 where his ruling reads 50 (AY2). And both
-    factors carried poleMean and JQ, so installing an opposite past 6 pushed
-    JQ up and CQ down: a release lowered CQ in 22 of 10,000 random fields
-    (AY1, measured at 9f4c7e5). Neither can happen now, because nothing but
-    a law score is read.
+    MODEL 3, BRIEFLY LIVE ON THIS BRANCH, IS THE SAME DEFECT AS THE
+    FORMULA THE AZ5 SIMULATION ALREADY KILLED, MEASURED AGAIN TODAY.
+    It set CQ to clamp(integrity*It/Rz), It being the band mean of the
+    same 21 laws read a second way. Measured on this exact branch: every
+    law at 10 with axes at their 6 default read 48.7, not the 100 the
+    all-tens invariant requires, and a release lowered CQ on 2,881 of
+    10,000 random fields, where the pure sum lowers it on none. That is
+    worse than the formula AY1 already measured and killed at 22 of
+    10,000. Reverted; new data for Intention and Resistance does not
+    make the same shape of division safe inside CQ.
 
-    AN UNANSWERED LAW COUNTS 0 AGAINST A FIXED 210, so CQ fills from zero as
-    the laws land and can only rise while a person is answering. "I don't
-    want it to go from 100 down, because that's demoralizing." The mean of
-    the laws answered so far, which the desktop runs, fell in every one of
-    10,000 simulated intakes; this rule fell in none of 630,000 answers.
+    AN UNANSWERED LAW COUNTS 0 AGAINST A FIXED 210, so CQ fills from zero
+    as the laws land and can only rise while a person is answering. "I
+    don't want it to go from 100 down, because that's demoralizing." The
+    mean of the laws answered so far, which the desktop runs, fell in
+    every one of 10,000 simulated intakes; this rule fell in none of
+    630,000 answers.
 
     The default 6 still sits in S.law for an unanswered law, because the
-    band relief inside sq and the Ig readout need a number. It never enters
-    CQ: lawIn() is what says whether a law was answered. */
+    band relief inside sq and the Ig/It readouts still need a number.
+    It never enters CQ: lawIn() is what says whether a law was answered. */
  const answered=SINAMES.filter(lawIn).length;
  const complete=(answered===SINAMES.length);
  /* each law as answered, plus what releases at its seat have added since. See
     LIFT_R above. It is still a law score and nothing else. */
  const CQ=cqSum();
- /* THE LEVER. Expression is CQ times what the shadow leaves: "CQ 100 SQ 0
-    ... one pulls down the other, it's a lever", and the pull is his bell,
-    applied per address because "a little tense" and "paralyzed" are
-    intensity at a place. PULL is the mean of leverPull over the 112. */
- const PULL=SQ.reduce((a,v)=>a+leverPull(v),0)/SQ.length;
+ /* THE SEESAW. Expression is CQ times what the shadow leaves, and this is
+    where Integrity times Intention divided by Resistance actually runs:
+    Integrity is the plank (CQ itself), Intention and Resistance are the two
+    ends. "Frames, gates, bends, shows." The bend is the same bell curve as
+    before, Phi over the 112 SQ values, centred at 5, width 1.25, except the
+    centre now moves with WILL: willpower can only push the tipping point
+    up, from 5 toward 6, never down, because moving it down would break the
+    rule that "paralysed" must pull at least a hundred times harder than "a
+    little tense" at every level of will. WILL has no measurement anywhere
+    in this engine yet, so it is 0 here, which makes this exactly the curve
+    already shipped, to the digit. Nothing moves until Will is real; that is
+    the correct behaviour, not a gap. */
+ const WILL=0;
+ const PULL=SQ.reduce((a,v)=>a+leverPullWill(v,WILL),0)/SQ.length;
  const EX=CQ*(1-PULL);
  /* One table. This was a literal copy of the thresholds and the names, and a
     previous commit claimed to have removed the duplicate after removing only
@@ -558,7 +660,7 @@ function compute(){
  const carrying=W.filter(n=>n.sq>0).sort((a,b)=>b.sq-a.sq);
  return {loaded,carrying,heaviest:carrying[0]||null,
   sabs,cxs,hys,sups,maskRing,DQ,SQ,PULL,EX,Rz,vf:_vf,SQm,poleMean,JQ,excess,
-  FAM_POLE,dist,Ig,It,CQ,answered,complete,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
+  FAM_POLE,dist,Ig,It,seats:seatRows(),CQ,answered,complete,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
   outward,organized,gov,
   will,drag,mask,darkB,darkV,root,rootsIn,weakL,balance:balance()};
 }
@@ -585,7 +687,7 @@ function compute(){
    every address, sq is zero whatever is installed, the four outside take a
    seat mean of zero, and the pull is leverPull(0) at all 112. Nothing is
    mutated and nothing is guessed. */
-function exCeiling(){return cqSum()*(1-leverPull(0));}
+function exCeiling(){return cqSum()*(1-leverPullWill(0,0));}
 /* the gap a release still has in it, for the person about to run one */
 function exHeadroom(exNow){return Math.max(0,exCeiling()-exNow);}
 

@@ -41,6 +41,70 @@ const CHG2FET={anxiety:'Anticipation',fear:'Fear',anger:'Anger',shame:'Shame',
  disgust:'Disgust',apathy:'Apathy',shock:'Shock',sadness:'Sad',sad:'Sad',
  grief:'Sad',surprise:'Surprise',separation:'Apathy',silence:'Apathy',
  doubt:'Shock',pride:'Shame',guilt:'Shame',craving:'Disgust'};
+/* THE SEAT A RANGE MATCH IS CHECKED AT, READ OFF THE ADDRESSES. 22 October.
+
+   compute() names a SAB33 range match only when the seat of its first charge
+   holds an address at sq 3 or more, and it draws the saboteur there. That
+   seat was CHG2SEAT, the owner's ruling about where a charge is held, and for
+   every axis but one the ruled seat holds at least one address carrying the
+   charge. Apathy is the one. CHG2SEAT and CHILD put it at the throat, the
+   shoulder girdle and the base of the neck, and no throat address carries
+   Apathy: REROUTE sends the node map's Joy label to Apathy, and every Joy
+   address sits at the root, the sacral, the third eye or the crown. So a row
+   led by apathy was checked at a seat its own charge never reaches. Measured
+   on 22 October over 270 or more settings a row (six law levels, five souls,
+   every combination of each band's low, centre and high): Pleaser,
+   Hyper-Achiever, Restless, Dreamer, Escapist and Avoider were never named
+   from their own configuration. People-Pleaser and Enabler escaped only
+   because their second charge, shame, happens to sit at the throat.
+
+   THE RULE. A charge is checked at its CHG2SEAT seat wherever that seat holds
+   an address carrying it, so the ruling stands everywhere it can be honoured.
+   Where the ruled seat holds none, the check moves to the seat holding the
+   most of that charge's addresses, and BANDS order breaks a tie. It is read
+   off W at load and never typed, so a change to the node map moves it and no
+   second table is left holding the old answer. On the map as it stands it
+   moves exactly one charge, apathy, from the throat to the sacral.
+
+   CHG2SEAT itself is not touched. It is also where the lexicon seats a story
+   word and where the path draws one, and sniff.js records that reconciling it
+   with the address map is a ruling nobody has made. This table answers a
+   narrower question with no ruling in it: which seat's addresses can carry
+   this charge at all. */
+const SAB_SEAT=(function(){
+ var out={};
+ Object.keys(CHG2SEAT).forEach(function(ch){
+  var fet=CHG2FET[ch]||CHARGES.filter(function(c){return String(c).toLowerCase()===ch;})[0]||null;
+  var ruled=CHG2SEAT[ch], at=fet?W.filter(function(n){return n.cf===fet;}):[];
+  if(!at.length||at.some(function(n){return n.b===ruled;})){out[ch]=ruled;return;}
+  var cnt={}; at.forEach(function(n){cnt[n.b]=(cnt[n.b]||0)+1;});
+  out[ch]=BANDS.reduce(function(best,b){return (cnt[b]||0)>(cnt[best]||0)?b:best;},ruled);});
+ return out;})();
+/* ONE SABOTEUR, ONE LIBRARY ROW, found by identity. KB_KEY is the key SABDEF
+   and SABCARD already use, so a saboteur is the same saboteur in every table
+   however its name is cased or hyphenated. compute() reads the library row's
+   family through this, so the range route and the address route can no
+   longer put one saboteur in two families. */
+const SAB_LIB_BY={};SAB_LIB.forEach(s=>{SAB_LIB_BY[KB_KEY(s.nm)]=s;});
+/* WHERE A NAMED SABOTEUR SITS IS WHERE ITS ADDRESSES ARE, 24 October, systems
+   audit SG-05. The seats of the addresses SAB_LIB builds the saboteur from,
+   once each, from the root up in BANDS order, and the seat that holds the most
+   of them, the root end winning a tie. The Analytics archetype card and the
+   Avatar page printed the third column of ARCH18 as the primary saboteur's
+   seat, and measured on 23 October that seat held none of the saboteur's
+   addresses in 9 of the 18 rows: Pleaser was put at the heart, and its
+   addresses sit at the root and the sacral. Read off the addresses, the words
+   and the body map cannot disagree. A saboteur with no library row has no
+   seats and says none. */
+function sabSeats(nm){
+ var s=SAB_LIB_BY[KB_KEY(String(nm===undefined||nm===null?'':nm))]; if(!s)return [];
+ var at={}; s.nids.forEach(function(i){var n=BY[i]; if(n)at[n.b]=(at[n.b]||0)+1;});
+ return BANDS.filter(function(b){return at[b];});}
+function sabSeatMain(nm){
+ var s=SAB_LIB_BY[KB_KEY(String(nm===undefined||nm===null?'':nm))]; if(!s)return null;
+ var at={}; s.nids.forEach(function(i){var n=BY[i]; if(n)at[n.b]=(at[n.b]||0)+1;});
+ var best=null; BANDS.forEach(function(b){if(at[b]&&(best===null||at[b]>at[best]))best=b;});
+ return best;}
 
 /* ============================================================
    TABS. A stale tab index caused the same class of bug four times in
@@ -102,12 +166,14 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
    TABFOLD no longer answers TAB.ANALYTICS with Summary, the same line Games
    came out of when it was unfolded the first time.
 
-   Summary still reads last of the three Discover doors, on the ruling that
-   put it there: "then my intake then my summary." Analytics reads after it,
-   his own order, so Discover was Story, Avatar, Summary, Analytics and the
-   bar still closes the loop on Embody. Round OD moved the body map
-   into Discover as Intake and round OG moved it back to Play as Body; see
-   the note above TAB.ENERGY's own entry in TABDEF. */
+   Summary read last of the three Discover doors, on the ruling that put it
+   there: "then my intake then my summary." Analytics read after it, his own
+   order, so Discover was Story, Avatar, Summary, Analytics and the bar still
+   closes the loop on Embody. Round OD moved the body map into Discover as
+   Intake and round OG moved it back to Play as Body; see the note above
+   TAB.ENERGY's own entry in TABDEF. On 23 October all four left Discover for
+   Play, keeping that order, and Discover became the journal page alone; see
+   the note above SECTIONS. */
 /* THE MENU RULE, ruled. One word, and the word names exactly what the surface
    does. Not what it is about, not what it belongs to. What it does.
 
@@ -154,6 +220,49 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
    Tools section was built on his earlier pass and taken out on this one.
    Only .sec and the order of this array moved. No TAB integer changed, and
    the gate holds every one to its value. */
+/* AND THEN DISCOVER WAS THE JOURNAL ALONE, AND THE APP OPENS ON IT. Recorded
+   23 October 2026. His words, across two messages: "I want to get rid of the
+   Story or move the Story link. Sorry, attach the Story link to Discover. So
+   we're removing the word Story. We're keeping the word Discover... the app
+   opens on Discover. So when you click Discover, you only get the journal and
+   the imprints and the release. If I click on play, then I get all the other
+   tools." And, on whether that changes the rule: "Yeah, I've changed that
+   rule. The most important portions of the app are core loop. The core loop
+   is discover, play, flow, and embody. That really is the journal to the
+   release. Plus the ritual."
+
+   WHAT HIS THREE WORDS ARE, read off the code rather than guessed. The
+   journal, the imprints and the release are the Story page's own three
+   columns, and they have carried exactly those three names since round QB,
+   his words: "I want journal, the word journal and prints and release"
+   (stMark, ui/storyui.js). The middle column is the imprints as the journal
+   reads them, and its bank opens the record of every imprint held (impRender,
+   ui/imprints.js). The third column is the release, and its Run opens the
+   real release card (ui/release.js). Summary and Analytics are readings of
+   the whole field, not the imprints, and the release was never hidden: it is
+   the third column. So nothing new is built for either word. Discover is that
+   one page, and the section is its door.
+
+   ONE DOOR, AND IT IS THE SECTION. door:'section' on the entry says so, and
+   three things read it. Above the phone width the bar shows no second door
+   under Discover, because the section button already is one, and a door
+   reading Discover under a button reading Discover is one word printed
+   twice. The phone has no section buttons, so its menu shows the door once,
+   as the menu's first line. The folded bar on a phone names the section
+   alone. The name is the section's own word because "we're keeping the word
+   Discover". The integer, the id story and the class tab-story stay, on the
+   rule the Body and Character renames follow: they are identity, never the
+   name a person reads.
+
+   PLAY IS EVERY OTHER TOOL, in two orders he gave and none invented here: his
+   Play order first, Field, Body, Compass, Character (rounds LE and OG), then
+   the four that leave Discover in the order they stood in it, Avatar,
+   Summary, Intake, Analytics (rounds LV and OG). Checked against what each
+   page does before it moved: the Avatar builds who a person is becoming and
+   borrows the journal's commit for it, the Intake page is the diagnostic's
+   questions, and neither is the journal, the imprints or the release. No
+   integer moved, and Play still opens on Field the first time it is pressed.
+   tests/functional.js holds every placement by name. */
 const SECTIONS=[
  {k:'discover', nm:'Discover'},
  {k:'play',     nm:'Play'},
@@ -172,33 +281,16 @@ const SECTIONS=[
     switch is off, which is how nearly everyone will see it. */
  {k:'practitioner', nm:'Practitioner', mode:'practitioner'}];
 const TABDEF=[
- /* Discover opens on the Story, "start right immediately on my journal":
-    secGo sends a first visit to a section's first entry, so being first here
-    is what makes it the opening. */
- {k:TAB.STORY,   id:'story', nm:'Story',     cls:'tab-story',   sec:'discover'},
- /* TAB.INTAKE is the Avatar and keeps that name. The integer's own name is
-    history, from when this surface was the intake; the door called Intake
-    below is a different tab, TAB.ENERGY. Two integers, one word each. */
- {k:TAB.INTAKE,  id:'iq',    nm:'Avatar',    cls:'tab-intake',  sec:'discover'},
- /* Summary last in Discover, on his own correction: "then my intake then my
-    summary". */
- {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary', sec:'discover'},
- /* THE INTAKE PAGE IS BACK, round OG. His words: "we'll do the intake questions
-    at the very end for now, just restore the intake page." It is the
-    questions, on a page of their own, after Summary and before Analytics, the
-    place round OD named for it. The body map is Body, in Play: this is not
-    that surface and never was. Integer 13, appended, host #iqp, which
-    borrows #iqbody from intakeui.js the way the Avatar's menu does. What it
-    asks, and how, is the redesign he put last. */
- {k:TAB.QUESTIONS, id:'iqp',  nm:'Intake',    cls:'tab-questions', sec:'discover'},
- /* ANALYTICS, RIGHT AFTER SUMMARY, his own order at round LV: "so it'll go
-    story, avatar, summary, analytics." Integer 4, unfolded: see the note
-    above TABDEF. #ana is body.html's own sibling of #sum now, never nested
-    inside it, and anaRender in ui/analytics.js is unchanged. */
- {k:TAB.ANALYTICS, id:'ana', nm:'Analytics', cls:'tab-analytics', sec:'discover'},
+ /* DISCOVER'S ONE DOOR, 23 October: the journal, the imprints and the release,
+    which are this page's three columns. See the note above SECTIONS. Being
+    first here is still what makes it the opening of its section, since secGo
+    sends a first visit to a section's first entry, and TABHOME below is where
+    the app itself opens. */
+ {k:TAB.STORY,   id:'story', nm:'Discover',  cls:'tab-story',   sec:'discover', door:'section'},
  /* "I want to move all the tools to play. And then get rid of the tools
-    tab." The instruments are Play now, and the app still opens on the Field,
-    so Play is the section pressed at start. */
+    tab." The instruments are Play. The app opened on the Field and Play was
+    the section pressed at start until 23 October; it opens on Discover now,
+    see TABHOME. */
  {k:TAB.FIELD,   id:'cv',    nm:'Field',     cls:'tab-field',   sec:'play'},
  /* BODY, BETWEEN FIELD AND COMPASS, round OG, reversing round OD. OD moved
     this surface to Discover and called it Intake on a misreading of his
@@ -222,13 +314,42 @@ const TABDEF=[
  /* THE DOOR IS CHARACTER NOW, round LP, his words: "and all of those form
     the character. So that's the character page. Let's rename masks there to
     character. And then all the masks will just be the masks." The six grids
-    on it are the masks; the page they make is the character, which is also
-    the word the chain already uses for its top tier. Integer 11, the id
-    masksview and the class tab-masksview stay, on the rule the Body rename
+    on it are the masks; the page they make is the character. Integer 11, the
+    id masksview and the class tab-masksview stay, on the rule the Body rename
     above follows: they are identity, never the name a person reads. What is
     drawn inside the host is new too (ui/character.js); the figure the
-    comment above describes is gone from this door. */
+    comment above describes is gone from this door.
+
+    THE PAGE KEEPS THE WORD, 23 October. The chain's top rung was called
+    character as well until he ruled that rung the super complex and put
+    Character at the very top of the stack, the whole person, above the
+    masks and above archetype through domain (DECISIONS.md, "The full stack,
+    nerve to Character"). This page draws the whole person, the masks and
+    what is running them, so it stays the one thing on screen called
+    Character, and the rung gave the word up rather than the page. */
  {k:TAB.MASKS,   id:'masksview', nm:'Character', cls:'tab-masksview', sec:'play'},
+ /* THE FOUR THAT LEFT DISCOVER, 23 October, after his Play order and in the
+    order they stood in Discover. See the note above SECTIONS. */
+ /* TAB.INTAKE is the Avatar and keeps that name. The integer's own name is
+    history, from when this surface was the intake; the door called Intake
+    below is a different tab, TAB.QUESTIONS. Two integers, one word each. */
+ {k:TAB.INTAKE,  id:'iq',    nm:'Avatar',    cls:'tab-intake',  sec:'play'},
+ /* Summary after the Avatar, the order his own correction gave it in Discover:
+    "then my intake then my summary". */
+ {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary', sec:'play'},
+ /* THE INTAKE PAGE IS BACK, round OG. His words: "we'll do the intake questions
+    at the very end for now, just restore the intake page." It is the
+    questions, on a page of their own, after Summary and before Analytics, the
+    place round OD named for it. The body map is Body, in Play: this is not
+    that surface and never was. Integer 13, appended, host #iqp, which
+    borrows #iqbody from intakeui.js the way the Avatar's menu does. What it
+    asks, and how, is the redesign he put last. */
+ {k:TAB.QUESTIONS, id:'iqp',  nm:'Intake',    cls:'tab-questions', sec:'play'},
+ /* ANALYTICS, RIGHT AFTER SUMMARY, his own order at round LV: "so it'll go
+    story, avatar, summary, analytics." Integer 4, unfolded: see the note
+    above TABDEF. #ana is body.html's own sibling of #sum now, never nested
+    inside it, and anaRender in ui/analytics.js is unchanged. */
+ {k:TAB.ANALYTICS, id:'ana', nm:'Analytics', cls:'tab-analytics', sec:'play'},
  /* "Flow is ritual and accountability." The Ritual tab carries both the
     building of a ritual and the accountability for keeping it, so the whole
     tab moves and nothing is split. */
@@ -304,6 +425,21 @@ const TABREAL=function(k){
     the summary, which is the folded-surface bug in a new costume. */
  if(TABEXTRA[k])return k;
  return TAB.SUMMARY;};
+/* WHERE THE APP OPENS, NAMED ONCE. Recorded 23 October 2026, his words: "the
+   app opens on Discover", and "The most important portions of the app are
+   core loop... That really is the journal to the release." So home is
+   Discover's one door, the journal page, integer 0.
+
+   ONE NAME, BECAUSE FOUR PLACES DECIDED IT. The default on S below, the boot's
+   opening step (ui/ui.js), the wordmark's home (ui/panels.js) and the landing
+   when the practitioner door shuts under a person (ui/practitioner.js) each
+   named a tab of their own. The boot's own note records what that costs: a
+   default changed in one place looked right in the source and did nothing on
+   screen. All four read this now, so the next ruling on the opening is one
+   line here. The one first landing (tabLandFirst, ui/panels.js) names Summary
+   and not this, on purpose: his 9 October ruling and the gift's line stand on
+   it, and the reasoning is written there. tests/landing.js holds both. */
+const TABHOME=TAB.STORY;
 
 /* ============================================================
    STATE
@@ -321,6 +457,13 @@ const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
     doors have to be reachable from here, which they are: the rail prints
     them on every tab but Summary, which was written for exactly this case
     and is the reason the change is safe. */
+ /* AND THEN ON DISCOVER, 23 October, which reverses the Field: see TABHOME
+    above. The default here is TABHOME so it cannot disagree with the boot's
+    step again. A stranger's first screen is the journal now, and the first
+    of the four doors (startHTML, ui/component.js) is the page itself: its
+    door data-start story opens exactly this surface. The other three are
+    drills printed on Summary and in the rail of the tools, which are in
+    Play: one press to Play opens the Field with them in its rail. */
  /* AND IT OPENS WITH EVERY LAYER ON. view was 1, Patterns, so the glass bar
     opened with Domains, Masks, Archetypes and the four chain tiers off, and
     since one set of switches drives all three pictures, Frames and Dial
@@ -329,7 +472,7 @@ const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
     on. Yeah, everything should start on." 3 is Blueprint, the preset that is
     every layer in LAYADD, so the first frame draws all of it and a press on
     the bar takes a layer away rather than having to find it. */
- theme:'dark',hover:null,pin:null,t:0,replace:{},view:3,who:0,tab:TAB.FIELD,
+ theme:'dark',hover:null,pin:null,t:0,replace:{},view:3,who:0,tab:TABHOME,
  /* atom: the one story weight being held on the wheel, past the fetter
     layer. {i:node id, ei:entry index}, or null for none held. View state,
     like pin and hover, so it is not persisted and not validated. */
@@ -407,26 +550,47 @@ function meanAng(l){let x=0,y=0;l.forEach(a=>{x+=Math.cos(a);y+=Math.sin(a);});r
 function bandIg(b){const g=SI.filter(l=>l.b===b);return g.reduce((a,l)=>a+S.law[l.nm],0)/g.length;}
 
 /* ---------- SAB33 detection ---------- */
-function sabLevels(){
+function sabLevels(exact){
  var L={},F={Fear:'fear',Anger:'anger',Shame:'shame',Disgust:'disgust',Apathy:'apathy',
   Shock:'shock',Sad:'sadness',Surprise:'surprise',Anticipation:'anticipation'};
- CHILD.forEach(function(c){L[F[c.nm]||c.nm.toLowerCase()]=Math.round(S.charge[c.nm]||0);});
+ CHILD.forEach(function(c){var v=S.charge[c.nm]||0;L[F[c.nm]||c.nm.toLowerCase()]=exact?v:Math.round(v);});
  L.anxiety=L.anticipation;
  return L;}
-/* fit scoring against the ranges. 1.0 inside the band, 0.5 for adjacent. */
+/* each SAB33 row by identity, for the address route's band check in compute() */
+const SAB33_BY={};SAB33.forEach(function(r){SAB33_BY[KB_KEY(r[0])]=r;});
+/* THE RANGE SCAN READS THE RAMP, P1-6 of the inference audit, 23 October.
+   It was a three step staircase over levels rounded to whole numbers, full
+   credit inside a band, half one step out, named at 60: the defect canon.js
+   records in its own header, and the owner's ruling is "a band edge is a
+   ramp, not a cliff". Measured on 77928172: with apathy at 4, fear at 4.49
+   named Innocent and Restless and fear at 4.51 named neither, and one answer
+   of the quiz's hundred moved one step changed which four saboteurs a
+   newcomer was shown in 8.6 per cent of simulated readings. The ramp, the
+   geometric mean and the one charge discount were built in canon.js and
+   used only by sniffStory, which no screen calls.
+
+   So this is sabConfidence on the exact levels. It still has to answer
+   yes or no, because compute() pairs the saboteurs it names into
+   complexes, so it names a row at SAB_NAME and ranks by confidence.
+   SAB_NAME is 0.5 because that is the ramp's own membership one point over
+   a band's high edge and the old rule's half credit: a row still names
+   when one of its charges sits about a point outside its band, as the
+   staircase allowed, and never when two do. What goes is the cliff at the
+   half point of every whole number. Exact is every charge inside its band,
+   read without rounding, and score is the confidence as a percent, which is
+   what the drill's "Matched at" prints. */
+var SAB_NAME=0.5;
 function sab33Detect(){
- var L=sabLevels(), out=[];
+ var L=sabLevels(true), out=[];
  SAB33.forEach(function(row){
-  var nm=row[0], parts=row[1], fit=0, inAll=true;
-  parts.forEach(function(p){
-   var lvl=L[p[0]]||0, lo=p[1], hi=p[2];
-   if(lvl>=lo && lvl<=hi){ fit+=1; }
-   else if(lvl===lo-1 || lvl===hi+1){ fit+=0.5; inAll=false; }
-   else { inAll=false; }});
-  var score=Math.round(fit/parts.length*100);
-  if(score>=60) out.push({nm:nm, score:score, exact:inAll, parts:parts,
+  var nm=row[0], parts=row[1], conf=sabConfidence(nm,parts,L);
+  var inAll=parts.every(function(p){var v=L[p[0]]||0; return v>=p[1]&&v<=p[2];});
+  var score=Math.round(conf*100);
+  if(conf>=SAB_NAME) out.push({nm:nm, score:score, exact:inAll, conf:conf, parts:parts,
    charges:parts.map(function(p){return p[0];}),
-   band:CHG2SEAT[parts[0][0]]||'Root',
+   /* the seat that can carry the first charge, SAB_SEAT above, and never a
+      seat its own charge cannot reach */
+   band:SAB_SEAT[parts[0][0]]||CHG2SEAT[parts[0][0]]||'Root',
    w:Math.min(10, parts.reduce(function(a,p){return a+(L[p[0]]||0);},0)/parts.length)});});
  return out.sort(function(a,b){return b.score-a.score || b.w-a.w;});}
 

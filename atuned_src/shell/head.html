@@ -1099,7 +1099,15 @@ body.lumen{
  /* KT added the line below. A section key with no line here is not hidden,
     it shows every group at once, so a new section in SECTIONS needs its line
     in this list; the functional gate presses every section and fails on it. */
- .top[data-sec="embody"] #tabbar .tabgrp:not([data-sec="embody"]){display:none}}
+ .top[data-sec="embody"] #tabbar .tabgrp:not([data-sec="embody"]){display:none}
+ /* A SECTION THAT IS ITS OWN DOOR SHOWS NO SECOND DOOR, 23 October. Discover
+    opens the journal page itself (door:'section', engine/core.js), so the
+    button under it would be Discover printed under Discover. It stays in the
+    markup, because on a phone it is the only way in, and because every route
+    that presses a tab by its integer still finds it. Not shown is not
+    focusable, so the keyboard meets the section button once and not a second
+    copy of it. */
+ #tabbar .tabtop[data-door="section"]{display:none}}
 /* THE SECOND TIER IS A ROW OF ITS OWN, UNDER THE FIRST. KT in TASKS.md, his
    words: "the navigation was it keeps unnesting right that's not what I want
    I wanted to open up a secondary navigation underneath." The tabs sat on the
@@ -1112,7 +1120,13 @@ body.lumen{
 
    So the strip takes a line of its own beneath the bar, the full width, and
    stays there on every surface: the second tier is always open and only its
-   contents change with the section. It is forced onto that line by its 100%
+   contents change with the section. ONE SECTION HAS NOTHING TO OPEN, since
+   23 October: Discover is its own door (engine/core.js), so under it the
+   strip holds no tab and folds to its hairline, and the journal page takes
+   the line. That is his model of the bar read straight, a section "opens up
+   a secondary navigation underneath" and this one has none; measured at
+   1600, the stage starts 44px higher on Discover than under Play, and the
+   section buttons, where the press lands, do not move. It is forced onto that line by its 100%
    basis. It once had to beat the status rule, which gave the strip a basis
    of 0 while a message showed and fit it back onto the first line; the status
    moved to the message dock at the bottom on 2 October and that rule went
@@ -2148,7 +2162,9 @@ body.quiet .rb-t i::before,body.rm .rb-t i::before,body.quiet .rb-t i::after,bod
 body.punch .kb{border-color:transparent;background:var(--panel-2)}
 /* the wheel is the main graphic. in Punch it carries a fifth more colour. */
 body.punch canvas#cv{filter:saturate(1.2)}
-.gate-r .ad-m{margin-left:auto;font-family:var(--num);color:var(--dim);font-size:11.5px}
+/* .gate-r .ad-m set the gate rows' multiplier, x0.70, at the right edge. The
+   rows no longer print it, because nothing held is multiplied by a gate
+   (engine/verp.js), so the rule had nothing left to style. */
 /* ============================================================
    THE BADGE. The icon carries the percent, the pill carries the number.
 
@@ -4756,10 +4772,11 @@ body.punch .ip.kid{background:color-mix(in srgb,var(--c) 68%,var(--panel-2))}
 .ad-q{font-size:14px;line-height:1.7;color:var(--dim);font-style:italic;
  border-left:3px solid var(--gold);padding-left:12px;margin:8px 0;font-weight:300}
 /* THE SABOTEUR CARD'S QUIET END, round SB. Connected is the engine's own map
-   for the thirteen of the 33 that SAB_LIB names, set under a rule so it reads
-   as reference and not as more of the reading above it. The gap is the other
-   twenty, dashed, because a missing map drawn in the same frame as a real one
-   reads as a map that came back empty. */
+   for every saboteur SAB_LIB names, set under a rule so it reads as reference
+   and not as more of the reading above it. The gap is a saboteur with no row,
+   dashed, because a missing map drawn in the same frame as a real one reads
+   as a map that came back empty. SAB_LIB was thirteen of the 33 in round SB
+   and is all of them but Innocent since 22 October. */
 .ad-con{margin-top:14px;padding-top:10px;border-top:1px solid var(--edge)}
 .ad-con .ad-sub,.ad-gap .ad-sub{margin-bottom:6px}
 .ad-gap{margin-top:14px;padding:8px 12px 4px;border:1px dashed var(--edge-2);border-radius:var(--r-s)}
@@ -5458,7 +5475,7 @@ body.quiet .av-pulse,body.rm .av-pulse{animation:none}
 .av-def{font-size:17px;line-height:1.55;color:var(--ink);margin:0 0 14px}
 .av-imp{border-left:3px solid var(--s);padding:10px 14px;border-radius:var(--r-xs);background:var(--sunk);margin-bottom:6px}
 .av-imp-v{margin:4px 0 2px;font-size:16px;color:var(--ink)}
-.av-imp-v span{font-size:13px;color:var(--dim);margin-left:8px}
+.av-imp-v>span{font-size:13px;color:var(--dim);margin-left:8px}
 .av-imp-c{margin:0;font-size:15px;line-height:1.5;color:var(--mid)}
 .av-imp-r{margin:6px 0 0;font-size:13px;color:var(--dim)}
 .av-scale{position:relative;display:flex;justify-content:space-between;align-items:center;margin:6px 0 2px}
@@ -6929,7 +6946,7 @@ body.punch .ob-mk-tk{display:none}
    THE STAGE, ROUND QH. ui/onboard.js's header carries the account: the sheet
    is a full screen with three depths, the body is one object moved by poses,
    and the card is the only thing replaced. Everything here is scoped to .obx,
-   because #login and #tutorial wear the same .ob and .ob-card and are not
+   because #login and #paidwelcome wear the same .ob and .ob-card and are not
    part of this round.
 
    THE POSES ARE DESIGN VALUES, per step and per width, and the script reads
@@ -7463,46 +7480,18 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
  .obx-fill,.obx .ob-dot,.obx-fn,.obx-glow::before{transition:none}
  .obx.ob-leaving{transition:none}}
 /* ============================================================
-   THE DAY ONE TUTORIAL ON THE STAGE, ROUND QJ. ui/tutorial.js's header has
-   the account: the tutorial stands on the stage above, built by the same
-   obStage and changed step by step through the same obSwap, so every rule
-   above already moves it and the reduced block above already stills it.
-   What is here is only what is the tutorial's own: five poses, which names
-   show, and its chain. No keyframe below is new; the chain's rows rise on
-   obxRise, the first run's own.
-
-   THE POSES ARE READ BY data-ts AND NEVER data-step, so not one of the first
-   run's eight poses, its names or its way out rules reach this sheet because
-   two numbers happen to match.
+   THE CHAIN, ROUND QJ, AND NOW THE END CARD'S. It was drawn for the Day One
+   tutorial, which stood on this stage until 23 October, when the owner ruled
+   it removed: "I want that hidden one completely removed. We're not doing
+   that anymore." Its five poses and its way of hiding the app went with it.
+   The chain stays, because the first run's own end card, Here is what you
+   made (obEndCard, ui/onboard.js), draws its rows in it. No keyframe below
+   is new; the rows rise on obxRise, the first run's own.
    ============================================================ */
-body.tut-on .app,body.tut-on #bgaura{visibility:hidden}
-/* Journal: the hero, the body whole with its seven seats named down its side,
-   the map before anything is written on it, held at 96 per cent. Discover:
-   the entry has landed, and the body comes the last four per cent forward,
-   on the camera's own two per cent backswing, so the press winds up, the
-   body lands at 640ms and the seats ignite on it from 420ms, a consequence
-   of the commit and not a second event. Measured before this: Journal and
-   Discover both stood at 1, the body did not move on the one step where
-   the words become charge, and only the ring turned. The ring turns its
-   eighth, and only the seats the words lit keep a name.
-   Understand steps back a little so the chain beside it is the thing read.
-   Release comes forward. Flow steps back, the walk handed on to practice. */
-.tutx[data-ts="0"]{--k:0;--fs:.96;--fo:1;--ro:1;--ax:27vw}
-.tutx[data-ts="1"]{--k:1;--fs:1;--fo:1;--ro:.86;--ax:27vw}
-.tutx[data-ts="2"]{--k:2;--fs:.94;--fo:.8;--ro:.7;--ax:26vw}
-.tutx[data-ts="3"]{--k:3;--fs:1;--fo:1;--ro:1;--ax:27vw}
-.tutx[data-ts="4"]{--k:4;--fs:.9;--fo:.62;--ro:.6;--ax:25vw}
-.obx.tutx[data-ts="0"] .obx-fn{opacity:1}
-/* a name never stands without its meaning (round PO): where a name shows, the
-   anatomy line under it shows too */
-.obx.tutx[data-ts="0"] .obx-fn i,.obx.tutx .obx-fn.on i{display:block}
-/* the steps that carry their own way out, Skip the tutorial, Not now and
-   Done, do not need a second one in the corner */
-.tutx[data-ts="0"] .obx-x,.tutx[data-ts="3"] .obx-x,.tutx[data-ts="4"] .obx-x{visibility:hidden}
 /* THE CHAIN, a thread and not a table. The bordered grid was the old card's
-   chrome inside a stage that has none. Four stations down one line, the
-   seat's own ring on the body's row, so the row and the lit seat on the
-   figure are visibly the same place. */
+   chrome inside a stage that has none. Its stations run down one line, the
+   seat's own ring on the row that names a seat, so the row and the lit seat
+   on the figure are visibly the same place. */
 .obx .ob-grid{display:block;position:relative;background:none;border:0;border-radius:0;overflow:visible;
  margin:26px 0 20px;padding-left:28px}
 .obx .ob-grid::before{content:'';position:absolute;left:5.5px;top:9px;bottom:26px;width:1px;
@@ -7517,13 +7506,6 @@ body.tut-on .app,body.tut-on #bgaura{visibility:hidden}
 .obx-enter .ob-grid>.ob-g{animation:obxRise .44s cubic-bezier(.22,1,.36,1) both;
  animation-delay:calc(var(--d0) + var(--si,0) * 70ms + var(--ci,0) * 80ms)}
 @media(max-width:899px){
- /* narrow: the words take the screen on every step and the body is the
-    emblem over them, still lit where the entry landed, as the first run's
-    own reading steps do. Named in the card, so not beside the emblem. */
- .obx.tutx[data-ts]{--fs:.5;--ax:50vw;--ay:calc(62px + var(--fh) * .2353);--st:calc(62px + var(--fh) * .5 + 6px)}
- .obx.tutx[data-ts="2"],.obx.tutx[data-ts="4"]{--fo:.62}
- .obx.tutx .obx-fn,.obx.tutx[data-ts="0"] .obx-fn{opacity:0}
- .obx.tutx.obx-in-arrive .obx-fn{animation:none}
  .obx .ob-grid{margin:18px 0 14px}
  .obx .ob-g{padding-bottom:14px}}
 @media (prefers-reduced-motion:reduce){
@@ -7532,7 +7514,7 @@ body.tut-on .app,body.tut-on #bgaura{visibility:hidden}
     slid 4px on hover. The document wide *{transition:none!important} does
     not reach it, because * matches no pseudo element. Seen as the one running
     animation on the stage when a new Next lands under a pointer that has not
-    moved, on this sheet and on the first run's alike. */
+    moved. */
  .obx .btn.pri::after{transition:none}}
 .s-lens{display:grid;gap:1px;background:var(--edge);border:1px solid var(--edge);
  border-radius:var(--r);overflow:hidden}
@@ -7989,6 +7971,11 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
  .top.navopen #tabbar{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));
   flex:1 1 100%;overflow:visible;border-bottom:0;mask-image:none;-webkit-mask-image:none}
  .top.navopen #tabbar .tabtop{justify-content:center}
+ /* DISCOVER IS THE MENU'S FIRST LINE, 23 October. Its section is its door
+    (engine/core.js), and the phone has no section buttons, so the door
+    carries the section's word and mark itself, once, across the whole row and
+    with no heading over it, ahead of Play's heading and its tools. */
+ .top.navopen #tabbar .tabtop[data-door="section"]{grid-column:1/-1}
  /* the sections are the main menu's headings here, KC, so every tab is one
     press from anywhere; the first tier's own row leaves the phone bar */
  .top .secbar{display:none}
@@ -7998,6 +7985,10 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
  /* the folded bar names the section, quietly, then the surface */
  .top .navtog .navsec{display:flex;align-items:baseline;gap:9px}
  .top .navtog #navsec{color:var(--dim);font-weight:400;font-size:13px}
+ /* empty on a section that is its own door, Discover since 23 October, whose
+    word is in the surface's slot (secPaint, ui/panels.js); an empty item
+    would still take the row's gap */
+ .top .navtog #navsec:empty{display:none}
  /* the search opens across the bar under the first row, where it has the
     width a phone does not have beside the circles */
  .top .srch{position:static}

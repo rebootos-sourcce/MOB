@@ -14,8 +14,9 @@
 
      AT1  every bubble, tile, square, ring count, law bar and session bar on
           the page is a door, and each one opens a card in Selection
-     AT2  the chain is walked the engine's way, character to hyper-complex to
-          complex to saboteur, each card listing exactly its own parts
+     AT2  the chain is walked the engine's way, super-complex to hyper-complex
+          to complex to saboteur, each card listing exactly its own parts, and
+          the top rung's ring and card call it a super complex (23 October)
      AT3  the walk goes on past the saboteur to a fetter, and past the fetter
           to its feeling, with every step kept in the trail
      AT4  a step in the trail goes back to that step and drops the rest
@@ -25,6 +26,9 @@
      AT7  a second press on the same bubble puts the card down, as before
      AT8  an unread field prints no telemetry, and a plan that cannot see the
           chain is shown the lock and no pattern
+     AT9  an archetype card puts its primary saboteur where its own addresses
+          sit, read off SAB_LIB, and never at the third column of ARCH18
+          (systems audit SG-05, 24 October)
 
    Checked against a known bad case first, as the repository asks: the old
    card's sentence, rebuilt from the build before this round, must fail AT5.
@@ -74,13 +78,36 @@ async function anaTrailGate(browser,FILE,ok,booted){
    const o=await open(sel);
    ok(o.k===k&&o.shown&&o.n>60,'AT1: '+tag+sel+' opens its '+k+' card in Selection, '+JSON.stringify(o));}
 
+  /* ---- AT9: an archetype card puts its primary saboteur where its addresses
+     sit. Systems audit SG-05, 24 October: the card printed the third column
+     of ARCH18 as the saboteur's seat, which held none of its addresses in 9 of
+     the 18 rows, so the Caregiver's card put Pleaser at the heart. What it
+     should say is read here off SAB_LIB and the node table, not through the
+     helper the card uses. ---- */
+  {const ds=await pg.$$eval('#ana g[data-ana^="arch|"]',gs=>gs.map(g=>g.getAttribute('data-ana')));
+   const off=[];
+   for(const d of ds){
+    const o=await open('#ana g[data-ana="'+d+'"]');
+    if(o.missing||o.k!=='arch'){off.push(d+' did not open, '+JSON.stringify(o)); continue;}
+    const r=await pg.evaluate(()=>{const nm=(ANA_PICK||{}).nm;
+     const a18=ARCH18.filter(x=>x[0]===nm||(nm==='Rebel'&&x[0]==='Outlaw'))[0];
+     let s=null; if(a18)SAB_LIB.forEach(x=>{if(KB_KEY(x.nm)===KB_KEY(a18[1]))s=x;});
+     const at={}; if(s)s.nids.forEach(i=>{at[BY[i].b]=1;});
+     const seats=BANDS.filter(b=>at[b]);
+     const t=(document.getElementById('rdrill').innerText||'').replace(/\s+/g,' ');
+     const want=seats.length?'its addresses sit at '+unpackList(seats.map(srcSeatSay)):'';
+     return {nm, sab:a18?a18[1]:null, want, ok:t.indexOf(want)>=0&&!/seated at the/.test(t)};});
+    if(!r.ok)off.push(JSON.stringify(r));}
+   ok(ds.length>0&&off.length===0,'AT9: '+tag+'every archetype card puts its primary saboteur where its own addresses sit, of '
+    +ds.length+': '+off.slice(0,2).join(' | '));}
+
   /* ---- AT7: the same bubble again puts it down ---- */
   {const g=await pg.$('#ana g[data-ana^="seat|"]'); await g.click(); await pg.waitForTimeout(80);
    const g2=await pg.$('#ana g.on'); if(g2)await g2.click(); await pg.waitForTimeout(80);
    const st=await pg.evaluate(()=>({pick:ANA_PICK,shown:document.getElementById('rdrill').style.display!=='none'}));
    ok(st.pick===null&&!st.shown,'AT7: '+tag+'a second press on the same bubble puts the card down, '+JSON.stringify(st));}
 
-  /* ---- AT2, AT3: walk the chain from the character ring ---- */
+  /* ---- AT2, AT3: walk the chain from the super-complex ring ---- */
   await open('#ana .ana-rung[data-ana="rung|sup"]');
   const walk=[];
   for(let i=0;i<6;i++){
@@ -96,13 +123,19 @@ async function anaTrailGate(browser,FILE,ok,booted){
      const m=/fetters? at the [^.]*\. (\d+) (?:is|are) held|None is held/.exec(card);
      heldSay=m?(m[1]?+m[1]:0):null;}
     return {k:P.k,kind:o?o.kind:null,nm:P.nm,trail:ANA_TRAIL.length,rows,want,held,heldSay,
-     old:/held addresses across/.test(card)};});
+     old:/held addresses across/.test(card),
+     sup:/\bsuper[- ]complex(es)?\b/i.test(card),character:/\bcharacter\b/i.test(card)};});
    walk.push(st);
    if(st.kind==='sab'||st.k!=='chain'&&st.k!=='rung')break;
    const next=st.rows[0]; if(!next)break;
    await pg.click('#rdrill .ad-r[data-ana="chain|'+next.replace(/"/g,'\\"')+'"]'); await pg.waitForTimeout(120);}
   const kinds=walk.filter(s=>s.kind).map(s=>s.kind);
-  ok(JSON.stringify(kinds)==='["sup","hy","cx","sab"]','AT2: '+tag+'the walk runs character, hyper-complex, complex, saboteur, '+JSON.stringify(kinds));
+  ok(JSON.stringify(kinds)==='["sup","hy","cx","sab"]','AT2: '+tag+'the walk runs super-complex, hyper-complex, complex, saboteur, '+JSON.stringify(kinds));
+  /* THE TOP RUNG'S WORD, ruled 23 October: the rung is the super complex and
+     Character is the whole of it, so no card on the walk says Character */
+  const top=walk.filter(s=>s.k==='rung'||s.kind==='sup');
+  ok(top.length>=2&&top.every(s=>s.sup),'AT2: '+tag+'the ring and the card it opens call the rung a super complex, '+JSON.stringify(top.map(s=>({k:s.k,kind:s.kind,sup:s.sup}))));
+  ok(walk.every(s=>!s.character),'AT2: '+tag+'and no card on the walk says Character, '+JSON.stringify(walk.filter(s=>s.character).map(s=>s.k+' '+s.nm)));
   walk.filter(s=>s.want).forEach(s=>ok(JSON.stringify(s.rows.slice(0,s.want.length))===JSON.stringify(s.want),
    'AT2: '+tag+s.kind+' '+s.nm+' lists exactly its own parts, '+JSON.stringify({rows:s.rows,want:s.want})));
   walk.filter(s=>s.kind).forEach(s=>ok(s.heldSay===s.held&&!s.old,

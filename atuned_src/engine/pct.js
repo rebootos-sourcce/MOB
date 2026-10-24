@@ -83,8 +83,11 @@ var PCT_KIND={
  /* data/compass.js:484, where a person sits on a compass axis */
  axis:      {lo:0, hi:100, src:'engine/data/compass.js', find:'return Math.round(clamp(clear*0.62+honest*0.38,0,1)*100);}',
              say:'the position on a compass axis'},
- /* core.js:426, how closely the feelings fit a saboteur's defined ranges */
- match:     {lo:0, hi:100, src:'engine/core.js', find:'var score=Math.round(fit/parts.length*100);',
+ /* core.js sab33Detect, how closely the feelings fit a saboteur's defined
+    ranges: the ramp's confidence, nought to one (sabConfidence clamps it,
+    data/canon.js), as a percent. It was the staircase's fit until P1-6 of
+    the inference audit, 23 October. */
+ match:     {lo:0, hi:100, src:'engine/core.js', find:'var score=Math.round(conf*100);',
              say:'a saboteur match'},
  /* verp.js:357, the share of the story that ran through one gate */
  gate:      {lo:0, hi:100, src:'engine/verp.js', find:'pct: sh?Math.round(sh[v.k]*100):0',
@@ -119,7 +122,7 @@ var PCT_KIND={
     a complex and a hyper the mean of their parts (compute.js:362 and 369), and
     the body map clamps the same w at 10 (ui/map.js:2036) */
  chain:     {lo:0, hi:10, src:'engine/core.js', find:'w:Math.min(10, parts.reduce(',
-             say:'the weight of a saboteur, complex, hyper complex or character layer'},
+             say:'the weight of a saboteur, complex, hyper complex or super complex'},
  /* compute.js:296, and poleMean is the mean of it over the somatic set */
  pole:      {lo:0, hi:10, src:'engine/compute.js', find:'n.pole = clamp(n.rep - n.held,0,10);',
              say:'how far the opposite outweighs the charge'},

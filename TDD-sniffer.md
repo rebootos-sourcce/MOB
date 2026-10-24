@@ -616,7 +616,7 @@ test sentences.
 | What | Status after this branch |
 | --- | --- |
 | negation is not read | read, S1. Still: a no reaches across a comma ("I didn't sleep, exhausted" denies exhausted), by the comma ruling |
-| attribution is not read | read, S2, on the story path. Still: the law path (`sniffLaws`) fires "she lied to me" on the writer; a name that opens its sentence reads as the writer's ("Sarah screamed at me"); a possessive after a verb reads as the writer's ("I saw his chest was tight"), where one opening its clause is held ("His chest was tight") |
-| a coherent word after a no | still subtracts ("I am not grateful"), because denying it would raise a reading |
+| attribution is not read | read, S2, on the story path. Since 24 October, branch `ai-quickfixes`: the law path counts a cue only when the writer did it (`lawWriter`, inference audit P0-4), so "she lied to me" no longer fires Truth on the writer; and a capitalised word that opens its sentence and is not a word the lexicon, the who tables or the common openers carry is held as unclear (`whoStartName`, P1-1), so "Sarah screamed at me" is held, at the cost that "London scares me." is held too. Still: a possessive after a verb reads as the writer's ("I saw his chest was tight"), where one opening its clause is held ("His chest was tight") |
+| a coherent word after a no | denied since 24 October, branch `ai-quickfixes`, inference audit P3-1: "I am not grateful" counts nowhere and is drawn set aside. Before, it subtracted about a tenth of a point from every feeling, because denying it was read as raising a reading |
 | being done to | held by the ruling ("he screamed at me"), so its charge reaches the reading only when the person writes how it landed |
 | inferred licenses printing an address name | the Story page titles and the tutorial card no longer say the words named an address, S4, gated in `tests/sniffpage.js` |

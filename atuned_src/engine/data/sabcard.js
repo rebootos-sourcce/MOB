@@ -15,7 +15,7 @@
         from nothing else. No fact here is new canon.
      a  what becomes available. Composed from TWO tables, never guessed: the
         axes this saboteur's SAB33 row keys on, and each axis's opp in CHILD.
-        Controller keys on fear and anger, so its row names trust and
+        Micromanager keys on fear and anger, so its row names trust and
         equanimity. tests/engine.js reads every row against SAB33 and CHILD
         and fails a row that leaves out one of its own opposites, because
         that is how the first draft of Martyr shipped: the approved mock-up
@@ -33,16 +33,22 @@
    the accusation pass 9 of the voice skill exists to catch.
 
    Every string went through check.py --line before it landed, and the file
-   goes through check.py whole. Superior is in SAB_LIB and in neither SABDEF
-   nor SAB33, so it has no row here and kbSabBlock prints nothing for it,
-   which is what it printed before.
+   goes through check.py whole. Superior was in SAB_LIB and in neither SABDEF
+   nor SAB33, so it never had a row here. It was retired from SAB_LIB on 22
+   October, and engine/data/nodes.js says why. Every name in SAB_LIB is one
+   of the 33 now, so every one of them has a row.
+
+   S02 IS MICROMANAGER, the owner's rename of 18 October in canon.js, carried
+   here on 22 October. The row kept its words and changed only its key, so
+   the card a person reads is the same card under the name the reading
+   prints.
    ============================================================ */
 var SABCARD={
  "negotiator":{
   h:"You mean to start. In the pause before you begin, a reasonable voice speaks up. Just this once. You've earned a break. It never says stop for good, only stop for today. For a moment the easier option feels earned. Then the thing you meant to do is still waiting, and the next pause is easier to win. Reflection: What does the pause help you avoid feeling, and what would make beginning manageable?",
   a:"Everyone has a pause before starting. When the fear isn't the one talking in it, the gap between meaning to and beginning gets short. Trust becomes available that you can handle the first uncomfortable minute, and vitality goes into the thing itself.",
   n:"Notice the pause between meaning to and starting. Separate the reasonable voice from the discomfort it is steering you around. Choose the first small motion before the argument finishes."},
- "controller":{
+ "micromanager":{
   h:"The future feels uncertain. Something may happen, but you cannot quite predict what. That uncertainty can produce anxiety before anything has actually gone wrong. The grip tightens in an attempt to make the outcome predictable: you check, correct, and take over. For a moment, control can feel like safety and the anxiety may ease. Then the room gets smaller: less space for the people around you to move, less room in you to trust without checking first. This is one possible pattern, not an explanation for every act of control. Reflection: When you cannot predict the outcome, what do you feel you need to take control of?",
   a:"Control isn't the problem. It works. When the fear isn't the one holding the grip, there's a beat of equanimity before you act, long enough to decide instead of react. Trust becomes available instead of something to verify first.",
   n:"Notice the moment the grip tightens. Separate the real risk from the old fear running it. Choose the next move from there."},
@@ -143,7 +149,7 @@ var SABCARD={
   a:"A break can help. When the fear isn't reaching for the exit, there's room to stay with a hard feeling until it moves. Vitality becomes available in being here, and trust that you can get through discomfort without leaving.",
   n:"Notice the reach for the exit. Separate needing a real break from leaving before the feeling finishes. Choose to stay for two minutes and name what's there."},
  "avoider":{
-  h:"Something needs dealing with, and leaving it costs nothing today. So it slides. You don't argue with it or run from it. You just don't look. For a moment nothing can land on you. Then the pile grows quietly, and the bill comes due all at once. Reflection: What is the real reason this can wait—or what makes it difficult to face now?",
+  h:"Something needs dealing with, and leaving it costs nothing today. So it slides. You don't argue with it or run from it. You just don't look. For a moment nothing can land on you. Then the pile grows quietly, and the bill comes due all at once. Reflection: What is the real reason this can wait, or what makes it difficult to face now?",
   a:"Some things can wait. When the fear isn't keeping your eyes off it, there's room to look at the thing directly. Vitality becomes available for the smallest piece of it, and trust that you can handle what you find.",
   n:"Notice the thing you keep not looking at. Separate what can wait from what you're avoiding. Choose to say it out loud, then do the smallest piece."},
  "nihilist":{

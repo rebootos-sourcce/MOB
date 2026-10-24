@@ -260,6 +260,14 @@ function dlyRefWhy(type,id){
  if(type==='aim')return /^sum:\d{4}-\d{2}-\d{2}$/.test(id)?null:'names no day: '+id;
  if(type==='history'||type==='ritualday')return isNaN(Date.parse(id))?'is not a date: '+id:null;
  if(type==='first')return null;
+ /* THE CHAIN'S FOUR RUNGS ARE GRAPH TYPES AND STILL NOT EVIDENCE A DAY
+    CITES, 22 October. They joined TRACE_NODE_TYPES with the chain
+    (engine/trace.js), and the line below would have let a stored day carry
+    one through this boundary, where before it was refused. A day's graph
+    (dlyGraph) is read with no reading and holds no rung, so such a
+    citation could never resolve. Refused by name, so a day citing a rung
+    is somebody's decision and not a side effect of a vocabulary growing. */
+ if(TRACE_CHAIN.indexOf(type)>=0)return 'names a rung of the chain, which a day does not cite: '+type;
  if(TRACE_NODE_TYPES.indexOf(type)>=0)return null;
  return 'names no kind of evidence this build holds';}
 function dlyStValid(errs,path,x,names){

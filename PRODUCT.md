@@ -112,10 +112,15 @@ where the text is about to land. Nothing touches the field until they commit.
 Committing writes charge onto the nine axes and is undoable.
 
 **3. The reading. Built.** `engine/compute.js`. The chain compounds in order:
-loose saboteurs, then complexes, then hyper complexes, then character. A
+loose saboteurs, then complexes, then hyper complexes, then super complexes. A
 saboteur needs a weight of 3.7 of 10 to appear, a complex is two saboteurs in
 one family, a hyper complex is two complexes in a family or one complex already
-running at 6.5 of 10, and character is two hyper complexes at 5.6 of 10.
+running at 6.5 of 10, and a super complex is two hyper complexes at 5.6 of 10.
+The stack goes on above the chain, as the owner ruled on 23 October
+(`DECISIONS.md`, "The full stack, nerve to Character"): the masks, then
+archetype through domain, and Character at the very top. Character is the whole
+reading taken together and computes no number of its own. This paragraph called
+the fourth rung character until that ruling renamed it.
 
 **4. Release. Built.** `ui/release.js`. A person picks addresses and the run is
 planned before it starts, by `meterPlan` in `engine/schema.js`, because a
@@ -486,10 +491,11 @@ first.
   arrows with eleven masters seated on it, the knowledge base with twelve
   decks, the games.
 - The reading. Coherence on a 0 to 100 scale across ten bands of ten points,
-  the chain of saboteurs into complexes into hyper complexes into character,
-  the six masks, the twelve archetypes, the nine poled axes, the seven seats,
-  the 21 laws, the two axes of shape and control with all four corners
-  reachable.
+  the chain of saboteurs into complexes into hyper complexes into super
+  complexes, the six masks, the twelve archetypes, the nine poled axes, the
+  seven seats, the 21 laws, the two axes of shape and control with all four
+  corners reachable, and Character at the top, which is all of it taken
+  together (ruled 23 October).
 - The journal, the imprints, the release across four channels, the meter, the
   dynamic ritual builder, and the record that reads them back as a streak, a
   ledger and 16 marks.

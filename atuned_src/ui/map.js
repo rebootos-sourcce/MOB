@@ -233,7 +233,7 @@ function pmMarks(r){
      /* never o.sub. On a hyper-complex that is the clinical correspondence,
         "bipolar · ADHD", and ui.js keeps it off a person's screen by name:
         mapshelf.js recorded this row as the one place still printing it. */
-     sub:o.over?'overshot':(o.kind==='sup'?'character layer':'hyper-complex')};});
+     sub:o.over?'overshot':(o.kind==='sup'?'super-complex':'hyper-complex')};});
  /* NO MASKS LAYER. The six masks were a layer here, one press away in the
     row above the figure, drawn as rings at the end of arcs like a pattern.
     Ruled against in CH, TASKS.md: "I don't want that overlay on a sub menu,
@@ -688,7 +688,7 @@ function renderMap(r){
     surface: a person looked at a body and read a list.
 
     The names were always in the right rail as well, under Fetters, Saboteurs,
-    Complexes, Hyper and Character, with their counts and their weights and a
+    Complexes, Hyper and Super, with their counts and their weights and a
     drill on every row. So the body was carrying a second copy of a list that
     already had a better home four inches to the right.
 

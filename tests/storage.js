@@ -199,7 +199,8 @@ const lineUp = pg => pg.evaluate(() => { const l = document.getElementById('keep
 const reserved = pg => pg.evaluate(() => { const a = document.querySelector('.app');
   const fixed = a && getComputedStyle(a).position === 'fixed';
   return Math.round(innerHeight - (fixed ? a.getBoundingClientRect().bottom : document.body.getBoundingClientRect().bottom)); });
-const TABS = [['STORY', 'Story'], ['INTAKE', 'Avatar'], ['FIELD', 'Field'], ['SETTINGS', 'Account']];
+/* the journal page is named Discover since 23 October; the integer is still TAB.STORY */
+const TABS = [['STORY', 'Discover'], ['INTAKE', 'Avatar'], ['FIELD', 'Field'], ['SETTINGS', 'Account']];
 const SIZES = [[1600, 1000], [1600, 700], [390, 844], [390, 600]];
 const big = b => b.w >= 44 && b.h >= 44;
 const fits = s => !!s.line.box && s.line.box.l >= 0 && s.line.box.r <= s.vw + 0.5 && s.line.box.t >= 0

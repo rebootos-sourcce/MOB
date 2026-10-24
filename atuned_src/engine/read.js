@@ -50,8 +50,20 @@ function output(prof){
 
 /* ---------- the whole door ----------
    opts.story   text to apply once before computing
-   opts.write   true to write the field back into the profile as well */
+   opts.write   true to write the field back into the profile as well
+
+   THE READING SAYS WHICH RECORD IT IS A READING OF. rec is the record's
+   id, the key loadProfile gives S.rec, and it is what lets
+   traceFromRecord(p, intents, reading) take the chain off a reading and
+   know it is p's (engine/trace.js, THE READING HANDED IN). compute() reads
+   whatever is loaded and cannot say, so the stamp is put on here, at the
+   one door that loads a record before it reads. A story applied and not
+   written is a field the record does not hold yet, so that reading is of
+   no record and rec is null. Written, the record holds that field, and
+   the reading is the record's. Only a key, nothing about the person, and
+   on the reading, never on the record. */
 function read(prof,opts){
  var o=opts||{}, p=input(prof,o), r=throughput(p);
  if(o.write)output(p);
+ r.rec=(o.story&&!o.write)?null:(typeof p.id==='string'&&p.id?p.id:null);
  return {profile:p, reading:r, snapshot:snapshot(p)};}

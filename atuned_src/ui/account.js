@@ -181,14 +181,15 @@ function accAccount(){
     profile, toggleable and replayable, and it does not spend real charge."
     The onboarding is the same: nothing it does writes to the nine axes, so
     running it again costs nothing and can be offered without a warning. */
+ /* ONE OPENING, 23 October. A second row here, "Replay the Day One
+    tutorial", was the only door that sequence had: nothing opened it on any
+    arrival. The owner: "I want that hidden one completely removed. We're not
+    doing that anymore." The row went with ui/tutorial.js. */
+ /* STALE SINCE 23 October. The onboarding this opens has had no signal test
+    since an earlier redesign; the row kept the tutorial-era wording. Found
+    in the 23 October cross-repo audit. */
  h+=accGroup('The opening',
-   accAct('Run the signal test again','acob',{btn:'Open it'})
-   /* THE TUTORIAL IS THE SAME RULE. Round NF: built on the same promise as
-      the signal test above, replayable and no charge of its own; what it
-      walks through is the real commit of whatever is typed into it, same as
-      the Story tab's own Apply, so running it again is a real entry each
-      time rather than a rehearsal. */
-   +accAct('Replay the Day One tutorial','actut',{btn:'Open it'}));
+   accAct('Replay the opening','acob',{btn:'Open it'}));
  /* PRACTITIONER MODE, round LL: "Add a practitioner mode to the profile."
     Account and not Display, because it changes what a person is in the
     product, a practitioner with clients, and not how the screen looks; and
@@ -344,13 +345,21 @@ function accProfStart(){
  if(!p){var typed=i.value; status('Nothing was started. '+accWhy(),'fail'); renderAccount();
   var i2=$('acpnew'); if(i2)i2.value=typed; return false;}
  accSwitched();
- status(p.name+' is open. It starts blank.','ok'); return true;}
+ status(accOpenSay(p)+' It starts blank.','ok'); return true;}
+/* "YOU IS OPEN." The default profile is named You (blankProfile('You'),
+   engine/profiles.js), and the sentence that names the profile now open was
+   built from the name, so a delete that moved onto it read "You is open."
+   (seen in tests/golden.js station 8, 23 October). The person's own default
+   profile is said as what it is, the way personas.js already reads that name. */
+function accOpenSay(p){
+ var nm=(p&&p.name)||'That profile';
+ return (nm==='You'?'Your own profile':nm)+' is open.';}
 function accProfOpen(id){
  var p=profFind(id), nm=(p&&p.name)||'That profile';
  accToOwn();
  if(!profOpen(id)){status(nm+' was not opened. '+accWhy(),'fail'); renderAccount(); return false;}
  accSwitched();
- status(CURP.name+' is open.','ok'); return true;}
+ status(accOpenSay(CURP),'ok'); return true;}
 /* THE SIDE KEYS GO WITH THE PROFILE. The avatar ratings and the active
    rituals are held beside the record under its id, so a delete that left them
    would leave part of a deleted profile in this browser. Only that id's entry
@@ -381,7 +390,7 @@ function accProfDelete(id){
  if(d.moved||PROFILES.indexOf(PROF_BY[PEOPLE[0].nm])<0)accSwitched(); else renderAccount();
  if(!side)status(d.name+' is deleted. Its rituals and avatar ratings could not be cleared from this browser.','fail');
  else status(d.name+' is deleted from this browser, the only place it was held.'
-  +(d.moved?' '+CURP.name+' is open.':''),'ok');
+  +(d.moved?' '+accOpenSay(CURP):''),'ok');
  return true;}
 
 /* ---------- 4.2 display ---------- */
@@ -714,9 +723,6 @@ function accWire(){
  var ob=$('acob'); if(ob)ob.onclick=function(){
   if(typeof sheetShut==='function')sheetShut();
   if(typeof obOpen==='function')obOpen(true);};
- var tu=$('actut'); if(tu)tu.onclick=function(){
-  if(typeof sheetShut==='function')sheetShut();
-  if(typeof tutorialOpen==='function')tutorialOpen(true);};
  /* the same three steps and the same setter as the bar menu. Two doors onto
     one setter is not a duplicate: one is for changing it while looking at the
     instrument, the other for finding it when you do not know where it is. */

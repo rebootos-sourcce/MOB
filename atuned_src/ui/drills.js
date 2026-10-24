@@ -173,12 +173,13 @@ function runDrill(o){
  var oppOf=function(f){var c=CHILD.filter(function(x){return x.nm===f;})[0];return c?c.opp:'';};
  var opps=fets.map(oppOf).filter(Boolean);
  var inst=fets.filter(function(f){return (S.replace[f]||0)>=4;});
- var TN={sup:'Character layer',hy:'Hyper-complex',cx:'Complex',sab:'Saboteur'};
+ var TN={sup:'Super-complex',hy:'Hyper-complex',cx:'Complex',sab:'Saboteur'};
  var h='<div class="pm-eye">'+(TN[o.kind]||'Pattern')+(o.over?', overshot':'')+'</div>'
   +'<div class="ad-nm">'+esc(o.nm)+'</div>'
   +(o.auth?'<div class="ad-sub">'+esc(o.auth)+'</div>':'')
   +(o.kind==='sab'&&o.unnamed?'<div class="ad-sub">Inferred. The library has no name for this cluster, so it is named for its seat and its child emotion.</div>'
-   :(o.kind==='sab'&&SAB_PI.indexOf(o.nm)>=0?'<div class="ad-sub">One of the ten Positive Intelligence saboteurs, after Shirzad Chamine.</div>':''))
+   :(o.kind==='sab'&&SAB_PI.indexOf(o.nm)>=0?'<div class="ad-sub">One of the ten Positive Intelligence saboteurs, after Shirzad Chamine'
+     +(SAB_PI_AS[o.nm]?', who calls it the '+esc(SAB_PI_AS[o.nm]):'')+'.</div>':''))
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
   +(o.over
    ? 'Jouissance. The coherent opposite installed past the point where it serves. The address '
@@ -189,7 +190,7 @@ function runDrill(o){
      defining the thing by what it is not and the second deferring its subject
      by two words and then explaining itself with a which. Same length, one
      gloss gone, and it starts on the noun. */
-  +(o.kind==='sup'?' A character layer costs more than it looks like it should, '
+  +(o.kind==='sup'?' A super-complex costs more than it looks like it should, '
    +'because you cannot see it as separate from you.':'')
   +(o.score?' Matched at <b>'+o.score+'%</b>'
     +(o.exact?', every charge inside its range.':'.'):'')+'</p>'
@@ -250,7 +251,10 @@ function lawDrillHtml(l,o){
     finding: "Truth 6.0. Working but not strong." lawIn is the engine's own
     answer to whether it was entered. Round J13. */
  var read=(typeof lawIn!=='function')||lawIn(l.nm);
- var h='<div class="pm-eye">Law of integrity, '+l.b.toLowerCase()+'</div>'
+ /* plain: a comma with a word after it makes this a sentence by the
+    capitalize rule in shell/head.html, which the old "Law of integrity, root"
+    broke as well and no walk reached */
+ var h='<div class="pm-eye plain">Law of Moral Integrity, '+l.b.toLowerCase()+'</div>'
   +'<div class="ad-nm">'+l.nm+(read?' '+v.toFixed(1):'')+'</div>'
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
   /* V21 and pass 1. "Under 4 it is not resisting, it is closed, and
@@ -481,33 +485,56 @@ function runCoreDrill(){
   +gatesBlock(null);
  rdShell(h);}
 
-/* the six gates. three higher keep charge from binding, three lower bind it.
-   the percent is the share of the story that ran through each gate, the
-   multiplier is what that gate does to everything held. */
+/* THE LAWS OF ACTION, three moves of right action and three of wrong action,
+   each row its share of every Law of Action read in the stories.
+
+   THE MULTIPLIER IS GONE FROM THE ROWS AND THE PARAGRAPH. Each row printed
+   x0.70 or x1.35 and the paragraph called it "the cost on everything held",
+   and nothing held is multiplied by it (engine/verp.js says where it goes).
+   And the two sides were told apart by colour alone, Heart against Root, with
+   no word on the drill to say which was which, so each side stands under its
+   own name now. */
 function gatesBlock(focus){
  var V=verpRead(), evid=V.some(function(v){return v.pct>0;});
- var rows=V.map(function(v){
-  var c=v.side==='higher'?seatCol('Heart'):seatCol('Root');
+ var rows=function(side){return V.filter(function(v){return v.side===side;}).map(function(v){
+  var c=side==='higher'?seatCol('Heart'):seatCol('Root');
   return '<button class="ad-r gate-r'+(focus===v.k?' on':'')+'" data-gate="'+v.k+'" style="--c:'+c+'">'
    +'<span class="ad-k">'+esc(v.nm)+'</span>'
-   +'<span class="ad-v">'+(evid?v.pct+'%':'')+'</span>'
-   +'<span class="ad-m">\u00d7'+v.mult.toFixed(2)+'</span></button>';}).join('');
- /* ACTION, GO in TASKS.md, the bar's name for this layer now, and his reading
-    of it: right action and wrong action. The six keep their own names. */
- return '<div class="pm-eye">Action</div><p class="ad-p">'
-  +(evid?'The share of the story that ran through each of the six. ':'No story yet, so none of the six has evidence. ')
-  +'The higher three leave charge where it is. The lower three bind it, and the multiplier is the cost on everything held.</p>'
-  +'<div class="ad-rows">'+rows+'</div>';}
+   +'<span class="ad-v">'+(evid?v.pct+'%':'')+'</span></button>';}).join('');};
+ /* ACTION, GO in TASKS.md, and his reading of it: right action and wrong
+    action. Named the Laws of Action on 22 October, the third set beside the
+    Laws of Moral Integrity and the Laws of Expression. The six keep their own
+    names. */
+ return '<div class="pm-eye">Laws of Action</div><p class="ad-p">'
+  +'The moves you make when a strong feeling rises. Right action lets the feeling pass. Wrong action makes it stick. '
+  +(evid?'Each row is its share of every Law of Action read in your stories.'
+   :'Nothing read yet, so none of your sentences has run through them.')+'</p>'
+  +'<div class="pm-eye">Right action</div><div class="ad-rows">'+rows('higher')+'</div>'
+  +'<div class="pm-eye">Wrong action</div><div class="ad-rows">'+rows('lower')+'</div>';}
+/* ONE LAW OF ACTION. This said "Everything held is multiplied by 0.70 for the
+   share that runs this way, so it lightens the load", which no arithmetic in
+   the engine does. It says what the move does to a feeling now, names the move
+   across from it in that move's own words (VERP_VS, engine/verp.js), and counts
+   what ran through it.
+
+   NOTHING READ YET ONLY WHEN NOTHING WAS. Once any story has run through any
+   of the six, a gate with none of its own says that, because "nothing read
+   yet" beside five rows carrying a share would be false. */
 function runGatesDrill(k){
- var v=verpRead().filter(function(x){return x.k===k;})[0];
+ var V=verpRead(), v=V.filter(function(x){return x.k===k;})[0];
  if(!v){runCoreDrill();return;}
- var h='<div class="pm-eye">'+(v.side==='higher'?'Higher action':'Lower action')+'</div>'
+ var o=V.filter(function(x){return x.k===VERP_VS[k];})[0], up=v.side==='higher';
+ var read=V.some(function(x){return x.n>0;});
+ var h='<div class="pm-eye">'+(up?'Right action':'Wrong action')+'</div>'
   +'<div class="ad-nm">'+esc(v.nm)+'</div>'
   +'<div class="pm-eye">What it sounds like</div><p class="ad-p">'+esc(v.d)+'</p>'
   +'<div class="pm-eye">What it does</div><p class="ad-p">'
-  +(v.pct?'<b>'+v.pct+'%</b> of the story ran through '+esc(v.nm.toLowerCase())+', '+v.n+' sentence'+(v.n===1?'':'s')+'. ':'Nothing in the story has run through it yet. ')
-  +'Everything held is multiplied by <b>'+v.mult.toFixed(2)+'</b> for the share that runs this way'
-  +(v.mult<1?', so it lightens the load.':v.mult>1?', so it adds to the load.':'.')+'</p>'
+  +(up?'It lets the feeling pass without sticking. ':'It makes the feeling stick in your body as charge. ')
+  +(v.n?'<b>'+v.n+' sentence'+(v.n===1?'':'s')+'</b> ran through '+esc(v.nm.toLowerCase())
+     +', <b>'+v.pct+'%</b> of every Law of Action read in your stories.'
+   :read?'No sentence of yours has run through it yet.'
+   :'Nothing read yet, so no sentence of yours has run through it.')+'</p>'
+  +(o?'<div class="pm-eye">Across from it</div><p class="ad-p"><b>'+esc(o.nm)+'</b>. '+esc(o.d)+'</p>':'')
   +gatesBlock(k);
  rdShell(h);}
 
@@ -723,7 +750,8 @@ function runSabDrill(s){
  var nodes=(s.nids||[]).map(function(i){return BY[i];}).filter(Boolean);
  var h='<div class="pm-eye">Saboteur, not running</div><div class="ad-nm">'+esc(s.nm)+'</div>'
   +'<div class="ad-sub">'+(s.unnamed?'Inferred from the connection types'
-    :(pi?'One of the ten Positive Intelligence saboteurs, after Shirzad Chamine':'Source library'))+'</div>'
+    :(pi?'One of the ten Positive Intelligence saboteurs, after Shirzad Chamine'
+      +(SAB_PI_AS[s.nm]?', who calls it the '+esc(SAB_PI_AS[s.nm]):''):'Source library'))+'</div>'
   +'<div class="pm-eye">What it would take</div><p class="ad-p">It fires when its addresses carry at '
   +'once. Yours are not carrying enough for it to run, which is why it is here and not on the wheel.'
   +(s.hcx?' It compounds into <b>'+esc(s.hcx)+'</b>.':'')+'</p>'
@@ -801,10 +829,14 @@ function runMaskDrill(m){
    field it was composed from, so a gap prints the old copy and never nothing;
    tests/engine.js fails before that can ship.
 
-   CONNECTED IS ONLY WHAT SAB_LIB KNOWS. Thirteen of the 33 have fetters and a
-   family in the engine. The other twenty were left unnamed by the engine on
-   purpose, and a card that drew three addresses for Martyr would be the guess
-   that boundary exists to refuse, so the gap is printed as a gap. The family
+   CONNECTED IS ONLY WHAT SAB_LIB KNOWS. Thirteen of the 33 had fetters and a
+   family in the engine and the other twenty were left unnamed on purpose,
+   because a card that drew three addresses for Martyr would have been a
+   guess. On 22 October the library was filled from each saboteur's own words
+   and its own canon charges, with the grounding written beside every row in
+   engine/data/nodes.js, and the one row that could not be grounded, Innocent,
+   was left out by name. A saboteur with no row still prints the gap as a gap,
+   never a guess. The family
    prints d and never sub: sub is a diagnostic name, and engine/data/nodes.js
    records the day a person was handed "depression, BPD and anxiety" about
    themselves as a subtitle. */
@@ -961,10 +993,10 @@ function runPoleDrill(end){
   +'</p>';
  /* where this person sits on each axis, read rather than asked */
  h+='<div class="pm-eye">Where you sit on each</div><div class="ad-rows">';
+ var seatRowsNow=compute().seats;
  MIRROR.forEach(function(m){
-  var grp=W.filter(function(n){return n.b===m.seat;});
-  var load=grp.length?grp.reduce(function(a,n){return a+n.sq;},0)/grp.length:0;
-  var pos=mirrorAt(load,bandIg(m.seat));
+  var row=seatRowsNow.filter(function(s){return s.seat===m.seat;})[0];
+  var pos=compassAt(row); if(pos==null)pos=50;
   var c=seatCol(m.seat);
   h+='<button type="button" class="ad-r" data-mirror="'+m.k+'" title="'+esc(m.ask)+'">'
    +cr(m.seat,pos,{size:'xs',raw:String(pos),hot:false})
@@ -1176,13 +1208,16 @@ function NUMWORD(n){
  return 'The '+((NUMWORDS[n]||String(n)).toLowerCase());}
 function avOf(){ return (CURP&&CURP.avatar)||avatarBlank(); }
 function avRows(){
- var av=avOf();
+ var av=avOf(), seatRowsNow=compute().seats;
  return (av.pairs||[]).map(function(pr){
   var seg=readSeat(pr.notbe);
   var load=0, ig=6;
-  if(seg){var grp=W.filter(function(n){return n.b===seg;});
-   load=grp.length?grp.reduce(function(a,n){return a+n.sq;},0)/grp.length:0;
-   ig=bandIg(seg);}
+  if(seg){var row=seatRowsNow.filter(function(s){return s.seat===seg;})[0];
+   load=row?row.weight*10:0;
+   /* honest, not bandIg's seeded six: a seat only partly answered no longer
+      blends in a guess for the laws it hasn't got yet. 6 stays the fallback
+      for the true nothing-answered case, same as it always read. */
+   ig=row&&row.ig!=null?row.ig*10:6;}
   return {pair:pr, gap:seg?avatarGap(pr,seg,load,ig):null};});}
 /* the seat a sentence about a bad day resolves to. the story parser already
    does this work, so this asks it rather than owning a second lexicon. */
@@ -1398,9 +1433,13 @@ function runAgeYear(a){
 /* one axis, both ends, and the question that tells them apart */
 function runMirrorDrill(k){
  var m=MIRROR.filter(function(x){return x.k===k;})[0]; if(!m)return;
- var grp=W.filter(function(n){return n.b===m.seat;});
- var load=grp.length?grp.reduce(function(a,n){return a+n.sq;},0)/grp.length:0;
- var pos=mirrorAt(load,bandIg(m.seat)), c=seatCol(m.seat);
+ var row=compute().seats.filter(function(s){return s.seat===m.seat;})[0];
+ /* a null ig means the seat's own laws are not yet answered. The ring still
+    needs a number to draw at; 50 is the least wrong one until this gets its
+    own unread treatment, which is a design pass and not decided here. The
+    value shown as text says so honestly rather than printing a guess. */
+ var pos=compassAt(row), unread=(pos==null); if(unread)pos=50;
+ var c=seatCol(m.seat);
  rdShell('<div class="pm-eye">'+esc(m.q)+'</div>'
   +'<div class="ad-nm">'+esc(m.up)+' against '+esc(m.dn)+'</div>'
   +'<div class="ad-sub">at the '+String(m.seat).toLowerCase()+'</div>'
@@ -1412,7 +1451,7 @@ function runMirrorDrill(k){
   +'<div class="ad-rows"><div class="ad-r static">'
    +cr(m.seat,pos,{size:'sm',raw:String(pos),hot:false})
    +'<span class="ad-k">'+esc(m.dn)+' at nought, '+esc(m.up)+' at a hundred</span>'
-   +'<span class="ad-v" style="color:'+c+'">'+pos+'</span></div></div>'
+   +'<span class="ad-v" style="color:'+c+'">'+(unread?'not yet answered':pos)+'</span></div></div>'
   +'<p class="ad-p">Read from what is held at the '+String(m.seat).toLowerCase()
   +' and the integrity measured there. Not asked, and not a verdict. Both ends are behaviours '
   +'and the axis is one you are on whether or not you look at it.</p>');}

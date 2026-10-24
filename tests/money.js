@@ -28,9 +28,13 @@
      4  the five new billing fields are read at the boundary: a wrong type or
         a value out of range is refused by name and never clamped, and a
         server that sends none of them is read exactly as before
+     5  the pay cycle walk's pinned copy (24 October): every function and
+        constant of plan.js the walk runs is the one it pinned, comments and
+        spacing aside, and one that moves fails by name
 
    CHECKED AGAINST MAIN FIRST, the standing rule (ENGINE pointing at main's
-   9a162d14 engine.js): it fails on 1, 2, 3 and 4.
+   9a162d14 engine.js): it fails on 1, 2, 3 and 4. Group 5 is checked against
+   a mutant engine whose PLAN_GRACE_MS is four days: it fails that one by name.
 
    No count is typed into this file. Read the counts off the run.
    ============================================================ */
@@ -229,6 +233,40 @@ console.log('\n=== 4. the new fields are read at the boundary ===');
   const sent = E.planFromServer(prev, Object.assign({}, base, { paid: 1200, currency: 'usd', renewal: 'paid', changed: null, prorated: null }), many(300), iso(5));
   ok(!sent.refused && sent.same, 'and good values change nothing on a period that has not moved: ' + J(sent.plan));
   ok(J(Object.keys(sent.plan)) === J(Object.keys(E.blankProfile('k').plan)), 'the record keeps the blank\'s own keys, so the schema does not move: ' + J(Object.keys(sent.plan)));
+}
+
+console.log('\n=== 5. the pay cycle walk\'s pinned copy, held to this engine ===');
+{
+  /* P3-9 of the 23 October QA pass, 24 October. Reboot-OS
+     atuned/server/test/e2e/paycycle.mjs runs a copy of this repository's
+     engine/plan.js, mob-plan.js, pinned by hash to c75e1d83 (PLAN_SRC_SHA
+     there). Three later commits touched plan.js and the arithmetic the walk
+     runs did not move, but nothing would have noticed the day it did: the walk
+     would go on proving a copy. So each function and constant the walk calls is
+     hashed here, comments and spacing aside, against the same hash read off
+     c75e1d83's engine.js, and one that moves fails by name. PLANS is held by
+     its arithmetic only (key, period, grant, built), so a description can be
+     reworded. When one moves on purpose: copy plan.js into mob-plan.js, move
+     PLAN_SRC_SHA and PLAN_SRC_FROM in paycycle.mjs, and move the hash here. */
+  const crypto = require('crypto');
+  const norm = s => String(s).replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:'"\\])\/\/[^\n]*/g, '$1').replace(/\s+/g, ' ').trim();
+  const text = v => typeof v === 'function' ? norm(v.toString())
+    : Array.isArray(v) ? J(v.map(p => ({ k: p.k, per: p.per, grant: p.grant, built: p.built !== false })))
+    : J(v);
+  const sha = s => crypto.createHash('sha256').update(s).digest('hex').slice(0, 16);
+  const PIN = {
+    planFromServer: '6b1ae4f3e8a84ea6', planAllowance: '8db8c4540e138e21', planState: 'a8d3594d8890cd39',
+    planPast: '115fa82d8d2a45fc', planWeeks: '4eeaa7b8b4d9a2cb', planFreeFrom: '08a79cc1a898fc6d',
+    planOf: '358948645ef3d2f9', planMoneyBad: 'ddd2e6e3c161e45e', planInGift: '2da85ba081f3c534',
+    PLAN_LIVE: 'b34433a78cdeecc7', PLAN_DEAD: '0a158019a8dd305c', PLAN_GRACE_MS: '2bde00e40705b916',
+    PLAN_RENEWAL: '829ed0b12b30a9e6', GIFT_N: 'ad57366865126e55', WEEK_MS: 'e4ee343ddea0000d',
+    RUN_MIN: '4b227777d4dd1fc6', PLANS: '5c80856cddff28c3' };
+  for (const [n, want] of Object.entries(PIN)) {
+    const v = E[n], got = v === undefined ? null : sha(text(v));
+    ok(got === want, n + ' is the one the pay cycle walk runs, pinned at c75e1d83'
+      + (got === want ? '' : (got === null ? ': it is not exported' : ': it hashes ' + got + ' where the walk pinned ' + want
+        + '. Move the walk\'s copy and this pin on purpose')));
+  }
 }
 
 console.log('\n' + PASS + ' passed, ' + FAIL + ' failed');
