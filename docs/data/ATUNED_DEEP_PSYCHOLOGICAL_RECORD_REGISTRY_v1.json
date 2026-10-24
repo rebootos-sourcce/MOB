@@ -27735,12 +27735,6 @@
       "blockedPassSlots": 16,
       "note": "Pass status reflects evidence scope. A recorded pass is not proof of canonical approval or substantive content closure."
     },
-    "linkFieldRepair": {
-      "recordsWithEmptyLinksAudited": 103,
-      "fieldsStructurallyPresent": 125,
-      "edgesAdded": 0,
-      "note": "Empty links arrays were already present; the repair is explicit relationship-status metadata only. No edges were inferred or added."
-    },
     "runtimeIntegration": "NOT VERIFIED; template catalog and registry adapter remain unintegrated with the existing engine.",
     "warning": "Do not promote provisional definitions, taxonomic mappings, cultural-figure crosswalks, or affirmation assignments to Canon without source-level evidence and the required approval.",
     "contentCompleteness": {
@@ -27748,6 +27742,12 @@
       "recordsWithSubstantiveContentStillProvisional": 23,
       "blueprintSlotsCountAsCompleteOnlyAsVisualizationSlots": 14,
       "note": "The 14 blueprint slots are complete as explicitly non-canonical visualization slots, not as named canonical domains. The 15 behavioral-domain records and 8 Conscious Domain records remain substantively open."
+    },
+    "linkAudit": {
+      "recordsWithEmptyLinksAudited": 103,
+      "fieldsStructurallyPresent": 125,
+      "edgesAdded": 0,
+      "note": "Empty links arrays were already present; the repair is explicit relationship-status metadata only. No edges were inferred or added."
     }
   }
 }
