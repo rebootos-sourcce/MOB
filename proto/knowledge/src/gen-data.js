@@ -414,6 +414,12 @@ const TEMPLATE_SCHEMAS={
  term:{id:'TPL-GLOSSARY-TERM', fields:['nm','fam','def','links']}
 };
 E.forEach(e=>{
+ if(!Array.isArray(e.researchPasses)||e.researchPasses.length!==3){
+  e.sourceRefs=e.sourceRefs||['proto/knowledge/src/engine.js (runtime source table)'];
+  e.sourceClaims=e.sourceClaims||[String(e.def||e.body||e.nm||e.id)];
+  e.researchPasses=[{pass:1,name:'primary_source_extraction',status:'complete',sources:e.sourceRefs,findings:['Existing source/runtime fields extracted; this pass does not claim independent validation.'],reviewedAt:'2026-10-24'},{pass:2,name:'independent_corroboration_and_contradiction',status:'pending',sources:[],findings:['Independent source comparison and contradiction check remain pending.'],reviewedAt:null},{pass:3,name:'synthesis_and_cross_record_consistency',status:'pending',sources:[],findings:['Cross-record consistency, counterexample review, and boundary checks remain pending.'],reviewedAt:null}];
+  e.researchStatus='pass2_pass3_pending';
+ }
  const schema=TEMPLATE_SCHEMAS[e.kind];
  if(!schema) throw new Error('No template schema for entry kind '+e.kind+' ('+e.id+')');
  e.templateId=schema.id;
@@ -427,7 +433,7 @@ E.forEach(e=>{
   return false;
 });
  e.templateValidation={schemaDefined:true, sourceBacked:true,
-  contentStatus:missingFields.length===0?'complete':'incomplete',
+  contentStatus:missingFields.length?'incomplete':((e.researchPasses||[]).some(p=>p.status!=='complete')?'research_pending':'complete'),
   missingFields};
 });
 
