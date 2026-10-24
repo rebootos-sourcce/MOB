@@ -14,6 +14,53 @@ const match = source.match(/var KBD=(.*);\s*$/s);
 if (!match) throw new Error('Cannot parse generated KBD payload.');
 const db = JSON.parse(match[1]);
 const entries = db.entries || [];
+const warnings = [];
+const strictDeepPsychological = process.argv.includes('--strict-deep-psychological');
+const dpRegistry = db.deepPsychologicalRegistry;
+const dpCatalog = db.deepPsychologicalTemplateCatalog;
+const dpSummary = { status: 'MISSING', recordCount: 0, uniqueIdCount: 0, contentProvisionalCount: 0, emptyLinkCount: 0, blockedResearchPassCount: 0, danglingReferences: [], missingTemplateFields: [], notes: [] };
+if (!dpRegistry || !Array.isArray(dpRegistry.records) || !dpCatalog || !Array.isArray(dpCatalog.templates)) {
+  errors.push('Deep Psychological registry/template catalog missing from generated data; regenerate with updated gen-data.js.');
+} else {
+  const dpRecords = dpRegistry.records;
+  const dpById = new Map();
+  const dpTemplates = new Map(dpCatalog.templates.map(t => [t.id, t]));
+  dpSummary.status = 'OPEN';
+  dpSummary.recordCount = dpRecords.length;
+  for (const r of dpRecords) {
+    if (!r.id) errors.push('Deep Psychological record has no stable ID');
+    else if (dpById.has(r.id)) errors.push('Deep Psychological duplicate ID: ' + r.id);
+    else dpById.set(r.id, r);
+    const t = dpTemplates.get(r.templateId);
+    if (!t) errors.push((r.id || '<unknown>') + ': undefined Deep Psychological template ' + r.templateId);
+    else {
+      const missing = t.fields.filter(f => r[f] === undefined || r[f] === null || r[f] === '');
+      if (missing.length) dpSummary.missingTemplateFields.push({ id: r.id, fields: missing });
+    }
+    if (!Array.isArray(r.links) || r.links.length === 0) dpSummary.emptyLinkCount++;
+    if ((r.templateValidation || {}).contentStatus !== 'complete' && r.recordType !== 'blueprint_domain_slot') dpSummary.contentProvisionalCount++;
+    const passes = Array.isArray(r.researchPasses) ? r.researchPasses : [];
+    if (passes.length !== 3 || passes.some(p => p.status !== 'complete')) dpSummary.blockedResearchPassCount++;
+  }
+  dpSummary.uniqueIdCount = dpById.size;
+  for (const r of dpRecords) {
+    for (const field of ['links','childIds','upstreamInfluenceIds','downstreamEffectIds']) {
+      for (const target of r[field] || []) if (!dpById.has(target)) dpSummary.danglingReferences.push({ from:r.id, field, to:target });
+    }
+    if (r.parentId && !dpById.has(r.parentId)) dpSummary.danglingReferences.push({ from:r.id, field:'parentId', to:r.parentId });
+    for (const rel of r.relationships || []) for (const target of [rel.fromId, rel.toId]) if (target && !dpById.has(target)) dpSummary.danglingReferences.push({ from:r.id, field:'relationships', to:target });
+  }
+  if (dpRegistry.recordCount !== dpRecords.length || dpSummary.uniqueIdCount !== dpRecords.length) errors.push('Deep Psychological registry count/unique-ID mismatch');
+  if (dpSummary.missingTemplateFields.length) errors.push('Deep Psychological records have missing actual template fields: ' + dpSummary.missingTemplateFields.length);
+  if (dpSummary.danglingReferences.length) errors.push('Deep Psychological registry has dangling references: ' + dpSummary.danglingReferences.length);
+  if (dpSummary.emptyLinkCount || dpSummary.contentProvisionalCount || dpSummary.blockedResearchPassCount) {
+    dpSummary.notes.push('Structural integration is present, but semantic content/relationship closure remains open. Empty links are not inferred as edges.');
+    warnings.push('Deep Psychological closure remains open: empty links=' + dpSummary.emptyLinkCount + ', provisional content=' + dpSummary.contentProvisionalCount + ', records with blocked research passes=' + dpSummary.blockedResearchPassCount);
+  } else dpSummary.status = 'STRUCTURALLY_CLOSED_PENDING_RUNTIME_EDGE_REVIEW';
+  if (strictDeepPsychological && (dpSummary.emptyLinkCount || dpSummary.contentProvisionalCount || dpSummary.blockedResearchPassCount || dpSummary.danglingReferences.length || dpSummary.missingTemplateFields.length)) {
+    errors.push('Strict Deep Psychological closure gate failed; see deepPsychological summary.');
+  }
+}
 const byId = new Map();
 const errors = [];
 const counts = {};
@@ -63,8 +110,11 @@ console.log(JSON.stringify({
   counts,
   missingByKind,
   requiredKinds,
-  status: errors.length ? 'FAIL' : 'PASS',
+  status: errors.length ? 'FAIL' : (warnings.length ? 'PASS_WITH_DEEP_PSYCHOLOGICAL_GAPS' : 'PASS'),
   errorCount: errors.length,
+  warningCount: warnings.length,
+  deepPsychological: dpSummary,
+  warnings,
   errors
 }, null, 2));
 if (errors.length) process.exitCode = 1;
