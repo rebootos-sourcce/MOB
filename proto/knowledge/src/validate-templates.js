@@ -55,6 +55,43 @@ for (const e of entries.filter(x => x.kind === 'hypercomplex_mode')) {
   const opposite = entries.find(x => x.id === e.oppositeId);
   if (!opposite || !(opposite.links || []).includes(e.id)) errors.push(e.id + ': missing reciprocal inferred counterpart');
 }
+/* Canonical Complex/Hyper-Complex records: R memberships may be materialized;
+   I memberships stay typed candidates and must not become canonical links. */
+for (const e of entries.filter(x => x.kind === 'complex')) {
+  if (!e.sourceStatus || !Array.isArray(e.childNames)) errors.push(e.id + ': missing source status or child-name inventory');
+  if (e.sourceStatus === 'R') {
+    for (const name of (e.childNames || [])) {
+      const child = entries.find(x => x.kind === 'sab' && x.nm === name);
+      if (!child) errors.push(e.id + ': source-recorded Saboteur child not resolved: ' + name);
+      else if (!(e.links || []).includes(child.id) || !(child.links || []).includes(e.id)) errors.push(e.id + ': source-recorded child link missing or non-reciprocal: ' + child.id);
+    }
+  }
+  if (e.sourceStatus === 'I' && (e.links || []).some(id => { const x = entries.find(y => y.id === id); return x && x.kind === 'sab'; })) {
+    errors.push(e.id + ': inferred Complex-to-Saboteur membership was materialized as a link');
+  }
+}
+for (const e of entries.filter(x => x.kind === 'hypercomplex')) {
+  if (!e.sourceStatus || !Array.isArray(e.childNames)) errors.push(e.id + ': missing source status or child-name inventory');
+  if (e.sourceStatus === 'R') {
+    for (const name of (e.childNames || [])) {
+      const child = entries.find(x => x.kind === 'complex' && x.nm === name);
+      if (!child) errors.push(e.id + ': source-recorded Complex child not resolved: ' + name);
+      else if (!(e.links || []).includes(child.id) || !(child.links || []).includes(e.id)) errors.push(e.id + ': source-recorded child link missing or non-reciprocal: ' + child.id);
+    }
+  }
+  if (e.sourceStatus === 'I' && (e.links || []).some(id => { const x = entries.find(y => y.id === id); return x && x.kind === 'complex'; })) {
+    errors.push(e.id + ': inferred Hyper-Complex-to-Complex membership was materialized as a link');
+  }
+}
+for (const e of entries.filter(x => x.kind === 'supercomplex_candidate')) {
+  if (!e.membershipStatus || !/UNRESOLVED/.test(e.membershipStatus)) errors.push(e.id + ': candidate membership status is not explicit');
+  if ((e.links || []).some(id => { const x = entries.find(y => y.id === id); return x && x.kind === 'hypercomplex'; })) errors.push(e.id + ': unapproved Super-Complex child membership was materialized');
+  if (!(db.relationshipEdges || []).some(edge => edge.fromId === e.id && edge.relationshipType === 'candidate_blocked_by_membership_rule')) errors.push(e.id + ': missing typed blocker edge for unresolved membership rule');
+}
+for (const e of entries.filter(x => x.kind === 'descent_candidate')) {
+  if (!e.sourceClaimedLayer || !e.ownerRuling) errors.push(e.id + ': source layer claim or owner ruling missing');
+  if (e.nm === 'Psychopathy' && !/rejected/i.test(e.canonicalStatus || '')) errors.push(e.id + ': Psychopathy must retain the explicit owner rejection for canonical Super-Complex status');
+}
 for (const kind of requiredKinds) {
   if (!counts[kind]) errors.push('required domain kind absent from generated catalog: ' + kind);
 }
