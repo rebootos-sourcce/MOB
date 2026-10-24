@@ -412,3 +412,9 @@ Do not treat `templateValidation.missingFields` as the sole source of truth for 
 The generator now embeds the Deep Psychological registry and template catalog in separate properties of `KBD`. This is data-contract integration, not yet full graph integration. The existing Nerve-to-Super-Complex `entries` array remains unchanged to prevent unapproved taxonomic mappings from being promoted.
 
 The template validator now reports the embedded registry's structural/reference/content state and supports `--strict-deep-psychological`. The strict gate is expected to fail until substantive content and relationship closure are complete. Runtime execution and regression testing remain required before this integration is accepted.
+
+
+### Superseding content audit — 2026-10-24
+The 15 behavioral-domain records are no longer classified as source-unverified content. Three research passes per record are complete using `MOB-Manuscript/index.html` blob `24dea9c95112fe83073e58ef4cb14d7eb5de9928`, Chapter 12, cross-checked against SOURCE OS CANON v1.0.0 built from v184 and the v341 crosswalk. The source artifact does not declare its version label; it is not silently treated as v341.
+
+Current registry-scope KPI 2 is **117/125 role-complete**, with **8 Conscious Domain records still substantively open**. The 15 behavioral-domain crosswalks remain unapproved, and domain 06 has an explicit label variant (“Destruction and Renewal” in the current manuscript versus “Destruction and Transformation” in the registry). KPI 3 remains open: 103 records have empty links arrays, 0/36 mapping rows are approved semantic edges, and runtime graph traversal is not verified.
