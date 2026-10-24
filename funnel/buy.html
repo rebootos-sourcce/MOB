@@ -417,8 +417,8 @@ open, and how far up the chain you can see.</span></p>
   <p class="m">A new person gets 100 patterns, free. Four full runs at the 25 cap,
   spent on your own material, and then you know what this is rather than having
   been told.</p>
-  <p class="m">Nothing expires. Unspent patterns bank until there are enough for a
-  run, so a weekly grant smaller than a run adds up instead of draining.</p>
+  <p class="m">Nothing expires: the gift stays yours until it is used, and on the
+  free rung what you do not spend in a week carries over to the next.</p>
   <div class="cta">
    <a class="btn" href="quiz.html">Take the test</a>
    <a class="btn ghost" href="about.html">Read what it is</a>
@@ -458,8 +458,24 @@ open, and how far up the chain you can see.</span></p>
   charged today. The gift above needs no card and no account.</p>
   <p class="m">Practitioner stays closed when checkout opens. It opens with the lead
   suite, and the lead suite is not built yet.</p>
-  <p class="m">The free rung banks. Ten a week against a run of 25 means one
-  release every two and a half weeks. The pace is deliberate.</p>
+  <!-- THE FREE PACE IS THE ENGINE'S, 24 October (P2-3 of the 23 October QA
+       pass). This said "Ten a week against a run of 25 means one release every
+       two and a half weeks", true only while every run cost 25. Since 1 October
+       a run costs the minimum for what was picked, at least four (RUN_MIN,
+       engine/plan.js), so ten a week is two releases a week, the app's own free
+       row says so, and tests/funnel.js reads this sentence against RUN_MIN and
+       the free grant. -->
+  <p class="m">The free rung banks. Ten patterns a week is two releases a week at
+  one address, and what you do not spend carries over to the next week.</p>
+  <!-- A PAID MONTH IS THAT MONTH'S, 24 October (P2-4 of the 23 October QA
+       pass). The page says "Nothing expires", true of the gift and of free,
+       and a paid period carries nothing to the next (planFromServer writes
+       carried 0 on every new one; carry over for paid tiers is not built,
+       DECISIONS.md, 17 October). Said here, beside the ladder that sells the
+       months, and held by tests/funnel.js until carry over is built. -->
+  <p class="m">A paid month's new patterns are that month's. What you have not
+  opened by the renewal does not carry over, and everything you have opened stays
+  open and reruns free.</p>
  </div>
 </section>
 
@@ -485,8 +501,8 @@ open, and how far up the chain you can see.</span></p>
  <div class="bd">
   <ul class="sees" id="sees">
    <li data-rung="free"><b>Every rung, free included.</b> Your 112 addresses, the
-    domains, the archetypes, the laws, action and shadow, the pain map and the
-    body map, every tool and the journal.</li>
+    domains, the archetypes, the Laws of Moral Integrity, the Laws of Action,
+    shadow, the pain map and the body map, every tool and the journal.</li>
    <li data-rung="one"><b>Tier one</b> shows you your saboteurs, what triggers
     each one and the sentence it says.</li>
    <li data-rung="two"><b>Tier two</b> shows you your complexes, where saboteurs

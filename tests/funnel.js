@@ -654,6 +654,37 @@ const SIZE = c => '"' + c.t + '" ' + c.w + 'x' + c.h
          it does, this line moves with it. */
       ok(!/invite somebody|invitations? a month|when they join|refer a friend/i.test(buy.text),
         'buy: promises a referral, and nothing in the product invites anybody or grants patterns for it');
+      /* THE FREE PACE, READ OFF THE ENGINE, 24 October (P2-3 of the 23 October
+         QA pass). The page said "Ten a week against a run of 25 means one
+         release every two and a half weeks", true only while every run cost 25.
+         Since 1 October a run costs the minimum for what was picked, RUN_MIN, so
+         how many releases a week the free grant buys is the engine's number. */
+      {
+        const grant = E.PLAN_BY.free.grant, perWeek = Math.floor(grant / E.RUN_MIN);
+        const WORD = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
+        const either = n => '(' + (WORD[n] || String(n)) + '|' + n + ')';
+        const pace = (buy.text.match(/The free rung banks\.[^\n]*/) || [''])[0];
+        ok(new RegExp('\\b' + either(grant) + ' patterns a week\\b', 'i').test(pace)
+          && new RegExp('\\b' + either(perWeek) + ' releases? a week\\b', 'i').test(pace),
+          'buy: the free pace does not say ' + grant + ' patterns a week is ' + perWeek + ' releases a week (RUN_MIN '
+          + E.RUN_MIN + '), got ' + JSON.stringify(pace));
+        ok(!/two and a half weeks|smaller than a run/i.test(buy.text),
+          'buy: still says the free pace from when every run cost 25');
+      }
+      /* A PAID MONTH IS THAT MONTH'S, 24 October (P2-4). planFromServer writes
+         carried 0 on every new period and carry over for paid tiers is not
+         built (DECISIONS.md, 17 October), so the page that sells the months
+         says so beside the ladder. This moves the day carry over is built. */
+      ok(/a paid month's new patterns are that month's/i.test(buy.text) && /does not carry over/i.test(buy.text),
+        'buy: does not say that a paid month\'s unopened patterns do not carry over at renewal');
+      /* THE EVERY RUNG LINE IN THE APP'S OWN WORDS, 24 October (P3-8). The app
+         says "the Laws of Moral Integrity" and "the Laws of Action" since 22
+         October (PLAN_ALWAYS, engine/plan.js), and the page said "the laws,
+         action". Every item but the rerun clause, which the page says in its own
+         section, is held on the free rung in PLAN_ALWAYS's words. */
+      for (const item of E.PLAN_ALWAYS.filter(x => !/^rerunning/.test(x)))
+        ok((buy.rungs.free || '').indexOf(item.toLowerCase()) >= 0,
+          'buy: the every rung line does not say "' + item + '", the app\'s own words (PLAN_ALWAYS)');
       await ctx.close();
     }
   }

@@ -29,6 +29,15 @@ ruling at the end of this file, "Sight by tier, round OK". Prices are in
 four runs. Ten a week on the free tier is less than one run, so the free grant
 banks until a run is affordable rather than expiring.
 
+(Recorded 24 October: the second sentence above is superseded, and has been
+since 1 October. A run costs the minimum for what was picked, at least four
+patterns, one address down its four channels (`RUN_MIN`, `engine/plan.js`),
+and 25 is the most a run opens, not its size. So ten a week is two releases a
+week at one address, the free grant is never too small for a run, and it still
+banks. The buy page carried the old pace, one release every two and a half
+weeks, until 24 October; `tests/funnel.js` now reads that sentence against
+`RUN_MIN` and the free grant.)
+
 **Tier four is not more of the same.** It carries the same twelve hundred as
 tier three, so patterns do not separate them at all. What it buys is the cohort
 lead suite: manage profiles, build rituals and build accountability for the
