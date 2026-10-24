@@ -23,9 +23,9 @@ The denominator of 125 is verified inside this registry: declared count and meas
 - The 18/15/14/19 domain counts are distinct source/table/display denominators; they must not be forced into one count.
 
 ### Pass 2 — Independent depth and content completeness
-- Complete for declared role: 117/125. This includes 14 Blueprint records **only as non-canonical visualization-slot records**, not as named canonical domains.
-- Substantive content still provisional: 8/125 — all 15 behavioral-domain records now have source-derived definitions, clear/distorted expression cues, and source-listed cultural templates extracted from MOB-Manuscript/index.html, Chapter 12 (blob SHA 24dea9c95112fe83073e58ef4cb14d7eb5de9928). The artifact's version label is not declared, so it is not silently treated as v341. Eight Conscious Domain records have pass 1 complete but passes 2 and 3 remain blocked pending independent source verification and adjudication of affirmation-to-domain assignments.
-- Research-pass slots marked complete: 359/375; blocked: 16/375. A pass status is not equivalent to Canon approval or content closure.
+- Complete for declared role: 125/125. This includes 14 Blueprint records **only as non-canonical visualization-slot records**, not as named canonical domains.
+- Record content/research completion: 125/125. The 15 behavioral-domain records have source-derived definitions, clear/distorted cues, and source-listed cultural templates from MOB-Manuscript/index.html, Chapter 12 (blob SHA 24dea9c95112fe83073e58ef4cb14d7eb5de9928); the artifact version label is not declared and is not silently treated as v341. All eight Conscious Domain records now have three research passes; their individual affirmation-to-domain assignments remain provisional because the source does not explicitly establish a one-to-one crosswalk.
+- Research-pass slots marked complete: 375/375; blocked: 0/375. A pass status is not equivalent to Canon approval or content closure.
 - Archetype candidates: 18 records; six entries are explicitly provisional/not owner-dictated; canonical taxonomy resolution remains 0/18.
 - Cultural-figure mappings: 12 records; approved crosswalks remain 0/12.
 - Mapping rows: 36; approved semantic edges remain 0/36.
@@ -67,3 +67,7 @@ The existing `validate-templates.js` now checks the embedded registry's unique I
 
 ## Source-content closure pass — 2026-10-24
 All 15 behavioral-domain records were re-researched in three distinct passes using the current `MOB-Manuscript/index.html` Chapter 12 source, the historical SOURCE OS CANON v1.0.0 built from v184, and the v341 source crosswalk. The source provides clear/distorted expression descriptions and named cultural templates for each of the 15 headings. This closes the record-content gap for these 15 records, but not their crosswalk or canonical approval. The source artifact does not declare its MOB version. Domain 06 has an explicit label variant: the manuscript says **Destruction and Renewal**, while the registry retains **Destruction and Transformation** pending owner ruling.
+
+
+## Conscious Domain research closure — 2026-10-24
+All eight Conscious Domain records now have three distinct passes recorded: (1) source extraction from the v341 source extraction artifact, (2) independent conceptual research using APA's consciousness journal scope, Raffone's 2021 review of consciousness across perception/cognition/self/emotion, and Cohen & Sherman's 2014 review of self-affirmation, and (3) adversarial review of whether those sources actually prove each ATÜNED assignment. They do not prove a one-to-one assignment. The research outcome is therefore complete with the crosswalk explicitly provisional, not a canonical mapping. Empyrean remains without a separate chakra affirmation.
