@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2447 de913892 2026-10-24 02:50"><head><meta charset="utf-8">
+<html lang="en" data-build="v2463 ae29c862 2026-10-24 05:41"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -5475,7 +5475,7 @@ body.quiet .av-pulse,body.rm .av-pulse{animation:none}
 .av-def{font-size:17px;line-height:1.55;color:var(--ink);margin:0 0 14px}
 .av-imp{border-left:3px solid var(--s);padding:10px 14px;border-radius:var(--r-xs);background:var(--sunk);margin-bottom:6px}
 .av-imp-v{margin:4px 0 2px;font-size:16px;color:var(--ink)}
-.av-imp-v span{font-size:13px;color:var(--dim);margin-left:8px}
+.av-imp-v>span{font-size:13px;color:var(--dim);margin-left:8px}
 .av-imp-c{margin:0;font-size:15px;line-height:1.5;color:var(--mid)}
 .av-imp-r{margin:6px 0 0;font-size:13px;color:var(--dim)}
 .av-scale{position:relative;display:flex;justify-content:space-between;align-items:center;margin:6px 0 2px}
@@ -17595,6 +17595,25 @@ const SAB_SEAT=(function(){
    family through this, so the range route and the address route can no
    longer put one saboteur in two families. */
 const SAB_LIB_BY={};SAB_LIB.forEach(s=>{SAB_LIB_BY[KB_KEY(s.nm)]=s;});
+/* WHERE A NAMED SABOTEUR SITS IS WHERE ITS ADDRESSES ARE, 24 October, systems
+   audit SG-05. The seats of the addresses SAB_LIB builds the saboteur from,
+   once each, from the root up in BANDS order, and the seat that holds the most
+   of them, the root end winning a tie. The Analytics archetype card and the
+   Avatar page printed the third column of ARCH18 as the primary saboteur's
+   seat, and measured on 23 October that seat held none of the saboteur's
+   addresses in 9 of the 18 rows: Pleaser was put at the heart, and its
+   addresses sit at the root and the sacral. Read off the addresses, the words
+   and the body map cannot disagree. A saboteur with no library row has no
+   seats and says none. */
+function sabSeats(nm){
+ var s=SAB_LIB_BY[KB_KEY(String(nm===undefined||nm===null?'':nm))]; if(!s)return [];
+ var at={}; s.nids.forEach(function(i){var n=BY[i]; if(n)at[n.b]=(at[n.b]||0)+1;});
+ return BANDS.filter(function(b){return at[b];});}
+function sabSeatMain(nm){
+ var s=SAB_LIB_BY[KB_KEY(String(nm===undefined||nm===null?'':nm))]; if(!s)return null;
+ var at={}; s.nids.forEach(function(i){var n=BY[i]; if(n)at[n.b]=(at[n.b]||0)+1;});
+ var best=null; BANDS.forEach(function(b){if(at[b]&&(best===null||at[b]>at[best]))best=b;});
+ return best;}
 
 /* ============================================================
    TABS. A stale tab index caused the same class of bug four times in
@@ -19309,10 +19328,22 @@ function planBuyable(k){
    IT DOES NOT CLOSE THE SERVER AND IT DOES NOT OPEN IT. The server's switch is
    the gate; this is the instrument saying the same thing before anybody
    presses. Opening paying is two words, this one and the server's, in the same
-   release. Billing's own Move to presses still go through planOpen and are
-   refused by the server exactly as they were: that route is left as it stood. */
+   release. Billing's tiers (ui/plans.js) ask the same question since 24 October
+   and say "Opens soon" where each Move to sat; until then they kept their
+   presses, and each one could only be refused (P2-1 of the 23 October QA pass). */
 const PLAN_CHECKOUT_OPEN=false;
 function planCheckoutOpen(){ return PLAN_CHECKOUT_OPEN===true; }
+/* WHETHER THE RECORD NAMES A PAID TIER, live or ended, 24 October. The plan
+   sheet offered Manage billing to everybody, and a person who had never paid
+   pressed it to be told by the server "there is no paid plan on this account
+   yet, so there is no billing to manage" (QA pass of 23 October, P3-4). A
+   record that names a paid rung, in force or stopped, belongs to somebody who
+   has had a plan and has a payment page to go to; free, the gift, no plan and
+   a key this build does not know do not. planFromServer makes the same test
+   inline as wasPaid, and is left untouched because the pay cycle walk runs a
+   pinned copy of it (tests/money.js, group 5). */
+function planNamesPaid(pl){
+ return !!(pl&&typeof pl==='object'&&PLAN_BY[pl.tier]&&pl.tier!=='free'&&pl.tier!=='gift');}
 /* THE GIFT'S SIZE, NAMED ONCE. It is the gift row's grant above. planAllowance
    carried its own literal 100 in five places beside that row, which is the same
    number held twice and one edit away from two answers. */
@@ -21613,6 +21644,23 @@ var LAW_UNSET={}, LAW_SEED={};
    boundary. Expression is a whole separate law axis in the codex and keeps its
    own name there. */
 var LAW_WAS={Justice:'Expression', Humility:'Discernment'};
+/* WHICH LAW A STORED KEY NAMES, the current name for a current name or an old
+   one, and null for anything else. 24 October, systems audit SG-01.
+
+   The table above was carried across in loadProfile and nowhere else, and no
+   record reached loadProfile with the old key still on it: validateProfile
+   read the laws and the work by their current names only, pStore keeps what
+   validateProfile hands back, and the next save wrote the shorter record over
+   the disk. Measured on 23 October, a record holding Expression 9 and
+   Discernment 2 read Justice 9 and Humility 2 and CQ 77.6 loaded straight, and
+   both as never answered and CQ 72.4 through the boundary, with ok true, no
+   error, and neither answer on the disk after one boot and one save. The
+   boundary reads the laws and the work through this now, the way the history
+   rows below already read lawNow, so one door keeps one rule. */
+function lawNameOf(k){
+ if(SINAMES.indexOf(k)>=0)return k;
+ var cur=Object.keys(LAW_WAS).filter(function(nm){return LAW_WAS[nm]===k;});
+ return cur.length?cur[0]:null;}
 /* AND THE RECORD THEY CAME FROM, as the object. The release lift reads the work
    of the record the laws in S were loaded from and of no other (lawWork,
    engine/compute.js). It was CURP, and the front door loads a profile into S
@@ -22500,29 +22548,70 @@ function validateProfile(o){
  if(typeof o.id==='string')p.id=o.id;
  if(typeof o.created==='string')p.created=o.created;
  if(typeof o.updated==='string')p.updated=o.updated;
- /* the nine axes */
- if(o.axes&&typeof o.axes==='object')CHILD.forEach(function(c){
+ /* the nine axes. A KEY THE BOUNDARY DOES NOT NAME IS REFUSED BY NAME, 24
+    October, systems audit SG-09, here and in the laws, the work and the gates
+    below. Each of them read only the keys it knew and dropped the rest with ok
+    true: a record carrying Sadness, the spelling the codes table maps to Sad,
+    loaded with Sad at the blank and nothing said. No build has written any
+    other axis or any other key inside one, so this refuses only a file this
+    product did not write. */
+ if(o.axes&&typeof o.axes==='object'){
+  Object.keys(o.axes).forEach(function(k){
+   if(!CHILD.some(function(c){return c.nm===k;})){errs.push('axes may not carry '+k);return;}
+   var a0=o.axes[k];
+   if(a0&&typeof a0==='object')Object.keys(a0).forEach(function(f){
+    if(f!=='held'&&f!=='opp')errs.push('axes.'+k+' may not carry '+f);});});
+  CHILD.forEach(function(c){
   var a=o.axes[c.nm]; if(!a||typeof a!=='object')return;
   var h=vRange(errs,'axes.'+c.nm+'.held',a.held,0,10);
   var q=vRange(errs,'axes.'+c.nm+'.opp',a.opp,0,10);
   if(h!==null)p.axes[c.nm].held=h;
-  if(q!==null)p.axes[c.nm].opp=q;});
- /* the 21 laws. null is a law not yet measured and is not an error. */
- if(o.laws&&typeof o.laws==='object')SI.forEach(function(l){
+  if(q!==null)p.axes[c.nm].opp=q;});}
+ /* the 21 laws. null is a law not yet measured and is not an error.
+    AN OLD NAME IS READ AS THE LAW IT BECAME (lawNameOf, above), only where the
+    record does not carry the current name at all, so the current name wins
+    where both are carried, the rule the history rows keep. It is refused under
+    the name it was stored under, like any other value. Any other key is
+    refused by name. */
+ if(o.laws&&typeof o.laws==='object'){
+  Object.keys(o.laws).forEach(function(k){if(lawNameOf(k)===null)errs.push('laws may not carry '+k);});
+  SI.forEach(function(l){
   if(o.laws[l.nm]===undefined||o.laws[l.nm]===null)return;
   var v=vRange(errs,'laws.'+l.nm,o.laws[l.nm],0,10);
   if(v!==null)p.laws[l.nm]=v;});
+  SI.forEach(function(l){
+   var was=LAW_WAS[l.nm];
+   if(was===undefined||o.laws[l.nm]!==undefined||o.laws[was]===undefined||o.laws[was]===null)return;
+   var v=vRange(errs,'laws.'+was,o.laws[was],0,10);
+   if(v!==null)p.laws[l.nm]=v;});}
  /* the soul. indexes into fixed tables, so an index outside them is refused. */
  if(o.soul&&typeof o.soul==='object'){
   if(Array.isArray(o.soul.doms))p.soul.doms=o.soul.doms.filter(function(d){
    var v=vRange(errs,'soul.doms',d,0,DOMAINS.length-1);return v!==null;});
   if(Array.isArray(o.soul.arcs))p.soul.arcs=o.soul.arcs.filter(function(a){
    var v=vRange(errs,'soul.arcs',a,0,ARCH.length-1);return v!==null;});
-  if(Array.isArray(o.soul.roots))p.soul.roots=o.soul.roots.filter(function(r){return typeof r==='string';});
+  /* A ROOT IS ONE OF THE FOUR, by name, 24 October, SG-09. Any string was
+     kept, and buildSoul matches a root against DOMAINS by name, so a root it
+     does not know weighted nothing and said nothing. The picker in
+     ui/panels.js only ever writes one of ROOTD. */
+  if(Array.isArray(o.soul.roots))p.soul.roots=o.soul.roots.filter(function(r){
+   if(typeof r==='string'&&ROOTD.indexOf(r)>=0)return true;
+   errs.push('soul.roots holds '+(typeof r==='string'?r:'a '+typeof r)+', which is not one of '+ROOTD.join(', '));
+   return false;});
   if(!p.soul.doms.length)p.soul.doms=[0];
   if(!p.soul.arcs.length)p.soul.arcs=[0,1];}
- /* gate evidence. counts of sentences, so any non negative integer. */
+ /* gate evidence. counts of sentences, so any non negative integer. A key
+    beside the two bags, or inside one, that this build does not count is
+    refused by name, SG-09: canon.json spells the third gate Intentional, and a
+    count under that name was dropped. verp.js is the one writer, and it writes
+    exactly these. */
  if(o.gates&&typeof o.gates==='object'){
+  var gOwn=function(bag,k){return Object.prototype.hasOwnProperty.call(bag,k);};
+  Object.keys(o.gates).forEach(function(k){if(k!=='verp'&&k!=='lean')errs.push('gates may not carry '+k);});
+  if(o.gates.verp&&typeof o.gates.verp==='object')Object.keys(o.gates.verp).forEach(function(k){
+   if(!gOwn(p.gates.verp,k))errs.push('gates.verp may not carry '+k);});
+  if(o.gates.lean&&typeof o.gates.lean==='object')Object.keys(o.gates.lean).forEach(function(k){
+   if(!gOwn(p.gates.lean,k))errs.push('gates.lean may not carry '+k);});
   if(o.gates.verp&&typeof o.gates.verp==='object')Object.keys(p.gates.verp).forEach(function(k){
    var v=vRange(errs,'gates.verp.'+k,o.gates.verp[k],0,1e6); if(v!==null)p.gates.verp[k]=v;});
   if(o.gates.lean&&typeof o.gates.lean==='object')['benign','malignant'].forEach(function(k){
@@ -22650,16 +22739,26 @@ function validateProfile(o){
   var seatKeys={};
   p.meter.unique.forEach(function(k){var n=BY[+String(k).split(':')[0]];
    if(n&&n.b)seatKeys[n.b]=(seatKeys[n.b]||0)+1;});
+  /* keyed by law, so it reads an old name the way the laws above do and
+     refuses any other key by name, and every refusal names the key the record
+     stored. A field inside an entry other than its count and the answer it was
+     counted on is refused by name too: compute.js writes exactly those two. */
+  Object.keys(o.work).forEach(function(k){
+   if(lawNameOf(k)===null){errs.push('work may not carry '+k);return;}
+   var w0=o.work[k];
+   if(w0&&typeof w0==='object'&&!Array.isArray(w0))Object.keys(w0).forEach(function(f){
+    if(f!=='n'&&f!=='on')errs.push('work.'+k+' may not carry '+f);});});
   SI.forEach(function(l){
-   var w=o.work[l.nm]; if(w===undefined||w===null)return;
-   if(typeof w!=='object'||Array.isArray(w)){errs.push('work.'+l.nm+' is not an object');return;}
-   var n=vRange(errs,'work.'+l.nm+'.n',w.n,0,1e6);
-   var on=vRange(errs,'work.'+l.nm+'.on',w.on,0,10);
+   var was=LAW_WAS[l.nm], key=(o.work[l.nm]===undefined&&was!==undefined&&o.work[was]!==undefined)?was:l.nm;
+   var w=o.work[key]; if(w===undefined||w===null)return;
+   if(typeof w!=='object'||Array.isArray(w)){errs.push('work.'+key+' is not an object');return;}
+   var n=vRange(errs,'work.'+key+'.n',w.n,0,1e6);
+   var on=vRange(errs,'work.'+key+'.on',w.on,0,10);
    if(n===null||on===null){
-    if(w.n===undefined||w.on===undefined)errs.push('work.'+l.nm+' is not a count and the answer it was counted on');
+    if(w.n===undefined||w.on===undefined)errs.push('work.'+key+' is not a count and the answer it was counted on');
     return;}
-   if(n%1!==0){errs.push('work.'+l.nm+'.n is '+n+', not a whole number of patterns');return;}
-   if(n>(seatKeys[l.b]||0)){errs.push('work.'+l.nm+'.n is '+n+', more than the '
+   if(n%1!==0){errs.push('work.'+key+'.n is '+n+', not a whole number of patterns');return;}
+   if(n>(seatKeys[l.b]||0)){errs.push('work.'+key+'.n is '+n+', more than the '
     +(seatKeys[l.b]||0)+' patterns this record has opened at the '+l.b);return;}
    p.work[l.nm]={n:n,on:on};});}
  else if(o.work!==undefined&&o.work!==null)errs.push('work is not an object');
@@ -32500,11 +32599,11 @@ if(typeof module!=='undefined'&&module.exports){
                  planNextSight:planNextSight, planAllowance:planAllowance,
                  planWeeks:planWeeks, planFreeFrom:planFreeFrom, GIFT_N:GIFT_N, WEEK_MS:WEEK_MS, planInGift:planInGift,
                  planUpgrade:planUpgrade, planBuyable:planBuyable, RUN_MAX:RUN_MAX, RUN_MIN:RUN_MIN,
-                 PLAN_CHECKOUT_OPEN:PLAN_CHECKOUT_OPEN, planCheckoutOpen:planCheckoutOpen,
+                 PLAN_CHECKOUT_OPEN:PLAN_CHECKOUT_OPEN, planCheckoutOpen:planCheckoutOpen, planNamesPaid:planNamesPaid,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  PLAN_PRICE:PLAN_PRICE, planPrice:planPrice, planLadder:planLadder,
-                 planFromServer:planFromServer,
+                 planFromServer:planFromServer, planMoneyBad:planMoneyBad,
                  LEAD_SEES:LEAD_SEES, LEAD_HIDDEN:LEAD_HIDDEN, leadSees:leadSees,
                  EQUIV:EQUIV, EQUIV_NONE:EQUIV_NONE, equivOf:equivOf, planWorth:planWorth,
   /* ages */     AGES:AGES, AGE_TEST:AGE_TEST, AGE_LO:AGE_LO, AGE_HI:AGE_HI,
@@ -32692,6 +32791,7 @@ if(typeof module!=='undefined'&&module.exports){
      against a number typed into the test, which is the failure this repository
      has been bitten by seven times. */
                   CHG2SEAT:CHG2SEAT, CHG2FET:CHG2FET, SAB_SEAT:SAB_SEAT, SAB_LIB_BY:SAB_LIB_BY, B2K:B2K, K2BAND:K2BAND,
+                  sabSeats:sabSeats, sabSeatMain:sabSeatMain,
                   LEX_SEAT:LEX_SEAT, LEX_AMT:LEX_AMT, LEX_FET:LEX_FET,
                   LEX_SEATS:LEX_SEATS, LEX_SRC:LEX_SRC, LEX_AMT_MAX:LEX_AMT_MAX,
                   LEXMETA:LEXMETA, CHGMETA:CHGMETA,
@@ -51447,12 +51547,19 @@ function anaArchCard(r,nm){
  var ai=-1; ARCH.forEach(function(x,i){if(x.nm===nm)ai=i;});
  /* ARCH names it Rebel and the eighteen name it Outlaw. one row, two names. */
  var a18=ARCH18.filter(function(x){return x[0]===nm||(nm==='Rebel'&&x[0]==='Outlaw');})[0];
+ /* WHERE THE PRIMARY SABOTEUR SITS IS WHERE ITS ADDRESSES ARE, 24 October,
+    systems audit SG-05. This printed the third column of ARCH18 as its seat,
+    which named none of its addresses' seats in 9 of the 18 rows, so the card
+    put Pleaser at the heart while the body map drew it at the root and the
+    sacral. sabSeats (engine/core.js) reads them off SAB_LIB. */
+ var sbs=a18?sabSeats(a18[1]):[];
  var h=anaHead('Archetype',nm,(ai===r.pi?'primary, how the soul expresses':'not your primary'));
  h+='<p class="ad-p">'+esc((ARCH[ai]||{}).v||'')+'. <b>'
   /* how fully it is expressed, ruled 16 October; the lean against the
      strongest still orders the archetypes and is printed nowhere */
   +fmtPct('archetype',archExpr(ai))+'</b> expressed. Charge held at its seat pulls it down, and a release lifts it.'
-  +(a18?' Its primary saboteur is <b>'+esc(a18[1])+'</b>, seated at the '+a18[2].toLowerCase()+'.':'')
+  +(a18?' Its primary saboteur is <b>'+esc(a18[1])+'</b>'
+   +(sbs.length?', and its '+unp('address','addresses')+' sit at '+esc(unpackList(sbs.map(srcSeatSay))):'')+'.':'')
   +' The archetype does not change. Release clears what bends it on the way out.</p>';
  /* and when that saboteur is running, it is a door */
  var run=a18&&lockSees('sab')?anaFind(r,a18[1]):null;
@@ -52273,9 +52380,16 @@ function avRituals(r,rows,rule){
 
 /* ---------------- the archetypes ----------------
    The twelve the instrument reads, ARCH, each seated where ARCH seats it.
-   The primary saboteur and its seat come from ARCH18, the table that carries
-   them, joined by name. ARCH18 calls the Rebel the Outlaw; ARCH is the table
-   the engine reads and the rail prints, so the Rebel keeps its shipped name. */
+   The primary saboteur comes from ARCH18, the table that carries it, joined by
+   name. ARCH18 calls the Rebel the Outlaw; ARCH is the table the engine reads
+   and the rail prints, so the Rebel keeps its shipped name.
+
+   WHERE THAT SABOTEUR SITS IS WHERE ITS ADDRESSES ARE, 24 October, systems
+   audit SG-05: sabS is the seats of its addresses and sabB the one holding the
+   most of them, both read off SAB_LIB by sabSeats and sabSeatMain
+   (engine/core.js). sabB was the third column of ARCH18, which named none of
+   the saboteur's addresses' seats in 9 of its 18 rows: this page put Pleaser at
+   the heart while the body map drew it at the root and the sacral. */
 var AV_DEF={
  Warrior:'The Warrior moves on the threat and counts the damage after. It gets the thing done on a day when feeling it would stop you.',
  Sage:'The Sage reads the situation before it moves. It gives you ground to stand on when the moment is unclear.',
@@ -52308,7 +52422,8 @@ var AV_IMPACT={
  'Worrywart':'The worst case runs on a loop, and it feels like planning.'};
 var AV_ROSTER=ARCH.map(function(a,i){
  var row=ARCH18.filter(function(x){return (x[0]==='Outlaw'?'Rebel':x[0])===a.nm;})[0]||null;
- return {nm:a.nm, v:a.v, b:a.b, ic:a.ic, i:i, sab:row?row[1]:null, sabB:row?row[2]:null};});
+ return {nm:a.nm, v:a.v, b:a.b, ic:a.ic, i:i, sab:row?row[1]:null,
+  sabS:row?sabSeats(row[1]):[], sabB:row?sabSeatMain(row[1]):null};});
 function avArchByName(nm){
  for(var i=0;i<AV_ROSTER.length;i++)if(AV_ROSTER[i].nm===nm)return AV_ROSTER[i];
  return null;}
@@ -53041,7 +53156,9 @@ function avDetail(st,a){
   +'<div class="ad-sub">'+esc(ARCH_CREDIT)+'</div>';
  if(a.sab)
   out+='<div class="av-imp" style="--s:'+seatCol(a.sabB)+'"><div class="pm-eye">Impact</div>'
-   +'<p class="av-imp-v"><b>'+esc(a.sab)+'</b><span>primary saboteur, at '+AV_THE[a.sabB]+'</span></p>'
+   +'<p class="av-imp-v"><b>'+esc(a.sab)+'</b><span>primary saboteur'
+   +(a.sabS.length?', its '+unp('address','addresses')+' at '+esc(unpackList(a.sabS.map(function(b){return AV_THE[b];}))):'')
+   +'</span></p>'
    +'<p class="av-imp-c">'+esc(AV_IMPACT[a.sab]||'')+'</p></div>';
  out+=avThreadHTML(st,a);
  out+='<div class="av-pl" id="avsclab">How much of this is you</div>'
@@ -70548,10 +70665,16 @@ function planSection(m,o){
     never outcome, at the conservative end of the book's own range. */
  var worth=o.brief?'':planWorth(al.inGift?GIFT_N:t.grant);
  if(worth)h+='<p class="sh-p">'+esc(worth)+'</p>';
- h+='<div class="sh-act">'
+ /* MANAGE BILLING ONLY FOR A RECORD THAT NAMES A PAID TIER, live or ended, 24
+    October (planNamesPaid, engine/plan.js). On a record that has never paid it
+    could only be refused, "there is no paid plan on this account yet", beside
+    a line promising a page to change tier, replace a card or stop. */
+ var billed=planNamesPaid(pl);
+ if(up||billed)h+='<div class="sh-act">'
   +(up?'<button class="btn pri" id="planup" data-tier="'+esc(up.to.k)+'">Move to '
     +esc(planNmIn(up.to))+'</button>':'')
-  +'<button class="btn" id="planman">Manage billing</button></div>'
+  +(billed?'<button class="btn" id="planman">Manage billing</button>':'')+'</div>';
+ h+=''
   /* WHAT THE BUTTON OPENS, said before it is pressed. Manage billing used to
      answer "not built yet" on a press, so the line beside it only said where
      payment was not. It opens Stripe's own page now, through authPlanPortal,
@@ -70566,8 +70689,8 @@ function planSection(m,o){
      ui/auth.js reads the plan back onto this record, so all three are named.
      STRIPE-SETUP.md switches plan changes on in the portal for the same
      reason. */
-  +'<p class="sh-p dim">Manage billing opens the payment page, where you can change tier, '
-  +'replace a card or stop. Nothing about a card is ever held on this device, and the record '
+  +'<p class="sh-p dim">'+(billed?'Manage billing opens the payment page, where you can change tier, '
+  +'replace a card or stop. ':'')+'Nothing about a card is ever held on this device, and the record '
   +'carries no customer number.</p>'
   +'</div>';
  return h;}
@@ -71933,6 +72056,7 @@ function authCheck(){
      Stripe, and the payment still happened, so it says where the plan is */
   if(back==='done')status('Payment finished. Log in from Account to bring the plan onto this record.','fail');
   return Promise.resolve(null);}
+ AUTH_PLAN_READ_AT=Date.now();
  return authCall('GET','/v1/me',null,s.token).then(function(r){
   var acc=r.body&&r.body.account;
   var redraw=function(){
@@ -71946,6 +72070,7 @@ function authCheck(){
    /* the same answer carries the plan, so the boot check reads it without a
       second request */
    authPlanBack(back,r.body.billing);
+   authPlanArm();
    profileSyncStart();
    return 'ok';}
   if(r.status===401){
@@ -72128,6 +72253,12 @@ function authPlanTake(b){
      card has not gone through, so this line is not the only place they live. */
   say='The card for '+nm+' did not go through. Everything you have opened still runs. New patterns '
    +'wait until the card does, and Manage billing replaces the card.'; kind='fail';}
+ /* AND WHEN IT DOES, 24 October (P3-3 of the 23 October QA pass). The refused
+    card was said on a held line and on Billing's State row, and the read that
+    found it paid said nothing, though that read is the one that opens the
+    month's new patterns (planFromServer, engine/plan.js). */
+ else if(r.nowLive&&r.wasLive&&r.wasStatus==='past_due'&&r.status!=='past_due')
+  say='The card for '+nm+' went through. This month\'s new patterns are open.';
  /* STOPPED ON THE PAYMENT PAGE, and turned back on there. Neither moves the
     tier, the status or the period, so neither was said: a person came back
     from pressing stop to silence and a plan that read as running. Said as a
@@ -72153,9 +72284,53 @@ function authPlanTake(b){
 function authPlanRead(){
  var s=authSession();
  if(!s)return Promise.resolve({ok:false, took:'signed out'});
+ AUTH_PLAN_READ_AT=Date.now();
  return authCall('GET','/v1/me',null,s.token).then(function(r){
   if(!r.ok||!r.body)return {ok:false, took:'unread', status:r.status};
-  return {ok:true, took:authPlanTake(r.body.billing)};});}
+  var took=authPlanTake(r.body.billing);
+  authPlanArm();
+  return {ok:true, took:took};});}
+/* A PAGE LEFT OPEN ACROSS A RENEWAL, 24 October (P2-2 of the 23 October QA
+   pass). The plan was read off the server only at boot, after a sign in and on
+   the way back from Stripe, and the record's own end date ends any renewal it
+   has not read three days after the period (planPast and PLAN_GRACE_MS,
+   engine/plan.js). That is right for a device signed out or offline, which is
+   what it was built for, and it was wrong for a signed in page that was simply
+   never reloaded: a tab kept open showed a person whose card had just renewed
+   "On Free" and "State ended", with the layers they pay for locked, until a
+   reload. Measured eight runs in eight, and coming back to the tab sent no
+   request.
+
+   So while signed in the plan is read again when the page comes back into
+   view or gains focus, at most once an hour, and once on a timer a minute
+   before the grace runs out, so the last word before an unread renewal reads
+   as an ending is the server's. A stopped plan (ends) needs no timer: it ends
+   on its day whatever the server says next. */
+var AUTH_PLAN_EVERY_MS=3600*1000, AUTH_PLAN_TIMER=null, AUTH_PLAN_READ_AT=Date.now();
+/* setTimeout holds at most 2^31 - 1 milliseconds, about 24.8 days, and a
+   longer wait fires at once, so a longer one is armed in steps */
+var AUTH_TIMER_MAX=2147483647;
+/* when the timer should read, as a time, or null when nothing needs one */
+function authPlanDue(){
+ if(!authSession()||typeof CURP==='undefined'||!CURP||!CURP.plan)return null;
+ var pl=CURP.plan;
+ if(planState(pl)!=='live'||pl.ends)return null;
+ var u=(typeof pl.until==='string')?Date.parse(pl.until):NaN; if(!isFinite(u))return null;
+ var at=u+PLAN_GRACE_MS-60000;
+ return at>Date.now()?at:null;}
+function authPlanArm(){
+ if(AUTH_PLAN_TIMER){ clearTimeout(AUTH_PLAN_TIMER); AUTH_PLAN_TIMER=null; }
+ var at=authPlanDue(); if(at===null)return;
+ AUTH_PLAN_TIMER=setTimeout(function(){ AUTH_PLAN_TIMER=null;
+  if(Date.now()<at-1000){ authPlanArm(); return; }
+  authPlanRead(); },Math.min(Math.max(0,at-Date.now()),AUTH_TIMER_MAX));}
+function authPlanWake(){
+ try{ if(document.visibilityState&&document.visibilityState!=='visible')return; }catch(e){}
+ if(!authSession()||Date.now()-AUTH_PLAN_READ_AT<AUTH_PLAN_EVERY_MS)return;
+ authPlanRead();}
+if(typeof addEventListener==='function'){
+ addEventListener('focus',authPlanWake);
+ try{ document.addEventListener('visibilitychange',authPlanWake); }catch(e){}}
 /* ?billing= is what the server sends Stripe back to (createCheckout and
    createPortal in reboot-os). Read once and removed, keeping every other
    parameter, so ?dev=1 and a hash survive. */
@@ -72364,6 +72539,17 @@ function planTiersHtml(){
     saboteurs were drawn on the Field the same minute */
  var gift=(typeof lockGift==='function')&&lockGift();
  var seeNow=planSight(pl,gift), nowT=planOf(pl);
+ /* CHECKOUT CLOSED, SAID WHERE THE PRESS WOULD SIT, 24 October (P2-1 of the 23
+    October QA pass). The paywall sheet asks whether paying is open before it
+    draws a press, and says "Opens soon" while it is not; this group asked only
+    planBuyable, so it offered "Move to tier one" on every rung the sheet called
+    closed, and the sheet's own Billing link went from the one to the other. A
+    press then met "Sign in first", or, signed in, the server's refusal: "Paid
+    checkout is not open in this release yet." It reads the paywall's own
+    answer now, pwPayOpen (ui/paywall.js), which is planCheckoutOpen with the
+    gates' PAYWALL_PAY_OPEN seam beside it, and says the paywall's own word. */
+ var pay=(typeof pwPayOpen==='function')?pwPayOpen():planCheckoutOpen();
+ var soon=(typeof PW_W!=='undefined'&&PW_W.soon)||'Opens soon';
  /* WHICH TIER THE PERSON HAS, FIRST, and what it does and does not show them.
     The row marked "You are on this" is further down, and a person deciding
     whether to pay should not have to scroll to learn where they stand. The
@@ -72404,15 +72590,18 @@ function planTiersHtml(){
       disabled button: a control that takes a press and refuses is furniture. */
    +(r.now?'<span class="pt-now">You are on this</span>'
      :(r.up&&!r.buy?'<span class="pt-now pt-shut">'+(r.lead?'Opens with the lead suite':'Not open yet')+'</span>'
+     :(r.up&&!pay?'<span class="pt-now pt-shut">'+esc(soon)+'</span>'
      :(r.up?'<button class="btn" type="button" data-ptier="'+esc(r.k)+'">Move to '
-       +esc(planNmIn(PLAN_BY[r.k]))+'</button>':'')))
+       +esc(planNmIn(PLAN_BY[r.k]))+'</button>':''))))
    +'</div></div>';});
  h+='</div>';
  /* THE FOOT SAYS WHAT A PRESS WILL MEET, before it is pressed. */
  var foot=[];
  if(al&&al.inGift)foot.push('You have '+al.left+' patterns left of the '+GIFT_N+' you were given. '
   +'While any of the gift is left, a run spends the gift first, on every tier.');
- if(!signed)foot.push('Moving to a tier needs a sign in, because the plan is held on your record. '
+ /* while checkout is closed there is no press, so nothing is said about what a
+    press needs or what it charges (P2-1, above) */
+ if(!signed&&pay)foot.push('Moving to a tier needs a sign in, because the plan is held on your record. '
   +'Sign in from Account, then come back here.');
  /* the price is on every row now, so the foot says when it is charged rather
     than promising to show it. Monthly and nothing more: no annual price is
@@ -72421,11 +72610,14 @@ function planTiersHtml(){
     server heard a finished checkout and nothing else. It hears a tier changed
     on Stripe's page now, so moving down is true again; panels.js planSection
     carries the reason beside its own line. */
- foot.push('Each price is charged once a month until you stop. You pay on a separate payment page, '
-  +'and nothing is charged until you confirm there. '
-  +'Moving down or stopping goes through Manage billing above, and stopping deletes nothing.');
+ /* "MANAGE BILLING ABOVE" ONLY WHERE IT IS ABOVE, 24 October: Your plan draws
+    Manage billing only for a record that names a paid tier (planNamesPaid,
+    engine/plan.js), so the sentence that points at it goes with it. */
+ if(pay)foot.push('Each price is charged once a month until you stop. You pay on a separate payment page, '
+  +'and nothing is charged until you confirm there.');
+ if(planNamesPaid(pl))foot.push('Moving down or stopping goes through Manage billing above, and stopping deletes nothing.');
  h+='<div class="ac-gf">'+foot.map(function(s){return '<p>'+esc(s)+'</p>';}).join('')
-  +(signed?'':'<div class="pt-acts"><button class="btn" type="button" id="ptacc">Go to account</button></div>')
+  +((signed||!pay)?'':'<div class="pt-acts"><button class="btn" type="button" id="ptacc">Go to account</button></div>')
   +'</div></div>';
  return h;}
 
@@ -72850,13 +73042,21 @@ function accProfStart(){
  if(!p){var typed=i.value; status('Nothing was started. '+accWhy(),'fail'); renderAccount();
   var i2=$('acpnew'); if(i2)i2.value=typed; return false;}
  accSwitched();
- status(p.name+' is open. It starts blank.','ok'); return true;}
+ status(accOpenSay(p)+' It starts blank.','ok'); return true;}
+/* "YOU IS OPEN." The default profile is named You (blankProfile('You'),
+   engine/profiles.js), and the sentence that names the profile now open was
+   built from the name, so a delete that moved onto it read "You is open."
+   (seen in tests/golden.js station 8, 23 October). The person's own default
+   profile is said as what it is, the way personas.js already reads that name. */
+function accOpenSay(p){
+ var nm=(p&&p.name)||'That profile';
+ return (nm==='You'?'Your own profile':nm)+' is open.';}
 function accProfOpen(id){
  var p=profFind(id), nm=(p&&p.name)||'That profile';
  accToOwn();
  if(!profOpen(id)){status(nm+' was not opened. '+accWhy(),'fail'); renderAccount(); return false;}
  accSwitched();
- status(CURP.name+' is open.','ok'); return true;}
+ status(accOpenSay(CURP),'ok'); return true;}
 /* THE SIDE KEYS GO WITH THE PROFILE. The avatar ratings and the active
    rituals are held beside the record under its id, so a delete that left them
    would leave part of a deleted profile in this browser. Only that id's entry
@@ -72887,7 +73087,7 @@ function accProfDelete(id){
  if(d.moved||PROFILES.indexOf(PROF_BY[PEOPLE[0].nm])<0)accSwitched(); else renderAccount();
  if(!side)status(d.name+' is deleted. Its rituals and avatar ratings could not be cleared from this browser.','fail');
  else status(d.name+' is deleted from this browser, the only place it was held.'
-  +(d.moved?' '+CURP.name+' is open.':''),'ok');
+  +(d.moved?' '+accOpenSay(CURP):''),'ok');
  return true;}
 
 /* ---------- 4.2 display ---------- */
@@ -73791,10 +73991,19 @@ function pwSigned(){ return typeof authSession==='function'&&!!authSession(); }
    same reason pwPlan reads the own plan there. Never under the harness seam:
    SIGHT_PLAN, when a gate sets one, is the whole answer, the rule lockGift
    keeps, so a gate measuring a tier is not handed the gift on an example. */
-function pwGift(){
+function pwInGift(){
  if(typeof SIGHT_PLAN!=='undefined'&&SIGHT_PLAN)return false;
  if(typeof showOnly==='function'&&showOnly())return typeof showOwnGift==='function'&&showOwnGift();
  return typeof lockGift==='function'&&lockGift();}
+/* THE GIFT'S OWN SHEET IS FOR A PERSON ON FREE, 24 October (P3-6 of the 23
+   October QA pass). A person paying for tier one who has not used the gift up
+   met it too: "Your gift: 100 patterns, no card. Everything is open.", said to
+   somebody paying by card, with Close and no way to stop or change the plan.
+   A payer inside the gift gets the paying sheet, with the gift's line beside
+   it (pwPaidInGift, PW_W.giftPaid). Inside the gift everything stays open
+   either way: this moves which sheet says so, never what is seen. */
+function pwGift(){ return pwInGift()&&planOf(pwPlan()).k==='free'; }
+function pwPaidInGift(){ return pwInGift()&&planOf(pwPlan()).k!=='free'; }
 
 /* ---- the words. Every string the sheet prints starts here, so the voice
    gate reads one list. ---- */
@@ -73830,7 +74039,9 @@ var PW_W={
     it, so the gift has one wording */
  giftTitle:'Your whole reading is open.',
  giftTl:'Open on your gift',
- gift:function(){ return ['Your gift: '+GIFT_N+' ','patterns',', no card. Everything is open.']; }};
+ gift:function(){ return ['Your gift: '+GIFT_N+' ','patterns',', no card. Everything is open.']; },
+ /* the same fact for somebody paying, with no claim about a card */
+ giftPaid:'Your gift is not used up yet. Everything is open until it is.'};
 /* 1,200 and not 1200, the way the tiers page prints it (ptN, ui/plans.js) */
 function pwN(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,','); }
 /* a ring's name, off SIGHT: "the masks" is Masks on a ring */
@@ -73941,6 +74152,8 @@ function pwHtml(){
      that tier's own card. */
   +(now.k==='free'&&free?'<div class="pw-here pw-quiet">'+PW_HERE+'<span><b>'+esc(PW_W.here)+'</b> '
     +esc(free.nm+', '+free.grant+' patterns a '+free.per)+'</span></div>':'')
+  /* a payer inside the gift: the gift's line beside the paying sheet (pwGift) */
+  +(pwPaidInGift()?'<div class="pw-here pw-quiet pw-gline"><span>'+esc(PW_W.giftPaid)+'</span></div>':'')
   +'</header>'
   +'<div class="pw-cards">'+cards.map(function(r){return pwCard(pl,r,pay);}).join('')+'</div>'
   +(prac?pwPrac(prac,pay):'')
@@ -73983,7 +74196,7 @@ function paywallOpen(k,back){
  var pl=pwPlan();
  /* a ring the person already sees is not a reason they came, so it marks
     nothing, and the door is the cheapest tier that opens what was pressed */
- if(k&&(pwGift()||planSees(pl,k)||!planNeed(k)))k=null;
+ if(k&&(pwInGift()||planSees(pl,k)||!planNeed(k)))k=null;
  PW.k=k||null; PW.door=k?planNeed(k).k:null;
  PW.back=back||document.activeElement||null;
  if(typeof TIP!=='undefined')TIP.hide();
@@ -78937,7 +79150,23 @@ addEventListener('click',function(e){
     below. Only that one sent tutorialCompleted, and the bridge's Not now and
     Go in are the ways out for somebody who did not run the release, so
     tests/golden.js found the server reading the first run as never finished
-    for every person who finished it the whole way. */
+    for every person who finished it the whole way.
+
+    THE MARK IS CALLED tutorialCompleted AND IT STAYS SO, 24 October, systems
+    audit SG-18. What it records is that the opening reached its end, here or
+    at the bridge's done, which is how the Account page already says it: "a
+    mark when you finish the opening". The name is from before the Day One
+    tutorial was deleted on 23 October. It is not renamed for the word, on the
+    identity rule DECISIONS.md records that day for ch and the character key,
+    because it is a stored key and not a label. The live server's checkpoint
+    accepts four keys and refuses any other with a 400 (Reboot-OS
+    atuned/server/src/funnel.js, validateCheckpointPatch), the first visit's
+    row keeps it as the column tutorial_completed, and four of its stored
+    functions read the key, so a rename sent from here alone would lose this
+    mark for every person who finishes. A rename starts on the server: accept
+    both names, migrate the column and the functions, deploy, and only then
+    send the new name from here, with tests/copy.js's table of sends moved in
+    the same change. */
  if(k==='endin'){
   if(typeof authFunnelCheckpoint==='function')authFunnelCheckpoint({tutorialCompleted:true});
   obClose('end'); return; }
@@ -81393,5 +81622,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005367487"></div>
+<div id="eof" hidden data-len="005382601"></div>
 </body></html>
