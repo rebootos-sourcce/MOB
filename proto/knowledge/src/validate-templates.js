@@ -98,6 +98,12 @@ for (const edge of (db.relationshipEdges || [])) {
   if (!byId.has(edge.fromId)) errors.push((edge.edgeId || '<unknown>') + ': source endpoint missing: ' + edge.fromId);
   if (edge.toId && !byId.has(edge.toId)) errors.push((edge.edgeId || '<unknown>') + ': target endpoint missing: ' + edge.toId);
 }
+for (const edge of (db.relationshipEdges || [])) {
+  for (const field of ['relationshipType','status','canonicality','validationStatus']) {
+    if (!edge[field]) errors.push((edge.edgeId || '<unknown>') + ': missing edge field ' + field);
+  }
+  if (!edge.toId && (!edge.toLabel || !edge.status)) errors.push((edge.edgeId || '<unknown>') + ': unresolved target needs a label and status');
+}
 const typedEdgeIds = new Set();
 for (const kind of requiredKinds) {
   if (!counts[kind]) errors.push('required domain kind absent from generated catalog: ' + kind);
