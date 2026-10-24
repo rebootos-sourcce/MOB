@@ -254,3 +254,22 @@ The latest artifact fetch confirmed the template catalog remains proposed/not en
 2. Build a type-safe relationship register for source-row references and unresolved candidate crosswalks; never convert source-row mappings into causal/canonical hierarchy edges without evidence.
 3. Integrate the psychological registry through a separate namespace and explicit relationship types, then run generator/validator and forward/reverse graph tests.
 4. Refresh this ledger with exact command, exit code, output, and current branch/commit SHA after actual execution.
+
+
+---
+
+## Build cycle — 2026-10-24 — source-roster and typed-edge expansion
+
+- Registry schema and template catalog advanced to **1.3.0**. Template payloads are now adapter-generated projections rather than duplicated source-registry objects.
+- Registry advanced to **156 records**: existing 125 plus 19 v341 domain-roster labels, 7 exact affirmation records, 3 related consciousness concept records, and 2 source-contradiction records.
+- All records retain three pass slots with sources/findings. The 15 behavioral-domain records have the eight new behavioral-energy fields; the 8 Conscious Domain records have independent contextual research and adversarial review dated 2026-10-24.
+- Added **130 typed relationship records** with provenance and explicit status. No candidate crosswalk was promoted to canonical membership.
+- Fresh static parse of the committed registry blob: 156/156 declared count match; 156/156 template content statuses complete; 156/156 three-pass slots marked complete; 0 duplicate IDs; 0 missing template fields; 0 dangling record links; 0 invalid in-subsystem edge endpoints; 130 unique typed edges.
+- Two open source contradictions are now records, not prose-only notes: (1) Architect/Rulership vs Imperium in the v341 domain roster; (2) exact v341 12-archetype names not enumerated in the extraction appendix, while the manuscript snapshot has 12 names and the file named ARCH12.json contains 18 rows.
+- The seven locked affirmations are individual records. The seven-to-eight Conscious Domain mapping remains candidate-only.
+- The three related concepts Pattern, Story, and Imperium remain separate from the eight Conscious Domains. Their detailed descriptions are secondary-source content pending exact v341 verification.
+
+### Still not closed
+- Full project denominator is not reconciled: the 108 Fetter deep-template records, 33 Saboteur records, 9 complex/hyper/super template rows, 972 address-register prompts, and current experiential runtime graph remain separate artifacts.
+- The 130-edge register is not yet loaded into the experiential runtime. No Nerve-to-Super-Complex integration or traversal tests have been run.
+- Global KPI 1, KPI 2, and KPI 3 remain **OPEN / NOT CERTIFIED** until the full denominator, source-backed record quality, and runtime graph are independently validated.
