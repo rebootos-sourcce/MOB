@@ -1389,6 +1389,27 @@
           "researchPasses"
         ]
       }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "inversion_pole_candidate"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceFamily",
+          "sourceRole",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
     }
   ]
 }
