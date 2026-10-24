@@ -2,7 +2,7 @@
   "registryId": "atuned.deep_psychological.record_registry",
   "version": "1.0.0",
   "generatedAt": "2026-10-22",
-  "status": "OPEN_STRUCTURAL_LINK_FIELD_REPAIRED_RESEARCH_AND_RUNTIME_CLOSURE_REMAIN",
+  "status": "OPEN_LINK_AUDIT_RECORDED_CONSCIOUS_DOMAIN_PASS_2_3_BLOCKED_RUNTIME_CLOSURE_OPEN",
   "purpose": "Source-qualified inventory with provisional content populated for the 15 owner-stated behavioral-domain records and explicit source-gap scaffolding for 8 Conscious Domain records. Provisional text is not canonical approval.",
   "recordContract": "docs/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_FORMAT_TDD_v1.md",
   "rules": [
@@ -1406,7 +1406,14 @@
         "Owner-provided project context; canonical repo source not yet located."
       ],
       "story": "A person notices that a confident assumption is contradicted by new evidence. They check the source, revise the belief, and make a better decision without treating correction as humiliation.",
-      "atunedVersion": "Knowledge is coherent when perception, evidence, and action stay aligned. It decoheres when certainty protects identity from feedback."
+      "atunedVersion": "Knowledge is coherent when perception, evidence, and action stay aligned. It decoheres when certainty protects identity from feedback.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Owner-stated domain crosswalk remains unapproved; do not infer semantic links from lexical similarity. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "domain:02",
@@ -1658,7 +1665,14 @@
         "Owner-provided project context; canonical repo source not yet located."
       ],
       "story": "Two collaborators leave a tense meeting with different interpretations. One restates the shared goal, checks what each person heard, and makes the next exchange explicit.",
-      "atunedVersion": "Communication is coherent when signal survives transmission and feedback corrects distortion. It decoheres when volume, ambiguity, withholding, or manipulation replaces mutual understanding."
+      "atunedVersion": "Communication is coherent when signal survives transmission and feedback corrects distortion. It decoheres when volume, ambiguity, withholding, or manipulation replaces mutual understanding.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Owner-stated domain crosswalk remains unapproved; do not infer semantic links from lexical similarity. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "domain:03",
@@ -1910,7 +1924,14 @@
         "Owner-provided project context; canonical repo source not yet located."
       ],
       "story": "A difficult task stalls. Instead of escalating pressure everywhere, a person identifies the one constraint that matters, applies focused effort, then stops to assess the result.",
-      "atunedVersion": "Directed Force is coherent when will, energy, and action share a target and remain adjustable to feedback. It decoheres when force becomes coercion or activity loses its aim."
+      "atunedVersion": "Directed Force is coherent when will, energy, and action share a target and remain adjustable to feedback. It decoheres when force becomes coercion or activity loses its aim.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Owner-stated domain crosswalk remains unapproved; do not infer semantic links from lexical similarity. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "domain:04",
@@ -2162,7 +2183,14 @@
         "Owner-provided project context; canonical repo source not yet located."
       ],
       "story": "A team repeatedly misses handoffs. The lead clarifies ownership and decision rights, invites challenge to the rules, and reviews whether the new structure actually helps.",
-      "atunedVersion": "Rulership and Order is coherent when structure serves the system and authority remains accountable. It decoheres when control serves the controller or rules replace judgment."
+      "atunedVersion": "Rulership and Order is coherent when structure serves the system and authority remains accountable. It decoheres when control serves the controller or rules replace judgment.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Owner-stated domain crosswalk remains unapproved; do not infer semantic links from lexical similarity. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "domain:05",
@@ -2414,7 +2442,14 @@
         "Owner-provided project context; canonical repo source not yet located."
       ],
       "story": "A creator has a promising idea but keeps refining it privately. They build a small version, test it with real users, and let feedback shape the next iteration.",
-      "atunedVersion": "Creation and Manifestation is coherent when intention becomes grounded output through action and feedback. It decoheres through endless ideation, premature execution, or attachment to appearance over effect."
+      "atunedVersion": "Creation and Manifestation is coherent when intention becomes grounded output through action and feedback. It decoheres through endless ideation, premature execution, or attachment to appearance over effect.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Owner-stated domain crosswalk remains unapproved; do not infer semantic links from lexical similarity. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "domain:06",
@@ -2666,7 +2701,14 @@
         "Owner-provided project context; canonical repo source not yet located."
       ],
       "story": "A process once useful now creates repeated errors. The team identifies what must end, protects what still works, and creates a transition plan rather than destroying everything in frustration.",
-      "atunedVersion": "Destruction and Transformation is coherent when endings are deliberate, proportionate, and make room for a viable next state. It decoheres when damage is mistaken for progress or necessary endings are avoided."
+      "atunedVersion": "Destruction and Transformation is coherent when endings are deliberate, proportionate, and make room for a viable next state. It decoheres when damage is mistaken for progress or necessary endings are avoided.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Owner-stated domain crosswalk remains unapproved; do not infer semantic links from lexical similarity. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "domain:07",
@@ -2918,7 +2960,14 @@
         "Owner-provided project context; canonical repo source not yet located."
       ],
       "story": "A friend asks for support that would overextend the other person. The response remains caring while naming a limit and offering a realistic alternative.",
-      "atunedVersion": "Love and Connection is coherent when care includes the reality of both people. It decoheres when belonging requires possession, self-erasure, or withdrawal from honest contact."
+      "atunedVersion": "Love and Connection is coherent when care includes the reality of both people. It decoheres when belonging requires possession, self-erasure, or withdrawal from honest contact.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Owner-stated domain crosswalk remains unapproved; do not infer semantic links from lexical similarity. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "domain:08",
@@ -3170,7 +3219,14 @@
         "Owner-provided project context; canonical repo source not yet located."
       ],
       "story": "After a serious setback, a person stops pretending nothing happened. They identify what was harmed, accept help, set a sustainable pace, and check whether function is returning.",
-      "atunedVersion": "Healing and Restoration is coherent when repair responds to actual damage and respects time, consent, and capacity. It decoheres when recovery is rushed, concealed, or turned into a permanent identity."
+      "atunedVersion": "Healing and Restoration is coherent when repair responds to actual damage and respects time, consent, and capacity. It decoheres when recovery is rushed, concealed, or turned into a permanent identity.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Owner-stated domain crosswalk remains unapproved; do not infer semantic links from lexical similarity. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "domain:09",
@@ -3422,7 +3478,14 @@
         "Owner-provided project context; canonical repo source not yet located."
       ],
       "story": "A person leaves a status position that conflicts with their values. They acknowledge the real cost, distinguish what was chosen from what was imposed, and carry forward the learning without treating pain as proof of virtue.",
-      "atunedVersion": "Sacrifice and Wisdom Through Descent is coherent when cost is consciously chosen or honestly faced and produces discernment without idealizing harm. It decoheres through martyrdom or avoidable suffering."
+      "atunedVersion": "Sacrifice and Wisdom Through Descent is coherent when cost is consciously chosen or honestly faced and produces discernment without idealizing harm. It decoheres through martyrdom or avoidable suffering.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Owner-stated domain crosswalk remains unapproved; do not infer semantic links from lexical similarity. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "domain:10",
@@ -3674,7 +3737,14 @@
         "Owner-provided project context; canonical repo source not yet located."
       ],
       "story": "A dispute reveals that a popular teammate caused harm. The group checks the facts, applies the same standard it would apply to anyone else, and creates a repair path without excusing or dehumanizing.",
-      "atunedVersion": "Justice and Truth is coherent when evidence, standards, speech, and repair align. It decoheres when vengeance masquerades as justice or certainty suppresses inquiry."
+      "atunedVersion": "Justice and Truth is coherent when evidence, standards, speech, and repair align. It decoheres when vengeance masquerades as justice or certainty suppresses inquiry.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Owner-stated domain crosswalk remains unapproved; do not infer semantic links from lexical similarity. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "domain:11",
@@ -3926,7 +3996,14 @@
         "Owner-provided project context; canonical repo source not yet located."
       ],
       "story": "A meeting repeats the same unproductive argument. Someone names the hidden assumption and offers a playful alternative that opens the problem without humiliating the people involved.",
-      "atunedVersion": "Trickster and Disruption is coherent when disruption reveals a blind spot and creates new options. It decoheres when chaos, deception, or humiliation becomes the goal."
+      "atunedVersion": "Trickster and Disruption is coherent when disruption reveals a blind spot and creates new options. It decoheres when chaos, deception, or humiliation becomes the goal.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Owner-stated domain crosswalk remains unapproved; do not infer semantic links from lexical similarity. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "domain:12",
@@ -4178,7 +4255,14 @@
         "Owner-provided project context; canonical repo source not yet located."
       ],
       "story": "A plan keeps failing because it ignores the team's actual energy and the environment's constraints. The person observes the pattern, adapts the schedule, and tests a more sustainable rhythm.",
-      "atunedVersion": "Nature and Organic Intelligence is coherent when plans stay responsive to living conditions and feedback. It decoheres when instinct is treated as infallible or systems are forced to fit abstractions."
+      "atunedVersion": "Nature and Organic Intelligence is coherent when plans stay responsive to living conditions and feedback. It decoheres when instinct is treated as infallible or systems are forced to fit abstractions.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Owner-stated domain crosswalk remains unapproved; do not infer semantic links from lexical similarity. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "domain:13",
@@ -4430,7 +4514,14 @@
         "Owner-provided project context; canonical repo source not yet located."
       ],
       "story": "An unusual experience invites a dramatic explanation. The person records what happened, separates observation from interpretation, explores alternatives, and leaves the question open where evidence is insufficient.",
-      "atunedVersion": "Mystery and the Unseen is coherent when uncertainty stays open to inquiry without being collapsed into either credulity or dismissal. It decoheres when speculation becomes certainty."
+      "atunedVersion": "Mystery and the Unseen is coherent when uncertainty stays open to inquiry without being collapsed into either credulity or dismissal. It decoheres when speculation becomes certainty.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Owner-stated domain crosswalk remains unapproved; do not infer semantic links from lexical similarity. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "domain:14",
@@ -4682,7 +4773,14 @@
         "Owner-provided project context; canonical repo source not yet located."
       ],
       "story": "A person says integrity matters but repeatedly avoids a difficult conversation. They choose one honest action, accept its consequences, and review whether their practice matches their stated value.",
-      "atunedVersion": "Devotion and Right Action is coherent when repeated behavior expresses a value while remaining open to correction. It decoheres when loyalty overrides discernment or noble ends excuse harmful means."
+      "atunedVersion": "Devotion and Right Action is coherent when repeated behavior expresses a value while remaining open to correction. It decoheres when loyalty overrides discernment or noble ends excuse harmful means.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Owner-stated domain crosswalk remains unapproved; do not infer semantic links from lexical similarity. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "domain:15",
@@ -4934,7 +5032,14 @@
         "Owner-provided project context; canonical repo source not yet located."
       ],
       "story": "A group is stuck trying to avoid every mistake. One member proposes a low-stakes experiment, invites play, and keeps the boundaries clear enough that everyone can participate safely.",
-      "atunedVersion": "Play and Creative Delight is coherent when curiosity opens possibility without abandoning context or responsibility. It decoheres when distraction replaces engagement or humor degrades others."
+      "atunedVersion": "Play and Creative Delight is coherent when curiosity opens possibility without abandoning context or responsibility. It decoheres when distraction replaces engagement or humor degrades others.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Owner-stated domain crosswalk remains unapproved; do not infer semantic links from lexical similarity. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "archetype:candidate:warrior",
@@ -5262,7 +5367,14 @@
       "band": "Solar plexus",
       "flagged": false,
       "story": "Illustrative pattern narrative (provisional): It installed early, in a moment where being seen meant being in danger. The body learned to arm first and ask later. In present-day behavior, this can appear as: In conflict: You are calm and decisive while others panic. You take the hit so someone else does not. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
-      "atunedVersion": "ATÜNED interpretation (provisional): Protection through force. The will to act under threat. Healthy expression: Courage. You move first. Distortion to watch: It blocks rest. Stillness feels like exposure."
+      "atunedVersion": "ATÜNED interpretation (provisional): Protection through force. The will to act under threat. Healthy expression: Courage. You move first. Distortion to watch: It blocks rest. Stillness feels like exposure.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Archetype taxonomy is unresolved; do not create links from provisional candidate prose. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "archetype:candidate:orphan",
@@ -5558,7 +5670,14 @@
       "band": "Heart",
       "flagged": false,
       "story": "Illustrative pattern narrative (provisional): It set when a need went unmet long enough that needing itself felt dangerous. In present-day behavior, this can appear as: In closeness: You keep a measured distance so any loss will cost less. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
-      "atunedVersion": "ATÜNED interpretation (provisional): Survival without rescue. Belonging earned the hard way. Healthy expression: Resilience. You endure what breaks others. Distortion to watch: It blocks closeness. You leave before you are left."
+      "atunedVersion": "ATÜNED interpretation (provisional): Survival without rescue. Belonging earned the hard way. Healthy expression: Resilience. You endure what breaks others. Distortion to watch: It blocks closeness. You leave before you are left.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Archetype taxonomy is unresolved; do not create links from provisional candidate prose. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "archetype:candidate:innocent",
@@ -5833,7 +5952,14 @@
       "band": "Root",
       "flagged": false,
       "story": "Illustrative pattern narrative (provisional): It quiets when trust is broken often enough that openness starts to feel naive. In present-day behavior, this can appear as: In new rooms: When active, you enter open. When quiet, you scan for threat first. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
-      "atunedVersion": "ATÜNED interpretation (provisional): Open trust. The belief that things can be good. Healthy expression: Faith. You expect the good. Distortion to watch: It blocks discernment. You look away from what is real."
+      "atunedVersion": "ATÜNED interpretation (provisional): Open trust. The belief that things can be good. Healthy expression: Faith. You expect the good. Distortion to watch: It blocks discernment. You look away from what is real.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Archetype taxonomy is unresolved; do not create links from provisional candidate prose. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "archetype:candidate:caregiver",
@@ -6108,7 +6234,14 @@
       "band": "Heart",
       "flagged": false,
       "story": "Illustrative pattern narrative (provisional): It quiets when giving once cost too much, or when your own needs were never met in return. In present-day behavior, this can appear as: With others: You sense what people need before they say it. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
-      "atunedVersion": "ATÜNED interpretation (provisional): Tending. Feeling another need as your own. Healthy expression: Generosity that holds people up. Distortion to watch: It blocks self-care. Your needs come last."
+      "atunedVersion": "ATÜNED interpretation (provisional): Tending. Feeling another need as your own. Healthy expression: Generosity that holds people up. Distortion to watch: It blocks self-care. Your needs come last.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Archetype taxonomy is unresolved; do not create links from provisional candidate prose. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "archetype:candidate:explorer",
@@ -6383,7 +6516,14 @@
       "band": "Sacral",
       "flagged": false,
       "story": "Illustrative pattern narrative (provisional): It quiets when staying put became the safer bet, or when movement once meant escape. In present-day behavior, this can appear as: In routine: You feel the walls. The same path drains you. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
-      "atunedVersion": "ATÜNED interpretation (provisional): The open road. Movement as freedom. Healthy expression: Freedom. You need no permission. Distortion to watch: It blocks arrival. You never land."
+      "atunedVersion": "ATÜNED interpretation (provisional): The open road. Movement as freedom. Healthy expression: Freedom. You need no permission. Distortion to watch: It blocks arrival. You never land.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Archetype taxonomy is unresolved; do not create links from provisional candidate prose. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "archetype:candidate:outlaw",
@@ -6658,7 +6798,14 @@
       "band": "Solar plexus",
       "flagged": false,
       "story": "Illustrative pattern narrative (provisional): It flares where power was used against you and rules protected the wrong people. In present-day behavior, this can appear as: When cornered: It surges. You will burn the structure rather than submit. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
-      "atunedVersion": "ATÜNED interpretation (provisional): Breaking the rigged game. Refusal of false order. Healthy expression: Liberation. You break what must break. Distortion to watch: It blocks belonging. You burn bridges you need."
+      "atunedVersion": "ATÜNED interpretation (provisional): Breaking the rigged game. Refusal of false order. Healthy expression: Liberation. You break what must break. Distortion to watch: It blocks belonging. You burn bridges you need.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Archetype taxonomy is unresolved; do not create links from provisional candidate prose. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "archetype:candidate:lover",
@@ -6933,7 +7080,14 @@
       "band": "Heart",
       "flagged": false,
       "story": "Illustrative pattern narrative (provisional): It quiets when desire once made you unsafe, or when wanting led to loss. In present-day behavior, this can appear as: In attraction: Desire waits behind the guard rather than moving freely. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
-      "atunedVersion": "ATÜNED interpretation (provisional): Bonding. Desire and devotion. Healthy expression: Passion that moves you. Distortion to watch: It blocks wholeness. You lose yourself in another."
+      "atunedVersion": "ATÜNED interpretation (provisional): Bonding. Desire and devotion. Healthy expression: Passion that moves you. Distortion to watch: It blocks wholeness. You lose yourself in another.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Archetype taxonomy is unresolved; do not create links from provisional candidate prose. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "archetype:candidate:creator",
@@ -7208,7 +7362,14 @@
       "band": "Throat",
       "flagged": false,
       "story": "Illustrative pattern narrative (provisional): It quiets when making was judged, or when the work was never safe to show. In present-day behavior, this can appear as: In the work: Ideas come, but finishing stalls under the weight of not-yet-perfect. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
-      "atunedVersion": "ATÜNED interpretation (provisional): Making. Bringing the new into form. Healthy expression: Imagination without limit. Distortion to watch: It blocks finishing. Nothing is ever enough."
+      "atunedVersion": "ATÜNED interpretation (provisional): Making. Bringing the new into form. Healthy expression: Imagination without limit. Distortion to watch: It blocks finishing. Nothing is ever enough.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Archetype taxonomy is unresolved; do not create links from provisional candidate prose. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "archetype:candidate:jester",
@@ -7483,7 +7644,14 @@
       "band": "Sacral",
       "flagged": false,
       "story": "Illustrative pattern narrative (provisional): It quiets when seriousness became unsafe, so the laugh became the hiding place. In present-day behavior, this can appear as: In tension: You break it with humor, sometimes before it can be felt. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
-      "atunedVersion": "ATÜNED interpretation (provisional): Play. The truth a joke can carry. Healthy expression: Levity that lifts a room. Distortion to watch: It blocks depth. You deflect with the laugh."
+      "atunedVersion": "ATÜNED interpretation (provisional): Play. The truth a joke can carry. Healthy expression: Levity that lifts a room. Distortion to watch: It blocks depth. You deflect with the laugh.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Archetype taxonomy is unresolved; do not create links from provisional candidate prose. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "archetype:candidate:sage",
@@ -7758,7 +7926,14 @@
       "band": "Third eye",
       "flagged": false,
       "story": "Illustrative pattern narrative (provisional): It quiets when survival runs hot, because reflection needs room the threat does not allow. In present-day behavior, this can appear as: In a crisis: When active, you find the long view. When quiet, the Warrior acts before you can. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
-      "atunedVersion": "ATÜNED interpretation (provisional): Perspective. Truth beneath the noise. Healthy expression: Perspective. You see the whole. Distortion to watch: It blocks feeling. You watch instead of live."
+      "atunedVersion": "ATÜNED interpretation (provisional): Perspective. Truth beneath the noise. Healthy expression: Perspective. You see the whole. Distortion to watch: It blocks feeling. You watch instead of live.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Archetype taxonomy is unresolved; do not create links from provisional candidate prose. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "archetype:candidate:magician",
@@ -8033,7 +8208,14 @@
       "band": "Third eye",
       "flagged": false,
       "story": "Illustrative pattern narrative (provisional): It quiets where power was punished, so it learned to keep its hand hidden. In present-day behavior, this can appear as: With influence: You sense leverage but hesitate to use it openly. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
-      "atunedVersion": "ATÜNED interpretation (provisional): Transformation. Working with hidden law. Healthy expression: Vision. You change reality. Distortion to watch: It blocks honesty. You hide your hand."
+      "atunedVersion": "ATÜNED interpretation (provisional): Transformation. Working with hidden law. Healthy expression: Vision. You change reality. Distortion to watch: It blocks honesty. You hide your hand.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Archetype taxonomy is unresolved; do not create links from provisional candidate prose. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "archetype:candidate:ruler",
@@ -8308,7 +8490,14 @@
       "band": "Crown",
       "flagged": false,
       "story": "Illustrative pattern narrative (provisional): It quiets when control once failed, so it guards a position instead of governing one. In present-day behavior, this can appear as: In a system: You see what is broken and want to fix the structure. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
-      "atunedVersion": "ATÜNED interpretation (provisional): Order. Responsibility for the whole. Healthy expression: Authority. You hold the structure. Distortion to watch: It blocks trust. You must control everything."
+      "atunedVersion": "ATÜNED interpretation (provisional): Order. Responsibility for the whole. Healthy expression: Authority. You hold the structure. Distortion to watch: It blocks trust. You must control everything.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Archetype taxonomy is unresolved; do not create links from provisional candidate prose. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "archetype:candidate:hero",
@@ -8583,7 +8772,14 @@
       "band": "Solar plexus",
       "flagged": true,
       "story": "Illustrative pattern narrative (provisional): It installed where proving yourself once meant survival, so effort became identity. In present-day behavior, this can appear as: In a challenge: You rise, and the rising feels like the only safe place to stand. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
-      "atunedVersion": "ATÜNED interpretation (provisional): Rising to the call. Becoming capable through the trial. Healthy expression: Courage to take on what is hard. Distortion to watch: It blocks rest. Worth is earned, never given."
+      "atunedVersion": "ATÜNED interpretation (provisional): Rising to the call. Becoming capable through the trial. Healthy expression: Courage to take on what is hard. Distortion to watch: It blocks rest. Worth is earned, never given.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Archetype taxonomy is unresolved; do not create links from provisional candidate prose. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "archetype:candidate:everyman",
@@ -8858,7 +9054,14 @@
       "band": "Heart",
       "flagged": true,
       "story": "Illustrative pattern narrative (provisional): It quiets when standing out once cost belonging, so blending in became the safer shape. In present-day behavior, this can appear as: In a group: You read the room and match it, before you know what you actually think. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
-      "atunedVersion": "ATÜNED interpretation (provisional): Belonging. A place at the table, shared with ordinary people. Healthy expression: Connection that crosses difference. Distortion to watch: It blocks difference. Standing apart feels like danger."
+      "atunedVersion": "ATÜNED interpretation (provisional): Belonging. A place at the table, shared with ordinary people. Healthy expression: Connection that crosses difference. Distortion to watch: It blocks difference. Standing apart feels like danger.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Archetype taxonomy is unresolved; do not create links from provisional candidate prose. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "archetype:candidate:mentor",
@@ -9133,7 +9336,14 @@
       "band": "Third eye",
       "flagged": true,
       "story": "Illustrative pattern narrative (provisional): It quiets when guidance once went unheard, or being right stopped being enough. In present-day behavior, this can appear as: When asked: You want to hand over the whole map, not just the next step. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
-      "atunedVersion": "ATÜNED interpretation (provisional): Guidance. Wisdom passed on, not held. Healthy expression: Wisdom offered freely. Distortion to watch: It blocks listening. Your view outranks theirs before they have spoken."
+      "atunedVersion": "ATÜNED interpretation (provisional): Guidance. Wisdom passed on, not held. Healthy expression: Wisdom offered freely. Distortion to watch: It blocks listening. Your view outranks theirs before they have spoken.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Archetype taxonomy is unresolved; do not create links from provisional candidate prose. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "archetype:candidate:shadowarch",
@@ -9408,7 +9618,14 @@
       "band": "Solar plexus",
       "flagged": true,
       "story": "Illustrative pattern narrative (provisional): It formed wherever a real part of you got punished for showing, so it went underground instead of away. In present-day behavior, this can appear as: In others: What you cannot stand in someone else is often what you buried in yourself. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
-      "atunedVersion": "ATÜNED interpretation (provisional): What was disowned. The self you built a wall around. Healthy expression: Access to your full range, not just the acceptable half. Distortion to watch: It blocks wholeness. A part of you stays exiled."
+      "atunedVersion": "ATÜNED interpretation (provisional): What was disowned. The self you built a wall around. Healthy expression: Access to your full range, not just the acceptable half. Distortion to watch: It blocks wholeness. A part of you stays exiled.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Archetype taxonomy is unresolved; do not create links from provisional candidate prose. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "archetype:candidate:shapeshifter",
@@ -9683,7 +9900,14 @@
       "band": "Sacral",
       "flagged": true,
       "story": "Illustrative pattern narrative (provisional): It quiets when one true shape once was not safe, so staying undefined became the shelter. In present-day behavior, this can appear as: Across people: You are a different person with each one, and none of them are quite lying. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
-      "atunedVersion": "ATÜNED interpretation (provisional): Adaptation. Becoming whatever the moment requires. Healthy expression: Real adaptability. You meet people where they are. Distortion to watch: It blocks a stable self. There is no fixed ground to stand on."
+      "atunedVersion": "ATÜNED interpretation (provisional): Adaptation. Becoming whatever the moment requires. Healthy expression: Real adaptability. You meet people where they are. Distortion to watch: It blocks a stable self. There is no fixed ground to stand on.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Archetype taxonomy is unresolved; do not create links from provisional candidate prose. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "archetype:candidate:healer",
@@ -9958,7 +10182,14 @@
       "band": "Heart",
       "flagged": true,
       "story": "Illustrative pattern narrative (provisional): It quiets when the wound never got tended, so it kept tending everyone else’s instead. In present-day behavior, this can appear as: With others’ pain: You recognize it instantly and move to meet it. The narrative is an interpretation of the registry's current archetype description, not a source quotation.",
-      "atunedVersion": "ATÜNED interpretation (provisional): Transforming pain into medicine. Healthy expression: Compassion earned the hard way, not performed. Distortion to watch: It blocks self-tending. Your wound stays open while you close everyone else’s."
+      "atunedVersion": "ATÜNED interpretation (provisional): Transforming pain into medicine. Healthy expression: Compassion earned the hard way, not performed. Distortion to watch: It blocks self-tending. Your wound stays open while you close everyone else’s.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Archetype taxonomy is unresolved; do not create links from provisional candidate prose. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "conscious-domain:01",
@@ -10078,12 +10309,12 @@
         "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence.",
         "Recover and inspect the exact v341 source excerpt for this record; record a line/anchor-level quotation or faithful extract.",
         "Locate an independent source or explicit second edition that corroborates the definition; if none exists, record the lack of corroboration rather than forcing pass 2 complete.",
-        "Recover the exact source-assigned affirmation, if one exists; leave affirmation unresolved until explicit evidence is found.",
+        "Verify whether the source directly assigns this affirmation to this Conscious Domain; keep the current chakra-based assignment provisional until confirmed.",
         "Complete cross-record synthesis without assuming chakra order proves an affirmation or mapping."
       ],
       "notes": [
         "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation.",
-        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved.",
+        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. The affirmation text is source-extracted; its assignment to this Conscious Domain remains provisional pending direct source-level confirmation and owner/canon approval.",
         "Source-backed absence statement: the source describes Empyrean as the unified field containing the seven; it specifies no separate chakra affirmation for Empyrean."
       ],
       "changelog": [
@@ -10218,7 +10449,22 @@
       ],
       "affirmation": "No separate chakra affirmation specified; Empyrean Consciousness is described as the unified field containing all seven.",
       "story": "A person notices competing thoughts, emotions, and bodily signals without reducing the whole experience to any one of them. They use the wider context to orient rather than claim certainty about an unseen force.",
-      "atunedVersion": "The Empyrean frame is treated as an integrative perspective, not a measurable field or externally verified mechanism."
+      "atunedVersion": "The Empyrean frame is treated as an integrative perspective, not a measurable field or externally verified mechanism.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Affirmation-to-domain mapping and canonical approval remain open; preserve source text separately from assignment. Empty links array is intentional and must not be counted as graph closure."
+      },
+      "affirmationAssignmentStatus": "SOURCE_BACKED_ABSENCE — no separate chakra affirmation is specified for Empyrean Consciousness.",
+      "affirmationSource": {
+        "source": "MOB_Complete_v341.html",
+        "section": "Chapter 32, The Seven Affirmations",
+        "sourceHash": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "sequence": "Locked May 2026 version",
+        "mappingStatus": "not_applicable_source_says_unified_field"
+      }
     },
     {
       "id": "conscious-domain:02",
@@ -10334,17 +10580,17 @@
       ],
       "unresolvedQuestions": [
         "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
-        "Canonical name, definition, body, and affirmation are not recovered from inspected sources.",
+        "Canonical approval remains open; the name, source-summary definition, and affirmation text are recorded, but the affirmation-to-domain assignment remains provisional and requires direct source-level confirmation.",
         "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source.",
         "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence.",
         "Recover and inspect the exact v341 source excerpt for this record; record a line/anchor-level quotation or faithful extract.",
         "Locate an independent source or explicit second edition that corroborates the definition; if none exists, record the lack of corroboration rather than forcing pass 2 complete.",
-        "Recover the exact source-assigned affirmation, if one exists; leave affirmation unresolved until explicit evidence is found.",
+        "Verify whether the source directly assigns this affirmation to this Conscious Domain; keep the current chakra-based assignment provisional until confirmed.",
         "Complete cross-record synthesis without assuming chakra order proves an affirmation or mapping."
       ],
       "notes": [
         "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation.",
-        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved.",
+        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. The affirmation text is source-extracted; its assignment to this Conscious Domain remains provisional pending direct source-level confirmation and owner/canon approval.",
         "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
       ],
       "changelog": [
@@ -10479,7 +10725,22 @@
       ],
       "affirmation": "I'm committed to my duty.",
       "story": "Someone makes a promise they cannot keep. Rather than hide the gap, they name it early, explain what changed, and make a credible repair commitment.",
-      "atunedVersion": "Crown Consciousness is operationalized as promise-integrity and clarity of incoming/outgoing signal; spiritual language remains source framing, not a validated physical claim."
+      "atunedVersion": "Crown Consciousness is operationalized as promise-integrity and clarity of incoming/outgoing signal; spiritual language remains source framing, not a validated physical claim.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Affirmation-to-domain mapping and canonical approval remain open; preserve source text separately from assignment. Empty links array is intentional and must not be counted as graph closure."
+      },
+      "affirmationAssignmentStatus": "SOURCE TEXT PRESENT; DOMAIN ASSIGNMENT PROVISIONAL — chakra-based crosswalk is not canonical or owner-approved.",
+      "affirmationSource": {
+        "source": "MOB_Complete_v341.html",
+        "section": "Chapter 32, The Seven Affirmations",
+        "sourceHash": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "sequence": "Locked May 2026 version",
+        "mappingStatus": "provisional_chakra_to_conscious_domain_crosswalk"
+      }
     },
     {
       "id": "conscious-domain:03",
@@ -10595,17 +10856,17 @@
       ],
       "unresolvedQuestions": [
         "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
-        "Canonical name, definition, body, and affirmation are not recovered from inspected sources.",
+        "Canonical approval remains open; the name, source-summary definition, and affirmation text are recorded, but the affirmation-to-domain assignment remains provisional and requires direct source-level confirmation.",
         "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source.",
         "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence.",
         "Recover and inspect the exact v341 source excerpt for this record; record a line/anchor-level quotation or faithful extract.",
         "Locate an independent source or explicit second edition that corroborates the definition; if none exists, record the lack of corroboration rather than forcing pass 2 complete.",
-        "Recover the exact source-assigned affirmation, if one exists; leave affirmation unresolved until explicit evidence is found.",
+        "Verify whether the source directly assigns this affirmation to this Conscious Domain; keep the current chakra-based assignment provisional until confirmed.",
         "Complete cross-record synthesis without assuming chakra order proves an affirmation or mapping."
       ],
       "notes": [
         "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation.",
-        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved.",
+        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. The affirmation text is source-extracted; its assignment to this Conscious Domain remains provisional pending direct source-level confirmation and owner/canon approval.",
         "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
       ],
       "changelog": [
@@ -10740,7 +11001,22 @@
       ],
       "affirmation": "I'm always present.",
       "story": "During a familiar argument, someone catches the impulse to react, names the pattern internally, and chooses a response after checking what is happening now.",
-      "atunedVersion": "Perception Consciousness becomes the capacity to notice a stimulus-response loop before it runs to completion; this is a practical interpretation of the source summary."
+      "atunedVersion": "Perception Consciousness becomes the capacity to notice a stimulus-response loop before it runs to completion; this is a practical interpretation of the source summary.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Affirmation-to-domain mapping and canonical approval remain open; preserve source text separately from assignment. Empty links array is intentional and must not be counted as graph closure."
+      },
+      "affirmationAssignmentStatus": "SOURCE TEXT PRESENT; DOMAIN ASSIGNMENT PROVISIONAL — chakra-based crosswalk is not canonical or owner-approved.",
+      "affirmationSource": {
+        "source": "MOB_Complete_v341.html",
+        "section": "Chapter 32, The Seven Affirmations",
+        "sourceHash": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "sequence": "Locked May 2026 version",
+        "mappingStatus": "provisional_chakra_to_conscious_domain_crosswalk"
+      }
     },
     {
       "id": "conscious-domain:04",
@@ -10856,17 +11132,17 @@
       ],
       "unresolvedQuestions": [
         "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
-        "Canonical name, definition, body, and affirmation are not recovered from inspected sources.",
+        "Canonical approval remains open; the name, source-summary definition, and affirmation text are recorded, but the affirmation-to-domain assignment remains provisional and requires direct source-level confirmation.",
         "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source.",
         "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence.",
         "Recover and inspect the exact v341 source excerpt for this record; record a line/anchor-level quotation or faithful extract.",
         "Locate an independent source or explicit second edition that corroborates the definition; if none exists, record the lack of corroboration rather than forcing pass 2 complete.",
-        "Recover the exact source-assigned affirmation, if one exists; leave affirmation unresolved until explicit evidence is found.",
+        "Verify whether the source directly assigns this affirmation to this Conscious Domain; keep the current chakra-based assignment provisional until confirmed.",
         "Complete cross-record synthesis without assuming chakra order proves an affirmation or mapping."
       ],
       "notes": [
         "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation.",
-        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved.",
+        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. The affirmation text is source-extracted; its assignment to this Conscious Domain remains provisional pending direct source-level confirmation and owner/canon approval.",
         "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
       ],
       "changelog": [
@@ -11001,7 +11277,22 @@
       ],
       "affirmation": "I speak absolute truth.",
       "story": "A person discovers that a story they have repeated is inaccurate. They correct it publicly, including the part that makes them look less favorable.",
-      "atunedVersion": "Truth Consciousness is operationalized as reducing distortion between what is observed, believed, said, and done; the source's spiritual framing is preserved separately."
+      "atunedVersion": "Truth Consciousness is operationalized as reducing distortion between what is observed, believed, said, and done; the source's spiritual framing is preserved separately.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Affirmation-to-domain mapping and canonical approval remain open; preserve source text separately from assignment. Empty links array is intentional and must not be counted as graph closure."
+      },
+      "affirmationAssignmentStatus": "SOURCE TEXT PRESENT; DOMAIN ASSIGNMENT PROVISIONAL — chakra-based crosswalk is not canonical or owner-approved.",
+      "affirmationSource": {
+        "source": "MOB_Complete_v341.html",
+        "section": "Chapter 32, The Seven Affirmations",
+        "sourceHash": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "sequence": "Locked May 2026 version",
+        "mappingStatus": "provisional_chakra_to_conscious_domain_crosswalk"
+      }
     },
     {
       "id": "conscious-domain:05",
@@ -11117,17 +11408,17 @@
       ],
       "unresolvedQuestions": [
         "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
-        "Canonical name, definition, body, and affirmation are not recovered from inspected sources.",
+        "Canonical approval remains open; the name, source-summary definition, and affirmation text are recorded, but the affirmation-to-domain assignment remains provisional and requires direct source-level confirmation.",
         "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source.",
         "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence.",
         "Recover and inspect the exact v341 source excerpt for this record; record a line/anchor-level quotation or faithful extract.",
         "Locate an independent source or explicit second edition that corroborates the definition; if none exists, record the lack of corroboration rather than forcing pass 2 complete.",
-        "Recover the exact source-assigned affirmation, if one exists; leave affirmation unresolved until explicit evidence is found.",
+        "Verify whether the source directly assigns this affirmation to this Conscious Domain; keep the current chakra-based assignment provisional until confirmed.",
         "Complete cross-record synthesis without assuming chakra order proves an affirmation or mapping."
       ],
       "notes": [
         "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation.",
-        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved.",
+        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. The affirmation text is source-extracted; its assignment to this Conscious Domain remains provisional pending direct source-level confirmation and owner/canon approval.",
         "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
       ],
       "changelog": [
@@ -11262,7 +11553,22 @@
       ],
       "affirmation": "I show equal compassion towards self and other.",
       "story": "A friend is distressed and wants immediate rescue. The person responds with care, stays present, and asks what support is wanted rather than taking over.",
-      "atunedVersion": "Heart Consciousness is interpreted as stable compassion with differentiation: care does not require emotional fusion or self-erasure."
+      "atunedVersion": "Heart Consciousness is interpreted as stable compassion with differentiation: care does not require emotional fusion or self-erasure.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Affirmation-to-domain mapping and canonical approval remain open; preserve source text separately from assignment. Empty links array is intentional and must not be counted as graph closure."
+      },
+      "affirmationAssignmentStatus": "SOURCE TEXT PRESENT; DOMAIN ASSIGNMENT PROVISIONAL — chakra-based crosswalk is not canonical or owner-approved.",
+      "affirmationSource": {
+        "source": "MOB_Complete_v341.html",
+        "section": "Chapter 32, The Seven Affirmations",
+        "sourceHash": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "sequence": "Locked May 2026 version",
+        "mappingStatus": "provisional_chakra_to_conscious_domain_crosswalk"
+      }
     },
     {
       "id": "conscious-domain:06",
@@ -11378,17 +11684,17 @@
       ],
       "unresolvedQuestions": [
         "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
-        "Canonical name, definition, body, and affirmation are not recovered from inspected sources.",
+        "Canonical approval remains open; the name, source-summary definition, and affirmation text are recorded, but the affirmation-to-domain assignment remains provisional and requires direct source-level confirmation.",
         "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source.",
         "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence.",
         "Recover and inspect the exact v341 source excerpt for this record; record a line/anchor-level quotation or faithful extract.",
         "Locate an independent source or explicit second edition that corroborates the definition; if none exists, record the lack of corroboration rather than forcing pass 2 complete.",
-        "Recover the exact source-assigned affirmation, if one exists; leave affirmation unresolved until explicit evidence is found.",
+        "Verify whether the source directly assigns this affirmation to this Conscious Domain; keep the current chakra-based assignment provisional until confirmed.",
         "Complete cross-record synthesis without assuming chakra order proves an affirmation or mapping."
       ],
       "notes": [
         "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation.",
-        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved.",
+        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. The affirmation text is source-extracted; its assignment to this Conscious Domain remains provisional pending direct source-level confirmation and owner/canon approval.",
         "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
       ],
       "changelog": [
@@ -11523,7 +11829,22 @@
       ],
       "affirmation": "I am creatively fulfilled in my purpose.",
       "story": "A person notices that they have been dismissing a genuine desire as unimportant. They name it, test whether it fits their values and constraints, and take one realistic step.",
-      "atunedVersion": "Value Consciousness is operationalized as recognizing desire and worth without treating every impulse as a command or every external approval as a measure of value."
+      "atunedVersion": "Value Consciousness is operationalized as recognizing desire and worth without treating every impulse as a command or every external approval as a measure of value.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Affirmation-to-domain mapping and canonical approval remain open; preserve source text separately from assignment. Empty links array is intentional and must not be counted as graph closure."
+      },
+      "affirmationAssignmentStatus": "SOURCE TEXT PRESENT; DOMAIN ASSIGNMENT PROVISIONAL — chakra-based crosswalk is not canonical or owner-approved.",
+      "affirmationSource": {
+        "source": "MOB_Complete_v341.html",
+        "section": "Chapter 32, The Seven Affirmations",
+        "sourceHash": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "sequence": "Locked May 2026 version",
+        "mappingStatus": "provisional_chakra_to_conscious_domain_crosswalk"
+      }
     },
     {
       "id": "conscious-domain:07",
@@ -11639,17 +11960,17 @@
       ],
       "unresolvedQuestions": [
         "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
-        "Canonical name, definition, body, and affirmation are not recovered from inspected sources.",
+        "Canonical approval remains open; the name, source-summary definition, and affirmation text are recorded, but the affirmation-to-domain assignment remains provisional and requires direct source-level confirmation.",
         "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source.",
         "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence.",
         "Recover and inspect the exact v341 source excerpt for this record; record a line/anchor-level quotation or faithful extract.",
         "Locate an independent source or explicit second edition that corroborates the definition; if none exists, record the lack of corroboration rather than forcing pass 2 complete.",
-        "Recover the exact source-assigned affirmation, if one exists; leave affirmation unresolved until explicit evidence is found.",
+        "Verify whether the source directly assigns this affirmation to this Conscious Domain; keep the current chakra-based assignment provisional until confirmed.",
         "Complete cross-record synthesis without assuming chakra order proves an affirmation or mapping."
       ],
       "notes": [
         "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation.",
-        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved.",
+        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. The affirmation text is source-extracted; its assignment to this Conscious Domain remains provisional pending direct source-level confirmation and owner/canon approval.",
         "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
       ],
       "changelog": [
@@ -11784,7 +12105,22 @@
       ],
       "affirmation": "I stand fully committed in my power, disciplined and focused.",
       "story": "A group has no clear decision-maker during a crisis. Someone takes responsibility for the next decision, states the reasoning, invites relevant correction, and remains accountable for the outcome.",
-      "atunedVersion": "Royal Consciousness is interpreted as self-governance and accountable agency, not status or control over other people."
+      "atunedVersion": "Royal Consciousness is interpreted as self-governance and accountable agency, not status or control over other people.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Affirmation-to-domain mapping and canonical approval remain open; preserve source text separately from assignment. Empty links array is intentional and must not be counted as graph closure."
+      },
+      "affirmationAssignmentStatus": "SOURCE TEXT PRESENT; DOMAIN ASSIGNMENT PROVISIONAL — chakra-based crosswalk is not canonical or owner-approved.",
+      "affirmationSource": {
+        "source": "MOB_Complete_v341.html",
+        "section": "Chapter 32, The Seven Affirmations",
+        "sourceHash": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "sequence": "Locked May 2026 version",
+        "mappingStatus": "provisional_chakra_to_conscious_domain_crosswalk"
+      }
     },
     {
       "id": "conscious-domain:08",
@@ -11900,17 +12236,17 @@
       ],
       "unresolvedQuestions": [
         "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
-        "Canonical name, definition, body, and affirmation are not recovered from inspected sources.",
+        "Canonical approval remains open; the name, source-summary definition, and affirmation text are recorded, but the affirmation-to-domain assignment remains provisional and requires direct source-level confirmation.",
         "Complete independent corroboration (research pass 2), cross-record synthesis (pass 3), and owner/canon approval; do not infer an affirmation not explicitly assigned by source.",
         "Obtain independent corroboration if available; confirm any explicit affirmation-to-domain edge from source rather than inferring it from chakra sequence.",
         "Recover and inspect the exact v341 source excerpt for this record; record a line/anchor-level quotation or faithful extract.",
         "Locate an independent source or explicit second edition that corroborates the definition; if none exists, record the lack of corroboration rather than forcing pass 2 complete.",
-        "Recover the exact source-assigned affirmation, if one exists; leave affirmation unresolved until explicit evidence is found.",
+        "Verify whether the source directly assigns this affirmation to this Conscious Domain; keep the current chakra-based assignment provisional until confirmed.",
         "Complete cross-record synthesis without assuming chakra order proves an affirmation or mapping."
       ],
       "notes": [
         "ATÜNED integration note (provisional): interpret this record as an awareness/behavioral state description, not as a validated diagnosis or a claim of measurable energy mechanics. Keep source paraphrase separate from product-facing interpretation.",
-        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. Authoritative affirmation remains unresolved.",
+        "ATÜNED operational story and interpretation added as provisional synthesis; not a source quotation. The affirmation text is source-extracted; its assignment to this Conscious Domain remains provisional pending direct source-level confirmation and owner/canon approval.",
         "Exact affirmation string from the locked May 2026 sequence in Chapter 32, 'The Seven Affirmations'. The assignment to this Conscious Domain follows a provisional chakra-to-domain crosswalk and is not yet canonical or owner-approved."
       ],
       "changelog": [
@@ -12045,7 +12381,22 @@
       ],
       "affirmation": "I show courage over fear.",
       "story": "A person delays sharing creative work because every draft feels risky. They set a safe, bounded experiment and let the work become visible before perfection is possible.",
-      "atunedVersion": "Creative Consciousness is operationalized as restoring usable creative capacity while acknowledging real constraints; it is not a claim that survival responses can simply be switched off."
+      "atunedVersion": "Creative Consciousness is operationalized as restoring usable creative capacity while acknowledging real constraints; it is not a claim that survival responses can simply be switched off.",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Affirmation-to-domain mapping and canonical approval remain open; preserve source text separately from assignment. Empty links array is intentional and must not be counted as graph closure."
+      },
+      "affirmationAssignmentStatus": "SOURCE TEXT PRESENT; DOMAIN ASSIGNMENT PROVISIONAL — chakra-based crosswalk is not canonical or owner-approved.",
+      "affirmationSource": {
+        "source": "MOB_Complete_v341.html",
+        "section": "Chapter 32, The Seven Affirmations",
+        "sourceHash": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "sequence": "Locked May 2026 version",
+        "mappingStatus": "provisional_chakra_to_conscious_domain_crosswalk"
+      }
     },
     {
       "id": "conscious-figure:rama",
@@ -12217,7 +12568,14 @@
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
       ],
-      "domainTarget": "Duty"
+      "domainTarget": "Duty",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Cultural-figure/domain crosswalk is unresolved; no target relationship is approved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "conscious-figure:krishna",
@@ -12389,7 +12747,14 @@
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
       ],
-      "domainTarget": "Play"
+      "domainTarget": "Play",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Cultural-figure/domain crosswalk is unresolved; no target relationship is approved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "conscious-figure:zoroaster",
@@ -12561,7 +12926,14 @@
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
       ],
-      "domainTarget": "Knowledge"
+      "domainTarget": "Knowledge",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Cultural-figure/domain crosswalk is unresolved; no target relationship is approved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "conscious-figure:akhenaten",
@@ -12733,7 +13105,14 @@
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
       ],
-      "domainTarget": "Devotion"
+      "domainTarget": "Devotion",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Cultural-figure/domain crosswalk is unresolved; no target relationship is approved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "conscious-figure:buddha",
@@ -12905,7 +13284,14 @@
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
       ],
-      "domainTarget": "Mystery"
+      "domainTarget": "Mystery",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Cultural-figure/domain crosswalk is unresolved; no target relationship is approved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "conscious-figure:confucius",
@@ -13077,7 +13463,14 @@
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
       ],
-      "domainTarget": "Justice"
+      "domainTarget": "Justice",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Cultural-figure/domain crosswalk is unresolved; no target relationship is approved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "conscious-figure:jesus",
@@ -13249,7 +13642,14 @@
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
       ],
-      "domainTarget": "Love"
+      "domainTarget": "Love",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Cultural-figure/domain crosswalk is unresolved; no target relationship is approved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "conscious-figure:rumi",
@@ -13421,7 +13821,14 @@
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
       ],
-      "domainTarget": "Creation"
+      "domainTarget": "Creation",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Cultural-figure/domain crosswalk is unresolved; no target relationship is approved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "conscious-figure:lao-tzu",
@@ -13593,7 +14000,14 @@
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
       ],
-      "domainTarget": "Nature"
+      "domainTarget": "Nature",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Cultural-figure/domain crosswalk is unresolved; no target relationship is approved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "conscious-figure:moses",
@@ -13765,7 +14179,14 @@
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
       ],
-      "domainTarget": "Power"
+      "domainTarget": "Power",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Cultural-figure/domain crosswalk is unresolved; no target relationship is approved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "conscious-figure:guru-nanak",
@@ -13937,7 +14358,14 @@
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
       ],
-      "domainTarget": "Healing"
+      "domainTarget": "Healing",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Cultural-figure/domain crosswalk is unresolved; no target relationship is approved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "conscious-figure:solomon",
@@ -14109,7 +14537,14 @@
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
       ],
-      "domainTarget": "Architect"
+      "domainTarget": "Architect",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Cultural-figure/domain crosswalk is unresolved; no target relationship is approved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:archdom:warrior",
@@ -14287,7 +14722,14 @@
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
       ],
       "archetypeName": "Warrior",
-      "domainTarget": "Power"
+      "domainTarget": "Power",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:archdom:caregiver",
@@ -14465,7 +14907,14 @@
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
       ],
       "archetypeName": "Caregiver",
-      "domainTarget": "Healing"
+      "domainTarget": "Healing",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:archdom:creator",
@@ -14643,7 +15092,14 @@
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
       ],
       "archetypeName": "Creator",
-      "domainTarget": "Creation"
+      "domainTarget": "Creation",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:archdom:sage",
@@ -14821,7 +15277,14 @@
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
       ],
       "archetypeName": "Sage",
-      "domainTarget": "Knowledge"
+      "domainTarget": "Knowledge",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:archdom:jester",
@@ -14999,7 +15462,14 @@
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
       ],
       "archetypeName": "Jester",
-      "domainTarget": "Play"
+      "domainTarget": "Play",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:archdom:lover",
@@ -15177,7 +15647,14 @@
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
       ],
       "archetypeName": "Lover",
-      "domainTarget": "Love"
+      "domainTarget": "Love",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:archdom:magician",
@@ -15355,7 +15832,14 @@
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
       ],
       "archetypeName": "Magician",
-      "domainTarget": "Mystery"
+      "domainTarget": "Mystery",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:archdom:innocent",
@@ -15533,7 +16017,14 @@
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
       ],
       "archetypeName": "Innocent",
-      "domainTarget": "Nature"
+      "domainTarget": "Nature",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:archdom:outlaw",
@@ -15711,7 +16202,14 @@
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
       ],
       "archetypeName": "Outlaw",
-      "domainTarget": "Destruction"
+      "domainTarget": "Destruction",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:archdom:ruler",
@@ -15889,7 +16387,14 @@
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
       ],
       "archetypeName": "Ruler",
-      "domainTarget": "Architect"
+      "domainTarget": "Architect",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:archdom:explorer",
@@ -16067,7 +16572,14 @@
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
       ],
       "archetypeName": "Explorer",
-      "domainTarget": "Nature"
+      "domainTarget": "Nature",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:archdom:orphan",
@@ -16245,7 +16757,14 @@
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
       ],
       "archetypeName": "Orphan",
-      "domainTarget": "Guardian"
+      "domainTarget": "Guardian",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:archdom:hero",
@@ -16423,7 +16942,14 @@
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
       ],
       "archetypeName": "Hero",
-      "domainTarget": "Power"
+      "domainTarget": "Power",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:archdom:everyman",
@@ -16601,7 +17127,14 @@
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
       ],
       "archetypeName": "Everyman",
-      "domainTarget": "Communication"
+      "domainTarget": "Communication",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:archdom:mentor",
@@ -16779,7 +17312,14 @@
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
       ],
       "archetypeName": "Mentor",
-      "domainTarget": "Knowledge"
+      "domainTarget": "Knowledge",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:archdom:shadow",
@@ -16957,7 +17497,14 @@
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
       ],
       "archetypeName": "Shadow",
-      "domainTarget": "Death"
+      "domainTarget": "Death",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:archdom:shapeshifter",
@@ -17135,7 +17682,14 @@
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
       ],
       "archetypeName": "Shapeshifter",
-      "domainTarget": "Trickster"
+      "domainTarget": "Trickster",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:archdom:healer",
@@ -17313,7 +17867,14 @@
         "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
       ],
       "archetypeName": "Healer",
-      "domainTarget": "Healing"
+      "domainTarget": "Healing",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:arch18:01",
@@ -17504,7 +18065,14 @@
       ],
       "archetypeName": "Warrior",
       "fetterLabel": "Controller",
-      "seatLabel": "solar"
+      "seatLabel": "solar",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:arch18:02",
@@ -17695,7 +18263,14 @@
       ],
       "archetypeName": "Caregiver",
       "fetterLabel": "Pleaser",
-      "seatLabel": "heart"
+      "seatLabel": "heart",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:arch18:03",
@@ -17886,7 +18461,14 @@
       ],
       "archetypeName": "Creator",
       "fetterLabel": "Stickler",
-      "seatLabel": "throat"
+      "seatLabel": "throat",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:arch18:04",
@@ -18077,7 +18659,14 @@
       ],
       "archetypeName": "Sage",
       "fetterLabel": "Hyper-Rational",
-      "seatLabel": "eye"
+      "seatLabel": "eye",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:arch18:05",
@@ -18268,7 +18857,14 @@
       ],
       "archetypeName": "Jester",
       "fetterLabel": "Restless",
-      "seatLabel": "sacral"
+      "seatLabel": "sacral",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:arch18:06",
@@ -18459,7 +19055,14 @@
       ],
       "archetypeName": "Lover",
       "fetterLabel": "Hyper-Vigilant",
-      "seatLabel": "heart"
+      "seatLabel": "heart",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:arch18:07",
@@ -18650,7 +19253,14 @@
       ],
       "archetypeName": "Magician",
       "fetterLabel": "Victim",
-      "seatLabel": "eye"
+      "seatLabel": "eye",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:arch18:08",
@@ -18841,7 +19451,14 @@
       ],
       "archetypeName": "Innocent",
       "fetterLabel": "Restless",
-      "seatLabel": "root"
+      "seatLabel": "root",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:arch18:09",
@@ -19032,7 +19649,14 @@
       ],
       "archetypeName": "Outlaw",
       "fetterLabel": "Judge",
-      "seatLabel": "solar"
+      "seatLabel": "solar",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:arch18:10",
@@ -19223,7 +19847,14 @@
       ],
       "archetypeName": "Ruler",
       "fetterLabel": "Hyper-Achiever",
-      "seatLabel": "crown"
+      "seatLabel": "crown",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:arch18:11",
@@ -19414,7 +20045,14 @@
       ],
       "archetypeName": "Explorer",
       "fetterLabel": "Restless",
-      "seatLabel": "sacral"
+      "seatLabel": "sacral",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:arch18:12",
@@ -19605,7 +20243,14 @@
       ],
       "archetypeName": "Orphan",
       "fetterLabel": "Worrywart",
-      "seatLabel": "heart"
+      "seatLabel": "heart",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:arch18:13",
@@ -19796,7 +20441,14 @@
       ],
       "archetypeName": "Hero",
       "fetterLabel": "Hyper-Achiever",
-      "seatLabel": "solar"
+      "seatLabel": "solar",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:arch18:14",
@@ -19987,7 +20639,14 @@
       ],
       "archetypeName": "Everyman",
       "fetterLabel": "Pleaser",
-      "seatLabel": "heart"
+      "seatLabel": "heart",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:arch18:15",
@@ -20178,7 +20837,14 @@
       ],
       "archetypeName": "Mentor",
       "fetterLabel": "Stickler",
-      "seatLabel": "eye"
+      "seatLabel": "eye",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:arch18:16",
@@ -20369,7 +21035,14 @@
       ],
       "archetypeName": "Shadow",
       "fetterLabel": "Judge",
-      "seatLabel": "solar"
+      "seatLabel": "solar",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:arch18:17",
@@ -20560,7 +21233,14 @@
       ],
       "archetypeName": "Shapeshifter",
       "fetterLabel": "Restless",
-      "seatLabel": "sacral"
+      "seatLabel": "sacral",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "mapping:arch18:18",
@@ -20751,7 +21431,14 @@
       ],
       "archetypeName": "Healer",
       "fetterLabel": "Hyper-Vigilant",
-      "seatLabel": "heart"
+      "seatLabel": "heart",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "Mapping row is research data, not an approved semantic edge; target semantics remain unresolved. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "blueprint-domain-slot:01",
@@ -20943,7 +21630,14 @@
           "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
-      "slotOnly": true
+      "slotOnly": true,
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "This record is a non-canonical visualization slot; no domain identity or semantic link is asserted. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "blueprint-domain-slot:02",
@@ -21135,7 +21829,14 @@
           "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
-      "slotOnly": true
+      "slotOnly": true,
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "This record is a non-canonical visualization slot; no domain identity or semantic link is asserted. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "blueprint-domain-slot:03",
@@ -21327,7 +22028,14 @@
           "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
-      "slotOnly": true
+      "slotOnly": true,
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "This record is a non-canonical visualization slot; no domain identity or semantic link is asserted. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "blueprint-domain-slot:04",
@@ -21519,7 +22227,14 @@
           "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
-      "slotOnly": true
+      "slotOnly": true,
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "This record is a non-canonical visualization slot; no domain identity or semantic link is asserted. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "blueprint-domain-slot:05",
@@ -21711,7 +22426,14 @@
           "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
-      "slotOnly": true
+      "slotOnly": true,
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "This record is a non-canonical visualization slot; no domain identity or semantic link is asserted. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "blueprint-domain-slot:06",
@@ -21903,7 +22625,14 @@
           "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
-      "slotOnly": true
+      "slotOnly": true,
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "This record is a non-canonical visualization slot; no domain identity or semantic link is asserted. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "blueprint-domain-slot:07",
@@ -22095,7 +22824,14 @@
           "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
-      "slotOnly": true
+      "slotOnly": true,
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "This record is a non-canonical visualization slot; no domain identity or semantic link is asserted. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "blueprint-domain-slot:08",
@@ -22287,7 +23023,14 @@
           "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
-      "slotOnly": true
+      "slotOnly": true,
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "This record is a non-canonical visualization slot; no domain identity or semantic link is asserted. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "blueprint-domain-slot:09",
@@ -22479,7 +23222,14 @@
           "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
-      "slotOnly": true
+      "slotOnly": true,
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "This record is a non-canonical visualization slot; no domain identity or semantic link is asserted. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "blueprint-domain-slot:10",
@@ -22671,7 +23421,14 @@
           "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
-      "slotOnly": true
+      "slotOnly": true,
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "This record is a non-canonical visualization slot; no domain identity or semantic link is asserted. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "blueprint-domain-slot:11",
@@ -22863,7 +23620,14 @@
           "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
-      "slotOnly": true
+      "slotOnly": true,
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "This record is a non-canonical visualization slot; no domain identity or semantic link is asserted. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "blueprint-domain-slot:12",
@@ -23055,7 +23819,14 @@
           "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
-      "slotOnly": true
+      "slotOnly": true,
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "This record is a non-canonical visualization slot; no domain identity or semantic link is asserted. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "blueprint-domain-slot:13",
@@ -23247,7 +24018,14 @@
           "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
-      "slotOnly": true
+      "slotOnly": true,
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "This record is a non-canonical visualization slot; no domain identity or semantic link is asserted. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "blueprint-domain-slot:14",
@@ -23439,7 +24217,14 @@
           "change": "Added provisional slot-level definition/body so the visualization record is populated while preserving non-canonical status."
         }
       ],
-      "slotOnly": true
+      "slotOnly": true,
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "sourceRelationshipCount": 0,
+        "note": "This record is a non-canonical visualization slot; no domain identity or semantic link is asserted. Empty links array is intentional and must not be counted as graph closure."
+      }
     },
     {
       "id": "canon-domain:architect:knowledge",
@@ -26833,8 +27618,9 @@
       "domainCountRulingResolved": false
     },
     "lastSourceRecovery": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
-    "latestRoundNote": "2026-10-24: Reconciled pass status with the actual unresolved evidence; all eight Conscious Domain records have pass 1 complete and passes 2–3 blocked. Added missing required links arrays as empty values where absent. Empty arrays are structural repairs only; graph wiring remains open.",
-    "lastStructuralRepair": "2026-10-24: Added missing links arrays to 0 records without inferring any edges; blocked Conscious Domain passes 2 and 3 where evidence remains insufficient."
+    "latestRoundNote": "2026-10-24: Three-pass status is now aligned with evidence: all eight Conscious Domain records have pass 1 complete and passes 2–3 blocked. Empty links arrays across 103 records are explicitly tagged as unresolved relationship work, not wiring. Conscious Domain affirmation strings remain source-extracted while domain assignments remain provisional.",
+    "lastStructuralRepair": "2026-10-24: Added missing links arrays to 0 records without inferring any edges; blocked Conscious Domain passes 2 and 3 where evidence remains insufficient.",
+    "lastRegistryAudit": "2026-10-24: Audited 103 records with empty links arrays. No semantic links were invented. Conscious Domain passes 2 and 3 are blocked where the available research does not verify exact domain/affirmation assignment."
   },
   "layerVisualizationInventory": [
     {
@@ -26939,7 +27725,9 @@
       "pass2Blocked": 8,
       "pass3Blocked": 8,
       "sourceComplete": 0,
-      "canonicalApproval": "OPEN — exact affirmation assignment and independent source verification not complete."
+      "canonicalApproval": "OPEN — seven affirmation strings are source-extracted; their association to seven Conscious Domains remains provisional; Empyrean has no separate chakra affirmation.",
+      "affirmationTextSourceExtracted": 7,
+      "affirmationAssignmentsCanonical": 0
     },
     "researchPasses": {
       "recordsWithThreePassesMarkedComplete": 117,
@@ -26948,10 +27736,18 @@
       "note": "Pass status reflects evidence scope. A recorded pass is not proof of canonical approval or substantive content closure."
     },
     "linkFieldRepair": {
-      "recordsRepaired": 0,
-      "note": "Empty links arrays added only where the required field was absent. No links were invented; KPI 3 remains open."
+      "recordsWithEmptyLinksAudited": 103,
+      "fieldsStructurallyPresent": 125,
+      "edgesAdded": 0,
+      "note": "Empty links arrays were already present; the repair is explicit relationship-status metadata only. No edges were inferred or added."
     },
     "runtimeIntegration": "NOT VERIFIED; template catalog and registry adapter remain unintegrated with the existing engine.",
-    "warning": "Do not promote provisional definitions, taxonomic mappings, cultural-figure crosswalks, or affirmation assignments to Canon without source-level evidence and the required approval."
+    "warning": "Do not promote provisional definitions, taxonomic mappings, cultural-figure crosswalks, or affirmation assignments to Canon without source-level evidence and the required approval.",
+    "contentCompleteness": {
+      "recordsCompleteForTheirDeclaredRecordRole": 102,
+      "recordsWithSubstantiveContentStillProvisional": 23,
+      "blueprintSlotsCountAsCompleteOnlyAsVisualizationSlots": 14,
+      "note": "The 14 blueprint slots are complete as explicitly non-canonical visualization slots, not as named canonical domains. The 15 behavioral-domain records and 8 Conscious Domain records remain substantively open."
+    }
   }
 }
