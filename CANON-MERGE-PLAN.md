@@ -1,10 +1,10 @@
 # The canon merge, phase two
 
-Systems seat, 24 October 2026. Branch `canon-merge-phase2`, cut from `atuned/mvp-alpha-recursive-execution` at `607bb0ee`. Three code commits, `b0a5b124`, `386eddf5` and `22be39c8`, then this file. Nothing is pushed.
+Systems seat, 24 October 2026. Landed on `atuned/mvp-alpha-recursive-execution` in four commits: `0ddceb3a` the port, `1591676f` the codes, `4b89f07e` one check named once, and `6c4f91b6` this file. Each is the same tree as the commit first cut on `canon-merge-phase2` from `607bb0ee` (`b0a5b124`, `386eddf5` and `22be39c8`); only the messages were rewritten when they were pushed. Later the same day a third source was reconciled, the deep psychological registry, and this file was updated with it. Its section is below. It moves D5, D6 and D8, and adds D14 to D16.
 
 canon.json is the owner's register file, SOURCE OS CANON 1.0.0, issued 8 September, kept in reboot-os at `atuned/data/canon.json`. A register is one of its tables: the nodes, the saboteurs, the laws and so on. This repository is now the one source of truth, and canon.json is an input to it: a pinned copy is held at `vendor/reboot-os/canon.json`, and every merge from now on is a named difference against that copy.
 
-Every number below was read off a run on 24 October at `22be39c8`, mostly by `node tools/canon-port.js report`, which reads the file and the engine on the day it is run. Run it again rather than trusting a figure here.
+Every number below was read off a run on 24 October: the register figures at `4b89f07e`, mostly by `node tools/canon-port.js report`, and the registry figures at `6c4f91b6` by `python3 -I tools/registry-reconcile.py`. Each reads its files and the built engine on the day it is run. Run them again rather than trusting a figure here.
 
 ## His three questions, answered for what this round touched
 
@@ -14,7 +14,7 @@ The owner's words, repeated on 24 October: "does everything have a record, is ev
 - **Is everything in a templated format?** The seven ported registers have one template each, and `codesCheck()` holds every row to it: the fields it must carry, of the right kind, with codes that run without a gap. Two places where canon.json breaks its own template are kept as written and held by name, so neither is hidden and neither is rewritten without him: the Dermis row of the organs, whose fourth field is a note where every other organ has a sentence the pattern says in the first person, and four words canon.json puts on two ladders each.
 - **Is the description from parent to children clear?** Every ported row names its parent, and the gate holds each link to something this repository holds. A ladder's charge reads as a child emotion, or is refused by a row that says why. A word on a ladder is its ladder and its step. An amplifier stands on a body address. A route runs from a ladder's charge to a body quadrant. A derived measure names its charge and the law it is. The astrology overlay keys only signs, animals and archetypes that have codes, or that are refused by a row that says why.
 
-For the registers this repository already had its own version of, the answer is no, and the decisions at the end are the reason.
+For the registers this repository already had its own version of, the answer is no, and the decisions at the end are the reason. The registry he asked about on 24 October has a section of its own below: its format has parents and children, and most of its content does not yet.
 
 ## What the reboot line holds, measured this round
 
@@ -23,10 +23,80 @@ The local reboot-os clone tracks only `main`, at `242e995` from 19 October. A sc
 - **canon.json is one file everywhere.** Every one of the 80 branches carries the identical canon.json, md5 `7e844c0d`, but one: `claude/keen-brahmagupta-qt32zr`, the manuscript line, which has none. So the registers ported here are current on every line of reboot-os.
 - **The look development line is `claude/app-migration-decision-yx56cj`.** It shares no history with reboot-os `main`. It was last written today, 24 October, with 115 commits on 23 October alone, and it holds `lookdev/`: design notes, a status file, 29 built pages and 29 patches against this repository's source (`lookdev/handoff/builds/`, 28 `.patch` files and one `.diff`). They cover the ritual page (four versions), the journal (four rounds and a regression fix), the Field cleanup, the Field and Body pole bars, the compass gauge, nav bar B, the side menu polarity meter, an SAB33 rename, a CQ, DQ and expression fix, and a knowledge restore. Some add files this repository has never had, such as `ui/ritplan.js`, `ui/journal.js`, `engine/data/harmdef.js` and `engine/kbdef.js`.
 - **Most of those patches cannot be applied as they are.** Each was dry run against this branch, forward and in reverse. Three apply cleanly today: `SIDE_MENU_POLARITY_METER_e7d97be.patch`, `field_pole_horizontal_41d1e97.patch` and `SPEC-source-ai_20261023.patch`. The other 26 neither apply nor are already here. Git writes into a patch the version of every file it was cut against, and reading those: 7 of the 26 were cut against file versions this repository's history holds (the ritual page's first three rounds, the combined merge and both SAB33 patches among them, cut from this repository as it stood on or after 16 and 17 October), so each can be applied to that version and carried forward as a branch. 12 were cut partly or wholly on top of earlier look development patches, against file versions no repository holds. 7 carry no version marks at all. The hashes in the patch files' names, such as `cdd54067`, are commits in neither repository, on GitHub or locally. The thread's coordination note, dated 16 October, says "Lance has ruled that nothing is ported until he says so", and that the port would come "as one pull request from a branch".
-- **The manuscript line, `claude/keen-brahmagupta-qt32zr`, is the book.** It holds the book's versions up to v342 and dictation notes. It is content for the book and has no app code to merge.
-- **This repository has two lines of its own.** On 24 October, `origin/main` carries 118 commits that `607bb0ee` does not, and `607bb0ee` carries 162 that `origin/main` does not. MOB's own `lookdev/mvp-alpha-checklist-2026-10-22` adds documents and a psychological registry audit tool (20 files). Reconciling `main` with this line is the devops seat's, and it has to happen before any merge lands on `main`.
+- **The manuscript line, `claude/keen-brahmagupta-qt32zr`, is the book.** It holds the book's versions up to v342 and dictation notes. It is content for the book and has no app code to merge. Its v342 of 22 October is the newest version of his book, and the registry below is read against it.
+- **This repository has three lines of its own.** Measured at `6c4f91b6`: `origin/main` carries 120 commits the working branch does not, and the working branch carries 166 that `main` does not. A third line, `atuned/deep-psyche-kpi-closure-2026-10-24`, committed on 24 October under the owner's account, is `main` less its last two commits plus 43 of its own, and holds the newest registry. MOB's own `lookdev/mvp-alpha-checklist-2026-10-22` adds documents and a psychological registry audit tool (20 files). Reconciling `main` with this line is the devops seat's, and it has to happen before any merge lands on `main`.
 
 None of the look development work was merged this round. It is design and interface, it needs a reachable base to merge as a branch, and it needs the interface gates and the owner's eye on every screen it changes. It is the largest body of new code on the reboot side, and phase three below is written for it.
+
+## The third source: the deep psychological registry, reconciled five ways
+
+His words on 24 October: "the new content has a format that descends from parent to child. It should use some of the data from the old one, making the old one obsolete and ready for archive. But double check that and verify that's accurate. Do a reconciliation review, run that 5 times". This section is that check, and the short answer comes first: **half of what he described holds.** The format does run from parent to child, though most of the content is not linked yet, and it does reuse old data, though not this repository's. But it makes none of this repository's tables obsolete: where the two overlap, this repository's are the newer, and they agree with his book where the registry does not. It is a research catalogue built mostly from older copies of sources this repository already holds. It should sit beside the engine and replace none of it. Three things in it are worth bringing in, and his own book already answers most of the domain question it leaves open.
+
+**What it is.** One JSON file, `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json`, with a schema and a template catalog beside it, built under the owner's account in this repository's `main` line from 22 October. A record is one concept, a root, a domain, an archetype or one row of a mapping table, with its definition, its sources, three research passes, a confidence figure and its open questions. There are two versions:
+
+- `main` at `64087d79`: 125 records in 9 layers, file blob `b3a76e41`.
+- `atuned/deep-psyche-kpi-closure-2026-10-24` at `364090e2`: 147 records in 11 layers, file blob `98280770`, md5 `06fc6d0b`, committed on 24 October. It is 43 commits on top of `main`'s `6c659e4b` and touches only `docs/` and `proto/knowledge/`. This is the newest, so it is the one "the most recent everything" means. It forks before `main`'s last two commits, the red fix `1f9b7dd0` and `64087d79`, so those have to be carried on their own.
+
+Neither version reaches atuned.world. The deploy (`.github/workflows/deploy.yml`) publishes the funnel pages and the app, which are built from `atuned_src/` and read this repository's tables. On `main` the registry is a file in the repository, and the site shows nothing of it.
+
+**How it was checked.** `tools/registry-reconcile.py`, added this round, runs the first four passes and prints what it finds; the fifth pass is the reading at the end of this section. It reads the engine as built, through `tools/registry-dump.js`, the vendored canon.json, and the owner's book, The Mechanics of Being: v341, kept in reboot-os on the manuscript branch at blob `37a4ee9f`, whose sha256 `79c8ddd9` is the hash the registry itself cites, and v342 of 22 October, the newest, identical to v341 in every section compared. Known bad first: its self test plants 26 defects in the newest registry, one for each comparison, and each was caught (24 in `main`'s, which has no v341 layer to plant in). Then two of its comparisons were broken on purpose in a copy, and the self test failed naming those two and no others.
+
+**Pass 1, does it hold together on its own.** In both versions every id is unique, every record has three research passes, every parent and child link it has runs both ways, and no relationship points at nothing. In the newest:
+- the 22 records it added carry layer names its own header does not use, "V341 Domain Roster" where the header counts `source_v341.domain_roster`, and "Related Consciousness Concepts" for `related_consciousness_candidates`, so its counts do not add up by name;
+- the same 22 lack `seat`, which its schema requires;
+- the 19 v341 domain records lack `parentId`, which their template has required since its last commit, and `relationships`, which it required before, while each record's own check reports nothing missing; and the four cluster records that last commit wrote a template for do not exist yet;
+- it carries 184 em dashes and 8 en dashes (`main`'s carries 154 em dashes). This repository allows none in any file, so whoever brings it here has that to settle first.
+
+**Pass 2, where it comes from.** No record cites this repository. Every layer is a copy of something this repository already holds or has read, or of the reboot-os app:
+- the roots and the canon domain layer: canon.json, the file vendored here, built from the book's v184 on 8 September;
+- the behavioral domains: re-researched on 24 October from what the registry calls the current manuscript, `MOB-Manuscript/index.html` at blob `24dea9c9`. That blob is the `index.html` of `rebootos-sourcce/mob-manuscript`, created on 31 May 2026 in that repository's only commit: the book as it stood four and a half months before v341;
+- the v341 roster and the three related consciousness concepts: v341, through a 23 record extract;
+- the Conscious Domains: v341 chapter 32, with outside literature;
+- the archetypes, the archetype to domain rows, the archetype to saboteur and seat rows, and the cultural figures: the app's own tables, `ARCH12.json`, `ARCHDOM.json`, `ARCH18.json` and `CDOMAIN.json`;
+- the blueprint slots: the 14 shapes the app's psyche map draws.
+
+**Pass 3, how finished it says it is.** Nothing is wired: `runtimeIntegration` reads `not_yet_wired` or `not_verified` on every record. Nothing is approved. Its status reads `OPEN_CROSS_VERSION_TAXONOMY_AND_GRAPH_WIRING_REMAIN`. Confidence runs from 0.55, the behavioral domains, to 0.99, the blueprint slots, and it lists 292 open questions. Its own design document says the same of its purpose: "The new deep-psychological registry adds provenance, research-pass state, taxonomy identity, completeness fields, and typed relationship intent without replacing the existing engine."
+
+**Pass 4, record by record.**
+
+*Roots.* The same four as `ROOTD`, on the same seats. Nothing to take.
+
+*Domains. His book settles them, and the registry carries older states of the same list three times.*
+- The book, v341 and v342 alike: nineteen domains in four clusters. Architect: Knowledge, Justice, Imperium, Duty, Fate. Engine: Power, Creation, Dissolution, Sacrifice, Death. Weaver: Love, Communication, Healing, Provision, Play. Witness: Nature, Trickster, Mystery, Guardian. In its words: "These nineteen are the same nineteen described in full further on, name for name. For a time they were not. A rename had been applied to this list and never to the descriptions, so seven domains carried two names apiece". Then: "The names that stand are these: Dissolution, Love, Imperium, Communication, Healing, Sacrifice, Duty." And on the count: "the nineteenth settles it: the coincidence broke the moment a domain was added on observation".
+- `DOMAINS` is that list position for position in 15 of 19. The other four positions carry the names the book retired: Descent at position 8 for Sacrifice, Connection at 10 for Love, Exchange at 11 for Communication, Restoration at 12 for Healing. `KB_RENAME` already pairs each with the book's name.
+- `DOMDEF` is the book's own "Blueprint Domain Descriptions, All 19", ported on 18 September (`f4d9a8a4`): the same keys, numerals and order. The copy sweeps of 27 September (`287dd3ec`) and 1 October (`21bb264d`) put four of them into plainer words in places: Power's clear line, both of Communication's lines, and one sentence each of Sacrifice and Justice. The other fifteen are the book's text exactly.
+- The registry's canon domain layer is canon.json's 18: the four retired names, and no Provision.
+- Its behavioral domain layer is the book's first fifteen descriptions under their 31 May headings. The 31 May file and v341 agree word for word on every distorted line, and nearly so on every clear line (a word sequence likeness of 0.88 to 1.00, where 1 is identical). Four of its labels are headings the book has since replaced: Directed Force for Power, Rulership and Order for Imperium, Destruction and Transformation for Dissolution (the 31 May file itself says Destruction and Renewal), and Devotion and Right Action for Duty.
+- Its v341 roster layer has every cluster and name right, and each of its 19 records says the v341 definition is not available, because, in its own audit's words, "the raw v341 source is not available in the current repository/Library search." All 19 are defined in v341, and all 19 are in `DOMDEF` here. Its own first next step, "Recover the raw `MOB_Complete_v341.html`", is answered by the reboot-os address above.
+- So 52 of its records describe at most 19 domains, under as many as three names each.
+
+*Archetypes.*
+- Names. Its 18 are `ARCH18`'s 18. The book's twelve, in chapter 12, are canon.json's jungian twelve, and `ARCH`'s twelve reach them with Rebel as Outlaw, Everyman as Orphan and Caregiver as Caretaker. The book prints "Outlaw (Rebel)" as one row, and writes that in Mark and Pearson's later book "Orphan becomes Regular Guy"; it never uses the word Everyman.
+- One seat and one saboteur, three ways. `ARCH18` matches the book's "Thirteen Archetypes, Address and Paired Saboteur", "the roster as the author keeps it", in 12 of its 13 rows, saboteur by code. The thirteenth is the Warrior's saboteur, where the book disagrees with itself: that table says Control Freak, code S32, while chapter 12's library and its two seat table both say Controller, code S02, which `ARCH18` carries under the name the owner gave it on 18 October, Micromanager. The registry's mapping layer is the app's `ARCH18.json`, and it differs from the book in four rows besides, each traced to a reboot-os commit the book does not follow:
+  - Jester and Explorer moved from Avoider to Restless on 14 September (`2a86f17`), when Avoider was taken off the saboteur roster. The book records the reversal: Avoider "was briefly taken off the roster to become the negative pole of the intentional axis, and put back when it turned out three archetypes and the Anxiety cluster had been carrying it all along", and "The Avoider pairings stand: Avoider is on the roster as S33". `SAB33` here carries it as S33.
+  - Magician moved to the third eye and Orphan to the heart on 25 September (`121f3c2`), on a seat's reading of Pearson. The author's roster has the crown and the root.
+- Two seats, not one. The book seats each archetype twice and keeps both: "Both stand. One is the native seat, where the archetype runs from. The other is the distortion seat, where its saboteur sits. The line between them is the lean." This repository already holds both: `ARCH`'s `b` is the seat it acts from, and `ARCH18`'s third column is the seat it distorts at. The book's two seat table agrees with `ARCH`'s seats in all 11 rows the two share, and leaves the Orphan and the Hero for him to place. Its distortion column agrees with `ARCH18` in all 13 rows, saboteur by code.
+- Two saboteurs and two seats. Chapter 12 gives each of the twelve two of each. canon.json's archetypes register does too, and agrees with chapter 12 in 1 row of 12, the Ruler. Chapter 12 also disagrees with the book's own thirteen in 4 rows: the Warrior (Controller there, Control Freak in the thirteen), the Innocent, the Orphan and the Explorer.
+- Long form content. Each of its 18 archetype records carries a long form from the app's `ARCH12.json`: a definition, an essence, healthy and decoherent expressions, signals, where it installed, the released state, and fetters with an address and a load. None of it is in the book: none of 110 probe phrases drawn from it was found in v341. The app's module says the first twelve are carried over verbatim from the owner's archetype dictation, and the registry itself asks for that dictation to be recovered to check it. Those twelve are the book's twelve, Orphan and Outlaw among them. Its Hero, Everyman, Mentor, Shadow, Shapeshifter and Healer are web research, marked as not dictated. `ARCH` here carries a name, a short line of behaviour and one sentence for each.
+
+*Archetype to domain rows.* 18, from the app's `ARCHDOM.json`. Two targets are no domain in the book or here: the Ruler's is Architect, which is a root, and the Outlaw's is Destruction. The book has no such table.
+
+*Cultural figures.* 12, from the app's `CDOMAIN.json`, each tied to one domain. Four of the twelve, Zoroaster, Confucius, Guru Nanak and Solomon, are on neither the book's coordinate list of masters nor `MASTERS` here, and two targets are no domain: Akhenaten's is Devotion, and Solomon's is Architect, a root. The registry's own words on every row: "the meaning of the mapping is not yet established". The book ties no figure to a domain. It places its masters on its Sat, Chit and Ananda coordinates, which `MASTERS` here carries, and it pairs Zoroaster with the law of Truth, as the Compass here does: other tables, with other meanings.
+
+*Conscious Domains, new to this repository.* The eight of v341 chapter 32, Empyrean, Crown, Perception, Truth, Heart, Value, Royal and Creative, with the seven affirmations the book marks locked (written August 2023, one for each chakra), and Pattern, Story and Imperium Consciousness with an affirmation each, all word for word. This repository has no table of either. One thing in them needs his word: the book numbers the eight from 7 down to 1, Crown to Root, which puts Value at the solar plexus and Royal at the sacral, while their own lines say "Sacral open" for Value and "Solar plexus clear" for Royal. The registry follows the lines.
+
+*Blueprint slots.* 14 placeholders with no names, the app's drawing. The book: the blueprint is "one per person", and "a rung in its own right, not another word for the domains".
+
+*Everything else.* A search of every record and the header for the subject of each other decision found only words in prose and source addresses. Nothing in it bears on D1, D2, D3, D4, D7, D9, D10, D11, D12 or D13.
+
+**Pass 5, what it means, against his words.**
+- *"A format that descends from parent to child."* The format does; most of the content does not yet. Its schema gives every record a parent, children and typed relationships. In the content, 18 of 147 records have a parent, all of them canon.json's domains under the four roots, and its 36 relationships are those same 18 links counted from each end, every one still "source_backed_open_ruling". The 19 v341 domains name a root only as a candidate. 125 records have no links. This repository's `DOMAINS` already gives all nineteen domains their root, and its codes layer gives every archetype, saboteur and address one code.
+- *"It should use some of the data from the old one."* It does, but the old data it uses is not this repository's: it is canon.json of 8 September, the book as it stood on 31 May, v341 through an extract, and the reboot-os app's tables.
+- *"Making the old one obsolete and ready for archive."* Not this repository's tables. Where the two overlap, the engine's tables are the newer and agree with his book, and the registry's copies are the older: the domains (`DOMAINS` and `DOMDEF` follow v341; the registry follows canon.json and the 31 May file) and the archetype seats (`ARCH18` follows his roster; the registry follows the app's September changes). Nothing in the engine should be archived or replaced by it.
+- *What it adds that the engine lacks:* the Conscious Domains and the seven locked affirmations, the three related consciousness concepts, the long form archetype content the app says is his dictation, and a provenance trail for every record, its sources, passes and open questions.
+- *What is ready to archive is inside the registry and canon.json:* the behavioral domain layer's four superseded labels and its 31 May source, the canon domain layer (a second copy of a file vendored here, with four retired names), and canon.json's own domain register, which is stale against the book in four names and in its count. The 14 blueprint slots are a drawing's placeholders, not records of anything.
+
+**For the registry's keeper.** Not this seat's to change, and named so none is lost: the 19 v341 definitions can be filled from v341 itself; the 22 new records need the header's layer names and a `seat`; the 19 v341 records need the `parentId` their template requires, and their own check should report its absence; the 52 domain records want one id for each domain, which the domain codes of D8 would supply; and the dashes come out.
 
 ## Findings that build on the audit
 
@@ -44,6 +114,8 @@ The audit of 23 October (the schema, graph and index lane, findings SG-01 to SG-
 ## Strategy
 
 - **One source of truth, and canon.json is an input to it.** Nothing here reads reboot-os at run time. The copy merged against is vendored and pinned by md5, and CODE_SOURCES (the table of where every label comes from) cites that md5. A newer canon.json is merged by running the port tool against it, reading the differences it names, and committing the new copy, its md5 and the changed rows together.
+- **His book is the newest statement of his content.** canon.json (8 September, built from v184), the reboot-os app's tables and the registry are copies of his content made at earlier dates. Where they disagree, the newest dated source wins unless he has ruled otherwise, and each case is named here. Wherever it was checked this round, this repository follows the book, except for the four domain names in D8 and the Everyman, which is D6.
+- **The registry is kept beside the engine, never inside it.** It is research, not product, and it does not ship. When one of its records is worth a row here, the row is ported by its code, the way the seven registers were, with the registry cited as its source. Nothing reads the registry at run time, and the version brought here is the newest, the 147 record file, not `main`'s 125.
 - **Identity first, then data, then content, then interface.** Codes come before tables, tables before what a reading prints, and what a reading prints before the screens that draw it. A screen built on a table whose content is still in dispute would have to be rebuilt after the ruling.
 - **Nothing ported moves a number until he rules.** Every ported table is inert, and the gate proves it on every run by scrambling them all and finding `compute()` unchanged.
 - **His words are carried as written.** Where canon.json breaks its own template, or breaks a house rule, the row is kept or withheld whole, held by name, and put to him. It is never quietly reworded.
@@ -54,7 +126,7 @@ The audit of 23 October (the schema, graph and index lane, findings SG-01 to SG-
 | canon.json part | Where it lives here | This round | Next | Blocked by |
 |---|---|---|---|---|
 | ladders | `CHARGE_LADDER` | ported, coded LD01 to LD08, words by rule | his ruling on the roster | its ruling 1 |
-| amplifiers | `AMPLIFIER` | ported, coded AM01 to AM06, nerve read off `NODES` | place Justification | its ruling 5 |
+| amplifiers | `AMPLIFIER` | ported, coded AM01 to AM06, nerve read off `NODES` | place Justification, then wire | its ruling 5 |
 | quadrants | `BODY_QUADRANT` | ported, coded BQ01 to BQ04 | a surface, once the routing is ruled | ruling 2, for any use |
 | organs | `ORGAN` | ported, coded OG01 to OG10, Dermis held | his word on the Dermis row | none to hold it |
 | charge_routing | `CHARGE_QUADRANT` | ported | his eight decisions | its ruling 2 |
@@ -64,10 +136,10 @@ The audit of 23 October (the schema, graph and index lane, findings SG-01 to SG-
 | fetters | `CHILD` | measured | D2 | his call, its ruling 1 |
 | saboteurs | `SAB33`, `SABDEF` | measured | D3 | his call |
 | complexes, hyper_complexes | `CODE_STRUCT`, `HCX_LIB` | measured | D4 | his call, its rulings 4 and 6 |
-| archetypes | `ARCH18` | measured | D5 | his call, its rulings 6 and 7 |
-| jungian | `ARCH` | measured | D6 | his call |
+| archetypes | `ARCH18` | measured against canon.json and the book | D5 | his call on one row |
+| jungian | `ARCH` | measured against canon.json and the book | D6 | his call on Everyman |
 | masks | `MASKS` | measured | D7 | his call |
-| domains | `DOMAINS`, `DOMDEF` | measured | D8 | his call, its ruling 8 |
+| domains | `DOMAINS`, `DOMDEF` | measured against canon.json and the book | D8, ready | a go |
 | laws | `SI`, `HARM` | measured | D9 | his call |
 | axes | `VERP`, the six gates | placed | aliases, no ruling needed | none |
 | formula | `compute()`, `TIERDEF` | placed | D10 | his call, its ruling 11 |
@@ -76,9 +148,25 @@ The audit of 23 October (the schema, graph and index lane, findings SG-01 to SG-
 | time_axis, contraindications | held out of the product | placed | the release seat checks the rebound warning | his call |
 | evidence, open_rulings | held out of the product | placed; the rulings are quoted here | none | none |
 
+## Tactics for the registry, layer by layer
+
+| Registry layer | Records | Against the engine and the book | Verdict | Next |
+|---|---|---|---|---|
+| roots | 4 | the same four as `ROOTD`, same seats | nothing to take | none |
+| behavioral domains | 15 | the book's first fifteen, under 31 May headings | archive its labels; `DOMDEF` stays | none |
+| v341 domain roster | 19 | right; the definitions it lacks are in v341 and `DOMDEF` | the registry fills from here, not the other way | its keeper |
+| canon domains | 18 | canon.json's, four retired names, no Provision | archive, a second copy | none |
+| Conscious Domains | 8 | v341 chapter 32, new here | port, inert and coded | D14 |
+| related consciousness | 3 | v341, new here | port with the eight | D14 |
+| archetype candidates | 18 | names are `ARCH18`'s; the long form is not in the book | enrich `ARCH` by code, AR01 to AR12, inert | D15 |
+| archetype to saboteur and seat | 18 | the app's table, four rows and a name off the book; `ARCH18` is the book's | keep `ARCH18`; the app's table is reboot-os's to correct | D5 |
+| archetype to domain | 18 | the app's alone, two targets no domain | hold | D16 |
+| cultural figures | 12 | the app's alone, four not in the book, meaning unset | hold | D16 |
+| blueprint slots | 14 | placeholders | hold out | none |
+
 ## What was executed
 
-**Commit `b0a5b124`, the port.**
+**Commit `0ddceb3a`, the port.**
 
 - `vendor/reboot-os/canon.json`, byte for byte the reboot-os file, md5 `7e844c0d21489b87ab604cf262a30e62`.
 - `atuned_src/engine/data/registers.js`, the seven tables. Every word, number and order is canon.json's. Two things are added: a name for each field where canon.json has only a position, which is this port's reading of each position, checked against every row; and a code in each row. Two things are not carried: the amplifiers' nerve, which `NODES` already holds, and the derived measures' descriptions, for the reason in finding 2.
@@ -86,23 +174,29 @@ The audit of 23 October (the schema, graph and index lane, findings SG-01 to SG-
 - `tools/canon-port.js`, the merge made repeatable: `check` runs `regDiff` against a newer file, `emit` writes the rows in the table's own shape with every code kept, `map` places every part of the file, and `report` measures the disagreements behind the decisions below.
 - The engine gate's new group `RG`. It holds the vendored copy to the md5 CODE_SOURCES cites, and every ported table to the file row for row, after showing that `regDiff` catches each of thirteen planted changes. It holds the map to every part of the file both ways, and every table in the data file to exactly what the port tool writes, so the generator and the file cannot drift. It holds `compute()` unchanged across 82 fields with every ported table scrambled, after showing on `SAB33` that the harness sees a change, and it holds the astrology overlay to its lock on its own. The two held template exceptions are held by name.
 
-**Commit `386eddf5`, the codes.**
+**Commit `1591676f`, the codes.**
 
 - Seven new kinds of code with an eighth composed by rule: charge ladder, ladder word, amplifier, body quadrant, organ, derived measure, sign and animal. The index lists 336 codes across 15 kinds, up from 281 across 8. A word on a ladder is never listed, because some words sit on two ladders. It is its ladder and its step, `LD05.6`.
 - One behaviour changed on purpose: Judgment, Obsession, Perfectionism, Comparison and Entitlement are now refused as ambiguous until the caller names the kind, because each now names an address and an amplifier. Entitlement is the sharpest case: the name is address 38 here, while the amplifier stands on address 8, so a door that picked for the caller would hang the amplifier's content on the wrong address. Nothing calls the codes door yet but the gate.
 - `codesCheck()` holds every new table to its template and every row to its parent: a ladder's charge, an amplifier's address, a quadrant's side and face, every route, a measure's law, every overlay key, the sign codes to the index `astro.js` counts the sun in, and the animal codes to `CHINESE` by year. The new group `RC` shows each of eighteen checks catching one planted defect, freezes the 55 codes the registers were born with, and holds the sign and animal codes to what the birth reading actually prints.
 
-**Commit `22be39c8`, one check named once.** `codesCheck()` read the ladder table's shape twice, so an empty table was reported twice. Found on a review of the codes commit, fixed, and held by a check that fails on the engine from before it.
+**Commit `4b89f07e`, one check named once.** `codesCheck()` read the ladder table's shape twice, so an empty table was reported twice. Found on a review of the codes commit, fixed, and held by a check that fails on the engine from before it.
 
-**Verification.**
+**Verification of those three.**
 
-- Known bad first. The engine gate was run against five engines that should fail, and each did: the engine from before the port (both new groups fail), a planted typo in a ladder (six checks fail), two sign codes swapped (six fail), a planted leak of the overlay into `compute()` (the scrambled-table check and the lock check fail on all 82 fields), and the engine from before `22be39c8` (its one new check fails). The leak case found a flaw in its own first plant, which edited a quoted copy of the line and not the line itself, and was rebuilt before it was trusted.
+- Known bad first. The engine gate was run against five engines that should fail, and each did: the engine from before the port (both new groups fail), a planted typo in a ladder (six checks fail), two sign codes swapped (six fail), a planted leak of the overlay into `compute()` (the scrambled-table check and the lock check fail on all 82 fields), and the engine from before `4b89f07e` (its one new check fails). The leak case found a flaw in its own first plant, which edited a quoted copy of the line and not the line itself, and was rebuilt before it was trusted.
 - Both build scripts, `funnel/BUILD-single.sh`, and `tools/products.js` after each commit: every product matches its source byte for byte. No product was edited by hand. Against `607bb0ee`, the build grows by 37,536 bytes in `source.html`, 37,401 in `engine.js` and in the quiz page that inlines it, and 10,560 in the packed file.
 - `tools/equiv.py` against the `607bb0ee` build: 13 new declarations (the seven tables, `REG_MAP`, the new module's three functions, `CODE_SIGN` and `CODE_ANIMAL`) and 6 changed bodies, all in the codes layer. Nothing else in the build moved.
-- The engine gate at `22be39c8` reads 6247 passed, 0 failed, 10 expected red, against 6147 at `607bb0ee`. The claims gate has 0 findings, the voice gate's sweep of his objections is unchanged, the percent gate passes, and the engine is host free. Every gate `tests/floors.json` names, 47 runs in all with the render watch and the orphan check, ran at `386eddf5` and every one exited clean, `functional` at 2676 passed and `golden` at 146 with its one expected red; the funnel package passed 44 of 44. `22be39c8` changes one line of `codesCheck()`, which no screen calls, and was run through the engine, products, claims, percent and objections gates. `tools/floors.js` over those logs fails one gate that this branch did not touch: `sniffpage` passes 80 against a floor of 61, and it passes 80 at `607bb0ee` too, so the floor was left behind by the sniffer commits this branch was cut after. It is the sniffer seat's one-line raise.
+- The engine gate at `4b89f07e` reads 6247 passed, 0 failed, 10 expected red, against 6147 at `607bb0ee`. The claims gate has 0 findings, the voice gate's sweep of his objections is unchanged, the percent gate passes, and the engine is host free. Every gate `tests/floors.json` names, 47 runs in all with the render watch and the orphan check, ran at `1591676f` and every one exited clean, `functional` at 2676 passed and `golden` at 146 with its one expected red; the funnel package passed 44 of 44. `4b89f07e` changes one line of `codesCheck()`, which no screen calls, and was run through the engine, products, claims, percent and objections gates. `tools/floors.js` over those logs fails one gate that this branch did not touch: `sniffpage` passes 80 against a floor of 61, and it passes 80 at `607bb0ee` too, so the floor was left behind by the sniffer commits this branch was cut after. It is the sniffer seat's one-line raise.
 - The next merge, rehearsed on a planted canon.json 1.1.0 with one ladder word changed, one organ added and one new register: `check` named the word and the organ and exited 1, `map` named the new register as not placed and exited 1, and `emit organs` kept OG01 to OG10 and gave the new organ OG11.
 - No em dash in any added line, in any commit message, or in any built product.
 - Coverage of the new engine code under the engine gate: `regDiffInto` and `ladderPlaces` run in full. The branches of the new checks that never run are the guards for a missing table.
+
+**This round, the registry.** One commit on top of `6c4f91b6`: `tools/registry-reconcile.py` and `tools/registry-dump.js`, which make the five passes repeatable, and this file. No file under `atuned_src/` changed, so no product changed.
+
+- Known bad first: the self test's 26 plants were each caught on the newest registry, and its 24 on `main`'s; a copy of the tool with two comparisons broken failed its self test naming exactly those two.
+- Both build scripts and `funnel/BUILD-single.sh` ran, and `tools/products.js` matches every product to its source. The rebuild differs from the committed products only in the build stamp, so the committed ones were kept. The engine gate reads 6247 passed, 0 failed, 10 expected red, as at `4b89f07e`. The claims gate has 0 findings and the voice gate's sweep of his objections exits clean.
+- No em dash or en dash in either tool, in this file, or in the commit message.
 
 ## How to run the next merge
 
@@ -112,9 +206,17 @@ The audit of 23 October (the schema, graph and index lane, findings SG-01 to SG-
 4. `node tools/canon-port.js emit <register>` for each register it names, pasted over that table. Every code is kept, and a new row takes the next one.
 5. Replace the md5 in CODE_SOURCES's canon row, run `node tools/canon-port.js report` to see what moved in the registers this repository holds its own version of, and run the gates.
 
+And for a newer registry:
+
+1. Put the registry, its schema and its template catalog in one directory under their own names, and take the newest book from reboot-os's manuscript branch, `claude/keen-brahmagupta-qt32zr`.
+2. `python3 -I tools/registry-reconcile.py --selftest --book MOB_Complete_vNNN.html REGISTRY.json`. Every plant must be caught before a run is read.
+3. `python3 -I tools/registry-reconcile.py --book MOB_Complete_vNNN.html REGISTRY.json`, with a second `--book` to compare two versions of the book, and read each finding against the registry section above.
+
 ## Decisions for the owner
 
-Each is what disagrees, what each answer costs, and the systems seat's recommendation. None of them blocks what was built this round, since everything ported is inert until he rules. If one question reaches him, it is D13, because it is the one that blocks the most new code.
+Each is what disagrees, what each answer costs, and the systems seat's recommendation. None of them blocks what was built this round, since everything ported is inert until he rules. If one question reaches him, it is D13, because it is the one that blocks the most new code. D8 needs no question: his book already rules it.
+
+The registry was checked against every one of these. It is silent on D1 to D4, D7 and D9 to D13, which stand as written. It moves D5, D6 and D8, which are revised below, and it adds D14 to D16.
 
 **D1. The four field nodes are numbered two ways.** canon.json and the book number them 109 Gaia Gateway, 110 Earth Star, 111 Soul Star and 112 Stellar Gateway. This repository's `NODES` and the reboot-os app's `NODEREG` number them 109 Sol Star (Soul Star there), 110 Stellar Gateway, 111 Earth Star and 112 Gaia Gateway. reboot-os's `nodes_112.json` agrees with them at 109 to 111 and puts PARAM SHIVA at 112. All four sit at another number in canon.json.
 - Keep this repository's numbers. Costs nothing here; canon.json and the book are corrected, or their order is called display order. The codes already translate canon.json's numbers.
@@ -136,21 +238,25 @@ Each is what disagrees, what each answer costs, and the systems seat's recommend
 - Keep both, the pair `compute()` makes and canon.json's named structure, joined by a table of which saboteurs belong to which named structure. A reading could then name his structure when its members fire. Additive, and nothing moves.
 - **Recommendation: keep both, joined.** The codes already keep them apart, pair codes against X codes. What a reading prints is the ai-director's.
 
-**D5. Archetype pairings.** canon.json gives each of its 19 archetypes two saboteurs and two seats. `ARCH18` gives each of its 18 one saboteur and one seat. Of the 17 both carry, `ARCH18`'s saboteur is neither of canon.json's two for 12, and its seat is neither of canon.json's two for 4. canon.json's saboteur columns also hold labels that are not saboteurs here: Rebel, Rescuer, Saboteur.
-- Keep `ARCH18`.
-- Take canon.json's two-and-two shape as a second column. Additive. The Analytics card and the Avatar page, which print a primary saboteur, would need their wording changed.
-- **Recommendation: take the two-and-two shape when he rules**, since it carries more, after canon.json's rulings 6 and 7 settle what Rebel, Rescuer and Saboteur are.
+**D5. Archetype pairings. Revised on 24 October after the book and the registry.** The first version compared canon.json with `ARCH18` and recommended taking canon.json's two saboteurs and two seats. The book changes that.
+- The book's two seat table matches `ARCH18` in all 13 rows by code. The author's thirteen matches it in 12; its Warrior is Control Freak, where the two seat table and chapter 12 say Controller, which `ARCH18` carries as S02. The registry's mapping layer, the app's `ARCH18.json`, differs from the book in four rows and that name, each traced above to a reboot-os change the book did not follow.
+- canon.json's two and two agrees with the book's chapter 12 in 1 row of 12, and chapter 12 disagrees with the book's own thirteen in 4 rows.
+- Keep `ARCH18`. Costs nothing, and it is the book's.
+- Add a second saboteur and a second seat taken from chapter 12, not canon.json. Additive. The four rows where the book's own tables disagree are his, and the Analytics card and the Avatar page, which print a primary saboteur, are unchanged.
+- **Recommendation: keep `ARCH18`**, withdraw the earlier recommendation, and take a second column from chapter 12 only if he wants one. The app's `ARCH18.json` should go back to the book in four rows, Jester and Explorer to Avoider, Magician to the crown and Orphan to the root, which is a note for the reboot-os thread and nothing here. Controller against Control Freak for the Warrior is the one row the book cannot settle for him, and the code here follows two of its three tables.
 
-**D6. The jungian twelve.** canon.json's twelve have Orphan, Outlaw and Caretaker where `ARCH` has Everyman, Rebel and Caregiver. `ARCH`'s order and names are stored on every record (`p.soul.arcs`, `p.avatar.arch`). canon.json disagrees with itself here: its jungian register uses Orphan and Outlaw in place of Everyman and Rebel, while its archetypes register carries all four as different archetypes.
-- One archetype each: Orphan is Everyman and Outlaw is Rebel. Two alias rows, no migration, and the display names are his to pick.
-- Two each: the roster is more than twelve, which is the open count question in `SNIFFER_SPEC.md` section 4.
-- **Recommendation: one each.** Both lists follow Carol Pearson's archetypes, as `ARCH_CREDIT` says of this repository's: in her later book with Margaret Mark, the Orphan's place is taken by the Everyman, and the Outlaw is also called the Rebel. Caretaker is already Caregiver in the codes.
+**D6. The jungian twelve.** canon.json's twelve have Orphan, Outlaw and Caretaker where `ARCH` has Everyman, Rebel and Caregiver. `ARCH`'s order and names are stored on every record (`p.soul.arcs`, `p.avatar.arch`). canon.json disagrees with itself here: its jungian register uses Orphan and Outlaw in place of Everyman and Rebel, while its archetypes register carries all four as different archetypes. Revised on 24 October after the book and the registry:
+- Rebel and Outlaw: one archetype. The book prints "Outlaw (Rebel)" as one row, and two readers here already join them by name (`ui/avatarui.js` and `ui/analytics.js`). One alias row in the codes, no migration, and the display name is his.
+- Everyman and Orphan: still his, with a new fact. The reboot-os app holds both, Orphan as his dictation and Everyman as web research, and the book never uses the word Everyman. If they are one, `AR11` takes the dictated Orphan long form and the app's Everyman entry is archived. If two, the roster passes twelve, which is the open count question in `SNIFFER_SPEC.md` section 4.
+- Caretaker is Caregiver, already in the codes.
+- **Recommendation: one each**, as before, with the dictated Orphan content as `AR11`'s once D15 confirms the dictation. Both lists follow Carol Pearson's archetypes, as `ARCH_CREDIT` says of this repository's: in her later book with Margaret Mark the Orphan's place is taken by the Everyman, and the Outlaw is also called the Rebel.
 
 **D7. Masks.** canon.json: Child, Preteen, Teen, Professional, Religious or Moral, Relational, one seat each. `MASKS`: Child, Preteen, Teen, Adult, Professional, Ideological, on one or two seats each. 4 of 6 share a name. canon.json's Religious or Moral mask is "Values held as position rather than practice", and the Ideological mask here "answers from the position instead of the moment", which is the same idea.
 - **Recommendation:** make Ideological and Religious or Moral one mask under two names, and ask only Adult against Relational, which are different ideas, and the seats.
 
-**D8. Domains.** canon.json has 18 in four families. `DOMAINS` has the same 18 plus Provision. `DOMDEF`, the knowledge page's table, names four of them otherwise, bridged for one reader by `KB_RENAME`: Descent is Sacrifice, Connection is Love, Exchange is Communication, Restoration is Healing. canon.json's ruling 8 counts 18 in the book, 15 in the compilation and 14 in the blueprint file. `p.soul.doms` stores a position in `DOMAINS`, and that order is not frozen yet (audit SG-04).
-- **Recommendation:** freeze the order first, then keep `DOMAINS`' names, which are canon.json's, with `DOMDEF`'s four as aliases. Ask only whether Provision stays. It is the fourteenth of nineteen, so dropping it moves every record that holds it or any of the five after it, Play to Guardian.
+**D8. Domains. Answered by his book, and this seat's first recommendation had it the wrong way round.** The first version, written before the book was read, kept `DOMAINS`' names because they are canon.json's, made `DOMDEF`'s four the aliases, and asked whether Provision stays. The book answers both: its nineteen, its seven standing names and its Provision are quoted in the registry section above. canon.json's own ruling 8, "18 in the book, 15 in the compilation, 14 in the blueprint file", is answered with them: the 18 is v184's, the 31 May file shows the same 14 in its roster and 15 in its descriptions, and the book now has nineteen in both. `p.soul.doms` stores a position in `DOMAINS`, and that order is not frozen yet (audit SG-04).
+- What it costs: the codes have no kind for a domain yet, so first a domain kind, nineteen codes given by position and frozen there, which is the freeze audit SG-04 asks for. Then four names in `DOMAINS` change, Descent to Sacrifice, Connection to Love, Exchange to Communication and Restoration to Healing, and the old four become alias rows of their codes, the pairs `KB_RENAME` already holds. A record stores a domain's position, never its name, so no stored record moves. Every surface that prints a domain shows the new word, so the interface and voice gates and the screenshots apply. No other line of the source or the tests writes any of the four old names as a domain; the one other "Connection" is address 106's theme, a different thing.
+- **Recommendation: make the change, in one commit with the domain codes and the freeze**, since the order is now the book's as well. It is his ruling already, written in his book. canon.json's domain register is then stale against the book, which is reboot-os's to regenerate.
 
 **D9. Laws.** canon.json numbers 59 laws in four groups, `HARM` carries 76 in seven, and the instrument measures 21 (`SI`). Number for number, 56 are named alike and 3 otherwise: 40 is Ownership there and Accountability here, 43 is Wisdom there and Responsibility here, and 57 is "Love (Expression)" there and Love here. So of the 21 measured, canon.json has no law named Accountability or Responsibility. canon.json calls the 21 the Laws of Spiritual Integrity, where this repository says Moral Integrity, his 15 October correction. The record boundary now carries an answer across a rename safely (SG-01, merged), so either answer is buildable.
 - Keep this repository's names, and correct canon.json and the newsletter.
@@ -165,7 +271,7 @@ Each is what disagrees, what each answer costs, and the systems seat's recommend
 - Charge routing, ruling 2: his eight front and back decisions. canon.json calls the current table a defect.
 - Amplifiers, ruling 5: is address 34 Justification's? If it is, does 34 keep the name Arrogance?
 - Derived measures, ruling 9: Awareness and Flow are already laws, `HARM`'s E32 and E54, and Vitality is already a reading here.
-- **Recommendation:** drop Awareness and Flow as derived measures, since they are measured as laws, and keep Vitality as the reading this repository makes (finding 3). If they stay, the Awareness description has to lose the word the claims rules refuse before it can ship. Until he rules, nothing reads any of the four.
+- **Recommendation:** drop Awareness and Flow as derived measures, since they are measured as laws, and keep Vitality as the reading this repository makes (finding 3). If they stay, the Awareness description has to lose the word the claims rules refuse before it can ship. Until he rules, nothing reads any of the four. The body quadrants and the amplifiers are the two he wants wired "at some point in time", and they wait on rulings 2 and 5.
 
 **D12. The organ row that breaks its template.** Dermis's fourth field is "Overflow system. Psoriasis, stress acne.", a note, where every other organ has the sentence the pattern says, such as the Heart's "If I open, I will be hurt again." The symptom fields of the quadrants and organs are body correspondences. They are kept inside the engine as its other clinical correspondences are, and may not be printed at a person without the claims boundary.
 - **Recommendation:** he gives Dermis a sentence in the first person, and the note moves to its issue field.
@@ -175,9 +281,26 @@ Each is what disagrees, what each answer costs, and the systems seat's recommend
 - Re-apply them here by hand, patch by patch, re-testing each. Slow, and each hand port can drift from the design he approved.
 - **Recommendation: the first.** It is the one thing that has to happen before most of the new code on the reboot side can reach this repository at all, and it is a request to the look development thread rather than a ruling.
 
+**D14. The Conscious Domains and the seven affirmations.** New this round, from the book through the registry.
+- Port them as a table, inert and coded, the way the seven registers were: the eight Conscious Domains, the three related concepts and the seven affirmations keyed by zone. Additive, and nothing reads them until a surface is designed.
+- For Value and Royal, take the zone their own lines name over the number the book gives them, as the registry does. Or take the number, which swaps the two affirmations.
+- The Ritual page's daily affirmations, `AFFIRM`, are a first draft of 3 October, nine lines keyed by the child emotions. Whether the seven locked ones join them is the ritual seat's to design and his to see.
+- **Recommendation: port now, inert, the lines over the number**, and put the ritual question to him with a picture when that surface is built.
+
+**D15. The long form archetype content.** The app's 18 entries, twelve of them said to be his dictation, none of it in the book.
+- Enrich `ARCH` by code, `AR01` to `AR12`, inert until a surface reads it. The six web research entries stay out. The fetters inside each entry carry an address and a load, which the engine would read as charge, so they stay out until he rules on them too.
+- Leave it in the registry.
+- **Recommendation: enrich, once he confirms the twelve are his dictation.** It is the richest thing in the file that this repository lacks, and the first surface it would serve is the archetype intake, where his words of round PV were "I want to see the symbol of the archetype and a description, and then the question".
+
+**D16. The archetype to domain rows and the cultural figures.** Both are the app's alone, both aim at targets that are no domain, and the registry says of the figures that "the meaning of the mapping is not yet established".
+- **Recommendation: hold both out.** Ask only if he wants archetypes or figures tied to domains at all. `MASTERS` already carries the book's own placing of the masters.
+
 ## Phase three, proposed
 
-1. The look development thread pushes its working branch to this repository. Devops reconciles this repository's `main` with `atuned/mvp-alpha-recursive-execution` first, so there is one base to merge onto.
-2. The three patches that apply today go first, each through the interface gates and his eye: the side menu polarity meter, the horizontal Field pole and the Source AI spec.
-3. Then the engine-side patches (the SAB33 rename, the CQ, DQ and expression fix, the knowledge restore, `harmdef.js` and `kbdef.js`), each held to `tools/equiv.py`, because they change what readings say. Then the interface rounds in the order he approved them.
-4. As he rules on D1 to D12, each ruling is one table change, and the codes keep every stored record resolving.
+1. Devops brings `main`'s unique work and the newest registry onto the working branch, outside the build, and carries `main`'s last two commits. The look development thread pushes its working branch to this repository. Then there is one base to merge onto.
+2. D8, on a go: the domain codes, the order freeze and the four domain names, in one commit, through the interface and voice gates.
+3. The three patches that apply today, each through the interface gates and his eye: the side menu polarity meter, the horizontal Field pole and the Source AI spec.
+4. Then the engine-side patches (the SAB33 rename, the CQ, DQ and expression fix, the knowledge restore, `harmdef.js` and `kbdef.js`), each held to `tools/equiv.py`, because they change what readings say. Then the interface rounds in the order he approved them.
+5. The Conscious Domains ported, inert and coded (D14), and `ARCH` enriched by code once he confirms the dictation (D15).
+6. The body quadrants and amplifiers wired, which he asked for "at some point in time", once canon.json's rulings 2 and 5 are answered (D11): the routing into the quadrants is the table canon.json calls a defect, and Justification has no address.
+7. As he rules on the rest, each ruling is one table change, and the codes keep every stored record resolving.
