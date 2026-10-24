@@ -1,6 +1,6 @@
 {
   "catalogId": "atuned.deep_psychological.template_catalog",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "status": "COMPLEX_HYPERCOMPLEX_AND_SUPERCOMPLEX_CANDIDATE_TEMPLATES_ADDED",
   "purpose": "Explicit template assignments for the deep-psychological registry. Behavioral-domain records include research-informed behavioral-energy fields; the catalog remains separate from the experiential runtime until integration is implemented and tested.",
   "templates": [
@@ -524,6 +524,24 @@
         "templateValidation"
       ],
       "description": "Explicit source/taxonomy blocker."
+    },
+    {
+      "id": "TPL-INVERSION-POLE-CANDIDATE-V1",
+      "kind": "inversion_pole_candidate",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "body",
+        "links",
+        "sourceFamily",
+        "sourceRole",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "templateValidation"
+      ],
+      "description": "Named inversion label from a source family; kept separate from MIRROR figures and Super-Complex entities unless an approved crosswalk exists."
     }
   ]
 }
