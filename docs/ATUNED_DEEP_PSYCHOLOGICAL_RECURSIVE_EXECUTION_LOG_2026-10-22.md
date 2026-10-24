@@ -1,8 +1,8 @@
-# Recursive Execution Log — ATÜNED Deep Psychological Layer
+# Recursive Execution Log, ATÜNED Deep Psychological Layer
 
 **Date:** 2026-10-22  
 **Repository:** `rebootos-sourcce/MOB`  
-**Status:** ACTIVE — KPI 1 remains the controlling priority; KPI 2 is gated on KPI 1 acceptance.
+**Status:** ACTIVE, KPI 1 remains the controlling priority; KPI 2 is gated on KPI 1 acceptance.
 
 ## Governing KPIs
 
@@ -11,7 +11,7 @@
 
 Do not start runtime wiring before record/source/taxonomy/schema gates are satisfied, except for read-only investigation needed to define the integration contract.
 
-## Round 1 — Baseline and source recovery
+## Round 1, Baseline and source recovery
 
 ### Confirmed from repository artifacts
 
@@ -66,7 +66,7 @@ The HTML also contains separate Pattern, Story, and Imperium Consciousness entri
 A populated field is not necessarily a source-backed field. A completed pass flag is not necessarily completed research. A record existing in the registry is not proof that the psychological layer is complete. A static graph scan is not proof of runtime traversal. Record every finding with evidence, version/commit, test output, and unresolved limitations.
 
 
-## Round 2 — Conscious Domain and affirmation extraction completed
+## Round 2, Conscious Domain and affirmation extraction completed
 
 Created `docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md` in commit `493e2052045a36ecad5756c8fbd04ebc7b234291`.
 
@@ -81,7 +81,7 @@ Local source file SHA-256: `79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f8073
 - **Important distinction:** creating the source extraction document does not close KPI 1. It supplies source evidence for the next record-level repair and crosswalk pass.
 
 
-## Round 3 — Conscious Domain registry repair
+## Round 3, Conscious Domain registry repair
 
 Committed registry edit `3ff0cb0b1a0fda7502aaa0f9061bde4784799b25` to `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json`.
 
@@ -95,7 +95,7 @@ Committed registry edit `3ff0cb0b1a0fda7502aaa0f9061bde4784799b25` to `docs/data
 The seven chakra-to-domain assignments are still an inferred crosswalk, not canonical approval. This repair removes the missing-field defect but does not close the Conscious Domain research gate. The 15 behavioral domains remain provisional and source-unverified. KPI 1 remains open; KPI 2 remains gated.
 
 
-## Round 4 — Provisional Blueprint slot population and external research
+## Round 4, Provisional Blueprint slot population and external research
 
 **Date:** 2026-10-22
 
@@ -127,7 +127,7 @@ The seven chakra-to-domain assignments are still an inferred crosswalk, not cano
 5. Re-run the full audit and publish record-level counts and failures. Do not claim KPI 1 closure until every applicable record passes.
 
 
-## Round 5 — Complete shared record/template content envelope
+## Round 5, Complete shared record/template content envelope
 
 **Date:** 2026-10-22
 
@@ -150,7 +150,7 @@ The seven chakra-to-domain assignments are still an inferred crosswalk, not cano
 5. Rerun the full registry audit and only then decide whether KPI 1 can close.
 
 
-## Round 6 — Conscious Domain research closure, provisional
+## Round 6, Conscious Domain research closure, provisional
 
 **Date:** 2026-10-22
 
@@ -181,7 +181,7 @@ The literature supports the general constructs used to contextualize the records
 5. Keep KPI 1 open until every applicable record satisfies the shared record contract and the unresolved domain-count/relationship decisions are explicitly dispositioned. KPI 2 remains gated.
 
 
-## Round 7 — Full registry structural acceptance audit
+## Round 7, Full registry structural acceptance audit
 
 **Date:** 2026-10-22
 
@@ -202,7 +202,7 @@ Fetched the current registry and its schema from the repository's Git tree/blob 
 - Structural audit errors: 0.
 
 ### KPI 1 disposition under the owner's stand-up-first instruction
-**KPI 1 — record stand-up baseline: COMPLETE (provisional).** The 125-record registry now satisfies the structural record envelope, has three separately named research-pass slots populated for each record, and has zero errors in this targeted schema/property audit. The owner explicitly authorized a usable first build that can be refined later, rather than waiting for perfect canonical resolution.
+**KPI 1, record stand-up baseline: COMPLETE (provisional).** The 125-record registry now satisfies the structural record envelope, has three separately named research-pass slots populated for each record, and has zero errors in this targeted schema/property audit. The owner explicitly authorized a usable first build that can be refined later, rather than waiting for perfect canonical resolution.
 
 This is not a claim that every ATÜNED semantic mapping is canon-approved. The unresolved 15/18/19/14 domain-count conflict, exact Conscious Domain affirmation assignments, Blueprint slot names, archetype/mapping semantics, and other source-specific questions remain recorded as a refinement backlog. Provisional content is not relabeled as canonical.
 
@@ -213,7 +213,7 @@ This is not a claim that every ATÜNED semantic mapping is canon-approved. The u
 Proceed to KPI 2 only after treating this logged provisional baseline as the agreed KPI 1 stand-up completion point; keep the refinement backlog visible and do not promote provisional mappings to canonical without evidence.
 
 
-## Round 4 — Owner model clarification: behavioral energy and mask state
+## Round 4, Owner model clarification: behavioral energy and mask state
 
 ### Owner-stated intent captured
 - Names and definitions are guiding posts; the core target is behavioral energy behind the construct.

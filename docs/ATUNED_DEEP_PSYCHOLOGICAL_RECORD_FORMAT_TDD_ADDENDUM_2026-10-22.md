@@ -1,6 +1,6 @@
-# ATÜNED Deep-Psychological Record Format TDD — Audit Addendum
+# ATÜNED Deep-Psychological Record Format TDD, Audit Addendum
 Date: 2026-10-22
-Status: OPEN — measured inventory corrected; content and integration gates remain open.
+Status: OPEN, measured inventory corrected; content and integration gates remain open.
 Parent TDD: [ATUNED_DEEP_PSYCHOLOGICAL_RECORD_FORMAT_TDD_v1.md](ATUNED_DEEP_PSYCHOLOGICAL_RECORD_FORMAT_TDD_v1.md)
 Audit: [ATUNED_DEEP_PSYCHOLOGICAL_REGISTRY_AUDIT_2026-10-22.md](ATUNED_DEEP_PSYCHOLOGICAL_REGISTRY_AUDIT_2026-10-22.md)
 Repeatable audit program: [audit-psychological-registry.js](../proto/knowledge/src/audit-psychological-registry.js)

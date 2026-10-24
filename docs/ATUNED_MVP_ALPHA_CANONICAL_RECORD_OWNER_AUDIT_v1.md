@@ -1,4 +1,4 @@
-# ATÜNED MVP Alpha — Canonical Record Owner Audit
+# ATÜNED MVP Alpha, Canonical Record Owner Audit
 Version: 1.1
 Date: 2026-10-21
 Status: **P0 contract complete.** Runtime integration is a downstream P1/P2 task and is not claimed complete.
@@ -52,13 +52,13 @@ Rules:
 - Trace graph is strict; a new edge or attribute must be validated across graph functions, profile boundary, UI and tests.
 
 ## Three-pass review result
-### Pass 1 — Ontology
+### Pass 1, Ontology
 Vritti is the total signal; fetter is the limiting-belief interpretation; qualium describes the orientation of that distortion; tone belongs to the nerve-address node. Connected, not interchangeable.
 
-### Pass 2 — Runtime ownership and metric isolation
+### Pass 2, Runtime ownership and metric isolation
 Use existing story/imprint, fetter/address, and trace owners. Qualium belongs to the interpretation/association unless implementation inspection proves the current edge contract cannot safely carry it; then extend that canonical contract, not a parallel collection. Tone is referenced from node/seat owner. CQ remains one operational calculator; conceptual formula is not a second executable calculator.
 
-### Pass 3 — Failure and evidence
+### Pass 3, Failure and evidence
 Preserve raw source, provenance, candidate/confirmed distinctions, old-profile compatibility, deterministic derivation, idempotency, and export/import. No relationship-only operation may alter metrics. No association implies causation. Do not overstate physiological validity.
 
 ## P0 exit checklist
@@ -71,11 +71,11 @@ Preserve raw source, provenance, candidate/confirmed distinctions, old-profile c
 - [x] Runtime implementation gaps transferred explicitly to P1/P2 rather than left as unresolved P0 semantics.
 
 ## Block status
-- **P0 — COMPLETE as architecture/ownership contract.** This is design/contract completion, not runtime completion.
-- **P1-C — IMPLEMENTATION CLOSED; EXECUTION DEFERRED:** regression coverage is authored for deterministic derivation, source/trace provenance, explicit address confirmation, metric isolation, profile round-trip, legacy-profile compatibility, and strict refusal of uncontracted qualium fields. No test pass is claimed.
-- **P2 — IMPLEMENTATION CLOSED; EXECUTION DEFERRED:** `engine/loop.js` exposes source-backed signal evidence and `ui/loopread.js` renders a marker with source text, candidate provenance, nerve-address identity, configured tone reference, and an explicit not-yet-captured qualium dimension. No separate `p.vritti[]` collection and no metric side effects.
+- **P0, COMPLETE as architecture/ownership contract.** This is design/contract completion, not runtime completion.
+- **P1-C, IMPLEMENTATION CLOSED; EXECUTION DEFERRED:** regression coverage is authored for deterministic derivation, source/trace provenance, explicit address confirmation, metric isolation, profile round-trip, legacy-profile compatibility, and strict refusal of uncontracted qualium fields. No test pass is claimed.
+- **P2, IMPLEMENTATION CLOSED; EXECUTION DEFERRED:** `engine/loop.js` exposes source-backed signal evidence and `ui/loopread.js` renders a marker with source text, candidate provenance, nerve-address identity, configured tone reference, and an explicit not-yet-captured qualium dimension. No separate `p.vritti[]` collection and no metric side effects.
 - **Follow-on (not part of P2 marker closure):** structured sensory/emotional waveform capture and a domain-approved qualium orientation vocabulary remain open.
-- **Build/tests — not run in this pass; candidate CI deploy run is queued, not a test result.**
+- **Build/tests, not run in this pass; candidate CI deploy run is queued, not a test result.**
 
 ## Next recursive actions
 1. **P1-A source/tone:** implemented by resolving `FLOWSEAT`/`seatHz` through the existing seat map and deriving the tone reference on address nodes; no persisted duplicate tone field.

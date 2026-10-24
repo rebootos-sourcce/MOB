@@ -1,4 +1,4 @@
-# ATÜNED MVP Alpha — Recursive Execution Contract (Superseding Clarification)
+# ATÜNED MVP Alpha, Recursive Execution Contract (Superseding Clarification)
 Version: 1.0
 Date: 2026-10-21
 Status: Active recursive execution plan; source implementation and runtime verification are not claimed by this document.
@@ -29,18 +29,18 @@ Each block is executed in dependency order. After every block:
 3. Add newly discovered dependencies to the same block or a follow-on sub-block.
 4. Continue recursively until every acceptance criterion is either verified or explicitly blocked with evidence.
 5. Never label a criterion complete because a document was written or code was committed. A code criterion requires source inspection and test/build evidence.
-6. Append a Development Statistics Snapshot after every build/pass: overall verified completion and remaining percentage; P0–P6 completion; implemented versus verified work; passed/failed/blocked/not-run tests; open gaps; change since the previous evidence-backed snapshot; and the next target. Percentages must be computed from explicit acceptance criteria, never inferred from commits or document count.
+6. Append a Development Statistics Snapshot after every build/pass: overall verified completion and remaining percentage; P0-P6 completion; implemented versus verified work; passed/failed/blocked/not-run tests; open gaps; change since the previous evidence-backed snapshot; and the next target. Percentages must be computed from explicit acceptance criteria, never inferred from commits or document count.
 7. A separate Development Metrics & Verification Auditor responsibility reviews the snapshot each turn. It must flag unsupported completion claims and must not invent test results or percentages.
 
-## Block 1 — P0 canonical contract and owner map (COMPLETE)
-P0 exit decisions are recorded in `docs/ATUNED_MVP_ALPHA_CANONICAL_RECORD_OWNER_AUDIT_v1.md` v1.1. P0 is complete as an architecture/ownership contract, not as runtime implementation. The canonical choices are: Vritti is the linked total sensory-emotional signal, not a new `p.vritti[]` store; fetter is the limiting-belief pattern; qualium is an orientation attribute of the Vritti→fetter interpretation/association; tone is owned/referenced by the canonical nerve-address node/seat owner; associations are provenance-bearing and not causation; CQ model 3 is the versioned operational reconciliation of `CQ = (Integrity × Intention) / Resistance`, with Integrity and Intention on 0–10 scales and the normalized Resistance denominator `Rz = max(1, (1 + DQ × 0.05) × verpFactor())`. This preserves partial CQ from zero answered-law state and defines zero-resistance behavior. Runtime acceptance remains gated on CI/tests.
+## Block 1, P0 canonical contract and owner map (COMPLETE)
+P0 exit decisions are recorded in `docs/ATUNED_MVP_ALPHA_CANONICAL_RECORD_OWNER_AUDIT_v1.md` v1.1. P0 is complete as an architecture/ownership contract, not as runtime implementation. The canonical choices are: Vritti is the linked total sensory-emotional signal, not a new `p.vritti[]` store; fetter is the limiting-belief pattern; qualium is an orientation attribute of the Vritti→fetter interpretation/association; tone is owned/referenced by the canonical nerve-address node/seat owner; associations are provenance-bearing and not causation; CQ model 3 is the versioned operational reconciliation of `CQ = (Integrity × Intention) / Resistance`, with Integrity and Intention on 0-10 scales and the normalized Resistance denominator `Rz = max(1, (1 + DQ × 0.05) × verpFactor())`. This preserves partial CQ from zero answered-law state and defines zero-resistance behavior. Runtime acceptance remains gated on CI/tests.
 
 ### P0 exit gate
 - [x] Definitions, current owners, target owners, cardinality, provenance, metric isolation and CQ version policy documented.
 - [x] Runtime gaps moved into P1/P2 acceptance criteria.
 - [x] No standalone Vritti collection.
 
-## Block 1 — Baseline and authority reconciliation
+## Block 1, Baseline and authority reconciliation
 ### Work
 - Inventory canonical schema, persistence boundary, trace graph, release queue/session owner, UI rendering owner, tests, build scripts, and CI.
 - Identify contradictory definitions and select the current owner-approved contract.
@@ -57,7 +57,7 @@ P0 exit decisions are recorded in `docs/ATUNED_MVP_ALPHA_CANONICAL_RECORD_OWNER_
 ### Exit evidence
 Repository paths, source contracts, dependency map, and contradiction list.
 
-## Block 2 — P1/P2 record, trace and marker wiring (NEXT)
+## Block 2, P1/P2 record, trace and marker wiring (NEXT)
 ### Work
 - Map the existing source/imprint, fetter/pattern, nerve-address node, tone, qualium semantics, and trace owners before changing storage. See `docs/ATUNED_MVP_ALPHA_CANONICAL_RECORD_OWNER_AUDIT_v1.md`. Do not add a standalone top-level Vritti collection by default; Vritti is the total waveform connecting existing owners.
 - Preserve raw sensory and emotional source inputs, context, time, provenance, confidence, and waveform representation/method at their canonical owner. Existing story text/onboarding fields must not be overstated as a complete waveform record. Do not invent physiological units.
@@ -77,7 +77,7 @@ Repository paths, source contracts, dependency map, and contradiction list.
 ### Exit evidence
 Canonical owner map, trace validation, UI path, migration coverage, and passing tests.
 
-## Block 3 — Release hit-feedback state machine
+## Block 3, Release hit-feedback state machine
 ### Work
 - Add optional voice feedback to existing release session configuration; voice off retains the current flow.
 - Use the same command handler for speech and visible controls.
@@ -96,7 +96,7 @@ Canonical owner map, trace validation, UI path, migration coverage, and passing 
 ### Exit evidence
 Durable event/state code, visible controls, voice integration, and release-chain tests.
 
-## Block 4 — Metric and recursive-loop integrity
+## Block 4, Metric and recursive-loop integrity
 ### Work
 - Reconcile CQ/DQ/SQ names at engine, schema, snapshot/history, UI, and export boundaries.
 - Preserve the current 21-law partial CQ behavior and completeness gate.
@@ -113,7 +113,7 @@ Durable event/state code, visible controls, voice integration, and release-chain
 ### Exit evidence
 Metric contract tests, trace/loop tests, and consistent documentation.
 
-## Block 5 — MVP Alpha build, regression, and snapshot
+## Block 5, MVP Alpha build, regression, and snapshot
 ### Work
 - Run `./atuned_src/BUILD-engine.sh`.
 - Run `node tests/engine.js`.
@@ -138,7 +138,7 @@ Build/test/CI evidence and final Alpha snapshot with no invented scores.
 | DQ/Resistance | Canonical meaning retained; no CQ complement assumption | Contract clarified; runtime cross-surface audit pending |
 | SQ/fetter weights | SQ is sum of individual node weights; no marker side effects | Contract clarified; regression proof pending |
 | Vritti signal ownership | Existing source/imprint record owns raw sensory/emotional inputs and waveform reference; no parallel collection | Owner map pending |
-| Vritti–fetter–node links | Typed relationships preserve provenance and navigate across existing owners | Derived story→impression→fetter and address→fetter links implemented; tests added, not executed; marker navigation remains open |
+| Vritti-fetter-node links | Typed relationships preserve provenance and navigate across existing owners | Derived story→impression→fetter and address→fetter links implemented; tests added, not executed; marker navigation remains open |
 | Fetter marker | Derived state opens correct Vritti record(s) | Not implemented/verified |
 | Release hit feedback | Explicit hit only; hold/reject/execute distinct | Not implemented/verified |
 | Voice safety | Low-confidence command causes no state change | Not implemented/verified |

@@ -1,12 +1,12 @@
-# Deep-Psychological Record Contract — Code-to-Registry Comparison
+# Deep-Psychological Record Contract, Code-to-Registry Comparison
 Date: 2026-10-22
 Status: COMPLETE FOR STATIC COMPARISON; INTEGRATION NOT EXECUTED
 
 ## Sources inspected
-- `proto/knowledge/src/gen-data.js` — blob SHA `2e9ad7e282bee49771b80909b90e83a298490ac1`
-- `proto/knowledge/src/validate-templates.js` — blob SHA `2b6c46c6035973c9d2a774ec34ba0cd66e01bb13`
-- `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json` — blob SHA `40d899f28e0e592a7cdf3df074ce29dd89666993`
-- `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_TEMPLATE_CATALOG_v1.json` — blob SHA `ea76c12766f29f9a51a6ccefface85d3b3437e52`
+- `proto/knowledge/src/gen-data.js`, blob SHA `2e9ad7e282bee49771b80909b90e83a298490ac1`
+- `proto/knowledge/src/validate-templates.js`, blob SHA `2b6c46c6035973c9d2a774ec34ba0cd66e01bb13`
+- `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json`, blob SHA `40d899f28e0e592a7cdf3df074ce29dd89666993`
+- `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_TEMPLATE_CATALOG_v1.json`, blob SHA `ea76c12766f29f9a51a6ccefface85d3b3437e52`
 
 ## 1. Existing engine record contract
 

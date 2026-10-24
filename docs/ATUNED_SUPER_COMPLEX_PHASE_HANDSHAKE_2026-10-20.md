@@ -1,23 +1,23 @@
-# ATÜNED Super-Complex Phase — Executive Handshake and Source-First Runbook
+# ATÜNED Super-Complex Phase, Executive Handshake and Source-First Runbook
 
 **Effective date:** 2026-10-20  
-**Status:** ACTIVE PHASE — Super-Complex design/reconciliation begins now at the owner's direction.  
+**Status:** ACTIVE PHASE, Super-Complex design/reconciliation begins now at the owner's direction.  
 **Repository:** `rebootos-sourcce/MOB`, default branch `main`.  
 **Important:** This phase authorizes discovery, source reconciliation, taxonomy design, and record drafting. It does not authorize silently promoting disputed candidates to Canon.
 
-## Read this first — startup sequence
+## Read this first, startup sequence
 
 The next thread or agent must open these sources before making a taxonomy decision or changing code. Fetch current versions; do not rely on cached summaries.
 
-1. **This document** — current phase, source blockers, and ordered runbook.
-2. **Owner's most recent project/thread instructions** — especially the explicit rejection of Psychopathy as a canonical Super-Complex. Owner decisions outrank a conflicting implementation label.
-3. `docs/ATUNED_SOURCE_INDEX.md` — navigational index to source families.
-4. `docs/ATUNED_SOURCE_REGISTER.md` — source provenance, versions, retrieval status.
-5. `docs/ATUNED_COMPLEX_RECORD_INVENTORY_SOURCE_MAP_2026-10-20.md` — complex / higher-order candidate families and unresolved denominator.
-6. `docs/ATUNED_LAYER_COUNT_DASHBOARD_2026-10-20.md` — current counts, wiring status, and explicit exceptions.
-7. `docs/ATUNED_TEMPLATE_CONNECTIVITY_CLOSURE_EXECUTION_2026-10-20.md` — existing graph/template closure strategy.
-8. `docs/ATUNED_FRAMEWORK_CLOSURE_AUDIT_LOG_2026-10-20.md` — prior audit evidence and unresolved findings.
-9. `SOURCE-TDD-handoff-master.md` — master architecture and AI handoff.
+1. **This document**, current phase, source blockers, and ordered runbook.
+2. **Owner's most recent project/thread instructions**, especially the explicit rejection of Psychopathy as a canonical Super-Complex. Owner decisions outrank a conflicting implementation label.
+3. `docs/ATUNED_SOURCE_INDEX.md`, navigational index to source families.
+4. `docs/ATUNED_SOURCE_REGISTER.md`, source provenance, versions, retrieval status.
+5. `docs/ATUNED_COMPLEX_RECORD_INVENTORY_SOURCE_MAP_2026-10-20.md`, complex / higher-order candidate families and unresolved denominator.
+6. `docs/ATUNED_LAYER_COUNT_DASHBOARD_2026-10-20.md`, current counts, wiring status, and explicit exceptions.
+7. `docs/ATUNED_TEMPLATE_CONNECTIVITY_CLOSURE_EXECUTION_2026-10-20.md`, existing graph/template closure strategy.
+8. `docs/ATUNED_FRAMEWORK_CLOSURE_AUDIT_LOG_2026-10-20.md`, prior audit evidence and unresolved findings.
+9. `SOURCE-TDD-handoff-master.md`, master architecture and AI handoff.
 10. Project Library TDDs and staging registers, explicitly including:
    - `SOURCE_TDD_DEEP_CONTENT_ADDENDUM_2026-10-20.md`
    - `SOURCE_TDD_AI_HANDOFF_MASTER_REBUILT_V1.1_DEEP_PASS.md`
@@ -51,7 +51,7 @@ If two sources conflict, preserve both claims and provenance, label the conflict
 
 The owner has explicitly changed the immediate order. **Do not delay Super-Complex work until the lower-layer audit is complete.** Work on Super-Complexes now; after the owner and assistant finish discussing/designing that layer, return to the deferred closure work below.
 
-### Phase A — Super-Complex source recovery and taxonomy (NOW)
+### Phase A, Super-Complex source recovery and taxonomy (NOW)
 
 1. Recover all authoritative source and library artifacts relevant to Super-Complexes; prioritize the exact v341 source and owner-authored definitions.
 2. Search all named candidate source families independently; do not collapse them into one list:
@@ -69,7 +69,7 @@ The owner has explicitly changed the immediate order. **Do not delay Super-Compl
 7. Define acceptance tests: source provenance, distinct layer identity, membership rule, supporting Hyper-Complex relationships if Canon requires them, contradiction handling, non-duplication, complete content/template fields, reciprocal links, no dangling references, and safe uncertainty handling.
 8. Present the source-backed candidate inventory and the precise unresolved owner decisions for discussion. Do not claim Super-Complex completion merely because the discussion begins.
 
-### Phase B — Resume deferred closure work AFTER Super-Complex discussion
+### Phase B, Resume deferred closure work AFTER Super-Complex discussion
 
 1. Recover the exact v341 artifact and establish which source versions are canonical.
 2. Recover the owner-defined eight ordinary Complexes and the original nerve-to-character mapping from the authoritative source; do not substitute seat/band geometry for semantic mapping.
@@ -92,7 +92,7 @@ The owner has explicitly changed the immediate order. **Do not delay Super-Compl
 - Psychopathy as a canonical Super-Complex: **explicitly rejected by owner; do not count or promote**.
 - v341: required authoritative artifact, not yet recovered through the last available retrieval path. A prior staging artifact identifies itself as v336/v2; do not silently substitute it.
 
-## Retrieval blockers — must be visible early
+## Retrieval blockers, must be visible early
 
 The following are retrieval failures, not evidence of absent content:
 
@@ -124,16 +124,16 @@ The following are retrieval failures, not evidence of absent content:
 ## Completion reporting
 
 Report only what was actually done. Distinguish:
-- **SOURCE RETRIEVED** — content read with version/hash and locator.
-- **SOURCE SEARCHED / NOT FOUND IN LOCATIONS SEARCHED** — exact locations listed.
-- **IMPLEMENTED** — source file changed.
-- **EXECUTION VERIFIED** — generator/validator/tests actually run with results.
-- **OWNER DECISION REQUIRED** — taxonomy is not settled by available canon.
-- **BLOCKED** — exact blocker and fallback recorded.
+- **SOURCE RETRIEVED**, content read with version/hash and locator.
+- **SOURCE SEARCHED / NOT FOUND IN LOCATIONS SEARCHED**, exact locations listed.
+- **IMPLEMENTED**, source file changed.
+- **EXECUTION VERIFIED**, generator/validator/tests actually run with results.
+- **OWNER DECISION REQUIRED**, taxonomy is not settled by available canon.
+- **BLOCKED**, exact blocker and fallback recorded.
 
 Do not say the whole framework is wired, the source library is complete, or Super-Complex Canon is settled until the corresponding evidence and validation exist.
 
-## Addendum — deep-psychological record-first mandate (2026-10-22)
+## Addendum, deep-psychological record-first mandate (2026-10-22)
 
 The owner has directed that the deep-psychological layer must first be researched from documentation, then have every record shell set up in the shared Nerve-to-Super-Complex record format, then receive ATÜNED-specific sourced content, then undergo three distinct research passes per record, and only after that be wired parent-to-child where evidence supports it. Execute recursively through closure; do not stop after a sample or imply background work continues outside an active execution session.
 
@@ -142,7 +142,7 @@ New artifacts on MOB main:
 - docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_SCHEMA_v1.json
 - docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json
 
-The registry currently contains 107 entries: 93 source-backed/owner-stated records and mapping rows, plus 14 non-canonical Blueprint Domain visualization-slot placeholders. Three-pass source reviews are complete for 66/93 source-backed entries (18 archetype content records, 18 ARCHDOM rows, 18 ARCH18 rows, 12 CDOMAIN rows). Roots, behavioral domains, and Conscious Domain labels have pass 1 captured, but passes 2–3 are blocked pending authoritative source recovery. Six archetype records—Hero, Everyman, Mentor, Shadow, Shapeshifter, and Healer—are explicitly marked as web-researched and not owner-dictated. The psyche-map visual layer counts conflict with canonical table counts for Archetypes, Masks, Hyper-Complexes, Saboteurs, and Fetters. Do not treat visual counts as canonical denominators. Do not silently equate behavioral domains, Conscious Domains, Blueprint Domains, Jungian archetypes, cultural figures, or fetter tables.
+The registry currently contains 107 entries: 93 source-backed/owner-stated records and mapping rows, plus 14 non-canonical Blueprint Domain visualization-slot placeholders. Three-pass source reviews are complete for 66/93 source-backed entries (18 archetype content records, 18 ARCHDOM rows, 18 ARCH18 rows, 12 CDOMAIN rows). Roots, behavioral domains, and Conscious Domain labels have pass 1 captured, but passes 2-3 are blocked pending authoritative source recovery. Six archetype records, Hero, Everyman, Mentor, Shadow, Shapeshifter, and Healer, are explicitly marked as web-researched and not owner-dictated. The psyche-map visual layer counts conflict with canonical table counts for Archetypes, Masks, Hyper-Complexes, Saboteurs, and Fetters. Do not treat visual counts as canonical denominators. Do not silently equate behavioral domains, Conscious Domains, Blueprint Domains, Jungian archetypes, cultural figures, or fetter tables.
 
 Next checkpoint: recover canonical definitions for roots/domains/Conscious Domains and the fourteen Blueprint Domains; resolve source/version conflicts in visualization counts; complete remaining research passes; populate required templates; then create typed relationships only where supported and verify forward/backward graph paths and runtime parity. Refresh the dashboard and this handshake after each execution round.
 

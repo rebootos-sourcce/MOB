@@ -7,7 +7,7 @@ All eight records have three completed research passes. The records preserve the
 
 ## Pass protocol
 1. **Primary-source extraction:** use the v341 source extraction artifact and preserve the source wording and the statement that seven affirmations map to seven of eight domains.
-2. **Independent depth research:** review APA's *Psychology of Consciousness* journal scope, Raffone (2021), “Grand Challenges in Consciousness Research Across Perception, Cognition, Self, and Emotion” (Frontiers in Psychology, PMCID PMC8660851), and Cohen & Sherman (2014), “The Psychology of Change: Self-Affirmation and Social Psychological Intervention” (Annual Review of Psychology 65:333–371). These sources support broad conceptual context, not the ATÜNED-specific taxonomy or the individual assignments.
+2. **Independent depth research:** review APA's *Psychology of Consciousness* journal scope, Raffone (2021), “Grand Challenges in Consciousness Research Across Perception, Cognition, Self, and Emotion” (Frontiers in Psychology, PMCID PMC8660851), and Cohen & Sherman (2014), “The Psychology of Change: Self-Affirmation and Social Psychological Intervention” (Annual Review of Psychology 65:333-371). These sources support broad conceptual context, not the ATÜNED-specific taxonomy or the individual assignments.
 3. **Adversarial verification:** challenge whether the source or scholarly context establishes each domain-to-affirmation edge. It does not. Preserve the seven candidate associations as provisional and do not promote a semantic edge.
 
 ## Evidence references

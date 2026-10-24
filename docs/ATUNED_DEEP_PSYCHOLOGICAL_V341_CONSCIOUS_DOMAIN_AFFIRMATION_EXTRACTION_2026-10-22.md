@@ -1,4 +1,4 @@
-# v341 Source Extraction — Conscious Domains and Seven Affirmations
+# v341 Source Extraction, Conscious Domains and Seven Affirmations
 
 Date: 2026-10-22. Source: uploaded `MOB_Complete_v341.html`, version 341.
 
@@ -6,16 +6,16 @@ Date: 2026-10-22. Source: uploaded `MOB_Complete_v341.html`, version 341.
 
 The source states: “The seven affirmations map onto seven of the eight domains. These aren't aspirational states. They're the natural expression of each chakra zone when the interference has been removed. The eighth, Empyrean Consciousness, is the unified field containing all seven.”
 
-1. **Empyrean Consciousness** — “Awareness aligned with Source. Pattern, truth, and coherence across time, energy, and matter. Not a chakra zone, the field that contains all zones.”
-2. **Crown Consciousness** — “Honoring the word you give to yourself and others. Crown as two-way interface, receiving from Source without distortion.”
-3. **Perception Consciousness** — “Conscious awareness in every moment. Recognition axis open. No longer running on automatic.”
-4. **Truth Consciousness** — “Absolute truth in speech, perception, and behavior. Body defending truth integrity automatically, as demonstrated at Burning Man.”
-5. **Heart Consciousness** — “Equal compassion toward self and others. The ant and elephant realization embodied as a permanent perceptual state. Heart that cannot be contracted by others' broadcasts.”
-6. **Value Consciousness** — “Embodiment of worth and desire fulfillment. Sacral open, creativity flowing, desires recognized and honored.”
-7. **Royal Consciousness** — “Sovereignty. Courage, leadership, and responsibility for one's own reality. Solar plexus clear, power that does not need to dominate.”
-8. **Creative Consciousness** — “Freedom to create without resistance. Root and sacral open, survival patterns no longer consuming creative output. What Keeley accessed after clearing stage fright. What Toni returned to after clearing survival fear.”
+1. **Empyrean Consciousness**, “Awareness aligned with Source. Pattern, truth, and coherence across time, energy, and matter. Not a chakra zone, the field that contains all zones.”
+2. **Crown Consciousness**, “Honoring the word you give to yourself and others. Crown as two-way interface, receiving from Source without distortion.”
+3. **Perception Consciousness**, “Conscious awareness in every moment. Recognition axis open. No longer running on automatic.”
+4. **Truth Consciousness**, “Absolute truth in speech, perception, and behavior. Body defending truth integrity automatically, as demonstrated at Burning Man.”
+5. **Heart Consciousness**, “Equal compassion toward self and others. The ant and elephant realization embodied as a permanent perceptual state. Heart that cannot be contracted by others' broadcasts.”
+6. **Value Consciousness**, “Embodiment of worth and desire fulfillment. Sacral open, creativity flowing, desires recognized and honored.”
+7. **Royal Consciousness**, “Sovereignty. Courage, leadership, and responsibility for one's own reality. Solar plexus clear, power that does not need to dominate.”
+8. **Creative Consciousness**, “Freedom to create without resistance. Root and sacral open, survival patterns no longer consuming creative output. What Keeley accessed after clearing stage fright. What Toni returned to after clearing survival fear.”
 
-## Seven affirmations — verbatim from Chapter 32, “The Seven Affirmations”
+## Seven affirmations, verbatim from Chapter 32, “The Seven Affirmations”
 
 The chapter labels these the locked “Burning Man version, locked May 2026,” and repeats the sequence under “Crown to Root · Daily Sequence.”
 

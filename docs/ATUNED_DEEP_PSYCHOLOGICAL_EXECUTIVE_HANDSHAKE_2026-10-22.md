@@ -1,4 +1,4 @@
-# ATÜNED Deep Psychological Layer — Executive Continuation Handshake
+# ATÜNED Deep Psychological Layer, Executive Continuation Handshake
 **Date:** 2026-10-22  
 **Repository:** `rebootos-sourcce/MOB`  
 **Purpose:** Transfer the current project state to a new thread or implementation agent without losing intent, completed work, unresolved decisions, or acceptance criteria.
@@ -14,14 +14,14 @@ The work must preserve the existing Nerve-to-Super-Complex experiential layer. T
 The project has three principal gears/layers:
 
 1. **Energetic layer**
-2. **Deep psychological layer** — the current build target: roots, behavioral domains, blueprint archetypes, Jungian/archetype taxonomy, fetters and distortion mappings, conscious domains, and related crosswalks.
-3. **Experiential layer** — the Nerve-to-Super-Complex architecture already under development.
+2. **Deep psychological layer**, the current build target: roots, behavioral domains, blueprint archetypes, Jungian/archetype taxonomy, fetters and distortion mappings, conscious domains, and related crosswalks.
+3. **Experiential layer**, the Nerve-to-Super-Complex architecture already under development.
 
 An astrological layer is intended as a future interface that may show how the other layers influence the person; do not make it a prerequisite for closing this psychological-layer implementation.
 
 The working conceptual flow is from roots and psychological structure through domains, blueprints/archetypes and fetters/distortions toward experience and action. Do not flatten all entities into one simplistic hierarchy. Preserve the distinction between canonical entities, taxonomy candidates, visualization slots, and mapping/crosswalk rows. Where source taxonomies conflict, surface and reconcile the conflict rather than silently choosing one.
 
-A project-level principle recorded in prior work: **coherence is signal flow from universal laws of nature through universal laws of human nature to action without distortion**. Resistance or distortion anywhere in the framework—including koshas, limiting beliefs, or soma—should be represented where the source model supports it. Coherence is described as influencing will, vitality, awareness, flow, and radiance. Preserve this as project doctrine, but do not fabricate implementation semantics or numerical equations that have not been specified.
+A project-level principle recorded in prior work: **coherence is signal flow from universal laws of nature through universal laws of human nature to action without distortion**. Resistance or distortion anywhere in the framework, including koshas, limiting beliefs, or soma, should be represented where the source model supports it. Coherence is described as influencing will, vitality, awareness, flow, and radiance. Preserve this as project doctrine, but do not fabricate implementation semantics or numerical equations that have not been specified.
 
 ## 3. Verified repository state as of 2026-10-22
 
@@ -64,10 +64,10 @@ These are static registry findings, not a claim that the Node audit or adapter h
 
 Read in this order before editing:
 
-1. [Registry audit — 2026-10-22](ATUNED_DEEP_PSYCHOLOGICAL_REGISTRY_AUDIT_2026-10-22.md)
-2. [Record format TDD addendum — 2026-10-22](ATUNED_DEEP_PSYCHOLOGICAL_RECORD_FORMAT_TDD_ADDENDUM_2026-10-22.md)
+1. [Registry audit, 2026-10-22](ATUNED_DEEP_PSYCHOLOGICAL_REGISTRY_AUDIT_2026-10-22.md)
+2. [Record format TDD addendum, 2026-10-22](ATUNED_DEEP_PSYCHOLOGICAL_RECORD_FORMAT_TDD_ADDENDUM_2026-10-22.md)
 3. [Record format TDD v1](ATUNED_DEEP_PSYCHOLOGICAL_RECORD_FORMAT_TDD_v1.md)
-4. [Code-to-registry contract — 2026-10-22](ATUNED_DEEP_PSYCHOLOGICAL_CODE_TO_REGISTRY_CONTRACT_2026-10-22.md)
+4. [Code-to-registry contract, 2026-10-22](ATUNED_DEEP_PSYCHOLOGICAL_CODE_TO_REGISTRY_CONTRACT_2026-10-22.md)
 5. [Source index](ATUNED_SOURCE_INDEX.md)
 6. `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json`
 7. `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_TEMPLATE_CATALOG_v1.json`
@@ -84,14 +84,14 @@ Relevant committed additions:
 
 ## 5. Required work sequence
 
-### Phase A — Establish reproducible baseline
+### Phase A, Establish reproducible baseline
 1. Read the files above and inspect repository scripts/package configuration.
 2. Run the psychological registry audit script under Node, first in report mode and then strict mode.
 3. Run the existing generator and validator using the repository's documented commands.
 4. Save actual command output, environment/runtime version, exit codes, and any errors. Do not claim execution based on code inspection alone.
 5. Fix the audit script if runtime execution exposes defects; rerun and record the result.
 
-### Phase B — Recover canonical source content
+### Phase B, Recover canonical source content
 1. Locate authoritative source editions for all 15 behavioral domains and fill their required definition/body fields with provenance.
 2. Recover the 8 Conscious Domain canonical names, required affirmations, definitions/bodies, and source references.
 3. Resolve the 14 blueprint visualization slots: determine whether each corresponds to a real canonical blueprint, a UI-only slot, or an obsolete placeholder. Do not invent canonical names.
@@ -99,7 +99,7 @@ Relevant committed additions:
 5. Review all 36 archetype mapping rows and 12 cultural-figure mappings against sources. Until reviewed and supported, keep their semantic edges/crosswalks unapproved.
 6. Complete three **substantive, distinct research passes** per applicable content record. A slot or a status flag is not evidence of a completed pass. Each pass must record the question investigated, source evidence, conclusion, uncertainty/conflicts, and resulting record changes.
 
-### Phase C — Enforce record contract
+### Phase C, Enforce record contract
 1. Validate every record against the canonical schema and template catalog.
 2. Preserve stable IDs and explicit record kinds.
 3. Keep parent/child references distinct from influence links and mapping edges.
@@ -108,7 +108,7 @@ Relevant committed additions:
 6. Detect duplicate IDs, dangling references, invalid template kinds, missing required fields, unapproved edges, and unresolved placeholders.
 7. Keep unresolved questions explicit; never replace uncertainty with invented data.
 
-### Phase D — Integrate safely
+### Phase D, Integrate safely
 1. Extend the existing generator/validator to consume the psychological registry through the adapter or a clearly defined equivalent.
 2. Preserve the existing experiential Nerve-to-Super-Complex output and its contracts.
 3. Keep the psychological records namespaced and distinguishable from existing experiential records; do not create ID collisions.
@@ -117,13 +117,13 @@ Relevant committed additions:
 6. Add backward traversal tests from downstream/action nodes to the upstream psychological sources, recording the valid paths and expected stop conditions.
 7. Test every record that is supposed to be connected. A successful global build alone is insufficient.
 
-### Phase E — Re-audit and close
+### Phase E, Re-audit and close
 1. Run all tests and audits after each meaningful change.
 2. Update the registry, audit, TDD, source index, and handoff from the same measured snapshot.
 3. Report passed/failed/blocked gates with evidence, not qualitative claims.
 4. Continue iterating until all acceptance gates below pass or a specific source dependency is documented as externally blocked.
 
-## 6. Acceptance gates — target 100%
+## 6. Acceptance gates, target 100%
 
 The requested completion KPI is 100% for content, research, record structure, connectivity, and forward/backward test coverage.
 
@@ -171,11 +171,11 @@ Do not report 100% merely because a registry contains 125 records or all records
 
 Start with Phase A. Run the committed audit script and existing repository checks in the actual repository environment. Capture the output. Fix and rerun any failures. Then recover canonical source content and close the measured content/taxonomy gaps before wiring the records into runtime. Do not stop after writing a plan; make repository changes, run tests, and report exact evidence after each stage.
 
-## Prime Directive and Two Completion KPIs — Owner Priority (2026-10-22)
+## Prime Directive and Two Completion KPIs, Owner Priority (2026-10-22)
 
-**Priority rule:** The prime directive is to complete the ATÜNED psychological layer to its defined acceptance standard. That is the first and controlling KPI. Work that does not directly complete, validate, or unblock that objective is lower priority and must not displace it. Documentation, analysis, plans, populated placeholders, and progress reports are support work—not substitutes for completion.
+**Priority rule:** The prime directive is to complete the ATÜNED psychological layer to its defined acceptance standard. That is the first and controlling KPI. Work that does not directly complete, validate, or unblock that objective is lower priority and must not displace it. Documentation, analysis, plans, populated placeholders, and progress reports are support work, not substitutes for completion.
 
-### KPI 1 — Complete the layer (prime directive; target 100%)
+### KPI 1, Complete the layer (prime directive; target 100%)
 
 Close the entire defined scope against evidence-based acceptance criteria:
 - all required records and fields complete with source provenance;
@@ -187,7 +187,7 @@ Close the entire defined scope against evidence-based acceptance criteria:
 
 A record is not complete merely because it exists, has a template, or has a status flag. A research pass is not complete without its evidence and findings. Do not declare this KPI complete while required content or acceptance checks remain open.
 
-### KPI 2 — Wire it all up (end-to-end integration; target 100%)
+### KPI 2, Wire it all up (end-to-end integration; target 100%)
 
 After and alongside only the prerequisite work needed to unblock KPI 1, integrate the completed, validated records into the ATÜNED engine:
 - connect the psychological layer to the existing architecture without breaking Nerve-to-Super-Complex behavior;

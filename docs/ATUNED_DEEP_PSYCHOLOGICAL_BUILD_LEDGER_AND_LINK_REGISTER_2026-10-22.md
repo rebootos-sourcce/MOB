@@ -1,7 +1,7 @@
-# ATÜNED Deep Psychological Layer — Build Ledger and Link Register
+# ATÜNED Deep Psychological Layer, Build Ledger and Link Register
 
 **Last verified:** 2026-10-22  
-**Status:** ACTIVE — source population has been committed; canonical research, taxonomy reconciliation, runtime integration, and test evidence remain open.  
+**Status:** ACTIVE, source population has been committed; canonical research, taxonomy reconciliation, runtime integration, and test evidence remain open.  
 **Repository:** https://github.com/rebootos-sourcce/MOB  
 **Default branch observed:** `main`  
 **Observed tree SHA at audit start:** `0b624a0969d6989ce41825f8566c7df5200d4a01`
@@ -70,7 +70,7 @@ For each build cycle, record: date, branch/commit SHA, exact paths changed, link
 
 ## Build-cycle log
 
-### 2026-10-22 — tracking baseline established
+### 2026-10-22, tracking baseline established
 - Confirmed repository paths for the primary TDD, audit addendum, registry audit, population update, executive handshake, registry, schema, template catalog, adapter, and audit program.
 - Confirmed the population report describes a committed registry update at commit [f8faa88b31341b56d50dcc1751d483f9dad19675](https://github.com/rebootos-sourcce/MOB/commit/f8faa88b31341b56d50dcc1751d483f9dad19675).
 - Current registry blob SHA observed through GitHub file endpoint: `84e81ccba7baa1219a198e30671254c3f14d9353`.
@@ -88,16 +88,16 @@ For each build cycle, record: date, branch/commit SHA, exact paths changed, link
 - Confidence in this baseline as a documentation ledger: 0.91. Confidence in semantic/source closure: low until v341 source and record-level evidence are verified.
 
 
-## 2026-10-22 — exact 23-record inventory and source crosswalk
+## 2026-10-22, exact 23-record inventory and source crosswalk
 - Added [23-Record Source Crosswalk](ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md), commit [59ad29d](https://github.com/rebootos-sourcce/MOB/commit/59ad29d03efd0621c3607f31b7bfea6a45152b9c).
-- Retrieved the 1,067,012-character registry through its Git blob endpoint and parsed it. Confirmed 125 records and enumerated all 15 `domain:01`–`domain:15` IDs plus all eight `conscious-domain:01`–`conscious-domain:08` IDs.
+- Retrieved the 1,067,012-character registry through its Git blob endpoint and parsed it. Confirmed 125 records and enumerated all 15 `domain:01`-`domain:15` IDs plus all eight `conscious-domain:01`-`conscious-domain:08` IDs.
 - Retrieved and parsed SOURCE OS CANON at `rebootos-sourcce/Reboot-OS/atuned/data/canon.json`, blob SHA `27a7a178de1e87252fa8e59554a66735dbeb0aed`. Its metadata identifies source build `MOB_Complete_v184.html`, not v341. It groups 18 domain labels: Architect (5), Engine (5), Weaver (4), Witness (4), and records the open ruling “18 in the book, 15 in the compilation, 14 in the blueprint file.”
 - No `MOB_Complete_v341.html` was found in the MOB default-branch tree. Exact v341 source recovery remains a blocker; no claim is made that v341 content has been verified.
 - Crosswalk preserves likely lexical leads as unapproved candidates only. Canonical semantic mappings approved: 0/23.
 - Next action: recover the actual v341 source (or verifiable v341 export), then record exact section/heading/anchor and hash for every evidence claim. Until then, do not invent canonical definitions, names, or affirmations.
 
 
-## 2026-10-22 — v341 source recovered from conversation upload
+## 2026-10-22, v341 source recovered from conversation upload
 - **Correction:** the earlier repository-only search missed the uploaded source file. `MOB_Complete_v341.html` was already attached to this conversation. It has now been materialized and inspected directly; do not ask the user to upload it again.
 - File size: 16,417,226 bytes. SHA-256: `79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4`.
 - Source headings verified: Chapter 28 “The Domains” (`#ch-domains`) and Chapter 32 “The Seven Affirmations” (`#ch22`). Chapter 12’s stacking-architecture container ID must be rechecked before publishing an anchor.
@@ -106,14 +106,14 @@ For each build cycle, record: date, branch/commit SHA, exact paths changed, link
 - Updated closure state: v341 recovered; eight consciousness source names found; 19 domain labels found; 15-to-19 behavioral crosswalk, three-pass evidence completion, source contradiction adjudication, schema/runtime tests, and automated link checks remain open.
 
 
-## 2026-10-22 — registry records updated from v341
+## 2026-10-22, registry records updated from v341
 - Updated all eight Conscious Domain registry records with v341 source-backed names and concise definition summaries. Source extraction is recorded; independent corroboration, synthesis, and canonical approval remain pending. Registry commit: [507d730](https://github.com/rebootos-sourcce/MOB/commit/507d730b837d1ed26ca5a33a7ce879d80574b843).
 - Added v341 source provenance and unapproved candidate crosswalk notes to all 15 behavioral-domain records without replacing their provisional definitions or promoting mappings. Registry commit: [1ef9d6f](https://github.com/rebootos-sourcce/MOB/commit/1ef9d6faf5ec3207ee7c69bf96954f141fc2e18d).
 - Crosswalk corrected to reflect that v341 was found in the conversation upload, not in repository tree search. Source SHA-256: `79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4`.
 - Remaining: pass 2 and 3 for all 23 records, adjudicate domain label mismatch and Architect/Rulership contradiction, schema/runtime validation, graph traversal, and automated link check.
 
 
-## 2026-10-22 — v341 record-level crosswalk execution
+## 2026-10-22, v341 record-level crosswalk execution
 
 This entry supersedes earlier ledger lines that say the exact v341 file has not been recovered. The file was already attached to the conversation and was materialized and inspected directly.
 
@@ -151,9 +151,9 @@ This entry supersedes earlier ledger lines that say the exact v341 file has not 
 | DP-12 TDD/ledger synchronization | UPDATED THIS CYCLE | Crosswalk, TDD, ledger, and registry updated in separate commits; re-fetch and verify current blobs before next write. |
 
 ### Exact source anchors
-- Chapter 12 Stacking Architecture: `#ch17` — four directive clusters and the 19-domain list.
-- Chapter 28 The Domains: `#ch-domains` — observed count of nineteen and the author's explicit withdrawal of an earlier derivation of eighteen.
-- Chapter 32 The Seven Affirmations: `#ch22` — eight Conscious Domain names/definitions, seven chakra-zone affirmations, and additional Pattern/Story/Imperium Consciousness entries.
+- Chapter 12 Stacking Architecture: `#ch17`, four directive clusters and the 19-domain list.
+- Chapter 28 The Domains: `#ch-domains`, observed count of nineteen and the author's explicit withdrawal of an earlier derivation of eighteen.
+- Chapter 32 The Seven Affirmations: `#ch22`, eight Conscious Domain names/definitions, seven chakra-zone affirmations, and additional Pattern/Story/Imperium Consciousness entries.
 
 ### Mandatory next actions
 1. Fetch the current registry and schema blobs; run actual JSON Schema validation against all 125 records. Fix any schema violations caused by this cycle before further edits.
@@ -176,7 +176,7 @@ This entry supersedes earlier ledger lines that say the exact v341 file has not 
 - Confidence in final semantic mapping: not scored; owner rulings and independent corroboration remain open.
 
 
-## 2026-10-22 — target schema-shape check and full-registry blocker
+## 2026-10-22, target schema-shape check and full-registry blocker
 
 - Latest registry blob SHA: `0e08a2ab98cef7f4ac925d3322793627f6a5be31`; update commit [be3efd4](https://github.com/rebootos-sourcce/MOB/commit/be3efd44fd3a8e2cd86c4d5d10932318d8ffc2af).
 - Added `templateValidation.status` to the 23 target records to satisfy the required envelope field without promoting semantic content.
@@ -201,7 +201,7 @@ This entry supersedes earlier ledger lines that say the exact v341 file has not 
 | Automated Markdown link and anchor checker | NOT RUN |
 
 
-## Executive three-pass recursive closure strategy — 2026-10-22
+## Executive three-pass recursive closure strategy, 2026-10-22
 
 New handoff entry points:
 - Strategy: `docs/ATUNED_DEEP_PSYCHOLOGICAL_THREE-PASS_RECURSIVE_CLOSURE_STRATEGY_2026-10-22.md`
@@ -211,17 +211,17 @@ New handoff entry points:
 Plan: three distinct strategy reviews, eight execution blocks, and four recursive rounds that repeat on failure. This is a planning/documentation milestone only; the full recursive audit and runtime closure remain open. Before execution, re-fetch current HEAD and verify all historical counts, paths, SHAs, source identity, test commands, and statuses. Every future cycle must log exact commits, commands, exit codes, evidence links, affected IDs, and residual blockers. Never claim background execution or closure without results.
 
 
-## Executive continuation artifacts — 2026-10-22 evening
+## Executive continuation artifacts, 2026-10-22 evening
 
-- [Executive Handshake v2](ATUNED_DEEP_PSYCHOLOGICAL_EXECUTIVE_HANDSHAKE_v2_2026-10-22.md) — consolidated mission, current technology state, source constraints, acceptance gates, and continuation sequence.
-- [Next-Round Tactics](ATUNED_DEEP_PSYCHOLOGICAL_NEXT_ROUND_TACTICS_2026-10-22.md) — three strategy reviews, eight blocks, four minimum recursive rounds, per-record content gate, and priority order.
+- [Executive Handshake v2](ATUNED_DEEP_PSYCHOLOGICAL_EXECUTIVE_HANDSHAKE_v2_2026-10-22.md), consolidated mission, current technology state, source constraints, acceptance gates, and continuation sequence.
+- [Next-Round Tactics](ATUNED_DEEP_PSYCHOLOGICAL_NEXT_ROUND_TACTICS_2026-10-22.md), three strategy reviews, eight blocks, four minimum recursive rounds, per-record content gate, and priority order.
 
 The latest artifact fetch confirmed the template catalog remains proposed/not engine-integrated and the adapter source does not inject records into the experiential graph. The registry fetch returned a blob SHA but an empty content body; the next executor must recover the actual JSON before making a new inventory claim. No tests or runtime traversal were executed in this documentation cycle. Keep the overall state OPEN until fresh inventory, authoritative validation, runtime integration, traversal, regression, and link checks are evidenced.
 
 
 ---
 
-## 2026-10-24 — recursive KPI closure round
+## 2026-10-24, recursive KPI closure round
 
 **Branch:** `atuned/deep-psyche-kpi-closure-2026-10-24`  
 **Registry update commit:** `a8ec121b443e03200a39c19a9822344286c0ee68`  
@@ -231,7 +231,7 @@ The latest artifact fetch confirmed the template catalog remains proposed/not en
 
 ### Three review passes performed
 1. **Inventory/source fidelity:** re-read the current registry by blob SHA, schema, template catalog, source crosswalk, source extraction, recursive plan, and code-to-registry contract. Confirmed 125 unique registry records, 9 record families, and the registry's scope boundary.
-2. **Research/content depth:** checked every record's assigned template, pass slots, source references/claims, unresolved questions, and record status. Reconciled eight Conscious Domain records to pass 1 complete / passes 2–3 blocked; separated source-extracted affirmation text from provisional domain assignment. Kept the 15 behavioral-domain definitions provisional.
+2. **Research/content depth:** checked every record's assigned template, pass slots, source references/claims, unresolved questions, and record status. Reconciled eight Conscious Domain records to pass 1 complete / passes 2-3 blocked; separated source-extracted affirmation text from provisional domain assignment. Kept the 15 behavioral-domain definitions provisional.
 3. **Adversarial graph review:** checked actual link arrays and relationship objects, reference resolution, mapping-row status, and runtime status. Empty links were not converted into guessed edges. The 36 mapping rows remain unapproved; the 36 source-table membership relationships remain under an open ruling.
 
 ### Current scorecard
@@ -251,23 +251,23 @@ The latest artifact fetch confirmed the template catalog remains proposed/not en
 **Not claimed:** the Node script has not been executed in the repository runtime; no runtime integration or CI test is claimed; no KPI is certified at 100% project-wide. Next execution block is source verification for the 15 behavioral domains and the two blocked passes for each Conscious Domain, followed by generator/validator integration and graph tests.
 
 
-### Follow-on integration pass — 2026-10-24
+### Follow-on integration pass, 2026-10-24
 - Updated `proto/knowledge/src/gen-data.js` to embed the registry and template catalog in separate `KBD.deepPsychologicalRegistry` and `KBD.deepPsychologicalTemplateCatalog` namespaces. Existing experiential graph entries are not merged with provisional records.
 - Updated `proto/knowledge/src/validate-templates.js` to validate the embedded registry's template fields, unique IDs, pass status, link/reference integrity, and unresolved closure counts. Added an opt-in `--strict-deep-psychological` gate that fails while content or graph closure remains open.
 - Updated `proto/knowledge/src/adapt-psychological-registry.js` to preserve relationship audit and affirmation-source metadata.
 - The integration is **not runtime-verified**: this connector cannot execute the repository's Node scripts. Next gate is to run `node proto/knowledge/src/gen-data.js`, `node proto/knowledge/src/validate-templates.js`, and `node proto/knowledge/src/validate-templates.js --strict-deep-psychological` in a real checkout, inspect outputs/exit codes, fix defects, then run the regression suite.
 
 
-### 2026-10-24 — behavioral-domain content research completed
+### 2026-10-24, behavioral-domain content research completed
 - Retrieved `MOB-Manuscript/index.html` from the private `MOB-Manuscript` repository (blob SHA `24dea9c95112fe83073e58ef4cb14d7eb5de9928`). Chapter 12, “The Somatic Psychology Stack,” contains 15 numbered domain headings with Clear, Distorted, and Templates descriptions. The artifact version label is not declared.
-- Updated all 15 `domain:01`–`domain:15` records with source-derived content and three distinct passes per record: source extraction, independent crosswalk comparison, adversarial label/version review.
+- Updated all 15 `domain:01`-`domain:15` records with source-derived content and three distinct passes per record: source extraction, independent crosswalk comparison, adversarial label/version review.
 - Source content gate is now complete for all 15 behavioral-domain records. Canonical/semantic crosswalks remain open for all 15. Domain 06 remains explicitly unresolved between “Destruction and Renewal” (manuscript) and “Destruction and Transformation” (registry).
 - Current registry-scope KPI 2: 117/125 role-complete; eight Conscious Domain records remain substantively open.
 - Current KPI 3 remains open: 103 empty-link records, zero approved semantic edges among 36 mapping rows, runtime integration/traversal not verified.
 - Source crosswalk and audit report updated. This supersedes earlier same-day notes that described the 15 behavioral-domain definitions as source-unverified.
 
 
-### Superseding KPI update — 2026-10-24
+### Superseding KPI update, 2026-10-24
 - All 125 records now have three research passes completed: 375/375 pass slots complete, 0 blocked.
 - KPI 2 is **125/125 researched records** for this registry. The eight Conscious Domain affirmation assignments remain provisional because source evidence does not establish a one-to-one mapping; that is a canonical/owner decision, not missing research.
 - KPI 3 remains open: 103 records have no approved outgoing links, zero of 36 mapping rows are approved semantic edges, and runtime traversal is not verified.

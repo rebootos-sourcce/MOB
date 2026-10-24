@@ -1,4 +1,4 @@
-# ATÜNED Deep Psychological Layer — Three-Pass Recursive Closure Strategy
+# ATÜNED Deep Psychological Layer, Three-Pass Recursive Closure Strategy
 Date: 2026-10-22
 Status: EXECUTION STRATEGY COMMITTED; end-to-end closure remains OPEN
 Repository: `rebootos-sourcce/MOB`
@@ -24,7 +24,7 @@ Do not interpret “complete” as populated prose or matching counts. Complete 
 
 ## Three strategic review passes (complete all three before bulk repair)
 
-### Strategy Pass 1 — Inventory and source fidelity
+### Strategy Pass 1, Inventory and source fidelity
 Questions:
 1. What are the exact files, source versions, hashes, registry IDs, templates, and record families at current HEAD?
 2. What does v341 explicitly say, and where (chapter, heading, HTML anchor, excerpt/claim)?
@@ -33,7 +33,7 @@ Questions:
 Deliverable: source inventory, exact ID inventory, per-claim provenance, counts by family, and a list of source contradictions.
 Exit gate: every current record and relevant source file has a stable identifier/path and current hash or blob SHA; unknown items are explicit placeholders, never invented canonical records.
 
-### Strategy Pass 2 — Independent challenge and defect classification
+### Strategy Pass 2, Independent challenge and defect classification
 Review the Pass 1 output as a skeptical auditor. Attempt to falsify every proposed equivalence and every claim of completeness.
 Classify each issue as exactly one primary defect type:
 - missing record;
@@ -52,7 +52,7 @@ For each defect, record severity, evidence, affected IDs, owning file, safe repa
 Deliverable: defect register with no “maybe fixed” statuses.
 Exit gate: each issue has a type, owner/path, acceptance test, and evidence standard; the audit distinguishes missing concepts from missing edges and incomplete evidence.
 
-### Strategy Pass 3 — Synthesis, dependency order, and safety review
+### Strategy Pass 3, Synthesis, dependency order, and safety review
 Reconcile the first two passes. Prioritize blockers by dependency:
 1. establish current state and source identity;
 2. enumerate canonical denominators and unresolved decisions;
@@ -78,17 +78,17 @@ Exit gate: no task depends on an undocumented assumption; no proposed mapping is
 8. **Independent closure and synchronization:** fetch fresh current HEAD; rerun all applicable checks; check Markdown links and source anchors; synchronize registry, TDD, source crosswalk, catalog/index/dashboard, build ledger, execution log, and this executive handshake. Produce pass/fail matrix and explicit residual exceptions.
 
 ## Four recursive execution rounds
-- **Round A — Discover:** run Blocks 1–2 and initial source census. No semantic edge additions.
-- **Round B — Research and repair:** run Blocks 2–4, repair only evidence-backed defects, and keep decisions pending when source does not decide them.
-- **Round C — Integrate and traverse:** run Blocks 5–7; repair each failure at its owning source and rerun impacted tests.
-- **Round D — Independent closure:** run Block 8 and re-run failed blocks. If any gate fails, return to the owning block and repeat; do not declare closure because four rounds elapsed.
+- **Round A, Discover:** run Blocks 1-2 and initial source census. No semantic edge additions.
+- **Round B, Research and repair:** run Blocks 2-4, repair only evidence-backed defects, and keep decisions pending when source does not decide them.
+- **Round C, Integrate and traverse:** run Blocks 5-7; repair each failure at its owning source and rerun impacted tests.
+- **Round D, Independent closure:** run Block 8 and re-run failed blocks. If any gate fails, return to the owning block and repeat; do not declare closure because four rounds elapsed.
 
 Each round must log start/end commit, files changed, record counts, failures found/fixed, commands, exit codes, links checked, unresolved decisions, and next checkpoint. No claim of background execution; each run records only work actually performed.
 
 ## Three-pass research contract for every record and material edge
-- **Pass 1 — Primary-source extraction:** source/version/hash, section/anchor, exact claim or concise excerpt, record-level interpretation separated from source wording.
-- **Pass 2 — Independent corroboration/contradiction:** genuinely independent source where available; if unavailable, mark blocked/limited. A repeated copy of the same source or historical source is not independent corroboration.
-- **Pass 3 — Cross-record synthesis:** compare parent/child/sibling/adjacent records, check contradictions and taxonomy, document relationship rationale and unresolved questions.
+- **Pass 1, Primary-source extraction:** source/version/hash, section/anchor, exact claim or concise excerpt, record-level interpretation separated from source wording.
+- **Pass 2, Independent corroboration/contradiction:** genuinely independent source where available; if unavailable, mark blocked/limited. A repeated copy of the same source or historical source is not independent corroboration.
+- **Pass 3, Cross-record synthesis:** compare parent/child/sibling/adjacent records, check contradictions and taxonomy, document relationship rationale and unresolved questions.
 Each pass must have a status, evidence, date, reviewer/process identifier, findings, and next action. Exactly three empty slots does not mean research was done. A proposed edge needs its own evidence and review; record research does not automatically approve its edges.
 
 ## Defect register minimum fields
@@ -99,7 +99,7 @@ For every edge, validate:
 - source and target IDs exist;
 - relation type and direction are allowed by the contract;
 - provenance/source and evidence are attached;
-- status is canonical, inferred, proposed, or unresolved—never ambiguous;
+- status is canonical, inferred, proposed, or unresolved, never ambiguous;
 - reciprocal edge exists if required by that relationship type;
 - forward and backward traversal tests cover the path;
 - no cycle exists unless explicitly allowed;

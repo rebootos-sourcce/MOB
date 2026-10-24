@@ -1,4 +1,4 @@
-# ATUNED — CQ / DQ / SQ and Release Hit Feedback Addendum
+# ATUNED, CQ / DQ / SQ and Release Hit Feedback Addendum
 Date: 2026-10-21
 Status: Owner clarification; implementation contract, not proof of runtime completion.
 
@@ -39,9 +39,9 @@ When a Vritti is identified and associated with a fetter, the record must preser
 Owner formula: `CQ = (Integrity × Intention) / Resistance`. CQ and Coherence are the same metric; there must be one operational output, not a parallel calculator.
 
 The working branch implements this as **CQ model 3** in `atuned_src/engine/compute.js`:
-- **Integrity** = the existing 21-law score on the 0–10 scale (`cqSum()/10)); unanswered laws contribute zero. The existing release lift is already included through `lawNow()` and must not be applied a second time.
-- **Intention** = the existing band-derived `It` value on the 0–10 scale.
-- **Resistance** = the normalized operational `Rz` factor, derived from total-shadow DQ and the six-axis gate factor, with the established denominator floor of 1. DQ is the canonical raw total-shadow Resistance measure; Rz is the normalized formula denominator needed by the engine's existing 0–10 Integrity and Intention scales.
+- **Integrity** = the existing 21-law score on the 0-10 scale (`cqSum()/10)); unanswered laws contribute zero. The existing release lift is already included through `lawNow()` and must not be applied a second time.
+- **Intention** = the existing band-derived `It` value on the 0-10 scale.
+- **Resistance** = the normalized operational `Rz` factor, derived from total-shadow DQ and the six-axis gate factor, with the established denominator floor of 1. DQ is the canonical raw total-shadow Resistance measure; Rz is the normalized formula denominator needed by the engine's existing 0-10 Integrity and Intention scales.
 - **CQ** = `clamp(Integrity * Intention / Resistance, 0, 100)`, with CQ set to zero when no laws have been answered. Tier words remain gated on all 21 laws being answered.
 - History rows are stamped with `CQ_MODEL=3` so records from the former law-only calculation are not compared as if they used the same arithmetic.
 
@@ -51,9 +51,9 @@ This is an explicit model change from the prior 21-law-only CQ output. DQ remain
 Before a release run, offer a setting to enable or disable voice-activated decisions. Provide equivalent visible interactive controls for accessibility and noisy environments. When disabled, the existing release flow remains available without mandatory per-item decisions.
 
 For each presented item, offer these conceptual actions (spoken aliases may be configurable):
-- **HOLD / KEEP** — retain in the active release pile for later review or another pass. Not a confirmed hit.
-- **RELEASE / HIT** — explicitly mark as a user-confirmed hit. Add it to the accumulated confirmed-hit set.
-- **DELETE / NOT A HIT** — remove from the active pile and record a negative decision. Do not permanently erase historical evidence merely because the user removes an item from the current queue.
+- **HOLD / KEEP**, retain in the active release pile for later review or another pass. Not a confirmed hit.
+- **RELEASE / HIT**, explicitly mark as a user-confirmed hit. Add it to the accumulated confirmed-hit set.
+- **DELETE / NOT A HIT**, remove from the active pile and record a negative decision. Do not permanently erase historical evidence merely because the user removes an item from the current queue.
 
 The exact command grammar must avoid ambiguity between “release this pattern” as a session action and “this was a hit” as feedback. Use contextual prompts or distinct aliases if needed. Low-confidence recognition must ask for clarification or leave state unchanged; never execute a destructive action from uncertain speech.
 
@@ -78,7 +78,7 @@ Before each run, the user can choose voice feedback on/off. Clarify whether the 
 10. A hit is accumulated only after explicit user confirmation and remains distinguishable from inferred/presented/released states.
 11. A Vritti record can exist without a fetter association; an identified association links it to the correct fetter.
 12. Fetter marker state reflects the association and opens the correct Vritti record(s); marker presence does not change CQ/DQ/SQ or node weight.
-13. Candidate, confirmed, and rejected Vritti–fetter associations survive persistence and remain distinguishable.
+13. Candidate, confirmed, and rejected Vritti-fetter associations survive persistence and remain distinguishable.
 
 ## 6. Build sequence
 1. Locate the existing release pile/queue owner and event persistence owner; extend them instead of creating parallel stores.

@@ -1,4 +1,4 @@
-# ATÜNED / Mechanics of Being — Source Register
+# ATÜNED / Mechanics of Being, Source Register
 
 **Status:** Initial durable source register  
 **Last verified:** 2026-10-20  
@@ -91,16 +91,16 @@ For each layer, level, concept, descriptive object, inferred item, and inferred 
 - Framework closure status: **Not verified; do not declare complete**
 
 
-## Recursive audit log added — 2026-10-20
+## Recursive audit log added, 2026-10-20
 
-- [`docs/ATUNED_FRAMEWORK_CLOSURE_AUDIT_LOG_2026-10-20.md`](ATUNED_FRAMEWORK_CLOSURE_AUDIT_LOG_2026-10-20.md) — records the source-backed findings from `atuned_src/engine/data/canon.js`, the three-pass method applied to that source, explicit risks, acceptance status, and next recursive actions.
+- [`docs/ATUNED_FRAMEWORK_CLOSURE_AUDIT_LOG_2026-10-20.md`](ATUNED_FRAMEWORK_CLOSURE_AUDIT_LOG_2026-10-20.md), records the source-backed findings from `atuned_src/engine/data/canon.js`, the three-pass method applied to that source, explicit risks, acceptance status, and next recursive actions.
 - Commit: `8151beb9e2cf85c0ce3bb377d3ca91e509945f62`.
 - The source index now links to this audit log.
 - New finding: the code contains explicit proposal/canon boundaries that must be preserved, including unapproved node-state thresholds and proposed anatomical Fetter placements.
 - The audit does not claim all concepts have received three full passes; that remains an open gate.
 
 
-## Active phase update — Super-Complexes first (2026-10-20)
+## Active phase update, Super-Complexes first (2026-10-20)
 
 **Owner-directed order:** begin Super-Complex source reconciliation and design now. Do not gate this phase on completion of nerve/node/fetter/Saboteur/Complex/Hyper-Complex audits. Those closure tasks remain queued for after the Super-Complex discussion.
 
@@ -116,7 +116,7 @@ For each layer, level, concept, descriptive object, inferred item, and inferred 
 
 These are retrieval/decision blockers, not evidence of absence. The next pass must search the Project Library, conversation files, and source registers with exact names and document the precise locations searched before reporting any item globally unavailable.
 
-## Deep-psychological record-first source audit — 2026-10-22
+## Deep-psychological record-first source audit, 2026-10-22
 
 | Path | Role / evidence | SHA or status |
 |---|---|---|

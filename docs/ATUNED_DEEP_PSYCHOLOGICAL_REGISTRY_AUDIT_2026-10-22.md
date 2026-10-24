@@ -1,4 +1,4 @@
-# Deep-Psychological Registry Audit — 2026-10-22
+# Deep-Psychological Registry Audit, 2026-10-22
 
 Status: OPEN. Static registry audit completed; runtime execution and integration remain unverified.
 
@@ -63,12 +63,12 @@ Do not invent definitions, affirmations, canonical names, or mapping semantics t
 | Adapter execution | NOT VERIFIED |
 | Engine integration | NOT DONE |
 | Runtime traversal | NOT VERIFIED |
-| Overall closure | OPEN — NOT COMPLETE |
+| Overall closure | OPEN, NOT COMPLETE |
 
 This audit supersedes earlier estimates of the registry denominator. It does not claim content, research, semantic wiring, or runtime closure.
 
 
-## 2026-10-22 — Fresh full-blob recursive audit
+## 2026-10-22, Fresh full-blob recursive audit
 
 ### Reproducible baseline
 - Registry blob fetched by exact Git blob SHA: `0e08a2ab98cef7f4ac925d3322793627f6a5be31`.
@@ -127,7 +127,7 @@ The previous audit narrative reported 103 records with passes 2 and 3 complete. 
 - Block 1: PASS for fresh JSON inventory, stable ID count, family counts, and static edge existence checks; repository tree/file SHA capture and source inventory remain partial.
 - Block 2: PARTIAL. 102 records are marked complete in registry metadata and 23 are not. The template catalog's non-empty-array policy needs a field-by-field contract decision; no content is auto-filled merely to satisfy empty `links` arrays.
 - Block 3: OPEN. Source citations are present but research-pass completion and source-to-record semantic validation remain open for 37 records. The 15/18/19/14 taxonomy conflict remains unresolved.
-- Blocks 4–5: PARTIAL static edge-existence and explicit parent/child reciprocity scan only; runtime traversal and full edge-type/cardinality audit not run.
+- Blocks 4-5: PARTIAL static edge-existence and explicit parent/child reciprocity scan only; runtime traversal and full edge-type/cardinality audit not run.
 - Block 6: OPEN; Node adapter/audit program and test suite have not been executed in a checkout.
 - Block 7: OPEN for record repairs; this audit addendum is a documentation correction only.
 - Block 8: NOT STARTED.
@@ -135,11 +135,11 @@ The previous audit narrative reported 103 records with passes 2 and 3 complete. 
 No canonical names, definitions, affirmations, or mapping edges were invented to improve counts. The next content batch is the 15 behavioral domains and 8 Conscious Domains, using the exact v341 source plus independently corroborating sources and preserving unresolved mappings as unresolved.
 
 
-### Correction — adapter predicate exactness
+### Correction, adapter predicate exactness
 The adapter does not treat an empty array as missing. A prior sentence in this audit addendum incorrectly said 103 records were flagged by the adapter; that number was produced by a separate stricter local diagnostic which counted empty arrays. The adapter-equivalent result is 8 records, each a Conscious Domain missing `affirmation`. The 23 registry content-status gaps and the 37 three-pass evidence-gate backlog remain separate metrics.
 
 
-## 2026-10-22 — Research pass 3 completed for the 15 behavioral domains
+## 2026-10-22, Research pass 3 completed for the 15 behavioral domains
 
 The registry now records pass 3 as `complete` for all 15 behavioral-domain records. Each pass already contained at least one v341 source reference, a record-specific candidate classification/finding, and an explicit unresolved taxonomy/alias conflict. This is completion of the research synthesis, **not** approval of any mapping or verification of the provisional behavioral definitions. Their content remains provisional, with canonical approval pending.
 
@@ -152,7 +152,7 @@ The registry now records pass 3 as `complete` for all 15 behavioral-domain recor
 - Blueprint slots remain non-canonical visualization placeholders. No names or definitions were fabricated.
 
 
-## 2026-10-22 — Recursive pass 2 results and explicit source gaps
+## 2026-10-22, Recursive pass 2 results and explicit source gaps
 
 - The registry remains 125 records / 125 unique IDs.
 - 117/125 records now have three research passes marked complete with source and finding entries. This includes 14 blueprint records whose research is complete specifically as non-canonical visualization slots; it does **not** mean there are 14 named domains.

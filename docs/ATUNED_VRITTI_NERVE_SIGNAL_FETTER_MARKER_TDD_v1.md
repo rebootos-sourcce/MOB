@@ -1,14 +1,14 @@
-# ATÜNED Vritti — Unified Signal, Fetter, Qualium, and Nerve-Node TDD
+# ATÜNED Vritti, Unified Signal, Fetter, Qualium, and Nerve-Node TDD
 Version: 1.3
 Date: 2026-10-22
 Status: P1-C regression contract and P2 trace/marker integration implemented on `atuned/mvp-alpha-recursive-execution`; tests are authored but intentionally not executed in this pass.
 
 ## 1. Purpose
 Define the unified relationship between:
-1. Vritti — the total waveform of sensory input plus emotional input, identified/tagged as a limiting belief.
-2. Fetter — the limiting-belief pattern identity in the engine.
-3. Nerve-address node — the canonical address node to which tone is attached and at which the model represents nerve oscillation at that frequency.
-4. Qualium — the orientation of distortion. This is a distinct semantic dimension, not the waveform, fetter identity, node address, or tone. Its vocabulary and canonical record owner must be mapped before adding a runtime field or enum.
+1. Vritti, the total waveform of sensory input plus emotional input, identified/tagged as a limiting belief.
+2. Fetter, the limiting-belief pattern identity in the engine.
+3. Nerve-address node, the canonical address node to which tone is attached and at which the model represents nerve oscillation at that frequency.
+4. Qualium, the orientation of distortion. This is a distinct semantic dimension, not the waveform, fetter identity, node address, or tone. Its vocabulary and canonical record owner must be mapped before adding a runtime field or enum.
 
 These are three connected layers of one model, not three independent inventories. The normative architecture and priority order are in `docs/ATUNED_UNIFIED_VRITTI_FETTER_NERVE_NODE_ARCHITECTURE_v1.md`.
 
@@ -45,7 +45,7 @@ Relationship semantics:
 - Vritti/fetter/node relationships must not imply causation unless the causal-claim contract permits it.
 - Do not assume one-to-one cardinality without a canonical domain rule. Prefer references to existing records over copying the same payload into multiple records.
 
-## 4. Record ownership — required before adding storage
+## 4. Record ownership, required before adding storage
 Use existing canonical record owners:
 - Journal/source/imprint/observation owner: sensory input, emotional input, context, timestamp, raw language, and source evidence.
 - Fetter/pattern owner: canonical fetter ID, exact limiting-belief wording, identification state, supporting/contradicting evidence.

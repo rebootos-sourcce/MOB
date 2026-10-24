@@ -1,4 +1,4 @@
-# ATÜNED Unified Vritti–Fetter–Qualium–Nerve Node Architecture
+# ATÜNED Unified Vritti-Fetter-Qualium-Nerve Node Architecture
 Version: 1.1
 Date: 2026-10-21
 Status: Owner-directed architecture priority; implementation contract, not a claim of validated biophysics.
@@ -7,10 +7,10 @@ Status: Owner-directed architecture priority; implementation contract, not a cla
 Vritti is not a separate collection of independent observations in the conceptual model. It is the **total waveform** of sensory input combined with emotional input that is identified/tagged as a limiting belief. The limiting belief is the **fetter**. The **tone is attached to the nerve-address node**. The nerve is described by the model as oscillating energy at that frequency.
 
 These are three connected layers plus a distinct orientation dimension; do not collapse the qualium into any of the three:
-1. **Vritti / signal layer** — the total sensory-emotional waveform.
-2. **Fetter / pattern layer** — the limiting-belief identity assigned to or associated with that waveform.
-3. **Nerve-address node / tone layer** — the node at the address, with its tone/frequency reference.
-4. **Qualium / orientation dimension** — the orientation of the distortion. It describes how the distortion is oriented, not the waveform itself, not the limiting-belief identity, and not the node's tone. Its precise taxonomy and canonical storage owner must be mapped to the existing architecture before a runtime field or enum is introduced.
+1. **Vritti / signal layer**, the total sensory-emotional waveform.
+2. **Fetter / pattern layer**, the limiting-belief identity assigned to or associated with that waveform.
+3. **Nerve-address node / tone layer**, the node at the address, with its tone/frequency reference.
+4. **Qualium / orientation dimension**, the orientation of the distortion. It describes how the distortion is oriented, not the waveform itself, not the limiting-belief identity, and not the node's tone. Its precise taxonomy and canonical storage owner must be mapped to the existing architecture before a runtime field or enum is introduced.
 
 The architecture should express the three layers through the engine's existing record owners and trace graph. Do not create a second profile inventory or a duplicate shadow/fetter registry. The previous draft's proposal to add a top-level `p.vritti[]` collection was premature and has been reverted from the execution branch. The conceptual relationship must be modeled first; the storage shape should follow the canonical owners.
 
@@ -43,7 +43,7 @@ Read the arrows carefully:
 
 ## 2. Three architecture reviews
 
-### Review 1 — Ontology and semantic boundaries
+### Review 1, Ontology and semantic boundaries
 **Question:** Are these three names describing one object three times, or three layers with typed relationships?
 
 **Decision:** Three layers, one connected model. Vritti is signal; fetter is pattern/interpretation; nerve-address node is the addressed model location carrying tone. A single flat record would blur raw input, inferred interpretation, and node properties. A standalone Vritti collection would also risk making Vritti an independent inventory rather than a signal representation anchored to existing record owners.
@@ -55,7 +55,7 @@ Read the arrows carefully:
 - Do not equate “tagged as a limiting belief” with scientific proof that the belief caused a physiological waveform.
 - The tone is a property/reference of the nerve-address node; do not duplicate tone as an unrelated fetter attribute unless the existing node schema requires a derived view.
 
-### Review 2 — Engine, records, and metric ownership
+### Review 2, Engine, records, and metric ownership
 **Question:** Where should the relationship live so it survives reload and affects the right computations without parallel truth?
 
 **Decision:** First reuse the canonical owners:
@@ -66,9 +66,9 @@ Read the arrows carefully:
 - **Trace graph:** typed relationships between the existing records; derived relationships should be derived, and relationships requiring a person's judgment should be stored with provenance.
 - **CQ/DQ/SQ compute owner:** reads canonical node/fetter weights and approved evidence; does not store a parallel Vritti score.
 
-Do not add a top-level Vritti array simply because the word Vritti needs to exist. If the existing source/imprint record can hold the signal payload and trace can link it to a fetter and nerve node, extend those records in place. Only introduce a new persisted record type if source inspection proves no existing record can own a durable waveform payload without violating record semantics. If so, the new type must be explicitly integrated into the existing profile boundary and trace graph—not left as an isolated collection.
+Do not add a top-level Vritti array simply because the word Vritti needs to exist. If the existing source/imprint record can hold the signal payload and trace can link it to a fetter and nerve node, extend those records in place. Only introduce a new persisted record type if source inspection proves no existing record can own a durable waveform payload without violating record semantics. If so, the new type must be explicitly integrated into the existing profile boundary and trace graph, not left as an isolated collection.
 
-### Review 3 — Failure modes, evidence, and scientific restraint
+### Review 3, Failure modes, evidence, and scientific restraint
 **Question:** What would make the model look connected while actually being misleading?
 
 **Risks and controls**
@@ -132,7 +132,7 @@ Use the current trace vocabulary and validation allowlist. Prefer existing edge 
 
 ## 5. Prioritized implementation plan
 
-### P0 — Record/engine ontology and owner map
+### P0, Record/engine ontology and owner map
 1. Map current journal/story/imprint records, fetter/pattern identity, nerve-address nodes, node tone/frequency fields, trace graph, and metric calculation.
 2. Identify which existing record owns the sensory input, emotional input, belief wording, tone, address, and node weight.
 3. Map qualium as the orientation of distortion, separately from waveform, fetter identity, node tone, and the existing node-table distortion descriptor.
@@ -141,7 +141,7 @@ Use the current trace vocabulary and validation allowlist. Prefer existing edge 
 
 **Acceptance:** field-to-owner table exists; every field has one canonical owner or a named unresolved owner gap; qualium is semantically distinguished from adjacent fields; no parallel fetter or Vritti inventory is introduced without a documented necessity.
 
-### P1 — Typed trace relationship
+### P1, Typed trace relationship
 1. Add or derive the Vritti/signal-to-fetter relationship using the current graph model.
 2. Add or derive the fetter-to-nerve-node/tone relationship.
 3. Preserve inferred/proposed/user-confirmed/observed provenance.
@@ -150,7 +150,7 @@ Use the current trace vocabulary and validation allowlist. Prefer existing edge 
 
 **Acceptance:** round-trip, duplicate, unresolved-link, provenance, and graph-validation tests pass.
 
-### P2 — Record and UI presentation
+### P2, Record and UI presentation
 1. Show the waveform/source evidence at the signal record.
 2. Show the fetter's relationship marker only when a valid association exists.
 3. From the fetter, navigate to source/Vritti evidence and the nerve-address node.
@@ -159,7 +159,7 @@ Use the current trace vocabulary and validation allowlist. Prefer existing edge 
 
 **Acceptance:** UI links all three existing owners; no duplicate payload or marker truth; candidate associations never look confirmed.
 
-### P3 — Metric wiring and regression
+### P3, Metric wiring and regression
 1. Verify node weight is the only individual contribution to SQ.
 2. Verify DQ is calculated by its canonical owner and not inferred as a CQ complement.
 3. Verify CQ is calculated by one reconciled, versioned contract.
@@ -168,7 +168,7 @@ Use the current trace vocabulary and validation allowlist. Prefer existing edge 
 
 **Acceptance:** metric snapshots remain unchanged for relationship-only edits; approved metric changes have named tests.
 
-### P4 — Full-stack validation
+### P4, Full-stack validation
 Run build, engine tests, trace tests, UI/release-chain tests, export/import, reload, and migration tests. Capture actual run links and results. Report failures rather than masking them.
 
 ## 6. Acceptance test matrix

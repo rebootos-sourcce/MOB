@@ -67,14 +67,14 @@ Do not treat lexical overlap as equivalence. Do not infer that Rulership and Ord
 
 | Registry ID | Current display name | Current state | Required action |
 |---|---|---|---|
-| `conscious-domain:01` | Empyrean Consciousness | v341 name/definition extracted | Complete passes 2–3; approval pending |
-| `conscious-domain:02` | Crown Consciousness | v341 name/definition extracted | Complete passes 2–3; approval pending |
-| `conscious-domain:03` | Perception Consciousness | v341 name/definition extracted | Complete passes 2–3; approval pending |
-| `conscious-domain:04` | Truth Consciousness | v341 name/definition extracted | Complete passes 2–3; approval pending |
-| `conscious-domain:05` | Heart Consciousness | v341 name/definition extracted | Complete passes 2–3; approval pending |
-| `conscious-domain:06` | Value Consciousness | v341 name/definition extracted | Complete passes 2–3; approval pending |
-| `conscious-domain:07` | Royal Consciousness | v341 name/definition extracted | Complete passes 2–3; approval pending |
-| `conscious-domain:08` | Creative Consciousness | v341 name/definition extracted | Complete passes 2–3; approval pending |
+| `conscious-domain:01` | Empyrean Consciousness | v341 name/definition extracted | Complete passes 2-3; approval pending |
+| `conscious-domain:02` | Crown Consciousness | v341 name/definition extracted | Complete passes 2-3; approval pending |
+| `conscious-domain:03` | Perception Consciousness | v341 name/definition extracted | Complete passes 2-3; approval pending |
+| `conscious-domain:04` | Truth Consciousness | v341 name/definition extracted | Complete passes 2-3; approval pending |
+| `conscious-domain:05` | Heart Consciousness | v341 name/definition extracted | Complete passes 2-3; approval pending |
+| `conscious-domain:06` | Value Consciousness | v341 name/definition extracted | Complete passes 2-3; approval pending |
+| `conscious-domain:07` | Royal Consciousness | v341 name/definition extracted | Complete passes 2-3; approval pending |
+| `conscious-domain:08` | Creative Consciousness | v341 name/definition extracted | Complete passes 2-3; approval pending |
 
 ## D. Required source-recovery procedure
 1. Obtain the actual `MOB_Complete_v341.html` source or a verifiable canonical export that explicitly identifies version 341.
@@ -111,7 +111,7 @@ Do not treat lexical overlap as equivalence. Do not infer that Rulership and Ord
 
 ---
 
-## Source-recovery correction and v341 extraction — 2026-10-22
+## Source-recovery correction and v341 extraction, 2026-10-22
 
 **Supersedes the earlier statement that the v341 source was unavailable.** The user-uploaded conversation file `MOB_Complete_v341.html` was present in the conversation upload inventory and has now been materialized and inspected directly. The earlier repository-only search was insufficient and the request to upload it again was an error.
 
@@ -157,7 +157,7 @@ Chapter 32, “The Seven Affirmations,” directly states that seven chakra-zone
 
 The seven explicit chakra-zone affirmation statements are separately located in the same chapter under “P21 · The Seven Affirmations · Crown to Root · Locked” and repeated in “P22 · Crown to Root · Daily Sequence.” These are source-backed text, but do not infer a one-to-one mapping from the registry's eight records without checking its schema and source relation fields.
 
-The chapter also contains three additional consciousness entries—Pattern Consciousness, Story Consciousness, and Imperium Consciousness—with their own affirmations. The source calls these entries out separately after the eight-domain sequence. Do not merge these three into the eight-domain roster without an explicit source ruling; capture them as related consciousness concepts pending taxonomy adjudication.
+The chapter also contains three additional consciousness entries, Pattern Consciousness, Story Consciousness, and Imperium Consciousness, with their own affirmations. The source calls these entries out separately after the eight-domain sequence. Do not merge these three into the eight-domain roster without an explicit source ruling; capture them as related consciousness concepts pending taxonomy adjudication.
 
 ### Crosswalk status after v341 inspection
 - v341 source recovered, version identified by filename/title: **yes**.
@@ -178,14 +178,14 @@ The chapter also contains three additional consciousness entries—Pattern Consc
 5. Run schema validation, adapter tests, runtime traversal, and link checks; record command, result, and commit.
 
 
-## Registry update — v341 source evidence attached
+## Registry update, v341 source evidence attached
 
 The live registry now contains the eight source-backed Conscious Domain names and definition summaries in `conscious-domain:01` through `conscious-domain:08`. The 15 behavioral-domain records now each carry v341 provenance and an explicitly unapproved candidate mapping note. Existing behavioral definitions remain provisional. These changes were committed in registry commits `507d730b837d1ed26ca5a33a7ce879d80574b843` and `1ef9d6faf5ec3207ee7c69bf96954f141fc2e18d`.
 
 Do not mark the three-pass research task complete: pass 1 source extraction is recorded for the eight Conscious Domain records; independent corroboration and cross-record synthesis remain pending. The 15 behavioral-domain mappings are candidates, not canonical approvals. The Architect (Rulership)/Imperium roster contradiction remains an owner ruling.
 
 
-## Record-level three-pass review update — 2026-10-22
+## Record-level three-pass review update, 2026-10-22
 
 Registry research-pass metadata was updated in commit [3bf815f](https://github.com/rebootos-sourcce/MOB/commit/3bf815f0ef50ab706ac57bb4d32c7c12eb122136). The statuses below are deliberately conservative: source extraction and comparisons are recorded, but canonical adjudication is not represented as complete.
 
@@ -247,11 +247,11 @@ Chapter 12 of v341 presents 12 archetypes as a distinct layer from the 19 domain
 
 ---
 
-## 2026-10-24 source-content research update — 15 behavioral domains
+## 2026-10-24 source-content research update, 15 behavioral domains
 
 **Primary source inspected:** `rebootos-sourcce/MOB-Manuscript/index.html`, blob SHA `24dea9c95112fe83073e58ef4cb14d7eb5de9928`, Chapter 12, “The Somatic Psychology Stack.” The artifact contains 15 numbered domain headings, each with Clear, Distorted, and Templates descriptions. **The artifact does not declare a MOB version label. Do not silently identify it as MOB_Complete_v341.**
 
-All 15 existing `domain:01`–`domain:15` records now contain source-derived definition/body text, clear-expression cues, distorted-expression cues, cultural-template names, provenance, and three distinct research-pass records:
+All 15 existing `domain:01`-`domain:15` records now contain source-derived definition/body text, clear-expression cues, distorted-expression cues, cultural-template names, provenance, and three distinct research-pass records:
 1. Primary-source extraction from the current manuscript artifact.
 2. Independent cross-check against SOURCE OS CANON v1.0.0 (built from v184) and the existing v341 crosswalk.
 3. Adversarial review of label drift and denominator conflicts, with no semantic edge promoted.

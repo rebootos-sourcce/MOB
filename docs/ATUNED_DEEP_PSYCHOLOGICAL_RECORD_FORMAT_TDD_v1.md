@@ -1,7 +1,7 @@
-# ATÜNED Deep-Psychological Layer — Record-First TDD
+# ATÜNED Deep-Psychological Layer, Record-First TDD
 Version: 1.0.0
 Date: 2026-10-22
-Status: OPEN — record inventory seeded; research and closure incomplete
+Status: OPEN, record inventory seeded; research and closure incomplete
 Repository: `rebootos-sourcce/MOB`
 Owner instruction: Set up every record in the shared Nerve-to-Super-Complex record format first; research every record in three distinct passes; only then wire supported parent/child and cross-layer relationships. Repeat until all records pass the closure gate.
 
@@ -25,8 +25,8 @@ Owner instruction: Set up every record in the shared Nerve-to-Super-Complex reco
 
 ## 3. Files created in this first record-setup round
 
-- `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_SCHEMA_v1.json` — shared JSON Schema for the record envelope.
-- `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json` — 107 entries: 93 source-backed/owner-stated records and mapping rows plus 14 explicitly non-canonical Blueprint Domain visualization-slot placeholders. Each entry has exactly three research-pass slots. This is an inventory seed, not a claim of complete canonical coverage or approval.
+- `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_SCHEMA_v1.json`, shared JSON Schema for the record envelope.
+- `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json`, 107 entries: 93 source-backed/owner-stated records and mapping rows plus 14 explicitly non-canonical Blueprint Domain visualization-slot placeholders. Each entry has exactly three research-pass slots. This is an inventory seed, not a claim of complete canonical coverage or approval.
 
 ## 4. Record inventory seeded
 
@@ -77,19 +77,19 @@ Each record must carry:
 
 ## 6. Three-pass research protocol
 
-**Pass 1 — primary-source extraction**
+**Pass 1, primary-source extraction**
 - Recover the authoritative source and its version/status.
 - Capture exact source claims and record IDs/counts.
 - Separate canon, owner instruction, implementation, generated output, proposed material, and inference.
 - Record the source SHA or stable link.
 
-**Pass 2 — independent corroboration and contradiction**
+**Pass 2, independent corroboration and contradiction**
 - Use a second independent source or source path where available.
 - Check aliases, version drift, duplicate labels, count discrepancies, and contradictory definitions.
 - A repeated copy of the same table is not independent corroboration.
 - If no independent source exists, mark that limitation explicitly; do not mark the pass as corroborated.
 
-**Pass 3 — synthesis and cross-record consistency**
+**Pass 3, synthesis and cross-record consistency**
 - Compare parent, child, siblings, and adjacent taxonomy records.
 - Confirm consistent language, definitions, IDs, seat/band vocabulary, provenance, and distinctions.
 - Document unresolved conflicts and confidence.
@@ -145,7 +145,7 @@ Do not claim a long-running background process is active. Continue the loop thro
 
 ## 10. Current status and next checkpoint
 
-- Registry: **107 entries** — 93 source-backed/owner-stated entries and 14 visualization-slot placeholders.
+- Registry: **107 entries**, 93 source-backed/owner-stated entries and 14 visualization-slot placeholders.
 - Schema: **created in MOB**; a custom structural audit found 107 unique IDs, exactly three research-pass slots per entry, and no missing shared-envelope fields.
 - Three-pass source review: **66/93 source-backed entries complete for source-row review** (18 archetypes, 18 ARCHDOM mappings, 18 ARCH18 mappings, 12 CDOMAIN mappings). This does not mean their taxonomy semantics are approved.
 - Owner-stated roots/domains/Conscious Domain slots: pass 1 recorded; passes 2 and 3 blocked pending canonical source recovery.
@@ -164,27 +164,27 @@ Do not claim a long-running background process is active. Continue the loop thro
 
 ## 11. Additional source discovery and three-pass cross-check (2026-10-22)
 
-### Pass A — primary source extraction
+### Pass A, primary source extraction
 - `atuned/src/40_the-archetypes.js` states the first twelve archetype entries are carried over from the owner’s dictation; six entries appended on 2026-09-24 are flagged as web-researched placeholders and not dictated.
 - The six flagged entries are Hero, Everyman, Mentor, Shadow, Shapeshifter, and Healer.
 - `atuned/data/canon_tables/ARCH12.json` contains 18 actual entries; `ARCH18.json` and `ARCHDOM.json` each also enumerate 18 archetype keys.
 - `atuned/src/45_the-psyche-map.js` defines visualization layers with display counts: Conscious Domains 8, Blueprint Domains 14, Archetypes 12, Masks 7, Hyper-Complexes 6, Saboteurs 14, Complexes 12, Clusters 9, Fetters 18, Child Fetters 9.
 - `atuned/data/canon_tables/manifest.json` separately declares ARCH12=18, ARCH18=18, ARCHDOM=18, CDOMAIN=12, MASKS6=6, HYPER=8, SAB33=33, NODEREG=112. These are not all the same denominator.
 
-### Pass B — independent table/code cross-check
+### Pass B, independent table/code cross-check
 - All 18 archetype names align across the inspected ARCH12, ARCH18, and ARCHDOM tables. The module's provenance comment qualifies the final six as non-dictated web-researched placeholders.
 - All 18 ARCHDOM rows and all 18 ARCH18 rows received three repository-evidence review passes; their source rows are preserved separately and no semantic cross-layer edge was approved.
 - All 12 CDOMAIN rows received three source-consistency passes. The table’s intended meaning and any relation to Conscious Domains or the fifteen owner-stated behavioral domains remain unresolved.
 - The psyche-map display counts conflict with canonical table counts for Archetypes, Masks, Hyper-Complexes, Saboteurs, and Fetters. The display counts are visualization declarations, not proof of canonical record denominators. Fourteen Blueprint Domain slots were added as explicitly non-canonical placeholders only.
 
-### Pass C — synthesis and gap disposition
+### Pass C, synthesis and gap disposition
 - Registry status is 107 entries, of which 93 are source-backed/owner-stated records or mapping rows and 14 are visual-slot placeholders.
 - Three-pass review completed for 66/93 source-backed entries. Root/domain/Conscious Domain entries remain blocked after pass 1 because authoritative definitions and independent corroboration were not located in the inspected sources.
 - The 18 archetype content records are populated from ARCH12. Six records retain explicit non-dictated provenance; taxonomy identity remains unresolved for all 18.
 - No new semantic parent/child edges have been added. This is intentional: source row consistency does not prove a causal or hierarchical relationship.
 - The registry passed a structural audit for unique IDs, required envelope fields, and exactly three ordered pass slots per entry. This was a custom structural audit, not a full JSON Schema validator or runtime integration test.
 
-## Current recursive record status — 2026-10-22
+## Current recursive record status, 2026-10-22
 
 - Registry: **125 unique records**; 125/125 have explicit proposed template assignments and exactly three research-pass slots.
 - Research: **103/125 records have all three repository/source review passes complete**. Pass 1 is complete for all 125. Passes 2 and 3 remain blocked for 22 placeholders: eight Conscious Domain slots and fourteen Blueprint Domain visualization slots.
@@ -193,13 +193,13 @@ Do not claim a long-running background process is active. Continue the loop thro
 - Semantic crosswalks: **0 of 36 ARCHDOM/ARCH18 mapping rows approved as semantic edges**. Eighteen source-canon root-membership edges are recorded, but the source's 18/15/14 domain-count ruling remains unresolved.
 - This is a partial source-review and record-setup milestone, not completion. Do not claim all records complete or wired.
 
-## Code-to-registry contract extraction — 2026-10-22
+## Code-to-registry contract extraction, 2026-10-22
 
 Completed a static field-by-field comparison of `proto/knowledge/src/gen-data.js` and `proto/knowledge/src/validate-templates.js` against the 125-record psychological registry and its proposed catalog. Exact engine kinds, template IDs, required fields, and validator checks are documented in [`ATUNED_DEEP_PSYCHOLOGICAL_CODE_TO_REGISTRY_CONTRACT_2026-10-22.md`](ATUNED_DEEP_PSYCHOLOGICAL_CODE_TO_REGISTRY_CONTRACT_2026-10-22.md).
 
 Key result: the registry's 125 proposed template assignments are not runtime assignments. The generator does not import this registry, the proposed template IDs are not declared in `TEMPLATE_SCHEMAS`, and the validator only evaluates generated `data.js`. The static comparison is complete; adapter implementation, runtime integration, and executable path tests remain open. No tests were run in a Node environment in this round.
 
-## Adapter implementation checkpoint — 2026-10-22
+## Adapter implementation checkpoint, 2026-10-22
 
 Added `proto/knowledge/src/adapt-psychological-registry.js` (commit `74c52ee3268a1fb53c75fb75265681fe2ba3270e`). It deterministically reads the registry and proposed template catalog, projects each record into an explicit `psych_<sourceKind>` namespace, preserves template payload, links, parent/child declarations, provenance, research-pass slots, confidence, status, and unresolved questions, and reports missing required fields without fabricating content. It checks duplicate IDs, undefined/mismatched template assignments, three-pass-slot presence, and dangling links/parent/child references.
 
@@ -263,8 +263,8 @@ The uploaded `MOB_Complete_v341.html` was present in the conversation and has no
 Do not continue describing v341 as unavailable. The unresolved problem is no longer source access: it is record-by-record evidence traceability, adjudicating the 15 registry behavioral-domain records against the 19 source labels, and resolving the source's internal Architect (Rulership)/Power (Directed Force) statement against its displayed 19-label roster. All changes must preserve source hash, section/anchor, claim-level evidence, status, and explicit non-canonical/approved distinction. Runtime integration and automated link checks remain unverified until actually executed.
 
 
-## 2026-10-22 — registry populated from recovered v341 source
-The uploaded v341 file has been extracted (SHA-256 `79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4`). The registry now holds source-backed name/definition summaries for all eight Conscious Domain IDs, and v341 provenance plus unapproved candidate mapping notes on all fifteen behavioral-domain IDs. The summaries are not a substitute for the source itself; retain the source hash and chapter anchor in each record. Research passes 2–3 and canonical approval remain pending. Do not mark the overall task complete until the 15-to-19 domain crosswalk and the source's Architect (Rulership)/Imperium contradiction are adjudicated, all 23 records have the required three distinct evidence passes, and schema/runtime/traversal/link tests have actually been run and logged.
+## 2026-10-22, registry populated from recovered v341 source
+The uploaded v341 file has been extracted (SHA-256 `79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4`). The registry now holds source-backed name/definition summaries for all eight Conscious Domain IDs, and v341 provenance plus unapproved candidate mapping notes on all fifteen behavioral-domain IDs. The summaries are not a substitute for the source itself; retain the source hash and chapter anchor in each record. Research passes 2-3 and canonical approval remain pending. Do not mark the overall task complete until the 15-to-19 domain crosswalk and the source's Architect (Rulership)/Imperium contradiction are adjudicated, all 23 records have the required three distinct evidence passes, and schema/runtime/traversal/link tests have actually been run and logged.
 
 
 ## 2026-10-22 v341 source-review execution update
@@ -296,7 +296,7 @@ Registry commit [be3efd4](https://github.com/rebootos-sourcce/MOB/commit/be3efd4
 The crosswalk records this distinction and the current registry SHA. Adapter execution, runtime integration, graph traversal, regression, and automated link checking remain not run/not verified.
 
 
-## Executive recursive-closure strategy update — 2026-10-22
+## Executive recursive-closure strategy update, 2026-10-22
 
 The current execution strategy and next-thread handshake are now defined in:
 - `docs/ATUNED_DEEP_PSYCHOLOGICAL_THREE-PASS_RECURSIVE_CLOSURE_STRATEGY_2026-10-22.md`
@@ -307,7 +307,7 @@ The strategy requires three distinct strategy reviews (source/inventory fidelity
 The current baseline figures in this TDD remain historical until re-fetched. Do not treat the plan or handshake as evidence that source research, schema repair, runtime integration, graph traversal, regression, or link checking passed. Preserve the v341 taxonomy contradiction and unapproved mappings. Update the TDD, registry, crosswalk, execution log, and ledger together after each meaningful build cycle.
 
 
-## Executive continuation update — 2026-10-22 evening
+## Executive continuation update, 2026-10-22 evening
 
 ### Current artifact observations
 - Schema blob SHA observed: `e7518232167ff881b442cbd24db181af7a5d7c50`.
@@ -319,7 +319,7 @@ The current baseline figures in this TDD remain historical until re-fetched. Do 
 ### Current engineering assessment
 The template catalog is not engine-integrated and the adapter remains separate from the experiential graph. Runtime wiring, forward/backward traversal, regression, and automated link checks are not demonstrated by the inspected code/logs. A record's template assignment is metadata until the authoritative generator/validator consumes it.
 
-### Next round — mandatory tactics
+### Next round, mandatory tactics
 1. Re-fetch default branch HEAD and the registry using a retrieval method that returns the JSON body. Record commit/blob SHA, byte length, parsed count, family counts, duplicate IDs, and parse result.
 2. Compare every record against the schema and correct type-specific template. Preserve established Fetter/Saboteur/Complex/Super-Complex conventions; do not flatten rich records into generic prose.
 3. Run the authoritative validator, adapter, project test suite, graph/path checks, and link checker. Record exact commands, exit codes, and outputs. Commands not executed remain NOT RUN with reason.
@@ -334,7 +334,7 @@ Status remains **OPEN / NOT VERIFIED**. This documentation pass did not freshly 
 
 ---
 
-## 11. Owner design clarification — behavioral energy, masks, and super-complex relationship (2026-10-22)
+## 11. Owner design clarification, behavioral energy, masks, and super-complex relationship (2026-10-22)
 
 **Status:** Owner-stated conceptual model captured; implementation semantics are a proposed design interpretation pending validation against existing record schemas and engine behavior. Do not silently present proposed edges as implemented.
 
@@ -345,16 +345,16 @@ Keep these concepts distinct: canonical name/label; guiding-post definition; beh
 
 ### 11.2 Proposed cascade
 The owner describes a cascade from root programming into archetypes and then super-complexes, while questioning whether super-complexes are a discrete layer or energetic drivers. Best-fit working interpretation is a causal/influence graph, not a guaranteed linear stack:
-1. Root programming / root complexes — deep organizing assumptions and constraints.
-2. Behavioral domains — broad fields in which root programming becomes behaviorally legible.
-3. Archetypal energies — reusable patterns of motivation, attention, agency, and action; multiple energies can coexist at different strengths.
-4. Super-complexes as energetic drivers (working hypothesis) — influences/modulators that may amplify, suppress, distort, or redirect archetypal expression. Prefer typed influence edges over forced parent-child placement unless source evidence or engine contracts require otherwise.
-5. Mask state — a psychospiritual state of identification/adaptation connecting egoic/psychological adaptation with essential/spiritual energy that remains visible.
-6. Observable expression/action — what a person says, chooses, does, avoids, or repeats. Assess coherence by tracing signal to action without replacing the existing coherence model.
+1. Root programming / root complexes, deep organizing assumptions and constraints.
+2. Behavioral domains, broad fields in which root programming becomes behaviorally legible.
+3. Archetypal energies, reusable patterns of motivation, attention, agency, and action; multiple energies can coexist at different strengths.
+4. Super-complexes as energetic drivers (working hypothesis), influences/modulators that may amplify, suppress, distort, or redirect archetypal expression. Prefer typed influence edges over forced parent-child placement unless source evidence or engine contracts require otherwise.
+5. Mask state, a psychospiritual state of identification/adaptation connecting egoic/psychological adaptation with essential/spiritual energy that remains visible.
+6. Observable expression/action, what a person says, chooses, does, avoids, or repeats. Assess coherence by tracing signal to action without replacing the existing coherence model.
 
 This is a working architecture. Do not infer direct parentage from the sequence. If the schema only supports parent/child links, extend it deliberately rather than encoding influence as false parentage.
 
-### 11.3 Mask model — state-change semantics
+### 11.3 Mask model, state-change semantics
 Owner formulation: the mask is a state change associated with binary states of identification. It can blend psychological/egoic adaptation with spiritual/essential energy. Shadow is part of the mask but not necessarily the whole mask. The ego may not recognize an inner energy (e.g., Warrior), while that energy remains visible through a gap in the mask. Removing masks is hypothesized to let dominant energies express more naturally.
 
 Operationalize without overclaiming:
@@ -393,13 +393,13 @@ Do not close KPI 1 from this conceptual addition alone. It is a TDD update, not 
 
 ---
 
-## 2026-10-24 KPI closure audit — registry scope remains open
+## 2026-10-24 KPI closure audit, registry scope remains open
 
 The record-level audit is maintained in [KPI Closure Audit](ATUNED_DEEP_PSYCHOLOGICAL_KPI_CLOSURE_AUDIT_2026-10-24.md), with a row-per-record companion at [Record Audit CSV](data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_AUDIT_2026-10-24.csv) and a repeatable Node audit at [strict closure audit script](../proto/knowledge/src/audit-deep-psychological-closure.js).
 
 ### Current measured gates
 - Registry inventory: 125 declared / 125 measured / 125 unique IDs. This proves coverage only for this registry; it does not prove the whole Nerve-to-Super-Complex denominator.
-- Role-level content gate: 102/125. The 14 Blueprint entries count as complete only as non-canonical visualization-slot records. The 15 behavioral-domain records remain provisional and source-unverified; the eight Conscious Domain records have pass 1 complete and passes 2–3 blocked.
+- Role-level content gate: 102/125. The 14 Blueprint entries count as complete only as non-canonical visualization-slot records. The 15 behavioral-domain records remain provisional and source-unverified; the eight Conscious Domain records have pass 1 complete and passes 2-3 blocked.
 - Research pass slots: 359/375 marked complete; 16 blocked. Pass status is not Canon approval.
 - Relationship graph: 103 records have empty `links` arrays explicitly classified as unresolved. The 36 mapping rows have zero approved semantic edges. The 36 source-table membership relationship objects remain `source_backed_open_ruling`.
 - Runtime integration and forward/backward traversal are not verified.
@@ -408,17 +408,17 @@ The record-level audit is maintained in [KPI Closure Audit](ATUNED_DEEP_PSYCHOLO
 Do not treat `templateValidation.missingFields` as the sole source of truth for template coverage. The audit must compare every actual record against every field in its assigned template, separately count provisional semantic content, and distinguish empty-but-valid link arrays from verified graph edges. Keep KPI 3 open until source-supported edges are adjudicated and runtime traversal tests pass.
 
 
-### 2026-10-24 implementation update — data namespace integration
+### 2026-10-24 implementation update, data namespace integration
 The generator now embeds the Deep Psychological registry and template catalog in separate properties of `KBD`. This is data-contract integration, not yet full graph integration. The existing Nerve-to-Super-Complex `entries` array remains unchanged to prevent unapproved taxonomic mappings from being promoted.
 
 The template validator now reports the embedded registry's structural/reference/content state and supports `--strict-deep-psychological`. The strict gate is expected to fail until substantive content and relationship closure are complete. Runtime execution and regression testing remain required before this integration is accepted.
 
 
-### Superseding content audit — 2026-10-24
+### Superseding content audit, 2026-10-24
 The 15 behavioral-domain records are no longer classified as source-unverified content. Three research passes per record are complete using `MOB-Manuscript/index.html` blob `24dea9c95112fe83073e58ef4cb14d7eb5de9928`, Chapter 12, cross-checked against SOURCE OS CANON v1.0.0 built from v184 and the v341 crosswalk. The source artifact does not declare its version label; it is not silently treated as v341.
 
 Current registry-scope KPI 2 is **117/125 role-complete**, with **8 Conscious Domain records still substantively open**. The 15 behavioral-domain crosswalks remain unapproved, and domain 06 has an explicit label variant (“Destruction and Renewal” in the current manuscript versus “Destruction and Transformation” in the registry). KPI 3 remains open: 103 records have empty links arrays, 0/36 mapping rows are approved semantic edges, and runtime graph traversal is not verified.
 
 
-### Superseding registry-scope KPI result — 2026-10-24
+### Superseding registry-scope KPI result, 2026-10-24
 After completing the three research passes for all eight Conscious Domain records, KPI 2 is **125/125 researched records** for this registry. The eight individual affirmation-to-domain assignments remain provisional; that is an owner/canonical crosswalk decision, not an unperformed research pass. KPI 3 remains open because semantic relationships are not yet fully approved or runtime-traversed. Project-wide KPI 1 remains unverified until the full Nerve-to-Super-Complex inventory is reconciled.

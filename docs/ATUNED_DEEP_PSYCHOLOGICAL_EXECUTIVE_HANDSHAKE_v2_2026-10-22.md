@@ -1,23 +1,23 @@
-# Executive Handshake — ATÜNED Deep Psychological Layer
+# Executive Handshake, ATÜNED Deep Psychological Layer
 **Updated:** 2026-10-22  
-**Status:** OPEN — continuation brief, not a completion certificate  
+**Status:** OPEN, continuation brief, not a completion certificate  
 **Repository:** https://github.com/rebootos-sourcce/MOB
 
 ## Mission
 Continue the deep-psychological registry work using established ATÜNED Fetter, Saboteur, Complex, Hyper-Complex, Character, and Super-Complex conventions and the shared Nerve-to-Super-Complex record envelope. Establish source truth, complete every required record, validate type-specific templates, and prove runtime graph connectivity. Do not invent canonical names, definitions, taxonomy mappings, or links. Opposites are explicitly out of scope.
 
 ## Read first
-1. `docs/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_FORMAT_TDD_v1.md` — governing record contract.
-2. `docs/ATUNED_DEEP_PSYCHOLOGICAL_BUILD_LEDGER_AND_LINK_REGISTER_2026-10-22.md` — artifact paths and dependencies.
-3. `docs/ATUNED_DEEP_PSYCHOLOGICAL_RECURSIVE_CLOSURE_PLAN_2026-10-22.md` — eight-block plan.
-4. `docs/ATUNED_DEEP_PSYCHOLOGICAL_RECURSIVE_CLOSURE_EXECUTION_LOG_2026-10-22.md` — checkpoint and blockers.
-5. `docs/ATUNED_DEEP_PSYCHOLOGICAL_THREE-PASS_RECURSIVE_CLOSURE_STRATEGY_2026-10-22.md` — research method.
-6. `docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md` — source crosswalk.
+1. `docs/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_FORMAT_TDD_v1.md`, governing record contract.
+2. `docs/ATUNED_DEEP_PSYCHOLOGICAL_BUILD_LEDGER_AND_LINK_REGISTER_2026-10-22.md`, artifact paths and dependencies.
+3. `docs/ATUNED_DEEP_PSYCHOLOGICAL_RECURSIVE_CLOSURE_PLAN_2026-10-22.md`, eight-block plan.
+4. `docs/ATUNED_DEEP_PSYCHOLOGICAL_RECURSIVE_CLOSURE_EXECUTION_LOG_2026-10-22.md`, checkpoint and blockers.
+5. `docs/ATUNED_DEEP_PSYCHOLOGICAL_THREE-PASS_RECURSIVE_CLOSURE_STRATEGY_2026-10-22.md`, research method.
+6. `docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md`, source crosswalk.
 7. `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json`, `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_SCHEMA_v1.json`, `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_TEMPLATE_CATALOG_v1.json`.
 8. `proto/knowledge/src/gen-data.js`, `proto/knowledge/src/validate-templates.js`, `proto/knowledge/src/adapt-psychological-registry.js`, `proto/knowledge/src/audit-psychological-registry.js`.
 9. Source material: `MOB_Complete_v341.html`, recorded SHA-256 `79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4`; use historical v184 CANON only as a separately labeled comparison source.
 
-## Technology state — last documented, must be freshly rechecked
+## Technology state, last documented, must be freshly rechecked
 - Historical baseline: 125 records across eight record families. Do not assume it remains current without parsing the current registry.
 - Schema: `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_SCHEMA_v1.json`.
 - Template catalog blob SHA observed in this pass: `ea76c12766f29f9a51a6ccefface85d3b3437e52`; status is proposed and not integrated with the engine.

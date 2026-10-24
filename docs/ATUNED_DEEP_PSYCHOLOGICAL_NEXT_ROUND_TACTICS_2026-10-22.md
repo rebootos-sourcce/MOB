@@ -1,4 +1,4 @@
-# Next-Round Tactics — ATÜNED Deep Psychological Layer
+# Next-Round Tactics, ATÜNED Deep Psychological Layer
 **Date:** 2026-10-22  
 **Status:** Ready-to-execute plan; current repository data must be re-fetched first.
 
@@ -6,13 +6,13 @@
 Reach evidence-backed closure across every required psychological record and its required connections to the existing Nerve-to-Super-Complex graph. This is not merely a content-fill task: the inventory, schema, type-specific template, source evidence, taxonomy, edge semantics, runtime integration, and tests must agree.
 
 ## Three strategy reviews before each execution cycle
-### Review A — source fidelity
+### Review A, source fidelity
 Confirm the current commit, file hashes, source versions, record denominator, and all canonical source passages. Separate owner-provided language, source canon, code behavior, generated data, inference, and unresolved claims.
 
-### Review B — adversarial defect hunt
+### Review B, adversarial defect hunt
 Look for missing IDs, duplicate identities, incomplete fields, wrong template IDs, type mismatches, stale snapshots, empty fetches, dangling or one-way edges, orphaned nodes, taxonomy collisions, broken relative links, and claims of tests without output. Challenge any status metadata that conflicts with actual data.
 
-### Review C — dependency and synthesis
+### Review C, dependency and synthesis
 Rank issues by impact and dependency. Fix source/inventory and schema defects before prose, prose/provenance before edge approval, and edge contract before runtime integration. Preserve open taxonomy decisions rather than making unsupported merges.
 
 ## Eight execution blocks
@@ -26,10 +26,10 @@ Rank issues by impact and dependency. Fix source/inventory and schema defects be
 8. **Independent closure:** rerun all validators/tests/link checks from a fresh checkout/fetch; compare results with prior round; list every residual blocker and repeat relevant blocks.
 
 ## Recursive rounds
-- **Round 1 — establish truth:** inventory, schema/template assignment, source mapping, known defect list.
-- **Round 2 — content and evidence:** complete source-supported definitions, stories, ATÜNED interpretations, behavioral expressions, provenance, and three-pass evidence.
-- **Round 3 — relationships and implementation:** approve edge semantics, wire supported connections, test forward/reverse traversal and runtime parity.
-- **Round 4 — independent regression:** fresh-fetch audit, strict validation, complete test suite, link/path checks, document reconciliation.
+- **Round 1, establish truth:** inventory, schema/template assignment, source mapping, known defect list.
+- **Round 2, content and evidence:** complete source-supported definitions, stories, ATÜNED interpretations, behavioral expressions, provenance, and three-pass evidence.
+- **Round 3, relationships and implementation:** approve edge semantics, wire supported connections, test forward/reverse traversal and runtime parity.
+- **Round 4, independent regression:** fresh-fetch audit, strict validation, complete test suite, link/path checks, document reconciliation.
 - Repeat any round or block that fails. Do not stop at Round 4 if blockers remain.
 
 ## Per-record content quality gate

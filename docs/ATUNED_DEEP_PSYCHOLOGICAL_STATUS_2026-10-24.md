@@ -1,4 +1,4 @@
-# Current Deep Psyche KPI Status — 2026-10-24
+# Current Deep Psyche KPI Status, 2026-10-24
 
 - **Registry:** 147 records, 147 unique IDs.
 - **Research:** 147 records have three recorded passes (441/441 pass slots complete).

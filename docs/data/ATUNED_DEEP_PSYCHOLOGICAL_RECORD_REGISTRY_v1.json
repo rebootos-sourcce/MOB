@@ -276,7 +276,7 @@
           }
         ],
         "story": "A group is overwhelmed by competing priorities. Someone clarifies the facts, names the rules that matter, assigns responsibility, and keeps the structure open to correction when reality changes.",
-        "atunedVersion": "Provisional ATÜNED interpretation: Architect represents coherent ordering—turning perception into distinctions, decisions, and accountable structure. Its failure mode is control detached from truth or service.",
+        "atunedVersion": "Provisional ATÜNED interpretation: Architect represents coherent ordering, turning perception into distinctions, decisions, and accountable structure. Its failure mode is control detached from truth or service.",
         "function": "Organize reality through distinctions, structure, responsibility, and principled order.",
         "healthyExpression": [
           "Clear distinctions and priorities",
@@ -316,7 +316,7 @@
         "canon.json@27a7a178de1e87252fa8e59554a66735dbeb0aed"
       ],
       "story": "A group is overwhelmed by competing priorities. Someone clarifies the facts, names the rules that matter, assigns responsibility, and keeps the structure open to correction when reality changes.",
-      "atunedVersion": "Provisional ATÜNED interpretation: Architect represents coherent ordering—turning perception into distinctions, decisions, and accountable structure. Its failure mode is control detached from truth or service."
+      "atunedVersion": "Provisional ATÜNED interpretation: Architect represents coherent ordering, turning perception into distinctions, decisions, and accountable structure. Its failure mode is control detached from truth or service."
     },
     {
       "id": "root:engine",
@@ -565,7 +565,7 @@
           }
         ],
         "story": "A project has lost momentum. The team identifies what to activate, what to build, and what must end, then directs effort toward the next viable state.",
-        "atunedVersion": "Provisional ATÜNED interpretation: Engine represents coherent dynamics—energy translated into purposeful movement and change. Its failure mode is force without direction or change without integration.",
+        "atunedVersion": "Provisional ATÜNED interpretation: Engine represents coherent dynamics, energy translated into purposeful movement and change. Its failure mode is force without direction or change without integration.",
         "function": "Mobilize energy and change through directed force, creation, dissolution, and consequential action.",
         "healthyExpression": [
           "Directed energy",
@@ -605,7 +605,7 @@
         "canon.json@27a7a178de1e87252fa8e59554a66735dbeb0aed"
       ],
       "story": "A project has lost momentum. The team identifies what to activate, what to build, and what must end, then directs effort toward the next viable state.",
-      "atunedVersion": "Provisional ATÜNED interpretation: Engine represents coherent dynamics—energy translated into purposeful movement and change. Its failure mode is force without direction or change without integration."
+      "atunedVersion": "Provisional ATÜNED interpretation: Engine represents coherent dynamics, energy translated into purposeful movement and change. Its failure mode is force without direction or change without integration."
     },
     {
       "id": "root:weaver",
@@ -841,7 +841,7 @@
           }
         ],
         "story": "Two groups are working at cross-purposes. Someone makes the dependencies visible, restores communication, and helps them exchange what each needs without erasing their differences.",
-        "atunedVersion": "Provisional ATÜNED interpretation: Weaver represents coherent relationship—connection that allows exchange, care, and play without collapsing boundaries. Its failure mode is enmeshment, extraction, or connection without truth.",
+        "atunedVersion": "Provisional ATÜNED interpretation: Weaver represents coherent relationship, connection that allows exchange, care, and play without collapsing boundaries. Its failure mode is enmeshment, extraction, or connection without truth.",
         "function": "Connect people, needs, resources, and processes through reciprocal exchange and repair.",
         "healthyExpression": [
           "Reciprocity",
@@ -881,7 +881,7 @@
         "canon.json@27a7a178de1e87252fa8e59554a66735dbeb0aed"
       ],
       "story": "Two groups are working at cross-purposes. Someone makes the dependencies visible, restores communication, and helps them exchange what each needs without erasing their differences.",
-      "atunedVersion": "Provisional ATÜNED interpretation: Weaver represents coherent relationship—connection that allows exchange, care, and play without collapsing boundaries. Its failure mode is enmeshment, extraction, or connection without truth."
+      "atunedVersion": "Provisional ATÜNED interpretation: Weaver represents coherent relationship, connection that allows exchange, care, and play without collapsing boundaries. Its failure mode is enmeshment, extraction, or connection without truth."
     },
     {
       "id": "root:witness",
@@ -1117,7 +1117,7 @@
           }
         ],
         "story": "A familiar system behaves unexpectedly. Rather than force the old explanation, someone observes the pattern, questions assumptions, and remains curious while testing what is actually happening.",
-        "atunedVersion": "Provisional ATÜNED interpretation: Witness represents coherent awareness—seeing signals before reacting and staying open to what is not yet understood. Its failure mode is detached observation, credulity, or dismissing experience too early.",
+        "atunedVersion": "Provisional ATÜNED interpretation: Witness represents coherent awareness, seeing signals before reacting and staying open to what is not yet understood. Its failure mode is detached observation, credulity, or dismissing experience too early.",
         "function": "Bring awareness to what is present, including nature, disruption, mystery, and protective boundaries.",
         "healthyExpression": [
           "Present-moment observation",
@@ -1157,7 +1157,7 @@
         "canon.json@27a7a178de1e87252fa8e59554a66735dbeb0aed"
       ],
       "story": "A familiar system behaves unexpectedly. Rather than force the old explanation, someone observes the pattern, questions assumptions, and remains curious while testing what is actually happening.",
-      "atunedVersion": "Provisional ATÜNED interpretation: Witness represents coherent awareness—seeing signals before reacting and staying open to what is not yet understood. Its failure mode is detached observation, credulity, or dismissing experience too early."
+      "atunedVersion": "Provisional ATÜNED interpretation: Witness represents coherent awareness, seeing signals before reacting and staying open to what is not yet understood. Its failure mode is detached observation, credulity, or dismissing experience too early."
     },
     {
       "id": "domain:01",
@@ -1298,15 +1298,15 @@
       "nm": "Knowledge",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": "PROVISIONAL — The behavioral domain concerned with acquiring, evaluating, organizing, and applying understanding.",
-      "body": "SOURCE-EXTRACTED SUMMARY — Clear expression: pattern recognition, codification, teaching, symbolic thinking. The person who reads before being asked to. Somatic knowledge is true knowledge, once it is in the body, deception does not work on you. You can feel the lie before it forms a word. Distorted expression: over-intellectualization, false certainty, knowledge as a barrier rather than a bridge. Source-listed cultural templates: Thoth, Athena, Saraswati, Odin.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
+      "def": "PROVISIONAL, The behavioral domain concerned with acquiring, evaluating, organizing, and applying understanding.",
+      "body": "SOURCE-EXTRACTED SUMMARY, Clear expression: pattern recognition, codification, teaching, symbolic thinking. The person who reads before being asked to. Somatic knowledge is true knowledge, once it is in the body, deception does not work on you. You can feel the lie before it forms a word. Distorted expression: over-intellectualization, false certainty, knowledge as a barrier rather than a bridge. Source-listed cultural templates: Thoth, Athena, Saraswati, Odin.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Knowledge",
         "fam": "deep_psychological.behavioral_domains",
-        "def": "PROVISIONAL — The behavioral domain concerned with acquiring, evaluating, organizing, and applying understanding.",
-        "body": "PROVISIONAL — In coherent expression, a person seeks reliable information, distinguishes observation from assumption, updates beliefs when evidence changes, and applies learning with appropriate humility. Distortion may appear as certainty without evidence, information hoarding, intellectual avoidance, or using knowledge to dominate rather than understand. These are proposed operational distinctions, not source-verified ATÜNED claims.",
+        "def": "PROVISIONAL, The behavioral domain concerned with acquiring, evaluating, organizing, and applying understanding.",
+        "body": "PROVISIONAL, In coherent expression, a person seeks reliable information, distinguishes observation from assumption, updates beliefs when evidence changes, and applies learning with appropriate humility. Distortion may appear as certainty without evidence, information hoarding, intellectual avoidance, or using knowledge to dominate rather than understand. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -1419,7 +1419,7 @@
         "repository": "rebootos-sourcce/MOB-Manuscript",
         "path": "index.html",
         "blobSha": "24dea9c95112fe83073e58ef4cb14d7eb5de9928",
-        "chapter": "Chapter 12 — The Somatic Psychology Stack",
+        "chapter": "Chapter 12, The Somatic Psychology Stack",
         "heading": "I · Knowledge",
         "htmlByteOffset": 2027933,
         "sourceVersionLabel": "not declared in artifact"
@@ -1560,15 +1560,15 @@
       "nm": "Communication and Exchange",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": "PROVISIONAL — The behavioral domain concerned with transmitting meaning and exchanging information, resources, attention, or value between people and systems.",
-      "body": "SOURCE-EXTRACTED SUMMARY — Clear expression: bridging, translation, precision of language, fast cognition. The connector, the person who translates between people, between ideas, between worlds. Distorted expression: manipulation, inconsistency, information as leverage. Source-listed cultural templates: Hermes, Mercury, Elegba.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
+      "def": "PROVISIONAL, The behavioral domain concerned with transmitting meaning and exchanging information, resources, attention, or value between people and systems.",
+      "body": "SOURCE-EXTRACTED SUMMARY, Clear expression: bridging, translation, precision of language, fast cognition. The connector, the person who translates between people, between ideas, between worlds. Distorted expression: manipulation, inconsistency, information as leverage. Source-listed cultural templates: Hermes, Mercury, Elegba.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Communication and Exchange",
         "fam": "deep_psychological.behavioral_domains",
-        "def": "PROVISIONAL — The behavioral domain concerned with transmitting meaning and exchanging information, resources, attention, or value between people and systems.",
-        "body": "PROVISIONAL — Coherent expression makes intent legible, listens for the other party's actual meaning, checks understanding, and supports reciprocal exchange. Distortion may appear as withholding, manipulation, noise, one-way extraction, or mistaking volume for clarity. These are proposed operational distinctions, not source-verified ATÜNED claims.",
+        "def": "PROVISIONAL, The behavioral domain concerned with transmitting meaning and exchanging information, resources, attention, or value between people and systems.",
+        "body": "PROVISIONAL, Coherent expression makes intent legible, listens for the other party's actual meaning, checks understanding, and supports reciprocal exchange. Distortion may appear as withholding, manipulation, noise, one-way extraction, or mistaking volume for clarity. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -1681,7 +1681,7 @@
         "repository": "rebootos-sourcce/MOB-Manuscript",
         "path": "index.html",
         "blobSha": "24dea9c95112fe83073e58ef4cb14d7eb5de9928",
-        "chapter": "Chapter 12 — The Somatic Psychology Stack",
+        "chapter": "Chapter 12, The Somatic Psychology Stack",
         "heading": "II · Communication and Exchange",
         "htmlByteOffset": 2028521,
         "sourceVersionLabel": "not declared in artifact"
@@ -1822,15 +1822,15 @@
       "nm": "Directed Force",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": "PROVISIONAL — The behavioral domain concerned with mobilizing will, energy, and effort toward a chosen aim.",
-      "body": "SOURCE-EXTRACTED SUMMARY — Clear expression: physical courage, boundary enforcement, protection of what matters. Directed aggression at obstacles, not people. Distorted expression: domination, violence without purpose, war as identity. Source-listed cultural templates: Ares, Mars, Sekhmet, Durga.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
+      "def": "PROVISIONAL, The behavioral domain concerned with mobilizing will, energy, and effort toward a chosen aim.",
+      "body": "SOURCE-EXTRACTED SUMMARY, Clear expression: physical courage, boundary enforcement, protection of what matters. Directed aggression at obstacles, not people. Distorted expression: domination, violence without purpose, war as identity. Source-listed cultural templates: Ares, Mars, Sekhmet, Durga.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Directed Force",
         "fam": "deep_psychological.behavioral_domains",
-        "def": "PROVISIONAL — The behavioral domain concerned with mobilizing will, energy, and effort toward a chosen aim.",
-        "body": "PROVISIONAL — Coherent expression applies proportionate force with clear direction, awareness of consequences, and the ability to stop or redirect when conditions change. Distortion may appear as coercion, scattered effort, passivity disguised as restraint, or force detached from purpose. These are proposed operational distinctions, not source-verified ATÜNED claims.",
+        "def": "PROVISIONAL, The behavioral domain concerned with mobilizing will, energy, and effort toward a chosen aim.",
+        "body": "PROVISIONAL, Coherent expression applies proportionate force with clear direction, awareness of consequences, and the ability to stop or redirect when conditions change. Distortion may appear as coercion, scattered effort, passivity disguised as restraint, or force detached from purpose. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -1943,7 +1943,7 @@
         "repository": "rebootos-sourcce/MOB-Manuscript",
         "path": "index.html",
         "blobSha": "24dea9c95112fe83073e58ef4cb14d7eb5de9928",
-        "chapter": "Chapter 12 — The Somatic Psychology Stack",
+        "chapter": "Chapter 12, The Somatic Psychology Stack",
         "heading": "III · Directed Force",
         "htmlByteOffset": 2028990,
         "sourceVersionLabel": "not declared in artifact"
@@ -2084,15 +2084,15 @@
       "nm": "Rulership and Order",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": "PROVISIONAL — The behavioral domain concerned with stewardship, governance, boundaries, structure, and coordinated responsibility.",
-      "body": "SOURCE-EXTRACTED SUMMARY — Clear expression: governance, structural authority, organizing chaos into function. sees how systems should be organized. Distorted expression: domination, entitlement, autocracy. Source-listed cultural templates: Zeus, Jupiter, Ra.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
+      "def": "PROVISIONAL, The behavioral domain concerned with stewardship, governance, boundaries, structure, and coordinated responsibility.",
+      "body": "SOURCE-EXTRACTED SUMMARY, Clear expression: governance, structural authority, organizing chaos into function. sees how systems should be organized. Distorted expression: domination, entitlement, autocracy. Source-listed cultural templates: Zeus, Jupiter, Ra.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Rulership and Order",
         "fam": "deep_psychological.behavioral_domains",
-        "def": "PROVISIONAL — The behavioral domain concerned with stewardship, governance, boundaries, structure, and coordinated responsibility.",
-        "body": "PROVISIONAL — Coherent expression creates understandable rules, accepts accountability, distributes responsibility appropriately, and uses authority to maintain a workable system rather than elevate the ruler. Distortion may appear as domination, rigidity, arbitrary control, abdication, or confusing compliance with integrity. These are proposed operational distinctions, not source-verified ATÜNED claims.",
+        "def": "PROVISIONAL, The behavioral domain concerned with stewardship, governance, boundaries, structure, and coordinated responsibility.",
+        "body": "PROVISIONAL, Coherent expression creates understandable rules, accepts accountability, distributes responsibility appropriately, and uses authority to maintain a workable system rather than elevate the ruler. Distortion may appear as domination, rigidity, arbitrary control, abdication, or confusing compliance with integrity. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -2205,7 +2205,7 @@
         "repository": "rebootos-sourcce/MOB-Manuscript",
         "path": "index.html",
         "blobSha": "24dea9c95112fe83073e58ef4cb14d7eb5de9928",
-        "chapter": "Chapter 12 — The Somatic Psychology Stack",
+        "chapter": "Chapter 12, The Somatic Psychology Stack",
         "heading": "IV · Rulership and Order",
         "htmlByteOffset": 2029416,
         "sourceVersionLabel": "not declared in artifact"
@@ -2354,15 +2354,15 @@
       "nm": "Creation and Manifestation",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": "PROVISIONAL — The behavioral domain concerned with bringing an intention or possibility into an observable form.",
-      "body": "SOURCE-EXTRACTED SUMMARY — Clear expression: building, executing, bringing vision into form. Always needed to make things. When you cannot create it feels like disconnection, like the system is broken. Financial stress kills creativity not motivationally but anatomically: the survival charge consumes the current before it reaches the generative center. When the root clears, the sacral opens, the creative current flows again. Not as discipline. As a natural consequence of the channel being clear. Distorted expression: perfectionism as paralysis, identity tied to output. Source-listed cultural templates: Brahma, Ptah, Prometheus.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
+      "def": "PROVISIONAL, The behavioral domain concerned with bringing an intention or possibility into an observable form.",
+      "body": "SOURCE-EXTRACTED SUMMARY, Clear expression: building, executing, bringing vision into form. Always needed to make things. When you cannot create it feels like disconnection, like the system is broken. Financial stress kills creativity not motivationally but anatomically: the survival charge consumes the current before it reaches the generative center. When the root clears, the sacral opens, the creative current flows again. Not as discipline. As a natural consequence of the channel being clear. Distorted expression: perfectionism as paralysis, identity tied to output. Source-listed cultural templates: Brahma, Ptah, Prometheus.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Creation and Manifestation",
         "fam": "deep_psychological.behavioral_domains",
-        "def": "PROVISIONAL — The behavioral domain concerned with bringing an intention or possibility into an observable form.",
-        "body": "PROVISIONAL — Coherent expression converts ideas into useful outcomes through deliberate choices, resources, iteration, and contact with reality. Distortion may appear as endless ideation without delivery, premature action without grounding, attachment to appearances, or claiming authorship without responsibility for effects. These are proposed operational distinctions, not source-verified ATÜNED claims.",
+        "def": "PROVISIONAL, The behavioral domain concerned with bringing an intention or possibility into an observable form.",
+        "body": "PROVISIONAL, Coherent expression converts ideas into useful outcomes through deliberate choices, resources, iteration, and contact with reality. Distortion may appear as endless ideation without delivery, premature action without grounding, attachment to appearances, or claiming authorship without responsibility for effects. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -2475,7 +2475,7 @@
         "repository": "rebootos-sourcce/MOB-Manuscript",
         "path": "index.html",
         "blobSha": "24dea9c95112fe83073e58ef4cb14d7eb5de9928",
-        "chapter": "Chapter 12 — The Somatic Psychology Stack",
+        "chapter": "Chapter 12, The Somatic Psychology Stack",
         "heading": "V · Creation and Manifestation",
         "htmlByteOffset": 2029808,
         "sourceVersionLabel": "not declared in artifact"
@@ -2618,15 +2618,15 @@
       "nm": "Destruction and Transformation",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": "PROVISIONAL — The behavioral domain concerned with ending, dismantling, releasing, or changing forms that no longer serve their purpose.",
-      "body": "SOURCE-EXTRACTED SUMMARY — Clear expression: deliberate dissolution, clearing what is false or finished, making space for what comes next. Sees what needs to end. Distorted expression: destruction as identity, nihilism, chaos without rebuilding. Source-listed cultural templates: Shiva, Kali, Loki.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
+      "def": "PROVISIONAL, The behavioral domain concerned with ending, dismantling, releasing, or changing forms that no longer serve their purpose.",
+      "body": "SOURCE-EXTRACTED SUMMARY, Clear expression: deliberate dissolution, clearing what is false or finished, making space for what comes next. Sees what needs to end. Distorted expression: destruction as identity, nihilism, chaos without rebuilding. Source-listed cultural templates: Shiva, Kali, Loki.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Destruction and Transformation",
         "fam": "deep_psychological.behavioral_domains",
-        "def": "PROVISIONAL — The behavioral domain concerned with ending, dismantling, releasing, or changing forms that no longer serve their purpose.",
-        "body": "PROVISIONAL — Coherent expression distinguishes necessary endings from reactive damage, removes obsolete structures with care, and makes room for a viable next state. Distortion may appear as indiscriminate destruction, avoidance of necessary endings, attachment to decay, or treating harm as transformation merely because something changed. These are proposed operational distinctions, not source-verified ATÜNED claims.",
+        "def": "PROVISIONAL, The behavioral domain concerned with ending, dismantling, releasing, or changing forms that no longer serve their purpose.",
+        "body": "PROVISIONAL, Coherent expression distinguishes necessary endings from reactive damage, removes obsolete structures with care, and makes room for a viable next state. Distortion may appear as indiscriminate destruction, avoidance of necessary endings, attachment to decay, or treating harm as transformation merely because something changed. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -2739,7 +2739,7 @@
         "repository": "rebootos-sourcce/MOB-Manuscript",
         "path": "index.html",
         "blobSha": "24dea9c95112fe83073e58ef4cb14d7eb5de9928",
-        "chapter": "Chapter 12 — The Somatic Psychology Stack",
+        "chapter": "Chapter 12, The Somatic Psychology Stack",
         "heading": "VI · Destruction and Renewal",
         "htmlByteOffset": 2030582,
         "sourceVersionLabel": "not declared in artifact"
@@ -2882,15 +2882,15 @@
       "nm": "Love and Connection",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": "PROVISIONAL — The behavioral domain concerned with relational bonding, care, intimacy, belonging, and connection across difference.",
-      "body": "SOURCE-EXTRACTED SUMMARY — Clear expression: union, intimacy, the force that draws beings into genuine contact. Love as a state the person generates, not receives. Always knew what brings people together. Distorted expression: codependency, possession, love as completion rather than addition. Source-listed cultural templates: Aphrodite, Hathor, Freya, Oshun.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
+      "def": "PROVISIONAL, The behavioral domain concerned with relational bonding, care, intimacy, belonging, and connection across difference.",
+      "body": "SOURCE-EXTRACTED SUMMARY, Clear expression: union, intimacy, the force that draws beings into genuine contact. Love as a state the person generates, not receives. Always knew what brings people together. Distorted expression: codependency, possession, love as completion rather than addition. Source-listed cultural templates: Aphrodite, Hathor, Freya, Oshun.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Love and Connection",
         "fam": "deep_psychological.behavioral_domains",
-        "def": "PROVISIONAL — The behavioral domain concerned with relational bonding, care, intimacy, belonging, and connection across difference.",
-        "body": "PROVISIONAL — Coherent expression combines care with truthful boundaries, recognizes the other as distinct, and supports connection without erasing agency. Distortion may appear as possession, enmeshment, conditional affection, chronic withdrawal, or self-erasure in exchange for belonging. These are proposed operational distinctions, not source-verified ATÜNED claims.",
+        "def": "PROVISIONAL, The behavioral domain concerned with relational bonding, care, intimacy, belonging, and connection across difference.",
+        "body": "PROVISIONAL, Coherent expression combines care with truthful boundaries, recognizes the other as distinct, and supports connection without erasing agency. Distortion may appear as possession, enmeshment, conditional affection, chronic withdrawal, or self-erasure in exchange for belonging. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -3003,7 +3003,7 @@
         "repository": "rebootos-sourcce/MOB-Manuscript",
         "path": "index.html",
         "blobSha": "24dea9c95112fe83073e58ef4cb14d7eb5de9928",
-        "chapter": "Chapter 12 — The Somatic Psychology Stack",
+        "chapter": "Chapter 12, The Somatic Psychology Stack",
         "heading": "VII · Love and Connection",
         "htmlByteOffset": 2031017,
         "sourceVersionLabel": "not declared in artifact"
@@ -3144,15 +3144,15 @@
       "nm": "Healing and Restoration",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": "PROVISIONAL — The behavioral domain concerned with repair, recovery, reintegration, and the restoration of functional capacity after disruption.",
-      "body": "SOURCE-EXTRACTED SUMMARY — Clear expression: directed intervention, active clearing, creating conditions in which restoration happens. Finds the broken thing in any room. Distorted expression: rescuer complex, martyrdom, healing as identity. Source-listed cultural templates: Asclepius, Chiron, Dhanvantari.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
+      "def": "PROVISIONAL, The behavioral domain concerned with repair, recovery, reintegration, and the restoration of functional capacity after disruption.",
+      "body": "SOURCE-EXTRACTED SUMMARY, Clear expression: directed intervention, active clearing, creating conditions in which restoration happens. Finds the broken thing in any room. Distorted expression: rescuer complex, martyrdom, healing as identity. Source-listed cultural templates: Asclepius, Chiron, Dhanvantari.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Healing and Restoration",
         "fam": "deep_psychological.behavioral_domains",
-        "def": "PROVISIONAL — The behavioral domain concerned with repair, recovery, reintegration, and the restoration of functional capacity after disruption.",
-        "body": "PROVISIONAL — Coherent expression identifies what is injured or depleted, respects limits and time, supports repair, and distinguishes recovery from concealment of symptoms. Distortion may appear as rescuing without consent, rushing recovery, denying damage, or making a permanent identity out of an injury. These are proposed operational distinctions, not source-verified ATÜNED claims.",
+        "def": "PROVISIONAL, The behavioral domain concerned with repair, recovery, reintegration, and the restoration of functional capacity after disruption.",
+        "body": "PROVISIONAL, Coherent expression identifies what is injured or depleted, respects limits and time, supports repair, and distinguishes recovery from concealment of symptoms. Distortion may appear as rescuing without consent, rushing recovery, denying damage, or making a permanent identity out of an injury. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -3265,7 +3265,7 @@
         "repository": "rebootos-sourcce/MOB-Manuscript",
         "path": "index.html",
         "blobSha": "24dea9c95112fe83073e58ef4cb14d7eb5de9928",
-        "chapter": "Chapter 12 — The Somatic Psychology Stack",
+        "chapter": "Chapter 12, The Somatic Psychology Stack",
         "heading": "VIII · Healing and Restoration",
         "htmlByteOffset": 2031511,
         "sourceVersionLabel": "not declared in artifact"
@@ -3408,15 +3408,15 @@
       "nm": "Sacrifice and Wisdom Through Descent",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": "PROVISIONAL — The behavioral domain concerned with relinquishing something of value, entering difficult experience, and extracting learning without glorifying suffering.",
-      "body": "SOURCE-EXTRACTED SUMMARY — Clear expression: voluntary descent, the chosen ordeal, sacrifice as the mechanism that produces insight unavailable any other way. The knowledge that comes from what was given up, not accumulated. The true utilization of experience: consume as much as possible, then do not hang onto the definitions. Words illuminate, they do not contain. Distorted expression: suffering as identity, the descent without return. Source-listed cultural templates: Odin, Osiris, Christ, Inanna.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
+      "def": "PROVISIONAL, The behavioral domain concerned with relinquishing something of value, entering difficult experience, and extracting learning without glorifying suffering.",
+      "body": "SOURCE-EXTRACTED SUMMARY, Clear expression: voluntary descent, the chosen ordeal, sacrifice as the mechanism that produces insight unavailable any other way. The knowledge that comes from what was given up, not accumulated. The true utilization of experience: consume as much as possible, then do not hang onto the definitions. Words illuminate, they do not contain. Distorted expression: suffering as identity, the descent without return. Source-listed cultural templates: Odin, Osiris, Christ, Inanna.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Sacrifice and Wisdom Through Descent",
         "fam": "deep_psychological.behavioral_domains",
-        "def": "PROVISIONAL — The behavioral domain concerned with relinquishing something of value, entering difficult experience, and extracting learning without glorifying suffering.",
-        "body": "PROVISIONAL — Coherent expression distinguishes chosen cost from coerced loss, remains honest about consequences, and allows difficulty to deepen discernment where learning is possible. Distortion may appear as martyrdom, self-abandonment, avoidable suffering, or treating pain as proof of wisdom. These are proposed operational distinctions, not source-verified ATÜNED claims.",
+        "def": "PROVISIONAL, The behavioral domain concerned with relinquishing something of value, entering difficult experience, and extracting learning without glorifying suffering.",
+        "body": "PROVISIONAL, Coherent expression distinguishes chosen cost from coerced loss, remains honest about consequences, and allows difficulty to deepen discernment where learning is possible. Distortion may appear as martyrdom, self-abandonment, avoidable suffering, or treating pain as proof of wisdom. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -3529,7 +3529,7 @@
         "repository": "rebootos-sourcce/MOB-Manuscript",
         "path": "index.html",
         "blobSha": "24dea9c95112fe83073e58ef4cb14d7eb5de9928",
-        "chapter": "Chapter 12 — The Somatic Psychology Stack",
+        "chapter": "Chapter 12, The Somatic Psychology Stack",
         "heading": "IX · Sacrifice and Wisdom Through Descent",
         "htmlByteOffset": 2031957,
         "sourceVersionLabel": "not declared in artifact"
@@ -3678,15 +3678,15 @@
       "nm": "Justice and Truth",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": "PROVISIONAL — The behavioral domain concerned with truthful representation, fair treatment, proportionate accountability, and alignment between claims and evidence.",
-      "body": "SOURCE-EXTRACTED SUMMARY — Clear expression: discernment of what is real and what is false. Accountability without cruelty. Moral disorder does not just feel wrong, it triggers the nervous system. When truth is a 10, anything less is somatic. You can feel the lie before it forms a word. If you lie, you dysregulate your own nervous system. Distorted expression: rigid judgment, self-righteousness, justice as control. Source-listed cultural templates: Ma'at, Themis, Forseti.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
+      "def": "PROVISIONAL, The behavioral domain concerned with truthful representation, fair treatment, proportionate accountability, and alignment between claims and evidence.",
+      "body": "SOURCE-EXTRACTED SUMMARY, Clear expression: discernment of what is real and what is false. Accountability without cruelty. Moral disorder does not just feel wrong, it triggers the nervous system. When truth is a 10, anything less is somatic. You can feel the lie before it forms a word. If you lie, you dysregulate your own nervous system. Distorted expression: rigid judgment, self-righteousness, justice as control. Source-listed cultural templates: Ma'at, Themis, Forseti.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Justice and Truth",
         "fam": "deep_psychological.behavioral_domains",
-        "def": "PROVISIONAL — The behavioral domain concerned with truthful representation, fair treatment, proportionate accountability, and alignment between claims and evidence.",
-        "body": "PROVISIONAL — Coherent expression tests claims against evidence, applies standards consistently, acknowledges uncertainty, and repairs harm without reducing people to their worst actions. Distortion may appear as selective truth, vengeance presented as justice, double standards, or certainty used to suppress inquiry. These are proposed operational distinctions, not source-verified ATÜNED claims.",
+        "def": "PROVISIONAL, The behavioral domain concerned with truthful representation, fair treatment, proportionate accountability, and alignment between claims and evidence.",
+        "body": "PROVISIONAL, Coherent expression tests claims against evidence, applies standards consistently, acknowledges uncertainty, and repairs harm without reducing people to their worst actions. Distortion may appear as selective truth, vengeance presented as justice, double standards, or certainty used to suppress inquiry. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -3799,7 +3799,7 @@
         "repository": "rebootos-sourcce/MOB-Manuscript",
         "path": "index.html",
         "blobSha": "24dea9c95112fe83073e58ef4cb14d7eb5de9928",
-        "chapter": "Chapter 12 — The Somatic Psychology Stack",
+        "chapter": "Chapter 12, The Somatic Psychology Stack",
         "heading": "X · Justice and Truth",
         "htmlByteOffset": 2032611,
         "sourceVersionLabel": "not declared in artifact"
@@ -3938,15 +3938,15 @@
       "nm": "Trickster and Disruption",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": "PROVISIONAL — The behavioral domain concerned with exposing assumptions, interrupting stale patterns, and introducing alternative perspectives through play, inversion, or disruption.",
-      "body": "SOURCE-EXTRACTED SUMMARY — Clear expression: disruption of rigid patterns, revealing what is hidden through inversion, innovation through disorder. Sees the absurdity in what everyone else treats as fixed. Distorted expression: deception as lifestyle, instability mistaken for freedom. Source-listed cultural templates: Loki, Coyote, Anansi.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
+      "def": "PROVISIONAL, The behavioral domain concerned with exposing assumptions, interrupting stale patterns, and introducing alternative perspectives through play, inversion, or disruption.",
+      "body": "SOURCE-EXTRACTED SUMMARY, Clear expression: disruption of rigid patterns, revealing what is hidden through inversion, innovation through disorder. Sees the absurdity in what everyone else treats as fixed. Distorted expression: deception as lifestyle, instability mistaken for freedom. Source-listed cultural templates: Loki, Coyote, Anansi.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Trickster and Disruption",
         "fam": "deep_psychological.behavioral_domains",
-        "def": "PROVISIONAL — The behavioral domain concerned with exposing assumptions, interrupting stale patterns, and introducing alternative perspectives through play, inversion, or disruption.",
-        "body": "PROVISIONAL — Coherent expression uses surprise and challenge to reveal blind spots while remaining accountable for impact. Distortion may appear as chaos for its own sake, humiliation, deception that destroys trust, or reflexively opposing structure without offering insight. These are proposed operational distinctions, not source-verified ATÜNED claims.",
+        "def": "PROVISIONAL, The behavioral domain concerned with exposing assumptions, interrupting stale patterns, and introducing alternative perspectives through play, inversion, or disruption.",
+        "body": "PROVISIONAL, Coherent expression uses surprise and challenge to reveal blind spots while remaining accountable for impact. Distortion may appear as chaos for its own sake, humiliation, deception that destroys trust, or reflexively opposing structure without offering insight. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -4059,7 +4059,7 @@
         "repository": "rebootos-sourcce/MOB-Manuscript",
         "path": "index.html",
         "blobSha": "24dea9c95112fe83073e58ef4cb14d7eb5de9928",
-        "chapter": "Chapter 12 — The Somatic Psychology Stack",
+        "chapter": "Chapter 12, The Somatic Psychology Stack",
         "heading": "XI · Trickster and Disruption",
         "htmlByteOffset": 2033217,
         "sourceVersionLabel": "not declared in artifact"
@@ -4198,15 +4198,15 @@
       "nm": "Nature and Organic Intelligence",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": "PROVISIONAL — The behavioral domain concerned with ecological awareness, embodied feedback, natural processes, and intelligence that emerges through relationship with living systems.",
-      "body": "SOURCE-EXTRACTED SUMMARY — Clear expression: alignment with biological truth, growth through patience rather than force. Thinks in cycles rather than straight lines. Distorted expression: rejection of structure, naturalism as escape from complexity. Source-listed cultural templates: Gaia, Cernunnos, Pan.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
+      "def": "PROVISIONAL, The behavioral domain concerned with ecological awareness, embodied feedback, natural processes, and intelligence that emerges through relationship with living systems.",
+      "body": "SOURCE-EXTRACTED SUMMARY, Clear expression: alignment with biological truth, growth through patience rather than force. Thinks in cycles rather than straight lines. Distorted expression: rejection of structure, naturalism as escape from complexity. Source-listed cultural templates: Gaia, Cernunnos, Pan.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Nature and Organic Intelligence",
         "fam": "deep_psychological.behavioral_domains",
-        "def": "PROVISIONAL — The behavioral domain concerned with ecological awareness, embodied feedback, natural processes, and intelligence that emerges through relationship with living systems.",
-        "body": "PROVISIONAL — Coherent expression observes conditions, respects interdependence and limits, and adapts to feedback rather than forcing every process into an abstract plan. Distortion may appear as domination of living systems, romanticizing nature, ignoring practical constraints, or treating instinct as infallible. These are proposed operational distinctions, not source-verified ATÜNED claims.",
+        "def": "PROVISIONAL, The behavioral domain concerned with ecological awareness, embodied feedback, natural processes, and intelligence that emerges through relationship with living systems.",
+        "body": "PROVISIONAL, Coherent expression observes conditions, respects interdependence and limits, and adapts to feedback rather than forcing every process into an abstract plan. Distortion may appear as domination of living systems, romanticizing nature, ignoring practical constraints, or treating instinct as infallible. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -4319,7 +4319,7 @@
         "repository": "rebootos-sourcce/MOB-Manuscript",
         "path": "index.html",
         "blobSha": "24dea9c95112fe83073e58ef4cb14d7eb5de9928",
-        "chapter": "Chapter 12 — The Somatic Psychology Stack",
+        "chapter": "Chapter 12, The Somatic Psychology Stack",
         "heading": "XII · Nature and Organic Intelligence",
         "htmlByteOffset": 2033696,
         "sourceVersionLabel": "not declared in artifact"
@@ -4462,15 +4462,15 @@
       "nm": "Mystery and the Unseen",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": "PROVISIONAL — The behavioral domain concerned with engaging uncertainty, hidden causes, ambiguity, and phenomena not yet fully understood.",
-      "body": "SOURCE-EXTRACTED SUMMARY — Clear expression: navigation of the unseen, death and rebirth as structural realities. Can hold darkness without being consumed. Always drawn to what is hidden. Distorted expression: obsession with shadow, nihilism, identity built on the margin. Source-listed cultural templates: Hades, Hecate, Anubis.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
+      "def": "PROVISIONAL, The behavioral domain concerned with engaging uncertainty, hidden causes, ambiguity, and phenomena not yet fully understood.",
+      "body": "SOURCE-EXTRACTED SUMMARY, Clear expression: navigation of the unseen, death and rebirth as structural realities. Can hold darkness without being consumed. Always drawn to what is hidden. Distorted expression: obsession with shadow, nihilism, identity built on the margin. Source-listed cultural templates: Hades, Hecate, Anubis.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Mystery and the Unseen",
         "fam": "deep_psychological.behavioral_domains",
-        "def": "PROVISIONAL — The behavioral domain concerned with engaging uncertainty, hidden causes, ambiguity, and phenomena not yet fully understood.",
-        "body": "PROVISIONAL — Coherent expression can remain curious without prematurely closing the question, distinguishes direct experience from interpretation, and holds uncertainty without surrendering discernment. Distortion may appear as credulity, conspiratorial certainty, avoidance disguised as mysticism, or dismissing all unknowns before examination. These are proposed operational distinctions, not source-verified ATÜNED claims.",
+        "def": "PROVISIONAL, The behavioral domain concerned with engaging uncertainty, hidden causes, ambiguity, and phenomena not yet fully understood.",
+        "body": "PROVISIONAL, Coherent expression can remain curious without prematurely closing the question, distinguishes direct experience from interpretation, and holds uncertainty without surrendering discernment. Distortion may appear as credulity, conspiratorial certainty, avoidance disguised as mysticism, or dismissing all unknowns before examination. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -4583,7 +4583,7 @@
         "repository": "rebootos-sourcce/MOB-Manuscript",
         "path": "index.html",
         "blobSha": "24dea9c95112fe83073e58ef4cb14d7eb5de9928",
-        "chapter": "Chapter 12 — The Somatic Psychology Stack",
+        "chapter": "Chapter 12, The Somatic Psychology Stack",
         "heading": "XIII · Mystery and the Unseen",
         "htmlByteOffset": 2034147,
         "sourceVersionLabel": "not declared in artifact"
@@ -4726,15 +4726,15 @@
       "nm": "Devotion and Right Action",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": "PROVISIONAL — The behavioral domain concerned with sustained commitment to a value, practice, or source of meaning expressed through responsible action.",
-      "body": "SOURCE-EXTRACTED SUMMARY — Clear expression: right action regardless of personal cost. Loyalty to what is true, not what is comfortable. Does the right thing even when no one is watching. Distorted expression: rigidity, losing self in obligation, duty performed for an audience. Source-listed cultural templates: Rama, Horus, Michael.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
+      "def": "PROVISIONAL, The behavioral domain concerned with sustained commitment to a value, practice, or source of meaning expressed through responsible action.",
+      "body": "SOURCE-EXTRACTED SUMMARY, Clear expression: right action regardless of personal cost. Loyalty to what is true, not what is comfortable. Does the right thing even when no one is watching. Distorted expression: rigidity, losing self in obligation, duty performed for an audience. Source-listed cultural templates: Rama, Horus, Michael.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Devotion and Right Action",
         "fam": "deep_psychological.behavioral_domains",
-        "def": "PROVISIONAL — The behavioral domain concerned with sustained commitment to a value, practice, or source of meaning expressed through responsible action.",
-        "body": "PROVISIONAL — Coherent expression aligns repeated action with declared commitments, remains open to correction, and measures devotion by integrity rather than display. Distortion may appear as fanaticism, obedience without discernment, performative virtue, or using a noble purpose to excuse harmful means. These are proposed operational distinctions, not source-verified ATÜNED claims.",
+        "def": "PROVISIONAL, The behavioral domain concerned with sustained commitment to a value, practice, or source of meaning expressed through responsible action.",
+        "body": "PROVISIONAL, Coherent expression aligns repeated action with declared commitments, remains open to correction, and measures devotion by integrity rather than display. Distortion may appear as fanaticism, obedience without discernment, performative virtue, or using a noble purpose to excuse harmful means. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -4847,7 +4847,7 @@
         "repository": "rebootos-sourcce/MOB-Manuscript",
         "path": "index.html",
         "blobSha": "24dea9c95112fe83073e58ef4cb14d7eb5de9928",
-        "chapter": "Chapter 12 — The Somatic Psychology Stack",
+        "chapter": "Chapter 12, The Somatic Psychology Stack",
         "heading": "XIV · Devotion and Right Action",
         "htmlByteOffset": 2034614,
         "sourceVersionLabel": "not declared in artifact"
@@ -4994,15 +4994,15 @@
       "nm": "Play and Creative Delight",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": "PROVISIONAL — The behavioral domain concerned with exploration, experimentation, spontaneous creativity, humor, and the intrinsic pleasure of participation.",
-      "body": "SOURCE-EXTRACTED SUMMARY — Clear expression: the generative state of pure engagement. Wonder. Creativity for its own sake. Not the absence of seriousness, the intelligence serious people miss. Always able to find what is alive in something. Distorted expression: avoidance through play, irresponsibility, lightness that refuses depth. Source-listed cultural templates: Krishna, Dionysus, Baldur.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
+      "def": "PROVISIONAL, The behavioral domain concerned with exploration, experimentation, spontaneous creativity, humor, and the intrinsic pleasure of participation.",
+      "body": "SOURCE-EXTRACTED SUMMARY, Clear expression: the generative state of pure engagement. Wonder. Creativity for its own sake. Not the absence of seriousness, the intelligence serious people miss. Always able to find what is alive in something. Distorted expression: avoidance through play, irresponsibility, lightness that refuses depth. Source-listed cultural templates: Krishna, Dionysus, Baldur.. The source artifact's version label is not declared; this is not silently treated as MOB_Complete_v341.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Play and Creative Delight",
         "fam": "deep_psychological.behavioral_domains",
-        "def": "PROVISIONAL — The behavioral domain concerned with exploration, experimentation, spontaneous creativity, humor, and the intrinsic pleasure of participation.",
-        "body": "PROVISIONAL — Coherent expression permits curiosity and invention while staying aware of context, consent, and consequences. Distortion may appear as compulsive distraction, avoidance of responsibility, mockery that degrades others, or suppressing play until all outcomes are guaranteed. These are proposed operational distinctions, not source-verified ATÜNED claims.",
+        "def": "PROVISIONAL, The behavioral domain concerned with exploration, experimentation, spontaneous creativity, humor, and the intrinsic pleasure of participation.",
+        "body": "PROVISIONAL, Coherent expression permits curiosity and invention while staying aware of context, consent, and consequences. Distortion may appear as compulsive distraction, avoidance of responsibility, mockery that degrades others, or suppressing play until all outcomes are guaranteed. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -5115,7 +5115,7 @@
         "repository": "rebootos-sourcce/MOB-Manuscript",
         "path": "index.html",
         "blobSha": "24dea9c95112fe83073e58ef4cb14d7eb5de9928",
-        "chapter": "Chapter 12 — The Somatic Psychology Stack",
+        "chapter": "Chapter 12, The Somatic Psychology Stack",
         "heading": "XV · Play and Creative Delight",
         "htmlByteOffset": 2035088,
         "sourceVersionLabel": "not declared in artifact"
@@ -10350,7 +10350,7 @@
             "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
           ],
           "findings": [
-            "Independent depth research reviewed APA's Psychology of Consciousness journal scope, Raffone (2021), 'Grand Challenges in Consciousness Research Across Perception, Cognition, Self, and Emotion' (Frontiers in Psychology; PMCID PMC8660851), and Cohen & Sherman (2014), 'The Psychology of Change: Self-Affirmation and Social Psychological Intervention' (Annual Review of Psychology 65:333–371).",
+            "Independent depth research reviewed APA's Psychology of Consciousness journal scope, Raffone (2021), 'Grand Challenges in Consciousness Research Across Perception, Cognition, Self, and Emotion' (Frontiers in Psychology; PMCID PMC8660851), and Cohen & Sherman (2014), 'The Psychology of Change: Self-Affirmation and Social Psychological Intervention' (Annual Review of Psychology 65:333-371).",
             "These sources support consciousness as a broad, multidimensional research field and self-affirmation as a values-based intervention concept. They do not independently validate ATÜNED's eight domain labels, the exact source wording, or a specific affirmation-to-domain mapping. This limitation is a finding, not a reason to invent an assignment."
           ]
         },
@@ -10406,14 +10406,14 @@
       "seat": null,
       "fam": "conscious_domains",
       "def": "Awareness aligned with Source; pattern, truth, and coherence across time, energy, and matter. Not a chakra zone, but the unified field containing all zones; the state from which the other seven emerge and to which they return.",
-      "body": "SOURCE-EXTRACTED SUMMARY — Awareness aligned with Source; pattern, truth, and coherence across time, energy, and matter. Not a chakra zone, but the unified field containing all zones; the state from which the other seven emerge and to which they return. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
+      "body": "SOURCE-EXTRACTED SUMMARY, Awareness aligned with Source; pattern, truth, and coherence across time, energy, and matter. Not a chakra zone, but the unified field containing all zones; the state from which the other seven emerge and to which they return. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
       "links": [],
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "Empyrean Consciousness",
         "fam": "conscious_domains",
         "def": "Awareness aligned with Source; pattern, truth, and coherence across time, energy, and matter. Not a chakra zone, but the unified field containing all zones; the state from which the other seven emerge and to which they return.",
-        "body": "SOURCE-EXTRACTED SUMMARY — Awareness aligned with Source; pattern, truth, and coherence across time, energy, and matter. Not a chakra zone, but the unified field containing all zones; the state from which the other seven emerge and to which they return. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
+        "body": "SOURCE-EXTRACTED SUMMARY, Awareness aligned with Source; pattern, truth, and coherence across time, energy, and matter. Not a chakra zone, but the unified field containing all zones; the state from which the other seven emerge and to which they return. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
         "affirmation": "No separate chakra affirmation specified; Empyrean Consciousness is described as the unified field containing all seven.",
         "links": [],
         "sourceRefs": [
@@ -10519,7 +10519,7 @@
         "sourceRelationshipCount": 0,
         "note": "Affirmation-to-domain mapping and canonical approval remain open; preserve source text separately from assignment. Empty links array is intentional and must not be counted as graph closure."
       },
-      "affirmationAssignmentStatus": "SOURCE-BACKED ABSENCE — no separate chakra affirmation is specified for Empyrean Consciousness.",
+      "affirmationAssignmentStatus": "SOURCE-BACKED ABSENCE, no separate chakra affirmation is specified for Empyrean Consciousness.",
       "affirmationSource": {
         "source": "MOB_Complete_v341.html",
         "section": "Chapter 32, The Seven Affirmations",
@@ -10607,7 +10607,7 @@
             "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
           ],
           "findings": [
-            "Independent depth research reviewed APA's Psychology of Consciousness journal scope, Raffone (2021), 'Grand Challenges in Consciousness Research Across Perception, Cognition, Self, and Emotion' (Frontiers in Psychology; PMCID PMC8660851), and Cohen & Sherman (2014), 'The Psychology of Change: Self-Affirmation and Social Psychological Intervention' (Annual Review of Psychology 65:333–371).",
+            "Independent depth research reviewed APA's Psychology of Consciousness journal scope, Raffone (2021), 'Grand Challenges in Consciousness Research Across Perception, Cognition, Self, and Emotion' (Frontiers in Psychology; PMCID PMC8660851), and Cohen & Sherman (2014), 'The Psychology of Change: Self-Affirmation and Social Psychological Intervention' (Annual Review of Psychology 65:333-371).",
             "These sources support consciousness as a broad, multidimensional research field and self-affirmation as a values-based intervention concept. They do not independently validate ATÜNED's eight domain labels, the exact source wording, or a specific affirmation-to-domain mapping. This limitation is a finding, not a reason to invent an assignment."
           ]
         },
@@ -10664,14 +10664,14 @@
       "seat": null,
       "fam": "conscious_domains",
       "def": "Honoring the word one gives to oneself and others; the crown as a two-way interface receiving from Source without distortion.",
-      "body": "SOURCE-EXTRACTED SUMMARY — Honoring the word one gives to oneself and others; the crown as a two-way interface receiving from Source without distortion. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
+      "body": "SOURCE-EXTRACTED SUMMARY, Honoring the word one gives to oneself and others; the crown as a two-way interface receiving from Source without distortion. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
       "links": [],
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "Crown Consciousness",
         "fam": "conscious_domains",
         "def": "Honoring the word one gives to oneself and others; the crown as a two-way interface receiving from Source without distortion.",
-        "body": "SOURCE-EXTRACTED SUMMARY — Honoring the word one gives to oneself and others; the crown as a two-way interface receiving from Source without distortion. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
+        "body": "SOURCE-EXTRACTED SUMMARY, Honoring the word one gives to oneself and others; the crown as a two-way interface receiving from Source without distortion. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
         "affirmation": "I'm committed to my duty.",
         "links": [],
         "sourceRefs": [
@@ -10777,7 +10777,7 @@
         "sourceRelationshipCount": 0,
         "note": "Affirmation-to-domain mapping and canonical approval remain open; preserve source text separately from assignment. Empty links array is intentional and must not be counted as graph closure."
       },
-      "affirmationAssignmentStatus": "SOURCE TEXT PRESENT; DOMAIN ASSIGNMENT PROVISIONAL — current candidate follows chakra correspondence, not an explicit one-to-one source assignment.",
+      "affirmationAssignmentStatus": "SOURCE TEXT PRESENT; DOMAIN ASSIGNMENT PROVISIONAL, current candidate follows chakra correspondence, not an explicit one-to-one source assignment.",
       "affirmationSource": {
         "source": "MOB_Complete_v341.html",
         "section": "Chapter 32, The Seven Affirmations",
@@ -10865,7 +10865,7 @@
             "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
           ],
           "findings": [
-            "Independent depth research reviewed APA's Psychology of Consciousness journal scope, Raffone (2021), 'Grand Challenges in Consciousness Research Across Perception, Cognition, Self, and Emotion' (Frontiers in Psychology; PMCID PMC8660851), and Cohen & Sherman (2014), 'The Psychology of Change: Self-Affirmation and Social Psychological Intervention' (Annual Review of Psychology 65:333–371).",
+            "Independent depth research reviewed APA's Psychology of Consciousness journal scope, Raffone (2021), 'Grand Challenges in Consciousness Research Across Perception, Cognition, Self, and Emotion' (Frontiers in Psychology; PMCID PMC8660851), and Cohen & Sherman (2014), 'The Psychology of Change: Self-Affirmation and Social Psychological Intervention' (Annual Review of Psychology 65:333-371).",
             "These sources support consciousness as a broad, multidimensional research field and self-affirmation as a values-based intervention concept. They do not independently validate ATÜNED's eight domain labels, the exact source wording, or a specific affirmation-to-domain mapping. This limitation is a finding, not a reason to invent an assignment."
           ]
         },
@@ -10922,14 +10922,14 @@
       "seat": null,
       "fam": "conscious_domains",
       "def": "Conscious awareness in every moment; the recognition axis is open and behavior is no longer running automatically.",
-      "body": "SOURCE-EXTRACTED SUMMARY — Conscious awareness in every moment; the recognition axis is open and behavior is no longer running automatically. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
+      "body": "SOURCE-EXTRACTED SUMMARY, Conscious awareness in every moment; the recognition axis is open and behavior is no longer running automatically. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
       "links": [],
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "Perception Consciousness",
         "fam": "conscious_domains",
         "def": "Conscious awareness in every moment; the recognition axis is open and behavior is no longer running automatically.",
-        "body": "SOURCE-EXTRACTED SUMMARY — Conscious awareness in every moment; the recognition axis is open and behavior is no longer running automatically. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
+        "body": "SOURCE-EXTRACTED SUMMARY, Conscious awareness in every moment; the recognition axis is open and behavior is no longer running automatically. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
         "affirmation": "I'm always present.",
         "links": [],
         "sourceRefs": [
@@ -11035,7 +11035,7 @@
         "sourceRelationshipCount": 0,
         "note": "Affirmation-to-domain mapping and canonical approval remain open; preserve source text separately from assignment. Empty links array is intentional and must not be counted as graph closure."
       },
-      "affirmationAssignmentStatus": "SOURCE TEXT PRESENT; DOMAIN ASSIGNMENT PROVISIONAL — current candidate follows chakra correspondence, not an explicit one-to-one source assignment.",
+      "affirmationAssignmentStatus": "SOURCE TEXT PRESENT; DOMAIN ASSIGNMENT PROVISIONAL, current candidate follows chakra correspondence, not an explicit one-to-one source assignment.",
       "affirmationSource": {
         "source": "MOB_Complete_v341.html",
         "section": "Chapter 32, The Seven Affirmations",
@@ -11123,7 +11123,7 @@
             "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
           ],
           "findings": [
-            "Independent depth research reviewed APA's Psychology of Consciousness journal scope, Raffone (2021), 'Grand Challenges in Consciousness Research Across Perception, Cognition, Self, and Emotion' (Frontiers in Psychology; PMCID PMC8660851), and Cohen & Sherman (2014), 'The Psychology of Change: Self-Affirmation and Social Psychological Intervention' (Annual Review of Psychology 65:333–371).",
+            "Independent depth research reviewed APA's Psychology of Consciousness journal scope, Raffone (2021), 'Grand Challenges in Consciousness Research Across Perception, Cognition, Self, and Emotion' (Frontiers in Psychology; PMCID PMC8660851), and Cohen & Sherman (2014), 'The Psychology of Change: Self-Affirmation and Social Psychological Intervention' (Annual Review of Psychology 65:333-371).",
             "These sources support consciousness as a broad, multidimensional research field and self-affirmation as a values-based intervention concept. They do not independently validate ATÜNED's eight domain labels, the exact source wording, or a specific affirmation-to-domain mapping. This limitation is a finding, not a reason to invent an assignment."
           ]
         },
@@ -11180,14 +11180,14 @@
       "seat": null,
       "fam": "conscious_domains",
       "def": "Absolute truth in speech, perception, and behavior; truth integrity defended automatically.",
-      "body": "SOURCE-EXTRACTED SUMMARY — Absolute truth in speech, perception, and behavior; truth integrity defended automatically. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
+      "body": "SOURCE-EXTRACTED SUMMARY, Absolute truth in speech, perception, and behavior; truth integrity defended automatically. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
       "links": [],
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "Truth Consciousness",
         "fam": "conscious_domains",
         "def": "Absolute truth in speech, perception, and behavior; truth integrity defended automatically.",
-        "body": "SOURCE-EXTRACTED SUMMARY — Absolute truth in speech, perception, and behavior; truth integrity defended automatically. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
+        "body": "SOURCE-EXTRACTED SUMMARY, Absolute truth in speech, perception, and behavior; truth integrity defended automatically. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
         "affirmation": "I speak absolute truth.",
         "links": [],
         "sourceRefs": [
@@ -11293,7 +11293,7 @@
         "sourceRelationshipCount": 0,
         "note": "Affirmation-to-domain mapping and canonical approval remain open; preserve source text separately from assignment. Empty links array is intentional and must not be counted as graph closure."
       },
-      "affirmationAssignmentStatus": "SOURCE TEXT PRESENT; DOMAIN ASSIGNMENT PROVISIONAL — current candidate follows chakra correspondence, not an explicit one-to-one source assignment.",
+      "affirmationAssignmentStatus": "SOURCE TEXT PRESENT; DOMAIN ASSIGNMENT PROVISIONAL, current candidate follows chakra correspondence, not an explicit one-to-one source assignment.",
       "affirmationSource": {
         "source": "MOB_Complete_v341.html",
         "section": "Chapter 32, The Seven Affirmations",
@@ -11381,7 +11381,7 @@
             "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
           ],
           "findings": [
-            "Independent depth research reviewed APA's Psychology of Consciousness journal scope, Raffone (2021), 'Grand Challenges in Consciousness Research Across Perception, Cognition, Self, and Emotion' (Frontiers in Psychology; PMCID PMC8660851), and Cohen & Sherman (2014), 'The Psychology of Change: Self-Affirmation and Social Psychological Intervention' (Annual Review of Psychology 65:333–371).",
+            "Independent depth research reviewed APA's Psychology of Consciousness journal scope, Raffone (2021), 'Grand Challenges in Consciousness Research Across Perception, Cognition, Self, and Emotion' (Frontiers in Psychology; PMCID PMC8660851), and Cohen & Sherman (2014), 'The Psychology of Change: Self-Affirmation and Social Psychological Intervention' (Annual Review of Psychology 65:333-371).",
             "These sources support consciousness as a broad, multidimensional research field and self-affirmation as a values-based intervention concept. They do not independently validate ATÜNED's eight domain labels, the exact source wording, or a specific affirmation-to-domain mapping. This limitation is a finding, not a reason to invent an assignment."
           ]
         },
@@ -11438,14 +11438,14 @@
       "seat": null,
       "fam": "conscious_domains",
       "def": "Equal compassion toward self and others; a stable perceptual state that cannot be contracted by other people's broadcasts.",
-      "body": "SOURCE-EXTRACTED SUMMARY — Equal compassion toward self and others; a stable perceptual state that cannot be contracted by other people's broadcasts. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
+      "body": "SOURCE-EXTRACTED SUMMARY, Equal compassion toward self and others; a stable perceptual state that cannot be contracted by other people's broadcasts. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
       "links": [],
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "Heart Consciousness",
         "fam": "conscious_domains",
         "def": "Equal compassion toward self and others; a stable perceptual state that cannot be contracted by other people's broadcasts.",
-        "body": "SOURCE-EXTRACTED SUMMARY — Equal compassion toward self and others; a stable perceptual state that cannot be contracted by other people's broadcasts. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
+        "body": "SOURCE-EXTRACTED SUMMARY, Equal compassion toward self and others; a stable perceptual state that cannot be contracted by other people's broadcasts. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
         "affirmation": "I show equal compassion towards self and other.",
         "links": [],
         "sourceRefs": [
@@ -11551,7 +11551,7 @@
         "sourceRelationshipCount": 0,
         "note": "Affirmation-to-domain mapping and canonical approval remain open; preserve source text separately from assignment. Empty links array is intentional and must not be counted as graph closure."
       },
-      "affirmationAssignmentStatus": "SOURCE TEXT PRESENT; DOMAIN ASSIGNMENT PROVISIONAL — current candidate follows chakra correspondence, not an explicit one-to-one source assignment.",
+      "affirmationAssignmentStatus": "SOURCE TEXT PRESENT; DOMAIN ASSIGNMENT PROVISIONAL, current candidate follows chakra correspondence, not an explicit one-to-one source assignment.",
       "affirmationSource": {
         "source": "MOB_Complete_v341.html",
         "section": "Chapter 32, The Seven Affirmations",
@@ -11639,7 +11639,7 @@
             "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
           ],
           "findings": [
-            "Independent depth research reviewed APA's Psychology of Consciousness journal scope, Raffone (2021), 'Grand Challenges in Consciousness Research Across Perception, Cognition, Self, and Emotion' (Frontiers in Psychology; PMCID PMC8660851), and Cohen & Sherman (2014), 'The Psychology of Change: Self-Affirmation and Social Psychological Intervention' (Annual Review of Psychology 65:333–371).",
+            "Independent depth research reviewed APA's Psychology of Consciousness journal scope, Raffone (2021), 'Grand Challenges in Consciousness Research Across Perception, Cognition, Self, and Emotion' (Frontiers in Psychology; PMCID PMC8660851), and Cohen & Sherman (2014), 'The Psychology of Change: Self-Affirmation and Social Psychological Intervention' (Annual Review of Psychology 65:333-371).",
             "These sources support consciousness as a broad, multidimensional research field and self-affirmation as a values-based intervention concept. They do not independently validate ATÜNED's eight domain labels, the exact source wording, or a specific affirmation-to-domain mapping. This limitation is a finding, not a reason to invent an assignment."
           ]
         },
@@ -11696,14 +11696,14 @@
       "seat": null,
       "fam": "conscious_domains",
       "def": "Embodiment of worth and desire fulfillment; creativity flowing and desires recognized and honored.",
-      "body": "SOURCE-EXTRACTED SUMMARY — Embodiment of worth and desire fulfillment; creativity flowing and desires recognized and honored. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
+      "body": "SOURCE-EXTRACTED SUMMARY, Embodiment of worth and desire fulfillment; creativity flowing and desires recognized and honored. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
       "links": [],
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "Value Consciousness",
         "fam": "conscious_domains",
         "def": "Embodiment of worth and desire fulfillment; creativity flowing and desires recognized and honored.",
-        "body": "SOURCE-EXTRACTED SUMMARY — Embodiment of worth and desire fulfillment; creativity flowing and desires recognized and honored. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
+        "body": "SOURCE-EXTRACTED SUMMARY, Embodiment of worth and desire fulfillment; creativity flowing and desires recognized and honored. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
         "affirmation": "I am creatively fulfilled in my purpose.",
         "links": [],
         "sourceRefs": [
@@ -11809,7 +11809,7 @@
         "sourceRelationshipCount": 0,
         "note": "Affirmation-to-domain mapping and canonical approval remain open; preserve source text separately from assignment. Empty links array is intentional and must not be counted as graph closure."
       },
-      "affirmationAssignmentStatus": "SOURCE TEXT PRESENT; DOMAIN ASSIGNMENT PROVISIONAL — current candidate follows chakra correspondence, not an explicit one-to-one source assignment.",
+      "affirmationAssignmentStatus": "SOURCE TEXT PRESENT; DOMAIN ASSIGNMENT PROVISIONAL, current candidate follows chakra correspondence, not an explicit one-to-one source assignment.",
       "affirmationSource": {
         "source": "MOB_Complete_v341.html",
         "section": "Chapter 32, The Seven Affirmations",
@@ -11897,7 +11897,7 @@
             "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
           ],
           "findings": [
-            "Independent depth research reviewed APA's Psychology of Consciousness journal scope, Raffone (2021), 'Grand Challenges in Consciousness Research Across Perception, Cognition, Self, and Emotion' (Frontiers in Psychology; PMCID PMC8660851), and Cohen & Sherman (2014), 'The Psychology of Change: Self-Affirmation and Social Psychological Intervention' (Annual Review of Psychology 65:333–371).",
+            "Independent depth research reviewed APA's Psychology of Consciousness journal scope, Raffone (2021), 'Grand Challenges in Consciousness Research Across Perception, Cognition, Self, and Emotion' (Frontiers in Psychology; PMCID PMC8660851), and Cohen & Sherman (2014), 'The Psychology of Change: Self-Affirmation and Social Psychological Intervention' (Annual Review of Psychology 65:333-371).",
             "These sources support consciousness as a broad, multidimensional research field and self-affirmation as a values-based intervention concept. They do not independently validate ATÜNED's eight domain labels, the exact source wording, or a specific affirmation-to-domain mapping. This limitation is a finding, not a reason to invent an assignment."
           ]
         },
@@ -11954,14 +11954,14 @@
       "seat": null,
       "fam": "conscious_domains",
       "def": "Sovereignty, courage, leadership, and responsibility for one's own reality; power that does not need to dominate.",
-      "body": "SOURCE-EXTRACTED SUMMARY — Sovereignty, courage, leadership, and responsibility for one's own reality; power that does not need to dominate. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
+      "body": "SOURCE-EXTRACTED SUMMARY, Sovereignty, courage, leadership, and responsibility for one's own reality; power that does not need to dominate. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
       "links": [],
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "Royal Consciousness",
         "fam": "conscious_domains",
         "def": "Sovereignty, courage, leadership, and responsibility for one's own reality; power that does not need to dominate.",
-        "body": "SOURCE-EXTRACTED SUMMARY — Sovereignty, courage, leadership, and responsibility for one's own reality; power that does not need to dominate. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
+        "body": "SOURCE-EXTRACTED SUMMARY, Sovereignty, courage, leadership, and responsibility for one's own reality; power that does not need to dominate. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
         "affirmation": "I stand fully committed in my power, disciplined and focused.",
         "links": [],
         "sourceRefs": [
@@ -12067,7 +12067,7 @@
         "sourceRelationshipCount": 0,
         "note": "Affirmation-to-domain mapping and canonical approval remain open; preserve source text separately from assignment. Empty links array is intentional and must not be counted as graph closure."
       },
-      "affirmationAssignmentStatus": "SOURCE TEXT PRESENT; DOMAIN ASSIGNMENT PROVISIONAL — current candidate follows chakra correspondence, not an explicit one-to-one source assignment.",
+      "affirmationAssignmentStatus": "SOURCE TEXT PRESENT; DOMAIN ASSIGNMENT PROVISIONAL, current candidate follows chakra correspondence, not an explicit one-to-one source assignment.",
       "affirmationSource": {
         "source": "MOB_Complete_v341.html",
         "section": "Chapter 32, The Seven Affirmations",
@@ -12155,7 +12155,7 @@
             "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115137"
           ],
           "findings": [
-            "Independent depth research reviewed APA's Psychology of Consciousness journal scope, Raffone (2021), 'Grand Challenges in Consciousness Research Across Perception, Cognition, Self, and Emotion' (Frontiers in Psychology; PMCID PMC8660851), and Cohen & Sherman (2014), 'The Psychology of Change: Self-Affirmation and Social Psychological Intervention' (Annual Review of Psychology 65:333–371).",
+            "Independent depth research reviewed APA's Psychology of Consciousness journal scope, Raffone (2021), 'Grand Challenges in Consciousness Research Across Perception, Cognition, Self, and Emotion' (Frontiers in Psychology; PMCID PMC8660851), and Cohen & Sherman (2014), 'The Psychology of Change: Self-Affirmation and Social Psychological Intervention' (Annual Review of Psychology 65:333-371).",
             "These sources support consciousness as a broad, multidimensional research field and self-affirmation as a values-based intervention concept. They do not independently validate ATÜNED's eight domain labels, the exact source wording, or a specific affirmation-to-domain mapping. This limitation is a finding, not a reason to invent an assignment."
           ]
         },
@@ -12212,14 +12212,14 @@
       "seat": null,
       "fam": "conscious_domains",
       "def": "Freedom to create without resistance; survival patterns no longer consume creative output.",
-      "body": "SOURCE-EXTRACTED SUMMARY — Freedom to create without resistance; survival patterns no longer consume creative output. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
+      "body": "SOURCE-EXTRACTED SUMMARY, Freedom to create without resistance; survival patterns no longer consume creative output. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
       "links": [],
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "Creative Consciousness",
         "fam": "conscious_domains",
         "def": "Freedom to create without resistance; survival patterns no longer consume creative output.",
-        "body": "SOURCE-EXTRACTED SUMMARY — Freedom to create without resistance; survival patterns no longer consume creative output. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
+        "body": "SOURCE-EXTRACTED SUMMARY, Freedom to create without resistance; survival patterns no longer consume creative output. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
         "affirmation": "I show courage over fear.",
         "links": [],
         "sourceRefs": [
@@ -12325,7 +12325,7 @@
         "sourceRelationshipCount": 0,
         "note": "Affirmation-to-domain mapping and canonical approval remain open; preserve source text separately from assignment. Empty links array is intentional and must not be counted as graph closure."
       },
-      "affirmationAssignmentStatus": "SOURCE TEXT PRESENT; DOMAIN ASSIGNMENT PROVISIONAL — current candidate follows chakra correspondence, not an explicit one-to-one source assignment.",
+      "affirmationAssignmentStatus": "SOURCE TEXT PRESENT; DOMAIN ASSIGNMENT PROVISIONAL, current candidate follows chakra correspondence, not an explicit one-to-one source assignment.",
       "affirmationSource": {
         "source": "MOB_Complete_v341.html",
         "section": "Chapter 32, The Seven Affirmations",
@@ -21389,9 +21389,9 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_01",
       "seat": null,
       "fam": "visualization slot only",
-      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A reserved position in the Blueprint Domains visualization. It preserves layout capacity while the canonical domain roster and mapping remain unresolved.",
-      "body": "PROVISIONAL — A reserved position in the Blueprint Domains visualization. It preserves layout capacity while the canonical domain roster and mapping remain unresolved. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
-      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A reserved position in the Blueprint Domains visualization. It preserves layout capacity while the canonical domain roster and mapping remain unresolved.",
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A reserved position in the Blueprint Domains visualization. It preserves layout capacity while the canonical domain roster and mapping remain unresolved.",
+      "body": "PROVISIONAL, A reserved position in the Blueprint Domains visualization. It preserves layout capacity while the canonical domain roster and mapping remain unresolved. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER, A reserved position in the Blueprint Domains visualization. It preserves layout capacity while the canonical domain roster and mapping remain unresolved.",
       "essence": "A reserved position in the Blueprint Domains visualization. It preserves layout capacity while the canonical domain roster and mapping remain unresolved.",
       "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
@@ -21472,8 +21472,8 @@
             ]
           }
         ],
-        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A reserved position in the Blueprint Domains visualization. It preserves layout capacity while the canonical domain roster and mapping remain unresolved.",
-        "body": "PROVISIONAL — A reserved position in the Blueprint Domains visualization. It preserves layout capacity while the canonical domain roster and mapping remain unresolved. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A reserved position in the Blueprint Domains visualization. It preserves layout capacity while the canonical domain roster and mapping remain unresolved.",
+        "body": "PROVISIONAL, A reserved position in the Blueprint Domains visualization. It preserves layout capacity while the canonical domain roster and mapping remain unresolved. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -21588,9 +21588,9 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_02",
       "seat": null,
       "fam": "visualization slot only",
-      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A non-canonical visualization placeholder used to maintain stable indexing. It must not be interpreted as a named psychological construct.",
-      "body": "PROVISIONAL — A non-canonical visualization placeholder used to maintain stable indexing. It must not be interpreted as a named psychological construct. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
-      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A non-canonical visualization placeholder used to maintain stable indexing. It must not be interpreted as a named psychological construct.",
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A non-canonical visualization placeholder used to maintain stable indexing. It must not be interpreted as a named psychological construct.",
+      "body": "PROVISIONAL, A non-canonical visualization placeholder used to maintain stable indexing. It must not be interpreted as a named psychological construct. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER, A non-canonical visualization placeholder used to maintain stable indexing. It must not be interpreted as a named psychological construct.",
       "essence": "A non-canonical visualization placeholder used to maintain stable indexing. It must not be interpreted as a named psychological construct.",
       "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
@@ -21671,8 +21671,8 @@
             ]
           }
         ],
-        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A non-canonical visualization placeholder used to maintain stable indexing. It must not be interpreted as a named psychological construct.",
-        "body": "PROVISIONAL — A non-canonical visualization placeholder used to maintain stable indexing. It must not be interpreted as a named psychological construct. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A non-canonical visualization placeholder used to maintain stable indexing. It must not be interpreted as a named psychological construct.",
+        "body": "PROVISIONAL, A non-canonical visualization placeholder used to maintain stable indexing. It must not be interpreted as a named psychological construct. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -21787,9 +21787,9 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_03",
       "seat": null,
       "fam": "visualization slot only",
-      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A placeholder for a future source-backed domain-to-blueprint mapping. No parent, child, or semantic equivalence is implied.",
-      "body": "PROVISIONAL — A placeholder for a future source-backed domain-to-blueprint mapping. No parent, child, or semantic equivalence is implied. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
-      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A placeholder for a future source-backed domain-to-blueprint mapping. No parent, child, or semantic equivalence is implied.",
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A placeholder for a future source-backed domain-to-blueprint mapping. No parent, child, or semantic equivalence is implied.",
+      "body": "PROVISIONAL, A placeholder for a future source-backed domain-to-blueprint mapping. No parent, child, or semantic equivalence is implied. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER, A placeholder for a future source-backed domain-to-blueprint mapping. No parent, child, or semantic equivalence is implied.",
       "essence": "A placeholder for a future source-backed domain-to-blueprint mapping. No parent, child, or semantic equivalence is implied.",
       "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
@@ -21870,8 +21870,8 @@
             ]
           }
         ],
-        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A placeholder for a future source-backed domain-to-blueprint mapping. No parent, child, or semantic equivalence is implied.",
-        "body": "PROVISIONAL — A placeholder for a future source-backed domain-to-blueprint mapping. No parent, child, or semantic equivalence is implied. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A placeholder for a future source-backed domain-to-blueprint mapping. No parent, child, or semantic equivalence is implied.",
+        "body": "PROVISIONAL, A placeholder for a future source-backed domain-to-blueprint mapping. No parent, child, or semantic equivalence is implied. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -21986,9 +21986,9 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_04",
       "seat": null,
       "fam": "visualization slot only",
-      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A visualization-only position in the Blueprint layer. Its existence establishes display capacity, not the number of canonical domains.",
-      "body": "PROVISIONAL — A visualization-only position in the Blueprint layer. Its existence establishes display capacity, not the number of canonical domains. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
-      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A visualization-only position in the Blueprint layer. Its existence establishes display capacity, not the number of canonical domains.",
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A visualization-only position in the Blueprint layer. Its existence establishes display capacity, not the number of canonical domains.",
+      "body": "PROVISIONAL, A visualization-only position in the Blueprint layer. Its existence establishes display capacity, not the number of canonical domains. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER, A visualization-only position in the Blueprint layer. Its existence establishes display capacity, not the number of canonical domains.",
       "essence": "A visualization-only position in the Blueprint layer. Its existence establishes display capacity, not the number of canonical domains.",
       "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
@@ -22069,8 +22069,8 @@
             ]
           }
         ],
-        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A visualization-only position in the Blueprint layer. Its existence establishes display capacity, not the number of canonical domains.",
-        "body": "PROVISIONAL — A visualization-only position in the Blueprint layer. Its existence establishes display capacity, not the number of canonical domains. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A visualization-only position in the Blueprint layer. Its existence establishes display capacity, not the number of canonical domains.",
+        "body": "PROVISIONAL, A visualization-only position in the Blueprint layer. Its existence establishes display capacity, not the number of canonical domains. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -22185,9 +22185,9 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_05",
       "seat": null,
       "fam": "visualization slot only",
-      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A stable slot reserved for later source reconciliation and owner review. Canonical naming is intentionally withheld pending evidence.",
-      "body": "PROVISIONAL — A stable slot reserved for later source reconciliation and owner review. Canonical naming is intentionally withheld pending evidence. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
-      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A stable slot reserved for later source reconciliation and owner review. Canonical naming is intentionally withheld pending evidence.",
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A stable slot reserved for later source reconciliation and owner review. Canonical naming is intentionally withheld pending evidence.",
+      "body": "PROVISIONAL, A stable slot reserved for later source reconciliation and owner review. Canonical naming is intentionally withheld pending evidence. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER, A stable slot reserved for later source reconciliation and owner review. Canonical naming is intentionally withheld pending evidence.",
       "essence": "A stable slot reserved for later source reconciliation and owner review. Canonical naming is intentionally withheld pending evidence.",
       "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
@@ -22268,8 +22268,8 @@
             ]
           }
         ],
-        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A stable slot reserved for later source reconciliation and owner review. Canonical naming is intentionally withheld pending evidence.",
-        "body": "PROVISIONAL — A stable slot reserved for later source reconciliation and owner review. Canonical naming is intentionally withheld pending evidence. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A stable slot reserved for later source reconciliation and owner review. Canonical naming is intentionally withheld pending evidence.",
+        "body": "PROVISIONAL, A stable slot reserved for later source reconciliation and owner review. Canonical naming is intentionally withheld pending evidence. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -22384,9 +22384,9 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_06",
       "seat": null,
       "fam": "visualization slot only",
-      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A placeholder for a future crosswalk row. Any eventual mapping must cite source evidence and retain uncertainty until adjudicated.",
-      "body": "PROVISIONAL — A placeholder for a future crosswalk row. Any eventual mapping must cite source evidence and retain uncertainty until adjudicated. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
-      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A placeholder for a future crosswalk row. Any eventual mapping must cite source evidence and retain uncertainty until adjudicated.",
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A placeholder for a future crosswalk row. Any eventual mapping must cite source evidence and retain uncertainty until adjudicated.",
+      "body": "PROVISIONAL, A placeholder for a future crosswalk row. Any eventual mapping must cite source evidence and retain uncertainty until adjudicated. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER, A placeholder for a future crosswalk row. Any eventual mapping must cite source evidence and retain uncertainty until adjudicated.",
       "essence": "A placeholder for a future crosswalk row. Any eventual mapping must cite source evidence and retain uncertainty until adjudicated.",
       "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
@@ -22467,8 +22467,8 @@
             ]
           }
         ],
-        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A placeholder for a future crosswalk row. Any eventual mapping must cite source evidence and retain uncertainty until adjudicated.",
-        "body": "PROVISIONAL — A placeholder for a future crosswalk row. Any eventual mapping must cite source evidence and retain uncertainty until adjudicated. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A placeholder for a future crosswalk row. Any eventual mapping must cite source evidence and retain uncertainty until adjudicated.",
+        "body": "PROVISIONAL, A placeholder for a future crosswalk row. Any eventual mapping must cite source evidence and retain uncertainty until adjudicated. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -22583,9 +22583,9 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_07",
       "seat": null,
       "fam": "visualization slot only",
-      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A stable sequence position for visualization and testing. The sequence number is not a canonical domain identifier.",
-      "body": "PROVISIONAL — A stable sequence position for visualization and testing. The sequence number is not a canonical domain identifier. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
-      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A stable sequence position for visualization and testing. The sequence number is not a canonical domain identifier.",
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A stable sequence position for visualization and testing. The sequence number is not a canonical domain identifier.",
+      "body": "PROVISIONAL, A stable sequence position for visualization and testing. The sequence number is not a canonical domain identifier. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER, A stable sequence position for visualization and testing. The sequence number is not a canonical domain identifier.",
       "essence": "A stable sequence position for visualization and testing. The sequence number is not a canonical domain identifier.",
       "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
@@ -22666,8 +22666,8 @@
             ]
           }
         ],
-        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A stable sequence position for visualization and testing. The sequence number is not a canonical domain identifier.",
-        "body": "PROVISIONAL — A stable sequence position for visualization and testing. The sequence number is not a canonical domain identifier. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A stable sequence position for visualization and testing. The sequence number is not a canonical domain identifier.",
+        "body": "PROVISIONAL, A stable sequence position for visualization and testing. The sequence number is not a canonical domain identifier. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -22782,9 +22782,9 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_08",
       "seat": null,
       "fam": "visualization slot only",
-      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A coverage placeholder to prevent a visual item from being omitted during inventory. It does not assert a separate domain exists.",
-      "body": "PROVISIONAL — A coverage placeholder to prevent a visual item from being omitted during inventory. It does not assert a separate domain exists. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
-      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A coverage placeholder to prevent a visual item from being omitted during inventory. It does not assert a separate domain exists.",
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A coverage placeholder to prevent a visual item from being omitted during inventory. It does not assert a separate domain exists.",
+      "body": "PROVISIONAL, A coverage placeholder to prevent a visual item from being omitted during inventory. It does not assert a separate domain exists. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER, A coverage placeholder to prevent a visual item from being omitted during inventory. It does not assert a separate domain exists.",
       "essence": "A coverage placeholder to prevent a visual item from being omitted during inventory. It does not assert a separate domain exists.",
       "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
@@ -22865,8 +22865,8 @@
             ]
           }
         ],
-        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A coverage placeholder to prevent a visual item from being omitted during inventory. It does not assert a separate domain exists.",
-        "body": "PROVISIONAL — A coverage placeholder to prevent a visual item from being omitted during inventory. It does not assert a separate domain exists. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A coverage placeholder to prevent a visual item from being omitted during inventory. It does not assert a separate domain exists.",
+        "body": "PROVISIONAL, A coverage placeholder to prevent a visual item from being omitted during inventory. It does not assert a separate domain exists. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -22981,9 +22981,9 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_09",
       "seat": null,
       "fam": "visualization slot only",
-      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A reserved position awaiting evidence linking a named source construct to the Blueprint layer.",
-      "body": "PROVISIONAL — A reserved position awaiting evidence linking a named source construct to the Blueprint layer. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
-      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A reserved position awaiting evidence linking a named source construct to the Blueprint layer.",
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A reserved position awaiting evidence linking a named source construct to the Blueprint layer.",
+      "body": "PROVISIONAL, A reserved position awaiting evidence linking a named source construct to the Blueprint layer. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER, A reserved position awaiting evidence linking a named source construct to the Blueprint layer.",
       "essence": "A reserved position awaiting evidence linking a named source construct to the Blueprint layer.",
       "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
@@ -23064,8 +23064,8 @@
             ]
           }
         ],
-        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A reserved position awaiting evidence linking a named source construct to the Blueprint layer.",
-        "body": "PROVISIONAL — A reserved position awaiting evidence linking a named source construct to the Blueprint layer. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A reserved position awaiting evidence linking a named source construct to the Blueprint layer.",
+        "body": "PROVISIONAL, A reserved position awaiting evidence linking a named source construct to the Blueprint layer. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -23180,9 +23180,9 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_10",
       "seat": null,
       "fam": "visualization slot only",
-      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A placeholder for a potential relationship to be researched. No relationship is asserted by this record.",
-      "body": "PROVISIONAL — A placeholder for a potential relationship to be researched. No relationship is asserted by this record. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
-      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A placeholder for a potential relationship to be researched. No relationship is asserted by this record.",
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A placeholder for a potential relationship to be researched. No relationship is asserted by this record.",
+      "body": "PROVISIONAL, A placeholder for a potential relationship to be researched. No relationship is asserted by this record. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER, A placeholder for a potential relationship to be researched. No relationship is asserted by this record.",
       "essence": "A placeholder for a potential relationship to be researched. No relationship is asserted by this record.",
       "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
@@ -23263,8 +23263,8 @@
             ]
           }
         ],
-        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A placeholder for a potential relationship to be researched. No relationship is asserted by this record.",
-        "body": "PROVISIONAL — A placeholder for a potential relationship to be researched. No relationship is asserted by this record. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A placeholder for a potential relationship to be researched. No relationship is asserted by this record.",
+        "body": "PROVISIONAL, A placeholder for a potential relationship to be researched. No relationship is asserted by this record. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -23379,9 +23379,9 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_11",
       "seat": null,
       "fam": "visualization slot only",
-      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A stable slot used to test that all visualization positions render and validate even before canonical mapping is known.",
-      "body": "PROVISIONAL — A stable slot used to test that all visualization positions render and validate even before canonical mapping is known. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
-      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A stable slot used to test that all visualization positions render and validate even before canonical mapping is known.",
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A stable slot used to test that all visualization positions render and validate even before canonical mapping is known.",
+      "body": "PROVISIONAL, A stable slot used to test that all visualization positions render and validate even before canonical mapping is known. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER, A stable slot used to test that all visualization positions render and validate even before canonical mapping is known.",
       "essence": "A stable slot used to test that all visualization positions render and validate even before canonical mapping is known.",
       "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
@@ -23462,8 +23462,8 @@
             ]
           }
         ],
-        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A stable slot used to test that all visualization positions render and validate even before canonical mapping is known.",
-        "body": "PROVISIONAL — A stable slot used to test that all visualization positions render and validate even before canonical mapping is known. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A stable slot used to test that all visualization positions render and validate even before canonical mapping is known.",
+        "body": "PROVISIONAL, A stable slot used to test that all visualization positions render and validate even before canonical mapping is known. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -23578,9 +23578,9 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_12",
       "seat": null,
       "fam": "visualization slot only",
-      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A placeholder for reconciling source versions and competing domain counts. It must remain non-canonical until a decision is recorded.",
-      "body": "PROVISIONAL — A placeholder for reconciling source versions and competing domain counts. It must remain non-canonical until a decision is recorded. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
-      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A placeholder for reconciling source versions and competing domain counts. It must remain non-canonical until a decision is recorded.",
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A placeholder for reconciling source versions and competing domain counts. It must remain non-canonical until a decision is recorded.",
+      "body": "PROVISIONAL, A placeholder for reconciling source versions and competing domain counts. It must remain non-canonical until a decision is recorded. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER, A placeholder for reconciling source versions and competing domain counts. It must remain non-canonical until a decision is recorded.",
       "essence": "A placeholder for reconciling source versions and competing domain counts. It must remain non-canonical until a decision is recorded.",
       "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
@@ -23661,8 +23661,8 @@
             ]
           }
         ],
-        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A placeholder for reconciling source versions and competing domain counts. It must remain non-canonical until a decision is recorded.",
-        "body": "PROVISIONAL — A placeholder for reconciling source versions and competing domain counts. It must remain non-canonical until a decision is recorded. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A placeholder for reconciling source versions and competing domain counts. It must remain non-canonical until a decision is recorded.",
+        "body": "PROVISIONAL, A placeholder for reconciling source versions and competing domain counts. It must remain non-canonical until a decision is recorded. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -23777,9 +23777,9 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_13",
       "seat": null,
       "fam": "visualization slot only",
-      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A reserved Blueprint visualization position for later integration. Runtime wiring is deferred until KPI 1 acceptance.",
-      "body": "PROVISIONAL — A reserved Blueprint visualization position for later integration. Runtime wiring is deferred until KPI 1 acceptance. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
-      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A reserved Blueprint visualization position for later integration. Runtime wiring is deferred until KPI 1 acceptance.",
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A reserved Blueprint visualization position for later integration. Runtime wiring is deferred until KPI 1 acceptance.",
+      "body": "PROVISIONAL, A reserved Blueprint visualization position for later integration. Runtime wiring is deferred until KPI 1 acceptance. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER, A reserved Blueprint visualization position for later integration. Runtime wiring is deferred until KPI 1 acceptance.",
       "essence": "A reserved Blueprint visualization position for later integration. Runtime wiring is deferred until KPI 1 acceptance.",
       "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
@@ -23860,8 +23860,8 @@
             ]
           }
         ],
-        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A reserved Blueprint visualization position for later integration. Runtime wiring is deferred until KPI 1 acceptance.",
-        "body": "PROVISIONAL — A reserved Blueprint visualization position for later integration. Runtime wiring is deferred until KPI 1 acceptance. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A reserved Blueprint visualization position for later integration. Runtime wiring is deferred until KPI 1 acceptance.",
+        "body": "PROVISIONAL, A reserved Blueprint visualization position for later integration. Runtime wiring is deferred until KPI 1 acceptance. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -23976,9 +23976,9 @@
       "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_14",
       "seat": null,
       "fam": "visualization slot only",
-      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A final inventory placeholder ensuring all fourteen declared visualization positions are represented without inventing domain names.",
-      "body": "PROVISIONAL — A final inventory placeholder ensuring all fourteen declared visualization positions are represented without inventing domain names. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
-      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER — A final inventory placeholder ensuring all fourteen declared visualization positions are represented without inventing domain names.",
+      "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A final inventory placeholder ensuring all fourteen declared visualization positions are represented without inventing domain names.",
+      "body": "PROVISIONAL, A final inventory placeholder ensuring all fourteen declared visualization positions are represented without inventing domain names. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence.",
+      "definition": "PROVISIONAL VISUALIZATION PLACEHOLDER, A final inventory placeholder ensuring all fourteen declared visualization positions are represented without inventing domain names.",
       "essence": "A final inventory placeholder ensuring all fourteen declared visualization positions are represented without inventing domain names.",
       "function": "Preserve a stable visualization position and make unresolved domain mapping visible without inventing canon.",
       "healthyExpression": [],
@@ -24059,8 +24059,8 @@
             ]
           }
         ],
-        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER — A final inventory placeholder ensuring all fourteen declared visualization positions are represented without inventing domain names.",
-        "body": "PROVISIONAL — A final inventory placeholder ensuring all fourteen declared visualization positions are represented without inventing domain names. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
+        "def": "PROVISIONAL VISUALIZATION PLACEHOLDER, A final inventory placeholder ensuring all fourteen declared visualization positions are represented without inventing domain names.",
+        "body": "PROVISIONAL, A final inventory placeholder ensuring all fourteen declared visualization positions are represented without inventing domain names. The slot exists to keep the visualization inventory complete while canonical names, definitions, and relationships are researched. It must not be presented as a canonical domain or linked to a psychological construct without evidence."
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -30567,7 +30567,7 @@
       "nm": "Pattern Consciousness",
       "canonicalName": "Pattern Consciousness",
       "displayName": "Pattern Consciousness",
-      "fam": "Related Consciousness Concepts — separate from the eight-domain roster",
+      "fam": "Related Consciousness Concepts, separate from the eight-domain roster",
       "layer": "Related Consciousness Concepts",
       "taxonomyVersion": "Current MOB-Manuscript artifact version unlabelled; separately referenced in v341 crosswalk",
       "def": "Seeing repeating cycles, internal and external, before they complete. At low levels: you see the pattern after it completes. At higher levels: you catch it mid-execution. At mastery: you feel it starting. The shadow becomes visible before it completes, not catching the behavior, catching the activation.",
@@ -30665,7 +30665,7 @@
       ],
       "template": {
         "nm": "Pattern Consciousness",
-        "fam": "Related Consciousness Concepts — separate from the eight-domain roster",
+        "fam": "Related Consciousness Concepts, separate from the eight-domain roster",
         "def": "Seeing repeating cycles, internal and external, before they complete. At low levels: you see the pattern after it completes. At higher levels: you catch it mid-execution. At mastery: you feel it starting. The shadow becomes visible before it completes, not catching the behavior, catching the activation.",
         "body": "SOURCE-DERIVED DESCRIPTION: Seeing repeating cycles, internal and external, before they complete. At low levels: you see the pattern after it completes. At higher levels: you catch it mid-execution. At mastery: you feel it starting. The shadow becomes visible before it completes, not catching the behavior, catching the activation. Source affirmation: I see the cycles in my life and know when to break or ride them.. The v341 crosswalk lists this as a separate related consciousness concept; do not merge it into the eight-domain roster without an explicit ruling.",
         "affirmation": "I see the cycles in my life and know when to break or ride them.",
@@ -30727,7 +30727,7 @@
       "nm": "Story Consciousness",
       "canonicalName": "Story Consciousness",
       "displayName": "Story Consciousness",
-      "fam": "Related Consciousness Concepts — separate from the eight-domain roster",
+      "fam": "Related Consciousness Concepts, separate from the eight-domain roster",
       "layer": "Related Consciousness Concepts",
       "taxonomyVersion": "Current MOB-Manuscript artifact version unlabelled; separately referenced in v341 crosswalk",
       "def": "Awareness of the arc of your own life as a mythic journey and your role inside it. Without story consciousness, events are random, unconnected, happening to a person. With it, the same events become chapters. The wound becomes the origin. The cleared state becomes the return. Story consciousness is not reframing pain into a lesson, it is the recognition that you are always in a story, and the story you tell determines what actions become available.",
@@ -30826,7 +30826,7 @@
       ],
       "template": {
         "nm": "Story Consciousness",
-        "fam": "Related Consciousness Concepts — separate from the eight-domain roster",
+        "fam": "Related Consciousness Concepts, separate from the eight-domain roster",
         "def": "Awareness of the arc of your own life as a mythic journey and your role inside it. Without story consciousness, events are random, unconnected, happening to a person. With it, the same events become chapters. The wound becomes the origin. The cleared state becomes the return. Story consciousness is not reframing pain into a lesson, it is the recognition that you are always in a story, and the story you tell determines what actions become available.",
         "body": "SOURCE-DERIVED DESCRIPTION: Awareness of the arc of your own life as a mythic journey and your role inside it. Without story consciousness, events are random, unconnected, happening to a person. With it, the same events become chapters. The wound becomes the origin. The cleared state becomes the return. Story consciousness is not reframing pain into a lesson, it is the recognition that you are always in a story, and the story you tell determines what actions become available. Source affirmation: I live and tell a story worth remembering.. The v341 crosswalk lists this as a separate related consciousness concept; do not merge it into the eight-domain roster without an explicit ruling.",
         "affirmation": "I live and tell a story worth remembering.",
@@ -30889,7 +30889,7 @@
       "nm": "Imperium Consciousness",
       "canonicalName": "Imperium Consciousness",
       "displayName": "Imperium Consciousness",
-      "fam": "Related Consciousness Concepts — separate from the eight-domain roster",
+      "fam": "Related Consciousness Concepts, separate from the eight-domain roster",
       "layer": "Related Consciousness Concepts",
       "taxonomyVersion": "Current MOB-Manuscript artifact version unlabelled; separately referenced in v341 crosswalk",
       "def": "The executive layer. The capacity that selects action across time, sequences decisions, and overrides impulse, not through willpower (a finite resource that depletes under somatic pressure) but through what becomes available when the soma is clear. Two failure modes: tyranny (rigid, over-control, cannot adapt) and fragmentation (impulsive, contradictory, inconsistent). Both are lower-layer problems presenting as upper-layer symptoms. Regulate the soma. The executive function stabilizes on its own.",
@@ -30988,7 +30988,7 @@
       ],
       "template": {
         "nm": "Imperium Consciousness",
-        "fam": "Related Consciousness Concepts — separate from the eight-domain roster",
+        "fam": "Related Consciousness Concepts, separate from the eight-domain roster",
         "def": "The executive layer. The capacity that selects action across time, sequences decisions, and overrides impulse, not through willpower (a finite resource that depletes under somatic pressure) but through what becomes available when the soma is clear. Two failure modes: tyranny (rigid, over-control, cannot adapt) and fragmentation (impulsive, contradictory, inconsistent). Both are lower-layer problems presenting as upper-layer symptoms. Regulate the soma. The executive function stabilizes on its own.",
         "body": "SOURCE-DERIVED DESCRIPTION: The executive layer. The capacity that selects action across time, sequences decisions, and overrides impulse, not through willpower (a finite resource that depletes under somatic pressure) but through what becomes available when the soma is clear. Two failure modes: tyranny (rigid, over-control, cannot adapt) and fragmentation (impulsive, contradictory, inconsistent). Both are lower-layer problems presenting as upper-layer symptoms. Regulate the soma. The executive function stabilizes on its own. Source affirmation: I act from clarity, not compulsion.. The v341 crosswalk lists this as a separate related consciousness concept; do not merge it into the eight-domain roster without an explicit ruling.",
         "affirmation": "I act from clarity, not compulsion.",
@@ -31233,7 +31233,7 @@
       "pass2Blocked": 0,
       "pass3Blocked": 0,
       "sourceComplete": 8,
-      "canonicalApproval": "OPEN — source text and three research passes are complete; seven affirmation-to-domain assignments remain provisional; Empyrean has no separate chakra affirmation.",
+      "canonicalApproval": "OPEN, source text and three research passes are complete; seven affirmation-to-domain assignments remain provisional; Empyrean has no separate chakra affirmation.",
       "affirmationTextSourceExtracted": 7,
       "affirmationAssignmentsCanonical": 0,
       "pass2Complete": 8,

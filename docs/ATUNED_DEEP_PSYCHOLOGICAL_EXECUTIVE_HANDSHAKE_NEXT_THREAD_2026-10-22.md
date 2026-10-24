@@ -1,13 +1,13 @@
-# ATÜNED Deep Psychological Layer — Executive Continuation Handshake
+# ATÜNED Deep Psychological Layer, Executive Continuation Handshake
 Date: 2026-10-22
-Status: CONTINUE EXECUTION — NOT CLOSED
+Status: CONTINUE EXECUTION, NOT CLOSED
 Audience: next AI / engineering thread
 Repository: https://github.com/rebootos-sourcce/MOB
 
 ## Mission
 Complete the deep-psychological registry and its valid integration into the existing ATÜNED Nerve-to-Super-Complex architecture. Every required layer must have a real record; every record must satisfy its template and research requirements; every required relationship must resolve; runtime paths must be tested in both directions; and all documentation paths/links must remain synchronized. Do not solve discrepancies by forcing counts to match or inventing canonical definitions.
 
-## Read first — mandatory order
+## Read first, mandatory order
 1. [Three-Pass Recursive Closure Strategy](ATUNED_DEEP_PSYCHOLOGICAL_THREE-PASS_RECURSIVE_CLOSURE_STRATEGY_2026-10-22.md)
 2. [Record-Format TDD](ATUNED_DEEP_PSYCHOLOGICAL_RECORD_FORMAT_TDD_v1.md)
 3. [Build Ledger and Link Register](ATUNED_DEEP_PSYCHOLOGICAL_BUILD_LEDGER_AND_LINK_REGISTER_2026-10-22.md)
@@ -25,7 +25,7 @@ If a path differs, search the current repository tree and update this handshake,
 ## Current factual baseline from prior audit (revalidate at current HEAD)
 - Registry was reported at 125 unique records.
 - 23 target records were identified as incomplete: 15 behavioral-domain records and eight Conscious Domain records.
-- v341 lists 19 native domains: Architect cluster—Knowledge, Justice, Imperium, Duty, Fate; Engine—Power, Creation, Dissolution, Sacrifice, Death; Weaver—Love, Communication, Healing, Provision, Play; Witness—Nature, Trickster, Mystery, Guardian.
+- v341 lists 19 native domains: Architect cluster, Knowledge, Justice, Imperium, Duty, Fate; Engine, Power, Creation, Dissolution, Sacrifice, Death; Weaver, Love, Communication, Healing, Provision, Play; Witness, Nature, Trickster, Mystery, Guardian.
 - v341 identifies eight Conscious Domain states and seven chakra-zone affirmations; the three additional concepts Pattern Consciousness, Story Consciousness, and Imperium Consciousness are separately discussed and must not be silently merged into the eight-state roster.
 - The source has an internal contradiction around “Architect (Rulership)” being separate from Power while Architect is not listed as a member in the displayed 19-label roster. This needs an explicit owner/source ruling.
 - Fifteen owner-stated behavioral labels do not have approved one-to-one mappings to the 19 native domains. Existing candidates are hypotheses only.
@@ -82,7 +82,7 @@ The project is not closed until every required record and edge is accounted for;
 This handshake is a continuation contract, not evidence of closure. Do not tell the user the item is off the plate until the acceptance matrix passes. A truthful checkpoint with exact blockers is better than a false completion claim.
 
 
-## Owner design update — behavioral energy and psychospiritual mask (2026-10-22)
+## Owner design update, behavioral energy and psychospiritual mask (2026-10-22)
 
 The TDD now captures the owner’s conceptual model. Canonical names and definitions are guiding posts; the target construct is the behavioral energy behind the label. A person may express degrees of many archetypal energies, with primary/secondary/tertiary dominance rather than mutually exclusive types.
 

@@ -1,4 +1,4 @@
-# Deep-Psychological Closure Checkpoint — 2026-10-22
+# Deep-Psychological Closure Checkpoint, 2026-10-22
 
 Status: **OPEN / NOT COMPLETE**  
 Repository: `rebootos-sourcce/MOB`  
@@ -44,7 +44,7 @@ Purpose: durable continuation point for the recursive record-first closure work.
 | Forward and backward graph tests | No end-to-end result available | **Not verified** |
 | TDD / handshake updated round by round | TDD and audit artifacts exist; this checkpoint records the current blocker set | In progress |
 
-## Required next actions — execute in order
+## Required next actions, execute in order
 
 1. Retrieve the complete current registry through a method that returns its actual content; count records, unique IDs, record kinds, templates, research-pass states, and link targets directly from that content. Reconcile the 107/125 discrepancy with commit/blob provenance.
 2. Fetch and inspect the full schema, template catalog, TDD, research audit, source register, layer dashboard, and executive handshake. Confirm which is the controlling current version and update all stale counts from a single measured snapshot.
@@ -66,10 +66,10 @@ Do not label this work complete until all required canonical records have stable
 This file is a checkpoint, not a completion claim. In this session, repository files were inspected through GitHub content access, but no Node runtime execution was available through the tools used here. The registry content retrieval returned empty content, so its current count could not be independently recomputed. Those are concrete blockers, not evidence that the missing work is complete.
 
 
-## Latest measured registry audit — 2026-10-22
+## Latest measured registry audit, 2026-10-22
 
 The full registry was retrieved through its Git blob SHA and parsed directly. The current verified denominator is **125 records**, not 107. Breakdown: 4 roots, 15 behavioral domains, 18 archetype candidates, 8 Conscious Domains, 12 cultural-figure/domain mappings, 18 archetype/domain mappings, 18 archetype/fetter/seat mappings, 14 blueprint visualization slots, and 18 canonical-domain candidates.
 
 Measured gates: 125/125 template assignments; 102/125 marked structurally complete; 23 records incomplete (all 15 behavioral domains and all 8 Conscious Domain records); 103/125 have passes 2 and 3 marked complete; 22 remain blocked (8 Conscious Domains and 14 blueprint slots). Blueprint canonical names recovered: 0/14. Archetype taxonomy resolution: 0/18. Approved semantic mapping edges: 0 across 36 mapping rows. Cultural-figure crosswalks approved: 0/12. A basic scan of child IDs, influence IDs, and links found zero dangling IDs, but this does not prove semantic correctness or runtime traversal.
 
-Detailed evidence and next actions: [Deep-Psychological Registry Audit](ATUNED_DEEP_PSYCHOLOGICAL_REGISTRY_AUDIT_2026-10-22.md). Adapter execution, generator integration, runtime validation, and forward/backward traversal remain unverified or not done. Overall status remains **OPEN — NOT COMPLETE**.
+Detailed evidence and next actions: [Deep-Psychological Registry Audit](ATUNED_DEEP_PSYCHOLOGICAL_REGISTRY_AUDIT_2026-10-22.md). Adapter execution, generator integration, runtime validation, and forward/backward traversal remain unverified or not done. Overall status remains **OPEN, NOT COMPLETE**.

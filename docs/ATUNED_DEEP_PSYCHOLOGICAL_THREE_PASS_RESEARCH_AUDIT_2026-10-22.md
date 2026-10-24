@@ -1,9 +1,9 @@
-# ATÜNED Deep-Psychological Record Setup — Three-Pass Research Audit
+# ATÜNED Deep-Psychological Record Setup, Three-Pass Research Audit
 Date: 2026-10-22
 Repository: rebootos-sourcce/MOB and rebootos-sourcce/Reboot-OS
-Status: OPEN — record inventory seeded; source-row reviews partially complete; canonical taxonomy recovery and wiring remain open.
+Status: OPEN, record inventory seeded; source-row reviews partially complete; canonical taxonomy recovery and wiring remain open.
 
-## Pass 1 — Primary source extraction
+## Pass 1, Primary source extraction
 
 ### MOB shared-record and closure contract
 - `proto/knowledge/src/gen-data.js` establishes the existing record-envelope precedent: stable `id`, `kind`, `nm`, `seat`, `fam`, `def`, plus record-specific content and relationships.
@@ -29,7 +29,7 @@ Status: OPEN — record inventory seeded; source-row reviews partially complete;
 | `atuned/data/canon_tables/NODEREG.json` | 112 Fetter/node entries | `8a2daa54b9a94dc9df6136f4a39a62bc57a6d9a3` |
 | `atuned/data/canon_tables/manifest.json` | Declared row counts and table meanings; source for denominator cross-checks | `9cc010fac9b46e27e90594167de3ed5cdf89c680` |
 
-## Pass 2 — Independent source/table cross-check
+## Pass 2, Independent source/table cross-check
 
 1. The 18 archetype names align across ARCH12, ARCH18, and ARCHDOM.
 2. The source module identifies six entries as provisional web research rather than owner dictation: Hero, Everyman, Mentor, Shadow, Shapeshifter, and Healer. Their prose remains reviewable draft content, not owner-authored canon.
@@ -39,7 +39,7 @@ Status: OPEN — record inventory seeded; source-row reviews partially complete;
 6. The Psyche Map UI declares: Conscious Domains 8; Blueprint Domains 14; Archetypes 12; Masks 7; Hyper-Complexes 6; Saboteurs 14; Complexes 12; Clusters 9; Fetters 18; Child Fetters 9. The canonical table manifest separately lists ARCH12=18, ARCH18=18, ARCHDOM=18, CDOMAIN=12, MASKS6=6, HYPER=8, SAB33=33, and NODEREG=112. The UI counts cannot be substituted for source-backed record counts.
 7. Fourteen Blueprint Domain slot placeholders were added to the registry to preserve the UI declaration and expose the missing names. They are marked `visual_slot_only_unresolved`; they are not canonical domain records.
 
-## Pass 3 — Synthesis and record consistency
+## Pass 3, Synthesis and record consistency
 
 ### Current registry
 - **107 registry entries total**:
@@ -81,7 +81,7 @@ Status: OPEN — record inventory seeded; source-row reviews partially complete;
 Record shells and an initial set of source-backed content are now committed. The deep-psychological layer is **not complete or wired**. This audit records partial execution and a reproducible checkpoint; it does not claim a background recursive job is running.
 
 
-## Recursive execution update — registry refresh (2026-10-22)
+## Recursive execution update, registry refresh (2026-10-22)
 
 This section supersedes earlier counts in this audit where they differ.
 

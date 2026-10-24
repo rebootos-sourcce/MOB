@@ -1,4 +1,4 @@
-# ATÜNED Deep Psychological Layer — Technical Implementation Handshake
+# ATÜNED Deep Psychological Layer, Technical Implementation Handshake
 **Date:** 2026-10-22  
 **Repository:** `rebootos-sourcce/MOB`  
 **Companion document:** [Executive Continuation Handshake](ATUNED_DEEP_PSYCHOLOGICAL_EXECUTIVE_HANDSHAKE_2026-10-22.md)
@@ -8,13 +8,13 @@
 Make the deep psychological registry a validated, runtime-consumed, traversable layer in the existing ATÜNED knowledge engine. Integration must be additive and non-breaking for the experiential Nerve-to-Super-Complex graph.
 
 Current relevant implementation:
-- `proto/knowledge/src/gen-data.js` — existing experiential data generator.
-- `proto/knowledge/src/validate-templates.js` — existing generated-data/template validator.
-- `proto/knowledge/src/adapt-psychological-registry.js` — adapter that projects registry records into a separate `psych_*` namespace, preserving parent/child references, links, provenance, research-pass metadata, confidence, and unresolved questions.
-- `proto/knowledge/src/audit-psychological-registry.js` — repeatable static registry audit, with a strict mode intended to fail while gates remain open.
-- `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json` — source registry.
-- `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_TEMPLATE_CATALOG_v1.json` — template catalog.
-- `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_SCHEMA_v1.json` — record schema.
+- `proto/knowledge/src/gen-data.js`, existing experiential data generator.
+- `proto/knowledge/src/validate-templates.js`, existing generated-data/template validator.
+- `proto/knowledge/src/adapt-psychological-registry.js`, adapter that projects registry records into a separate `psych_*` namespace, preserving parent/child references, links, provenance, research-pass metadata, confidence, and unresolved questions.
+- `proto/knowledge/src/audit-psychological-registry.js`, repeatable static registry audit, with a strict mode intended to fail while gates remain open.
+- `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json`, source registry.
+- `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_TEMPLATE_CATALOG_v1.json`, template catalog.
+- `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_SCHEMA_v1.json`, record schema.
 
 **Important state:** the adapter explicitly reports `runtimeIntegrated: false`. Its existence is not evidence that it runs in the generator. The audit script has been committed but its execution in Node has not yet been proven in the available session. Verify both in the repository environment.
 
@@ -118,9 +118,9 @@ Every applicable record requires three distinct passes, not three empty metadata
 - A clear pass outcome: complete, blocked with reason, or not started.
 
 Recommended pass separation:
-1. **Pass 1 — Source recovery:** identify primary source, exact terminology, edition, and direct evidence.
-2. **Pass 2 — Comparative validation:** compare against related ATÜNED source models and identify conflicts, duplicates, or category errors.
-3. **Pass 3 — Integration validation:** verify the interpretation against neighboring records, parent/child semantics, mappings, and expected traversals.
+1. **Pass 1, Source recovery:** identify primary source, exact terminology, edition, and direct evidence.
+2. **Pass 2, Comparative validation:** compare against related ATÜNED source models and identify conflicts, duplicates, or category errors.
+3. **Pass 3, Integration validation:** verify the interpretation against neighboring records, parent/child semantics, mappings, and expected traversals.
 
 Adapt this separation where the project already defines specific pass semantics, but keep passes genuinely distinct. Never overwrite the original evidence when later passes change an interpretation.
 
