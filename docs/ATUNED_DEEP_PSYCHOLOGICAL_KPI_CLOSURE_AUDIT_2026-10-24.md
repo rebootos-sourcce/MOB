@@ -1,22 +1,22 @@
 # ATÜNED Deep Psychological Layer — KPI Closure Audit
 **Audit date:** 2026-10-24  
 **Branch:** `atuned/deep-psyche-kpi-closure-2026-10-24`  
-**Scope:** `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json` and its declared template catalog. This is the 125-record Deep Psychological registry, not proof that the entire Nerve-to-Super-Complex universe has been inventoried.
+**Scope:** `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json` and its declared template catalog. This is the 147-record Deep Psychological registry, not proof that the entire Nerve-to-Super-Complex universe has been inventoried.
 
 ## Executive result
 
 | KPI | Result | Status |
 |---|---:|---|
-| 1 — Every record exists | 125/125 unique IDs in the declared registry | **PASS — registry scope only** |
+| 1 — Every record exists | 147/147 unique IDs in the declared registry | **PASS — registry scope only** |
 | 2 — Every record filled with research | 128/147 source-content complete; 19 v341 roster definitions blocked; 441/441 research passes complete | **PASS — RECORD CONTENT** |
 | 3 — Required relationships linked and verified | 125 records have empty links arrays; 0/36 mapping rows approved; runtime graph wiring unverified | **OPEN** |
 
-The denominator of 125 is verified inside this registry: declared count and measured array count agree, and all IDs are unique. It is **not** the complete project-wide denominator. The full Nerve-to-Super-Complex entity universe and its cross-registry inventory still require reconciliation.
+The denominator of 147 is verified inside this registry: declared count and measured array count agree, and all IDs are unique. It is **not** the complete project-wide denominator. The full Nerve-to-Super-Complex entity universe and its cross-registry inventory still require reconciliation.
 
 ## Three strategy passes
 
 ### Pass 1 — Inventory and source fidelity
-- Registry declared count: 125; measured count: 125; unique IDs: 125.
+- Registry declared count: 147; measured count: 147; unique IDs: 147.
 - Record families: roots 4; behavioral domains 15; archetype candidates 18; Conscious Domains 8; cultural-figure mappings 12; archetype/domain mappings 18; archetype/fetter/seat mappings 18; Blueprint visualization slots 14; canonical-domain candidates 18.
 - Required fields are checked against the actual template catalog, not trusted solely from `templateValidation.missingFields`.
 - The source extraction document identifies eight Conscious Domain names/descriptions and seven affirmation strings. The affirmation strings are present; the assignment of seven strings to seven Conscious Domains remains provisional. Empyrean has no separate chakra affirmation.
