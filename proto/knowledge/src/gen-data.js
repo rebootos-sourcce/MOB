@@ -394,7 +394,7 @@ E.forEach(e=>{e.links=[...new Set(e.links)].filter(l=>l!==e.id);});
    authoritative engine-derived entry, never hand-written into generated data.
    A null value stays null and is reported by the validator, not fabricated. */
 const TEMPLATE_SCHEMAS={
- hypercomplex:{id:'TPL-HYPERCOMPLEX', fields:['nm','fam','cluster','def','body','behavior','triggerMechanism','livedExample','impact','practice','inferred','inferenceBasis','confidence','reviewStatus','oppositeId','oppositeDefinition','oppositeStatus','narrativeSource','researchSources','links']},
+ hypercomplex_mode:{id:'TPL-HYPERCOMPLEX', fields:['nm','fam','cluster','def','body','behavior','triggerMechanism','livedExample','impact','practice','inferred','inferenceBasis','confidence','reviewStatus','oppositeId','oppositeDefinition','oppositeStatus','narrativeSource','researchSources','links']},
  nerve:{id:'TPL-NERVE-BRANCH', fields:['nm','seat','fam','def','branchIndex','sourceSeat','pointCount','mappingBasis','mappedNodeIds','narrativeSource','links']},
  seat:{id:'TPL-SEAT', fields:['nm','fam','def','body','links']},
  axis:{id:'TPL-FETTER-AXIS', fields:['nm','seat','fam','def','card','where','says','inst','opp','links']},
