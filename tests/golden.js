@@ -150,7 +150,11 @@ function fakeWorker(origin, giftAt) {
     selectedGroundId: s.selectedGroundId || null, starterGiftId: null, tutorialCompleted: !!s.tutorialCompleted,
     firstReleaseId: s.firstReleaseId || null, verificationId: s.verificationId || null, version: s.version,
     createdAt: s.createdAt, updatedAt: s.updatedAt });
-  const billing = a => { const e = st.ent[a.id]; return e ? { tier: e.tier, status: e.status, since: e.since, until: e.until, store: 'stripe' } : null; };
+  /* ends is sent while the plan is in force and null after, as the real
+     server's billingOf sends it (Reboot-OS src/store.js) */
+  const billing = a => { const e = st.ent[a.id]; if (!e) return null;
+    const live = e.status === 'active' || e.status === 'trialing' || e.status === 'past_due';
+    return { tier: e.tier, status: e.status, since: e.since, until: e.until, store: 'stripe', ends: live ? (e.ends || null) : null }; };
   function handle(method, url, headers, raw) {
     const res = route(method, url, headers, raw);
     st.reqs[st.reqs.length - 1].status = res.status;
@@ -264,10 +268,22 @@ function fakeWorker(origin, giftAt) {
   /* what Stripe's webhook would have told the Worker */
   const paid = () => { const c = st.checkout; if (!c) return false;
     st.ent[c.account] = { tier: c.tier, status: 'active', since: now(), until: new Date(Date.now() + 30 * 864e5).toISOString() }; return true; };
+  /* CANCELLED AT THE PERIOD END, the way the portal does (Reboot-OS
+     tools/stripe-portal.mjs, subscription_cancel at_period_end), 24 October,
+     P3-3 of the 23 October QA pass. This wrote canceled inside the paid period,
+     an immediate cancel the deployed portal never makes, so station 8 passed on
+     a path production does not take. Now the plan stays active and the server
+     names the day it ends (billingOf's ends); endsIn moves the server's
+     calendar to the period's last moments, and over() is Stripe deleting the
+     subscription once the period has run out. */
   const cancelled = () => { const c = st.portal; if (!c || !st.ent[c.account]) return false;
+    st.ent[c.account].ends = st.ent[c.account].until; return true; };
+  const endsIn = ms => { const c = st.portal; if (!c || !st.ent[c.account]) return null;
+    const e = st.ent[c.account]; e.until = e.ends = new Date(Date.now() + ms).toISOString(); return e.ends; };
+  const over = () => { const c = st.portal; if (!c || !st.ent[c.account]) return false;
     st.ent[c.account].status = 'canceled'; return true; };
   const reqs = (meth, re) => st.reqs.filter(q => q.method === meth && re.test(q.path));
-  return { st, handle, paid, cancelled, reqs };
+  return { st, handle, paid, cancelled, endsIn, over, reqs };
 }
 
 /* ---------------- the site, served the way atuned.world serves it ---------------- */
@@ -866,11 +882,29 @@ async function door(browser, SITE, cut, giftAt) {
   const po = wq.reqs('POST', /^\/v1\/billing\/portal$/);
   ok(po.length === 1 && po[0].me === accQ.id, 'it asks the server for the billing portal, signed in');
   ok(page.url().indexOf(PORTAL + '/') === 0, 'and the browser goes to the portal page the server named', 'Manage billing does nothing');
+  /* cancelled at the period end, as the portal does (P3-3, 24 October): the
+     plan stays on to the end of the month paid for, and the app says the day */
   wq.cancelled();
   await page.goto(SITE + '/atuned.html?billing=managed', { waitUntil: 'load' });
   await Q.booted();
-  const ended = await Q.waitSaid(/Tier one has ended, so this record reads Free now\./, 8000);
-  ok(!!ended && /^fail\|/.test(ended), 'back from the portal, the app says the plan has ended, on a held line: ' + J(ended), 'cancelled, and the app still reads tier one');
+  const stops = await Q.waitSaid(/Tier one stops on [^.]+\. It stays on until then, and Manage billing turns it back on\./, 8000);
+  ok(!!stops && /^ok\|/.test(stops), 'back from the portal, the app says the day the plan stops and that it stays on until then: ' + J(stops),
+    'stopped, and the app says nothing');
+  sv = await Q.saved();
+  const stopAt = wq.st.ent[accQ.id] && wq.st.ent[accQ.id].until;
+  ok(!!(sv.rec && sv.rec.plan && E.planState(sv.rec.plan) === 'live' && sv.rec.plan.ends === stopAt && E.planOf(sv.rec.plan).k === 'one'),
+    'and the record keeps tier one on, to the day it stops: ' + J(sv.rec && sv.rec.plan && { t: sv.rec.plan.tier, s: sv.rec.plan.status, ends: sv.rec.plan.ends }));
+  await Q.click('#profbtn'); await Q.click('[data-pms="billing"]');
+  await page.waitForTimeout(300);
+  const endsLine = await page.evaluate(() => { const r = [...document.querySelectorAll('#settings .sh-row')].filter(x => /^State/.test(x.innerText))[0]; return r ? r.innerText : null; });
+  ok(/ends /.test(endsLine || ''), 'and Billing\'s State row says when it ends, ' + J(endsLine));
+  /* the month runs out: the server's calendar moves to the period's last
+     seconds, the page reads that, and its own clock passes the end */
+  const endAt = Date.parse(wq.endsIn(4000));
+  await Q.reload();
+  while (Date.now() < endAt + 600) await page.waitForTimeout(200);
+  /* and Stripe deletes the subscription at the period end */
+  wq.over();
   await Q.reload();
   sv = await Q.saved();
   ok(!!(sv.rec && sv.rec.plan && E.planState(sv.rec.plan) === 'ended' && E.planOf(sv.rec.plan).k === 'free'),

@@ -3801,6 +3801,8 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
      tests/money.js holds the arithmetic) */
   o.rbLateRow=(function(){var d=document.createElement('div'); d.innerHTML=planSection(meterRead(CURP));
    var r=d.querySelector('#planlate'); return r?d.textContent.replace(/\s+/g,' '):'';})();
+  /* and the card then goes through, same period: P3-3, 24 October */
+  o.rbFixed=await as('t-paid');
   o.rbEnded=await as('t-ended');
   await as('t-paid'); o.rbNone=await as('t-none');
   await as('t-paid'); o.rbOdd=await as('t-odd');
@@ -3895,6 +3897,11 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
   'past due keeps the tier and holds a line about the card, got '+JSON.stringify(o.rbLate.said));
  ok(/State\s*the card did not go through/.test(o.rbLateRow)&&/Everything you have opened still runs\. New patterns wait until the card does/.test(o.rbLateRow),
   'and Billing\'s State row says the card did not go through, what still runs and what waits, for as long as it is so, got '+JSON.stringify(o.rbLateRow.slice(0,240)));
+ /* P3-3, 24 October: the read that found the card paid said nothing, though it
+    is the read that opens the month's new patterns */
+ ok(o.rbFixed&&o.rbFixed.took==='live'&&o.rbFixed.plan.status==='active'
+  &&o.rbFixed.said[0]==='The card for Tier one went through. This month\'s new patterns are open.'&&o.rbFixed.said[1]!=='fail',
+  'P3-3: and when the card goes through, that read says so, and that the month\'s new patterns are open, got '+JSON.stringify(o.rbFixed&&o.rbFixed.said));
  ok(o.rbEnded.free==='free'&&o.rbEnded.plan.tier==='one'&&o.rbEnded.plan.status==='canceled'
   &&o.rbEnded.said[0]==='Tier one has ended, so this record reads Free now.'&&o.rbEnded.said[1]==='fail',
   'a cancelled plan reads free, keeps which tier ended, and says so on a held line, got '+JSON.stringify(o.rbEnded.said));

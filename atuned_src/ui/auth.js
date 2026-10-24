@@ -977,6 +977,12 @@ function authPlanTake(b){
      card has not gone through, so this line is not the only place they live. */
   say='The card for '+nm+' did not go through. Everything you have opened still runs. New patterns '
    +'wait until the card does, and Manage billing replaces the card.'; kind='fail';}
+ /* AND WHEN IT DOES, 24 October (P3-3 of the 23 October QA pass). The refused
+    card was said on a held line and on Billing's State row, and the read that
+    found it paid said nothing, though that read is the one that opens the
+    month's new patterns (planFromServer, engine/plan.js). */
+ else if(r.nowLive&&r.wasLive&&r.wasStatus==='past_due'&&r.status!=='past_due')
+  say='The card for '+nm+' went through. This month\'s new patterns are open.';
  /* STOPPED ON THE PAYMENT PAGE, and turned back on there. Neither moves the
     tier, the status or the period, so neither was said: a person came back
     from pressing stop to silence and a plan that read as running. Said as a
