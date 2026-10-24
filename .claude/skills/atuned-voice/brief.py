@@ -202,9 +202,6 @@ FILES = {
     # before the instrument
     'atuned_src/ui/onboard.js': (None, ('all', 'information'),
         'the first card. It says what the instrument is and what it does.'),
-    'atuned_src/ui/tutorial.js': (None, ('split',),
-        'the day one tutorial walks every station, so a prompt in it is not '
-        'assigned one.'),
     'atuned_src/ui/login.js': (None, ('all', 'information'),
         'the return door, after the funnel.'),
     'atuned_src/shell/body.html': (None, ('split',),

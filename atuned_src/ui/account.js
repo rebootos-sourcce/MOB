@@ -185,8 +185,11 @@ function accAccount(){
     tutorial", was the only door that sequence had: nothing opened it on any
     arrival. The owner: "I want that hidden one completely removed. We're not
     doing that anymore." The row went with ui/tutorial.js. */
+ /* STALE SINCE 23 October. The onboarding this opens has had no signal test
+    since an earlier redesign; the row kept the tutorial-era wording. Found
+    in the 23 October cross-repo audit. */
  h+=accGroup('The opening',
-   accAct('Run the signal test again','acob',{btn:'Open it'}));
+   accAct('Replay the opening','acob',{btn:'Open it'}));
  /* PRACTITIONER MODE, round LL: "Add a practitioner mode to the profile."
     Account and not Display, because it changes what a person is in the
     product, a practitioner with clients, and not how the screen looks; and
