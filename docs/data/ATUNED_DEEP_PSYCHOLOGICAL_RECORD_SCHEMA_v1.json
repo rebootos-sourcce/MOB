@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/rebootos-sourcce/MOB/blob/main/docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_SCHEMA_v1.json",
   "title": "ATÜNED Shared Deep-Psychological Record",
-  "description": "Shared record envelope aligned to the existing Nerve-to-Super-Complex knowledge record shape, with provenance, typed links, template coverage, and exactly three distinct research-pass slots. A schema-valid record is not necessarily canon-approved or research-complete.",
+  "description": "Shared record envelope aligned to the Nerve-to-Super-Complex record shape. Behavioral-domain records include explicit provisional behavioral-energy fields. Schema validity is not canonical approval or proof of runtime integration.",
   "type": "object",
   "required": [
     "id",
@@ -289,7 +289,83 @@
     },
     "changelog": {
       "type": "array"
+    },
+    "behavioralEnergy": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Provisional, research-informed description of recurring motivational, attention, and action pattern; must not be represented as source-verbatim without evidence."
+    },
+    "motivationalPull": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "attentionBias": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "actionTendency": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "adaptiveExpression": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "distortedExpression": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "researchSynthesis": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "researchLimitations": {
+      "type": [
+        "string",
+        "null"
+      ]
     }
   },
-  "additionalProperties": true
+  "additionalProperties": true,
+  "version": "1.1.0",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "behavioral_domain"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "behavioralEnergy",
+          "motivationalPull",
+          "attentionBias",
+          "actionTendency",
+          "adaptiveExpression",
+          "distortedExpression",
+          "researchSynthesis",
+          "researchLimitations"
+        ]
+      }
+    }
+  ]
 }
