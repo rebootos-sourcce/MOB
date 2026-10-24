@@ -938,6 +938,10 @@ async function door(browser, SITE, cut, giftAt) {
   ok(await Q.click('#acdel'), 'Delete this record is there to press');
   const del = await Q.waitSaid(/is deleted from this browser, the only place it was held\./, 6000);
   ok(!!del && del.indexOf(goneName) >= 0, 'and it says what it deleted and where, ' + J(del), 'no word of what went');
+  /* the profile it lands on is the default one, named You, and was said "You is
+     open." until 24 October (ui/account.js, accOpenSay) */
+  ok(!!del && /Your own profile is open\.$/.test(del) && !/\bYou is open\./.test(del),
+    'and the profile it opens is said as the person\'s own, never "You is open.": ' + J(del), 'You is open.');
   await Q.reload();
   sv = await Q.saved();
   ok(!!sv.list && !sv.list.some(p => p && p.id === goneId), 'after a reload the record is gone from this browser');

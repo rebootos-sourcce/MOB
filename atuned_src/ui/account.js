@@ -345,13 +345,21 @@ function accProfStart(){
  if(!p){var typed=i.value; status('Nothing was started. '+accWhy(),'fail'); renderAccount();
   var i2=$('acpnew'); if(i2)i2.value=typed; return false;}
  accSwitched();
- status(p.name+' is open. It starts blank.','ok'); return true;}
+ status(accOpenSay(p)+' It starts blank.','ok'); return true;}
+/* "YOU IS OPEN." The default profile is named You (blankProfile('You'),
+   engine/profiles.js), and the sentence that names the profile now open was
+   built from the name, so a delete that moved onto it read "You is open."
+   (seen in tests/golden.js station 8, 23 October). The person's own default
+   profile is said as what it is, the way personas.js already reads that name. */
+function accOpenSay(p){
+ var nm=(p&&p.name)||'That profile';
+ return (nm==='You'?'Your own profile':nm)+' is open.';}
 function accProfOpen(id){
  var p=profFind(id), nm=(p&&p.name)||'That profile';
  accToOwn();
  if(!profOpen(id)){status(nm+' was not opened. '+accWhy(),'fail'); renderAccount(); return false;}
  accSwitched();
- status(CURP.name+' is open.','ok'); return true;}
+ status(accOpenSay(CURP),'ok'); return true;}
 /* THE SIDE KEYS GO WITH THE PROFILE. The avatar ratings and the active
    rituals are held beside the record under its id, so a delete that left them
    would leave part of a deleted profile in this browser. Only that id's entry
@@ -382,7 +390,7 @@ function accProfDelete(id){
  if(d.moved||PROFILES.indexOf(PROF_BY[PEOPLE[0].nm])<0)accSwitched(); else renderAccount();
  if(!side)status(d.name+' is deleted. Its rituals and avatar ratings could not be cleared from this browser.','fail');
  else status(d.name+' is deleted from this browser, the only place it was held.'
-  +(d.moved?' '+CURP.name+' is open.':''),'ok');
+  +(d.moved?' '+accOpenSay(CURP):''),'ok');
  return true;}
 
 /* ---------- 4.2 display ---------- */
