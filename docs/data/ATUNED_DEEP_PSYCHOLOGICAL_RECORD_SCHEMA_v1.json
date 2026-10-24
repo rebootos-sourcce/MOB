@@ -701,7 +701,7 @@
     }
   },
   "additionalProperties": true,
-  "version": "1.7.0",
+  "version": "1.8.0",
   "allOf": [
     {
       "if": {
@@ -1430,6 +1430,378 @@
           "inferred",
           "inferenceBasis",
           "confidence",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "somatic_signature"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "nm",
+          "seat",
+          "fam",
+          "def",
+          "body",
+          "trigger",
+          "says",
+          "out",
+          "livedBehavior",
+          "availableState",
+          "nextMove",
+          "nids",
+          "arch",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "saboteur"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "nm",
+          "fam",
+          "def",
+          "body",
+          "chargeSignature",
+          "sourceDefinition",
+          "sourceBehavior",
+          "sourceIntervention",
+          "sourceFamily",
+          "sourceMembershipNids",
+          "membershipStatus",
+          "canonicalStatus",
+          "sourceFields",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "fetter_deep_template"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "nodeId",
+          "nm",
+          "sourceBand",
+          "anatomicalAddress",
+          "governingFunction",
+          "shadowExpression",
+          "phase",
+          "sourceFields",
+          "corpusMatches",
+          "behavioralHypothesis",
+          "contextualDiscriminant",
+          "counterexampleGuard",
+          "releaseStatement",
+          "sourceVersion",
+          "versionCrosscheckStatus",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "address_nine_prompt"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "promptId",
+          "nodeId",
+          "fetterName",
+          "register",
+          "registerQuestion",
+          "searchAnchor",
+          "evidenceInstruction",
+          "evidenceClass",
+          "reviewStatus",
+          "sourceFields",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "polarity_candidate"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "pairId",
+          "profileId",
+          "profileName",
+          "constructiveCandidate",
+          "relationClass",
+          "sharedMechanismHypothesis",
+          "descentObservablePatterns",
+          "constructiveObservablePatterns",
+          "sourceSupport",
+          "storyEvidenceIds",
+          "counterexampleOrConfounds",
+          "confidence",
+          "reviewStatus",
+          "promotionGate",
+          "notes",
+          "sourceFields",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "descent_profile_candidate"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "profileId",
+          "profileName",
+          "sourceFields",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses",
+          "canonicalStatus",
+          "confidence"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "template_definition"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "templateId",
+          "structureType",
+          "nm",
+          "sourceDescription",
+          "sourceSeat",
+          "sourceSubtextInternalOnly",
+          "constructiveExpression",
+          "shadowOrLoadMechanism",
+          "membershipRule",
+          "evidenceGate",
+          "sourceStatus",
+          "clinicalSafety",
+          "sourceFields",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "source_ruling"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "rulingId",
+          "item",
+          "detail",
+          "blocks",
+          "sourceVersion",
+          "status",
+          "requiredDecision",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "owner_roster_placeholder"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "rosterId",
+          "slotIndex",
+          "layer",
+          "canonicalStatus",
+          "ownerClaim",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "saboteur_membership_requirement"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "saboteurId",
+          "saboteurName",
+          "requiredMinimumNodeCount",
+          "currentNodeIds",
+          "status",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "source_os_hypercomplex_snapshot"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceHypercomplexId",
+          "nm",
+          "sourceVersion",
+          "childSaboteurNames",
+          "sourceStatus",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "layer_inventory"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "layerId",
+          "nm",
+          "layerClass",
+          "sourceVersions",
+          "expectedCount",
+          "observedCount",
+          "denominatorStatus",
+          "recordCoverageStatus",
+          "researchCoverageStatus",
+          "wiringCoverageStatus",
+          "knownBlockers",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "kpi_definition"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "kpiId",
+          "nm",
+          "definition",
+          "numerator",
+          "denominator",
+          "status",
+          "evidence",
           "sourceRefs",
           "sourceClaims",
           "researchPasses"
