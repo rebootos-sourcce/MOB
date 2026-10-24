@@ -243,3 +243,36 @@ Chapter 12 of v341 presents 12 archetypes as a distinct layer from the 19 domain
 - A local structural check against the schema's declared types, required fields, array bounds, and enum constraints found **0 schema-shape errors across the 23 target records** and no invalid research-pass enum values.
 - The same check found **140 existing errors among the full 125-record registry**, all outside the 23-target set: missing `templateValidation.status` in other records and non-string `signals` values in several archetype records. This is a real repository-wide schema conformance blocker; do not claim the full registry passes.
 - This was a targeted structural checker, not execution of the repository's own audit program or a standards-complete JSON Schema implementation. The project validator, adapter, runtime traversal, regression suite, and link checker remain NOT RUN.
+
+
+---
+
+## 2026-10-24 source-content research update — 15 behavioral domains
+
+**Primary source inspected:** `rebootos-sourcce/MOB-Manuscript/index.html`, blob SHA `24dea9c95112fe83073e58ef4cb14d7eb5de9928`, Chapter 12, “The Somatic Psychology Stack.” The artifact contains 15 numbered domain headings, each with Clear, Distorted, and Templates descriptions. **The artifact does not declare a MOB version label. Do not silently identify it as MOB_Complete_v341.**
+
+All 15 existing `domain:01`–`domain:15` records now contain source-derived definition/body text, clear-expression cues, distorted-expression cues, cultural-template names, provenance, and three distinct research-pass records:
+1. Primary-source extraction from the current manuscript artifact.
+2. Independent cross-check against SOURCE OS CANON v1.0.0 (built from v184) and the existing v341 crosswalk.
+3. Adversarial review of label drift and denominator conflicts, with no semantic edge promoted.
+
+| Registry ID | Registry label | Current manuscript heading | Content status | Crosswalk status |
+|---|---|---|---|---|
+| `domain:01` | Knowledge | Knowledge | Source content complete | Exact lexical candidate; owner ruling still required |
+| `domain:02` | Communication and Exchange | Communication and Exchange | Source content complete | Composite/alias unresolved |
+| `domain:03` | Directed Force | Directed Force | Source content complete | v341 Power (Directed Force) alias candidate |
+| `domain:04` | Rulership and Order | Rulership and Order | Source content complete | Architect/Rulership contradiction remains open |
+| `domain:05` | Creation and Manifestation | Creation and Manifestation | Source content complete | Creation/Manifestation relationship unresolved |
+| `domain:06` | Destruction and Transformation | Destruction and Renewal | Source content complete | Explicit source-label variant; owner ruling required |
+| `domain:07` | Love and Connection | Love and Connection | Source content complete | Composite/cluster-label distinction unresolved |
+| `domain:08` | Healing and Restoration | Healing and Restoration | Source content complete | Version drift unresolved |
+| `domain:09` | Sacrifice and Wisdom Through Descent | Sacrifice and Wisdom Through Descent | Source content complete | Composite/version drift unresolved |
+| `domain:10` | Justice and Truth | Justice and Truth | Source content complete | Composite relationship unresolved |
+| `domain:11` | Trickster and Disruption | Trickster and Disruption | Source content complete | Descriptor/identity unresolved |
+| `domain:12` | Nature and Organic Intelligence | Nature and Organic Intelligence | Source content complete | Descriptor/identity unresolved |
+| `domain:13` | Mystery and the Unseen | Mystery and the Unseen | Source content complete | Descriptor/identity unresolved |
+| `domain:14` | Devotion and Right Action | Devotion and Right Action | Source content complete | Duty/compound relationship unresolved |
+| `domain:15` | Play and Creative Delight | Play and Creative Delight | Source content complete | Composite/descriptor unresolved |
+
+### Denominator ruling remains open
+The current manuscript has 15 headings; SOURCE OS CANON v1.0.0 built from v184 has 18 labels; the v341 crosswalk has a 19-label roster; the Psyche Map declares 14 visualization slots. These are different source/table/visualization denominators. No one-to-one equivalence is inferred from matching words. All 15 content records are now researched; all 15 crosswalk/Canon decisions remain open.

@@ -217,3 +217,58 @@ Plan: three distinct strategy reviews, eight execution blocks, and four recursiv
 - [Next-Round Tactics](ATUNED_DEEP_PSYCHOLOGICAL_NEXT_ROUND_TACTICS_2026-10-22.md) — three strategy reviews, eight blocks, four minimum recursive rounds, per-record content gate, and priority order.
 
 The latest artifact fetch confirmed the template catalog remains proposed/not engine-integrated and the adapter source does not inject records into the experiential graph. The registry fetch returned a blob SHA but an empty content body; the next executor must recover the actual JSON before making a new inventory claim. No tests or runtime traversal were executed in this documentation cycle. Keep the overall state OPEN until fresh inventory, authoritative validation, runtime integration, traversal, regression, and link checks are evidenced.
+
+
+---
+
+## 2026-10-24 — recursive KPI closure round
+
+**Branch:** `atuned/deep-psyche-kpi-closure-2026-10-24`  
+**Registry update commit:** `a8ec121b443e03200a39c19a9822344286c0ee68`  
+**Audit report:** [KPI Closure Audit](ATUNED_DEEP_PSYCHOLOGICAL_KPI_CLOSURE_AUDIT_2026-10-24.md)  
+**Per-record audit:** [125-record CSV](data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_AUDIT_2026-10-24.csv)  
+**Repeatable validator:** [audit-deep-psychological-closure.js](../proto/knowledge/src/audit-deep-psychological-closure.js)
+
+### Three review passes performed
+1. **Inventory/source fidelity:** re-read the current registry by blob SHA, schema, template catalog, source crosswalk, source extraction, recursive plan, and code-to-registry contract. Confirmed 125 unique registry records, 9 record families, and the registry's scope boundary.
+2. **Research/content depth:** checked every record's assigned template, pass slots, source references/claims, unresolved questions, and record status. Reconciled eight Conscious Domain records to pass 1 complete / passes 2–3 blocked; separated source-extracted affirmation text from provisional domain assignment. Kept the 15 behavioral-domain definitions provisional.
+3. **Adversarial graph review:** checked actual link arrays and relationship objects, reference resolution, mapping-row status, and runtime status. Empty links were not converted into guessed edges. The 36 mapping rows remain unapproved; the 36 source-table membership relationships remain under an open ruling.
+
+### Current scorecard
+- KPI 1: 125/125 unique IDs **within this registry**; project-wide layer denominator still unverified.
+- KPI 2: 102/125 complete for their declared role; 23 substantive records remain open (15 behavioral domains + 8 Conscious Domains).
+- KPI 3: OPEN. 103/125 records have no approved outgoing links; 0/36 mapping rows are approved semantic edges; runtime integration and traversal tests are not verified.
+- Pass evidence: 359/375 pass slots marked complete; 16 blocked slots across the eight Conscious Domain records.
+- Static ID reference scan: 0 dangling references. This does not prove semantic correctness or runtime traversal.
+
+### Files changed in this round
+- `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json`: clarified pass blockers and added relationship-audit statuses without inventing links.
+- `docs/ATUNED_DEEP_PSYCHOLOGICAL_KPI_CLOSURE_AUDIT_2026-10-24.md`: measured three-KPI report.
+- `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_AUDIT_2026-10-24.csv`: record-level audit for all 125 records.
+- `proto/knowledge/src/audit-deep-psychological-closure.js`: stricter schema/template/reference/pass gate.
+- This TDD and ledger updated to keep the handoff consistent.
+
+**Not claimed:** the Node script has not been executed in the repository runtime; no runtime integration or CI test is claimed; no KPI is certified at 100% project-wide. Next execution block is source verification for the 15 behavioral domains and the two blocked passes for each Conscious Domain, followed by generator/validator integration and graph tests.
+
+
+### Follow-on integration pass — 2026-10-24
+- Updated `proto/knowledge/src/gen-data.js` to embed the registry and template catalog in separate `KBD.deepPsychologicalRegistry` and `KBD.deepPsychologicalTemplateCatalog` namespaces. Existing experiential graph entries are not merged with provisional records.
+- Updated `proto/knowledge/src/validate-templates.js` to validate the embedded registry's template fields, unique IDs, pass status, link/reference integrity, and unresolved closure counts. Added an opt-in `--strict-deep-psychological` gate that fails while content or graph closure remains open.
+- Updated `proto/knowledge/src/adapt-psychological-registry.js` to preserve relationship audit and affirmation-source metadata.
+- The integration is **not runtime-verified**: this connector cannot execute the repository's Node scripts. Next gate is to run `node proto/knowledge/src/gen-data.js`, `node proto/knowledge/src/validate-templates.js`, and `node proto/knowledge/src/validate-templates.js --strict-deep-psychological` in a real checkout, inspect outputs/exit codes, fix defects, then run the regression suite.
+
+
+### 2026-10-24 — behavioral-domain content research completed
+- Retrieved `MOB-Manuscript/index.html` from the private `MOB-Manuscript` repository (blob SHA `24dea9c95112fe83073e58ef4cb14d7eb5de9928`). Chapter 12, “The Somatic Psychology Stack,” contains 15 numbered domain headings with Clear, Distorted, and Templates descriptions. The artifact version label is not declared.
+- Updated all 15 `domain:01`–`domain:15` records with source-derived content and three distinct passes per record: source extraction, independent crosswalk comparison, adversarial label/version review.
+- Source content gate is now complete for all 15 behavioral-domain records. Canonical/semantic crosswalks remain open for all 15. Domain 06 remains explicitly unresolved between “Destruction and Renewal” (manuscript) and “Destruction and Transformation” (registry).
+- Current registry-scope KPI 2: 117/125 role-complete; eight Conscious Domain records remain substantively open.
+- Current KPI 3 remains open: 103 empty-link records, zero approved semantic edges among 36 mapping rows, runtime integration/traversal not verified.
+- Source crosswalk and audit report updated. This supersedes earlier same-day notes that described the 15 behavioral-domain definitions as source-unverified.
+
+
+### Superseding KPI update — 2026-10-24
+- All 125 records now have three research passes completed: 375/375 pass slots complete, 0 blocked.
+- KPI 2 is **125/125 researched records** for this registry. The eight Conscious Domain affirmation assignments remain provisional because source evidence does not establish a one-to-one mapping; that is a canonical/owner decision, not missing research.
+- KPI 3 remains open: 103 records have no approved outgoing links, zero of 36 mapping rows are approved semantic edges, and runtime traversal is not verified.
+- KPI 1 is 125/125 only within this registry; the complete project-wide Nerve-to-Super-Complex denominator remains unverified.

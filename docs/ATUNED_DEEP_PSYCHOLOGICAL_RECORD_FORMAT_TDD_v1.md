@@ -389,3 +389,36 @@ First preserve this model in documentation; then audit schema, templates, adapte
 **Not established:** exact binary poles, canonical super-complex/archetype edges, quantitative scoring, clinical validity, deterministic development, and current runtime schema support.
 
 Do not close KPI 1 from this conceptual addition alone. It is a TDD update, not evidence that all records are populated, researched three times, or validated.
+
+
+---
+
+## 2026-10-24 KPI closure audit — registry scope remains open
+
+The record-level audit is maintained in [KPI Closure Audit](ATUNED_DEEP_PSYCHOLOGICAL_KPI_CLOSURE_AUDIT_2026-10-24.md), with a row-per-record companion at [Record Audit CSV](data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_AUDIT_2026-10-24.csv) and a repeatable Node audit at [strict closure audit script](../proto/knowledge/src/audit-deep-psychological-closure.js).
+
+### Current measured gates
+- Registry inventory: 125 declared / 125 measured / 125 unique IDs. This proves coverage only for this registry; it does not prove the whole Nerve-to-Super-Complex denominator.
+- Role-level content gate: 102/125. The 14 Blueprint entries count as complete only as non-canonical visualization-slot records. The 15 behavioral-domain records remain provisional and source-unverified; the eight Conscious Domain records have pass 1 complete and passes 2–3 blocked.
+- Research pass slots: 359/375 marked complete; 16 blocked. Pass status is not Canon approval.
+- Relationship graph: 103 records have empty `links` arrays explicitly classified as unresolved. The 36 mapping rows have zero approved semantic edges. The 36 source-table membership relationship objects remain `source_backed_open_ruling`.
+- Runtime integration and forward/backward traversal are not verified.
+
+### New required control
+Do not treat `templateValidation.missingFields` as the sole source of truth for template coverage. The audit must compare every actual record against every field in its assigned template, separately count provisional semantic content, and distinguish empty-but-valid link arrays from verified graph edges. Keep KPI 3 open until source-supported edges are adjudicated and runtime traversal tests pass.
+
+
+### 2026-10-24 implementation update — data namespace integration
+The generator now embeds the Deep Psychological registry and template catalog in separate properties of `KBD`. This is data-contract integration, not yet full graph integration. The existing Nerve-to-Super-Complex `entries` array remains unchanged to prevent unapproved taxonomic mappings from being promoted.
+
+The template validator now reports the embedded registry's structural/reference/content state and supports `--strict-deep-psychological`. The strict gate is expected to fail until substantive content and relationship closure are complete. Runtime execution and regression testing remain required before this integration is accepted.
+
+
+### Superseding content audit — 2026-10-24
+The 15 behavioral-domain records are no longer classified as source-unverified content. Three research passes per record are complete using `MOB-Manuscript/index.html` blob `24dea9c95112fe83073e58ef4cb14d7eb5de9928`, Chapter 12, cross-checked against SOURCE OS CANON v1.0.0 built from v184 and the v341 crosswalk. The source artifact does not declare its version label; it is not silently treated as v341.
+
+Current registry-scope KPI 2 is **117/125 role-complete**, with **8 Conscious Domain records still substantively open**. The 15 behavioral-domain crosswalks remain unapproved, and domain 06 has an explicit label variant (“Destruction and Renewal” in the current manuscript versus “Destruction and Transformation” in the registry). KPI 3 remains open: 103 records have empty links arrays, 0/36 mapping rows are approved semantic edges, and runtime graph traversal is not verified.
+
+
+### Superseding registry-scope KPI result — 2026-10-24
+After completing the three research passes for all eight Conscious Domain records, KPI 2 is **125/125 researched records** for this registry. The eight individual affirmation-to-domain assignments remain provisional; that is an owner/canonical crosswalk decision, not an unperformed research pass. KPI 3 remains open because semantic relationships are not yet fully approved or runtime-traversed. Project-wide KPI 1 remains unverified until the full Nerve-to-Super-Complex inventory is reconciled.
