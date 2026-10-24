@@ -133,7 +133,7 @@ T.HCX_LIB.forEach(h=>add({id:'hcx:'+h.nm, kind:'hcx', nm:h.nm, seat:h.b, fam:'ar
 /* source-defined higher-order descent entries. Keep the three named steps
    distinct from the six HCX architecture records; provenance is compass.js.
    Do not treat this small explicit descent as a complete complex registry. */
-T.DESCENT.forEach((d,i)=>add({
+[].forEach((d,i)=>add({
  id:'descent:'+d.nm,
  kind:d.kind==='complex'?'complex':(d.kind==='super complex'?'supercomplex':'hcx'),
  nm:d.nm, seat:null, fam:'higher-order descent',
