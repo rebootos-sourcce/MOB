@@ -27555,7 +27555,7 @@
       "domainCountRulingResolved": false
     },
     "lastSourceRecovery": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
-    "latestRoundNote": "2026-10-24: Completed all three research passes for all eight Conscious Domain records. Independent sources provide conceptual context but do not establish individual affirmation-to-domain assignments; those remain provisional. KPI 2 is research-record completeness, separate from canonical approval and KPI 3 wiring.",
+    "latestRoundNote": "2026-10-24: Completed all three research passes for all eight Conscious Domain records. Independent sources provide conceptual context but do not establish individual affirmation-to-domain assignments; those remain provisional. KPI 2 is research-record completeness, separate from canonical approval and KPI 3 wiring. Generator/validator code now embeds the registry and catalog in a separate KBD namespace; Node execution and graph traversal are still unverified.",
     "lastStructuralRepair": "2026-10-24: Added missing links arrays to 0 records without inferring any edges; blocked Conscious Domain passes 2 and 3 where evidence remains insufficient.",
     "lastRegistryAudit": "2026-10-24: Audited 103 records with empty links arrays. No semantic links were invented. Conscious Domain passes 2 and 3 are blocked where the available research does not verify exact domain/affirmation assignment."
   },
@@ -27675,7 +27675,7 @@
       "blockedPassSlots": 0,
       "note": "All 125 records have three recorded research passes. Unresolved taxonomy/assignment findings remain explicit; research completion is not Canon approval or graph wiring."
     },
-    "runtimeIntegration": "NOT VERIFIED; template catalog and registry adapter remain unintegrated with the existing engine.",
+    "runtimeIntegration": "GENERATOR/VALIDATOR DATA-NAMESPACE EMBEDDING CODED; NOT EXECUTED OR VERIFIED; APP-LEVEL/SEMANTIC GRAPH INTEGRATION OPEN",
     "warning": "Do not promote provisional definitions, taxonomic mappings, cultural-figure crosswalks, or affirmation assignments to Canon without source-level evidence and the required approval.",
     "contentCompleteness": {
       "recordsCompleteForDeclaredRole": 125,
