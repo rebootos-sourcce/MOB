@@ -18,7 +18,7 @@ const byId = new Map();
 const errors = [];
 const counts = {};
 const missingByKind = {};
-const requiredKinds = ['node','sab','hcx','hypercomplex','complex','supercomplex','inferred'];
+const requiredKinds = ['node','sab','hcx','hypercomplex_mode','hypercomplex','complex','supercomplex_candidate','descent_candidate','inferred','mirror_pair','mirror_figure_candidate','circle_candidate','blueprint_pattern','cascade_state','source_contradiction','source_gap','roster_requirement','axis','seat','nerve','arch','mask','term'];
 for (const e of entries) {
   counts[e.kind] = (counts[e.kind] || 0) + 1;
   if (!e.id) errors.push('record has no stable id');
@@ -40,7 +40,7 @@ for (const e of entries) {
 }
 /* Hypercomplex closure gate: every mode must reach at least one populated
    complex through reciprocal links, and every declared route edge must return. */
-for (const e of entries.filter(x => x.kind === 'hypercomplex')) {
+for (const e of entries.filter(x => x.kind === 'hypercomplex_mode')) {
   const targets = new Set(e.links || []);
   const linkedSaboteurs = [...targets].map(id => byId.get(id) || entries.find(x => x.id === id))
     .filter(x => x && x.kind === 'sab');
