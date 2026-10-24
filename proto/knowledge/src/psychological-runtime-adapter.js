@@ -30,7 +30,7 @@ module.exports = function adaptPsychologicalRegistry(registry, catalog, options 
       source[field] === null || source[field] === undefined || source[field] === ''
     );
     entries.push({
-      id: 'psych:' + source.id,
+      id: runtimeId(source.id),
       sourceRecordId: source.id,
       kind: source.runtimeKind || ('psych_' + source.kind),
       sourceRuntimeKind: source.runtimeKind || null,
@@ -55,8 +55,8 @@ module.exports = function adaptPsychologicalRegistry(registry, catalog, options 
       },
       links: [...new Set([...(source.links || []), ...(source.childIds || [])])]
         .filter((id) => id && id !== source.id && sourceIds.has(id))
-        .map((id) => 'psych:' + id),
-      parentId: source.parentId && sourceIds.has(source.parentId) ? 'psych:' + source.parentId : null,
+        .map(runtimeId),
+      parentId: source.parentId && sourceIds.has(source.parentId) ? runtimeId(source.parentId) : null,
       childIds: (source.childIds || []).filter((id) => sourceIds.has(id)).map((id) => 'psych:' + id),
       relationships: source.relationships || [],
       sourceRefs: source.sourceRefs || [],
@@ -78,13 +78,13 @@ module.exports = function adaptPsychologicalRegistry(registry, catalog, options 
   const edges = [];
   const edgeIds = new Set();
   for (const edge of (registry.relationshipEdges || [])) {
-    const fromId = sourceIds.has(edge.fromId) ? 'psych:' + edge.fromId : edge.fromId;
+    const fromId = sourceIds.has(edge.fromId) ? runtimeId(edge.fromId) : edge.fromId;
     const internalTarget = edge.toId && sourceIds.has(edge.toId);
-    const toId = internalTarget ? 'psych:' + edge.toId : (edge.toId || null);
+    const toId = internalTarget ? runtimeId(edge.toId) : (edge.toId || null);
     if (!entryIds.has(fromId)) errors.push((edge.edgeId || 'edge') + ': source endpoint missing');
     if (internalTarget && !entryIds.has(toId)) errors.push((edge.edgeId || 'edge') + ': target endpoint missing');
     if (!toId && (!edge.toLabel || !edge.status)) errors.push((edge.edgeId || 'edge') + ': unresolved target needs label and status');
-    const edgeId = 'psych:' + edge.edgeId;
+    const edgeId = namespace + ':' + edge.edgeId;
     if (edgeIds.has(edgeId)) errors.push(edgeId + ': duplicate edge id');
     edgeIds.add(edgeId);
     edges.push({
@@ -110,6 +110,7 @@ module.exports = function adaptPsychologicalRegistry(registry, catalog, options 
     relationshipEdges: edges,
     sourceRegistry: {
       registryId: registry.registryId,
+      namespace,
       version: registry.version,
       recordCount: records.length,
       relationshipEdgeCount: edges.length
