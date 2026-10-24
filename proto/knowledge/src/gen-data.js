@@ -442,6 +442,14 @@ const relationshipEdges=[...adaptedPsych.relationshipEdges,...adaptedSuper.relat
  if(edge.toId&&sourceToRuntimeId.has(edge.toId))return {...edge,toId:sourceToRuntimeId.get(edge.toId),targetRegistry:'combined_runtime',validationStatus:'cross_registry_target_resolved'};
  return edge;
 });
+const allById=new Map(E.map(e=>[e.id,e]));
+for(const edge of relationshipEdges){
+ if(edge.toId&&edge.reciprocalRequired&&allById.has(edge.fromId)&&allById.has(edge.toId)){
+  const from=allById.get(edge.fromId),to=allById.get(edge.toId);
+  if(!from.links.includes(edge.toId))from.links.push(edge.toId);
+  if(!to.links.includes(edge.fromId))to.links.push(edge.fromId);
+ }
+}
 const icp=JSON.parse(fs.readFileSync(path.join(__dirname,'icp.json'),'utf8'));
 const out={entries:E, pal:T.PAL, glyph:T.SEATGLYPH, bands:T.BANDS, icp:icp,
  relationshipEdges:adaptedPsych.relationshipEdges,
