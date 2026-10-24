@@ -77,8 +77,18 @@ $('allCh').addEventListener('input',function(e){toYou();
  CHARGES.forEach(function(c){S.charge[c]=+e.target.value;});syncCh();saveYou();render();});
 $('allRep').addEventListener('input',function(e){toYou();
  CHARGES.forEach(function(c){S.replace[c]=+e.target.value;});syncCh();saveYou();render();});
+/* THE BULK LAW SLIDER ANSWERS NOTHING, P2-5 of the inference audit, 24
+   October. It set every law in one drag, and a law moved off its seed counts
+   as answered (lawIn, saveProfile), so one gesture filled all 21 and CQ, the
+   tier word and full coverage followed it. CQ is exactly as good as the self
+   report, and this was not one. An unanswered law now moves with the slider
+   and its seed moves with it, so it stays unanswered and no save writes it.
+   A law already answered takes the value and stays answered: the person
+   moved their own answer. Moving one law's own control still answers that
+   law, because it moves it off the seed. */
 $('allLaw').addEventListener('input',function(e){toYou();
- SINAMES.forEach(function(l){S.law[l]=+e.target.value;});syncLw();saveYou();render();});
+ var v=+e.target.value;
+ SINAMES.forEach(function(l){if(!lawIn(l))LAW_SEED[l]=v; S.law[l]=v;});syncLw();saveYou();render();});
 
 /* ---- tabs and depths ---- */
 /* ============================================================

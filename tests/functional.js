@@ -4535,6 +4535,42 @@ ok(pris.measured===0,'and has measured nothing, got '+pris.measured);
 ok(pris.unset===21,'and carries 21 unset laws, got '+pris.unset);
 await strg.close();
 
+/* THE BULK LAW SLIDER MOVES THE LAWS AND ANSWERS NONE OF THEM, P2-5 of the
+   inference audit, 24 October. The "all" slider on the Field's right rail set
+   every law in one drag, and a law moved off its seed counts as answered, so
+   one gesture filled all 21 and CQ, the tier word and full coverage followed
+   it. Held on a stranger's page: the drag moves every law and answers none,
+   stores none and leaves the field unread; one law's own control then
+   answers that law and no other; and a second drag moves the answered law
+   too and leaves it answered, because it is the person's own answer. */
+const bk=await browser.newPage({viewport:{width:1600,height:1000}});
+await bk.goto(FILE,{waitUntil:'load'}); await booted(bk); await bk.waitForTimeout(400);
+await bk.evaluate(()=>{try{localStorage.clear();}catch(e){}});
+await bk.reload({waitUntil:'load'}); await booted(bk); await bk.waitForTimeout(700);
+const bulk=await bk.evaluate(()=>{
+ setTab(TAB.FIELD);
+ /* the write to the record is debounced, persistYou, so each move is
+    flushed before the record is read, the way leaving the page flushes it */
+ const fire=(el,v)=>{el.value=String(v); el.dispatchEvent(new Event('input',{bubbles:true})); persistNow();};
+ const state=()=>{const r=compute();
+  return {answered:r.answered, measured:r.measured, unread:r.unread, cq:Math.round(r.CQ),
+   vals:[...new Set(SINAMES.map(l=>S.law[l]))],
+   stored:Object.keys((CURP&&CURP.laws)||{}).filter(k=>CURP.laws[k]!=null).length};};
+ const a=state();
+ fire(document.getElementById('allLaw'),8); const b=state();
+ fire(LWF[SINAMES[0]].inp,3); const c=state();
+ fire(document.getElementById('allLaw'),5); const d=state();
+ return {a,b,c,d,first:S.law[SINAMES[0]]};});
+await bk.close();
+ok(bulk.a.answered===0&&bulk.a.measured===0&&bulk.a.unread,'a stranger starts with no law answered, '+JSON.stringify(bulk.a));
+ok(bulk.b.vals.length===1&&bulk.b.vals[0]===8,'the all slider moves every law to 8, '+JSON.stringify(bulk.b.vals));
+ok(bulk.b.answered===0&&bulk.b.measured===0&&bulk.b.unread&&bulk.b.stored===0&&bulk.b.cq===0,
+ 'and answers none of them: none answered, none stored, the field unread and CQ 0, '+JSON.stringify(bulk.b));
+ok(bulk.c.answered===1&&bulk.c.measured===1&&bulk.c.stored===1,
+ 'one law\'s own control then answers that law and no other, '+JSON.stringify(bulk.c));
+ok(bulk.d.answered===1&&bulk.d.measured===1&&bulk.d.stored===1&&bulk.first===5&&bulk.d.vals.length===1,
+ 'and a second drag moves that answer too and keeps it answered, '+JSON.stringify({d:bulk.d,first:bulk.first}));
+
 
 console.log('\n=== carrying and held are two facts, and only one of them was said ===');
 /* THE RULE: the product may say "Nothing is carrying" only to somebody who is
