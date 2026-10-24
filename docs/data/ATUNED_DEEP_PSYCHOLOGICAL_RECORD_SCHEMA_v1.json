@@ -674,10 +674,34 @@
         "string",
         "null"
       ]
+    },
+    "inferred": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "inferenceBasis": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "narrativeSource": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "researchSources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     }
   },
   "additionalProperties": true,
-  "version": "1.4.0",
+  "version": "1.5.0",
   "allOf": [
     {
       "if": {
@@ -1330,6 +1354,36 @@
           "canonicalStatus",
           "blockingDependencies",
           "requiredNextAction",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "descent_candidate"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceClaimedLayer",
+          "ownerRuling",
+          "behavior",
+          "triggerMechanism",
+          "livedExample",
+          "impact",
+          "practice",
+          "oppositeDefinition",
+          "oppositeStatus",
+          "inferred",
+          "inferenceBasis",
           "sourceRefs",
           "sourceClaims",
           "researchPasses"
