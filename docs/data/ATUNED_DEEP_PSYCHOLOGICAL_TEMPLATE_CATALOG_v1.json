@@ -1,6 +1,6 @@
 {
   "catalogId": "atuned.deep_psychological.template_catalog",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "status": "COMPLEX_HYPERCOMPLEX_AND_SUPERCOMPLEX_CANDIDATE_TEMPLATES_ADDED",
   "purpose": "Explicit template assignments for the deep-psychological registry. Behavioral-domain records include research-informed behavioral-energy fields; the catalog remains separate from the experiential runtime until integration is implemented and tested.",
   "templates": [
@@ -250,23 +250,15 @@
       "kind": "source_contradiction",
       "fields": [
         "nm",
-        "fam",
-        "def",
-        "body",
-        "links",
         "contradictoryStatements",
         "affectedRecordIds",
         "requiredRuling",
-        "sourceVersion",
-        "sourceLocator",
-        "sourceEvidenceStatus",
-        "canonicalStatus",
         "sourceRefs",
         "sourceClaims",
         "researchPasses",
         "templateValidation"
       ],
-      "description": "Contradictory source claims retained as a record; must not be silently reconciled."
+      "description": "Contradictory source claims tracked separately until owner/source ruling resolves them."
     },
     {
       "id": "TPL-COMPLEX-CANON-V1",
@@ -603,6 +595,308 @@
         "templateValidation"
       ],
       "description": "Provisional inferred counterpart record. Never treat as canonical or as a clinical claim without evidence and review."
+    },
+    {
+      "id": "TPL-SOMATIC-SIGNATURE-V1",
+      "kind": "somatic_signature",
+      "fields": [
+        "nm",
+        "seat",
+        "fam",
+        "def",
+        "body",
+        "trigger",
+        "says",
+        "out",
+        "livedBehavior",
+        "availableState",
+        "nextMove",
+        "nids",
+        "arch",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "links",
+        "templateValidation"
+      ],
+      "description": "Runtime somatic signature state; distinct from the canonical 33 Saboteur entities."
+    },
+    {
+      "id": "TPL-SABOTEUR-DEEP-V1",
+      "kind": "saboteur",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "body",
+        "chargeSignature",
+        "sourceDefinition",
+        "sourceBehavior",
+        "sourceIntervention",
+        "sourceFamily",
+        "sourceMembershipNids",
+        "membershipStatus",
+        "canonicalStatus",
+        "sourceFields",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "links",
+        "templateValidation"
+      ],
+      "description": "Canonical Saboteur source record enriched with behavioral research; parent membership is not inferred from runtime signature NIDs."
+    },
+    {
+      "id": "TPL-FETTER-DEEP-V1",
+      "kind": "fetter_deep_template",
+      "fields": [
+        "nodeId",
+        "nm",
+        "sourceBand",
+        "anatomicalAddress",
+        "governingFunction",
+        "shadowExpression",
+        "phase",
+        "sourceFields",
+        "corpusMatches",
+        "behavioralHypothesis",
+        "contextualDiscriminant",
+        "counterexampleGuard",
+        "releaseStatement",
+        "sourceVersion",
+        "versionCrosscheckStatus",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "links",
+        "templateValidation"
+      ],
+      "description": "Research record for one of the 108 body Fetter nodes; generated hypotheses remain non-canonical."
+    },
+    {
+      "id": "TPL-ADDRESS-NINE-PROMPT-V1",
+      "kind": "address_nine_prompt",
+      "fields": [
+        "promptId",
+        "nodeId",
+        "fetterName",
+        "register",
+        "registerQuestion",
+        "searchAnchor",
+        "evidenceInstruction",
+        "evidenceClass",
+        "reviewStatus",
+        "sourceFields",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "links",
+        "templateValidation"
+      ],
+      "description": "Evidence-collection prompt for one Fetter across one linguistic register; not itself a psychological finding."
+    },
+    {
+      "id": "TPL-POLARITY-CANDIDATE-V1",
+      "kind": "polarity_candidate",
+      "fields": [
+        "pairId",
+        "profileId",
+        "profileName",
+        "constructiveCandidate",
+        "relationClass",
+        "sharedMechanismHypothesis",
+        "descentObservablePatterns",
+        "constructiveObservablePatterns",
+        "sourceSupport",
+        "storyEvidenceIds",
+        "counterexampleOrConfounds",
+        "confidence",
+        "reviewStatus",
+        "promotionGate",
+        "notes",
+        "sourceFields",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "links",
+        "templateValidation"
+      ],
+      "description": "Unresolved Inferno/descent polarity hypothesis; no antonym promotion without story evidence and owner adjudication."
+    },
+    {
+      "id": "TPL-DESCENT-PROFILE-CANDIDATE-V1",
+      "kind": "descent_profile_candidate",
+      "fields": [
+        "profileId",
+        "profileName",
+        "sourceFields",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "canonicalStatus",
+        "confidence",
+        "links",
+        "templateValidation"
+      ],
+      "description": "Source profile record distinct from any proposed constructive polarity."
+    },
+    {
+      "id": "TPL-TEMPLATE-DEFINITION-V1",
+      "kind": "template_definition",
+      "fields": [
+        "templateId",
+        "structureType",
+        "nm",
+        "sourceDescription",
+        "sourceSeat",
+        "sourceSubtextInternalOnly",
+        "constructiveExpression",
+        "shadowOrLoadMechanism",
+        "membershipRule",
+        "evidenceGate",
+        "sourceStatus",
+        "clinicalSafety",
+        "sourceFields",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "links",
+        "templateValidation"
+      ],
+      "description": "Source-defined family or example template; not a user-specific Complex/Hyper-Complex/Super-Complex entity."
+    },
+    {
+      "id": "TPL-SOURCE-GAP-REGISTER-V1",
+      "kind": "source_gap",
+      "fields": [
+        "gapId",
+        "priority",
+        "area",
+        "gap",
+        "impact",
+        "nextAction",
+        "status",
+        "sourceFields",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "links",
+        "templateValidation"
+      ],
+      "description": "Explicit source/build gap record; an unresolved status is not treated as completion."
+    },
+    {
+      "id": "TPL-SOURCE-RULING-V1",
+      "kind": "source_ruling",
+      "fields": [
+        "rulingId",
+        "item",
+        "detail",
+        "blocks",
+        "sourceVersion",
+        "status",
+        "requiredDecision",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "links",
+        "templateValidation"
+      ],
+      "description": "Open source-owner ruling with affected register layers and a recorded decision dependency."
+    },
+    {
+      "id": "TPL-OWNER-ROSTER-PLACEHOLDER-V1",
+      "kind": "owner_roster_placeholder",
+      "fields": [
+        "rosterId",
+        "slotIndex",
+        "layer",
+        "nm",
+        "canonicalStatus",
+        "ownerClaim",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "links",
+        "templateValidation"
+      ],
+      "description": "Counted but unnamed roster slot; placeholder prevents false completeness without inventing an entity name."
+    },
+    {
+      "id": "TPL-SABOTEUR-MEMBERSHIP-REQUIREMENT-V1",
+      "kind": "saboteur_membership_requirement",
+      "fields": [
+        "saboteurId",
+        "saboteurName",
+        "requiredMinimumNodeCount",
+        "currentNodeIds",
+        "status",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "links",
+        "templateValidation"
+      ],
+      "description": "Tracks the canonical minimum-child rule where exact Fetter-to-Saboteur membership evidence is unavailable."
+    },
+    {
+      "id": "TPL-SOURCE-OS-HYPERCOMPLEX-SNAPSHOT-V1",
+      "kind": "source_os_hypercomplex_snapshot",
+      "fields": [
+        "sourceHypercomplexId",
+        "nm",
+        "sourceVersion",
+        "childSaboteurNames",
+        "sourceStatus",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "links",
+        "templateValidation"
+      ],
+      "description": "Versioned SOURCE OS CANON Hyper-Complex snapshot; kept distinct from the MOB registry hierarchy."
+    },
+    {
+      "id": "TPL-LAYER-INVENTORY-V1",
+      "kind": "layer_inventory",
+      "fields": [
+        "layerId",
+        "nm",
+        "layerClass",
+        "sourceVersions",
+        "expectedCount",
+        "observedCount",
+        "denominatorStatus",
+        "recordCoverageStatus",
+        "researchCoverageStatus",
+        "wiringCoverageStatus",
+        "knownBlockers",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "links",
+        "templateValidation"
+      ],
+      "description": "Global layer denominator and KPI evidence; counts are version-scoped and must not hide unknown source universes."
+    },
+    {
+      "id": "TPL-KPI-DEFINITION-V1",
+      "kind": "kpi_definition",
+      "fields": [
+        "kpiId",
+        "nm",
+        "definition",
+        "numerator",
+        "denominator",
+        "status",
+        "evidence",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "links",
+        "templateValidation"
+      ],
+      "description": "One of the three closure KPIs with explicit numerator, denominator, evidence, and blocker state."
     }
   ]
 }
