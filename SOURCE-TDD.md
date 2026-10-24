@@ -1,6 +1,6 @@
-# SOURCE — Technical Design Document (TDD)
+# SOURCE, Technical Design Document (TDD)
 ## Master Architecture + AI Handoff Specification
-**Version:** 1.0 — 2026-09-30
+**Version:** 1.0, 2026-09-30
 
 ## 0. HANDOFF CONTRACT
 
@@ -956,7 +956,7 @@ Higher-order candidates require stronger evidence because combinatorial false po
 # 29. DISCOVERY GRAPH
 
 ```text
-ADDRESS ↔ FETTER ↔ BEHAVIOR → SABOTEUR → COMPLEX → HYPER-COMPLEX → CHARACTER
+ADDRESS ↔ FETTER ↔ BEHAVIOR → SABOTEUR → COMPLEX → HYPER-COMPLEX → SUPER-COMPLEX → MASK → ARCHETYPE → DOMAIN → CHARACTER
 
 CELESTIAL SIGNAL → ARCHETYPE → BEHAVIOR ↔ FETTER
 
@@ -968,6 +968,14 @@ EXTERNAL EVIDENCE ↔ CANDIDATE
 ```
 
 The graph permits cross-layer discovery without collapsing the layers.
+
+The first line follows the stack the owner ruled on 23 October 2026
+(`DECISIONS.md`, "The full stack, nerve to Character"). After the hyper-complex
+comes the super-complex, two or more hyper-complexes combined. The masks sit
+above it, then archetype through domain, and Character is at the very top: the
+whole person, everything below taken together, and not a rung that computes a
+number of its own. Until that ruling this line ran the hyper-complex straight
+into Character as one rung.
 
 ---
 
@@ -1509,19 +1517,19 @@ VERSIONED CANON
 
 # 46. FOUR-ENGINE MODEL
 
-## Engine 1 — Celestial
+## Engine 1: Celestial
 
 > What did you come in with?
 
-## Engine 2 — Psycho-Spiritual
+## Engine 2: Psycho-Spiritual
 
 > How is the experience organizing psychologically and symbolically?
 
-## Engine 3 — SOURCE
+## Engine 3: SOURCE
 
 > What conditioned structures are actually carrying charge?
 
-## Engine 4 — Emergent Pattern
+## Engine 4: Emergent Pattern
 
 > What structures are present that SOURCE does not yet have names for?
 
