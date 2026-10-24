@@ -96,6 +96,18 @@ require('./net.js').guardBrowser(browser);
     ok(!!mn && +mn[1] === k, 'and its set aside is the engine\'s denied count, ' + k + ', said in plain words: ' + JSON.stringify(s.ctr));
     ok(!/negated/.test(s.ctr), 'the counter carries no word a ten year old would ask about: ' + JSON.stringify(s.ctr));
 
+    /* P3-1 of the inference audit, 24 October: a calm word said with a no is
+       set aside like any other word, denied on the parse, struck on the page
+       and counted as set aside, where it used to subtract a calm the person
+       said they did not have */
+    await type(p, 'I am not grateful. I was scared.');
+    const c = await story(p);
+    const cs = c.marks.filter(m => m.neg).map(m => m.t);
+    ok(!!c.denied && c.denied.join('|') === 'not grateful' && cs.join('|') === 'not grateful',
+      'a calm word after a no is denied on the parse and struck on the page: ' + JSON.stringify({ denied: c.denied, struck: cs }));
+    const cn = c.ctr.match(/(\d+) set aside after a no/);
+    ok(!!cn && +cn[1] === 1, 'and the counter sets it aside: ' + JSON.stringify(c.ctr));
+
     await type(p, 'I was not angry.');
     const d = await story(p);
     ok(d.commit === 'Commit', 'a denial alone gives the Commit button nothing to count: ' + JSON.stringify(d.commit));

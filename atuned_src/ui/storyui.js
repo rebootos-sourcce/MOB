@@ -1691,7 +1691,12 @@ function stDraw(){
  var pts=[];
  Object.keys(STC.items).forEach(function(k){var it=STC.items[k],m=it.m,g1=Math.max(0,it.g);if(g1<.01||m.t0<0)return;
   var x=stXOf(m.t0),x2=stXOf(m.t1)+tw;
-  if(m.coh){g.fillStyle=rgba(STC.acc,.9);g.fillRect(x,H-STC.FLOOR+2-10*g1,x2-x,3);return;}
+  /* a calm word said with a no is set aside like any other word, P3-1 of the
+     inference audit: drawn dashed and faint, never as the solid bar of a calm
+     that counted */
+  if(m.coh){var cy=H-STC.FLOOR+2-10*g1;
+   if(m.aside){g.strokeStyle=rgba(STC.acc,.55);g.setLineDash([2,2]);g.strokeRect(x+.5,cy+.5,x2-x-1,2);g.setLineDash([]);return;}
+   g.fillStyle=rgba(STC.acc,.9);g.fillRect(x,cy,x2-x,3);return;}
   var lk=STC.lm.keyOf(m),o=lk&&STC.lane[lk];if(!o)return;
   var c=stCol(m.bn),hh=Math.max(3,g1*(0.22+0.78*m.depth)*o.h*.82),base=o.y+o.h-1,al=o.a;
   if(m.aside){g.strokeStyle=rgba(c,.55*al);g.setLineDash([2,2]);g.strokeRect(x+.5,base-hh+.5,x2-x-1,hh-1);g.setLineDash([]);}
@@ -1836,10 +1841,14 @@ function stDrawRing(){
  /* the core. A coherent word places nothing, so it lands here and grows
     nothing. Hollow by cutting, like the stations on Lanes. */
  g.save();g.globalCompositeOperation='destination-out';g.beginPath();g.arc(q.cx,q.cy,q.core,0,TAU);g.fill();g.restore();
- g.beginPath();g.arc(q.cx,q.cy,q.core,0,TAU);g.strokeStyle=rgba(acc,Math.min(1,.35+.1*coh.length));g.lineWidth=1.4*s;g.stroke();
+ /* and a calm word said with a no is drawn set aside here too, P3-1, and
+    does not brighten the core it did not reach */
+ var cohKept=coh.filter(function(it){return !it.m.aside;}).length;
+ g.beginPath();g.arc(q.cx,q.cy,q.core,0,TAU);g.strokeStyle=rgba(acc,Math.min(1,.35+.1*cohKept));g.lineWidth=1.4*s;g.stroke();
  coh.forEach(function(it,j){var a=-Math.PI/2+j*.5,g1=Math.max(0,it.g),r0=q.core+3*s,r1=r0+6*s*g1;
   g.beginPath();g.moveTo(q.cx+Math.cos(a)*r0,q.cy+Math.sin(a)*r0);g.lineTo(q.cx+Math.cos(a)*r1,q.cy+Math.sin(a)*r1);
-  g.strokeStyle=rgba(acc,1);g.lineWidth=2*s;g.stroke();});
+  if(it.m.aside){g.setLineDash([2*s,2*s]);g.strokeStyle=rgba(acc,.45);}else{g.setLineDash([]);g.strokeStyle=rgba(acc,1);}
+  g.lineWidth=2*s;g.stroke();g.setLineDash([]);});
  g.lineCap='butt';}
 /* ---- C. THE TRACE, AS FIRST DRAWN: THE STRIP ---- */
 function stStripBox(){return {x0:70,x1:STC.W-60,y0:8,y1:STC.H-26};}
@@ -1863,7 +1872,10 @@ function stDrawStrip(){
   g.fillStyle=o.m?rgba(o.m.bn?stCol(o.m.bn):acc,1):rgba(dim,.45);g.fillRect(x,CH-20,Math.max(1.5,dx-3),o.m?9:6);});
  Object.keys(STC.items).forEach(function(k){var it=STC.items[k],m=it.m,g1=Math.max(0,it.g);if(g1<.01||m.t0<0)return;
   var x=stStripX(m.t0),x2=stStripX(m.t1)+Math.max(5,dx-1.5);
-  if(m.coh){g.fillStyle=rgba(acc,.9);g.fillRect(x,CH-20-12*g1,x2-x,3);return;}
+  /* a calm word said with a no, set aside as on the lanes, P3-1 */
+  if(m.coh){var cy=CH-20-12*g1;
+   if(m.aside){g.strokeStyle=rgba(acc,.55);g.setLineDash([2,2]);g.strokeRect(x+.5,cy+.5,x2-x-1,2);g.setLineDash([]);return;}
+   g.fillStyle=rgba(acc,.9);g.fillRect(x,cy,x2-x,3);return;}
   if(!m.bn)return;
   var l=stStripLane(m.bn),c=stCol(m.bn),hh=g1*(0.2+0.8*m.depth)*l.h*.9,base=l.y+l.h-1;
   if(m.aside){g.strokeStyle=rgba(c,.55);g.setLineDash([2,2]);g.strokeRect(x+.5,base-hh+.5,x2-x-1,hh-1);g.setLineDash([]);return;}

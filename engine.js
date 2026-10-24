@@ -16875,10 +16875,15 @@ function wordsOf(t,nm){
    so "I was not, honestly, angry" is denied. The cost of that ruling is
    measured and reported with the change, not hidden here.
 
-   A COHERENT WORD IS NEVER DENIED. A denial must never raise a reading, and
-   denying a word that subtracts would. "I am not grateful" subtracts as it
-   always did; that is a known gap, written in TDD-sniffer.md, and not made
-   worse here.
+   A COHERENT WORD SAID WITH A NO COUNTS NOWHERE, P3-1 of the inference
+   audit, 24 October. It used to be never denied, so that a denial could
+   never raise a reading, and the cost was written in TDD-sniffer.md: "I am
+   not grateful" still subtracted, about a tenth of a point from every
+   feeling, for a calm the person said they did not have. It is denied now
+   by the same rule as every other word, listed in denied, drawn set aside
+   and counted nowhere, so the sentence reads exactly as it would without
+   the word. A denial still never raises a reading above what the rest of
+   the words say.
 
    The hit keeps negw, the no it saw, and negAt, that word's leading space in
    nm.s, so a mark and a list can quote from the no to the word on the letters
@@ -16887,7 +16892,6 @@ var NEG_NOT_DENY=['stop','stops','stopped','help'];
 function sniffDeny(t,nm,hits){
  var ws=null, cuts=[];
  hits.forEach(function(h){
-  if(h.band==='coherent')return;
   if(!ws){ws=wordsOf(t,nm);
    /* every place a no is already spoken for: the end of each word read, and
       the end of each can't stop frame. Kept as the trailing space, which is

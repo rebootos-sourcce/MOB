@@ -8267,16 +8267,34 @@ g('S1 · a word said with a no is kept, named as denied, and adds nothing to any
    JSON.stringify(t)+' is not a denial: every hit counts, '+JSON.stringify(p.bands)+(den(p).length?', but denied '+den(p).map(h=>h.t).join(','):''));});
  ok(Array.isArray(E.NEG_NOT_DENY)&&E.NEG_NOT_DENY.length>0&&E.NEG_NOT_DENY.every(w=>NOTDEN.some(t=>new RegExp("(n't|not|never|cannot) "+w+'\\b','i').test(t))),
   'every frame word is named in one table and each has a sentence above: '+JSON.stringify(E.NEG_NOT_DENY));
- /* A COHERENT WORD IS NEVER DENIED, and the reason is the ruling's own: a
-    denial never raises a reading, and denying a word that subtracts would. */
+ /* A COHERENT WORD SAID WITH A NO COUNTS NOWHERE, P3-1 of the inference
+    audit, 24 October. It used to be never denied, and "I am not grateful"
+    subtracted a calm the person said they did not have. Denied, it reads as
+    the sentence without it: never below it, which was the subtraction, and
+    never above it, which is the ruling's own reason a denial must not raise
+    a reading. */
  const coh=parseStory('I am not grateful.');
- ok(den(coh).length===0&&coh.hits.some(h=>h.band==='coherent'),'a coherent word after a no still subtracts, the reading it had');
- /* the sentence, the chart, the list and the score read one flag */
+ ok(den(coh).length>0&&den(coh).every(h=>h.t==='grateful'&&h.negw==='not')&&!coh.hits.some(h=>h.band==='coherent'),
+  'a coherent word after a no is denied with its no and is not among the counted hits: '+JSON.stringify(den(coh).map(h=>[h.t,h.kind,h.negw])));
+ reset(3,0,6); const c0=JSON.stringify(S.charge); E.applyStory('I am not grateful.');
+ ok(JSON.stringify(S.charge)===c0,'committing it moves no charge on the field, down or up');
+ reset(3,0,6); E.applyStory('I am grateful.');
+ ok(JSON.stringify(S.charge)!==c0,'and the calm word said plainly still lowers it');
+ /* grateful, because "not calm" is a word of its own, a LEXANT entry that
+    reads as charge, and would test the wrong thing */
+ reset(3,0,6); E.applyStory('I am not grateful and I am scared.'); const cm=JSON.stringify(S.charge);
+ reset(3,0,6); E.applyStory('I am scared.');
+ ok(JSON.stringify(S.charge)===cm,'beside real charge it lands exactly as the charge alone');
+ ok(parseStory("I can't help feeling grateful.").hits.some(h=>h.band==='coherent'),
+  'and a can\'t help frame is not a no to the calm word after it');
+ /* the sentence, the chart, the list and the score read one flag, the calm
+    words with the rest */
  PAIRS.map(x=>[x[1],true]).concat([['I am not afraid. Afraid now.',true],['I was not scared but I was angry.',true],
-  ["I can't stop crying.",false],['Not sad, not angry, just tired of it.',true]]).forEach(([t,struck])=>{
+  ["I can't stop crying.",false],['Not sad, not angry, just tired of it.',true],['I am not grateful.',true],
+  ['I am grateful.',false]]).forEach(([t,struck])=>{
   const p=parseStory(t), m=marksOf(t,p), nm=normMap(t), at={};
   den(p).forEach(h=>{at[nm.map[h.at+1]]=1;});
-  const bad=m.filter(k=>!k.coh&&(!!k.neg!==!!at[k.s]));
+  const bad=m.filter(k=>!!k.neg!==!!at[k.s]);
   ok(bad.length===0&&m.some(k=>k.neg)===struck&&(den(p).length>0)===struck,
    'every struck mark is a denied hit and every denied hit is struck, in '+JSON.stringify(t)
    +(bad.length?': '+JSON.stringify(bad.map(k=>t.slice(k.s,k.e))):'')+(m.some(k=>k.neg)!==struck?', struck should be '+struck:''));});
