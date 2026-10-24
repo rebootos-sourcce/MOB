@@ -1,6 +1,6 @@
 {
   "catalogId": "atuned.deep_psychological.template_catalog",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "status": "PROPOSED_TEMPLATE_CATALOG; EMBEDDED_IN_GENERATED_DATA_NAMESPACE; RUNTIME_VALIDATION_PENDING",
   "purpose": "Typed templates for source-backed psychological records, source-version-specific domain rosters, related consciousness concepts, and explicitly provisional crosswalks. Template completeness does not confer canonical approval.",
   "templates": [
@@ -153,11 +153,29 @@
         "fam",
         "def",
         "body",
+        "parentId",
         "links",
+        "relationships",
         "sourceRefs",
         "researchPasses"
       ],
-      "description": "Source-version-specific candidate record for one label in the 19-label MOB_Complete_v341 domain roster. Captures cluster membership and research/crosswalk state without silently merging the label into v184 or current-manuscript taxonomies."
+      "description": "Source-version-specific candidate record for one label in the 19-label MOB_Complete_v341 domain roster. Requires a source-backed parent cluster edge; does not silently merge the label into v184 or current-manuscript taxonomies."
+    },
+    {
+      "id": "TPL-V341-CLUSTER-CANDIDATE-V1",
+      "kind": "v341_cluster_candidate",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "body",
+        "childIds",
+        "links",
+        "relationships",
+        "sourceRefs",
+        "researchPasses"
+      ],
+      "description": "Source-version-specific cluster record for the four v341 domain groups. Child membership is source-backed within the v341 roster only and is not merged into the v184 root graph."
     }
   ]
 }
