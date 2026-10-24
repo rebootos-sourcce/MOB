@@ -549,6 +549,85 @@ const PROBE = () => {
     ok(/what you marked Yes or Not me are not in it/.test(doorSay),
       '@' + w + ': the door does not say what was marked is not in the record');
 
+    /* THE SABOTEUR CARD'S OWN LOOKUP. sabCard inside viewRead reads the
+       authored entry with s.nm.toLowerCase(), and the reading's own names
+       carry a hyphen for four of the 33: Hyper-Achiever, Hyper-Rational,
+       Hyper-Vigilant, People-Pleaser. SABDEF keys the same four with a space,
+       so the lookup missed on exactly those four and the card fell to the
+       composed branch, no "It fires when:", no quoted line.
+       The engine will not surface two of the four through a hundred answered
+       questions no matter how they are answered: CHG2SEAT, the band
+       compute.js filters a named saboteur's addresses through, carries no
+       Apathy addresses at all, a separate engine gap this gate does not own
+       and is not testing. So the card is driven directly: read() is wrapped
+       for one render, viewRead() is called by hand with READ_AT at the
+       saboteur layer, and a real address cluster is borrowed for the parts
+       so nothing else on the card is invented.
+       Checked against the lookup it replaces first: all four missed and none
+       passed. The check is generic, by SAB33 and KB_KEY, and not by the four
+       names, so a future miss on any of the thirty three cannot hide either,
+       and a name the table does not carry (Root Flincher, the quiz's own
+       example of a generated one) is checked too, so the fix cannot be read
+       as having broken the composed branch instead. */
+    const sabCheck = await page.evaluate(() => {
+      QQ.forEach((q, i) => { A[i] = 2; });                /* a uniform baseline */
+      const realRead = read;
+      let parts = null, hcx = null;
+      const renderWith = names => {
+        read = function (p) {
+          const o = realRead(p);
+          if (!parts) {
+            const any = o.reading.sabs.find(s => s.parts && s.parts.length);
+            if (any) { parts = any.parts; hcx = any.hcx; }
+          }
+          o.reading.sabs = names.map((nm, i) => (
+            { nm, hcx: hcx || 'Collapse', parts: parts || [], w: 5 + i * 0.1 }));
+          return o;
+        };
+        READ_AT = 3;
+        let html, threw = null;
+        try { html = viewRead(); } catch (e) { threw = String(e && e.message || e); }
+        read = realRead;
+        if (threw) return { threw: threw, cards: [] };
+        const div = document.createElement('div');
+        div.innerHTML = html;
+        return { threw: null, cards: [...div.querySelectorAll('.sab')].map(c => ({
+          nm: (c.querySelector('h3') || {}).textContent || '',
+          text: c.textContent,
+          said: c.querySelector('.said') ? c.querySelector('.said').textContent : null
+        })) };
+      };
+      const r1 = renderWith(['Hyper-Achiever', 'Hyper-Rational', 'Hyper-Vigilant', 'People-Pleaser']);
+      const r2 = renderWith(['Root Flincher']);
+      const cards = r1.cards.concat(r2.cards).map(c => {
+        const key = KB_KEY(c.nm);
+        const inSab33 = SAB33.some(row => KB_KEY(row[0]) === key);
+        const def = SABDEF[key];
+        return { nm: c.nm, text: c.text, said: c.said, inSab33, hasQuote: !!(def && def.q) };
+      });
+      return { threw: r1.threw || r2.threw, hadParts: !!parts, cards: cards };
+    });
+    ok(!sabCheck.threw, '@' + w + ': driving the saboteur layer by hand threw: ' + sabCheck.threw);
+    ok(sabCheck.hadParts, '@' + w + ': no real address cluster to borrow, the saboteur lookup check did not run');
+    ok(sabCheck.cards.length === 5,
+      '@' + w + ': the five saboteur cards for this check did not all render, got '
+      + sabCheck.cards.map(c => c.nm).join(', '));
+    sabCheck.cards.forEach(c => {
+      if (c.inSab33) {
+        ok(/It fires when:/.test(c.text),
+          '@' + w + ': the ' + c.nm + ' card, one of the 33, carries no authored "It fires when:", '
+          + 'the SABDEF lookup missed it');
+        ok(!c.hasQuote || !!c.said,
+          '@' + w + ': the ' + c.nm + ' card carries no quoted line though SABDEF has one for it');
+      } else {
+        ok(/It fires on:/.test(c.text) && !/It fires when:/.test(c.text),
+          '@' + w + ': ' + c.nm + ', not one of the 33, no longer falls to the composed "It fires on:" line: '
+          + c.text.slice(0, 160));
+      }
+    });
+    console.log('  saboteur lookup: ' + sabCheck.cards.filter(c => c.inSab33).length
+      + ' authored card(s), ' + sabCheck.cards.filter(c => !c.inSab33).length + ' composed');
+
     ok(errs.length === 0, '@' + w + ': the quiz threw: ' + errs.slice(0, 2).join(' | '));
     await ctx.close();
   }

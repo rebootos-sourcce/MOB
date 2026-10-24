@@ -22608,7 +22608,7 @@ function viewRead(){
     The one slot that stays authored only is the sentence it says in your head,
     because putting words in somebody's mouth is not something to compose. */
  function sabCard(s,seen){
-  var d=(typeof SABDEF!=='undefined'&&SABDEF)?SABDEF[s.nm.toLowerCase()]:null;
+  var d=(typeof SABDEF!=='undefined'&&SABDEF)?SABDEF[typeof KB_KEY==='function'?KB_KEY(s.nm):s.nm.toLowerCase()]:null;
   var fam=HCX_LIB.filter(function(x){return x.nm===s.hcx;})[0];
   /* parts arrive unsorted for the cluster scan, and "the heaviest of them" has
      to be true when it is said. */
