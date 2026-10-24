@@ -1,6 +1,6 @@
 {
   "catalogId": "atuned.deep_psychological.template_catalog",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "status": "COMPLEX_HYPERCOMPLEX_AND_SUPERCOMPLEX_CANDIDATE_TEMPLATES_ADDED",
   "purpose": "Explicit template assignments for the deep-psychological registry. Behavioral-domain records include research-informed behavioral-energy fields; the catalog remains separate from the experiential runtime until integration is implemented and tested.",
   "templates": [
@@ -461,6 +461,20 @@
         "links",
         "sourceClaimedLayer",
         "ownerRuling",
+        "inferred",
+        "inferenceBasis",
+        "behavior",
+        "triggerMechanism",
+        "livedExample",
+        "impact",
+        "practice",
+        "oppositeId",
+        "oppositeDefinition",
+        "oppositeStatus",
+        "confidence",
+        "reviewStatus",
+        "narrativeSource",
+        "researchSources",
         "sourceVersion",
         "sourceLocator",
         "sourceRefs",
@@ -468,7 +482,7 @@
         "researchPasses",
         "templateValidation"
       ],
-      "description": "One of three DESCENT layer claims."
+      "description": "One of three DESCENT layer claims with full source behavioral fields preserved; source layer claim and owner ruling remain separate."
     },
     {
       "id": "TPL-ROSTER-REQUIREMENT-V1",
