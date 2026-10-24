@@ -14,6 +14,10 @@ const match = source.match(/var KBD=(.*);\s*$/s);
 if (!match) throw new Error('Cannot parse generated KBD payload.');
 const db = JSON.parse(match[1]);
 const entries = db.entries || [];
+const byId = new Map();
+const errors = [];
+const counts = {};
+const missingByKind = {};
 const warnings = [];
 const strictDeepPsychological = process.argv.includes('--strict-deep-psychological');
 const dpRegistry = db.deepPsychologicalRegistry;
@@ -61,10 +65,7 @@ if (!dpRegistry || !Array.isArray(dpRegistry.records) || !dpCatalog || !Array.is
     errors.push('Strict Deep Psychological closure gate failed; see deepPsychological summary.');
   }
 }
-const byId = new Map();
-const errors = [];
-const counts = {};
-const missingByKind = {};
+
 const requiredKinds = ['node','sab','hcx','hypercomplex','complex','supercomplex','inferred'];
 for (const e of entries) {
   counts[e.kind] = (counts[e.kind] || 0) + 1;
