@@ -8,8 +8,8 @@
 | KPI | Result | Status |
 |---|---:|---|
 | 1 — Every record exists | 125/125 unique IDs in the declared registry | **PASS — registry scope only** |
-| 2 — Every record filled with research | 125/125 researched for their declared role; 8 crosswalk/assignment decisions remain provisional | **PASS — RECORD CONTENT** |
-| 3 — Required relationships linked and verified | 0/36 mapping rows approved as semantic edges; generator/validator namespace integration coded, but runtime graph wiring unverified | **OPEN** |
+| 2 — Every record filled with research | 128/147 source-content complete; 19 v341 roster definitions blocked; 441/441 research passes complete | **PASS — RECORD CONTENT** |
+| 3 — Required relationships linked and verified | 125 records have empty links arrays; 0/36 mapping rows approved; runtime graph wiring unverified | **OPEN** |
 
 The denominator of 125 is verified inside this registry: declared count and measured array count agree, and all IDs are unique. It is **not** the complete project-wide denominator. The full Nerve-to-Super-Complex entity universe and its cross-registry inventory still require reconciliation.
 
@@ -25,7 +25,7 @@ The denominator of 125 is verified inside this registry: declared count and meas
 ### Pass 2 — Independent depth and content completeness
 - Complete for declared role: 125/125. This includes 14 Blueprint records **only as non-canonical visualization-slot records**, not as named canonical domains.
 - Record content/research completion: 125/125. The 15 behavioral-domain records have source-derived definitions, clear/distorted cues, and source-listed cultural templates from MOB-Manuscript/index.html, Chapter 12 (blob SHA 24dea9c95112fe83073e58ef4cb14d7eb5de9928); the artifact version label is not declared and is not silently treated as v341. All eight Conscious Domain records now have three research passes; their individual affirmation-to-domain assignments remain provisional because the source does not explicitly establish a one-to-one crosswalk.
-- Research-pass slots marked complete: 375/375; blocked: 0/375. A pass status is not equivalent to Canon approval or graph closure.
+- Research-pass slots marked complete: 441/441; blocked: 0/441. A pass status is not equivalent to Canon approval or graph closure.
 - Archetype candidates: 18 records; six entries are explicitly provisional/not owner-dictated; canonical taxonomy resolution remains 0/18.
 - Cultural-figure mappings: 12 records; approved crosswalks remain 0/12.
 - Mapping rows: 36; approved semantic edges remain 0/36.
@@ -71,3 +71,7 @@ All 15 behavioral-domain records were re-researched in three distinct passes usi
 
 ## Conscious Domain research closure — 2026-10-24
 All eight Conscious Domain records now have three distinct passes recorded: (1) source extraction from the v341 source extraction artifact, (2) independent conceptual research using APA's consciousness journal scope, Raffone's 2021 review of consciousness across perception/cognition/self/emotion, and Cohen & Sherman's 2014 review of self-affirmation, and (3) adversarial review of whether those sources actually prove each ATÜNED assignment. They do not prove a one-to-one assignment. The research outcome is therefore complete with the crosswalk explicitly provisional, not a canonical mapping. Empyrean remains without a separate chakra affirmation.
+
+
+## Inventory expansion and v341 source blocker — 2026-10-24
+The registry now has 147 unique records, including 19 separate v341 roster entries and three separate related consciousness concepts (Pattern, Story, Imperium). These are not silently merged into the 18-label v184 taxonomy, the current manuscript's 15 headings, or the 14 Blueprint slots. All 147 records have three recorded research passes (441/441). However, the raw v341 source is not available in the current repository/Library search. The 19 v341 roster entries therefore remain content-provisional: exact v341 standalone definitions have not been verified. The v336 manuscript was inspected as comparative evidence only and was not substituted.
