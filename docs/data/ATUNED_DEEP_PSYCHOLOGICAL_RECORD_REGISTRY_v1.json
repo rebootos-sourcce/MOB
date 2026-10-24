@@ -2,7 +2,7 @@
   "registryId": "atuned.deep_psychological.record_registry",
   "version": "1.0.0",
   "generatedAt": "2026-10-22",
-  "status": "OPEN_PROVISIONAL_CONTENT_POPULATED_SOURCE_GAPS_REMAIN",
+  "status": "OPEN_STRUCTURAL_LINK_FIELD_REPAIRED_RESEARCH_AND_RUNTIME_CLOSURE_REMAIN",
   "purpose": "Source-qualified inventory with provisional content populated for the 15 owner-stated behavioral-domain records and explicit source-gap scaffolding for 8 Conscious Domain records. Provisional text is not canonical approval.",
   "recordContract": "docs/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_FORMAT_TDD_v1.md",
   "rules": [
@@ -9968,7 +9968,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_research_complete_canonical_review_open",
+      "status": "provisional_research_pass_1_complete_pass_2_3_blocked_canonical_review_open",
       "definition": "Awareness aligned with Source; pattern, truth, and coherence across time, energy, and matter. Not a chakra zone, but the unified field containing all zones; the state from which the other seven emerge and to which they return.",
       "essence": null,
       "function": "Represent the integrative awareness frame within which the other seven conscious-domain states are situated.",
@@ -10036,7 +10036,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "complete",
+          "status": "blocked",
           "sources": [
             "https://www.apa.org/pubs/journals/cns/about",
             "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
@@ -10048,12 +10048,13 @@
           ],
           "conflicts": [
             "Exact ATÜNED semantics and affirmation assignment remain source-specific and are not established by external general psychology literature; retain the record as provisional pending owner/source confirmation."
-          ]
+          ],
+          "blockReason": "Current evidence is conceptual/category-level only; it does not independently corroborate the exact ATUNED domain wording or source-assigned affirmation."
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "complete",
+          "status": "blocked",
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md",
@@ -10067,7 +10068,8 @@
           ],
           "conflicts": [
             "Source-authoritative affirmation-to-domain assignment and canonical approval remain open; this pass is complete as provisional synthesis only."
-          ]
+          ],
+          "blockReason": "Cross-record synthesis remains provisional because the exact affirmation-to-domain edge is not source-verified or owner-approved."
         }
       ],
       "unresolvedQuestions": [
@@ -10204,12 +10206,12 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "complete",
+        "contentStatus": "provisional_content_populated",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "not_approved",
-        "status": "provisional_research_complete_canonical_review_open"
+        "canonicalApproval": "pending",
+        "status": "provisional_research_incomplete"
       },
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
@@ -10226,7 +10228,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_research_complete_canonical_review_open",
+      "status": "provisional_research_pass_1_complete_pass_2_3_blocked_canonical_review_open",
       "definition": "Honoring the word one gives to oneself and others; the crown as a two-way interface receiving from Source without distortion.",
       "essence": null,
       "function": "Orient integrity around the relationship between a person's word, intent, and actual behavior.",
@@ -10294,7 +10296,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "complete",
+          "status": "blocked",
           "sources": [
             "https://www.apa.org/pubs/journals/cns/about",
             "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
@@ -10306,12 +10308,13 @@
           ],
           "conflicts": [
             "Exact ATÜNED semantics and affirmation assignment remain source-specific and are not established by external general psychology literature; retain the record as provisional pending owner/source confirmation."
-          ]
+          ],
+          "blockReason": "Current evidence is conceptual/category-level only; it does not independently corroborate the exact ATUNED domain wording or source-assigned affirmation."
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "complete",
+          "status": "blocked",
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md",
@@ -10325,7 +10328,8 @@
           ],
           "conflicts": [
             "Source-authoritative affirmation-to-domain assignment and canonical approval remain open; this pass is complete as provisional synthesis only."
-          ]
+          ],
+          "blockReason": "Cross-record synthesis remains provisional because the exact affirmation-to-domain edge is not source-verified or owner-approved."
         }
       ],
       "unresolvedQuestions": [
@@ -10463,12 +10467,12 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "complete",
+        "contentStatus": "provisional_content_populated",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "not_approved",
-        "status": "provisional_research_complete_canonical_review_open"
+        "canonicalApproval": "pending",
+        "status": "provisional_research_incomplete"
       },
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
@@ -10485,7 +10489,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_research_complete_canonical_review_open",
+      "status": "provisional_research_pass_1_complete_pass_2_3_blocked_canonical_review_open",
       "definition": "Conscious awareness in every moment; the recognition axis is open and behavior is no longer running automatically.",
       "essence": null,
       "function": "Increase awareness of the present moment and recognition of automatic behavioral patterns.",
@@ -10553,7 +10557,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "complete",
+          "status": "blocked",
           "sources": [
             "https://www.apa.org/pubs/journals/cns/about",
             "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
@@ -10565,12 +10569,13 @@
           ],
           "conflicts": [
             "Exact ATÜNED semantics and affirmation assignment remain source-specific and are not established by external general psychology literature; retain the record as provisional pending owner/source confirmation."
-          ]
+          ],
+          "blockReason": "Current evidence is conceptual/category-level only; it does not independently corroborate the exact ATUNED domain wording or source-assigned affirmation."
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "complete",
+          "status": "blocked",
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md",
@@ -10584,7 +10589,8 @@
           ],
           "conflicts": [
             "Source-authoritative affirmation-to-domain assignment and canonical approval remain open; this pass is complete as provisional synthesis only."
-          ]
+          ],
+          "blockReason": "Cross-record synthesis remains provisional because the exact affirmation-to-domain edge is not source-verified or owner-approved."
         }
       ],
       "unresolvedQuestions": [
@@ -10722,12 +10728,12 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "complete",
+        "contentStatus": "provisional_content_populated",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "not_approved",
-        "status": "provisional_research_complete_canonical_review_open"
+        "canonicalApproval": "pending",
+        "status": "provisional_research_incomplete"
       },
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
@@ -10744,7 +10750,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_research_complete_canonical_review_open",
+      "status": "provisional_research_pass_1_complete_pass_2_3_blocked_canonical_review_open",
       "definition": "Absolute truth in speech, perception, and behavior; truth integrity defended automatically.",
       "essence": null,
       "function": "Align speech, perception, and behavior with evidence and truthful representation.",
@@ -10812,7 +10818,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "complete",
+          "status": "blocked",
           "sources": [
             "https://www.apa.org/pubs/journals/cns/about",
             "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
@@ -10824,12 +10830,13 @@
           ],
           "conflicts": [
             "Exact ATÜNED semantics and affirmation assignment remain source-specific and are not established by external general psychology literature; retain the record as provisional pending owner/source confirmation."
-          ]
+          ],
+          "blockReason": "Current evidence is conceptual/category-level only; it does not independently corroborate the exact ATUNED domain wording or source-assigned affirmation."
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "complete",
+          "status": "blocked",
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md",
@@ -10843,7 +10850,8 @@
           ],
           "conflicts": [
             "Source-authoritative affirmation-to-domain assignment and canonical approval remain open; this pass is complete as provisional synthesis only."
-          ]
+          ],
+          "blockReason": "Cross-record synthesis remains provisional because the exact affirmation-to-domain edge is not source-verified or owner-approved."
         }
       ],
       "unresolvedQuestions": [
@@ -10981,12 +10989,12 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "complete",
+        "contentStatus": "provisional_content_populated",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "not_approved",
-        "status": "provisional_research_complete_canonical_review_open"
+        "canonicalApproval": "pending",
+        "status": "provisional_research_incomplete"
       },
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
@@ -11003,7 +11011,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_research_complete_canonical_review_open",
+      "status": "provisional_research_pass_1_complete_pass_2_3_blocked_canonical_review_open",
       "definition": "Equal compassion toward self and others; a stable perceptual state that cannot be contracted by other people's broadcasts.",
       "essence": null,
       "function": "Maintain compassion for self and others without collapsing boundaries or agency.",
@@ -11071,7 +11079,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "complete",
+          "status": "blocked",
           "sources": [
             "https://www.apa.org/pubs/journals/cns/about",
             "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
@@ -11083,12 +11091,13 @@
           ],
           "conflicts": [
             "Exact ATÜNED semantics and affirmation assignment remain source-specific and are not established by external general psychology literature; retain the record as provisional pending owner/source confirmation."
-          ]
+          ],
+          "blockReason": "Current evidence is conceptual/category-level only; it does not independently corroborate the exact ATUNED domain wording or source-assigned affirmation."
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "complete",
+          "status": "blocked",
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md",
@@ -11102,7 +11111,8 @@
           ],
           "conflicts": [
             "Source-authoritative affirmation-to-domain assignment and canonical approval remain open; this pass is complete as provisional synthesis only."
-          ]
+          ],
+          "blockReason": "Cross-record synthesis remains provisional because the exact affirmation-to-domain edge is not source-verified or owner-approved."
         }
       ],
       "unresolvedQuestions": [
@@ -11240,12 +11250,12 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "complete",
+        "contentStatus": "provisional_content_populated",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "not_approved",
-        "status": "provisional_research_complete_canonical_review_open"
+        "canonicalApproval": "pending",
+        "status": "provisional_research_incomplete"
       },
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
@@ -11262,7 +11272,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_research_complete_canonical_review_open",
+      "status": "provisional_research_pass_1_complete_pass_2_3_blocked_canonical_review_open",
       "definition": "Embodiment of worth and desire fulfillment; creativity flowing and desires recognized and honored.",
       "essence": null,
       "function": "Recognize worth and desires clearly enough to honor them through responsible creative action.",
@@ -11330,7 +11340,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "complete",
+          "status": "blocked",
           "sources": [
             "https://www.apa.org/pubs/journals/cns/about",
             "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
@@ -11342,12 +11352,13 @@
           ],
           "conflicts": [
             "Exact ATÜNED semantics and affirmation assignment remain source-specific and are not established by external general psychology literature; retain the record as provisional pending owner/source confirmation."
-          ]
+          ],
+          "blockReason": "Current evidence is conceptual/category-level only; it does not independently corroborate the exact ATUNED domain wording or source-assigned affirmation."
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "complete",
+          "status": "blocked",
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md",
@@ -11361,7 +11372,8 @@
           ],
           "conflicts": [
             "Source-authoritative affirmation-to-domain assignment and canonical approval remain open; this pass is complete as provisional synthesis only."
-          ]
+          ],
+          "blockReason": "Cross-record synthesis remains provisional because the exact affirmation-to-domain edge is not source-verified or owner-approved."
         }
       ],
       "unresolvedQuestions": [
@@ -11499,12 +11511,12 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "complete",
+        "contentStatus": "provisional_content_populated",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "not_approved",
-        "status": "provisional_research_complete_canonical_review_open"
+        "canonicalApproval": "pending",
+        "status": "provisional_research_incomplete"
       },
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
@@ -11521,7 +11533,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_research_complete_canonical_review_open",
+      "status": "provisional_research_pass_1_complete_pass_2_3_blocked_canonical_review_open",
       "definition": "Sovereignty, courage, leadership, and responsibility for one's own reality; power that does not need to dominate.",
       "essence": null,
       "function": "Exercise agency, courage, leadership, and responsibility without domination.",
@@ -11589,7 +11601,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "complete",
+          "status": "blocked",
           "sources": [
             "https://www.apa.org/pubs/journals/cns/about",
             "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
@@ -11601,12 +11613,13 @@
           ],
           "conflicts": [
             "Exact ATÜNED semantics and affirmation assignment remain source-specific and are not established by external general psychology literature; retain the record as provisional pending owner/source confirmation."
-          ]
+          ],
+          "blockReason": "Current evidence is conceptual/category-level only; it does not independently corroborate the exact ATUNED domain wording or source-assigned affirmation."
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "complete",
+          "status": "blocked",
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md",
@@ -11620,7 +11633,8 @@
           ],
           "conflicts": [
             "Source-authoritative affirmation-to-domain assignment and canonical approval remain open; this pass is complete as provisional synthesis only."
-          ]
+          ],
+          "blockReason": "Cross-record synthesis remains provisional because the exact affirmation-to-domain edge is not source-verified or owner-approved."
         }
       ],
       "unresolvedQuestions": [
@@ -11758,12 +11772,12 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "complete",
+        "contentStatus": "provisional_content_populated",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "not_approved",
-        "status": "provisional_research_complete_canonical_review_open"
+        "canonicalApproval": "pending",
+        "status": "provisional_research_incomplete"
       },
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
@@ -11780,7 +11794,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_research_complete_canonical_review_open",
+      "status": "provisional_research_pass_1_complete_pass_2_3_blocked_canonical_review_open",
       "definition": "Freedom to create without resistance; survival patterns no longer consume creative output.",
       "essence": null,
       "function": "Create and express without allowing survival-oriented patterns to consume all available capacity.",
@@ -11848,7 +11862,7 @@
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "complete",
+          "status": "blocked",
           "sources": [
             "https://www.apa.org/pubs/journals/cns/about",
             "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660851/",
@@ -11860,12 +11874,13 @@
           ],
           "conflicts": [
             "Exact ATÜNED semantics and affirmation assignment remain source-specific and are not established by external general psychology literature; retain the record as provisional pending owner/source confirmation."
-          ]
+          ],
+          "blockReason": "Current evidence is conceptual/category-level only; it does not independently corroborate the exact ATUNED domain wording or source-assigned affirmation."
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "complete",
+          "status": "blocked",
           "sources": [
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
             "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md",
@@ -11879,7 +11894,8 @@
           ],
           "conflicts": [
             "Source-authoritative affirmation-to-domain assignment and canonical approval remain open; this pass is complete as provisional synthesis only."
-          ]
+          ],
+          "blockReason": "Cross-record synthesis remains provisional because the exact affirmation-to-domain edge is not source-verified or owner-approved."
         }
       ],
       "unresolvedQuestions": [
@@ -12017,12 +12033,12 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "complete",
+        "contentStatus": "provisional_content_populated",
         "missingFields": [],
         "templateCatalogVersion": "1.0.0",
         "runtimeIntegration": "not_yet_wired",
-        "canonicalApproval": "not_approved",
-        "status": "provisional_research_complete_canonical_review_open"
+        "canonicalApproval": "pending",
+        "status": "provisional_research_incomplete"
       },
       "sourceIds": [
         "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22."
@@ -26774,7 +26790,7 @@
       ]
     }
   ],
-  "lastUpdated": "2026-10-22",
+  "lastUpdated": "2026-10-24",
   "researchProgress": {
     "archetypeCandidates": {
       "total": 18,
@@ -26786,7 +26802,8 @@
     "blueprintDomainSlots": {
       "visualSlots": 14,
       "canonicalNamesRecovered": 0,
-      "threePassesComplete": 0
+      "threePassesComplete": 14,
+      "scopeNote": "Three passes establish that these are non-canonical visualization slots; they do not recover fourteen canonical domain names."
     },
     "mappingRows": {
       "total": 36,
@@ -26806,7 +26823,8 @@
       "behavioralDomainThreePassesComplete": 15,
       "consciousPass1Complete": 8,
       "consciousPass2Blocked": 8,
-      "consciousPass3Blocked": 8
+      "consciousPass3Blocked": 8,
+      "consciousNamesSourceExtracted": 8
     },
     "canonicalDomainCandidates": {
       "total": 18,
@@ -26815,20 +26833,21 @@
       "domainCountRulingResolved": false
     },
     "lastSourceRecovery": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
-    "latestRoundNote": "2026-10-22: Populated explanatory definition/body/function and template payload for all 14 blueprint visualization slots. This does not supply canonical names or close the domain-count/mapping decision."
+    "latestRoundNote": "2026-10-24: Reconciled pass status with the actual unresolved evidence; all eight Conscious Domain records have pass 1 complete and passes 2–3 blocked. Added missing required links arrays as empty values where absent. Empty arrays are structural repairs only; graph wiring remains open.",
+    "lastStructuralRepair": "2026-10-24: Added missing links arrays to 0 records without inferring any edges; blocked Conscious Domain passes 2 and 3 where evidence remains insufficient."
   },
   "layerVisualizationInventory": [
     {
       "layer": "Conscious Domains",
       "visualCount": 8,
       "source": "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
-      "semanticDenominator": "owner-stated eight; only Empyrean name currently retained, seven labels unresolved"
+      "semanticDenominator": "Owner-stated eight; all eight names/descriptions source-extracted from v341; affirmation assignment and canonical approval remain open."
     },
     {
       "layer": "Blueprint Domains",
       "visualCount": 14,
       "source": "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
-      "semanticDenominator": "unverified; 14 slot placeholders only"
+      "semanticDenominator": "Fourteen visualization slots are represented; zero canonical names recovered. Slot semantics do not establish a fourteen-domain taxonomy."
     },
     {
       "layer": "Archetypes",
@@ -26897,27 +26916,42 @@
     }
   },
   "closureSummary": {
-    "date": "2026-10-22",
-    "scope": "23 previously incomplete records",
+    "date": "2026-10-24",
+    "scope": "Full 125-record Deep Psychological Registry; this is not the entire Nerve-to-Super-Complex universe.",
+    "recordInventory": {
+      "declared": 125,
+      "measured": 125,
+      "uniqueIds": 125
+    },
     "behavioralDomains": {
       "count": 15,
       "provisionalContentPopulated": 15,
       "sourceVerified": 0,
       "canonicalApproved": 0,
-      "threePassResearchComplete": 15
+      "threePassResearchComplete": 15,
+      "contentGate": "OPEN — definitions and bodies remain provisional; source/crosswalk and owner rulings unresolved."
     },
     "consciousDomains": {
       "count": 8,
-      "structurallyScaffolded": 8,
-      "canonicalNamesRecovered": 1,
-      "sourceComplete": 0,
-      "threePassResearchComplete": 0,
+      "namesSourceExtracted": 8,
+      "affirmationFieldPresent": 8,
       "pass1Complete": 8,
       "pass2Blocked": 8,
-      "pass3Blocked": 8
+      "pass3Blocked": 8,
+      "sourceComplete": 0,
+      "canonicalApproval": "OPEN — exact affirmation assignment and independent source verification not complete."
     },
-    "researchPasses": "For the 23-record target subset, 53 of 69 pass slots are marked complete (all 45 slots for the 15 behavioral domains and pass 1 for each of 8 Conscious Domains); 16 Conscious Domain pass slots remain blocked. This is research-pass status, not canonical approval. The 14 blueprint slots remain a separate research backlog.",
-    "runtimeIntegration": "Not verified; template catalog remains not yet integrated with engine.",
-    "warning": "Seven affirmation strings are populated from v341; Empyrean explicitly has no separate chakra affirmation. Chakra-to-domain assignments remain provisional; independent corroboration, three-pass closure, behavioral-domain source verification, taxonomy rulings, and runtime integration remain open."
+    "researchPasses": {
+      "recordsWithThreePassesMarkedComplete": 117,
+      "completePassSlots": 359,
+      "blockedPassSlots": 16,
+      "note": "Pass status reflects evidence scope. A recorded pass is not proof of canonical approval or substantive content closure."
+    },
+    "linkFieldRepair": {
+      "recordsRepaired": 0,
+      "note": "Empty links arrays added only where the required field was absent. No links were invented; KPI 3 remains open."
+    },
+    "runtimeIntegration": "NOT VERIFIED; template catalog and registry adapter remain unintegrated with the existing engine.",
+    "warning": "Do not promote provisional definitions, taxonomic mappings, cultural-figure crosswalks, or affirmation assignments to Canon without source-level evidence and the required approval."
   }
 }
