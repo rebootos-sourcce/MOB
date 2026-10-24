@@ -18066,8 +18066,68 @@ function AXOF(k){return {fear:'Fear',anger:'Anger',shame:'Shame',disgust:'Disgus
    carries most of the reading and the tenth carries almost none. The shape is
    the same asymptote verp.js uses for its trust ramp, for the same reason, that
    a handful of substring matches must not buy certainty. */
+/* WHOSE ACT A LAW CUE IS, P0-4 of the inference audit, 23 October. This path
+   had no subject at all, and the Story page's Laws panel reads it, so "She
+   lied to me" told the writer "Truth, saying something that was not quite
+   true". Measured on 77928172, on fifteen sentences where someone else did
+   the act, three gave the writer a broken law. S2 held someone else's words
+   out of the feelings reading on 9 October and not out of this one.
+
+   NOT sniffWho AS IT STANDS, and the reason is one word. whoOf stops at the
+   nearest first person, which is right for a feeling, "he made me furious"
+   is the writer's, and wrong for an act: "My husband lied to me again last
+   night" carries the Temperance cue "again last night" after the object
+   "me". So this walks back through the same comma group with the same
+   tables, WHO_SUBJ, whoPerson and whoOpens, and counts only a first person
+   that can be a subject. An object is passed over. A cue whose own words
+   carry the writer, "i lied", is the writer's. A cue straight after a form
+   of be, not an -ing, is something done to the writer: "I was lied to".
+   No subject found is the writer, which is what a journal is.
+
+   THE WORDS LINE UP WITH wordsOf. lawNorm's copy holds the same words as
+   normMap's once its sentence bars are dropped, after a curly apostrophe
+   is made straight, which normMap already drops and lawNorm turned into a
+   space: "didn't" typed on a phone read "didn t", and its no was lost. When
+   the words do not line up the cue counts, as it always did, so this can
+   only ever set aside a cue it can show was someone else's. */
+var LAW_ME=['i','im','ive','id','we','weve'];
+var LAW_BE=['was','were','been','being','am','is','are','get','gets','got','getting','gotten'];
+/* a passive needs a participle after the be: "I was lied to", "I was kept
+   from it". "It is all my fault" is a be and no participle, and is the
+   writer's own blame. */
+var LAW_PART=['kept','told','hidden','taken','given','said','left','made','done','broken','stolen',
+ 'shown','held','caught','thrown','beaten','hurt'];
+function lawPassive(w){return /ed$/.test(w)||LAW_PART.indexOf(w)>=0;}
+function lawActor(t,ws,i){
+ var g=ws[i].g;
+ if(i>0&&ws[i-1].g===g){var p=ws[i-1].w;
+  if(p==='my'||p==='our')return 'me';
+  if(WHO_POSS.indexOf(p)>=0)return 'other';}
+ for(var j=i-1;j>=0&&ws[j].g===g;j--){
+  var w=ws[j].w;
+  if(LAW_ME.indexOf(w)>=0)return 'me';
+  if(WHO_SUBJ.indexOf(w)>=0)return 'other';
+  if(WHO_YOU.indexOf(w)>=0&&whoOpens(ws,j))return 'unclear';
+  if(whoPerson(w)){var k=j;
+   if(k>0&&ws[k-1].g===g&&LEXKIN.indexOf(ws[k-1].w+' '+w)>=0)k--;
+   if(k>0&&ws[k-1].g===g&&WHO_DET.indexOf(ws[k-1].w)>=0)k--;
+   if(whoOpens(ws,k))return 'other';
+   j=k; continue;}
+  if(j>0&&ws[j-1].c===ws[j].c&&/^[A-Z][a-z]+$/.test(t.slice(ws[j].s,ws[j].e))&&whoOpens(ws,j))return 'other';}
+ return 'none';}
+function lawWriter(t,src){
+ var ws=wordsOf(t,normMap(t));
+ return function(h){
+  var cw=String(h.cue).replace(/'/g,'').split(' ');
+  if(cw.some(function(w){return LAW_ME.indexOf(w)>=0;}))return true;
+  var k=src.slice(0,h.at+1).split(' ').filter(function(w){return w&&w!=='|';}).length;
+  if(!ws[k]||ws[k].w!==cw[0])return true;
+  if(k>0&&ws[k-1].c===ws[k].c&&LAW_BE.indexOf(ws[k-1].w)>=0&&lawPassive(ws[k].w))return false;
+  var a=lawActor(t,ws,k);
+  return a==='me'||a==='none';};}
 function sniffLaws(text){
- var src=lawNorm(text), hits=lawMatch(src,LAWCUE,3), by={};
+ var t=String(text||'').replace(/[‘’]/g,"'");
+ var src=lawNorm(t), hits=lawMatch(src,LAWCUE,3).filter(lawWriter(t,src)), by={};
  hits.forEach(function(h){
   var r=h.row, key=r[0]+'|'+r[2];
   if(!by[key])by[key]={e:r[0],law:r[1],direction:r[2],n:0,cues:[]};

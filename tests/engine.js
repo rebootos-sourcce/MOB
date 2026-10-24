@@ -4399,6 +4399,24 @@ g('33 · the sniffer contract, and the four guards that are testable');
   ok(!o.some(l=>l.law==='Ownership'&&l.direction==='self'),
    'a denial of self blame does not fire the self direction');
  }
+ /* WHOSE ACT, P0-4 of the inference audit, 23 October. This path had no
+    subject, and the Story page's Laws panel reads it, so "She lied to me"
+    told the writer they had let go of Truth. Measured on 77928172: three of
+    fifteen sentences where someone else did the act gave the writer a law. */
+ {
+  const laws=t=>sniffLaws(t).map(l=>l.law);
+  ok(laws('She lied to me about where she was.').indexOf('Truth')<0,'her lie is not the writer\'s Truth, '+laws('She lied to me about where she was.'));
+  ok(laws('My husband lied to me again last night.').length===0,
+   'nor is his, and "again last night" after the object me is his too, '+laws('My husband lied to me again last night.'));
+  ok(laws('They kept it from me for years.').indexOf('Transparency')<0,'what they kept from the writer is not the writer\'s Transparency');
+  ok(laws('I was lied to again.').indexOf('Truth')<0,'being lied to is something done to the writer, '+laws('I was lied to again.'));
+  ok(laws('I lied to my wife about the money.').indexOf('Truth')>=0,'the writer\'s own lie still reads Truth');
+  ok(laws('I hid it from everyone.').indexOf('Transparency')>=0&&laws('I kept it from her because I was scared.').indexOf('Transparency')>=0,
+   'and the writer\'s own concealment still reads Transparency');
+  ok(laws('I haven’t lied to anyone.').indexOf('Truth')<0,'a curly apostrophe from a phone keeps its no, '+laws('I haven’t lied to anyone.'));
+  ok(laws('others have it worse and i do not matter and it is all my fault').indexOf('Ownership')>=0,
+   'a be with no participle after it is not a passive, so "it is all my fault" stays the writer\'s');
+ }
 
  /* ---- RESENTMENT AS THE COMPOSITE, and the collision it was ruled to fix ---- */
  {
