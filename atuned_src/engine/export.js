@@ -388,6 +388,12 @@ if(typeof module!=='undefined'&&module.exports){
                   codeKey:codeKey, codeOf:codeOf, codeKind:codeKind, codeName:codeName,
                   codeList:codeList, codeOfEntry:codeOfEntry, codeEmotionOf:codeEmotionOf,
                   codesCheck:codesCheck, codeTables:codeTables,
+  /* the registers ported from canon.json, engine/data/registers.js, and the
+     map and check in engine/registers.js. Nothing reads the tables but the
+     codes and the gate, so they are exported to be held, not to be used. */
+                  CHARGE_LADDER:CHARGE_LADDER, AMPLIFIER:AMPLIFIER, BODY_QUADRANT:BODY_QUADRANT,
+                  ORGAN:ORGAN, CHARGE_QUADRANT:CHARGE_QUADRANT, DERIVED_MEASURE:DERIVED_MEASURE,
+                  ASTRO_OVERLAY:ASTRO_OVERLAY, REG_MAP:REG_MAP, regDiff:regDiff, ladderPlaces:ladderPlaces,
   /* util */      clamp:clamp, leaves:(typeof leaves==='function'?leaves:null)
  };
 }

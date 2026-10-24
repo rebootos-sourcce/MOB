@@ -1,0 +1,3393 @@
+{
+ "meta": {
+  "name": "SOURCE OS CANON",
+  "version": "1.0.0",
+  "issued": "2026-09-08",
+  "principal": "Lance Powell, Tula Unified LLC",
+  "source_build": {
+   "file": "MOB_Complete_v184.html",
+   "md5": "719bfb27b4366fdef2e05748e5d71b39",
+   "integrity": "PASS 92 / WAIVED 5 / FAIL 0"
+  },
+  "purpose": "The single canonical architecture payload. Atuned, the newsletter, and the manuscript read from this file so they cannot drift apart. If a downstream product disagrees with this file, the product is wrong.",
+  "consumers": [
+   "Atuned",
+   "The Body of Evidence (beehiiv)",
+   "The Mechanics of Being"
+  ],
+  "tags": {
+   "R": "ruled by Lance",
+   "I": "inferred, tagged in product UI",
+   "G": "honest gap"
+  }
+ },
+ "locks": {
+  "node_count": {
+   "total": 112,
+   "in_body": 108,
+   "field": 4,
+   "note": "PERMANENT. A source saying 114 is wrong and gets corrected silently. Never surfaced as a question."
+  },
+  "chain_operator": "two or more at every rung",
+  "chain": [
+   "fetter",
+   "2+ nodes -> SABOTEUR",
+   "2+ saboteurs -> COMPLEX",
+   "2+ complexes -> HYPER-COMPLEX",
+   "2+ hyper -> SUPER-COMPLEX / CHARACTER",
+   "MASK (the seam)",
+   "ARCHETYPE",
+   "BLUEPRINT / DOMAIN"
+  ],
+  "saboteur_addresses": "GENERATIVE, never assigned. Bottom-up from fetter scores. Do not hard-code addresses to saboteurs.",
+  "divine_term": "Source, never Creator",
+  "morality": "Morality IS the Laws of Spiritual Integrity layer. Maintenance, not judgement.",
+  "element_39": "Duty. Reverence is out, permanently.",
+  "evil": "The output, never the blueprint.",
+  "astrology": "Display-only overlay. Failed a permutation test for convergence at p = 1.000. Never enters a number.",
+  "em_dashes": "Banned in all output. Single dash or commas."
+ },
+ "formula": {
+  "statement": "(Intention x Integrity) / Resistance",
+  "operational": "sqrt(Intention x Integrity) * 10 / (1 + 0.2*SQ/10 + 0.4*Distortion/10)",
+  "terms": {
+   "Intention": "0-10, direction of will",
+   "Integrity": "0-10, hull soundness, 21 laws",
+   "SQ": "0-10, node load, the shadow",
+   "Distortion": "0-10, derived from Intention through loaded nodes, never measured separately"
+  },
+  "coefficients": {
+   "root": 0.5,
+   "scale": 10,
+   "sq_weight": 0.2,
+   "distortion_weight": 0.4
+  },
+  "corrected_read": "corrected = anchor - 0.5*max(0, coherent - anchor) - 0.5*max(0, shadow - (10 - anchor))",
+  "corrected_read_note": "Three probes per law. The anchor sets the value, the probes only subtract. Cannot be gamed upward. Honest respondent 4.98, self-flatterer 3.92 across 4000 responses.",
+  "validation": {
+   "corr_true_coherence": 0.937,
+   "test_retest": 0.96,
+   "under_30pt_honesty_shift": 0.924,
+   "under_tripled_noise": 0.898,
+   "n_simulated": 1000
+  },
+  "bands": [
+   [
+    "Mastery",
+    90,
+    100
+   ],
+   [
+    "Embodied",
+    70,
+    89
+   ],
+   [
+    "Practicing",
+    50,
+    69
+   ],
+   [
+    "Incoherent",
+    31,
+    49
+   ],
+   [
+    "Corrupt",
+    21,
+    30
+   ],
+   [
+    "Severe",
+    1,
+    20
+   ],
+   [
+    "Collapsed",
+    0,
+    0
+   ]
+  ],
+  "compass": {
+   "rule": "CQ >= 50 is benign. Below 50 is malignant.",
+   "depth": "(50 - CQ) / 50 as a percentage",
+   "note": "Polarity of the whole stack, not a layer and not a location in it."
+  },
+  "vitality": {
+   "formula": "10 - SQ",
+   "independence_from_cq_r": 0.742
+  }
+ },
+ "time_axis": {
+  "structural": "L0 * exp(-t / tau)",
+  "felt": "structural(t) - relief(t) + rebound(t)",
+  "params": {
+   "tau_days": 9.0,
+   "relief_depth": 0.62,
+   "relief_scale_days": 0.9,
+   "rebound_depth": 0.3,
+   "rebound_peak_days": 5.0,
+   "rebound_shape_k": 2.2
+  },
+  "rebound_peak_day": 4.5,
+  "completion_day": 27.0,
+  "completion_derivation": "tau * ln(20) = 26.96. Five percent residual. Derived from two ruled numbers, not fitted.",
+  "scope": "PER ADDRESS, not whole system. Aggregate CQ does not dip. 100 percent of released addresses read worse days 2-7 than day 1.",
+  "product_requirement": "Any product that runs a release MUST warn about the rebound before the release, or the user reads day five as failure and stops."
+ },
+ "evidence": {
+  "blind_inter_rater_trial": {
+   "band_agreement_pct": 88.3,
+   "cohens_kappa": 0.836,
+   "kappa_scale": "Landis-Koch: almost perfect",
+   "within_one_band_pct": 96.7,
+   "bootstrap_ci": [
+    80.0,
+    96.7
+   ],
+   "charge_agreement_pct": 65.0,
+   "saboteur_agreement_pct": 53.3,
+   "chance_baseline_pct": 3.0,
+   "n_stories": 30,
+   "failure_analysis": "Charge agreement 86.8 pct where a rule fires, 27.3 pct where it falls back. The error is coverage, not logic.",
+   "status": "The only non-circular result in the corpus. State it at its size."
+  },
+  "live_practice": {
+   "one_to_one_clients": "under 200",
+   "group": "hundreds",
+   "since": 2020,
+   "personal_releases": "approximately 15000",
+   "locked_cases": 11,
+   "note": "The practice has n. The harness has never been run on any of them. The gap is instrumentation, not recruitment."
+  },
+  "not_claimed": [
+   "No formal controlled study.",
+   "No longitudinal data past 34 days.",
+   "Absence of observed harm is not a safety finding."
+  ]
+ },
+ "registers": {
+  "nodes": [
+   [
+    1,
+    "Fear",
+    "Lumbar Plexus",
+    "root",
+    "fear",
+    "Avoidance"
+   ],
+   [
+    2,
+    "Shame",
+    "Pudendal Nerve",
+    "root",
+    "shame",
+    "Self-rejection"
+   ],
+   [
+    3,
+    "Guilt",
+    "Inferior Hypogastric Plexus",
+    "root",
+    "shame",
+    "Overcompensation"
+   ],
+   [
+    4,
+    "Control",
+    "Sacral Nerves",
+    "root",
+    "anger",
+    "Domination"
+   ],
+   [
+    5,
+    "Insecurity",
+    "Pelvic Nerve",
+    "root",
+    "fear",
+    "Dependency"
+   ],
+   [
+    6,
+    "Victimhood",
+    "Coccygeal Plexus",
+    "root",
+    "sadness",
+    "Blame"
+   ],
+   [
+    7,
+    "Scarcity",
+    "Iliac Nerve Branch",
+    "root",
+    "fear",
+    "Hoarding"
+   ],
+   [
+    8,
+    "Entitlement",
+    "Cauda Equina",
+    "root",
+    "anger",
+    "Deservingness"
+   ],
+   [
+    9,
+    "Possession",
+    "Gluteal Nerve",
+    "root",
+    "anger",
+    "Control of objects"
+   ],
+   [
+    10,
+    "Lethargy",
+    "Obturator Nerve",
+    "root",
+    "fear",
+    "Stagnation"
+   ],
+   [
+    11,
+    "Resistance",
+    "Perineal Branch",
+    "root",
+    "fear",
+    "Holding on"
+   ],
+   [
+    12,
+    "Compulsion",
+    "Pelvic Floor Nerves",
+    "root",
+    "anxiety",
+    "Fixation"
+   ],
+   [
+    13,
+    "Disconnection",
+    "Sacral Root Ganglia",
+    "root",
+    "shock",
+    "Numbness"
+   ],
+   [
+    14,
+    "Escapism",
+    "Sciatic Nerve",
+    "root",
+    "fear",
+    "Running"
+   ],
+   [
+    15,
+    "Panic",
+    "Lumbar Sympathetic Chain",
+    "root",
+    "fear",
+    "Unconsciousness"
+   ],
+   [
+    16,
+    "Collapse",
+    "Spinal Cord Base",
+    "root",
+    "shame",
+    "Abandoning self"
+   ],
+   [
+    17,
+    "Addiction",
+    "Sacral Plexus",
+    "sacral",
+    "joy",
+    "Obsession"
+   ],
+   [
+    18,
+    "Lust",
+    "Genitofemoral Nerve",
+    "sacral",
+    "joy",
+    "Objectification"
+   ],
+   [
+    19,
+    "Envy",
+    "Internal Pudendal Nerve",
+    "sacral",
+    "anger",
+    "Hatred of others' joy"
+   ],
+   [
+    20,
+    "Jealousy",
+    "Obturator Nerve",
+    "sacral",
+    "fear",
+    "Paranoia"
+   ],
+   [
+    21,
+    "Co-Dependency",
+    "Pelvic Splanchnic Nerves",
+    "sacral",
+    "sadness",
+    "Self-abandonment"
+   ],
+   [
+    22,
+    "Shame of Desire",
+    "Hypogastric Plexus",
+    "sacral",
+    "shame",
+    "Suppression"
+   ],
+   [
+    23,
+    "Hypersexuality",
+    "Pudendal Plexus",
+    "sacral",
+    "joy",
+    "Dissociation"
+   ],
+   [
+    24,
+    "Avoidance of Pleasure",
+    "Pelvic Nerve",
+    "sacral",
+    "fear",
+    "Denial of life"
+   ],
+   [
+    25,
+    "Manipulation through Emotion",
+    "Uterovaginal Plexus",
+    "sacral",
+    "anger",
+    ""
+   ],
+   [
+    26,
+    "Oversensitivity",
+    "Inferior Hypogastric Plexus",
+    "sacral",
+    "sadness",
+    "Victim reactivity"
+   ],
+   [
+    27,
+    "Fantasy",
+    "Splanchnic Root",
+    "sacral",
+    "fear",
+    "Delusion"
+   ],
+   [
+    28,
+    "Infatuation",
+    "Lumbar-Sacral Overlap",
+    "sacral",
+    "joy",
+    "Idealization"
+   ],
+   [
+    29,
+    "Obsession",
+    "Pelvic Ganglia",
+    "sacral",
+    "joy",
+    "Fixation"
+   ],
+   [
+    30,
+    "Guilt of Pleasure",
+    "Sacral Outflow",
+    "sacral",
+    "joy",
+    "Self-denial"
+   ],
+   [
+    31,
+    "Need for Approval",
+    "Iliac Branches",
+    "sacral",
+    "joy",
+    "Conformity"
+   ],
+   [
+    32,
+    "Excess Emotion",
+    "Urogenital Nerve",
+    "sacral",
+    "joy",
+    "Flooding"
+   ],
+   [
+    33,
+    "Pride",
+    "Celiac Plexus",
+    "solar",
+    "anger",
+    "Superiority"
+   ],
+   [
+    34,
+    "Arrogance",
+    "Greater Splanchnic Nerve",
+    "solar",
+    "anger",
+    "Inflated self"
+   ],
+   [
+    35,
+    "Competition",
+    "Aortic Plexus",
+    "solar",
+    "anger",
+    "Division"
+   ],
+   [
+    36,
+    "Anger",
+    "Celiac Plexus",
+    "solar",
+    "anger",
+    "Attack"
+   ],
+   [
+    37,
+    "Judgment",
+    "Splanchnic Plexus",
+    "solar",
+    "disgust",
+    "Projection"
+   ],
+   [
+    38,
+    "Entitlement (Will-based)",
+    "Renal Plexus",
+    "solar",
+    "anger",
+    ""
+   ],
+   [
+    39,
+    "Rebellion",
+    "Renal Ganglia",
+    "solar",
+    "anger",
+    "Misalignment"
+   ],
+   [
+    40,
+    "Perfectionism",
+    "Mesenteric Plexus",
+    "solar",
+    "disgust",
+    "Rigidity"
+   ],
+   [
+    41,
+    "Force",
+    "Splenic Plexus",
+    "solar",
+    "anger",
+    "Overpowering"
+   ],
+   [
+    42,
+    "Rigidity",
+    "Pancreatic Plexus",
+    "solar",
+    "disgust",
+    "Inflexibility"
+   ],
+   [
+    43,
+    "Resentment",
+    "Suprarenal Plexus",
+    "solar",
+    "resent",
+    "Withholding love"
+   ],
+   [
+    44,
+    "Unworthiness",
+    "Inferior Mesenteric Plexus",
+    "solar",
+    "shame",
+    "Minimization"
+   ],
+   [
+    45,
+    "Anxiety",
+    "Adrenal Medulla",
+    "solar",
+    "fear",
+    "Future fear"
+   ],
+   [
+    46,
+    "Self-Judgment",
+    "Epigastric Branches",
+    "solar",
+    "shame",
+    "Harshness"
+   ],
+   [
+    47,
+    "Need to Win",
+    "Vagus-Liver Plexus",
+    "solar",
+    "anger",
+    "Domination"
+   ],
+   [
+    48,
+    "Superiority",
+    "Hepatic Nerve",
+    "solar",
+    "anger",
+    "Distinction"
+   ],
+   [
+    49,
+    "Hatred",
+    "Cardiac Plexus",
+    "heart",
+    "anger",
+    "Vengeance"
+   ],
+   [
+    50,
+    "Resentment (Heart)",
+    "Thoracic Nerves",
+    "heart",
+    "resent",
+    ""
+   ],
+   [
+    51,
+    "Self-Judgment (Heart)",
+    "Vagus Nerve",
+    "heart",
+    "shame",
+    ""
+   ],
+   [
+    52,
+    "Betrayal",
+    "Thoracic Plexus",
+    "heart",
+    "sadness",
+    "Abandonment"
+   ],
+   [
+    53,
+    "Separation",
+    "Pericardial Nerve",
+    "heart",
+    "sadness",
+    "Isolation"
+   ],
+   [
+    54,
+    "Martyrdom",
+    "Intercostal Nerves",
+    "heart",
+    "sadness",
+    "Guilt-driven love"
+   ],
+   [
+    55,
+    "Longing",
+    "Cardiac Nerve Plexus",
+    "heart",
+    "sadness",
+    "Fantasy"
+   ],
+   [
+    56,
+    "Closed Heart",
+    "Costal Branches",
+    "heart",
+    "sadness",
+    "Armor"
+   ],
+   [
+    57,
+    "Manipulative Kindness",
+    "Phrenic Nerve",
+    "heart",
+    "resent",
+    "Transactional giving"
+   ],
+   [
+    58,
+    "Expectation",
+    "Pulmonary Nerve Plexus",
+    "heart",
+    "love",
+    "Contractual love"
+   ],
+   [
+    59,
+    "Blame",
+    "Thoracic Ganglia",
+    "heart",
+    "resent",
+    "Externalization"
+   ],
+   [
+    60,
+    "False Love",
+    "Anterior Thoracic Roots",
+    "heart",
+    "love",
+    "Projection"
+   ],
+   [
+    61,
+    "Rejection",
+    "Vagal Branches",
+    "heart",
+    "disgust",
+    "Othering"
+   ],
+   [
+    62,
+    "Avoidance of Grief",
+    "Great Cardiac Nerve",
+    "heart",
+    "sadness",
+    "Suppression"
+   ],
+   [
+    63,
+    "Need to be Needed",
+    "Coronary Plexus",
+    "heart",
+    "joy",
+    "Validation"
+   ],
+   [
+    64,
+    "Deceit",
+    "Cervical Plexus",
+    "throat",
+    "resent",
+    "Manipulation"
+   ],
+   [
+    65,
+    "Self-Silencing",
+    "Vagus Nerve",
+    "throat",
+    "resent",
+    "Withholding"
+   ],
+   [
+    66,
+    "People Pleasing",
+    "Superior Laryngeal Nerve",
+    "throat",
+    "joy",
+    "Inauthenticity"
+   ],
+   [
+    67,
+    "Lying",
+    "Recurrent Laryngeal Nerve",
+    "throat",
+    "resent",
+    "Protection"
+   ],
+   [
+    68,
+    "Interrupting",
+    "Pharyngeal Nerve",
+    "throat",
+    "shame",
+    "Imposition"
+   ],
+   [
+    69,
+    "Comparison",
+    "Accessory Nerve",
+    "throat",
+    "resent",
+    "Envy"
+   ],
+   [
+    70,
+    "Excuse",
+    "Glossopharyngeal Nerve",
+    "throat",
+    "sadness",
+    ""
+   ],
+   [
+    71,
+    "Stage Performing",
+    "Laryngeal Plexus",
+    "throat",
+    "shame",
+    "Persona"
+   ],
+   [
+    72,
+    "Speaking to be Right",
+    "Cervical Ganglia",
+    "throat",
+    "shame",
+    "Righteousness"
+   ],
+   [
+    73,
+    "Manic Expression",
+    "Spinal Accessory Nerve",
+    "throat",
+    "shame",
+    "Energy discharge"
+   ],
+   [
+    74,
+    "Talking to Avoid Feeling",
+    "Subclavian Nerve",
+    "throat",
+    "fear",
+    "Avoidance"
+   ],
+   [
+    75,
+    "Using Spiritual Language to Manipulate",
+    "Brachial Plexus",
+    "throat",
+    "sadness",
+    ""
+   ],
+   [
+    76,
+    "Delusion",
+    "Optic Nerve",
+    "eye",
+    "shock",
+    "Illusion"
+   ],
+   [
+    77,
+    "Cynicism",
+    "Oculomotor Nerve",
+    "eye",
+    "disgust",
+    "Dismissal"
+   ],
+   [
+    78,
+    "Distrust",
+    "Abducens Nerve",
+    "eye",
+    "fear",
+    "Suspicion"
+   ],
+   [
+    79,
+    "Hypervigilance",
+    "Optic Chiasm",
+    "eye",
+    "fear",
+    "Overthinking"
+   ],
+   [
+    80,
+    "Dogma",
+    "Pineal Gland",
+    "eye",
+    "disgust",
+    "Rigidity"
+   ],
+   [
+    81,
+    "Overanalysis",
+    "Trigeminal Nerve",
+    "eye",
+    "shock",
+    "Paralysis"
+   ],
+   [
+    82,
+    "Projection",
+    "Visual Cortex",
+    "eye",
+    "resent",
+    "Blame"
+   ],
+   [
+    83,
+    "Paranoia",
+    "Lateral Geniculate",
+    "eye",
+    "fear",
+    "Narrative spinning"
+   ],
+   [
+    84,
+    "Distortion",
+    "Occipital Nerve",
+    "eye",
+    "disgust",
+    "Mis-seeing"
+   ],
+   [
+    85,
+    "Doubt",
+    "Cortical Visual Pathway",
+    "eye",
+    "fear",
+    "Dismissal"
+   ],
+   [
+    86,
+    "Idealism",
+    "Supraoptic Nucleus",
+    "eye",
+    "joy",
+    ""
+   ],
+   [
+    87,
+    "Lack of Discernment",
+    "Thalamus",
+    "eye",
+    "shock",
+    "Blind trust"
+   ],
+   [
+    88,
+    "Doubt of Source",
+    "Corpus Callosum",
+    "crown",
+    "fear",
+    "Separation"
+   ],
+   [
+    89,
+    "Hubris",
+    "Prefrontal Cortex",
+    "crown",
+    "anger",
+    "Ego-Source complex"
+   ],
+   [
+    90,
+    "Spiritual Pride",
+    "Pineal-Hypothalamic Axis",
+    "crown",
+    "anger",
+    "Superiority"
+   ],
+   [
+    91,
+    "Nihilism",
+    "Parietal Cortex",
+    "crown",
+    "disgust",
+    "Apathy"
+   ],
+   [
+    92,
+    "Spiritual Escapism",
+    "Dorsal Raphe Nucleus",
+    "crown",
+    "fear",
+    "Bypass"
+   ],
+   [
+    93,
+    "False Humility",
+    "Frontal Lobe",
+    "crown",
+    "shame",
+    "Manipulation"
+   ],
+   [
+    94,
+    "Seeking Validation",
+    "Cerebral Cortex",
+    "crown",
+    "joy",
+    "Worship addiction"
+   ],
+   [
+    95,
+    "Savior Complex",
+    "Posterior Cingulate",
+    "crown",
+    "sadness",
+    "Overreach"
+   ],
+   [
+    96,
+    "Condemnation",
+    "Reticular Formation",
+    "crown",
+    "disgust",
+    "Judgment"
+   ],
+   [
+    97,
+    "Need to be Special",
+    "Anterior Cingulate",
+    "crown",
+    "joy",
+    "Distinction"
+   ],
+   [
+    98,
+    "Unworthy of Source",
+    "Pineal-Amygdala Axis",
+    "crown",
+    "shame",
+    "Disbelief"
+   ],
+   [
+    99,
+    "Knowing Better than Source",
+    "Default Mode Network",
+    "crown",
+    "anger",
+    "Arrogance"
+   ],
+   [
+    100,
+    "Denial of Truth",
+    "Medial Forebrain Bundle",
+    "crown",
+    "shock",
+    "Resistance"
+   ],
+   [
+    101,
+    "Rejection of Spirit",
+    "Posterior Commissure",
+    "crown",
+    "disgust",
+    "Abandonment"
+   ],
+   [
+    102,
+    "Fear of Source",
+    "Temporal Lobe",
+    "crown",
+    "fear",
+    "Dread"
+   ],
+   [
+    103,
+    "Anger at Source",
+    "Hypothalamus",
+    "crown",
+    "anger",
+    "Rebellion"
+   ],
+   [
+    104,
+    "Forgetfulness",
+    "Hippocampus",
+    "crown",
+    "sadness",
+    "Amnesia"
+   ],
+   [
+    105,
+    "Denial of Light",
+    "Epithalamus",
+    "crown",
+    "fear",
+    "Avoidance"
+   ],
+   [
+    106,
+    "Rejection of Unity",
+    "Neocortex",
+    "crown",
+    "disgust",
+    "Separation"
+   ],
+   [
+    107,
+    "Self-Exclusion",
+    "Superior Sagittal Sinus",
+    "crown",
+    "shame",
+    "Disconnection"
+   ],
+   [
+    108,
+    "Endless Seeking",
+    "Ascension Column",
+    "crown",
+    "sadness",
+    "**TRUNCATED IN SOURCE**"
+   ],
+   [
+    109,
+    "Gaia Gateway",
+    "Inferior Tibial Branch",
+    "field",
+    "shock",
+    ""
+   ],
+   [
+    110,
+    "Earth Star",
+    "Inferior Tibial Branch",
+    "field",
+    "shock",
+    ""
+   ],
+   [
+    111,
+    "Soul Star",
+    "Transpersonal Axis",
+    "field",
+    "shock",
+    ""
+   ],
+   [
+    112,
+    "Stellar Gateway",
+    "Transpersonal Axis",
+    "field",
+    "shock",
+    ""
+   ]
+  ],
+  "fetters": [
+   [
+    "Fear",
+    "Lumbar Plexus",
+    1,
+    "R"
+   ],
+   [
+    "Anger",
+    "Celiac Plexus",
+    36,
+    "R"
+   ],
+   [
+    "Shame",
+    "Pudendal Nerve",
+    2,
+    "R"
+   ],
+   [
+    "Disgust",
+    "Sacral / Dermis",
+    null,
+    "R"
+   ],
+   [
+    "Apathy",
+    "Shoulder / Throat",
+    null,
+    "R"
+   ],
+   [
+    "Shock",
+    "Dermis",
+    null,
+    "R"
+   ],
+   [
+    "Sad",
+    "Inferior Cardiac",
+    null,
+    "R"
+   ],
+   [
+    "Surprise",
+    "address pending",
+    null,
+    "R"
+   ],
+   [
+    "Anticipation",
+    "address pending",
+    null,
+    "R"
+   ]
+  ],
+  "ladders": {
+   "joy": [
+    "Content",
+    "Pleased",
+    "Cheerful",
+    "Joyful",
+    "Elated",
+    "Thrilled",
+    "Ecstatic",
+    "Overjoyed",
+    "Blissful"
+   ],
+   "sadness": [
+    "Disappointed",
+    "Dismal",
+    "Downcast",
+    "Mournful",
+    "Despondent",
+    "Grief-stricken",
+    "Heartbroken",
+    "Depressed",
+    "Despairing"
+   ],
+   "disgust": [
+    "Displeased",
+    "Disapproving",
+    "Repelled",
+    "Revolted",
+    "Appalled",
+    "Horrified",
+    "Nauseated",
+    "Loathsome",
+    "Detested"
+   ],
+   "shock": [
+    "Startled",
+    "Surprised",
+    "Astonished",
+    "Amazed",
+    "Flabbergasted",
+    "Stunned",
+    "Aghast",
+    "Thunderstruck",
+    "Dumbfounded"
+   ],
+   "fear": [
+    "Apprehensive",
+    "Uneasy",
+    "Worried",
+    "Frightened",
+    "Terrified",
+    "Horrified",
+    "Panic-stricken",
+    "Petrified",
+    "Paralyzed"
+   ],
+   "anger": [
+    "Annoyed",
+    "Irritated",
+    "Aggravated",
+    "Angry",
+    "Furious",
+    "Enraged",
+    "Seething",
+    "Infuriated",
+    "Wrathful"
+   ],
+   "shame": [
+    "Embarrassed",
+    "Regretful",
+    "Guilty",
+    "Remorseful",
+    "Humiliated",
+    "Disgraced",
+    "Mortified",
+    "Degraded",
+    "Stigmatized"
+   ],
+   "resent": [
+    "Peeved",
+    "Irked",
+    "Annoyed",
+    "Aggravated",
+    "Bitter",
+    "Indignant",
+    "Hostile",
+    "Vindictive",
+    "Wrathful"
+   ]
+  },
+  "saboteurs": [
+   [
+    "Avoider",
+    [
+     [
+      "fear",
+      3,
+      5
+     ]
+    ]
+   ],
+   [
+    "Controller",
+    [
+     [
+      "fear",
+      7,
+      10
+     ],
+     [
+      "anger",
+      5,
+      8
+     ]
+    ]
+   ],
+   [
+    "Victim",
+    [
+     [
+      "sadness",
+      6,
+      8
+     ],
+     [
+      "resent",
+      4,
+      6
+     ]
+    ]
+   ],
+   [
+    "Perfectionist",
+    [
+     [
+      "disgust",
+      5,
+      7
+     ],
+     [
+      "anger",
+      4,
+      6
+     ]
+    ]
+   ],
+   [
+    "Pleaser",
+    [
+     [
+      "joy",
+      3,
+      5
+     ],
+     [
+      "fear",
+      2,
+      4
+     ]
+    ]
+   ],
+   [
+    "Hyper-Achiever",
+    [
+     [
+      "joy",
+      5,
+      7
+     ],
+     [
+      "fear",
+      4,
+      6
+     ]
+    ]
+   ],
+   [
+    "Hyper-Rational",
+    [
+     [
+      "shock",
+      2,
+      4
+     ],
+     [
+      "disgust",
+      3,
+      5
+     ]
+    ]
+   ],
+   [
+    "Hyper-Vigilant",
+    [
+     [
+      "fear",
+      7,
+      9
+     ],
+     [
+      "anger",
+      5,
+      7
+     ]
+    ]
+   ],
+   [
+    "Restless",
+    [
+     [
+      "joy",
+      4,
+      6
+     ],
+     [
+      "fear",
+      3,
+      5
+     ]
+    ]
+   ],
+   [
+    "Stickler",
+    [
+     [
+      "disgust",
+      4,
+      6
+     ],
+     [
+      "anger",
+      4,
+      6
+     ]
+    ]
+   ],
+   [
+    "Judge",
+    [
+     [
+      "disgust",
+      6,
+      8
+     ],
+     [
+      "resent",
+      5,
+      7
+     ]
+    ]
+   ],
+   [
+    "Deflector",
+    [
+     [
+      "shame",
+      4,
+      6
+     ],
+     [
+      "anger",
+      4,
+      6
+     ]
+    ]
+   ],
+   [
+    "Dramatizer",
+    [
+     [
+      "shock",
+      6,
+      8
+     ],
+     [
+      "sadness",
+      4,
+      6
+     ]
+    ]
+   ],
+   [
+    "Worrywart",
+    [
+     [
+      "fear",
+      6,
+      8
+     ],
+     [
+      "sadness",
+      3,
+      5
+     ]
+    ]
+   ],
+   [
+    "Loner",
+    [
+     [
+      "sadness",
+      6,
+      8
+     ],
+     [
+      "fear",
+      5,
+      7
+     ]
+    ]
+   ],
+   [
+    "People-Pleaser",
+    [
+     [
+      "joy",
+      4,
+      6
+     ],
+     [
+      "shame",
+      3,
+      5
+     ]
+    ]
+   ],
+   [
+    "Skeptic",
+    [
+     [
+      "disgust",
+      5,
+      7
+     ],
+     [
+      "shock",
+      3,
+      5
+     ]
+    ]
+   ],
+   [
+    "Dreamer",
+    [
+     [
+      "joy",
+      3,
+      5
+     ],
+     [
+      "sadness",
+      2,
+      4
+     ]
+    ]
+   ],
+   [
+    "Procrastinator",
+    [
+     [
+      "fear",
+      4,
+      6
+     ],
+     [
+      "sadness",
+      3,
+      5
+     ]
+    ]
+   ],
+   [
+    "Imposter",
+    [
+     [
+      "shame",
+      5,
+      7
+     ],
+     [
+      "fear",
+      4,
+      6
+     ]
+    ]
+   ],
+   [
+    "Aggressor",
+    [
+     [
+      "anger",
+      7,
+      9
+     ],
+     [
+      "resent",
+      6,
+      8
+     ]
+    ]
+   ],
+   [
+    "Martyr",
+    [
+     [
+      "sadness",
+      6,
+      8
+     ],
+     [
+      "resent",
+      4,
+      6
+     ]
+    ]
+   ],
+   [
+    "Cynic",
+    [
+     [
+      "disgust",
+      6,
+      8
+     ],
+     [
+      "sadness",
+      4,
+      6
+     ]
+    ]
+   ],
+   [
+    "Manipulator",
+    [
+     [
+      "resent",
+      6,
+      8
+     ],
+     [
+      "anger",
+      5,
+      7
+     ]
+    ]
+   ],
+   [
+    "Overthinker",
+    [
+     [
+      "fear",
+      5,
+      7
+     ],
+     [
+      "shame",
+      4,
+      6
+     ]
+    ]
+   ],
+   [
+    "Escapist",
+    [
+     [
+      "joy",
+      4,
+      6
+     ],
+     [
+      "fear",
+      6,
+      8
+     ]
+    ]
+   ],
+   [
+    "Nihilist",
+    [
+     [
+      "disgust",
+      7,
+      9
+     ],
+     [
+      "sadness",
+      5,
+      7
+     ]
+    ]
+   ],
+   [
+    "Innocent",
+    [
+     [
+      "fear",
+      2,
+      4
+     ]
+    ]
+   ],
+   [
+    "Pessimist",
+    [
+     [
+      "sadness",
+      5,
+      7
+     ],
+     [
+      "fear",
+      4,
+      6
+     ]
+    ]
+   ],
+   [
+    "Catastrophizer",
+    [
+     [
+      "fear",
+      8,
+      10
+     ],
+     [
+      "sadness",
+      6,
+      8
+     ]
+    ]
+   ],
+   [
+    "Enabler",
+    [
+     [
+      "joy",
+      3,
+      5
+     ],
+     [
+      "shame",
+      4,
+      6
+     ]
+    ]
+   ],
+   [
+    "Control Freak",
+    [
+     [
+      "fear",
+      7,
+      9
+     ],
+     [
+      "anger",
+      5,
+      7
+     ]
+    ]
+   ],
+   [
+    "Negotiator",
+    [
+     [
+      "fear",
+      3,
+      5
+     ],
+     [
+      "joy",
+      4,
+      6
+     ]
+    ]
+   ]
+  ],
+  "complexes": [
+   [
+    "Dominance Enforcement",
+    "♜",
+    [
+     "Controller",
+     "Judge"
+    ],
+    "R",
+    "Named in the malignant narcissism trace."
+   ],
+   [
+    "Blame Displacement",
+    "↺",
+    [
+     "Aggressor",
+     "Deflector"
+    ],
+    "R",
+    "Named in the malignant narcissism trace."
+   ],
+   [
+    "Superiority-Persecution",
+    "⚔",
+    [
+     "Hyper-Achiever",
+     "Victim"
+    ],
+    "R",
+    "Named in the malignant narcissism trace. Victim runs split."
+   ],
+   [
+    "Narcissistic",
+    "◉",
+    [
+     "Controller",
+     "Hyper-Achiever",
+     "Judge"
+    ],
+    "R",
+    "Lance dictated: entitlement, justification, comparison, judgment. Four nodes, three of them addressed."
+   ],
+   [
+    "Machiavellian Tactics",
+    "♟",
+    [
+     "Manipulator",
+     "Skeptic"
+    ],
+    "R",
+    "Rebel removed, ruled a Jungian archetype."
+   ],
+   [
+    "Antisocial",
+    "☠",
+    [
+     "Aggressor",
+     "Deflector"
+    ],
+    "R",
+    "Rebel removed."
+   ],
+   [
+    "Oscillation",
+    "∿",
+    [
+     "Dramatizer",
+     "Restless",
+     "Victim"
+    ],
+    "R",
+    "Filed as Bipolar in the March table."
+   ],
+   [
+    "Abandonment Reactivity",
+    "☄",
+    [
+     "Victim",
+     "People-Pleaser",
+     "Imposter"
+    ],
+    "R",
+    "Filed as BPD."
+   ],
+   [
+    "Rigidity",
+    "▦",
+    [
+     "Stickler",
+     "Perfectionist",
+     "Hyper-Vigilant"
+    ],
+    "R",
+    "Filed as OCPD."
+   ],
+   [
+    "Attention Seeking",
+    "✺",
+    [
+     "Dramatizer",
+     "People-Pleaser",
+     "Dreamer"
+    ],
+    "R",
+    "Filed as Histrionic."
+   ],
+   [
+    "Threat Scanning",
+    "◈",
+    [
+     "Worrywart",
+     "Hyper-Vigilant",
+     "Avoider"
+    ],
+    "R",
+    "Filed as Anxiety Disorders."
+   ],
+   [
+    "Collapse",
+    "↓",
+    [
+     "Victim",
+     "Pessimist",
+     "Loner"
+    ],
+    "R",
+    "Filed as Depression."
+   ],
+   [
+    "Scatter",
+    "∷",
+    [
+     "Restless",
+     "Dreamer",
+     "Imposter"
+    ],
+    "R",
+    "Filed as ADHD."
+   ],
+   [
+    "Anticipatory Freeze",
+    "❄",
+    [
+     "Overthinker",
+     "Procrastinator",
+     "Avoider"
+    ],
+    "I",
+    "Negative Affectivity cluster. Anxiousness, perseveration and withdrawal co-load in PID-5. The saboteurs that stall before motion."
+   ],
+   [
+    "Catastrophic Bracing",
+    "⚡",
+    [
+     "Catastrophizer",
+     "Worrywart",
+     "Hyper-Vigilant"
+    ],
+    "I",
+    "Negative Affectivity at the high end. Fear 6 to 10 across all three profiles. The body already at the worst outcome."
+   ],
+   [
+    "Meaning Withdrawal",
+    "◌",
+    [
+     "Nihilist",
+     "Cynic",
+     "Pessimist"
+    ],
+    "I",
+    "Detachment spectrum. Anhedonia plus restricted affectivity. All three are disgust-plus-sadness profiles."
+   ],
+   [
+    "Retreat",
+    "◑",
+    [
+     "Loner",
+     "Escapist",
+     "Dreamer"
+    ],
+    "I",
+    "Detachment. Withdrawal and intimacy avoidance. Leaving the room, by distance or by fantasy."
+   ],
+   [
+    "Cold Analysis",
+    "△",
+    [
+     "Hyper-Rational",
+     "Skeptic",
+     "Judge"
+    ],
+    "I",
+    "Detachment crossing into Antagonism. Restricted affectivity plus callousness. Judgement with the feeling switched off."
+   ],
+   [
+    "Self-Erasure",
+    "○",
+    [
+     "Pleaser",
+     "People-Pleaser",
+     "Enabler"
+    ],
+    "I",
+    "Other-directedness. Subjugation, self-sacrifice and approval seeking are one schema domain. The self traded for the bond."
+   ],
+   [
+    "Sacrificial Ledger",
+    "⚖",
+    [
+     "Martyr",
+     "Victim",
+     "Enabler"
+    ],
+    "I",
+    "Other-directedness with resentment. Self-sacrifice that keeps an account. Giving as a claim."
+   ],
+   [
+    "Exploitation",
+    "✖",
+    [
+     "Manipulator",
+     "Aggressor",
+     "Deflector"
+    ],
+    "I",
+    "Antagonism core. Manipulativeness, deceitfulness and callousness are one PID-5 domain and the D factor explains most of their shared variance."
+   ],
+   [
+    "Standard Enforcement",
+    "▬",
+    [
+     "Perfectionist",
+     "Stickler",
+     "Judge"
+    ],
+    "I",
+    "Rigid perfectionism plus punitiveness. The schema domain of unrelenting standards, pointed outward."
+   ],
+   [
+    "Imposture",
+    "◇",
+    [
+     "Imposter",
+     "Deflector",
+     "Overthinker"
+    ],
+    "I",
+    "Shame at 5 to 7 with concealment. Defectiveness schema plus a coping loop of hiding."
+   ]
+  ],
+  "hyper_complexes": [
+   [
+    "Malignant Narcissism",
+    "⬛",
+    [
+     "Narcissistic",
+     "Antisocial"
+    ],
+    "R",
+    "The only hyper-complex with a written composition anywhere in the corpus."
+   ],
+   [
+    "Sociopathy",
+    "■",
+    [
+     "Narcissistic",
+     "Cold Analysis"
+    ],
+    "I",
+    "Lance dictated: narcissism plus lack of empathy. Cold Analysis is the empathy-off cluster. Kernberg-adjacent, not a DSM entity."
+   ],
+   [
+    "Psychopathy",
+    "▪",
+    [
+     "Narcissistic",
+     "Antisocial",
+     "Exploitation"
+    ],
+    "I",
+    "Lance dictated: sociopath plus willingness to see others harmed. The D factor explains 92 percent of common variance in psychopathy."
+   ],
+   [
+    "Machiavellianism",
+    "♛",
+    [
+     "Machiavellian Tactics",
+     "Dominance Enforcement"
+    ],
+    "I",
+    "Strategy plus control. Note the literature finds Machiavellianism nearly redundant with psychopathy once D is partialled."
+   ],
+   [
+    "Megalomania",
+    "★",
+    [
+     "Narcissistic",
+     "Dominance Enforcement",
+     "Superiority-Persecution"
+    ],
+    "I",
+    "Lance: malignant base plus superiority complex, grandiosity without the insecurity underneath. Not a research construct in the literature."
+   ],
+   [
+    "Malignant Grandiosity",
+    "✹",
+    [
+     "Narcissistic",
+     "Superiority-Persecution",
+     "Blame Displacement"
+    ],
+    "I",
+    "Grandiosity that cannot absorb a consequence. Every failure displaced."
+   ],
+   [
+    "Dark Triad",
+    "◆",
+    [
+     "Narcissistic",
+     "Machiavellian Tactics",
+     "Antisocial"
+    ],
+    "I",
+    "Super-complex in Lance's terms. The D factor literature finds one core, not three, which supports treating it as a single object."
+   ],
+   [
+    "Persecutory Collapse",
+    "▽",
+    [
+     "Collapse",
+     "Abandonment Reactivity",
+     "Sacrificial Ledger"
+    ],
+    "I",
+    "The internalizing counterpart. HiTOP internalizing spectrum, distress subfactor. The severe end that is not antagonistic."
+   ]
+  ],
+  "amplifiers": [
+   [
+    "Entitlement",
+    8,
+    "Cauda Equina",
+    "R"
+   ],
+   [
+    "Obsession",
+    29,
+    "Pelvic Ganglia",
+    "R"
+   ],
+   [
+    "Judgment",
+    37,
+    "Splanchnic Plexus",
+    "R"
+   ],
+   [
+    "Perfectionism",
+    40,
+    "Mesenteric Plexus",
+    "R"
+   ],
+   [
+    "Comparison",
+    69,
+    "Accessory Nerve",
+    "R"
+   ],
+   [
+    "Justification",
+    34,
+    "Greater Splanchnic Nerve",
+    "I"
+   ]
+  ],
+  "archetypes": [
+   [
+    "Warrior",
+    "Control Freak",
+    "Judge",
+    "Solar",
+    "Throat"
+   ],
+   [
+    "Caregiver",
+    "Pleaser",
+    "Martyr",
+    "Heart",
+    "Sacral"
+   ],
+   [
+    "Creator",
+    "Perfectionist",
+    "Victim",
+    "Throat",
+    "Crown"
+   ],
+   [
+    "Rebel",
+    "Rebel",
+    "Stickler",
+    "Root",
+    "Solar"
+   ],
+   [
+    "Sage",
+    "Hyper-Rational",
+    "Avoider",
+    "Eye",
+    "Crown"
+   ],
+   [
+    "Magician",
+    "Manipulator",
+    "Pleaser",
+    "Solar",
+    "Eye"
+   ],
+   [
+    "Outlaw",
+    "Rebel",
+    "Victim",
+    "Throat",
+    "Root"
+   ],
+   [
+    "Pleaser",
+    "People-Pleaser",
+    "Victim",
+    "Heart",
+    "Sacral"
+   ],
+   [
+    "Orphan",
+    "Victim",
+    "Judge",
+    "Root",
+    "Sacral"
+   ],
+   [
+    "Ruler",
+    "Controller",
+    "Hyper-Achiever",
+    "Solar",
+    "Crown"
+   ],
+   [
+    "Explorer",
+    "Restless",
+    "Escapist",
+    "Throat",
+    "Eye"
+   ],
+   [
+    "Hero",
+    "Perfectionist",
+    "Hyper-Rational",
+    "Solar",
+    "Heart"
+   ],
+   [
+    "Everyman",
+    "Pleaser",
+    "Avoider",
+    "Sacral",
+    "Heart"
+   ],
+   [
+    "Shadow",
+    "Saboteur",
+    "Victim",
+    "Root",
+    "Solar"
+   ],
+   [
+    "Shapeshifter",
+    "Imposter",
+    "Controller",
+    "Throat",
+    "Eye"
+   ],
+   [
+    "Healer",
+    "Rescuer",
+    "Hyper-Achiever",
+    "Heart",
+    "Crown"
+   ],
+   [
+    "Jester",
+    "Avoider",
+    "Pleaser",
+    "Sacral",
+    "Throat"
+   ],
+   [
+    "Lover",
+    "Stickler",
+    "Victim",
+    "Heart",
+    "Sacral"
+   ],
+   [
+    "Mentor",
+    "Hyper-Achiever",
+    "Judge",
+    "Eye",
+    "Throat"
+   ]
+  ],
+  "jungian": [
+   [
+    "Innocent",
+    "☀",
+    "Safety, optimism, faith",
+    "Denial. Refuses to see what is happening.",
+    "Everyman"
+   ],
+   [
+    "Orphan",
+    "◍",
+    "Belonging, realism, empathy",
+    "Victimhood. Bonds through shared wounding.",
+    "Everyman"
+   ],
+   [
+    "Warrior",
+    "⚔",
+    "Courage, discipline, mastery",
+    "Domination. Fights when nothing is attacking.",
+    "Ego"
+   ],
+   [
+    "Caretaker",
+    "♡",
+    "Compassion, service, protection",
+    "Martyrdom. Gives to create obligation.",
+    "Ego"
+   ],
+   [
+    "Explorer",
+    "➤",
+    "Autonomy, discovery, authenticity",
+    "Restlessness. Leaves before anything can land.",
+    "Soul"
+   ],
+   [
+    "Outlaw",
+    "✕",
+    "Revolution, liberation, disruption",
+    "Destruction for its own sake.",
+    "Soul"
+   ],
+   [
+    "Lover",
+    "❤",
+    "Intimacy, devotion, beauty",
+    "Fusion. Loses its edges in another.",
+    "Soul"
+   ],
+   [
+    "Creator",
+    "✦",
+    "Imagination, form-making, vision",
+    "Perfectionism. The work never ships.",
+    "Soul"
+   ],
+   [
+    "Jester",
+    "◔",
+    "Presence, levity, truth-telling",
+    "Deflection. The joke that hides the wound.",
+    "Self"
+   ],
+   [
+    "Sage",
+    "△",
+    "Truth, understanding, discernment",
+    "Detachment. Knowing instead of living.",
+    "Self"
+   ],
+   [
+    "Magician",
+    "✷",
+    "Transformation, vision, catalysis",
+    "Manipulation. Power without accountability.",
+    "Self"
+   ],
+   [
+    "Ruler",
+    "♛",
+    "Order, responsibility, sovereignty",
+    "Control. Order enforced, not held.",
+    "Self"
+   ]
+  ],
+  "masks": [
+   [
+    "Child Mask",
+    "Root",
+    "Formed before language. Deepest, most intense, least visible."
+   ],
+   [
+    "Preteen Mask",
+    "Sacral",
+    "Social survival strategy running underneath."
+   ],
+   [
+    "Teen Mask",
+    "Throat",
+    "Where the archetypes emerge. Contains the archetype layer."
+   ],
+   [
+    "Professional Mask",
+    "Solar",
+    "Competence as identity."
+   ],
+   [
+    "Religious / Moral Mask",
+    "Crown",
+    "Values held as position rather than practice."
+   ],
+   [
+    "Relational Mask",
+    "Heart",
+    "Who you become in front of the person you need."
+   ]
+  ],
+  "axes": [
+   [
+    "Aware",
+    "Ignorant"
+   ],
+   [
+    "Detached",
+    "Attached"
+   ],
+   [
+    "Intentional",
+    "Avoidant"
+   ]
+  ],
+  "domains": {
+   "Architect (Order)": [
+    "Knowledge",
+    "Justice",
+    "Imperium",
+    "Duty",
+    "Fate"
+   ],
+   "Engine (Dynamics)": [
+    "Power",
+    "Creation",
+    "Dissolution",
+    "Descent",
+    "Death"
+   ],
+   "Weaver (Connection)": [
+    "Connection",
+    "Exchange",
+    "Restoration",
+    "Play"
+   ],
+   "Witness (Awareness)": [
+    "Nature",
+    "Trickster",
+    "Mystery",
+    "Guardian"
+   ]
+  },
+  "laws": {
+   "nature": [
+    [
+     1,
+     "All Is One",
+     "Unified Field",
+     "Isolation, treating yourself as separate from the field that generates you"
+    ],
+    [
+     2,
+     "All Is Motion",
+     "Frequency Dynamics",
+     "Stagnation, the appearance of stillness when the field never stops"
+    ],
+    [
+     3,
+     "Polarity",
+     "Complementary Differentiation",
+     "Collapsing into one pole. Refusing the opposite, losing the charge between them"
+    ],
+    [
+     4,
+     "All Fields Correspond",
+     "Fractal Reflection",
+     "Blaming the readout, treating external events as separate from the internal state generating them"
+    ],
+    [
+     5,
+     "Like Fields Attract",
+     "Magnetic Resonance",
+     "Incoherence attracting incoherence, and not recognizing the mechanism"
+    ],
+    [
+     6,
+     "Inspired Action",
+     "Co-Creative Motion",
+     "Forced action, moving without resonance, generating charge instead of form"
+    ],
+    [
+     7,
+     "Transmutation",
+     "Alchemical Change",
+     "Decay, energy degrading when the change state is refused"
+    ],
+    [
+     8,
+     "Cause & Effect",
+     "Causal Reciprocity",
+     "Denial, refusing to see the field returning what was sent"
+    ],
+    [
+     9,
+     "Compensation",
+     "Restorative Equilibrium",
+     "Forcing imbalance to hold. The correction arrives harder"
+    ],
+    [
+     10,
+     "Potential",
+     "Directed Possibility",
+     "Potential unactivated, the field waiting for direction that never comes"
+    ],
+    [
+     11,
+     "Relativity",
+     "Contextual Awareness",
+     "Absolutism, claiming fixed meaning independent of context"
+    ],
+    [
+     12,
+     "Rhythm",
+     "Temporal Flow",
+     "Resistance, forcing a hold on the peak or the valley"
+    ],
+    [
+     13,
+     "Gender",
+     "Dual Creation",
+     "One force dominating. The creative circuit shorts"
+    ]
+   ],
+   "human_nature": [
+    [
+     14,
+     "Form",
+     "Structured Pattern",
+     "gate",
+     "Distortion, form collapsing from its geometry under load"
+    ],
+    [
+     15,
+     "Archetype",
+     "Collective Geometry",
+     "gate",
+     "Noise, pattern without archetypal anchor"
+    ],
+    [
+     16,
+     "Biofield",
+     "Circulating Coherence",
+     "gate",
+     "Fragmentation, unresolved charge disrupting the coherence of the field"
+    ],
+    [
+     17,
+     "Attunement",
+     "Resonant Fusion",
+     "instrument",
+     "Dissonance, the soul's frequency and the body's field out of phase"
+    ],
+    [
+     18,
+     "Perception",
+     "Sensory Measurement",
+     "instrument",
+     "Delusion, a charged node filtering the signal before it reaches awareness"
+    ],
+    [
+     19,
+     "Intelligence",
+     "Cognitive Organization",
+     "gate",
+     "Fixed perspective. Uncleared nodes acting as perceptual blinders"
+    ],
+    [
+     20,
+     "Pleasure & Pain",
+     "Binary Switch",
+     "gate",
+     "Contraction as default. The signal hijacked before it can be read"
+    ],
+    [
+     21,
+     "The Three Axes",
+     "Three-Axis Routing \\u00b7 downstream of Pleasure & Pain",
+     "gate",
+     "Ignorant, attached, avoidant. The poisons selecting the pole"
+    ],
+    [
+     22,
+     "Symbol",
+     "Linguistic Encoding",
+     "gate",
+     "Symbols severed from their roots. Words that reference nothing real"
+    ],
+    [
+     23,
+     "Identity",
+     "Boundary Creation",
+     "instrument",
+     "Calcified identity. A fixed position that cannot receive new information without threatening its structure"
+    ],
+    [
+     24,
+     "Choice",
+     "Directional Intent",
+     "instrument",
+     "Compulsion, identity running as automatic pattern before choice can engage"
+    ],
+    [
+     25,
+     "Ego",
+     "Adaptive Interface",
+     "gate",
+     "Ego running the system as if it were the soul"
+    ],
+    [
+     26,
+     "Intention",
+     "Focused Will",
+     "instrument",
+     "Aimlessness, energy dispersing without direction"
+    ],
+    [
+     27,
+     "Action",
+     "Manifested Energy",
+     "instrument",
+     "Movement that generates more charge than it resolves"
+    ],
+    [
+     28,
+     "Memory",
+     "Immediate Return",
+     "instrument",
+     "Justification, overriding the body's immediate verdict with rationalization"
+    ]
+   ],
+   "spiritual_integrity": [
+    [
+     29,
+     "Truth",
+     "Clarity of Awareness"
+    ],
+    [
+     30,
+     "Transparency",
+     "Visible Integrity"
+    ],
+    [
+     31,
+     "Unity",
+     "Field Recognition"
+    ],
+    [
+     32,
+     "Awareness",
+     "Witness Capacity"
+    ],
+    [
+     33,
+     "Presence",
+     "Moment Occupancy"
+    ],
+    [
+     34,
+     "Equanimity",
+     "Even Signal"
+    ],
+    [
+     35,
+     "Compassion",
+     "Equal Regard"
+    ],
+    [
+     36,
+     "Forgiveness",
+     "Charge Unbinding"
+    ],
+    [
+     37,
+     "Courage",
+     "Fear Transcendence"
+    ],
+    [
+     38,
+     "Temperance",
+     "Governed Appetite"
+    ],
+    [
+     39,
+     "Duty",
+     "Word Integrity"
+    ],
+    [
+     40,
+     "Ownership",
+     "Ownership Loop"
+    ],
+    [
+     41,
+     "Justice",
+     "Right Dealing"
+    ],
+    [
+     42,
+     "Non-Harm",
+     "Conduct Floor"
+    ],
+    [
+     43,
+     "Wisdom",
+     "Signal Intelligence"
+    ],
+    [
+     44,
+     "Humility",
+     "Accurate Measure"
+    ],
+    [
+     45,
+     "Generosity",
+     "Restorative Flow"
+    ],
+    [
+     46,
+     "Detachment",
+     "Open Hands"
+    ],
+    [
+     47,
+     "Patience",
+     "Right Timing"
+    ],
+    [
+     48,
+     "Aesthetic Beauty",
+     "Resonant Order"
+    ],
+    [
+     49,
+     "Nature",
+     "Natural Alignment"
+    ]
+   ],
+   "expression": [
+    [
+     50,
+     "Peace",
+     "The Zero Point \\u00b7 Root of Expression",
+     18,
+     "Equanimity that lets the full expressive system rise without resistance"
+    ],
+    [
+     51,
+     "Play",
+     "Open Curiosity",
+     30,
+     "Full engagement without needing to control what happens"
+    ],
+    [
+     52,
+     "Curiosity",
+     "Exploratory Motion",
+     34,
+     "Sustained interest in what lies beyond current understanding"
+    ],
+    [
+     53,
+     "Creativity",
+     "Generative Innovation",
+     42,
+     "Producing something that did not exist in that form before"
+    ],
+    [
+     54,
+     "Flow",
+     "Seamless Continuity",
+     50,
+     "Action that feels like cooperation with what wants to happen"
+    ],
+    [
+     55,
+     "Wonder",
+     "Meaning Made for Another",
+     56,
+     "Work that moves the person it was made for"
+    ],
+    [
+     56,
+     "Order",
+     "Sacred Structure",
+     62,
+     "Higher order made livable and transmissible by others"
+    ],
+    [
+     57,
+     "Love (Expression)",
+     "Total Transmutation",
+     70,
+     "Operating from maximum positive charge as a stable, ongoing state"
+    ],
+    [
+     58,
+     "Purpose",
+     "Standing Aim",
+     78,
+     "A life whose acts, taken together, describe one direction"
+    ],
+    [
+     59,
+     "Will",
+     "Directed Persistence",
+     86,
+     "Moving through resistance until the nerve re-learns the outcome is different"
+    ]
+   ]
+  },
+  "quadrants": [
+   [
+    "Right-Front",
+    "Conscious external",
+    "Action, leadership, responsibility, control",
+    "right shoulder/neck, right chest/arm, right hip/lower back, right leg",
+    "Shoulder pain, chest tightness, lower back ache",
+    "Too much carried, fear of failure, hesitation to act",
+    "right",
+    "front"
+   ],
+   [
+    "Left-Front",
+    "Conscious internal",
+    "Emotional expression, relationship, self-worth",
+    "left shoulder/neck, left chest/heart, left hip, left leg",
+    "Chest tightness, foot pain, lower back tension",
+    "Suppressed emotion, unresolved heartache, resistance to change",
+    "left",
+    "front"
+   ],
+   [
+    "Right-Back",
+    "Subconscious external",
+    "Suppressed control, hidden anger, past failure",
+    "right back shoulder, right mid-back, right lower back, right posterior hip/leg",
+    "Chronic back pain, hip pain, mid-back tension",
+    "Suppressed frustration, deep insecurity, risk avoidance",
+    "right",
+    "back"
+   ],
+   [
+    "Left-Back",
+    "Subconscious internal",
+    "Repressed grief, sadness, emotional pain",
+    "left back shoulder, left mid-back, left lower back, left posterior hip/leg",
+    "Chronic heaviness, persistent sadness, emotional withdrawal",
+    "Unprocessed grief, wounding never named, support never received",
+    "left",
+    "back"
+   ]
+  ],
+  "organs": [
+   [
+    "Heart",
+    "centre",
+    "Fear of giving and receiving love. Past hurts held.",
+    "If I open, I will be hurt again."
+   ],
+   [
+    "Stomach",
+    "centre",
+    "Anxiety about the future. Scarcity.",
+    "There is not enough. I cannot manage this."
+   ],
+   [
+    "Right Lung",
+    "right",
+    "Fear of expressing the true self.",
+    "If I say what I actually mean, I will be rejected."
+   ],
+   [
+    "Left Lung",
+    "left",
+    "Grief and sadness. Difficulty releasing pain.",
+    "I cannot let this go. It defines what happened to me."
+   ],
+   [
+    "Right Liver",
+    "right",
+    "Anger, frustration, resentment.",
+    "This was done to me. I am right to be furious."
+   ],
+   [
+    "Right Kidney",
+    "right",
+    "Fear of failure. Performance pressure.",
+    "I am only safe if I perform perfectly."
+   ],
+   [
+    "Left Kidney",
+    "left",
+    "Fear of rejection. Feeling unsupported.",
+    "No one is going to show up for me when I need it."
+   ],
+   [
+    "Intestines",
+    "centre",
+    "Holding onto past traumas.",
+    "If I let this go, I lose the story that explains me."
+   ],
+   [
+    "Spine",
+    "centre",
+    "Fear of support and stability. Rigidity.",
+    "I have to hold all of this alone."
+   ],
+   [
+    "Dermis",
+    "full surface",
+    "Shock, acute stress overflow.",
+    "Overflow system. Psoriasis, stress acne."
+   ]
+  ],
+  "charge_routing": {
+   "anger": "Right-Back",
+   "fear": "Right-Front",
+   "shame": "Left-Front",
+   "sadness": "Left-Back",
+   "disgust": "Right-Back",
+   "shock": "Left-Back",
+   "resent": "Right-Back",
+   "joy": "Left-Front"
+  },
+  "derived_measures": [
+   [
+    "Vitality",
+    "Coherent opposite of the Apathy/Joy axis, addressed at the fascia between solar and heart. Also the vitality component of PQ.",
+    "joy"
+   ],
+   [
+    "Awareness",
+    "Element 32, a Law of Spiritual Integrity, and a scored diagnostic set. Reads how much of what drives you is visible while it runs.",
+    "shock"
+   ],
+   [
+    "Flow",
+    "Element 54, a Law of Expression. Opens at CQ 50. Seamless continuity, no forcing.",
+    "fear"
+   ]
+  ],
+  "astrology_overlay": {
+   "west": {
+    "Aries": [
+     3,
+     0,
+     -2,
+     3,
+     2,
+     2,
+     -2,
+     1
+    ],
+    "Taurus": [
+     -1,
+     1,
+     2,
+     -3,
+     0,
+     0,
+     3,
+     3
+    ],
+    "Gemini": [
+     1,
+     2,
+     -2,
+     1,
+     0,
+     3,
+     -2,
+     -1
+    ],
+    "Cancer": [
+     -1,
+     3,
+     1,
+     -2,
+     -1,
+     1,
+     2,
+     1
+    ],
+    "Leo": [
+     2,
+     2,
+     -1,
+     1,
+     3,
+     3,
+     0,
+     1
+    ],
+    "Virgo": [
+     0,
+     0,
+     3,
+     -2,
+     -1,
+     -1,
+     2,
+     3
+    ],
+    "Libra": [
+     -1,
+     3,
+     1,
+     -1,
+     -2,
+     1,
+     1,
+     0
+    ],
+    "Scorpio": [
+     1,
+     -1,
+     1,
+     2,
+     1,
+     -2,
+     0,
+     0
+    ],
+    "Sagittarius": [
+     2,
+     1,
+     -3,
+     3,
+     1,
+     2,
+     -2,
+     -2
+    ],
+    "Capricorn": [
+     1,
+     -1,
+     3,
+     0,
+     1,
+     -2,
+     3,
+     3
+    ],
+    "Aquarius": [
+     1,
+     0,
+     -2,
+     2,
+     0,
+     0,
+     -3,
+     -3
+    ],
+    "Pisces": [
+     -2,
+     2,
+     -2,
+     -1,
+     -2,
+     1,
+     -1,
+     -3
+    ]
+   },
+   "east": {
+    "Rat": [
+     2,
+     1,
+     0,
+     1,
+     1,
+     1,
+     -1,
+     2
+    ],
+    "Ox": [
+     0,
+     -1,
+     3,
+     -2,
+     0,
+     -2,
+     3,
+     3
+    ],
+    "Tiger": [
+     3,
+     0,
+     -2,
+     3,
+     2,
+     2,
+     -2,
+     0
+    ],
+    "Rabbit": [
+     -2,
+     2,
+     1,
+     -3,
+     -1,
+     0,
+     2,
+     1
+    ],
+    "Dragon": [
+     3,
+     1,
+     -1,
+     2,
+     3,
+     3,
+     -1,
+     0
+    ],
+    "Snake": [
+     0,
+     -2,
+     1,
+     1,
+     1,
+     -3,
+     1,
+     0
+    ],
+    "Horse": [
+     2,
+     2,
+     -3,
+     2,
+     1,
+     3,
+     -2,
+     -1
+    ],
+    "Goat": [
+     -2,
+     2,
+     -1,
+     -2,
+     -2,
+     1,
+     0,
+     0
+    ],
+    "Monkey": [
+     2,
+     1,
+     -2,
+     2,
+     1,
+     2,
+     -2,
+     -1
+    ],
+    "Rooster": [
+     0,
+     0,
+     3,
+     -1,
+     2,
+     -1,
+     2,
+     3
+    ],
+    "Dog": [
+     0,
+     2,
+     2,
+     -1,
+     -1,
+     0,
+     3,
+     2
+    ],
+    "Pig": [
+     -1,
+     3,
+     0,
+     -1,
+     -1,
+     1,
+     2,
+     2
+    ]
+   },
+   "archetype_vectors": {
+    "Innocent": [
+     -1,
+     2,
+     -1,
+     -2,
+     -1,
+     1,
+     1,
+     0
+    ],
+    "Orphan": [
+     -2,
+     2,
+     0,
+     -2,
+     -2,
+     0,
+     1,
+     1
+    ],
+    "Warrior": [
+     3,
+     -1,
+     2,
+     3,
+     2,
+     1,
+     0,
+     2
+    ],
+    "Caretaker": [
+     -1,
+     3,
+     1,
+     -2,
+     -3,
+     1,
+     3,
+     1
+    ],
+    "Explorer": [
+     2,
+     0,
+     -3,
+     3,
+     2,
+     1,
+     -3,
+     -1
+    ],
+    "Outlaw": [
+     3,
+     -2,
+     -3,
+     3,
+     1,
+     2,
+     -3,
+     0
+    ],
+    "Lover": [
+     0,
+     3,
+     -1,
+     0,
+     -1,
+     3,
+     0,
+     1
+    ],
+    "Creator": [
+     2,
+     0,
+     1,
+     1,
+     2,
+     3,
+     -1,
+     0
+    ],
+    "Jester": [
+     1,
+     2,
+     -3,
+     1,
+     0,
+     3,
+     -2,
+     -1
+    ],
+    "Sage": [
+     -1,
+     -1,
+     2,
+     -2,
+     0,
+     -2,
+     1,
+     -2
+    ],
+    "Magician": [
+     2,
+     0,
+     0,
+     2,
+     1,
+     1,
+     -2,
+     -3
+    ],
+    "Ruler": [
+     1,
+     0,
+     3,
+     0,
+     2,
+     0,
+     3,
+     2
+    ]
+   },
+   "load_map": {
+    "Aries": "anger",
+    "Taurus": "resent",
+    "Gemini": "shock",
+    "Cancer": "sadness",
+    "Leo": "shame",
+    "Virgo": "disgust",
+    "Libra": "fear",
+    "Scorpio": "resent",
+    "Sagittarius": "joy",
+    "Capricorn": "fear",
+    "Aquarius": "disgust",
+    "Pisces": "sadness",
+    "Rat": "fear",
+    "Ox": "resent",
+    "Tiger": "anger",
+    "Rabbit": "fear",
+    "Dragon": "shame",
+    "Snake": "resent",
+    "Horse": "joy",
+    "Goat": "sadness",
+    "Monkey": "shock",
+    "Rooster": "disgust",
+    "Dog": "anger",
+    "Pig": "joy"
+   },
+   "dims": [
+    "initiate",
+    "toward",
+    "structure",
+    "risk",
+    "self",
+    "expressive",
+    "stabilise",
+    "concrete"
+   ]
+  }
+ },
+ "contraindications": [
+  {
+   "id": "rebound",
+   "rule": "Warn before every release. Days 2-7 read worse at that address. Expected, resolves, not damage."
+  },
+  {
+   "id": "acute_crisis",
+   "rule": "Not a substitute for emergency care and must not delay it."
+  },
+  {
+   "id": "dissociation",
+   "rule": "If the person leaves their body under pressure, pace down or do not run it."
+  },
+  {
+   "id": "structural",
+   "rule": "Structural diagnoses stay with whoever manages them. Say it every time, not once."
+  },
+  {
+   "id": "medication",
+   "rule": "Nothing here changes a prescription. A better reading is not a reason to stop a drug."
+  },
+  {
+   "id": "scope",
+   "rule": "Not a diagnosis. Complex and hyper-complex names are structural descriptions, not clinical labels."
+  }
+ ],
+ "open_rulings": [
+  {
+   "id": 1,
+   "item": "The nine base emotions",
+   "detail": "Three incompatible rosters. Surprise against Shock unresolved. Blocks book, harness and two published newsletter issues at once.",
+   "blocks": [
+    "registers.fetters",
+    "registers.ladders"
+   ]
+  },
+  {
+   "id": 2,
+   "item": "Front and back charge routing",
+   "detail": "Eight decisions. Current routing is inferred and produced a back-weighted population. Defect, not a finding.",
+   "blocks": [
+    "registers.charge_routing"
+   ]
+  },
+  {
+   "id": 3,
+   "item": "Band or floor",
+   "detail": "Whether a saboteur fires at a band or above a floor. Decidable. Moves load correlation from +0.387 to +0.891.",
+   "blocks": [
+    "registers.saboteurs"
+   ]
+  },
+  {
+   "id": 4,
+   "item": "The TULA 25-entry table",
+   "detail": "If its triads are fetters, the chain closes from the bottom.",
+   "blocks": [
+    "registers.complexes"
+   ]
+  },
+  {
+   "id": 5,
+   "item": "Justification has no node",
+   "detail": "Component two of four in narcissism. Inferred candidate: node 034.",
+   "blocks": [
+    "registers.amplifiers"
+   ]
+  },
+  {
+   "id": 6,
+   "item": "Rebel",
+   "detail": "Ruled a Jungian archetype, still load-bearing in four places. Four substitutions needed.",
+   "blocks": [
+    "registers.complexes",
+    "registers.archetypes"
+   ]
+  },
+  {
+   "id": 7,
+   "item": "Rescuer and Saboteur",
+   "detail": "Head archetypes and are not among the 33.",
+   "blocks": [
+    "registers.archetypes"
+   ]
+  },
+  {
+   "id": 8,
+   "item": "Domain count",
+   "detail": "18 in the book, 15 in the compilation, 14 in the blueprint file.",
+   "blocks": [
+    "registers.domains"
+   ]
+  },
+  {
+   "id": 9,
+   "item": "Awareness and Flow",
+   "detail": "Rebuild from non-instrument inputs or drop.",
+   "blocks": [
+    "registers.derived_measures"
+   ]
+  },
+  {
+   "id": 10,
+   "item": "Coherent Opposite vs replacement state",
+   "detail": "Core system term is a BANNED STRING in the manuscript integrity script, which standardizes on replacement state. One of the two is stale. No ruling on record.",
+   "blocks": [
+    "terminology"
+   ]
+  },
+  {
+   "id": 11,
+   "item": "Intention vs Integrity asymmetry",
+   "detail": "The formula is commutative in its two instruments. Intention 2 with Integrity 8 scores what Intention 8 with Integrity 2 scores. The narcissism material requires them to differ. Not solved by the square root.",
+   "blocks": [
+    "formula.operational"
+   ]
+  }
+ ]
+}

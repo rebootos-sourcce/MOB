@@ -9501,5 +9501,138 @@ g('ID · one fixed code per thing the engine names, and one door every label goe
  reset(0,0,6);
 }
 
+g('RG · the registers ported from canon.json, held row for row to the copy this repository keeps');
+/* PHASE TWO OF THE MERGE, 24 October. Seven of canon.json's registers had no
+   table here and are ported into engine/data/registers.js. The vendored copy
+   is vendor/reboot-os/canon.json, and these checks hold the tables to it, so
+   the next canon.json is a named difference (node tools/canon-port.js check)
+   and never a silent one. Every check below that compares is first shown to
+   bite on a copy with one thing planted wrong, because a comparison that
+   cannot fail reports green on everything. Counts are read off the run. */
+{
+ const fs=require('fs'), path=require('path'), crypto=require('crypto');
+ const live=typeof E.regDiff==='function'&&Array.isArray(E.REG_MAP)&&Array.isArray(E.CHARGE_LADDER);
+ ok(live,'the engine carries the ported registers, REG_MAP and regDiff');
+ const VEND=path.resolve('vendor/reboot-os/canon.json');
+ ok(fs.existsSync(VEND),'the vendored canon.json is at vendor/reboot-os/canon.json');
+ if(live&&fs.existsSync(VEND)){
+  const raw=fs.readFileSync(VEND), canon=JSON.parse(raw.toString('utf8')), copy=()=>JSON.parse(raw.toString('utf8'));
+  /* THE PIN. CODE_SOURCES cites the md5 every canon row in the codes was read
+     at, so the copy here must be that file, byte for byte. */
+  const md5=crypto.createHash('md5').update(raw).digest('hex');
+  const cited=(/md5 ([0-9a-f]{8})/.exec((E.CODE_SOURCES.find(r=>r[0]==='canon')||[])[1]||'')||[])[1];
+  ok(cited&&md5.indexOf(cited)===0,'the vendored copy is the canon.json CODE_SOURCES cites, md5 '+md5.slice(0,8)+' against '+cited);
+  /* ROW FOR ROW */
+  const d0=E.regDiff(canon);
+  ok(d0.length===0,'every ported register matches the vendored copy row for row, differences: '+JSON.stringify(d0.slice(0,4)));
+  /* AND EACH COMPARISON BITES, on a copy of the file with one thing planted */
+  const bite=(what,mut,word)=>{const c=copy(); mut(c.registers,c); const d=E.regDiff(c);
+   ok(d.some(x=>x.indexOf(word)>=0),'regDiff names '+what+', got '+JSON.stringify(d.slice(0,3)));};
+  bite('a word changed on a ladder',R=>{R.ladders.fear[5]='Aghast';},'"fear" is');
+  bite('a ladder canon.json adds',R=>{R.ladders.love=R.ladders.joy.slice();},'canon.json has "love"');
+  bite('an amplifier moved to another address',R=>{R.amplifiers[5][1]=35;},'its address');
+  bite('a nerve that is not the one NODES holds',R=>{R.amplifiers[0][2]='Sciatic Nerve';},'its nerve');
+  bite('a quadrant\'s theme reworded',R=>{R.quadrants[0][2]='Action';},'its theme');
+  bite('an organ\'s voice reworded',R=>{R.organs[9][3]='Overflow.';},'its voice');
+  bite('a charge routed to another quadrant',R=>{R.charge_routing.anger='Left-Back';},'"anger" is');
+  bite('a derived measure citing another law',R=>{R.derived_measures[2][1]=R.derived_measures[2][1].replace('Element 54','Element 55');},'its law cited');
+  bite('an overlay vector changed',R=>{R.astrology_overlay.west.Leo[0]=-2;},'astrology_overlay west');
+  bite('an overlay dim renamed',R=>{R.astrology_overlay.dims[0]='begin';},'dims');
+  bite('rows that only moved',R=>{R.organs.reverse();},'another order');
+  bite('a register the file drops',R=>{delete R.organs;},'no such register');
+  bite('a register given in another shape',R=>{R.quadrants={};},'where the port reads a list');
+  [[null,'not a canon.json'],[{},'not a canon.json'],[{registers:[]},'not a canon.json']].forEach(([x,w])=>{let d;
+   try{d=E.regDiff(x);}catch(e){d=['threw '+e.message];}
+   ok(Array.isArray(d)&&d.some(s=>s.indexOf(w)>=0)&&!d.some(s=>/threw/.test(s)),'regDiff refuses '+JSON.stringify(x)+' by name and never throws, '+JSON.stringify(d));});
+  /* THE MAP. Every top level part of the file is placed, both ways, and what
+     it places is a table the engine holds. */
+  const paths=Object.keys(canon).filter(k=>k!=='registers').concat(Object.keys(canon.registers).map(k=>'registers.'+k));
+  const mapped=E.REG_MAP.map(r=>r[0]);
+  ok(paths.every(p=>mapped.indexOf(p)>=0),'REG_MAP places every part of the vendored canon.json, unplaced: '+JSON.stringify(paths.filter(p=>mapped.indexOf(p)<0)));
+  ok(mapped.every(p=>paths.indexOf(p)>=0)&&new Set(mapped).size===mapped.length,'and places nothing the file does not have, nothing twice');
+  ok(E.REG_MAP.every(r=>['ported','mob','held'].indexOf(r[1])>=0&&Array.isArray(r[2])&&typeof r[3]==='string'&&r[3].trim()),
+   'every row says ported, mob or held, names its tables and says what to know');
+  const missing=[].concat(...E.REG_MAP.map(r=>r[2])).filter(n=>E[n]===undefined);
+  ok(missing.length===0,'every table REG_MAP names is one the engine holds, missing: '+JSON.stringify(missing));
+  const PORTED=require(path.resolve('tools/canon-port.js')).PORTED;
+  ok(JSON.stringify(E.REG_MAP.filter(r=>r[1]==='ported').map(r=>[r[0].replace(/^registers\./,''),r[2]]))
+   ===JSON.stringify(PORTED.map(p=>[p[0],[p[1]]])),'the ported rows are exactly the registers regDiff and the port tool compare, each with its one table');
+  ok(E.REG_MAP.filter(r=>r[1]==='mob').every(r=>/^registers\./.test(r[0])?r[2].length>0:true),'every register this repository has its own version of names that version');
+  /* THE GENERATOR WRITES THE FILE. Each table in engine/data/registers.js is
+     exactly what tools/canon-port.js emit writes for the vendored copy, so
+     the next merge is a paste and a review, not a hand transcription. */
+  const tool=require(path.resolve('tools/canon-port.js')), src=fs.readFileSync(path.resolve('atuned_src/engine/data/registers.js'),'utf8');
+  PORTED.forEach(([reg,tbl])=>{const want=tool.emit(canon,reg,E), at=src.indexOf('const '+tbl+'=');
+   /* a table ends at its first ]; and an object at its first };, since the
+      overlay's inner objects close with }, and never with }; */
+   const end=at<0?-1:src.indexOf(src.charAt(src.indexOf('=',at)+1)==='{'?'};':'];',at); const got=end<0?'':src.slice(at,end+2);
+   ok(got===want,'the '+tbl+' the data file carries is what emit writes for '+reg+', got '+JSON.stringify(got.slice(0,80)));});
+  /* NOTHING READS THEM. compute() makes the same reading for every roster
+     person and a sweep of uniform and seeded fields with every ported table
+     scrambled. First the harness is shown to see a change, on SAB33, which
+     compute() does read. */
+  const fields=()=>{const out=[];
+   PEOPLE.forEach(p=>{S.doms=[p.dom];S.arcs=[p.a1,p.a2];S.roots=[];buildSoul();
+    CHARGES.forEach(c=>{S.charge[c]=p.c[c]||0;S.replace[c]=(p.rep&&p.rep[c])||0;});
+    const LS=LAWSET[p.nm]||{_:E.LAW_DEFAULT};
+    SINAMES.forEach(l=>S.law[l]=LS[l]!==undefined?LS[l]:(LS._!==undefined?LS._:E.LAW_DEFAULT)); lawsIn(); out.push(JSON.stringify(compute()));});
+   for(let h=0;h<=10;h+=2)out.push(JSON.stringify(reset(h,h/2,6)));
+   let seed=2410; const rnd=()=>{seed=(seed*1103515245+12345)%2147483648;return seed/2147483648;};
+   for(let i=0;i<60;i++){reset(0,0,6);
+    CHARGES.forEach(c=>{S.charge[c]=Math.round(rnd()*100)/10;S.replace[c]=Math.round(rnd()*100)/10;});
+    SINAMES.forEach(l=>S.law[l]=Math.round(rnd()*10)); lawsIn(); out.push(JSON.stringify(compute()));}
+   return out;};
+  const before=fields();
+  const sab=JSON.parse(JSON.stringify(SAB33[0][1])); SAB33[0][1].forEach(b=>{b[1]=0;b[2]=10;});
+  const seen=fields(); SAB33[0][1]=sab;
+  ok(seen.some((x,i)=>x!==before[i]),'the harness sees a change when a table compute() reads is changed');
+  ok(fields().every((x,i)=>x===before[i]),'and SAB33 is put back exactly');
+  /* scrambled copies go in and the very objects that were there go back, so
+     nothing that holds a table, the codes index among them, ever sees one
+     of its own rows changed */
+  const was={L:E.CHARGE_LADDER.slice(),A:E.AMPLIFIER.slice(),Q:E.BODY_QUADRANT.slice(),O:E.ORGAN.slice(),
+   D:E.DERIVED_MEASURE.slice(),R:Object.assign({},E.CHARGE_QUADRANT),S:Object.assign({},E.ASTRO_OVERLAY)};
+  const put=(arr,rows)=>{arr.splice(0,arr.length,...rows);};
+  put(E.CHARGE_LADDER,was.L.map(l=>({c:l.c,ch:'x'+l.ch,w:l.w.slice().reverse()})));
+  put(E.AMPLIFIER,was.A.map(r=>({c:r.c,nm:'x',i:1,tag:r.tag})));
+  put(E.BODY_QUADRANT,was.Q.map(r=>Object.assign({},r,{nm:'x',side:'left',face:'front'})));
+  put(E.ORGAN,was.O.map(r=>Object.assign({},r,{side:'right',voice:'x'})));
+  put(E.DERIVED_MEASURE,was.D.map(r=>({c:r.c,nm:r.nm,ch:'x',el:'E01'})));
+  Object.keys(E.CHARGE_QUADRANT).forEach(k=>{E.CHARGE_QUADRANT[k]='x';});
+  const flip=o=>{const n={}; Object.keys(o).forEach(k=>{n[k]=o[k].map(v=>-v-1);}); return n;};
+  ['west','east','archetype_vectors'].forEach(k=>{E.ASTRO_OVERLAY[k]=flip(was.S[k]);});
+  E.ASTRO_OVERLAY.load_map={}; Object.keys(was.S.load_map).forEach(k=>{E.ASTRO_OVERLAY.load_map[k]='x';});
+  E.ASTRO_OVERLAY.dims=was.S.dims.slice().reverse();
+  const scrambled=fields();
+  put(E.CHARGE_LADDER,was.L); put(E.AMPLIFIER,was.A); put(E.BODY_QUADRANT,was.Q); put(E.ORGAN,was.O); put(E.DERIVED_MEASURE,was.D);
+  Object.assign(E.CHARGE_QUADRANT,was.R); Object.assign(E.ASTRO_OVERLAY,was.S);
+  const off=scrambled.filter((x,i)=>x!==before[i]).length;
+  ok(off===0,'compute() reads the same for every one of '+before.length+' fields with every ported table scrambled, so none of them enters a number; differed: '+off);
+  ok(E.regDiff(canon).length===0,'and every table is put back exactly, row for row with the file');
+  /* THE ASTROLOGY LOCK, said on its own because canon.json says it on its
+     own: "Display-only overlay ... Never enters a number." It is the same
+     sweep, with the overlay alone flipped. */
+  const west=E.ASTRO_OVERLAY.west, neg={};
+  Object.keys(west).forEach(n=>{neg[n]=west[n].map(v=>-v);}); E.ASTRO_OVERLAY.west=neg;
+  const skyOff=fields().filter((x,i)=>x!==before[i]).length;
+  E.ASTRO_OVERLAY.west=west;
+  ok(skyOff===0,'the astrology overlay enters no number, canon.json\'s own lock, differed: '+skyOff);
+  /* TWO EXCEPTIONS TO THE TEMPLATE, HELD BY NAME. canon.json's own rows,
+     ported as written, because rewording them is the owner's call. A held
+     row that changes, or a new one, fails here until the hold is changed on
+     purpose. */
+  const firstPerson=E.ORGAN.filter(r=>!/\b(I|me|my)\b/.test(r.voice)).map(r=>r.nm);
+  ok(JSON.stringify(firstPerson)==='["Dermis"]','every organ\'s voice is the pattern speaking as I, but the one held: Dermis, got '+JSON.stringify(firstPerson));
+  ok(E.ORGAN.find(r=>r.nm==='Dermis').voice==='Overflow system. Psoriasis, stress acne.','and the held row is still the one held');
+  const at={}; E.CHARGE_LADDER.forEach(l=>l.w.forEach(w=>{at[w]=(at[w]||0)+1;}));
+  const twice=Object.keys(at).filter(w=>at[w]>1).sort();
+  ok(JSON.stringify(twice)==='["Aggravated","Annoyed","Horrified","Wrathful"]','the words canon.json puts on two ladders are the ones held, got '+JSON.stringify(twice));
+  const hp=E.ladderPlaces('horrified');
+  ok(hp.length===2&&hp.map(x=>x.code).join()==='LD03.6,LD05.6','ladderPlaces names every place a word sits, Horrified on disgust and on fear, '+JSON.stringify(hp));
+  ok(E.ladderPlaces('Furious').map(x=>x.code).join()==='LD06.5'&&E.ladderPlaces('calm').length===0&&E.ladderPlaces(null).length===0,
+   'one place for a word on one ladder, and none for a word on none or for nothing');
+ }
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');
 process.exit(F?1:0);
