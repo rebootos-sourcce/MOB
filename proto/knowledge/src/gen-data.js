@@ -260,7 +260,7 @@ const HYPERCOMPLEX_MODES=[
 HYPERCOMPLEX_MODES.forEach((m,i)=>{
  const id='hypercomplex:'+m.name;
  const oppositeId='inferred:hypercomplex-inverse:'+m.name;
- add({id,kind:'hypercomplex',nm:m.name,seat:null,fam:'hyper-complex mode',cluster:m.cluster,
+ add({id,kind:'hypercomplex_mode',nm:m.name,seat:null,fam:'hyper-complex mode',cluster:m.cluster,
   def:m.definition,body:m.definition,behavior:m.behavior,triggerMechanism:m.triggerMechanism,
   livedExample:m.livedExample,impact:m.impact,practice:m.practice,
   inferred:false,inferenceBasis:m.basis,confidence:m.confidence,
