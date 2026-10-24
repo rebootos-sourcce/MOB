@@ -236,6 +236,7 @@ if(typeof module!=='undefined'&&module.exports){
      against a number typed into the test, which is the failure this repository
      has been bitten by seven times. */
                   CHG2SEAT:CHG2SEAT, CHG2FET:CHG2FET, SAB_SEAT:SAB_SEAT, SAB_LIB_BY:SAB_LIB_BY, B2K:B2K, K2BAND:K2BAND,
+                  sabSeats:sabSeats, sabSeatMain:sabSeatMain,
                   LEX_SEAT:LEX_SEAT, LEX_AMT:LEX_AMT, LEX_FET:LEX_FET,
                   LEX_SEATS:LEX_SEATS, LEX_SRC:LEX_SRC, LEX_AMT_MAX:LEX_AMT_MAX,
                   LEXMETA:LEXMETA, CHGMETA:CHGMETA,

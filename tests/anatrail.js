@@ -26,6 +26,9 @@
      AT7  a second press on the same bubble puts the card down, as before
      AT8  an unread field prints no telemetry, and a plan that cannot see the
           chain is shown the lock and no pattern
+     AT9  an archetype card puts its primary saboteur where its own addresses
+          sit, read off SAB_LIB, and never at the third column of ARCH18
+          (systems audit SG-05, 24 October)
 
    Checked against a known bad case first, as the repository asks: the old
    card's sentence, rebuilt from the build before this round, must fail AT5.
@@ -74,6 +77,29 @@ async function anaTrailGate(browser,FILE,ok,booted){
     ['#ana g[data-ana^="arch|"]','arch'],['#ana g[data-ana^="mask|"]','mask'],['#ana g[data-ana^="chain|"]','chain']]){
    const o=await open(sel);
    ok(o.k===k&&o.shown&&o.n>60,'AT1: '+tag+sel+' opens its '+k+' card in Selection, '+JSON.stringify(o));}
+
+  /* ---- AT9: an archetype card puts its primary saboteur where its addresses
+     sit. Systems audit SG-05, 24 October: the card printed the third column
+     of ARCH18 as the saboteur's seat, which held none of its addresses in 9 of
+     the 18 rows, so the Caregiver's card put Pleaser at the heart. What it
+     should say is read here off SAB_LIB and the node table, not through the
+     helper the card uses. ---- */
+  {const ds=await pg.$$eval('#ana g[data-ana^="arch|"]',gs=>gs.map(g=>g.getAttribute('data-ana')));
+   const off=[];
+   for(const d of ds){
+    const o=await open('#ana g[data-ana="'+d+'"]');
+    if(o.missing||o.k!=='arch'){off.push(d+' did not open, '+JSON.stringify(o)); continue;}
+    const r=await pg.evaluate(()=>{const nm=(ANA_PICK||{}).nm;
+     const a18=ARCH18.filter(x=>x[0]===nm||(nm==='Rebel'&&x[0]==='Outlaw'))[0];
+     let s=null; if(a18)SAB_LIB.forEach(x=>{if(KB_KEY(x.nm)===KB_KEY(a18[1]))s=x;});
+     const at={}; if(s)s.nids.forEach(i=>{at[BY[i].b]=1;});
+     const seats=BANDS.filter(b=>at[b]);
+     const t=(document.getElementById('rdrill').innerText||'').replace(/\s+/g,' ');
+     const want=seats.length?'its addresses sit at '+unpackList(seats.map(srcSeatSay)):'';
+     return {nm, sab:a18?a18[1]:null, want, ok:t.indexOf(want)>=0&&!/seated at the/.test(t)};});
+    if(!r.ok)off.push(JSON.stringify(r));}
+   ok(ds.length>0&&off.length===0,'AT9: '+tag+'every archetype card puts its primary saboteur where its own addresses sit, of '
+    +ds.length+': '+off.slice(0,2).join(' | '));}
 
   /* ---- AT7: the same bubble again puts it down ---- */
   {const g=await pg.$('#ana g[data-ana^="seat|"]'); await g.click(); await pg.waitForTimeout(80);

@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2437 01f3022a 2026-10-24 02:09"><head><meta charset="utf-8">
+<html lang="en" data-build="v2438 6f218ee5 2026-10-24 02:11"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -5475,7 +5475,7 @@ body.quiet .av-pulse,body.rm .av-pulse{animation:none}
 .av-def{font-size:17px;line-height:1.55;color:var(--ink);margin:0 0 14px}
 .av-imp{border-left:3px solid var(--s);padding:10px 14px;border-radius:var(--r-xs);background:var(--sunk);margin-bottom:6px}
 .av-imp-v{margin:4px 0 2px;font-size:16px;color:var(--ink)}
-.av-imp-v span{font-size:13px;color:var(--dim);margin-left:8px}
+.av-imp-v>span{font-size:13px;color:var(--dim);margin-left:8px}
 .av-imp-c{margin:0;font-size:15px;line-height:1.5;color:var(--mid)}
 .av-imp-r{margin:6px 0 0;font-size:13px;color:var(--dim)}
 .av-scale{position:relative;display:flex;justify-content:space-between;align-items:center;margin:6px 0 2px}
@@ -17547,6 +17547,25 @@ const SAB_SEAT=(function(){
    family through this, so the range route and the address route can no
    longer put one saboteur in two families. */
 const SAB_LIB_BY={};SAB_LIB.forEach(s=>{SAB_LIB_BY[KB_KEY(s.nm)]=s;});
+/* WHERE A NAMED SABOTEUR SITS IS WHERE ITS ADDRESSES ARE, 24 October, systems
+   audit SG-05. The seats of the addresses SAB_LIB builds the saboteur from,
+   once each, from the root up in BANDS order, and the seat that holds the most
+   of them, the root end winning a tie. The Analytics archetype card and the
+   Avatar page printed the third column of ARCH18 as the primary saboteur's
+   seat, and measured on 23 October that seat held none of the saboteur's
+   addresses in 9 of the 18 rows: Pleaser was put at the heart, and its
+   addresses sit at the root and the sacral. Read off the addresses, the words
+   and the body map cannot disagree. A saboteur with no library row has no
+   seats and says none. */
+function sabSeats(nm){
+ var s=SAB_LIB_BY[KB_KEY(String(nm===undefined||nm===null?'':nm))]; if(!s)return [];
+ var at={}; s.nids.forEach(function(i){var n=BY[i]; if(n)at[n.b]=(at[n.b]||0)+1;});
+ return BANDS.filter(function(b){return at[b];});}
+function sabSeatMain(nm){
+ var s=SAB_LIB_BY[KB_KEY(String(nm===undefined||nm===null?'':nm))]; if(!s)return null;
+ var at={}; s.nids.forEach(function(i){var n=BY[i]; if(n)at[n.b]=(at[n.b]||0)+1;});
+ var best=null; BANDS.forEach(function(b){if(at[b]&&(best===null||at[b]>at[best]))best=b;});
+ return best;}
 
 /* ============================================================
    TABS. A stale tab index caused the same class of bug four times in
@@ -32510,6 +32529,7 @@ if(typeof module!=='undefined'&&module.exports){
      against a number typed into the test, which is the failure this repository
      has been bitten by seven times. */
                   CHG2SEAT:CHG2SEAT, CHG2FET:CHG2FET, SAB_SEAT:SAB_SEAT, SAB_LIB_BY:SAB_LIB_BY, B2K:B2K, K2BAND:K2BAND,
+                  sabSeats:sabSeats, sabSeatMain:sabSeatMain,
                   LEX_SEAT:LEX_SEAT, LEX_AMT:LEX_AMT, LEX_FET:LEX_FET,
                   LEX_SEATS:LEX_SEATS, LEX_SRC:LEX_SRC, LEX_AMT_MAX:LEX_AMT_MAX,
                   LEXMETA:LEXMETA, CHGMETA:CHGMETA,
@@ -51222,12 +51242,19 @@ function anaArchCard(r,nm){
  var ai=-1; ARCH.forEach(function(x,i){if(x.nm===nm)ai=i;});
  /* ARCH names it Rebel and the eighteen name it Outlaw. one row, two names. */
  var a18=ARCH18.filter(function(x){return x[0]===nm||(nm==='Rebel'&&x[0]==='Outlaw');})[0];
+ /* WHERE THE PRIMARY SABOTEUR SITS IS WHERE ITS ADDRESSES ARE, 24 October,
+    systems audit SG-05. This printed the third column of ARCH18 as its seat,
+    which named none of its addresses' seats in 9 of the 18 rows, so the card
+    put Pleaser at the heart while the body map drew it at the root and the
+    sacral. sabSeats (engine/core.js) reads them off SAB_LIB. */
+ var sbs=a18?sabSeats(a18[1]):[];
  var h=anaHead('Archetype',nm,(ai===r.pi?'primary, how the soul expresses':'not your primary'));
  h+='<p class="ad-p">'+esc((ARCH[ai]||{}).v||'')+'. <b>'
   /* how fully it is expressed, ruled 16 October; the lean against the
      strongest still orders the archetypes and is printed nowhere */
   +fmtPct('archetype',archExpr(ai))+'</b> expressed. Charge held at its seat pulls it down, and a release lifts it.'
-  +(a18?' Its primary saboteur is <b>'+esc(a18[1])+'</b>, seated at the '+a18[2].toLowerCase()+'.':'')
+  +(a18?' Its primary saboteur is <b>'+esc(a18[1])+'</b>'
+   +(sbs.length?', and its '+unp('address','addresses')+' sit at '+esc(unpackList(sbs.map(srcSeatSay))):'')+'.':'')
   +' The archetype does not change. Release clears what bends it on the way out.</p>';
  /* and when that saboteur is running, it is a door */
  var run=a18&&lockSees('sab')?anaFind(r,a18[1]):null;
@@ -52048,9 +52075,16 @@ function avRituals(r,rows,rule){
 
 /* ---------------- the archetypes ----------------
    The twelve the instrument reads, ARCH, each seated where ARCH seats it.
-   The primary saboteur and its seat come from ARCH18, the table that carries
-   them, joined by name. ARCH18 calls the Rebel the Outlaw; ARCH is the table
-   the engine reads and the rail prints, so the Rebel keeps its shipped name. */
+   The primary saboteur comes from ARCH18, the table that carries it, joined by
+   name. ARCH18 calls the Rebel the Outlaw; ARCH is the table the engine reads
+   and the rail prints, so the Rebel keeps its shipped name.
+
+   WHERE THAT SABOTEUR SITS IS WHERE ITS ADDRESSES ARE, 24 October, systems
+   audit SG-05: sabS is the seats of its addresses and sabB the one holding the
+   most of them, both read off SAB_LIB by sabSeats and sabSeatMain
+   (engine/core.js). sabB was the third column of ARCH18, which named none of
+   the saboteur's addresses' seats in 9 of its 18 rows: this page put Pleaser at
+   the heart while the body map drew it at the root and the sacral. */
 var AV_DEF={
  Warrior:'The Warrior moves on the threat and counts the damage after. It gets the thing done on a day when feeling it would stop you.',
  Sage:'The Sage reads the situation before it moves. It gives you ground to stand on when the moment is unclear.',
@@ -52083,7 +52117,8 @@ var AV_IMPACT={
  'Worrywart':'The worst case runs on a loop, and it feels like planning.'};
 var AV_ROSTER=ARCH.map(function(a,i){
  var row=ARCH18.filter(function(x){return (x[0]==='Outlaw'?'Rebel':x[0])===a.nm;})[0]||null;
- return {nm:a.nm, v:a.v, b:a.b, ic:a.ic, i:i, sab:row?row[1]:null, sabB:row?row[2]:null};});
+ return {nm:a.nm, v:a.v, b:a.b, ic:a.ic, i:i, sab:row?row[1]:null,
+  sabS:row?sabSeats(row[1]):[], sabB:row?sabSeatMain(row[1]):null};});
 function avArchByName(nm){
  for(var i=0;i<AV_ROSTER.length;i++)if(AV_ROSTER[i].nm===nm)return AV_ROSTER[i];
  return null;}
@@ -52816,7 +52851,9 @@ function avDetail(st,a){
   +'<div class="ad-sub">'+esc(ARCH_CREDIT)+'</div>';
  if(a.sab)
   out+='<div class="av-imp" style="--s:'+seatCol(a.sabB)+'"><div class="pm-eye">Impact</div>'
-   +'<p class="av-imp-v"><b>'+esc(a.sab)+'</b><span>primary saboteur, at '+AV_THE[a.sabB]+'</span></p>'
+   +'<p class="av-imp-v"><b>'+esc(a.sab)+'</b><span>primary saboteur'
+   +(a.sabS.length?', its '+unp('address','addresses')+' at '+esc(unpackList(a.sabS.map(function(b){return AV_THE[b];}))):'')
+   +'</span></p>'
    +'<p class="av-imp-c">'+esc(AV_IMPACT[a.sab]||'')+'</p></div>';
  out+=avThreadHTML(st,a);
  out+='<div class="av-pl" id="avsclab">How much of this is you</div>'
@@ -81143,5 +81180,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005350910"></div>
+<div id="eof" hidden data-len="005353306"></div>
 </body></html>

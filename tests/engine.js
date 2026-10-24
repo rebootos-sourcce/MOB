@@ -5928,6 +5928,34 @@ g('LK · an old law name is the law it became at every door, and a key the bound
  reset();
 }
 
+g('SS · a primary saboteur sits where its addresses are');
+/* SYSTEMS AUDIT SG-05, 24 October. The Analytics archetype card and the Avatar
+   page printed the third column of ARCH18 as the primary saboteur's seat, and
+   that seat held none of the saboteur's addresses in 9 of the 18 rows. Both
+   read sabSeats and sabSeatMain now. Held against the addresses themselves,
+   read here straight off SAB_LIB and the node table, not through either. */
+{
+ const {SAB_LIB,ARCH18,KB_KEY}=E;
+ /* a build without the two fails here by name rather than throwing below */
+ ok(typeof E.sabSeats==='function'&&typeof E.sabSeatMain==='function','the engine carries sabSeats and sabSeatMain');
+ const sabSeats=typeof E.sabSeats==='function'?E.sabSeats:()=>['missing'];
+ const sabSeatMain=typeof E.sabSeatMain==='function'?E.sabSeatMain:()=>'missing';
+ const byNm={}; SAB_LIB.forEach(s=>{byNm[KB_KEY(s.nm)]=s;});
+ const seatsOf=nm=>{const s=byNm[KB_KEY(nm)]; if(!s)return [];
+  const at=new Set(s.nids.map(i=>NODES.find(n=>n.i===i).b)); return BANDS.filter(b=>at.has(b));};
+ const off=ARCH18.filter(r=>JSON.stringify(sabSeats(r[1]))!==JSON.stringify(seatsOf(r[1])));
+ ok(ARCH18.length>0&&off.length===0,'every primary saboteur\'s seats are the seats of its own addresses, root first, off: '
+  +JSON.stringify(off.map(r=>r[1]+' '+sabSeats(r[1]).join('/')+' against '+seatsOf(r[1]).join('/'))));
+ ok(JSON.stringify(sabSeats('Pleaser'))===JSON.stringify(['Root','Sacral'])&&sabSeats('Pleaser').indexOf('Heart')<0,
+  'Pleaser, the Caregiver\'s primary saboteur, sits at the root and the sacral and not at the heart, got '+JSON.stringify(sabSeats('Pleaser')));
+ const mainOff=ARCH18.filter(r=>{const s=byNm[KB_KEY(r[1])]; if(!s)return sabSeatMain(r[1])!==null;
+  const cnt={}; s.nids.forEach(i=>{const b=NODES.find(n=>n.i===i).b; cnt[b]=(cnt[b]||0)+1;});
+  const m=sabSeatMain(r[1]); return !(m&&cnt[m]===Math.max(...Object.values(cnt)));});
+ ok(mainOff.length===0,'and the seat it is coloured by holds the most of its addresses, off: '+JSON.stringify(mainOff.map(r=>r[1])));
+ ok(sabSeats('No Such Saboteur').length===0&&sabSeatMain('No Such Saboteur')===null&&sabSeats(null).length===0,
+  'a name with no library row has no seat, and says none');
+}
+
 g('SA · Source AI hears on the rung, asks at seven, and the person leads');
 /* reviews/SPEC-source-ai.md, the behaviour section. The contract, not the
    copy: the rung is a count of return, one word is never questioned however

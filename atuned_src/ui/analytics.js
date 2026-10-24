@@ -658,12 +658,19 @@ function anaArchCard(r,nm){
  var ai=-1; ARCH.forEach(function(x,i){if(x.nm===nm)ai=i;});
  /* ARCH names it Rebel and the eighteen name it Outlaw. one row, two names. */
  var a18=ARCH18.filter(function(x){return x[0]===nm||(nm==='Rebel'&&x[0]==='Outlaw');})[0];
+ /* WHERE THE PRIMARY SABOTEUR SITS IS WHERE ITS ADDRESSES ARE, 24 October,
+    systems audit SG-05. This printed the third column of ARCH18 as its seat,
+    which named none of its addresses' seats in 9 of the 18 rows, so the card
+    put Pleaser at the heart while the body map drew it at the root and the
+    sacral. sabSeats (engine/core.js) reads them off SAB_LIB. */
+ var sbs=a18?sabSeats(a18[1]):[];
  var h=anaHead('Archetype',nm,(ai===r.pi?'primary, how the soul expresses':'not your primary'));
  h+='<p class="ad-p">'+esc((ARCH[ai]||{}).v||'')+'. <b>'
   /* how fully it is expressed, ruled 16 October; the lean against the
      strongest still orders the archetypes and is printed nowhere */
   +fmtPct('archetype',archExpr(ai))+'</b> expressed. Charge held at its seat pulls it down, and a release lifts it.'
-  +(a18?' Its primary saboteur is <b>'+esc(a18[1])+'</b>, seated at the '+a18[2].toLowerCase()+'.':'')
+  +(a18?' Its primary saboteur is <b>'+esc(a18[1])+'</b>'
+   +(sbs.length?', and its '+unp('address','addresses')+' sit at '+esc(unpackList(sbs.map(srcSeatSay))):'')+'.':'')
   +' The archetype does not change. Release clears what bends it on the way out.</p>';
  /* and when that saboteur is running, it is a door */
  var run=a18&&lockSees('sab')?anaFind(r,a18[1]):null;

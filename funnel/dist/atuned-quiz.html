@@ -8025,6 +8025,25 @@ const SAB_SEAT=(function(){
    family through this, so the range route and the address route can no
    longer put one saboteur in two families. */
 const SAB_LIB_BY={};SAB_LIB.forEach(s=>{SAB_LIB_BY[KB_KEY(s.nm)]=s;});
+/* WHERE A NAMED SABOTEUR SITS IS WHERE ITS ADDRESSES ARE, 24 October, systems
+   audit SG-05. The seats of the addresses SAB_LIB builds the saboteur from,
+   once each, from the root up in BANDS order, and the seat that holds the most
+   of them, the root end winning a tie. The Analytics archetype card and the
+   Avatar page printed the third column of ARCH18 as the primary saboteur's
+   seat, and measured on 23 October that seat held none of the saboteur's
+   addresses in 9 of the 18 rows: Pleaser was put at the heart, and its
+   addresses sit at the root and the sacral. Read off the addresses, the words
+   and the body map cannot disagree. A saboteur with no library row has no
+   seats and says none. */
+function sabSeats(nm){
+ var s=SAB_LIB_BY[KB_KEY(String(nm===undefined||nm===null?'':nm))]; if(!s)return [];
+ var at={}; s.nids.forEach(function(i){var n=BY[i]; if(n)at[n.b]=(at[n.b]||0)+1;});
+ return BANDS.filter(function(b){return at[b];});}
+function sabSeatMain(nm){
+ var s=SAB_LIB_BY[KB_KEY(String(nm===undefined||nm===null?'':nm))]; if(!s)return null;
+ var at={}; s.nids.forEach(function(i){var n=BY[i]; if(n)at[n.b]=(at[n.b]||0)+1;});
+ var best=null; BANDS.forEach(function(b){if(at[b]&&(best===null||at[b]>at[best]))best=b;});
+ return best;}
 
 /* ============================================================
    TABS. A stale tab index caused the same class of bug four times in
@@ -22930,6 +22949,7 @@ if(typeof module!=='undefined'&&module.exports){
      against a number typed into the test, which is the failure this repository
      has been bitten by seven times. */
                   CHG2SEAT:CHG2SEAT, CHG2FET:CHG2FET, SAB_SEAT:SAB_SEAT, SAB_LIB_BY:SAB_LIB_BY, B2K:B2K, K2BAND:K2BAND,
+                  sabSeats:sabSeats, sabSeatMain:sabSeatMain,
                   LEX_SEAT:LEX_SEAT, LEX_AMT:LEX_AMT, LEX_FET:LEX_FET,
                   LEX_SEATS:LEX_SEATS, LEX_SRC:LEX_SRC, LEX_AMT_MAX:LEX_AMT_MAX,
                   LEXMETA:LEXMETA, CHGMETA:CHGMETA,
