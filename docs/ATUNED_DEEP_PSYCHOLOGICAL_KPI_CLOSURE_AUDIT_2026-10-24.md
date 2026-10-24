@@ -9,7 +9,7 @@
 |---|---:|---|
 | 1 — Every record exists | 125/125 unique IDs in the declared registry | **PASS — registry scope only** |
 | 2 — Every record filled with research | 125/125 researched for their declared role; 8 crosswalk/assignment decisions remain provisional | **PASS — RECORD CONTENT** |
-| 3 — Required relationships linked and verified | 0 of 36 mapping rows approved as semantic edges; runtime integration not verified | **OPEN** |
+| 3 — Required relationships linked and verified | 0/36 mapping rows approved as semantic edges; generator/validator namespace integration coded, but runtime graph wiring unverified | **OPEN** |
 
 The denominator of 125 is verified inside this registry: declared count and measured array count agree, and all IDs are unique. It is **not** the complete project-wide denominator. The full Nerve-to-Super-Complex entity universe and its cross-registry inventory still require reconciliation.
 
@@ -35,7 +35,7 @@ The denominator of 125 is verified inside this registry: declared count and meas
 - Explicit relationship objects: 36; status distribution: source_backed_open_ruling=36.
 - Empty `links` arrays: 103/125. These are intentional unresolved graph states, not missing records and not proof of wiring.
 - Dangling references detected by the static reference scan: 0. A zero count proves ID resolution only, not semantic correctness, reciprocity, or runtime traversal.
-- Runtime integration: not verified. The template catalog explicitly remains proposed/not integrated with the engine.
+- Generator/validator code now embeds the registry and template catalog in a separate `KBD` namespace; runtime execution, application consumption, and semantic graph traversal are not yet verified.
 - The 36 root-membership relationship objects are source-backed but still marked `source_backed_open_ruling`; they are not promoted as fully adjudicated canonical edges.
 
 ## Work completed in this branch
@@ -50,7 +50,7 @@ The denominator of 125 is verified inside this registry: declared count and meas
 2. Obtain owner/canonical adjudication of the eight provisional Conscious Domain affirmation assignments. Research is complete; do not promote the candidate crosswalks without direct source evidence.
 3. Reconcile the 18/15/14/19 taxonomies and decide whether the 14 Blueprint positions are purely visualization geometry or require a separately sourced semantic inventory.
 4. Review and adjudicate all 36 mapping rows and 12 cultural-figure mappings; do not approve lexical-only relationships.
-5. Integrate the registry/template catalog with the Nerve-to-Super-Complex generator and validator; execute the actual Node audit and test suite.
+5. Execute the coded generator/validator integration in a real Node checkout, run the strict closure audit and regression suite, and fix any runtime or data-contract defects.
 6. Verify reciprocal links, forward and backward traversal, orphan handling, and regression fixtures. Update all KPIs from fresh test output.
 
 ## Acceptance rule
@@ -60,7 +60,7 @@ Do not declare 100% until the denominator is complete across the entire required
 ## Follow-on integration pass — 2026-10-24
 The registry and template catalog are now included in the generated `KBD` data object under separate `deepPsychologicalRegistry` and `deepPsychologicalTemplateCatalog` namespaces. The existing experiential `entries` array is left unchanged so unresolved semantic mappings are not silently promoted into the Nerve-to-Super-Complex graph.
 
-The existing `validate-templates.js` now checks the embedded registry's unique IDs, actual template fields, blocked research records, and dangling references, and reports the open content/link counts separately. The adapter also preserves `relationshipAudit`, `affirmationAssignmentStatus`, and `affirmationSource` fields.
+The existing `validate-templates.js` now checks the embedded registry's unique IDs, actual template fields, blocked research records, and dangling references, and reports the open content/link counts separately. The adapter also preserves `relationshipAudit`, `affirmationAssignmentStatus`, and `affirmationSource` fields. A companion research record is available in `docs/ATUNED_CONSCIOUS_DOMAIN_THREE_PASS_CLOSURE_2026-10-24.md`.
 
 **Validation limitation:** these code changes have not yet been executed in a Node runtime or CI in this session. They are code-integrated but not runtime-verified. Do not mark KPI 3 complete.
 
