@@ -1,6 +1,6 @@
 {
   "catalogId": "atuned.deep_psychological.template_catalog",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "status": "SOURCE_ROSTER_AND_RELATIONSHIP_EDGE_TEMPLATES_ADDED; RUNTIME_INTEGRATION_PENDING",
   "purpose": "Explicit template assignments for the deep-psychological registry. Behavioral-domain records include research-informed behavioral-energy fields; the catalog remains separate from the experiential runtime until integration is implemented and tested.",
   "templates": [
