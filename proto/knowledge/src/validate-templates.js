@@ -22,7 +22,7 @@ const warnings = [];
 const strictDeepPsychological = process.argv.includes('--strict-deep-psychological');
 const dpRegistry = db.deepPsychologicalRegistry;
 const dpCatalog = db.deepPsychologicalTemplateCatalog;
-const dpSummary = { status: 'MISSING', recordCount: 0, uniqueIdCount: 0, contentProvisionalCount: 0, emptyLinkCount: 0, blockedResearchPassCount: 0, danglingReferences: [], missingTemplateFields: [], notes: [] };
+const dpSummary = { status: 'MISSING', generatedDataEmbedded: false, experientialGraphIntegrated: false, recordCount: 0, uniqueIdCount: 0, contentProvisionalCount: 0, emptyLinkCount: 0, blockedResearchPassCount: 0, danglingReferences: [], missingTemplateFields: [], notes: [] };
 if (!dpRegistry || !Array.isArray(dpRegistry.records) || !dpCatalog || !Array.isArray(dpCatalog.templates)) {
   errors.push('Deep Psychological registry/template catalog missing from generated data; regenerate with updated gen-data.js.');
 } else {
@@ -30,6 +30,7 @@ if (!dpRegistry || !Array.isArray(dpRegistry.records) || !dpCatalog || !Array.is
   const dpById = new Map();
   const dpTemplates = new Map(dpCatalog.templates.map(t => [t.id, t]));
   dpSummary.status = 'OPEN';
+  dpSummary.generatedDataEmbedded = true;
   dpSummary.recordCount = dpRecords.length;
   for (const r of dpRecords) {
     if (!r.id) errors.push('Deep Psychological record has no stable ID');
