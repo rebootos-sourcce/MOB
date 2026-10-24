@@ -1,7 +1,7 @@
 {
   "catalogId": "atuned.deep_psychological.template_catalog",
-  "version": "1.3.0",
-  "status": "SOURCE_ROSTER_AND_RELATIONSHIP_EDGE_TEMPLATES_ADDED; RUNTIME_INTEGRATION_PENDING",
+  "version": "1.4.0",
+  "status": "COMPLEX_HYPERCOMPLEX_AND_SUPERCOMPLEX_CANDIDATE_TEMPLATES_ADDED",
   "purpose": "Explicit template assignments for the deep-psychological registry. Behavioral-domain records include research-informed behavioral-energy fields; the catalog remains separate from the experiential runtime until integration is implemented and tested.",
   "templates": [
     {
@@ -267,6 +267,249 @@
         "templateValidation"
       ],
       "description": "Contradictory source claims retained as a record; must not be silently reconciled."
+    },
+    {
+      "id": "TPL-COMPLEX-CANON-V1",
+      "kind": "complex",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "body",
+        "links",
+        "sourceStatus",
+        "childNames",
+        "childIds",
+        "behavior",
+        "triggerMechanism",
+        "livedExample",
+        "impact",
+        "practice",
+        "oppositeId",
+        "oppositeDefinition",
+        "oppositeStatus",
+        "confidence",
+        "reviewStatus",
+        "narrativeSource",
+        "researchSources",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "templateValidation"
+      ],
+      "description": "Source OS CANON Complex record."
+    },
+    {
+      "id": "TPL-HYPERCOMPLEX-CANON-V1",
+      "kind": "hypercomplex",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "body",
+        "links",
+        "sourceStatus",
+        "childNames",
+        "childIds",
+        "compositionStatus",
+        "composition",
+        "confidence",
+        "reviewStatus",
+        "narrativeSource",
+        "researchSources",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "templateValidation"
+      ],
+      "description": "Source OS CANON Hyper-Complex instance; distinct from behavioral-family templates."
+    },
+    {
+      "id": "TPL-SUPERCOMPLEX-CANDIDATE-V1",
+      "kind": "supercomplex_candidate",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "body",
+        "links",
+        "ownerStatedStatus",
+        "sourceClaimedLayer",
+        "canonicalStatus",
+        "membershipStatus",
+        "inversionCandidates",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "templateValidation"
+      ],
+      "description": "Owner-stated Super-Complex candidate; not Canon approval."
+    },
+    {
+      "id": "TPL-MIRROR-PAIR-V1",
+      "kind": "mirror_pair",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "body",
+        "links",
+        "axis",
+        "seat",
+        "upName",
+        "upDescription",
+        "downName",
+        "downDescription",
+        "question",
+        "sourceVersion",
+        "sourceLocator",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "templateValidation"
+      ],
+      "description": "One source-defined MIRROR axis pair."
+    },
+    {
+      "id": "TPL-MIRROR-FIGURE-V1",
+      "kind": "mirror_figure_candidate",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "body",
+        "links",
+        "sourceFamily",
+        "sourceRole",
+        "sourceClaims",
+        "sourceRefs",
+        "researchPasses",
+        "templateValidation"
+      ],
+      "description": "Unique figure name in MIRROR pole data."
+    },
+    {
+      "id": "TPL-CIRCLE-CANDIDATE-V1",
+      "kind": "circle_candidate",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "body",
+        "links",
+        "circleNumber",
+        "governorName",
+        "sin",
+        "see",
+        "pattern",
+        "bodyAnchor",
+        "sourceVersion",
+        "sourceLocator",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "templateValidation"
+      ],
+      "description": "Source-defined CIRCLES/Descent pattern."
+    },
+    {
+      "id": "TPL-BLUEPRINT-PATTERN-V1",
+      "kind": "blueprint_pattern",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "body",
+        "links",
+        "sourceClaimedType",
+        "sourceVersion",
+        "sourceLocator",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "templateValidation"
+      ],
+      "description": "Source-defined behavioral blueprint pattern."
+    },
+    {
+      "id": "TPL-CASCADE-STATE-V1",
+      "kind": "cascade_state",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "body",
+        "links",
+        "sourceClaimedType",
+        "sourceVersion",
+        "sourceLocator",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "templateValidation"
+      ],
+      "description": "One of six behavioral-cascade states."
+    },
+    {
+      "id": "TPL-DESCENT-CANDIDATE-V1",
+      "kind": "descent_candidate",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "body",
+        "links",
+        "sourceClaimedLayer",
+        "ownerRuling",
+        "sourceVersion",
+        "sourceLocator",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "templateValidation"
+      ],
+      "description": "One of three DESCENT layer claims."
+    },
+    {
+      "id": "TPL-ROSTER-REQUIREMENT-V1",
+      "kind": "roster_requirement",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "body",
+        "links",
+        "expectedCount",
+        "memberNames",
+        "sourceEvidenceStatus",
+        "canonicalStatus",
+        "requiredNextAction",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "templateValidation"
+      ],
+      "description": "Roster requirement whose members or source locator remain unresolved."
+    },
+    {
+      "id": "TPL-SOURCE-GAP-V1",
+      "kind": "source_gap",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "body",
+        "links",
+        "sourceEvidenceStatus",
+        "canonicalStatus",
+        "blockingDependencies",
+        "requiredNextAction",
+        "sourceRefs",
+        "sourceClaims",
+        "researchPasses",
+        "templateValidation"
+      ],
+      "description": "Explicit source/taxonomy blocker."
     }
   ]
 }
