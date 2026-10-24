@@ -14,7 +14,7 @@
     "Keep v341's 19-label roster, v184's 18-label source canon, current manuscript's 15 behavioral-domain headings, and 14 Blueprint slots as separate denominators until owner/canon ruling.",
     "Owner-stated material remains owner_stated_unverified until reconciled with primary project documentation."
   ],
-  "recordCount": 145,
+  "recordCount": 147,
   "countsByLayer": {
     "deep_psychological.roots": 4,
     "deep_psychological.behavioral_domains": 15,
@@ -26,7 +26,7 @@
     "psyche_map.blueprint_domain_visual_slots": 14,
     "source_os_canon.registers.domains": 18,
     "source_v341.domain_roster": 19,
-    "related_consciousness_candidates": 1
+    "related_consciousness_candidates": 3
   },
   "records": [
     {
@@ -30509,6 +30509,330 @@
           }
         ]
       }
+    },
+    {
+      "id": "related-consciousness:story",
+      "recordType": "related_consciousness_candidate",
+      "kind": "conscious_domain",
+      "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
+      "nm": "Story Consciousness",
+      "canonicalName": "Story Consciousness",
+      "displayName": "Story Consciousness",
+      "fam": "Related Consciousness Concepts — separate from the eight-domain roster",
+      "layer": "Related Consciousness Concepts",
+      "taxonomyVersion": "Current MOB-Manuscript artifact version unlabelled; separately referenced in v341 crosswalk",
+      "def": "Awareness of the arc of your own life as a mythic journey and your role inside it. Without story consciousness, events are random, unconnected, happening to a person. With it, the same events become chapters. The wound becomes the origin. The cleared state becomes the return. Story consciousness is not reframing pain into a lesson, it is the recognition that you are always in a story, and the story you tell determines what actions become available.",
+      "definition": "Awareness of the arc of your own life as a mythic journey and your role inside it. Without story consciousness, events are random, unconnected, happening to a person. With it, the same events become chapters. The wound becomes the origin. The cleared state becomes the return. Story consciousness is not reframing pain into a lesson, it is the recognition that you are always in a story, and the story you tell determines what actions become available.",
+      "body": "SOURCE-DERIVED DESCRIPTION: Awareness of the arc of your own life as a mythic journey and your role inside it. Without story consciousness, events are random, unconnected, happening to a person. With it, the same events become chapters. The wound becomes the origin. The cleared state becomes the return. Story consciousness is not reframing pain into a lesson, it is the recognition that you are always in a story, and the story you tell determines what actions become available. Source affirmation: I live and tell a story worth remembering.. The v341 crosswalk lists this as a separate related consciousness concept; do not merge it into the eight-domain roster without an explicit ruling.",
+      "affirmation": "I live and tell a story worth remembering.",
+      "links": [],
+      "sourceRefs": [
+        "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+        "https://github.com/rebootos-sourcce/MOB-Manuscript/blob/main/index.html",
+        "https://www.psychologicalscience.org/journals/current-directions/0963721413475622",
+        "https://pubmed.ncbi.nlm.nih.gov/26172971/"
+      ],
+      "sourceIds": [
+        "MOB-Manuscript/index.html@24dea9c95112fe83073e58ef4cb14d7eb5de9928#offset:4016553"
+      ],
+      "sourceClaims": [
+        "The v341 crosswalk identifies Story Consciousness as a separate related consciousness concept.",
+        "The current manuscript artifact contains the recorded definition and affirmation at HTML offset 4016553; its version label is not declared.",
+        "Narrative identity research describes an evolving life story that can provide unity and purpose. This is conceptual adjacency, not proof of canonical placement in the eight-domain roster.",
+        "Do not merge into the eight-domain roster without a source/owner ruling."
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "status": "complete",
+          "sources": [
+            "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+          ],
+          "findings": [
+            "Extracted the separate concept, its description, and affirmation from the current manuscript; the v341 crosswalk independently records it as a related concept."
+          ]
+        },
+        {
+          "pass": 2,
+          "status": "complete",
+          "sources": [
+            "https://www.psychologicalscience.org/journals/current-directions/0963721413475622",
+            "https://pubmed.ncbi.nlm.nih.gov/26172971/"
+          ],
+          "findings": [
+            "Narrative identity research describes an evolving life story that can provide unity and purpose. This is conceptual adjacency, not proof of canonical placement in the eight-domain roster.",
+            "Independent conceptual research does not establish ATUNED-specific canonical membership."
+          ]
+        },
+        {
+          "pass": 3,
+          "status": "complete",
+          "sources": [
+            "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+            "https://www.psychologicalscience.org/journals/current-directions/0963721413475622",
+            "https://pubmed.ncbi.nlm.nih.gov/26172971/"
+          ],
+          "findings": [
+            "Adversarial review: current-manuscript text is source-backed but its version is unlabelled; the v341 crosswalk says to keep this concept separate. No link to the eight-domain roster is promoted."
+          ]
+        }
+      ],
+      "sourceSection": {
+        "repository": "rebootos-sourcce/MOB-Manuscript",
+        "path": "index.html",
+        "blobSha": "24dea9c95112fe83073e58ef4cb14d7eb5de9928",
+        "htmlByteOffset": 4016553,
+        "sourceVersionLabel": "not declared in artifact"
+      },
+      "canonicalStatus": "SOURCE_BACKED_RELATED_CONCEPT; ROSTER PLACEMENT UNRESOLVED",
+      "status": "source_backed_related_consciousness_candidate_not_promoted",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "note": "Keep separate from the eight-domain roster pending taxonomy ruling."
+      },
+      "templateValidation": {
+        "status": "source_content_complete_roster_placement_open",
+        "contentStatus": "complete",
+        "sourceBacked": true,
+        "missingFields": [],
+        "canonicalApproval": "pending",
+        "runtimeIntegration": "not_verified"
+      },
+      "evidenceStrength": "primary-source text in current manuscript; version label unverified; v341 crosswalk confirms separate-concept status",
+      "confidence": 0.93,
+      "unresolvedQuestions": [
+        "Owner/canonical ruling required: retain as a related concept or incorporate into the eight-domain roster?",
+        "Do not infer an edge to any of the eight Conscious Domains from conceptual similarity."
+      ],
+      "changelog": [
+        "2026-10-24: Added separate source-backed related consciousness concept record; completed three research passes and left roster placement unresolved."
+      ],
+      "template": {
+        "nm": "Story Consciousness",
+        "fam": "Related Consciousness Concepts — separate from the eight-domain roster",
+        "def": "Awareness of the arc of your own life as a mythic journey and your role inside it. Without story consciousness, events are random, unconnected, happening to a person. With it, the same events become chapters. The wound becomes the origin. The cleared state becomes the return. Story consciousness is not reframing pain into a lesson, it is the recognition that you are always in a story, and the story you tell determines what actions become available.",
+        "body": "SOURCE-DERIVED DESCRIPTION: Awareness of the arc of your own life as a mythic journey and your role inside it. Without story consciousness, events are random, unconnected, happening to a person. With it, the same events become chapters. The wound becomes the origin. The cleared state becomes the return. Story consciousness is not reframing pain into a lesson, it is the recognition that you are always in a story, and the story you tell determines what actions become available. Source affirmation: I live and tell a story worth remembering.. The v341 crosswalk lists this as a separate related consciousness concept; do not merge it into the eight-domain roster without an explicit ruling.",
+        "affirmation": "I live and tell a story worth remembering.",
+        "links": [],
+        "sourceRefs": [
+          "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+          "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+          "https://github.com/rebootos-sourcce/MOB-Manuscript/blob/main/index.html",
+          "https://www.psychologicalscience.org/journals/current-directions/0963721413475622",
+          "https://pubmed.ncbi.nlm.nih.gov/26172971/"
+        ],
+        "researchPasses": [
+          {
+            "pass": 1,
+            "status": "complete",
+            "sources": [
+              "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+              "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+            ],
+            "findings": [
+              "Extracted the separate concept, its description, and affirmation from the current manuscript; the v341 crosswalk independently records it as a related concept."
+            ]
+          },
+          {
+            "pass": 2,
+            "status": "complete",
+            "sources": [
+              "https://www.psychologicalscience.org/journals/current-directions/0963721413475622",
+              "https://pubmed.ncbi.nlm.nih.gov/26172971/"
+            ],
+            "findings": [
+              "Narrative identity research describes an evolving life story that can provide unity and purpose. This is conceptual adjacency, not proof of canonical placement in the eight-domain roster.",
+              "Independent conceptual research does not establish ATUNED-specific canonical membership."
+            ]
+          },
+          {
+            "pass": 3,
+            "status": "complete",
+            "sources": [
+              "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+              "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+              "https://www.psychologicalscience.org/journals/current-directions/0963721413475622",
+              "https://pubmed.ncbi.nlm.nih.gov/26172971/"
+            ],
+            "findings": [
+              "Adversarial review: current-manuscript text is source-backed but its version is unlabelled; the v341 crosswalk says to keep this concept separate. No link to the eight-domain roster is promoted."
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "related-consciousness:imperium",
+      "recordType": "related_consciousness_candidate",
+      "kind": "conscious_domain",
+      "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
+      "nm": "Imperium Consciousness",
+      "canonicalName": "Imperium Consciousness",
+      "displayName": "Imperium Consciousness",
+      "fam": "Related Consciousness Concepts — separate from the eight-domain roster",
+      "layer": "Related Consciousness Concepts",
+      "taxonomyVersion": "Current MOB-Manuscript artifact version unlabelled; separately referenced in v341 crosswalk",
+      "def": "The executive layer. The capacity that selects action across time, sequences decisions, and overrides impulse, not through willpower (a finite resource that depletes under somatic pressure) but through what becomes available when the soma is clear. Two failure modes: tyranny (rigid, over-control, cannot adapt) and fragmentation (impulsive, contradictory, inconsistent). Both are lower-layer problems presenting as upper-layer symptoms. Regulate the soma. The executive function stabilizes on its own.",
+      "definition": "The executive layer. The capacity that selects action across time, sequences decisions, and overrides impulse, not through willpower (a finite resource that depletes under somatic pressure) but through what becomes available when the soma is clear. Two failure modes: tyranny (rigid, over-control, cannot adapt) and fragmentation (impulsive, contradictory, inconsistent). Both are lower-layer problems presenting as upper-layer symptoms. Regulate the soma. The executive function stabilizes on its own.",
+      "body": "SOURCE-DERIVED DESCRIPTION: The executive layer. The capacity that selects action across time, sequences decisions, and overrides impulse, not through willpower (a finite resource that depletes under somatic pressure) but through what becomes available when the soma is clear. Two failure modes: tyranny (rigid, over-control, cannot adapt) and fragmentation (impulsive, contradictory, inconsistent). Both are lower-layer problems presenting as upper-layer symptoms. Regulate the soma. The executive function stabilizes on its own. Source affirmation: I act from clarity, not compulsion.. The v341 crosswalk lists this as a separate related consciousness concept; do not merge it into the eight-domain roster without an explicit ruling.",
+      "affirmation": "I act from clarity, not compulsion.",
+      "links": [],
+      "sourceRefs": [
+        "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+        "https://github.com/rebootos-sourcce/MOB-Manuscript/blob/main/index.html",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC4084861/",
+        "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-113011-143750"
+      ],
+      "sourceIds": [
+        "MOB-Manuscript/index.html@24dea9c95112fe83073e58ef4cb14d7eb5de9928#offset:4017254"
+      ],
+      "sourceClaims": [
+        "The v341 crosswalk identifies Imperium Consciousness as a separate related consciousness concept.",
+        "The current manuscript artifact contains the recorded definition and affirmation at HTML offset 4017254; its version label is not declared.",
+        "Diamond's 2013 review describes executive functions including inhibition, working memory, and cognitive flexibility. This is conceptual adjacency, not validation of the ATUNED label or roster placement.",
+        "Do not merge into the eight-domain roster without a source/owner ruling."
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "status": "complete",
+          "sources": [
+            "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+          ],
+          "findings": [
+            "Extracted the separate concept, its description, and affirmation from the current manuscript; the v341 crosswalk independently records it as a related concept."
+          ]
+        },
+        {
+          "pass": 2,
+          "status": "complete",
+          "sources": [
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC4084861/",
+            "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-113011-143750"
+          ],
+          "findings": [
+            "Diamond's 2013 review describes executive functions including inhibition, working memory, and cognitive flexibility. This is conceptual adjacency, not validation of the ATUNED label or roster placement.",
+            "Independent conceptual research does not establish ATUNED-specific canonical membership."
+          ]
+        },
+        {
+          "pass": 3,
+          "status": "complete",
+          "sources": [
+            "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC4084861/",
+            "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-113011-143750"
+          ],
+          "findings": [
+            "Adversarial review: current-manuscript text is source-backed but its version is unlabelled; the v341 crosswalk says to keep this concept separate. No link to the eight-domain roster is promoted."
+          ]
+        }
+      ],
+      "sourceSection": {
+        "repository": "rebootos-sourcce/MOB-Manuscript",
+        "path": "index.html",
+        "blobSha": "24dea9c95112fe83073e58ef4cb14d7eb5de9928",
+        "htmlByteOffset": 4017254,
+        "sourceVersionLabel": "not declared in artifact"
+      },
+      "canonicalStatus": "SOURCE_BACKED_RELATED_CONCEPT; ROSTER PLACEMENT UNRESOLVED",
+      "status": "source_backed_related_consciousness_candidate_not_promoted",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "note": "Keep separate from the eight-domain roster pending taxonomy ruling."
+      },
+      "templateValidation": {
+        "status": "source_content_complete_roster_placement_open",
+        "contentStatus": "complete",
+        "sourceBacked": true,
+        "missingFields": [],
+        "canonicalApproval": "pending",
+        "runtimeIntegration": "not_verified"
+      },
+      "evidenceStrength": "primary-source text in current manuscript; version label unverified; v341 crosswalk confirms separate-concept status",
+      "confidence": 0.93,
+      "unresolvedQuestions": [
+        "Owner/canonical ruling required: retain as a related concept or incorporate into the eight-domain roster?",
+        "Do not infer an edge to any of the eight Conscious Domains from conceptual similarity."
+      ],
+      "changelog": [
+        "2026-10-24: Added separate source-backed related consciousness concept record; completed three research passes and left roster placement unresolved."
+      ],
+      "template": {
+        "nm": "Imperium Consciousness",
+        "fam": "Related Consciousness Concepts — separate from the eight-domain roster",
+        "def": "The executive layer. The capacity that selects action across time, sequences decisions, and overrides impulse, not through willpower (a finite resource that depletes under somatic pressure) but through what becomes available when the soma is clear. Two failure modes: tyranny (rigid, over-control, cannot adapt) and fragmentation (impulsive, contradictory, inconsistent). Both are lower-layer problems presenting as upper-layer symptoms. Regulate the soma. The executive function stabilizes on its own.",
+        "body": "SOURCE-DERIVED DESCRIPTION: The executive layer. The capacity that selects action across time, sequences decisions, and overrides impulse, not through willpower (a finite resource that depletes under somatic pressure) but through what becomes available when the soma is clear. Two failure modes: tyranny (rigid, over-control, cannot adapt) and fragmentation (impulsive, contradictory, inconsistent). Both are lower-layer problems presenting as upper-layer symptoms. Regulate the soma. The executive function stabilizes on its own. Source affirmation: I act from clarity, not compulsion.. The v341 crosswalk lists this as a separate related consciousness concept; do not merge it into the eight-domain roster without an explicit ruling.",
+        "affirmation": "I act from clarity, not compulsion.",
+        "links": [],
+        "sourceRefs": [
+          "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+          "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+          "https://github.com/rebootos-sourcce/MOB-Manuscript/blob/main/index.html",
+          "https://pmc.ncbi.nlm.nih.gov/articles/PMC4084861/",
+          "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-113011-143750"
+        ],
+        "researchPasses": [
+          {
+            "pass": 1,
+            "status": "complete",
+            "sources": [
+              "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+              "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+            ],
+            "findings": [
+              "Extracted the separate concept, its description, and affirmation from the current manuscript; the v341 crosswalk independently records it as a related concept."
+            ]
+          },
+          {
+            "pass": 2,
+            "status": "complete",
+            "sources": [
+              "https://pmc.ncbi.nlm.nih.gov/articles/PMC4084861/",
+              "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-113011-143750"
+            ],
+            "findings": [
+              "Diamond's 2013 review describes executive functions including inhibition, working memory, and cognitive flexibility. This is conceptual adjacency, not validation of the ATUNED label or roster placement.",
+              "Independent conceptual research does not establish ATUNED-specific canonical membership."
+            ]
+          },
+          {
+            "pass": 3,
+            "status": "complete",
+            "sources": [
+              "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+              "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+              "https://pmc.ncbi.nlm.nih.gov/articles/PMC4084861/",
+              "https://www.annualreviews.org/content/journals/10.1146/annurev-psych-113011-143750"
+            ],
+            "findings": [
+              "Adversarial review: current-manuscript text is source-backed but its version is unlabelled; the v341 crosswalk says to keep this concept separate. No link to the eight-domain roster is promoted."
+            ]
+          }
+        ]
+      }
     }
   ],
   "lastUpdated": "2026-10-24",
@@ -30558,7 +30882,7 @@
       "domainCountRulingResolved": false
     },
     "lastSourceRecovery": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
-    "latestRoundNote": "2026-10-24: Added 19 source-version-specific v341 domain roster records and related consciousness concept records after source crosswalk review. All records have three research passes. Candidate references are metadata only; no unapproved links were added.",
+    "latestRoundNote": "2026-10-24: Added 19 source-version-specific v341 domain roster records and three related consciousness concept records. All records have three research passes; candidate references are metadata only; no unapproved links were added.",
     "lastStructuralRepair": "2026-10-24: Added missing links arrays to 0 records without inferring any edges; blocked Conscious Domain passes 2 and 3 where evidence remains insufficient.",
     "lastRegistryAudit": "2026-10-24: Audited 103 records with empty links arrays. No semantic links were invented. Conscious Domain passes 2 and 3 are blocked where the available research does not verify exact domain/affirmation assignment.",
     "v341DomainRoster": {
@@ -30570,9 +30894,9 @@
       "note": "Records capture exact v341 label/cluster membership; standalone definitions are not present in the accessible durable crosswalk extract. No v184/current-manuscript equivalence is assumed."
     },
     "relatedConsciousnessCandidates": {
-      "records": 1,
-      "sourceTextInCurrentManuscript": 1,
-      "threePassResearchComplete": 1,
+      "records": 3,
+      "sourceTextInCurrentManuscript": 3,
+      "threePassResearchComplete": 3,
       "rosterPlacementApproved": 0
     }
   },
@@ -30652,9 +30976,9 @@
   ],
   "templateCatalog": "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_TEMPLATE_CATALOG_v1.json",
   "templateAssignmentProgress": {
-    "assigned": 145,
-    "total": 145,
-    "structurallyComplete": 145,
+    "assigned": 147,
+    "total": 147,
+    "structurallyComplete": 147,
     "incomplete": 0,
     "runtimeIntegrated": false,
     "generatedDataNamespaceEmbedded": true,
@@ -30669,16 +30993,16 @@
       "behavioralDomains": 15,
       "consciousDomains": 8,
       "v341DomainRosterLabels": 19,
-      "relatedConsciousnessCandidates": 1
+      "relatedConsciousnessCandidates": 3
     }
   },
   "closureSummary": {
     "date": "2026-10-24",
-    "scope": "Full 145-record Deep Psychological Registry; this is not the entire Nerve-to-Super-Complex universe.",
+    "scope": "Full 147-record Deep Psychological Registry; this is not the entire Nerve-to-Super-Complex universe.",
     "recordInventory": {
-      "declared": 145,
-      "measured": 145,
-      "uniqueIds": 145
+      "declared": 147,
+      "measured": 147,
+      "uniqueIds": 147
     },
     "behavioralDomains": {
       "count": 15,
@@ -30704,25 +31028,25 @@
       "pass3Complete": 8
     },
     "researchPasses": {
-      "recordsWithThreePassesMarkedComplete": 145,
-      "completePassSlots": 435,
+      "recordsWithThreePassesMarkedComplete": 147,
+      "completePassSlots": 441,
       "blockedPassSlots": 0,
       "note": "All records have three recorded research passes. Unresolved taxonomy/assignment findings remain explicit; research completion is not Canon approval or graph wiring."
     },
     "runtimeIntegration": "GENERATOR/VALIDATOR DATA-NAMESPACE EMBEDDING CODED; NOT EXECUTED OR VERIFIED; APP-LEVEL/SEMANTIC GRAPH INTEGRATION OPEN",
     "warning": "Do not promote provisional definitions, taxonomic mappings, cultural-figure crosswalks, or affirmation assignments to Canon without source-level evidence and the required approval.",
     "contentCompleteness": {
-      "recordsCompleteForDeclaredRole": 145,
+      "recordsCompleteForDeclaredRole": 147,
       "recordsWithResearchOrSourceContentStillIncomplete": 0,
       "recordsWithCanonicalAssignmentUnresolved": 8,
       "recordsWithCrossVersionCrosswalkUnresolved": 34,
       "blueprintSlotsCountAsCompleteOnlyAsVisualizationSlots": 14,
       "note": "Roster-candidate records are complete for their declared source-record role; standalone definitions/cross-version semantic identities remain unresolved where not in the accessible source extract.",
-      "relatedConceptRosterPlacementUnresolved": 1
+      "relatedConceptRosterPlacementUnresolved": 3
     },
     "linkAudit": {
-      "recordsWithEmptyLinksAudited": 123,
-      "fieldsStructurallyPresent": 145,
+      "recordsWithEmptyLinksAudited": 125,
+      "fieldsStructurallyPresent": 147,
       "edgesAdded": 0,
       "note": "Empty links arrays remain explicit unresolved graph states. Candidate crosswalk references are metadata, not semantic edges."
     },
@@ -30735,9 +31059,9 @@
       "note": "Source-roster candidate records preserve v341 labels and cluster membership separately from v184 and current-manuscript records."
     },
     "relatedConsciousnessCandidates": {
-      "count": 1,
-      "sourceTextPresent": 1,
-      "threePassResearchComplete": 1,
+      "count": 3,
+      "sourceTextPresent": 3,
+      "threePassResearchComplete": 3,
       "rosterPlacementApproved": 0
     }
   }
