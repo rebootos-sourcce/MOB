@@ -8167,16 +8167,26 @@ g('PLAIN · an idiom that carries no feeling outranks its own words and counts n
  const sum=o=>Object.keys(o||{}).reduce((a,k)=>a+Math.abs(o[k]),0);
  const fets=t=>[...new Set(parseStory(t).imprints.map(i=>i.fetter))].sort().join(',');
  const has=(t,w)=>scanStory(t).some(h=>h.t===w);
- /* the apology */
- ['I am afraid I cannot make it tonight.',"I'm afraid I can't come to dinner.","I'm afraid not.",
-  'I am afraid I have to say no.'].forEach(t=>{const p=parseStory(t);
+ /* the apology, only as a whole polite clause */
+ ['I am afraid I cannot make it tonight.',"I'm afraid I can't make it.","I'm afraid not.",
+  'I am afraid so.','I am afraid I cannot make it tomorrow, sorry.'].forEach(t=>{const p=parseStory(t);
   ok(p.imprints.length===0&&sum(p.bands)===0&&!has(t,'afraid'),
    JSON.stringify(t)+' is an apology and reads no fear: '+JSON.stringify(p.bands));});
  /* and fear said plainly stays fear: a real fear, a sentence end, a comma,
-    a degree word, and the word alone */
- ['I am afraid I will lose him.','I am afraid. I cannot breathe.',"I am afraid, I can't breathe.",
-  'I am so afraid I cannot sleep.','I am afraid.'].forEach(t=>{
+    a degree word and the word alone, and the six lines the first cut of
+    the row read as nothing, each by name, with the two it read without
+    their fear */
+ ['I am afraid I will lose him.','I am afraid. Not now.','I am afraid, not tired.',
+  'I am so afraid I cannot sleep.','I am afraid.',
+  'I am afraid I have to leave him.','I am afraid I must be broken.','I am afraid I need to hide.',
+  'I am afraid so much of the time.','I am afraid not everyone likes me.',
+  'I am afraid I cannot make it through another night.',
+  'I am afraid I cannot cope.','I am afraid I cannot do this anymore.'].forEach(t=>{
   ok(fets(t).split(',').indexOf('Fear')>=0&&has(t,'afraid'),JSON.stringify(t)+' still reads fear: '+fets(t));});
+ /* the cost of a closed list, held so it is seen: a polite clause the row
+    does not carry still reads fear, as every one did before */
+ ok(has("I'm afraid I can't come to dinner.",'afraid'),
+  'an apology the row does not list still reads fear, the cost of reading only whole clauses');
  /* the wish */
  const dy='I am dying to see the new film.';
  ok(parseStory(dy).imprints.length===0&&!has(dy,'dying'),
@@ -8190,15 +8200,18 @@ g('PLAIN · an idiom that carries no feeling outranks its own words and counts n
  ok(parseStory("I can't stop laughing.").imprints.length===0,'"I can\'t stop laughing." reads nothing');
  ['I cannot stop checking the locks.','I cannot stop.'].forEach(t=>{
   ok(scanStory(t).some(h=>h.kind==='phrase'&&h.label==='compulsion'),JSON.stringify(t)+' is still a compulsion');});
- /* every row is reachable with each word that may follow it, and no idiom
-    is plain on its own */
- const dead=[], alone=[];
+ /* every row is reachable with each word that may follow it, no idiom is
+    plain on its own, and a row marked to close is plain only when nothing
+    of its clause comes after the follower */
+ const dead=[], alone=[], open=[];
  LEXPLAIN.forEach(r=>r[0].forEach(idm=>{
-  (r[1].length?r[1]:['see']).forEach(f=>{const t=idm+' '+f+' it';
-   if(!plainSpans(t,normMap(t)).length)dead.push(t);});
+  (r[1].length?r[1]:['see']).forEach(f=>{const t=idm+' '+f+(r[2]?'':' it');
+   if(!plainSpans(t,normMap(t)).length)dead.push(t);
+   const u=idm+' '+f+' it'; if(r[2]&&plainSpans(u,normMap(u)).length)open.push(u);});
   if(plainSpans(idm,normMap(idm)).length)alone.push(idm);}));
  ok(dead.length===0,'every idiom is found with each word that may follow it, '+dead.length+' are not: '+JSON.stringify(dead.slice(0,4)));
  ok(alone.length===0,'and none is plain with nothing after it: '+JSON.stringify(alone));
+ ok(open.length===0,'and a closing row is not plain with its clause still going: '+JSON.stringify(open.slice(0,4)));
  /* the stamp moves when the table does */
  LEXPLAIN[1][0].push('xyzzy to'); const mv=lexVersion(); LEXPLAIN[1][0].pop();
  ok(mv!==LEX_VERSION&&lexVersion()===LEX_VERSION,'adding a plain idiom moves the lexicon stamp, and taking it out puts it back');

@@ -637,7 +637,8 @@ function sniffWho(t,nm,hits){
    idiom's own words, as {at, len} in nm.s: at is its leading space and len
    its length, the same addressing every hit uses. The follower must be the
    very next words and in the idiom's own comma group, read off wordsOf, so a
-   sentence end or a comma between them leaves the feeling where it was. */
+   sentence end or a comma between them leaves the feeling where it was; and
+   on a row marked to close, nothing of that group may come after it. */
 function plainSpans(t,nm){
  var src=nm.s, out=[], ws=null, byAt=null;
  LEXPLAIN.forEach(function(row){
@@ -647,8 +648,10 @@ function plainSpans(t,nm){
     if(!ws){ws=wordsOf(t,nm); byAt={}; ws.forEach(function(w,i){byAt[w.at]=i;});}
     var i=byAt[at], n=idiom.split(' ').length;
     var same=function(k){return ws[k]&&ws[k].g===ws[i].g;};
+    /* row[2], the follower closes its comma group: no word of the group after it */
     var ok=i!==undefined&&same(i+n-1)&&(row[1].length?row[1].some(function(f){
-     return f.split(' ').every(function(w,k){return same(i+n+k)&&ws[i+n+k].w===w;});}):same(i+n));
+     var fw=f.split(' ');
+     return fw.every(function(w,k){return same(i+n+k)&&ws[i+n+k].w===w;})&&!(row[2]&&same(i+n+fw.length));}):same(i+n));
     if(ok)out.push({at:at,len:idiom.length});
     at=src.indexOf(' '+idiom+' ',at+1);}});});
  return out;}

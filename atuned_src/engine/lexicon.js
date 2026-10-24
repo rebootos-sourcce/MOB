@@ -304,20 +304,37 @@ var PHRASES=[
 
    A row is [the idiom, the words that may follow it]. The idiom is plain
    only when one of those follows straight after it, inside the same comma
-   group, so "I am afraid. I cannot breathe." and "I am afraid, I can't
-   breathe." keep their fear. An empty list means any word may follow, and
-   one must. A plain idiom's own words are skipped by the phrase, word and
-   adjective passes in scanStory. The words after it are not: "cannot stop
-   crying" drops the compulsion and still reads the crying.
+   group, so "I am afraid. Not now." and "I am afraid, not tired." keep
+   their fear. An empty list means any word may follow, and one must. A
+   plain idiom's own words are skipped by the phrase, word and adjective
+   passes in scanStory. The words after it are not: "cannot stop crying"
+   drops the compulsion and still reads the crying.
 
-   The apology's frames are only the polite ones on purpose. "I am afraid
-   I will lose him" is fear, and so is "I am so afraid I cannot sleep",
-   which has a degree word between and is never this row. A false plain
-   reading hides a fear the person wrote, so a frame is added here only
-   when the polite sense is the ordinary one. */
+   A third element, true, means the follower must also close its comma
+   group: nothing may come after it but a comma or the end of the
+   sentence.
+
+   THE APOLOGY IS ONLY THE WHOLE POLITE SENTENCE, and the first cut of
+   this row proved why. It took any "I cannot", "I have to", "I must", "I
+   need to", "not" or "so" after "I am afraid", and measured on that cut,
+   "I am afraid I have to leave him", "I am afraid I must be broken", "I
+   am afraid I need to hide", "I am afraid so much of the time", "I am
+   afraid not everyone likes me" and "I am afraid I cannot make it
+   through another night" all read nothing at all. Across every markdown,
+   text, JSON and script file in the repository, the fuzzy corpus and the
+   gates among them, "I am afraid" is fear in every line but the audit's
+   own example and the tests written from it. A false plain reading hides
+   a fear the person wrote and shows no mark to say so, where a false fear
+   is drawn on the word for them to see, so the row holds only sentences
+   whose whole clause is the apology. One that is not listed still reads
+   fear, as it did before. "I am so afraid I cannot sleep" has a degree
+   word between and is never this row. */
 var LEXPLAIN=[
- [['i am afraid','im afraid'],['i cannot','i cant','i can not','i have to','i must',
-   'i need to','i will have to','ill have to','not','so']],
+ [['i am afraid','im afraid'],['not','so',
+   'i cannot make it','i cant make it','i can not make it',
+   'i cannot make it tonight','i cant make it tonight','i can not make it tonight',
+   'i cannot make it today','i cant make it today','i can not make it today',
+   'i cannot make it tomorrow','i cant make it tomorrow','i can not make it tomorrow'],true],
  [['dying to'],[]],
  [['could not stop','cant stop','can not stop','cannot stop'],
    ['crying','laughing','sobbing','weeping']]];
