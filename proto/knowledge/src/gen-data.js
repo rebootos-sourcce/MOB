@@ -173,7 +173,7 @@ T.DESCENT.forEach(d=>{
   livedExample:'In the same situation that would trigger '+d.nm+', the person checks facts, considers the other party’s perspective and agency, and chooses an accountable response consistent with this counterpart.',
   impact:'Supports more reciprocal, transparent, harm-aware decisions; outcome must be assessed from behavior rather than inferred identity.',
   practice:'Name the trigger, identify who is affected, state the facts transparently, and choose one observable action consistent with the counterpart. Review the impact and repair any harm.',
-  oppositeId:'descent:'+d.nm,
+  oppositeId:'super:descent-candidate:'+slug(d.nm),
   oppositeDefinition:clean(d.d),
   oppositeStatus:'inferred-working-counterpart; reciprocal navigation pair; owner/canon review required',
   confidence:c.confidence,
@@ -361,14 +361,14 @@ E.filter(e=>e.kind==='hypercomplex').forEach(h=>{
  const routeNodeIds=new Set(E.filter(e=>e.kind==='node'&&routeAxes.includes(e.axis)).map(e=>e.id));
  const linkedSaboteurs=E.filter(e=>e.kind==='sab'&&(e.nids||[]).some(i=>routeNodeIds.has('node:'+i)));
  h.routeAxes=routeAxes;
- h.routeBasis='provisional axis-mediated ecosystem route; shared node IDs connect this mode to Saboteurs and the existing complex layer; not canonical parentage or clinical equivalence';
+ h.routeBasis='no semantic mapping inferred from shared axis or seat; source-backed membership edge required';
  h.links.push(...linkedSaboteurs.map(s=>s.id));
  linkedSaboteurs.forEach(s=>s.links.push(h.id));
  const linkedComplexes=E.filter(e=>e.kind==='complex'&&linkedSaboteurs.some(s=>(s.links||[]).includes(e.id)));
  h.complexRouteIds=linkedComplexes.map(c=>c.id);
  h.links.push(...h.complexRouteIds);
  linkedComplexes.forEach(c=>c.links.push(h.id));
- if(!linkedComplexes.length) h.parentLinkBasis='no populated complex reachable on declared provisional axis route; review required';
+ if(!linkedComplexes.length) h.parentLinkBasis='no parent link inferred; source-backed membership edge required';
  else h.parentLinkBasis='provisional shared-axis path to populated complex records; not direct parent mapping';
 });
 /* Counterpart edges are explicit and reciprocal; both endpoints must exist. */
