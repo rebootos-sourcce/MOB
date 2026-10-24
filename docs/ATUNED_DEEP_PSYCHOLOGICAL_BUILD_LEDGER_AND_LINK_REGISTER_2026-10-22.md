@@ -217,3 +217,40 @@ Plan: three distinct strategy reviews, eight execution blocks, and four recursiv
 - [Next-Round Tactics](ATUNED_DEEP_PSYCHOLOGICAL_NEXT_ROUND_TACTICS_2026-10-22.md) — three strategy reviews, eight blocks, four minimum recursive rounds, per-record content gate, and priority order.
 
 The latest artifact fetch confirmed the template catalog remains proposed/not engine-integrated and the adapter source does not inject records into the experiential graph. The registry fetch returned a blob SHA but an empty content body; the next executor must recover the actual JSON before making a new inventory claim. No tests or runtime traversal were executed in this documentation cycle. Keep the overall state OPEN until fresh inventory, authoritative validation, runtime integration, traversal, regression, and link checks are evidenced.
+
+
+---
+
+## Build cycle — 2026-10-24 — three-pass behavioral-domain depth
+
+**Branch:** `work/deep-psyche-recursive-closure-2026-10-24`  
+**Research report:** [Three-Pass Research Depth Pass — 2026-10-24](ATUNED_DEEP_PSYCHOLOGICAL_THREE_PASS_RESEARCH_DEPTH_PASS_2026-10-24.md)
+
+### Changes committed on the work branch
+- Schema `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_SCHEMA_v1.json` extended with typed behavioral-energy fields and a conditional requirement for behavioral-domain records; version 1.1.0.
+- Template catalog `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_TEMPLATE_CATALOG_v1.json` updated so the behavioral-domain template requires the same fields; version 1.1.0. It remains not engine-integrated.
+- Registry `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json` advanced to version 1.1.0. All 15 behavioral-domain records now contain the eight required behavioral-energy/research fields, independent literature references, revised pass 2, adversarial pass 3, and 2026-10-24 review dates. Canonical status and candidate crosswalks remain unresolved.
+- All 14 Blueprint entries are marked complete as visualization-slot records only; no names were invented and they are not treated as canonical domain entities.
+- `proto/knowledge/src/audit-psychological-registry.js` now checks the eight behavioral-energy fields and reports gaps for the behavioral-domain family.
+- This ledger, the TDD, and the research depth report were updated on the work branch.
+
+### Fresh static verification of the fetched registry blob
+- Records: **125 declared / 125 parsed**.
+- Content status: **125/125 complete** at the registry template-status level.
+- Three research-pass arrays: **125/125** have three passes marked complete with sources and findings.
+- Behavioral-energy fields: **15/15** complete.
+- Missing template fields, missing behavioral-energy fields, pass-slot failures, and dangling IDs in the scanned link/child/influence fields: **0**.
+- Existing relationship links: **36**, on **22** records. This is not proof of complete cross-layer graph coverage.
+- Canonical semantic edges among the 36 ARCHDOM/ARCH18 mapping rows: **0 approved**; this remains the correct evidence-gated status.
+
+### Not run / not verified
+- The repository Node audit script was updated but not executed in a Node checkout.
+- The adapter, existing generator, and validator were not executed.
+- No Nerve-to-Super-Complex runtime integration, forward/reverse traversal, reciprocal-edge validation, or regression suite was executed.
+- Full-project layer/entity denominator is not yet proven; the 125-record registry is one typed subsystem, not the whole runtime graph.
+
+### Next block
+1. Audit the complete current experiential graph's entity families and relationship contracts from the generator, canonical tables, and validator.
+2. Build a type-safe relationship register for source-row references and unresolved candidate crosswalks; never convert source-row mappings into causal/canonical hierarchy edges without evidence.
+3. Integrate the psychological registry through a separate namespace and explicit relationship types, then run generator/validator and forward/reverse graph tests.
+4. Refresh this ledger with exact command, exit code, output, and current branch/commit SHA after actual execution.
