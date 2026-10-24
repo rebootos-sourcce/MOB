@@ -338,10 +338,112 @@
         "string",
         "null"
       ]
+    },
+    "sourceLabel": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceCluster": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceVersion": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceLocator": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceExcerpt": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceEvidenceStatus": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "canonicalStatus": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "crosswalkStatus": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "affirmationText": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "chakra": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sequence": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "variants": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "contradictoryStatements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "affectedRecordIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "requiredRuling": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "relationshipEdges": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
     }
   },
   "additionalProperties": true,
-  "version": "1.1.0",
+  "version": "1.2.0",
   "allOf": [
     {
       "if": {
@@ -364,6 +466,129 @@
           "distortedExpression",
           "researchSynthesis",
           "researchLimitations"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "v341_domain_label"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceLabel",
+          "sourceCluster",
+          "sourceVersion",
+          "sourceLocator",
+          "sourceEvidenceStatus",
+          "canonicalStatus",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "source_arch12_label"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceLabel",
+          "sourceVersion",
+          "sourceLocator",
+          "sourceEvidenceStatus",
+          "canonicalStatus",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "conscious_affirmation"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "affirmationText",
+          "chakra",
+          "sequence",
+          "sourceVersion",
+          "sourceLocator",
+          "sourceEvidenceStatus",
+          "canonicalStatus",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "related_consciousness_concept"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceLabel",
+          "description",
+          "affirmationText",
+          "sourceVersion",
+          "sourceLocator",
+          "sourceEvidenceStatus",
+          "canonicalStatus",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "source_contradiction"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "contradictoryStatements",
+          "affectedRecordIds",
+          "requiredRuling",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
         ]
       }
     }
