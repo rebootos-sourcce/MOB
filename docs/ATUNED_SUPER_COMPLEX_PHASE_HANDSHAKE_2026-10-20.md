@@ -132,3 +132,17 @@ Report only what was actually done. Distinguish:
 - **BLOCKED** — exact blocker and fallback recorded.
 
 Do not say the whole framework is wired, the source library is complete, or Super-Complex Canon is settled until the corresponding evidence and validation exist.
+
+## Addendum — deep-psychological record-first mandate (2026-10-22)
+
+The owner has directed that the deep-psychological layer must first be researched from documentation, then have every record shell set up in the shared Nerve-to-Super-Complex record format, then receive ATÜNED-specific sourced content, then undergo three distinct research passes per record, and only after that be wired parent-to-child where evidence supports it. Execute recursively through closure; do not stop after a sample or imply background work continues outside an active execution session.
+
+New artifacts on MOB main:
+- docs/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_FORMAT_TDD_v1.md
+- docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_SCHEMA_v1.json
+- docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json
+
+The registry currently contains 107 entries: 93 source-backed/owner-stated records and mapping rows, plus 14 non-canonical Blueprint Domain visualization-slot placeholders. Three-pass source reviews are complete for 66/93 source-backed entries (18 archetype content records, 18 ARCHDOM rows, 18 ARCH18 rows, 12 CDOMAIN rows). Roots, behavioral domains, and Conscious Domain labels have pass 1 captured, but passes 2–3 are blocked pending authoritative source recovery. Six archetype records—Hero, Everyman, Mentor, Shadow, Shapeshifter, and Healer—are explicitly marked as web-researched and not owner-dictated. The psyche-map visual layer counts conflict with canonical table counts for Archetypes, Masks, Hyper-Complexes, Saboteurs, and Fetters. Do not treat visual counts as canonical denominators. Do not silently equate behavioral domains, Conscious Domains, Blueprint Domains, Jungian archetypes, cultural figures, or fetter tables.
+
+Next checkpoint: recover canonical definitions for roots/domains/Conscious Domains and the fourteen Blueprint Domains; resolve source/version conflicts in visualization counts; complete remaining research passes; populate required templates; then create typed relationships only where supported and verify forward/backward graph paths and runtime parity. Refresh the dashboard and this handshake after each execution round.
+

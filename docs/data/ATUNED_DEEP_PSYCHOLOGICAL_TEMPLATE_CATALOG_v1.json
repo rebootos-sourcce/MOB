@@ -1,0 +1,149 @@
+{
+  "catalogId": "atuned.deep_psychological.template_catalog",
+  "version": "1.0.0",
+  "status": "PROPOSED_FOR_DEEP_PSYCHOLOGICAL_REGISTRY_NOT_YET_INTEGRATED_WITH_ENGINE",
+  "purpose": "Explicit template assignments for the deep-psychological record registry. These templates follow the shared record envelope but are not yet wired into the existing generator or validator.",
+  "templates": [
+    {
+      "id": "TPL-PSYCHOLOGICAL-ROOT-V1",
+      "kind": "root",
+      "fields": [
+        "nm",
+        "seat",
+        "fam",
+        "def",
+        "body",
+        "childIds",
+        "links",
+        "sourceRefs",
+        "researchPasses"
+      ],
+      "description": "Root record with source-backed child membership and owner-stated seat kept separate."
+    },
+    {
+      "id": "TPL-BEHAVIORAL-DOMAIN-V1",
+      "kind": "domain",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "body",
+        "links",
+        "sourceRefs",
+        "researchPasses"
+      ],
+      "description": "Owner-stated behavioral-domain record; definition remains missing until sourced."
+    },
+    {
+      "id": "TPL-CANONICAL-DOMAIN-CANDIDATE-V1",
+      "kind": "canonical_domain_candidate",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "body",
+        "parentId",
+        "links",
+        "sourceRefs",
+        "researchPasses"
+      ],
+      "description": "Source-registered domain candidate with explicit parent membership and open count ruling."
+    },
+    {
+      "id": "TPL-ARCHETYPE-CANDIDATE-V1",
+      "kind": "archetype",
+      "fields": [
+        "nm",
+        "seat",
+        "fam",
+        "def",
+        "body",
+        "essence",
+        "origin",
+        "healthyExpression",
+        "decoherentExpression",
+        "signals",
+        "fetters",
+        "released",
+        "links",
+        "sourceRefs",
+        "researchPasses"
+      ],
+      "description": "Archetype content record with source-authored content and provenance qualifiers."
+    },
+    {
+      "id": "TPL-CONSCIOUS-DOMAIN-V1",
+      "kind": "conscious_domain",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "body",
+        "affirmation",
+        "links",
+        "sourceRefs",
+        "researchPasses"
+      ],
+      "description": "Conscious Domain record; unresolved canonical names remain explicit placeholders."
+    },
+    {
+      "id": "TPL-CULTURAL-FIGURE-DOMAIN-MAPPING-V1",
+      "kind": "cultural_figure",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "domainTarget",
+        "links",
+        "sourceRefs",
+        "researchPasses"
+      ],
+      "description": "Separate cultural-figure mapping from CDOMAIN; does not imply a hierarchy edge."
+    },
+    {
+      "id": "TPL-ARCHETYPE-DOMAIN-MAPPING-V1",
+      "kind": "mapping",
+      "subtype": "archdom",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "archetypeName",
+        "domainTarget",
+        "links",
+        "sourceRefs",
+        "researchPasses"
+      ],
+      "description": "ARCHDOM source-row record; target taxonomy equivalence remains unverified."
+    },
+    {
+      "id": "TPL-ARCHETYPE-FETTER-SEAT-MAPPING-V1",
+      "kind": "mapping",
+      "subtype": "arch18",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "archetypeName",
+        "fetterLabel",
+        "seatLabel",
+        "links",
+        "sourceRefs",
+        "researchPasses"
+      ],
+      "description": "ARCH18 source-row record; mapping semantics remain unverified."
+    },
+    {
+      "id": "TPL-BLUEPRINT-DOMAIN-VISUAL-SLOT-V1",
+      "kind": "blueprint_domain_slot",
+      "fields": [
+        "nm",
+        "fam",
+        "links",
+        "sourceRefs",
+        "researchPasses"
+      ],
+      "description": "Non-canonical visualization slot used only to track an unresolved count; not a domain entity."
+    }
+  ]
+}
