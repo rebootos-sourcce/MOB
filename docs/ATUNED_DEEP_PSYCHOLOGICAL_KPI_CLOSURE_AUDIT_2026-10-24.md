@@ -55,3 +55,11 @@ The denominator of 125 is verified inside this registry: declared count and meas
 
 ## Acceptance rule
 Do not declare 100% until the denominator is complete across the entire required layer inventory, all required records satisfy their record-specific content/research criteria, and every required relationship is source-supported, approved where required, and proven through runtime tests.
+
+
+## Follow-on integration pass — 2026-10-24
+The registry and template catalog are now included in the generated `KBD` data object under separate `deepPsychologicalRegistry` and `deepPsychologicalTemplateCatalog` namespaces. The existing experiential `entries` array is left unchanged so unresolved semantic mappings are not silently promoted into the Nerve-to-Super-Complex graph.
+
+The existing `validate-templates.js` now checks the embedded registry's unique IDs, actual template fields, blocked research records, and dangling references, and reports the open content/link counts separately. The adapter also preserves `relationshipAudit`, `affirmationAssignmentStatus`, and `affirmationSource` fields.
+
+**Validation limitation:** these code changes have not yet been executed in a Node runtime or CI in this session. They are code-integrated but not runtime-verified. Do not mark KPI 3 complete.
