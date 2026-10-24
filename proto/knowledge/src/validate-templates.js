@@ -92,6 +92,7 @@ for (const e of entries.filter(x => x.kind === 'descent_candidate')) {
   if (!e.sourceClaimedLayer || !e.ownerRuling) errors.push(e.id + ': source layer claim or owner ruling missing');
   if (e.nm === 'Psychopathy' && !/rejected/i.test(e.canonicalStatus || '')) errors.push(e.id + ': Psychopathy must retain the explicit owner rejection for canonical Super-Complex status');
 }
+const typedEdgeIds = new Set();
 for (const kind of requiredKinds) {
   if (!counts[kind]) errors.push('required domain kind absent from generated catalog: ' + kind);
 }
