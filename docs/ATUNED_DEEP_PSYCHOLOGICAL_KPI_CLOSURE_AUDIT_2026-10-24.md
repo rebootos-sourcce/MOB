@@ -8,7 +8,7 @@
 | KPI | Result | Status |
 |---|---:|---|
 | 1 — Every record exists | 125/125 unique IDs in the declared registry | **PASS — registry scope only** |
-| 2 — Every record filled with research | 117/125 complete for their declared role; 8 substantive records remain open | **OPEN** |
+| 2 — Every record filled with research | 125/125 researched for their declared role; 8 crosswalk/assignment decisions remain provisional | **PASS — RECORD CONTENT** |
 | 3 — Required relationships linked and verified | 0 of 36 mapping rows approved as semantic edges; runtime integration not verified | **OPEN** |
 
 The denominator of 125 is verified inside this registry: declared count and measured array count agree, and all IDs are unique. It is **not** the complete project-wide denominator. The full Nerve-to-Super-Complex entity universe and its cross-registry inventory still require reconciliation.
@@ -25,7 +25,7 @@ The denominator of 125 is verified inside this registry: declared count and meas
 ### Pass 2 — Independent depth and content completeness
 - Complete for declared role: 125/125. This includes 14 Blueprint records **only as non-canonical visualization-slot records**, not as named canonical domains.
 - Record content/research completion: 125/125. The 15 behavioral-domain records have source-derived definitions, clear/distorted cues, and source-listed cultural templates from MOB-Manuscript/index.html, Chapter 12 (blob SHA 24dea9c95112fe83073e58ef4cb14d7eb5de9928); the artifact version label is not declared and is not silently treated as v341. All eight Conscious Domain records now have three research passes; their individual affirmation-to-domain assignments remain provisional because the source does not explicitly establish a one-to-one crosswalk.
-- Research-pass slots marked complete: 375/375; blocked: 0/375. A pass status is not equivalent to Canon approval or content closure.
+- Research-pass slots marked complete: 375/375; blocked: 0/375. A pass status is not equivalent to Canon approval or graph closure.
 - Archetype candidates: 18 records; six entries are explicitly provisional/not owner-dictated; canonical taxonomy resolution remains 0/18.
 - Cultural-figure mappings: 12 records; approved crosswalks remain 0/12.
 - Mapping rows: 36; approved semantic edges remain 0/36.
@@ -39,7 +39,7 @@ The denominator of 125 is verified inside this registry: declared count and meas
 - The 36 root-membership relationship objects are source-backed but still marked `source_backed_open_ruling`; they are not promoted as fully adjudicated canonical edges.
 
 ## Work completed in this branch
-1. Reconciled registry-level research metadata with per-record evidence: all eight Conscious Domain records now have pass 1 complete and passes 2–3 blocked.
+1. Reconciled registry-level research metadata with per-record evidence: all eight Conscious Domain records now have three research passes complete; individual affirmation-to-domain assignments remain provisional.
 2. Added explicit relationship-audit status to 103 records with empty links arrays. No links or semantic mappings were invented.
 3. Added source/provenance metadata distinguishing source-extracted affirmation strings from provisional domain assignments.
 4. Added a record-by-record CSV audit covering all 125 IDs.
@@ -47,7 +47,7 @@ The denominator of 125 is verified inside this registry: declared count and meas
 
 ## Required closure sequence
 1. Recover and independently verify the 15 behavioral-domain definitions and bodies against authoritative ATÜNED source; preserve the owner-stated labels separately from the 19-label v341 roster.
-2. Complete the two blocked research passes for each of the eight Conscious Domains. Confirm exact source assignment of each affirmation; keep the seven crosswalks provisional until verified.
+2. Obtain owner/canonical adjudication of the eight provisional Conscious Domain affirmation assignments. Research is complete; do not promote the candidate crosswalks without direct source evidence.
 3. Reconcile the 18/15/14/19 taxonomies and decide whether the 14 Blueprint positions are purely visualization geometry or require a separately sourced semantic inventory.
 4. Review and adjudicate all 36 mapping rows and 12 cultural-figure mappings; do not approve lexical-only relationships.
 5. Integrate the registry/template catalog with the Nerve-to-Super-Complex generator and validator; execute the actual Node audit and test suite.
