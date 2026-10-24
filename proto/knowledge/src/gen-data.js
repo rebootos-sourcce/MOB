@@ -449,9 +449,10 @@ const sourceToRuntimeId=new Map([
  ...(psychRegistry.records||[]).map(r=>[r.id,'psych:'+r.id]),
  ...(superRegistry.records||[]).map(r=>[r.id,'super:'+r.id])
 ]);
+const runtimeIdByLower=new Map(E.map(e=>[String(e.id).toLowerCase(),e.id]));
 const relationshipEdges=[...adaptedPsych.relationshipEdges,...adaptedSuper.relationshipEdges,...(crossRegistryEdgeRegister.relationshipEdges||[])].map(edge=>{
- const fromId=sourceToRuntimeId.get(edge.fromId)||edge.fromId;
- const toId=sourceToRuntimeId.get(edge.toId)||edge.toId;
+ const fromId=sourceToRuntimeId.get(edge.fromId)||runtimeIdByLower.get(String(edge.fromId||'').toLowerCase())||edge.fromId;
+ const toId=sourceToRuntimeId.get(edge.toId)||runtimeIdByLower.get(String(edge.toId||'').toLowerCase())||edge.toId;
  const crossRegistryResolved=fromId!==edge.fromId||toId!==edge.toId;
  return {...edge,fromId,toId,targetRegistry:crossRegistryResolved?'combined_runtime':edge.targetRegistry,validationStatus:crossRegistryResolved?'cross_registry_target_resolved':(edge.validationStatus||'imported_not_semantically_verified')};
 });
