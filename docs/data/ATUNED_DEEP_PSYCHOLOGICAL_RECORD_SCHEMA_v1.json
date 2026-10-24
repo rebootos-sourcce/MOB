@@ -701,7 +701,7 @@
     }
   },
   "additionalProperties": true,
-  "version": "1.6.0",
+  "version": "1.7.0",
   "allOf": [
     {
       "if": {
@@ -1405,6 +1405,31 @@
         "required": [
           "sourceFamily",
           "sourceRole",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "inferred_counterpart"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "oppositeId",
+          "oppositeDefinition",
+          "oppositeStatus",
+          "inferred",
+          "inferenceBasis",
+          "confidence",
           "sourceRefs",
           "sourceClaims",
           "researchPasses"
