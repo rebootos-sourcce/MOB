@@ -1,8 +1,8 @@
 {
   "catalogId": "atuned.deep_psychological.template_catalog",
-  "version": "1.0.0",
-  "status": "PROPOSED_FOR_DEEP_PSYCHOLOGICAL_REGISTRY_NOT_YET_INTEGRATED_WITH_ENGINE",
-  "purpose": "Explicit template assignments for the deep-psychological record registry. These templates follow the shared record envelope but are not yet wired into the existing generator or validator.",
+  "version": "1.1.0",
+  "status": "PROPOSED_TEMPLATE_CATALOG; EMBEDDED_IN_GENERATED_DATA_NAMESPACE; RUNTIME_VALIDATION_PENDING",
+  "purpose": "Typed templates for source-backed psychological records, source-version-specific domain rosters, related consciousness concepts, and explicitly provisional crosswalks. Template completeness does not confer canonical approval.",
   "templates": [
     {
       "id": "TPL-PSYCHOLOGICAL-ROOT-V1",
@@ -84,7 +84,7 @@
         "sourceRefs",
         "researchPasses"
       ],
-      "description": "Conscious Domain record; unresolved canonical names remain explicit placeholders."
+      "description": "Source-extracted Conscious Domain record; affirmation text and its assignment status are separate fields. Seven candidate assignments remain provisional unless directly evidenced."
     },
     {
       "id": "TPL-CULTURAL-FIGURE-DOMAIN-MAPPING-V1",
@@ -144,6 +144,20 @@
         "researchPasses"
       ],
       "description": "Non-canonical visualization slot used only to track an unresolved count; not a domain entity."
+    },
+    {
+      "id": "TPL-V341-DOMAIN-CANDIDATE-V1",
+      "kind": "v341_domain_candidate",
+      "fields": [
+        "nm",
+        "fam",
+        "def",
+        "body",
+        "links",
+        "sourceRefs",
+        "researchPasses"
+      ],
+      "description": "Source-version-specific candidate record for one label in the 19-label MOB_Complete_v341 domain roster. Captures cluster membership and research/crosswalk state without silently merging the label into v184 or current-manuscript taxonomies."
     }
   ]
 }
