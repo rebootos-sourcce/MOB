@@ -30,7 +30,8 @@ module.exports = function adaptPsychologicalRegistry(registry, catalog) {
     entries.push({
       id: 'psych:' + source.id,
       sourceRecordId: source.id,
-      kind: 'psych_' + source.kind,
+      kind: source.runtimeKind || ('psych_' + source.kind),
+      sourceRuntimeKind: source.runtimeKind || null,
       sourceKind: source.kind,
       recordType: source.recordType || null,
       layer: source.layer || null,
@@ -44,7 +45,7 @@ module.exports = function adaptPsychologicalRegistry(registry, catalog) {
       templateValidation: {
         schemaDefined: true,
         sourceBacked: Boolean(source.sourceRefs && source.sourceRefs.length),
-        contentStatus: missingFields.length ? 'incomplete' : 'complete',
+        contentStatus: missingFields.length ? 'incomplete' : ((source.templateValidation && source.templateValidation.contentStatus && source.templateValidation.contentStatus !== 'complete') ? source.templateValidation.contentStatus : 'complete'),
         missingFields,
         runtimeIntegration: 'integrated',
         sourceRegistryVersion: registry.version || 'unspecified',
