@@ -27589,7 +27589,7 @@
       "crosswalkStatus": "EXACT_LEXICAL_CANDIDATE_NOT_APPROVED",
       "standaloneDefinitionStatus": "NOT_EXTRACTED_FROM_ACCESSIBLE_V341_CROSSWALK_EXCERPT",
       "canonicalStatus": "SOURCE_BACKED_ROSTER_MEMBER; CROSS-VERSION SEMANTIC APPROVAL PENDING",
-      "status": "source_backed_v341_roster_candidate_crosswalk_open",
+      "status": "source_roster_membership_researched_standalone_definition_pending",
       "relationshipAudit": {
         "status": "NO_APPROVED_LINKS_RECORDED",
         "auditedAt": "2026-10-24",
@@ -27597,8 +27597,8 @@
         "note": "Cluster and crosswalk candidates are metadata only, not graph edges."
       },
       "templateValidation": {
-        "status": "source_roster_record_complete_crosswalk_open",
-        "contentStatus": "complete",
+        "status": "source_roster_verified_standalone_definition_blocked",
+        "contentStatus": "provisional",
         "sourceBacked": true,
         "missingFields": [],
         "canonicalApproval": "pending",
@@ -27609,7 +27609,8 @@
       "unresolvedQuestions": [
         "Recover the standalone v341 definition from the raw source or a complete extraction; the current durable extract confirms roster membership only.",
         "Owner/canonical ruling required before connecting this v341 label to the current-manuscript or v184 domain taxonomies.",
-        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots."
+        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots.",
+        "The raw MOB_Complete_v341.html is not available in the current repository/library search. The v336 source was inspected as comparative evidence only and cannot replace the v341 definition."
       ],
       "changelog": [
         "2026-10-24: Added source-version-specific v341 roster record; three research passes completed; no semantic edge promoted."
@@ -27749,7 +27750,7 @@
       "crosswalkStatus": "PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED",
       "standaloneDefinitionStatus": "NOT_EXTRACTED_FROM_ACCESSIBLE_V341_CROSSWALK_EXCERPT",
       "canonicalStatus": "SOURCE_BACKED_ROSTER_MEMBER; CROSS-VERSION SEMANTIC APPROVAL PENDING",
-      "status": "source_backed_v341_roster_candidate_crosswalk_open",
+      "status": "source_roster_membership_researched_standalone_definition_pending",
       "relationshipAudit": {
         "status": "NO_APPROVED_LINKS_RECORDED",
         "auditedAt": "2026-10-24",
@@ -27757,8 +27758,8 @@
         "note": "Cluster and crosswalk candidates are metadata only, not graph edges."
       },
       "templateValidation": {
-        "status": "source_roster_record_complete_crosswalk_open",
-        "contentStatus": "complete",
+        "status": "source_roster_verified_standalone_definition_blocked",
+        "contentStatus": "provisional",
         "sourceBacked": true,
         "missingFields": [],
         "canonicalApproval": "pending",
@@ -27769,7 +27770,8 @@
       "unresolvedQuestions": [
         "Recover the standalone v341 definition from the raw source or a complete extraction; the current durable extract confirms roster membership only.",
         "Owner/canonical ruling required before connecting this v341 label to the current-manuscript or v184 domain taxonomies.",
-        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots."
+        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots.",
+        "The raw MOB_Complete_v341.html is not available in the current repository/library search. The v336 source was inspected as comparative evidence only and cannot replace the v341 definition."
       ],
       "changelog": [
         "2026-10-24: Added source-version-specific v341 roster record; three research passes completed; no semantic edge promoted."
@@ -27907,7 +27909,7 @@
       "crosswalkStatus": "ROOT_DOMAIN_DISTINCTION_OPEN",
       "standaloneDefinitionStatus": "NOT_EXTRACTED_FROM_ACCESSIBLE_V341_CROSSWALK_EXCERPT",
       "canonicalStatus": "SOURCE_BACKED_ROSTER_MEMBER; CROSS-VERSION SEMANTIC APPROVAL PENDING",
-      "status": "source_backed_v341_roster_candidate_crosswalk_open",
+      "status": "source_roster_membership_researched_standalone_definition_pending",
       "relationshipAudit": {
         "status": "NO_APPROVED_LINKS_RECORDED",
         "auditedAt": "2026-10-24",
@@ -27915,8 +27917,8 @@
         "note": "Cluster and crosswalk candidates are metadata only, not graph edges."
       },
       "templateValidation": {
-        "status": "source_roster_record_complete_crosswalk_open",
-        "contentStatus": "complete",
+        "status": "source_roster_verified_standalone_definition_blocked",
+        "contentStatus": "provisional",
         "sourceBacked": true,
         "missingFields": [],
         "canonicalApproval": "pending",
@@ -27927,7 +27929,8 @@
       "unresolvedQuestions": [
         "Recover the standalone v341 definition from the raw source or a complete extraction; the current durable extract confirms roster membership only.",
         "Owner/canonical ruling required before connecting this v341 label to the current-manuscript or v184 domain taxonomies.",
-        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots."
+        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots.",
+        "The raw MOB_Complete_v341.html is not available in the current repository/library search. The v336 source was inspected as comparative evidence only and cannot replace the v341 definition."
       ],
       "changelog": [
         "2026-10-24: Added source-version-specific v341 roster record; three research passes completed; no semantic edge promoted."
@@ -28067,7 +28070,7 @@
       "crosswalkStatus": "PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED",
       "standaloneDefinitionStatus": "NOT_EXTRACTED_FROM_ACCESSIBLE_V341_CROSSWALK_EXCERPT",
       "canonicalStatus": "SOURCE_BACKED_ROSTER_MEMBER; CROSS-VERSION SEMANTIC APPROVAL PENDING",
-      "status": "source_backed_v341_roster_candidate_crosswalk_open",
+      "status": "source_roster_membership_researched_standalone_definition_pending",
       "relationshipAudit": {
         "status": "NO_APPROVED_LINKS_RECORDED",
         "auditedAt": "2026-10-24",
@@ -28075,8 +28078,8 @@
         "note": "Cluster and crosswalk candidates are metadata only, not graph edges."
       },
       "templateValidation": {
-        "status": "source_roster_record_complete_crosswalk_open",
-        "contentStatus": "complete",
+        "status": "source_roster_verified_standalone_definition_blocked",
+        "contentStatus": "provisional",
         "sourceBacked": true,
         "missingFields": [],
         "canonicalApproval": "pending",
@@ -28087,7 +28090,8 @@
       "unresolvedQuestions": [
         "Recover the standalone v341 definition from the raw source or a complete extraction; the current durable extract confirms roster membership only.",
         "Owner/canonical ruling required before connecting this v341 label to the current-manuscript or v184 domain taxonomies.",
-        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots."
+        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots.",
+        "The raw MOB_Complete_v341.html is not available in the current repository/library search. The v336 source was inspected as comparative evidence only and cannot replace the v341 definition."
       ],
       "changelog": [
         "2026-10-24: Added source-version-specific v341 roster record; three research passes completed; no semantic edge promoted."
@@ -28225,7 +28229,7 @@
       "crosswalkStatus": "NO_EXACT_CURRENT_MANUSCRIPT_CANDIDATE",
       "standaloneDefinitionStatus": "NOT_EXTRACTED_FROM_ACCESSIBLE_V341_CROSSWALK_EXCERPT",
       "canonicalStatus": "SOURCE_BACKED_ROSTER_MEMBER; CROSS-VERSION SEMANTIC APPROVAL PENDING",
-      "status": "source_backed_v341_roster_candidate_crosswalk_open",
+      "status": "source_roster_membership_researched_standalone_definition_pending",
       "relationshipAudit": {
         "status": "NO_APPROVED_LINKS_RECORDED",
         "auditedAt": "2026-10-24",
@@ -28233,8 +28237,8 @@
         "note": "Cluster and crosswalk candidates are metadata only, not graph edges."
       },
       "templateValidation": {
-        "status": "source_roster_record_complete_crosswalk_open",
-        "contentStatus": "complete",
+        "status": "source_roster_verified_standalone_definition_blocked",
+        "contentStatus": "provisional",
         "sourceBacked": true,
         "missingFields": [],
         "canonicalApproval": "pending",
@@ -28245,7 +28249,8 @@
       "unresolvedQuestions": [
         "Recover the standalone v341 definition from the raw source or a complete extraction; the current durable extract confirms roster membership only.",
         "Owner/canonical ruling required before connecting this v341 label to the current-manuscript or v184 domain taxonomies.",
-        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots."
+        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots.",
+        "The raw MOB_Complete_v341.html is not available in the current repository/library search. The v336 source was inspected as comparative evidence only and cannot replace the v341 definition."
       ],
       "changelog": [
         "2026-10-24: Added source-version-specific v341 roster record; three research passes completed; no semantic edge promoted."
@@ -28385,7 +28390,7 @@
       "crosswalkStatus": "POWER_DIRECTED_FORCE_ALIAS_CANDIDATE_NOT_APPROVED",
       "standaloneDefinitionStatus": "NOT_EXTRACTED_FROM_ACCESSIBLE_V341_CROSSWALK_EXCERPT",
       "canonicalStatus": "SOURCE_BACKED_ROSTER_MEMBER; CROSS-VERSION SEMANTIC APPROVAL PENDING",
-      "status": "source_backed_v341_roster_candidate_crosswalk_open",
+      "status": "source_roster_membership_researched_standalone_definition_pending",
       "relationshipAudit": {
         "status": "NO_APPROVED_LINKS_RECORDED",
         "auditedAt": "2026-10-24",
@@ -28393,8 +28398,8 @@
         "note": "Cluster and crosswalk candidates are metadata only, not graph edges."
       },
       "templateValidation": {
-        "status": "source_roster_record_complete_crosswalk_open",
-        "contentStatus": "complete",
+        "status": "source_roster_verified_standalone_definition_blocked",
+        "contentStatus": "provisional",
         "sourceBacked": true,
         "missingFields": [],
         "canonicalApproval": "pending",
@@ -28405,7 +28410,8 @@
       "unresolvedQuestions": [
         "Recover the standalone v341 definition from the raw source or a complete extraction; the current durable extract confirms roster membership only.",
         "Owner/canonical ruling required before connecting this v341 label to the current-manuscript or v184 domain taxonomies.",
-        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots."
+        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots.",
+        "The raw MOB_Complete_v341.html is not available in the current repository/library search. The v336 source was inspected as comparative evidence only and cannot replace the v341 definition."
       ],
       "changelog": [
         "2026-10-24: Added source-version-specific v341 roster record; three research passes completed; no semantic edge promoted."
@@ -28545,7 +28551,7 @@
       "crosswalkStatus": "PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED",
       "standaloneDefinitionStatus": "NOT_EXTRACTED_FROM_ACCESSIBLE_V341_CROSSWALK_EXCERPT",
       "canonicalStatus": "SOURCE_BACKED_ROSTER_MEMBER; CROSS-VERSION SEMANTIC APPROVAL PENDING",
-      "status": "source_backed_v341_roster_candidate_crosswalk_open",
+      "status": "source_roster_membership_researched_standalone_definition_pending",
       "relationshipAudit": {
         "status": "NO_APPROVED_LINKS_RECORDED",
         "auditedAt": "2026-10-24",
@@ -28553,8 +28559,8 @@
         "note": "Cluster and crosswalk candidates are metadata only, not graph edges."
       },
       "templateValidation": {
-        "status": "source_roster_record_complete_crosswalk_open",
-        "contentStatus": "complete",
+        "status": "source_roster_verified_standalone_definition_blocked",
+        "contentStatus": "provisional",
         "sourceBacked": true,
         "missingFields": [],
         "canonicalApproval": "pending",
@@ -28565,7 +28571,8 @@
       "unresolvedQuestions": [
         "Recover the standalone v341 definition from the raw source or a complete extraction; the current durable extract confirms roster membership only.",
         "Owner/canonical ruling required before connecting this v341 label to the current-manuscript or v184 domain taxonomies.",
-        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots."
+        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots.",
+        "The raw MOB_Complete_v341.html is not available in the current repository/library search. The v336 source was inspected as comparative evidence only and cannot replace the v341 definition."
       ],
       "changelog": [
         "2026-10-24: Added source-version-specific v341 roster record; three research passes completed; no semantic edge promoted."
@@ -28705,7 +28712,7 @@
       "crosswalkStatus": "RENEWAL_TRANSFORMATION_LABEL_VARIANT_NOT_APPROVED",
       "standaloneDefinitionStatus": "NOT_EXTRACTED_FROM_ACCESSIBLE_V341_CROSSWALK_EXCERPT",
       "canonicalStatus": "SOURCE_BACKED_ROSTER_MEMBER; CROSS-VERSION SEMANTIC APPROVAL PENDING",
-      "status": "source_backed_v341_roster_candidate_crosswalk_open",
+      "status": "source_roster_membership_researched_standalone_definition_pending",
       "relationshipAudit": {
         "status": "NO_APPROVED_LINKS_RECORDED",
         "auditedAt": "2026-10-24",
@@ -28713,8 +28720,8 @@
         "note": "Cluster and crosswalk candidates are metadata only, not graph edges."
       },
       "templateValidation": {
-        "status": "source_roster_record_complete_crosswalk_open",
-        "contentStatus": "complete",
+        "status": "source_roster_verified_standalone_definition_blocked",
+        "contentStatus": "provisional",
         "sourceBacked": true,
         "missingFields": [],
         "canonicalApproval": "pending",
@@ -28725,7 +28732,8 @@
       "unresolvedQuestions": [
         "Recover the standalone v341 definition from the raw source or a complete extraction; the current durable extract confirms roster membership only.",
         "Owner/canonical ruling required before connecting this v341 label to the current-manuscript or v184 domain taxonomies.",
-        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots."
+        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots.",
+        "The raw MOB_Complete_v341.html is not available in the current repository/library search. The v336 source was inspected as comparative evidence only and cannot replace the v341 definition."
       ],
       "changelog": [
         "2026-10-24: Added source-version-specific v341 roster record; three research passes completed; no semantic edge promoted."
@@ -28865,7 +28873,7 @@
       "crosswalkStatus": "PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED",
       "standaloneDefinitionStatus": "NOT_EXTRACTED_FROM_ACCESSIBLE_V341_CROSSWALK_EXCERPT",
       "canonicalStatus": "SOURCE_BACKED_ROSTER_MEMBER; CROSS-VERSION SEMANTIC APPROVAL PENDING",
-      "status": "source_backed_v341_roster_candidate_crosswalk_open",
+      "status": "source_roster_membership_researched_standalone_definition_pending",
       "relationshipAudit": {
         "status": "NO_APPROVED_LINKS_RECORDED",
         "auditedAt": "2026-10-24",
@@ -28873,8 +28881,8 @@
         "note": "Cluster and crosswalk candidates are metadata only, not graph edges."
       },
       "templateValidation": {
-        "status": "source_roster_record_complete_crosswalk_open",
-        "contentStatus": "complete",
+        "status": "source_roster_verified_standalone_definition_blocked",
+        "contentStatus": "provisional",
         "sourceBacked": true,
         "missingFields": [],
         "canonicalApproval": "pending",
@@ -28885,7 +28893,8 @@
       "unresolvedQuestions": [
         "Recover the standalone v341 definition from the raw source or a complete extraction; the current durable extract confirms roster membership only.",
         "Owner/canonical ruling required before connecting this v341 label to the current-manuscript or v184 domain taxonomies.",
-        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots."
+        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots.",
+        "The raw MOB_Complete_v341.html is not available in the current repository/library search. The v336 source was inspected as comparative evidence only and cannot replace the v341 definition."
       ],
       "changelog": [
         "2026-10-24: Added source-version-specific v341 roster record; three research passes completed; no semantic edge promoted."
@@ -29023,7 +29032,7 @@
       "crosswalkStatus": "NO_EXACT_CURRENT_MANUSCRIPT_CANDIDATE",
       "standaloneDefinitionStatus": "NOT_EXTRACTED_FROM_ACCESSIBLE_V341_CROSSWALK_EXCERPT",
       "canonicalStatus": "SOURCE_BACKED_ROSTER_MEMBER; CROSS-VERSION SEMANTIC APPROVAL PENDING",
-      "status": "source_backed_v341_roster_candidate_crosswalk_open",
+      "status": "source_roster_membership_researched_standalone_definition_pending",
       "relationshipAudit": {
         "status": "NO_APPROVED_LINKS_RECORDED",
         "auditedAt": "2026-10-24",
@@ -29031,8 +29040,8 @@
         "note": "Cluster and crosswalk candidates are metadata only, not graph edges."
       },
       "templateValidation": {
-        "status": "source_roster_record_complete_crosswalk_open",
-        "contentStatus": "complete",
+        "status": "source_roster_verified_standalone_definition_blocked",
+        "contentStatus": "provisional",
         "sourceBacked": true,
         "missingFields": [],
         "canonicalApproval": "pending",
@@ -29043,7 +29052,8 @@
       "unresolvedQuestions": [
         "Recover the standalone v341 definition from the raw source or a complete extraction; the current durable extract confirms roster membership only.",
         "Owner/canonical ruling required before connecting this v341 label to the current-manuscript or v184 domain taxonomies.",
-        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots."
+        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots.",
+        "The raw MOB_Complete_v341.html is not available in the current repository/library search. The v336 source was inspected as comparative evidence only and cannot replace the v341 definition."
       ],
       "changelog": [
         "2026-10-24: Added source-version-specific v341 roster record; three research passes completed; no semantic edge promoted."
@@ -29183,7 +29193,7 @@
       "crosswalkStatus": "PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED",
       "standaloneDefinitionStatus": "NOT_EXTRACTED_FROM_ACCESSIBLE_V341_CROSSWALK_EXCERPT",
       "canonicalStatus": "SOURCE_BACKED_ROSTER_MEMBER; CROSS-VERSION SEMANTIC APPROVAL PENDING",
-      "status": "source_backed_v341_roster_candidate_crosswalk_open",
+      "status": "source_roster_membership_researched_standalone_definition_pending",
       "relationshipAudit": {
         "status": "NO_APPROVED_LINKS_RECORDED",
         "auditedAt": "2026-10-24",
@@ -29191,8 +29201,8 @@
         "note": "Cluster and crosswalk candidates are metadata only, not graph edges."
       },
       "templateValidation": {
-        "status": "source_roster_record_complete_crosswalk_open",
-        "contentStatus": "complete",
+        "status": "source_roster_verified_standalone_definition_blocked",
+        "contentStatus": "provisional",
         "sourceBacked": true,
         "missingFields": [],
         "canonicalApproval": "pending",
@@ -29203,7 +29213,8 @@
       "unresolvedQuestions": [
         "Recover the standalone v341 definition from the raw source or a complete extraction; the current durable extract confirms roster membership only.",
         "Owner/canonical ruling required before connecting this v341 label to the current-manuscript or v184 domain taxonomies.",
-        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots."
+        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots.",
+        "The raw MOB_Complete_v341.html is not available in the current repository/library search. The v336 source was inspected as comparative evidence only and cannot replace the v341 definition."
       ],
       "changelog": [
         "2026-10-24: Added source-version-specific v341 roster record; three research passes completed; no semantic edge promoted."
@@ -29343,7 +29354,7 @@
       "crosswalkStatus": "PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED",
       "standaloneDefinitionStatus": "NOT_EXTRACTED_FROM_ACCESSIBLE_V341_CROSSWALK_EXCERPT",
       "canonicalStatus": "SOURCE_BACKED_ROSTER_MEMBER; CROSS-VERSION SEMANTIC APPROVAL PENDING",
-      "status": "source_backed_v341_roster_candidate_crosswalk_open",
+      "status": "source_roster_membership_researched_standalone_definition_pending",
       "relationshipAudit": {
         "status": "NO_APPROVED_LINKS_RECORDED",
         "auditedAt": "2026-10-24",
@@ -29351,8 +29362,8 @@
         "note": "Cluster and crosswalk candidates are metadata only, not graph edges."
       },
       "templateValidation": {
-        "status": "source_roster_record_complete_crosswalk_open",
-        "contentStatus": "complete",
+        "status": "source_roster_verified_standalone_definition_blocked",
+        "contentStatus": "provisional",
         "sourceBacked": true,
         "missingFields": [],
         "canonicalApproval": "pending",
@@ -29363,7 +29374,8 @@
       "unresolvedQuestions": [
         "Recover the standalone v341 definition from the raw source or a complete extraction; the current durable extract confirms roster membership only.",
         "Owner/canonical ruling required before connecting this v341 label to the current-manuscript or v184 domain taxonomies.",
-        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots."
+        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots.",
+        "The raw MOB_Complete_v341.html is not available in the current repository/library search. The v336 source was inspected as comparative evidence only and cannot replace the v341 definition."
       ],
       "changelog": [
         "2026-10-24: Added source-version-specific v341 roster record; three research passes completed; no semantic edge promoted."
@@ -29503,7 +29515,7 @@
       "crosswalkStatus": "PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED",
       "standaloneDefinitionStatus": "NOT_EXTRACTED_FROM_ACCESSIBLE_V341_CROSSWALK_EXCERPT",
       "canonicalStatus": "SOURCE_BACKED_ROSTER_MEMBER; CROSS-VERSION SEMANTIC APPROVAL PENDING",
-      "status": "source_backed_v341_roster_candidate_crosswalk_open",
+      "status": "source_roster_membership_researched_standalone_definition_pending",
       "relationshipAudit": {
         "status": "NO_APPROVED_LINKS_RECORDED",
         "auditedAt": "2026-10-24",
@@ -29511,8 +29523,8 @@
         "note": "Cluster and crosswalk candidates are metadata only, not graph edges."
       },
       "templateValidation": {
-        "status": "source_roster_record_complete_crosswalk_open",
-        "contentStatus": "complete",
+        "status": "source_roster_verified_standalone_definition_blocked",
+        "contentStatus": "provisional",
         "sourceBacked": true,
         "missingFields": [],
         "canonicalApproval": "pending",
@@ -29523,7 +29535,8 @@
       "unresolvedQuestions": [
         "Recover the standalone v341 definition from the raw source or a complete extraction; the current durable extract confirms roster membership only.",
         "Owner/canonical ruling required before connecting this v341 label to the current-manuscript or v184 domain taxonomies.",
-        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots."
+        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots.",
+        "The raw MOB_Complete_v341.html is not available in the current repository/library search. The v336 source was inspected as comparative evidence only and cannot replace the v341 definition."
       ],
       "changelog": [
         "2026-10-24: Added source-version-specific v341 roster record; three research passes completed; no semantic edge promoted."
@@ -29661,7 +29674,7 @@
       "crosswalkStatus": "NO_EXACT_CURRENT_MANUSCRIPT_CANDIDATE",
       "standaloneDefinitionStatus": "NOT_EXTRACTED_FROM_ACCESSIBLE_V341_CROSSWALK_EXCERPT",
       "canonicalStatus": "SOURCE_BACKED_ROSTER_MEMBER; CROSS-VERSION SEMANTIC APPROVAL PENDING",
-      "status": "source_backed_v341_roster_candidate_crosswalk_open",
+      "status": "source_roster_membership_researched_standalone_definition_pending",
       "relationshipAudit": {
         "status": "NO_APPROVED_LINKS_RECORDED",
         "auditedAt": "2026-10-24",
@@ -29669,8 +29682,8 @@
         "note": "Cluster and crosswalk candidates are metadata only, not graph edges."
       },
       "templateValidation": {
-        "status": "source_roster_record_complete_crosswalk_open",
-        "contentStatus": "complete",
+        "status": "source_roster_verified_standalone_definition_blocked",
+        "contentStatus": "provisional",
         "sourceBacked": true,
         "missingFields": [],
         "canonicalApproval": "pending",
@@ -29681,7 +29694,8 @@
       "unresolvedQuestions": [
         "Recover the standalone v341 definition from the raw source or a complete extraction; the current durable extract confirms roster membership only.",
         "Owner/canonical ruling required before connecting this v341 label to the current-manuscript or v184 domain taxonomies.",
-        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots."
+        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots.",
+        "The raw MOB_Complete_v341.html is not available in the current repository/library search. The v336 source was inspected as comparative evidence only and cannot replace the v341 definition."
       ],
       "changelog": [
         "2026-10-24: Added source-version-specific v341 roster record; three research passes completed; no semantic edge promoted."
@@ -29821,7 +29835,7 @@
       "crosswalkStatus": "PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED",
       "standaloneDefinitionStatus": "NOT_EXTRACTED_FROM_ACCESSIBLE_V341_CROSSWALK_EXCERPT",
       "canonicalStatus": "SOURCE_BACKED_ROSTER_MEMBER; CROSS-VERSION SEMANTIC APPROVAL PENDING",
-      "status": "source_backed_v341_roster_candidate_crosswalk_open",
+      "status": "source_roster_membership_researched_standalone_definition_pending",
       "relationshipAudit": {
         "status": "NO_APPROVED_LINKS_RECORDED",
         "auditedAt": "2026-10-24",
@@ -29829,8 +29843,8 @@
         "note": "Cluster and crosswalk candidates are metadata only, not graph edges."
       },
       "templateValidation": {
-        "status": "source_roster_record_complete_crosswalk_open",
-        "contentStatus": "complete",
+        "status": "source_roster_verified_standalone_definition_blocked",
+        "contentStatus": "provisional",
         "sourceBacked": true,
         "missingFields": [],
         "canonicalApproval": "pending",
@@ -29841,7 +29855,8 @@
       "unresolvedQuestions": [
         "Recover the standalone v341 definition from the raw source or a complete extraction; the current durable extract confirms roster membership only.",
         "Owner/canonical ruling required before connecting this v341 label to the current-manuscript or v184 domain taxonomies.",
-        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots."
+        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots.",
+        "The raw MOB_Complete_v341.html is not available in the current repository/library search. The v336 source was inspected as comparative evidence only and cannot replace the v341 definition."
       ],
       "changelog": [
         "2026-10-24: Added source-version-specific v341 roster record; three research passes completed; no semantic edge promoted."
@@ -29981,7 +29996,7 @@
       "crosswalkStatus": "PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED",
       "standaloneDefinitionStatus": "NOT_EXTRACTED_FROM_ACCESSIBLE_V341_CROSSWALK_EXCERPT",
       "canonicalStatus": "SOURCE_BACKED_ROSTER_MEMBER; CROSS-VERSION SEMANTIC APPROVAL PENDING",
-      "status": "source_backed_v341_roster_candidate_crosswalk_open",
+      "status": "source_roster_membership_researched_standalone_definition_pending",
       "relationshipAudit": {
         "status": "NO_APPROVED_LINKS_RECORDED",
         "auditedAt": "2026-10-24",
@@ -29989,8 +30004,8 @@
         "note": "Cluster and crosswalk candidates are metadata only, not graph edges."
       },
       "templateValidation": {
-        "status": "source_roster_record_complete_crosswalk_open",
-        "contentStatus": "complete",
+        "status": "source_roster_verified_standalone_definition_blocked",
+        "contentStatus": "provisional",
         "sourceBacked": true,
         "missingFields": [],
         "canonicalApproval": "pending",
@@ -30001,7 +30016,8 @@
       "unresolvedQuestions": [
         "Recover the standalone v341 definition from the raw source or a complete extraction; the current durable extract confirms roster membership only.",
         "Owner/canonical ruling required before connecting this v341 label to the current-manuscript or v184 domain taxonomies.",
-        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots."
+        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots.",
+        "The raw MOB_Complete_v341.html is not available in the current repository/library search. The v336 source was inspected as comparative evidence only and cannot replace the v341 definition."
       ],
       "changelog": [
         "2026-10-24: Added source-version-specific v341 roster record; three research passes completed; no semantic edge promoted."
@@ -30141,7 +30157,7 @@
       "crosswalkStatus": "PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED",
       "standaloneDefinitionStatus": "NOT_EXTRACTED_FROM_ACCESSIBLE_V341_CROSSWALK_EXCERPT",
       "canonicalStatus": "SOURCE_BACKED_ROSTER_MEMBER; CROSS-VERSION SEMANTIC APPROVAL PENDING",
-      "status": "source_backed_v341_roster_candidate_crosswalk_open",
+      "status": "source_roster_membership_researched_standalone_definition_pending",
       "relationshipAudit": {
         "status": "NO_APPROVED_LINKS_RECORDED",
         "auditedAt": "2026-10-24",
@@ -30149,8 +30165,8 @@
         "note": "Cluster and crosswalk candidates are metadata only, not graph edges."
       },
       "templateValidation": {
-        "status": "source_roster_record_complete_crosswalk_open",
-        "contentStatus": "complete",
+        "status": "source_roster_verified_standalone_definition_blocked",
+        "contentStatus": "provisional",
         "sourceBacked": true,
         "missingFields": [],
         "canonicalApproval": "pending",
@@ -30161,7 +30177,8 @@
       "unresolvedQuestions": [
         "Recover the standalone v341 definition from the raw source or a complete extraction; the current durable extract confirms roster membership only.",
         "Owner/canonical ruling required before connecting this v341 label to the current-manuscript or v184 domain taxonomies.",
-        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots."
+        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots.",
+        "The raw MOB_Complete_v341.html is not available in the current repository/library search. The v336 source was inspected as comparative evidence only and cannot replace the v341 definition."
       ],
       "changelog": [
         "2026-10-24: Added source-version-specific v341 roster record; three research passes completed; no semantic edge promoted."
@@ -30301,7 +30318,7 @@
       "crosswalkStatus": "PARTIAL_COMPOSITE_CANDIDATE_NOT_APPROVED",
       "standaloneDefinitionStatus": "NOT_EXTRACTED_FROM_ACCESSIBLE_V341_CROSSWALK_EXCERPT",
       "canonicalStatus": "SOURCE_BACKED_ROSTER_MEMBER; CROSS-VERSION SEMANTIC APPROVAL PENDING",
-      "status": "source_backed_v341_roster_candidate_crosswalk_open",
+      "status": "source_roster_membership_researched_standalone_definition_pending",
       "relationshipAudit": {
         "status": "NO_APPROVED_LINKS_RECORDED",
         "auditedAt": "2026-10-24",
@@ -30309,8 +30326,8 @@
         "note": "Cluster and crosswalk candidates are metadata only, not graph edges."
       },
       "templateValidation": {
-        "status": "source_roster_record_complete_crosswalk_open",
-        "contentStatus": "complete",
+        "status": "source_roster_verified_standalone_definition_blocked",
+        "contentStatus": "provisional",
         "sourceBacked": true,
         "missingFields": [],
         "canonicalApproval": "pending",
@@ -30321,7 +30338,8 @@
       "unresolvedQuestions": [
         "Recover the standalone v341 definition from the raw source or a complete extraction; the current durable extract confirms roster membership only.",
         "Owner/canonical ruling required before connecting this v341 label to the current-manuscript or v184 domain taxonomies.",
-        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots."
+        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots.",
+        "The raw MOB_Complete_v341.html is not available in the current repository/library search. The v336 source was inspected as comparative evidence only and cannot replace the v341 definition."
       ],
       "changelog": [
         "2026-10-24: Added source-version-specific v341 roster record; three research passes completed; no semantic edge promoted."
@@ -30459,7 +30477,7 @@
       "crosswalkStatus": "NO_EXACT_CURRENT_MANUSCRIPT_CANDIDATE",
       "standaloneDefinitionStatus": "NOT_EXTRACTED_FROM_ACCESSIBLE_V341_CROSSWALK_EXCERPT",
       "canonicalStatus": "SOURCE_BACKED_ROSTER_MEMBER; CROSS-VERSION SEMANTIC APPROVAL PENDING",
-      "status": "source_backed_v341_roster_candidate_crosswalk_open",
+      "status": "source_roster_membership_researched_standalone_definition_pending",
       "relationshipAudit": {
         "status": "NO_APPROVED_LINKS_RECORDED",
         "auditedAt": "2026-10-24",
@@ -30467,8 +30485,8 @@
         "note": "Cluster and crosswalk candidates are metadata only, not graph edges."
       },
       "templateValidation": {
-        "status": "source_roster_record_complete_crosswalk_open",
-        "contentStatus": "complete",
+        "status": "source_roster_verified_standalone_definition_blocked",
+        "contentStatus": "provisional",
         "sourceBacked": true,
         "missingFields": [],
         "canonicalApproval": "pending",
@@ -30479,7 +30497,8 @@
       "unresolvedQuestions": [
         "Recover the standalone v341 definition from the raw source or a complete extraction; the current durable extract confirms roster membership only.",
         "Owner/canonical ruling required before connecting this v341 label to the current-manuscript or v184 domain taxonomies.",
-        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots."
+        "Keep the 19-label v341 roster separate from the 18-label v184 taxonomy, 15 current-manuscript headings, and 14 Blueprint slots.",
+        "The raw MOB_Complete_v341.html is not available in the current repository/library search. The v336 source was inspected as comparative evidence only and cannot replace the v341 definition."
       ],
       "changelog": [
         "2026-10-24: Added source-version-specific v341 roster record; three research passes completed; no semantic edge promoted."
@@ -31072,7 +31091,7 @@
       "domainCountRulingResolved": false
     },
     "lastSourceRecovery": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
-    "latestRoundNote": "2026-10-24: Added 19 source-version-specific v341 domain roster records and three related consciousness concept records. All records have three research passes; candidate references are metadata only; no unapproved links were added.",
+    "latestRoundNote": "2026-10-24: Added 19 source-version-specific v341 domain roster records and three related consciousness concept records. All records have three research passes; candidate references are metadata only; no unapproved links were added. The 19 v341 roster records are now correctly marked content-provisional because the raw v341 definitions are unavailable; v336 is comparison only.",
     "lastStructuralRepair": "2026-10-24: Added missing links arrays to 0 records without inferring any edges; blocked Conscious Domain passes 2 and 3 where evidence remains insufficient.",
     "lastRegistryAudit": "2026-10-24: Audited 103 records with empty links arrays. No semantic links were invented. Conscious Domain passes 2 and 3 are blocked where the available research does not verify exact domain/affirmation assignment.",
     "v341DomainRoster": {
@@ -31173,7 +31192,7 @@
     "incomplete": 0,
     "runtimeIntegrated": false,
     "generatedDataNamespaceEmbedded": true,
-    "contentStatus": "Records complete for their declared source-record role; cross-version definitions and semantic crosswalks remain explicitly unresolved where the accessible extract is incomplete.",
+    "contentStatus": "All records have three research passes. 19 v341 roster candidate records remain content-provisional pending access to exact v341 standalone definitions.",
     "canonicalApproval": {
       "behavioralDomains": 0,
       "consciousDomains": 0,
@@ -31185,7 +31204,9 @@
       "consciousDomains": 8,
       "v341DomainRosterLabels": 19,
       "relatedConsciousnessCandidates": 3
-    }
+    },
+    "contentComplete": 128,
+    "contentIncomplete": 19
   },
   "closureSummary": {
     "date": "2026-10-24",
@@ -31227,12 +31248,12 @@
     "runtimeIntegration": "GENERATOR/VALIDATOR DATA-NAMESPACE EMBEDDING CODED; NOT EXECUTED OR VERIFIED; APP-LEVEL/SEMANTIC GRAPH INTEGRATION OPEN",
     "warning": "Do not promote provisional definitions, taxonomic mappings, cultural-figure crosswalks, or affirmation assignments to Canon without source-level evidence and the required approval.",
     "contentCompleteness": {
-      "recordsCompleteForDeclaredRole": 147,
-      "recordsWithResearchOrSourceContentStillIncomplete": 0,
+      "recordsCompleteForDeclaredRole": 128,
+      "recordsWithResearchOrSourceContentStillIncomplete": 19,
       "recordsWithCanonicalAssignmentUnresolved": 8,
       "recordsWithCrossVersionCrosswalkUnresolved": 34,
       "blueprintSlotsCountAsCompleteOnlyAsVisualizationSlots": 14,
-      "note": "The 19 v341 roster records have source-backed labels, clusters, and three-pass crosswalk research. The raw v341 standalone definitions remain unverified; v336 was reviewed as a comparison only, not substituted.",
+      "note": "All 147 records have source/research records and three passes. 128 have source-complete content for their declared role; 19 v341 roster records remain content-provisional because exact v341 standalone definitions are not available in the accessible source. v336 was reviewed only as a comparator and was not substituted.",
       "relatedConceptRosterPlacementUnresolved": 3,
       "v341RosterDefinitionGap": 19
     },
