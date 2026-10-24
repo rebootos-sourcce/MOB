@@ -14,7 +14,7 @@
     "Keep v341's 19-label roster, v184's 18-label source canon, current manuscript's 15 behavioral-domain headings, and 14 Blueprint slots as separate denominators until owner/canon ruling.",
     "Owner-stated material remains owner_stated_unverified until reconciled with primary project documentation."
   ],
-  "recordCount": 144,
+  "recordCount": 145,
   "countsByLayer": {
     "deep_psychological.roots": 4,
     "deep_psychological.behavioral_domains": 15,
@@ -25,7 +25,8 @@
     "archetype_fetter_seat_mapping_table": 18,
     "psyche_map.blueprint_domain_visual_slots": 14,
     "source_os_canon.registers.domains": 18,
-    "source_v341.domain_roster": 19
+    "source_v341.domain_roster": 19,
+    "related_consciousness_candidates": 1
   },
   "records": [
     {
@@ -30348,6 +30349,166 @@
           }
         ]
       }
+    },
+    {
+      "id": "related-consciousness:pattern",
+      "recordType": "related_consciousness_candidate",
+      "kind": "conscious_domain",
+      "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
+      "nm": "Pattern Consciousness",
+      "canonicalName": "Pattern Consciousness",
+      "displayName": "Pattern Consciousness",
+      "fam": "Related Consciousness Concepts — separate from the eight-domain roster",
+      "layer": "Related Consciousness Concepts",
+      "taxonomyVersion": "Current MOB-Manuscript artifact version unlabelled; separately referenced in v341 crosswalk",
+      "def": "Seeing repeating cycles, internal and external, before they complete. At low levels: you see the pattern after it completes. At higher levels: you catch it mid-execution. At mastery: you feel it starting. The shadow becomes visible before it completes, not catching the behavior, catching the activation.",
+      "definition": "Seeing repeating cycles, internal and external, before they complete. At low levels: you see the pattern after it completes. At higher levels: you catch it mid-execution. At mastery: you feel it starting. The shadow becomes visible before it completes, not catching the behavior, catching the activation.",
+      "body": "SOURCE-DERIVED DESCRIPTION: Seeing repeating cycles, internal and external, before they complete. At low levels: you see the pattern after it completes. At higher levels: you catch it mid-execution. At mastery: you feel it starting. The shadow becomes visible before it completes, not catching the behavior, catching the activation. Source affirmation: I see the cycles in my life and know when to break or ride them.. The v341 crosswalk lists this as a separate related consciousness concept; do not merge it into the eight-domain roster without an explicit ruling.",
+      "affirmation": "I see the cycles in my life and know when to break or ride them.",
+      "links": [],
+      "sourceRefs": [
+        "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+        "https://github.com/rebootos-sourcce/MOB-Manuscript/blob/main/index.html",
+        "https://dictionary.apa.org/pattern-recognition",
+        "https://www.nature.com/articles/s44159-023-00245-1"
+      ],
+      "sourceIds": [
+        "MOB-Manuscript/index.html@24dea9c95112fe83073e58ef4cb14d7eb5de9928#offset:4015974"
+      ],
+      "sourceClaims": [
+        "The v341 crosswalk identifies Pattern Consciousness as a separate related consciousness concept.",
+        "The current manuscript artifact contains the recorded definition and affirmation at HTML offset 4015974; its version label is not declared.",
+        "APA's pattern-recognition definition and the 2023 metacognition review provide adjacent context, not validation of ATUNED-specific taxonomy.",
+        "Do not merge into the eight-domain roster without a source/owner ruling."
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "status": "complete",
+          "sources": [
+            "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+          ],
+          "findings": [
+            "Extracted the separate concept, its description, and its affirmation from the current manuscript; the v341 crosswalk independently records it as a related concept."
+          ]
+        },
+        {
+          "pass": 2,
+          "status": "complete",
+          "sources": [
+            "https://dictionary.apa.org/pattern-recognition",
+            "https://www.nature.com/articles/s44159-023-00245-1"
+          ],
+          "findings": [
+            "APA defines pattern recognition as identifying a meaningful whole from separate elements; the 2023 review treats metacognition as evaluating, controlling, and representing cognitive states. These are adjacent constructs, not proof of the ATUNED label."
+          ]
+        },
+        {
+          "pass": 3,
+          "status": "complete",
+          "sources": [
+            "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+            "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+            "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+            "https://dictionary.apa.org/pattern-recognition",
+            "https://www.nature.com/articles/s44159-023-00245-1"
+          ],
+          "findings": [
+            "Adversarial review: current-manuscript text is source-backed but its version is unlabelled; the v341 crosswalk says to keep this concept separate. No link to the eight-domain roster is promoted."
+          ]
+        }
+      ],
+      "sourceSection": {
+        "repository": "rebootos-sourcce/MOB-Manuscript",
+        "path": "index.html",
+        "blobSha": "24dea9c95112fe83073e58ef4cb14d7eb5de9928",
+        "htmlByteOffset": 4015974,
+        "sourceVersionLabel": "not declared in artifact"
+      },
+      "canonicalStatus": "SOURCE_BACKED_RELATED_CONCEPT; ROSTER PLACEMENT UNRESOLVED",
+      "status": "source_backed_related_consciousness_candidate_not_promoted",
+      "relationshipAudit": {
+        "status": "NO_APPROVED_LINKS_RECORDED",
+        "auditedAt": "2026-10-24",
+        "currentLinkCount": 0,
+        "note": "Keep separate from the eight-domain roster pending taxonomy ruling."
+      },
+      "templateValidation": {
+        "status": "source_content_complete_roster_placement_open",
+        "contentStatus": "complete",
+        "sourceBacked": true,
+        "missingFields": [],
+        "canonicalApproval": "pending",
+        "runtimeIntegration": "not_verified"
+      },
+      "evidenceStrength": "primary-source text in current manuscript; version label unverified; v341 crosswalk confirms separate-concept status",
+      "confidence": 0.93,
+      "unresolvedQuestions": [
+        "Owner/canonical ruling required: retain as a related concept or incorporate into the eight-domain roster?",
+        "Do not infer an edge to any of the eight Conscious Domains from conceptual similarity."
+      ],
+      "changelog": [
+        "2026-10-24: Added separate source-backed related consciousness concept record; completed three research passes and left roster placement unresolved."
+      ],
+      "template": {
+        "nm": "Pattern Consciousness",
+        "fam": "Related Consciousness Concepts — separate from the eight-domain roster",
+        "def": "Seeing repeating cycles, internal and external, before they complete. At low levels: you see the pattern after it completes. At higher levels: you catch it mid-execution. At mastery: you feel it starting. The shadow becomes visible before it completes, not catching the behavior, catching the activation.",
+        "body": "SOURCE-DERIVED DESCRIPTION: Seeing repeating cycles, internal and external, before they complete. At low levels: you see the pattern after it completes. At higher levels: you catch it mid-execution. At mastery: you feel it starting. The shadow becomes visible before it completes, not catching the behavior, catching the activation. Source affirmation: I see the cycles in my life and know when to break or ride them.. The v341 crosswalk lists this as a separate related consciousness concept; do not merge it into the eight-domain roster without an explicit ruling.",
+        "affirmation": "I see the cycles in my life and know when to break or ride them.",
+        "links": [],
+        "sourceRefs": [
+          "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+          "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+          "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+          "https://github.com/rebootos-sourcce/MOB-Manuscript/blob/main/index.html",
+          "https://dictionary.apa.org/pattern-recognition",
+          "https://www.nature.com/articles/s44159-023-00245-1"
+        ],
+        "researchPasses": [
+          {
+            "pass": 1,
+            "status": "complete",
+            "sources": [
+              "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+              "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+            ],
+            "findings": [
+              "Extracted the separate concept, its description, and its affirmation from the current manuscript; the v341 crosswalk independently records it as a related concept."
+            ]
+          },
+          {
+            "pass": 2,
+            "status": "complete",
+            "sources": [
+              "https://dictionary.apa.org/pattern-recognition",
+              "https://www.nature.com/articles/s44159-023-00245-1"
+            ],
+            "findings": [
+              "APA defines pattern recognition as identifying a meaningful whole from separate elements; the 2023 review treats metacognition as evaluating, controlling, and representing cognitive states. These are adjacent constructs, not proof of the ATUNED label."
+            ]
+          },
+          {
+            "pass": 3,
+            "status": "complete",
+            "sources": [
+              "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+              "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+              "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared",
+              "https://dictionary.apa.org/pattern-recognition",
+              "https://www.nature.com/articles/s44159-023-00245-1"
+            ],
+            "findings": [
+              "Adversarial review: current-manuscript text is source-backed but its version is unlabelled; the v341 crosswalk says to keep this concept separate. No link to the eight-domain roster is promoted."
+            ]
+          }
+        ]
+      }
     }
   ],
   "lastUpdated": "2026-10-24",
@@ -30397,7 +30558,7 @@
       "domainCountRulingResolved": false
     },
     "lastSourceRecovery": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
-    "latestRoundNote": "2026-10-24: Added 19 source-version-specific v341 domain roster records after source crosswalk review. All records have three research passes. Candidate references are metadata only; no unapproved links were added.",
+    "latestRoundNote": "2026-10-24: Added 19 source-version-specific v341 domain roster records and related consciousness concept records after source crosswalk review. All records have three research passes. Candidate references are metadata only; no unapproved links were added.",
     "lastStructuralRepair": "2026-10-24: Added missing links arrays to 0 records without inferring any edges; blocked Conscious Domain passes 2 and 3 where evidence remains insufficient.",
     "lastRegistryAudit": "2026-10-24: Audited 103 records with empty links arrays. No semantic links were invented. Conscious Domain passes 2 and 3 are blocked where the available research does not verify exact domain/affirmation assignment.",
     "v341DomainRoster": {
@@ -30407,6 +30568,12 @@
       "crosswalksApproved": 0,
       "threePassResearchComplete": 19,
       "note": "Records capture exact v341 label/cluster membership; standalone definitions are not present in the accessible durable crosswalk extract. No v184/current-manuscript equivalence is assumed."
+    },
+    "relatedConsciousnessCandidates": {
+      "records": 1,
+      "sourceTextInCurrentManuscript": 1,
+      "threePassResearchComplete": 1,
+      "rosterPlacementApproved": 0
     }
   },
   "layerVisualizationInventory": [
@@ -30475,13 +30642,19 @@
       "visualCount": 19,
       "source": "MOB_Complete_v341.html source extraction and docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
       "semanticDenominator": "19 source-version-specific roster records created. Standalone definitions are not present in the accessible durable extract; cross-version mappings remain provisional."
+    },
+    {
+      "layer": "Related Consciousness Concepts",
+      "visualCount": 3,
+      "source": "MOB_Complete_v341.html source crosswalk plus MOB-Manuscript/index.html blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928",
+      "semanticDenominator": "Pattern, Story, and Imperium Consciousness are separate records, not merged into the eight-domain roster pending owner/canonical ruling."
     }
   ],
   "templateCatalog": "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_TEMPLATE_CATALOG_v1.json",
   "templateAssignmentProgress": {
-    "assigned": 144,
-    "total": 144,
-    "structurallyComplete": 144,
+    "assigned": 145,
+    "total": 145,
+    "structurallyComplete": 145,
     "incomplete": 0,
     "runtimeIntegrated": false,
     "generatedDataNamespaceEmbedded": true,
@@ -30496,16 +30669,16 @@
       "behavioralDomains": 15,
       "consciousDomains": 8,
       "v341DomainRosterLabels": 19,
-      "relatedConsciousnessCandidates": 0
+      "relatedConsciousnessCandidates": 1
     }
   },
   "closureSummary": {
     "date": "2026-10-24",
-    "scope": "Full 144-record Deep Psychological Registry; this is not the entire Nerve-to-Super-Complex universe.",
+    "scope": "Full 145-record Deep Psychological Registry; this is not the entire Nerve-to-Super-Complex universe.",
     "recordInventory": {
-      "declared": 144,
-      "measured": 144,
-      "uniqueIds": 144
+      "declared": 145,
+      "measured": 145,
+      "uniqueIds": 145
     },
     "behavioralDomains": {
       "count": 15,
@@ -30531,24 +30704,25 @@
       "pass3Complete": 8
     },
     "researchPasses": {
-      "recordsWithThreePassesMarkedComplete": 144,
-      "completePassSlots": 432,
+      "recordsWithThreePassesMarkedComplete": 145,
+      "completePassSlots": 435,
       "blockedPassSlots": 0,
       "note": "All records have three recorded research passes. Unresolved taxonomy/assignment findings remain explicit; research completion is not Canon approval or graph wiring."
     },
     "runtimeIntegration": "GENERATOR/VALIDATOR DATA-NAMESPACE EMBEDDING CODED; NOT EXECUTED OR VERIFIED; APP-LEVEL/SEMANTIC GRAPH INTEGRATION OPEN",
     "warning": "Do not promote provisional definitions, taxonomic mappings, cultural-figure crosswalks, or affirmation assignments to Canon without source-level evidence and the required approval.",
     "contentCompleteness": {
-      "recordsCompleteForDeclaredRole": 144,
+      "recordsCompleteForDeclaredRole": 145,
       "recordsWithResearchOrSourceContentStillIncomplete": 0,
       "recordsWithCanonicalAssignmentUnresolved": 8,
       "recordsWithCrossVersionCrosswalkUnresolved": 34,
       "blueprintSlotsCountAsCompleteOnlyAsVisualizationSlots": 14,
-      "note": "Roster-candidate records are complete for their declared source-record role; standalone definitions/cross-version semantic identities remain unresolved where not in the accessible source extract."
+      "note": "Roster-candidate records are complete for their declared source-record role; standalone definitions/cross-version semantic identities remain unresolved where not in the accessible source extract.",
+      "relatedConceptRosterPlacementUnresolved": 1
     },
     "linkAudit": {
-      "recordsWithEmptyLinksAudited": 122,
-      "fieldsStructurallyPresent": 144,
+      "recordsWithEmptyLinksAudited": 123,
+      "fieldsStructurallyPresent": 145,
       "edgesAdded": 0,
       "note": "Empty links arrays remain explicit unresolved graph states. Candidate crosswalk references are metadata, not semantic edges."
     },
@@ -30559,6 +30733,12 @@
       "threePassResearchComplete": 19,
       "crosswalksApproved": 0,
       "note": "Source-roster candidate records preserve v341 labels and cluster membership separately from v184 and current-manuscript records."
+    },
+    "relatedConsciousnessCandidates": {
+      "count": 1,
+      "sourceTextPresent": 1,
+      "threePassResearchComplete": 1,
+      "rosterPlacementApproved": 0
     }
   }
 }
