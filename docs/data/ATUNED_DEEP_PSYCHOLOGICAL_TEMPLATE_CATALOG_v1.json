@@ -1,8 +1,8 @@
 {
   "catalogId": "atuned.deep_psychological.template_catalog",
-  "version": "1.0.0",
-  "status": "PROPOSED_FOR_DEEP_PSYCHOLOGICAL_REGISTRY_NOT_YET_INTEGRATED_WITH_ENGINE",
-  "purpose": "Explicit template assignments for the deep-psychological record registry. These templates follow the shared record envelope but are not yet wired into the existing generator or validator.",
+  "version": "1.1.0",
+  "status": "PROPOSED_FOR_DEEP_PSYCHOLOGICAL_REGISTRY_WITH_BEHAVIORAL_ENERGY_FIELDS_NOT_YET_ENGINE_INTEGRATED",
+  "purpose": "Explicit template assignments for the deep-psychological registry. Behavioral-domain records include research-informed behavioral-energy fields; the catalog remains separate from the experiential runtime until integration is implemented and tested.",
   "templates": [
     {
       "id": "TPL-PSYCHOLOGICAL-ROOT-V1",
@@ -30,9 +30,17 @@
         "body",
         "links",
         "sourceRefs",
-        "researchPasses"
+        "researchPasses",
+        "behavioralEnergy",
+        "motivationalPull",
+        "attentionBias",
+        "actionTendency",
+        "adaptiveExpression",
+        "distortedExpression",
+        "researchSynthesis",
+        "researchLimitations"
       ],
-      "description": "Owner-stated behavioral-domain record; definition remains missing until sourced."
+      "description": "Owner-stated behavioral-domain record with research-informed provisional behavioral-energy content. Source-specific taxonomy equivalence and canonical approval remain separate gates."
     },
     {
       "id": "TPL-CANONICAL-DOMAIN-CANDIDATE-V1",
