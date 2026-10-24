@@ -268,7 +268,8 @@ HYPERCOMPLEX_MODES.forEach((m,i)=>{
   oppositeId,oppositeDefinition:m.inverseDefinition,
   oppositeStatus:'inferred-working-counterpart; not canonical; review required',
   narrativeSource:'SNIFFER_SPEC.md section 5 plus adjacent research; see researchSources',
-  researchSources:m.sources,clusterOrder:i+1,links:[oppositeId]});
+  researchSources:m.sources,sourceRefs:['SNIFFER_SPEC.md section 5','proto/knowledge/src/gen-data.js HYPERCOMPLEX_MODES'],
+  sourceClaims:[m.definition,m.basis],researchPasses:[{pass:1,name:'source_extraction',status:'complete',sources:['SNIFFER_SPEC.md section 5','proto/knowledge/src/gen-data.js HYPERCOMPLEX_MODES'],findings:[m.definition,m.basis],reviewedAt:'2026-10-24'},{pass:2,name:'independent_depth_research',status:'pending',sources:[],findings:['Cited research sources require independent review against this specific framework record.'],reviewedAt:null},{pass:3,name:'adversarial_review',status:'pending',sources:[],findings:['Counterexamples, alternatives, and boundary conditions remain to be tested.'],reviewedAt:null}],clusterOrder:i+1,links:[oppositeId]});
  add({id:oppositeId,kind:'inferred',nm:m.inverseName,seat:null,fam:'inferred hyper-complex counterpart',
   def:m.inverseDefinition,body:m.inverseDefinition,behavior:m.inverseDefinition,
   triggerMechanism:'Use as a possible deliberate response after identifying the observed pattern; do not assume a person possesses or lacks this capacity globally.',
@@ -279,6 +280,9 @@ HYPERCOMPLEX_MODES.forEach((m,i)=>{
   confidence:m.confidence,reviewStatus:'inferred; owner/canon review required',
   oppositeId:id,oppositeDefinition:m.definition,oppositeStatus:'inferred reciprocal navigation pair',
   narrativeSource:'derived inferred counterpart; not canonical',researchSources:m.sources,
+  sourceRefs:['SNIFFER_SPEC.md section 5','proto/knowledge/src/gen-data.js HYPERCOMPLEX_MODES'],
+  sourceClaims:[m.inverseName,m.inverseDefinition,'This is an inferred working counterpart, not a canonical or clinical claim.'],
+  researchPasses:[{pass:1,name:'source_and_synthesis_extraction',status:'complete',sources:['proto/knowledge/src/gen-data.js HYPERCOMPLEX_MODES'],findings:[m.inverseName,m.inverseDefinition],reviewedAt:'2026-10-24'},{pass:2,name:'independent_depth_research',status:'pending',sources:[],findings:['Inverse behavior and examples require independent validation.'],reviewedAt:null},{pass:3,name:'adversarial_review',status:'pending',sources:[],findings:['Test false positives, alternative responses, and whether the proposed counterpart is actually opposite.'],reviewedAt:null}],
   cluster:m.cluster,links:[id]});
 });
 
