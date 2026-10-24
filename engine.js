@@ -5483,8 +5483,11 @@ var PCT_KIND={
  /* data/compass.js:484, where a person sits on a compass axis */
  axis:      {lo:0, hi:100, src:'engine/data/compass.js', find:'return Math.round(clamp(clear*0.62+honest*0.38,0,1)*100);}',
              say:'the position on a compass axis'},
- /* core.js:426, how closely the feelings fit a saboteur's defined ranges */
- match:     {lo:0, hi:100, src:'engine/core.js', find:'var score=Math.round(fit/parts.length*100);',
+ /* core.js sab33Detect, how closely the feelings fit a saboteur's defined
+    ranges: the ramp's confidence, nought to one (sabConfidence clamps it,
+    data/canon.js), as a percent. It was the staircase's fit until P1-6 of
+    the inference audit, 23 October. */
+ match:     {lo:0, hi:100, src:'engine/core.js', find:'var score=Math.round(conf*100);',
              say:'a saboteur match'},
  /* verp.js:357, the share of the story that ran through one gate */
  gate:      {lo:0, hi:100, src:'engine/verp.js', find:'pct: sh?Math.round(sh[v.k]*100):0',
@@ -7995,18 +7998,35 @@ function sabLevels(exact){
  return L;}
 /* each SAB33 row by identity, for the address route's band check in compute() */
 const SAB33_BY={};SAB33.forEach(function(r){SAB33_BY[KB_KEY(r[0])]=r;});
-/* fit scoring against the ranges. 1.0 inside the band, 0.5 for adjacent. */
+/* THE RANGE SCAN READS THE RAMP, P1-6 of the inference audit, 23 October.
+   It was a three step staircase over levels rounded to whole numbers, full
+   credit inside a band, half one step out, named at 60: the defect canon.js
+   records in its own header, and the owner's ruling is "a band edge is a
+   ramp, not a cliff". Measured on 77928172: with apathy at 4, fear at 4.49
+   named Innocent and Restless and fear at 4.51 named neither, and one answer
+   of the quiz's hundred moved one step changed which four saboteurs a
+   newcomer was shown in 8.6 per cent of simulated readings. The ramp, the
+   geometric mean and the one charge discount were built in canon.js and
+   used only by sniffStory, which no screen calls.
+
+   So this is sabConfidence on the exact levels. It still has to answer
+   yes or no, because compute() pairs the saboteurs it names into
+   complexes, so it names a row at SAB_NAME and ranks by confidence.
+   SAB_NAME is 0.5 because that is the ramp's own membership one point over
+   a band's high edge and the old rule's half credit: a row still names
+   when one of its charges sits about a point outside its band, as the
+   staircase allowed, and never when two do. What goes is the cliff at the
+   half point of every whole number. Exact is every charge inside its band,
+   read without rounding, and score is the confidence as a percent, which is
+   what the drill's "Matched at" prints. */
+var SAB_NAME=0.5;
 function sab33Detect(){
- var L=sabLevels(), out=[];
+ var L=sabLevels(true), out=[];
  SAB33.forEach(function(row){
-  var nm=row[0], parts=row[1], fit=0, inAll=true;
-  parts.forEach(function(p){
-   var lvl=L[p[0]]||0, lo=p[1], hi=p[2];
-   if(lvl>=lo && lvl<=hi){ fit+=1; }
-   else if(lvl===lo-1 || lvl===hi+1){ fit+=0.5; inAll=false; }
-   else { inAll=false; }});
-  var score=Math.round(fit/parts.length*100);
-  if(score>=60) out.push({nm:nm, score:score, exact:inAll, parts:parts,
+  var nm=row[0], parts=row[1], conf=sabConfidence(nm,parts,L);
+  var inAll=parts.every(function(p){var v=L[p[0]]||0; return v>=p[1]&&v<=p[2];});
+  var score=Math.round(conf*100);
+  if(conf>=SAB_NAME) out.push({nm:nm, score:score, exact:inAll, conf:conf, parts:parts,
    charges:parts.map(function(p){return p[0];}),
    /* the seat that can carry the first charge, SAB_SEAT above, and never a
       seat its own charge cannot reach */
@@ -8567,14 +8587,22 @@ function compute(){
   if(ex){if(s.w<=ex.w)return; sabs[sabs.indexOf(ex)]=s;sabByNm[id]=s;return;}
   sabByNm[id]=s;sabs.push(s);};
  /* SAB33: 33 named saboteurs matched on charge RANGES. */
+ /* anticipation is spelled out because SAB33 spells it out: a row led by it
+    fell through this map to Collapse. No row leads with it today. */
+ const SAB_FET={fear:'Fear',anger:'Anger',shame:'Shame',disgust:'Disgust',apathy:'Apathy',
+  shock:'Shock',sadness:'Sad',surprise:'Surprise',anticipation:'Anticipation',anxiety:'Anticipation'};
  sab33Detect().forEach(function(d){
-  const parts=W.filter(n=>n.b===d.band&&n.sq>=3).sort((a,b)=>b.sq-a.sq).slice(0,4);
+  /* THE SEAT'S ADDRESSES THAT CARRY THE SABOTEUR'S OWN CHARGES, P1-6 of the
+     inference audit, 23 October. This took any address at the seat at 3 or
+     more, whatever it carried, so a fear row was confirmed by apathy load
+     and drawn there: measured on 77928172, 44 per cent of this route's names
+     were placed only on addresses carrying none of their own charges. The
+     address route's rule 2 already says an address must carry one of the
+     row's own charges, and this route now keeps it too. */
+  const ownFet=d.charges.map(c=>SAB_FET[c]);
+  const parts=W.filter(n=>n.b===d.band&&n.sq>=3&&ownFet.indexOf(n.cf)>=0).sort((a,b)=>b.sq-a.sq).slice(0,4);
   if(!parts.length)return;
-  /* anticipation is spelled out because SAB33 spells it out: a row led by it
-     fell through this map to Collapse. No row leads with it today. */
-  const key=d.charges[0]==='anxiety'?'Anticipation':
-   ({fear:'Fear',anger:'Anger',shame:'Shame',disgust:'Disgust',apathy:'Apathy',
-     shock:'Shock',sadness:'Sad',surprise:'Surprise',anticipation:'Anticipation'})[d.charges[0]];
+  const key=SAB_FET[d.charges[0]];
   const own=SAB_LIB_BY[KB_KEY(d.nm)];
   pushSab({kind:'sab',nm:d.nm,hcx:own?own.hcx:(FAM_OF[key]||'Collapse'),named:true,
    score:d.score,exact:d.exact,charges:d.charges,auth:SABAUTH[d.nm]||null,

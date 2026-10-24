@@ -388,14 +388,22 @@ function compute(){
   if(ex){if(s.w<=ex.w)return; sabs[sabs.indexOf(ex)]=s;sabByNm[id]=s;return;}
   sabByNm[id]=s;sabs.push(s);};
  /* SAB33: 33 named saboteurs matched on charge RANGES. */
+ /* anticipation is spelled out because SAB33 spells it out: a row led by it
+    fell through this map to Collapse. No row leads with it today. */
+ const SAB_FET={fear:'Fear',anger:'Anger',shame:'Shame',disgust:'Disgust',apathy:'Apathy',
+  shock:'Shock',sadness:'Sad',surprise:'Surprise',anticipation:'Anticipation',anxiety:'Anticipation'};
  sab33Detect().forEach(function(d){
-  const parts=W.filter(n=>n.b===d.band&&n.sq>=3).sort((a,b)=>b.sq-a.sq).slice(0,4);
+  /* THE SEAT'S ADDRESSES THAT CARRY THE SABOTEUR'S OWN CHARGES, P1-6 of the
+     inference audit, 23 October. This took any address at the seat at 3 or
+     more, whatever it carried, so a fear row was confirmed by apathy load
+     and drawn there: measured on 77928172, 44 per cent of this route's names
+     were placed only on addresses carrying none of their own charges. The
+     address route's rule 2 already says an address must carry one of the
+     row's own charges, and this route now keeps it too. */
+  const ownFet=d.charges.map(c=>SAB_FET[c]);
+  const parts=W.filter(n=>n.b===d.band&&n.sq>=3&&ownFet.indexOf(n.cf)>=0).sort((a,b)=>b.sq-a.sq).slice(0,4);
   if(!parts.length)return;
-  /* anticipation is spelled out because SAB33 spells it out: a row led by it
-     fell through this map to Collapse. No row leads with it today. */
-  const key=d.charges[0]==='anxiety'?'Anticipation':
-   ({fear:'Fear',anger:'Anger',shame:'Shame',disgust:'Disgust',apathy:'Apathy',
-     shock:'Shock',sadness:'Sad',surprise:'Surprise',anticipation:'Anticipation'})[d.charges[0]];
+  const key=SAB_FET[d.charges[0]];
   const own=SAB_LIB_BY[KB_KEY(d.nm)];
   pushSab({kind:'sab',nm:d.nm,hcx:own?own.hcx:(FAM_OF[key]||'Collapse'),named:true,
    score:d.score,exact:d.exact,charges:d.charges,auth:SABAUTH[d.nm]||null,

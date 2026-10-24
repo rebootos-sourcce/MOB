@@ -187,12 +187,49 @@ function fitFor(name,fear,anger){
  const hit=E.sab33Detect().filter(d=>d.nm===name)[0];
  return hit?{score:hit.score,exact:hit.exact}:null;}
 const inside=fitFor('Micromanager',8,6);
-ok(inside&&inside.score===100&&inside.exact,'inside both bands scores 100 and exact');
+/* THE RANGE SCAN READS THE RAMP, P1-6 of the inference audit, 23 October.
+   This read 100 under the staircase, full credit anywhere inside a band. The
+   ramp peaks at a band's centre and holds 0.75 at its edge (canon.js), so a
+   reading inside both bands is exact and scores between the edge and 100. */
+ok(inside&&inside.exact&&inside.score>=75&&inside.score<=100,'inside both bands is exact and scores between the band edge and 100, '+JSON.stringify(inside));
 const below=fitFor('Micromanager',2,1);
 ok(!below||below.score<100,'below the band does not score 100: the saboteur has not formed');
 const above=fitFor('Victim',10,10);   /* Victim is sadness 6..8 + anger 4..6 */
 ok(!above||!above.exact,'above the band is not exact: the charge escalated past it');
 ok(fitFor('Micromanager',6,6).score<100,'one step below lo is adjacent, not inside');
+/* no cliff at the half point. The staircase rounded each charge first, so a
+   fifth of a point decided a quarter or a half of a row's score. On the ramp
+   no row's score moves more than a few points across that step. Restless is
+   apathy 5..7 and fear 2..4, and it scored 100 at fear 4.49 and 75 at 4.51. */
+{
+ const rs=f=>{reset(0,0,6); S.charge.Apathy=6; S.charge.Fear=f;
+  const h=E.sab33Detect().filter(d=>d.nm==='Restless')[0]; return h?h.score:0;};
+ ok(Math.abs(rs(4.49)-rs(4.51))<=2,'Restless across fear 4.49 to 4.51 moves at most two points, '+rs(4.49)+' then '+rs(4.51));
+ let worst=0;
+ SAB33.forEach(row=>row[1].forEach(p=>{
+  const L={}; SAB33.forEach(r=>r[1].forEach(q=>{L[q[0]]=(q[1]+q[2])/2;}));
+  row[1].forEach(q=>{L[q[0]]=(q[1]+q[2])/2;});
+  for(let v=0;v<=10;v+=0.02){const a=Object.assign({},L),b=Object.assign({},L); a[p[0]]=v; b[p[0]]=v+0.02;
+   if(p[0]==='anticipation'){a.anxiety=a.anticipation;b.anxiety=b.anticipation;}
+   const ca=E.sabConfidence(row[0],row[1],a), cb=E.sabConfidence(row[0],row[1],b);
+   /* where a name is decided, a third and up. Off zero the geometric mean
+      rises steeply, but that far down it names nothing */
+   if(ca>=0.3&&cb>=0.3)worst=Math.max(worst,Math.abs(ca-cb));}}));
+ /* the staircase's smallest jump at a half point was a sixth, half credit
+    on one charge of a three charge row */
+ ok(worst<0.05,'and where a name is decided, no 0.02 step on any row along any charge moves the confidence by a twentieth, the largest '+worst.toFixed(4));
+ /* a low fear with apathy at the seat no longer names Innocent off a rounded 2 */
+ reset(0,0,6); S.charge.Fear=1.6; S.charge.Apathy=4;
+ ok(!compute().sabs.some(s=>s.named&&s.nm==='Innocent'),'fear 1.6 does not name Innocent, which the staircase did off a rounded 2');
+ /* and a range saboteur is drawn only on addresses carrying its own charges */
+ const AX={fear:'Fear',anger:'Anger',shame:'Shame',disgust:'Disgust',apathy:'Apathy',shock:'Shock',sadness:'Sad',
+  surprise:'Surprise',anticipation:'Anticipation',anxiety:'Anticipation'};
+ let off=0,seen=0,sd=11; const R=()=>{sd=(sd*1103515245+12345)&0x7fffffff;return sd/0x7fffffff;};
+ for(let i=0;i<300;i++){reset(0,0,6); CHARGES.forEach(c=>{S.charge[c]=R()<0.5?0:R()*8;});
+  compute().sabs.filter(s=>s.named&&s.charges).forEach(s=>{seen++; const own=s.charges.map(c=>AX[c]);
+   if(!s.parts.length||!s.parts.every(n=>own.indexOf(n.cf)>=0))off++;});}
+ ok(seen>0&&off===0,'every range saboteur is drawn on addresses carrying its own charges, '+off+' of '+seen+' not');
+}
 
 g('7 · the six gates multiply resistance');
 r=reset(6,0,6);
