@@ -957,16 +957,31 @@ g('15b \u00b7 the seed');
  ok(JSON.stringify(p.laws)+JSON.stringify(p.gates)+JSON.stringify(p.soul)===before,
   'the seed writes charge only, never a law, a gate or a domain');
  ok(seedShare(p)===1,'a fresh seed is all seed, got '+seedShare(p));
+ /* a type changed before anything moved re-seeds from the base rather than
+    compounding */
+ seedApply(p,'ISTJ'); seedApply(p,'ENTP');
+ ok(seedShare(p)===1&&JSON.stringify(p.axes.Fear.held)==='2.8',
+  're-seeding an untouched seed starts from the base, Fear reads '+p.axes.Fear.held);
  p.axes.Fear.held=9; p.axes.Anger.held=1;
  const mid=seedShare(p);
  ok(mid>0&&mid<1,'the share falls as the person moves the axes, got '+mid);
- /* seeding twice re-seeds from the base rather than compounding */
- seedApply(p,'ENTP');
- ok(seedShare(p)===1&&JSON.stringify(p.axes.Fear.held)==='2.8',
-  're-seeding starts from the base, Fear reads '+p.axes.Fear.held);
+ /* A SEED NEVER WRITES OVER WHAT THE PERSON MOVED, P0-5 of the inference
+    audit, 23 October. This group held the opposite until then: with Fear
+    moved to 9 it asserted a re-seed put Fear back to 2.8, which is the
+    overwrite that erased four entries' fear when a person picked INFJ. */
+ const moved=JSON.stringify(p.axes);
+ ok(seedApply(p,'INFJ')===null&&JSON.stringify(p.axes)===moved&&p.seed.type==='ENTP',
+  'a type chosen over axes the person moved writes nothing, and Fear stays '+p.axes.Fear.held);
  const r=read(p,{});
  ok(typeof r.reading.CQ==='number'&&r.reading.CQ>=0&&r.reading.CQ<=100,'a seeded profile reads');
  seedClear(p); ok(!p.seed&&seedShare(p)===0,'clearing the seed leaves no claim behind');
+ ok(JSON.stringify(p.axes)===moved,'and on a moved field clearing it takes the type off and leaves what the person put there');
+ const q=blankProfile('seedclear'); seedApply(q,'ENTP'); seedClear(q);
+ ok(!q.seed&&CHARGES.every(c=>q.axes[c].held===0),'"not said" on an untouched seed puts back the empty field that was there');
+ const st=blankProfile('seedstory'); E.loadProfile(st); E.applyStory('I am terrified of losing my job'); E.saveProfile(st);
+ const had=st.axes.Fear.held;
+ ok(had>0&&seedApply(st,'INFJ')===null&&st.axes.Fear.held===had&&!st.seed,
+  'a story\'s fear survives choosing a type afterwards, Fear '+st.axes.Fear.held+' against '+had);
 }
 
 g('16 \u00b7 the front door');
@@ -1707,6 +1722,19 @@ g('18b \u00b7 undo');
  /* that it is keyed rather than cleared, so going back to the record finds the
     history where it was left, is checked in the functional gate, where moving
     between records is a control a person presses rather than an assignment. */
+ E.undoClear();
+ /* A SEED IS UNDONE WITH ITS TYPE, P0-5 of the inference audit, 23 October.
+    The Intake page pushes undo before a type writes. The axes it wrote go back
+    to the empty field and the type comes off with them, so the card under the
+    select never claims a seed the axes no longer hold. */
+ const recS=E.pImport(JSON.stringify(E.blankProfile('history seed')));
+ const cs=E.current();
+ ok(!!recS&&!!cs&&E.seedEmpty(cs),'a fresh record\'s axes are empty, so a type may seed them');
+ E.undoPush('choosing the Myers-Briggs type ENTP'); E.seedApply(cs,'ENTP'); E.loadProfile(cs);
+ const seeded=S.charge.Fear;
+ E.undoPop();
+ ok(seeded>0&&CHARGES.every(c=>S.charge[c]===0)&&E.current().seed===null,
+  'undoing a seed puts back the empty field and takes the type off with it, Fear '+seeded+' then '+S.charge.Fear);
  E.undoClear();
 }
 

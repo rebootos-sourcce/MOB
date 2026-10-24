@@ -1510,7 +1510,19 @@ function renderIntake(){
   else{CURP.who.sealed='';}};
  var ty=document.getElementById('wtype');
  if(ty)ty.onchange=function(){
-  if(ty.value)seedApply(CURP,ty.value); else seedClear(CURP);
+  /* A TYPE NEVER WRITES OVER WHAT THE PERSON MOVED, P0-5 of the inference
+     audit. Choosing one over axes a story or a slider had moved replaced
+     every axis with the type's preset, and the card then said nothing had
+     moved it. Now it says what did not happen and why, writes nothing, and
+     the select goes back to what is held. Every write that does go ahead
+     can be undone. */
+  var v=ty.value;
+  if(v&&!seedEmpty(CURP)){
+   ty.value=(CURP.seed&&CURP.seed.type)||'';
+   status('Nothing was seeded from '+v+'. Your own entries already fill the axes, and a type only fills them while they are empty.','fail');
+   return;}
+  undoPush(v?'choosing the Myers-Briggs type '+v:'taking the Myers-Briggs type off');
+  if(v)seedApply(CURP,v); else seedClear(CURP);
   loadProfile(CURP); pSave(); statusSaved();
   syncCh(); syncSoul(); renderIntake(); render();};
  var tu=document.getElementById('wtu');

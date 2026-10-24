@@ -8110,7 +8110,11 @@ function undoState(){
  CHARGES.forEach(function(k){c[k]=S.charge[k];o[k]=S.replace[k]||0;});
  SINAMES.forEach(function(k){l[k]=S.law[k];});
  var wk=(typeof CURP!=='undefined'&&CURP&&CURP.work)?JSON.parse(JSON.stringify(CURP.work)):null;
- return {charge:c, replace:o, law:l, work:wk,
+ /* the stated type rides with the axes it wrote, so undoing a seed puts back
+    the empty field and takes the type off with it, and the card under the
+    select never claims a seed the axes no longer hold. P0-5. */
+ var sd=(typeof CURP!=='undefined'&&CURP)?(CURP.seed?JSON.parse(JSON.stringify(CURP.seed)):null):undefined;
+ return {charge:c, replace:o, law:l, work:wk, seed:sd,
   doms:S.doms.slice(), arcs:S.arcs.slice(), roots:S.roots.slice(),
   dom:S.dom, a1:S.a1, a2:S.a2};}
 
@@ -8143,6 +8147,8 @@ function undoApply(s){
  SINAMES.forEach(function(k){if(s.law[k]!==undefined)S.law[k]=s.law[k];});
  /* an entry taken before the lift existed carries no work and leaves it alone */
  if(s.work!=null&&typeof CURP!=='undefined'&&CURP)CURP.work=JSON.parse(JSON.stringify(s.work));
+ /* and an entry taken before the seed rode with it leaves the seed alone */
+ if(s.seed!==undefined&&typeof CURP!=='undefined'&&CURP)CURP.seed=s.seed?JSON.parse(JSON.stringify(s.seed)):null;
  S.doms=s.doms.slice(); S.arcs=s.arcs.slice(); S.roots=s.roots.slice();
  S.dom=s.dom; S.a1=s.a1; S.a2=s.a2;
  buildSoul();
@@ -19771,14 +19777,30 @@ function seedAxes(type){
  CHARGES.forEach(function(c){out[c]=Math.round(out[c]*10)/10;});
  return out;}
 
+/* WHETHER A SEED MAY WRITE, P0-5 of the inference audit, 23 October. The
+   header above says a type is used "so a new field is not empty", and the
+   code wrote it over a full one: four entries put fear at 10, choosing INFJ
+   on the Intake page set it to 3.3 and put anger, shame and disgust where
+   nothing was written, the card said "Nothing has moved it yet", and "not
+   said" put nothing back. A seed now writes only onto an empty field: every
+   axis at the blank, or every axis still exactly where the current seed put
+   it, which is a type changed before anything moved. All or nothing, so a
+   release that brought one axis back to the blank is still the person's. */
+function seedEmpty(p){
+ if(!p)return false;
+ var held=function(c){return (p.axes&&p.axes[c]&&p.axes[c].held!=null)?p.axes[c].held:AXIS_BLANK;};
+ var cur=p.seed&&p.seed.axes;
+ return CHARGES.every(function(c){return Math.abs(held(c)-AXIS_BLANK)<1e-9;})
+  ||(!!cur&&CHARGES.every(function(c){return cur[c]!=null&&Math.abs(held(c)-cur[c])<1e-9;}));}
 /* write the seed onto a profile. it records what it wrote, so the
    product can say later how much of the field is still the seed and
    how much the person has moved it. seeding twice re-seeds from the
-   base rather than compounding. */
+   base rather than compounding, and only while nothing has moved it. */
 function seedApply(p,type){
  if(!p||!seedValid(type))return null;
  /* show only on a worked example, engine/showonly.js */
  if(showRefuse('intake',p))return null;
+ if(!seedEmpty(p))return null;
  var ax=seedAxes(type);
  CHARGES.forEach(function(c){
   p.axes[c]=p.axes[c]||{held:AXIS_BLANK,opp:0};
@@ -19786,7 +19808,16 @@ function seedApply(p,type){
  p.seed={type:String(type).toUpperCase(), at:new Date().toISOString(), axes:ax};
  return p.seed;}
 
-function seedClear(p){ if(p)p.seed=null; return p; }
+/* "not said" puts back what was there. A seed only ever lands on an empty
+   field, so what was there is the blank, and it goes back only while the
+   field is still exactly the seed: once a story or a slider has moved it,
+   the field is the person's and stays, and only the type comes off. A
+   worked example is show only and is not written. */
+function seedClear(p){
+ if(!p||(typeof showOnly==='function'&&showOnly(p)))return p;
+ if(p.seed&&p.seed.axes&&seedEmpty(p))CHARGES.forEach(function(c){
+  p.axes[c]=p.axes[c]||{held:AXIS_BLANK,opp:0}; p.axes[c].held=AXIS_BLANK;});
+ p.seed=null; return p;}
 
 /* HOW MUCH IS STILL THE SEED. the distance the axes have travelled from
    where the seed put them, against the distance the seed itself moved
@@ -22428,7 +22459,7 @@ if(typeof module!=='undefined'&&module.exports){
                   LIFT_R:LIFT_R, lawLift:lawLift, lawWork:lawWork, lawNow:lawNow,
                   releaseWork:releaseWork, lawAnswered:lawAnswered, iqAnswer:iqAnswer,
   /* seed */      TYPE16:TYPE16, SEED16:SEED16, seedAxes:seedAxes, seedApply:seedApply,
-                  seedClear:seedClear, seedShare:seedShare, seedValid:seedValid, accuracy:accuracy, accCover:accCover, accCoverWord:accCoverWord,
+                  seedClear:seedClear, seedShare:seedShare, seedValid:seedValid, seedEmpty:seedEmpty, accuracy:accuracy, accCover:accCover, accCoverWord:accCoverWord,
                   CS_LAWW:CS_LAWW, CS_STORYW:CS_STORYW, CS_STORY_N:CS_STORY_N, CS_PARTIAL:CS_PARTIAL, sab33Detect:sab33Detect,
                   sabLevels:sabLevels, exprFill:exprFill, exprRead:exprRead,
   /* gates */     verpScan:verpScan, verpApply:verpApply, verpFactor:verpFactor,
