@@ -11496,6 +11496,23 @@ var LAW_UNSET={}, LAW_SEED={};
    boundary. Expression is a whole separate law axis in the codex and keeps its
    own name there. */
 var LAW_WAS={Justice:'Expression', Humility:'Discernment'};
+/* WHICH LAW A STORED KEY NAMES, the current name for a current name or an old
+   one, and null for anything else. 24 October, systems audit SG-01.
+
+   The table above was carried across in loadProfile and nowhere else, and no
+   record reached loadProfile with the old key still on it: validateProfile
+   read the laws and the work by their current names only, pStore keeps what
+   validateProfile hands back, and the next save wrote the shorter record over
+   the disk. Measured on 23 October, a record holding Expression 9 and
+   Discernment 2 read Justice 9 and Humility 2 and CQ 77.6 loaded straight, and
+   both as never answered and CQ 72.4 through the boundary, with ok true, no
+   error, and neither answer on the disk after one boot and one save. The
+   boundary reads the laws and the work through this now, the way the history
+   rows below already read lawNow, so one door keeps one rule. */
+function lawNameOf(k){
+ if(SINAMES.indexOf(k)>=0)return k;
+ var cur=Object.keys(LAW_WAS).filter(function(nm){return LAW_WAS[nm]===k;});
+ return cur.length?cur[0]:null;}
 /* AND THE RECORD THEY CAME FROM, as the object. The release lift reads the work
    of the record the laws in S were loaded from and of no other (lawWork,
    engine/compute.js). It was CURP, and the front door loads a profile into S
@@ -12383,29 +12400,70 @@ function validateProfile(o){
  if(typeof o.id==='string')p.id=o.id;
  if(typeof o.created==='string')p.created=o.created;
  if(typeof o.updated==='string')p.updated=o.updated;
- /* the nine axes */
- if(o.axes&&typeof o.axes==='object')CHILD.forEach(function(c){
+ /* the nine axes. A KEY THE BOUNDARY DOES NOT NAME IS REFUSED BY NAME, 24
+    October, systems audit SG-09, here and in the laws, the work and the gates
+    below. Each of them read only the keys it knew and dropped the rest with ok
+    true: a record carrying Sadness, the spelling the codes table maps to Sad,
+    loaded with Sad at the blank and nothing said. No build has written any
+    other axis or any other key inside one, so this refuses only a file this
+    product did not write. */
+ if(o.axes&&typeof o.axes==='object'){
+  Object.keys(o.axes).forEach(function(k){
+   if(!CHILD.some(function(c){return c.nm===k;})){errs.push('axes may not carry '+k);return;}
+   var a0=o.axes[k];
+   if(a0&&typeof a0==='object')Object.keys(a0).forEach(function(f){
+    if(f!=='held'&&f!=='opp')errs.push('axes.'+k+' may not carry '+f);});});
+  CHILD.forEach(function(c){
   var a=o.axes[c.nm]; if(!a||typeof a!=='object')return;
   var h=vRange(errs,'axes.'+c.nm+'.held',a.held,0,10);
   var q=vRange(errs,'axes.'+c.nm+'.opp',a.opp,0,10);
   if(h!==null)p.axes[c.nm].held=h;
-  if(q!==null)p.axes[c.nm].opp=q;});
- /* the 21 laws. null is a law not yet measured and is not an error. */
- if(o.laws&&typeof o.laws==='object')SI.forEach(function(l){
+  if(q!==null)p.axes[c.nm].opp=q;});}
+ /* the 21 laws. null is a law not yet measured and is not an error.
+    AN OLD NAME IS READ AS THE LAW IT BECAME (lawNameOf, above), only where the
+    record does not carry the current name at all, so the current name wins
+    where both are carried, the rule the history rows keep. It is refused under
+    the name it was stored under, like any other value. Any other key is
+    refused by name. */
+ if(o.laws&&typeof o.laws==='object'){
+  Object.keys(o.laws).forEach(function(k){if(lawNameOf(k)===null)errs.push('laws may not carry '+k);});
+  SI.forEach(function(l){
   if(o.laws[l.nm]===undefined||o.laws[l.nm]===null)return;
   var v=vRange(errs,'laws.'+l.nm,o.laws[l.nm],0,10);
   if(v!==null)p.laws[l.nm]=v;});
+  SI.forEach(function(l){
+   var was=LAW_WAS[l.nm];
+   if(was===undefined||o.laws[l.nm]!==undefined||o.laws[was]===undefined||o.laws[was]===null)return;
+   var v=vRange(errs,'laws.'+was,o.laws[was],0,10);
+   if(v!==null)p.laws[l.nm]=v;});}
  /* the soul. indexes into fixed tables, so an index outside them is refused. */
  if(o.soul&&typeof o.soul==='object'){
   if(Array.isArray(o.soul.doms))p.soul.doms=o.soul.doms.filter(function(d){
    var v=vRange(errs,'soul.doms',d,0,DOMAINS.length-1);return v!==null;});
   if(Array.isArray(o.soul.arcs))p.soul.arcs=o.soul.arcs.filter(function(a){
    var v=vRange(errs,'soul.arcs',a,0,ARCH.length-1);return v!==null;});
-  if(Array.isArray(o.soul.roots))p.soul.roots=o.soul.roots.filter(function(r){return typeof r==='string';});
+  /* A ROOT IS ONE OF THE FOUR, by name, 24 October, SG-09. Any string was
+     kept, and buildSoul matches a root against DOMAINS by name, so a root it
+     does not know weighted nothing and said nothing. The picker in
+     ui/panels.js only ever writes one of ROOTD. */
+  if(Array.isArray(o.soul.roots))p.soul.roots=o.soul.roots.filter(function(r){
+   if(typeof r==='string'&&ROOTD.indexOf(r)>=0)return true;
+   errs.push('soul.roots holds '+(typeof r==='string'?r:'a '+typeof r)+', which is not one of '+ROOTD.join(', '));
+   return false;});
   if(!p.soul.doms.length)p.soul.doms=[0];
   if(!p.soul.arcs.length)p.soul.arcs=[0,1];}
- /* gate evidence. counts of sentences, so any non negative integer. */
+ /* gate evidence. counts of sentences, so any non negative integer. A key
+    beside the two bags, or inside one, that this build does not count is
+    refused by name, SG-09: canon.json spells the third gate Intentional, and a
+    count under that name was dropped. verp.js is the one writer, and it writes
+    exactly these. */
  if(o.gates&&typeof o.gates==='object'){
+  var gOwn=function(bag,k){return Object.prototype.hasOwnProperty.call(bag,k);};
+  Object.keys(o.gates).forEach(function(k){if(k!=='verp'&&k!=='lean')errs.push('gates may not carry '+k);});
+  if(o.gates.verp&&typeof o.gates.verp==='object')Object.keys(o.gates.verp).forEach(function(k){
+   if(!gOwn(p.gates.verp,k))errs.push('gates.verp may not carry '+k);});
+  if(o.gates.lean&&typeof o.gates.lean==='object')Object.keys(o.gates.lean).forEach(function(k){
+   if(!gOwn(p.gates.lean,k))errs.push('gates.lean may not carry '+k);});
   if(o.gates.verp&&typeof o.gates.verp==='object')Object.keys(p.gates.verp).forEach(function(k){
    var v=vRange(errs,'gates.verp.'+k,o.gates.verp[k],0,1e6); if(v!==null)p.gates.verp[k]=v;});
   if(o.gates.lean&&typeof o.gates.lean==='object')['benign','malignant'].forEach(function(k){
@@ -12533,16 +12591,26 @@ function validateProfile(o){
   var seatKeys={};
   p.meter.unique.forEach(function(k){var n=BY[+String(k).split(':')[0]];
    if(n&&n.b)seatKeys[n.b]=(seatKeys[n.b]||0)+1;});
+  /* keyed by law, so it reads an old name the way the laws above do and
+     refuses any other key by name, and every refusal names the key the record
+     stored. A field inside an entry other than its count and the answer it was
+     counted on is refused by name too: compute.js writes exactly those two. */
+  Object.keys(o.work).forEach(function(k){
+   if(lawNameOf(k)===null){errs.push('work may not carry '+k);return;}
+   var w0=o.work[k];
+   if(w0&&typeof w0==='object'&&!Array.isArray(w0))Object.keys(w0).forEach(function(f){
+    if(f!=='n'&&f!=='on')errs.push('work.'+k+' may not carry '+f);});});
   SI.forEach(function(l){
-   var w=o.work[l.nm]; if(w===undefined||w===null)return;
-   if(typeof w!=='object'||Array.isArray(w)){errs.push('work.'+l.nm+' is not an object');return;}
-   var n=vRange(errs,'work.'+l.nm+'.n',w.n,0,1e6);
-   var on=vRange(errs,'work.'+l.nm+'.on',w.on,0,10);
+   var was=LAW_WAS[l.nm], key=(o.work[l.nm]===undefined&&was!==undefined&&o.work[was]!==undefined)?was:l.nm;
+   var w=o.work[key]; if(w===undefined||w===null)return;
+   if(typeof w!=='object'||Array.isArray(w)){errs.push('work.'+key+' is not an object');return;}
+   var n=vRange(errs,'work.'+key+'.n',w.n,0,1e6);
+   var on=vRange(errs,'work.'+key+'.on',w.on,0,10);
    if(n===null||on===null){
-    if(w.n===undefined||w.on===undefined)errs.push('work.'+l.nm+' is not a count and the answer it was counted on');
+    if(w.n===undefined||w.on===undefined)errs.push('work.'+key+' is not a count and the answer it was counted on');
     return;}
-   if(n%1!==0){errs.push('work.'+l.nm+'.n is '+n+', not a whole number of patterns');return;}
-   if(n>(seatKeys[l.b]||0)){errs.push('work.'+l.nm+'.n is '+n+', more than the '
+   if(n%1!==0){errs.push('work.'+key+'.n is '+n+', not a whole number of patterns');return;}
+   if(n>(seatKeys[l.b]||0)){errs.push('work.'+key+'.n is '+n+', more than the '
     +(seatKeys[l.b]||0)+' patterns this record has opened at the '+l.b);return;}
    p.work[l.nm]={n:n,on:on};});}
  else if(o.work!==undefined&&o.work!==null)errs.push('work is not an object');

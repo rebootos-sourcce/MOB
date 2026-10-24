@@ -5824,6 +5824,110 @@ g('41 · the twenty one on every history row, and a record from before still loa
  bindStore(()=>null,()=>{});
 }
 
+g('LK · an old law name is the law it became at every door, and a key the boundary does not name is refused by name');
+/* SYSTEMS AUDIT SG-01 AND SG-09, 24 October. The group above holds an old law
+   name on a history row. Nothing held it on the record's own laws and work,
+   and there the boundary read the current names only: a record holding
+   Expression 9 and Discernment 2 read Justice 9 and Humility 2 loaded straight,
+   and both as never answered through validateProfile, with ok true and nothing
+   said. pStore keeps what the boundary returns and the next save writes it,
+   so the two answers left the disk. This holds the boundary, the boot read
+   and the import, and the bytes the import leaves on the store. And every
+   keyed bag at the boundary refuses a key it does not name, by name, where
+   axes, laws, work and gates each dropped one with ok true and any text was
+   kept as a root. Checked against the build before the fix, where the old
+   name checks and every refusal below fail. */
+{
+ const {bindStore,pImport,importError,pStore,storeRefused,validateProfile,blankProfile,saveProfile,
+        read,LAW_WAS,PKEY,ROOTD}=E;
+ const J=JSON.stringify, clone=o=>JSON.parse(J(o));
+ const OLD_J=LAW_WAS.Justice, OLD_H=LAW_WAS.Humility;
+ /* a record from before the rename: every law answered at 8, the two renamed
+    laws under the names they carried until 18 September */
+ const old=clone(blankProfile('before the rename'));
+ SINAMES.forEach(l=>{old.laws[l]=8;});
+ delete old.laws.Justice; delete old.laws.Humility;
+ old.laws[OLD_J]=9; old.laws[OLD_H]=2;
+ const vo=validateProfile(clone(old));
+ ok(vo.ok&&vo.profile.laws.Justice===9&&vo.profile.laws.Humility===2,
+  'the boundary reads an old law name as the law it became, got '
+  +J(vo.ok?{Justice:vo.profile.laws.Justice,Humility:vo.profile.laws.Humility}:vo.errs));
+ ok(vo.ok&&!(OLD_J in vo.profile.laws)&&!(OLD_H in vo.profile.laws),
+  'and the old name does not cross beside the new one');
+ const cqStraight=read(clone(old)).reading.CQ, cqDoor=read(clone(vo.profile)).reading.CQ;
+ ok(Math.abs(cqStraight-cqDoor)<1e-9,
+  'and the record reads the same CQ loaded straight and through the boundary, '+cqStraight.toFixed(1)+' and '+cqDoor.toFixed(1));
+ const both=clone(old); both.laws.Justice=4;
+ const vb=validateProfile(both);
+ ok(vb.ok&&vb.profile.laws.Justice===4,
+  'the current name wins where both are carried, the history rows\' rule, got '+J(vb.ok?vb.profile.laws.Justice:vb.errs));
+ const hi=clone(old); hi.laws[OLD_J]=12;
+ const vh=validateProfile(hi);
+ ok(!vh.ok&&vh.errs.some(e=>e.indexOf('laws.'+OLD_J+' ')===0),
+  'an old name out of range is refused under the name it was stored under, '+J(vh.ok?'it loaded':vh.errs).slice(0,140));
+ const odd=clone(old); odd.laws.Charisma=5;
+ const vx=validateProfile(odd);
+ ok(!vx.ok&&vx.errs.indexOf('laws may not carry Charisma')>=0,
+  'a law key that is neither a law nor an old name of one is refused by name, '+J(vx.ok?'it loaded':vx.errs).slice(0,140));
+ /* the release lift, kept by law, reads an old name the same way */
+ const wk=clone(old); wk.work={}; wk.work[OLD_J]={n:0,on:9};
+ const vw=validateProfile(wk);
+ ok(vw.ok&&J(vw.profile.work.Justice)===J({n:0,on:9})&&!(OLD_J in vw.profile.work),
+  'the release lift under an old name lands on the law it became, got '+J(vw.ok?vw.profile.work:vw.errs));
+ const wx=clone(old); wx.work={Charisma:{n:0,on:5}};
+ const vwx=validateProfile(wx);
+ ok(!vwx.ok&&vwx.errs.indexOf('work may not carry Charisma')>=0,
+  'and a work key the boundary does not name is refused by name, '+J(vwx.ok?'ok':vwx.errs).slice(0,140));
+ /* THE BOOT READ. pStore keeps what the boundary returns, and on a real boot
+    that list is what the next save writes, so this is what the disk will
+    hold. THE IMPORT validates, loads and saves, so the bytes it leaves on the
+    store are the record a reload reads. */
+ const mem={}; bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
+ mem[PKEY]=J([old]);
+ const boot=pStore();
+ ok(boot.length===1&&storeRefused().length===0&&boot[0].laws.Justice===9&&boot[0].laws.Humility===2,
+  'the boot read keeps both answers, got '+J(boot.map(p=>({Justice:p.laws.Justice,Humility:p.laws.Humility}))));
+ const imp=pImport(J(old));
+ ok(!!imp&&importError()===null&&imp.laws.Justice===9&&imp.laws.Humility===2,
+  'the import keeps both answers, got '+J(imp?{Justice:imp.laws.Justice,Humility:imp.laws.Humility}:importError()));
+ const disk=JSON.parse(mem[PKEY]||'[]').filter(p=>p&&p.id===old.id)[0];
+ ok(!!disk&&disk.laws.Justice===9&&disk.laws.Humility===2&&!(OLD_J in disk.laws)&&!(OLD_H in disk.laws),
+  'and after the save the disk holds them under their current names, got '
+  +J(disk?{Justice:disk.laws.Justice,Humility:disk.laws.Humility}:null));
+ bindStore(()=>null,()=>{});
+
+ /* SG-09. Each keyed bag refuses a key it does not name, by name, and a root
+    is one of the four. */
+ const base=clone(blankProfile('keys'));
+ const refuses=(mut,want,m)=>{const o=clone(base); mut(o); const r=validateProfile(o);
+  ok(!r.ok&&r.errs.indexOf(want)>=0,m+', '+J(r.ok?'it loaded':r.errs).slice(0,150));};
+ refuses(o=>{o.axes.Sadness={held:9,opp:1};},'axes may not carry Sadness',
+  'an axis this build does not carry is refused by name, Sadness, the spelling the codes map to Sad');
+ refuses(o=>{o.axes.Fear={held:4,opp:2,rep:1};},'axes.Fear may not carry rep','a key inside an axis');
+ refuses(o=>{o.gates.verp.intentional=5;},'gates.verp may not carry intentional',
+  'a gate this build does not count, canon.json\'s spelling of intent');
+ refuses(o=>{o.gates.lean.neutral=1;},'gates.lean may not carry neutral','a lean this build does not count');
+ refuses(o=>{o.gates.mood=1;},'gates may not carry mood','a key beside the two gate bags');
+ refuses(o=>{o.work={Justice:{n:0,on:6,at:'today'}};},'work.Justice may not carry at','a key inside a law\'s work');
+ refuses(o=>{o.soul.roots=['Banana'];},'soul.roots holds Banana, which is not one of '+ROOTD.join(', '),
+  'a root that is not one of the four');
+ refuses(o=>{o.soul.roots=[7];},'soul.roots holds a number, which is not one of '+ROOTD.join(', '),
+  'and a root that is not text');
+ const roots=clone(base); roots.soul.roots=['Architect','Witness'];
+ const vr=validateProfile(roots);
+ ok(vr.ok&&J(vr.profile.soul.roots)===J(['Architect','Witness']),
+  'the four roots still load as they were written, got '+J(vr.ok?vr.profile.soul.roots:vr.errs));
+ /* known good: what this product writes crosses with no error at all */
+ const answered=clone(base); SINAMES.forEach(l=>{answered.laws[l]=7;});
+ CHILD.forEach(c=>{answered.axes[c.nm]={held:3,opp:1};});
+ const va=validateProfile(answered);
+ ok(va.ok,'a record carrying every law and every axis by name loads clean, '+J(va.ok?'ok':va.errs).slice(0,150));
+ const saved=clone(saveProfile(blankProfile('saved')));
+ const vs=validateProfile(saved);
+ ok(vs.ok,'and a record saveProfile writes loads clean, '+J(vs.ok?'ok':vs.errs).slice(0,150));
+ reset();
+}
+
 g('SA · Source AI hears on the rung, asks at seven, and the person leads');
 /* reviews/SPEC-source-ai.md, the behaviour section. The contract, not the
    copy: the rung is a count of return, one word is never questioned however
