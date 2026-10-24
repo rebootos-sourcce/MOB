@@ -112,7 +112,7 @@ T.ALL_SAB.forEach(s=>{
  const inferredStory='A situation involving '+themeLine+' brings the pattern into focus. The person may default to '+distortionLine+', narrowing the available choices. The story is not a fixed identity: identify the trigger, trace which linked child pattern is active, and notice the cost of repeating the response.';
  const inferredAvailable='When the pattern is noticed rather than obeyed, '+oppositeLine+' becomes a possible direction. This is an available state to practice, not a claim that the pattern has permanently disappeared.';
  const inferredNext='Pause at the first observable sign. Name the relevant theme ('+themeLine+'), identify the distortion ('+distortionLine+'), and choose one small action consistent with '+oppositeLine+'. Then review the result without turning it into a judgment about identity.';
- add({id:'sab:'+s.nm, kind:'sab', nm:s.nm, seat:(fam&&fam.b)||'Heart',
+ add({id:'sab:'+s.nm, kind:'somatic_signature', nm:s.nm, seat:(fam&&fam.b)||'Heart',
   fam:s.hcx||'unnamed',
   def:d?lead(d.d):(fam?s.nm+', a saboteur in the '+fam.nm+' architecture: '+fam.d+'.':s.nm+', a saboteur pattern inferred from its linked canonical records.'),
   body:d?clean(d.d):inferredBody,
@@ -403,7 +403,7 @@ const TEMPLATE_SCHEMAS={
  seat:{id:'TPL-SEAT', fields:['nm','fam','def','body','links']},
  axis:{id:'TPL-FETTER-AXIS', fields:['nm','seat','fam','def','card','where','says','inst','opp','links']},
  node:{id:'TPL-FETTER-NODE', fields:['nm','seat','fam','def','where','card','theme','distort','axis','body','trigger','says','out','inst','opp','nextMove','narrativeSource','links']},
- sab:{id:'TPL-SABOTEUR', fields:['nm','seat','fam','def','body','trigger','says','out','livedBehavior','availableState','nextMove','nids','arch','links']},
+ somatic_signature:{id:'TPL-SOMATIC-SIGNATURE-V1', fields:['nm','seat','fam','def','body','trigger','says','out','livedBehavior','availableState','nextMove','nids','arch','sourceRefs','sourceClaims','researchPasses','links']},
  hcx:{id:'TPL-HYPERCOMPLEX', fields:['nm','seat','fam','def','sub','links']},
  complex:{id:'TPL-COMPLEX-UNIFIED', fields:['nm','fam','def','body','inferred','inferenceBasis','behavior','triggerMechanism','livedExample','impact','practice','oppositeId','oppositeDefinition','oppositeStatus','confidence','reviewStatus','narrativeSource','researchSources','links']},
  inferred:{id:'TPL-INFERRED-COUNTERPART-V1', fields:['nm','fam','def','body','inferred','inferenceBasis','behavior','triggerMechanism','livedExample','impact','practice','oppositeId','oppositeDefinition','oppositeStatus','confidence','reviewStatus','narrativeSource','researchSources','sourceRefs','sourceClaims','researchPasses','links']},
