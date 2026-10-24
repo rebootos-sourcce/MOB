@@ -92,6 +92,12 @@ for (const e of entries.filter(x => x.kind === 'descent_candidate')) {
   if (!e.sourceClaimedLayer || !e.ownerRuling) errors.push(e.id + ': source layer claim or owner ruling missing');
   if (e.nm === 'Psychopathy' && !/rejected/i.test(e.canonicalStatus || '')) errors.push(e.id + ': Psychopathy must retain the explicit owner rejection for canonical Super-Complex status');
 }
+for (const edge of (db.relationshipEdges || [])) {
+  if (!edge.edgeId || typedEdgeIds.has(edge.edgeId)) errors.push('missing or duplicate edge id: ' + (edge.edgeId || '<unknown>'));
+  typedEdgeIds.add(edge.edgeId);
+  if (!byId.has(edge.fromId)) errors.push((edge.edgeId || '<unknown>') + ': source endpoint missing: ' + edge.fromId);
+  if (edge.toId && !byId.has(edge.toId)) errors.push((edge.edgeId || '<unknown>') + ': target endpoint missing: ' + edge.toId);
+}
 const typedEdgeIds = new Set();
 for (const kind of requiredKinds) {
   if (!counts[kind]) errors.push('required domain kind absent from generated catalog: ' + kind);
