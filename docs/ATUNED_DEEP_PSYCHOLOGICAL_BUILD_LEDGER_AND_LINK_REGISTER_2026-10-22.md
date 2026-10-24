@@ -256,3 +256,12 @@ The latest artifact fetch confirmed the template catalog remains proposed/not en
 - Updated `proto/knowledge/src/validate-templates.js` to validate the embedded registry's template fields, unique IDs, pass status, link/reference integrity, and unresolved closure counts. Added an opt-in `--strict-deep-psychological` gate that fails while content or graph closure remains open.
 - Updated `proto/knowledge/src/adapt-psychological-registry.js` to preserve relationship audit and affirmation-source metadata.
 - The integration is **not runtime-verified**: this connector cannot execute the repository's Node scripts. Next gate is to run `node proto/knowledge/src/gen-data.js`, `node proto/knowledge/src/validate-templates.js`, and `node proto/knowledge/src/validate-templates.js --strict-deep-psychological` in a real checkout, inspect outputs/exit codes, fix defects, then run the regression suite.
+
+
+### 2026-10-24 — behavioral-domain content research completed
+- Retrieved `MOB-Manuscript/index.html` from the private `MOB-Manuscript` repository (blob SHA `24dea9c95112fe83073e58ef4cb14d7eb5de9928`). Chapter 12, “The Somatic Psychology Stack,” contains 15 numbered domain headings with Clear, Distorted, and Templates descriptions. The artifact version label is not declared.
+- Updated all 15 `domain:01`–`domain:15` records with source-derived content and three distinct passes per record: source extraction, independent crosswalk comparison, adversarial label/version review.
+- Source content gate is now complete for all 15 behavioral-domain records. Canonical/semantic crosswalks remain open for all 15. Domain 06 remains explicitly unresolved between “Destruction and Renewal” (manuscript) and “Destruction and Transformation” (registry).
+- Current registry-scope KPI 2: 117/125 role-complete; eight Conscious Domain records remain substantively open.
+- Current KPI 3 remains open: 103 empty-link records, zero approved semantic edges among 36 mapping rows, runtime integration/traversal not verified.
+- Source crosswalk and audit report updated. This supersedes earlier same-day notes that described the 15 behavioral-domain definitions as source-unverified.
