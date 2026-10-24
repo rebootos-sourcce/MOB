@@ -5985,8 +5985,11 @@ var PCT_KIND={
  /* data/compass.js:484, where a person sits on a compass axis */
  axis:      {lo:0, hi:100, src:'engine/data/compass.js', find:'return Math.round(clamp(clear*0.62+honest*0.38,0,1)*100);}',
              say:'the position on a compass axis'},
- /* core.js:426, how closely the feelings fit a saboteur's defined ranges */
- match:     {lo:0, hi:100, src:'engine/core.js', find:'var score=Math.round(fit/parts.length*100);',
+ /* core.js sab33Detect, how closely the feelings fit a saboteur's defined
+    ranges: the ramp's confidence, nought to one (sabConfidence clamps it,
+    data/canon.js), as a percent. It was the staircase's fit until P1-6 of
+    the inference audit, 23 October. */
+ match:     {lo:0, hi:100, src:'engine/core.js', find:'var score=Math.round(conf*100);',
              say:'a saboteur match'},
  /* verp.js:357, the share of the story that ran through one gate */
  gate:      {lo:0, hi:100, src:'engine/verp.js', find:'pct: sh?Math.round(sh[v.k]*100):0',
@@ -7083,6 +7086,34 @@ var PHRASES=[
  [['hated myself','disgusted with myself','ashamed of myself'],'throat',24,'self-attack'],
  [['do not show anyone','dont show anyone','not until it is perfect'],'sacral',18,'concealment'],
  [['find out i am','find out im','they will know','see through me'],'root',24,'exposure']];
+
+/* ============================================================
+   THE PLAIN IDIOM, P2-3 of the inference audit, 24 October. An idiom that
+   carries no feeling outranks its own words, by the rule PHRASES above
+   already follows, and then counts nowhere. Measured on d9ca4450 before
+   this: "I am afraid I cannot make it tonight" read fear at the root, "I am
+   dying to see the new film" read grief at the heart, and "I still cannot
+   stop crying" read the sacral compulsion phrase on top of the crying.
+
+   A row is [the idiom, the words that may follow it]. The idiom is plain
+   only when one of those follows straight after it, inside the same comma
+   group, so "I am afraid. I cannot breathe." and "I am afraid, I can't
+   breathe." keep their fear. An empty list means any word may follow, and
+   one must. A plain idiom's own words are skipped by the phrase, word and
+   adjective passes in scanStory. The words after it are not: "cannot stop
+   crying" drops the compulsion and still reads the crying.
+
+   The apology's frames are only the polite ones on purpose. "I am afraid
+   I will lose him" is fear, and so is "I am so afraid I cannot sleep",
+   which has a degree word between and is never this row. A false plain
+   reading hides a fear the person wrote, so a frame is added here only
+   when the polite sense is the ordinary one. */
+var LEXPLAIN=[
+ [['i am afraid','im afraid'],['i cannot','i cant','i can not','i have to','i must',
+   'i need to','i will have to','ill have to','not','so']],
+ [['dying to'],[]],
+ [['could not stop','cant stop','can not stop','cannot stop'],
+   ['crying','laughing','sobbing','weeping']]];
 
 /* ============================================================
    WHAT AN ENTRY IS, WHERE IT CAME FROM, AND WHAT IT MAY ASSERT.
@@ -8497,18 +8528,35 @@ function sabLevels(exact){
  return L;}
 /* each SAB33 row by identity, for the address route's band check in compute() */
 const SAB33_BY={};SAB33.forEach(function(r){SAB33_BY[KB_KEY(r[0])]=r;});
-/* fit scoring against the ranges. 1.0 inside the band, 0.5 for adjacent. */
+/* THE RANGE SCAN READS THE RAMP, P1-6 of the inference audit, 23 October.
+   It was a three step staircase over levels rounded to whole numbers, full
+   credit inside a band, half one step out, named at 60: the defect canon.js
+   records in its own header, and the owner's ruling is "a band edge is a
+   ramp, not a cliff". Measured on 77928172: with apathy at 4, fear at 4.49
+   named Innocent and Restless and fear at 4.51 named neither, and one answer
+   of the quiz's hundred moved one step changed which four saboteurs a
+   newcomer was shown in 8.6 per cent of simulated readings. The ramp, the
+   geometric mean and the one charge discount were built in canon.js and
+   used only by sniffStory, which no screen calls.
+
+   So this is sabConfidence on the exact levels. It still has to answer
+   yes or no, because compute() pairs the saboteurs it names into
+   complexes, so it names a row at SAB_NAME and ranks by confidence.
+   SAB_NAME is 0.5 because that is the ramp's own membership one point over
+   a band's high edge and the old rule's half credit: a row still names
+   when one of its charges sits about a point outside its band, as the
+   staircase allowed, and never when two do. What goes is the cliff at the
+   half point of every whole number. Exact is every charge inside its band,
+   read without rounding, and score is the confidence as a percent, which is
+   what the drill's "Matched at" prints. */
+var SAB_NAME=0.5;
 function sab33Detect(){
- var L=sabLevels(), out=[];
+ var L=sabLevels(true), out=[];
  SAB33.forEach(function(row){
-  var nm=row[0], parts=row[1], fit=0, inAll=true;
-  parts.forEach(function(p){
-   var lvl=L[p[0]]||0, lo=p[1], hi=p[2];
-   if(lvl>=lo && lvl<=hi){ fit+=1; }
-   else if(lvl===lo-1 || lvl===hi+1){ fit+=0.5; inAll=false; }
-   else { inAll=false; }});
-  var score=Math.round(fit/parts.length*100);
-  if(score>=60) out.push({nm:nm, score:score, exact:inAll, parts:parts,
+  var nm=row[0], parts=row[1], conf=sabConfidence(nm,parts,L);
+  var inAll=parts.every(function(p){var v=L[p[0]]||0; return v>=p[1]&&v<=p[2];});
+  var score=Math.round(conf*100);
+  if(conf>=SAB_NAME) out.push({nm:nm, score:score, exact:inAll, conf:conf, parts:parts,
    charges:parts.map(function(p){return p[0];}),
    /* the seat that can carry the first charge, SAB_SEAT above, and never a
       seat its own charge cannot reach */
@@ -8612,7 +8660,11 @@ function undoState(){
  CHARGES.forEach(function(k){c[k]=S.charge[k];o[k]=S.replace[k]||0;});
  SINAMES.forEach(function(k){l[k]=S.law[k];});
  var wk=(typeof CURP!=='undefined'&&CURP&&CURP.work)?JSON.parse(JSON.stringify(CURP.work)):null;
- return {charge:c, replace:o, law:l, work:wk,
+ /* the stated type rides with the axes it wrote, so undoing a seed puts back
+    the empty field and takes the type off with it, and the card under the
+    select never claims a seed the axes no longer hold. P0-5. */
+ var sd=(typeof CURP!=='undefined'&&CURP)?(CURP.seed?JSON.parse(JSON.stringify(CURP.seed)):null):undefined;
+ return {charge:c, replace:o, law:l, work:wk, seed:sd,
   doms:S.doms.slice(), arcs:S.arcs.slice(), roots:S.roots.slice(),
   dom:S.dom, a1:S.a1, a2:S.a2};}
 
@@ -8645,6 +8697,8 @@ function undoApply(s){
  SINAMES.forEach(function(k){if(s.law[k]!==undefined)S.law[k]=s.law[k];});
  /* an entry taken before the lift existed carries no work and leaves it alone */
  if(s.work!=null&&typeof CURP!=='undefined'&&CURP)CURP.work=JSON.parse(JSON.stringify(s.work));
+ /* and an entry taken before the seed rode with it leaves the seed alone */
+ if(s.seed!==undefined&&typeof CURP!=='undefined'&&CURP)CURP.seed=s.seed?JSON.parse(JSON.stringify(s.seed)):null;
  S.doms=s.doms.slice(); S.arcs=s.arcs.slice(); S.roots=s.roots.slice();
  S.dom=s.dom; S.a1=s.a1; S.a2=s.a2;
  buildSoul();
@@ -9063,14 +9117,22 @@ function compute(){
   if(ex){if(s.w<=ex.w)return; sabs[sabs.indexOf(ex)]=s;sabByNm[id]=s;return;}
   sabByNm[id]=s;sabs.push(s);};
  /* SAB33: 33 named saboteurs matched on charge RANGES. */
+ /* anticipation is spelled out because SAB33 spells it out: a row led by it
+    fell through this map to Collapse. No row leads with it today. */
+ const SAB_FET={fear:'Fear',anger:'Anger',shame:'Shame',disgust:'Disgust',apathy:'Apathy',
+  shock:'Shock',sadness:'Sad',surprise:'Surprise',anticipation:'Anticipation',anxiety:'Anticipation'};
  sab33Detect().forEach(function(d){
-  const parts=W.filter(n=>n.b===d.band&&n.sq>=3).sort((a,b)=>b.sq-a.sq).slice(0,4);
+  /* THE SEAT'S ADDRESSES THAT CARRY THE SABOTEUR'S OWN CHARGES, P1-6 of the
+     inference audit, 23 October. This took any address at the seat at 3 or
+     more, whatever it carried, so a fear row was confirmed by apathy load
+     and drawn there: measured on 77928172, 44 per cent of this route's names
+     were placed only on addresses carrying none of their own charges. The
+     address route's rule 2 already says an address must carry one of the
+     row's own charges, and this route now keeps it too. */
+  const ownFet=d.charges.map(c=>SAB_FET[c]);
+  const parts=W.filter(n=>n.b===d.band&&n.sq>=3&&ownFet.indexOf(n.cf)>=0).sort((a,b)=>b.sq-a.sq).slice(0,4);
   if(!parts.length)return;
-  /* anticipation is spelled out because SAB33 spells it out: a row led by it
-     fell through this map to Collapse. No row leads with it today. */
-  const key=d.charges[0]==='anxiety'?'Anticipation':
-   ({fear:'Fear',anger:'Anger',shame:'Shame',disgust:'Disgust',apathy:'Apathy',
-     shock:'Shock',sadness:'Sad',surprise:'Surprise',anticipation:'Anticipation'})[d.charges[0]];
+  const key=SAB_FET[d.charges[0]];
   const own=SAB_LIB_BY[KB_KEY(d.nm)];
   pushSab({kind:'sab',nm:d.nm,hcx:own?own.hcx:(FAM_OF[key]||'Collapse'),named:true,
    score:d.score,exact:d.exact,charges:d.charges,auth:SABAUTH[d.nm]||null,
@@ -17402,6 +17464,37 @@ var WHO_OPEN=['and','but','then','when','while','because','cause','so','after','
  'now','today','yesterday','tonight','again','also','just','still','even','suddenly','finally','later'];
 var WHO_LOSS=['died','death','dying','passed away','grief','mourning','mourn','bereaved','loss','funeral',
  'buried','widowed','miscarriage','stillborn','grieving'];
+/* A NAME THAT STARTS ITS SENTENCE, P1-1 of the inference audit, 23 October.
+   The rule above reads a capital that does not start its sentence, and named
+   the one that does in GAPS: "Sarah screamed at me and I froze" put Sarah's
+   screaming on the writer as the writer's own anger, and that is how most
+   people begin a sentence about someone. A capitalised first word is now
+   unclear, held and shown with its sentence ("Write it with I if it is
+   yours"), unless it is a word this reader already knows: a pronoun or a
+   person word, a word in the lexicon or the degree table, a clause opener or
+   a negator, a place in the body, or one of the common first words below,
+   which are what a sentence about the writer's own day starts on. Holding a
+   writer's own word costs them one line of text; scoring Sarah's anger on
+   them costs the reading. */
+var WHO_OPENER=['the','a','an','this','that','these','those','it','its','there','here','what','which','who',
+ 'whose','why','how','where','when','everything','nothing','something','anything','everyone','someone',
+ 'anyone','everybody','somebody','nobody','all','some','most','many','much','more','less','one','each',
+ 'every','both','either','neither','no','yes','ok','okay','well','oh','today','tonight','yesterday',
+ 'tomorrow','morning','afternoon','evening','night','week','weekend','day','last','next','first','then',
+ 'after','before','during','since','later','earlier','again','still','even','just','only','also','maybe',
+ 'perhaps','probably','really','honestly','sometimes','often','always','usually','never','work','life',
+ 'home','school','things','sleep','money','dinner','lunch','breakfast','traffic','weather','coffee','job',
+ 'monday','tuesday','wednesday','thursday','friday','saturday','sunday','january','february','march',
+ 'april','may','june','july','august','september','october','november','december'];
+function whoKnown(w){
+ var own=function(o){return Object.prototype.hasOwnProperty.call(o,w);};
+ if(own(LEX)||own(ADJ2CHG)||own(LEXMOD))return true;
+ if([WHO_ME,WHO_SUBJ,WHO_POSS,WHO_OBJ,WHO_YOU,WHO_DET,WHO_OPEN,WHO_LOSS,WHO_OPENER,SOMA_PLACE_WORDS,LEXKIN]
+  .some(function(l){return l.indexOf(w)>=0;}))return true;
+ if(typeof SRC_NEG!=='undefined'&&SRC_NEG.indexOf(w)>=0)return true;
+ return Object.keys(SRC_DIM_CUE).some(function(k){return SRC_DIM_CUE[k].indexOf(w)>=0;});}
+function whoStartName(t,ws,j){
+ return (j===0||ws[j-1].c!==ws[j].c)&&/^[A-Z][a-z]+$/.test(t.slice(ws[j].s,ws[j].e))&&!whoKnown(ws[j].w);}
 function whoLoss(h){
  var m=LEXMETA[h.t];
  return WHO_LOSS.indexOf(h.t)>=0||!!(m&&m.from&&WHO_LOSS.indexOf(m.from)>=0);}
@@ -17428,7 +17521,8 @@ function whoOf(t,ws,i){
   if(WHO_POSS.indexOf(w)>=0&&whoOpens(ws,j))return {k:j,j:j};
   if(WHO_YOU.indexOf(w)>=0&&whoOpens(ws,j))return {k:j,j:j,unclear:true};
   if(j>0&&ws[j-1].c===ws[j].c&&/^[A-Z][a-z]+$/.test(t.slice(ws[j].s,ws[j].e))&&whoOpens(ws,j))
-   return {k:j,j:j};}
+   return {k:j,j:j};
+  if(whoStartName(t,ws,j))return {k:j,j:j,unclear:true};}
  return null;}
 function sniffWho(t,nm,hits){
  var ws=null, byAt=null;
@@ -17440,15 +17534,39 @@ function sniffWho(t,nm,hits){
   h.other=true; h.whoAt=ws[r.k].at;
   h.who=ws.slice(r.k,r.j+1).map(function(x){return x.w;}).join(' ');
   if(r.unclear)h.unclear=true;});}
+/* THE PLAIN IDIOM, P2-3, see LEXPLAIN in the lexicon. Each span is a plain
+   idiom's own words, as {at, len} in nm.s: at is its leading space and len
+   its length, the same addressing every hit uses. The follower must be the
+   very next words and in the idiom's own comma group, read off wordsOf, so a
+   sentence end or a comma between them leaves the feeling where it was. */
+function plainSpans(t,nm){
+ var src=nm.s, out=[], ws=null, byAt=null;
+ LEXPLAIN.forEach(function(row){
+  row[0].forEach(function(idiom){
+   var at=src.indexOf(' '+idiom+' ');
+   while(at>=0){
+    if(!ws){ws=wordsOf(t,nm); byAt={}; ws.forEach(function(w,i){byAt[w.at]=i;});}
+    var i=byAt[at], n=idiom.split(' ').length;
+    var same=function(k){return ws[k]&&ws[k].g===ws[i].g;};
+    var ok=i!==undefined&&same(i+n-1)&&(row[1].length?row[1].some(function(f){
+     return f.split(' ').every(function(w,k){return same(i+n+k)&&ws[i+n+k].w===w;});}):same(i+n));
+    if(ok)out.push({at:at,len:idiom.length});
+    at=src.indexOf(' '+idiom+' ',at+1);}});});
+ return out;}
 function scanStory(text){
  var nm=normMap(text), src=nm.s;
  var hits=[];
- /* phrases first: an idiom outranks its own words */
+ /* a plain idiom first: nothing below may read a feeling inside one. A word
+    of len characters at at overlaps a span when each starts before the
+    other ends. */
+ var plain=plainSpans(text,nm);
+ var inPlain=function(at,len){return plain.some(function(p){return at<p.at+p.len&&p.at<at+len;});};
+ /* phrases next: an idiom outranks its own words */
  PHRASES.forEach(function(row){
   var words=row[0], band=row[1], amt=row[2], label=row[3];
   words.forEach(function(w){
    var at=src.indexOf(' '+w+' ');
-   while(at>=0){ hits.push({t:w,kind:'phrase',band:band,amt:amt,label:label,at:at});
+   while(at>=0){ if(!inPlain(at,w.length))hits.push({t:w,kind:'phrase',band:band,amt:amt,label:label,at:at});
     at=src.indexOf(' '+w+' ',at+1); }});});
  /* multi-word LEX entries next, then single words */
  var keys=Object.keys(LEX).sort(function(a,b){return b.length-a.length;});
@@ -17461,7 +17579,7 @@ function scanStory(text){
       following a longer one was suppressed, and keys are scanned longest
       first, so it bit constantly: a third of legitimate matches never landed.
       The phrase still outranks the words inside it, which is what this is for. */
-   if(!hits.some(function(h){return h.at<=at&&at<h.at+h.t.length+1;}))
+   if(!inPlain(at,w.length)&&!hits.some(function(h){return h.at<=at&&at<h.at+h.t.length+1;}))
     /* A WORD MAY NAME ITS OWN FETTER, and some have to.
 
        LEX was [seat, intensity] and the fetter was then inferred from the
@@ -17480,7 +17598,7 @@ function scanStory(text){
  /* adjectives name the charge even when they carry no band */
  Object.keys(ADJ2CHG).forEach(function(w){
   var at=src.indexOf(' '+w+' ');
-  while(at>=0){ hits.push({t:w,kind:'adj',charge:ADJ2CHG[w],at:at});
+  while(at>=0){ if(!inPlain(at,w.length))hits.push({t:w,kind:'adj',charge:ADJ2CHG[w],at:at});
    at=src.indexOf(' '+w+' ',at+1);}});
  /* THE DEGREE WORD, AZ6. A LEXMOD entry standing immediately before a word or
     phrase hit scales its amount, and the hit keeps both so the path and any
@@ -17694,8 +17812,10 @@ function parseStory(text){
    var sa=statedAt[h.band]=statedAt[h.band]||{};
    sa[h.fet]=(sa[h.fet]||0)+Math.abs(h.amt||0);}
   else if(adjAt[h.at]){
+   /* the amount the word carried, and not only that it named something, so
+      the word can keep its charge below when its seat cannot house it */
    var oa=ownAt[h.band]=ownAt[h.band]||{};
-   oa[adjAt[h.at]]=true;}});
+   oa[adjAt[h.at]]=(oa[adjAt[h.at]]||0)+Math.abs(h.amt||0);}});
  Object.keys(byBand).forEach(function(k){
   var bn=K2BAND[k]; if(!bn) return;
   var all=W.filter(function(n){return n.b===bn&&n.cf;});
@@ -17738,7 +17858,26 @@ function parseStory(text){
      one thing the sentence actually said and fall back to Anger. The charge
      still lands on the seat, because that is where the body holds it, and the
      reading keeps the name the word gave it. */
-  var here=statedAt[k]||{};
+  var here=Object.assign({},statedAt[k]||{});
+  /* AND SO DOES A FEELING THE WORD'S OWN ADJECTIVE NAMES, P0-1 of the
+     inference audit, 23 October. The survival above covered only a fetter
+     LEX states outright. A word whose own adjective names its feeling lost
+     to the quarter rule whenever its seat held few addresses for it:
+     measured, 23 of the 171 single feeling words were filed mostly under a
+     feeling they do not name. "I feel disconnected and hollow" names apathy,
+     the crown holds one apathy address and eight anger ones, so about 90
+     per cent of it was filed as anger; three such entries read anger at 10
+     and the Compass named the writer The Devil. "Tense" went to disgust and
+     "anxious" to fear. The quarter rule is right for a feeling named
+     elsewhere in the sentence, which is the grief filed as shame it was
+     written to stop. The word's own adjective is the plainest evidence the
+     sentence has, so it survives the same way a stated fetter does. A
+     feeling its seat does house, a quarter or more, reads exactly as
+     before. */
+  var own=ownAt[k]||{};
+  Object.keys(own).forEach(function(f){
+   if(here[f]!==undefined)return;
+   if(all.filter(function(n){return n.cf===f;}).length<all.length*0.25)here[f]=own[f];});
   var hereF=Object.keys(here).sort(function(a,b){return here[b]-here[a];});
   var stateHere=hereF.length>0;
   /* the intensity curve is 0-30ish. normalise to a 0-10 charge delta. */
@@ -18289,7 +18428,8 @@ var LEXPROFRUN=lexProf();
    the canon, fold and composite passes have finished writing, over every
    table the scanner reads a match, an amount or a seat from: LEX, ADJ2CHG,
    PHRASES, LEXMOD and the place word tables, the blocking places included,
-   because adding one can stop a move. A word added, an amount
+   because adding one can stop a move, and LEXPLAIN, the plain idioms, for
+   the same reason: adding one stops a reading. A word added, an amount
    retuned or a seat moved changes it, and nothing else does.
 
    WHAT IT DOES NOT COVER, said so nobody has to discover it: a change to
@@ -18309,7 +18449,7 @@ function lexCanonJSON(v){
   return JSON.stringify(k)+':'+lexCanonJSON(v[k]);}).join(',')+'}';
  return JSON.stringify(v===undefined?null:v);}
 function lexVersion(){
- var s=[LEX,ADJ2CHG,PHRASES,LEXMOD,SOMA_PLACE.sense,SOMA_PLACE.seat,SOMA_PLACE_WORDS]
+ var s=[LEX,ADJ2CHG,PHRASES,LEXMOD,SOMA_PLACE.sense,SOMA_PLACE.seat,SOMA_PLACE_WORDS,LEXPLAIN]
   .map(lexCanonJSON).join('|');
  var h=0x811c9dc5;
  for(var i=0;i<s.length;i++){h^=s.charCodeAt(i); h=Math.imul(h,0x01000193)>>>0;}
@@ -18547,8 +18687,69 @@ function AXOF(k){return {fear:'Fear',anger:'Anger',shame:'Shame',disgust:'Disgus
    carries most of the reading and the tenth carries almost none. The shape is
    the same asymptote verp.js uses for its trust ramp, for the same reason, that
    a handful of substring matches must not buy certainty. */
+/* WHOSE ACT A LAW CUE IS, P0-4 of the inference audit, 23 October. This path
+   had no subject at all, and the Story page's Laws panel reads it, so "She
+   lied to me" told the writer "Truth, saying something that was not quite
+   true". Measured on 77928172, on fifteen sentences where someone else did
+   the act, three gave the writer a broken law. S2 held someone else's words
+   out of the feelings reading on 9 October and not out of this one.
+
+   NOT sniffWho AS IT STANDS, and the reason is one word. whoOf stops at the
+   nearest first person, which is right for a feeling, "he made me furious"
+   is the writer's, and wrong for an act: "My husband lied to me again last
+   night" carries the Temperance cue "again last night" after the object
+   "me". So this walks back through the same comma group with the same
+   tables, WHO_SUBJ, whoPerson and whoOpens, and counts only a first person
+   that can be a subject. An object is passed over. A cue whose own words
+   carry the writer, "i lied", is the writer's. A cue straight after a form
+   of be, not an -ing, is something done to the writer: "I was lied to".
+   No subject found is the writer, which is what a journal is.
+
+   THE WORDS LINE UP WITH wordsOf. lawNorm's copy holds the same words as
+   normMap's once its sentence bars are dropped, after a curly apostrophe
+   is made straight, which normMap already drops and lawNorm turned into a
+   space: "didn't" typed on a phone read "didn t", and its no was lost. When
+   the words do not line up the cue counts, as it always did, so this can
+   only ever set aside a cue it can show was someone else's. */
+var LAW_ME=['i','im','ive','id','we','weve'];
+var LAW_BE=['was','were','been','being','am','is','are','get','gets','got','getting','gotten'];
+/* a passive needs a participle after the be: "I was lied to", "I was kept
+   from it". "It is all my fault" is a be and no participle, and is the
+   writer's own blame. */
+var LAW_PART=['kept','told','hidden','taken','given','said','left','made','done','broken','stolen',
+ 'shown','held','caught','thrown','beaten','hurt'];
+function lawPassive(w){return /ed$/.test(w)||LAW_PART.indexOf(w)>=0;}
+function lawActor(t,ws,i){
+ var g=ws[i].g;
+ if(i>0&&ws[i-1].g===g){var p=ws[i-1].w;
+  if(p==='my'||p==='our')return 'me';
+  if(WHO_POSS.indexOf(p)>=0)return 'other';}
+ for(var j=i-1;j>=0&&ws[j].g===g;j--){
+  var w=ws[j].w;
+  if(LAW_ME.indexOf(w)>=0)return 'me';
+  if(WHO_SUBJ.indexOf(w)>=0)return 'other';
+  if(WHO_YOU.indexOf(w)>=0&&whoOpens(ws,j))return 'unclear';
+  if(whoPerson(w)){var k=j;
+   if(k>0&&ws[k-1].g===g&&LEXKIN.indexOf(ws[k-1].w+' '+w)>=0)k--;
+   if(k>0&&ws[k-1].g===g&&WHO_DET.indexOf(ws[k-1].w)>=0)k--;
+   if(whoOpens(ws,k))return 'other';
+   j=k; continue;}
+  if(j>0&&ws[j-1].c===ws[j].c&&/^[A-Z][a-z]+$/.test(t.slice(ws[j].s,ws[j].e))&&whoOpens(ws,j))return 'other';
+  if(whoStartName(t,ws,j))return 'unclear';}
+ return 'none';}
+function lawWriter(t,src){
+ var ws=wordsOf(t,normMap(t));
+ return function(h){
+  var cw=String(h.cue).replace(/'/g,'').split(' ');
+  if(cw.some(function(w){return LAW_ME.indexOf(w)>=0;}))return true;
+  var k=src.slice(0,h.at+1).split(' ').filter(function(w){return w&&w!=='|';}).length;
+  if(!ws[k]||ws[k].w!==cw[0])return true;
+  if(k>0&&ws[k-1].c===ws[k].c&&LAW_BE.indexOf(ws[k-1].w)>=0&&lawPassive(ws[k].w))return false;
+  var a=lawActor(t,ws,k);
+  return a==='me'||a==='none';};}
 function sniffLaws(text){
- var src=lawNorm(text), hits=lawMatch(src,LAWCUE,3), by={};
+ var t=String(text||'').replace(/[‘’]/g,"'");
+ var src=lawNorm(t), hits=lawMatch(src,LAWCUE,3).filter(lawWriter(t,src)), by={};
  hits.forEach(function(h){
   var r=h.row, key=r[0]+'|'+r[2];
   if(!by[key])by[key]={e:r[0],law:r[1],direction:r[2],n:0,cues:[]};
@@ -20192,14 +20393,30 @@ function seedAxes(type){
  CHARGES.forEach(function(c){out[c]=Math.round(out[c]*10)/10;});
  return out;}
 
+/* WHETHER A SEED MAY WRITE, P0-5 of the inference audit, 23 October. The
+   header above says a type is used "so a new field is not empty", and the
+   code wrote it over a full one: four entries put fear at 10, choosing INFJ
+   on the Intake page set it to 3.3 and put anger, shame and disgust where
+   nothing was written, the card said "Nothing has moved it yet", and "not
+   said" put nothing back. A seed now writes only onto an empty field: every
+   axis at the blank, or every axis still exactly where the current seed put
+   it, which is a type changed before anything moved. All or nothing, so a
+   release that brought one axis back to the blank is still the person's. */
+function seedEmpty(p){
+ if(!p)return false;
+ var held=function(c){return (p.axes&&p.axes[c]&&p.axes[c].held!=null)?p.axes[c].held:AXIS_BLANK;};
+ var cur=p.seed&&p.seed.axes;
+ return CHARGES.every(function(c){return Math.abs(held(c)-AXIS_BLANK)<1e-9;})
+  ||(!!cur&&CHARGES.every(function(c){return cur[c]!=null&&Math.abs(held(c)-cur[c])<1e-9;}));}
 /* write the seed onto a profile. it records what it wrote, so the
    product can say later how much of the field is still the seed and
    how much the person has moved it. seeding twice re-seeds from the
-   base rather than compounding. */
+   base rather than compounding, and only while nothing has moved it. */
 function seedApply(p,type){
  if(!p||!seedValid(type))return null;
  /* show only on a worked example, engine/showonly.js */
  if(showRefuse('intake',p))return null;
+ if(!seedEmpty(p))return null;
  var ax=seedAxes(type);
  CHARGES.forEach(function(c){
   p.axes[c]=p.axes[c]||{held:AXIS_BLANK,opp:0};
@@ -20207,7 +20424,16 @@ function seedApply(p,type){
  p.seed={type:String(type).toUpperCase(), at:new Date().toISOString(), axes:ax};
  return p.seed;}
 
-function seedClear(p){ if(p)p.seed=null; return p; }
+/* "not said" puts back what was there. A seed only ever lands on an empty
+   field, so what was there is the blank, and it goes back only while the
+   field is still exactly the seed: once a story or a slider has moved it,
+   the field is the person's and stays, and only the type comes off. A
+   worked example is show only and is not written. */
+function seedClear(p){
+ if(!p||(typeof showOnly==='function'&&showOnly(p)))return p;
+ if(p.seed&&p.seed.axes&&seedEmpty(p))CHARGES.forEach(function(c){
+  p.axes[c]=p.axes[c]||{held:AXIS_BLANK,opp:0}; p.axes[c].held=AXIS_BLANK;});
+ p.seed=null; return p;}
 
 /* HOW MUCH IS STILL THE SEED. the distance the axes have travelled from
    where the seed put them, against the distance the seed itself moved
@@ -22809,7 +23035,7 @@ if(typeof module!=='undefined'&&module.exports){
                   TEACHER_RECIPES:TEACHER_RECIPES, RECIPE_STEPS:RECIPE_STEPS, recipeOf:recipeOf,
                   recipeRitual:recipeRitual, recipeSteps:recipeSteps,
                   PAINREG:PAINREG, PEOPLE:PEOPLE, LAWSET:LAWSET, BIRTH:BIRTH,
-                  LEX:LEX, ADJ2CHG:ADJ2CHG, PHRASES:PHRASES, VERP:VERP,
+                  LEX:LEX, ADJ2CHG:ADJ2CHG, PHRASES:PHRASES, LEXPLAIN:LEXPLAIN, plainSpans:plainSpans, VERP:VERP,
                   NERVEBR:NERVEBR, BODYPATH:BODYPATH, TAB:TAB,
   /* the ladder */MARKS:MARKS, ladderRead:ladderRead, markDays:markDays, BACK_GAP:BACK_GAP, ledgerRead:ledgerRead,
                   intentionRead:intentionRead, INTENT_DAYS:INTENT_DAYS,
@@ -22849,7 +23075,7 @@ if(typeof module!=='undefined'&&module.exports){
                   LIFT_R:LIFT_R, lawLift:lawLift, lawWork:lawWork, lawNow:lawNow,
                   releaseWork:releaseWork, lawAnswered:lawAnswered, iqAnswer:iqAnswer,
   /* seed */      TYPE16:TYPE16, SEED16:SEED16, seedAxes:seedAxes, seedApply:seedApply,
-                  seedClear:seedClear, seedShare:seedShare, seedValid:seedValid, accuracy:accuracy, accCover:accCover, accCoverWord:accCoverWord,
+                  seedClear:seedClear, seedShare:seedShare, seedValid:seedValid, seedEmpty:seedEmpty, accuracy:accuracy, accCover:accCover, accCoverWord:accCoverWord,
                   CS_LAWW:CS_LAWW, CS_STORYW:CS_STORYW, CS_STORY_N:CS_STORY_N, CS_PARTIAL:CS_PARTIAL, sab33Detect:sab33Detect,
                   sabLevels:sabLevels, exprFill:exprFill, exprRead:exprRead,
   /* gates */     verpScan:verpScan, verpApply:verpApply, verpFactor:verpFactor,
@@ -24557,6 +24783,15 @@ function viewRead(){
    +(seen[s.hcx]?'':': '+esc(fam?fam.d:'a contraction that has hardened into a shape'))
    +'</div>';
   seen[s.hcx]=1;
+  /* AN INFERRED NAME SAYS SO, P2-4 of the inference audit, 24 October.
+     Across simulated quiz takers the two names shown most were Diffuse
+     Freezer and Sacral Drifter, and neither is one of the 33: they are
+     clusters the engine names for their seat and feeling (UNNAMED in
+     engine/core.js, flagged unnamed on the reading), and the card printed
+     them exactly as it prints Judge. The word is the app's own, the drill
+     sheet's "Inferred", so one concept keeps one word. */
+  if(s.unnamed)h+='<div class="sl"><b>Inferred:</b> no saboteur of the 33 on file fits '
+   +'these addresses. This cluster is named for where it sits and the feeling it runs on.</div>';
   h+='<div class="sl"><b>What it does:</b> '
    +(d&&d.d?esc(firstSentences(d.d,2))
           :esc('It shows up as '+listOf(parts.map(function(n){return low(n.d);}))+'.'))

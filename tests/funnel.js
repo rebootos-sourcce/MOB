@@ -1141,6 +1141,65 @@ const SIZE = c => '"' + c.t + '" ' + c.w + 'x' + c.h
     await cctx.close();
   }
 
+  /* ---------- a saboteur card says when its name is inferred ----------
+     P2-4 of the inference audit, 24 October. Across simulated quiz takers
+     the two names shown most were Diffuse Freezer and Sacral Drifter, which
+     are clusters the engine names for their seat and feeling and are not two
+     of the 33, and their cards read exactly as Judge's does. A card now
+     carries "Inferred:" exactly when its saboteur is flagged unnamed on the
+     reading, and the flag is checked against the 33 themselves, SAB33, so a
+     card can neither hide an inferred name nor call one of the 33 inferred.
+     Answers are searched for on the page's own reader until the four shown
+     hold both kinds, so the check is never vacuous. Checked against the page
+     before this change first, where it fails on the line. */
+  for (const [w, hgt] of WIDTHS) {
+    console.log('\n--- the quiz saboteur cards, inferred or one of the 33, @' + w + ' ---');
+    const ictx = await browser.newContext({ viewport: { width: w, height: hgt } });
+    const ip = await ictx.newPage();
+    const ierrs = [];
+    ip.on('pageerror', e => ierrs.push(String(e && e.message || e)));
+    await ip.goto('file://' + path.join(DIR, 'quiz.html'), { waitUntil: 'load' });
+    const inf = await ip.evaluate(() => {
+      let seed = 11;
+      const R = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+      const cs = [...new Set(QQ.map(q => q.c))];
+      let tries = 0, top = null;
+      for (; tries < 400; tries++) {
+        const lean = {}; cs.forEach(c => { lean[c] = R() * 4; });
+        const ans = {};
+        QQ.forEach((q, i) => { ans[i] = Math.max(0, Math.min(4, Math.round(lean[q.c] + (R() - 0.5) * 2))); });
+        A = ans;
+        const t = topSabs(read(scored().p).reading, 4);
+        if (t.some(s => s.unnamed) && t.some(s => !s.unnamed)) { top = t; break; }
+      }
+      if (!top) return { tries: tries, top: null };
+      STATE = 'read'; READ_AT = 99; render();
+      const of33 = nm => SAB33.some(r => KB_KEY(r[0]) === KB_KEY(nm));
+      const cards = [...document.querySelectorAll('.read .sab')].map(c => ({
+        nm: (c.querySelector('h3') || {}).textContent || '',
+        inferred: [...c.querySelectorAll('.sl b')].some(b => b.textContent === 'Inferred:'),
+        line: ([...c.querySelectorAll('.sl')].filter(d => /^Inferred:/.test(d.textContent))[0] || {}).textContent || '' }));
+      return { tries: tries, top: top.map(s => ({ nm: s.nm, unnamed: !!s.unnamed, of33: of33(s.nm) })), cards: cards };
+    });
+    ok(!!inf.top, '@' + w + ': no answers in ' + inf.tries + ' tries showed an inferred cluster beside one of the 33');
+    if (inf.top) {
+      ok(inf.cards.length === inf.top.length && inf.cards.every((c, i) => c.nm === inf.top[i].nm),
+        '@' + w + ': the cards are the four the reader ranks: ' + JSON.stringify(inf.cards.map(c => c.nm)) + ' against '
+        + JSON.stringify(inf.top.map(s => s.nm)));
+      ok(inf.top.every(s => s.unnamed === !s.of33),
+        '@' + w + ': the engine flags unnamed exactly the names that are not one of the 33: ' + JSON.stringify(inf.top));
+      ok(inf.cards.every((c, i) => c.inferred === !!(inf.top[i] && inf.top[i].unnamed)),
+        '@' + w + ': a card says Inferred exactly when its name is not one of the 33: '
+        + JSON.stringify(inf.cards.map((c, i) => [c.nm, c.inferred, inf.top[i] && inf.top[i].unnamed])));
+      const said = inf.cards.filter(c => c.inferred).map(c => c.line);
+      ok(said.length > 0 && said.every(l => /33/.test(l) && /named for where it sits and the feeling it runs on/.test(l)),
+        '@' + w + ': and the line says what an inferred name is: ' + JSON.stringify(said[0] || ''));
+      console.log('  found in ' + (inf.tries + 1) + ' tries: ' + inf.cards.map(c => c.nm + (c.inferred ? ' (inferred)' : '')).join(', '));
+    }
+    ok(ierrs.length === 0, '@' + w + ': ' + ierrs.length + ' error(s) on the saboteur cards: ' + ierrs.slice(0, 2).join(' | '));
+    await ictx.close();
+  }
+
   /* ---------- the sendable build, if it has been made ---------- */
   console.log('\n--- dist ---');
   const DIST = path.join(DIR, 'dist');
