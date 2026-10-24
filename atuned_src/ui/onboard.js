@@ -1734,7 +1734,23 @@ addEventListener('click',function(e){
     below. Only that one sent tutorialCompleted, and the bridge's Not now and
     Go in are the ways out for somebody who did not run the release, so
     tests/golden.js found the server reading the first run as never finished
-    for every person who finished it the whole way. */
+    for every person who finished it the whole way.
+
+    THE MARK IS CALLED tutorialCompleted AND IT STAYS SO, 24 October, systems
+    audit SG-18. What it records is that the opening reached its end, here or
+    at the bridge's done, which is how the Account page already says it: "a
+    mark when you finish the opening". The name is from before the Day One
+    tutorial was deleted on 23 October. It is not renamed for the word, on the
+    identity rule DECISIONS.md records that day for ch and the character key,
+    because it is a stored key and not a label. The live server's checkpoint
+    accepts four keys and refuses any other with a 400 (Reboot-OS
+    atuned/server/src/funnel.js, validateCheckpointPatch), the first visit's
+    row keeps it as the column tutorial_completed, and four of its stored
+    functions read the key, so a rename sent from here alone would lose this
+    mark for every person who finishes. A rename starts on the server: accept
+    both names, migrate the column and the functions, deploy, and only then
+    send the new name from here, with tests/copy.js's table of sends moved in
+    the same change. */
  if(k==='endin'){
   if(typeof authFunnelCheckpoint==='function')authFunnelCheckpoint({tutorialCompleted:true});
   obClose('end'); return; }
