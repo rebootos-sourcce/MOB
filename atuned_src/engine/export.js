@@ -84,7 +84,7 @@ if(typeof module!=='undefined'&&module.exports){
                   TEACHER_RECIPES:TEACHER_RECIPES, RECIPE_STEPS:RECIPE_STEPS, recipeOf:recipeOf,
                   recipeRitual:recipeRitual, recipeSteps:recipeSteps,
                   PAINREG:PAINREG, PEOPLE:PEOPLE, LAWSET:LAWSET, BIRTH:BIRTH,
-                  LEX:LEX, ADJ2CHG:ADJ2CHG, PHRASES:PHRASES, VERP:VERP,
+                  LEX:LEX, ADJ2CHG:ADJ2CHG, PHRASES:PHRASES, LEXPLAIN:LEXPLAIN, plainSpans:plainSpans, VERP:VERP,
                   NERVEBR:NERVEBR, BODYPATH:BODYPATH, TAB:TAB,
   /* the ladder */MARKS:MARKS, ladderRead:ladderRead, markDays:markDays, BACK_GAP:BACK_GAP, ledgerRead:ledgerRead,
                   intentionRead:intentionRead, INTENT_DAYS:INTENT_DAYS,

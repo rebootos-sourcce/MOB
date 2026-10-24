@@ -295,6 +295,34 @@ var PHRASES=[
  [['find out i am','find out im','they will know','see through me'],'root',24,'exposure']];
 
 /* ============================================================
+   THE PLAIN IDIOM, P2-3 of the inference audit, 24 October. An idiom that
+   carries no feeling outranks its own words, by the rule PHRASES above
+   already follows, and then counts nowhere. Measured on d9ca4450 before
+   this: "I am afraid I cannot make it tonight" read fear at the root, "I am
+   dying to see the new film" read grief at the heart, and "I still cannot
+   stop crying" read the sacral compulsion phrase on top of the crying.
+
+   A row is [the idiom, the words that may follow it]. The idiom is plain
+   only when one of those follows straight after it, inside the same comma
+   group, so "I am afraid. I cannot breathe." and "I am afraid, I can't
+   breathe." keep their fear. An empty list means any word may follow, and
+   one must. A plain idiom's own words are skipped by the phrase, word and
+   adjective passes in scanStory. The words after it are not: "cannot stop
+   crying" drops the compulsion and still reads the crying.
+
+   The apology's frames are only the polite ones on purpose. "I am afraid
+   I will lose him" is fear, and so is "I am so afraid I cannot sleep",
+   which has a degree word between and is never this row. A false plain
+   reading hides a fear the person wrote, so a frame is added here only
+   when the polite sense is the ordinary one. */
+var LEXPLAIN=[
+ [['i am afraid','im afraid'],['i cannot','i cant','i can not','i have to','i must',
+   'i need to','i will have to','ill have to','not','so']],
+ [['dying to'],[]],
+ [['could not stop','cant stop','can not stop','cannot stop'],
+   ['crying','laughing','sobbing','weeping']]];
+
+/* ============================================================
    WHAT AN ENTRY IS, WHERE IT CAME FROM, AND WHAT IT MAY ASSERT.
 
    The three tables above were authored and nothing recorded their provenance,

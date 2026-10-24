@@ -8153,6 +8153,57 @@ g('S0 · the word pass: swearing and a bad day read, and the two known traps sta
  ok(keys.length>0&&E.lexVersion()===E.LEX_VERSION,'the lexicon stamp is taken after the pass, so an entry read by these words says so');
 }
 
+g('PLAIN · an idiom that carries no feeling outranks its own words and counts nowhere');
+/* Inference audit P2-3, 24 October. Measured on d9ca4450 before this: "I am
+   afraid I cannot make it tonight" read fear at the root, "I am dying to see
+   the new film" read grief at the heart, and "I still cannot stop crying"
+   read the sacral compulsion phrase on top of the crying. LEXPLAIN carries
+   each idiom and the words that may follow it, and scanStory skips the
+   idiom's own words in the phrase, word and adjective passes. Held here: the
+   idiom reads nothing of its own, the words after it still read, and the
+   same words said outside the idiom keep their feeling. */
+{
+ const {parseStory,scanStory,normMap,plainSpans,LEXPLAIN,lexVersion,LEX_VERSION}=E;
+ const sum=o=>Object.keys(o||{}).reduce((a,k)=>a+Math.abs(o[k]),0);
+ const fets=t=>[...new Set(parseStory(t).imprints.map(i=>i.fetter))].sort().join(',');
+ const has=(t,w)=>scanStory(t).some(h=>h.t===w);
+ /* the apology */
+ ['I am afraid I cannot make it tonight.',"I'm afraid I can't come to dinner.","I'm afraid not.",
+  'I am afraid I have to say no.'].forEach(t=>{const p=parseStory(t);
+  ok(p.imprints.length===0&&sum(p.bands)===0&&!has(t,'afraid'),
+   JSON.stringify(t)+' is an apology and reads no fear: '+JSON.stringify(p.bands));});
+ /* and fear said plainly stays fear: a real fear, a sentence end, a comma,
+    a degree word, and the word alone */
+ ['I am afraid I will lose him.','I am afraid. I cannot breathe.',"I am afraid, I can't breathe.",
+  'I am so afraid I cannot sleep.','I am afraid.'].forEach(t=>{
+  ok(fets(t).split(',').indexOf('Fear')>=0&&has(t,'afraid'),JSON.stringify(t)+' still reads fear: '+fets(t));});
+ /* the wish */
+ const dy='I am dying to see the new film.';
+ ok(parseStory(dy).imprints.length===0&&!has(dy,'dying'),
+  JSON.stringify(dy)+' is wanting and reads no grief: '+JSON.stringify(parseStory(dy).bands));
+ ['My father is dying.','He is dying. To lose him now is too much.'].forEach(t=>{
+  ok(fets(t).split(',').indexOf('Sad')>=0,JSON.stringify(t)+' still reads grief: '+fets(t));});
+ /* crying or laughing that will not stop */
+ const cr='I still cannot stop crying.';
+ ok(!scanStory(cr).some(h=>h.kind==='phrase')&&has(cr,'crying')&&fets(cr)==='Sad',
+  JSON.stringify(cr)+' reads the crying and no compulsion: '+fets(cr));
+ ok(parseStory("I can't stop laughing.").imprints.length===0,'"I can\'t stop laughing." reads nothing');
+ ['I cannot stop checking the locks.','I cannot stop.'].forEach(t=>{
+  ok(scanStory(t).some(h=>h.kind==='phrase'&&h.label==='compulsion'),JSON.stringify(t)+' is still a compulsion');});
+ /* every row is reachable with each word that may follow it, and no idiom
+    is plain on its own */
+ const dead=[], alone=[];
+ LEXPLAIN.forEach(r=>r[0].forEach(idm=>{
+  (r[1].length?r[1]:['see']).forEach(f=>{const t=idm+' '+f+' it';
+   if(!plainSpans(t,normMap(t)).length)dead.push(t);});
+  if(plainSpans(idm,normMap(idm)).length)alone.push(idm);}));
+ ok(dead.length===0,'every idiom is found with each word that may follow it, '+dead.length+' are not: '+JSON.stringify(dead.slice(0,4)));
+ ok(alone.length===0,'and none is plain with nothing after it: '+JSON.stringify(alone));
+ /* the stamp moves when the table does */
+ LEXPLAIN[1][0].push('xyzzy to'); const mv=lexVersion(); LEXPLAIN[1][0].pop();
+ ok(mv!==LEX_VERSION&&lexVersion()===LEX_VERSION,'adding a plain idiom moves the lexicon stamp, and taking it out puts it back');
+}
+
 g('S1 · a word said with a no is kept, named as denied, and adds nothing to any reading');
 /* REVIEW-sniffer-audit-2026-10-09.md, ruling 1 and package S1. Measured on
    main before this: "I was not angry" read Anger 18 at the solar plexus, the

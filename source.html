@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2442 f9f89057 2026-10-24 01:51"><head><meta charset="utf-8">
+<html lang="en" data-build="v2443 7243d4ae 2026-10-24 02:05"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -16608,6 +16608,34 @@ var PHRASES=[
  [['find out i am','find out im','they will know','see through me'],'root',24,'exposure']];
 
 /* ============================================================
+   THE PLAIN IDIOM, P2-3 of the inference audit, 24 October. An idiom that
+   carries no feeling outranks its own words, by the rule PHRASES above
+   already follows, and then counts nowhere. Measured on d9ca4450 before
+   this: "I am afraid I cannot make it tonight" read fear at the root, "I am
+   dying to see the new film" read grief at the heart, and "I still cannot
+   stop crying" read the sacral compulsion phrase on top of the crying.
+
+   A row is [the idiom, the words that may follow it]. The idiom is plain
+   only when one of those follows straight after it, inside the same comma
+   group, so "I am afraid. I cannot breathe." and "I am afraid, I can't
+   breathe." keep their fear. An empty list means any word may follow, and
+   one must. A plain idiom's own words are skipped by the phrase, word and
+   adjective passes in scanStory. The words after it are not: "cannot stop
+   crying" drops the compulsion and still reads the crying.
+
+   The apology's frames are only the polite ones on purpose. "I am afraid
+   I will lose him" is fear, and so is "I am so afraid I cannot sleep",
+   which has a degree word between and is never this row. A false plain
+   reading hides a fear the person wrote, so a frame is added here only
+   when the polite sense is the ordinary one. */
+var LEXPLAIN=[
+ [['i am afraid','im afraid'],['i cannot','i cant','i can not','i have to','i must',
+   'i need to','i will have to','ill have to','not','so']],
+ [['dying to'],[]],
+ [['could not stop','cant stop','can not stop','cannot stop'],
+   ['crying','laughing','sobbing','weeping']]];
+
+/* ============================================================
    WHAT AN ENTRY IS, WHERE IT CAME FROM, AND WHAT IT MAY ASSERT.
 
    The three tables above were authored and nothing recorded their provenance,
@@ -26961,15 +26989,39 @@ function sniffWho(t,nm,hits){
   h.other=true; h.whoAt=ws[r.k].at;
   h.who=ws.slice(r.k,r.j+1).map(function(x){return x.w;}).join(' ');
   if(r.unclear)h.unclear=true;});}
+/* THE PLAIN IDIOM, P2-3, see LEXPLAIN in the lexicon. Each span is a plain
+   idiom's own words, as {at, len} in nm.s: at is its leading space and len
+   its length, the same addressing every hit uses. The follower must be the
+   very next words and in the idiom's own comma group, read off wordsOf, so a
+   sentence end or a comma between them leaves the feeling where it was. */
+function plainSpans(t,nm){
+ var src=nm.s, out=[], ws=null, byAt=null;
+ LEXPLAIN.forEach(function(row){
+  row[0].forEach(function(idiom){
+   var at=src.indexOf(' '+idiom+' ');
+   while(at>=0){
+    if(!ws){ws=wordsOf(t,nm); byAt={}; ws.forEach(function(w,i){byAt[w.at]=i;});}
+    var i=byAt[at], n=idiom.split(' ').length;
+    var same=function(k){return ws[k]&&ws[k].g===ws[i].g;};
+    var ok=i!==undefined&&same(i+n-1)&&(row[1].length?row[1].some(function(f){
+     return f.split(' ').every(function(w,k){return same(i+n+k)&&ws[i+n+k].w===w;});}):same(i+n));
+    if(ok)out.push({at:at,len:idiom.length});
+    at=src.indexOf(' '+idiom+' ',at+1);}});});
+ return out;}
 function scanStory(text){
  var nm=normMap(text), src=nm.s;
  var hits=[];
- /* phrases first: an idiom outranks its own words */
+ /* a plain idiom first: nothing below may read a feeling inside one. A word
+    of len characters at at overlaps a span when each starts before the
+    other ends. */
+ var plain=plainSpans(text,nm);
+ var inPlain=function(at,len){return plain.some(function(p){return at<p.at+p.len&&p.at<at+len;});};
+ /* phrases next: an idiom outranks its own words */
  PHRASES.forEach(function(row){
   var words=row[0], band=row[1], amt=row[2], label=row[3];
   words.forEach(function(w){
    var at=src.indexOf(' '+w+' ');
-   while(at>=0){ hits.push({t:w,kind:'phrase',band:band,amt:amt,label:label,at:at});
+   while(at>=0){ if(!inPlain(at,w.length))hits.push({t:w,kind:'phrase',band:band,amt:amt,label:label,at:at});
     at=src.indexOf(' '+w+' ',at+1); }});});
  /* multi-word LEX entries next, then single words */
  var keys=Object.keys(LEX).sort(function(a,b){return b.length-a.length;});
@@ -26982,7 +27034,7 @@ function scanStory(text){
       following a longer one was suppressed, and keys are scanned longest
       first, so it bit constantly: a third of legitimate matches never landed.
       The phrase still outranks the words inside it, which is what this is for. */
-   if(!hits.some(function(h){return h.at<=at&&at<h.at+h.t.length+1;}))
+   if(!inPlain(at,w.length)&&!hits.some(function(h){return h.at<=at&&at<h.at+h.t.length+1;}))
     /* A WORD MAY NAME ITS OWN FETTER, and some have to.
 
        LEX was [seat, intensity] and the fetter was then inferred from the
@@ -27001,7 +27053,7 @@ function scanStory(text){
  /* adjectives name the charge even when they carry no band */
  Object.keys(ADJ2CHG).forEach(function(w){
   var at=src.indexOf(' '+w+' ');
-  while(at>=0){ hits.push({t:w,kind:'adj',charge:ADJ2CHG[w],at:at});
+  while(at>=0){ if(!inPlain(at,w.length))hits.push({t:w,kind:'adj',charge:ADJ2CHG[w],at:at});
    at=src.indexOf(' '+w+' ',at+1);}});
  /* THE DEGREE WORD, AZ6. A LEXMOD entry standing immediately before a word or
     phrase hit scales its amount, and the hit keeps both so the path and any
@@ -27831,7 +27883,8 @@ var LEXPROFRUN=lexProf();
    the canon, fold and composite passes have finished writing, over every
    table the scanner reads a match, an amount or a seat from: LEX, ADJ2CHG,
    PHRASES, LEXMOD and the place word tables, the blocking places included,
-   because adding one can stop a move. A word added, an amount
+   because adding one can stop a move, and LEXPLAIN, the plain idioms, for
+   the same reason: adding one stops a reading. A word added, an amount
    retuned or a seat moved changes it, and nothing else does.
 
    WHAT IT DOES NOT COVER, said so nobody has to discover it: a change to
@@ -27851,7 +27904,7 @@ function lexCanonJSON(v){
   return JSON.stringify(k)+':'+lexCanonJSON(v[k]);}).join(',')+'}';
  return JSON.stringify(v===undefined?null:v);}
 function lexVersion(){
- var s=[LEX,ADJ2CHG,PHRASES,LEXMOD,SOMA_PLACE.sense,SOMA_PLACE.seat,SOMA_PLACE_WORDS]
+ var s=[LEX,ADJ2CHG,PHRASES,LEXMOD,SOMA_PLACE.sense,SOMA_PLACE.seat,SOMA_PLACE_WORDS,LEXPLAIN]
   .map(lexCanonJSON).join('|');
  var h=0x811c9dc5;
  for(var i=0;i<s.length;i++){h^=s.charCodeAt(i); h=Math.imul(h,0x01000193)>>>0;}
@@ -32463,7 +32516,7 @@ if(typeof module!=='undefined'&&module.exports){
                   TEACHER_RECIPES:TEACHER_RECIPES, RECIPE_STEPS:RECIPE_STEPS, recipeOf:recipeOf,
                   recipeRitual:recipeRitual, recipeSteps:recipeSteps,
                   PAINREG:PAINREG, PEOPLE:PEOPLE, LAWSET:LAWSET, BIRTH:BIRTH,
-                  LEX:LEX, ADJ2CHG:ADJ2CHG, PHRASES:PHRASES, VERP:VERP,
+                  LEX:LEX, ADJ2CHG:ADJ2CHG, PHRASES:PHRASES, LEXPLAIN:LEXPLAIN, plainSpans:plainSpans, VERP:VERP,
                   NERVEBR:NERVEBR, BODYPATH:BODYPATH, TAB:TAB,
   /* the ladder */MARKS:MARKS, ladderRead:ladderRead, markDays:markDays, BACK_GAP:BACK_GAP, ledgerRead:ledgerRead,
                   intentionRead:intentionRead, INTENT_DAYS:INTENT_DAYS,
@@ -81294,5 +81347,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005361154"></div>
+<div id="eof" hidden data-len="005364356"></div>
 </body></html>

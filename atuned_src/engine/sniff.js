@@ -633,15 +633,39 @@ function sniffWho(t,nm,hits){
   h.other=true; h.whoAt=ws[r.k].at;
   h.who=ws.slice(r.k,r.j+1).map(function(x){return x.w;}).join(' ');
   if(r.unclear)h.unclear=true;});}
+/* THE PLAIN IDIOM, P2-3, see LEXPLAIN in the lexicon. Each span is a plain
+   idiom's own words, as {at, len} in nm.s: at is its leading space and len
+   its length, the same addressing every hit uses. The follower must be the
+   very next words and in the idiom's own comma group, read off wordsOf, so a
+   sentence end or a comma between them leaves the feeling where it was. */
+function plainSpans(t,nm){
+ var src=nm.s, out=[], ws=null, byAt=null;
+ LEXPLAIN.forEach(function(row){
+  row[0].forEach(function(idiom){
+   var at=src.indexOf(' '+idiom+' ');
+   while(at>=0){
+    if(!ws){ws=wordsOf(t,nm); byAt={}; ws.forEach(function(w,i){byAt[w.at]=i;});}
+    var i=byAt[at], n=idiom.split(' ').length;
+    var same=function(k){return ws[k]&&ws[k].g===ws[i].g;};
+    var ok=i!==undefined&&same(i+n-1)&&(row[1].length?row[1].some(function(f){
+     return f.split(' ').every(function(w,k){return same(i+n+k)&&ws[i+n+k].w===w;});}):same(i+n));
+    if(ok)out.push({at:at,len:idiom.length});
+    at=src.indexOf(' '+idiom+' ',at+1);}});});
+ return out;}
 function scanStory(text){
  var nm=normMap(text), src=nm.s;
  var hits=[];
- /* phrases first: an idiom outranks its own words */
+ /* a plain idiom first: nothing below may read a feeling inside one. A word
+    of len characters at at overlaps a span when each starts before the
+    other ends. */
+ var plain=plainSpans(text,nm);
+ var inPlain=function(at,len){return plain.some(function(p){return at<p.at+p.len&&p.at<at+len;});};
+ /* phrases next: an idiom outranks its own words */
  PHRASES.forEach(function(row){
   var words=row[0], band=row[1], amt=row[2], label=row[3];
   words.forEach(function(w){
    var at=src.indexOf(' '+w+' ');
-   while(at>=0){ hits.push({t:w,kind:'phrase',band:band,amt:amt,label:label,at:at});
+   while(at>=0){ if(!inPlain(at,w.length))hits.push({t:w,kind:'phrase',band:band,amt:amt,label:label,at:at});
     at=src.indexOf(' '+w+' ',at+1); }});});
  /* multi-word LEX entries next, then single words */
  var keys=Object.keys(LEX).sort(function(a,b){return b.length-a.length;});
@@ -654,7 +678,7 @@ function scanStory(text){
       following a longer one was suppressed, and keys are scanned longest
       first, so it bit constantly: a third of legitimate matches never landed.
       The phrase still outranks the words inside it, which is what this is for. */
-   if(!hits.some(function(h){return h.at<=at&&at<h.at+h.t.length+1;}))
+   if(!inPlain(at,w.length)&&!hits.some(function(h){return h.at<=at&&at<h.at+h.t.length+1;}))
     /* A WORD MAY NAME ITS OWN FETTER, and some have to.
 
        LEX was [seat, intensity] and the fetter was then inferred from the
@@ -673,7 +697,7 @@ function scanStory(text){
  /* adjectives name the charge even when they carry no band */
  Object.keys(ADJ2CHG).forEach(function(w){
   var at=src.indexOf(' '+w+' ');
-  while(at>=0){ hits.push({t:w,kind:'adj',charge:ADJ2CHG[w],at:at});
+  while(at>=0){ if(!inPlain(at,w.length))hits.push({t:w,kind:'adj',charge:ADJ2CHG[w],at:at});
    at=src.indexOf(' '+w+' ',at+1);}});
  /* THE DEGREE WORD, AZ6. A LEXMOD entry standing immediately before a word or
     phrase hit scales its amount, and the hit keeps both so the path and any
@@ -1503,7 +1527,8 @@ var LEXPROFRUN=lexProf();
    the canon, fold and composite passes have finished writing, over every
    table the scanner reads a match, an amount or a seat from: LEX, ADJ2CHG,
    PHRASES, LEXMOD and the place word tables, the blocking places included,
-   because adding one can stop a move. A word added, an amount
+   because adding one can stop a move, and LEXPLAIN, the plain idioms, for
+   the same reason: adding one stops a reading. A word added, an amount
    retuned or a seat moved changes it, and nothing else does.
 
    WHAT IT DOES NOT COVER, said so nobody has to discover it: a change to
@@ -1523,7 +1548,7 @@ function lexCanonJSON(v){
   return JSON.stringify(k)+':'+lexCanonJSON(v[k]);}).join(',')+'}';
  return JSON.stringify(v===undefined?null:v);}
 function lexVersion(){
- var s=[LEX,ADJ2CHG,PHRASES,LEXMOD,SOMA_PLACE.sense,SOMA_PLACE.seat,SOMA_PLACE_WORDS]
+ var s=[LEX,ADJ2CHG,PHRASES,LEXMOD,SOMA_PLACE.sense,SOMA_PLACE.seat,SOMA_PLACE_WORDS,LEXPLAIN]
   .map(lexCanonJSON).join('|');
  var h=0x811c9dc5;
  for(var i=0;i<s.length;i++){h^=s.charCodeAt(i); h=Math.imul(h,0x01000193)>>>0;}
