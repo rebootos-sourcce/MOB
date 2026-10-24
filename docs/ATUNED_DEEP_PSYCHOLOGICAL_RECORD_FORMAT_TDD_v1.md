@@ -389,3 +389,20 @@ First preserve this model in documentation; then audit schema, templates, adapte
 **Not established:** exact binary poles, canonical super-complex/archetype edges, quantitative scoring, clinical validity, deterministic development, and current runtime schema support.
 
 Do not close KPI 1 from this conceptual addition alone. It is a TDD update, not evidence that all records are populated, researched three times, or validated.
+
+
+---
+
+## 2026-10-24 KPI closure audit — registry scope remains open
+
+The record-level audit is maintained in [KPI Closure Audit](ATUNED_DEEP_PSYCHOLOGICAL_KPI_CLOSURE_AUDIT_2026-10-24.md), with a row-per-record companion at [Record Audit CSV](data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_AUDIT_2026-10-24.csv) and a repeatable Node audit at [strict closure audit script](../proto/knowledge/src/audit-deep-psychological-closure.js).
+
+### Current measured gates
+- Registry inventory: 125 declared / 125 measured / 125 unique IDs. This proves coverage only for this registry; it does not prove the whole Nerve-to-Super-Complex denominator.
+- Role-level content gate: 102/125. The 14 Blueprint entries count as complete only as non-canonical visualization-slot records. The 15 behavioral-domain records remain provisional and source-unverified; the eight Conscious Domain records have pass 1 complete and passes 2–3 blocked.
+- Research pass slots: 359/375 marked complete; 16 blocked. Pass status is not Canon approval.
+- Relationship graph: 103 records have empty `links` arrays explicitly classified as unresolved. The 36 mapping rows have zero approved semantic edges. The 36 source-table membership relationship objects remain `source_backed_open_ruling`.
+- Runtime integration and forward/backward traversal are not verified.
+
+### New required control
+Do not treat `templateValidation.missingFields` as the sole source of truth for template coverage. The audit must compare every actual record against every field in its assigned template, separately count provisional semantic content, and distinguish empty-but-valid link arrays from verified graph edges. Keep KPI 3 open until source-supported edges are adjudicated and runtime traversal tests pass.
