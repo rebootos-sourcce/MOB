@@ -389,3 +389,29 @@ First preserve this model in documentation; then audit schema, templates, adapte
 **Not established:** exact binary poles, canonical super-complex/archetype edges, quantitative scoring, clinical validity, deterministic development, and current runtime schema support.
 
 Do not close KPI 1 from this conceptual addition alone. It is a TDD update, not evidence that all records are populated, researched three times, or validated.
+
+
+---
+
+## 12. Recursive closure update — 2026-10-24
+
+**Status:** Record content and behavioral-domain research advanced; overall closure remains **OPEN**.
+
+### Verified registry snapshot
+- Registry version: **1.1.0**; declared and parsed count: **125/125**.
+- All 125 records now report `templateValidation.contentStatus = complete` with no template missing-field entries. This is record/template completeness, not canonical approval.
+- All 125 records contain exactly three research-pass slots marked complete with sources and findings. The current static snapshot has no missing IDs, duplicate IDs, or dangling IDs in scanned link/child/influence fields.
+- The fifteen behavioral-domain records now have explicit `behavioralEnergy`, `motivationalPull`, `attentionBias`, `actionTendency`, `adaptiveExpression`, `distortedExpression`, `researchSynthesis`, and `researchLimitations` fields. Their second pass uses independent scholarly research and their third pass records adversarial limits and cross-record contradictions, dated 2026-10-24.
+- The fourteen Blueprint Domain records are complete as non-canonical visualization-slot records only. Their names remain unresolved; do not count them as fourteen named canonical domains.
+- Schema and template catalog are version **1.1.0**. The registry audit program now checks the new behavioral-energy fields and date-stamped research passes for the behavioral-domain family.
+
+### Research sources and result
+See [Three-Pass Research Depth Pass — 2026-10-24](ATUNED_DEEP_PSYCHOLOGICAL_THREE_PASS_RESEARCH_DEPTH_PASS_2026-10-24.md) for the 15-record matrix, source links, synthesis, counterexamples, and limits.
+
+### Still open
+1. The owner-stated 15-domain list is not yet adjudicated against the v341 19-label roster.
+2. The source's Architect (Rulership)/Power/Imperium contradiction remains unresolved.
+3. The 36 ARCHDOM/ARCH18 source mapping rows remain unapproved as semantic/canonical edges; do not force equivalence by label similarity.
+4. The full denominator across the existing experiential Nerve-to-Super-Complex graph and the separate typed psychological registry must be inventoried and reconciled.
+5. The psychological registry remains separate from the experiential runtime. Generator/validator integration, forward and reverse traversal, reciprocal-edge tests, regression tests, and independent fresh-fetch closure have **not** been run in this execution.
+6. Do not report the three KPIs as 100% until the full layer denominator is proven, content/research acceptance is independently checked, and every required relationship is represented and validated. Current static results establish record/template population in this 125-record registry, not full-project closure.
