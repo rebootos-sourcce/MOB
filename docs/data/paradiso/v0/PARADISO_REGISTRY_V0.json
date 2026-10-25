@@ -1,0 +1,884 @@
+{
+  "meta": {
+    "release": "2026-10-25",
+    "status": "PARADISO_DRAFT_NOT_CANON",
+    "scope": "COMPASS_ONLY",
+    "sourceBaseBranch": "atunED/purgatorio-oscillation-v1-2026-10-25",
+    "count": 10,
+    "recordIds": [
+      "paradiso:PD01",
+      "paradiso:PD02",
+      "paradiso:PD03",
+      "paradiso:PD04",
+      "paradiso:PD05",
+      "paradiso:PD06",
+      "paradiso:PD07",
+      "paradiso:PD08",
+      "paradiso:PD09",
+      "paradiso:PD10"
+    ],
+    "requiredTemplateKeys": [
+      "nm",
+      "fam",
+      "def",
+      "body",
+      "inferred",
+      "inferenceBasis",
+      "behavior",
+      "triggerMechanism",
+      "livedExample",
+      "impact",
+      "practice",
+      "oppositeId",
+      "oppositeDefinition",
+      "oppositeStatus",
+      "confidence",
+      "reviewStatus",
+      "refer",
+      "narrativeSource",
+      "researchSources",
+      "researchPasses",
+      "links"
+    ],
+    "staticValidation": "PASS",
+    "sourcesPerRecord": 3,
+    "analyticalSectionsPerRecord": 4,
+    "independentSourcePassCertification": "NOT_COMPLETE",
+    "oppositesApproved": 0,
+    "liveRuntimeEdges": 0,
+    "verifiedExistingMasters": 11,
+    "twelveMasterProblem": "OWNER_NAME_UNRESOLVED",
+    "inferno38PublishedInFull": "NOT_CONFIRMED",
+    "purgatorio23GitHub": true,
+    "purgatorioLive": false
+  },
+  "records": [
+    {
+      "id": "paradiso:PD01",
+      "kind": "paradiso_sphere",
+      "sourceOrder": 1,
+      "sourceSphere": "Moon",
+      "sourceCantos": "I–V",
+      "archetypeRole": "CONSTRUCTIVE_CAPACITY_MAPPING_NOT_NEW_ENGINE_ARCHETYPE",
+      "candidateCompassAxes": [
+        "TR",
+        "OR"
+      ],
+      "templateId": "TPL-PARADISO-SUPERCOMPLEX-COMPAT-V0",
+      "nm": "Paradiso 01 — Moon",
+      "fam": "Compass / Paradiso / coherent-capacity source-space",
+      "def": "Staying true to a chosen commitment while acknowledging limits, coercion, and what was beyond one's control.",
+      "body": "DANTE: Vows under constraint; Piccarda Donati and Constance; Dante distinguishes coercion from inward fidelity. ATUNED BEHAVIORAL INTERPRETATION: Fidelity under pressure. MOVEMENT: RECEIVE reality → DIFFERENTIATE chosen from imposed duty → PRESERVE honest commitment → RELEASE false self-blame. DISCRIMINANT: Do not blame those coerced into breaking vows; faithfulness is not compliance with abuse or impossible promises.",
+      "inferred": true,
+      "inferenceBasis": "Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante",
+      "behavior": "RECEIVE reality → DIFFERENTIATE chosen from imposed duty → PRESERVE honest commitment → RELEASE false self-blame.",
+      "triggerMechanism": "A promise collides with external coercion, a real safety obligation, or changing capacity.",
+      "livedExample": "A worker reports accurately which obligations they could meet after an emergency, instead of claiming to have delivered what was impossible.",
+      "impact": "Integrity and trust improve when commitments are precise, revisable, and not confused with submission.",
+      "practice": "Name one freely chosen commitment, the constraint it faces, and one truthful action possible today.",
+      "oppositeId": null,
+      "oppositeDefinition": "Untruthful compliance, false claims of perfection, or treating coercion as voluntary failure.",
+      "oppositeStatus": "UNRESOLVED; contrast is not an approved canonical inverse",
+      "confidence": {
+        "literary": "SOURCE_REVIEWED",
+        "behavioral": "PROVISIONAL",
+        "runtime": "NOT_CONNECTED"
+      },
+      "reviewStatus": "DRAFT_PARADISO_V0_NOT_OWNER_APPROVED",
+      "refer": "Paradiso I–V",
+      "narrativeSource": "Dante, Paradiso I–V; https://danteworlds.laits.utexas.edu/paradiso/01moon.html",
+      "researchSources": [
+        "https://danteworlds.laits.utexas.edu/paradiso/01moon.html",
+        "https://danteworlds.laits.utexas.edu/textpopup/par0000.html",
+        "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "literary_source_and_boundaries",
+          "finding": "In Dante's Paradiso I–V, Vows under constraint; Piccarda Donati and Constance; Dante distinguishes coercion from inward fidelity. The scene establishes a literary location, not a psychometric hierarchy.",
+          "source": "https://danteworlds.laits.utexas.edu/paradiso/01moon.html",
+          "verification": "SOURCE_REVIEWED"
+        },
+        {
+          "pass": 2,
+          "name": "behavioral_mechanics",
+          "finding": "ATUNED candidate capacity: Fidelity under pressure. Behavioral movement: RECEIVE reality → DIFFERENTIATE chosen from imposed duty → PRESERVE honest commitment → RELEASE false self-blame.. Inferred translation; not asserted by Dante.",
+          "source": "atuned_src/engine/data/compass.js; ATUNED recursive movement primitives",
+          "verification": "FRAMEWORK_INTERPRETATION"
+        },
+        {
+          "pass": 3,
+          "name": "lived_discriminants",
+          "finding": "Trigger: A promise collides with external coercion, a real safety obligation, or changing capacity. Example: A worker reports accurately which obligations they could meet after an emergency, instead of claiming to have delivered what was impossible. Impact: Integrity and trust improve when commitments are precise, revisable, and not confused with submission.",
+          "source": "ATUNED authoring hypothesis; requires actual user observation",
+          "verification": "HYPOTHESIS"
+        },
+        {
+          "pass": 4,
+          "name": "adversarial_test_and_guardrails",
+          "finding": "Distinguish this capacity from: Untruthful compliance, false claims of perfection, or treating coercion as voluntary failure.. Guard: Do not blame those coerced into breaking vows; faithfulness is not compliance with abuse or impossible promises. Practice: Name one freely chosen commitment, the constraint it faces, and one truthful action possible today.",
+          "source": "Danteworlds source + ATUNED scope safeguards",
+          "verification": "FRAMEWORK_INTERPRETATION"
+        }
+      ],
+      "links": [
+        {
+          "id": "purgatorio:P08",
+          "type": "PROPOSED_JOURNEY_TRANSITION",
+          "status": "NOT_WIRED"
+        },
+        {
+          "id": "compass:axis:TR",
+          "type": "BEHAVIORAL_RESONANCE_CANDIDATE",
+          "status": "NOT_APPROVED"
+        }
+      ]
+    },
+    {
+      "id": "paradiso:PD02",
+      "kind": "paradiso_sphere",
+      "sourceOrder": 2,
+      "sourceSphere": "Mercury",
+      "sourceCantos": "V–VII",
+      "archetypeRole": "CONSTRUCTIVE_CAPACITY_MAPPING_NOT_NEW_ENGINE_ARCHETYPE",
+      "candidateCompassAxes": [
+        "IL",
+        "PO"
+      ],
+      "templateId": "TPL-PARADISO-SUPERCOMPLEX-COMPAT-V0",
+      "nm": "Paradiso 02 — Mercury",
+      "fam": "Compass / Paradiso / coherent-capacity source-space",
+      "def": "Doing work that benefits others without making reputation the condition of effort.",
+      "body": "DANTE: Justinian and Romeo; virtuous service complicated by a desire for fame and worldly honor. ATUNED BEHAVIORAL INTERPRETATION: Service without applause. MOVEMENT: SEEK contribution → EXPRESS useful work → RELEASE audience-dependence → CONNECT results to shared benefit. DISCRIMINANT: Leadership and fair recognition are not vanity; exploitation and invisibility are not duties.",
+      "inferred": true,
+      "inferenceBasis": "Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante",
+      "behavior": "SEEK contribution → EXPRESS useful work → RELEASE audience-dependence → CONNECT results to shared benefit.",
+      "triggerMechanism": "A useful act will be unseen, or a peer receives public credit.",
+      "livedExample": "A team member documents another person's contribution and completes an unglamorous repair without demanding acknowledgment.",
+      "impact": "The work becomes more reliable and public credit becomes less central to self-worth.",
+      "practice": "Choose one valuable action no one will notice; record its real result and whether visibility was needed.",
+      "oppositeId": null,
+      "oppositeDefinition": "Work motivated solely by status or prestige, presented as disinterested service.",
+      "oppositeStatus": "UNRESOLVED; contrast is not an approved canonical inverse",
+      "confidence": {
+        "literary": "SOURCE_REVIEWED",
+        "behavioral": "PROVISIONAL",
+        "runtime": "NOT_CONNECTED"
+      },
+      "reviewStatus": "DRAFT_PARADISO_V0_NOT_OWNER_APPROVED",
+      "refer": "Paradiso V–VII",
+      "narrativeSource": "Dante, Paradiso V–VII; https://danteworlds.laits.utexas.edu/paradiso/02mercury.html",
+      "researchSources": [
+        "https://danteworlds.laits.utexas.edu/paradiso/02mercury.html",
+        "https://danteworlds.laits.utexas.edu/textpopup/par0000.html",
+        "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "literary_source_and_boundaries",
+          "finding": "In Dante's Paradiso V–VII, Justinian and Romeo; virtuous service complicated by a desire for fame and worldly honor. The scene establishes a literary location, not a psychometric hierarchy.",
+          "source": "https://danteworlds.laits.utexas.edu/paradiso/02mercury.html",
+          "verification": "SOURCE_REVIEWED"
+        },
+        {
+          "pass": 2,
+          "name": "behavioral_mechanics",
+          "finding": "ATUNED candidate capacity: Service without applause. Behavioral movement: SEEK contribution → EXPRESS useful work → RELEASE audience-dependence → CONNECT results to shared benefit.. Inferred translation; not asserted by Dante.",
+          "source": "atuned_src/engine/data/compass.js; ATUNED recursive movement primitives",
+          "verification": "FRAMEWORK_INTERPRETATION"
+        },
+        {
+          "pass": 3,
+          "name": "lived_discriminants",
+          "finding": "Trigger: A useful act will be unseen, or a peer receives public credit. Example: A team member documents another person's contribution and completes an unglamorous repair without demanding acknowledgment. Impact: The work becomes more reliable and public credit becomes less central to self-worth.",
+          "source": "ATUNED authoring hypothesis; requires actual user observation",
+          "verification": "HYPOTHESIS"
+        },
+        {
+          "pass": 4,
+          "name": "adversarial_test_and_guardrails",
+          "finding": "Distinguish this capacity from: Work motivated solely by status or prestige, presented as disinterested service.. Guard: Leadership and fair recognition are not vanity; exploitation and invisibility are not duties. Practice: Choose one valuable action no one will notice; record its real result and whether visibility was needed.",
+          "source": "Danteworlds source + ATUNED scope safeguards",
+          "verification": "FRAMEWORK_INTERPRETATION"
+        }
+      ],
+      "links": [
+        {
+          "id": "purgatorio:P08",
+          "type": "PROPOSED_JOURNEY_TRANSITION",
+          "status": "NOT_WIRED"
+        },
+        {
+          "id": "compass:axis:IL",
+          "type": "BEHAVIORAL_RESONANCE_CANDIDATE",
+          "status": "NOT_APPROVED"
+        }
+      ]
+    },
+    {
+      "id": "paradiso:PD03",
+      "kind": "paradiso_sphere",
+      "sourceOrder": 3,
+      "sourceSphere": "Venus",
+      "sourceCantos": "VIII–IX",
+      "archetypeRole": "CONSTRUCTIVE_CAPACITY_MAPPING_NOT_NEW_ENGINE_ARCHETYPE",
+      "candidateCompassAxes": [
+        "DE",
+        "IL"
+      ],
+      "templateId": "TPL-PARADISO-SUPERCOMPLEX-COMPAT-V0",
+      "nm": "Paradiso 03 — Venus",
+      "fam": "Compass / Paradiso / coherent-capacity source-space",
+      "def": "Treating desire as energy for consensual, reciprocal connection without turning a person into possession or proof of worth.",
+      "body": "DANTE: Charles Martel, Cunizza, Folco, Rahab; love and desire are transformed in the blessed rather than erased. ATUNED BEHAVIORAL INTERPRETATION: Mutual love and honest desire. MOVEMENT: ATTRACT → CONNECT with consent → RECEIVE the other's perspective → RELEASE ownership. DISCRIMINANT: Consent, pleasure, orientation, sexual activity and ordinary desire are not moral defects.",
+      "inferred": true,
+      "inferenceBasis": "Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante",
+      "behavior": "ATTRACT → CONNECT with consent → RECEIVE the other's perspective → RELEASE ownership.",
+      "triggerMechanism": "Longing, rejection, infatuation or an opportunity to coerce affection.",
+      "livedExample": "Someone voices attraction honestly, hears a refusal, respects it, and stays humane and self-respecting.",
+      "impact": "Relating becomes more reciprocal; desire no longer dictates ownership or deception.",
+      "practice": "State a desire without demand, ask what the other person chooses, and honor the answer.",
+      "oppositeId": null,
+      "oppositeDefinition": "Manipulation, coercion, possessiveness, or claiming intimacy where no mutuality exists.",
+      "oppositeStatus": "UNRESOLVED; contrast is not an approved canonical inverse",
+      "confidence": {
+        "literary": "SOURCE_REVIEWED",
+        "behavioral": "PROVISIONAL",
+        "runtime": "NOT_CONNECTED"
+      },
+      "reviewStatus": "DRAFT_PARADISO_V0_NOT_OWNER_APPROVED",
+      "refer": "Paradiso VIII–IX",
+      "narrativeSource": "Dante, Paradiso VIII–IX; https://danteworlds.laits.utexas.edu/paradiso/03venus.html",
+      "researchSources": [
+        "https://danteworlds.laits.utexas.edu/paradiso/03venus.html",
+        "https://danteworlds.laits.utexas.edu/textpopup/par0000.html",
+        "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "literary_source_and_boundaries",
+          "finding": "In Dante's Paradiso VIII–IX, Charles Martel, Cunizza, Folco, Rahab; love and desire are transformed in the blessed rather than erased. The scene establishes a literary location, not a psychometric hierarchy.",
+          "source": "https://danteworlds.laits.utexas.edu/paradiso/03venus.html",
+          "verification": "SOURCE_REVIEWED"
+        },
+        {
+          "pass": 2,
+          "name": "behavioral_mechanics",
+          "finding": "ATUNED candidate capacity: Mutual love and honest desire. Behavioral movement: ATTRACT → CONNECT with consent → RECEIVE the other's perspective → RELEASE ownership.. Inferred translation; not asserted by Dante.",
+          "source": "atuned_src/engine/data/compass.js; ATUNED recursive movement primitives",
+          "verification": "FRAMEWORK_INTERPRETATION"
+        },
+        {
+          "pass": 3,
+          "name": "lived_discriminants",
+          "finding": "Trigger: Longing, rejection, infatuation or an opportunity to coerce affection. Example: Someone voices attraction honestly, hears a refusal, respects it, and stays humane and self-respecting. Impact: Relating becomes more reciprocal; desire no longer dictates ownership or deception.",
+          "source": "ATUNED authoring hypothesis; requires actual user observation",
+          "verification": "HYPOTHESIS"
+        },
+        {
+          "pass": 4,
+          "name": "adversarial_test_and_guardrails",
+          "finding": "Distinguish this capacity from: Manipulation, coercion, possessiveness, or claiming intimacy where no mutuality exists.. Guard: Consent, pleasure, orientation, sexual activity and ordinary desire are not moral defects. Practice: State a desire without demand, ask what the other person chooses, and honor the answer.",
+          "source": "Danteworlds source + ATUNED scope safeguards",
+          "verification": "FRAMEWORK_INTERPRETATION"
+        }
+      ],
+      "links": [
+        {
+          "id": "purgatorio:P08",
+          "type": "PROPOSED_JOURNEY_TRANSITION",
+          "status": "NOT_WIRED"
+        },
+        {
+          "id": "compass:axis:DE",
+          "type": "BEHAVIORAL_RESONANCE_CANDIDATE",
+          "status": "NOT_APPROVED"
+        }
+      ]
+    },
+    {
+      "id": "paradiso:PD04",
+      "kind": "paradiso_sphere",
+      "sourceOrder": 4,
+      "sourceSphere": "Sun",
+      "sourceCantos": "X–XIV",
+      "archetypeRole": "CONSTRUCTIVE_CAPACITY_MAPPING_NOT_NEW_ENGINE_ARCHETYPE",
+      "candidateCompassAxes": [
+        "PE",
+        "RE",
+        "OR"
+      ],
+      "templateId": "TPL-PARADISO-SUPERCOMPLEX-COMPAT-V0",
+      "nm": "Paradiso 04 — Sun",
+      "fam": "Compass / Paradiso / coherent-capacity source-space",
+      "def": "Seeking truth through evidence, humility and the capacity to recognize insight in those who disagree.",
+      "body": "DANTE: Thomas Aquinas, Bonaventure and two circles of wise spirits honor rivals and exchange praise across orders. ATUNED BEHAVIORAL INTERPRETATION: Collaborative wisdom. MOVEMENT: SEEK understanding → RECEIVE contradiction → DIFFERENTIATE evidence from certainty → CONNECT perspectives. DISCRIMINANT: Wisdom is not information hoarding, credential worship or retreat from practical accountability.",
+      "inferred": true,
+      "inferenceBasis": "Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante",
+      "behavior": "SEEK understanding → RECEIVE contradiction → DIFFERENTIATE evidence from certainty → CONNECT perspectives.",
+      "triggerMechanism": "A credible critic contradicts a belief or a rival produces a better explanation.",
+      "livedExample": "A researcher updates a cherished hypothesis after testing it and openly credits a different school of thought.",
+      "impact": "Shared understanding improves; certainty no longer substitutes for inquiry.",
+      "practice": "Name a belief, the strongest counterevidence, and the specific observation that would change your view.",
+      "oppositeId": null,
+      "oppositeDefinition": "Dogmatism, intellectual domination or selective use of evidence to appear wise.",
+      "oppositeStatus": "UNRESOLVED; contrast is not an approved canonical inverse",
+      "confidence": {
+        "literary": "SOURCE_REVIEWED",
+        "behavioral": "PROVISIONAL",
+        "runtime": "NOT_CONNECTED"
+      },
+      "reviewStatus": "DRAFT_PARADISO_V0_NOT_OWNER_APPROVED",
+      "refer": "Paradiso X–XIV",
+      "narrativeSource": "Dante, Paradiso X–XIV; https://danteworlds.laits.utexas.edu/paradiso/04sun.html",
+      "researchSources": [
+        "https://danteworlds.laits.utexas.edu/paradiso/04sun.html",
+        "https://danteworlds.laits.utexas.edu/textpopup/par0000.html",
+        "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "literary_source_and_boundaries",
+          "finding": "In Dante's Paradiso X–XIV, Thomas Aquinas, Bonaventure and two circles of wise spirits honor rivals and exchange praise across orders. The scene establishes a literary location, not a psychometric hierarchy.",
+          "source": "https://danteworlds.laits.utexas.edu/paradiso/04sun.html",
+          "verification": "SOURCE_REVIEWED"
+        },
+        {
+          "pass": 2,
+          "name": "behavioral_mechanics",
+          "finding": "ATUNED candidate capacity: Collaborative wisdom. Behavioral movement: SEEK understanding → RECEIVE contradiction → DIFFERENTIATE evidence from certainty → CONNECT perspectives.. Inferred translation; not asserted by Dante.",
+          "source": "atuned_src/engine/data/compass.js; ATUNED recursive movement primitives",
+          "verification": "FRAMEWORK_INTERPRETATION"
+        },
+        {
+          "pass": 3,
+          "name": "lived_discriminants",
+          "finding": "Trigger: A credible critic contradicts a belief or a rival produces a better explanation. Example: A researcher updates a cherished hypothesis after testing it and openly credits a different school of thought. Impact: Shared understanding improves; certainty no longer substitutes for inquiry.",
+          "source": "ATUNED authoring hypothesis; requires actual user observation",
+          "verification": "HYPOTHESIS"
+        },
+        {
+          "pass": 4,
+          "name": "adversarial_test_and_guardrails",
+          "finding": "Distinguish this capacity from: Dogmatism, intellectual domination or selective use of evidence to appear wise.. Guard: Wisdom is not information hoarding, credential worship or retreat from practical accountability. Practice: Name a belief, the strongest counterevidence, and the specific observation that would change your view.",
+          "source": "Danteworlds source + ATUNED scope safeguards",
+          "verification": "FRAMEWORK_INTERPRETATION"
+        }
+      ],
+      "links": [
+        {
+          "id": "purgatorio:P08",
+          "type": "PROPOSED_JOURNEY_TRANSITION",
+          "status": "NOT_WIRED"
+        },
+        {
+          "id": "compass:axis:PE",
+          "type": "BEHAVIORAL_RESONANCE_CANDIDATE",
+          "status": "NOT_APPROVED"
+        }
+      ]
+    },
+    {
+      "id": "paradiso:PD05",
+      "kind": "paradiso_sphere",
+      "sourceOrder": 5,
+      "sourceSphere": "Mars",
+      "sourceCantos": "XIV–XVIII",
+      "archetypeRole": "CONSTRUCTIVE_CAPACITY_MAPPING_NOT_NEW_ENGINE_ARCHETYPE",
+      "candidateCompassAxes": [
+        "CH",
+        "PO",
+        "IL"
+      ],
+      "templateId": "TPL-PARADISO-SUPERCOMPLEX-COMPAT-V0",
+      "nm": "Paradiso 05 — Mars",
+      "fam": "Compass / Paradiso / coherent-capacity source-space",
+      "def": "Bearing a real cost to uphold a justified principle while using the least harmful effective means.",
+      "body": "DANTE: Cacciaguida and the cross of holy warriors; faith, sacrifice and courage depicted through Dante's medieval political theology. ATUNED BEHAVIORAL INTERPRETATION: Courageous principled action. MOVEMENT: PROTECT → INITIATE chosen action → HOLD a boundary → RELEASE needless aggression. DISCRIMINANT: Dante's Crusade setting is literary-historical, not permission to romanticize religious warfare or violence.",
+      "inferred": true,
+      "inferenceBasis": "Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante",
+      "behavior": "PROTECT → INITIATE chosen action → HOLD a boundary → RELEASE needless aggression.",
+      "triggerMechanism": "A principle is costly to defend, or force seems easier than patient courage.",
+      "livedExample": "A colleague challenges retaliation against a vulnerable coworker and accepts personal risk without threatening anyone.",
+      "impact": "Reliability and protection increase without glorifying aggression.",
+      "practice": "Identify a difficult protective act, its real risks, and the least harmful way to take it.",
+      "oppositeId": null,
+      "oppositeDefinition": "Aggression, conquest or sacrificial performance falsely labeled courage.",
+      "oppositeStatus": "UNRESOLVED; contrast is not an approved canonical inverse",
+      "confidence": {
+        "literary": "SOURCE_REVIEWED",
+        "behavioral": "PROVISIONAL",
+        "runtime": "NOT_CONNECTED"
+      },
+      "reviewStatus": "DRAFT_PARADISO_V0_NOT_OWNER_APPROVED",
+      "refer": "Paradiso XIV–XVIII",
+      "narrativeSource": "Dante, Paradiso XIV–XVIII; https://danteworlds.laits.utexas.edu/paradiso/05mars.html",
+      "researchSources": [
+        "https://danteworlds.laits.utexas.edu/paradiso/05mars.html",
+        "https://danteworlds.laits.utexas.edu/textpopup/par0000.html",
+        "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "literary_source_and_boundaries",
+          "finding": "In Dante's Paradiso XIV–XVIII, Cacciaguida and the cross of holy warriors; faith, sacrifice and courage depicted through Dante's medieval political theology. The scene establishes a literary location, not a psychometric hierarchy.",
+          "source": "https://danteworlds.laits.utexas.edu/paradiso/05mars.html",
+          "verification": "SOURCE_REVIEWED"
+        },
+        {
+          "pass": 2,
+          "name": "behavioral_mechanics",
+          "finding": "ATUNED candidate capacity: Courageous principled action. Behavioral movement: PROTECT → INITIATE chosen action → HOLD a boundary → RELEASE needless aggression.. Inferred translation; not asserted by Dante.",
+          "source": "atuned_src/engine/data/compass.js; ATUNED recursive movement primitives",
+          "verification": "FRAMEWORK_INTERPRETATION"
+        },
+        {
+          "pass": 3,
+          "name": "lived_discriminants",
+          "finding": "Trigger: A principle is costly to defend, or force seems easier than patient courage. Example: A colleague challenges retaliation against a vulnerable coworker and accepts personal risk without threatening anyone. Impact: Reliability and protection increase without glorifying aggression.",
+          "source": "ATUNED authoring hypothesis; requires actual user observation",
+          "verification": "HYPOTHESIS"
+        },
+        {
+          "pass": 4,
+          "name": "adversarial_test_and_guardrails",
+          "finding": "Distinguish this capacity from: Aggression, conquest or sacrificial performance falsely labeled courage.. Guard: Dante's Crusade setting is literary-historical, not permission to romanticize religious warfare or violence. Practice: Identify a difficult protective act, its real risks, and the least harmful way to take it.",
+          "source": "Danteworlds source + ATUNED scope safeguards",
+          "verification": "FRAMEWORK_INTERPRETATION"
+        }
+      ],
+      "links": [
+        {
+          "id": "purgatorio:P08",
+          "type": "PROPOSED_JOURNEY_TRANSITION",
+          "status": "NOT_WIRED"
+        },
+        {
+          "id": "compass:axis:CH",
+          "type": "BEHAVIORAL_RESONANCE_CANDIDATE",
+          "status": "NOT_APPROVED"
+        }
+      ]
+    },
+    {
+      "id": "paradiso:PD06",
+      "kind": "paradiso_sphere",
+      "sourceOrder": 6,
+      "sourceSphere": "Jupiter",
+      "sourceCantos": "XVIII–XX",
+      "archetypeRole": "CONSTRUCTIVE_CAPACITY_MAPPING_NOT_NEW_ENGINE_ARCHETYPE",
+      "candidateCompassAxes": [
+        "OR",
+        "PO",
+        "PE"
+      ],
+      "templateId": "TPL-PARADISO-SUPERCOMPLEX-COMPAT-V0",
+      "nm": "Paradiso 06 — Jupiter",
+      "fam": "Compass / Paradiso / coherent-capacity source-space",
+      "def": "Applying transparent standards with humility about what is unknown, especially when holding power over others.",
+      "body": "DANTE: Just rulers form the eagle; Dante questions limited human judgments, exclusion and failures of political justice. ATUNED BEHAVIORAL INTERPRETATION: Accountable justice. MOVEMENT: RECEIVE facts → DIFFERENTIATE interests → ORDER fair procedure → EXPRESS accountable decision. DISCRIMINANT: A favorable outcome is not proof of justice; formal authority and religious identity do not establish moral merit.",
+      "inferred": true,
+      "inferenceBasis": "Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante",
+      "behavior": "RECEIVE facts → DIFFERENTIATE interests → ORDER fair procedure → EXPRESS accountable decision.",
+      "triggerMechanism": "An institution must decide under uncertainty or personal allegiance conflicts with fair process.",
+      "livedExample": "A manager discloses a conflict, hears the affected people, applies known criteria, and explains a reversible decision.",
+      "impact": "Power becomes reviewable and avoidable harm decreases.",
+      "practice": "Audit one decision for conflicts, excluded voices, evidence and a fair appeal route.",
+      "oppositeId": null,
+      "oppositeDefinition": "Arbitrary punishment, favoritism, secrecy or equating one's certainty with universal justice.",
+      "oppositeStatus": "UNRESOLVED; contrast is not an approved canonical inverse",
+      "confidence": {
+        "literary": "SOURCE_REVIEWED",
+        "behavioral": "PROVISIONAL",
+        "runtime": "NOT_CONNECTED"
+      },
+      "reviewStatus": "DRAFT_PARADISO_V0_NOT_OWNER_APPROVED",
+      "refer": "Paradiso XVIII–XX",
+      "narrativeSource": "Dante, Paradiso XVIII–XX; https://danteworlds.laits.utexas.edu/paradiso/06jupiter.html",
+      "researchSources": [
+        "https://danteworlds.laits.utexas.edu/paradiso/06jupiter.html",
+        "https://danteworlds.laits.utexas.edu/textpopup/par0000.html",
+        "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "literary_source_and_boundaries",
+          "finding": "In Dante's Paradiso XVIII–XX, Just rulers form the eagle; Dante questions limited human judgments, exclusion and failures of political justice. The scene establishes a literary location, not a psychometric hierarchy.",
+          "source": "https://danteworlds.laits.utexas.edu/paradiso/06jupiter.html",
+          "verification": "SOURCE_REVIEWED"
+        },
+        {
+          "pass": 2,
+          "name": "behavioral_mechanics",
+          "finding": "ATUNED candidate capacity: Accountable justice. Behavioral movement: RECEIVE facts → DIFFERENTIATE interests → ORDER fair procedure → EXPRESS accountable decision.. Inferred translation; not asserted by Dante.",
+          "source": "atuned_src/engine/data/compass.js; ATUNED recursive movement primitives",
+          "verification": "FRAMEWORK_INTERPRETATION"
+        },
+        {
+          "pass": 3,
+          "name": "lived_discriminants",
+          "finding": "Trigger: An institution must decide under uncertainty or personal allegiance conflicts with fair process. Example: A manager discloses a conflict, hears the affected people, applies known criteria, and explains a reversible decision. Impact: Power becomes reviewable and avoidable harm decreases.",
+          "source": "ATUNED authoring hypothesis; requires actual user observation",
+          "verification": "HYPOTHESIS"
+        },
+        {
+          "pass": 4,
+          "name": "adversarial_test_and_guardrails",
+          "finding": "Distinguish this capacity from: Arbitrary punishment, favoritism, secrecy or equating one's certainty with universal justice.. Guard: A favorable outcome is not proof of justice; formal authority and religious identity do not establish moral merit. Practice: Audit one decision for conflicts, excluded voices, evidence and a fair appeal route.",
+          "source": "Danteworlds source + ATUNED scope safeguards",
+          "verification": "FRAMEWORK_INTERPRETATION"
+        }
+      ],
+      "links": [
+        {
+          "id": "purgatorio:P08",
+          "type": "PROPOSED_JOURNEY_TRANSITION",
+          "status": "NOT_WIRED"
+        },
+        {
+          "id": "compass:axis:OR",
+          "type": "BEHAVIORAL_RESONANCE_CANDIDATE",
+          "status": "NOT_APPROVED"
+        }
+      ]
+    },
+    {
+      "id": "paradiso:PD07",
+      "kind": "paradiso_sphere",
+      "sourceOrder": 7,
+      "sourceSphere": "Saturn",
+      "sourceCantos": "XXI–XXII",
+      "archetypeRole": "CONSTRUCTIVE_CAPACITY_MAPPING_NOT_NEW_ENGINE_ARCHETYPE",
+      "candidateCompassAxes": [
+        "RE",
+        "TR",
+        "PE"
+      ],
+      "templateId": "TPL-PARADISO-SUPERCOMPLEX-COMPAT-V0",
+      "nm": "Paradiso 07 — Saturn",
+      "fam": "Compass / Paradiso / coherent-capacity source-space",
+      "def": "Remaining available to experience without needing constant output, noise, explanation or performance.",
+      "body": "DANTE: Peter Damian and Benedict on the contemplative ladder; silence when celestial song would overwhelm Dante. ATUNED BEHAVIORAL INTERPRETATION: Contemplative presence. MOVEMENT: WITHDRAW from stimulation → RECEIVE present experience → HOLD attention → RELEASE compulsive doing. DISCRIMINANT: Rest, disability, fatigue and reasonable withdrawal are not sloth; contemplation is not evasion.",
+      "inferred": true,
+      "inferenceBasis": "Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante",
+      "behavior": "WITHDRAW from stimulation → RECEIVE present experience → HOLD attention → RELEASE compulsive doing.",
+      "triggerMechanism": "Silence or nonproductivity provokes discomfort and urges constant stimulation.",
+      "livedExample": "A person spends a deliberate quiet interval noticing what is present, then returns to a task with clearer priorities.",
+      "impact": "Attention and discernment can recover from constant reactivity.",
+      "practice": "Choose five minutes of quiet; afterward record what was actually observed, not what was hoped for.",
+      "oppositeId": null,
+      "oppositeDefinition": "Disengagement or avoidance framed as spiritual superiority.",
+      "oppositeStatus": "UNRESOLVED; contrast is not an approved canonical inverse",
+      "confidence": {
+        "literary": "SOURCE_REVIEWED",
+        "behavioral": "PROVISIONAL",
+        "runtime": "NOT_CONNECTED"
+      },
+      "reviewStatus": "DRAFT_PARADISO_V0_NOT_OWNER_APPROVED",
+      "refer": "Paradiso XXI–XXII",
+      "narrativeSource": "Dante, Paradiso XXI–XXII; https://danteworlds.laits.utexas.edu/paradiso/07saturn.html",
+      "researchSources": [
+        "https://danteworlds.laits.utexas.edu/paradiso/07saturn.html",
+        "https://danteworlds.laits.utexas.edu/textpopup/par0000.html",
+        "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "literary_source_and_boundaries",
+          "finding": "In Dante's Paradiso XXI–XXII, Peter Damian and Benedict on the contemplative ladder; silence when celestial song would overwhelm Dante. The scene establishes a literary location, not a psychometric hierarchy.",
+          "source": "https://danteworlds.laits.utexas.edu/paradiso/07saturn.html",
+          "verification": "SOURCE_REVIEWED"
+        },
+        {
+          "pass": 2,
+          "name": "behavioral_mechanics",
+          "finding": "ATUNED candidate capacity: Contemplative presence. Behavioral movement: WITHDRAW from stimulation → RECEIVE present experience → HOLD attention → RELEASE compulsive doing.. Inferred translation; not asserted by Dante.",
+          "source": "atuned_src/engine/data/compass.js; ATUNED recursive movement primitives",
+          "verification": "FRAMEWORK_INTERPRETATION"
+        },
+        {
+          "pass": 3,
+          "name": "lived_discriminants",
+          "finding": "Trigger: Silence or nonproductivity provokes discomfort and urges constant stimulation. Example: A person spends a deliberate quiet interval noticing what is present, then returns to a task with clearer priorities. Impact: Attention and discernment can recover from constant reactivity.",
+          "source": "ATUNED authoring hypothesis; requires actual user observation",
+          "verification": "HYPOTHESIS"
+        },
+        {
+          "pass": 4,
+          "name": "adversarial_test_and_guardrails",
+          "finding": "Distinguish this capacity from: Disengagement or avoidance framed as spiritual superiority.. Guard: Rest, disability, fatigue and reasonable withdrawal are not sloth; contemplation is not evasion. Practice: Choose five minutes of quiet; afterward record what was actually observed, not what was hoped for.",
+          "source": "Danteworlds source + ATUNED scope safeguards",
+          "verification": "FRAMEWORK_INTERPRETATION"
+        }
+      ],
+      "links": [
+        {
+          "id": "purgatorio:P08",
+          "type": "PROPOSED_JOURNEY_TRANSITION",
+          "status": "NOT_WIRED"
+        },
+        {
+          "id": "compass:axis:RE",
+          "type": "BEHAVIORAL_RESONANCE_CANDIDATE",
+          "status": "NOT_APPROVED"
+        }
+      ]
+    },
+    {
+      "id": "paradiso:PD08",
+      "kind": "paradiso_sphere",
+      "sourceOrder": 8,
+      "sourceSphere": "Fixed Stars",
+      "sourceCantos": "XXII–XXVII",
+      "archetypeRole": "CONSTRUCTIVE_CAPACITY_MAPPING_NOT_NEW_ENGINE_ARCHETYPE",
+      "candidateCompassAxes": [
+        "TR",
+        "IL",
+        "DE"
+      ],
+      "templateId": "TPL-PARADISO-SUPERCOMPLEX-COMPAT-V0",
+      "nm": "Paradiso 08 — Fixed Stars",
+      "fam": "Compass / Paradiso / coherent-capacity source-space",
+      "def": "Holding realistic trust, future-directed possibility and generous regard together without losing factual judgment.",
+      "body": "DANTE: Peter, James and John question Dante respectively on faith, hope and love; the Church Triumphant appears. ATUNED BEHAVIORAL INTERPRETATION: Trust, hope and love in action. MOVEMENT: PRESERVE warranted trust → SEEK viable future → CONNECT compassionately → EXPRESS follow-through. DISCRIMINANT: Faith is not credulity, hope is not denial, and love is not enabling harm; Dante's theology is source context, not a user requirement.",
+      "inferred": true,
+      "inferenceBasis": "Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante",
+      "behavior": "PRESERVE warranted trust → SEEK viable future → CONNECT compassionately → EXPRESS follow-through.",
+      "triggerMechanism": "Doubt, a discouraging setback or another person's need tests professed values.",
+      "livedExample": "A team names uncertainty, commits to a realistic path, and supports an affected member without concealing risks.",
+      "impact": "Professed values become visible as reciprocal, sustained conduct.",
+      "practice": "Write one warranted trust, one evidence-based hope and one tangible act of care; test each in action.",
+      "oppositeId": null,
+      "oppositeDefinition": "Unfounded certainty, magical reassurance or conditional charity.",
+      "oppositeStatus": "UNRESOLVED; contrast is not an approved canonical inverse",
+      "confidence": {
+        "literary": "SOURCE_REVIEWED",
+        "behavioral": "PROVISIONAL",
+        "runtime": "NOT_CONNECTED"
+      },
+      "reviewStatus": "DRAFT_PARADISO_V0_NOT_OWNER_APPROVED",
+      "refer": "Paradiso XXII–XXVII",
+      "narrativeSource": "Dante, Paradiso XXII–XXVII; https://danteworlds.laits.utexas.edu/paradiso/08fixedstars.html",
+      "researchSources": [
+        "https://danteworlds.laits.utexas.edu/paradiso/08fixedstars.html",
+        "https://danteworlds.laits.utexas.edu/textpopup/par0000.html",
+        "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "literary_source_and_boundaries",
+          "finding": "In Dante's Paradiso XXII–XXVII, Peter, James and John question Dante respectively on faith, hope and love; the Church Triumphant appears. The scene establishes a literary location, not a psychometric hierarchy.",
+          "source": "https://danteworlds.laits.utexas.edu/paradiso/08fixedstars.html",
+          "verification": "SOURCE_REVIEWED"
+        },
+        {
+          "pass": 2,
+          "name": "behavioral_mechanics",
+          "finding": "ATUNED candidate capacity: Trust, hope and love in action. Behavioral movement: PRESERVE warranted trust → SEEK viable future → CONNECT compassionately → EXPRESS follow-through.. Inferred translation; not asserted by Dante.",
+          "source": "atuned_src/engine/data/compass.js; ATUNED recursive movement primitives",
+          "verification": "FRAMEWORK_INTERPRETATION"
+        },
+        {
+          "pass": 3,
+          "name": "lived_discriminants",
+          "finding": "Trigger: Doubt, a discouraging setback or another person's need tests professed values. Example: A team names uncertainty, commits to a realistic path, and supports an affected member without concealing risks. Impact: Professed values become visible as reciprocal, sustained conduct.",
+          "source": "ATUNED authoring hypothesis; requires actual user observation",
+          "verification": "HYPOTHESIS"
+        },
+        {
+          "pass": 4,
+          "name": "adversarial_test_and_guardrails",
+          "finding": "Distinguish this capacity from: Unfounded certainty, magical reassurance or conditional charity.. Guard: Faith is not credulity, hope is not denial, and love is not enabling harm; Dante's theology is source context, not a user requirement. Practice: Write one warranted trust, one evidence-based hope and one tangible act of care; test each in action.",
+          "source": "Danteworlds source + ATUNED scope safeguards",
+          "verification": "FRAMEWORK_INTERPRETATION"
+        }
+      ],
+      "links": [
+        {
+          "id": "purgatorio:P08",
+          "type": "PROPOSED_JOURNEY_TRANSITION",
+          "status": "NOT_WIRED"
+        },
+        {
+          "id": "compass:axis:TR",
+          "type": "BEHAVIORAL_RESONANCE_CANDIDATE",
+          "status": "NOT_APPROVED"
+        }
+      ]
+    },
+    {
+      "id": "paradiso:PD09",
+      "kind": "paradiso_sphere",
+      "sourceOrder": 9,
+      "sourceSphere": "Primum Mobile",
+      "sourceCantos": "XXVII–XXX",
+      "archetypeRole": "CONSTRUCTIVE_CAPACITY_MAPPING_NOT_NEW_ENGINE_ARCHETYPE",
+      "candidateCompassAxes": [
+        "OR",
+        "RE",
+        "PO"
+      ],
+      "templateId": "TPL-PARADISO-SUPERCOMPLEX-COMPAT-V0",
+      "nm": "Paradiso 09 — Primum Mobile",
+      "fam": "Compass / Paradiso / coherent-capacity source-space",
+      "def": "Letting intention, understanding and action reinforce one another while revising mistaken models.",
+      "body": "DANTE: The first mover and nine angelic orders; Beatrice explains their apparent inverse relation to heavenly spheres. ATUNED BEHAVIORAL INTERPRETATION: Coherent ordering of action. MOVEMENT: ORDER purpose → CONNECT interdependent actions → TRANSFORM mistaken assumptions → PRESERVE movement. DISCRIMINANT: The nine angelic orders are literary-theological constructs; no literal energy, neuroscience or physical mechanics follow.",
+      "inferred": true,
+      "inferenceBasis": "Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante",
+      "behavior": "ORDER purpose → CONNECT interdependent actions → TRANSFORM mistaken assumptions → PRESERVE movement.",
+      "triggerMechanism": "System complexity, clashing models or authority claims obstruct a clear course.",
+      "livedExample": "A team discovers an inverted assumption, revises the workflow, and coordinates action without hiding the error.",
+      "impact": "The system becomes more legible and adaptable without requiring coercive order.",
+      "practice": "Identify one mismatch between your mental model and outcomes; correct the model and one process.",
+      "oppositeId": null,
+      "oppositeDefinition": "Rigid hierarchy, total control or spiritual claims used to suppress correction.",
+      "oppositeStatus": "UNRESOLVED; contrast is not an approved canonical inverse",
+      "confidence": {
+        "literary": "SOURCE_REVIEWED",
+        "behavioral": "PROVISIONAL",
+        "runtime": "NOT_CONNECTED"
+      },
+      "reviewStatus": "DRAFT_PARADISO_V0_NOT_OWNER_APPROVED",
+      "refer": "Paradiso XXVII–XXX",
+      "narrativeSource": "Dante, Paradiso XXVII–XXX; https://danteworlds.laits.utexas.edu/paradiso/09primum.html",
+      "researchSources": [
+        "https://danteworlds.laits.utexas.edu/paradiso/09primum.html",
+        "https://danteworlds.laits.utexas.edu/textpopup/par0000.html",
+        "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "literary_source_and_boundaries",
+          "finding": "In Dante's Paradiso XXVII–XXX, The first mover and nine angelic orders; Beatrice explains their apparent inverse relation to heavenly spheres. The scene establishes a literary location, not a psychometric hierarchy.",
+          "source": "https://danteworlds.laits.utexas.edu/paradiso/09primum.html",
+          "verification": "SOURCE_REVIEWED"
+        },
+        {
+          "pass": 2,
+          "name": "behavioral_mechanics",
+          "finding": "ATUNED candidate capacity: Coherent ordering of action. Behavioral movement: ORDER purpose → CONNECT interdependent actions → TRANSFORM mistaken assumptions → PRESERVE movement.. Inferred translation; not asserted by Dante.",
+          "source": "atuned_src/engine/data/compass.js; ATUNED recursive movement primitives",
+          "verification": "FRAMEWORK_INTERPRETATION"
+        },
+        {
+          "pass": 3,
+          "name": "lived_discriminants",
+          "finding": "Trigger: System complexity, clashing models or authority claims obstruct a clear course. Example: A team discovers an inverted assumption, revises the workflow, and coordinates action without hiding the error. Impact: The system becomes more legible and adaptable without requiring coercive order.",
+          "source": "ATUNED authoring hypothesis; requires actual user observation",
+          "verification": "HYPOTHESIS"
+        },
+        {
+          "pass": 4,
+          "name": "adversarial_test_and_guardrails",
+          "finding": "Distinguish this capacity from: Rigid hierarchy, total control or spiritual claims used to suppress correction.. Guard: The nine angelic orders are literary-theological constructs; no literal energy, neuroscience or physical mechanics follow. Practice: Identify one mismatch between your mental model and outcomes; correct the model and one process.",
+          "source": "Danteworlds source + ATUNED scope safeguards",
+          "verification": "FRAMEWORK_INTERPRETATION"
+        }
+      ],
+      "links": [
+        {
+          "id": "purgatorio:P08",
+          "type": "PROPOSED_JOURNEY_TRANSITION",
+          "status": "NOT_WIRED"
+        },
+        {
+          "id": "compass:axis:OR",
+          "type": "BEHAVIORAL_RESONANCE_CANDIDATE",
+          "status": "NOT_APPROVED"
+        }
+      ]
+    },
+    {
+      "id": "paradiso:PD10",
+      "kind": "paradiso_sphere",
+      "sourceOrder": 10,
+      "sourceSphere": "Empyrean",
+      "sourceCantos": "XXX–XXXIII",
+      "archetypeRole": "CONSTRUCTIVE_CAPACITY_MAPPING_NOT_NEW_ENGINE_ARCHETYPE",
+      "candidateCompassAxes": [
+        "IL",
+        "RE",
+        "TR"
+      ],
+      "templateId": "TPL-PARADISO-SUPERCOMPLEX-COMPAT-V0",
+      "nm": "Paradiso 10 — Empyrean",
+      "fam": "Compass / Paradiso / coherent-capacity source-space",
+      "def": "Experiencing connection without making a person, role or exalted state the property of the ego.",
+      "body": "DANTE: Beyond the moving spheres: river of light, white rose, Saint Bernard, and an inexpressible final vision of love. ATUNED BEHAVIORAL INTERPRETATION: Nonpossessive unity and unforced expression. MOVEMENT: RELEASE identification → CONNECT without ownership → RECEIVE difference → EXPRESS care without transaction. DISCRIMINANT: The Empyrean is not a CQ=100 badge, an automatic neurological state, or a claim that a user has become God; Source is not a destination.",
+      "inferred": true,
+      "inferenceBasis": "Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante",
+      "behavior": "RELEASE identification → CONNECT without ownership → RECEIVE difference → EXPRESS care without transaction.",
+      "triggerMechanism": "A moment of closeness, recognition or accomplishment tempts appropriation or spiritual superiority.",
+      "livedExample": "After a meaningful collective success, someone shares credit, remains open to correction, and serves the next need without claiming special rank.",
+      "impact": "Connection is less conditional and the person can return to ordinary conduct without identity inflation.",
+      "practice": "After meaningful connection, name what you can enact for someone else without claiming the experience makes you superior.",
+      "oppositeId": null,
+      "oppositeDefinition": "Performative transcendence, dissociation, exceptionalism or spiritualized manipulation.",
+      "oppositeStatus": "UNRESOLVED; contrast is not an approved canonical inverse",
+      "confidence": {
+        "literary": "SOURCE_REVIEWED",
+        "behavioral": "PROVISIONAL",
+        "runtime": "NOT_CONNECTED"
+      },
+      "reviewStatus": "DRAFT_PARADISO_V0_NOT_OWNER_APPROVED",
+      "refer": "Paradiso XXX–XXXIII",
+      "narrativeSource": "Dante, Paradiso XXX–XXXIII; https://danteworlds.laits.utexas.edu/paradiso/10empyrean.html",
+      "researchSources": [
+        "https://danteworlds.laits.utexas.edu/paradiso/10empyrean.html",
+        "https://danteworlds.laits.utexas.edu/textpopup/par0000.html",
+        "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "literary_source_and_boundaries",
+          "finding": "In Dante's Paradiso XXX–XXXIII, Beyond the moving spheres: river of light, white rose, Saint Bernard, and an inexpressible final vision of love. The scene establishes a literary location, not a psychometric hierarchy.",
+          "source": "https://danteworlds.laits.utexas.edu/paradiso/10empyrean.html",
+          "verification": "SOURCE_REVIEWED"
+        },
+        {
+          "pass": 2,
+          "name": "behavioral_mechanics",
+          "finding": "ATUNED candidate capacity: Nonpossessive unity and unforced expression. Behavioral movement: RELEASE identification → CONNECT without ownership → RECEIVE difference → EXPRESS care without transaction.. Inferred translation; not asserted by Dante.",
+          "source": "atuned_src/engine/data/compass.js; ATUNED recursive movement primitives",
+          "verification": "FRAMEWORK_INTERPRETATION"
+        },
+        {
+          "pass": 3,
+          "name": "lived_discriminants",
+          "finding": "Trigger: A moment of closeness, recognition or accomplishment tempts appropriation or spiritual superiority. Example: After a meaningful collective success, someone shares credit, remains open to correction, and serves the next need without claiming special rank. Impact: Connection is less conditional and the person can return to ordinary conduct without identity inflation.",
+          "source": "ATUNED authoring hypothesis; requires actual user observation",
+          "verification": "HYPOTHESIS"
+        },
+        {
+          "pass": 4,
+          "name": "adversarial_test_and_guardrails",
+          "finding": "Distinguish this capacity from: Performative transcendence, dissociation, exceptionalism or spiritualized manipulation.. Guard: The Empyrean is not a CQ=100 badge, an automatic neurological state, or a claim that a user has become God; Source is not a destination. Practice: After meaningful connection, name what you can enact for someone else without claiming the experience makes you superior.",
+          "source": "Danteworlds source + ATUNED scope safeguards",
+          "verification": "FRAMEWORK_INTERPRETATION"
+        }
+      ],
+      "links": [
+        {
+          "id": "purgatorio:P08",
+          "type": "PROPOSED_JOURNEY_TRANSITION",
+          "status": "NOT_WIRED"
+        },
+        {
+          "id": "compass:axis:IL",
+          "type": "BEHAVIORAL_RESONANCE_CANDIDATE",
+          "status": "NOT_APPROVED"
+        }
+      ]
+    }
+  ]
+}
