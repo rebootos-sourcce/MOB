@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2641 13cf64fb 2026-10-25 20:59"><head><meta charset="utf-8">
+<html lang="en" data-build="v2642 d4dcdebc 2026-10-25 21:16"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -9246,7 +9246,7 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
          reaches; balance opens its reading. The ids are kept because every
          gate reads them. -->
     <div class="fdial" id="fdial">
-     <div class="polbar" id="polbar" role="img" tabindex="0" aria-label="Orientation. Benign against malignant."></div>
+     <div class="polbar" id="polbar" role="img" tabindex="0" aria-label="Orientation. Positive against negative."></div>
      <button type="button" class="bal" id="bal"
       aria-label="Balance. Masculine against feminine. Opens the reading."></button>
     </div>
@@ -14730,8 +14730,8 @@ var UNPACK_BASE={
  'rail:radiance':'Radiance is vitality, awareness and will put together, and it sets how bright the field behind the wheel is.',
  'rail:flow':'Flow is how much gets from the base of your spine to the top of your head, each seat passing on part of what it gets.',
  'rail:orientation':'Orientation is which way the charge you hold leans, toward costing you nothing or toward taking something from you.',
- 'rail:benign':'Benign is charge you hold that is not costing you anything.',
- 'rail:malignant':'Malignant is charge you hold that is taking something from you.',
+ 'rail:benign':'Positive is charge you hold that is not costing you anything.',
+ 'rail:malignant':'Negative is charge you hold that is taking something from you.',
  'rail:balance':'Balance is which way your body moves under what you feel, out toward the world or in toward yourself.',
  'rail:masculine':'Masculine is energy given a shape and a direction and sent outward, and it does not mean men.',
  'rail:feminine':'Feminine is energy held and taken inward, and it does not mean women.',
@@ -50126,7 +50126,7 @@ function sumStory(r){
     the glossary already holds for the word (rail:benign, rail:malignant in
     engine/data/gloss.js) follows it on the page, read from that one table so
     the two can never say different things. */
- var leanW=lean.ben>=lean.mal?'benign':'malignant';
+ var leanW=lean.ben>=lean.mal?'positive':'negative';
  p.push(((lean.read===false?'':'Your energy leans <b>'
   +leanW+'</b>'
   +(r.benign===null?'':', toward '+(r.benign?'expanding':'contracting'))+'. '
@@ -81260,7 +81260,7 @@ const GLYPH_F='<circle cx="12" cy="9" r="6"/><path d="M12 15v7M8.5 19h7"/>';
    ORIENTATION AND BALANCE ARE ONE MECHANIC, AND ONE BAR. FJ in TASKS.md,
    his words: "Orientation and balance, those two elements need to be designed
    the same way, it's the same mechanic." Each is two shares of one whole.
-   Orientation is benign against malignant, leanRead, and the two add to 100.
+   Orientation is positive against negative, leanRead, and the two add to 100.
    Balance is the outward mean against the inward mean, balance(), and as
    shares of their sum they add to 100 as well.
 
@@ -81449,21 +81449,21 @@ function render(){
      per cent benign for somebody who had answered no law at all. */
   if(r.malig===null){$('pol').innerHTML='<div class="bmnote">Coherence is still filling, '
    +'so there is no split to show.</div>'; return;}
-  $('pol').innerHTML='<div class="bmrow"><span class="bmk">Benign</span>'
+  $('pol').innerHTML='<div class="bmrow"><span class="bmk">Positive</span>'
    +'<span class="bmbar"><i style="width:'+ben.toFixed(0)+'%;background:'+PAL.Heart+'"></i></span>'
    /* fmtPct('lean'), 17 October, percent phase 2: a share of nought is the
       dash and never "0%", the registry's one rule for every figure */
    +'<span class="bmv" style="color:'+PAL.Heart+'">'+fmtPct('lean',ben)+'</span></div>'
-   +'<div class="bmrow"><span class="bmk">Malignant</span>'
+   +'<div class="bmrow"><span class="bmk">Negative</span>'
    +'<span class="bmbar"><i style="width:'+mal.toFixed(0)+'%;background:'+PAL.Root+'"></i></span>'
    +'<span class="bmv" style="color:'+PAL.Root+'">'+fmtPct('lean',mal)+'</span></div>'
    /* This said "building more than it costs", which is the ledger sentence and
       the ledger belongs to the scale, where it is defined against the median.
       A field at CQ 39 read Incoherent in the rail and "building more than it
-      costs" two inches away, because this line was reading the benign split
+      costs" two inches away, because this line was reading the positive split
       and not coherence at all. It says what it actually measures. */
-   +'<div class="bmnote">'+(ben>=mal?'most of what is held is benign'
-     :'most of what is held is malignant')+'</div>';})();
+   +'<div class="bmnote">'+(ben>=mal?'most of what is held is positive'
+     :'most of what is held is negative')+'</div>';})();
  /* The how to block sat permanently under the wheel repeating what the depth
     buttons already say. Ruled out. The text survives as the depth button's own
     tooltip, where it is asked for rather than always on. */
@@ -81495,12 +81495,12 @@ function render(){
   /* the meeting point is the benign share, so a malignant swing moves it the
      other way, and the left pole carries the swing for the pair */
   var spec={read:read, whole:true,
-   L:{nm:'Benign',ic:'halo',c:seatCol('Heart'),v:L.ben||0,sw:sw.sw?function(t){return -sw.sw(t);}:null,fw:sw.fw},
-   R:{nm:'Malignant',ic:'fork',c:seatCol('Root'),v:L.mal||0}};
+   L:{nm:'Positive',ic:'halo',c:seatCol('Heart'),v:L.ben||0,sw:sw.sw?function(t){return -sw.sw(t);}:null,fw:sw.fw},
+   R:{nm:'Negative',ic:'fork',c:seatCol('Root'),v:L.mal||0}};
   var n=Math.round(L.cues||0);
   var lean=r.unread?'Nothing read yet, so there is no lean to show.'
    :!read?'Coherence is still filling, so there is no lean to show.'
-   :(L.ben>L.mal?'It leans benign':L.mal>L.ben?'It leans malignant':'It is even')
+   :(L.ben>L.mal?'It leans positive':L.mal>L.ben?'It leans negative':'It is even')
     +', and the notches mark where the two meet. '
     +(n?'It is read from '+(r.malig!==null&&r.malig!==undefined?'your coherence and ':'')+n+' cue'+(n===1?'':'s')+' in your stories.'
       :'No story yet, so it is read from your coherence alone.')
@@ -82191,5 +82191,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005420961"></div>
+<div id="eof" hidden data-len="005420971"></div>
 </body></html>

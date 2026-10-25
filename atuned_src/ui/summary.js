@@ -392,7 +392,7 @@ function sumStory(r){
     the glossary already holds for the word (rail:benign, rail:malignant in
     engine/data/gloss.js) follows it on the page, read from that one table so
     the two can never say different things. */
- var leanW=lean.ben>=lean.mal?'benign':'malignant';
+ var leanW=lean.ben>=lean.mal?'positive':'negative';
  p.push(((lean.read===false?'':'Your energy leans <b>'
   +leanW+'</b>'
   +(r.benign===null?'':', toward '+(r.benign?'expanding':'contracting'))+'. '

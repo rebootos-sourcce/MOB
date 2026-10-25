@@ -1,5 +1,81 @@
 # ATÜNED MVP Alpha, Development Statistics Snapshot
-Snapshot: 2026-10-22 (CQ formula source audit; canonical Intention mismatch found)
+
+## Snapshot: 2026-10-25 (real runtime verification closes most of P5's gap; one owner decision blocks P3)
+Scope: the same contract, after three independent runtime audits actually ran the
+engine (simulation, forward and backward), the full records inventory, and the
+both-poles UI check, against a real Chromium, against the live build. This is
+the first comparable runtime snapshot the 22 October entry below said did not
+exist yet.
+
+## Headline
+| Measure | Current value | Basis |
+|---|---:|---|
+| Runtime acceptance criteria verified complete | not 100% | Real, named progress since 22 October, not full closure. See block table. |
+| P0 canonical architecture/ownership contract | 100% | Unchanged, still contract-only. |
+| P3, CQ/DQ/SQ framework mapping | blocked on one owner decision | Named below. Everything else in P3 is now runtime-verified, not just implemented. |
+| Build delta since 22 October | large, evidence-backed | tests/engine.js: 6247 passed, 0 failed, run repeatedly today, not claimed from a commit count. |
+
+## What today's audits actually verified, against this contract's own ledger
+
+**P3, CQ/DQ/SQ calculation integration.** The 22 October entry said "arithmetic
+wired, framework mapping blocked." Today's audit ran it, not just read it:
+- CQ computes exactly as the 22 October ruling specifies, across 500 random
+  profiles. Proven, not asserted.
+- DQ computes correctly across 300 profiles, and its seat-level breakdown
+  checks out across 200 more.
+- SQ, confirmed by source inspection to still be exactly this contract's own
+  definition, "sum of individual fetter/node weights" (`const SQ=NODES.map(n
+  =>n.sq)`, `compute.js:496`), feeding DQ (`compute.js:497`). It does not yet
+  reach outward to Awareness, Flow, Radiance, Vitality, or the Positive and
+  Negative lean the owner named today. That wiring does not exist yet; this is
+  now a named gap, not an open question of whether it exists.
+- Forward simulation works, proven by running it, not by reading the code.
+- Backward simulation does not exist as a built feature. The core math does
+  invert by hand. Written as a realistic story and run the normal way through
+  the sniffer, it does not yet reliably land on a specific target. Named
+  precisely in the engine audit, not asserted as either broken or working.
+- **Still blocked, and this is the one piece of P3 that needs him, not more
+  verification:** `compute.js` derives Intention from band-answered laws.
+  `docs/briefs/cq-unified.md` and `DECISIONS.md` define Intention as
+  action-linked, said-versus-did follow-through over a seven day window
+  (`intentionRead`). These are two different things computing one number
+  called Intention. The 22 October snapshot named this and it is still true
+  today: CQ cannot be called framework-correct until he picks one.
+
+**P5, end-to-end verification.** The 22 October entry read 0% verified, no
+build or test run claimed. Today: `tests/engine.js` run repeatedly, 6247
+passed, 0 failed, 10 expected red. A full records inventory ran against the
+live build, not a draft. A both-poles UI check ran against real screenshots,
+both widths, a loaded and an empty profile, images actually looked at. This
+does not close P5, release hit-feedback and the full end-to-end browser chain
+are not part of what ran today, but it is real evidence where the ledger
+previously had none.
+
+**P4, release/intervention loop.** Unchanged, still 0%, not touched today.
+
+**P6, final integration and handoff.** Unchanged, still blocked on P3 and P4.
+
+## New since 22 October, not in the old ledger
+- The resistance/avoidance signal (the six gates, "THE SIX AXES" at the top of
+  `engine/verp.js`) computes correctly and has a structural rule already
+  written into the engine against showing it as a bare number. It has no
+  screen. Not a P3 metric gap, a rendering gap, named for whoever builds that
+  screen.
+- The body-location read (where on the body a story lands) does not use the
+  location at all right now; it spreads evenly regardless of what body part a
+  person names. Verified by running two otherwise-identical stories through
+  it and comparing the output.
+- Shock and Surprise are read by about one word each in the whole lexicon.
+
+## Audit rule, unchanged from 22 October
+Do not upgrade a percentage because a document was written or a commit
+exists. The entries above are upgraded only where the entry itself names what
+was actually run and what it actually proved. Update this file after every
+subsequent build or pass, and keep the entry below for delta calculation.
+
+---
+
+# Snapshot: 2026-10-22 (CQ formula source audit; canonical Intention mismatch found)
 Scope: Priority-1 CQ / Coherence formula integration, including downstream projections and the connected signal architecture
 Baseline type: Updated after P0 contract closure; first comparable runtime snapshot remains unavailable, so no build delta is claimed.
 
@@ -30,7 +106,7 @@ Implementation percentages below describe code and integration present on the br
 - Implemented in this pass: CQ model 3 formula wiring in `compute.js`; returned formula inputs; revised CQ regression expectations and added explicit formula contract assertions; added `ATUNED_CQ_COHERENCE_FORMULA_INTEGRATION_TDD_v1.md`.
 - Verified by source inspection: story text and onboarding metadata live under p.story.entries; address/nerve identity is sourced from NODES; trace is strict and stored through p.trace; the current source does not establish that NODES[].d or OUTWARD/INWARD is qualium.
 - Not verified: runtime signal → fetter → qualium → node/tone traversal, marker rendering, persistence round trip for new links, metric isolation, release-feedback integration, build/tests.
-- Test status: passed 0 confirmed; failed 0 confirmed; blocked/not run: documented build, engine, and release-chain tests. “0 passed” means no run evidence is available, not that tests failed.
+- Test status: passed 0 confirmed; failed 0 confirmed; blocked/not run: documented build, engine, and release-chain tests. "0 passed" means no run evidence is available, not that tests failed.
 
 ## Open gaps
 1. Structured sensory and emotional input capture at the existing source/imprint owner remains a separate follow-on; current story text is preserved as raw source and is not misrepresented as a fully structured waveform.
