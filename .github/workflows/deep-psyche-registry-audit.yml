@@ -41,23 +41,23 @@ jobs:
       - name: Audit psychological source registry
         id: source-audit
         continue-on-error: true
-        run: node proto/knowledge/src/audit-psychological-registry.js 2>&1 | tee artifacts/source-registry-audit.log
+        run: set -o pipefail; node proto/knowledge/src/audit-psychological-registry.js 2>&1 | tee artifacts/source-registry-audit.log
       - name: Validate runtime adapter
         id: adapter
         continue-on-error: true
-        run: node proto/knowledge/src/adapt-psychological-registry.js --check 2>&1 | tee artifacts/psychological-adapter.log
+        run: set -o pipefail; node proto/knowledge/src/adapt-psychological-registry.js --check 2>&1 | tee artifacts/psychological-adapter.log
       - name: Regenerate shared knowledge runtime data
         id: build
         continue-on-error: true
-        run: node proto/knowledge/src/gen-data.js 2>&1 | tee artifacts/runtime-generation.log
+        run: set -o pipefail; node proto/knowledge/src/gen-data.js 2>&1 | tee artifacts/runtime-generation.log
       - name: Validate generated graph and required templates
         id: graph-validation
         continue-on-error: true
-        run: node proto/knowledge/src/validate-templates.js 2>&1 | tee artifacts/runtime-graph-validation.log
+        run: set -o pipefail; node proto/knowledge/src/validate-templates.js 2>&1 | tee artifacts/runtime-graph-validation.log
       - name: Evaluate strict closure gate
         id: strict-closure
         continue-on-error: true
-        run: node proto/knowledge/src/audit-psychological-registry.js --strict 2>&1 | tee artifacts/strict-closure-gate.log
+        run: set -o pipefail; node proto/knowledge/src/audit-psychological-registry.js --strict 2>&1 | tee artifacts/strict-closure-gate.log
       - name: Write closure summary
         if: always()
         env:
