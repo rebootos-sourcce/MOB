@@ -20,6 +20,24 @@ function readJson(file) {
 const registry = readJson(registryPath);
 const catalog = readJson(catalogPath);
 const relationshipEdges = Array.isArray(registry.relationshipEdges) ? registry.relationshipEdges : [];
+const engineDataPath = path.join(ROOT, 'proto/knowledge/src/data.js');
+const engineIds = new Set();
+const engineLabels = new Map();
+if (fs.existsSync(engineDataPath)) {
+  const source = fs.readFileSync(engineDataPath, 'utf8');
+  const match = source.match(/var KBD=(.*);\\s*$/s);
+  if (match) {
+    const db = JSON.parse(match[1]);
+    for (const entry of (db.entries || [])) {
+      if (entry.id) engineIds.add(entry.id);
+      const key = String(entry.nm || '').trim().toLowerCase();
+      if (key) {
+        if (!engineLabels.has(key)) engineLabels.set(key, []);
+        engineLabels.get(key).push(entry.id);
+      }
+    }
+  }
+}
 const templateById = new Map((catalog.templates || []).map(t => [t.id, t]));
 const ids = new Set();
 const errors = [];
@@ -96,13 +114,50 @@ for (const entry of entries) {
   for (const target of entry.childIds) if (!ids.has(target)) errors.push(entry.id + ': dangling childId ' + target);
   if (entry.parentId && !ids.has(entry.parentId)) errors.push(entry.id + ': dangling parentId ' + entry.parentId);
 }
+const targetResolutionCounts = {};
+const unresolvedRelationshipTargets = [];
 for (const edge of relationshipEdges) {
   if (!edge.edgeId || edgeIds.has(edge.edgeId)) edgeErrors.push({ edgeId: edge.edgeId || null, issue: 'missing_or_duplicate_edge_id' });
   edgeIds.add(edge.edgeId);
   if (!ids.has(edge.fromId)) edgeErrors.push({ edgeId: edge.edgeId, issue: 'source_record_missing', fromId: edge.fromId });
-  if (edge.toId && edge.targetRegistry === 'deep_psychological_registry' && !ids.has(edge.toId)) edgeErrors.push({ edgeId: edge.edgeId, issue: 'target_record_missing', toId: edge.toId });
-  if (!edge.toId && (!edge.toLabel || !edge.status)) edgeErrors.push({ edgeId: edge.edgeId, issue: 'unresolved_target_needs_label_and_status' });
+  if (edge.toId) {
+    const targetRegistry = edge.targetRegistry || edge.toRegistry || 'unspecified';
+    let targetExists = false;
+    let targetUniverse = targetRegistry;
+    if (targetRegistry === 'deep_psychological_registry' || targetRegistry === 'ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY') {
+      targetExists = ids.has(edge.toId);
+    } else if (targetRegistry === 'experiential_runtime' || targetRegistry === 'ATUNED_EXPERIENTIAL_RUNTIME') {
+      targetExists = engineIds.has(edge.toId);
+      targetUniverse = 'experiential_runtime';
+    } else {
+      targetExists = ids.has(edge.toId);
+      if (!targetExists && engineIds.size) targetExists = engineIds.has(edge.toId);
+    }
+    const bucket = targetUniverse + ':' + (targetExists ? 'resolved_exact_id' : 'unresolved_exact_id');
+    targetResolutionCounts[bucket] = (targetResolutionCounts[bucket] || 0) + 1;
+    if (!targetExists) {
+      unresolvedRelationshipTargets.push({
+        edgeId: edge.edgeId,
+        targetRegistry,
+        toId: edge.toId,
+        toLabel: edge.toLabel || null,
+        validationStatus: edge.validationStatus || 'unspecified'
+      });
+    }
+  } else {
+    targetResolutionCounts[(edge.targetRegistry || 'unspecified') + ':unresolved_label_only'] =
+      (targetResolutionCounts[(edge.targetRegistry || 'unspecified') + ':unresolved_label_only'] || 0) + 1;
+    if (!edge.toLabel || !edge.status) edgeErrors.push({ edgeId: edge.edgeId, issue: 'unresolved_target_needs_label_and_status' });
+    else unresolvedRelationshipTargets.push({
+      edgeId: edge.edgeId,
+      targetRegistry: edge.targetRegistry || edge.toRegistry || 'unspecified',
+      toId: null,
+      toLabel: edge.toLabel,
+      validationStatus: edge.validationStatus || 'unresolved_label_only'
+    });
+  }
 }
+if (unresolvedRelationshipTargets.length) warnings.push('Relationship endpoints unresolved: ' + unresolvedRelationshipTargets.length + ' of ' + relationshipEdges.length + '; candidate edges are not treated as runtime wiring.');
 const result = {
   schema: 'atuned.deep_psychological.engine_adapter.v1',
   status: errors.length ? 'FAIL' : (warnings.length ? 'PASS_WITH_CONTENT_GAPS' : 'PASS'),
@@ -114,7 +169,12 @@ const result = {
   errors, warnings, entries,
   relationshipEdges,
   relationshipEdgeCount: relationshipEdges.length,
-  relationshipEdgeErrors: edgeErrors
+  relationshipEdgeErrors: edgeErrors,
+  targetResolutionCounts,
+  unresolvedRelationshipTargets,
+  unresolvedRelationshipTargetCount: unresolvedRelationshipTargets.length,
+  engineTargetUniverseLoaded: engineIds.size > 0,
+  engineTargetIdCount: engineIds.size
 };
 const outIndex = process.argv.indexOf('--out');
 const outPath = outIndex >= 0 ? process.argv[outIndex + 1] : null;
@@ -126,6 +186,8 @@ console.log(JSON.stringify({
   uniqueIdCount: result.uniqueIdCount, templateAssignedCount: result.templateAssignedCount,
   structurallyIncompleteCount: result.structurallyIncompleteCount,
   errorCount: errors.length, warningCount: warnings.length,
-  relationshipEdgeCount: relationshipEdges.length, relationshipEdgeErrorCount: edgeErrors.length
+  relationshipEdgeCount: relationshipEdges.length, relationshipEdgeErrorCount: edgeErrors.length,
+  unresolvedRelationshipTargetCount: unresolvedRelationshipTargets.length, targetResolutionCounts,
+  engineTargetUniverseLoaded: engineIds.size > 0, engineTargetIdCount: engineIds.size
 }, null, 2));
 if (errors.length) process.exitCode = 1;
