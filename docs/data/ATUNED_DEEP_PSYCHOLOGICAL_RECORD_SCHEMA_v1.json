@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/rebootos-sourcce/MOB/blob/main/docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_SCHEMA_v1.json",
   "title": "ATÜNED Shared Deep-Psychological Record",
-  "description": "Shared record envelope. The template payload is a derived projection built by the adapter from top-level source fields and the versioned template catalog; it is not duplicated in the source registry to avoid drift. Conditional requirements now include researchSources, researchSynthesis, and researchLimitations for source Complex, Hyper-Complex, MIRROR, CIRCLES, BLUEPRINT, and CASCADE records. Adds explicit source-child-label records with provenance and research/crosswalk fields. Requires independent research synthesis and limitations for DESCENT and Super-Complex candidate records. Requires researched behavioral-energy fields for all archetype candidates. Requires independent historical-context research and explicit cultural limitations for cultural-figure mapping rows.",
+  "description": "Shared record envelope. The template payload is a derived projection built by the adapter from top-level source fields and the versioned template catalog; it is not duplicated in the source registry to avoid drift. Conditional requirements now include researchSources, researchSynthesis, and researchLimitations for source Complex, Hyper-Complex, MIRROR, CIRCLES, BLUEPRINT, and CASCADE records. Adds explicit source-child-label records with provenance and research/crosswalk fields. Requires independent research synthesis and limitations for DESCENT and Super-Complex candidate records. Requires researched behavioral-energy fields for all archetype candidates. Requires independent historical-context research and explicit cultural limitations for cultural-figure mapping rows. Adds researched provisional interpretations and adversarial limitations for source roster and historical domain-candidate records.",
   "type": "object",
   "required": [
     "id",
@@ -698,10 +698,14 @@
       "items": {
         "type": "string"
       }
+    },
+    "provisionalResearchDefinition": {
+      "type": "string",
+      "description": "Provisional research-informed interpretation, distinct from source-verbatim definition."
     }
   },
   "additionalProperties": true,
-  "version": "2.3.0",
+  "version": "2.4.0",
   "allOf": [
     {
       "if": {
