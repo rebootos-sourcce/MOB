@@ -61,8 +61,13 @@ for (const e of entries.filter(x => x.kind === 'complex')) {
   if (!e.sourceStatus || !Array.isArray(e.childNames)) errors.push(e.id + ': missing source status or child-name inventory');
   if (e.sourceStatus === 'R') {
     for (const name of (e.childNames || [])) {
-      const child = entries.find(x => x.kind === 'sab' && x.nm === name);
-      if (!child) errors.push(e.id + ': source-recorded Saboteur child not resolved: ' + name);
+      const child = entries.find(x =>
+        (x.kind === 'sab' && x.nm === name) ||
+        (x.kind === 'psych_source_label' && x.sourceKind === 'source_label' &&
+         x.template && x.template.sourceLabel === name &&
+         x.template.sourceFamily === 'SOURCE OS CANON complex child labels')
+      );
+      if (!child) errors.push(e.id + ': source-recorded child label record not resolved: ' + name);
       else if (!(e.links || []).includes(child.id) || !(child.links || []).includes(e.id)) errors.push(e.id + ': source-recorded child link missing or non-reciprocal: ' + child.id);
     }
   }
@@ -92,11 +97,12 @@ for (const e of entries.filter(x => x.kind === 'descent_candidate')) {
   if (!e.sourceClaimedLayer || !e.ownerRuling) errors.push(e.id + ': source layer claim or owner ruling missing');
   if (e.nm === 'Psychopathy' && !/rejected/i.test(e.canonicalStatus || '')) errors.push(e.id + ': Psychopathy must retain the explicit owner rejection for canonical Super-Complex status');
 }
+const typedEdgeIds = new Set();
 for (const edge of (db.relationshipEdges || [])) {
   if (!edge.edgeId || typedEdgeIds.has(edge.edgeId)) errors.push('missing or duplicate edge id: ' + (edge.edgeId || '<unknown>'));
   typedEdgeIds.add(edge.edgeId);
   if (!byId.has(edge.fromId)) errors.push((edge.edgeId || '<unknown>') + ': source endpoint missing: ' + edge.fromId);
-  if (edge.toId && !byId.has(edge.toId)) errors.push((edge.edgeId || '<unknown>') + ': target endpoint missing: ' + edge.toId);
+  if (edge.toId && !byId.has(edge.toId) && edge.targetRegistry !== 'external_or_unresolved') errors.push((edge.edgeId || '<unknown>') + ': target endpoint missing: ' + edge.toId);
 }
 for (const edge of (db.relationshipEdges || [])) {
   for (const field of ['relationshipType','status','canonicality','validationStatus']) {
@@ -104,7 +110,6 @@ for (const edge of (db.relationshipEdges || [])) {
   }
   if (!edge.toId && (!edge.toLabel || !edge.status)) errors.push((edge.edgeId || '<unknown>') + ': unresolved target needs a label and status');
 }
-const typedEdgeIds = new Set();
 for (const kind of requiredKinds) {
   if (!counts[kind]) errors.push('required domain kind absent from generated catalog: ' + kind);
 }
