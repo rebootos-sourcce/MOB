@@ -2083,6 +2083,15 @@ function meterFirst(p,key,label,at){
 function profMark(p){ try{ if(p&&p.id)devSet('open',p.id); }catch(e){} }
 
 var IMPORT_ERR=null;
+/* Stable comparison is used only for identity collisions at the import
+   boundary. Key order in pasted JSON is not semantic, but different field
+   values under the same profile ID must never replace the local record. */
+function importStable(v){
+ if(Array.isArray(v))return '['+v.map(importStable).join(',')+']';
+ if(v&&typeof v==='object')return '{'+Object.keys(v).filter(function(k){return v[k]!==undefined;}).sort()
+  .map(function(k){return JSON.stringify(k)+':'+importStable(v[k]);}).join(',')+'}';
+ return JSON.stringify(v);
+}
 function pImport(txt){
  IMPORT_ERR=null;
  /* NOTHING IS LOADED WHILE A WORKED EXAMPLE IS OPEN. This pushed the new
@@ -2106,6 +2115,44 @@ function pImport(txt){
     place that sets it, and the next sign in reopens the tour on a person
     who already answered it, outside this app, on the funnel. */
  v.profile.ui.onboarded=true;
+ /* Imports are idempotent by profile ID only when the complete normalized
+    profile matches. A conflicting file reusing an ID is refused before any
+    engine state or stored profile can be replaced. */
+ var existing=null;
+ for(var i=0;i<PROFILES.length;i++)if(PROFILES[i]&&PROFILES[i].id===v.profile.id){existing=PROFILES[i];break;}
+ if(existing){
+  /* Compare two detached, once-normalized records. saveProfile() is an
+     engine writer: it reads the active working state and mutates its argument,
+     so using it here could copy another profile's state into the collision
+     candidate. validateProfile() produces a detached, bounded record without
+     moving the active profile. */
+  var existingValidation=validateProfile(existing);
+  if(!existingValidation.ok){ IMPORT_ERR=['the existing profile cannot be normalized for identity comparison']; return null; }
+  var existingComparable=existingValidation.profile, incomingComparable=v.profile;
+  /* Import always completes onboarding; normalize that product-owned field
+     on the comparison copies only. Neither stored nor incoming data is changed. */
+  if(existingComparable.ui)existingComparable.ui.onboarded=true;
+  if(incomingComparable.ui)incomingComparable.ui.onboarded=true;
+  if(importStable(existingComparable)!==importStable(incomingComparable)){
+   IMPORT_ERR=['same ID already exists with different content']; return null;
+  }
+  var oldProfiles=PROFILES.slice(), oldCurrent=CURP;
+  var oldOnboarded=existing.ui?existing.ui.onboarded:undefined;
+  if(existing.ui)existing.ui.onboarded=true;
+  try{ loadProfile(existing); }
+  catch(e){
+   if(existing.ui&&oldOnboarded!==undefined)existing.ui.onboarded=oldOnboarded;
+   PROFILES=oldProfiles; CURP=oldCurrent; loadProfile(oldCurrent||blankProfile('unnamed'));
+   IMPORT_ERR=['could not load existing profile: '+((e&&e.message)||'error')]; return null;
+  }
+  CURP=existing;
+  if(oldOnboarded!==true&&!pPersist()){
+   if(existing.ui&&oldOnboarded!==undefined)existing.ui.onboarded=oldOnboarded;
+   PROFILES=oldProfiles; CURP=oldCurrent; loadProfile(oldCurrent||blankProfile('unnamed'));
+   IMPORT_ERR=['could not save existing profile: '+(SAVE_ERR||'error')]; return null;
+  }
+  profMark(existing); return existing;
+ }
  var keepP=PROFILES.slice(), keepC=CURP;
  /* with no current profile there is nothing to restore to, so the rollback
     loads a blank rather than leaving the engine holding the rejected one. */

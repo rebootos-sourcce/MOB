@@ -7300,12 +7300,32 @@ g('OG1 · the rerun puts the heavy lines back where they sit, round OG');
   const p=fixture(); meterHeavy(p,[K(7,'Llimit',2),K(7,'Rtruth',1),K(9,'Ltruth',2)]);
   const got=pImport(JSON.stringify(p));
   ok(got!==null&&got.meter.heavy.join()===p.meter.heavy.join(),'an import keeps the heavy marks, '+(got&&got.meter.heavy.length));
+  /* Import owns the rule that an imported record has completed onboarding.
+     Exercise the edge where the same ID already exists locally but that one
+     field still says false: same identity is reused, normalized, and saved. */
+  got.ui.onboarded=false;
+  const onboardingWire=pExport(), countBeforeOnboarding=profiles().length;
+  const onboardingAgain=pImport(onboardingWire);
+  ok(onboardingAgain===got&&got.ui.onboarded===true&&profiles().length===countBeforeOnboarding
+    &&JSON.parse(pExport()).ui.onboarded===true,
+    'same-ID reimport persists onboarding normalization without duplicating the profile');
   const out=JSON.parse(pExport());
   ok(out.meter.heavy.join()===p.meter.heavy.join(),'and an export carries them');
+  const beforeSameId=profiles().length;
   const again=pImport(JSON.stringify(out));
-  ok(again!==null&&again.meter.heavy.join()===p.meter.heavy.join(),'and a second import of that export is the same list');
+  ok(again!==null&&again.meter.heavy.join()===p.meter.heavy.join()&&profiles().length===beforeSameId,
+   'a byte-equivalent same-ID re-import reuses the existing profile without a duplicate');
   ok(meterRerunOrder(again,[7,9],CH,RUN_MAX).join()===meterRerunOrder(p,[7,9],CH,RUN_MAX).join(),
    'so the rerun the imported record says is the rerun the original said');
+  const conflict=JSON.parse(JSON.stringify(out)); conflict.name='same ID, different content';
+  const beforeConflictList=JSON.stringify(profiles()), beforeConflictDisk=mem[E.PKEY];
+  const beforeConflictCurrent=E.current(), beforeConflictRecord=JSON.stringify(beforeConflictCurrent);
+  const conflictResult=pImport(JSON.stringify(conflict)), conflictError=String(E.importError());
+  ok(conflictResult===null&&/same ID already exists with different content/.test(conflictError),
+   'a conflicting same-ID payload is refused by name: '+conflictError);
+  ok(JSON.stringify(profiles())===beforeConflictList&&E.current()===beforeConflictCurrent
+    &&JSON.stringify(E.current())===beforeConflictRecord&&mem[E.PKEY]===beforeConflictDisk,
+   'refusing a conflicting same-ID payload leaves the list, active profile and durable store unchanged');
   const bad=JSON.parse(JSON.stringify(out)); bad.meter.heavy.push(K(7,'Llimit',44));
   const before=profiles().length;
   ok(pImport(JSON.stringify(bad))===null&&profiles().length===before,'a heavy mark on a line never opened refuses the whole import and pushes nothing');
