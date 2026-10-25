@@ -606,7 +606,7 @@ for(const entry of E.filter(e=>e.kind==='node')){
   entry.sourceDefinitionVerbatim=entry.def;
   entry.sourceClaims=[...(entry.sourceClaims||[]),'Fetter source label: '+r.sourceFetterName,'MOB source pattern label: '+mob.sourcePatternName,'Crosswalk status: '+sourceStatus+' / '+mobStatus];
   const requiredFields=(TEMPLATE_SCHEMAS.node.fields||[]).filter(field=>field!=='id'&&field!=='kind'&&field!=='templateId');
-  const missingFields=requiredFields.filter(field=>!Object.prototype.hasOwnProperty.call(entry,field)||entry[field]==null||entry[field]===''||(Array.isArray(entry[field])&&!entry[field].length));
+  const missingFields=requiredFields.filter(field=>!(field==='axis'&&entry.axisStatus==='source_axis_not_specified')&&(!Object.prototype.hasOwnProperty.call(entry,field)||entry[field]==null||entry[field]===''||(Array.isArray(entry[field])&&!entry[field].length)));
   entry.templateValidation={...(entry.templateValidation||{}),contentStatus:missingFields.length?'incomplete':entry.researchPasses.some(pass=>pass.status!=='complete')?'research_pending':'complete',missingFields};
  }
 }
