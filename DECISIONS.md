@@ -3026,6 +3026,15 @@ His words, across two messages: "I want to get rid of the Story or move the Stor
 - **CLAUDE.md still says the app opens on the Field** (the 19 September paragraph and the 9 October addition to it). It was left alone in this change, and this entry supersedes it until that paragraph is updated.
 - **Held by** `tests/landing.js`, which fails by name on the build from before this change, and `tests/functional.js`, which holds every placement by name.
 
+## The journal is a conversation, not a writing prompt, and its redesign waits for the final release, 25 October
+
+His words: "Since the focus on the journal is now conversational between you and the AI, that's the primary focus. It would not be about writing about today because that doesn't make sense. So it's talking about today. The talk button needs to be very friendly and very focused. It needs to be front and center. Because I want this to be the thing that activates in the person's mind that this is my Pavlovian, once I hit this thing, it's now capturing my conversation. And that the AI is designed to kind of like tease out these limiting beliefs." And, on the redesign itself: "I'm not satisfied with any of the journal changes just yet. So let's not redesign the journal. We'll hold that the final release. These will be the last big items that we do."
+
+- **The opening line is settled: "What are we talking about today?"** Not writing. The journal is a conversation with the AI, not a page a person fills in alone, so a writing prompt no longer fits what it is. `SRC_OPEN` in `ui/storyui.js` carries it, changed on the `lance/lookdev-handoff-2026-10-25` branch. The line had its own earlier history, chosen at his own request at round GO, and is replaced at his own request too, asked and ruled on enough times that it does not need asking again.
+- **The Talk button is meant to be the trigger, and is not built to read as one yet.** His model: a person presses it and feels a learned response, this is now listening, the way a bell comes to mean food. Friendly, front and center, not a quiet second control beside Record. A placement and design pass of its own, not a copy change, not started.
+- **The AI's work inside that conversation is named: tease out limiting beliefs.** What the conversational layer is for, not a transcript of what was said back at the person. No spec yet, not built.
+- **The journal's visual redesign, look development's "The Page" and the rest of its proposal, is held.** Not now. It is named as one of the last big items before the final release, beside getting the KPIs right, which he is counting as what completion means. Nothing from look development's journal mock-ups moves until that round opens.
+
 ## The Day One tutorial is deleted, not hidden, 23 October
 
 His words: "Check to see if there's a second onboarding. Right now, there's been two onboardings. There's the one that we see, and there's a hidden one. I want that hidden one completely removed. We're not doing that anymore. We're going to be working on the funnel and we're going to be working on the flow into the site."
