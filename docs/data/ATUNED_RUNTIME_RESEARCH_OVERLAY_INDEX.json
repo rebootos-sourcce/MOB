@@ -1,9 +1,9 @@
 {
   "registryId": "ATUNED_RUNTIME_RESEARCH_OVERLAY",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "lastUpdated": "2026-10-24",
-  "status": "PARTIAL_RESEARCH_OVERLAY; 88_OF_242_RUNTIME_RECORDS_RESEARCH_COMPLETE",
-  "recordCount": 88,
+  "status": "PARTIAL_RESEARCH_OVERLAY; 92_OF_242_RUNTIME_RECORDS_HAVE_THREE_PASS_RESEARCH_OR_EXPLICIT_SOURCE_GAP_DISPOSITION",
+  "recordCount": 92,
   "targetRecordCount": 242,
   "policy": "Each overlay record preserves source text, separates scholarly context from owner-model claims, documents a third-pass counterexample/limitation review, and never promotes a hypothesis to canon. Records not yet in an overlay remain visibly research-pending.",
   "parts": [
@@ -21,14 +21,23 @@
       "families": [
         "nerve"
       ]
+    },
+    {
+      "path": "docs/data/ATUNED_RUNTIME_RESEARCH_OVERLAY_NODE_FIELD_ANCHORS_4_v1.json",
+      "recordCount": 4,
+      "families": [
+        "node"
+      ],
+      "disposition": "research complete as explicit source-gap record; exact definition unresolved"
     }
   ],
   "validationSummary": {
-    "overlayRecords": 88,
+    "overlayRecords": 92,
     "targetRecords": 242,
-    "remaining": 154,
+    "remaining": 150,
     "sourceDefinitionPreservation": true,
     "canonicalPromotions": 0,
-    "realPersonEvidence": 0
+    "realPersonEvidence": 0,
+    "unresolvedSourceGapRecords": 4
   }
 }
