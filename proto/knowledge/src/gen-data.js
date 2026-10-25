@@ -516,17 +516,22 @@ const fetterByRuntimeId=new Map((fetterResearchRegistry.records||[]).filter(r=>r
 for(const entry of E.filter(e=>e.kind==='node')){
  const r=fetterByRuntimeId.get(entry.id);
  const mob=mobPatternByRuntimeId.get(entry.id);
- if(mob&&mob.sourcePatternName===entry.nm){
+ const mobIndexMatch=mob&&entry.id==='node:'+(mob.sourceIndex+1);
+ const mobAddressMatch=mob&&String(entry.where||'').toLowerCase().startsWith(String(mob.sourceNervousSystemLocation||'').toLowerCase()+',');
+ const mobCrosswalkAllowed=mob&&(mob.sourcePatternName===entry.nm||cardKey(mob.sourcePatternName)===cardKey(entry.nm)||(mob.runtimeCrosswalkStatus==='source_index_and_anatomical_address_candidate_not_semantic_approval'&&mobIndexMatch&&mobAddressMatch));
+ if(mob&&mob.runtimeNodeId===entry.id&&mobCrosswalkAllowed){
   entry.mobPatternSourceRecordId=mob.id;
   entry.mobPatternSourceStatus=mob.researchStatus;
-  entry.mobPatternSource={sourceIndex:mob.sourceIndex,sourcePatternName:mob.sourcePatternName,sourceNervousSystemLocation:mob.sourceNervousSystemLocation,sourceShadowExpression:mob.sourceShadowExpression,sourceBandHeading:mob.sourceBandHeading,sourceVersionBoundary:mob.sourceVersionBoundary,researchSources:mob.researchSources,researchSynthesis:mob.researchSynthesis,researchLimitations:mob.researchLimitations,researchPasses:mob.researchPasses};
+  entry.mobPatternSourceCrosswalkStatus=mob.runtimeCrosswalkStatus;
+  entry.mobPatternSourceCrosswalkEvidence=mob.runtimeCrosswalkEvidence||[];
+  entry.mobPatternSource={sourceIndex:mob.sourceIndex,sourcePatternName:mob.sourcePatternName,sourceNervousSystemLocation:mob.sourceNervousSystemLocation,sourceShadowExpression:mob.sourceShadowExpression,sourceBandHeading:mob.sourceBandHeading,sourceVersionBoundary:mob.sourceVersionBoundary,runtimeCrosswalkStatus:mob.runtimeCrosswalkStatus,runtimeCrosswalkEvidence:mob.runtimeCrosswalkEvidence,deepResearchRecordId:mob.deepResearchRecordId,deepResearchCrosswalkStatus:mob.deepResearchCrosswalkStatus,researchSources:mob.researchSources,researchSynthesis:mob.researchSynthesis,researchLimitations:mob.researchLimitations,researchPasses:mob.researchPasses};
  }else{
   entry.mobPatternSourceStatus='NO_EXACT_SOURCE_PATTERN_LABEL_MATCH; SOURCE_ROW_COUNT_MISMATCH_OPEN';
  }
- if(r&&r.runtimeNodeLabel===entry.nm){
+ if(r&&(r.runtimeNodeLabel===entry.nm||cardKey(r.runtimeNodeLabel)===cardKey(entry.nm))){
   entry.fetterResearchRecordId=r.id;
   entry.fetterResearchStatus=r.researchStatus;
-  entry.fetterResearchCrosswalkStatus=r.runtimeCrosswalkStatus;
+  entry.fetterResearchCrosswalkStatus=r.runtimeNodeLabel===entry.nm?r.runtimeCrosswalkStatus:'normalized_runtime_label_candidate_not_semantic';
   entry.fetterResearch={
    sourceNodeId:r.nodeId,sourceFetterName:r.sourceFetterName,sourceVersionNote:r.sourceVersionNote,
    sourceBand:r.sourceBand,sourceAnatomicalAddress:r.sourceAnatomicalAddress,
