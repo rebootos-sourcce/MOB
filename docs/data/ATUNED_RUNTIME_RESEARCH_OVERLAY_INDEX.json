@@ -1,9 +1,9 @@
 {
   "registryId": "ATUNED_RUNTIME_RESEARCH_OVERLAY",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "lastUpdated": "2026-10-24",
   "status": "PARTIAL_RESEARCH_OVERLAY; 149_OF_242_TARGET_RECORDS_HAVE_THREE_PASS_RESEARCH_OR_EXPLICIT_SOURCE_GAP_DISPOSITION",
-  "recordCount": 149,
+  "recordCount": 152,
   "targetRecordCount": 242,
   "policy": "Each overlay record preserves source text, separates scholarly context from owner-model claims, documents a third-pass counterexample/limitation review, and never promotes a hypothesis to canon. Records not yet in an overlay remain visibly research-pending.",
   "parts": [
@@ -40,24 +40,27 @@
     },
     {
       "path": "docs/data/ATUNED_RUNTIME_RESEARCH_OVERLAY_HCX_MODES_INVERSES_18_v1.json",
-      "recordCount": 18,
+      "recordCount": 21,
       "families": [
         "hcx",
         "hypercomplex_mode",
         "inferred"
       ],
-      "disposition": "three-pass research complete; inferred relationships remain noncanonical"
+      "disposition": "three-pass research complete; inferred relationships remain noncanonical",
+      "supplementalRecords": 3
     }
   ],
   "validationSummary": {
-    "overlayRecords": 149,
+    "overlayRecords": 152,
     "targetRecords": 242,
-    "remaining": 93,
+    "completedTargetRecords": 149,
+    "remainingTargetRecords": 93,
     "sourceDefinitionPreservation": true,
     "canonicalPromotions": 0,
     "realPersonEvidence": 0,
     "unresolvedSourceGapRecords": 4,
-    "candidateRelationshipEdges": 12
+    "candidateRelationshipEdges": 12,
+    "supplementalAlreadyResearchedRecords": 3
   },
   "relationshipEdges": [
     {
@@ -276,5 +279,7 @@
       "ownerDecisionRequired": true,
       "notes": "The pair is a provisional contrast, not a canonical opposite or causal mechanism."
     }
-  ]
+  ],
+  "completedTargetRecordCount": 149,
+  "remainingTargetRecords": 93
 }
