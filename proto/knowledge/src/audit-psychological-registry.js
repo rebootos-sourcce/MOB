@@ -42,7 +42,7 @@ for (const record of records) {
   else ids.add(record.id);
 
   if (empty(record.researchStatus)) researchStatusGaps.push(record.id);
-  if (/(pending|blocked|incomplete)/i.test(String(record.researchStatus || ''))) openResearchStatuses.push({ id: record.id, status: record.researchStatus });
+  if (/^(?:three_pass_research_(?:pending|blocked|incomplete)|research_(?:pending|blocked|incomplete))/i.test(String(record.researchStatus || ''))) openResearchStatuses.push({ id: record.id, status: record.researchStatus });
   if (record.recordType === 'archetype_candidate') {
     const energyFields = ['behavioralEnergy','motivationalPull','attentionBias','actionTendency','adaptiveExpression','distortedExpression','researchSources','researchSynthesis','researchLimitations'];
     const missingEnergyFields = energyFields.filter((field) => empty(record[field]));
