@@ -1,0 +1,26 @@
+{
+  "registryId": "ATUNED_RUNTIME_RESEARCH_OVERLAY",
+  "version": "1.0.0",
+  "lastUpdated": "2026-10-24",
+  "status": "PARTIAL_RESEARCH_OVERLAY; 16_OF_242_RUNTIME_RECORDS_RESEARCH_COMPLETE",
+  "recordCount": 16,
+  "targetRecordCount": 242,
+  "policy": "Each overlay record preserves source text, separates scholarly context from owner-model claims, documents a third-pass counterexample/limitation review, and never promotes a hypothesis to canon. Records not yet in an overlay remain visibly research-pending.",
+  "parts": [
+    {
+      "path": "docs/data/ATUNED_RUNTIME_RESEARCH_OVERLAY_SEATS_AXES_v1.json",
+      "recordCount": 16,
+      "families": [
+        "seat",
+        "axis"
+      ]
+    }
+  ],
+  "validationSummary": {
+    "overlayRecords": 16,
+    "targetRecords": 242,
+    "remaining": 226,
+    "sourceDefinitionPreservation": true,
+    "canonicalPromotions": 0
+  }
+}
