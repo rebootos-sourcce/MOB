@@ -576,7 +576,9 @@ for(const entry of E.filter(e=>e.kind==='node')){
   entry.fetterResearchStatus='NO_EXACT_108_OVERLAY_RECORD; SOURCE_112_PATTERN_RESEARCH_PENDING';
  }
  if(r&&entry.fetterResearch&&mob&&entry.mobPatternSource){
-  const labelAligned=r.sourceFetterName===entry.nm||cardKey(r.sourceFetterName)===cardKey(entry.nm);
+  const fetterLabelAligned=r.sourceFetterName===entry.nm||cardKey(r.sourceFetterName)===cardKey(entry.nm);
+  const mobLabelAligned=mob.sourcePatternName===entry.nm||cardKey(mob.sourcePatternName)===cardKey(entry.nm);
+  const labelAligned=fetterLabelAligned&&mobLabelAligned;
   const sourceStatus=entry.fetterResearchCrosswalkStatus||'candidate_crosswalk';
   const mobStatus=entry.mobPatternSourceCrosswalkStatus||'candidate_crosswalk';
   const pass1=entry.researchPasses?.[0]||{pass:1,name:'runtime_source_extraction',status:'complete',sources:['proto/knowledge/src/engine.js'],findings:[entry.def],conflicts:[],reviewedAt:'2026-10-24'};
@@ -603,6 +605,9 @@ for(const entry of E.filter(e=>e.kind==='node')){
   entry.researchLimitations='The source records may not be semantically identical to the runtime node. Keep crosswalks provisional; no clinical, causal, or canonical inference is authorized.';
   entry.sourceDefinitionVerbatim=entry.def;
   entry.sourceClaims=[...(entry.sourceClaims||[]),'Fetter source label: '+r.sourceFetterName,'MOB source pattern label: '+mob.sourcePatternName,'Crosswalk status: '+sourceStatus+' / '+mobStatus];
+  const requiredFields=(TEMPLATE_SCHEMAS.node.fields||[]).filter(field=>field!=='id'&&field!=='kind'&&field!=='templateId');
+  const missingFields=requiredFields.filter(field=>!Object.prototype.hasOwnProperty.call(entry,field)||entry[field]==null||entry[field]===''||(Array.isArray(entry[field])&&!entry[field].length));
+  entry.templateValidation={...(entry.templateValidation||{}),contentStatus:missingFields.length?'incomplete':entry.researchPasses.some(pass=>pass.status!=='complete')?'research_pending':'complete',missingFields};
  }
 }
 const sourceToRuntimeId=new Map([
