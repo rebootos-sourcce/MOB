@@ -10,6 +10,7 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..', '..', '..');
 const registryPath = path.join(ROOT, 'docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json');
+const runtimePath = path.join(ROOT, 'proto/knowledge/src/data.js');
 const strict = process.argv.includes('--strict');
 const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
 if (!Array.isArray(registry.records)) throw new Error('Registry must contain a records array.');
@@ -27,6 +28,9 @@ const incomplete = [];
 const blockedResearch = [];
 const behavioralDomainGaps = [];
 const passReviewDateGaps = [];
+const researchStatusGaps = [];
+const archetypeEnergyGaps = [];
+const relationshipEdgeErrors = [];
 const dangling = [];
 const duplicateIds = [];
 const ids = new Set();
@@ -36,6 +40,12 @@ for (const record of records) {
   else if (ids.has(record.id)) duplicateIds.push({ id: record.id, reason: 'duplicate_id' });
   else ids.add(record.id);
 
+  if (empty(record.researchStatus)) researchStatusGaps.push(record.id);
+  if (record.recordType === 'archetype_candidate') {
+    const energyFields = ['behavioralEnergy','motivationalPull','attentionBias','actionTendency','adaptiveExpression','distortedExpression','researchSources','researchSynthesis','researchLimitations'];
+    const missingEnergyFields = energyFields.filter((field) => empty(record[field]));
+    if (missingEnergyFields.length) archetypeEnergyGaps.push({ id: record.id, missingFields: missingEnergyFields });
+  }
   const missing = (record.templateValidation && Array.isArray(record.templateValidation.missingFields))
     ? record.templateValidation.missingFields : [];
   if ((record.templateValidation || {}).contentStatus !== 'complete' || missing.length) {
@@ -65,6 +75,19 @@ for (const record of records) {
   }
 }
 
+const runtimeSource = fs.existsSync(runtimePath) ? fs.readFileSync(runtimePath, 'utf8') : '';
+const runtimeMatch = runtimeSource.match(/var KBD=(.*);\\s*$/s);
+const runtimeDb = runtimeMatch ? JSON.parse(runtimeMatch[1]) : { entries: [] };
+const runtimeIds = new Set((runtimeDb.entries || []).map((entry) => entry.id));
+const runtimeIntegrated = records.every((record) => runtimeIds.has('psych:' + record.id));
+const edgeIds = new Set();
+for (const edge of (registry.relationshipEdges || [])) {
+  if (!edge.edgeId || edgeIds.has(edge.edgeId)) relationshipEdgeErrors.push({ edgeId: edge.edgeId || null, issue: 'missing_or_duplicate_edge_id' });
+  edgeIds.add(edge.edgeId);
+  if (!ids.has(edge.fromId)) relationshipEdgeErrors.push({ edgeId: edge.edgeId, issue: 'source_endpoint_missing', fromId: edge.fromId });
+  if (edge.toId && (edge.targetRegistry === 'deep_psychological_registry' || edge.targetRegistry === 'ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY') && !ids.has(edge.toId)) relationshipEdgeErrors.push({ edgeId: edge.edgeId, issue: 'internal_target_missing', toId: edge.toId });
+  if (!edge.toId && (!edge.toLabel || !edge.status)) relationshipEdgeErrors.push({ edgeId: edge.edgeId, issue: 'unresolved_target_needs_label_and_status' });
+}
 const report = {
   registryId: registry.registryId,
   registryVersion: registry.version,
@@ -78,13 +101,22 @@ const report = {
   recordsWithThreePassesMarkedComplete: records.filter((record) => Array.isArray(record.researchPasses) && record.researchPasses.length === 3 && record.researchPasses.every((pass) => pass.status === 'complete')).length,
   recordsWithBlockedOrInsufficientResearchEvidence: blockedResearch.length,
   recordsWithIncompleteTemplateContent: incomplete.length,
+  researchStatusGaps: researchStatusGaps.length,
+  researchStatusGapIds: researchStatusGaps,
+  archetypeEnergyGaps,
+  relationshipEdgeCount: (registry.relationshipEdges || []).length,
+  relationshipEdgeErrors,
+  unresolvedRelationshipTargetCount: (registry.relationshipEdges || []).filter((edge) => !edge.toId || edge.targetRegistry === 'external_or_unresolved').length,
+  runtimeRecordCount: (runtimeDb.entries || []).filter((entry) => String(entry.id || '').startsWith('psych:')).length,
+  runtimeRecordCoverage: records.filter((record) => runtimeIds.has('psych:' + record.id)).length,
   behavioralDomainRecordCount: records.filter((record) => record.recordType === 'behavioral_domain').length,
   behavioralDomainsWithCompleteEnergyFields: records.filter((record) => record.recordType === 'behavioral_domain' && ['behavioralEnergy', 'motivationalPull', 'attentionBias', 'actionTendency', 'adaptiveExpression', 'distortedExpression', 'researchSynthesis', 'researchLimitations'].every((field) => !empty(record[field]))).length,
   behavioralDomainGaps,
   behavioralDomainPassReviewDateGaps: passReviewDateGaps,
   duplicateOrMissingIds: duplicateIds,
   danglingReferences: dangling,
-  runtimeIntegrated: false,
+  runtimeIntegrated,
+  closureStatus: runtimeIntegrated && !incomplete.length && !blockedResearch.length && !researchStatusGaps.length && !archetypeEnergyGaps.length && !relationshipEdgeErrors.length && !duplicateIds.length && !dangling.length ? 'STATIC_GATES_PASS_RUNTIME_TESTS_REQUIRED' : 'OPEN_NOT_CLOSURE',
   closureStatus: 'OPEN_NOT_CLOSURE',
   blockers: { incompleteRecords: incomplete, blockedResearchRecords: blockedResearch }
 };
@@ -94,6 +126,9 @@ if (strict && (
   !report.countMatches ||
   report.recordsWithIncompleteTemplateContent ||
   report.recordsWithBlockedOrInsufficientResearchEvidence ||
+  report.researchStatusGaps ||
+  report.archetypeEnergyGaps.length ||
+  report.relationshipEdgeErrors.length ||
   report.behavioralDomainGaps.length ||
   report.duplicateOrMissingIds.length ||
   report.danglingReferences.length ||

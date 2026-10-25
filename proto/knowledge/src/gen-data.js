@@ -456,7 +456,7 @@ const relationshipEdges=[...adaptedPsych.relationshipEdges,...adaptedSuper.relat
  const fromId=sourceToRuntimeId.get(sourceFromId)||runtimeIdByLower.get(String(sourceFromId||'').toLowerCase())||sourceFromId;
  const resolvedToId=sourceToRuntimeId.get(sourceToId)||runtimeIdByLower.get(String(sourceToId||'').toLowerCase())||null;
  const targetIsUnresolved=Boolean(sourceToId)&&!resolvedToId;
- const unresolvedTargetLabel=edge.toLabel||(targetIsUnresolved?String(sourceToId).replace(/^[^:]+:/,'').replace(/[-_]/g,' '):null);
+ const unresolvedTargetLabel=edge.toLabel||(targetIsUnresolved?String(sourceToId).replace(/^[^:]+:/,'').replace(/[-_]/g,' '):(!sourceToId?'UNRESOLVED_TARGET_LABEL_NOT_SPECIFIED':null));
  return {
   ...edge,
   fromId,
