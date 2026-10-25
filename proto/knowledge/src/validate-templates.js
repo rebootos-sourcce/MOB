@@ -69,11 +69,10 @@ for (const e of entries.filter(x => x.kind === 'complex')) {
   if (e.sourceStatus === 'R') {
     for (const name of (e.childNames || [])) {
       const child = entries.find(x =>
-        (['sab','somatic_signature'].includes(x.kind) && x.nm === name) ||
-        (x.kind === 'psych_source_label' && x.sourceKind === 'source_label' &&
-         x.template && x.template.sourceLabel === name &&
-         x.template.sourceCluster === 'SOURCE OS CANON complex child labels')
-      );
+        x.kind === 'psych_source_label' && x.sourceKind === 'source_label' &&
+        x.template && x.template.sourceLabel === name &&
+        x.template.sourceCluster === 'SOURCE OS CANON complex child labels'
+      ) || entries.find(x => ['sab','somatic_signature'].includes(x.kind) && x.nm === name);
       if (!child) errors.push(e.id + ': source-recorded child label record not resolved: ' + name);
       else if (!(e.links || []).includes(child.id) || !(child.links || []).includes(e.id)) errors.push(e.id + ': source-recorded child link missing or non-reciprocal: ' + child.id);
     }
