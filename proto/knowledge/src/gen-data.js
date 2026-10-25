@@ -32,6 +32,9 @@ const SAB_CARDS=cardCtx.__cards;
 const cardKey=s=>String(s==null?'':s).toLowerCase().replace(/[^a-z0-9]/g,'');
 const SAB_CARDS_BY_KEY=Object.fromEntries(Object.entries(SAB_CARDS).map(([k,v])=>[cardKey(k),v]));
 const T=ctx.__;
+const runtimeResearchOverlayIndex=JSON.parse(fs.readFileSync(path.join(ROOT,'docs/data/ATUNED_RUNTIME_RESEARCH_OVERLAY_INDEX.json'),'utf8'));
+const runtimeResearchOverlayRecords=(runtimeResearchOverlayIndex.parts||[]).flatMap(part=>JSON.parse(fs.readFileSync(path.join(ROOT,part.path),'utf8')).records||[]);
+const runtimeResearchOverlayById=new Map(runtimeResearchOverlayRecords.map(record=>[record.id,record]));
 const AXIS_RESEARCH_FALLBACKS={
  Surprise:{
   says:'PROVISIONAL RESEARCH CONTEXT: I did not expect this; notice what changed before deciding what it means.',
@@ -364,6 +367,26 @@ T.GLOSS.forEach(g=>add({id:'term:'+g.t, kind:'term', nm:g.t, seat:null, fam:'ter
    addresses and its opposite's entry where one exists; an address links to
    its axis, its seat and the saboteurs that sit on it; a saboteur links to
    its addresses and its architecture. */
+for(const entry of E){
+ const overlay=runtimeResearchOverlayById.get(entry.id);
+ if(!overlay)continue;
+ const sourceDefinitionMatches=!overlay.sourceDefinitionVerbatim||overlay.sourceDefinitionVerbatim===entry.def;
+ const sourceWhereMatches=!overlay.sourceWhereVerbatim||overlay.sourceWhereVerbatim===entry.where;
+ if(!sourceDefinitionMatches||!sourceWhereMatches){
+  entry.runtimeResearchOverlayStatus='source_drift_recheck_required';
+  entry.runtimeResearchOverlayMismatch={definition:!sourceDefinitionMatches,where:!sourceWhereMatches};
+  continue;
+ }
+ entry.sourceDefinitionVerbatim=overlay.sourceDefinitionVerbatim||entry.def;
+ if(overlay.sourceWhereVerbatim)entry.sourceWhereVerbatim=overlay.sourceWhereVerbatim;
+ for(const [key,value] of Object.entries(overlay)){
+  if(['id','sourceDefinitionVerbatim','sourceWhereVerbatim','def','where'].includes(key))continue;
+  entry[key]=value;
+ }
+ if(overlay.def)entry.def=overlay.def;
+ if(overlay.where)entry.where=overlay.where;
+ entry.runtimeResearchOverlayStatus='applied_source_verified';
+}
 const by={}; E.forEach(e=>by[e.id]=e);
 E.forEach(e=>{e.links=[];});
 /* Hyper-complex mode ↔ inferred counterpart is an explicit reciprocal pair. Grandiosity maps to the source-defined Cluster I / Narcissism association; other direct parent mappings remain unresolved. */
@@ -462,8 +485,8 @@ E.forEach(e=>{e.links=[...new Set(e.links)].filter(l=>l!==e.id);});
 const TEMPLATE_SCHEMAS={
  hypercomplex_mode:{id:'TPL-HYPERCOMPLEX-MODE-V1', fields:['nm','fam','cluster','def','body','behavior','triggerMechanism','livedExample','impact','practice','inferred','inferenceBasis','confidence','reviewStatus','oppositeId','oppositeDefinition','oppositeStatus','narrativeSource','researchSources','sourceRefs','sourceClaims','researchPasses','links']},
  nerve:{id:'TPL-NERVE-BRANCH', fields:['nm','seat','fam','def','branchIndex','sourceSeat','pointCount','mappingBasis','mappedNodeIds','narrativeSource','links']},
- seat:{id:'TPL-SEAT', fields:['nm','fam','def','body','links']},
- axis:{id:'TPL-FETTER-AXIS', fields:['nm','seat','fam','def','card','where','says','inst','opp','links']},
+ seat:{id:'TPL-SEAT', fields:['nm','fam','def','body','sourceDefinitionVerbatim','sourceWhereVerbatim','sourceClaimType','researchStatus','researchSources','researchSynthesis','researchLimitations','researchPasses','confidence','links']},
+ axis:{id:'TPL-FETTER-AXIS', fields:['nm','seat','fam','def','card','where','sourceDefinitionVerbatim','sourceWhereVerbatim','sourceClaimType','researchStatus','researchSources','researchSynthesis','researchLimitations','researchPasses','confidence','says','inst','opp','links']},
  node:{id:'TPL-FETTER-NODE', fields:['nm','seat','fam','def','where','card','theme','distort','axis','body','trigger','says','out','inst','opp','nextMove','narrativeSource','links']},
  somatic_signature:{id:'TPL-SOMATIC-SIGNATURE-V1', fields:['nm','seat','fam','def','body','trigger','says','out','livedBehavior','availableState','nextMove','nids','arch','sourceRefs','sourceClaims','researchPasses','links']},
  hcx:{id:'TPL-HYPERCOMPLEX', fields:['nm','seat','fam','def','sub','links']},
@@ -592,7 +615,7 @@ for(const edge of relationshipEdges){
 const icp=JSON.parse(fs.readFileSync(path.join(__dirname,'icp.json'),'utf8'));
 const out={entries:E, pal:T.PAL, glyph:T.SEATGLYPH, bands:T.BANDS, icp:icp,
  relationshipEdges,
- sourceRegistries:[adaptedPsych.sourceRegistry,adaptedSuper.sourceRegistry,{registryId:'fetter-deep-research-108',version:fetterResearchRegistry.version,recordCount:fetterResearchRegistry.recordCount,status:fetterResearchRegistry.status,promptCount:fetterPromptRegistry.recordCount,promptValidationOverlayVersion:promptValidationIndex.version,promptValidationOverlayRecordCount:promptValidationRecords.length,promptValidationOverlayStatus:promptValidationIndex.status,sourceVersionBoundary:fetterResearchRegistry.sourceBoundary},{registryId:'mob-pattern-source-108-of-112',version:mobPatternSourceRegistry.version,recordCount:mobPatternSourceRegistry.recordCount,claimedPatternCount:mobPatternSourceRegistry.claimedPatternCount,missingSourceRows:mobPatternSourceRegistry.counts.missingRows,status:mobPatternSourceRegistry.status}],
+ sourceRegistries:[adaptedPsych.sourceRegistry,adaptedSuper.sourceRegistry,{registryId:'fetter-deep-research-108',version:fetterResearchRegistry.version,recordCount:fetterResearchRegistry.recordCount,status:fetterResearchRegistry.status,promptCount:fetterPromptRegistry.recordCount,promptValidationOverlayVersion:promptValidationIndex.version,promptValidationOverlayRecordCount:promptValidationRecords.length,promptValidationOverlayStatus:promptValidationIndex.status,runtimeResearchOverlay:runtimeResearchOverlayIndex.version,runtimeResearchOverlayRecordCount:runtimeResearchOverlayRecords.length,runtimeResearchOverlayStatus:runtimeResearchOverlayIndex.status,sourceVersionBoundary:fetterResearchRegistry.sourceBoundary},{registryId:'mob-pattern-source-108-of-112',version:mobPatternSourceRegistry.version,recordCount:mobPatternSourceRegistry.recordCount,claimedPatternCount:mobPatternSourceRegistry.claimedPatternCount,missingSourceRows:mobPatternSourceRegistry.counts.missingRows,status:mobPatternSourceRegistry.status}],
  relationshipEdgeRegistries:[{registryId:crossRegistryEdgeRegister.registryId,version:crossRegistryEdgeRegister.version,edgeCount:(crossRegistryEdgeRegister.relationshipEdges||[]).length}],
  stamp:'engine tables and ICP figures read from commit b434f1a; Deep Psyche registry v'+psychRegistry.version+' and Super-Complex candidate registry v'+superRegistry.version+' plus cross-registry edge register v'+crossRegistryEdgeRegister.version+' imported'};
 function sanitizeGeneratedStrings(value){
