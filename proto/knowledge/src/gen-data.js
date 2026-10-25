@@ -32,6 +32,52 @@ const SAB_CARDS=cardCtx.__cards;
 const cardKey=s=>String(s==null?'':s).toLowerCase().replace(/[^a-z0-9]/g,'');
 const SAB_CARDS_BY_KEY=Object.fromEntries(Object.entries(SAB_CARDS).map(([k,v])=>[cardKey(k),v]));
 const T=ctx.__;
+const AXIS_RESEARCH_FALLBACKS={
+ Surprise:{
+  says:'PROVISIONAL RESEARCH CONTEXT: I did not expect this; notice what changed before deciding what it means.',
+  inst:'PROVISIONAL RESEARCH CONTEXT: Pause, identify the unexpected cue, compare it with the prior expectation, and gather context before reacting.',
+  sources:['https://pubmed.ncbi.nlm.nih.gov/23317823/'],
+  synthesis:'Surprise links cognition and emotion and is shaped by expectations about likelihood; the meaning and valence of an unexpected event depend on appraisal and context.',
+  limitations:'These phrases are provisional prompts, not source-authored ATÜNED language. Surprise is not inherently positive, negative, or evidence of danger.'
+ },
+ Anticipation:{
+  says:'PROVISIONAL RESEARCH CONTEXT: Something may happen; prepare for what the available evidence suggests, not for certainty you do not have.',
+  inst:'PROVISIONAL RESEARCH CONTEXT: Name the expected outcome, separate evidence from imagined certainty, prepare proportionately, and update when new information arrives.',
+  sources:['https://pubmed.ncbi.nlm.nih.gov/32061891/','https://pubmed.ncbi.nlm.nih.gov/18829428/','https://pubmed.ncbi.nlm.nih.gov/17500652/'],
+  synthesis:'Anticipatory feelings combine prediction, bodily and affective response, and preparation. Anticipation can shape choice, while imagined future emotion may be more intense than later recollection.',
+  limitations:'These phrases are provisional prompts, not source-authored ATÜNED language. Anticipation is not inherently anxiety, accurate prediction, or a reliable signal that an event will occur.'
+ }
+};
+const DOMAIN_RESEARCH_FALLBACKS={
+ Descent:{
+  clear:'PROVISIONAL RESEARCH CONTEXT, NOT SOURCE-CANON: Choose a meaningful cost or ending with consent, proportion, and awareness of alternatives; retain agency and learn without glorifying pain.',
+  dist:'PROVISIONAL RESEARCH CONTEXT, NOT SOURCE-CANON: Self-abandonment, coerced sacrifice, martyrdom, or treating suffering as proof that a choice is wise.',
+  sources:['https://pubmed.ncbi.nlm.nih.gov/32673005/','https://pubmed.ncbi.nlm.nih.gov/34571369/'],
+  synthesis:'Sacrifice research treats willingness, behavior, satisfaction, and cost as distinct; outcomes vary with choice, context, and consequences.',
+  limitations:'General sacrifice research does not define the project-specific Descent domain or establish its canonical meaning. Preserve the source label and keep this interpretation provisional.'
+ },
+ Connection:{
+  clear:'PROVISIONAL RESEARCH CONTEXT, NOT SOURCE-CANON: Maintain meaningful connection through responsive care, mutual understanding, reciprocity, and boundaries that preserve each person’s agency.',
+  dist:'PROVISIONAL RESEARCH CONTEXT, NOT SOURCE-CANON: Enmeshment, coercion, one-way extraction, or withdrawal treated as the only safe response when connection is appropriate.',
+  sources:['https://www.nature.com/articles/s44159-025-00455-9','https://pubmed.ncbi.nlm.nih.gov/36201836/'],
+  synthesis:'Social connection is multidimensional and includes subjective perceptions, network structure, synchrony, and interpersonal behavior; these dimensions should not be collapsed.',
+  limitations:'General social-connection research does not define the project-specific Connection domain. Closeness is not always safe or coherent; distance may be protective.'
+ },
+ Exchange:{
+  clear:'PROVISIONAL RESEARCH CONTEXT, NOT SOURCE-CANON: Exchange information, attention, resources, or value with explicit expectations, consent, reciprocity, and repair when a transaction is unequal or misunderstood.',
+  dist:'PROVISIONAL RESEARCH CONTEXT, NOT SOURCE-CANON: Manipulation, extraction, assumed consent, hidden conditions, or reducing relationships to scorekeeping.',
+  sources:['https://pubmed.ncbi.nlm.nih.gov/36710813/','https://pmc.ncbi.nlm.nih.gov/articles/PMC9878386/'],
+  synthesis:'Social-exchange research describes transactions, reciprocity, exchanged resources, and resulting relationships, while noting broad definitions and unresolved questions in psychological exchange.',
+  limitations:'General social-exchange theory does not establish the project-specific Exchange domain or make every relationship transactional. Reciprocity and fairness require context.'
+ },
+ Restoration:{
+  clear:'PROVISIONAL RESEARCH CONTEXT, NOT SOURCE-CANON: Rebuild capacity after disruption through support, pacing, consent, feedback, and practical reorganization; recovery need not recreate the exact prior state.',
+  dist:'PROVISIONAL RESEARCH CONTEXT, NOT SOURCE-CANON: Denying injury, forcing a return to the prior state, rescuing without consent, or treating visible growth as mandatory.',
+  sources:['https://pubmed.ncbi.nlm.nih.gov/39429523/','https://pubmed.ncbi.nlm.nih.gov/38657292/','https://pubmed.ncbi.nlm.nih.gov/33126037/'],
+  synthesis:'Resilience and recovery literature treats adaptation as dynamic and context-dependent; repair may involve support, meaning, and reorganization rather than simple restoration.',
+  limitations:'General recovery research does not define the project-specific Restoration domain or guarantee recovery. These descriptions are provisional context, not a clinical protocol.'
+ }
+};
 const clean=s=>String(s==null?'':s).replace(/\s*--\s*/g,', ').replace(/\u2014/g,', ').trim();
 /* the first sentence, or two when the first is a fragment under forty
    characters, because E1 wants the definition in the first clause and the
@@ -48,12 +94,18 @@ T.APC.forEach(c=>add({id:'seat:'+c.b, kind:'seat', nm:c.b, seat:c.b,
  fam:clean(c.nv), def:lead(c.d), body:clean(c.d), ic:null}));
 
 /* the nine child emotions, and the letting go card that speaks each */
-T.CHILD.forEach((c,i)=>{const ax=T.AXCARD.filter(a=>a.ax===c.nm)[0]||{};
+T.CHILD.forEach((c,i)=>{const ax=T.AXCARD.filter(a=>a.ax===c.nm)[0]||{}; const fallback=AXIS_RESEARCH_FALLBACKS[c.nm]||null;
  add({id:'axis:'+c.nm, kind:'axis', nm:c.nm, seat:c.seat, fam:c.seat+' seat',
   def:c.nm+', one of the nine child emotions, seated in the '+c.seat+' seat.',
   card:'Felt in the '+c.loc+'. Emptied, it fills with '+c.opp+'.',
-  where:'Held at: '+c.addr.toLowerCase()+'. Felt in the '+c.loc+'.', says:clean(ax.track), out:clean(T.AXLINE[i]),
-  inst:clean(ax.inst), opp:c.opp, ic:c.ic});});
+  where:'Held at: '+c.addr.toLowerCase()+'. Felt in the '+c.loc+'.',
+  says:clean(ax.track||(fallback&&fallback.says)||''), out:clean(T.AXLINE[i]),
+  inst:clean(ax.inst||(fallback&&fallback.inst)||''), opp:c.opp, ic:c.ic,
+  sourceFieldStatus:fallback?'source_says_and_instruction_missing_provisional_research_fallback':'source_card_fields_present',
+  researchStatus:fallback?'provisional_research_context_not_source_canon':'source_card_content_present',
+  researchSources:fallback?fallback.sources:[],
+  researchSynthesis:fallback?fallback.synthesis:null,
+  researchLimitations:fallback?fallback.limitations:null});});
 
 /* The 72 artwork branches are explicit records. Their only supported
    semantic join to nodes is seat/band-level: the artwork labels branches by
@@ -81,7 +133,9 @@ T.NODES.forEach(n=>{const field=T.BANDS.indexOf(n.b)<0;
   def:n.k+', a fetter held at the '+clean(n.n)+'.',
   where:clean(n.n)+', '+(field?'a field anchor '+(n.b==='Field-Above'?'above':'below')+' the body':'in the '+n.b+' seat')+'.',
   card:'Governs '+clean(n.a).toLowerCase()+'. Distorts into '+clean(n.d).toLowerCase()+'.',
-  theme:clean(n.a), distort:clean(n.d), axis:n.c||null, ic:(ax&&ax.ic)||null,
+  theme:clean(n.a), distort:clean(n.d), axis:n.c||null,
+  axisStatus:n.c?'source_axis_explicit':'source_axis_not_specified',
+  ic:(ax&&ax.ic)||null,
   body:'This fetter is organized around '+clean(n.a)+'. The linked distortion is '+clean(n.d)+'. Its relationship to the '+(n.c||'linked')+' axis is the canonical route for interpreting this record.',
   trigger:'Notice when '+clean(n.a).toLowerCase()+' becomes charged and the response begins moving toward '+clean(n.d).toLowerCase()+'.',
   says:'The active pattern frames '+clean(n.a).toLowerCase()+' through the distortion '+clean(n.d).toLowerCase()+'. Treat this as a signal to examine, not as a fact that must govern the response.',
@@ -291,9 +345,16 @@ T.MASKS.forEach(m=>add({id:'mask:'+m.nm, kind:'mask', nm:m.nm, seat:(m.b&&m.b[0]
  fam:(m.b||[]).join(' and '), def:'The '+m.nm.toLowerCase()+' mask '+clean(m.v)+'.', ic:m.ic}));
 T.ARCH.forEach((a,i)=>add({id:'arch:'+a.nm, kind:'arch', nm:a.nm, seat:a.b||'Heart', idx:i,
  fam:(a.b||'Heart')+' seat', def:'The '+a.nm.toLowerCase()+' '+clean(a.v)+'.', ic:a.ic}));
-T.DOMAINS.forEach((d,i)=>{const x=T.DOMDEF[T.KB_KEY(d.nm)];
+T.DOMAINS.forEach((d,i)=>{const x=T.DOMDEF[T.KB_KEY(d.nm)]; const fallback=DOMAIN_RESEARCH_FALLBACKS[d.nm]||null;
  add({id:'dom:'+d.nm, kind:'dom', nm:d.nm, seat:'Heart', idx:i, fam:d.r+' root',
-  def:d.nm+', '+clean(d.d)+'.', clear:x?clean(x.c):'', dist:x?clean(x.x):'', ic:d.ic||null});});
+  def:d.nm+', '+clean(d.d)+'.',
+  clear:x?clean(x.c):(fallback?fallback.clear:''), dist:x?clean(x.x):(fallback?fallback.dist:''),
+  researchStatus:fallback?'provisional_research_context_not_source_canon':'source_domain_definition_present',
+  researchSources:fallback?fallback.sources:[],
+  researchSynthesis:fallback?fallback.synthesis:null,
+  researchLimitations:fallback?fallback.limitations:null,
+  canonicalStatus:fallback?'source_label_preserved; content interpretation provisional':'source-derived domain content',
+  ic:d.ic||null});});
 
 /* the glossary, which answers a search first */
 T.GLOSS.forEach(g=>add({id:'term:'+g.t, kind:'term', nm:g.t, seat:null, fam:'term',
@@ -306,6 +367,7 @@ T.GLOSS.forEach(g=>add({id:'term:'+g.t, kind:'term', nm:g.t, seat:null, fam:'ter
 const by={}; E.forEach(e=>by[e.id]=e);
 E.forEach(e=>{e.links=[];});
 /* Hyper-complex mode ↔ inferred counterpart is an explicit reciprocal pair. Grandiosity maps to the source-defined Cluster I / Narcissism association; other direct parent mappings remain unresolved. */
+E.filter(e=>e.kind==='hypercomplex_mode').forEach(h=>{const opposite=by[h.oppositeId]; if(opposite){h.links.push(opposite.id);opposite.links.push(h.id);}});
 E.filter(e=>e.kind==='hypercomplex').forEach(h=>{const opposite=by[h.oppositeId]; if(opposite){h.links.push(opposite.id);opposite.links.push(h.id);} if(h.cluster==='I · Narcissism'&&by['descent:Narcissism']){h.links.push('descent:Narcissism');by['descent:Narcissism'].links.push(h.id);h.parentLinkBasis='source-defined Cluster I / Narcissism association in SNIFFER_SPEC.md';} else {h.parentLinkBasis='direct parent-complex mapping unresolved; no edge invented';}});
 E.forEach(e=>{
  if(e.kind==='nerve'){
@@ -427,6 +489,7 @@ E.forEach(e=>{
  const assignedFields=(e.kind==='hcx'&&String(e.narrativeSource||'').includes('compass.js DESCENT'))?schema.fields.concat(descentDetailFields):schema.fields;
  e.template=Object.fromEntries(assignedFields.map(k=>[k,Object.prototype.hasOwnProperty.call(e,k)?e[k]:null]));
  const missingFields=assignedFields.filter(k=>{
+  if(e.kind==='node'&&k==='axis'&&e.axisStatus==='source_axis_not_specified') return false;
   if(!Object.prototype.hasOwnProperty.call(e,k)||e[k]==null||e[k]==='') return true;
   /* Empty arrays are valid for relationship collections: a leaf may have no
      outgoing links. Do not report [] as missing content. */
