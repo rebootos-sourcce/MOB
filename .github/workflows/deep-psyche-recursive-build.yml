@@ -44,6 +44,7 @@ jobs:
         run: node proto/knowledge/src/validate-templates.js
 
       - name: Structural graph audit
+        id: structural-audit
         run: |
           node <<'NODE'
           const fs = require('fs');
