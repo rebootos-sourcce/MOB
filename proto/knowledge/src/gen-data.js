@@ -615,7 +615,7 @@ const sourceToRuntimeId=new Map([
  ...(superRegistry.records||[]).map(r=>[r.id,'super:'+r.id])
 ]);
 const runtimeIdByLower=new Map(E.map(e=>[String(e.id).toLowerCase(),e.id]));
-const relationshipEdges=[...adaptedPsych.relationshipEdges,...adaptedSuper.relationshipEdges,...(crossRegistryEdgeRegister.relationshipEdges||[])].map(edge=>{
+const relationshipEdges=[...adaptedPsych.relationshipEdges,...adaptedSuper.relationshipEdges,...(crossRegistryEdgeRegister.relationshipEdges||[]),...(runtimeResearchOverlayIndex.relationshipEdges||[])].map(edge=>{
  const sourceFromId=edge.fromId;
  const sourceToId=edge.toId;
  const fromId=sourceToRuntimeId.get(sourceFromId)||runtimeIdByLower.get(String(sourceFromId||'').toLowerCase())||sourceFromId;
