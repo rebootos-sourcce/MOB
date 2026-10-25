@@ -29,6 +29,7 @@ const blockedResearch = [];
 const behavioralDomainGaps = [];
 const passReviewDateGaps = [];
 const researchStatusGaps = [];
+const openResearchStatuses = [];
 const archetypeEnergyGaps = [];
 const relationshipEdgeErrors = [];
 const dangling = [];
@@ -41,6 +42,7 @@ for (const record of records) {
   else ids.add(record.id);
 
   if (empty(record.researchStatus)) researchStatusGaps.push(record.id);
+  if (/(pending|blocked|incomplete)/i.test(String(record.researchStatus || ''))) openResearchStatuses.push({ id: record.id, status: record.researchStatus });
   if (record.recordType === 'archetype_candidate') {
     const energyFields = ['behavioralEnergy','motivationalPull','attentionBias','actionTendency','adaptiveExpression','distortedExpression','researchSources','researchSynthesis','researchLimitations'];
     const missingEnergyFields = energyFields.filter((field) => empty(record[field]));
@@ -103,6 +105,8 @@ const report = {
   recordsWithIncompleteTemplateContent: incomplete.length,
   researchStatusGaps: researchStatusGaps.length,
   researchStatusGapIds: researchStatusGaps,
+  openResearchStatusCount: openResearchStatuses.length,
+  openResearchStatuses,
   archetypeEnergyGaps,
   relationshipEdgeCount: (registry.relationshipEdges || []).length,
   relationshipEdgeErrors,
@@ -127,6 +131,7 @@ if (strict && (
   report.recordsWithIncompleteTemplateContent ||
   report.recordsWithBlockedOrInsufficientResearchEvidence ||
   report.researchStatusGaps ||
+  report.openResearchStatusCount ||
   report.archetypeEnergyGaps.length ||
   report.relationshipEdgeErrors.length ||
   report.behavioralDomainGaps.length ||
