@@ -1,0 +1,41 @@
+{
+  "registryId": "ATUNED_FETTER_PROMPT_VALIDATION_OVERLAY_972",
+  "version": "1.0.0",
+  "lastUpdated": "2026-10-24",
+  "status": "972_PROMPTS_HAVE_THREE_PASS_PROMPT_REVIEW_AND_SYNTHETIC_CASE_COUNTEREXAMPLE_VALIDATION; REAL_PERSON_DATA_NOT_COLLECTED",
+  "sourcePromptRegistry": "docs/data/ATUNED_FETTER_NINE_REGISTER_PROMPTS_972_v1.json",
+  "sourceResearchRegistry": "docs/data/ATUNED_FETTER_DEEP_RESEARCH_REGISTRY_108_v1.json",
+  "policy": "Synthetic cases validate prompt clarity and bias resistance only. They are not observations of real people and do not validate diagnosis, anatomy, or canonical membership. Pass 2 inherits the linked parent record's independent research with direct source references.",
+  "recordCount": 972,
+  "parts": [
+    {
+      "path": "docs/data/ATUNED_FETTER_PROMPT_VALIDATION_OVERLAY_PART_01_OF_03.json",
+      "recordCount": 324,
+      "firstPromptId": "N001:believing",
+      "lastPromptId": "N036:voicing"
+    },
+    {
+      "path": "docs/data/ATUNED_FETTER_PROMPT_VALIDATION_OVERLAY_PART_02_OF_03.json",
+      "recordCount": 324,
+      "firstPromptId": "N037:believing",
+      "lastPromptId": "N072:voicing"
+    },
+    {
+      "path": "docs/data/ATUNED_FETTER_PROMPT_VALIDATION_OVERLAY_PART_03_OF_03.json",
+      "recordCount": 324,
+      "firstPromptId": "N073:believing",
+      "lastPromptId": "N108:voicing"
+    }
+  ],
+  "validationSummary": {
+    "promptCount": 972,
+    "threePassReviewed": 972,
+    "passSlots": 2916,
+    "syntheticCases": 972,
+    "counterexamples": 972,
+    "failedCases": 0,
+    "realPersonEvidence": 0,
+    "canonicalPromotions": 0,
+    "missingParents": 0
+  }
+}
