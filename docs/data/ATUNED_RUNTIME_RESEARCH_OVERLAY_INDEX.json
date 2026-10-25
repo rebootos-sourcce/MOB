@@ -1,9 +1,9 @@
 {
   "registryId": "ATUNED_RUNTIME_RESEARCH_OVERLAY",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "lastUpdated": "2026-10-24",
-  "status": "PARTIAL_RESEARCH_OVERLAY; 92_OF_242_RUNTIME_RECORDS_HAVE_THREE_PASS_RESEARCH_OR_EXPLICIT_SOURCE_GAP_DISPOSITION",
-  "recordCount": 92,
+  "status": "PARTIAL_RESEARCH_OVERLAY; 131_OF_242_RUNTIME_RECORDS_HAVE_THREE_PASS_RESEARCH_OR_EXPLICIT_SOURCE_GAP_DISPOSITION",
+  "recordCount": 131,
   "targetRecordCount": 242,
   "policy": "Each overlay record preserves source text, separates scholarly context from owner-model claims, documents a third-pass counterexample/limitation review, and never promotes a hypothesis to canon. Records not yet in an overlay remain visibly research-pending.",
   "parts": [
@@ -29,12 +29,20 @@
         "node"
       ],
       "disposition": "research complete as explicit source-gap record; exact definition unresolved"
+    },
+    {
+      "path": "docs/data/ATUNED_RUNTIME_RESEARCH_OVERLAY_SOMATIC_SIGNATURES_39_v1.json",
+      "recordCount": 39,
+      "families": [
+        "somatic_signature"
+      ],
+      "disposition": "three-pass research complete; inferred composites remain provisional"
     }
   ],
   "validationSummary": {
-    "overlayRecords": 92,
+    "overlayRecords": 131,
     "targetRecords": 242,
-    "remaining": 150,
+    "remaining": 111,
     "sourceDefinitionPreservation": true,
     "canonicalPromotions": 0,
     "realPersonEvidence": 0,
