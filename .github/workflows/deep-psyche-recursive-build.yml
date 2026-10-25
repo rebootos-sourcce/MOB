@@ -35,10 +35,13 @@ jobs:
       - name: Generate knowledge graph
         run: node proto/knowledge/src/gen-data.js
 
-      - name: Psychological registry and template validation
-        run: |
-          node proto/knowledge/src/audit-psychological-registry.js --strict
-          node proto/knowledge/src/validate-templates.js
+      - name: Psychological registry audit
+        id: source-audit
+        run: node proto/knowledge/src/audit-psychological-registry.js
+
+      - name: Template and connectivity validation
+        id: template-validation
+        run: node proto/knowledge/src/validate-templates.js
 
       - name: Structural graph audit
         run: |
@@ -78,7 +81,13 @@ jobs:
           if (errors.length) process.exit(1);
           NODE
 
+      - name: Strict KPI closure audit
+        id: strict-closure
+        continue-on-error: true
+        run: node proto/knowledge/src/audit-psychological-registry.js --strict
+
       - name: Commit generated graph
+        if: steps.template-validation.outcome == 'success' && steps.structural-audit.outcome == 'success'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -86,4 +95,19 @@ jobs:
           if ! git diff --cached --quiet; then
             git commit -m "Build integrated Deep Psyche knowledge graph"
             git push
+          fi
+
+      - name: Report KPI closure state
+        if: always()
+        env:
+          STRICT_CLOSURE: ${{ steps.strict-closure.outcome }}
+          TEMPLATE_VALIDATION: ${{ steps.template-validation.outcome }}
+          STRUCTURAL_AUDIT: ${{ steps.structural-audit.outcome }}
+        run: |
+          echo "Template validation: ${TEMPLATE_VALIDATION}"
+          echo "Structural graph audit: ${STRUCTURAL_AUDIT}"
+          echo "Strict KPI closure: ${STRICT_CLOSURE}"
+          if [ "${TEMPLATE_VALIDATION}" != "success" ] || [ "${STRUCTURAL_AUDIT}" != "success" ] || [ "${STRICT_CLOSURE}" != "success" ]; then
+            echo "The graph build may be committed, but 100% closure is not certified."
+            exit 1
           fi
