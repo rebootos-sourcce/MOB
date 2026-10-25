@@ -1,0 +1,29 @@
+{
+  "registryId": "ATUNED_DEEP_PSYCHOLOGICAL_CROSS_REGISTRY_EDGE_REGISTER",
+  "version": "1.0.0",
+  "lastUpdated": "2026-10-24",
+  "status": "OPEN_CROSS_REGISTRY_LINK_REGISTER",
+  "edgeCount": 1,
+  "relationshipEdges": [
+    {
+      "edgeId": "xedge:psychopathy-layer-contradiction:descent",
+      "fromId": "source-contradiction:psychopathy-descent-vs-canon",
+      "fromRegistry": "ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY",
+      "toId": "descent-candidate:psychopathy",
+      "toRegistry": "ATUNED_SUPERCOMPLEX_CANDIDATE_REGISTRY",
+      "toLabel": null,
+      "relationshipType": "source_contradiction_affects_record",
+      "direction": "from_to",
+      "status": "open_owner_ruling",
+      "canonicality": "not_semantic_edge",
+      "provenanceSource": "docs/ATUNED_SUPER_COMPLEX_PHASE_HANDSHAKE_2026-10-20.md",
+      "sourceLocator": "DESCENT row versus SOURCE OS CANON Hyper-Complex register",
+      "sourceVersion": "MOB engine.js commit b434f1a; SOURCE OS CANON v1.0.0",
+      "confidence": 0.99,
+      "reciprocalRequired": false,
+      "validationStatus": "cross_registry_target_expected",
+      "ownerDecisionRequired": false,
+      "notes": "Owner ruling rejects Psychopathy as a canonical Super-Complex; the DESCENT source claim remains a separate record."
+    }
+  ]
+}

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/rebootos-sourcce/MOB/blob/main/docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_SCHEMA_v1.json",
   "title": "ATÜNED Shared Deep-Psychological Record",
-  "description": "Shared record envelope aligned to the existing Nerve-to-Super-Complex knowledge record shape, with provenance, typed links, template coverage, and exactly three distinct research-pass slots. A schema-valid record is not necessarily canon-approved or research-complete.",
+  "description": "Shared record envelope. The template payload is a derived projection built by the adapter from top-level source fields and the versioned template catalog; it is not duplicated in the source registry to avoid drift. Conditional requirements now include researchSources, researchSynthesis, and researchLimitations for source Complex, Hyper-Complex, MIRROR, CIRCLES, BLUEPRINT, and CASCADE records. Adds explicit source-child-label records with provenance and research/crosswalk fields.",
   "type": "object",
   "required": [
     "id",
@@ -14,7 +14,6 @@
     "body",
     "links",
     "templateId",
-    "template",
     "templateValidation",
     "sourceRefs",
     "sourceClaims",
@@ -73,7 +72,8 @@
       "type": [
         "object",
         "null"
-      ]
+      ],
+      "description": "Optional generated projection; source registry records may omit it. The adapter must reconstruct this object from top-level fields and the template catalog."
     },
     "templateValidation": {
       "type": "object",
@@ -289,7 +289,1596 @@
     },
     "changelog": {
       "type": "array"
+    },
+    "behavioralEnergy": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Provisional, research-informed description of recurring motivational, attention, and action pattern; must not be represented as source-verbatim without evidence."
+    },
+    "motivationalPull": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "attentionBias": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "actionTendency": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "adaptiveExpression": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "distortedExpression": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "researchSynthesis": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "researchLimitations": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceLabel": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceCluster": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceVersion": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceLocator": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceExcerpt": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceEvidenceStatus": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "canonicalStatus": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "crosswalkStatus": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "affirmationText": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "chakra": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sequence": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "variants": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "contradictoryStatements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "affectedRecordIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "requiredRuling": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "relationshipEdges": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "runtimeKind": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceStatus": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "childNames": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "behavior": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "triggerMechanism": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "livedExample": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "impact": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "practice": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "oppositeId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "oppositeDefinition": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "oppositeStatus": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "compositionStatus": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "composition": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ownerStatedStatus": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "membershipStatus": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "inversionCandidates": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "axis": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "upName": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "upDescription": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "downName": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "downDescription": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "question": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "circleNumber": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "governorName": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sin": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "see": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "pattern": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "bodyAnchor": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceClaimedType": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceClaimedLayer": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ownerRuling": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "expectedCount": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "memberNames": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "blockingDependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "requiredNextAction": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceFamily": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceRole": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceSequence": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "researchStatus": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "inferred": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "inferenceBasis": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "narrativeSource": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "researchSources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     }
   },
-  "additionalProperties": true
+  "additionalProperties": true,
+  "version": "2.0.0",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "behavioral_domain"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "behavioralEnergy",
+          "motivationalPull",
+          "attentionBias",
+          "actionTendency",
+          "adaptiveExpression",
+          "distortedExpression",
+          "researchSynthesis",
+          "researchLimitations"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "v341_domain_label"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceLabel",
+          "sourceCluster",
+          "sourceVersion",
+          "sourceLocator",
+          "sourceEvidenceStatus",
+          "canonicalStatus",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "source_arch12_label"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceLabel",
+          "sourceVersion",
+          "sourceLocator",
+          "sourceEvidenceStatus",
+          "canonicalStatus",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "conscious_affirmation"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "affirmationText",
+          "chakra",
+          "sequence",
+          "sourceVersion",
+          "sourceLocator",
+          "sourceEvidenceStatus",
+          "canonicalStatus",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "related_consciousness_concept"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceLabel",
+          "description",
+          "affirmationText",
+          "sourceVersion",
+          "sourceLocator",
+          "sourceEvidenceStatus",
+          "canonicalStatus",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "source_contradiction"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "contradictoryStatements",
+          "affectedRecordIds",
+          "requiredRuling",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "complex"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceStatus",
+          "childNames",
+          "behavior",
+          "triggerMechanism",
+          "livedExample",
+          "impact",
+          "practice",
+          "oppositeId",
+          "oppositeDefinition",
+          "oppositeStatus",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses",
+          "researchSources",
+          "researchSynthesis",
+          "researchLimitations"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "hypercomplex"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceStatus",
+          "childNames",
+          "compositionStatus",
+          "composition",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses",
+          "researchSources",
+          "researchSynthesis",
+          "researchLimitations"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "supercomplex_candidate"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "ownerStatedStatus",
+          "sourceClaimedLayer",
+          "membershipStatus",
+          "inversionCandidates",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "mirror_pair"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "axis",
+          "seat",
+          "upName",
+          "upDescription",
+          "downName",
+          "downDescription",
+          "question",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses",
+          "researchSources",
+          "researchSynthesis",
+          "researchLimitations"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "mirror_figure_candidate"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceFamily",
+          "sourceRole",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses",
+          "researchSources",
+          "researchSynthesis",
+          "researchLimitations"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "circle_candidate"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "circleNumber",
+          "governorName",
+          "sin",
+          "see",
+          "pattern",
+          "bodyAnchor",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses",
+          "researchSources",
+          "researchSynthesis",
+          "researchLimitations"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "blueprint_pattern"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceClaimedType",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses",
+          "researchSources",
+          "researchSynthesis",
+          "researchLimitations"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "cascade_state"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceClaimedType",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses",
+          "researchSources",
+          "researchSynthesis",
+          "researchLimitations"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "descent_candidate"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceClaimedLayer",
+          "ownerRuling",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "roster_requirement"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "expectedCount",
+          "memberNames",
+          "sourceEvidenceStatus",
+          "canonicalStatus",
+          "requiredNextAction",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "source_gap"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceEvidenceStatus",
+          "canonicalStatus",
+          "blockingDependencies",
+          "requiredNextAction",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "complex"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceStatus",
+          "childNames",
+          "behavior",
+          "triggerMechanism",
+          "livedExample",
+          "impact",
+          "practice",
+          "oppositeId",
+          "oppositeDefinition",
+          "oppositeStatus",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses",
+          "researchSources",
+          "researchSynthesis",
+          "researchLimitations"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "hypercomplex"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceStatus",
+          "childNames",
+          "compositionStatus",
+          "composition",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses",
+          "researchSources",
+          "researchSynthesis",
+          "researchLimitations"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "supercomplex_candidate"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "ownerStatedStatus",
+          "sourceClaimedLayer",
+          "membershipStatus",
+          "inversionCandidates",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "mirror_pair"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "axis",
+          "seat",
+          "upName",
+          "upDescription",
+          "downName",
+          "downDescription",
+          "question",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses",
+          "researchSources",
+          "researchSynthesis",
+          "researchLimitations"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "mirror_figure_candidate"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceFamily",
+          "sourceRole",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses",
+          "researchSources",
+          "researchSynthesis",
+          "researchLimitations"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "circle_candidate"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "circleNumber",
+          "governorName",
+          "sin",
+          "see",
+          "pattern",
+          "bodyAnchor",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses",
+          "researchSources",
+          "researchSynthesis",
+          "researchLimitations"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "blueprint_pattern"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceClaimedType",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses",
+          "researchSources",
+          "researchSynthesis",
+          "researchLimitations"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "cascade_state"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceClaimedType",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses",
+          "researchSources",
+          "researchSynthesis",
+          "researchLimitations"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "descent_candidate"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceClaimedLayer",
+          "ownerRuling",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "roster_requirement"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "expectedCount",
+          "memberNames",
+          "sourceEvidenceStatus",
+          "canonicalStatus",
+          "requiredNextAction",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "source_gap"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceEvidenceStatus",
+          "canonicalStatus",
+          "blockingDependencies",
+          "requiredNextAction",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "descent_candidate"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceClaimedLayer",
+          "ownerRuling",
+          "behavior",
+          "triggerMechanism",
+          "livedExample",
+          "impact",
+          "practice",
+          "oppositeDefinition",
+          "oppositeStatus",
+          "inferred",
+          "inferenceBasis",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "inversion_pole_candidate"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceFamily",
+          "sourceRole",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "inferred_counterpart"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "oppositeId",
+          "oppositeDefinition",
+          "oppositeStatus",
+          "inferred",
+          "inferenceBasis",
+          "confidence",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "somatic_signature"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "nm",
+          "seat",
+          "fam",
+          "def",
+          "body",
+          "trigger",
+          "says",
+          "out",
+          "livedBehavior",
+          "availableState",
+          "nextMove",
+          "nids",
+          "arch",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "saboteur"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "nm",
+          "fam",
+          "def",
+          "body",
+          "chargeSignature",
+          "sourceDefinition",
+          "sourceBehavior",
+          "sourceIntervention",
+          "sourceFamily",
+          "sourceMembershipNids",
+          "membershipStatus",
+          "canonicalStatus",
+          "sourceFields",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "fetter_deep_template"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "nodeId",
+          "nm",
+          "sourceBand",
+          "anatomicalAddress",
+          "governingFunction",
+          "shadowExpression",
+          "phase",
+          "sourceFields",
+          "corpusMatches",
+          "behavioralHypothesis",
+          "contextualDiscriminant",
+          "counterexampleGuard",
+          "releaseStatement",
+          "sourceVersion",
+          "versionCrosscheckStatus",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "address_nine_prompt"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "promptId",
+          "nodeId",
+          "fetterName",
+          "register",
+          "registerQuestion",
+          "searchAnchor",
+          "evidenceInstruction",
+          "evidenceClass",
+          "reviewStatus",
+          "sourceFields",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "polarity_candidate"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "pairId",
+          "profileId",
+          "profileName",
+          "constructiveCandidate",
+          "relationClass",
+          "sharedMechanismHypothesis",
+          "descentObservablePatterns",
+          "constructiveObservablePatterns",
+          "sourceSupport",
+          "storyEvidenceIds",
+          "counterexampleOrConfounds",
+          "confidence",
+          "reviewStatus",
+          "promotionGate",
+          "notes",
+          "sourceFields",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "descent_profile_candidate"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "profileId",
+          "profileName",
+          "sourceFields",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses",
+          "canonicalStatus",
+          "confidence"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "template_definition"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "templateId",
+          "structureType",
+          "nm",
+          "sourceDescription",
+          "sourceSeat",
+          "sourceSubtextInternalOnly",
+          "constructiveExpression",
+          "shadowOrLoadMechanism",
+          "membershipRule",
+          "evidenceGate",
+          "sourceStatus",
+          "clinicalSafety",
+          "sourceFields",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "source_ruling"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "rulingId",
+          "item",
+          "detail",
+          "blocks",
+          "sourceVersion",
+          "status",
+          "requiredDecision",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "owner_roster_placeholder"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "rosterId",
+          "slotIndex",
+          "layer",
+          "canonicalStatus",
+          "ownerClaim",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "saboteur_membership_requirement"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "saboteurId",
+          "saboteurName",
+          "requiredMinimumNodeCount",
+          "currentNodeIds",
+          "status",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "source_os_hypercomplex_snapshot"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceHypercomplexId",
+          "nm",
+          "sourceVersion",
+          "childSaboteurNames",
+          "sourceStatus",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "layer_inventory"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "layerId",
+          "nm",
+          "layerClass",
+          "sourceVersions",
+          "expectedCount",
+          "observedCount",
+          "denominatorStatus",
+          "recordCoverageStatus",
+          "researchCoverageStatus",
+          "wiringCoverageStatus",
+          "knownBlockers",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "kpi_definition"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "kpiId",
+          "nm",
+          "definition",
+          "numerator",
+          "denominator",
+          "status",
+          "evidence",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "source_saboteur_child_label"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceLabel",
+          "sourceCluster",
+          "sourceVersion",
+          "sourceLocator",
+          "sourceExcerpt",
+          "sourceEvidenceStatus",
+          "canonicalStatus",
+          "crosswalkStatus",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses",
+          "researchSources",
+          "researchSynthesis",
+          "researchLimitations"
+        ]
+      }
+    }
+  ]
 }

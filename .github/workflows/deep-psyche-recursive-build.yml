@@ -1,0 +1,80 @@
+name: Deep Psyche recursive build
+
+on:
+  push:
+    branches:
+      - work/deep-psyche-recursive-closure-2026-10-24
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  generate-and-audit:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate knowledge graph
+        run: node proto/knowledge/src/gen-data.js
+
+      - name: Structural graph audit
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const text = fs.readFileSync('proto/knowledge/src/data.js', 'utf8');
+          const match = text.match(/var KBD=(.*);\s*$/s);
+          if (!match) throw new Error('Generated KBD payload did not parse');
+          const db = JSON.parse(match[1]);
+          const entries = db.entries || [];
+          const edges = db.relationshipEdges || [];
+          const ids = new Set();
+          const errors = [];
+          for (const entry of entries) {
+            if (!entry.id || ids.has(entry.id)) errors.push('missing or duplicate record ID: ' + entry.id);
+            ids.add(entry.id);
+          }
+          for (const entry of entries) {
+            for (const target of entry.links || []) {
+              if (!ids.has(target)) errors.push(entry.id + ' has dangling link ' + target);
+            }
+          }
+          const edgeIds = new Set();
+          for (const edge of edges) {
+            if (!edge.edgeId || edgeIds.has(edge.edgeId)) errors.push('missing or duplicate edge ID: ' + edge.edgeId);
+            edgeIds.add(edge.edgeId);
+            if (!ids.has(edge.fromId)) errors.push(edge.edgeId + ' source does not resolve: ' + edge.fromId);
+            if (edge.toId && !ids.has(edge.toId) && edge.targetRegistry !== 'external_or_unresolved') errors.push(edge.edgeId + ' target does not resolve: ' + edge.toId);
+            if (!edge.toId && (!edge.toLabel || !edge.status)) errors.push(edge.edgeId + ' unresolved target missing label/status');
+            for (const field of ['relationshipType', 'status', 'canonicality', 'validationStatus']) if (!edge[field]) errors.push(edge.edgeId + ' missing ' + field);
+          }
+          const counts = {};
+          for (const entry of entries) counts[entry.kind] = (counts[entry.kind] || 0) + 1;
+          const pending = entries.filter(entry => entry.templateValidation && entry.templateValidation.contentStatus !== 'complete').length;
+          const report = { entryCount: entries.length, uniqueRecordIds: ids.size, edgeCount: edges.length, uniqueEdgeIds: edgeIds.size, counts, recordsPendingResearchOrValidation: pending, errorCount: errors.length, errors };
+          console.log(JSON.stringify(report, null, 2));
+          if (errors.length) process.exit(1);
+          NODE
+
+      - name: Commit generated graph
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add proto/knowledge/src/data.js
+          if ! git diff --cached --quiet; then
+            git commit -m "Build integrated Deep Psyche knowledge graph"
+            git push
+          fi

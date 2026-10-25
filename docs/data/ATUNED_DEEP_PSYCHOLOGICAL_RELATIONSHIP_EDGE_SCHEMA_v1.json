@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ATUNED_DEEP_PSYCHOLOGICAL_RELATIONSHIP_EDGE_SCHEMA_v1",
+  "title": "ATÜNED Deep Psychological Relationship Edge",
+  "version": "1.0.0",
+  "description": "Typed, provenance-bearing relationship record. Candidate and unresolved edges are first-class records but must not be treated as canonical semantic membership.",
+  "type": "object",
+  "required": [
+    "edgeId",
+    "fromId",
+    "toId",
+    "relationshipType",
+    "direction",
+    "status",
+    "canonicality",
+    "validationStatus"
+  ],
+  "properties": {
+    "edgeId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fromId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "toId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "toLabel": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "relationshipType": {
+      "type": "string",
+      "minLength": 1
+    },
+    "direction": {
+      "type": "string",
+      "enum": [
+        "from_to"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "minLength": 1
+    },
+    "canonicality": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provenanceSource": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceLocator": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceVersion": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "confidence": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "reciprocalRequired": {
+      "type": "boolean"
+    },
+    "targetRegistry": {
+      "type": "string"
+    },
+    "validationStatus": {
+      "type": "string"
+    },
+    "ownerDecisionRequired": {
+      "type": "boolean"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "toId": {
+            "const": null
+          }
+        },
+        "required": [
+          "toId"
+        ]
+      },
+      "then": {
+        "required": [
+          "toLabel",
+          "status"
+        ]
+      }
+    }
+  ],
+  "additionalProperties": true
+}

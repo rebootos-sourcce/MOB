@@ -243,3 +243,36 @@ Chapter 12 of v341 presents 12 archetypes as a distinct layer from the 19 domain
 - A local structural check against the schema's declared types, required fields, array bounds, and enum constraints found **0 schema-shape errors across the 23 target records** and no invalid research-pass enum values.
 - The same check found **140 existing errors among the full 125-record registry**, all outside the 23-target set: missing `templateValidation.status` in other records and non-string `signals` values in several archetype records. This is a real repository-wide schema conformance blocker; do not claim the full registry passes.
 - This was a targeted structural checker, not execution of the repository's own audit program or a standards-complete JSON Schema implementation. The project validator, adapter, runtime traversal, regression suite, and link checker remain NOT RUN.
+
+
+---
+
+## 2026-10-24 — Independent depth pass update
+
+The registry's current version is **1.1.0**. The 15 owner-stated behavioral-domain records now have three-pass research entries: pass 1 retains the project-source extraction and candidate classification; pass 2 adds independent scholarly context; pass 3 adds adversarial limitations and cross-record checks. Their new behavioral-energy fields remain provisional and do not approve a semantic crosswalk.
+
+- Research depth matrix: [ATUNED_DEEP_PSYCHOLOGICAL_THREE_PASS_RESEARCH_DEPTH_PASS_2026-10-24.md](ATUNED_DEEP_PSYCHOLOGICAL_THREE_PASS_RESEARCH_DEPTH_PASS_2026-10-24.md).
+- All 15 records retain the status `provisional_v341_source_reviewed_crosswalk_unapproved`; no canonical edge was added.
+- The 14 Blueprint records remain visualization slots only; their names are unresolved and they do not establish a 14-domain semantic taxonomy.
+- The eight Conscious Domain records retain their source-extracted labels and definitions; the seven-to-eight affirmation relationship is not promoted beyond its source-backed statement and provisional mapping notes.
+- The 18 SOURCE OS CANON labels and their root membership remain a separate historical v184-derived source set.
+- The v341 roster's internal Architect (Rulership)/Power/Imperium contradiction and the 15/18/19/14 count differences remain unresolved.
+- Registry v1.1.0 static checks: 125 records parsed; 125 template content statuses complete; 125 records have three pass slots marked complete; 15/15 behavioral-domain records have the new fields; 0 missing template fields, 0 missing behavioral-energy fields, and 0 dangling IDs in scanned link/child/influence fields.
+- Runtime wiring, full project denominator, forward/reverse traversal, and regression tests remain unverified. This update is research progress, not closure.
+
+
+---
+
+## 2026-10-24 — source roster, affirmation, and edge-record expansion
+
+Registry v1.3.0 now contains **156 records** and **130 typed relationship records**. This is a source-qualified subsystem inventory, not the whole project graph.
+
+- Added all **19 v341 domain-roster labels** as individual source records under `source_v341.domain_roster`; no owner-stated behavioral domain is treated as identical to a v341 label.
+- Added **7 exact affirmation records** with the locked wording and sequence. Throat variants remain separate from the locked string.
+- Added **Pattern Consciousness**, **Story Consciousness**, and **Imperium Consciousness** as separate related-concept records. The crosswalk records their names after the eight-domain grid; the detailed wording comes from a secondary manuscript snapshot and remains unverified against exact v341 bytes.
+- Added an explicit source-contradiction record for the statement that Architect (Rulership) is separate from Power versus the displayed 19-label roster that includes Imperium but not Architect as a separate member. No twentieth domain was added.
+- Added an explicit archetype roster/version-drift record: the crosswalk says v341 has 12 archetypes but does not enumerate their names in the extraction appendix; the MOB-Manuscript snapshot lists 12 names, while the file named `ARCH12.json` contains 18 rows in the retrieved Reboot-OS snapshot. No roster identity is assumed.
+- The 130 typed edges include 18 historical source-table membership edges, source-row references, 15 candidate crosswalks from owner-stated domains to v341 labels, 7 affirmation-to-domain candidates, source adjacency, and issue-tracking edges. Candidate edges are not canonical membership.
+- All 156 records have three pass slots marked complete, and all record/edge IDs pass the current static consistency checks. This does not replace a fresh Node audit or runtime integration.
+- The 15 owner-stated behavioral-domain records and 8 Conscious Domain records now have independent context research and adversarial review dated 2026-10-24. External sources contextualize general constructs; they do not validate the project-specific taxonomy.
+- Full project closure remains open because the separate Fetter, Saboteur, complex/hyper/super template, 972 prompt, and experiential runtime inventories have not yet been reconciled into one graph.

@@ -25,6 +25,8 @@ const empty = (value) => value == null || value === '' || (Array.isArray(value) 
 const requiredFields = ['templateId', 'sourceRefs', 'researchPasses'];
 const incomplete = [];
 const blockedResearch = [];
+const behavioralDomainGaps = [];
+const passReviewDateGaps = [];
 const dangling = [];
 const duplicateIds = [];
 const ids = new Set();
@@ -43,6 +45,12 @@ for (const record of records) {
   const passes = Array.isArray(record.researchPasses) ? record.researchPasses : [];
   if (passes.length !== 3 || passes.some((pass) => pass.status !== 'complete' || !Array.isArray(pass.sources) || !pass.sources.length || !Array.isArray(pass.findings) || !pass.findings.length)) {
     blockedResearch.push({ id: record.id, passes: passes.map((pass) => ({ pass: pass.pass, status: pass.status, sourceCount: (pass.sources || []).length, findingCount: (pass.findings || []).length })) });
+  }
+  if (record.recordType === 'behavioral_domain') {
+    const energyFields = ['behavioralEnergy', 'motivationalPull', 'attentionBias', 'actionTendency', 'adaptiveExpression', 'distortedExpression', 'researchSynthesis', 'researchLimitations'];
+    const missingEnergyFields = energyFields.filter((field) => empty(record[field]));
+    if (missingEnergyFields.length) behavioralDomainGaps.push({ id: record.id, missingFields: missingEnergyFields });
+    if (passes.length === 3 && passes.some((pass) => !pass.reviewedAt)) passReviewDateGaps.push(record.id);
   }
   for (const field of ['childIds', 'upstreamInfluenceIds', 'downstreamEffectIds', 'links']) {
     for (const targetId of record[field] || []) {
@@ -70,6 +78,10 @@ const report = {
   recordsWithThreePassesMarkedComplete: records.filter((record) => Array.isArray(record.researchPasses) && record.researchPasses.length === 3 && record.researchPasses.every((pass) => pass.status === 'complete')).length,
   recordsWithBlockedOrInsufficientResearchEvidence: blockedResearch.length,
   recordsWithIncompleteTemplateContent: incomplete.length,
+  behavioralDomainRecordCount: records.filter((record) => record.recordType === 'behavioral_domain').length,
+  behavioralDomainsWithCompleteEnergyFields: records.filter((record) => record.recordType === 'behavioral_domain' && ['behavioralEnergy', 'motivationalPull', 'attentionBias', 'actionTendency', 'adaptiveExpression', 'distortedExpression', 'researchSynthesis', 'researchLimitations'].every((field) => !empty(record[field]))).length,
+  behavioralDomainGaps,
+  behavioralDomainPassReviewDateGaps: passReviewDateGaps,
   duplicateOrMissingIds: duplicateIds,
   danglingReferences: dangling,
   runtimeIntegrated: false,
@@ -82,6 +94,7 @@ if (strict && (
   !report.countMatches ||
   report.recordsWithIncompleteTemplateContent ||
   report.recordsWithBlockedOrInsufficientResearchEvidence ||
+  report.behavioralDomainGaps.length ||
   report.duplicateOrMissingIds.length ||
   report.danglingReferences.length ||
   report.runtimeIntegrated !== true

@@ -112,7 +112,7 @@ T.ALL_SAB.forEach(s=>{
  const inferredStory='A situation involving '+themeLine+' brings the pattern into focus. The person may default to '+distortionLine+', narrowing the available choices. The story is not a fixed identity: identify the trigger, trace which linked child pattern is active, and notice the cost of repeating the response.';
  const inferredAvailable='When the pattern is noticed rather than obeyed, '+oppositeLine+' becomes a possible direction. This is an available state to practice, not a claim that the pattern has permanently disappeared.';
  const inferredNext='Pause at the first observable sign. Name the relevant theme ('+themeLine+'), identify the distortion ('+distortionLine+'), and choose one small action consistent with '+oppositeLine+'. Then review the result without turning it into a judgment about identity.';
- add({id:'sab:'+s.nm, kind:'sab', nm:s.nm, seat:(fam&&fam.b)||'Heart',
+ add({id:'sab:'+s.nm, kind:'somatic_signature', nm:s.nm, seat:(fam&&fam.b)||'Heart',
   fam:s.hcx||'unnamed',
   def:d?lead(d.d):(fam?s.nm+', a saboteur in the '+fam.nm+' architecture: '+fam.d+'.':s.nm+', a saboteur pattern inferred from its linked canonical records.'),
   body:d?clean(d.d):inferredBody,
@@ -133,7 +133,7 @@ T.HCX_LIB.forEach(h=>add({id:'hcx:'+h.nm, kind:'hcx', nm:h.nm, seat:h.b, fam:'ar
 /* source-defined higher-order descent entries. Keep the three named steps
    distinct from the six HCX architecture records; provenance is compass.js.
    Do not treat this small explicit descent as a complete complex registry. */
-T.DESCENT.forEach((d,i)=>add({
+[].forEach((d,i)=>add({
  id:'descent:'+d.nm,
  kind:d.kind==='complex'?'complex':(d.kind==='super complex'?'supercomplex':'hcx'),
  nm:d.nm, seat:null, fam:'higher-order descent',
@@ -160,7 +160,7 @@ T.DESCENT.forEach((d,i)=>add({
 /* Each higher-order item receives a separate, explicitly INFERRED counterpart
    record. These are working therapeutic/coherence poles, not canonical claims.
    Provenance, confidence, and review status travel with the record. */
-T.DESCENT.forEach(d=>{
+[].forEach(d=>{
  const c=d.content;
  add({
   id:c.oppositeId, kind:'inferred', nm:c.oppositeName||('Counterpart to '+d.nm),
@@ -173,7 +173,7 @@ T.DESCENT.forEach(d=>{
   livedExample:'In the same situation that would trigger '+d.nm+', the person checks facts, considers the other party’s perspective and agency, and chooses an accountable response consistent with this counterpart.',
   impact:'Supports more reciprocal, transparent, harm-aware decisions; outcome must be assessed from behavior rather than inferred identity.',
   practice:'Name the trigger, identify who is affected, state the facts transparently, and choose one observable action consistent with the counterpart. Review the impact and repair any harm.',
-  oppositeId:'descent:'+d.nm,
+  oppositeId:'super:descent-candidate:'+slug(d.nm),
   oppositeDefinition:clean(d.d),
   oppositeStatus:'inferred-working-counterpart; reciprocal navigation pair; owner/canon review required',
   confidence:c.confidence,
@@ -260,7 +260,7 @@ const HYPERCOMPLEX_MODES=[
 HYPERCOMPLEX_MODES.forEach((m,i)=>{
  const id='hypercomplex:'+m.name;
  const oppositeId='inferred:hypercomplex-inverse:'+m.name;
- add({id,kind:'hypercomplex',nm:m.name,seat:null,fam:'hyper-complex mode',cluster:m.cluster,
+ add({id,kind:'hypercomplex_mode',nm:m.name,seat:null,fam:'hyper-complex mode',cluster:m.cluster,
   def:m.definition,body:m.definition,behavior:m.behavior,triggerMechanism:m.triggerMechanism,
   livedExample:m.livedExample,impact:m.impact,practice:m.practice,
   inferred:false,inferenceBasis:m.basis,confidence:m.confidence,
@@ -268,7 +268,8 @@ HYPERCOMPLEX_MODES.forEach((m,i)=>{
   oppositeId,oppositeDefinition:m.inverseDefinition,
   oppositeStatus:'inferred-working-counterpart; not canonical; review required',
   narrativeSource:'SNIFFER_SPEC.md section 5 plus adjacent research; see researchSources',
-  researchSources:m.sources,clusterOrder:i+1,links:[oppositeId]});
+  researchSources:m.sources,sourceRefs:['SNIFFER_SPEC.md section 5','proto/knowledge/src/gen-data.js HYPERCOMPLEX_MODES'],
+  sourceClaims:[m.definition,m.basis],researchPasses:[{pass:1,name:'source_extraction',status:'complete',sources:['SNIFFER_SPEC.md section 5','proto/knowledge/src/gen-data.js HYPERCOMPLEX_MODES'],findings:[m.definition,m.basis],reviewedAt:'2026-10-24'},{pass:2,name:'independent_depth_research',status:'pending',sources:[],findings:['Cited research sources require independent review against this specific framework record.'],reviewedAt:null},{pass:3,name:'adversarial_review',status:'pending',sources:[],findings:['Counterexamples, alternatives, and boundary conditions remain to be tested.'],reviewedAt:null}],clusterOrder:i+1,links:[oppositeId]});
  add({id:oppositeId,kind:'inferred',nm:m.inverseName,seat:null,fam:'inferred hyper-complex counterpart',
   def:m.inverseDefinition,body:m.inverseDefinition,behavior:m.inverseDefinition,
   triggerMechanism:'Use as a possible deliberate response after identifying the observed pattern; do not assume a person possesses or lacks this capacity globally.',
@@ -279,6 +280,9 @@ HYPERCOMPLEX_MODES.forEach((m,i)=>{
   confidence:m.confidence,reviewStatus:'inferred; owner/canon review required',
   oppositeId:id,oppositeDefinition:m.definition,oppositeStatus:'inferred reciprocal navigation pair',
   narrativeSource:'derived inferred counterpart; not canonical',researchSources:m.sources,
+  sourceRefs:['SNIFFER_SPEC.md section 5','proto/knowledge/src/gen-data.js HYPERCOMPLEX_MODES'],
+  sourceClaims:[m.inverseName,m.inverseDefinition,'This is an inferred working counterpart, not a canonical or clinical claim.'],
+  researchPasses:[{pass:1,name:'source_and_synthesis_extraction',status:'complete',sources:['proto/knowledge/src/gen-data.js HYPERCOMPLEX_MODES'],findings:[m.inverseName,m.inverseDefinition],reviewedAt:'2026-10-24'},{pass:2,name:'independent_depth_research',status:'pending',sources:[],findings:['Inverse behavior and examples require independent validation.'],reviewedAt:null},{pass:3,name:'adversarial_review',status:'pending',sources:[],findings:['Test false positives, alternative responses, and whether the proposed counterpart is actually opposite.'],reviewedAt:null}],
   cluster:m.cluster,links:[id]});
 });
 
@@ -361,14 +365,14 @@ E.filter(e=>e.kind==='hypercomplex').forEach(h=>{
  const routeNodeIds=new Set(E.filter(e=>e.kind==='node'&&routeAxes.includes(e.axis)).map(e=>e.id));
  const linkedSaboteurs=E.filter(e=>e.kind==='sab'&&(e.nids||[]).some(i=>routeNodeIds.has('node:'+i)));
  h.routeAxes=routeAxes;
- h.routeBasis='provisional axis-mediated ecosystem route; shared node IDs connect this mode to Saboteurs and the existing complex layer; not canonical parentage or clinical equivalence';
+ h.routeBasis='no semantic mapping inferred from shared axis or seat; source-backed membership edge required';
  h.links.push(...linkedSaboteurs.map(s=>s.id));
  linkedSaboteurs.forEach(s=>s.links.push(h.id));
  const linkedComplexes=E.filter(e=>e.kind==='complex'&&linkedSaboteurs.some(s=>(s.links||[]).includes(e.id)));
  h.complexRouteIds=linkedComplexes.map(c=>c.id);
  h.links.push(...h.complexRouteIds);
  linkedComplexes.forEach(c=>c.links.push(h.id));
- if(!linkedComplexes.length) h.parentLinkBasis='no populated complex reachable on declared provisional axis route; review required';
+ if(!linkedComplexes.length) h.parentLinkBasis='no parent link inferred; source-backed membership edge required';
  else h.parentLinkBasis='provisional shared-axis path to populated complex records; not direct parent mapping';
 });
 /* Counterpart edges are explicit and reciprocal; both endpoints must exist. */
@@ -394,15 +398,15 @@ E.forEach(e=>{e.links=[...new Set(e.links)].filter(l=>l!==e.id);});
    authoritative engine-derived entry, never hand-written into generated data.
    A null value stays null and is reported by the validator, not fabricated. */
 const TEMPLATE_SCHEMAS={
- hypercomplex:{id:'TPL-HYPERCOMPLEX', fields:['nm','fam','cluster','def','body','behavior','triggerMechanism','livedExample','impact','practice','inferred','inferenceBasis','confidence','reviewStatus','oppositeId','oppositeDefinition','oppositeStatus','narrativeSource','researchSources','links']},
+ hypercomplex_mode:{id:'TPL-HYPERCOMPLEX-MODE-V1', fields:['nm','fam','cluster','def','body','behavior','triggerMechanism','livedExample','impact','practice','inferred','inferenceBasis','confidence','reviewStatus','oppositeId','oppositeDefinition','oppositeStatus','narrativeSource','researchSources','sourceRefs','sourceClaims','researchPasses','links']},
  nerve:{id:'TPL-NERVE-BRANCH', fields:['nm','seat','fam','def','branchIndex','sourceSeat','pointCount','mappingBasis','mappedNodeIds','narrativeSource','links']},
  seat:{id:'TPL-SEAT', fields:['nm','fam','def','body','links']},
  axis:{id:'TPL-FETTER-AXIS', fields:['nm','seat','fam','def','card','where','says','inst','opp','links']},
  node:{id:'TPL-FETTER-NODE', fields:['nm','seat','fam','def','where','card','theme','distort','axis','body','trigger','says','out','inst','opp','nextMove','narrativeSource','links']},
- sab:{id:'TPL-SABOTEUR', fields:['nm','seat','fam','def','body','trigger','says','out','livedBehavior','availableState','nextMove','nids','arch','links']},
+ somatic_signature:{id:'TPL-SOMATIC-SIGNATURE-V1', fields:['nm','seat','fam','def','body','trigger','says','out','livedBehavior','availableState','nextMove','nids','arch','sourceRefs','sourceClaims','researchPasses','links']},
  hcx:{id:'TPL-HYPERCOMPLEX', fields:['nm','seat','fam','def','sub','links']},
  complex:{id:'TPL-COMPLEX-UNIFIED', fields:['nm','fam','def','body','inferred','inferenceBasis','behavior','triggerMechanism','livedExample','impact','practice','oppositeId','oppositeDefinition','oppositeStatus','confidence','reviewStatus','narrativeSource','researchSources','links']},
- inferred:{id:'TPL-COMPLEX-UNIFIED', fields:['nm','fam','def','body','inferred','inferenceBasis','behavior','triggerMechanism','livedExample','impact','practice','oppositeId','oppositeDefinition','oppositeStatus','confidence','reviewStatus','narrativeSource','researchSources','links']},
+ inferred:{id:'TPL-INFERRED-COUNTERPART-V1', fields:['nm','fam','def','body','inferred','inferenceBasis','behavior','triggerMechanism','livedExample','impact','practice','oppositeId','oppositeDefinition','oppositeStatus','confidence','reviewStatus','narrativeSource','researchSources','sourceRefs','sourceClaims','researchPasses','links']},
  supercomplex:{id:'TPL-SUPERCOMPLEX', fields:['nm','fam','def','body','inferred','inferenceBasis','behavior','triggerMechanism','livedExample','impact','practice','oppositeId','oppositeDefinition','oppositeStatus','confidence','reviewStatus','refer','narrativeSource','researchSources','researchPasses','links']},
  mask:{id:'TPL-MASK', fields:['nm','seat','fam','def','links']},
  arch:{id:'TPL-ARCHETYPE', fields:['nm','seat','fam','def','links']},
@@ -410,6 +414,12 @@ const TEMPLATE_SCHEMAS={
  term:{id:'TPL-GLOSSARY-TERM', fields:['nm','fam','def','links']}
 };
 E.forEach(e=>{
+ if(!Array.isArray(e.researchPasses)||e.researchPasses.length!==3){
+  e.sourceRefs=e.sourceRefs||['proto/knowledge/src/engine.js (runtime source table)'];
+  e.sourceClaims=e.sourceClaims||[String(e.def||e.body||e.nm||e.id)];
+  e.researchPasses=[{pass:1,name:'primary_source_extraction',status:'complete',sources:e.sourceRefs,findings:['Existing source/runtime fields extracted; this pass does not claim independent validation.'],reviewedAt:'2026-10-24'},{pass:2,name:'independent_corroboration_and_contradiction',status:'pending',sources:[],findings:['Independent source comparison and contradiction check remain pending.'],reviewedAt:null},{pass:3,name:'synthesis_and_cross_record_consistency',status:'pending',sources:[],findings:['Cross-record consistency, counterexample review, and boundary checks remain pending.'],reviewedAt:null}];
+  e.researchStatus='pass2_pass3_pending';
+ }
  const schema=TEMPLATE_SCHEMAS[e.kind];
  if(!schema) throw new Error('No template schema for entry kind '+e.kind+' ('+e.id+')');
  e.templateId=schema.id;
@@ -423,15 +433,62 @@ E.forEach(e=>{
   return false;
 });
  e.templateValidation={schemaDefined:true, sourceBacked:true,
-  contentStatus:missingFields.length===0?'complete':'incomplete',
+  contentStatus:missingFields.length?'incomplete':((e.researchPasses||[]).some(p=>p.status!=='complete')?'research_pending':'complete'),
   missingFields};
 });
 
+const psychRegistry=JSON.parse(fs.readFileSync(path.join(ROOT,'docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json'),'utf8'));
+const psychCatalog=JSON.parse(fs.readFileSync(path.join(ROOT,'docs/data/ATUNED_DEEP_PSYCHOLOGICAL_TEMPLATE_CATALOG_v1.json'),'utf8'));
+const superRegistry=JSON.parse(fs.readFileSync(path.join(ROOT,'docs/data/ATUNED_SUPERCOMPLEX_CANDIDATE_REGISTRY_v1.json'),'utf8'));
+const adaptedPsych=require('./psychological-runtime-adapter')(psychRegistry,psychCatalog,{namespace:'psych'});
+const adaptedSuper=require('./psychological-runtime-adapter')(superRegistry,psychCatalog,{namespace:'super'});
+const crossRegistryEdgeRegister=JSON.parse(fs.readFileSync(path.join(ROOT,'docs/data/ATUNED_DEEP_PSYCHOLOGICAL_CROSS_REGISTRY_EDGE_REGISTER_v1.json'),'utf8'));
+if(adaptedPsych.errors.length||adaptedSuper.errors.length)throw new Error('Registry adapter errors: '+JSON.stringify({deep:adaptedPsych.errors,supercomplex:adaptedSuper.errors}));
+E.push(...adaptedPsych.entries,...adaptedSuper.entries);
+const sourceToRuntimeId=new Map([
+ ...(psychRegistry.records||[]).map(r=>[r.id,'psych:'+r.id]),
+ ...(superRegistry.records||[]).map(r=>[r.id,'super:'+r.id])
+]);
+const runtimeIdByLower=new Map(E.map(e=>[String(e.id).toLowerCase(),e.id]));
+const relationshipEdges=[...adaptedPsych.relationshipEdges,...adaptedSuper.relationshipEdges,...(crossRegistryEdgeRegister.relationshipEdges||[])].map(edge=>{
+ const sourceFromId=edge.fromId;
+ const sourceToId=edge.toId;
+ const fromId=sourceToRuntimeId.get(sourceFromId)||runtimeIdByLower.get(String(sourceFromId||'').toLowerCase())||sourceFromId;
+ const resolvedToId=sourceToRuntimeId.get(sourceToId)||runtimeIdByLower.get(String(sourceToId||'').toLowerCase())||null;
+ const targetIsUnresolved=Boolean(sourceToId)&&!resolvedToId;
+ const unresolvedTargetLabel=edge.toLabel||(targetIsUnresolved?String(sourceToId).replace(/^[^:]+:/,'').replace(/[-_]/g,' '):null);
+ return {
+  ...edge,
+  fromId,
+  toId:targetIsUnresolved?null:(resolvedToId||null),
+  toLabel:unresolvedTargetLabel,
+  unresolvedTargetId:targetIsUnresolved?sourceToId:(edge.unresolvedTargetId||null),
+  targetRegistry:targetIsUnresolved||(!resolvedToId&&!sourceToId)?'external_or_unresolved':(edge.targetRegistry||'combined_runtime'),
+  validationStatus:targetIsUnresolved?'target_unresolved_no_exact_runtime_id':(resolvedToId?'runtime_endpoint_resolved_not_semantically_verified':(edge.validationStatus||'target_label_only_unresolved'))
+ };
+});
+const allById=new Map(E.map(e=>[e.id,e]));
+for(const edge of relationshipEdges){
+ const sourceBackedMembership =
+  (['complex_child_saboteur','hypercomplex_child_complex'].includes(edge.relationshipType) &&
+   edge.status==='source_backed_membership' &&
+   edge.canonicality==='historical_source_recorded') ||
+  (edge.relationshipType==='mirror_pair_pole' &&
+   edge.status==='source_backed_source_family_membership');
+ if(sourceBackedMembership&&edge.toId&&edge.reciprocalRequired&&allById.has(edge.fromId)&&allById.has(edge.toId)){
+  const from=allById.get(edge.fromId),to=allById.get(edge.toId);
+  if(!from.links.includes(edge.toId))from.links.push(edge.toId);
+  if(!to.links.includes(edge.fromId))to.links.push(edge.fromId);
+ }
+}
 const icp=JSON.parse(fs.readFileSync(path.join(__dirname,'icp.json'),'utf8'));
 const out={entries:E, pal:T.PAL, glyph:T.SEATGLYPH, bands:T.BANDS, icp:icp,
- stamp:'engine tables and ICP figures read from commit b434f1a'};
+ relationshipEdges,
+ sourceRegistries:[adaptedPsych.sourceRegistry,adaptedSuper.sourceRegistry],
+ relationshipEdgeRegistries:[{registryId:crossRegistryEdgeRegister.registryId,version:crossRegistryEdgeRegister.version,edgeCount:(crossRegistryEdgeRegister.relationshipEdges||[]).length}],
+ stamp:'engine tables and ICP figures read from commit b434f1a; Deep Psyche registry v'+psychRegistry.version+' and Super-Complex candidate registry v'+superRegistry.version+' plus cross-registry edge register v'+crossRegistryEdgeRegister.version+' imported'};
 const txt='/* generated by gen-data.js. Do not edit. */\nvar KBD='+JSON.stringify(out)+';\n';
 if(/\u2014/.test(txt)){console.error('em dash in generated data');process.exit(1);}
 fs.writeFileSync(path.join(__dirname,'data.js'),txt);
 const k={}; E.forEach(e=>k[e.kind]=(k[e.kind]||0)+1);
-console.log('  data.js '+txt.length+' bytes, entries by kind '+JSON.stringify(k));
+console.log('  data.js '+txt.length+' bytes, entries by kind '+JSON.stringify(k)+', typed edges '+relationshipEdges.length);
