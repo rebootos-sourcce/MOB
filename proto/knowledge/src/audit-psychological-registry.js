@@ -148,6 +148,7 @@ const report = {
   mobPatternOverlayMissingIds,
   mobPatternPassFailures,
   fetterPromptRegisterErrors: promptRegisterErrors.length,
+  fetterPromptExampleValidationPendingCount: (fetterPrompts.records || []).filter((prompt) => !prompt.exampleValidationStatus || prompt.exampleValidationStatus === 'PENDING_EXAMPLE_EVIDENCE').length,
   fetterPromptNodeCount: Object.keys(promptCountsByNode).length,
   fetterPromptRowsPerNodeErrors: Object.entries(promptCountsByNode).filter(([id, count]) => count !== 9).map(([id, count]) => ({ id, count })),
   behavioralDomainRecordCount: records.filter((record) => record.recordType === 'behavioral_domain').length,
@@ -165,7 +166,8 @@ const report = {
     fetterOverlayCoverage === (fetterRegistry.records || []).length &&
     mobPatternOverlayCoverage === (mobPatternRegistry.records || []).length &&
     !(mobPatternRegistry.counts && mobPatternRegistry.counts.missingRows) &&
-    unresolvedRelationshipTargetIds.length === 0 &&
+    fetterPromptRegisterErrors.length === 0 &&
+    report.fetterPromptExampleValidationPendingCount === 0 &&
     passReviewDateGaps.length === 0 &&
     !incomplete.length && !blockedResearch.length && !researchStatusGaps.length &&
     !archetypeEnergyGaps.length && !behavioralDomainGaps.length &&
@@ -190,7 +192,7 @@ if (strict && (
   report.fetterResearchOverlayMissingIds.length ||
   report.mobPatternOverlayMissingIds.length ||
   report.mobPatternMissingSourceRows ||
-  report.unresolvedRelationshipTargetCount ||
+  report.fetterPromptExampleValidationPendingCount ||
   report.duplicateOrMissingIds.length ||
   report.danglingReferences.length ||
   report.runtimeIntegrated !== true
