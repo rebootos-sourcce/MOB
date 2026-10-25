@@ -1,7 +1,7 @@
 {
   "catalogId": "atuned.deep_psychological.template_catalog",
-  "version": "2.5.0",
-  "status": "RESEARCH_FIELDS_REQUIRED_FOR_OPEN_ROSTER_AND_SOURCE_GAP_RECORDS",
+  "version": "2.6.0",
+  "status": "AFFIRMATION_AND_RELATED_CONCEPT_RESEARCH_FIELDS_REQUIRED",
   "purpose": "Explicit template assignments for the deep-psychological registry. Behavioral-domain records include research-informed behavioral-energy fields; the catalog remains separate from the experiential runtime until integration is implemented and tested. The 23 Complex, 8 Hyper-Complex, 8 MIRROR pairs, 15 MIRROR figure rows, 9 CIRCLES, 4 BLUEPRINT patterns, and 6 CASCADE states require independent researchSources, researchSynthesis, and researchLimitations; canonical approval remains separate.",
   "templates": [
     {
@@ -244,7 +244,10 @@
         "sourceRefs",
         "sourceClaims",
         "researchPasses",
-        "templateValidation"
+        "templateValidation",
+        "researchSources",
+        "researchSynthesis",
+        "researchLimitations"
       ],
       "description": "Exact source affirmation record; candidate mapping to Conscious Domains remains a separate edge decision."
     },
@@ -267,7 +270,10 @@
         "sourceRefs",
         "sourceClaims",
         "researchPasses",
-        "templateValidation"
+        "templateValidation",
+        "researchSources",
+        "researchSynthesis",
+        "researchLimitations"
       ],
       "description": "Related consciousness concept preserved separately from the eight-domain roster; version-specific cross-check remains explicit."
     },
