@@ -25,7 +25,7 @@ for (const entry of entries.filter((x) => x.kind === 'node' && x.fetterResearchR
 for (const entry of entries.filter((x) => x.kind === 'node' && x.mobPatternSourceRecordId)) {
   if (!entry.mobPatternSource || !Array.isArray(entry.mobPatternSource.researchPasses) || entry.mobPatternSource.researchPasses.length !== 3 || entry.mobPatternSource.researchPasses.some((pass) => pass.status !== 'complete')) errors.push(entry.id + ': MOB pattern source overlay is missing a complete three-pass record');
 }
-const requiredKinds = ['node','sab','hcx','hypercomplex_mode','hypercomplex','complex','supercomplex_candidate','descent_candidate','inversion_pole_candidate','inferred','mirror_pair','mirror_figure_candidate','circle_candidate','blueprint_pattern','cascade_state','source_contradiction','psych_source_contradiction','psych_source_gap','psych_roster_requirement','axis','seat','nerve','arch','mask','term'];
+const requiredKinds = ['node','somatic_signature','hcx','hypercomplex_mode','hypercomplex','complex','supercomplex_candidate','descent_candidate','inversion_pole_candidate','inferred','mirror_pair','mirror_figure_candidate','circle_candidate','blueprint_pattern','cascade_state','source_contradiction','psych_source_contradiction','psych_source_gap','psych_roster_requirement','axis','seat','nerve','arch','mask','term'];
 for (const e of entries) {
   counts[e.kind] = (counts[e.kind] || 0) + 1;
   if (!e.id) errors.push('record has no stable id');
@@ -50,7 +50,7 @@ for (const e of entries) {
 for (const e of entries.filter(x => x.kind === 'hypercomplex_mode')) {
   const targets = new Set(e.links || []);
   const linkedSaboteurs = [...targets].map(id => byId.get(id) || entries.find(x => x.id === id))
-    .filter(x => x && x.kind === 'sab');
+    .filter(x => x && ['sab','somatic_signature'].includes(x.kind));
   const linkedComplexes = [...targets].map(id => byId.get(id) || entries.find(x => x.id === id))
     .filter(x => x && x.kind === 'complex');
   /* Route axes are descriptive metadata only, not a required semantic edge. */
@@ -69,7 +69,7 @@ for (const e of entries.filter(x => x.kind === 'complex')) {
   if (e.sourceStatus === 'R') {
     for (const name of (e.childNames || [])) {
       const child = entries.find(x =>
-        (x.kind === 'sab' && x.nm === name) ||
+        (['sab','somatic_signature'].includes(x.kind) && x.nm === name) ||
         (x.kind === 'psych_source_label' && x.sourceKind === 'source_label' &&
          x.template && x.template.sourceLabel === name &&
          x.template.sourceCluster === 'SOURCE OS CANON complex child labels')
@@ -78,7 +78,7 @@ for (const e of entries.filter(x => x.kind === 'complex')) {
       else if (!(e.links || []).includes(child.id) || !(child.links || []).includes(e.id)) errors.push(e.id + ': source-recorded child link missing or non-reciprocal: ' + child.id);
     }
   }
-  if (e.sourceStatus === 'I' && (e.links || []).some(id => { const x = entries.find(y => y.id === id); return x && x.kind === 'sab'; })) {
+  if (e.sourceStatus === 'I' && (e.links || []).some(id => { const x = entries.find(y => y.id === id); return x && ['sab','somatic_signature'].includes(x.kind); })) {
     errors.push(e.id + ': inferred Complex-to-Saboteur membership was materialized as a link');
   }
 }
