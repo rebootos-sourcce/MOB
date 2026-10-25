@@ -1,7 +1,7 @@
 {
   "catalogId": "atuned.deep_psychological.template_catalog",
-  "version": "2.1.0",
-  "status": "THREE_PASS_RESEARCH_FIELDS_REQUIRED_FOR_SUPERCOMPLEX_AND_DESCENT_CANDIDATES",
+  "version": "2.2.0",
+  "status": "ARCHETYPE_BEHAVIORAL_ENERGY_FIELDS_REQUIRED",
   "purpose": "Explicit template assignments for the deep-psychological registry. Behavioral-domain records include research-informed behavioral-energy fields; the catalog remains separate from the experiential runtime until integration is implemented and tested. The 23 Complex, 8 Hyper-Complex, 8 MIRROR pairs, 15 MIRROR figure rows, 9 CIRCLES, 4 BLUEPRINT patterns, and 6 CASCADE states require independent researchSources, researchSynthesis, and researchLimitations; canonical approval remains separate.",
   "templates": [
     {
@@ -75,7 +75,16 @@
         "released",
         "links",
         "sourceRefs",
-        "researchPasses"
+        "researchPasses",
+        "behavioralEnergy",
+        "motivationalPull",
+        "attentionBias",
+        "actionTendency",
+        "adaptiveExpression",
+        "distortedExpression",
+        "researchSources",
+        "researchSynthesis",
+        "researchLimitations"
       ],
       "description": "Archetype content record with source-authored content and provenance qualifiers."
     },
