@@ -103,6 +103,20 @@ const promptValidationPassFailures = promptValidationRecords.filter((prompt) =>
 ).map((prompt) => prompt.promptId);
 const mobPatternRegistry = JSON.parse(fs.readFileSync(mobPatternPath, 'utf8'));
 const runtimeById = new Map((runtimeDb.entries || []).map((entry) => [entry.id, entry]));
+const runtimeResearchCoverageByKind = {};
+const runtimeResearchPassFailures = [];
+for (const entry of runtimeDb.entries || []) {
+  const passes = Array.isArray(entry.researchPasses) ? entry.researchPasses : [];
+  const complete = passes.length === 3 && passes.every((pass) => pass.status === 'complete' && Array.isArray(pass.sources) && pass.sources.length && Array.isArray(pass.findings) && pass.findings.length);
+  const kind = entry.kind || 'UNSPECIFIED';
+  runtimeResearchCoverageByKind[kind] ||= { total: 0, threePassComplete: 0, incomplete: 0 };
+  runtimeResearchCoverageByKind[kind].total++;
+  if (complete) runtimeResearchCoverageByKind[kind].threePassComplete++;
+  else {
+    runtimeResearchCoverageByKind[kind].incomplete++;
+    runtimeResearchPassFailures.push({ id: entry.id, kind, passStatuses: passes.map((pass) => ({ pass: pass.pass, status: pass.status, sourceCount: (pass.sources || []).length, findingCount: (pass.findings || []).length })) });
+  }
+}
 const fetterOverlayMissingIds = (fetterRegistry.records || []).filter((record) => !record.runtimeNodeId || runtimeById.get(record.runtimeNodeId)?.fetterResearchRecordId !== record.id).map((record) => record.id);
 const fetterOverlayCoverage = (fetterRegistry.records || []).length - fetterOverlayMissingIds.length;
 const fetterPassFailures = (fetterRegistry.records || []).filter((record) => record.researchPasses?.length !== 3 || record.researchPasses.some((pass) => pass.status !== 'complete' || !pass.sources?.length || !pass.findings?.length)).map((record) => record.id);
@@ -148,6 +162,11 @@ const report = {
   relationshipEdgeErrors,
   unresolvedRelationshipTargetCount: unresolvedRelationshipTargetIds.length,
   unresolvedRelationshipTargetIds,
+  runtimeEntryCount: (runtimeDb.entries || []).length,
+  runtimeResearchCompleteCount: (runtimeDb.entries || []).length - runtimeResearchPassFailures.length,
+  runtimeResearchIncompleteCount: runtimeResearchPassFailures.length,
+  runtimeResearchPassFailures,
+  runtimeResearchCoverageByKind,
   runtimeRecordCount: (runtimeDb.entries || []).filter((entry) => String(entry.id || '').startsWith('psych:')).length,
   runtimeRecordCoverage: records.filter((record) => runtimeIds.has('psych:' + record.id)).length,
   runtimeMissingRecordIds,
@@ -181,6 +200,7 @@ const report = {
   runtimeIntegrated,
   closureStatus: (
     runtimeIntegrated &&
+    runtimeResearchPassFailures.length === 0 &&
     records.length === records.filter((record) => runtimeIds.has('psych:' + record.id)).length &&
     fetterOverlayCoverage === (fetterRegistry.records || []).length &&
     mobPatternOverlayCoverage === (mobPatternRegistry.records || []).length &&
@@ -211,6 +231,7 @@ if (strict && (
   report.behavioralDomainPassReviewDateGaps.length ||
   report.researchPassReviewDateGapCount ||
   report.runtimeMissingRecordIds.length ||
+  report.runtimeResearchPassFailures.length ||
   report.fetterResearchOverlayMissingIds.length ||
   report.mobPatternOverlayMissingIds.length ||
   report.mobPatternMissingSourceRows ||
