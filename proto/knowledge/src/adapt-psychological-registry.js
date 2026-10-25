@@ -25,7 +25,7 @@ const engineIds = new Set();
 const engineLabels = new Map();
 if (fs.existsSync(engineDataPath)) {
   const source = fs.readFileSync(engineDataPath, 'utf8');
-  const match = source.match(/var KBD=(.*);\\s*$/s);
+  const match = source.match(/var KBD=(.*);\s*$/s);
   if (match) {
     const db = JSON.parse(match[1]);
     for (const entry of (db.entries || [])) {
@@ -141,7 +141,8 @@ for (const edge of relationshipEdges) {
         targetRegistry,
         toId: edge.toId,
         toLabel: edge.toLabel || null,
-        validationStatus: edge.validationStatus || 'unspecified'
+        validationStatus: edge.validationStatus || 'unspecified',
+        labelMatchCandidateIds: engineLabels.get(String(edge.toLabel || edge.toId.replace(/^[^:]+:/, '')).trim().toLowerCase()) || []
       });
     }
   } else {
