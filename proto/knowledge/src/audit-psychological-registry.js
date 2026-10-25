@@ -163,7 +163,7 @@ const report = {
   runtimeIntegrated,
   closureStatus: (
     runtimeIntegrated &&
-    records.length === runtimeRecordCoverage &&
+    records.length === records.filter((record) => runtimeIds.has('psych:' + record.id)).length &&
     fetterOverlayCoverage === (fetterRegistry.records || []).length &&
     mobPatternOverlayCoverage === (mobPatternRegistry.records || []).length &&
     !(mobPatternRegistry.counts && mobPatternRegistry.counts.missingRows) &&
