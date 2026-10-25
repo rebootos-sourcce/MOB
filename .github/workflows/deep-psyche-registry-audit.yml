@@ -88,5 +88,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: deep-psyche-registry-audit
-          path: artifacts/
+          path: |
+            artifacts/
+            proto/knowledge/src/data.js
           if-no-files-found: warn
