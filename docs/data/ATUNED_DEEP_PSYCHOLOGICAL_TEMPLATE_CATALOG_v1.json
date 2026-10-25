@@ -1,8 +1,8 @@
 {
   "catalogId": "atuned.deep_psychological.template_catalog",
-  "version": "1.8.0",
-  "status": "COMPLEX_HYPERCOMPLEX_AND_SUPERCOMPLEX_CANDIDATE_TEMPLATES_ADDED",
-  "purpose": "Explicit template assignments for the deep-psychological registry. Behavioral-domain records include research-informed behavioral-energy fields; the catalog remains separate from the experiential runtime until integration is implemented and tested.",
+  "version": "1.9.0",
+  "status": "THREE_PASS_RESEARCH_FIELDS_REQUIRED_FOR_COMPLEX_AND_SOURCE_FAMILY_RECORDS",
+  "purpose": "Explicit template assignments for the deep-psychological registry. Behavioral-domain records include research-informed behavioral-energy fields; the catalog remains separate from the experiential runtime until integration is implemented and tested. The 23 Complex, 8 Hyper-Complex, 8 MIRROR pairs, 15 MIRROR figure rows, 9 CIRCLES, 4 BLUEPRINT patterns, and 6 CASCADE states require independent researchSources, researchSynthesis, and researchLimitations; canonical approval remains separate.",
   "templates": [
     {
       "id": "TPL-PSYCHOLOGICAL-ROOT-V1",
@@ -287,7 +287,9 @@
         "sourceRefs",
         "sourceClaims",
         "researchPasses",
-        "templateValidation"
+        "templateValidation",
+        "researchSynthesis",
+        "researchLimitations"
       ],
       "description": "Source OS CANON Complex record."
     },
@@ -312,7 +314,9 @@
         "sourceRefs",
         "sourceClaims",
         "researchPasses",
-        "templateValidation"
+        "templateValidation",
+        "researchSynthesis",
+        "researchLimitations"
       ],
       "description": "Source OS CANON Hyper-Complex instance; distinct from behavioral-family templates."
     },
@@ -358,7 +362,10 @@
         "sourceRefs",
         "sourceClaims",
         "researchPasses",
-        "templateValidation"
+        "templateValidation",
+        "researchSources",
+        "researchSynthesis",
+        "researchLimitations"
       ],
       "description": "One source-defined MIRROR axis pair."
     },
@@ -376,7 +383,10 @@
         "sourceClaims",
         "sourceRefs",
         "researchPasses",
-        "templateValidation"
+        "templateValidation",
+        "researchSources",
+        "researchSynthesis",
+        "researchLimitations"
       ],
       "description": "Unique figure name in MIRROR pole data."
     },
@@ -400,7 +410,10 @@
         "sourceRefs",
         "sourceClaims",
         "researchPasses",
-        "templateValidation"
+        "templateValidation",
+        "researchSources",
+        "researchSynthesis",
+        "researchLimitations"
       ],
       "description": "Source-defined CIRCLES/Descent pattern."
     },
@@ -419,7 +432,10 @@
         "sourceRefs",
         "sourceClaims",
         "researchPasses",
-        "templateValidation"
+        "templateValidation",
+        "researchSources",
+        "researchSynthesis",
+        "researchLimitations"
       ],
       "description": "Source-defined behavioral blueprint pattern."
     },
@@ -438,7 +454,10 @@
         "sourceRefs",
         "sourceClaims",
         "researchPasses",
-        "templateValidation"
+        "templateValidation",
+        "researchSources",
+        "researchSynthesis",
+        "researchLimitations"
       ],
       "description": "One of six behavioral-cascade states."
     },
@@ -898,5 +917,6 @@
       ],
       "description": "One of the three closure KPIs with explicit numerator, denominator, evidence, and blocker state."
     }
-  ]
+  ],
+  "lastUpdated": "2026-10-24"
 }
