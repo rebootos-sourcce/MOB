@@ -70,3 +70,10 @@ When a source or audit file is discovered, add its repository-relative path, rol
 - [Host-free Purgatorio reader](data/purgatorio/v1/src/purgatorio-oscillation.js) and [unit tests](data/purgatorio/v1/tests/purgatorio.test.js). These are **not loaded into the live Compass UI yet**.
 
 **Source of truth:** This branch's versioned `docs/data/purgatorio/v1/` directory. Purgatorio is an owner-approved behavioral model; no external certification gate. Production UI integration and runtime graph edges remain implementation work.
+
+## Paradiso Compass records and integrity crosswalk (2026-10-25)
+- [Executive handshake](data/paradiso/v0/EXECUTIVE_HANDSHAKE_PARADISO_2026-10-25.md)
+- [10 structured records](data/paradiso/v0/PARADISO_REGISTRY_V0.json) and individual `data/paradiso/v0/records/PD01.md` through `PD10.md`
+- [21 canonical law coverage](data/paradiso/v0/INTEGRITY_21_COVERAGE_AND_INTERPRETATION.md) and [44 mapped law relationships](data/paradiso/v0/PARADISO_21_INTEGRITY_LAWS_44_RELATIONSHIPS.csv)
+- [Research / Technical Design](data/paradiso/v0/PARADISO_RESEARCH_MAP_TDD_v0.md) and [audit manifest](data/paradiso/v0/PARADISO_VALIDATION_MANIFEST_V0.json)
+- These are source-preserving research records on a feature branch, not merged/live app wiring. All 11 known masters preserved; twelfth master remains unassigned.
