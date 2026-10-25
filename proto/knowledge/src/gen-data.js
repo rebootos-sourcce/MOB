@@ -451,14 +451,31 @@ const sourceToRuntimeId=new Map([
 ]);
 const runtimeIdByLower=new Map(E.map(e=>[String(e.id).toLowerCase(),e.id]));
 const relationshipEdges=[...adaptedPsych.relationshipEdges,...adaptedSuper.relationshipEdges,...(crossRegistryEdgeRegister.relationshipEdges||[])].map(edge=>{
- const fromId=sourceToRuntimeId.get(edge.fromId)||runtimeIdByLower.get(String(edge.fromId||'').toLowerCase())||edge.fromId;
- const toId=sourceToRuntimeId.get(edge.toId)||runtimeIdByLower.get(String(edge.toId||'').toLowerCase())||edge.toId;
- const crossRegistryResolved=fromId!==edge.fromId||toId!==edge.toId;
- return {...edge,fromId,toId,targetRegistry:crossRegistryResolved?'combined_runtime':edge.targetRegistry,validationStatus:crossRegistryResolved?'cross_registry_target_resolved':(edge.validationStatus||'imported_not_semantically_verified')};
+ const sourceFromId=edge.fromId;
+ const sourceToId=edge.toId;
+ const fromId=sourceToRuntimeId.get(sourceFromId)||runtimeIdByLower.get(String(sourceFromId||'').toLowerCase())||sourceFromId;
+ const resolvedToId=sourceToRuntimeId.get(sourceToId)||runtimeIdByLower.get(String(sourceToId||'').toLowerCase())||null;
+ const targetIsUnresolved=Boolean(sourceToId)&&!resolvedToId;
+ const unresolvedTargetLabel=edge.toLabel||(targetIsUnresolved?String(sourceToId).replace(/^[^:]+:/,'').replace(/[-_]/g,' '):null);
+ return {
+  ...edge,
+  fromId,
+  toId:targetIsUnresolved?null:(resolvedToId||null),
+  toLabel:unresolvedTargetLabel,
+  unresolvedTargetId:targetIsUnresolved?sourceToId:(edge.unresolvedTargetId||null),
+  targetRegistry:targetIsUnresolved||(!resolvedToId&&!sourceToId)?'external_or_unresolved':(edge.targetRegistry||'combined_runtime'),
+  validationStatus:targetIsUnresolved?'target_unresolved_no_exact_runtime_id':(resolvedToId?'runtime_endpoint_resolved_not_semantically_verified':(edge.validationStatus||'target_label_only_unresolved'))
+ };
 });
 const allById=new Map(E.map(e=>[e.id,e]));
 for(const edge of relationshipEdges){
- if(edge.toId&&edge.reciprocalRequired&&allById.has(edge.fromId)&&allById.has(edge.toId)){
+ const sourceBackedMembership =
+  (['complex_child_saboteur','hypercomplex_child_complex'].includes(edge.relationshipType) &&
+   edge.status==='source_backed_membership' &&
+   edge.canonicality==='historical_source_recorded') ||
+  (edge.relationshipType==='mirror_pair_pole' &&
+   edge.status==='source_backed_source_family_membership');
+ if(sourceBackedMembership&&edge.toId&&edge.reciprocalRequired&&allById.has(edge.fromId)&&allById.has(edge.toId)){
   const from=allById.get(edge.fromId),to=allById.get(edge.toId);
   if(!from.links.includes(edge.toId))from.links.push(edge.toId);
   if(!to.links.includes(edge.fromId))to.links.push(edge.fromId);
