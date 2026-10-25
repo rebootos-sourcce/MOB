@@ -31,6 +31,7 @@ const incomplete = [];
 const blockedResearch = [];
 const behavioralDomainGaps = [];
 const passReviewDateGaps = [];
+const researchPassReviewDateGaps = [];
 const researchStatusGaps = [];
 const openResearchStatuses = [];
 const archetypeEnergyGaps = [];
@@ -61,6 +62,9 @@ for (const record of records) {
   if (passes.length !== 3 || passes.some((pass) => pass.status !== 'complete' || !Array.isArray(pass.sources) || !pass.sources.length || !Array.isArray(pass.findings) || !pass.findings.length)) {
     blockedResearch.push({ id: record.id, passes: passes.map((pass) => ({ pass: pass.pass, status: pass.status, sourceCount: (pass.sources || []).length, findingCount: (pass.findings || []).length })) });
   }
+  if (passes.length === 3) {
+    for (const pass of passes) if (!pass.reviewedAt) researchPassReviewDateGaps.push({ id: record.id, pass: pass.pass, name: pass.name || null });
+  }
   if (record.recordType === 'behavioral_domain') {
     const energyFields = ['behavioralEnergy', 'motivationalPull', 'attentionBias', 'actionTendency', 'adaptiveExpression', 'distortedExpression', 'researchSynthesis', 'researchLimitations'];
     const missingEnergyFields = energyFields.filter((field) => empty(record[field]));
@@ -88,10 +92,14 @@ const fetterRegistry = JSON.parse(fs.readFileSync(fetterResearchPath, 'utf8'));
 const fetterPrompts = JSON.parse(fs.readFileSync(fetterPromptPath, 'utf8'));
 const mobPatternRegistry = JSON.parse(fs.readFileSync(mobPatternPath, 'utf8'));
 const runtimeById = new Map((runtimeDb.entries || []).map((entry) => [entry.id, entry]));
-const fetterOverlayCoverage = (fetterRegistry.records || []).filter((record) => record.runtimeNodeId && runtimeById.get(record.runtimeNodeId)?.fetterResearchRecordId === record.id).length;
+const fetterOverlayMissingIds = (fetterRegistry.records || []).filter((record) => !record.runtimeNodeId || runtimeById.get(record.runtimeNodeId)?.fetterResearchRecordId !== record.id).map((record) => record.id);
+const fetterOverlayCoverage = (fetterRegistry.records || []).length - fetterOverlayMissingIds.length;
 const fetterPassFailures = (fetterRegistry.records || []).filter((record) => record.researchPasses?.length !== 3 || record.researchPasses.some((pass) => pass.status !== 'complete' || !pass.sources?.length || !pass.findings?.length)).map((record) => record.id);
-const mobPatternOverlayCoverage = (mobPatternRegistry.records || []).filter((record) => record.runtimeNodeId && runtimeById.get(record.runtimeNodeId)?.mobPatternSourceRecordId === record.id).length;
+const mobPatternOverlayMissingIds = (mobPatternRegistry.records || []).filter((record) => !record.runtimeNodeId || runtimeById.get(record.runtimeNodeId)?.mobPatternSourceRecordId !== record.id).map((record) => record.id);
+const mobPatternOverlayCoverage = (mobPatternRegistry.records || []).length - mobPatternOverlayMissingIds.length;
 const mobPatternPassFailures = (mobPatternRegistry.records || []).filter((record) => record.researchPasses?.length !== 3 || record.researchPasses.some((pass) => pass.status !== 'complete' || !pass.sources?.length || !pass.findings?.length)).map((record) => record.id);
+const runtimeMissingRecordIds = records.filter((record) => !runtimeIds.has('psych:' + record.id)).map((record) => record.id);
+const unresolvedRelationshipTargetIds = (registry.relationshipEdges || []).filter((edge) => !edge.toId || edge.targetRegistry === 'external_or_unresolved').map((edge) => ({ edgeId: edge.edgeId, toLabel: edge.toLabel || null, targetRegistry: edge.targetRegistry || null, status: edge.status || null }));
 const promptCountsByNode = (fetterPrompts.records || []).reduce((out, prompt) => { out[prompt.node_id] = (out[prompt.node_id] || 0) + 1; return out; }, {});
 const promptRegisterErrors = (fetterPrompts.records || []).filter((prompt) => !prompt.linkedFetterRecordId || !prompt.search_anchor || !prompt.exampleValidationStatus).map((prompt) => prompt.promptId);
 const runtimeIntegrated = records.every((record) => runtimeIds.has('psych:' + record.id));
@@ -123,17 +131,21 @@ const report = {
   archetypeEnergyGaps,
   relationshipEdgeCount: (registry.relationshipEdges || []).length,
   relationshipEdgeErrors,
-  unresolvedRelationshipTargetCount: (registry.relationshipEdges || []).filter((edge) => !edge.toId || edge.targetRegistry === 'external_or_unresolved').length,
+  unresolvedRelationshipTargetCount: unresolvedRelationshipTargetIds.length,
+  unresolvedRelationshipTargetIds,
   runtimeRecordCount: (runtimeDb.entries || []).filter((entry) => String(entry.id || '').startsWith('psych:')).length,
   runtimeRecordCoverage: records.filter((record) => runtimeIds.has('psych:' + record.id)).length,
+  runtimeMissingRecordIds,
   fetterResearchRecordCount: (fetterRegistry.records || []).length,
   fetterResearchOverlayCoverage: fetterOverlayCoverage,
+  fetterResearchOverlayMissingIds: fetterOverlayMissingIds,
   fetterResearchPassFailures: fetterPassFailures,
   fetterPromptCount: (fetterPrompts.records || []).length,
   mobPatternSourceRecordCount: (mobPatternRegistry.records || []).length,
   mobPatternClaimedCount: mobPatternRegistry.claimedPatternCount,
   mobPatternMissingSourceRows: mobPatternRegistry.counts?.missingRows,
   mobPatternOverlayCoverage,
+  mobPatternOverlayMissingIds,
   mobPatternPassFailures,
   fetterPromptRegisterErrors: promptRegisterErrors.length,
   fetterPromptNodeCount: Object.keys(promptCountsByNode).length,
@@ -142,11 +154,23 @@ const report = {
   behavioralDomainsWithCompleteEnergyFields: records.filter((record) => record.recordType === 'behavioral_domain' && ['behavioralEnergy', 'motivationalPull', 'attentionBias', 'actionTendency', 'adaptiveExpression', 'distortedExpression', 'researchSynthesis', 'researchLimitations'].every((field) => !empty(record[field]))).length,
   behavioralDomainGaps,
   behavioralDomainPassReviewDateGaps: passReviewDateGaps,
+  researchPassReviewDateGapCount: researchPassReviewDateGaps.length,
+  researchPassReviewDateGaps,
   duplicateOrMissingIds: duplicateIds,
   danglingReferences: dangling,
   runtimeIntegrated,
-  closureStatus: runtimeIntegrated && !incomplete.length && !blockedResearch.length && !researchStatusGaps.length && !archetypeEnergyGaps.length && !relationshipEdgeErrors.length && !duplicateIds.length && !dangling.length ? 'STATIC_GATES_PASS_RUNTIME_TESTS_REQUIRED' : 'OPEN_NOT_CLOSURE',
-  closureStatus: 'OPEN_NOT_CLOSURE',
+  closureStatus: (
+    runtimeIntegrated &&
+    records.length === runtimeRecordCoverage &&
+    fetterOverlayCoverage === (fetterRegistry.records || []).length &&
+    mobPatternOverlayCoverage === (mobPatternRegistry.records || []).length &&
+    !(mobPatternRegistry.counts && mobPatternRegistry.counts.missingRows) &&
+    unresolvedRelationshipTargetIds.length === 0 &&
+    passReviewDateGaps.length === 0 &&
+    !incomplete.length && !blockedResearch.length && !researchStatusGaps.length &&
+    !archetypeEnergyGaps.length && !behavioralDomainGaps.length &&
+    !relationshipEdgeErrors.length && !duplicateIds.length && !dangling.length
+  ) ? 'STATIC_KPI_GATES_PASS_RUNTIME_REGRESSION_REQUIRED' : 'OPEN_NOT_CLOSURE',
   blockers: { incompleteRecords: incomplete, blockedResearchRecords: blockedResearch }
 };
 process.stdout.write(JSON.stringify(report, null, 2) + '\n');
@@ -160,6 +184,13 @@ if (strict && (
   report.archetypeEnergyGaps.length ||
   report.relationshipEdgeErrors.length ||
   report.behavioralDomainGaps.length ||
+  report.behavioralDomainPassReviewDateGaps.length ||
+  report.researchPassReviewDateGapCount ||
+  report.runtimeMissingRecordIds.length ||
+  report.fetterResearchOverlayMissingIds.length ||
+  report.mobPatternOverlayMissingIds.length ||
+  report.mobPatternMissingSourceRows ||
+  report.unresolvedRelationshipTargetCount ||
   report.duplicateOrMissingIds.length ||
   report.danglingReferences.length ||
   report.runtimeIntegrated !== true
