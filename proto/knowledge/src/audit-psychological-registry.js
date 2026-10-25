@@ -90,6 +90,17 @@ const runtimeDb = runtimeMatch ? JSON.parse(runtimeMatch[1]) : { entries: [] };
 const runtimeIds = new Set((runtimeDb.entries || []).map((entry) => entry.id));
 const fetterRegistry = JSON.parse(fs.readFileSync(fetterResearchPath, 'utf8'));
 const fetterPrompts = JSON.parse(fs.readFileSync(fetterPromptPath, 'utf8'));
+const promptValidationIndex = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/data/ATUNED_FETTER_PROMPT_VALIDATION_OVERLAY_972_INDEX.json'), 'utf8'));
+const promptValidationRecords = (promptValidationIndex.parts || []).flatMap((part) => JSON.parse(fs.readFileSync(path.join(ROOT, part.path), 'utf8')).records || []);
+const promptValidationById = new Map(promptValidationRecords.map((prompt) => [prompt.promptId, prompt]));
+const promptValidationMissingIds = (fetterPrompts.records || []).filter((prompt) => !promptValidationById.has(prompt.promptId)).map((prompt) => prompt.promptId);
+const promptValidationPassFailures = promptValidationRecords.filter((prompt) =>
+  prompt.researchPasses?.length !== 3 ||
+  prompt.researchPasses.some((pass) => pass.status !== 'complete' || !pass.sources?.length || !pass.findings?.length) ||
+  prompt.syntheticExampleValidation?.result !== 'PASS' ||
+  !prompt.syntheticExampleValidation?.scenario ||
+  !prompt.syntheticExampleValidation?.counterexample
+).map((prompt) => prompt.promptId);
 const mobPatternRegistry = JSON.parse(fs.readFileSync(mobPatternPath, 'utf8'));
 const runtimeById = new Map((runtimeDb.entries || []).map((entry) => [entry.id, entry]));
 const fetterOverlayMissingIds = (fetterRegistry.records || []).filter((record) => !record.runtimeNodeId || runtimeById.get(record.runtimeNodeId)?.fetterResearchRecordId !== record.id).map((record) => record.id);
@@ -102,7 +113,10 @@ const runtimeMissingRecordIds = records.filter((record) => !runtimeIds.has('psyc
 const unresolvedRelationshipTargetIds = (registry.relationshipEdges || []).filter((edge) => !edge.toId || edge.targetRegistry === 'external_or_unresolved').map((edge) => ({ edgeId: edge.edgeId, toLabel: edge.toLabel || null, targetRegistry: edge.targetRegistry || null, status: edge.status || null }));
 const promptCountsByNode = (fetterPrompts.records || []).reduce((out, prompt) => { out[prompt.node_id] = (out[prompt.node_id] || 0) + 1; return out; }, {});
 const promptRegisterErrors = (fetterPrompts.records || []).filter((prompt) => !prompt.linkedFetterRecordId || !prompt.search_anchor || !prompt.exampleValidationStatus).map((prompt) => prompt.promptId);
-const fetterPromptExampleValidationPendingCount = (fetterPrompts.records || []).filter((prompt) => !prompt.exampleValidationStatus || prompt.exampleValidationStatus === 'PENDING_EXAMPLE_EVIDENCE').length;
+const fetterPromptExampleValidationPendingCount = (fetterPrompts.records || []).filter((prompt) => {
+ const validation = promptValidationById.get(prompt.promptId);
+ return !validation || validation.exampleValidationStatus !== 'VALIDATED_SYNTHETIC_CASE_AND_COUNTEREXAMPLE_NO_REAL_PERSON_DATA';
+}).length;
 const runtimeIntegrated = records.every((record) => runtimeIds.has('psych:' + record.id));
 const edgeIds = new Set();
 for (const edge of (registry.relationshipEdges || [])) {
@@ -150,6 +164,10 @@ const report = {
   mobPatternPassFailures,
   fetterPromptRegisterErrors: promptRegisterErrors.length,
   fetterPromptExampleValidationPendingCount,
+  fetterPromptValidationOverlayRecordCount: promptValidationRecords.length,
+  fetterPromptValidationOverlayCoverage: (fetterPrompts.records || []).filter((prompt) => promptValidationById.has(prompt.promptId)).length,
+  fetterPromptValidationMissingIds: promptValidationMissingIds,
+  fetterPromptValidationPassFailures: promptValidationPassFailures,
   fetterPromptNodeCount: Object.keys(promptCountsByNode).length,
   fetterPromptRowsPerNodeErrors: Object.entries(promptCountsByNode).filter(([id, count]) => count !== 9).map(([id, count]) => ({ id, count })),
   behavioralDomainRecordCount: records.filter((record) => record.recordType === 'behavioral_domain').length,
@@ -169,6 +187,9 @@ const report = {
     !(mobPatternRegistry.counts && mobPatternRegistry.counts.missingRows) &&
     fetterPromptRegisterErrors.length === 0 &&
     fetterPromptExampleValidationPendingCount === 0 &&
+    (fetterPrompts.records || []).length === (promptValidationIndex.recordCount || 0) &&
+    promptValidationRecords.length === (fetterPrompts.records || []).length &&
+    promptValidationPassFailures.length === 0 &&
     passReviewDateGaps.length === 0 &&
     !incomplete.length && !blockedResearch.length && !researchStatusGaps.length &&
     !archetypeEnergyGaps.length && !behavioralDomainGaps.length &&
@@ -194,6 +215,8 @@ if (strict && (
   report.mobPatternOverlayMissingIds.length ||
   report.mobPatternMissingSourceRows ||
   report.fetterPromptExampleValidationPendingCount ||
+  report.fetterPromptValidationMissingIds.length ||
+  report.fetterPromptValidationPassFailures.length ||
   report.duplicateOrMissingIds.length ||
   report.danglingReferences.length ||
   report.runtimeIntegrated !== true
