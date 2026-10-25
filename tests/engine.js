@@ -487,10 +487,10 @@ g('OW1 · the character field: the 112, the seven seats, the light and the openi
  ok(A.every(a=>a.channel===(NODES[a.i-1].c||null)&&a.pattern===(NODES[a.i-1].cf||null)),'channel and pattern are the table\'s own');
  /* THE ONE ADDRESS WITH NO NAME */
  ok(A.find(a=>a.key==='Root_08_Unnamed').name==='Unnamed, Root 08','Root_08_Unnamed reads as Unnamed, Root 08');
- ok(charAddrName('Doubt Of God')==='Doubt of God'&&charAddrName('Self-Exclusion')==='Self-exclusion'
+ ok(charAddrName('Doubt Of Source')==='Doubt of Source'&&charAddrName('Self-Exclusion')==='Self-exclusion'
   &&charAddrName('Resentment (Solar)')==='Resentment (Solar)'&&charAddrName('Celiac Plexus')==='Celiac plexus'
   &&charAddrName('Sol Star')==='Sol Star'&&charAddrName('Gaia Gateway')==='Gaia Gateway',
-  'sentence case, with God, the seat in brackets and the anchors kept: '+['Doubt Of God','Self-Exclusion','Resentment (Solar)','Celiac Plexus'].map(charAddrName).join(' | '));
+  'sentence case, with Source, the seat in brackets and the anchors kept: '+['Doubt Of Source','Self-Exclusion','Resentment (Solar)','Celiac Plexus'].map(charAddrName).join(' | '));
  ok(charAddrName(null)===''&&charAddrName(undefined)==='','a missing name is empty and never throws');
  /* SEATS */
  const SF=seatField();
@@ -9394,8 +9394,8 @@ g('ID · one fixed code per thing the engine names, and one door every label goe
  is('109',{source:'canon'},'112','canon.json numbers the field nodes another way');
  is('109',null,'109','MOB\'s own 109 is its own');
  is('Soul Star',{source:'canon'},'109','and spells Sol Star Soul Star');
- is('Doubt of Source',{source:'canon'},'88','canon.json writes Source for God');
- no('Doubt of Source',null,'not a code','and that spelling is only canon.json\'s');
+ is('Doubt of Source',{source:'canon'},'88','canon.json writes Source for this address');
+ is('Doubt of Source',null,'88','ruled 25 October, use Source instead of God, so it is MOB\'s own name now too');
  no('112',{source:'nodes112'},'PARAM SHIVA','nodes_112\'s 112 is not said to be Gaia Gateway');
  /* clusters, overshot readings, pairs, by rule */
  const dead=(()=>{for(const b of BANDS)for(const e of E.CODE_EMOTION)if(!W.some(n=>n.b===b&&n.cf===e))return [b,e];return null;})();

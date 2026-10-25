@@ -1998,6 +1998,16 @@ carries both rulings, 20 September's and this one. What he settled, in short:
 - **It discerns and does not define.** It listens for where a story lands in
   the body, how often it comes back, and the person's own words. It never
   says an address, fetter, saboteur or archetype name to a person.
+  **Clarified 25 October**, after the records audit read this line as Source
+  AI never consulting a definition at all, which is not what it says. His
+  words: "Source AI doesn't focus on a definition. It uses the definition as
+  a guide, but it looks at the behavior of the energy behind the definition,
+  and where it's going in relationship with all the other behaviors, so it
+  can make a more accurate assessment." The line above was always about what
+  it says to a person, never a name, never a definition recited back. It was
+  never a rule against reading a definition internally to inform its own
+  judgment, and the graph editor contract's call for shared definitions does
+  not conflict with it.
 - **It asks only at seven to ten, looking for the root, which is usually a
   ten.** The scale is Source AI's own and counts return: one mention is heard
   and never asked about, a return inside the entry is seven, an earlier entry

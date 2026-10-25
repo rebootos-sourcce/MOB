@@ -59,13 +59,13 @@ var CHAR_GROW_S=2.1;
 
 function charSmooth(a,b,v){var t=clamp((v-a)/(b-a),0,1);return t*t*(3-2*t);}
 
-/* A name as a person reads it. The table has "Doubt Of God" and "Self-Exclusion"
-   and the nerves are "Celiac Plexus", title case all the way down, which in a
-   hover reads as shouting. Sentence case, with the proper nouns kept: God, the
-   field anchors and a seat named in brackets. Root_08_Unnamed is the one
-   address with no name, and a person is shown "Unnamed, Root 08" and never the
-   key it is stored under. */
-var CHAR_PROPER={God:1,Sol:1,Star:1,Gaia:1,Earth:1,Stellar:1,Gateway:1,Solar:1,Heart:1};
+/* A name as a person reads it. The table has "Doubt Of Source" and
+   "Self-Exclusion" and the nerves are "Celiac Plexus", title case all the way
+   down, which in a hover reads as shouting. Sentence case, with the proper
+   nouns kept: Source, the field anchors and a seat named in brackets.
+   Root_08_Unnamed is the one address with no name, and a person is shown
+   "Unnamed, Root 08" and never the key it is stored under. */
+var CHAR_PROPER={Source:1,Sol:1,Star:1,Gaia:1,Earth:1,Stellar:1,Gateway:1,Solar:1,Heart:1};
 function charAddrName(k){
  k=String(k==null?'':k);
  var u=/^(\w+)_(\d+)_Unnamed$/.exec(k);

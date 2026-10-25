@@ -232,11 +232,11 @@ const CODE_ALIAS=[
  [['canon','book'],'address','Resentment','43',"canon.json and the book (v192 line 8813) name this address Resentment. MOB names it Resentment (Solar), beside its Resentment (Heart)"],
  [['canon','book'],'address','Self-Judgment','46',"canon.json and the book (v192 line 8816) name this address Self-Judgment. MOB names it Self-Judgment (Solar), beside its Self-Judgment (Heart)"],
  [['canon','book'],'address','Using Spiritual Language to Manipulate','75',"canon.json and the book (v192 line 8847) name this Throat address so. MOB names it Spiritual Language To Manipulate"],
- ['canon','address','Doubt of Source','88',"canon.json writes Source where MOB, the book and the app write God, by its own lock that the divine term is Source. MOB names it Doubt Of God"],
- ['canon','address','Unworthy of Source','98',"canon.json's Source for God. MOB names it Unworthy Of God"],
- ['canon','address','Knowing Better than Source','99',"canon.json's Source for God. MOB names it Knowing Better Than God"],
- ['canon','address','Fear of Source','102',"canon.json's Source for God. MOB names it Fear Of God"],
- ['canon','address','Anger at Source','103',"canon.json's Source for God. MOB names it Anger At God"],
+ /* RESOLVED 25 October: canon.json's own lock said the divine term is Source,
+    where MOB, the book and the app wrote God at these five addresses. Ruled
+    "use Source instead of God, for now" and all five renamed in nodes.js, so
+    the five rows this lock used to need are gone: the names agree. "For now"
+    is his own word, so a later ruling could reopen this. */
  [['canon','book'],'address','109','112',"canon.json and the book (v192 line 8886) number the field nodes in another order. Their 109 is Gaia Gateway, MOB's 112"],
  [['canon','book'],'address','110','111',"canon.json and the book number the field nodes in another order. Their 110 is Earth Star, MOB's 111"],
  [['canon','book'],'address','111','109',"canon.json and the book number the field nodes in another order. Their 111 is Soul Star, MOB's 109, Sol Star"],
