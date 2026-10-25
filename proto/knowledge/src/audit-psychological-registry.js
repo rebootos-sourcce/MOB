@@ -76,7 +76,7 @@ for (const record of records) {
 }
 
 const runtimeSource = fs.existsSync(runtimePath) ? fs.readFileSync(runtimePath, 'utf8') : '';
-const runtimeMatch = runtimeSource.match(/var KBD=(.*);\\s*$/s);
+const runtimeMatch = runtimeSource.match(/var KBD=(.*);\s*$/s);
 const runtimeDb = runtimeMatch ? JSON.parse(runtimeMatch[1]) : { entries: [] };
 const runtimeIds = new Set((runtimeDb.entries || []).map((entry) => entry.id));
 const runtimeIntegrated = records.every((record) => runtimeIds.has('psych:' + record.id));
