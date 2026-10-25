@@ -74,3 +74,23 @@ Every `paradiso:PD01` through `paradiso:PD10` record has 21 exact Super-Complex-
 
 ## Truthful closure checkpoint
 **Done here:** ten source-space descriptions and structured proposed records; shape checks of unique IDs, required keys, 4 analytical sections, explicit unknown inverses. **Not done:** 12th master, canonical approval of Paradiso interpretation, complete archetype records, full Inferno import, all four independent research passes, graph linkage, live UI, merge, deployment.
+
+
+---
+
+## DEEP RESEARCH AND LAW CROSSWALK CHECKPOINT — 2026-10-25
+
+The user approved proceeding with the existing observed-behavior profiles without an external certification gate. This does **not** transform literary interpretation or psychology research into a physiological measurement. All ten Paradiso sphere records now carry four detailed lenses, aligned to exact labels of the 21 active `SI` laws:
+
+1. **Dante literary source pass:** original sphere, characters, historical limits; Danteworlds and independent University of Leeds commentary.
+2. **Behavioral movement pass:** trigger, action verbs, actual witnessable action, alternative explanation.
+3. **Moral integrity pass:** many-to-many exact name/seat crosswalk to current `canon.js#SI`, rationale per relationship; 44 mappings across all 21 laws.
+4. **Adversarial verification pass:** distorted imitation, counterexamples, disconfirmation, practical behavior evidence and cautious use of broad psychological research.
+
+**Current files:** `PARADISO_REGISTRY_V0.json` (now enriched through version `v1-four-lens-law-crosswalk`), `INTEGRITY_21_COVERAGE_AND_INTERPRETATION.md`, `PARADISO_21_INTEGRITY_LAWS_44_RELATIONSHIPS.csv`, ten individual `records/PD01.md`–`PD10.md`, `PARADISO_VALIDATION_MANIFEST_V0.json`, `EXECUTIVE_HANDSHAKE_PARADISO_2026-10-25.md`.
+
+**Important source vocabulary:** the active app source uses 21 Laws of Spiritual Integrity and the user calls them the Universal Laws of Moral Integrity. Older manuscript versions may contain 10 or 13 laws; do not silently transplant outdated names or counts into the active 21-law `SI` array. Names of laws are canonical; a link from a Paradiso interpretation to a law is model-authored until checked against real events.
+
+**Crosswalk guardrails:** references to a mirror pair or master are for behavioral resonance. Neither Dante's soul placement nor a named master is a person class, medical diagnosis, 21st century empirical score or one-to-one archetype identity. `READ -> CHOOSE -> ACT -> OBSERVE -> REASSESS` is the desired journey loop.
+
+**No claim of production completion:** all 10 records and corresponding documentation are on `atunED/paradiso-compass-map-v0-2026-10-25`. They are not wired into `atuned_src/engine/compute.js`, `journey.js` or a live Compass renderer; no extra CQ is added; 11 named master anchors still need their owner-unassigned twelfth; the Inferno 38 normalized ZIP is not fully published on this branch.
