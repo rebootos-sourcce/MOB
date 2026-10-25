@@ -30,6 +30,7 @@ module.exports = function adaptPsychologicalRegistry(registry, catalog, options 
       source[field] === null || source[field] === undefined || source[field] === ''
     );
     entries.push({
+      ...source,
       id: runtimeId(source.id),
       sourceRecordId: source.id,
       kind: source.runtimeKind || ('psych_' + source.kind),
@@ -65,6 +66,7 @@ module.exports = function adaptPsychologicalRegistry(registry, catalog, options 
       evidenceStrength: source.evidenceStrength || null,
       confidence: source.confidence === undefined ? null : source.confidence,
       status: source.status || 'unclassified',
+      oppositeStatus: source.oppositeStatus || (source.runtimeKind === 'hypercomplex' && !source.oppositeId ? 'not_assigned_owner_direction_excludes_opposite_creation' : null),
       unresolvedQuestions: source.unresolvedQuestions || [],
       provenance: {
         sourceRecordId: source.id,
