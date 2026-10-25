@@ -21,6 +21,18 @@ const missingByKind = {};
 for (const entry of entries.filter((x) => x.kind === 'node' && x.fetterResearchRecordId)) {
   if (!entry.fetterResearch || !Array.isArray(entry.fetterResearch.researchPasses) || entry.fetterResearch.researchPasses.length !== 3 || entry.fetterResearch.researchPasses.some((pass) => pass.status !== 'complete')) errors.push(entry.id + ': fetter research overlay is missing a complete three-pass record');
   if (!Array.isArray(entry.fetterResearch?.registerPrompts) || entry.fetterResearch.registerPrompts.length !== 9) errors.push(entry.id + ': expected nine register prompts in the fetter research overlay');
+  const prompts = entry.fetterResearch?.registerPrompts || [];
+  if (new Set(prompts.map((prompt) => prompt.linguistic_register)).size !== 9) errors.push(entry.id + ': register prompt set does not cover nine distinct linguistic registers');
+  const invalidPrompts = prompts.filter((prompt) =>
+    prompt.exampleValidationStatus !== 'VALIDATED_SYNTHETIC_CASE_AND_COUNTEREXAMPLE_NO_REAL_PERSON_DATA' ||
+    !prompt.syntheticExampleValidation ||
+    prompt.syntheticExampleValidation.result !== 'PASS' ||
+    !(prompt.syntheticExampleValidation.scenario || '').length ||
+    !(prompt.syntheticExampleValidation.counterexample || '').length ||
+    !Array.isArray(prompt.researchPasses) || prompt.researchPasses.length !== 3 ||
+    prompt.researchPasses.some((pass) => pass.status !== 'complete' || !(pass.sources || []).length || !(pass.findings || []).length)
+  );
+  if (invalidPrompts.length) errors.push(entry.id + ': ' + invalidPrompts.length + ' register prompts lack complete three-pass synthetic validation');
 }
 for (const entry of entries.filter((x) => x.kind === 'node' && x.mobPatternSourceRecordId)) {
   if (!entry.mobPatternSource || !Array.isArray(entry.mobPatternSource.researchPasses) || entry.mobPatternSource.researchPasses.length !== 3 || entry.mobPatternSource.researchPasses.some((pass) => pass.status !== 'complete')) errors.push(entry.id + ': MOB pattern source overlay is missing a complete three-pass record');
