@@ -794,7 +794,7 @@ var SRC_PASSED=false;
    was saying, what would you like to write about today? Say, what are we
    writing about today?" The round JS wording above is replaced by the one he
    first offered at round GO, at his own request. */
-var SRC_OPEN='What are we writing about today?';
+var SRC_OPEN='What are we talking about today?';
 function srcOpen(){
  var w=(typeof CURP!=='undefined'&&CURP&&CURP.who)||{};
  var f=capName(String(w.first||'').trim().split(/\s+/)[0]);
