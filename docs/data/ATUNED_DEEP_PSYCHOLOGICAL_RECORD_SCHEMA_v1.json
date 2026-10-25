@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/rebootos-sourcce/MOB/blob/main/docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_SCHEMA_v1.json",
   "title": "ATÜNED Shared Deep-Psychological Record",
-  "description": "Shared record envelope. The template payload is a derived projection built by the adapter from top-level source fields and the versioned template catalog; it is not duplicated in the source registry to avoid drift. Conditional requirements now include researchSources, researchSynthesis, and researchLimitations for source Complex, Hyper-Complex, MIRROR, CIRCLES, BLUEPRINT, and CASCADE records.",
+  "description": "Shared record envelope. The template payload is a derived projection built by the adapter from top-level source fields and the versioned template catalog; it is not duplicated in the source registry to avoid drift. Conditional requirements now include researchSources, researchSynthesis, and researchLimitations for source Complex, Hyper-Complex, MIRROR, CIRCLES, BLUEPRINT, and CASCADE records. Adds explicit source-child-label records with provenance and research/crosswalk fields.",
   "type": "object",
   "required": [
     "id",
@@ -701,7 +701,7 @@
     }
   },
   "additionalProperties": true,
-  "version": "1.9.0",
+  "version": "2.0.0",
   "allOf": [
     {
       "if": {
@@ -1847,6 +1847,36 @@
           "sourceRefs",
           "sourceClaims",
           "researchPasses"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordType": {
+            "const": "source_saboteur_child_label"
+          }
+        },
+        "required": [
+          "recordType"
+        ]
+      },
+      "then": {
+        "required": [
+          "sourceLabel",
+          "sourceCluster",
+          "sourceVersion",
+          "sourceLocator",
+          "sourceExcerpt",
+          "sourceEvidenceStatus",
+          "canonicalStatus",
+          "crosswalkStatus",
+          "sourceRefs",
+          "sourceClaims",
+          "researchPasses",
+          "researchSources",
+          "researchSynthesis",
+          "researchLimitations"
         ]
       }
     }
