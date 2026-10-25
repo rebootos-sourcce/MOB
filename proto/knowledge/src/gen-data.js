@@ -510,6 +510,10 @@ if(adaptedPsych.errors.length||adaptedSuper.errors.length)throw new Error('Regis
 E.push(...adaptedPsych.entries,...adaptedSuper.entries);
 const fetterResearchRegistry=JSON.parse(fs.readFileSync(path.join(ROOT,'docs/data/ATUNED_FETTER_DEEP_RESEARCH_REGISTRY_108_v1.json'),'utf8'));
 const fetterPromptRegistry=JSON.parse(fs.readFileSync(path.join(ROOT,'docs/data/ATUNED_FETTER_NINE_REGISTER_PROMPTS_972_v1.json'),'utf8'));
+const promptValidationIndex=JSON.parse(fs.readFileSync(path.join(ROOT,'docs/data/ATUNED_FETTER_PROMPT_VALIDATION_OVERLAY_972_INDEX.json'),'utf8'));
+const promptValidationRecords=(promptValidationIndex.parts||[]).flatMap(part=>JSON.parse(fs.readFileSync(path.join(ROOT,part.path),'utf8')).records||[]);
+const promptValidationById=new Map(promptValidationRecords.map(prompt=>[prompt.promptId,prompt]));
+const promptById=new Map((fetterPromptRegistry.records||[]).map(prompt=>[prompt.promptId,prompt]));
 const mobPatternSourceRegistry=JSON.parse(fs.readFileSync(path.join(ROOT,'docs/data/ATUNED_MOB_PATTERN_SOURCE_REGISTRY_108_OF_112_v1.json'),'utf8'));
 const mobPatternByRuntimeId=new Map((mobPatternSourceRegistry.records||[]).filter(r=>r.runtimeNodeId).map(r=>[r.runtimeNodeId,r]));
 const fetterByRuntimeId=new Map((fetterResearchRegistry.records||[]).filter(r=>r.runtimeNodeId).map(r=>[r.runtimeNodeId,r]));
@@ -540,7 +544,10 @@ for(const entry of E.filter(e=>e.kind==='node')){
    researchLimitations:r.researchLimitations,behavioralHypothesis:r.behavioralHypothesis,
    contextualDiscriminant:r.contextualDiscriminant,counterexampleGuard:r.counterexampleGuard,
    constructiveOppositeStatus:r.constructiveOppositeStatus,releaseStatementStatus:r.releaseStatementStatus,
-   researchPasses:r.researchPasses,registerPrompts:r.registerPrompts
+   researchPasses:r.researchPasses,
+   registerPrompts:(r.registerPrompts||[]).map(prompt=>({...prompt,...(promptById.get(prompt.promptId)||{}),...(promptValidationById.get(prompt.promptId)||{})})),
+   registerPromptValidationCoverage:(r.registerPrompts||[]).filter(prompt=>promptValidationById.has(prompt.promptId)).length,
+   registerPromptValidationStatus:(r.registerPrompts||[]).every(prompt=>promptValidationById.get(prompt.promptId)?.exampleValidationStatus==='VALIDATED_SYNTHETIC_CASE_AND_COUNTEREXAMPLE_NO_REAL_PERSON_DATA'&&(promptValidationById.get(prompt.promptId)?.researchPasses||[]).length===3)?'three_pass_synthetic_validation_complete':'validation_overlay_incomplete'
   };
  }else{
   entry.fetterResearchStatus='NO_EXACT_108_OVERLAY_RECORD; SOURCE_112_PATTERN_RESEARCH_PENDING';
@@ -585,7 +592,7 @@ for(const edge of relationshipEdges){
 const icp=JSON.parse(fs.readFileSync(path.join(__dirname,'icp.json'),'utf8'));
 const out={entries:E, pal:T.PAL, glyph:T.SEATGLYPH, bands:T.BANDS, icp:icp,
  relationshipEdges,
- sourceRegistries:[adaptedPsych.sourceRegistry,adaptedSuper.sourceRegistry,{registryId:'fetter-deep-research-108',version:fetterResearchRegistry.version,recordCount:fetterResearchRegistry.recordCount,status:fetterResearchRegistry.status,promptCount:fetterPromptRegistry.recordCount,sourceVersionBoundary:fetterResearchRegistry.sourceBoundary},{registryId:'mob-pattern-source-108-of-112',version:mobPatternSourceRegistry.version,recordCount:mobPatternSourceRegistry.recordCount,claimedPatternCount:mobPatternSourceRegistry.claimedPatternCount,missingSourceRows:mobPatternSourceRegistry.counts.missingRows,status:mobPatternSourceRegistry.status}],
+ sourceRegistries:[adaptedPsych.sourceRegistry,adaptedSuper.sourceRegistry,{registryId:'fetter-deep-research-108',version:fetterResearchRegistry.version,recordCount:fetterResearchRegistry.recordCount,status:fetterResearchRegistry.status,promptCount:fetterPromptRegistry.recordCount,promptValidationOverlayVersion:promptValidationIndex.version,promptValidationOverlayRecordCount:promptValidationRecords.length,promptValidationOverlayStatus:promptValidationIndex.status,sourceVersionBoundary:fetterResearchRegistry.sourceBoundary},{registryId:'mob-pattern-source-108-of-112',version:mobPatternSourceRegistry.version,recordCount:mobPatternSourceRegistry.recordCount,claimedPatternCount:mobPatternSourceRegistry.claimedPatternCount,missingSourceRows:mobPatternSourceRegistry.counts.missingRows,status:mobPatternSourceRegistry.status}],
  relationshipEdgeRegistries:[{registryId:crossRegistryEdgeRegister.registryId,version:crossRegistryEdgeRegister.version,edgeCount:(crossRegistryEdgeRegister.relationshipEdges||[]).length}],
  stamp:'engine tables and ICP figures read from commit b434f1a; Deep Psyche registry v'+psychRegistry.version+' and Super-Complex candidate registry v'+superRegistry.version+' plus cross-registry edge register v'+crossRegistryEdgeRegister.version+' imported'};
 function sanitizeGeneratedStrings(value){
