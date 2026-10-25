@@ -13,6 +13,7 @@ const registryPath = path.join(ROOT, 'docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD
 const runtimePath = path.join(ROOT, 'proto/knowledge/src/data.js');
 const fetterResearchPath = path.join(ROOT, 'docs/data/ATUNED_FETTER_DEEP_RESEARCH_REGISTRY_108_v1.json');
 const fetterPromptPath = path.join(ROOT, 'docs/data/ATUNED_FETTER_NINE_REGISTER_PROMPTS_972_v1.json');
+const mobPatternPath = path.join(ROOT, 'docs/data/ATUNED_MOB_PATTERN_SOURCE_REGISTRY_108_OF_112_v1.json');
 const strict = process.argv.includes('--strict');
 const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
 if (!Array.isArray(registry.records)) throw new Error('Registry must contain a records array.');
@@ -85,9 +86,12 @@ const runtimeDb = runtimeMatch ? JSON.parse(runtimeMatch[1]) : { entries: [] };
 const runtimeIds = new Set((runtimeDb.entries || []).map((entry) => entry.id));
 const fetterRegistry = JSON.parse(fs.readFileSync(fetterResearchPath, 'utf8'));
 const fetterPrompts = JSON.parse(fs.readFileSync(fetterPromptPath, 'utf8'));
+const mobPatternRegistry = JSON.parse(fs.readFileSync(mobPatternPath, 'utf8'));
 const runtimeById = new Map((runtimeDb.entries || []).map((entry) => [entry.id, entry]));
 const fetterOverlayCoverage = (fetterRegistry.records || []).filter((record) => record.runtimeNodeId && runtimeById.get(record.runtimeNodeId)?.fetterResearchRecordId === record.id).length;
 const fetterPassFailures = (fetterRegistry.records || []).filter((record) => record.researchPasses?.length !== 3 || record.researchPasses.some((pass) => pass.status !== 'complete' || !pass.sources?.length || !pass.findings?.length)).map((record) => record.id);
+const mobPatternOverlayCoverage = (mobPatternRegistry.records || []).filter((record) => record.runtimeNodeId && runtimeById.get(record.runtimeNodeId)?.mobPatternSourceRecordId === record.id).length;
+const mobPatternPassFailures = (mobPatternRegistry.records || []).filter((record) => record.researchPasses?.length !== 3 || record.researchPasses.some((pass) => pass.status !== 'complete' || !pass.sources?.length || !pass.findings?.length)).map((record) => record.id);
 const promptCountsByNode = (fetterPrompts.records || []).reduce((out, prompt) => { out[prompt.node_id] = (out[prompt.node_id] || 0) + 1; return out; }, {});
 const promptRegisterErrors = (fetterPrompts.records || []).filter((prompt) => !prompt.linkedFetterRecordId || !prompt.search_anchor || !prompt.exampleValidationStatus).map((prompt) => prompt.promptId);
 const runtimeIntegrated = records.every((record) => runtimeIds.has('psych:' + record.id));
@@ -126,6 +130,11 @@ const report = {
   fetterResearchOverlayCoverage: fetterOverlayCoverage,
   fetterResearchPassFailures: fetterPassFailures,
   fetterPromptCount: (fetterPrompts.records || []).length,
+  mobPatternSourceRecordCount: (mobPatternRegistry.records || []).length,
+  mobPatternClaimedCount: mobPatternRegistry.claimedPatternCount,
+  mobPatternMissingSourceRows: mobPatternRegistry.counts?.missingRows,
+  mobPatternOverlayCoverage,
+  mobPatternPassFailures,
   fetterPromptRegisterErrors: promptRegisterErrors.length,
   fetterPromptNodeCount: Object.keys(promptCountsByNode).length,
   fetterPromptRowsPerNodeErrors: Object.entries(promptCountsByNode).filter(([id, count]) => count !== 9).map(([id, count]) => ({ id, count })),

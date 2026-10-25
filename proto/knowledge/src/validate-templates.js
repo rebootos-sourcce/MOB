@@ -22,6 +22,9 @@ for (const entry of entries.filter((x) => x.kind === 'node' && x.fetterResearchR
   if (!entry.fetterResearch || !Array.isArray(entry.fetterResearch.researchPasses) || entry.fetterResearch.researchPasses.length !== 3 || entry.fetterResearch.researchPasses.some((pass) => pass.status !== 'complete')) errors.push(entry.id + ': fetter research overlay is missing a complete three-pass record');
   if (!Array.isArray(entry.fetterResearch?.registerPrompts) || entry.fetterResearch.registerPrompts.length !== 9) errors.push(entry.id + ': expected nine register prompts in the fetter research overlay');
 }
+for (const entry of entries.filter((x) => x.kind === 'node' && x.mobPatternSourceRecordId)) {
+  if (!entry.mobPatternSource || !Array.isArray(entry.mobPatternSource.researchPasses) || entry.mobPatternSource.researchPasses.length !== 3 || entry.mobPatternSource.researchPasses.some((pass) => pass.status !== 'complete')) errors.push(entry.id + ': MOB pattern source overlay is missing a complete three-pass record');
+}
 const requiredKinds = ['node','sab','hcx','hypercomplex_mode','hypercomplex','complex','supercomplex_candidate','descent_candidate','inversion_pole_candidate','inferred','mirror_pair','mirror_figure_candidate','circle_candidate','blueprint_pattern','cascade_state','source_contradiction','psych_source_contradiction','psych_source_gap','psych_roster_requirement','axis','seat','nerve','arch','mask','term'];
 for (const e of entries) {
   counts[e.kind] = (counts[e.kind] || 0) + 1;
