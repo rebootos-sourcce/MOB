@@ -78,3 +78,8 @@ Follow the existing ATUNED chain when actual engine links are hooked up:
 
 **Created and tested:** 23 complete local descriptive records; 4 layers per record; 21 template fields; vice/capacity reciprocal links; 7 crosswalks; a host-free read-only oscillation module; repeatable tests.  
 **Not part of this local delivery:** production Compass UI wiring, adding the package to the engine loader, server/account persistence, and production deployment. GitHub publication state should be recorded separately, only after commits are confirmed. No invented 'we are fully wired' claim.
+## GITHUB PUBLICATION CHECKPOINT — 2026-10-25
+
+**Committed on branch:** `atunED/purgatorio-oscillation-v1-2026-10-25`. The complete registry, 23 individual `records/*.md` pages, combined narrative dossier, 7-row Inferno/Compass crosswalk, reader, tests, TDD and this handshake are present under `docs/data/purgatorio/v1/`. The source index `docs/ATUNED_SOURCE_INDEX.md` has been updated. Record-body publication is **complete** on this branch; the earlier instruction to commit the entire registry in the next-steps list is already satisfied. **Not merged into `main` and not yet hooked into the running Compass.**
+
+Last checked record upload commit: `b2d9bc0e9f8e101a88176f9fefd34a36eea38230`. Source-index commit: `7f39ac19b1f267c5eb38e3635d49aee7dee067ec`.
