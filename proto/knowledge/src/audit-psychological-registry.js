@@ -11,6 +11,8 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..', '..', '..');
 const registryPath = path.join(ROOT, 'docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json');
 const runtimePath = path.join(ROOT, 'proto/knowledge/src/data.js');
+const fetterResearchPath = path.join(ROOT, 'docs/data/ATUNED_FETTER_DEEP_RESEARCH_REGISTRY_108_v1.json');
+const fetterPromptPath = path.join(ROOT, 'docs/data/ATUNED_FETTER_NINE_REGISTER_PROMPTS_972_v1.json');
 const strict = process.argv.includes('--strict');
 const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
 if (!Array.isArray(registry.records)) throw new Error('Registry must contain a records array.');
@@ -81,6 +83,13 @@ const runtimeSource = fs.existsSync(runtimePath) ? fs.readFileSync(runtimePath, 
 const runtimeMatch = runtimeSource.match(/var KBD=(.*);\s*$/s);
 const runtimeDb = runtimeMatch ? JSON.parse(runtimeMatch[1]) : { entries: [] };
 const runtimeIds = new Set((runtimeDb.entries || []).map((entry) => entry.id));
+const fetterRegistry = JSON.parse(fs.readFileSync(fetterResearchPath, 'utf8'));
+const fetterPrompts = JSON.parse(fs.readFileSync(fetterPromptPath, 'utf8'));
+const runtimeById = new Map((runtimeDb.entries || []).map((entry) => [entry.id, entry]));
+const fetterOverlayCoverage = (fetterRegistry.records || []).filter((record) => record.runtimeNodeId && runtimeById.get(record.runtimeNodeId)?.fetterResearchRecordId === record.id).length;
+const fetterPassFailures = (fetterRegistry.records || []).filter((record) => record.researchPasses?.length !== 3 || record.researchPasses.some((pass) => pass.status !== 'complete' || !pass.sources?.length || !pass.findings?.length)).map((record) => record.id);
+const promptCountsByNode = (fetterPrompts.records || []).reduce((out, prompt) => { out[prompt.node_id] = (out[prompt.node_id] || 0) + 1; return out; }, {});
+const promptRegisterErrors = (fetterPrompts.records || []).filter((prompt) => !prompt.linkedFetterRecordId || !prompt.search_anchor || !prompt.exampleValidationStatus).map((prompt) => prompt.promptId);
 const runtimeIntegrated = records.every((record) => runtimeIds.has('psych:' + record.id));
 const edgeIds = new Set();
 for (const edge of (registry.relationshipEdges || [])) {
@@ -113,6 +122,13 @@ const report = {
   unresolvedRelationshipTargetCount: (registry.relationshipEdges || []).filter((edge) => !edge.toId || edge.targetRegistry === 'external_or_unresolved').length,
   runtimeRecordCount: (runtimeDb.entries || []).filter((entry) => String(entry.id || '').startsWith('psych:')).length,
   runtimeRecordCoverage: records.filter((record) => runtimeIds.has('psych:' + record.id)).length,
+  fetterResearchRecordCount: (fetterRegistry.records || []).length,
+  fetterResearchOverlayCoverage: fetterOverlayCoverage,
+  fetterResearchPassFailures: fetterPassFailures,
+  fetterPromptCount: (fetterPrompts.records || []).length,
+  fetterPromptRegisterErrors: promptRegisterErrors.length,
+  fetterPromptNodeCount: Object.keys(promptCountsByNode).length,
+  fetterPromptRowsPerNodeErrors: Object.entries(promptCountsByNode).filter(([id, count]) => count !== 9).map(([id, count]) => ({ id, count })),
   behavioralDomainRecordCount: records.filter((record) => record.recordType === 'behavioral_domain').length,
   behavioralDomainsWithCompleteEnergyFields: records.filter((record) => record.recordType === 'behavioral_domain' && ['behavioralEnergy', 'motivationalPull', 'attentionBias', 'actionTendency', 'adaptiveExpression', 'distortedExpression', 'researchSynthesis', 'researchLimitations'].every((field) => !empty(record[field]))).length,
   behavioralDomainGaps,

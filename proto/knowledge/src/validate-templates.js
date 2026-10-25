@@ -18,6 +18,10 @@ const byId = new Map();
 const errors = [];
 const counts = {};
 const missingByKind = {};
+for (const entry of entries.filter((x) => x.kind === 'node' && x.fetterResearchRecordId)) {
+  if (!entry.fetterResearch || !Array.isArray(entry.fetterResearch.researchPasses) || entry.fetterResearch.researchPasses.length !== 3 || entry.fetterResearch.researchPasses.some((pass) => pass.status !== 'complete')) errors.push(entry.id + ': fetter research overlay is missing a complete three-pass record');
+  if (!Array.isArray(entry.fetterResearch?.registerPrompts) || entry.fetterResearch.registerPrompts.length !== 9) errors.push(entry.id + ': expected nine register prompts in the fetter research overlay');
+}
 const requiredKinds = ['node','sab','hcx','hypercomplex_mode','hypercomplex','complex','supercomplex_candidate','descent_candidate','inversion_pole_candidate','inferred','mirror_pair','mirror_figure_candidate','circle_candidate','blueprint_pattern','cascade_state','source_contradiction','psych_source_contradiction','psych_source_gap','psych_roster_requirement','axis','seat','nerve','arch','mask','term'];
 for (const e of entries) {
   counts[e.kind] = (counts[e.kind] || 0) + 1;
