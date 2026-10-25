@@ -1,0 +1,43 @@
+{
+  "nature": "grief",
+  "cap": 30,
+  "owner_named_distinct": 11,
+  "owner_passed_rules": 3,
+  "owner_held_on_reading": 0,
+  "owner_pool": 3,
+  "owner_by_source": {
+    "2026": 3
+  },
+  "card_named_distinct": 109,
+  "card_passed_rules": 58,
+  "card_held_on_reading": 9,
+  "card_same_as_owner_line": 0,
+  "card_pool": 49,
+  "chosen": 52,
+  "chosen_owner": 3,
+  "chosen_card": 49,
+  "reserve": 0,
+  "shortfall": 48,
+  "chosen_tiers": {
+    "core": 45,
+    "neighbour": 7
+  },
+  "chosen_owner_tiers": {
+    "core": 3
+  },
+  "own_held_reasons": {
+    "a second release runs on inside it": 2,
+    "about a named other person": 1,
+    "longer than 30 words": 1,
+    "names another nature": 4
+  },
+  "card_held_reasons": {
+    "a loss of power or control, not a loss that is mourned": 6,
+    "names another nature": 45
+  },
+  "little_books_read": 8,
+  "little_books_qualify": 0,
+  "reading_layer_used": 3,
+  "distinct_headings": 25,
+  "bank_content_sha256": "f6032d3fbc7cdc2f82d74b985ac430ea86c34800fab78d5cd553e79656d584c1"
+}

@@ -1,0 +1,1338 @@
+{
+  "note": "Ranked candidates after the 100, same rules, not in the bank. Card lines are marked.",
+  "status": "candidate, not approved",
+  "reserve": [
+    {
+      "pattern_id": "burnout-ea1f33d2998872b1",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am drained from trying to hold it in.",
+      "pattern_hash": "ea1f33d2998872b1d7f996cabf759d522cb8f0aff6f8f5e434605d11116420fe",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-037",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=7585"
+    },
+    {
+      "pattern_id": "burnout-e74d99a9cbbc1c3e",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am enraged at constant exhaustion.",
+      "pattern_hash": "e74d99a9cbbc1c3e7e59542afadd3e18cae9a49f908e9a9e2d2a4fdac4af74ff",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-200",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33636"
+    },
+    {
+      "pattern_id": "burnout-82c42c6864e3294c",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am ashamed to admit mental exhaustion.",
+      "pattern_hash": "82c42c6864e3294cd233eacc5269dd78d9a82fb972c0bfdeedfcd61d65cc9f59",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-123",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21576"
+    },
+    {
+      "pattern_id": "burnout-87d2cd150987260c",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am judging myself for exhaustion and depletion.",
+      "pattern_hash": "87d2cd150987260c816f93226528abb62e9e30987d079fa6d0ec064e444809e6",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-014",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=2706"
+    },
+    {
+      "pattern_id": "burnout-a58ce599b962a982",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am believing depletion is punishment for desire.",
+      "pattern_hash": "a58ce599b962a98237d5ad507d5848d147aa6302e71b175afe42393c7ea9184f",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-006",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=1280"
+    },
+    {
+      "pattern_id": "burnout-f99fa7cc0023d80b",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am convinced depletion proves I am weak.",
+      "pattern_hash": "f99fa7cc0023d80ba1f43f2666f9ab32f0469bb4c93fae9be28c20aac0ec78df",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-009",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=2034"
+    },
+    {
+      "pattern_id": "burnout-500db6f0fdf9e0b5",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am collapsed in the belief I am depleted.",
+      "pattern_hash": "500db6f0fdf9e0b5c7a36c6ff8b794510de0d5305c776f46ce909f7d2fb35e72",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-201",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33785"
+    },
+    {
+      "pattern_id": "burnout-f560fe5e5967638d",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am ashamed of feeling drained.",
+      "pattern_hash": "f560fe5e5967638d48d9b817160d56fda8944e4ed501c0fa9bb443ad1df04aa7",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-132",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=23024"
+    },
+    {
+      "pattern_id": "burnout-7a114628efa4a95e",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am scattered between exhaustion and pressure.",
+      "pattern_hash": "7a114628efa4a95e67faafe92c1014663990523e4d420da68e694a92912768dd",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-133",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=23093"
+    },
+    {
+      "pattern_id": "burnout-190c045b9d2c5b39",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am collapsed in exhaustion from thinking too much.",
+      "pattern_hash": "190c045b9d2c5b3970c74e9fe8588f0e434311ed63453649a887b7773a73e20b",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-124",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21749"
+    },
+    {
+      "pattern_id": "burnout-b6e70c1fe9399d78",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am drained of strength from pushing beyond my limits.",
+      "pattern_hash": "b6e70c1fe9399d789817c7dc51178e4f2daf3fae45a1efa44d5316daecccec20",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-009",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=2026"
+    },
+    {
+      "pattern_id": "burnout-f7a97bca7b50753c",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am blaming myself for burnout.",
+      "pattern_hash": "f7a97bca7b50753c240c91a0946370517de04630a3a4511d12f27cd5c1157a00",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-132",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=23004"
+    },
+    {
+      "pattern_id": "burnout-8eb4902a6b18a536",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am pressured to perform while depleted.",
+      "pattern_hash": "8eb4902a6b18a536adcaa475b99c20360a5937912a97b32a9c0b549992ded1d3",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-200",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33598"
+    },
+    {
+      "pattern_id": "burnout-ce3e9cc1aa976f67",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am drained before the day even begins.",
+      "pattern_hash": "ce3e9cc1aa976f67936318087f90e3dcbeaa86a8d8de699efbd1aa0bf425d4ad",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-125",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21979"
+    },
+    {
+      "pattern_id": "burnout-f84f9fc7c6757d0d",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tensing my pelvis to push through exhaustion.",
+      "pattern_hash": "f84f9fc7c6757d0d904ca239b996a6e10c0ec081ebed4d7a4d0db74683892101",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-006",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=1256"
+    },
+    {
+      "pattern_id": "burnout-aeb7c5ecb02a755f",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am drained of power and unable to recover my vitality.",
+      "pattern_hash": "aeb7c5ecb02a755f59063ca9bbbc6cba9e5bf02637a1c780574ddb8d41e08758",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-006",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=1244"
+    },
+    {
+      "pattern_id": "burnout-c7b0253b15ed7307",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am collapsed under the weight of unrelenting exhaustion.",
+      "pattern_hash": "c7b0253b15ed7307ddf20d752d4a8fb044c2c810659cb4a63d3b128e6682a0cc",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-132",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=23066"
+    },
+    {
+      "pattern_id": "burnout-3c38da1155e47603",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary from overworking.",
+      "pattern_hash": "3c38da1155e47603afebb4b04b087c4f3c4eea8a01dfb1e3cd530ccc9eddbc25",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-055",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=11067"
+    },
+    {
+      "pattern_id": "burnout-5e3b3534d12d4e57",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of overreacting.",
+      "pattern_hash": "5e3b3534d12d4e5710a457a3722b29991517f5ee9a9c3cc1ab2c7e5584e148cd",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-068",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=13881"
+    },
+    {
+      "pattern_id": "burnout-ed0181ae68068887",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am ashamed of fatigue.",
+      "pattern_hash": "ed0181ae68068887ea8ce70caf9069e6a6bbbc1e100accd84460e4524401f91b",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-014",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=2722"
+    },
+    {
+      "pattern_id": "burnout-080c7b13369b07ab",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am believing fatigue means failure.",
+      "pattern_hash": "080c7b13369b07ab6658cbf85241ed574f28095a8f06cf372f5287b4f612a117",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-124",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21681"
+    },
+    {
+      "pattern_id": "burnout-094d980169f0f667",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary of questioning everything.",
+      "pattern_hash": "094d980169f0f6675a575397ef46c3249a40b4b83772c6b5fb1eac4edce6613a",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-090",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=16845"
+    },
+    {
+      "pattern_id": "burnout-1f0d946a102be2d8",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of internal conflict.",
+      "pattern_hash": "1f0d946a102be2d8233f62e0cf45bd88e34167bc9c4c59b48010c94d89167bda",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-062",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12597"
+    },
+    {
+      "pattern_id": "burnout-29bb18e5096055b3",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of forcing motivation.",
+      "pattern_hash": "29bb18e5096055b3471924e5ba4e58021260d013f7a299157ec7dd9ed770db20",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-132",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=23016"
+    },
+    {
+      "pattern_id": "burnout-2d81560eaaf82170",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary from defending confusion.",
+      "pattern_hash": "2d81560eaaf82170e12c6497ee71bd4adc1a7144ada5fd8ad738c096ece3e519",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-049",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=9775"
+    },
+    {
+      "pattern_id": "burnout-308ea8570bb2e555",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary of feeling stuck.",
+      "pattern_hash": "308ea8570bb2e555bc8ab9ea34de0bb0b62aac05404d17be32f09479deb31e20",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-122",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21258"
+    },
+    {
+      "pattern_id": "burnout-49e2a55c3aed08b1",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of chasing separation.",
+      "pattern_hash": "49e2a55c3aed08b1918207670a7083b49b6f064a3c79f7e0d610a2cfb213feec",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-069",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=14127"
+    },
+    {
+      "pattern_id": "burnout-5513cf3e2c46bc3c",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary from emotional holding.",
+      "pattern_hash": "5513cf3e2c46bc3cc4b24f2745e9b60ead6f2f28d532c92ae6ef5a585a025888",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-056",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=11269"
+    },
+    {
+      "pattern_id": "burnout-61b79d705537f13c",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am equating fatigue with failure.",
+      "pattern_hash": "61b79d705537f13ceec76d1cac9608974f6bff4024fb11218d70c64217baef80",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-123",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21626"
+    },
+    {
+      "pattern_id": "burnout-715b55047cf9db7d",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am ashamed of feeling tired.",
+      "pattern_hash": "715b55047cf9db7d262885b9eae1eb00b45a24457bcda90c6053f38a3b4603cc",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-112",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=19747"
+    },
+    {
+      "pattern_id": "burnout-7e029ae6ce607739",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of feeling behind.",
+      "pattern_hash": "7e029ae6ce60773984a04cf572d5d58b4b16176b4b9eb6283e0e33a51cfd9945",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-035",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=7042"
+    },
+    {
+      "pattern_id": "burnout-86d51bc34fd4e3d0",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am holding fatigue as identity.",
+      "pattern_hash": "86d51bc34fd4e3d0a29c1ae073538e7bfee773beacdcd91b8de0b2587a0c0221",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-006",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=1328"
+    },
+    {
+      "pattern_id": "burnout-9442b7751da0dc9f",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of suppressing instinct.",
+      "pattern_hash": "9442b7751da0dc9fa7528be2106ada13fe22e838c9970ab62a9a99cb17be161b",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-065",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=13247"
+    },
+    {
+      "pattern_id": "burnout-c364ab2a989433d6",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary of false kindness.",
+      "pattern_hash": "c364ab2a989433d658747689a9997ee310ee3652494e03cca4d55af25a8224dc",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-108",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=19323"
+    },
+    {
+      "pattern_id": "burnout-c94b4f46a22d6e8b",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary of feeling fragmented.",
+      "pattern_hash": "c94b4f46a22d6e8b402391b3f90b5bfd2c615f82fc3d94dc006f200532119864",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-094",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=17394"
+    },
+    {
+      "pattern_id": "burnout-d5e8a08d14de6cb3",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am heavy with emotional fatigue.",
+      "pattern_hash": "d5e8a08d14de6cb33ab8c0e4bde0c6b718365e9c363b9cc365f73df8ed1e618a",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-060",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12141"
+    },
+    {
+      "pattern_id": "burnout-f5935269d618048b",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of forcing smiles.",
+      "pattern_hash": "f5935269d618048b61e826f023d52b50863fd3901af0a3ed36aab9d8392a8a1c",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-064",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12969"
+    },
+    {
+      "pattern_id": "burnout-219b719727770438",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of being on alert.",
+      "pattern_hash": "219b7197277704386ac8ef78445cccd6afcead0e12e9291048dad738fe48a9c4",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-043",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=8796"
+    },
+    {
+      "pattern_id": "burnout-52fd07895f85aa87",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary from guarding every resource.",
+      "pattern_hash": "52fd07895f85aa87bab020855139c5ce9022ca0e7baa2402b91a45695e6300d8",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-096",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=17591"
+    },
+    {
+      "pattern_id": "burnout-622709165c357af1",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary of fighting the world.",
+      "pattern_hash": "622709165c357af197524c724eeb2d42e33fd41c60e6e56d64de3afed68aee10",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-106",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=19134"
+    },
+    {
+      "pattern_id": "burnout-628d94bd60eb8416",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary from searching for truth.",
+      "pattern_hash": "628d94bd60eb8416edeb622131b62a2fa58b31b0b3a2f8e348e0ca12efd2318e",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-088",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=16423"
+    },
+    {
+      "pattern_id": "burnout-79d3e713b04a936e",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overworking to fill inner restlessness.",
+      "pattern_hash": "79d3e713b04a936e4fd15bce2c3e01c8a0b97fbd088d393c0ce08b409c6c6335",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-017",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=3692"
+    },
+    {
+      "pattern_id": "burnout-a67692b25a0cd507",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of holding myself together.",
+      "pattern_hash": "a67692b25a0cd507e27983e27beb1038dfb7177763a321a031f9c95fbeb13f79",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-054",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=10865"
+    },
+    {
+      "pattern_id": "burnout-a916232062d21645",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary of not understanding vibration.",
+      "pattern_hash": "a916232062d216455b0e4b1e33091c8af27aa3f0821191273525d9945cc0a5df",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-074",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=14782"
+    },
+    {
+      "pattern_id": "burnout-b27ff54e57f90de1",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am worn out from inner resistance.",
+      "pattern_hash": "b27ff54e57f90de12de58433354891e8ff4e5578622ff01b60b22a2d1ca64a29",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-067",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=13687"
+    },
+    {
+      "pattern_id": "burnout-b6d4fb84db26fee5",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of dimming my truth.",
+      "pattern_hash": "b6d4fb84db26fee53c8d5a570fe981d0a4726f86dc896088eb03ae680b07ea16",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-077",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=15121"
+    },
+    {
+      "pattern_id": "burnout-b95bd8e3b968d718",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of pretending everything’s fine.",
+      "pattern_hash": "b95bd8e3b968d718fa29612367faf62d21efd982937c3524a73ad3f210619c0d",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-050",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=9993"
+    },
+    {
+      "pattern_id": "burnout-c322ee19d3181bfd",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of guessing what’s real.",
+      "pattern_hash": "c322ee19d3181bfd23488280ba23326b4e4779081668ccf213b0094fffcb0a5d",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-045",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=9296"
+    },
+    {
+      "pattern_id": "burnout-c442212104f1e377",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am blaming fatigue for every lapse.",
+      "pattern_hash": "c442212104f1e377b38fcb1fc2ea0dab5bf72904961dceeb29af5bdf36b77239",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-130",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=22603"
+    },
+    {
+      "pattern_id": "burnout-e4e0de7b76627134",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary of pretending to care.",
+      "pattern_hash": "e4e0de7b7662713474d6cec5a91390e7b80aea7b3e64b9fbb5b2821a91f365f3",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-105",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=19003"
+    },
+    {
+      "pattern_id": "burnout-f5f13a15dfc6a38e",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of searching for meaning.",
+      "pattern_hash": "f5f13a15dfc6a38e807fc62911308dfa19c0e4b9a98a35bc69ce0eb8b8c26aae",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-087",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=16175"
+    },
+    {
+      "pattern_id": "burnout-0802c9e1cc520803",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of pretending I don’t want.",
+      "pattern_hash": "0802c9e1cc5208036845c4c6998854e7062e5f4b99541f41f209fd3e6c2f1109",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-066",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=13467"
+    },
+    {
+      "pattern_id": "burnout-49481565673a4dee",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of carrying everyone else’s weight.",
+      "pattern_hash": "49481565673a4deec0c19a9a23b3786b71c9efa8500abbbcf5870b244af5b004",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-007",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=1508"
+    },
+    {
+      "pattern_id": "burnout-52bc19bc0798d1a1",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of living inside emotional storms.",
+      "pattern_hash": "52bc19bc0798d1a1cb21370041cef3241ad350328b7d5c59b4173d7d6c157237",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-042",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=8622"
+    },
+    {
+      "pattern_id": "burnout-650bb4c4886c67df",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of feeling apart from love.",
+      "pattern_hash": "650bb4c4886c67dfd2a121b6909637912073887632d8231cb7dbe335a141f399",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-070",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=14337"
+    },
+    {
+      "pattern_id": "burnout-69dcf800542859fc",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary of guarding myself from tenderness.",
+      "pattern_hash": "69dcf800542859fc4c49181037b05bbd3a33a7e47d9108975abe026a95bb4cbd",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-102",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=18488"
+    },
+    {
+      "pattern_id": "burnout-8423bf89e17e7a18",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary of trying to break free.",
+      "pattern_hash": "8423bf89e17e7a18f5b5560c8c6ad6926e8503e59c306bd3a8e73e611b614f7c",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-121",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21169"
+    },
+    {
+      "pattern_id": "burnout-bd034bccabbec508",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary of chasing a higher place.",
+      "pattern_hash": "bd034bccabbec508ec14ab3aa696973207ecd6059e9aad688be7384c8db65c21",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-076",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=15005"
+    },
+    {
+      "pattern_id": "burnout-e4003f5d4e690081",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of running from my choices.",
+      "pattern_hash": "e4003f5d4e6900810a6f05d26f0218d3e5044d6fddb6cda1e626eec42bfb5089",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-051",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=10185"
+    },
+    {
+      "pattern_id": "burnout-092319f31ec3656b",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am collapsed in fatigue from carrying others’ irresponsibility.",
+      "pattern_hash": "092319f31ec3656b486762b5284babe407bc307bccf69257e6be216e1ae230da",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-135",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=23392"
+    },
+    {
+      "pattern_id": "burnout-3ac517f9ea671ede",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of searching for home outside myself.",
+      "pattern_hash": "3ac517f9ea671ede9ee490953ec25c9f9d140fdf34738aabfb4a8782a891456d",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-082",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=15630"
+    },
+    {
+      "pattern_id": "burnout-509dd05d15d605b7",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of holding tension in my elbows and hands.",
+      "pattern_hash": "509dd05d15d605b7315ced2d1db355d036258f3dc703867cfa25847776e695e5",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-002",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=299"
+    },
+    {
+      "pattern_id": "burnout-6d5acb7ddff5effc",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am disoriented in fatigue.",
+      "pattern_hash": "6d5acb7ddff5effc87321fb32d3775d5596d4b276cdac6eb887374a333f9f3d0",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-125",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=22059"
+    },
+    {
+      "pattern_id": "burnout-2702f23beb6acfaf",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am hiding fatigue behind productivity.",
+      "pattern_hash": "2702f23beb6acfaf4ef30321e59f1c391839fbeaba4e8c6311ac89765a3e2365",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-014",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=2770"
+    },
+    {
+      "pattern_id": "burnout-2a9da2284589de55",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am bothered fatigue blocks momentum.",
+      "pattern_hash": "2a9da2284589de55f1f991235cb46d5758dd80b9b8db60325b4463006271564f",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-200",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33650"
+    },
+    {
+      "pattern_id": "burnout-43acad7baa2f41d3",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am heavy with spiritual fatigue.",
+      "pattern_hash": "43acad7baa2f41d3619266d38e1fc1b63d98847e2ed30168b0dd0fb4b265e0f6",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-062",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12605"
+    },
+    {
+      "pattern_id": "burnout-54ed123390fcd42a",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of feeling lost.",
+      "pattern_hash": "54ed123390fcd42a5f0150cf8d4a89a617b9e4e8d998bc7463ea92af5040dfd3",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-037",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=7543"
+    },
+    {
+      "pattern_id": "burnout-d3e990ad98e40360",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of endless argument.",
+      "pattern_hash": "d3e990ad98e40360ab41750473f0c4890ff9afcb496088c0e874f3ef003a9024",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-061",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12357"
+    },
+    {
+      "pattern_id": "burnout-f654135c78db433f",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am hiding fatigue behind performance.",
+      "pattern_hash": "f654135c78db433f5ae89a334068929a6075888e1f0ba79298c83602e469e23d",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-009",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=2174"
+    },
+    {
+      "pattern_id": "burnout-035ae5f52caba439",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of my own criticism.",
+      "pattern_hash": "035ae5f52caba4397df605949ba3f482488c31c7965732843cc6099e6f29959c",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-110",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=19564"
+    },
+    {
+      "pattern_id": "burnout-1d40fac1715c4b5b",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of waiting for truth.",
+      "pattern_hash": "1d40fac1715c4b5b178f2dc96d1e72e3f5e567b501490b5caa903a98bbd78ec8",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-059",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=11939"
+    },
+    {
+      "pattern_id": "burnout-26e306c3b4c8a0c2",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am annoyed fatigue dulls my sensitivity.",
+      "pattern_hash": "26e306c3b4c8a0c2e4d27867874df592d406d2a80117c072158fe94a093fc249",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-201",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33729"
+    },
+    {
+      "pattern_id": "burnout-80d967bd7507013e",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am heart tired from shallow conversations.",
+      "pattern_hash": "80d967bd7507013e1905f97f97ca9080c39be59800a554973ab96c54a1dfa718",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-060",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12133"
+    },
+    {
+      "pattern_id": "burnout-944bcca87cf11f12",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary of forgiving too much.",
+      "pattern_hash": "944bcca87cf11f128a46f87806650d47ad2ec892b90e932f3b6949cf1f1ea0fc",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-108",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=19285"
+    },
+    {
+      "pattern_id": "burnout-a663b6376ede290f",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of walking on eggshells.",
+      "pattern_hash": "a663b6376ede290f3a7f289265bf2a340fc90ebaf6a7f9f791bcf73186d01e40",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-039",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=8042"
+    },
+    {
+      "pattern_id": "burnout-ade654ff1001a4ec",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of smiling through pain.",
+      "pattern_hash": "ade654ff1001a4ece79d7ef0784a49af3b662d0114de73d886fc5e27766b4af8",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-058",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=11715"
+    },
+    {
+      "pattern_id": "burnout-b196a856d5a9f132",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am ashamed of my mental fatigue.",
+      "pattern_hash": "b196a856d5a9f13265cadbf9f322eca33b8a425aea8539b2aa9cd0554a42a0f4",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-131",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=22674"
+    },
+    {
+      "pattern_id": "burnout-b4c9765e8b0c8a97",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary of searching for meaning.",
+      "pattern_hash": "b4c9765e8b0c8a97e4e9927758dcd30cff41fdb119ad5ed191a26c3c6573d185",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-069",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=14113"
+    },
+    {
+      "pattern_id": "burnout-03ed6b95368123d0",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of replaying what I missed.",
+      "pattern_hash": "03ed6b95368123d025e577e23e02cdac59d3f843dfa059e87c4b62a041b6eadd",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-130",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=22557"
+    },
+    {
+      "pattern_id": "burnout-1d46925d7bf4c228",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of pretending I see clearly.",
+      "pattern_hash": "1d46925d7bf4c228361c9ebf88a9c86d6aa244d674499125a3a7afbfd8619d29",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-047",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=9662"
+    },
+    {
+      "pattern_id": "burnout-8d5db5a61cb5c4a5",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of reacting to small things.",
+      "pattern_hash": "8d5db5a61cb5c4a51ab3b4e0505157ace37107aef061fdbd7e852396d82e8063",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-067",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=13683"
+    },
+    {
+      "pattern_id": "burnout-a8f72d3ac669743b",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary from holding judgment so long.",
+      "pattern_hash": "a8f72d3ac669743b09d3fe4eb15a24798833769fc090b78b4543f906e1833743",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-106",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=19118"
+    },
+    {
+      "pattern_id": "burnout-c02070dd8afaf111",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary of trying to understand oneness.",
+      "pattern_hash": "c02070dd8afaf111afbdcf45390dd33171c5af0d307d58738bc004de0163f056",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-070",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=14351"
+    },
+    {
+      "pattern_id": "burnout-f03745cbf1dc134c",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of proving strength through pain.",
+      "pattern_hash": "f03745cbf1dc134cfee187eb9800ded8cf3c292671f05cafcf7acd940a979c19",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-054",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=10837"
+    },
+    {
+      "pattern_id": "burnout-516d58e8a483e314",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary of calling out and hearing nothing.",
+      "pattern_hash": "516d58e8a483e314719f179692d75867e6609d14f17083119928930e3958b1a5",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-082",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=15640"
+    },
+    {
+      "pattern_id": "burnout-c70fa105e2c2a88a",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of pretending I’m okay with confinement.",
+      "pattern_hash": "c70fa105e2c2a88a8c4dbb2d8059f9d2872f5c2589f536fe847297c8fdba98fd",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-122",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21296"
+    },
+    {
+      "pattern_id": "burnout-2e328420e8dd9b70",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of pretending I have nothing to say.",
+      "pattern_hash": "2e328420e8dd9b70e48d79945295643b5355331a060847f83a7a2ef9a0d5b0a8",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-057",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=11505"
+    },
+    {
+      "pattern_id": "burnout-f4cc4f953b93f7d3",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of trying to be pure instead of whole.",
+      "pattern_hash": "f4cc4f953b93f7d34ba68e16145787fe749cde6de29a00cd84d54a096c31c9ab",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-076",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=14975"
+    },
+    {
+      "pattern_id": "burnout-0b88e6281d99694c",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am fatigued from always pushing.",
+      "pattern_hash": "0b88e6281d99694cd8359ac233ab7d070e18d29d7de9e07841472e67ed2cf60d",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-055",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=11083"
+    },
+    {
+      "pattern_id": "burnout-5f5f07da69500400",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am collapsing under sustained fatigue.",
+      "pattern_hash": "5f5f07da6950040051f2e97bb18d9631f541bb4939eaf5430e09035b76810d96",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-200",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33640"
+    },
+    {
+      "pattern_id": "burnout-7cba0094745305a2",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired from over-managing life.",
+      "pattern_hash": "7cba0094745305a2aa974c682e69f8ea69213c07559781a35864c614b25b9077",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-124",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21661"
+    },
+    {
+      "pattern_id": "burnout-ca2c2441ed07a854",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired but still pushing.",
+      "pattern_hash": "ca2c2441ed07a854b30786a4570f6b3bc5723b80fc3a8f93a4e11dc889e355ec",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-037",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=7583"
+    },
+    {
+      "pattern_id": "burnout-dfd717fe092f0260",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of needing answers.",
+      "pattern_hash": "dfd717fe092f02602d3710cc7457370fce41c29e292b2db4066e90217e95b5ad",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-061",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12387"
+    },
+    {
+      "pattern_id": "burnout-e1d4de4b589b5ce5",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am judging fatigue as inadequacy.",
+      "pattern_hash": "e1d4de4b589b5ce56431dabffae2c088621e1a56ed315320a1c5721441fafb80",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-123",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21594"
+    },
+    {
+      "pattern_id": "burnout-9daaec0ace9f30c7",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am bothered my heart feels tired.",
+      "pattern_hash": "9daaec0ace9f30c775749e854a30bb6f66b15655f682e4cebb89b2e5290c095e",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-227",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=38320"
+    },
+    {
+      "pattern_id": "burnout-d1023bc8c1e95fa0",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of tiptoeing around truth.",
+      "pattern_hash": "d1023bc8c1e95fa05dc3adc36fe085a73be1b8808e9f2a95947392b4b0cc8c05",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-060",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12127"
+    },
+    {
+      "pattern_id": "burnout-e7d29550eb8995c5",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of loving without return.",
+      "pattern_hash": "e7d29550eb8995c5ea6a2771a9e518e64fb8c110b43d542588175fe9e7daef0a",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-108",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=19341"
+    },
+    {
+      "pattern_id": "burnout-ebd01fb4a8e70e3d",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of needing help again.",
+      "pattern_hash": "ebd01fb4a8e70e3dbcf1dd6242f4cfe5a2584f5b4bc307760890a714ca63e4fb",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-035",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=7086"
+    },
+    {
+      "pattern_id": "burnout-0c0ae6cf8e6d53f9",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of holding light for everyone.",
+      "pattern_hash": "0c0ae6cf8e6d53f9f109f3af506b13e4b5ee3aadbaa6e4eb0a1c8cb3a22b6234",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-064",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=13037"
+    },
+    {
+      "pattern_id": "burnout-2b451abfc5cf6bab",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of carrying so much weight.",
+      "pattern_hash": "2b451abfc5cf6bab1eb269ccf439b9abe78aac070368f2b551ccbc4d36c97ada",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-053",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=10647"
+    },
+    {
+      "pattern_id": "burnout-7bff254311bde1be",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of fighting sound and feeling.",
+      "pattern_hash": "7bff254311bde1be1cff06973257e7149ac910a981643171d3ba2ce2e958263f",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-068",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=13911"
+    },
+    {
+      "pattern_id": "burnout-8a074689b4c2bc98",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of holding it all together.",
+      "pattern_hash": "8a074689b4c2bc983ef074e0d4b3adc536ec0f5e0c68714fa2450946c237af01",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-056",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=11285"
+    },
+    {
+      "pattern_id": "burnout-c27f937d65731099",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of pretending I understand connection.",
+      "pattern_hash": "c27f937d65731099a5f1166de2f8c7211c18fdca45a65fe31122439200192ae5",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-069",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=14061"
+    },
+    {
+      "pattern_id": "burnout-d0bd91a20c536188",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of caring when others don’t.",
+      "pattern_hash": "d0bd91a20c53618886664215eed7a6cc76b3d644aa6bb7d467218d3d556ff264",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-106",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=19080"
+    },
+    {
+      "pattern_id": "burnout-35bb78093381931f",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of pretending I’m okay with it.",
+      "pattern_hash": "35bb78093381931fc93e34154c5ef44ec6934b7e9e830da17ec9a7153e42f536",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-059",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=11901"
+    },
+    {
+      "pattern_id": "burnout-febd9af313307062",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of waiting for a second chance.",
+      "pattern_hash": "febd9af313307062c891b0d38cb42c6556b80761ded544a9621101c21b862d75",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-122",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21234"
+    },
+    {
+      "pattern_id": "burnout-3d6181edc6f7f080",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am collapsed in fatigue from trying to stay mentally perfect.",
+      "pattern_hash": "3d6181edc6f7f0802f6fcf167d5b192ed52fdc7837291916be3f9d592e056199",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-131",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=22732"
+    },
+    {
+      "pattern_id": "burnout-e7282f5b766241ae",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am irritated by constant tiredness.",
+      "pattern_hash": "e7282f5b766241ae81141d10ab1202fb5763bd476765b36cd7178a823f3750c3",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-132",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=23026"
+    },
+    {
+      "pattern_id": "burnout-1919117c6e821e2b",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary from constant mental battle.",
+      "pattern_hash": "1919117c6e821e2b6260cfffdb5bba8279201becedf415138d8be13c41117424",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-061",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12385"
+    },
+    {
+      "pattern_id": "burnout-fef7de4ff0bb1bcc",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of chasing what’s fleeting.",
+      "pattern_hash": "fef7de4ff0bb1bcc40884b55d3cb181e3cef5efc4ed28eb91bffee4e26100107",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-063",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12819"
+    },
+    {
+      "pattern_id": "burnout-3ece8516f50feeff",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tense holding emotional weight while tired.",
+      "pattern_hash": "3ece8516f50feeff93087a247cf8aa5e68ea84ab884ef2a4e1e1ef6d80eb477a",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-201",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33751"
+    },
+    {
+      "pattern_id": "burnout-5e81e934939edca1",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of pretending I’m always glowing.",
+      "pattern_hash": "5e81e934939edca16094f0aefef85eb9953ea434ea12970e1adac0539dde6e11",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-064",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12985"
+    },
+    {
+      "pattern_id": "burnout-7355bde8c125c6e5",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am ashamed of fatigue in my body.",
+      "pattern_hash": "7355bde8c125c6e5a8e967e50477cd18e119e9b18189c635321be87edc29f8a9",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-009",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=2074"
+    },
+    {
+      "pattern_id": "burnout-7d97daf322829aa3",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of pretending everything was fine.",
+      "pattern_hash": "7d97daf322829aa38cce0c2e5f9e6bb8a247a0031675d20c6955702bffe879f1",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-060",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12095"
+    },
+    {
+      "pattern_id": "burnout-dada48f12c850db5",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary of trying to reconcile opposites.",
+      "pattern_hash": "dada48f12c850db5f310b2b6e6c8d162b47c92525cf8c63dce6ef028f2c41ac6",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-062",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12601"
+    },
+    {
+      "pattern_id": "burnout-f6ad26d4eee323e8",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary of feeling betrayed by life.",
+      "pattern_hash": "f6ad26d4eee323e81160e414a7f87c1e9ad226b99842fceef5f07c557189e4ff",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-106",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=19060"
+    },
+    {
+      "pattern_id": "burnout-014c17cf8ba8c752",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of being the one who cares.",
+      "pattern_hash": "014c17cf8ba8c752c31c115584277f903d8eeddda312966b68f8db746ec24f54",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-037",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=7601"
+    },
+    {
+      "pattern_id": "burnout-b2d931a793cf95f1",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am furious that I’m tired all the time.",
+      "pattern_hash": "b2d931a793cf95f187db1b78edc9a15c48b89a4d3cf1bada5ba76d2d9484cc42",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-039",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=8098"
+    },
+    {
+      "pattern_id": "burnout-ed991319c9ff818f",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of keeping secrets to keep peace.",
+      "pattern_hash": "ed991319c9ff818fac9e2bbac71a101d627489db5480b5b9a0bffc6e5191e21d",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-059",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=11873"
+    },
+    {
+      "pattern_id": "burnout-f401e3a3fc04e8fe",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am worn out from overthinking.",
+      "pattern_hash": "f401e3a3fc04e8fef7d7a2865e411180a715f7f9012eb836fe347159aba17b73",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-133",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=23125"
+    },
+    {
+      "pattern_id": "burnout-2c2994c8babd7fb2",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired from constant mental effort.",
+      "pattern_hash": "2c2994c8babd7fb233e997e1d2bdb28ca1cd6de643a77d636f4fac6d00dca69b",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-125",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21977"
+    },
+    {
+      "pattern_id": "burnout-05c5caf0a7f6ff6f",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am punishing my body for being tired.",
+      "pattern_hash": "05c5caf0a7f6ff6f6645e765c76a3fac9d66e153feec1f7a59da44140c01c945",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-014",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=2746"
+    },
+    {
+      "pattern_id": "burnout-2bf9e20ee569ac04",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am ashamed to admit I’m mentally tired.",
+      "pattern_hash": "2bf9e20ee569ac04f09ecca6a7966fad4885b38f16131ff01a6172cf817eaebb",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-124",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21673"
+    },
+    {
+      "pattern_id": "burnout-752b1768ac15ce67",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am angry at myself for being tired.",
+      "pattern_hash": "752b1768ac15ce67ab5b7a7179f65d43433853c29d66c3ed4bafc60ce66d4f00",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-009",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=2094"
+    },
+    {
+      "pattern_id": "burnout-9db245b3ad6e1f64",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary from walking on emotional eggshells.",
+      "pattern_hash": "9db245b3ad6e1f640ff5a5dc7557f267e627f90bf24b56798460915fa2ce1543",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-060",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12163"
+    },
+    {
+      "pattern_id": "burnout-71ece81c532f1284",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary of pretending I’m above it all.",
+      "pattern_hash": "71ece81c532f128481c5457e445f0d63db2c3ab6146daad6f84bec529d76207a",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-106",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=19086"
+    },
+    {
+      "pattern_id": "burnout-fe2d62f9b5f5c8d8",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am ashamed to feel tired all the time.",
+      "pattern_hash": "fe2d62f9b5f5c8d81a18a2b64ed24d8f4e89769c19984b3e98343bbe500b371c",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-151",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=25502"
+    },
+    {
+      "pattern_id": "burnout-f06eac07c07b0e69",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am defensive about my fatigue.",
+      "pattern_hash": "f06eac07c07b0e6969e845b59b1657e9b8f88e3060dda9a28ed30a67bee15554",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-132",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=23052"
+    },
+    {
+      "pattern_id": "burnout-19a7d373de7d6b29",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am believing fatigue means I’ve failed.",
+      "pattern_hash": "19a7d373de7d6b2912737d265f5da67789817cb5250eb0e13f74092b8b673cbf",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-133",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=23105"
+    },
+    {
+      "pattern_id": "burnout-9fce80219fdf4fab",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am blaming my body for fatigue.",
+      "pattern_hash": "9fce80219fdf4fab383bcf8dfdbdd9f32b740db4089ccb42c78f466f12157532",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-055",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=11049"
+    },
+    {
+      "pattern_id": "burnout-ae18da7bb57a95da",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am short-tempered with my own fatigue.",
+      "pattern_hash": "ae18da7bb57a95da6c766ef34f3312cabba6aa3265d27a8c76e65ffd1e73aec5",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-125",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=22015"
+    },
+    {
+      "pattern_id": "burnout-a5a78c9d973c3112",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of being the emotional anchor.",
+      "pattern_hash": "a5a78c9d973c311220199036427c33ce9202c534a70db180d5c6a9e4acb6df63",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-060",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12153"
+    },
+    {
+      "pattern_id": "burnout-cf4ad3ccfee06c09",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am believing fatigue means I’m not enough.",
+      "pattern_hash": "cf4ad3ccfee06c096895c58b057f00db0134a221890eeaae0ccc0380933d5a60",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-124",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21701"
+    },
+    {
+      "pattern_id": "burnout-0bb4bb7031c995fa",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tense holding responsibility while tired.",
+      "pattern_hash": "0bb4bb7031c995faf33e5024e31beb0b649d46d1ad40d064e1521dbf6f17cb72",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-200",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33646"
+    },
+    {
+      "pattern_id": "burnout-8dbbfef5104ff199",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am judging myself for being tired.",
+      "pattern_hash": "8dbbfef5104ff1997f7d66f29b42b318d6c5eb17c0c8bd0956d9e908792e7185",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-123",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21642"
+    },
+    {
+      "pattern_id": "burnout-bd48f24440b1a372",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am wired but weary—unable to stop.",
+      "pattern_hash": "bd48f24440b1a37252ead15ab843d345a91d9c13be87873d20d7d974b21a7691",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-125",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=22021"
+    },
+    {
+      "pattern_id": "burnout-e14a47e7a31c5285",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am ashamed to feel tired or uninspired.",
+      "pattern_hash": "e14a47e7a31c528569c3a12d2925ccc2d25e49d9eb41487ddbac29281b5ccc02",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-006",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=1274"
+    },
+    {
+      "pattern_id": "burnout-887bf46b8af53588",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary of hiding how it affected me.",
+      "pattern_hash": "887bf46b8af53588f0c05f3f1ecb9cdbeec255fb19eb08216f0d3dfd2ec5849b",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-060",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12111"
+    },
+    {
+      "pattern_id": "burnout-7a249dedac509896",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of pretending I’m okay.",
+      "pattern_hash": "7a249dedac509896c9c8b5990392d4f7617a22169421b3f0551ba28b28ec55a4",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-133",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=23103"
+    },
+    {
+      "pattern_id": "burnout-9dc2a608fdb05ba5",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am mistrusting my intuition when tired.",
+      "pattern_hash": "9dc2a608fdb05ba543ee48860aac0e0cc055494682442bdd403af94ebfaac75d",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-123",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21572"
+    },
+    {
+      "pattern_id": "burnout-e4f1bbf1e657feb6",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am believing fatigue is who I am now.",
+      "pattern_hash": "e4f1bbf1e657feb69365d5df7ace8c1e5fd0696bd313f28971e93945a03c5357",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-124",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21737"
+    },
+    {
+      "pattern_id": "burnout-5a41345b74c888b1",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am ashamed of being mentally tired.",
+      "pattern_hash": "5a41345b74c888b1a47c38d937b34728ccfddd24d356fff6c6754167e93179ed",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-132",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=22982"
+    },
+    {
+      "pattern_id": "burnout-929c0aca3dbfd618",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am ashamed of being so tired.",
+      "pattern_hash": "929c0aca3dbfd6181aca8c2b257235e8ca9f8df919e03a56710360070203cbfe",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-133",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=23077"
+    },
+    {
+      "pattern_id": "burnout-a9c204d16edb213c",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am annoyed fatigue controls my schedule.",
+      "pattern_hash": "a9c204d16edb213cbf1f5a787787596906a3eb7eeec79d11fd45418b07bd725a",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-200",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33624"
+    },
+    {
+      "pattern_id": "burnout-6d29033aacd447ff",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am impatient with my own fatigue.",
+      "pattern_hash": "6d29033aacd447ff8354e305f79ea410eb52e524d5bc0301c8e10d572669c611",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-132",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=22974"
+    },
+    {
+      "pattern_id": "burnout-bdced65759d0c11e",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary from holding too much in my mind.",
+      "pattern_hash": "bdced65759d0c11e50d747a9a7700aff6d1768ac9f84117d493b60256f0716ba",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-133",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=23073"
+    },
+    {
+      "pattern_id": "burnout-d7f6a2a245042887",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired but pushing through anyway.",
+      "pattern_hash": "d7f6a2a2450428879f1abae2e410f104b20135d023d3a1fc50799c612685d937",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-132",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=22970"
+    },
+    {
+      "pattern_id": "burnout-f94c82e7cee7c5ef",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am believing fatigue makes me less capable.",
+      "pattern_hash": "f94c82e7cee7c5ef67c1db4a13ba4dc09f5f766720298a7cd88064942882ff46",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-132",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=23008"
+    }
+  ]
+}

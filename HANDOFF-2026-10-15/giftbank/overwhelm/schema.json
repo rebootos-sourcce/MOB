@@ -1,0 +1,30 @@
+{
+  "schema_version": "gift-bank-item-candidate-2026-10-16-v1",
+  "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+  "approval_reference": "",
+  "approved_by": "",
+  "approved_at": "",
+  "required_item_fields": [
+    "pattern_id",
+    "content",
+    "pattern_hash",
+    "classification",
+    "source_provenance"
+  ],
+  "id_field": "pattern_id",
+  "provenance_field": "source_provenance",
+  "provenance_required_fields": [
+    "source",
+    "source_revision",
+    "source_record_file",
+    "source_record_id",
+    "locator",
+    "source_text_as_transcribed"
+  ],
+  "classification_field": "classification",
+  "classification_values": [
+    "release",
+    "reframe"
+  ],
+  "content_field": "content"
+}

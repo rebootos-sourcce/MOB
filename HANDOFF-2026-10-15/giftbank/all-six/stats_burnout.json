@@ -1,0 +1,44 @@
+{
+  "nature": "burnout",
+  "cap": 30,
+  "owner_named_distinct": 33,
+  "owner_passed_rules": 14,
+  "owner_held_on_reading": 4,
+  "owner_pool": 10,
+  "owner_by_source": {
+    "2026": 10
+  },
+  "card_named_distinct": 258,
+  "card_passed_rules": 238,
+  "card_held_on_reading": 0,
+  "card_same_as_owner_line": 0,
+  "card_pool": 238,
+  "chosen": 100,
+  "chosen_owner": 10,
+  "chosen_card": 90,
+  "reserve": 148,
+  "shortfall": 0,
+  "chosen_tiers": {
+    "core": 97,
+    "neighbour": 3
+  },
+  "chosen_owner_tiers": {
+    "core": 7,
+    "neighbour": 3
+  },
+  "own_held_reasons": {
+    "a second release runs on inside it": 3,
+    "about a named other person": 1,
+    "carries a censored word": 1,
+    "longer than 30 words": 8,
+    "names another nature": 6
+  },
+  "card_held_reasons": {
+    "names another nature": 20
+  },
+  "little_books_read": 33,
+  "little_books_qualify": 0,
+  "reading_layer_used": 5,
+  "distinct_headings": 60,
+  "bank_content_sha256": "13379add39a6d6a18849723acfeeca65893b0a191fe944e1e8ac067c88e2c2ef"
+}
