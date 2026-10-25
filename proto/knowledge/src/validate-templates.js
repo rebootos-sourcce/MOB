@@ -65,7 +65,7 @@ for (const e of entries.filter(x => x.kind === 'complex')) {
         (x.kind === 'sab' && x.nm === name) ||
         (x.kind === 'psych_source_label' && x.sourceKind === 'source_label' &&
          x.template && x.template.sourceLabel === name &&
-         x.template.sourceFamily === 'SOURCE OS CANON complex child labels')
+         x.template.sourceCluster === 'SOURCE OS CANON complex child labels')
       );
       if (!child) errors.push(e.id + ': source-recorded child label record not resolved: ' + name);
       else if (!(e.links || []).includes(child.id) || !(child.links || []).includes(e.id)) errors.push(e.id + ': source-recorded child link missing or non-reciprocal: ' + child.id);
