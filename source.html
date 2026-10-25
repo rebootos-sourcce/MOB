@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2636 a682ceaa 2026-10-25 15:18"><head><meta charset="utf-8">
+<html lang="en" data-build="v2637 81957bf1 2026-10-25 15:36"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -48787,14 +48787,20 @@ function stDraw(){
   if(STV.hot===l.key){g.fillStyle=rgba(c,.08*al);g.fillRect(4,y,W-8,h);}
   g.beginPath();g.moveTo(q.x0,y+h-1);g.lineTo(q.x1,y+h-1);g.strokeStyle=rgba(c,(on?.24:.07)*al);g.lineWidth=1;g.stroke();
   var ly=y+h*.6;g.textBaseline='middle';
-  /* a lane too thin to carry a name carries its ring only, never a name over
-     its neighbour's */
-  if(h<12){if(h>=6){g.beginPath();g.arc(15,y+h/2,Math.min(4,h/2-1),0,TAU);g.strokeStyle=rgba(c,.4*al);g.lineWidth=1.2;g.stroke();}}
+  /* a lane too thin for even a small name carries its ring only, never a
+     name over its neighbour's. Below that, a lane short of the full 12px a
+     name was first drawn at still gets one, smaller: seven seats at equal,
+     untouched height on a brand new profile measured at 10px each, all
+     under the old 12px floor, so a first time phone visitor saw seven rings
+     and zero names. 7px is still ring only; a mixed, partly active reading
+     rarely sits there. */
+  if(h<7){if(h>=6){g.beginPath();g.arc(15,y+h/2,Math.min(4,h/2-1),0,TAU);g.strokeStyle=rgba(c,.4*al);g.lineWidth=1.2;g.stroke();}}
   else{
    if(l.icon){g.save();g.translate(8,ly-7);g.scale(14/24,14/24);g.strokeStyle=rgba(c,al);g.lineWidth=1.8*24/14;
     g.lineJoin='round';g.lineCap='round';g.stroke(new Path2D(l.icon));g.restore();}
    else{g.beginPath();g.arc(15,ly,4,0,TAU);g.strokeStyle=rgba(c,(on?1:.45)*al);g.lineWidth=1.6;g.stroke();}
-   g.fillStyle=rgba(on?mixc(c,ink,.12):c,(on?1:.6)*al);g.font='600 12px Inter,system-ui,sans-serif';g.textAlign='left';
+   var fsz=h<12?10:12;
+   g.fillStyle=rgba(on?mixc(c,ink,.12):c,(on?1:.6)*al);g.font='600 '+fsz+'px Inter,system-ui,sans-serif';g.textAlign='left';
    g.fillText(l.label.length>11&&STC.GL<94?l.label.slice(0,10)+'.':l.label,26,ly);}
   if(h>=11)for(var i=0;i<10;i++){var lit=i<Math.round(l.rung);
    g.fillStyle=lit?rgba(c,al):rgba(c,(i>=SRC_ASK-1?.3:.12)*al);g.fillRect(W-STC.GR+8+i*5,ly-5,3,10);}
@@ -82175,5 +82181,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005420137"></div>
+<div id="eof" hidden data-len="005420540"></div>
 </body></html>
