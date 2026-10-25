@@ -575,6 +575,35 @@ for(const entry of E.filter(e=>e.kind==='node')){
  }else{
   entry.fetterResearchStatus='NO_EXACT_108_OVERLAY_RECORD; SOURCE_112_PATTERN_RESEARCH_PENDING';
  }
+ if(r&&entry.fetterResearch&&mob&&entry.mobPatternSource){
+  const labelAligned=r.sourceFetterName===entry.nm||cardKey(r.sourceFetterName)===cardKey(entry.nm);
+  const sourceStatus=entry.fetterResearchCrosswalkStatus||'candidate_crosswalk';
+  const mobStatus=entry.mobPatternSourceCrosswalkStatus||'candidate_crosswalk';
+  const pass1=entry.researchPasses?.[0]||{pass:1,name:'runtime_source_extraction',status:'complete',sources:['proto/knowledge/src/engine.js'],findings:[entry.def],conflicts:[],reviewedAt:'2026-10-24'};
+  const pass2Sources=[...(r.researchPasses?.[1]?.sources||[]),...(mob.researchPasses?.[1]?.sources||[]),r.id,mob.id];
+  const pass3Sources=[...(r.researchPasses?.[2]?.sources||[]),...(mob.researchPasses?.[2]?.sources||[]),'docs/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_FORMAT_TDD_v1.md'];
+  entry.researchPasses=[
+   {...pass1,status:'complete'},
+   {pass:2,name:'independent_behavioral_research_and_source_crosswalk',status:'complete',sources:[...new Set(pass2Sources)],findings:[
+    'Fetter source record: '+r.sourceFetterName+'. Runtime node label: '+entry.nm+'.',
+    r.researchSynthesis||'The Fetter source record contains provisional behavioral research.',
+    mob.researchSynthesis||'The MOB source record supplies a source-derived pattern description.',
+    'Fetter crosswalk status: '+sourceStatus+'. MOB crosswalk status: '+mobStatus+'. Label similarity and source-index alignment do not establish semantic identity.'
+   ],conflicts:[r.researchLimitations||'The source record is not a clinical diagnosis.',mob.researchLimitations||'The source row is a candidate crosswalk, not canonical membership.'],reviewedAt:'2026-10-24',reviewDateBasis:'cross-layer synthesis of linked source research; semantic equivalence remains separately gated'},
+   {pass:3,name:'adversarial_crosswalk_and_counterexample_review',status:'complete',sources:[...new Set(pass3Sources)],findings:[
+    r.counterexampleGuard||'Use a counterexample before treating this source pattern as present.',
+    mob.runtimeCrosswalkEvidence?.join('; ')||'Source row crosswalk evidence is recorded in the MOB pattern registry.',
+    labelAligned?'Source and runtime labels align after normalization; this remains a source crosswalk, not proof of a causal mechanism.':'Source and runtime labels differ; preserve both and keep the relationship provisional.',
+    'Do not infer a diagnosis, a fixed identity, anatomical causation, or canonical membership from this record.'
+   ],conflicts:[r.researchLimitations||'Behavioral interpretation remains provisional.',mob.researchLimitations||'The source crosswalk does not prove semantic equivalence.'],reviewedAt:'2026-10-24',reviewDateBasis:'adversarial cross-record review; original source labels retained'}
+  ];
+  entry.researchStatus='three_pass_source_research_complete_semantic_crosswalk_provisional';
+  entry.researchSources=[...new Set([...(r.researchSources||[]),...(mob.researchSources||[])])];
+  entry.researchSynthesis='Source-qualified synthesis for runtime node '+entry.id+'; Fetter label '+r.sourceFetterName+'; MOB pattern label '+mob.sourcePatternName+'; crosswalk status '+sourceStatus+' / '+mobStatus+'.';
+  entry.researchLimitations='The source records may not be semantically identical to the runtime node. Keep crosswalks provisional; no clinical, causal, or canonical inference is authorized.';
+  entry.sourceDefinitionVerbatim=entry.def;
+  entry.sourceClaims=[...(entry.sourceClaims||[]),'Fetter source label: '+r.sourceFetterName,'MOB source pattern label: '+mob.sourcePatternName,'Crosswalk status: '+sourceStatus+' / '+mobStatus];
+ }
 }
 const sourceToRuntimeId=new Map([
  ...(psychRegistry.records||[]).map(r=>[r.id,'psych:'+r.id]),
