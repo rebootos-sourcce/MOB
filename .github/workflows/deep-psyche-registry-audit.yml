@@ -1,0 +1,92 @@
+name: Deep Psyche Registry Build and Closure Audit
+
+on:
+  push:
+    branches:
+      - work/deep-psyche-recursive-closure-2026-10-24
+    paths:
+      - 'docs/data/ATUNED_DEEP_PSYCHOLOGICAL_*'
+      - 'docs/data/ATUNED_SUPERCOMPLEX_CANDIDATE_REGISTRY_v1.json'
+      - 'docs/data/ATUNED_FETTER_DEEP_RESEARCH_REGISTRY_108_v1.json'
+      - 'docs/data/ATUNED_MOB_PATTERN_SOURCE_REGISTRY_108_OF_112_v1.json'
+      - 'proto/knowledge/src/**'
+      - '.github/workflows/deep-psyche-registry-audit.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'docs/data/ATUNED_DEEP_PSYCHOLOGICAL_*'
+      - 'docs/data/ATUNED_SUPERCOMPLEX_CANDIDATE_REGISTRY_v1.json'
+      - 'docs/data/ATUNED_FETTER_DEEP_RESEARCH_REGISTRY_108_v1.json'
+      - 'docs/data/ATUNED_MOB_PATTERN_SOURCE_REGISTRY_108_OF_112_v1.json'
+      - 'proto/knowledge/src/**'
+      - '.github/workflows/deep-psyche-registry-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  registry-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Prepare audit output directory
+        run: mkdir -p artifacts
+      - name: Audit psychological source registry
+        id: source-audit
+        continue-on-error: true
+        run: node proto/knowledge/src/audit-psychological-registry.js 2>&1 | tee artifacts/source-registry-audit.log
+      - name: Validate runtime adapter
+        id: adapter
+        continue-on-error: true
+        run: node proto/knowledge/src/adapt-psychological-registry.js --check 2>&1 | tee artifacts/psychological-adapter.log
+      - name: Regenerate shared knowledge runtime data
+        id: build
+        continue-on-error: true
+        run: node proto/knowledge/src/gen-data.js 2>&1 | tee artifacts/runtime-generation.log
+      - name: Validate generated graph and required templates
+        id: graph-validation
+        continue-on-error: true
+        run: node proto/knowledge/src/validate-templates.js 2>&1 | tee artifacts/runtime-graph-validation.log
+      - name: Evaluate strict closure gate
+        id: strict-closure
+        continue-on-error: true
+        run: node proto/knowledge/src/audit-psychological-registry.js --strict 2>&1 | tee artifacts/strict-closure-gate.log
+      - name: Write closure summary
+        if: always()
+        env:
+          SOURCE_AUDIT: ${{ steps.source-audit.outcome }}
+          ADAPTER: ${{ steps.adapter.outcome }}
+          BUILD: ${{ steps.build.outcome }}
+          GRAPH_VALIDATION: ${{ steps.graph-validation.outcome }}
+          STRICT_CLOSURE: ${{ steps.strict-closure.outcome }}
+        run: |
+          {
+            echo "## Deep Psyche Registry Build"
+            echo ""
+            echo "| Gate | Result |"
+            echo "|---|---|"
+            echo "| Source registry audit | ${SOURCE_AUDIT} |"
+            echo "| Runtime adapter | ${ADAPTER} |"
+            echo "| Runtime generation | ${BUILD} |"
+            echo "| Generated graph validation | ${GRAPH_VALIDATION} |"
+            echo "| Strict 100% closure gate | ${STRICT_CLOSURE} |"
+            echo ""
+            echo "A failing strict closure gate means the full KPI is not certified. It is tracked separately from build and graph validation."
+          } | tee artifacts/closure-summary.md
+          if [ "${ADAPTER}" != "success" ] || [ "${BUILD}" != "success" ] || [ "${GRAPH_VALIDATION}" != "success" ]; then
+            exit 1
+          fi
+      - name: Upload reproducible audit logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deep-psyche-registry-audit
+          path: artifacts/
+          if-no-files-found: warn
