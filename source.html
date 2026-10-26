@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2653 f00ac799 2026-10-26 03:15"><head><meta charset="utf-8">
+<html lang="en" data-build="v2654 5bc808ad 2026-10-26 03:17"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -28545,7 +28545,16 @@ var LEX_VERSION=lexVersion();
    without a second offset map. Building that map is a new reader of the text,
    which is the risk the review said not to take for alpha. The gap is named in
    TDD-sniffer.md and is held there, not here. */
-var LAW_NEG=['not','no','never','nobody','none','cannot','cant','did',
+/* 'did' ON ITS OWN IS NOT A NEGATION, and it stood in this list anyway. "I
+   did tell him the truth", "I did show up": the bare word is very often
+   affirmative, so any cue sitting within the three word window after it was
+   voided whether or not anything actually denied it. Measured: "Yes, I did,
+   and I lied to them about it afterward." read Truth clean, the instrument
+   missing an admission it should have caught. sourceai.js's own negator
+   list already left it out on exactly this reasoning, srcNegated's comment
+   naming this file's "did" by name as the case to avoid repeating; this is
+   that repair. The contracted forms below are genuine negations and stay. */
+var LAW_NEG=['not','no','never','nobody','none','cannot','cant',
  'didnt','dont','wont','wasnt','isnt','havent','hasnt','couldnt','wouldnt','refuse','refused'];
 var LAW_NEG_W=3;
 function lawNorm(text){
@@ -82468,5 +82477,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005439857"></div>
+<div id="eof" hidden data-len="005440533"></div>
 </body></html>

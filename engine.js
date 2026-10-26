@@ -18487,7 +18487,16 @@ var LEX_VERSION=lexVersion();
    without a second offset map. Building that map is a new reader of the text,
    which is the risk the review said not to take for alpha. The gap is named in
    TDD-sniffer.md and is held there, not here. */
-var LAW_NEG=['not','no','never','nobody','none','cannot','cant','did',
+/* 'did' ON ITS OWN IS NOT A NEGATION, and it stood in this list anyway. "I
+   did tell him the truth", "I did show up": the bare word is very often
+   affirmative, so any cue sitting within the three word window after it was
+   voided whether or not anything actually denied it. Measured: "Yes, I did,
+   and I lied to them about it afterward." read Truth clean, the instrument
+   missing an admission it should have caught. sourceai.js's own negator
+   list already left it out on exactly this reasoning, srcNegated's comment
+   naming this file's "did" by name as the case to avoid repeating; this is
+   that repair. The contracted forms below are genuine negations and stay. */
+var LAW_NEG=['not','no','never','nobody','none','cannot','cant',
  'didnt','dont','wont','wasnt','isnt','havent','hasnt','couldnt','wouldnt','refuse','refused'];
 var LAW_NEG_W=3;
 function lawNorm(text){
