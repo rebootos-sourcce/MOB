@@ -53,6 +53,19 @@ const url='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1
    const ritualExport=validateProfile(JSON.parse(JSON.stringify(CURP)));
    data.ritualExport=ritualExport.ok&&Array.isArray(ritualExport.profile.ritualPlans)
     &&ritualExport.profile.ritualPlans.some(x=>x.steps.indexOf('box')>=0);
+   /* The new Diagnostic is separate from the prior CQ scorer, but shares
+      the owner's Core 10 and remaining 11 in the same screen. */
+   renderIntake();
+   const diag=document.querySelector('.d3-panel');
+   data.diagAppears=!!diag;
+   const toggle=diag&&diag.querySelector('[data-d3toggle]');
+   if(toggle)toggle.click();
+   data.diagNodes=document.querySelectorAll('[data-d3law]').length;
+   const zero=document.querySelector('[data-d3answer="0"]');
+   if(zero)zero.click();
+   data.diagPersisted=CURP.diagnostic3&&CURP.diagnostic3.answers[D3_BANK[0].questions[0].id]===0;
+   const diagCopy=validateProfile(JSON.parse(JSON.stringify(CURP)));
+   data.diagExport=diagCopy.ok&&diagCopy.profile.diagnostic3&&diagCopy.profile.diagnostic3.answers[D3_BANK[0].questions[0].id]===0;
    return data;
   });
   assert.equal(result.rendered,true,'Board renders on existing avatar');
@@ -72,6 +85,10 @@ const url='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1
   assert.equal(result.ritualStarted,true,'ritual starts using existing builder');
   assert.equal(result.ritualOwned,true,'plan is stored on the owned record');
   assert.equal(result.ritualExport,true,'plan survives strict export/import boundary');
+  assert.equal(result.diagAppears,true,'three-channel Diagnostic is visible');
+  assert.equal(result.diagNodes,21,'all 21 laws can be visited');
+  assert.equal(result.diagPersisted,true,'zero is a valid self report');
+  assert.equal(result.diagExport,true,'self-report persists through profile validation');
   assert.equal(errors.length,0,'browser execution has no unhandled errors: '+errors.join('; '));
   console.log('PASS hero journey real-browser: '+JSON.stringify(result));
   await page.close();
