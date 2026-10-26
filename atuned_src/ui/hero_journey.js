@@ -108,6 +108,7 @@ function hjPanel(st){
     +'<p><b>Source:</b> '+hjSafe(a.source)+'</p></details>'
     +'<div class="hj-desc">This is an optional encounter. It does not label you or move your CQ. '+hjSafe((a.laws||[]).join(', '))+'</div>'
     +'<div class="hj-actions"><button type="button" data-hjrelease'+(!ids.length?' disabled':'')+'>Review '+ids.length+' relevant imprints</button>'
+    + '<button type="button" data-hjaffirm>Write my affirmation</button>'
     +'<button type="button" data-hjritual'+(!option?' disabled':'')+'>Start suggested daily practice</button></div>';
   }
  }
@@ -129,6 +130,20 @@ function hjBind(host){
   if(!ids.length){status('No relevant held imprints are available for this encounter.','fail');return;}
   if(!avOwn()){status('Switch to your own profile to do a release.','fail');return;}
   relPick(ids);
+ };
+ var affirm=host.querySelector('[data-hjaffirm]');if(affirm)affirm.onclick=function(){
+  if(!avOwn()){status('Switch to your own profile to write an affirmation.','fail');return;}
+  var active=hjScene(CURP.avatar.activeJourneyScene||HJ_VIEW_ONLY)||hjRead(CURP,compute()).location;
+  var law=SI.filter(function(l){return active&&(active.laws||[]).indexOf(l.nm)>=0;})[0];
+  if(!law){status('Choose a law-linked encounter first.','fail');return;}
+  /* This is the existing Avatar writer; no new affirmation is stored here.
+     ritAffirm reads the person's becoming pair once they deliberately save it. */
+  AV.sub='becoming';AV.seat=law.b;AV.face='story';
+  var row=(typeof avRows==='function'?avRows():[]).filter(function(v){return avSeatOf(v)===law.b;}).slice(-1)[0];
+  if(row){AV.edit=row.i;AV.drafts[law.b]={be:row.pair.be,notbe:row.pair.notbe};}
+  else{AV.edit=null;AV.drafts[law.b]={be:'',notbe:''};}
+  renderAvatar();
+  status('Write your own becoming statement. When saved, it can appear in your daily affirmations.');
  };
  var rit=host.querySelector('[data-hjritual]');if(rit)rit.onclick=function(){
   if(!avOwn()){status('Switch to your own profile to start a ritual.','fail');return;}
