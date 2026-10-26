@@ -41,4 +41,23 @@ context.cqSpan=()=>({answered:1,of:2,complete:false});
 r=context.hjRead(p);
 assert.equal(r.location,null);
 assert.equal(r.cq,null);
-console.log('PASS: 26 stages, thresholds, unique release polarity, baseline, active encounter, action routing, partial guard');
+/* Check the actual source registry joins, not just the staged atlas count. */
+const board=JSON.parse(fs.readFileSync(path.resolve('docs/data/compass/gameboard/v1/GAMEBOARD_MAP_V1.json'),'utf8'));
+const purg=JSON.parse(fs.readFileSync(path.resolve('docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json'),'utf8'));
+const para=JSON.parse(fs.readFileSync(path.resolve('docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json'),'utf8'));
+const boardNodes=new Map(board.nodes.map(n=>[n.id,n]));
+const sourceRecords=new Set(purg.records.concat(para.records).map(n=>n.id));
+assert.equal(board.nodes.length,26,'exactly 26 Board source nodes');
+assert.equal(boardNodes.size,26,'Board node IDs are unique');
+for(const scene of context.HJ_SCENES){
+ const node=boardNodes.get(scene.id);
+ assert(node,'Board has source node for '+scene.id);
+ assert.equal(scene.source,node.sourceRecordId,'live scene matches its Board source record');
+ assert(scene.guide&&scene.successEvidence&&scene.sourceLocation,'scene exposes guide, evidence and source');
+ if(scene.realm!=='INFERNO')
+  assert(sourceRecords.has(scene.source),'nonarchival source record exists for '+scene.id);
+}
+/* Fixed protocol identities require approval; the current Board only offers
+   profile-dependent real writers. This test must not invent their IDs. */
+assert(board.nodes.every(n=>n.releaseProtocolId==null&&n.becomingRitualId==null));
+console.log('PASS: 26 stages, thresholds, unique releases, canonical source joins, baseline, action routing, partial guard');
