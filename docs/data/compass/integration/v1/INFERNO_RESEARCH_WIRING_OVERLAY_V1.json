@@ -1,0 +1,1006 @@
+{
+  "schema": "ATUNED_INFERNO_RESEARCH_WIRING_OVERLAY_V1",
+  "date": "2026-10-26",
+  "authority": "SOURCE_REFERENCED_CANDIDATE_NON_CANONICAL",
+  "baseGraph": "docs/data/compass/integration/v1/COMPASS_CROSS_LAYER_GRAPH_V1.json",
+  "policy": "Additive candidate parent-child and associative references only. Do not promote or use for production scoring without semantic approval. No source record merges.",
+  "recordCount": 38,
+  "recordBindings": [
+    {
+      "recordId": "B01",
+      "graphNodeId": "inferno:B01",
+      "linkedNodeIds": [
+        "inferno:B08",
+        "inferno:L03",
+        "inferno:F03"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "B02",
+      "graphNodeId": "inferno:B02",
+      "linkedNodeIds": [
+        "inferno:B11",
+        "inferno:B13",
+        "inferno:L08",
+        "inferno:F09"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "B03",
+      "graphNodeId": "inferno:B03",
+      "linkedNodeIds": [],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "B04",
+      "graphNodeId": "inferno:B04",
+      "linkedNodeIds": [],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "B05",
+      "graphNodeId": "inferno:B05",
+      "linkedNodeIds": [
+        "inferno:L05",
+        "inferno:F05"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "B06",
+      "graphNodeId": "inferno:B06",
+      "linkedNodeIds": [
+        "inferno:L01"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "B07",
+      "graphNodeId": "inferno:B07",
+      "linkedNodeIds": [
+        "inferno:L04",
+        "inferno:F04"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "B08",
+      "graphNodeId": "inferno:B08",
+      "linkedNodeIds": [
+        "inferno:B01",
+        "inferno:L03",
+        "inferno:F03"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "B09",
+      "graphNodeId": "inferno:B09",
+      "linkedNodeIds": [
+        "inferno:L02"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "B10",
+      "graphNodeId": "inferno:B10",
+      "linkedNodeIds": [
+        "inferno:L07",
+        "inferno:F07"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "B11",
+      "graphNodeId": "inferno:B11",
+      "linkedNodeIds": [
+        "inferno:B02",
+        "inferno:B13",
+        "inferno:L08",
+        "inferno:F09"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "B12",
+      "graphNodeId": "inferno:B12",
+      "linkedNodeIds": [
+        "inferno:L09",
+        "inferno:F11"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "B13",
+      "graphNodeId": "inferno:B13",
+      "linkedNodeIds": [
+        "inferno:B02",
+        "inferno:B11",
+        "inferno:L08",
+        "inferno:F09"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "B14",
+      "graphNodeId": "inferno:B14",
+      "linkedNodeIds": [
+        "inferno:L02",
+        "inferno:L03",
+        "inferno:L04",
+        "inferno:L05"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "B15",
+      "graphNodeId": "inferno:B15",
+      "linkedNodeIds": [],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "L01",
+      "graphNodeId": "inferno:L01",
+      "linkedNodeIds": [
+        "inferno:B06",
+        "inferno:F01"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "L02",
+      "graphNodeId": "inferno:L02",
+      "linkedNodeIds": [
+        "inferno:B09",
+        "inferno:B14",
+        "inferno:F02"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "L03",
+      "graphNodeId": "inferno:L03",
+      "linkedNodeIds": [
+        "inferno:B01",
+        "inferno:B08",
+        "inferno:F03"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "L04",
+      "graphNodeId": "inferno:L04",
+      "linkedNodeIds": [
+        "inferno:B07",
+        "inferno:B14",
+        "inferno:F04"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "L05",
+      "graphNodeId": "inferno:L05",
+      "linkedNodeIds": [
+        "inferno:B05",
+        "inferno:B14",
+        "inferno:F05"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "L06",
+      "graphNodeId": "inferno:L06",
+      "linkedNodeIds": [
+        "inferno:F06",
+        "inferno:L01"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "L07",
+      "graphNodeId": "inferno:L07",
+      "linkedNodeIds": [
+        "inferno:B10",
+        "inferno:F07",
+        "inferno:F08"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "L08",
+      "graphNodeId": "inferno:L08",
+      "linkedNodeIds": [
+        "inferno:B02",
+        "inferno:B11",
+        "inferno:B13",
+        "inferno:F09"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "L09",
+      "graphNodeId": "inferno:L09",
+      "linkedNodeIds": [
+        "inferno:B12",
+        "inferno:F10",
+        "inferno:F11"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "F01",
+      "graphNodeId": "inferno:F01",
+      "linkedNodeIds": [
+        "inferno:L01"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "F02",
+      "graphNodeId": "inferno:F02",
+      "linkedNodeIds": [
+        "inferno:L02"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "F03",
+      "graphNodeId": "inferno:F03",
+      "linkedNodeIds": [
+        "inferno:B01",
+        "inferno:B08",
+        "inferno:L03"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "F04",
+      "graphNodeId": "inferno:F04",
+      "linkedNodeIds": [
+        "inferno:B07",
+        "inferno:L04"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "F05",
+      "graphNodeId": "inferno:F05",
+      "linkedNodeIds": [
+        "inferno:B05",
+        "inferno:L05"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "F06",
+      "graphNodeId": "inferno:F06",
+      "linkedNodeIds": [
+        "inferno:L06"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "F07",
+      "graphNodeId": "inferno:F07",
+      "linkedNodeIds": [
+        "inferno:B10",
+        "inferno:L07"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "F08",
+      "graphNodeId": "inferno:F08",
+      "linkedNodeIds": [
+        "inferno:L07"
+      ],
+      "state": "REVIEW_REQUIRED"
+    },
+    {
+      "recordId": "F09",
+      "graphNodeId": "inferno:F09",
+      "linkedNodeIds": [
+        "inferno:B02",
+        "inferno:B11",
+        "inferno:B13",
+        "inferno:L08"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    },
+    {
+      "recordId": "F10",
+      "graphNodeId": "inferno:F10",
+      "linkedNodeIds": [
+        "inferno:L09"
+      ],
+      "state": "REVIEW_REQUIRED"
+    },
+    {
+      "recordId": "F11",
+      "graphNodeId": "inferno:F11",
+      "linkedNodeIds": [
+        "inferno:L09",
+        "inferno:B12"
+      ],
+      "state": "REVIEW_REQUIRED"
+    },
+    {
+      "recordId": "X01",
+      "graphNodeId": "inferno:X01",
+      "linkedNodeIds": [],
+      "state": "REVIEW_REQUIRED"
+    },
+    {
+      "recordId": "X02",
+      "graphNodeId": "inferno:X02",
+      "linkedNodeIds": [],
+      "state": "REVIEW_REQUIRED"
+    },
+    {
+      "recordId": "X03",
+      "graphNodeId": "inferno:X03",
+      "linkedNodeIds": [
+        "inferno:B09",
+        "inferno:B10"
+      ],
+      "state": "RESEARCH_UNPROMOTED"
+    }
+  ],
+  "edges": [
+    {
+      "from": "inferno:B01",
+      "to": "inferno:B08",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B01",
+      "to": "inferno:L03",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B01",
+      "to": "inferno:F03",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B02",
+      "to": "inferno:B11",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B02",
+      "to": "inferno:B13",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B02",
+      "to": "inferno:L08",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B02",
+      "to": "inferno:F09",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B05",
+      "to": "inferno:L05",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B05",
+      "to": "inferno:F05",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B06",
+      "to": "inferno:L01",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B07",
+      "to": "inferno:L04",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B07",
+      "to": "inferno:F04",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B08",
+      "to": "inferno:B01",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B08",
+      "to": "inferno:L03",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B08",
+      "to": "inferno:F03",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B09",
+      "to": "inferno:L02",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B10",
+      "to": "inferno:L07",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B10",
+      "to": "inferno:F07",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B11",
+      "to": "inferno:B02",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B11",
+      "to": "inferno:B13",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B11",
+      "to": "inferno:L08",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B11",
+      "to": "inferno:F09",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B12",
+      "to": "inferno:L09",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B12",
+      "to": "inferno:F11",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B13",
+      "to": "inferno:B02",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B13",
+      "to": "inferno:B11",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B13",
+      "to": "inferno:L08",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B13",
+      "to": "inferno:F09",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B14",
+      "to": "inferno:L02",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B14",
+      "to": "inferno:L03",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B14",
+      "to": "inferno:L04",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:B14",
+      "to": "inferno:L05",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:L01",
+      "to": "inferno:B06",
+      "type": "level_behavior_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:L01",
+      "to": "inferno:F01",
+      "type": "level_contains_figure_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:L02",
+      "to": "inferno:B09",
+      "type": "level_behavior_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:L02",
+      "to": "inferno:B14",
+      "type": "level_behavior_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:L02",
+      "to": "inferno:F02",
+      "type": "level_contains_figure_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:L03",
+      "to": "inferno:B01",
+      "type": "level_behavior_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:L03",
+      "to": "inferno:B08",
+      "type": "level_behavior_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:L03",
+      "to": "inferno:F03",
+      "type": "level_contains_figure_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:L04",
+      "to": "inferno:B07",
+      "type": "level_behavior_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:L04",
+      "to": "inferno:B14",
+      "type": "level_behavior_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:L04",
+      "to": "inferno:F04",
+      "type": "level_contains_figure_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:L05",
+      "to": "inferno:B05",
+      "type": "level_behavior_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:L05",
+      "to": "inferno:B14",
+      "type": "level_behavior_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:L05",
+      "to": "inferno:F05",
+      "type": "level_contains_figure_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:L06",
+      "to": "inferno:F06",
+      "type": "level_contains_figure_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:L06",
+      "to": "inferno:L01",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:L07",
+      "to": "inferno:B10",
+      "type": "level_behavior_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:L07",
+      "to": "inferno:F07",
+      "type": "level_contains_figure_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:L07",
+      "to": "inferno:F08",
+      "type": "level_contains_figure_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:L08",
+      "to": "inferno:B02",
+      "type": "level_behavior_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:L08",
+      "to": "inferno:B11",
+      "type": "level_behavior_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:L08",
+      "to": "inferno:B13",
+      "type": "level_behavior_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:L08",
+      "to": "inferno:F09",
+      "type": "level_contains_figure_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:L09",
+      "to": "inferno:B12",
+      "type": "level_behavior_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:L09",
+      "to": "inferno:F10",
+      "type": "level_contains_figure_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:L09",
+      "to": "inferno:F11",
+      "type": "level_contains_figure_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:F01",
+      "to": "inferno:L01",
+      "type": "figure_in_level_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:F02",
+      "to": "inferno:L02",
+      "type": "figure_in_level_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:F03",
+      "to": "inferno:B01",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:F03",
+      "to": "inferno:B08",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:F03",
+      "to": "inferno:L03",
+      "type": "figure_in_level_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:F04",
+      "to": "inferno:B07",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:F04",
+      "to": "inferno:L04",
+      "type": "figure_in_level_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:F05",
+      "to": "inferno:B05",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:F05",
+      "to": "inferno:L05",
+      "type": "figure_in_level_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:F06",
+      "to": "inferno:L06",
+      "type": "figure_in_level_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:F07",
+      "to": "inferno:B10",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:F07",
+      "to": "inferno:L07",
+      "type": "figure_in_level_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:F08",
+      "to": "inferno:L07",
+      "type": "figure_in_level_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:F09",
+      "to": "inferno:B02",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:F09",
+      "to": "inferno:B11",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:F09",
+      "to": "inferno:B13",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:F09",
+      "to": "inferno:L08",
+      "type": "figure_in_level_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:F10",
+      "to": "inferno:L09",
+      "type": "figure_in_level_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:F11",
+      "to": "inferno:L09",
+      "type": "figure_in_level_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:F11",
+      "to": "inferno:B12",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:X03",
+      "to": "inferno:B09",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    },
+    {
+      "from": "inferno:X03",
+      "to": "inferno:B10",
+      "type": "research_association_candidate",
+      "status": "UNPROMOTED",
+      "source": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "notRuntime": true
+    }
+  ],
+  "validation": {
+    "allNodesResolve": true,
+    "errors": [],
+    "isolatedResearchIds": [
+      "B03",
+      "B04",
+      "B15",
+      "X01",
+      "X02"
+    ],
+    "baselineGraphNodeCount": 135,
+    "baselineGraphEdgeCount": 300
+  }
+}
