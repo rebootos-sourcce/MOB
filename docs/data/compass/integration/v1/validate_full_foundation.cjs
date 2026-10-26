@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* Read-only validation of the full documented Compass integration graph. */
 const fs=require('node:fs'),path=require('node:path');
-const root=path.resolve(__dirname,'../../../..');
+const root=path.resolve(__dirname,'../../../../..');
 const read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));
 const graph=read('docs/data/compass/integration/v1/COMPASS_CROSS_LAYER_GRAPH_V1.json');
 const validation=read('docs/data/compass/integration/v1/BUILD_VALIDATION_V2.json');
