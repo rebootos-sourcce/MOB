@@ -139,7 +139,7 @@ function hjBind(host){
   /* This is the existing Avatar writer; no new affirmation is stored here.
      ritAffirm reads the person's becoming pair once they deliberately save it. */
   AV.sub='becoming';AV.seat=law.b;AV.face='story';
-  var row=(typeof avRows==='function'?avRows():[]).filter(function(v){return avSeatOf(v)===law.b;}).slice(-1)[0];
+  var row=avState().rows.filter(function(v){return avSeatOf(v)===law.b;}).slice(-1)[0];
   if(row){AV.edit=row.i;AV.drafts[law.b]={be:row.pair.be,notbe:row.pair.notbe};}
   else{AV.edit=null;AV.drafts[law.b]={be:'',notbe:''};}
   renderAvatar();
