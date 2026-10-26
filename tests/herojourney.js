@@ -14,6 +14,7 @@ const context={
 vm.createContext(context);vm.runInContext(src,context);
 const loc=x=>context.hjLocate(x).id;
 assert.equal(context.HJ_SCENES.length,26);
+assert(context.HJ_SCENES.every(s=>s.guide&&s.successEvidence&&s.source&&s.sourceLocation),'all 26 scenes carry guide, evidence and source');
 assert.equal(loc(0),'game:inferno:L09');
 assert.equal(loc(39.999),'game:inferno:L01');
 assert.equal(loc(40),'game:purgatorio:P01');

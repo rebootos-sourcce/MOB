@@ -65,6 +65,8 @@ function hjCss(){
  '.hj-actions button:focus-visible,.hj-node:focus-visible{outline:2px solid var(--accent)}',
  '.hj-actions button[disabled]{opacity:.48;cursor:not-allowed}',
  '.hj-story{font-size:13px;line-height:1.5;margin:8px 0}',
+ '.hj-explain{font-size:13px;color:var(--mid);line-height:1.55;margin:12px 0;border-top:1px solid var(--edge-2);padding-top:8px}',
+ '.hj-explain summary{cursor:pointer;color:var(--ink);font-weight:600;min-height:28px}',
  '@media (max-width:620px){.hj-panel{padding:12px}.hj-figure{grid-template-columns:65px 1fr;gap:10px}.hj-character{width:63px;height:92px}.hj-human{font-size:44px}.hj-scenes{grid-template-columns:repeat(9,minmax(0,1fr))}}',
  '@media (prefers-reduced-motion:reduce){.hj-panel *{transition:none!important;animation:none!important}}'
  ].join('\n');document.head.appendChild(x);
@@ -100,6 +102,10 @@ function hjPanel(st){
     +'<div class="hj-story">'+hjSafe(a.challenge)+'</div>'
     +'<div class="hj-story"><b>Discover:</b> '+hjSafe(a.knowledge)+'</div>'
     +'<div class="hj-story"><b>Become:</b> '+hjSafe(a.becoming)+'</div>'
+    +'<details class="hj-explain"><summary>Guidance and progress evidence</summary>'
+    +'<p><b>Guide:</b> '+hjSafe(a.guide)+'</p>'
+    +'<p><b>Look for:</b> '+hjSafe(a.successEvidence)+'</p>'
+    +'<p><b>Source:</b> '+hjSafe(a.source)+'</p></details>'
     +'<div class="hj-desc">This is an optional encounter. It does not label you or move your CQ. '+hjSafe((a.laws||[]).join(', '))+'</div>'
     +'<div class="hj-actions"><button type="button" data-hjrelease'+(!ids.length?' disabled':'')+'>Review '+ids.length+' relevant imprints</button>'
     +'<button type="button" data-hjritual'+(!option?' disabled':'')+'>Start suggested daily practice</button></div>';
