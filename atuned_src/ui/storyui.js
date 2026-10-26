@@ -117,14 +117,17 @@ function stRender(){
       listening and leaves the conversation open, since a person mid
       conversation is not done because the mic paused. */
    +(show?'':'<button class="st-mic st-talk'+(ST_LISTEN?' on':'')+'" id="sttalk" type="button" '
-   +'aria-pressed="'+!!STV.chat+'" '
+   +'aria-pressed="'+!!STV.chat+'" aria-label="'+(ST_LISTEN?'Listening':'Talk')+'" '
    +'title="'+(ST_LISTEN?'Listening. Press to stop and keep what it heard.'
      :'Talk it through, one turn at a time. Recording sends the audio to your browser\'s speech service; typing does not leave this device.')+'">'
    +'<span class="st-dot"></span>'
    +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
    +'<circle cx="6" cy="6.5" r="3"/><circle cx="18" cy="17.5" r="3"/>'
    +'<path d="M8.4 8.4Q16.5 7 15.6 15.6"/></svg>'
-   +'<span>'+(ST_LISTEN?'Listening':'Talk')+'</span>'
+   /* ICON ONLY, his words just now: "I just want a icon without the text."
+      No printed word on the button, the way the dial's own icon row
+      already does it, round of 18-19 October: "each self-explaining
+      without a caption", named for anyone else by aria-label alone. */
    /* THE CLOCK, ROUND LV. His words: "I want the time showing how long my
       recording is." mm:ss, in the button itself so it reads as one control
       rather than two things to track, and gone the moment recording is,
