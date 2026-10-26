@@ -1,0 +1,39 @@
+record_id,record_type,name,source_scope,behavior_family,relationship_to_family,linked_records,promotion_status,interpretive_confidence
+B01,legacy,Cerberus gluttony,Inferno VI,CONSUMPTION,provisional_family_member,B08|L03|F03,UNPROMOTED,0.72
+B02,legacy,Geryon fraud,Inferno XVII,FRAUD,provisional_family_member,B11|B13|L08|F09,UNPROMOTED,0.82
+B03,legacy,Pride,Purgatorio I,SELF_ELEVATION,provisional_family_member,,UNPROMOTED,0.72
+B04,legacy,Envy,Purgatorio II,ENVY,provisional_family_member,,UNPROMOTED,0.70
+B05,legacy,Wrath,Purgatorio III,PUNITIVE_ANGER,provisional_family_member,L05|F05,UNPROMOTED,0.80
+B06,legacy,Sloth acedia,Purgatorio IV,AVOIDANT_NONENGAGEMENT,provisional_family_member,L01,UNPROMOTED,0.65
+B07,legacy,Avarice,Purgatorio V,AVARICE,provisional_family_member,L04|F04,UNPROMOTED,0.77
+B08,legacy,Gluttony excess,Purgatorio VI,CONSUMPTION,alias_family_not_record_merge,B01|L03|F03,UNPROMOTED,0.79
+B09,legacy,Lust,Purgatorio VII,DISREGARDED_AGENCY_IN_DESIRE,provisional_family_member,L02,UNPROMOTED,0.73
+B10,legacy,Violence,Inferno Circle VII,VIOLENCE,provisional_family_member,L07|F07,UNPROMOTED,0.83
+B11,legacy,Simple fraud,Inferno Circle VIII,FRAUD,umbrella_family,B02|B13|L08|F09,UNPROMOTED,0.83
+B12,legacy,Treachery,Inferno Circle IX,TREACHERY,provisional_family_member,L09|F11,UNPROMOTED,0.81
+B13,legacy,Fraudulent speech,Inferno VIII motif,FRAUD,subtype_material_reality_distortion,B02|B11|L08|F09,UNPROMOTED,0.68
+B14,legacy,Incontinence,Inferno Circles II-V,IMPULSE_OVERRIDES_CHOICE,higher_order_family,L02|L03|L04|L05,UNPROMOTED,0.67
+B15,legacy,Disruption,ATUNED cross-work,DISRUPTION,context_sensitive_family,,UNPROMOTED,0.60
+L01,level,Limbo,Inferno IV,NONENGAGEMENT,symbolic_atuned_analogy,B06|F01,UNPROMOTED,0.48
+L02,level,Lust,Inferno V,ENTITLEMENT_IN_DESIRE,symbolic_atuned_analogy,B09|B14|F02,UNPROMOTED,0.46
+L03,level,Gluttony,Inferno VI,CONSUMPTION,source_category_plus_interpretation,B01|B08|F03,UNPROMOTED,0.79
+L04,level,Avarice prodigality,Inferno VII,AVARICE,source_category_plus_interpretation,B07|B14|F04,UNPROMOTED,0.70
+L05,level,Wrath sullenness,Inferno VII-VIII,REACTIVITY,source_category_plus_interpretation,B05|B14|F05,UNPROMOTED,0.67
+L06,level,Heresy,Inferno IX-XI,EPISTEMIC_RIGIDITY,symbolic_atuned_analogy,F06|L01,UNPROMOTED,0.40
+L07,level,Violence,Inferno XII-XVII,VIOLENCE,source_category_plus_interpretation,B10|F07|F08,UNPROMOTED,0.79
+L08,level,Fraud Malebolge,Inferno XVIII-XXX,FRAUD,source_category_plus_interpretation,B02|B11|B13|F09,UNPROMOTED,0.80
+L09,level,Treachery,Inferno XXXII-XXXIV,TREACHERY,source_category_plus_condition,B12|F10|F11,UNPROMOTED,0.60
+F01,figure,Charon,Inferno III,THRESHOLD_GATEKEEPING,function_not_automatic_harm,L01,UNPROMOTED,0.58
+F02,figure,Minos,Inferno V,JUDGMENT_CLASSIFICATION,function_not_automatic_harm,L02,UNPROMOTED,0.52
+F03,figure,Cerberus,Inferno VI,CONSUMPTION,provisional_symbolic_link,B01|B08|L03,UNPROMOTED,0.68
+F04,figure,Plutus,Inferno VII,POSSESSIVE_GUARDING,provisional_symbolic_link,B07|L04,UNPROMOTED,0.56
+F05,figure,Phlegyas,Inferno VIII,REACTIVITY,provisional_symbolic_link,B05|L05,UNPROMOTED,0.61
+F06,figure,Furies,Inferno IX,INTIMIDATION,provisional_symbolic_link,L06,UNPROMOTED,0.65
+F07,figure,Minotaur,Inferno XII,VIOLENCE,provisional_symbolic_link,B10|L07,UNPROMOTED,0.72
+F08,figure,Harpies,Inferno XIII,INFLICTED_DEGRADATION,source_action_not_self_harm,L07,ARCHETYPE_LINK_UNRESOLVED,0.40
+F09,figure,Geryon,Inferno XVII,FRAUD,source_symbol_plus_interpretation,B02|B11|B13|L08,UNPROMOTED,0.86
+F10,figure,Giants,Inferno XXXI,DOMINATION,heterogeneous_collective_hypothesis,L09,ARCHETYPE_LINK_UNRESOLVED,0.36
+F11,figure,Lucifer,Inferno XXXIV,STASIS_CONDITION,condition_not_root_behavior,L09|B12,ARCHETYPE_LINK_UNRESOLVED,0.43
+X01,external,Malak,unresolved,UNKNOWN,blocked_name_identity,,IDENTITY_BLOCKED,0.10
+X02,external,Baal or Bael,Ugaritic Baal Cycle versus later grimoires,CONTESTED_SOVEREIGNTY,cross_tradition_unmerged,,COMPOSITE_UNRESOLVED,0.29
+X03,external,Asmodeus,Tobit III VI VIII,OBSTRUCTION_OF_INTIMACY_VIA_HARM,source_role_plus_interpretation,B09|B10,UNPROMOTED,0.39
