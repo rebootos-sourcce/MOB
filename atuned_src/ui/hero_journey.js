@@ -2,6 +2,38 @@
 /* HERO'S JOURNEY BOARD — the living avatar's CQ coordinate and work doors.
  * The board has one position: canonical CQ. The selected encounter can differ. */
 var HJ_EXPANDED=false;
+/* The avatar is a figure, not a generic dot. CQ opens its posture and
+ * increases the visible field. Persisted release-side milestones appear as
+ * fixed marks: a lower CQ never erases work already completed. This is a
+ * symbolic illustration, not biological anatomy or a health reading. */
+function hjFigureHtml(h){
+ var q=h.cq===null?50:h.cq, openness=q/100;
+ var arms=(32+openness*12).toFixed(1),w=(19+openness*5).toFixed(1);
+ var glow=(.13+openness*.37).toFixed(3);
+ var marks=Math.min(12,Math.floor(h.uniqueReleaseCount/25));
+ var dots='';
+ for(var i=0;i<marks;i++){
+  var a=Math.PI*2*i/12-Math.PI/2;
+  dots+='<circle cx="'+(50+41*Math.cos(a)).toFixed(1)+'" cy="'+(58+49*Math.sin(a)).toFixed(1)
+   +'" r="1.7" fill="currentColor"/>';
+ }
+ var nodes=[36,45,54,63,72,81,90].map(function(y,i){
+  return '<circle cx="50" cy="'+y+'" r="'+(1.4+openness*1.2).toFixed(1)
+    +'" fill="var(--accent)" opacity="'+(.3+openness*.6).toFixed(2)+'"/>';
+ }).join('');
+ return '<svg class="hj-avatar-form" viewBox="0 0 100 128" role="img" aria-label="Your living avatar form reflects CQ '
+  +(h.cq===null?'not yet measured':h.cq.toFixed(1)+' out of 100')+' and '
+  +h.uniqueReleaseCount+' unique releases">'
+  +'<defs><radialGradient id="hj-field" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="var(--accent)" stop-opacity="'+glow+'"/><stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/></radialGradient></defs>'
+  +'<ellipse cx="50" cy="63" rx="'+(26+openness*24).toFixed(1)+'" ry="58" fill="url(#hj-field)"/>'
+  +'<circle cx="50" cy="22" r="8" stroke="currentColor" stroke-width="1.6" fill="var(--panel)"/>'
+  +'<path d="M50 32 Q'+(50-w)+' 40 '+(50-w*.75)+' 61 Q42 76 44 91 L37 121 '
+  +'M50 32 Q'+(50+w)+' 40 '+(50+w*.75)+' 61 Q58 76 56 91 L63 121"'
+  +' stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round"/>'
+  +'<path d="M'+(50-w)+' 42 L'+(50-arms)+' 77 M'+(50+w)+' 42 L'+(50+arms)+' 77"'
+  +' stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>'
+  +'<path d="M50 30 L50 98" stroke="currentColor" stroke-width="1.1" opacity=".65"/>'+nodes+dots+'</svg>';
+}
 function hjCss(){
  if(document.getElementById('hj-avatar-css'))return;
  var x=document.createElement('style');x.id='hj-avatar-css';
@@ -15,7 +47,7 @@ function hjCss(){
  '.hj-metric small{font-size:11px;color:var(--mid)}',
  '.hj-figure{--hjprogress:0%;display:grid;grid-template-columns:90px 1fr;gap:16px;align-items:center;margin-top:14px}',
  '.hj-character{position:relative;width:88px;height:116px;display:flex;justify-content:center;align-items:flex-end}',
- '.hj-aura{position:absolute;inset:4px 0 8px;border:1px solid color-mix(in srgb,var(--accent) 58%,transparent);border-radius:48% 48% 42% 42%;background:radial-gradient(ellipse at center,color-mix(in srgb,var(--accent) calc(5% + var(--hjp)*.32),transparent),transparent 70%)}',
+ '.hj-avatar-form{width:100%;height:100%;display:block;color:var(--ink);filter:drop-shadow(0 0 4px color-mix(in srgb,var(--accent) 38%,transparent))}',
  '.hj-human{position:relative;z-index:1;font-size:60px;font-weight:200;line-height:1;filter:brightness(calc(.7 + var(--hjp)*.006))}',
  '.hj-bands{display:grid;grid-template-columns:40fr 20fr 40fr;overflow:hidden;border-radius:8px;height:17px}',
  '.hj-region{border:0;box-sizing:border-box;background:var(--edge-2);position:relative}',
@@ -42,7 +74,7 @@ function hjPanel(st){
  if(typeof hjRead!=='function')return '';
  hjCss();var p=CURP,h=hjRead(p,st&&st.r),loc=h.location,a=h.active;
  var pc=h.cq==null?50:Math.max(0,Math.min(100,h.cq));
- var visual='<span class="hj-human" aria-hidden="true">&#9679;</span>';
+ var visual=hjFigureHtml(h);
  var out='<section class="hj-panel" aria-label="Hero&#39;s Journey Board and avatar position" style="--hjp:'+pc+';--hjprogress:'+pc+'%">';
  out+='<div class="hj-heading"><div class="hj-title">Hero&#39;s Journey Board</div><div class="hj-metrics">'
   +'<span class="hj-metric"><b>'+(h.cq===null?'—':h.cq.toFixed(1))+'</b><small>CQ / 100</small></span>'
