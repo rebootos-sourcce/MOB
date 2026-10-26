@@ -105,6 +105,16 @@ function integrateDeepPsychological(entries, registry, catalog) {
         bridge(entry,findEngine('arch',source.archetypeName),'mapping_record.archetypeName');
       if (source.fetterLabel)
         bridge(entry,findEngine('sab',source.fetterLabel),'mapping_record.fetterLabel');
+      /* ARCH18 explicitly records each tuple's seat. A seat-label route is
+         source-backed navigation through the existing seat -> node -> nerve
+         topology, including when an ARCH18 Saboteur alias is not an exact
+         name in the current app's 39-name runtime catalog. */
+      const seatName={
+        root:'Root',sacral:'Sacral',solar:'Solar',heart:'Heart',
+        throat:'Throat',eye:'3rd Eye',crown:'Crown'
+      }[norm(source.seatLabel)];
+      if (seatName)
+        bridge(entry,findEngine('seat',seatName),'mapping_record.seatLabel');
       if (source.domainTarget)
         bridge(entry,findEngine('dom',source.domainTarget),'mapping_record.domainTarget');
     }
