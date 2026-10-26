@@ -1,0 +1,231 @@
+{
+  "schemaVersion": "1.0.0",
+  "visibilityContract": "HIDE_NAMES_SHOW_CHARACTERISTICS",
+  "state": "DATA_CONTRACT_NOT_RUNTIME",
+  "poles": [
+    {
+      "poleKey": "IL",
+      "publicId": "SH011",
+      "label": "Separation",
+      "description": "Cuts off reciprocal connection through self-prioritization"
+    },
+    {
+      "poleKey": "RE",
+      "publicId": "SH006",
+      "label": "Vengeance",
+      "description": "Pursues retaliation and threatens others into stopping"
+    },
+    {
+      "poleKey": "DE",
+      "publicId": "SH014",
+      "label": "Obstruction",
+      "description": "Sabotages consenting relationships through concrete interference or harm"
+    },
+    {
+      "poleKey": "OR",
+      "publicId": "SH015",
+      "label": "Internal Sabotage",
+      "description": "Corrupts a shared structure while benefiting from insider access"
+    },
+    {
+      "poleKey": "PO",
+      "publicId": "SH016",
+      "label": "Sacrificial Extraction",
+      "description": "Sacrifices dependents' welfare to maintain status or institution"
+    },
+    {
+      "poleKey": "PE",
+      "publicId": "SH009",
+      "label": "Fraud",
+      "description": "Claims integrity while concealing harmful contrary facts"
+    },
+    {
+      "poleKey": "TR",
+      "publicId": "SH001",
+      "label": "Gatekeeping",
+      "description": "Sets terms for admission and refuses passage"
+    },
+    {
+      "poleKey": "CH",
+      "publicId": "SH005",
+      "label": "Reactivity",
+      "description": "Anger spikes beyond what safety requires"
+    },
+    {
+      "poleKey": "FL",
+      "publicId": "SH017",
+      "label": "Poisoning",
+      "description": "Creates persistent exposure to something known to harm others"
+    },
+    {
+      "poleKey": "AL",
+      "publicId": "SH018",
+      "label": "Coercive Abduction",
+      "description": "Overrides consent through force and deceptive approach"
+    },
+    {
+      "poleKey": "HO",
+      "publicId": "SH019",
+      "label": "Forced Alteration",
+      "description": "Forces alterations without understanding effects"
+    },
+    {
+      "poleKey": "SA",
+      "publicId": "SH020",
+      "label": "Sabotage",
+      "description": "Blocks important collective processes for destructive effect"
+    },
+    {
+      "poleKey": "TU",
+      "publicId": "SH021",
+      "label": "Deceit",
+      "description": "Creates false accounts for others to rely on"
+    },
+    {
+      "poleKey": "NA",
+      "publicId": "SH022",
+      "label": "Forced Growth",
+      "description": "Intervenes to accelerate development and damages the result"
+    }
+  ],
+  "traits": [
+    {
+      "publicId": "SH001",
+      "label": "Gatekeeping",
+      "description": "Sets terms for admission and refuses passage",
+      "poleKey": "TR"
+    },
+    {
+      "publicId": "SH002",
+      "label": "Judgment",
+      "description": "Assigns people fixed categories",
+      "poleKey": null
+    },
+    {
+      "publicId": "SH003",
+      "label": "Insatiability",
+      "description": "Continues ravenous intake despite harm",
+      "poleKey": null
+    },
+    {
+      "publicId": "SH004",
+      "label": "Possessiveness",
+      "description": "Denies access to shared resources despite responsibility",
+      "poleKey": null
+    },
+    {
+      "publicId": "SH005",
+      "label": "Reactivity",
+      "description": "Anger spikes beyond what safety requires",
+      "poleKey": "CH"
+    },
+    {
+      "publicId": "SH006",
+      "label": "Vengeance",
+      "description": "Pursues retaliation and threatens others into stopping",
+      "poleKey": "RE"
+    },
+    {
+      "publicId": "SH007",
+      "label": "Violence",
+      "description": "Lashes out to hurt instead of protect",
+      "poleKey": null
+    },
+    {
+      "publicId": "SH008",
+      "label": "Torment",
+      "description": "Repeatedly injures or humiliates someone vulnerable",
+      "poleKey": null
+    },
+    {
+      "publicId": "SH009",
+      "label": "Fraud",
+      "description": "Claims integrity while concealing harmful contrary facts",
+      "poleKey": "PE"
+    },
+    {
+      "publicId": "SH011",
+      "label": "Separation",
+      "description": "Cuts off reciprocal connection through self-prioritization",
+      "poleKey": "IL"
+    },
+    {
+      "publicId": "SH012",
+      "label": "Extractive Control",
+      "description": "Uses rules and hierarchy to exploit dependent people",
+      "poleKey": null
+    },
+    {
+      "publicId": "SH013",
+      "label": "Unchecked Appetite",
+      "description": "Consumes resources without regard for downstream costs",
+      "poleKey": null
+    },
+    {
+      "publicId": "SH014",
+      "label": "Obstruction",
+      "description": "Sabotages consenting relationships through concrete interference or harm",
+      "poleKey": "DE"
+    },
+    {
+      "publicId": "SH015",
+      "label": "Internal Sabotage",
+      "description": "Corrupts a shared structure while benefiting from insider access",
+      "poleKey": "OR"
+    },
+    {
+      "publicId": "SH016",
+      "label": "Sacrificial Extraction",
+      "description": "Sacrifices dependents' welfare to maintain status or institution",
+      "poleKey": "PO"
+    },
+    {
+      "publicId": "SH017",
+      "label": "Poisoning",
+      "description": "Creates persistent exposure to something known to harm others",
+      "poleKey": "FL"
+    },
+    {
+      "publicId": "SH018",
+      "label": "Coercive Abduction",
+      "description": "Overrides consent through force and deceptive approach",
+      "poleKey": "AL"
+    },
+    {
+      "publicId": "SH019",
+      "label": "Forced Alteration",
+      "description": "Forces alterations without understanding effects",
+      "poleKey": "HO"
+    },
+    {
+      "publicId": "SH020",
+      "label": "Sabotage",
+      "description": "Blocks important collective processes for destructive effect",
+      "poleKey": "SA"
+    },
+    {
+      "publicId": "SH021",
+      "label": "Deceit",
+      "description": "Creates false accounts for others to rely on",
+      "poleKey": "TU"
+    },
+    {
+      "publicId": "SH022",
+      "label": "Forced Growth",
+      "description": "Intervenes to accelerate development and damages the result",
+      "poleKey": "NA"
+    },
+    {
+      "publicId": "SH024",
+      "label": "Hubris",
+      "description": "Overbuilds an imposing plan at cost of collective understanding",
+      "poleKey": null
+    },
+    {
+      "publicId": "SH025",
+      "label": "Defiance",
+      "description": "Exerts force to overthrow established boundaries",
+      "poleKey": null
+    }
+  ]
+}
