@@ -1,0 +1,23 @@
+name: Compass Inferno documented source bridge
+on:
+  push:
+    branches:
+      - 'atuned/compass-foundation-closure-20261026'
+  workflow_dispatch:
+jobs:
+  verify-documented-foundation:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate existing Compass foundation graph
+        run: node docs/data/compass/integration/v1/validate_full_foundation.cjs
+      - name: Verify documented Inferno source, identity and quarantine references
+        run: node docs/data/compass/integration/v1/validate_inferno_source_bridge_v1.cjs
+      - name: Check documented lookup endpoint
+        run: node docs/data/compass/integration/v1/INFERNO_DOCUMENTED_GRAPH_READER_V1.cjs inferno:X02
