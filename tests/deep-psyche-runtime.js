@@ -19,6 +19,13 @@ for(const e of entries) {
  assert(e.id&&!by.has(e.id),'Duplicate or missing entry: '+e.id);
  by.set(e.id,e);
 }
+const requiredEngineFamilies={nerve:72,node:112,sab:33,seat:7,axis:9,hcx:6,hypercomplex:6,mask:6,arch:12,dom:19};
+const legacyFamilyCounts={};
+for(const e of entries)if(!String(e.kind).startsWith('psych_'))
+ legacyFamilyCounts[e.kind]=(legacyFamilyCounts[e.kind]||0)+1;
+for(const [kind,minimum] of Object.entries(requiredEngineFamilies))
+ assert((legacyFamilyCounts[kind]||0)>=minimum,
+  'Legacy source layer missing/incomplete '+kind+': '+(legacyFamilyCounts[kind]||0)+'/'+minimum);
 const psych=reg.records.map(r=>{
  const e=by.get(r.id);
  assert(e,'Missing runtime Deep Psyche entry: '+r.id);
@@ -102,7 +109,7 @@ assert(reg.records.filter(x=>x.recordType==='related_consciousness_candidate').e
 const uiSlots=psych.filter(x=>x.slotOnly);
 assert(uiSlots.length===14,'Visualization slots lost');
 const report={
- status:'PASS', runtimeEntries:entries.length,
+ status:'PASS', runtimeEntries:entries.length, legacyLayerCounts:legacyFamilyCounts,
  deepPsychologicalRecords:psych.length, templatesComplete:psych.length,
  mappingsNavigable:tableRows.length, fourDepthReviewsVerified:psych.length*4,
  bidirectionalPsychologicalLinks:reciprocalEdges,
