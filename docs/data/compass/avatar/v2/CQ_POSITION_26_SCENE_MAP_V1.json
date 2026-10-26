@@ -1,0 +1,412 @@
+{
+  "schemaVersion": "1.0.0",
+  "purpose": "CQ-driven locational projection for the Hero's Journey Board; does not overwrite underlying narrative edges",
+  "status": "ARCHITECTURE_CONTRACT_NOT_LIVE",
+  "ownerDecisions": {
+    "positionDriver": "CQ_ONLY",
+    "realmBands": [
+      {
+        "realm": "INFERNO",
+        "min": 0,
+        "maxExclusive": 40
+      },
+      {
+        "realm": "PURGATORIO",
+        "min": 40,
+        "maxExclusive": 60
+      },
+      {
+        "realm": "PARADISO",
+        "min": 60,
+        "maxInclusive": 100
+      }
+    ],
+    "visualFormEvolves": true
+  },
+  "preconditions": {
+    "lawReadingsRequired": 21,
+    "completeLawInput": true,
+    "formula": "Use existing canonical compute().CQ; never recompute here",
+    "modelStamped": true
+  },
+  "coordinateRules": {
+    "preferredNumericalPrecision": "Canonical full precision internally; rendered label rounds only for display",
+    "exactInternalFormula": [
+      "if cq < 40: index = floor(cq / 40 * 9); scene = INFERNO sorted sourceOrder DESCENDING at index",
+      "if 40 <= cq < 60: index = floor((cq-40)/20 * 7); scene = PURGATORIO sorted sourceOrder ASCENDING at index",
+      "if 60 <= cq <= 100: index = min(9,floor((cq-60)/40 * 10)); scene = PARADISO sorted sourceOrder ASCENDING at index"
+    ],
+    "boundaryConvention": "40 belongs to Purgatorio; 60 belongs to Paradiso; 100 belongs to final Paradiso scene",
+    "rangesShown": "for documentation only, six-decimal intervals; use exact formula for lookup",
+    "dimensionContract": "One continuous CQ coordinate. 26 stage labels are nearest narrative waypoints, not a second score.",
+    "originalNarrativeWalk": "Existing scene sequence edges remain unchanged and navigable. Inferno CQ ascent traverses L09→L01, opposite the current descent narrative L01→L09. Never reuse the narrative edge order for CQ relocation.",
+    "selectedQuest": "An active imprints/release/ritual quest may be in any realm; never auto-relocate the avatar to that quest. Different pointers: cqLocation vs activeEncounterId.",
+    "movement": "Any persisted canonical CQ change can move position either direction; no artificial smoothing of underlying data; animation may ease transitions only.",
+    "scoringCaveat": "A partial 10-law or incomplete 21-law assessment is not full CQ. Show provisional data, not a permanent or morally labelled avatar stage."
+  },
+  "positions": [
+    {
+      "sceneId": "game:inferno:L09",
+      "realm": "INFERNO",
+      "sourceOrder": 9,
+      "label": "Treachery",
+      "fromCq": 0,
+      "toCq": 4.444444,
+      "rangeDisplayOnly": true,
+      "lowerInclusive": true,
+      "upperInclusive": false,
+      "ascendingIndex": 1
+    },
+    {
+      "sceneId": "game:inferno:L08",
+      "realm": "INFERNO",
+      "sourceOrder": 8,
+      "label": "Fraud",
+      "fromCq": 4.444444,
+      "toCq": 8.888889,
+      "rangeDisplayOnly": true,
+      "lowerInclusive": true,
+      "upperInclusive": false,
+      "ascendingIndex": 2
+    },
+    {
+      "sceneId": "game:inferno:L07",
+      "realm": "INFERNO",
+      "sourceOrder": 7,
+      "label": "Harmful Force",
+      "fromCq": 8.888889,
+      "toCq": 13.333333,
+      "rangeDisplayOnly": true,
+      "lowerInclusive": true,
+      "upperInclusive": false,
+      "ascendingIndex": 3
+    },
+    {
+      "sceneId": "game:inferno:L06",
+      "realm": "INFERNO",
+      "sourceOrder": 6,
+      "label": "Epistemic Rigidity",
+      "fromCq": 13.333333,
+      "toCq": 17.777778,
+      "rangeDisplayOnly": true,
+      "lowerInclusive": true,
+      "upperInclusive": false,
+      "ascendingIndex": 4
+    },
+    {
+      "sceneId": "game:inferno:L05",
+      "realm": "INFERNO",
+      "sourceOrder": 5,
+      "label": "Reactivity",
+      "fromCq": 17.777778,
+      "toCq": 22.222222,
+      "rangeDisplayOnly": true,
+      "lowerInclusive": true,
+      "upperInclusive": false,
+      "ascendingIndex": 5
+    },
+    {
+      "sceneId": "game:inferno:L04",
+      "realm": "INFERNO",
+      "sourceOrder": 4,
+      "label": "Resource Fixation",
+      "fromCq": 22.222222,
+      "toCq": 26.666667,
+      "rangeDisplayOnly": true,
+      "lowerInclusive": true,
+      "upperInclusive": false,
+      "ascendingIndex": 6
+    },
+    {
+      "sceneId": "game:inferno:L03",
+      "realm": "INFERNO",
+      "sourceOrder": 3,
+      "label": "Consumption",
+      "fromCq": 26.666667,
+      "toCq": 31.111111,
+      "rangeDisplayOnly": true,
+      "lowerInclusive": true,
+      "upperInclusive": false,
+      "ascendingIndex": 7
+    },
+    {
+      "sceneId": "game:inferno:L02",
+      "realm": "INFERNO",
+      "sourceOrder": 2,
+      "label": "Entitlement",
+      "fromCq": 31.111111,
+      "toCq": 35.555556,
+      "rangeDisplayOnly": true,
+      "lowerInclusive": true,
+      "upperInclusive": false,
+      "ascendingIndex": 8
+    },
+    {
+      "sceneId": "game:inferno:L01",
+      "realm": "INFERNO",
+      "sourceOrder": 1,
+      "label": "Nonengagement",
+      "fromCq": 35.555556,
+      "toCq": 40,
+      "rangeDisplayOnly": true,
+      "lowerInclusive": true,
+      "upperInclusive": false,
+      "ascendingIndex": 9
+    },
+    {
+      "sceneId": "game:purgatorio:P01",
+      "realm": "PURGATORIO",
+      "sourceOrder": 1,
+      "label": "Pride → Humility",
+      "fromCq": 40,
+      "toCq": 42.857143,
+      "rangeDisplayOnly": true,
+      "lowerInclusive": true,
+      "upperInclusive": false,
+      "ascendingIndex": 10
+    },
+    {
+      "sceneId": "game:purgatorio:P02",
+      "realm": "PURGATORIO",
+      "sourceOrder": 2,
+      "label": "Envy → Charity / Kindness",
+      "fromCq": 42.857143,
+      "toCq": 45.714286,
+      "rangeDisplayOnly": true,
+      "lowerInclusive": true,
+      "upperInclusive": false,
+      "ascendingIndex": 11
+    },
+    {
+      "sceneId": "game:purgatorio:P03",
+      "realm": "PURGATORIO",
+      "sourceOrder": 3,
+      "label": "Wrath → Meekness / Forbearance",
+      "fromCq": 45.714286,
+      "toCq": 48.571429,
+      "rangeDisplayOnly": true,
+      "lowerInclusive": true,
+      "upperInclusive": false,
+      "ascendingIndex": 12
+    },
+    {
+      "sceneId": "game:purgatorio:P04",
+      "realm": "PURGATORIO",
+      "sourceOrder": 4,
+      "label": "Sloth / Acedia → Zeal / Diligence",
+      "fromCq": 48.571429,
+      "toCq": 51.428571,
+      "rangeDisplayOnly": true,
+      "lowerInclusive": true,
+      "upperInclusive": false,
+      "ascendingIndex": 13
+    },
+    {
+      "sceneId": "game:purgatorio:P05",
+      "realm": "PURGATORIO",
+      "sourceOrder": 5,
+      "label": "Avarice / Prodigality → Generosity / Stewardship",
+      "fromCq": 51.428571,
+      "toCq": 54.285714,
+      "rangeDisplayOnly": true,
+      "lowerInclusive": true,
+      "upperInclusive": false,
+      "ascendingIndex": 14
+    },
+    {
+      "sceneId": "game:purgatorio:P06",
+      "realm": "PURGATORIO",
+      "sourceOrder": 6,
+      "label": "Gluttony → Temperance / Sufficiency",
+      "fromCq": 54.285714,
+      "toCq": 57.142857,
+      "rangeDisplayOnly": true,
+      "lowerInclusive": true,
+      "upperInclusive": false,
+      "ascendingIndex": 15
+    },
+    {
+      "sceneId": "game:purgatorio:P07",
+      "realm": "PURGATORIO",
+      "sourceOrder": 7,
+      "label": "Lust → Chastity / Respectful Intimacy",
+      "fromCq": 57.142857,
+      "toCq": 60,
+      "rangeDisplayOnly": true,
+      "lowerInclusive": true,
+      "upperInclusive": false,
+      "ascendingIndex": 16
+    },
+    {
+      "sceneId": "game:paradiso:PD01",
+      "realm": "PARADISO",
+      "sourceOrder": 1,
+      "label": "Chosen Commitment",
+      "fromCq": 60,
+      "toCq": 64,
+      "rangeDisplayOnly": true,
+      "lowerInclusive": true,
+      "upperInclusive": false,
+      "ascendingIndex": 17
+    },
+    {
+      "sceneId": "game:paradiso:PD02",
+      "realm": "PARADISO",
+      "sourceOrder": 2,
+      "label": "Humble Contribution",
+      "fromCq": 64,
+      "toCq": 68,
+      "rangeDisplayOnly": true,
+      "lowerInclusive": true,
+      "upperInclusive": false,
+      "ascendingIndex": 18
+    },
+    {
+      "sceneId": "game:paradiso:PD03",
+      "realm": "PARADISO",
+      "sourceOrder": 3,
+      "label": "Reciprocal Love",
+      "fromCq": 68,
+      "toCq": 72,
+      "rangeDisplayOnly": true,
+      "lowerInclusive": true,
+      "upperInclusive": false,
+      "ascendingIndex": 19
+    },
+    {
+      "sceneId": "game:paradiso:PD04",
+      "realm": "PARADISO",
+      "sourceOrder": 4,
+      "label": "Truthful Inquiry",
+      "fromCq": 72,
+      "toCq": 76,
+      "rangeDisplayOnly": true,
+      "lowerInclusive": true,
+      "upperInclusive": false,
+      "ascendingIndex": 20
+    },
+    {
+      "sceneId": "game:paradiso:PD05",
+      "realm": "PARADISO",
+      "sourceOrder": 5,
+      "label": "Principled Courage",
+      "fromCq": 76,
+      "toCq": 80,
+      "rangeDisplayOnly": true,
+      "lowerInclusive": true,
+      "upperInclusive": false,
+      "ascendingIndex": 21
+    },
+    {
+      "sceneId": "game:paradiso:PD06",
+      "realm": "PARADISO",
+      "sourceOrder": 6,
+      "label": "Just Leadership",
+      "fromCq": 80,
+      "toCq": 84,
+      "rangeDisplayOnly": true,
+      "lowerInclusive": true,
+      "upperInclusive": false,
+      "ascendingIndex": 22
+    },
+    {
+      "sceneId": "game:paradiso:PD07",
+      "realm": "PARADISO",
+      "sourceOrder": 7,
+      "label": "Quiet Presence",
+      "fromCq": 84,
+      "toCq": 88,
+      "rangeDisplayOnly": true,
+      "lowerInclusive": true,
+      "upperInclusive": false,
+      "ascendingIndex": 23
+    },
+    {
+      "sceneId": "game:paradiso:PD08",
+      "realm": "PARADISO",
+      "sourceOrder": 8,
+      "label": "Hopeful Connection",
+      "fromCq": 88,
+      "toCq": 92,
+      "rangeDisplayOnly": true,
+      "lowerInclusive": true,
+      "upperInclusive": false,
+      "ascendingIndex": 24
+    },
+    {
+      "sceneId": "game:paradiso:PD09",
+      "realm": "PARADISO",
+      "sourceOrder": 9,
+      "label": "Coherent Alignment",
+      "fromCq": 92,
+      "toCq": 96,
+      "rangeDisplayOnly": true,
+      "lowerInclusive": true,
+      "upperInclusive": false,
+      "ascendingIndex": 25
+    },
+    {
+      "sceneId": "game:paradiso:PD10",
+      "realm": "PARADISO",
+      "sourceOrder": 10,
+      "label": "Unity",
+      "fromCq": 96,
+      "toCq": 100,
+      "rangeDisplayOnly": true,
+      "lowerInclusive": true,
+      "upperInclusive": true,
+      "ascendingIndex": 26
+    }
+  ],
+  "smokeTests": [
+    {
+      "cq": 0,
+      "expectedSceneId": "game:inferno:L09"
+    },
+    {
+      "cq": 0.05,
+      "expectedSceneId": "game:inferno:L09"
+    },
+    {
+      "cq": 20,
+      "expectedSceneId": "game:inferno:L05"
+    },
+    {
+      "cq": 39.999,
+      "expectedSceneId": "game:inferno:L01"
+    },
+    {
+      "cq": 40,
+      "expectedSceneId": "game:purgatorio:P01"
+    },
+    {
+      "cq": 42.9,
+      "expectedSceneId": "game:purgatorio:P02"
+    },
+    {
+      "cq": 59.999,
+      "expectedSceneId": "game:purgatorio:P07"
+    },
+    {
+      "cq": 60,
+      "expectedSceneId": "game:paradiso:PD01"
+    },
+    {
+      "cq": 76,
+      "expectedSceneId": "game:paradiso:PD05"
+    },
+    {
+      "cq": 99.999,
+      "expectedSceneId": "game:paradiso:PD10"
+    },
+    {
+      "cq": 100,
+      "expectedSceneId": "game:paradiso:PD10"
+    }
+  ],
+  "provenance": {
+    "sourceMap": "docs/data/compass/gameboard/v1/GAMEBOARD_MAP_V1.json",
+    "sourceSha": "4c97cb39cba7d93a671e571c756fcb4c4fe74fc1",
+    "sourceBranch": "atunED/teachers-poles-ascent-alpha-2026-10-25"
+  }
+}
