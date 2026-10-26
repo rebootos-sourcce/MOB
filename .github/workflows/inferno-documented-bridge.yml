@@ -21,5 +21,7 @@ jobs:
         run: node docs/data/compass/integration/v1/validate_inferno_source_bridge_v1.cjs
       - name: Verify original research integrity and 14-pole source joins
         run: node docs/data/compass/integration/v1/validate_inferno_research_and_teacher_joins_v1.cjs
+      - name: Verify V2 21-field reconstruction against exact original Inferno source
+        run: node docs/data/inferno/v2/validate_inferno_reconstruction_v2.cjs
       - name: Check documented lookup endpoint
         run: node docs/data/compass/integration/v1/INFERNO_DOCUMENTED_GRAPH_READER_V1.cjs inferno:X02
