@@ -35,20 +35,20 @@ function d3Valid(errs,raw){
  if(raw==null)return null;
  if(!raw||typeof raw!=='object'||Array.isArray(raw)||raw.v!==D3_V
   ||!raw.answers||typeof raw.answers!=='object'||Array.isArray(raw.answers)){
-  errs.push('diagnostic3 must hold the V2 record and answer map');return null;}
+  errs.push('three-register record must hold the V2 answer map');return null;}
  var d=d3Blank();
  Object.keys(raw).forEach(function(k){if(['v','answers','startedAt','completedAt'].indexOf(k)<0)
-  errs.push('diagnostic3 may not carry '+k);});
+  errs.push('three-register record may not carry '+k);});
  Object.keys(raw.answers).forEach(function(id){
   var v=raw.answers[id];
-  if(!d3Question(id))errs.push('diagnostic3.answers may not carry '+id);
+  if(!d3Question(id))errs.push('three-register answer map may not carry '+id);
   else if(v!==null&&!(typeof v==='number'&&isFinite(v)&&v>=0&&v<=10))
-   errs.push('diagnostic3.answers.'+id+' is not 0 through 10 or null');
+   errs.push('three-register answer '+id+' is not 0 through 10 or null');
   else d.answers[id]=v;
  });
  ['startedAt','completedAt'].forEach(function(k){
   var v=raw[k];
-  if(v!=null){if(typeof v!=='string'||!isFinite(Date.parse(v)))errs.push('diagnostic3.'+k+' is not a date');
+  if(v!=null){if(typeof v!=='string'||!isFinite(Date.parse(v)))errs.push('three-register record '+k+' is not a date');
     else d[k]=v;}
  });
  if(d.completedAt&&d3Counts({diagnostic3:d}).answered!==63)errs.push('diagnostic3.completedAt requires 63 answered prompts');
