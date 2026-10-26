@@ -22,10 +22,11 @@ jobs:
           node-version: '22'
       - name: Generate knowledge graph from current engine and Deep Psyche registry
         run: node proto/knowledge/src/gen-data.js
-      - name: Existing knowledge template and link validation
-        run: node proto/knowledge/src/validate-templates.js
       - name: Deep Psyche 147-record runtime integration and nerve traversal
         run: node tests/deep-psyche-runtime.js
+      - name: Existing knowledge template and link validation (legacy source gaps remain fail-closed)
+        if: always()
+        run: node proto/knowledge/src/validate-templates.js
       - name: Strict Deep Psyche completion audit (records unresolved gaps without failing job)
         if: always()
         run: node proto/knowledge/src/audit-deep-psychological-closure.js > deep-psyche-audit.json
