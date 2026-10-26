@@ -12,6 +12,7 @@ const digest=crypto.createHash('sha256').update(source,'utf8').digest('hex');
 assert.equal(digest,'121f67f0e6625ef44e29bc7730143ddef70ba7e8b27322be832472960da54202',
   'Four-pass research document must be byte-for-byte identical to archived source');
 const index=json(base+'INFERNO_RESEARCH_RECORD_INDEX_V1.json');
+assert.equal(index.publishedOriginalResearchSha256,'121f67f0e6625ef44e29bc7730143ddef70ba7e8b27322be832472960da54202');
 const graph=json(base+'COMPASS_CROSS_LAYER_GRAPH_V1.json');
 const overlay=json(base+'INFERNO_RESEARCH_WIRING_OVERLAY_V1.json');
 const bridge=json(base+'INFERNO_CROSS_REGISTRY_SOURCE_BRIDGE_V1.json');
@@ -34,8 +35,8 @@ assert.equal(graph.nodes.length,135);assert.equal(graph.edges.length,300);
 assert.equal(bridge.referenceEdges.length,3);
 assert.deepEqual(new Set(index.records.map(x=>x.recordId)),ids);
 assert.deepEqual(new Set(overlay.recordBindings.map(x=>x.recordId)),ids);
-assert.ok(index.records.every(r=>r.fullResearchBodyPresentInGitHub===false),
-  'Index must preserve its historical pre-import snapshot (new source publication is independently verified)');
+assert.ok(index.records.every(r=>r.fullResearchBodyPresentInGitHub===true && r.publishedFullResearchPath),
+  'Index must confirm full noncanonical research-body publication');
 const joined=json(base+'TEACHER_POLE_SOURCE_AND_RECIPE_JOIN_V1.json');
 const teacher=json('docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json');
 const shadows=json('docs/data/compass/shadow_archetypes/v1/SHADOW_ARCHETYPES_REGISTRY_V1.json');
