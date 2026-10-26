@@ -1,5 +1,70 @@
 # ATÜNED MVP Alpha, Development Statistics Snapshot
 
+## Snapshot: 2026-10-26 (a confirmation round: percent conversion, both-poles bar, code freshness, and the real KPI number)
+
+He asked to confirm five things in one message: the coherence engine, nerve to
+saboteur, the records, the point-to-percent change, the both-poles bar reading
+clean, the engine and code being current, and where the KPI sits now. Checked
+each against the live build, not against memory of earlier rounds.
+
+## Headline
+| Measure | Current value | Basis |
+|---|---:|---|
+| P0 chain, the 20 links Review B scored (same day, earlier round) | 40%, 8 of 20 | Unchanged since that round. Nothing built today touched this scorecard; today's work was two urgent bug fixes and five small, independent backlog items, all outside this ledger. |
+| Both-poles bar (CQ/DQ, Positive/Negative, Masculine/Feminine) | reads clean, verified | Real screenshots, a loaded profile (Gordon), both widths, today. Paired, labelled, percent on both sides. |
+| Point numbers to percent, sitewide | not complete | Real, active, partly merged. See below. |
+| Code and build freshness | current | `git status` clean, HEAD matches the pushed branch tip, build stamp matches. |
+| Navigation | clean | `tests/functional.js`: "the navigation is in the document and cannot drift" and the tab-count check both pass, 0 failed, confirmed on this round's run. |
+
+## The percent conversion, checked directly, not assumed
+
+This is being built as its own tracked effort ("percent phase 2"), in slices,
+not by this session: slice 1 (the shared ring and Field headline), slice 2
+(Summary) and slice 3 (Analytics and the record) are merged to main. Slice 4
+(the six-gate drill panel and its hover tip) is open as PR 123, created 19
+October, last touched 22 October, and as of today it has a merge conflict
+against main. Nobody's move to make here but worth knowing it has gone quiet.
+
+What is still raw, checked live on the Character tab with a real profile
+loaded (not a blank one): the Leading Pattern card prints "Fear 10.0", and the
+Vitality line beside it prints "0.09", a bare fraction with no percent sign,
+while two lines below it Coherence and Decoherence already print "18%" and
+"54%" on the same panel. The 0.09 is the same figure the Field tab already
+shows correctly as "9%", so this is not a missing calculation, it is one
+screen's own number sitting un-wrapped in a renderer slice 4 did not reach.
+Site wide, 9 of 45 UI renderer files call the shared percent registry
+(`pct.js`/`fmtPct`) today; the other 36 were not audited one by one, this
+round only confirms the gap is real and names one concrete instance of it.
+
+## Everything else he asked to confirm
+
+- **The coherence engine, CQ to DQ, nerve to saboteur.** Still exactly where
+  Review B left it earlier today: the two ends hold (CQ and DQ arithmetic,
+  proven by running it), the middle does not (a story's body location is read
+  correctly by the sniffer and thrown away before the field uses it). The
+  fix for this, the most serious item on Review B's list, has not been
+  started. Nothing today changed this picture; today's five small fixes were
+  independent backlog items (a lexicon gap, a negation bug, stable record
+  IDs, a documentation gap, a research write-up), none of them this wiring.
+- **All the records.** Unchanged since the records-inventory audit: real and
+  substantial, with named gaps already tracked (the chain graph stops four
+  rungs short of canon's eight, saboteur addresses are hand-coded where a
+  canon.json lock says not to, both written up today in
+  `CANON-MERGE-PLAN.md`).
+- **The engine is the most recent, all the code is the most recent.**
+  Confirmed directly: working tree clean, HEAD is the branch's own pushed
+  tip, the build stamp inside `source.html` matches it. Nothing uncommitted,
+  nothing stale.
+
+## Audit rule, unchanged from 22 October and 25 October
+
+Do not upgrade a percentage because a document was written or a commit
+exists. The entries above are upgraded only where the entry itself names what
+was actually run and what it actually proved. Update this file after every
+subsequent build or pass, and keep the entries below for delta calculation.
+
+---
+
 ## Snapshot: 2026-10-25 (real runtime verification closes most of P5's gap; one owner decision blocks P3)
 Scope: the same contract, after three independent runtime audits actually ran the
 engine (simulation, forward and backward), the full records inventory, and the
