@@ -7,7 +7,10 @@ on:
     paths:
       - 'docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json'
       - 'proto/knowledge/src/**'
+      - 'atuned_src/**'
+      - 'tools/build-deep-psyche-app.js'
       - 'tests/deep-psyche-runtime.js'
+      - 'tests/deep-psyche-app.js'
       - '.github/workflows/deep-psyche-runtime.yml'
 permissions:
   contents: write
@@ -22,12 +25,14 @@ jobs:
           node-version: '22'
       - name: Generate knowledge graph from current engine and Deep Psyche registry
         run: node proto/knowledge/src/gen-data.js
-      - name: Deep Psyche 147-record runtime integration and nerve traversal
+      - name: Deep Psyche 149-record runtime integration and nerve traversal
         run: node tests/deep-psyche-runtime.js
-      - name: Legacy source/template validator (report unresolved defects separately)
-        if: always()
-        continue-on-error: true
+      - name: Engine and psychological template validator
         run: node proto/knowledge/src/validate-templates.js
+      - name: Compile shipped app and preserve established build gates
+        run: sh atuned_src/BUILD.sh
+      - name: Validate shipped app registry, navigation and bundle
+        run: node tests/deep-psyche-app.js
       - name: Strict Deep Psyche completion audit (records unresolved gaps without failing job)
         if: always()
         run: node proto/knowledge/src/audit-deep-psychological-closure.js > deep-psyche-audit.json
