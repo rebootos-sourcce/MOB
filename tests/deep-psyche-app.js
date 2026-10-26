@@ -43,6 +43,19 @@ const uiIndex=modules.indexOf('ui/knowledge.js');
 assert(dataIndex>=0 && uiIndex>dataIndex,'App data not loaded before Knowledge interface');
 for(const marker of ["['psyche','Deep Psyche']","if(sec==='psyche'","if(x.k==='psyche')","DEEP_PSYCHE.records"])assert(ui.includes(marker),'Knowledge UI missing '+marker);
 assert(!ui.includes('const DEEP_PSYCHE='),'App UI contains independent copied registry');
+assert(ui.includes('function kbPsycheDrill(d)')&&ui.includes('data-dp-link'),
+ 'Deep Psyche drill must support record-to-record click-through');
+const drillSource=ui.match(/function kbPsycheDrill\\(d\\)\\{[\\s\\S]*?\\n\\}/);
+assert(drillSource,'Source-qualified graph drill function missing');
+let rendered='';
+const escapeHtml=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+const drillContext={DEEP_PSYCHE:db,esc:escapeHtml,rdShell:html=>{rendered=html;}};
+vm.runInNewContext(drillSource[0],drillContext,{timeout:5000});
+drillContext.kbPsycheDrill(by.get('blueprint:personal-model'));
+assert(rendered.includes('data-dp-link')&&rendered.includes('Connected records'),
+ 'Blueprint does not render traversable linked records');
+assert(rendered.includes('SOURCE_LEVEL_STRUCTURE')||rendered.includes('source_'),
+ 'Relationship source/evidence status is not presented to users');
 const sourceHtml=path.join(ROOT,'source.html');
 if(process.env.CI)assert(fs.existsSync(sourceHtml),'CI acceptance requires a built source.html');
 if(fs.existsSync(sourceHtml)){
