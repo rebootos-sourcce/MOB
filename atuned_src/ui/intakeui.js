@@ -1370,7 +1370,7 @@ function renderIntake(){
  var h='<div class="iqa">'+iqHeroHtml(p,sc,r,scored,answered,Q.length)
   /* show only on a worked example, ruled 16 October: the line under the
      header, and the answers drawn disabled below */
-  +(showOnly()?showNote('intake','iqa-show'):'')+iqMoreHtml(p)
+  +(showOnly()?showNote('intake','iqa-show'):'')+d3Panel(p)+iqMoreHtml(p)
   +'<div class="iqa-mid" data-who="'+(IQ_WHO?1:0)+'">'+iqWhoHtml(p)+iqAccuracy()+'</div>';
  /* THE LAW IN HAND IS PINNED ON ARRIVAL. Left unpinned it was worked out
     fresh on every draw as the first law still missing an answer, so the third
@@ -1383,6 +1383,7 @@ function renderIntake(){
  h+='</div>';
  iqArtCss(); iqDoors();
  host.innerHTML=h;
+ d3Bind(host);
  /* A WORKED EXAMPLE'S ANSWERS ARE ITS READING, AND THEY ARE NOT PRESSED.
     Ruled 16 October (engine/showonly.js). Every control on this page that
     writes an answer, a name, a birth moment, the seal, the stated type, a save

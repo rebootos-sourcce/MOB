@@ -19,6 +19,7 @@ engine/data/cards.js
 engine/data/intakemore.js
 engine/data/gloss.js
 engine/data/onboarding.js
+engine/data/diagnostic3.js
 engine/data/crisis.js
 engine/data/registers.js
 engine/data/codes.js
@@ -42,6 +43,7 @@ engine/loop.js
 engine/pracex.js
 engine/exdepth.js
 engine/intake.js
+engine/diagnostic3.js
 engine/intakemore.js
 engine/sniff.js
 engine/sourceai.js
@@ -81,6 +83,7 @@ ui/analytics.js
 ui/avatarui.js
 ui/hero_journey.js
 ui/intakeui.js
+ui/diagnostic3.js
 ui/release.js
 ui/ritual.js
 ui/accountability.js

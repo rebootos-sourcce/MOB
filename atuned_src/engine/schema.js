@@ -117,7 +117,7 @@ function blankProfile(name){
      stored, because a derived value that is also stored is one that can
      drift. */
   avatar:avatarBlank(), purpose:purposeBlank(),
-  laws:{}, intake:{answers:{}, done:[], startedAt:null, completedAt:null,
+  laws:{}, diagnostic3:null, intake:{answers:{}, done:[], startedAt:null, completedAt:null,
    /* the three blocks stacked under the 63, engine/intakemore.js. Evidence and
       read by no sum. Additive: an older record has none and is filled from this
       blank, with no SCHEMA_V bump. */
@@ -1142,6 +1142,7 @@ function validateProfile(o){
   if(o.gates.lean&&typeof o.gates.lean==='object')['benign','malignant'].forEach(function(k){
    var v=vRange(errs,'gates.lean.'+k,o.gates.lean[k],0,1e6); if(v!==null)p.gates.lean[k]=v;});}
  /* the 63 answers */
+ if(o.diagnostic3!==undefined)p.diagnostic3=d3Valid(errs,o.diagnostic3);
  if(o.intake&&typeof o.intake==='object'){
   if(o.intake.answers&&typeof o.intake.answers==='object')Object.keys(o.intake.answers).forEach(function(k){
    var i=+k; if(!NUM(i)||i<0||i>62||i%1!==0){errs.push('intake answer key '+k+' is not 0 to 62');return;}
