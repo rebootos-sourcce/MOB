@@ -3916,6 +3916,12 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .st-flow[data-focus="read"] .st-colr{flex:1.55 1 0}
 .st-flow[data-focus="release"] .st-colw{flex:1 1 0}
 .st-flow[data-focus="release"] .st-colx{flex:0 0 430px}
+/* SIMPLE, THEN THE DASHBOARD ONE PRESS AWAY, his words, 26 October. The
+   journal alone, full width, until the dashboard button expands the other
+   two back in. The columns are not re-rendered, only resized and hidden,
+   so nothing in them loses state by pressing this. */
+.st-flow.simple .st-colr,.st-flow.simple .st-colx{display:none}
+.st-flow.simple .st-colw{flex:1 1 100%}
 .st-pan{display:flex;flex-direction:column;min-width:0;min-height:0;position:relative;
  background:color-mix(in srgb,var(--ink) 3%,transparent);border:1px solid var(--edge);
  border-radius:var(--r-s);padding:14px 16px}

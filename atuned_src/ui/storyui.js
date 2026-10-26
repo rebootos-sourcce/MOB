@@ -75,7 +75,7 @@ function stRender(){
     whole story and then refused it at Commit, which is a control that looks
     like it works until the moment it does not. */
  var show=showOnly();
- var out='<div class="st-flow" id="stflow" data-focus="'+STV.focus+'">'
+ var out='<div class="st-flow'+(STV.simple?' simple':'')+'" id="stflow" data-focus="'+STV.focus+'">'
   /* ---- the write column: the journal, with Source AI inside it ---- */
   +'<div class="st-colw">'
   +'<div class="st-pan st-jr'+(STV.chat?' st-chat':'')+'" id="stjr">'
@@ -137,7 +137,22 @@ function stRender(){
       that shows it runs. */
    +(ST_LISTEN?'<span class="st-mictime" id="stmictime" aria-hidden="true">'
      +stMicFmt(stMicElapsed())+'</span>':'')
-   +'</button>')+'</div>'
+   +'</button>')
+   /* THE DASHBOARD BUTTON. His words: "this needs to be the simple journal
+      plus the dashboard button that expands including the imprints and the
+      release." One press, one toggle: simple shows the Journal alone,
+      pressed shows the three columns this page always had. Wears the same
+      pill as Talk and Record so the row reads as one family of controls. */
+   +(show?'':'<button class="st-mic st-dash" id="stdash" type="button" '
+   +'aria-pressed="'+!STV.simple+'" aria-label="'+(STV.simple?'Dashboard':'Simple')+'" '
+   +'title="'+(STV.simple?'Show imprints and release alongside the journal.'
+     :'Back to the journal alone.')+'">'
+   +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
+   +'<rect x="3" y="3" width="7" height="18" rx="1.5"/>'
+   +'<rect x="13" y="3" width="8" height="8" rx="1.5"/>'
+   +'<rect x="13" y="14" width="8" height="7" rx="1.5"/></svg>'
+   +'<span>'+(STV.simple?'Dashboard':'Simple')+'</span></button>')
+   +'</div>'
   /* SOURCE AI AND THE JOURNAL'S MENU CHANGED PLACES, round LO, his words: "I
      want you to swap the main journal menu with the source AI question." The
      column read Source AI, then the journal's own top line with Record on it,
@@ -350,6 +365,8 @@ function stRender(){
   if(opening!==!!ST_LISTEN)stMic();
   STV.chat=opening; stRender();
   var f=document.getElementById(STV.chat?'stcin':'sttext'); if(f)f.focus();};
+ var db=document.getElementById('stdash');
+ if(db)db.onclick=function(){STV.simple=!STV.simple; stRender();};
  srcChatWire();}
 
 /* ============================================================
@@ -364,8 +381,14 @@ function stRender(){
    of stCommit's own reflow (STV.committedAt, below) is refused as the same
    press landing twice, never as a second one arriving late. */
 var ST_DBLTAP_MS=100;
+/* SIMPLE, THEN THE DASHBOARD ONE PRESS AWAY. His words: "this needs to be the
+   simple journal plus the dashboard button that expands including the
+   imprints and the release... it already starts off in easy mode." Simple is
+   the Journal alone, full width; the dashboard is the three columns this page
+   already had (stCssFlow below). One flag, default on, so a first landing is
+   simple before anyone presses anything. */
 var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:false,law:false,
- unsaved:null,draftT:null,draftFail:false,crisis:false};
+ unsaved:null,draftT:null,draftFail:false,crisis:false,simple:true};
 /* the one width the page changes shape at is the one the product stacks its
    columns at, so the Story cannot be in three columns while the rails are
    already one. */
