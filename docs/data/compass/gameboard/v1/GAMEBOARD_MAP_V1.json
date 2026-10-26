@@ -1,0 +1,2052 @@
+{
+  "version": "1.0.0",
+  "date": "2026-10-25",
+  "title": "ATUNED — The Hero's Journey Gameboard",
+  "status": "DESIGN_GRAPH_WITH_SOURCE_LINKS_NOT_RUNTIME",
+  "creativePremise": {
+    "hero": "THE_USER",
+    "avatar": "VISIBLE_REFLECTION_OF_CHOSEN_ACTIONS",
+    "guide": "SOURCE_AI_VIRGIL_ROLE",
+    "inferno": "RECOGNIZE_AND_RELEASE",
+    "purgatorio": "OSCILLATE_RELEASE_REFRAME",
+    "paradiso": "BECOME_AND_EMBODY",
+    "theme": "A game map of inner behaviors, not a ranking of human worth"
+  },
+  "scope": {
+    "levelCount": 26,
+    "realms": {
+      "INFERNO": 9,
+      "PURGATORIO": 7,
+      "PARADISO": 10
+    },
+    "sourceArchetypes": 12,
+    "shadowPoles": 14
+  },
+  "sources": {
+    "pur": {
+      "path": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+      "sha": "1d60c13449687e32a533ebb94a0aed2683dc7a90"
+    },
+    "para": {
+      "path": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+      "sha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041"
+    },
+    "arc": {
+      "path": "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+      "sha": "3cc04779229fb0ebb041f8b4609e739ab73d9c50"
+    },
+    "sh": {
+      "path": "docs/data/compass/shadow_archetypes/v1/PUBLIC_CHARACTERISTICS_ONLY_V1.json",
+      "sha": "211e46563840217e56dcc12b3153008039f2541c"
+    },
+    "inferno": {
+      "path": "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json",
+      "status": "ARCHIVED_NOT_GITHUB",
+      "sourceCount": 38
+    }
+  },
+  "guideContract": {
+    "identity": "Source AI as Virgil, a narrative guide, not a moral authority or clinical assessor",
+    "autonomy": [
+      "Ask permission before exploring",
+      "One useful prompt at a time",
+      "Accept a refusal or topic change immediately",
+      "No automatic assignment to a level from CQ, DQ, story text, or behaviors",
+      "Respect privacy and safety; avoid diagnosing or identifying users as archetypes"
+    ],
+    "promptModes": {
+      "INFERNO": "What happened, what did you do, and what would you like to loosen?",
+      "PURGATORIO": "What pulls you between the two behaviors, and what alternative would you practice?",
+      "PARADISO": "What action would embody the quality today, and how will you recognize it?"
+    },
+    "transition": "Virgil-inspired role in descent; voice becomes more collaborative on ascent. Do not invent an owner-approved Beatrice persona or make metaphysical claims about Source AI."
+  },
+  "progressionPolicy": {
+    "pathIsNonlinear": true,
+    "mapOrder": "NARRATIVE_ONLY",
+    "manualLevelSelection": true,
+    "autoClassification": false,
+    "CQAndDQAuthoritativeOnlyInExistingEngine": true,
+    "awardsForObservedPracticeNotForScores": true,
+    "unlockMeansIntroductionNotCapabilityGate": true,
+    "preserveMembershipAccess": true,
+    "releaseCanRecur": true,
+    "recoveryOrDisengagementNeverPunished": true,
+    "notes": "40–60 Purgatorio compass waist is a visualization, not a CQ-based terrace classifier"
+  },
+  "avatarContract": {
+    "currentStateOwner": "atuned_src/engine/avatar.js",
+    "nextPhase": true,
+    "plannedReads": [
+      "existing dated first address releases",
+      "existing ritual completions",
+      "user-owned purpose and boundary declarations",
+      "user-confirmed acted-on behavior evidence"
+    ],
+    "eventNamesAreDesignProposals": [
+      "journey.scene.visited",
+      "journey.challenge.chosen",
+      "journey.knowledge.opened",
+      "journey.practice.attempted",
+      "journey.behavior.observed",
+      "journey.behavior.applied"
+    ],
+    "notSignals": [
+      "score rank",
+      "moral level",
+      "completion of a human being",
+      "diagnosis from AI",
+      "automatic positive CQ change"
+    ],
+    "projection": "Trace documented acts and increasing user choice as visual additions; the user's current inner state remains a separate, mutable gauge."
+  },
+  "nodes": [
+    {
+      "id": "game:inferno:L01",
+      "realm": "INFERNO",
+      "order": 1,
+      "label": "Nonengagement",
+      "sourceRecordId": "inferno:L01",
+      "sourceLocation": "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json",
+      "sourceStatus": "INFERNO_ARCHIVED_RESEARCH_CANDIDATE",
+      "challenge": "Repeatedly dismisses relevant evidence or withdraws from inquiry without evaluation.",
+      "knowledge": "Inferno IV / Limbo. Literary condition is not moralized behavior; candidate is ATUNED interpretive hypothesis.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Ask what evidence was considered, what was safely available, and whether the person wants to test an alternative. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "relatedCrosswalks": [],
+      "archetypeResonances": [],
+      "kind": "GAMEBOARD_LEVEL",
+      "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+      "public": {
+        "id": "game:inferno:L01",
+        "label": "Nonengagement",
+        "realm": "INFERNO",
+        "challenge": "Repeatedly dismisses relevant evidence or withdraws from inquiry without evaluation.",
+        "knowledge": "Inferno IV / Limbo. Literary condition is not moralized behavior; candidate is ATUNED interpretive hypothesis.",
+        "releaseCandidate": "Source AI invites an opt-in reflection: Ask what evidence was considered, what was safely available, and whether the person wants to test an alternative. Existing release practices require separate authorized IDs.",
+        "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+        "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+        "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+        "editableByUser": true
+      },
+      "releaseProtocolId": null,
+      "becomingRitualId": null,
+      "unlock": {
+        "type": "INTRODUCTION_ON_ENCOUNTER",
+        "neverGatesMeasurements": true,
+        "paidTierEntitlementUnchanged": true
+      },
+      "progression": {
+        "status": "USER_CHOSEN_NOT_INFERRED",
+        "canRevisit": true,
+        "canSkip": true,
+        "noMoralityRank": true
+      },
+      "avatarEffect": {
+        "mode": "EVENT_TRACE_ONLY",
+        "appliesAfter": "logged_behavior_or_practice",
+        "noAutomaticCoherenceIncrease": true
+      },
+      "recordStatus": "MAP_DATA_CONTRACT_NOT_RUNTIME"
+    },
+    {
+      "id": "game:inferno:L02",
+      "realm": "INFERNO",
+      "order": 2,
+      "label": "Entitlement",
+      "sourceRecordId": "inferno:L02",
+      "sourceLocation": "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json",
+      "sourceStatus": "INFERNO_ARCHIVED_RESEARCH_CANDIDATE",
+      "challenge": "Disregards another person's agency in pursuit of being desired or rewarded.",
+      "knowledge": "Inferno V / Lust; distinguish desire from disregarding informed consent.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Name what you wanted, where consent or boundaries mattered, and what a freely chosen alternative would respect. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "relatedCrosswalks": [
+        {
+          "levelId": "game:purgatorio:P07",
+          "relationship": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        }
+      ],
+      "archetypeResonances": [],
+      "kind": "GAMEBOARD_LEVEL",
+      "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+      "public": {
+        "id": "game:inferno:L02",
+        "label": "Entitlement",
+        "realm": "INFERNO",
+        "challenge": "Disregards another person's agency in pursuit of being desired or rewarded.",
+        "knowledge": "Inferno V / Lust; distinguish desire from disregarding informed consent.",
+        "releaseCandidate": "Source AI invites an opt-in reflection: Name what you wanted, where consent or boundaries mattered, and what a freely chosen alternative would respect. Existing release practices require separate authorized IDs.",
+        "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+        "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+        "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+        "editableByUser": true
+      },
+      "releaseProtocolId": null,
+      "becomingRitualId": null,
+      "unlock": {
+        "type": "INTRODUCTION_ON_ENCOUNTER",
+        "neverGatesMeasurements": true,
+        "paidTierEntitlementUnchanged": true
+      },
+      "progression": {
+        "status": "USER_CHOSEN_NOT_INFERRED",
+        "canRevisit": true,
+        "canSkip": true,
+        "noMoralityRank": true
+      },
+      "avatarEffect": {
+        "mode": "EVENT_TRACE_ONLY",
+        "appliesAfter": "logged_behavior_or_practice",
+        "noAutomaticCoherenceIncrease": true
+      },
+      "recordStatus": "MAP_DATA_CONTRACT_NOT_RUNTIME"
+    },
+    {
+      "id": "game:inferno:L03",
+      "realm": "INFERNO",
+      "order": 3,
+      "label": "Consumption",
+      "sourceRecordId": "inferno:L03",
+      "sourceLocation": "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json",
+      "sourceStatus": "INFERNO_ARCHIVED_RESEARCH_CANDIDATE",
+      "challenge": "Returns repeatedly to more consumption despite meaningful known cost.",
+      "knowledge": "Inferno VI / Gluttony; do not pathologize food, hunger or pleasure.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Notice the repeating reach, the actual need, and a voluntary safer alternative. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "relatedCrosswalks": [
+        {
+          "levelId": "game:purgatorio:P06",
+          "relationship": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        }
+      ],
+      "archetypeResonances": [],
+      "kind": "GAMEBOARD_LEVEL",
+      "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+      "public": {
+        "id": "game:inferno:L03",
+        "label": "Consumption",
+        "realm": "INFERNO",
+        "challenge": "Returns repeatedly to more consumption despite meaningful known cost.",
+        "knowledge": "Inferno VI / Gluttony; do not pathologize food, hunger or pleasure.",
+        "releaseCandidate": "Source AI invites an opt-in reflection: Notice the repeating reach, the actual need, and a voluntary safer alternative. Existing release practices require separate authorized IDs.",
+        "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+        "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+        "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+        "editableByUser": true
+      },
+      "releaseProtocolId": null,
+      "becomingRitualId": null,
+      "unlock": {
+        "type": "INTRODUCTION_ON_ENCOUNTER",
+        "neverGatesMeasurements": true,
+        "paidTierEntitlementUnchanged": true
+      },
+      "progression": {
+        "status": "USER_CHOSEN_NOT_INFERRED",
+        "canRevisit": true,
+        "canSkip": true,
+        "noMoralityRank": true
+      },
+      "avatarEffect": {
+        "mode": "EVENT_TRACE_ONLY",
+        "appliesAfter": "logged_behavior_or_practice",
+        "noAutomaticCoherenceIncrease": true
+      },
+      "recordStatus": "MAP_DATA_CONTRACT_NOT_RUNTIME"
+    },
+    {
+      "id": "game:inferno:L04",
+      "realm": "INFERNO",
+      "order": 4,
+      "label": "Resource Fixation",
+      "sourceRecordId": "inferno:L04",
+      "sourceLocation": "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json",
+      "sourceStatus": "INFERNO_ARCHIVED_RESEARCH_CANDIDATE",
+      "challenge": "Repeatedly hoards or recklessly spends resources despite meaningful obligations.",
+      "knowledge": "Inferno VII / Avarice and prodigality; distinguishes overguarding from reckless waste.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Track one concrete decision and ask whom it served and what actual need or obligation it missed. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "relatedCrosswalks": [
+        {
+          "levelId": "game:purgatorio:P05",
+          "relationship": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        }
+      ],
+      "archetypeResonances": [],
+      "kind": "GAMEBOARD_LEVEL",
+      "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+      "public": {
+        "id": "game:inferno:L04",
+        "label": "Resource Fixation",
+        "realm": "INFERNO",
+        "challenge": "Repeatedly hoards or recklessly spends resources despite meaningful obligations.",
+        "knowledge": "Inferno VII / Avarice and prodigality; distinguishes overguarding from reckless waste.",
+        "releaseCandidate": "Source AI invites an opt-in reflection: Track one concrete decision and ask whom it served and what actual need or obligation it missed. Existing release practices require separate authorized IDs.",
+        "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+        "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+        "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+        "editableByUser": true
+      },
+      "releaseProtocolId": null,
+      "becomingRitualId": null,
+      "unlock": {
+        "type": "INTRODUCTION_ON_ENCOUNTER",
+        "neverGatesMeasurements": true,
+        "paidTierEntitlementUnchanged": true
+      },
+      "progression": {
+        "status": "USER_CHOSEN_NOT_INFERRED",
+        "canRevisit": true,
+        "canSkip": true,
+        "noMoralityRank": true
+      },
+      "avatarEffect": {
+        "mode": "EVENT_TRACE_ONLY",
+        "appliesAfter": "logged_behavior_or_practice",
+        "noAutomaticCoherenceIncrease": true
+      },
+      "recordStatus": "MAP_DATA_CONTRACT_NOT_RUNTIME"
+    },
+    {
+      "id": "game:inferno:L05",
+      "realm": "INFERNO",
+      "order": 5,
+      "label": "Reactivity",
+      "sourceRecordId": "inferno:L05",
+      "sourceLocation": "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json",
+      "sourceStatus": "INFERNO_ARCHIVED_RESEARCH_CANDIDATE",
+      "challenge": "Escalates or covertly withdraws through anger with harmful consequences.",
+      "knowledge": "Inferno VII–VIII / Wrath and sullenness; legitimate anger does not by itself show vice.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Observe the sequence between trigger, bodily response, reaction and consequence; choose a bounded response. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "relatedCrosswalks": [
+        {
+          "levelId": "game:purgatorio:P03",
+          "relationship": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        },
+        {
+          "levelId": "game:purgatorio:P04",
+          "relationship": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        }
+      ],
+      "archetypeResonances": [],
+      "kind": "GAMEBOARD_LEVEL",
+      "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+      "public": {
+        "id": "game:inferno:L05",
+        "label": "Reactivity",
+        "realm": "INFERNO",
+        "challenge": "Escalates or covertly withdraws through anger with harmful consequences.",
+        "knowledge": "Inferno VII–VIII / Wrath and sullenness; legitimate anger does not by itself show vice.",
+        "releaseCandidate": "Source AI invites an opt-in reflection: Observe the sequence between trigger, bodily response, reaction and consequence; choose a bounded response. Existing release practices require separate authorized IDs.",
+        "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+        "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+        "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+        "editableByUser": true
+      },
+      "releaseProtocolId": null,
+      "becomingRitualId": null,
+      "unlock": {
+        "type": "INTRODUCTION_ON_ENCOUNTER",
+        "neverGatesMeasurements": true,
+        "paidTierEntitlementUnchanged": true
+      },
+      "progression": {
+        "status": "USER_CHOSEN_NOT_INFERRED",
+        "canRevisit": true,
+        "canSkip": true,
+        "noMoralityRank": true
+      },
+      "avatarEffect": {
+        "mode": "EVENT_TRACE_ONLY",
+        "appliesAfter": "logged_behavior_or_practice",
+        "noAutomaticCoherenceIncrease": true
+      },
+      "recordStatus": "MAP_DATA_CONTRACT_NOT_RUNTIME"
+    },
+    {
+      "id": "game:inferno:L06",
+      "realm": "INFERNO",
+      "order": 6,
+      "label": "Epistemic Rigidity",
+      "sourceRecordId": "inferno:L06",
+      "sourceLocation": "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json",
+      "sourceStatus": "INFERNO_ARCHIVED_RESEARCH_CANDIDATE",
+      "challenge": "Refuses standards of evidence while punishing disagreement or shutting out correction.",
+      "knowledge": "Inferno IX–XI / Heresy; purely interpretive metaphor, never faith/nonbelief as a diagnostic category.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Name a belief and a real counterexample; ask what evidence could fairly revise your position. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "relatedCrosswalks": [],
+      "archetypeResonances": [],
+      "kind": "GAMEBOARD_LEVEL",
+      "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+      "public": {
+        "id": "game:inferno:L06",
+        "label": "Epistemic Rigidity",
+        "realm": "INFERNO",
+        "challenge": "Refuses standards of evidence while punishing disagreement or shutting out correction.",
+        "knowledge": "Inferno IX–XI / Heresy; purely interpretive metaphor, never faith/nonbelief as a diagnostic category.",
+        "releaseCandidate": "Source AI invites an opt-in reflection: Name a belief and a real counterexample; ask what evidence could fairly revise your position. Existing release practices require separate authorized IDs.",
+        "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+        "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+        "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+        "editableByUser": true
+      },
+      "releaseProtocolId": null,
+      "becomingRitualId": null,
+      "unlock": {
+        "type": "INTRODUCTION_ON_ENCOUNTER",
+        "neverGatesMeasurements": true,
+        "paidTierEntitlementUnchanged": true
+      },
+      "progression": {
+        "status": "USER_CHOSEN_NOT_INFERRED",
+        "canRevisit": true,
+        "canSkip": true,
+        "noMoralityRank": true
+      },
+      "avatarEffect": {
+        "mode": "EVENT_TRACE_ONLY",
+        "appliesAfter": "logged_behavior_or_practice",
+        "noAutomaticCoherenceIncrease": true
+      },
+      "recordStatus": "MAP_DATA_CONTRACT_NOT_RUNTIME"
+    },
+    {
+      "id": "game:inferno:L07",
+      "realm": "INFERNO",
+      "order": 7,
+      "label": "Harmful Force",
+      "sourceRecordId": "inferno:L07",
+      "sourceLocation": "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json",
+      "sourceStatus": "INFERNO_ARCHIVED_RESEARCH_CANDIDATE",
+      "challenge": "Uses threat, destruction, coercion or injury beyond proportional protection.",
+      "knowledge": "Inferno XII–XVII / Violence; no invitation to revisit unsafe encounters.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Describe the concrete harmful action and immediate safety considerations; choose non-harming boundaries. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "relatedCrosswalks": [],
+      "archetypeResonances": [],
+      "kind": "GAMEBOARD_LEVEL",
+      "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+      "public": {
+        "id": "game:inferno:L07",
+        "label": "Harmful Force",
+        "realm": "INFERNO",
+        "challenge": "Uses threat, destruction, coercion or injury beyond proportional protection.",
+        "knowledge": "Inferno XII–XVII / Violence; no invitation to revisit unsafe encounters.",
+        "releaseCandidate": "Source AI invites an opt-in reflection: Describe the concrete harmful action and immediate safety considerations; choose non-harming boundaries. Existing release practices require separate authorized IDs.",
+        "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+        "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+        "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+        "editableByUser": true
+      },
+      "releaseProtocolId": null,
+      "becomingRitualId": null,
+      "unlock": {
+        "type": "INTRODUCTION_ON_ENCOUNTER",
+        "neverGatesMeasurements": true,
+        "paidTierEntitlementUnchanged": true
+      },
+      "progression": {
+        "status": "USER_CHOSEN_NOT_INFERRED",
+        "canRevisit": true,
+        "canSkip": true,
+        "noMoralityRank": true
+      },
+      "avatarEffect": {
+        "mode": "EVENT_TRACE_ONLY",
+        "appliesAfter": "logged_behavior_or_practice",
+        "noAutomaticCoherenceIncrease": true
+      },
+      "recordStatus": "MAP_DATA_CONTRACT_NOT_RUNTIME"
+    },
+    {
+      "id": "game:inferno:L08",
+      "realm": "INFERNO",
+      "order": 8,
+      "label": "Fraud",
+      "sourceRecordId": "inferno:L08",
+      "sourceLocation": "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json",
+      "sourceStatus": "INFERNO_ARCHIVED_RESEARCH_CANDIDATE",
+      "challenge": "Knowingly presents a deceptive claim that affects another person's choices.",
+      "knowledge": "Inferno XVIII–XXX / Fraud / Malebolge; deliberate deception is essential.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Name the representation, hidden relevant fact, reliance and harm; choose truthful repair only if safe. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "relatedCrosswalks": [
+        {
+          "levelId": "game:purgatorio:P02",
+          "relationship": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        }
+      ],
+      "archetypeResonances": [],
+      "kind": "GAMEBOARD_LEVEL",
+      "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+      "public": {
+        "id": "game:inferno:L08",
+        "label": "Fraud",
+        "realm": "INFERNO",
+        "challenge": "Knowingly presents a deceptive claim that affects another person's choices.",
+        "knowledge": "Inferno XVIII–XXX / Fraud / Malebolge; deliberate deception is essential.",
+        "releaseCandidate": "Source AI invites an opt-in reflection: Name the representation, hidden relevant fact, reliance and harm; choose truthful repair only if safe. Existing release practices require separate authorized IDs.",
+        "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+        "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+        "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+        "editableByUser": true
+      },
+      "releaseProtocolId": null,
+      "becomingRitualId": null,
+      "unlock": {
+        "type": "INTRODUCTION_ON_ENCOUNTER",
+        "neverGatesMeasurements": true,
+        "paidTierEntitlementUnchanged": true
+      },
+      "progression": {
+        "status": "USER_CHOSEN_NOT_INFERRED",
+        "canRevisit": true,
+        "canSkip": true,
+        "noMoralityRank": true
+      },
+      "avatarEffect": {
+        "mode": "EVENT_TRACE_ONLY",
+        "appliesAfter": "logged_behavior_or_practice",
+        "noAutomaticCoherenceIncrease": true
+      },
+      "recordStatus": "MAP_DATA_CONTRACT_NOT_RUNTIME"
+    },
+    {
+      "id": "game:inferno:L09",
+      "realm": "INFERNO",
+      "order": 9,
+      "label": "Treachery",
+      "sourceRecordId": "inferno:L09",
+      "sourceLocation": "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json",
+      "sourceStatus": "INFERNO_ARCHIVED_RESEARCH_CANDIDATE",
+      "challenge": "Violates a trusted relationship or duty intentionally.",
+      "knowledge": "Inferno XXXII–XXXIV / Treachery; stasis is narrative result, not behavior.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Identify the duty of trust and action that broke it, then choose accountability without self-abuse. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "relatedCrosswalks": [],
+      "archetypeResonances": [],
+      "kind": "GAMEBOARD_LEVEL",
+      "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+      "public": {
+        "id": "game:inferno:L09",
+        "label": "Treachery",
+        "realm": "INFERNO",
+        "challenge": "Violates a trusted relationship or duty intentionally.",
+        "knowledge": "Inferno XXXII–XXXIV / Treachery; stasis is narrative result, not behavior.",
+        "releaseCandidate": "Source AI invites an opt-in reflection: Identify the duty of trust and action that broke it, then choose accountability without self-abuse. Existing release practices require separate authorized IDs.",
+        "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+        "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+        "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+        "editableByUser": true
+      },
+      "releaseProtocolId": null,
+      "becomingRitualId": null,
+      "unlock": {
+        "type": "INTRODUCTION_ON_ENCOUNTER",
+        "neverGatesMeasurements": true,
+        "paidTierEntitlementUnchanged": true
+      },
+      "progression": {
+        "status": "USER_CHOSEN_NOT_INFERRED",
+        "canRevisit": true,
+        "canSkip": true,
+        "noMoralityRank": true
+      },
+      "avatarEffect": {
+        "mode": "EVENT_TRACE_ONLY",
+        "appliesAfter": "logged_behavior_or_practice",
+        "noAutomaticCoherenceIncrease": true
+      },
+      "recordStatus": "MAP_DATA_CONTRACT_NOT_RUNTIME"
+    },
+    {
+      "id": "game:purgatorio:P01",
+      "realm": "PURGATORIO",
+      "order": 1,
+      "label": "Pride → Humility",
+      "sourceRecordId": "purgatorio:P01",
+      "sourceLocation": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+      "sourceStatus": "OWNER_APPROVED_BEHAVIORAL_STANDUP",
+      "challenge": "I must be above others to be worthy, safe, or seen.",
+      "knowledge": "TERRACE 1: Pride ↔ Humility DANTE: Purgatorio X–XII. The proud bend beneath stone, while carved examples of humility reverse their former upward self-display. Dante begins the seven-terrace purification here. LIMITING BELIEF: I must be above others to be worthy, safe, or seen.",
+      "releaseCandidate": "Observe the recurring Pride movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+      "becomingCandidate": "Name a correction accurately, credit another person by name, and make one repair without explaining away the impact.",
+      "guideBehavior": "VIRGIL: recognize the oscillation, invite release, ask what real-world behavior is different.",
+      "successEvidence": "In an actual status threat, receives feedback, credits another, corrects course, and can repeat this without rank restoration.",
+      "viceRecordId": "purgatorio:P01-V",
+      "capacityRecordId": "purgatorio:P01-C",
+      "sourceCrosswalks": [
+        {
+          "id": "inferno:B03",
+          "kind": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        }
+      ],
+      "archetypeResonances": [],
+      "kind": "GAMEBOARD_LEVEL",
+      "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+      "public": {
+        "id": "game:purgatorio:P01",
+        "label": "Pride → Humility",
+        "realm": "PURGATORIO",
+        "challenge": "I must be above others to be worthy, safe, or seen.",
+        "knowledge": "TERRACE 1: Pride ↔ Humility DANTE: Purgatorio X–XII. The proud bend beneath stone, while carved examples of humility reverse their former upward self-display. Dante begins the seven-terrace purification here. LIMITING BELIEF: I must be above others to be worthy, safe, or seen.",
+        "releaseCandidate": "Observe the recurring Pride movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+        "becomingCandidate": "Name a correction accurately, credit another person by name, and make one repair without explaining away the impact.",
+        "guideBehavior": "VIRGIL: recognize the oscillation, invite release, ask what real-world behavior is different.",
+        "successEvidence": "In an actual status threat, receives feedback, credits another, corrects course, and can repeat this without rank restoration.",
+        "editableByUser": true
+      },
+      "releaseProtocolId": null,
+      "becomingRitualId": null,
+      "unlock": {
+        "type": "INTRODUCTION_ON_ENCOUNTER",
+        "neverGatesMeasurements": true,
+        "paidTierEntitlementUnchanged": true
+      },
+      "progression": {
+        "status": "USER_CHOSEN_NOT_INFERRED",
+        "canRevisit": true,
+        "canSkip": true,
+        "noMoralityRank": true
+      },
+      "avatarEffect": {
+        "mode": "EVENT_TRACE_ONLY",
+        "appliesAfter": "logged_behavior_or_practice",
+        "noAutomaticCoherenceIncrease": true
+      },
+      "recordStatus": "MAP_DATA_CONTRACT_NOT_RUNTIME"
+    },
+    {
+      "id": "game:purgatorio:P02",
+      "realm": "PURGATORIO",
+      "order": 2,
+      "label": "Envy → Charity / Kindness",
+      "sourceRecordId": "purgatorio:P02",
+      "sourceLocation": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+      "sourceStatus": "OWNER_APPROVED_BEHAVIORAL_STANDUP",
+      "challenge": "Someone else receiving goodness reduces what is possible for me.",
+      "knowledge": "TERRACE 2: Envy ↔ Charity / Kindness DANTE: Purgatorio XIII–XV. Penitents are seated together with their eyes sewn shut; voices recount acts of selfless love, and Sapia recognizes rejoicing in others’ misfortune. LIMITING BELIEF: Someone else receiving goodness reduces what is possible for me.",
+      "releaseCandidate": "Observe the recurring Envy movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+      "becomingCandidate": "State one real thing you value in the other person, offer non-transactional support when appropriate, then take one step toward your own goal.",
+      "guideBehavior": "VIRGIL: recognize the oscillation, invite release, ask what real-world behavior is different.",
+      "successEvidence": "Can witness a peer’s success without punishment, support their success where appropriate, and keep a clear personal path.",
+      "viceRecordId": "purgatorio:P02-V",
+      "capacityRecordId": "purgatorio:P02-C",
+      "sourceCrosswalks": [
+        {
+          "id": "inferno:B04",
+          "kind": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        },
+        {
+          "id": "inferno:L08",
+          "kind": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        }
+      ],
+      "archetypeResonances": [],
+      "kind": "GAMEBOARD_LEVEL",
+      "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+      "public": {
+        "id": "game:purgatorio:P02",
+        "label": "Envy → Charity / Kindness",
+        "realm": "PURGATORIO",
+        "challenge": "Someone else receiving goodness reduces what is possible for me.",
+        "knowledge": "TERRACE 2: Envy ↔ Charity / Kindness DANTE: Purgatorio XIII–XV. Penitents are seated together with their eyes sewn shut; voices recount acts of selfless love, and Sapia recognizes rejoicing in others’ misfortune. LIMITING BELIEF: Someone else receiving goodness reduces what is possible for me.",
+        "releaseCandidate": "Observe the recurring Envy movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+        "becomingCandidate": "State one real thing you value in the other person, offer non-transactional support when appropriate, then take one step toward your own goal.",
+        "guideBehavior": "VIRGIL: recognize the oscillation, invite release, ask what real-world behavior is different.",
+        "successEvidence": "Can witness a peer’s success without punishment, support their success where appropriate, and keep a clear personal path.",
+        "editableByUser": true
+      },
+      "releaseProtocolId": null,
+      "becomingRitualId": null,
+      "unlock": {
+        "type": "INTRODUCTION_ON_ENCOUNTER",
+        "neverGatesMeasurements": true,
+        "paidTierEntitlementUnchanged": true
+      },
+      "progression": {
+        "status": "USER_CHOSEN_NOT_INFERRED",
+        "canRevisit": true,
+        "canSkip": true,
+        "noMoralityRank": true
+      },
+      "avatarEffect": {
+        "mode": "EVENT_TRACE_ONLY",
+        "appliesAfter": "logged_behavior_or_practice",
+        "noAutomaticCoherenceIncrease": true
+      },
+      "recordStatus": "MAP_DATA_CONTRACT_NOT_RUNTIME"
+    },
+    {
+      "id": "game:purgatorio:P03",
+      "realm": "PURGATORIO",
+      "order": 3,
+      "label": "Wrath → Meekness / Forbearance",
+      "sourceRecordId": "purgatorio:P03",
+      "sourceLocation": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+      "sourceStatus": "OWNER_APPROVED_BEHAVIORAL_STANDUP",
+      "challenge": "If I do not attack or punish, I lose power and will be harmed.",
+      "knowledge": "TERRACE 3: Wrath ↔ Meekness / Forbearance DANTE: Purgatorio XV–XVII. The angry walk through blinding smoke and receive visions of measured responses, forgiveness, and peacemaking. LIMITING BELIEF: If I do not attack or punish, I lose power and will be harmed.",
+      "releaseCandidate": "Observe the recurring Wrath movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+      "becomingCandidate": "Pause one breath before replying; describe what happened without motive claims; state a concrete boundary and next action.",
+      "guideBehavior": "VIRGIL: recognize the oscillation, invite release, ask what real-world behavior is different.",
+      "successEvidence": "During real provocation, sets limits without humiliation, violence, or prolonged retaliation and repairs harm when needed.",
+      "viceRecordId": "purgatorio:P03-V",
+      "capacityRecordId": "purgatorio:P03-C",
+      "sourceCrosswalks": [
+        {
+          "id": "inferno:B05",
+          "kind": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        },
+        {
+          "id": "inferno:L05",
+          "kind": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        }
+      ],
+      "archetypeResonances": [],
+      "kind": "GAMEBOARD_LEVEL",
+      "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+      "public": {
+        "id": "game:purgatorio:P03",
+        "label": "Wrath → Meekness / Forbearance",
+        "realm": "PURGATORIO",
+        "challenge": "If I do not attack or punish, I lose power and will be harmed.",
+        "knowledge": "TERRACE 3: Wrath ↔ Meekness / Forbearance DANTE: Purgatorio XV–XVII. The angry walk through blinding smoke and receive visions of measured responses, forgiveness, and peacemaking. LIMITING BELIEF: If I do not attack or punish, I lose power and will be harmed.",
+        "releaseCandidate": "Observe the recurring Wrath movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+        "becomingCandidate": "Pause one breath before replying; describe what happened without motive claims; state a concrete boundary and next action.",
+        "guideBehavior": "VIRGIL: recognize the oscillation, invite release, ask what real-world behavior is different.",
+        "successEvidence": "During real provocation, sets limits without humiliation, violence, or prolonged retaliation and repairs harm when needed.",
+        "editableByUser": true
+      },
+      "releaseProtocolId": null,
+      "becomingRitualId": null,
+      "unlock": {
+        "type": "INTRODUCTION_ON_ENCOUNTER",
+        "neverGatesMeasurements": true,
+        "paidTierEntitlementUnchanged": true
+      },
+      "progression": {
+        "status": "USER_CHOSEN_NOT_INFERRED",
+        "canRevisit": true,
+        "canSkip": true,
+        "noMoralityRank": true
+      },
+      "avatarEffect": {
+        "mode": "EVENT_TRACE_ONLY",
+        "appliesAfter": "logged_behavior_or_practice",
+        "noAutomaticCoherenceIncrease": true
+      },
+      "recordStatus": "MAP_DATA_CONTRACT_NOT_RUNTIME"
+    },
+    {
+      "id": "game:purgatorio:P04",
+      "realm": "PURGATORIO",
+      "order": 4,
+      "label": "Sloth / Acedia → Zeal / Diligence",
+      "sourceRecordId": "purgatorio:P04",
+      "sourceLocation": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+      "sourceStatus": "OWNER_APPROVED_BEHAVIORAL_STANDUP",
+      "challenge": "My effort will not matter, or beginning will expose that I cannot succeed.",
+      "knowledge": "TERRACE 4: Sloth / Acedia ↔ Zeal / Diligence DANTE: Purgatorio XVII–XIX. Virgil locates sloth at the center of the mountain as insufficient love of a good; the penitents run with urgent energy and cite examples of zeal. LIMITING BELIEF: My effort will not matter, or beginning will expose that I cannot succeed.",
+      "releaseCandidate": "Observe the recurring Sloth / Acedia movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+      "becomingCandidate": "Choose one meaningful task smaller than five minutes; begin, record completion, then stop or continue by choice.",
+      "guideBehavior": "VIRGIL: recognize the oscillation, invite release, ask what real-world behavior is different.",
+      "successEvidence": "Repeatedly begins chosen, appropriately sized action under uncertainty and uses recovery without self-attack.",
+      "viceRecordId": "purgatorio:P04-V",
+      "capacityRecordId": "purgatorio:P04-C",
+      "sourceCrosswalks": [
+        {
+          "id": "inferno:B06",
+          "kind": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        },
+        {
+          "id": "inferno:L05",
+          "kind": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        }
+      ],
+      "archetypeResonances": [],
+      "kind": "GAMEBOARD_LEVEL",
+      "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+      "public": {
+        "id": "game:purgatorio:P04",
+        "label": "Sloth / Acedia → Zeal / Diligence",
+        "realm": "PURGATORIO",
+        "challenge": "My effort will not matter, or beginning will expose that I cannot succeed.",
+        "knowledge": "TERRACE 4: Sloth / Acedia ↔ Zeal / Diligence DANTE: Purgatorio XVII–XIX. Virgil locates sloth at the center of the mountain as insufficient love of a good; the penitents run with urgent energy and cite examples of zeal. LIMITING BELIEF: My effort will not matter, or beginning will expose that I cannot succeed.",
+        "releaseCandidate": "Observe the recurring Sloth / Acedia movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+        "becomingCandidate": "Choose one meaningful task smaller than five minutes; begin, record completion, then stop or continue by choice.",
+        "guideBehavior": "VIRGIL: recognize the oscillation, invite release, ask what real-world behavior is different.",
+        "successEvidence": "Repeatedly begins chosen, appropriately sized action under uncertainty and uses recovery without self-attack.",
+        "editableByUser": true
+      },
+      "releaseProtocolId": null,
+      "becomingRitualId": null,
+      "unlock": {
+        "type": "INTRODUCTION_ON_ENCOUNTER",
+        "neverGatesMeasurements": true,
+        "paidTierEntitlementUnchanged": true
+      },
+      "progression": {
+        "status": "USER_CHOSEN_NOT_INFERRED",
+        "canRevisit": true,
+        "canSkip": true,
+        "noMoralityRank": true
+      },
+      "avatarEffect": {
+        "mode": "EVENT_TRACE_ONLY",
+        "appliesAfter": "logged_behavior_or_practice",
+        "noAutomaticCoherenceIncrease": true
+      },
+      "recordStatus": "MAP_DATA_CONTRACT_NOT_RUNTIME"
+    },
+    {
+      "id": "game:purgatorio:P05",
+      "realm": "PURGATORIO",
+      "order": 5,
+      "label": "Avarice / Prodigality → Generosity / Stewardship",
+      "sourceRecordId": "purgatorio:P05",
+      "sourceLocation": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+      "sourceStatus": "OWNER_APPROVED_BEHAVIORAL_STANDUP",
+      "challenge": "I am safe and valuable only if I keep more than enough—or spend to prove that I matter.",
+      "knowledge": "TERRACE 5: Avarice / Prodigality ↔ Generosity / Stewardship DANTE: Purgatorio XIX–XXII. Dante places avarice AND wasteful prodigality on the same terrace; the penitents lie face down, and examples praise generosity and honorable use of goods. LIMITING BELIEF: I am safe and valuable only if I keep more than enough—or spend to prove that I matter.",
+      "releaseCandidate": "Observe the recurring Avarice / Prodigality movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+      "becomingCandidate": "Identify one resource choice: fulfill an obligation, release one unnecessary grasp, or practice bounded generosity without debt or resentment.",
+      "guideBehavior": "VIRGIL: recognize the oscillation, invite release, ask what real-world behavior is different.",
+      "successEvidence": "Makes sustainable resource decisions under scarcity cues, honors obligations, and gives freely only within real capacity.",
+      "viceRecordId": "purgatorio:P05-V",
+      "capacityRecordId": "purgatorio:P05-C",
+      "sourceCrosswalks": [
+        {
+          "id": "inferno:B07",
+          "kind": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        },
+        {
+          "id": "inferno:L04",
+          "kind": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        }
+      ],
+      "archetypeResonances": [],
+      "kind": "GAMEBOARD_LEVEL",
+      "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+      "public": {
+        "id": "game:purgatorio:P05",
+        "label": "Avarice / Prodigality → Generosity / Stewardship",
+        "realm": "PURGATORIO",
+        "challenge": "I am safe and valuable only if I keep more than enough—or spend to prove that I matter.",
+        "knowledge": "TERRACE 5: Avarice / Prodigality ↔ Generosity / Stewardship DANTE: Purgatorio XIX–XXII. Dante places avarice AND wasteful prodigality on the same terrace; the penitents lie face down, and examples praise generosity and honorable use of goods. LIMITING BELIEF: I am safe and valuable only if I keep more than enough—or spend to prove that I matter.",
+        "releaseCandidate": "Observe the recurring Avarice / Prodigality movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+        "becomingCandidate": "Identify one resource choice: fulfill an obligation, release one unnecessary grasp, or practice bounded generosity without debt or resentment.",
+        "guideBehavior": "VIRGIL: recognize the oscillation, invite release, ask what real-world behavior is different.",
+        "successEvidence": "Makes sustainable resource decisions under scarcity cues, honors obligations, and gives freely only within real capacity.",
+        "editableByUser": true
+      },
+      "releaseProtocolId": null,
+      "becomingRitualId": null,
+      "unlock": {
+        "type": "INTRODUCTION_ON_ENCOUNTER",
+        "neverGatesMeasurements": true,
+        "paidTierEntitlementUnchanged": true
+      },
+      "progression": {
+        "status": "USER_CHOSEN_NOT_INFERRED",
+        "canRevisit": true,
+        "canSkip": true,
+        "noMoralityRank": true
+      },
+      "avatarEffect": {
+        "mode": "EVENT_TRACE_ONLY",
+        "appliesAfter": "logged_behavior_or_practice",
+        "noAutomaticCoherenceIncrease": true
+      },
+      "recordStatus": "MAP_DATA_CONTRACT_NOT_RUNTIME"
+    },
+    {
+      "id": "game:purgatorio:P06",
+      "realm": "PURGATORIO",
+      "order": 6,
+      "label": "Gluttony → Temperance / Sufficiency",
+      "sourceRecordId": "purgatorio:P06",
+      "sourceLocation": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+      "sourceStatus": "OWNER_APPROVED_BEHAVIORAL_STANDUP",
+      "challenge": "More consumption will finally fill the discomfort or emptiness I feel.",
+      "knowledge": "TERRACE 6: Gluttony ↔ Temperance / Sufficiency DANTE: Purgatorio XXII–XXIV. The sixth terrace places desired fruit and water out of reach; exemplary stories emphasize temperance and right relation to appetite. LIMITING BELIEF: More consumption will finally fill the discomfort or emptiness I feel.",
+      "releaseCandidate": "Observe the recurring Gluttony movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+      "becomingCandidate": "Before a habitual reach, ask “What do I actually need?”; choose nourishment, rest, connection, pleasure, or a pause deliberately.",
+      "guideBehavior": "VIRGIL: recognize the oscillation, invite release, ask what real-world behavior is different.",
+      "successEvidence": "Experiences discomfort or appetite, accurately distinguishes needs, and chooses sufficient behavior without harsh deprivation.",
+      "viceRecordId": "purgatorio:P06-V",
+      "capacityRecordId": "purgatorio:P06-C",
+      "sourceCrosswalks": [
+        {
+          "id": "inferno:B01",
+          "kind": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        },
+        {
+          "id": "inferno:B08",
+          "kind": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        },
+        {
+          "id": "inferno:L03",
+          "kind": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        },
+        {
+          "id": "inferno:F03",
+          "kind": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        }
+      ],
+      "archetypeResonances": [],
+      "kind": "GAMEBOARD_LEVEL",
+      "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+      "public": {
+        "id": "game:purgatorio:P06",
+        "label": "Gluttony → Temperance / Sufficiency",
+        "realm": "PURGATORIO",
+        "challenge": "More consumption will finally fill the discomfort or emptiness I feel.",
+        "knowledge": "TERRACE 6: Gluttony ↔ Temperance / Sufficiency DANTE: Purgatorio XXII–XXIV. The sixth terrace places desired fruit and water out of reach; exemplary stories emphasize temperance and right relation to appetite. LIMITING BELIEF: More consumption will finally fill the discomfort or emptiness I feel.",
+        "releaseCandidate": "Observe the recurring Gluttony movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+        "becomingCandidate": "Before a habitual reach, ask “What do I actually need?”; choose nourishment, rest, connection, pleasure, or a pause deliberately.",
+        "guideBehavior": "VIRGIL: recognize the oscillation, invite release, ask what real-world behavior is different.",
+        "successEvidence": "Experiences discomfort or appetite, accurately distinguishes needs, and chooses sufficient behavior without harsh deprivation.",
+        "editableByUser": true
+      },
+      "releaseProtocolId": null,
+      "becomingRitualId": null,
+      "unlock": {
+        "type": "INTRODUCTION_ON_ENCOUNTER",
+        "neverGatesMeasurements": true,
+        "paidTierEntitlementUnchanged": true
+      },
+      "progression": {
+        "status": "USER_CHOSEN_NOT_INFERRED",
+        "canRevisit": true,
+        "canSkip": true,
+        "noMoralityRank": true
+      },
+      "avatarEffect": {
+        "mode": "EVENT_TRACE_ONLY",
+        "appliesAfter": "logged_behavior_or_practice",
+        "noAutomaticCoherenceIncrease": true
+      },
+      "recordStatus": "MAP_DATA_CONTRACT_NOT_RUNTIME"
+    },
+    {
+      "id": "game:purgatorio:P07",
+      "realm": "PURGATORIO",
+      "order": 7,
+      "label": "Lust → Chastity / Respectful Intimacy",
+      "sourceRecordId": "purgatorio:P07",
+      "sourceLocation": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+      "sourceStatus": "OWNER_APPROVED_BEHAVIORAL_STANDUP",
+      "challenge": "Being desired, possessing someone, or obtaining pleasure is what makes me worthy or complete.",
+      "knowledge": "TERRACE 7: Lust ↔ Chastity / Respectful Intimacy DANTE: Purgatorio XXV–XXVII. Dante depicts the seventh terrace as purifying desire by fire, with examples of chastity. Historical theology and the poem’s judgments about sexuality are not imported as contemporary behavioral judgments. LIMITING BELIEF: Being desired, possessing someone, or obtaining pleasure is what makes me worthy or complete.",
+      "releaseCandidate": "Observe the recurring Lust movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+      "becomingCandidate": "State what you want and what you can offer honestly; invite a real yes or no; respect the answer without punishment.",
+      "guideBehavior": "VIRGIL: recognize the oscillation, invite release, ask what real-world behavior is different.",
+      "successEvidence": "Responds to attraction or rejection with consent, candor, reciprocal care, and preserved autonomy.",
+      "viceRecordId": "purgatorio:P07-V",
+      "capacityRecordId": "purgatorio:P07-C",
+      "sourceCrosswalks": [
+        {
+          "id": "inferno:B09",
+          "kind": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        },
+        {
+          "id": "inferno:L02",
+          "kind": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        },
+        {
+          "id": "inferno:X03",
+          "kind": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        }
+      ],
+      "archetypeResonances": [],
+      "kind": "GAMEBOARD_LEVEL",
+      "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+      "public": {
+        "id": "game:purgatorio:P07",
+        "label": "Lust → Chastity / Respectful Intimacy",
+        "realm": "PURGATORIO",
+        "challenge": "Being desired, possessing someone, or obtaining pleasure is what makes me worthy or complete.",
+        "knowledge": "TERRACE 7: Lust ↔ Chastity / Respectful Intimacy DANTE: Purgatorio XXV–XXVII. Dante depicts the seventh terrace as purifying desire by fire, with examples of chastity. Historical theology and the poem’s judgments about sexuality are not imported as contemporary behavioral judgments. LIMITING BELIEF: Being desired, possessing someone, or obtaining pleasure is what makes me worthy or complete.",
+        "releaseCandidate": "Observe the recurring Lust movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+        "becomingCandidate": "State what you want and what you can offer honestly; invite a real yes or no; respect the answer without punishment.",
+        "guideBehavior": "VIRGIL: recognize the oscillation, invite release, ask what real-world behavior is different.",
+        "successEvidence": "Responds to attraction or rejection with consent, candor, reciprocal care, and preserved autonomy.",
+        "editableByUser": true
+      },
+      "releaseProtocolId": null,
+      "becomingRitualId": null,
+      "unlock": {
+        "type": "INTRODUCTION_ON_ENCOUNTER",
+        "neverGatesMeasurements": true,
+        "paidTierEntitlementUnchanged": true
+      },
+      "progression": {
+        "status": "USER_CHOSEN_NOT_INFERRED",
+        "canRevisit": true,
+        "canSkip": true,
+        "noMoralityRank": true
+      },
+      "avatarEffect": {
+        "mode": "EVENT_TRACE_ONLY",
+        "appliesAfter": "logged_behavior_or_practice",
+        "noAutomaticCoherenceIncrease": true
+      },
+      "recordStatus": "MAP_DATA_CONTRACT_NOT_RUNTIME"
+    },
+    {
+      "id": "game:paradiso:PD01",
+      "realm": "PARADISO",
+      "order": 1,
+      "label": "Chosen Commitment",
+      "sourceRecordId": "paradiso:PD01",
+      "sourceLocation": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+      "sourceStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "challenge": "Staying true to a chosen commitment while acknowledging limits, coercion, and what was beyond one's control.",
+      "knowledge": "Constructive practice at Moon: Staying true to a chosen commitment while acknowledging limits, coercion, and what was beyond one's control.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "Name one freely chosen commitment, the constraint it faces, and one truthful action possible today.",
+      "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+      "successEvidence": "A worker reports accurately which obligations they could meet after an emergency, instead of claiming to have delivered what was impossible.",
+      "lawResonances": [
+        "Duty",
+        "Responsibility"
+      ],
+      "archetypeResonances": [
+        {
+          "id": "compass-archetype:Innocent",
+          "status": "CANDIDATE_RESONANCE_FROM_2026_REGISTRY"
+        }
+      ],
+      "behavior": "RECEIVE reality → DIFFERENTIATE chosen from imposed duty → PRESERVE honest commitment → RELEASE false self-blame.",
+      "kind": "GAMEBOARD_LEVEL",
+      "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+      "public": {
+        "id": "game:paradiso:PD01",
+        "label": "Chosen Commitment",
+        "realm": "PARADISO",
+        "challenge": "Staying true to a chosen commitment while acknowledging limits, coercion, and what was beyond one's control.",
+        "knowledge": "Constructive practice at Moon: Staying true to a chosen commitment while acknowledging limits, coercion, and what was beyond one's control.",
+        "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+        "becomingCandidate": "Name one freely chosen commitment, the constraint it faces, and one truthful action possible today.",
+        "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+        "successEvidence": "A worker reports accurately which obligations they could meet after an emergency, instead of claiming to have delivered what was impossible.",
+        "editableByUser": true
+      },
+      "releaseProtocolId": null,
+      "becomingRitualId": null,
+      "unlock": {
+        "type": "INTRODUCTION_ON_ENCOUNTER",
+        "neverGatesMeasurements": true,
+        "paidTierEntitlementUnchanged": true
+      },
+      "progression": {
+        "status": "USER_CHOSEN_NOT_INFERRED",
+        "canRevisit": true,
+        "canSkip": true,
+        "noMoralityRank": true
+      },
+      "avatarEffect": {
+        "mode": "EVENT_TRACE_ONLY",
+        "appliesAfter": "logged_behavior_or_practice",
+        "noAutomaticCoherenceIncrease": true
+      },
+      "recordStatus": "MAP_DATA_CONTRACT_NOT_RUNTIME"
+    },
+    {
+      "id": "game:paradiso:PD02",
+      "realm": "PARADISO",
+      "order": 2,
+      "label": "Humble Contribution",
+      "sourceRecordId": "paradiso:PD02",
+      "sourceLocation": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+      "sourceStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "challenge": "Doing work that benefits others without making reputation the condition of effort.",
+      "knowledge": "Constructive practice at Mercury: Doing work that benefits others without making reputation the condition of effort.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "Choose one valuable action no one will notice; record its real result and whether visibility was needed.",
+      "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+      "successEvidence": "A team member documents another person's contribution and completes an unglamorous repair without demanding acknowledgment.",
+      "lawResonances": [
+        "Humility",
+        "Generosity"
+      ],
+      "archetypeResonances": [],
+      "behavior": "SEEK contribution → EXPRESS useful work → RELEASE audience-dependence → CONNECT results to shared benefit.",
+      "kind": "GAMEBOARD_LEVEL",
+      "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+      "public": {
+        "id": "game:paradiso:PD02",
+        "label": "Humble Contribution",
+        "realm": "PARADISO",
+        "challenge": "Doing work that benefits others without making reputation the condition of effort.",
+        "knowledge": "Constructive practice at Mercury: Doing work that benefits others without making reputation the condition of effort.",
+        "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+        "becomingCandidate": "Choose one valuable action no one will notice; record its real result and whether visibility was needed.",
+        "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+        "successEvidence": "A team member documents another person's contribution and completes an unglamorous repair without demanding acknowledgment.",
+        "editableByUser": true
+      },
+      "releaseProtocolId": null,
+      "becomingRitualId": null,
+      "unlock": {
+        "type": "INTRODUCTION_ON_ENCOUNTER",
+        "neverGatesMeasurements": true,
+        "paidTierEntitlementUnchanged": true
+      },
+      "progression": {
+        "status": "USER_CHOSEN_NOT_INFERRED",
+        "canRevisit": true,
+        "canSkip": true,
+        "noMoralityRank": true
+      },
+      "avatarEffect": {
+        "mode": "EVENT_TRACE_ONLY",
+        "appliesAfter": "logged_behavior_or_practice",
+        "noAutomaticCoherenceIncrease": true
+      },
+      "recordStatus": "MAP_DATA_CONTRACT_NOT_RUNTIME"
+    },
+    {
+      "id": "game:paradiso:PD03",
+      "realm": "PARADISO",
+      "order": 3,
+      "label": "Reciprocal Love",
+      "sourceRecordId": "paradiso:PD03",
+      "sourceLocation": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+      "sourceStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "challenge": "Treating desire as energy for consensual, reciprocal connection without turning a person into possession or proof of worth.",
+      "knowledge": "Constructive practice at Venus: Treating desire as energy for consensual, reciprocal connection without turning a person into possession or proof of worth.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "State a desire without demand, ask what the other person chooses, and honor the answer.",
+      "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+      "successEvidence": "Someone voices attraction honestly, hears a refusal, respects it, and stays humane and self-respecting.",
+      "lawResonances": [
+        "Compassion",
+        "Non-Harm"
+      ],
+      "archetypeResonances": [
+        {
+          "id": "compass-archetype:Lover",
+          "status": "CANDIDATE_RESONANCE_FROM_2026_REGISTRY"
+        }
+      ],
+      "behavior": "ATTRACT → CONNECT with consent → RECEIVE the other's perspective → RELEASE ownership.",
+      "kind": "GAMEBOARD_LEVEL",
+      "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+      "public": {
+        "id": "game:paradiso:PD03",
+        "label": "Reciprocal Love",
+        "realm": "PARADISO",
+        "challenge": "Treating desire as energy for consensual, reciprocal connection without turning a person into possession or proof of worth.",
+        "knowledge": "Constructive practice at Venus: Treating desire as energy for consensual, reciprocal connection without turning a person into possession or proof of worth.",
+        "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+        "becomingCandidate": "State a desire without demand, ask what the other person chooses, and honor the answer.",
+        "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+        "successEvidence": "Someone voices attraction honestly, hears a refusal, respects it, and stays humane and self-respecting.",
+        "editableByUser": true
+      },
+      "releaseProtocolId": null,
+      "becomingRitualId": null,
+      "unlock": {
+        "type": "INTRODUCTION_ON_ENCOUNTER",
+        "neverGatesMeasurements": true,
+        "paidTierEntitlementUnchanged": true
+      },
+      "progression": {
+        "status": "USER_CHOSEN_NOT_INFERRED",
+        "canRevisit": true,
+        "canSkip": true,
+        "noMoralityRank": true
+      },
+      "avatarEffect": {
+        "mode": "EVENT_TRACE_ONLY",
+        "appliesAfter": "logged_behavior_or_practice",
+        "noAutomaticCoherenceIncrease": true
+      },
+      "recordStatus": "MAP_DATA_CONTRACT_NOT_RUNTIME"
+    },
+    {
+      "id": "game:paradiso:PD04",
+      "realm": "PARADISO",
+      "order": 4,
+      "label": "Truthful Inquiry",
+      "sourceRecordId": "paradiso:PD04",
+      "sourceLocation": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+      "sourceStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "challenge": "Seeking truth through evidence, humility and the capacity to recognize insight in those who disagree.",
+      "knowledge": "Constructive practice at Sun: Seeking truth through evidence, humility and the capacity to recognize insight in those who disagree.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "Name a belief, the strongest counterevidence, and the specific observation that would change your view.",
+      "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+      "successEvidence": "A researcher updates a cherished hypothesis after testing it and openly credits a different school of thought.",
+      "lawResonances": [
+        "Truth",
+        "Humility"
+      ],
+      "archetypeResonances": [
+        {
+          "id": "compass-archetype:Sage",
+          "status": "CANDIDATE_RESONANCE_FROM_2026_REGISTRY"
+        }
+      ],
+      "behavior": "SEEK understanding → RECEIVE contradiction → DIFFERENTIATE evidence from certainty → CONNECT perspectives.",
+      "kind": "GAMEBOARD_LEVEL",
+      "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+      "public": {
+        "id": "game:paradiso:PD04",
+        "label": "Truthful Inquiry",
+        "realm": "PARADISO",
+        "challenge": "Seeking truth through evidence, humility and the capacity to recognize insight in those who disagree.",
+        "knowledge": "Constructive practice at Sun: Seeking truth through evidence, humility and the capacity to recognize insight in those who disagree.",
+        "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+        "becomingCandidate": "Name a belief, the strongest counterevidence, and the specific observation that would change your view.",
+        "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+        "successEvidence": "A researcher updates a cherished hypothesis after testing it and openly credits a different school of thought.",
+        "editableByUser": true
+      },
+      "releaseProtocolId": null,
+      "becomingRitualId": null,
+      "unlock": {
+        "type": "INTRODUCTION_ON_ENCOUNTER",
+        "neverGatesMeasurements": true,
+        "paidTierEntitlementUnchanged": true
+      },
+      "progression": {
+        "status": "USER_CHOSEN_NOT_INFERRED",
+        "canRevisit": true,
+        "canSkip": true,
+        "noMoralityRank": true
+      },
+      "avatarEffect": {
+        "mode": "EVENT_TRACE_ONLY",
+        "appliesAfter": "logged_behavior_or_practice",
+        "noAutomaticCoherenceIncrease": true
+      },
+      "recordStatus": "MAP_DATA_CONTRACT_NOT_RUNTIME"
+    },
+    {
+      "id": "game:paradiso:PD05",
+      "realm": "PARADISO",
+      "order": 5,
+      "label": "Principled Courage",
+      "sourceRecordId": "paradiso:PD05",
+      "sourceLocation": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+      "sourceStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "challenge": "Bearing a real cost to uphold a justified principle while using the least harmful effective means.",
+      "knowledge": "Constructive practice at Mars: Bearing a real cost to uphold a justified principle while using the least harmful effective means.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "Identify a difficult protective act, its real risks, and the least harmful way to take it.",
+      "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+      "successEvidence": "A colleague challenges retaliation against a vulnerable coworker and accepts personal risk without threatening anyone.",
+      "lawResonances": [
+        "Courage",
+        "Non-Harm"
+      ],
+      "archetypeResonances": [
+        {
+          "id": "compass-archetype:Warrior",
+          "status": "CANDIDATE_RESONANCE_FROM_2026_REGISTRY"
+        }
+      ],
+      "behavior": "PROTECT → INITIATE chosen action → HOLD a boundary → RELEASE needless aggression.",
+      "kind": "GAMEBOARD_LEVEL",
+      "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+      "public": {
+        "id": "game:paradiso:PD05",
+        "label": "Principled Courage",
+        "realm": "PARADISO",
+        "challenge": "Bearing a real cost to uphold a justified principle while using the least harmful effective means.",
+        "knowledge": "Constructive practice at Mars: Bearing a real cost to uphold a justified principle while using the least harmful effective means.",
+        "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+        "becomingCandidate": "Identify a difficult protective act, its real risks, and the least harmful way to take it.",
+        "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+        "successEvidence": "A colleague challenges retaliation against a vulnerable coworker and accepts personal risk without threatening anyone.",
+        "editableByUser": true
+      },
+      "releaseProtocolId": null,
+      "becomingRitualId": null,
+      "unlock": {
+        "type": "INTRODUCTION_ON_ENCOUNTER",
+        "neverGatesMeasurements": true,
+        "paidTierEntitlementUnchanged": true
+      },
+      "progression": {
+        "status": "USER_CHOSEN_NOT_INFERRED",
+        "canRevisit": true,
+        "canSkip": true,
+        "noMoralityRank": true
+      },
+      "avatarEffect": {
+        "mode": "EVENT_TRACE_ONLY",
+        "appliesAfter": "logged_behavior_or_practice",
+        "noAutomaticCoherenceIncrease": true
+      },
+      "recordStatus": "MAP_DATA_CONTRACT_NOT_RUNTIME"
+    },
+    {
+      "id": "game:paradiso:PD06",
+      "realm": "PARADISO",
+      "order": 6,
+      "label": "Just Leadership",
+      "sourceRecordId": "paradiso:PD06",
+      "sourceLocation": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+      "sourceStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "challenge": "Applying transparent standards with humility about what is unknown, especially when holding power over others.",
+      "knowledge": "Constructive practice at Jupiter: Applying transparent standards with humility about what is unknown, especially when holding power over others.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "Audit one decision for conflicts, excluded voices, evidence and a fair appeal route.",
+      "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+      "successEvidence": "A manager discloses a conflict, hears the affected people, applies known criteria, and explains a reversible decision.",
+      "lawResonances": [
+        "Justice",
+        "Accountability"
+      ],
+      "archetypeResonances": [
+        {
+          "id": "compass-archetype:Rebel",
+          "status": "CANDIDATE_RESONANCE_FROM_2026_REGISTRY"
+        },
+        {
+          "id": "compass-archetype:Ruler",
+          "status": "CANDIDATE_RESONANCE_FROM_2026_REGISTRY"
+        }
+      ],
+      "behavior": "RECEIVE facts → DIFFERENTIATE interests → ORDER fair procedure → EXPRESS accountable decision.",
+      "kind": "GAMEBOARD_LEVEL",
+      "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+      "public": {
+        "id": "game:paradiso:PD06",
+        "label": "Just Leadership",
+        "realm": "PARADISO",
+        "challenge": "Applying transparent standards with humility about what is unknown, especially when holding power over others.",
+        "knowledge": "Constructive practice at Jupiter: Applying transparent standards with humility about what is unknown, especially when holding power over others.",
+        "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+        "becomingCandidate": "Audit one decision for conflicts, excluded voices, evidence and a fair appeal route.",
+        "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+        "successEvidence": "A manager discloses a conflict, hears the affected people, applies known criteria, and explains a reversible decision.",
+        "editableByUser": true
+      },
+      "releaseProtocolId": null,
+      "becomingRitualId": null,
+      "unlock": {
+        "type": "INTRODUCTION_ON_ENCOUNTER",
+        "neverGatesMeasurements": true,
+        "paidTierEntitlementUnchanged": true
+      },
+      "progression": {
+        "status": "USER_CHOSEN_NOT_INFERRED",
+        "canRevisit": true,
+        "canSkip": true,
+        "noMoralityRank": true
+      },
+      "avatarEffect": {
+        "mode": "EVENT_TRACE_ONLY",
+        "appliesAfter": "logged_behavior_or_practice",
+        "noAutomaticCoherenceIncrease": true
+      },
+      "recordStatus": "MAP_DATA_CONTRACT_NOT_RUNTIME"
+    },
+    {
+      "id": "game:paradiso:PD07",
+      "realm": "PARADISO",
+      "order": 7,
+      "label": "Quiet Presence",
+      "sourceRecordId": "paradiso:PD07",
+      "sourceLocation": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+      "sourceStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "challenge": "Remaining available to experience without needing constant output, noise, explanation or performance.",
+      "knowledge": "Constructive practice at Saturn: Remaining available to experience without needing constant output, noise, explanation or performance.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "Choose five minutes of quiet; afterward record what was actually observed, not what was hoped for.",
+      "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+      "successEvidence": "A person spends a deliberate quiet interval noticing what is present, then returns to a task with clearer priorities.",
+      "lawResonances": [
+        "Presence",
+        "Equanimity"
+      ],
+      "archetypeResonances": [
+        {
+          "id": "compass-archetype:Explorer",
+          "status": "CANDIDATE_RESONANCE_FROM_2026_REGISTRY"
+        }
+      ],
+      "behavior": "WITHDRAW from stimulation → RECEIVE present experience → HOLD attention → RELEASE compulsive doing.",
+      "kind": "GAMEBOARD_LEVEL",
+      "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+      "public": {
+        "id": "game:paradiso:PD07",
+        "label": "Quiet Presence",
+        "realm": "PARADISO",
+        "challenge": "Remaining available to experience without needing constant output, noise, explanation or performance.",
+        "knowledge": "Constructive practice at Saturn: Remaining available to experience without needing constant output, noise, explanation or performance.",
+        "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+        "becomingCandidate": "Choose five minutes of quiet; afterward record what was actually observed, not what was hoped for.",
+        "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+        "successEvidence": "A person spends a deliberate quiet interval noticing what is present, then returns to a task with clearer priorities.",
+        "editableByUser": true
+      },
+      "releaseProtocolId": null,
+      "becomingRitualId": null,
+      "unlock": {
+        "type": "INTRODUCTION_ON_ENCOUNTER",
+        "neverGatesMeasurements": true,
+        "paidTierEntitlementUnchanged": true
+      },
+      "progression": {
+        "status": "USER_CHOSEN_NOT_INFERRED",
+        "canRevisit": true,
+        "canSkip": true,
+        "noMoralityRank": true
+      },
+      "avatarEffect": {
+        "mode": "EVENT_TRACE_ONLY",
+        "appliesAfter": "logged_behavior_or_practice",
+        "noAutomaticCoherenceIncrease": true
+      },
+      "recordStatus": "MAP_DATA_CONTRACT_NOT_RUNTIME"
+    },
+    {
+      "id": "game:paradiso:PD08",
+      "realm": "PARADISO",
+      "order": 8,
+      "label": "Hopeful Connection",
+      "sourceRecordId": "paradiso:PD08",
+      "sourceLocation": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+      "sourceStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "challenge": "Holding realistic trust, future-directed possibility and generous regard together without losing factual judgment.",
+      "knowledge": "Constructive practice at Fixed Stars: Holding realistic trust, future-directed possibility and generous regard together without losing factual judgment.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "Write one warranted trust, one evidence-based hope and one tangible act of care; test each in action.",
+      "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+      "successEvidence": "A team names uncertainty, commits to a realistic path, and supports an affected member without concealing risks.",
+      "lawResonances": [
+        "Compassion",
+        "Unity"
+      ],
+      "archetypeResonances": [
+        {
+          "id": "compass-archetype:Caregiver",
+          "status": "CANDIDATE_RESONANCE_FROM_2026_REGISTRY"
+        },
+        {
+          "id": "compass-archetype:Jester",
+          "status": "CANDIDATE_RESONANCE_FROM_2026_REGISTRY"
+        },
+        {
+          "id": "compass-archetype:Everyman",
+          "status": "CANDIDATE_RESONANCE_FROM_2026_REGISTRY"
+        }
+      ],
+      "behavior": "PRESERVE warranted trust → SEEK viable future → CONNECT compassionately → EXPRESS follow-through.",
+      "kind": "GAMEBOARD_LEVEL",
+      "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+      "public": {
+        "id": "game:paradiso:PD08",
+        "label": "Hopeful Connection",
+        "realm": "PARADISO",
+        "challenge": "Holding realistic trust, future-directed possibility and generous regard together without losing factual judgment.",
+        "knowledge": "Constructive practice at Fixed Stars: Holding realistic trust, future-directed possibility and generous regard together without losing factual judgment.",
+        "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+        "becomingCandidate": "Write one warranted trust, one evidence-based hope and one tangible act of care; test each in action.",
+        "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+        "successEvidence": "A team names uncertainty, commits to a realistic path, and supports an affected member without concealing risks.",
+        "editableByUser": true
+      },
+      "releaseProtocolId": null,
+      "becomingRitualId": null,
+      "unlock": {
+        "type": "INTRODUCTION_ON_ENCOUNTER",
+        "neverGatesMeasurements": true,
+        "paidTierEntitlementUnchanged": true
+      },
+      "progression": {
+        "status": "USER_CHOSEN_NOT_INFERRED",
+        "canRevisit": true,
+        "canSkip": true,
+        "noMoralityRank": true
+      },
+      "avatarEffect": {
+        "mode": "EVENT_TRACE_ONLY",
+        "appliesAfter": "logged_behavior_or_practice",
+        "noAutomaticCoherenceIncrease": true
+      },
+      "recordStatus": "MAP_DATA_CONTRACT_NOT_RUNTIME"
+    },
+    {
+      "id": "game:paradiso:PD09",
+      "realm": "PARADISO",
+      "order": 9,
+      "label": "Coherent Alignment",
+      "sourceRecordId": "paradiso:PD09",
+      "sourceLocation": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+      "sourceStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "challenge": "Letting intention, understanding and action reinforce one another while revising mistaken models.",
+      "knowledge": "Constructive practice at Primum Mobile: Letting intention, understanding and action reinforce one another while revising mistaken models.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "Identify one mismatch between your mental model and outcomes; correct the model and one process.",
+      "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+      "successEvidence": "A team discovers an inverted assumption, revises the workflow, and coordinates action without hiding the error.",
+      "lawResonances": [
+        "Responsibility",
+        "Temperance"
+      ],
+      "archetypeResonances": [
+        {
+          "id": "compass-archetype:Creator",
+          "status": "CANDIDATE_RESONANCE_FROM_2026_REGISTRY"
+        },
+        {
+          "id": "compass-archetype:Magician",
+          "status": "CANDIDATE_RESONANCE_FROM_2026_REGISTRY"
+        }
+      ],
+      "behavior": "ORDER purpose → CONNECT interdependent actions → TRANSFORM mistaken assumptions → PRESERVE movement.",
+      "kind": "GAMEBOARD_LEVEL",
+      "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+      "public": {
+        "id": "game:paradiso:PD09",
+        "label": "Coherent Alignment",
+        "realm": "PARADISO",
+        "challenge": "Letting intention, understanding and action reinforce one another while revising mistaken models.",
+        "knowledge": "Constructive practice at Primum Mobile: Letting intention, understanding and action reinforce one another while revising mistaken models.",
+        "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+        "becomingCandidate": "Identify one mismatch between your mental model and outcomes; correct the model and one process.",
+        "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+        "successEvidence": "A team discovers an inverted assumption, revises the workflow, and coordinates action without hiding the error.",
+        "editableByUser": true
+      },
+      "releaseProtocolId": null,
+      "becomingRitualId": null,
+      "unlock": {
+        "type": "INTRODUCTION_ON_ENCOUNTER",
+        "neverGatesMeasurements": true,
+        "paidTierEntitlementUnchanged": true
+      },
+      "progression": {
+        "status": "USER_CHOSEN_NOT_INFERRED",
+        "canRevisit": true,
+        "canSkip": true,
+        "noMoralityRank": true
+      },
+      "avatarEffect": {
+        "mode": "EVENT_TRACE_ONLY",
+        "appliesAfter": "logged_behavior_or_practice",
+        "noAutomaticCoherenceIncrease": true
+      },
+      "recordStatus": "MAP_DATA_CONTRACT_NOT_RUNTIME"
+    },
+    {
+      "id": "game:paradiso:PD10",
+      "realm": "PARADISO",
+      "order": 10,
+      "label": "Unity",
+      "sourceRecordId": "paradiso:PD10",
+      "sourceLocation": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+      "sourceStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "challenge": "Experiencing connection without making a person, role or exalted state the property of the ego.",
+      "knowledge": "Constructive practice at Empyrean: Experiencing connection without making a person, role or exalted state the property of the ego.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "After meaningful connection, name what you can enact for someone else without claiming the experience makes you superior.",
+      "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+      "successEvidence": "After a meaningful collective success, someone shares credit, remains open to correction, and serves the next need without claiming special rank.",
+      "lawResonances": [
+        "Unity",
+        "Detachment"
+      ],
+      "archetypeResonances": [],
+      "behavior": "RELEASE identification → CONNECT without ownership → RECEIVE difference → EXPRESS care without transaction.",
+      "kind": "GAMEBOARD_LEVEL",
+      "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+      "public": {
+        "id": "game:paradiso:PD10",
+        "label": "Unity",
+        "realm": "PARADISO",
+        "challenge": "Experiencing connection without making a person, role or exalted state the property of the ego.",
+        "knowledge": "Constructive practice at Empyrean: Experiencing connection without making a person, role or exalted state the property of the ego.",
+        "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+        "becomingCandidate": "After meaningful connection, name what you can enact for someone else without claiming the experience makes you superior.",
+        "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+        "successEvidence": "After a meaningful collective success, someone shares credit, remains open to correction, and serves the next need without claiming special rank.",
+        "editableByUser": true
+      },
+      "releaseProtocolId": null,
+      "becomingRitualId": null,
+      "unlock": {
+        "type": "INTRODUCTION_ON_ENCOUNTER",
+        "neverGatesMeasurements": true,
+        "paidTierEntitlementUnchanged": true
+      },
+      "progression": {
+        "status": "USER_CHOSEN_NOT_INFERRED",
+        "canRevisit": true,
+        "canSkip": true,
+        "noMoralityRank": true
+      },
+      "avatarEffect": {
+        "mode": "EVENT_TRACE_ONLY",
+        "appliesAfter": "logged_behavior_or_practice",
+        "noAutomaticCoherenceIncrease": true
+      },
+      "recordStatus": "MAP_DATA_CONTRACT_NOT_RUNTIME"
+    }
+  ],
+  "edges": [
+    {
+      "from": "game:inferno:L01",
+      "to": "game:inferno:L02",
+      "kind": "SCENE_SEQUENCE",
+      "status": "GAMEBOARD_NAVIGATION_PROPOSED",
+      "noAutomaticUserLevelAssignment": true
+    },
+    {
+      "from": "game:inferno:L02",
+      "to": "game:inferno:L03",
+      "kind": "SCENE_SEQUENCE",
+      "status": "GAMEBOARD_NAVIGATION_PROPOSED",
+      "noAutomaticUserLevelAssignment": true
+    },
+    {
+      "from": "game:inferno:L03",
+      "to": "game:inferno:L04",
+      "kind": "SCENE_SEQUENCE",
+      "status": "GAMEBOARD_NAVIGATION_PROPOSED",
+      "noAutomaticUserLevelAssignment": true
+    },
+    {
+      "from": "game:inferno:L04",
+      "to": "game:inferno:L05",
+      "kind": "SCENE_SEQUENCE",
+      "status": "GAMEBOARD_NAVIGATION_PROPOSED",
+      "noAutomaticUserLevelAssignment": true
+    },
+    {
+      "from": "game:inferno:L05",
+      "to": "game:inferno:L06",
+      "kind": "SCENE_SEQUENCE",
+      "status": "GAMEBOARD_NAVIGATION_PROPOSED",
+      "noAutomaticUserLevelAssignment": true
+    },
+    {
+      "from": "game:inferno:L06",
+      "to": "game:inferno:L07",
+      "kind": "SCENE_SEQUENCE",
+      "status": "GAMEBOARD_NAVIGATION_PROPOSED",
+      "noAutomaticUserLevelAssignment": true
+    },
+    {
+      "from": "game:inferno:L07",
+      "to": "game:inferno:L08",
+      "kind": "SCENE_SEQUENCE",
+      "status": "GAMEBOARD_NAVIGATION_PROPOSED",
+      "noAutomaticUserLevelAssignment": true
+    },
+    {
+      "from": "game:inferno:L08",
+      "to": "game:inferno:L09",
+      "kind": "SCENE_SEQUENCE",
+      "status": "GAMEBOARD_NAVIGATION_PROPOSED",
+      "noAutomaticUserLevelAssignment": true
+    },
+    {
+      "from": "game:purgatorio:P01",
+      "to": "game:purgatorio:P02",
+      "kind": "SCENE_SEQUENCE",
+      "status": "GAMEBOARD_NAVIGATION_PROPOSED",
+      "noAutomaticUserLevelAssignment": true
+    },
+    {
+      "from": "game:purgatorio:P02",
+      "to": "game:purgatorio:P03",
+      "kind": "SCENE_SEQUENCE",
+      "status": "GAMEBOARD_NAVIGATION_PROPOSED",
+      "noAutomaticUserLevelAssignment": true
+    },
+    {
+      "from": "game:purgatorio:P03",
+      "to": "game:purgatorio:P04",
+      "kind": "SCENE_SEQUENCE",
+      "status": "GAMEBOARD_NAVIGATION_PROPOSED",
+      "noAutomaticUserLevelAssignment": true
+    },
+    {
+      "from": "game:purgatorio:P04",
+      "to": "game:purgatorio:P05",
+      "kind": "SCENE_SEQUENCE",
+      "status": "GAMEBOARD_NAVIGATION_PROPOSED",
+      "noAutomaticUserLevelAssignment": true
+    },
+    {
+      "from": "game:purgatorio:P05",
+      "to": "game:purgatorio:P06",
+      "kind": "SCENE_SEQUENCE",
+      "status": "GAMEBOARD_NAVIGATION_PROPOSED",
+      "noAutomaticUserLevelAssignment": true
+    },
+    {
+      "from": "game:purgatorio:P06",
+      "to": "game:purgatorio:P07",
+      "kind": "SCENE_SEQUENCE",
+      "status": "GAMEBOARD_NAVIGATION_PROPOSED",
+      "noAutomaticUserLevelAssignment": true
+    },
+    {
+      "from": "game:paradiso:PD01",
+      "to": "game:paradiso:PD02",
+      "kind": "SCENE_SEQUENCE",
+      "status": "GAMEBOARD_NAVIGATION_PROPOSED",
+      "noAutomaticUserLevelAssignment": true
+    },
+    {
+      "from": "game:paradiso:PD02",
+      "to": "game:paradiso:PD03",
+      "kind": "SCENE_SEQUENCE",
+      "status": "GAMEBOARD_NAVIGATION_PROPOSED",
+      "noAutomaticUserLevelAssignment": true
+    },
+    {
+      "from": "game:paradiso:PD03",
+      "to": "game:paradiso:PD04",
+      "kind": "SCENE_SEQUENCE",
+      "status": "GAMEBOARD_NAVIGATION_PROPOSED",
+      "noAutomaticUserLevelAssignment": true
+    },
+    {
+      "from": "game:paradiso:PD04",
+      "to": "game:paradiso:PD05",
+      "kind": "SCENE_SEQUENCE",
+      "status": "GAMEBOARD_NAVIGATION_PROPOSED",
+      "noAutomaticUserLevelAssignment": true
+    },
+    {
+      "from": "game:paradiso:PD05",
+      "to": "game:paradiso:PD06",
+      "kind": "SCENE_SEQUENCE",
+      "status": "GAMEBOARD_NAVIGATION_PROPOSED",
+      "noAutomaticUserLevelAssignment": true
+    },
+    {
+      "from": "game:paradiso:PD06",
+      "to": "game:paradiso:PD07",
+      "kind": "SCENE_SEQUENCE",
+      "status": "GAMEBOARD_NAVIGATION_PROPOSED",
+      "noAutomaticUserLevelAssignment": true
+    },
+    {
+      "from": "game:paradiso:PD07",
+      "to": "game:paradiso:PD08",
+      "kind": "SCENE_SEQUENCE",
+      "status": "GAMEBOARD_NAVIGATION_PROPOSED",
+      "noAutomaticUserLevelAssignment": true
+    },
+    {
+      "from": "game:paradiso:PD08",
+      "to": "game:paradiso:PD09",
+      "kind": "SCENE_SEQUENCE",
+      "status": "GAMEBOARD_NAVIGATION_PROPOSED",
+      "noAutomaticUserLevelAssignment": true
+    },
+    {
+      "from": "game:paradiso:PD09",
+      "to": "game:paradiso:PD10",
+      "kind": "SCENE_SEQUENCE",
+      "status": "GAMEBOARD_NAVIGATION_PROPOSED",
+      "noAutomaticUserLevelAssignment": true
+    },
+    {
+      "from": "game:inferno:L09",
+      "to": "game:purgatorio:P01",
+      "kind": "BETWEEN_REALMS_GATEWAY",
+      "status": "GAMEBOARD_NAVIGATION_PROPOSED",
+      "noAutomaticUserLevelAssignment": true
+    },
+    {
+      "from": "game:purgatorio:P07",
+      "to": "game:paradiso:PD01",
+      "kind": "BETWEEN_REALMS_GATEWAY",
+      "status": "GAMEBOARD_NAVIGATION_PROPOSED",
+      "noAutomaticUserLevelAssignment": true
+    }
+  ],
+  "shadowEncounterLibrary": [
+    {
+      "poleKey": "IL",
+      "publicId": "SH011",
+      "label": "Separation",
+      "challenge": "Cuts off reciprocal connection through self-prioritization",
+      "visibility": "PUBLIC_TRAIT_ONLY",
+      "sourcePath": "docs/data/compass/shadow_archetypes/v1/PUBLIC_CHARACTERISTICS_ONLY_V1.json",
+      "runtime": "NO_INTEGRATION"
+    },
+    {
+      "poleKey": "RE",
+      "publicId": "SH006",
+      "label": "Vengeance",
+      "challenge": "Pursues retaliation and threatens others into stopping",
+      "visibility": "PUBLIC_TRAIT_ONLY",
+      "sourcePath": "docs/data/compass/shadow_archetypes/v1/PUBLIC_CHARACTERISTICS_ONLY_V1.json",
+      "runtime": "NO_INTEGRATION"
+    },
+    {
+      "poleKey": "DE",
+      "publicId": "SH014",
+      "label": "Obstruction",
+      "challenge": "Sabotages consenting relationships through concrete interference or harm",
+      "visibility": "PUBLIC_TRAIT_ONLY",
+      "sourcePath": "docs/data/compass/shadow_archetypes/v1/PUBLIC_CHARACTERISTICS_ONLY_V1.json",
+      "runtime": "NO_INTEGRATION"
+    },
+    {
+      "poleKey": "OR",
+      "publicId": "SH015",
+      "label": "Internal Sabotage",
+      "challenge": "Corrupts a shared structure while benefiting from insider access",
+      "visibility": "PUBLIC_TRAIT_ONLY",
+      "sourcePath": "docs/data/compass/shadow_archetypes/v1/PUBLIC_CHARACTERISTICS_ONLY_V1.json",
+      "runtime": "NO_INTEGRATION"
+    },
+    {
+      "poleKey": "PO",
+      "publicId": "SH016",
+      "label": "Sacrificial Extraction",
+      "challenge": "Sacrifices dependents' welfare to maintain status or institution",
+      "visibility": "PUBLIC_TRAIT_ONLY",
+      "sourcePath": "docs/data/compass/shadow_archetypes/v1/PUBLIC_CHARACTERISTICS_ONLY_V1.json",
+      "runtime": "NO_INTEGRATION"
+    },
+    {
+      "poleKey": "PE",
+      "publicId": "SH009",
+      "label": "Fraud",
+      "challenge": "Claims integrity while concealing harmful contrary facts",
+      "visibility": "PUBLIC_TRAIT_ONLY",
+      "sourcePath": "docs/data/compass/shadow_archetypes/v1/PUBLIC_CHARACTERISTICS_ONLY_V1.json",
+      "runtime": "NO_INTEGRATION"
+    },
+    {
+      "poleKey": "TR",
+      "publicId": "SH001",
+      "label": "Gatekeeping",
+      "challenge": "Sets terms for admission and refuses passage",
+      "visibility": "PUBLIC_TRAIT_ONLY",
+      "sourcePath": "docs/data/compass/shadow_archetypes/v1/PUBLIC_CHARACTERISTICS_ONLY_V1.json",
+      "runtime": "NO_INTEGRATION"
+    },
+    {
+      "poleKey": "CH",
+      "publicId": "SH005",
+      "label": "Reactivity",
+      "challenge": "Anger spikes beyond what safety requires",
+      "visibility": "PUBLIC_TRAIT_ONLY",
+      "sourcePath": "docs/data/compass/shadow_archetypes/v1/PUBLIC_CHARACTERISTICS_ONLY_V1.json",
+      "runtime": "NO_INTEGRATION"
+    },
+    {
+      "poleKey": "FL",
+      "publicId": "SH017",
+      "label": "Poisoning",
+      "challenge": "Creates persistent exposure to something known to harm others",
+      "visibility": "PUBLIC_TRAIT_ONLY",
+      "sourcePath": "docs/data/compass/shadow_archetypes/v1/PUBLIC_CHARACTERISTICS_ONLY_V1.json",
+      "runtime": "NO_INTEGRATION"
+    },
+    {
+      "poleKey": "AL",
+      "publicId": "SH018",
+      "label": "Coercive Abduction",
+      "challenge": "Overrides consent through force and deceptive approach",
+      "visibility": "PUBLIC_TRAIT_ONLY",
+      "sourcePath": "docs/data/compass/shadow_archetypes/v1/PUBLIC_CHARACTERISTICS_ONLY_V1.json",
+      "runtime": "NO_INTEGRATION"
+    },
+    {
+      "poleKey": "HO",
+      "publicId": "SH019",
+      "label": "Forced Alteration",
+      "challenge": "Forces alterations without understanding effects",
+      "visibility": "PUBLIC_TRAIT_ONLY",
+      "sourcePath": "docs/data/compass/shadow_archetypes/v1/PUBLIC_CHARACTERISTICS_ONLY_V1.json",
+      "runtime": "NO_INTEGRATION"
+    },
+    {
+      "poleKey": "SA",
+      "publicId": "SH020",
+      "label": "Sabotage",
+      "challenge": "Blocks important collective processes for destructive effect",
+      "visibility": "PUBLIC_TRAIT_ONLY",
+      "sourcePath": "docs/data/compass/shadow_archetypes/v1/PUBLIC_CHARACTERISTICS_ONLY_V1.json",
+      "runtime": "NO_INTEGRATION"
+    },
+    {
+      "poleKey": "TU",
+      "publicId": "SH021",
+      "label": "Deceit",
+      "challenge": "Creates false accounts for others to rely on",
+      "visibility": "PUBLIC_TRAIT_ONLY",
+      "sourcePath": "docs/data/compass/shadow_archetypes/v1/PUBLIC_CHARACTERISTICS_ONLY_V1.json",
+      "runtime": "NO_INTEGRATION"
+    },
+    {
+      "poleKey": "NA",
+      "publicId": "SH022",
+      "label": "Forced Growth",
+      "challenge": "Intervenes to accelerate development and damages the result",
+      "visibility": "PUBLIC_TRAIT_ONLY",
+      "sourcePath": "docs/data/compass/shadow_archetypes/v1/PUBLIC_CHARACTERISTICS_ONLY_V1.json",
+      "runtime": "NO_INTEGRATION"
+    }
+  ],
+  "ascentArchetypeLibrary": [
+    {
+      "id": "compass-archetype:Warrior",
+      "publicName": "Warrior",
+      "behavior": "PROTECT → INITIATE → HOLD → REVIEW",
+      "existingCandidateParadisoIds": [
+        "paradiso:PD05"
+      ],
+      "status": "RESONANCES_AS_CANDIDATES_NOT_MANDATORY_CLASSES"
+    },
+    {
+      "id": "compass-archetype:Sage",
+      "publicName": "Sage",
+      "behavior": "RECEIVE → DIFFERENTIATE → SEEK → EXPRESS",
+      "existingCandidateParadisoIds": [
+        "paradiso:PD04"
+      ],
+      "status": "RESONANCES_AS_CANDIDATES_NOT_MANDATORY_CLASSES"
+    },
+    {
+      "id": "compass-archetype:Rebel",
+      "publicName": "Rebel",
+      "behavior": "REPEL → EXAMINE → EXPRESS → TRANSFORM",
+      "existingCandidateParadisoIds": [
+        "paradiso:PD06"
+      ],
+      "status": "RESONANCES_AS_CANDIDATES_NOT_MANDATORY_CLASSES"
+    },
+    {
+      "id": "compass-archetype:Caregiver",
+      "publicName": "Caregiver",
+      "behavior": "RECEIVE → CONNECT → OFFER → RELEASE CONTROL",
+      "existingCandidateParadisoIds": [
+        "paradiso:PD08"
+      ],
+      "status": "RESONANCES_AS_CANDIDATES_NOT_MANDATORY_CLASSES"
+    },
+    {
+      "id": "compass-archetype:Creator",
+      "publicName": "Creator",
+      "behavior": "SEEK → TRANSFORM → EXPRESS → RECEIVE CRITIQUE",
+      "existingCandidateParadisoIds": [
+        "paradiso:PD09"
+      ],
+      "status": "RESONANCES_AS_CANDIDATES_NOT_MANDATORY_CLASSES"
+    },
+    {
+      "id": "compass-archetype:Magician",
+      "publicName": "Magician",
+      "behavior": "OBSERVE → REFRAME → TRANSFORM → VERIFY",
+      "existingCandidateParadisoIds": [
+        "paradiso:PD09"
+      ],
+      "status": "RESONANCES_AS_CANDIDATES_NOT_MANDATORY_CLASSES"
+    },
+    {
+      "id": "compass-archetype:Ruler",
+      "publicName": "Ruler",
+      "behavior": "ORDER → EXPRESS STANDARDS → RECEIVE APPEAL",
+      "existingCandidateParadisoIds": [
+        "paradiso:PD06"
+      ],
+      "status": "RESONANCES_AS_CANDIDATES_NOT_MANDATORY_CLASSES"
+    },
+    {
+      "id": "compass-archetype:Explorer",
+      "publicName": "Explorer",
+      "behavior": "SEEK → APPROACH → OBSERVE → RETURN",
+      "existingCandidateParadisoIds": [
+        "paradiso:PD07"
+      ],
+      "status": "RESONANCES_AS_CANDIDATES_NOT_MANDATORY_CLASSES"
+    },
+    {
+      "id": "compass-archetype:Lover",
+      "publicName": "Lover",
+      "behavior": "ATTRACT → CONNECT → RECEIVE → RELEASE OWNERSHIP",
+      "existingCandidateParadisoIds": [
+        "paradiso:PD03"
+      ],
+      "status": "RESONANCES_AS_CANDIDATES_NOT_MANDATORY_CLASSES"
+    },
+    {
+      "id": "compass-archetype:Jester",
+      "publicName": "Jester",
+      "behavior": "RECEIVE → EXPRESS PLAY → CONNECT → REFOCUS",
+      "existingCandidateParadisoIds": [
+        "paradiso:PD08"
+      ],
+      "status": "RESONANCES_AS_CANDIDATES_NOT_MANDATORY_CLASSES"
+    },
+    {
+      "id": "compass-archetype:Everyman",
+      "publicName": "Everyman",
+      "behavior": "CONNECT → RECEIVE DIFFERENCE → EXPRESS SOLIDARITY",
+      "existingCandidateParadisoIds": [
+        "paradiso:PD08"
+      ],
+      "status": "RESONANCES_AS_CANDIDATES_NOT_MANDATORY_CLASSES"
+    },
+    {
+      "id": "compass-archetype:Innocent",
+      "publicName": "Innocent",
+      "behavior": "RECEIVE → SEEK EVIDENCE → PRESERVE OPENNESS",
+      "existingCandidateParadisoIds": [
+        "paradiso:PD01"
+      ],
+      "status": "RESONANCES_AS_CANDIDATES_NOT_MANDATORY_CLASSES"
+    }
+  ]
+}
