@@ -18,6 +18,7 @@ function loadDocumentedInfernoGraph() {
   const research = parse(INTEGRATION+'INFERNO_RESEARCH_WIRING_OVERLAY_V1.json');
   const bridge = parse(INTEGRATION+'INFERNO_CROSS_REGISTRY_SOURCE_BRIDGE_V1.json');
   const index = parse(INTEGRATION+'INFERNO_RESEARCH_RECORD_INDEX_V1.json');
+  const reconstruction = parse('docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json');
   const shadow = parse('docs/data/compass/shadow_archetypes/v1/SHADOW_ARCHETYPES_REGISTRY_V1.json');
   invariant(base.status === 'DOCUMENTED_NOT_RUNTIME', 'base is no longer documentation-only');
   invariant(research.authority === 'SOURCE_REFERENCED_CANDIDATE_NON_CANONICAL', 'research authority drift');
@@ -26,6 +27,8 @@ function loadDocumentedInfernoGraph() {
   invariant(research.recordBindings.length === 38 && research.edges.length === 80, 'research count drift');
   invariant(bridge.referenceEdges.length === 3 && bridge.sourceNodes.length === 3, 'bridge count drift');
   invariant(index.status === 'RESEARCH_BODIES_PUBLISHED__CANONICAL_NORMALIZED_JSON_NOT_IMPORTED' && index.recordCount === 38 && index.records.length === 38, 'index status/count drift');
+  invariant(reconstruction.authority === 'RESEARCH_RECONSTRUCTION_ONLY_NOT_CANONICAL_NOT_RUNTIME' && reconstruction.sameAsMissingV1Archive === false, 'unapproved V2 source promotion');
+  invariant(reconstruction.records.length === 38 && reconstruction.templateFields.length === 21, 'normalized V2 structure drift');
   invariant(bridge.authority.graphPromotion === false && bridge.authority.scoringPermission === false, 'unsafe bridge promotion');
   const nodes = [...base.nodes, ...bridge.sourceNodes];
   const ids = new Set(nodes.map(n=>n.id));
@@ -38,6 +41,13 @@ function loadDocumentedInfernoGraph() {
   const researchIds = new Set(research.recordBindings.map(r=>r.graphNodeId));
   invariant(researchIds.size === 38, 'duplicate Inferno record binding');
   const indexedIds = new Set(index.records.map(r=>r.graphNodeId));
+  const reconstructedIds = new Set(reconstruction.records.map(r=>r.id));
+  invariant(reconstructedIds.size === 38 && [...researchIds].every(id=>reconstructedIds.has(id)), 'reconstruction V2/graph ID drift');
+  for (const r of reconstruction.records) {
+    invariant(r.authority === 'SOURCE_REFERENCED_NONCANONICAL_RECONSTRUCTION' && r.refer === false && r.oppositeId === null, 'unsafe reconstructed promotion '+r.id);
+    invariant(r.researchPasses.length === 4 && reconstruction.templateFields.every(k=>Object.hasOwn(r,k)), 'missing required V2 research template field '+r.id);
+    invariant(r.links.every(e=>e.status === 'UNPROMOTED' && e.notRuntime === true), 'unapproved V2 cross-link '+r.id);
+  }
   invariant(indexedIds.size === 38 && [...researchIds].every(id=>indexedIds.has(id)), 'record index/graph identity drift');
   for (const b of research.recordBindings)
     invariant(ids.has(b.graphNodeId) && b.graphNodeId === 'inferno:'+b.recordId, 'invalid record binding '+b.recordId);
@@ -69,6 +79,7 @@ function loadDocumentedInfernoGraph() {
   const dispositions = new Map(bridge.isolatedDispositions.map(x=>[x.id,x]));
   const bindings = new Map(research.recordBindings.map(x=>[x.graphNodeId,x]));
   const indexedRecords = new Map(index.records.map(x=>[x.graphNodeId,x]));
+  const reconstructed = new Map(reconstruction.records.map(x=>[x.id,x]));
   function referencesFor(id, includeCandidates = true) {
     const all = [];
     for (const [origin, edges] of [['baseline',base.edges],['research',research.edges],['cross-registry',bridge.referenceEdges]]) {
@@ -89,6 +100,8 @@ function loadDocumentedInfernoGraph() {
       id, record:dictionary.get(id),
       researchBinding:bindings.get(id)||null,
       sourceIndex: indexedRecords.get(id)||null,
+      reconstructedResearch: options.includeReconstruction === true ? reconstructed.get(id)||null : null,
+      reconstructedResearchCanonical:false,
       disposition:dispositions.get(id)||null,
       edges:referencesFor(id,options.includeCandidates !== false),
       documentedOnly:true,canonicalApproved:false,runtimeApproved:false,
@@ -102,7 +115,10 @@ function loadDocumentedInfernoGraph() {
   return Object.freeze({
     lookup,
     audit:Object.freeze({baseNodes:base.nodes.length,baseEdges:base.edges.length,
-      infernoBindings:research.recordBindings.length,indexedRecords:index.records.length,researchEdges:research.edges.length,
+      infernoBindings:research.recordBindings.length,indexedRecords:index.records.length,
+      reconstructedRecords:reconstruction.records.length,reconstructedTemplateFields:reconstruction.templateFields.length,
+      reconstructedAnalyticalPasses:reconstruction.records.reduce((n,r)=>n+r.researchPasses.length,0),
+      researchEdges:research.edges.length,
       referenceEdges:bridge.referenceEdges.length,referenceNodes:bridge.sourceNodes.length,
       documentedDisconnected:disconnected.sort(),
       quarantined:[...exceptionIds].sort(),narrativeBoundaries:corrections.size,
