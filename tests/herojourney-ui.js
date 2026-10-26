@@ -133,7 +133,7 @@ const url='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1
    const node=grid&&grid.querySelector('[data-hjscene]');
    const figure=board&&board.querySelector('svg.hj-avatar-form');
    return {visible:!!board&&!!grid,scenes:grid?grid.querySelectorAll('[data-hjscene]').length:0,
-    columns:grid?getComputedStyle(grid).gridTemplateColumns.split(/\\s+/).filter(Boolean).length:0,
+    columns:grid?getComputedStyle(grid).gridTemplateColumns.split(/\s+/).filter(Boolean).length:0,
     noMotion:!!node&&getComputedStyle(node).animationName==='none'&&getComputedStyle(node).transitionDuration==='0s',
     figureAccessible:!!figure&&figure.getAttribute('role')==='img'&&!!figure.getAttribute('aria-label')};
   });
