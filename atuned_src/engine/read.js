@@ -26,7 +26,7 @@ function input(prof,opts){
  loadProfile(p);            /* soul, nine axes, laws, gate evidence. builds the soul */
  if(p.intake&&p.intake.answers)iqApply(p);    /* a measured law beats the default 6 */
  if(o.story){                                 /* new text, not yet in the axes */
-  applyStory(o.story); verpApply(o.story); leanApply(o.story);}
+  applyStory(o.story); applyStoryAddr(o.story); verpApply(o.story); leanApply(o.story);}
  return p;}
 
 /* ---------- THROUGHPUT ----------

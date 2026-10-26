@@ -1201,6 +1201,39 @@ function applyStory(text){
   .reduce(function(a,h){return a+Math.abs(h.amt);},0);
  if(calm)CHARGES.forEach(function(c){S.charge[c]=clamp(S.charge[c]-calm/140,0,10);});
  return {parsed:p, applied:touched};}
+/* ============================================================
+   APPLYSTORYADDR · THE ADDITIVE PER-ADDRESS LAYER, 26 October.
+
+   applyStory above keeps its own body and signature, on the standing
+   ruling below: scanStory, parseStory and applyStory are untouched. It
+   writes only S.charge, one total per fetter, so every address sharing a
+   fetter is spread by susceptibility alone and a story naming one
+   specific place carries no more weight there than anywhere else the
+   body can hold the same feeling. Review B, 25 October, measured it:
+   grief read at the Heart under every blueprint tried, and the field
+   made the Heart the heaviest seat in 6 of 19 and held nothing there at
+   all in 11 of 19. Writing "chest", "stomach", "throat" or "lower back"
+   changed nothing.
+
+   A sibling, not a change to applyStory: the same text, parsed again
+   (parseStory is pure, nothing in it depends on call order or on
+   applyStory having run). Only the imprints the person's own words
+   actually pointed to, im.inferred false, add anything here. A fallback
+   guess (inferred true) adds nothing; the fetter spread above already
+   carries it, exactly as today. Scaled by the same 0.35 applyStory uses,
+   so the two terms sit on one scale when compute() adds them together.
+   This is additive on top of the spread, never in place of it: an
+   address nobody named keeps reading exactly as it does today. Call
+   this everywhere applyStory is called, never instead of it. */
+function applyStoryAddr(text){
+ if(showRefuse('story'))return {applied:{}, refused:'example'};
+ var p=parseStory(text), touched={};
+ p.imprints.forEach(function(im){
+  if(im.inferred||im.node==null)return;
+  touched[im.node]=(touched[im.node]||0)+im.amt;});
+ Object.keys(touched).forEach(function(k){
+  S.addr[k]=clamp((S.addr[k]||0)+touched[k]*0.35,0,10);});
+ return {applied:touched};}
 
 /* ============================================================
    SNIFFSTORY · THE OUTPUT CONTRACT, SNIFFER_SPEC.md SECTION 10.
