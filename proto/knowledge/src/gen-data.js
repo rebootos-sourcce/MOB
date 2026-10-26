@@ -19,7 +19,7 @@ const src=process.argv[2]?fs.readFileSync(process.argv[2],'utf8')
  :cp.execSync('git show HEAD:engine.js',{cwd:ROOT,maxBuffer:64e6}).toString();
 const ctx={console}; vm.createContext(ctx);
 vm.runInContext(src+`;this.__={NODES,CHILD,MASKS,ARCH,GLOSS,HCX_LIB,ALL_SAB,SABDEF,
- DOMAINS,DOMDEF,APC,AXCARD,PAL,SEATGLYPH,BANDS,KB_KEY,
+ DOMAINS,DOMDEF,KB_RENAME,APC,AXCARD,PAL,SEATGLYPH,BANDS,KB_KEY,
  AXLINE:CHILD.map(function(c){return axLine(c.nm);}), DESCENT};`,ctx);
 const nerveSource=fs.readFileSync(path.join(ROOT,'atuned_src','engine','data','nerves.js'),'utf8');
 const nerveCtx={}; vm.createContext(nerveCtx);
@@ -287,7 +287,7 @@ T.MASKS.forEach(m=>add({id:'mask:'+m.nm, kind:'mask', nm:m.nm, seat:(m.b&&m.b[0]
  fam:(m.b||[]).join(' and '), def:'The '+m.nm.toLowerCase()+' mask '+clean(m.v)+'.', ic:m.ic}));
 T.ARCH.forEach((a,i)=>add({id:'arch:'+a.nm, kind:'arch', nm:a.nm, seat:a.b||'Heart', idx:i,
  fam:(a.b||'Heart')+' seat', def:'The '+a.nm.toLowerCase()+' '+clean(a.v)+'.', ic:a.ic}));
-T.DOMAINS.forEach((d,i)=>{const x=T.DOMDEF[T.KB_KEY(d.nm)];
+T.DOMAINS.forEach((d,i)=>{const oldKey=T.KB_KEY(d.nm);const alias=T.KB_RENAME[oldKey];const x=T.DOMDEF[oldKey]||(alias?T.DOMDEF[T.KB_KEY(alias)]:null);
  add({id:'dom:'+d.nm, kind:'dom', nm:d.nm, seat:'Heart', idx:i, fam:d.r+' root',
   def:d.nm+', '+clean(d.d)+'.', clear:x?clean(x.c):'', dist:x?clean(x.x):'', ic:d.ic||null});});
 
