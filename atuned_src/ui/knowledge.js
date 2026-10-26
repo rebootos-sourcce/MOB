@@ -828,6 +828,7 @@ function kbPsycheDrill(d){
   +'<div class="ad-sub">'+esc(d.family)+'</div>'
   +'<div class="pm-eye">Source-defined description</div><p class="ad-p">'+esc(detail)+'</p>'
   +'<div class="pm-eye">Source status</div><p class="ad-p">'+esc(d.reviewStatus||'unclassified')+'</p>'
+  +((d.sourceRefs||[]).length?'<div class="pm-eye">Source references</div><p class="ad-p">'+esc(d.sourceRefs.join(' / '))+'</p>':'')
   +(relationButtons?'<div class="pm-eye">Connected records, tap to follow</div>'+relationButtons:''));
 }
 /* A connected Deep Psyche record opens the same source-backed drill. */
