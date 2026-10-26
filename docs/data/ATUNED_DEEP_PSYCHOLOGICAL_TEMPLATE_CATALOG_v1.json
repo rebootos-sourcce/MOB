@@ -1,8 +1,9 @@
 {
   "catalogId": "atuned.deep_psychological.template_catalog",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "status": "PROPOSED_TEMPLATE_CATALOG; EMBEDDED_IN_GENERATED_DATA_NAMESPACE; RUNTIME_VALIDATION_PENDING",
   "purpose": "Typed templates for source-backed psychological records, source-version-specific domain rosters, related consciousness concepts, and explicitly provisional crosswalks. Template completeness does not confer canonical approval.",
+  "fieldContract": "fields are required: every reader of this catalog counts an empty one as incomplete or an error. optionalFields (added 1.4.0) are declared for a template but may be absent, and an absent one never makes a record incomplete. A reader that only knows fields ignores optionalFields, so records and readers from 1.3.0 still load unchanged.",
   "templates": [
     {
       "id": "TPL-PSYCHOLOGICAL-ROOT-V1",
@@ -114,7 +115,10 @@
         "sourceRefs",
         "researchPasses"
       ],
-      "description": "ARCHDOM source-row record; target taxonomy equivalence remains unverified."
+      "optionalFields": [
+        "complexTarget"
+      ],
+      "description": "ARCHDOM source-row record; target taxonomy equivalence remains unverified. complexTarget, when present, names one complex, hyper complex (hcx) or super complex entry by exact name."
     },
     {
       "id": "TPL-ARCHETYPE-FETTER-SEAT-MAPPING-V1",
@@ -131,7 +135,10 @@
         "sourceRefs",
         "researchPasses"
       ],
-      "description": "ARCH18 source-row record; mapping semantics remain unverified."
+      "optionalFields": [
+        "complexTarget"
+      ],
+      "description": "ARCH18 source-row record; mapping semantics remain unverified. complexTarget, when present, names one complex, hyper complex (hcx) or super complex entry by exact name."
     },
     {
       "id": "TPL-BLUEPRINT-DOMAIN-VISUAL-SLOT-V1",

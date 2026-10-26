@@ -39,6 +39,13 @@ function integrateDeepPsychological(entries, registry, catalog) {
     }
     const missing = checkMissing(source, template);
     if (missing.length) errors.push(source.id+': missing fields '+missing.join(','));
+    const optional = template.optionalFields || [];
+    if (Object.prototype.hasOwnProperty.call(source, 'complexTarget') && source.complexTarget != null) {
+      if (!optional.includes('complexTarget'))
+        errors.push(source.id+': complexTarget is not declared by template '+template.id);
+      else if (typeof source.complexTarget !== 'string')
+        errors.push(source.id+': complexTarget must be a string, got '+typeof source.complexTarget);
+    }
     const copy = {
       id: source.id,
       kind: 'psych_'+source.kind,
@@ -60,9 +67,15 @@ function integrateDeepPsychological(entries, registry, catalog) {
       canonicalStatus: source.canonicalStatus || 'NOT_ADJUDICATED',
       slotOnly: Boolean(source.slotOnly),
       templateId: template.id,
-      template: Object.fromEntries(template.fields.map(f => [
-        f, Object.prototype.hasOwnProperty.call(source,f) ? source[f] : null
-      ])),
+      template: Object.fromEntries([
+        ...template.fields.map(f => [
+          f, Object.prototype.hasOwnProperty.call(source,f) ? source[f] : null
+        ]),
+        /* An optional field is carried only when the record has it, so an
+           unused one leaves the generated payload unchanged. */
+        ...optional.filter(f => Object.prototype.hasOwnProperty.call(source,f))
+          .map(f => [f, source[f]])
+      ]),
       templateValidation: {
         schemaDefined: true,
         sourceBacked: Boolean(source.sourceRefs && source.sourceRefs.length),
@@ -95,6 +108,22 @@ function integrateDeepPsychological(entries, registry, catalog) {
     }
     bridges.push([source.id,target.id,sourceField]);
   };
+  /* complexTarget names one entry of the complex family without saying which
+     kind it is, because DESCENT can reclassify a step (Psychopathy's is under
+     revision). gen-data builds these kinds from DESCENT and HCX_LIB, so the
+     lookup searches all three. Unlike the four lookups below, a name that
+     matches nothing, or more than one entry, is refused by name: it is never
+     dropped and never bridged to whichever entry happens to come first. */
+  const COMPLEX_KINDS = ['complex','hcx','supercomplex'];
+  const bridgeErrors = [];
+  const findComplex = (sourceId, name) => {
+    const hits = entries.filter(e => COMPLEX_KINDS.includes(e.kind) && norm(e.nm) === norm(name));
+    if (hits.length === 1) return hits[0];
+    bridgeErrors.push(sourceId+': mapping_record.complexTarget "'+name+'" '+(hits.length
+      ? 'matches more than one entry: '+hits.map(h => h.id).join(', ')
+      : 'matches no '+COMPLEX_KINDS.join(' / ')+' entry'));
+    return null;
+  };
   for (const source of registry.records) {
     const entry=byId.get(source.id);
     if (source.recordType==='archetype_candidate') {
@@ -117,8 +146,11 @@ function integrateDeepPsychological(entries, registry, catalog) {
         bridge(entry,findEngine('seat',seatName),'mapping_record.seatLabel');
       if (source.domainTarget)
         bridge(entry,findEngine('dom',source.domainTarget),'mapping_record.domainTarget');
+      if (source.complexTarget)
+        bridge(entry,findComplex(source.id,source.complexTarget),'mapping_record.complexTarget');
     }
   }
+  if (bridgeErrors.length) throw new Error(bridgeErrors.join('\n'));
 
   const orphanLinks=[];
   const nonreciprocal=[];
