@@ -140,7 +140,7 @@ Form art tokens can be driven by CQ and release milestone values, but exact cost
 |---|---|---|---|---|
 | Empty profile | Unknown (no realm label) | Editable neutral starting state | 0 | none |
 | Only Core 10 answered | **Provisional; no full-CQ coordinate** | Neutral/provisional preview | count stored past releases if any | allowed |
-| Full 21-lawn reading at CQ 39.9 | Inferno, stage L01 | CQ 39.9 morphology | current unique count | independent |
+| Full 21-law reading at CQ 39.9 | Inferno, stage L01 | CQ 39.9 morphology | current unique count | independent |
 | Later CQ rises to 40 | Purgatorio P01 | smooth upward form transition | unchanged unless new release | independent |
 | Later CQ rises to 60 | Paradiso PD01 | further visual evolution | immutable earned work | independent |
 | CQ falls from 65 to 59 | Purgatorio P07 | reverses mutable CQ-dependent form | release milestones unchanged | independent |
