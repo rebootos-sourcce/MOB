@@ -137,9 +137,20 @@ T.HCX_LIB.forEach(h=>add({id:'hcx:'+h.nm, kind:'hcx', nm:h.nm, seat:h.b, fam:'ar
 /* source-defined higher-order descent entries. Keep the three named steps
    distinct from the six HCX architecture records; provenance is compass.js.
    Do not treat this small explicit descent as a complete complex registry. */
-T.DESCENT.forEach((d,i)=>add({
+/* ALL THREE NAMED, NOTHING ELSE ASSUMED. This used to read 'complex', then
+   'super complex', then fall anything else to 'hcx' silently, so a typo or
+   a renamed kind (Psychopathy's own classification is under revision as
+   this is written) would quietly become a generic hyper-complex with no
+   warning. A descent entry's kind is one of exactly three source words;
+   anything else is a finding, not a default. */
+const DESCENT_KIND={complex:'complex','hyper complex':'hcx','super complex':'supercomplex'};
+T.DESCENT.forEach((d,i)=>{
+ if(!(d.kind in DESCENT_KIND))
+  throw new Error('descent:'+d.nm+' has a kind this generator does not know: '+JSON.stringify(d.kind)
+   +'. Expected one of: '+Object.keys(DESCENT_KIND).join(', '));
+ add({
  id:'descent:'+d.nm,
- kind:d.kind==='complex'?'complex':(d.kind==='super complex'?'supercomplex':'hcx'),
+ kind:DESCENT_KIND[d.kind],
  nm:d.nm, seat:null, fam:'higher-order descent',
  def:clean(d.d), body:clean(d.d),
  inferred:!!d.content.inferred,
@@ -159,7 +170,8 @@ T.DESCENT.forEach((d,i)=>add({
  researchSources:d.content.researchSources,
  researchPasses:d.content.researchPasses||[],
  descentOrder:i
-}));
+ });
+});
 
 /* Each higher-order item receives a separate, explicitly INFERRED counterpart
    record. These are working therapeutic/coherence poles, not canonical claims.

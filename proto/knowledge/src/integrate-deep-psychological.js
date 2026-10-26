@@ -20,8 +20,6 @@ function integrateDeepPsychological(entries, registry, catalog) {
   const kindCounts = {};
   const bridges = [];
   const norm = value => String(value || '').trim().toLowerCase();
-  const findEngine = (kind, name) =>
-    entries.find(e => e.kind === kind && norm(e.nm) === norm(name));
   const checkMissing = (source, template) =>
     template.fields.filter(f => !Object.prototype.hasOwnProperty.call(source, f) ||
       source[f] === undefined || source[f] === null || source[f] === '');
@@ -108,32 +106,39 @@ function integrateDeepPsychological(entries, registry, catalog) {
     }
     bridges.push([source.id,target.id,sourceField]);
   };
-  /* complexTarget names one entry of the complex family without saying which
-     kind it is, because DESCENT can reclassify a step (Psychopathy's is under
-     revision). gen-data builds these kinds from DESCENT and HCX_LIB, so the
-     lookup searches all three. Unlike the four lookups below, a name that
-     matches nothing, or more than one entry, is refused by name: it is never
-     dropped and never bridged to whichever entry happens to come first. */
+  /* A NAME THAT MATCHES NOTHING IS A FINDING, NOT A SILENT DROP. The four
+     lookups below used to call findEngine directly and move on when it
+     returned undefined, so a record could sit in the registry forever,
+     named at a seat or archetype that does not exist under that name, and
+     nothing would ever say so. An audit (26 October) found 21 such misses
+     already sitting unreported. complexTarget already refused to work that
+     way (kind can be any of three, because DESCENT can reclassify a step,
+     Psychopathy's is under revision); this brings the other four lookups up
+     to the same standard instead of leaving them the exception. */
   const COMPLEX_KINDS = ['complex','hcx','supercomplex'];
   const bridgeErrors = [];
-  const findComplex = (sourceId, name) => {
-    const hits = entries.filter(e => COMPLEX_KINDS.includes(e.kind) && norm(e.nm) === norm(name));
+  const findEngineChecked = (sourceId, kinds, name, sourceField) => {
+    const kindList = Array.isArray(kinds) ? kinds : [kinds];
+    const hits = entries.filter(e => kindList.includes(e.kind) && norm(e.nm) === norm(name));
     if (hits.length === 1) return hits[0];
-    bridgeErrors.push(sourceId+': mapping_record.complexTarget "'+name+'" '+(hits.length
+    bridgeErrors.push(sourceId+': '+sourceField+' "'+name+'" '+(hits.length
       ? 'matches more than one entry: '+hits.map(h => h.id).join(', ')
-      : 'matches no '+COMPLEX_KINDS.join(' / ')+' entry'));
+      : 'matches no '+kindList.join(' / ')+' entry'));
     return null;
   };
   for (const source of registry.records) {
     const entry=byId.get(source.id);
     if (source.recordType==='archetype_candidate') {
-      bridge(entry,findEngine('arch',source.canonicalName),'archetype_candidate.canonicalName');
+      bridge(entry,findEngineChecked(source.id,'arch',source.canonicalName,
+        'archetype_candidate.canonicalName'),'archetype_candidate.canonicalName');
     }
     if (source.recordType==='mapping_record') {
       if (source.archetypeName)
-        bridge(entry,findEngine('arch',source.archetypeName),'mapping_record.archetypeName');
+        bridge(entry,findEngineChecked(source.id,'arch',source.archetypeName,
+          'mapping_record.archetypeName'),'mapping_record.archetypeName');
       if (source.fetterLabel)
-        bridge(entry,findEngine('sab',source.fetterLabel),'mapping_record.fetterLabel');
+        bridge(entry,findEngineChecked(source.id,'sab',source.fetterLabel,
+          'mapping_record.fetterLabel'),'mapping_record.fetterLabel');
       /* ARCH18 explicitly records each tuple's seat. A seat-label route is
          source-backed navigation through the existing seat -> node -> nerve
          topology, including when an ARCH18 Saboteur alias is not an exact
@@ -143,11 +148,14 @@ function integrateDeepPsychological(entries, registry, catalog) {
         throat:'Throat',eye:'3rd Eye',crown:'Crown'
       }[norm(source.seatLabel)];
       if (seatName)
-        bridge(entry,findEngine('seat',seatName),'mapping_record.seatLabel');
+        bridge(entry,findEngineChecked(source.id,'seat',seatName,
+          'mapping_record.seatLabel'),'mapping_record.seatLabel');
       if (source.domainTarget)
-        bridge(entry,findEngine('dom',source.domainTarget),'mapping_record.domainTarget');
+        bridge(entry,findEngineChecked(source.id,'dom',source.domainTarget,
+          'mapping_record.domainTarget'),'mapping_record.domainTarget');
       if (source.complexTarget)
-        bridge(entry,findComplex(source.id,source.complexTarget),'mapping_record.complexTarget');
+        bridge(entry,findEngineChecked(source.id,COMPLEX_KINDS,source.complexTarget,
+          'mapping_record.complexTarget'),'mapping_record.complexTarget');
     }
   }
   if (bridgeErrors.length) throw new Error(bridgeErrors.join('\n'));
