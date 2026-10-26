@@ -1,0 +1,31 @@
+name: Hero Journey avatar validation
+on:
+  push:
+    branches:
+      - 'atunED/teachers-poles-ascent-alpha-2026-10-25'
+  workflow_dispatch:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build host-free canonical engine
+        run: sh ./atuned_src/BUILD-engine.sh
+      - name: Check Hero Journey coordinates and milestones
+        run: node tests/herojourney.js
+      - name: Existing engine contract suite
+        run: node tests/engine.js
+      - name: Build complete app and its packaging
+        run: sh ./atuned_src/BUILD.sh
+      - name: Confirm avatar modules exist in built product
+        run: |
+          grep -q 'function hjLocate' source.html
+          grep -q 'function hjPanel' source.html
+          grep -q 'function hjFigureHtml' source.html
+          grep -q 'Hero' source.html
