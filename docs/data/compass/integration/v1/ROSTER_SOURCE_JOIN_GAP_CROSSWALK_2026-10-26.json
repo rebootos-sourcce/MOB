@@ -1,0 +1,90 @@
+{
+  "title": "Compass roster missing membership — source-resolved crosswalk",
+  "date": "2026-10-26",
+  "status": "SOURCE_REFERENCE_JOIN_NOT_CANONICAL_APPROVAL",
+  "baseline": "docs/data/compass/integration/v1/COMPASS_COMPLETENESS_AUDIT_V4_2026-10-26.md",
+  "authoritativeRecipe": "atuned_src/engine/data/teachers_recipes.js",
+  "teacherRegistry": "docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json",
+  "shadowRegistry": "docs/data/compass/shadow_archetypes/v1/SHADOW_ARCHETYPES_REGISTRY_V1.json",
+  "rows": [
+    {
+      "name": "Zoroaster",
+      "pole": "TU",
+      "existingShadowRecordId": null,
+      "sourceRecordPath": null,
+      "missingFromTeacherRegistry": true,
+      "meaning": "Link to existing authored source; do not copy/rename record into a different semantic identity without reconciliation",
+      "verification": "TEACHER_PRESENT_IN_CANONICAL_RECIPE_ROSTER_NOT_IN_TEACHER_RECORD_REGISTRY"
+    },
+    {
+      "name": "Confucius",
+      "pole": "NA",
+      "existingShadowRecordId": null,
+      "sourceRecordPath": null,
+      "missingFromTeacherRegistry": true,
+      "meaning": "Link to existing authored source; do not copy/rename record into a different semantic identity without reconciliation",
+      "verification": "TEACHER_PRESENT_IN_CANONICAL_RECIPE_ROSTER_NOT_IN_TEACHER_RECORD_REGISTRY"
+    },
+    {
+      "name": "Kaliya",
+      "pole": "FL",
+      "existingShadowRecordId": "shadow:kaliya",
+      "sourceRecordPath": "docs/data/compass/shadow_archetypes/v1/records/kaliya.md",
+      "missingFromTeacherRegistry": true,
+      "meaning": "Link to existing authored source; do not copy/rename record into a different semantic identity without reconciliation",
+      "verification": "EXISTING_SHADOW_ID_MATCH"
+    },
+    {
+      "name": "Ravana",
+      "pole": "AL",
+      "existingShadowRecordId": "shadow:ravana",
+      "sourceRecordPath": "docs/data/compass/shadow_archetypes/v1/records/ravana.md",
+      "missingFromTeacherRegistry": true,
+      "meaning": "Link to existing authored source; do not copy/rename record into a different semantic identity without reconciliation",
+      "verification": "EXISTING_SHADOW_ID_MATCH"
+    },
+    {
+      "name": "Shu and Hu",
+      "pole": "HO",
+      "existingShadowRecordId": "shadow:shuhu",
+      "sourceRecordPath": "docs/data/compass/shadow_archetypes/v1/records/shuhu.md",
+      "missingFromTeacherRegistry": true,
+      "meaning": "Link to existing authored source; do not copy/rename record into a different semantic identity without reconciliation",
+      "verification": "EXISTING_SHADOW_ID_MATCH"
+    },
+    {
+      "name": "Apep",
+      "pole": "SA",
+      "existingShadowRecordId": "shadow:apep",
+      "sourceRecordPath": "docs/data/compass/shadow_archetypes/v1/records/apep.md",
+      "missingFromTeacherRegistry": true,
+      "meaning": "Link to existing authored source; do not copy/rename record into a different semantic identity without reconciliation",
+      "verification": "EXISTING_SHADOW_ID_MATCH"
+    },
+    {
+      "name": "The Lie / Druj",
+      "pole": "TU",
+      "existingShadowRecordId": "shadow:druj",
+      "sourceRecordPath": "docs/data/compass/shadow_archetypes/v1/records/druj.md",
+      "missingFromTeacherRegistry": true,
+      "meaning": "Link to existing authored source; do not copy/rename record into a different semantic identity without reconciliation",
+      "verification": "EXISTING_SHADOW_ID_MATCH"
+    },
+    {
+      "name": "The farmer of Song",
+      "pole": "NA",
+      "existingShadowRecordId": "shadow:farmer",
+      "sourceRecordPath": "docs/data/compass/shadow_archetypes/v1/records/farmer.md",
+      "missingFromTeacherRegistry": true,
+      "meaning": "Link to existing authored source; do not copy/rename record into a different semantic identity without reconciliation",
+      "verification": "EXISTING_SHADOW_ID_MATCH"
+    }
+  ],
+  "acceptance": [
+    "No omitted roster rows",
+    "All canonical teacher poles have source-backed teacher record memberships",
+    "All named inverse mappings point to an existing authoritative source record",
+    "No invented opposite identities",
+    "Preserve 11 vs 13 teacher discrepancy and 12th master policy until reconciled"
+  ]
+}
