@@ -501,8 +501,12 @@ function chgAdd(k,chg,meta){
    tool that produced it and re-runs it when a corpus grows.
 
    THE CORPUS, NAMED. index.html, the owner's own book, 117,716 words and
-   7,667 distinct surface forms, plus the fourteen persona voices the product
-   ships. A form neither confirms is not admitted, because admitting it is an
+   7,667 distinct surface forms, plus every persona voice the product ships
+   (PEOPLE[].says, read off PEOPLE.length and not typed here, the same
+   reason this file no longer counts its own allow list in prose: a persona
+   roster that grows is the same defect as a gate count that grows, and
+   CLAUDE.md already names what that costs). A form neither confirms is not
+   admitted, because admitting it is an
    unmeasured claim. When the record store exists there will be a third and
    much better corpus, and this list grows by re-running the tool rather than
    by anybody's judgement about what a person might write.
