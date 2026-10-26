@@ -50,6 +50,12 @@ const url='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1
    const did=ritStartPlan({steps:['box'],band:'Root',track:'Body',days:7},null);
    data.ritualStarted=!!did;
    data.ritualOwned=Array.isArray(CURP.ritualPlans)&&CURP.ritualPlans.some(x=>x.steps.indexOf('box')>=0);
+   /* A real daily ritual log changes practice history, never the CQ scorer. */
+   const practiceCQ=compute().CQ;
+   const practicePlan=(CURP.ritualPlans||[]).filter(x=>x.steps.indexOf('box')>=0).slice(-1)[0];
+   if(practicePlan)ritLog(practicePlan.id);
+   data.ritualDayLogged=CURP.rituals.some(x=>x.steps&&x.steps.indexOf('box')>=0&&ritIsDone(x));
+   data.ritualKeepsCQ=compute().CQ===practiceCQ;
    const ritualExport=validateProfile(JSON.parse(JSON.stringify(CURP)));
    data.ritualExport=ritualExport.ok&&Array.isArray(ritualExport.profile.ritualPlans)
     &&ritualExport.profile.ritualPlans.some(x=>x.steps.indexOf('box')>=0);
@@ -104,6 +110,8 @@ const url='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1
   assert.equal(result.releaseMilestoneZero,true,'reassessment is not a release');
   assert.equal(result.ritualStarted,true,'ritual starts using existing builder');
   assert.equal(result.ritualOwned,true,'plan is stored on the owned record');
+  assert.equal(result.ritualDayLogged,true,'existing Ritual Builder records completed daily practice');
+  assert.equal(result.ritualKeepsCQ,true,'daily practice cannot grant synthetic CQ lift');
   assert.equal(result.ritualExport,true,'plan survives strict export/import boundary');
   assert.equal(result.diagAppears,true,'three-channel Diagnostic is visible');
   assert.equal(result.diagNodes,21,'all 21 laws can be visited');
