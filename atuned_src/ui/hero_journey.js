@@ -1,5 +1,5 @@
 
-/* HERO'S JOURNEY BOARD — the living avatar's CQ coordinate and work doors.
+/* HERO'S JOURNEY BOARD  -  the living avatar's CQ coordinate and work doors.
  * The board has one position: canonical CQ. The selected encounter can differ. */
 var HJ_EXPANDED=false;
 /* The avatar is a figure, not a generic dot. CQ opens its posture and
@@ -77,9 +77,9 @@ function hjPanel(st){
  var visual=hjFigureHtml(h);
  var out='<section class="hj-panel" aria-label="Hero&#39;s Journey Board and avatar position" style="--hjp:'+pc+';--hjprogress:'+pc+'%">';
  out+='<div class="hj-heading"><div class="hj-title">Hero&#39;s Journey Board</div><div class="hj-metrics">'
-  +'<span class="hj-metric"><b>'+(h.cq===null?'—':h.cq.toFixed(1))+'</b><small>CQ / 100</small></span>'
+  +'<span class="hj-metric"><b>'+(h.cq===null?' - ':h.cq.toFixed(1))+'</b><small>CQ / 100</small></span>'
   +'<span class="hj-metric"><b>'+h.uniqueReleaseCount+'</b><small>Unique releases</small></span>'
-  +'<span class="hj-metric"><b>'+(h.delta===null?'—':(h.delta>=0?'+':'')+h.delta.toFixed(2))+'</b><small>CQ movement</small></span>'
+  +'<span class="hj-metric"><b>'+(h.delta===null?' - ':(h.delta>=0?'+':'')+h.delta.toFixed(2))+'</b><small>CQ movement</small></span>'
   +'</div></div>';
  out+='<div class="hj-figure"><div class="hj-character"><div class="hj-aura"></div>'+visual+'</div><div>'
   +'<div class="hj-bands" aria-label="Inferno 0 to 40, Purgatorio 40 to 60, Paradiso 60 to 100"><span class="hj-region"></span><span class="hj-region"></span><span class="hj-region"></span></div>'
