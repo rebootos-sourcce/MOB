@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v692 4d998273 2026-10-26 20:17"><head><meta charset="utf-8">
+<html lang="en" data-build="v695 367960bd 2026-10-26 21:40"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -3916,6 +3916,12 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .st-flow[data-focus="read"] .st-colr{flex:1.55 1 0}
 .st-flow[data-focus="release"] .st-colw{flex:1 1 0}
 .st-flow[data-focus="release"] .st-colx{flex:0 0 430px}
+/* SIMPLE, THEN THE DASHBOARD ONE PRESS AWAY, his words, 26 October. The
+   journal alone, full width, until the dashboard button expands the other
+   two back in. The columns are not re-rendered, only resized and hidden,
+   so nothing in them loses state by pressing this. */
+.st-flow.simple .st-colr,.st-flow.simple .st-colx{display:none}
+.st-flow.simple .st-colw{flex:1 1 100%}
 .st-pan{display:flex;flex-direction:column;min-width:0;min-height:0;position:relative;
  background:color-mix(in srgb,var(--ink) 3%,transparent);border:1px solid var(--edge);
  border-radius:var(--r-s);padding:14px 16px}
@@ -47639,7 +47645,7 @@ function stRender(){
     whole story and then refused it at Commit, which is a control that looks
     like it works until the moment it does not. */
  var show=showOnly();
- var out='<div class="st-flow" id="stflow" data-focus="'+STV.focus+'">'
+ var out='<div class="st-flow'+(STV.simple?' simple':'')+'" id="stflow" data-focus="'+STV.focus+'">'
   /* ---- the write column: the journal, with Source AI inside it ---- */
   +'<div class="st-colw">'
   +'<div class="st-pan st-jr'+(STV.chat?' st-chat':'')+'" id="stjr">'
@@ -47701,7 +47707,22 @@ function stRender(){
       that shows it runs. */
    +(ST_LISTEN?'<span class="st-mictime" id="stmictime" aria-hidden="true">'
      +stMicFmt(stMicElapsed())+'</span>':'')
-   +'</button>')+'</div>'
+   +'</button>')
+   /* THE DASHBOARD BUTTON. His words: "this needs to be the simple journal
+      plus the dashboard button that expands including the imprints and the
+      release." One press, one toggle: simple shows the Journal alone,
+      pressed shows the three columns this page always had. Wears the same
+      pill as Talk and Record so the row reads as one family of controls. */
+   +(show?'':'<button class="st-mic st-dash" id="stdash" type="button" '
+   +'aria-pressed="'+!STV.simple+'" aria-label="'+(STV.simple?'Dashboard':'Simple')+'" '
+   +'title="'+(STV.simple?'Show imprints and release alongside the journal.'
+     :'Back to the journal alone.')+'">'
+   +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
+   +'<rect x="3" y="3" width="7" height="18" rx="1.5"/>'
+   +'<rect x="13" y="3" width="8" height="8" rx="1.5"/>'
+   +'<rect x="13" y="14" width="8" height="7" rx="1.5"/></svg>'
+   +'<span>'+(STV.simple?'Dashboard':'Simple')+'</span></button>')
+   +'</div>'
   /* SOURCE AI AND THE JOURNAL'S MENU CHANGED PLACES, round LO, his words: "I
      want you to swap the main journal menu with the source AI question." The
      column read Source AI, then the journal's own top line with Record on it,
@@ -47914,6 +47935,8 @@ function stRender(){
   if(opening!==!!ST_LISTEN)stMic();
   STV.chat=opening; stRender();
   var f=document.getElementById(STV.chat?'stcin':'sttext'); if(f)f.focus();};
+ var db=document.getElementById('stdash');
+ if(db)db.onclick=function(){STV.simple=!STV.simple; stRender();};
  srcChatWire();}
 
 /* ============================================================
@@ -47928,8 +47951,14 @@ function stRender(){
    of stCommit's own reflow (STV.committedAt, below) is refused as the same
    press landing twice, never as a second one arriving late. */
 var ST_DBLTAP_MS=100;
+/* SIMPLE, THEN THE DASHBOARD ONE PRESS AWAY. His words: "this needs to be the
+   simple journal plus the dashboard button that expands including the
+   imprints and the release... it already starts off in easy mode." Simple is
+   the Journal alone, full width; the dashboard is the three columns this page
+   already had (stCssFlow below). One flag, default on, so a first landing is
+   simple before anyone presses anything. */
 var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:false,law:false,
- unsaved:null,draftT:null,draftFail:false,crisis:false};
+ unsaved:null,draftT:null,draftFail:false,crisis:false,simple:true};
 /* the one width the page changes shape at is the one the product stacks its
    columns at, so the Story cannot be in three columns while the rails are
    already one. */
@@ -57020,7 +57049,7 @@ var RUN={open:false,id:null,first:false,queue:[],plan:[],sec:0,idx:0,phase:'idle
          tally:null,hits:null,settleAt:0,settled:false,
          heavy:{},look:false,rerun:false,pick:[],studioLost:false,
          ask:false,said:null,skip:false,storyT:null,grp:'story',gfocus:0,books:{},
-         mini:false,doseHeld:null};
+         mini:false,doseHeld:null,shortSay:''};
 /* THE RUN IS A PLAN OF THOUGHT LINES, ruled. One pattern is one thought line
    and the line targets the address by way of the channel, so a run is a list
    of address, channel and line, capped at RUN_MAX. It is built when the run is
@@ -57116,14 +57145,16 @@ function relRerunSay(){
    fitting a run is allowed, and it is one per run. The engine's one rule goes
    before the first line is said: on a worked example the protocol does not
    play and the voice is not spoken for a run the end of it would refuse. */
-function relBegin(){
+function relBegin(door){
  if(showRefuse('release'))return;
  /* THE SAME GUARD #strun ALREADY KEEPS, held here too: #strun's own press
     clicks this button programmatically (ui/storyui.js), so a stray press
     reaching this one directly, the moment a commit has just moved a button
     onto it, is refused on the same terms. See STV.committedAt and
     ST_DBLTAP_MS in ui/storyui.js. */
- if(typeof STV!=='undefined'&&STV.committedAt&&typeof ST_DBLTAP_MS!=='undefined'
+ /* door is relPick's own call, the door's press already reaching here; see
+    NO SECOND SETUP PAGE in relPick for why the guard is not asked there */
+ if(!door&&typeof STV!=='undefined'&&STV.committedAt&&typeof ST_DBLTAP_MS!=='undefined'
    &&Date.now()-STV.committedAt<ST_DBLTAP_MS)return;
  if(typeof sfx==='function')sfx('begin',true);
  RUN.phase='welcome';RUN.line=0;RUN.idx=0;RUN.pass=0;RUN.halted=false;RUN.paused=false;
@@ -57243,7 +57274,46 @@ function relPick(nodeIds,from){
  /* the setup carousel opens on its first group, and on stories when any of
     what was picked came from one; the toggle is the person's after that */
  RUN.gfocus=0; RUN.grp=relGroups('story').some(function(g){return g.ei!=null;})?'story':'seat';
- RUN.open=true; relRender();}
+ RUN.open=true;
+ /* NO SECOND SETUP PAGE, ruled 25 October, his annotated screenshot of the
+    Set up step crossed out corner to corner: "My release protocol, I set up
+    on that page, so I don't have a second setup page." Every door landed on
+    a card of its own here (seat picker, run speed, times said, time, the
+    voice switch) and Run release on it was a second press after the door,
+    so the setup was asked twice: once on the dashboard's Release panel,
+    which already carries Pace and Times said (stRelPanel, ui/storyui.js),
+    and again here. A run that can begin now begins on the door's own press.
+    Pace and times said are what RUN already holds, the panel's or the last
+    run's, a hundred and pace one when nothing has set them. The voice and
+    tone switches were never only here: relSws draws them on the welcome,
+    the opening and the list. End on the welcome is the old Cancel, and it
+    says the same thing: nothing released, nothing charged.
+
+    The card below stays for the two runs that cannot begin, a plan with
+    nothing in it (the empty card, Rerun these) and a worked example (the
+    reading and Close), because those are refusals and not a setup.
+
+    The double tap guard in relBegin is not asked here. It was written for
+    #relgo, a button a commit could move under a finger, and #relgo is gone;
+    the one door a commit moves, #strun, keeps its own guard (ui/storyui.js).
+    Asked here it closed every release a caller opened inside a hundred
+    milliseconds of a commit, which tests/onboarding2.js caught on its first
+    run: the story committed, the release planned, and nothing opened.
+
+    A SHORTER RUN STILL SAYS SO (relShortSay, ruled 17 October). It was a
+    line under the count on this card, before Run. There is no before now,
+    so the welcome carries it, the first screen of the run and the one
+    before any line is said, and the list never does. It is read here,
+    once, off the plan the run was given, because a rerun or a later pick
+    changes what relShortSay would answer. Not through status: measured at
+    1600 and at 390 the message dock sits under the welcome's Skip, Pause
+    and End, so the line was drawn and could not be read. */
+ RUN.shortSay='';
+ if(!showOnly()&&(RUN.plan||[]).length){
+  RUN.shortSay=relShortSay();
+  relBegin(true);
+  return;}
+ relRender();}
 
 /* ============================================================
    ONE STEP OF THE SCRIPT, read off where the run is. Nothing is
@@ -58981,8 +59051,16 @@ function relCss(){
      the room too. Only the setup's: on the running screen the room comes out
      of the readings, which tests/release-screen.js holds above the controls
      at 1600 by 1000, so the run's foot is left as it was and named in the
-     review of this change rather than moved here. */
-  'html.keep-on .rel .rel-card[data-ph="setup"] .rel-foot.rel-act{padding-bottom:calc(var(--keep-h) + 4px)}',
+     review of this change rather than moved here.
+     AND THE WELCOME'S AND THE OPENING'S, 26 October. With the setup cut
+     (NO SECOND SETUP PAGE, relPick) the welcome is the first screen every
+     door lands on, and measured on a guest at 1600 and at 390 its Skip,
+     Pause and End sat wholly under the storage line, so the one way out of
+     a release opened by mistake was covered. The run's foot is still left
+     as it was, for the reason above. */
+  'html.keep-on .rel .rel-card[data-ph="setup"] .rel-foot.rel-act,'
+   +'html.keep-on .rel .rel-card[data-ph="welcome"] .rel-foot.rel-act,'
+   +'html.keep-on .rel .rel-card[data-ph="opening"] .rel-foot.rel-act{padding-bottom:calc(var(--keep-h) + 4px)}',
   '.rel-foot.rel-act{flex:none;display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;margin:0;',
   ' padding:12px 24px calc(20px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--bg) 62%,transparent)}',
   '.rel-stage{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:min(52vh,500px)}',
@@ -59631,33 +59709,40 @@ function relMarksNow(full){
    own released and recharged counts. On a phone the two panels sit side by
    side under the list, still left and right.
    ============================================================ */
-var REL_STEPS=['Set up','Settle','Release','Rest','Results'];
+/* SET UP IS OFF THE RAIL, ruled 25 October with the step it named (NO
+   SECOND SETUP PAGE, relPick). A rail of five that opens on its second dot
+   would tell a person they skipped something. The card a run that cannot
+   begin still draws is not a step of a run, so it answers minus one and
+   draws no rail at all (relTop). */
+var REL_STEPS=['Settle','Release','Rest','Results'];
 function relStepNow(){
- if(RUN.phase==='welcome'||RUN.phase==='opening')return 1;
- if(RUN.phase==='run')return 2;
- if(RUN.phase==='done')return relResting()?3:4;
- return 0;}
+ if(RUN.phase==='welcome'||RUN.phase==='opening')return 0;
+ if(RUN.phase==='run')return 1;
+ if(RUN.phase==='done')return relResting()?2:3;
+ return -1;}
 /* how far along the rail the fill reaches: whole steps behind, and inside the
    list the share of the plan said, so the line moves while the list runs */
 function relRailP(){
  var k=relStepNow(), w=0;
- if(k===2){var n=(RUN.plan||[]).length*RUN.dose; w=n?(RUN.idx*RUN.dose+RUN.pass)/n:0;}
- if(k===3)w=1-relSettleLeft()/REL_SETTLE_S;
+ if(k===1){var n=(RUN.plan||[]).length*RUN.dose; w=n?(RUN.idx*RUN.dose+RUN.pass)/n:0;}
+ if(k===2)w=1-relSettleLeft()/REL_SETTLE_S;
  return Math.max(0,Math.min(1,(k+w)/(REL_STEPS.length-1)));}
 function relTop(right){
  var k=relStepNow();
  return '<div class="rel-top" id="reltop">'
   +'<span class="rel-word">Release</span>'
-  +'<div class="rel-rail" role="img" aria-label="Step '+(k+1)+' of '+REL_STEPS.length+', '+REL_STEPS[k]+'">'
+  +(k<0?'<span class="rel-rail" aria-hidden="true"></span>'
+   :'<div class="rel-rail" role="img" aria-label="Step '+(k+1)+' of '+REL_STEPS.length+', '+REL_STEPS[k]+'">'
   +'<span class="rel-trk"><i class="rel-fill" style="--p:'+relRailP().toFixed(3)+'"></i>'
   +REL_STEPS.map(function(_,i){return '<b class="rel-dot'+(i<k?' past':'')+(i===k?' on':'')+'"></b>';}).join('')+'</span>'
-  +'<span class="rel-stepw">'+esc(REL_STEPS[k])+'</span></div>'
+  +'<span class="rel-stepw">'+esc(REL_STEPS[k])+'</span></div>')
   +'<span class="rel-topr">'+(right||'')+'</span></div>';}
 /* the rail moved in place on the list, so the fill glides on the context
    duration rather than being rebuilt at its new length every line */
 function relTopSync(){
  var t=document.getElementById('reltop'); if(!t)return;
  var k=relStepNow(), f=t.querySelector('.rel-fill'), w=t.querySelector('.rel-stepw'), r=t.querySelector('.rel-rail');
+ if(k<0)return;
  if(f)f.style.setProperty('--p',relRailP().toFixed(3));
  [].slice.call(t.querySelectorAll('.rel-dot')).forEach(function(d,i){
   d.classList.toggle('past',i<k); d.classList.toggle('on',i===k);});
@@ -59951,6 +60036,15 @@ function relRender(){
     skip it into the list. Nothing has been released at this point, so End
     here closes without committing anything. */
  var openFoot='<button class="btn" id="relskip">Skip the opening</button>'+relPauseEnd();
+ /* THE CROSS MOVED WITH THE FIRST SCREEN, 26 October. Ruled 2 October: "when
+    I click on a protocol, if I don't want to run it, give me the X so I can
+    have the option of canceling." It stood on the setup, and the setup is
+    cut (NO SECOND SETUP PAGE, relPick), so the welcome is now the screen a
+    click on a protocol lands on. Nothing has been said, released or charged
+    on the welcome or the opening, so it is the same close, relCancel, and it
+    says the same thing. The list has none: End is the way off it, and End
+    there charges what was reached. */
+ var openX='<button type="button" class="rel-x" id="relx" aria-label="Cancel">'+relIc('x')+'</button>';
  if(RUN.phase==='welcome'){
   /* HIS VOICE'S SLOT. The line is set at the size .rel-speak sets and does not
      carry that class, on purpose: .rel-speak and .rel-line mean "the line the
@@ -59959,7 +60053,7 @@ function relRender(){
      note says the voice starts at the list, and only while the voice is on,
      because with it off that sentence is not true. */
   var wl=relWelcome();
-  out=relShell({ph:'welcome',col:col0,foot:openFoot,
+  out=relShell({ph:'welcome',col:col0,foot:openFoot,right:openX,
    body:'<div class="rel-stage"><div class="pm-eye" aria-live="polite">Release, opening</div>'
     +'<div class="rel-human">'+esc(st.text)+'</div>'
     +'<div class="rel-dots">'+wl.map(function(_,i){return '<i class="'+(i<=RUN.line?'on':'')+'"></i>';}).join('')+'</div>'
@@ -59971,6 +60065,7 @@ function relRender(){
        sentence that is true of this build: with the voice on, nothing speaks
        until the list, and the voice starts there. */
     +(RUN.line===0&&relVoiceOn()?'<div class="rel-sub">The app voice starts with the list.</div>':'')
+    +(RUN.shortSay?'<div class="rel-note rel-cost" id="relcost">'+esc(RUN.shortSay)+'</div>':'')
     +relClock()+'</div>'+relSws(relNow().n)});
  } else if(RUN.phase==='opening'){
   /* "Release and reframe" was the old name for the mechanic, two words where
@@ -59980,7 +60075,7 @@ function relRender(){
      times": the opening is the instruction to repeat it, so it stands above
      the opening line and stays where it is for the whole list. */
   var pr0=relPrompt(relNow());
-  out=relShell({ph:'opening',col:col0,foot:openFoot,
+  out=relShell({ph:'opening',col:col0,foot:openFoot,right:openX,
    pre:'<div class="rel-pr in" id="relpr" data-k="'+esc(pr0.half)+'"><span>'+esc(pr0.half)+'</span><b>'+esc(pr0.text)+'</b></div>',
    body:'<div class="rel-stage"><div class="pm-eye" aria-live="polite">Release, opening</div>'
     +'<div class="rel-speak">'+esc(st.text)+'</div>'+relClock()+'</div>'+relSws(relNow().n)});
@@ -60116,12 +60211,10 @@ function relRender(){
    +'<button type="button" data-relgrp="story" aria-pressed="'+(RUN.grp!=='seat')+'">Story</button>'
    +'<button type="button" data-relgrp="seat" aria-pressed="'+(RUN.grp==='seat')+'">Seat</button></span></div>'
    +relSetupCar(spent);
-  /* A SHORTER RUN SAYS SO, IN ONE LINE, BEFORE RUN AND NEVER AFTER, 17
-     October. A short allowance cut the run without a sentence. It sits under
-     the count it qualifies, because at the foot of the fields it fell below
-     the first screen at both widths and Run release was pressed over it. */
-  var cost=(!spent&&!showOnly())?relShortSay():'';
-  if(cost)body+='<div class="rel-note rel-cost" id="relcost">'+esc(cost)+'</div>';
+  /* A SHORTER RUN SAYS SO, 17 October, and it is said in relPick now, as the
+     run begins: a run that can begin no longer draws this card at all (NO
+     SECOND SETUP PAGE, relPick), so a line here would be on a card nobody
+     who is short is ever shown. */
   /* NEW OR RERUN, 22.K17, as a pressed pair the way the dose picks are. The
      rerun's price is said before Run release is offered, because a person is
      entitled to see what a run costs before they begin it. */
@@ -60142,34 +60235,14 @@ function relRender(){
      stCommit wrote it before any release could be planned. */
   if(spent)body+='<div class="rel-note" id="relempty">'+esc(relEmptySay(again.length>0))+'</div>'
    +(typeof crisisBtn==='function'?'<p class="crx-line">'+crisisBtn()+'</p>':'');
-  /* HOW MANY PATTERNS, RUN SPEED AND TIME, round LY: "dials that say time, run
-     speed... number of patterns". Time is the length this exact plan will
-     run, read off relSecFrom, the same clock the run shows once it starts. */
-  /* NO DOSE ON THE MINI RELEASE. The ruled size is twelve lines said once, and
-     the card before it says each line is said once, so a field offering a
-     hundred is a control that turns the promised run into another one; the
-     Patterns field here was how "4 lines" became four hundred (M28). The pace
-     and the time stay, because the card says the person sets the pace. A
-     release after this one opens with the dose back. */
-  /* the pace, the patterns and the switches set a run, so on a worked example,
-     where no run begins (showOnly, ruled 16 October), they are not offered:
-     the voice switch there was a preference save the example refused */
-  else if(!showOnly())body+='<div class="rel-fields">'
-    +'<label class="rel-field"><span>Run speed</span><input type="number" id="relpace" min="0.5" max="2" step="0.1" value="'
-     +RUN.pace+'"></label>'
-    /* TIMES SAID, 17 October, and not Patterns: this is how many times each
-       line is said, and the allowance's unit is a line opened, which a dose
-       never spends. One word per concept. */
-    +(relMiniNow()?'':'<label class="rel-field"><span>Times said</span><input type="number" id="reldose" min="1" max="'
-     +REL_DOSES[REL_DOSES.length-1]+'" step="1" value="'+RUN.dose+'"></label>')
-    +'<div class="rel-field"><span>Time</span><b class="rel-time">'+relMMSS(relSecFrom(null))+'</b></div>'
-    /* his three, as quick picks on the same number */
-    +(relMiniNow()?'':'<div class="rel-field"><span>Left and right</span><div class="seg" role="group" aria-label="Times each line is said, left and right">'
-     +REL_DOSES.map(function(d){return '<button type="button" data-reldose="'+d+'" aria-pressed="'
-      +(RUN.dose===d)+'">'+d+'</button>';}).join('')+'</div></div>')
-    +'</div>';
-  /* and no switch for a run that cannot begin */
-  if(!spent&&!showOnly())body+=relSws(null);
+  /* RUN SPEED, TIMES SAID, TIME, LEFT AND RIGHT AND THE SWITCHES WERE HERE,
+     round LY ("dials that say time, run speed... number of patterns"), and
+     they are cut with the setup step, ruled 25 October: "My release
+     protocol, I set up on that page, so I don't have a second setup page."
+     Pace and times said are on the dashboard's Release panel (stRelPanel,
+     ui/storyui.js), the voice and tone switches on every screen of the run
+     (relSws). This card is drawn only for a run that cannot begin, and none
+     of those set a run that is not going to happen. */
 
   out=relShell({ph:'setup',col:col0,body:body,
    right:'<button type="button" class="rel-x" id="relx" aria-label="Cancel">'+relIc('x')+'</button>',
@@ -60188,8 +60261,10 @@ function relRender(){
      ?(again.length?'<button class="btn pri" id="relrerun">'+(again===RUN.pick?'Rerun these':'Rerun your heaviest')+'</button>':'')
       +'<button class="btn" id="relcancel">Close</button>'
       +'<button type="button" class="rel-lk" id="relplan">See the tiers</button>'
-     :'<button class="btn" id="relcancel">Cancel</button>'
-      +'<button class="btn pri" id="relgo">Run release</button>'))});}
+     /* a plan that can run never reaches this card (relPick begins it), so
+        the only way here with one is a begin refused on the way in, and
+        relPick closes on that. Close, for the reason the example gives. */
+     :'<button class="btn" id="relcancel">Close</button>'))});}
  var sc0=document.getElementById('relsc'), keepY=(sc0&&sc0.closest('[data-ph]')
   &&sc0.closest('[data-ph]').getAttribute('data-ph')==='done'&&RUN.phase==='done')?sc0.scrollTop:0;
  if(!kept)h.innerHTML=out;
@@ -60206,9 +60281,9 @@ function relRender(){
     screen disagreeing, which this file does not allow. */
  if((b=document.getElementById('relrest')))b.onclick=function(){
   relHush(); RUN.cool=COOLING.length; RUN.settled=true; relTicker(false); relRender();};
- /* BEGIN IS THE HAND OVER, and the press a browser needs before it will make
-    a sound. The technical requirement and the ritual are the same press. */
- if((b=document.getElementById('relgo')))b.onclick=relBegin;
+ /* BEGIN WAS THE HAND OVER here, #relgo, and the press a browser needs
+    before it will make a sound. The door's own press is that press now: it
+    reaches relBegin in the same handler, through relPick. */
  /* RERUN THESE, the empty card's first press: the rerun plan for what is
     picked, or for the heaviest addresses already opened when nothing picked
     is (relRerunPick), and the run begins on the same press. relMode narrows
@@ -60239,8 +60314,9 @@ function relRender(){
  if((b=document.getElementById('relrit')))b.onclick=function(){var lg=RUN.log.slice();relClose();ritOpen(lg);};
  /* RUN ANOTHER, round QM: "do you want to run another session, we would
     recommend these". The heaviest addresses still held, by the Release
-    button's own rule (relQueueOf), opened on the setup, so nothing starts
-    and nothing is charged until Run release is pressed again. */
+    button's own rule (relQueueOf). It opened on the setup and waited for Run
+    release; with the setup cut (relPick) this press is the begin, and End on
+    the welcome still leaves with nothing released and nothing charged. */
  if((b=document.getElementById('relagain')))b.onclick=function(){
   var ids=relQueueOf(6).map(function(n){return n.i;});
   if(ids.length)relPick(ids,RUN.storyT?{story_t:RUN.storyT}:null);};
@@ -60261,10 +60337,6 @@ function relRender(){
   if(RUN.paused){RUN.pauseAt=Date.now();relHush();relRender();}
   else {if(RUN.pauseAt)RUN.pausedMs+=Date.now()-RUN.pauseAt; RUN.pauseAt=0; relStep();}};
  if((b=document.getElementById('relbook')))b.onclick=relBookToggle;
- if((b=document.getElementById('reldose')))b.onchange=function(){
-  RUN.dose=Math.max(1,Math.min(REL_DOSES[REL_DOSES.length-1],Math.round(+this.value)||1));relRender();};
- h.querySelectorAll('[data-reldose]').forEach(function(el){el.onclick=function(){
-  RUN.dose=+this.getAttribute('data-reldose');relRender();};});
  h.querySelectorAll('[data-relmode]').forEach(function(el){el.onclick=function(){
   relMode(this.getAttribute('data-relmode')==='rerun');};});
  /* WHAT CHANGED, one press. relAnswer writes and then redraws the card, so
@@ -60277,8 +60349,6 @@ function relRender(){
  h.querySelectorAll('[data-relfelt]').forEach(function(el){el.onclick=function(){
   var x=RUN.log[+this.getAttribute('data-relfelt')]; if(!x)return;
   x.felt=!x.felt; this.setAttribute('aria-pressed',String(x.felt));};});
- if((b=document.getElementById('relpace')))b.onchange=function(){
-  RUN.pace=Math.max(0.5,Math.min(2,Math.round((+this.value||1)*10)/10));relRender();};
  /* uiSet is the one writer for the profile's preferences, so this reports
     through statusSaved like the other switches do. A save that fails leaves
     the tone on for this visit and says it will not survive a reload, and both
@@ -79993,7 +80063,12 @@ function obMiniHow(){
  return '<p class="ob-p">Each line is said '+(d===1?'once':d+' times')
   +(voice?', out loud by the app voice.':', and nothing reads it out loud.')
   +(m?' After the last line you rest for '+m+(m===1?' minute':' minutes')+', and a ring counts them down.':'')
-  +' You set the pace and can stop at any line.</p>';}
+  /* NOT "YOU SET THE PACE" ANY MORE, 26 October. The pace was a field on the
+     release's own setup step, and that step is cut (NO SECOND SETUP PAGE,
+     ui/release.js relPick): this card hands straight into the run, which
+     carries Pause and End and no pace, so the sentence says what the next
+     screen does. tests/firstrelease.js holds it to that screen. */
+  +' You can pause or stop at any line.</p>';}
 /* WHY THERE IS NO RELEASE TO BEGIN, when the story read and the plan is still
    refused. Said once, plainly; the route is the button beside it. */
 function obMiniWhy(pl,yes){
@@ -82688,5 +82763,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005453998"></div>
+<div id="eof" hidden data-len="005458626"></div>
 </body></html>
