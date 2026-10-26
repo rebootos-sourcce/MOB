@@ -51,6 +51,6 @@ function d3Valid(errs,raw){
   if(v!=null){if(typeof v!=='string'||!isFinite(Date.parse(v)))errs.push('three-register record '+k+' is not a date');
     else d[k]=v;}
  });
- if(d.completedAt&&d3Counts({diagnostic3:d}).answered!==63)errs.push('diagnostic3.completedAt requires 63 answered prompts');
+ if(d.completedAt&&d3Counts({diagnostic3:d}).answered!==63)errs.push('three-register completion requires all 63 answered prompts');
  return d;
 }
