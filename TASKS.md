@@ -33519,3 +33519,228 @@ Source: `REVIEW-audit-2026-10-09/` (five passes). Plan block: PLAN.md section W.
 - [ ] **V3. P0. Owner.** Add `ELEVENLABS_API_KEY` and `ELEVENLABS_VOICE_ID` as GitHub secrets on Reboot-OS, then re-run the `server` workflow. Until then the app is silent and says the voice is not switched on at the server.
 - [x] **V4. P1. A first visit that is not signed in is silent.** Done 9 October, the owner's ruling: the voice needs no sign in. Reboot-OS pull request 14 (device, address and server ceilings) and the app change in MOB pull request 43.
 - [ ] **V5. P1. The voice has never been heard on the live site.** First real check is the owner's ears after V1 to V3; add a live render check to the deploy smoke once a test account exists.
+
+## 26 October: today's working list closed into this file
+
+The session carried its own working list, outside this file, while this
+batch was built. On instruction, that list is now cleared. Everything it
+held moves here: what was built, with its evidence, under one heading; what
+is still open, under another, so none of it survives only on a screen this
+file can't show. Items are numbered 26-1 and up, scoped to this entry only.
+
+### Built and verified today
+
+- [x] **26-1. Body location now adds onto the charge spread, not just the
+      nine feelings evenly.** Review B's own finding, graded most serious.
+      `engine/core.js` gained `S.addr`, an address-keyed additive layer next
+      to `S.charge`. `engine/sniff.js` gained a new sibling function,
+      `applyStoryAddr(text)`, called wherever `applyStory` is called;
+      `applyStory` itself stayed untouched, on the standing ruling already
+      written into that file. It keys off `parseStory`'s own `inferred:false`
+      flag, meaning the person's own words pointed at that specific address,
+      and adds the same `*0.35` scale `applyStory` already uses. `compute()`'s
+      `n.held` now reads `(S.charge[n.cf]+(S.addr[n.i]||0))*n.susc*...`,
+      additive, so every address nobody named reads exactly as it did before.
+      Proven two ways: "the grief sits in my chest like a stone" resolves
+      Heart as the heaviest address, and a direct test that sets `S.addr` by
+      hand shows the layer touches only the address it is given. Broke 23
+      tests on the way to this (a stale `pct.js` citation, a missing
+      `journey.js` claim entry, a real state leak in `exdepth.js`'s history
+      replay, a missing `export.js` entry), fixed all four at the root rather
+      than patching each failing assertion. `tests/engine.js`: 6283 passed, 0
+      failed, 10 expected red, the same count as before the change. Unblocks
+      26-21 below.
+- [x] **26-2. Shock and Surprise, one trigger word each, now read a real
+      spread.** `engine/lexicon.js`: `LEX_FOLD_OK` gained `shocked` and
+      `surprised`; `LEXSYN` gained a `shock` and a `surprise` group, each word
+      checked against the book's own text before it went in.
+- [x] **26-3. The bare "did" bug.** `engine/sniff.js` around line 1602:
+      `LAW_NEG` carried a bare `'did'`, negating law detection on a "did" with
+      nothing after it. Removed, citing `sourceai.js`'s own `SRC_NEG` list as
+      the precedent for how a negation word should be scoped.
+- [x] **26-4. Stale "fourteen persona voices" comment.** `engine/lexicon.js`
+      now points at `PEOPLE.length` instead of a typed number, the exact
+      failure this file's own voice rule warns about above.
+- [x] **26-5. Stable code IDs, 7 of the 8 requested kinds.**
+      `engine/data/codes.js` and `engine/codes.js` gained `CODE_DOMAIN`,
+      `CODE_ROOT`, `CODE_MASK`, `CODE_LAW`, `CODE_GATE`, `CODE_COMPASS`,
+      `CODE_RECIPE`, wired into `codeTables()`, `codeIndexOf()` and
+      `codesCheckInto()` with row for row parity checks against each source
+      table. `figure`, the eighth kind, stayed deliberately uncoded: no
+      single clean source table exists for it, four tables name the same
+      people with overlapping, non-unique names. The reasoning is written
+      into the file itself, not left here only.
+- [x] **26-6. The canon.json lock list, written where it was promised.**
+      `CANON-MERGE-PLAN.md` now names all 10 of canon.json's real locks, not
+      the 5 a stale task description assumed: `node_count`, `chain_operator`,
+      `chain`, `saboteur_addresses`, `divine_term`, `morality`, `element_39`,
+      `evil`, `astrology`, `em_dashes`. Two real gaps surfaced doing it: the
+      live trace graph carries 4 of canon's 8 chain rungs, and `SAB_LIB`
+      hard-codes 3 named addresses per saboteur, which the `saboteur_addresses`
+      lock does not allow. Carried forward as 26-27 below.
+- [x] **26-7. Book versus app, Orphan and Magician's body seats.** Not
+      resolved, recorded. `DECISIONS.md` carries the finding, dated 26
+      October: the book places Orphan at Root and Crown and Magician at
+      Crown and Throat; this codebase places Orphan at Heart and Magician at
+      Third-eye, both research-driven and owner-directed (commit `121f3c2`,
+      `BACKLOG.md` G-4.4). The app's own tables disagree with each other too,
+      ARCH18 against ARCH, on Magician's seat. Left open on purpose, his call.
+- [x] **26-8. The double-tap-on-Commit billing bug.** Review B's find:
+      double-tapping Commit on the Story tab at 390px width could open a real
+      release run and call the billed voice-synthesize endpoint within 30 to
+      40 seconds, 2 of 3 times at phone width, real money at stake. Root
+      cause traced to the Release panel's Run button landing at the same
+      screen pixels the Commit button had just occupied, so the second half
+      of a double-tap could land on it. Fixed in an isolated worktree,
+      re-verified independently, then merged in.
+- [x] **26-9. The false "gain" chip on a plain reload.** Review B's find:
+      reloading the page, not switching profile, flashed a false gain chip
+      such as "Vitality +60%" on every bar though nothing had changed,
+      breaking the existing no-false-gain rule. Cause: the bars' remembered
+      previous value was empty at boot, so the first real tick after boot
+      read as a rise from zero, and whatever suppresses this on a deliberate
+      profile switch did not run on boot. Fixed and verified the same way.
+- [x] **26-10. The Positive and Negative rename regression, closed out.**
+      `gloss.js`'s lookup keys, a `summary.js` comment, `compass.js`'s "say:"
+      sentence, and stale benign/malignant assertions in `functional.js`,
+      `railmenu.js` and `onboarding2.js` all still carried the old names.
+      Fixed, `tests/functional.js` confirmed clean, committed with the gap in
+      the original rename verification owned in the message rather than
+      hidden.
+- [x] **26-11. Three audits run to answer his own "confirming" question.**
+      The coherence engine end to end, nerve to saboteur, CQ to DQ, simulated
+      both directions; the full records inventory, celestial, Jungian, roots,
+      what is ported but not wired to anything live; and a both-poles audit
+      of every menu that shows a duality. Together they are what found 26-1,
+      26-8 and 26-9 above, and they are the evidence behind the percent gap
+      named in the KPI note at the end of this entry. Nothing in them changed
+      the MVP scorecard itself, which measures a narrower, separate slice.
+- [x] **26-12. Cross-repo audit, three fixing batches merged.** A
+      law-boundary data-loss bug, a saboteur-seat fix and stale docs (commit
+      `08150f1c`); commerce fixes, billing, paywall, cancellation, plus floor
+      raises (commit `cd0b8f01`); sniffer fixes, a victim-blaming law bug,
+      dissociation read as anger, a Myers-Briggs overwrite, idiom misreads
+      (commit `607bb0ee`). About 11GB of confirmed-merged worktrees cleaned
+      up along the way. Three threads carried open rather than closed here:
+      see 26-24.
+- [x] **26-13. The funnel mapped screen by screen, the hidden second
+      onboarding found and resolved.**
+- [x] **26-14. Three stale `test_brief.py` REAL-list entries,** gone stale
+      when an earlier task folded Story into Discover on 23 October, traced
+      one by one to their real current classification and corrected.
+- [x] **26-15. Stale "Run the signal test again" label in Account,** found
+      while verifying the Day One tutorial removal (commit `77928172`); the
+      onboarding it referred to has not existed since an earlier redesign.
+- [x] **26-16. Look-dev's 25 October coordination note, checked against the
+      code rather than accepted on its word,** and a separate incomplete-UI
+      report investigated. 3 items were ready to pull, 2 were not; a plan
+      was returned covering both halves.
+- [x] **26-17. Release page bug fix, merged.** Pull request 117: found why
+      the "I am" statements broke, fixed it, merged. The one-screen redesign
+      itself (C minus to B plus target) is separate and still open, see 26-22.
+- [x] **26-18. Reboot-OS canon.json branch reconciliation, done and pushed.**
+      Commit `a682ceaa` on `atuned/mvp-alpha-recursive-execution`: main's
+      history, the working branch's history, and the newer 147-record
+      registry pull request are now one line, main can fast-forward to it
+      cleanly, every gate green (engine 6247/0, functional 2676/0, collide
+      388/0, design 193/0, 44/44 full suite). Content verdict triangulated
+      three separate ways, a self check, systems-director's own deep check,
+      and devops-qa's independent check: the new registry replaces no engine
+      table, it is additive research content. Rollback procedure documented.
+      This is phase 1, the branch history, only. The actual complex and
+      hyper-complex reconciliation this task is named for is phase 2, not
+      scoped yet. The one action actually held for him is at 26-23.
+
+### Still open, moved here rather than left on a list only this session could see
+
+- [ ] **26-19. Percent framework, phase 2, has a background agent running
+      right now,** on his own "do it now, run recursively" instruction. Not
+      idle, not abandoned, check its own status before assuming otherwise.
+      Pull request 123 (slice 4) is open since 19 October, stale since 22,
+      now conflicted against main; 9 of 45 UI renderer files called
+      `pct.js`/`fmtPct` as of this morning, with a live, confirmed gap on the
+      Character tab, a raw "Fear 10.0" two lines from an already converted
+      "Coherence 18%" on the same panel. The job: rescue pull request 123
+      first, do not discard real merged work, then sweep every remaining
+      renderer until a full pass finds zero non-percent point numbers left,
+      excluding the ones that are not percentages at all: SVG coordinates,
+      animation durations, counts, internal-only raw weights.
+- [ ] **26-20. The mobile Imprints label drop-out is diagnosed, not fixed.**
+      On phone width, a new profile's 7-seat Imprints list loses its text
+      labels because the card gives each row about 10px and the drawing code
+      needs 12 to show one. Re-weighting active against inactive lanes does
+      not fix it, the math cancels when every lane carries equal weight.
+      Needs a design call: more height for this card on phone, a smaller
+      label font at tight heights, or a different mobile layout. His steer.
+- [ ] **26-21. The Journal "The Page" redesign has nothing to review yet.**
+      Requirements are captured, `DECISIONS.md`'s 25 October entry
+      (conversational journal, a Talk button as the trigger, the AI teasing
+      out limiting beliefs). Held for the final release round by his own
+      call. Revisit when those files are shared. Unblocked in principle by
+      26-1's address layer, since a real per-address charge now exists for
+      whatever that redesign wants to show.
+- [ ] **26-22. The release page redesign itself,** one screen, C minus to B
+      plus. Waits on his pick of a release mockup and an answer on heavy
+      marks, then wiring, then the line bank. The bug it was blocked on is
+      already fixed, see 26-17.
+- [ ] **26-23. Move main to the reconciled canon.json commit,** the one
+      action actually held for him on 26-18, `a682ceaa`, which triggers the
+      real atuned.world deploy. Three other open pull requests (123, 126,
+      128) were intentionally left out of this round, reasons given where
+      the reconciliation itself lives. Same blocker as 26-24.
+- [ ] **26-24. The main-branch unblock decision.** Two competing fixes exist
+      on different branches, needs his nod before either touches main. Gates
+      26-23 above.
+- [ ] **26-25. Dual-pole bar: fix the label, then decide the rollout's
+      scope.** Deprioritized by him already, not urgent.
+- [ ] **26-26. Rebuild charge-to-body routing around his real anatomical
+      model.** Distinct from 26-1 above: that item makes the sniffer's own
+      address guess count for more than one feeling's worth of weight; this
+      item is about whether the model the addresses sit on is the right one
+      at all. Not started.
+- [ ] **26-27. Re-vendor canon.json** once ruling 5, Justification against
+      Arrogance, lands upstream. Blocked on that repository, not this one.
+      Carries the two gaps named at 26-6.
+- [ ] **26-28. The Psychopathy super-complex mislabel task needs a real
+      decision before a fix, not a guess.** `engine/trace.js` lines 95 to 106
+      carries an explicit 23 October ruling renaming the trace chain's
+      fourth rung from `character` to `super_complex`, reasoned in part from
+      Psychopathy's own placement in the descent (`engine/data/compass.js`).
+      An earlier, 20 October ruling was found this session reading the other
+      way on the classification itself. The two were not reconciled here, on
+      purpose: fixing this blind, on a disputed canonical classification, is
+      exactly the class of error this file warns against elsewhere. Needs
+      his ruling on which one stands before any line of code changes.
+- [ ] **26-29. Fuzzy matching for minimizing, humor as deflection, and
+      numbing resistance patterns.** A feature build, not a small fix. Not
+      started.
+- [ ] **26-30. The dashboard/journal toggle:** a simplified journal default,
+      one Talk button, no second release setup page. New, no earlier record
+      in this file. Not started.
+- [ ] **26-31. The unified chakra/torus model for Vitality, Awareness,
+      Radiance and Flow.** This file already carries a long torus-field
+      thread (round OV and OW, 1 October, among others) and a long heat-map
+      thread (section HE, 27 September; section KR; several more). Today's
+      framing ties those two existing threads into one model across all four
+      measures. Treat as a continuation of that history, not a new idea,
+      before scoping it.
+- [ ] **26-32. Turn the heat map into the energy body map,** overlapping
+      saboteur volumes rather than one flat heat layer. Unblocked now by
+      26-1: with a real address-level charge layer in place, a map of
+      overlapping volumes has real per-address numbers to draw from. The
+      same existing heat-map history named at 26-31 applies here too.
+
+### Where the MVP number actually comes from
+
+Asked plainly today: what counts as a closed MVP, since it does not look
+like the items on this list. It is not this list. The real definition is
+`docs/ATUNED_MVP_ALPHA_RECURSIVE_EXECUTION_CONTRACT_v1.md`, six blocks, dated
+21 October. The 40 percent, 8 of 20 score he has watched for two weeks is
+Review B's own adversarial score, one block of the six, not the whole
+contract and not this file. Nothing built today touches the code paths that
+score measures, checked against this session's own commits by name. The MVP
+contract's own release hit-feedback block, explicit hit versus hold versus
+reject, voice safety, replay idempotency, is marked not implemented in the
+contract itself, and nothing here touched it either.
+`docs/ATUNED_MVP_ALPHA_DEVELOPMENT_STATS_SNAPSHOT.md` carries today's dated
+confirmation round in full.
