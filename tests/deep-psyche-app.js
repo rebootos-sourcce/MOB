@@ -45,7 +45,7 @@ for(const marker of ["['psyche','Deep Psyche']","if(sec==='psyche'","if(x.k==='p
 assert(!ui.includes('const DEEP_PSYCHE='),'App UI contains independent copied registry');
 assert(ui.includes('function kbPsycheDrill(d)')&&ui.includes('data-dp-link'),
  'Deep Psyche drill must support record-to-record click-through');
-const drillSource=ui.match(/function kbPsycheDrill\\(d\\)\\{[\\s\\S]*?\\n\\}/);
+const drillSource=ui.match(/function kbPsycheDrill\(d\)\{[\s\S]*?\n\}/);
 assert(drillSource,'Source-qualified graph drill function missing');
 let rendered='';
 const escapeHtml=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
