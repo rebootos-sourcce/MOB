@@ -805,6 +805,39 @@ function poleDrillHead(n){
   +'</span></div>'
   +'<div class="kbp-line"><span class="kbp-pc">'+(sh&&sh.l?sh.l+'%':'–')+'</span>'+poleBar(sh)
   +'<span class="kbp-pc r">'+(sh&&sh.r?sh.r+'%':'–')+'</span></div></div>';}
+/* One source-backed Deep Psyche record, with traversable typed relations.
+   Show source statuses; a navigation edge is not a causal or canonical claim. */
+function kbPsycheDrill(d){
+ if(!d||typeof DEEP_PSYCHE==='undefined')return;
+ var lookup={};
+ DEEP_PSYCHE.records.forEach(function(r){lookup[r.id]=r;});
+ var detail=(d.description||d.body||'')+
+  (d.clear?' / Clear: '+d.clear:'')+
+  (d.distorted?' / Distorted: '+d.distorted:'');
+ var relationButtons=(d.linkedIds||[]).map(function(id){
+  var other=lookup[id]; if(!other)return '';
+  var edge=(d.relationships||[]).filter(function(e){
+   return (e.fromId===d.id&&e.toId===id)||(e.toId===d.id&&e.fromId===id);
+  })[0];
+  var provenance=edge?(edge.type+' / '+edge.status):'Navigation-only link';
+  return '<button type="button" class="btn" data-dp-link="'+esc(other.id)+'">'
+    +esc(other.name)+' <span class="ad-sub">'+esc(provenance)+'</span></button>';
+ }).join('');
+ rdShell('<div class="pm-eye">Deep Psyche / '+esc(d.type)+'</div>'
+  +'<div class="ad-nm">'+esc(d.name)+'</div>'
+  +'<div class="ad-sub">'+esc(d.family)+'</div>'
+  +'<div class="pm-eye">Source-defined description</div><p class="ad-p">'+esc(detail)+'</p>'
+  +'<div class="pm-eye">Source status</div><p class="ad-p">'+esc(d.reviewStatus||'unclassified')+'</p>'
+  +(relationButtons?'<div class="pm-eye">Connected records, tap to follow</div>'+relationButtons:''));
+}
+/* A connected Deep Psyche record opens the same source-backed drill. */
+addEventListener('click',function(e){
+ var el=e.target&&e.target.closest?e.target.closest('[data-dp-link]'):null;
+ if(!el||typeof DEEP_PSYCHE==='undefined')return;
+ var id=el.getAttribute('data-dp-link');
+ var item=DEEP_PSYCHE.records.filter(function(r){return r.id===id;})[0];
+ if(item)kbPsycheDrill(item);
+});
 /* one row, one door. every kind routes to the drill that already exists for it. */
 function kbOpen(x){
  if(!x)return;
@@ -820,7 +853,7 @@ function kbOpen(x){
  if(x.k==='harm'){runKbDrill('Harmonic element '+x.o.c, x.o.t, HARM_AX[x.o.a]||x.o.a, x.o.ch); return;}
  if(x.k==='gloss'){runKbDrill('Glossary', x.o.t, '', x.o.d); return;}
  if(x.k==='dom'){runDomDrill(x.o); return;}
- if(x.k==='psyche'){var d=x.o;runKbDrill('Deep Psyche / '+d.type,d.name,d.family,(d.description||'')+(d.clear?' / Clear: '+d.clear:'')+(d.distorted?' / Distorted: '+d.distorted:'')+' / Source status: '+(d.reviewStatus||'unclassified'));return;}
+ if(x.k==='psyche'){kbPsycheDrill(x.o);return;}
  /* the archetype and the mask drills live in drills.js now, because the
     Field opens them too and one thing has one wording */
  if(x.k==='arch'){runArchDrill(x.o); return;}
