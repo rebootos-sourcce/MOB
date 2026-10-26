@@ -41,6 +41,22 @@ context.cqSpan=()=>({answered:1,of:2,complete:false});
 r=context.hjRead(p);
 assert.equal(r.location,null);
 assert.equal(r.cq,null);
+/* Reject malformed CQ history baselines and snapshots without treating them
+   as real user movement or altering the canonical CQ engine. */
+const bad={id:'p1',avatar:{cqOrigin:{cq:NaN,m:2}},laws:{Truth:8,Courage:5},
+ meter:{unique:[]},history:[
+  {m:2,cq:Infinity,t:'bad-infinite',lawNow:{Truth:7,Courage:6}},
+  {m:2,cq:101,t:'bad-out-of-range',lawNow:{Truth:7,Courage:6}},
+  {m:2,cq:55,t:'bad-law',lawNow:{Truth:NaN,Courage:6}}
+ ]};
+assert.equal(context.hjOrigin(bad),null,'invalid origin and invalid snapshots must not establish baseline');
+context.cqSpan=()=>({answered:2,of:2,complete:true});
+const clean=context.hjRead(bad);
+assert.equal(clean.origin,null);
+assert.equal(clean.fromLast,null,'invalid historic snapshot must not produce movement');
+bad.history.push({m:2,cq:55,t:'valid',lawNow:{Truth:7,Courage:6}});
+assert.equal(context.hjOrigin(bad).cq,55,'valid complete history restores baseline');
+assert.equal(context.hjRead(bad).fromLast,-15);
 /* Check the actual source registry joins, not just the staged atlas count. */
 const board=JSON.parse(fs.readFileSync(path.resolve('docs/data/compass/gameboard/v1/GAMEBOARD_MAP_V1.json'),'utf8'));
 const purg=JSON.parse(fs.readFileSync(path.resolve('docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json'),'utf8'));

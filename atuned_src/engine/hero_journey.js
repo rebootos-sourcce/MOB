@@ -20,13 +20,13 @@ function hjReleaseKeys(p){
 }
 function hjOrigin(p){
  var a=(p&&p.avatar&&p.avatar.cqOrigin)||null;
- if(a&&a.m===CQ_MODEL&&typeof a.cq==='number')return a;
+ if(a&&a.m===CQ_MODEL&&typeof a.cq==='number'&&isFinite(a.cq)&&a.cq>=0&&a.cq<=100)return a;
  /* Older profiles: only a history row with all 21 measured laws can prove
     a full initial CQ. An older row without lawNow is not proof. */
  var h=(p&&p.history)||[];
  for(var i=0;i<h.length;i++){
   var x=h[i], l=x&&x.lawNow;
-  if(x&&x.m===CQ_MODEL&&l&&SINAMES.every(function(n){return typeof l[n]==='number';}))
+  if(x&&x.m===CQ_MODEL&&typeof x.cq==='number'&&isFinite(x.cq)&&x.cq>=0&&x.cq<=100&&l&&SINAMES.every(function(n){return typeof l[n]==='number'&&isFinite(l[n]);}))
    return {cq:x.cq,m:x.m,at:x.t,source:'historic-complete-snapshot'};
  }
  return null;
@@ -38,7 +38,7 @@ function hjRead(p,r){
  var last=null;
  for(var i=h.length-1;i>=0;i--){
   var x=h[i], l=x&&x.lawNow;
-  if(x&&x.m===CQ_MODEL&&l&&SINAMES.every(function(n){return typeof l[n]==='number';})){
+  if(x&&x.m===CQ_MODEL&&typeof x.cq==='number'&&isFinite(x.cq)&&x.cq>=0&&x.cq<=100&&l&&SINAMES.every(function(n){return typeof l[n]==='number'&&isFinite(l[n]);})){
    last=x;break;}}
  return {cq:cq,complete:complete,coverage:span.answered,total:span.of,realm:loc&&loc.realm,
   location:loc,origin:origin,delta:origin&&cq!==null?cq-origin.cq:null,
