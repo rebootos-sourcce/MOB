@@ -823,13 +823,22 @@ function kbPsycheDrill(d){
   return '<button type="button" class="btn" data-dp-link="'+esc(other.id)+'">'
     +esc(other.name)+' <span class="ad-sub">'+esc(provenance)+'</span></button>';
  }).join('');
+ var nativeButtons=(typeof kbRowsOf==='function'?(d.nativeNavigationCandidates||[]).map(function(ref,i){
+  var hit=kbRowsOf(ref.kind).filter(function(x){
+   return String(x.t||'').trim().toLowerCase()===String(ref.name||'').trim().toLowerCase();
+  })[0];
+  if(!hit)return '';
+  return '<button type="button" class="btn" data-dp-native="'+esc(d.id)+'" data-dp-native-index="'+i+'">'
+   +esc(ref.name)+' <span class="ad-sub">'+esc(ref.evidenceStatus)+'</span></button>';
+ }):[]).join('');
  rdShell('<div class="pm-eye">Deep Psyche / '+esc(d.type)+'</div>'
   +'<div class="ad-nm">'+esc(d.name)+'</div>'
   +'<div class="ad-sub">'+esc(d.family)+'</div>'
   +'<div class="pm-eye">Source-defined description</div><p class="ad-p">'+esc(detail)+'</p>'
   +'<div class="pm-eye">Source status</div><p class="ad-p">'+esc(d.reviewStatus||'unclassified')+'</p>'
   +((d.sourceRefs||[]).length?'<div class="pm-eye">Source references</div><p class="ad-p">'+esc(d.sourceRefs.join(' / '))+'</p>':'')
-  +(relationButtons?'<div class="pm-eye">Connected records, tap to follow</div>'+relationButtons:''));
+  +(relationButtons?'<div class="pm-eye">Connected records, tap to follow</div>'+relationButtons:'')
+  +(nativeButtons?'<div class="pm-eye">Source-table links into the instrument</div>'+nativeButtons:''));
 }
 /* A connected Deep Psyche record opens the same source-backed drill. */
 addEventListener('click',function(e){
@@ -838,6 +847,19 @@ addEventListener('click',function(e){
  var id=el.getAttribute('data-dp-link');
  var item=DEEP_PSYCHE.records.filter(function(r){return r.id===id;})[0];
  if(item)kbPsycheDrill(item);
+});
+/* Exact-label navigation into the native app records. */
+addEventListener('click',function(e){
+ var el=e.target&&e.target.closest?e.target.closest('[data-dp-native]'):null;
+ if(!el||typeof DEEP_PSYCHE==='undefined'||typeof kbRowsOf!=='function')return;
+ var record=DEEP_PSYCHE.records.filter(function(r){return r.id===el.getAttribute('data-dp-native');})[0];
+ var index=Number(el.getAttribute('data-dp-native-index'));
+ if(!record||!isFinite(index)||index<0||index%1)return;
+ var ref=(record.nativeNavigationCandidates||[])[index];if(!ref)return;
+ var target=kbRowsOf(ref.kind).filter(function(x){
+  return String(x.t||'').trim().toLowerCase()===String(ref.name||'').trim().toLowerCase();
+ })[0];
+ if(target)kbOpen(target);
 });
 /* one row, one door. every kind routes to the drill that already exists for it. */
 function kbOpen(x){
