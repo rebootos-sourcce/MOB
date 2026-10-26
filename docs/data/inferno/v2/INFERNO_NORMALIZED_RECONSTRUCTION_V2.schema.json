@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:atuned:inferno:reconstruction:v2",
+  "title": "ATUNED Inferno source reconstruction v2 (not V1 canonical archive)",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "authority",
+    "sameAsMissingV1Archive",
+    "missingOriginalV1Sha256",
+    "sourceResearchSha256",
+    "sourceCrosswalkSha256",
+    "templateFields",
+    "records",
+    "counts"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ATUNED_INFERNO_RECONSTRUCTED_21_FIELD_REGISTRY_V2"
+    },
+    "authority": {
+      "const": "RESEARCH_RECONSTRUCTION_ONLY_NOT_CANONICAL_NOT_RUNTIME"
+    },
+    "sameAsMissingV1Archive": {
+      "const": false
+    },
+    "records": {
+      "type": "array",
+      "minItems": 38,
+      "maxItems": 38,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "recordId",
+          "kind",
+          "templateId",
+          "authority",
+          "sourceSectionSha256",
+          "sourceSectionPath",
+          "nm",
+          "fam",
+          "def",
+          "body",
+          "inferred",
+          "inferenceBasis",
+          "behavior",
+          "triggerMechanism",
+          "livedExample",
+          "impact",
+          "practice",
+          "oppositeId",
+          "oppositeDefinition",
+          "oppositeStatus",
+          "confidence",
+          "reviewStatus",
+          "refer",
+          "narrativeSource",
+          "researchSources",
+          "researchPasses",
+          "links"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "inferno_behavior",
+              "inferno_circle",
+              "inferno_figure",
+              "inferno_cross_tradition"
+            ]
+          },
+          "authority": {
+            "const": "SOURCE_REFERENCED_NONCANONICAL_RECONSTRUCTION"
+          },
+          "nm": {},
+          "fam": {},
+          "def": {},
+          "body": {},
+          "inferred": {},
+          "inferenceBasis": {},
+          "behavior": {},
+          "triggerMechanism": {},
+          "livedExample": {},
+          "impact": {},
+          "practice": {},
+          "oppositeId": {
+            "type": "null"
+          },
+          "oppositeDefinition": {
+            "type": "null"
+          },
+          "oppositeStatus": {},
+          "confidence": {},
+          "reviewStatus": {},
+          "refer": {
+            "const": false
+          },
+          "narrativeSource": {},
+          "researchSources": {},
+          "researchPasses": {
+            "type": "array",
+            "minItems": 4,
+            "maxItems": 4,
+            "items": {
+              "type": "object",
+              "required": [
+                "pass_number",
+                "lens",
+                "finding",
+                "authority",
+                "sourceRecord"
+              ],
+              "properties": {
+                "pass_number": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 4
+                },
+                "finding": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "authority": {
+                  "const": "AUTHORED_ANALYTICAL_PASS_NOT_INDEPENDENT_CERTIFICATION"
+                }
+              }
+            }
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "type",
+                "status",
+                "notRuntime"
+              ],
+              "properties": {
+                "status": {
+                  "const": "UNPROMOTED"
+                },
+                "notRuntime": {
+                  "const": true
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
