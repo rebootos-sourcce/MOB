@@ -73,7 +73,21 @@ function canReach(start,kind,maxHops=7) {
 const archetypeTable=reg.records.filter(x=>x.layer==='archetype_fetter_seat_mapping_table');
 const nervePaths=archetypeTable.filter(x=>canReach(x.id,'nerve')).length;
 assert(crossSystemEdges>0,'Deep Psyche not connected to legacy runtime entries');
-assert(nervePaths>0,'No mapped archetype/fetter row reaches any nerve branch');
+assert(nervePaths===archetypeTable.length,'All ARCH18 rows must reach nerve topology through source seat, found '+nervePaths+'/'+archetypeTable.length);
+// The actual four-page prototype uses KB.KIND and KB.sheet. Every newly
+// added kind must render, and a psychological sheet must be navigable.
+const vm=require('vm');
+const commonSource=fs.readFileSync(path.join(root,'proto/knowledge/src/common.js'),'utf8');
+const uiContext={KBD:db,console};
+vm.runInNewContext(commonSource,uiContext,{timeout:5000});
+assert(uiContext.KB && uiContext.KB.KIND,'Knowledge browser did not initialize');
+for(const e of psych) {
+ assert(uiContext.KB.KIND[e.kind]?.[0],'UI category missing for '+e.id);
+}
+const sheet=uiContext.KB.sheet(by.get('mapping:arch18:17'),{check:false});
+assert(sheet.includes('Shapeshifter') && sheet.includes('Linked'),
+ 'Knowledge sheet does not render the deep psyche source mapping');
+const uiKinds=Object.keys(uiContext.KB.KIND).length;
 const uiSlots=psych.filter(x=>x.slotOnly);
 assert(uiSlots.length===14,'Visualization slots lost');
 const report={
@@ -84,7 +98,7 @@ const report={
  legacyGraphEdges:crossSystemEdges,
  archetypeFetterRowsReachingNerves:nervePaths,
  totalArchetypeFetterRows:archetypeTable.length,
- visualizationSlots:uiSlots.length,
+ visualizationSlots:uiSlots.length, uiKindsRenderable:uiKinds,
  remainingProvisionalDefinitions:v341.filter(x=>
   x.templateValidation?.contentStatus!=='complete').length,
  measuredRuntimeGraph:db.deepPsychologicalGraph
