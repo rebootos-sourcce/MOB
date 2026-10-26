@@ -48,7 +48,11 @@ T.APC.forEach(c=>add({id:'seat:'+c.b, kind:'seat', nm:c.b, seat:c.b,
  fam:clean(c.nv), def:lead(c.d), body:clean(c.d), ic:null}));
 
 /* the nine child emotions, and the letting go card that speaks each */
-T.CHILD.forEach((c,i)=>{const ax=T.AXCARD.filter(a=>a.ax===c.nm)[0]||{};
+const AXIS_MANUSCRIPT={
+ Surprise:{track:'A sudden arrival of new experience before the reaction; distinct from shock.',inst:'Readiness, the documented coherent pole of Surprise.'},
+ Anticipation:{track:'Waiting for what is ahead, experienced as anxious or excited.',inst:'Presence, the documented coherent pole; returning from waiting into the current moment.'}
+};
+T.CHILD.forEach((c,i)=>{const card=T.AXCARD.filter(a=>a.ax===c.nm)[0]||{};const ax={...AXIS_MANUSCRIPT[c.nm],...card};
  add({id:'axis:'+c.nm, kind:'axis', nm:c.nm, seat:c.seat, fam:c.seat+' seat',
   def:c.nm+', one of the nine child emotions, seated in the '+c.seat+' seat.',
   card:'Felt in the '+c.loc+'. Emptied, it fills with '+c.opp+'.',
