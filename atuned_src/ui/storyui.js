@@ -1189,7 +1189,19 @@ function srcPaint(){
  /* talking, every turn Source AI takes is a line it says, once */
  if(cur)said=cur.q;
  var sy=document.getElementById('srcsay');
- if(sy&&sy.textContent!==said)sy.textContent=said;
+ /* TALKING, SOURCE AI SAYS IT OUT LOUD, 26 October: "no sound comes out" was
+    true because nothing here had ever called the voice. srcsay's own gate,
+    above, already tells a new thing said from a repaint saying the same
+    thing again; talking reuses that exact gate so the line is spoken once,
+    the moment it is new, and never again on a key that changed nothing.
+    relVoiceOn, relStudioLostSay and speakStudio are the release protocol's
+    own voice (ui/release.js, ui/sound.js), ported and not rebuilt: the same
+    switch, the same server, the same words for a failure. */
+ if(sy&&sy.textContent!==said){
+  sy.textContent=said;
+  if(STV.chat&&said&&typeof relVoiceOn==='function'&&relVoiceOn())
+   speakStudio(said,1,'frame',function(){},function(why){
+    status(typeof relStudioLostSay==='function'?relStudioLostSay(why):'The voice did not answer.','fail');});}
  var mv=document.getElementById('srcpass');
  if(mv)mv.onclick=function(){SRC_PASSED=true;
   SRC_LOG.forEach(function(r){if(r.k===turn.why&&r.seat===turn.seat)r.moved=true;});
@@ -1424,10 +1436,17 @@ function srcChatWire(){
  if(ap&&SRC_CDRAFT.trim())ap.disabled=false;
  var sd=document.getElementById('stcsend');
  if(sd)sd.onclick=function(){srcChatSend(); cin.focus();};}
-/* THE THREAD. A row per turn, oldest at the top, each on its node, and under
-   every node but the last the wire down to the next one. The newest Source
-   AI row carries its words and the same controls the panel does, under the
-   same ids, so srcPaint wires them without knowing which view it drew. */
+/* THE THREAD, A NORMAL CHAT DISPLAY. His words, 26 October: "let's go back
+   to a normal chat display, I don't like the chat style that we're using."
+   This replaces the wire-and-node visual (each turn a ring, strung to the
+   next by a drawn, pulsing line) with the ordinary shape of a conversation:
+   a row per turn, the person's on the right, Source AI's on the left, each
+   in its own bubble. No wire is laid between them. A past Source AI turn
+   now shows its own words again; the wire version printed only a bare node
+   for every turn but the last, so a conversation of more than one exchange
+   read as empty rings strung together, no text on any but the newest. The
+   newest Source AI row still carries the live controls, under the same ids,
+   so srcPaint wires them without knowing which view it drew. */
 function srcThread(turn,heard,cur,acts,why){
  var ents=(CURP&&CURP.story&&CURP.story.entries)||[], pr=null, last=-1;
  SRC_CHAT.forEach(function(r,i){if(r.w==='src')last=i;});
@@ -1436,19 +1455,14 @@ function srcThread(turn,heard,cur,acts,why){
   /* a reply's reading is the entry as it stood when it was sent */
   if(r.w==='me'&&r.rg===undefined){pr=pr||srcPrior(ents);
    var hh=srcHear(ST_TEXT.slice(0,r.b),pr); r.rg=hh.top?hh.top.rung:0; r.bd=hh.top?hh.top.band:null;}
-  var t=clamp((r.rg||0)/10,0,1), col=r.bd?seatCol(r.bd):'var(--dim)';
+  var col=r.bd?seatCol(r.bd):'var(--dim)';
   var cls='src-tn src-tn-'+(r.w==='me'?'me':(i===last?'now':'past'));
-  o+='<li class="'+cls+'" style="--c:'+col+'"'+(r.w==='src'&&i!==last?' aria-label="An earlier turn"':'')+'>';
-  if(i<SRC_CHAT.length-1){
-   var per=96-48*t, sp=16+68*Math.sqrt(t), dur=per/sp, ph=(((i*12.9898+t*78.233)%1)+1)%1*dur;
-   o+='<svg class="src-tw" aria-hidden="true" data-t="'+t.toFixed(2)+'" data-s="'+(i%2?-1:1)+'">'
-    +'<path class="src-wire" style="opacity:'+(0.4+0.5*t).toFixed(2)+'"/>'
-    +'<path class="src-puls" stroke-dasharray="7 '+(per-7).toFixed(1)+'" style="opacity:'
-    +(0.28+0.72*t).toFixed(2)+';--p:'+per.toFixed(1)+';--d:'+dur.toFixed(2)+'s;--ph:-'+ph.toFixed(2)+'s"/></svg>';}
-  o+='<i class="src-nd"></i>';
+  o+='<li class="'+cls+'" style="--c:'+col+'"'+(r.w==='src'&&i!==last?' aria-label="An earlier turn"':'')+'>'
+   +'<div class="src-bub'+(r.w==='me'?' src-bub-me':' src-bub-ai')+'">';
   if(r.w==='me')o+='<p class="src-me">'+esc(r.t)+'</p>';
   else if(i===last)o+=srcThreadNow(r,turn,heard,acts,why);
-  o+='</li>';});
+  else o+='<p class="src-q quiet">'+esc(r.q)+'</p>';
+  o+='</div></li>';});
  return o+'</ol>';}
 /* the one live Source AI row, in the panel's own markup for each move */
 function srcThreadNow(r,turn,heard,acts,why){
@@ -1467,22 +1481,11 @@ function srcThreadNow(r,turn,heard,acts,why){
  if(why)o+='<div id="srcwhy" style="margin-top:12px"><span class="pm-eye">Why</span>'
   +'<p class="src-open quiet" style="margin:2px 0 0">'+esc(why)+'</p></div>';
  return o;}
-/* THE WIRES ARE LAID AFTER THE ROWS ARE. A row's height is only known once it
-   is on the page, and a viewBox stretched to fit would stretch the pulse with
-   it, so every height is read first and every path written after, one layout
-   for the whole thread. Each wire runs from its node to the next row's node,
-   which sits the same distance down its own row, so it is exactly the row
-   tall. The bow is frSag's, scaled down on a short row so a folded turn does
-   not kink. Then the pulses go on the panel's one clock, srcLock, so a
-   repaint does not restart them, and the thread opens at its newest turn. */
+/* NO WIRES TO LAY ANY MORE, 26 October: srcThread stopped drawing them. This
+   keeps its name and its one real job, which the wire version did at the
+   same place: lock whatever still breathes on the panel's one clock so a
+   repaint does not restart it, and open the thread at its newest turn. */
 function srcWire(h){
- var lis=[].slice.call(h.querySelectorAll('.src-tn')), hs=lis.map(function(li){return li.offsetHeight;});
- lis.forEach(function(li,i){
-  var sv=li.querySelector('.src-tw'); if(!sv)return;
-  var H=hs[i], t=+sv.getAttribute('data-t')||0, s=+sv.getAttribute('data-s')||1;
-  var bow=7*(1.28-0.62*t)*Math.min(1,H/80), d='M12 0Q'+(12+2*s*bow).toFixed(1)+' '+(H/2).toFixed(1)+' 12 '+H;
-  sv.setAttribute('viewBox','0 0 24 '+H); sv.style.height=H+'px';
-  [].forEach.call(sv.querySelectorAll('path'),function(p){p.setAttribute('d',d);});});
  srcLock(h);
  var th=h.querySelector('.src-th'); if(th)th.scrollTop=th.scrollHeight;}
 /* THE RAIL HOST IS STATIC, SO IT IS EMPTIED ON THE WAY OUT. A hidden surface

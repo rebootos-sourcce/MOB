@@ -12,11 +12,18 @@
    conversation keeps exactly what the box keeps, a kind and a seat per
    question and never a question's words.
 
+   NORMAL CHAT, 26 October, his words: "let's go back to a normal chat
+   display, I don't like the chat style that we're using." The wire and node
+   drawing is gone; the thread is a row of bubbles, the person's on the
+   right, Source AI's on the left, and a past Source AI turn carries its own
+   words again, which the wire version did not: it drew every turn but the
+   last as a bare, textless ring.
+
    CHECKED AGAINST TWO KNOWN BAD COPIES FIRST, the standing rule. One page
    whose send joins a reply with a space, where the first turn's "not"
    reaches into the next: the boundary check must fail on it. One whose
-   thread prints every earlier question: the one question check must fail on
-   it. A gate that passes a broken page is not a gate.
+   thread prints two live questions at once: the one live row check must
+   fail on it. A gate that passes a broken page is not a gate.
 
    No count is typed into this file. Read the counts off the run.
    ============================================================ */
@@ -51,8 +58,7 @@ const look = p => p.evaluate(() => {
     pass: !!document.getElementById('srcpass'),
     box: !!document.getElementById('sttext'), line: !!document.getElementById('stcin'),
     pressed: (document.getElementById('sttalk') || { getAttribute() { return null; } }).getAttribute('aria-pressed'),
-    ts: [...document.querySelectorAll('#stsrc .src-tw')].map(s => +s.getAttribute('data-t')),
-    puls: [...document.querySelectorAll('#stsrc .src-puls')].map(e => ({ an: getComputedStyle(e).animationName, d: e.getAttribute('d') || '', disp: getComputedStyle(e).display })),
+    wires: document.querySelectorAll('#stsrc .src-tw').length,
     said: (document.getElementById('srcsay') || {}).textContent || ''
   };
 });
@@ -106,16 +112,16 @@ require('./net.js').guardBrowser(browser);
     await p.cx.close();
   }
 
-  console.log('\n=== known bad first: a thread that prints every question ===');
+  console.log('\n=== known bad first: a thread with two rows both live ===');
   {
     const p = await open(browser, 1600, 1000);
     const r = await talk(p);
     const bad = await p.evaluate(() => {
-      /* every Source AI row carrying its words, the defect the rule is for */
-      [...document.querySelectorAll('#stsrc .src-tn-past')].forEach((li, i) => {
-        const q = SRC_CHAT.filter(x => x.w === 'src')[i]; if (q) li.insertAdjacentHTML('beforeend', '<p class="src-q">' + q.q + '</p>'); });
-      return [...document.querySelectorAll('#stsrc .src-tn-past')].map(li => li.textContent.trim()).filter(Boolean).length; });
-    ok(bad > 0, 'the one question check catches a thread printing earlier questions, ' + bad + ' found');
+      /* a second row wrongly marked now, the defect the one live row rule is for */
+      const li = document.querySelector('#stsrc .src-tn-past');
+      if (li) li.className = li.className.replace('src-tn-past', 'src-tn-now');
+      return document.querySelectorAll('#stsrc .src-tn-now').length; });
+    ok(bad > 1, 'the one live row check catches a thread with two rows both live, ' + bad + ' found');
     await p.cx.close();
   }
 
@@ -133,12 +139,11 @@ require('./net.js').guardBrowser(browser);
   ok(alone && b.top.seat === alone.seat && b.top.rung === alone.rung, 'and it reads what the reply reads alone, ' + JSON.stringify(alone));
   ok(c.move === 'ask' && c.pass && c.top.rung >= 7, 'the seat coming back across turns is asked about, rung ' + (c.top && c.top.rung));
   ok(c.said && c.rows.filter(x => x.cls === 'src-tn-now')[0].say.indexOf(c.said) === 0, 'the screen reader line carries the live turn: ' + JSON.stringify(c.said.slice(0, 70)));
-  ok(d.now === 1 && d.pastWords.length === 0, 'one question on screen: every earlier Source AI turn is its ring, ' + d.pastWords.length + ' with words');
+  ok(d.now === 1 && d.pastWords.length > 0, 'one live row, and every earlier Source AI turn still carries its words: ' + d.pastWords.length + ' with words');
   ok(d.asks === 1, 'an answer to the ask does not ask the same why again: ' + d.asks + ' ask rows');
   const me = d.rows.filter(x => x.cls === 'src-tn-me').map(x => x.say);
   ok(me.join('|') === 'I did not sleep|afraid all night.|Still afraid when he called.|I am afraid of what he says next.', 'every reply stands in the thread in the person\'s words');
-  ok(d.ts.length === d.rows.length - 1 && d.ts.some(t => t >= 0.7) && d.ts[0] < 0.7, 'a wire under every row but the last, tightening to the rung: ' + d.ts.join(' '));
-  ok(d.puls.length && d.puls.every(x => x.an === 'frflow' && /^M12 0Q/.test(x.d)), 'every wire carries a pulse on frflow, laid after the rows: ' + d.puls.length);
+  ok(d.wires === 0, 'no wire drawn between rows, a normal chat display: ' + d.wires);
   await shot(p, 'talk-1600-ask.png');
 
   /* move on, and a reply after it */
@@ -206,7 +211,7 @@ require('./net.js').guardBrowser(browser);
     const q = await open(browser, 390, 844, { reducedMotion: 'reduce' });
     await talk(q);
     const z = await look(q);
-    ok(z.puls.length && z.puls.every(x => x.disp === 'none'), 'reduced motion keeps the wires and drops the pulses');
+    ok(z.wires === 0, 'no wires under reduced motion either, a normal chat display: ' + z.wires);
     const fit = await q.evaluate(() => ({ sw: document.documentElement.scrollWidth, w: innerWidth,
       line: (() => { const r = document.getElementById('stcin').getBoundingClientRect(); return { top: r.top, h: r.height, w: r.width }; })(),
       send: (() => { const r = document.getElementById('stcsend').getBoundingClientRect(); return { w: r.width, h: r.height }; })() }));
