@@ -77,3 +77,8 @@ When a source or audit file is discovered, add its repository-relative path, rol
 - [21 canonical law coverage](data/paradiso/v0/INTEGRITY_21_COVERAGE_AND_INTERPRETATION.md) and [44 mapped law relationships](data/paradiso/v0/PARADISO_21_INTEGRITY_LAWS_44_RELATIONSHIPS.csv)
 - [Research / Technical Design](data/paradiso/v0/PARADISO_RESEARCH_MAP_TDD_v0.md) and [audit manifest](data/paradiso/v0/PARADISO_VALIDATION_MANIFEST_V0.json)
 - These are source-preserving research records on a feature branch, not merged/live app wiring. All 11 known masters preserved; twelfth master remains unassigned.
+
+## Twelve core Compass archetype research records (2026-10-25)
+- [12 core behavioral archetype records in the engine-compatible 21-field shape](data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json)
+- Individual dossiers: `data/compass/archetypes/v1/records/Warrior.md`, `Sage.md`, `Rebel.md`, `Caregiver.md`, `Creator.md`, `Magician.md`, `Ruler.md`, `Explorer.md`, `Lover.md`, `Jester.md`, `Everyman.md`, `Innocent.md`
+- Four analytical lenses per archetype; original `canon.js#ARCH` definitions preserved. These are **12 core archetypes**, not the **11 masters** or **10 Paradiso spheres**.
