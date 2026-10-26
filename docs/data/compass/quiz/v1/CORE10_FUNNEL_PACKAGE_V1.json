@@ -1,9 +1,9 @@
 {
-  "schemaVersion": "1.0.0",
-  "release": "ATUNED-CORE10-FUNNEL-DRAFT-V1",
+  "schemaVersion": "1.1.0",
+  "release": "ATUNED-CORE10-FUNNEL-DRAFT-V1.1",
   "date": "2026-10-26",
-  "status": "CONTENT_COMPLETE_APPROVAL_AND_INTEGRATION_PENDING",
-  "intent": "10 canonical integrity laws, each triangulated in behavior, under pressure and prospective mechanism; vignette teaches coherence as intention/action alignment",
+  "status": "THREE_NUMERIC_CHANNELS_CONTENT_REVISED_INTEGRATION_PENDING",
+  "intent": "Ten laws each measured in three 0-10 registers: observable aligned behavior, aligned behavior under pressure, and one clearly stated defensive pattern hypothesized to interrupt alignment.",
   "sourceCanon": {
     "path": "atuned_src/engine/data/canon.js",
     "identityKey": "SI.nm",
@@ -51,31 +51,36 @@
       {
         "key": "BEHAVIOR",
         "scoreType": "REPORTED_FREQUENCY_0_10",
-        "meaning": "How regularly the action occurred in eligible situations"
+        "polarity": "ALIGNED",
+        "meaning": "How consistently the constructive behavior occurred, when reasonably possible"
       },
       {
         "key": "PRESSURE",
         "scoreType": "REPORTED_FREQUENCY_0_10",
-        "meaning": "How regularly action occurred in higher-cost opportunities",
-        "skipWhenNoOpportunity": true
+        "polarity": "ALIGNED",
+        "meaning": "How consistently the constructive behavior occurred in relevant higher-cost situations, when safe"
       },
       {
         "key": "MECHANISM",
-        "scoreType": "UNSCORED_OPTION_OR_TEXT",
-        "meaning": "User's own anticipated outcome or protective reason, not proof of cause"
+        "scoreType": "REPORTED_FREQUENCY_0_10",
+        "polarity": "REVERSE",
+        "meaning": "How frequently the explicitly named protective behavior occurred when the named trigger arose; the reason is a hypothesis in the question and the user can reject it by reporting N/A or zero"
       }
     ],
-    "results": "OPTIONAL CORE10_SELF_REPORT_INDEX ONLY; never label as full 21-law CQ until a versioned and validated bridge to the canonical engine exists",
-    "journalAdjustment": "PRESERVE_RAW_SELF_REPORT_AND_PRESSURE_RATINGS; PROPOSE_EVIDENCE_WITH_EXPLICIT_USER_CONFIRMATION; DO_NOT_SILENTLY_REWRITE",
+    "results": "PROVISIONAL 3-CHANNEL CORE10 SELF_REPORT; NEVER CALCULATE FINAL CQ FROM THE CHANNELS UNTIL MODEL AND REVERSAL POLICY APPROVED",
+    "journalAdjustment": "Each source rating is immutable after submission; proposed evidence-based corrections are a new version, opt-in and reversible; no automatic claim of confirmed cause.",
     "privacy": "No profile storage or journal inference without notice and permission; no sensitive raw entries in shareable link",
-    "onSkip": "Unanswered and not-applicable remain NULL; never substitute 0",
-    "userAutonomy": "Don't judge protective silence, sensible boundaries, disability, scarcity, exhaustion or coercion as automatically immoral"
+    "onSkip": "Not applicable, no relevant triggering situation, prefer not to answer, and unanswered are null, never zero; mechanism options are not forced.",
+    "userAutonomy": "Explicitly allow 'This isn't what happens for me' and an optional open-text account; don't equate safety, coercion, personal boundaries, disability, trauma or ordinary privacy with low integrity.",
+    "mechanismPolarity": "REVERSE: 10 = frequently performs the stated protective behavior, not high integrity. Preserve separate; do not mean-average all 3 channels.",
+    "contextualGate": "The third register is not universally applicable: if the named fear never happened, the answer is N/A rather than 0. Include optional user words to flag another mechanism."
   },
   "totals": {
     "laws": 10,
     "questions": 30,
-    "numeric": 20,
+    "numeric": 30,
     "mechanism": 10,
+    "mechanismNumeric": 10,
     "stories": 10,
     "bands": 7
   },
@@ -91,47 +96,66 @@
         {
           "id": "core10:v1:01:B",
           "register": "BEHAVIOR",
-          "prompt": "When someone needed an honest answer, how often did you give it?",
+          "prompt": "When someone asked you for an honest answer about something important, how often did you tell the truth?",
           "answer": {
             "type": "FREQUENCY",
             "min": 0,
             "max": 10,
             "allowNotApplicable": true,
-            "allowSkip": true
-          }
+            "allowSkip": true,
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "ALIGNED_CAPACITY"
+          },
+          "measure": "Observed, aligned action",
+          "contextRule": "Rate only occasions when you reasonably had the opportunity to choose"
         },
         {
           "id": "core10:v1:01:P",
           "register": "PRESSURE",
-          "prompt": "When honesty could upset someone, how often did you still tell the truth when safe?",
+          "prompt": "When telling the truth could disappoint someone, how often did you still give an honest answer when it was safe?",
           "answer": {
             "type": "FREQUENCY",
             "min": 0,
             "max": 10,
             "allowNotApplicable": true,
-            "allowSkip": true
-          }
+            "allowSkip": true,
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "ALIGNED_CAPACITY"
+          },
+          "measure": "Aligned action when difficult",
+          "contextRule": "Rate only occasions when you reasonably had the opportunity to choose"
         },
         {
           "id": "core10:v1:01:M",
           "register": "MECHANISM",
-          "prompt": "When you held back, what were you afraid might happen?",
+          "prompt": "When you worried someone would be upset by the truth, how often did you leave out an important fact to keep them happy?",
           "answer": {
-            "type": "MULTI_SELECT_PLUS_TEXT",
-            "options": [
-              "Rejection",
-              "Conflict",
-              "Punishment",
-              "Loss of privacy",
-              "It was unsafe",
-              "Something else, in my own words",
-              "None of these",
-              "I'm not sure",
-              "Prefer not to answer"
-            ],
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
             "allowSkip": true,
-            "scored": false,
-            "confirmationRequired": true
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "REVERSE_PROTECTIVE_PATTERN"
+          },
+          "measure": "Withholding an important fact to preserve approval",
+          "contextRule": "Only answer for occasions when the feared or uncomfortable situation in the question actually arose; otherwise choose Not applicable",
+          "mechanismHypothesis": {
+            "example": "Withholding an important fact to preserve approval",
+            "causation": "USER_SELF_REPORT_ONLY",
+            "inferredCause": false
           }
         }
       ],
@@ -146,7 +170,7 @@
       },
       "previewContract": {
         "showsUnderPressureGap": "ONLY_IF_BOTH_RATINGS_ANSWERED",
-        "mechanism": "SELF_SELECTED_CANDIDATE_NOT_CAUSE",
+        "mechanism": "FREQUENCY_OF_CANDIDATE_PROTECTIVE_BEHAVIOR_USER_SELF_REPORT_NOT_CONFIRMED_ROOT",
         "miniCompassBand": "Throat",
         "entryJourneySceneId": null,
         "releaseProtocolId": null,
@@ -155,7 +179,7 @@
       "provenance": {
         "sourceQuestions": "docs/data/compass/quiz/v1/INTEGRITY_THREE_DEPTH_QUESTIONS_V1.json",
         "canon": "atuned_src/engine/data/canon.js#SI",
-        "status": "DRAFT_21_LAW_SUBSET_WITH_NEW_VIGNETTES"
+        "status": "REVISED_OWNER_DIRECTION_3_NUMERIC_CONTEXTUAL_CHANNELS"
       }
     },
     {
@@ -169,47 +193,66 @@
         {
           "id": "core10:v1:02:B",
           "register": "BEHAVIOR",
-          "prompt": "When your choices affected someone, how often did you share what they needed to know?",
+          "prompt": "When your choices affected another person, how often did you tell them the information they needed?",
           "answer": {
             "type": "FREQUENCY",
             "min": 0,
             "max": 10,
             "allowNotApplicable": true,
-            "allowSkip": true
-          }
+            "allowSkip": true,
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "ALIGNED_CAPACITY"
+          },
+          "measure": "Observed, aligned action",
+          "contextRule": "Rate only occasions when you reasonably had the opportunity to choose"
         },
         {
           "id": "core10:v1:02:P",
           "register": "PRESSURE",
-          "prompt": "When admitting a mistake felt embarrassing, how often did you tell them?",
+          "prompt": "When you made a mistake that affected someone else, how often did you tell them even if it was embarrassing?",
           "answer": {
             "type": "FREQUENCY",
             "min": 0,
             "max": 10,
             "allowNotApplicable": true,
-            "allowSkip": true
-          }
+            "allowSkip": true,
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "ALIGNED_CAPACITY"
+          },
+          "measure": "Aligned action when difficult",
+          "contextRule": "Rate only occasions when you reasonably had the opportunity to choose"
         },
         {
           "id": "core10:v1:02:M",
           "register": "MECHANISM",
-          "prompt": "When you hid something important, what were you trying to protect?",
+          "prompt": "When you worried a mistake would make someone think less of you, how often did you hide that mistake from the person it affected?",
           "answer": {
-            "type": "MULTI_SELECT_PLUS_TEXT",
-            "options": [
-              "Reputation",
-              "Trust",
-              "Privacy",
-              "Safety",
-              "Avoiding blame",
-              "Something else, in my own words",
-              "None of these",
-              "I'm not sure",
-              "Prefer not to answer"
-            ],
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
             "allowSkip": true,
-            "scored": false,
-            "confirmationRequired": true
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "REVERSE_PROTECTIVE_PATTERN"
+          },
+          "measure": "Hiding an important mistake to protect reputation",
+          "contextRule": "Only answer for occasions when the feared or uncomfortable situation in the question actually arose; otherwise choose Not applicable",
+          "mechanismHypothesis": {
+            "example": "Hiding an important mistake to protect reputation",
+            "causation": "USER_SELF_REPORT_ONLY",
+            "inferredCause": false
           }
         }
       ],
@@ -224,7 +267,7 @@
       },
       "previewContract": {
         "showsUnderPressureGap": "ONLY_IF_BOTH_RATINGS_ANSWERED",
-        "mechanism": "SELF_SELECTED_CANDIDATE_NOT_CAUSE",
+        "mechanism": "FREQUENCY_OF_CANDIDATE_PROTECTIVE_BEHAVIOR_USER_SELF_REPORT_NOT_CONFIRMED_ROOT",
         "miniCompassBand": "Throat",
         "entryJourneySceneId": null,
         "releaseProtocolId": null,
@@ -233,7 +276,7 @@
       "provenance": {
         "sourceQuestions": "docs/data/compass/quiz/v1/INTEGRITY_THREE_DEPTH_QUESTIONS_V1.json",
         "canon": "atuned_src/engine/data/canon.js#SI",
-        "status": "DRAFT_21_LAW_SUBSET_WITH_NEW_VIGNETTES"
+        "status": "REVISED_OWNER_DIRECTION_3_NUMERIC_CONTEXTUAL_CHANNELS"
       }
     },
     {
@@ -247,47 +290,66 @@
         {
           "id": "core10:v1:03:B",
           "register": "BEHAVIOR",
-          "prompt": "When someone disagreed with you, how often did you treat them with respect?",
+          "prompt": "When you disagreed with someone, how often did you still treat them with respect?",
           "answer": {
             "type": "FREQUENCY",
             "min": 0,
             "max": 10,
             "allowNotApplicable": true,
-            "allowSkip": true
-          }
+            "allowSkip": true,
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "ALIGNED_CAPACITY"
+          },
+          "measure": "Observed, aligned action",
+          "contextRule": "Rate only occasions when you reasonably had the opportunity to choose"
         },
         {
           "id": "core10:v1:03:P",
           "register": "PRESSURE",
-          "prompt": "When your group judged someone, how often did you decide for yourself how to treat them?",
+          "prompt": "When people you wanted to fit in with mocked someone, how often did you choose not to join in?",
           "answer": {
             "type": "FREQUENCY",
             "min": 0,
             "max": 10,
             "allowNotApplicable": true,
-            "allowSkip": true
-          }
+            "allowSkip": true,
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "ALIGNED_CAPACITY"
+          },
+          "measure": "Aligned action when difficult",
+          "contextRule": "Rate only occasions when you reasonably had the opportunity to choose"
         },
         {
           "id": "core10:v1:03:M",
           "register": "MECHANISM",
-          "prompt": "When respect was difficult, what felt threatened?",
+          "prompt": "When you wanted a group's approval, how often did you join in putting down someone the group disliked?",
           "answer": {
-            "type": "MULTI_SELECT_PLUS_TEXT",
-            "options": [
-              "Belonging",
-              "Values",
-              "Safety",
-              "Pride",
-              "Old hurt",
-              "Something else, in my own words",
-              "None of these",
-              "I'm not sure",
-              "Prefer not to answer"
-            ],
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
             "allowSkip": true,
-            "scored": false,
-            "confirmationRequired": true
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "REVERSE_PROTECTIVE_PATTERN"
+          },
+          "measure": "Joining group ridicule to avoid social disapproval",
+          "contextRule": "Only answer for occasions when the feared or uncomfortable situation in the question actually arose; otherwise choose Not applicable",
+          "mechanismHypothesis": {
+            "example": "Joining group ridicule to avoid social disapproval",
+            "causation": "USER_SELF_REPORT_ONLY",
+            "inferredCause": false
           }
         }
       ],
@@ -302,7 +364,7 @@
       },
       "previewContract": {
         "showsUnderPressureGap": "ONLY_IF_BOTH_RATINGS_ANSWERED",
-        "mechanism": "SELF_SELECTED_CANDIDATE_NOT_CAUSE",
+        "mechanism": "FREQUENCY_OF_CANDIDATE_PROTECTIVE_BEHAVIOR_USER_SELF_REPORT_NOT_CONFIRMED_ROOT",
         "miniCompassBand": "Crown",
         "entryJourneySceneId": null,
         "releaseProtocolId": null,
@@ -311,7 +373,7 @@
       "provenance": {
         "sourceQuestions": "docs/data/compass/quiz/v1/INTEGRITY_THREE_DEPTH_QUESTIONS_V1.json",
         "canon": "atuned_src/engine/data/canon.js#SI",
-        "status": "DRAFT_21_LAW_SUBSET_WITH_NEW_VIGNETTES"
+        "status": "REVISED_OWNER_DIRECTION_3_NUMERIC_CONTEXTUAL_CHANNELS"
       }
     },
     {
@@ -325,47 +387,66 @@
         {
           "id": "core10:v1:04:B",
           "register": "BEHAVIOR",
-          "prompt": "When someone was speaking, how often did you give them your attention?",
+          "prompt": "When someone was talking to you, how often did you pay attention to what they were saying?",
           "answer": {
             "type": "FREQUENCY",
             "min": 0,
             "max": 10,
             "allowNotApplicable": true,
-            "allowSkip": true
-          }
+            "allowSkip": true,
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "ALIGNED_CAPACITY"
+          },
+          "measure": "Observed, aligned action",
+          "contextRule": "Rate only occasions when you reasonably had the opportunity to choose"
         },
         {
           "id": "core10:v1:04:P",
           "register": "PRESSURE",
-          "prompt": "When worry or distraction interrupted you, how often did you return to the moment?",
+          "prompt": "When worries distracted you during a conversation, how often did you bring your attention back to the person speaking?",
           "answer": {
             "type": "FREQUENCY",
             "min": 0,
             "max": 10,
             "allowNotApplicable": true,
-            "allowSkip": true
-          }
+            "allowSkip": true,
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "ALIGNED_CAPACITY"
+          },
+          "measure": "Aligned action when difficult",
+          "contextRule": "Rate only occasions when you reasonably had the opportunity to choose"
         },
         {
           "id": "core10:v1:04:M",
           "register": "MECHANISM",
-          "prompt": "When you drifted away, what drew your attention?",
+          "prompt": "When a conversation brought up an uncomfortable feeling, how often did you turn to your phone or another distraction to avoid that feeling?",
           "answer": {
-            "type": "MULTI_SELECT_PLUS_TEXT",
-            "options": [
-              "Future worries",
-              "Past events",
-              "Overload",
-              "Restlessness",
-              "Wanting escape",
-              "Something else, in my own words",
-              "None of these",
-              "I'm not sure",
-              "Prefer not to answer"
-            ],
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
             "allowSkip": true,
-            "scored": false,
-            "confirmationRequired": true
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "REVERSE_PROTECTIVE_PATTERN"
+          },
+          "measure": "Using distraction to avoid discomfort",
+          "contextRule": "Only answer for occasions when the feared or uncomfortable situation in the question actually arose; otherwise choose Not applicable",
+          "mechanismHypothesis": {
+            "example": "Using distraction to avoid discomfort",
+            "causation": "USER_SELF_REPORT_ONLY",
+            "inferredCause": false
           }
         }
       ],
@@ -380,7 +461,7 @@
       },
       "previewContract": {
         "showsUnderPressureGap": "ONLY_IF_BOTH_RATINGS_ANSWERED",
-        "mechanism": "SELF_SELECTED_CANDIDATE_NOT_CAUSE",
+        "mechanism": "FREQUENCY_OF_CANDIDATE_PROTECTIVE_BEHAVIOR_USER_SELF_REPORT_NOT_CONFIRMED_ROOT",
         "miniCompassBand": "3rd Eye",
         "entryJourneySceneId": null,
         "releaseProtocolId": null,
@@ -389,7 +470,7 @@
       "provenance": {
         "sourceQuestions": "docs/data/compass/quiz/v1/INTEGRITY_THREE_DEPTH_QUESTIONS_V1.json",
         "canon": "atuned_src/engine/data/canon.js#SI",
-        "status": "DRAFT_21_LAW_SUBSET_WITH_NEW_VIGNETTES"
+        "status": "REVISED_OWNER_DIRECTION_3_NUMERIC_CONTEXTUAL_CHANNELS"
       }
     },
     {
@@ -403,47 +484,66 @@
         {
           "id": "core10:v1:05:B",
           "register": "BEHAVIOR",
-          "prompt": "When someone struggled, how often did you take their feelings seriously?",
+          "prompt": "When someone told you they were struggling, how often did you listen before responding?",
           "answer": {
             "type": "FREQUENCY",
             "min": 0,
             "max": 10,
             "allowNotApplicable": true,
-            "allowSkip": true
-          }
+            "allowSkip": true,
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "ALIGNED_CAPACITY"
+          },
+          "measure": "Observed, aligned action",
+          "contextRule": "Rate only occasions when you reasonably had the opportunity to choose"
         },
         {
           "id": "core10:v1:05:P",
           "register": "PRESSURE",
-          "prompt": "When tired or annoyed, how often did you stay kind without ignoring your limits?",
+          "prompt": "When you were tired and someone needed support, how often did you respond with care while respecting your own limits?",
           "answer": {
             "type": "FREQUENCY",
             "min": 0,
             "max": 10,
             "allowNotApplicable": true,
-            "allowSkip": true
-          }
+            "allowSkip": true,
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "ALIGNED_CAPACITY"
+          },
+          "measure": "Aligned action when difficult",
+          "contextRule": "Rate only occasions when you reasonably had the opportunity to choose"
         },
         {
           "id": "core10:v1:05:M",
           "register": "MECHANISM",
-          "prompt": "When you pulled away from someone's pain, what made it hard?",
+          "prompt": "When someone's distress made you uncomfortable, how often did you change the subject to avoid hearing more about their pain?",
           "answer": {
-            "type": "MULTI_SELECT_PLUS_TEXT",
-            "options": [
-              "Being drained",
-              "Not knowing how to help",
-              "Fear of getting pulled in",
-              "Discomfort",
-              "My own hurt",
-              "Something else, in my own words",
-              "None of these",
-              "I'm not sure",
-              "Prefer not to answer"
-            ],
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
             "allowSkip": true,
-            "scored": false,
-            "confirmationRequired": true
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "REVERSE_PROTECTIVE_PATTERN"
+          },
+          "measure": "Changing subject to avoid another's distress",
+          "contextRule": "Only answer for occasions when the feared or uncomfortable situation in the question actually arose; otherwise choose Not applicable",
+          "mechanismHypothesis": {
+            "example": "Changing subject to avoid another's distress",
+            "causation": "USER_SELF_REPORT_ONLY",
+            "inferredCause": false
           }
         }
       ],
@@ -458,7 +558,7 @@
       },
       "previewContract": {
         "showsUnderPressureGap": "ONLY_IF_BOTH_RATINGS_ANSWERED",
-        "mechanism": "SELF_SELECTED_CANDIDATE_NOT_CAUSE",
+        "mechanism": "FREQUENCY_OF_CANDIDATE_PROTECTIVE_BEHAVIOR_USER_SELF_REPORT_NOT_CONFIRMED_ROOT",
         "miniCompassBand": "Heart",
         "entryJourneySceneId": null,
         "releaseProtocolId": null,
@@ -467,7 +567,7 @@
       "provenance": {
         "sourceQuestions": "docs/data/compass/quiz/v1/INTEGRITY_THREE_DEPTH_QUESTIONS_V1.json",
         "canon": "atuned_src/engine/data/canon.js#SI",
-        "status": "DRAFT_21_LAW_SUBSET_WITH_NEW_VIGNETTES"
+        "status": "REVISED_OWNER_DIRECTION_3_NUMERIC_CONTEXTUAL_CHANNELS"
       }
     },
     {
@@ -481,47 +581,66 @@
         {
           "id": "core10:v1:06:B",
           "register": "BEHAVIOR",
-          "prompt": "When something mattered but felt scary, how often did you take a reasonably safe step?",
+          "prompt": "When something important needed to be said, how often did you speak up when it was reasonably safe?",
           "answer": {
             "type": "FREQUENCY",
             "min": 0,
             "max": 10,
             "allowNotApplicable": true,
-            "allowSkip": true
-          }
+            "allowSkip": true,
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "ALIGNED_CAPACITY"
+          },
+          "measure": "Observed, aligned action",
+          "contextRule": "Rate only occasions when you reasonably had the opportunity to choose"
         },
         {
           "id": "core10:v1:06:P",
           "register": "PRESSURE",
-          "prompt": "When speaking up might bring disapproval, how often did you speak when safe?",
+          "prompt": "When speaking up might bring disapproval, how often did you still say what mattered when it was safe?",
           "answer": {
             "type": "FREQUENCY",
             "min": 0,
             "max": 10,
             "allowNotApplicable": true,
-            "allowSkip": true
-          }
+            "allowSkip": true,
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "ALIGNED_CAPACITY"
+          },
+          "measure": "Aligned action when difficult",
+          "contextRule": "Rate only occasions when you reasonably had the opportunity to choose"
         },
         {
           "id": "core10:v1:06:M",
           "register": "MECHANISM",
-          "prompt": "When you held back, what did you expect could happen?",
+          "prompt": "When you feared someone would reject you for speaking up, how often did you stay silent even though it was safe to speak?",
           "answer": {
-            "type": "MULTI_SELECT_PLUS_TEXT",
-            "options": [
-              "Rejection",
-              "Loss",
-              "Conflict",
-              "Uncertainty",
-              "Real danger",
-              "Something else, in my own words",
-              "None of these",
-              "I'm not sure",
-              "Prefer not to answer"
-            ],
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
             "allowSkip": true,
-            "scored": false,
-            "confirmationRequired": true
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "REVERSE_PROTECTIVE_PATTERN"
+          },
+          "measure": "Staying silent to avoid rejection when speaking is safe",
+          "contextRule": "Only answer for occasions when the feared or uncomfortable situation in the question actually arose; otherwise choose Not applicable",
+          "mechanismHypothesis": {
+            "example": "Staying silent to avoid rejection when speaking is safe",
+            "causation": "USER_SELF_REPORT_ONLY",
+            "inferredCause": false
           }
         }
       ],
@@ -536,7 +655,7 @@
       },
       "previewContract": {
         "showsUnderPressureGap": "ONLY_IF_BOTH_RATINGS_ANSWERED",
-        "mechanism": "SELF_SELECTED_CANDIDATE_NOT_CAUSE",
+        "mechanism": "FREQUENCY_OF_CANDIDATE_PROTECTIVE_BEHAVIOR_USER_SELF_REPORT_NOT_CONFIRMED_ROOT",
         "miniCompassBand": "Solar",
         "entryJourneySceneId": null,
         "releaseProtocolId": null,
@@ -545,7 +664,7 @@
       "provenance": {
         "sourceQuestions": "docs/data/compass/quiz/v1/INTEGRITY_THREE_DEPTH_QUESTIONS_V1.json",
         "canon": "atuned_src/engine/data/canon.js#SI",
-        "status": "DRAFT_21_LAW_SUBSET_WITH_NEW_VIGNETTES"
+        "status": "REVISED_OWNER_DIRECTION_3_NUMERIC_CONTEXTUAL_CHANNELS"
       }
     },
     {
@@ -559,47 +678,66 @@
         {
           "id": "core10:v1:07:B",
           "register": "BEHAVIOR",
-          "prompt": "When you made a promise you could reasonably keep, how often did you follow through?",
+          "prompt": "When you freely made a realistic promise, how often did you follow through?",
           "answer": {
             "type": "FREQUENCY",
             "min": 0,
             "max": 10,
             "allowNotApplicable": true,
-            "allowSkip": true
-          }
+            "allowSkip": true,
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "ALIGNED_CAPACITY"
+          },
+          "measure": "Observed, aligned action",
+          "contextRule": "Rate only occasions when you reasonably had the opportunity to choose"
         },
         {
           "id": "core10:v1:07:P",
           "register": "PRESSURE",
-          "prompt": "When you couldn't meet a commitment, how often did you tell the other person in time?",
+          "prompt": "When something unexpected prevented you from keeping a promise, how often did you tell the affected person before the deadline?",
           "answer": {
             "type": "FREQUENCY",
             "min": 0,
             "max": 10,
             "allowNotApplicable": true,
-            "allowSkip": true
-          }
+            "allowSkip": true,
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "ALIGNED_CAPACITY"
+          },
+          "measure": "Aligned action when difficult",
+          "contextRule": "Rate only occasions when you reasonably had the opportunity to choose"
         },
         {
           "id": "core10:v1:07:M",
           "register": "MECHANISM",
-          "prompt": "When a commitment slipped, what got in the way?",
+          "prompt": "When you feared disappointing someone, how often did you agree to a task you already knew you could not reasonably finish?",
           "answer": {
-            "type": "MULTI_SELECT_PLUS_TEXT",
-            "options": [
-              "Overload",
-              "Difficulty saying no",
-              "Fear of disappointing someone",
-              "Avoidance",
-              "Changed circumstances",
-              "Something else, in my own words",
-              "None of these",
-              "I'm not sure",
-              "Prefer not to answer"
-            ],
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
             "allowSkip": true,
-            "scored": false,
-            "confirmationRequired": true
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "REVERSE_PROTECTIVE_PATTERN"
+          },
+          "measure": "Overcommitting to avoid disappointing someone",
+          "contextRule": "Only answer for occasions when the feared or uncomfortable situation in the question actually arose; otherwise choose Not applicable",
+          "mechanismHypothesis": {
+            "example": "Overcommitting to avoid disappointing someone",
+            "causation": "USER_SELF_REPORT_ONLY",
+            "inferredCause": false
           }
         }
       ],
@@ -614,7 +752,7 @@
       },
       "previewContract": {
         "showsUnderPressureGap": "ONLY_IF_BOTH_RATINGS_ANSWERED",
-        "mechanism": "SELF_SELECTED_CANDIDATE_NOT_CAUSE",
+        "mechanism": "FREQUENCY_OF_CANDIDATE_PROTECTIVE_BEHAVIOR_USER_SELF_REPORT_NOT_CONFIRMED_ROOT",
         "miniCompassBand": "Solar",
         "entryJourneySceneId": null,
         "releaseProtocolId": null,
@@ -623,7 +761,7 @@
       "provenance": {
         "sourceQuestions": "docs/data/compass/quiz/v1/INTEGRITY_THREE_DEPTH_QUESTIONS_V1.json",
         "canon": "atuned_src/engine/data/canon.js#SI",
-        "status": "DRAFT_21_LAW_SUBSET_WITH_NEW_VIGNETTES"
+        "status": "REVISED_OWNER_DIRECTION_3_NUMERIC_CONTEXTUAL_CHANNELS"
       }
     },
     {
@@ -637,47 +775,66 @@
         {
           "id": "core10:v1:08:B",
           "register": "BEHAVIOR",
-          "prompt": "When a mistake affected someone, how often did you try to repair it?",
+          "prompt": "When your mistake affected someone else, how often did you acknowledge what you did?",
           "answer": {
             "type": "FREQUENCY",
             "min": 0,
             "max": 10,
             "allowNotApplicable": true,
-            "allowSkip": true
-          }
+            "allowSkip": true,
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "ALIGNED_CAPACITY"
+          },
+          "measure": "Observed, aligned action",
+          "contextRule": "Rate only occasions when you reasonably had the opportunity to choose"
         },
         {
           "id": "core10:v1:08:P",
           "register": "PRESSURE",
-          "prompt": "When apologizing was uncomfortable, how often did you apologize directly when appropriate?",
+          "prompt": "When admitting a mistake could damage your reputation, how often did you still own your part?",
           "answer": {
             "type": "FREQUENCY",
             "min": 0,
             "max": 10,
             "allowNotApplicable": true,
-            "allowSkip": true
-          }
+            "allowSkip": true,
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "ALIGNED_CAPACITY"
+          },
+          "measure": "Aligned action when difficult",
+          "contextRule": "Rate only occasions when you reasonably had the opportunity to choose"
         },
         {
           "id": "core10:v1:08:M",
           "register": "MECHANISM",
-          "prompt": "When you delayed repair, what stopped you?",
+          "prompt": "When you feared being blamed for a mistake, how often did you make excuses instead of acknowledging your part?",
           "answer": {
-            "type": "MULTI_SELECT_PLUS_TEXT",
-            "options": [
-              "Shame",
-              "Rejection",
-              "Punishment",
-              "Not knowing what to do",
-              "Feeling it was too late",
-              "Something else, in my own words",
-              "None of these",
-              "I'm not sure",
-              "Prefer not to answer"
-            ],
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
             "allowSkip": true,
-            "scored": false,
-            "confirmationRequired": true
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "REVERSE_PROTECTIVE_PATTERN"
+          },
+          "measure": "Making excuses to avoid blame",
+          "contextRule": "Only answer for occasions when the feared or uncomfortable situation in the question actually arose; otherwise choose Not applicable",
+          "mechanismHypothesis": {
+            "example": "Making excuses to avoid blame",
+            "causation": "USER_SELF_REPORT_ONLY",
+            "inferredCause": false
           }
         }
       ],
@@ -692,7 +849,7 @@
       },
       "previewContract": {
         "showsUnderPressureGap": "ONLY_IF_BOTH_RATINGS_ANSWERED",
-        "mechanism": "SELF_SELECTED_CANDIDATE_NOT_CAUSE",
+        "mechanism": "FREQUENCY_OF_CANDIDATE_PROTECTIVE_BEHAVIOR_USER_SELF_REPORT_NOT_CONFIRMED_ROOT",
         "miniCompassBand": "Solar",
         "entryJourneySceneId": null,
         "releaseProtocolId": null,
@@ -701,7 +858,7 @@
       "provenance": {
         "sourceQuestions": "docs/data/compass/quiz/v1/INTEGRITY_THREE_DEPTH_QUESTIONS_V1.json",
         "canon": "atuned_src/engine/data/canon.js#SI",
-        "status": "DRAFT_21_LAW_SUBSET_WITH_NEW_VIGNETTES"
+        "status": "REVISED_OWNER_DIRECTION_3_NUMERIC_CONTEXTUAL_CHANNELS"
       }
     },
     {
@@ -715,47 +872,66 @@
         {
           "id": "core10:v1:09:B",
           "register": "BEHAVIOR",
-          "prompt": "When you'd had enough of something you wanted, how often did you stop?",
+          "prompt": "When you noticed you had enough of something you wanted, how often did you stop?",
           "answer": {
             "type": "FREQUENCY",
             "min": 0,
             "max": 10,
             "allowNotApplicable": true,
-            "allowSkip": true
-          }
+            "allowSkip": true,
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "ALIGNED_CAPACITY"
+          },
+          "measure": "Observed, aligned action",
+          "contextRule": "Rate only occasions when you reasonably had the opportunity to choose"
         },
         {
           "id": "core10:v1:09:P",
           "register": "PRESSURE",
-          "prompt": "When stressed, how often did you choose what you needed over an escape that left you worse off?",
+          "prompt": "When you were stressed, how often did you stop at enough instead of continuing just for relief?",
           "answer": {
             "type": "FREQUENCY",
             "min": 0,
             "max": 10,
             "allowNotApplicable": true,
-            "allowSkip": true
-          }
+            "allowSkip": true,
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "ALIGNED_CAPACITY"
+          },
+          "measure": "Aligned action when difficult",
+          "contextRule": "Rate only occasions when you reasonably had the opportunity to choose"
         },
         {
           "id": "core10:v1:09:M",
           "register": "MECHANISM",
-          "prompt": "When you kept going past enough, what were you looking for?",
+          "prompt": "When you felt upset, how often did you keep doing a comforting activity after you wanted to stop so you would not have to face the feeling?",
           "answer": {
-            "type": "MULTI_SELECT_PLUS_TEXT",
-            "options": [
-              "Comfort",
-              "Stress relief",
-              "Control",
-              "Filling emptiness",
-              "Automatic habit",
-              "Something else, in my own words",
-              "None of these",
-              "I'm not sure",
-              "Prefer not to answer"
-            ],
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
             "allowSkip": true,
-            "scored": false,
-            "confirmationRequired": true
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "REVERSE_PROTECTIVE_PATTERN"
+          },
+          "measure": "Continuing a comforting activity to avoid a feeling",
+          "contextRule": "Only answer for occasions when the feared or uncomfortable situation in the question actually arose; otherwise choose Not applicable",
+          "mechanismHypothesis": {
+            "example": "Continuing a comforting activity to avoid a feeling",
+            "causation": "USER_SELF_REPORT_ONLY",
+            "inferredCause": false
           }
         }
       ],
@@ -770,7 +946,7 @@
       },
       "previewContract": {
         "showsUnderPressureGap": "ONLY_IF_BOTH_RATINGS_ANSWERED",
-        "mechanism": "SELF_SELECTED_CANDIDATE_NOT_CAUSE",
+        "mechanism": "FREQUENCY_OF_CANDIDATE_PROTECTIVE_BEHAVIOR_USER_SELF_REPORT_NOT_CONFIRMED_ROOT",
         "miniCompassBand": "Sacral",
         "entryJourneySceneId": null,
         "releaseProtocolId": null,
@@ -779,7 +955,7 @@
       "provenance": {
         "sourceQuestions": "docs/data/compass/quiz/v1/INTEGRITY_THREE_DEPTH_QUESTIONS_V1.json",
         "canon": "atuned_src/engine/data/canon.js#SI",
-        "status": "DRAFT_21_LAW_SUBSET_WITH_NEW_VIGNETTES"
+        "status": "REVISED_OWNER_DIRECTION_3_NUMERIC_CONTEXTUAL_CHANNELS"
       }
     },
     {
@@ -793,47 +969,66 @@
         {
           "id": "core10:v1:10:B",
           "register": "BEHAVIOR",
-          "prompt": "When upset, how often did you avoid unnecessary harm in what you said or did?",
+          "prompt": "When you were upset with someone, how often did you avoid saying or doing something meant to hurt them?",
           "answer": {
             "type": "FREQUENCY",
             "min": 0,
             "max": 10,
             "allowNotApplicable": true,
-            "allowSkip": true
-          }
+            "allowSkip": true,
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "ALIGNED_CAPACITY"
+          },
+          "measure": "Observed, aligned action",
+          "contextRule": "Rate only occasions when you reasonably had the opportunity to choose"
         },
         {
           "id": "core10:v1:10:P",
           "register": "PRESSURE",
-          "prompt": "When setting a boundary, how often did you do it without trying to punish the other person?",
+          "prompt": "When setting a boundary with someone who upset you, how often did you do it without trying to punish them?",
           "answer": {
             "type": "FREQUENCY",
             "min": 0,
             "max": 10,
             "allowNotApplicable": true,
-            "allowSkip": true
-          }
+            "allowSkip": true,
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "ALIGNED_CAPACITY"
+          },
+          "measure": "Aligned action when difficult",
+          "contextRule": "Rate only occasions when you reasonably had the opportunity to choose"
         },
         {
           "id": "core10:v1:10:M",
           "register": "MECHANISM",
-          "prompt": "When you wanted to hurt back, what felt threatened?",
+          "prompt": "When you felt disrespected, how often did you say something cutting because you wanted the other person to feel hurt too?",
           "answer": {
-            "type": "MULTI_SELECT_PLUS_TEXT",
-            "options": [
-              "Being heard",
-              "Respect",
-              "Control",
-              "Safety",
-              "Being understood",
-              "Something else, in my own words",
-              "None of these",
-              "I'm not sure",
-              "Prefer not to answer"
-            ],
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
             "allowSkip": true,
-            "scored": false,
-            "confirmationRequired": true
+            "anchors": {
+              "0": "Never",
+              "5": "About half the eligible opportunities",
+              "10": "Always"
+            },
+            "polarity": "REVERSE_PROTECTIVE_PATTERN"
+          },
+          "measure": "Hurting back to recover a sense of respect",
+          "contextRule": "Only answer for occasions when the feared or uncomfortable situation in the question actually arose; otherwise choose Not applicable",
+          "mechanismHypothesis": {
+            "example": "Hurting back to recover a sense of respect",
+            "causation": "USER_SELF_REPORT_ONLY",
+            "inferredCause": false
           }
         }
       ],
@@ -848,7 +1043,7 @@
       },
       "previewContract": {
         "showsUnderPressureGap": "ONLY_IF_BOTH_RATINGS_ANSWERED",
-        "mechanism": "SELF_SELECTED_CANDIDATE_NOT_CAUSE",
+        "mechanism": "FREQUENCY_OF_CANDIDATE_PROTECTIVE_BEHAVIOR_USER_SELF_REPORT_NOT_CONFIRMED_ROOT",
         "miniCompassBand": "Root",
         "entryJourneySceneId": null,
         "releaseProtocolId": null,
@@ -857,7 +1052,7 @@
       "provenance": {
         "sourceQuestions": "docs/data/compass/quiz/v1/INTEGRITY_THREE_DEPTH_QUESTIONS_V1.json",
         "canon": "atuned_src/engine/data/canon.js#SI",
-        "status": "DRAFT_21_LAW_SUBSET_WITH_NEW_VIGNETTES"
+        "status": "REVISED_OWNER_DIRECTION_3_NUMERIC_CONTEXTUAL_CHANNELS"
       }
     }
   ]
