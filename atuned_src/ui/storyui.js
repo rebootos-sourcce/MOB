@@ -111,20 +111,20 @@ function stRender(){
       question button already draws: one drawing per named thing. The margin
       takes the free space, so it and Record stand together at the right
       edge where Record stood alone. See srcThread for what it opens. */
-   +(show?'':'<button class="st-mic st-talk" id="sttalk" type="button" aria-pressed="'+!!STV.chat+'" '
-   +'title="Write it as a conversation, one turn at a time.">'
+   /* TALK AND RECORD ARE ONE BUTTON, ruled 25 October: "Talk and Record
+      become one button... the single friendly press." One press opens the
+      conversation and starts listening together; a second press stops
+      listening and leaves the conversation open, since a person mid
+      conversation is not done because the mic paused. */
+   +(show?'':'<button class="st-mic st-talk'+(ST_LISTEN?' on':'')+'" id="sttalk" type="button" '
+   +'aria-pressed="'+!!STV.chat+'" '
+   +'title="'+(ST_LISTEN?'Listening. Press to stop and keep what it heard.'
+     :'Talk it through, one turn at a time. Recording sends the audio to your browser\'s speech service; typing does not leave this device.')+'">'
+   +'<span class="st-dot"></span>'
    +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
    +'<circle cx="6" cy="6.5" r="3"/><circle cx="18" cy="17.5" r="3"/>'
    +'<path d="M8.4 8.4Q16.5 7 15.6 15.6"/></svg>'
-   +'<span>Talk</span></button>'
-   +'<button class="st-mic'+(ST_LISTEN?' on':'')+'" id="stmic" type="button" '
-   +'title="'+(ST_LISTEN?'Recording. Press to stop and keep what it heard.'
-     :'Record what happened out loud instead of typing it. Recording sends the audio to your browser\'s speech service; typing does not leave this device.')+'">'
-   +'<span class="st-dot"></span>'
-   +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
-   +'<rect x="9" y="3" width="6" height="11" rx="3"/>'
-   +'<path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg>'
-   +'<span>'+(ST_LISTEN?'Recording':'Record')+'</span>'
+   +'<span>'+(ST_LISTEN?'Listening':'Talk')+'</span>'
    /* THE CLOCK, ROUND LV. His words: "I want the time showing how long my
       recording is." mm:ss, in the button itself so it reads as one control
       rather than two things to track, and gone the moment recording is,
@@ -335,10 +335,17 @@ function stRender(){
  /* a reply still in the line is the person's words, so Commit sends it first
     rather than committing the entry without it */
  if(ap)ap.onclick=function(){if(STV.chat)srcChatSend(); return stCommit();};
- var mic=document.getElementById('stmic');
- if(mic)mic.onclick=stMic;
+ /* ONE BUTTON, BOTH MOVES, ONE TOGGLE. Pressing it on opens the conversation
+    and starts listening together; pressing it off closes the conversation
+    and stops listening together, the same single on/off Talk always was.
+    stMic() renders itself on every path it takes, so this calls it first
+    while STV.chat still reads the old value, then flips STV.chat and
+    renders once more for the swap between #sttext and #stcin. */
  var tk=document.getElementById('sttalk');
- if(tk)tk.onclick=function(){STV.chat=!STV.chat; stRender();
+ if(tk)tk.onclick=function(){
+  var opening=!STV.chat;
+  if(opening!==!!ST_LISTEN)stMic();
+  STV.chat=opening; stRender();
   var f=document.getElementById(STV.chat?'stcin':'sttext'); if(f)f.focus();};
  srcChatWire();}
 

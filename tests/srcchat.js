@@ -211,10 +211,11 @@ require('./net.js').guardBrowser(browser);
       line: (() => { const r = document.getElementById('stcin').getBoundingClientRect(); return { top: r.top, h: r.height, w: r.width }; })(),
       send: (() => { const r = document.getElementById('stcsend').getBoundingClientRect(); return { w: r.width, h: r.height }; })() }));
     ok(fit.sw <= fit.w, 'no sideways scroll at 390: ' + fit.sw + ' of ' + fit.w);
-    /* the row that first put Record on a line of its own, then squeezed Talk to sixteen pixels */
-    const row = await q.evaluate(() => { const t = document.getElementById('sttalk').getBoundingClientRect(), m = document.getElementById('stmic').getBoundingClientRect();
-      return { tt: Math.round(t.top), mt: Math.round(m.top), tw: Math.round(t.width), th: Math.round(t.height) }; });
-    ok(row.tt === row.mt && row.tw >= 44 && row.th >= 44, 'Talk and Record share the row, and Talk is tap sized: ' + JSON.stringify(row));
+    /* Talk and Record are one button now, ruled 25 October; the row that
+       first put Record on a line of its own now has just the one control */
+    const row = await q.evaluate(() => { const t = document.getElementById('sttalk').getBoundingClientRect();
+      return { tw: Math.round(t.width), th: Math.round(t.height) }; });
+    ok(row.tw >= 44 && row.th >= 44, 'the one Talk and Record button is tap sized: ' + JSON.stringify(row));
     ok(fit.send.w >= 44 && fit.send.h >= 44 && fit.line.h >= 44, 'the send and the line are tap sized: ' + JSON.stringify(fit));
     await q.evaluate(() => { const t = document.querySelector('#stjr'); t.scrollIntoView(); });
     await shot(q, 'talk-390-ask.png');
