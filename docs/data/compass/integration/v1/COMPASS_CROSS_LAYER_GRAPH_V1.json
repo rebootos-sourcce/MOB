@@ -1,0 +1,3389 @@
+{
+  "schema": "ATUNED_COMPASS_READ_ONLY_GRAPH_OVERLAY_V1",
+  "date": "2026-10-25",
+  "status": "DOCUMENTED_NOT_RUNTIME",
+  "sourceDigests": {
+    "teachers": {
+      "path": "docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json",
+      "blobSha": "66dffa2535755c80076bb78176f65420f533e340"
+    },
+    "paradiso": {
+      "path": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+      "blobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041"
+    },
+    "purgatorio": {
+      "path": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+      "blobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90"
+    },
+    "archetypes": {
+      "path": "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+      "blobSha": "3cc04779229fb0ebb041f8b4609e739ab73d9c50"
+    }
+  },
+  "infernoArchive": {
+    "source": "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json",
+    "sha256": "de3d0099ffbaf698d40873a141010cd2c724ff226e0b33a208b1307f58bc0fdc",
+    "recordCount": 38,
+    "status": "NORMALIZED_DOCUMENTATION_UNPROMOTED",
+    "githubPromoted": false
+  },
+  "policy": {
+    "scoring": "No new CQ/DQ calculations, no rank inference; laws are non-scoring cross-references",
+    "purgatorio": "40–60 oscillation zone and seven terraces are behavioral not CQ numeric subdivisions",
+    "identity": "Named mythic/historic figures are provenance only; no human classification",
+    "protocols": "Purgatorio owns release protocols, Paradiso owns ascent rituals; both are still unassigned",
+    "archetypes": "Archetype is not a teacher or Paradiso identity",
+    "twelveMaster": "Owner-unnamed; do not invent"
+  },
+  "stats": {
+    "nodes": 135,
+    "edges": 300,
+    "teachers": 11,
+    "inverses": 12,
+    "canonNamedInverses": 8,
+    "inferredInverses": 4,
+    "infernoArchive": 38,
+    "purgatorio": 23,
+    "paradiso": 10,
+    "archetypes": 12,
+    "laws": 21,
+    "axes": 8,
+    "teacherParadisoTotal": 29,
+    "teacherParadisoReciprocal": 24,
+    "teacherParadisoOneSided": 5,
+    "teacherInversePairs": 12,
+    "recordsWithFourResearchLenses": 23
+  },
+  "nodes": [
+    {
+      "id": "compass-teacher:Akhenaten",
+      "kind": "compass_teacher",
+      "label": "Light",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-teacher:Buddha",
+      "kind": "compass_teacher",
+      "label": "Awareness",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-teacher:Jesus",
+      "kind": "compass_teacher",
+      "label": "Love",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-teacher:Krishna",
+      "kind": "compass_teacher",
+      "label": "Flow",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-teacher:Rama",
+      "kind": "compass_teacher",
+      "label": "Alignment",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-teacher:Lao-Tzu",
+      "kind": "compass_teacher",
+      "label": "Non-Resistance",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-teacher:Moses",
+      "kind": "compass_teacher",
+      "label": "Order",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-teacher:Rumi",
+      "kind": "compass_teacher",
+      "label": "Beauty",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-teacher:Musashi",
+      "kind": "compass_teacher",
+      "label": "Discipline",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-teacher:Ramakrishna",
+      "kind": "compass_teacher",
+      "label": "Devotion",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-teacher:Elijah",
+      "kind": "compass_teacher",
+      "label": "Grounded Fire",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-inverse:Lucifer",
+      "kind": "compass_mirror_inverse",
+      "label": "False Light",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-inverse:Asmodeus",
+      "kind": "compass_mirror_inverse",
+      "label": "Compulsive Craving",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-inverse:Set",
+      "kind": "compass_mirror_inverse",
+      "label": "Engineered Disorder",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-inverse:Moloch",
+      "kind": "compass_mirror_inverse",
+      "label": "Extractive Power",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-inverse:Geryon",
+      "kind": "compass_mirror_inverse",
+      "label": "Deceptive Appearance",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-inverse:Charon",
+      "kind": "compass_mirror_inverse",
+      "label": "Threshold Paralysis",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-inverse:Phlegyas",
+      "kind": "compass_mirror_inverse",
+      "label": "Reactive Charge",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-inverse:The-Furies",
+      "kind": "compass_mirror_inverse",
+      "label": "Ideological Rigidity",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-inverse:Doctrinal-Control",
+      "kind": "compass_inferred_inverse",
+      "label": "Dogmatic Control",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-inverse:Clinging",
+      "kind": "compass_inferred_inverse",
+      "label": "Outcome Attachment",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-inverse:Possessive-Dominion",
+      "kind": "compass_inferred_inverse",
+      "label": "Possessive Dominion",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-inverse:Forcing",
+      "kind": "compass_inferred_inverse",
+      "label": "Coercive Forcing",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "paradiso:PD01",
+      "kind": "paradiso_sphere",
+      "label": "Paradiso 01 — Moon",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "paradiso:PD02",
+      "kind": "paradiso_sphere",
+      "label": "Paradiso 02 — Mercury",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "paradiso:PD03",
+      "kind": "paradiso_sphere",
+      "label": "Paradiso 03 — Venus",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "paradiso:PD04",
+      "kind": "paradiso_sphere",
+      "label": "Paradiso 04 — Sun",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "paradiso:PD05",
+      "kind": "paradiso_sphere",
+      "label": "Paradiso 05 — Mars",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "paradiso:PD06",
+      "kind": "paradiso_sphere",
+      "label": "Paradiso 06 — Jupiter",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "paradiso:PD07",
+      "kind": "paradiso_sphere",
+      "label": "Paradiso 07 — Saturn",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "paradiso:PD08",
+      "kind": "paradiso_sphere",
+      "label": "Paradiso 08 — Fixed Stars",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "paradiso:PD09",
+      "kind": "paradiso_sphere",
+      "label": "Paradiso 09 — Primum Mobile",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "paradiso:PD10",
+      "kind": "paradiso_sphere",
+      "label": "Paradiso 10 — Empyrean",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "purgatorio:P00",
+      "kind": "purgatorio_boundary",
+      "label": "Ante-Purgatorio / Entry",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "purgatorio:P01",
+      "kind": "purgatorio_terrace",
+      "label": "Terrace 1: Pride to Humility",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "purgatorio:P01-V",
+      "kind": "purgatorio_vice",
+      "label": "Pride",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "purgatorio:P01-C",
+      "kind": "purgatorio_capacity",
+      "label": "Humility",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "purgatorio:P02",
+      "kind": "purgatorio_terrace",
+      "label": "Terrace 2: Envy to Charity / Kindness",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "purgatorio:P02-V",
+      "kind": "purgatorio_vice",
+      "label": "Envy",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "purgatorio:P02-C",
+      "kind": "purgatorio_capacity",
+      "label": "Charity / Kindness",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "purgatorio:P03",
+      "kind": "purgatorio_terrace",
+      "label": "Terrace 3: Wrath to Meekness / Forbearance",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "purgatorio:P03-V",
+      "kind": "purgatorio_vice",
+      "label": "Wrath",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "purgatorio:P03-C",
+      "kind": "purgatorio_capacity",
+      "label": "Meekness / Forbearance",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "purgatorio:P04",
+      "kind": "purgatorio_terrace",
+      "label": "Terrace 4: Sloth / Acedia to Zeal / Diligence",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "purgatorio:P04-V",
+      "kind": "purgatorio_vice",
+      "label": "Sloth / Acedia",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "purgatorio:P04-C",
+      "kind": "purgatorio_capacity",
+      "label": "Zeal / Diligence",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "purgatorio:P05",
+      "kind": "purgatorio_terrace",
+      "label": "Terrace 5: Avarice / Prodigality to Generosity / Stewardship",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "purgatorio:P05-V",
+      "kind": "purgatorio_vice",
+      "label": "Avarice / Prodigality",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "purgatorio:P05-C",
+      "kind": "purgatorio_capacity",
+      "label": "Generosity / Stewardship",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "purgatorio:P06",
+      "kind": "purgatorio_terrace",
+      "label": "Terrace 6: Gluttony to Temperance / Sufficiency",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "purgatorio:P06-V",
+      "kind": "purgatorio_vice",
+      "label": "Gluttony",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "purgatorio:P06-C",
+      "kind": "purgatorio_capacity",
+      "label": "Temperance / Sufficiency",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "purgatorio:P07",
+      "kind": "purgatorio_terrace",
+      "label": "Terrace 7: Lust to Chastity / Respectful Intimacy",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "purgatorio:P07-V",
+      "kind": "purgatorio_vice",
+      "label": "Lust",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "purgatorio:P07-C",
+      "kind": "purgatorio_capacity",
+      "label": "Chastity / Respectful Intimacy",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "purgatorio:P08",
+      "kind": "purgatorio_boundary",
+      "label": "Terrestrial Paradise / Integration",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-archetype:Warrior",
+      "kind": "compass_core_archetype",
+      "label": "Warrior",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-archetype:Sage",
+      "kind": "compass_core_archetype",
+      "label": "Sage",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-archetype:Rebel",
+      "kind": "compass_core_archetype",
+      "label": "Rebel",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-archetype:Caregiver",
+      "kind": "compass_core_archetype",
+      "label": "Caregiver",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-archetype:Creator",
+      "kind": "compass_core_archetype",
+      "label": "Creator",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-archetype:Magician",
+      "kind": "compass_core_archetype",
+      "label": "Magician",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-archetype:Ruler",
+      "kind": "compass_core_archetype",
+      "label": "Ruler",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-archetype:Explorer",
+      "kind": "compass_core_archetype",
+      "label": "Explorer",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-archetype:Lover",
+      "kind": "compass_core_archetype",
+      "label": "Lover",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-archetype:Jester",
+      "kind": "compass_core_archetype",
+      "label": "Jester",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-archetype:Everyman",
+      "kind": "compass_core_archetype",
+      "label": "Everyman",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "compass-archetype:Innocent",
+      "kind": "compass_core_archetype",
+      "label": "Innocent",
+      "sourceStatus": "FEATURE_BRANCH"
+    },
+    {
+      "id": "inferno:B01",
+      "kind": "inferno_archived_source",
+      "label": "inferno:B01",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:B02",
+      "kind": "inferno_archived_source",
+      "label": "inferno:B02",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:B03",
+      "kind": "inferno_archived_source",
+      "label": "inferno:B03",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:B04",
+      "kind": "inferno_archived_source",
+      "label": "inferno:B04",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:B05",
+      "kind": "inferno_archived_source",
+      "label": "inferno:B05",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:B06",
+      "kind": "inferno_archived_source",
+      "label": "inferno:B06",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:B07",
+      "kind": "inferno_archived_source",
+      "label": "inferno:B07",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:B08",
+      "kind": "inferno_archived_source",
+      "label": "inferno:B08",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:B09",
+      "kind": "inferno_archived_source",
+      "label": "inferno:B09",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:B10",
+      "kind": "inferno_archived_source",
+      "label": "inferno:B10",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:B11",
+      "kind": "inferno_archived_source",
+      "label": "inferno:B11",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:B12",
+      "kind": "inferno_archived_source",
+      "label": "inferno:B12",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:B13",
+      "kind": "inferno_archived_source",
+      "label": "inferno:B13",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:B14",
+      "kind": "inferno_archived_source",
+      "label": "inferno:B14",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:B15",
+      "kind": "inferno_archived_source",
+      "label": "inferno:B15",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:L01",
+      "kind": "inferno_archived_source",
+      "label": "inferno:L01",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:L02",
+      "kind": "inferno_archived_source",
+      "label": "inferno:L02",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:L03",
+      "kind": "inferno_archived_source",
+      "label": "inferno:L03",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:L04",
+      "kind": "inferno_archived_source",
+      "label": "inferno:L04",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:L05",
+      "kind": "inferno_archived_source",
+      "label": "inferno:L05",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:L06",
+      "kind": "inferno_archived_source",
+      "label": "inferno:L06",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:L07",
+      "kind": "inferno_archived_source",
+      "label": "inferno:L07",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:L08",
+      "kind": "inferno_archived_source",
+      "label": "inferno:L08",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:L09",
+      "kind": "inferno_archived_source",
+      "label": "inferno:L09",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:F01",
+      "kind": "inferno_archived_source",
+      "label": "inferno:F01",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:F02",
+      "kind": "inferno_archived_source",
+      "label": "inferno:F02",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:F03",
+      "kind": "inferno_archived_source",
+      "label": "inferno:F03",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:F04",
+      "kind": "inferno_archived_source",
+      "label": "inferno:F04",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:F05",
+      "kind": "inferno_archived_source",
+      "label": "inferno:F05",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:F06",
+      "kind": "inferno_archived_source",
+      "label": "inferno:F06",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:F07",
+      "kind": "inferno_archived_source",
+      "label": "inferno:F07",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:F08",
+      "kind": "inferno_archived_source",
+      "label": "inferno:F08",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:F09",
+      "kind": "inferno_archived_source",
+      "label": "inferno:F09",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:F10",
+      "kind": "inferno_archived_source",
+      "label": "inferno:F10",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:F11",
+      "kind": "inferno_archived_source",
+      "label": "inferno:F11",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:X01",
+      "kind": "inferno_archived_source",
+      "label": "inferno:X01",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:X02",
+      "kind": "inferno_archived_source",
+      "label": "inferno:X02",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "inferno:X03",
+      "kind": "inferno_archived_source",
+      "label": "inferno:X03",
+      "sourceStatus": "ZIP_ONLY_UNPROMOTED"
+    },
+    {
+      "id": "canon-law:Truth",
+      "kind": "integrity_law",
+      "label": "Truth",
+      "sourceStatus": "CANON_SI_NAME"
+    },
+    {
+      "id": "canon-law:Transparency",
+      "kind": "integrity_law",
+      "label": "Transparency",
+      "sourceStatus": "CANON_SI_NAME"
+    },
+    {
+      "id": "canon-law:Justice",
+      "kind": "integrity_law",
+      "label": "Justice",
+      "sourceStatus": "CANON_SI_NAME"
+    },
+    {
+      "id": "canon-law:Unity",
+      "kind": "integrity_law",
+      "label": "Unity",
+      "sourceStatus": "CANON_SI_NAME"
+    },
+    {
+      "id": "canon-law:Awareness",
+      "kind": "integrity_law",
+      "label": "Awareness",
+      "sourceStatus": "CANON_SI_NAME"
+    },
+    {
+      "id": "canon-law:Nature",
+      "kind": "integrity_law",
+      "label": "Nature",
+      "sourceStatus": "CANON_SI_NAME"
+    },
+    {
+      "id": "canon-law:Presence",
+      "kind": "integrity_law",
+      "label": "Presence",
+      "sourceStatus": "CANON_SI_NAME"
+    },
+    {
+      "id": "canon-law:Humility",
+      "kind": "integrity_law",
+      "label": "Humility",
+      "sourceStatus": "CANON_SI_NAME"
+    },
+    {
+      "id": "canon-law:Equanimity",
+      "kind": "integrity_law",
+      "label": "Equanimity",
+      "sourceStatus": "CANON_SI_NAME"
+    },
+    {
+      "id": "canon-law:Compassion",
+      "kind": "integrity_law",
+      "label": "Compassion",
+      "sourceStatus": "CANON_SI_NAME"
+    },
+    {
+      "id": "canon-law:Forgiveness",
+      "kind": "integrity_law",
+      "label": "Forgiveness",
+      "sourceStatus": "CANON_SI_NAME"
+    },
+    {
+      "id": "canon-law:Generosity",
+      "kind": "integrity_law",
+      "label": "Generosity",
+      "sourceStatus": "CANON_SI_NAME"
+    },
+    {
+      "id": "canon-law:Aesthetic Beauty",
+      "kind": "integrity_law",
+      "label": "Aesthetic Beauty",
+      "sourceStatus": "CANON_SI_NAME"
+    },
+    {
+      "id": "canon-law:Courage",
+      "kind": "integrity_law",
+      "label": "Courage",
+      "sourceStatus": "CANON_SI_NAME"
+    },
+    {
+      "id": "canon-law:Duty",
+      "kind": "integrity_law",
+      "label": "Duty",
+      "sourceStatus": "CANON_SI_NAME"
+    },
+    {
+      "id": "canon-law:Responsibility",
+      "kind": "integrity_law",
+      "label": "Responsibility",
+      "sourceStatus": "CANON_SI_NAME"
+    },
+    {
+      "id": "canon-law:Accountability",
+      "kind": "integrity_law",
+      "label": "Accountability",
+      "sourceStatus": "CANON_SI_NAME"
+    },
+    {
+      "id": "canon-law:Temperance",
+      "kind": "integrity_law",
+      "label": "Temperance",
+      "sourceStatus": "CANON_SI_NAME"
+    },
+    {
+      "id": "canon-law:Detachment",
+      "kind": "integrity_law",
+      "label": "Detachment",
+      "sourceStatus": "CANON_SI_NAME"
+    },
+    {
+      "id": "canon-law:Non-Harm",
+      "kind": "integrity_law",
+      "label": "Non-Harm",
+      "sourceStatus": "CANON_SI_NAME"
+    },
+    {
+      "id": "canon-law:Patience",
+      "kind": "integrity_law",
+      "label": "Patience",
+      "sourceStatus": "CANON_SI_NAME"
+    },
+    {
+      "id": "compass:axis:IL",
+      "kind": "compass_axis",
+      "label": "IL",
+      "sourceStatus": "COMPASS_ENGINE"
+    },
+    {
+      "id": "compass:axis:DE",
+      "kind": "compass_axis",
+      "label": "DE",
+      "sourceStatus": "COMPASS_ENGINE"
+    },
+    {
+      "id": "compass:axis:OR",
+      "kind": "compass_axis",
+      "label": "OR",
+      "sourceStatus": "COMPASS_ENGINE"
+    },
+    {
+      "id": "compass:axis:PO",
+      "kind": "compass_axis",
+      "label": "PO",
+      "sourceStatus": "COMPASS_ENGINE"
+    },
+    {
+      "id": "compass:axis:PE",
+      "kind": "compass_axis",
+      "label": "PE",
+      "sourceStatus": "COMPASS_ENGINE"
+    },
+    {
+      "id": "compass:axis:TR",
+      "kind": "compass_axis",
+      "label": "TR",
+      "sourceStatus": "COMPASS_ENGINE"
+    },
+    {
+      "id": "compass:axis:CH",
+      "kind": "compass_axis",
+      "label": "CH",
+      "sourceStatus": "COMPASS_ENGINE"
+    },
+    {
+      "id": "compass:axis:RE",
+      "kind": "compass_axis",
+      "label": "RE",
+      "sourceStatus": "COMPASS_ENGINE"
+    }
+  ],
+  "edges": [
+    {
+      "from": "compass-teacher:Akhenaten",
+      "to": "compass-inverse:Doctrinal-Control",
+      "type": "teacher_inverse",
+      "status": "CANDIDATE_INVERSE",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Akhenaten",
+      "to": "canon-law:Truth",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Akhenaten",
+      "to": "canon-law:Transparency",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Akhenaten",
+      "to": "canon-law:Humility",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Buddha",
+      "to": "compass-inverse:Geryon",
+      "type": "teacher_inverse",
+      "status": "ENGINE_NAMED_MIRROR",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Buddha",
+      "to": "canon-law:Awareness",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Buddha",
+      "to": "canon-law:Presence",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Buddha",
+      "to": "canon-law:Equanimity",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Buddha",
+      "to": "compass:axis:PE",
+      "type": "compass_axis_reference",
+      "status": "ENGINE",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Jesus",
+      "to": "compass-inverse:Lucifer",
+      "type": "teacher_inverse",
+      "status": "ENGINE_NAMED_MIRROR",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Jesus",
+      "to": "compass-inverse:The-Furies",
+      "type": "teacher_inverse",
+      "status": "ENGINE_NAMED_MIRROR",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Jesus",
+      "to": "canon-law:Compassion",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Jesus",
+      "to": "canon-law:Forgiveness",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Jesus",
+      "to": "canon-law:Generosity",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Jesus",
+      "to": "canon-law:Non-Harm",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Jesus",
+      "to": "compass:axis:IL",
+      "type": "compass_axis_reference",
+      "status": "ENGINE",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Jesus",
+      "to": "compass:axis:RE",
+      "type": "compass_axis_reference",
+      "status": "ENGINE",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Krishna",
+      "to": "compass-inverse:Clinging",
+      "type": "teacher_inverse",
+      "status": "CANDIDATE_INVERSE",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Krishna",
+      "to": "canon-law:Detachment",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Krishna",
+      "to": "canon-law:Duty",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Krishna",
+      "to": "canon-law:Accountability",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Rama",
+      "to": "compass-inverse:Possessive-Dominion",
+      "type": "teacher_inverse",
+      "status": "CANDIDATE_INVERSE",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Rama",
+      "to": "canon-law:Duty",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Rama",
+      "to": "canon-law:Responsibility",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Rama",
+      "to": "canon-law:Non-Harm",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Lao-Tzu",
+      "to": "compass-inverse:Forcing",
+      "type": "teacher_inverse",
+      "status": "CANDIDATE_INVERSE",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Lao-Tzu",
+      "to": "canon-law:Temperance",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Lao-Tzu",
+      "to": "canon-law:Patience",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Lao-Tzu",
+      "to": "canon-law:Equanimity",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Moses",
+      "to": "compass-inverse:Set",
+      "type": "teacher_inverse",
+      "status": "ENGINE_NAMED_MIRROR",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Moses",
+      "to": "canon-law:Justice",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Moses",
+      "to": "canon-law:Transparency",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Moses",
+      "to": "canon-law:Responsibility",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Moses",
+      "to": "compass:axis:OR",
+      "type": "compass_axis_reference",
+      "status": "ENGINE",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Rumi",
+      "to": "compass-inverse:Charon",
+      "type": "teacher_inverse",
+      "status": "ENGINE_NAMED_MIRROR",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Rumi",
+      "to": "canon-law:Compassion",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Rumi",
+      "to": "canon-law:Aesthetic Beauty",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Rumi",
+      "to": "canon-law:Presence",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Rumi",
+      "to": "compass:axis:TR",
+      "type": "compass_axis_reference",
+      "status": "ENGINE",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Musashi",
+      "to": "compass-inverse:Moloch",
+      "type": "teacher_inverse",
+      "status": "ENGINE_NAMED_MIRROR",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Musashi",
+      "to": "canon-law:Courage",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Musashi",
+      "to": "canon-law:Accountability",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Musashi",
+      "to": "canon-law:Non-Harm",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Musashi",
+      "to": "compass:axis:PO",
+      "type": "compass_axis_reference",
+      "status": "ENGINE",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Ramakrishna",
+      "to": "compass-inverse:Asmodeus",
+      "type": "teacher_inverse",
+      "status": "ENGINE_NAMED_MIRROR",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Ramakrishna",
+      "to": "canon-law:Detachment",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Ramakrishna",
+      "to": "canon-law:Temperance",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Ramakrishna",
+      "to": "canon-law:Compassion",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Ramakrishna",
+      "to": "compass:axis:DE",
+      "type": "compass_axis_reference",
+      "status": "ENGINE",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Elijah",
+      "to": "compass-inverse:Phlegyas",
+      "type": "teacher_inverse",
+      "status": "ENGINE_NAMED_MIRROR",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Elijah",
+      "to": "canon-law:Courage",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Elijah",
+      "to": "canon-law:Non-Harm",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Elijah",
+      "to": "canon-law:Equanimity",
+      "type": "teacher_law_resonance",
+      "status": "PROPOSED",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Elijah",
+      "to": "compass:axis:CH",
+      "type": "compass_axis_reference",
+      "status": "ENGINE",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-inverse:Lucifer",
+      "to": "compass-teacher:Jesus",
+      "type": "inverse_teacher",
+      "status": "REVERSE_MODEL",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-inverse:Lucifer",
+      "to": "inferno:F11",
+      "type": "figure_identity_match",
+      "status": "ARCHIVE_IDENTITY_ONLY_SEMANTICS_PENDING",
+      "source": "TEACHERS_AND_ZIP",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-inverse:Asmodeus",
+      "to": "compass-teacher:Ramakrishna",
+      "type": "inverse_teacher",
+      "status": "REVERSE_MODEL",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-inverse:Asmodeus",
+      "to": "inferno:X03",
+      "type": "figure_identity_match",
+      "status": "ARCHIVE_IDENTITY_ONLY_SEMANTICS_PENDING",
+      "source": "TEACHERS_AND_ZIP",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-inverse:Set",
+      "to": "compass-teacher:Moses",
+      "type": "inverse_teacher",
+      "status": "REVERSE_MODEL",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-inverse:Moloch",
+      "to": "compass-teacher:Musashi",
+      "type": "inverse_teacher",
+      "status": "REVERSE_MODEL",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-inverse:Geryon",
+      "to": "compass-teacher:Buddha",
+      "type": "inverse_teacher",
+      "status": "REVERSE_MODEL",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-inverse:Geryon",
+      "to": "inferno:F09",
+      "type": "figure_identity_match",
+      "status": "ARCHIVE_IDENTITY_ONLY_SEMANTICS_PENDING",
+      "source": "TEACHERS_AND_ZIP",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-inverse:Charon",
+      "to": "compass-teacher:Rumi",
+      "type": "inverse_teacher",
+      "status": "REVERSE_MODEL",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-inverse:Charon",
+      "to": "inferno:F01",
+      "type": "figure_identity_match",
+      "status": "ARCHIVE_IDENTITY_ONLY_SEMANTICS_PENDING",
+      "source": "TEACHERS_AND_ZIP",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-inverse:Phlegyas",
+      "to": "compass-teacher:Elijah",
+      "type": "inverse_teacher",
+      "status": "REVERSE_MODEL",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-inverse:Phlegyas",
+      "to": "inferno:F05",
+      "type": "figure_identity_match",
+      "status": "ARCHIVE_IDENTITY_ONLY_SEMANTICS_PENDING",
+      "source": "TEACHERS_AND_ZIP",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-inverse:The-Furies",
+      "to": "compass-teacher:Jesus",
+      "type": "inverse_teacher",
+      "status": "REVERSE_MODEL",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-inverse:The-Furies",
+      "to": "inferno:F06",
+      "type": "figure_identity_match",
+      "status": "ARCHIVE_IDENTITY_ONLY_SEMANTICS_PENDING",
+      "source": "TEACHERS_AND_ZIP",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-inverse:Doctrinal-Control",
+      "to": "compass-teacher:Akhenaten",
+      "type": "inverse_teacher",
+      "status": "REVERSE_MODEL",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-inverse:Clinging",
+      "to": "compass-teacher:Krishna",
+      "type": "inverse_teacher",
+      "status": "REVERSE_MODEL",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-inverse:Possessive-Dominion",
+      "to": "compass-teacher:Rama",
+      "type": "inverse_teacher",
+      "status": "REVERSE_MODEL",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-inverse:Forcing",
+      "to": "compass-teacher:Lao-Tzu",
+      "type": "inverse_teacher",
+      "status": "REVERSE_MODEL",
+      "source": "TEACHERS",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Akhenaten",
+      "to": "paradiso:PD04",
+      "type": "teacher_paradiso_resonance",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD04",
+      "to": "compass-teacher:Akhenaten",
+      "type": "paradiso_teacher_reverse",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Akhenaten",
+      "to": "paradiso:PD10",
+      "type": "teacher_paradiso_resonance",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD10",
+      "to": "compass-teacher:Akhenaten",
+      "type": "paradiso_teacher_reverse",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Buddha",
+      "to": "paradiso:PD04",
+      "type": "teacher_paradiso_resonance",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD04",
+      "to": "compass-teacher:Buddha",
+      "type": "paradiso_teacher_reverse",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Buddha",
+      "to": "paradiso:PD06",
+      "type": "teacher_paradiso_resonance",
+      "status": "UNRECONCILED_ONE_SIDED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD06",
+      "to": "compass-teacher:Buddha",
+      "type": "paradiso_teacher_reverse",
+      "status": "UNRECONCILED_ONE_SIDED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Buddha",
+      "to": "paradiso:PD07",
+      "type": "teacher_paradiso_resonance",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD07",
+      "to": "compass-teacher:Buddha",
+      "type": "paradiso_teacher_reverse",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Elijah",
+      "to": "paradiso:PD05",
+      "type": "teacher_paradiso_resonance",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD05",
+      "to": "compass-teacher:Elijah",
+      "type": "paradiso_teacher_reverse",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Elijah",
+      "to": "paradiso:PD06",
+      "type": "teacher_paradiso_resonance",
+      "status": "UNRECONCILED_ONE_SIDED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD06",
+      "to": "compass-teacher:Elijah",
+      "type": "paradiso_teacher_reverse",
+      "status": "UNRECONCILED_ONE_SIDED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Jesus",
+      "to": "paradiso:PD03",
+      "type": "teacher_paradiso_resonance",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD03",
+      "to": "compass-teacher:Jesus",
+      "type": "paradiso_teacher_reverse",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Jesus",
+      "to": "paradiso:PD08",
+      "type": "teacher_paradiso_resonance",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD08",
+      "to": "compass-teacher:Jesus",
+      "type": "paradiso_teacher_reverse",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Jesus",
+      "to": "paradiso:PD10",
+      "type": "teacher_paradiso_resonance",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD10",
+      "to": "compass-teacher:Jesus",
+      "type": "paradiso_teacher_reverse",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Krishna",
+      "to": "paradiso:PD08",
+      "type": "teacher_paradiso_resonance",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD08",
+      "to": "compass-teacher:Krishna",
+      "type": "paradiso_teacher_reverse",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Krishna",
+      "to": "paradiso:PD09",
+      "type": "teacher_paradiso_resonance",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD09",
+      "to": "compass-teacher:Krishna",
+      "type": "paradiso_teacher_reverse",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Lao-Tzu",
+      "to": "paradiso:PD07",
+      "type": "teacher_paradiso_resonance",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD07",
+      "to": "compass-teacher:Lao-Tzu",
+      "type": "paradiso_teacher_reverse",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Lao-Tzu",
+      "to": "paradiso:PD09",
+      "type": "teacher_paradiso_resonance",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD09",
+      "to": "compass-teacher:Lao-Tzu",
+      "type": "paradiso_teacher_reverse",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Lao-Tzu",
+      "to": "paradiso:PD10",
+      "type": "teacher_paradiso_resonance",
+      "status": "UNRECONCILED_ONE_SIDED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD10",
+      "to": "compass-teacher:Lao-Tzu",
+      "type": "paradiso_teacher_reverse",
+      "status": "UNRECONCILED_ONE_SIDED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Moses",
+      "to": "paradiso:PD01",
+      "type": "teacher_paradiso_resonance",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD01",
+      "to": "compass-teacher:Moses",
+      "type": "paradiso_teacher_reverse",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Moses",
+      "to": "paradiso:PD06",
+      "type": "teacher_paradiso_resonance",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD06",
+      "to": "compass-teacher:Moses",
+      "type": "paradiso_teacher_reverse",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Moses",
+      "to": "paradiso:PD09",
+      "type": "teacher_paradiso_resonance",
+      "status": "UNRECONCILED_ONE_SIDED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD09",
+      "to": "compass-teacher:Moses",
+      "type": "paradiso_teacher_reverse",
+      "status": "UNRECONCILED_ONE_SIDED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Musashi",
+      "to": "paradiso:PD02",
+      "type": "teacher_paradiso_resonance",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD02",
+      "to": "compass-teacher:Musashi",
+      "type": "paradiso_teacher_reverse",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Musashi",
+      "to": "paradiso:PD05",
+      "type": "teacher_paradiso_resonance",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD05",
+      "to": "compass-teacher:Musashi",
+      "type": "paradiso_teacher_reverse",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Ramakrishna",
+      "to": "paradiso:PD02",
+      "type": "teacher_paradiso_resonance",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD02",
+      "to": "compass-teacher:Ramakrishna",
+      "type": "paradiso_teacher_reverse",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Ramakrishna",
+      "to": "paradiso:PD03",
+      "type": "teacher_paradiso_resonance",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD03",
+      "to": "compass-teacher:Ramakrishna",
+      "type": "paradiso_teacher_reverse",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Rama",
+      "to": "paradiso:PD01",
+      "type": "teacher_paradiso_resonance",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD01",
+      "to": "compass-teacher:Rama",
+      "type": "paradiso_teacher_reverse",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Rama",
+      "to": "paradiso:PD05",
+      "type": "teacher_paradiso_resonance",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD05",
+      "to": "compass-teacher:Rama",
+      "type": "paradiso_teacher_reverse",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Rama",
+      "to": "paradiso:PD06",
+      "type": "teacher_paradiso_resonance",
+      "status": "UNRECONCILED_ONE_SIDED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD06",
+      "to": "compass-teacher:Rama",
+      "type": "paradiso_teacher_reverse",
+      "status": "UNRECONCILED_ONE_SIDED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Rama",
+      "to": "paradiso:PD09",
+      "type": "teacher_paradiso_resonance",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD09",
+      "to": "compass-teacher:Rama",
+      "type": "paradiso_teacher_reverse",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Rumi",
+      "to": "paradiso:PD03",
+      "type": "teacher_paradiso_resonance",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD03",
+      "to": "compass-teacher:Rumi",
+      "type": "paradiso_teacher_reverse",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Rumi",
+      "to": "paradiso:PD08",
+      "type": "teacher_paradiso_resonance",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD08",
+      "to": "compass-teacher:Rumi",
+      "type": "paradiso_teacher_reverse",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-teacher:Rumi",
+      "to": "paradiso:PD10",
+      "type": "teacher_paradiso_resonance",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD10",
+      "to": "compass-teacher:Rumi",
+      "type": "paradiso_teacher_reverse",
+      "status": "BILATERALLY_LISTED_CANDIDATE",
+      "source": "TEACHERS_AND_PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD01",
+      "to": "canon-law:Duty",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD01",
+      "to": "canon-law:Responsibility",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD01",
+      "to": "canon-law:Truth",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD01",
+      "to": "canon-law:Patience",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD01",
+      "to": "purgatorio:P01-C",
+      "type": "paradiso_constructive_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD01",
+      "to": "purgatorio:P04-C",
+      "type": "paradiso_constructive_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD02",
+      "to": "canon-law:Humility",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD02",
+      "to": "canon-law:Generosity",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD02",
+      "to": "canon-law:Duty",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD02",
+      "to": "canon-law:Transparency",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD02",
+      "to": "purgatorio:P01-C",
+      "type": "paradiso_constructive_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD02",
+      "to": "purgatorio:P05-C",
+      "type": "paradiso_constructive_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD03",
+      "to": "canon-law:Compassion",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD03",
+      "to": "canon-law:Detachment",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD03",
+      "to": "canon-law:Non-Harm",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD03",
+      "to": "canon-law:Generosity",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD03",
+      "to": "canon-law:Nature",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD03",
+      "to": "purgatorio:P07-C",
+      "type": "paradiso_constructive_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD03",
+      "to": "purgatorio:P02-C",
+      "type": "paradiso_constructive_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD04",
+      "to": "canon-law:Truth",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD04",
+      "to": "canon-law:Awareness",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD04",
+      "to": "canon-law:Humility",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD04",
+      "to": "canon-law:Transparency",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD04",
+      "to": "purgatorio:P01-C",
+      "type": "paradiso_constructive_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD04",
+      "to": "purgatorio:P02-C",
+      "type": "paradiso_constructive_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD05",
+      "to": "canon-law:Courage",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD05",
+      "to": "canon-law:Duty",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD05",
+      "to": "canon-law:Non-Harm",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD05",
+      "to": "canon-law:Accountability",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD05",
+      "to": "purgatorio:P03-C",
+      "type": "paradiso_constructive_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD05",
+      "to": "purgatorio:P01-C",
+      "type": "paradiso_constructive_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD06",
+      "to": "canon-law:Justice",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD06",
+      "to": "canon-law:Transparency",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD06",
+      "to": "canon-law:Accountability",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD06",
+      "to": "canon-law:Responsibility",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD06",
+      "to": "purgatorio:P01-C",
+      "type": "paradiso_constructive_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD06",
+      "to": "purgatorio:P05-C",
+      "type": "paradiso_constructive_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD07",
+      "to": "canon-law:Presence",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD07",
+      "to": "canon-law:Equanimity",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD07",
+      "to": "canon-law:Patience",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD07",
+      "to": "canon-law:Awareness",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD07",
+      "to": "purgatorio:P04-C",
+      "type": "paradiso_constructive_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD07",
+      "to": "purgatorio:P03-C",
+      "type": "paradiso_constructive_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD08",
+      "to": "canon-law:Compassion",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD08",
+      "to": "canon-law:Unity",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD08",
+      "to": "canon-law:Generosity",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD08",
+      "to": "canon-law:Courage",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD08",
+      "to": "canon-law:Forgiveness",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD08",
+      "to": "purgatorio:P02-C",
+      "type": "paradiso_constructive_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD08",
+      "to": "purgatorio:P03-C",
+      "type": "paradiso_constructive_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD09",
+      "to": "canon-law:Accountability",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD09",
+      "to": "canon-law:Responsibility",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD09",
+      "to": "canon-law:Nature",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD09",
+      "to": "canon-law:Temperance",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD09",
+      "to": "purgatorio:P04-C",
+      "type": "paradiso_constructive_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD09",
+      "to": "purgatorio:P05-C",
+      "type": "paradiso_constructive_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD10",
+      "to": "canon-law:Unity",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD10",
+      "to": "canon-law:Aesthetic Beauty",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD10",
+      "to": "canon-law:Compassion",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD10",
+      "to": "canon-law:Forgiveness",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD10",
+      "to": "canon-law:Detachment",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD10",
+      "to": "canon-law:Presence",
+      "type": "paradiso_law_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD10",
+      "to": "purgatorio:P08",
+      "type": "paradiso_constructive_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "paradiso:PD10",
+      "to": "purgatorio:P02-C",
+      "type": "paradiso_constructive_resonance",
+      "status": "PROPOSED",
+      "source": "PARADISO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P01",
+      "to": "purgatorio:P01-V",
+      "type": "purgatorio_contains",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P01",
+      "to": "purgatorio:P01-C",
+      "type": "purgatorio_contains",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P01",
+      "to": "inferno:B03",
+      "type": "purgatorio_maps_to",
+      "status": "BEHAVIORAL_CROSSWALK",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P01-V",
+      "to": "purgatorio:P01-C",
+      "type": "purgatorio_counterpart_of",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P01-V",
+      "to": "purgatorio:P01",
+      "type": "purgatorio_expresses",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P01-C",
+      "to": "purgatorio:P01-V",
+      "type": "purgatorio_counterpart_of",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P01-C",
+      "to": "purgatorio:P01",
+      "type": "purgatorio_expresses",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P02",
+      "to": "purgatorio:P02-V",
+      "type": "purgatorio_contains",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P02",
+      "to": "purgatorio:P02-C",
+      "type": "purgatorio_contains",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P02",
+      "to": "inferno:B04",
+      "type": "purgatorio_maps_to",
+      "status": "BEHAVIORAL_CROSSWALK",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P02",
+      "to": "inferno:L08",
+      "type": "purgatorio_maps_to",
+      "status": "BEHAVIORAL_CROSSWALK",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P02-V",
+      "to": "purgatorio:P02-C",
+      "type": "purgatorio_counterpart_of",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P02-V",
+      "to": "purgatorio:P02",
+      "type": "purgatorio_expresses",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P02-C",
+      "to": "purgatorio:P02-V",
+      "type": "purgatorio_counterpart_of",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P02-C",
+      "to": "purgatorio:P02",
+      "type": "purgatorio_expresses",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P03",
+      "to": "purgatorio:P03-V",
+      "type": "purgatorio_contains",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P03",
+      "to": "purgatorio:P03-C",
+      "type": "purgatorio_contains",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P03",
+      "to": "inferno:B05",
+      "type": "purgatorio_maps_to",
+      "status": "BEHAVIORAL_CROSSWALK",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P03",
+      "to": "inferno:L05",
+      "type": "purgatorio_maps_to",
+      "status": "BEHAVIORAL_CROSSWALK",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P03-V",
+      "to": "purgatorio:P03-C",
+      "type": "purgatorio_counterpart_of",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P03-V",
+      "to": "purgatorio:P03",
+      "type": "purgatorio_expresses",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P03-C",
+      "to": "purgatorio:P03-V",
+      "type": "purgatorio_counterpart_of",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P03-C",
+      "to": "purgatorio:P03",
+      "type": "purgatorio_expresses",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P04",
+      "to": "purgatorio:P04-V",
+      "type": "purgatorio_contains",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P04",
+      "to": "purgatorio:P04-C",
+      "type": "purgatorio_contains",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P04",
+      "to": "inferno:B06",
+      "type": "purgatorio_maps_to",
+      "status": "BEHAVIORAL_CROSSWALK",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P04",
+      "to": "inferno:L05",
+      "type": "purgatorio_maps_to",
+      "status": "BEHAVIORAL_CROSSWALK",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P04-V",
+      "to": "purgatorio:P04-C",
+      "type": "purgatorio_counterpart_of",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P04-V",
+      "to": "purgatorio:P04",
+      "type": "purgatorio_expresses",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P04-C",
+      "to": "purgatorio:P04-V",
+      "type": "purgatorio_counterpart_of",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P04-C",
+      "to": "purgatorio:P04",
+      "type": "purgatorio_expresses",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P05",
+      "to": "purgatorio:P05-V",
+      "type": "purgatorio_contains",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P05",
+      "to": "purgatorio:P05-C",
+      "type": "purgatorio_contains",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P05",
+      "to": "inferno:B07",
+      "type": "purgatorio_maps_to",
+      "status": "BEHAVIORAL_CROSSWALK",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P05",
+      "to": "inferno:L04",
+      "type": "purgatorio_maps_to",
+      "status": "BEHAVIORAL_CROSSWALK",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P05-V",
+      "to": "purgatorio:P05-C",
+      "type": "purgatorio_counterpart_of",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P05-V",
+      "to": "purgatorio:P05",
+      "type": "purgatorio_expresses",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P05-C",
+      "to": "purgatorio:P05-V",
+      "type": "purgatorio_counterpart_of",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P05-C",
+      "to": "purgatorio:P05",
+      "type": "purgatorio_expresses",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P06",
+      "to": "purgatorio:P06-V",
+      "type": "purgatorio_contains",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P06",
+      "to": "purgatorio:P06-C",
+      "type": "purgatorio_contains",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P06",
+      "to": "inferno:B01",
+      "type": "purgatorio_maps_to",
+      "status": "BEHAVIORAL_CROSSWALK",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P06",
+      "to": "inferno:B08",
+      "type": "purgatorio_maps_to",
+      "status": "BEHAVIORAL_CROSSWALK",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P06",
+      "to": "inferno:L03",
+      "type": "purgatorio_maps_to",
+      "status": "BEHAVIORAL_CROSSWALK",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P06",
+      "to": "inferno:F03",
+      "type": "purgatorio_maps_to",
+      "status": "BEHAVIORAL_CROSSWALK",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P06-V",
+      "to": "purgatorio:P06-C",
+      "type": "purgatorio_counterpart_of",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P06-V",
+      "to": "purgatorio:P06",
+      "type": "purgatorio_expresses",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P06-C",
+      "to": "purgatorio:P06-V",
+      "type": "purgatorio_counterpart_of",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P06-C",
+      "to": "purgatorio:P06",
+      "type": "purgatorio_expresses",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P07",
+      "to": "purgatorio:P07-V",
+      "type": "purgatorio_contains",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P07",
+      "to": "purgatorio:P07-C",
+      "type": "purgatorio_contains",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P07",
+      "to": "inferno:B09",
+      "type": "purgatorio_maps_to",
+      "status": "BEHAVIORAL_CROSSWALK",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P07",
+      "to": "inferno:L02",
+      "type": "purgatorio_maps_to",
+      "status": "BEHAVIORAL_CROSSWALK",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P07",
+      "to": "inferno:X03",
+      "type": "purgatorio_maps_to",
+      "status": "BEHAVIORAL_CROSSWALK",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P07-V",
+      "to": "purgatorio:P07-C",
+      "type": "purgatorio_counterpart_of",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P07-V",
+      "to": "purgatorio:P07",
+      "type": "purgatorio_expresses",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P07-C",
+      "to": "purgatorio:P07-V",
+      "type": "purgatorio_counterpart_of",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "purgatorio:P07-C",
+      "to": "purgatorio:P07",
+      "type": "purgatorio_expresses",
+      "status": "OWNER_APPROVED_MODEL",
+      "source": "PURGATORIO",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Warrior",
+      "to": "paradiso:PD05",
+      "type": "archetype_paradiso_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Warrior",
+      "to": "canon-law:Courage",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Warrior",
+      "to": "canon-law:Non-Harm",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Warrior",
+      "to": "canon-law:Accountability",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Sage",
+      "to": "paradiso:PD04",
+      "type": "archetype_paradiso_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Sage",
+      "to": "canon-law:Truth",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Sage",
+      "to": "canon-law:Awareness",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Sage",
+      "to": "canon-law:Humility",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Rebel",
+      "to": "paradiso:PD06",
+      "type": "archetype_paradiso_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Rebel",
+      "to": "canon-law:Justice",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Rebel",
+      "to": "canon-law:Courage",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Rebel",
+      "to": "canon-law:Non-Harm",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Caregiver",
+      "to": "paradiso:PD08",
+      "type": "archetype_paradiso_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Caregiver",
+      "to": "canon-law:Compassion",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Caregiver",
+      "to": "canon-law:Generosity",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Caregiver",
+      "to": "canon-law:Detachment",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Creator",
+      "to": "paradiso:PD09",
+      "type": "archetype_paradiso_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Creator",
+      "to": "canon-law:Aesthetic Beauty",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Creator",
+      "to": "canon-law:Responsibility",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Creator",
+      "to": "canon-law:Humility",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Magician",
+      "to": "paradiso:PD09",
+      "type": "archetype_paradiso_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Magician",
+      "to": "canon-law:Awareness",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Magician",
+      "to": "canon-law:Truth",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Magician",
+      "to": "canon-law:Accountability",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Ruler",
+      "to": "paradiso:PD06",
+      "type": "archetype_paradiso_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Ruler",
+      "to": "canon-law:Justice",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Ruler",
+      "to": "canon-law:Accountability",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Ruler",
+      "to": "canon-law:Transparency",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Explorer",
+      "to": "paradiso:PD07",
+      "type": "archetype_paradiso_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Explorer",
+      "to": "canon-law:Nature",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Explorer",
+      "to": "canon-law:Courage",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Explorer",
+      "to": "canon-law:Responsibility",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Lover",
+      "to": "paradiso:PD03",
+      "type": "archetype_paradiso_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Lover",
+      "to": "canon-law:Compassion",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Lover",
+      "to": "canon-law:Detachment",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Lover",
+      "to": "canon-law:Non-Harm",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Jester",
+      "to": "paradiso:PD08",
+      "type": "archetype_paradiso_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Jester",
+      "to": "canon-law:Presence",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Jester",
+      "to": "canon-law:Aesthetic Beauty",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Jester",
+      "to": "canon-law:Compassion",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Everyman",
+      "to": "paradiso:PD08",
+      "type": "archetype_paradiso_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Everyman",
+      "to": "canon-law:Unity",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Everyman",
+      "to": "canon-law:Humility",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Everyman",
+      "to": "canon-law:Duty",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Innocent",
+      "to": "paradiso:PD01",
+      "type": "archetype_paradiso_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Innocent",
+      "to": "canon-law:Truth",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Innocent",
+      "to": "canon-law:Awareness",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    },
+    {
+      "from": "compass-archetype:Innocent",
+      "to": "canon-law:Patience",
+      "type": "archetype_law_resonance",
+      "status": "PROPOSED",
+      "source": "ARCHETYPES",
+      "notRuntime": true
+    }
+  ],
+  "reviewQueue": [
+    {
+      "code": "FIGURE_BEHAVIOR_SEMANTIC_DRIFT",
+      "severity": "HIGH",
+      "inverseId": "compass-inverse:Lucifer",
+      "infernoId": "inferno:F11",
+      "note": "Archive Lucifer = stasis, teacher-inverse definition = false light"
+    },
+    {
+      "code": "FIGURE_BEHAVIOR_SEMANTIC_DRIFT",
+      "severity": "HIGH",
+      "inverseId": "compass-inverse:Asmodeus",
+      "infernoId": "inferno:X03",
+      "note": "Archive Asmodeus = obstruction of intimacy via harm, new record = broad craving"
+    },
+    {
+      "code": "NO_INFERNO_ARCHIVE_MATCH",
+      "severity": "MEDIUM",
+      "id": "compass-inverse:Set",
+      "kind": "compass_mirror_inverse"
+    },
+    {
+      "code": "NO_INFERNO_ARCHIVE_MATCH",
+      "severity": "MEDIUM",
+      "id": "compass-inverse:Moloch",
+      "kind": "compass_mirror_inverse"
+    },
+    {
+      "code": "FIGURE_BEHAVIOR_SEMANTIC_DRIFT",
+      "severity": "HIGH",
+      "inverseId": "compass-inverse:Charon",
+      "infernoId": "inferno:F01",
+      "note": "Archive Charon = threshold gatekeeping, new record = threshold paralysis"
+    },
+    {
+      "code": "FIGURE_BEHAVIOR_SEMANTIC_DRIFT",
+      "severity": "HIGH",
+      "inverseId": "compass-inverse:The-Furies",
+      "infernoId": "inferno:F06",
+      "note": "Archive Furies = intimidation, new record = ideological rigidity"
+    },
+    {
+      "code": "NO_INFERNO_ARCHIVE_MATCH",
+      "severity": "INFO",
+      "id": "compass-inverse:Doctrinal-Control",
+      "kind": "compass_inferred_inverse"
+    },
+    {
+      "code": "NO_INFERNO_ARCHIVE_MATCH",
+      "severity": "INFO",
+      "id": "compass-inverse:Clinging",
+      "kind": "compass_inferred_inverse"
+    },
+    {
+      "code": "NO_INFERNO_ARCHIVE_MATCH",
+      "severity": "INFO",
+      "id": "compass-inverse:Possessive-Dominion",
+      "kind": "compass_inferred_inverse"
+    },
+    {
+      "code": "NO_INFERNO_ARCHIVE_MATCH",
+      "severity": "INFO",
+      "id": "compass-inverse:Forcing",
+      "kind": "compass_inferred_inverse"
+    },
+    {
+      "code": "PARADISO_TEACHER_ONE_SIDED",
+      "severity": "MEDIUM",
+      "teacherId": "compass-teacher:Buddha",
+      "paradisoId": "paradiso:PD06",
+      "sourceOnly": "PARADISO"
+    },
+    {
+      "code": "PARADISO_TEACHER_ONE_SIDED",
+      "severity": "MEDIUM",
+      "teacherId": "compass-teacher:Elijah",
+      "paradisoId": "paradiso:PD06",
+      "sourceOnly": "TEACHERS"
+    },
+    {
+      "code": "PARADISO_TEACHER_ONE_SIDED",
+      "severity": "MEDIUM",
+      "teacherId": "compass-teacher:Lao-Tzu",
+      "paradisoId": "paradiso:PD10",
+      "sourceOnly": "PARADISO"
+    },
+    {
+      "code": "PARADISO_TEACHER_ONE_SIDED",
+      "severity": "MEDIUM",
+      "teacherId": "compass-teacher:Moses",
+      "paradisoId": "paradiso:PD09",
+      "sourceOnly": "PARADISO"
+    },
+    {
+      "code": "PARADISO_TEACHER_ONE_SIDED",
+      "severity": "MEDIUM",
+      "teacherId": "compass-teacher:Rama",
+      "paradisoId": "paradiso:PD06",
+      "sourceOnly": "PARADISO"
+    },
+    {
+      "code": "INFERNO_ARCHIVE_NOT_PROMOTED",
+      "severity": "HIGH",
+      "source": "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json",
+      "sha256": "de3d0099ffbaf698d40873a141010cd2c724ff226e0b33a208b1307f58bc0fdc"
+    },
+    {
+      "code": "MASTER_12_UNRESOLVED",
+      "severity": "MEDIUM",
+      "currentMasterCount": 11
+    },
+    {
+      "code": "RITUAL_AND_RELEASE_IDS_NOT_ASSIGNED",
+      "severity": "HIGH",
+      "teachersMissingRitual": 11,
+      "inversesMissingRelease": 12
+    }
+  ]
+}

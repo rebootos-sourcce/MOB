@@ -1,0 +1,194 @@
+{
+  "date": "2026-10-25",
+  "state": "STRUCTURAL_VALIDATION_PASS__REVIEW_QUEUE_OPEN__NOT_RUNTIME",
+  "sourceDigests": {
+    "teachers": {
+      "path": "docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json",
+      "blobSha": "66dffa2535755c80076bb78176f65420f533e340"
+    },
+    "paradiso": {
+      "path": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+      "blobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041"
+    },
+    "purgatorio": {
+      "path": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+      "blobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90"
+    },
+    "archetypes": {
+      "path": "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+      "blobSha": "3cc04779229fb0ebb041f8b4609e739ab73d9c50"
+    }
+  },
+  "infernoArchive": {
+    "source": "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json",
+    "sha256": "de3d0099ffbaf698d40873a141010cd2c724ff226e0b33a208b1307f58bc0fdc",
+    "recordCount": 38,
+    "status": "NORMALIZED_DOCUMENTATION_UNPROMOTED",
+    "githubPromoted": false
+  },
+  "stats": {
+    "nodes": 135,
+    "edges": 300,
+    "teachers": 11,
+    "inverses": 12,
+    "canonNamedInverses": 8,
+    "inferredInverses": 4,
+    "infernoArchive": 38,
+    "purgatorio": 23,
+    "paradiso": 10,
+    "archetypes": 12,
+    "laws": 21,
+    "axes": 8,
+    "teacherParadisoTotal": 29,
+    "teacherParadisoReciprocal": 24,
+    "teacherParadisoOneSided": 5,
+    "teacherInversePairs": 12,
+    "recordsWithFourResearchLenses": 23
+  },
+  "checks": {
+    "uniqueNodes": true,
+    "uniqueEdges": true,
+    "allEndpoints": true,
+    "all23HaveFourPasses": true,
+    "all21TemplateKeys": true,
+    "allMirrorReferencesReciprocal": true,
+    "allReferencedLawsCanonical": true,
+    "noCanonCqDqModifications": true,
+    "allTeacherParadisoLinksReconciled": false,
+    "infernoPromoted": false,
+    "runtimeTested": false
+  },
+  "issueCounts": {
+    "FIGURE_BEHAVIOR_SEMANTIC_DRIFT": 4,
+    "NO_INFERNO_ARCHIVE_MATCH": 6,
+    "PARADISO_TEACHER_ONE_SIDED": 5,
+    "INFERNO_ARCHIVE_NOT_PROMOTED": 1,
+    "MASTER_12_UNRESOLVED": 1,
+    "RITUAL_AND_RELEASE_IDS_NOT_ASSIGNED": 1
+  },
+  "issues": [
+    {
+      "code": "FIGURE_BEHAVIOR_SEMANTIC_DRIFT",
+      "severity": "HIGH",
+      "inverseId": "compass-inverse:Lucifer",
+      "infernoId": "inferno:F11",
+      "note": "Archive Lucifer = stasis, teacher-inverse definition = false light"
+    },
+    {
+      "code": "FIGURE_BEHAVIOR_SEMANTIC_DRIFT",
+      "severity": "HIGH",
+      "inverseId": "compass-inverse:Asmodeus",
+      "infernoId": "inferno:X03",
+      "note": "Archive Asmodeus = obstruction of intimacy via harm, new record = broad craving"
+    },
+    {
+      "code": "NO_INFERNO_ARCHIVE_MATCH",
+      "severity": "MEDIUM",
+      "id": "compass-inverse:Set",
+      "kind": "compass_mirror_inverse"
+    },
+    {
+      "code": "NO_INFERNO_ARCHIVE_MATCH",
+      "severity": "MEDIUM",
+      "id": "compass-inverse:Moloch",
+      "kind": "compass_mirror_inverse"
+    },
+    {
+      "code": "FIGURE_BEHAVIOR_SEMANTIC_DRIFT",
+      "severity": "HIGH",
+      "inverseId": "compass-inverse:Charon",
+      "infernoId": "inferno:F01",
+      "note": "Archive Charon = threshold gatekeeping, new record = threshold paralysis"
+    },
+    {
+      "code": "FIGURE_BEHAVIOR_SEMANTIC_DRIFT",
+      "severity": "HIGH",
+      "inverseId": "compass-inverse:The-Furies",
+      "infernoId": "inferno:F06",
+      "note": "Archive Furies = intimidation, new record = ideological rigidity"
+    },
+    {
+      "code": "NO_INFERNO_ARCHIVE_MATCH",
+      "severity": "INFO",
+      "id": "compass-inverse:Doctrinal-Control",
+      "kind": "compass_inferred_inverse"
+    },
+    {
+      "code": "NO_INFERNO_ARCHIVE_MATCH",
+      "severity": "INFO",
+      "id": "compass-inverse:Clinging",
+      "kind": "compass_inferred_inverse"
+    },
+    {
+      "code": "NO_INFERNO_ARCHIVE_MATCH",
+      "severity": "INFO",
+      "id": "compass-inverse:Possessive-Dominion",
+      "kind": "compass_inferred_inverse"
+    },
+    {
+      "code": "NO_INFERNO_ARCHIVE_MATCH",
+      "severity": "INFO",
+      "id": "compass-inverse:Forcing",
+      "kind": "compass_inferred_inverse"
+    },
+    {
+      "code": "PARADISO_TEACHER_ONE_SIDED",
+      "severity": "MEDIUM",
+      "teacherId": "compass-teacher:Buddha",
+      "paradisoId": "paradiso:PD06",
+      "sourceOnly": "PARADISO"
+    },
+    {
+      "code": "PARADISO_TEACHER_ONE_SIDED",
+      "severity": "MEDIUM",
+      "teacherId": "compass-teacher:Elijah",
+      "paradisoId": "paradiso:PD06",
+      "sourceOnly": "TEACHERS"
+    },
+    {
+      "code": "PARADISO_TEACHER_ONE_SIDED",
+      "severity": "MEDIUM",
+      "teacherId": "compass-teacher:Lao-Tzu",
+      "paradisoId": "paradiso:PD10",
+      "sourceOnly": "PARADISO"
+    },
+    {
+      "code": "PARADISO_TEACHER_ONE_SIDED",
+      "severity": "MEDIUM",
+      "teacherId": "compass-teacher:Moses",
+      "paradisoId": "paradiso:PD09",
+      "sourceOnly": "PARADISO"
+    },
+    {
+      "code": "PARADISO_TEACHER_ONE_SIDED",
+      "severity": "MEDIUM",
+      "teacherId": "compass-teacher:Rama",
+      "paradisoId": "paradiso:PD06",
+      "sourceOnly": "PARADISO"
+    },
+    {
+      "code": "INFERNO_ARCHIVE_NOT_PROMOTED",
+      "severity": "HIGH",
+      "source": "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json",
+      "sha256": "de3d0099ffbaf698d40873a141010cd2c724ff226e0b33a208b1307f58bc0fdc"
+    },
+    {
+      "code": "MASTER_12_UNRESOLVED",
+      "severity": "MEDIUM",
+      "currentMasterCount": 11
+    },
+    {
+      "code": "RITUAL_AND_RELEASE_IDS_NOT_ASSIGNED",
+      "severity": "HIGH",
+      "teachersMissingRitual": 11,
+      "inversesMissingRelease": 12
+    }
+  ],
+  "confidence": {
+    "structure": 0.98,
+    "identityMatching": 0.87,
+    "behavioralSemantics": 0.63,
+    "runtime": 0
+  },
+  "disclaimer": "Four analytical passes are not four independent experimental verifications; archive identity matches do not imply behavioral equivalence."
+}
