@@ -1,0 +1,119 @@
+{
+  "schema": "ATUNED_INFERNO_CROSS_REGISTRY_SOURCE_BRIDGE_V1",
+  "date": "2026-10-26",
+  "status": "DOCUMENTED_SOURCE_REFERENCE_ONLY__NOT_RUNTIME",
+  "baseGraph": "docs/data/compass/integration/v1/COMPASS_CROSS_LAYER_GRAPH_V1.json",
+  "researchOverlay": "docs/data/compass/integration/v1/INFERNO_RESEARCH_WIRING_OVERLAY_V1.json",
+  "shadowRegistry": "docs/data/compass/shadow_archetypes/v1/SHADOW_ARCHETYPES_REGISTRY_V1.json",
+  "authority": {
+    "graphPromotion": false,
+    "semanticApproval": false,
+    "scoringPermission": false,
+    "intelligenceConsumer": "READ_ONLY_DOCUMENTATION_ADAPTER_ONLY"
+  },
+  "sourceNodes": [
+    {
+      "id": "shadow:malak",
+      "sourceRecord": "docs/data/compass/shadow_archetypes/v1/records/malak.md",
+      "identityStatus": "HISTORICAL_IDENTITY_UNRESOLVED"
+    },
+    {
+      "id": "shadow:baal",
+      "sourceRecord": "docs/data/compass/shadow_archetypes/v1/records/baal.md",
+      "identityStatus": "UGARITIC_BAAL_HADAD_DISTINCT"
+    },
+    {
+      "id": "shadow:bael",
+      "sourceRecord": "docs/data/compass/shadow_archetypes/v1/records/bael.md",
+      "identityStatus": "LATER_GOETIC_BAEL_DISTINCT"
+    }
+  ],
+  "referenceEdges": [
+    {
+      "from": "inferno:X01",
+      "to": "shadow:malak",
+      "type": "cross_registry_textual_reference",
+      "approval": "SOURCE_REFERENCE_ONLY_IDENTITY_BLOCKED",
+      "evidence": "shadow:malak original source layer explicitly refers to inferno:X01; no historical identity equivalence verified",
+      "notRuntime": true,
+      "source": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md + SHADOW_ARCHETYPES_REGISTRY_V1.json"
+    },
+    {
+      "from": "inferno:X02",
+      "to": "shadow:baal",
+      "type": "cross_registry_textual_reference",
+      "approval": "COMPOSITE_REFERENCE_NOT_IDENTITY_MERGE",
+      "evidence": "shadow:baal original source layer explicitly refers to inferno:X02; Ugaritic source not identical to Goetic Bael",
+      "notRuntime": true,
+      "source": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md + SHADOW_ARCHETYPES_REGISTRY_V1.json"
+    },
+    {
+      "from": "inferno:X02",
+      "to": "shadow:bael",
+      "type": "cross_registry_composite_member_reference",
+      "approval": "COMPOSITE_REFERENCE_NOT_IDENTITY_MERGE",
+      "evidence": "X02 research compares later Bael with Ugaritic Baal; separate shadow:bael source record; no canonical Inferno identity match",
+      "notRuntime": true,
+      "source": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md + SHADOW_ARCHETYPES_REGISTRY_V1.json"
+    }
+  ],
+  "isolatedDispositions": [
+    {
+      "id": "inferno:B15",
+      "classification": "NON_DANTE_CONTEXT_ROOT_UNASSIGNED",
+      "basis": "Research B15 is an ATUNED Trickster / Disruption motif, not a fixed Inferno circle/figure and has no source-backed inferno parent",
+      "canonicalRootApproved": false,
+      "notRuntime": true
+    },
+    {
+      "id": "inferno:X01",
+      "classification": "QUARANTINED_NAME_IDENTITY_BLOCKED",
+      "basis": "Malak spelling unresolved; shadow:malak is an ATUNED model reference, not a verified historical figure identity",
+      "canonicalRootApproved": false,
+      "notRuntime": true
+    },
+    {
+      "id": "inferno:X02",
+      "classification": "QUARANTINED_COMPOSITE_NEEDS_SOURCE_SPLIT",
+      "basis": "Ugaritic Baal/Hadad and later Goetic Bael separated in shadow sources; research X02 is a comparative container only",
+      "canonicalRootApproved": false,
+      "notRuntime": true
+    }
+  ],
+  "sourceCorrections": [
+    {
+      "candidate": "inferno:L01 -> inferno:F01",
+      "originalType": "level_contains_figure_candidate",
+      "readAs": "threshold_before_circle",
+      "basis": "Charon is in Inferno III at the Acheron crossing, prior to Circle I/Inferno IV",
+      "promotionAllowed": false
+    },
+    {
+      "candidate": "inferno:L06 -> inferno:F06",
+      "originalType": "level_contains_figure_candidate",
+      "readAs": "gates_to_circle",
+      "basis": "Furies appear at the walls/gates of Dis in Inferno IX, approaching heresy rather than straightforward containment within Circle VI",
+      "promotionAllowed": false
+    },
+    {
+      "candidate": "inferno:L08 -> inferno:F09",
+      "originalType": "level_contains_figure_candidate",
+      "readAs": "transport_to_circle",
+      "basis": "Geryon carries travelers down from Circle VII to VIII, not securely a resident member of VIII",
+      "promotionAllowed": false
+    },
+    {
+      "candidate": "inferno:L09 -> inferno:F10",
+      "originalType": "level_contains_figure_candidate",
+      "readAs": "threshold_before_circle",
+      "basis": "Giants appear in Inferno XXXI at descent toward Cocytus, preceding Circle IX proper",
+      "promotionAllowed": false
+    }
+  ],
+  "policy": [
+    "Source-reference edges do not establish equivalence or parent/child membership",
+    "A documented quarantine is a classified unresolved state, not an owner-approved standalone",
+    "Do not add any bridge edge to app scoring, clinical classification, rituals, releases or CQ",
+    "Preserve all original 300 graph edges and 80 staged research edges unchanged"
+  ]
+}
