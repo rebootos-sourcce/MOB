@@ -1390,7 +1390,7 @@ function validateProfile(o){
    var og=o.avatar.cqOrigin;
    if(og&&typeof og==='object'&&!Array.isArray(og)
       &&typeof og.cq==='number'&&isFinite(og.cq)&&og.cq>=0&&og.cq<=100
-      &&og.m===CQ_MODEL&&typeof og.at==='string'&&!isNaN(Date.parse(og.at))
+      &&typeof og.m==='number'&&Number.isInteger(og.m)&&og.m>=1&&og.m<=CQ_MODEL&&typeof og.at==='string'&&!isNaN(Date.parse(og.at))
       &&typeof og.source==='string'&&og.source.length<=64)
     p.avatar.cqOrigin={cq:og.cq,m:og.m,at:og.at,source:og.source};
    else errs.push('avatar.cqOrigin is not a valid same-model full CQ baseline');}
