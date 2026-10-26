@@ -1,0 +1,739 @@
+{
+  "schema": "ATUNED_INFERNO_RESEARCH_RECORD_INDEX_V1",
+  "date": "2026-10-26",
+  "status": "SOURCE_METADATA_INDEX_ONLY__CANONICAL_BODY_NOT_IMPORTED",
+  "basis": "38 rows transcribed from the uploaded 2026-10-25 Inferno research crosswalk; node edges checked against staged overlay",
+  "sourceFileInHandoff": "source/INFERNO_CROSSWALK_2026-10-25.csv",
+  "fullFourPassSourceFileInHandoff": "source/INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+  "canonicalNormalizedExpectedSha256": "de3d0099ffbaf698d40873a141010cd2c724ff226e0b33a208b1307f58bc0fdc",
+  "canonicalArchivePresentInRepo": false,
+  "authority": {
+    "production": false,
+    "identityPromotion": false,
+    "behavioralScoring": false
+  },
+  "recordCount": 38,
+  "records": [
+    {
+      "recordId": "B01",
+      "graphNodeId": "inferno:B01",
+      "label": "Cerberus gluttony",
+      "sourceScope": "Inferno VI",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:B08",
+        "inferno:L03",
+        "inferno:F03"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "B02",
+      "graphNodeId": "inferno:B02",
+      "label": "Geryon fraud",
+      "sourceScope": "Inferno XVII",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:B11",
+        "inferno:B13",
+        "inferno:L08",
+        "inferno:F09"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "B03",
+      "graphNodeId": "inferno:B03",
+      "label": "Pride",
+      "sourceScope": "Purgatorio I",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "B04",
+      "graphNodeId": "inferno:B04",
+      "label": "Envy",
+      "sourceScope": "Purgatorio II",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "B05",
+      "graphNodeId": "inferno:B05",
+      "label": "Wrath",
+      "sourceScope": "Purgatorio III",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:L05",
+        "inferno:F05"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "B06",
+      "graphNodeId": "inferno:B06",
+      "label": "Sloth acedia",
+      "sourceScope": "Purgatorio IV",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:L01"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "B07",
+      "graphNodeId": "inferno:B07",
+      "label": "Avarice",
+      "sourceScope": "Purgatorio V",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:L04",
+        "inferno:F04"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "B08",
+      "graphNodeId": "inferno:B08",
+      "label": "Gluttony excess",
+      "sourceScope": "Purgatorio VI",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:B01",
+        "inferno:L03",
+        "inferno:F03"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "B09",
+      "graphNodeId": "inferno:B09",
+      "label": "Lust",
+      "sourceScope": "Purgatorio VII",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:L02"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "B10",
+      "graphNodeId": "inferno:B10",
+      "label": "Violence",
+      "sourceScope": "Inferno Circle VII",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:L07",
+        "inferno:F07"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "B11",
+      "graphNodeId": "inferno:B11",
+      "label": "Simple fraud",
+      "sourceScope": "Inferno Circle VIII",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:B02",
+        "inferno:B13",
+        "inferno:L08",
+        "inferno:F09"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "B12",
+      "graphNodeId": "inferno:B12",
+      "label": "Treachery",
+      "sourceScope": "Inferno Circle IX",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:L09",
+        "inferno:F11"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "B13",
+      "graphNodeId": "inferno:B13",
+      "label": "Fraudulent speech",
+      "sourceScope": "Inferno VIII motif",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:B02",
+        "inferno:B11",
+        "inferno:L08",
+        "inferno:F09"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "B14",
+      "graphNodeId": "inferno:B14",
+      "label": "Incontinence",
+      "sourceScope": "Inferno Circles II-V",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:L02",
+        "inferno:L03",
+        "inferno:L04",
+        "inferno:L05"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "B15",
+      "graphNodeId": "inferno:B15",
+      "label": "Disruption",
+      "sourceScope": "ATUNED cross-work",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [],
+      "sourceDisposition": "NON_DANTE_CONTEXT_ROOT_UNASSIGNED",
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "L01",
+      "graphNodeId": "inferno:L01",
+      "label": "Limbo",
+      "sourceScope": "Inferno IV",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:B06",
+        "inferno:F01"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "L02",
+      "graphNodeId": "inferno:L02",
+      "label": "Lust",
+      "sourceScope": "Inferno V",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:B09",
+        "inferno:B14",
+        "inferno:F02"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "L03",
+      "graphNodeId": "inferno:L03",
+      "label": "Gluttony",
+      "sourceScope": "Inferno VI",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:B01",
+        "inferno:B08",
+        "inferno:F03"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "L04",
+      "graphNodeId": "inferno:L04",
+      "label": "Avarice prodigality",
+      "sourceScope": "Inferno VII",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:B07",
+        "inferno:B14",
+        "inferno:F04"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "L05",
+      "graphNodeId": "inferno:L05",
+      "label": "Wrath sullenness",
+      "sourceScope": "Inferno VII-VIII",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:B05",
+        "inferno:B14",
+        "inferno:F05"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "L06",
+      "graphNodeId": "inferno:L06",
+      "label": "Heresy",
+      "sourceScope": "Inferno IX-XI",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:F06",
+        "inferno:L01"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "L07",
+      "graphNodeId": "inferno:L07",
+      "label": "Violence",
+      "sourceScope": "Inferno XII-XVII",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:B10",
+        "inferno:F07",
+        "inferno:F08"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "L08",
+      "graphNodeId": "inferno:L08",
+      "label": "Fraud Malebolge",
+      "sourceScope": "Inferno XVIII-XXX",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:B02",
+        "inferno:B11",
+        "inferno:B13",
+        "inferno:F09"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "L09",
+      "graphNodeId": "inferno:L09",
+      "label": "Treachery",
+      "sourceScope": "Inferno XXXII-XXXIV",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:B12",
+        "inferno:F10",
+        "inferno:F11"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "F01",
+      "graphNodeId": "inferno:F01",
+      "label": "Charon",
+      "sourceScope": "Inferno III",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:L01"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "F02",
+      "graphNodeId": "inferno:F02",
+      "label": "Minos",
+      "sourceScope": "Inferno V",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:L02"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "F03",
+      "graphNodeId": "inferno:F03",
+      "label": "Cerberus",
+      "sourceScope": "Inferno VI",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:B01",
+        "inferno:B08",
+        "inferno:L03"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "F04",
+      "graphNodeId": "inferno:F04",
+      "label": "Plutus",
+      "sourceScope": "Inferno VII",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:B07",
+        "inferno:L04"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "F05",
+      "graphNodeId": "inferno:F05",
+      "label": "Phlegyas",
+      "sourceScope": "Inferno VIII",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:B05",
+        "inferno:L05"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "F06",
+      "graphNodeId": "inferno:F06",
+      "label": "Furies",
+      "sourceScope": "Inferno IX",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:L06"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "F07",
+      "graphNodeId": "inferno:F07",
+      "label": "Minotaur",
+      "sourceScope": "Inferno XII",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:B10",
+        "inferno:L07"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "F08",
+      "graphNodeId": "inferno:F08",
+      "label": "Harpies",
+      "sourceScope": "Inferno XIII",
+      "sourceStatus": "ARCHETYPE_LINK_UNRESOLVED",
+      "graphBindingState": "REVIEW_REQUIRED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:L07"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "F09",
+      "graphNodeId": "inferno:F09",
+      "label": "Geryon",
+      "sourceScope": "Inferno XVII",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:B02",
+        "inferno:B11",
+        "inferno:B13",
+        "inferno:L08"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "F10",
+      "graphNodeId": "inferno:F10",
+      "label": "Giants",
+      "sourceScope": "Inferno XXXI",
+      "sourceStatus": "ARCHETYPE_LINK_UNRESOLVED",
+      "graphBindingState": "REVIEW_REQUIRED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:L09"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "F11",
+      "graphNodeId": "inferno:F11",
+      "label": "Lucifer",
+      "sourceScope": "Inferno XXXIV",
+      "sourceStatus": "ARCHETYPE_LINK_UNRESOLVED",
+      "graphBindingState": "REVIEW_REQUIRED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:L09",
+        "inferno:B12"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "X01",
+      "graphNodeId": "inferno:X01",
+      "label": "Malak",
+      "sourceScope": "unresolved",
+      "sourceStatus": "IDENTITY_BLOCKED",
+      "graphBindingState": "REVIEW_REQUIRED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [],
+      "sourceDisposition": "QUARANTINED_NAME_IDENTITY_BLOCKED",
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "X02",
+      "graphNodeId": "inferno:X02",
+      "label": "Baal or Bael",
+      "sourceScope": "Ugaritic Baal Cycle versus later grimoires",
+      "sourceStatus": "COMPOSITE_UNRESOLVED",
+      "graphBindingState": "REVIEW_REQUIRED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [],
+      "sourceDisposition": "QUARANTINED_COMPOSITE_NEEDS_SOURCE_SPLIT",
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "recordId": "X03",
+      "graphNodeId": "inferno:X03",
+      "label": "Asmodeus",
+      "sourceScope": "Tobit III VI VIII",
+      "sourceStatus": "UNPROMOTED",
+      "graphBindingState": "RESEARCH_UNPROMOTED",
+      "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+      "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
+      "researchPassCountInUploadedHandoff": 4,
+      "fullResearchBodyPresentInGitHub": false,
+      "linkedNodeIds": [
+        "inferno:B09",
+        "inferno:B10"
+      ],
+      "sourceDisposition": null,
+      "canonical": false,
+      "notRuntime": true
+    }
+  ]
+}
