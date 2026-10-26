@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2643 546a8ec4 2026-10-25 21:20"><head><meta charset="utf-8">
+<html lang="en" data-build="v2646 997eea3d 2026-10-25 23:43"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -12225,7 +12225,7 @@ function darkRead(mal01, CQ){
   /* which step of the descent, and only while both conditions hold */
   step:!dark?null:(CQ<11?DESCENT[2]:(CQ<21?DESCENT[1]:DESCENT[0])),
   refer:dark&&CQ<11,
-  say:!dark?'':'The shape is malignant and your energy is decoherent at the same time. '
+  say:!dark?'':'The shape is negative and your energy is decoherent at the same time. '
    +'That pair is what the descent describes. It is a reading of what is running, not of who is running it.'};}
 /* Which circle a descent has reached. Depth follows coherence, so
    the ladder is read off the same number everything else is. */
@@ -14730,8 +14730,8 @@ var UNPACK_BASE={
  'rail:radiance':'Radiance is vitality, awareness and will put together, and it sets how bright the field behind the wheel is.',
  'rail:flow':'Flow is how much gets from the base of your spine to the top of your head, each seat passing on part of what it gets.',
  'rail:orientation':'Orientation is which way the charge you hold leans, toward costing you nothing or toward taking something from you.',
- 'rail:benign':'Positive is charge you hold that is not costing you anything.',
- 'rail:malignant':'Negative is charge you hold that is taking something from you.',
+ 'rail:positive':'Positive is charge you hold that is not costing you anything.',
+ 'rail:negative':'Negative is charge you hold that is taking something from you.',
  'rail:balance':'Balance is which way your body moves under what you feel, out toward the world or in toward yourself.',
  'rail:masculine':'Masculine is energy given a shape and a direction and sent outward, and it does not mean men.',
  'rail:feminine':'Feminine is energy held and taken inward, and it does not mean women.',
@@ -34750,7 +34750,16 @@ function rbMotion(hosts){
     to=off?0:(parseFloat(el.getAttribute('data-w'))||0),
     pv=el.querySelector('.rb-v'), num=crMoNum(pv?pv.textContent:''), n1=num?num.n:null,
     tt=el.querySelector('.rb-t'), sv=rbSeatsOf(el);
-   if(m&&Math.abs(m.w1-to)<.05&&m.n1===n1){
+   /* A ROW STILL SWEEPING ITS OWN FIRST SIGHT IS NOT YET A READING. n1 above
+      is read off .rb-v's live text, and while the entrance tween is running
+      that text is the sweep's own in-between frame, not a new figure from the
+      model. A second call in that window (the rail opening and railFirstSight
+      both call rbMotion on the same render) read that frame back in as if it
+      were fresh, saw it miss the row's own target and reported a chip for a
+      change that never happened, down to the figure the row was sweeping up
+      from. The width survives this, since rbPaint never writes data-w, so it
+      alone still says whether the reading itself has moved. */
+   if(m&&Math.abs(m.w1-to)<.05&&(m.n1===n1||(m.first&&!m.done))){
     m.tw=tt?tt.offsetWidth:0; m.s1=sv;
     if(!m.done)rbPaint(m,now);
     rbGhost(el,m,now); rbChip(el,m,now); return;}
@@ -47477,6 +47486,13 @@ function stRender(){
    sorted, which column has the room, which list is up, and whether the bank
    is open. Kept across a return to the tab, never saved.
    ============================================================ */
+/* THE GAP A REAL SECOND PRESS NEVER BEATS. Measured directly: the two clicks
+   of a native double click or double tap land a tenth of a millisecond
+   apart. A hundred milliseconds is a thousand times that gap and still well
+   under what any person perceives as a pause, so a press on Run inside it
+   of stCommit's own reflow (STV.committedAt, below) is refused as the same
+   press landing twice, never as a second one arriving late. */
+var ST_DBLTAP_MS=100;
 var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:false,law:false,
  unsaved:null,draftT:null,draftFail:false,crisis:false};
 /* the one width the page changes shape at is the one the product stacks its
@@ -47744,6 +47760,16 @@ function stCommit(){
     with Run on it: widening it there would push Run off the first screen,
     which is the one thing layout H exists to stop. */
  STV.focus=stPhone()?'write':'release';
+ /* AND RUN CAN LAND WHERE COMMIT JUST WAS. Write held the room until this
+    line ran; now Run does, at the same screen position Commit sat at a
+    moment ago. A double tap aimed at Commit then ends its second half on
+    Run: measured at 390 by 844, a native double click after three commits
+    opened a real release two times in three and ran the voice line before
+    anyone pressed Run on purpose. The two clicks of a real double tap land
+    a tenth of a millisecond apart (measured); stRelPanel below refuses a
+    press on Run inside a tenth of a second of this line, which cannot be a
+    second press, only the same one landing twice. */
+ STV.committedAt=Date.now();
  /* the crisis line has said what the box is for, and the box has been used */
  STV.crisis=false;
  toYou();syncCh();if(typeof stRender==='function')stRender();render();
@@ -49271,6 +49297,10 @@ function stRelPanel(){
  var go=document.getElementById('strun');
  if(go)go.onclick=function(){
   if(!M.sel.length)return;
+  /* THE SAME PRESS, LANDING TWICE. See STV.committedAt and ST_DBLTAP_MS
+     above: a commit just moved Run to this exact spot, and a press this
+     soon after cannot be a person who has seen it there and chosen it. */
+  if(STV.committedAt&&Date.now()-STV.committedAt<ST_DBLTAP_MS)return;
   RUN.speed=2.2/(RUN.pace||1);
   /* the entry is named only when the panel is reading the last commit's own
      addresses: not a bank pick, not a draft still being typed, not the three
@@ -50123,8 +50153,8 @@ function sumStory(r){
     crisis screens. He ruled "Your energy leans malignant" and kept the word,
     and round PO rules that no term stands without its plain meaning in the
     same place. A hover tip is not the same place on a phone, so the sentence
-    the glossary already holds for the word (rail:benign, rail:malignant in
-    engine/data/gloss.js) follows it on the page, read from that one table so
+    the glossary already holds for the word (rail:positive, rail:negative in
+    engine/data/gloss.js, renamed 25 October) follows it on the page, read from that one table so
     the two can never say different things. */
  var leanW=lean.ben>=lean.mal?'positive':'negative';
  p.push(((lean.read===false?'':'Your energy leans <b>'
@@ -56653,6 +56683,13 @@ function relRerunSay(){
    play and the voice is not spoken for a run the end of it would refuse. */
 function relBegin(){
  if(showRefuse('release'))return;
+ /* THE SAME GUARD #strun ALREADY KEEPS, held here too: #strun's own press
+    clicks this button programmatically (ui/storyui.js), so a stray press
+    reaching this one directly, the moment a commit has just moved a button
+    onto it, is refused on the same terms. See STV.committedAt and
+    ST_DBLTAP_MS in ui/storyui.js. */
+ if(typeof STV!=='undefined'&&STV.committedAt&&typeof ST_DBLTAP_MS!=='undefined'
+   &&Date.now()-STV.committedAt<ST_DBLTAP_MS)return;
  if(typeof sfx==='function')sfx('begin',true);
  RUN.phase='welcome';RUN.line=0;RUN.idx=0;RUN.pass=0;RUN.halted=false;RUN.paused=false;
  RUN.t0=Date.now();RUN.tEnd=0;RUN.pauseAt=0;RUN.pausedMs=0;relTicker(true);relStep();}
@@ -82191,5 +82228,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005420971"></div>
+<div id="eof" hidden data-len="005423600"></div>
 </body></html>

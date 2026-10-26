@@ -676,7 +676,16 @@ function rbMotion(hosts){
     to=off?0:(parseFloat(el.getAttribute('data-w'))||0),
     pv=el.querySelector('.rb-v'), num=crMoNum(pv?pv.textContent:''), n1=num?num.n:null,
     tt=el.querySelector('.rb-t'), sv=rbSeatsOf(el);
-   if(m&&Math.abs(m.w1-to)<.05&&m.n1===n1){
+   /* A ROW STILL SWEEPING ITS OWN FIRST SIGHT IS NOT YET A READING. n1 above
+      is read off .rb-v's live text, and while the entrance tween is running
+      that text is the sweep's own in-between frame, not a new figure from the
+      model. A second call in that window (the rail opening and railFirstSight
+      both call rbMotion on the same render) read that frame back in as if it
+      were fresh, saw it miss the row's own target and reported a chip for a
+      change that never happened, down to the figure the row was sweeping up
+      from. The width survives this, since rbPaint never writes data-w, so it
+      alone still says whether the reading itself has moved. */
+   if(m&&Math.abs(m.w1-to)<.05&&(m.n1===n1||(m.first&&!m.done))){
     m.tw=tt?tt.offsetWidth:0; m.s1=sv;
     if(!m.done)rbPaint(m,now);
     rbGhost(el,m,now); rbChip(el,m,now); return;}
