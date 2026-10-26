@@ -17,6 +17,12 @@ assert(db.records.find(x=>x.id==='blueprint:personal-model'),'Blueprint model ab
 assert(db.records.find(x=>x.id==='consciousness:conceptual-group'),'Consciousness model absent from app');
 assert(db.records.filter(x=>x.type==='v341_domain_candidate').length===19,'19 source domains missing');
 assert(db.records.filter(x=>x.type==='archetype_candidate').length===18,'18 archetype candidates missing');
+const nativeCandidates=db.records.flatMap(x=>x.nativeNavigationCandidates||[]);
+assert(nativeCandidates.length===108,'Expected 108 source-derived native navigation candidates');
+assert(nativeCandidates.filter(x=>x.kind==='seat').length===18,
+ '18 documented ARCH18 seat pathways missing');
+assert(nativeCandidates.every(x=>x.sourceField&&x.evidenceStatus==='EXACT_LABEL_NAVIGATION_NOT_CANONICAL_EQUIVALENCE'),
+ 'Native drill link used unsupported inferred equivalence');
 const by=new Map(db.records.map(x=>[x.id,x]));
 for(const original of registry.records){
  const delivered=by.get(original.id);
@@ -45,6 +51,8 @@ for(const marker of ["['psyche','Deep Psyche']","if(sec==='psyche'","if(x.k==='p
 assert(!ui.includes('const DEEP_PSYCHE='),'App UI contains independent copied registry');
 assert(ui.includes('function kbPsycheDrill(d)')&&ui.includes('data-dp-link'),
  'Deep Psyche drill must support record-to-record click-through');
+assert(ui.includes('data-dp-native-index')&&ui.includes('kbOpen(target)'),
+ 'Native instrument record drill navigation missing');
 const drillSource=ui.match(/function kbPsycheDrill\(d\)\{[\s\S]*?\n\}/);
 assert(drillSource,'Source-qualified graph drill function missing');
 let rendered='';
@@ -56,6 +64,10 @@ assert(rendered.includes('data-dp-link')&&rendered.includes('Connected records')
  'Blueprint does not render traversable linked records');
 assert(rendered.includes('SOURCE_LEVEL_STRUCTURE')||rendered.includes('source_'),
  'Relationship source/evidence status is not presented to users');
+drillContext.kbRowsOf=kind=>kind==='seat'?[{t:'Solar',k:'seat'}]:[];
+drillContext.kbPsycheDrill(by.get('mapping:arch18:01'));
+assert(rendered.includes('data-dp-native-index')&&rendered.includes('Solar'),
+ 'ARCH18 source row cannot render a direct native seat drill path');
 const sourceHtml=path.join(ROOT,'source.html');
 if(process.env.CI)assert(fs.existsSync(sourceHtml),'CI acceptance requires a built source.html');
 if(fs.existsSync(sourceHtml)){
