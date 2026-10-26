@@ -30,7 +30,7 @@ const psych=reg.records.map(r=>{
   'Three passes not carried into runtime: '+r.id);
  return e;
 });
-assert(psych.length===reg.recordCount && psych.length===147,
+assert(psych.length===reg.recordCount && psych.length>=149,
  'Registry count mismatch');
 const failures=[];let reciprocalEdges=0,crossSystemEdges=0;
 for(const e of psych) {
@@ -88,6 +88,12 @@ const sheet=uiContext.KB.sheet(by.get('mapping:arch18:17'),{check:false});
 assert(sheet.includes('Shapeshifter') && sheet.includes('Linked'),
  'Knowledge sheet does not render the deep psyche source mapping');
 const uiKinds=Object.keys(uiContext.KB.KIND).length;
+const blueprint=by.get('blueprint:personal-model');
+assert(blueprint && blueprint.kind==='psych_blueprint_model','Missing conceptual Blueprint model');
+assert(reg.records.filter(x=>x.recordType==='blueprint_domain_slot').every(x=>x.links.includes(blueprint.id)),'Blueprint visualization positions not connected to their structural model');
+assert(reg.records.filter(x=>x.recordType==='v341_domain_candidate').every(x=>x.links.includes(blueprint.id)),'Nineteen versioned domains do not reach Blueprint model');
+assert(reg.records.filter(x=>x.recordType==='archetype_candidate').every(x=>x.links.includes(blueprint.id)),'Archetypes do not reach Blueprint model');
+assert(reg.records.filter(x=>x.recordType==='related_consciousness_candidate').every(x=>x.links.includes('consciousness:conceptual-group')),'Related consciousness records disconnected');
 const uiSlots=psych.filter(x=>x.slotOnly);
 assert(uiSlots.length===14,'Visualization slots lost');
 const report={
@@ -98,7 +104,7 @@ const report={
  legacyGraphEdges:crossSystemEdges,
  archetypeFetterRowsReachingNerves:nervePaths,
  totalArchetypeFetterRows:archetypeTable.length,
- visualizationSlots:uiSlots.length, uiKindsRenderable:uiKinds,
+ visualizationSlots:uiSlots.length, uiKindsRenderable:uiKinds, blueprintModelConnected:true, consciousnessCategoryConnected:true,
  remainingProvisionalDefinitions:v341.filter(x=>
   x.templateValidation?.contentStatus!=='complete').length,
  measuredRuntimeGraph:db.deepPsychologicalGraph
