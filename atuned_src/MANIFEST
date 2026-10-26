@@ -31,6 +31,8 @@ engine/undo.js
 engine/compute.js
 engine/plan.js
 engine/avatar.js
+engine/data/hero_journey.js
+engine/hero_journey.js
 engine/trace.js
 engine/schema.js
 engine/journey.js
@@ -77,6 +79,7 @@ ui/summary.js
 ui/daily.js
 ui/analytics.js
 ui/avatarui.js
+ui/hero_journey.js
 ui/intakeui.js
 ui/release.js
 ui/ritual.js

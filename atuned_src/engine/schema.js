@@ -314,6 +314,7 @@ function saveProfile(p){
     comes through here, the release's included, so the stored counter is never
     a save behind the ground it counts (journeyGiftSync, engine/journey.js). */
  if(p.journey&&p.journey.gift)journeyGiftSync(p);
+ if(typeof hjStampOrigin==='function')hjStampOrigin(p);
  p.updated=new Date().toISOString(); p.v=SCHEMA_V;
  return p;}
 /* a snapshot is what Analytics plots. derived only, never inputs.
@@ -1379,6 +1380,20 @@ function validateProfile(o){
    if(AV_STATUS.indexOf(o.avatar.status)>=0)p.avatar.status=o.avatar.status;
    else errs.push('avatar.status '+JSON.stringify(o.avatar.status)+' is not one of '+AV_STATUS.join(', '));}
   else p.avatar.status=p.avatar.built?'active':'draft';
+  /* Hero's Journey: canonical CQ origin and independently selected quest.
+     Both fields are explicit in the boundary so export/import preserves them. */
+  if(o.avatar.activeJourneyScene!==undefined&&o.avatar.activeJourneyScene!==null){
+   if(typeof o.avatar.activeJourneyScene==='string'&&typeof hjScene==='function'&&hjScene(o.avatar.activeJourneyScene))
+    p.avatar.activeJourneyScene=o.avatar.activeJourneyScene;
+   else errs.push('avatar.activeJourneyScene is not a known Hero Journey encounter');}
+  if(o.avatar.cqOrigin!==undefined&&o.avatar.cqOrigin!==null){
+   var og=o.avatar.cqOrigin;
+   if(og&&typeof og==='object'&&!Array.isArray(og)
+      &&typeof og.cq==='number'&&isFinite(og.cq)&&og.cq>=0&&og.cq<=100
+      &&og.m===CQ_MODEL&&typeof og.at==='string'&&!isNaN(Date.parse(og.at))
+      &&typeof og.source==='string'&&og.source.length<=64)
+    p.avatar.cqOrigin={cq:og.cq,m:og.m,at:og.at,source:og.source};
+   else errs.push('avatar.cqOrigin is not a valid same-model full CQ baseline');}
   if(o.avatar.movedAt!==undefined&&o.avatar.movedAt!==null){
    if(typeof o.avatar.movedAt==='string'&&!isNaN(new Date(o.avatar.movedAt).getTime()))p.avatar.movedAt=o.avatar.movedAt;
    else errs.push('avatar.movedAt is not a date');}
