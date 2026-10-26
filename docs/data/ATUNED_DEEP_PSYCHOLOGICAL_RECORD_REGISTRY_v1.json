@@ -10842,7 +10842,64 @@
       "downstreamEffectIds": [],
       "parentId": null,
       "childIds": [],
-      "relationships": [],
+      "relationships": [
+        {
+          "type": "source_conscious_domain_containment",
+          "fromId": "conscious-domain:01",
+          "toId": "conscious-domain:02",
+          "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+          "status": "source_declared_state_relationship_without_affirmation_assignment",
+          "reciprocalRequired": true
+        },
+        {
+          "type": "source_conscious_domain_containment",
+          "fromId": "conscious-domain:01",
+          "toId": "conscious-domain:03",
+          "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+          "status": "source_declared_state_relationship_without_affirmation_assignment",
+          "reciprocalRequired": true
+        },
+        {
+          "type": "source_conscious_domain_containment",
+          "fromId": "conscious-domain:01",
+          "toId": "conscious-domain:04",
+          "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+          "status": "source_declared_state_relationship_without_affirmation_assignment",
+          "reciprocalRequired": true
+        },
+        {
+          "type": "source_conscious_domain_containment",
+          "fromId": "conscious-domain:01",
+          "toId": "conscious-domain:05",
+          "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+          "status": "source_declared_state_relationship_without_affirmation_assignment",
+          "reciprocalRequired": true
+        },
+        {
+          "type": "source_conscious_domain_containment",
+          "fromId": "conscious-domain:01",
+          "toId": "conscious-domain:06",
+          "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+          "status": "source_declared_state_relationship_without_affirmation_assignment",
+          "reciprocalRequired": true
+        },
+        {
+          "type": "source_conscious_domain_containment",
+          "fromId": "conscious-domain:01",
+          "toId": "conscious-domain:07",
+          "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+          "status": "source_declared_state_relationship_without_affirmation_assignment",
+          "reciprocalRequired": true
+        },
+        {
+          "type": "source_conscious_domain_containment",
+          "fromId": "conscious-domain:01",
+          "toId": "conscious-domain:08",
+          "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+          "status": "source_declared_state_relationship_without_affirmation_assignment",
+          "reciprocalRequired": true
+        }
+      ],
       "interactions": [],
       "examples": [
         "Reflecting on how a decision aligns across values, context, and consequences"
@@ -10942,7 +10999,15 @@
       "fam": "conscious_domains",
       "def": "Awareness aligned with Source; pattern, truth, and coherence across time, energy, and matter. Not a chakra zone, but the unified field containing all zones; the state from which the other seven emerge and to which they return.",
       "body": "SOURCE-EXTRACTED SUMMARY, Awareness aligned with Source; pattern, truth, and coherence across time, energy, and matter. Not a chakra zone, but the unified field containing all zones; the state from which the other seven emerge and to which they return. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
-      "links": [],
+      "links": [
+        "conscious-domain:02",
+        "conscious-domain:03",
+        "conscious-domain:04",
+        "conscious-domain:05",
+        "conscious-domain:06",
+        "conscious-domain:07",
+        "conscious-domain:08"
+      ],
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "Empyrean Consciousness",
@@ -10950,7 +11015,15 @@
         "def": "Awareness aligned with Source; pattern, truth, and coherence across time, energy, and matter. Not a chakra zone, but the unified field containing all zones; the state from which the other seven emerge and to which they return.",
         "body": "SOURCE-EXTRACTED SUMMARY, Awareness aligned with Source; pattern, truth, and coherence across time, energy, and matter. Not a chakra zone, but the unified field containing all zones; the state from which the other seven emerge and to which they return. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
         "affirmation": "No separate chakra affirmation specified; Empyrean Consciousness is described as the unified field containing all seven.",
-        "links": [],
+        "links": [
+          "conscious-domain:02",
+          "conscious-domain:03",
+          "conscious-domain:04",
+          "conscious-domain:05",
+          "conscious-domain:06",
+          "conscious-domain:07",
+          "conscious-domain:08"
+        ],
         "sourceRefs": [
           "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
           "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
@@ -11024,7 +11097,65 @@
         "examples": [
           "Reflecting on how a decision aligns across values, context, and consequences"
         ],
-        "nonExamples": []
+        "nonExamples": [],
+        "relationships": [
+          {
+            "type": "source_conscious_domain_containment",
+            "fromId": "conscious-domain:01",
+            "toId": "conscious-domain:02",
+            "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+            "status": "source_declared_state_relationship_without_affirmation_assignment",
+            "reciprocalRequired": true
+          },
+          {
+            "type": "source_conscious_domain_containment",
+            "fromId": "conscious-domain:01",
+            "toId": "conscious-domain:03",
+            "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+            "status": "source_declared_state_relationship_without_affirmation_assignment",
+            "reciprocalRequired": true
+          },
+          {
+            "type": "source_conscious_domain_containment",
+            "fromId": "conscious-domain:01",
+            "toId": "conscious-domain:04",
+            "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+            "status": "source_declared_state_relationship_without_affirmation_assignment",
+            "reciprocalRequired": true
+          },
+          {
+            "type": "source_conscious_domain_containment",
+            "fromId": "conscious-domain:01",
+            "toId": "conscious-domain:05",
+            "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+            "status": "source_declared_state_relationship_without_affirmation_assignment",
+            "reciprocalRequired": true
+          },
+          {
+            "type": "source_conscious_domain_containment",
+            "fromId": "conscious-domain:01",
+            "toId": "conscious-domain:06",
+            "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+            "status": "source_declared_state_relationship_without_affirmation_assignment",
+            "reciprocalRequired": true
+          },
+          {
+            "type": "source_conscious_domain_containment",
+            "fromId": "conscious-domain:01",
+            "toId": "conscious-domain:07",
+            "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+            "status": "source_declared_state_relationship_without_affirmation_assignment",
+            "reciprocalRequired": true
+          },
+          {
+            "type": "source_conscious_domain_containment",
+            "fromId": "conscious-domain:01",
+            "toId": "conscious-domain:08",
+            "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+            "status": "source_declared_state_relationship_without_affirmation_assignment",
+            "reciprocalRequired": true
+          }
+        ]
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -11043,9 +11174,9 @@
       "story": "A person notices competing thoughts, emotions, and bodily signals without reducing the whole experience to any one of them. They use the wider context to orient rather than claim certainty about an unseen force.",
       "atunedVersion": "The Empyrean frame is treated as an integrative perspective, not a measurable field or externally verified mechanism.",
       "relationshipAudit": {
-        "status": "NO_APPROVED_LINKS_RECORDED",
+        "status": "SOURCE_TRACEABLE_GRAPH_LINKS_PRESENT",
         "auditedAt": "2026-10-24",
-        "currentLinkCount": 0,
+        "currentLinkCount": 7,
         "sourceRelationshipCount": 0,
         "note": "Affirmation-to-domain mapping and canonical approval remain open; preserve source text separately from assignment. Empty links array is intentional and must not be counted as graph closure."
       },
@@ -11094,7 +11225,16 @@
       "downstreamEffectIds": [],
       "parentId": null,
       "childIds": [],
-      "relationships": [],
+      "relationships": [
+        {
+          "type": "source_conscious_domain_containment",
+          "fromId": "conscious-domain:02",
+          "toId": "conscious-domain:01",
+          "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+          "status": "source_declared_state_relationship_without_affirmation_assignment",
+          "reciprocalRequired": true
+        }
+      ],
       "interactions": [],
       "examples": [
         "Admitting a missed commitment and proposing a realistic remedy"
@@ -11195,7 +11335,9 @@
       "fam": "conscious_domains",
       "def": "Honoring the word one gives to oneself and others; the crown as a two-way interface receiving from Source without distortion.",
       "body": "SOURCE-EXTRACTED SUMMARY, Honoring the word one gives to oneself and others; the crown as a two-way interface receiving from Source without distortion. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
-      "links": [],
+      "links": [
+        "conscious-domain:01"
+      ],
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "Crown Consciousness",
@@ -11203,7 +11345,9 @@
         "def": "Honoring the word one gives to oneself and others; the crown as a two-way interface receiving from Source without distortion.",
         "body": "SOURCE-EXTRACTED SUMMARY, Honoring the word one gives to oneself and others; the crown as a two-way interface receiving from Source without distortion. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
         "affirmation": "I'm committed to my duty.",
-        "links": [],
+        "links": [
+          "conscious-domain:01"
+        ],
         "sourceRefs": [
           "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
           "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
@@ -11277,7 +11421,17 @@
         "examples": [
           "Admitting a missed commitment and proposing a realistic remedy"
         ],
-        "nonExamples": []
+        "nonExamples": [],
+        "relationships": [
+          {
+            "type": "source_conscious_domain_containment",
+            "fromId": "conscious-domain:02",
+            "toId": "conscious-domain:01",
+            "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+            "status": "source_declared_state_relationship_without_affirmation_assignment",
+            "reciprocalRequired": true
+          }
+        ]
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -11296,9 +11450,9 @@
       "story": "Someone makes a promise they cannot keep. Rather than hide the gap, they name it early, explain what changed, and make a credible repair commitment.",
       "atunedVersion": "Crown Consciousness is operationalized as promise-integrity and clarity of incoming/outgoing signal; spiritual language remains source framing, not a validated physical claim.",
       "relationshipAudit": {
-        "status": "NO_APPROVED_LINKS_RECORDED",
+        "status": "SOURCE_TRACEABLE_GRAPH_LINKS_PRESENT",
         "auditedAt": "2026-10-24",
-        "currentLinkCount": 0,
+        "currentLinkCount": 1,
         "sourceRelationshipCount": 0,
         "note": "Affirmation-to-domain mapping and canonical approval remain open; preserve source text separately from assignment. Empty links array is intentional and must not be counted as graph closure."
       },
@@ -11347,7 +11501,16 @@
       "downstreamEffectIds": [],
       "parentId": null,
       "childIds": [],
-      "relationships": [],
+      "relationships": [
+        {
+          "type": "source_conscious_domain_containment",
+          "fromId": "conscious-domain:03",
+          "toId": "conscious-domain:01",
+          "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+          "status": "source_declared_state_relationship_without_affirmation_assignment",
+          "reciprocalRequired": true
+        }
+      ],
       "interactions": [],
       "examples": [
         "Recognizing a trigger and pausing before responding"
@@ -11448,7 +11611,9 @@
       "fam": "conscious_domains",
       "def": "Conscious awareness in every moment; the recognition axis is open and behavior is no longer running automatically.",
       "body": "SOURCE-EXTRACTED SUMMARY, Conscious awareness in every moment; the recognition axis is open and behavior is no longer running automatically. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
-      "links": [],
+      "links": [
+        "conscious-domain:01"
+      ],
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "Perception Consciousness",
@@ -11456,7 +11621,9 @@
         "def": "Conscious awareness in every moment; the recognition axis is open and behavior is no longer running automatically.",
         "body": "SOURCE-EXTRACTED SUMMARY, Conscious awareness in every moment; the recognition axis is open and behavior is no longer running automatically. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
         "affirmation": "I'm always present.",
-        "links": [],
+        "links": [
+          "conscious-domain:01"
+        ],
         "sourceRefs": [
           "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
           "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
@@ -11530,7 +11697,17 @@
         "examples": [
           "Recognizing a trigger and pausing before responding"
         ],
-        "nonExamples": []
+        "nonExamples": [],
+        "relationships": [
+          {
+            "type": "source_conscious_domain_containment",
+            "fromId": "conscious-domain:03",
+            "toId": "conscious-domain:01",
+            "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+            "status": "source_declared_state_relationship_without_affirmation_assignment",
+            "reciprocalRequired": true
+          }
+        ]
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -11549,9 +11726,9 @@
       "story": "During a familiar argument, someone catches the impulse to react, names the pattern internally, and chooses a response after checking what is happening now.",
       "atunedVersion": "Perception Consciousness becomes the capacity to notice a stimulus-response loop before it runs to completion; this is a practical interpretation of the source summary.",
       "relationshipAudit": {
-        "status": "NO_APPROVED_LINKS_RECORDED",
+        "status": "SOURCE_TRACEABLE_GRAPH_LINKS_PRESENT",
         "auditedAt": "2026-10-24",
-        "currentLinkCount": 0,
+        "currentLinkCount": 1,
         "sourceRelationshipCount": 0,
         "note": "Affirmation-to-domain mapping and canonical approval remain open; preserve source text separately from assignment. Empty links array is intentional and must not be counted as graph closure."
       },
@@ -11600,7 +11777,16 @@
       "downstreamEffectIds": [],
       "parentId": null,
       "childIds": [],
-      "relationships": [],
+      "relationships": [
+        {
+          "type": "source_conscious_domain_containment",
+          "fromId": "conscious-domain:04",
+          "toId": "conscious-domain:01",
+          "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+          "status": "source_declared_state_relationship_without_affirmation_assignment",
+          "reciprocalRequired": true
+        }
+      ],
       "interactions": [],
       "examples": [
         "Correcting an inaccurate statement even when inconvenient"
@@ -11701,7 +11887,9 @@
       "fam": "conscious_domains",
       "def": "Absolute truth in speech, perception, and behavior; truth integrity defended automatically.",
       "body": "SOURCE-EXTRACTED SUMMARY, Absolute truth in speech, perception, and behavior; truth integrity defended automatically. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
-      "links": [],
+      "links": [
+        "conscious-domain:01"
+      ],
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "Truth Consciousness",
@@ -11709,7 +11897,9 @@
         "def": "Absolute truth in speech, perception, and behavior; truth integrity defended automatically.",
         "body": "SOURCE-EXTRACTED SUMMARY, Absolute truth in speech, perception, and behavior; truth integrity defended automatically. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
         "affirmation": "I speak absolute truth.",
-        "links": [],
+        "links": [
+          "conscious-domain:01"
+        ],
         "sourceRefs": [
           "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
           "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
@@ -11783,7 +11973,17 @@
         "examples": [
           "Correcting an inaccurate statement even when inconvenient"
         ],
-        "nonExamples": []
+        "nonExamples": [],
+        "relationships": [
+          {
+            "type": "source_conscious_domain_containment",
+            "fromId": "conscious-domain:04",
+            "toId": "conscious-domain:01",
+            "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+            "status": "source_declared_state_relationship_without_affirmation_assignment",
+            "reciprocalRequired": true
+          }
+        ]
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -11802,9 +12002,9 @@
       "story": "A person discovers that a story they have repeated is inaccurate. They correct it publicly, including the part that makes them look less favorable.",
       "atunedVersion": "Truth Consciousness is operationalized as reducing distortion between what is observed, believed, said, and done; the source's spiritual framing is preserved separately.",
       "relationshipAudit": {
-        "status": "NO_APPROVED_LINKS_RECORDED",
+        "status": "SOURCE_TRACEABLE_GRAPH_LINKS_PRESENT",
         "auditedAt": "2026-10-24",
-        "currentLinkCount": 0,
+        "currentLinkCount": 1,
         "sourceRelationshipCount": 0,
         "note": "Affirmation-to-domain mapping and canonical approval remain open; preserve source text separately from assignment. Empty links array is intentional and must not be counted as graph closure."
       },
@@ -11853,7 +12053,16 @@
       "downstreamEffectIds": [],
       "parentId": null,
       "childIds": [],
-      "relationships": [],
+      "relationships": [
+        {
+          "type": "source_conscious_domain_containment",
+          "fromId": "conscious-domain:05",
+          "toId": "conscious-domain:01",
+          "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+          "status": "source_declared_state_relationship_without_affirmation_assignment",
+          "reciprocalRequired": true
+        }
+      ],
       "interactions": [],
       "examples": [
         "Offering support while respecting the other person's choices"
@@ -11954,7 +12163,9 @@
       "fam": "conscious_domains",
       "def": "Equal compassion toward self and others; a stable perceptual state that cannot be contracted by other people's broadcasts.",
       "body": "SOURCE-EXTRACTED SUMMARY, Equal compassion toward self and others; a stable perceptual state that cannot be contracted by other people's broadcasts. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
-      "links": [],
+      "links": [
+        "conscious-domain:01"
+      ],
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "Heart Consciousness",
@@ -11962,7 +12173,9 @@
         "def": "Equal compassion toward self and others; a stable perceptual state that cannot be contracted by other people's broadcasts.",
         "body": "SOURCE-EXTRACTED SUMMARY, Equal compassion toward self and others; a stable perceptual state that cannot be contracted by other people's broadcasts. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
         "affirmation": "I show equal compassion towards self and other.",
-        "links": [],
+        "links": [
+          "conscious-domain:01"
+        ],
         "sourceRefs": [
           "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
           "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
@@ -12036,7 +12249,17 @@
         "examples": [
           "Offering support while respecting the other person's choices"
         ],
-        "nonExamples": []
+        "nonExamples": [],
+        "relationships": [
+          {
+            "type": "source_conscious_domain_containment",
+            "fromId": "conscious-domain:05",
+            "toId": "conscious-domain:01",
+            "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+            "status": "source_declared_state_relationship_without_affirmation_assignment",
+            "reciprocalRequired": true
+          }
+        ]
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -12055,9 +12278,9 @@
       "story": "A friend is distressed and wants immediate rescue. The person responds with care, stays present, and asks what support is wanted rather than taking over.",
       "atunedVersion": "Heart Consciousness is interpreted as stable compassion with differentiation: care does not require emotional fusion or self-erasure.",
       "relationshipAudit": {
-        "status": "NO_APPROVED_LINKS_RECORDED",
+        "status": "SOURCE_TRACEABLE_GRAPH_LINKS_PRESENT",
         "auditedAt": "2026-10-24",
-        "currentLinkCount": 0,
+        "currentLinkCount": 1,
         "sourceRelationshipCount": 0,
         "note": "Affirmation-to-domain mapping and canonical approval remain open; preserve source text separately from assignment. Empty links array is intentional and must not be counted as graph closure."
       },
@@ -12106,7 +12329,16 @@
       "downstreamEffectIds": [],
       "parentId": null,
       "childIds": [],
-      "relationships": [],
+      "relationships": [
+        {
+          "type": "source_conscious_domain_containment",
+          "fromId": "conscious-domain:06",
+          "toId": "conscious-domain:01",
+          "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+          "status": "source_declared_state_relationship_without_affirmation_assignment",
+          "reciprocalRequired": true
+        }
+      ],
       "interactions": [],
       "examples": [
         "Naming a desire and choosing a proportionate first step"
@@ -12207,7 +12439,9 @@
       "fam": "conscious_domains",
       "def": "Embodiment of worth and desire fulfillment; creativity flowing and desires recognized and honored.",
       "body": "SOURCE-EXTRACTED SUMMARY, Embodiment of worth and desire fulfillment; creativity flowing and desires recognized and honored. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
-      "links": [],
+      "links": [
+        "conscious-domain:01"
+      ],
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "Value Consciousness",
@@ -12215,7 +12449,9 @@
         "def": "Embodiment of worth and desire fulfillment; creativity flowing and desires recognized and honored.",
         "body": "SOURCE-EXTRACTED SUMMARY, Embodiment of worth and desire fulfillment; creativity flowing and desires recognized and honored. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
         "affirmation": "I am creatively fulfilled in my purpose.",
-        "links": [],
+        "links": [
+          "conscious-domain:01"
+        ],
         "sourceRefs": [
           "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
           "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
@@ -12289,7 +12525,17 @@
         "examples": [
           "Naming a desire and choosing a proportionate first step"
         ],
-        "nonExamples": []
+        "nonExamples": [],
+        "relationships": [
+          {
+            "type": "source_conscious_domain_containment",
+            "fromId": "conscious-domain:06",
+            "toId": "conscious-domain:01",
+            "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+            "status": "source_declared_state_relationship_without_affirmation_assignment",
+            "reciprocalRequired": true
+          }
+        ]
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -12308,9 +12554,9 @@
       "story": "A person notices that they have been dismissing a genuine desire as unimportant. They name it, test whether it fits their values and constraints, and take one realistic step.",
       "atunedVersion": "Value Consciousness is operationalized as recognizing desire and worth without treating every impulse as a command or every external approval as a measure of value.",
       "relationshipAudit": {
-        "status": "NO_APPROVED_LINKS_RECORDED",
+        "status": "SOURCE_TRACEABLE_GRAPH_LINKS_PRESENT",
         "auditedAt": "2026-10-24",
-        "currentLinkCount": 0,
+        "currentLinkCount": 1,
         "sourceRelationshipCount": 0,
         "note": "Affirmation-to-domain mapping and canonical approval remain open; preserve source text separately from assignment. Empty links array is intentional and must not be counted as graph closure."
       },
@@ -12359,7 +12605,16 @@
       "downstreamEffectIds": [],
       "parentId": null,
       "childIds": [],
-      "relationships": [],
+      "relationships": [
+        {
+          "type": "source_conscious_domain_containment",
+          "fromId": "conscious-domain:07",
+          "toId": "conscious-domain:01",
+          "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+          "status": "source_declared_state_relationship_without_affirmation_assignment",
+          "reciprocalRequired": true
+        }
+      ],
       "interactions": [],
       "examples": [
         "Taking responsibility for a decision and its repair"
@@ -12460,7 +12715,9 @@
       "fam": "conscious_domains",
       "def": "Sovereignty, courage, leadership, and responsibility for one's own reality; power that does not need to dominate.",
       "body": "SOURCE-EXTRACTED SUMMARY, Sovereignty, courage, leadership, and responsibility for one's own reality; power that does not need to dominate. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
-      "links": [],
+      "links": [
+        "conscious-domain:01"
+      ],
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "Royal Consciousness",
@@ -12468,7 +12725,9 @@
         "def": "Sovereignty, courage, leadership, and responsibility for one's own reality; power that does not need to dominate.",
         "body": "SOURCE-EXTRACTED SUMMARY, Sovereignty, courage, leadership, and responsibility for one's own reality; power that does not need to dominate. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
         "affirmation": "I stand fully committed in my power, disciplined and focused.",
-        "links": [],
+        "links": [
+          "conscious-domain:01"
+        ],
         "sourceRefs": [
           "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
           "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
@@ -12542,7 +12801,17 @@
         "examples": [
           "Taking responsibility for a decision and its repair"
         ],
-        "nonExamples": []
+        "nonExamples": [],
+        "relationships": [
+          {
+            "type": "source_conscious_domain_containment",
+            "fromId": "conscious-domain:07",
+            "toId": "conscious-domain:01",
+            "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+            "status": "source_declared_state_relationship_without_affirmation_assignment",
+            "reciprocalRequired": true
+          }
+        ]
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -12561,9 +12830,9 @@
       "story": "A group has no clear decision-maker during a crisis. Someone takes responsibility for the next decision, states the reasoning, invites relevant correction, and remains accountable for the outcome.",
       "atunedVersion": "Royal Consciousness is interpreted as self-governance and accountable agency, not status or control over other people.",
       "relationshipAudit": {
-        "status": "NO_APPROVED_LINKS_RECORDED",
+        "status": "SOURCE_TRACEABLE_GRAPH_LINKS_PRESENT",
         "auditedAt": "2026-10-24",
-        "currentLinkCount": 0,
+        "currentLinkCount": 1,
         "sourceRelationshipCount": 0,
         "note": "Affirmation-to-domain mapping and canonical approval remain open; preserve source text separately from assignment. Empty links array is intentional and must not be counted as graph closure."
       },
@@ -12612,7 +12881,16 @@
       "downstreamEffectIds": [],
       "parentId": null,
       "childIds": [],
-      "relationships": [],
+      "relationships": [
+        {
+          "type": "source_conscious_domain_containment",
+          "fromId": "conscious-domain:08",
+          "toId": "conscious-domain:01",
+          "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+          "status": "source_declared_state_relationship_without_affirmation_assignment",
+          "reciprocalRequired": true
+        }
+      ],
       "interactions": [],
       "examples": [
         "Sharing a small draft with a trusted reviewer"
@@ -12713,7 +12991,9 @@
       "fam": "conscious_domains",
       "def": "Freedom to create without resistance; survival patterns no longer consume creative output.",
       "body": "SOURCE-EXTRACTED SUMMARY, Freedom to create without resistance; survival patterns no longer consume creative output. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
-      "links": [],
+      "links": [
+        "conscious-domain:01"
+      ],
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "Creative Consciousness",
@@ -12721,7 +13001,9 @@
         "def": "Freedom to create without resistance; survival patterns no longer consume creative output.",
         "body": "SOURCE-EXTRACTED SUMMARY, Freedom to create without resistance; survival patterns no longer consume creative output. Source prose is paraphrased for the registry; see source reference and crosswalk for traceability.",
         "affirmation": "I show courage over fear.",
-        "links": [],
+        "links": [
+          "conscious-domain:01"
+        ],
         "sourceRefs": [
           "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, The Seven Affirmations, HTML anchor #ch22.",
           "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
@@ -12795,7 +13077,17 @@
         "examples": [
           "Sharing a small draft with a trusted reviewer"
         ],
-        "nonExamples": []
+        "nonExamples": [],
+        "relationships": [
+          {
+            "type": "source_conscious_domain_containment",
+            "fromId": "conscious-domain:08",
+            "toId": "conscious-domain:01",
+            "sourceRef": "MOB_Complete_v341.html SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 32, Seven Affirmations, #ch22; Empyrean described as containing the other seven states",
+            "status": "source_declared_state_relationship_without_affirmation_assignment",
+            "reciprocalRequired": true
+          }
+        ]
       },
       "templateValidation": {
         "schemaDefined": true,
@@ -12814,9 +13106,9 @@
       "story": "A person delays sharing creative work because every draft feels risky. They set a safe, bounded experiment and let the work become visible before perfection is possible.",
       "atunedVersion": "Creative Consciousness is operationalized as restoring usable creative capacity while acknowledging real constraints; it is not a claim that survival responses can simply be switched off.",
       "relationshipAudit": {
-        "status": "NO_APPROVED_LINKS_RECORDED",
+        "status": "SOURCE_TRACEABLE_GRAPH_LINKS_PRESENT",
         "auditedAt": "2026-10-24",
-        "currentLinkCount": 0,
+        "currentLinkCount": 1,
         "sourceRelationshipCount": 0,
         "note": "Affirmation-to-domain mapping and canonical approval remain open; preserve source text separately from assignment. Empty links array is intentional and must not be counted as graph closure."
       },
@@ -29236,6 +29528,7 @@
       "definition": "Source-roster fact: the v341 extraction lists 'Imperium' under the 'Architect' cluster. The accessible durable extract confirms label and cluster membership but does not provide a standalone definition for this roster entry.",
       "body": "V341 roster label: Imperium. Source cluster: Architect. Current-manuscript candidate: none established. Crosswalk status: ROOT_DOMAIN_DISTINCTION_OPEN. This is a source-version-specific roster record, not a promoted semantic edge.",
       "links": [
+        "related-consciousness:imperium",
         "root:architect"
       ],
       "sourceRefs": [
@@ -29304,7 +29597,7 @@
       "relationshipAudit": {
         "status": "SOURCE_TRACEABLE_GRAPH_LINKS_PRESENT",
         "auditedAt": "2026-10-24",
-        "currentLinkCount": 1,
+        "currentLinkCount": 2,
         "note": "Cluster and crosswalk candidates are metadata only, not graph edges."
       },
       "templateValidation": {
@@ -29332,6 +29625,7 @@
         "def": "Source-roster fact: the v341 extraction lists 'Imperium' under the 'Architect' cluster. The accessible durable extract confirms label and cluster membership but does not provide a standalone definition for this roster entry.",
         "body": "V341 roster label: Imperium. Source cluster: Architect. Current-manuscript candidate: none established. Crosswalk status: ROOT_DOMAIN_DISTINCTION_OPEN. This is a source-version-specific roster record, not a promoted semantic edge.",
         "links": [
+          "related-consciousness:imperium",
           "root:architect"
         ],
         "sourceRefs": [
@@ -29389,6 +29683,14 @@
             "sourceRef": "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
             "status": "source_roster_membership_cross_version_root_provisional",
             "reciprocalRequired": true
+          },
+          {
+            "type": "cross_version_exact_label_candidate",
+            "fromId": "v341-domain:architect:imperium",
+            "toId": "related-consciousness:imperium",
+            "sourceRef": "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+            "status": "exact_label_only_not_semantic_equivalence",
+            "reciprocalRequired": true
           }
         ]
       },
@@ -29406,6 +29708,14 @@
           "toId": "root:architect",
           "sourceRef": "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
           "status": "source_roster_membership_cross_version_root_provisional",
+          "reciprocalRequired": true
+        },
+        {
+          "type": "cross_version_exact_label_candidate",
+          "fromId": "v341-domain:architect:imperium",
+          "toId": "related-consciousness:imperium",
+          "sourceRef": "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+          "status": "exact_label_only_not_semantic_equivalence",
           "reciprocalRequired": true
         }
       ]
@@ -33191,7 +33501,9 @@
       "definition": "The executive layer. The capacity that selects action across time, sequences decisions, and overrides impulse, not through willpower (a finite resource that depletes under somatic pressure) but through what becomes available when the soma is clear. Two failure modes: tyranny (rigid, over-control, cannot adapt) and fragmentation (impulsive, contradictory, inconsistent). Both are lower-layer problems presenting as upper-layer symptoms. Regulate the soma. The executive function stabilizes on its own.",
       "body": "SOURCE-DERIVED DESCRIPTION: The executive layer. The capacity that selects action across time, sequences decisions, and overrides impulse, not through willpower (a finite resource that depletes under somatic pressure) but through what becomes available when the soma is clear. Two failure modes: tyranny (rigid, over-control, cannot adapt) and fragmentation (impulsive, contradictory, inconsistent). Both are lower-layer problems presenting as upper-layer symptoms. Regulate the soma. The executive function stabilizes on its own. Source affirmation: I act from clarity, not compulsion.. The v341 crosswalk lists this as a separate related consciousness concept; do not merge it into the eight-domain roster without an explicit ruling.",
       "affirmation": "I act from clarity, not compulsion.",
-      "links": [],
+      "links": [
+        "v341-domain:architect:imperium"
+      ],
       "sourceRefs": [
         "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
         "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
@@ -33259,9 +33571,9 @@
       "canonicalStatus": "SOURCE_BACKED_RELATED_CONCEPT; ROSTER PLACEMENT UNRESOLVED",
       "status": "source_backed_related_consciousness_candidate_not_promoted",
       "relationshipAudit": {
-        "status": "NO_APPROVED_LINKS_RECORDED",
+        "status": "SOURCE_TRACEABLE_GRAPH_LINKS_PRESENT",
         "auditedAt": "2026-10-24",
-        "currentLinkCount": 0,
+        "currentLinkCount": 1,
         "note": "Keep separate from the eight-domain roster pending taxonomy ruling."
       },
       "templateValidation": {
@@ -33287,7 +33599,9 @@
         "def": "The executive layer. The capacity that selects action across time, sequences decisions, and overrides impulse, not through willpower (a finite resource that depletes under somatic pressure) but through what becomes available when the soma is clear. Two failure modes: tyranny (rigid, over-control, cannot adapt) and fragmentation (impulsive, contradictory, inconsistent). Both are lower-layer problems presenting as upper-layer symptoms. Regulate the soma. The executive function stabilizes on its own.",
         "body": "SOURCE-DERIVED DESCRIPTION: The executive layer. The capacity that selects action across time, sequences decisions, and overrides impulse, not through willpower (a finite resource that depletes under somatic pressure) but through what becomes available when the soma is clear. Two failure modes: tyranny (rigid, over-control, cannot adapt) and fragmentation (impulsive, contradictory, inconsistent). Both are lower-layer problems presenting as upper-layer symptoms. Regulate the soma. The executive function stabilizes on its own. Source affirmation: I act from clarity, not compulsion.. The v341 crosswalk lists this as a separate related consciousness concept; do not merge it into the eight-domain roster without an explicit ruling.",
         "affirmation": "I act from clarity, not compulsion.",
-        "links": [],
+        "links": [
+          "v341-domain:architect:imperium"
+        ],
         "sourceRefs": [
           "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
           "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
@@ -33336,7 +33650,17 @@
             ]
           }
         ]
-      }
+      },
+      "relationships": [
+        {
+          "type": "cross_version_exact_label_candidate",
+          "fromId": "related-consciousness:imperium",
+          "toId": "v341-domain:architect:imperium",
+          "sourceRef": "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md",
+          "status": "exact_label_only_not_semantic_equivalence",
+          "reciprocalRequired": true
+        }
+      ]
     }
   ],
   "lastUpdated": "2026-10-26",
@@ -33579,19 +33903,21 @@
     "status": "SOURCE_REFERENCE_EDGES_STOOD_UP; CROSS_VERSION_AND_CANONICAL_APPROVAL_REMAIN_EXPLICITLY_PROVISIONAL",
     "date": "2026-10-26",
     "baseRegistryRecordCount": 147,
-    "typedEdgesUndirected": 82,
+    "typedEdgesUndirected": 90,
     "typedEdgesByKind": {
       "v341_roster_cluster_membership": 19,
       "source_row_archetype_label": 36,
       "source_row_domain_label": 16,
       "source_row_cultural_figure_domain_label": 10,
-      "cross_version_exact_label_candidate": 1
+      "cross_version_exact_label_candidate": 2,
+      "source_conscious_domain_containment": 7
     },
     "notes": [
       "Both directions of every emitted link resolve inside this registry.",
       "Source-row links reflect documented table association and are not asserted as causal or canonical equivalence.",
       "Fourteen blueprint visualization slots are intentionally unlinked.",
-      "Nineteen v341 records retain provisional standalone definitions until exact source wording is recovered."
+      "Nineteen v341 records retain provisional standalone definitions until exact source wording is recovered.",
+      "Seven conscious-domain containment links are declared in the v341 seven-affirmation source; no individual affirmation assignments were promoted."
     ]
   }
 }
