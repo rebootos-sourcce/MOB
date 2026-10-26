@@ -24,6 +24,8 @@ jobs:
         run: sh ./atuned_src/BUILD-engine.sh
       - name: Check Hero Journey coordinates and milestones
         run: node tests/herojourney.js
+      - name: Core 10 to full 21 self-report boundary
+        run: node tests/diagnostic3.js
       - name: Existing engine contract suite
         run: node tests/engine.js
       - name: Build complete app and its packaging
