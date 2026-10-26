@@ -52,7 +52,10 @@ function codeTables(){
   CODE_RETIRED:CODE_RETIRED,
   CHARGE_LADDER:CHARGE_LADDER,AMPLIFIER:AMPLIFIER,BODY_QUADRANT:BODY_QUADRANT,ORGAN:ORGAN,
   DERIVED_MEASURE:DERIVED_MEASURE,CHARGE_QUADRANT:CHARGE_QUADRANT,ASTRO_OVERLAY:ASTRO_OVERLAY,
-  CODE_SIGN:CODE_SIGN,CODE_ANIMAL:CODE_ANIMAL,ZSIGN:ZSIGN,ZI:ZI,CHINESE:CHINESE,HARM:HARM};}
+  CODE_SIGN:CODE_SIGN,CODE_ANIMAL:CODE_ANIMAL,ZSIGN:ZSIGN,ZI:ZI,CHINESE:CHINESE,HARM:HARM,
+  DOMAINS:DOMAINS,ROOTD:ROOTD,MASKS:MASKS,SI:SI,VERP:VERP,MIRROR:MIRROR,TEACHER_RECIPES:TEACHER_RECIPES,
+  CODE_DOMAIN:CODE_DOMAIN,CODE_ROOT:CODE_ROOT,CODE_MASK:CODE_MASK,CODE_LAW:CODE_LAW,
+  CODE_GATE:CODE_GATE,CODE_COMPASS:CODE_COMPASS,CODE_RECIPE:CODE_RECIPE};}
 
 /* THE INDEX. Built from the tables and never stored in them. codeOf keeps
    one for the live tables, which do not change after load. codesCheck builds
@@ -96,6 +99,17 @@ function codeIndexOf(t){
  t.DERIVED_MEASURE.forEach(function(r){put(r.c,'derived-measure',r.nm,{charge:r.ch,law:r.el}); named(r.nm,r.c);});
  t.CODE_SIGN.forEach(function(r,i){put(r[0],'sign',r[1],{index:i}); named(r[1],r[0]);});
  t.CODE_ANIMAL.forEach(function(r,i){put(r[0],'animal',r[1],{index:i}); named(r[1],r[0]);});
+ /* seven more, additive 26 October: domain, root, mask, law and gate are
+    plain rosters, and compass-position and recipe carry MIRROR's or
+    TEACHER_RECIPES's own key beside the code, the way archetype carries its
+    ARCH index. */
+ t.CODE_DOMAIN.forEach(function(r,i){put(r[0],'domain',r[1],{index:i}); named(r[1],r[0]);});
+ t.CODE_ROOT.forEach(function(r,i){put(r[0],'root',r[1],{index:i}); named(r[1],r[0]);});
+ t.CODE_MASK.forEach(function(r,i){put(r[0],'mask',r[1],{index:i}); named(r[1],r[0]);});
+ t.CODE_LAW.forEach(function(r,i){put(r[0],'law',r[1],{index:i}); named(r[1],r[0]);});
+ t.CODE_GATE.forEach(function(r,i){put(r[0],'gate',r[1],{index:i,k:r[2]}); named(r[1],r[0]);});
+ t.CODE_COMPASS.forEach(function(r,i){put(r[0],'compass-position',r[1],{index:i,k:r[2]}); named(r[1],r[0]);});
+ t.CODE_RECIPE.forEach(function(r,i){put(r[0],'recipe',r[1],{index:i,k:r[2]}); named(r[1],r[0]);});
  /* the rows. A row for several sources is one row per source here. */
  var row=function(type,src,kind,label,code,why,date){
   [].concat(src).forEach(function(s){var k=codeKey(label);
@@ -339,6 +353,75 @@ function codesCheckInto(t,out){
  t.ARCH18.forEach(function(a){
   if(!res(a[0],{kind:'archetype'}).ok&&!rowSays(a[0],'archetype','unmapped'))
    no('ARCH18 names the archetype '+a[0]+', which has no code and no row saying why not');});
+
+ /* SEVEN MORE, ADDITIVE 26 October: domain, root, mask, law, gate,
+    compass-position and recipe. */
+ /* domain. p.soul.doms stores the DOMAINS index directly (buildSoul's
+    S.doms, core.js), so a reorder here is the same migration hazard
+    CODE_ARCH guards against above. */
+ run(t.CODE_DOMAIN.map(function(r){return r[0];}),'DO',2,'CODE_DOMAIN');
+ dupes(t.CODE_DOMAIN.map(function(r){return codeKey(r[1]);})).forEach(function(n){no('CODE_DOMAIN names '+n+' twice');});
+ if(t.CODE_DOMAIN.length!==t.DOMAINS.length)
+  no('CODE_DOMAIN has '+t.CODE_DOMAIN.length+' rows and DOMAINS has '+t.DOMAINS.length+', and p.soul.doms stores the DOMAINS index');
+ t.DOMAINS.forEach(function(d,i){var r=t.CODE_DOMAIN[i];
+  if(!r||r[1]!==d.nm)no('DOMAINS['+i+'] is '+d.nm+' and CODE_DOMAIN row '+i+' is '+(r?r[1]:'missing')
+   +'. p.soul.doms stores the index, so DOMAINS may not reorder or rename without a migration');});
+
+ /* root. S.roots stores the root's own name, never an index, so reordering
+    ROOTD moves no stored profile; this still catches a content accident. */
+ run(t.CODE_ROOT.map(function(r){return r[0];}),'RO',2,'CODE_ROOT');
+ dupes(t.CODE_ROOT.map(function(r){return codeKey(r[1]);})).forEach(function(n){no('CODE_ROOT names '+n+' twice');});
+ if(t.CODE_ROOT.length!==t.ROOTD.length)
+  no('CODE_ROOT has '+t.CODE_ROOT.length+' rows and ROOTD has '+t.ROOTD.length+' roots');
+ t.ROOTD.forEach(function(rt,i){var r=t.CODE_ROOT[i];
+  if(!r||r[1]!==rt)no('ROOTD['+i+'] is '+rt+' and CODE_ROOT row '+i+' is '+(r?r[1]:'missing'));});
+
+ /* mask. Not stored in a profile at all, computed live every time, so this
+    is a content check and not a migration guard. */
+ run(t.CODE_MASK.map(function(r){return r[0];}),'MA',2,'CODE_MASK');
+ dupes(t.CODE_MASK.map(function(r){return codeKey(r[1]);})).forEach(function(n){no('CODE_MASK names '+n+' twice');});
+ if(t.CODE_MASK.length!==t.MASKS.length)
+  no('CODE_MASK has '+t.CODE_MASK.length+' rows and MASKS has '+t.MASKS.length);
+ t.MASKS.forEach(function(m,i){var r=t.CODE_MASK[i];
+  if(!r||r[1]!==m.nm)no('MASKS['+i+'] is '+m.nm+' and CODE_MASK row '+i+' is '+(r?r[1]:'missing'));});
+
+ /* law. S.law keys by SI's own name everywhere, never an index. */
+ run(t.CODE_LAW.map(function(r){return r[0];}),'LA',2,'CODE_LAW');
+ dupes(t.CODE_LAW.map(function(r){return codeKey(r[1]);})).forEach(function(n){no('CODE_LAW names '+n+' twice');});
+ if(t.CODE_LAW.length!==t.SI.length)
+  no('CODE_LAW has '+t.CODE_LAW.length+' rows and SI has '+t.SI.length+' laws');
+ t.SI.forEach(function(l,i){var r=t.CODE_LAW[i];
+  if(!r||r[1]!==l.nm)no('SI['+i+'] is '+l.nm+' and CODE_LAW row '+i+' is '+(r?r[1]:'missing'));});
+
+ /* gate. VERPMIX, VERPMULT, VERPCUE and GATEGLYPH all key by VERP's own k,
+    never an index, so CODE_GATE carries k beside the code and holds it to
+    the same row. */
+ run(t.CODE_GATE.map(function(r){return r[0];}),'GA',2,'CODE_GATE');
+ dupes(t.CODE_GATE.map(function(r){return codeKey(r[1]);})).forEach(function(n){no('CODE_GATE names '+n+' twice');});
+ if(t.CODE_GATE.length!==t.VERP.length)
+  no('CODE_GATE has '+t.CODE_GATE.length+' rows and VERP has '+t.VERP.length+' gates');
+ t.VERP.forEach(function(v,i){var r=t.CODE_GATE[i];
+  if(!r||r[1]!==v.nm||r[2]!==v.k)no('VERP['+i+'] is '+v.k+' '+v.nm+' and CODE_GATE row '+i+' is '+(r?r[2]+' '+r[1]:'missing'));});
+
+ /* compass-position. compass.js calls MIRROR's own k identity, not a
+    label, so CODE_COMPASS carries it beside the code for the same reason
+    CODE_GATE does. */
+ run(t.CODE_COMPASS.map(function(r){return r[0];}),'CP',2,'CODE_COMPASS');
+ dupes(t.CODE_COMPASS.map(function(r){return codeKey(r[1]);})).forEach(function(n){no('CODE_COMPASS names '+n+' twice');});
+ if(t.CODE_COMPASS.length!==t.MIRROR.length)
+  no('CODE_COMPASS has '+t.CODE_COMPASS.length+' rows and MIRROR has '+t.MIRROR.length+' axes');
+ t.MIRROR.forEach(function(m,i){var r=t.CODE_COMPASS[i];
+  if(!r||r[1]!==m.q||r[2]!==m.k)no('MIRROR['+i+'] is '+m.k+' '+m.q+' and CODE_COMPASS row '+i+' is '+(r?r[2]+' '+r[1]:'missing'));});
+
+ /* recipe. Named by quality and teacher together, since neither is unique
+    alone across the fourteen (Jesus holds two, Light is two). recipeOf(k)
+    still reaches a row by TEACHER_RECIPES's own key, never by this code. */
+ run(t.CODE_RECIPE.map(function(r){return r[0];}),'RC',2,'CODE_RECIPE');
+ dupes(t.CODE_RECIPE.map(function(r){return codeKey(r[1]);})).forEach(function(n){no('CODE_RECIPE names '+n+' twice');});
+ if(t.CODE_RECIPE.length!==t.TEACHER_RECIPES.length)
+  no('CODE_RECIPE has '+t.CODE_RECIPE.length+' rows and TEACHER_RECIPES has '+t.TEACHER_RECIPES.length+' rows');
+ t.TEACHER_RECIPES.forEach(function(p,i){var r=t.CODE_RECIPE[i], nm=p.q+' ('+p.who+')';
+  if(!r||r[1]!==nm||r[2]!==p.k)no('TEACHER_RECIPES['+i+'] is '+p.k+' '+nm+' and CODE_RECIPE row '+i+' is '+(r?r[2]+' '+r[1]:'missing'));});
 
  /* child emotions, and the routing and the rule only ever land on one */
  var emo=t.CODE_EMOTION, child=t.CHILD.map(function(c){return c.nm;});

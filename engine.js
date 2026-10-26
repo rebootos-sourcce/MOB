@@ -5492,15 +5492,75 @@ const ASTRO_OVERLAY={
                       is not a body quadrant and has no code.
      organ            ORGAN's c, OG01 and up.
      derived-measure  DERIVED_MEASURE's c, DM01 and up. Awareness and Flow are
-                      laws of HARM as well, Awareness is one of the six gates,
-                      and Vitality is a reading, and none of those has a code
-                      yet. So the door names the measure alone for now, and
-                      when laws and gates are coded the bare word becomes
-                      ambiguous, which is the true answer.
+                      laws of HARM as well, by its own E32 and E54, a different
+                      registry from SI's Laws of Moral Integrity and already
+                      coded on its own rows. Vitality is a reading with no code
+                      of its own. Awareness is now also one of SI's 21
+                      (CODE_LAW, LA05) and one of the six gates (CODE_GATE,
+                      GA01), so the bare word is ambiguous among the three, the
+                      true answer this paragraph predicted before law and gate
+                      had codes. Flow names neither, and the recipe that
+                      carries it keeps it unambiguous too, named "Flow
+                      (Krishna)" and never the bare word.
      sign             CODE_SIGN below, ZS01 and up, from Aries, the order
                       astro.js counts the ecliptic in.
      animal           CODE_ANIMAL below, CA01 and up, from Rat, the order of
                       the cycle.
+
+   SEVEN MORE, ADDITIVE, 26 October. Found by a records-inventory pass that
+   asked why domain, root, mask, law, gate, compass-position and recipe had no
+   code when the rest of this file's own kinds do. No ruling moves and nothing
+   already coded renumbers.
+     domain            CODE_DOMAIN below, DO01 and up, one per record of
+                       DOMAINS, in file order: the nineteen named blueprint
+                       domains under the four roots.
+     root              CODE_ROOT below, RO01 and up, one per record of ROOTD,
+                       in file order: the four roots a domain sits under,
+                       Architect to Witness.
+     mask              CODE_MASK below, MA01 and up, one per record of MASKS,
+                       in file order, all six. MASKS_READ drops Professional
+                       from what is shown, never from what exists, so the code
+                       follows the roster MASKS keeps whole.
+     law               CODE_LAW below, LA01 and up, one per record of SI, in
+                       file order: the 21 Laws of Moral Integrity. HARM is a
+                       different registry under a word this file already used
+                       loosely for it above; this code is SI's alone, and
+                       HARM's own rows already carry a code of their own, E01
+                       and up.
+     gate              CODE_GATE below, GA01 and up, one per record of VERP, in
+                       file order: the six gates, aware to averse. Awareness is
+                       now a law and a gate as well as the derived measure it
+                       already was, so the bare word is ambiguous among the
+                       three, which is the true answer the derived-measure row
+                       above predicted.
+     compass-position  CODE_COMPASS below, CP01 and up, one per record of
+                       MIRROR, in file order: the Compass's eight axes, each a
+                       quality read at one seat between its coherent and its
+                       compressed pole. PATHS and HOME_POLES stand on no axis,
+                       by the file's own ruling, and carry no position code.
+     recipe            CODE_RECIPE below, RC01 and up, one per record of
+                       TEACHER_RECIPES, in file order: the starter recipe for
+                       one pole of the Compass, fourteen for thirteen people,
+                       Jesus at two. Named by its quality and its teacher
+                       together, since who is not unique alone, Jesus recipes
+                       two, and quality is not unique alone either, Light
+                       recipes two.
+
+   NO CODE FOR FIGURE. The Compass draws a cast of named people, and no one
+   table lists them once each: a name sits in MIRROR's up and dn, again in
+   MASTERS, again in BLUEPRINT or in a row of CIRCLES's by, and the same person
+   is more than one of those under the same name. Jesus is MIRROR's up at two
+   axes and a row of MASTERS. Buddha is MIRROR's up, a row of MASTERS and a row
+   of PATHS. Geryon is MIRROR's dn and a CIRCLES governor. Set is MIRROR's dn
+   and a row of BLUEPRINT. A code needs one table in file order, the rule every
+   code above follows, and coding one of these four tables and not the others
+   would be the arbitrary pick this repository has already been bitten by more
+   than once; coding their union would need a merge rule this file does not
+   have and should not invent just to get a number. figure.js, the file the
+   name points to first, is not a cast at all: it is the body outline and the
+   research placements an address stands at, and every address it places
+   already has its code. So figure stays open, for the owner or a later pass
+   once a roster exists to give it one.
 
    THE THREE ROW TABLES. Each row names its source, from CODE_SOURCES, or a
    list of them, or any.
@@ -5544,7 +5604,14 @@ const CODE_KINDS=[
  ['organ','an organ of canon.json\'s organs register'],
  ['derived-measure','one of canon.json\'s derived measures'],
  ['sign','a sign of the zodiac'],
- ['animal','an animal of the Chinese calendar']];
+ ['animal','an animal of the Chinese calendar'],
+ ['domain','a blueprint domain of DOMAINS, one of the nineteen under a root'],
+ ['root','one of the four roots a domain sits under, ROOTD'],
+ ['mask','one of the six masks of MASKS'],
+ ['law','one of the 21 Laws of Moral Integrity of SI'],
+ ['gate','one of the six gates of VERP, aware to averse'],
+ ['compass-position','one of the Compass\'s eight mirror axes of MIRROR'],
+ ['recipe','the starter recipe for one pole of the Compass, of TEACHER_RECIPES']];
 
 /* [code, MOB's name, the book's cluster numeral]. HCX_LIB is the same six in
    the same order today, and the gate holds the names, not the order, so a
@@ -5624,6 +5691,69 @@ const CODE_SIGN=[['ZS01','Aries'],['ZS02','Taurus'],['ZS03','Gemini'],['ZS04','C
 const CODE_ANIMAL=[['CA01','Rat'],['CA02','Ox'],['CA03','Tiger'],['CA04','Rabbit'],
  ['CA05','Dragon'],['CA06','Snake'],['CA07','Horse'],['CA08','Goat'],['CA09','Monkey'],
  ['CA10','Rooster'],['CA11','Dog'],['CA12','Pig']];
+
+/* [code, DOMAINS's name]. Row i is DOMAINS[i], and the gate fails if either
+   moves. */
+const CODE_DOMAIN=[
+ ['DO01','Knowledge'],['DO02','Justice'],['DO03','Imperium'],['DO04','Duty'],
+ ['DO05','Fate'],['DO06','Power'],['DO07','Creation'],['DO08','Dissolution'],
+ ['DO09','Descent'],['DO10','Death'],['DO11','Connection'],['DO12','Exchange'],
+ ['DO13','Restoration'],['DO14','Provision'],['DO15','Play'],['DO16','Nature'],
+ ['DO17','Trickster'],['DO18','Mystery'],['DO19','Guardian']];
+
+/* [code, ROOTD's name]. Row i is ROOTD[i], and the gate fails if either
+   moves. */
+const CODE_ROOT=[['RO01','Architect'],['RO02','Engine'],['RO03','Weaver'],['RO04','Witness']];
+
+/* [code, MASKS's name]. Row i is MASKS[i], and the gate fails if either
+   moves. All six, Child to Ideological: MASKS_READ is the five a reading
+   shows, never the roster a code answers for. */
+const CODE_MASK=[['MA01','Child'],['MA02','Preteen'],['MA03','Teen'],
+ ['MA04','Adult'],['MA05','Professional'],['MA06','Ideological']];
+
+/* [code, SI's name]. Row i is SI[i], and the gate fails if either moves. */
+const CODE_LAW=[['LA01','Truth'],['LA02','Transparency'],['LA03','Justice'],
+ ['LA04','Unity'],['LA05','Awareness'],['LA06','Nature'],['LA07','Presence'],
+ ['LA08','Humility'],['LA09','Equanimity'],['LA10','Compassion'],
+ ['LA11','Forgiveness'],['LA12','Generosity'],['LA13','Aesthetic Beauty'],
+ ['LA14','Courage'],['LA15','Duty'],['LA16','Responsibility'],
+ ['LA17','Accountability'],['LA18','Temperance'],['LA19','Detachment'],
+ ['LA20','Non-Harm'],['LA21','Patience']];
+
+/* [code, VERP's name, VERP's own key]. Row i is VERP[i]. The key is kept
+   beside the code because VERP_VS, VERPMULT, VERPCUE and GATEGLYPH are all
+   keyed by it, not by name, so a caller crossing from one of those tables to
+   this one reads the key, never the English word. */
+const CODE_GATE=[['GA01','Awareness','aware'],['GA02','Detachment','detach'],
+ ['GA03','Intention','intent'],['GA04','Ignorance','ignore'],
+ ['GA05','Attachment','attach'],['GA06','Aversion','averse']];
+
+/* [code, MIRROR's quality, MIRROR's own key]. Row i is MIRROR[i]. The key is
+   kept beside the code because it is what compass.js itself calls identity
+   ("k stays IL, because a key is identity, not a label"), and
+   TEACHER_RECIPES, PATHS and the needle all carry the same key. PATHS and
+   HOME_POLES stand on no axis, by the file's own ruling, and carry no
+   position code; CODE_RECIPE below still codes their rows, because a recipe
+   is the practice content, not the position. */
+const CODE_COMPASS=[['CP01','Light','IL'],['CP02','Desire and will','DE'],
+ ['CP03','Order','OR'],['CP04','Power','PO'],['CP05','Perception','PE'],
+ ['CP06','Trust','TR'],['CP07','Charge','CH'],['CP08','Revelation','RE']];
+
+/* [code, name, TEACHER_RECIPES's own key]. Row i is TEACHER_RECIPES[i]. The
+   name is the pole's quality and its teacher together, in that shape, because
+   neither alone is unique across the fourteen: Jesus holds two recipes
+   (Light and Revelation) and Light is two recipes' own quality (Jesus's and
+   Akhenaten's). The key is kept for the same reason CODE_GATE and
+   CODE_COMPASS keep theirs: it is what MIRROR, PATHS and BECOMING already
+   call identity, and recipeOf(k) is still how the engine reaches a row,
+   never this code. */
+const CODE_RECIPE=[['RC01','Light (Jesus)','IL'],['RC02','Revelation (Jesus)','RE'],
+ ['RC03','Desire and will (Ramakrishna)','DE'],['RC04','Order (Moses)','OR'],
+ ['RC05','Power (Musashi)','PO'],['RC06','Perception (Buddha)','PE'],
+ ['RC07','Trust (Rumi)','TR'],['RC08','Charge (Elijah)','CH'],
+ ['RC09','Flow (Krishna)','FL'],['RC10','Alignment (Rama)','AL'],
+ ['RC11','The horizontal (Lao Tzu)','HO'],['RC12','Light (Akhenaten)','SA'],
+ ['RC13','Truth (Zoroaster)','TU'],['RC14','Nature (Confucius)','NA']];
 
 /* the child emotions, frozen. The gate holds CHILD and CHARGES to it both ways. */
 const CODE_EMOTION=['Fear','Anger','Shame','Disgust','Apathy','Shock','Sad','Surprise','Anticipation'];
@@ -22482,7 +22612,10 @@ function codeTables(){
   CODE_RETIRED:CODE_RETIRED,
   CHARGE_LADDER:CHARGE_LADDER,AMPLIFIER:AMPLIFIER,BODY_QUADRANT:BODY_QUADRANT,ORGAN:ORGAN,
   DERIVED_MEASURE:DERIVED_MEASURE,CHARGE_QUADRANT:CHARGE_QUADRANT,ASTRO_OVERLAY:ASTRO_OVERLAY,
-  CODE_SIGN:CODE_SIGN,CODE_ANIMAL:CODE_ANIMAL,ZSIGN:ZSIGN,ZI:ZI,CHINESE:CHINESE,HARM:HARM};}
+  CODE_SIGN:CODE_SIGN,CODE_ANIMAL:CODE_ANIMAL,ZSIGN:ZSIGN,ZI:ZI,CHINESE:CHINESE,HARM:HARM,
+  DOMAINS:DOMAINS,ROOTD:ROOTD,MASKS:MASKS,SI:SI,VERP:VERP,MIRROR:MIRROR,TEACHER_RECIPES:TEACHER_RECIPES,
+  CODE_DOMAIN:CODE_DOMAIN,CODE_ROOT:CODE_ROOT,CODE_MASK:CODE_MASK,CODE_LAW:CODE_LAW,
+  CODE_GATE:CODE_GATE,CODE_COMPASS:CODE_COMPASS,CODE_RECIPE:CODE_RECIPE};}
 
 /* THE INDEX. Built from the tables and never stored in them. codeOf keeps
    one for the live tables, which do not change after load. codesCheck builds
@@ -22526,6 +22659,17 @@ function codeIndexOf(t){
  t.DERIVED_MEASURE.forEach(function(r){put(r.c,'derived-measure',r.nm,{charge:r.ch,law:r.el}); named(r.nm,r.c);});
  t.CODE_SIGN.forEach(function(r,i){put(r[0],'sign',r[1],{index:i}); named(r[1],r[0]);});
  t.CODE_ANIMAL.forEach(function(r,i){put(r[0],'animal',r[1],{index:i}); named(r[1],r[0]);});
+ /* seven more, additive 26 October: domain, root, mask, law and gate are
+    plain rosters, and compass-position and recipe carry MIRROR's or
+    TEACHER_RECIPES's own key beside the code, the way archetype carries its
+    ARCH index. */
+ t.CODE_DOMAIN.forEach(function(r,i){put(r[0],'domain',r[1],{index:i}); named(r[1],r[0]);});
+ t.CODE_ROOT.forEach(function(r,i){put(r[0],'root',r[1],{index:i}); named(r[1],r[0]);});
+ t.CODE_MASK.forEach(function(r,i){put(r[0],'mask',r[1],{index:i}); named(r[1],r[0]);});
+ t.CODE_LAW.forEach(function(r,i){put(r[0],'law',r[1],{index:i}); named(r[1],r[0]);});
+ t.CODE_GATE.forEach(function(r,i){put(r[0],'gate',r[1],{index:i,k:r[2]}); named(r[1],r[0]);});
+ t.CODE_COMPASS.forEach(function(r,i){put(r[0],'compass-position',r[1],{index:i,k:r[2]}); named(r[1],r[0]);});
+ t.CODE_RECIPE.forEach(function(r,i){put(r[0],'recipe',r[1],{index:i,k:r[2]}); named(r[1],r[0]);});
  /* the rows. A row for several sources is one row per source here. */
  var row=function(type,src,kind,label,code,why,date){
   [].concat(src).forEach(function(s){var k=codeKey(label);
@@ -22769,6 +22913,75 @@ function codesCheckInto(t,out){
  t.ARCH18.forEach(function(a){
   if(!res(a[0],{kind:'archetype'}).ok&&!rowSays(a[0],'archetype','unmapped'))
    no('ARCH18 names the archetype '+a[0]+', which has no code and no row saying why not');});
+
+ /* SEVEN MORE, ADDITIVE 26 October: domain, root, mask, law, gate,
+    compass-position and recipe. */
+ /* domain. p.soul.doms stores the DOMAINS index directly (buildSoul's
+    S.doms, core.js), so a reorder here is the same migration hazard
+    CODE_ARCH guards against above. */
+ run(t.CODE_DOMAIN.map(function(r){return r[0];}),'DO',2,'CODE_DOMAIN');
+ dupes(t.CODE_DOMAIN.map(function(r){return codeKey(r[1]);})).forEach(function(n){no('CODE_DOMAIN names '+n+' twice');});
+ if(t.CODE_DOMAIN.length!==t.DOMAINS.length)
+  no('CODE_DOMAIN has '+t.CODE_DOMAIN.length+' rows and DOMAINS has '+t.DOMAINS.length+', and p.soul.doms stores the DOMAINS index');
+ t.DOMAINS.forEach(function(d,i){var r=t.CODE_DOMAIN[i];
+  if(!r||r[1]!==d.nm)no('DOMAINS['+i+'] is '+d.nm+' and CODE_DOMAIN row '+i+' is '+(r?r[1]:'missing')
+   +'. p.soul.doms stores the index, so DOMAINS may not reorder or rename without a migration');});
+
+ /* root. S.roots stores the root's own name, never an index, so reordering
+    ROOTD moves no stored profile; this still catches a content accident. */
+ run(t.CODE_ROOT.map(function(r){return r[0];}),'RO',2,'CODE_ROOT');
+ dupes(t.CODE_ROOT.map(function(r){return codeKey(r[1]);})).forEach(function(n){no('CODE_ROOT names '+n+' twice');});
+ if(t.CODE_ROOT.length!==t.ROOTD.length)
+  no('CODE_ROOT has '+t.CODE_ROOT.length+' rows and ROOTD has '+t.ROOTD.length+' roots');
+ t.ROOTD.forEach(function(rt,i){var r=t.CODE_ROOT[i];
+  if(!r||r[1]!==rt)no('ROOTD['+i+'] is '+rt+' and CODE_ROOT row '+i+' is '+(r?r[1]:'missing'));});
+
+ /* mask. Not stored in a profile at all, computed live every time, so this
+    is a content check and not a migration guard. */
+ run(t.CODE_MASK.map(function(r){return r[0];}),'MA',2,'CODE_MASK');
+ dupes(t.CODE_MASK.map(function(r){return codeKey(r[1]);})).forEach(function(n){no('CODE_MASK names '+n+' twice');});
+ if(t.CODE_MASK.length!==t.MASKS.length)
+  no('CODE_MASK has '+t.CODE_MASK.length+' rows and MASKS has '+t.MASKS.length);
+ t.MASKS.forEach(function(m,i){var r=t.CODE_MASK[i];
+  if(!r||r[1]!==m.nm)no('MASKS['+i+'] is '+m.nm+' and CODE_MASK row '+i+' is '+(r?r[1]:'missing'));});
+
+ /* law. S.law keys by SI's own name everywhere, never an index. */
+ run(t.CODE_LAW.map(function(r){return r[0];}),'LA',2,'CODE_LAW');
+ dupes(t.CODE_LAW.map(function(r){return codeKey(r[1]);})).forEach(function(n){no('CODE_LAW names '+n+' twice');});
+ if(t.CODE_LAW.length!==t.SI.length)
+  no('CODE_LAW has '+t.CODE_LAW.length+' rows and SI has '+t.SI.length+' laws');
+ t.SI.forEach(function(l,i){var r=t.CODE_LAW[i];
+  if(!r||r[1]!==l.nm)no('SI['+i+'] is '+l.nm+' and CODE_LAW row '+i+' is '+(r?r[1]:'missing'));});
+
+ /* gate. VERPMIX, VERPMULT, VERPCUE and GATEGLYPH all key by VERP's own k,
+    never an index, so CODE_GATE carries k beside the code and holds it to
+    the same row. */
+ run(t.CODE_GATE.map(function(r){return r[0];}),'GA',2,'CODE_GATE');
+ dupes(t.CODE_GATE.map(function(r){return codeKey(r[1]);})).forEach(function(n){no('CODE_GATE names '+n+' twice');});
+ if(t.CODE_GATE.length!==t.VERP.length)
+  no('CODE_GATE has '+t.CODE_GATE.length+' rows and VERP has '+t.VERP.length+' gates');
+ t.VERP.forEach(function(v,i){var r=t.CODE_GATE[i];
+  if(!r||r[1]!==v.nm||r[2]!==v.k)no('VERP['+i+'] is '+v.k+' '+v.nm+' and CODE_GATE row '+i+' is '+(r?r[2]+' '+r[1]:'missing'));});
+
+ /* compass-position. compass.js calls MIRROR's own k identity, not a
+    label, so CODE_COMPASS carries it beside the code for the same reason
+    CODE_GATE does. */
+ run(t.CODE_COMPASS.map(function(r){return r[0];}),'CP',2,'CODE_COMPASS');
+ dupes(t.CODE_COMPASS.map(function(r){return codeKey(r[1]);})).forEach(function(n){no('CODE_COMPASS names '+n+' twice');});
+ if(t.CODE_COMPASS.length!==t.MIRROR.length)
+  no('CODE_COMPASS has '+t.CODE_COMPASS.length+' rows and MIRROR has '+t.MIRROR.length+' axes');
+ t.MIRROR.forEach(function(m,i){var r=t.CODE_COMPASS[i];
+  if(!r||r[1]!==m.q||r[2]!==m.k)no('MIRROR['+i+'] is '+m.k+' '+m.q+' and CODE_COMPASS row '+i+' is '+(r?r[2]+' '+r[1]:'missing'));});
+
+ /* recipe. Named by quality and teacher together, since neither is unique
+    alone across the fourteen (Jesus holds two, Light is two). recipeOf(k)
+    still reaches a row by TEACHER_RECIPES's own key, never by this code. */
+ run(t.CODE_RECIPE.map(function(r){return r[0];}),'RC',2,'CODE_RECIPE');
+ dupes(t.CODE_RECIPE.map(function(r){return codeKey(r[1]);})).forEach(function(n){no('CODE_RECIPE names '+n+' twice');});
+ if(t.CODE_RECIPE.length!==t.TEACHER_RECIPES.length)
+  no('CODE_RECIPE has '+t.CODE_RECIPE.length+' rows and TEACHER_RECIPES has '+t.TEACHER_RECIPES.length+' rows');
+ t.TEACHER_RECIPES.forEach(function(p,i){var r=t.CODE_RECIPE[i], nm=p.q+' ('+p.who+')';
+  if(!r||r[1]!==nm||r[2]!==p.k)no('TEACHER_RECIPES['+i+'] is '+p.k+' '+nm+' and CODE_RECIPE row '+i+' is '+(r?r[2]+' '+r[1]:'missing'));});
 
  /* child emotions, and the routing and the rule only ever land on one */
  var emo=t.CODE_EMOTION, child=t.CHILD.map(function(c){return c.nm;});

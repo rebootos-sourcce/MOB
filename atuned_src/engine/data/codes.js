@@ -69,15 +69,75 @@
                       is not a body quadrant and has no code.
      organ            ORGAN's c, OG01 and up.
      derived-measure  DERIVED_MEASURE's c, DM01 and up. Awareness and Flow are
-                      laws of HARM as well, Awareness is one of the six gates,
-                      and Vitality is a reading, and none of those has a code
-                      yet. So the door names the measure alone for now, and
-                      when laws and gates are coded the bare word becomes
-                      ambiguous, which is the true answer.
+                      laws of HARM as well, by its own E32 and E54, a different
+                      registry from SI's Laws of Moral Integrity and already
+                      coded on its own rows. Vitality is a reading with no code
+                      of its own. Awareness is now also one of SI's 21
+                      (CODE_LAW, LA05) and one of the six gates (CODE_GATE,
+                      GA01), so the bare word is ambiguous among the three, the
+                      true answer this paragraph predicted before law and gate
+                      had codes. Flow names neither, and the recipe that
+                      carries it keeps it unambiguous too, named "Flow
+                      (Krishna)" and never the bare word.
      sign             CODE_SIGN below, ZS01 and up, from Aries, the order
                       astro.js counts the ecliptic in.
      animal           CODE_ANIMAL below, CA01 and up, from Rat, the order of
                       the cycle.
+
+   SEVEN MORE, ADDITIVE, 26 October. Found by a records-inventory pass that
+   asked why domain, root, mask, law, gate, compass-position and recipe had no
+   code when the rest of this file's own kinds do. No ruling moves and nothing
+   already coded renumbers.
+     domain            CODE_DOMAIN below, DO01 and up, one per record of
+                       DOMAINS, in file order: the nineteen named blueprint
+                       domains under the four roots.
+     root              CODE_ROOT below, RO01 and up, one per record of ROOTD,
+                       in file order: the four roots a domain sits under,
+                       Architect to Witness.
+     mask              CODE_MASK below, MA01 and up, one per record of MASKS,
+                       in file order, all six. MASKS_READ drops Professional
+                       from what is shown, never from what exists, so the code
+                       follows the roster MASKS keeps whole.
+     law               CODE_LAW below, LA01 and up, one per record of SI, in
+                       file order: the 21 Laws of Moral Integrity. HARM is a
+                       different registry under a word this file already used
+                       loosely for it above; this code is SI's alone, and
+                       HARM's own rows already carry a code of their own, E01
+                       and up.
+     gate              CODE_GATE below, GA01 and up, one per record of VERP, in
+                       file order: the six gates, aware to averse. Awareness is
+                       now a law and a gate as well as the derived measure it
+                       already was, so the bare word is ambiguous among the
+                       three, which is the true answer the derived-measure row
+                       above predicted.
+     compass-position  CODE_COMPASS below, CP01 and up, one per record of
+                       MIRROR, in file order: the Compass's eight axes, each a
+                       quality read at one seat between its coherent and its
+                       compressed pole. PATHS and HOME_POLES stand on no axis,
+                       by the file's own ruling, and carry no position code.
+     recipe            CODE_RECIPE below, RC01 and up, one per record of
+                       TEACHER_RECIPES, in file order: the starter recipe for
+                       one pole of the Compass, fourteen for thirteen people,
+                       Jesus at two. Named by its quality and its teacher
+                       together, since who is not unique alone, Jesus recipes
+                       two, and quality is not unique alone either, Light
+                       recipes two.
+
+   NO CODE FOR FIGURE. The Compass draws a cast of named people, and no one
+   table lists them once each: a name sits in MIRROR's up and dn, again in
+   MASTERS, again in BLUEPRINT or in a row of CIRCLES's by, and the same person
+   is more than one of those under the same name. Jesus is MIRROR's up at two
+   axes and a row of MASTERS. Buddha is MIRROR's up, a row of MASTERS and a row
+   of PATHS. Geryon is MIRROR's dn and a CIRCLES governor. Set is MIRROR's dn
+   and a row of BLUEPRINT. A code needs one table in file order, the rule every
+   code above follows, and coding one of these four tables and not the others
+   would be the arbitrary pick this repository has already been bitten by more
+   than once; coding their union would need a merge rule this file does not
+   have and should not invent just to get a number. figure.js, the file the
+   name points to first, is not a cast at all: it is the body outline and the
+   research placements an address stands at, and every address it places
+   already has its code. So figure stays open, for the owner or a later pass
+   once a roster exists to give it one.
 
    THE THREE ROW TABLES. Each row names its source, from CODE_SOURCES, or a
    list of them, or any.
@@ -121,7 +181,14 @@ const CODE_KINDS=[
  ['organ','an organ of canon.json\'s organs register'],
  ['derived-measure','one of canon.json\'s derived measures'],
  ['sign','a sign of the zodiac'],
- ['animal','an animal of the Chinese calendar']];
+ ['animal','an animal of the Chinese calendar'],
+ ['domain','a blueprint domain of DOMAINS, one of the nineteen under a root'],
+ ['root','one of the four roots a domain sits under, ROOTD'],
+ ['mask','one of the six masks of MASKS'],
+ ['law','one of the 21 Laws of Moral Integrity of SI'],
+ ['gate','one of the six gates of VERP, aware to averse'],
+ ['compass-position','one of the Compass\'s eight mirror axes of MIRROR'],
+ ['recipe','the starter recipe for one pole of the Compass, of TEACHER_RECIPES']];
 
 /* [code, MOB's name, the book's cluster numeral]. HCX_LIB is the same six in
    the same order today, and the gate holds the names, not the order, so a
@@ -201,6 +268,69 @@ const CODE_SIGN=[['ZS01','Aries'],['ZS02','Taurus'],['ZS03','Gemini'],['ZS04','C
 const CODE_ANIMAL=[['CA01','Rat'],['CA02','Ox'],['CA03','Tiger'],['CA04','Rabbit'],
  ['CA05','Dragon'],['CA06','Snake'],['CA07','Horse'],['CA08','Goat'],['CA09','Monkey'],
  ['CA10','Rooster'],['CA11','Dog'],['CA12','Pig']];
+
+/* [code, DOMAINS's name]. Row i is DOMAINS[i], and the gate fails if either
+   moves. */
+const CODE_DOMAIN=[
+ ['DO01','Knowledge'],['DO02','Justice'],['DO03','Imperium'],['DO04','Duty'],
+ ['DO05','Fate'],['DO06','Power'],['DO07','Creation'],['DO08','Dissolution'],
+ ['DO09','Descent'],['DO10','Death'],['DO11','Connection'],['DO12','Exchange'],
+ ['DO13','Restoration'],['DO14','Provision'],['DO15','Play'],['DO16','Nature'],
+ ['DO17','Trickster'],['DO18','Mystery'],['DO19','Guardian']];
+
+/* [code, ROOTD's name]. Row i is ROOTD[i], and the gate fails if either
+   moves. */
+const CODE_ROOT=[['RO01','Architect'],['RO02','Engine'],['RO03','Weaver'],['RO04','Witness']];
+
+/* [code, MASKS's name]. Row i is MASKS[i], and the gate fails if either
+   moves. All six, Child to Ideological: MASKS_READ is the five a reading
+   shows, never the roster a code answers for. */
+const CODE_MASK=[['MA01','Child'],['MA02','Preteen'],['MA03','Teen'],
+ ['MA04','Adult'],['MA05','Professional'],['MA06','Ideological']];
+
+/* [code, SI's name]. Row i is SI[i], and the gate fails if either moves. */
+const CODE_LAW=[['LA01','Truth'],['LA02','Transparency'],['LA03','Justice'],
+ ['LA04','Unity'],['LA05','Awareness'],['LA06','Nature'],['LA07','Presence'],
+ ['LA08','Humility'],['LA09','Equanimity'],['LA10','Compassion'],
+ ['LA11','Forgiveness'],['LA12','Generosity'],['LA13','Aesthetic Beauty'],
+ ['LA14','Courage'],['LA15','Duty'],['LA16','Responsibility'],
+ ['LA17','Accountability'],['LA18','Temperance'],['LA19','Detachment'],
+ ['LA20','Non-Harm'],['LA21','Patience']];
+
+/* [code, VERP's name, VERP's own key]. Row i is VERP[i]. The key is kept
+   beside the code because VERP_VS, VERPMULT, VERPCUE and GATEGLYPH are all
+   keyed by it, not by name, so a caller crossing from one of those tables to
+   this one reads the key, never the English word. */
+const CODE_GATE=[['GA01','Awareness','aware'],['GA02','Detachment','detach'],
+ ['GA03','Intention','intent'],['GA04','Ignorance','ignore'],
+ ['GA05','Attachment','attach'],['GA06','Aversion','averse']];
+
+/* [code, MIRROR's quality, MIRROR's own key]. Row i is MIRROR[i]. The key is
+   kept beside the code because it is what compass.js itself calls identity
+   ("k stays IL, because a key is identity, not a label"), and
+   TEACHER_RECIPES, PATHS and the needle all carry the same key. PATHS and
+   HOME_POLES stand on no axis, by the file's own ruling, and carry no
+   position code; CODE_RECIPE below still codes their rows, because a recipe
+   is the practice content, not the position. */
+const CODE_COMPASS=[['CP01','Light','IL'],['CP02','Desire and will','DE'],
+ ['CP03','Order','OR'],['CP04','Power','PO'],['CP05','Perception','PE'],
+ ['CP06','Trust','TR'],['CP07','Charge','CH'],['CP08','Revelation','RE']];
+
+/* [code, name, TEACHER_RECIPES's own key]. Row i is TEACHER_RECIPES[i]. The
+   name is the pole's quality and its teacher together, in that shape, because
+   neither alone is unique across the fourteen: Jesus holds two recipes
+   (Light and Revelation) and Light is two recipes' own quality (Jesus's and
+   Akhenaten's). The key is kept for the same reason CODE_GATE and
+   CODE_COMPASS keep theirs: it is what MIRROR, PATHS and BECOMING already
+   call identity, and recipeOf(k) is still how the engine reaches a row,
+   never this code. */
+const CODE_RECIPE=[['RC01','Light (Jesus)','IL'],['RC02','Revelation (Jesus)','RE'],
+ ['RC03','Desire and will (Ramakrishna)','DE'],['RC04','Order (Moses)','OR'],
+ ['RC05','Power (Musashi)','PO'],['RC06','Perception (Buddha)','PE'],
+ ['RC07','Trust (Rumi)','TR'],['RC08','Charge (Elijah)','CH'],
+ ['RC09','Flow (Krishna)','FL'],['RC10','Alignment (Rama)','AL'],
+ ['RC11','The horizontal (Lao Tzu)','HO'],['RC12','Light (Akhenaten)','SA'],
+ ['RC13','Truth (Zoroaster)','TU'],['RC14','Nature (Confucius)','NA']];
 
 /* the child emotions, frozen. The gate holds CHILD and CHARGES to it both ways. */
 const CODE_EMOTION=['Fear','Anger','Shame','Disgust','Apathy','Shock','Sad','Surprise','Anticipation'];

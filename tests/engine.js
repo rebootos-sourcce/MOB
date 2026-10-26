@@ -9691,8 +9691,11 @@ g('RC · a code for every row of the ported registers, and the door reads each o
   is('Right-Front',null,'BQ01','a body quadrant');
   is('right front',null,'BQ01','spelled with a space');
   is('Dermis',null,'OG10','an organ');
-  const aw=is('Awareness',null,'DM02','a derived measure, while laws and gates have no code');
+  no('Awareness',null,'ambiguous','now a derived measure, a law and a gate, so the bare word asks which');
+  const aw=is('Awareness',{kind:'derived-measure'},'DM02','the derived measure, by kind');
   ok(aw.law==='E32','and it cites the law it is, HARM\'s E32, '+JSON.stringify(aw));
+  is('Awareness',{kind:'law'},'LA05','and the law, by kind');
+  is('Awareness',{kind:'gate'},'GA01','and the gate, by kind');
   is('Aries',null,'ZS01','a sign');
   is('Goat',null,'CA08','an animal');
   /* a ladder's charge is canon.json's word, and its parent is a child emotion or a row that says why not */
@@ -9727,6 +9730,60 @@ g('RC · a code for every row of the ported registers, and the door reads each o
   const offAnimal=E.CODE_ANIMAL.map((r,k)=>[2020+k,r[1],E.spiritualOf({d:(2020+k)+'-06-15'}).chinese]).filter(x=>x[1]!==x[2]);
   ok(offAnimal.length===0,'the animal code for each year of a cycle is the animal the reading prints for a birth that June, off: '+JSON.stringify(offAnimal));
  }
+}
+
+g('CK · eight more kinds asked for 26 October, domain to recipe, additive only');
+/* The codes these seven kinds were born with, typed on purpose as every
+   other ledger in this file is: identities being frozen. figure got no
+   table, and engine/data/codes.js says why beside CODE_RECIPE; there is
+   nothing to freeze for a kind that was not built. */
+{
+ const {codeOf,codeName,codeKind,codeList,codesCheck}=E;
+ ok(codesCheck().length===0,'codesCheck still finds nothing wrong with domain, root, mask, law, gate, compass-position and recipe in the tables');
+ const is=(label,hint,code,m)=>{const r=codeOf(label,hint);
+  ok(r.ok&&r.code===code,m+': '+JSON.stringify(label)+' '+JSON.stringify(hint)+' is '+code+', got '+JSON.stringify(r.ok?r.code:r.why));return r;};
+ const no=(label,hint,word,m)=>{const r=codeOf(label,hint);
+  ok(!r.ok&&r.why.indexOf(word)>=0,m+': '+JSON.stringify(label)+' is refused naming '+JSON.stringify(word)+', got '+JSON.stringify(r.ok?r.code:r.why));};
+ const born=[];
+ ['Knowledge','Justice','Imperium','Duty','Fate','Power','Creation','Dissolution','Descent','Death',
+  'Connection','Exchange','Restoration','Provision','Play','Nature','Trickster','Mystery','Guardian']
+  .forEach((nm,i)=>born.push(['DO'+String(i+1).padStart(2,'0'),nm,'domain']));
+ ['Architect','Engine','Weaver','Witness'].forEach((nm,i)=>born.push(['RO'+String(i+1).padStart(2,'0'),nm,'root']));
+ ['Child','Preteen','Teen','Adult','Professional','Ideological'].forEach((nm,i)=>born.push(['MA'+String(i+1).padStart(2,'0'),nm,'mask']));
+ ['Truth','Transparency','Justice','Unity','Awareness','Nature','Presence','Humility','Equanimity',
+  'Compassion','Forgiveness','Generosity','Aesthetic Beauty','Courage','Duty','Responsibility',
+  'Accountability','Temperance','Detachment','Non-Harm','Patience']
+  .forEach((nm,i)=>born.push(['LA'+String(i+1).padStart(2,'0'),nm,'law']));
+ ['Awareness','Detachment','Intention','Ignorance','Attachment','Aversion']
+  .forEach((nm,i)=>born.push(['GA'+String(i+1).padStart(2,'0'),nm,'gate']));
+ ['Light','Desire and will','Order','Power','Perception','Trust','Charge','Revelation']
+  .forEach((nm,i)=>born.push(['CP'+String(i+1).padStart(2,'0'),nm,'compass-position']));
+ ['Light (Jesus)','Revelation (Jesus)','Desire and will (Ramakrishna)','Order (Moses)','Power (Musashi)',
+  'Perception (Buddha)','Trust (Rumi)','Charge (Elijah)','Flow (Krishna)','Alignment (Rama)',
+  'The horizontal (Lao Tzu)','Light (Akhenaten)','Truth (Zoroaster)','Nature (Confucius)']
+  .forEach((nm,i)=>born.push(['RC'+String(i+1).padStart(2,'0'),nm,'recipe']));
+ const moved=born.filter(([c,nm,k])=>{const r=codeOf(nm,{kind:k});return !(r.ok&&r.code===c);});
+ ok(moved.length===0,'every one of the '+born.length+' codes these seven kinds were born with answers to the name it was born on, moved: '
+  +JSON.stringify(moved.slice(0,6).map(([c,nm,k])=>nm+' was '+c+', now '+(codeOf(nm,{kind:k}).code||'nothing'))));
+ const kinds=['domain','root','mask','law','gate','compass-position','recipe'];
+ ok(kinds.every(k=>codeList(k).length===born.filter(b=>b[2]===k).length),
+  'and nothing else of those kinds is listed: '+JSON.stringify(kinds.map(k=>k+' '+codeList(k).length)));
+ /* a name shared with something that already had a code is ambiguous, not
+    picked, the same rule Collapse and Narcissism already prove */
+ no('Justice',null,'ambiguous','Justice is now a domain and a law');
+ is('Justice',{kind:'domain'},'DO02','as a domain');
+ is('Justice',{kind:'law'},'LA03','as a law');
+ no('Detachment',null,'ambiguous','Detachment is now a law and a gate');
+ is('Detachment',{kind:'law'},'LA19','as a law');
+ is('Detachment',{kind:'gate'},'GA02','as a gate');
+ no('Awareness',null,'ambiguous','Awareness is now a derived measure, a law and a gate');
+ /* the eight Compass axes and the fourteen recipes, each held to the same
+    key compass.js itself calls identity */
+ E.MIRROR.forEach(m=>{const r=codeOf(m.q,{kind:'compass-position'});
+  ok(r.ok&&r.k===m.k,'the compass-position code for '+m.q+' carries MIRROR\'s own key, '+JSON.stringify(r));});
+ E.TEACHER_RECIPES.forEach(p=>{const r=codeOf(p.q+' ('+p.who+')',{kind:'recipe'});
+  ok(r.ok&&r.k===p.k,'the recipe code for '+p.q+' ('+p.who+') carries TEACHER_RECIPES\'s own key, '+JSON.stringify(r));});
+ ok(codeList('figure').length===0,'figure has no code, the one of the eight asked for that this pass could not build cleanly');
 }
 
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');
