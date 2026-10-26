@@ -68,6 +68,23 @@ drillContext.kbRowsOf=kind=>kind==='seat'?[{t:'Solar',k:'seat'}]:[];
 drillContext.kbPsycheDrill(by.get('mapping:arch18:01'));
 assert(rendered.includes('data-dp-native-index')&&rendered.includes('Solar'),
  'ARCH18 source row cannot render a direct native seat drill path');
+/* Execute source-backed click routing against the actual generated record. */
+const nativeClickSource=ui.match(/\/\* Exact-label navigation into the native app records\. \*\/[\s\S]*?\n\}\);/);
+assert(nativeClickSource,'Native click event handler missing');
+let nativeClick=null,nativeOpened=null;
+const clickScope={
+ DEEP_PSYCHE:db,
+ addEventListener:(kind,handler)=>{if(kind==='click')nativeClick=handler;},
+ kbRowsOf:kind=>kind==='seat'?[{k:'seat',t:'Solar',o:{b:'Solar'}}]:[],
+ kbOpen:row=>{nativeOpened=row;}
+};
+vm.runInNewContext(nativeClickSource[0],clickScope,{timeout:5000});
+assert(nativeClick,'Native click route not registered');
+nativeClick({target:{closest:selector=>selector==='[data-dp-native]'?{
+ getAttribute:key=>key==='data-dp-native'?'mapping:arch18:01':
+ key==='data-dp-native-index'?'2':null
+}:null}});
+assert(nativeOpened?.t==='Solar','ARCH18 native click does not open existing Solar seat drill');
 const sourceHtml=path.join(ROOT,'source.html');
 if(process.env.CI)assert(fs.existsSync(sourceHtml),'CI acceptance requires a built source.html');
 if(fs.existsSync(sourceHtml)){
