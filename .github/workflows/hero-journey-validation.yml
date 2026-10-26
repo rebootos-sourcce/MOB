@@ -15,6 +15,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Install the repository's pinned TypeScript toolchain
+        run: npm ci --prefix atuned_funnel_system
       - name: Build host-free canonical engine
         run: sh ./atuned_src/BUILD-engine.sh
       - name: Check Hero Journey coordinates and milestones
@@ -22,7 +24,9 @@ jobs:
       - name: Existing engine contract suite
         run: node tests/engine.js
       - name: Build complete app and its packaging
-        run: sh ./atuned_src/BUILD.sh
+        run: PATH="$GITHUB_WORKSPACE/atuned_funnel_system/node_modules/.bin:$PATH" sh ./atuned_src/BUILD.sh
+      - name: Verify the funnel's typed adapter suite
+        run: npm test --prefix atuned_funnel_system
       - name: Confirm avatar modules exist in built product
         run: |
           grep -q 'function hjLocate' source.html
