@@ -123,6 +123,25 @@ const url='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1
   assert.equal(result.visitorSelected,'game:purgatorio:P02','visitor may select an encounter');
   assert.equal(result.visitorShowsChosen,true,'visitor sees the selected encounter, not the saved owner quest');
   assert.equal(result.visitorPreservesOwner,true,'visitor does not overwrite owner-selected encounter');
+  /* The same actual Board must remain navigable at mobile width with motion disabled. */
+  await page.setViewportSize({width:390,height:844});
+  await page.emulateMedia({reducedMotion:'reduce'});
+  const mobile=await page.evaluate(()=>{
+   AV.sub='becoming';HJ_EXPANDED=true;renderAvatar();
+   const board=document.querySelector('.hj-panel');
+   const grid=board&&board.querySelector('.hj-scenes');
+   const node=grid&&grid.querySelector('[data-hjscene]');
+   const figure=board&&board.querySelector('svg.hj-avatar-form');
+   return {visible:!!board&&!!grid,scenes:grid?grid.querySelectorAll('[data-hjscene]').length:0,
+    columns:grid?getComputedStyle(grid).gridTemplateColumns.split(/\\s+/).filter(Boolean).length:0,
+    noMotion:!!node&&getComputedStyle(node).animationName==='none'&&getComputedStyle(node).transitionDuration==='0s',
+    figureAccessible:!!figure&&figure.getAttribute('role')==='img'&&!!figure.getAttribute('aria-label')};
+  });
+  assert.equal(mobile.visible,true,'Board remains present at phone width');
+  assert.equal(mobile.scenes,26,'all encounters remain accessible on phone');
+  assert.equal(mobile.columns,9,'phone layout uses compact nine-column grid');
+  assert.equal(mobile.noMotion,true,'reduced-motion preference disables motion');
+  assert.equal(mobile.figureAccessible,true,'living avatar retains its descriptive image label');
   assert.equal(errors.length,0,'browser execution has no unhandled errors: '+errors.join('; '));
   console.log('PASS hero journey real-browser: '+JSON.stringify(result));
   await page.close();
