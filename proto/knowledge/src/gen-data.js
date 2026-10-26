@@ -416,13 +416,19 @@ E.forEach(e=>{
  const descentDetailFields=['inferred','inferenceBasis','behavior','triggerMechanism','livedExample','impact','practice','oppositeId','oppositeDefinition','oppositeStatus','confidence','reviewStatus','researchSources','researchPasses'];
  const assignedFields=(e.kind==='hcx'&&String(e.narrativeSource||'').includes('compass.js DESCENT'))?schema.fields.concat(descentDetailFields):schema.fields;
  e.template=Object.fromEntries(assignedFields.map(k=>[k,Object.prototype.hasOwnProperty.call(e,k)?e[k]:null]));
+ const documentedNullFields=[];
+ if(e.kind==='node'&&[8,109,110,111,112].includes(Number(e.id.slice(5)))&&e.axis==null)
+  documentedNullFields.push('axis');
+ if(e.kind==='hcx'&&e.id==='descent:Machiavellianism')
+  documentedNullFields.push('seat','sub');
  const missingFields=assignedFields.filter(k=>{
+  if(documentedNullFields.includes(k))return false;
   if(!Object.prototype.hasOwnProperty.call(e,k)||e[k]==null||e[k]==='') return true;
   /* Empty arrays are valid for relationship collections: a leaf may have no
      outgoing links. Do not report [] as missing content. */
   return false;
 });
- e.templateValidation={schemaDefined:true, sourceBacked:true,
+ e.templateValidation={schemaDefined:true, sourceBacked:true, documentedNullFields,
   contentStatus:missingFields.length===0?'complete':'incomplete',
   missingFields};
 });
