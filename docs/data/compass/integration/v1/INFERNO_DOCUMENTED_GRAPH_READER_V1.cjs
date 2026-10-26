@@ -17,6 +17,7 @@ function loadDocumentedInfernoGraph() {
   const base = parse(INTEGRATION+'COMPASS_CROSS_LAYER_GRAPH_V1.json');
   const research = parse(INTEGRATION+'INFERNO_RESEARCH_WIRING_OVERLAY_V1.json');
   const bridge = parse(INTEGRATION+'INFERNO_CROSS_REGISTRY_SOURCE_BRIDGE_V1.json');
+  const index = parse(INTEGRATION+'INFERNO_RESEARCH_RECORD_INDEX_V1.json');
   const shadow = parse('docs/data/compass/shadow_archetypes/v1/SHADOW_ARCHETYPES_REGISTRY_V1.json');
   invariant(base.status === 'DOCUMENTED_NOT_RUNTIME', 'base is no longer documentation-only');
   invariant(research.authority === 'SOURCE_REFERENCED_CANDIDATE_NON_CANONICAL', 'research authority drift');
@@ -24,6 +25,7 @@ function loadDocumentedInfernoGraph() {
   invariant(base.nodes.length === 135 && base.edges.length === 300, 'baseline count drift');
   invariant(research.recordBindings.length === 38 && research.edges.length === 80, 'research count drift');
   invariant(bridge.referenceEdges.length === 3 && bridge.sourceNodes.length === 3, 'bridge count drift');
+  invariant(index.status === 'SOURCE_METADATA_INDEX_ONLY__CANONICAL_BODY_NOT_IMPORTED' && index.recordCount === 38 && index.records.length === 38, 'index status/count drift');
   invariant(bridge.authority.graphPromotion === false && bridge.authority.scoringPermission === false, 'unsafe bridge promotion');
   const nodes = [...base.nodes, ...bridge.sourceNodes];
   const ids = new Set(nodes.map(n=>n.id));
@@ -35,8 +37,14 @@ function loadDocumentedInfernoGraph() {
   }
   const researchIds = new Set(research.recordBindings.map(r=>r.graphNodeId));
   invariant(researchIds.size === 38, 'duplicate Inferno record binding');
+  const indexedIds = new Set(index.records.map(r=>r.graphNodeId));
+  invariant(indexedIds.size === 38 && [...researchIds].every(id=>indexedIds.has(id)), 'record index/graph identity drift');
   for (const b of research.recordBindings)
     invariant(ids.has(b.graphNodeId) && b.graphNodeId === 'inferno:'+b.recordId, 'invalid record binding '+b.recordId);
+  for (const r of index.records) {
+    invariant(r.canonical === false && r.notRuntime === true && r.fullResearchBodyPresentInGitHub === false,'unsafe research index status');
+    invariant(r.researchPassCountInUploadedHandoff === 4 && !!r.label && !!r.sourceStatus, 'incomplete source index row');
+  }
   for (const [origin, edges] of [['baseline',base.edges],['research',research.edges],['cross-registry',bridge.referenceEdges]]) {
     for (const e of edges) {
       invariant(ids.has(e.from) && ids.has(e.to), origin+' dangling relation');
@@ -59,6 +67,7 @@ function loadDocumentedInfernoGraph() {
   const dictionary = new Map(nodes.map(n=>[n.id,n]));
   const dispositions = new Map(bridge.isolatedDispositions.map(x=>[x.id,x]));
   const bindings = new Map(research.recordBindings.map(x=>[x.graphNodeId,x]));
+  const indexedRecords = new Map(index.records.map(x=>[x.graphNodeId,x]));
   function referencesFor(id, includeCandidates = true) {
     const all = [];
     for (const [origin, edges] of [['baseline',base.edges],['research',research.edges],['cross-registry',bridge.referenceEdges]]) {
@@ -78,6 +87,7 @@ function loadDocumentedInfernoGraph() {
     return {
       id, record:dictionary.get(id),
       researchBinding:bindings.get(id)||null,
+      sourceIndex: indexedRecords.get(id)||null,
       disposition:dispositions.get(id)||null,
       edges:referencesFor(id,options.includeCandidates !== false),
       documentedOnly:true,canonicalApproved:false,runtimeApproved:false,
@@ -89,7 +99,7 @@ function loadDocumentedInfernoGraph() {
   return Object.freeze({
     lookup,
     audit:Object.freeze({baseNodes:base.nodes.length,baseEdges:base.edges.length,
-      infernoBindings:research.recordBindings.length,researchEdges:research.edges.length,
+      infernoBindings:research.recordBindings.length,indexedRecords:index.records.length,researchEdges:research.edges.length,
       referenceEdges:bridge.referenceEdges.length,referenceNodes:bridge.sourceNodes.length,
       documentedDisconnected:disconnected.sort(),
       quarantined:[...exceptionIds].sort(),narrativeBoundaries:corrections.size,
