@@ -347,6 +347,13 @@ function stRender(){
    sorted, which column has the room, which list is up, and whether the bank
    is open. Kept across a return to the tab, never saved.
    ============================================================ */
+/* THE GAP A REAL SECOND PRESS NEVER BEATS. Measured directly: the two clicks
+   of a native double click or double tap land a tenth of a millisecond
+   apart. A hundred milliseconds is a thousand times that gap and still well
+   under what any person perceives as a pause, so a press on Run inside it
+   of stCommit's own reflow (STV.committedAt, below) is refused as the same
+   press landing twice, never as a second one arriving late. */
+var ST_DBLTAP_MS=100;
 var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:false,law:false,
  unsaved:null,draftT:null,draftFail:false,crisis:false};
 /* the one width the page changes shape at is the one the product stacks its
@@ -614,6 +621,16 @@ function stCommit(){
     with Run on it: widening it there would push Run off the first screen,
     which is the one thing layout H exists to stop. */
  STV.focus=stPhone()?'write':'release';
+ /* AND RUN CAN LAND WHERE COMMIT JUST WAS. Write held the room until this
+    line ran; now Run does, at the same screen position Commit sat at a
+    moment ago. A double tap aimed at Commit then ends its second half on
+    Run: measured at 390 by 844, a native double click after three commits
+    opened a real release two times in three and ran the voice line before
+    anyone pressed Run on purpose. The two clicks of a real double tap land
+    a tenth of a millisecond apart (measured); stRelPanel below refuses a
+    press on Run inside a tenth of a second of this line, which cannot be a
+    second press, only the same one landing twice. */
+ STV.committedAt=Date.now();
  /* the crisis line has said what the box is for, and the box has been used */
  STV.crisis=false;
  toYou();syncCh();if(typeof stRender==='function')stRender();render();
@@ -2141,6 +2158,10 @@ function stRelPanel(){
  var go=document.getElementById('strun');
  if(go)go.onclick=function(){
   if(!M.sel.length)return;
+  /* THE SAME PRESS, LANDING TWICE. See STV.committedAt and ST_DBLTAP_MS
+     above: a commit just moved Run to this exact spot, and a press this
+     soon after cannot be a person who has seen it there and chosen it. */
+  if(STV.committedAt&&Date.now()-STV.committedAt<ST_DBLTAP_MS)return;
   RUN.speed=2.2/(RUN.pace||1);
   /* the entry is named only when the panel is reading the last commit's own
      addresses: not a bank pick, not a draft still being typed, not the three

@@ -392,6 +392,13 @@ function relRerunSay(){
    play and the voice is not spoken for a run the end of it would refuse. */
 function relBegin(){
  if(showRefuse('release'))return;
+ /* THE SAME GUARD #strun ALREADY KEEPS, held here too: #strun's own press
+    clicks this button programmatically (ui/storyui.js), so a stray press
+    reaching this one directly, the moment a commit has just moved a button
+    onto it, is refused on the same terms. See STV.committedAt and
+    ST_DBLTAP_MS in ui/storyui.js. */
+ if(typeof STV!=='undefined'&&STV.committedAt&&typeof ST_DBLTAP_MS!=='undefined'
+   &&Date.now()-STV.committedAt<ST_DBLTAP_MS)return;
  if(typeof sfx==='function')sfx('begin',true);
  RUN.phase='welcome';RUN.line=0;RUN.idx=0;RUN.pass=0;RUN.halted=false;RUN.paused=false;
  RUN.t0=Date.now();RUN.tEnd=0;RUN.pauseAt=0;RUN.pausedMs=0;relTicker(true);relStep();}
