@@ -88,3 +88,11 @@ Each pass has unique content for each of the ten records. Do not conflate four a
 - Moral disengagement: https://pubmed.ncbi.nlm.nih.gov/15661671/
 - Intellectual humility: https://pubmed.ncbi.nlm.nih.gov/34569872/
 - Organizational justice: https://pubmed.ncbi.nlm.nih.gov/11419803/
+
+## CORE ARCHETYPE RECORD COMPLETION CHECKPOINT
+
+The current `canon.js#ARCH` defines **12 core behavioral archetypes** (Warrior, Sage, Rebel, Caregiver, Creator, Magician, Ruler, Explorer, Lover, Jester, Everyman, Innocent). Do not confuse these with the **11 individually named Compass master coordinates** or the **10 Paradiso spheres**. Their original `nm`, `v`, `d`, and `b` fields are read intact from the existing code.
+
+`docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json` now contains all 12 in the same inherited 21-field envelope, four analytical source/behavior/law/contrary research passes each (48 sections), exact canonical SI-law names/bands, clear-versus-distorted behavioral examples and candidate Paradiso links. All 12 individual readable pages are in `docs/data/compass/archetypes/v1/records/{Warrior,Sage,Rebel,Caregiver,Creator,Magician,Ruler,Explorer,Lover,Jester,Everyman,Innocent}.md`. Their outer historical sources are Pearson / Mark's modern twelve-archetype model, NOT a list authored verbatim by Jung. **These are research profiles and not registered native engine records.**
+
+**Additional tasks beyond this research block:** map the 11 masters' own individual record completeness, keep the twelfth unnamed until sourced, reconcile Inferno figure records and import, wire all Compass graph traversals and UI. Never infer one-on-one identity between a core archetype, master, Inferno figure, Purgatorio terrace or Paradiso source sphere.
