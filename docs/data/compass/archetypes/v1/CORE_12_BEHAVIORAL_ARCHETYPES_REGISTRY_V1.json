@@ -1,0 +1,1286 @@
+{
+  "meta": {
+    "source": "canon.js#ARCH",
+    "recordCount": 12,
+    "exactCanonicalSI": 21,
+    "analyticalPasses": 48,
+    "kind": "compass_core_archetype",
+    "sourceScope": "ATUNED 12 archetypes not identical to 11 masters or 10 Paradiso spheres",
+    "runtime": "NO_REGISTRATION",
+    "fourLensesPerRecord": true
+  },
+  "records": [
+    {
+      "id": "compass-archetype:Warrior",
+      "kind": "compass_core_archetype",
+      "templateId": "TPL-COMPASS-ARCHETYPE-SUPERCOMPLEX-COMPAT-V1",
+      "nm": "Warrior",
+      "fam": "Compass / 12 core archetypes",
+      "def": "Proportional defense without retaliation",
+      "body": "Canonical behavior: moves on the threat. Native description: Acts first and reads the damage after.. Clear: Proportional defense without retaliation. Distortion: Escalates force after danger ends.",
+      "inferred": true,
+      "inferenceBasis": "Engine exact behavior plus research interpretation, not an empirically validated personality class",
+      "behavior": "PROTECT → INITIATE → HOLD → REVIEW",
+      "triggerMechanism": "A threat or boundary activates rapid response.",
+      "livedExample": "Protects others and accepts review",
+      "impact": "Compare intended value, actual action and harm without assigning a fixed personality label.",
+      "practice": "Run one concrete situation and compare observable clear action against distorted imitation.",
+      "oppositeId": null,
+      "oppositeDefinition": "Escalates force after danger ends",
+      "oppositeStatus": "NOT_A_FIXED_POLAR_OPPOSITE",
+      "confidence": {
+        "native": "EXACT_SOURCE",
+        "lawNames": "EXACT_SOURCE",
+        "interpretation": "CANDIDATE",
+        "runtime": "NOT_WIRED"
+      },
+      "reviewStatus": "RESEARCH_RECORD_COMPLETE_NO_CANON_REGISTRATION",
+      "refer": "Carol Pearson, Margaret Mark and ATUNED original behavioral description",
+      "narrativeSource": "atuned_src/engine/data/canon.js#ARCH",
+      "researchSources": [
+        "https://carolspearson.com/about/the-pearson-12-archetype-system-human-development-and-evolution",
+        "https://books.google.com/books/about/The_Hero_and_the_Outlaw_Building_Extraor.html?id=l6qXGiTld1sC",
+        "https://pubmed.ncbi.nlm.nih.gov/38615492/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORY_AND_ENGINE_CANON",
+          "finding": "ATUNED canon calls Warrior \"moves on the threat\" and describes it: \"Acts first and reads the damage after.\". Jung-derived modern 12-archetype lineup is attributed to Carol S. Pearson and Margaret Mark, not directly a list Jung established.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#ARCH",
+            "https://carolspearson.com/about/the-pearson-12-archetype-system-human-development-and-evolution"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIORAL_MOVEMENT",
+          "finding": "Trigger: A threat or boundary activates rapid response. Movement: PROTECT → INITIATE → HOLD → REVIEW. Coherent behavior: Proportional defense without retaliation.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#ARCH",
+            "ATUNED behavioral primitive framework"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "EXACT_MORAL_INTEGRITY_LAWS",
+          "finding": "Observed law expressions in active SI vocabulary: Courage (Solar); Non-Harm (Root); Accountability (Solar). No law relation here is a new scoring input.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#SI"
+          ]
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_DISCRIMINANT",
+          "finding": "Positive observation: Protects others and accepts review. Contrary observation: Escalates force after danger ends. Do not make fixed moral identities out of archetypes.",
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+            "https://pubmed.ncbi.nlm.nih.gov/15661671/"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "type": "PARADISO_RESONANCE",
+          "id": "paradiso:PD05",
+          "status": "CANDIDATE"
+        }
+      ],
+      "native": {
+        "v": "moves on the threat",
+        "d": "Acts first and reads the damage after.",
+        "seat": "Root",
+        "originalIndex": 0
+      },
+      "integrityLawLinks": [
+        {
+          "name": "Courage",
+          "seat": "Solar",
+          "strength": "PRIMARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "name": "Non-Harm",
+          "seat": "Root",
+          "strength": "PRIMARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "name": "Accountability",
+          "seat": "Solar",
+          "strength": "SECONDARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        }
+      ]
+    },
+    {
+      "id": "compass-archetype:Sage",
+      "kind": "compass_core_archetype",
+      "templateId": "TPL-COMPASS-ARCHETYPE-SUPERCOMPLEX-COMPAT-V1",
+      "nm": "Sage",
+      "fam": "Compass / 12 core archetypes",
+      "def": "Evidence-seeking without status defense",
+      "body": "Canonical behavior: reads the situation. Native description: Stops to work out what is true before it moves.. Clear: Evidence-seeking without status defense. Distortion: Rejects contradictory evidence to preserve prestige.",
+      "inferred": true,
+      "inferenceBasis": "Engine exact behavior plus research interpretation, not an empirically validated personality class",
+      "behavior": "RECEIVE → DIFFERENTIATE → SEEK → EXPRESS",
+      "triggerMechanism": "Uncertainty presents competing explanations.",
+      "livedExample": "Revises a public claim after new evidence",
+      "impact": "Compare intended value, actual action and harm without assigning a fixed personality label.",
+      "practice": "Run one concrete situation and compare observable clear action against distorted imitation.",
+      "oppositeId": null,
+      "oppositeDefinition": "Rejects contradictory evidence to preserve prestige",
+      "oppositeStatus": "NOT_A_FIXED_POLAR_OPPOSITE",
+      "confidence": {
+        "native": "EXACT_SOURCE",
+        "lawNames": "EXACT_SOURCE",
+        "interpretation": "CANDIDATE",
+        "runtime": "NOT_WIRED"
+      },
+      "reviewStatus": "RESEARCH_RECORD_COMPLETE_NO_CANON_REGISTRATION",
+      "refer": "Carol Pearson, Margaret Mark and ATUNED original behavioral description",
+      "narrativeSource": "atuned_src/engine/data/canon.js#ARCH",
+      "researchSources": [
+        "https://carolspearson.com/about/the-pearson-12-archetype-system-human-development-and-evolution",
+        "https://books.google.com/books/about/The_Hero_and_the_Outlaw_Building_Extraor.html?id=l6qXGiTld1sC",
+        "https://pubmed.ncbi.nlm.nih.gov/38615492/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORY_AND_ENGINE_CANON",
+          "finding": "ATUNED canon calls Sage \"reads the situation\" and describes it: \"Stops to work out what is true before it moves.\". Jung-derived modern 12-archetype lineup is attributed to Carol S. Pearson and Margaret Mark, not directly a list Jung established.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#ARCH",
+            "https://carolspearson.com/about/the-pearson-12-archetype-system-human-development-and-evolution"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIORAL_MOVEMENT",
+          "finding": "Trigger: Uncertainty presents competing explanations. Movement: RECEIVE → DIFFERENTIATE → SEEK → EXPRESS. Coherent behavior: Evidence-seeking without status defense.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#ARCH",
+            "ATUNED behavioral primitive framework"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "EXACT_MORAL_INTEGRITY_LAWS",
+          "finding": "Observed law expressions in active SI vocabulary: Truth (Throat); Awareness (Crown); Humility (3rd Eye). No law relation here is a new scoring input.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#SI"
+          ]
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_DISCRIMINANT",
+          "finding": "Positive observation: Revises a public claim after new evidence. Contrary observation: Rejects contradictory evidence to preserve prestige. Do not make fixed moral identities out of archetypes.",
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+            "https://pubmed.ncbi.nlm.nih.gov/15661671/"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "type": "PARADISO_RESONANCE",
+          "id": "paradiso:PD04",
+          "status": "CANDIDATE"
+        }
+      ],
+      "native": {
+        "v": "reads the situation",
+        "d": "Stops to work out what is true before it moves.",
+        "seat": "Crown",
+        "originalIndex": 1
+      },
+      "integrityLawLinks": [
+        {
+          "name": "Truth",
+          "seat": "Throat",
+          "strength": "PRIMARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "name": "Awareness",
+          "seat": "Crown",
+          "strength": "PRIMARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "name": "Humility",
+          "seat": "3rd Eye",
+          "strength": "SECONDARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        }
+      ]
+    },
+    {
+      "id": "compass-archetype:Rebel",
+      "kind": "compass_core_archetype",
+      "templateId": "TPL-COMPASS-ARCHETYPE-SUPERCOMPLEX-COMPAT-V1",
+      "nm": "Rebel",
+      "fam": "Compass / 12 core archetypes",
+      "def": "Specific dissent with a viable repair",
+      "body": "Canonical behavior: refuses the frame. Native description: Pushes back on a rule it never agreed to.. Clear: Specific dissent with a viable repair. Distortion: Destroys protections just to reject authority.",
+      "inferred": true,
+      "inferenceBasis": "Engine exact behavior plus research interpretation, not an empirically validated personality class",
+      "behavior": "REPEL → EXAMINE → EXPRESS → TRANSFORM",
+      "triggerMechanism": "A rule produces identifiable injustice.",
+      "livedExample": "Challenges an unfair rule with evidence",
+      "impact": "Compare intended value, actual action and harm without assigning a fixed personality label.",
+      "practice": "Run one concrete situation and compare observable clear action against distorted imitation.",
+      "oppositeId": null,
+      "oppositeDefinition": "Destroys protections just to reject authority",
+      "oppositeStatus": "NOT_A_FIXED_POLAR_OPPOSITE",
+      "confidence": {
+        "native": "EXACT_SOURCE",
+        "lawNames": "EXACT_SOURCE",
+        "interpretation": "CANDIDATE",
+        "runtime": "NOT_WIRED"
+      },
+      "reviewStatus": "RESEARCH_RECORD_COMPLETE_NO_CANON_REGISTRATION",
+      "refer": "Carol Pearson, Margaret Mark and ATUNED original behavioral description",
+      "narrativeSource": "atuned_src/engine/data/canon.js#ARCH",
+      "researchSources": [
+        "https://carolspearson.com/about/the-pearson-12-archetype-system-human-development-and-evolution",
+        "https://books.google.com/books/about/The_Hero_and_the_Outlaw_Building_Extraor.html?id=l6qXGiTld1sC",
+        "https://pubmed.ncbi.nlm.nih.gov/38615492/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORY_AND_ENGINE_CANON",
+          "finding": "ATUNED canon calls Rebel \"refuses the frame\" and describes it: \"Pushes back on a rule it never agreed to.\". Jung-derived modern 12-archetype lineup is attributed to Carol S. Pearson and Margaret Mark, not directly a list Jung established.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#ARCH",
+            "https://carolspearson.com/about/the-pearson-12-archetype-system-human-development-and-evolution"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIORAL_MOVEMENT",
+          "finding": "Trigger: A rule produces identifiable injustice. Movement: REPEL → EXAMINE → EXPRESS → TRANSFORM. Coherent behavior: Specific dissent with a viable repair.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#ARCH",
+            "ATUNED behavioral primitive framework"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "EXACT_MORAL_INTEGRITY_LAWS",
+          "finding": "Observed law expressions in active SI vocabulary: Justice (Throat); Courage (Solar); Non-Harm (Root). No law relation here is a new scoring input.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#SI"
+          ]
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_DISCRIMINANT",
+          "finding": "Positive observation: Challenges an unfair rule with evidence. Contrary observation: Destroys protections just to reject authority. Do not make fixed moral identities out of archetypes.",
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+            "https://pubmed.ncbi.nlm.nih.gov/15661671/"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "type": "PARADISO_RESONANCE",
+          "id": "paradiso:PD06",
+          "status": "CANDIDATE"
+        }
+      ],
+      "native": {
+        "v": "refuses the frame",
+        "d": "Pushes back on a rule it never agreed to.",
+        "seat": "Throat",
+        "originalIndex": 2
+      },
+      "integrityLawLinks": [
+        {
+          "name": "Justice",
+          "seat": "Throat",
+          "strength": "PRIMARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "name": "Courage",
+          "seat": "Solar",
+          "strength": "PRIMARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "name": "Non-Harm",
+          "seat": "Root",
+          "strength": "SECONDARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        }
+      ]
+    },
+    {
+      "id": "compass-archetype:Caregiver",
+      "kind": "compass_core_archetype",
+      "templateId": "TPL-COMPASS-ARCHETYPE-SUPERCOMPLEX-COMPAT-V1",
+      "nm": "Caregiver",
+      "fam": "Compass / 12 core archetypes",
+      "def": "Care with boundaries and reciprocal agency",
+      "body": "Canonical behavior: attends to the other. Native description: Puts its own plans down to help somebody else carry theirs.. Clear: Care with boundaries and reciprocal agency. Distortion: Makes people dependent or uses guilt to compel thanks.",
+      "inferred": true,
+      "inferenceBasis": "Engine exact behavior plus research interpretation, not an empirically validated personality class",
+      "behavior": "RECEIVE → CONNECT → OFFER → RELEASE CONTROL",
+      "triggerMechanism": "Someone expresses need.",
+      "livedExample": "Offers bounded support without demanding gratitude",
+      "impact": "Compare intended value, actual action and harm without assigning a fixed personality label.",
+      "practice": "Run one concrete situation and compare observable clear action against distorted imitation.",
+      "oppositeId": null,
+      "oppositeDefinition": "Makes people dependent or uses guilt to compel thanks",
+      "oppositeStatus": "NOT_A_FIXED_POLAR_OPPOSITE",
+      "confidence": {
+        "native": "EXACT_SOURCE",
+        "lawNames": "EXACT_SOURCE",
+        "interpretation": "CANDIDATE",
+        "runtime": "NOT_WIRED"
+      },
+      "reviewStatus": "RESEARCH_RECORD_COMPLETE_NO_CANON_REGISTRATION",
+      "refer": "Carol Pearson, Margaret Mark and ATUNED original behavioral description",
+      "narrativeSource": "atuned_src/engine/data/canon.js#ARCH",
+      "researchSources": [
+        "https://carolspearson.com/about/the-pearson-12-archetype-system-human-development-and-evolution",
+        "https://books.google.com/books/about/The_Hero_and_the_Outlaw_Building_Extraor.html?id=l6qXGiTld1sC",
+        "https://pubmed.ncbi.nlm.nih.gov/38615492/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORY_AND_ENGINE_CANON",
+          "finding": "ATUNED canon calls Caregiver \"attends to the other\" and describes it: \"Puts its own plans down to help somebody else carry theirs.\". Jung-derived modern 12-archetype lineup is attributed to Carol S. Pearson and Margaret Mark, not directly a list Jung established.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#ARCH",
+            "https://carolspearson.com/about/the-pearson-12-archetype-system-human-development-and-evolution"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIORAL_MOVEMENT",
+          "finding": "Trigger: Someone expresses need. Movement: RECEIVE → CONNECT → OFFER → RELEASE CONTROL. Coherent behavior: Care with boundaries and reciprocal agency.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#ARCH",
+            "ATUNED behavioral primitive framework"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "EXACT_MORAL_INTEGRITY_LAWS",
+          "finding": "Observed law expressions in active SI vocabulary: Compassion (Heart); Generosity (Heart); Detachment (Sacral). No law relation here is a new scoring input.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#SI"
+          ]
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_DISCRIMINANT",
+          "finding": "Positive observation: Offers bounded support without demanding gratitude. Contrary observation: Makes people dependent or uses guilt to compel thanks. Do not make fixed moral identities out of archetypes.",
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+            "https://pubmed.ncbi.nlm.nih.gov/15661671/"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "type": "PARADISO_RESONANCE",
+          "id": "paradiso:PD08",
+          "status": "CANDIDATE"
+        }
+      ],
+      "native": {
+        "v": "attends to the other",
+        "d": "Puts its own plans down to help somebody else carry theirs.",
+        "seat": "Heart",
+        "originalIndex": 3
+      },
+      "integrityLawLinks": [
+        {
+          "name": "Compassion",
+          "seat": "Heart",
+          "strength": "PRIMARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "name": "Generosity",
+          "seat": "Heart",
+          "strength": "PRIMARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "name": "Detachment",
+          "seat": "Sacral",
+          "strength": "SECONDARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        }
+      ]
+    },
+    {
+      "id": "compass-archetype:Creator",
+      "kind": "compass_core_archetype",
+      "templateId": "TPL-COMPASS-ARCHETYPE-SUPERCOMPLEX-COMPAT-V1",
+      "nm": "Creator",
+      "fam": "Compass / 12 core archetypes",
+      "def": "Useful craft without perfectionism as identity",
+      "body": "Canonical behavior: makes the thing. Native description: Builds what is missing out of what is lying around.. Clear: Useful craft without perfectionism as identity. Distortion: Sacrifices people or truth to protect the image of genius.",
+      "inferred": true,
+      "inferenceBasis": "Engine exact behavior plus research interpretation, not an empirically validated personality class",
+      "behavior": "SEEK → TRANSFORM → EXPRESS → RECEIVE CRITIQUE",
+      "triggerMechanism": "A necessary form or solution does not exist.",
+      "livedExample": "Ships, tests and improves a useful artifact",
+      "impact": "Compare intended value, actual action and harm without assigning a fixed personality label.",
+      "practice": "Run one concrete situation and compare observable clear action against distorted imitation.",
+      "oppositeId": null,
+      "oppositeDefinition": "Sacrifices people or truth to protect the image of genius",
+      "oppositeStatus": "NOT_A_FIXED_POLAR_OPPOSITE",
+      "confidence": {
+        "native": "EXACT_SOURCE",
+        "lawNames": "EXACT_SOURCE",
+        "interpretation": "CANDIDATE",
+        "runtime": "NOT_WIRED"
+      },
+      "reviewStatus": "RESEARCH_RECORD_COMPLETE_NO_CANON_REGISTRATION",
+      "refer": "Carol Pearson, Margaret Mark and ATUNED original behavioral description",
+      "narrativeSource": "atuned_src/engine/data/canon.js#ARCH",
+      "researchSources": [
+        "https://carolspearson.com/about/the-pearson-12-archetype-system-human-development-and-evolution",
+        "https://books.google.com/books/about/The_Hero_and_the_Outlaw_Building_Extraor.html?id=l6qXGiTld1sC",
+        "https://pubmed.ncbi.nlm.nih.gov/38615492/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORY_AND_ENGINE_CANON",
+          "finding": "ATUNED canon calls Creator \"makes the thing\" and describes it: \"Builds what is missing out of what is lying around.\". Jung-derived modern 12-archetype lineup is attributed to Carol S. Pearson and Margaret Mark, not directly a list Jung established.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#ARCH",
+            "https://carolspearson.com/about/the-pearson-12-archetype-system-human-development-and-evolution"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIORAL_MOVEMENT",
+          "finding": "Trigger: A necessary form or solution does not exist. Movement: SEEK → TRANSFORM → EXPRESS → RECEIVE CRITIQUE. Coherent behavior: Useful craft without perfectionism as identity.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#ARCH",
+            "ATUNED behavioral primitive framework"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "EXACT_MORAL_INTEGRITY_LAWS",
+          "finding": "Observed law expressions in active SI vocabulary: Aesthetic Beauty (Heart); Responsibility (Solar); Humility (3rd Eye). No law relation here is a new scoring input.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#SI"
+          ]
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_DISCRIMINANT",
+          "finding": "Positive observation: Ships, tests and improves a useful artifact. Contrary observation: Sacrifices people or truth to protect the image of genius. Do not make fixed moral identities out of archetypes.",
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+            "https://pubmed.ncbi.nlm.nih.gov/15661671/"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "type": "PARADISO_RESONANCE",
+          "id": "paradiso:PD09",
+          "status": "CANDIDATE"
+        }
+      ],
+      "native": {
+        "v": "makes the thing",
+        "d": "Builds what is missing out of what is lying around.",
+        "seat": "Sacral",
+        "originalIndex": 4
+      },
+      "integrityLawLinks": [
+        {
+          "name": "Aesthetic Beauty",
+          "seat": "Heart",
+          "strength": "PRIMARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "name": "Responsibility",
+          "seat": "Solar",
+          "strength": "PRIMARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "name": "Humility",
+          "seat": "3rd Eye",
+          "strength": "SECONDARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        }
+      ]
+    },
+    {
+      "id": "compass-archetype:Magician",
+      "kind": "compass_core_archetype",
+      "templateId": "TPL-COMPASS-ARCHETYPE-SUPERCOMPLEX-COMPAT-V1",
+      "nm": "Magician",
+      "fam": "Compass / 12 core archetypes",
+      "def": "Transparent context change and measured effects",
+      "body": "Canonical behavior: changes the conditions. Native description: Moves the setup so the problem stops on its own.. Clear: Transparent context change and measured effects. Distortion: Manipulates hidden conditions to control another.",
+      "inferred": true,
+      "inferenceBasis": "Engine exact behavior plus research interpretation, not an empirically validated personality class",
+      "behavior": "OBSERVE → REFRAME → TRANSFORM → VERIFY",
+      "triggerMechanism": "A recurrent problem persists despite direct effort.",
+      "livedExample": "States intervention and checks unintended harm",
+      "impact": "Compare intended value, actual action and harm without assigning a fixed personality label.",
+      "practice": "Run one concrete situation and compare observable clear action against distorted imitation.",
+      "oppositeId": null,
+      "oppositeDefinition": "Manipulates hidden conditions to control another",
+      "oppositeStatus": "NOT_A_FIXED_POLAR_OPPOSITE",
+      "confidence": {
+        "native": "EXACT_SOURCE",
+        "lawNames": "EXACT_SOURCE",
+        "interpretation": "CANDIDATE",
+        "runtime": "NOT_WIRED"
+      },
+      "reviewStatus": "RESEARCH_RECORD_COMPLETE_NO_CANON_REGISTRATION",
+      "refer": "Carol Pearson, Margaret Mark and ATUNED original behavioral description",
+      "narrativeSource": "atuned_src/engine/data/canon.js#ARCH",
+      "researchSources": [
+        "https://carolspearson.com/about/the-pearson-12-archetype-system-human-development-and-evolution",
+        "https://books.google.com/books/about/The_Hero_and_the_Outlaw_Building_Extraor.html?id=l6qXGiTld1sC",
+        "https://pubmed.ncbi.nlm.nih.gov/38615492/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORY_AND_ENGINE_CANON",
+          "finding": "ATUNED canon calls Magician \"changes the conditions\" and describes it: \"Moves the setup so the problem stops on its own.\". Jung-derived modern 12-archetype lineup is attributed to Carol S. Pearson and Margaret Mark, not directly a list Jung established.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#ARCH",
+            "https://carolspearson.com/about/the-pearson-12-archetype-system-human-development-and-evolution"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIORAL_MOVEMENT",
+          "finding": "Trigger: A recurrent problem persists despite direct effort. Movement: OBSERVE → REFRAME → TRANSFORM → VERIFY. Coherent behavior: Transparent context change and measured effects.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#ARCH",
+            "ATUNED behavioral primitive framework"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "EXACT_MORAL_INTEGRITY_LAWS",
+          "finding": "Observed law expressions in active SI vocabulary: Awareness (Crown); Truth (Throat); Accountability (Solar). No law relation here is a new scoring input.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#SI"
+          ]
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_DISCRIMINANT",
+          "finding": "Positive observation: States intervention and checks unintended harm. Contrary observation: Manipulates hidden conditions to control another. Do not make fixed moral identities out of archetypes.",
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+            "https://pubmed.ncbi.nlm.nih.gov/15661671/"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "type": "PARADISO_RESONANCE",
+          "id": "paradiso:PD09",
+          "status": "CANDIDATE"
+        }
+      ],
+      "native": {
+        "v": "changes the conditions",
+        "d": "Moves the setup so the problem stops on its own.",
+        "seat": "3rd Eye",
+        "originalIndex": 5
+      },
+      "integrityLawLinks": [
+        {
+          "name": "Awareness",
+          "seat": "Crown",
+          "strength": "PRIMARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "name": "Truth",
+          "seat": "Throat",
+          "strength": "PRIMARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "name": "Accountability",
+          "seat": "Solar",
+          "strength": "SECONDARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        }
+      ]
+    },
+    {
+      "id": "compass-archetype:Ruler",
+      "kind": "compass_core_archetype",
+      "templateId": "TPL-COMPASS-ARCHETYPE-SUPERCOMPLEX-COMPAT-V1",
+      "nm": "Ruler",
+      "fam": "Compass / 12 core archetypes",
+      "def": "Fair leadership and reversible decisions",
+      "body": "Canonical behavior: orders the field. Native description: Sets the order so everyone moves together.. Clear: Fair leadership and reversible decisions. Distortion: Punishes dissent and makes private exceptions.",
+      "inferred": true,
+      "inferenceBasis": "Engine exact behavior plus research interpretation, not an empirically validated personality class",
+      "behavior": "ORDER → EXPRESS STANDARDS → RECEIVE APPEAL",
+      "triggerMechanism": "People require allocation or governance.",
+      "livedExample": "Discloses conflicts and explains procedures",
+      "impact": "Compare intended value, actual action and harm without assigning a fixed personality label.",
+      "practice": "Run one concrete situation and compare observable clear action against distorted imitation.",
+      "oppositeId": null,
+      "oppositeDefinition": "Punishes dissent and makes private exceptions",
+      "oppositeStatus": "NOT_A_FIXED_POLAR_OPPOSITE",
+      "confidence": {
+        "native": "EXACT_SOURCE",
+        "lawNames": "EXACT_SOURCE",
+        "interpretation": "CANDIDATE",
+        "runtime": "NOT_WIRED"
+      },
+      "reviewStatus": "RESEARCH_RECORD_COMPLETE_NO_CANON_REGISTRATION",
+      "refer": "Carol Pearson, Margaret Mark and ATUNED original behavioral description",
+      "narrativeSource": "atuned_src/engine/data/canon.js#ARCH",
+      "researchSources": [
+        "https://carolspearson.com/about/the-pearson-12-archetype-system-human-development-and-evolution",
+        "https://books.google.com/books/about/The_Hero_and_the_Outlaw_Building_Extraor.html?id=l6qXGiTld1sC",
+        "https://pubmed.ncbi.nlm.nih.gov/38615492/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORY_AND_ENGINE_CANON",
+          "finding": "ATUNED canon calls Ruler \"orders the field\" and describes it: \"Sets the order so everyone moves together.\". Jung-derived modern 12-archetype lineup is attributed to Carol S. Pearson and Margaret Mark, not directly a list Jung established.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#ARCH",
+            "https://carolspearson.com/about/the-pearson-12-archetype-system-human-development-and-evolution"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIORAL_MOVEMENT",
+          "finding": "Trigger: People require allocation or governance. Movement: ORDER → EXPRESS STANDARDS → RECEIVE APPEAL. Coherent behavior: Fair leadership and reversible decisions.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#ARCH",
+            "ATUNED behavioral primitive framework"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "EXACT_MORAL_INTEGRITY_LAWS",
+          "finding": "Observed law expressions in active SI vocabulary: Justice (Throat); Accountability (Solar); Transparency (Throat). No law relation here is a new scoring input.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#SI"
+          ]
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_DISCRIMINANT",
+          "finding": "Positive observation: Discloses conflicts and explains procedures. Contrary observation: Punishes dissent and makes private exceptions. Do not make fixed moral identities out of archetypes.",
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+            "https://pubmed.ncbi.nlm.nih.gov/15661671/"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "type": "PARADISO_RESONANCE",
+          "id": "paradiso:PD06",
+          "status": "CANDIDATE"
+        }
+      ],
+      "native": {
+        "v": "orders the field",
+        "d": "Sets the order so everyone moves together.",
+        "seat": "Solar",
+        "originalIndex": 6
+      },
+      "integrityLawLinks": [
+        {
+          "name": "Justice",
+          "seat": "Throat",
+          "strength": "PRIMARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "name": "Accountability",
+          "seat": "Solar",
+          "strength": "PRIMARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "name": "Transparency",
+          "seat": "Throat",
+          "strength": "SECONDARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        }
+      ]
+    },
+    {
+      "id": "compass-archetype:Explorer",
+      "kind": "compass_core_archetype",
+      "templateId": "TPL-COMPASS-ARCHETYPE-SUPERCOMPLEX-COMPAT-V1",
+      "nm": "Explorer",
+      "fam": "Compass / 12 core archetypes",
+      "def": "Curiosity with risk management and commitments",
+      "body": "Canonical behavior: goes to the edge. Native description: Keeps going past where the path ran out.. Clear: Curiosity with risk management and commitments. Distortion: Abandons people and takes risks for excitement alone.",
+      "inferred": true,
+      "inferenceBasis": "Engine exact behavior plus research interpretation, not an empirically validated personality class",
+      "behavior": "SEEK → APPROACH → OBSERVE → RETURN",
+      "triggerMechanism": "A meaningful unknown calls for investigation.",
+      "livedExample": "Tests uncertainty and shares failures honestly",
+      "impact": "Compare intended value, actual action and harm without assigning a fixed personality label.",
+      "practice": "Run one concrete situation and compare observable clear action against distorted imitation.",
+      "oppositeId": null,
+      "oppositeDefinition": "Abandons people and takes risks for excitement alone",
+      "oppositeStatus": "NOT_A_FIXED_POLAR_OPPOSITE",
+      "confidence": {
+        "native": "EXACT_SOURCE",
+        "lawNames": "EXACT_SOURCE",
+        "interpretation": "CANDIDATE",
+        "runtime": "NOT_WIRED"
+      },
+      "reviewStatus": "RESEARCH_RECORD_COMPLETE_NO_CANON_REGISTRATION",
+      "refer": "Carol Pearson, Margaret Mark and ATUNED original behavioral description",
+      "narrativeSource": "atuned_src/engine/data/canon.js#ARCH",
+      "researchSources": [
+        "https://carolspearson.com/about/the-pearson-12-archetype-system-human-development-and-evolution",
+        "https://books.google.com/books/about/The_Hero_and_the_Outlaw_Building_Extraor.html?id=l6qXGiTld1sC",
+        "https://pubmed.ncbi.nlm.nih.gov/38615492/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORY_AND_ENGINE_CANON",
+          "finding": "ATUNED canon calls Explorer \"goes to the edge\" and describes it: \"Keeps going past where the path ran out.\". Jung-derived modern 12-archetype lineup is attributed to Carol S. Pearson and Margaret Mark, not directly a list Jung established.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#ARCH",
+            "https://carolspearson.com/about/the-pearson-12-archetype-system-human-development-and-evolution"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIORAL_MOVEMENT",
+          "finding": "Trigger: A meaningful unknown calls for investigation. Movement: SEEK → APPROACH → OBSERVE → RETURN. Coherent behavior: Curiosity with risk management and commitments.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#ARCH",
+            "ATUNED behavioral primitive framework"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "EXACT_MORAL_INTEGRITY_LAWS",
+          "finding": "Observed law expressions in active SI vocabulary: Nature (Crown); Courage (Solar); Responsibility (Solar). No law relation here is a new scoring input.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#SI"
+          ]
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_DISCRIMINANT",
+          "finding": "Positive observation: Tests uncertainty and shares failures honestly. Contrary observation: Abandons people and takes risks for excitement alone. Do not make fixed moral identities out of archetypes.",
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+            "https://pubmed.ncbi.nlm.nih.gov/15661671/"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "type": "PARADISO_RESONANCE",
+          "id": "paradiso:PD07",
+          "status": "CANDIDATE"
+        }
+      ],
+      "native": {
+        "v": "goes to the edge",
+        "d": "Keeps going past where the path ran out.",
+        "seat": "Sacral",
+        "originalIndex": 7
+      },
+      "integrityLawLinks": [
+        {
+          "name": "Nature",
+          "seat": "Crown",
+          "strength": "PRIMARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "name": "Courage",
+          "seat": "Solar",
+          "strength": "PRIMARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "name": "Responsibility",
+          "seat": "Solar",
+          "strength": "SECONDARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        }
+      ]
+    },
+    {
+      "id": "compass-archetype:Lover",
+      "kind": "compass_core_archetype",
+      "templateId": "TPL-COMPASS-ARCHETYPE-SUPERCOMPLEX-COMPAT-V1",
+      "nm": "Lover",
+      "fam": "Compass / 12 core archetypes",
+      "def": "Honest desire, consent and autonomy",
+      "body": "Canonical behavior: closes the distance. Native description: Moves toward the person and says what it feels.. Clear: Honest desire, consent and autonomy. Distortion: Pressures another for closeness or access.",
+      "inferred": true,
+      "inferenceBasis": "Engine exact behavior plus research interpretation, not an empirically validated personality class",
+      "behavior": "ATTRACT → CONNECT → RECEIVE → RELEASE OWNERSHIP",
+      "triggerMechanism": "Attraction or fear of separation intensifies.",
+      "livedExample": "Accepts a refusal with ongoing respect",
+      "impact": "Compare intended value, actual action and harm without assigning a fixed personality label.",
+      "practice": "Run one concrete situation and compare observable clear action against distorted imitation.",
+      "oppositeId": null,
+      "oppositeDefinition": "Pressures another for closeness or access",
+      "oppositeStatus": "NOT_A_FIXED_POLAR_OPPOSITE",
+      "confidence": {
+        "native": "EXACT_SOURCE",
+        "lawNames": "EXACT_SOURCE",
+        "interpretation": "CANDIDATE",
+        "runtime": "NOT_WIRED"
+      },
+      "reviewStatus": "RESEARCH_RECORD_COMPLETE_NO_CANON_REGISTRATION",
+      "refer": "Carol Pearson, Margaret Mark and ATUNED original behavioral description",
+      "narrativeSource": "atuned_src/engine/data/canon.js#ARCH",
+      "researchSources": [
+        "https://carolspearson.com/about/the-pearson-12-archetype-system-human-development-and-evolution",
+        "https://books.google.com/books/about/The_Hero_and_the_Outlaw_Building_Extraor.html?id=l6qXGiTld1sC",
+        "https://pubmed.ncbi.nlm.nih.gov/38615492/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORY_AND_ENGINE_CANON",
+          "finding": "ATUNED canon calls Lover \"closes the distance\" and describes it: \"Moves toward the person and says what it feels.\". Jung-derived modern 12-archetype lineup is attributed to Carol S. Pearson and Margaret Mark, not directly a list Jung established.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#ARCH",
+            "https://carolspearson.com/about/the-pearson-12-archetype-system-human-development-and-evolution"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIORAL_MOVEMENT",
+          "finding": "Trigger: Attraction or fear of separation intensifies. Movement: ATTRACT → CONNECT → RECEIVE → RELEASE OWNERSHIP. Coherent behavior: Honest desire, consent and autonomy.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#ARCH",
+            "ATUNED behavioral primitive framework"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "EXACT_MORAL_INTEGRITY_LAWS",
+          "finding": "Observed law expressions in active SI vocabulary: Compassion (Heart); Detachment (Sacral); Non-Harm (Root). No law relation here is a new scoring input.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#SI"
+          ]
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_DISCRIMINANT",
+          "finding": "Positive observation: Accepts a refusal with ongoing respect. Contrary observation: Pressures another for closeness or access. Do not make fixed moral identities out of archetypes.",
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+            "https://pubmed.ncbi.nlm.nih.gov/15661671/"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "type": "PARADISO_RESONANCE",
+          "id": "paradiso:PD03",
+          "status": "CANDIDATE"
+        }
+      ],
+      "native": {
+        "v": "closes the distance",
+        "d": "Moves toward the person and says what it feels.",
+        "seat": "Heart",
+        "originalIndex": 8
+      },
+      "integrityLawLinks": [
+        {
+          "name": "Compassion",
+          "seat": "Heart",
+          "strength": "PRIMARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "name": "Detachment",
+          "seat": "Sacral",
+          "strength": "PRIMARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "name": "Non-Harm",
+          "seat": "Root",
+          "strength": "SECONDARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        }
+      ]
+    },
+    {
+      "id": "compass-archetype:Jester",
+      "kind": "compass_core_archetype",
+      "templateId": "TPL-COMPASS-ARCHETYPE-SUPERCOMPLEX-COMPAT-V1",
+      "nm": "Jester",
+      "fam": "Compass / 12 core archetypes",
+      "def": "Kind humor followed by needed responsibility",
+      "body": "Canonical behavior: breaks the tension. Native description: Lets the pressure out of a heavy room.. Clear: Kind humor followed by needed responsibility. Distortion: Mocks pain and avoids addressing harm.",
+      "inferred": true,
+      "inferenceBasis": "Engine exact behavior plus research interpretation, not an empirically validated personality class",
+      "behavior": "RECEIVE → EXPRESS PLAY → CONNECT → REFOCUS",
+      "triggerMechanism": "Stress or solemnity freezes a group.",
+      "livedExample": "Breaks tension without diminishing anyone",
+      "impact": "Compare intended value, actual action and harm without assigning a fixed personality label.",
+      "practice": "Run one concrete situation and compare observable clear action against distorted imitation.",
+      "oppositeId": null,
+      "oppositeDefinition": "Mocks pain and avoids addressing harm",
+      "oppositeStatus": "NOT_A_FIXED_POLAR_OPPOSITE",
+      "confidence": {
+        "native": "EXACT_SOURCE",
+        "lawNames": "EXACT_SOURCE",
+        "interpretation": "CANDIDATE",
+        "runtime": "NOT_WIRED"
+      },
+      "reviewStatus": "RESEARCH_RECORD_COMPLETE_NO_CANON_REGISTRATION",
+      "refer": "Carol Pearson, Margaret Mark and ATUNED original behavioral description",
+      "narrativeSource": "atuned_src/engine/data/canon.js#ARCH",
+      "researchSources": [
+        "https://carolspearson.com/about/the-pearson-12-archetype-system-human-development-and-evolution",
+        "https://books.google.com/books/about/The_Hero_and_the_Outlaw_Building_Extraor.html?id=l6qXGiTld1sC",
+        "https://pubmed.ncbi.nlm.nih.gov/38615492/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORY_AND_ENGINE_CANON",
+          "finding": "ATUNED canon calls Jester \"breaks the tension\" and describes it: \"Lets the pressure out of a heavy room.\". Jung-derived modern 12-archetype lineup is attributed to Carol S. Pearson and Margaret Mark, not directly a list Jung established.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#ARCH",
+            "https://carolspearson.com/about/the-pearson-12-archetype-system-human-development-and-evolution"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIORAL_MOVEMENT",
+          "finding": "Trigger: Stress or solemnity freezes a group. Movement: RECEIVE → EXPRESS PLAY → CONNECT → REFOCUS. Coherent behavior: Kind humor followed by needed responsibility.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#ARCH",
+            "ATUNED behavioral primitive framework"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "EXACT_MORAL_INTEGRITY_LAWS",
+          "finding": "Observed law expressions in active SI vocabulary: Presence (3rd Eye); Aesthetic Beauty (Heart); Compassion (Heart). No law relation here is a new scoring input.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#SI"
+          ]
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_DISCRIMINANT",
+          "finding": "Positive observation: Breaks tension without diminishing anyone. Contrary observation: Mocks pain and avoids addressing harm. Do not make fixed moral identities out of archetypes.",
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+            "https://pubmed.ncbi.nlm.nih.gov/15661671/"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "type": "PARADISO_RESONANCE",
+          "id": "paradiso:PD08",
+          "status": "CANDIDATE"
+        }
+      ],
+      "native": {
+        "v": "breaks the tension",
+        "d": "Lets the pressure out of a heavy room.",
+        "seat": "Throat",
+        "originalIndex": 9
+      },
+      "integrityLawLinks": [
+        {
+          "name": "Presence",
+          "seat": "3rd Eye",
+          "strength": "PRIMARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "name": "Aesthetic Beauty",
+          "seat": "Heart",
+          "strength": "PRIMARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "name": "Compassion",
+          "seat": "Heart",
+          "strength": "SECONDARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        }
+      ]
+    },
+    {
+      "id": "compass-archetype:Everyman",
+      "kind": "compass_core_archetype",
+      "templateId": "TPL-COMPASS-ARCHETYPE-SUPERCOMPLEX-COMPAT-V1",
+      "nm": "Everyman",
+      "fam": "Compass / 12 core archetypes",
+      "def": "Inclusion without group conformity",
+      "body": "Canonical behavior: stays with the room. Native description: Fits in with the group and keeps it in one piece.. Clear: Inclusion without group conformity. Distortion: Follows the crowd into cruelty.",
+      "inferred": true,
+      "inferenceBasis": "Engine exact behavior plus research interpretation, not an empirically validated personality class",
+      "behavior": "CONNECT → RECEIVE DIFFERENCE → EXPRESS SOLIDARITY",
+      "triggerMechanism": "Belonging and difference are tested.",
+      "livedExample": "Invites excluded voices and resists bullying",
+      "impact": "Compare intended value, actual action and harm without assigning a fixed personality label.",
+      "practice": "Run one concrete situation and compare observable clear action against distorted imitation.",
+      "oppositeId": null,
+      "oppositeDefinition": "Follows the crowd into cruelty",
+      "oppositeStatus": "NOT_A_FIXED_POLAR_OPPOSITE",
+      "confidence": {
+        "native": "EXACT_SOURCE",
+        "lawNames": "EXACT_SOURCE",
+        "interpretation": "CANDIDATE",
+        "runtime": "NOT_WIRED"
+      },
+      "reviewStatus": "RESEARCH_RECORD_COMPLETE_NO_CANON_REGISTRATION",
+      "refer": "Carol Pearson, Margaret Mark and ATUNED original behavioral description",
+      "narrativeSource": "atuned_src/engine/data/canon.js#ARCH",
+      "researchSources": [
+        "https://carolspearson.com/about/the-pearson-12-archetype-system-human-development-and-evolution",
+        "https://books.google.com/books/about/The_Hero_and_the_Outlaw_Building_Extraor.html?id=l6qXGiTld1sC",
+        "https://pubmed.ncbi.nlm.nih.gov/38615492/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORY_AND_ENGINE_CANON",
+          "finding": "ATUNED canon calls Everyman \"stays with the room\" and describes it: \"Fits in with the group and keeps it in one piece.\". Jung-derived modern 12-archetype lineup is attributed to Carol S. Pearson and Margaret Mark, not directly a list Jung established.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#ARCH",
+            "https://carolspearson.com/about/the-pearson-12-archetype-system-human-development-and-evolution"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIORAL_MOVEMENT",
+          "finding": "Trigger: Belonging and difference are tested. Movement: CONNECT → RECEIVE DIFFERENCE → EXPRESS SOLIDARITY. Coherent behavior: Inclusion without group conformity.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#ARCH",
+            "ATUNED behavioral primitive framework"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "EXACT_MORAL_INTEGRITY_LAWS",
+          "finding": "Observed law expressions in active SI vocabulary: Unity (Crown); Humility (3rd Eye); Duty (Solar). No law relation here is a new scoring input.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#SI"
+          ]
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_DISCRIMINANT",
+          "finding": "Positive observation: Invites excluded voices and resists bullying. Contrary observation: Follows the crowd into cruelty. Do not make fixed moral identities out of archetypes.",
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+            "https://pubmed.ncbi.nlm.nih.gov/15661671/"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "type": "PARADISO_RESONANCE",
+          "id": "paradiso:PD08",
+          "status": "CANDIDATE"
+        }
+      ],
+      "native": {
+        "v": "stays with the room",
+        "d": "Fits in with the group and keeps it in one piece.",
+        "seat": "Root",
+        "originalIndex": 10
+      },
+      "integrityLawLinks": [
+        {
+          "name": "Unity",
+          "seat": "Crown",
+          "strength": "PRIMARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "name": "Humility",
+          "seat": "3rd Eye",
+          "strength": "PRIMARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "name": "Duty",
+          "seat": "Solar",
+          "strength": "SECONDARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        }
+      ]
+    },
+    {
+      "id": "compass-archetype:Innocent",
+      "kind": "compass_core_archetype",
+      "templateId": "TPL-COMPASS-ARCHETYPE-SUPERCOMPLEX-COMPAT-V1",
+      "nm": "Innocent",
+      "fam": "Compass / 12 core archetypes",
+      "def": "Openness paired with verification",
+      "body": "Canonical behavior: takes it at face value. Native description: Hears what was said exactly as it was said.. Clear: Openness paired with verification. Distortion: Ignores repeated direct warnings out of idealism.",
+      "inferred": true,
+      "inferenceBasis": "Engine exact behavior plus research interpretation, not an empirically validated personality class",
+      "behavior": "RECEIVE → SEEK EVIDENCE → PRESERVE OPENNESS",
+      "triggerMechanism": "A claim invites immediate trust.",
+      "livedExample": "Checks a material promise without becoming cynical",
+      "impact": "Compare intended value, actual action and harm without assigning a fixed personality label.",
+      "practice": "Run one concrete situation and compare observable clear action against distorted imitation.",
+      "oppositeId": null,
+      "oppositeDefinition": "Ignores repeated direct warnings out of idealism",
+      "oppositeStatus": "NOT_A_FIXED_POLAR_OPPOSITE",
+      "confidence": {
+        "native": "EXACT_SOURCE",
+        "lawNames": "EXACT_SOURCE",
+        "interpretation": "CANDIDATE",
+        "runtime": "NOT_WIRED"
+      },
+      "reviewStatus": "RESEARCH_RECORD_COMPLETE_NO_CANON_REGISTRATION",
+      "refer": "Carol Pearson, Margaret Mark and ATUNED original behavioral description",
+      "narrativeSource": "atuned_src/engine/data/canon.js#ARCH",
+      "researchSources": [
+        "https://carolspearson.com/about/the-pearson-12-archetype-system-human-development-and-evolution",
+        "https://books.google.com/books/about/The_Hero_and_the_Outlaw_Building_Extraor.html?id=l6qXGiTld1sC",
+        "https://pubmed.ncbi.nlm.nih.gov/38615492/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORY_AND_ENGINE_CANON",
+          "finding": "ATUNED canon calls Innocent \"takes it at face value\" and describes it: \"Hears what was said exactly as it was said.\". Jung-derived modern 12-archetype lineup is attributed to Carol S. Pearson and Margaret Mark, not directly a list Jung established.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#ARCH",
+            "https://carolspearson.com/about/the-pearson-12-archetype-system-human-development-and-evolution"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIORAL_MOVEMENT",
+          "finding": "Trigger: A claim invites immediate trust. Movement: RECEIVE → SEEK EVIDENCE → PRESERVE OPENNESS. Coherent behavior: Openness paired with verification.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#ARCH",
+            "ATUNED behavioral primitive framework"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "EXACT_MORAL_INTEGRITY_LAWS",
+          "finding": "Observed law expressions in active SI vocabulary: Truth (Throat); Awareness (Crown); Patience (Root). No law relation here is a new scoring input.",
+          "sources": [
+            "atuned_src/engine/data/canon.js#SI"
+          ]
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_DISCRIMINANT",
+          "finding": "Positive observation: Checks a material promise without becoming cynical. Contrary observation: Ignores repeated direct warnings out of idealism. Do not make fixed moral identities out of archetypes.",
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+            "https://pubmed.ncbi.nlm.nih.gov/15661671/"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "type": "PARADISO_RESONANCE",
+          "id": "paradiso:PD01",
+          "status": "CANDIDATE"
+        }
+      ],
+      "native": {
+        "v": "takes it at face value",
+        "d": "Hears what was said exactly as it was said.",
+        "seat": "Crown",
+        "originalIndex": 11
+      },
+      "integrityLawLinks": [
+        {
+          "name": "Truth",
+          "seat": "Throat",
+          "strength": "PRIMARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "name": "Awareness",
+          "seat": "Crown",
+          "strength": "PRIMARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "name": "Patience",
+          "seat": "Root",
+          "strength": "SECONDARY",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        }
+      ]
+    }
+  ]
+}
