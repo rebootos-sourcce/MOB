@@ -28,7 +28,9 @@
                   code carries no tier, on purpose: canon.json files Dark
                   Triad as a hyper-complex while its own note calls it a
                   super-complex, and MOB's DESCENT files Psychopathy as a
-                  super complex where canon.json files it a hyper-complex. A
+                  super complex where canon.json files it a hyper-complex
+                  (ruled so on 26 October: the super complex of the
+                  Grandiosity and Predatory pair alone). A
                   ruling that moves a record between registers changes its
                   filed field and never its code.
      pair         compute()'s complex rung, two saboteurs of one family: the

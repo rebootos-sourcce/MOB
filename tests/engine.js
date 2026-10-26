@@ -2237,9 +2237,98 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
  ok(darkRead(0.1,5).dark===false,'and a decoherent field with a benign shape is not either');
  ok(darkRead(0.9,5).dark===true,'the two together is');
  ok(darkRead(0.9,5).refer===true,'and at the floor it refers out');
- ok(darkRead(0.9,5).step&&darkRead(0.9,5).step.refer===true,'to the step that says so');
+ /* CHANGED 26 OCTOBER, with the ruling that ties Psychopathy to the chain.
+    This read "to the step that says so": the floor lit Psychopathy for any
+    dark field. A field handed no chain now names an untied step at the
+    floor, and the referral stays on, because it follows depth and not the
+    step. */
+ ok(darkRead(0.9,5).step&&darkRead(0.9,5).step.nm==='Machiavellianism'&&darkRead(0.9,5).refer===true,
+  'with no chain behind it the floor refers out and names no tied step, got '+(darkRead(0.9,5).step||{}).nm);
  ok(/licensed clinician/.test(DESCENT_REFER),'the referral names a clinician');
- ok(DESCENT.length===3&&DESCENT[2].refer===true,'three steps and the last is not ours to work');
+ /* CHANGED 26 OCTOBER. This counted three steps and read the last by
+    position, the two habits the repository rules out. Read by name. */
+ {const psyE=E.descentStep('Psychopathy'), socE=E.descentStep('Sociopathy');
+  ok(psyE&&psyE.refer===true&&DESCENT[DESCENT.length-1]===psyE,'the last step is Psychopathy and it is not ours to work');
+  ok(psyE.kind==='super complex'&&JSON.stringify(psyE.pair)==='["Grandiosity","Predatory"]',
+   'Psychopathy is a super complex of exactly Grandiosity and Predatory, '+JSON.stringify(psyE.pair));
+  ok(socE&&socE.kind==='hyper complex'&&socE.fam==='Predatory'&&!socE.refer,
+   'Sociopathy is the Predatory hyper complex and refers nobody by itself');
+  ok(E.HCX_LIB.some(h=>h.nm===socE.fam)&&psyE.pair.every(f=>E.HCX_LIB.some(h=>h.nm===f)),
+   'and every family a step is tied to is a family HCX_LIB carries');
+  /* the step is read off the chain it is handed, never off depth */
+  const hy=(nm,w,over)=>({kind:'hy',nm:nm,w:w,over:!!over});
+  ok(darkRead(0.9,25,{hys:[hy('Predatory',7)],psychopathy:null}).step===socE,
+   'a Predatory hyper complex in a dark field names Sociopathy, at any depth of the dark read');
+  ok(darkRead(0.9,5,{hys:[hy('Predatory',7,true)],psychopathy:null}).step!==socE,
+   'an overshoot is not its family');
+  ok(darkRead(0.9,25,{hys:[hy('Grandiosity',7),hy('Predatory',7)],psychopathy:{named:'Psychopathy'}}).step===psyE,
+   'the named super complex names Psychopathy, the deepest tied step first');
+  ok(darkRead(0.9,25,{hys:[hy('Grandiosity',7),hy('Predatory',7)],psychopathy:{named:'Psychopathy'}}).refer===false,
+   'and naming it does not move the referral, which still follows depth');
+  ok(darkRead(0.9,70,{hys:[hy('Predatory',7)],psychopathy:{named:'Psychopathy'}}).step===null,
+   'and nothing is named outside the dark read');}
+
+ /* THE NAMED SUPER COMPLEX IN THE ENGINE, 26 October. The contract, held on
+    every field the roster and a drive at named saboteurs can make: r.psychopathy
+    is set exactly when a Grandiosity and a Predatory hyper complex are both
+    in hys, neither overshot, at a mean weight that passes the super complex's
+    own gate, and inSups says whether the generic pairing by rank also paired
+    them. It never enters sups. Two of the driven fields must produce it, one
+    of them where the pairing by rank did not, or the probe proves nothing. */
+ {const drive=(names,ch,law,extra)=>{
+   reset(0,0,law);
+   Object.keys(S.addr).forEach(k=>{delete S.addr[k];});
+   const cfs={};
+   names.forEach(nm=>E.ALL_SAB.filter(s=>s.nm===nm)[0].nids.forEach(i=>{
+    S.addr[i]=10; const n=W.filter(x=>x.i===i)[0]; if(n&&n.cf)cfs[n.cf]=1;}));
+   Object.keys(cfs).forEach(c=>{S.charge[c]=ch;});
+   (extra||[]).forEach(nm=>E.ALL_SAB.filter(s=>s.nm===nm)[0].nids.forEach(i=>{S.addr[i]=10;}));
+   return compute();};
+  const G=['Micromanager','Hyper-Achiever','Judge','Dramatizer','Dreamer'];
+  const Pd=['Aggressor','Deflector','Skeptic','Manipulator'];
+  const heavy=E.ALL_SAB.filter(s=>!s.unnamed&&(s.hcx==='Collapse'||s.hcx==='Rigidity')).map(s=>s.nm);
+  const runs=[];
+  /* the roster read the way group 'the tier words' reads it, rd above */
+  PEOPLE.forEach(p=>{Object.keys(S.addr).forEach(k=>{delete S.addr[k];});
+   S.doms=p.doms?p.doms.slice():[p.dom]; S.arcs=p.arcs?p.arcs.slice():[p.a1,p.a2];
+   S.roots=p.roots?p.roots.slice():[]; buildSoul();
+   CHARGES.forEach(c=>{S.charge[c]=(p.c&&p.c[c])||0; S.replace[c]=(p.rep&&p.rep[c])||0;});
+   const LS=LAWSET[p.nm]||{_:E.LAW_DEFAULT};
+   SINAMES.forEach(l=>S.law[l]=(LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:E.LAW_DEFAULT)); lawsIn();
+   runs.push(['roster '+p.nm,compute()]);});
+  [4,5,6,7].forEach(ch=>{
+   runs.push(['Grandiosity at '+ch,drive(G,ch,2)]);
+   runs.push(['Predatory at '+ch,drive(Pd,ch,2)]);
+   runs.push(['both at '+ch,drive(G.concat(Pd),ch,2)]);
+   runs.push(['both at '+ch+' under Collapse and Rigidity',drive(G.concat(Pd),ch,2,heavy)]);});
+  /* a flat field with both families light: both hyper complexes form and
+     sit under the gate, which is the field that holds the gate itself */
+  {reset(5,0,2); Object.keys(S.addr).forEach(k=>{delete S.addr[k];});
+   /* Dreamer left out: with it Grandiosity clears the gate on its own */
+   G.filter(nm=>nm!=='Dreamer').concat(Pd).forEach(nm=>E.ALL_SAB.filter(s=>s.nm===nm)[0].nids.forEach(i=>{S.addr[i]=5;}));
+   runs.push(['both light on a flat field',compute()]);}
+  let bad=[], fired=0, offRank=0, under=0;
+  runs.forEach(([nm,r])=>{
+   const parts=r.hys.filter(h=>!h.over&&(h.nm==='Grandiosity'||h.nm==='Predatory'));
+   const w=parts.length===2?(parts[0].w+parts[1].w)/2:0;
+   const want=parts.length===2&&w>=5.6;
+   if(parts.length===2&&w<5.6)under++;
+   const p=r.psychopathy;
+   if(want!==!!p)bad.push(nm+': want '+want+' got '+!!p);
+   if(p){fired++;
+    const both=r.sups.some(s=>s.parts.indexOf(parts[0])>=0&&s.parts.indexOf(parts[1])>=0);
+    if(p.inSups!==both)bad.push(nm+': inSups '+p.inSups+' against '+both);
+    if(!p.inSups)offRank++;
+    if(r.sups.indexOf(p)>=0)bad.push(nm+': it entered sups');
+    if(p.named!=='Psychopathy'||p.kind!=='sup'||Math.abs(p.w-w)>1e-9)bad.push(nm+': shape '+p.named+' '+p.kind+' '+p.w);}});
+  ok(bad.length===0,'r.psychopathy is set exactly when both hyper complexes clear the gate, on '+runs.length+' fields: '+bad.slice(0,3).join('; '));
+  ok(fired>=2,'and a drive at named saboteurs produces it, '+fired+' times');
+  ok(under>=1,'and a field where both form under the gate is in the sweep, so the gate is held too, '+under+' times');
+  ok(offRank>=1,'including where the pairing by rank paired them with something else, '+offRank+' times');
+  ok(drive(Pd,5,2).psychopathy===null&&drive(Pd,5,2).hys.some(h=>h.nm==='Predatory'),
+   'Predatory alone builds its hyper complex and no Psychopathy');
+  Object.keys(S.addr).forEach(k=>{delete S.addr[k];});
+  reset();}
  /* never a label on a person. the sentence has to say what it is a reading of. */
  ok(/not of who is running it/.test(darkRead(0.9,5).say),
   'and the dark read says it is a reading of what runs, not of the person');

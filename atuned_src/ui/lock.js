@@ -220,6 +220,8 @@ function sightR(r){
  v.cxs=planSees(pl,'cx',gf)?r.cxs:[];
  v.hys=planSees(pl,'hy',gf)?r.hys:[];
  v.sups=planSees(pl,'sup',gf)?r.sups:[];
+ /* the named super complex is that rung, so it locks with it */
+ v.psychopathy=planSees(pl,'sup',gf)?r.psychopathy:null;
  v.mask=v.sups[0]||v.hys[0]||v.cxs[0]||v.sabs[0]||null;
  /* the layers the plan cannot see, so a renderer can say why a list is empty
     instead of saying nothing is running */
