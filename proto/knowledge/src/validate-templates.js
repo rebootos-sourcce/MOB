@@ -104,6 +104,37 @@ for (const e of entries.filter(x => x.kind === 'hypercomplex')) {
   const opposite = entries.find(x => x.id === e.oppositeId);
   if (!opposite || !(opposite.links || []).includes(e.id)) errors.push(e.id + ': missing reciprocal inferred counterpart');
 }
+/* Check the actual merged runtime, not only the separate JSON namespace.
+   These tests never promote unresolved source-level taxonomy mappings. */
+if (dpRegistry && Array.isArray(dpRegistry.records)) {
+  dpSummary.runtimeRecordCount = 0;
+  dpSummary.runtimeCrossSystemLinks = 0;
+  dpSummary.runtimeNonreciprocalLinks = [];
+  for (const source of dpRegistry.records) {
+    const runtime = byId.get(source.id);
+    if (!runtime || runtime.kind !== 'psych_' + source.kind) {
+      errors.push(source.id + ': no runtime psychological entry');
+      continue;
+    }
+    dpSummary.runtimeRecordCount++;
+    for (const targetId of runtime.links || []) {
+      const target=byId.get(targetId);
+      if (!target) { errors.push(runtime.id + ': missing runtime link ' + targetId); continue; }
+      if (!(target.links || []).includes(runtime.id)) {
+        dpSummary.runtimeNonreciprocalLinks.push({from:runtime.id,to:targetId});
+      }
+      if (String(target.kind).indexOf('psych_') !== 0) dpSummary.runtimeCrossSystemLinks++;
+    }
+  }
+  if (dpSummary.runtimeNonreciprocalLinks.length)
+    errors.push('Deep Psychological runtime has '+dpSummary.runtimeNonreciprocalLinks.length+' one-way links');
+  dpSummary.experientialGraphIntegrated =
+    dpSummary.runtimeRecordCount===dpRegistry.records.length &&
+    dpSummary.runtimeCrossSystemLinks>0 && !dpSummary.runtimeNonreciprocalLinks.length;
+  if (!dpSummary.experientialGraphIntegrated)
+    errors.push('Deep Psychological runtime graph not integrated');
+}
+
 for (const kind of requiredKinds) {
   if (!counts[kind]) errors.push('required domain kind absent from generated catalog: ' + kind);
 }
