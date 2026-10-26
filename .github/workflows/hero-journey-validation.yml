@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -27,6 +27,12 @@ jobs:
         run: PATH="$GITHUB_WORKSPACE/atuned_funnel_system/node_modules/.bin:$PATH" sh ./atuned_src/BUILD.sh
       - name: Verify the funnel's typed adapter suite
         run: npm test --prefix atuned_funnel_system
+      - name: Install headless browser test runner
+        run: |
+          npm install --prefix atuned_funnel_system --no-save playwright
+          ./atuned_funnel_system/node_modules/.bin/playwright install chromium
+      - name: Exercise actual avatar in Chromium
+        run: NODE_PATH="$GITHUB_WORKSPACE/atuned_funnel_system/node_modules" node tests/herojourney-ui.js
       - name: Confirm avatar modules exist in built product
         run: |
           grep -q 'function hjLocate' source.html
