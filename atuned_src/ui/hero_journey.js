@@ -74,7 +74,9 @@ function hjCss(){
 function hjSafe(s){return esc(String(s==null?'':s));}
 function hjPanel(st){
  if(typeof hjRead!=='function')return '';
- hjCss();var p=CURP,h=hjRead(p,st&&st.r),loc=h.location,a=h.active;
+ hjCss();/* A visiting reader may browse any encounter without changing the owner's saved quest. */
+ var p=CURP,h=hjRead(p,st&&st.r),loc=h.location,
+  a=(!avOwn()&&HJ_VIEW_ONLY?hjScene(HJ_VIEW_ONLY):null)||h.active;
  var pc=h.cq==null?50:Math.max(0,Math.min(100,h.cq));
  var visual=hjFigureHtml(h);
  var out='<section class="hj-panel" aria-label="Hero&#39;s Journey Board and avatar position" style="--hjp:'+pc+';--hjprogress:'+pc+'%">';

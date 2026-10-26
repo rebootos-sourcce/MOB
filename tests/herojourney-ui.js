@@ -73,6 +73,19 @@ const url='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1
    if(invite)invite.click();
    data.affirmationSeat=AV.seat;
    data.affirmationEditor=!!document.querySelector('[data-avf="be"]');
+   /* Visitor selection is an ephemeral view, not a write to the owner. */
+   const savedOwn=avOwn, savedView=HJ_VIEW_ONLY;
+   const persistedScene=CURP.avatar.activeJourneyScene;
+   try {
+    avOwn=function(){return false;};
+    HJ_EXPANDED=true;renderAvatar();
+    const visitorButton=document.querySelector('[data-hjscene="game:purgatorio:P02"]');
+    if(visitorButton)visitorButton.click();
+    data.visitorSelected=HJ_VIEW_ONLY;
+    const shown=document.querySelector('.hj-story b');
+    data.visitorShowsChosen=!!shown&&shown.textContent===hjScene('game:purgatorio:P02').title;
+    data.visitorPreservesOwner=CURP.avatar.activeJourneyScene===persistedScene;
+   }finally{avOwn=savedOwn;HJ_VIEW_ONLY=savedView;}
    return data;
   });
   assert.equal(result.rendered,true,'Board renders on existing avatar');
@@ -99,6 +112,9 @@ const url='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1
   assert.equal(result.affirmationDoor,true,'ascent offers a becoming affirmation');
   assert.equal(result.affirmationSeat,'Throat','Truth scene opens its law seat');
   assert.equal(result.affirmationEditor,true,'existing avatar writer is used');
+  assert.equal(result.visitorSelected,'game:purgatorio:P02','visitor may select an encounter');
+  assert.equal(result.visitorShowsChosen,true,'visitor sees the selected encounter, not the saved owner quest');
+  assert.equal(result.visitorPreservesOwner,true,'visitor does not overwrite owner-selected encounter');
   assert.equal(errors.length,0,'browser execution has no unhandled errors: '+errors.join('; '));
   console.log('PASS hero journey real-browser: '+JSON.stringify(result));
   await page.close();
