@@ -44,7 +44,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: deep-psyche-graph-audit
-          path: |\n            deep-psyche-audit.json\n            deep-psyche-8-audit.json
+          path: |
+            deep-psyche-audit.json
+            deep-psyche-8-audit.json
       - name: Commit generated graph on integration branch after successful runtime tests
         if: github.event_name == 'push' && success()
         run: |
