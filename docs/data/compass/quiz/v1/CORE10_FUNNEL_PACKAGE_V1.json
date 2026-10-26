@@ -1,0 +1,864 @@
+{
+  "schemaVersion": "1.0.0",
+  "release": "ATUNED-CORE10-FUNNEL-DRAFT-V1",
+  "date": "2026-10-26",
+  "status": "CONTENT_COMPLETE_APPROVAL_AND_INTEGRATION_PENDING",
+  "intent": "10 canonical integrity laws, each triangulated in behavior, under pressure and prospective mechanism; vignette teaches coherence as intention/action alignment",
+  "sourceCanon": {
+    "path": "atuned_src/engine/data/canon.js",
+    "identityKey": "SI.nm",
+    "count": 21
+  },
+  "selection": {
+    "lawCount": 10,
+    "selectedLaws": [
+      "Truth",
+      "Transparency",
+      "Unity",
+      "Presence",
+      "Compassion",
+      "Courage",
+      "Duty",
+      "Accountability",
+      "Temperance",
+      "Non-Harm"
+    ],
+    "bandsCovered": [
+      "3rd Eye",
+      "Crown",
+      "Heart",
+      "Root",
+      "Sacral",
+      "Solar",
+      "Throat"
+    ],
+    "selectionStatus": "OWNER_APPROVED_EDITORIAL_CORE10_NOT_PSYCHOMETRICALLY_SELECTED",
+    "remainingLawCount": 11
+  },
+  "assessment": {
+    "intro": "Think of the past 30 days. Answer based on what you actually did when you had a fair chance to choose. There is no penalty for skipping or saying a situation did not apply.",
+    "scoreAnchors": {
+      "0": "Never",
+      "5": "About half the eligible times",
+      "10": "Always"
+    },
+    "oscillationBand": [
+      4,
+      6
+    ],
+    "notStatisticalAverage": true,
+    "registers": [
+      {
+        "key": "BEHAVIOR",
+        "scoreType": "REPORTED_FREQUENCY_0_10",
+        "meaning": "How regularly the action occurred in eligible situations"
+      },
+      {
+        "key": "PRESSURE",
+        "scoreType": "REPORTED_FREQUENCY_0_10",
+        "meaning": "How regularly action occurred in higher-cost opportunities",
+        "skipWhenNoOpportunity": true
+      },
+      {
+        "key": "MECHANISM",
+        "scoreType": "UNSCORED_OPTION_OR_TEXT",
+        "meaning": "User's own anticipated outcome or protective reason, not proof of cause"
+      }
+    ],
+    "results": "OPTIONAL CORE10_SELF_REPORT_INDEX ONLY; never label as full 21-law CQ until a versioned and validated bridge to the canonical engine exists",
+    "journalAdjustment": "PRESERVE_RAW_SELF_REPORT_AND_PRESSURE_RATINGS; PROPOSE_EVIDENCE_WITH_EXPLICIT_USER_CONFIRMATION; DO_NOT_SILENTLY_REWRITE",
+    "privacy": "No profile storage or journal inference without notice and permission; no sensitive raw entries in shareable link",
+    "onSkip": "Unanswered and not-applicable remain NULL; never substitute 0",
+    "userAutonomy": "Don't judge protective silence, sensible boundaries, disability, scarcity, exhaustion or coercion as automatically immoral"
+  },
+  "totals": {
+    "laws": 10,
+    "questions": 30,
+    "numeric": 20,
+    "mechanism": 10,
+    "stories": 10,
+    "bands": 7
+  },
+  "records": [
+    {
+      "id": "core10:v1:01",
+      "sourceLaw": "Truth",
+      "band": "Throat",
+      "lawOrder": 1,
+      "title": "Truth",
+      "displayStatus": "DRAFT_FOR_OWNER_REVIEW",
+      "questions": [
+        {
+          "id": "core10:v1:01:B",
+          "register": "BEHAVIOR",
+          "prompt": "When someone needed an honest answer, how often did you give it?",
+          "answer": {
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
+            "allowSkip": true
+          }
+        },
+        {
+          "id": "core10:v1:01:P",
+          "register": "PRESSURE",
+          "prompt": "When honesty could upset someone, how often did you still tell the truth when safe?",
+          "answer": {
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
+            "allowSkip": true
+          }
+        },
+        {
+          "id": "core10:v1:01:M",
+          "register": "MECHANISM",
+          "prompt": "When you held back, what were you afraid might happen?",
+          "answer": {
+            "type": "MULTI_SELECT_PLUS_TEXT",
+            "options": [
+              "Rejection",
+              "Conflict",
+              "Punishment",
+              "Loss of privacy",
+              "It was unsafe",
+              "Something else, in my own words",
+              "None of these",
+              "I'm not sure",
+              "Prefer not to answer"
+            ],
+            "allowSkip": true,
+            "scored": false,
+            "confirmationRequired": true
+          }
+        }
+      ],
+      "vignette": {
+        "title": "The promise you didn't mean",
+        "story": "A friend asks you to help this weekend. You already need rest, but you say yes to avoid disappointing them. By Saturday, you feel trapped and resentful.",
+        "alignedActionEffect": "You give an honest answer, even when it is uncomfortable. Both people can make a real choice.",
+        "misalignedActionEffect": "You hide your limits to keep approval. The promise and your real intention drift apart.",
+        "releaseReflection": "Notice the belief that an honest no will cost connection.",
+        "becomingAction": "Give one respectful, truthful answer about what you can actually do.",
+        "contextBoundary": "Privacy, danger and coercion are not failures to practice truth."
+      },
+      "previewContract": {
+        "showsUnderPressureGap": "ONLY_IF_BOTH_RATINGS_ANSWERED",
+        "mechanism": "SELF_SELECTED_CANDIDATE_NOT_CAUSE",
+        "miniCompassBand": "Throat",
+        "entryJourneySceneId": null,
+        "releaseProtocolId": null,
+        "becomingRitualId": null
+      },
+      "provenance": {
+        "sourceQuestions": "docs/data/compass/quiz/v1/INTEGRITY_THREE_DEPTH_QUESTIONS_V1.json",
+        "canon": "atuned_src/engine/data/canon.js#SI",
+        "status": "DRAFT_21_LAW_SUBSET_WITH_NEW_VIGNETTES"
+      }
+    },
+    {
+      "id": "core10:v1:02",
+      "sourceLaw": "Transparency",
+      "band": "Throat",
+      "lawOrder": 2,
+      "title": "Transparency",
+      "displayStatus": "DRAFT_FOR_OWNER_REVIEW",
+      "questions": [
+        {
+          "id": "core10:v1:02:B",
+          "register": "BEHAVIOR",
+          "prompt": "When your choices affected someone, how often did you share what they needed to know?",
+          "answer": {
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
+            "allowSkip": true
+          }
+        },
+        {
+          "id": "core10:v1:02:P",
+          "register": "PRESSURE",
+          "prompt": "When admitting a mistake felt embarrassing, how often did you tell them?",
+          "answer": {
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
+            "allowSkip": true
+          }
+        },
+        {
+          "id": "core10:v1:02:M",
+          "register": "MECHANISM",
+          "prompt": "When you hid something important, what were you trying to protect?",
+          "answer": {
+            "type": "MULTI_SELECT_PLUS_TEXT",
+            "options": [
+              "Reputation",
+              "Trust",
+              "Privacy",
+              "Safety",
+              "Avoiding blame",
+              "Something else, in my own words",
+              "None of these",
+              "I'm not sure",
+              "Prefer not to answer"
+            ],
+            "allowSkip": true,
+            "scored": false,
+            "confirmationRequired": true
+          }
+        }
+      ],
+      "vignette": {
+        "title": "The mistake no one saw",
+        "story": "You spot an error in a shared project. Nobody else has noticed. If you say nothing, the team will make a decision using the wrong numbers.",
+        "alignedActionEffect": "You name the error and what it affects. Others can make informed choices and correct course.",
+        "misalignedActionEffect": "You protect your image by hiding something relevant. People act on incomplete information.",
+        "releaseReflection": "Notice the worry that admitting a mistake will make you less valuable.",
+        "becomingAction": "Share one necessary fact clearly with the person affected.",
+        "contextBoundary": "Transparency is not an obligation to share private or unsafe information."
+      },
+      "previewContract": {
+        "showsUnderPressureGap": "ONLY_IF_BOTH_RATINGS_ANSWERED",
+        "mechanism": "SELF_SELECTED_CANDIDATE_NOT_CAUSE",
+        "miniCompassBand": "Throat",
+        "entryJourneySceneId": null,
+        "releaseProtocolId": null,
+        "becomingRitualId": null
+      },
+      "provenance": {
+        "sourceQuestions": "docs/data/compass/quiz/v1/INTEGRITY_THREE_DEPTH_QUESTIONS_V1.json",
+        "canon": "atuned_src/engine/data/canon.js#SI",
+        "status": "DRAFT_21_LAW_SUBSET_WITH_NEW_VIGNETTES"
+      }
+    },
+    {
+      "id": "core10:v1:03",
+      "sourceLaw": "Unity",
+      "band": "Crown",
+      "lawOrder": 3,
+      "title": "Unity",
+      "displayStatus": "DRAFT_FOR_OWNER_REVIEW",
+      "questions": [
+        {
+          "id": "core10:v1:03:B",
+          "register": "BEHAVIOR",
+          "prompt": "When someone disagreed with you, how often did you treat them with respect?",
+          "answer": {
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
+            "allowSkip": true
+          }
+        },
+        {
+          "id": "core10:v1:03:P",
+          "register": "PRESSURE",
+          "prompt": "When your group judged someone, how often did you decide for yourself how to treat them?",
+          "answer": {
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
+            "allowSkip": true
+          }
+        },
+        {
+          "id": "core10:v1:03:M",
+          "register": "MECHANISM",
+          "prompt": "When respect was difficult, what felt threatened?",
+          "answer": {
+            "type": "MULTI_SELECT_PLUS_TEXT",
+            "options": [
+              "Belonging",
+              "Values",
+              "Safety",
+              "Pride",
+              "Old hurt",
+              "Something else, in my own words",
+              "None of these",
+              "I'm not sure",
+              "Prefer not to answer"
+            ],
+            "allowSkip": true,
+            "scored": false,
+            "confirmationRequired": true
+          }
+        }
+      ],
+      "vignette": {
+        "title": "The person everyone disagrees with",
+        "story": "A group conversation turns against someone who sees things differently. You don't agree with them, but you notice people are talking as if they matter less.",
+        "alignedActionEffect": "You keep your judgment of an idea separate from your respect for a person.",
+        "misalignedActionEffect": "You join in treating a person as less worthy because they differ from your group.",
+        "releaseReflection": "Notice the need to belong that can overpower your own values.",
+        "becomingAction": "Disagree with one idea without diminishing the person.",
+        "contextBoundary": "Equal dignity doesn't require agreement or staying near someone unsafe."
+      },
+      "previewContract": {
+        "showsUnderPressureGap": "ONLY_IF_BOTH_RATINGS_ANSWERED",
+        "mechanism": "SELF_SELECTED_CANDIDATE_NOT_CAUSE",
+        "miniCompassBand": "Crown",
+        "entryJourneySceneId": null,
+        "releaseProtocolId": null,
+        "becomingRitualId": null
+      },
+      "provenance": {
+        "sourceQuestions": "docs/data/compass/quiz/v1/INTEGRITY_THREE_DEPTH_QUESTIONS_V1.json",
+        "canon": "atuned_src/engine/data/canon.js#SI",
+        "status": "DRAFT_21_LAW_SUBSET_WITH_NEW_VIGNETTES"
+      }
+    },
+    {
+      "id": "core10:v1:04",
+      "sourceLaw": "Presence",
+      "band": "3rd Eye",
+      "lawOrder": 4,
+      "title": "Presence",
+      "displayStatus": "DRAFT_FOR_OWNER_REVIEW",
+      "questions": [
+        {
+          "id": "core10:v1:04:B",
+          "register": "BEHAVIOR",
+          "prompt": "When someone was speaking, how often did you give them your attention?",
+          "answer": {
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
+            "allowSkip": true
+          }
+        },
+        {
+          "id": "core10:v1:04:P",
+          "register": "PRESSURE",
+          "prompt": "When worry or distraction interrupted you, how often did you return to the moment?",
+          "answer": {
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
+            "allowSkip": true
+          }
+        },
+        {
+          "id": "core10:v1:04:M",
+          "register": "MECHANISM",
+          "prompt": "When you drifted away, what drew your attention?",
+          "answer": {
+            "type": "MULTI_SELECT_PLUS_TEXT",
+            "options": [
+              "Future worries",
+              "Past events",
+              "Overload",
+              "Restlessness",
+              "Wanting escape",
+              "Something else, in my own words",
+              "None of these",
+              "I'm not sure",
+              "Prefer not to answer"
+            ],
+            "allowSkip": true,
+            "scored": false,
+            "confirmationRequired": true
+          }
+        }
+      ],
+      "vignette": {
+        "title": "The conversation you missed",
+        "story": "Someone close to you is telling you about a hard day. Your phone lights up. You keep checking it and miss what they actually needed.",
+        "alignedActionEffect": "You return your attention and understand more accurately what is being shared.",
+        "misalignedActionEffect": "You leave the moment without noticing. Assumptions replace what was actually said.",
+        "releaseReflection": "Notice what pulls your attention away, without judging the distraction itself.",
+        "becomingAction": "Put one distraction aside and listen long enough to reflect back what you heard.",
+        "contextBoundary": "Pain, disability, nervous-system load and divided demands can limit attention; adjust expectations fairly."
+      },
+      "previewContract": {
+        "showsUnderPressureGap": "ONLY_IF_BOTH_RATINGS_ANSWERED",
+        "mechanism": "SELF_SELECTED_CANDIDATE_NOT_CAUSE",
+        "miniCompassBand": "3rd Eye",
+        "entryJourneySceneId": null,
+        "releaseProtocolId": null,
+        "becomingRitualId": null
+      },
+      "provenance": {
+        "sourceQuestions": "docs/data/compass/quiz/v1/INTEGRITY_THREE_DEPTH_QUESTIONS_V1.json",
+        "canon": "atuned_src/engine/data/canon.js#SI",
+        "status": "DRAFT_21_LAW_SUBSET_WITH_NEW_VIGNETTES"
+      }
+    },
+    {
+      "id": "core10:v1:05",
+      "sourceLaw": "Compassion",
+      "band": "Heart",
+      "lawOrder": 5,
+      "title": "Compassion",
+      "displayStatus": "DRAFT_FOR_OWNER_REVIEW",
+      "questions": [
+        {
+          "id": "core10:v1:05:B",
+          "register": "BEHAVIOR",
+          "prompt": "When someone struggled, how often did you take their feelings seriously?",
+          "answer": {
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
+            "allowSkip": true
+          }
+        },
+        {
+          "id": "core10:v1:05:P",
+          "register": "PRESSURE",
+          "prompt": "When tired or annoyed, how often did you stay kind without ignoring your limits?",
+          "answer": {
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
+            "allowSkip": true
+          }
+        },
+        {
+          "id": "core10:v1:05:M",
+          "register": "MECHANISM",
+          "prompt": "When you pulled away from someone's pain, what made it hard?",
+          "answer": {
+            "type": "MULTI_SELECT_PLUS_TEXT",
+            "options": [
+              "Being drained",
+              "Not knowing how to help",
+              "Fear of getting pulled in",
+              "Discomfort",
+              "My own hurt",
+              "Something else, in my own words",
+              "None of these",
+              "I'm not sure",
+              "Prefer not to answer"
+            ],
+            "allowSkip": true,
+            "scored": false,
+            "confirmationRequired": true
+          }
+        }
+      ],
+      "vignette": {
+        "title": "Fixing when they needed listening",
+        "story": "A colleague tells you they're overwhelmed. You immediately list solutions. Later you realize they needed to be heard before they could think about next steps.",
+        "alignedActionEffect": "You make space for the person's actual needs while keeping your own limits.",
+        "misalignedActionEffect": "You try to stop your discomfort by fixing or dismissing the other person.",
+        "releaseReflection": "Notice the urge to end discomfort quickly.",
+        "becomingAction": "Ask once: 'Would listening or problem-solving help more?'",
+        "contextBoundary": "Compassion does not require self-sacrifice, endless availability or ignoring boundaries."
+      },
+      "previewContract": {
+        "showsUnderPressureGap": "ONLY_IF_BOTH_RATINGS_ANSWERED",
+        "mechanism": "SELF_SELECTED_CANDIDATE_NOT_CAUSE",
+        "miniCompassBand": "Heart",
+        "entryJourneySceneId": null,
+        "releaseProtocolId": null,
+        "becomingRitualId": null
+      },
+      "provenance": {
+        "sourceQuestions": "docs/data/compass/quiz/v1/INTEGRITY_THREE_DEPTH_QUESTIONS_V1.json",
+        "canon": "atuned_src/engine/data/canon.js#SI",
+        "status": "DRAFT_21_LAW_SUBSET_WITH_NEW_VIGNETTES"
+      }
+    },
+    {
+      "id": "core10:v1:06",
+      "sourceLaw": "Courage",
+      "band": "Solar",
+      "lawOrder": 6,
+      "title": "Courage",
+      "displayStatus": "DRAFT_FOR_OWNER_REVIEW",
+      "questions": [
+        {
+          "id": "core10:v1:06:B",
+          "register": "BEHAVIOR",
+          "prompt": "When something mattered but felt scary, how often did you take a reasonably safe step?",
+          "answer": {
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
+            "allowSkip": true
+          }
+        },
+        {
+          "id": "core10:v1:06:P",
+          "register": "PRESSURE",
+          "prompt": "When speaking up might bring disapproval, how often did you speak when safe?",
+          "answer": {
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
+            "allowSkip": true
+          }
+        },
+        {
+          "id": "core10:v1:06:M",
+          "register": "MECHANISM",
+          "prompt": "When you held back, what did you expect could happen?",
+          "answer": {
+            "type": "MULTI_SELECT_PLUS_TEXT",
+            "options": [
+              "Rejection",
+              "Loss",
+              "Conflict",
+              "Uncertainty",
+              "Real danger",
+              "Something else, in my own words",
+              "None of these",
+              "I'm not sure",
+              "Prefer not to answer"
+            ],
+            "allowSkip": true,
+            "scored": false,
+            "confirmationRequired": true
+          }
+        }
+      ],
+      "vignette": {
+        "title": "The conversation you keep delaying",
+        "story": "A workplace issue keeps coming back. You know a conversation could help, but you rehearse it for days because you're worried how it will land.",
+        "alignedActionEffect": "You take a proportionate, reasonably safe step aligned with what matters.",
+        "misalignedActionEffect": "You avoid every possible step and let an important issue continue without review.",
+        "releaseReflection": "Notice whether rejection, conflict or uncertainty is driving the delay.",
+        "becomingAction": "Choose one small, safe action toward the conversation.",
+        "contextBoundary": "Declining to enter danger is sound judgment, not lack of courage."
+      },
+      "previewContract": {
+        "showsUnderPressureGap": "ONLY_IF_BOTH_RATINGS_ANSWERED",
+        "mechanism": "SELF_SELECTED_CANDIDATE_NOT_CAUSE",
+        "miniCompassBand": "Solar",
+        "entryJourneySceneId": null,
+        "releaseProtocolId": null,
+        "becomingRitualId": null
+      },
+      "provenance": {
+        "sourceQuestions": "docs/data/compass/quiz/v1/INTEGRITY_THREE_DEPTH_QUESTIONS_V1.json",
+        "canon": "atuned_src/engine/data/canon.js#SI",
+        "status": "DRAFT_21_LAW_SUBSET_WITH_NEW_VIGNETTES"
+      }
+    },
+    {
+      "id": "core10:v1:07",
+      "sourceLaw": "Duty",
+      "band": "Solar",
+      "lawOrder": 7,
+      "title": "Duty",
+      "displayStatus": "DRAFT_FOR_OWNER_REVIEW",
+      "questions": [
+        {
+          "id": "core10:v1:07:B",
+          "register": "BEHAVIOR",
+          "prompt": "When you made a promise you could reasonably keep, how often did you follow through?",
+          "answer": {
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
+            "allowSkip": true
+          }
+        },
+        {
+          "id": "core10:v1:07:P",
+          "register": "PRESSURE",
+          "prompt": "When you couldn't meet a commitment, how often did you tell the other person in time?",
+          "answer": {
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
+            "allowSkip": true
+          }
+        },
+        {
+          "id": "core10:v1:07:M",
+          "register": "MECHANISM",
+          "prompt": "When a commitment slipped, what got in the way?",
+          "answer": {
+            "type": "MULTI_SELECT_PLUS_TEXT",
+            "options": [
+              "Overload",
+              "Difficulty saying no",
+              "Fear of disappointing someone",
+              "Avoidance",
+              "Changed circumstances",
+              "Something else, in my own words",
+              "None of these",
+              "I'm not sure",
+              "Prefer not to answer"
+            ],
+            "allowSkip": true,
+            "scored": false,
+            "confirmationRequired": true
+          }
+        }
+      ],
+      "vignette": {
+        "title": "The yes that became too much",
+        "story": "You agree to finish a task by Friday. New demands pile up, and by Wednesday you know you won't finish. You consider staying silent.",
+        "alignedActionEffect": "You keep workable promises, or speak up early so the other person can adapt.",
+        "misalignedActionEffect": "You hide an impossible commitment and let others discover the cost too late.",
+        "releaseReflection": "Notice the belief that disappointing someone makes you unworthy.",
+        "becomingAction": "Renegotiate one commitment while there is still time.",
+        "contextBoundary": "Forced obligations and unreasonable demands are not freely chosen duties."
+      },
+      "previewContract": {
+        "showsUnderPressureGap": "ONLY_IF_BOTH_RATINGS_ANSWERED",
+        "mechanism": "SELF_SELECTED_CANDIDATE_NOT_CAUSE",
+        "miniCompassBand": "Solar",
+        "entryJourneySceneId": null,
+        "releaseProtocolId": null,
+        "becomingRitualId": null
+      },
+      "provenance": {
+        "sourceQuestions": "docs/data/compass/quiz/v1/INTEGRITY_THREE_DEPTH_QUESTIONS_V1.json",
+        "canon": "atuned_src/engine/data/canon.js#SI",
+        "status": "DRAFT_21_LAW_SUBSET_WITH_NEW_VIGNETTES"
+      }
+    },
+    {
+      "id": "core10:v1:08",
+      "sourceLaw": "Accountability",
+      "band": "Solar",
+      "lawOrder": 8,
+      "title": "Accountability",
+      "displayStatus": "DRAFT_FOR_OWNER_REVIEW",
+      "questions": [
+        {
+          "id": "core10:v1:08:B",
+          "register": "BEHAVIOR",
+          "prompt": "When a mistake affected someone, how often did you try to repair it?",
+          "answer": {
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
+            "allowSkip": true
+          }
+        },
+        {
+          "id": "core10:v1:08:P",
+          "register": "PRESSURE",
+          "prompt": "When apologizing was uncomfortable, how often did you apologize directly when appropriate?",
+          "answer": {
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
+            "allowSkip": true
+          }
+        },
+        {
+          "id": "core10:v1:08:M",
+          "register": "MECHANISM",
+          "prompt": "When you delayed repair, what stopped you?",
+          "answer": {
+            "type": "MULTI_SELECT_PLUS_TEXT",
+            "options": [
+              "Shame",
+              "Rejection",
+              "Punishment",
+              "Not knowing what to do",
+              "Feeling it was too late",
+              "Something else, in my own words",
+              "None of these",
+              "I'm not sure",
+              "Prefer not to answer"
+            ],
+            "allowSkip": true,
+            "scored": false,
+            "confirmationRequired": true
+          }
+        }
+      ],
+      "vignette": {
+        "title": "The explanation before the apology",
+        "story": "You forget something that mattered to a friend. When they mention it, you immediately describe how busy you've been. They still haven't heard you own the impact.",
+        "alignedActionEffect": "You name what you did, acknowledge the effect, and offer a proportionate repair.",
+        "misalignedActionEffect": "You use a true explanation to avoid taking your share of responsibility.",
+        "releaseReflection": "Notice the fear that admitting a mistake makes you fundamentally bad.",
+        "becomingAction": "Say what happened and ask what repair would be useful, when appropriate.",
+        "contextBoundary": "Taking your share does not mean accepting blame for someone else's actions."
+      },
+      "previewContract": {
+        "showsUnderPressureGap": "ONLY_IF_BOTH_RATINGS_ANSWERED",
+        "mechanism": "SELF_SELECTED_CANDIDATE_NOT_CAUSE",
+        "miniCompassBand": "Solar",
+        "entryJourneySceneId": null,
+        "releaseProtocolId": null,
+        "becomingRitualId": null
+      },
+      "provenance": {
+        "sourceQuestions": "docs/data/compass/quiz/v1/INTEGRITY_THREE_DEPTH_QUESTIONS_V1.json",
+        "canon": "atuned_src/engine/data/canon.js#SI",
+        "status": "DRAFT_21_LAW_SUBSET_WITH_NEW_VIGNETTES"
+      }
+    },
+    {
+      "id": "core10:v1:09",
+      "sourceLaw": "Temperance",
+      "band": "Sacral",
+      "lawOrder": 9,
+      "title": "Temperance",
+      "displayStatus": "DRAFT_FOR_OWNER_REVIEW",
+      "questions": [
+        {
+          "id": "core10:v1:09:B",
+          "register": "BEHAVIOR",
+          "prompt": "When you'd had enough of something you wanted, how often did you stop?",
+          "answer": {
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
+            "allowSkip": true
+          }
+        },
+        {
+          "id": "core10:v1:09:P",
+          "register": "PRESSURE",
+          "prompt": "When stressed, how often did you choose what you needed over an escape that left you worse off?",
+          "answer": {
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
+            "allowSkip": true
+          }
+        },
+        {
+          "id": "core10:v1:09:M",
+          "register": "MECHANISM",
+          "prompt": "When you kept going past enough, what were you looking for?",
+          "answer": {
+            "type": "MULTI_SELECT_PLUS_TEXT",
+            "options": [
+              "Comfort",
+              "Stress relief",
+              "Control",
+              "Filling emptiness",
+              "Automatic habit",
+              "Something else, in my own words",
+              "None of these",
+              "I'm not sure",
+              "Prefer not to answer"
+            ],
+            "allowSkip": true,
+            "scored": false,
+            "confirmationRequired": true
+          }
+        }
+      ],
+      "vignette": {
+        "title": "One more hour",
+        "story": "You keep scrolling late at night, looking for a little relief after a hard day. An hour later, you're more tired and the relief hasn't lasted.",
+        "alignedActionEffect": "You recognize what you actually need and choose an action that supports it.",
+        "misalignedActionEffect": "You keep reaching for more even when it is no longer helping.",
+        "releaseReflection": "Notice whether comfort, avoidance or habit is behind the next reach.",
+        "becomingAction": "Pause at a familiar moment and choose rest, connection or another real need.",
+        "contextBoundary": "Do not label health conditions or basic needs as lack of temperance."
+      },
+      "previewContract": {
+        "showsUnderPressureGap": "ONLY_IF_BOTH_RATINGS_ANSWERED",
+        "mechanism": "SELF_SELECTED_CANDIDATE_NOT_CAUSE",
+        "miniCompassBand": "Sacral",
+        "entryJourneySceneId": null,
+        "releaseProtocolId": null,
+        "becomingRitualId": null
+      },
+      "provenance": {
+        "sourceQuestions": "docs/data/compass/quiz/v1/INTEGRITY_THREE_DEPTH_QUESTIONS_V1.json",
+        "canon": "atuned_src/engine/data/canon.js#SI",
+        "status": "DRAFT_21_LAW_SUBSET_WITH_NEW_VIGNETTES"
+      }
+    },
+    {
+      "id": "core10:v1:10",
+      "sourceLaw": "Non-Harm",
+      "band": "Root",
+      "lawOrder": 10,
+      "title": "Non-Harm",
+      "displayStatus": "DRAFT_FOR_OWNER_REVIEW",
+      "questions": [
+        {
+          "id": "core10:v1:10:B",
+          "register": "BEHAVIOR",
+          "prompt": "When upset, how often did you avoid unnecessary harm in what you said or did?",
+          "answer": {
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
+            "allowSkip": true
+          }
+        },
+        {
+          "id": "core10:v1:10:P",
+          "register": "PRESSURE",
+          "prompt": "When setting a boundary, how often did you do it without trying to punish the other person?",
+          "answer": {
+            "type": "FREQUENCY",
+            "min": 0,
+            "max": 10,
+            "allowNotApplicable": true,
+            "allowSkip": true
+          }
+        },
+        {
+          "id": "core10:v1:10:M",
+          "register": "MECHANISM",
+          "prompt": "When you wanted to hurt back, what felt threatened?",
+          "answer": {
+            "type": "MULTI_SELECT_PLUS_TEXT",
+            "options": [
+              "Being heard",
+              "Respect",
+              "Control",
+              "Safety",
+              "Being understood",
+              "Something else, in my own words",
+              "None of these",
+              "I'm not sure",
+              "Prefer not to answer"
+            ],
+            "allowSkip": true,
+            "scored": false,
+            "confirmationRequired": true
+          }
+        }
+      ],
+      "vignette": {
+        "title": "The true but cutting reply",
+        "story": "Someone upsets you. You have an accurate criticism ready, but you also know the way you could say it would be needlessly cruel.",
+        "alignedActionEffect": "You state what is true and set a firm limit without adding unnecessary injury.",
+        "misalignedActionEffect": "You use truth or silence as punishment and increase the damage.",
+        "releaseReflection": "Notice what part of you wants the other person to feel the pain you felt.",
+        "becomingAction": "Express one boundary without humiliation or retaliation.",
+        "contextBoundary": "Protecting yourself or others from immediate harm is not the same as unnecessary aggression."
+      },
+      "previewContract": {
+        "showsUnderPressureGap": "ONLY_IF_BOTH_RATINGS_ANSWERED",
+        "mechanism": "SELF_SELECTED_CANDIDATE_NOT_CAUSE",
+        "miniCompassBand": "Root",
+        "entryJourneySceneId": null,
+        "releaseProtocolId": null,
+        "becomingRitualId": null
+      },
+      "provenance": {
+        "sourceQuestions": "docs/data/compass/quiz/v1/INTEGRITY_THREE_DEPTH_QUESTIONS_V1.json",
+        "canon": "atuned_src/engine/data/canon.js#SI",
+        "status": "DRAFT_21_LAW_SUBSET_WITH_NEW_VIGNETTES"
+      }
+    }
+  ]
+}
