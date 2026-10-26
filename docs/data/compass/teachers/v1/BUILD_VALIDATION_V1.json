@@ -1,0 +1,12 @@
+{
+  "validation": "LOCAL_STRUCTURAL_PASS",
+  "recordCount": 23,
+  "teachers": 11,
+  "namedInversePoles": 8,
+  "candidateInversePatterns": 4,
+  "fourPassRecords": 23,
+  "notRuntime": true,
+  "notIndependentSourceCertificate": true,
+  "sourceCanonUntouched": true,
+  "date": "2026-10-25"
+}

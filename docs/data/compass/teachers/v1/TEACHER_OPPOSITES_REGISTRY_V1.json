@@ -1,0 +1,2680 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "date": "2026-10-25",
+    "status": "FOUR_RESEARCH_LENSES_AUTHORING_COMPLETE__NOT_4_INDEPENDENT_EMPIRICAL_VERIFICATIONS__NOT_RUNTIME",
+    "sourceCompass": "atuned_src/engine/data/compass.js",
+    "canonicalMasterCount": 11,
+    "ownerUnnamedMasterNumber12": true,
+    "teacherRecordCount": 11,
+    "inverseRecordCount": 12,
+    "canonicalMirrors": 8,
+    "inferredBehavioralInverses": 4,
+    "requiredTemplateFields": [
+      "nm",
+      "fam",
+      "def",
+      "body",
+      "inferred",
+      "inferenceBasis",
+      "behavior",
+      "triggerMechanism",
+      "livedExample",
+      "impact",
+      "practice",
+      "oppositeId",
+      "oppositeDefinition",
+      "oppositeStatus",
+      "confidence",
+      "reviewStatus",
+      "refer",
+      "narrativeSource",
+      "researchSources",
+      "researchPasses",
+      "links"
+    ],
+    "scope": "COMPASS_ONLY",
+    "modelStatus": "CANDIDATE_MAPPING_NONNUMERIC",
+    "canonicalCqAltered": false,
+    "dqAltered": false,
+    "infernoRegistrySource": "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json",
+    "researchPassesPerRecord": 4
+  },
+  "records": [
+    {
+      "id": "compass-teacher:Akhenaten",
+      "kind": "compass_teacher",
+      "templateId": "TPL-COMPASS-TEACHER-INVERSE-V1",
+      "nm": "Akhenaten",
+      "fam": "Compass / Paradiso / teachers",
+      "def": "Light",
+      "body": "Source setting: New Kingdom Egypt; Aten reforms, royal theology, and displacement of Amun institutions. Royal centralization and coercion are counterevidence to a simple moral-hero framing. ATUNED quality: Light. Movement: Make a conviction explicit and subject claims to scrutiny instead of using institutional status as proof. Opposing mechanism: Claims of privileged access to truth can become compulsory belief and silencing of dissent. Observable: Names evidence and revises a claim without punishing disagreement. Caution: Do not treat suppression of other worship as coherent behavior; historical Akhenaten and ATUNED's metaphorical Light must remain distinct.",
+      "inferred": true,
+      "inferenceBasis": "Owner-directed interpretive modeling using existing Compass coordinates; source facts are distinguished from new behavioral claims.",
+      "behavior": "Make a conviction explicit and subject claims to scrutiny instead of using institutional status as proof.",
+      "triggerMechanism": "Claims of privileged access to truth can become compulsory belief and silencing of dissent.",
+      "livedExample": "Names evidence and revises a claim without punishing disagreement.",
+      "impact": "Practice a coherent response while retaining uncertainty about personal state and external conditions.",
+      "practice": "Record one event, chosen action, effect, contrary evidence, and any safe next step.",
+      "oppositeId": null,
+      "oppositeDefinition": "Claims of privileged access to truth can become compulsory belief and silencing of dissent.",
+      "oppositeStatus": "CANDIDATE_BEHAVIORAL_INVERSE_NOT_CANON",
+      "confidence": {
+        "source": "SOURCE_CONTEXT_SUPPORTED",
+        "sourceToBehavior": "INTERPRETIVE",
+        "mirror": "CANDIDATE",
+        "integration": "NOT_RUNTIME_WIRED"
+      },
+      "reviewStatus": "RESEARCH_V1_FOUR_LENSES__NOT_RUNTIME",
+      "refer": false,
+      "narrativeSource": "https://rsc.byu.edu/bible-readers-history-ancient-world/egypts-new-kingdom",
+      "researchSources": [
+        "https://rsc.byu.edu/bible-readers-history-ancient-world/egypts-new-kingdom"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_TEXT_AND_CONTEXT",
+          "finding": "New Kingdom Egypt; Aten reforms, royal theology, and displacement of Amun institutions. Royal centralization and coercion are counterevidence to a simple moral-hero framing.",
+          "sourceKind": "HISTORICAL_OR_TRADITIONAL_SOURCE",
+          "sources": [
+            "https://rsc.byu.edu/bible-readers-history-ancient-world/egypts-new-kingdom"
+          ],
+          "limits": "A religious narrative or philosophical lineage is not a measured physiological state."
+        },
+        {
+          "pass": 2,
+          "lens": "TEACHING_TO_OBSERVABLE_MOVEMENT",
+          "finding": "Teaching-path interpretation: Make a conviction explicit and subject claims to scrutiny instead of using institutional status as proof. Operational evidence: Names evidence and revises a claim without punishing disagreement. A visible act is needed before any application to a real person.",
+          "sourceKind": "BEHAVIORAL_TRANSLATION",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://rsc.byu.edu/bible-readers-history-ancient-world/egypts-new-kingdom"
+          ],
+          "limits": "ATUNED movement interpretation, not a textual quotation or personality diagnosis."
+        },
+        {
+          "pass": 3,
+          "lens": "ASCENT_LAWS_AND_OPPOSITE_RELATIONSHIPS",
+          "finding": "Candidate Paradiso resonances: paradiso:PD04, paradiso:PD10. Existing coordinate: X / Sat apex. Related active integrity laws: Truth, Transparency, Humility. Proposed opposite mechanism: Claims of privileged access to truth can become compulsory belief and silencing of dissent.. Amun priesthood is historical religious opposition, not necessarily the behavioral inversion; exact individual inverse unresolved.",
+          "sourceKind": "MODEL_CROSSWALK",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "atuned_src/engine/data/canon.js",
+            "https://rsc.byu.edu/bible-readers-history-ancient-world/egypts-new-kingdom"
+          ],
+          "limits": "Resonances are many-to-many and not numeric level assignments; mirror poles come from current engine only."
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_AND_ETHICAL_DISCONFIRMATION",
+          "finding": "Disconfirmation: Do not treat suppression of other worship as coherent behavior; historical Akhenaten and ATUNED's metaphorical Light must remain distinct. A self-described Light identity without independently described action does not establish the capacity. Report real-world alternatives and risk of coercion.",
+          "sourceKind": "CRITICAL_REVIEW",
+          "sources": [
+            "https://rsc.byu.edu/bible-readers-history-ancient-world/egypts-new-kingdom"
+          ],
+          "limits": "Research lenses are four documented analyses, not four independently peer-reviewed empirical validations."
+        }
+      ],
+      "links": [
+        {
+          "id": "paradiso:PD04",
+          "type": "PARADISO_CAPACITY_RESONANCE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        },
+        {
+          "id": "paradiso:PD10",
+          "type": "PARADISO_CAPACITY_RESONANCE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        },
+        {
+          "id": "compass-inverse:Doctrinal-Control",
+          "type": "INFERRED_OPPOSITE_MECHANISM",
+          "status": "CANDIDATE"
+        }
+      ],
+      "displayLabel": "Light",
+      "hiddenIdentity": "Akhenaten",
+      "sourceCoordinate": "X / Sat apex",
+      "candidateCompassAxes": [],
+      "candidateParadisoIds": [
+        "paradiso:PD04",
+        "paradiso:PD10"
+      ],
+      "integrityLawNames": [
+        "Truth",
+        "Transparency",
+        "Humility"
+      ],
+      "oppositeIds": [
+        "compass-inverse:Doctrinal-Control"
+      ],
+      "sourceCounterpart": "Amun priesthood is historical religious opposition, not necessarily the behavioral inversion; exact individual inverse unresolved.",
+      "safetyBoundary": "Do not treat suppression of other worship as coherent behavior; historical Akhenaten and ATUNED's metaphorical Light must remain distinct.",
+      "ritualOwnership": "PARADISO",
+      "ritualId": null,
+      "ritualStatus": "NEEDS_DESIGNED_PROTOCOL",
+      "levelAssignment": {
+        "kind": "NON_NUMERIC_BEHAVIORAL_COORDINATE",
+        "fixedSphere": null,
+        "scoreDerived": false
+      }
+    },
+    {
+      "id": "compass-teacher:Buddha",
+      "kind": "compass_teacher",
+      "templateId": "TPL-COMPASS-TEACHER-INVERSE-V1",
+      "nm": "Buddha",
+      "fam": "Compass / Paradiso / teachers",
+      "def": "Awareness",
+      "body": "Source setting: Early Buddhist teaching investigates suffering, craving, ignorance, the Middle Way, and the Eightfold Path. Mara is a Buddhist narrative figure and not the Compass canonical Geryon pole. ATUNED quality: Awareness. Movement: Notice suffering, distinguish craving from present evidence, act attentively without reactive identification. Opposing mechanism: Manufactured appearances and rigid projections masquerade as direct seeing. Observable: Corrects a mistaken perception after checking events and hears disconfirming testimony. Caution: Awareness must not be inferred from calm presentation or lack of visible emotion.",
+      "inferred": true,
+      "inferenceBasis": "Owner-directed interpretive modeling using existing Compass coordinates; source facts are distinguished from new behavioral claims.",
+      "behavior": "Notice suffering, distinguish craving from present evidence, act attentively without reactive identification.",
+      "triggerMechanism": "Manufactured appearances and rigid projections masquerade as direct seeing.",
+      "livedExample": "Corrects a mistaken perception after checking events and hears disconfirming testimony.",
+      "impact": "Practice a coherent response while retaining uncertainty about personal state and external conditions.",
+      "practice": "Record one event, chosen action, effect, contrary evidence, and any safe next step.",
+      "oppositeId": "compass-inverse:Geryon",
+      "oppositeDefinition": "Manufactured appearances and rigid projections masquerade as direct seeing.",
+      "oppositeStatus": "CANONICAL_MIRROR_FROM_COMPASS_JS__RELATIONSHIPS_MODEL_ONLY",
+      "confidence": {
+        "source": "SOURCE_CONTEXT_SUPPORTED",
+        "sourceToBehavior": "INTERPRETIVE",
+        "mirror": "ENGINE_CANON_POLE",
+        "integration": "NOT_RUNTIME_WIRED"
+      },
+      "reviewStatus": "RESEARCH_V1_FOUR_LENSES__NOT_RUNTIME",
+      "refer": false,
+      "narrativeSource": "https://onlinelibrary.wiley.com/doi/abs/10.1002/9781119009924.eopr0060",
+      "researchSources": [
+        "https://onlinelibrary.wiley.com/doi/abs/10.1002/9781119009924.eopr0060",
+        "https://unvis.it/www.britannica.com/topic/Four-Noble-Truths"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_TEXT_AND_CONTEXT",
+          "finding": "Early Buddhist teaching investigates suffering, craving, ignorance, the Middle Way, and the Eightfold Path. Mara is a Buddhist narrative figure and not the Compass canonical Geryon pole.",
+          "sourceKind": "HISTORICAL_OR_TRADITIONAL_SOURCE",
+          "sources": [
+            "https://onlinelibrary.wiley.com/doi/abs/10.1002/9781119009924.eopr0060",
+            "https://unvis.it/www.britannica.com/topic/Four-Noble-Truths"
+          ],
+          "limits": "A religious narrative or philosophical lineage is not a measured physiological state."
+        },
+        {
+          "pass": 2,
+          "lens": "TEACHING_TO_OBSERVABLE_MOVEMENT",
+          "finding": "Teaching-path interpretation: Notice suffering, distinguish craving from present evidence, act attentively without reactive identification. Operational evidence: Corrects a mistaken perception after checking events and hears disconfirming testimony. A visible act is needed before any application to a real person.",
+          "sourceKind": "BEHAVIORAL_TRANSLATION",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://onlinelibrary.wiley.com/doi/abs/10.1002/9781119009924.eopr0060",
+            "https://unvis.it/www.britannica.com/topic/Four-Noble-Truths"
+          ],
+          "limits": "ATUNED movement interpretation, not a textual quotation or personality diagnosis."
+        },
+        {
+          "pass": 3,
+          "lens": "ASCENT_LAWS_AND_OPPOSITE_RELATIONSHIPS",
+          "finding": "Candidate Paradiso resonances: paradiso:PD04, paradiso:PD07. Existing coordinate: Y / Chit apex. Related active integrity laws: Awareness, Presence, Equanimity. Proposed opposite mechanism: Manufactured appearances and rigid projections masquerade as direct seeing.. Mara is a narrative tempter in Buddhist stories; Geryon is the existing ATUNED Perception mirror only.",
+          "sourceKind": "MODEL_CROSSWALK",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "atuned_src/engine/data/canon.js",
+            "https://onlinelibrary.wiley.com/doi/abs/10.1002/9781119009924.eopr0060",
+            "https://unvis.it/www.britannica.com/topic/Four-Noble-Truths"
+          ],
+          "limits": "Resonances are many-to-many and not numeric level assignments; mirror poles come from current engine only."
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_AND_ETHICAL_DISCONFIRMATION",
+          "finding": "Disconfirmation: Awareness must not be inferred from calm presentation or lack of visible emotion. A self-described Awareness identity without independently described action does not establish the capacity. Report real-world alternatives and risk of coercion.",
+          "sourceKind": "CRITICAL_REVIEW",
+          "sources": [
+            "https://onlinelibrary.wiley.com/doi/abs/10.1002/9781119009924.eopr0060",
+            "https://unvis.it/www.britannica.com/topic/Four-Noble-Truths"
+          ],
+          "limits": "Research lenses are four documented analyses, not four independently peer-reviewed empirical validations."
+        }
+      ],
+      "links": [
+        {
+          "id": "paradiso:PD04",
+          "type": "PARADISO_CAPACITY_RESONANCE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        },
+        {
+          "id": "paradiso:PD07",
+          "type": "PARADISO_CAPACITY_RESONANCE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        },
+        {
+          "id": "compass:axis:PE",
+          "type": "ENGINE_CANON_COORDINATE",
+          "status": "ENGINE_SOURCE"
+        },
+        {
+          "id": "compass-inverse:Geryon",
+          "type": "CANON_MIRROR_BEHAVIORAL_POLE",
+          "status": "ENGINE_SOURCE_RELATIONSHIP_NOT_GRAPH_WIRED"
+        }
+      ],
+      "displayLabel": "Awareness",
+      "hiddenIdentity": "Buddha",
+      "sourceCoordinate": "Y / Chit apex",
+      "candidateCompassAxes": [
+        "PE"
+      ],
+      "candidateParadisoIds": [
+        "paradiso:PD04",
+        "paradiso:PD07"
+      ],
+      "integrityLawNames": [
+        "Awareness",
+        "Presence",
+        "Equanimity"
+      ],
+      "oppositeIds": [
+        "compass-inverse:Geryon"
+      ],
+      "sourceCounterpart": "Mara is a narrative tempter in Buddhist stories; Geryon is the existing ATUNED Perception mirror only.",
+      "safetyBoundary": "Awareness must not be inferred from calm presentation or lack of visible emotion.",
+      "ritualOwnership": "PARADISO",
+      "ritualId": null,
+      "ritualStatus": "NEEDS_DESIGNED_PROTOCOL",
+      "levelAssignment": {
+        "kind": "NON_NUMERIC_BEHAVIORAL_COORDINATE",
+        "fixedSphere": null,
+        "scoreDerived": false
+      }
+    },
+    {
+      "id": "compass-teacher:Jesus",
+      "kind": "compass_teacher",
+      "templateId": "TPL-COMPASS-TEACHER-INVERSE-V1",
+      "nm": "Jesus",
+      "fam": "Compass / Paradiso / teachers",
+      "def": "Love",
+      "body": "Source setting: The Sermon on the Mount presents enemy-love, mercy and a critique of retaliation. Jewish and Roman contexts are historically complex; modern stereotypes about any religious community are invalid. ATUNED quality: Love. Movement: Extend practical care without a demand for praise; revise hostility while keeping safety and truthful boundaries. Opposing mechanism: Performed virtue or rigid doctrine substitutes for freely given care. Observable: Helps a person without transaction and respects a boundary even when unseen. Caution: Forgiveness is not permission for continued abuse. Do not infer divinity or saintliness from a CQ reading.",
+      "inferred": true,
+      "inferenceBasis": "Owner-directed interpretive modeling using existing Compass coordinates; source facts are distinguished from new behavioral claims.",
+      "behavior": "Extend practical care without a demand for praise; revise hostility while keeping safety and truthful boundaries.",
+      "triggerMechanism": "Performed virtue or rigid doctrine substitutes for freely given care.",
+      "livedExample": "Helps a person without transaction and respects a boundary even when unseen.",
+      "impact": "Practice a coherent response while retaining uncertainty about personal state and external conditions.",
+      "practice": "Record one event, chosen action, effect, contrary evidence, and any safe next step.",
+      "oppositeId": null,
+      "oppositeDefinition": "Performed virtue or rigid doctrine substitutes for freely given care.",
+      "oppositeStatus": "CANONICAL_MIRROR_FROM_COMPASS_JS__RELATIONSHIPS_MODEL_ONLY",
+      "confidence": {
+        "source": "SOURCE_CONTEXT_SUPPORTED",
+        "sourceToBehavior": "INTERPRETIVE",
+        "mirror": "ENGINE_CANON_POLE",
+        "integration": "NOT_RUNTIME_WIRED"
+      },
+      "reviewStatus": "RESEARCH_V1_FOUR_LENSES__NOT_RUNTIME",
+      "refer": false,
+      "narrativeSource": "https://www.biblegateway.com/passage/?search=Matthew+5&version=NIV",
+      "researchSources": [
+        "https://www.biblegateway.com/passage/?search=Matthew+5&version=NIV"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_TEXT_AND_CONTEXT",
+          "finding": "The Sermon on the Mount presents enemy-love, mercy and a critique of retaliation. Jewish and Roman contexts are historically complex; modern stereotypes about any religious community are invalid.",
+          "sourceKind": "HISTORICAL_OR_TRADITIONAL_SOURCE",
+          "sources": [
+            "https://www.biblegateway.com/passage/?search=Matthew+5&version=NIV"
+          ],
+          "limits": "A religious narrative or philosophical lineage is not a measured physiological state."
+        },
+        {
+          "pass": 2,
+          "lens": "TEACHING_TO_OBSERVABLE_MOVEMENT",
+          "finding": "Teaching-path interpretation: Extend practical care without a demand for praise; revise hostility while keeping safety and truthful boundaries. Operational evidence: Helps a person without transaction and respects a boundary even when unseen. A visible act is needed before any application to a real person.",
+          "sourceKind": "BEHAVIORAL_TRANSLATION",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://www.biblegateway.com/passage/?search=Matthew+5&version=NIV"
+          ],
+          "limits": "ATUNED movement interpretation, not a textual quotation or personality diagnosis."
+        },
+        {
+          "pass": 3,
+          "lens": "ASCENT_LAWS_AND_OPPOSITE_RELATIONSHIPS",
+          "finding": "Candidate Paradiso resonances: paradiso:PD03, paradiso:PD08, paradiso:PD10. Existing coordinate: Z / Ananda apex; coherent poles IL and RE. Related active integrity laws: Compassion, Forgiveness, Generosity, Non-Harm. Proposed opposite mechanism: Performed virtue or rigid doctrine substitutes for freely given care.. Opposition by authorities in gospel narratives is historical-theological context, not an ethnic or religious enemy-class.",
+          "sourceKind": "MODEL_CROSSWALK",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "atuned_src/engine/data/canon.js",
+            "https://www.biblegateway.com/passage/?search=Matthew+5&version=NIV"
+          ],
+          "limits": "Resonances are many-to-many and not numeric level assignments; mirror poles come from current engine only."
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_AND_ETHICAL_DISCONFIRMATION",
+          "finding": "Disconfirmation: Forgiveness is not permission for continued abuse. Do not infer divinity or saintliness from a CQ reading. A self-described Love identity without independently described action does not establish the capacity. Report real-world alternatives and risk of coercion.",
+          "sourceKind": "CRITICAL_REVIEW",
+          "sources": [
+            "https://www.biblegateway.com/passage/?search=Matthew+5&version=NIV"
+          ],
+          "limits": "Research lenses are four documented analyses, not four independently peer-reviewed empirical validations."
+        }
+      ],
+      "links": [
+        {
+          "id": "paradiso:PD03",
+          "type": "PARADISO_CAPACITY_RESONANCE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        },
+        {
+          "id": "paradiso:PD08",
+          "type": "PARADISO_CAPACITY_RESONANCE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        },
+        {
+          "id": "paradiso:PD10",
+          "type": "PARADISO_CAPACITY_RESONANCE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        },
+        {
+          "id": "compass:axis:IL",
+          "type": "ENGINE_CANON_COORDINATE",
+          "status": "ENGINE_SOURCE"
+        },
+        {
+          "id": "compass:axis:RE",
+          "type": "ENGINE_CANON_COORDINATE",
+          "status": "ENGINE_SOURCE"
+        },
+        {
+          "id": "compass-inverse:Lucifer",
+          "type": "CANON_MIRROR_BEHAVIORAL_POLE",
+          "status": "ENGINE_SOURCE_RELATIONSHIP_NOT_GRAPH_WIRED"
+        },
+        {
+          "id": "compass-inverse:The-Furies",
+          "type": "CANON_MIRROR_BEHAVIORAL_POLE",
+          "status": "ENGINE_SOURCE_RELATIONSHIP_NOT_GRAPH_WIRED"
+        }
+      ],
+      "displayLabel": "Love",
+      "hiddenIdentity": "Jesus",
+      "sourceCoordinate": "Z / Ananda apex; coherent poles IL and RE",
+      "candidateCompassAxes": [
+        "IL",
+        "RE"
+      ],
+      "candidateParadisoIds": [
+        "paradiso:PD03",
+        "paradiso:PD08",
+        "paradiso:PD10"
+      ],
+      "integrityLawNames": [
+        "Compassion",
+        "Forgiveness",
+        "Generosity",
+        "Non-Harm"
+      ],
+      "oppositeIds": [
+        "compass-inverse:Lucifer",
+        "compass-inverse:The-Furies"
+      ],
+      "sourceCounterpart": "Opposition by authorities in gospel narratives is historical-theological context, not an ethnic or religious enemy-class.",
+      "safetyBoundary": "Forgiveness is not permission for continued abuse. Do not infer divinity or saintliness from a CQ reading.",
+      "ritualOwnership": "PARADISO",
+      "ritualId": null,
+      "ritualStatus": "NEEDS_DESIGNED_PROTOCOL",
+      "levelAssignment": {
+        "kind": "NON_NUMERIC_BEHAVIORAL_COORDINATE",
+        "fixedSphere": null,
+        "scoreDerived": false
+      }
+    },
+    {
+      "id": "compass-teacher:Krishna",
+      "kind": "compass_teacher",
+      "templateId": "TPL-COMPASS-TEACHER-INVERSE-V1",
+      "nm": "Krishna",
+      "fam": "Compass / Paradiso / teachers",
+      "def": "Flow",
+      "body": "Source setting: The Bhagavad Gita frames dialogue with Arjuna about duty, yoga and action without attachment to fruits. The Mahabharata is a complex epic involving warfare; not an injunction to violence in present-day practice. ATUNED quality: Flow. Movement: Choose an accountable action and release fixation on obtaining personal reward. Opposing mechanism: Clinging to an outcome overwhelms discernment; duty can be misused to rationalize harm. Observable: Adjusts method when new facts appear without abandoning responsibility. Caution: Do not equate detached action with emotional detachment from victims or indifference to consequences.",
+      "inferred": true,
+      "inferenceBasis": "Owner-directed interpretive modeling using existing Compass coordinates; source facts are distinguished from new behavioral claims.",
+      "behavior": "Choose an accountable action and release fixation on obtaining personal reward.",
+      "triggerMechanism": "Clinging to an outcome overwhelms discernment; duty can be misused to rationalize harm.",
+      "livedExample": "Adjusts method when new facts appear without abandoning responsibility.",
+      "impact": "Practice a coherent response while retaining uncertainty about personal state and external conditions.",
+      "practice": "Record one event, chosen action, effect, contrary evidence, and any safe next step.",
+      "oppositeId": null,
+      "oppositeDefinition": "Clinging to an outcome overwhelms discernment; duty can be misused to rationalize harm.",
+      "oppositeStatus": "CANDIDATE_BEHAVIORAL_INVERSE_NOT_CANON",
+      "confidence": {
+        "source": "SOURCE_CONTEXT_SUPPORTED",
+        "sourceToBehavior": "INTERPRETIVE",
+        "mirror": "CANDIDATE",
+        "integration": "NOT_RUNTIME_WIRED"
+      },
+      "reviewStatus": "RESEARCH_V1_FOUR_LENSES__NOT_RUNTIME",
+      "refer": false,
+      "narrativeSource": "https://erenow.org/ancient/the-bhagavad-gita-a-biography/2.php",
+      "researchSources": [
+        "https://erenow.org/ancient/the-bhagavad-gita-a-biography/2.php"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_TEXT_AND_CONTEXT",
+          "finding": "The Bhagavad Gita frames dialogue with Arjuna about duty, yoga and action without attachment to fruits. The Mahabharata is a complex epic involving warfare; not an injunction to violence in present-day practice.",
+          "sourceKind": "HISTORICAL_OR_TRADITIONAL_SOURCE",
+          "sources": [
+            "https://erenow.org/ancient/the-bhagavad-gita-a-biography/2.php"
+          ],
+          "limits": "A religious narrative or philosophical lineage is not a measured physiological state."
+        },
+        {
+          "pass": 2,
+          "lens": "TEACHING_TO_OBSERVABLE_MOVEMENT",
+          "finding": "Teaching-path interpretation: Choose an accountable action and release fixation on obtaining personal reward. Operational evidence: Adjusts method when new facts appear without abandoning responsibility. A visible act is needed before any application to a real person.",
+          "sourceKind": "BEHAVIORAL_TRANSLATION",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://erenow.org/ancient/the-bhagavad-gita-a-biography/2.php"
+          ],
+          "limits": "ATUNED movement interpretation, not a textual quotation or personality diagnosis."
+        },
+        {
+          "pass": 3,
+          "lens": "ASCENT_LAWS_AND_OPPOSITE_RELATIONSHIPS",
+          "finding": "Candidate Paradiso resonances: paradiso:PD09, paradiso:PD08. Existing coordinate: Z / Ananda in motion. Related active integrity laws: Detachment, Duty, Accountability. Proposed opposite mechanism: Clinging to an outcome overwhelms discernment; duty can be misused to rationalize harm.. Duryodhana is a narrative antagonist, not an approved ATUNED infernal mirror.",
+          "sourceKind": "MODEL_CROSSWALK",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "atuned_src/engine/data/canon.js",
+            "https://erenow.org/ancient/the-bhagavad-gita-a-biography/2.php"
+          ],
+          "limits": "Resonances are many-to-many and not numeric level assignments; mirror poles come from current engine only."
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_AND_ETHICAL_DISCONFIRMATION",
+          "finding": "Disconfirmation: Do not equate detached action with emotional detachment from victims or indifference to consequences. A self-described Flow identity without independently described action does not establish the capacity. Report real-world alternatives and risk of coercion.",
+          "sourceKind": "CRITICAL_REVIEW",
+          "sources": [
+            "https://erenow.org/ancient/the-bhagavad-gita-a-biography/2.php"
+          ],
+          "limits": "Research lenses are four documented analyses, not four independently peer-reviewed empirical validations."
+        }
+      ],
+      "links": [
+        {
+          "id": "paradiso:PD09",
+          "type": "PARADISO_CAPACITY_RESONANCE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        },
+        {
+          "id": "paradiso:PD08",
+          "type": "PARADISO_CAPACITY_RESONANCE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        },
+        {
+          "id": "compass-inverse:Clinging",
+          "type": "INFERRED_OPPOSITE_MECHANISM",
+          "status": "CANDIDATE"
+        }
+      ],
+      "displayLabel": "Flow",
+      "hiddenIdentity": "Krishna",
+      "sourceCoordinate": "Z / Ananda in motion",
+      "candidateCompassAxes": [],
+      "candidateParadisoIds": [
+        "paradiso:PD09",
+        "paradiso:PD08"
+      ],
+      "integrityLawNames": [
+        "Detachment",
+        "Duty",
+        "Accountability"
+      ],
+      "oppositeIds": [
+        "compass-inverse:Clinging"
+      ],
+      "sourceCounterpart": "Duryodhana is a narrative antagonist, not an approved ATUNED infernal mirror.",
+      "safetyBoundary": "Do not equate detached action with emotional detachment from victims or indifference to consequences.",
+      "ritualOwnership": "PARADISO",
+      "ritualId": null,
+      "ritualStatus": "NEEDS_DESIGNED_PROTOCOL",
+      "levelAssignment": {
+        "kind": "NON_NUMERIC_BEHAVIORAL_COORDINATE",
+        "fixedSphere": null,
+        "scoreDerived": false
+      }
+    },
+    {
+      "id": "compass-teacher:Rama",
+      "kind": "compass_teacher",
+      "templateId": "TPL-COMPASS-TEACHER-INVERSE-V1",
+      "nm": "Rama",
+      "fam": "Compass / Paradiso / teachers",
+      "def": "Alignment",
+      "body": "Source setting: Rama is a central figure in the Ramayana, which stages contested obligations of dharma and depicts Ravana as narrative antagonist. Treatments of Sita in versions of the story prompt major ethical debate. ATUNED quality: Alignment. Movement: Balance truthful commitment, protection and proportional duty under pressure. Opposing mechanism: Claims to duty or royal rank can mask possession, domination or imposition of duty on others. Observable: Admits competing obligations, refuses coercion and chooses an accountable response. Caution: Do not idealize contested treatment of Sita or encode subordination as moral virtue.",
+      "inferred": true,
+      "inferenceBasis": "Owner-directed interpretive modeling using existing Compass coordinates; source facts are distinguished from new behavioral claims.",
+      "behavior": "Balance truthful commitment, protection and proportional duty under pressure.",
+      "triggerMechanism": "Claims to duty or royal rank can mask possession, domination or imposition of duty on others.",
+      "livedExample": "Admits competing obligations, refuses coercion and chooses an accountable response.",
+      "impact": "Practice a coherent response while retaining uncertainty about personal state and external conditions.",
+      "practice": "Record one event, chosen action, effect, contrary evidence, and any safe next step.",
+      "oppositeId": null,
+      "oppositeDefinition": "Claims to duty or royal rank can mask possession, domination or imposition of duty on others.",
+      "oppositeStatus": "CANDIDATE_BEHAVIORAL_INVERSE_NOT_CANON",
+      "confidence": {
+        "source": "SOURCE_CONTEXT_SUPPORTED",
+        "sourceToBehavior": "INTERPRETIVE",
+        "mirror": "CANDIDATE",
+        "integration": "NOT_RUNTIME_WIRED"
+      },
+      "reviewStatus": "RESEARCH_V1_FOUR_LENSES__NOT_RUNTIME",
+      "refer": false,
+      "narrativeSource": "https://www.britannica.com/topic/Ramayana-Indian-epic",
+      "researchSources": [
+        "https://www.britannica.com/topic/Ramayana-Indian-epic"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_TEXT_AND_CONTEXT",
+          "finding": "Rama is a central figure in the Ramayana, which stages contested obligations of dharma and depicts Ravana as narrative antagonist. Treatments of Sita in versions of the story prompt major ethical debate.",
+          "sourceKind": "HISTORICAL_OR_TRADITIONAL_SOURCE",
+          "sources": [
+            "https://www.britannica.com/topic/Ramayana-Indian-epic"
+          ],
+          "limits": "A religious narrative or philosophical lineage is not a measured physiological state."
+        },
+        {
+          "pass": 2,
+          "lens": "TEACHING_TO_OBSERVABLE_MOVEMENT",
+          "finding": "Teaching-path interpretation: Balance truthful commitment, protection and proportional duty under pressure. Operational evidence: Admits competing obligations, refuses coercion and chooses an accountable response. A visible act is needed before any application to a real person.",
+          "sourceKind": "BEHAVIORAL_TRANSLATION",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://www.britannica.com/topic/Ramayana-Indian-epic"
+          ],
+          "limits": "ATUNED movement interpretation, not a textual quotation or personality diagnosis."
+        },
+        {
+          "pass": 3,
+          "lens": "ASCENT_LAWS_AND_OPPOSITE_RELATIONSHIPS",
+          "finding": "Candidate Paradiso resonances: paradiso:PD01, paradiso:PD05, paradiso:PD09. Existing coordinate: ∑ / Sat, Chit and Ananda held. Related active integrity laws: Duty, Responsibility, Non-Harm. Proposed opposite mechanism: Claims to duty or royal rank can mask possession, domination or imposition of duty on others.. Ravana is a narrative counterfigure, not an established Inferno canonical entity or the totality of a culture.",
+          "sourceKind": "MODEL_CROSSWALK",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "atuned_src/engine/data/canon.js",
+            "https://www.britannica.com/topic/Ramayana-Indian-epic"
+          ],
+          "limits": "Resonances are many-to-many and not numeric level assignments; mirror poles come from current engine only."
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_AND_ETHICAL_DISCONFIRMATION",
+          "finding": "Disconfirmation: Do not idealize contested treatment of Sita or encode subordination as moral virtue. A self-described Alignment identity without independently described action does not establish the capacity. Report real-world alternatives and risk of coercion.",
+          "sourceKind": "CRITICAL_REVIEW",
+          "sources": [
+            "https://www.britannica.com/topic/Ramayana-Indian-epic"
+          ],
+          "limits": "Research lenses are four documented analyses, not four independently peer-reviewed empirical validations."
+        }
+      ],
+      "links": [
+        {
+          "id": "paradiso:PD01",
+          "type": "PARADISO_CAPACITY_RESONANCE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        },
+        {
+          "id": "paradiso:PD05",
+          "type": "PARADISO_CAPACITY_RESONANCE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        },
+        {
+          "id": "paradiso:PD09",
+          "type": "PARADISO_CAPACITY_RESONANCE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        },
+        {
+          "id": "compass-inverse:Possessive-Dominion",
+          "type": "INFERRED_OPPOSITE_MECHANISM",
+          "status": "CANDIDATE"
+        }
+      ],
+      "displayLabel": "Alignment",
+      "hiddenIdentity": "Rama",
+      "sourceCoordinate": "∑ / Sat, Chit and Ananda held",
+      "candidateCompassAxes": [],
+      "candidateParadisoIds": [
+        "paradiso:PD01",
+        "paradiso:PD05",
+        "paradiso:PD09"
+      ],
+      "integrityLawNames": [
+        "Duty",
+        "Responsibility",
+        "Non-Harm"
+      ],
+      "oppositeIds": [
+        "compass-inverse:Possessive-Dominion"
+      ],
+      "sourceCounterpart": "Ravana is a narrative counterfigure, not an established Inferno canonical entity or the totality of a culture.",
+      "safetyBoundary": "Do not idealize contested treatment of Sita or encode subordination as moral virtue.",
+      "ritualOwnership": "PARADISO",
+      "ritualId": null,
+      "ritualStatus": "NEEDS_DESIGNED_PROTOCOL",
+      "levelAssignment": {
+        "kind": "NON_NUMERIC_BEHAVIORAL_COORDINATE",
+        "fixedSphere": null,
+        "scoreDerived": false
+      }
+    },
+    {
+      "id": "compass-teacher:Lao-Tzu",
+      "kind": "compass_teacher",
+      "templateId": "TPL-COMPASS-TEACHER-INVERSE-V1",
+      "nm": "Lao Tzu",
+      "fam": "Compass / Paradiso / teachers",
+      "def": "Non-Resistance",
+      "body": "Source setting: The Dao De Jing and Daoist philosophical tradition critique coercive social control and cultivate wu-wei or non-forcing. The historical biography of Laozi is not securely established. ATUNED quality: Non-Resistance. Movement: Respond in proportion to conditions rather than imposing unnecessary force. Opposing mechanism: Excessive command, overregulation and anxious intervention create the instability they claim to cure. Observable: Removes an unhelpful control and allows a reversible, safer choice. Caution: Non-forcing is not neglect of danger, necessary intervention or obligation.",
+      "inferred": true,
+      "inferenceBasis": "Owner-directed interpretive modeling using existing Compass coordinates; source facts are distinguished from new behavioral claims.",
+      "behavior": "Respond in proportion to conditions rather than imposing unnecessary force.",
+      "triggerMechanism": "Excessive command, overregulation and anxious intervention create the instability they claim to cure.",
+      "livedExample": "Removes an unhelpful control and allows a reversible, safer choice.",
+      "impact": "Practice a coherent response while retaining uncertainty about personal state and external conditions.",
+      "practice": "Record one event, chosen action, effect, contrary evidence, and any safe next step.",
+      "oppositeId": null,
+      "oppositeDefinition": "Excessive command, overregulation and anxious intervention create the instability they claim to cure.",
+      "oppositeStatus": "CANDIDATE_BEHAVIORAL_INVERSE_NOT_CANON",
+      "confidence": {
+        "source": "SOURCE_CONTEXT_SUPPORTED",
+        "sourceToBehavior": "INTERPRETIVE",
+        "mirror": "CANDIDATE",
+        "integration": "NOT_RUNTIME_WIRED"
+      },
+      "reviewStatus": "RESEARCH_V1_FOUR_LENSES__NOT_RUNTIME",
+      "refer": false,
+      "narrativeSource": "https://plato.stanford.edu/entries/daoism/",
+      "researchSources": [
+        "https://plato.stanford.edu/entries/daoism/",
+        "https://plato.stanford.edu/archives/sum2021/entries/laozi/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_TEXT_AND_CONTEXT",
+          "finding": "The Dao De Jing and Daoist philosophical tradition critique coercive social control and cultivate wu-wei or non-forcing. The historical biography of Laozi is not securely established.",
+          "sourceKind": "HISTORICAL_OR_TRADITIONAL_SOURCE",
+          "sources": [
+            "https://plato.stanford.edu/entries/daoism/",
+            "https://plato.stanford.edu/archives/sum2021/entries/laozi/"
+          ],
+          "limits": "A religious narrative or philosophical lineage is not a measured physiological state."
+        },
+        {
+          "pass": 2,
+          "lens": "TEACHING_TO_OBSERVABLE_MOVEMENT",
+          "finding": "Teaching-path interpretation: Respond in proportion to conditions rather than imposing unnecessary force. Operational evidence: Removes an unhelpful control and allows a reversible, safer choice. A visible act is needed before any application to a real person.",
+          "sourceKind": "BEHAVIORAL_TRANSLATION",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://plato.stanford.edu/entries/daoism/",
+            "https://plato.stanford.edu/archives/sum2021/entries/laozi/"
+          ],
+          "limits": "ATUNED movement interpretation, not a textual quotation or personality diagnosis."
+        },
+        {
+          "pass": 3,
+          "lens": "ASCENT_LAWS_AND_OPPOSITE_RELATIONSHIPS",
+          "finding": "Candidate Paradiso resonances: paradiso:PD07, paradiso:PD09. Existing coordinate: ⊥ / horizontal. Related active integrity laws: Temperance, Patience, Equanimity. Proposed opposite mechanism: Excessive command, overregulation and anxious intervention create the instability they claim to cure.. No unique named contemporary enemy or mirror figure is securely identified.",
+          "sourceKind": "MODEL_CROSSWALK",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "atuned_src/engine/data/canon.js",
+            "https://plato.stanford.edu/entries/daoism/",
+            "https://plato.stanford.edu/archives/sum2021/entries/laozi/"
+          ],
+          "limits": "Resonances are many-to-many and not numeric level assignments; mirror poles come from current engine only."
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_AND_ETHICAL_DISCONFIRMATION",
+          "finding": "Disconfirmation: Non-forcing is not neglect of danger, necessary intervention or obligation. A self-described Non-Resistance identity without independently described action does not establish the capacity. Report real-world alternatives and risk of coercion.",
+          "sourceKind": "CRITICAL_REVIEW",
+          "sources": [
+            "https://plato.stanford.edu/entries/daoism/",
+            "https://plato.stanford.edu/archives/sum2021/entries/laozi/"
+          ],
+          "limits": "Research lenses are four documented analyses, not four independently peer-reviewed empirical validations."
+        }
+      ],
+      "links": [
+        {
+          "id": "paradiso:PD07",
+          "type": "PARADISO_CAPACITY_RESONANCE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        },
+        {
+          "id": "paradiso:PD09",
+          "type": "PARADISO_CAPACITY_RESONANCE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        },
+        {
+          "id": "compass-inverse:Forcing",
+          "type": "INFERRED_OPPOSITE_MECHANISM",
+          "status": "CANDIDATE"
+        }
+      ],
+      "displayLabel": "Non-Resistance",
+      "hiddenIdentity": "Lao Tzu",
+      "sourceCoordinate": "⊥ / horizontal",
+      "candidateCompassAxes": [],
+      "candidateParadisoIds": [
+        "paradiso:PD07",
+        "paradiso:PD09"
+      ],
+      "integrityLawNames": [
+        "Temperance",
+        "Patience",
+        "Equanimity"
+      ],
+      "oppositeIds": [
+        "compass-inverse:Forcing"
+      ],
+      "sourceCounterpart": "No unique named contemporary enemy or mirror figure is securely identified.",
+      "safetyBoundary": "Non-forcing is not neglect of danger, necessary intervention or obligation.",
+      "ritualOwnership": "PARADISO",
+      "ritualId": null,
+      "ritualStatus": "NEEDS_DESIGNED_PROTOCOL",
+      "levelAssignment": {
+        "kind": "NON_NUMERIC_BEHAVIORAL_COORDINATE",
+        "fixedSphere": null,
+        "scoreDerived": false
+      }
+    },
+    {
+      "id": "compass-teacher:Moses",
+      "kind": "compass_teacher",
+      "templateId": "TPL-COMPASS-TEACHER-INVERSE-V1",
+      "nm": "Moses",
+      "fam": "Compass / Paradiso / teachers",
+      "def": "Order",
+      "body": "Source setting: Exodus depicts Moses confronting Pharaoh about enslavement and establishing covenantal obligations. Narrative historicity is debated separately from its ethical meaning. ATUNED quality: Order. Movement: Create structures that protect agency and are intelligible to those governed. Opposing mechanism: Order becomes destabilization or domination when rules are imposed for the ruler's control. Observable: Writes a transparent fair rule and accepts appeal or correction. Caution: Avoid equating compliance with liberation; rules require fairness and consent-sensitive application.",
+      "inferred": true,
+      "inferenceBasis": "Owner-directed interpretive modeling using existing Compass coordinates; source facts are distinguished from new behavioral claims.",
+      "behavior": "Create structures that protect agency and are intelligible to those governed.",
+      "triggerMechanism": "Order becomes destabilization or domination when rules are imposed for the ruler's control.",
+      "livedExample": "Writes a transparent fair rule and accepts appeal or correction.",
+      "impact": "Practice a coherent response while retaining uncertainty about personal state and external conditions.",
+      "practice": "Record one event, chosen action, effect, contrary evidence, and any safe next step.",
+      "oppositeId": "compass-inverse:Set",
+      "oppositeDefinition": "Order becomes destabilization or domination when rules are imposed for the ruler's control.",
+      "oppositeStatus": "CANONICAL_MIRROR_FROM_COMPASS_JS__RELATIONSHIPS_MODEL_ONLY",
+      "confidence": {
+        "source": "SOURCE_CONTEXT_SUPPORTED",
+        "sourceToBehavior": "INTERPRETIVE",
+        "mirror": "ENGINE_CANON_POLE",
+        "integration": "NOT_RUNTIME_WIRED"
+      },
+      "reviewStatus": "RESEARCH_V1_FOUR_LENSES__NOT_RUNTIME",
+      "refer": false,
+      "narrativeSource": "https://bibleproject.com/guides/the-exodus-way/",
+      "researchSources": [
+        "https://bibleproject.com/guides/the-exodus-way/",
+        "https://www.biblegateway.com/passage/?search=Exodus+3&version=NIV"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_TEXT_AND_CONTEXT",
+          "finding": "Exodus depicts Moses confronting Pharaoh about enslavement and establishing covenantal obligations. Narrative historicity is debated separately from its ethical meaning.",
+          "sourceKind": "HISTORICAL_OR_TRADITIONAL_SOURCE",
+          "sources": [
+            "https://bibleproject.com/guides/the-exodus-way/",
+            "https://www.biblegateway.com/passage/?search=Exodus+3&version=NIV"
+          ],
+          "limits": "A religious narrative or philosophical lineage is not a measured physiological state."
+        },
+        {
+          "pass": 2,
+          "lens": "TEACHING_TO_OBSERVABLE_MOVEMENT",
+          "finding": "Teaching-path interpretation: Create structures that protect agency and are intelligible to those governed. Operational evidence: Writes a transparent fair rule and accepts appeal or correction. A visible act is needed before any application to a real person.",
+          "sourceKind": "BEHAVIORAL_TRANSLATION",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://bibleproject.com/guides/the-exodus-way/",
+            "https://www.biblegateway.com/passage/?search=Exodus+3&version=NIV"
+          ],
+          "limits": "ATUNED movement interpretation, not a textual quotation or personality diagnosis."
+        },
+        {
+          "pass": 3,
+          "lens": "ASCENT_LAWS_AND_OPPOSITE_RELATIONSHIPS",
+          "finding": "Candidate Paradiso resonances: paradiso:PD01, paradiso:PD06. Existing coordinate: X / Sat midpoint. Related active integrity laws: Justice, Transparency, Responsibility. Proposed opposite mechanism: Order becomes destabilization or domination when rules are imposed for the ruler's control.. Pharaoh is the explicit narrative counterpart in Exodus; Set is the Compass OR mirror archetype, not an assertion that Pharaoh was Set.",
+          "sourceKind": "MODEL_CROSSWALK",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "atuned_src/engine/data/canon.js",
+            "https://bibleproject.com/guides/the-exodus-way/",
+            "https://www.biblegateway.com/passage/?search=Exodus+3&version=NIV"
+          ],
+          "limits": "Resonances are many-to-many and not numeric level assignments; mirror poles come from current engine only."
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_AND_ETHICAL_DISCONFIRMATION",
+          "finding": "Disconfirmation: Avoid equating compliance with liberation; rules require fairness and consent-sensitive application. A self-described Order identity without independently described action does not establish the capacity. Report real-world alternatives and risk of coercion.",
+          "sourceKind": "CRITICAL_REVIEW",
+          "sources": [
+            "https://bibleproject.com/guides/the-exodus-way/",
+            "https://www.biblegateway.com/passage/?search=Exodus+3&version=NIV"
+          ],
+          "limits": "Research lenses are four documented analyses, not four independently peer-reviewed empirical validations."
+        }
+      ],
+      "links": [
+        {
+          "id": "paradiso:PD01",
+          "type": "PARADISO_CAPACITY_RESONANCE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        },
+        {
+          "id": "paradiso:PD06",
+          "type": "PARADISO_CAPACITY_RESONANCE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        },
+        {
+          "id": "compass:axis:OR",
+          "type": "ENGINE_CANON_COORDINATE",
+          "status": "ENGINE_SOURCE"
+        },
+        {
+          "id": "compass-inverse:Set",
+          "type": "CANON_MIRROR_BEHAVIORAL_POLE",
+          "status": "ENGINE_SOURCE_RELATIONSHIP_NOT_GRAPH_WIRED"
+        }
+      ],
+      "displayLabel": "Order",
+      "hiddenIdentity": "Moses",
+      "sourceCoordinate": "X / Sat midpoint",
+      "candidateCompassAxes": [
+        "OR"
+      ],
+      "candidateParadisoIds": [
+        "paradiso:PD01",
+        "paradiso:PD06"
+      ],
+      "integrityLawNames": [
+        "Justice",
+        "Transparency",
+        "Responsibility"
+      ],
+      "oppositeIds": [
+        "compass-inverse:Set"
+      ],
+      "sourceCounterpart": "Pharaoh is the explicit narrative counterpart in Exodus; Set is the Compass OR mirror archetype, not an assertion that Pharaoh was Set.",
+      "safetyBoundary": "Avoid equating compliance with liberation; rules require fairness and consent-sensitive application.",
+      "ritualOwnership": "PARADISO",
+      "ritualId": null,
+      "ritualStatus": "NEEDS_DESIGNED_PROTOCOL",
+      "levelAssignment": {
+        "kind": "NON_NUMERIC_BEHAVIORAL_COORDINATE",
+        "fixedSphere": null,
+        "scoreDerived": false
+      }
+    },
+    {
+      "id": "compass-teacher:Rumi",
+      "kind": "compass_teacher",
+      "templateId": "TPL-COMPASS-TEACHER-INVERSE-V1",
+      "nm": "Rumi",
+      "fam": "Compass / Paradiso / teachers",
+      "def": "Beauty",
+      "body": "Source setting: Rumi was a Muslim Sufi poet and teacher whose devotion and poetry explore love, separation, remembrance and unity. His Islamic context must not be erased by modern inspirational retellings. ATUNED quality: Beauty. Movement: Remain open to felt connection and give care without using others as a source of status. Opposing mechanism: Threshold paralysis waits for certainty before authentic encounter or refuses to tolerate vulnerability. Observable: Makes a sincere approach or repairs a rupture while honoring refusal. Caution: Intimacy is not an obligation; consent and boundaries remain primary.",
+      "inferred": true,
+      "inferenceBasis": "Owner-directed interpretive modeling using existing Compass coordinates; source facts are distinguished from new behavioral claims.",
+      "behavior": "Remain open to felt connection and give care without using others as a source of status.",
+      "triggerMechanism": "Threshold paralysis waits for certainty before authentic encounter or refuses to tolerate vulnerability.",
+      "livedExample": "Makes a sincere approach or repairs a rupture while honoring refusal.",
+      "impact": "Practice a coherent response while retaining uncertainty about personal state and external conditions.",
+      "practice": "Record one event, chosen action, effect, contrary evidence, and any safe next step.",
+      "oppositeId": "compass-inverse:Charon",
+      "oppositeDefinition": "Threshold paralysis waits for certainty before authentic encounter or refuses to tolerate vulnerability.",
+      "oppositeStatus": "CANONICAL_MIRROR_FROM_COMPASS_JS__RELATIONSHIPS_MODEL_ONLY",
+      "confidence": {
+        "source": "SOURCE_CONTEXT_SUPPORTED",
+        "sourceToBehavior": "INTERPRETIVE",
+        "mirror": "ENGINE_CANON_POLE",
+        "integration": "NOT_RUNTIME_WIRED"
+      },
+      "reviewStatus": "RESEARCH_V1_FOUR_LENSES__NOT_RUNTIME",
+      "refer": false,
+      "narrativeSource": "https://www.iranicaonline.org/articles/rumi-philosophy/",
+      "researchSources": [
+        "https://www.iranicaonline.org/articles/rumi-philosophy/",
+        "https://www.ebsco.com/research-starters/biography/jalal-al-din-rumi/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_TEXT_AND_CONTEXT",
+          "finding": "Rumi was a Muslim Sufi poet and teacher whose devotion and poetry explore love, separation, remembrance and unity. His Islamic context must not be erased by modern inspirational retellings.",
+          "sourceKind": "HISTORICAL_OR_TRADITIONAL_SOURCE",
+          "sources": [
+            "https://www.iranicaonline.org/articles/rumi-philosophy/",
+            "https://www.ebsco.com/research-starters/biography/jalal-al-din-rumi/"
+          ],
+          "limits": "A religious narrative or philosophical lineage is not a measured physiological state."
+        },
+        {
+          "pass": 2,
+          "lens": "TEACHING_TO_OBSERVABLE_MOVEMENT",
+          "finding": "Teaching-path interpretation: Remain open to felt connection and give care without using others as a source of status. Operational evidence: Makes a sincere approach or repairs a rupture while honoring refusal. A visible act is needed before any application to a real person.",
+          "sourceKind": "BEHAVIORAL_TRANSLATION",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://www.iranicaonline.org/articles/rumi-philosophy/",
+            "https://www.ebsco.com/research-starters/biography/jalal-al-din-rumi/"
+          ],
+          "limits": "ATUNED movement interpretation, not a textual quotation or personality diagnosis."
+        },
+        {
+          "pass": 3,
+          "lens": "ASCENT_LAWS_AND_OPPOSITE_RELATIONSHIPS",
+          "finding": "Candidate Paradiso resonances: paradiso:PD03, paradiso:PD08, paradiso:PD10. Existing coordinate: Z / Ananda as beauty. Related active integrity laws: Compassion, Aesthetic Beauty, Presence. Proposed opposite mechanism: Threshold paralysis waits for certainty before authentic encounter or refuses to tolerate vulnerability.. Shams of Tabriz is a teacher and beloved, not an opponent; Charon is the ATUNED mirror metaphor.",
+          "sourceKind": "MODEL_CROSSWALK",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "atuned_src/engine/data/canon.js",
+            "https://www.iranicaonline.org/articles/rumi-philosophy/",
+            "https://www.ebsco.com/research-starters/biography/jalal-al-din-rumi/"
+          ],
+          "limits": "Resonances are many-to-many and not numeric level assignments; mirror poles come from current engine only."
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_AND_ETHICAL_DISCONFIRMATION",
+          "finding": "Disconfirmation: Intimacy is not an obligation; consent and boundaries remain primary. A self-described Beauty identity without independently described action does not establish the capacity. Report real-world alternatives and risk of coercion.",
+          "sourceKind": "CRITICAL_REVIEW",
+          "sources": [
+            "https://www.iranicaonline.org/articles/rumi-philosophy/",
+            "https://www.ebsco.com/research-starters/biography/jalal-al-din-rumi/"
+          ],
+          "limits": "Research lenses are four documented analyses, not four independently peer-reviewed empirical validations."
+        }
+      ],
+      "links": [
+        {
+          "id": "paradiso:PD03",
+          "type": "PARADISO_CAPACITY_RESONANCE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        },
+        {
+          "id": "paradiso:PD08",
+          "type": "PARADISO_CAPACITY_RESONANCE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        },
+        {
+          "id": "paradiso:PD10",
+          "type": "PARADISO_CAPACITY_RESONANCE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        },
+        {
+          "id": "compass:axis:TR",
+          "type": "ENGINE_CANON_COORDINATE",
+          "status": "ENGINE_SOURCE"
+        },
+        {
+          "id": "compass-inverse:Charon",
+          "type": "CANON_MIRROR_BEHAVIORAL_POLE",
+          "status": "ENGINE_SOURCE_RELATIONSHIP_NOT_GRAPH_WIRED"
+        }
+      ],
+      "displayLabel": "Beauty",
+      "hiddenIdentity": "Rumi",
+      "sourceCoordinate": "Z / Ananda as beauty",
+      "candidateCompassAxes": [
+        "TR"
+      ],
+      "candidateParadisoIds": [
+        "paradiso:PD03",
+        "paradiso:PD08",
+        "paradiso:PD10"
+      ],
+      "integrityLawNames": [
+        "Compassion",
+        "Aesthetic Beauty",
+        "Presence"
+      ],
+      "oppositeIds": [
+        "compass-inverse:Charon"
+      ],
+      "sourceCounterpart": "Shams of Tabriz is a teacher and beloved, not an opponent; Charon is the ATUNED mirror metaphor.",
+      "safetyBoundary": "Intimacy is not an obligation; consent and boundaries remain primary.",
+      "ritualOwnership": "PARADISO",
+      "ritualId": null,
+      "ritualStatus": "NEEDS_DESIGNED_PROTOCOL",
+      "levelAssignment": {
+        "kind": "NON_NUMERIC_BEHAVIORAL_COORDINATE",
+        "fixedSphere": null,
+        "scoreDerived": false
+      }
+    },
+    {
+      "id": "compass-teacher:Musashi",
+      "kind": "compass_teacher",
+      "templateId": "TPL-COMPASS-TEACHER-INVERSE-V1",
+      "nm": "Musashi",
+      "fam": "Compass / Paradiso / teachers",
+      "def": "Discipline",
+      "body": "Source setting: Miyamoto Musashi's early-Edo strategy writings and fighting tradition emphasize sustained practice and adaptation. Claims of perfect dueling records may be legendary; violence belongs in its historical context. ATUNED quality: Discipline. Movement: Invest repeated effort in precision and accept the personal cost of training. Opposing mechanism: Extractive systems require others to carry the cost of the leader's power. Observable: The practitioner changes their own routine rather than forcing others to absorb avoidable harm. Caution: Discipline cannot legitimize coercion, punishments or violent domination.",
+      "inferred": true,
+      "inferenceBasis": "Owner-directed interpretive modeling using existing Compass coordinates; source facts are distinguished from new behavioral claims.",
+      "behavior": "Invest repeated effort in precision and accept the personal cost of training.",
+      "triggerMechanism": "Extractive systems require others to carry the cost of the leader's power.",
+      "livedExample": "The practitioner changes their own routine rather than forcing others to absorb avoidable harm.",
+      "impact": "Practice a coherent response while retaining uncertainty about personal state and external conditions.",
+      "practice": "Record one event, chosen action, effect, contrary evidence, and any safe next step.",
+      "oppositeId": "compass-inverse:Moloch",
+      "oppositeDefinition": "Extractive systems require others to carry the cost of the leader's power.",
+      "oppositeStatus": "CANONICAL_MIRROR_FROM_COMPASS_JS__RELATIONSHIPS_MODEL_ONLY",
+      "confidence": {
+        "source": "SOURCE_CONTEXT_SUPPORTED",
+        "sourceToBehavior": "INTERPRETIVE",
+        "mirror": "ENGINE_CANON_POLE",
+        "integration": "NOT_RUNTIME_WIRED"
+      },
+      "reviewStatus": "RESEARCH_V1_FOUR_LENSES__NOT_RUNTIME",
+      "refer": false,
+      "narrativeSource": "https://www.nippon.com/en/japan-topics/g00689/master-swordsman-miyamoto-musashi-the-man-behind-the-book-of-five-rings.html",
+      "researchSources": [
+        "https://www.nippon.com/en/japan-topics/g00689/master-swordsman-miyamoto-musashi-the-man-behind-the-book-of-five-rings.html"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_TEXT_AND_CONTEXT",
+          "finding": "Miyamoto Musashi's early-Edo strategy writings and fighting tradition emphasize sustained practice and adaptation. Claims of perfect dueling records may be legendary; violence belongs in its historical context.",
+          "sourceKind": "HISTORICAL_OR_TRADITIONAL_SOURCE",
+          "sources": [
+            "https://www.nippon.com/en/japan-topics/g00689/master-swordsman-miyamoto-musashi-the-man-behind-the-book-of-five-rings.html"
+          ],
+          "limits": "A religious narrative or philosophical lineage is not a measured physiological state."
+        },
+        {
+          "pass": 2,
+          "lens": "TEACHING_TO_OBSERVABLE_MOVEMENT",
+          "finding": "Teaching-path interpretation: Invest repeated effort in precision and accept the personal cost of training. Operational evidence: The practitioner changes their own routine rather than forcing others to absorb avoidable harm. A visible act is needed before any application to a real person.",
+          "sourceKind": "BEHAVIORAL_TRANSLATION",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://www.nippon.com/en/japan-topics/g00689/master-swordsman-miyamoto-musashi-the-man-behind-the-book-of-five-rings.html"
+          ],
+          "limits": "ATUNED movement interpretation, not a textual quotation or personality diagnosis."
+        },
+        {
+          "pass": 3,
+          "lens": "ASCENT_LAWS_AND_OPPOSITE_RELATIONSHIPS",
+          "finding": "Candidate Paradiso resonances: paradiso:PD05, paradiso:PD02. Existing coordinate: ∴ / practice layer. Related active integrity laws: Courage, Accountability, Non-Harm. Proposed opposite mechanism: Extractive systems require others to carry the cost of the leader's power.. Moloch is an ATUNED symbolic inverse, not Musashi's historically attested opponent.",
+          "sourceKind": "MODEL_CROSSWALK",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "atuned_src/engine/data/canon.js",
+            "https://www.nippon.com/en/japan-topics/g00689/master-swordsman-miyamoto-musashi-the-man-behind-the-book-of-five-rings.html"
+          ],
+          "limits": "Resonances are many-to-many and not numeric level assignments; mirror poles come from current engine only."
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_AND_ETHICAL_DISCONFIRMATION",
+          "finding": "Disconfirmation: Discipline cannot legitimize coercion, punishments or violent domination. A self-described Discipline identity without independently described action does not establish the capacity. Report real-world alternatives and risk of coercion.",
+          "sourceKind": "CRITICAL_REVIEW",
+          "sources": [
+            "https://www.nippon.com/en/japan-topics/g00689/master-swordsman-miyamoto-musashi-the-man-behind-the-book-of-five-rings.html"
+          ],
+          "limits": "Research lenses are four documented analyses, not four independently peer-reviewed empirical validations."
+        }
+      ],
+      "links": [
+        {
+          "id": "paradiso:PD05",
+          "type": "PARADISO_CAPACITY_RESONANCE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        },
+        {
+          "id": "paradiso:PD02",
+          "type": "PARADISO_CAPACITY_RESONANCE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        },
+        {
+          "id": "compass:axis:PO",
+          "type": "ENGINE_CANON_COORDINATE",
+          "status": "ENGINE_SOURCE"
+        },
+        {
+          "id": "compass-inverse:Moloch",
+          "type": "CANON_MIRROR_BEHAVIORAL_POLE",
+          "status": "ENGINE_SOURCE_RELATIONSHIP_NOT_GRAPH_WIRED"
+        }
+      ],
+      "displayLabel": "Discipline",
+      "hiddenIdentity": "Musashi",
+      "sourceCoordinate": "∴ / practice layer",
+      "candidateCompassAxes": [
+        "PO"
+      ],
+      "candidateParadisoIds": [
+        "paradiso:PD05",
+        "paradiso:PD02"
+      ],
+      "integrityLawNames": [
+        "Courage",
+        "Accountability",
+        "Non-Harm"
+      ],
+      "oppositeIds": [
+        "compass-inverse:Moloch"
+      ],
+      "sourceCounterpart": "Moloch is an ATUNED symbolic inverse, not Musashi's historically attested opponent.",
+      "safetyBoundary": "Discipline cannot legitimize coercion, punishments or violent domination.",
+      "ritualOwnership": "PARADISO",
+      "ritualId": null,
+      "ritualStatus": "NEEDS_DESIGNED_PROTOCOL",
+      "levelAssignment": {
+        "kind": "NON_NUMERIC_BEHAVIORAL_COORDINATE",
+        "fixedSphere": null,
+        "scoreDerived": false
+      }
+    },
+    {
+      "id": "compass-teacher:Ramakrishna",
+      "kind": "compass_teacher",
+      "templateId": "TPL-COMPASS-TEACHER-INVERSE-V1",
+      "nm": "Ramakrishna",
+      "fam": "Compass / Paradiso / teachers",
+      "def": "Devotion",
+      "body": "Source setting: Ramakrishna was a Bengali devotional mystic associated with Kali worship and exploration of more than one spiritual tradition. Traditions differ in their accounts and emphasis. ATUNED quality: Devotion. Movement: Direct desire toward chosen values and devotion without converting another person into possession. Opposing mechanism: Craving without completion replaces meaningful attention with recurrent appetite. Observable: Acts consistently with a freely chosen practice and keeps care nonpossessive. Caution: Do not pathologize sexuality, desire, or another religion; the target is loss of consent and control.",
+      "inferred": true,
+      "inferenceBasis": "Owner-directed interpretive modeling using existing Compass coordinates; source facts are distinguished from new behavioral claims.",
+      "behavior": "Direct desire toward chosen values and devotion without converting another person into possession.",
+      "triggerMechanism": "Craving without completion replaces meaningful attention with recurrent appetite.",
+      "livedExample": "Acts consistently with a freely chosen practice and keeps care nonpossessive.",
+      "impact": "Practice a coherent response while retaining uncertainty about personal state and external conditions.",
+      "practice": "Record one event, chosen action, effect, contrary evidence, and any safe next step.",
+      "oppositeId": "compass-inverse:Asmodeus",
+      "oppositeDefinition": "Craving without completion replaces meaningful attention with recurrent appetite.",
+      "oppositeStatus": "CANONICAL_MIRROR_FROM_COMPASS_JS__RELATIONSHIPS_MODEL_ONLY",
+      "confidence": {
+        "source": "SOURCE_CONTEXT_SUPPORTED",
+        "sourceToBehavior": "INTERPRETIVE",
+        "mirror": "ENGINE_CANON_POLE",
+        "integration": "NOT_RUNTIME_WIRED"
+      },
+      "reviewStatus": "RESEARCH_V1_FOUR_LENSES__NOT_RUNTIME",
+      "refer": false,
+      "narrativeSource": "https://belurmath.org/sri-ramakrishna/",
+      "researchSources": [
+        "https://belurmath.org/sri-ramakrishna/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_TEXT_AND_CONTEXT",
+          "finding": "Ramakrishna was a Bengali devotional mystic associated with Kali worship and exploration of more than one spiritual tradition. Traditions differ in their accounts and emphasis.",
+          "sourceKind": "HISTORICAL_OR_TRADITIONAL_SOURCE",
+          "sources": [
+            "https://belurmath.org/sri-ramakrishna/"
+          ],
+          "limits": "A religious narrative or philosophical lineage is not a measured physiological state."
+        },
+        {
+          "pass": 2,
+          "lens": "TEACHING_TO_OBSERVABLE_MOVEMENT",
+          "finding": "Teaching-path interpretation: Direct desire toward chosen values and devotion without converting another person into possession. Operational evidence: Acts consistently with a freely chosen practice and keeps care nonpossessive. A visible act is needed before any application to a real person.",
+          "sourceKind": "BEHAVIORAL_TRANSLATION",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://belurmath.org/sri-ramakrishna/"
+          ],
+          "limits": "ATUNED movement interpretation, not a textual quotation or personality diagnosis."
+        },
+        {
+          "pass": 3,
+          "lens": "ASCENT_LAWS_AND_OPPOSITE_RELATIONSHIPS",
+          "finding": "Candidate Paradiso resonances: paradiso:PD02, paradiso:PD03. Existing coordinate: Z / desire surrendered. Related active integrity laws: Detachment, Temperance, Compassion. Proposed opposite mechanism: Craving without completion replaces meaningful attention with recurrent appetite.. Asmodeus is the ATUNED DE mirror and a figure in Tobit; there is no historically attested personal conflict between him and Ramakrishna.",
+          "sourceKind": "MODEL_CROSSWALK",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "atuned_src/engine/data/canon.js",
+            "https://belurmath.org/sri-ramakrishna/"
+          ],
+          "limits": "Resonances are many-to-many and not numeric level assignments; mirror poles come from current engine only."
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_AND_ETHICAL_DISCONFIRMATION",
+          "finding": "Disconfirmation: Do not pathologize sexuality, desire, or another religion; the target is loss of consent and control. A self-described Devotion identity without independently described action does not establish the capacity. Report real-world alternatives and risk of coercion.",
+          "sourceKind": "CRITICAL_REVIEW",
+          "sources": [
+            "https://belurmath.org/sri-ramakrishna/"
+          ],
+          "limits": "Research lenses are four documented analyses, not four independently peer-reviewed empirical validations."
+        }
+      ],
+      "links": [
+        {
+          "id": "paradiso:PD02",
+          "type": "PARADISO_CAPACITY_RESONANCE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        },
+        {
+          "id": "paradiso:PD03",
+          "type": "PARADISO_CAPACITY_RESONANCE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        },
+        {
+          "id": "compass:axis:DE",
+          "type": "ENGINE_CANON_COORDINATE",
+          "status": "ENGINE_SOURCE"
+        },
+        {
+          "id": "compass-inverse:Asmodeus",
+          "type": "CANON_MIRROR_BEHAVIORAL_POLE",
+          "status": "ENGINE_SOURCE_RELATIONSHIP_NOT_GRAPH_WIRED"
+        }
+      ],
+      "displayLabel": "Devotion",
+      "hiddenIdentity": "Ramakrishna",
+      "sourceCoordinate": "Z / desire surrendered",
+      "candidateCompassAxes": [
+        "DE"
+      ],
+      "candidateParadisoIds": [
+        "paradiso:PD02",
+        "paradiso:PD03"
+      ],
+      "integrityLawNames": [
+        "Detachment",
+        "Temperance",
+        "Compassion"
+      ],
+      "oppositeIds": [
+        "compass-inverse:Asmodeus"
+      ],
+      "sourceCounterpart": "Asmodeus is the ATUNED DE mirror and a figure in Tobit; there is no historically attested personal conflict between him and Ramakrishna.",
+      "safetyBoundary": "Do not pathologize sexuality, desire, or another religion; the target is loss of consent and control.",
+      "ritualOwnership": "PARADISO",
+      "ritualId": null,
+      "ritualStatus": "NEEDS_DESIGNED_PROTOCOL",
+      "levelAssignment": {
+        "kind": "NON_NUMERIC_BEHAVIORAL_COORDINATE",
+        "fixedSphere": null,
+        "scoreDerived": false
+      }
+    },
+    {
+      "id": "compass-teacher:Elijah",
+      "kind": "compass_teacher",
+      "templateId": "TPL-COMPASS-TEACHER-INVERSE-V1",
+      "nm": "Elijah",
+      "fam": "Compass / Paradiso / teachers",
+      "def": "Grounded Fire",
+      "body": "Source setting: First Kings 18 narrates Elijah's confrontation with Ahab and prophets of Baal, including a lethal aftermath. This is a religious narrative, not evidence that punishment or violence is desirable. ATUNED quality: Grounded Fire. Movement: Turn intensity into bounded, proportionate action instead of retaliation. Opposing mechanism: Uncontained charge alternates between explosive rage and immobility. Observable: Notices escalation and pauses, de-escalates, or protects without attacking. Caution: The Mount Carmel slaughter cannot serve as a modern ritual or normative behavioral target.",
+      "inferred": true,
+      "inferenceBasis": "Owner-directed interpretive modeling using existing Compass coordinates; source facts are distinguished from new behavioral claims.",
+      "behavior": "Turn intensity into bounded, proportionate action instead of retaliation.",
+      "triggerMechanism": "Uncontained charge alternates between explosive rage and immobility.",
+      "livedExample": "Notices escalation and pauses, de-escalates, or protects without attacking.",
+      "impact": "Practice a coherent response while retaining uncertainty about personal state and external conditions.",
+      "practice": "Record one event, chosen action, effect, contrary evidence, and any safe next step.",
+      "oppositeId": "compass-inverse:Phlegyas",
+      "oppositeDefinition": "Uncontained charge alternates between explosive rage and immobility.",
+      "oppositeStatus": "CANONICAL_MIRROR_FROM_COMPASS_JS__RELATIONSHIPS_MODEL_ONLY",
+      "confidence": {
+        "source": "SOURCE_CONTEXT_SUPPORTED",
+        "sourceToBehavior": "INTERPRETIVE",
+        "mirror": "ENGINE_CANON_POLE",
+        "integration": "NOT_RUNTIME_WIRED"
+      },
+      "reviewStatus": "RESEARCH_V1_FOUR_LENSES__NOT_RUNTIME",
+      "refer": false,
+      "narrativeSource": "https://bible.usccb.org/bible/1kings/18",
+      "researchSources": [
+        "https://bible.usccb.org/bible/1kings/18"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_TEXT_AND_CONTEXT",
+          "finding": "First Kings 18 narrates Elijah's confrontation with Ahab and prophets of Baal, including a lethal aftermath. This is a religious narrative, not evidence that punishment or violence is desirable.",
+          "sourceKind": "HISTORICAL_OR_TRADITIONAL_SOURCE",
+          "sources": [
+            "https://bible.usccb.org/bible/1kings/18"
+          ],
+          "limits": "A religious narrative or philosophical lineage is not a measured physiological state."
+        },
+        {
+          "pass": 2,
+          "lens": "TEACHING_TO_OBSERVABLE_MOVEMENT",
+          "finding": "Teaching-path interpretation: Turn intensity into bounded, proportionate action instead of retaliation. Operational evidence: Notices escalation and pauses, de-escalates, or protects without attacking. A visible act is needed before any application to a real person.",
+          "sourceKind": "BEHAVIORAL_TRANSLATION",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://bible.usccb.org/bible/1kings/18"
+          ],
+          "limits": "ATUNED movement interpretation, not a textual quotation or personality diagnosis."
+        },
+        {
+          "pass": 3,
+          "lens": "ASCENT_LAWS_AND_OPPOSITE_RELATIONSHIPS",
+          "finding": "Candidate Paradiso resonances: paradiso:PD05, paradiso:PD06. Existing coordinate: Z / charge grounded. Related active integrity laws: Courage, Non-Harm, Equanimity. Proposed opposite mechanism: Uncontained charge alternates between explosive rage and immobility.. Baal is a narrative counterpart in 1 Kings 18, whereas Phlegyas is ATUNED's CH inverse; do not merge Baal the ancient deity with a later Bael demon.",
+          "sourceKind": "MODEL_CROSSWALK",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "atuned_src/engine/data/canon.js",
+            "https://bible.usccb.org/bible/1kings/18"
+          ],
+          "limits": "Resonances are many-to-many and not numeric level assignments; mirror poles come from current engine only."
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_AND_ETHICAL_DISCONFIRMATION",
+          "finding": "Disconfirmation: The Mount Carmel slaughter cannot serve as a modern ritual or normative behavioral target. A self-described Grounded Fire identity without independently described action does not establish the capacity. Report real-world alternatives and risk of coercion.",
+          "sourceKind": "CRITICAL_REVIEW",
+          "sources": [
+            "https://bible.usccb.org/bible/1kings/18"
+          ],
+          "limits": "Research lenses are four documented analyses, not four independently peer-reviewed empirical validations."
+        }
+      ],
+      "links": [
+        {
+          "id": "paradiso:PD05",
+          "type": "PARADISO_CAPACITY_RESONANCE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        },
+        {
+          "id": "paradiso:PD06",
+          "type": "PARADISO_CAPACITY_RESONANCE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        },
+        {
+          "id": "compass:axis:CH",
+          "type": "ENGINE_CANON_COORDINATE",
+          "status": "ENGINE_SOURCE"
+        },
+        {
+          "id": "compass-inverse:Phlegyas",
+          "type": "CANON_MIRROR_BEHAVIORAL_POLE",
+          "status": "ENGINE_SOURCE_RELATIONSHIP_NOT_GRAPH_WIRED"
+        }
+      ],
+      "displayLabel": "Grounded Fire",
+      "hiddenIdentity": "Elijah",
+      "sourceCoordinate": "Z / charge grounded",
+      "candidateCompassAxes": [
+        "CH"
+      ],
+      "candidateParadisoIds": [
+        "paradiso:PD05",
+        "paradiso:PD06"
+      ],
+      "integrityLawNames": [
+        "Courage",
+        "Non-Harm",
+        "Equanimity"
+      ],
+      "oppositeIds": [
+        "compass-inverse:Phlegyas"
+      ],
+      "sourceCounterpart": "Baal is a narrative counterpart in 1 Kings 18, whereas Phlegyas is ATUNED's CH inverse; do not merge Baal the ancient deity with a later Bael demon.",
+      "safetyBoundary": "The Mount Carmel slaughter cannot serve as a modern ritual or normative behavioral target.",
+      "ritualOwnership": "PARADISO",
+      "ritualId": null,
+      "ritualStatus": "NEEDS_DESIGNED_PROTOCOL",
+      "levelAssignment": {
+        "kind": "NON_NUMERIC_BEHAVIORAL_COORDINATE",
+        "fixedSphere": null,
+        "scoreDerived": false
+      }
+    },
+    {
+      "id": "compass-inverse:Lucifer",
+      "kind": "compass_mirror_inverse",
+      "templateId": "TPL-COMPASS-TEACHER-INVERSE-V1",
+      "nm": "Lucifer",
+      "fam": "Compass / Inferno / inverse patterns",
+      "def": "False Light",
+      "body": "Pride or staged radiance needs applause to sustain itself. Trigger mechanism: A demand to be seen turns apparent generosity into reputation management. Example candidate: Withdraws aid when there is no public recognition. Historical boundary: Existing mirror-axis opposite. Historical identity and behavioral interpretation must not be conflated. Counterexample: Self-promotion alone is insufficient to infer maliciousness.",
+      "inferred": false,
+      "inferenceBasis": "Engine canon defines the mirror behavior; external semantic evidence is separately qualified.",
+      "behavior": "Pride or staged radiance needs applause to sustain itself.",
+      "triggerMechanism": "A demand to be seen turns apparent generosity into reputation management.",
+      "livedExample": "Withdraws aid when there is no public recognition.",
+      "impact": "May orient an evidence-based release practice; does not diagnose a person.",
+      "practice": "Refer to an explicitly linked Purgatorio release protocol when available; otherwise record an observation without moral labeling.",
+      "oppositeId": "compass-teacher:Jesus",
+      "oppositeDefinition": "Extend practical care without a demand for praise; revise hostility while keeping safety and truthful boundaries.",
+      "oppositeStatus": "NAMED_ENGINE_MIRROR",
+      "confidence": {
+        "source": "ENGINE_CANON",
+        "identity": "EXISTING_ENGINE_LABEL",
+        "behavior": "INTERPRETIVE",
+        "integration": "NOT_RUNTIME_WIRED"
+      },
+      "reviewStatus": "RESEARCH_V1_FOUR_LENSES__NOT_RUNTIME",
+      "refer": false,
+      "narrativeSource": "atuned_src/engine/data/compass.js",
+      "researchSources": [
+        "atuned_src/engine/data/compass.js",
+        "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json#inferno:F11",
+        "https://danteworlds.laits.utexas.edu/inferno/index.html"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY_AND_NARRATIVE",
+          "finding": "Engine names Lucifer as inverted pole of IL, opposed to Jesus. Existing mirror-axis opposite. Historical identity and behavioral interpretation must not be conflated. An Inferno body match is inferno:F11; do not assert equivalence to other figures of similar name.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json#inferno:F11",
+            "https://danteworlds.laits.utexas.edu/inferno/index.html"
+          ],
+          "sourceKind": "ENGINE_CANON_PLUS_SOURCE_CHECK",
+          "limits": "Canon is a product mapping, not a claim that figures were historical contemporaries."
+        },
+        {
+          "pass": 2,
+          "lens": "MECHANISM_AND_TRIGGER",
+          "finding": "Inversion description: Pride or staged radiance needs applause to sustain itself. Mechanism: A demand to be seen turns apparent generosity into reputation management. The distinction from its coherent pole is about the cost and direction of action, not identity.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://www.biblegateway.com/passage/?search=Matthew+5&version=NIV"
+          ],
+          "sourceKind": "BEHAVIORAL_MOVEMENT",
+          "limits": "Context, consent and alternative explanations are mandatory."
+        },
+        {
+          "pass": 3,
+          "lens": "OBSERVABLES_AND_REVERSE_EDGES",
+          "finding": "Observable candidate: Withdraws aid when there is no public recognition. Reference coherent teacher Jesus (Love); inverse status named in MIRROR. Inferno source mapping inferno:F11; release protocols belong to Purgatorio.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json#inferno:F11",
+            "https://danteworlds.laits.utexas.edu/inferno/index.html"
+          ],
+          "sourceKind": "GRAPH_AND_PROTOCOL_MAPPING",
+          "limits": "Do not manufacture a Purgatorio release-protocol ID or trigger a runtime claim."
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_FALSE_POSITIVE_CHECK",
+          "finding": "Counterexample guard: Self-promotion alone is insufficient to infer maliciousness. All records are interpretive comparisons of actions, not diagnoses or assignments of human worth. A named mythic figure must not be equated with a historical person, religion, or ethnic group. A single isolated action is not sufficient for a stable profile.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json#inferno:F11",
+            "https://danteworlds.laits.utexas.edu/inferno/index.html"
+          ],
+          "sourceKind": "SAFETY_AND_COUNTEREVIDENCE",
+          "limits": "Four analytical research lenses are not four external independent studies."
+        }
+      ],
+      "links": [
+        {
+          "id": "compass-teacher:Jesus",
+          "type": "ENGINE_MIRROR_POLE",
+          "status": "SOURCE_VERIFIED_NOT_RUNTIME"
+        },
+        {
+          "id": "inferno:F11",
+          "type": "INFERNO_EXISTING_RECORD",
+          "status": "ARCHIVE_VERIFIED_NOT_RUNTIME"
+        },
+        {
+          "id": "compass:axis:IL",
+          "type": "ENGINE_AXIS",
+          "status": "ENGINE_SOURCE"
+        }
+      ],
+      "displayLabel": "False Light",
+      "hiddenIdentity": "Lucifer",
+      "sourceIdentityStatus": "ENGINE_NAMED",
+      "sourceInfernoId": "inferno:F11",
+      "candidateCompassAxis": "IL",
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Self-promotion alone is insufficient to infer maliciousness."
+    },
+    {
+      "id": "compass-inverse:Asmodeus",
+      "kind": "compass_mirror_inverse",
+      "templateId": "TPL-COMPASS-TEACHER-INVERSE-V1",
+      "nm": "Asmodeus",
+      "fam": "Compass / Inferno / inverse patterns",
+      "def": "Compulsive Craving",
+      "body": "Desire cannot settle and people become instruments of appetite. Trigger mechanism: An unmet internal need is interpreted as an entitlement to take or control. Example candidate: Disregards consent or agreed limits to obtain a short-lived reward. Historical boundary: Existing mirror-axis opposite. Historical identity and behavioral interpretation must not be conflated. Counterexample: Ordinary desire or consensual pleasure is not vice.",
+      "inferred": false,
+      "inferenceBasis": "Engine canon defines the mirror behavior; external semantic evidence is separately qualified.",
+      "behavior": "Desire cannot settle and people become instruments of appetite.",
+      "triggerMechanism": "An unmet internal need is interpreted as an entitlement to take or control.",
+      "livedExample": "Disregards consent or agreed limits to obtain a short-lived reward.",
+      "impact": "May orient an evidence-based release practice; does not diagnose a person.",
+      "practice": "Refer to an explicitly linked Purgatorio release protocol when available; otherwise record an observation without moral labeling.",
+      "oppositeId": "compass-teacher:Ramakrishna",
+      "oppositeDefinition": "Direct desire toward chosen values and devotion without converting another person into possession.",
+      "oppositeStatus": "NAMED_ENGINE_MIRROR",
+      "confidence": {
+        "source": "ENGINE_CANON",
+        "identity": "EXISTING_ENGINE_LABEL",
+        "behavior": "INTERPRETIVE",
+        "integration": "NOT_RUNTIME_WIRED"
+      },
+      "reviewStatus": "RESEARCH_V1_FOUR_LENSES__NOT_RUNTIME",
+      "refer": false,
+      "narrativeSource": "atuned_src/engine/data/compass.js",
+      "researchSources": [
+        "atuned_src/engine/data/compass.js",
+        "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json#inferno:X03",
+        "https://danteworlds.laits.utexas.edu/inferno/index.html"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY_AND_NARRATIVE",
+          "finding": "Engine names Asmodeus as inverted pole of DE, opposed to Ramakrishna. Existing mirror-axis opposite. Historical identity and behavioral interpretation must not be conflated. An Inferno body match is inferno:X03; do not assert equivalence to other figures of similar name.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json#inferno:X03",
+            "https://danteworlds.laits.utexas.edu/inferno/index.html"
+          ],
+          "sourceKind": "ENGINE_CANON_PLUS_SOURCE_CHECK",
+          "limits": "Canon is a product mapping, not a claim that figures were historical contemporaries."
+        },
+        {
+          "pass": 2,
+          "lens": "MECHANISM_AND_TRIGGER",
+          "finding": "Inversion description: Desire cannot settle and people become instruments of appetite. Mechanism: An unmet internal need is interpreted as an entitlement to take or control. The distinction from its coherent pole is about the cost and direction of action, not identity.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://belurmath.org/sri-ramakrishna/"
+          ],
+          "sourceKind": "BEHAVIORAL_MOVEMENT",
+          "limits": "Context, consent and alternative explanations are mandatory."
+        },
+        {
+          "pass": 3,
+          "lens": "OBSERVABLES_AND_REVERSE_EDGES",
+          "finding": "Observable candidate: Disregards consent or agreed limits to obtain a short-lived reward. Reference coherent teacher Ramakrishna (Devotion); inverse status named in MIRROR. Inferno source mapping inferno:X03; release protocols belong to Purgatorio.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json#inferno:X03",
+            "https://danteworlds.laits.utexas.edu/inferno/index.html"
+          ],
+          "sourceKind": "GRAPH_AND_PROTOCOL_MAPPING",
+          "limits": "Do not manufacture a Purgatorio release-protocol ID or trigger a runtime claim."
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_FALSE_POSITIVE_CHECK",
+          "finding": "Counterexample guard: Ordinary desire or consensual pleasure is not vice. All records are interpretive comparisons of actions, not diagnoses or assignments of human worth. A named mythic figure must not be equated with a historical person, religion, or ethnic group. A single isolated action is not sufficient for a stable profile.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json#inferno:X03",
+            "https://danteworlds.laits.utexas.edu/inferno/index.html"
+          ],
+          "sourceKind": "SAFETY_AND_COUNTEREVIDENCE",
+          "limits": "Four analytical research lenses are not four external independent studies."
+        }
+      ],
+      "links": [
+        {
+          "id": "compass-teacher:Ramakrishna",
+          "type": "ENGINE_MIRROR_POLE",
+          "status": "SOURCE_VERIFIED_NOT_RUNTIME"
+        },
+        {
+          "id": "inferno:X03",
+          "type": "INFERNO_EXISTING_RECORD",
+          "status": "ARCHIVE_VERIFIED_NOT_RUNTIME"
+        },
+        {
+          "id": "compass:axis:DE",
+          "type": "ENGINE_AXIS",
+          "status": "ENGINE_SOURCE"
+        }
+      ],
+      "displayLabel": "Compulsive Craving",
+      "hiddenIdentity": "Asmodeus",
+      "sourceIdentityStatus": "ENGINE_NAMED",
+      "sourceInfernoId": "inferno:X03",
+      "candidateCompassAxis": "DE",
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Ordinary desire or consensual pleasure is not vice."
+    },
+    {
+      "id": "compass-inverse:Set",
+      "kind": "compass_mirror_inverse",
+      "templateId": "TPL-COMPASS-TEACHER-INVERSE-V1",
+      "nm": "Set",
+      "fam": "Compass / Inferno / inverse patterns",
+      "def": "Engineered Disorder",
+      "body": "Betrayal or disruption works from inside a structure people rely on. Trigger mechanism: Trusted rules are selectively violated or subverted for control. Example candidate: Sabotages a shared agreement while presenting as its guardian. Historical boundary: Existing mirror-axis opposite. Historical identity and behavioral interpretation must not be conflated. Counterexample: Protest against injustice or necessary reform is not automatically disorder.",
+      "inferred": false,
+      "inferenceBasis": "Engine canon defines the mirror behavior; external semantic evidence is separately qualified.",
+      "behavior": "Betrayal or disruption works from inside a structure people rely on.",
+      "triggerMechanism": "Trusted rules are selectively violated or subverted for control.",
+      "livedExample": "Sabotages a shared agreement while presenting as its guardian.",
+      "impact": "May orient an evidence-based release practice; does not diagnose a person.",
+      "practice": "Refer to an explicitly linked Purgatorio release protocol when available; otherwise record an observation without moral labeling.",
+      "oppositeId": "compass-teacher:Moses",
+      "oppositeDefinition": "Create structures that protect agency and are intelligible to those governed.",
+      "oppositeStatus": "NAMED_ENGINE_MIRROR",
+      "confidence": {
+        "source": "ENGINE_CANON",
+        "identity": "EXISTING_ENGINE_LABEL",
+        "behavior": "INTERPRETIVE",
+        "integration": "NOT_RUNTIME_WIRED"
+      },
+      "reviewStatus": "RESEARCH_V1_FOUR_LENSES__NOT_RUNTIME",
+      "refer": false,
+      "narrativeSource": "atuned_src/engine/data/compass.js",
+      "researchSources": [
+        "atuned_src/engine/data/compass.js",
+        "https://danteworlds.laits.utexas.edu/inferno/index.html"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY_AND_NARRATIVE",
+          "finding": "Engine names Set as inverted pole of OR, opposed to Moses. Existing mirror-axis opposite. Historical identity and behavioral interpretation must not be conflated. An Inferno body match is UNVERIFIED; do not assert equivalence to other figures of similar name.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://danteworlds.laits.utexas.edu/inferno/index.html"
+          ],
+          "sourceKind": "ENGINE_CANON_PLUS_SOURCE_CHECK",
+          "limits": "Canon is a product mapping, not a claim that figures were historical contemporaries."
+        },
+        {
+          "pass": 2,
+          "lens": "MECHANISM_AND_TRIGGER",
+          "finding": "Inversion description: Betrayal or disruption works from inside a structure people rely on. Mechanism: Trusted rules are selectively violated or subverted for control. The distinction from its coherent pole is about the cost and direction of action, not identity.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://bibleproject.com/guides/the-exodus-way/"
+          ],
+          "sourceKind": "BEHAVIORAL_MOVEMENT",
+          "limits": "Context, consent and alternative explanations are mandatory."
+        },
+        {
+          "pass": 3,
+          "lens": "OBSERVABLES_AND_REVERSE_EDGES",
+          "finding": "Observable candidate: Sabotages a shared agreement while presenting as its guardian. Reference coherent teacher Moses (Order); inverse status named in MIRROR. Inferno source mapping not verified; release protocols belong to Purgatorio.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://danteworlds.laits.utexas.edu/inferno/index.html"
+          ],
+          "sourceKind": "GRAPH_AND_PROTOCOL_MAPPING",
+          "limits": "Do not manufacture a Purgatorio release-protocol ID or trigger a runtime claim."
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_FALSE_POSITIVE_CHECK",
+          "finding": "Counterexample guard: Protest against injustice or necessary reform is not automatically disorder. All records are interpretive comparisons of actions, not diagnoses or assignments of human worth. A named mythic figure must not be equated with a historical person, religion, or ethnic group. A single isolated action is not sufficient for a stable profile.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://danteworlds.laits.utexas.edu/inferno/index.html"
+          ],
+          "sourceKind": "SAFETY_AND_COUNTEREVIDENCE",
+          "limits": "Four analytical research lenses are not four external independent studies."
+        }
+      ],
+      "links": [
+        {
+          "id": "compass-teacher:Moses",
+          "type": "ENGINE_MIRROR_POLE",
+          "status": "SOURCE_VERIFIED_NOT_RUNTIME"
+        },
+        {
+          "id": "compass:axis:OR",
+          "type": "ENGINE_AXIS",
+          "status": "ENGINE_SOURCE"
+        }
+      ],
+      "displayLabel": "Engineered Disorder",
+      "hiddenIdentity": "Set",
+      "sourceIdentityStatus": "ENGINE_NAMED",
+      "sourceInfernoId": null,
+      "candidateCompassAxis": "OR",
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Protest against injustice or necessary reform is not automatically disorder."
+    },
+    {
+      "id": "compass-inverse:Moloch",
+      "kind": "compass_mirror_inverse",
+      "templateId": "TPL-COMPASS-TEACHER-INVERSE-V1",
+      "nm": "Moloch",
+      "fam": "Compass / Inferno / inverse patterns",
+      "def": "Extractive Power",
+      "body": "The cost of power is transferred to others rather than borne by the practitioner. Trigger mechanism: A hierarchy calls sacrifice necessary while exempting its leader from the loss. Example candidate: Requires subordinates to absorb risks not accepted by the leader. Historical boundary: Existing mirror-axis opposite. Historical identity and behavioral interpretation must not be conflated. Counterexample: Do not equate every difficult institution or leadership decision with exploitation.",
+      "inferred": false,
+      "inferenceBasis": "Engine canon defines the mirror behavior; external semantic evidence is separately qualified.",
+      "behavior": "The cost of power is transferred to others rather than borne by the practitioner.",
+      "triggerMechanism": "A hierarchy calls sacrifice necessary while exempting its leader from the loss.",
+      "livedExample": "Requires subordinates to absorb risks not accepted by the leader.",
+      "impact": "May orient an evidence-based release practice; does not diagnose a person.",
+      "practice": "Refer to an explicitly linked Purgatorio release protocol when available; otherwise record an observation without moral labeling.",
+      "oppositeId": "compass-teacher:Musashi",
+      "oppositeDefinition": "Invest repeated effort in precision and accept the personal cost of training.",
+      "oppositeStatus": "NAMED_ENGINE_MIRROR",
+      "confidence": {
+        "source": "ENGINE_CANON",
+        "identity": "EXISTING_ENGINE_LABEL",
+        "behavior": "INTERPRETIVE",
+        "integration": "NOT_RUNTIME_WIRED"
+      },
+      "reviewStatus": "RESEARCH_V1_FOUR_LENSES__NOT_RUNTIME",
+      "refer": false,
+      "narrativeSource": "atuned_src/engine/data/compass.js",
+      "researchSources": [
+        "atuned_src/engine/data/compass.js",
+        "https://danteworlds.laits.utexas.edu/inferno/index.html"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY_AND_NARRATIVE",
+          "finding": "Engine names Moloch as inverted pole of PO, opposed to Musashi. Existing mirror-axis opposite. Historical identity and behavioral interpretation must not be conflated. An Inferno body match is UNVERIFIED; do not assert equivalence to other figures of similar name.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://danteworlds.laits.utexas.edu/inferno/index.html"
+          ],
+          "sourceKind": "ENGINE_CANON_PLUS_SOURCE_CHECK",
+          "limits": "Canon is a product mapping, not a claim that figures were historical contemporaries."
+        },
+        {
+          "pass": 2,
+          "lens": "MECHANISM_AND_TRIGGER",
+          "finding": "Inversion description: The cost of power is transferred to others rather than borne by the practitioner. Mechanism: A hierarchy calls sacrifice necessary while exempting its leader from the loss. The distinction from its coherent pole is about the cost and direction of action, not identity.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://www.nippon.com/en/japan-topics/g00689/master-swordsman-miyamoto-musashi-the-man-behind-the-book-of-five-rings.html"
+          ],
+          "sourceKind": "BEHAVIORAL_MOVEMENT",
+          "limits": "Context, consent and alternative explanations are mandatory."
+        },
+        {
+          "pass": 3,
+          "lens": "OBSERVABLES_AND_REVERSE_EDGES",
+          "finding": "Observable candidate: Requires subordinates to absorb risks not accepted by the leader. Reference coherent teacher Musashi (Discipline); inverse status named in MIRROR. Inferno source mapping not verified; release protocols belong to Purgatorio.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://danteworlds.laits.utexas.edu/inferno/index.html"
+          ],
+          "sourceKind": "GRAPH_AND_PROTOCOL_MAPPING",
+          "limits": "Do not manufacture a Purgatorio release-protocol ID or trigger a runtime claim."
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_FALSE_POSITIVE_CHECK",
+          "finding": "Counterexample guard: Do not equate every difficult institution or leadership decision with exploitation. All records are interpretive comparisons of actions, not diagnoses or assignments of human worth. A named mythic figure must not be equated with a historical person, religion, or ethnic group. A single isolated action is not sufficient for a stable profile.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://danteworlds.laits.utexas.edu/inferno/index.html"
+          ],
+          "sourceKind": "SAFETY_AND_COUNTEREVIDENCE",
+          "limits": "Four analytical research lenses are not four external independent studies."
+        }
+      ],
+      "links": [
+        {
+          "id": "compass-teacher:Musashi",
+          "type": "ENGINE_MIRROR_POLE",
+          "status": "SOURCE_VERIFIED_NOT_RUNTIME"
+        },
+        {
+          "id": "compass:axis:PO",
+          "type": "ENGINE_AXIS",
+          "status": "ENGINE_SOURCE"
+        }
+      ],
+      "displayLabel": "Extractive Power",
+      "hiddenIdentity": "Moloch",
+      "sourceIdentityStatus": "ENGINE_NAMED",
+      "sourceInfernoId": null,
+      "candidateCompassAxis": "PO",
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Do not equate every difficult institution or leadership decision with exploitation."
+    },
+    {
+      "id": "compass-inverse:Geryon",
+      "kind": "compass_mirror_inverse",
+      "templateId": "TPL-COMPASS-TEACHER-INVERSE-V1",
+      "nm": "Geryon",
+      "fam": "Compass / Inferno / inverse patterns",
+      "def": "Deceptive Appearance",
+      "body": "Polished presentation conceals an incompatible underlying action. Trigger mechanism: An engineered surface substitutes for available evidence. Example candidate: Repeatedly performs trustworthiness while records show inconsistent behavior. Historical boundary: Existing mirror-axis opposite. Historical identity and behavioral interpretation must not be conflated. Counterexample: Privacy or social masking for safety is not inherently deceit.",
+      "inferred": false,
+      "inferenceBasis": "Engine canon defines the mirror behavior; external semantic evidence is separately qualified.",
+      "behavior": "Polished presentation conceals an incompatible underlying action.",
+      "triggerMechanism": "An engineered surface substitutes for available evidence.",
+      "livedExample": "Repeatedly performs trustworthiness while records show inconsistent behavior.",
+      "impact": "May orient an evidence-based release practice; does not diagnose a person.",
+      "practice": "Refer to an explicitly linked Purgatorio release protocol when available; otherwise record an observation without moral labeling.",
+      "oppositeId": "compass-teacher:Buddha",
+      "oppositeDefinition": "Notice suffering, distinguish craving from present evidence, act attentively without reactive identification.",
+      "oppositeStatus": "NAMED_ENGINE_MIRROR",
+      "confidence": {
+        "source": "ENGINE_CANON",
+        "identity": "EXISTING_ENGINE_LABEL",
+        "behavior": "INTERPRETIVE",
+        "integration": "NOT_RUNTIME_WIRED"
+      },
+      "reviewStatus": "RESEARCH_V1_FOUR_LENSES__NOT_RUNTIME",
+      "refer": false,
+      "narrativeSource": "atuned_src/engine/data/compass.js",
+      "researchSources": [
+        "atuned_src/engine/data/compass.js",
+        "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json#inferno:F09",
+        "https://danteworlds.laits.utexas.edu/inferno/index.html"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY_AND_NARRATIVE",
+          "finding": "Engine names Geryon as inverted pole of PE, opposed to Buddha. Existing mirror-axis opposite. Historical identity and behavioral interpretation must not be conflated. An Inferno body match is inferno:F09; do not assert equivalence to other figures of similar name.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json#inferno:F09",
+            "https://danteworlds.laits.utexas.edu/inferno/index.html"
+          ],
+          "sourceKind": "ENGINE_CANON_PLUS_SOURCE_CHECK",
+          "limits": "Canon is a product mapping, not a claim that figures were historical contemporaries."
+        },
+        {
+          "pass": 2,
+          "lens": "MECHANISM_AND_TRIGGER",
+          "finding": "Inversion description: Polished presentation conceals an incompatible underlying action. Mechanism: An engineered surface substitutes for available evidence. The distinction from its coherent pole is about the cost and direction of action, not identity.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://onlinelibrary.wiley.com/doi/abs/10.1002/9781119009924.eopr0060"
+          ],
+          "sourceKind": "BEHAVIORAL_MOVEMENT",
+          "limits": "Context, consent and alternative explanations are mandatory."
+        },
+        {
+          "pass": 3,
+          "lens": "OBSERVABLES_AND_REVERSE_EDGES",
+          "finding": "Observable candidate: Repeatedly performs trustworthiness while records show inconsistent behavior. Reference coherent teacher Buddha (Awareness); inverse status named in MIRROR. Inferno source mapping inferno:F09; release protocols belong to Purgatorio.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json#inferno:F09",
+            "https://danteworlds.laits.utexas.edu/inferno/index.html"
+          ],
+          "sourceKind": "GRAPH_AND_PROTOCOL_MAPPING",
+          "limits": "Do not manufacture a Purgatorio release-protocol ID or trigger a runtime claim."
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_FALSE_POSITIVE_CHECK",
+          "finding": "Counterexample guard: Privacy or social masking for safety is not inherently deceit. All records are interpretive comparisons of actions, not diagnoses or assignments of human worth. A named mythic figure must not be equated with a historical person, religion, or ethnic group. A single isolated action is not sufficient for a stable profile.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json#inferno:F09",
+            "https://danteworlds.laits.utexas.edu/inferno/index.html"
+          ],
+          "sourceKind": "SAFETY_AND_COUNTEREVIDENCE",
+          "limits": "Four analytical research lenses are not four external independent studies."
+        }
+      ],
+      "links": [
+        {
+          "id": "compass-teacher:Buddha",
+          "type": "ENGINE_MIRROR_POLE",
+          "status": "SOURCE_VERIFIED_NOT_RUNTIME"
+        },
+        {
+          "id": "inferno:F09",
+          "type": "INFERNO_EXISTING_RECORD",
+          "status": "ARCHIVE_VERIFIED_NOT_RUNTIME"
+        },
+        {
+          "id": "compass:axis:PE",
+          "type": "ENGINE_AXIS",
+          "status": "ENGINE_SOURCE"
+        }
+      ],
+      "displayLabel": "Deceptive Appearance",
+      "hiddenIdentity": "Geryon",
+      "sourceIdentityStatus": "ENGINE_NAMED",
+      "sourceInfernoId": "inferno:F09",
+      "candidateCompassAxis": "PE",
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Privacy or social masking for safety is not inherently deceit."
+    },
+    {
+      "id": "compass-inverse:Charon",
+      "kind": "compass_mirror_inverse",
+      "templateId": "TPL-COMPASS-TEACHER-INVERSE-V1",
+      "nm": "Charon",
+      "fam": "Compass / Inferno / inverse patterns",
+      "def": "Threshold Paralysis",
+      "body": "Connection is deferred indefinitely until impossible certainty arrives. Trigger mechanism: Fear of felt vulnerability is rationalized as endless verification. Example candidate: Avoids a safe, voluntary next action despite sufficient ordinary information. Historical boundary: Existing mirror-axis opposite. Historical identity and behavioral interpretation must not be conflated. Counterexample: Caution, trauma responses, disability and valid safety doubts are not moral failure.",
+      "inferred": false,
+      "inferenceBasis": "Engine canon defines the mirror behavior; external semantic evidence is separately qualified.",
+      "behavior": "Connection is deferred indefinitely until impossible certainty arrives.",
+      "triggerMechanism": "Fear of felt vulnerability is rationalized as endless verification.",
+      "livedExample": "Avoids a safe, voluntary next action despite sufficient ordinary information.",
+      "impact": "May orient an evidence-based release practice; does not diagnose a person.",
+      "practice": "Refer to an explicitly linked Purgatorio release protocol when available; otherwise record an observation without moral labeling.",
+      "oppositeId": "compass-teacher:Rumi",
+      "oppositeDefinition": "Remain open to felt connection and give care without using others as a source of status.",
+      "oppositeStatus": "NAMED_ENGINE_MIRROR",
+      "confidence": {
+        "source": "ENGINE_CANON",
+        "identity": "EXISTING_ENGINE_LABEL",
+        "behavior": "INTERPRETIVE",
+        "integration": "NOT_RUNTIME_WIRED"
+      },
+      "reviewStatus": "RESEARCH_V1_FOUR_LENSES__NOT_RUNTIME",
+      "refer": false,
+      "narrativeSource": "atuned_src/engine/data/compass.js",
+      "researchSources": [
+        "atuned_src/engine/data/compass.js",
+        "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json#inferno:F01",
+        "https://danteworlds.laits.utexas.edu/inferno/index.html"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY_AND_NARRATIVE",
+          "finding": "Engine names Charon as inverted pole of TR, opposed to Rumi. Existing mirror-axis opposite. Historical identity and behavioral interpretation must not be conflated. An Inferno body match is inferno:F01; do not assert equivalence to other figures of similar name.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json#inferno:F01",
+            "https://danteworlds.laits.utexas.edu/inferno/index.html"
+          ],
+          "sourceKind": "ENGINE_CANON_PLUS_SOURCE_CHECK",
+          "limits": "Canon is a product mapping, not a claim that figures were historical contemporaries."
+        },
+        {
+          "pass": 2,
+          "lens": "MECHANISM_AND_TRIGGER",
+          "finding": "Inversion description: Connection is deferred indefinitely until impossible certainty arrives. Mechanism: Fear of felt vulnerability is rationalized as endless verification. The distinction from its coherent pole is about the cost and direction of action, not identity.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://www.iranicaonline.org/articles/rumi-philosophy/"
+          ],
+          "sourceKind": "BEHAVIORAL_MOVEMENT",
+          "limits": "Context, consent and alternative explanations are mandatory."
+        },
+        {
+          "pass": 3,
+          "lens": "OBSERVABLES_AND_REVERSE_EDGES",
+          "finding": "Observable candidate: Avoids a safe, voluntary next action despite sufficient ordinary information. Reference coherent teacher Rumi (Beauty); inverse status named in MIRROR. Inferno source mapping inferno:F01; release protocols belong to Purgatorio.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json#inferno:F01",
+            "https://danteworlds.laits.utexas.edu/inferno/index.html"
+          ],
+          "sourceKind": "GRAPH_AND_PROTOCOL_MAPPING",
+          "limits": "Do not manufacture a Purgatorio release-protocol ID or trigger a runtime claim."
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_FALSE_POSITIVE_CHECK",
+          "finding": "Counterexample guard: Caution, trauma responses, disability and valid safety doubts are not moral failure. All records are interpretive comparisons of actions, not diagnoses or assignments of human worth. A named mythic figure must not be equated with a historical person, religion, or ethnic group. A single isolated action is not sufficient for a stable profile.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json#inferno:F01",
+            "https://danteworlds.laits.utexas.edu/inferno/index.html"
+          ],
+          "sourceKind": "SAFETY_AND_COUNTEREVIDENCE",
+          "limits": "Four analytical research lenses are not four external independent studies."
+        }
+      ],
+      "links": [
+        {
+          "id": "compass-teacher:Rumi",
+          "type": "ENGINE_MIRROR_POLE",
+          "status": "SOURCE_VERIFIED_NOT_RUNTIME"
+        },
+        {
+          "id": "inferno:F01",
+          "type": "INFERNO_EXISTING_RECORD",
+          "status": "ARCHIVE_VERIFIED_NOT_RUNTIME"
+        },
+        {
+          "id": "compass:axis:TR",
+          "type": "ENGINE_AXIS",
+          "status": "ENGINE_SOURCE"
+        }
+      ],
+      "displayLabel": "Threshold Paralysis",
+      "hiddenIdentity": "Charon",
+      "sourceIdentityStatus": "ENGINE_NAMED",
+      "sourceInfernoId": "inferno:F01",
+      "candidateCompassAxis": "TR",
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Caution, trauma responses, disability and valid safety doubts are not moral failure."
+    },
+    {
+      "id": "compass-inverse:Phlegyas",
+      "kind": "compass_mirror_inverse",
+      "templateId": "TPL-COMPASS-TEACHER-INVERSE-V1",
+      "nm": "Phlegyas",
+      "fam": "Compass / Inferno / inverse patterns",
+      "def": "Reactive Charge",
+      "body": "Suppressed intensity emerges as attack or as immobilization. Trigger mechanism: The person acts before noticing consequences or shuts down when intensity rises. Example candidate: Escalates an argument or freezes without using available safe support. Historical boundary: Existing mirror-axis opposite. Historical identity and behavioral interpretation must not be conflated. Counterexample: Anger about genuine injustice is not synonymous with harmful retaliation.",
+      "inferred": false,
+      "inferenceBasis": "Engine canon defines the mirror behavior; external semantic evidence is separately qualified.",
+      "behavior": "Suppressed intensity emerges as attack or as immobilization.",
+      "triggerMechanism": "The person acts before noticing consequences or shuts down when intensity rises.",
+      "livedExample": "Escalates an argument or freezes without using available safe support.",
+      "impact": "May orient an evidence-based release practice; does not diagnose a person.",
+      "practice": "Refer to an explicitly linked Purgatorio release protocol when available; otherwise record an observation without moral labeling.",
+      "oppositeId": "compass-teacher:Elijah",
+      "oppositeDefinition": "Turn intensity into bounded, proportionate action instead of retaliation.",
+      "oppositeStatus": "NAMED_ENGINE_MIRROR",
+      "confidence": {
+        "source": "ENGINE_CANON",
+        "identity": "EXISTING_ENGINE_LABEL",
+        "behavior": "INTERPRETIVE",
+        "integration": "NOT_RUNTIME_WIRED"
+      },
+      "reviewStatus": "RESEARCH_V1_FOUR_LENSES__NOT_RUNTIME",
+      "refer": false,
+      "narrativeSource": "atuned_src/engine/data/compass.js",
+      "researchSources": [
+        "atuned_src/engine/data/compass.js",
+        "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json#inferno:F05",
+        "https://danteworlds.laits.utexas.edu/inferno/index.html"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY_AND_NARRATIVE",
+          "finding": "Engine names Phlegyas as inverted pole of CH, opposed to Elijah. Existing mirror-axis opposite. Historical identity and behavioral interpretation must not be conflated. An Inferno body match is inferno:F05; do not assert equivalence to other figures of similar name.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json#inferno:F05",
+            "https://danteworlds.laits.utexas.edu/inferno/index.html"
+          ],
+          "sourceKind": "ENGINE_CANON_PLUS_SOURCE_CHECK",
+          "limits": "Canon is a product mapping, not a claim that figures were historical contemporaries."
+        },
+        {
+          "pass": 2,
+          "lens": "MECHANISM_AND_TRIGGER",
+          "finding": "Inversion description: Suppressed intensity emerges as attack or as immobilization. Mechanism: The person acts before noticing consequences or shuts down when intensity rises. The distinction from its coherent pole is about the cost and direction of action, not identity.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://bible.usccb.org/bible/1kings/18"
+          ],
+          "sourceKind": "BEHAVIORAL_MOVEMENT",
+          "limits": "Context, consent and alternative explanations are mandatory."
+        },
+        {
+          "pass": 3,
+          "lens": "OBSERVABLES_AND_REVERSE_EDGES",
+          "finding": "Observable candidate: Escalates an argument or freezes without using available safe support. Reference coherent teacher Elijah (Grounded Fire); inverse status named in MIRROR. Inferno source mapping inferno:F05; release protocols belong to Purgatorio.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json#inferno:F05",
+            "https://danteworlds.laits.utexas.edu/inferno/index.html"
+          ],
+          "sourceKind": "GRAPH_AND_PROTOCOL_MAPPING",
+          "limits": "Do not manufacture a Purgatorio release-protocol ID or trigger a runtime claim."
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_FALSE_POSITIVE_CHECK",
+          "finding": "Counterexample guard: Anger about genuine injustice is not synonymous with harmful retaliation. All records are interpretive comparisons of actions, not diagnoses or assignments of human worth. A named mythic figure must not be equated with a historical person, religion, or ethnic group. A single isolated action is not sufficient for a stable profile.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json#inferno:F05",
+            "https://danteworlds.laits.utexas.edu/inferno/index.html"
+          ],
+          "sourceKind": "SAFETY_AND_COUNTEREVIDENCE",
+          "limits": "Four analytical research lenses are not four external independent studies."
+        }
+      ],
+      "links": [
+        {
+          "id": "compass-teacher:Elijah",
+          "type": "ENGINE_MIRROR_POLE",
+          "status": "SOURCE_VERIFIED_NOT_RUNTIME"
+        },
+        {
+          "id": "inferno:F05",
+          "type": "INFERNO_EXISTING_RECORD",
+          "status": "ARCHIVE_VERIFIED_NOT_RUNTIME"
+        },
+        {
+          "id": "compass:axis:CH",
+          "type": "ENGINE_AXIS",
+          "status": "ENGINE_SOURCE"
+        }
+      ],
+      "displayLabel": "Reactive Charge",
+      "hiddenIdentity": "Phlegyas",
+      "sourceIdentityStatus": "ENGINE_NAMED",
+      "sourceInfernoId": "inferno:F05",
+      "candidateCompassAxis": "CH",
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Anger about genuine injustice is not synonymous with harmful retaliation."
+    },
+    {
+      "id": "compass-inverse:The-Furies",
+      "kind": "compass_mirror_inverse",
+      "templateId": "TPL-COMPASS-TEACHER-INVERSE-V1",
+      "nm": "The Furies",
+      "fam": "Compass / Inferno / inverse patterns",
+      "def": "Ideological Rigidity",
+      "body": "A fixed map is defended against disconfirming experience. Trigger mechanism: Counterevidence is recoded as an attack on identity rather than examined. Example candidate: Refuses a checkable correction while invoking doctrine or status. Historical boundary: Existing mirror-axis opposite. Historical identity and behavioral interpretation must not be conflated. Counterexample: Religious belief or intellectual conviction alone is not a pathology.",
+      "inferred": false,
+      "inferenceBasis": "Engine canon defines the mirror behavior; external semantic evidence is separately qualified.",
+      "behavior": "A fixed map is defended against disconfirming experience.",
+      "triggerMechanism": "Counterevidence is recoded as an attack on identity rather than examined.",
+      "livedExample": "Refuses a checkable correction while invoking doctrine or status.",
+      "impact": "May orient an evidence-based release practice; does not diagnose a person.",
+      "practice": "Refer to an explicitly linked Purgatorio release protocol when available; otherwise record an observation without moral labeling.",
+      "oppositeId": "compass-teacher:Jesus",
+      "oppositeDefinition": "Extend practical care without a demand for praise; revise hostility while keeping safety and truthful boundaries.",
+      "oppositeStatus": "NAMED_ENGINE_MIRROR",
+      "confidence": {
+        "source": "ENGINE_CANON",
+        "identity": "EXISTING_ENGINE_LABEL",
+        "behavior": "INTERPRETIVE",
+        "integration": "NOT_RUNTIME_WIRED"
+      },
+      "reviewStatus": "RESEARCH_V1_FOUR_LENSES__NOT_RUNTIME",
+      "refer": false,
+      "narrativeSource": "atuned_src/engine/data/compass.js",
+      "researchSources": [
+        "atuned_src/engine/data/compass.js",
+        "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json#inferno:F06",
+        "https://danteworlds.laits.utexas.edu/inferno/index.html"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY_AND_NARRATIVE",
+          "finding": "Engine names The Furies as inverted pole of RE, opposed to Jesus. Existing mirror-axis opposite. Historical identity and behavioral interpretation must not be conflated. An Inferno body match is inferno:F06; do not assert equivalence to other figures of similar name.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json#inferno:F06",
+            "https://danteworlds.laits.utexas.edu/inferno/index.html"
+          ],
+          "sourceKind": "ENGINE_CANON_PLUS_SOURCE_CHECK",
+          "limits": "Canon is a product mapping, not a claim that figures were historical contemporaries."
+        },
+        {
+          "pass": 2,
+          "lens": "MECHANISM_AND_TRIGGER",
+          "finding": "Inversion description: A fixed map is defended against disconfirming experience. Mechanism: Counterevidence is recoded as an attack on identity rather than examined. The distinction from its coherent pole is about the cost and direction of action, not identity.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://www.biblegateway.com/passage/?search=Matthew+5&version=NIV"
+          ],
+          "sourceKind": "BEHAVIORAL_MOVEMENT",
+          "limits": "Context, consent and alternative explanations are mandatory."
+        },
+        {
+          "pass": 3,
+          "lens": "OBSERVABLES_AND_REVERSE_EDGES",
+          "finding": "Observable candidate: Refuses a checkable correction while invoking doctrine or status. Reference coherent teacher Jesus (Love); inverse status named in MIRROR. Inferno source mapping inferno:F06; release protocols belong to Purgatorio.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json#inferno:F06",
+            "https://danteworlds.laits.utexas.edu/inferno/index.html"
+          ],
+          "sourceKind": "GRAPH_AND_PROTOCOL_MAPPING",
+          "limits": "Do not manufacture a Purgatorio release-protocol ID or trigger a runtime claim."
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_FALSE_POSITIVE_CHECK",
+          "finding": "Counterexample guard: Religious belief or intellectual conviction alone is not a pathology. All records are interpretive comparisons of actions, not diagnoses or assignments of human worth. A named mythic figure must not be equated with a historical person, religion, or ethnic group. A single isolated action is not sufficient for a stable profile.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json#inferno:F06",
+            "https://danteworlds.laits.utexas.edu/inferno/index.html"
+          ],
+          "sourceKind": "SAFETY_AND_COUNTEREVIDENCE",
+          "limits": "Four analytical research lenses are not four external independent studies."
+        }
+      ],
+      "links": [
+        {
+          "id": "compass-teacher:Jesus",
+          "type": "ENGINE_MIRROR_POLE",
+          "status": "SOURCE_VERIFIED_NOT_RUNTIME"
+        },
+        {
+          "id": "inferno:F06",
+          "type": "INFERNO_EXISTING_RECORD",
+          "status": "ARCHIVE_VERIFIED_NOT_RUNTIME"
+        },
+        {
+          "id": "compass:axis:RE",
+          "type": "ENGINE_AXIS",
+          "status": "ENGINE_SOURCE"
+        }
+      ],
+      "displayLabel": "Ideological Rigidity",
+      "hiddenIdentity": "The Furies",
+      "sourceIdentityStatus": "ENGINE_NAMED",
+      "sourceInfernoId": "inferno:F06",
+      "candidateCompassAxis": "RE",
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Religious belief or intellectual conviction alone is not a pathology."
+    },
+    {
+      "id": "compass-inverse:Doctrinal-Control",
+      "kind": "compass_inferred_inverse",
+      "templateId": "TPL-COMPASS-TEACHER-INVERSE-V1",
+      "nm": "Doctrinal Control",
+      "fam": "Compass / Inferno / inverse patterns",
+      "def": "Dogmatic Control",
+      "body": "A claim to truth is imposed by concentrating authority and suppressing dissent. Trigger mechanism: Authority is used instead of evidence to settle a contested claim. Example candidate: Punishes disagreement rather than engaging its reasons. Historical boundary: No unique named historic entity safely maps as a moral negative of Akhenaten; his own acts furnish important counterexamples. Counterexample: A religion, its adherents, or Amun worshippers are not themselves inverse archetypes.",
+      "inferred": true,
+      "inferenceBasis": "Behavioral candidate extrapolated from teaching context; no approved entity identity.",
+      "behavior": "A claim to truth is imposed by concentrating authority and suppressing dissent.",
+      "triggerMechanism": "Authority is used instead of evidence to settle a contested claim.",
+      "livedExample": "Punishes disagreement rather than engaging its reasons.",
+      "impact": "May orient an evidence-based release practice; does not diagnose a person.",
+      "practice": "Refer to an explicitly linked Purgatorio release protocol when available; otherwise record an observation without moral labeling.",
+      "oppositeId": "compass-teacher:Akhenaten",
+      "oppositeDefinition": "Make a conviction explicit and subject claims to scrutiny instead of using institutional status as proof.",
+      "oppositeStatus": "PROPOSED_BEHAVIORAL_CONTRAST",
+      "confidence": {
+        "source": "SOURCE_CANDIDATE",
+        "identity": "UNRESOLVED",
+        "behavior": "INTERPRETIVE",
+        "integration": "NOT_RUNTIME_WIRED"
+      },
+      "reviewStatus": "RESEARCH_V1_FOUR_LENSES__NOT_RUNTIME",
+      "refer": false,
+      "narrativeSource": "https://rsc.byu.edu/bible-readers-history-ancient-world/egypts-new-kingdom",
+      "researchSources": [
+        "atuned_src/engine/data/compass.js",
+        "https://rsc.byu.edu/bible-readers-history-ancient-world/egypts-new-kingdom"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY_AND_NARRATIVE",
+          "finding": "Candidate only: No unique named historic entity safely maps as a moral negative of Akhenaten; his own acts furnish important counterexamples. Do not invent an entity name before a source identifies one.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://rsc.byu.edu/bible-readers-history-ancient-world/egypts-new-kingdom"
+          ],
+          "sourceKind": "RESEARCH_CANDIDATE",
+          "limits": "Canon is a product mapping, not a claim that figures were historical contemporaries."
+        },
+        {
+          "pass": 2,
+          "lens": "MECHANISM_AND_TRIGGER",
+          "finding": "Inversion description: A claim to truth is imposed by concentrating authority and suppressing dissent. Mechanism: Authority is used instead of evidence to settle a contested claim. The distinction from its coherent pole is about the cost and direction of action, not identity.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://rsc.byu.edu/bible-readers-history-ancient-world/egypts-new-kingdom"
+          ],
+          "sourceKind": "BEHAVIORAL_MOVEMENT",
+          "limits": "Context, consent and alternative explanations are mandatory."
+        },
+        {
+          "pass": 3,
+          "lens": "OBSERVABLES_AND_REVERSE_EDGES",
+          "finding": "Observable candidate: Punishes disagreement rather than engaging its reasons. Reference coherent teacher Akhenaten (Light); inverse status model candidate. Inferno source mapping not verified; release protocols belong to Purgatorio.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://rsc.byu.edu/bible-readers-history-ancient-world/egypts-new-kingdom"
+          ],
+          "sourceKind": "GRAPH_AND_PROTOCOL_MAPPING",
+          "limits": "Do not manufacture a Purgatorio release-protocol ID or trigger a runtime claim."
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_FALSE_POSITIVE_CHECK",
+          "finding": "Counterexample guard: A religion, its adherents, or Amun worshippers are not themselves inverse archetypes. All records are interpretive comparisons of actions, not diagnoses or assignments of human worth. A named mythic figure must not be equated with a historical person, religion, or ethnic group. A single isolated action is not sufficient for a stable profile.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://rsc.byu.edu/bible-readers-history-ancient-world/egypts-new-kingdom"
+          ],
+          "sourceKind": "SAFETY_AND_COUNTEREVIDENCE",
+          "limits": "Four analytical research lenses are not four external independent studies."
+        }
+      ],
+      "links": [
+        {
+          "id": "compass-teacher:Akhenaten",
+          "type": "CANDIDATE_INVERSE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        }
+      ],
+      "displayLabel": "Dogmatic Control",
+      "hiddenIdentity": null,
+      "sourceIdentityStatus": "UNASSIGNED",
+      "sourceInfernoId": null,
+      "candidateCompassAxis": null,
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "A religion, its adherents, or Amun worshippers are not themselves inverse archetypes."
+    },
+    {
+      "id": "compass-inverse:Clinging",
+      "kind": "compass_inferred_inverse",
+      "templateId": "TPL-COMPASS-TEACHER-INVERSE-V1",
+      "nm": "Clinging",
+      "fam": "Compass / Inferno / inverse patterns",
+      "def": "Outcome Attachment",
+      "body": "Fixation on reward overrides responsible action and openness to change. Trigger mechanism: Only a predetermined outcome is considered acceptable. Example candidate: Continues an ineffective harmful action merely to preserve promised status. Historical boundary: Duryodhana is an epic narrative antagonist, not an approved Compass pole. Counterexample: Care about an outcome is normal and often necessary.",
+      "inferred": true,
+      "inferenceBasis": "Behavioral candidate extrapolated from teaching context; no approved entity identity.",
+      "behavior": "Fixation on reward overrides responsible action and openness to change.",
+      "triggerMechanism": "Only a predetermined outcome is considered acceptable.",
+      "livedExample": "Continues an ineffective harmful action merely to preserve promised status.",
+      "impact": "May orient an evidence-based release practice; does not diagnose a person.",
+      "practice": "Refer to an explicitly linked Purgatorio release protocol when available; otherwise record an observation without moral labeling.",
+      "oppositeId": "compass-teacher:Krishna",
+      "oppositeDefinition": "Choose an accountable action and release fixation on obtaining personal reward.",
+      "oppositeStatus": "PROPOSED_BEHAVIORAL_CONTRAST",
+      "confidence": {
+        "source": "SOURCE_CANDIDATE",
+        "identity": "UNRESOLVED",
+        "behavior": "INTERPRETIVE",
+        "integration": "NOT_RUNTIME_WIRED"
+      },
+      "reviewStatus": "RESEARCH_V1_FOUR_LENSES__NOT_RUNTIME",
+      "refer": false,
+      "narrativeSource": "https://erenow.org/ancient/the-bhagavad-gita-a-biography/2.php",
+      "researchSources": [
+        "atuned_src/engine/data/compass.js",
+        "https://erenow.org/ancient/the-bhagavad-gita-a-biography/2.php"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY_AND_NARRATIVE",
+          "finding": "Candidate only: Duryodhana is an epic narrative antagonist, not an approved Compass pole. Do not invent an entity name before a source identifies one.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://erenow.org/ancient/the-bhagavad-gita-a-biography/2.php"
+          ],
+          "sourceKind": "RESEARCH_CANDIDATE",
+          "limits": "Canon is a product mapping, not a claim that figures were historical contemporaries."
+        },
+        {
+          "pass": 2,
+          "lens": "MECHANISM_AND_TRIGGER",
+          "finding": "Inversion description: Fixation on reward overrides responsible action and openness to change. Mechanism: Only a predetermined outcome is considered acceptable. The distinction from its coherent pole is about the cost and direction of action, not identity.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://erenow.org/ancient/the-bhagavad-gita-a-biography/2.php"
+          ],
+          "sourceKind": "BEHAVIORAL_MOVEMENT",
+          "limits": "Context, consent and alternative explanations are mandatory."
+        },
+        {
+          "pass": 3,
+          "lens": "OBSERVABLES_AND_REVERSE_EDGES",
+          "finding": "Observable candidate: Continues an ineffective harmful action merely to preserve promised status. Reference coherent teacher Krishna (Flow); inverse status model candidate. Inferno source mapping not verified; release protocols belong to Purgatorio.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://erenow.org/ancient/the-bhagavad-gita-a-biography/2.php"
+          ],
+          "sourceKind": "GRAPH_AND_PROTOCOL_MAPPING",
+          "limits": "Do not manufacture a Purgatorio release-protocol ID or trigger a runtime claim."
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_FALSE_POSITIVE_CHECK",
+          "finding": "Counterexample guard: Care about an outcome is normal and often necessary. All records are interpretive comparisons of actions, not diagnoses or assignments of human worth. A named mythic figure must not be equated with a historical person, religion, or ethnic group. A single isolated action is not sufficient for a stable profile.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://erenow.org/ancient/the-bhagavad-gita-a-biography/2.php"
+          ],
+          "sourceKind": "SAFETY_AND_COUNTEREVIDENCE",
+          "limits": "Four analytical research lenses are not four external independent studies."
+        }
+      ],
+      "links": [
+        {
+          "id": "compass-teacher:Krishna",
+          "type": "CANDIDATE_INVERSE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        }
+      ],
+      "displayLabel": "Outcome Attachment",
+      "hiddenIdentity": null,
+      "sourceIdentityStatus": "UNASSIGNED",
+      "sourceInfernoId": null,
+      "candidateCompassAxis": null,
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Care about an outcome is normal and often necessary."
+    },
+    {
+      "id": "compass-inverse:Possessive-Dominion",
+      "kind": "compass_inferred_inverse",
+      "templateId": "TPL-COMPASS-TEACHER-INVERSE-V1",
+      "nm": "Possessive Dominion",
+      "fam": "Compass / Inferno / inverse patterns",
+      "def": "Possessive Dominion",
+      "body": "A relationship or rule is treated as property of the powerful. Trigger mechanism: Possession and status are disguised as loyalty or duty. Example candidate: Ignores another person's consent while invoking tradition. Historical boundary: Ravana is a Ramayana narrative antagonist; any symbolic relation requires separate source approval. Counterexample: Do not turn Ravana into a diagnostic identity, religious stereotype, or Inferno canon by assumption.",
+      "inferred": true,
+      "inferenceBasis": "Behavioral candidate extrapolated from teaching context; no approved entity identity.",
+      "behavior": "A relationship or rule is treated as property of the powerful.",
+      "triggerMechanism": "Possession and status are disguised as loyalty or duty.",
+      "livedExample": "Ignores another person's consent while invoking tradition.",
+      "impact": "May orient an evidence-based release practice; does not diagnose a person.",
+      "practice": "Refer to an explicitly linked Purgatorio release protocol when available; otherwise record an observation without moral labeling.",
+      "oppositeId": "compass-teacher:Rama",
+      "oppositeDefinition": "Balance truthful commitment, protection and proportional duty under pressure.",
+      "oppositeStatus": "PROPOSED_BEHAVIORAL_CONTRAST",
+      "confidence": {
+        "source": "SOURCE_CANDIDATE",
+        "identity": "UNRESOLVED",
+        "behavior": "INTERPRETIVE",
+        "integration": "NOT_RUNTIME_WIRED"
+      },
+      "reviewStatus": "RESEARCH_V1_FOUR_LENSES__NOT_RUNTIME",
+      "refer": false,
+      "narrativeSource": "https://www.britannica.com/topic/Ramayana-Indian-epic",
+      "researchSources": [
+        "atuned_src/engine/data/compass.js",
+        "https://www.britannica.com/topic/Ramayana-Indian-epic"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY_AND_NARRATIVE",
+          "finding": "Candidate only: Ravana is a Ramayana narrative antagonist; any symbolic relation requires separate source approval. Do not invent an entity name before a source identifies one.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://www.britannica.com/topic/Ramayana-Indian-epic"
+          ],
+          "sourceKind": "RESEARCH_CANDIDATE",
+          "limits": "Canon is a product mapping, not a claim that figures were historical contemporaries."
+        },
+        {
+          "pass": 2,
+          "lens": "MECHANISM_AND_TRIGGER",
+          "finding": "Inversion description: A relationship or rule is treated as property of the powerful. Mechanism: Possession and status are disguised as loyalty or duty. The distinction from its coherent pole is about the cost and direction of action, not identity.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://www.britannica.com/topic/Ramayana-Indian-epic"
+          ],
+          "sourceKind": "BEHAVIORAL_MOVEMENT",
+          "limits": "Context, consent and alternative explanations are mandatory."
+        },
+        {
+          "pass": 3,
+          "lens": "OBSERVABLES_AND_REVERSE_EDGES",
+          "finding": "Observable candidate: Ignores another person's consent while invoking tradition. Reference coherent teacher Rama (Alignment); inverse status model candidate. Inferno source mapping not verified; release protocols belong to Purgatorio.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://www.britannica.com/topic/Ramayana-Indian-epic"
+          ],
+          "sourceKind": "GRAPH_AND_PROTOCOL_MAPPING",
+          "limits": "Do not manufacture a Purgatorio release-protocol ID or trigger a runtime claim."
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_FALSE_POSITIVE_CHECK",
+          "finding": "Counterexample guard: Do not turn Ravana into a diagnostic identity, religious stereotype, or Inferno canon by assumption. All records are interpretive comparisons of actions, not diagnoses or assignments of human worth. A named mythic figure must not be equated with a historical person, religion, or ethnic group. A single isolated action is not sufficient for a stable profile.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://www.britannica.com/topic/Ramayana-Indian-epic"
+          ],
+          "sourceKind": "SAFETY_AND_COUNTEREVIDENCE",
+          "limits": "Four analytical research lenses are not four external independent studies."
+        }
+      ],
+      "links": [
+        {
+          "id": "compass-teacher:Rama",
+          "type": "CANDIDATE_INVERSE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        }
+      ],
+      "displayLabel": "Possessive Dominion",
+      "hiddenIdentity": null,
+      "sourceIdentityStatus": "UNASSIGNED",
+      "sourceInfernoId": null,
+      "candidateCompassAxis": null,
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Do not turn Ravana into a diagnostic identity, religious stereotype, or Inferno canon by assumption."
+    },
+    {
+      "id": "compass-inverse:Forcing",
+      "kind": "compass_inferred_inverse",
+      "templateId": "TPL-COMPASS-TEACHER-INVERSE-V1",
+      "nm": "Forcing",
+      "fam": "Compass / Inferno / inverse patterns",
+      "def": "Coercive Forcing",
+      "body": "Intervention and control exceed what conditions require. Trigger mechanism: Anxiety about uncertainty prompts rigid command and interference. Example candidate: Adds controls that increase resistance while refusing a safe reversible test. Historical boundary: No historically established named polar foe of Laozi; name remains a behavior candidate. Counterexample: Necessary intervention, law enforcement and boundary-setting can be legitimate.",
+      "inferred": true,
+      "inferenceBasis": "Behavioral candidate extrapolated from teaching context; no approved entity identity.",
+      "behavior": "Intervention and control exceed what conditions require.",
+      "triggerMechanism": "Anxiety about uncertainty prompts rigid command and interference.",
+      "livedExample": "Adds controls that increase resistance while refusing a safe reversible test.",
+      "impact": "May orient an evidence-based release practice; does not diagnose a person.",
+      "practice": "Refer to an explicitly linked Purgatorio release protocol when available; otherwise record an observation without moral labeling.",
+      "oppositeId": "compass-teacher:Lao-Tzu",
+      "oppositeDefinition": "Respond in proportion to conditions rather than imposing unnecessary force.",
+      "oppositeStatus": "PROPOSED_BEHAVIORAL_CONTRAST",
+      "confidence": {
+        "source": "SOURCE_CANDIDATE",
+        "identity": "UNRESOLVED",
+        "behavior": "INTERPRETIVE",
+        "integration": "NOT_RUNTIME_WIRED"
+      },
+      "reviewStatus": "RESEARCH_V1_FOUR_LENSES__NOT_RUNTIME",
+      "refer": false,
+      "narrativeSource": "https://plato.stanford.edu/entries/daoism/",
+      "researchSources": [
+        "atuned_src/engine/data/compass.js",
+        "https://plato.stanford.edu/entries/daoism/",
+        "https://plato.stanford.edu/archives/sum2021/entries/laozi/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY_AND_NARRATIVE",
+          "finding": "Candidate only: No historically established named polar foe of Laozi; name remains a behavior candidate. Do not invent an entity name before a source identifies one.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://plato.stanford.edu/entries/daoism/",
+            "https://plato.stanford.edu/archives/sum2021/entries/laozi/"
+          ],
+          "sourceKind": "RESEARCH_CANDIDATE",
+          "limits": "Canon is a product mapping, not a claim that figures were historical contemporaries."
+        },
+        {
+          "pass": 2,
+          "lens": "MECHANISM_AND_TRIGGER",
+          "finding": "Inversion description: Intervention and control exceed what conditions require. Mechanism: Anxiety about uncertainty prompts rigid command and interference. The distinction from its coherent pole is about the cost and direction of action, not identity.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://plato.stanford.edu/entries/daoism/"
+          ],
+          "sourceKind": "BEHAVIORAL_MOVEMENT",
+          "limits": "Context, consent and alternative explanations are mandatory."
+        },
+        {
+          "pass": 3,
+          "lens": "OBSERVABLES_AND_REVERSE_EDGES",
+          "finding": "Observable candidate: Adds controls that increase resistance while refusing a safe reversible test. Reference coherent teacher Lao Tzu (Non-Resistance); inverse status model candidate. Inferno source mapping not verified; release protocols belong to Purgatorio.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://plato.stanford.edu/entries/daoism/",
+            "https://plato.stanford.edu/archives/sum2021/entries/laozi/"
+          ],
+          "sourceKind": "GRAPH_AND_PROTOCOL_MAPPING",
+          "limits": "Do not manufacture a Purgatorio release-protocol ID or trigger a runtime claim."
+        },
+        {
+          "pass": 4,
+          "lens": "ADVERSARIAL_FALSE_POSITIVE_CHECK",
+          "finding": "Counterexample guard: Necessary intervention, law enforcement and boundary-setting can be legitimate. All records are interpretive comparisons of actions, not diagnoses or assignments of human worth. A named mythic figure must not be equated with a historical person, religion, or ethnic group. A single isolated action is not sufficient for a stable profile.",
+          "sources": [
+            "atuned_src/engine/data/compass.js",
+            "https://plato.stanford.edu/entries/daoism/",
+            "https://plato.stanford.edu/archives/sum2021/entries/laozi/"
+          ],
+          "sourceKind": "SAFETY_AND_COUNTEREVIDENCE",
+          "limits": "Four analytical research lenses are not four external independent studies."
+        }
+      ],
+      "links": [
+        {
+          "id": "compass-teacher:Lao-Tzu",
+          "type": "CANDIDATE_INVERSE",
+          "status": "PROPOSED_NOT_RUNTIME"
+        }
+      ],
+      "displayLabel": "Coercive Forcing",
+      "hiddenIdentity": null,
+      "sourceIdentityStatus": "UNASSIGNED",
+      "sourceInfernoId": null,
+      "candidateCompassAxis": null,
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Necessary intervention, law enforcement and boundary-setting can be legitimate."
+    }
+  ]
+}
