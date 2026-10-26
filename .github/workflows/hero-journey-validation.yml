@@ -16,7 +16,10 @@ jobs:
         with:
           node-version: '22'
       - name: Install the repository's pinned TypeScript toolchain
-        run: npm ci --prefix atuned_funnel_system
+        run: |
+          npm ci --prefix atuned_funnel_system
+          ln -s "$GITHUB_WORKSPACE/atuned_funnel_system/node_modules" "$GITHUB_WORKSPACE/atuned_src/node_modules"
+          test -x atuned_src/node_modules/.bin/tsc
       - name: Build host-free canonical engine
         run: sh ./atuned_src/BUILD-engine.sh
       - name: Check Hero Journey coordinates and milestones
