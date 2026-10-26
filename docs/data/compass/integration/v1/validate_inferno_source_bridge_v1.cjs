@@ -20,7 +20,9 @@ for(const prefix of ['B','L','F','X']){
     assert.equal(found.id,id);
     assert.equal(found.researchBinding.graphNodeId,id);
     assert.equal(found.sourceIndex.graphNodeId,id);
-    assert.equal(found.sourceIndex.fullResearchBodyPresentInGitHub,false);
+    assert.equal(found.sourceIndex.fullResearchBodyPresentInGitHub,true);
+    assert.equal(view.lookup(id,{includeSourceBody:true}).sourceRecordContentIncluded,true);
+    assert.ok(view.lookup(id,{includeSourceBody:true}).researchBody.includes('- **P4:**'));
     assert.ok(found.sourceIndex.label);
     assert.ok(found.sourceIndex.sourceStatus);
     assert.equal(found.canonicalApproved,false);
