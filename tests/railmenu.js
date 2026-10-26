@@ -168,14 +168,14 @@ async function railMenuGate(browser,FILE,ok,booted){
    const pc=v=>Math.round(v)>0?Math.round(v)+'%':'–';
    ok(JSON.stringify(st.pairFigs[0])===JSON.stringify([pc(st.cq),pc(st.dq)]),
     'RM2: '+tag+'and it prints the two figures as percents, '+JSON.stringify(st.pairFigs[0])+' for '+st.cq.toFixed(1)+' and '+st.dq.toFixed(1));
-   ok(JSON.stringify(st.pairNames.slice(1))==='[["Benign","Malignant"],["Masculine","Feminine"]]',
+   ok(JSON.stringify(st.pairNames.slice(1))==='[["Positive","Negative"],["Masculine","Feminine"]]',
     'RM4: '+tag+'orientation and balance are the same pair bar, '+JSON.stringify(st.pairNames.slice(1)));
-   ok(!!st.halo&&st.leanIc===st.halo&&!!st.fork&&st.malIc===st.fork,'RM5: '+tag+'benign carries the halo and malignant the pitchfork, '+JSON.stringify({l:st.leanIc,r:st.malIc}));
+   ok(!!st.halo&&st.leanIc===st.halo&&!!st.fork&&st.malIc===st.fork,'RM5: '+tag+'positive carries the halo and negative the pitchfork, '+JSON.stringify({l:st.leanIc,r:st.malIc}));
    const col={}; st.singleCol.forEach(x=>col[x[0]]=x[1]);
    ok(['Vitality','Awareness','Will'].every(k=>col[k]===st.want[k]),'RM6: '+tag+'vitality yellow, awareness indigo, will blue, '+JSON.stringify({got:col,want:st.want}));
    ok(st.marks.length===0,'RM7: '+tag+'no mark stands alone in the block, '+JSON.stringify(st.marks));
    const words=st.words.map(x=>x.word);
-   ok(['CQ','DQ','Vitality','Awareness','Will','Radiance','Flow','Benign','Malignant','Masculine','Feminine'].every(x=>words.indexOf(x)>=0),
+   ok(['CQ','DQ','Vitality','Awareness','Will','Radiance','Flow','Positive','Negative','Masculine','Feminine'].every(x=>words.indexOf(x)>=0),
     'RM8: '+tag+'every word the menu prints is found by the scan, '+JSON.stringify(words));
    st.words.forEach(x=>ok(x.entry&&x.glossed,'RM8: '+tag+'"'+x.word+'" carries its plain meaning'+(x.entry?'':' and the table has no sentence for it')));
    ok(st.dockR<=st.panelR+0.5&&st.panelScroll<=1,'RM11: '+tag+'the block stays inside its column and the column does not scroll sideways, '+JSON.stringify({dock:st.dockR,panel:st.panelR,scroll:st.panelScroll}));
@@ -231,7 +231,7 @@ async function railMenuGate(browser,FILE,ok,booted){
   const small=doors.named.filter(x=>x.w<44||x.h<44);
   ok(small.length===0,'RM10: '+tag+'every door is at least 44 by 44, '+JSON.stringify(small));
   const mean=await pg.evaluate(()=>{
-   const need=[['cq','CQ'],['dq','DQ'],['Vitality','Vitality'],['Awareness','Awareness'],['Will','Will'],['Radiance','Radiance'],['Flow','Flow'],['polbar','Benign'],['polbar','Malignant'],['bal','Masculine'],['bal','Feminine']];
+   const need=[['cq','CQ'],['dq','DQ'],['Vitality','Vitality'],['Awareness','Awareness'],['Will','Will'],['Radiance','Radiance'],['Flow','Flow'],['polbar','Positive'],['polbar','Negative'],['bal','Masculine'],['bal','Feminine']];
    const d=document.getElementById('fdock');
    return need.map(([q,word])=>{
     let el=d.querySelector('[data-q="'+q+'"].rb2-k')||document.getElementById(q)

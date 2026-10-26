@@ -2105,8 +2105,10 @@ ok(/blueprint you were born on|no birth data/.test(sum.text),
    leans, so the row asserts that instead of the word. */
 /* 16 October, his words: "change the field to 'your energy leans malignant',
    because energy is more natural. Field is just too abstract." So the subject
-   is held, and the word after it, and the old subject is held out. */
-ok(/Your energy leans (?:benign|malignant)\b/.test(sum.text)&&!/the field leans/i.test(sum.text),
+   is held, and the word after it, and the old subject is held out. Benign and
+   malignant renamed to positive and negative, 25 October, his words: "we're
+   changing from benign and malignant to positive and negative." */
+ok(/Your energy leans (?:positive|negative)\b/.test(sum.text)&&!/the field leans/i.test(sum.text),
  'and closes on which way your energy leans, never the field');
 ok(!/undefined|NaN|\[object/.test(sum.text),'and nothing leaked a placeholder');
 console.log(' ',JSON.stringify({glance:sum.glance,rows:sum.structRows,chips:sum.chips,
@@ -5855,7 +5857,7 @@ console.log('\n=== the orientation dial says nothing about an unread field ===')
    h:pb?Math.round(pb.getBoundingClientRect().height):0};
   return {blank, read};});
  ok(dial.blank.unread,'an arrival who has entered nothing reads as unread');
- ok(!/\d/.test(dial.blank.text||'x')&&/Benign/.test(dial.blank.text)&&/Malignant/.test(dial.blank.text),
+ ok(!/\d/.test(dial.blank.text||'x')&&/Positive/.test(dial.blank.text)&&/Negative/.test(dial.blank.text),
   'and the bar prints no figure at all, only its two words and dashes, got '+JSON.stringify(dial.blank.text));
  ok(dial.blank.fill===false,'and lays no colour');
  ok(dial.blank.mid===true,'and keeps its track, so the bar is still a bar');
@@ -6855,7 +6857,7 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  ok(dock.inLeft&&!dock.inStage&&dock.keylo,'the readings sit at the head of the left rail and none of them along the stage\'s foot');
  ok(JSON.stringify(dock.bar.names)==='["Vitality","Awareness","Will","Radiance","Flow"]',
   'RB: five single readings in reading order, Radiance a bar among them, '+JSON.stringify(dock.bar.names));
- ok(JSON.stringify(dock.bar.pairNames)==='[["CQ","DQ"],["Benign","Malignant"],["Masculine","Feminine"]]',
+ ok(JSON.stringify(dock.bar.pairNames)==='[["CQ","DQ"],["Positive","Negative"],["Masculine","Feminine"]]',
   'RB, OV: three pairs, CQ and DQ on one bar, '+JSON.stringify(dock.bar.pairNames));
  ok(dock.bar.stacked&&dock.bar.oneColumn,'RB: all eight stacked one on top of the next, in one column of one width, '+JSON.stringify({stacked:dock.bar.stacked,oneColumn:dock.bar.oneColumn}));
  ok(dock.bar.heights.length===1&&dock.bar.tall>=44,'RB: every bar the same height, at the 44px floor, '+JSON.stringify(dock.bar.heights));
