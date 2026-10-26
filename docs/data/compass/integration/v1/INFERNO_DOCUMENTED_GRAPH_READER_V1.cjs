@@ -25,7 +25,7 @@ function loadDocumentedInfernoGraph() {
   invariant(base.nodes.length === 135 && base.edges.length === 300, 'baseline count drift');
   invariant(research.recordBindings.length === 38 && research.edges.length === 80, 'research count drift');
   invariant(bridge.referenceEdges.length === 3 && bridge.sourceNodes.length === 3, 'bridge count drift');
-  invariant(index.status === 'SOURCE_METADATA_INDEX_ONLY__CANONICAL_BODY_NOT_IMPORTED' && index.recordCount === 38 && index.records.length === 38, 'index status/count drift');
+  invariant(index.status === 'RESEARCH_BODIES_PUBLISHED__CANONICAL_NORMALIZED_JSON_NOT_IMPORTED' && index.recordCount === 38 && index.records.length === 38, 'index status/count drift');
   invariant(bridge.authority.graphPromotion === false && bridge.authority.scoringPermission === false, 'unsafe bridge promotion');
   const nodes = [...base.nodes, ...bridge.sourceNodes];
   const ids = new Set(nodes.map(n=>n.id));
@@ -42,8 +42,9 @@ function loadDocumentedInfernoGraph() {
   for (const b of research.recordBindings)
     invariant(ids.has(b.graphNodeId) && b.graphNodeId === 'inferno:'+b.recordId, 'invalid record binding '+b.recordId);
   for (const r of index.records) {
-    invariant(r.canonical === false && r.notRuntime === true && r.fullResearchBodyPresentInGitHub === false,'unsafe research index status');
+    invariant(r.canonical === false && r.notRuntime === true && r.fullResearchBodyPresentInGitHub === true,'unsafe research index status');
     invariant(r.researchPassCountInUploadedHandoff === 4 && !!r.label && !!r.sourceStatus, 'incomplete source index row');
+    invariant(!!r.publishedFullResearchPath && fs.existsSync(path.join(ROOT,r.publishedFullResearchPath)), 'missing full research record '+r.recordId);
   }
   for (const [origin, edges] of [['baseline',base.edges],['research',research.edges],['cross-registry',bridge.referenceEdges]]) {
     for (const e of edges) {
@@ -91,7 +92,9 @@ function loadDocumentedInfernoGraph() {
       disposition:dispositions.get(id)||null,
       edges:referencesFor(id,options.includeCandidates !== false),
       documentedOnly:true,canonicalApproved:false,runtimeApproved:false,
-      sourceRecordContentIncluded:false
+      researchBody: options.includeSourceBody === true && indexedRecords.has(id) ?
+        fs.readFileSync(path.join(ROOT,indexedRecords.get(id).publishedFullResearchPath),'utf8') : null,
+      sourceRecordContentIncluded: options.includeSourceBody === true && indexedRecords.has(id)
     };
   }
   const allEdges = [...base.edges,...research.edges,...bridge.referenceEdges];
