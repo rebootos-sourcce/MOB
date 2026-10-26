@@ -18,6 +18,19 @@ assert(db.records.find(x=>x.id==='consciousness:conceptual-group'),'Consciousnes
 assert(db.records.filter(x=>x.type==='v341_domain_candidate').length===19,'19 source domains missing');
 assert(db.records.filter(x=>x.type==='archetype_candidate').length===18,'18 archetype candidates missing');
 const by=new Map(db.records.map(x=>[x.id,x]));
+for(const original of registry.records){
+ const delivered=by.get(original.id);
+ assert(delivered,'Shipped app record missing: '+original.id);
+ assert.deepStrictEqual(JSON.parse(JSON.stringify(delivered.relationships)),original.relationships,
+  'Typed source relationship provenance lost: '+original.id);
+ assert.deepStrictEqual(JSON.parse(JSON.stringify(delivered.sourceRefs)),original.sourceRefs,
+  'Source citations lost: '+original.id);
+ assert.deepStrictEqual(JSON.parse(JSON.stringify(delivered.sourceClaims)),original.sourceClaims||[],
+  'Record source claims lost: '+original.id);
+ assert(delivered.reviewStatus===original.status,'Source status mutated: '+original.id);
+ assert(delivered.depthReviewStatus?.structuralStatus==='PASS',
+  'Depth structural review missing: '+original.id);
+}
 for(const x of db.records){
  for(const link of x.linkedIds){
   const other=by.get(link);
@@ -31,6 +44,7 @@ assert(dataIndex>=0 && uiIndex>dataIndex,'App data not loaded before Knowledge i
 for(const marker of ["['psyche','Deep Psyche']","if(sec==='psyche'","if(x.k==='psyche')","DEEP_PSYCHE.records"])assert(ui.includes(marker),'Knowledge UI missing '+marker);
 assert(!ui.includes('const DEEP_PSYCHE='),'App UI contains independent copied registry');
 const sourceHtml=path.join(ROOT,'source.html');
+if(process.env.CI)assert(fs.existsSync(sourceHtml),'CI acceptance requires a built source.html');
 if(fs.existsSync(sourceHtml)){
  const html=fs.readFileSync(sourceHtml,'utf8');
  assert(html.includes('var DEEP_PSYCHE='),'Built app missing Deep Psyche records');
