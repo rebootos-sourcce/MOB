@@ -28,6 +28,11 @@ const psych=reg.records.map(r=>{
   'Unfilled required template fields: '+r.id);
  assert(Array.isArray(e.researchPasses)&&e.researchPasses.length===3,
   'Three passes not carried into runtime: '+r.id);
+ assert((r.depthReviewPasses||[]).length===4,
+  'Four depth reviews missing from authoritative record: '+r.id);
+ assert(r.depthReviewStatus?.structuralStatus==='PASS',
+  'Four-round depth audit found structural gaps: '+r.id);
+ assert((e.links||[]).length>0,'Deep Psyche record has no navigable graph links: '+r.id);
  return e;
 });
 assert(psych.length===reg.recordCount && psych.length>=149,
@@ -99,7 +104,7 @@ assert(uiSlots.length===14,'Visualization slots lost');
 const report={
  status:'PASS', runtimeEntries:entries.length,
  deepPsychologicalRecords:psych.length, templatesComplete:psych.length,
- mappingsNavigable:tableRows.length,
+ mappingsNavigable:tableRows.length, fourDepthReviewsVerified:psych.length*4,
  bidirectionalPsychologicalLinks:reciprocalEdges,
  legacyGraphEdges:crossSystemEdges,
  archetypeFetterRowsReachingNerves:nervePaths,
