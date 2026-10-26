@@ -66,6 +66,13 @@ const url='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1
    data.diagPersisted=CURP.diagnostic3&&CURP.diagnostic3.answers[D3_BANK[0].questions[0].id]===0;
    const diagCopy=validateProfile(JSON.parse(JSON.stringify(CURP)));
    data.diagExport=diagCopy.ok&&diagCopy.profile.diagnostic3&&diagCopy.profile.diagnostic3.answers[D3_BANK[0].questions[0].id]===0;
+   AV.sub='becoming';renderAvatar();
+   HJ_EXPANDED=true;renderAvatar();
+   const invite=document.querySelector('[data-hjaffirm]');
+   data.affirmationDoor=!!invite;
+   if(invite)invite.click();
+   data.affirmationSeat=AV.seat;
+   data.affirmationEditor=!!document.querySelector('[data-avf="be"]');
    return data;
   });
   assert.equal(result.rendered,true,'Board renders on existing avatar');
@@ -89,6 +96,9 @@ const url='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1
   assert.equal(result.diagNodes,21,'all 21 laws can be visited');
   assert.equal(result.diagPersisted,true,'zero is a valid self report');
   assert.equal(result.diagExport,true,'self-report persists through profile validation');
+  assert.equal(result.affirmationDoor,true,'ascent offers a becoming affirmation');
+  assert.equal(result.affirmationSeat,'Throat','Truth scene opens its law seat');
+  assert.equal(result.affirmationEditor,true,'existing avatar writer is used');
   assert.equal(errors.length,0,'browser execution has no unhandled errors: '+errors.join('; '));
   console.log('PASS hero journey real-browser: '+JSON.stringify(result));
   await page.close();
