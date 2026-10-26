@@ -1511,7 +1511,12 @@ function obMiniHow(){
  return '<p class="ob-p">Each line is said '+(d===1?'once':d+' times')
   +(voice?', out loud by the app voice.':', and nothing reads it out loud.')
   +(m?' After the last line you rest for '+m+(m===1?' minute':' minutes')+', and a ring counts them down.':'')
-  +' You set the pace and can stop at any line.</p>';}
+  /* NOT "YOU SET THE PACE" ANY MORE, 26 October. The pace was a field on the
+     release's own setup step, and that step is cut (NO SECOND SETUP PAGE,
+     ui/release.js relPick): this card hands straight into the run, which
+     carries Pause and End and no pace, so the sentence says what the next
+     screen does. tests/firstrelease.js holds it to that screen. */
+  +' You can pause or stop at any line.</p>';}
 /* WHY THERE IS NO RELEASE TO BEGIN, when the story read and the plan is still
    refused. Said once, plainly; the route is the button beside it. */
 function obMiniWhy(pl,yes){

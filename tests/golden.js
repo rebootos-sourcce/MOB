@@ -1072,8 +1072,7 @@ async function door(browser, SITE, cut, giftAt) {
   ok(await po2.evaluate(() => !!document.getElementById('relvoice')), 'signed in, the release card offers the one Voice switch', 'no voice switch');
   ok(await po2.evaluate(() => typeof relVoiceOn === 'function' && relVoiceOn() === true), 'and it is on without a press, so a release is spoken by the studio voice and by nothing else');
   await po2.evaluate(SHRINK);
-  await po2.evaluate(() => { const d = document.getElementById('reldose'); if (d) { d.value = '1'; d.dispatchEvent(new Event('change')); } });
-  await O.click('#relgo');
+  /* the door's own press began the run: no second setup page, ruled 25 October (ui/release.js relPick) */
   const doneO = await O.runDone();
   const run = await po2.evaluate(() => ({ phase: RUN.phase, id: RUN.id, lost: !!RUN.studioLost }));
   ok(doneO, 'the release runs to its end, phase ' + run.phase, 'a release that never finishes');

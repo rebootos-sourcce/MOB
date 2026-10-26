@@ -116,17 +116,17 @@ const SPY = () => {
       let audios = 0; const A = window.Audio;
       window.Audio = function (u) { audios++; return new A(u); };
       const ids = compute().carrying.slice(0, 1).map(n => n.i);
+      /* the door's press begins the run since 25 October (ui/release.js
+         relPick); times said is set on RUN, the way the dashboard's field does */
       relPick(ids);
-      const d = document.getElementById('reldose'); d.value = '1'; d.dispatchEvent(new Event('change'));
+      RUN.dose = 1;
       const row = relVoiceRow().replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
       /* typeof guards, so the build from before this ruling fails these checks
          in words and does not die on a missing name */
       const wantedOn = typeof relVoiceWanted === 'function' ? relVoiceWanted() : null,
         canNow = typeof relVoiceCan === 'function' ? relVoiceCan() : null,
         onNow = typeof relVoiceOn === 'function' ? relVoiceOn() : null;
-      const go = document.getElementById('relgo');
-      if (!go) return { go: false };
-      go.click();
+      if (RUN.phase !== 'welcome') return { go: false };
       const t0 = Date.now();
       while (!(RUN.phase === 'done' && RUN.cool >= COOLING.length) && Date.now() - t0 < 120000)
         await new Promise(r => setTimeout(r, 50));

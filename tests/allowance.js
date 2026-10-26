@@ -235,21 +235,25 @@ async function shot(page, name, W) {
         'a queue of ' + g.wide + ' against a plan of fewer releases only what the plan reached: ' + J(g.logged));
     }
 
-    console.log('\n=== 5. one line under Run, before it, at ' + W + ' ===');
+    /* THE LINE MOVED, 25 October. It sat under the count on the setup, before
+       Run release; the setup step is cut (no second setup page, ui/release.js
+       relPick), so a door begins the run and the welcome, the screen before
+       any line is said, carries the line. */
+    console.log('\n=== 5. one line as a shorter run begins, at ' + W + ' ===');
     {
       await setUp(page, 10, false);
       const sh = await ev(page, () => {
         relPick(relQueueOf(3).map(function (n) { return n.i; }));
-        var c = document.getElementById('relcost'), go = document.getElementById('relgo');
-        var r = c && c.getBoundingClientRect(), ft = document.getElementById('relfoot'), fr = ft && ft.getBoundingClientRect();
-        return { text: c && c.textContent, before: !!(c && go && (c.compareDocumentPosition(go) & Node.DOCUMENT_POSITION_FOLLOWING)),
-          /* on the first screen, above the foot, with no scrolling: a line
-             under the fold is a line nobody reads before pressing Run */
-          seen: !!(r && fr && r.height > 0 && r.top >= 0 && r.bottom <= fr.top), at: r && [Math.round(r.top), Math.round(r.bottom), fr && Math.round(fr.top)] };
+        var c = document.getElementById('relcost'), r = c && c.getBoundingClientRect(), ft = document.getElementById('relfoot'), fr = ft && ft.getBoundingClientRect();
+        var top = r ? document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2) : null;
+        return { text: c && c.textContent, began: RUN.phase === 'welcome',
+          /* on the first screen, above the foot, with nothing over it */
+          seen: !!(r && fr && r.height > 0 && r.top >= 0 && r.bottom <= fr.top && top && (top === c || c.contains(top))),
+          at: r && [Math.round(r.top), Math.round(r.bottom), fr && Math.round(fr.top)] };
       });
       ok(sh.text === 'This run opens 2 new addresses. This week has room for 2, and you picked 3.',
-        'a short run says so before Run: "' + sh.text + '"');
-      ok(sh.before && sh.seen, 'on the card\'s first screen, above Run release: ' + J(sh.at));
+        'a short run says so as it begins: "' + sh.text + '"');
+      ok(sh.began && sh.seen, 'on the welcome a door lands on, above Skip, Pause and End: ' + J(sh.at));
       await shot(page, 'allowance-short', W);
       await ev(page, () => relClose());
 
@@ -259,18 +263,20 @@ async function shot(page, name, W) {
         CURP.plan = { tier: 'one', status: 'active', granted: 0, carried: 0, base: 100, since: new Date(Date.now() - 86400000).toISOString(),
           until: new Date(Date.now() + 20 * 86400000).toISOString(), ends: null };
         relPick(relQueueOf(3).map(function (n) { return n.i; }));
-        var c = document.getElementById('relcost'), card = document.querySelector('#rel .rel-card');
-        var go = document.getElementById('relgo'), gr = go && go.getBoundingClientRect();
+        var said = (document.getElementById('relcost') || {}).textContent || '', card = document.querySelector('#rel .rel-card');
+        /* End on the welcome is the way out a door now lands beside, so it is
+           the control held clear of the storage line */
+        var go = document.getElementById('relstop'), gr = go && go.getBoundingClientRect();
         var top = gr ? document.elementFromPoint(gr.left + gr.width / 2, gr.top + gr.height / 2) : null;
-        var out = { cost: !!c, plan: RUN.plan.length, left: relLeft(), go: !!go, open: !!(top && go && (top === go || go.contains(top))),
-          price: /\d+ left this|\bof the \d+/.test(card ? card.innerText : '') }; relClose(); return out;
+        var out = { cost: /This run opens/.test(said), plan: RUN.plan.length, left: relLeft(), go: RUN.phase === 'welcome', open: !!(top && go && (top === go || go.contains(top))),
+          price: /\d+ left this|\bof the \d+/.test((card ? card.innerText : '') + ' ' + said) }; relClose(); return out;
       });
       /* round IG, 27 September, his words: "Cost runs left, that goes away. And
          this, just, run release button." The review asked for "Opens 12 new.
          388 left this month." here; it stays off until he rules it back. */
       ok(nm.go && nm.plan > 0 && !nm.cost && !nm.price,
         'a run that covers what was picked carries no cost line, as ruled at IG: ' + J(nm));
-      ok(nm.open, 'and Run release is not under the storage line');
+      ok(nm.open, 'and End on the welcome is not under the storage line');
     }
 
     console.log('\n=== 6. the empty card, at ' + W + ' ===');
@@ -288,7 +294,7 @@ async function shot(page, name, W) {
         return { ids: kids.map(function (b) { return b.id; }), words: kids.map(function (b) { return b.textContent; }),
           pri: !!(rr && rr.classList.contains('pri')), w: r && r.width, h: r && r.height,
           open: !!(top && rr && (top === rr || rr.contains(top))), over: top ? (top.id || top.className) : null,
-          go: !!document.getElementById('relgo'), note: note && note.textContent,
+          go: RUN.phase !== 'idle', note: note && note.textContent,
           renews: (meterBudget(CURP).allow || {}).renews, day: typeof planDay === 'function' ? planDay((meterBudget(CURP).allow || {}).renews) : '',
           crx: !!crx, crxH: crx ? crx.getBoundingClientRect().height : 0,
           tiersFont: parseFloat(getComputedStyle(document.getElementById('relplan') || document.body).fontSize),
@@ -356,17 +362,17 @@ async function shot(page, name, W) {
       const w8 = await ev(page, () => {
         loadP(0); compute();
         CURP.meter.unique = []; CURP.plan = { tier: 'free', status: '', granted: 0, carried: 0, base: null, since: null, until: null, ends: null };
+        /* the setup's groups and its summary went with the setup, 25 October
+           (ui/release.js relPick). The count a run prints is the plate on the
+           list, and the dose's label is the dashboard's own Times said field,
+           which tests/releasechain.js holds. */
         relPick(relQueueOf(1).map(function (n) { return n.i; }));
-        var card = document.querySelector('#rel .rel-card');
-        var t = card ? card.innerText : '', lbl = document.getElementById('reldose');
-        var out = { groups: [].slice.call(document.querySelectorAll('#rel .rel-gi-c')).map(function (x) { return x.textContent; }),
-          sum: (document.querySelector('#rel .rel-gsum') || {}).textContent, dose: lbl && lbl.parentNode.querySelector('span').textContent,
+        clearTimeout(RUN.timer); RUN.phase = 'run'; RUN.idx = 0; RUN.pass = 0; relRender();
+        var out = { plate: (document.querySelector('#relhd .rel-ct') || {}).textContent || '',
           closing: (relClosing({ said: 200 }, false) || [])[0] };
         relClose(); return out;
       });
-      ok(w8.groups && w8.groups.length && w8.groups.every(g => /lines?$/.test(g) && !/pattern/.test(g)), 'each group counts lines said: ' + J(w8.groups));
-      ok(w8.sum && /lines\. Each is one release line, said once\.$/.test(w8.sum) && !/pattern/.test(w8.sum), 'and so does the summary: "' + w8.sum + '"');
-      ok(w8.dose === 'Times said', 'the dose is times said, not patterns: ' + w8.dose);
+      ok(/\b\d+ release lines? this session\b/.test(w8.plate) && !/pattern/.test(w8.plate), 'the list counts lines said, not patterns: "' + w8.plate + '"');
       ok(w8.closing === 'Congratulations. You finished your release: 200 lines.', 'the closing counts lines: "' + w8.closing + '"');
     }
 

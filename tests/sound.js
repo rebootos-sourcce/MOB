@@ -487,7 +487,8 @@ async function soundGate(browser,FILE,ok,booted){
   CURP.ui.sfxoff=false; CURP.ui.quiet=false; CURP.ui.voice=false; CURP.ui.tone=false;
   var keepRoom=window.sfxRoomHeld;
   if(bite)window.sfxRoomHeld=function(){return false;};
-  relPick(compute().carrying.slice(0,1).map(n=>n.i));
+  /* the door's press is the begin since 25 October (ui/release.js relPick,
+     no second setup page), so relPick is pressed below, where Begin was */
   var probes=[], n0=0;
   var orig=window.relRender;
   window.relRender=function(){ orig();
@@ -501,9 +502,9 @@ async function soundGate(browser,FILE,ok,booted){
     var atm=(typeof atmPlay==='function')
      ?[atmPlay('click'), atmPlay('hover',null,true), atmPlay('overlay-on',{seat:'Heart'}), atmPlay('air-open'), atmZoom(3,7)]:[];
     probes.push({ph:p+(p==='done'?' cooldown':''), r:a, atm:atm});}};
-  var go=document.getElementById('relgo'); if(!go){ window.relRender=orig; window.sfxRoomHeld=keepRoom; return {go:false}; }
   n0=window.__nodes; var p0=SFX_PLAYED, last0=Object.assign({},SFX_LAST);
-  go.click();
+  relPick(compute().carrying.slice(0,1).map(n=>n.i));
+  if(RUN.phase!=='welcome'){ window.relRender=orig; window.sfxRoomHeld=keepRoom; return {go:false}; }
   var t0=Date.now();
   while(!(RUN.phase==='done'&&RUN.cool>=COOLING.length)&&Date.now()-t0<60000)
    await new Promise(r=>setTimeout(r,40));
@@ -1197,7 +1198,7 @@ async function atmGate(browser,FILE,ok,booted){
   loadP(0); CHARGES.forEach(c=>{S.charge[c]=7;});
   CURP.ui.sfxoff=false; CURP.ui.quiet=false; CURP.ui.voice=false; CURP.ui.tone=false;
   relPick(compute().carrying.slice(0,1).map(n=>n.i));
-  var go=document.getElementById('relgo'); if(!go)return false; go.click(); return true; });
+  return RUN.phase==='welcome'; });
  let inRun=null;
  if(runGo){
   await pg.waitForFunction(()=>RUN&&RUN.phase==='run',null,{timeout:20000}).catch(()=>{});

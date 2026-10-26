@@ -239,7 +239,9 @@ const TEXT='I was furious and ashamed and I could not stop going over it. I said
    const b=[...document.querySelectorAll('[data-a]')].find(e=>!e.disabled&&CURP.intake.answers[+e.dataset.a]!==+e.dataset.v);
    if(b){const k=+b.dataset.a, v=+b.dataset.v; b.onclick(); o.answer=CURP.intake.answers[k]===v;} else o.answer=false;
    setTab(TAB.FIELD); const hot=relQueueOf(8).map(n=>n.i);
-   if(hot.length){relPick(hot); await wait(30); o.begin=!!document.getElementById('relgo')&&!document.querySelector('#rel .rel-show'); relClose();}
+   /* the door begins the run on the own record since 25 October (no second
+      setup page, ui/release.js relPick), so Begin offered reads as begun */
+   if(hot.length){relPick(hot); await wait(30); o.begin=RUN.open&&RUN.phase!=='idle'&&!document.querySelector('#rel .rel-show'); relClose();}
    else o.begin='nothing carrying';
    return o;},[tier,TEXT]);
   ok(mine.of===tier&&!mine.show&&mine.sightRight,tier+': the own record reads its own tier and exactly that tier\'s sight, '+JSON.stringify({of:mine.of,show:mine.show,sight:mine.sightRight}));

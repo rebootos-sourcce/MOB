@@ -233,8 +233,7 @@ for(const [W,H] of WIDTHS){
 
  /* ---- 8. the release, run to its end, and What changed ---- */
  await page.evaluate(SHRINK);
- await page.evaluate(()=>{const d=document.getElementById('reldose'); if(d){d.value='1'; d.dispatchEvent(new Event('change'));}});
- await click('#relgo');
+ /* the door's own press began the run: no second setup page, ruled 25 October (ui/release.js relPick) */
  await page.waitForFunction(()=>typeof RUN!=='undefined'&&RUN.phase==='done'&&RUN.cool>=COOLING.length,null,{timeout:90000}).catch(()=>{});
  rel=await page.evaluate(()=>({ph:RUN.phase,lines:(CURP.meter&&CURP.meter.unique||[]).length}));
  ok(rel.ph==='done'&&rel.lines===size,tag+'the release ran to its end and opened '+rel.lines+' lines of new ground');
@@ -346,8 +345,7 @@ console.log('\n=== a walk the tutorial door left: the same resume, the same end 
  ok(back.plan>0&&/Your story touched/.test(back.card)&&/Begin the release/.test(back.card),tag+'planned from what the story read, '+back.plan+' lines');
  await click('[data-ob="release"]'); await page.waitForTimeout(200);
  await page.evaluate(SHRINK);
- await page.evaluate(()=>{const d=document.getElementById('reldose'); if(d){d.value='1'; d.dispatchEvent(new Event('change'));}});
- await click('#relgo');
+ /* the door's own press began the run: no second setup page, ruled 25 October (ui/release.js relPick) */
  await page.waitForFunction(()=>typeof RUN!=='undefined'&&RUN.phase==='done'&&RUN.cool>=COOLING.length,null,{timeout:90000}).catch(()=>{});
  await page.evaluate(()=>{const r=document.getElementById('relrest'); if(r)r.click();}); await page.waitForTimeout(150);
  await click('#relclose'); await page.waitForTimeout(500);

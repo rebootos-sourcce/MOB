@@ -30,7 +30,9 @@ async function protocolGate(browser,FILE,ok,booted){
   const pg=await browser.newPage({viewport:{width:w,height:h}});
   const err=[]; pg.on('pageerror',e=>err.push(e.message));
   await pg.goto(FILE,{waitUntil:'load'}); await booted(pg);
-  /* ---- 1. the cross on the setup ---- */
+  /* ---- 1. the cross on the first screen. It was the setup's until 25
+     October, when the setup step was cut (ui/release.js relPick): a door
+     begins the run, so the cross is on the welcome a door lands on ---- */
   const a=await pg.evaluate(async()=>{
    const wait=ms=>new Promise(r=>setTimeout(r,ms)), o={};
    loadP(0); CHARGES.forEach(c=>{S.charge[c]=7;}); setTab(TAB.FIELD); render();
@@ -47,8 +49,8 @@ async function protocolGate(browser,FILE,ok,booted){
    o.u1=CURP.meter.unique.length; o.l1=CURP.meter.lines; o.c1=JSON.stringify(S.charge);
    o.said=(document.getElementById('status')||{}).textContent;
    return o;});
-  ok(a.has&&a.w>=44&&a.h>=44&&a.label==='Cancel'&&a.ring&&a.phase==='idle',
-   'at '+w+', the setup carries a ring X labelled Cancel at 44 by 44, '+JSON.stringify({w:a.w,h:a.h,label:a.label,ring:a.ring}));
+  ok(a.has&&a.w>=44&&a.h>=44&&a.label==='Cancel'&&a.ring&&a.phase==='welcome',
+   'at '+w+', the welcome a door lands on carries a ring X labelled Cancel at 44 by 44, '+JSON.stringify({w:a.w,h:a.h,label:a.label,ring:a.ring}));
   ok(a.open===false&&a.hidden==='none'&&a.u1===a.u0&&a.l1===a.l0&&a.c1===a.c0&&/Nothing was started and nothing was charged/.test(a.said),
    'at '+w+', pressing it closes with nothing started and nothing charged, and says so, '+JSON.stringify({open:a.open,u:[a.u0,a.u1],l:[a.l0,a.l1],said:a.said}));
   /* ---- 2. End and Pause on every phase ---- */
@@ -62,7 +64,7 @@ async function protocolGate(browser,FILE,ok,booted){
      endText:e&&e.textContent.trim(), pause:!!p&&rp.width>=44&&rp.height>=44,
      css:!!document.getElementById('rel-cr-css'), inView:!!e&&re.right<=innerWidth&&re.left>=0};};
    o.setup=RUN.phase;
-   document.getElementById('relgo').click(); clearTimeout(RUN.timer); relRender();
+   clearTimeout(RUN.timer); relRender();
    o.welcome=read('welcome');
    RUN.phase='opening'; RUN.line=0; relRender(); o.opening=read('opening');
    RUN.phase='run'; RUN.idx=0; RUN.pass=0; relRender(); o.run=read('run');
@@ -78,7 +80,6 @@ async function protocolGate(browser,FILE,ok,booted){
    relPick(compute().carrying.slice(0,2).map(n=>n.i)); await wait(100);
    o.planN=RUN.plan.length; o.addrs=RUN.queue.length;
    o.u0=CURP.meter.unique.length;
-   document.getElementById('relgo').click(); await wait(60);
    document.getElementById('relskip').click(); await wait(60);
    clearTimeout(RUN.timer);
    /* the very first line, nothing said: End closes and charges nothing */
@@ -88,7 +89,6 @@ async function protocolGate(browser,FILE,ok,booted){
    o.first.said=(document.getElementById('status')||{}).textContent;
    /* three lines said out of the plan: the first address, three channels */
    relPick(compute().carrying.slice(0,2).map(n=>n.i)); await wait(100);
-   document.getElementById('relgo').click(); await wait(60);
    document.getElementById('relskip').click(); await wait(60);
    clearTimeout(RUN.timer); RUN.idx=2; RUN.pass=1;
    o.mid={reach:relReach(), planN:RUN.plan.length, addrs:RUN.queue.length};

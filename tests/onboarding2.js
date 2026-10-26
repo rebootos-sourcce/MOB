@@ -314,9 +314,7 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
     the card itself can finish, so "reaches a release" means the walker
     actually ran and the engine actually wrote, not only that a button
     exists. */
- const d=await page.$('#reldose');
- if(d){await d.evaluate(el=>{el.value='1';el.dispatchEvent(new Event('change'));});}
- await page.click('#relgo');
+ /* the door's own press began the run: no second setup page, ruled 25 October (ui/release.js relPick) */
  const t0=Date.now();
  await page.waitForFunction(()=>RUN.phase==='done'&&RUN.cool>=COOLING.length,
   null,{timeout:60000}).catch(()=>{});
@@ -561,9 +559,7 @@ console.log('\n=== what changed: every answer kept across a reload, Skip and lea
    return {committed:!!(c&&c.ok&&c.k), planned:!!(pl&&pl.ok), open:!!(typeof RUN!=='undefined'&&RUN.open)};},REAL_STORY);
   ok(handed.committed&&handed.planned&&handed.open,tag+': the story is committed and its first release opens: '+JSON.stringify(handed));
   await page.waitForTimeout(120);
-  const d=await page.$('#reldose');
-  if(d){await d.evaluate(el=>{el.value='1';el.dispatchEvent(new Event('change'));});}
-  await page.click('#relgo');
+  /* the door's own press began the run: no second setup page, ruled 25 October (ui/release.js relPick) */
   await page.waitForFunction(()=>RUN.phase==='done'&&RUN.cool>=COOLING.length,null,{timeout:60000}).catch(()=>{});
   /* past the two minutes, round QH, through the button a person uses */
   await page.evaluate(()=>{const r=document.getElementById('relrest'); if(r)r.click();});

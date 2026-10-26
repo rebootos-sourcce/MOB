@@ -1552,14 +1552,15 @@ console.log('\n=== the release runs to its end in silence, and says what it spea
   CHARGES.forEach(c=>{S.charge[c]=7;});
   CURP.ui.voice=a.voice; CURP.ui.tone=false;
   const ids=compute().carrying.slice(0,1).map(n=>n.i);
+  /* the door's press begins the run since 25 October (NO SECOND SETUP PAGE,
+     ui/release.js relPick), so the dose is set the way the dashboard's Times
+     said field sets it, on RUN, and nothing is said until the list */
   relPick(ids);
-  if(a.dose){const d=document.getElementById('reldose');
-   d.value=String(a.dose); d.dispatchEvent(new Event('change'));}
+  if(a.dose)RUN.dose=a.dose;
   const before=(CURP.meter.unique||[]).length, plan=RUN.plan.slice(), dose=RUN.dose;
   const setup=(document.getElementById('rel').textContent||'').replace(/\s+/g,' ');
-  const go=document.getElementById('relgo');
+  const go=RUN.phase==='welcome';
   if(!go)return {go:false,setup:setup};
-  go.click();
   const t0=Date.now();
   while(!(RUN.phase==='done'&&RUN.cool>=COOLING.length)&&Date.now()-t0<90000)
    await new Promise(r=>setTimeout(r,50));
@@ -1571,7 +1572,7 @@ console.log('\n=== the release runs to its end in silence, and says what it spea
   relClose();
   return out;},{voice:voice,dose:dose});
  const q=await walk(false,0);
- ok(q.go,'the setup offers Run release on the person\'s own record: '+q.setup.slice(0,120));
+ ok(q.go,'the door begins the run on the person\'s own record: '+q.setup.slice(0,120));
  if(q.go){
   const op=q.seen.filter(s=>s.ph==='opening').map(s=>s.text);
   const run=q.seen.filter(s=>s.ph==='run');

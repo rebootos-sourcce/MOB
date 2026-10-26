@@ -190,12 +190,14 @@ const FLOOR_CANVAS=60;
      function m(nm){var h=document.getElementById('rel'), b=h.getBoundingClientRect(), s=getComputedStyle(h);
       out.push({nm:nm, markup:(s.display!=='none'&&b.width>0)?h.innerHTML.length:0,
        text:(h.innerText||'').trim().length});}
-     relPick(ids); m('rel setup');
-     var g=document.getElementById('relgo');
-     if(g){ g.click(); clearTimeout(RUN.timer); m('rel open');
+     /* NO SETUP ROW SINCE 25 OCTOBER. The setup step was cut (ui/release.js
+        relPick, no second setup page): the door's press begins the run, so
+        the first surface is the opening. A run that did not begin is a
+        surface this watch did not see, and it says so as an empty row rather
+        than printing a row fewer. */
+     relPick(ids);
+     if(RUN.phase==='welcome'){ clearTimeout(RUN.timer); m('rel open');
       RUN.phase='run'; RUN.idx=0; RUN.pass=0; relRender(); m('rel run'); }
-     /* a Begin that is not there is a surface this watch did not see, and it
-        says so as an empty row rather than printing two rows fewer */
      else out.push({nm:'rel open', markup:0, text:0});
      relClose();
      if(CURP&&CURP.ui)CURP.ui.voice=had;

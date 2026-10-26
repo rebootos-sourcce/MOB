@@ -150,24 +150,28 @@ const ev = async (page, fn, arg) => { try { return await page.evaluate(fn, arg);
           card: typeof REL_DOSES !== 'undefined' ? REL_DOSES[REL_DOSES.length - 1] : null }; });
       ok(f5.label === 'Times said', '5. the Story\'s field says Times said, the card\'s word, not Patterns: ' + J(f5.label));
       ok(f5.max === f5.card && f5.value <= f5.max, '5. and its ceiling is the card\'s own, so the default it shows is one it allows: ' + J(f5));
-      /* the press the Story's Run release makes, with the setup drawn first,
-         and a short dose so the walk covers every block */
+      /* the press the Story's Run release makes, which begins the run itself
+         since 25 October (no second setup page, ui/release.js relPick), and a
+         short dose so the walk covers every block, set on RUN the way the
+         dashboard's Times said field sets it */
       const s6 = await ev(page, () => {
         REL_WORD_S = 0.0004; REL_GAP_S = 0.001; REL_HEAD_S = 0; REL_FRAME_S = 0;
         CURP.ui.voice = true; CURP.ui.tone = false;
         var M = stRelModel(); relPick(M.sel.map(function (n) { return n.i; }), M.fromLast && STV.lastT ? { story_t: STV.lastT } : null);
-        var d = document.getElementById('reldose'); d.value = '3'; d.dispatchEvent(new Event('change'));
-        var g = document.querySelector('#rel .rel-gsum'), b = g ? g.querySelectorAll('b') : [];
+        RUN.dose = 3;
         window.__shown = []; var o = window.relStep;
         window.relStep = function () { var r = o.apply(this, arguments); var st = relCur();
           var ln = document.querySelector('#rel .rel-line'); if (st && (st.kind === 'head' || st.kind === 'pass')) window.__shown.push({ st: st.text, dom: ln ? ln.textContent : null }); return r; };
-        return { setup: b[1] ? +b[1].textContent : null, plan: RUN.plan.length, u0: CURP.meter.unique.length };
+        /* the session's count the setup card used to print, worked out here
+           from the plan rather than read off the screen it is checked against:
+           the release half of every key, said RUN.dose times */
+        var rel = RUN.plan.filter(function (k) { return /limit$/.test(String(k).split(':')[1]); }).length;
+        return { setup: rel * RUN.dose, plan: RUN.plan.length, u0: CURP.meter.unique.length };
       });
-      await page.click('#relgo');
       await page.waitForFunction(() => RUN.phase === 'run', null, { timeout: 20000 }).catch(() => { });
       await page.waitForTimeout(100);
       const plate = await ev(page, () => { var t = (document.querySelector('#relhd .rel-ct') || {}).textContent || ''; var m = t.match(/(\d+) (release )?lines? this session/); return { t: t, n: m ? +m[1] : null }; });
-      ok(s6.setup != null && plate.n === s6.setup, '6. the run states the session in the setup\'s count: setup ' + s6.setup + ', run ' + J(plate.t));
+      ok(s6.setup != null && plate.n === s6.setup, '6. the run states the session as the plan counts it: plan ' + s6.setup + ', run ' + J(plate.t));
       await page.waitForFunction(() => RUN.phase === 'done' && RUN.cool >= COOLING.length, null, { timeout: 180000 }).catch(() => { });
       const r = await ev(page, () => ({ done: RUN.phase === 'done' && RUN.cool >= COOLING.length, lost: RUN.studioLost, shown: window.__shown,
         unique: CURP.meter.unique.slice(), vault: relVaultN(), fresh: (RUN.meter && RUN.meter.added) || 0 }));

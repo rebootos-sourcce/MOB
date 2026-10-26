@@ -91,7 +91,7 @@ function promises(t){
  const c=t.match(/\b(\d+) lines?, (?:all at one place|\d+ at each of (\d+) places)/);
  return {lines:c?+c[1]:null, places:c?(c[2]?+c[2]:1):null,
   voice:claim('voice',t), timer:claim('timer',t), repeats:claim('repeats',t),
-  pace:/You set the pace/.test(t), stop:/stop at any line/.test(t)};}
+  pace:/You set the pace/.test(t), pause:/pause or stop at any line/.test(t), stop:/stop at any line/.test(t)};}
 const STANDIN=/recorded voice|until it is recorded|placeholder|lorem|\bTODO\b|\bTBD\b/i;
 
 /* RECORD EVERY SCREEN. relRender is wrapped the way tests/design.js wraps it,
@@ -118,7 +118,8 @@ const ARM=()=>{
     const lefts=[].slice.call(document.querySelectorAll('#rel .rel-tclk-l, #rel .rel-fig span'))
      .filter(function(e){return /^\s*left\s*$/i.test(e.textContent)||e.classList.contains('rel-tclk-l');});
     H.push({sk:sk,ph:card?card.getAttribute('data-ph'):'',text:rel?rel.innerText:'',
-     ring:!!document.getElementById('relsetd'),left:lefts.length>0,stop:!!document.getElementById('relstop')});}};}};
+     ring:!!document.getElementById('relsetd'),left:lefts.length>0,stop:!!document.getElementById('relstop'),
+     pause:!!document.getElementById('relpause')});}};}};
 
 /* the run, from Begin on a door to the results, with the screen recorded */
 async function runFrom(page,beginSel){
@@ -127,11 +128,14 @@ async function runFrom(page,beginSel){
  const setup=await page.evaluate(()=>({text:document.getElementById('rel').innerText,
   plan:(RUN.plan||[]).length, dose:RUN.dose, queue:(RUN.queue||[]).length, voice:relVoiceOn(),
   doseCtl:!!document.getElementById('reldose')||!!document.querySelector('[data-reldose]'),
-  pace:!!document.getElementById('relpace'), go:!!document.getElementById('relgo'),
+  pace:!!document.getElementById('relpace'), go:RUN.phase!=='idle',
   mini:{a:typeof ONB_MINI_ADDRS==='number'?ONB_MINI_ADDRS:null, m:typeof RUN_MIN==='number'?RUN_MIN:null},
   settle:typeof REL_SETTLE_S==='number'?REL_SETTLE_S:null}));
- await page.evaluate(()=>{window.__said=[]; window.__steps=[]; window.__shots=[];});
- if(setup.go)await page.click('#relgo');
+ /* NOT EMPTIED HERE ANY MORE. The record started at Run release, which came
+    after this read; the door is the begin now, so ARM above already emptied
+    it before the press and the run has been saying lines since. */
+ /* the door's press began the run: no second setup page, ruled 25 October
+    (ui/release.js relPick), so there is no Run release to press here */
  await page.waitForFunction(()=>RUN.phase==='done'&&RUN.cool>=COOLING.length,null,{timeout:150000}).catch(()=>{});
  await page.waitForTimeout(120);
  const rest=await page.evaluate(()=>!!document.getElementById('relrest'));
@@ -151,13 +155,31 @@ function hold(tag,card,r,opts){
  /* count */
  ok(S.plan*S.dose===P.lines,tag+'the run is set to say the card\'s '+P.lines+' lines, it is set to say '+(S.plan*S.dose)
   +' ('+S.plan+' lines, each '+S.dose+' times)');
- const counts=[...S.text.matchAll(/(\d+)\s*(patterns?|lines?)\b/g)].map(m=>+m[1]);
- ok(new RegExp('\\b'+P.lines+'\\s*lines?\\b').test(S.text),tag+'the setup prints the card\'s count, '+P.lines+' lines');
- ok(counts.length>0&&counts.every(n=>n===P.lines),tag+'and every count of lines or patterns on the setup is that '+P.lines+': '+JSON.stringify(counts));
+ /* THE COUNT IS HELD ON THE LIST NOW. It was held on the setup screen, which
+    printed it before Run release; that screen is cut, ruled 25 October (no
+    second setup page, ui/release.js relPick), and the card hands straight
+    into the run. The plate on the list is the screen after the card that
+    states the session's size, so the card's number is held there. */
+ const L1=(W.shots.filter(s=>s.ph==='run')[0]||{}).text||'';
+ /* and it is a different number with a different name, on purpose: the
+    plate counts release lines, the release half of each address said once,
+    and the card counts every line, both halves. So the plate's figure is
+    half the card's, and nothing on the list may print a count of plain
+    lines or patterns that disagrees with the card. Found when the setup
+    was cut: the setup was the one screen that printed the card's own
+    figure, and no screen after the card prints it now. */
+ const rel=[...L1.matchAll(/(\d+)\s+release\s+lines?\b/g)].map(m=>+m[1]);
+ /* Remaining is a countdown of the same release lines, not a size, so it is
+    held to the release count and left out of the bare ones */
+ const left=[...L1.matchAll(/Remaining\s+(\d+)\s+lines?\b/g)].map(m=>+m[1]);
+ const bare=[...L1.replace(/Remaining\s+\d+\s+lines?\b/g,'').matchAll(/(\d+)\s+(patterns?|lines?)\b/g)].map(m=>+m[1]).filter(n=>n!==P.lines);
+ ok(left.every(n=>rel.indexOf(n)>=0),tag+'and Remaining on the first list screen is that release count: '+JSON.stringify(left));
+ ok(rel.length>0&&rel.every(n=>n*2===P.lines),tag+'the list counts the release half of the card\'s '+P.lines+' lines: '+JSON.stringify(rel));
+ ok(bare.length===0,tag+'and prints no other count of lines or patterns that disagrees with the card: '+JSON.stringify(bare));
  ok(list.length===P.lines,tag+'the walk said exactly '+P.lines+' lines, it said '+list.length);
  /* places */
  ok(S.queue===P.places,tag+'the run carries the card\'s '+P.places+(P.places===1?' place':' places')+', it carries '+S.queue);
- ok(new RegExp('\\b'+P.places+' address(es)?\\b').test(S.text),tag+'and the setup counts the same '+P.places);
+ ok(new RegExp('\\baddress \\d+ of '+P.places+'\\b').test(L1),tag+'and the list counts the same '+P.places+(P.places===1?' place':' places')+': '+JSON.stringify((L1.match(/address \d+ of \d+/)||[''])[0]));
  /* the ruling, read off the engine's own tables */
  const ruled=S.mini.a!=null&&S.mini.m!=null?S.mini.a*S.mini.m:null;
  ok(ruled===12,tag+'the ruled size is twelve lines, three addresses at four, read off the tables: '+ruled);
@@ -183,10 +205,12 @@ function hold(tag,card,r,opts){
  if(P.repeats.k==='once')ok(S.dose===1&&!S.doseCtl,tag+'it says each line is said once: dose '+S.dose+', a control to change it '+S.doseCtl);
  if(P.repeats.k==='set')ok(S.doseCtl,tag+'it says the person sets the repeats, and the control is there');
  if(P.pace)ok(S.pace,tag+'it says the person sets the pace, and the pace control is there');
+ if(P.pause){const ls=W.shots.filter(s=>s.ph==='run');
+  ok(ls.length>0&&ls.every(s=>s.pause),tag+'it says the person can pause at any line, and Pause is on every list screen');}
  if(P.stop){const ls=W.shots.filter(s=>s.ph==='run');
   ok(ls.length>0&&ls.every(s=>s.stop),tag+'it says the person can stop at any line, and End session is on every list screen');}
  /* no stand in */
- const bad=[{ph:'card',text:card},{ph:'setup',text:S.text}].concat(W.shots).filter(s=>STANDIN.test(s.text||''));
+ const bad=[{ph:'card',text:card},{ph:'opening',text:S.text}].concat(W.shots).filter(s=>STANDIN.test(s.text||''));
  ok(bad.length===0,tag+'no placeholder reaches the person on any screen: '
   +bad.slice(0,2).map(s=>s.ph+': '+((s.text||'').match(STANDIN)||[''])[0]).join(' | '));
  return P;}

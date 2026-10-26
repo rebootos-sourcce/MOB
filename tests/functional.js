@@ -1230,10 +1230,11 @@ ok(gm.both&&gm.after===1,'both poles clear the printed card, got '+gm.after);
 const relsix=await page.evaluate(()=>{
  loadP(0); setTab(TAB.FIELD); render();
  const ids=W.filter(n=>n.cf).sort((a,b)=>b.sq-a.sq).slice(0,3).map(n=>n.i);
+ /* the door's own press begins the run: the setup step and its Run release
+    were cut, ruled 25 October (NO SECOND SETUP PAGE, ui/release.js relPick) */
  relPick(ids);
- const o={plan:RUN.plan.length, begin:!!document.getElementById('relgo'), lines:[]};
+ const o={plan:RUN.plan.length, begin:RUN.phase==='welcome', lines:[]};
  if(!o.begin){relClose(); return o;}
- document.getElementById('relgo').click();
  document.getElementById('relskip').click();
  clearInterval(RUN.timer);
  /* the half and the side moved from the static eyebrow to the carousel's own
@@ -2986,8 +2987,9 @@ const relrun=await page.evaluate(()=>{
   o.caseAge=PEOPLE[GORDON()].age;}
  const held=W.filter(n=>n.sq>=4).slice(0,3).map(n=>n.i);
  relPick(held);
- o.plan=RUN.plan.length;
+ o.plan=RUN.plan.length; o.ph=RUN.phase;
  o.setup=(document.getElementById('rel').textContent||'').replace(/\s+/g,' ');
+ o.ctl=['relgo','relpace','reldose'].filter(function(id){return !!document.getElementById(id);});
  o.distinct=new Set(RUN.plan).size;
  /* THE PERSON WHO RAN IT IS THE PERSON CHARGED, and nothing in the run moves
     who that is. An earlier build repointed CURP at the person's own record
@@ -2996,7 +2998,7 @@ const relrun=await page.evaluate(()=>{
     both starts and ends on whoever pressed it. */
  o.beforeWho=S.who;
  const ownBefore=(PROF_BY[PEOPLE[0].nm].meter.unique||[]).length;
- RUN.phase='run'; RUN.idx=RUN.plan.length-1;
+ clearTimeout(RUN.timer); RUN.phase='run'; RUN.idx=RUN.plan.length-1;
  relCoolDown();
  o.afterWho=S.who;
  /* AND THE FIELD MOVED WITH THE IDENTITY. The meter half of this was fixed
@@ -3046,14 +3048,17 @@ ok(relrun.distinct===relrun.plan,'and never repeats a line inside one run');
    or the patterns that I'm about to release." The heading's place is the
    Story and Seat toggle, and the selection is shown as what it is, each group
    with its count of patterns. */
-ok(!/Release your selections/i.test(relrun.setup)&&/Story/.test(relrun.setup)&&/Seat/.test(relrun.setup)
- /* counted in lines and the dose named Times said since 17 October: a
-    pattern is the allowance's unit, and these count lines said, every pass
-    (tests/allowance.js, 8). The controls he named are all still here. */
- &&/\d+ ?lines/.test(relrun.setup)&&/Run speed/.test(relrun.setup)
- &&/Times said/.test(relrun.setup)&&/Run release/.test(relrun.setup),
- 'the setup is what is picked, by story or seat with its patterns, run speed, how many patterns and one button: '
- +relrun.setup.slice(0,160));
+/* AND THE SETUP ITSELF CAME OFF, ruled 25 October, his annotated screenshot
+   of the Set up step crossed out corner to corner: "My release protocol, I
+   set up on that page, so I don't have a second setup page." Pace and Times
+   said are on the dashboard's Release panel, and a door begins the run on its
+   own press (ui/release.js relPick). What this held, the setup's toggle, its
+   run speed, its times said and its one button, is now held absent: the door
+   lands on the welcome, which names what is being released. */
+ok(relrun.ph==='welcome'&&relrun.ctl.length===0&&/You are releasing/.test(relrun.setup)
+ &&!/Run speed|Times said|Run release/.test(relrun.setup),
+ 'the door begins the run on the welcome, naming what it releases, with no second setup: '
+ +JSON.stringify(relrun.ctl)+' '+relrun.setup.slice(0,160));
 ok(!/patterns of the|thought lines? of new ground|you have left|empties the story/.test(relrun.setup),
  'and it quotes no cost and no framing, '+relrun.setup.slice(0,160));
 ok(relrun.beforeWho===0&&relrun.afterWho===0,
@@ -5254,7 +5259,7 @@ console.log('\n=== a release can be ended from its opening ===');
   var bc=Object.assign({},S.charge), br=Object.assign({},S.replace);
   loadP(0); CHARGES.forEach(function(k){S.charge[k]=bc[k]; S.replace[k]=br[k];}); compute();
   var q=['Root','3rd Eye','Heart'].map(function(s){return NODES.filter(function(n){return n.cf&&n.b===s;})[0].i;});
-  relPick(q); document.getElementById('relgo').click(); await wait(300);
+  relPick(q); await wait(300);
   const o={phase:RUN.phase, has:!!document.getElementById('relstop'), before:RUN.log.length};
   document.getElementById('relstop').click(); await wait(300);
   o.open=RUN.open; o.after=RUN.phase; o.hidden=getComputedStyle(document.getElementById('rel')).display;
@@ -5541,7 +5546,7 @@ console.log('\n=== the release panel quotes a price it then charges ===');
   const txt=e=>{const n=host.querySelector(e);return n?n.textContent.trim():'';};
   const out={left, addresses:RUN.queue.length, plan:(RUN.plan||[]).length,
    sub:txt('.rel-sub'), note:txt('.rel-note'),
-   begin:!!document.getElementById('relgo'),
+   begin:RUN.phase!=='idle',
    route:!!document.getElementById('relplan'),
    label:(document.getElementById('relplan')||{}).textContent||'',
    before:CURP.meter.unique.length};
@@ -5588,9 +5593,11 @@ console.log('\n=== the release panel quotes a price it then charges ===');
   await new Promise(r=>setTimeout(r,120));
   const host=document.getElementById('rel');
   const txt=e=>{const n=host.querySelector(e);return n?n.textContent.trim():'';};
-  const out={left, plan:(RUN.plan||[]).length, sub:txt('.rel-sub'), note:txt('.rel-note'),
-   begin:!!document.getElementById('relgo'), before:CURP.meter.unique.length};
-  if(out.begin){RUN.phase='run'; RUN.idx=RUN.plan.length; relCoolDown();}
+  /* no setup card since 25 October: the run begins on relPick, and the one
+     line a shorter run owes is on the welcome, before any line is said */
+  const out={left, plan:(RUN.plan||[]).length, note:(document.getElementById('relcost')||{}).textContent||'',
+   begin:RUN.phase==='welcome', before:CURP.meter.unique.length};
+  if(out.begin){clearTimeout(RUN.timer); RUN.phase='run'; RUN.idx=RUN.plan.length; relCoolDown();}
   out.spent=CURP.meter.unique.length-out.before;
   return out;},102);
  /* TWO OF THE WEEK SPENT AND NOT SEVEN, 17 October. Three left is less than
@@ -5609,10 +5616,10 @@ console.log('\n=== the release panel quotes a price it then charges ===');
  /* and one line says the run is shorter than what was picked, which is not a
     price: it names addresses and room, never a count of patterns or what is
     left, so round IG's cut stands (relShortSay, ui/release.js) */
- ok(part.sub===''&&/^This run opens \d+ new address(es)?\. This week has room for \d+, and you picked \d+\.$/.test(part.note)
+ ok(/^This run opens \d+ new address(es)?\. This week has room for \d+, and you picked \d+\.$/.test(part.note)
   &&!/left|patterns? of/.test(part.note),
-  'and the panel quotes no price for it, only that it is shorter, got '
-  +JSON.stringify([part.sub,part.note]));
+  'and the run says, as it begins, only that it is shorter, with no price, got '
+  +JSON.stringify(part.note));
  await rl.close();
 }
 
@@ -5643,7 +5650,7 @@ console.log('\n=== a rerun is picked on purpose, priced before it starts, and ch
   const out={opened:opened.length, bare:pressed('rerun')};
   relPick(ids);
   out.left0=relLeft(); out.newOn=pressed('new'); out.rerunOn=pressed('rerun');
-  out.beginNew=!!document.getElementById('relgo');
+  out.beginNew=RUN.phase!=='idle';
   /* THE EMPTY CARD'S FIRST PRESS IS RERUN THESE SINCE 17 OCTOBER, and the
      toggle is not drawn on it (tests/allowance.js holds the press itself). The
      rerun setup below is relMode(true), which both the toggle and that press
@@ -5652,10 +5659,15 @@ console.log('\n=== a rerun is picked on purpose, priced before it starts, and ch
   relMode(true);
   out.rerunOn2=pressed('rerun'); out.rerun=RUN.rerun;
   out.note=(host.querySelector('.rel-note')||{}).textContent||'';
-  out.beginRerun=!!document.getElementById('relgo');
+  /* THE PRESS ITSELF, since 25 October: no setup card offers a second Run
+     release (relPick), so a spent allowance reruns when Rerun these is
+     pressed, and the time it will take is the run's own clock */
+  relPick(ids); const rr=document.getElementById('relrerun'); if(rr)rr.click();
+  out.beginRerun=RUN.phase==='welcome'&&RUN.rerun===true;
   out.queue=RUN.queue.length; out.plan=RUN.plan.slice();
   out.allOpen=RUN.plan.every(k=>opened.indexOf(k)>=0);
-  out.time=((host.querySelector('.rel-time')||{}).textContent||'');
+  out.time=((host.innerText||'').match(/Left\s+(\d+:\d\d)/)||[])[1]||'';
+  clearTimeout(RUN.timer);
   const u0=CURP.meter.unique.length, l0=CURP.meter.lines;
   RUN.phase='run'; RUN.idx=RUN.plan.length; relCoolDown();
   out.spent=CURP.meter.unique.length-u0; out.lines=CURP.meter.lines-l0;
@@ -6189,10 +6201,18 @@ console.log('\n=== the seat tone is binaural, and it is the seat\'s own ===');
   +r3(Math.max.apply(null,snd.seats.map(x=>Math.max(x.lf,x.rf)))));
 
  console.log('\n=== the seat tone follows the release, and it is off until turned on ===');
- const pick=()=>tp.evaluate(()=>{
-  var q=['Root','3rd Eye','Heart'].map(function(s){
-   return NODES.filter(function(n){return n.cf&&n.b===s;})[0].i;});
-  relPick(q); return RUN.queue.map(function(n){return n.b;});});
+ /* A DOOR, PRESSED. The setup's Run release was the press that opened the
+    channel until 25 October, when the setup step was cut (relPick): the
+    door's own press begins the run now, so the door is pressed for real
+    here, inside a gesture, the way any door in the app is. */
+ const pick=async()=>{await tp.evaluate(()=>{var b=document.getElementById('tdoor');
+   if(!b){b=document.createElement('button'); b.id='tdoor'; b.type='button'; b.textContent='door';
+    b.style.cssText='position:fixed;left:0;top:0;width:44px;height:44px;z-index:2147483647';
+    document.body.appendChild(b);}
+   b.onclick=function(){var q=['Root','3rd Eye','Heart'].map(function(s){
+    return NODES.filter(function(n){return n.cf&&n.b===s;})[0].i;}); relPick(q);};});
+  await tp.click('#tdoor');
+  return tp.evaluate(()=>RUN.queue.map(function(n){return n.b;}));};
  const sw=()=>tp.evaluate(()=>{var b=document.getElementById('reltone');
   if(!b)return null; var em=b.parentElement.querySelector('.ac-rl em');
   return {checked:b.getAttribute('aria-checked'),role:b.getAttribute('role'),
@@ -6230,7 +6250,7 @@ console.log('\n=== the seat tone is binaural, and it is the seat\'s own ===');
  /* SILENCE IS THE DEFAULT, SO SILENCE IS THE CASE THAT MUST NEVER BREAK. Asked
     for by name in DESIGN-release.md: the run renders and completes with the
     tone off, and nothing audio is touched on the way. */
- await tp.click('#relgo'); await tp.waitForTimeout(150);
+ await tp.waitForTimeout(150);
  await tp.click('#relskip'); await tp.waitForTimeout(150);
  const quietRun=await tp.evaluate(()=>({phase:RUN.phase,
   node:(document.querySelector('#rel .rel-node')||{}).textContent||''}));
@@ -6258,7 +6278,9 @@ console.log('\n=== the seat tone is binaural, and it is the seat\'s own ===');
  ok(s1&&s1.checked==='true'&&k1===true,'a press turns it on and it is saved to the record, '
   +JSON.stringify([s1&&s1.checked,k1]));
  ok(/Saved/.test(said1),'and the save reports like every other preference, said '+JSON.stringify(said1));
- ok(!b1.on&&b1.carrier===null,'and nothing sounds before Begin, '+JSON.stringify(b1));
+ /* there is no before Begin any more: the door's press began the run, so a
+    tone turned on now sounds on the run it is on, at once */
+ ok(b1.on||(await bedOnWait(null).then(()=>true,()=>false)),'and it sounds on the run that has begun, '+JSON.stringify(b1));
  /* REMEMBERED. The page is reloaded and the switch reads the record, once
     the record has left the page (persisted, above). */
  const toneId=await tp.evaluate(()=>CURP.id);
@@ -6268,13 +6290,14 @@ console.log('\n=== the seat tone is binaural, and it is the seat\'s own ===');
  await pick();
  const s2=await sw();
  ok(s2&&s2.checked==='true','remembered across a reload, '+JSON.stringify(s2));
- /* BEGIN IS THE PRESS THAT OPENS THE CHANNEL, and the tone is the first seat's */
- await tp.click('#relgo'); await bedOnWait(null);
+ /* THE DOOR'S PRESS OPENS THE CHANNEL, and the tone is the first seat's. It
+    was Begin on the setup until 25 October; pick() above is the press now. */
+ await bedOnWait(null);
  await tp.evaluate(()=>clearInterval(RUN.timer));
  const want=await tp.evaluate(()=>RUN.queue.map(function(n){return {b:n.b,hz:seatHz(n.b),col:seatCol(n.b)};}));
  const b2=await bed(), s3=await sw();
  ok(b2.on&&b2.ctx==='running'&&b2.carrier===want[0].hz&&b2.beat===THETA,
-  'Begin opens the channel inside the press and sounds the first seat, '+want[0].b+' at '
+  'the door opens the channel inside its press and sounds the first seat, '+want[0].b+' at '
   +want[0].hz+', under theta: '+JSON.stringify(b2));
  ok(s3&&s3.hz===want[0].hz+' Hz'&&s3.style.indexOf(want[0].col)>=0,
   'and the switch prints that tone in the seat\'s own colour, '+JSON.stringify(s3));
@@ -6344,7 +6367,7 @@ console.log('\n=== the seat tone is binaural, and it is the seat\'s own ===');
  const rf=await tp.evaluate(()=>{ loadP(GORDON()); render();
   if(!CURP.ui)CURP.ui={}; CURP.ui.tone=true;
   relPick(W.filter(function(n){return n.cf&&n.sq>=4;}).slice(0,2).map(function(n){return n.i;}));
-  var begin=!!document.getElementById('relgo');
+  var begin=RUN.phase!=='idle';
   RUN.phase='run'; RUN.idx=RUN.plan.length; var r=relCoolDown();
   var o={begin:begin, returned:r, phase:RUN.phase, bed:bedState().on}; relClose(); return o;});
  ok(!rf.begin&&rf.returned===false&&rf.phase==='pick'&&rf.bed===false,
