@@ -1,7 +1,7 @@
 {
   "schema": "ATUNED_INFERNO_RESEARCH_RECORD_INDEX_V1",
   "date": "2026-10-26",
-  "status": "SOURCE_METADATA_INDEX_ONLY__CANONICAL_BODY_NOT_IMPORTED",
+  "status": "RESEARCH_BODIES_PUBLISHED__CANONICAL_NORMALIZED_JSON_NOT_IMPORTED",
   "basis": "38 rows transcribed from the uploaded 2026-10-25 Inferno research crosswalk; node edges checked against staged overlay",
   "sourceFileInHandoff": "source/INFERNO_CROSSWALK_2026-10-25.csv",
   "fullFourPassSourceFileInHandoff": "source/INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
@@ -24,7 +24,7 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:B08",
         "inferno:L03",
@@ -32,7 +32,8 @@
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/B01.md"
     },
     {
       "recordId": "B02",
@@ -44,7 +45,7 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:B11",
         "inferno:B13",
@@ -53,7 +54,8 @@
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/B02.md"
     },
     {
       "recordId": "B03",
@@ -65,11 +67,12 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/B03.md"
     },
     {
       "recordId": "B04",
@@ -81,11 +84,12 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/B04.md"
     },
     {
       "recordId": "B05",
@@ -97,14 +101,15 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:L05",
         "inferno:F05"
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/B05.md"
     },
     {
       "recordId": "B06",
@@ -116,13 +121,14 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:L01"
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/B06.md"
     },
     {
       "recordId": "B07",
@@ -134,14 +140,15 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:L04",
         "inferno:F04"
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/B07.md"
     },
     {
       "recordId": "B08",
@@ -153,7 +160,7 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:B01",
         "inferno:L03",
@@ -161,7 +168,8 @@
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/B08.md"
     },
     {
       "recordId": "B09",
@@ -173,13 +181,14 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:L02"
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/B09.md"
     },
     {
       "recordId": "B10",
@@ -191,14 +200,15 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:L07",
         "inferno:F07"
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/B10.md"
     },
     {
       "recordId": "B11",
@@ -210,7 +220,7 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:B02",
         "inferno:B13",
@@ -219,7 +229,8 @@
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/B11.md"
     },
     {
       "recordId": "B12",
@@ -231,14 +242,15 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:L09",
         "inferno:F11"
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/B12.md"
     },
     {
       "recordId": "B13",
@@ -250,7 +262,7 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:B02",
         "inferno:B11",
@@ -259,7 +271,8 @@
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/B13.md"
     },
     {
       "recordId": "B14",
@@ -271,7 +284,7 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:L02",
         "inferno:L03",
@@ -280,7 +293,8 @@
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/B14.md"
     },
     {
       "recordId": "B15",
@@ -292,11 +306,12 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [],
       "sourceDisposition": "NON_DANTE_CONTEXT_ROOT_UNASSIGNED",
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/B15.md"
     },
     {
       "recordId": "L01",
@@ -308,14 +323,15 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:B06",
         "inferno:F01"
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/L01.md"
     },
     {
       "recordId": "L02",
@@ -327,7 +343,7 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:B09",
         "inferno:B14",
@@ -335,7 +351,8 @@
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/L02.md"
     },
     {
       "recordId": "L03",
@@ -347,7 +364,7 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:B01",
         "inferno:B08",
@@ -355,7 +372,8 @@
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/L03.md"
     },
     {
       "recordId": "L04",
@@ -367,7 +385,7 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:B07",
         "inferno:B14",
@@ -375,7 +393,8 @@
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/L04.md"
     },
     {
       "recordId": "L05",
@@ -387,7 +406,7 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:B05",
         "inferno:B14",
@@ -395,7 +414,8 @@
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/L05.md"
     },
     {
       "recordId": "L06",
@@ -407,14 +427,15 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:F06",
         "inferno:L01"
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/L06.md"
     },
     {
       "recordId": "L07",
@@ -426,7 +447,7 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:B10",
         "inferno:F07",
@@ -434,7 +455,8 @@
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/L07.md"
     },
     {
       "recordId": "L08",
@@ -446,7 +468,7 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:B02",
         "inferno:B11",
@@ -455,7 +477,8 @@
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/L08.md"
     },
     {
       "recordId": "L09",
@@ -467,7 +490,7 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:B12",
         "inferno:F10",
@@ -475,7 +498,8 @@
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/L09.md"
     },
     {
       "recordId": "F01",
@@ -487,13 +511,14 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:L01"
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/F01.md"
     },
     {
       "recordId": "F02",
@@ -505,13 +530,14 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:L02"
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/F02.md"
     },
     {
       "recordId": "F03",
@@ -523,7 +549,7 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:B01",
         "inferno:B08",
@@ -531,7 +557,8 @@
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/F03.md"
     },
     {
       "recordId": "F04",
@@ -543,14 +570,15 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:B07",
         "inferno:L04"
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/F04.md"
     },
     {
       "recordId": "F05",
@@ -562,14 +590,15 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:B05",
         "inferno:L05"
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/F05.md"
     },
     {
       "recordId": "F06",
@@ -581,13 +610,14 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:L06"
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/F06.md"
     },
     {
       "recordId": "F07",
@@ -599,14 +629,15 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:B10",
         "inferno:L07"
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/F07.md"
     },
     {
       "recordId": "F08",
@@ -618,13 +649,14 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:L07"
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/F08.md"
     },
     {
       "recordId": "F09",
@@ -636,7 +668,7 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:B02",
         "inferno:B11",
@@ -645,7 +677,8 @@
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/F09.md"
     },
     {
       "recordId": "F10",
@@ -657,13 +690,14 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:L09"
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/F10.md"
     },
     {
       "recordId": "F11",
@@ -675,14 +709,15 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:L09",
         "inferno:B12"
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/F11.md"
     },
     {
       "recordId": "X01",
@@ -694,11 +729,12 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [],
       "sourceDisposition": "QUARANTINED_NAME_IDENTITY_BLOCKED",
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/X01.md"
     },
     {
       "recordId": "X02",
@@ -710,11 +746,12 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [],
       "sourceDisposition": "QUARANTINED_COMPOSITE_NEEDS_SOURCE_SPLIT",
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/X02.md"
     },
     {
       "recordId": "X03",
@@ -726,14 +763,18 @@
       "sourceResearch": "INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
       "sourceCrosswalk": "INFERNO_CROSSWALK_2026-10-25.csv",
       "researchPassCountInUploadedHandoff": 4,
-      "fullResearchBodyPresentInGitHub": false,
+      "fullResearchBodyPresentInGitHub": true,
       "linkedNodeIds": [
         "inferno:B09",
         "inferno:B10"
       ],
       "sourceDisposition": null,
       "canonical": false,
-      "notRuntime": true
+      "notRuntime": true,
+      "publishedFullResearchPath": "docs/data/inferno/v1/research/records/X03.md"
     }
-  ]
+  ],
+  "publishedOriginalResearch": "docs/data/inferno/v1/research/INFERNO_FOUR_PASS_REGISTRY_2026-10-25.md",
+  "publishedOriginalResearchSha256": "121f67f0e6625ef44e29bc7730143ddef70ba7e8b27322be832472960da54202",
+  "researchBodyPublicationStatus": "SOURCE_PRESERVED_UNPROMOTED"
 }
