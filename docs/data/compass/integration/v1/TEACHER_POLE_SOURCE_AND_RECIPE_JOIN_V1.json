@@ -1,0 +1,654 @@
+{
+  "schema": "ATUNED_COMPASS_14_POLE_SOURCE_AND_RECIPE_JOIN_V1",
+  "date": "2026-10-26",
+  "authority": "AUTHORITATIVE_ENGINE_RECIPE_ROSTER_REFERENCE__RESEARCH_CANDIDATE_JOIN_ONLY",
+  "sourcePaths": [
+    "atuned_src/engine/data/teachers_recipes.js",
+    "docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json",
+    "docs/data/compass/shadow_archetypes/v1/SHADOW_ARCHETYPES_REGISTRY_V1.json"
+  ],
+  "status": "PROVENANCE_JOIN_NOT_RUNTIME_PROMOTION",
+  "stats": {
+    "poleRows": 14,
+    "uniqueTeacherNames": 13,
+    "standardizedTeacherBindings": 12,
+    "engineOnlyTeacherBindings": 2,
+    "standardizedInverseBindings": 8,
+    "shadowOnlyInverseBindings": 6,
+    "existingRecipeRitualCount": 39,
+    "homePoleRouteCautions": 3
+  },
+  "rules": [
+    "The 11-person teacher registry supplies 12 pole rows because Jesus has two poles",
+    "New crosswalk rows do not create canonical teachers or inverses",
+    "Every ritual ID is read from existing first-draft recipes, not invented",
+    "The three home-pole routes are not falsely marked fully figure-integrated",
+    "Narrative opposite figure does not establish wrongdoing or diagnosis",
+    "Do not use this reference crosswalk to score CQ, rituals, releases, or person identity"
+  ],
+  "rows": [
+    {
+      "poleId": "compass-pole:IL",
+      "poleKey": "IL",
+      "teacherName": "Jesus",
+      "quality": "Light",
+      "inverseCaption": "Lucifer",
+      "teacherSourceId": "compass-teacher:Jesus",
+      "teacherSourcePath": "docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json",
+      "teacherRegistryMembership": "STANDARDIZED_RESEARCH_REGISTRY",
+      "inverseSourceId": "compass-inverse:Lucifer",
+      "inverseSourcePath": "docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json",
+      "inverseRegistryMembership": "STANDARDIZED_INVERSE_RESEARCH_REGISTRY",
+      "supportingShadowId": "shadow:lucifer",
+      "recipeRitualIds": [
+        "IL-give",
+        "IL-need",
+        "IL-alone"
+      ],
+      "recipeRitualSteps": [
+        {
+          "id": "IL-give",
+          "stepKeys": [
+            "box",
+            "given"
+          ]
+        },
+        {
+          "id": "IL-need",
+          "stepKeys": [
+            "box",
+            "il_need"
+          ]
+        },
+        {
+          "id": "IL-alone",
+          "stepKeys": [
+            "il_alone",
+            "given"
+          ]
+        }
+      ],
+      "ritualStatus": "ENGINE_STARTER_DRAFT",
+      "routeLimitation": "PANEL_ROUTE_EXISTS",
+      "allSourceJoinsReadOnly": true,
+      "canonicalPromotion": false
+    },
+    {
+      "poleId": "compass-pole:RE",
+      "poleKey": "RE",
+      "teacherName": "Jesus",
+      "quality": "Revelation",
+      "inverseCaption": "The Furies",
+      "teacherSourceId": "compass-teacher:Jesus",
+      "teacherSourcePath": "docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json",
+      "teacherRegistryMembership": "STANDARDIZED_RESEARCH_REGISTRY",
+      "inverseSourceId": "compass-inverse:The-Furies",
+      "inverseSourcePath": "docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json",
+      "inverseRegistryMembership": "STANDARDIZED_INVERSE_RESEARCH_REGISTRY",
+      "supportingShadowId": "shadow:furies",
+      "recipeRitualIds": [
+        "RE-hold",
+        "RE-changed",
+        "RE-jaw"
+      ],
+      "recipeRitualSteps": [
+        {
+          "id": "RE-hold",
+          "stepKeys": [
+            "box",
+            "meetit"
+          ]
+        },
+        {
+          "id": "RE-changed",
+          "stepKeys": [
+            "box",
+            "re_changed"
+          ]
+        },
+        {
+          "id": "RE-jaw",
+          "stepKeys": [
+            "re_jaw",
+            "meetit"
+          ]
+        }
+      ],
+      "ritualStatus": "ENGINE_STARTER_DRAFT",
+      "routeLimitation": "PANEL_ROUTE_EXISTS",
+      "allSourceJoinsReadOnly": true,
+      "canonicalPromotion": false
+    },
+    {
+      "poleId": "compass-pole:DE",
+      "poleKey": "DE",
+      "teacherName": "Ramakrishna",
+      "quality": "Desire and will",
+      "inverseCaption": "Asmodeus",
+      "teacherSourceId": "compass-teacher:Ramakrishna",
+      "teacherSourcePath": "docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json",
+      "teacherRegistryMembership": "STANDARDIZED_RESEARCH_REGISTRY",
+      "inverseSourceId": "compass-inverse:Asmodeus",
+      "inverseSourcePath": "docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json",
+      "inverseRegistryMembership": "STANDARDIZED_INVERSE_RESEARCH_REGISTRY",
+      "supportingShadowId": "shadow:asmodeus",
+      "recipeRitualIds": [
+        "DE-want",
+        "DE-enough",
+        "DE-pull"
+      ],
+      "recipeRitualSteps": [
+        {
+          "id": "DE-want",
+          "stepKeys": [
+            "slow",
+            "offered"
+          ]
+        },
+        {
+          "id": "DE-enough",
+          "stepKeys": [
+            "box",
+            "de_enough"
+          ]
+        },
+        {
+          "id": "DE-pull",
+          "stepKeys": [
+            "de_pull",
+            "offered"
+          ]
+        }
+      ],
+      "ritualStatus": "ENGINE_STARTER_DRAFT",
+      "routeLimitation": "PANEL_ROUTE_EXISTS",
+      "allSourceJoinsReadOnly": true,
+      "canonicalPromotion": false
+    },
+    {
+      "poleId": "compass-pole:OR",
+      "poleKey": "OR",
+      "teacherName": "Moses",
+      "quality": "Order",
+      "inverseCaption": "Set",
+      "teacherSourceId": "compass-teacher:Moses",
+      "teacherSourcePath": "docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json",
+      "teacherRegistryMembership": "STANDARDIZED_RESEARCH_REGISTRY",
+      "inverseSourceId": "compass-inverse:Set",
+      "inverseSourcePath": "docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json",
+      "inverseRegistryMembership": "STANDARDIZED_INVERSE_RESEARCH_REGISTRY",
+      "supportingShadowId": "shadow:set",
+      "recipeRitualIds": [
+        "OR-rule",
+        "OR-plan",
+        "OR-stand"
+      ],
+      "recipeRitualSteps": [
+        {
+          "id": "OR-rule",
+          "stepKeys": [
+            "box",
+            "onerule"
+          ]
+        },
+        {
+          "id": "OR-plan",
+          "stepKeys": [
+            "box",
+            "or_plan"
+          ]
+        },
+        {
+          "id": "OR-stand",
+          "stepKeys": [
+            "or_stand",
+            "onerule"
+          ]
+        }
+      ],
+      "ritualStatus": "ENGINE_STARTER_DRAFT",
+      "routeLimitation": "PANEL_ROUTE_EXISTS",
+      "allSourceJoinsReadOnly": true,
+      "canonicalPromotion": false
+    },
+    {
+      "poleId": "compass-pole:PO",
+      "poleKey": "PO",
+      "teacherName": "Musashi",
+      "quality": "Power",
+      "inverseCaption": "Moloch",
+      "teacherSourceId": "compass-teacher:Musashi",
+      "teacherSourcePath": "docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json",
+      "teacherRegistryMembership": "STANDARDIZED_RESEARCH_REGISTRY",
+      "inverseSourceId": "compass-inverse:Moloch",
+      "inverseSourcePath": "docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json",
+      "inverseRegistryMembership": "STANDARDIZED_INVERSE_RESEARCH_REGISTRY",
+      "supportingShadowId": "shadow:moloch",
+      "recipeRitualIds": [
+        "PO-cut",
+        "PO-small",
+        "PO-own"
+      ],
+      "recipeRitualSteps": [
+        {
+          "id": "PO-cut",
+          "stepKeys": [
+            "box",
+            "samecut"
+          ]
+        },
+        {
+          "id": "PO-small",
+          "stepKeys": [
+            "box",
+            "po_small"
+          ]
+        },
+        {
+          "id": "PO-own",
+          "stepKeys": [
+            "po_own",
+            "samecut"
+          ]
+        }
+      ],
+      "ritualStatus": "ENGINE_STARTER_DRAFT",
+      "routeLimitation": "PANEL_ROUTE_EXISTS",
+      "allSourceJoinsReadOnly": true,
+      "canonicalPromotion": false
+    },
+    {
+      "poleId": "compass-pole:PE",
+      "poleKey": "PE",
+      "teacherName": "Buddha",
+      "quality": "Perception",
+      "inverseCaption": "Geryon",
+      "teacherSourceId": "compass-teacher:Buddha",
+      "teacherSourcePath": "docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json",
+      "teacherRegistryMembership": "STANDARDIZED_RESEARCH_REGISTRY",
+      "inverseSourceId": "compass-inverse:Geryon",
+      "inverseSourcePath": "docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json",
+      "inverseRegistryMembership": "STANDARDIZED_INVERSE_RESEARCH_REGISTRY",
+      "supportingShadowId": "shadow:geryon",
+      "recipeRitualIds": [
+        "PE-name",
+        "PE-match",
+        "PE-see"
+      ],
+      "recipeRitualSteps": [
+        {
+          "id": "PE-name",
+          "stepKeys": [
+            "box",
+            "pe_name"
+          ]
+        },
+        {
+          "id": "PE-match",
+          "stepKeys": [
+            "box",
+            "pe_match"
+          ]
+        },
+        {
+          "id": "PE-see",
+          "stepKeys": [
+            "pe_name",
+            "pe_match",
+            "noting"
+          ]
+        }
+      ],
+      "ritualStatus": "ENGINE_STARTER_DRAFT",
+      "routeLimitation": "PANEL_ROUTE_EXISTS",
+      "allSourceJoinsReadOnly": true,
+      "canonicalPromotion": false
+    },
+    {
+      "poleId": "compass-pole:TR",
+      "poleKey": "TR",
+      "teacherName": "Rumi",
+      "quality": "Trust",
+      "inverseCaption": "Charon",
+      "teacherSourceId": "compass-teacher:Rumi",
+      "teacherSourcePath": "docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json",
+      "teacherRegistryMembership": "STANDARDIZED_RESEARCH_REGISTRY",
+      "inverseSourceId": "compass-inverse:Charon",
+      "inverseSourcePath": "docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json",
+      "inverseRegistryMembership": "STANDARDIZED_INVERSE_RESEARCH_REGISTRY",
+      "supportingShadowId": "shadow:charon",
+      "recipeRitualIds": [
+        "TR-land",
+        "TR-tell"
+      ],
+      "recipeRitualSteps": [
+        {
+          "id": "TR-land",
+          "stepKeys": [
+            "box",
+            "tr_land"
+          ]
+        },
+        {
+          "id": "TR-tell",
+          "stepKeys": [
+            "tr_land",
+            "tr_tell"
+          ]
+        }
+      ],
+      "ritualStatus": "ENGINE_STARTER_DRAFT",
+      "routeLimitation": "PANEL_ROUTE_EXISTS",
+      "allSourceJoinsReadOnly": true,
+      "canonicalPromotion": false
+    },
+    {
+      "poleId": "compass-pole:CH",
+      "poleKey": "CH",
+      "teacherName": "Elijah",
+      "quality": "Charge",
+      "inverseCaption": "Phlegyas",
+      "teacherSourceId": "compass-teacher:Elijah",
+      "teacherSourcePath": "docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json",
+      "teacherRegistryMembership": "STANDARDIZED_RESEARCH_REGISTRY",
+      "inverseSourceId": "compass-inverse:Phlegyas",
+      "inverseSourcePath": "docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json",
+      "inverseRegistryMembership": "STANDARDIZED_INVERSE_RESEARCH_REGISTRY",
+      "supportingShadowId": "shadow:phlegyas",
+      "recipeRitualIds": [
+        "CH-move",
+        "CH-ten",
+        "CH-feel"
+      ],
+      "recipeRitualSteps": [
+        {
+          "id": "CH-move",
+          "stepKeys": [
+            "box",
+            "ch_move"
+          ]
+        },
+        {
+          "id": "CH-ten",
+          "stepKeys": [
+            "box",
+            "ch_ten"
+          ]
+        },
+        {
+          "id": "CH-feel",
+          "stepKeys": [
+            "slow",
+            "resist"
+          ]
+        }
+      ],
+      "ritualStatus": "ENGINE_STARTER_DRAFT",
+      "routeLimitation": "PANEL_ROUTE_EXISTS",
+      "allSourceJoinsReadOnly": true,
+      "canonicalPromotion": false
+    },
+    {
+      "poleId": "compass-pole:FL",
+      "poleKey": "FL",
+      "teacherName": "Krishna",
+      "quality": "Flow",
+      "inverseCaption": "Kaliya",
+      "teacherSourceId": "compass-teacher:Krishna",
+      "teacherSourcePath": "docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json",
+      "teacherRegistryMembership": "STANDARDIZED_RESEARCH_REGISTRY",
+      "inverseSourceId": "shadow:kaliya",
+      "inverseSourcePath": "docs/data/compass/shadow_archetypes/v1/SHADOW_ARCHETYPES_REGISTRY_V1.json",
+      "inverseRegistryMembership": "SHADOW_RECORD_ONLY_NORMALIZATION_MISSING",
+      "supportingShadowId": "shadow:kaliya",
+      "recipeRitualIds": [
+        "FL-move",
+        "FL-call",
+        "FL-other"
+      ],
+      "recipeRitualSteps": [
+        {
+          "id": "FL-move",
+          "stepKeys": [
+            "box",
+            "letmove"
+          ]
+        },
+        {
+          "id": "FL-call",
+          "stepKeys": [
+            "box",
+            "fl_call"
+          ]
+        },
+        {
+          "id": "FL-other",
+          "stepKeys": [
+            "fl_other",
+            "letmove"
+          ]
+        }
+      ],
+      "ritualStatus": "ENGINE_STARTER_DRAFT",
+      "routeLimitation": "PANEL_ROUTE_EXISTS",
+      "allSourceJoinsReadOnly": true,
+      "canonicalPromotion": false
+    },
+    {
+      "poleId": "compass-pole:AL",
+      "poleKey": "AL",
+      "teacherName": "Rama",
+      "quality": "Alignment",
+      "inverseCaption": "Ravana",
+      "teacherSourceId": "compass-teacher:Rama",
+      "teacherSourcePath": "docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json",
+      "teacherRegistryMembership": "STANDARDIZED_RESEARCH_REGISTRY",
+      "inverseSourceId": "shadow:ravana",
+      "inverseSourcePath": "docs/data/compass/shadow_archetypes/v1/SHADOW_ARCHETYPES_REGISTRY_V1.json",
+      "inverseRegistryMembership": "SHADOW_RECORD_ONLY_NORMALIZATION_MISSING",
+      "supportingShadowId": "shadow:ravana",
+      "recipeRitualIds": [
+        "AL-line",
+        "AL-said",
+        "AL-owe"
+      ],
+      "recipeRitualSteps": [
+        {
+          "id": "AL-line",
+          "stepKeys": [
+            "box",
+            "linehold"
+          ]
+        },
+        {
+          "id": "AL-said",
+          "stepKeys": [
+            "box",
+            "al_said"
+          ]
+        },
+        {
+          "id": "AL-owe",
+          "stepKeys": [
+            "al_owe",
+            "linehold"
+          ]
+        }
+      ],
+      "ritualStatus": "ENGINE_STARTER_DRAFT",
+      "routeLimitation": "PANEL_ROUTE_EXISTS",
+      "allSourceJoinsReadOnly": true,
+      "canonicalPromotion": false
+    },
+    {
+      "poleId": "compass-pole:HO",
+      "poleKey": "HO",
+      "teacherName": "Lao Tzu",
+      "quality": "The horizontal",
+      "inverseCaption": "Shu and Hu",
+      "teacherSourceId": "compass-teacher:Lao-Tzu",
+      "teacherSourcePath": "docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json",
+      "teacherRegistryMembership": "STANDARDIZED_RESEARCH_REGISTRY",
+      "inverseSourceId": "shadow:shuhu",
+      "inverseSourcePath": "docs/data/compass/shadow_archetypes/v1/SHADOW_ARCHETYPES_REGISTRY_V1.json",
+      "inverseRegistryMembership": "SHADOW_RECORD_ONLY_NORMALIZATION_MISSING",
+      "supportingShadowId": "shadow:shuhu",
+      "recipeRitualIds": [
+        "HO-stop",
+        "HO-wait",
+        "HO-rest"
+      ],
+      "recipeRitualSteps": [
+        {
+          "id": "HO-stop",
+          "stepKeys": [
+            "box",
+            "stopone"
+          ]
+        },
+        {
+          "id": "HO-wait",
+          "stepKeys": [
+            "ho_open",
+            "ho_wait"
+          ]
+        },
+        {
+          "id": "HO-rest",
+          "stepKeys": [
+            "ho_open",
+            "stopone",
+            "ho_wait"
+          ]
+        }
+      ],
+      "ritualStatus": "ENGINE_STARTER_DRAFT",
+      "routeLimitation": "PANEL_ROUTE_EXISTS",
+      "allSourceJoinsReadOnly": true,
+      "canonicalPromotion": false
+    },
+    {
+      "poleId": "compass-pole:SA",
+      "poleKey": "SA",
+      "teacherName": "Akhenaten",
+      "quality": "Light",
+      "inverseCaption": "Apep",
+      "teacherSourceId": "compass-teacher:Akhenaten",
+      "teacherSourcePath": "docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json",
+      "teacherRegistryMembership": "STANDARDIZED_RESEARCH_REGISTRY",
+      "inverseSourceId": "shadow:apep",
+      "inverseSourcePath": "docs/data/compass/shadow_archetypes/v1/SHADOW_ARCHETYPES_REGISTRY_V1.json",
+      "inverseRegistryMembership": "SHADOW_RECORD_ONLY_NORMALIZATION_MISSING",
+      "supportingShadowId": "shadow:apep",
+      "recipeRitualIds": [
+        "SA-hand",
+        "SA-name"
+      ],
+      "recipeRitualSteps": [
+        {
+          "id": "SA-hand",
+          "stepKeys": [
+            "box",
+            "sa_hand"
+          ]
+        },
+        {
+          "id": "SA-name",
+          "stepKeys": [
+            "sa_name",
+            "sa_hand"
+          ]
+        }
+      ],
+      "ritualStatus": "ENGINE_STARTER_DRAFT",
+      "routeLimitation": "HOME_POLE_NOT_ON_FIGURE_ROUTE",
+      "allSourceJoinsReadOnly": true,
+      "canonicalPromotion": false
+    },
+    {
+      "poleId": "compass-pole:TU",
+      "poleKey": "TU",
+      "teacherName": "Zoroaster",
+      "quality": "Truth",
+      "inverseCaption": "The Lie",
+      "teacherSourceId": "engine-teacher:Zoroaster",
+      "teacherSourcePath": "atuned_src/engine/data/teachers_recipes.js",
+      "teacherRegistryMembership": "ENGINE_ROSTER_ONLY_NORMALIZATION_MISSING",
+      "inverseSourceId": "shadow:druj",
+      "inverseSourcePath": "docs/data/compass/shadow_archetypes/v1/SHADOW_ARCHETYPES_REGISTRY_V1.json",
+      "inverseRegistryMembership": "SHADOW_RECORD_ONLY_NORMALIZATION_MISSING",
+      "supportingShadowId": "shadow:druj",
+      "recipeRitualIds": [
+        "TU-plain",
+        "TU-end",
+        "TU-both"
+      ],
+      "recipeRitualSteps": [
+        {
+          "id": "TU-plain",
+          "stepKeys": [
+            "box",
+            "tu_plain"
+          ]
+        },
+        {
+          "id": "TU-end",
+          "stepKeys": [
+            "box",
+            "tu_end"
+          ]
+        },
+        {
+          "id": "TU-both",
+          "stepKeys": [
+            "box",
+            "tu_plain",
+            "tu_end"
+          ]
+        }
+      ],
+      "ritualStatus": "ENGINE_STARTER_DRAFT",
+      "routeLimitation": "HOME_POLE_NOT_ON_FIGURE_ROUTE",
+      "allSourceJoinsReadOnly": true,
+      "canonicalPromotion": false
+    },
+    {
+      "poleId": "compass-pole:NA",
+      "poleKey": "NA",
+      "teacherName": "Confucius",
+      "quality": "Nature",
+      "inverseCaption": "The farmer of Song",
+      "teacherSourceId": "engine-teacher:Confucius",
+      "teacherSourcePath": "atuned_src/engine/data/teachers_recipes.js",
+      "teacherRegistryMembership": "ENGINE_ROSTER_ONLY_NORMALIZATION_MISSING",
+      "inverseSourceId": "shadow:farmer",
+      "inverseSourcePath": "docs/data/compass/shadow_archetypes/v1/SHADOW_ARCHETYPES_REGISTRY_V1.json",
+      "inverseRegistryMembership": "SHADOW_RECORD_ONLY_NORMALIZATION_MISSING",
+      "supportingShadowId": "shadow:farmer",
+      "recipeRitualIds": [
+        "NA-tend",
+        "NA-season"
+      ],
+      "recipeRitualSteps": [
+        {
+          "id": "NA-tend",
+          "stepKeys": [
+            "box",
+            "na_tend"
+          ]
+        },
+        {
+          "id": "NA-season",
+          "stepKeys": [
+            "na_season",
+            "na_tend"
+          ]
+        }
+      ],
+      "ritualStatus": "ENGINE_STARTER_DRAFT",
+      "routeLimitation": "HOME_POLE_NOT_ON_FIGURE_ROUTE",
+      "allSourceJoinsReadOnly": true,
+      "canonicalPromotion": false
+    }
+  ]
+}
