@@ -26,6 +26,24 @@ for(const r of registry.records){
   if(!(other.links||[]).includes(r.id))throw Error('Non-reciprocal link '+r.id+' -> '+id);
  }
 }
+function nativeNavigationCandidates(r) {
+ const out=[];
+ const add=(kind,name,field)=>{
+  if(typeof name==='string' && name.trim())
+   out.push({kind,name:name.trim(),sourceField:field,
+    evidenceStatus:'EXACT_LABEL_NAVIGATION_NOT_CANONICAL_EQUIVALENCE'});
+ };
+ if(r.recordType==='archetype_candidate')add('arch',r.canonicalName,'archetype_candidate.canonicalName');
+ if(r.recordType==='mapping_record') {
+  add('arch',r.archetypeName,'mapping_record.archetypeName');
+  add('sab',r.fetterLabel,'mapping_record.fetterLabel');
+  const seat={root:'Root',sacral:'Sacral',solar:'Solar',heart:'Heart',
+   throat:'Throat',eye:'3rd Eye',crown:'Crown'}[String(r.seatLabel||'').trim().toLowerCase()];
+  add('seat',seat,'mapping_record.seatLabel');
+  add('dom',r.domainTarget,'mapping_record.domainTarget');
+ }
+ return out;
+}
 const out={
  schema:'atuned.deep_psyche.shipped_app.v1',
  sourceRegistryVersion:registry.version,
@@ -45,6 +63,7 @@ const out={
   sourceRefs:r.sourceRefs||[],
   sourceClaims:r.sourceClaims||[],
   relationships:r.relationships||[],
+  nativeNavigationCandidates:nativeNavigationCandidates(r),
   relationshipAudit:r.relationshipAudit||null,
   depthReviewStatus:r.depthReviewStatus||null,
   linkedIds:r.links||[],
