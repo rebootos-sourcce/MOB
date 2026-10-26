@@ -45,6 +45,14 @@ const url='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1
    data.afterScene=after.location&&after.location.id;
    data.baselineKept=after.origin&&after.origin.cq===60;
    data.releaseMilestoneZero=after.uniqueReleaseCount===0;
+   /* The real Ritual Builder must now keep plan state on the profile as well
+      as the old side store, including the selected Board's practice. */
+   const did=ritStartPlan({steps:['box'],band:'Root',track:'Body',days:7},null);
+   data.ritualStarted=!!did;
+   data.ritualOwned=Array.isArray(CURP.ritualPlans)&&CURP.ritualPlans.some(x=>x.steps.indexOf('box')>=0);
+   const ritualExport=validateProfile(JSON.parse(JSON.stringify(CURP)));
+   data.ritualExport=ritualExport.ok&&Array.isArray(ritualExport.profile.ritualPlans)
+    &&ritualExport.profile.ritualPlans.some(x=>x.steps.indexOf('box')>=0);
    return data;
   });
   assert.equal(result.rendered,true,'Board renders on existing avatar');
@@ -61,6 +69,9 @@ const url='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1
   assert.equal(result.afterScene,'game:purgatorio:P07','drop below 60 changes coordinate');
   assert.equal(result.baselineKept,true,'old CQ baseline retained');
   assert.equal(result.releaseMilestoneZero,true,'reassessment is not a release');
+  assert.equal(result.ritualStarted,true,'ritual starts using existing builder');
+  assert.equal(result.ritualOwned,true,'plan is stored on the owned record');
+  assert.equal(result.ritualExport,true,'plan survives strict export/import boundary');
   assert.equal(errors.length,0,'browser execution has no unhandled errors: '+errors.join('; '));
   console.log('PASS hero journey real-browser: '+JSON.stringify(result));
   await page.close();
