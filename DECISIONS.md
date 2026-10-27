@@ -29,6 +29,15 @@ ruling at the end of this file, "Sight by tier, round OK". Prices are in
 four runs. Ten a week on the free tier is less than one run, so the free grant
 banks until a run is affordable rather than expiring.
 
+(Recorded 24 October: the second sentence above is superseded, and has been
+since 1 October. A run costs the minimum for what was picked, at least four
+patterns, one address down its four channels (`RUN_MIN`, `engine/plan.js`),
+and 25 is the most a run opens, not its size. So ten a week is two releases a
+week at one address, the free grant is never too small for a run, and it still
+banks. The buy page carried the old pace, one release every two and a half
+weeks, until 24 October; `tests/funnel.js` now reads that sentence against
+`RUN_MIN` and the free grant.)
+
 **Tier four is not more of the same.** It carries the same twelve hundred as
 tier three, so patterns do not separate them at all. What it buys is the cohort
 lead suite: manage profiles, build rituals and build accountability for the
@@ -2824,6 +2833,8 @@ His words: "fix the 11 Labs voice. The audio is still defaulting to the Claude d
 
 His words: "when a first time user goes from the funnel to the questions to the app, I want them to start on the summary screen. For the first time after that, it'll just be persistent to wherever they left off. But we want to give them right away information on their summary reading."
 
+**Changed 23 October in one place:** a device with no memory opens on Discover now, not the Field. The first arrival still lands on Summary once, as below. See "Discover is the journal, imprints and release", 23 October.
+
 - **First arrival lands on Summary, once per device.** Two doors send it: the record arriving in a link from the funnel, and the first run closing. Summary shows the reading at once.
 - **Every open after that is where the person left off.** The last surface is kept in the browser's own store, not the record. Settings and the practitioner page are never remembered. A device with no memory still opens on the Field (the 19 September ruling stands for it).
 - **Held by `tests/landing.js`**, which fails on the build from before this change.
@@ -2954,3 +2965,84 @@ His words, 17 October: "knock out that percent framework... the percent is how w
 - **The line at 4 reads 40%.** A charge "reaches 4 and starts to cost your body" becomes "reaches 40%".
 - **The one cap stays at 10** (several entries added up at one address print as a percent of 10). Unchanged from phase 1, still open for him.
 - **The release screen waits for its own rebuild.** Its results page and carousel are being rebuilt by another seat, so `ui/release.js` is not touched by phase 2; the percent items it needs are listed in the phase 2 plan for that seat.
+
+## The full stack, nerve to Character, ruled 23 October
+
+His words, close to verbatim, called canon and ordered locked in: "Our
+stack goes psychophysical, that's nerve, to super complex, deep
+psychological, it's our archetypes to domains, and then we have our
+energetic... From fetter to super complex. After the super complex are
+the masks. The mask layer is the hybrid. Then one up from that is the
+archetype to the spiritual. And then at the very top is the character.
+So the whole thing goes from nerve to character."
+
+This settles the one point every earlier reconciliation this session left
+open. Super complex and Character are not the same rung. The ordered
+stack, bottom to top:
+
+1. Nerve (node, fetter), the psychophysical floor.
+2. Saboteur, complex, hyper complex.
+3. **Super complex.** Two or more hyper complexes combined. This is the
+   rung the running engine currently builds and calls Character; it is
+   being renamed, not newly invented, since the arithmetic (two hyper
+   complexes pairing) already exists and already matches his
+   description.
+4. Masks, "the hybrid" layer.
+5. Archetype through domain, "deep psychological," running up to what he
+   calls the spiritual.
+6. **Character, at the very top.** Above masks and above archetype
+   through the spiritual, not a direct pairing of two hyper complexes.
+   His own 27 September words already on record, "the character is a
+   total sum of the all of it," read correctly under this ruling as the
+   whole person, everything below it taken together, not a fourth
+   rung's arithmetic.
+
+Open, not decided here, his to rule on when asked rather than guessed at:
+exactly where the "energetic" band he named sits against this ordered
+list, since the explicit sequence he gave does not mention it by name a
+second time; and what Character computes, if it needs to compute
+anything beyond naming the whole reading, now that it is no longer the
+super complex arithmetic. Both logged as open rather than assumed.
+
+### Built the same day, and what each open point landed on
+
+- **The rename.** The rung `compute()` builds by pairing two hyper complexes (`r.sups`, kind `sup`) is called the super complex everywhere it is printed or named: the Field bar's innermost switch (Super complexes), the right rail's stack tab (Super, beside Hyper), the run cards and the pattern drill (Super-complex), Summary's chain, Analytics' ring, its card and its session rows, the record card, the Dial's callout, the depth menu's Chains line, the tiers page and every lock sentence (`SIGHT` in `engine/plan.js`), the meaning table (`engine/data/gloss.js`, a sentence of its own), and the trace graph's type (`super_complex`, in `engine/trace.js` and in the trace TDD's section 16 and 17 blocks, which `tests/trace.js` reads). The arithmetic and the wiring under it did not move: the same pairs, the same weight line, the same parts.
+- **The keys did not move, on the identity rule.** The kind `sup`, the Field layer key `character`, the history row's `ch` and the codes layer's `family-pair` kind are identity: compared by the gates and the code, and `ch` is stored on every history row a record holds. A key is never renamed for a word, the rule `TAB.INTAKE` and the `seats` key already follow. Each one carries a comment saying it is the super complex. The trace graph's algorithm number stays 4: a rename is not a new derivation, and no graph the product builds or stores holds a rung.
+- **What Character computes: nothing new.** Character is the whole reading, everything `read()` returns for a record, taken together. It is not a fifth rung, not a stored value and not a node type in the trace graph; a record carrying a `character` node is refused by name. His 27 September words ("the character is a total sum of the all of it... You're actually rendering a visualization of what all the masks look like, and what's running it") and the placement above agree on that. No arithmetic was added, because none was ruled, and a stored sum of everything would be a second copy of the reading. Its meaning sentence now says the whole: "Character is the whole of you, added up: your charge, the patterns running on it, your masks and what you were born with."
+- **The Character page keeps its name. Decided, not asked.** Round LP named it ("all of those form the character. So that's the character page. Let's rename masks there to character"), the 27 September ruling describes what it draws, and the placement above puts Character at the top as the whole person, which is what the page draws: the 112 addresses, the saboteurs dimming the body, the masks, coherence and vitality. The collision was the rung printing the same word, so the rung gave it up. Renaming the page to Masks would have reversed round LP and left the top of his stack with no place on screen. `tests/stackname.js` holds it: on every tab, with a person whose reading reaches the rung, the word Character stands only on that page, its door, its rail section and the Play section's title.
+- **Two more things called character, found and fixed.** The Compass's two name panels told a screen reader "Characters" for the teachers; they say Teachers, the word the rows themselves use. And the age ladder's seventh year, "Who did you pretend to be, and who did you refuse to be?", was labelled "the first character"; it is "the first role". The everyday word stays where it means a person's nature and not a thing on screen: an archetype is one of the kinds of character, and the ego is the mask your character wears.
+- **Still open, and his.** Where the energetic band sits in the order, logged above. Whether Character should ever print a figure of its own, one number for the whole person, which would be new arithmetic and his to define. And the mark the super complex wears is the ring in a ring it wore as Character; whether the rung keeps it is a design question nobody has put to him.
+
+## Discover is the journal, imprints and release, and the app opens on it, 23 October
+
+His words, across two messages: "I want to get rid of the Story or move the Story link. Sorry, attach the Story link to Discover. So we're removing the word Story. We're keeping the word Discover... the app opens on Discover. So when you click Discover, you only get the journal and the imprints and the release. If I click on play, then I get all the other tools." And: "Yeah, I've changed that rule. The most important portions of the app are core loop. The core loop is discover, play, flow, and embody. That really is the journal to the release. Plus the ritual."
+
+- **Discover is one page, and pressing Discover opens it.** The journal, the imprints and the release are the three columns of the page that was called Story, and they have carried exactly those names since round QB ("I want journal, the word journal and prints and release"). The imprints are the middle column, what the journal reads, with the bank of every imprint held behind its bank button. The release is the third column, and its Run opens the release card. Nothing new was built for either word. Summary and Analytics are readings of the whole field and are not the imprints.
+- **The word Story is off the bar and off every line that named the page.** The page's door is called Discover. Above phone width there is no second door under the Discover button, because it would print the word twice; on a phone, where the section buttons leave the bar, the door is the first line of the menu. A story is still what a person writes, so the word stays where it names the writing: the first run's writing step, the release card's grouping by story, the Trace chain's story step, the bank's grouping.
+- **Play carries every other tool:** Field, Body, Compass and Character in his Play order, then Avatar, Summary, Intake and Analytics in the order they stood in Discover. The Avatar builds who a person is becoming and the Intake page is the questions, so neither is the journal, the imprints or the release. No identity integer moved.
+- **The app opens on Discover** on a device with no memory, and the wordmark's home and the landing when the practitioner door shuts go there too. The opening is named once in the code, `TABHOME` in `engine/core.js`, because four places each named their own and the boot's own note records what that cost.
+- **Default taken, his to overrule: the first arrival keeps its one landing on Summary.** The funnel's link and the first run closing, once per device, then wherever the person left off, exactly as ruled on 9 October. Why: that ruling is his and is about exactly this moment, a first time user arriving from the funnel, where the 23 October ruling is about where the app opens and names nothing of the funnel; and the gift's line ("Your gift: 100 patterns, no card. Everything is open.") is drawn on Summary as the page a new person lands on, held there by `tests/gift.js`, so moving the landing would take it off a new person's first screen or need it rebuilt on the journal page, which nobody asked for. Landing them on Discover was the first cut of this change and was measured working (the release column offered three of the record's held addresses with Run lit) before it was reversed for those two reasons. The cost: "the app opens on Discover" is true on every open but the first arrival, which meets Discover as the first section on the bar. Sending it to Discover too is one line, at `tabLandFirst` in `ui/panels.js`, once the gift's line has a place on the journal page.
+- **Above phone width the row under Discover is empty and folds to its hairline,** so the journal page takes the line. His model of the bar, round KT, is that a section "opens up a secondary navigation underneath", and this one has none. The section buttons, where a press lands, do not move.
+- **CLAUDE.md still says the app opens on the Field** (the 19 September paragraph and the 9 October addition to it). It was left alone in this change, and this entry supersedes it until that paragraph is updated.
+- **Held by** `tests/landing.js`, which fails by name on the build from before this change, and `tests/functional.js`, which holds every placement by name.
+
+## The Day One tutorial is deleted, not hidden, 23 October
+
+His words: "Check to see if there's a second onboarding. Right now, there's been two onboardings. There's the one that we see, and there's a hidden one. I want that hidden one completely removed. We're not doing that anymore. We're going to be working on the funnel and we're going to be working on the flow into the site."
+
+- **The hidden one was the Day One tutorial** (`ui/tutorial.js`, round NF): five cards, Journal, Discover, Understand, Release and Flow, on the onboarding's own full screen stage, with its own story entry, its own hand off to a first release and its own door on the journey record. No arrival opened it. Its switch, `DEV_PLAY_TUTORIAL` in `ui/login.js`, defaulted off, and the developer panel that could turn it on was deactivated at round RI on 3 October. Its one door was "Replay the Day One tutorial" in Account, under The opening.
+- **The one that is seen is the onboarding** (`ui/onboard.js`): Arrive, Ask, Settle, Feel, Body, Story, Mirror, Next, the first release, then the end card. It opens once behind the login door on a profile that has not been through it. A record arriving from the quiz's link skips it, because `pImport` marks every record it takes as onboarded (`engine/schema.js`). Both unchanged.
+- **Removed:** the module, its switch, its Account row, its five poses and its way of hiding the app (`shell/head.html`), the gate sections that walked its screens, and `tools/tutorial-motion.js`. The question left open at round NF, whether the tutorial should replace the onboarding, follow it, or stay a developer path, is answered: none of the three.
+- **Kept, on purpose:** the sheet host the welcome after paying borrowed, renamed `#paidwelcome` and now its own; the chain the onboarding's end card draws its rows in; `ui.tutorialSeen` on the record; and `'tutorial'` among the doors a journey walk may name (`JOURNEY_DOORS`), because a record carrying an older value is read and never refused. The journey record landed on 9 October, after the switch panel was gone, so no person could have written that door; only gates did. `tests/journey2.js` still holds that such a walk resumes on the onboarding's own card and ends on its end card.
+- **What else changes:** `sniffStory`, the full story reader, has no screen that calls it now. The tutorial was its only one. It stays in the engine, exported and held by `tests/engine.js`, and its route into screens was already ruled for after alpha (the 9 October entry above).
+- **Held by** `tests/onboarding2.js`, section 2, which reads the running page: no name of the tutorial on it, no rule of its poses, no host of its own, and no row for it in Account. Those four fail by name on `45fe5649`, the build from before this change. The checks that rode the tutorial's screens and still describe the product moved: the stage checks (no card chrome, a ghost with no live control, nothing running under reduced motion) onto the onboarding's own stage, and the release question gate onto the same two calls the tutorial made, `stCommit` and `obMini` handed to `relPick`.
+
+## Sociopathy and Psychopathy are placed in the descent, 26 October
+
+His words, settled in conversation: "Narcissism is a subset of psychopathy and Machiavellianism... sociopath would be a hypercomplex and psychopath would be a supercomplex. But a very particular archetype." This resolves his 20 October strike (`0e53d037`, "Remove disputed Psychopathy supercomplex classification"), which changed only `docs/ATUNED_LAYER_COUNT_DASHBOARD_2026-10-20.md` and never reached the code.
+
+- **Sociopathy is the Predatory family's own hyper complex.** `compute()` already built it (`kind:'hy'`, `nm:'Predatory'`). It is now a DESCENT entry of its own in `engine/data/compass.js`, `kind:'hyper complex'`, `fam:'Predatory'`. The name is the structure's (Sociopathy, not sociopath), the way the descent names a pattern and never a person, and it is the name `CODE_STRUCT` already codes, X25.
+- **Psychopathy is a super complex, and only one particular one:** the Grandiosity hyper complex and the Predatory one together. Its entry keeps `kind:'super complex'` and gains `pair:['Grandiosity','Predatory']`. `compute()` reads that pair into `r.psychopathy`, a separate field that is never pushed into `sups`. It is set wherever the two rank by weight, under the same weight gate as every super complex (a mean of 5.6). `inSups` says whether the generic pairing by rank also paired them.
+- **The dark read now lights a tied step only when the chain holds it.** It used to light Psychopathy for anybody dark under expression 11. The referral to a licensed clinician is unchanged and still follows depth alone, because it is a safety rule and not a label.
+- **What it changed on the roster:** one reading out of sixteen. Tomas is dark, carries Grandiosity and no Predatory, and was shown Psychopathy; he is now shown Machiavellianism. Every number on every profile is unchanged.
+- **Open, and his:** whether a heavy hyper complex may carry a marginal one past the gate. The mean lets a Grandiosity of 8.7 carry a Predatory of 5.5. The generic super complex does the same today, so a floor for each part would move both rules, and that call is his. Sociopathy's behaviour, practice and counterpart are unwritten on purpose: they are `null` in the record rather than invented.

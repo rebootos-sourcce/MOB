@@ -33,9 +33,15 @@
    the accusation pass 9 of the voice skill exists to catch.
 
    Every string went through check.py --line before it landed, and the file
-   goes through check.py whole. Superior is in SAB_LIB and in neither SABDEF
-   nor SAB33, so it has no row here and kbSabBlock prints nothing for it,
-   which is what it printed before.
+   goes through check.py whole. Superior was in SAB_LIB and in neither SABDEF
+   nor SAB33, so it never had a row here. It was retired from SAB_LIB on 22
+   October, and engine/data/nodes.js says why. Every name in SAB_LIB is one
+   of the 33 now, so every one of them has a row.
+
+   S02 IS MICROMANAGER, the owner's rename of 18 October in canon.js, carried
+   here on 22 October. The row kept its words and changed only its key, so
+   the card a person reads is the same card under the name the reading
+   prints.
    ============================================================ */
 var SABCARD={
  "negotiator":{

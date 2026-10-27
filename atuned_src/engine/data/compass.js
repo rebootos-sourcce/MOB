@@ -453,12 +453,39 @@ function compassPoleLines(m,end){
    weeks. It gets icons on the turn something renders it. */
 
 /* ---- THE NARCISSISM DESCENT ----
-   Three steps, and the third one is not ours to work on. The codex
+   The last step is not ours to work on. The codex
    is explicit and the rule is carried into the product rather than
    left in the book: "Practitioners encountering this configuration:
    work at the fetter level. Do not attempt to address the
    structural layer. Refer to licensed clinical professionals for
-   parallel support." */
+   parallel support."
+
+   SOCIOPATHY AND PSYCHOPATHY ARE PLACED, RULED 26 OCTOBER. His words:
+   "Narcissism is a subset of psychopathy and Machiavellianism... sociopath
+   would be a hypercomplex and psychopath would be a supercomplex. But a very
+   particular archetype." On 20 October (0e53d037) he had struck Psychopathy
+   as a super complex standing on its own, and that commit only reached a
+   dashboard document, so this table went on filing it as a flat kind that
+   darkRead below then lit by depth alone, for anybody dark enough, whatever
+   was running.
+
+   So two entries are tied to the chain compute() already builds, and the
+   tie is data on the entry, read by nobody's position:
+     fam   Sociopathy is the Predatory family's own hyper complex. compute()
+           has always built it (kind 'hy', nm 'Predatory'). It was never
+           given this name anywhere a person reads.
+     pair  Psychopathy is the super complex of exactly these two families'
+           hyper complexes, Grandiosity and Predatory, and no other pair.
+           compute() reads the pair off this entry into r.psychopathy.
+   The names are the structure's and not the person's, Sociopathy and not
+   sociopath, the way the other three are: the dark read names a pattern and
+   never a person, and CODE_STRUCT codes all four under these names (X25,
+   X26), which the ID gate in engine/codes.js holds.
+
+   Why here and not on HCX_LIB. HCX_LIB's d prints on every hover of a
+   hyper complex (ui/ui.js), for anybody carrying one. This table prints
+   only inside the dark read, beside the referral. A clinical name belongs
+   behind that gate. */
 const DESCENT=[
  {nm:'Narcissism', kind:'complex',
   d:'Grandiose entitlement; the self-appointed arbiter. Personal situations are interpreted through status, exceptionalism, entitlement, and the need to preserve a superior self-image.',
@@ -469,7 +496,7 @@ const DESCENT=[
    livedExample:'In a team discussion, another person receives credit. The person experiences this as a threat to rank, reframes the other person as incompetent, redirects the discussion toward their own contribution, and struggles to acknowledge the other person’s work.',
    impact:'Can reduce mutuality, trust, feedback quality, and capacity to repair harm when other people’s needs are treated as secondary to protecting self-image.',
    practice:'Pause before defending rank. State the observable facts, name the impact on the other person, acknowledge one valid point or contribution without qualification, and ask what repair or shared outcome is needed.',
-   oppositeName:'Grounded Self-Worth', oppositeId:'opposite:Narcissism', oppositeDefinition:'Grounded self-worth with humility, reciprocal empathy, accountability, and respect for others as equally real. Not self-erasure or self-contempt.',
+   oppositeName:'Grounded Self-Worth', oppositeId:'opposite:Narcissism', oppositeDefinition:'Grounded self-worth with humility, reciprocal empathy, accountability, and respect for others as equally real, not self-erasure or self-contempt.',
    oppositeStatus:'inferred-working-counterpart; not asserted as a canonical one-to-one opposite',
    confidence:0.78, reviewStatus:'external-research-pass-A-done; semantic-pass-B-and-adversarial-pass-C-pending',
    researchSources:['https://www.psychiatry.org/News-room/APA-Blogs/What-Is-Narcissistic-Personality-Disorder','https://pmc.ncbi.nlm.nih.gov/articles/PMC4415495/','https://pubmed.ncbi.nlm.nih.gov/34860434/','https://www.sciencedirect.com/science/article/pii/S0092656622001428','https://pubmed.ncbi.nlm.nih.gov/35913765/'],
@@ -484,7 +511,7 @@ const DESCENT=[
   gate:'Malignancy begins where harm to others becomes instrumental.',
   content:{
    inferred:false, inferenceBasis:'The higher-order placement and brief description are explicitly source-defined in this DESCENT registry. Detailed behavior and opposite are research-informed expansions, not diagnoses.',
-   behavior:'May use strategic impression management, selective disclosure, deception, cynical assumptions, or interpersonal leverage to pursue an outcome. Empathy may be used instrumentally rather than to guide care; research does not support treating every person with this trait as identical.',
+   behavior:'May use strategic impression management, selective disclosure, deception, cynical assumptions, or a hold over other people to pursue an outcome. Empathy may be used instrumentally rather than to guide care; research does not support treating every person with this trait as identical.',
    triggerMechanism:'A desired outcome, competition, perceived vulnerability, or distrust can shift the decision rule from mutual agreement toward control of information and other people’s choices.',
    livedExample:'During a disagreement, the person privately tells each colleague a different version of events to isolate an opponent and secure a decision, while presenting the move as neutral problem-solving.',
    impact:'Undermines informed consent, stable trust, fair collaboration, and shared decision-making; apparent cooperation can become difficult to distinguish from tactical compliance.',
@@ -499,12 +526,31 @@ const DESCENT=[
     {pass:'C · adversarial/counterpart review',focus:'Check newer systematic synthesis of dishonest behavior and test the proposed opposite against agency and consent.',sources:['https://pmc.ncbi.nlm.nih.gov/articles/PMC13422123/','https://pubmed.ncbi.nlm.nih.gov/34636074/'],finding:'Associations vary by outcome and construct measurement. Transparent Reciprocal Agency is an inferred practice pole, not a validated clinical opposite; focus on disclosure, consent and verifiable accountability.'}
    ]
   }},
- {nm:'Psychopathy',kind:'super complex',
-  d:'Structural absence of the empathy feedback loop. The Machiavellian suppresses, so there is something to suppress. This does not suppress, because harm is always a neutral option.',
+ /* THE PREDATORY HYPER COMPLEX, NAMED. Ruled 26 October; see the head of
+    this table. The template below is left empty on purpose: the placement is
+    his, and no behaviour, practice or counterpart has been written or
+    researched for it yet, so nothing is invented to fill the shape. A null
+    is reported as a null by the knowledge generator, never filled. */
+ {nm:'Sociopathy',kind:'hyper complex',fam:'Predatory',
+  d:'The Predatory family built up into a hyper complex of its own. Other people are read as terrain, and the move is made before it is felt.',
+  content:{
+   inferred:false, inferenceBasis:'The name and the hyper-complex placement are owner-ruled, 26 October 2026, as the Predatory family\'s own hyper complex. No behavioral template or research pass has been written for it yet.',
+   behavior:null, triggerMechanism:null, livedExample:null, impact:null, practice:null,
+   oppositeName:null, oppositeId:'opposite:Sociopathy', oppositeDefinition:null,
+   oppositeStatus:'not yet named; no counterpart invented',
+   confidence:null, reviewStatus:'owner-placed 26 October; template and research passes not written',
+   researchSources:[], researchPasses:[]
+  }},
+ /* A SUPER COMPLEX, AND ONE PARTICULAR ONE. The kind stands: he ruled it a
+    super complex. What 0e53d037 struck was it standing as a flat kind lit for
+    anybody, and pair is the fix: it is held only where compute() finds both
+    of these families' hyper complexes, read into r.psychopathy. */
+ {nm:'Psychopathy',kind:'super complex',pair:['Grandiosity','Predatory'],
+  d:'The Grandiosity and Predatory hyper complexes running at once. Structural absence of the empathy feedback loop. The Machiavellian suppresses, so there is something to suppress. This does not suppress, because harm is always a neutral option.',
   refer:true,
   content:{
    inferred:false, inferenceBasis:'The super-complex placement and core phrasing are explicitly source-defined in this DESCENT registry. The added behavioral template is research-informed and must not be used to diagnose an individual.',
-   behavior:'The source model describes harm-related feedback as structurally unavailable or not constraining choice. In real-world research, psychopathy is a complex construct with varied measures; do not infer it from a single action, conflict, or perceived lack of warmth.',
+   behavior:'The source model describes harm-related feedback as structurally unavailable or not constraining choice. In real-world research, psychopathy is a complex pattern with varied measures; do not infer it from a single action, conflict, or perceived lack of warmth.',
    triggerMechanism:'In the source model, a choice point occurs where another person’s welfare would normally constrain an action, but the anticipated harm does not function as a meaningful stop signal. This is a model description, not a validated clinical mechanism for an individual.',
    livedExample:'A decision-maker recognizes that a choice will predictably injure another person, but treats that injury as irrelevant to the decision and proceeds without meaningful consideration of consent, responsibility, or repair.',
    impact:'If this pattern is present, ordinary appeals to shared feeling may not be sufficient to protect others; prioritize boundaries, accountability, documented decisions, and appropriate professional support.',
@@ -533,6 +579,16 @@ function mirrorAt(seatLoad, seatIg){
  var clear=1-clamp(seatLoad,0,10)/10;
  var honest=clamp(seatIg,0,10)/10;
  return Math.round(clamp(clear*0.62+honest*0.38,0,1)*100);}
+/* ONE READER, FOR ALL FOUR CALLERS. mirrorAt took seatIg on a 0 to 10 scale
+   and every caller typed out bandIg(seat) by hand to get it, which seeds an
+   unanswered law to 6. compassAt reads a row from compute()'s own seatRows()
+   instead, which carries an honest ig, null when the seat has nothing
+   answered. NULL IS AN ANSWER: a seat that has not been answered reads as
+   not yet read, the way the rest of this file already treats a null. */
+function compassAt(row){
+ if(!row)return null;
+ if(row.ig==null)return null;
+ return mirrorAt(row.weight*10, row.ig*10);}
 /* THE DARK READ. The owner's rule: malignant plus decoherent on the
    same axis is the configuration to name. Neither alone is it. A
    high malignant share in a coherent field is a hard week; a
@@ -569,17 +625,43 @@ const DARK_MAL=0.55, DARK_CQ=31;
 
    The body keeps its bodies and its signature shape. One name and one caller
    moved. */
-function darkRead(mal01, CQ){
+/* A DESCENT STEP BY ITS NAME, never by where it sits in the table. darkRead
+   read DESCENT[2] as the floor, and the first entry added in the middle
+   would have moved the referral's step onto it without a word. */
+function descentStep(nm){
+ for(var i=0;i<DESCENT.length;i++)if(DESCENT[i].nm===nm)return DESCENT[i];
+ return null;}
+/* WHETHER A READING HOLDS THE STRUCTURE A STEP IS TIED TO. A step with
+   neither fam nor pair is not tied to the chain and is never held this way.
+   r is a compute() result, or what a plan may see of one (sightR in
+   ui/lock.js), so a rung the plan hides is never held here either. */
+function descentHeld(d,r){
+ if(!d||!r)return false;
+ if(d.pair)return !!(r.psychopathy&&r.psychopathy.named===d.nm);
+ if(d.fam)return (r.hys||[]).some(function(h){return h.nm===d.fam&&!h.over;});
+ return false;}
+function darkRead(mal01, CQ, r){
  /* mal01 is the malignancy axis, nought to one, and CQ is the coherence axis.
-    Two measurements, not one twice. An unreadable shape is never dark. */
+    Two measurements, not one twice. An unreadable shape is never dark.
+    r is optional and only chooses the step. Without it no tied step is ever
+    chosen, which is the safe direction: an untied step, never a label the
+    chain does not support. */
  if(mal01===null||mal01===undefined)
   return {mal:null,cq:Math.round(CQ),dark:false,step:null,refer:false,say:''};
  var mal=clamp(mal01,0,1);
  var dark=(mal>=DARK_MAL)&&(CQ<DARK_CQ);
+ /* WHICH STEP, ruled 26 October. A tied step is chosen only when the chain
+    holds it, deepest first, and never by depth. Psychopathy was chosen at CQ
+    under 11 for anybody dark, which named it on fields with no Grandiosity
+    in them at all. Depth still chooses between the untied two. The referral
+    below is not moved: it is a safety rule and not a label, so it keeps
+    following depth alone, exactly as before. */
+ var tied=null;
+ if(dark)for(var i=DESCENT.length-1;i>=0&&!tied;i--)if(descentHeld(DESCENT[i],r))tied=DESCENT[i];
  return {mal:Math.round(mal*100), cq:Math.round(CQ),
   dark:dark,
   /* which step of the descent, and only while both conditions hold */
-  step:!dark?null:(CQ<11?DESCENT[2]:(CQ<21?DESCENT[1]:DESCENT[0])),
+  step:!dark?null:(tied||descentStep(CQ<21?'Machiavellianism':'Narcissism')),
   refer:dark&&CQ<11,
   say:!dark?'':'The shape is malignant and your energy is decoherent at the same time. '
    +'That pair is what the descent describes. It is a reading of what is running, not of who is running it.'};}
@@ -678,7 +760,7 @@ function quadrant(outward,organized,CQ){
 
    Organised means the pattern has compounded. "It starts small, gets
    conditioned, and becomes who we are." The engine already walks that chain:
-   loose saboteurs, then complexes, then hyper complexes, then character. The
+   loose saboteurs, then complexes, then hyper complexes, then super complexes. The
    share of what is running that has climbed that chain is how conditioned it
    is, which is the thing the word organised was reaching for. */
 const ORG_W={sab:0.2, cx:0.5, hy:0.8, sup:1};

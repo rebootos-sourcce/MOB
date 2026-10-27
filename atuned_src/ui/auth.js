@@ -780,6 +780,7 @@ function authCheck(){
      Stripe, and the payment still happened, so it says where the plan is */
   if(back==='done')status('Payment finished. Log in from Account to bring the plan onto this record.','fail');
   return Promise.resolve(null);}
+ AUTH_PLAN_READ_AT=Date.now();
  return authCall('GET','/v1/me',null,s.token).then(function(r){
   var acc=r.body&&r.body.account;
   var redraw=function(){
@@ -793,6 +794,7 @@ function authCheck(){
    /* the same answer carries the plan, so the boot check reads it without a
       second request */
    authPlanBack(back,r.body.billing);
+   authPlanArm();
    profileSyncStart();
    return 'ok';}
   if(r.status===401){
@@ -975,6 +977,12 @@ function authPlanTake(b){
      card has not gone through, so this line is not the only place they live. */
   say='The card for '+nm+' did not go through. Everything you have opened still runs. New patterns '
    +'wait until the card does, and Manage billing replaces the card.'; kind='fail';}
+ /* AND WHEN IT DOES, 24 October (P3-3 of the 23 October QA pass). The refused
+    card was said on a held line and on Billing's State row, and the read that
+    found it paid said nothing, though that read is the one that opens the
+    month's new patterns (planFromServer, engine/plan.js). */
+ else if(r.nowLive&&r.wasLive&&r.wasStatus==='past_due'&&r.status!=='past_due')
+  say='The card for '+nm+' went through. This month\'s new patterns are open.';
  /* STOPPED ON THE PAYMENT PAGE, and turned back on there. Neither moves the
     tier, the status or the period, so neither was said: a person came back
     from pressing stop to silence and a plan that read as running. Said as a
@@ -1000,9 +1008,53 @@ function authPlanTake(b){
 function authPlanRead(){
  var s=authSession();
  if(!s)return Promise.resolve({ok:false, took:'signed out'});
+ AUTH_PLAN_READ_AT=Date.now();
  return authCall('GET','/v1/me',null,s.token).then(function(r){
   if(!r.ok||!r.body)return {ok:false, took:'unread', status:r.status};
-  return {ok:true, took:authPlanTake(r.body.billing)};});}
+  var took=authPlanTake(r.body.billing);
+  authPlanArm();
+  return {ok:true, took:took};});}
+/* A PAGE LEFT OPEN ACROSS A RENEWAL, 24 October (P2-2 of the 23 October QA
+   pass). The plan was read off the server only at boot, after a sign in and on
+   the way back from Stripe, and the record's own end date ends any renewal it
+   has not read three days after the period (planPast and PLAN_GRACE_MS,
+   engine/plan.js). That is right for a device signed out or offline, which is
+   what it was built for, and it was wrong for a signed in page that was simply
+   never reloaded: a tab kept open showed a person whose card had just renewed
+   "On Free" and "State ended", with the layers they pay for locked, until a
+   reload. Measured eight runs in eight, and coming back to the tab sent no
+   request.
+
+   So while signed in the plan is read again when the page comes back into
+   view or gains focus, at most once an hour, and once on a timer a minute
+   before the grace runs out, so the last word before an unread renewal reads
+   as an ending is the server's. A stopped plan (ends) needs no timer: it ends
+   on its day whatever the server says next. */
+var AUTH_PLAN_EVERY_MS=3600*1000, AUTH_PLAN_TIMER=null, AUTH_PLAN_READ_AT=Date.now();
+/* setTimeout holds at most 2^31 - 1 milliseconds, about 24.8 days, and a
+   longer wait fires at once, so a longer one is armed in steps */
+var AUTH_TIMER_MAX=2147483647;
+/* when the timer should read, as a time, or null when nothing needs one */
+function authPlanDue(){
+ if(!authSession()||typeof CURP==='undefined'||!CURP||!CURP.plan)return null;
+ var pl=CURP.plan;
+ if(planState(pl)!=='live'||pl.ends)return null;
+ var u=(typeof pl.until==='string')?Date.parse(pl.until):NaN; if(!isFinite(u))return null;
+ var at=u+PLAN_GRACE_MS-60000;
+ return at>Date.now()?at:null;}
+function authPlanArm(){
+ if(AUTH_PLAN_TIMER){ clearTimeout(AUTH_PLAN_TIMER); AUTH_PLAN_TIMER=null; }
+ var at=authPlanDue(); if(at===null)return;
+ AUTH_PLAN_TIMER=setTimeout(function(){ AUTH_PLAN_TIMER=null;
+  if(Date.now()<at-1000){ authPlanArm(); return; }
+  authPlanRead(); },Math.min(Math.max(0,at-Date.now()),AUTH_TIMER_MAX));}
+function authPlanWake(){
+ try{ if(document.visibilityState&&document.visibilityState!=='visible')return; }catch(e){}
+ if(!authSession()||Date.now()-AUTH_PLAN_READ_AT<AUTH_PLAN_EVERY_MS)return;
+ authPlanRead();}
+if(typeof addEventListener==='function'){
+ addEventListener('focus',authPlanWake);
+ try{ document.addEventListener('visibilitychange',authPlanWake); }catch(e){}}
 /* ?billing= is what the server sends Stripe back to (createCheckout and
    createPortal in reboot-os). Read once and removed, keeping every other
    parameter, so ?dev=1 and a hash survive. */
@@ -1019,19 +1071,14 @@ function authBillingBack(){
    tell them to do the loop, go to the journal, input stories, and get used to
    using the software ten minutes a day until you no longer need it." Shown
    once per profile, only when the plan is live after a checkout return, and
-   never for a managed or cancelled return. It rides the tutorial's own sheet
-   host, which is idle at that moment. The flag is a ui fact, so it survives a
-   load. */
+   never for a managed or cancelled return. Its sheet host is its own,
+   #paidwelcome in shell/body.html. It borrowed the Day One tutorial's host
+   until 23 October, when that sequence was removed, so nothing else ever
+   stands on this one. The flag is a ui fact, so it survives a load. */
 function paidWelcomeOpen(){
- var h=document.getElementById('tutorial'); if(!h)return false;
+ var h=document.getElementById('paidwelcome'); if(!h)return false;
  if(CURP&&CURP.ui&&CURP.ui.paidWelcomed)return false;
- if(typeof TUT!=='undefined'&&TUT.open)return false;
- /* the tutorial's stage leaves its classes on the host until its own exit
-    has run (ui/tutorial.js, tutClose); this card is the old sheet and must
-    not open wearing them, nor be wiped by that exit's timer */
- if(typeof TUT!=='undefined'&&TUT.leaveT){ clearTimeout(TUT.leaveT); TUT.leaveT=null; }
- document.body.classList.remove('tut-on');
- h.classList.remove('ob-leaving','obx','tutx','obx-lit','obx-in-arrive');
+ h.classList.remove('ob-leaving');
  h.innerHTML='<div class="ob-card" role="dialog" aria-modal="true" aria-label="You are in">'
   +'<div class="ob-wash" aria-hidden="true"></div><div class="ob-scroll">'
   +'<span class="pm-eye">Paid</span>'

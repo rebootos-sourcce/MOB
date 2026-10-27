@@ -87,6 +87,25 @@ function loopRead(p){
   (into[e.to]=into[e.to]||[]).push(e);
   (from[e.from]=from[e.from]||[]).push(e);});
  var typeOf=function(k){return traceSplit(k).type;};
+ /* SIGNAL MARKERS. Resolve the derived story→impression→fetter path back to
+    the existing source entry. This is navigation metadata, not another
+    waveform record and not a confirmed physiological or causal claim. */
+ var signalByFetter={}, storyIds=traceStoryIds(p), storyEntries=(p.story&&Array.isArray(p.story.entries))?p.story.entries:[];
+ var sourceByStory={};
+ storyIds.forEach(function(id,i){sourceByStory['story:'+id]=storyEntries[i]||null;});
+ g.edges.forEach(function(e){
+  if(e.edge!=='supports'||e.from.indexOf('impression:')!==0||e.to.indexOf('pattern:fetter:')!==0)return;
+  var producer=g.edges.filter(function(x){return x.edge==='produces'&&x.to===e.from&&x.from.indexOf('story:')===0;})[0];
+  if(!producer)return;
+  var entry=sourceByStory[producer.from]; if(!entry)return;
+  var fetter=traceSplit(e.to).id.slice('fetter:'.length);
+  (signalByFetter[fetter]=signalByFetter[fetter]||[]).push({id:traceSplit(producer.from).id,
+   at:entry.t||null,text:typeof entry.text==='string'?entry.text:'',src:e.src||'inferred',
+   status:e.src==='user_confirmed'?'confirmed':'candidate'});
+ });
+ Object.keys(signalByFetter).forEach(function(f){
+  var seen={}; signalByFetter[f]=signalByFetter[f].filter(function(s){var k=s.id+'|'+s.src;if(seen[k])return false;seen[k]=1;return true;});
+ });
 
  /* PRACTICE HISTORY. A practice event is a node whether or not it happened:
     the practice build hands the graph every event it holds, scheduled and
@@ -119,15 +138,22 @@ function loopRead(p){
      lookup the story edges are made with. Found by the practitioner page,
      round QB, whose examples reach their patterns through practice first. */
   var at=(!n.name&&typeof tracePatternAttrs==='function')?tracePatternAttrs(n.id):{};
-  var row={key:k, id:n.id, name:n.name||at.name||n.id, seat:n.seat||at.seat||null, fetter:n.fetter||at.fetter||null,
+  var fetterKey=n.fetter||at.fetter||null;
+  var row={key:k, id:n.id, name:n.name||at.name||n.id, seat:n.seat||at.seat||null, fetter:fetterKey,
    nerve:n.nerve||at.nerve||null, address:/^[0-9]+$/.test(n.id)?+n.id:null,
+   toneHz:typeof n.toneHz==='number'&&isFinite(n.toneHz)?n.toneHz:null,
+   toneSource:n.toneSource||null,
    state:'unanswered', named:false, stories:0, weight:0, lines:0, truths:0,
    protocols:[], rituals:0, practised:0, evFor:0, evAgainst:0, by:null,
    /* WHAT THE PERSON SAID CHANGED after each release here, read off the
       evidence directly, because a verification is never an edge (RV_METRIC,
       engine/practice.js). Counted by answer, with the newest, and never added
       to evFor or evAgainst: an answer is what was said, not support. */
-   said:{n:0, by:{}, last:null}};
+   said:{n:0, by:{}, last:null},
+   /* Derived signal evidence linked through the canonical fetter. The raw
+      source remains the story entry; sensory and emotional components are
+      not claimed to be separately captured by this legacy text field. */
+   signalSources:signalByFetter[fetterKey||'']||[]};
   if(row.address!==null&&typeof releaseVerifyAt==='function')
    releaseVerifyAt(P,row.address).forEach(function(v){
     row.said.n++; row.said.by[v.value]=(row.said.by[v.value]||0)+1; row.said.last=v.value;});

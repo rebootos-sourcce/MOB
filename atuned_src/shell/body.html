@@ -40,11 +40,11 @@
      It signs in against the account server through ui/auth.js, and it
      always offers a way through without an account, ui/login.js. -->
 <div id="login" class="ob" style="display:none"></div>
-<!-- THE DAY ONE TUTORIAL. A sheet, the same family as onboarding: met once
-     behind the door, replayable from the account area, round NF. It writes
-     the person's first entry through the Story tab's own real commit
-     (ui/storyui.js's stCommit), never a simulated reading. -->
-<div id="tutorial" class="ob" style="display:none"></div>
+<!-- THE WELCOME AFTER PAYING, ui/auth.js paidWelcomeOpen. A sheet of the same
+     family, shown once when a plan goes live. Until 23 October this host was
+     the Day One tutorial's and the welcome borrowed it; the owner ruled that
+     sequence removed, so the host is the welcome's own. -->
+<div id="paidwelcome" class="ob" style="display:none"></div>
 <!-- ============================================================
      THE BOOT. THE BODY BECOMES THE FIELD, AND THE CAMERA GOES IN.
 
@@ -92,13 +92,151 @@
      Reduced motion gets the end state, which for a boot is the instrument:
      the sheet is never shown and ui/panels.js removes it at once.
      ============================================================ -->
+<!-- ============================================================
+     THE SHEET'S PRESS, DECIDED ON THE SHEET'S OWN CLOCK. 23 October.
+
+     The owner: "Find why presses right after boot are dropped." Reproduced
+     first, on the live file served in pieces the way a browser reads it,
+     with one real press per load swept across the boot: a press in the
+     first second of the overture went through the sheet to a frame that had
+     nothing listening, and a press while the app was already coming into
+     view was eaten as a skip with nothing left to skip. tests/boot.js
+     section 4 holds both.
+
+     Both were one fault. The sheet is pointer-events:none and fades on a CSS
+     clock that starts on its first painted frame, but the press it owns was
+     taken by a listener in ui/panels.js, which does not exist until the
+     whole start up has arrived and run, and was let go only when the script
+     heard animationend, a frame or more after the fade had finished on
+     screen. Those frames are the heaviest of the session, because the
+     Field's entrance starts with the fade, so under load the floor timer
+     let it go instead, up to 200ms after the sheet was invisible
+     (tests/design.js gate 11 measured exactly that on 2 October).
+
+     So the press is decided here, ahead of the sheet in the document, so
+     this is listening before the sheet can ever be painted, and it is
+     decided by the press's own time against the fade's own start, both on
+     the page's clock. A press made while the overture was still standing is
+     the skip, as ruled: it is taken here, its click is eaten, and it does
+     not also press the app. A press made once the sheet had begun to leave
+     by itself is not a skip, because there is nothing left to skip, and it
+     goes to the app untouched. A skip that arrives before the start up has
+     run is held, not dropped, and ui/panels.js acts on it the moment the
+     start up says it finished, which is when data-boot reads ok.
+
+     AND THE SHEET DOES NOT LEAVE BEFORE THERE IS SOMETHING TO PRESS. When
+     the start up runs longer than the overture, on a slow connection or a
+     slow phone, the CSS fade used to lift the sheet on time over a frame
+     with nothing in it and nothing listening, which is the preview pane
+     lesson in CLAUDE.md again, now costing presses. So while the start up
+     runs, the fade is paused, and the moment it finishes the fade is put
+     back exactly where it was, its own start time restored, so a start up
+     that finishes in time changes nothing a person can see. One that runs
+     past the fade's time leaves the sheet standing on its closing black
+     beat, and then the fade plays whole from its own start, its own length
+     and curve. With no script at all none of this runs, so the sheet still
+     clears itself, as ruled.
+
+     Its own script block, like the guard after it, so a fault in the main
+     block cannot take it down, and it touches nothing but the press and the
+     moment the sheet may leave.
+     ============================================================ -->
+<script>
+(function(){
+ try{
+  var root=document.documentElement;
+  var OK=null, ACT=null, RETIME=null, HELD=null, TAKEN=false, HELDFADE=null;
+  var fadeOf=function(el){
+   try{var a=el.getAnimations();
+    for(var i=0;i<a.length;i++)if(a[i].animationName==='bootOut')return a[i];}catch(e){}
+   return null;};
+  /* WAS THE SHEET STANDING WHEN THE PERSON PRESSED. Asked at the press's own
+     timestamp, never at the moment the script gets round to it, because the
+     script can hear a press long after it was made, on a page busy with the
+     fade's own heavy frames, and only the moment of the press says what was
+     on screen. (The fade itself runs on the main thread: it animates
+     visibility, which Chrome reports it cannot composite.) A browser that
+     cannot say gets the old answer, standing. */
+  var standing=function(ts){
+   var el=document.getElementById('boot'); if(!el)return false;
+   var cs=getComputedStyle(el);
+   if(cs.display==='none'||cs.visibility==='hidden')return false;
+   var f=fadeOf(el);
+   if(!f||f.startTime==null)return true;
+   return ts<f.startTime+f.effect.getComputedTiming().delay;};
+  var eat=function(ev){ev.stopPropagation(); if(ev.cancelable)ev.preventDefault();};
+  /* NOTHING HERE MAY THROW. It runs before the guard and the guard reads an
+     error from this document as the instrument's own, so a throw from a
+     press handler before start up would put the false "stopped" message up,
+     the exact alarm tests/boot.js section 1 exists to keep down. */
+  var act=function(p){try{ACT(p);}catch(e){}};
+  var trap=function(e){
+   try{
+    if(TAKEN)return;
+    /* the sheet has gone and the start up is done: nothing left to decide */
+    if(OK!==null&&!document.getElementById('boot')){TAKEN=true;
+     removeEventListener('pointerdown',trap,true); removeEventListener('keydown',trap,true); return;}
+    /* the developer button on the sheet always means skip while it is there */
+    var dev=!!(e.target&&e.target.id==='devskip');
+    if(!dev&&!standing(e.timeStamp))return;
+    TAKEN=true;
+    /* click is a separate event and is sent whatever happened to the
+       pointerdown before it, so the one click after the skip is eaten too,
+       and the eater does not wait for ever for a click that never comes */
+    if(e.type==='pointerdown'){
+     e.stopPropagation();
+     addEventListener('click',eat,{once:true,capture:true});
+     setTimeout(function(){removeEventListener('click',eat,true);},700);}
+    var p={dev:dev};
+    if(ACT&&OK!==null)act(p); else HELD=p;
+   }catch(x){}};
+  addEventListener('pointerdown',trap,true);
+  addEventListener('keydown',trap,true);
+  /* THE HOLD. The moment the overture is on the clock, while the start up
+     has not finished, the fade is paused, seconds before it is due, and a
+     paused fade has no start time, so a press while it is held is a skip
+     like any other. Paused at once and not by a timer set just ahead of
+     the fade, because that was measured racing: a pause takes effect on the
+     next frame and not on the call, and under load the fade began before
+     the pause did, the sheet at 0.95 and fading. tests/boot.js section 4
+     caught it on 23 October, and a probe then held it in 4 of 12 loaded
+     runs. Paused this early, the pause is down long before it matters. */
+  var watch=function(){
+   try{
+    if(OK!==null)return;
+    var el=document.getElementById('boot');
+    if(!el){requestAnimationFrame(watch); return;}
+    var f=fadeOf(el); if(!f)return;
+    if(f.startTime==null){requestAnimationFrame(watch); return;}
+    HELDFADE={f:f,s0:f.startTime}; f.pause();
+   }catch(x){}};
+  try{requestAnimationFrame(watch);}catch(e){}
+  /* the start up finished. The fade is put back exactly where it was, its
+     own start time restored, so a start up that finished in time changes
+     nothing a person can see; if its time has already come, it plays whole
+     from its own start, now. Then a skip held from before the start up is
+     acted on, or the floor in ui/panels.js is read again off the fade. */
+  var ready=function(){
+   if(OK!==null||root.getAttribute('data-boot')!=='ok')return;
+   OK=performance.now();
+   if(HELDFADE){var h=HELDFADE; HELDFADE=null;
+    try{var d=h.f.effect.getComputedTiming().delay;
+     if(performance.now()<h.s0+d)h.f.startTime=h.s0;
+     else{h.f.currentTime=d; h.f.play();}}catch(x){}}
+   if(ACT&&HELD){var p=HELD; HELD=null; act(p);}
+   else if(RETIME){try{RETIME();}catch(x){}}};
+  try{new MutationObserver(ready).observe(root,{attributes:true,attributeFilter:['data-boot']});}catch(e){}
+  window.__bootPress=function(skip,retime){ACT=skip; RETIME=retime||null; ready();};
+ }catch(e){}
+})();
+</script>
 <div id="boot" class="boot bx" aria-hidden="true">
  <!-- THE DEVELOPER SKIP. His words: "just put it as a developer button, on
       the upper right hand corner. And if it's pressed, it's just skips."
       .boot itself is pointer-events:none so a press anywhere else still
-      falls through to the skip gesture already wired in ui/panels.js; this
-      one control opts itself back in to be pressable, and ui/login.js reads
-      the flag it sets. -->
+      falls through to the skip gesture, decided in the block just above;
+      this one control opts itself back in to be pressable, and ui/login.js
+      reads the flag it sets. -->
  <button type="button" id="devskip" class="dev-skip">Skip</button>
  <!-- BOOT FIGURE BEGIN. Written by tools/bootgeo.js off engine.js. Do not edit by hand. -->
  <div class="bx-stage">
@@ -328,7 +466,7 @@
        apply, and the dots take --um from the sheet. The boot card carries the
        same drawing at its own size. -->
   <button class="brand" id="brand" type="button"
-   title="Home. Takes you back to the field."><svg class="bn" viewBox="-2 -2 655.5 136"
+   title="Home. Takes you back to Discover, where you write what happened."><svg class="bn" viewBox="-2 -2 655.5 136"
    role="img" aria-label="Atuned" focusable="false"><g fill="none" stroke="currentColor"
    stroke-width="19" stroke-linecap="butt" stroke-linejoin="round"><path
    d="M 9.5 80 A 42 42 0 1 0 93.5 80 A 42 42 0 1 0 9.5 80"/><path
@@ -378,8 +516,8 @@
        in the quiet colour first, then the surface a person is on. Both are
        repainted by setTab in ui/panels.js. -->
   <button type="button" class="vt navtog" id="navtog" aria-expanded="false"
-   aria-controls="tabbar"><span class="navsec"><span id="navsec">Play</span><span
-   class="n" id="navnow">Field</span></span>
+   aria-controls="tabbar"><span class="navsec"><span id="navsec"></span><span
+   class="n" id="navnow">Discover</span></span>
    <svg class="chev" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
     <path d="M6 9.5l6 5.5 6-5.5"/></svg></button>
   <!-- AN ICON FOR EVERY TAB, AND THE NAMES FOLD. Round JZ, his words: "I want
@@ -403,8 +541,9 @@
        once start up has said which that is. A start up that never arrives
        leaves every group showing, so a failed boot still has all its doors.
 
-       Play is pressed here because the app opens on Field, which is in it.
-       At KT the bar grew from three sections to the loop's four, Discover,
+       Discover is pressed here because the app opens on it, 23 October, his
+       words: "the app opens on Discover". Play was pressed here while the app
+       opened on the Field. At KT the bar grew from three sections to the loop's four, Discover,
        Play, Flow and Embody, and the instruments went into Play. The groups
        below are in TABDEF's order, which a gate holds them to button by
        button, and the tabs are a row of their own under the sections, in
@@ -438,10 +577,16 @@
   <input type="checkbox" id="tabnames" class="tabnames-i" checked
    aria-label="Fold the menu" title="Fold the menu to its icons, or open it again">
   <div class="secbar" id="secbar" role="group" aria-label="Sections">
-   <button type="button" class="secb" data-sec="discover" aria-pressed="false"
-    title="Discover. Story, Avatar, Summary, Intake and Analytics."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.8 12c2.4-4.2 5.5-6.3 9.2-6.3s6.8 2.1 9.2 6.3c-2.4 4.2-5.5 6.3-9.2 6.3S5.2 16.2 2.8 12z"/><circle cx="12" cy="12" r="2.9"/></svg><span class="sn">Discover</span></button>
-   <button type="button" class="secb" data-sec="play" aria-pressed="true"
-    title="Play. Field, Body, Compass and Character."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M10.2 8.6l5.2 3.4-5.2 3.4z"/></svg><span class="sn">Play</span></button>
+   <!-- DISCOVER IS ITS OWN DOOR, 23 October. His words: "attach the Story link
+        to Discover. So we're removing the word Story. We're keeping the word
+        Discover." So this button opens the journal page and its title says
+        what is there, the three columns in the glossary's own terms: journal,
+        imprints, release (engine/data/gloss.js). engine/core.js has the
+        ruling in full, at SECTIONS. -->
+   <button type="button" class="secb" data-sec="discover" aria-pressed="true"
+    title="Discover. Write what happened, see where it lands in your body, and release it."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.8 12c2.4-4.2 5.5-6.3 9.2-6.3s6.8 2.1 9.2 6.3c-2.4 4.2-5.5 6.3-9.2 6.3S5.2 16.2 2.8 12z"/><circle cx="12" cy="12" r="2.9"/></svg><span class="sn">Discover</span></button>
+   <button type="button" class="secb" data-sec="play" aria-pressed="false"
+    title="Play. Field, Body, Compass, Character, Avatar, Summary, Intake and Analytics."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M10.2 8.6l5.2 3.4-5.2 3.4z"/></svg><span class="sn">Play</span></button>
    <button type="button" class="secb" data-sec="flow" aria-pressed="false"
     title="Flow. Ritual sets what you will do. Accountability shows what you did."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.2c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0M3 14.8c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0"/></svg><span class="sn">Flow</span></button>
    <button type="button" class="secb" data-sec="embody" aria-pressed="false"
@@ -474,8 +619,27 @@
        has. Discover's still listed four tabs after Analytics came back as a
        fifth. tests/tabtips.js holds both and fails by name. -->
   <div id="tabbar" style="display:flex;gap:5px;flex-wrap:wrap">
-   <div class="tabgrp" data-sec="discover" role="group" aria-label="Discover"><span class="tabgrp-hd" aria-hidden="true">Discover</span>
-    <button type="button" class="vt tabtop" data-tabk="0" aria-pressed="false" title="Story. Write what happened, in your own words."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8.5L18 7v13.5H6z"/><path d="M14.5 3.5V7H18M9 11h6M9 14h6M9 17h3.5"/></svg><span class="n">Story</span></button>
+   <!-- DISCOVER'S ONE DOOR, 23 October. Integer 0, the journal page, whose
+        three columns are the journal, the imprints and the release. The
+        section is the door (door:'section' in engine/core.js). Above the phone
+        width this button is not shown: the Discover button over it already
+        opens the page, and a second Discover under the first is one word
+        printed twice. On a phone the section buttons leave the bar and the
+        menu's groups are the doors, so here this is the one way in, the menu's
+        first line, wearing the section's own mark and word with no heading
+        over it. One drawing per named thing: the page mark Story wore went
+        with the word. -->
+   <div class="tabgrp" data-sec="discover" data-door="section" role="group" aria-label="Discover">
+    <button type="button" class="vt tabtop" data-tabk="0" data-door="section" aria-pressed="true" title="Discover. Write what happened, see where it lands in your body, and release it."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.8 12c2.4-4.2 5.5-6.3 9.2-6.3s6.8 2.1 9.2 6.3c-2.4 4.2-5.5 6.3-9.2 6.3S5.2 16.2 2.8 12z"/><circle cx="12" cy="12" r="2.9"/></svg><span class="n">Discover</span></button>
+   </div>
+   <!-- PLAY IS EVERY OTHER TOOL, 23 October: "If I click on play, then I get
+        all the other tools." His Play order first, then the four that left
+        Discover in the order they stood there. engine/core.js has it. -->
+   <div class="tabgrp" data-sec="play" role="group" aria-label="Play"><span class="tabgrp-hd" aria-hidden="true">Play</span>
+    <button type="button" class="vt tabtop" data-tabk="2" aria-pressed="false" title="Field. Everything you carry, on one wheel."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="5.6"/><circle cx="12" cy="12" r="2"/></svg><span class="n">Field</span></button>
+    <button type="button" class="vt tabtop" data-tabk="3" aria-pressed="false" title="Body. Each place in your body, and what is held there."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.8" r="2.1"/><path d="M12 8.2v7M12 15.2l-3.2 5.6M12 15.2l3.2 5.6M6.2 10.4h11.6"/></svg><span class="n">Body</span></button>
+    <button type="button" class="vt tabtop" data-tabk="8" aria-pressed="false" title="Compass. Where you sit on each quality, from clean to upside down."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M15.2 8.8l-1.9 4.5-4.5 1.9 1.9-4.5z"/></svg><span class="n">Compass</span></button>
+    <button type="button" class="vt tabtop" data-tabk="11" aria-pressed="false" title="Character. The masks read so far, and the character they make together."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h16v4.5a8 8 0 01-16 0zM8.2 11.4h2.6M13.2 11.4h2.6"/></svg><span class="n">Character</span></button>
     <button type="button" class="vt tabtop" data-tabk="5" aria-pressed="false" title="Avatar. Say who you are becoming, and see how far you have come."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="9.2" r="2.7"/><path d="M7.4 18.2c.9-2.6 2.5-3.9 4.6-3.9s3.7 1.3 4.6 3.9"/></svg><span class="n">Avatar</span></button>
     <button type="button" class="vt tabtop" data-tabk="1" aria-pressed="false" title="Summary. Everything read so far, and what to do first."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 6h15M4.5 12h11M4.5 18h7"/></svg><span class="n">Summary</span></button>
     <button type="button" class="vt tabtop" data-tabk="13" aria-pressed="false" title="Intake. Answer the questions about you."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h14v15H5z"/><path d="M8.5 9h7M8.5 12h7M8.5 15h4"/><circle cx="6.6" cy="9" r=".5"/><circle cx="6.6" cy="12" r=".5"/><circle cx="6.6" cy="15" r=".5"/></svg><span class="n">Intake</span></button>
@@ -483,12 +647,6 @@
          analytics." Integer 4, TAB.ANALYTICS, unfolded from Summary on the
          Games template. engine/core.js has the ruling in full. -->
     <button type="button" class="vt tabtop" data-tabk="4" aria-pressed="false" title="Analytics. Follow each pattern down to what holds it in place."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 20V10M11 20V4M17.5 20v-7"/></svg><span class="n">Analytics</span></button>
-   </div>
-   <div class="tabgrp" data-sec="play" role="group" aria-label="Play"><span class="tabgrp-hd" aria-hidden="true">Play</span>
-    <button type="button" class="vt tabtop" data-tabk="2" aria-pressed="true" title="Field. Everything you carry, on one wheel."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="5.6"/><circle cx="12" cy="12" r="2"/></svg><span class="n">Field</span></button>
-    <button type="button" class="vt tabtop" data-tabk="3" aria-pressed="false" title="Body. Each place in your body, and what is held there."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.8" r="2.1"/><path d="M12 8.2v7M12 15.2l-3.2 5.6M12 15.2l3.2 5.6M6.2 10.4h11.6"/></svg><span class="n">Body</span></button>
-    <button type="button" class="vt tabtop" data-tabk="8" aria-pressed="false" title="Compass. Where you sit on each quality, from clean to upside down."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M15.2 8.8l-1.9 4.5-4.5 1.9 1.9-4.5z"/></svg><span class="n">Compass</span></button>
-    <button type="button" class="vt tabtop" data-tabk="11" aria-pressed="false" title="Character. The masks read so far, and the character they make together."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h16v4.5a8 8 0 01-16 0zM8.2 11.4h2.6M13.2 11.4h2.6"/></svg><span class="n">Character</span></button>
    </div>
    <div class="tabgrp" data-sec="flow" role="group" aria-label="Flow"><span class="tabgrp-hd" aria-hidden="true">Flow</span>
     <button type="button" class="vt tabtop" data-tabk="10" aria-pressed="false" title="Ritual. Build a ritual, do it, and see what you kept."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.4c.9 2.9 4.6 4.9 4.6 9.3a4.6 4.6 0 0 1-9.2 0c0-2.3 1.1-3.7 2.3-4.8.3 1.5 1 2.4 2 2.7-.5-2.8 0-5.1.3-7.2z"/><path d="M8 21h8"/></svg><span class="n">Ritual</span></button>
@@ -1188,7 +1346,7 @@
    </div>
 
    <div class="lsec" data-rail="right" data-sec="laws">
-    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M5.6 20V10M10 20V10M14 20V10M18.4 20V10M3.6 10L12 4.2l8.4 5.8z"/></svg>Moral integrity</span><i></i></button>
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M5.6 20V10M10 20V10M14 20V10M18.4 20V10M3.6 10L12 4.2l8.4 5.8z"/></svg>Laws of Moral Integrity</span><i></i></button>
     <div class="lsec-bd">
      <div class="bulk"><label for="allLaw">all</label><input type="range" id="allLaw" min="0" max="10" step="0.5" value="6"></div>
      <div id="laws"></div>

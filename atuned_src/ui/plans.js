@@ -121,6 +121,17 @@ function planTiersHtml(){
     saboteurs were drawn on the Field the same minute */
  var gift=(typeof lockGift==='function')&&lockGift();
  var seeNow=planSight(pl,gift), nowT=planOf(pl);
+ /* CHECKOUT CLOSED, SAID WHERE THE PRESS WOULD SIT, 24 October (P2-1 of the 23
+    October QA pass). The paywall sheet asks whether paying is open before it
+    draws a press, and says "Opens soon" while it is not; this group asked only
+    planBuyable, so it offered "Move to tier one" on every rung the sheet called
+    closed, and the sheet's own Billing link went from the one to the other. A
+    press then met "Sign in first", or, signed in, the server's refusal: "Paid
+    checkout is not open in this release yet." It reads the paywall's own
+    answer now, pwPayOpen (ui/paywall.js), which is planCheckoutOpen with the
+    gates' PAYWALL_PAY_OPEN seam beside it, and says the paywall's own word. */
+ var pay=(typeof pwPayOpen==='function')?pwPayOpen():planCheckoutOpen();
+ var soon=(typeof PW_W!=='undefined'&&PW_W.soon)||'Opens soon';
  /* WHICH TIER THE PERSON HAS, FIRST, and what it does and does not show them.
     The row marked "You are on this" is further down, and a person deciding
     whether to pay should not have to scroll to learn where they stand. The
@@ -161,15 +172,18 @@ function planTiersHtml(){
       disabled button: a control that takes a press and refuses is furniture. */
    +(r.now?'<span class="pt-now">You are on this</span>'
      :(r.up&&!r.buy?'<span class="pt-now pt-shut">'+(r.lead?'Opens with the lead suite':'Not open yet')+'</span>'
+     :(r.up&&!pay?'<span class="pt-now pt-shut">'+esc(soon)+'</span>'
      :(r.up?'<button class="btn" type="button" data-ptier="'+esc(r.k)+'">Move to '
-       +esc(planNmIn(PLAN_BY[r.k]))+'</button>':'')))
+       +esc(planNmIn(PLAN_BY[r.k]))+'</button>':''))))
    +'</div></div>';});
  h+='</div>';
  /* THE FOOT SAYS WHAT A PRESS WILL MEET, before it is pressed. */
  var foot=[];
  if(al&&al.inGift)foot.push('You have '+al.left+' patterns left of the '+GIFT_N+' you were given. '
   +'While any of the gift is left, a run spends the gift first, on every tier.');
- if(!signed)foot.push('Moving to a tier needs a sign in, because the plan is held on your record. '
+ /* while checkout is closed there is no press, so nothing is said about what a
+    press needs or what it charges (P2-1, above) */
+ if(!signed&&pay)foot.push('Moving to a tier needs a sign in, because the plan is held on your record. '
   +'Sign in from Account, then come back here.');
  /* the price is on every row now, so the foot says when it is charged rather
     than promising to show it. Monthly and nothing more: no annual price is
@@ -178,11 +192,14 @@ function planTiersHtml(){
     server heard a finished checkout and nothing else. It hears a tier changed
     on Stripe's page now, so moving down is true again; panels.js planSection
     carries the reason beside its own line. */
- foot.push('Each price is charged once a month until you stop. You pay on a separate payment page, '
-  +'and nothing is charged until you confirm there. '
-  +'Moving down or stopping goes through Manage billing above, and stopping deletes nothing.');
+ /* "MANAGE BILLING ABOVE" ONLY WHERE IT IS ABOVE, 24 October: Your plan draws
+    Manage billing only for a record that names a paid tier (planNamesPaid,
+    engine/plan.js), so the sentence that points at it goes with it. */
+ if(pay)foot.push('Each price is charged once a month until you stop. You pay on a separate payment page, '
+  +'and nothing is charged until you confirm there.');
+ if(planNamesPaid(pl))foot.push('Moving down or stopping goes through Manage billing above, and stopping deletes nothing.');
  h+='<div class="ac-gf">'+foot.map(function(s){return '<p>'+esc(s)+'</p>';}).join('')
-  +(signed?'':'<div class="pt-acts"><button class="btn" type="button" id="ptacc">Go to account</button></div>')
+  +((signed||!pay)?'':'<div class="pt-acts"><button class="btn" type="button" id="ptacc">Go to account</button></div>')
   +'</div></div>';
  return h;}
 

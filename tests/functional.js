@@ -899,6 +899,15 @@ for(const nm of people){
  const i=people.indexOf(nm);
  await page.evaluate(n=>loadP(n),i);
  await page.evaluate(()=>setTab(TAB.FIELD)); await page.waitForTimeout(80);
+ /* THE FIELD'S ENTRANCE IS NOT THE FIGURE. Since 23 October the app opens on
+    Discover, so this is the first time the page enters the Field and its
+    once a session entrance (enterStart, ui/wheel.js, 900ms) plays here, where
+    before it had played at start up and was long over. Measured that day:
+    the first person read 105, 91, 105 and 129 hit targets mid entrance and
+    181, 136, 150 and 162 once it was over, every other person unchanged. So
+    the count waits for the entrance to end, read off enterOver, and is a
+    count of the figure and not of the animation. */
+ await page.waitForFunction(()=>typeof enterOver!=='function'||enterOver(),null,{timeout:5000});
  let hits=[];
  for(let v=0;v<4;v++){
   const n=await page.evaluate(vv=>{S.view=vv;render();return HIT.length;},v);
@@ -1006,8 +1015,8 @@ const kb=await page.evaluate(()=>{
    matters is that every deck the codex claims to hold is reachable by name.
    The owner asked where the stack and the universal laws were: both were here
    under names that did not say what they held, so those two are named here. */
-{const want=['Fetters','Child emotions','Saboteurs','Moral integrity','Masks',
-  'Domains','Archetypes','Gates','The cards','The stack','Universal laws'];
+{const want=['Fetters','Child emotions','Saboteurs','Laws of Moral Integrity','Masks',
+  'Domains','Archetypes','Laws of Action','The cards','The stack','Universal laws'];
  const miss=want.filter(w=>kb.names.indexOf(w)<0);
  ok(miss.length===0,'every deck is reachable by name'
   +(miss.length?', missing '+miss.join(', '):'')+', '+kb.names.length+' decks');
@@ -1031,8 +1040,10 @@ const kb=await page.evaluate(()=>{
     why this asserts on what a person reads rather than on a key. */
  ok(kb.names.indexOf('Nodes')<0,
   'and the deck of addresses is no longer called Nodes');
- ok(kb.names.indexOf('Laws')<0,
-  'and the twenty one are Moral integrity, not Laws');
+ /* and on 22 October the three sets of laws took one scheme, so neither name
+    the decks carried before it may come back either */
+ ok(kb.names.indexOf('Laws')<0&&kb.names.indexOf('Moral integrity')<0&&kb.names.indexOf('Gates')<0,
+  'and the twenty one are the Laws of Moral Integrity and the six the Laws of Action, not Laws, Moral integrity or Gates');
  /* the glossary is not a deck. A name is glossed once, in one table, and the
     search shows it; fifty six rows whose whole content is a definition are an
     answer to a question rather than a deck of readings. */
@@ -2220,6 +2231,26 @@ const pole=await page.evaluate(()=>{
  const txt=()=>(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ');
  runPoleDrill('up'); o.up=txt();
  runPoleDrill('dn'); o.dn=txt();
+ /* A DESCENT RECORD IS NEVER PAINTED, 23 October. The voice gate sets
+    content.researchPasses and content.inferenceBasis aside as a record about
+    the copy (NOT_COPY in .claude/skills/atuned-voice/check.py), on the ground
+    that nothing that ships reads them, and its guard can only see a read by
+    name. This measures the paint. The dark read is the one route a DESCENT
+    entry has to a screen, so every string of those two records is looked for
+    in what this drill draws, its text and every attribute, and none may be
+    there. What it does paint, each step's name and its title, is looked for
+    first: a probe that cannot find what is there proves nothing about what
+    is not. */
+ {const el=document.getElementById('rdrill'), seen=[el.textContent];
+  el.querySelectorAll('*').forEach(n=>{for(const a of n.attributes)seen.push(a.value);});
+  const paint=seen.join('\n'), rec=[];
+  (function walk(v){if(typeof v==='string')rec.push(v);
+   else if(v&&typeof v==='object')Object.values(v).forEach(walk);})
+   (DESCENT.map(d=>[d.content&&d.content.researchPasses,d.content&&d.content.inferenceBasis]));
+  o.steps=DESCENT.length;
+  o.stepsPainted=DESCENT.filter(d=>paint.indexOf(d.nm)>=0&&paint.indexOf(d.d)>=0).length;
+  o.recordStrings=rec.length;
+  o.recordPainted=rec.filter(t=>t.length>=12&&paint.indexOf(t)>=0);}
  /* a row on either roster opens that axis with both poles on it */
  runPoleDrill('up');
  const row=document.querySelector('#rdrill [data-mirror]');
@@ -2266,6 +2297,10 @@ ok(pole.dark===true,'the heaviest case reads malignant and decoherent at once, C
 ok(/licensed clinician/.test(pole.dn),'and the referral is on the surface, not only in the book');
 ok(/reading of what is running, not of who/.test(pole.dn),
  'said as a reading of what runs rather than a label on a person');
+ok(pole.steps>0&&pole.stepsPainted===pole.steps,'the dark read paints every step of the descent by name and title, '
+ +pole.stepsPainted+' of '+pole.steps+', so the probe below can see a DESCENT string');
+ok(pole.recordStrings>0&&pole.recordPainted.length===0,'and paints none of the '+pole.recordStrings
+ +' strings of the research record the voice gate sets aside, painted '+JSON.stringify(pole.recordPainted.slice(0,2)));
 /* and none of it is shown to somebody it is not true of */
 ok(pole.cleanDark===false,'a cleared field does not read as the descent, CQ '
  +pole.cleanCQ+' malignant '+pole.cleanMal);
@@ -2656,16 +2691,22 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
    press:{}};
   for(const s of LOOP){
    document.querySelector('#secbar .secb[data-sec="'+s.k+'"]').click(); await wait();
-   const want=TABDEF.filter(t=>t.sec===s.k).map(t=>t.k);
-   out.press[s.k]={landed:want.indexOf(S.tab)>=0, shown:JSON.stringify(vis())===JSON.stringify(want),
-    pressed:JSON.stringify(pressedSec())===JSON.stringify([s.k])};
+   /* A SECTION THAT IS ITS OWN DOOR, 23 October: Discover opens the journal
+      page and its row shows no second door above the phone width, so the row
+      is held to the section's doors less the one the section button already
+      is (door:'section' in engine/core.js) */
+   const all=TABDEF.filter(t=>t.sec===s.k), want=all.filter(t=>t.door!=='section').map(t=>t.k);
+   out.press[s.k]={landed:all.some(t=>t.k===S.tab), shown:JSON.stringify(vis())===JSON.stringify(want),
+    pressed:JSON.stringify(pressedSec())===JSON.stringify([s.k]),
+    selfDoor:all.length===1&&all[0].door==='section'};
    /* the row and the letter, above the phone width where the bar is a row */
    if(innerWidth>720){
     const sn=document.querySelector('#secbar .secb[data-sec="'+s.k+'"] .sn').getBoundingClientRect();
     const t0=[...document.querySelectorAll('#tabbar .tabtop')].filter(b=>b.offsetParent)[0];
-    const tn=t0.querySelector('.n').getBoundingClientRect();
-    out.press[s.k].below=tn.top>=sn.bottom;
-    out.press[s.k].dx=Math.round((tn.left-sn.left)*10)/10;}}
+    if(!t0)out.press[s.k].empty=true;
+    else{const tn=t0.querySelector('.n').getBoundingClientRect();
+     out.press[s.k].below=tn.top>=sn.bottom;
+     out.press[s.k].dx=Math.round((tn.left-sn.left)*10)/10;}}}
   out.first={};
   for(const s of LOOP){SEC_LAST={}; setTab(TAB.SETTINGS);
    document.querySelector('#secbar .secb[data-sec="'+s.k+'"]').click(); await wait();
@@ -2680,6 +2721,15 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
   /* LE, his order, in the engine and in the markup: "field intake compass mask" */
   out.play=TABDEF.filter(t=>t.sec==='play').map(t=>t.nm).join(',')+' / '
    +[...document.querySelectorAll('.tabgrp[data-sec="play"] .tabtop .n')].map(n=>n.textContent).join(',');
+  /* 23 October, his words: "attach the Story link to Discover. So we're
+     removing the word Story." Discover's group, in the engine and in the
+     markup, and the word Story on no name, mark or title on the bar */
+  out.discover={def:TABDEF.filter(t=>t.sec==='discover').map(t=>t.k+':'+t.nm+':'+(t.door||'')).join(','),
+   btn:[...document.querySelectorAll('.tabgrp[data-sec="discover"] .tabtop')].map(b=>b.getAttribute('data-tabk')+':'
+    +b.querySelector('.n').textContent+':'+(b.getAttribute('data-door')||'')).join(','),
+   home:typeof TABHOME==='undefined'?null:TABHOME,
+   story:[...document.querySelectorAll('#secbar .secb, #tabbar .tabtop, #navtog')].filter(b=>/\bstory\b/i.test(
+    b.textContent+' '+(b.getAttribute('title')||'')+' '+(b.getAttribute('aria-label')||''))).map(b=>b.textContent.trim())};
   out.placed={avatar:SECOF(TAB.INTAKE),summary:SECOF(TAB.SUMMARY),intake:SECOF(TAB.QUESTIONS),story:SECOF(TAB.STORY),
    know:SECOF(TAB.KNOW),ritual:SECOF(TAB.RITUAL),acct:SECOF(TAB.ACCOUNT),field:SECOF(TAB.FIELD),
    body:SECOF(TAB.ENERGY),compass:SECOF(TAB.COMPASS),masks:SECOF(TAB.MASKS),games:SECOF(TAB.GAMES),
@@ -2706,23 +2756,31 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
   'the first tier is discover, play, flow, embody, in his order, and with practitioner mode off those four are all the bar shows, '+JSON.stringify(nav.shownKeys));
  ok(JSON.stringify(nav.secKeys)==='["discover","play","flow","embody","practitioner"]'&&JSON.stringify(nav.barKeys)===JSON.stringify(nav.secKeys),
   'LL: Practitioner is a fifth section after the loop, in the engine and the markup alike, '+JSON.stringify(nav.barKeys));
- ok(JSON.stringify(nav.placed)==='{"avatar":"discover","summary":"discover","intake":"discover","story":"discover","know":"embody","ritual":"flow","acct":"flow","field":"play","body":"play","compass":"play","masks":"play","games":null,"clients":"practitioner"}',
+ ok(JSON.stringify(nav.placed)==='{"avatar":"play","summary":"play","intake":"play","story":"discover","know":"embody","ritual":"flow","acct":"flow","field":"play","body":"play","compass":"play","masks":"play","games":null,"clients":"practitioner"}',
   /* round OG reverses round OD: the body map is Body, in Play, between Field
      and Compass. His words: "Body should be between field and compass...
-     the intake that you call intake is body." engine/core.js has it. */
-  'OG: Story, Avatar, Summary and Intake in Discover, Field, Body, Compass and Character in Play, Ritual and Accountability in Flow, Knowledge in Embody, Games hidden, Clients in Practitioner, '+JSON.stringify(nav.placed));
- ok(nav.play==='Field,Body,Compass,Character / Field,Body,Compass,Character',
-  'Play reads in his order, Field, Body, Compass, Character, in the engine and the bar alike, '+nav.play);
- ok(JSON.stringify(nav.first)==='{"discover":"Story","play":"Field","flow":"Ritual","embody":"Knowledge"}',
-  'a first visit to each section opens its first tab, and Discover opens on the Story, '+JSON.stringify(nav.first));
+     the intake that you call intake is body." And 23 October: "when you
+     click Discover, you only get the journal and the imprints and the
+     release. If I click on play, then I get all the other tools."
+     engine/core.js has both. */
+  '23 October: the journal page alone in Discover, Field, Body, Compass, Character, Avatar, Summary and Intake in Play, Ritual and Accountability in Flow, Knowledge in Embody, Games hidden, Clients in Practitioner, '+JSON.stringify(nav.placed));
+ ok(nav.play==='Field,Body,Compass,Character,Avatar,Summary,Intake,Analytics / Field,Body,Compass,Character,Avatar,Summary,Intake,Analytics',
+  'Play reads his order, Field, Body, Compass, Character, then the four that left Discover in the order they stood there, in the engine and the bar alike, '+nav.play);
+ ok(nav.discover.def==='0:Discover:section'&&nav.discover.btn==='0:Discover:section'&&nav.discover.home===0,
+  '23 October: Discover has one door, the journal page, named Discover and marked as the section\'s own, in the engine and the markup, and it is where the app opens, '+JSON.stringify(nav.discover));
+ ok(nav.discover.story.length===0,'and the word Story is on no name, mark or title on the bar: '+JSON.stringify(nav.discover.story));
+ ok(JSON.stringify(nav.first)==='{"discover":"Discover","play":"Field","flow":"Ritual","embody":"Knowledge"}',
+  'a first visit to each section opens its first tab, Discover the journal page and Play the Field, '+JSON.stringify(nav.first));
  ok(nav.unsectioned.length===0,'every tab sits in a section, unsectioned: '+nav.unsectioned.join(', '));
  ok(nav.misgrouped.length===0,'and every button sits in its own section\'s group, misgrouped: '+nav.misgrouped.join(', '));
- ok(nav.secof.analytics==='discover'&&nav.secof.settings===null,
+ ok(nav.secof.analytics==='play'&&nav.secof.settings===null,
   'a folded surface answers with its carrier\'s section and Settings with none, '+JSON.stringify(nav.secof));
  Object.keys(nav.press).forEach(k=>{const p=nav.press[k];
   ok(p.landed&&p.shown&&p.pressed,k+': pressing it opens a tab in it, shows exactly its tabs and presses it alone, '+JSON.stringify(p));
   if(p.dx!==undefined)ok(p.below&&Math.abs(p.dx)<=1,
-   k+': its tabs are a row below it, the first tab\'s word starting under its first letter, off by '+p.dx+'px');});
+   k+': its tabs are a row below it, the first tab\'s word starting under its first letter, off by '+p.dx+'px');
+  /* an empty row is only right under a section that is its own door */
+  if(p.empty)ok(p.selfDoor,k+': its row is empty because the section is its own door, '+JSON.stringify(p));});
  ok(nav.remembers,'a section goes back to the tab last used in it');
  ok(nav.settings.pressed===0&&nav.settings.shown>0,'Settings presses no section and leaves the last section\'s tabs in sight, '+JSON.stringify(nav.settings));
  ok(JSON.stringify(nav.folded)==='["discover:hidden","play:visible","flow:hidden","embody:hidden"]',
@@ -2836,11 +2894,11 @@ console.log('\n=== practitioner mode: the switch, the fifth section and the sket
   const vis=()=>[...document.querySelectorAll('#tabbar .tabtop')].filter(b=>b.offsetParent).length;
   /* shut by a change of profile while standing on the page: the switch lives
      on the device, so shutting it while standing on the page shuts the door
-     under the person, and they land on the Field rather than on a page with
-     no door */
+     under the person, and they land home rather than on a page with no door.
+     Home was the Field; it is Discover since 23 October (TABHOME). */
   setTab(TAB.PRACTITIONER); await wait();
   pracSwitch(false); await wait();
-  o.landed=S.tab===TAB.FIELD;
+  o.landed=S.tab===TAB.STORY;
   o.secOff=document.querySelector('.top').getAttribute('data-sec');
   pracSwitch(true); await wait();
   /* and shut by the switch, having come to Account from the page, which is
@@ -2854,18 +2912,23 @@ console.log('\n=== practitioner mode: the switch, the fifth section and the sket
    .filter(b=>getComputedStyle(b).display!=='none').map(b=>b.getAttribute('data-sec'));
   o.sec=document.querySelector('.top').getAttribute('data-sec');
   o.row=vis();
+  o.selfDoor=TABDEF.filter(t=>t.sec===o.sec).every(t=>t.door==='section');
   /* and the row sits under the section it now shows, the first cut left it
      at Practitioner's offset, x 596 at 1600, under nothing */
   const t0=[...document.querySelectorAll('#tabbar .tabtop')].filter(b=>b.offsetParent)[0];
   const sn=$q('#secbar .secb[data-sec="'+o.sec+'"] .sn');
   o.dx=t0&&sn?Math.round((t0.querySelector('.n').getBoundingClientRect().left-sn.getBoundingClientRect().left)*10)/10:null;
   return o;});
- ok(o2.landed&&o2.secOff==='play',
-  'shut while standing on Clients, the person lands on the Field and the bar on Play, '+JSON.stringify(o2));
+ ok(o2.landed&&o2.secOff==='discover',
+  'shut while standing on Clients, the person lands home on Discover and the bar on Discover, '+JSON.stringify(o2));
  ok(o2.swOff==='false'&&o2.stored===false&&JSON.stringify(o2.shown)==='["discover","play","flow","embody"]',
   'switched off in Account, the bar is the loop\'s four again with nothing left over, '+JSON.stringify(o2.shown));
- ok(o2.sec!=='practitioner'&&o2.row>0&&o2.dx!==null&&Math.abs(o2.dx)<=1,
-  'and the row under the bar is not left pointing at the section that went, section '+o2.sec+', '+o2.row+' tabs in sight, off its first letter by '+o2.dx+'px');
+ /* home is Discover since 23 October, a section that is its own door, so the
+    row under it holds no tab and there is no letter to line one up under:
+    what is held is that it is not left pointing at the section that went */
+ ok(o2.sec!=='practitioner'&&(o2.selfDoor?o2.row===0:(o2.row>0&&o2.dx!==null&&Math.abs(o2.dx)<=1)),
+  'and the row under the bar is not left pointing at the section that went, section '+o2.sec+', '+o2.row+' tabs in sight'
+  +(o2.selfDoor?', the section being its own door':', off its first letter by '+o2.dx+'px'));
  await pr.close();}
 
 console.log('\n=== the build says which build it is, and how much of it arrived ===');
@@ -3257,10 +3320,11 @@ console.log('\n=== the record file has a door, and it opens on the record contro
 }
 
 console.log('\n=== the Intake page is back, and the questions are on it (round OG) ===');
-/* His words: "just restore the intake page." A Discover door of its own after
-   Summary, hosting the diagnostic's questions. Opened, the questions are in
-   #iqp and in view; the Avatar still draws them in its own menu and takes the
-   host back. */
+/* His words: "just restore the intake page." A door of its own after Summary,
+   hosting the diagnostic's questions; in Discover then, in Play since 23
+   October with the rest of the tools. Opened, the questions are in #iqp and
+   in view; the Avatar still draws them in its own menu and takes the host
+   back. */
 const ipg=await page.evaluate(async()=>{
  const wait=()=>new Promise(r=>setTimeout(r,250)), o={};
  loadP(GORDON()); setTab(TAB.QUESTIONS); render(); await wait();
@@ -3269,7 +3333,7 @@ const ipg=await page.evaluate(async()=>{
  o.shown=getComputedStyle(h).display!=='none'&&r.width>300&&r.height>300;
  o.inside=!!q&&q.parentNode===h&&!q.hidden;
  o.laws=h.querySelectorAll('[data-law]').length;
- o.btn=[...document.querySelectorAll('.tabgrp[data-sec="discover"] .tabtop .n')].map(n=>n.textContent).join(',');
+ o.btn=[...document.querySelectorAll('.tabgrp[data-sec="play"] .tabtop .n')].map(n=>n.textContent).join(',');
  o.pressed=document.querySelector('.tabtop[data-tabk="13"]').getAttribute('aria-pressed');
  o.avatarHidden=getComputedStyle(document.getElementById('iq')).display==='none';
  setTab(TAB.INTAKE); render(); await wait();
@@ -3279,7 +3343,7 @@ const ipg=await page.evaluate(async()=>{
  setTab(TAB.FIELD); render();
  return o;});
 ok(ipg.shown&&ipg.inside&&ipg.laws>=21&&ipg.avatarHidden,'Intake opens its own page with the questions on it, '+JSON.stringify(ipg));
-ok(ipg.btn==='Story,Avatar,Summary,Intake,Analytics'&&ipg.pressed==='true','Discover reads Story, Avatar, Summary, Intake, Analytics and the Intake door is pressed, '+ipg.btn);
+ok(ipg.btn==='Field,Body,Compass,Character,Avatar,Summary,Intake,Analytics'&&ipg.pressed==='true','Play reads Field, Body, Compass, Character, Avatar, Summary, Intake, Analytics and the Intake door is pressed, '+ipg.btn);
 ok(ipg.avatarOwns&&ipg.again>=21,'the Avatar still takes its page back and the questions come back to the Intake, '+JSON.stringify({a:ipg.avatarOwns,again:ipg.again}));
 
 console.log('\n=== the profile is a menu, and the glow fills the frame (round OI) ===');
@@ -3695,10 +3759,22 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
      real button for both refusals, because the press goes PLAN_HOST, then
      authPlanPortal, then status. The yes is read off authPlanPortal itself,
      because pressing it would navigate this page to the URL. */
+  /* P3-4, 24 October: Manage billing is drawn only on a record that names a
+     paid tier, live or ended (planNamesPaid), so the server's refusals are
+     pressed on a stopped tier one record, which is what a person who paid and
+     stopped holds; on the blank record nothing is drawn to press */
+  const STOPPED={tier:'one',status:'canceled',granted:0,carried:0,base:100,
+   since:'2036-10-01T00:00:00.000Z',until:'2036-11-01T00:00:00.000Z',ends:null};
+  const keptManPlan=CURP.plan;
+  profileSheet();
+  o.manFree={button:!!document.getElementById('planman'),
+   line:/Manage billing opens/.test((document.getElementById('sheet-card')||{}).textContent||'')};
+  sheetShut();
   const pressMan=async()=>{
-   const was=said()[0]; profileSheet(); document.getElementById('planman').click();
+   const was=said()[0]; CURP.plan=STOPPED; profileSheet();
+   const b=document.getElementById('planman'); if(b)b.click();
    for(let i=0;i<160&&said()[0]===was;i++)await wait(25);
-   const s=said(); sheetShut(); return s;};
+   const s=said(); sheetShut(); CURP.plan=keptManPlan; return b?s:['no Manage billing on a stopped record','fail'];};
   authForget(); status('probe, before Manage billing signed out');
   o.manOut=await pressMan();
   authKeep({token:'t-probe',email:'probe@example.invalid'}); status('probe, before Manage billing with no plan');
@@ -3725,6 +3801,8 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
      tests/money.js holds the arithmetic) */
   o.rbLateRow=(function(){var d=document.createElement('div'); d.innerHTML=planSection(meterRead(CURP));
    var r=d.querySelector('#planlate'); return r?d.textContent.replace(/\s+/g,' '):'';})();
+  /* and the card then goes through, same period: P3-3, 24 October */
+  o.rbFixed=await as('t-paid');
   o.rbEnded=await as('t-ended');
   await as('t-paid'); o.rbNone=await as('t-none');
   await as('t-paid'); o.rbOdd=await as('t-odd');
@@ -3801,6 +3879,8 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
  ok(o.manNone[0]==='There is no paid plan on this account yet, so there is no billing to manage.'&&o.manNone[1]==='fail',
   'with nothing bought it says the server\'s own reason, got '+JSON.stringify(o.manNone));
  ok(!/not built|email support/i.test(o.manOut[0]+o.manNone[0]),'and neither answer says Manage billing is unbuilt');
+ ok(o.manFree&&!o.manFree.button&&!o.manFree.line,
+  'P3-4: a record that has never paid is offered no Manage billing, and no line saying what it opens, got '+JSON.stringify(o.manFree));
  ok(seen.some(s=>s.m==='POST'&&s.u==='/v1/billing/portal'&&s.auth==='Bearer t-probe'),
   'the request carries the session and nothing else names the account');
  ok(o.manPaid&&o.manPaid.ok&&o.manPaid.url==='https://billing.stripe.test/1',
@@ -3817,6 +3897,11 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
   'past due keeps the tier and holds a line about the card, got '+JSON.stringify(o.rbLate.said));
  ok(/State\s*the card did not go through/.test(o.rbLateRow)&&/Everything you have opened still runs\. New patterns wait until the card does/.test(o.rbLateRow),
   'and Billing\'s State row says the card did not go through, what still runs and what waits, for as long as it is so, got '+JSON.stringify(o.rbLateRow.slice(0,240)));
+ /* P3-3, 24 October: the read that found the card paid said nothing, though it
+    is the read that opens the month's new patterns */
+ ok(o.rbFixed&&o.rbFixed.took==='live'&&o.rbFixed.plan.status==='active'
+  &&o.rbFixed.said[0]==='The card for Tier one went through. This month\'s new patterns are open.'&&o.rbFixed.said[1]!=='fail',
+  'P3-3: and when the card goes through, that read says so, and that the month\'s new patterns are open, got '+JSON.stringify(o.rbFixed&&o.rbFixed.said));
  ok(o.rbEnded.free==='free'&&o.rbEnded.plan.tier==='one'&&o.rbEnded.plan.status==='canceled'
   &&o.rbEnded.said[0]==='Tier one has ended, so this record reads Free now.'&&o.rbEnded.said[1]==='fail',
   'a cancelled plan reads free, keeps which tier ended, and says so on a held line, got '+JSON.stringify(o.rbEnded.said));
@@ -4043,7 +4128,7 @@ const tiers=await page.evaluate(async()=>{
  CURP.plan={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null};
  ACC_OPEN='billing'; setTab(TAB.SETTINGS); renderAccount();
  await new Promise(r=>setTimeout(r,80));
- const g=document.getElementById('plantiers');
+ let g=document.getElementById('plantiers');
  o.there=!!g;
  o.rows=g?[...g.querySelectorAll('.pt-row')].map(r=>r.querySelector('.pt-nm').textContent):[];
  o.now=g?[...g.querySelectorAll('.pt-row.on .pt-nm')].map(e=>e.textContent):[];
@@ -4066,6 +4151,19 @@ const tiers=await page.evaluate(async()=>{
     #planup in the closed sheet, and a document lookup found that one */
  o.planup=!!(pane&&pane.querySelector('#planup'));
  o.planman=!!(pane&&pane.querySelector('#planman'));
+ o.foot=((g&&g.querySelector('.ac-gf'))||{}).textContent||'';
+ /* P2-1, 24 October: checkout is closed in this build, so no rung carries a
+    press and each says the paywall's own word where its press sat. The rest of
+    this block opens the paywall's harness seam (PW_PAY_SEAM, ui/paywall.js),
+    which is what tests/paywall.js measures the open sheet with, so the presses
+    are held as they will be the day paying opens. Closed again at the end. */
+ o.closedPay=(typeof pwPayOpen==='function')&&pwPayOpen();
+ o.pressesClosed=o.presses.slice();
+ o.goClosed={one:o.rowGo.one,two:o.rowGo.two,three:o.rowGo.three};
+ PW_PAY_SEAM=true; renderAccount();
+ g=document.getElementById('plantiers');
+ o.presses=[...g.querySelectorAll('[data-ptier]')].map(b=>b.getAttribute('data-ptier'));
+ o.footOpen=(g.querySelector('.ac-gf')||{}).textContent||'';
  /* a press goes through the seam with the tier on the button */
  let called=null;
  bindPlan(function(what,tier){called={what:what,tier:tier};});
@@ -4079,6 +4177,8 @@ const tiers=await page.evaluate(async()=>{
  CURP.plan={tier:'two',status:'active',granted:800,carried:0,base:100,since:null,until:null};
  renderAccount();
  const g2=document.getElementById('plantiers');
+ o.planman2=!!document.querySelector('#settings .ac-pane #planman');
+ o.foot2=(g2.querySelector('.ac-gf')||{}).textContent||'';
  o.presses2=[...g2.querySelectorAll('[data-ptier]')].map(b=>b.getAttribute('data-ptier'));
  o.now2=[...g2.querySelectorAll('.pt-row.on .pt-nm')].map(e=>e.textContent);
  /* a press on a live plan goes to the portal, never a second checkout */
@@ -4092,6 +4192,7 @@ const tiers=await page.evaluate(async()=>{
  o.calledDue=called;
  /* an ended plan is free again, so a press is a checkout */
  CURP.plan.status='canceled'; renderAccount();
+ o.planmanEnded=!!document.querySelector('#settings .ac-pane #planman');
  called=null;
  const b3c=document.querySelector('#plantiers [data-ptier="three"]'); if(b3c)b3c.click();
  o.calledEnded=called;
@@ -4108,6 +4209,7 @@ const tiers=await page.evaluate(async()=>{
  o.small=[...g2.querySelectorAll('button')].filter(b=>{const r=b.getBoundingClientRect();
   return r.width>0&&r.height<44;}).length;
  bindPlan(keptHost);
+ PW_PAY_SEAM=false;
  CURP.plan=kept; CURP.meter.unique=keptU; ACC_OPEN='account';
  return o;});
 ok(tiers.there,'Billing carries the tiers group');
@@ -4115,8 +4217,18 @@ ok(tiers.there,'Billing carries the tiers group');
 ok(JSON.stringify(tiers.rows)===JSON.stringify(['Free','Tier one','Tier two','Tier three','Practitioner']),
  'one row per tier, in ladder order, the gift left out: '+JSON.stringify(tiers.rows));
 ok(JSON.stringify(tiers.now)==='["Free"]','the tier in force is marked, and only it: '+JSON.stringify(tiers.now));
+/* P2-1, 24 October: Billing reads the paywall's answer to whether paying is
+   open (pwPayOpen), so while it is closed it sells nothing the sheet says is
+   closed, and says nothing about charging */
+ok(!tiers.closedPay&&tiers.pressesClosed.length===0,
+ 'P2-1: with checkout closed, as this build ships, Billing offers no Move to at all: '+JSON.stringify(tiers.pressesClosed));
+ok(['one','two','three'].every(k=>tiers.goClosed[k]==='Opens soon'),
+ 'P2-1: and each rung the paywall calls closed says the paywall\'s own "Opens soon" where its press sat: '+JSON.stringify(tiers.goClosed));
+ok(!/charged|payment page|needs a sign in/.test(tiers.foot)&&/charged once a month/.test(tiers.footOpen),
+ 'P2-1: the foot says nothing about charging or a press while closed, and says when a price is charged once open: '
+ +JSON.stringify([tiers.foot,tiers.footOpen]));
 ok(tiers.presses.join()===(tiers.closed4?'one,two,three':'one,two,three,four'),
- 'from free every paid tier that can be bought has a press: '+tiers.presses.join());
+ 'once paying opens (the paywall\'s seam), from free every paid tier that can be bought has a press: '+tiers.presses.join());
 /* TIER FOUR IS CLOSED UNTIL BUILT, round PK, enforced round RB */
 if(tiers.closed4){
  ok(tiers.rowGo.four==='Opens with the lead suite','the closed rung says "Opens with the lead suite" where the press was: '+JSON.stringify(tiers.rowGo.four));
@@ -4166,15 +4278,23 @@ ok(!/\b(level|rank|better|worse|behind|lower|beginner|advanced|mastery)\b/i.test
 ok(/Your tier\s*Free/.test(tiers.text)&&/You see your own reading, without what is running it/.test(tiers.text),
  'the page says first which tier the person has and what it shows: '+tiers.text.slice(0,260));
 ok(/Unlocks saboteurs/.test(tiers.rowSees.one||'')&&/Unlocks complexes/.test(tiers.rowSees.two||'')
- &&/Unlocks hyper complexes, character, the registers and the masks/.test(tiers.rowSees.three||'')
+ &&/Unlocks hyper complexes, super complexes, the registers and the masks/.test(tiers.rowSees.three||'')
  &&/Shows everything the tier below shows/.test(tiers.rowSees.four||''),
  'every other tier says what it unlocks to see, off the table: '+JSON.stringify(tiers.rowSees));
-ok(/Does not show saboteurs, complexes, hyper complexes and character/.test(tiers.rowSees.free||''),
+ok(/Does not show saboteurs, complexes, hyper complexes and super complexes/.test(tiers.rowSees.free||''),
  'and free says what it leaves out');
 ok(!/kundalini/i.test(tiers.text),'the Kundalini has no surface yet, so no tier is sold on it');
 ok(/Locked: saboteurs, unlocked on tier one and above/.test(tiers.text),
  'a free person is told what is locked and which tier opens each, in the lock\'s own words');
-ok(/Manage billing/.test(tiers.paneText)&&tiers.planman,'Your plan keeps Manage billing above the tiers');
+/* P3-4, 24 October: Manage billing only for a record that names a paid tier,
+   live or ended (planNamesPaid, engine/plan.js). On the free record above it
+   could only have been refused. */
+ok(!tiers.planman&&!/Manage billing/.test(tiers.paneText),
+ 'P3-4: a free record\'s Your plan carries no Manage billing, and nothing on the pane points at one');
+ok(tiers.planman2&&tiers.planmanEnded,
+ 'P3-4: a record that names a paid tier, live or ended, keeps Manage billing above the tiers, '+JSON.stringify([tiers.planman2,tiers.planmanEnded]));
+ok(!/Manage billing above/.test(tiers.foot)&&/Manage billing above/.test(tiers.foot2),
+ 'P3-4: and the foot points at Manage billing only where it is above it, '+JSON.stringify([tiers.foot,tiers.foot2]));
 ok(!tiers.planup,'and drops its own Move to, because the tiers below carry every press');
 ok((tiers.paneText.match(/On every tier/g)||[]).length===1,
  'what is on every tier is said once on the pane, not twice');
@@ -4216,7 +4336,8 @@ ok(tiers.small===0,'every control on the tiers meets the 44 pixel floor, '+tiers
  const tabs=await pa.$$eval('.tabtop',a=>a.map(x=>x.textContent.trim()));
  const go=async nm=>{await pa.$$eval('.tabtop',(a,i)=>a[i].click(),
    tabs.findIndex(t=>new RegExp(nm,'i').test(t))); await pa.waitForTimeout(600);};
- await go('Story');
+ /* the journal page's door reads Discover since 23 October */
+ await go('Discover');
  await pa.fill('#sttext','I was humiliated in the meeting and I said nothing. '
   +'My chest went tight and I felt ashamed the rest of the day.');
  await pa.waitForTimeout(450);
@@ -4414,6 +4535,42 @@ ok(pris.measured===0,'and has measured nothing, got '+pris.measured);
 ok(pris.unset===21,'and carries 21 unset laws, got '+pris.unset);
 await strg.close();
 
+/* THE BULK LAW SLIDER MOVES THE LAWS AND ANSWERS NONE OF THEM, P2-5 of the
+   inference audit, 24 October. The "all" slider on the Field's right rail set
+   every law in one drag, and a law moved off its seed counts as answered, so
+   one gesture filled all 21 and CQ, the tier word and full coverage followed
+   it. Held on a stranger's page: the drag moves every law and answers none,
+   stores none and leaves the field unread; one law's own control then
+   answers that law and no other; and a second drag moves the answered law
+   too and leaves it answered, because it is the person's own answer. */
+const bk=await browser.newPage({viewport:{width:1600,height:1000}});
+await bk.goto(FILE,{waitUntil:'load'}); await booted(bk); await bk.waitForTimeout(400);
+await bk.evaluate(()=>{try{localStorage.clear();}catch(e){}});
+await bk.reload({waitUntil:'load'}); await booted(bk); await bk.waitForTimeout(700);
+const bulk=await bk.evaluate(()=>{
+ setTab(TAB.FIELD);
+ /* the write to the record is debounced, persistYou, so each move is
+    flushed before the record is read, the way leaving the page flushes it */
+ const fire=(el,v)=>{el.value=String(v); el.dispatchEvent(new Event('input',{bubbles:true})); persistNow();};
+ const state=()=>{const r=compute();
+  return {answered:r.answered, measured:r.measured, unread:r.unread, cq:Math.round(r.CQ),
+   vals:[...new Set(SINAMES.map(l=>S.law[l]))],
+   stored:Object.keys((CURP&&CURP.laws)||{}).filter(k=>CURP.laws[k]!=null).length};};
+ const a=state();
+ fire(document.getElementById('allLaw'),8); const b=state();
+ fire(LWF[SINAMES[0]].inp,3); const c=state();
+ fire(document.getElementById('allLaw'),5); const d=state();
+ return {a,b,c,d,first:S.law[SINAMES[0]]};});
+await bk.close();
+ok(bulk.a.answered===0&&bulk.a.measured===0&&bulk.a.unread,'a stranger starts with no law answered, '+JSON.stringify(bulk.a));
+ok(bulk.b.vals.length===1&&bulk.b.vals[0]===8,'the all slider moves every law to 8, '+JSON.stringify(bulk.b.vals));
+ok(bulk.b.answered===0&&bulk.b.measured===0&&bulk.b.unread&&bulk.b.stored===0&&bulk.b.cq===0,
+ 'and answers none of them: none answered, none stored, the field unread and CQ 0, '+JSON.stringify(bulk.b));
+ok(bulk.c.answered===1&&bulk.c.measured===1&&bulk.c.stored===1,
+ 'one law\'s own control then answers that law and no other, '+JSON.stringify(bulk.c));
+ok(bulk.d.answered===1&&bulk.d.measured===1&&bulk.d.stored===1&&bulk.first===5&&bulk.d.vals.length===1,
+ 'and a second drag moves that answer too and keeps it answered, '+JSON.stringify({d:bulk.d,first:bulk.first}));
+
 
 console.log('\n=== carrying and held are two facts, and only one of them was said ===');
 /* THE RULE: the product may say "Nothing is carrying" only to somebody who is
@@ -4501,7 +4658,7 @@ await ph.goto(FILE,{waitUntil:'load'}); await booted(ph); await ph.waitForTimeou
    heaviest of the four, so the phone is measured with the most drawn. */
 await ph.evaluate(()=>{const i=PEOPLE.findIndex(x=>x.nm==='Lance 15');
  if(i<0)throw new Error('Lance 15 is not in the roster any more');loadP(i);});
-for(const [nm,t] of [['story',0],['summary',1],['field',2],['body',3],['intake',5],
+for(const [nm,t] of [['discover',0],['summary',1],['field',2],['body',3],['intake',5],
                      ['know',6],['games',7],['compass',8],['settings',9]]){
  const o=await ph.evaluate(async t=>{setTab(t);await new Promise(r=>setTimeout(r,420));
   return {b:document.body.scrollWidth,h:document.documentElement.scrollWidth,w:innerWidth};},t);
@@ -5115,7 +5272,7 @@ console.log('\n=== the welcome after paying shows once and says the loop ===');
  const o=await tp.evaluate(async()=>{
   const wait=ms=>new Promise(r=>setTimeout(r,ms));
   loadP(0);
-  const first=paidWelcomeOpen(), h=document.getElementById('tutorial');
+  const first=paidWelcomeOpen(), h=document.getElementById('paidwelcome');
   const txt=h.textContent, shown=getComputedStyle(h).display;
   document.getElementById('pwgo').click(); await wait(700);
   return {first,txt,shown,hidden:getComputedStyle(h).display,onStory:S.tab===TAB.STORY,again:paidWelcomeOpen(),flag:!!(CURP.ui&&CURP.ui.paidWelcomed)};});
@@ -7249,9 +7406,17 @@ console.log('\n=== GO: the Field lands with its column shut, two names changed, 
    already start at full depth." Each on a real first visit, #landing, so the
    seed every other block gets is not here to hide the default. */
 {
+ /* THE FIRST VISIT TO THE FIELD, since 23 October. The app opens on Discover
+    now (TABHOME, engine/core.js), so a first visit reaches the Field by going
+    there, and that is what is measured: the Field's own defaults on the first
+    visit it gets, with nothing stored. Through setTab and not a press, since
+    a press inside the first moment after start up can be dropped (see the
+    settle note in tests/landing.js), and this block is about the Field. */
  const land=async(w,h)=>{const cx=await browser.newContext({viewport:{width:w,height:h}});
   const pg=await cx.newPage(); const err=[]; pg.on('pageerror',e=>err.push('PAGEERROR: '+e.message));
-  await pg.goto(FILE+'#landing',{waitUntil:'load'}); await booted(pg); return {cx,pg,err};};
+  await pg.goto(FILE+'#landing',{waitUntil:'load'}); await booted(pg);
+  await pg.evaluate(()=>{setTab(TAB.FIELD);render();}); await pg.waitForTimeout(300);
+  return {cx,pg,err};};
  const wide=await land(1600,1000);
  const a=await wide.pg.evaluate(()=>{const F=document.getElementById('fbar'),
    lay=k=>F.querySelector('.fb-full [data-fb='+k+']'), dv=F.querySelector('[data-fb=depth] .val');
@@ -7264,10 +7429,10 @@ console.log('\n=== GO: the Field lands with its column shut, two names changed, 
    stale:names.filter(n=>/^(Seats|Gates)$/.test(n)),
    view:S.view,custom:LAYSET,ring:dv.getAttribute('stroke-dasharray'),
    togMark:F.querySelector('.fb-tog svg').innerHTML,foldMark:document.querySelector('#lfold svg').innerHTML};});
- ok(a.tab&&a.lshut&&a.stored===null,'a first visit at 1600 lands on the Field with the left column shut and nothing stored, '+JSON.stringify({lshut:a.lshut,stored:a.stored}));
+ ok(a.tab&&a.lshut&&a.stored===null,'a first visit to the Field at 1600 finds the left column shut and nothing stored, '+JSON.stringify({lshut:a.lshut,stored:a.stored}));
  ok(a.energetics&&a.left==='Root Energetics','the left rail keeps Root Energetics, closed, '+a.left);
  ok(a.esum==='Energetic summary','and the summary keeps its own name, Energetic summary, so no two sections share one, '+a.esum);
- ok(a.seats==='Assemblage points'&&a.gates==='Action'&&!a.stale.length,'the bar says Assemblage points and Action, and neither old word, '+JSON.stringify([a.seats,a.gates,a.stale]));
+ ok(a.seats==='Assemblage points'&&a.gates==='Laws of Action'&&!a.stale.length,'the bar says Assemblage points and Laws of Action, and neither old word, '+JSON.stringify([a.seats,a.gates,a.stale]));
  ok(a.view===3&&a.custom===null&&a.ring==='100.0 100','depth starts full, Blueprint, and its ring reads full, '+a.ring);
  ok(a.togMark!==a.foldMark,'the bar\'s fold and the column\'s fold wear two marks, since they now stand side by side');
  /* ONE PRESS ON ONE LAYER IS NOT DEPTH GOING TO NOTHING. The ring was binary,
@@ -7284,7 +7449,7 @@ console.log('\n=== GO: the Field lands with its column shut, two names changed, 
  /* the drills a press on those two layers reaches answer under the same words */
  const d=await wide.pg.evaluate(()=>{runSeatDrill(APC[0]);const s=document.querySelector('#rdrill .pm-eye').textContent;
   runGatesDrill('aware');const g=document.querySelector('#rdrill .pm-eye').textContent;rdClose();return [s,g];});
- ok(/^Assemblage point$/i.test(d[0])&&/^Higher action$/i.test(d[1]),'the drills they open say assemblage point and action, '+d.join(', '));
+ ok(/^Assemblage point$/i.test(d[0])&&/^Right action$/i.test(d[1]),'the drills they open say assemblage point and right action, '+d.join(', '));
  /* THE COLUMN OPENED IS REMEMBERED, and at 1600 the row folds to its fold,
     Layers and Depth, rather than hanging a circle under itself */
  await wide.pg.click('#lfold'); await wide.pg.waitForTimeout(300);
@@ -7408,6 +7573,13 @@ await require('./flowtools.js').flowGate(browser,FILE,ok,booted);
    run holds it through the same code. */
 console.log('\n=== analytics: every figure a door, the chain walked down to the fetter and back ===');
 await require('./anatrail.js').anaTrailGate(browser,FILE,ok,booted);
+
+/* ONE CHARACTER ON SCREEN, tests/stackname.js, 23 October. His ruling: the
+   rung where two hyper complexes join is the super complex, and Character is
+   the whole of it, at the very top. A file of its own so it can run alone,
+   called here so a full run holds it too. */
+console.log('\n=== one Character on screen: the rung is the super complex, ruled 23 October ===');
+await require('./stackname.js').stackNameGate(browser,FILE,ok,booted);
 
 /* THE HEADS PACKAGE, 9 October: case, the tab tooltips and Help's build
    stamp. Each is a file of its own that runs alone, called

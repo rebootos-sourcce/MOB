@@ -102,7 +102,7 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
 
    One press, one door, and every kind goes to the drill that already exists
    for it, which is the rule the codex already keeps in kbOpen. A saboteur,
-   a complex, a hyper-complex and a character layer are the same objects the
+   a complex, a hyper-complex and a super-complex are the same objects the
    Field and the codex open with runDrill, so they open with runDrill here:
    the shelf had a second, shorter renderer for them, which is two places for
    one reading to disagree, and it printed the clinical correspondence that
@@ -163,7 +163,9 @@ function runSeatFlowDrill(k){
   +'<span>held</span><b>'+(ss.hot||'\u2013')+'</b>'
   +'<span>mean SQ</span><b>'+(ss.mean>0?ss.mean.toFixed(1):'\u2013')+'</b>'
   +'<span>integrity</span><b>'+(unreadNow()?'\u2013':bandIg(bnd).toFixed(1))+'</b></div>'
-  +'<div class="pm-eye" style="margin-top:12px">Moral integrity seated here</div><div class="pm-chips">'
+  /* plain, because six words is a sentence and not a label (shell/head.html,
+     the capitalize rule), so it keeps the case it is written in */
+  +'<div class="pm-eye plain" style="margin-top:12px">Laws of Moral Integrity seated here</div><div class="pm-chips">'
   +lws.map(function(l){return '<span class="pm-chip" style="opacity:'
     +(0.4+S.law[l.nm]/10*0.6).toFixed(2)+'">'+l.nm+(unreadNow()?'':' '+S.law[l.nm].toFixed(1))+'</span>';}).join('')+'</div>'
   +'<div class="pm-eye" style="margin-top:12px">Addresses</div><div class="pm-rows">';

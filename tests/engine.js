@@ -126,6 +126,48 @@ for(let v=0;v<=10;v+=1){const x=reset(0,0,v); if(x.CQ<prev-1e-9)mono=false; prev
 ok(mono,'CQ never falls as integrity rises');
 
 g('5 · CQ bounds and the ceiling');
+/* CQ MODEL 2, RESTORED 22 October: model 3 put Integrity x Intention /
+   Resistance inside CQ itself and read 36 here. That is the same defect
+   AZ5 already killed, measured again: every law at 10 read 48.7 not 100,
+   and a release lowered CQ on 2,881 of 10,000 fields. Reverted. CQ is the
+   21 laws and nothing else, so six points on all 21 reads 60. */
+{
+ const x=reset(0,0,6);
+ near(x.CQ,60,1e-12,'all 21 laws at six reads 60, the pure law sum');
+ ok(E.CQ_MODEL===2,'the formula reverted to its model 2 stamp');
+ ok(x.integrity===undefined&&x.intention===undefined&&x.resistance===undefined,
+  'the model 3 integrity/intention/resistance split is gone, not just unused');
+}
+/* NO KEY OF THE READING IS WRITTEN TWICE. A key written twice in one object
+   literal keeps the last and drops the first without a word, and node --check
+   allows it. will:WILL sat in compute()'s return beside the older will
+   shorthand and lost to it on every call, so compute().will was never the 0
+   it was added to carry. Read off compute's own source and held against the
+   keys a real reading has, after the reader is checked on a literal that
+   does carry a duplicate. */
+{
+ const keysOf=src=>{
+  const at=src.lastIndexOf('return {'); if(at<0)return null;
+  const ks=[]; let depth=0, cur='', q='';
+  for(let i=at+8;i<src.length;i++){const c=src[i];
+   if(q){cur+=c; if(c==='\\')cur+=src[++i]; else if(c===q)q=''; continue;}
+   if(c==="'"||c==='"'||c==='`'){q=c; cur+=c; continue;}
+   if('([{'.includes(c))depth++;
+   if(')]}'.includes(c)){if(!depth)break; depth--;}
+   if(c===','&&!depth){ks.push(cur); cur=''; continue;}
+   cur+=c;}
+  ks.push(cur);
+  return ks.map(s=>s.trim()).filter(Boolean).map(s=>(/^([\w$]+)\s*:/.exec(s)||[0,s])[1]);};
+ const twice=ks=>ks.filter((k,i)=>ks.indexOf(k)!==i);
+ const known=keysOf("function f(){return {a,b:g(1,2),c:'x,}',a:3};}");
+ ok(JSON.stringify(known)==='["a","b","c","a"]'&&JSON.stringify(twice(known))==='["a"]',
+  'the key reader finds the one key written twice in a literal that has one, '+JSON.stringify(known));
+ const ks=keysOf(E.compute.toString()), live=Object.keys(compute());
+ ok(ks&&twice(ks).length===0,'no key of compute()\'s reading is written twice, twice: '+JSON.stringify(ks&&twice(ks)));
+ ok(ks&&ks.length===live.length&&live.every(k=>ks.indexOf(k)>=0),
+  'and the keys read off its source are the keys a reading has, '+(ks&&ks.length)+' against '+live.length);
+}
+
 r=reset(0,0,10);
 near(r.CQ,100,0.001,'all laws 10, nothing held, CQ is 100');
 ok(r.tier==='Mastery','and the tier is Mastery');
@@ -139,29 +181,80 @@ ok(true,'CQ stays inside 0..100 across the grid');
 ok(reset(0,0,10).Rz>=1&&reset(10,0,0).Rz>=1,'resistance never drops below its floor of 1');
 
 g('6 · SAB33 ranges are bands, not floors');
-/* Micromanager is fear 7..10 + anger 5..8. Renamed from Controller, 337966b8. */
+/* Micromanager, S02, is fear 7..10 + anger 5..8 */
 function fitFor(name,fear,anger){
  reset(0,0,6); S.charge.Fear=fear; S.charge.Anger=anger;
  const hit=E.sab33Detect().filter(d=>d.nm===name)[0];
  return hit?{score:hit.score,exact:hit.exact}:null;}
 const inside=fitFor('Micromanager',8,6);
-ok(inside&&inside.score===100&&inside.exact,'inside both bands scores 100 and exact');
+/* THE RANGE SCAN READS THE RAMP, P1-6 of the inference audit, 23 October.
+   This read 100 under the staircase, full credit anywhere inside a band. The
+   ramp peaks at a band's centre and holds 0.75 at its edge (canon.js), so a
+   reading inside both bands is exact and scores between the edge and 100. */
+ok(inside&&inside.exact&&inside.score>=75&&inside.score<=100,'inside both bands is exact and scores between the band edge and 100, '+JSON.stringify(inside));
 const below=fitFor('Micromanager',2,1);
 ok(!below||below.score<100,'below the band does not score 100: the saboteur has not formed');
 const above=fitFor('Victim',10,10);   /* Victim is sadness 6..8 + anger 4..6 */
 ok(!above||!above.exact,'above the band is not exact: the charge escalated past it');
 ok(fitFor('Micromanager',6,6).score<100,'one step below lo is adjacent, not inside');
+/* no cliff at the half point. The staircase rounded each charge first, so a
+   fifth of a point decided a quarter or a half of a row's score. On the ramp
+   no row's score moves more than a few points across that step. Restless is
+   apathy 5..7 and fear 2..4, and it scored 100 at fear 4.49 and 75 at 4.51. */
+{
+ const rs=f=>{reset(0,0,6); S.charge.Apathy=6; S.charge.Fear=f;
+  const h=E.sab33Detect().filter(d=>d.nm==='Restless')[0]; return h?h.score:0;};
+ ok(Math.abs(rs(4.49)-rs(4.51))<=2,'Restless across fear 4.49 to 4.51 moves at most two points, '+rs(4.49)+' then '+rs(4.51));
+ let worst=0;
+ SAB33.forEach(row=>row[1].forEach(p=>{
+  const L={}; SAB33.forEach(r=>r[1].forEach(q=>{L[q[0]]=(q[1]+q[2])/2;}));
+  row[1].forEach(q=>{L[q[0]]=(q[1]+q[2])/2;});
+  for(let v=0;v<=10;v+=0.02){const a=Object.assign({},L),b=Object.assign({},L); a[p[0]]=v; b[p[0]]=v+0.02;
+   if(p[0]==='anticipation'){a.anxiety=a.anticipation;b.anxiety=b.anticipation;}
+   const ca=E.sabConfidence(row[0],row[1],a), cb=E.sabConfidence(row[0],row[1],b);
+   /* where a name is decided, a third and up. Off zero the geometric mean
+      rises steeply, but that far down it names nothing */
+   if(ca>=0.3&&cb>=0.3)worst=Math.max(worst,Math.abs(ca-cb));}}));
+ /* the staircase's smallest jump at a half point was a sixth, half credit
+    on one charge of a three charge row */
+ ok(worst<0.05,'and where a name is decided, no 0.02 step on any row along any charge moves the confidence by a twentieth, the largest '+worst.toFixed(4));
+ /* a low fear with apathy at the seat no longer names Innocent off a rounded 2 */
+ reset(0,0,6); S.charge.Fear=1.6; S.charge.Apathy=4;
+ ok(!compute().sabs.some(s=>s.named&&s.nm==='Innocent'),'fear 1.6 does not name Innocent, which the staircase did off a rounded 2');
+ /* and a range saboteur is drawn only on addresses carrying its own charges */
+ const AX={fear:'Fear',anger:'Anger',shame:'Shame',disgust:'Disgust',apathy:'Apathy',shock:'Shock',sadness:'Sad',
+  surprise:'Surprise',anticipation:'Anticipation',anxiety:'Anticipation'};
+ let off=0,seen=0,sd=11; const R=()=>{sd=(sd*1103515245+12345)&0x7fffffff;return sd/0x7fffffff;};
+ for(let i=0;i<300;i++){reset(0,0,6); CHARGES.forEach(c=>{S.charge[c]=R()<0.5?0:R()*8;});
+  compute().sabs.filter(s=>s.named&&s.charges).forEach(s=>{seen++; const own=s.charges.map(c=>AX[c]);
+   if(!s.parts.length||!s.parts.every(n=>own.indexOf(n.cf)>=0))off++;});}
+ ok(seen>0&&off===0,'every range saboteur is drawn on addresses carrying its own charges, '+off+' of '+seen+' not');
+}
 
 g('7 · the six gates multiply resistance');
 r=reset(6,0,6);
 const baseRz=r.Rz, baseCQ=r.CQ;
 near(r.vf,1,1e-9,'no story means no gate evidence, factor is 1');
+/* A SEEDED LAW IS NOT AN ANSWER. Every law sits at its seeded default here
+   and none is marked answered, so CQ is nothing, and one answer is that one
+   law over 210. */
+const unreadProfile=E.blankProfile('unanswered formula'); E.loadProfile(unreadProfile);
+const unreadFormula=compute();
+ok(unreadFormula.answered===0&&unreadFormula.CQ===0,
+ 'no answered laws means no claimed coherence even when defaults exist');
+S.law[SINAMES[0]]=10; E.LAW_UNSET[SINAMES[0]]=false;
+const oneLawFormula=compute();
+ok(oneLawFormula.answered===1,'one measured law is one answered, got '+oneLawFormula.answered);
+near(oneLawFormula.CQ,10/210*100,1e-12,
+ 'and CQ is that one law over 210, the '+(SINAMES.length-1)+' seeded defaults counting nothing');
+
 reset(6,0,6); E.verpApply('i could not stop going over it and it had me');
 const att=compute();
 ok(att.vf>1,'an attachment story costs more than 1');
 /* CHANGED 25 SEPTEMBER, and on purpose. These read "and it raises
    resistance, lowering CQ" and "and it raises CQ". The owner ruled CQ is the
-   21 laws and nothing else, so resistance still moves and CQ must not. */
+   21 laws and nothing else, so resistance still moves and CQ must not.
+   Model 3 turned both round on this branch and was reverted, 22 October. */
 ok(att.Rz>baseRz,'and it raises resistance');
 ok(att.CQ===baseCQ,'which no longer moves CQ, '+baseCQ+' then '+att.CQ);
 reset(6,0,6); E.verpApply('i let it pass and i stayed out of the story and i let it go');
@@ -173,6 +266,12 @@ const sh=E.verpRead();
 ok(sh.length===6&&sh.every(v=>v.mult>0),'six gates, each with a multiplier');
 ok(sh.filter(v=>v.side==='higher').length===3&&sh.filter(v=>v.side==='lower').length===3,
    'three higher, three lower');
+/* THE PAIRS, read off VERP_VS. Each move of right action stands across from
+   exactly one wrong action and the table says it both ways round, so the drill
+   and the dial name the same opposite whichever end a person opens. */
+ok(sh.every(v=>{const o=sh.filter(x=>x.k===E.VERP_VS[v.k])[0];return !!o&&o.side!==v.side&&E.VERP_VS[o.k]===v.k;})
+   &&Object.keys(E.VERP_VS).length===sh.length,
+   'every Law of Action stands across from one on the other side, both ways round, '+JSON.stringify(E.VERP_VS));
 /* A PHRASE OUTRANKS THE WORDS INSIDE IT. verpScan was a bare indexOf, so
    Intention's 'kept going' counted inside Attachment's 'kept going over', and
    a cue counted inside a longer word. Red on f7188cba, each check beside the
@@ -326,7 +425,7 @@ r=compute();
 ok(r.sabs.length>0,'saboteurs fire');
 ok(r.cxs.every(c=>c.parts.length===2),'a complex is exactly two saboteurs');
 ok(r.hys.every(h=>h.parts.length>=1),'a hyper-complex draws on complexes');
-ok(r.sups.every(u=>u.parts.length===2),'a character layer is two hyper');
+ok(r.sups.every(u=>u.parts.length===2),'a super complex is two hyper complexes');
 ok(r.cxs.every(c=>c.parts.every(p=>r.sabs.includes(p))),'complexes only cite live saboteurs');
 ok(r.hys.every(h=>h.parts.every(p=>r.cxs.includes(p))),'hyper only cite live complexes');
 /* Professional hidden and not calculated, round NE, his own correction:
@@ -358,6 +457,9 @@ const ref=n=>{const p=PEOPLE.find(x=>x.nm===n);
  return compute();};
 ok(ref('Rosa').CQ>ref('Ana').CQ,'the cleared reference case reads higher than the one mid-crisis');
 ok(ref('Ana').CQ>ref('Gordon').CQ,'and mid-crisis reads higher than the collapsed one');
+['Rosa','Ana','Gordon'].forEach(n=>{const x=ref(n), LS=LAWSET[n];
+ near(x.CQ,SINAMES.reduce((a,l)=>a+(LS[l]!==undefined?LS[l]:LS._),0)/210*100,1e-9,
+  n+' reference case reads its own laws over 210');});
 ok(ref('Rosa').loaded.length===0,'Rosa holds nothing');
 ok(ref('Gordon').loaded.length>90,'Gordon holds nearly everything');
 
@@ -892,16 +994,31 @@ g('15b \u00b7 the seed');
  ok(JSON.stringify(p.laws)+JSON.stringify(p.gates)+JSON.stringify(p.soul)===before,
   'the seed writes charge only, never a law, a gate or a domain');
  ok(seedShare(p)===1,'a fresh seed is all seed, got '+seedShare(p));
+ /* a type changed before anything moved re-seeds from the base rather than
+    compounding */
+ seedApply(p,'ISTJ'); seedApply(p,'ENTP');
+ ok(seedShare(p)===1&&JSON.stringify(p.axes.Fear.held)==='2.8',
+  're-seeding an untouched seed starts from the base, Fear reads '+p.axes.Fear.held);
  p.axes.Fear.held=9; p.axes.Anger.held=1;
  const mid=seedShare(p);
  ok(mid>0&&mid<1,'the share falls as the person moves the axes, got '+mid);
- /* seeding twice re-seeds from the base rather than compounding */
- seedApply(p,'ENTP');
- ok(seedShare(p)===1&&JSON.stringify(p.axes.Fear.held)==='2.8',
-  're-seeding starts from the base, Fear reads '+p.axes.Fear.held);
+ /* A SEED NEVER WRITES OVER WHAT THE PERSON MOVED, P0-5 of the inference
+    audit, 23 October. This group held the opposite until then: with Fear
+    moved to 9 it asserted a re-seed put Fear back to 2.8, which is the
+    overwrite that erased four entries' fear when a person picked INFJ. */
+ const moved=JSON.stringify(p.axes);
+ ok(seedApply(p,'INFJ')===null&&JSON.stringify(p.axes)===moved&&p.seed.type==='ENTP',
+  'a type chosen over axes the person moved writes nothing, and Fear stays '+p.axes.Fear.held);
  const r=read(p,{});
  ok(typeof r.reading.CQ==='number'&&r.reading.CQ>=0&&r.reading.CQ<=100,'a seeded profile reads');
  seedClear(p); ok(!p.seed&&seedShare(p)===0,'clearing the seed leaves no claim behind');
+ ok(JSON.stringify(p.axes)===moved,'and on a moved field clearing it takes the type off and leaves what the person put there');
+ const q=blankProfile('seedclear'); seedApply(q,'ENTP'); seedClear(q);
+ ok(!q.seed&&CHARGES.every(c=>q.axes[c].held===0),'"not said" on an untouched seed puts back the empty field that was there');
+ const st=blankProfile('seedstory'); E.loadProfile(st); E.applyStory('I am terrified of losing my job'); E.saveProfile(st);
+ const had=st.axes.Fear.held;
+ ok(had>0&&seedApply(st,'INFJ')===null&&st.axes.Fear.held===had&&!st.seed,
+  'a story\'s fear survives choosing a type afterwards, Fear '+st.axes.Fear.held+' against '+had);
 }
 
 g('16 \u00b7 the front door');
@@ -1643,6 +1760,19 @@ g('18b \u00b7 undo');
     history where it was left, is checked in the functional gate, where moving
     between records is a control a person presses rather than an assignment. */
  E.undoClear();
+ /* A SEED IS UNDONE WITH ITS TYPE, P0-5 of the inference audit, 23 October.
+    The Intake page pushes undo before a type writes. The axes it wrote go back
+    to the empty field and the type comes off with them, so the card under the
+    select never claims a seed the axes no longer hold. */
+ const recS=E.pImport(JSON.stringify(E.blankProfile('history seed')));
+ const cs=E.current();
+ ok(!!recS&&!!cs&&E.seedEmpty(cs),'a fresh record\'s axes are empty, so a type may seed them');
+ E.undoPush('choosing the Myers-Briggs type ENTP'); E.seedApply(cs,'ENTP'); E.loadProfile(cs);
+ const seeded=S.charge.Fear;
+ E.undoPop();
+ ok(seeded>0&&CHARGES.every(c=>S.charge[c]===0)&&E.current().seed===null,
+  'undoing a seed puts back the empty field and takes the type off with it, Fear '+seeded+' then '+S.charge.Fear);
+ E.undoClear();
 }
 
 g('19a \u00b7 the roster covers the scale');
@@ -1664,20 +1794,23 @@ g('19a \u00b7 the roster covers the scale');
  /* CHANGED 25 SEPTEMBER. This asserted Tomas about 2, Nkem 10, Wren 92 and
     Abraham 98, and each pair shared a word. Those four were solved by
     bisection against It*Ig/Rz, where a heavy field could pull CQ to the
-    floor. CQ is the laws alone now, so load no longer reaches it: the four
-    read 25.9, 45.6, 91.3 and 89.2, and the floor pair is reached on
-    expression instead (11.4 and 35.8). Their law tables are persona data and
-    were not re-solved: whether the tier word names CQ or expression is the
-    owner's question 1, and re-solving before he rules would pick for him.
-    What is still true, and asserted: the floor cases sit below the median on
-    CQ and further down on expression, the ceiling cases sit in the top two
-    bands, and CQ is exactly each table summed over 210. */
- /* Nkem was cut in round QD, and Gordon, at 17.5, is the second floor case */
+    floor. CQ is the laws alone now, so load no longer reaches it, and the
+    floor pair is reached on expression instead. Their law tables are persona
+    data and were not re-solved: whether the tier word names CQ or expression
+    is the owner's question 1, and re-solving before he rules would pick for
+    him. What is still true, and asserted: the floor cases sit below the
+    median on CQ and further down on expression, the ceiling cases sit in the
+    top two bands, CQ is exactly each table summed over 210, and expression
+    is CQ times what the pull leaves. The readings themselves are printed by
+    the checks, not typed here. */
+ /* Nkem was cut in round QD, and Gordon is the second floor case */
  ['Tomas','Gordon'].forEach(n=>{
   ok(by[n].CQ<E.MEDIAN,n+' is a floor case, below the median, got '+by[n].CQ.toFixed(1));
   ok(by[n].EX<by[n].CQ,n+' and its load pulls expression lower, '+by[n].EX.toFixed(1));});
  ['Wren','Abraham'].forEach(n=>ok(by[n].CQ>=81,
   n+' is a ceiling case, in the top two bands, got '+by[n].CQ.toFixed(1)));
+ ['Tomas','Gordon','Wren','Abraham'].forEach(n=>
+  near(by[n].EX,by[n].CQ*(1-by[n].PULL),1e-9,n+' expression is CQ times what the pull leaves'));
  ['Tomas','Gordon','Wren','Abraham'].forEach(n=>{
   const LS=LAWSET[n];
   const sum=SINAMES.reduce((a,l)=>a+((LS[l]!==undefined)?LS[l]:LS._),0);
@@ -2104,9 +2237,98 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
  ok(darkRead(0.1,5).dark===false,'and a decoherent field with a benign shape is not either');
  ok(darkRead(0.9,5).dark===true,'the two together is');
  ok(darkRead(0.9,5).refer===true,'and at the floor it refers out');
- ok(darkRead(0.9,5).step&&darkRead(0.9,5).step.refer===true,'to the step that says so');
+ /* CHANGED 26 OCTOBER, with the ruling that ties Psychopathy to the chain.
+    This read "to the step that says so": the floor lit Psychopathy for any
+    dark field. A field handed no chain now names an untied step at the
+    floor, and the referral stays on, because it follows depth and not the
+    step. */
+ ok(darkRead(0.9,5).step&&darkRead(0.9,5).step.nm==='Machiavellianism'&&darkRead(0.9,5).refer===true,
+  'with no chain behind it the floor refers out and names no tied step, got '+(darkRead(0.9,5).step||{}).nm);
  ok(/licensed clinician/.test(DESCENT_REFER),'the referral names a clinician');
- ok(DESCENT.length===3&&DESCENT[2].refer===true,'three steps and the last is not ours to work');
+ /* CHANGED 26 OCTOBER. This counted three steps and read the last by
+    position, the two habits the repository rules out. Read by name. */
+ {const psyE=E.descentStep('Psychopathy'), socE=E.descentStep('Sociopathy');
+  ok(psyE&&psyE.refer===true&&DESCENT[DESCENT.length-1]===psyE,'the last step is Psychopathy and it is not ours to work');
+  ok(psyE.kind==='super complex'&&JSON.stringify(psyE.pair)==='["Grandiosity","Predatory"]',
+   'Psychopathy is a super complex of exactly Grandiosity and Predatory, '+JSON.stringify(psyE.pair));
+  ok(socE&&socE.kind==='hyper complex'&&socE.fam==='Predatory'&&!socE.refer,
+   'Sociopathy is the Predatory hyper complex and refers nobody by itself');
+  ok(E.HCX_LIB.some(h=>h.nm===socE.fam)&&psyE.pair.every(f=>E.HCX_LIB.some(h=>h.nm===f)),
+   'and every family a step is tied to is a family HCX_LIB carries');
+  /* the step is read off the chain it is handed, never off depth */
+  const hy=(nm,w,over)=>({kind:'hy',nm:nm,w:w,over:!!over});
+  ok(darkRead(0.9,25,{hys:[hy('Predatory',7)],psychopathy:null}).step===socE,
+   'a Predatory hyper complex in a dark field names Sociopathy, at any depth of the dark read');
+  ok(darkRead(0.9,5,{hys:[hy('Predatory',7,true)],psychopathy:null}).step!==socE,
+   'an overshoot is not its family');
+  ok(darkRead(0.9,25,{hys:[hy('Grandiosity',7),hy('Predatory',7)],psychopathy:{named:'Psychopathy'}}).step===psyE,
+   'the named super complex names Psychopathy, the deepest tied step first');
+  ok(darkRead(0.9,25,{hys:[hy('Grandiosity',7),hy('Predatory',7)],psychopathy:{named:'Psychopathy'}}).refer===false,
+   'and naming it does not move the referral, which still follows depth');
+  ok(darkRead(0.9,70,{hys:[hy('Predatory',7)],psychopathy:{named:'Psychopathy'}}).step===null,
+   'and nothing is named outside the dark read');}
+
+ /* THE NAMED SUPER COMPLEX IN THE ENGINE, 26 October. The contract, held on
+    every field the roster and a drive at named saboteurs can make: r.psychopathy
+    is set exactly when a Grandiosity and a Predatory hyper complex are both
+    in hys, neither overshot, at a mean weight that passes the super complex's
+    own gate, and inSups says whether the generic pairing by rank also paired
+    them. It never enters sups. Two of the driven fields must produce it, one
+    of them where the pairing by rank did not, or the probe proves nothing. */
+ {const drive=(names,ch,law,extra)=>{
+   reset(0,0,law);
+   Object.keys(S.addr).forEach(k=>{delete S.addr[k];});
+   const cfs={};
+   names.forEach(nm=>E.ALL_SAB.filter(s=>s.nm===nm)[0].nids.forEach(i=>{
+    S.addr[i]=10; const n=W.filter(x=>x.i===i)[0]; if(n&&n.cf)cfs[n.cf]=1;}));
+   Object.keys(cfs).forEach(c=>{S.charge[c]=ch;});
+   (extra||[]).forEach(nm=>E.ALL_SAB.filter(s=>s.nm===nm)[0].nids.forEach(i=>{S.addr[i]=10;}));
+   return compute();};
+  const G=['Micromanager','Hyper-Achiever','Judge','Dramatizer','Dreamer'];
+  const Pd=['Aggressor','Deflector','Skeptic','Manipulator'];
+  const heavy=E.ALL_SAB.filter(s=>!s.unnamed&&(s.hcx==='Collapse'||s.hcx==='Rigidity')).map(s=>s.nm);
+  const runs=[];
+  /* the roster read the way group 'the tier words' reads it, rd above */
+  PEOPLE.forEach(p=>{Object.keys(S.addr).forEach(k=>{delete S.addr[k];});
+   S.doms=p.doms?p.doms.slice():[p.dom]; S.arcs=p.arcs?p.arcs.slice():[p.a1,p.a2];
+   S.roots=p.roots?p.roots.slice():[]; buildSoul();
+   CHARGES.forEach(c=>{S.charge[c]=(p.c&&p.c[c])||0; S.replace[c]=(p.rep&&p.rep[c])||0;});
+   const LS=LAWSET[p.nm]||{_:E.LAW_DEFAULT};
+   SINAMES.forEach(l=>S.law[l]=(LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:E.LAW_DEFAULT)); lawsIn();
+   runs.push(['roster '+p.nm,compute()]);});
+  [4,5,6,7].forEach(ch=>{
+   runs.push(['Grandiosity at '+ch,drive(G,ch,2)]);
+   runs.push(['Predatory at '+ch,drive(Pd,ch,2)]);
+   runs.push(['both at '+ch,drive(G.concat(Pd),ch,2)]);
+   runs.push(['both at '+ch+' under Collapse and Rigidity',drive(G.concat(Pd),ch,2,heavy)]);});
+  /* a flat field with both families light: both hyper complexes form and
+     sit under the gate, which is the field that holds the gate itself */
+  {reset(5,0,2); Object.keys(S.addr).forEach(k=>{delete S.addr[k];});
+   /* Dreamer left out: with it Grandiosity clears the gate on its own */
+   G.filter(nm=>nm!=='Dreamer').concat(Pd).forEach(nm=>E.ALL_SAB.filter(s=>s.nm===nm)[0].nids.forEach(i=>{S.addr[i]=5;}));
+   runs.push(['both light on a flat field',compute()]);}
+  let bad=[], fired=0, offRank=0, under=0;
+  runs.forEach(([nm,r])=>{
+   const parts=r.hys.filter(h=>!h.over&&(h.nm==='Grandiosity'||h.nm==='Predatory'));
+   const w=parts.length===2?(parts[0].w+parts[1].w)/2:0;
+   const want=parts.length===2&&w>=5.6;
+   if(parts.length===2&&w<5.6)under++;
+   const p=r.psychopathy;
+   if(want!==!!p)bad.push(nm+': want '+want+' got '+!!p);
+   if(p){fired++;
+    const both=r.sups.some(s=>s.parts.indexOf(parts[0])>=0&&s.parts.indexOf(parts[1])>=0);
+    if(p.inSups!==both)bad.push(nm+': inSups '+p.inSups+' against '+both);
+    if(!p.inSups)offRank++;
+    if(r.sups.indexOf(p)>=0)bad.push(nm+': it entered sups');
+    if(p.named!=='Psychopathy'||p.kind!=='sup'||Math.abs(p.w-w)>1e-9)bad.push(nm+': shape '+p.named+' '+p.kind+' '+p.w);}});
+  ok(bad.length===0,'r.psychopathy is set exactly when both hyper complexes clear the gate, on '+runs.length+' fields: '+bad.slice(0,3).join('; '));
+  ok(fired>=2,'and a drive at named saboteurs produces it, '+fired+' times');
+  ok(under>=1,'and a field where both form under the gate is in the sweep, so the gate is held too, '+under+' times');
+  ok(offRank>=1,'including where the pairing by rank paired them with something else, '+offRank+' times');
+  ok(drive(Pd,5,2).psychopathy===null&&drive(Pd,5,2).hys.some(h=>h.nm==='Predatory'),
+   'Predatory alone builds its hyper complex and no Psychopathy');
+  Object.keys(S.addr).forEach(k=>{delete S.addr[k];});
+  reset();}
  /* never a label on a person. the sentence has to say what it is a reading of. */
  ok(/not of who is running it/.test(darkRead(0.9,5).say),
   'and the dark read says it is a reading of what runs, not of the person');
@@ -2139,7 +2361,7 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
  const {organisedShare,ORG_W}=E;
  ok(organisedShare([])===null,'an empty chain has no reading');
  ok(organisedShare([{kind:'sab',w:5}])===ORG_W.sab,'a named saboteur is already conditioning');
- ok(organisedShare([{kind:'sup',w:5}])===1,'character is fully conditioned');
+ ok(organisedShare([{kind:'sup',w:5}])===1,'a super complex is fully conditioned');
  /* DEPTH REACHED, NOT MASS SPLIT. A weighted mean read everybody as loose,
     because a field carries many saboteurs and one hyper complex, so the many
     dragged the mean down and nothing ever reached the organised half. A hyper
@@ -2369,9 +2591,10 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
     1 October made the fact differ by tier. SIGHT is the one table. */
  ok(PLANS.every(p=>!('see' in p)),'no row of the ladder types a sight of its own, SIGHT is the table');
  ok(PLAN_ALWAYS.length>=3,'and what is on every tier is named rather than remembered');
- ok(['your 112 addresses','the domains','the archetypes','the laws','action','shadow']
+ /* the laws and the gates by the names the Field's bar prints since 22 October */
+ ok(['your 112 addresses','the domains','the archetypes','the Laws of Moral Integrity','the Laws of Action','shadow']
    .every(w=>PLAN_ALWAYS.indexOf(w)>=0),
-  'what is on every tier is the owner\'s own list: addresses, domains, archetypes, laws, action and shadow');
+  'what is on every tier is the owner\'s own list: addresses, domains, archetypes, the Laws of Moral Integrity, the Laws of Action and shadow');
  ok(!PLAN_ALWAYS.some(w=>/saboteur|complex|character|whole reading/i.test(w)),
   'and nothing in it is a rung a tier buys, or the whole reading, which is no longer on every tier');
 
@@ -2392,13 +2615,13 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
  /* SIGHT BY TIER. Ruled 1 October, reversing "sight is not for sale": everybody
     sees their own reading down to the 112 addresses, and the chain above them
     is bought. Free sees no saboteurs, tier one sees saboteurs, tier two adds
-    complexes, tiers three and four add hyper complexes and character. */
+    complexes, tiers three and four add hyper complexes and super complexes. */
  const mk=k=>({tier:k,status:'active'}), t1=mk('one'), t3=mk('three');
  const seen=k=>SEE_ORDER.filter(r=>planSees(mk(k),r)).join();
  ok(seen('free')==='','free sees no rung of the chain, got '+seen('free'));
  ok(seen('one')==='sab','tier one sees saboteurs and nothing above them, got '+seen('one'));
  ok(seen('two')==='sab,cx','tier two adds complexes, got '+seen('two'));
- ok(seen('three')==='sab,cx,hy,sup','tier three adds hyper complexes and character, got '+seen('three'));
+ ok(seen('three')==='sab,cx,hy,sup','tier three adds hyper complexes and super complexes, got '+seen('three'));
  ok(seen('four')===seen('three'),'tier four sees what tier three sees, and buys the lead suite instead');
  /* the three that are not rungs. The registers are the point cloud, ruled tier
     three by the owner on 1 October. The Kundalini is ruled tier two and has no
@@ -2425,7 +2648,7 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
     stack: a tier that sees a rung sees every rung below it, because each rung
     is built from the one before. */
  ok(SIGHT.every(g=>TIER_KEYS.indexOf(g.need)>0),'every row names a paid tier that exists as its need');
- ok(SEE_ORDER.join()==='sab,cx,hy,sup','the rungs are saboteur, complex, hyper, character, in chain order');
+ ok(SEE_ORDER.join()==='sab,cx,hy,sup','the rungs are saboteur, complex, hyper complex, super complex, in chain order');
  ok(SEE_ORDER.every((k,i)=>i===0||planRank(planNeed(k).k)>=planRank(planNeed(SEE_ORDER[i-1]).k)),
   'and the tier a rung needs never falls as the chain goes up');
  ok(SIGHT.every(g=>typeof g.what==='string'&&g.what.length>10&&!/\u2014/.test(g.what)),'every row says in a sentence what is locked');
@@ -2441,7 +2664,7 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
  ok(planAdds('free').length===0,'free adds nothing, it is the floor');
  ok(planAdds('one').map(g=>g.k).join()==='sab','tier one adds saboteurs');
  ok(planAdds('two').map(g=>g.k).join()==='cx','tier two adds complexes, and not the Kundalini, which has no surface to sell');
- ok(planAdds('three').map(g=>g.k).join()==='hy,sup,reg,mask','tier three adds hyper complexes, character, the registers and the masks');
+ ok(planAdds('three').map(g=>g.k).join()==='hy,sup,reg,mask','tier three adds hyper complexes, super complexes, the registers and the masks');
  ok(planAdds('four').length===0,'tier four adds no sight over tier three');
  ok(planSeesAt('three').length===SIGHT.filter(g=>g.built!==false).length&&planSeesAt('free').length===0&&planSeesAt('nonsense').length===0,
   'what a tier sees is every built row at or below it, and a tier that does not exist sees none');
@@ -2476,13 +2699,13 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
   ok(g.all&&g.locked.length===0&&SIGHT.every(r=>g.sees[r.k]===true),'inside the gift every row of SIGHT is seen and nothing is locked');
   ok(g.tier==='free'&&g.gift===true&&planOf(null).k==='free','and the rung in force is still free: the gift opens sight and moves nobody up the ladder');
   ok(SEE_ORDER.every(r=>planSees(null,r,true))&&planSees(null,'reg',true)&&planSees(null,'mask',true),
-   'saboteurs, complexes, hyper complexes, character, the registers and the masks are all visible on the gift');
+   'saboteurs, complexes, hyper complexes, super complexes, the registers and the masks are all visible on the gift');
   ok(planSees(null,'nonsense',true)===false,'a key SIGHT does not hold is still not visible, gift or not');
   ok(SEE_ORDER.every(r=>!planSees(null,r,false)&&!planSees(null,r)),'with the gift spent, or not asked, free sees exactly what it saw before');
   ok(planSight(mk('one'),true).all&&planSight(mk('one'),false).locked.map(x=>x.k).join()==='cx,hy,sup,reg,mask',
    'a paid tier inside the gift sees everything, and after it sees its own rung');
   ok(planNextSight(null,true)===null&&planNextSight(null,false).to.k==='one','inside the gift there is no next rung of sight to name');
-  ok(E.planSightSay(null,true)==='your own reading, with saboteurs, complexes, hyper complexes, character, the registers and the masks, while your gift lasts',
+  ok(E.planSightSay(null,true)==='your own reading, with saboteurs, complexes, hyper complexes, super complexes, the registers and the masks, while your gift lasts',
    'what the gift sees is said off the table, '+E.planSightSay(null,true));
   ok(planUpgrade(null)&&planUpgrade(null).to.k==='one'&&E.planBuyable('one')&&!E.planBuyable('gift'),
    'the gift buys nothing and is never bought: the ladder and checkout read the plan alone');}
@@ -2651,6 +2874,14 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
  ok(E.planBuyable('four')===(E.PLAN_BY.four.built!==false),'tier four can be bought exactly when it is built');
  ok(!E.planBuyable('free')&&!E.planBuyable('gift')&&!E.planBuyable('nonsense')&&!E.planBuyable(undefined),
   'free, the gift and a key this build does not know are never bought');
+ /* planNamesPaid, 24 October: Manage billing is drawn only for a record that
+    names a paid tier, in force or stopped (P3-4 of the 23 October QA pass) */
+ ok(E.planNamesPaid({tier:'one',status:'active'})&&E.planNamesPaid({tier:'two',status:'canceled'})
+  &&E.planNamesPaid({tier:'four',status:'past_due'}),
+  'a record naming a paid tier names one whether it is live, stopped or late');
+ ok(!E.planNamesPaid(null)&&!E.planNamesPaid({tier:'free',status:''})&&!E.planNamesPaid({tier:'gift'})
+  &&!E.planNamesPaid({tier:'nine',status:'active'})&&!E.planNamesPaid('one'),
+  'no plan, free, the gift, a key this build does not know and a bare string name no paid tier');
  /* closing a rung moves nobody: a record on tier four still reads tier four */
  ok(E.planOf({tier:'four',status:'active'}).k==='four','a record already on tier four still reads tier four');
  /* THE TOP RUNG IS NAMED PRACTITIONER, ruled 17 October: "There are four
@@ -4322,6 +4553,24 @@ g('33 · the sniffer contract, and the four guards that are testable');
   ok(!o.some(l=>l.law==='Ownership'&&l.direction==='self'),
    'a denial of self blame does not fire the self direction');
  }
+ /* WHOSE ACT, P0-4 of the inference audit, 23 October. This path had no
+    subject, and the Story page's Laws panel reads it, so "She lied to me"
+    told the writer they had let go of Truth. Measured on 77928172: three of
+    fifteen sentences where someone else did the act gave the writer a law. */
+ {
+  const laws=t=>sniffLaws(t).map(l=>l.law);
+  ok(laws('She lied to me about where she was.').indexOf('Truth')<0,'her lie is not the writer\'s Truth, '+laws('She lied to me about where she was.'));
+  ok(laws('My husband lied to me again last night.').length===0,
+   'nor is his, and "again last night" after the object me is his too, '+laws('My husband lied to me again last night.'));
+  ok(laws('They kept it from me for years.').indexOf('Transparency')<0,'what they kept from the writer is not the writer\'s Transparency');
+  ok(laws('I was lied to again.').indexOf('Truth')<0,'being lied to is something done to the writer, '+laws('I was lied to again.'));
+  ok(laws('I lied to my wife about the money.').indexOf('Truth')>=0,'the writer\'s own lie still reads Truth');
+  ok(laws('I hid it from everyone.').indexOf('Transparency')>=0&&laws('I kept it from her because I was scared.').indexOf('Transparency')>=0,
+   'and the writer\'s own concealment still reads Transparency');
+  ok(laws('I haven’t lied to anyone.').indexOf('Truth')<0,'a curly apostrophe from a phone keeps its no, '+laws('I haven’t lied to anyone.'));
+  ok(laws('others have it worse and i do not matter and it is all my fault').indexOf('Ownership')>=0,
+   'a be with no participle after it is not a passive, so "it is all my fault" stays the writer\'s');
+ }
 
  /* ---- RESENTMENT AS THE COMPOSITE, and the collision it was ruled to fix ---- */
  {
@@ -4599,9 +4848,10 @@ g('36 · the ceiling is reachable, and it is what expression reads with nothing 
    formula and not the other.
 
    CHANGED 25 SEPTEMBER from cqCeiling and cqHeadroom, which had CQ as the
-   thing a release moves. CQ is the 21 laws alone now and no release can move
-   it, so the ceiling is expression's: what the lever leaves once the shadow
-   is gone. The assertions are the same ones, on that number. */
+   thing a release moves. CQ is the 21 laws alone now, and the shadow never
+   enters it, so the ceiling is expression's: CQ as the laws read now, times
+   what the lever leaves once the shadow is gone. The assertions are the same
+   ones, on that number. */
 {
  const {exCeiling,exHeadroom}=E;
  ok(typeof exCeiling==='function','exCeiling is reachable from outside the engine');
@@ -4682,6 +4932,16 @@ g('36b · the fitted CQ model, reproduced from the simulation that fitted it');
  ok(FIELD.every(n=>n.sq>0),'so on a loaded field none of the four is forced to 0');
  near(h.DQ,h.SQ.reduce((a,v)=>a+v,0)/1120*100,1e-9,'DQ is the 112 over 1120');
  near(h.EX,h.CQ*(1-h.PULL),1e-12,'and expression is CQ times what the pull leaves');
+ /* WILL IS NOT MEASURED, SO THE SEESAW IS THE SHIPPED BELL, TO THE BIT.
+    compute() reads its pull through leverPullWill, whose centre may one day
+    move with Will, and Will is 0 until something measures it. It was a
+    second copy of the bell, and this check was the only thing that caught a
+    drift between the two. It is now leverPull itself, moved by Will, so
+    they cannot drift apart, and this holds what compute() prints to the
+    curve the table above pins. Red on purpose the day Will is real: that
+    day the claim changes and somebody says so. */
+ ok(h.PULL===h.SQ.reduce((a,v)=>a+leverPull(v),0)/h.SQ.length,
+  'and the pull is the mean of leverPull over the 112, to the bit, while Will is unmeasured');
 
  /* NOTHING ENTERED. A blank profile through the boundary: CQ 0 and filling,
     no tier word, and the reading is unread. */
@@ -4792,6 +5052,152 @@ g('36b · the fitted CQ model, reproduced from the simulation that fitted it');
   E.current().work={};
   bindStore(()=>null,()=>{});
  }
+}
+
+g('36f · lawSQ, CQ\'s own complement, 27 October');
+/* He asked, verbatim: a self-reported shadow built purely from the 21 laws,
+   so it sums to 100 with CQ by construction, standing beside DQ rather than
+   replacing it. Proven first by simulation (lookdev/handoff/
+   CQ_DQ_SOURCE_OF_TRUTH_2026-10-27.md): strict complementarity between CQ
+   and the real, address-based DQ breaks the release mechanic, so this is a
+   second, separate number, never a redefinition of DQ. */
+{
+ const r0=reset(0,0,5);
+ near(r0.CQ+r0.lawSQ,100,1e-9,'CQ and lawSQ sum to 100 by construction, got '+r0.CQ+' and '+r0.lawSQ);
+ ok(r0.lawSQ===50,'every law 5: lawSQ is 50, got '+r0.lawSQ);
+ const rPerfect=reset(10,0,10);
+ ok(rPerfect.CQ===100&&rPerfect.lawSQ===0,
+  'every law 10, heavily loaded: CQ 100 and lawSQ 0, even though DQ is still '+rPerfect.DQ.toFixed(1)+
+  ' -- lawSQ is the self-report, not what is actually carried');
+ const rZero=reset(0,0,0);
+ ok(rZero.CQ===0&&rZero.lawSQ===100,'every law 0: CQ 0, lawSQ 100, got '+rZero.CQ+', '+rZero.lawSQ);
+
+ /* a few hundred random complete fields, the identity must hold exactly every time */
+ let x=23>>>0; const rnd=()=>{x^=x<<13;x>>>=0;x^=x>>>17;x^=x<<5;x>>>=0;return x/4294967296;};
+ let offCount=0;
+ for(let i=0;i<500;i++){
+  S.doms=[Math.floor(rnd()*19)];S.arcs=[Math.floor(rnd()*12)];S.roots=[];buildSoul();
+  CHARGES.forEach(c=>{S.charge[c]=+(rnd()*10).toFixed(2);S.replace[c]=+(rnd()<.5?0:rnd()*10).toFixed(2);});
+  SINAMES.forEach(l=>S.law[l]=Math.round(rnd()*10)); lawsIn();
+  const r=compute();
+  if(Math.abs((r.CQ+r.lawSQ)-100)>1e-9)offCount++;}
+ ok(offCount===0,'CQ+lawSQ=100 held on 500 random complete fields, off '+offCount);
+
+ /* unread and incomplete: null, never a number built off answers that have
+    not landed, the same guard tier already uses */
+ E.loadProfile(E.blankProfile('lawSQ, nothing entered'));
+ ok(compute().lawSQ===null,'nothing entered: lawSQ is null, not a false 100');
+ {const p=E.blankProfile('lawSQ, filling'); E.loadProfile(p);
+  p.intake.answers[0]=7; E.iqApply(p);
+  ok(compute().lawSQ===null,'one law answered of 21: lawSQ still null, not a partial shadow reading');}
+
+ /* the release probe again, now also watching lawSQ: the charge half must
+    never move it (it cannot see the 112 addresses), and the law half, which
+    raises CQ, must lower it by exactly as much */
+ const mem2={}; E.bindStore(k=>mem2[k]===undefined?null:mem2[k],(k,v)=>{mem2[k]=String(v);});
+ const CH2=['Rlimit','Llimit','Rtruth','Ltruth'];
+ let rec2=null, runs2=0, lawSQoffChargeHalf=0, lawSQoffLawHalf=0;
+ for(let i=0;i<500;i++){
+  if(i%100===0)rec2=E.pImport(JSON.stringify(E.blankProfile('lawSQ release probe '+i)));
+  S.doms=[Math.floor(rnd()*19)];S.arcs=[Math.floor(rnd()*12)];S.roots=[];buildSoul();
+  CHARGES.forEach(c=>{S.charge[c]=+(rnd()*10).toFixed(2);S.replace[c]=+(rnd()<.5?0:rnd()*10).toFixed(2);});
+  SINAMES.forEach(l=>S.law[l]=Math.round(rnd()*10)); lawsIn();
+  const r0b=compute();
+  const q=W.filter(n=>n.sq>0).sort((a,b)=>b.sq-a.sq).slice(0,1+Math.floor(rnd()*4));
+  if(!q.length)continue; runs2++;
+  q.forEach(n=>{const d=-Math.round(n.sq*10*0.21+2);
+   const share=Math.abs(d)/10/Math.max(1,q.filter(o=>o.cf===n.cf).length);
+   S.charge[n.cf]=E.clamp((S.charge[n.cf]||0)-share,0,10);
+   S.replace[n.cf]=E.clamp((S.replace[n.cf]||0)+share*0.62,0,10);});
+  const rMidB=compute();
+  if(rMidB.lawSQ!==null&&r0b.lawSQ!==null&&Math.abs(rMidB.lawSQ-r0b.lawSQ)>1e-9)lawSQoffChargeHalf++;
+  const m2=E.meterRun(rec2,E.meterPlan(rec2,q.map(n=>n.i),CH2,25));
+  E.releaseWork(rec2,m2.fresh);
+  const r1b=compute();
+  if(r1b.lawSQ!==null&&rMidB.lawSQ!==null&&Math.abs((r1b.lawSQ-rMidB.lawSQ)-(-(r1b.CQ-rMidB.CQ)))>1e-6)lawSQoffLawHalf++;}
+ ok(runs2>450,'the lawSQ release probe ran, '+runs2);
+ ok(lawSQoffChargeHalf===0,'the charge half of a release never moves lawSQ, moved '+lawSQoffChargeHalf);
+ ok(lawSQoffLawHalf===0,'the law half moves lawSQ by exactly the negative of what it moves CQ, off '+lawSQoffLawHalf);
+ E.current().work={}; E.bindStore(()=>null,()=>{});
+
+ /* the percent table, same rigor as cq and dq: cited, clamped, fetched */
+ ok(E.PCT_KIND.lawsq&&E.PCT_KIND.lawsq.lo===0&&E.PCT_KIND.lawsq.hi===100,
+  'PCT_KIND carries lawsq, 0 to 100');
+}
+
+g('36g · the Kundalini rise, ported from proto/avatar/rise.js, 27 October');
+/* The computation only: engine/plan.js keeps built:false on purpose, because
+   no screen draws this yet (checked directly: flipping it would list the
+   Kundalini as a tier-two benefit on the pricing page with nothing anywhere
+   showing it, exactly what that table's own comment already warns against).
+   This group proves the arithmetic itself is real and correct. */
+{
+ const {riseSeats,seatTrans,riseRead,riseFrom,riseReach,riseLevers,riseBase,riseDelta}=E;
+ ok(JSON.stringify(riseSeats())===JSON.stringify(BANDS),'riseSeats is BANDS, root to crown, by name');
+
+ /* the clamp ceiling this arithmetic depends on, cited and checked like
+    every PCT_KIND entry is, so a change to n.open's clamp fails this test by
+    name instead of silently bending the rise */
+ const fs=require('fs');
+ const src=fs.readFileSync('atuned_src/engine/compute.js','utf8');
+ ok(src.indexOf('n.open = clamp(1-n.sq/10 + n.pole/26,0,1.18)')>=0,
+  'rise.js\'s OPEN_CAP (1.18) is still the real clamp on n.open in compute.js');
+ ok(E.OPEN_CAP===1.18,'OPEN_CAP is 1.18, got '+E.OPEN_CAP);
+
+ /* a clean field: every law 10, nothing held, every opposite installed at 10.
+    Every seat should transmit at or near full, reach close to 7, pct close
+    to 100. */
+ const rClean=reset(0,10,10);
+ const riseClean=riseRead(rClean);
+ ok(riseClean.pct>95,'a clean field with every opposite installed reads close to full rise, got '+riseClean.pct);
+ ok(riseClean.reach>6.5&&riseClean.reach<=7,'reach sits just under 7 seats, got '+riseClean.reach.toFixed(3));
+
+ /* a fully blocked field: everything held, nothing released, every law at 0 */
+ const rBlocked=reset(10,0,0);
+ const riseBlocked=riseRead(rBlocked);
+ ok(riseBlocked.pct<riseClean.pct,'a heavily loaded field rises less than a clean one, '+riseBlocked.pct+' against '+riseClean.pct);
+ ok(riseBlocked.blocked!==null&&BANDS.indexOf(riseBlocked.blocked)>=0,
+  'a blocked field names a real seat as its blockage, got '+riseBlocked.blocked);
+ ok(riseBlocked.at===null||BANDS.indexOf(riseBlocked.at.b)>=0,
+  'the address at the blockage, if named, sits at the blocked seat');
+
+ /* reach is the series product, by hand, against the engine's own t() */
+ const t=riseClean.t; let cum=1,reachCheck=0;
+ BANDS.forEach(b=>{cum*=t[b]; reachCheck+=cum;});
+ near(riseClean.reach,reachCheck,1e-9,'reach is the running product of the seven seats\' own transmission, root first');
+
+ /* never a height with no seat: blocked is null only when reach is the full 7 */
+ ok(riseClean.blocked!==null||riseClean.reach>=7-1e-9,
+  'blocked is null only at a full, unblocked reach');
+
+ /* the reach ceiling: everything cleared, nothing simulated, moves only on
+    conduct (a law), never on a release -- checked directly */
+ const rReachProbe=reset(6,2,7);
+ const reachA=riseReach(), lawBefore=S.law.Compassion;
+ S.law.Compassion=Math.min(10,lawBefore+2); lawsIn();
+ const reachB=riseReach();
+ S.law.Compassion=lawBefore; lawsIn();
+ const chargeBefore=S.charge.Anger; S.charge.Anger=E.clamp(chargeBefore+3,0,10);
+ const reachC=riseReach();
+ S.charge.Anger=chargeBefore;
+ ok(reachB.pct>=reachA.pct,'the reach ceiling never falls when a law rises, '+reachA.pct+' to '+reachB.pct);
+ ok(reachC.pct===reachA.pct,'the reach ceiling does not move on a charge change, held is zero by construction, '+reachA.pct+' against '+reachC.pct);
+
+ /* levers: a real seat, both directions computed, one named bigger */
+ if(riseBlocked.blocked){
+  const lv=riseLevers(riseBlocked.blocked);
+  ok(lv.seat===riseBlocked.blocked,'levers are computed at the blocked seat');
+  ok(lv.release.to>=lv.now-1e-9,'a quarter of release work never lowers transmission, '+lv.now.toFixed(3)+' to '+lv.release.to.toFixed(3));
+  ok(lv.law.to>=lv.now-1e-9,'two points on the weakest law never lowers transmission, '+lv.now.toFixed(3)+' to '+lv.law.to.toFixed(3));
+  ok(lv.bigger==='law'||lv.bigger==='release'||lv.bigger==='level','bigger names one of the two levers or a tie, got '+lv.bigger);
+ }
+
+ /* baseline and delta: no change reads d 0, nothing is stored by this file itself */
+ const base=riseBase();
+ const delta0=riseDelta(rBlocked,base);
+ near(delta0.d,0,1e-9,'no change since the baseline reads a delta of 0, got '+delta0.d);
+ const noBase=riseDelta(rBlocked,null);
+ ok(noBase.has===false&&noBase.from===null,'with no baseline the height still reads and the from mark is absent');
 }
 
 g('36c · intention is what was said against what was done, and no charge');
@@ -4920,6 +5326,12 @@ g('36e \u00b7 a release lifts the laws at its seat, fitted to his fifteen thousa
  ok(lastRun>0&&lastRun<firstRun/2,'the last moves it '+lastRun.toFixed(3)+': the same work moves it less as the laws near 10');
  {const c0=cqSum(); releaseWork(rec,meterRun(rec,[order[15000]]).fresh); one=cqSum()-c0;}
  ok(one>0&&one<0.01,'one pattern moves it '+one.toFixed(4)+', which no screen shows');
+ /* WHAT A RELEASE REPORTS IS THE READING. releaseWork reads CQ through
+    cqSum, as main does, and not through two whole compute() calls: the two
+    are the same number while CQ is the laws, and this holds them to it. */
+ {const r0=compute().CQ, o=releaseWork(rec,meterRun(rec,[order[15001]]).fresh), r1=compute().CQ;
+  ok(o.n===1&&o.cq0===r0&&o.cq1===r1&&o.cq1>o.cq0,
+   'what a release reports as CQ before and after is the reading itself, '+o.cq0+' then '+o.cq1);}
  /* A RERUN IS FREE AND MOVES NOTHING. Ground already open spends nothing, so
     it lifts nothing either, which is what keeps the lift from being farmed. */
  {const w=JSON.stringify(rec.work), c0=cqSum(), m=meterRun(rec,order.slice(0,24));
@@ -4982,7 +5394,8 @@ g('36e \u00b7 a release lifts the laws at its seat, fitted to his fifteen thousa
   HL.forEach(l=>near(lawNow(l),10-5*Math.pow(1-LIFT_R,4),1e-12,l+' took four steps of the distance left'));
   near(cqSum()-c0,HL.reduce((a,l)=>a+lawNow(l)-5,0)/210*100,1e-12,'and CQ moved by those four over 210');}
  /* THE SHADOW IS NOT IN IT. The same record, the field loaded and then
-    emptied: CQ reads the same both times. */
+    emptied: CQ reads the same both times. Model 3 inverted this on this
+    branch, through Resistance, and was reverted, 22 October. */
  {CHARGES.forEach(c=>{S.charge[c]=9;}); const a=compute().CQ;
   CHARGES.forEach(c=>{S.charge[c]=0;}); const b=compute().CQ;
   ok(a===b,'a loaded field and an empty one read the same CQ, '+a.toFixed(4)+' and '+b.toFixed(4));}
@@ -5737,6 +6150,138 @@ g('41 · the twenty one on every history row, and a record from before still loa
  bindStore(()=>null,()=>{});
 }
 
+g('LK · an old law name is the law it became at every door, and a key the boundary does not name is refused by name');
+/* SYSTEMS AUDIT SG-01 AND SG-09, 24 October. The group above holds an old law
+   name on a history row. Nothing held it on the record's own laws and work,
+   and there the boundary read the current names only: a record holding
+   Expression 9 and Discernment 2 read Justice 9 and Humility 2 loaded straight,
+   and both as never answered through validateProfile, with ok true and nothing
+   said. pStore keeps what the boundary returns and the next save writes it,
+   so the two answers left the disk. This holds the boundary, the boot read
+   and the import, and the bytes the import leaves on the store. And every
+   keyed bag at the boundary refuses a key it does not name, by name, where
+   axes, laws, work and gates each dropped one with ok true and any text was
+   kept as a root. Checked against the build before the fix, where the old
+   name checks and every refusal below fail. */
+{
+ const {bindStore,pImport,importError,pStore,storeRefused,validateProfile,blankProfile,saveProfile,
+        read,LAW_WAS,PKEY,ROOTD}=E;
+ const J=JSON.stringify, clone=o=>JSON.parse(J(o));
+ const OLD_J=LAW_WAS.Justice, OLD_H=LAW_WAS.Humility;
+ /* a record from before the rename: every law answered at 8, the two renamed
+    laws under the names they carried until 18 September */
+ const old=clone(blankProfile('before the rename'));
+ SINAMES.forEach(l=>{old.laws[l]=8;});
+ delete old.laws.Justice; delete old.laws.Humility;
+ old.laws[OLD_J]=9; old.laws[OLD_H]=2;
+ const vo=validateProfile(clone(old));
+ ok(vo.ok&&vo.profile.laws.Justice===9&&vo.profile.laws.Humility===2,
+  'the boundary reads an old law name as the law it became, got '
+  +J(vo.ok?{Justice:vo.profile.laws.Justice,Humility:vo.profile.laws.Humility}:vo.errs));
+ ok(vo.ok&&!(OLD_J in vo.profile.laws)&&!(OLD_H in vo.profile.laws),
+  'and the old name does not cross beside the new one');
+ const cqStraight=read(clone(old)).reading.CQ, cqDoor=read(clone(vo.profile)).reading.CQ;
+ ok(Math.abs(cqStraight-cqDoor)<1e-9,
+  'and the record reads the same CQ loaded straight and through the boundary, '+cqStraight.toFixed(1)+' and '+cqDoor.toFixed(1));
+ const both=clone(old); both.laws.Justice=4;
+ const vb=validateProfile(both);
+ ok(vb.ok&&vb.profile.laws.Justice===4,
+  'the current name wins where both are carried, the history rows\' rule, got '+J(vb.ok?vb.profile.laws.Justice:vb.errs));
+ const hi=clone(old); hi.laws[OLD_J]=12;
+ const vh=validateProfile(hi);
+ ok(!vh.ok&&vh.errs.some(e=>e.indexOf('laws.'+OLD_J+' ')===0),
+  'an old name out of range is refused under the name it was stored under, '+J(vh.ok?'it loaded':vh.errs).slice(0,140));
+ const odd=clone(old); odd.laws.Charisma=5;
+ const vx=validateProfile(odd);
+ ok(!vx.ok&&vx.errs.indexOf('laws may not carry Charisma')>=0,
+  'a law key that is neither a law nor an old name of one is refused by name, '+J(vx.ok?'it loaded':vx.errs).slice(0,140));
+ /* the release lift, kept by law, reads an old name the same way */
+ const wk=clone(old); wk.work={}; wk.work[OLD_J]={n:0,on:9};
+ const vw=validateProfile(wk);
+ ok(vw.ok&&J(vw.profile.work.Justice)===J({n:0,on:9})&&!(OLD_J in vw.profile.work),
+  'the release lift under an old name lands on the law it became, got '+J(vw.ok?vw.profile.work:vw.errs));
+ const wx=clone(old); wx.work={Charisma:{n:0,on:5}};
+ const vwx=validateProfile(wx);
+ ok(!vwx.ok&&vwx.errs.indexOf('work may not carry Charisma')>=0,
+  'and a work key the boundary does not name is refused by name, '+J(vwx.ok?'ok':vwx.errs).slice(0,140));
+ /* THE BOOT READ. pStore keeps what the boundary returns, and on a real boot
+    that list is what the next save writes, so this is what the disk will
+    hold. THE IMPORT validates, loads and saves, so the bytes it leaves on the
+    store are the record a reload reads. */
+ const mem={}; bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
+ mem[PKEY]=J([old]);
+ const boot=pStore();
+ ok(boot.length===1&&storeRefused().length===0&&boot[0].laws.Justice===9&&boot[0].laws.Humility===2,
+  'the boot read keeps both answers, got '+J(boot.map(p=>({Justice:p.laws.Justice,Humility:p.laws.Humility}))));
+ const imp=pImport(J(old));
+ ok(!!imp&&importError()===null&&imp.laws.Justice===9&&imp.laws.Humility===2,
+  'the import keeps both answers, got '+J(imp?{Justice:imp.laws.Justice,Humility:imp.laws.Humility}:importError()));
+ const disk=JSON.parse(mem[PKEY]||'[]').filter(p=>p&&p.id===old.id)[0];
+ ok(!!disk&&disk.laws.Justice===9&&disk.laws.Humility===2&&!(OLD_J in disk.laws)&&!(OLD_H in disk.laws),
+  'and after the save the disk holds them under their current names, got '
+  +J(disk?{Justice:disk.laws.Justice,Humility:disk.laws.Humility}:null));
+ bindStore(()=>null,()=>{});
+
+ /* SG-09. Each keyed bag refuses a key it does not name, by name, and a root
+    is one of the four. */
+ const base=clone(blankProfile('keys'));
+ const refuses=(mut,want,m)=>{const o=clone(base); mut(o); const r=validateProfile(o);
+  ok(!r.ok&&r.errs.indexOf(want)>=0,m+', '+J(r.ok?'it loaded':r.errs).slice(0,150));};
+ refuses(o=>{o.axes.Sadness={held:9,opp:1};},'axes may not carry Sadness',
+  'an axis this build does not carry is refused by name, Sadness, the spelling the codes map to Sad');
+ refuses(o=>{o.axes.Fear={held:4,opp:2,rep:1};},'axes.Fear may not carry rep','a key inside an axis');
+ refuses(o=>{o.gates.verp.intentional=5;},'gates.verp may not carry intentional',
+  'a gate this build does not count, canon.json\'s spelling of intent');
+ refuses(o=>{o.gates.lean.neutral=1;},'gates.lean may not carry neutral','a lean this build does not count');
+ refuses(o=>{o.gates.mood=1;},'gates may not carry mood','a key beside the two gate bags');
+ refuses(o=>{o.work={Justice:{n:0,on:6,at:'today'}};},'work.Justice may not carry at','a key inside a law\'s work');
+ refuses(o=>{o.soul.roots=['Banana'];},'soul.roots holds Banana, which is not one of '+ROOTD.join(', '),
+  'a root that is not one of the four');
+ refuses(o=>{o.soul.roots=[7];},'soul.roots holds a number, which is not one of '+ROOTD.join(', '),
+  'and a root that is not text');
+ const roots=clone(base); roots.soul.roots=['Architect','Witness'];
+ const vr=validateProfile(roots);
+ ok(vr.ok&&J(vr.profile.soul.roots)===J(['Architect','Witness']),
+  'the four roots still load as they were written, got '+J(vr.ok?vr.profile.soul.roots:vr.errs));
+ /* known good: what this product writes crosses with no error at all */
+ const answered=clone(base); SINAMES.forEach(l=>{answered.laws[l]=7;});
+ CHILD.forEach(c=>{answered.axes[c.nm]={held:3,opp:1};});
+ const va=validateProfile(answered);
+ ok(va.ok,'a record carrying every law and every axis by name loads clean, '+J(va.ok?'ok':va.errs).slice(0,150));
+ const saved=clone(saveProfile(blankProfile('saved')));
+ const vs=validateProfile(saved);
+ ok(vs.ok,'and a record saveProfile writes loads clean, '+J(vs.ok?'ok':vs.errs).slice(0,150));
+ reset();
+}
+
+g('SS · a primary saboteur sits where its addresses are');
+/* SYSTEMS AUDIT SG-05, 24 October. The Analytics archetype card and the Avatar
+   page printed the third column of ARCH18 as the primary saboteur's seat, and
+   that seat held none of the saboteur's addresses in 9 of the 18 rows. Both
+   read sabSeats and sabSeatMain now. Held against the addresses themselves,
+   read here straight off SAB_LIB and the node table, not through either. */
+{
+ const {SAB_LIB,ARCH18,KB_KEY}=E;
+ /* a build without the two fails here by name rather than throwing below */
+ ok(typeof E.sabSeats==='function'&&typeof E.sabSeatMain==='function','the engine carries sabSeats and sabSeatMain');
+ const sabSeats=typeof E.sabSeats==='function'?E.sabSeats:()=>['missing'];
+ const sabSeatMain=typeof E.sabSeatMain==='function'?E.sabSeatMain:()=>'missing';
+ const byNm={}; SAB_LIB.forEach(s=>{byNm[KB_KEY(s.nm)]=s;});
+ const seatsOf=nm=>{const s=byNm[KB_KEY(nm)]; if(!s)return [];
+  const at=new Set(s.nids.map(i=>NODES.find(n=>n.i===i).b)); return BANDS.filter(b=>at.has(b));};
+ const off=ARCH18.filter(r=>JSON.stringify(sabSeats(r[1]))!==JSON.stringify(seatsOf(r[1])));
+ ok(ARCH18.length>0&&off.length===0,'every primary saboteur\'s seats are the seats of its own addresses, root first, off: '
+  +JSON.stringify(off.map(r=>r[1]+' '+sabSeats(r[1]).join('/')+' against '+seatsOf(r[1]).join('/'))));
+ ok(JSON.stringify(sabSeats('Pleaser'))===JSON.stringify(['Root','Sacral'])&&sabSeats('Pleaser').indexOf('Heart')<0,
+  'Pleaser, the Caregiver\'s primary saboteur, sits at the root and the sacral and not at the heart, got '+JSON.stringify(sabSeats('Pleaser')));
+ const mainOff=ARCH18.filter(r=>{const s=byNm[KB_KEY(r[1])]; if(!s)return sabSeatMain(r[1])!==null;
+  const cnt={}; s.nids.forEach(i=>{const b=NODES.find(n=>n.i===i).b; cnt[b]=(cnt[b]||0)+1;});
+  const m=sabSeatMain(r[1]); return !(m&&cnt[m]===Math.max(...Object.values(cnt)));});
+ ok(mainOff.length===0,'and the seat it is coloured by holds the most of its addresses, off: '+JSON.stringify(mainOff.map(r=>r[1])));
+ ok(sabSeats('No Such Saboteur').length===0&&sabSeatMain('No Such Saboteur')===null&&sabSeats(null).length===0,
+  'a name with no library row has no seat, and says none');
+}
+
 g('SA · Source AI hears on the rung, asks at seven, and the person leads');
 /* reviews/SPEC-source-ai.md, the behaviour section. The contract, not the
    copy: the rung is a count of return, one word is never questioned however
@@ -6179,16 +6724,66 @@ g('ND · one saboteur, one entry, however many tests name it');
    Held heavy and uniform this produced 26 entries carrying 23 identities,
    Micromanager, Hyper-Vigilant and Avoider each twice, and one pairing away
    from a self-paired complex, "X + X", which is not a second voice, it is
-   the same one counted twice. */
+   the same one counted twice.
+
+   AND BY IDENTITY, 22 October. Counting by name could not see the defect it
+   was written for once two tables spelled one saboteur two ways. The owner
+   renamed S02 to Micromanager in SAB33 on 18 October and the library kept
+   Controller, so from then a heavy field named S02 twice, once under each
+   name and in two families, and this group stayed green because the two
+   strings differ. It counts identities now: a saboteur is its SABDEF code,
+   reached from SAB33's row and from SABDEF's key both, so two spellings of
+   one code are one saboteur. And it holds every table that names a
+   saboteur to a name SABDEF knows, so a rename that reaches one table and
+   not the others fails here. Both halves were run first on the build from
+   before the fix, where both failed, and pass on the fix. */
 {
- reset(8,0,6);
- const r=compute();
- const names=r.sabs.map(s=>s.nm);
- const counts={};names.forEach(n=>counts[n]=(counts[n]||0)+1);
- const dupes=Object.keys(counts).filter(n=>counts[n]>1);
- ok(dupes.length===0,'no saboteur is named twice in one reading, got '+JSON.stringify(dupes));
- const selfCx=r.cxs.filter(c=>c.parts[0].nm===c.parts[1].nm);
- ok(selfCx.length===0,'no complex pairs a saboteur with itself, got '+JSON.stringify(selfCx.map(c=>c.nm)));
+ const {SABDEF,SAB_LIB,SAB_PI,SAB_PI_AS,SABAUTH,SABCARD,ARCH18,KB_KEY}=E;
+ /* the aliases of each code: SAB33's own spelling, by its row, which is the
+    codex order S01 to S32 and then Avoider at S33, and SABDEF's key */
+ const code=k=>SABDEF[k]?SABDEF[k].c:null;
+ ok(SAB33.every((r,i)=>code(KB_KEY(r[0]))===null||code(KB_KEY(r[0]))==='S'+String(i+1).padStart(2,'0')),
+  'SAB33 is in codex order, so its row says which code it is');
+ const alias={};
+ SAB33.forEach((r,i)=>{const c='S'+String(i+1).padStart(2,'0');(alias[c]=alias[c]||new Set()).add(KB_KEY(r[0]));});
+ Object.keys(SABDEF).forEach(k=>{(alias[SABDEF[k].c]=alias[SABDEF[k].c]||new Set()).add(k);});
+ const codeOf=nm=>{const k=KB_KEY(nm);for(const c in alias)if(alias[c].has(k))return c;return k;};
+ const twice=r=>{const n={};r.sabs.filter(s=>!s.over).forEach(s=>{const c=codeOf(s.nm);n[c]=(n[c]||0)+1;});
+  return Object.keys(n).filter(c=>n[c]>1);};
+ const s02=()=>{reset(0,0,6);S.charge.Fear=9;S.charge.Anger=7;S.charge.Sad=10;return compute();};
+ [['every axis held at 8',()=>reset(8,0,6)],['fear 9, anger 7 and sadness 10, S02 on both routes',s02]].forEach(f=>{
+  const r=f[1]();
+  ok(twice(r).length===0,f[0]+': no saboteur is named twice in one reading, by identity, got '+JSON.stringify(twice(r)));
+  const selfCx=r.cxs.filter(c=>codeOf(c.parts[0].nm)===codeOf(c.parts[1].nm));
+  ok(selfCx.length===0,f[0]+': no complex pairs a saboteur with itself, got '+JSON.stringify(selfCx.map(c=>c.nm)));});
+ const r2=s02(), m=r2.sabs.filter(s=>!s.over&&codeOf(s.nm)==='S02');
+ ok(m.length===1&&m[0].nm===SAB33[1][0],'S02 is one entry under its one name, got '+JSON.stringify(m.map(s=>s.nm)));
+ /* AND ONE FAMILY. The range route took FAM_OF of its first charge and the
+    address route the library row's family, so S02 was Dysregulation from one
+    and Rigidity from the other. Every route gives the library's. */
+ const famOff=[];
+ SAB33.forEach(row=>{const lib=SAB_LIB.find(s=>KB_KEY(s.nm)===KB_KEY(row[0])); if(!lib)return;
+  reset(0,0,6); row[1].forEach(p=>{S.charge[p[0]==='sadness'?'Sad':p[0].charAt(0).toUpperCase()+p[0].slice(1)]=(p[1]+p[2])/2;});
+  compute().sabs.filter(s=>!s.over&&KB_KEY(s.nm)===KB_KEY(row[0])&&s.hcx!==lib.hcx).forEach(s=>famOff.push(s.nm+' '+s.hcx+(s.named?' off the range':'')));});
+ ok(famOff.length===0,'a saboteur with a library row carries that row\'s family from either route, off: '+JSON.stringify(famOff));
+ /* ONE NAME IN EVERY TABLE. Each name a table carries keys into SABDEF. */
+ const tables={SAB33:SAB33.map(r=>r[0]),SAB_LIB:SAB_LIB.map(s=>s.nm),SAB_PI:SAB_PI,ARCH18:ARCH18.map(a=>a[1])};
+ const unknown=t=>t.filter(n=>!SABDEF[KB_KEY(n)]);
+ Object.keys(tables).forEach(t=>ok(unknown(tables[t]).length===0,
+  'every saboteur '+t+' names is one SABDEF knows, unknown: '+JSON.stringify(unknown(tables[t]))));
+ ok(SAB33.every(r=>SABAUTH[r[0]]&&SABCARD[KB_KEY(r[0])]),
+  'and every SAB33 name has its SABAUTH line and its card row, missing: '
+  +JSON.stringify(SAB33.filter(r=>!SABAUTH[r[0]]||!SABCARD[KB_KEY(r[0])]).map(r=>r[0])));
+ /* the check is run on the split it was written for, and must catch it */
+ const split=SAB_LIB.map(s=>s.nm).map(n=>n===SAB33[1][0]?'Controller':n);
+ ok(unknown(split).length===1&&unknown(split)[0]==='Controller','the check catches a library that kept Controller: '+JSON.stringify(unknown(split)));
+ /* SAB_PI IS A LOOKUP. Its names are the ones the reading prints, or the
+    attribution goes quiet; Chamine's own name for S02 rides beside it. */
+ const printable=new Set(SAB33.map(r=>KB_KEY(r[0])).concat(SAB_LIB.map(s=>KB_KEY(s.nm))));
+ ok(SAB_PI.length===10&&SAB_PI.every(n=>printable.has(KB_KEY(n))),
+  'all ten Positive Intelligence names are names the engine can print, '+JSON.stringify(SAB_PI.filter(n=>!printable.has(KB_KEY(n)))));
+ ok(SAB_PI_AS&&SAB_PI_AS[SAB33[1][0]]==='Controller'&&Object.keys(SAB_PI_AS).every(n=>SAB_PI.indexOf(n)>=0),
+  'and his own name for S02 is kept, Controller, beside the name the product prints');
 }
 
 g('NZ · the tiers side by side, read off the ladder and nothing else');
@@ -7337,6 +7932,17 @@ g('PO · unpack every symbol: the meaning table and the pole meanings');
    +'and these carry none: '+JSON.stringify(left.map(g=>g.t)));}
  ok(unpackOf('Brow','seat')===T['seat:3rd eye']&&unpackKey('Virgo','sign')==='sign:virgo'&&unpackOf('nothing at all')==='',
   'the lookup folds case, reads Brow as the 3rd Eye, and returns nothing for a term it does not hold');
+ /* THE FOURTH RUNG AND THE TOP ARE TWO WORDS, ruled 23 October (DECISIONS.md,
+    "The full stack, nerve to Character"). The rung where two hyper complexes
+    join is the super complex, so its sentence says how it forms, and
+    Character is the whole of it, so its sentence is the whole and never a
+    ring of the chain. The tier table names the rung by the same word. */
+ ok(/two hyper complexes/.test(T['super complex']||'')&&/ring/.test(T['super complex']||''),
+  'the super complex has a sentence, and it is the rung, two hyper complexes one ring further in, got '+JSON.stringify(T['super complex']));
+ ok(!!T['character']&&!/\bring\b|hyper complex/i.test(T['character'])&&/masks/.test(T['character']),
+  'and Character is the whole of it, the masks and everything under them, never a ring of the chain, got '+JSON.stringify(T['character']));
+ ok(E.SIGHT.filter(x=>x.k==='sup').length===1&&E.SIGHT.filter(x=>x.k==='sup').every(x=>x.nm==='super complexes'&&!/character/i.test(x.what)),
+  'the tier table names the rung super complexes and never Character, got '+JSON.stringify(E.SIGHT.filter(x=>x.k==='sup')));
  /* the sentence a family builds reads off the table it describes, so it cannot drift */
  ok(T['earth'].indexOf('Taurus, Virgo and Capricorn')>=0&&T['fire'].indexOf('Aries, Leo and Sagittarius')>=0
   &&T['air'].indexOf('Gemini, Libra and Aquarius')>=0&&T['water'].indexOf('Cancer, Scorpio and Pisces')>=0,
@@ -7782,6 +8388,70 @@ g('S0 · the word pass: swearing and a bad day read, and the two known traps sta
  ok(keys.length>0&&E.lexVersion()===E.LEX_VERSION,'the lexicon stamp is taken after the pass, so an entry read by these words says so');
 }
 
+g('PLAIN · an idiom that carries no feeling outranks its own words and counts nowhere');
+/* Inference audit P2-3, 24 October. Measured on d9ca4450 before this: "I am
+   afraid I cannot make it tonight" read fear at the root, "I am dying to see
+   the new film" read grief at the heart, and "I still cannot stop crying"
+   read the sacral compulsion phrase on top of the crying. LEXPLAIN carries
+   each idiom and the words that may follow it, and scanStory skips the
+   idiom's own words in the phrase, word and adjective passes. Held here: the
+   idiom reads nothing of its own, the words after it still read, and the
+   same words said outside the idiom keep their feeling. */
+{
+ const {parseStory,scanStory,normMap,plainSpans,LEXPLAIN,lexVersion,LEX_VERSION}=E;
+ const sum=o=>Object.keys(o||{}).reduce((a,k)=>a+Math.abs(o[k]),0);
+ const fets=t=>[...new Set(parseStory(t).imprints.map(i=>i.fetter))].sort().join(',');
+ const has=(t,w)=>scanStory(t).some(h=>h.t===w);
+ /* the apology, only as a whole polite clause */
+ ['I am afraid I cannot make it tonight.',"I'm afraid I can't make it.","I'm afraid not.",
+  'I am afraid so.','I am afraid I cannot make it tomorrow, sorry.'].forEach(t=>{const p=parseStory(t);
+  ok(p.imprints.length===0&&sum(p.bands)===0&&!has(t,'afraid'),
+   JSON.stringify(t)+' is an apology and reads no fear: '+JSON.stringify(p.bands));});
+ /* and fear said plainly stays fear: a real fear, a sentence end, a comma,
+    a degree word and the word alone, and the six lines the first cut of
+    the row read as nothing, each by name, with the two it read without
+    their fear */
+ ['I am afraid I will lose him.','I am afraid. Not now.','I am afraid, not tired.',
+  'I am so afraid I cannot sleep.','I am afraid.',
+  'I am afraid I have to leave him.','I am afraid I must be broken.','I am afraid I need to hide.',
+  'I am afraid so much of the time.','I am afraid not everyone likes me.',
+  'I am afraid I cannot make it through another night.',
+  'I am afraid I cannot cope.','I am afraid I cannot do this anymore.'].forEach(t=>{
+  ok(fets(t).split(',').indexOf('Fear')>=0&&has(t,'afraid'),JSON.stringify(t)+' still reads fear: '+fets(t));});
+ /* the cost of a closed list, held so it is seen: a polite clause the row
+    does not carry still reads fear, as every one did before */
+ ok(has("I'm afraid I can't come to dinner.",'afraid'),
+  'an apology the row does not list still reads fear, the cost of reading only whole clauses');
+ /* the wish */
+ const dy='I am dying to see the new film.';
+ ok(parseStory(dy).imprints.length===0&&!has(dy,'dying'),
+  JSON.stringify(dy)+' is wanting and reads no grief: '+JSON.stringify(parseStory(dy).bands));
+ ['My father is dying.','He is dying. To lose him now is too much.'].forEach(t=>{
+  ok(fets(t).split(',').indexOf('Sad')>=0,JSON.stringify(t)+' still reads grief: '+fets(t));});
+ /* crying or laughing that will not stop */
+ const cr='I still cannot stop crying.';
+ ok(!scanStory(cr).some(h=>h.kind==='phrase')&&has(cr,'crying')&&fets(cr)==='Sad',
+  JSON.stringify(cr)+' reads the crying and no compulsion: '+fets(cr));
+ ok(parseStory("I can't stop laughing.").imprints.length===0,'"I can\'t stop laughing." reads nothing');
+ ['I cannot stop checking the locks.','I cannot stop.'].forEach(t=>{
+  ok(scanStory(t).some(h=>h.kind==='phrase'&&h.label==='compulsion'),JSON.stringify(t)+' is still a compulsion');});
+ /* every row is reachable with each word that may follow it, no idiom is
+    plain on its own, and a row marked to close is plain only when nothing
+    of its clause comes after the follower */
+ const dead=[], alone=[], open=[];
+ LEXPLAIN.forEach(r=>r[0].forEach(idm=>{
+  (r[1].length?r[1]:['see']).forEach(f=>{const t=idm+' '+f+(r[2]?'':' it');
+   if(!plainSpans(t,normMap(t)).length)dead.push(t);
+   const u=idm+' '+f+' it'; if(r[2]&&plainSpans(u,normMap(u)).length)open.push(u);});
+  if(plainSpans(idm,normMap(idm)).length)alone.push(idm);}));
+ ok(dead.length===0,'every idiom is found with each word that may follow it, '+dead.length+' are not: '+JSON.stringify(dead.slice(0,4)));
+ ok(alone.length===0,'and none is plain with nothing after it: '+JSON.stringify(alone));
+ ok(open.length===0,'and a closing row is not plain with its clause still going: '+JSON.stringify(open.slice(0,4)));
+ /* the stamp moves when the table does */
+ LEXPLAIN[1][0].push('xyzzy to'); const mv=lexVersion(); LEXPLAIN[1][0].pop();
+ ok(mv!==LEX_VERSION&&lexVersion()===LEX_VERSION,'adding a plain idiom moves the lexicon stamp, and taking it out puts it back');
+}
+
 g('S1 · a word said with a no is kept, named as denied, and adds nothing to any reading');
 /* REVIEW-sniffer-audit-2026-10-09.md, ruling 1 and package S1. Measured on
    main before this: "I was not angry" read Anger 18 at the solar plexus, the
@@ -7832,16 +8502,34 @@ g('S1 · a word said with a no is kept, named as denied, and adds nothing to any
    JSON.stringify(t)+' is not a denial: every hit counts, '+JSON.stringify(p.bands)+(den(p).length?', but denied '+den(p).map(h=>h.t).join(','):''));});
  ok(Array.isArray(E.NEG_NOT_DENY)&&E.NEG_NOT_DENY.length>0&&E.NEG_NOT_DENY.every(w=>NOTDEN.some(t=>new RegExp("(n't|not|never|cannot) "+w+'\\b','i').test(t))),
   'every frame word is named in one table and each has a sentence above: '+JSON.stringify(E.NEG_NOT_DENY));
- /* A COHERENT WORD IS NEVER DENIED, and the reason is the ruling's own: a
-    denial never raises a reading, and denying a word that subtracts would. */
+ /* A COHERENT WORD SAID WITH A NO COUNTS NOWHERE, P3-1 of the inference
+    audit, 24 October. It used to be never denied, and "I am not grateful"
+    subtracted a calm the person said they did not have. Denied, it reads as
+    the sentence without it: never below it, which was the subtraction, and
+    never above it, which is the ruling's own reason a denial must not raise
+    a reading. */
  const coh=parseStory('I am not grateful.');
- ok(den(coh).length===0&&coh.hits.some(h=>h.band==='coherent'),'a coherent word after a no still subtracts, the reading it had');
- /* the sentence, the chart, the list and the score read one flag */
+ ok(den(coh).length>0&&den(coh).every(h=>h.t==='grateful'&&h.negw==='not')&&!coh.hits.some(h=>h.band==='coherent'),
+  'a coherent word after a no is denied with its no and is not among the counted hits: '+JSON.stringify(den(coh).map(h=>[h.t,h.kind,h.negw])));
+ reset(3,0,6); const c0=JSON.stringify(S.charge); E.applyStory('I am not grateful.');
+ ok(JSON.stringify(S.charge)===c0,'committing it moves no charge on the field, down or up');
+ reset(3,0,6); E.applyStory('I am grateful.');
+ ok(JSON.stringify(S.charge)!==c0,'and the calm word said plainly still lowers it');
+ /* grateful, because "not calm" is a word of its own, a LEXANT entry that
+    reads as charge, and would test the wrong thing */
+ reset(3,0,6); E.applyStory('I am not grateful and I am scared.'); const cm=JSON.stringify(S.charge);
+ reset(3,0,6); E.applyStory('I am scared.');
+ ok(JSON.stringify(S.charge)===cm,'beside real charge it lands exactly as the charge alone');
+ ok(parseStory("I can't help feeling grateful.").hits.some(h=>h.band==='coherent'),
+  'and a can\'t help frame is not a no to the calm word after it');
+ /* the sentence, the chart, the list and the score read one flag, the calm
+    words with the rest */
  PAIRS.map(x=>[x[1],true]).concat([['I am not afraid. Afraid now.',true],['I was not scared but I was angry.',true],
-  ["I can't stop crying.",false],['Not sad, not angry, just tired of it.',true]]).forEach(([t,struck])=>{
+  ["I can't stop crying.",false],['Not sad, not angry, just tired of it.',true],['I am not grateful.',true],
+  ['I am grateful.',false]]).forEach(([t,struck])=>{
   const p=parseStory(t), m=marksOf(t,p), nm=normMap(t), at={};
   den(p).forEach(h=>{at[nm.map[h.at+1]]=1;});
-  const bad=m.filter(k=>!k.coh&&(!!k.neg!==!!at[k.s]));
+  const bad=m.filter(k=>!!k.neg!==!!at[k.s]);
   ok(bad.length===0&&m.some(k=>k.neg)===struck&&(den(p).length>0)===struck,
    'every struck mark is a denied hit and every denied hit is struck, in '+JSON.stringify(t)
    +(bad.length?': '+JSON.stringify(bad.map(k=>t.slice(k.s,k.e))):'')+(m.some(k=>k.neg)!==struck?', struck should be '+struck:''));});
@@ -7888,6 +8576,18 @@ g('S2 · a charge word about someone else is kept, listed, and never scored on t
  ok(oth(mf).length===1&&oth(mf)[0].t==='shouted'&&mf.hits.some(h=>h.t==='froze'),
   'one sentence, two people: her shouting is held and my freezing is read, '+say('When my mother shouted I froze.'));
  ok(held('Then Sarah screamed at me.','sarah'),'a name opening a clause is someone else: '+say('Then Sarah screamed at me.'));
+ /* A NAME THAT STARTS ITS SENTENCE, P1-1 of the inference audit, 23 October.
+    It was read as the writer's, named in GAPS: "Sarah screamed at me and I
+    froze" put Sarah's screaming on the writer. A capitalised first word the
+    reader does not know is unclear now, held and said so, and the writer's
+    own word after "I" in the same sentence still reads. */
+ const sf=parseStory('Sarah screamed at me and I froze.');
+ ok(oth(sf).length===1&&oth(sf)[0].unclear===true&&oth(sf)[0].who==='sarah'&&sf.hits.some(h=>h.t==='froze'),
+  'a name starting its sentence is held as unclear, and my freezing is read: '+say('Sarah screamed at me and I froze.'));
+ ok(held('Sarah was furious.','sarah')&&held('Mark yelled at me.','mark'),'and so is a name alone before the word: '+say('Sarah was furious.'));
+ ["Work was awful.","Today was awful.","Traffic was awful.","Monday was awful.","Everything was terrible.","It was terrifying."]
+  .forEach(t=>ok(writer(t),'a common first word is not a name, and the sentence is the writer\'s: '+say(t)));
+ ok(E.sniffLaws('Sarah lied to me.').every(l=>l.law!=='Truth'),'and the law reader holds her lie the same way');
  ok(writer('I went to London and felt terrified.'),'and a capital after a word like "to" is a place, not a person: '+say('I went to London and felt terrified.'));
  const ha=parseStory('Her anger scared me.');
  ok(oth(ha).length>=1&&sum(ha.bands)===0,'her anger is hers, and "her anger scared me" has her anger as its subject: '+say('Her anger scared me.'));
@@ -7962,9 +8662,11 @@ g('SB · the saboteur card is the same 33 as SABDEF, and its opposites are read 
 
    SAB_LIB's own map resolves, and the card can only print what it holds:
    every address id is a real node and every family has a d, since the card
-   prints d and never sub. Superior is in SAB_LIB and in neither table, and it
-   must stay without a card row, because a row would be a definition nobody
-   wrote. */
+   prints d and never sub. Superior was in SAB_LIB and in neither table, and
+   was held here without a card row, because a row would have been a
+   definition nobody wrote. It was retired from SAB_LIB on 22 October, and
+   engine/data/nodes.js says why, so the rule is now the stronger one: no
+   library name sits outside the 33 at all. */
 {
  const {SABDEF,SABCARD,SAB_LIB,HCX_LIB}=E;
  const KK=s=>String(s).replace(/^[Tt]he\s+/,'').toLowerCase().replace(/-/g,' ');
@@ -7994,9 +8696,223 @@ g('SB · the saboteur card is the same 33 as SABDEF, and its opposites are read 
  ok(SAB_LIB.every(s=>s.nids.every(i=>NODES.some(n=>n.i===i))),'every SAB_LIB address id is a real node');
  ok(SAB_LIB.every(s=>{const f=HCX_LIB.find(h=>h.nm===s.hcx);return f&&typeof f.d==='string'&&f.d.length>0;}),
   'every SAB_LIB family resolves and carries a d to print, '+linked+' of the 33 are mapped and '+(SAB33.length-linked)+' print the gap');
- const orphans=SAB_LIB.filter(s=>!SAB33.some(r=>r[0]===s.nm));
- ok(orphans.every(s=>!SABDEF[KK(s.nm)]&&!SABCARD[KK(s.nm)]),
-  'a SAB_LIB name outside the 33 gets no card row, '+JSON.stringify(orphans.map(s=>s.nm)));
+ const orphans=SAB_LIB.filter(s=>!SAB33.some(r=>KK(r[0])===KK(s.nm)));
+ ok(orphans.length===0,'every SAB_LIB name is one of the 33, so each has a definition and a card row, orphans: '
+  +JSON.stringify(orphans.map(s=>s.nm)));
+}
+
+g('SW · a range match is checked at a seat its own first charge can reach');
+/* PIECE ONE OF 22 OCTOBER, core.js SAB_SEAT. compute() names a SAB33 range
+   match only when its seat holds an address at sq 3 or more. The seat was
+   CHG2SEAT, and CHG2SEAT seats apathy at the throat, where no address carries
+   Apathy, so six rows led by apathy could never be named from their own
+   configuration. Measured on the build before the fix, over laws 0 to 10 and
+   five souls at each row's band centre and edges: Pleaser, Hyper-Achiever,
+   Restless, Dreamer, Escapist and Avoider, never. This group was run there
+   first and failed on exactly those six. */
+{
+ const {SAB_SEAT,CHG2SEAT,CHG2FET,sab33Detect,KB_KEY}=E;
+ const fetOf=ch=>CHG2FET[ch]||CHARGES.find(c=>c.toLowerCase()===ch)||null;
+ const ruledHolds=ch=>W.some(n=>n.b===CHG2SEAT[ch]&&n.cf===fetOf(ch));
+ /* the ruling stands wherever it can be honoured */
+ const moved=Object.keys(CHG2SEAT).filter(ch=>SAB_SEAT[ch]!==CHG2SEAT[ch]);
+ ok(moved.every(ch=>!ruledHolds(ch)),'the check leaves CHG2SEAT alone wherever its seat holds the charge, moved: '+JSON.stringify(moved));
+ ok(Object.keys(CHG2SEAT).every(ch=>!fetOf(ch)||!W.some(n=>n.cf===fetOf(ch))||W.some(n=>n.b===SAB_SEAT[ch]&&n.cf===fetOf(ch))),
+  'and every charge is checked at a seat holding at least one of its addresses');
+ ok(!W.some(n=>n.b===CHG2SEAT.apathy&&n.cf==='Apathy')&&W.some(n=>n.b===SAB_SEAT.apathy&&n.cf==='Apathy'),
+  'apathy is the case it was written for: none at the '+CHG2SEAT.apathy.toLowerCase()+', checked at the '+SAB_SEAT.apathy.toLowerCase());
+ /* every match the detector returns is seated where its own first charge sits */
+ const AX=k=>k==='sadness'?'Sad':k.charAt(0).toUpperCase()+k.slice(1);
+ const seatOff=[];
+ SAB33.forEach(row=>{reset(0,0,6); row[1].forEach(p=>{S.charge[AX(p[0])]=(p[1]+p[2])/2;}); compute();
+  sab33Detect().filter(d=>d.nm===row[0]).forEach(d=>{
+   if(!W.some(n=>n.b===d.band&&n.cf===fetOf(d.charges[0])))seatOff.push(row[0]+' at '+d.band);});});
+ ok(seatOff.length===0,'no range match is seated where its first charge has no address, off: '+JSON.stringify(seatOff));
+ /* AND EVERY ROW CAN BE NAMED FROM ITS OWN CONFIGURATION. Laws 0 to 10 and
+    five souls, at band centre: the range route, read off the reading itself. */
+ const SOULS=[[0,[0,1]],[4,[3,7]],[9,[6,11]],[14,[9,2]],[18,[11,5]]];
+ const never=SAB33.filter(row=>!SOULS.some(sl=>[0,2,4,6,8,10].some(law=>{
+  S.doms=[sl[0]];S.arcs=sl[1].slice();S.roots=[];buildSoul();
+  CHARGES.forEach(c=>{S.charge[c]=0;S.replace[c]=0;}); SINAMES.forEach(l=>S.law[l]=law); lawsIn();
+  row[1].forEach(p=>{S.charge[AX(p[0])]=(p[1]+p[2])/2;});
+  return compute().sabs.some(s=>s.named&&KB_KEY(s.nm)===KB_KEY(row[0]));})));
+ ok(never.length===0,'every one of the '+SAB33.length+' can be named by its own band configuration, never: '+JSON.stringify(never.map(r=>r[0])));
+ reset(0,0,6);
+}
+
+g('SL · the library: every saboteur has a place in the body, grounded on its own charges, and asks its own band');
+/* PIECES TWO AND THREE OF 22 OCTOBER, engine/data/nodes.js and compute.js,
+   and the re-grounding of the first thirteen rows later the same day, which
+   the owner asked for. Every SAB33 row but one has a SAB_LIB row, and the
+   one is named here with its reason, so wiring it later is a decision.
+   Superior is retired. Every row carries only its own canon charges,
+   because the engine reads an address only through its charge, and leans
+   the way its bands do, but for one exception named here. No two rows share
+   two addresses. The address route names a row only while its own
+   configuration is on the band ramp, and it reaches every row inside its
+   own band. Each rule is run first on rows that break it: the thirteen as
+   they came, held below, broke the charge rule 16 times in 10 rows, the
+   lean in three rows and the pair rule once, and three rows of the first
+   pass broke the lean. Last, each row's family follows the owner's TULA
+   notes, which six of the thirteen did not as they came. */
+{
+ const {SAB_LIB,HCX_LIB,ALL_SAB,sabFetters,sabLevels,KB_KEY,BY}=E;
+ /* Innocent: one low band, fear 2 to 4, and the addresses that say what it
+    does carry Disgust. Three fear addresses only reach the address route's
+    load above its band. nodes.js has the measurement. */
+ const FLAGGED=['Innocent'];
+ /* the thirteen as they came with the original source, before the
+    re-grounding: the known bad case every rule below is run on first */
+ const ASCAME=[['Micromanager',[4,36,50]],['Victim',[6,50,3]],['Perfectionist',[40,37,45]],['Pleaser',[66,2,65]],
+  ['Hyper-Achiever',[33,40,48]],['Hyper-Vigilant',[79,1,82]],['Judge',[37,48,82]],['Avoider',[1,14,89]],
+  ['Worrywart',[45,1,3]],['Loner',[55,1,49]],['Nihilist',[91,88,90]],['Aggressor',[36,49,38]],['Imposter',[2,45,66]]]
+  .map(x=>({nm:x[0],nids:x[1]}));
+ const libOf=nm=>SAB_LIB.find(s=>KB_KEY(s.nm)===KB_KEY(nm));
+ const rowOf=nm=>SAB33.find(r=>KB_KEY(r[0])===KB_KEY(nm));
+ const unwired=SAB33.filter(r=>!libOf(r[0])).map(r=>r[0]);
+ ok(JSON.stringify(unwired)===JSON.stringify(FLAGGED),
+  'every SAB33 row has a library row but the one flagged, unwired: '+JSON.stringify(unwired));
+ ok(SAB_LIB.length===SAB33.length-FLAGGED.length,'and one library row each, '+SAB_LIB.length);
+ ok(!SAB_LIB.some(s=>KB_KEY(s.nm)==='superior'),'Superior is retired from the library');
+ /* Superior's three addresses. 38 is still Aggressor's. 33 and 48 carry
+    Anger, and since the re-grounding no row that answers to them may hold
+    them, so the solar plexus's inferred anger cluster reads them, in
+    Grandiosity, the family Superior had */
+ const solar=ALL_SAB.filter(s=>s.unnamed&&[33,48].every(i=>s.nids.indexOf(i)>=0));
+ ok(libOf('Aggressor').nids.indexOf(38)>=0&&!SAB_LIB.some(s=>s.nids.indexOf(33)>=0||s.nids.indexOf(48)>=0)
+   &&solar.length===1&&solar[0].hcx==='Grandiosity',
+  '38 stays Aggressor\'s, and 33 and 48 are read by one inferred cluster in Grandiosity: '+JSON.stringify(solar.map(s=>s.nm+' '+s.hcx)));
+ ok(SAB_LIB.every(s=>s.nids.length===3&&new Set(s.nids).size===3&&s.nids.every(i=>BY[i]&&!BY[i].b.startsWith('Field'))),
+  'every row is three different somatic addresses');
+ ok(SAB_LIB.every(s=>HCX_LIB.some(h=>h.nm===s.hcx)),'every row names one of the six families');
+ /* RULE 2, GROUNDED ON ITS OWN CHARGES, on every row: there is no legacy
+    exemption any more */
+ const FET={fear:'Fear',anger:'Anger',shame:'Shame',disgust:'Disgust',apathy:'Apathy',shock:'Shock',
+  sadness:'Sad',surprise:'Surprise',anticipation:'Anticipation'};
+ const offCharge=rows=>{const out=[];rows.forEach(s=>{const row=rowOf(s.nm); if(!row)return;
+  const own=row[1].map(p=>FET[p[0]]);
+  s.nids.forEach(i=>{if(own.indexOf(BY[i].cf)<0)out.push(s.nm+' '+i+' '+BY[i].k+' carries '+BY[i].cf);});});return out;};
+ const offCame=offCharge(ASCAME);
+ ok(offCame.length===16&&new Set(offCame.map(m=>m.split(' ')[0])).size===10,
+  'the check catches the thirteen as they came: '+offCame.length+' addresses off their own charges in '
+  +new Set(offCame.map(m=>m.split(' ')[0])).size+' rows');
+ ok(offCharge(SAB_LIB).length===0,'and every address of every row carries one of its own SAB33 charges, off: '+JSON.stringify(offCharge(SAB_LIB)));
+ /* RULE 3, A ROW LEANS THE WAY ITS BANDS DO: no charge has more of the three
+    than the charge whose band sits highest, read at its centre. Escapist is
+    the one exception. Its fear band is the higher and only 1 Fear says what
+    it does; nodes.js has the reason and the measurement. */
+ const LEAN_EXCEPT=['Escapist'];
+ const mid=p=>(p[1]+p[2])/2;
+ const leanOff=rows=>rows.filter(s=>{const row=rowOf(s.nm); if(!row)return false;
+  const cnt={}; row[1].forEach(p=>cnt[FET[p[0]]]=0); s.nids.forEach(i=>{if(cnt[BY[i].cf]!==undefined)cnt[BY[i].cf]++;});
+  const top=Math.max(...row[1].map(mid)), topN=Math.max(...row[1].filter(p=>mid(p)===top).map(p=>cnt[FET[p[0]]]));
+  return row[1].some(p=>cnt[FET[p[0]]]>topN);}).map(s=>s.nm);
+ const FIRSTPASS=[{nm:'Hyper-Rational',nids:[81,84,74]},{nm:'Cynic',nids:[77,98,13]},{nm:'Escapist',nids:[14,27,18]}];
+ ok(JSON.stringify(leanOff(ASCAME))===JSON.stringify(['Micromanager','Perfectionist','Judge'])
+   &&JSON.stringify(leanOff(FIRSTPASS))===JSON.stringify(['Hyper-Rational','Cynic','Escapist']),
+  'the check catches the rows that broke the lean, as they came '+JSON.stringify(leanOff(ASCAME))
+  +' and in the first pass '+JSON.stringify(leanOff(FIRSTPASS)));
+ ok(JSON.stringify(leanOff(SAB_LIB))===JSON.stringify(LEAN_EXCEPT),
+  'and every row leans the way its bands do but the one exception, off: '+JSON.stringify(leanOff(SAB_LIB)));
+ /* RULE 4, ONE DETECTOR, ONE NAME: no two rows share two addresses, now with
+    no exception. Pleaser and Imposter shared 2 and 66 as they came. */
+ const pairsOf=rows=>{const out=[];
+  for(let i=0;i<rows.length;i++)for(let j=i+1;j<rows.length;j++){
+   const sh=rows[i].nids.filter(x=>rows[j].nids.indexOf(x)>=0);
+   if(sh.length>=2)out.push(rows[i].nm+'/'+rows[j].nm);}
+  return out;};
+ ok(JSON.stringify(pairsOf(ASCAME))===JSON.stringify(['Pleaser/Imposter']),
+  'the check finds the pair the thirteen came with, '+JSON.stringify(pairsOf(ASCAME)));
+ ok(pairsOf(SAB_LIB).length===0,'and no two rows share two addresses, '+JSON.stringify(pairsOf(SAB_LIB)));
+ /* THE ADDRESS ROUTE ASKS THE BAND. Fear alone loads Pleaser's three past
+    3.7, two of them Fear, while its own configuration, apathy and fear, has
+    no apathy in it. It is not named. */
+ reset(0,0,6); S.charge.Fear=10; let r=compute();
+ const pl=libOf('Pleaser'), plW=pl.nids.map(i=>BY[i]).reduce((a,n)=>a+n.sq,0)/3;
+ ok(plW>=3.7&&!r.sabs.some(s=>!s.over&&KB_KEY(s.nm)==='pleaser'),
+  'fear alone loads Pleaser\'s three addresses to '+plW.toFixed(2)+' and does not name it, because its own band is apathy and fear');
+ /* and inside its own band the check can never remove a naming: the ramp is
+    above zero everywhere inside every band */
+ const inside=[];
+ SAB33.forEach(row=>{const pos=p=>[p[1],(p[1]+p[2])/2,p[2]];
+  let cfgs=[{}];row[1].forEach(p=>{cfgs=[].concat(...cfgs.map(c=>pos(p).map(v=>Object.assign({},c,{[p[0]]:v}))));});
+  cfgs.forEach(c=>{const L={};Object.keys(FET).forEach(k=>L[k]=c[k]||0);if(sabFetters(row[1],L)<=0)inside.push(row[0]);});});
+ ok(inside.length===0,'the band check is open everywhere inside every band, closed at: '+JSON.stringify([...new Set(inside)]));
+ /* and the field the address route was built for still names it off its
+    addresses: Pleaser at apathy 3 and fear 7, both inside its band, where the
+    address reading is the heavier one and so the entry the merge keeps */
+ reset(0,0,6); S.charge.Apathy=3; S.charge.Fear=7; r=compute();
+ ok(r.sabs.some(s=>!s.over&&!s.named&&KB_KEY(s.nm)==='pleaser'),
+  'with apathy 3 and fear 7 inside its band, the address route names Pleaser');
+ /* AND THE ADDRESS ROUTE REACHES EVERY ROW INSIDE ITS OWN BAND. As they came,
+    Pleaser, Perfectionist, Hyper-Achiever, Hyper-Vigilant and Worrywart had
+    one address or none on their own charges, so their three reached 3.7
+    only off charges they are not made of, and the address route never named
+    them inside their own band. The route's own test, the mean load of the
+    three at 3.7 or more with the configuration on the ramp, read as SW reads
+    the range route: laws 0 to 10 and five souls, at each band's low, centre
+    and high, nothing else held. Run on the five as they came first. */
+ const SOULS=[[0,[0,1]],[4,[3,7]],[9,[6,11]],[14,[9,2]],[18,[11,5]]];
+ const reached=(nm,nids)=>{const row=rowOf(nm); let cfgs=[{}];
+  row[1].forEach(p=>{cfgs=[].concat(...cfgs.map(c=>[p[1],mid(p),p[2]].map(v=>Object.assign({},c,{[p[0]]:v}))));});
+  return SOULS.some(sl=>[0,2,4,6,8,10].some(law=>cfgs.some(c=>{
+   S.doms=[sl[0]];S.arcs=sl[1].slice();S.roots=[];buildSoul();
+   CHARGES.forEach(ch=>{S.charge[ch]=0;S.replace[ch]=0;}); SINAMES.forEach(l=>S.law[l]=law); lawsIn();
+   Object.keys(c).forEach(k=>{S.charge[FET[k]]=c[k];}); compute();
+   return nids.reduce((a,i)=>a+BY[i].sq,0)/3>=3.7&&sabFetters(row[1],sabLevels(true))>0;})));};
+ const FIVE=['Pleaser','Perfectionist','Hyper-Achiever','Hyper-Vigilant','Worrywart'];
+ const cameReached=FIVE.filter(nm=>reached(nm,ASCAME.find(x=>x.nm===nm).nids));
+ ok(cameReached.length===0,'the check fails the five as they came, reached: '+JSON.stringify(cameReached));
+ const never=SAB_LIB.filter(s=>!reached(s.nm,s.nids)).map(s=>s.nm);
+ ok(never.length===0,'and the address route names every one of the '+SAB_LIB.length+' rows inside its own band, never: '+JSON.stringify(never));
+ reset(0,0,6);
+ /* THE FAMILY FOLLOWS THE OWNER'S TULA NOTES, on every row since the
+    families of the first thirteen followed their addresses. TULA ("Emotions
+    & Saboteurs & Hyper Personalities", April 2026) lists the saboteurs each
+    hyper-complex personality comes from. It writes Controller for S02 and
+    Sceptic for Skeptic, written here under the codex names, and a Rebel the
+    codex does not carry. HCX_LIB's sub says which family translates each
+    personality, so the family is read off HCX_LIB and not typed here.
+    Where TULA names one family the row carries it. Where it names two, the
+    row carries the one nodes.js chose and argued, held here so changing it
+    is a decision. Where it names none and the note follows a sibling, the
+    row carries the sibling's family. Run first on the families as they came,
+    which break it six times, and on the two first-pass rows that followed
+    the Worrywart, left behind when it moved. */
+ const TULA={narcissism:['Micromanager','Hyper-Achiever','Judge'],machiavellian:['Manipulator','Skeptic','Rebel'],
+  bipolar:['Dramatizer','Restless','Victim'],BPD:['Victim','People-Pleaser','Imposter'],
+  OCPD:['Stickler','Perfectionist','Hyper-Vigilant'],histrionic:['Dramatizer','People-Pleaser','Dreamer'],
+  antisocial:['Rebel','Aggressor','Deflector'],anxiety:['Worrywart','Hyper-Vigilant','Avoider'],
+  depression:['Victim','Pessimist','Loner'],ADHD:['Restless','Dreamer','Imposter']};
+ const famOfSub=t=>{const h=HCX_LIB.find(f=>String(f.sub).split(' · ').indexOf(t)>=0);return h?h.nm:null;};
+ const untranslated=Object.keys(TULA).filter(t=>!famOfSub(t));
+ ok(untranslated.length===0,'every personality TULA names is one HCX_LIB translates, untranslated: '+JSON.stringify(untranslated));
+ const tulaFam=nm=>[...new Set(Object.keys(TULA).filter(t=>TULA[t].indexOf(nm)>=0).map(famOfSub))];
+ const CHOSEN={Victim:'Collapse','Hyper-Vigilant':'Rigidity',Imposter:'Collapse',Dramatizer:'Grandiosity',
+  'People-Pleaser':'Collapse',Dreamer:'Grandiosity'};
+ const SIBLING={Catastrophizer:'Worrywart',Overthinker:'Worrywart',Martyr:'Victim',Cynic:'Nihilist',
+  Enabler:'Pleaser',Pleaser:'People-Pleaser'};
+ const twoNamed=SAB_LIB.filter(s=>tulaFam(s.nm).length>1).map(s=>s.nm).sort();
+ ok(JSON.stringify(twoNamed)===JSON.stringify(Object.keys(CHOSEN).sort()),
+  'every row TULA names two families for has its choice held here, '+JSON.stringify(twoNamed));
+ const famOff=rows=>{const by={};rows.forEach(s=>{by[s.nm]=s.hcx;});const out=[];
+  rows.forEach(s=>{const n=tulaFam(s.nm);
+   if(n.length===1&&s.hcx!==n[0])out.push(s.nm+' '+s.hcx+', TULA '+n[0]);
+   if(n.length>1&&s.hcx!==CHOSEN[s.nm])out.push(s.nm+' '+s.hcx+', chosen '+CHOSEN[s.nm]+' of '+n.join(' or '));
+   if(!n.length&&SIBLING[s.nm]&&s.hcx!==by[SIBLING[s.nm]])out.push(s.nm+' '+s.hcx+', its sibling '+SIBLING[s.nm]+' '+by[SIBLING[s.nm]]);});
+  return out;};
+ const asFam=f=>SAB_LIB.map(s=>({nm:s.nm,nids:s.nids,hcx:f[s.nm]||s.hcx}));
+ const CAMEFAM={Micromanager:'Rigidity',Judge:'Predatory','Hyper-Vigilant':'Dysregulation',Avoider:'Dissociation',
+  Worrywart:'Dysregulation',Loner:'Dissociation',Catastrophizer:'Dysregulation',Overthinker:'Dysregulation'};
+ const offCameFam=famOff(asFam(CAMEFAM)).map(m=>m.split(' ')[0]);
+ ok(JSON.stringify(offCameFam)===JSON.stringify(['Micromanager','Hyper-Vigilant','Judge','Avoider','Worrywart','Loner']),
+  'the check catches the six families as they came, '+JSON.stringify(offCameFam));
+ const leftBehind=famOff(asFam({Micromanager:'Grandiosity',Judge:'Grandiosity','Hyper-Vigilant':'Rigidity',
+  Avoider:'Collapse',Worrywart:'Collapse',Loner:'Collapse',Catastrophizer:'Dysregulation',Overthinker:'Dysregulation'}))
+  .map(m=>m.split(' ')[0]);
+ ok(JSON.stringify(leftBehind)===JSON.stringify(['Overthinker','Catastrophizer']),
+  'and the two that follow the Worrywart, left behind when it moved, '+JSON.stringify(leftBehind));
+ ok(famOff(SAB_LIB).length===0,'and every row\'s family follows TULA, its chosen one or its sibling, off: '+JSON.stringify(famOff(SAB_LIB)));
 }
 
 g('RB · every worked example with a row runs rituals, written in the shapes the Ritual page reads');
@@ -8264,6 +9180,40 @@ g('OWN WORD · a second emotion word never erases a stated one, each keeps its o
  fresh();
  const one=E.parseStory('I am angry').imprints;
  ok(one.length===4&&one.every(i=>i.fetter==='Anger'&&i.from==='solar'),'a lone anger word is still four Anger addresses at the solar plexus');
+}
+
+g('OWN NAMED · a feeling the word\'s own adjective names survives a seat that cannot house it');
+/* P0-1 of the inference audit, 23 October. "I feel disconnected and hollow"
+   names apathy. The crown holds one apathy address and eight anger ones, so
+   the quarter rule filed about 90 per cent of it as anger, measured on
+   77928172: three such entries read anger at 10 and, with the laws answered
+   at 3, the Compass named the writer The Devil. A stated fetter already
+   survived a seat that cannot house it. A word's own named feeling now does
+   too, and a feeling named elsewhere in the sentence still meets the quarter
+   rule, which is the grief filed as shame it was written to stop. */
+{
+ const fresh=()=>{E.loadProfile(E.blankProfile('ownnamed'));};
+ const fets=t=>{fresh();return [...new Set(E.parseStory(t).imprints.map(i=>i.fetter))].sort().join(',');};
+ const applied=t=>{fresh();return E.applyStory(t).applied||{};};
+ ok(fets('I feel disconnected and hollow')==='Apathy','disconnected and hollow read apathy and nothing else, '+fets('I feel disconnected and hollow'));
+ const d=applied('I feel disconnected and hollow');
+ ok((d.Apathy||0)>0&&!((d.Anger||0)>0),'and the charge lands on apathy with none on anger, '+JSON.stringify(d));
+ ok(fets('I am dissociating again')==='Apathy','dissociating reads apathy, '+fets('I am dissociating again'));
+ ok(fets('I feel unheard')==='Apathy','unheard reads apathy and not disgust, '+fets('I feel unheard'));
+ ok(fets('I am so tense')==='Anticipation','tense reads anticipation and not disgust, '+fets('I am so tense'));
+ ok(fets('I am anxious')==='Anticipation','anxious reads anticipation, the feeling the engine\'s own table gives anxiety, '+fets('I am anxious'));
+ /* the cases the quarter rule exists for, unchanged */
+ fresh();
+ const gs=E.parseStory('My father died and I feel ashamed').imprints;
+ ok(gs.filter(i=>i.from==='heart').every(i=>i.fetter==='Sad')&&gs.some(i=>i.fetter==='Shame'),
+  'grief stays sadness at the heart beside a shame word, '+JSON.stringify(gs.map(i=>i.from+'/'+i.fetter)));
+ ok(fets('I am angry')==='Anger'&&fets('I am terrified')==='Fear','a feeling its seat houses reads exactly as before');
+ /* and the reading that went wrong downstream */
+ const p=E.blankProfile('ownnamed3'); SINAMES.forEach(l=>{p.laws[l]=3;}); E.loadProfile(p);
+ for(let i=0;i<3;i++)E.applyStory('I feel disconnected and hollow');
+ const r=compute();
+ ok(!((S.charge.Anger||0)>0)&&r.balance.lean<0&&!(r.gov&&r.gov.nm==='The Devil'),
+  'three entries of it read inward, with no anger and no Devil, '+JSON.stringify({anger:S.charge.Anger,lean:r.balance.lean,gov:r.gov&&r.gov.nm}));
 }
 
 g('SEED SHARE · the share of the field that is still the seed is measured from the real blank');
@@ -8610,6 +9560,408 @@ g('CRISIS · the button a person presses: three numbers, each with its sentence 
  ok(S.open==='Is this a crisis?'&&S.h==='Tell me about it.'&&S.reach==='Reach someone now'&&S.talk==='Talk it through',
   'the button and the panel carry the words as ruled');
  ok(!/—/.test(JSON.stringify([L,S])),'and no em dash anywhere in them');
+}
+
+g('ID · one fixed code per thing the engine names, and one door every label goes through');
+/* PHASE ONE OF THE CONTENT LIBRARY, 23 October, engine/codes.js and
+   engine/data/codes.js. Identity and plumbing only: nothing here moves a
+   number, and compute() and trace.js do not read it yet. A code never
+   changes and a name may, so the codes asserted below are typed on purpose:
+   they are the identities being frozen, and a gate that read them back off
+   the table it tests would hold nothing. Counts are read off the run. */
+{
+ const {codeOf,codeKind,codeName,codeList,codeOfEntry,codeEmotionOf,codesCheck,codeTables,
+        SABDEF,LAW_DEFAULT}=E;
+ /* the live tables hold, every check at once */
+ const probs=codesCheck();
+ ok(probs.length===0,'codesCheck finds nothing wrong with the live tables, found '+probs.length+': '+JSON.stringify(probs.slice(0,6)));
+ /* AND EACH CHECK BITES. A copy of the tables with one thing broken, and the
+    check must name the thing. The live tables are never touched. */
+ const bites=(what,mut,word)=>{const t=Object.assign({},codeTables()); mut(t); const p=codesCheck(t);
+  ok(p.some(x=>x.indexOf(word)>=0),'the check catches '+what+', got '+JSON.stringify(p.slice(0,3)));};
+ bites('an alias that points at no code',t=>{t.CODE_ALIAS=t.CODE_ALIAS.concat([['canon','saboteur','Kontroller','S99','a test row']]);},'S99');
+ bites('a family renamed in HCX_LIB and not in CODE_FAMILY',t=>{t.HCX_LIB=t.HCX_LIB.map(h=>h.nm==='Collapse'?Object.assign({},h,{nm:'Kollapse'}):h);},'Kollapse');
+ bites('two ARCH rows swapped, which would re-point every stored p.soul.arcs',t=>{const a=t.ARCH.slice(),x=a[2];a[2]=a[3];a[3]=x;t.ARCH=a;},'ARCH[2]');
+ bites('a row for every source that shadows a MOB name',t=>{t.CODE_ALIAS=t.CODE_ALIAS.concat([['any','address','Entitlement','8','a test row']]);},'Entitlement');
+ bites('an unmapped row a code now answers',t=>{t.CODE_UNMAPPED=t.CODE_UNMAPPED.concat([['mob','saboteur','Judge','a test row']]);},'Judge');
+ bites('a retired name that is still a code',t=>{t.CODE_RETIRED=t.CODE_RETIRED.concat([['mob','saboteur','Stickler','2026-10-23','a test row']]);},'Stickler');
+ bites('an inferred cluster renamed off the rule',t=>{t.ALL_SAB=t.ALL_SAB.map(s=>s.nm==='Heart Mourner'?Object.assign({},s,{nm:'Heart Weeper'}):s);},'Heart Weeper');
+ bites('a library row that kept the old name of S02',t=>{t.SAB_LIB=t.SAB_LIB.map(s=>s.nm==='Micromanager'?Object.assign({},s,{nm:'Controller'}):s);},'Controller');
+ bites('a child emotion renamed in CHILD and not frozen',t=>{t.CHILD=t.CHILD.map(c=>c.nm==='Sad'?Object.assign({},c,{nm:'Sorrow'}):c);},'Sorrow');
+ bites('a structure code given twice',t=>{t.CODE_STRUCT=t.CODE_STRUCT.concat([['X01','A Copy','complex',t.CODE_STRUCT.filter(r=>r[2]==='complex').length,'I']]);},'X01 twice');
+
+ const is=(label,hint,code,m)=>{const r=codeOf(label,hint);
+  ok(r.ok&&r.code===code,m+': '+JSON.stringify(label)+(hint?' '+JSON.stringify(hint):'')+' is '+code+', got '+JSON.stringify(r.ok?r.code:r.why));};
+ const no=(label,hint,word,m)=>{const r=codeOf(label,hint);
+  ok(!r.ok&&r.why.indexOf(word)>=0,m+': '+JSON.stringify(label)+(hint?' '+JSON.stringify(hint):'')+' is refused naming '+JSON.stringify(word)+', got '+JSON.stringify(r.ok?r.code:r.why));};
+ /* saboteurs, and every spelling of one */
+ ok(SABDEF.micromanager.c==='S02'&&SABDEF.skeptic.c==='S17'&&SABDEF.avoider.c==='S33','the saboteur codes are SABDEF\'s own, kept');
+ is('Micromanager',null,'S02','the name the reading prints');
+ is('Controller',null,'S02','the owner renamed S02 on 18 October, and the old name still finds it');
+ is('Controller',{source:'canon'},'S02','canon.json still prints Controller');
+ is('Sceptic',{source:'book'},'S17','the book spells Skeptic once with a c');
+ is('The Negotiator',{source:'book'},'S01','the book\'s The is not part of the name');
+ no('Superior',null,'2026-10-22','a retired saboteur is refused with its day');
+ no('The Withholder',{source:'app'},'Avoider','the app\'s 33rd row is no code, and says why');
+ /* one word for several things is never picked, always named */
+ no('Collapse',null,'ambiguous','Collapse is a family, a canon.json complex and an address');
+ is('Collapse',{kind:'family'},'K3','as a family');
+ is('Collapse',{source:'canon',kind:'structure'},'X12','as canon.json\'s complex');
+ is('Collapse',{kind:'address'},String(NODES.find(n=>n.k==='Collapse').i),'as an address');
+ is('Mania',{kind:'pole'},'K3o','a pole is its family\'s code and o');
+ no('Narcissism',null,'ambiguous','Narcissism is the book\'s cluster I and canon.json\'s Narcissistic');
+ is('Narcissism',{kind:'family'},'K1','as a family, Grandiosity');
+ is('Narcissism',{kind:'structure'},'X04','as a structure, Narcissistic');
+ no('Innocent',null,'ambiguous','Innocent is a saboteur and an archetype');
+ no('Fear',null,'ambiguous','Fear is a child emotion and address 1');
+ is('Fear',{kind:'emotion'},'Fear','a child emotion\'s code is its CHILD name');
+ is('Fear',{kind:'address'},'1','and address 1 is Fear');
+ /* BLAME DISPLACEMENT AND ANTISOCIAL ARE TWO, by decision, written in
+    engine/data/codes.js: a merge later is an alias, a split later is not */
+ is('Blame Displacement',{source:'canon'},'X02','Blame Displacement');
+ is('Antisocial',{source:'canon'},'X06','and Antisocial is its own code');
+ is('Dark Triad',null,'X30','Dark Triad');
+ {const d=codeOf('X30'); ok(d.ok&&d.filed==='hyper_complex'&&d.tag==='I','and it stays filed where canon.json files it, inferred, '+JSON.stringify(d));}
+ /* the same label means another thing in another source */
+ is('Entitlement',{source:'canon',kind:'address'},'8','canon.json\'s Entitlement is address 8');
+ is('Entitlement',{kind:'address'},'38','MOB\'s is 38');
+ no('Entitlement',{source:'book'},'ambiguous','the book uses it for address 8 and as a band axis');
+ is('109',{source:'canon'},'112','canon.json numbers the field nodes another way');
+ is('109',null,'109','MOB\'s own 109 is its own');
+ is('Soul Star',{source:'canon'},'109','and spells Sol Star Soul Star');
+ is('Doubt of Source',{source:'canon'},'88','canon.json writes Source for God');
+ no('Doubt of Source',null,'not a code','and that spelling is only canon.json\'s');
+ no('112',{source:'nodes112'},'PARAM SHIVA','nodes_112\'s 112 is not said to be Gaia Gateway');
+ /* clusters, overshot readings, pairs, by rule */
+ const dead=(()=>{for(const b of BANDS)for(const e of E.CODE_EMOTION)if(!W.some(n=>n.b===b&&n.cf===e))return [b,e];return null;})();
+ ok(dead!==null,'some seat carries no address of some emotion, so a cluster can be coded and not live');
+ if(dead){const r=codeOf(codeName('S.'+E.B2K[dead[0]]+'.'+dead[1]));
+  ok(r.ok&&r.kind==='cluster'&&r.live===false,'a cluster the node map cannot make still has its code, and says it is not live: '+JSON.stringify(r));}
+ is('Micromanager overshot',null,'S02.over','an overshot reading is its code and .over');
+ is('Micromanager + Judge',null,'S02+S11','a pair is its two codes');
+ is('Judge + Micromanager',null,'S02+S11','whichever is heavier today');
+ no('Judge + Judge',null,'with itself','one voice counted twice is not a pair');
+ is('Collapse / Mania',null,'K3/K3o','a pair of families is its two codes');
+ /* archetypes and emotions */
+ is('Caretaker',null,'AR04','Caretaker is Caregiver');
+ no('Rebel',null,'ambiguous','Rebel is an archetype and a retired saboteur');
+ is('Rebel',{kind:'archetype'},'AR03','as an archetype');
+ no('Rebel',{kind:'saboteur'},'open ruling 6','as a saboteur it has no code, and says whose ruling');
+ no('Outlaw',null,'owner\'s call','Outlaw is no code until he says whether it is Rebel');
+ is('Sadness',{kind:'emotion'},'Sad','Sadness is the Sad axis');
+ no('Joy',{kind:'emotion'},'REROUTE','Joy is a charge label routed by rule, not a child emotion');
+ /* bad input is refused, never thrown */
+ const loop={}; loop.self=loop;
+ [[null,null,'string'],['',null,'string'],[loop,null,'string'],[BigInt(7),null,'string'],
+  ['Judge',{source:'nowhere'},'source'],['Judge',{kind:'nothing'},'kind'],['Judge',{kind:[]},'kind'],
+  ['Judge',{kind:loop},'kind']].forEach(x=>{let r; try{r=codeOf(x[0],x[1]);}catch(e){r={ok:false,why:'threw '+e.message};}
+  ok(r&&!r.ok&&r.why.indexOf(x[2])>=0&&r.why.indexOf('threw')<0,'a bad '+x[2]+' is refused by name, '+JSON.stringify(r));});
+ is(38,null,'38','an address given as a number');
+ no('Nobody overshot',null,'what it overshoots','an overshot reading of nothing is refused, and says which part');
+ [[null,'object with a name'],[{kind:'zz',nm:'Judge'},'sab, cx, hy or sup']].forEach(x=>{const r=codeOfEntry(x[0]);
+  ok(!r.ok&&r.why.indexOf(x[1])>=0,'an entry that is not one a reading makes is refused by name, '+JSON.stringify(r));});
+ ok(!codeEmotionOf('nowhere').ok&&/not one NODES holds/.test(codeEmotionOf('nowhere').why)&&codeEmotionOf('38').code===E.BY[38].cf,
+  'codeEmotionOf refuses what is not an address, and reads a number written as text');
+
+ /* THE LEDGER. Every code this layer was born with, 23 October, and the name
+    it was born on, in code order. This is the freeze, and it is not a count:
+    a new code may be added after the last, and a thing may be renamed when a
+    CODE_ALIAS row keeps the old name finding it, but no code here may ever
+    answer for anything else. codesCheck holds each table's shape and cannot
+    see two codes trade places; this can. Addresses are their own NODES
+    numbers and are held by codesCheck. */
+ const born=[];
+ [['saboteur','S',2,'Negotiator|Micromanager|Victim|Perfectionist|Pleaser|Hyper-Achiever|Hyper-Rational|Hyper-Vigilant|Restless|Stickler|Judge|Deflector|Dramatizer|Worrywart|Loner|People-Pleaser|Skeptic|Dreamer|Procrastinator|Imposter|Aggressor|Martyr|Cynic|Manipulator|Overthinker|Escapist|Nihilist|Innocent|Pessimist|Catastrophizer|Enabler|Control Freak|Avoider'],
+  ['family','K',1,'Grandiosity|Predatory|Collapse|Rigidity|Dysregulation|Dissociation'],
+  ['structure','X',2,'Dominance Enforcement|Blame Displacement|Superiority-Persecution|Narcissistic|Machiavellian Tactics|Antisocial|Oscillation|Abandonment Reactivity|Rigidity|Attention Seeking|Threat Scanning|Collapse|Scatter|Anticipatory Freeze|Catastrophic Bracing|Meaning Withdrawal|Retreat|Cold Analysis|Self-Erasure|Sacrificial Ledger|Exploitation|Standard Enforcement|Imposture|Malignant Narcissism|Sociopathy|Psychopathy|Machiavellianism|Megalomania|Malignant Grandiosity|Dark Triad|Persecutory Collapse'],
+  ['archetype','AR',2,'Warrior|Sage|Rebel|Caregiver|Creator|Magician|Ruler|Explorer|Lover|Jester|Everyman|Innocent']
+ ].forEach(([kind,pre,w,names])=>names.split('|').forEach((nm,i)=>born.push([pre+String(i+1).padStart(w,'0'),nm,kind])));
+ 'Self-erasure|Enabling|Mania|Indiscriminate|Numbness|Enmeshment'.split('|').forEach((nm,i)=>born.push(['K'+(i+1)+'o',nm,'pole']));
+ 'Fear|Anger|Shame|Disgust|Apathy|Shock|Sad|Surprise|Anticipation'.split('|').forEach(nm=>born.push([nm,nm,'emotion']));
+ /* a cluster's code is its seat's key and its emotion. The key is B2K's, so
+    the seven keys are frozen here; the noun is display and is read live. */
+ [['Root','root'],['Sacral','sacral'],['Solar','solar'],['Heart','heart'],['Throat','throat'],['3rd Eye','eye'],['Crown','crown'],
+  ['Diffuse','diffuse']].forEach(([b,k])=>born.push(['S.'+k+'.Fear',b+' '+E.INFER_NOUN.Fear,'cluster']));
+ const moved=born.filter(([c,nm,k])=>{const r=codeOf(nm,{kind:k});return !(r.ok&&r.code===c);});
+ ok(moved.length===0,'every one of the '+born.length+' codes this layer was born with still answers to the name it was born on, moved: '
+  +JSON.stringify(moved.slice(0,6).map(([c,nm,k])=>nm+' was '+c+', now '+(codeOf(nm,{kind:k}).code||'nothing'))));
+
+ /* ROUND TRIP. Every code the tables list comes back from its own name and kind. */
+ const all=codeList(), back=all.filter(c=>{const r=codeOf(codeName(c),{kind:codeKind(c)});return !(r.ok&&r.code===c);});
+ ok(all.length>0&&back.length===0,'every one of the '+all.length+' listed codes comes back from its own name and kind, off: '+JSON.stringify(back.slice(0,6)));
+
+ /* EVERY NAME A READING PRINTS has one code, of its rung's kind, and a
+    pair's code is made of its own parts' codes. The worked examples, uniform
+    fields with and without the opposite, and seeded random fields. */
+ const rd=p=>{S.doms=[p.dom];S.arcs=[p.a1,p.a2];S.roots=[];buildSoul();
+  CHARGES.forEach(c=>{S.charge[c]=p.c[c]||0;S.replace[c]=(p.rep&&p.rep[c])||0;});
+  const LS=LAWSET[p.nm]||{_:LAW_DEFAULT};
+  SINAMES.forEach(l=>S.law[l]=LS[l]!==undefined?LS[l]:(LS._!==undefined?LS._:LAW_DEFAULT)); lawsIn();
+  return compute();};
+ const R=PEOPLE.map(rd);
+ for(let h=0;h<=10;h++)for(let o=0;o<=10;o+=5)R.push(reset(h,o,6));
+ let seed=2310; const rnd=()=>{seed=(seed*1103515245+12345)%2147483648;return seed/2147483648;};
+ for(let i=0;i<300;i++){reset(0,0,6);
+  CHARGES.forEach(c=>{S.charge[c]=Math.round(rnd()*100)/10;S.replace[c]=Math.round(rnd()*100)/10;});
+  SINAMES.forEach(l=>S.law[l]=Math.round(rnd()*10)); lawsIn(); R.push(compute());}
+ const seen={}, byName={}, byCode={}, refused=[], partsOff=[]; let entries=0;
+ const sortedOf=nm=>/ \/ /.test(nm)?nm.split(' / ').sort().join(' / '):/ \+ /.test(nm)?nm.split(' + ').sort().join(' + '):nm;
+ R.forEach(r=>['sabs','cxs','hys','sups'].forEach(l=>r[l].forEach(o=>{entries++;
+  const c=codeOfEntry(o);
+  if(!c.ok){refused.push(o.kind+' '+o.nm+': '+c.why);return;}
+  seen[c.kind]=(seen[c.kind]||0)+1;
+  (byName[o.nm]=byName[o.nm]||new Set()).add(c.code);
+  (byCode[c.code]=byCode[c.code]||new Set()).add(sortedOf(o.nm));
+  if(o.kind==='cx'||o.kind==='sup'){const pc=o.parts.map(q=>codeOfEntry(q).code).sort();
+   if(JSON.stringify(pc)!==JSON.stringify(c.parts))partsOff.push(o.nm+' is '+c.code+' and its parts are '+pc.join(', '));}})));
+ ok(refused.length===0,'every one of the '+entries+' entries of '+R.length+' readings resolves to a code of its rung\'s kind, refused: '+JSON.stringify(refused.slice(0,6)));
+ ok(['saboteur','cluster','overshot','pair','family','pole','family-pair'].every(k=>seen[k]>0),
+  'and the sweep reached every kind a reading can print, so it tested each, seen: '+JSON.stringify(seen));
+ const twoCodes=Object.keys(byName).filter(n=>byName[n].size>1), twoNames=Object.keys(byCode).filter(c=>byCode[c].size>1);
+ ok(twoCodes.length===0,'no name carries two codes, of '+Object.keys(byName).length+' names, '+JSON.stringify(twoCodes.slice(0,4)));
+ ok(twoNames.length===0,'and no code carries two names but for a pair\'s order, of '+Object.keys(byCode).length+' codes, '+JSON.stringify(twoNames.slice(0,4)));
+ ok(partsOff.length===0,'a pair\'s code is its own parts\' codes, off: '+JSON.stringify(partsOff.slice(0,4)));
+
+ /* THE ONE FETTER ASSIGNMENT RULE. The library reads an address's child
+    emotion through codeEmotionOf, and it answers n.cf, which is what the
+    reading reads, at every body address. A field node and an address with
+    no charge are refused by name, never given one. */
+ const offRule=W.filter(n=>{const r=codeEmotionOf(n.i);return n.cf?!(r.ok&&r.code===n.cf):r.ok;});
+ ok(offRule.length===0,'codeEmotionOf is n.cf at every one of the '+W.length+' body addresses, off: '+JSON.stringify(offRule.map(n=>n.i)));
+ const field=NODES.filter(n=>/^Field/.test(n.b)), bare=W.filter(n=>!n.cf);
+ ok(field.length>0&&field.every(n=>{const r=codeEmotionOf(n.i);return !r.ok&&/field node/.test(r.why);}),
+  'a field node is refused by name, it carries no child emotion');
+ ok(bare.every(n=>{const r=codeEmotionOf(n.i);return !r.ok&&/carries no charge/.test(r.why);}),
+  'and a body address with no charge on the node map is refused by name, '+JSON.stringify(bare.map(n=>n.i)));
+ reset(0,0,6);
+}
+
+g('RG · the registers ported from canon.json, held row for row to the copy this repository keeps');
+/* PHASE TWO OF THE MERGE, 24 October. Seven of canon.json's registers had no
+   table here and are ported into engine/data/registers.js. The vendored copy
+   is vendor/reboot-os/canon.json, and these checks hold the tables to it, so
+   the next canon.json is a named difference (node tools/canon-port.js check)
+   and never a silent one. Every check below that compares is first shown to
+   bite on a copy with one thing planted wrong, because a comparison that
+   cannot fail reports green on everything. Counts are read off the run. */
+{
+ const fs=require('fs'), path=require('path'), crypto=require('crypto');
+ const live=typeof E.regDiff==='function'&&Array.isArray(E.REG_MAP)&&Array.isArray(E.CHARGE_LADDER);
+ ok(live,'the engine carries the ported registers, REG_MAP and regDiff');
+ const VEND=path.resolve('vendor/reboot-os/canon.json');
+ ok(fs.existsSync(VEND),'the vendored canon.json is at vendor/reboot-os/canon.json');
+ if(live&&fs.existsSync(VEND)){
+  const raw=fs.readFileSync(VEND), canon=JSON.parse(raw.toString('utf8')), copy=()=>JSON.parse(raw.toString('utf8'));
+  /* THE PIN. CODE_SOURCES cites the md5 every canon row in the codes was read
+     at, so the copy here must be that file, byte for byte. */
+  const md5=crypto.createHash('md5').update(raw).digest('hex');
+  const cited=(/md5 ([0-9a-f]{8})/.exec((E.CODE_SOURCES.find(r=>r[0]==='canon')||[])[1]||'')||[])[1];
+  ok(cited&&md5.indexOf(cited)===0,'the vendored copy is the canon.json CODE_SOURCES cites, md5 '+md5.slice(0,8)+' against '+cited);
+  /* ROW FOR ROW */
+  const d0=E.regDiff(canon);
+  ok(d0.length===0,'every ported register matches the vendored copy row for row, differences: '+JSON.stringify(d0.slice(0,4)));
+  /* AND EACH COMPARISON BITES, on a copy of the file with one thing planted */
+  const bite=(what,mut,word)=>{const c=copy(); mut(c.registers,c); const d=E.regDiff(c);
+   ok(d.some(x=>x.indexOf(word)>=0),'regDiff names '+what+', got '+JSON.stringify(d.slice(0,3)));};
+  bite('a word changed on a ladder',R=>{R.ladders.fear[5]='Aghast';},'"fear" is');
+  bite('a ladder canon.json adds',R=>{R.ladders.love=R.ladders.joy.slice();},'canon.json has "love"');
+  bite('an amplifier moved to another address',R=>{R.amplifiers[5][1]=35;},'its address');
+  bite('a nerve that is not the one NODES holds',R=>{R.amplifiers[0][2]='Sciatic Nerve';},'its nerve');
+  bite('a quadrant\'s theme reworded',R=>{R.quadrants[0][2]='Action';},'its theme');
+  bite('an organ\'s voice reworded',R=>{R.organs[9][3]='Overflow.';},'its voice');
+  bite('a charge routed to another quadrant',R=>{R.charge_routing.anger='Left-Back';},'"anger" is');
+  bite('a derived measure citing another law',R=>{R.derived_measures[2][1]=R.derived_measures[2][1].replace('Element 54','Element 55');},'its law cited');
+  bite('an overlay vector changed',R=>{R.astrology_overlay.west.Leo[0]=-2;},'astrology_overlay west');
+  bite('an overlay dim renamed',R=>{R.astrology_overlay.dims[0]='begin';},'dims');
+  bite('rows that only moved',R=>{R.organs.reverse();},'another order');
+  bite('a register the file drops',R=>{delete R.organs;},'no such register');
+  bite('a register given in another shape',R=>{R.quadrants={};},'where the port reads a list');
+  [[null,'not a canon.json'],[{},'not a canon.json'],[{registers:[]},'not a canon.json']].forEach(([x,w])=>{let d;
+   try{d=E.regDiff(x);}catch(e){d=['threw '+e.message];}
+   ok(Array.isArray(d)&&d.some(s=>s.indexOf(w)>=0)&&!d.some(s=>/threw/.test(s)),'regDiff refuses '+JSON.stringify(x)+' by name and never throws, '+JSON.stringify(d));});
+  /* THE MAP. Every top level part of the file is placed, both ways, and what
+     it places is a table the engine holds. */
+  const paths=Object.keys(canon).filter(k=>k!=='registers').concat(Object.keys(canon.registers).map(k=>'registers.'+k));
+  const mapped=E.REG_MAP.map(r=>r[0]);
+  ok(paths.every(p=>mapped.indexOf(p)>=0),'REG_MAP places every part of the vendored canon.json, unplaced: '+JSON.stringify(paths.filter(p=>mapped.indexOf(p)<0)));
+  ok(mapped.every(p=>paths.indexOf(p)>=0)&&new Set(mapped).size===mapped.length,'and places nothing the file does not have, nothing twice');
+  ok(E.REG_MAP.every(r=>['ported','mob','held'].indexOf(r[1])>=0&&Array.isArray(r[2])&&typeof r[3]==='string'&&r[3].trim()),
+   'every row says ported, mob or held, names its tables and says what to know');
+  const missing=[].concat(...E.REG_MAP.map(r=>r[2])).filter(n=>E[n]===undefined);
+  ok(missing.length===0,'every table REG_MAP names is one the engine holds, missing: '+JSON.stringify(missing));
+  const PORTED=require(path.resolve('tools/canon-port.js')).PORTED;
+  ok(JSON.stringify(E.REG_MAP.filter(r=>r[1]==='ported').map(r=>[r[0].replace(/^registers\./,''),r[2]]))
+   ===JSON.stringify(PORTED.map(p=>[p[0],[p[1]]])),'the ported rows are exactly the registers regDiff and the port tool compare, each with its one table');
+  ok(E.REG_MAP.filter(r=>r[1]==='mob').every(r=>/^registers\./.test(r[0])?r[2].length>0:true),'every register this repository has its own version of names that version');
+  /* THE GENERATOR WRITES THE FILE. Each table in engine/data/registers.js is
+     exactly what tools/canon-port.js emit writes for the vendored copy, so
+     the next merge is a paste and a review, not a hand transcription. */
+  const tool=require(path.resolve('tools/canon-port.js')), src=fs.readFileSync(path.resolve('atuned_src/engine/data/registers.js'),'utf8');
+  PORTED.forEach(([reg,tbl])=>{const want=tool.emit(canon,reg,E), at=src.indexOf('const '+tbl+'=');
+   /* a table ends at its first ]; and an object at its first };, since the
+      overlay's inner objects close with }, and never with }; */
+   const end=at<0?-1:src.indexOf(src.charAt(src.indexOf('=',at)+1)==='{'?'};':'];',at); const got=end<0?'':src.slice(at,end+2);
+   ok(got===want,'the '+tbl+' the data file carries is what emit writes for '+reg+', got '+JSON.stringify(got.slice(0,80)));});
+  /* NOTHING READS THEM. compute() makes the same reading for every roster
+     person and a sweep of uniform and seeded fields with every ported table
+     scrambled. First the harness is shown to see a change, on SAB33, which
+     compute() does read. */
+  const fields=()=>{const out=[];
+   PEOPLE.forEach(p=>{S.doms=[p.dom];S.arcs=[p.a1,p.a2];S.roots=[];buildSoul();
+    CHARGES.forEach(c=>{S.charge[c]=p.c[c]||0;S.replace[c]=(p.rep&&p.rep[c])||0;});
+    const LS=LAWSET[p.nm]||{_:E.LAW_DEFAULT};
+    SINAMES.forEach(l=>S.law[l]=LS[l]!==undefined?LS[l]:(LS._!==undefined?LS._:E.LAW_DEFAULT)); lawsIn(); out.push(JSON.stringify(compute()));});
+   for(let h=0;h<=10;h+=2)out.push(JSON.stringify(reset(h,h/2,6)));
+   let seed=2410; const rnd=()=>{seed=(seed*1103515245+12345)%2147483648;return seed/2147483648;};
+   for(let i=0;i<60;i++){reset(0,0,6);
+    CHARGES.forEach(c=>{S.charge[c]=Math.round(rnd()*100)/10;S.replace[c]=Math.round(rnd()*100)/10;});
+    SINAMES.forEach(l=>S.law[l]=Math.round(rnd()*10)); lawsIn(); out.push(JSON.stringify(compute()));}
+   return out;};
+  const before=fields();
+  const sab=JSON.parse(JSON.stringify(SAB33[0][1])); SAB33[0][1].forEach(b=>{b[1]=0;b[2]=10;});
+  const seen=fields(); SAB33[0][1]=sab;
+  ok(seen.some((x,i)=>x!==before[i]),'the harness sees a change when a table compute() reads is changed');
+  ok(fields().every((x,i)=>x===before[i]),'and SAB33 is put back exactly');
+  /* scrambled copies go in and the very objects that were there go back, so
+     nothing that holds a table, the codes index among them, ever sees one
+     of its own rows changed */
+  const was={L:E.CHARGE_LADDER.slice(),A:E.AMPLIFIER.slice(),Q:E.BODY_QUADRANT.slice(),O:E.ORGAN.slice(),
+   D:E.DERIVED_MEASURE.slice(),R:Object.assign({},E.CHARGE_QUADRANT),S:Object.assign({},E.ASTRO_OVERLAY)};
+  const put=(arr,rows)=>{arr.splice(0,arr.length,...rows);};
+  put(E.CHARGE_LADDER,was.L.map(l=>({c:l.c,ch:'x'+l.ch,w:l.w.slice().reverse()})));
+  put(E.AMPLIFIER,was.A.map(r=>({c:r.c,nm:'x',i:1,tag:r.tag})));
+  put(E.BODY_QUADRANT,was.Q.map(r=>Object.assign({},r,{nm:'x',side:'left',face:'front'})));
+  put(E.ORGAN,was.O.map(r=>Object.assign({},r,{side:'right',voice:'x'})));
+  put(E.DERIVED_MEASURE,was.D.map(r=>({c:r.c,nm:r.nm,ch:'x',el:'E01'})));
+  Object.keys(E.CHARGE_QUADRANT).forEach(k=>{E.CHARGE_QUADRANT[k]='x';});
+  const flip=o=>{const n={}; Object.keys(o).forEach(k=>{n[k]=o[k].map(v=>-v-1);}); return n;};
+  ['west','east','archetype_vectors'].forEach(k=>{E.ASTRO_OVERLAY[k]=flip(was.S[k]);});
+  E.ASTRO_OVERLAY.load_map={}; Object.keys(was.S.load_map).forEach(k=>{E.ASTRO_OVERLAY.load_map[k]='x';});
+  E.ASTRO_OVERLAY.dims=was.S.dims.slice().reverse();
+  const scrambled=fields();
+  put(E.CHARGE_LADDER,was.L); put(E.AMPLIFIER,was.A); put(E.BODY_QUADRANT,was.Q); put(E.ORGAN,was.O); put(E.DERIVED_MEASURE,was.D);
+  Object.assign(E.CHARGE_QUADRANT,was.R); Object.assign(E.ASTRO_OVERLAY,was.S);
+  const off=scrambled.filter((x,i)=>x!==before[i]).length;
+  ok(off===0,'compute() reads the same for every one of '+before.length+' fields with every ported table scrambled, so none of them enters a number; differed: '+off);
+  ok(E.regDiff(canon).length===0,'and every table is put back exactly, row for row with the file');
+  /* THE ASTROLOGY LOCK, said on its own because canon.json says it on its
+     own: "Display-only overlay ... Never enters a number." It is the same
+     sweep, with the overlay alone flipped. */
+  const west=E.ASTRO_OVERLAY.west, neg={};
+  Object.keys(west).forEach(n=>{neg[n]=west[n].map(v=>-v);}); E.ASTRO_OVERLAY.west=neg;
+  const skyOff=fields().filter((x,i)=>x!==before[i]).length;
+  E.ASTRO_OVERLAY.west=west;
+  ok(skyOff===0,'the astrology overlay enters no number, canon.json\'s own lock, differed: '+skyOff);
+  /* TWO EXCEPTIONS TO THE TEMPLATE, HELD BY NAME. canon.json's own rows,
+     ported as written, because rewording them is the owner's call. A held
+     row that changes, or a new one, fails here until the hold is changed on
+     purpose. */
+  const firstPerson=E.ORGAN.filter(r=>!/\b(I|me|my)\b/.test(r.voice)).map(r=>r.nm);
+  ok(JSON.stringify(firstPerson)==='["Dermis"]','every organ\'s voice is the pattern speaking as I, but the one held: Dermis, got '+JSON.stringify(firstPerson));
+  ok(E.ORGAN.find(r=>r.nm==='Dermis').voice==='Overflow system. Psoriasis, stress acne.','and the held row is still the one held');
+  const at={}; E.CHARGE_LADDER.forEach(l=>l.w.forEach(w=>{at[w]=(at[w]||0)+1;}));
+  const twice=Object.keys(at).filter(w=>at[w]>1).sort();
+  ok(JSON.stringify(twice)==='["Aggravated","Annoyed","Horrified","Wrathful"]','the words canon.json puts on two ladders are the ones held, got '+JSON.stringify(twice));
+  const hp=E.ladderPlaces('horrified');
+  ok(hp.length===2&&hp.map(x=>x.code).join()==='LD03.6,LD05.6','ladderPlaces names every place a word sits, Horrified on disgust and on fear, '+JSON.stringify(hp));
+  ok(E.ladderPlaces('Furious').map(x=>x.code).join()==='LD06.5'&&E.ladderPlaces('calm').length===0&&E.ladderPlaces(null).length===0,
+   'one place for a word on one ladder, and none for a word on none or for nothing');
+ }
+}
+
+g('RC · a code for every row of the ported registers, and the door reads each one');
+/* The codes the registers were born with, 24 October, typed on purpose as the
+   ID group's ledger is: they are identities being frozen, and a gate that
+   read them back off the table it tests would hold nothing. */
+{
+ const {codeOf,codeName,codeKind,codeList,codesCheck,codeTables}=E;
+ const live=Array.isArray(E.CODE_SIGN)&&Array.isArray(E.CHARGE_LADDER);
+ ok(live,'the engine carries the register codes and the sign and animal codes');
+ if(live){
+  const is=(label,hint,code,m)=>{const r=codeOf(label,hint);
+   ok(r.ok&&r.code===code,m+': '+JSON.stringify(label)+(hint?' '+JSON.stringify(hint):'')+' is '+code+', got '+JSON.stringify(r.ok?r.code:r.why));return r;};
+  const no=(label,hint,word,m)=>{const r=codeOf(label,hint);
+   ok(!r.ok&&r.why.indexOf(word)>=0,m+': '+JSON.stringify(label)+(hint?' '+JSON.stringify(hint):'')+' is refused naming '+JSON.stringify(word)+', got '+JSON.stringify(r.ok?r.code:r.why));};
+  ok(codesCheck().length===0,'codesCheck finds nothing wrong with the ported registers and their codes');
+  /* EACH NEW CHECK BITES, on a copy with one thing broken */
+  const bites=(what,mut,word)=>{const t=JSON.parse(JSON.stringify(codeTables())); mut(t);
+   ['ZSIGN','ZI','CHINESE','HARM','NODES','SAB33','SABDEF'].forEach(k=>{if(!(k in t))t[k]=codeTables()[k];});
+   const p=codesCheck(t); ok(p.some(x=>x.indexOf(word)>=0),'the check catches '+what+', got '+JSON.stringify(p.slice(0,3)));};
+  bites('a ladder a step short',t=>{t.CHARGE_LADDER[3].w.pop();},'not one template');
+  bites('a ladder code skipped',t=>{t.CHARGE_LADDER[7].c='LD09';},'skips LD08');
+  bites('a ladder for a charge nothing reads',t=>{t.CHARGE_LADDER[2].ch='zest';},'neither a child emotion');
+  bites('an amplifier on a field node',t=>{t.AMPLIFIER[0].i=110;},'field node');
+  bites('a quadrant whose name is not its side and face',t=>{t.BODY_QUADRANT[0].face='back';},'says otherwise');
+  bites('two organs of one name',t=>{t.ORGAN[1].nm='Heart';},'twice');
+  bites('a route to a quadrant that does not exist',t=>{t.CHARGE_QUADRANT.fear='Middle';},'not a body quadrant');
+  bites('a charge with no route',t=>{delete t.CHARGE_QUADRANT.joy;},'has no route');
+  bites('a measure citing a law of another name',t=>{t.DERIVED_MEASURE[2].el='E53';},'HARM names');
+  bites('an overlay vector a number short',t=>{t.ASTRO_OVERLAY.east.Ox.pop();},'one whole number for each dim');
+  bites('an overlay charge keyed by no sign',t=>{t.ASTRO_OVERLAY.load_map.Ophiuchus='fear';},'a sign or an animal');
+  bites('two signs swapped',t=>{const x=t.CODE_SIGN[0][1];t.CODE_SIGN[0][1]=t.CODE_SIGN[1][1];t.CODE_SIGN[1][1]=x;},'read through ZI');
+  bites('two animals swapped',t=>{const x=t.CODE_ANIMAL[0][1];t.CODE_ANIMAL[0][1]=t.CODE_ANIMAL[1][1];t.CODE_ANIMAL[1][1]=x;},'as birth.js reads CHINESE');
+  bites('a fifth body quadrant',t=>{t.BODY_QUADRANT.push(Object.assign({},t.BODY_QUADRANT[0],{c:'BQ05'}));},'right and left by front and back is');
+  bites('the overlay without its dims',t=>{delete t.ASTRO_OVERLAY.dims;},'no dims to read');
+  bites('the overlay gone',t=>{delete t.ASTRO_OVERLAY;},'ASTRO_OVERLAY is missing');
+  bites('a sign the codes lost',t=>{t.CODE_SIGN.pop();},'CODE_SIGN has');
+  bites('an animal the codes lost',t=>{t.CODE_ANIMAL.pop();},'CODE_ANIMAL has');
+  {const t=JSON.parse(JSON.stringify(codeTables())); ['ZSIGN','ZI','CHINESE','HARM','NODES','SAB33','SABDEF'].forEach(k=>{if(!(k in t))t[k]=codeTables()[k];});
+   t.CHARGE_LADDER=[]; const p=codesCheck(t).filter(x=>x==='CHARGE_LADDER is not a list of rows');
+   ok(p.length===1,'an empty ladder table is named once, not once for each check that reads it, got '+p.length);}
+  /* THE DOOR */
+  is('LD05',null,'LD05','a ladder is its code');
+  is('fear ladder',null,'LD05','and its name is its charge and the word ladder');
+  const hw=is('LD05.6',null,'LD05.6','a word is its ladder and its step');
+  ok(hw.nm==='Horrified'&&hw.of==='LD05'&&hw.step===6&&hw.kind==='ladder-word','and says which word, which ladder and which step, '+JSON.stringify(hw));
+  no('LD05.06',null,'not a code','a step has one spelling, without a leading nought');
+  no('LD05.10',null,'not a code','and no step past the top of its ladder');
+  no('Horrified',null,'not a code','a word is not a name the door answers for, since some sit on two ladders');
+  no('Judgment',null,'ambiguous','Judgment is now an address and an amplifier, so the door asks which');
+  is('Judgment',{kind:'address'},'37','as an address');
+  const am=is('Judgment',{kind:'amplifier'},'AM03','as an amplifier');
+  ok(am.address===37,'and the amplifier says the address it stands on, '+JSON.stringify(am));
+  const en=is('Entitlement',{kind:'amplifier'},'AM01','canon.json\'s amplifier Entitlement');
+  ok(en.address===8,'stands on address 8, where NODES\'s own Entitlement is 38, '+JSON.stringify(en));
+  is('Justification',null,'AM06','Justification is an amplifier and nothing else here');
+  is('Right-Front',null,'BQ01','a body quadrant');
+  is('right front',null,'BQ01','spelled with a space');
+  is('Dermis',null,'OG10','an organ');
+  const aw=is('Awareness',null,'DM02','a derived measure, while laws and gates have no code');
+  ok(aw.law==='E32','and it cites the law it is, HARM\'s E32, '+JSON.stringify(aw));
+  is('Aries',null,'ZS01','a sign');
+  is('Goat',null,'CA08','an animal');
+  /* a ladder's charge is canon.json's word, and its parent is a child emotion or a row that says why not */
+  E.CHARGE_LADDER.forEach(l=>{const r=codeOf(l.ch,{source:'canon',kind:'emotion'});
+   ok(r.ok||(r.kind==='emotion'&&/no emotion code/.test(r.why)),'the '+l.ch+' ladder\'s charge reads as a child emotion or is refused by name, '+(r.ok?r.code:r.why.slice(0,60)));});
+  is('sadness',{source:'canon',kind:'emotion'},'Sad','canon.json\'s sadness is the Sad axis');
+  no('resent',{source:'canon',kind:'emotion'},'no emotion code','and its resent is no child emotion');
+  /* THE LEDGER, 24 October */
+  const born=[];
+  'joy|sadness|disgust|shock|fear|anger|shame|resent'.split('|').forEach((c,i)=>born.push(['LD0'+(i+1),c+' ladder','charge-ladder']));
+  'Entitlement|Obsession|Judgment|Perfectionism|Comparison|Justification'.split('|').forEach((n,i)=>born.push(['AM0'+(i+1),n,'amplifier']));
+  'Right-Front|Left-Front|Right-Back|Left-Back'.split('|').forEach((n,i)=>born.push(['BQ0'+(i+1),n,'body-quadrant']));
+  'Heart|Stomach|Right Lung|Left Lung|Right Liver|Right Kidney|Left Kidney|Intestines|Spine|Dermis'.split('|').forEach((n,i)=>born.push(['OG'+String(i+1).padStart(2,'0'),n,'organ']));
+  'Vitality|Awareness|Flow'.split('|').forEach((n,i)=>born.push(['DM0'+(i+1),n,'derived-measure']));
+  'Aries|Taurus|Gemini|Cancer|Leo|Virgo|Libra|Scorpio|Sagittarius|Capricorn|Aquarius|Pisces'.split('|').forEach((n,i)=>born.push(['ZS'+String(i+1).padStart(2,'0'),n,'sign']));
+  'Rat|Ox|Tiger|Rabbit|Dragon|Snake|Horse|Goat|Monkey|Rooster|Dog|Pig'.split('|').forEach((n,i)=>born.push(['CA'+String(i+1).padStart(2,'0'),n,'animal']));
+  const moved=born.filter(([c,nm,k])=>{const r=codeOf(nm,{kind:k});return !(r.ok&&r.code===c);});
+  ok(moved.length===0,'every one of the '+born.length+' codes the registers were born with still answers to the name it was born on, moved: '+JSON.stringify(moved.slice(0,6)));
+  const kinds=['charge-ladder','amplifier','body-quadrant','organ','derived-measure','sign','animal'];
+  ok(kinds.every(k=>codeList(k).length===born.filter(b=>b[2]===k).length),'and nothing else of those kinds is listed: '+JSON.stringify(kinds.map(k=>k+' '+codeList(k).length)));
+  ok(codeList('ladder-word').length===0&&E.CHARGE_LADDER.every(l=>l.w.every((w,i)=>codeName(l.c+'.'+(i+1))===w&&codeKind(l.c+'.'+(i+1))==='ladder-word')),
+   'a word is never listed, and every one of them is reached by rule, named the word canon.json gives the step');
+  /* SIGNS AND ANIMALS, held to what the product prints. The sun sign the
+     birth reading gives a day in the middle of each sign is the sign coded
+     at the index astro.js counts that day's sun in, and the animal of a
+     year the reading prints is the one coded at that year in the cycle. */
+  const offSign=[];
+  E.ZSIGN.forEach(z=>{const d='2001-'+String(z[0]).padStart(2,'0')+'-'+String(z[1]+7).padStart(2,'0');
+   const k=E.signOf(sunLon(julianDay(2001,z[0],z[1]+7,12))), sp=E.spiritualOf({d:d});
+   if(!sp||E.CODE_SIGN[k][1]!==sp.sun||sp.sun!==z[2])offSign.push(d+' reads '+(sp&&sp.sun)+', coded '+E.CODE_SIGN[k][1]);});
+  ok(offSign.length===0,'the sign code at the sun\'s own index is the sun sign the reading prints, for a day inside each of the '+E.ZSIGN.length+' signs, off: '+JSON.stringify(offSign));
+  const offAnimal=E.CODE_ANIMAL.map((r,k)=>[2020+k,r[1],E.spiritualOf({d:(2020+k)+'-06-15'}).chinese]).filter(x=>x[1]!==x[2]);
+  ok(offAnimal.length===0,'the animal code for each year of a cycle is the animal the reading prints for a birth that June, off: '+JSON.stringify(offAnimal));
+ }
 }
 
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');

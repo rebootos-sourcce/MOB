@@ -298,16 +298,24 @@ for(const [W,H] of WIDTHS){
 }
 
 /* ============================================================
-   THE OTHER DOOR. The Day One tutorial reaches the same first release
-   (ui/tutorial.js), behind its developer switch, DEV_PLAY_TUTORIAL, which is
-   how loginEnter opens it on a first run. It writes the same record, a reload
-   after its hand off comes back to the card that offers the release (planned
-   from what the story read, since this door has no yes rows), and the release
-   ends on the same end card.
+   A WALK THE DAY ONE TUTORIAL LEFT BEHIND. That sequence was the other door
+   into the same first release until the owner ruled it removed on 23
+   October: "I want that hidden one completely removed. We're not doing that
+   anymore." Nothing writes its door now, and 'tutorial' stays a door the
+   boundary accepts (JOURNEY_DOORS), so a record that carries one has to keep
+   working: a reload after its hand off comes back to the card that offers
+   the release, planned from what the story read since that door had no yes
+   rows, and the release ends on the same end card.
+
+   THE RECORD IS MADE THE WAY THE TUTORIAL MADE IT, through the product's own
+   writers and nothing typed in its place: the start line it logged, the
+   Story page's commit (stCommit) it ran, and the hand off the onboarding
+   writes for either door (obHandOff). Its screens are gone, so they are not
+   pressed; ?dev=1 keeps the first run's own sheet from opening over it.
    ============================================================ */
-console.log('\n=== the tutorial door: the same record, the same resume, the same end ===');
+console.log('\n=== a walk the tutorial door left: the same resume, the same end ===');
 {
- const tag='tutorial: ';
+ const tag='tutorial door: ';
  const ctx=await browser.newContext({viewport:{width:1600,height:1000}});
  await ctx.route(/workers\.dev/,r=>r.abort('failed'));
  const page=await ctx.newPage();
@@ -316,25 +324,21 @@ console.log('\n=== the tutorial door: the same record, the same resume, the same
   catch(e){return page.evaluate(s=>{const b=document.querySelector(s); if(b){b.click(); return true;} return false;},sel);}};
  const rec=()=>page.evaluate(()=>(typeof CURP!=='undefined'&&CURP&&CURP.journey)?JSON.parse(JSON.stringify(CURP.journey)):null);
  const door=async()=>{await booted(page);
-  await page.evaluate(()=>{ if(typeof DEV_PLAY_TUTORIAL!=='undefined')DEV_PLAY_TUTORIAL=true; });
   if(await page.$('#loginb-skip')){await click('#loginb-skip'); await page.waitForTimeout(350);}};
- await page.goto(FILE,{waitUntil:'load'}); await door();
- const open=await page.evaluate(()=>!!(typeof TUT!=='undefined'&&TUT.open));
- ok(open,tag+'the switch opens the tutorial on a first run');
+ await page.goto(FILE+'?dev=1',{waitUntil:'load'}); await booted(page);
+ const made=await page.evaluate(story=>{
+  const lg=journeyLog(CURP,'tutorial_started',null,{door:'tutorial'});
+  /* the read is kept before the commit, as the tutorial kept it: stCommit
+     clears ST_PARSED once the entry is on (ui/storyui.js) */
+  const ps=parseStory(story); ST_TEXT=story; ST_PARSED=ps; const c=stCommit();
+  const pl=(c&&c.ok)?obMini(obImprints(ps)):null;
+  const off=(pl&&pl.ok)?obHandOff(pl,'tutorial',c.t):false;
+  return {logged:!!(lg&&lg.ok), committed:!!(c&&c.ok&&c.k), planned:!!(pl&&pl.ok), handed:!!off, saved:pSave()};},STORY);
+ ok(made.logged&&made.committed&&made.planned&&made.handed&&made.saved,tag+'the record is written the way that door wrote it: '+J(made));
  let j=await rec();
- ok(!!(j&&j.log.some(e=>e.type==='tutorial_started'&&e.d&&e.d.door==='tutorial')),tag+'its start is on the log, with the door it came through');
- await page.fill('#tuttext',STORY); await click('[data-tut="commit"]');
- j=await rec();
- ok(!!(j&&j.log.some(e=>e.type==='story_submitted')&&j.log.every(e=>J(e).indexOf('chest')<0)),tag+'the story is on the log, and no word of it');
- await click('[data-tut="next"]'); await click('[data-tut="next"]');
- const card=await page.evaluate(()=>(document.querySelector('#tutorial .ob-card')||{}).innerText||'');
- ok(/You have \d+ patterns left of the \d+ you were given\. This release opens \d+ of them/.test(card),
-  tag+'the Release card says what is left of the gift and what this release opens');
- await click('[data-tut="release"]'); await page.waitForTimeout(200);
- j=await rec();
  ok(!!(j&&j.walk&&j.walk.step==='release'&&j.walk.door==='tutorial'&&j.walk.base&&j.walk.t),tag+'the hand off is on the walk, by door: '+J(j&&j.walk&&{s:j.walk.step,d:j.walk.door}));
  ok(!!(j&&j.gift&&j.gift.used===0)&&!!(j&&j.log.some(e=>e.type==='first_release_started')),tag+'the gift is issued and the start of the release is logged');
- await page.reload({waitUntil:'load'}); await door();
+ await page.goto(FILE,{waitUntil:'load'}); await door();
  const back=await page.evaluate(()=>({open:!!(typeof OB!=='undefined'&&OB.open),step:typeof OB!=='undefined'?OB.step:null,
   door:typeof OB!=='undefined'?OB.door:null, plan:(typeof OB!=='undefined'&&OB.plan&&OB.plan.ok)?OB.plan.lines:null,
   card:(document.querySelector('#ob .ob-card')||{}).innerText||''}));

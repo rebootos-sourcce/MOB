@@ -759,9 +759,9 @@ function coneSeatAt(t){
    same arithmetic the mirror drill prints, so a node and the drill it opens
    cannot disagree. */
 function coneMirPos(m){
- var grp=W_ADDR().filter(function(n){return n.b===m.seat;});
- var load=grp.length?grp.reduce(function(a,n){return a+n.sq;},0)/grp.length:0;
- return mirrorAt(load,bandIg(m.seat));}
+ var row=compute().seats.filter(function(s){return s.seat===m.seat;})[0];
+ var pos=compassAt(row);
+ return pos==null?50:pos;}
 /* a seat's laws as CQ reads them, out of a hundred. lawNow and not bandIg,
    and an unanswered law as nought, because that is what cqSum does, and the
    shell's mean being CQ is the only reason it is drawn against the coherence
@@ -2793,7 +2793,10 @@ function coneNames(side){
     stage's own glass (.cn-pan in the sheet), and the pane is the figure and
     its overlays and nothing else. Still .cn-nms and still .cn-nr, so every
     gate that finds a row by those names finds it where it was. */
- return '<div class="cn-pan cn-nms cn-nms-'+side+'" role="group" aria-label="Characters, '
+ /* "Teachers", the word the rows themselves use (engine/data/gloss.js,
+    teacher). This said Characters, which a screen reader then read as a
+    second thing called character beside the Character page. */
+ return '<div class="cn-pan cn-nms cn-nms-'+side+'" role="group" aria-label="Teachers, '
   +(side==='l'?'the first half of the axes, and of the poles on no axis'
     :'the second half of the axes, and of the poles on no axis')+'">'
   +half.map(function(x){

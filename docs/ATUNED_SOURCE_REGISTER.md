@@ -1,4 +1,4 @@
-# ATÜNED / Mechanics of Being — Source Register
+# ATÜNED / Mechanics of Being, Source Register
 
 **Status:** Initial durable source register  
 **Last verified:** 2026-10-20  
@@ -91,16 +91,16 @@ For each layer, level, concept, descriptive object, inferred item, and inferred 
 - Framework closure status: **Not verified; do not declare complete**
 
 
-## Recursive audit log added — 2026-10-20
+## Recursive audit log added, 2026-10-20
 
-- [`docs/ATUNED_FRAMEWORK_CLOSURE_AUDIT_LOG_2026-10-20.md`](ATUNED_FRAMEWORK_CLOSURE_AUDIT_LOG_2026-10-20.md) — records the source-backed findings from `atuned_src/engine/data/canon.js`, the three-pass method applied to that source, explicit risks, acceptance status, and next recursive actions.
+- [`docs/ATUNED_FRAMEWORK_CLOSURE_AUDIT_LOG_2026-10-20.md`](ATUNED_FRAMEWORK_CLOSURE_AUDIT_LOG_2026-10-20.md), records the source-backed findings from `atuned_src/engine/data/canon.js`, the three-pass method applied to that source, explicit risks, acceptance status, and next recursive actions.
 - Commit: `8151beb9e2cf85c0ce3bb377d3ca91e509945f62`.
 - The source index now links to this audit log.
 - New finding: the code contains explicit proposal/canon boundaries that must be preserved, including unapproved node-state thresholds and proposed anatomical Fetter placements.
 - The audit does not claim all concepts have received three full passes; that remains an open gate.
 
 
-## Active phase update — Super-Complexes first (2026-10-20)
+## Active phase update, Super-Complexes first (2026-10-20)
 
 **Owner-directed order:** begin Super-Complex source reconciliation and design now. Do not gate this phase on completion of nerve/node/fetter/Saboteur/Complex/Hyper-Complex audits. Those closure tasks remain queued for after the Super-Complex discussion.
 
@@ -115,3 +115,22 @@ For each layer, level, concept, descriptive object, inferred item, and inferred 
 - Psychopathy as a canonical Super-Complex: explicitly rejected by owner; source code label is not Canon.
 
 These are retrieval/decision blockers, not evidence of absence. The next pass must search the Project Library, conversation files, and source registers with exact names and document the precise locations searched before reporting any item globally unavailable.
+
+## Deep-psychological record-first source audit, 2026-10-22
+
+| Path | Role / evidence | SHA or status |
+|---|---|---|
+| `docs/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_FORMAT_TDD_v1.md` | Record-first execution order, shared envelope, three-pass method, acceptance gates | Committed on MOB main; linked from source index |
+| `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_SCHEMA_v1.json` | JSON Schema for the common record envelope | Committed on MOB main; structural audit performed against registry |
+| `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json` | 107 entries: 93 source-backed/owner-stated records and mapping rows plus 14 visualization-only placeholders | Current registry; every item has three research-pass slots |
+| `docs/ATUNED_DEEP_PSYCHOLOGICAL_THREE_PASS_RESEARCH_AUDIT_2026-10-22.md` | Three-pass source audit, provenance findings, visual-vs-canonical count conflicts, and next checkpoint | Committed on MOB main; linked from source index |
+| `Reboot-OS: atuned/src/40_the-archetypes.js` | Provenance note: first twelve archetypes owner-dictated; six added from web research, not dictated | SHA `e6a7dd0b5891fed6e9903b28e0f7ac00f2a21049` |
+| `Reboot-OS: atuned/src/45_the-psyche-map.js` | Visualization layer counts; counts are not accepted as canonical record denominators | SHA `9cd5d9b93ce3522b9f7c523efdfe6ee6fe1bc9d6` |
+| `Reboot-OS: atuned/data/canon_tables/ARCH12.json` | 18 archetype content entries | SHA `2294d2a0bdde603e331a45e2f1f4785571719fff` |
+| `Reboot-OS: atuned/data/canon_tables/ARCH18.json` | 18 archetype/fetter/seat tuples | SHA `dc4a5713c70c63d93569226b7e2cdb3dc29299a6` |
+| `Reboot-OS: atuned/data/canon_tables/ARCHDOM.json` | 18 archetype/domain mappings | SHA `cc2cec9775282a658625b1f4435ee2e04ecb300b` |
+| `Reboot-OS: atuned/data/canon_tables/CDOMAIN.json` | 12 cultural-figure/domain mappings | SHA `e825043f9601fe8ff4a7dc08ccacdeaab668bd91` |
+| `Reboot-OS: atuned/data/canon_tables/manifest.json` | Canon table descriptions and row counts, including HYPER=8, MASKS6=6, SAB33=33, NODEREG=112 | SHA `9cc010fac9b46e27e90594167de3ed5cdf89c680` |
+
+The new registry is an inventory and research ledger, not a runtime integration. Do not remove prior closure blockers until source denominators, templates, generated output, and graph tests have been verified.
+| `docs/ATUNED_DEEP_PSYCHOLOGICAL_CODE_TO_REGISTRY_CONTRACT_2026-10-22.md` | Exact generator template fields and closure-validator contract compared with the 125-record psychological registry; adapter and runtime gaps | Commit `0fef21a2150df55095a1e08c35212b116ec6d76b` |

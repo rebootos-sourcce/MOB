@@ -459,10 +459,15 @@ function wordsOf(t,nm){
    so "I was not, honestly, angry" is denied. The cost of that ruling is
    measured and reported with the change, not hidden here.
 
-   A COHERENT WORD IS NEVER DENIED. A denial must never raise a reading, and
-   denying a word that subtracts would. "I am not grateful" subtracts as it
-   always did; that is a known gap, written in TDD-sniffer.md, and not made
-   worse here.
+   A COHERENT WORD SAID WITH A NO COUNTS NOWHERE, P3-1 of the inference
+   audit, 24 October. It used to be never denied, so that a denial could
+   never raise a reading, and the cost was written in TDD-sniffer.md: "I am
+   not grateful" still subtracted, about a tenth of a point from every
+   feeling, for a calm the person said they did not have. It is denied now
+   by the same rule as every other word, listed in denied, drawn set aside
+   and counted nowhere, so the sentence reads exactly as it would without
+   the word. A denial still never raises a reading above what the rest of
+   the words say.
 
    The hit keeps negw, the no it saw, and negAt, that word's leading space in
    nm.s, so a mark and a list can quote from the no to the word on the letters
@@ -471,7 +476,6 @@ var NEG_NOT_DENY=['stop','stops','stopped','help'];
 function sniffDeny(t,nm,hits){
  var ws=null, cuts=[];
  hits.forEach(function(h){
-  if(h.band==='coherent')return;
   if(!ws){ws=wordsOf(t,nm);
    /* every place a no is already spoken for: the end of each word read, and
       the end of each can't stop frame. Kept as the trailing space, which is
@@ -563,6 +567,37 @@ var WHO_OPEN=['and','but','then','when','while','because','cause','so','after','
  'now','today','yesterday','tonight','again','also','just','still','even','suddenly','finally','later'];
 var WHO_LOSS=['died','death','dying','passed away','grief','mourning','mourn','bereaved','loss','funeral',
  'buried','widowed','miscarriage','stillborn','grieving'];
+/* A NAME THAT STARTS ITS SENTENCE, P1-1 of the inference audit, 23 October.
+   The rule above reads a capital that does not start its sentence, and named
+   the one that does in GAPS: "Sarah screamed at me and I froze" put Sarah's
+   screaming on the writer as the writer's own anger, and that is how most
+   people begin a sentence about someone. A capitalised first word is now
+   unclear, held and shown with its sentence ("Write it with I if it is
+   yours"), unless it is a word this reader already knows: a pronoun or a
+   person word, a word in the lexicon or the degree table, a clause opener or
+   a negator, a place in the body, or one of the common first words below,
+   which are what a sentence about the writer's own day starts on. Holding a
+   writer's own word costs them one line of text; scoring Sarah's anger on
+   them costs the reading. */
+var WHO_OPENER=['the','a','an','this','that','these','those','it','its','there','here','what','which','who',
+ 'whose','why','how','where','when','everything','nothing','something','anything','everyone','someone',
+ 'anyone','everybody','somebody','nobody','all','some','most','many','much','more','less','one','each',
+ 'every','both','either','neither','no','yes','ok','okay','well','oh','today','tonight','yesterday',
+ 'tomorrow','morning','afternoon','evening','night','week','weekend','day','last','next','first','then',
+ 'after','before','during','since','later','earlier','again','still','even','just','only','also','maybe',
+ 'perhaps','probably','really','honestly','sometimes','often','always','usually','never','work','life',
+ 'home','school','things','sleep','money','dinner','lunch','breakfast','traffic','weather','coffee','job',
+ 'monday','tuesday','wednesday','thursday','friday','saturday','sunday','january','february','march',
+ 'april','may','june','july','august','september','october','november','december'];
+function whoKnown(w){
+ var own=function(o){return Object.prototype.hasOwnProperty.call(o,w);};
+ if(own(LEX)||own(ADJ2CHG)||own(LEXMOD))return true;
+ if([WHO_ME,WHO_SUBJ,WHO_POSS,WHO_OBJ,WHO_YOU,WHO_DET,WHO_OPEN,WHO_LOSS,WHO_OPENER,SOMA_PLACE_WORDS,LEXKIN]
+  .some(function(l){return l.indexOf(w)>=0;}))return true;
+ if(typeof SRC_NEG!=='undefined'&&SRC_NEG.indexOf(w)>=0)return true;
+ return Object.keys(SRC_DIM_CUE).some(function(k){return SRC_DIM_CUE[k].indexOf(w)>=0;});}
+function whoStartName(t,ws,j){
+ return (j===0||ws[j-1].c!==ws[j].c)&&/^[A-Z][a-z]+$/.test(t.slice(ws[j].s,ws[j].e))&&!whoKnown(ws[j].w);}
 function whoLoss(h){
  var m=LEXMETA[h.t];
  return WHO_LOSS.indexOf(h.t)>=0||!!(m&&m.from&&WHO_LOSS.indexOf(m.from)>=0);}
@@ -589,7 +624,8 @@ function whoOf(t,ws,i){
   if(WHO_POSS.indexOf(w)>=0&&whoOpens(ws,j))return {k:j,j:j};
   if(WHO_YOU.indexOf(w)>=0&&whoOpens(ws,j))return {k:j,j:j,unclear:true};
   if(j>0&&ws[j-1].c===ws[j].c&&/^[A-Z][a-z]+$/.test(t.slice(ws[j].s,ws[j].e))&&whoOpens(ws,j))
-   return {k:j,j:j};}
+   return {k:j,j:j};
+  if(whoStartName(t,ws,j))return {k:j,j:j,unclear:true};}
  return null;}
 function sniffWho(t,nm,hits){
  var ws=null, byAt=null;
@@ -601,15 +637,42 @@ function sniffWho(t,nm,hits){
   h.other=true; h.whoAt=ws[r.k].at;
   h.who=ws.slice(r.k,r.j+1).map(function(x){return x.w;}).join(' ');
   if(r.unclear)h.unclear=true;});}
+/* THE PLAIN IDIOM, P2-3, see LEXPLAIN in the lexicon. Each span is a plain
+   idiom's own words, as {at, len} in nm.s: at is its leading space and len
+   its length, the same addressing every hit uses. The follower must be the
+   very next words and in the idiom's own comma group, read off wordsOf, so a
+   sentence end or a comma between them leaves the feeling where it was; and
+   on a row marked to close, nothing of that group may come after it. */
+function plainSpans(t,nm){
+ var src=nm.s, out=[], ws=null, byAt=null;
+ LEXPLAIN.forEach(function(row){
+  row[0].forEach(function(idiom){
+   var at=src.indexOf(' '+idiom+' ');
+   while(at>=0){
+    if(!ws){ws=wordsOf(t,nm); byAt={}; ws.forEach(function(w,i){byAt[w.at]=i;});}
+    var i=byAt[at], n=idiom.split(' ').length;
+    var same=function(k){return ws[k]&&ws[k].g===ws[i].g;};
+    /* row[2], the follower closes its comma group: no word of the group after it */
+    var ok=i!==undefined&&same(i+n-1)&&(row[1].length?row[1].some(function(f){
+     var fw=f.split(' ');
+     return fw.every(function(w,k){return same(i+n+k)&&ws[i+n+k].w===w;})&&!(row[2]&&same(i+n+fw.length));}):same(i+n));
+    if(ok)out.push({at:at,len:idiom.length});
+    at=src.indexOf(' '+idiom+' ',at+1);}});});
+ return out;}
 function scanStory(text){
  var nm=normMap(text), src=nm.s;
  var hits=[];
- /* phrases first: an idiom outranks its own words */
+ /* a plain idiom first: nothing below may read a feeling inside one. A word
+    of len characters at at overlaps a span when each starts before the
+    other ends. */
+ var plain=plainSpans(text,nm);
+ var inPlain=function(at,len){return plain.some(function(p){return at<p.at+p.len&&p.at<at+len;});};
+ /* phrases next: an idiom outranks its own words */
  PHRASES.forEach(function(row){
   var words=row[0], band=row[1], amt=row[2], label=row[3];
   words.forEach(function(w){
    var at=src.indexOf(' '+w+' ');
-   while(at>=0){ hits.push({t:w,kind:'phrase',band:band,amt:amt,label:label,at:at});
+   while(at>=0){ if(!inPlain(at,w.length))hits.push({t:w,kind:'phrase',band:band,amt:amt,label:label,at:at});
     at=src.indexOf(' '+w+' ',at+1); }});});
  /* multi-word LEX entries next, then single words */
  var keys=Object.keys(LEX).sort(function(a,b){return b.length-a.length;});
@@ -622,7 +685,7 @@ function scanStory(text){
       following a longer one was suppressed, and keys are scanned longest
       first, so it bit constantly: a third of legitimate matches never landed.
       The phrase still outranks the words inside it, which is what this is for. */
-   if(!hits.some(function(h){return h.at<=at&&at<h.at+h.t.length+1;}))
+   if(!inPlain(at,w.length)&&!hits.some(function(h){return h.at<=at&&at<h.at+h.t.length+1;}))
     /* A WORD MAY NAME ITS OWN FETTER, and some have to.
 
        LEX was [seat, intensity] and the fetter was then inferred from the
@@ -641,7 +704,7 @@ function scanStory(text){
  /* adjectives name the charge even when they carry no band */
  Object.keys(ADJ2CHG).forEach(function(w){
   var at=src.indexOf(' '+w+' ');
-  while(at>=0){ hits.push({t:w,kind:'adj',charge:ADJ2CHG[w],at:at});
+  while(at>=0){ if(!inPlain(at,w.length))hits.push({t:w,kind:'adj',charge:ADJ2CHG[w],at:at});
    at=src.indexOf(' '+w+' ',at+1);}});
  /* THE DEGREE WORD, AZ6. A LEXMOD entry standing immediately before a word or
     phrase hit scales its amount, and the hit keeps both so the path and any
@@ -855,8 +918,10 @@ function parseStory(text){
    var sa=statedAt[h.band]=statedAt[h.band]||{};
    sa[h.fet]=(sa[h.fet]||0)+Math.abs(h.amt||0);}
   else if(adjAt[h.at]){
+   /* the amount the word carried, and not only that it named something, so
+      the word can keep its charge below when its seat cannot house it */
    var oa=ownAt[h.band]=ownAt[h.band]||{};
-   oa[adjAt[h.at]]=true;}});
+   oa[adjAt[h.at]]=(oa[adjAt[h.at]]||0)+Math.abs(h.amt||0);}});
  Object.keys(byBand).forEach(function(k){
   var bn=K2BAND[k]; if(!bn) return;
   var all=W.filter(function(n){return n.b===bn&&n.cf;});
@@ -899,7 +964,26 @@ function parseStory(text){
      one thing the sentence actually said and fall back to Anger. The charge
      still lands on the seat, because that is where the body holds it, and the
      reading keeps the name the word gave it. */
-  var here=statedAt[k]||{};
+  var here=Object.assign({},statedAt[k]||{});
+  /* AND SO DOES A FEELING THE WORD'S OWN ADJECTIVE NAMES, P0-1 of the
+     inference audit, 23 October. The survival above covered only a fetter
+     LEX states outright. A word whose own adjective names its feeling lost
+     to the quarter rule whenever its seat held few addresses for it:
+     measured, 23 of the 171 single feeling words were filed mostly under a
+     feeling they do not name. "I feel disconnected and hollow" names apathy,
+     the crown holds one apathy address and eight anger ones, so about 90
+     per cent of it was filed as anger; three such entries read anger at 10
+     and the Compass named the writer The Devil. "Tense" went to disgust and
+     "anxious" to fear. The quarter rule is right for a feeling named
+     elsewhere in the sentence, which is the grief filed as shame it was
+     written to stop. The word's own adjective is the plainest evidence the
+     sentence has, so it survives the same way a stated fetter does. A
+     feeling its seat does house, a quarter or more, reads exactly as
+     before. */
+  var own=ownAt[k]||{};
+  Object.keys(own).forEach(function(f){
+   if(here[f]!==undefined)return;
+   if(all.filter(function(n){return n.cf===f;}).length<all.length*0.25)here[f]=own[f];});
   var hereF=Object.keys(here).sort(function(a,b){return here[b]-here[a];});
   var stateHere=hereF.length>0;
   /* the intensity curve is 0-30ish. normalise to a 0-10 charge delta. */
@@ -1117,6 +1201,39 @@ function applyStory(text){
   .reduce(function(a,h){return a+Math.abs(h.amt);},0);
  if(calm)CHARGES.forEach(function(c){S.charge[c]=clamp(S.charge[c]-calm/140,0,10);});
  return {parsed:p, applied:touched};}
+/* ============================================================
+   APPLYSTORYADDR · THE ADDITIVE PER-ADDRESS LAYER, 26 October.
+
+   applyStory above keeps its own body and signature, on the standing
+   ruling below: scanStory, parseStory and applyStory are untouched. It
+   writes only S.charge, one total per fetter, so every address sharing a
+   fetter is spread by susceptibility alone and a story naming one
+   specific place carries no more weight there than anywhere else the
+   body can hold the same feeling. Review B, 25 October, measured it:
+   grief read at the Heart under every blueprint tried, and the field
+   made the Heart the heaviest seat in 6 of 19 and held nothing there at
+   all in 11 of 19. Writing "chest", "stomach", "throat" or "lower back"
+   changed nothing.
+
+   A sibling, not a change to applyStory: the same text, parsed again
+   (parseStory is pure, nothing in it depends on call order or on
+   applyStory having run). Only the imprints the person's own words
+   actually pointed to, im.inferred false, add anything here. A fallback
+   guess (inferred true) adds nothing; the fetter spread above already
+   carries it, exactly as today. Scaled by the same 0.35 applyStory uses,
+   so the two terms sit on one scale when compute() adds them together.
+   This is additive on top of the spread, never in place of it: an
+   address nobody named keeps reading exactly as it does today. Call
+   this everywhere applyStory is called, never instead of it. */
+function applyStoryAddr(text){
+ if(showRefuse('story'))return {applied:{}, refused:'example'};
+ var p=parseStory(text), touched={};
+ p.imprints.forEach(function(im){
+  if(im.inferred||im.node==null)return;
+  touched[im.node]=(touched[im.node]||0)+im.amt;});
+ Object.keys(touched).forEach(function(k){
+  S.addr[k]=clamp((S.addr[k]||0)+touched[k]*0.35,0,10);});
+ return {applied:touched};}
 
 /* ============================================================
    SNIFFSTORY · THE OUTPUT CONTRACT, SNIFFER_SPEC.md SECTION 10.
@@ -1450,7 +1567,8 @@ var LEXPROFRUN=lexProf();
    the canon, fold and composite passes have finished writing, over every
    table the scanner reads a match, an amount or a seat from: LEX, ADJ2CHG,
    PHRASES, LEXMOD and the place word tables, the blocking places included,
-   because adding one can stop a move. A word added, an amount
+   because adding one can stop a move, and LEXPLAIN, the plain idioms, for
+   the same reason: adding one stops a reading. A word added, an amount
    retuned or a seat moved changes it, and nothing else does.
 
    WHAT IT DOES NOT COVER, said so nobody has to discover it: a change to
@@ -1470,7 +1588,7 @@ function lexCanonJSON(v){
   return JSON.stringify(k)+':'+lexCanonJSON(v[k]);}).join(',')+'}';
  return JSON.stringify(v===undefined?null:v);}
 function lexVersion(){
- var s=[LEX,ADJ2CHG,PHRASES,LEXMOD,SOMA_PLACE.sense,SOMA_PLACE.seat,SOMA_PLACE_WORDS]
+ var s=[LEX,ADJ2CHG,PHRASES,LEXMOD,SOMA_PLACE.sense,SOMA_PLACE.seat,SOMA_PLACE_WORDS,LEXPLAIN]
   .map(lexCanonJSON).join('|');
  var h=0x811c9dc5;
  for(var i=0;i<s.length;i++){h^=s.charCodeAt(i); h=Math.imul(h,0x01000193)>>>0;}
@@ -1708,8 +1826,69 @@ function AXOF(k){return {fear:'Fear',anger:'Anger',shame:'Shame',disgust:'Disgus
    carries most of the reading and the tenth carries almost none. The shape is
    the same asymptote verp.js uses for its trust ramp, for the same reason, that
    a handful of substring matches must not buy certainty. */
+/* WHOSE ACT A LAW CUE IS, P0-4 of the inference audit, 23 October. This path
+   had no subject at all, and the Story page's Laws panel reads it, so "She
+   lied to me" told the writer "Truth, saying something that was not quite
+   true". Measured on 77928172, on fifteen sentences where someone else did
+   the act, three gave the writer a broken law. S2 held someone else's words
+   out of the feelings reading on 9 October and not out of this one.
+
+   NOT sniffWho AS IT STANDS, and the reason is one word. whoOf stops at the
+   nearest first person, which is right for a feeling, "he made me furious"
+   is the writer's, and wrong for an act: "My husband lied to me again last
+   night" carries the Temperance cue "again last night" after the object
+   "me". So this walks back through the same comma group with the same
+   tables, WHO_SUBJ, whoPerson and whoOpens, and counts only a first person
+   that can be a subject. An object is passed over. A cue whose own words
+   carry the writer, "i lied", is the writer's. A cue straight after a form
+   of be, not an -ing, is something done to the writer: "I was lied to".
+   No subject found is the writer, which is what a journal is.
+
+   THE WORDS LINE UP WITH wordsOf. lawNorm's copy holds the same words as
+   normMap's once its sentence bars are dropped, after a curly apostrophe
+   is made straight, which normMap already drops and lawNorm turned into a
+   space: "didn't" typed on a phone read "didn t", and its no was lost. When
+   the words do not line up the cue counts, as it always did, so this can
+   only ever set aside a cue it can show was someone else's. */
+var LAW_ME=['i','im','ive','id','we','weve'];
+var LAW_BE=['was','were','been','being','am','is','are','get','gets','got','getting','gotten'];
+/* a passive needs a participle after the be: "I was lied to", "I was kept
+   from it". "It is all my fault" is a be and no participle, and is the
+   writer's own blame. */
+var LAW_PART=['kept','told','hidden','taken','given','said','left','made','done','broken','stolen',
+ 'shown','held','caught','thrown','beaten','hurt'];
+function lawPassive(w){return /ed$/.test(w)||LAW_PART.indexOf(w)>=0;}
+function lawActor(t,ws,i){
+ var g=ws[i].g;
+ if(i>0&&ws[i-1].g===g){var p=ws[i-1].w;
+  if(p==='my'||p==='our')return 'me';
+  if(WHO_POSS.indexOf(p)>=0)return 'other';}
+ for(var j=i-1;j>=0&&ws[j].g===g;j--){
+  var w=ws[j].w;
+  if(LAW_ME.indexOf(w)>=0)return 'me';
+  if(WHO_SUBJ.indexOf(w)>=0)return 'other';
+  if(WHO_YOU.indexOf(w)>=0&&whoOpens(ws,j))return 'unclear';
+  if(whoPerson(w)){var k=j;
+   if(k>0&&ws[k-1].g===g&&LEXKIN.indexOf(ws[k-1].w+' '+w)>=0)k--;
+   if(k>0&&ws[k-1].g===g&&WHO_DET.indexOf(ws[k-1].w)>=0)k--;
+   if(whoOpens(ws,k))return 'other';
+   j=k; continue;}
+  if(j>0&&ws[j-1].c===ws[j].c&&/^[A-Z][a-z]+$/.test(t.slice(ws[j].s,ws[j].e))&&whoOpens(ws,j))return 'other';
+  if(whoStartName(t,ws,j))return 'unclear';}
+ return 'none';}
+function lawWriter(t,src){
+ var ws=wordsOf(t,normMap(t));
+ return function(h){
+  var cw=String(h.cue).replace(/'/g,'').split(' ');
+  if(cw.some(function(w){return LAW_ME.indexOf(w)>=0;}))return true;
+  var k=src.slice(0,h.at+1).split(' ').filter(function(w){return w&&w!=='|';}).length;
+  if(!ws[k]||ws[k].w!==cw[0])return true;
+  if(k>0&&ws[k-1].c===ws[k].c&&LAW_BE.indexOf(ws[k-1].w)>=0&&lawPassive(ws[k].w))return false;
+  var a=lawActor(t,ws,k);
+  return a==='me'||a==='none';};}
 function sniffLaws(text){
- var src=lawNorm(text), hits=lawMatch(src,LAWCUE,3), by={};
+ var t=String(text||'').replace(/[‘’]/g,"'");
+ var src=lawNorm(t), hits=lawMatch(src,LAWCUE,3).filter(lawWriter(t,src)), by={};
  hits.forEach(function(h){
   var r=h.row, key=r[0]+'|'+r[2];
   if(!by[key])by[key]={e:r[0],law:r[1],direction:r[2],n:0,cues:[]};
@@ -1915,8 +2094,9 @@ function sniffStory(text){
   /* EVERY POSITIVE CANDIDATE, S3 of the 9 October sniffer audit. This was
      sliced to SAB_SHOW here, so the domain layer decided what a screen shows
      and a seventh candidate was not in the output for anything to read.
-     SAB_SHOW is what a renderer slices to; no screen renders this list yet,
-     the tutorial reads only offer. */
+     SAB_SHOW is what a renderer slices to; no screen renders this list yet.
+     The one screen that read this aggregate at all was the Day One tutorial,
+     and it read only offer; it was removed on 23 October. */
   saboteurs: sniffSaboteurs(axes),
   laws:      sniffLaws(text),
   flow:      sniffFlow(text),

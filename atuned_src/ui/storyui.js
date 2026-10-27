@@ -490,15 +490,15 @@ function stFound(){
    Two writers for one commit is the same mistake setTab's own history
    warns against, a thing read in one table and written from two; this is one
    function, called from both. Returns what happened rather than only acting,
-   so a caller that is not the button itself (the tutorial) can act on a real
-   result instead of re-deriving it. */
+   so a caller that is not the button itself (the onboarding's commit) can
+   act on a real result instead of re-deriving it. */
 function stCommit(){
  /* AN ENTRY THAT READS AS NOTHING IS STILL THE PERSON'S OWN WORDS, round NZ,
     21.I1. This used to refuse the whole commit whenever the sniffer found no
     imprint, which is a UI gate and not the boundary: validateProfile already
     accepts an entry with imprints:0 and empty bands (engine/schema.js). Four
     of his own example sentences measured nothing here, "I keep putting off
-    the conversation" among them, and the Day One tutorial runs this same
+    the conversation" among them, and the Day One tutorial ran this same
     path, so a first entry exactly like one of his own examples was dropped
     on day one while the card beside it said "it is not a problem with what
     you wrote." The TDDs this product is built from rule it directly: "the
@@ -542,7 +542,7 @@ function stCommit(){
  if(k&&!again){
   /* the field is about to change and until now there was no way back */
   undoPush('committing the story');
-  applyStory(ST_TEXT); verpApply(ST_TEXT); leanApply(ST_TEXT);
+  applyStory(ST_TEXT); applyStoryAddr(ST_TEXT); verpApply(ST_TEXT); leanApply(ST_TEXT);
   /* THE CHARGE HAS TO REACH THE MIRROR, OR THE NEXT VISIT TAKES IT BACK OUT.
      applyStory writes S and pSave writes the record, and neither writes
      PEOPLE[0], which is the table loadP(0) reads the person's field back out
@@ -574,9 +574,8 @@ function stCommit(){
   entT=ent.t;}
   /* the draft these words were is taken off in the same write that puts the
      entry on, so a reload never offers back a story already committed. Only
-     when it is these words: onboarding and the tutorial commit their own text
-     through here, and a half written story waiting on the Story page is not
-     theirs to clear. */
+     when it is these words: onboarding commits its own text through here,
+     and a half written story waiting on the Story page is not its to clear. */
   var wasDraft=CURP.story.draft===ST_TEXT;
   if(wasDraft)delete CURP.story.draft;
   stDraftStop();
@@ -1692,7 +1691,12 @@ function stDraw(){
  var pts=[];
  Object.keys(STC.items).forEach(function(k){var it=STC.items[k],m=it.m,g1=Math.max(0,it.g);if(g1<.01||m.t0<0)return;
   var x=stXOf(m.t0),x2=stXOf(m.t1)+tw;
-  if(m.coh){g.fillStyle=rgba(STC.acc,.9);g.fillRect(x,H-STC.FLOOR+2-10*g1,x2-x,3);return;}
+  /* a calm word said with a no is set aside like any other word, P3-1 of the
+     inference audit: drawn dashed and faint, never as the solid bar of a calm
+     that counted */
+  if(m.coh){var cy=H-STC.FLOOR+2-10*g1;
+   if(m.aside){g.strokeStyle=rgba(STC.acc,.55);g.setLineDash([2,2]);g.strokeRect(x+.5,cy+.5,x2-x-1,2);g.setLineDash([]);return;}
+   g.fillStyle=rgba(STC.acc,.9);g.fillRect(x,cy,x2-x,3);return;}
   var lk=STC.lm.keyOf(m),o=lk&&STC.lane[lk];if(!o)return;
   var c=stCol(m.bn),hh=Math.max(3,g1*(0.22+0.78*m.depth)*o.h*.82),base=o.y+o.h-1,al=o.a;
   if(m.aside){g.strokeStyle=rgba(c,.55*al);g.setLineDash([2,2]);g.strokeRect(x+.5,base-hh+.5,x2-x-1,hh-1);g.setLineDash([]);}
@@ -1837,10 +1841,14 @@ function stDrawRing(){
  /* the core. A coherent word places nothing, so it lands here and grows
     nothing. Hollow by cutting, like the stations on Lanes. */
  g.save();g.globalCompositeOperation='destination-out';g.beginPath();g.arc(q.cx,q.cy,q.core,0,TAU);g.fill();g.restore();
- g.beginPath();g.arc(q.cx,q.cy,q.core,0,TAU);g.strokeStyle=rgba(acc,Math.min(1,.35+.1*coh.length));g.lineWidth=1.4*s;g.stroke();
+ /* and a calm word said with a no is drawn set aside here too, P3-1, and
+    does not brighten the core it did not reach */
+ var cohKept=coh.filter(function(it){return !it.m.aside;}).length;
+ g.beginPath();g.arc(q.cx,q.cy,q.core,0,TAU);g.strokeStyle=rgba(acc,Math.min(1,.35+.1*cohKept));g.lineWidth=1.4*s;g.stroke();
  coh.forEach(function(it,j){var a=-Math.PI/2+j*.5,g1=Math.max(0,it.g),r0=q.core+3*s,r1=r0+6*s*g1;
   g.beginPath();g.moveTo(q.cx+Math.cos(a)*r0,q.cy+Math.sin(a)*r0);g.lineTo(q.cx+Math.cos(a)*r1,q.cy+Math.sin(a)*r1);
-  g.strokeStyle=rgba(acc,1);g.lineWidth=2*s;g.stroke();});
+  if(it.m.aside){g.setLineDash([2*s,2*s]);g.strokeStyle=rgba(acc,.45);}else{g.setLineDash([]);g.strokeStyle=rgba(acc,1);}
+  g.lineWidth=2*s;g.stroke();g.setLineDash([]);});
  g.lineCap='butt';}
 /* ---- C. THE TRACE, AS FIRST DRAWN: THE STRIP ---- */
 function stStripBox(){return {x0:70,x1:STC.W-60,y0:8,y1:STC.H-26};}
@@ -1864,7 +1872,10 @@ function stDrawStrip(){
   g.fillStyle=o.m?rgba(o.m.bn?stCol(o.m.bn):acc,1):rgba(dim,.45);g.fillRect(x,CH-20,Math.max(1.5,dx-3),o.m?9:6);});
  Object.keys(STC.items).forEach(function(k){var it=STC.items[k],m=it.m,g1=Math.max(0,it.g);if(g1<.01||m.t0<0)return;
   var x=stStripX(m.t0),x2=stStripX(m.t1)+Math.max(5,dx-1.5);
-  if(m.coh){g.fillStyle=rgba(acc,.9);g.fillRect(x,CH-20-12*g1,x2-x,3);return;}
+  /* a calm word said with a no, set aside as on the lanes, P3-1 */
+  if(m.coh){var cy=CH-20-12*g1;
+   if(m.aside){g.strokeStyle=rgba(acc,.55);g.setLineDash([2,2]);g.strokeRect(x+.5,cy+.5,x2-x-1,2);g.setLineDash([]);return;}
+   g.fillStyle=rgba(acc,.9);g.fillRect(x,cy,x2-x,3);return;}
   if(!m.bn)return;
   var l=stStripLane(m.bn),c=stCol(m.bn),hh=g1*(0.2+0.8*m.depth)*l.h*.9,base=l.y+l.h-1;
   if(m.aside){g.strokeStyle=rgba(c,.55);g.setLineDash([2,2]);g.strokeRect(x+.5,base-hh+.5,x2-x-1,hh-1);g.setLineDash([]);return;}
@@ -1949,12 +1960,16 @@ function stListPaint(){
      which does not carry the fetter, so "I am exhausted" printed Pride.
      A stated imprint now folds to its fetter like an inferred one, because
      it has no address of its own, and each title says what the words did. */
+  /* AND A NAMED IMPRINT FOLDS TOO, P0-3 of the inference audit, 23 October.
+     It printed the address, so "My father died last year" showed a pill
+     reading Martyrdom, and the one sentence saying the engine chose it sat in
+     a hover title a phone never shows. The words named the feeling and only
+     the feeling, so every pill prints the feeling at its seat. */
   l.imps.slice().sort(function(a,b){return b.amt-a.amt;}).forEach(function(im){
-   if(im.inferred||im.stated){var fk=(im.stated?'s:':'i:')+im.band+':'+im.fetter;
-    if(!fold[fk]){fold[fk]={label:STV.sort==='charge'?im.band:im.fetter,amt:0,inf:true,st:!!im.stated,
-     band:im.band,fet:im.fetter};pills.push(fold[fk]);}
-    fold[fk].amt+=im.amt;}
-   else pills.push({label:im.name,amt:im.amt,inf:false,band:im.band,fet:im.fetter});});
+   var fk=(im.stated?'s:':im.inferred?'i:':'n:')+im.band+':'+im.fetter;
+   if(!fold[fk]){fold[fk]={label:STV.sort==='charge'?im.band:im.fetter,amt:0,inf:!!(im.inferred||im.stated),
+    st:!!im.stated,band:im.band,fet:im.fetter};pills.push(fold[fk]);}
+   fold[fk].amt+=im.amt;});
   /* THE "ONLY FROM" WARNING IS GONE, S1, because its case is. It was written
      for a seat charged by parseStory from words srcHear set aside, the two
      halves of the engine disagreeing. Since S1 a word said with a no charges
@@ -1970,7 +1985,7 @@ function stListPaint(){
     return '<span class="st-pill'+(q.inf?' inf':'')+(ST_SEEN[k]?'':' new')+'" style="--c:'+seatCol(q.band)+'" '
      +'title="'+esc(q.st?'Your words named '+String(q.fet||'').toLowerCase()+'. This seat has no address for it, so the charge stays at the seat.'
       :q.inf?'The seat was read. The words did not name this address.'
-      :'Your words named '+String(q.fet||'').toLowerCase()+'. The engine picked this address for it.')+'">'
+      :'Your words named '+String(q.fet||'').toLowerCase()+'.')+'">'
      +'<span class="st-ring"></span>'+esc(q.label)+' <small>+'+(Math.round(q.amt*10)/10)+'</small></span>';}).join('')
    +'</div></div>';});
  ST_SEEN=seen; box.innerHTML=o;
@@ -2377,8 +2392,11 @@ function stLawRow(t){
   +'<em style="flex:0 0 auto;font-style:normal;font-size:12px;color:var(--dim)">in '+t.n+(t.n===1?' entry':' entries')+'</em></div>';}
 function stLawPaint(){
  var b=document.getElementById('stlawb'); if(!b)return;
- var o='<p class="st-none" style="margin:0 0 10px">From your own words, not a score: which of the 21 laws of '
-  +'integrity read as held or let go in what you wrote. Nothing here moves your coherence number yet.</p>';
+ /* KEPT, NOT HELD. Held is the word for charge at an address, so a law is
+    kept or let go, and the set is named the way every other surface names it,
+    the count read off SI. */
+ var o='<p class="st-none" style="margin:0 0 10px">From your own words, not a score: which of the '+SI.length+' Laws of '
+  +'Moral Integrity read as kept or let go in what you wrote. Nothing here moves your coherence number yet.</p>';
  stLawWins().forEach(function(w){
   o+=stAnaHead(w.say,w.entries?w.entries+(w.entries===1?' entry':' entries'):'–');
   if(!w.entries)o+='<p class="st-none" style="margin-top:4px">Nothing written.</p>';
@@ -2391,8 +2409,13 @@ function stLawPaint(){
      character flaw without the two readings it was built from beside it. */
   o+='<p style="margin:6px 0 2px">Avoidance reads <b>'+g.intentional.avoidance+' per cent</b> in your last entry, built '
    +'from the two readings below it and never shown without them.</p>'
-   +'<p style="margin:2px 0">Aware against reactive, clean: <b>'+Math.round(g.aware*100)+' per cent</b>.</p>'
-   +'<p style="margin:2px 0">Detached against attached, clean: <b>'+Math.round(g.detached*100)+' per cent</b>.</p>';}
+   /* TWO LAWS OF ACTION, EACH AGAINST THE MOVE ACROSS FROM IT. These read
+      "Aware against reactive, clean", and sniffGates (engine/sniff.js) scores
+      aware against ignore, so reactive named an end the figure never counts,
+      and clean was the spec's word for the share. Each figure is the right
+      action's share of its own pair. */
+   +'<p style="margin:2px 0">Awareness against ignorance: <b>'+Math.round(g.aware*100)+' per cent</b> awareness.</p>'
+   +'<p style="margin:2px 0">Detachment against attachment: <b>'+Math.round(g.detached*100)+' per cent</b> detachment.</p>';}
  b.innerHTML=o;}
 
 /* ============================================================

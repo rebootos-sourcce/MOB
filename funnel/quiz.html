@@ -883,6 +883,15 @@ function viewRead(){
    +(seen[s.hcx]?'':': '+esc(fam?fam.d:'a contraction that has hardened into a shape'))
    +'</div>';
   seen[s.hcx]=1;
+  /* AN INFERRED NAME SAYS SO, P2-4 of the inference audit, 24 October.
+     Across simulated quiz takers the two names shown most were Diffuse
+     Freezer and Sacral Drifter, and neither is one of the 33: they are
+     clusters the engine names for their seat and feeling (UNNAMED in
+     engine/core.js, flagged unnamed on the reading), and the card printed
+     them exactly as it prints Judge. The word is the app's own, the drill
+     sheet's "Inferred", so one concept keeps one word. */
+  if(s.unnamed)h+='<div class="sl"><b>Inferred:</b> no saboteur of the 33 on file fits '
+   +'these addresses. This cluster is named for where it sits and the feeling it runs on.</div>';
   h+='<div class="sl"><b>What it does:</b> '
    +(d&&d.d?esc(firstSentences(d.d,2))
           :esc('It shows up as '+listOf(parts.map(function(n){return low(n.d);}))+'.'))

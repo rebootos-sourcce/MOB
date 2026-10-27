@@ -455,7 +455,7 @@ function runAccDrill(){
   +'<div class="pm-eye">How reliable</div>'
   +'<p class="ad-p">'+(a.relN>=0.6?'Reliable':(a.relN>=0.3?'Partial':'Too close to call'))
   +'. '+(a.rel>0?'<b>'+a.rel+'%</b> of the laws are':'None of the laws are')+' spread three or more, which is what separates one '
-  +'family from another. Laws of integrity sitting close together name nothing.</p>');}
+  +'family from another. Laws of Moral Integrity sitting close together name nothing.</p>');}
 
 /* ---- personas ---- */
 /* CUSTOM, and a line a person can actually read.

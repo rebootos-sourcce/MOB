@@ -34,6 +34,15 @@
                               per ritual saved before done existed,
                               inferred, because ledgerRead counts those as
                               practised and nothing ever recorded it
+     saboteur, complex,       derived, inferred, and only from a reading
+     hyper_complex,           handed in: one node per rung compute()
+     super_complex            already built, r.sabs, r.cxs, r.hys and
+                              r.sups. Never stored and never confirmed
+     a part supports its rung derived, inferred. The reading's own parts:
+                              an address supports a saboteur, a saboteur
+                              a complex, a complex a hyper-complex, and a
+                              hyper-complex a super-complex (THE CHAIN,
+                              below)
      everything else          STORED in p.trace: the practice objects'
                               stubs and every edge a person confirmed, a
                               proposal they have not yet answered, and a
@@ -63,14 +72,50 @@ var TRACE_V=1;
 /* WHICH DERIVATION MADE A DERIVED GRAPH, TDD section 27's algorithm
    version. A graph read under one rule compared with one read under
    another is a change of rule, not a change in the person. */
-/* 2, 3 October: the mirror card's Yes is read as the person's confirmation
-   (yesOf in traceFromRecord). */
-var TRACE_ALG=2;
+/* 2, 3 October: the mirror card's Yes is read as the person's confirmation.
+   3, 22 October: derived story→signal-impression→fetter and canonical
+   address→fetter membership are added to the graph read.
+   4, 22 October: the chain. A reading made by read() from this record,
+   handed in, adds its four rungs, saboteur to super complex, and the parts
+   each rung was built from. A graph read with no reading holds what 3
+   held, under this number.
+   Still 4 after 23 October, on purpose. That day the fourth rung's type
+   was renamed, character to super_complex, on the owner's ruling (below).
+   A rename is not a new derivation: the same rungs come off the same lists
+   with the same edges. And no graph the product builds or stores holds a
+   rung, because a day's graph is read with no reading and every door
+   refuses the chain's types. So a day stamped 4 means what it meant, and a
+   new number would only stop an older build opening a newer record. */
+var TRACE_ALG=4;
 
-/* TDD section 16, exactly. */
+/* THE CHAIN'S FOUR RUNGS, in the order they stack, TDD section 16's second
+   block. Derived only: see THE CHAIN, below. Named as the product names
+   them on screen (TIERNM in ui/ui.js), written as identifiers.
+
+   THE FOURTH IS super_complex, RULED 23 OCTOBER. His words, in DECISIONS.md
+   under "The full stack, nerve to Character": "From fetter to super complex.
+   After the super complex are the masks... And then at the very top is the
+   character." It was character until that day, and this comment said it
+   could never be super complex because that word already names
+   Psychopathy's kind in the descent (engine/data/compass.js). The ruling
+   took that reason away. The descent files Narcissism as a complex,
+   Machiavellianism and Sociopathy as hyper complexes and Psychopathy as a
+   super complex (Sociopathy added, and Psychopathy tied to the Grandiosity
+   and Predatory pair, on his 26 October ruling):
+   the word names the rung each one sits on, and this is that rung, so one
+   word still names one thing. Character is no type at all. It is the whole
+   person, every rung and every layer above them taken together, which is
+   the whole reading and not one node in it.
+
+   The address and the fetter are not here and never will be: both are a
+   pattern (tracePatternWhy), and a type of their own would stop every
+   stored pattern key resolving. */
+var TRACE_CHAIN=['saboteur','complex','hyper_complex','super_complex'];
+/* TDD section 16, exactly: its first block, the types that may be added,
+   then its second, the chain. */
 var TRACE_NODE_TYPES=['story','impression','pattern','goal','behavior','protocol',
  'ritual','practice_event','observation','evidence','outcome','context',
- 'somatic_state','reframe','release'];
+ 'somatic_state','reframe','release'].concat(TRACE_CHAIN);
 /* TDD section 17, exactly. There is no related_to. */
 var TRACE_EDGE_TYPES=['causes','associated_with','supports','contradicts','obstructs',
  'reinforces','targets','addresses','requires','implements','executes','produces',
@@ -153,6 +198,12 @@ var TRACE_RULES=[
  ['story','produces','impression','16, and the priority list 20.H8: the reading of an entry'],
  ['impression','supports','pattern','16, and the priority list 20.H8'],
  ['story','occurs_in','context','36'],
+ /* the chain, read off a reading (THE CHAIN, below). supports and never
+    causes: the reading counted a part toward a rung, a registration */
+ ['pattern','supports','saboteur','16 and 17, the chain: a cluster of addresses co-firing'],
+ ['saboteur','supports','complex','16 and 17, the chain: two saboteurs of one family compounded'],
+ ['complex','supports','hyper_complex','16 and 17, the chain: a family\'s complexes compounded'],
+ ['hyper_complex','supports','super_complex','16 and 17, the chain: two hyper-complexes paired'],
  /* section 12 and 13: observation and the somatic state */
  ['practice_event','produces','observation','12, source observation'],
  ['observation','supports','evidence','12, source observation'],
@@ -221,7 +272,7 @@ var TRACE_TABLE=['pattern','release','reframe'];
 /* THE TYPES THE RECORD CAN ANSWER FOR. Anything else stored in p.trace
    belongs to the practice objects, whose schema is not this file's, and
    is counted as unchecked rather than claimed to resolve. */
-var TRACE_RESOLVED=['story','pattern','release','reframe'];
+var TRACE_RESOLVED=['story','impression','pattern','release','reframe'];
 /* A truth channel is a reframe. The same test relCounts makes in
    ui/release.js over the channel part of a meter key. */
 var TRACE_TRUTH=/truth$/;
@@ -239,8 +290,11 @@ var TRACE_ID_MAX=120, TRACE_MAX=100000;
 
    The reasons below are read by a person and carry no citation. Where each
    one comes from, in the practice and trace design document: ritual 1,
-   protocol 15, practice event 15, evidence 12, outcome 14, goal 19, and
-   impression in the priority list at 20.H8. */
+   protocol 15, practice event 15, evidence 12, outcome 14, goal 19,
+   impression in the priority list at 20.H8, and the four rungs of the chain
+   in section 16's second block. A rung read off a reading always has its
+   parts, because traceReadingWhy refuses one that does not; these four say
+   so of a graph assembled anywhere else. */
 var TRACE_NEEDS={
  ritual:[{dir:'out',edges:['executes'],types:['protocol'],
   why:'a ritual is the scheduled execution of a protocol, and this one executes none'}],
@@ -259,7 +313,15 @@ var TRACE_NEEDS={
  release:[{dir:'out',edges:['targets','addresses'],types:['pattern'],
   why:'a release works at an address'}],
  reframe:[{dir:'out',edges:['targets','addresses'],types:['pattern'],
-  why:'a reframe works at an address'}]};
+  why:'a reframe works at an address'}],
+ saboteur:[{dir:'in',edges:['supports'],types:['pattern'],
+  why:'a saboteur is a cluster of addresses co-firing, and no address is counted toward this one'}],
+ complex:[{dir:'in',edges:['supports'],types:['saboteur'],
+  why:'a complex is saboteurs compounded, and no saboteur is counted toward this one'}],
+ hyper_complex:[{dir:'in',edges:['supports'],types:['complex'],
+  why:'a hyper-complex is complexes compounded, and no complex is counted toward this one'}],
+ super_complex:[{dir:'in',edges:['supports'],types:['hyper_complex'],
+  why:'a super-complex is hyper-complexes paired, and no hyper-complex is counted toward this one'}]};
 
 /* ---------- keys ---------- */
 /* A key is type and id. A type never holds a colon, so the first colon
@@ -332,7 +394,55 @@ function traceNodeWhy(type,id,src){
  var w=traceIdWhy(type,id); if(w)return w;
  if(TRACE_TABLE.indexOf(type)>=0&&src!=='known')
   return traceKey(type,id)+' is a row of the address table, so it is known, not '+src;
+ if(TRACE_CHAIN.indexOf(type)>=0&&src!=='inferred')
+  return traceKey(type,id)+' is a rung read off the reading, so it is inferred, not '+src;
  return null;}
+
+/* ============================================================
+   THE CHAIN. Nerve to super-complex, as edges the graph can walk.
+
+   compute() already builds four rungs from the addresses up, and each
+   rung holds the rung below it as its parts: a saboteur is a cluster of
+   addresses co-firing (r.sabs), a complex is two saboteurs of one family
+   compounded (r.cxs), a hyper-complex is a family's complexes compounded
+   (r.hys), and a super-complex is two hyper-complexes paired (r.sups). This
+   file adds no rung and moves no threshold. It writes down, one typed
+   edge each, which part the reading counted toward which rung, so a path
+   from an address to a super-complex is a path tracePath can find. Above
+   the chain the owner's stack goes on, masks, then archetype through
+   domain, then Character, the whole of it (DECISIONS.md, 23 October).
+   None of those is a rung compute() pairs, so none is a type here.
+
+   DERIVED ONLY. A rung exists because a reading of a field says so, on
+   that read, and for no other reason. So nothing but the derivation may
+   make one: traceAddNode, traceAddEdge, traceApply, validateTrace and the
+   stored layer under traceFromRecord all refuse the four types by name,
+   and the practice build's own vocabulary (PR_NODE, engine/practice.js)
+   does not hold them, so an intent cannot name one either.
+
+   INFERRED, AND NEVER CONFIRMED. A rung is the arithmetic's reading of a
+   field and not a claim a person made, so there is nothing for them to
+   confirm and nothing observed could bear it out. traceNodeWhy above and
+   traceEdgeAdd below refuse every provenance on a rung but inferred, which
+   is what keeps TRACE_PROMOTE from ever turning one into user_confirmed.
+
+   REGISTRATION IS NOT CAUSATION. Every edge is supports, the word a story
+   placing charge at an address already uses. Nothing here says one rung
+   causes the next.
+   ============================================================ */
+/* each rung, the list of the reading it is read from, and the reason its
+   part supports it, read by a person */
+var TRACE_CHAIN_OF=[
+ {type:'saboteur', list:'sabs', why:'the reading counted this address toward this saboteur, a cluster of addresses co-firing. A registration, not a cause'},
+ {type:'complex', list:'cxs', why:'the reading compounded this saboteur with another of its family into this complex. A registration, not a cause'},
+ {type:'hyper_complex', list:'hys', why:'the reading compounded this complex into its family\'s hyper-complex. A registration, not a cause'},
+ {type:'super_complex', list:'sups', why:'the reading paired this hyper-complex with another into this super-complex. A registration, not a cause'}];
+/* why a type may not come in through a door, or null */
+function traceChainWhy(type){
+ return TRACE_CHAIN.indexOf(type)>=0
+  ?'a '+type+' is read off the reading on every read, so it is never stored, applied or added by hand':null;}
+function traceChainKeyWhy(key){
+ return typeof key==='string'?traceChainWhy(traceSplit(key).type):null;}
 
 /* ---------- the index ----------
    Never stored on the graph. A cache on the object is one more copy that
@@ -413,6 +523,10 @@ function traceEdgeAdd(g,ix,from,edge,to,src,o){
  if(edge==='causes'&&TRACE_CAUSE_SRC.indexOf(src)<0)
   return {ok:false, why:'a cause is a claim and is held only as '+TRACE_CAUSE_SRC.join(' or ')
    +', never as '+src+': registration is not causation'};
+ /* THE CHAIN, never confirmed (THE CHAIN, above). Checked here, past the
+    rule table, so the derivation itself cannot get it wrong. */
+ if((TRACE_CHAIN.indexOf(ft)>=0||TRACE_CHAIN.indexOf(tt)>=0)&&src!=='inferred')
+  return {ok:false, why:from+' '+edge+' '+to+' is the reading counting a part toward a rung, so it is inferred, not '+src};
  var e={from:from, to:to, edge:edge, src:src};
  if(o.at!==undefined){
   if(typeof o.at!=='string'||isNaN(new Date(o.at).getTime()))return {ok:false, why:'at is not a date'};
@@ -439,15 +553,20 @@ function traceEdgeAdd(g,ix,from,edge,to,src,o){
  return {ok:true, added:true, edge:e};}
 
 /* THE PUBLIC FOUR. Each builds its own index, so a graph is only ever its
-   two arrays. */
+   two arrays. The two that add refuse a rung of the chain by name, on any
+   graph, a derived one included: a rung is never added by hand, and an
+   edge to one held by hand would be one more way to confirm it. */
 function traceAddNode(g,type,id,src){
  if(!traceIsGraph(g))return {ok:false, why:'there is no graph to add to'};
+ var cw=traceChainWhy(type); if(cw)return {ok:false, why:cw};
  return traceNodeAdd(g,traceIx(g),type,traceInId(type,id),src);}
 function traceAddEdge(g,from,edge,to,src,opt){
  if(!traceIsGraph(g))return {ok:false, why:'there is no graph to add to'};
+ var f=traceRef(from), t=traceRef(to), cw=traceChainKeyWhy(f)||traceChainKeyWhy(t);
+ if(cw)return {ok:false, why:cw};
  var o=opt&&typeof opt==='object'?{at:opt.at, was:opt.was}:{};
  if(o.at===undefined)delete o.at; if(o.was===undefined)delete o.was;
- return traceEdgeAdd(g,traceIx(g),traceRef(from),edge,traceRef(to),src,o);}
+ return traceEdgeAdd(g,traceIx(g),f,edge,t,src,o);}
 function traceRemoveEdge(g,from,edge,to){
  if(!traceIsGraph(g))return {ok:false, why:'there is no graph to remove from'};
  var f=traceRef(from), t=traceRef(to);
@@ -598,6 +717,11 @@ function traceOrphans(g){
    quietly removed is one a person thinks they confirmed. Every check is
    the same function the live graph uses, so there is one rule table and
    not a second copy of it here.
+
+   A rung of the chain is refused by name, as a node and as either end of
+   an edge. The stored layer holds only what cannot be derived, and a rung
+   is nothing but derived, so a stored one could only ever be a second,
+   staler answer to what the next reading says.
    ============================================================ */
 var TRACE_KEYS=['v','nodes','edges'], TRACE_NODE_KEYS=['type','id','src','was'],
     TRACE_EDGE_KEYS=['from','to','edge','src','at','was'];
@@ -619,6 +743,7 @@ function validateTrace(o){
   var bad=0;
   Object.keys(n).forEach(function(k){if(TRACE_NODE_KEYS.indexOf(k)<0){errs.push(path+' may not carry '+k); bad++;}});
   if(bad)return;
+  var cw=traceChainWhy(n.type); if(cw){errs.push(path+' '+cw); return;}
   var sid=traceId(n.id);
   if(sid!==null&&ix.node[traceKey(n.type,sid)]){errs.push(path+' repeats '+traceKey(n.type,sid)); return;}
   var r=traceNodeAdd(g,ix,n.type,n.id,n.src,null,n.was);
@@ -629,6 +754,7 @@ function validateTrace(o){
   var bad=0;
   Object.keys(e).forEach(function(k){if(TRACE_EDGE_KEYS.indexOf(k)<0){errs.push(path+' may not carry '+k); bad++;}});
   if(bad)return;
+  var cw=traceChainKeyWhy(e.from)||traceChainKeyWhy(e.to); if(cw){errs.push(path+' '+cw); return;}
   var r=traceEdgeAdd(g,ix,e.from,e.edge,e.to,e.src,{at:e.at, was:e.was, strict:true, nocycle:true});
   if(!r.ok)errs.push(path+' '+r.why);});
  /* the loops, once, over the whole layer rather than per edge */
@@ -654,6 +780,12 @@ function validateTrace(o){
    counted as held and is not a refusal, so a build that replays its
    intents on every save is not told it failed. now stamps the edges, and
    is the only clock this file reads: pass it and the call is pure.
+
+   An intent naming a rung of the chain at either end is refused by name,
+   at read time as well as here: a rung is read off a reading and never
+   applied (THE CHAIN). PR_NODE does not hold the four, so the practice
+   build cannot emit one, and this is the door that says so if anything
+   else tries.
    ============================================================ */
 var TRACE_INTENT_KEYS=['from','to','edge','src'], TRACE_END_KEYS=['type','id'];
 function traceIntentWhy(it){
@@ -670,6 +802,8 @@ function traceApplyIx(g,ix,intents,at,res){
  intents.forEach(function(it){
   var why=traceIntentWhy(it);
   if(why){res.refused.push({intent:it, why:why}); return;}
+  var fw=traceChainWhy(it.from.type), tw=traceChainWhy(it.to.type);
+  if(fw||tw){res.refused.push({intent:it, why:fw?'from '+fw:'to '+tw}); return;}
   var made=[], keys=[];
   for(var i=0;i<2;i++){var end=i?it.to:it.from;
    var src=TRACE_TABLE.indexOf(end.type)>=0?'known':it.src;
@@ -754,16 +888,91 @@ function traceWithSoul(p,fn){
 
 function tracePatternAttrs(i){
  var f=TRACE_FETTER.exec(String(i));
- if(f)return {name:f[1], seat:null, nerve:null, fetter:f[1]};
- var n=BY[+i]; return n?{name:n.k, seat:n.b, nerve:n.n||null, fetter:n.cf||null}:{};}
+ if(f)return {name:f[1], seat:null, nerve:null, fetter:f[1], toneHz:null, toneSource:null};
+ var n=BY[+i];
+ if(!n)return {};
+ /* FLOWSEAT owns the symbolic seat-tone reference. Attach its resolved value
+    to the derived address view, never copy it into the saved node/profile.
+    This is a configured sound-healing reference, not a measured nerve signal. */
+ var hz=(typeof seatHz==='function')?seatHz(n.b):null;
+ return {name:n.k, seat:n.b, nerve:n.n||null, fetter:n.cf||null,
+  toneHz:typeof hz==='number'&&isFinite(hz)?hz:null,
+  toneSource:typeof hz==='number'&&isFinite(hz)?'FLOWSEAT seat-tone mapping':null};}
 
 /* ============================================================
-   traceFromRecord(p, intents)
+   THE READING HANDED IN, and whether it is this record's.
+
+   compute() reads whatever field is loaded, so a reading on its own could
+   be anybody's, and this file promises one graph for one record whatever
+   is loaded. So a reading is read into a record's graph only when read()
+   stamped it with that record's id: rec, the key loadProfile already sets
+   as S.rec, for the same reason, "key the thing to the record it came
+   from". A reading with no stamp, another record's, or one read past a
+   story the record does not hold yet (read() leaves that one unstamped)
+   is refused by name, and the graph carries no chain.
+
+   ALL OR NOTHING. One rung that does not resolve refuses the whole
+   reading, because half a chain is a chain that stops somewhere the field
+   does not, and nobody reading the graph could tell.
+
+   THE PARTS ARE NAMES, NEVER THE OBJECTS. A saboteur's parts are the
+   address objects in W, and the next compute() rewrites them, so the sq
+   they hold by the time a graph is read belongs to whoever was read last.
+   Only the address number is taken from a part. A rung's weight is the one
+   compute() wrote onto that rung's own object, which nothing rewrites.
+   ============================================================ */
+function traceReadingWhy(p,r){
+ if(!r||typeof r!=='object'||Array.isArray(r))return 'the reading is not an object';
+ if(typeof r.rec!=='string'||!r.rec)
+  return 'the reading carries no record stamp, so it could be the reading of whatever field was loaded; read() stamps one';
+ if(typeof p.id!=='string'||!p.id)return 'this record has no id, so no reading can be shown to be its own';
+ if(r.rec!==p.id)return 'the reading is of another record';
+ var below=null;
+ for(var i=0;i<TRACE_CHAIN_OF.length;i++){
+  var row=TRACE_CHAIN_OF[i], list=r[row.list], here=Object.create(null);
+  if(!Array.isArray(list))return 'the reading has no '+row.list+' list';
+  for(var j=0;j<list.length;j++){
+   var x=list[j], at=row.list+'['+j+']';
+   if(!x||typeof x!=='object'||Array.isArray(x))return at+' is not an object';
+   var w=traceIdWhy(row.type,typeof x.nm==='string'?x.nm:null); if(w)return at+' '+w;
+   if(here[x.nm])return at+' names '+x.nm+' a second time';
+   here[x.nm]=1;
+   if(!Array.isArray(x.parts)||!x.parts.length)return at+' '+x.nm+' has no parts';
+   for(var k=0;k<x.parts.length;k++){
+    var q=x.parts[k], a=q&&typeof q==='object'?traceId(q.i):null;
+    if(!q||typeof q!=='object')return at+' '+x.nm+' has a part that is not an object';
+    if(below===null){
+     if(a===null||!/^[0-9]+$/.test(a)||!BY[+a])return at+' '+x.nm+' counts a part that is not one of the 112 addresses';}
+    else if(typeof q.nm!=='string'||!below[q.nm])
+     return at+' '+x.nm+' counts '+String(q.nm)+', which is not a '+TRACE_CHAIN_OF[i-1].type+' of this reading';}}
+  below=here;}
+ return null;}
+/* what a rung carries beside its key: its weight as compute() wrote it,
+   its family, and whether it is the overshoot. Never d, the line a person
+   is shown, and never sub, the clinical correspondence compute() calls
+   internal: a graph that carried them would be one more place to print
+   them from. */
+function traceChainAttrs(type,x){
+ var a={w:typeof x.w==='number'&&isFinite(x.w)?Math.round(x.w*10)/10:null};
+ if(type==='super_complex')return a;
+ a.family=type==='hyper_complex'?x.nm:(typeof x.hcx==='string'?x.hcx:null);
+ a.over=!!x.over;
+ if(type==='saboteur')a.unnamed=!!x.unnamed;
+ return a;}
+
+/* ============================================================
+   traceFromRecord(p, intents, reading)
 
    The whole graph for one record: what the record says, then the stored
    layer p.trace over it, then any intents handed in at read time. Same
    record, same graph, byte for byte, whatever profile the engine happens
    to have loaded.
+
+   reading is optional, and is the reading read() made of this same record
+   (THE READING HANDED IN, above). With one, the graph carries the chain,
+   saboteur to super-complex, read off its four lists. Without one there is no
+   chain, which is every caller written before 22 October, and their
+   graphs hold what they held. Same record and same reading, same graph.
 
    intents here are for relationships a practice object's own fields
    already state, a protocol's own list of patterns, say. Those should be
@@ -776,7 +985,7 @@ function tracePatternAttrs(i){
    file, so it is reported in refused rather than kept, and the gate holds
    refused empty on the worked record.
    ============================================================ */
-function traceFromRecord(p,intents){
+function traceFromRecord(p,intents,reading){
  var g=traceNew(); g.alg=TRACE_ALG; g.lex=LEX_VERSION;
  g.gaps=[]; g.refused=[]; g.restated=[]; g.unchecked={};
  var ix=traceIx(g);
@@ -853,6 +1062,32 @@ function traceFromRecord(p,intents){
    if(!by[k]){by[k]={amt:0, named:false}; order.push(k);}
    by[k].amt+=x.amt||0; if(!x.inferred)by[k].named=true;
    by[k].fetter=x.fetter||null;});
+  /* THE SIGNAL → FETTER PATH.
+     Story text is the raw source, not a fully structured waveform. Use the
+     existing impression node as the derived signal-reading layer. Keep
+     story→address supports unchanged for legacy consumers; the signal
+     impression supports the parser-identified fetter separately. Both edges
+     are derived with inferred provenance, never causation or metric writes.
+     A STORY THE SNIFFER READ NOTHING IN HAS NO READING, SO IT HAS NO
+     IMPRESSION. An impression is the reading of a story (TRACE_NEEDS), and
+     one made for a reading that found nothing joined the story to the graph,
+     so the drawer, which flags a story connected to nothing and never hides
+     it (daily.js, dlyWhy), stopped seeing it. Red in tests/daily.js until
+     this, and main, which has no signal path, never was. */
+  var signalId='signal:'+id;
+  var signal=im.length?node('impression',signalId,'inferred',{derived:true}):null;
+  if(signal)edge(sk,'produces',signal,'inferred',{derived:true,
+   why:'the story text was read as a signal impression; this is a derived interpretation, not a separate persisted waveform'});
+  var fetters={};
+  im.forEach(function(x){
+   var f=x&&typeof x.fetter==='string'?x.fetter:null;
+   if(f&&CHARGES.indexOf(f)>=0)fetters[f]=1;
+  });
+  Object.keys(fetters).sort().forEach(function(f){
+   var fk=node('pattern','fetter:'+f,'known',tracePatternAttrs('fetter:'+f));
+   if(signal&&fk)edge(signal,'supports',fk,'inferred',{derived:true,
+    why:'the parser identified '+f+' as the limiting-belief pattern in this source; this is an interpretation, not causation'});
+  });
   order.forEach(function(k){
    var pk=node('pattern',k,'known',tracePatternAttrs(k));
    if(!pk)return;
@@ -862,6 +1097,15 @@ function traceFromRecord(p,intents){
      :'the seat was read and the address was chosen by the fallback, not by the words'});});
   yesOf(sk,e);});
 
+ /* CANONICAL ADDRESS→FETTER MEMBERSHIP. NODES[].cf owns this mapping.
+    It is a known classification edge, not a claim about the person's state. */
+ W.forEach(function(n){
+  if(!n||!n.cf||CHARGES.indexOf(n.cf)<0)return;
+  var ak=node('pattern',String(n.i),'known',tracePatternAttrs(String(n.i)));
+  var fk=node('pattern','fetter:'+n.cf,'known',tracePatternAttrs('fetter:'+n.cf));
+  if(ak&&fk)edge(ak,'associated_with',fk,'known',{derived:true,
+   why:'canonical NODES[].cf membership; association does not imply causation'});
+ });
  /* THE LINES OPENED. One node per address and channel, which is
     meterKey's own form with no line. */
  var groups={}, gorder=[];
@@ -896,13 +1140,40 @@ function traceFromRecord(p,intents){
   if(ek)edge(rk,'produces',ek,src,{derived:true,
    why:older?'saved before planned and practised were split; ledgerRead counts it practised and nothing recorded it'
     :'marked done'});});
+
+ /* THE CHAIN, read off the reading handed in, and only then. A reading
+    that is not this record's is the caller's to fix and is refused whole,
+    by name. Past that, each rung is made lowest first, so every part a
+    rung counts is already a node: the addresses are, from the membership
+    above, and each rung is made before the one it is a part of. One edge
+    per part, however often it is listed. A refusal past that point is a
+    defect in this file and is reported, never dropped, the same as every
+    other derived edge. */
+ if(reading!==undefined&&reading!==null){
+  var rw=traceReadingWhy(p,reading);
+  if(rw)g.refused.push({reading:true, why:rw});
+  else TRACE_CHAIN_OF.forEach(function(row,i){
+   reading[row.list].forEach(function(x){
+    var ck=node(row.type,x.nm,'inferred',traceChainAttrs(row.type,x));
+    if(!ck)return;
+    var seen={};
+    x.parts.forEach(function(q){
+     var from=i===0?node('pattern',traceId(q.i),'known',tracePatternAttrs(traceId(q.i)))
+      :traceKey(TRACE_CHAIN_OF[i-1].type,q.nm);
+     if(from===null||seen[from])return;
+     seen[from]=1;
+     edge(from,'supports',ck,'inferred',{derived:true, why:row.why});});});});}
  /* every derived node so far is the record's own */
  g.nodes.forEach(function(n){n.derived=true;});
 
  /* THE STORED LAYER over it. A stored node the record already derived
     keeps the derived one. A stored story the record no longer holds is
     kept and marked dangling. A stored release nothing has run yet targets
-    its address, known from its own key, and does not address it. */
+    its address, known from its own key, and does not address it. A stored
+    rung of the chain, or a stored edge to one, is refused by name, checked
+    before the derived graph is consulted, so one that matches what the
+    reading derived is refused too rather than quietly passed over. This is
+    the boundary for a record that never went through validateTrace. */
  var s=p.trace;
  if(s!==undefined&&s!==null){
   if(!traceIsGraph(s))g.refused.push({stored:true, why:'p.trace is not a graph'});
@@ -910,6 +1181,7 @@ function traceFromRecord(p,intents){
    s.nodes.forEach(function(n){
     if(!n||typeof n!=='object'){g.refused.push({stored:true, why:'a stored node is not an object'}); return;}
     var sid=traceId(n.id), k=sid===null?null:traceKey(n.type,sid);
+    var cw=traceChainWhy(n.type); if(cw){g.refused.push({stored:true, node:k, why:cw}); return;}
     if(k!==null&&ix.node[k])return;
     var attrs=n.type==='pattern'?tracePatternAttrs(sid):{};
     if(n.type==='story')attrs={dangling:true, why:'no entry on this record is keyed '+sid};
@@ -922,6 +1194,8 @@ function traceFromRecord(p,intents){
      edge(r.key,'targets',ak,'known',{derived:true, why:'the key names this address; no line has run here'});}});
    s.edges.forEach(function(e){
     if(!e||typeof e!=='object'){g.refused.push({stored:true, why:'a stored edge is not an object'}); return;}
+    var cw=traceChainKeyWhy(e.from)||traceChainKeyWhy(e.to);
+    if(cw){g.refused.push({stored:true, edge:e.from+' '+e.edge+' '+e.to, why:cw}); return;}
     var r=traceEdgeAdd(g,ix,e.from,e.edge,e.to,e.src,{at:e.at, was:e.was});
     if(!r.ok)g.refused.push({stored:true, edge:e.from+' '+e.edge+' '+e.to, why:r.why});});}}
 

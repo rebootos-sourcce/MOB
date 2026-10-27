@@ -211,6 +211,8 @@ var SABAUTH={
  'Avoider':"Fear of confrontation + Delusion + Laziness",
  'Bully':"Aggression + Cruelty + Self-importance",
  'Codependent':"Fear of abandonment + Lack of self-esteem + Dependency",
+ /* S02, renamed by the owner on 18 October. Keyed by the name the reading
+    prints, because both routes in compute() look this up by s.nm. */
  'Micromanager':"Anxiety + Manipulation + Impatience",
  'Critic':"Self-hatred + Judgment of others + Perfectionism",
  'Cynic':"Doubt + Procrastination + Lack of effort",
@@ -313,8 +315,23 @@ const GATEGLYPH={
  ignore:'M2 12s4 5 10 5 10-5 10-5M6 15l-2 3M12 17v3M18 15l2 3',
  attach:'M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.5 1.5M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.5-1.5',
  averse:'M3 19C3 9 21 9 21 19M12 15m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0'};
+/* SAB_PI IS A LOOKUP, NOT A CITATION, and that decided the 18 October rename
+   here. Nothing prints these strings. ui/drills.js and ui/ui.js ask
+   SAB_PI.indexOf(o.nm) with the name the reading prints, and print a fixed
+   attribution when it answers. So an entry has to be this product's name for
+   the saboteur, or the attribution goes quiet. Since 18 October the range
+   route has named S02 Micromanager and printed no credit for it. With
+   Controller left here once the library carries the new name as well,
+   nothing the engine names is called Controller, and the credit would be
+   gone from S02 everywhere. Renaming his concept and dropping his credit
+   would be the inaccurate outcome, not the consistent one.
+
+   His own name for it is kept as data, in SAB_PI_AS, so the attribution can
+   say it. Chamine calls S02 the Controller; this product calls it the
+   Micromanager. The nine others use his names unchanged. */
 const SAB_PI=['Judge','Avoider','Micromanager','Hyper-Achiever','Hyper-Rational',
  'Hyper-Vigilant','Pleaser','Restless','Stickler','Victim'];
+const SAB_PI_AS={Micromanager:'Controller'};
 /* Inferred saboteurs are clusters the library does not name: two or more
    addresses in one seat carrying the same child fetter. They take an agent
    noun for the fetter so they read alongside the named ones, and they carry

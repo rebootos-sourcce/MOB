@@ -46,7 +46,7 @@ function loopSig(p){
  if(!p)return '';
  try{
   var es=(p.story&&p.story.entries)||[];
-  return JSON.stringify([p.id||null, es.map(function(e){return [e&&e.t,e&&e.text&&e.text.length,e&&e.lex];}),
+  return JSON.stringify([p.id||null, es.map(function(e){return [e&&e.t,e&&e.text,e&&e.lex];}),
    (p.meter&&p.meter.unique)||[], (p.rituals||[]).map(function(x){return [x&&x.t,x&&x.done];}),
    p.practice||null, p.trace||null, p.soul||null]);}
  catch(e){return String(Math.random());}}
@@ -104,7 +104,22 @@ function lpRow(x,i){
  return '<details class="lp-p" data-lpk="'+esc(x.key)+'" data-lpw="'+esc(w)+'"'+(open?' open':'')+'>'
   +'<summary><span class="lp-pn"><b>'+esc(x.name)+'</b>'+(seat?'<em>'+seat+'</em>':'')+'</span>'
   +'<span class="lp-st lp-'+x.state+'">'+(x.state==='confirmed'?'Confirmed':'Unanswered')+'</span></summary>'
-  +lpChain(x)+'</details>';}
+  +lpChain(x)+lpSignalHtml(x)+'</details>';}
+
+/* A marker is a navigable view of the existing source, not a second truth.
+   Candidate/inferred status stays explicit; no marker mutates metrics. */
+function lpSignalHtml(x){
+ var src=Array.isArray(x.signalSources)?x.signalSources:[];
+ if(!src.length)return '';
+ var nerve=x.nerve?'<p class="lp-signal-node">Nerve address '+esc(String(x.address||x.id))+': '+esc(x.nerve)+'. '+(x.toneHz!==null&&x.toneHz!==undefined?'Configured seat-tone reference: '+esc(String(x.toneHz))+' Hz ('+esc(x.toneSource||'FLOWSEAT')+'); this is a sound-healing reference, not a measured physiological frequency.':'No canonical tone reference is mapped for this address.')+'</p>':'';
+ return '<details class="lp-signal"><summary>Signal marker · '+src.length+' source'+(src.length===1?'':'s')+'</summary>'
+  +'<p class="lp-signal-note">Candidate signal-to-fetter association. This is an interpretation of source text, not proof of causation. Raw sensory and emotional components are not yet separately represented in this record.</p>'
+  +'<p class="lp-signal-qualium"><b>Qualium orientation of distortion:</b> not yet captured for this association. It is not inferred from the node descriptor or inward/outward charge grouping.</p>'
+  +nerve+'<ol class="lp-signal-sources">'+src.map(function(s){
+   return '<li><span class="lp-signal-state">'+(s.status==='confirmed'?'User confirmed':'Inferred candidate')+'</span>'
+    +(s.at?'<time datetime="'+esc(s.at)+'">'+esc(s.at)+'</time>':'')
+    +'<blockquote>'+esc(s.text||'(source text unavailable)')+'</blockquote></li>';
+  }).join('')+'</ol></details>';}
 
 function loopHtml(r,where){
  if(!r||r.unread)return '';

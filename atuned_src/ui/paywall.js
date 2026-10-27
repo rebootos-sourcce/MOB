@@ -85,10 +85,19 @@ function pwSigned(){ return typeof authSession==='function'&&!!authSession(); }
    same reason pwPlan reads the own plan there. Never under the harness seam:
    SIGHT_PLAN, when a gate sets one, is the whole answer, the rule lockGift
    keeps, so a gate measuring a tier is not handed the gift on an example. */
-function pwGift(){
+function pwInGift(){
  if(typeof SIGHT_PLAN!=='undefined'&&SIGHT_PLAN)return false;
  if(typeof showOnly==='function'&&showOnly())return typeof showOwnGift==='function'&&showOwnGift();
  return typeof lockGift==='function'&&lockGift();}
+/* THE GIFT'S OWN SHEET IS FOR A PERSON ON FREE, 24 October (P3-6 of the 23
+   October QA pass). A person paying for tier one who has not used the gift up
+   met it too: "Your gift: 100 patterns, no card. Everything is open.", said to
+   somebody paying by card, with Close and no way to stop or change the plan.
+   A payer inside the gift gets the paying sheet, with the gift's line beside
+   it (pwPaidInGift, PW_W.giftPaid). Inside the gift everything stays open
+   either way: this moves which sheet says so, never what is seen. */
+function pwGift(){ return pwInGift()&&planOf(pwPlan()).k==='free'; }
+function pwPaidInGift(){ return pwInGift()&&planOf(pwPlan()).k!=='free'; }
 
 /* ---- the words. Every string the sheet prints starts here, so the voice
    gate reads one list. ---- */
@@ -124,7 +133,9 @@ var PW_W={
     it, so the gift has one wording */
  giftTitle:'Your whole reading is open.',
  giftTl:'Open on your gift',
- gift:function(){ return ['Your gift: '+GIFT_N+' ','patterns',', no card. Everything is open.']; }};
+ gift:function(){ return ['Your gift: '+GIFT_N+' ','patterns',', no card. Everything is open.']; },
+ /* the same fact for somebody paying, with no claim about a card */
+ giftPaid:'Your gift is not used up yet. Everything is open until it is.'};
 /* 1,200 and not 1200, the way the tiers page prints it (ptN, ui/plans.js) */
 function pwN(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,','); }
 /* a ring's name, off SIGHT: "the masks" is Masks on a ring */
@@ -235,6 +246,8 @@ function pwHtml(){
      that tier's own card. */
   +(now.k==='free'&&free?'<div class="pw-here pw-quiet">'+PW_HERE+'<span><b>'+esc(PW_W.here)+'</b> '
     +esc(free.nm+', '+free.grant+' patterns a '+free.per)+'</span></div>':'')
+  /* a payer inside the gift: the gift's line beside the paying sheet (pwGift) */
+  +(pwPaidInGift()?'<div class="pw-here pw-quiet pw-gline"><span>'+esc(PW_W.giftPaid)+'</span></div>':'')
   +'</header>'
   +'<div class="pw-cards">'+cards.map(function(r){return pwCard(pl,r,pay);}).join('')+'</div>'
   +(prac?pwPrac(prac,pay):'')
@@ -277,7 +290,7 @@ function paywallOpen(k,back){
  var pl=pwPlan();
  /* a ring the person already sees is not a reason they came, so it marks
     nothing, and the door is the cheapest tier that opens what was pressed */
- if(k&&(pwGift()||planSees(pl,k)||!planNeed(k)))k=null;
+ if(k&&(pwInGift()||planSees(pl,k)||!planNeed(k)))k=null;
  PW.k=k||null; PW.door=k?planNeed(k).k:null;
  PW.back=back||document.activeElement||null;
  if(typeof TIP!=='undefined')TIP.hide();

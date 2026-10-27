@@ -71,6 +71,13 @@ var PCT_KIND={
  /* compute.js:408, all 112 addresses summed over 1120, each sq at most 10 */
  dq:        {lo:0, hi:100, src:'engine/compute.js', find:'const DQ=SQ.reduce((a,v)=>a+v,0)/1120*100;',
              say:'decoherence, the shadow on all 112 against the most they could hold'},
+ /* compute.js, 27 October, CQ's own complement: the 21 laws read on their
+    shadow side, 100-CQ by construction. Not the same quantity as dq above:
+    dq is what the 112 addresses measure is actually carried, lawsq is only
+    what the law answers imply alone. Null while CQ is still filling, same
+    guard as tier, so a partial intake never reads a false shadow. */
+ lawsq:     {lo:0, hi:100, src:'engine/compute.js', find:'const lawSQ=complete?clamp(100-CQ,0,100):null;',
+             say:'the shadow the law answers alone imply, CQ\'s own complement'},
  /* compute.js:448, CQ times what the pull leaves, PULL nought to one. The
     headroom exHeadroom returns, compute.js:585, is a gap on this same scale,
     so it asks this kind too: three points of expression is 3%. */
@@ -83,8 +90,11 @@ var PCT_KIND={
  /* data/compass.js:484, where a person sits on a compass axis */
  axis:      {lo:0, hi:100, src:'engine/data/compass.js', find:'return Math.round(clamp(clear*0.62+honest*0.38,0,1)*100);}',
              say:'the position on a compass axis'},
- /* core.js:426, how closely the feelings fit a saboteur's defined ranges */
- match:     {lo:0, hi:100, src:'engine/core.js', find:'var score=Math.round(fit/parts.length*100);',
+ /* core.js sab33Detect, how closely the feelings fit a saboteur's defined
+    ranges: the ramp's confidence, nought to one (sabConfidence clamps it,
+    data/canon.js), as a percent. It was the staircase's fit until P1-6 of
+    the inference audit, 23 October. */
+ match:     {lo:0, hi:100, src:'engine/core.js', find:'var score=Math.round(conf*100);',
              say:'a saboteur match'},
  /* verp.js:357, the share of the story that ran through one gate */
  gate:      {lo:0, hi:100, src:'engine/verp.js', find:'pct: sh?Math.round(sh[v.k]*100):0',
@@ -106,8 +116,11 @@ var PCT_KIND={
  /* schema.js:1041 on the axis, and compute.js:293 at one address */
  installed: {lo:0, hi:10, src:'engine/schema.js', find:"vRange(errs,'axes.'+c.nm+'.opp',a.opp,0,10)",
              say:'an opposite installed'},
- /* compute.js:290, the charge held at one address before the opposite */
- held:      {lo:0, hi:10, src:'engine/compute.js', find:'n.held = n.cf?clamp(S.charge[n.cf]*n.susc*(1-relief*0.42),0,10):0;',
+ /* compute.js, the charge held at one address before the opposite. base
+    folds in S.addr, the named-address layer added 26 October, before the
+    susceptibility and relief scaling; the clamp and its bound are the
+    same line they always were. */
+ held:      {lo:0, hi:10, src:'engine/compute.js', find:'n.held = n.cf?clamp(base*n.susc*(1-relief*0.42),0,10):0;',
              say:'the charge held at one address'},
  /* compute.js:295, sq, what is left at one address after the opposite. A mean
     of sq stays on the same scale, so SQm (compute.js:318), the heaviest seat
@@ -119,7 +132,7 @@ var PCT_KIND={
     a complex and a hyper the mean of their parts (compute.js:362 and 369), and
     the body map clamps the same w at 10 (ui/map.js:2036) */
  chain:     {lo:0, hi:10, src:'engine/core.js', find:'w:Math.min(10, parts.reduce(',
-             say:'the weight of a saboteur, complex, hyper complex or character layer'},
+             say:'the weight of a saboteur, complex, hyper complex or super complex'},
  /* compute.js:296, and poleMean is the mean of it over the somatic set */
  pole:      {lo:0, hi:10, src:'engine/compute.js', find:'n.pole = clamp(n.rep - n.held,0,10);',
              say:'how far the opposite outweighs the charge'},

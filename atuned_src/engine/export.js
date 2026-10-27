@@ -7,7 +7,7 @@
    ============================================================ */
 if(typeof module!=='undefined'&&module.exports){
  module.exports={
-  /* data */      NODES:NODES, SAB_LIB:SAB_LIB, HCX_LIB:HCX_LIB, SAB33:SAB33, SAB_PI:SAB_PI, GATEGLYPH:GATEGLYPH,
+  /* data */      NODES:NODES, SAB_LIB:SAB_LIB, HCX_LIB:HCX_LIB, SAB33:SAB33, SAB_PI:SAB_PI, SAB_PI_AS:SAB_PI_AS, GATEGLYPH:GATEGLYPH,
                   APC:APC, APC_REL:APC_REL, APC_EMB:APC_EMB,
                   SABDEF:SABDEF, SABCARD:SABCARD, DOMDEF:DOMDEF, GLOSS:GLOSS, HARM:HARM,
   /* meter */    meterFirst:meterFirst,
@@ -44,11 +44,11 @@ if(typeof module!=='undefined'&&module.exports){
                  planNextSight:planNextSight, planAllowance:planAllowance,
                  planWeeks:planWeeks, planFreeFrom:planFreeFrom, GIFT_N:GIFT_N, WEEK_MS:WEEK_MS, planInGift:planInGift,
                  planUpgrade:planUpgrade, planBuyable:planBuyable, RUN_MAX:RUN_MAX, RUN_MIN:RUN_MIN,
-                 PLAN_CHECKOUT_OPEN:PLAN_CHECKOUT_OPEN, planCheckoutOpen:planCheckoutOpen,
+                 PLAN_CHECKOUT_OPEN:PLAN_CHECKOUT_OPEN, planCheckoutOpen:planCheckoutOpen, planNamesPaid:planNamesPaid,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  PLAN_PRICE:PLAN_PRICE, planPrice:planPrice, planLadder:planLadder,
-                 planFromServer:planFromServer,
+                 planFromServer:planFromServer, planMoneyBad:planMoneyBad,
                  LEAD_SEES:LEAD_SEES, LEAD_HIDDEN:LEAD_HIDDEN, leadSees:leadSees,
                  EQUIV:EQUIV, EQUIV_NONE:EQUIV_NONE, equivOf:equivOf, planWorth:planWorth,
   /* ages */     AGES:AGES, AGE_TEST:AGE_TEST, AGE_LO:AGE_LO, AGE_HI:AGE_HI,
@@ -56,6 +56,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* compass */  MIRROR:MIRROR, PATHS:PATHS, MASTERS:MASTERS, BLUEPRINT:BLUEPRINT, CIRCLES:CIRCLES,
                  CASCADE:CASCADE, DESCENT:DESCENT, DESCENT_REFER:DESCENT_REFER,
                  mirrorAt:mirrorAt, darkRead:darkRead, circleAt:circleAt,
+                 descentStep:descentStep, descentHeld:descentHeld,
                  DARK_MAL:DARK_MAL, DARK_CQ:DARK_CQ,
                  GOVERN:GOVERN, quadrant:quadrant, outwardShare:outwardShare, organisedShare:organisedShare, ORG_W:ORG_W,
                  FAM_OUT:FAM_OUT, FAM_IN:FAM_IN, GOV_ORG:GOV_ORG, GOV_MAL:GOV_MAL, GOV_ANGEL:GOV_ANGEL,
@@ -84,7 +85,7 @@ if(typeof module!=='undefined'&&module.exports){
                   TEACHER_RECIPES:TEACHER_RECIPES, RECIPE_STEPS:RECIPE_STEPS, recipeOf:recipeOf,
                   recipeRitual:recipeRitual, recipeSteps:recipeSteps,
                   PAINREG:PAINREG, PEOPLE:PEOPLE, LAWSET:LAWSET, BIRTH:BIRTH,
-                  LEX:LEX, ADJ2CHG:ADJ2CHG, PHRASES:PHRASES, VERP:VERP,
+                  LEX:LEX, ADJ2CHG:ADJ2CHG, PHRASES:PHRASES, LEXPLAIN:LEXPLAIN, plainSpans:plainSpans, VERP:VERP,
                   NERVEBR:NERVEBR, BODYPATH:BODYPATH, TAB:TAB,
   /* the ladder */MARKS:MARKS, ladderRead:ladderRead, markDays:markDays, BACK_GAP:BACK_GAP, ledgerRead:ledgerRead,
                   intentionRead:intentionRead, INTENT_DAYS:INTENT_DAYS,
@@ -124,7 +125,7 @@ if(typeof module!=='undefined'&&module.exports){
                   LIFT_R:LIFT_R, lawLift:lawLift, lawWork:lawWork, lawNow:lawNow,
                   releaseWork:releaseWork, lawAnswered:lawAnswered, iqAnswer:iqAnswer,
   /* seed */      TYPE16:TYPE16, SEED16:SEED16, seedAxes:seedAxes, seedApply:seedApply,
-                  seedClear:seedClear, seedShare:seedShare, seedValid:seedValid, accuracy:accuracy, accCover:accCover, accCoverWord:accCoverWord,
+                  seedClear:seedClear, seedShare:seedShare, seedValid:seedValid, seedEmpty:seedEmpty, accuracy:accuracy, accCover:accCover, accCoverWord:accCoverWord,
                   CS_LAWW:CS_LAWW, CS_STORYW:CS_STORYW, CS_STORY_N:CS_STORY_N, CS_PARTIAL:CS_PARTIAL, sab33Detect:sab33Detect,
                   sabLevels:sabLevels, exprFill:exprFill, exprRead:exprRead,
   /* gates */     verpScan:verpScan, verpApply:verpApply, verpFactor:verpFactor,
@@ -141,7 +142,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* VERPCUE was reachable as a browser global and absent from the contract,
      so no test could check the lean tables against it. One phrase in both
      moves two instruments on one occurrence, which is what 'let it go' did. */
-                  VERPCUE:VERPCUE, VERPMULT:VERPMULT,
+                  VERPCUE:VERPCUE, VERPMULT:VERPMULT, VERP_VS:VERP_VS,
                   LEAN_FRAME_W:LEAN_FRAME_W, LEAN_TRUST_CAP:LEAN_TRUST_CAP,
                   LEAN_TRUST_HALF:LEAN_TRUST_HALF, LEAN_MIN_CH:LEAN_MIN_CH,
   /* the door */  read:read, input:input, throughput:throughput, output:output,
@@ -191,7 +192,7 @@ if(typeof module!=='undefined'&&module.exports){
                   unpackAll:unpackAll, unpackOf:unpackOf, unpackKey:unpackKey,
                   compassPoleOf:compassPoleOf, compassPoleLines:compassPoleLines, POLE_MEANS:POLE_MEANS,
                   HOME_POLES:HOME_POLES, compassOffAxis:compassOffAxis,
-  /* sniffer */   scanStory:scanStory, normMap:normMap, maskedRuns:maskedRuns, maskedSay:maskedSay, clauseFloor:clauseFloor, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory,
+  /* sniffer */   scanStory:scanStory, normMap:normMap, maskedRuns:maskedRuns, maskedSay:maskedSay, clauseFloor:clauseFloor, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory, applyStoryAddr:applyStoryAddr,
                   wordsOf:wordsOf, unmarkedOf:unmarkedOf,
                   sniffDeny:sniffDeny, NEG_NOT_DENY:NEG_NOT_DENY, storyHits:storyHits,
                   asideOf:asideOf, asideSay:asideSay,
@@ -235,7 +236,8 @@ if(typeof module!=='undefined'&&module.exports){
      exported so the gate can assert the derivation against them rather than
      against a number typed into the test, which is the failure this repository
      has been bitten by seven times. */
-                  CHG2SEAT:CHG2SEAT, CHG2FET:CHG2FET, B2K:B2K, K2BAND:K2BAND,
+                  CHG2SEAT:CHG2SEAT, CHG2FET:CHG2FET, SAB_SEAT:SAB_SEAT, SAB_LIB_BY:SAB_LIB_BY, B2K:B2K, K2BAND:K2BAND,
+                  sabSeats:sabSeats, sabSeatMain:sabSeatMain,
                   LEX_SEAT:LEX_SEAT, LEX_AMT:LEX_AMT, LEX_FET:LEX_FET,
                   LEX_SEATS:LEX_SEATS, LEX_SRC:LEX_SRC, LEX_AMT_MAX:LEX_AMT_MAX,
                   LEXMETA:LEXMETA, CHGMETA:CHGMETA,
@@ -295,7 +297,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* the trace graph, engine/trace.js. The vocabularies and the rule table
      are exported so the gate asserts them against the document rather than
      against a copy typed into the test. */
-                  TRACE_V:TRACE_V, TRACE_ALG:TRACE_ALG, TRACE_NODE_TYPES:TRACE_NODE_TYPES,
+                  TRACE_V:TRACE_V, TRACE_ALG:TRACE_ALG, TRACE_NODE_TYPES:TRACE_NODE_TYPES, TRACE_CHAIN:TRACE_CHAIN,
                   TRACE_EDGE_TYPES:TRACE_EDGE_TYPES, TRACE_SRC:TRACE_SRC, TRACE_RULES:TRACE_RULES,
                   TRACE_LOOP:TRACE_LOOP, TRACE_INVERSE:TRACE_INVERSE, TRACE_SYMMETRIC:TRACE_SYMMETRIC,
                   TRACE_CAUSE_SRC:TRACE_CAUSE_SRC, TRACE_PROMOTE:TRACE_PROMOTE, TRACE_TABLE:TRACE_TABLE,
@@ -377,6 +379,23 @@ if(typeof module!=='undefined'&&module.exports){
                   journeyClaim:journeyClaim, journeyClaimCheck:journeyClaimCheck,
                   releaseVerify:releaseVerify, releaseVerifyAt:releaseVerifyAt,
                   RV_METRIC:RV_METRIC, RV_ANSWERS:RV_ANSWERS, RV_SAY:RV_SAY,
+  /* the codes, engine/codes.js and engine/data/codes.js: one fixed code per
+     thing the engine names and the door every label goes through. The
+     tables are exported as the live objects so the gate holds them both
+     ways, and codeTables so it can hand codesCheck a copy with one broken. */
+                  CODE_SOURCES:CODE_SOURCES, CODE_KINDS:CODE_KINDS, CODE_FAMILY:CODE_FAMILY,
+                  CODE_STRUCT:CODE_STRUCT, CODE_ARCH:CODE_ARCH, CODE_EMOTION:CODE_EMOTION,
+                  CODE_ALIAS:CODE_ALIAS, CODE_UNMAPPED:CODE_UNMAPPED, CODE_RETIRED:CODE_RETIRED,
+                  CODE_SIGN:CODE_SIGN, CODE_ANIMAL:CODE_ANIMAL,
+                  codeKey:codeKey, codeOf:codeOf, codeKind:codeKind, codeName:codeName,
+                  codeList:codeList, codeOfEntry:codeOfEntry, codeEmotionOf:codeEmotionOf,
+                  codesCheck:codesCheck, codeTables:codeTables,
+  /* the registers ported from canon.json, engine/data/registers.js, and the
+     map and check in engine/registers.js. Nothing reads the tables but the
+     codes and the gate, so they are exported to be held, not to be used. */
+                  CHARGE_LADDER:CHARGE_LADDER, AMPLIFIER:AMPLIFIER, BODY_QUADRANT:BODY_QUADRANT,
+                  ORGAN:ORGAN, CHARGE_QUADRANT:CHARGE_QUADRANT, DERIVED_MEASURE:DERIVED_MEASURE,
+                  ASTRO_OVERLAY:ASTRO_OVERLAY, REG_MAP:REG_MAP, regDiff:regDiff, ladderPlaces:ladderPlaces,
   /* util */      clamp:clamp, leaves:(typeof leaves==='function'?leaves:null)
  };
 }

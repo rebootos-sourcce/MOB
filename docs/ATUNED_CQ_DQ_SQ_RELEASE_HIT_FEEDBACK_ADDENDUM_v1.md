@@ -1,10 +1,11 @@
-# ATUNED — CQ / DQ / SQ and Release Hit Feedback Addendum
+# ATUNED, CQ / DQ / SQ and Release Hit Feedback Addendum
 Date: 2026-10-21
 Status: Owner clarification; implementation contract, not proof of runtime completion.
 
 ## 1. Owner's canonical vocabulary
 - **CQ = Coherence.** These are two names for the same measure, not separate outputs.
-- **DQ = Resistance.** DQ represents the total sum of the shadow. Do not model DQ as `100 - CQ`.
+- **DQ = the canonical total-shadow Resistance measure.** DQ represents the total sum of the shadow. Do not model DQ as `100 - CQ` or conflate DQ with SQ.
+- **Formula Resistance input = normalized `Rz`.** `Rz` derives from DQ and the six-axis gate factor and has a floor of 1. It is the formula's normalized denominator, not a second user-facing metric; DQ remains the canonical total-shadow resistance readout.
 - **SQ = total shadow weight.** SQ is the sum of the individual weights of nodes.
 - **Fetter = the name/type of a node.** The fetter's individual weight is that node's contribution to SQ.
 - Keep the entity name (fetter), individual node weight, SQ aggregate, and DQ/Resistance aggregate distinct in storage and display.
@@ -34,18 +35,25 @@ When a Vritti is identified and associated with a fetter, the record must preser
 7. Vritti marker presence does not itself alter node weight, SQ, DQ, CQ, or release-hit counts.
 8. Test persistence, reload, export/import, duplicate prevention, and broken-link handling for the association.
 
-## 3. Preserve current engine behavior while reconciling the model
-The current `atuned_src/engine/compute.js` comments define CQ from the 21 universal-law values over fixed denominator 210, with unanswered laws contributing zero. Partial CQ therefore builds from zero as answers are supplied; completeness gates definitive tier eligibility, not existence of a partial score. The release-lift mechanic is already defined in that file and must not be duplicated.
+## 3. Canonical coherence formula and engine integration
+Owner formula: `CQ = (Integrity × Intention) / Resistance`. CQ and Coherence are the same metric; there must be one operational output, not a parallel calculator.
 
-The conceptual relationship `CQ = (Integrity × Intention) / Resistance` must be reconciled with the canonical engine rather than implemented as a second calculator. Treat CQ as Coherence per owner instruction. DQ is the Resistance term. SQ is a different aggregate: total node shadow weight. Do not silently substitute SQ for DQ or change the existing CQ calculation without a versioned decision and tests.
+The working branch implements this as **CQ model 3** in `atuned_src/engine/compute.js`:
+- **Integrity** = the existing 21-law score on the 0-10 scale (`cqSum()/10)); unanswered laws contribute zero. The existing release lift is already included through `lawNow()` and must not be applied a second time.
+- **Intention** = the existing band-derived `It` value on the 0-10 scale.
+- **Resistance** = the normalized operational `Rz` factor, derived from total-shadow DQ and the six-axis gate factor, with the established denominator floor of 1. DQ is the canonical raw total-shadow Resistance measure; Rz is the normalized formula denominator needed by the engine's existing 0-10 Integrity and Intention scales.
+- **CQ** = `clamp(Integrity * Intention / Resistance, 0, 100)`, with CQ set to zero when no laws have been answered. Tier words remain gated on all 21 laws being answered.
+- History rows are stamped with `CQ_MODEL=3` so records from the former law-only calculation are not compared as if they used the same arithmetic.
+
+This is an explicit model change from the prior 21-law-only CQ output. DQ remains the canonical total-shadow Resistance measure; Rz is the normalized formula denominator derived from DQ and gate context; SQ remains total node shadow weight. Do not substitute SQ for DQ or use `100-CQ` for Resistance. The formula wiring and regression assertions are present on the working branch, but runtime acceptance is **not complete until the engine build, tests, downstream consumer audit, and history/persistence checks execute successfully**. Any mismatch between the owner's intended meanings of Integrity/Intention/Resistance and the existing engine owners must be raised as a specific domain decision rather than hidden in another formula.
 
 ## 4. Release pile: optional voice-activated hit feedback
 Before a release run, offer a setting to enable or disable voice-activated decisions. Provide equivalent visible interactive controls for accessibility and noisy environments. When disabled, the existing release flow remains available without mandatory per-item decisions.
 
 For each presented item, offer these conceptual actions (spoken aliases may be configurable):
-- **HOLD / KEEP** — retain in the active release pile for later review or another pass. Not a confirmed hit.
-- **RELEASE / HIT** — explicitly mark as a user-confirmed hit. Add it to the accumulated confirmed-hit set.
-- **DELETE / NOT A HIT** — remove from the active pile and record a negative decision. Do not permanently erase historical evidence merely because the user removes an item from the current queue.
+- **HOLD / KEEP**, retain in the active release pile for later review or another pass. Not a confirmed hit.
+- **RELEASE / HIT**, explicitly mark as a user-confirmed hit. Add it to the accumulated confirmed-hit set.
+- **DELETE / NOT A HIT**, remove from the active pile and record a negative decision. Do not permanently erase historical evidence merely because the user removes an item from the current queue.
 
 The exact command grammar must avoid ambiguity between “release this pattern” as a session action and “this was a hit” as feedback. Use contextual prompts or distinct aliases if needed. Low-confidence recognition must ask for clarification or leave state unchanged; never execute a destructive action from uncertain speech.
 
@@ -70,7 +78,7 @@ Before each run, the user can choose voice feedback on/off. Clarify whether the 
 10. A hit is accumulated only after explicit user confirmation and remains distinguishable from inferred/presented/released states.
 11. A Vritti record can exist without a fetter association; an identified association links it to the correct fetter.
 12. Fetter marker state reflects the association and opens the correct Vritti record(s); marker presence does not change CQ/DQ/SQ or node weight.
-13. Candidate, confirmed, and rejected Vritti–fetter associations survive persistence and remain distinguishable.
+13. Candidate, confirmed, and rejected Vritti-fetter associations survive persistence and remain distinguishable.
 
 ## 6. Build sequence
 1. Locate the existing release pile/queue owner and event persistence owner; extend them instead of creating parallel stores.
@@ -78,7 +86,7 @@ Before each run, the user can choose voice feedback on/off. Clarify whether the 
 3. Add decision events and idempotent state transitions to the existing release queue/state machine.
 4. Wire voice and interactive controls to the same command/decision handler.
 5. Add unit and release-chain tests for all acceptance cases above.
-6. Verify current CQ, DQ, and SQ read/write paths and update existing TDDs to match these semantics.
+6. Verify current CQ, DQ, and SQ read/write paths against CQ model 3 and the `ATUNED_CQ_COHERENCE_FORMULA_INTEGRATION_TDD_v1.md` contract.
 7. Run the documented engine build, engine tests, and release-chain tests in a real runner; report results, not assumptions.
 
 ## 7. Verification boundary

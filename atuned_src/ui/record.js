@@ -152,7 +152,7 @@ function recRender(){
   +recRow('Saboteurs',a.sab,b.sab,0,true)
   +recRow('Complexes',a.cx,b.cx,0,true)
   +recRow('Hyper',a.hy,b.hy,0,true)
-  +recRow('Character',a.ch,b.ch,0,true);
+  +recRow('Super',a.ch,b.ch,0,true);
 
  var moved=[];
  /* a null tier is a row written while CQ was still filling, which has no word to compare.

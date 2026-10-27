@@ -32,7 +32,7 @@
    the 112 addresses (the fetters), the domains, the archetypes, the laws,
    the gates and the shadow. That is PLAN_ALWAYS below. What a tier buys is
    how far up the chain from a fetter a person may look: saboteur, complex,
-   hyper complex, character. And two surfaces that express what is running
+   hyper complex, super complex. And two surfaces that express what is running
    somebody rather than listing it, the Compass's Registers (the point cloud)
    and the Character page's masks, which sit on the same ladder.
 
@@ -62,22 +62,34 @@
    below it, and the table is checked for that in tests/engine.js.
 
    built:false MARKS A ROW WITH NO SURFACE YET, and the copy readers below skip
-   it. The owner ruled "Tier two unlocks the Kundalini" on 1 October and the
-   shipped app has a glossary entry for it and nothing that draws it (the rise
-   bar is in proto/avatar/rise.js, which is not in the build). The row is here
-   so the ruling is held in the one table and planSees answers it, but a tiers
-   page that listed it under tier two would be selling something that is not
-   there, so planAdds, planSeesAt, planLockedSay and the lock lists leave it
-   out until the surface exists. Building it is one word here, built:true, and
-   one lockApply on its control.
+   it. The owner ruled "Tier two unlocks the Kundalini" on 1 October.
+
+   PORTED 27 OCTOBER: proto/avatar/rise.js, the finished, measured prototype,
+   is now engine/rise.js, real, tested, and callable (riseRead, riseReach,
+   riseLevers, riseBase, riseDelta). built STAYS false. Checked before
+   flipping it: sightRows() feeds ui/paywall.js's own tier comparison
+   directly, so built:true would list the Kundalini as a tier-two benefit on
+   the pricing page today, with no screen anywhere drawing it -- the exact
+   thing this comment already warned against, "selling something that is not
+   there." The computation existing is not the surface existing; both were
+   always the condition, not either. kund is added to LOCK_OF_LAYER
+   (ui/lock.js) so the one lockApply a real control will need, once a
+   screen is designed and built for it, has a real lock ready to call.
 
    THE TIERS OF THE TWO THAT ARE NOT RUNGS. The owner ruled the point cloud
    on 1 October, in answer to the question this table asked: "Tier three
    unlocks the point cloud." That is the Compass's Registers view, so reg is
    tier three. He has not named a tier for the masks, which he listed with
    "how the point cloud is expressed or the child masks", so the masks are
-   PROPOSED at tier three, where the character layer that lights them sits.
-   That one is still open, and moving it is one word in this table. */
+   PROPOSED at tier three, where the super complex that lights them sits.
+   That one is still open, and moving it is one word in this table.
+
+   THE FOURTH RUNG IS super complexes, 23 October. It was character, and the
+   owner ruled the word for the rung above the hyper complex is super complex
+   and that Character is the whole of it, at the top (DECISIONS.md, "The
+   full stack, nerve to Character"). k stays sup, because a key is identity;
+   nm and what moved, so every tier row and lock sentence built off this
+   table says the new word and none says Character for a rung. */
 const SIGHT=[
  {k:'sab', nm:'saboteurs', need:'one', layer:true,
   what:'Which saboteurs are running on your charge.'},
@@ -85,8 +97,8 @@ const SIGHT=[
   what:'Where your saboteurs join into complexes.'},
  {k:'hy', nm:'hyper complexes', need:'three', layer:true,
   what:'Where your complexes join into hyper complexes.'},
- {k:'sup', nm:'character', need:'three', layer:true,
-  what:'The character your whole chain builds up into.'},
+ {k:'sup', nm:'super complexes', need:'three', layer:true,
+  what:'Where your hyper complexes join into super complexes.'},
  {k:'kund', nm:'the Kundalini', need:'two', layer:false, built:false,
   what:'How far the Kundalini has risen up your seven seats.'},
  {k:'reg', nm:'the registers', need:'three', layer:false,
@@ -185,10 +197,22 @@ function planBuyable(k){
    IT DOES NOT CLOSE THE SERVER AND IT DOES NOT OPEN IT. The server's switch is
    the gate; this is the instrument saying the same thing before anybody
    presses. Opening paying is two words, this one and the server's, in the same
-   release. Billing's own Move to presses still go through planOpen and are
-   refused by the server exactly as they were: that route is left as it stood. */
+   release. Billing's tiers (ui/plans.js) ask the same question since 24 October
+   and say "Opens soon" where each Move to sat; until then they kept their
+   presses, and each one could only be refused (P2-1 of the 23 October QA pass). */
 const PLAN_CHECKOUT_OPEN=false;
 function planCheckoutOpen(){ return PLAN_CHECKOUT_OPEN===true; }
+/* WHETHER THE RECORD NAMES A PAID TIER, live or ended, 24 October. The plan
+   sheet offered Manage billing to everybody, and a person who had never paid
+   pressed it to be told by the server "there is no paid plan on this account
+   yet, so there is no billing to manage" (QA pass of 23 October, P3-4). A
+   record that names a paid rung, in force or stopped, belongs to somebody who
+   has had a plan and has a payment page to go to; free, the gift, no plan and
+   a key this build does not know do not. planFromServer makes the same test
+   inline as wasPaid, and is left untouched because the pay cycle walk runs a
+   pinned copy of it (tests/money.js, group 5). */
+function planNamesPaid(pl){
+ return !!(pl&&typeof pl==='object'&&PLAN_BY[pl.tier]&&pl.tier!=='free'&&pl.tier!=='gift');}
 /* THE GIFT'S SIZE, NAMED ONCE. It is the gift row's grant above. planAllowance
    carried its own literal 100 in five places beside that row, which is the same
    number held twice and one edit away from two answers. */
@@ -240,10 +264,11 @@ function leadSees(what){ return LEAD_SEES.indexOf(what)>=0; }
    everything except how far up the chain a person sees (SIGHT) and how much
    new ground they may open (grant). The first six are the owner's own words of
    1 October, "your own reading at the level of the 112 addresses, domains,
-   archetypes, laws, gates and shadow", with gates said as action because that
-   is the word the Field's bar already prints for them. */
-const PLAN_ALWAYS=['your 112 addresses','the domains','the archetypes','the laws',
- 'action','shadow','the pain map','every tool','the journal',
+   archetypes, laws, gates and shadow", with the laws and the gates said by the
+   names the Field's bar prints for them since 22 October, the Laws of Moral
+   Integrity and the Laws of Action. */
+const PLAN_ALWAYS=['your 112 addresses','the domains','the archetypes','the Laws of Moral Integrity',
+ 'the Laws of Action','shadow','the pain map','every tool','the journal',
  'rerunning anything already open'];
 /* ANNUAL. TWO MONTHS FREE IS OUT, on the owner's ruling.
 

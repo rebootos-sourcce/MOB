@@ -111,7 +111,8 @@ console.log('\n=== 2 · one tab surface visible, plus whatever it carries ===');
 const FOLDOF={};
 /* indexed by the TAB integer, not by position, which is the rule this repo
    keeps relearning. 5 is Intake and it is not swept here. */
-const TABN=['Story','Summary','Field','Energy','Analytics','Intake','Knowledge',
+/* 0 is the journal page, named Discover since 23 October */
+const TABN=['Discover','Summary','Field','Energy','Analytics','Intake','Knowledge',
  'Games','Compass','Settings','Ritual','Character','Practitioner','Intake page'];
 /* 11 is the Character page, LP, in the host the Masks door had (LE). It sits
    over the same stage as the Body, so the two are the pair most likely to
@@ -596,7 +597,8 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
     reached its own end before the sheet left, so it was not cut; and the
     Wheel's once a session entrance started no earlier than the first frame
     the sheet began to lift, so it did not run out under a solid sheet. */
- const ev=await p6.evaluate(()=>({log:__BOOTLOG,t0:typeof ENTER_T0==='undefined'?null:ENTER_T0}));
+ const ev=await p6.evaluate(()=>({log:__BOOTLOG,t0:typeof ENTER_T0==='undefined'?null:ENTER_T0,
+   tab:S.tab,field:TAB.FIELD,nm:TABOF(S.tab).nm}));
  /* READ ON THE FADE'S OWN CLOCK, NOT ON THE ORDER TWO EVENTS ARRIVED IN.
     This asked for animationend before the removal. animationend is sent on
     the first frame after the fade's end, and the floor in ui/panels.js
@@ -616,8 +618,25 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
   'the sheet\'s fade played to its end before it left: began '+Math.round(ev.log.start)
   +'ms, due to end '+(fl?Math.round(fl.end):'unknown')+'ms, removed '+Math.round(ev.log.gone)+'ms'
   +(ev.log.end>0?', animationend at '+Math.round(ev.log.end)+'ms':', animationend not reached before the floor'));
- ok(ev.t0>0&&ev.t0>=ev.log.start-5,'the Field\'s entrance started as the sheet lifted, not under it: '
-  +'entrance '+Math.round(ev.t0)+'ms, lift '+Math.round(ev.log.start)+'ms');
+ /* AND SINCE 23 OCTOBER THE APP OPENS ON DISCOVER (TABHOME, engine/core.js),
+    so the Field is not the surface under the sheet. Nothing enters the Field
+    at start up, so its entrance cannot run out under a solid sheet, and it
+    waits for the first visit, where enterStart in ui/wheel.js runs it once a
+    session. Both halves of ET's finding are held on that opening: it did not
+    run under the sheet, and on the first visit it plays, after the sheet has
+    left. Opened on the Field again, the original check is the one that
+    applies, so it is kept for that case and read off where the app opened. */
+ if(ev.tab===ev.field){
+  ok(ev.t0>0&&ev.t0>=ev.log.start-5,'the Field\'s entrance started as the sheet lifted, not under it: '
+   +'entrance '+Math.round(ev.t0)+'ms, lift '+Math.round(ev.log.start)+'ms');
+ }else{
+  ok(ev.t0===null,'the app opened on '+ev.nm+', so the Field\'s entrance did not run under the sheet: '+ev.t0);
+  const first=await p6.evaluate(async()=>{setTab(TAB.FIELD); await new Promise(r=>requestAnimationFrame(()=>r()));
+   return {t0:typeof ENTER_T0==='undefined'?null:ENTER_T0, reduced:typeof REDUCED!=='undefined'&&!!REDUCED};});
+  ok(first.reduced?first.t0===0:(first.t0>0&&first.t0>=ev.log.gone),
+   'and on the first visit to the Field it plays, after the sheet left: entrance '+Math.round(first.t0||0)
+   +'ms, sheet gone '+Math.round(ev.log.gone)+'ms');
+ }
  console.log('  cleared:',late.gone);
  await p6.close();
 }

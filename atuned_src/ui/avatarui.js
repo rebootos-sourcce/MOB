@@ -509,9 +509,16 @@ function avRituals(r,rows,rule){
 
 /* ---------------- the archetypes ----------------
    The twelve the instrument reads, ARCH, each seated where ARCH seats it.
-   The primary saboteur and its seat come from ARCH18, the table that carries
-   them, joined by name. ARCH18 calls the Rebel the Outlaw; ARCH is the table
-   the engine reads and the rail prints, so the Rebel keeps its shipped name. */
+   The primary saboteur comes from ARCH18, the table that carries it, joined by
+   name. ARCH18 calls the Rebel the Outlaw; ARCH is the table the engine reads
+   and the rail prints, so the Rebel keeps its shipped name.
+
+   WHERE THAT SABOTEUR SITS IS WHERE ITS ADDRESSES ARE, 24 October, systems
+   audit SG-05: sabS is the seats of its addresses and sabB the one holding the
+   most of them, both read off SAB_LIB by sabSeats and sabSeatMain
+   (engine/core.js). sabB was the third column of ARCH18, which named none of
+   the saboteur's addresses' seats in 9 of its 18 rows: this page put Pleaser at
+   the heart while the body map drew it at the root and the sacral. */
 var AV_DEF={
  Warrior:'The Warrior moves on the threat and counts the damage after. It gets the thing done on a day when feeling it would stop you.',
  Sage:'The Sage reads the situation before it moves. It gives you ground to stand on when the moment is unclear.',
@@ -526,7 +533,10 @@ var AV_DEF={
  Everyman:'The Everyman stays with the room, so it reads the room first. It keeps you in the group.',
  Innocent:'The Innocent takes things at face value. It lets you trust people and start again after a bad day.'};
 /* what taking the role on costs, as a thing that happens in a day. It names
-   the saboteur and never calls the person by it. */
+   the saboteur and never calls the person by it. Keyed by the name ARCH18
+   carries, so S02 is Micromanager here: the owner renamed it in ARCH18 on 18
+   October and this key still said Controller, so the Warrior's line printed
+   empty until 22 October. */
 var AV_IMPACT={
  'Micromanager':'Handing a thing over feels like dropping it, so the grip stays on.',
  'Pleaser':'Yes comes out before your own answer has been checked.',
@@ -541,7 +551,8 @@ var AV_IMPACT={
  'Worrywart':'The worst case runs on a loop, and it feels like planning.'};
 var AV_ROSTER=ARCH.map(function(a,i){
  var row=ARCH18.filter(function(x){return (x[0]==='Outlaw'?'Rebel':x[0])===a.nm;})[0]||null;
- return {nm:a.nm, v:a.v, b:a.b, ic:a.ic, i:i, sab:row?row[1]:null, sabB:row?row[2]:null};});
+ return {nm:a.nm, v:a.v, b:a.b, ic:a.ic, i:i, sab:row?row[1]:null,
+  sabS:row?sabSeats(row[1]):[], sabB:row?sabSeatMain(row[1]):null};});
 function avArchByName(nm){
  for(var i=0;i<AV_ROSTER.length;i++)if(AV_ROSTER[i].nm===nm)return AV_ROSTER[i];
  return null;}
@@ -1274,7 +1285,9 @@ function avDetail(st,a){
   +'<div class="ad-sub">'+esc(ARCH_CREDIT)+'</div>';
  if(a.sab)
   out+='<div class="av-imp" style="--s:'+seatCol(a.sabB)+'"><div class="pm-eye">Impact</div>'
-   +'<p class="av-imp-v"><b>'+esc(a.sab)+'</b><span>primary saboteur, at '+AV_THE[a.sabB]+'</span></p>'
+   +'<p class="av-imp-v"><b>'+esc(a.sab)+'</b><span>primary saboteur'
+   +(a.sabS.length?', its '+unp('address','addresses')+' at '+esc(unpackList(a.sabS.map(function(b){return AV_THE[b];}))):'')
+   +'</span></p>'
    +'<p class="av-imp-c">'+esc(AV_IMPACT[a.sab]||'')+'</p></div>';
  out+=avThreadHTML(st,a);
  out+='<div class="av-pl" id="avsclab">How much of this is you</div>'
@@ -2102,7 +2115,7 @@ function avSeatAdd(b){
  var send=!old||old.notbe!==pr.notbe, p=parseStory(pr.notbe), k=p.imprints.length, msg;
  if(send&&k&&S.who===0){
   undoPush('adding a story to your avatar');
-  applyStory(pr.notbe); verpApply(pr.notbe); leanApply(pr.notbe);
+  applyStory(pr.notbe); applyStoryAddr(pr.notbe); verpApply(pr.notbe); leanApply(pr.notbe);
   saveYou();
   CURP.story=CURP.story||{entries:[]};
   /* stamped with the lexicon that read it, 19.B6, the same as the Story's

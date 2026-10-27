@@ -141,7 +141,7 @@ const FLAYS=[
  {k:'patterns',nm:'Patterns',d:frCirc(15.6,8.4,3.2)+'M13.3 10.7L5 19',
   tip:'The saboteurs running on the charge, threaded to the addresses that built them.'},
  {k:'chains',nm:'Chains',d:frCirc(5.4,18.6,1.6)+frCirc(11,13,2.3)+frCirc(17.4,6.6,3)+'M6.6 17.4l2.8-2.8M12.7 11.3l2.6-2.6',
-  tip:'How a pattern compounds: complex, hyper complex, character, inward.'},
+  tip:'How a pattern compounds: complex, hyper complex, super complex, inward.'},
  {k:'laws',nm:'Laws',d:frCirc(12,12,2.4)+frTicks(7,5.2,10,[1,.6,.9,.45,.8,.55,.95]),
   tip:'The twenty one laws, set by seat. Their sum is the number at the centre.'},
  {k:'gates',nm:'Gates',d:frCirc(12,12,3.1)+'M12 8.9V3.6M9.6 6L12 3.6 14.4 6M12 15.1v5.3',
@@ -707,12 +707,13 @@ function frPoles(M,r,cx,cy,inner){
    two left hand gates further than the four others and leaves every sector on
    the rim where it is. */
 const FR_GATE_AT={intent:-150,aware:-90,detach:-30,averse:30,ignore:90,attach:150};
-const FR_GATE_VS={aware:'ignore',ignore:'aware',detach:'attach',attach:'detach',intent:'averse',averse:'intent'};
+/* each gate's opposite is VERP_VS in engine/verp.js, the one pairing table,
+   which the action drill names it from as well */
 function frCollar(M,cx,cy,edge,sm){
  var G=frGates(),V=G.hi.concat(G.lo),by={};V.forEach(function(v){by[v.k]=v;});
  var rc=edge+(sm?3:4),wc=sm?3:4,span=46*Math.PI/180,gz=sm?11:13,Rg=gz/2+3,ph=15,clear=rc+wc/2+2;
  V.forEach(function(v){var t=(FR_GATE_AT[v.k]||0)*Math.PI/180,ev=G.ev,c=M.seat(v.side==='higher'?'Heart':'Root');
-  var o=by[FR_GATE_VS[v.k]],sum=v.pct+(o?o.pct:0),f=ev&&sum>0?v.pct/sum:0;
+  var o=by[VERP_VS[v.k]],sum=v.pct+(o?o.pct:0),f=ev&&sum>0?v.pct/sum:0;
   var pw=G.pw(v),ct=Math.cos(t),st=Math.sin(t),gr=rc+wc/2+Rg+3,gx,gy,px,py;
   for(var n=0;n<200;n++){gx=cx+ct*gr;gy=cy+st*gr;px=gx+Rg-4;py=gy+Rg-7;
    var nx=Math.max(px,Math.min(cx,px+pw)),ny=Math.max(py,Math.min(cy,py+ph));
@@ -857,7 +858,7 @@ function frFrames(M,r){
    P.push('<circle data-h="'+M.hid({k:'sab',o:s})+'" cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+rb.toFixed(1)+'"'
     +(s.unnamed?' fill="'+frRgb(M.ground)+'" stroke="'+frRgb(c)+'" stroke-width="1.5"':' fill="'+frRgb(c)+'"')+'/>');});})();
 
- /* chains. complexes, hyper complexes, character, each a frame further in.
+ /* chains. complexes, hyper complexes, super complexes, each a frame further in.
     The threads bow toward the core, because a chain is a pattern compounding
     inward, and drawn straight they ran across the frame as loose string. */
  frChains(M,r,at,[['cx',r.cxs,M.tCx,ring(D.cx),'Solar',3.4,1.5,'sab',M.ixSab,.30],
@@ -889,7 +890,7 @@ function frFrames(M,r){
 /* EACH TIER CARRIES ITS OWN CLASS, T-<tier>, and each thread the class of the
    tier at its far end as well, F-<tier>. The three tiers were one group under
    one switch, and the glass bar gives complexes, hyper complexes and
-   character a switch each; a thread is drawn when both its ends are, so a
+   super complexes a switch each; a thread is drawn when both its ends are, so a
    thread leaves with either. */
 function frChains(M,r,at,tiers,th,sc,frames){
  tiers.forEach(function(T){var key=T[0],list=T[1],ts=T[2],tr=T[3],c=M.seat(T[4]),rb=T[5],wd=T[6],from=at[T[7]],ixf=T[8],pull=T[9];
@@ -1089,7 +1090,7 @@ function frCallouts(M,r,P){
  if(ARCH[r.pi])push('archetypes',P.archAt[r.pi],ARCH[r.pi].nm,'First archetype',M.accent,P.hitOf['a'+r.pi]);
  /* the selected domain is not called out: the left rail already names it, and
     a fifth name in one corner reached the dial's own outer ring */
- r.sups.forEach(function(o,k){push('chains',P.at.sup[k],o.nm,'Character layer',M.seat('Root'),P.hitOf['u'+k]);});
+ r.sups.forEach(function(o,k){push('chains',P.at.sup[k],o.nm,'Super complex',M.seat('Root'),P.hitOf['u'+k]);});
  var shut=SI.map(function(l,i){return {l:l,i:i,v:+S.law[l.nm]||0};})
   .filter(function(x){return typeof lawIn!=='function'||lawIn(x.l.nm);})
   .sort(function(a,b){return a.v-b.v;})[0];
