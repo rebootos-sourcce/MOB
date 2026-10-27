@@ -3115,7 +3115,37 @@ His words: "Check to see if there's a second onboarding. Right now, there's been
 - **What else changes:** `sniffStory`, the full story reader, has no screen that calls it now. The tutorial was its only one. It stays in the engine, exported and held by `tests/engine.js`, and its route into screens was already ruled for after alpha (the 9 October entry above).
 - **Held by** `tests/onboarding2.js`, section 2, which reads the running page: no name of the tutorial on it, no rule of its poses, no host of its own, and no row for it in Account. Those four fail by name on `45fe5649`, the build from before this change. The checks that rode the tutorial's screens and still describe the product moved: the stage checks (no card chrome, a ghost with no live control, nothing running under reduced motion) onto the onboarding's own stage, and the release question gate onto the same two calls the tutorial made, `stCommit` and `obMini` handed to `relPick`.
 
-## Sociopathy and Psychopathy are placed in the descent, 26 October
+## The fetter's two poles are a nerve's freeze or flight, neutral at the centre, 27 October
+
+His words, reviewing the Field with the dual-pole rows on screen: "I realized
+that the fetter state having both poles is showing two things, the freeze or
+flight state of a nerve and then the center point is neutral. So the express
+collapsed is really showing the state of the nerve. It's very good."
+
+"Nerve" is his own word for the floor of the stack ruled 23 October, "our
+stack goes psychophysical, that's nerve, to super complex": the fetter and its
+address is the nerve. A fetter already carries two values, the charge it
+holds (`n.sq`, read as the held pole) and the coherent opposite installed
+against it (`n.pole`, see `ui/imprints.js` and `ui/map.js`). The reading above
+says what the two together have always been showing, read correctly for the
+first time: not a split scorecard of shadow against virtue, but which way
+that one nerve has tipped away from a centre where neither pole is pulling.
+Held high and installed low is the nerve pulled to one side. Installed high
+and held low is the nerve pulled to the other. Centre, where the two draw
+close, is the nerve regulated.
+
+Expression (`EX` in `engine/compute.js`, `CQ*(1-PULL)`, where `PULL` is the
+average drag every held address exerts against the person's will) is the
+figure that already moves with this. A collapsed Expression is not a separate
+fact about the person: it is this same tipped state, read off every nerve at
+once rather than one address at a time. CQ itself stays fixed (it is read
+from the law answers alone, ruled 25 September and reaffirmed since), so a
+low Expression is always the nerves pulling against a steady CQ, never CQ
+itself moving.
+
+Nothing in the arithmetic changed. This is a naming of what `n.sq`, `n.pole`
+and `EX` already compute, so the next reader of this code, or of a fetter
+drill on screen, has the right word for it.
 
 His words, settled in conversation: "Narcissism is a subset of psychopathy and Machiavellianism... sociopath would be a hypercomplex and psychopath would be a supercomplex. But a very particular archetype." This resolves his 20 October strike (`0e53d037`, "Remove disputed Psychopathy supercomplex classification"), which changed only `docs/ATUNED_LAYER_COUNT_DASHBOARD_2026-10-20.md` and never reached the code.
 

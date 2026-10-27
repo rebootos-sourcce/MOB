@@ -876,7 +876,12 @@ var SRC_PASSED=false;
 /* ROUND OT, his words: "I want the output to be a little bit more casual. So I
    was saying, what would you like to write about today? Say, what are we
    writing about today?" The round JS wording above is replaced by the one he
-   first offered at round GO, at his own request. */
+   first offered at round GO, at his own request.
+   SUPERSEDED, look-dev reconciliation, section 109, his words with a Page
+   mock-up in front of him: "What are we talking about today? That's new.
+   That's what we're using." A later, explicit, in-context ruling over the
+   same line -- not a guess, not drift. Round OT's reasoning kept above
+   rather than deleted, in case it needs to be reopened. */
 var SRC_OPEN='What are we talking about today?';
 /* THE NAME, LIFTED OUT, so the landing text and the Talk greeting below ask
    the same profile the same way once rather than twice. who.first and
