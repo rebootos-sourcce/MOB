@@ -1,2 +1,21 @@
 <!--line:One grammar for both families. A pair is a track with a line at 50 and one mark, and its figure sits over the centre line, where it is measured from. An amount fills from the left end and its figure sits at the right.-->
-<section><h2>Notes</h2><p>Round 1.</p></section>
+<section><h2>How to read it</h2><ul>
+<li>A pair: the line in the middle is 50 and 50. The bar grows from the line toward the side you lean to, the white mark is where you sit, and the figure over the line is how far, in that side's colour, with an arrow pointing to it.</li>
+<li>An amount: it fills from the left end. The figure is at the right.</li>
+<li>Flow: seven cells, root to crown. Colour is what each seat passes on. Hatching is what it holds back. The ringed cell is where you are blocked, and its name is beside the word Flow.</li>
+<li>Awareness, Will, Radiance and Vitality carry their figure in their symbol: the aperture opens, the shaft rises toward the gap, the rays lengthen, the shoot grows.</li></ul></section>
+<section><h2>Three rounds</h2><ul>
+<li><b>Round 1.</b> Dani: the figure over the line repeated the word already lit at the pole, so one reading was said twice. Mika: the pair fills were half height and the amount fills full height, two weights in one grammar. Petra: at 1% the Vitality shoot was a dot. Sol: the hatched swing band read as noise.</li>
+<li><b>Round 2.</b> The figure now carries only the arrow and the number. Pair and amount fills are one height. Every live symbol keeps its whole outline at nought. The band is a soft solid. New finding: a 16px flow cell cannot show Diane's Solar holding back 25%.</li>
+<li><b>Round 3.</b> The flow track is 24px: it carries seven readings and earns the height. DQ has a gap of its own above the five readings where more is better. Kai: the throw put Tomas's mark past 100% for a frame, so the ends are hard stops now.</li></ul></section>
+<section><h2>Rulings</h2><ul>
+<li><b>Kept:</b> the rail, the 44px pitch, round OT's colours and the halo and pitchfork, round OV's words CQ and DQ, round OX's swing range as the band, the 25 October rename to Positive and Negative.</li>
+<li><b>Superseded by his words today:</b> round RB and PC's two colours pressing in from the ends with a moving edge between them, and round OG's words drawn inside the fill. Words now sit on a line above the track.</li></ul></section>
+<section><h2>Grade</h2><p class="grade"><b>B+</b> Every hard constraint is met at the lowest cost of the four. Aperture and willpower are carried only by a symbol 18 pixels wide, and the page reads as tidy rather than striking.</p></section>
+<section><h2>What all four share, and why</h2><ul>
+<li><b>Two families, two drawings.</b> A pair is one reading measured from a centre, so it gets a line at 50 and one mark. An amount is one reading measured from none, so it fills or travels from one end.</li>
+<li><b>CQ is drawn against its own shadow, not against DQ.</b> DQ is not 100 less CQ (ruled in engine/compute.js), and no sampled person got past 60 on it. A line at 50 between CQ and DQ would draw a figure the engine does not compute. The self-read shadow (lawSQ, 27 October) is 100 less CQ by construction, and the engine already tips the field negative under CQ 50, so that line is real. DQ moves under How much, where the arithmetic puts it.</li>
+<li><b>Every figure is read off the build</b> at HEAD 87dd2cdf, for all 16 of PEOPLE, through the real compute(), leanRead(), leanSwing(), cqRange(), balance and flSeats(). Five people are shown, plus a profile with nothing entered.</li>
+<li><b>Colours are the house's own:</b> CQ the accent blue, every cost side Root red, Positive the Heart green, Masculine Solar, Feminine Throat, Vitality Solar, Awareness 3rd Eye, Will Throat. Radiance is drawn in light, because it is the brightness of the field and not a seat.</li>
+<li><b>Blocked uses the engine's own held rule</b> (flSeats: at least two addresses, and 28 percent of the seat, carrying), so a person with nothing held is never called blocked.</li>
+<li><b>Motion is ported, not invented:</b> rbDrift for the coherence band, leanSwing for Orientation, Balance still because nothing in the engine moves it, ENTER_SPAN 380 and ENTER_STAGGER 62, a 700ms throw that never passes either end. Reduced motion lands on the figure in the first frame.</li></ul></section>

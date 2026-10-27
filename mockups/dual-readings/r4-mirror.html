@@ -66,7 +66,7 @@ body.say .rs{display:block}
 .gh.c{position:relative;z-index:1}
 .gh.c,.gs.c{background:var(--panel)}
 .gh.c{width:max-content;margin:0 auto;padding:4px 8px 8px}
-.rw{position:relative;padding:6px 0 8px;outline:none;border-radius:10px}
+.rw{position:relative;padding:4px 0 6px;outline:none;border-radius:10px}
 .rw:focus-visible{box-shadow:0 0 0 2px var(--ink)}
 .ln{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;height:22px;font-size:12px}
 .ln.c{display:flex}
@@ -105,19 +105,19 @@ body.say .rs{display:block}
 .fsub{text-align:center;font-size:12px;color:var(--dim);margin:2px 0 6px;position:relative}
 .fsub span{font-weight:600;background:var(--panel);padding:0 6px}
 .crown-out{display:flex;justify-content:center;height:10px}
-.seat{display:grid;grid-template-columns:1fr 40px 1fr;align-items:center;height:30px}
+.seat{display:grid;grid-template-columns:1fr 40px 1fr;align-items:center;height:24px}
 .sn{justify-self:end;font-size:12px;color:var(--mid);padding-right:8px;outline:none}
 .sv{font-size:11.5px;color:var(--dim);padding-left:8px;white-space:nowrap}
 .seat.bk .sn,.seat.bk .sv{color:var(--sc);font-weight:600}
-.mid{position:relative;height:30px;display:flex;justify-content:center}
+.mid{position:relative;height:24px;display:flex;justify-content:center}
 .pipe{position:absolute;left:50%;width:28px;margin-left:-14px;display:block;background:repeating-linear-gradient(135deg,rgba(239,237,232,.22) 0 1.5px,transparent 1.5px 4.5px);border-radius:2px;overflow:hidden}
 .crown-out .pipe{position:relative;left:auto;margin:0;height:10px}
-.pipe.up{top:0;height:15px}.pipe.dn{bottom:0;height:15px}
+.pipe.up{top:0;height:12px}.pipe.dn{bottom:0;height:12px}
 .pipe .ex{position:absolute;inset:0;display:block;background:var(--sc,var(--ink));transform-origin:50% 50%;transform:scaleX(0);opacity:.9}
 .crown-out .pipe .ex{background:var(--crown)}
 .seat .pipe.up .ex{background:var(--sc)}
 .node{position:relative;z-index:1;align-self:center;width:12px;height:12px;border-radius:50%;border:2px solid var(--sc);background:var(--panel);display:block}
-.seat.bk .node{width:18px;height:18px;border-width:2.5px;box-shadow:0 0 0 3px var(--panel),0 0 0 4.5px var(--sc)}
+.seat.bk .node{width:16px;height:16px;border-width:2.5px;box-shadow:0 0 0 3px var(--panel),0 0 0 4.5px var(--sc)}
 .key{display:flex;gap:14px;font-size:11px;color:var(--dim);margin-top:8px}
 .key i{display:inline-block;width:10px;height:10px;border-radius:2px;vertical-align:-1px;margin-right:5px}
 .key .k1{background:var(--ink);opacity:.8}
@@ -132,7 +132,26 @@ body.say .rs{display:block}
 <button type="button" class="mt" id="meanings" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.6v.1"/></svg>Say what each one means</button></div>
 <main class="grid" id="grid"></main>
 <div class="notes">
-<section><h2>Notes</h2><p>Round 1.</p></section>
+<section><h2>How to read it</h2><ul>
+<li>One line runs down the middle of everything, the body's midline. Masculine is on the left and Feminine on the right because this is a mirror, the strip's own ruling.</li>
+<li>A pair sits off the line by its lean: a bead on a beam, the beam coloured from the line to the bead, the figure over the line.</li>
+<li>An amount is drawn the same on both sides of the line. Its shape says it has no direction, only how wide it is. The wider, the more.</li>
+<li>Flow is the line itself, root at the foot and crown at the top. The channel is as wide as what still gets through, hatched where it has collapsed, and pinched at the seat that holds back the most, which says how much.</li></ul></section>
+<section><h2>Three rounds</h2><ul>
+<li><b>Round 1.</b> Petra: the end caps on the amounts did not move, because a percent translate on a two pixel element moves by percent of two pixels. Fixed before the first shot. Mika: the channel's foot was a white stub that read as a reading.</li>
+<li><b>Round 2.</b> The foot of the channel is in the quiet ink. Ines: Wren read blocked at Root for a root holding back 7%, with two of sixteen addresses carrying. That was the mockup's rule and not the engine's, and it was in all four.</li>
+<li><b>Round 3.</b> Blocked now uses the engine's held rule. DQ has a gap of its own. Kai: the throw put a bead past the end of its beam for a frame, so the ends are hard stops. Dani: centred amounts are one sentence to learn, and after that they are the fastest glance of the four.</li></ul></section>
+<section><h2>Rulings</h2><ul>
+<li><b>Kept:</b> the mirror handedness, the halo and pitchfork, the element colours, CQ and DQ as words, the swing range as a band. <b>Serves</b> the 20 September ruling that the avatar is the centre and the layers are sewn to the body: flow is drawn on the body's own axis.</li>
+<li><b>Superseded:</b> round RB and PC's two colours pressing in from the ends, round OG's words inside the fill, and the wave as Flow's drawing (round OM). The wave's two questions, where it is rough and how much arrives, are answered by the channel's pinch and its width.</li></ul></section>
+<section><h2>Grade</h2><p class="grade"><b>A-</b> The only concept where the two families are told apart by shape alone: off the line is a lean, the same on both sides is an amount. Symmetrical in fact and not only in layout, and flow reads as blocked or open from across a room. It is the tallest of the four, 777 pixels at phone width against 431 for today's rail, measured 27 October after round 3 cut it from 851. It leaves awareness and will to their symbols.</p></section>
+<section><h2>What all four share, and why</h2><ul>
+<li><b>Two families, two drawings.</b> A pair is one reading measured from a centre, so it gets a line at 50 and one mark. An amount is one reading measured from none, so it fills or travels from one end.</li>
+<li><b>CQ is drawn against its own shadow, not against DQ.</b> DQ is not 100 less CQ (ruled in engine/compute.js), and no sampled person got past 60 on it. A line at 50 between CQ and DQ would draw a figure the engine does not compute. The self-read shadow (lawSQ, 27 October) is 100 less CQ by construction, and the engine already tips the field negative under CQ 50, so that line is real. DQ moves under How much, where the arithmetic puts it.</li>
+<li><b>Every figure is read off the build</b> at HEAD 87dd2cdf, for all 16 of PEOPLE, through the real compute(), leanRead(), leanSwing(), cqRange(), balance and flSeats(). Five people are shown, plus a profile with nothing entered.</li>
+<li><b>Colours are the house's own:</b> CQ the accent blue, every cost side Root red, Positive the Heart green, Masculine Solar, Feminine Throat, Vitality Solar, Awareness 3rd Eye, Will Throat. Radiance is drawn in light, because it is the brightness of the field and not a seat.</li>
+<li><b>Blocked uses the engine's own held rule</b> (flSeats: at least two addresses, and 28 percent of the seat, carrying), so a person with nothing held is never called blocked.</li>
+<li><b>Motion is ported, not invented:</b> rbDrift for the coherence band, leanSwing for Orientation, Balance still because nothing in the engine moves it, ENTER_SPAN 380 and ENTER_STAGGER 62, a 700ms throw that never passes either end. Reduced motion lands on the figure in the first frame.</li></ul></section>
 </div>
 <script>/* ============================================================
    DUAL READINGS, the shared half of four mockups. Design exploration only:
@@ -347,7 +366,10 @@ Panel.prototype.at=function(k,now){
  var e=CONCEPT.kind&&CONCEPT.kind(k)==='mark'?spring(clamp(kk,0,1)):e3(kk);
  if(REDUCED)e=1;
  if(Array.isArray(b))return b.map(function(v,j){var av=Array.isArray(a)?a[j]:v;return av+(v-av)*e;});
- return a+(b-a)*e;};
+ /* a mark throws past where it lands and settles, but never past either end
+    of its scale: round 3 caught Tomas's mark at 101.8 percent for a frame, a
+    figure the reading cannot have */
+ return clamp(a+(b-a)*e,0,100);};
 Panel.prototype.paint=function(now){var v=this.cur();CONCEPT.paint(this.host,this.p,v,REDUCED?0:now/1000);};
 function tick(now){PANELS.forEach(function(P){P.paint(now);});requestAnimationFrame(tick);}
 

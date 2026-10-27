@@ -130,7 +130,24 @@ body.say .rs{display:block}
 <button type="button" class="mt" id="meanings" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.6v.1"/></svg>Say what each one means</button></div>
 <main class="grid" id="grid"></main>
 <div class="notes">
-<section><h2>Notes</h2><p>Round 1.</p></section>
+<section><h2>How to read it</h2><ul>
+<li>A pair: one line drawn once down through all three is 50 and 50. Each ring sits on its own line, on a stem from the centre in the colour of the side it leans to. The figure on the right says how far, with an arrow.</li>
+<li>An amount: one axis for all six, none to all, with lines at the quarters running through every row, so vitality and will can be compared without reading a number.</li>
+<li>Flow: the line starts at all of it at the root and steps down at every seat by what that seat holds back. Shaded under the line is expressed, still flowing. Hatched above it is collapsed. The cliff is where you are blocked.</li></ul></section>
+<section><h2>Three rounds</h2><ul>
+<li><b>Round 1.</b> Two collisions in the build itself, found by looking at the shots: a gridline class shared a name with the page layout, and the row class matched every right hand stem. Both renamed. Mika: the step chart's seat colours were heavy and the expressed area barely showed.</li>
+<li><b>Round 2.</b> Seat colours are dimmed and the expressed area is lifted. Each panel's hatch pattern has its own id, because the first panel held the only one and it is hidden on a phone. Ines: DQ on the same axis as five readings where more is better invites a wrong comparison.</li>
+<li><b>Round 3.</b> DQ has a gap of its own. Blocked uses the engine's held rule, so Wren is no seat blocked and not blocked at Root. Dani: the most compact and the most comparable; the rings are small and the page is quiet.</li></ul></section>
+<section><h2>Rulings</h2><ul>
+<li><b>Kept:</b> CQ and DQ as words, the halo and pitchfork, the element colours, the swing range as a band. <b>Superseded:</b> round RB's one bar per row with the words inside; words sit in a column beside the scale.</li></ul></section>
+<section><h2>Grade</h2><p class="grade"><b>B+</b> The most truthful drawing of the four, with the least ink. The flow chart is the clearest picture of expressed, collapsed and blocked. It has the least pull of the four, and aperture and willpower are carried only by small symbols.</p></section>
+<section><h2>What all four share, and why</h2><ul>
+<li><b>Two families, two drawings.</b> A pair is one reading measured from a centre, so it gets a line at 50 and one mark. An amount is one reading measured from none, so it fills or travels from one end.</li>
+<li><b>CQ is drawn against its own shadow, not against DQ.</b> DQ is not 100 less CQ (ruled in engine/compute.js), and no sampled person got past 60 on it. A line at 50 between CQ and DQ would draw a figure the engine does not compute. The self-read shadow (lawSQ, 27 October) is 100 less CQ by construction, and the engine already tips the field negative under CQ 50, so that line is real. DQ moves under How much, where the arithmetic puts it.</li>
+<li><b>Every figure is read off the build</b> at HEAD 87dd2cdf, for all 16 of PEOPLE, through the real compute(), leanRead(), leanSwing(), cqRange(), balance and flSeats(). Five people are shown, plus a profile with nothing entered.</li>
+<li><b>Colours are the house's own:</b> CQ the accent blue, every cost side Root red, Positive the Heart green, Masculine Solar, Feminine Throat, Vitality Solar, Awareness 3rd Eye, Will Throat. Radiance is drawn in light, because it is the brightness of the field and not a seat.</li>
+<li><b>Blocked uses the engine's own held rule</b> (flSeats: at least two addresses, and 28 percent of the seat, carrying), so a person with nothing held is never called blocked.</li>
+<li><b>Motion is ported, not invented:</b> rbDrift for the coherence band, leanSwing for Orientation, Balance still because nothing in the engine moves it, ENTER_SPAN 380 and ENTER_STAGGER 62, a 700ms throw that never passes either end. Reduced motion lands on the figure in the first frame.</li></ul></section>
 </div>
 <script>/* ============================================================
    DUAL READINGS, the shared half of four mockups. Design exploration only:
@@ -345,7 +362,10 @@ Panel.prototype.at=function(k,now){
  var e=CONCEPT.kind&&CONCEPT.kind(k)==='mark'?spring(clamp(kk,0,1)):e3(kk);
  if(REDUCED)e=1;
  if(Array.isArray(b))return b.map(function(v,j){var av=Array.isArray(a)?a[j]:v;return av+(v-av)*e;});
- return a+(b-a)*e;};
+ /* a mark throws past where it lands and settles, but never past either end
+    of its scale: round 3 caught Tomas's mark at 101.8 percent for a frame, a
+    figure the reading cannot have */
+ return clamp(a+(b-a)*e,0,100);};
 Panel.prototype.paint=function(now){var v=this.cur();CONCEPT.paint(this.host,this.p,v,REDUCED?0:now/1000);};
 function tick(now){PANELS.forEach(function(P){P.paint(now);});requestAnimationFrame(tick);}
 
