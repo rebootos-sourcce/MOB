@@ -82,22 +82,22 @@ const CHARGE_LADDER=[
    Arrogance. canon.json's open ruling 5: "Justification has no node.
    Component two of four in narcissism. Inferred candidate: node 034."
 
-   RULED 25 October, not yet moved here: his words, "Justification and
-   arrogance in many ways share similar features. Justification is
-   rejection of accountability. Arrogance is using intimidation to avoid
-   accountability. So they share a trait. I would put them together."
-   Address 34 carries both. The tag stays "I" until the vendored canon.json
-   this ruling resolves (its own open_rulings id 5) is re-pinned; regDiff
-   holds this table to that file row for row on purpose, so a tag flipped
-   here first would read as drift instead of as his word. Recorded in full
-   in DECISIONS.md. */
+   RULED 25 October, his words: "Justification and arrogance in many ways
+   share similar features. Justification is rejection of accountability.
+   Arrogance is using intimidation to avoid accountability. So they share a
+   trait. I would put them together." Address 34 carries both. CLOSED 27
+   October: canon.json's own open ruling 5 is resolved upstream (reboot-os
+   PR #75) and vendor/reboot-os/canon.json is re-pinned to the copy that
+   carries it, so the tag moves to "R" here too, regDiff holding this table
+   to that file row for row the way it always does. Recorded in full in
+   DECISIONS.md. */
 const AMPLIFIER=[
  {c:"AM01",nm:"Entitlement",i:8,tag:"R"},
  {c:"AM02",nm:"Obsession",i:29,tag:"R"},
  {c:"AM03",nm:"Judgment",i:37,tag:"R"},
  {c:"AM04",nm:"Perfectionism",i:40,tag:"R"},
  {c:"AM05",nm:"Comparison",i:69,tag:"R"},
- {c:"AM06",nm:"Justification",i:34,tag:"I"}];
+ {c:"AM06",nm:"Justification",i:34,tag:"R"}];
 
 /* QUADRANTS, canon.json registers.quadrants. The body in four, right and left
    by front and back. Not the Compass's quadrant() (engine/data/compass.js),

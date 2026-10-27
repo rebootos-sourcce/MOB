@@ -2070,7 +2070,7 @@
     "Justification",
     34,
     "Greater Splanchnic Nerve",
-    "I"
+    "R"
    ]
   ],
   "archetypes": [
@@ -3333,14 +3333,6 @@
    ]
   },
   {
-   "id": 5,
-   "item": "Justification has no node",
-   "detail": "Component two of four in narcissism. Inferred candidate: node 034.",
-   "blocks": [
-    "registers.amplifiers"
-   ]
-  },
-  {
    "id": 6,
    "item": "Rebel",
    "detail": "Ruled a Jungian archetype, still load-bearing in four places. Four substitutions needed.",
@@ -3388,6 +3380,17 @@
    "blocks": [
     "formula.operational"
    ]
+  }
+ ],
+ "resolved_rulings": [
+  {
+   "id": 5,
+   "item": "Justification has no node",
+   "detail": "Component two of four in narcissism. Inferred candidate: node 034.",
+   "resolved": "2026-10-27",
+   "ruling": "Justification and arrogance in many ways share similar features. Justification is rejection of accountability. Arrogance is using intimidation to avoid accountability. So they share a trait. I would put them together.",
+   "ruled_by": "Lance Powell",
+   "applied": "registers.amplifiers row 6 (Justification, node 34, Greater Splanchnic Nerve) retagged I to R, the same node registers.nodes already names Arrogance."
   }
  ]
 }

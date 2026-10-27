@@ -154,11 +154,13 @@
    Entitlement is address 8, where MOB's is 38.
 
    Every row says where it was read. Book line numbers are for v192, md5
-   3d2671d9, the copy reboot-os holds. canon.json is 1.0.0, md5 7e844c0d.
+   3d2671d9, the copy reboot-os holds. canon.json is 1.0.0, md5 e41a12df,
+   re-pinned 27 October when ruling 5 (Justification and Arrogance) closed
+   upstream, reboot-os PR #75.
    ============================================================ */
 const CODE_SOURCES=[
  ['mob','this repository: its own tables, SNIFFER_SPEC.md and DESCENT'],
- ['canon','reboot-os atuned/data/canon.json, SOURCE OS CANON 1.0.0, issued 8 September by the owner, md5 7e844c0d, the copy held at vendor/reboot-os/canon.json'],
+ ['canon','reboot-os atuned/data/canon.json, SOURCE OS CANON 1.0.0, issued 8 September by the owner, md5 e41a12df, the copy held at vendor/reboot-os/canon.json'],
  ['book','The Mechanics of Being v192, reboot-os atuned/data/corpus/MOB_Complete_v192.txt, md5 3d2671d9'],
  ['app','the reboot-os app tables, atuned/data/canon_tables: SAB33, SABAUTH, HYPER, NODEREG'],
  ['nodes112','reboot-os atuned/data/nodes_112.json'],
