@@ -741,6 +741,9 @@ var ANA_MET={
  dq:{nm:'Shadow',seat:'Root',txt:'DQ',
   tip:'Shadow is all the charge left at your addresses, added up, as a share of the most they could hold.',
   fig:function(r){return anaPctFig('dq',r.DQ,r);}},
+ lawsq:{nm:'Self-read shadow',seat:'Root',txt:'SQ',
+  tip:'SQ is what your own law answers alone imply about shadow, CQ\'s own complement. It is not Shadow (DQ): DQ moves when you release what you actually carry, SQ only moves when a law answer changes.',
+  fig:function(r){return r.lawSQ===null?{p:0,raw:'–'}:anaPctFig('lawsq',r.lawSQ,r);}},
  pull:{nm:'Pull',seat:'Solar',txt:null,
   tip:'Pull is how hard the charge you hold drags on what you do, and a heavy place drags far harder than a light one.',
   fig:function(r){return anaPctFig('pull',r.PULL,r);}},
@@ -933,7 +936,7 @@ addEventListener('keydown',function(e){
 function anaTele(r){
  if(r.unread)return '';
  var s='<div class="ana-tele"><div class="pm-eye" style="margin-top:20px">Readings</div>'
-  +'<div class="ana-tiles">'+['cq','dq','pull','ex','jq','pole'].map(function(k){
+  +'<div class="ana-tiles">'+['cq','dq','lawsq','pull','ex','jq','pole'].map(function(k){
    var M=ANA_MET[k], f=M.fig(r);
    return '<button type="button" class="ana-tile" data-ana="met|'+k+'">'
     +cr(M.seat,f.p,{size:'md',raw:f.raw,text:M.txt,hot:false,title:M.nm})

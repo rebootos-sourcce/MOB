@@ -5082,6 +5082,152 @@ g('36b · the fitted CQ model, reproduced from the simulation that fitted it');
  }
 }
 
+g('36f · lawSQ, CQ\'s own complement, 27 October');
+/* He asked, verbatim: a self-reported shadow built purely from the 21 laws,
+   so it sums to 100 with CQ by construction, standing beside DQ rather than
+   replacing it. Proven first by simulation (lookdev/handoff/
+   CQ_DQ_SOURCE_OF_TRUTH_2026-10-27.md): strict complementarity between CQ
+   and the real, address-based DQ breaks the release mechanic, so this is a
+   second, separate number, never a redefinition of DQ. */
+{
+ const r0=reset(0,0,5);
+ near(r0.CQ+r0.lawSQ,100,1e-9,'CQ and lawSQ sum to 100 by construction, got '+r0.CQ+' and '+r0.lawSQ);
+ ok(r0.lawSQ===50,'every law 5: lawSQ is 50, got '+r0.lawSQ);
+ const rPerfect=reset(10,0,10);
+ ok(rPerfect.CQ===100&&rPerfect.lawSQ===0,
+  'every law 10, heavily loaded: CQ 100 and lawSQ 0, even though DQ is still '+rPerfect.DQ.toFixed(1)+
+  ' -- lawSQ is the self-report, not what is actually carried');
+ const rZero=reset(0,0,0);
+ ok(rZero.CQ===0&&rZero.lawSQ===100,'every law 0: CQ 0, lawSQ 100, got '+rZero.CQ+', '+rZero.lawSQ);
+
+ /* a few hundred random complete fields, the identity must hold exactly every time */
+ let x=23>>>0; const rnd=()=>{x^=x<<13;x>>>=0;x^=x>>>17;x^=x<<5;x>>>=0;return x/4294967296;};
+ let offCount=0;
+ for(let i=0;i<500;i++){
+  S.doms=[Math.floor(rnd()*19)];S.arcs=[Math.floor(rnd()*12)];S.roots=[];buildSoul();
+  CHARGES.forEach(c=>{S.charge[c]=+(rnd()*10).toFixed(2);S.replace[c]=+(rnd()<.5?0:rnd()*10).toFixed(2);});
+  SINAMES.forEach(l=>S.law[l]=Math.round(rnd()*10)); lawsIn();
+  const r=compute();
+  if(Math.abs((r.CQ+r.lawSQ)-100)>1e-9)offCount++;}
+ ok(offCount===0,'CQ+lawSQ=100 held on 500 random complete fields, off '+offCount);
+
+ /* unread and incomplete: null, never a number built off answers that have
+    not landed, the same guard tier already uses */
+ E.loadProfile(E.blankProfile('lawSQ, nothing entered'));
+ ok(compute().lawSQ===null,'nothing entered: lawSQ is null, not a false 100');
+ {const p=E.blankProfile('lawSQ, filling'); E.loadProfile(p);
+  p.intake.answers[0]=7; E.iqApply(p);
+  ok(compute().lawSQ===null,'one law answered of 21: lawSQ still null, not a partial shadow reading');}
+
+ /* the release probe again, now also watching lawSQ: the charge half must
+    never move it (it cannot see the 112 addresses), and the law half, which
+    raises CQ, must lower it by exactly as much */
+ const mem2={}; E.bindStore(k=>mem2[k]===undefined?null:mem2[k],(k,v)=>{mem2[k]=String(v);});
+ const CH2=['Rlimit','Llimit','Rtruth','Ltruth'];
+ let rec2=null, runs2=0, lawSQoffChargeHalf=0, lawSQoffLawHalf=0;
+ for(let i=0;i<500;i++){
+  if(i%100===0)rec2=E.pImport(JSON.stringify(E.blankProfile('lawSQ release probe '+i)));
+  S.doms=[Math.floor(rnd()*19)];S.arcs=[Math.floor(rnd()*12)];S.roots=[];buildSoul();
+  CHARGES.forEach(c=>{S.charge[c]=+(rnd()*10).toFixed(2);S.replace[c]=+(rnd()<.5?0:rnd()*10).toFixed(2);});
+  SINAMES.forEach(l=>S.law[l]=Math.round(rnd()*10)); lawsIn();
+  const r0b=compute();
+  const q=W.filter(n=>n.sq>0).sort((a,b)=>b.sq-a.sq).slice(0,1+Math.floor(rnd()*4));
+  if(!q.length)continue; runs2++;
+  q.forEach(n=>{const d=-Math.round(n.sq*10*0.21+2);
+   const share=Math.abs(d)/10/Math.max(1,q.filter(o=>o.cf===n.cf).length);
+   S.charge[n.cf]=E.clamp((S.charge[n.cf]||0)-share,0,10);
+   S.replace[n.cf]=E.clamp((S.replace[n.cf]||0)+share*0.62,0,10);});
+  const rMidB=compute();
+  if(rMidB.lawSQ!==null&&r0b.lawSQ!==null&&Math.abs(rMidB.lawSQ-r0b.lawSQ)>1e-9)lawSQoffChargeHalf++;
+  const m2=E.meterRun(rec2,E.meterPlan(rec2,q.map(n=>n.i),CH2,25));
+  E.releaseWork(rec2,m2.fresh);
+  const r1b=compute();
+  if(r1b.lawSQ!==null&&rMidB.lawSQ!==null&&Math.abs((r1b.lawSQ-rMidB.lawSQ)-(-(r1b.CQ-rMidB.CQ)))>1e-6)lawSQoffLawHalf++;}
+ ok(runs2>450,'the lawSQ release probe ran, '+runs2);
+ ok(lawSQoffChargeHalf===0,'the charge half of a release never moves lawSQ, moved '+lawSQoffChargeHalf);
+ ok(lawSQoffLawHalf===0,'the law half moves lawSQ by exactly the negative of what it moves CQ, off '+lawSQoffLawHalf);
+ E.current().work={}; E.bindStore(()=>null,()=>{});
+
+ /* the percent table, same rigor as cq and dq: cited, clamped, fetched */
+ ok(E.PCT_KIND.lawsq&&E.PCT_KIND.lawsq.lo===0&&E.PCT_KIND.lawsq.hi===100,
+  'PCT_KIND carries lawsq, 0 to 100');
+}
+
+g('36g · the Kundalini rise, ported from proto/avatar/rise.js, 27 October');
+/* The computation only: engine/plan.js keeps built:false on purpose, because
+   no screen draws this yet (checked directly: flipping it would list the
+   Kundalini as a tier-two benefit on the pricing page with nothing anywhere
+   showing it, exactly what that table's own comment already warns against).
+   This group proves the arithmetic itself is real and correct. */
+{
+ const {riseSeats,seatTrans,riseRead,riseFrom,riseReach,riseLevers,riseBase,riseDelta}=E;
+ ok(JSON.stringify(riseSeats())===JSON.stringify(BANDS),'riseSeats is BANDS, root to crown, by name');
+
+ /* the clamp ceiling this arithmetic depends on, cited and checked like
+    every PCT_KIND entry is, so a change to n.open's clamp fails this test by
+    name instead of silently bending the rise */
+ const fs=require('fs');
+ const src=fs.readFileSync('atuned_src/engine/compute.js','utf8');
+ ok(src.indexOf('n.open = clamp(1-n.sq/10 + n.pole/26,0,1.18)')>=0,
+  'rise.js\'s OPEN_CAP (1.18) is still the real clamp on n.open in compute.js');
+ ok(E.OPEN_CAP===1.18,'OPEN_CAP is 1.18, got '+E.OPEN_CAP);
+
+ /* a clean field: every law 10, nothing held, every opposite installed at 10.
+    Every seat should transmit at or near full, reach close to 7, pct close
+    to 100. */
+ const rClean=reset(0,10,10);
+ const riseClean=riseRead(rClean);
+ ok(riseClean.pct>95,'a clean field with every opposite installed reads close to full rise, got '+riseClean.pct);
+ ok(riseClean.reach>6.5&&riseClean.reach<=7,'reach sits just under 7 seats, got '+riseClean.reach.toFixed(3));
+
+ /* a fully blocked field: everything held, nothing released, every law at 0 */
+ const rBlocked=reset(10,0,0);
+ const riseBlocked=riseRead(rBlocked);
+ ok(riseBlocked.pct<riseClean.pct,'a heavily loaded field rises less than a clean one, '+riseBlocked.pct+' against '+riseClean.pct);
+ ok(riseBlocked.blocked!==null&&BANDS.indexOf(riseBlocked.blocked)>=0,
+  'a blocked field names a real seat as its blockage, got '+riseBlocked.blocked);
+ ok(riseBlocked.at===null||BANDS.indexOf(riseBlocked.at.b)>=0,
+  'the address at the blockage, if named, sits at the blocked seat');
+
+ /* reach is the series product, by hand, against the engine's own t() */
+ const t=riseClean.t; let cum=1,reachCheck=0;
+ BANDS.forEach(b=>{cum*=t[b]; reachCheck+=cum;});
+ near(riseClean.reach,reachCheck,1e-9,'reach is the running product of the seven seats\' own transmission, root first');
+
+ /* never a height with no seat: blocked is null only when reach is the full 7 */
+ ok(riseClean.blocked!==null||riseClean.reach>=7-1e-9,
+  'blocked is null only at a full, unblocked reach');
+
+ /* the reach ceiling: everything cleared, nothing simulated, moves only on
+    conduct (a law), never on a release -- checked directly */
+ const rReachProbe=reset(6,2,7);
+ const reachA=riseReach(), lawBefore=S.law.Compassion;
+ S.law.Compassion=Math.min(10,lawBefore+2); lawsIn();
+ const reachB=riseReach();
+ S.law.Compassion=lawBefore; lawsIn();
+ const chargeBefore=S.charge.Anger; S.charge.Anger=E.clamp(chargeBefore+3,0,10);
+ const reachC=riseReach();
+ S.charge.Anger=chargeBefore;
+ ok(reachB.pct>=reachA.pct,'the reach ceiling never falls when a law rises, '+reachA.pct+' to '+reachB.pct);
+ ok(reachC.pct===reachA.pct,'the reach ceiling does not move on a charge change, held is zero by construction, '+reachA.pct+' against '+reachC.pct);
+
+ /* levers: a real seat, both directions computed, one named bigger */
+ if(riseBlocked.blocked){
+  const lv=riseLevers(riseBlocked.blocked);
+  ok(lv.seat===riseBlocked.blocked,'levers are computed at the blocked seat');
+  ok(lv.release.to>=lv.now-1e-9,'a quarter of release work never lowers transmission, '+lv.now.toFixed(3)+' to '+lv.release.to.toFixed(3));
+  ok(lv.law.to>=lv.now-1e-9,'two points on the weakest law never lowers transmission, '+lv.now.toFixed(3)+' to '+lv.law.to.toFixed(3));
+  ok(lv.bigger==='law'||lv.bigger==='release'||lv.bigger==='level','bigger names one of the two levers or a tie, got '+lv.bigger);
+ }
+
+ /* baseline and delta: no change reads d 0, nothing is stored by this file itself */
+ const base=riseBase();
+ const delta0=riseDelta(rBlocked,base);
+ near(delta0.d,0,1e-9,'no change since the baseline reads a delta of 0, got '+delta0.d);
+ const noBase=riseDelta(rBlocked,null);
+ ok(noBase.has===false&&noBase.from===null,'with no baseline the height still reads and the from mark is absent');
+}
+
 g('36c · intention is what was said against what was done, and no charge');
 /* The ruled model's intention (cq-unified.md B.1): 100 times did over said
    in the last seven days, null when nothing was said. A saved ritual is the

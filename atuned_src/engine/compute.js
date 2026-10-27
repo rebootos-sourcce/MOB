@@ -573,6 +573,23 @@ function compute(){
  /* each law as answered, plus what releases at its seat have added since. See
     LIFT_R above. It is still a law score and nothing else. */
  const CQ=cqSum();
+ /* LAWSQ, 27 October. His own reading: the 21 laws, on their shadow side,
+    are one term that produces a shadow by construction, CQ's own complement.
+    Not named SQ: SQ is already the 112 addresses' own array, below, load-
+    bearing in PULL and Vitality, and a second thing by that name would be
+    the exact defect CODE_ALIAS exists to prevent, two things sharing one
+    word. lawSQ is read-only arithmetic, not a fit: `100-CQ`, always, by the
+    same identity that makes 21 answers over 210 and their complement over
+    210 sum to 100 every time. It stands beside DQ, never in place of it.
+    DQ is what the 112 addresses measure a person is actually carrying;
+    lawSQ is what their own law answers imply alone, nothing else counted.
+    A real release that clears carried charge moves DQ and never lawSQ,
+    proven by simulation before this landed: forcing DQ itself to equal
+    this number made 2,000 of 2,000 real releases invisible, since CQ never
+    reads an address. Gated the same way tier is: an incomplete intake
+    would read a lawSQ building toward false certainty off answers that
+    have not landed, the same shape of bug `unread` already exists to stop. */
+ const lawSQ=complete?clamp(100-CQ,0,100):null;
  /* THE SEESAW. Expression is CQ times what the shadow leaves, and this is
     where Integrity times Intention divided by Resistance actually runs:
     Integrity is the plank (CQ itself), Intention and Resistance are the two
@@ -694,7 +711,7 @@ function compute(){
     something true to point at. */
  const carrying=W.filter(n=>n.sq>0).sort((a,b)=>b.sq-a.sq);
  return {loaded,carrying,heaviest:carrying[0]||null,
-  sabs,cxs,hys,sups,psychopathy,maskRing,DQ,SQ,PULL,EX,Rz,vf:_vf,SQm,poleMean,JQ,excess,
+  sabs,cxs,hys,sups,psychopathy,maskRing,DQ,lawSQ,SQ,PULL,EX,Rz,vf:_vf,SQm,poleMean,JQ,excess,
   FAM_POLE,dist,Ig,It,seats:seatRows(),CQ,answered,complete,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
   outward,organized,gov,
   will,drag,mask,darkB,darkV,root,rootsIn,weakL,balance:balance()};
