@@ -61,7 +61,7 @@ async function anaTrailGate(browser,FILE,ok,booted){
     laws:document.querySelectorAll('#ana .ana-lw[data-ana]').length, nlaws:SI.length,
     seats:BANDS.length, feel:CHILD.length};});
   ok(page.bubbles>0&&page.doors===page.bubbles,'AT1: '+tag+'every bubble is a door a keyboard reaches, '+page.doors+' of '+page.bubbles);
-  ok(page.tiles===6&&page.cells>0&&page.edges===page.seats+page.feel&&page.rungs===5&&page.laws===page.nlaws,
+  ok(page.tiles===7&&page.cells>0&&page.edges===page.seats+page.feel&&page.rungs===5&&page.laws===page.nlaws,
    'AT1: '+tag+'the readings, the squares, both edges, the chain and every law are doors, '+JSON.stringify(page));
 
   /* ---- AT1: each kind of door opens a card ---- */
