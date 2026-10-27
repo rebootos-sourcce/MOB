@@ -106,7 +106,12 @@ function lockSees(k){ return planSees(lockPlan(),k,lockGift()); }
    switch: the key kept the rung's old name when the owner gave the word
    Character to the whole of it, 23 October, because a key is identity */
 const LOCK_OF_LAYER={saboteurs:'sab',complexes:'cx',hyper:'hy',character:'sup',
- sab:'sab',cx:'cx',hy:'hy',sup:'sup',masks:'mask',mask:'mask',registers:'reg',reg:'reg'};
+ sab:'sab',cx:'cx',hy:'hy',sup:'sup',masks:'mask',mask:'mask',registers:'reg',reg:'reg',
+ /* the Kundalini's computation is real (engine/rise.js, 27 October); its
+    screen is not built yet, so SIGHT still carries it built:false and
+    sightRows() still leaves it off the tiers page. This entry only readies
+    lockFor('kund') for the control a future screen will need. */
+ kund:'kund'};
 function lockFor(layer){ return LOCK_OF_LAYER[layer]||null; }
 /* which gate a pattern's kind belongs to, for a list that mixes the four */
 function lockKind(kind){ return LOCK_OF_LAYER[kind]||null; }

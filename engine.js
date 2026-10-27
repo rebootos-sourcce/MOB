@@ -5853,6 +5853,13 @@ var PCT_KIND={
  /* compute.js:408, all 112 addresses summed over 1120, each sq at most 10 */
  dq:        {lo:0, hi:100, src:'engine/compute.js', find:'const DQ=SQ.reduce((a,v)=>a+v,0)/1120*100;',
              say:'decoherence, the shadow on all 112 against the most they could hold'},
+ /* compute.js, 27 October, CQ's own complement: the 21 laws read on their
+    shadow side, 100-CQ by construction. Not the same quantity as dq above:
+    dq is what the 112 addresses measure is actually carried, lawsq is only
+    what the law answers imply alone. Null while CQ is still filling, same
+    guard as tier, so a partial intake never reads a false shadow. */
+ lawsq:     {lo:0, hi:100, src:'engine/compute.js', find:'const lawSQ=complete?clamp(100-CQ,0,100):null;',
+             say:'the shadow the law answers alone imply, CQ\'s own complement'},
  /* compute.js:448, CQ times what the pull leaves, PULL nought to one. The
     headroom exHeadroom returns, compute.js:585, is a gap on this same scale,
     so it asks this kind too: three points of expression is 3%. */
@@ -9208,6 +9215,23 @@ function compute(){
  /* each law as answered, plus what releases at its seat have added since. See
     LIFT_R above. It is still a law score and nothing else. */
  const CQ=cqSum();
+ /* LAWSQ, 27 October. His own reading: the 21 laws, on their shadow side,
+    are one term that produces a shadow by construction, CQ's own complement.
+    Not named SQ: SQ is already the 112 addresses' own array, below, load-
+    bearing in PULL and Vitality, and a second thing by that name would be
+    the exact defect CODE_ALIAS exists to prevent, two things sharing one
+    word. lawSQ is read-only arithmetic, not a fit: `100-CQ`, always, by the
+    same identity that makes 21 answers over 210 and their complement over
+    210 sum to 100 every time. It stands beside DQ, never in place of it.
+    DQ is what the 112 addresses measure a person is actually carrying;
+    lawSQ is what their own law answers imply alone, nothing else counted.
+    A real release that clears carried charge moves DQ and never lawSQ,
+    proven by simulation before this landed: forcing DQ itself to equal
+    this number made 2,000 of 2,000 real releases invisible, since CQ never
+    reads an address. Gated the same way tier is: an incomplete intake
+    would read a lawSQ building toward false certainty off answers that
+    have not landed, the same shape of bug `unread` already exists to stop. */
+ const lawSQ=complete?clamp(100-CQ,0,100):null;
  /* THE SEESAW. Expression is CQ times what the shadow leaves, and this is
     where Integrity times Intention divided by Resistance actually runs:
     Integrity is the plank (CQ itself), Intention and Resistance are the two
@@ -9329,7 +9353,7 @@ function compute(){
     something true to point at. */
  const carrying=W.filter(n=>n.sq>0).sort((a,b)=>b.sq-a.sq);
  return {loaded,carrying,heaviest:carrying[0]||null,
-  sabs,cxs,hys,sups,psychopathy,maskRing,DQ,SQ,PULL,EX,Rz,vf:_vf,SQm,poleMean,JQ,excess,
+  sabs,cxs,hys,sups,psychopathy,maskRing,DQ,lawSQ,SQ,PULL,EX,Rz,vf:_vf,SQm,poleMean,JQ,excess,
   FAM_POLE,dist,Ig,It,seats:seatRows(),CQ,answered,complete,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
   outward,organized,gov,
   will,drag,mask,darkB,darkV,root,rootsIn,weakL,balance:balance()};
@@ -9592,14 +9616,19 @@ function childFound(r){
    below it, and the table is checked for that in tests/engine.js.
 
    built:false MARKS A ROW WITH NO SURFACE YET, and the copy readers below skip
-   it. The owner ruled "Tier two unlocks the Kundalini" on 1 October and the
-   shipped app has a glossary entry for it and nothing that draws it (the rise
-   bar is in proto/avatar/rise.js, which is not in the build). The row is here
-   so the ruling is held in the one table and planSees answers it, but a tiers
-   page that listed it under tier two would be selling something that is not
-   there, so planAdds, planSeesAt, planLockedSay and the lock lists leave it
-   out until the surface exists. Building it is one word here, built:true, and
-   one lockApply on its control.
+   it. The owner ruled "Tier two unlocks the Kundalini" on 1 October.
+
+   PORTED 27 OCTOBER: proto/avatar/rise.js, the finished, measured prototype,
+   is now engine/rise.js, real, tested, and callable (riseRead, riseReach,
+   riseLevers, riseBase, riseDelta). built STAYS false. Checked before
+   flipping it: sightRows() feeds ui/paywall.js's own tier comparison
+   directly, so built:true would list the Kundalini as a tier-two benefit on
+   the pricing page today, with no screen anywhere drawing it -- the exact
+   thing this comment already warned against, "selling something that is not
+   there." The computation existing is not the surface existing; both were
+   always the condition, not either. kund is added to LOCK_OF_LAYER
+   (ui/lock.js) so the one lockApply a real control will need, once a
+   screen is designed and built for it, has a real lock ready to call.
 
    THE TIERS OF THE TWO THAT ARE NOT RUNGS. The owner ruled the point cloud
    on 1 October, in answer to the question this table asked: "Tier three
@@ -23835,6 +23864,225 @@ if(typeof module!=='undefined'&&module.exports){
   CHAR_OSC_AMP0:CHAR_OSC_AMP0, CHAR_OSC_AMP1:CHAR_OSC_AMP1, CHAR_OSC_RATE0:CHAR_OSC_RATE0, CHAR_OSC_RATE1:CHAR_OSC_RATE1,
   CHAR_HEAT_FULL:CHAR_HEAT_FULL,
   CHAR_SEAT_LO:CHAR_SEAT_LO, CHAR_SEAT_FULL:CHAR_SEAT_FULL, CHAR_GROW_S:CHAR_GROW_S});}
+/* ============================================================
+   THE KUNDALINI RISE. Ported 27 October from proto/avatar/rise.js, the
+   finished, measured prototype `engine/plan.js`'s own comment already names:
+   "Building it is one word here, built:true, and one lockApply on its
+   control." No new arithmetic here either -- every quantity is read off
+   compute() as the build already returns it, and this file mutates nothing.
+
+   WHAT THE GLOSSARY SAYS, which is the whole specification:
+
+     Kundalini. The stored vital energy at the base of the spine. Rises root
+     to crown when enough nodes are cleared for the channel to conduct.
+
+   THREE THINGS ARE NEEDED AND THE ENGINE HAS ALL THREE.
+
+   1. A conductivity per address. compute() writes n.open at compute.js:342,
+        n.open = clamp(1 - n.sq/10 + n.pole/26, 0, 1.18)
+      with the engine's own comment beside it: "an address with the opposite
+      in does not merely read zero, it conducts". That is conductivity, the
+      engine already calls it open, and open or blocked is his own word.
+
+   2. A seat. Each of the 108 seated addresses carries n.b, one of the seven
+      in BANDS. The four field addresses, Sol Star and Stellar Gateway above
+      the crown and Earth Star and Gaia Gateway below the root, carry
+      Field-Above and Field-Below. They are not on the channel and the rise
+      never reads them.
+
+   3. A way to turn seven conductivities into one height.
+
+   THE THIRD ONE WAS MEASURED RATHER THAN CHOSEN, AND THE FIRST TWO TRIES
+   WERE WRONG. A threshold per seat was tried first: a seat conducts when its
+   mean conductivity clears the value an address sitting exactly on the
+   product's own carrying line would have, 1 - 4/10 = 0.60. Measured on the
+   roster, seven of ten read 100 percent while carrying between 52 and 99
+   addresses. Marcus carries 99 and the bar said his channel was fully open.
+   Every stricter threshold collapsed the other way: at 0.95, nine of ten read
+   between 5 and 14 percent and every one of them was blocked at the root,
+   because a channel in series always blames the first seat. A bar pinned near
+   zero for everybody, naming the same seat for everybody, carries no reading.
+
+   SO THE RISE IS A SERIES TRANSMISSION AND THERE IS NO THRESHOLD AT ALL.
+
+     t(seat)  = clamp(mean(n.open at that seat) / 1.18, 0, 1)
+     cum(i)   = t(seat 1) x ... x t(seat i)        root first
+     reach    = cum(1) + cum(2) + ... + cum(7)     0 to 7 seats
+     pct      = round(100 x reach / 7)
+
+   Every part of that is read off the engine. 1.18 is the clamp ceiling on
+   n.open at compute.js:342, so a seat cleared to nothing with no opposite
+   installed transmits 1/1.18 = 0.847 and only a seat with the opposite
+   installed transmits 1.00. That is the engine's own claim, that clearing
+   gets an address to zero and the installed pole is what makes it conduct,
+   and the normaliser honours it rather than flattening it.
+
+   The product is what makes it a channel. A shut root throttles everything
+   above it, which is his model exactly: a clear crown over a blocked solar
+   plexus does not conduct, and a bar that averaged the seven would say it
+   did.
+
+   WHERE IT IS BLOCKED is the seat with the lowest transmission, not the
+   first seat under a line. Measured across the fourteen voice cases that
+   names the throat six times, the solar plexus four, the root three and the
+   sacral once, so it is a reading that varies rather than a constant. The
+   address is the heaviest carrying address at that seat, which compute() has
+   already sorted into r.carrying.
+
+   WHAT THIS FILE REFUSES TO DO. It stores nothing. It returns no level, rank
+   or stage. It never returns a height without the seat that height stopped
+   at, because a rise with no address on it is a score.
+
+   NAMES READ DIRECTLY, NOT THROUGH A PASSED-IN ENGINE OBJECT. The prototype
+   took an `E` parameter because it was required as a standalone module
+   outside the build; concatenated into atuned_src, BANDS, W, S, SI and
+   bandIg are already the same names every other engine file reads them by.
+   ============================================================ */
+
+var OPEN_CAP = 1.18;   /* the clamp ceiling on n.open, compute.js:342 */
+
+/* Root to crown is the direction the channel runs. BANDS is already in that
+   order. Read by name, never by position, which is the standing rule. */
+function riseSeats(){ return BANDS.slice(); }
+
+/* Transmission at one seat, off n.open as compute() left it. */
+function seatTrans(seat){
+ var g=W.filter(function(n){return n.b===seat;});
+ if(!g.length)return 0;
+ var m=g.reduce(function(a,n){return a+n.open;},0)/g.length;
+ return Math.max(0,Math.min(1,m/OPEN_CAP));}
+
+/* THE READ. r is what compute() returned. Pass it and the blockage gets an
+   address; leave it out and the height still reads. */
+function riseRead(r){
+ var seats=riseSeats(),t={};
+ seats.forEach(function(b){t[b]=seatTrans(b);});
+ return riseFrom(t,r);}
+
+/* Split out so a stored baseline, which is seven transmissions and nothing
+   else, reads through the same arithmetic. One truth, read twice. */
+function riseFrom(t,r){
+ var seats=riseSeats(),cum=1,reach=0,seg={},worst=null,wv=2;
+ seats.forEach(function(b){
+  cum*=(t[b]==null?0:t[b]);
+  seg[b]=cum; reach+=cum;
+  if(t[b]!=null&&t[b]<wv){wv=t[b];worst=b;}});
+ var out={
+  t:t,                 /* transmission per seat, by seat name */
+  seg:seg,             /* how much of the channel is left arriving at each seat */
+  seats:seats.length,  /* 7 */
+  reach:reach,         /* in seats, 0 to 7 */
+  pct:Math.round(100*reach/seats.length),
+  blocked:worst,       /* the seat that costs the most */
+  at:null, holding:0, levers:null};
+ if(!worst||!r)return out;
+ var here=(r.carrying||[]).filter(function(n){return n.b===worst;});
+ out.at=here[0]||null;          /* already sorted heaviest first by compute() */
+ out.holding=here.length;
+ out.levers=riseLevers(worst);
+ return out;}
+
+/* THE REACH. Every charge gone, the laws and the installed opposites as they
+   stand. Built the way cqCeiling is built at compute.js, nothing is mutated
+   and nothing is simulated, held is zero by construction so the pole is the
+   whole of the installed side. It is the dotted end of the bar, and it moves
+   only on conduct, never on a release. */
+function riseReach(){
+ var seats=riseSeats(),t={};
+ seats.forEach(function(b){
+  var g=W.filter(function(n){return n.b===b;});
+  var relief=bandIg(b)/10, s=0;
+  g.forEach(function(n){
+   var rep=n.cf?Math.max(0,Math.min(10,(S.replace[n.cf]||0)*(0.72+0.28*relief))):0;
+   var sq=0;                               /* held is 0, so sq is 0 */
+   var pole=Math.max(0,Math.min(10,rep));
+   s+=Math.max(0,Math.min(OPEN_CAP,1-sq/10+pole/26));});
+  t[b]=Math.max(0,Math.min(1,(s/g.length)/OPEN_CAP));});
+ return riseFrom(t,null);}
+
+/* THE DIRECTION OUT, and the arithmetic has exactly two. n.sq is held minus
+   the installed opposite, and held is charge x susceptibility x
+   (1 - bandIg(seat)/10 x 0.42). So a seat's transmission moves on the charge,
+   which a release empties, and on the laws carrying that seat, which nothing
+   but conduct moves. Both are computed here by running the engine's own
+   bodies on a copy, not by modelling them. */
+function riseLevers(seat){
+ var g=W.filter(function(n){return n.b===seat;});
+ var now=seatTrans(seat);
+ var norm=function(arr){
+  return Math.max(0,Math.min(1,
+   (arr.reduce(function(a,v){return a+v;},0)/arr.length)/OPEN_CAP));};
+ /* Both levers are run on LOCAL COPIES of charge and replace. Nothing in S is
+    touched, because a probe in this repository once read shared state left by
+    another run and reported a whole lane as empty. */
+ var openOf=function(n,ch,rp,relief){
+  var held=n.cf?Math.max(0,Math.min(10,(ch[n.cf]||0)*n.susc*(1-relief*0.42))):0;
+  var rep=n.cf?Math.max(0,Math.min(10,(rp[n.cf]||0)*(0.72+0.28*relief))):0;
+  var sq=Math.max(0,Math.min(10,held-rep*0.86));
+  var pole=Math.max(0,Math.min(10,rep-held));
+  return {open:Math.max(0,Math.min(OPEN_CAP,1-sq/10+pole/26)),sq:sq};};
+ var copy=function(o){var c={};for(var k in o)c[k]=o[k];return c;};
+
+ /* LEVER ONE. A QUARTER OF RELEASE WORK AT THIS SEAT, twelve runs of eight at
+    one a week, which is the unit the roster table already uses. One run moves
+    a seat by under two points and a person cannot act on that, so the honest
+    comparison is the one a quarter of work actually buys.
+    ui/release.js:88 verbatim: 21 percent of the weight plus 2 off each address
+    in the run, and 62 percent of what it removed installed as the opposite. */
+ var ch=copy(S.charge), rp=copy(S.replace), relief=bandIg(seat)/10;
+ var RUNS=12, touched={};
+ for(var run=0;run<RUNS;run++){
+  var live=g.map(function(n){return {n:n,sq:openOf(n,ch,rp,relief).sq};})
+             .filter(function(x){return x.sq>0;})
+             .sort(function(a,b){return b.sq-a.sq;}).slice(0,8);
+  if(!live.length)break;
+  live.forEach(function(x){
+   touched[x.n.i]=1;
+   var d=Math.abs(-Math.round(x.sq*10*0.21+2));
+   var same=live.filter(function(y){return y.n.cf===x.n.cf;}).length;
+   var share=d/10/Math.max(1,same);
+   ch[x.n.cf]=Math.max(0,Math.min(10,(ch[x.n.cf]||0)-share));
+   rp[x.n.cf]=Math.max(0,Math.min(10,(rp[x.n.cf]||0)+share*0.62));});}
+ var relT=norm(g.map(function(n){return openOf(n,ch,rp,relief).open;}));
+
+ /* LEVER TWO. Two points on the weakest law carrying this seat. bandIg is the
+    mean of the laws at the seat, engine/core.js, so raising one raises the
+    relief at every address here. It is a change a person makes once. */
+ var here=SI.filter(function(l){return l.b===seat;});
+ var weak=here.slice().sort(function(a,b){return S.law[a.nm]-S.law[b.nm];})[0];
+ var lawT=now, lawNm=null, lawAt=null;
+ if(weak){
+  lawNm=weak.nm; lawAt=S.law[weak.nm];
+  var ig2=here.reduce(function(a,l){
+   return a+(l.nm===weak.nm?Math.min(10,S.law[l.nm]+2):S.law[l.nm]);},0)/here.length;
+  lawT=norm(g.map(function(n){
+   return openOf(n,S.charge,S.replace,ig2/10).open;}));}
+ var dR=relT-now, dL=lawT-now;
+ return {
+  seat:seat, now:now, runs:RUNS,
+  release:{to:relT, d:dR, n:Object.keys(touched).length},
+  law:{nm:lawNm, at:lawAt, to:lawT, d:dL, count:here.length},
+  bigger:dL>dR?'law':(dR>dL?'release':'level')};}
+
+/* THE BASELINE. Seven transmissions and a date, and nothing derived from
+   them is stored. With no baseline the height still draws and the from mark
+   is absent, which the surface says rather than drawing a rise from nothing. */
+function riseBase(){
+ var t={}; riseSeats().forEach(function(b){t[b]=seatTrans(b);});
+ return {t:t, at:new Date().toISOString()};}
+function riseDelta(r,base){
+ var now=riseRead(r);
+ if(!base||!base.t)return {now:now, from:null, d:null, has:false};
+ var was=riseFrom(base.t,null);
+ return {now:now, from:was, d:now.pct-was.pct, has:true, at:base.at||null};}
+
+/* It sits after engine/export.js on purpose, same as engine/charfield.js:
+   export.js assigns module.exports whole, and this file adds its own names
+   to what it left rather than editing a list other seats are appending to. */
+if(typeof module!=='undefined'&&module.exports){
+ Object.assign(module.exports,{OPEN_CAP:OPEN_CAP, riseSeats:riseSeats, seatTrans:seatTrans,
+  riseRead:riseRead, riseFrom:riseFrom, riseReach:riseReach,
+  riseLevers:riseLevers, riseBase:riseBase, riseDelta:riseDelta});}
 /* ============================================================
    A WORKED EXAMPLE'S RITUALS. Round RB, 3 October, the owner's words: "For
    profiles, I want these rituals to have different configurations for the
