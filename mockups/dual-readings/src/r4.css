@@ -1,0 +1,65 @@
+/* R4, the mirror. one line down the middle of everything */
+.m4{position:relative}
+.m4 .spine{position:absolute;left:50%;top:26px;bottom:0;width:1.5px;margin-left:-.75px;background:var(--ink);opacity:.22;pointer-events:none}
+.c{justify-content:center;text-align:center}
+.gh.c{position:relative;z-index:1}
+.gh.c,.gs.c{background:var(--panel)}
+.gh.c{width:max-content;margin:0 auto;padding:4px 8px 8px}
+.rw{position:relative;padding:6px 0 8px;outline:none;border-radius:10px}
+.rw:focus-visible{box-shadow:0 0 0 2px var(--ink)}
+.ln{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;height:22px;font-size:12px}
+.ln.c{display:flex}
+.pole{display:inline-flex;align-items:center;gap:6px;color:var(--dim);white-space:nowrap}
+.pole .ic{color:var(--pc);opacity:.75}
+.pole.r{justify-self:end}.pole.lit{color:var(--ink)}.pole.lit .ic{opacity:1}
+.cf{display:inline-flex;align-items:center;gap:3px;color:var(--sc);background:var(--panel);padding:0 6px;border-radius:6px;position:relative;z-index:1;outline:none}
+.cf b{font-size:15px;font-weight:600}
+.cf .ch{width:13px;height:13px;stroke-width:2.2}
+.off .cf{color:var(--dim)}
+.beam{position:relative;height:12px;margin-top:6px}
+.beam>i{position:absolute;display:block;top:0;bottom:0}
+.hf{width:50%;top:4px!important;bottom:4px!important;opacity:.28}
+.hf.l{left:0;background:linear-gradient(90deg,transparent,var(--lc));border-radius:4px 0 0 4px}
+.hf.r{right:0;background:linear-gradient(270deg,transparent,var(--rc));border-radius:0 4px 4px 0}
+.off .hf{opacity:.1}
+.band{background:rgba(239,237,232,.09);border-radius:6px}
+.fl{width:50%;top:3px!important;bottom:3px!important}
+.fl.l{right:50%;background:var(--lc);transform-origin:100% 50%;transform:scaleX(0);border-radius:3px 0 0 3px}
+.fl.r{left:50%;background:var(--rc);transform-origin:0 50%;transform:scaleX(0);border-radius:0 3px 3px 0}
+.hold{left:0;width:100%;pointer-events:none;will-change:transform}
+.bead{position:absolute;left:-7px;top:-1px;width:14px;height:14px;transform:rotate(45deg);border:2.5px solid var(--sc);background:var(--panel);border-radius:2px}
+.gt{position:absolute;left:-1px;top:0;width:2px;height:12px;background:var(--ink);opacity:.35;border-radius:1px}
+.nm{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;background:var(--panel);padding:0 8px;border-radius:6px;position:relative;z-index:1;outline:none}
+.nm .ic{color:var(--c)}
+.nm>span{font-size:13px;font-weight:500;color:var(--ink)}
+.nm .fg{font-size:14px;font-weight:600;color:var(--ink);margin-left:2px}
+.off .fg{color:var(--dim)}
+.sp{position:relative;height:12px;margin-top:6px}
+.sp>i{position:absolute;display:block}
+.sp .w{left:0;right:0;top:2px;bottom:2px;background:var(--c);border-radius:4px;transform:scaleX(0);transform-origin:50% 50%}
+.sp .hold{top:-1px;bottom:-1px}
+.sp .cap{position:absolute;left:-1px;top:0;bottom:0;width:2px;background:var(--ink);opacity:.8;border-radius:1px}
+.am.z .cap,.am.off .cap{opacity:0}
+.fl4{position:relative}
+.fsub{text-align:center;font-size:12px;color:var(--dim);margin:2px 0 6px;position:relative}
+.fsub span{font-weight:600;background:var(--panel);padding:0 6px}
+.crown-out{display:flex;justify-content:center;height:10px}
+.seat{display:grid;grid-template-columns:1fr 40px 1fr;align-items:center;height:30px}
+.sn{justify-self:end;font-size:12px;color:var(--mid);padding-right:8px;outline:none}
+.sv{font-size:11.5px;color:var(--dim);padding-left:8px;white-space:nowrap}
+.seat.bk .sn,.seat.bk .sv{color:var(--sc);font-weight:600}
+.mid{position:relative;height:30px;display:flex;justify-content:center}
+.pipe{position:absolute;left:50%;width:28px;margin-left:-14px;display:block;background:repeating-linear-gradient(135deg,rgba(239,237,232,.22) 0 1.5px,transparent 1.5px 4.5px);border-radius:2px;overflow:hidden}
+.crown-out .pipe{position:relative;left:auto;margin:0;height:10px}
+.pipe.up{top:0;height:15px}.pipe.dn{bottom:0;height:15px}
+.pipe .ex{position:absolute;inset:0;display:block;background:var(--sc,var(--ink));transform-origin:50% 50%;transform:scaleX(0);opacity:.9}
+.crown-out .pipe .ex{background:var(--crown)}
+.seat .pipe.up .ex{background:var(--sc)}
+.node{position:relative;z-index:1;align-self:center;width:12px;height:12px;border-radius:50%;border:2px solid var(--sc);background:var(--panel);display:block}
+.seat.bk .node{width:18px;height:18px;border-width:2.5px;box-shadow:0 0 0 3px var(--panel),0 0 0 4.5px var(--sc)}
+.key{display:flex;gap:14px;font-size:11px;color:var(--dim);margin-top:8px}
+.key i{display:inline-block;width:10px;height:10px;border-radius:2px;vertical-align:-1px;margin-right:5px}
+.key .k1{background:var(--ink);opacity:.8}
+.key .k2{background:repeating-linear-gradient(135deg,rgba(239,237,232,.4) 0 1.5px,transparent 1.5px 4px)}
+
+.rw[data-k="DQ"]{margin-bottom:8px}
