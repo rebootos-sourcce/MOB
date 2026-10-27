@@ -71,6 +71,13 @@ var PCT_KIND={
  /* compute.js:408, all 112 addresses summed over 1120, each sq at most 10 */
  dq:        {lo:0, hi:100, src:'engine/compute.js', find:'const DQ=SQ.reduce((a,v)=>a+v,0)/1120*100;',
              say:'decoherence, the shadow on all 112 against the most they could hold'},
+ /* compute.js, 27 October, CQ's own complement: the 21 laws read on their
+    shadow side, 100-CQ by construction. Not the same quantity as dq above:
+    dq is what the 112 addresses measure is actually carried, lawsq is only
+    what the law answers imply alone. Null while CQ is still filling, same
+    guard as tier, so a partial intake never reads a false shadow. */
+ lawsq:     {lo:0, hi:100, src:'engine/compute.js', find:'const lawSQ=complete?clamp(100-CQ,0,100):null;',
+             say:'the shadow the law answers alone imply, CQ\'s own complement'},
  /* compute.js:448, CQ times what the pull leaves, PULL nought to one. The
     headroom exHeadroom returns, compute.js:585, is a gap on this same scale,
     so it asks this kind too: three points of expression is 3%. */
