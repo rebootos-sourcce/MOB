@@ -5767,7 +5767,7 @@ const CODE_UNMAPPED=[
  ['any','archetype','Healer',"carried by ARCH18 and canon.json's archetype register, not by ARCH, the roster a record stores. The roster's count is open (SNIFFER_SPEC.md section 4)"],
  ['canon','archetype','Pleaser',"canon.json's archetype register carries Pleaser, which MOB and canon.json both carry as the saboteur S05. ARCH has no Pleaser"],
  /* structures with no canon.json record */
- ['book','structure','Borderline-Sociopath',"a link in the book's descent (v192 line 3088) that canon.json has no record of. Confirmed by reading the book directly (chapter 17, The Stacking Architecture): named only by effect, between Psychopathy and Megalomania, never given a saboteur or complex breakdown, so it is canon.json's open ruling 12, not a structure code"],
+ ['book','structure','Borderline-Sociopath',"a link in the book's descent (v192 line 3088) that canon.json has no record of. Confirmed by reading the book directly, chapter 17: named only by effect, between Psychopathy and Megalomania, never given a saboteur or complex breakdown, so it is canon.json's open ruling 12, not a structure code"],
  ['app','structure','Bipolar Disorder',"the app's HYPER table, with Nonconformist where canon.json's Oscillation, filed as Bipolar, has Restless. Whether they are one record is not written anywhere"],
  ['app','structure','Borderline Personality Disorder',"the app's HYPER table, sharing no saboteur with canon.json's Abandonment Reactivity, filed as BPD. Whether they are one record is not written anywhere"],
  ['app','structure','Obsessive-Compulsive Disorder',"the app's HYPER table. canon.json files its Rigidity complex as OCPD, a different filing, with Stickler where this has Overthinker"],
