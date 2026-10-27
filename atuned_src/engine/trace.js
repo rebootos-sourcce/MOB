@@ -99,7 +99,9 @@ var TRACE_ALG=4;
    could never be super complex because that word already names
    Psychopathy's kind in the descent (engine/data/compass.js). The ruling
    took that reason away. The descent files Narcissism as a complex,
-   Machiavellianism as a hyper complex and Psychopathy as a super complex:
+   Machiavellianism and Sociopathy as hyper complexes and Psychopathy as a
+   super complex (Sociopathy added, and Psychopathy tied to the Grandiosity
+   and Predatory pair, on his 26 October ruling):
    the word names the rung each one sits on, and this is that rung, so one
    word still names one thing. Character is no type at all. It is the whole
    person, every rung and every layer above them taken together, which is

@@ -116,8 +116,11 @@ var PCT_KIND={
  /* schema.js:1041 on the axis, and compute.js:293 at one address */
  installed: {lo:0, hi:10, src:'engine/schema.js', find:"vRange(errs,'axes.'+c.nm+'.opp',a.opp,0,10)",
              say:'an opposite installed'},
- /* compute.js:290, the charge held at one address before the opposite */
- held:      {lo:0, hi:10, src:'engine/compute.js', find:'n.held = n.cf?clamp(S.charge[n.cf]*n.susc*(1-relief*0.42),0,10):0;',
+ /* compute.js, the charge held at one address before the opposite. base
+    folds in S.addr, the named-address layer added 26 October, before the
+    susceptibility and relief scaling; the clamp and its bound are the
+    same line they always were. */
+ held:      {lo:0, hi:10, src:'engine/compute.js', find:'n.held = n.cf?clamp(base*n.susc*(1-relief*0.42),0,10):0;',
              say:'the charge held at one address'},
  /* compute.js:295, sq, what is left at one address after the opposite. A mean
     of sq stays on the same scale, so SQm (compute.js:318), the heaviest seat

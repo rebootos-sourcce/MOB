@@ -1042,7 +1042,12 @@ function runPoleDrill(end){
      him, so the referral reaches the person it was written for. Whether the
      tier word names CQ or expression is the owner's open question 1; a
      safety referral is not a label, so it does not wait on that. */
-  var dk=darkRead(r.malig===null?null:r.malig/100,r.EX), circ=r.complete?circleAt(r.EX):null;
+  /* THE STEP IS READ OFF THE CHAIN AS THE PLAN SEES IT, 26 October. This
+     drill reads compute() whole, and a tied step (Sociopathy, Psychopathy)
+     lit from a rung the plan hides would show the rung through the side
+     door. sightR empties the hidden rungs and the step falls back to depth. */
+  var dk=darkRead(r.malig===null?null:r.malig/100,r.EX,typeof sightR==='function'?sightR(r):r),
+   circ=r.complete?circleAt(r.EX):null;
   h+='<div class="pm-eye">The blueprint, where the downward cone ends</div><div class="ad-rows">';
   BLUEPRINT.forEach(function(x){
    h+='<div class="ad-r static" title="'+esc(x.d)+'"><span class="ad-k">'

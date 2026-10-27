@@ -28,7 +28,9 @@
                   code carries no tier, on purpose: canon.json files Dark
                   Triad as a hyper-complex while its own note calls it a
                   super-complex, and MOB's DESCENT files Psychopathy as a
-                  super complex where canon.json files it a hyper-complex. A
+                  super complex where canon.json files it a hyper-complex
+                  (ruled so on 26 October: the super complex of the
+                  Grandiosity and Predatory pair alone). A
                   ruling that moves a record between registers changes its
                   filed field and never its code.
      pair         compute()'s complex rung, two saboteurs of one family: the
@@ -92,11 +94,14 @@
    Entitlement is address 8, where MOB's is 38.
 
    Every row says where it was read. Book line numbers are for v192, md5
-   3d2671d9, the copy reboot-os holds. canon.json is 1.0.0, md5 7e844c0d.
+   3d2671d9, the copy reboot-os holds. canon.json is 1.0.1, md5 79951697,
+   amended 27 October with The Performer hyper-complex and the Borderline-
+   Sociopath open ruling, both read from the book directly, the owner having
+   authorized this addition. 1.0.0 was md5 7e844c0d.
    ============================================================ */
 const CODE_SOURCES=[
  ['mob','this repository: its own tables, SNIFFER_SPEC.md and DESCENT'],
- ['canon','reboot-os atuned/data/canon.json, SOURCE OS CANON 1.0.0, issued 8 September by the owner, md5 7e844c0d, the copy held at vendor/reboot-os/canon.json'],
+ ['canon','reboot-os atuned/data/canon.json, SOURCE OS CANON 1.0.1, issued 8 September by the owner, amended 27 October (The Performer, Borderline-Sociopath), md5 79951697, the copy held at vendor/reboot-os/canon.json'],
  ['book','The Mechanics of Being v192, reboot-os atuned/data/corpus/MOB_Complete_v192.txt, md5 3d2671d9'],
  ['app','the reboot-os app tables, atuned/data/canon_tables: SAB33, SABAUTH, HYPER, NODEREG'],
  ['nodes112','reboot-os atuned/data/nodes_112.json'],
@@ -165,7 +170,8 @@ const CODE_STRUCT=[
  ["X28","Megalomania","hyper_complex",4,"I"],
  ["X29","Malignant Grandiosity","hyper_complex",5,"I"],
  ["X30","Dark Triad","hyper_complex",6,"I"],
- ["X31","Persecutory Collapse","hyper_complex",7,"I"]];
+ ["X31","Persecutory Collapse","hyper_complex",7,"I"],
+ ["X32","The Performer","hyper_complex",8,"I"]];
 
 /* BLAME DISPLACEMENT AND ANTISOCIAL ARE TWO CODES, X02 AND X06. canon.json
    gives both the same two saboteurs, Aggressor and Deflector, and tags both
@@ -276,8 +282,7 @@ const CODE_UNMAPPED=[
  ['any','archetype','Healer',"carried by ARCH18 and canon.json's archetype register, not by ARCH, the roster a record stores. The roster's count is open (SNIFFER_SPEC.md section 4)"],
  ['canon','archetype','Pleaser',"canon.json's archetype register carries Pleaser, which MOB and canon.json both carry as the saboteur S05. ARCH has no Pleaser"],
  /* structures with no canon.json record */
- ['book','structure','Borderline-Sociopath',"a link in the book's descent (v192 line 3088) that canon.json has no record of"],
- ['book','structure','The Performer',"the book names it a hyper-complex (v192 line 4487). canon.json has no record of it"],
+ ['book','structure','Borderline-Sociopath',"a link in the book's descent (v192 line 3088) that canon.json has no record of. Confirmed by reading the book directly (chapter 17, The Stacking Architecture): named only by effect, between Psychopathy and Megalomania, never given a saboteur or complex breakdown, so it is canon.json's open ruling 12, not a structure code"],
  ['app','structure','Bipolar Disorder',"the app's HYPER table, with Nonconformist where canon.json's Oscillation, filed as Bipolar, has Restless. Whether they are one record is not written anywhere"],
  ['app','structure','Borderline Personality Disorder',"the app's HYPER table, sharing no saboteur with canon.json's Abandonment Reactivity, filed as BPD. Whether they are one record is not written anywhere"],
  ['app','structure','Obsessive-Compulsive Disorder',"the app's HYPER table. canon.json files its Rigidity complex as OCPD, a different filing, with Stickler where this has Overthinker"],
