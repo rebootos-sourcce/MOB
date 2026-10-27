@@ -5313,22 +5313,22 @@ const CHARGE_LADDER=[
    Arrogance. canon.json's open ruling 5: "Justification has no node.
    Component two of four in narcissism. Inferred candidate: node 034."
 
-   RULED 25 October, not yet moved here: his words, "Justification and
-   arrogance in many ways share similar features. Justification is
-   rejection of accountability. Arrogance is using intimidation to avoid
-   accountability. So they share a trait. I would put them together."
-   Address 34 carries both. The tag stays "I" until the vendored canon.json
-   this ruling resolves (its own open_rulings id 5) is re-pinned; regDiff
-   holds this table to that file row for row on purpose, so a tag flipped
-   here first would read as drift instead of as his word. Recorded in full
-   in DECISIONS.md. */
+   RULED 25 October, his words: "Justification and arrogance in many ways
+   share similar features. Justification is rejection of accountability.
+   Arrogance is using intimidation to avoid accountability. So they share a
+   trait. I would put them together." Address 34 carries both. CLOSED 27
+   October: canon.json's own open ruling 5 is resolved upstream (reboot-os
+   PR #75) and vendor/reboot-os/canon.json is re-pinned to the copy that
+   carries it, so the tag moves to "R" here too, regDiff holding this table
+   to that file row for row the way it always does. Recorded in full in
+   DECISIONS.md. */
 const AMPLIFIER=[
  {c:"AM01",nm:"Entitlement",i:8,tag:"R"},
  {c:"AM02",nm:"Obsession",i:29,tag:"R"},
  {c:"AM03",nm:"Judgment",i:37,tag:"R"},
  {c:"AM04",nm:"Perfectionism",i:40,tag:"R"},
  {c:"AM05",nm:"Comparison",i:69,tag:"R"},
- {c:"AM06",nm:"Justification",i:34,tag:"I"}];
+ {c:"AM06",nm:"Justification",i:34,tag:"R"}];
 
 /* QUADRANTS, canon.json registers.quadrants. The body in four, right and left
    by front and back. Not the Compass's quadrant() (engine/data/compass.js),
@@ -5649,11 +5649,13 @@ const ASTRO_OVERLAY={
    Entitlement is address 8, where MOB's is 38.
 
    Every row says where it was read. Book line numbers are for v192, md5
-   3d2671d9, the copy reboot-os holds. canon.json is 1.0.0, md5 7e844c0d.
+   3d2671d9, the copy reboot-os holds. canon.json is 1.0.0, md5 e41a12df,
+   re-pinned 27 October when ruling 5 (Justification and Arrogance) closed
+   upstream, reboot-os PR #75.
    ============================================================ */
 const CODE_SOURCES=[
  ['mob','this repository: its own tables, SNIFFER_SPEC.md and DESCENT'],
- ['canon','reboot-os atuned/data/canon.json, SOURCE OS CANON 1.0.0, issued 8 September by the owner, md5 7e844c0d, the copy held at vendor/reboot-os/canon.json'],
+ ['canon','reboot-os atuned/data/canon.json, SOURCE OS CANON 1.0.0, issued 8 September by the owner, md5 e41a12df, the copy held at vendor/reboot-os/canon.json'],
  ['book','The Mechanics of Being v192, reboot-os atuned/data/corpus/MOB_Complete_v192.txt, md5 3d2671d9'],
  ['app','the reboot-os app tables, atuned/data/canon_tables: SAB33, SABAUTH, HYPER, NODEREG'],
  ['nodes112','reboot-os atuned/data/nodes_112.json'],
@@ -23403,7 +23405,8 @@ const REG_MAP=[
  ['time_axis','held',[],'how a release settles over the days after it. Nothing here models it, and the rebound days were taken off the release screen by his ruling of 27 September'],
  ['evidence','held',[],'trial and practice figures about the method. Not product data'],
  ['contraindications','held',[],'when a release should not be run, or should be paced. The release screens hold the product\'s own wording'],
- ['open_rulings','held',[],'the owner\'s open questions in that file, carried into CANON-MERGE-PLAN.md']];
+ ['open_rulings','held',[],'the owner\'s open questions in that file, carried into CANON-MERGE-PLAN.md'],
+ ['resolved_rulings','held',[],'closed as of 27 October, ruling 5, Justification and Arrogance: who ruled it, when, and what changed, carried in full in DECISIONS.md and at engine/data/registers.js\'s own AMPLIFIER comment']];
 
 /* the ported tables, by register, as regDiff reads them */
 function regDiff(canon){
