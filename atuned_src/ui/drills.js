@@ -739,6 +739,15 @@ function runFetterDrill(c){
   +'. Seated at the '+esc(c.seat).toLowerCase()+'.</p>'
   +'<div class="pm-eye">Both halves</div><p class="ad-p">Held <b>'+held.toFixed(1)+'</b>. '
   +esc(c.opp)+' installed <b>'+inst.toFixed(1)+'</b>. Release empties the address, the opposite is what fills it.</p>'
+  /* THE CENTRE IS CALM, NOT A THIRD HALF. His words, 27 October, reading this
+     exact pair on screen: "the fetter state having both poles is showing two
+     things, the freeze or flight state of a nerve and then the center point
+     is neutral." One sentence, no new number: held and installed are the two
+     sides this nerve can tip toward, and level between them is where it is
+     not tipped either way. DECISIONS.md carries the full ruling and the map
+     to EX, the figure that moves with this across every nerve at once. */
+  +'<div class="pm-eye">Which way it leans</div><p class="ad-p">Held high or installed high, either one '
+  +'is this nerve pulled to that side. Level between them is the centre, where it is not pulled either way.</p>'
   +'<div class="pm-eye">It runs '+at.length+' addresses</div><div class="ad-rows">'
   +at.slice(0,10).map(addrRow).join('')
   +(at.length>10?'<div class="pm-more">and '+(at.length-10)+' more</div>':'')+'</div>';
