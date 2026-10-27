@@ -542,7 +542,7 @@ function stCommit(){
  if(k&&!again){
   /* the field is about to change and until now there was no way back */
   undoPush('committing the story');
-  applyStory(ST_TEXT); verpApply(ST_TEXT); leanApply(ST_TEXT);
+  applyStory(ST_TEXT); applyStoryAddr(ST_TEXT); verpApply(ST_TEXT); leanApply(ST_TEXT);
   /* THE CHARGE HAS TO REACH THE MIRROR, OR THE NEXT VISIT TAKES IT BACK OUT.
      applyStory writes S and pSave writes the record, and neither writes
      PEOPLE[0], which is the table loadP(0) reads the person's field back out

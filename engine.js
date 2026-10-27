@@ -2101,12 +2101,39 @@ function compassPoleLines(m,end){
    weeks. It gets icons on the turn something renders it. */
 
 /* ---- THE NARCISSISM DESCENT ----
-   Three steps, and the third one is not ours to work on. The codex
+   The last step is not ours to work on. The codex
    is explicit and the rule is carried into the product rather than
    left in the book: "Practitioners encountering this configuration:
    work at the fetter level. Do not attempt to address the
    structural layer. Refer to licensed clinical professionals for
-   parallel support." */
+   parallel support."
+
+   SOCIOPATHY AND PSYCHOPATHY ARE PLACED, RULED 26 OCTOBER. His words:
+   "Narcissism is a subset of psychopathy and Machiavellianism... sociopath
+   would be a hypercomplex and psychopath would be a supercomplex. But a very
+   particular archetype." On 20 October (0e53d037) he had struck Psychopathy
+   as a super complex standing on its own, and that commit only reached a
+   dashboard document, so this table went on filing it as a flat kind that
+   darkRead below then lit by depth alone, for anybody dark enough, whatever
+   was running.
+
+   So two entries are tied to the chain compute() already builds, and the
+   tie is data on the entry, read by nobody's position:
+     fam   Sociopathy is the Predatory family's own hyper complex. compute()
+           has always built it (kind 'hy', nm 'Predatory'). It was never
+           given this name anywhere a person reads.
+     pair  Psychopathy is the super complex of exactly these two families'
+           hyper complexes, Grandiosity and Predatory, and no other pair.
+           compute() reads the pair off this entry into r.psychopathy.
+   The names are the structure's and not the person's, Sociopathy and not
+   sociopath, the way the other three are: the dark read names a pattern and
+   never a person, and CODE_STRUCT codes all four under these names (X25,
+   X26), which the ID gate in engine/codes.js holds.
+
+   Why here and not on HCX_LIB. HCX_LIB's d prints on every hover of a
+   hyper complex (ui/ui.js), for anybody carrying one. This table prints
+   only inside the dark read, beside the referral. A clinical name belongs
+   behind that gate. */
 const DESCENT=[
  {nm:'Narcissism', kind:'complex',
   d:'Grandiose entitlement; the self-appointed arbiter. Personal situations are interpreted through status, exceptionalism, entitlement, and the need to preserve a superior self-image.',
@@ -2147,8 +2174,27 @@ const DESCENT=[
     {pass:'C · adversarial/counterpart review',focus:'Check newer systematic synthesis of dishonest behavior and test the proposed opposite against agency and consent.',sources:['https://pmc.ncbi.nlm.nih.gov/articles/PMC13422123/','https://pubmed.ncbi.nlm.nih.gov/34636074/'],finding:'Associations vary by outcome and construct measurement. Transparent Reciprocal Agency is an inferred practice pole, not a validated clinical opposite; focus on disclosure, consent and verifiable accountability.'}
    ]
   }},
- {nm:'Psychopathy',kind:'super complex',
-  d:'Structural absence of the empathy feedback loop. The Machiavellian suppresses, so there is something to suppress. This does not suppress, because harm is always a neutral option.',
+ /* THE PREDATORY HYPER COMPLEX, NAMED. Ruled 26 October; see the head of
+    this table. The template below is left empty on purpose: the placement is
+    his, and no behaviour, practice or counterpart has been written or
+    researched for it yet, so nothing is invented to fill the shape. A null
+    is reported as a null by the knowledge generator, never filled. */
+ {nm:'Sociopathy',kind:'hyper complex',fam:'Predatory',
+  d:'The Predatory family built up into a hyper complex of its own. Other people are read as terrain, and the move is made before it is felt.',
+  content:{
+   inferred:false, inferenceBasis:'The name and the hyper-complex placement are owner-ruled, 26 October 2026, as the Predatory family\'s own hyper complex. No behavioral template or research pass has been written for it yet.',
+   behavior:null, triggerMechanism:null, livedExample:null, impact:null, practice:null,
+   oppositeName:null, oppositeId:'opposite:Sociopathy', oppositeDefinition:null,
+   oppositeStatus:'not yet named; no counterpart invented',
+   confidence:null, reviewStatus:'owner-placed 26 October; template and research passes not written',
+   researchSources:[], researchPasses:[]
+  }},
+ /* A SUPER COMPLEX, AND ONE PARTICULAR ONE. The kind stands: he ruled it a
+    super complex. What 0e53d037 struck was it standing as a flat kind lit for
+    anybody, and pair is the fix: it is held only where compute() finds both
+    of these families' hyper complexes, read into r.psychopathy. */
+ {nm:'Psychopathy',kind:'super complex',pair:['Grandiosity','Predatory'],
+  d:'The Grandiosity and Predatory hyper complexes running at once. Structural absence of the empathy feedback loop. The Machiavellian suppresses, so there is something to suppress. This does not suppress, because harm is always a neutral option.',
   refer:true,
   content:{
    inferred:false, inferenceBasis:'The super-complex placement and core phrasing are explicitly source-defined in this DESCENT registry. The added behavioral template is research-informed and must not be used to diagnose an individual.',
@@ -2227,17 +2273,43 @@ const DARK_MAL=0.55, DARK_CQ=31;
 
    The body keeps its bodies and its signature shape. One name and one caller
    moved. */
-function darkRead(mal01, CQ){
+/* A DESCENT STEP BY ITS NAME, never by where it sits in the table. darkRead
+   read DESCENT[2] as the floor, and the first entry added in the middle
+   would have moved the referral's step onto it without a word. */
+function descentStep(nm){
+ for(var i=0;i<DESCENT.length;i++)if(DESCENT[i].nm===nm)return DESCENT[i];
+ return null;}
+/* WHETHER A READING HOLDS THE STRUCTURE A STEP IS TIED TO. A step with
+   neither fam nor pair is not tied to the chain and is never held this way.
+   r is a compute() result, or what a plan may see of one (sightR in
+   ui/lock.js), so a rung the plan hides is never held here either. */
+function descentHeld(d,r){
+ if(!d||!r)return false;
+ if(d.pair)return !!(r.psychopathy&&r.psychopathy.named===d.nm);
+ if(d.fam)return (r.hys||[]).some(function(h){return h.nm===d.fam&&!h.over;});
+ return false;}
+function darkRead(mal01, CQ, r){
  /* mal01 is the malignancy axis, nought to one, and CQ is the coherence axis.
-    Two measurements, not one twice. An unreadable shape is never dark. */
+    Two measurements, not one twice. An unreadable shape is never dark.
+    r is optional and only chooses the step. Without it no tied step is ever
+    chosen, which is the safe direction: an untied step, never a label the
+    chain does not support. */
  if(mal01===null||mal01===undefined)
   return {mal:null,cq:Math.round(CQ),dark:false,step:null,refer:false,say:''};
  var mal=clamp(mal01,0,1);
  var dark=(mal>=DARK_MAL)&&(CQ<DARK_CQ);
+ /* WHICH STEP, ruled 26 October. A tied step is chosen only when the chain
+    holds it, deepest first, and never by depth. Psychopathy was chosen at CQ
+    under 11 for anybody dark, which named it on fields with no Grandiosity
+    in them at all. Depth still chooses between the untied two. The referral
+    below is not moved: it is a safety rule and not a label, so it keeps
+    following depth alone, exactly as before. */
+ var tied=null;
+ if(dark)for(var i=DESCENT.length-1;i>=0&&!tied;i--)if(descentHeld(DESCENT[i],r))tied=DESCENT[i];
  return {mal:Math.round(mal*100), cq:Math.round(CQ),
   dark:dark,
   /* which step of the descent, and only while both conditions hold */
-  step:!dark?null:(CQ<11?DESCENT[2]:(CQ<21?DESCENT[1]:DESCENT[0])),
+  step:!dark?null:(tied||descentStep(CQ<21?'Machiavellianism':'Narcissism')),
   refer:dark&&CQ<11,
   say:!dark?'':'The shape is malignant and your energy is decoherent at the same time. '
    +'That pair is what the descent describes. It is a reading of what is running, not of who is running it.'};}
@@ -5441,7 +5513,9 @@ const ASTRO_OVERLAY={
                   code carries no tier, on purpose: canon.json files Dark
                   Triad as a hyper-complex while its own note calls it a
                   super-complex, and MOB's DESCENT files Psychopathy as a
-                  super complex where canon.json files it a hyper-complex. A
+                  super complex where canon.json files it a hyper-complex
+                  (ruled so on 26 October: the super complex of the
+                  Grandiosity and Predatory pair alone). A
                   ruling that moves a record between registers changes its
                   filed field and never its code.
      pair         compute()'s complex rung, two saboteurs of one family: the
@@ -5817,8 +5891,11 @@ var PCT_KIND={
  /* schema.js:1041 on the axis, and compute.js:293 at one address */
  installed: {lo:0, hi:10, src:'engine/schema.js', find:"vRange(errs,'axes.'+c.nm+'.opp',a.opp,0,10)",
              say:'an opposite installed'},
- /* compute.js:290, the charge held at one address before the opposite */
- held:      {lo:0, hi:10, src:'engine/compute.js', find:'n.held = n.cf?clamp(S.charge[n.cf]*n.susc*(1-relief*0.42),0,10):0;',
+ /* compute.js, the charge held at one address before the opposite. base
+    folds in S.addr, the named-address layer added 26 October, before the
+    susceptibility and relief scaling; the clamp and its bound are the
+    same line they always were. */
+ held:      {lo:0, hi:10, src:'engine/compute.js', find:'n.held = n.cf?clamp(base*n.susc*(1-relief*0.42),0,10):0;',
              say:'the charge held at one address'},
  /* compute.js:295, sq, what is left at one address after the opposite. A mean
     of sq stays on the same scale, so SQm (compute.js:318), the heaviest seat
@@ -8265,7 +8342,13 @@ const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
     on. Yeah, everything should start on." 3 is Blueprint, the preset that is
     every layer in LAYADD, so the first frame draws all of it and a press on
     the bar takes a layer away rather than having to find it. */
- theme:'dark',hover:null,pin:null,t:0,replace:{},view:3,who:0,tab:TABHOME,
+ theme:'dark',hover:null,pin:null,t:0,replace:{},
+ /* addr: an address-keyed additive layer, engine/sniff.js's applyStoryAddr.
+    charge above is per fetter and spreads by susceptibility alone; this is
+    the one place a story's own named address, not just its feeling, is
+    kept. Empty until a story names a specific place; compute() adds it on
+    top of the fetter spread, never in place of it. */
+ addr:{},view:3,who:0,tab:TABHOME,
  /* atom: the one story weight being held on the wheel, past the fetter
     layer. {i:node id, ei:entry index}, or null for none held. View state,
     like pin and hover, so it is not persisted and not validated. */
@@ -8880,7 +8963,14 @@ function compute(){
  W.forEach(n=>{
   /* a closed law at this band lets charge sit deeper. integrity is local. */
   const relief=bandIg(n.b)/10;
-  n.held = n.cf?clamp(S.charge[n.cf]*n.susc*(1-relief*0.42),0,10):0;
+  /* THE NAMED ADDRESS CARRIES MORE THAN ITS SHARE, 26 October. S.addr is
+     engine/sniff.js's applyStoryAddr, additive on top of the fetter spread
+     below it, never in place of it: an address nobody's words ever named
+     reads exactly as it did before this line existed. One the words did
+     name reads at least that much heavier, whatever its own susceptibility
+     would otherwise have given it. */
+  const base = S.charge[n.cf]+(S.addr[n.i]||0);
+  n.held = n.cf?clamp(base*n.susc*(1-relief*0.42),0,10):0;
   /* the coherent opposite installed at the same address. an address with the
      opposite in does not merely read zero, it conducts. */
   n.rep  = n.cf?clamp((S.replace[n.cf]||0)*(0.72+0.28*relief),0,10):0;
@@ -9010,9 +9100,37 @@ function compute(){
     w:fam.reduce((a,p)=>a+p.w,0)/fam.length,ang:meanAng(fam.map(p=>p.ang))});});
  hys.sort((a,b)=>b.w-a.w);
  const sups=[];
+ /* the super complex's own gate, named once so the named one below keeps it */
+ const SUP_W=5.6;
  for(let i=0;i+1<hys.length;i+=2){const parts=hys.slice(i,i+2),w=(parts[0].w+parts[1].w)/2;
-  if(w>=5.6)sups.push({kind:'sup',nm:parts[0].nm+' / '+parts[1].nm,parts,w,
+  if(w>=SUP_W)sups.push({kind:'sup',nm:parts[0].nm+' / '+parts[1].nm,parts,w,
    ang:meanAng(parts.map(p=>p.ang))});}
+ /* THE ONE NAMED SUPER COMPLEX, ruled 26 October: Psychopathy is the
+    Grandiosity hyper complex and the Predatory one together, "a very
+    particular archetype", and not any two hyper complexes that happen to sit
+    next to each other. The pairing above takes whatever is adjacent in
+    weight, so whether it pairs these two is a coincidence of rank, and this
+    asks for the two families by name, wherever they rank. It is never pushed
+    into sups: that would move dist, the mask and every count of the rung for
+    a field the generic rule did not pair, and conflate two mechanics.
+
+    The same weight gate as the rung it is said to sit on. Two hyper
+    complexes under SUP_W are not a super complex anywhere in this engine,
+    and a false Psychopathy costs more than a missed one, so the named one is
+    held to the generic bar and never to a lower one. An overshoot family is
+    not its family: Grandiosity overshot is a different hyper complex.
+
+    Same shape as a sup, heaviest first as the pairing above orders its
+    parts, so where both rules pair the two, the names agree; inSups says
+    whether they did. The pair is read off the DESCENT entry, never typed. */
+ const psyD=DESCENT.filter(d=>d.nm==='Psychopathy')[0]||null;
+ const psyParts=psyD&&psyD.pair?hys.filter(h=>!h.over&&psyD.pair.indexOf(h.nm)>=0):[];
+ const psyW=psyParts.length===2?(psyParts[0].w+psyParts[1].w)/2:0;
+ const psychopathy=(psyParts.length===2&&psyW>=SUP_W)
+  ?{kind:'sup',nm:psyParts[0].nm+' / '+psyParts[1].nm,named:psyD.nm,parts:psyParts,w:psyW,
+    ang:meanAng(psyParts.map(p=>p.ang)),
+    inSups:sups.some(s=>s.parts.indexOf(psyParts[0])>=0&&s.parts.indexOf(psyParts[1])>=0)}
+  :null;
  /* the five masks a reading is taken on. Professional is hidden, round NE. */
  const maskRing=MASKS_READ.map(m=>{
   const seg=W.filter(n=>m.b.indexOf(n.b)>=0);
@@ -9211,7 +9329,7 @@ function compute(){
     something true to point at. */
  const carrying=W.filter(n=>n.sq>0).sort((a,b)=>b.sq-a.sq);
  return {loaded,carrying,heaviest:carrying[0]||null,
-  sabs,cxs,hys,sups,maskRing,DQ,SQ,PULL,EX,Rz,vf:_vf,SQm,poleMean,JQ,excess,
+  sabs,cxs,hys,sups,psychopathy,maskRing,DQ,SQ,PULL,EX,Rz,vf:_vf,SQm,poleMean,JQ,excess,
   FAM_POLE,dist,Ig,It,seats:seatRows(),CQ,answered,complete,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
   outward,organized,gov,
   will,drag,mask,darkB,darkV,root,rootsIn,weakL,balance:balance()};
@@ -10627,7 +10745,9 @@ var TRACE_ALG=4;
    could never be super complex because that word already names
    Psychopathy's kind in the descent (engine/data/compass.js). The ruling
    took that reason away. The descent files Narcissism as a complex,
-   Machiavellianism as a hyper complex and Psychopathy as a super complex:
+   Machiavellianism and Sociopathy as hyper complexes and Psychopathy as a
+   super complex (Sociopathy added, and Psychopathy tied to the Grandiosity
+   and Predatory pair, on his 26 October ruling):
    the word names the rung each one sits on, and this is that rung, so one
    word still names one thing. Character is no type at all. It is the whole
    person, every rung and every layer above them taken together, which is
@@ -11771,6 +11891,12 @@ function blankProfile(name){
   name:name||'New profile', created:new Date().toISOString(), updated:null,
   soul:{doms:[0], arcs:[0,1], roots:[]},            /* the invariant */
   axes:{},                                          /* nine poled child fetters */
+  /* THE NAMED-ADDRESS LAYER, engine/sniff.js's applyStoryAddr, 26 October.
+     Additive: an older record has none, which is a record no story ever
+     named a specific place in, not a broken one, and no SCHEMA_V bump,
+     same standing as p.practice below. Keyed by NODES[].i, the address's
+     own number; empty until a story names one. */
+  addr:{},
   /* who. name, sex at birth, and the birth moment. Nothing derived is
      stored: the energetics are pure functions of these three strings, so a
      sixth system still costs nothing. timeUnknown is explicit, because an
@@ -11984,6 +12110,9 @@ function loadProfile(p){
     person carrying on all nine (AXIS_BLANK, above) */
  CHILD.forEach(function(c){var a=p.axes[c.nm]||{};
   S.charge[c.nm]=a.held!=null?a.held:AXIS_BLANK; S.replace[c.nm]=a.opp||0;});
+ /* a record from before this layer has none, which is a record no story
+    ever named a specific address in, not a broken one */
+ S.addr=Object.assign({},p.addr||{});
  /* an old name's score is carried across rather than dropped back to the
     default a person never entered (LAW_WAS, above) */
  var LAWWAS=LAW_WAS;
@@ -12018,6 +12147,7 @@ function loadProfile(p){
 function saveProfile(p){
  p.soul={doms:S.doms.slice(),arcs:S.arcs.slice(),roots:S.roots.slice()};
  CHILD.forEach(function(c){p.axes[c.nm]={held:S.charge[c.nm],opp:S.replace[c.nm]||0};});
+ p.addr=Object.assign({},S.addr);
  /* A LAW NOBODY MEASURED MUST NOT COME BACK MEASURED.
 
     null in p.laws means not yet measured, and every surface that asks whether
@@ -12837,6 +12967,16 @@ function validateProfile(o){
   var q=vRange(errs,'axes.'+c.nm+'.opp',a.opp,0,10);
   if(h!==null)p.axes[c.nm].held=h;
   if(q!==null)p.axes[c.nm].opp=q;});}
+ /* THE NAMED-ADDRESS LAYER, 26 October. Keyed by NODES[].i, the address
+    itself; a key that names no node is refused by name, the same
+    boundary the trace graph already holds its own node references to
+    (BY[i], above). */
+ if(o.addr&&typeof o.addr==='object'&&!Array.isArray(o.addr)){
+  Object.keys(o.addr).forEach(function(k){
+   var i=+k;
+   if(!Number.isFinite(i)||!BY[i]){errs.push('addr may not carry '+k);return;}
+   var v=vRange(errs,'addr.'+k,o.addr[k],0,10);
+   if(v!==null)p.addr[k]=v;});}
  /* the 21 laws. null is a law not yet measured and is not an error.
     AN OLD NAME IS READ AS THE LAW IT BECAME (lawNameOf, above), only where the
     record does not carry the current name at all, so the current name wins
@@ -14385,7 +14525,7 @@ function journeyMade(p){
    It does not touch the record it reads. It reads it through validateProfile,
    which builds a fresh object, so what is returned shares nothing with the live
    profile and a caller that edits the packet cannot move the person's data. */
-var JOURNEY_CLAIM_SEND=['soul','axes','laws','seed','intake','work','gates','story',
+var JOURNEY_CLAIM_SEND=['soul','axes','addr','laws','seed','intake','work','gates','story',
  'rituals','history','meter','avatar','purpose','practice','trace','summaries','journey'];
 var JOURNEY_CLAIM_NEVER=['v','id','name','created','updated','who','ui','plan'];
 var JOURNEY_CLAIM_V=1;
@@ -16359,7 +16499,7 @@ function exdepthFill(rec,p,now){
  (h.r||[]).forEach(function(x){ev.push({k:'r', back:x[0], n:x[1], dose:x[2]});});
  /* oldest first, and on one day the story before the release */
  ev.sort(function(a,b){return b.back-a.back||(a.k===b.k?0:(a.k==='e'?-1:1));});
- var c0=Object.assign({},S.charge), r0=Object.assign({},S.replace);
+ var c0=Object.assign({},S.charge), r0=Object.assign({},S.replace), a0=Object.assign({},S.addr);
  var v0=Object.assign({},VERPMIX), l0=Object.assign({},LEANMIX);
  var out={entries:0, imprints:0, runs:0, lines:0, addrs:0};
  /* ALL OR NOTHING. A history the engine refuses half way would otherwise
@@ -16380,7 +16520,7 @@ function exdepthFill(rec,p,now){
    var at=exdepthAt(now,x.back,EXDEPTH_HOUR[x.k]);
    if(x.k==='e'){
     var P=parseStory(x.text), k=P.imprints.length;
-    if(k){applyStory(x.text); verpApply(x.text); leanApply(x.text);}
+    if(k){applyStory(x.text); applyStoryAddr(x.text); verpApply(x.text); leanApply(x.text);}
     rec.story.entries.push({t:at, text:x.text, imprints:k, bands:P.bands, lex:LEX_VERSION});
     out.entries++; out.imprints+=k; return;}
    compute();
@@ -16418,7 +16558,7 @@ function exdepthFill(rec,p,now){
   throw e;}
  finally{
   SHOW_REPLAY--;
-  exdepthPut(S.charge,c0); exdepthPut(S.replace,r0);
+  exdepthPut(S.charge,c0); exdepthPut(S.replace,r0); exdepthPut(S.addr,a0);
   exdepthPut(VERPMIX,v0); exdepthPut(LEANMIX,l0);
   compute();}
  return out;}
@@ -17925,6 +18065,39 @@ function applyStory(text){
   .reduce(function(a,h){return a+Math.abs(h.amt);},0);
  if(calm)CHARGES.forEach(function(c){S.charge[c]=clamp(S.charge[c]-calm/140,0,10);});
  return {parsed:p, applied:touched};}
+/* ============================================================
+   APPLYSTORYADDR · THE ADDITIVE PER-ADDRESS LAYER, 26 October.
+
+   applyStory above keeps its own body and signature, on the standing
+   ruling below: scanStory, parseStory and applyStory are untouched. It
+   writes only S.charge, one total per fetter, so every address sharing a
+   fetter is spread by susceptibility alone and a story naming one
+   specific place carries no more weight there than anywhere else the
+   body can hold the same feeling. Review B, 25 October, measured it:
+   grief read at the Heart under every blueprint tried, and the field
+   made the Heart the heaviest seat in 6 of 19 and held nothing there at
+   all in 11 of 19. Writing "chest", "stomach", "throat" or "lower back"
+   changed nothing.
+
+   A sibling, not a change to applyStory: the same text, parsed again
+   (parseStory is pure, nothing in it depends on call order or on
+   applyStory having run). Only the imprints the person's own words
+   actually pointed to, im.inferred false, add anything here. A fallback
+   guess (inferred true) adds nothing; the fetter spread above already
+   carries it, exactly as today. Scaled by the same 0.35 applyStory uses,
+   so the two terms sit on one scale when compute() adds them together.
+   This is additive on top of the spread, never in place of it: an
+   address nobody named keeps reading exactly as it does today. Call
+   this everywhere applyStory is called, never instead of it. */
+function applyStoryAddr(text){
+ if(showRefuse('story'))return {applied:{}, refused:'example'};
+ var p=parseStory(text), touched={};
+ p.imprints.forEach(function(im){
+  if(im.inferred||im.node==null)return;
+  touched[im.node]=(touched[im.node]||0)+im.amt;});
+ Object.keys(touched).forEach(function(k){
+  S.addr[k]=clamp((S.addr[k]||0)+touched[k]*0.35,0,10);});
+ return {applied:touched};}
 
 /* ============================================================
    SNIFFSTORY · THE OUTPUT CONTRACT, SNIFFER_SPEC.md SECTION 10.
@@ -20314,7 +20487,7 @@ function input(prof,opts){
  loadProfile(p);            /* soul, nine axes, laws, gate evidence. builds the soul */
  if(p.intake&&p.intake.answers)iqApply(p);    /* a measured law beats the default 6 */
  if(o.story){                                 /* new text, not yet in the axes */
-  applyStory(o.story); verpApply(o.story); leanApply(o.story);}
+  applyStory(o.story); applyStoryAddr(o.story); verpApply(o.story); leanApply(o.story);}
  return p;}
 
 /* ---------- THROUGHPUT ----------
@@ -23074,6 +23247,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* compass */  MIRROR:MIRROR, PATHS:PATHS, MASTERS:MASTERS, BLUEPRINT:BLUEPRINT, CIRCLES:CIRCLES,
                  CASCADE:CASCADE, DESCENT:DESCENT, DESCENT_REFER:DESCENT_REFER,
                  mirrorAt:mirrorAt, darkRead:darkRead, circleAt:circleAt,
+                 descentStep:descentStep, descentHeld:descentHeld,
                  DARK_MAL:DARK_MAL, DARK_CQ:DARK_CQ,
                  GOVERN:GOVERN, quadrant:quadrant, outwardShare:outwardShare, organisedShare:organisedShare, ORG_W:ORG_W,
                  FAM_OUT:FAM_OUT, FAM_IN:FAM_IN, GOV_ORG:GOV_ORG, GOV_MAL:GOV_MAL, GOV_ANGEL:GOV_ANGEL,
@@ -23209,7 +23383,7 @@ if(typeof module!=='undefined'&&module.exports){
                   unpackAll:unpackAll, unpackOf:unpackOf, unpackKey:unpackKey,
                   compassPoleOf:compassPoleOf, compassPoleLines:compassPoleLines, POLE_MEANS:POLE_MEANS,
                   HOME_POLES:HOME_POLES, compassOffAxis:compassOffAxis,
-  /* sniffer */   scanStory:scanStory, normMap:normMap, maskedRuns:maskedRuns, maskedSay:maskedSay, clauseFloor:clauseFloor, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory,
+  /* sniffer */   scanStory:scanStory, normMap:normMap, maskedRuns:maskedRuns, maskedSay:maskedSay, clauseFloor:clauseFloor, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory, applyStoryAddr:applyStoryAddr,
                   wordsOf:wordsOf, unmarkedOf:unmarkedOf,
                   sniffDeny:sniffDeny, NEG_NOT_DENY:NEG_NOT_DENY, storyHits:storyHits,
                   asideOf:asideOf, asideSay:asideSay,
