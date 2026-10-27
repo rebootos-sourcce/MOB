@@ -16,6 +16,7 @@
     "Added 17 October: pct 2858, read off its first green local run on claude/percent-phase-2 at 7609fde6 (tests/pct.js, every ring and bar that prints a percent filled to it, at 1600 and 390, blank and three worked examples). The build from origin/main aeab54e2 read 157 passed, 89 failed.",
     "Raised 17 October: pct 3148 with slice 2 (Summary, section S2), read off its green run on claude/percent-phase-2-s2 at 53f6f792. The slice 1 build read 2878 passed, 46 failed against it.",
     "Raised 17 October: pct 3238 with slice 3 (Analytics and the record, section S3), read off its green run on claude/percent-phase-2-s3 at f19e9d85. The slice 2 build read 3168 passed, 22 failed against it.",
+    "Raised 19 October: pct 3470 with slice 4 (the drills and the hover lines, section S4), read off its green run on claude/percent-phase-2-s4. The slice 3 build's floor, 3238, sat 232 checks below this run, more than tools/floors.js' own drift allowance, which is the number this entry is here to fix rather than hide.",
     "Raised 23 October: landing 15 to 20, with the Discover opening (a clean device opens on Discover with it pressed, the opening is named once as TABHOME, the wordmark goes home to Discover, a press on Discover from the first landing opens the journal page, and a device that remembers another surface is still moved to Summary by its first link), read off its green run on the branch atuned/mvp-alpha-recursive-execution, the build carrying that change. The build from a4c2872b fails it on the cold open, the named opening, the wordmark and the press on Discover from the first landing.",
     "Raised 23 October: boot 13 to 28, for the fifteen checks of section 4, a press is never lost to the boot sheet (the owner: \"Find why presses right after boot are dropped\"), read off three green local runs of tests/boot.js on the fixed build, branch atuned/mvp-alpha-recursive-execution. The build from a4c2872b, before the fix, read 18 passed, 10 failed against it on each of three runs.",
     "Raised 23 October: boot 28 to 29, for the check that the sheet's fade and its opening beat start on one frame, which section 4 now reads the overture's clock off while the fade is held. Read off three green local runs on the build that holds the fade from the start. The build at 6343fd46, before the fix, read 19 passed, 10 failed against it on each of three runs.",
@@ -74,7 +75,7 @@
     "allowance": 84,
     "money": 71,
     "releasechain": 48,
-    "pct": 3238
+    "pct": 3470
   },
   "no_count": {
     "monitor": "all surfaces render"

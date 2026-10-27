@@ -6720,9 +6720,9 @@ g('Sign in · the session is the browser\'s and never rides on a profile');
 g('ND · one saboteur, one entry, however many tests name it');
 /* AUDIT-source-tdd.md's own finding. SAB33's range match (compute.js's
    sab33Detect loop) and the fixed-address library (the ALL_SAB loop) can
-   both name the same saboteur, eg Controller, from two different tests.
+   both name the same saboteur, eg Micromanager, from two different tests.
    Held heavy and uniform this produced 26 entries carrying 23 identities,
-   Controller, Hyper-Vigilant and Avoider each twice, and one pairing away
+   Micromanager, Hyper-Vigilant and Avoider each twice, and one pairing away
    from a self-paired complex, "X + X", which is not a second voice, it is
    the same one counted twice.
 

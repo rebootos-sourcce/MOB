@@ -793,8 +793,8 @@ function poleDrillHead(n){
  return '<div class="kbp-dr" style="--c:'+col+';--oc:'+oc+'">'
   +'<div class="kbp-top"><span class="kbp-side">'
   +crBadge(n.b, kbPct(n.held), {size:'sm', bare:true, color:col, glyph:glyphPath(c.ic)})
-  +'<span class="kbp-nm">'+esc(n.k)+'</span><span class="kbp-w">'+(n.held>=0.05?n.held.toFixed(1):'\u2013')+'</span></span>'
-  +'<span class="kbp-side kbp-o"><span class="kbp-w">'+(n.rep>=0.05?n.rep.toFixed(1):'\u2013')+'</span>'
+  +'<span class="kbp-nm">'+esc(n.k)+'</span><span class="kbp-w">'+fmtPct('held',n.held)+'</span></span>'
+  +'<span class="kbp-side kbp-o"><span class="kbp-w">'+fmtPct('installed',n.rep)+'</span>'
   +'<span class="kbp-nm">'+esc(c.opp)+'</span>'
   +crBadge('Heart', kbPct(n.rep), {size:'sm', bare:true, color:oc, glyph:glyphPath(c.ic)})
   +'</span></div>'
