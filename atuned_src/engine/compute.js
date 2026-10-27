@@ -465,9 +465,37 @@ function compute(){
     w:fam.reduce((a,p)=>a+p.w,0)/fam.length,ang:meanAng(fam.map(p=>p.ang))});});
  hys.sort((a,b)=>b.w-a.w);
  const sups=[];
+ /* the super complex's own gate, named once so the named one below keeps it */
+ const SUP_W=5.6;
  for(let i=0;i+1<hys.length;i+=2){const parts=hys.slice(i,i+2),w=(parts[0].w+parts[1].w)/2;
-  if(w>=5.6)sups.push({kind:'sup',nm:parts[0].nm+' / '+parts[1].nm,parts,w,
+  if(w>=SUP_W)sups.push({kind:'sup',nm:parts[0].nm+' / '+parts[1].nm,parts,w,
    ang:meanAng(parts.map(p=>p.ang))});}
+ /* THE ONE NAMED SUPER COMPLEX, ruled 26 October: Psychopathy is the
+    Grandiosity hyper complex and the Predatory one together, "a very
+    particular archetype", and not any two hyper complexes that happen to sit
+    next to each other. The pairing above takes whatever is adjacent in
+    weight, so whether it pairs these two is a coincidence of rank, and this
+    asks for the two families by name, wherever they rank. It is never pushed
+    into sups: that would move dist, the mask and every count of the rung for
+    a field the generic rule did not pair, and conflate two mechanics.
+
+    The same weight gate as the rung it is said to sit on. Two hyper
+    complexes under SUP_W are not a super complex anywhere in this engine,
+    and a false Psychopathy costs more than a missed one, so the named one is
+    held to the generic bar and never to a lower one. An overshoot family is
+    not its family: Grandiosity overshot is a different hyper complex.
+
+    Same shape as a sup, heaviest first as the pairing above orders its
+    parts, so where both rules pair the two, the names agree; inSups says
+    whether they did. The pair is read off the DESCENT entry, never typed. */
+ const psyD=DESCENT.filter(d=>d.nm==='Psychopathy')[0]||null;
+ const psyParts=psyD&&psyD.pair?hys.filter(h=>!h.over&&psyD.pair.indexOf(h.nm)>=0):[];
+ const psyW=psyParts.length===2?(psyParts[0].w+psyParts[1].w)/2:0;
+ const psychopathy=(psyParts.length===2&&psyW>=SUP_W)
+  ?{kind:'sup',nm:psyParts[0].nm+' / '+psyParts[1].nm,named:psyD.nm,parts:psyParts,w:psyW,
+    ang:meanAng(psyParts.map(p=>p.ang)),
+    inSups:sups.some(s=>s.parts.indexOf(psyParts[0])>=0&&s.parts.indexOf(psyParts[1])>=0)}
+  :null;
  /* the five masks a reading is taken on. Professional is hidden, round NE. */
  const maskRing=MASKS_READ.map(m=>{
   const seg=W.filter(n=>m.b.indexOf(n.b)>=0);
@@ -666,7 +694,7 @@ function compute(){
     something true to point at. */
  const carrying=W.filter(n=>n.sq>0).sort((a,b)=>b.sq-a.sq);
  return {loaded,carrying,heaviest:carrying[0]||null,
-  sabs,cxs,hys,sups,maskRing,DQ,SQ,PULL,EX,Rz,vf:_vf,SQm,poleMean,JQ,excess,
+  sabs,cxs,hys,sups,psychopathy,maskRing,DQ,SQ,PULL,EX,Rz,vf:_vf,SQm,poleMean,JQ,excess,
   FAM_POLE,dist,Ig,It,seats:seatRows(),CQ,answered,complete,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
   outward,organized,gov,
   will,drag,mask,darkB,darkV,root,rootsIn,weakL,balance:balance()};
