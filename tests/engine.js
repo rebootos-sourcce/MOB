@@ -2329,6 +2329,34 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
    'Predatory alone builds its hyper complex and no Psychopathy');
   Object.keys(S.addr).forEach(k=>{delete S.addr[k];});
   reset();}
+ /* SOURCE AI'S OWN WIRE INTO THIS FIELD, 26 October, his words: "I don't
+    think the Source AI has been updated. The latest sniffer plus the wire
+    into the logic system." srcHyperSeats (engine/sourceai.js) walks a real
+    hyper complex down to the nodes under it and returns the seats it
+    actually sits on, nothing else: no name, no why. Driven the same way the
+    Psychopathy probe above drives one, so this is a real complex and not a
+    hand built shape. */
+ {const {srcHyperSeats,K2BAND}=E;
+  reset(0,0,2); Object.keys(S.addr).forEach(k=>{delete S.addr[k];});
+  const G=['Micromanager','Hyper-Achiever','Judge','Dramatizer','Dreamer'];
+  const cfs={};
+  G.forEach(nm=>E.ALL_SAB.filter(s=>s.nm===nm)[0].nids.forEach(i=>{
+   S.addr[i]=10; const n=W.filter(x=>x.i===i)[0]; if(n&&n.cf)cfs[n.cf]=1;}));
+  Object.keys(cfs).forEach(c=>{S.charge[c]=6;});
+  const r=compute();
+  const grand=r.hys.filter(h=>h.nm==='Grandiosity'&&!h.over);
+  ok(grand.length>0,'the driven field holds a real Grandiosity hyper complex to test against');
+  const want={};
+  grand.forEach(h=>h.parts.forEach(cx=>cx.parts.forEach(sab=>sab.parts.forEach(n=>{if(n.b)want[n.b]=1;}))));
+  const seats=srcHyperSeats(r);
+  const codes=Object.keys(want).map(b=>Object.keys(K2BAND).filter(k=>K2BAND[k]===b)[0]);
+  ok(codes.length>0&&codes.every(k=>seats[k]),
+   'srcHyperSeats names every seat the driven hyper complex actually sits on, '+codes.length+' seats');
+  ok(Object.keys(seats).length===codes.length,'and names no seat it does not sit on');
+  ok(JSON.stringify(srcHyperSeats({}))==='{}'&&JSON.stringify(srcHyperSeats(null))==='{}',
+   'nothing to read is nothing heard, never a throw');
+  Object.keys(S.addr).forEach(k=>{delete S.addr[k];});
+  reset();}
  /* never a label on a person. the sentence has to say what it is a reading of. */
  ok(/not of who is running it/.test(darkRead(0.9,5).say),
   'and the dark read says it is a reading of what runs, not of the person');
@@ -6151,6 +6179,12 @@ g('SA · Source AI hears on the rung, asks at seven, and the person leads');
  ok(srcRung(2,0,0)===7&&srcRung(3,0,0)===8&&srcRung(9,0,0)===8,'a return inside the entry is 7, three or more is 8');
  ok(srcRung(1,1,0)===9,'an earlier entry at the same seat is 9');
  ok(srcRung(2,1,0)===10&&srcRung(1,2,0)===10,'back across entries and again here, or two earlier, is 10');
+ /* STRUCTURAL, 26 October: a seat the wider reading already holds (a hyper
+    complex sitting on it, srcHyperSeats) reaches the same rung a real
+    earlier entry would, on one mention, and invents no mention of its own. */
+ ok(srcRung(1,0,2,true)===9,'a seat the wider reading already holds structurally reaches 9 on one mention');
+ ok(srcRung(0,0,0,true)===0,'structural invents no mention: nothing heard is still 0, whatever else is true');
+ ok(srcRung(1,0,2,false)===2&&srcRung(1,0,2)===2,'and without it, or with it false, the same one mention stays at the sniffer\'s own reading');
  /* checked against a known case: the probe that set this found the lexicon's
     median word alone reads over 7 on the sniffer's own scale */
  const one=srcHear('i was furious');
@@ -6170,6 +6204,15 @@ g('SA · Source AI hears on the rung, asks at seven, and the person leads');
  const root=srcHear('I was furious at him. Still furious tonight.',{solar:1});
  ok(root.root&&root.root.rung===SRC_ROOT&&srcTurn(root,{typed:true}).why==='root','back here and before is the root');
  ok(srcHear('I was furious at him.',{solar:1}).top.rung===9,'one mention and one earlier entry is 9');
+ /* srcHear's own third param, active, the same shape srcHyperSeats returns:
+    a seat the wider reading already holds reaches 9 on one mention here,
+    through the real call and not only the bare rung ladder above. */
+ const struct=srcHear('i was furious',null,{solar:1});
+ ok(struct.asks&&struct.top.rung===9&&struct.top.seat==='solar',
+  'one mention on a seat the wider reading already holds asks, at 9, through srcHear\'s own active param');
+ ok(srcHear('i was furious').top.rung<SRC_ASK,'and without that signal the same one mention still only listens');
+ ok(srcHear('i was furious',null,{heart:1}).top.rung<SRC_ASK,
+  'active on a seat this entry never reaches changes nothing for the seat it does reach');
  ok(srcTurn(srcHear(''),{}).move==='open','nothing written opens');
  /* pure: the same entry twice, and the field untouched */
  const before=JSON.stringify(S.charge);

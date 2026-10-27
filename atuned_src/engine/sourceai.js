@@ -109,21 +109,52 @@ function srcPrior(entries){
    if(K2BAND[k]&&(e.bands[k]||0)>0)out[k]=(out[k]||0)+1;});});
  return out;}
 
-/* the rung for one seat, from the three counts. Kept apart so the ladder is
-   one function a test can walk rung by rung. */
-function srcRung(mentions,earlier,reading){
+/* WHICH SEATS THE WIDER READING ALREADY SITS ON, ruled 26 October: "I don't
+   think the Source AI has been updated. The latest sniffer plus the wire
+   into the logic system." A hyper complex (compute.js's r.hys) is already
+   two complexes at one family, which is the engine's own bar for "this is
+   not one bad day", the same kind of fact srcPrior reads off committed
+   entries, only read off the whole of compute() instead of the story bank.
+   Seats only, never a name: this walks a hyper complex down to the nodes
+   that carry it (hy.parts, complexes; cx.parts, two saboteurs each; sab.parts,
+   the nodes, each an address with its own seat) and returns which seats, so
+   the caller can treat "the logic system already sees this sitting here" as
+   the same kind of evidence srcPrior already is, and Source AI still never
+   says why, names a complex, or says anything this function could not point
+   at as a seat a person can read back in their own body. */
+var SRC_B2K=null;
+function srcHyperSeats(r){
+ if(!SRC_B2K){SRC_B2K={}; Object.keys(K2BAND).forEach(function(k){SRC_B2K[K2BAND[k]]=k;});}
+ var seats={};
+ ((r&&r.hys)||[]).forEach(function(h){
+  (h.parts||[]).forEach(function(cx){
+   (cx.parts||[]).forEach(function(sab){
+    (sab.parts||[]).forEach(function(n){
+     var k=n&&n.b&&SRC_B2K[n.b]; if(k)seats[k]=1;});});});});
+ return seats;}
+
+/* the rung for one seat, from the three counts and whether a hyper complex
+   already sits on this seat. Kept apart so the ladder is one function a test
+   can walk rung by rung. structural does not invent a mention: mentions
+   still gates everything, the same floor earlier always had, so a seat
+   never asked about in this entry still asks about nothing. */
+function srcRung(mentions,earlier,reading,structural){
  if(!mentions)return 0;
  if(earlier>=2||(earlier>=1&&mentions>=2))return 10;
- if(earlier>=1)return 9;
+ if(earlier>=1||structural)return 9;
  if(mentions>=3)return 8;
  if(mentions>=2)return 7;
  return Math.max(1,Math.min(SRC_ONCE,Math.round(reading||0)));}
 
 /* HEAR AN ENTRY. text is what the person typed. prior is srcPrior of their
-   own earlier entries, or nothing. Returns every seat heard, heaviest rung
-   first, with the person's own words for each, which is what Source AI says
-   back instead of a definition. */
-function srcHear(text,prior){
+   own earlier entries, or nothing. active is srcHyperSeats of the current
+   reading, or nothing: a seat this entry mentions that the wider reading
+   already holds structurally reaches the same rung an earlier committed
+   entry would have put it at, so Source AI can ask about it now rather than
+   waiting for it to be written down twice. Returns every seat heard,
+   heaviest rung first, with the person's own words for each, which is what
+   Source AI says back instead of a definition. */
+function srcHear(text,prior,active){
  var t=String(text||'');
  var out={unread:true, seats:[], top:null, root:null, asks:false};
  if(!t.trim())return out;
@@ -146,10 +177,11 @@ function srcHear(text,prior){
   var a=s.at+1, b=s.at+String(s.word).length;
   var w=(a<nm.map.length&&b<nm.map.length)?t.slice(nm.map[a],nm.map[b]+1):s.word;
   if(o.words.indexOf(w)<0)o.words.push(w);});
- var P=prior||{};
+ var P=prior||{}, A=active||{};
  out.seats=Object.keys(by).map(function(k){var o=by[k];
   o.earlier=P[k]||0;
-  o.rung=srcRung(o.mentions,o.earlier,o.reading);
+  o.structural=!!A[k];
+  o.rung=srcRung(o.mentions,o.earlier,o.reading,o.structural);
   o.reading=Math.round(o.reading*10)/10;
   return o;})
   .filter(function(o){return o.rung>0;})

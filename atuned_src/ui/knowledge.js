@@ -715,7 +715,13 @@ function poleBar(sh){
    are pulled verbatim from the approved render,
    lookdev/handoff/builds/dualpole_icon_live_five_state_20261024.html. */
 var NODE_STRIKE={
- op:'<circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="1.9" style="fill:currentColor;stroke:none"/>',
+ /* THE CENTRE DOT IS A PATH AND NOT A CIRCLE, same two arcs a circle is built
+    from, drawn the same, so it reads identically. A <circle> has no path and
+    the addr deck's own mark count reads a row by its svg path (the pair of
+    colour and path is what a person tells two rows apart by, functional.js's
+    "every card wears a mark"), so every address sitting at open read as
+    carrying no mark at all: 11 cards, on the running deck. */
+ op:'<circle cx="12" cy="12" r="7"/><path d="M10.1 12A1.9 1.9 0 1 0 13.9 12A1.9 1.9 0 1 0 10.1 12" style="fill:currentColor;stroke:none"/>',
  im:'<circle cx="12" cy="12" r="7"/><path d="M5 12h4"/>',
  mo:'<circle cx="12" cy="12" r="7"/><path d="M5 12h7.5"/>',
  he:'<circle cx="12" cy="12" r="7"/><path d="M5 12h11"/>',

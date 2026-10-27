@@ -75,7 +75,16 @@ function stRender(){
     whole story and then refused it at Commit, which is a control that looks
     like it works until the moment it does not. */
  var show=showOnly();
- var out='<div class="st-flow'+(STV.simple?' simple':'')+'" id="stflow" data-focus="'+STV.focus+'">'
+ /* SIMPLE NEVER COLLAPSES A WORKED EXAMPLE. The write column on an example is
+    one redirect note, never the box, since nothing typed there runs (see the
+    show branch below). Simple mode hides the other two columns to let that
+    column alone set the page's height, which is right when it holds a real
+    box and wrong when it holds one sentence: functional.js caught it as
+    "STORY actually rendered on a phone, box 186", a worked example's row
+    collapsed to the note's own height with nothing left to stretch it. An
+    example is shown in full, the way it always was, and the toggle that
+    makes no sense on it is already hidden beside Talk, both gated on show. */
+ var out='<div class="st-flow'+(STV.simple&&!show?' simple':'')+'" id="stflow" data-focus="'+STV.focus+'">'
   /* ---- the write column: the journal, with Source AI inside it ---- */
   +'<div class="st-colw">'
   +'<div class="st-pan st-jr'+(STV.chat?' st-chat':'')+'" id="stjr">'
@@ -329,6 +338,7 @@ function stRender(){
     the resize observer, the first layout ran at a height of nought and every
     lane sprang in from above the chart on each arrival at the tab. */
  stSize();
+ ST_ACTIVE=typeof srcHyperSeats==='function'?srcHyperSeats(compute()):null;
  stRead(); stSortPaint();
  srcLock(h.querySelector('.st-glow')); srcLock(h.querySelector('#stjr .src-live'));
  var ta=document.getElementById('sttext');
@@ -479,6 +489,15 @@ function stBank(){
    picture and the score came to disagree. The mark still runs back over its
    no and is struck, and the bar is still dashed. */
 var STR={t:null,marks:[],toks:[],heard:null};
+/* WHICH SEATS THE WIDER READING ALREADY SITS ON, read once a render and not
+   once a key. compute() reads the committed profile (S, W), never the live
+   draft, so it cannot change while a person is still typing an entry: only a
+   full render (stRender, on commit, undo, a tab arrival, Talk, the dashboard
+   toggle) needs to ask it again. stRefresh runs on every key and reads this
+   cache rather than calling compute() itself, the same reason the live dot
+   stopped rebuilding on every key, round PW: a forced layout a key is a cost
+   this page already paid once and does not pay twice. */
+var ST_ACTIVE=null;
 function stMarks(t,p){
  if(!p||typeof marksOf!=='function')return [];
  var marks=marksOf(t,p), nm=normMap(t), modAt={};
@@ -506,7 +525,7 @@ function stRead(){
  var t=ST_TEXT, ents=(CURP&&CURP.story&&CURP.story.entries)||[];
  var marks=stMarks(t,ST_PARSED);
  STR={t:t,marks:marks,toks:marks.toks||(t?(t.match(/[A-Za-z']+/g)||[]).map(function(w){return {w:w};}):[]),
-  heard:srcHear(t,srcPrior(ents))};}
+  heard:srcHear(t,srcPrior(ents),ST_ACTIVE)};}
 /* the addresses this entry reaches, or the last committed entry's.
    THE ONES THE WORDS NAMED COME FIRST, and .named says how many of the head of
    the list they are, 17 October. parseStory reaches two kinds of address: the
