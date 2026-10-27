@@ -328,7 +328,14 @@ function compute(){
  W.forEach(n=>{
   /* a closed law at this band lets charge sit deeper. integrity is local. */
   const relief=bandIg(n.b)/10;
-  n.held = n.cf?clamp(S.charge[n.cf]*n.susc*(1-relief*0.42),0,10):0;
+  /* THE NAMED ADDRESS CARRIES MORE THAN ITS SHARE, 26 October. S.addr is
+     engine/sniff.js's applyStoryAddr, additive on top of the fetter spread
+     below it, never in place of it: an address nobody's words ever named
+     reads exactly as it did before this line existed. One the words did
+     name reads at least that much heavier, whatever its own susceptibility
+     would otherwise have given it. */
+  const base = S.charge[n.cf]+(S.addr[n.i]||0);
+  n.held = n.cf?clamp(base*n.susc*(1-relief*0.42),0,10):0;
   /* the coherent opposite installed at the same address. an address with the
      opposite in does not merely read zero, it conducts. */
   n.rep  = n.cf?clamp((S.replace[n.cf]||0)*(0.72+0.28*relief),0,10):0;

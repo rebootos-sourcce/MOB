@@ -2115,7 +2115,7 @@ function avSeatAdd(b){
  var send=!old||old.notbe!==pr.notbe, p=parseStory(pr.notbe), k=p.imprints.length, msg;
  if(send&&k&&S.who===0){
   undoPush('adding a story to your avatar');
-  applyStory(pr.notbe); verpApply(pr.notbe); leanApply(pr.notbe);
+  applyStory(pr.notbe); applyStoryAddr(pr.notbe); verpApply(pr.notbe); leanApply(pr.notbe);
   saveYou();
   CURP.story=CURP.story||{entries:[]};
   /* stamped with the lexicon that read it, 19.B6, the same as the Story's
