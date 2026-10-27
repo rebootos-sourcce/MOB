@@ -3922,6 +3922,20 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    so nothing in them loses state by pressing this. */
 .st-flow.simple .st-colr,.st-flow.simple .st-colx{display:none}
 .st-flow.simple .st-colw{flex:1 1 100%}
+/* SMALL AND CONTAINED TO START, round of 27 October, his words: "right now
+   the journal opens up full screen, I want it to start roughly about 800 by
+   600, and then when I hit the dashboard button it expands and opens up."
+   Simple is the first thing a landing shows (STV.simple defaults true, see
+   the paragraph above), so the box holds to a size that reads as one small
+   instrument rather than the whole page; pressing Dashboard flips STV.simple
+   off and this cap lifts, back to the full width and height the three column
+   layout always had. #story already centers its one child on every width
+   this rule reaches (body.tab-story #story, further down), so the box
+   simply sits in the middle with nothing more needed here. Below 1180 the
+   phone and tablet layout stacks the columns and needs the room it is
+   given, so the override beside that breakpoint's own .st-flow rule lifts
+   the cap back off rather than shrinking a phone screen into 800 by 600. */
+.st-flow.simple{width:800px;max-width:800px;height:600px;max-height:600px}
 .st-pan{display:flex;flex-direction:column;min-width:0;min-height:0;position:relative;
  background:color-mix(in srgb,var(--ink) 3%,transparent);border:1px solid var(--edge);
  border-radius:var(--r-s);padding:14px 16px}
@@ -4411,6 +4425,20 @@ body.punch .src-new{border-color:transparent;background:var(--panel-2)}
 .src-open{font-size:22px;line-height:1.3;color:var(--ink);font-weight:400;margin:4px 0 2px;max-width:44ch;
  transition:font-size var(--t-element) var(--ease-out),color var(--t-element) var(--ease-out)}
 .src-open.quiet{font-size:15px;color:var(--mid)}
+/* LARGE, BEAUTIFUL, FRIENDLY, his own three words, round of 27 October, for
+   the first thing a person sees landing on the journal. One typeface in
+   this file, Inter, so friendly is weight and air rather than a second
+   font: lighter than the body's 400, looser line height, and a touch of
+   negative tracking to keep large letters from reading loose. Still sentence
+   case, still no soft wellness word in the string itself, which is the
+   house voice rule; this is the letterform around words that were already
+   his own. Written .src-ask .src-hero, not .src-hero alone, so it outranks
+   the responsive sheet's own .src-open rule further down at the same single
+   class specificity: equal specificity falls back to source order and that
+   rule sits later in the file, which silently clipped this one at 1180px
+   and under until it was caught here. */
+.src-ask .src-hero{font-size:32px;line-height:1.25;font-weight:300;letter-spacing:-.01em;max-width:30ch}
+@media (max-width:720px){.src-ask .src-hero{font-size:26px}}
 .src-q{font-size:20px;line-height:1.35;color:var(--ink);margin:4px 0 2px;max-width:48ch}
 .src-note{font-size:13px;color:var(--dim);line-height:1.55;margin:3px 0}
 .src-say{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);
@@ -4443,17 +4471,22 @@ body.punch .src-new{border-color:transparent;background:var(--panel-2)}
    margin-left:auto already claims for the pair, so it only needs the gap
    between them. */
 .st-dash{margin-left:6px}
-/* ON A PHONE IT IS ITS MARK, the way the bank and the vault are, and the word
-   stays in the button for a screen reader. Measured with the word: the
-   name, Talk and Record need 330 pixels and the row has 328 at 390 and 298 at
-   360, so Record dropped to a line of its own under the name. Two classes
-   deep, because the phone rule that lets every child of .st-hd shrink to
-   nothing is later in this sheet and squeezed the mark to sixteen pixels.
-   Dashboard's own word gets the same treatment it would have needed next:
-   the mark only, the word kept for a screen reader. */
+/* IT IS ITS MARK NOW AT EVERY WIDTH, the way the bank and the vault are.
+   Dashboard used to keep a printed word beside the icon above the 720px
+   phone cut, which Talk never did, so the two buttons that wear the same
+   pill read as two different rules. Round of 27 October, his words: "the
+   talk button and dashboard in simple buttons need to be more iconic."
+   Dashboard dropped the word everywhere: it was never more than this
+   media query's own job below 720px, and the stdash markup above stopped
+   printing a span at all, so there is nothing left here to hide for it.
+   The word still stays in aria-label and title for a screen reader and
+   for anyone hovering, per the house rule that a symbol never stands
+   without its meaning somewhere beside it. Talk's own span hiding rule
+   stays below untouched: that one still carries the recording dot and
+   the mm:ss clock, neither of which this change touches. */
 @media (max-width:720px){
  .st-hd .st-talk,.st-hd .st-dash{flex:0 0 auto;min-width:var(--tap);justify-content:center;padding-left:0;padding-right:0}
- .st-talk span,.st-dash span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}}
+ .st-talk span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}}
 .st-chat .st-glow{flex:1 1 auto;display:flex;flex-direction:column;min-height:0}
 .st-chat .st-pe{flex:1 1 auto;display:flex;flex-direction:column;min-height:260px}
 .src-th{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;margin:0;padding:2px 4px 8px 0;
@@ -5846,6 +5879,12 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     80 pixels under the first screen. These are the pixels that bought it
     back, and none of them is a tap target. */
  .st-flow{flex-direction:column;height:auto;gap:8px}
+ /* THE 800 BY 600 CAP IS A DESKTOP RULE. Stacked, the box needs whatever
+    width and height the phone or tablet actually gives it, same as every
+    other surface in this breakpoint, so the cap above lifts here rather
+    than squeezing a 390 wide screen into a box built for a much larger
+    one. */
+ .st-flow.simple{width:100%;max-width:100%;height:auto;max-height:none}
  .st-flow>*,.st-colr>*,.st-colw>*{flex:0 0 auto!important}
  .st-colw,.st-colr,.st-colx{gap:8px}
  .st-pan{padding:10px 12px}

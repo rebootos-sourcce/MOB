@@ -151,16 +151,30 @@ function stRender(){
       plus the dashboard button that expands including the imprints and the
       release." One press, one toggle: simple shows the Journal alone,
       pressed shows the three columns this page always had. Wears the same
-      pill as Talk and Record so the row reads as one family of controls. */
+      pill as Talk and Record so the row reads as one family of controls.
+
+      ICON ONLY, ROUND OF 27 OCTOBER, his words: "the talk button and
+      dashboard in simple buttons need to be more iconic." Talk already
+      dropped its printed word at his own earlier request; this had kept
+      "Dashboard" or "Simple" printed beside the icon on anything wider than
+      a phone, which read as two different rules on two buttons that wear
+      the same pill. The word moves to aria-label and title, where it was
+      already carried for a screen reader, and the glyph is redrawn plainer:
+      three panes becomes one open square and one divided square, read as
+      "alone" against "in three", rather than three rectangles that needed
+      the word beside them to say which state was which. */
    +(show?'':'<button class="st-mic st-dash" id="stdash" type="button" '
    +'aria-pressed="'+!STV.simple+'" aria-label="'+(STV.simple?'Dashboard':'Simple')+'" '
    +'title="'+(STV.simple?'Show imprints and release alongside the journal.'
      :'Back to the journal alone.')+'">'
-   +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
-   +'<rect x="3" y="3" width="7" height="18" rx="1.5"/>'
-   +'<rect x="13" y="3" width="8" height="8" rx="1.5"/>'
-   +'<rect x="13" y="14" width="8" height="7" rx="1.5"/></svg>'
-   +'<span>'+(STV.simple?'Dashboard':'Simple')+'</span></button>')
+   +(STV.simple
+    ?'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
+     +'<rect x="3" y="4" width="7" height="16" rx="1.3"/>'
+     +'<rect x="13" y="4" width="8" height="7" rx="1.3"/>'
+     +'<rect x="13" y="14" width="8" height="6" rx="1.3"/></svg>'
+    :'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
+     +'<rect x="4" y="4" width="16" height="16" rx="1.6"/></svg>')
+   +'</button>')
    +'</div>'
   /* SOURCE AI AND THE JOURNAL'S MENU CHANGED PLACES, round LO, his words: "I
      want you to swap the main journal menu with the source AI question." The
@@ -864,10 +878,42 @@ var SRC_PASSED=false;
    writing about today?" The round JS wording above is replaced by the one he
    first offered at round GO, at his own request. */
 var SRC_OPEN='What are we talking about today?';
-function srcOpen(){
+/* THE NAME, LIFTED OUT, so the landing text and the Talk greeting below ask
+   the same profile the same way once rather than twice. who.first and
+   nothing else, per the paragraph above: a profile called Custom is not
+   greeted as Custom, and a worked example is not greeted by a case name. */
+function srcFirstName(){
  var w=(typeof CURP!=='undefined'&&CURP&&CURP.who)||{};
- var f=capName(String(w.first||'').trim().split(/\s+/)[0]);
- return (f?'Hello, '+f+'. ':'')+SRC_OPEN;}
+ return capName(String(w.first||'').trim().split(/\s+/)[0]);}
+/* THE NAME LEADS NOW, round of 27 October, his words: "when I land on the
+   journal, the first time I want to see the text welcome, Lance, what are
+   we talking about today." "Hello, Lance." read as a greeting he had
+   already had; leading with the name and a comma reads as a friend
+   starting the sentence with him, the way the rest of this file's own
+   questions already do. No name is still no greeting, the question stands
+   alone, same as before.
+
+   LOWERCASE ONLY HERE, FOUND BY EMMY'S REVIEW. The name leading the
+   sentence makes SRC_OPEN's own capital W wrong mid sentence: "Derek, What
+   are we talking about today?" reads as two sentences stapled together.
+   SRC_OPEN itself stays capitalised, since srcQuestion and srcChatOpen
+   both still need it to open a sentence on its own; only this one
+   concatenation lowercases its first letter, and only when a name actually
+   leads it. */
+function srcOpen(){
+ var f=srcFirstName();
+ return f?f+', '+SRC_OPEN.charAt(0).toLowerCase()+SRC_OPEN.slice(1):SRC_OPEN;}
+/* TALK'S OWN GREETING IS A SEPARATE SENTENCE, not this one. His words: "when
+   I hit the talk button, I'm greeted by the software, who repeats the
+   command, welcome Lance, what are we talking about today, from there it's
+   a conversation." Landing on the journal and pressing Talk are two
+   different moments: one is the page waiting to be written in, the other is
+   being met by something that just started listening. srcChatCur below
+   calls this only on the first turn of a fresh conversation, never on a
+   repaint of one already under way. */
+function srcChatOpen(){
+ var f=srcFirstName();
+ return (f?'Welcome '+f+'. ':'Welcome. ')+SRC_OPEN;}
 /* SIMPLE, STRAIGHTFORWARD, DEEP. His three words for what the page should
    ask. Each is a physical event a person can answer from memory, the shape
    funnel/questions.js already proved works in this product, and none of them
@@ -1155,8 +1201,13 @@ function srcPaint(){
    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 5h15v10.5H10l-4.5 4v-4h-1z"/><path d="M10 8.6l-1.1 2.6M14.2 8.6l-1.1 2.6"/></svg>'
    +'</button></div>';
  var q=turn.move==='open'||turn.move==='listen'?srcQuestion():ask;
+ /* LARGE AND FRIENDLY, THE FIRST THING ON THE PAGE. His words: "in large
+    beautiful friendly font." src-hero only reaches the landing opener, not
+    the same question once Source AI is listening (below) or the Talk
+    greeting (srcThreadNow), which sit inside a tighter column and a chat
+    bubble where this size would crowd them. */
  if(turn.move==='open')
-  o+='<div class="src-ask">'+srcLand('src-open',q)+acts+'</div>';
+  o+='<div class="src-ask">'+srcLand('src-open src-hero',q)+acts+'</div>';
  else if(turn.move==='ask'){
   o+=srcLand('src-q',ask,'--c:'+seatCol(turn.band))
    +'<div class="src-row"><button type="button" class="btn" id="srcpass">Move on</button>'
@@ -1398,7 +1449,26 @@ var SRC_CHAT=[], SRC_CPRESS=false, SRC_CDRAFT='';
    person pressed for since their last reply stands instead. */
 function srcChatCur(turn,heard,q,ask){
  var top=heard&&heard.top, r={rg:top?top.rung:0, bd:turn.band||(top?top.band:null), mv:turn.move};
- if(turn.move==='open'){r.key='open|'+q; r.q=q;}
+ /* THE GREETING REPLACES THE LANDING QUESTION UNTIL THE PERSON SAYS
+    ANYTHING, NOT ONLY ON ONE CALL. "SRC_CHAT is empty" is not the same
+    question as "has the person replied yet", and the first version of this
+    checked SRC_CHAT.length===0, which is true on the very first call and
+    false on every call after, including one with nothing new to show.
+    Found by Emmy's own repro: Talk's onclick starts speech recognition
+    before it sets STV.chat and repaints, and in a browser with no mic
+    permission or no network that recognizer's own error callback fires an
+    instant later and repaints again on its own. By then this function had
+    already pushed the greeting once, SRC_CHAT.length was 1, and the second
+    call fell through to the plain question, which srcChatNote then swapped
+    in over the greeting it had just shown: the greeting flashed and was
+    gone before anyone could read it, sometimes inside the same frame.
+    The actual question is whether the person has answered yet, which is
+    whatever rows besides Source AI's own are in the thread. None means
+    still at the door, however many times this has repainted saying so. */
+ if(turn.move==='open'){
+  var stillAtDoor=SRC_CHAT.every(function(r){return r.w==='src';});
+  var oq=stillAtDoor?srcChatOpen():q;
+  r.key='open|'+oq; r.q=oq;}
  else if(turn.move==='ask'){r.key='ask|'+turn.seat+'|'+turn.why; r.q=ask;}
  else if(turn.move==='pass'){r.key='pass'; r.q='Cool.';}
  else if(SRC_CPRESS&&!SRC_DNONE){r.key='q|'+q; r.q=q; r.mv='asked';}
