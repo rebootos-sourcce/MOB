@@ -1,0 +1,25 @@
+name: Compass Unified Research Graph V1
+on:
+  push:
+    branches:
+      - 'atuned/compass-foundation-closure-20261026'
+  workflow_dispatch:
+jobs:
+  verify-unified-research-graph:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate canonical-source-preserving 208-node unified research graph and editor syntax
+        run: node docs/data/compass/integration/v3/validate_unified_research_graph_v1.cjs
+      - name: Validate V3 shadow-law research overlay
+        run: node docs/data/compass/integration/v2/validate_shadow_law_layer_evidence_v3.cjs
+      - name: Verify baseline Compass foundation graph
+        run: node docs/data/compass/integration/v1/validate_cross_layer.cjs
+      - name: Verify gameboard source references
+        run: node docs/data/compass/gameboard/v1/validate_gameboard.cjs
