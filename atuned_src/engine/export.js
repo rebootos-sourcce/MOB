@@ -14,6 +14,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* percent */  PCT_KIND:PCT_KIND, PCT_DASH:PCT_DASH, pct:pct, fmtPct:fmtPct, pctMove:pctMove,
   /* source ai */ SRC_ASK:SRC_ASK, SRC_ROOT:SRC_ROOT, SRC_ONCE:SRC_ONCE, SRC_NEG:SRC_NEG,
                  srcNegated:srcNegated, srcPrior:srcPrior, srcRung:srcRung,
+                 srcHyperSeats:srcHyperSeats,
                  srcHear:srcHear, srcHear:srcHear, srcPrior:srcPrior, srcTurn:srcTurn,
                  SRC_DIM_ORDER:SRC_DIM_ORDER, SRC_DIM_CUE:SRC_DIM_CUE, SRC_DO:SRC_DO,
                  srcDims:srcDims, srcNext:srcNext,
