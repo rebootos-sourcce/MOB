@@ -1509,8 +1509,25 @@ function renderGates(){
  } else {
   g.innerHTML='<p class="ad-p" style="margin-top:10px">Nothing read yet. Write a line in the Journal and the gates fill in from it.</p>';
  }}
+/* THE SUPEREGO'S SIX AMPLIFIERS, READ STRAIGHT OFF NODES. No new arithmetic:
+   AMPLIFIER (engine/data/registers.js) names which address canon treats as
+   an amplifier and under which name; the held and installed charge at that
+   address is the same n.sq/n.pole every other address already carries. The
+   book's own name for the first four, in its own order, labels them
+   separately from canon's extra two so the difference is visible rather
+   than silently merged. */
+var AMP_BOOK=['Justification','Entitlement','Perfectionism','Obsession'];
+function renderAmplifiers(){
+ var h=document.getElementById('amprows'); if(!h||typeof AMPLIFIER==='undefined')return;
+ h.innerHTML=AMPLIFIER.map(function(a){
+  var n=NODES.filter(function(x){return x.i===a.i;})[0]; if(!n)return '';
+  var inBook=AMP_BOOK.indexOf(a.nm)>=0;
+  return '<button type="button" class="ad-r" data-addr="'+n.i+'" title="Open '+esc(a.nm)+'">'+crbNode(n,'sm')
+   +'<span>'+esc(a.nm)+(inBook?'':' <i class="amp-extra" title="Canon only, not in the book’s four">+</i>')+'</span>'
+   +'<em>'+esc(n.b)+'</em></button>';
+ }).join('');}
  wireKbJump();
- renderAcc(r); renderSpirit(); renderRootSum(); renderPol2(r); syncMx(); renderGates();
+ renderAcc(r); renderSpirit(); renderRootSum(); renderPol2(r); syncMx(); renderGates(); renderAmplifiers();
  /* the trace graph's block in the Field's side column, ui/loopread.js */
  if(typeof loopPaint==='function')loopPaint(r);
  /* the dock's circles move into their values rather than snapping, and only

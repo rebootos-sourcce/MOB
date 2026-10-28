@@ -3076,3 +3076,13 @@ His words, settled in conversation: "Narcissism is a subset of psychopathy and M
 - **The dark read now lights a tied step only when the chain holds it.** It used to light Psychopathy for anybody dark under expression 11. The referral to a licensed clinician is unchanged and still follows depth alone, because it is a safety rule and not a label.
 - **What it changed on the roster:** one reading out of sixteen. Tomas is dark, carries Grandiosity and no Predatory, and was shown Psychopathy; he is now shown Machiavellianism. Every number on every profile is unchanged.
 - **Open, and his:** whether a heavy hyper complex may carry a marginal one past the gate. The mean lets a Grandiosity of 8.7 carry a Predatory of 5.5. The generic super complex does the same today, so a floor for each part would move both rules, and that call is his. Sociopathy's behaviour, practice and counterpart are unwritten on purpose: they are `null` in the record rather than invented.
+
+## The superego's amplifier count, book against canon, 28 October
+
+His words: "we need the superego complex outside of that," given the complex to super-complex chain the Field already draws, and "look for superego in the mechanics of being, it's in there," pointing at his own book.
+
+The book (`/home/user/mob-manuscript`) names four: "Superego, Four Amplifiers: Justification, entitlement, perfectionism, obsession. The layer that takes the ego's nine patterns and builds defense architecture around them. The superego is why insight doesn't change behavior, it provides reasons why the pattern is correct, necessary, or justified." Stack position 9, between Ego at 8 and Conceptual Koshas at 10.
+
+canon.json's own register, already carried in this codebase as `AMPLIFIER` (`engine/data/registers.js`), names six: Entitlement, Obsession, Judgment, Perfectionism, Comparison, Justification. Each is a real address already computed (`n.sq`, `n.pole`, the same charge every other address carries), confirmed directly, not assumed. The book's four and canon's six overlap on four names and canon adds two the book does not name, Judgment and Comparison.
+
+This is a real difference between the two sources, not a typo in either, and it is not resolved here. Both are shown together on the Field's new Superego section: all six real addresses, with the two canon carries beyond the book's four marked apart rather than silently merged into one list. Which count is the real one, and whether Judgment and Comparison belong in the four or are a separate thing, is his call.
