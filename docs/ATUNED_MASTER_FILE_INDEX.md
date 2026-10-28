@@ -127,7 +127,7 @@
 - Previously recorded V9 Git scope of **201/201 branch HEAD trees**, 5 tags, 27 `v341` keyword commits remains a prior audit, not repeated in this cycle.
 
 ## 6. Index verification
-Run `node docs/data/compass/integration/v14/validate_v14_file_index.cjs` in a local working-branch checkout. The research GitHub Actions workflow also runs this validator on subsequent commits. It checks locator uniqueness, count, existing working-tree source blob SHA-1s and the first-read pointer; **not** original-v341 recovery, semantic authority, cross-repository historical contents or browser E2E. The historical source pointer is exempted from the pinned-base hash comparison because it was intentionally updated to link to this index.
+Run `node docs/data/compass/integration/v14/validate_v14_file_index.cjs` in a local working-branch checkout. The research GitHub Actions workflow also runs this validator on subsequent commits. It checks locator uniqueness, count, existing working-tree source blob SHA-1s and the first-read pointer; **not** original-v341 recovery, semantic authority, cross-repository historical contents or browser E2E. The source index pointer and this workflow were changed after the pinned-base snapshot; the manifest's `postIndexChanges` pins and hash-checks their exact current Git blobs. They are not silently exempt.
 
 ## 7. Locator refresh contract (mandatory every future handshake)
 - **Never re-search already located paths without evidence of changed refs**. Read this index, use manifest `repository + ref + path + blobSha`, fetch the exact file needed.
