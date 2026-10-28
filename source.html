@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v683 d1c49fa9 2026-10-27 23:00"><head><meta charset="utf-8">
+<html lang="en" data-build="v685 7061828c 2026-10-28 00:58"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -15947,9 +15947,23 @@ var PCT_KIND={
  /* compute.js:390 */
  integrity: {lo:0, hi:10, src:'engine/compute.js', find:'- JQ*0.42,0,10);',
              say:'integrity, the laws lifted by the poles and pulled down by overshoot'},
- /* compute.js:391 */
- intention: {lo:0, hi:10, src:'engine/compute.js', find:'- JQ*0.30,0,10);',
-             say:'intention, the same laws read seat by seat'},
+ /* compute.js:391. RENAMED FROM intention, 28 October: the word intention is
+    the ruled reading below now, what a person said against what they did,
+    and this kept it as well, which is the exact defect one word per concept
+    exists to stop. This is a law mean read seat by seat, nothing a person
+    committed to or carried out. */
+ lawseat:   {lo:0, hi:10, src:'engine/compute.js', find:'- JQ*0.30,0,10);',
+             say:'the same laws read seat by seat, up the body'},
+ /* ladder.js, intentionRead. Ruled 25 September, "you either did the thing
+    you said you were gonna do or you didn't", said against done over the
+    last seven days, no charge read into it. Wired in 28 October: the
+    function existed, tested, and had never been put on a screen. Profile
+    dependent, so it is not in tests/engine.js's roster scan the way a pure
+    compute() figure is, the same exemption accuracy already carries; its
+    own coverage is tests/engine.js's and tests/daily.js's intentionRead
+    checks, and the fmtPct example below. */
+ intention: {lo:0, hi:100, src:'engine/ladder.js', find:'pct:said?100*did/said:null',
+             say:'what a person said they would do against what they did, the last seven days'},
  /* intake.js:55, the widest gap between a law's three answers, each 0 to 10
     at the boundary (schema.js:1069) */
  spread:    {lo:0, hi:10, src:'engine/intake.js', find:'var spread=Math.max.apply(null,v)-Math.min.apply(null,v);',
@@ -35407,7 +35421,7 @@ const QICON_D={
     shoot: the thing that grows back when the weight comes off. */
  vitality:'M12 21v-8M12 13c0-3.4 2.4-6 5.6-6.4C17.2 10 15 12.6 12 13'
    +'M12 13c0-2.8-2-5-4.7-5.4C7.7 10.4 9.6 12.4 12 13M9 21h6',
- /* AWARENESS. Intention read against distortion. An aperture, because
+ /* AWARENESS. Law reach read against distortion. An aperture, because
     awareness in this product is the width of what gets through, and the eye
     is already spoken for by perception. */
  awareness:'M12 3.5a8.5 8.5 0 110 17 8.5 8.5 0 010-17M12 3.5L17.8 9.3'
@@ -49963,7 +49977,14 @@ function stLawPaint(){
   else o+=w.top.map(stLawRow).join('');});
  var g=STLW.gate;
  if(g&&g.intentional){
-  o+=stAnaHead('Intention','your last entry');
+  /* RENAMED FROM INTENTION, 28 October. This heading named the six gates'
+     avoidance cascade (engine/sniff.js sniffGates, engine/verp.js VERP)
+     "Intention" before the ruled Intention, said against done, had a
+     screen of its own. Two different readings sharing one word, the exact
+     defect one word per concept exists to stop. This stays named for what
+     it is: right action read from this entry's own words. The real
+     Intention is on the Instruments row (ui/ui.js). */
+  o+=stAnaHead('Right action','your last entry');
   /* NEVER THE AVOIDANCE NUMBER ALONE, the spec's own rule: it reads as a
      character flaw without the two readings it was built from beside it. */
   o+='<p style="margin:6px 0 2px">Avoidance reads <b>'+g.intentional.avoidance+' per cent</b> in your last entry, built '
@@ -67883,13 +67904,22 @@ function runQDrill(q){
 
 /* THE THREE AXES. energy read on three independent lines, each a pure
    function of quantities already in the reading. Vitality is what is left
-   after apathy and shadow weight. Awareness is intention against
-   distortion. Will is integrity through a clear segment. */
+   after apathy and shadow weight. Awareness is law reach against
+   distortion. Will is integrity through a clear segment.
+
+   RENAMED FROM INTENTION, 28 October. r.It fed this axis under that name
+   since before intention meant anything else. It still does, the arithmetic
+   is unchanged and untested against the new meaning, so it keeps its own
+   name, law reach, the same law mean read seat by seat that feeds the
+   Instruments row (ui/ui.js). The real intention, what a person said against
+   what they did, is wired in there now and does not enter this axis: that
+   would be new, unfitted arithmetic, the same shape of change already tried
+   and killed once inside CQ itself (engine/compute.js, the model 3 note). */
 function runXYZDrill(){
  var r=compute();
  var A=[['Vitality',r.X,'Solar','what is left after apathy and the shadow weight. Apathy <b>'
    +((S.charge.Apathy||0)>0?(S.charge.Apathy).toFixed(1):'\u2013')+'</b>, shadow weight <b>'+(Math.round(r.DQ)||'\u2013')+'</b>.'],
-  ['Awareness',r.Y,'3rd Eye','intention against distortion. Intention <b>'+r.It.toFixed(1)
+  ['Awareness',r.Y,'3rd Eye','law reach against distortion. Law reach <b>'+r.It.toFixed(1)
    +'</b>, distortion <b>'+r.dist.toFixed(1)+'</b>.'],
   ['Will',r.Z,'Root','integrity carried through a clear segment. Integrity <b>'+r.Ig.toFixed(1)
    +'</b>, mean depth <b>'+r.SQm.toFixed(1)+'</b>.']];
@@ -82210,11 +82240,19 @@ function render(){
     registry bounds the same way (engine/pct.js, nought to ten). Each prints
     fmtPct for its own kind now, and nought or an unread profile is the dash. */
  var ins=function(t,line){return '<span title="'+esc(t)+'">'+line+'</span><br>';};
+ /* INTENTION, WIRED IN, 28 October. Ruled 25 September: what a person said
+    they would do against what they did, no charge read into it
+    (intentionRead, engine/ladder.js). Nothing was said in the last seven
+    days reads as unread, not as zero, the same way an unanswered law does
+    not read as a failing one: a blank week is not a broken promise. */
+ var intent=intentionRead(CURP,Date.now());
  $('rows').innerHTML='<span class="k">Instruments</span><br>'
   +ins('How well you keep the 21 laws, lifted by the opposites installed and pulled down by overshoot.',
     'integrity <b>'+fmtPct('integrity',r.Ig,{unread:r.unread})+'</b>')
+  +ins('What you said you would do against what you did, the last seven days. No charge in it, only follow through.',
+    'intention <b>'+(intent.said?fmtPct('intention',intent.pct):PCT_DASH)+'</b>')
   +ins('The same laws read seat by seat, up the body.',
-    'intention <b>'+fmtPct('intention',r.It,{unread:r.unread})+'</b>')
+    'law reach <b>'+fmtPct('lawseat',r.It,{unread:r.unread})+'</b>')
   /* JOUISSANCE WAS ON EIGHTY ONE SCREENS. A French psychoanalytic term, printed
      as an instrument label to a person who has never heard it, with no gloss
      anywhere in the product. One word per concept, and the word has to say
@@ -82651,5 +82689,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005448563"></div>
+<div id="eof" hidden data-len="005451329"></div>
 </body></html>
