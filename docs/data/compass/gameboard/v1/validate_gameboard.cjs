@@ -3,11 +3,19 @@
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const base=__dirname,load=f=>JSON.parse(fs.readFileSync(path.join(base,f),'utf8'));
 const g=load('GAMEBOARD_MAP_V1.json'),p=load('PUBLIC_GAMEBOARD_V1.json'),tpl=load('GAME_LEVEL_TEMPLATE_V1.json');
+/* Fixed content instances are deliberately null: the shipped engine routes scenes
+   through relPick / ritStartPlan by current user's imprints and pacing.
+   See v2 dynamic source binding audit; this test only checks the static scene schema. */
+const joined=load('../v2/GAMEBOARD_EXISTING_RELEASE_RITUAL_BINDINGS_V2.json');
+const byBinding=new Map(joined.sceneBindings.map(x=>[x.sceneId,x]));
+assert.equal(byBinding.size,26);
 assert.equal(g.nodes.length,26);assert.equal(g.edges.length,25);assert.equal(p.levels.length,26);
 const nodeIds=new Set(),byId=new Map();const realms={INFERNO:0,PURGATORIO:0,PARADISO:0};
 for(const n of g.nodes){
  assert(!nodeIds.has(n.id),'duplicate node '+n.id);nodeIds.add(n.id);byId.set(n.id,n);
- for(const key of tpl.required)assert(Object.hasOwn(n,key)&&n[key]!=null,'missing '+key+' on '+n.id);
+ for(const key of tpl.required)assert(Object.hasOwn(n,key)&&(n[key]!=null||['releaseProtocolId','becomingRitualId'].includes(key)),'missing '+key+' on '+n.id);
+ const route=byBinding.get(n.id);
+ assert(route&&route.release.method==='relPick'&&route.becoming.method==='ritStartPlan','missing existing dynamic route on '+n.id);
  assert(n.label.trim().length>0&&n.challenge.trim().length>0&&n.knowledge.trim().length>0);
  assert.equal(n.releaseProtocolId,null);assert.equal(n.becomingRitualId,null);
  assert.equal(n.progression.noMoralityRank,true);assert.equal(n.progression.canRevisit,true);
@@ -20,4 +28,4 @@ assert.equal(g.shadowEncounterLibrary.length,14);assert.equal(g.ascentArchetypeL
 const published=JSON.stringify(p);
 for(const banned of ['Lucifer','Charon','Geryon','Asmodeus','Furies','Phlegyas','Moloch','Apep','Ravana','Kaliya','Druj','Malak','Baal'])assert(!new RegExp('\\b'+banned+'\\b','i').test(published),'figure identity leaked: '+banned);
 for(const x of p.levels)assert(byId.has(x.id)&&x.label===byId.get(x.id).label);
-console.log(JSON.stringify({pass:true,levels:g.nodes.length,realms,navEdges:g.edges.length,shadowEncounters:g.shadowEncounterLibrary.length,ascentArchetypes:g.ascentArchetypeLibrary.length},null,2));
+console.log(JSON.stringify({pass:true,levels:g.nodes.length,realms,navEdges:g.edges.length,shadowEncounters:g.shadowEncounterLibrary.length,ascentArchetypes:g.ascentArchetypeLibrary.length,dynamicReleaseRoutes:byBinding.size,dynamicRitualRoutes:byBinding.size,fixedPerUserProtocolInstances:0,productEndToEnd:'NOT_CERTIFIED'},null,2));
