@@ -1,0 +1,2168 @@
+{
+  "schema": "ATUNED_GAMEBOARD_26_FOUR_PASS_SOURCE_RESEARCH_V2",
+  "date": "2026-10-27",
+  "authority": "SOURCE_DERIVED_RESEARCH_NOT_CANON_NOT_RUNTIME",
+  "provenance": {
+    "para": {
+      "path": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+      "blobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041"
+    },
+    "inferno": {
+      "path": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+      "blobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a"
+    },
+    "purg": {
+      "path": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+      "blobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90"
+    },
+    "game": {
+      "path": "docs/data/compass/gameboard/v1/GAMEBOARD_MAP_V1.json",
+      "blobSha": "4c97cb39cba7d93a671e571c756fcb4c4fe74fc1"
+    }
+  },
+  "caveat": "104 distinct source-extracting analytical passes, not 104 independent historical or empirical studies. Original gameboard unchanged. No automatic interpretation or classification of real people.",
+  "audit": {
+    "records": 26,
+    "analyses": 104,
+    "realms": {
+      "INFERNO": 9,
+      "PURGATORIO": 7,
+      "PARADISO": 10
+    },
+    "exactSourceReferences": true,
+    "sourcePassesFour": true,
+    "unique": 26,
+    "automaticScoringEdges": 0,
+    "unsupportedFixedIDs": 0
+  },
+  "records": [
+    {
+      "id": "game:inferno:L01",
+      "kind": "gameboard_source_research_record",
+      "realm": "INFERNO",
+      "label": "Nonengagement",
+      "sourceRecordId": "inferno:L01",
+      "sourceFamily": "inferno",
+      "sourceRegistryPath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+      "sourceRegistryBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+      "challenge": "Repeatedly dismisses relevant evidence or withdraws from inquiry without evaluation.",
+      "knowledge": "Inferno IV / Limbo. Literary condition is not moralized behavior; candidate is ATUNED interpretive hypothesis.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Ask what evidence was considered, what was safely available, and whether the person wants to test an alternative. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "sourceStatus": "INFERNO_ARCHIVED_RESEARCH_CANDIDATE",
+      "relatedCrosswalks": [],
+      "archetypeResonances": [],
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_NARRATIVE_AND_IDENTITY",
+          "sourceRecordId": "inferno:L01",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            1
+          ],
+          "finding": "Historical/source context: Inferno IV. Source versus model: Literary/narrative source distinct from ATUNED modeled behavior; four archived analytical lenses are not independent experimental studies.. Boundary: Inferno V2 is a noncanonical literary interpretation; Limbo is not a clinical label.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 2,
+          "lens": "TRIGGER_MOVEMENT_AND_TESTABLE_OBSERVABLES",
+          "sourceRecordId": "inferno:L01",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            2
+          ],
+          "finding": "Scene challenge: Repeatedly dismisses relevant evidence or withdraws from inquiry without evaluation.. Candidate movement: A perceived threat to autonomy, emotional avoidance, ambiguous information, or ambivalence might interrupt engagement; relief from disengaging can reinforce it; psychologically safe choice and fair evidence access may interrupt.. Trigger: A perceived threat to autonomy, emotional avoidance, ambiguous information, or ambivalence might interrupt engagement; relief from disengaging can reinforce it; psychologically safe choice and fair evidence access may interrupt.. Observables: Refuses to consider relevant evidence or disengages repeatedly from a chosen inquiry without evaluating it. Ask whether evidence was understood, accessible, credible, and relevant..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 3,
+          "lens": "CHOICE_BASED_PRACTICE_AND_EVIDENCE",
+          "sourceRecordId": "inferno:L01",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            3
+          ],
+          "finding": "Source candidate practice: Source AI invites an opt-in reflection: Ask what evidence was considered, what was safely available, and whether the person wants to test an alternative. Existing release practices require separate authorized IDs.. Proposed gameboard becoming action: A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.. Desired evidence: A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.. Source behavioral outcome/example: B nothing new can matter; P novelty as danger; T pre-emptively dismisses; F discomfort; H disengages; A avoids testing; S says no without examination; E distances from growth; R stalls mutual inquiry..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 4,
+          "lens": "ALTERNATIVE_EXPLANATION_SEMANTIC_AND_ENGINE_SEAMS",
+          "sourceRecordId": "inferno:L01",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            4
+          ],
+          "finding": "Explicit counterexamples/disconfirmation: Legitimate skepticism, consent, disagreement, discrimination, cultural difference, or simply insufficient evidence falsify automatic resistance. This is an ATUNED allegory, not Dante's moral claim. **Status:** RESEARCH_COMPLETE / UNPROMOTED; **interpretive confidence:** 0.48.. Inferno V2 is a noncanonical literary interpretation; Limbo is not a clinical label. Scene-to-source link is exact, but semantic/person assignment is not approved. The existing conditional release entrypoint is relPick; ritual is ritStartPlan; fixed scene instance IDs remain null.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        }
+      ],
+      "reviewStatus": "FOUR_ANALYTICAL_LENSES_COMPLETE_NOT_INDEPENDENT_CANON",
+      "existingReleaseMethod": "relPick",
+      "existingRitualMethod": "ritStartPlan",
+      "fixedReleaseProtocolId": null,
+      "fixedBecomingRitualId": null,
+      "canon": false,
+      "runtime": false
+    },
+    {
+      "id": "game:inferno:L02",
+      "kind": "gameboard_source_research_record",
+      "realm": "INFERNO",
+      "label": "Entitlement",
+      "sourceRecordId": "inferno:L02",
+      "sourceFamily": "inferno",
+      "sourceRegistryPath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+      "sourceRegistryBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+      "challenge": "Disregards another person's agency in pursuit of being desired or rewarded.",
+      "knowledge": "Inferno V / Lust; distinguish desire from disregarding informed consent.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Name what you wanted, where consent or boundaries mattered, and what a freely chosen alternative would respect. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "sourceStatus": "INFERNO_ARCHIVED_RESEARCH_CANDIDATE",
+      "relatedCrosswalks": [
+        {
+          "levelId": "game:purgatorio:P07",
+          "relationship": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        }
+      ],
+      "archetypeResonances": [],
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_NARRATIVE_AND_IDENTITY",
+          "sourceRecordId": "inferno:L02",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            1
+          ],
+          "finding": "Historical/source context: Inferno V. Source versus model: Literary/narrative source distinct from ATUNED modeled behavior; four archived analytical lenses are not independent experimental studies.. Boundary: Inferno V2 is a noncanonical literary interpretation; Limbo is not a clinical label.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 2,
+          "lens": "TRIGGER_MOVEMENT_AND_TESTABLE_OBSERVABLES",
+          "sourceRecordId": "inferno:L02",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            2
+          ],
+          "finding": "Scene challenge: Disregards another person's agency in pursuit of being desired or rewarded.. Candidate movement: Validation hunger or desire may combine with a belief that the other owes gratification; successful coercion can reinforce it; consent, boundaries, and accountability interrupt.. Trigger: Validation hunger or desire may combine with a belief that the other owes gratification; successful coercion can reinforce it; consent, boundaries, and accountability interrupt.. Observables: Repeated disregard for another's agency in pursuit of reward. Ask whether the person accepted refusal and honored informed consent..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 3,
+          "lens": "CHOICE_BASED_PRACTICE_AND_EVIDENCE",
+          "sourceRecordId": "inferno:L02",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            3
+          ],
+          "finding": "Source candidate practice: Source AI invites an opt-in reflection: Name what you wanted, where consent or boundaries mattered, and what a freely chosen alternative would respect. Existing release practices require separate authorized IDs.. Proposed gameboard becoming action: A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.. Desired evidence: A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.. Source behavioral outcome/example: B wanting confers rights; P other as supply; T rationalizes access; F longing/frustration; H presses limits; A objectifies or coerces; S claims special exception; E performs conquest; R becomes asymmetric..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 4,
+          "lens": "ALTERNATIVE_EXPLANATION_SEMANTIC_AND_ENGINE_SEAMS",
+          "sourceRecordId": "inferno:L02",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            4
+          ],
+          "finding": "Explicit counterexamples/disconfirmation: Many instances of lust involve no entitlement, and many forms of entitlement are nonsexual. Retain original owner's provisional label but do not claim it is Dante's Circle II meaning or a narcissistic disorder. **Status:** RESEARCH_COMPLETE / UNPROMOTED; **confidence:** 0.46.. Inferno V2 is a noncanonical literary interpretation; Limbo is not a clinical label. Scene-to-source link is exact, but semantic/person assignment is not approved. The existing conditional release entrypoint is relPick; ritual is ritStartPlan; fixed scene instance IDs remain null.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        }
+      ],
+      "reviewStatus": "FOUR_ANALYTICAL_LENSES_COMPLETE_NOT_INDEPENDENT_CANON",
+      "existingReleaseMethod": "relPick",
+      "existingRitualMethod": "ritStartPlan",
+      "fixedReleaseProtocolId": null,
+      "fixedBecomingRitualId": null,
+      "canon": false,
+      "runtime": false
+    },
+    {
+      "id": "game:inferno:L03",
+      "kind": "gameboard_source_research_record",
+      "realm": "INFERNO",
+      "label": "Consumption",
+      "sourceRecordId": "inferno:L03",
+      "sourceFamily": "inferno",
+      "sourceRegistryPath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+      "sourceRegistryBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+      "challenge": "Returns repeatedly to more consumption despite meaningful known cost.",
+      "knowledge": "Inferno VI / Gluttony; do not pathologize food, hunger or pleasure.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Notice the repeating reach, the actual need, and a voluntary safer alternative. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "sourceStatus": "INFERNO_ARCHIVED_RESEARCH_CANDIDATE",
+      "relatedCrosswalks": [
+        {
+          "levelId": "game:purgatorio:P06",
+          "relationship": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        }
+      ],
+      "archetypeResonances": [],
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_NARRATIVE_AND_IDENTITY",
+          "sourceRecordId": "inferno:L03",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            1
+          ],
+          "finding": "Historical/source context: Inferno VI. Source versus model: Literary/narrative source distinct from ATUNED modeled behavior; four archived analytical lenses are not independent experimental studies.. Boundary: Inferno V2 is a noncanonical literary interpretation; Limbo is not a clinical label.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 2,
+          "lens": "TRIGGER_MOVEMENT_AND_TESTABLE_OBSERVABLES",
+          "sourceRecordId": "inferno:L03",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            2
+          ],
+          "finding": "Scene challenge: Returns repeatedly to more consumption despite meaningful known cost.. Candidate movement: Reward and avoidance can sustain excess intake after diminishing returns; recognize sufficiency and separate need from urge to interrupt.. Trigger: Reward and avoidance can sustain excess intake after diminishing returns; recognize sufficiency and separate need from urge to interrupt.. Observables: Repeated consumption over meaningful limit with costs, not merely appetite. Ask what indicates insufficiency, recurrence, and consequence..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 3,
+          "lens": "CHOICE_BASED_PRACTICE_AND_EVIDENCE",
+          "sourceRecordId": "inferno:L03",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            3
+          ],
+          "finding": "Source candidate practice: Source AI invites an opt-in reflection: Notice the repeating reach, the actual need, and a voluntary safer alternative. Existing release practices require separate authorized IDs.. Proposed gameboard becoming action: A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.. Desired evidence: A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.. Source behavioral outcome/example: B more will fix it; P cues invite relief; T plans acquisition; F craving; H overindulges; A consumes; S excuses; E performs abundance; R trades commitments for intake..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 4,
+          "lens": "ALTERNATIVE_EXPLANATION_SEMANTIC_AND_ENGINE_SEAMS",
+          "sourceRecordId": "inferno:L03",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            4
+          ],
+          "finding": "Explicit counterexamples/disconfirmation: Food need, medicine, cultural feasting, and poverty complicate an excess judgment. This is a family reused from B01, not a new primitive. **Status:** RESEARCH_COMPLETE / UNPROMOTED; **confidence:** 0.79.. Inferno V2 is a noncanonical literary interpretation; Limbo is not a clinical label. Scene-to-source link is exact, but semantic/person assignment is not approved. The existing conditional release entrypoint is relPick; ritual is ritStartPlan; fixed scene instance IDs remain null.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        }
+      ],
+      "reviewStatus": "FOUR_ANALYTICAL_LENSES_COMPLETE_NOT_INDEPENDENT_CANON",
+      "existingReleaseMethod": "relPick",
+      "existingRitualMethod": "ritStartPlan",
+      "fixedReleaseProtocolId": null,
+      "fixedBecomingRitualId": null,
+      "canon": false,
+      "runtime": false
+    },
+    {
+      "id": "game:inferno:L04",
+      "kind": "gameboard_source_research_record",
+      "realm": "INFERNO",
+      "label": "Resource Fixation",
+      "sourceRecordId": "inferno:L04",
+      "sourceFamily": "inferno",
+      "sourceRegistryPath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+      "sourceRegistryBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+      "challenge": "Repeatedly hoards or recklessly spends resources despite meaningful obligations.",
+      "knowledge": "Inferno VII / Avarice and prodigality; distinguishes overguarding from reckless waste.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Track one concrete decision and ask whom it served and what actual need or obligation it missed. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "sourceStatus": "INFERNO_ARCHIVED_RESEARCH_CANDIDATE",
+      "relatedCrosswalks": [
+        {
+          "levelId": "game:purgatorio:P05",
+          "relationship": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        }
+      ],
+      "archetypeResonances": [],
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_NARRATIVE_AND_IDENTITY",
+          "sourceRecordId": "inferno:L04",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            1
+          ],
+          "finding": "Historical/source context: Inferno VII. Source versus model: Literary/narrative source distinct from ATUNED modeled behavior; four archived analytical lenses are not independent experimental studies.. Boundary: Inferno V2 is a noncanonical literary interpretation; Limbo is not a clinical label.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 2,
+          "lens": "TRIGGER_MOVEMENT_AND_TESTABLE_OBSERVABLES",
+          "sourceRecordId": "inferno:L04",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            2
+          ],
+          "finding": "Scene challenge: Repeatedly hoards or recklessly spends resources despite meaningful obligations.. Candidate movement: Scarcity fear, perceived status, or short-term display may lead to clinging *or* waste; financial reinforcement or fear of loss maintains each differently.. Trigger: Scarcity fear, perceived status, or short-term display may lead to clinging *or* waste; financial reinforcement or fear of loss maintains each differently.. Observables: Resource decisions repeatedly violate meaningful obligations or proportionate stewardship. Ask whether the problem is hoarding, exploitation, reckless waste, or a real unmet need..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 3,
+          "lens": "CHOICE_BASED_PRACTICE_AND_EVIDENCE",
+          "sourceRecordId": "inferno:L04",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            3
+          ],
+          "finding": "Source candidate practice: Source AI invites an opt-in reflection: Track one concrete decision and ask whom it served and what actual need or obligation it missed. Existing release practices require separate authorized IDs.. Proposed gameboard becoming action: A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.. Desired evidence: A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.. Source behavioral outcome/example: B worth is what I own/spend; P resources as safety/status; T counts or splurges; F fear/pride; H guards or wastes; A hoards/spends; S boasts/withholds; E signals wealth; R strains mutual obligations..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 4,
+          "lens": "ALTERNATIVE_EXPLANATION_SEMANTIC_AND_ENGINE_SEAMS",
+          "sourceRecordId": "inferno:L04",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            4
+          ],
+          "finding": "Explicit counterexamples/disconfirmation: The original literary category includes **prodigality**, not just possession. Budgeting, generosity, saving, and legitimate control of one's property are confounds. **Status:** RESEARCH_COMPLETE / UNPROMOTED; **confidence:** 0.70.. Inferno V2 is a noncanonical literary interpretation; Limbo is not a clinical label. Scene-to-source link is exact, but semantic/person assignment is not approved. The existing conditional release entrypoint is relPick; ritual is ritStartPlan; fixed scene instance IDs remain null.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        }
+      ],
+      "reviewStatus": "FOUR_ANALYTICAL_LENSES_COMPLETE_NOT_INDEPENDENT_CANON",
+      "existingReleaseMethod": "relPick",
+      "existingRitualMethod": "ritStartPlan",
+      "fixedReleaseProtocolId": null,
+      "fixedBecomingRitualId": null,
+      "canon": false,
+      "runtime": false
+    },
+    {
+      "id": "game:inferno:L05",
+      "kind": "gameboard_source_research_record",
+      "realm": "INFERNO",
+      "label": "Reactivity",
+      "sourceRecordId": "inferno:L05",
+      "sourceFamily": "inferno",
+      "sourceRegistryPath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+      "sourceRegistryBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+      "challenge": "Escalates or covertly withdraws through anger with harmful consequences.",
+      "knowledge": "Inferno VII–VIII / Wrath and sullenness; legitimate anger does not by itself show vice.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Observe the sequence between trigger, bodily response, reaction and consequence; choose a bounded response. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "sourceStatus": "INFERNO_ARCHIVED_RESEARCH_CANDIDATE",
+      "relatedCrosswalks": [
+        {
+          "levelId": "game:purgatorio:P03",
+          "relationship": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        },
+        {
+          "levelId": "game:purgatorio:P04",
+          "relationship": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        }
+      ],
+      "archetypeResonances": [],
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_NARRATIVE_AND_IDENTITY",
+          "sourceRecordId": "inferno:L05",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            1
+          ],
+          "finding": "Historical/source context: Inferno VII-VIII. Source versus model: Literary/narrative source distinct from ATUNED modeled behavior; four archived analytical lenses are not independent experimental studies.. Boundary: Inferno V2 is a noncanonical literary interpretation; Limbo is not a clinical label.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 2,
+          "lens": "TRIGGER_MOVEMENT_AND_TESTABLE_OBSERVABLES",
+          "sourceRecordId": "inferno:L05",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            2
+          ],
+          "finding": "Scene challenge: Escalates or covertly withdraws through anger with harmful consequences.. Candidate movement: Perceived threat or grievance can provoke rapid escalation or suppressed resentment; short-term relief or submission may reinforce; repair and safe regulation interrupt.. Trigger: Perceived threat or grievance can provoke rapid escalation or suppressed resentment; short-term relief or submission may reinforce; repair and safe regulation interrupt.. Observables: Disproportionate anger-driven action *or* persistent covert withdrawal tied to grievance. Ask what observable consequence and context support the mapping..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 3,
+          "lens": "CHOICE_BASED_PRACTICE_AND_EVIDENCE",
+          "sourceRecordId": "inferno:L05",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            3
+          ],
+          "finding": "Source candidate practice: Source AI invites an opt-in reflection: Observe the sequence between trigger, bodily response, reaction and consequence; choose a bounded response. Existing release practices require separate authorized IDs.. Proposed gameboard becoming action: A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.. Desired evidence: A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.. Source behavioral outcome/example: B provocation demands response; P neutral signal as insult; T rehearses injury; F anger/shame; H flares or shuts down; A retaliates/withholds; S lashes out or goes silent; E becomes armored; R cycles conflict..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 4,
+          "lens": "ALTERNATIVE_EXPLANATION_SEMANTIC_AND_ENGINE_SEAMS",
+          "sourceRecordId": "inferno:L05",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            4
+          ],
+          "finding": "Explicit counterexamples/disconfirmation: Prompt protective action is not harmful reactivity; silence may indicate safety or overwhelm. Distinguish punitive conduct, regulation, and violence. **Status:** RESEARCH_COMPLETE / UNPROMOTED; **confidence:** 0.67.. Inferno V2 is a noncanonical literary interpretation; Limbo is not a clinical label. Scene-to-source link is exact, but semantic/person assignment is not approved. The existing conditional release entrypoint is relPick; ritual is ritStartPlan; fixed scene instance IDs remain null.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        }
+      ],
+      "reviewStatus": "FOUR_ANALYTICAL_LENSES_COMPLETE_NOT_INDEPENDENT_CANON",
+      "existingReleaseMethod": "relPick",
+      "existingRitualMethod": "ritStartPlan",
+      "fixedReleaseProtocolId": null,
+      "fixedBecomingRitualId": null,
+      "canon": false,
+      "runtime": false
+    },
+    {
+      "id": "game:inferno:L06",
+      "kind": "gameboard_source_research_record",
+      "realm": "INFERNO",
+      "label": "Epistemic Rigidity",
+      "sourceRecordId": "inferno:L06",
+      "sourceFamily": "inferno",
+      "sourceRegistryPath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+      "sourceRegistryBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+      "challenge": "Refuses standards of evidence while punishing disagreement or shutting out correction.",
+      "knowledge": "Inferno IX–XI / Heresy; purely interpretive metaphor, never faith/nonbelief as a diagnostic category.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Name a belief and a real counterexample; ask what evidence could fairly revise your position. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "sourceStatus": "INFERNO_ARCHIVED_RESEARCH_CANDIDATE",
+      "relatedCrosswalks": [],
+      "archetypeResonances": [],
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_NARRATIVE_AND_IDENTITY",
+          "sourceRecordId": "inferno:L06",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            1
+          ],
+          "finding": "Historical/source context: Inferno IX-XI. Source versus model: Literary/narrative source distinct from ATUNED modeled behavior; four archived analytical lenses are not independent experimental studies.. Boundary: Inferno V2 is a noncanonical literary interpretation; Limbo is not a clinical label.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 2,
+          "lens": "TRIGGER_MOVEMENT_AND_TESTABLE_OBSERVABLES",
+          "sourceRecordId": "inferno:L06",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            2
+          ],
+          "finding": "Scene challenge: Refuses standards of evidence while punishing disagreement or shutting out correction.. Candidate movement: Identity-protective certainty or group sanctions may defend commitments against challenge; repeated social reinforcement may sustain it; safe inquiry can interrupt.. Trigger: Identity-protective certainty or group sanctions may defend commitments against challenge; repeated social reinforcement may sustain it; safe inquiry can interrupt.. Observables: Selectively refuses standards of evidence one normally applies to oneself, while punishing dissent. Ask whether correction is possible with fair contrary evidence..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 3,
+          "lens": "CHOICE_BASED_PRACTICE_AND_EVIDENCE",
+          "sourceRecordId": "inferno:L06",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            3
+          ],
+          "finding": "Source candidate practice: Source AI invites an opt-in reflection: Name a belief and a real counterexample; ask what evidence could fairly revise your position. Existing release practices require separate authorized IDs.. Proposed gameboard becoming action: A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.. Desired evidence: A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.. Source behavioral outcome/example: B my view cannot be wrong; P other views as threats; T dismisses exceptions; F anxiety/zeal; H filters information; A excludes debate; S shames dissent; E performs orthodoxy; R fractures dialogue..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 4,
+          "lens": "ALTERNATIVE_EXPLANATION_SEMANTIC_AND_ENGINE_SEAMS",
+          "sourceRecordId": "inferno:L06",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            4
+          ],
+          "finding": "Explicit counterexamples/disconfirmation: Heresy is a medieval theological category, not a psychological disorder; principled commitment and minority belief can be rational. The Furies' intimidation is an adjacent guardian function, not equivalent to heresy. **Status:** RESEARCH_COMPLETE / UNPROMOTED; **confidence:** 0.40.. Inferno V2 is a noncanonical literary interpretation; Limbo is not a clinical label. Scene-to-source link is exact, but semantic/person assignment is not approved. The existing conditional release entrypoint is relPick; ritual is ritStartPlan; fixed scene instance IDs remain null.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        }
+      ],
+      "reviewStatus": "FOUR_ANALYTICAL_LENSES_COMPLETE_NOT_INDEPENDENT_CANON",
+      "existingReleaseMethod": "relPick",
+      "existingRitualMethod": "ritStartPlan",
+      "fixedReleaseProtocolId": null,
+      "fixedBecomingRitualId": null,
+      "canon": false,
+      "runtime": false
+    },
+    {
+      "id": "game:inferno:L07",
+      "kind": "gameboard_source_research_record",
+      "realm": "INFERNO",
+      "label": "Harmful Force",
+      "sourceRecordId": "inferno:L07",
+      "sourceFamily": "inferno",
+      "sourceRegistryPath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+      "sourceRegistryBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+      "challenge": "Uses threat, destruction, coercion or injury beyond proportional protection.",
+      "knowledge": "Inferno XII–XVII / Violence; no invitation to revisit unsafe encounters.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Describe the concrete harmful action and immediate safety considerations; choose non-harming boundaries. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "sourceStatus": "INFERNO_ARCHIVED_RESEARCH_CANDIDATE",
+      "relatedCrosswalks": [],
+      "archetypeResonances": [],
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_NARRATIVE_AND_IDENTITY",
+          "sourceRecordId": "inferno:L07",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            1
+          ],
+          "finding": "Historical/source context: Inferno XII-XVII. Source versus model: Literary/narrative source distinct from ATUNED modeled behavior; four archived analytical lenses are not independent experimental studies.. Boundary: Inferno V2 is a noncanonical literary interpretation; Limbo is not a clinical label.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 2,
+          "lens": "TRIGGER_MOVEMENT_AND_TESTABLE_OBSERVABLES",
+          "sourceRecordId": "inferno:L07",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            2
+          ],
+          "finding": "Scene challenge: Uses threat, destruction, coercion or injury beyond proportional protection.. Candidate movement: Punishment, domination, threat defense, or ideological justification may generate force; fear or gain can reinforce it; de-escalation and accountability interrupt.. Trigger: Punishment, domination, threat defense, or ideological justification may generate force; fear or gain can reinforce it; de-escalation and accountability interrupt.. Observables: Threat, injury, coercion, or destruction beyond justifiable protective action. Ask who was harmed, how, and under what immediate constraints..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 3,
+          "lens": "CHOICE_BASED_PRACTICE_AND_EVIDENCE",
+          "sourceRecordId": "inferno:L07",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            3
+          ],
+          "finding": "Source candidate practice: Source AI invites an opt-in reflection: Describe the concrete harmful action and immediate safety considerations; choose non-harming boundaries. Existing release practices require separate authorized IDs.. Proposed gameboard becoming action: A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.. Desired evidence: A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.. Source behavioral outcome/example: B harm is permissible; P other as target; T plans force; F fury/fear; H threatens; A damages; S intimidates; E displays power; R induces unsafety..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 4,
+          "lens": "ALTERNATIVE_EXPLANATION_SEMANTIC_AND_ENGINE_SEAMS",
+          "sourceRecordId": "inferno:L07",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            4
+          ],
+          "finding": "Explicit counterexamples/disconfirmation: The forest of suicides is a literary moral framing, not proof that modern suicidal distress reflects a blameworthy behavior. Do not equate self-harm, trauma, despair, and outward violence. **Status:** RESEARCH_COMPLETE / UNPROMOTED; **confidence:** 0.79.. Inferno V2 is a noncanonical literary interpretation; Limbo is not a clinical label. Scene-to-source link is exact, but semantic/person assignment is not approved. The existing conditional release entrypoint is relPick; ritual is ritStartPlan; fixed scene instance IDs remain null.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        }
+      ],
+      "reviewStatus": "FOUR_ANALYTICAL_LENSES_COMPLETE_NOT_INDEPENDENT_CANON",
+      "existingReleaseMethod": "relPick",
+      "existingRitualMethod": "ritStartPlan",
+      "fixedReleaseProtocolId": null,
+      "fixedBecomingRitualId": null,
+      "canon": false,
+      "runtime": false
+    },
+    {
+      "id": "game:inferno:L08",
+      "kind": "gameboard_source_research_record",
+      "realm": "INFERNO",
+      "label": "Fraud",
+      "sourceRecordId": "inferno:L08",
+      "sourceFamily": "inferno",
+      "sourceRegistryPath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+      "sourceRegistryBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+      "challenge": "Knowingly presents a deceptive claim that affects another person's choices.",
+      "knowledge": "Inferno XVIII–XXX / Fraud / Malebolge; deliberate deception is essential.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Name the representation, hidden relevant fact, reliance and harm; choose truthful repair only if safe. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "sourceStatus": "INFERNO_ARCHIVED_RESEARCH_CANDIDATE",
+      "relatedCrosswalks": [
+        {
+          "levelId": "game:purgatorio:P02",
+          "relationship": "maps_to",
+          "status": "BEHAVIORAL_CROSSWALK"
+        }
+      ],
+      "archetypeResonances": [],
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_NARRATIVE_AND_IDENTITY",
+          "sourceRecordId": "inferno:L08",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            1
+          ],
+          "finding": "Historical/source context: Inferno XVIII-XXX. Source versus model: Literary/narrative source distinct from ATUNED modeled behavior; four archived analytical lenses are not independent experimental studies.. Boundary: Inferno V2 is a noncanonical literary interpretation; Limbo is not a clinical label.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 2,
+          "lens": "TRIGGER_MOVEMENT_AND_TESTABLE_OBSERVABLES",
+          "sourceRecordId": "inferno:L08",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            2
+          ],
+          "finding": "Scene challenge: Knowingly presents a deceptive claim that affects another person's choices.. Candidate movement: Gain through inducing material falsehoods may be reinforced by successful manipulation; detection and truthful accountability interrupt.. Trigger: Gain through inducing material falsehoods may be reinforced by successful manipulation; detection and truthful accountability interrupt.. Observables: Verified deliberate deception that influences another's decisions; ask what false belief was induced, what evidence supports knowledge, and what reliance followed..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 3,
+          "lens": "CHOICE_BASED_PRACTICE_AND_EVIDENCE",
+          "sourceRecordId": "inferno:L08",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            3
+          ],
+          "finding": "Source candidate practice: Source AI invites an opt-in reflection: Name the representation, hidden relevant fact, reliance and harm; choose truthful repair only if safe. Existing release practices require separate authorized IDs.. Proposed gameboard becoming action: A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.. Desired evidence: A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.. Source behavioral outcome/example: B manipulation wins; P trust as leverage; T scripts misdirection; F anticipation; H obscures; A exploits; S falsifies; E performs credibility; R damages autonomy..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 4,
+          "lens": "ALTERNATIVE_EXPLANATION_SEMANTIC_AND_ENGINE_SEAMS",
+          "sourceRecordId": "inferno:L08",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            4
+          ],
+          "finding": "Explicit counterexamples/disconfirmation: Ten bolge cannot be flattened into one exact mechanism. Malacoda in Bolgia V adds an instructive deception case but is not one of the nine circle guardians. **Status:** RESEARCH_COMPLETE / UNPROMOTED; **confidence:** 0.80.. Inferno V2 is a noncanonical literary interpretation; Limbo is not a clinical label. Scene-to-source link is exact, but semantic/person assignment is not approved. The existing conditional release entrypoint is relPick; ritual is ritStartPlan; fixed scene instance IDs remain null.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        }
+      ],
+      "reviewStatus": "FOUR_ANALYTICAL_LENSES_COMPLETE_NOT_INDEPENDENT_CANON",
+      "existingReleaseMethod": "relPick",
+      "existingRitualMethod": "ritStartPlan",
+      "fixedReleaseProtocolId": null,
+      "fixedBecomingRitualId": null,
+      "canon": false,
+      "runtime": false
+    },
+    {
+      "id": "game:inferno:L09",
+      "kind": "gameboard_source_research_record",
+      "realm": "INFERNO",
+      "label": "Treachery",
+      "sourceRecordId": "inferno:L09",
+      "sourceFamily": "inferno",
+      "sourceRegistryPath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+      "sourceRegistryBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+      "challenge": "Violates a trusted relationship or duty intentionally.",
+      "knowledge": "Inferno XXXII–XXXIV / Treachery; stasis is narrative result, not behavior.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Identify the duty of trust and action that broke it, then choose accountability without self-abuse. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "sourceStatus": "INFERNO_ARCHIVED_RESEARCH_CANDIDATE",
+      "relatedCrosswalks": [],
+      "archetypeResonances": [],
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_NARRATIVE_AND_IDENTITY",
+          "sourceRecordId": "inferno:L09",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            1
+          ],
+          "finding": "Historical/source context: Inferno XXXII-XXXIV. Source versus model: Literary/narrative source distinct from ATUNED modeled behavior; four archived analytical lenses are not independent experimental studies.. Boundary: Inferno V2 is a noncanonical literary interpretation; Limbo is not a clinical label.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 2,
+          "lens": "TRIGGER_MOVEMENT_AND_TESTABLE_OBSERVABLES",
+          "sourceRecordId": "inferno:L09",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            2
+          ],
+          "finding": "Scene challenge: Violates a trusted relationship or duty intentionally.. Candidate movement: Breach of special duty may be reinforced by gain or retaliation; entrenched concealment can block repair; ownership and accountability may reopen choice.. Trigger: Breach of special duty may be reinforced by gain or retaliation; entrenched concealment can block repair; ownership and accountability may reopen choice.. Observables: Deliberate violation of entrusted relation is observable; immobilization of the Lucifer image is a separate narrative fact, not a behavior. Ask which particular trust duty was betrayed..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 3,
+          "lens": "CHOICE_BASED_PRACTICE_AND_EVIDENCE",
+          "sourceRecordId": "inferno:L09",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            3
+          ],
+          "finding": "Source candidate practice: Source AI invites an opt-in reflection: Identify the duty of trust and action that broke it, then choose accountability without self-abuse. Existing release practices require separate authorized IDs.. Proposed gameboard becoming action: A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.. Desired evidence: A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.. Source behavioral outcome/example: B bonds may be sacrificed; P trust as weakness; T justifies betrayal; F resentment/detachment; H conceals; A violates duty; S falsely reassures; E performs allegiance; R severs trust..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 4,
+          "lens": "ALTERNATIVE_EXPLANATION_SEMANTIC_AND_ENGINE_SEAMS",
+          "sourceRecordId": "inferno:L09",
+          "sourcePath": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+          "sourceBlobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a",
+          "sourceEvidencePassRefs": [
+            4
+          ],
+          "finding": "Explicit counterexamples/disconfirmation: `Adversary` is an archetypal organizer, `stasis` is a condition, and `treachery` a moral/behavior family; none is a synonym. A stuck person is not therefore treacherous or evil. **Status:** RESEARCH_COMPLETE / UNPROMOTED; **confidence:** 0.60.. Inferno V2 is a noncanonical literary interpretation; Limbo is not a clinical label. Scene-to-source link is exact, but semantic/person assignment is not approved. The existing conditional release entrypoint is relPick; ritual is ritStartPlan; fixed scene instance IDs remain null.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        }
+      ],
+      "reviewStatus": "FOUR_ANALYTICAL_LENSES_COMPLETE_NOT_INDEPENDENT_CANON",
+      "existingReleaseMethod": "relPick",
+      "existingRitualMethod": "ritStartPlan",
+      "fixedReleaseProtocolId": null,
+      "fixedBecomingRitualId": null,
+      "canon": false,
+      "runtime": false
+    },
+    {
+      "id": "game:purgatorio:P01",
+      "kind": "gameboard_source_research_record",
+      "realm": "PURGATORIO",
+      "label": "Pride → Humility",
+      "sourceRecordId": "purgatorio:P01",
+      "sourceFamily": "purg",
+      "sourceRegistryPath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+      "sourceRegistryBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+      "challenge": "I must be above others to be worthy, safe, or seen.",
+      "knowledge": "TERRACE 1: Pride ↔ Humility DANTE: Purgatorio X–XII. The proud bend beneath stone, while carved examples of humility reverse their former upward self-display. Dante begins the seven-terrace purification here. LIMITING BELIEF: I must be above others to be worthy, safe, or seen.",
+      "releaseCandidate": "Observe the recurring Pride movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+      "becomingCandidate": "Name a correction accurately, credit another person by name, and make one repair without explaining away the impact.",
+      "sourceStatus": "OWNER_APPROVED_BEHAVIORAL_STANDUP",
+      "archetypeResonances": [],
+      "successEvidence": "In an actual status threat, receives feedback, credits another, corrects course, and can repeat this without rank restoration.",
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_NARRATIVE_AND_IDENTITY",
+          "sourceRecordId": "purgatorio:P01",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            1
+          ],
+          "finding": "Historical/source context: The proud bend beneath stone, while carved examples of humility reverse their former upward self-display. Dante begins the seven-terrace purification here. The vice/virtue names form a source frame, not a psychological diagnosis.. Source versus model: Dante terrace and opposing exemplars source-based; modern limiting-belief mechanics are ATUNED design interpretations.. Boundary: A Purgatorio terrace cannot be inferred from CQ score; recovery pace and disability are contextual.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 2,
+          "lens": "TRIGGER_MOVEMENT_AND_TESTABLE_OBSERVABLES",
+          "sourceRecordId": "purgatorio:P01",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            2
+          ],
+          "finding": "Scene challenge: I must be above others to be worthy, safe, or seen.. Candidate movement: EXPAND self-image → CONCEAL fallibility → REPEL correction → HOLD position.. Trigger: Correction, another person receiving credit, losing face, public uncertainty, or comparison to an expert.. Observables: [\"Claims special standing, redirects credit, dismisses criticism, hides mistakes, or insists on being right to preserve rank.\",\"Acknowledges what is true, credits others, asks for correction, admits limits, and holds equal regard without shrinking.\"].",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 3,
+          "lens": "CHOICE_BASED_PRACTICE_AND_EVIDENCE",
+          "sourceRecordId": "purgatorio:P01",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            3
+          ],
+          "finding": "Source candidate practice: Name a correction accurately, credit another person by name, and make one repair without explaining away the impact.. Proposed gameboard becoming action: Name a correction accurately, credit another person by name, and make one repair without explaining away the impact.. Desired evidence: In an actual status threat, receives feedback, credits another, corrects course, and can repeat this without rank restoration.. Source behavioral outcome/example: In an actual status threat, receives feedback, credits another, corrects course, and can repeat this without rank restoration..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 4,
+          "lens": "ALTERNATIVE_EXPLANATION_SEMANTIC_AND_ENGINE_SEAMS",
+          "sourceRecordId": "purgatorio:P01",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            4
+          ],
+          "finding": "Explicit counterexamples/disconfirmation: Confidence, leadership, disagreement, and healthy pride in real achievement are not this pattern; humiliation or self-erasure is not humility.. A Purgatorio terrace cannot be inferred from CQ score; recovery pace and disability are contextual. Scene-to-source link is exact, but semantic/person assignment is not approved. The existing conditional release entrypoint is relPick; ritual is ritStartPlan; fixed scene instance IDs remain null.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        }
+      ],
+      "reviewStatus": "FOUR_ANALYTICAL_LENSES_COMPLETE_NOT_INDEPENDENT_CANON",
+      "existingReleaseMethod": "relPick",
+      "existingRitualMethod": "ritStartPlan",
+      "fixedReleaseProtocolId": null,
+      "fixedBecomingRitualId": null,
+      "canon": false,
+      "runtime": false
+    },
+    {
+      "id": "game:purgatorio:P02",
+      "kind": "gameboard_source_research_record",
+      "realm": "PURGATORIO",
+      "label": "Envy → Charity / Kindness",
+      "sourceRecordId": "purgatorio:P02",
+      "sourceFamily": "purg",
+      "sourceRegistryPath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+      "sourceRegistryBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+      "challenge": "Someone else receiving goodness reduces what is possible for me.",
+      "knowledge": "TERRACE 2: Envy ↔ Charity / Kindness DANTE: Purgatorio XIII–XV. Penitents are seated together with their eyes sewn shut; voices recount acts of selfless love, and Sapia recognizes rejoicing in others’ misfortune. LIMITING BELIEF: Someone else receiving goodness reduces what is possible for me.",
+      "releaseCandidate": "Observe the recurring Envy movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+      "becomingCandidate": "State one real thing you value in the other person, offer non-transactional support when appropriate, then take one step toward your own goal.",
+      "sourceStatus": "OWNER_APPROVED_BEHAVIORAL_STANDUP",
+      "archetypeResonances": [],
+      "successEvidence": "Can witness a peer’s success without punishment, support their success where appropriate, and keep a clear personal path.",
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_NARRATIVE_AND_IDENTITY",
+          "sourceRecordId": "purgatorio:P02",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            1
+          ],
+          "finding": "Historical/source context: Penitents are seated together with their eyes sewn shut; voices recount acts of selfless love, and Sapia recognizes rejoicing in others’ misfortune. The vice/virtue names form a source frame, not a psychological diagnosis.. Source versus model: Dante terrace and opposing exemplars source-based; modern limiting-belief mechanics are ATUNED design interpretations.. Boundary: A Purgatorio terrace cannot be inferred from CQ score; recovery pace and disability are contextual.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 2,
+          "lens": "TRIGGER_MOVEMENT_AND_TESTABLE_OBSERVABLES",
+          "sourceRecordId": "purgatorio:P02",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            2
+          ],
+          "finding": "Scene challenge: Someone else receiving goodness reduces what is possible for me.. Candidate movement: SEEK comparison → CONTRACT possibility → REPEL another’s good → WITHDRAW warmth.. Trigger: A peer succeeds, receives attention, is loved, or gains a resource I wanted.. Observables: [\"Keeps score, discounts achievements, gossips, withdraws goodwill, or gains relief when a rival fails.\",\"Recognizes another person’s good, offers genuine goodwill or help, and acts toward one’s own values without rivalry.\"].",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 3,
+          "lens": "CHOICE_BASED_PRACTICE_AND_EVIDENCE",
+          "sourceRecordId": "purgatorio:P02",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            3
+          ],
+          "finding": "Source candidate practice: State one real thing you value in the other person, offer non-transactional support when appropriate, then take one step toward your own goal.. Proposed gameboard becoming action: State one real thing you value in the other person, offer non-transactional support when appropriate, then take one step toward your own goal.. Desired evidence: Can witness a peer’s success without punishment, support their success where appropriate, and keep a clear personal path.. Source behavioral outcome/example: Can witness a peer’s success without punishment, support their success where appropriate, and keep a clear personal path..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 4,
+          "lens": "ALTERNATIVE_EXPLANATION_SEMANTIC_AND_ENGINE_SEAMS",
+          "sourceRecordId": "purgatorio:P02",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            4
+          ],
+          "finding": "Explicit counterexamples/disconfirmation: Recognizing injustice, seeking fairness, or wanting a similar opportunity is not envy; generosity does not require tolerating exploitation.. A Purgatorio terrace cannot be inferred from CQ score; recovery pace and disability are contextual. Scene-to-source link is exact, but semantic/person assignment is not approved. The existing conditional release entrypoint is relPick; ritual is ritStartPlan; fixed scene instance IDs remain null.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        }
+      ],
+      "reviewStatus": "FOUR_ANALYTICAL_LENSES_COMPLETE_NOT_INDEPENDENT_CANON",
+      "existingReleaseMethod": "relPick",
+      "existingRitualMethod": "ritStartPlan",
+      "fixedReleaseProtocolId": null,
+      "fixedBecomingRitualId": null,
+      "canon": false,
+      "runtime": false
+    },
+    {
+      "id": "game:purgatorio:P03",
+      "kind": "gameboard_source_research_record",
+      "realm": "PURGATORIO",
+      "label": "Wrath → Meekness / Forbearance",
+      "sourceRecordId": "purgatorio:P03",
+      "sourceFamily": "purg",
+      "sourceRegistryPath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+      "sourceRegistryBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+      "challenge": "If I do not attack or punish, I lose power and will be harmed.",
+      "knowledge": "TERRACE 3: Wrath ↔ Meekness / Forbearance DANTE: Purgatorio XV–XVII. The angry walk through blinding smoke and receive visions of measured responses, forgiveness, and peacemaking. LIMITING BELIEF: If I do not attack or punish, I lose power and will be harmed.",
+      "releaseCandidate": "Observe the recurring Wrath movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+      "becomingCandidate": "Pause one breath before replying; describe what happened without motive claims; state a concrete boundary and next action.",
+      "sourceStatus": "OWNER_APPROVED_BEHAVIORAL_STANDUP",
+      "archetypeResonances": [],
+      "successEvidence": "During real provocation, sets limits without humiliation, violence, or prolonged retaliation and repairs harm when needed.",
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_NARRATIVE_AND_IDENTITY",
+          "sourceRecordId": "purgatorio:P03",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            1
+          ],
+          "finding": "Historical/source context: The angry walk through blinding smoke and receive visions of measured responses, forgiveness, and peacemaking. The vice/virtue names form a source frame, not a psychological diagnosis.. Source versus model: Dante terrace and opposing exemplars source-based; modern limiting-belief mechanics are ATUNED design interpretations.. Boundary: A Purgatorio terrace cannot be inferred from CQ score; recovery pace and disability are contextual.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 2,
+          "lens": "TRIGGER_MOVEMENT_AND_TESTABLE_OBSERVABLES",
+          "sourceRecordId": "purgatorio:P03",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            2
+          ],
+          "finding": "Scene challenge: If I do not attack or punish, I lose power and will be harmed.. Candidate movement: CONTRACT threat focus → INITIATE attack → PENETRATE boundary → HOLD grievance.. Trigger: Perceived disrespect, threat, betrayal, obstruction, unfair treatment, or loss of control.. Observables: [\"Escalates voice or force, assigns hostile intent before checking, attacks character, seeks revenge, or goes into resentful silence.\",\"Names the harm and boundary directly, maintains restraint, listens for reality, and chooses proportionate action.\"].",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 3,
+          "lens": "CHOICE_BASED_PRACTICE_AND_EVIDENCE",
+          "sourceRecordId": "purgatorio:P03",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            3
+          ],
+          "finding": "Source candidate practice: Pause one breath before replying; describe what happened without motive claims; state a concrete boundary and next action.. Proposed gameboard becoming action: Pause one breath before replying; describe what happened without motive claims; state a concrete boundary and next action.. Desired evidence: During real provocation, sets limits without humiliation, violence, or prolonged retaliation and repairs harm when needed.. Source behavioral outcome/example: During real provocation, sets limits without humiliation, violence, or prolonged retaliation and repairs harm when needed..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 4,
+          "lens": "ALTERNATIVE_EXPLANATION_SEMANTIC_AND_ENGINE_SEAMS",
+          "sourceRecordId": "purgatorio:P03",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            4
+          ],
+          "finding": "Explicit counterexamples/disconfirmation: Anger is not inherently wrong; self-protection, protest, accountability, and firm refusal can be coherent. Meekness is not passivity.. A Purgatorio terrace cannot be inferred from CQ score; recovery pace and disability are contextual. Scene-to-source link is exact, but semantic/person assignment is not approved. The existing conditional release entrypoint is relPick; ritual is ritStartPlan; fixed scene instance IDs remain null.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        }
+      ],
+      "reviewStatus": "FOUR_ANALYTICAL_LENSES_COMPLETE_NOT_INDEPENDENT_CANON",
+      "existingReleaseMethod": "relPick",
+      "existingRitualMethod": "ritStartPlan",
+      "fixedReleaseProtocolId": null,
+      "fixedBecomingRitualId": null,
+      "canon": false,
+      "runtime": false
+    },
+    {
+      "id": "game:purgatorio:P04",
+      "kind": "gameboard_source_research_record",
+      "realm": "PURGATORIO",
+      "label": "Sloth / Acedia → Zeal / Diligence",
+      "sourceRecordId": "purgatorio:P04",
+      "sourceFamily": "purg",
+      "sourceRegistryPath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+      "sourceRegistryBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+      "challenge": "My effort will not matter, or beginning will expose that I cannot succeed.",
+      "knowledge": "TERRACE 4: Sloth / Acedia ↔ Zeal / Diligence DANTE: Purgatorio XVII–XIX. Virgil locates sloth at the center of the mountain as insufficient love of a good; the penitents run with urgent energy and cite examples of zeal. LIMITING BELIEF: My effort will not matter, or beginning will expose that I cannot succeed.",
+      "releaseCandidate": "Observe the recurring Sloth / Acedia movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+      "becomingCandidate": "Choose one meaningful task smaller than five minutes; begin, record completion, then stop or continue by choice.",
+      "sourceStatus": "OWNER_APPROVED_BEHAVIORAL_STANDUP",
+      "archetypeResonances": [],
+      "successEvidence": "Repeatedly begins chosen, appropriately sized action under uncertainty and uses recovery without self-attack.",
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_NARRATIVE_AND_IDENTITY",
+          "sourceRecordId": "purgatorio:P04",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            1
+          ],
+          "finding": "Historical/source context: Virgil locates sloth at the center of the mountain as insufficient love of a good; the penitents run with urgent energy and cite examples of zeal. The vice/virtue names form a source frame, not a psychological diagnosis.. Source versus model: Dante terrace and opposing exemplars source-based; modern limiting-belief mechanics are ATUNED design interpretations.. Boundary: A Purgatorio terrace cannot be inferred from CQ score; recovery pace and disability are contextual.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 2,
+          "lens": "TRIGGER_MOVEMENT_AND_TESTABLE_OBSERVABLES",
+          "sourceRecordId": "purgatorio:P04",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            2
+          ],
+          "finding": "Scene challenge: My effort will not matter, or beginning will expose that I cannot succeed.. Candidate movement: AVOID difficulty → WITHDRAW initiative → HOLD imagined failure → PRESERVE stuckness.. Trigger: Overwhelm, fear of failure, uncertain payoff, monotony, fatigue, shame, or too-large commitments.. Observables: [\"Repeatedly delays chosen action, escapes into distraction, passively agrees while not starting, or abandons meaningful commitments.\",\"Begins a viable action, stays with a manageable commitment, requests necessary support, and returns after interruption.\"].",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 3,
+          "lens": "CHOICE_BASED_PRACTICE_AND_EVIDENCE",
+          "sourceRecordId": "purgatorio:P04",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            3
+          ],
+          "finding": "Source candidate practice: Choose one meaningful task smaller than five minutes; begin, record completion, then stop or continue by choice.. Proposed gameboard becoming action: Choose one meaningful task smaller than five minutes; begin, record completion, then stop or continue by choice.. Desired evidence: Repeatedly begins chosen, appropriately sized action under uncertainty and uses recovery without self-attack.. Source behavioral outcome/example: Repeatedly begins chosen, appropriately sized action under uncertainty and uses recovery without self-attack..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 4,
+          "lens": "ALTERNATIVE_EXPLANATION_SEMANTIC_AND_ENGINE_SEAMS",
+          "sourceRecordId": "purgatorio:P04",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            4
+          ],
+          "finding": "Explicit counterexamples/disconfirmation: Rest, disability, depression, sleep loss, burnout, survival stress, and strategic waiting must not be called sloth.. A Purgatorio terrace cannot be inferred from CQ score; recovery pace and disability are contextual. Scene-to-source link is exact, but semantic/person assignment is not approved. The existing conditional release entrypoint is relPick; ritual is ritStartPlan; fixed scene instance IDs remain null.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        }
+      ],
+      "reviewStatus": "FOUR_ANALYTICAL_LENSES_COMPLETE_NOT_INDEPENDENT_CANON",
+      "existingReleaseMethod": "relPick",
+      "existingRitualMethod": "ritStartPlan",
+      "fixedReleaseProtocolId": null,
+      "fixedBecomingRitualId": null,
+      "canon": false,
+      "runtime": false
+    },
+    {
+      "id": "game:purgatorio:P05",
+      "kind": "gameboard_source_research_record",
+      "realm": "PURGATORIO",
+      "label": "Avarice / Prodigality → Generosity / Stewardship",
+      "sourceRecordId": "purgatorio:P05",
+      "sourceFamily": "purg",
+      "sourceRegistryPath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+      "sourceRegistryBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+      "challenge": "I am safe and valuable only if I keep more than enough—or spend to prove that I matter.",
+      "knowledge": "TERRACE 5: Avarice / Prodigality ↔ Generosity / Stewardship DANTE: Purgatorio XIX–XXII. Dante places avarice AND wasteful prodigality on the same terrace; the penitents lie face down, and examples praise generosity and honorable use of goods. LIMITING BELIEF: I am safe and valuable only if I keep more than enough—or spend to prove that I matter.",
+      "releaseCandidate": "Observe the recurring Avarice / Prodigality movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+      "becomingCandidate": "Identify one resource choice: fulfill an obligation, release one unnecessary grasp, or practice bounded generosity without debt or resentment.",
+      "sourceStatus": "OWNER_APPROVED_BEHAVIORAL_STANDUP",
+      "archetypeResonances": [],
+      "successEvidence": "Makes sustainable resource decisions under scarcity cues, honors obligations, and gives freely only within real capacity.",
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_NARRATIVE_AND_IDENTITY",
+          "sourceRecordId": "purgatorio:P05",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            1
+          ],
+          "finding": "Historical/source context: Dante places avarice AND wasteful prodigality on the same terrace; the penitents lie face down, and examples praise generosity and honorable use of goods. The vice/virtue names form a source frame, not a psychological diagnosis.. Source versus model: Dante terrace and opposing exemplars source-based; modern limiting-belief mechanics are ATUNED design interpretations.. Boundary: A Purgatorio terrace cannot be inferred from CQ score; recovery pace and disability are contextual.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 2,
+          "lens": "TRIGGER_MOVEMENT_AND_TESTABLE_OBSERVABLES",
+          "sourceRecordId": "purgatorio:P05",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            2
+          ],
+          "finding": "Scene challenge: I am safe and valuable only if I keep more than enough—or spend to prove that I matter.. Candidate movement: ATTACH to resource → HOLD or DISRUPT its flow → CONTRACT safety to possession → REPEL reciprocity.. Trigger: Fear of loss, comparison, insecurity, sudden money, status pressure, or opportunity to control through resources.. Observables: [\"Hoarding beyond needs or spending to secure approval; leverages possession for control; sacrifices trust to acquisition.\",\"Meets responsibilities, budgets realistically, shares without coercion, and uses resources for actual values and relationships.\"].",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 3,
+          "lens": "CHOICE_BASED_PRACTICE_AND_EVIDENCE",
+          "sourceRecordId": "purgatorio:P05",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            3
+          ],
+          "finding": "Source candidate practice: Identify one resource choice: fulfill an obligation, release one unnecessary grasp, or practice bounded generosity without debt or resentment.. Proposed gameboard becoming action: Identify one resource choice: fulfill an obligation, release one unnecessary grasp, or practice bounded generosity without debt or resentment.. Desired evidence: Makes sustainable resource decisions under scarcity cues, honors obligations, and gives freely only within real capacity.. Source behavioral outcome/example: Makes sustainable resource decisions under scarcity cues, honors obligations, and gives freely only within real capacity..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 4,
+          "lens": "ALTERNATIVE_EXPLANATION_SEMANTIC_AND_ENGINE_SEAMS",
+          "sourceRecordId": "purgatorio:P05",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            4
+          ],
+          "finding": "Explicit counterexamples/disconfirmation: Poverty, prudent saving, disability-related needs, ambition, and financial planning are not greed; impulsive overspending is not generosity.. A Purgatorio terrace cannot be inferred from CQ score; recovery pace and disability are contextual. Scene-to-source link is exact, but semantic/person assignment is not approved. The existing conditional release entrypoint is relPick; ritual is ritStartPlan; fixed scene instance IDs remain null.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        }
+      ],
+      "reviewStatus": "FOUR_ANALYTICAL_LENSES_COMPLETE_NOT_INDEPENDENT_CANON",
+      "existingReleaseMethod": "relPick",
+      "existingRitualMethod": "ritStartPlan",
+      "fixedReleaseProtocolId": null,
+      "fixedBecomingRitualId": null,
+      "canon": false,
+      "runtime": false
+    },
+    {
+      "id": "game:purgatorio:P06",
+      "kind": "gameboard_source_research_record",
+      "realm": "PURGATORIO",
+      "label": "Gluttony → Temperance / Sufficiency",
+      "sourceRecordId": "purgatorio:P06",
+      "sourceFamily": "purg",
+      "sourceRegistryPath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+      "sourceRegistryBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+      "challenge": "More consumption will finally fill the discomfort or emptiness I feel.",
+      "knowledge": "TERRACE 6: Gluttony ↔ Temperance / Sufficiency DANTE: Purgatorio XXII–XXIV. The sixth terrace places desired fruit and water out of reach; exemplary stories emphasize temperance and right relation to appetite. LIMITING BELIEF: More consumption will finally fill the discomfort or emptiness I feel.",
+      "releaseCandidate": "Observe the recurring Gluttony movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+      "becomingCandidate": "Before a habitual reach, ask “What do I actually need?”; choose nourishment, rest, connection, pleasure, or a pause deliberately.",
+      "sourceStatus": "OWNER_APPROVED_BEHAVIORAL_STANDUP",
+      "archetypeResonances": [],
+      "successEvidence": "Experiences discomfort or appetite, accurately distinguishes needs, and chooses sufficient behavior without harsh deprivation.",
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_NARRATIVE_AND_IDENTITY",
+          "sourceRecordId": "purgatorio:P06",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            1
+          ],
+          "finding": "Historical/source context: The sixth terrace places desired fruit and water out of reach; exemplary stories emphasize temperance and right relation to appetite. The vice/virtue names form a source frame, not a psychological diagnosis.. Source versus model: Dante terrace and opposing exemplars source-based; modern limiting-belief mechanics are ATUNED design interpretations.. Boundary: A Purgatorio terrace cannot be inferred from CQ score; recovery pace and disability are contextual.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 2,
+          "lens": "TRIGGER_MOVEMENT_AND_TESTABLE_OBSERVABLES",
+          "sourceRecordId": "purgatorio:P06",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            2
+          ],
+          "finding": "Scene challenge: More consumption will finally fill the discomfort or emptiness I feel.. Candidate movement: SEEK relief → APPROACH substitute → HOLD repetition → AVOID underlying feeling.. Trigger: Stress, emptiness, boredom, reward cues, loneliness, uncertainty, or fatigue.. Observables: [\"Repeatedly consumes or seeks stimulation past a chosen useful limit while the underlying need remains unaddressed.\",\"Names the need, enjoys pleasure consciously, recognizes enough, and stops or changes course when appropriate.\"].",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 3,
+          "lens": "CHOICE_BASED_PRACTICE_AND_EVIDENCE",
+          "sourceRecordId": "purgatorio:P06",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            3
+          ],
+          "finding": "Source candidate practice: Before a habitual reach, ask “What do I actually need?”; choose nourishment, rest, connection, pleasure, or a pause deliberately.. Proposed gameboard becoming action: Before a habitual reach, ask “What do I actually need?”; choose nourishment, rest, connection, pleasure, or a pause deliberately.. Desired evidence: Experiences discomfort or appetite, accurately distinguishes needs, and chooses sufficient behavior without harsh deprivation.. Source behavioral outcome/example: Experiences discomfort or appetite, accurately distinguishes needs, and chooses sufficient behavior without harsh deprivation..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 4,
+          "lens": "ALTERNATIVE_EXPLANATION_SEMANTIC_AND_ENGINE_SEAMS",
+          "sourceRecordId": "purgatorio:P06",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            4
+          ],
+          "finding": "Explicit counterexamples/disconfirmation: Hunger, enjoyment, celebration, medical appetite changes, food insecurity, or healthy self-soothing are not automatically gluttony.. A Purgatorio terrace cannot be inferred from CQ score; recovery pace and disability are contextual. Scene-to-source link is exact, but semantic/person assignment is not approved. The existing conditional release entrypoint is relPick; ritual is ritStartPlan; fixed scene instance IDs remain null.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        }
+      ],
+      "reviewStatus": "FOUR_ANALYTICAL_LENSES_COMPLETE_NOT_INDEPENDENT_CANON",
+      "existingReleaseMethod": "relPick",
+      "existingRitualMethod": "ritStartPlan",
+      "fixedReleaseProtocolId": null,
+      "fixedBecomingRitualId": null,
+      "canon": false,
+      "runtime": false
+    },
+    {
+      "id": "game:purgatorio:P07",
+      "kind": "gameboard_source_research_record",
+      "realm": "PURGATORIO",
+      "label": "Lust → Chastity / Respectful Intimacy",
+      "sourceRecordId": "purgatorio:P07",
+      "sourceFamily": "purg",
+      "sourceRegistryPath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+      "sourceRegistryBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+      "challenge": "Being desired, possessing someone, or obtaining pleasure is what makes me worthy or complete.",
+      "knowledge": "TERRACE 7: Lust ↔ Chastity / Respectful Intimacy DANTE: Purgatorio XXV–XXVII. Dante depicts the seventh terrace as purifying desire by fire, with examples of chastity. Historical theology and the poem’s judgments about sexuality are not imported as contemporary behavioral judgments. LIMITING BELIEF: Being desired, possessing someone, or obtaining pleasure is what makes me worthy or complete.",
+      "releaseCandidate": "Observe the recurring Lust movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+      "becomingCandidate": "State what you want and what you can offer honestly; invite a real yes or no; respect the answer without punishment.",
+      "sourceStatus": "OWNER_APPROVED_BEHAVIORAL_STANDUP",
+      "archetypeResonances": [],
+      "successEvidence": "Responds to attraction or rejection with consent, candor, reciprocal care, and preserved autonomy.",
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_NARRATIVE_AND_IDENTITY",
+          "sourceRecordId": "purgatorio:P07",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            1
+          ],
+          "finding": "Historical/source context: Dante depicts the seventh terrace as purifying desire by fire, with examples of chastity. Historical theology and the poem’s judgments about sexuality are not imported as contemporary behavioral judgments. The vice/virtue names form a source frame, not a psychological diagnosis.. Source versus model: Dante terrace and opposing exemplars source-based; modern limiting-belief mechanics are ATUNED design interpretations.. Boundary: A Purgatorio terrace cannot be inferred from CQ score; recovery pace and disability are contextual.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 2,
+          "lens": "TRIGGER_MOVEMENT_AND_TESTABLE_OBSERVABLES",
+          "sourceRecordId": "purgatorio:P07",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            2
+          ],
+          "finding": "Scene challenge: Being desired, possessing someone, or obtaining pleasure is what makes me worthy or complete.. Candidate movement: ATTRACT validation → PENETRATE boundaries → CONCEAL need → AVOID genuine intimacy.. Trigger: Attraction, rejection, boredom, fear of intimacy, insecurity, novelty, or relationship conflict.. Observables: [\"Uses seduction to control, obscures intentions, pressures boundaries, treats people as sources of validation, or pursues repeated novelty despite harm.\",\"Feels desire without coercion, communicates intentions, checks consent, respects refusal, and integrates sexuality with care.\"].",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 3,
+          "lens": "CHOICE_BASED_PRACTICE_AND_EVIDENCE",
+          "sourceRecordId": "purgatorio:P07",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            3
+          ],
+          "finding": "Source candidate practice: State what you want and what you can offer honestly; invite a real yes or no; respect the answer without punishment.. Proposed gameboard becoming action: State what you want and what you can offer honestly; invite a real yes or no; respect the answer without punishment.. Desired evidence: Responds to attraction or rejection with consent, candor, reciprocal care, and preserved autonomy.. Source behavioral outcome/example: Responds to attraction or rejection with consent, candor, reciprocal care, and preserved autonomy..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 4,
+          "lens": "ALTERNATIVE_EXPLANATION_SEMANTIC_AND_ENGINE_SEAMS",
+          "sourceRecordId": "purgatorio:P07",
+          "sourcePath": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+          "sourceBlobSha": "1d60c13449687e32a533ebb94a0aed2683dc7a90",
+          "sourceEvidencePassRefs": [
+            4
+          ],
+          "finding": "Explicit counterexamples/disconfirmation: Consensual sexuality, attraction, sexual orientation, high libido, nontraditional relationships, and abstinence choices are not themselves moral deficits. Chastity here means integrity of desire, not a prescribed sexual norm.. A Purgatorio terrace cannot be inferred from CQ score; recovery pace and disability are contextual. Scene-to-source link is exact, but semantic/person assignment is not approved. The existing conditional release entrypoint is relPick; ritual is ritStartPlan; fixed scene instance IDs remain null.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        }
+      ],
+      "reviewStatus": "FOUR_ANALYTICAL_LENSES_COMPLETE_NOT_INDEPENDENT_CANON",
+      "existingReleaseMethod": "relPick",
+      "existingRitualMethod": "ritStartPlan",
+      "fixedReleaseProtocolId": null,
+      "fixedBecomingRitualId": null,
+      "canon": false,
+      "runtime": false
+    },
+    {
+      "id": "game:paradiso:PD01",
+      "kind": "gameboard_source_research_record",
+      "realm": "PARADISO",
+      "label": "Chosen Commitment",
+      "sourceRecordId": "paradiso:PD01",
+      "sourceFamily": "para",
+      "sourceRegistryPath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+      "sourceRegistryBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+      "challenge": "Staying true to a chosen commitment while acknowledging limits, coercion, and what was beyond one's control.",
+      "knowledge": "Constructive practice at Moon: Staying true to a chosen commitment while acknowledging limits, coercion, and what was beyond one's control.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "Name one freely chosen commitment, the constraint it faces, and one truthful action possible today.",
+      "sourceStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "archetypeResonances": [
+        {
+          "id": "compass-archetype:Innocent",
+          "status": "CANDIDATE_RESONANCE_FROM_2026_REGISTRY"
+        }
+      ],
+      "successEvidence": "A worker reports accurately which obligations they could meet after an emergency, instead of claiming to have delivered what was impossible.",
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_NARRATIVE_AND_IDENTITY",
+          "sourceRecordId": "paradiso:PD01",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            1
+          ],
+          "finding": "Historical/source context: Dante, Paradiso I–V; https://danteworlds.laits.utexas.edu/paradiso/01moon.html. Source versus model: Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante. Boundary: Paradiso capacity is not a ranking or automatically inferred archetype.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 2,
+          "lens": "TRIGGER_MOVEMENT_AND_TESTABLE_OBSERVABLES",
+          "sourceRecordId": "paradiso:PD01",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            2
+          ],
+          "finding": "Scene challenge: Staying true to a chosen commitment while acknowledging limits, coercion, and what was beyond one's control.. Candidate movement: RECEIVE reality → DIFFERENTIATE chosen from imposed duty → PRESERVE honest commitment → RELEASE false self-blame.. Trigger: A promise collides with external coercion, a real safety obligation, or changing capacity.. Observables: A promise is renegotiated promptly when circumstances change; no false fulfillment is claimed; affected people receive clear notice; threats are documented..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 3,
+          "lens": "CHOICE_BASED_PRACTICE_AND_EVIDENCE",
+          "sourceRecordId": "paradiso:PD01",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            3
+          ],
+          "finding": "Source candidate practice: Name one freely chosen commitment, the constraint it faces, and one truthful action possible today.. Proposed gameboard becoming action: Name one freely chosen commitment, the constraint it faces, and one truthful action possible today.. Desired evidence: A worker reports accurately which obligations they could meet after an emergency, instead of claiming to have delivered what was impossible.. Source behavioral outcome/example: A worker reports accurately which obligations they could meet after an emergency, instead of claiming to have delivered what was impossible..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 4,
+          "lens": "ALTERNATIVE_EXPLANATION_SEMANTIC_AND_ENGINE_SEAMS",
+          "sourceRecordId": "paradiso:PD01",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            4
+          ],
+          "finding": "Explicit counterexamples/disconfirmation: Cultural or family pressure can mimic chosen duty. Distinguish choice, safety, contract, disability and consent. | Repeated promises without follow-through or coerced agreement presented as voluntary devotion.. Paradiso capacity is not a ranking or automatically inferred archetype. Scene-to-source link is exact, but semantic/person assignment is not approved. The existing conditional release entrypoint is relPick; ritual is ritStartPlan; fixed scene instance IDs remain null.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        }
+      ],
+      "reviewStatus": "FOUR_ANALYTICAL_LENSES_COMPLETE_NOT_INDEPENDENT_CANON",
+      "existingReleaseMethod": "relPick",
+      "existingRitualMethod": "ritStartPlan",
+      "fixedReleaseProtocolId": null,
+      "fixedBecomingRitualId": null,
+      "canon": false,
+      "runtime": false
+    },
+    {
+      "id": "game:paradiso:PD02",
+      "kind": "gameboard_source_research_record",
+      "realm": "PARADISO",
+      "label": "Humble Contribution",
+      "sourceRecordId": "paradiso:PD02",
+      "sourceFamily": "para",
+      "sourceRegistryPath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+      "sourceRegistryBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+      "challenge": "Doing work that benefits others without making reputation the condition of effort.",
+      "knowledge": "Constructive practice at Mercury: Doing work that benefits others without making reputation the condition of effort.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "Choose one valuable action no one will notice; record its real result and whether visibility was needed.",
+      "sourceStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "archetypeResonances": [],
+      "successEvidence": "A team member documents another person's contribution and completes an unglamorous repair without demanding acknowledgment.",
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_NARRATIVE_AND_IDENTITY",
+          "sourceRecordId": "paradiso:PD02",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            1
+          ],
+          "finding": "Historical/source context: Dante, Paradiso V–VII; https://danteworlds.laits.utexas.edu/paradiso/02mercury.html. Source versus model: Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante. Boundary: Paradiso capacity is not a ranking or automatically inferred archetype.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 2,
+          "lens": "TRIGGER_MOVEMENT_AND_TESTABLE_OBSERVABLES",
+          "sourceRecordId": "paradiso:PD02",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            2
+          ],
+          "finding": "Scene challenge: Doing work that benefits others without making reputation the condition of effort.. Candidate movement: SEEK contribution → EXPRESS useful work → RELEASE audience-dependence → CONNECT results to shared benefit.. Trigger: A useful act will be unseen, or a peer receives public credit.. Observables: Provides a useful service, credits contributors, makes the work auditable and accepts appropriate acknowledgement without chasing an audience..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 3,
+          "lens": "CHOICE_BASED_PRACTICE_AND_EVIDENCE",
+          "sourceRecordId": "paradiso:PD02",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            3
+          ],
+          "finding": "Source candidate practice: Choose one valuable action no one will notice; record its real result and whether visibility was needed.. Proposed gameboard becoming action: Choose one valuable action no one will notice; record its real result and whether visibility was needed.. Desired evidence: A team member documents another person's contribution and completes an unglamorous repair without demanding acknowledgment.. Source behavioral outcome/example: A team member documents another person's contribution and completes an unglamorous repair without demanding acknowledgment..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 4,
+          "lens": "ALTERNATIVE_EXPLANATION_SEMANTIC_AND_ENGINE_SEAMS",
+          "sourceRecordId": "paradiso:PD02",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            4
+          ],
+          "finding": "Explicit counterexamples/disconfirmation: Working professionally for salary, acclaim, promotion or visibility is not automatically selfish; evaluate concrete motive and harm. | Changes priorities solely to gain acclaim; demands visibility before helping; withholds credit from the actual doer.. Paradiso capacity is not a ranking or automatically inferred archetype. Scene-to-source link is exact, but semantic/person assignment is not approved. The existing conditional release entrypoint is relPick; ritual is ritStartPlan; fixed scene instance IDs remain null.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        }
+      ],
+      "reviewStatus": "FOUR_ANALYTICAL_LENSES_COMPLETE_NOT_INDEPENDENT_CANON",
+      "existingReleaseMethod": "relPick",
+      "existingRitualMethod": "ritStartPlan",
+      "fixedReleaseProtocolId": null,
+      "fixedBecomingRitualId": null,
+      "canon": false,
+      "runtime": false
+    },
+    {
+      "id": "game:paradiso:PD03",
+      "kind": "gameboard_source_research_record",
+      "realm": "PARADISO",
+      "label": "Reciprocal Love",
+      "sourceRecordId": "paradiso:PD03",
+      "sourceFamily": "para",
+      "sourceRegistryPath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+      "sourceRegistryBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+      "challenge": "Treating desire as energy for consensual, reciprocal connection without turning a person into possession or proof of worth.",
+      "knowledge": "Constructive practice at Venus: Treating desire as energy for consensual, reciprocal connection without turning a person into possession or proof of worth.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "State a desire without demand, ask what the other person chooses, and honor the answer.",
+      "sourceStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "archetypeResonances": [
+        {
+          "id": "compass-archetype:Lover",
+          "status": "CANDIDATE_RESONANCE_FROM_2026_REGISTRY"
+        }
+      ],
+      "successEvidence": "Someone voices attraction honestly, hears a refusal, respects it, and stays humane and self-respecting.",
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_NARRATIVE_AND_IDENTITY",
+          "sourceRecordId": "paradiso:PD03",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            1
+          ],
+          "finding": "Historical/source context: Dante, Paradiso VIII–IX; https://danteworlds.laits.utexas.edu/paradiso/03venus.html. Source versus model: Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante. Boundary: Paradiso capacity is not a ranking or automatically inferred archetype.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 2,
+          "lens": "TRIGGER_MOVEMENT_AND_TESTABLE_OBSERVABLES",
+          "sourceRecordId": "paradiso:PD03",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            2
+          ],
+          "finding": "Scene challenge: Treating desire as energy for consensual, reciprocal connection without turning a person into possession or proof of worth.. Candidate movement: ATTRACT → CONNECT with consent → RECEIVE the other's perspective → RELEASE ownership.. Trigger: Longing, rejection, infatuation or an opportunity to coerce affection.. Observables: Explicit consent checked, limits respected, welcome given without debt, differences accepted, a refusal followed without retaliation..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 3,
+          "lens": "CHOICE_BASED_PRACTICE_AND_EVIDENCE",
+          "sourceRecordId": "paradiso:PD03",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            3
+          ],
+          "finding": "Source candidate practice: State a desire without demand, ask what the other person chooses, and honor the answer.. Proposed gameboard becoming action: State a desire without demand, ask what the other person chooses, and honor the answer.. Desired evidence: Someone voices attraction honestly, hears a refusal, respects it, and stays humane and self-respecting.. Source behavioral outcome/example: Someone voices attraction honestly, hears a refusal, respects it, and stays humane and self-respecting..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 4,
+          "lens": "ALTERNATIVE_EXPLANATION_SEMANTIC_AND_ENGINE_SEAMS",
+          "sourceRecordId": "paradiso:PD03",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            4
+          ],
+          "finding": "Explicit counterexamples/disconfirmation: Loving intensely, consenting sexuality and disappointment are not by themselves decoherent behavior. | Persists after refusal, extracts intimacy for proof of worth, assigns rigid identity from someone's supposed 'nature'.. Paradiso capacity is not a ranking or automatically inferred archetype. Scene-to-source link is exact, but semantic/person assignment is not approved. The existing conditional release entrypoint is relPick; ritual is ritStartPlan; fixed scene instance IDs remain null.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        }
+      ],
+      "reviewStatus": "FOUR_ANALYTICAL_LENSES_COMPLETE_NOT_INDEPENDENT_CANON",
+      "existingReleaseMethod": "relPick",
+      "existingRitualMethod": "ritStartPlan",
+      "fixedReleaseProtocolId": null,
+      "fixedBecomingRitualId": null,
+      "canon": false,
+      "runtime": false
+    },
+    {
+      "id": "game:paradiso:PD04",
+      "kind": "gameboard_source_research_record",
+      "realm": "PARADISO",
+      "label": "Truthful Inquiry",
+      "sourceRecordId": "paradiso:PD04",
+      "sourceFamily": "para",
+      "sourceRegistryPath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+      "sourceRegistryBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+      "challenge": "Seeking truth through evidence, humility and the capacity to recognize insight in those who disagree.",
+      "knowledge": "Constructive practice at Sun: Seeking truth through evidence, humility and the capacity to recognize insight in those who disagree.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "Name a belief, the strongest counterevidence, and the specific observation that would change your view.",
+      "sourceStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "archetypeResonances": [
+        {
+          "id": "compass-archetype:Sage",
+          "status": "CANDIDATE_RESONANCE_FROM_2026_REGISTRY"
+        }
+      ],
+      "successEvidence": "A researcher updates a cherished hypothesis after testing it and openly credits a different school of thought.",
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_NARRATIVE_AND_IDENTITY",
+          "sourceRecordId": "paradiso:PD04",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            1
+          ],
+          "finding": "Historical/source context: Dante, Paradiso X–XIV; https://danteworlds.laits.utexas.edu/paradiso/04sun.html. Source versus model: Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante. Boundary: Paradiso capacity is not a ranking or automatically inferred archetype.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 2,
+          "lens": "TRIGGER_MOVEMENT_AND_TESTABLE_OBSERVABLES",
+          "sourceRecordId": "paradiso:PD04",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            2
+          ],
+          "finding": "Scene challenge: Seeking truth through evidence, humility and the capacity to recognize insight in those who disagree.. Candidate movement: SEEK understanding → RECEIVE contradiction → DIFFERENTIATE evidence from certainty → CONNECT perspectives.. Trigger: A credible critic contradicts a belief or a rival produces a better explanation.. Observables: Names an actual error, revises a position with evidence, acknowledges an opponent's genuine contribution, publishes corrections..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 3,
+          "lens": "CHOICE_BASED_PRACTICE_AND_EVIDENCE",
+          "sourceRecordId": "paradiso:PD04",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            3
+          ],
+          "finding": "Source candidate practice: Name a belief, the strongest counterevidence, and the specific observation that would change your view.. Proposed gameboard becoming action: Name a belief, the strongest counterevidence, and the specific observation that would change your view.. Desired evidence: A researcher updates a cherished hypothesis after testing it and openly credits a different school of thought.. Source behavioral outcome/example: A researcher updates a cherished hypothesis after testing it and openly credits a different school of thought..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 4,
+          "lens": "ALTERNATIVE_EXPLANATION_SEMANTIC_AND_ENGINE_SEAMS",
+          "sourceRecordId": "paradiso:PD04",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            4
+          ],
+          "finding": "Explicit counterexamples/disconfirmation: Expertise and firm conclusions are consistent with humility when evidence and revision conditions are explicit. | Refuses to answer counterevidence, withholds disconfirming data or claims certainty by authority alone.. Paradiso capacity is not a ranking or automatically inferred archetype. Scene-to-source link is exact, but semantic/person assignment is not approved. The existing conditional release entrypoint is relPick; ritual is ritStartPlan; fixed scene instance IDs remain null.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        }
+      ],
+      "reviewStatus": "FOUR_ANALYTICAL_LENSES_COMPLETE_NOT_INDEPENDENT_CANON",
+      "existingReleaseMethod": "relPick",
+      "existingRitualMethod": "ritStartPlan",
+      "fixedReleaseProtocolId": null,
+      "fixedBecomingRitualId": null,
+      "canon": false,
+      "runtime": false
+    },
+    {
+      "id": "game:paradiso:PD05",
+      "kind": "gameboard_source_research_record",
+      "realm": "PARADISO",
+      "label": "Principled Courage",
+      "sourceRecordId": "paradiso:PD05",
+      "sourceFamily": "para",
+      "sourceRegistryPath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+      "sourceRegistryBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+      "challenge": "Bearing a real cost to uphold a justified principle while using the least harmful effective means.",
+      "knowledge": "Constructive practice at Mars: Bearing a real cost to uphold a justified principle while using the least harmful effective means.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "Identify a difficult protective act, its real risks, and the least harmful way to take it.",
+      "sourceStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "archetypeResonances": [
+        {
+          "id": "compass-archetype:Warrior",
+          "status": "CANDIDATE_RESONANCE_FROM_2026_REGISTRY"
+        }
+      ],
+      "successEvidence": "A colleague challenges retaliation against a vulnerable coworker and accepts personal risk without threatening anyone.",
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_NARRATIVE_AND_IDENTITY",
+          "sourceRecordId": "paradiso:PD05",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            1
+          ],
+          "finding": "Historical/source context: Dante, Paradiso XIV–XVIII; https://danteworlds.laits.utexas.edu/paradiso/05mars.html. Source versus model: Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante. Boundary: Paradiso capacity is not a ranking or automatically inferred archetype.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 2,
+          "lens": "TRIGGER_MOVEMENT_AND_TESTABLE_OBSERVABLES",
+          "sourceRecordId": "paradiso:PD05",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            2
+          ],
+          "finding": "Scene challenge: Bearing a real cost to uphold a justified principle while using the least harmful effective means.. Candidate movement: PROTECT → INITIATE chosen action → HOLD a boundary → RELEASE needless aggression.. Trigger: A principle is costly to defend, or force seems easier than patient courage.. Observables: Names a vulnerable person who needs protection, speaks a hard truth with a plan, avoids unnecessary injury, answers for foreseeable consequences..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 3,
+          "lens": "CHOICE_BASED_PRACTICE_AND_EVIDENCE",
+          "sourceRecordId": "paradiso:PD05",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            3
+          ],
+          "finding": "Source candidate practice: Identify a difficult protective act, its real risks, and the least harmful way to take it.. Proposed gameboard becoming action: Identify a difficult protective act, its real risks, and the least harmful way to take it.. Desired evidence: A colleague challenges retaliation against a vulnerable coworker and accepts personal risk without threatening anyone.. Source behavioral outcome/example: A colleague challenges retaliation against a vulnerable coworker and accepts personal risk without threatening anyone..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 4,
+          "lens": "ALTERNATIVE_EXPLANATION_SEMANTIC_AND_ENGINE_SEAMS",
+          "sourceRecordId": "paradiso:PD05",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            4
+          ],
+          "finding": "Explicit counterexamples/disconfirmation: Self-defense and protecting others are situational; evaluate necessity, proportionality, available nonviolent actions. | Enjoys harming an adversary, escalates under criticism or calls collateral damage courageous by definition.. Paradiso capacity is not a ranking or automatically inferred archetype. Scene-to-source link is exact, but semantic/person assignment is not approved. The existing conditional release entrypoint is relPick; ritual is ritStartPlan; fixed scene instance IDs remain null.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        }
+      ],
+      "reviewStatus": "FOUR_ANALYTICAL_LENSES_COMPLETE_NOT_INDEPENDENT_CANON",
+      "existingReleaseMethod": "relPick",
+      "existingRitualMethod": "ritStartPlan",
+      "fixedReleaseProtocolId": null,
+      "fixedBecomingRitualId": null,
+      "canon": false,
+      "runtime": false
+    },
+    {
+      "id": "game:paradiso:PD06",
+      "kind": "gameboard_source_research_record",
+      "realm": "PARADISO",
+      "label": "Just Leadership",
+      "sourceRecordId": "paradiso:PD06",
+      "sourceFamily": "para",
+      "sourceRegistryPath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+      "sourceRegistryBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+      "challenge": "Applying transparent standards with humility about what is unknown, especially when holding power over others.",
+      "knowledge": "Constructive practice at Jupiter: Applying transparent standards with humility about what is unknown, especially when holding power over others.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "Audit one decision for conflicts, excluded voices, evidence and a fair appeal route.",
+      "sourceStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "archetypeResonances": [
+        {
+          "id": "compass-archetype:Rebel",
+          "status": "CANDIDATE_RESONANCE_FROM_2026_REGISTRY"
+        },
+        {
+          "id": "compass-archetype:Ruler",
+          "status": "CANDIDATE_RESONANCE_FROM_2026_REGISTRY"
+        }
+      ],
+      "successEvidence": "A manager discloses a conflict, hears the affected people, applies known criteria, and explains a reversible decision.",
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_NARRATIVE_AND_IDENTITY",
+          "sourceRecordId": "paradiso:PD06",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            1
+          ],
+          "finding": "Historical/source context: Dante, Paradiso XVIII–XX; https://danteworlds.laits.utexas.edu/paradiso/06jupiter.html. Source versus model: Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante. Boundary: Paradiso capacity is not a ranking or automatically inferred archetype.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 2,
+          "lens": "TRIGGER_MOVEMENT_AND_TESTABLE_OBSERVABLES",
+          "sourceRecordId": "paradiso:PD06",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            2
+          ],
+          "finding": "Scene challenge: Applying transparent standards with humility about what is unknown, especially when holding power over others.. Candidate movement: RECEIVE facts → DIFFERENTIATE interests → ORDER fair procedure → EXPRESS accountable decision.. Trigger: An institution must decide under uncertainty or personal allegiance conflicts with fair process.. Observables: Applies declared standards, records rationale, discloses conflicts, hears impacted parties, permits correction or appeal..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 3,
+          "lens": "CHOICE_BASED_PRACTICE_AND_EVIDENCE",
+          "sourceRecordId": "paradiso:PD06",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            3
+          ],
+          "finding": "Source candidate practice: Audit one decision for conflicts, excluded voices, evidence and a fair appeal route.. Proposed gameboard becoming action: Audit one decision for conflicts, excluded voices, evidence and a fair appeal route.. Desired evidence: A manager discloses a conflict, hears the affected people, applies known criteria, and explains a reversible decision.. Source behavioral outcome/example: A manager discloses a conflict, hears the affected people, applies known criteria, and explains a reversible decision..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 4,
+          "lens": "ALTERNATIVE_EXPLANATION_SEMANTIC_AND_ENGINE_SEAMS",
+          "sourceRecordId": "paradiso:PD06",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            4
+          ],
+          "finding": "Explicit counterexamples/disconfirmation: A procedural step alone does not guarantee a just outcome; consequences and unequal access still matter. | Exempts allies, suppresses dissent, changes the standards after choosing the beneficiary.. Paradiso capacity is not a ranking or automatically inferred archetype. Scene-to-source link is exact, but semantic/person assignment is not approved. The existing conditional release entrypoint is relPick; ritual is ritStartPlan; fixed scene instance IDs remain null.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        }
+      ],
+      "reviewStatus": "FOUR_ANALYTICAL_LENSES_COMPLETE_NOT_INDEPENDENT_CANON",
+      "existingReleaseMethod": "relPick",
+      "existingRitualMethod": "ritStartPlan",
+      "fixedReleaseProtocolId": null,
+      "fixedBecomingRitualId": null,
+      "canon": false,
+      "runtime": false
+    },
+    {
+      "id": "game:paradiso:PD07",
+      "kind": "gameboard_source_research_record",
+      "realm": "PARADISO",
+      "label": "Quiet Presence",
+      "sourceRecordId": "paradiso:PD07",
+      "sourceFamily": "para",
+      "sourceRegistryPath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+      "sourceRegistryBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+      "challenge": "Remaining available to experience without needing constant output, noise, explanation or performance.",
+      "knowledge": "Constructive practice at Saturn: Remaining available to experience without needing constant output, noise, explanation or performance.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "Choose five minutes of quiet; afterward record what was actually observed, not what was hoped for.",
+      "sourceStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "archetypeResonances": [
+        {
+          "id": "compass-archetype:Explorer",
+          "status": "CANDIDATE_RESONANCE_FROM_2026_REGISTRY"
+        }
+      ],
+      "successEvidence": "A person spends a deliberate quiet interval noticing what is present, then returns to a task with clearer priorities.",
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_NARRATIVE_AND_IDENTITY",
+          "sourceRecordId": "paradiso:PD07",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            1
+          ],
+          "finding": "Historical/source context: Dante, Paradiso XXI–XXII; https://danteworlds.laits.utexas.edu/paradiso/07saturn.html. Source versus model: Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante. Boundary: Paradiso capacity is not a ranking or automatically inferred archetype.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 2,
+          "lens": "TRIGGER_MOVEMENT_AND_TESTABLE_OBSERVABLES",
+          "sourceRecordId": "paradiso:PD07",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            2
+          ],
+          "finding": "Scene challenge: Remaining available to experience without needing constant output, noise, explanation or performance.. Candidate movement: WITHDRAW from stimulation → RECEIVE present experience → HOLD attention → RELEASE compulsive doing.. Trigger: Silence or nonproductivity provokes discomfort and urges constant stimulation.. Observables: Tracks what was actually experienced, regulates response under provocation, returns to an agreed task or protective action..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 3,
+          "lens": "CHOICE_BASED_PRACTICE_AND_EVIDENCE",
+          "sourceRecordId": "paradiso:PD07",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            3
+          ],
+          "finding": "Source candidate practice: Choose five minutes of quiet; afterward record what was actually observed, not what was hoped for.. Proposed gameboard becoming action: Choose five minutes of quiet; afterward record what was actually observed, not what was hoped for.. Desired evidence: A person spends a deliberate quiet interval noticing what is present, then returns to a task with clearer priorities.. Source behavioral outcome/example: A person spends a deliberate quiet interval noticing what is present, then returns to a task with clearer priorities..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 4,
+          "lens": "ALTERNATIVE_EXPLANATION_SEMANTIC_AND_ENGINE_SEAMS",
+          "sourceRecordId": "paradiso:PD07",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            4
+          ],
+          "finding": "Explicit counterexamples/disconfirmation: Quiet time, illness, disability and deliberate rest must not be pathologized as sloth. | Uses 'being above it' to abandon responsibility or refuses timely intervention.. Paradiso capacity is not a ranking or automatically inferred archetype. Scene-to-source link is exact, but semantic/person assignment is not approved. The existing conditional release entrypoint is relPick; ritual is ritStartPlan; fixed scene instance IDs remain null.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        }
+      ],
+      "reviewStatus": "FOUR_ANALYTICAL_LENSES_COMPLETE_NOT_INDEPENDENT_CANON",
+      "existingReleaseMethod": "relPick",
+      "existingRitualMethod": "ritStartPlan",
+      "fixedReleaseProtocolId": null,
+      "fixedBecomingRitualId": null,
+      "canon": false,
+      "runtime": false
+    },
+    {
+      "id": "game:paradiso:PD08",
+      "kind": "gameboard_source_research_record",
+      "realm": "PARADISO",
+      "label": "Hopeful Connection",
+      "sourceRecordId": "paradiso:PD08",
+      "sourceFamily": "para",
+      "sourceRegistryPath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+      "sourceRegistryBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+      "challenge": "Holding realistic trust, future-directed possibility and generous regard together without losing factual judgment.",
+      "knowledge": "Constructive practice at Fixed Stars: Holding realistic trust, future-directed possibility and generous regard together without losing factual judgment.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "Write one warranted trust, one evidence-based hope and one tangible act of care; test each in action.",
+      "sourceStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "archetypeResonances": [
+        {
+          "id": "compass-archetype:Caregiver",
+          "status": "CANDIDATE_RESONANCE_FROM_2026_REGISTRY"
+        },
+        {
+          "id": "compass-archetype:Jester",
+          "status": "CANDIDATE_RESONANCE_FROM_2026_REGISTRY"
+        },
+        {
+          "id": "compass-archetype:Everyman",
+          "status": "CANDIDATE_RESONANCE_FROM_2026_REGISTRY"
+        }
+      ],
+      "successEvidence": "A team names uncertainty, commits to a realistic path, and supports an affected member without concealing risks.",
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_NARRATIVE_AND_IDENTITY",
+          "sourceRecordId": "paradiso:PD08",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            1
+          ],
+          "finding": "Historical/source context: Dante, Paradiso XXII–XXVII; https://danteworlds.laits.utexas.edu/paradiso/08fixedstars.html. Source versus model: Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante. Boundary: Paradiso capacity is not a ranking or automatically inferred archetype.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 2,
+          "lens": "TRIGGER_MOVEMENT_AND_TESTABLE_OBSERVABLES",
+          "sourceRecordId": "paradiso:PD08",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            2
+          ],
+          "finding": "Scene challenge: Holding realistic trust, future-directed possibility and generous regard together without losing factual judgment.. Candidate movement: PRESERVE warranted trust → SEEK viable future → CONNECT compassionately → EXPRESS follow-through.. Trigger: Doubt, a discouraging setback or another person's need tests professed values.. Observables: Admits uncertainty, sets viable commitments, helps at personal cost within capacity, confronts harm without stripping anyone's dignity..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 3,
+          "lens": "CHOICE_BASED_PRACTICE_AND_EVIDENCE",
+          "sourceRecordId": "paradiso:PD08",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            3
+          ],
+          "finding": "Source candidate practice: Write one warranted trust, one evidence-based hope and one tangible act of care; test each in action.. Proposed gameboard becoming action: Write one warranted trust, one evidence-based hope and one tangible act of care; test each in action.. Desired evidence: A team names uncertainty, commits to a realistic path, and supports an affected member without concealing risks.. Source behavioral outcome/example: A team names uncertainty, commits to a realistic path, and supports an affected member without concealing risks..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 4,
+          "lens": "ALTERNATIVE_EXPLANATION_SEMANTIC_AND_ENGINE_SEAMS",
+          "sourceRecordId": "paradiso:PD08",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            4
+          ],
+          "finding": "Explicit counterexamples/disconfirmation: Religious faith is the poem's source concept; the ATUNED behavior does not require adherence to that belief. | Ignores evidence, makes unfounded promises or demands unconditional access in the name of love.. Paradiso capacity is not a ranking or automatically inferred archetype. Scene-to-source link is exact, but semantic/person assignment is not approved. The existing conditional release entrypoint is relPick; ritual is ritStartPlan; fixed scene instance IDs remain null.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        }
+      ],
+      "reviewStatus": "FOUR_ANALYTICAL_LENSES_COMPLETE_NOT_INDEPENDENT_CANON",
+      "existingReleaseMethod": "relPick",
+      "existingRitualMethod": "ritStartPlan",
+      "fixedReleaseProtocolId": null,
+      "fixedBecomingRitualId": null,
+      "canon": false,
+      "runtime": false
+    },
+    {
+      "id": "game:paradiso:PD09",
+      "kind": "gameboard_source_research_record",
+      "realm": "PARADISO",
+      "label": "Coherent Alignment",
+      "sourceRecordId": "paradiso:PD09",
+      "sourceFamily": "para",
+      "sourceRegistryPath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+      "sourceRegistryBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+      "challenge": "Letting intention, understanding and action reinforce one another while revising mistaken models.",
+      "knowledge": "Constructive practice at Primum Mobile: Letting intention, understanding and action reinforce one another while revising mistaken models.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "Identify one mismatch between your mental model and outcomes; correct the model and one process.",
+      "sourceStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "archetypeResonances": [
+        {
+          "id": "compass-archetype:Creator",
+          "status": "CANDIDATE_RESONANCE_FROM_2026_REGISTRY"
+        },
+        {
+          "id": "compass-archetype:Magician",
+          "status": "CANDIDATE_RESONANCE_FROM_2026_REGISTRY"
+        }
+      ],
+      "successEvidence": "A team discovers an inverted assumption, revises the workflow, and coordinates action without hiding the error.",
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_NARRATIVE_AND_IDENTITY",
+          "sourceRecordId": "paradiso:PD09",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            1
+          ],
+          "finding": "Historical/source context: Dante, Paradiso XXVII–XXX; https://danteworlds.laits.utexas.edu/paradiso/09primum.html. Source versus model: Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante. Boundary: Paradiso capacity is not a ranking or automatically inferred archetype.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 2,
+          "lens": "TRIGGER_MOVEMENT_AND_TESTABLE_OBSERVABLES",
+          "sourceRecordId": "paradiso:PD09",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            2
+          ],
+          "finding": "Scene challenge: Letting intention, understanding and action reinforce one another while revising mistaken models.. Candidate movement: ORDER purpose → CONNECT interdependent actions → TRANSFORM mistaken assumptions → PRESERVE movement.. Trigger: System complexity, clashing models or authority claims obstruct a clear course.. Observables: Detects a wrong assumption, revises the system without concealing error, makes roles and feedback transparent, restrains excess control..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 3,
+          "lens": "CHOICE_BASED_PRACTICE_AND_EVIDENCE",
+          "sourceRecordId": "paradiso:PD09",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            3
+          ],
+          "finding": "Source candidate practice: Identify one mismatch between your mental model and outcomes; correct the model and one process.. Proposed gameboard becoming action: Identify one mismatch between your mental model and outcomes; correct the model and one process.. Desired evidence: A team discovers an inverted assumption, revises the workflow, and coordinates action without hiding the error.. Source behavioral outcome/example: A team discovers an inverted assumption, revises the workflow, and coordinates action without hiding the error..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 4,
+          "lens": "ALTERNATIVE_EXPLANATION_SEMANTIC_AND_ENGINE_SEAMS",
+          "sourceRecordId": "paradiso:PD09",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            4
+          ],
+          "finding": "Explicit counterexamples/disconfirmation: Nature is an existing ATUNED integrity-law label here, not a claim that medieval cosmology describes physics. | Cannot admit a faulty model, silences users whose data contradict it or treats metaphysical analogy as measurement.. Paradiso capacity is not a ranking or automatically inferred archetype. Scene-to-source link is exact, but semantic/person assignment is not approved. The existing conditional release entrypoint is relPick; ritual is ritStartPlan; fixed scene instance IDs remain null.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        }
+      ],
+      "reviewStatus": "FOUR_ANALYTICAL_LENSES_COMPLETE_NOT_INDEPENDENT_CANON",
+      "existingReleaseMethod": "relPick",
+      "existingRitualMethod": "ritStartPlan",
+      "fixedReleaseProtocolId": null,
+      "fixedBecomingRitualId": null,
+      "canon": false,
+      "runtime": false
+    },
+    {
+      "id": "game:paradiso:PD10",
+      "kind": "gameboard_source_research_record",
+      "realm": "PARADISO",
+      "label": "Unity",
+      "sourceRecordId": "paradiso:PD10",
+      "sourceFamily": "para",
+      "sourceRegistryPath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+      "sourceRegistryBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+      "challenge": "Experiencing connection without making a person, role or exalted state the property of the ego.",
+      "knowledge": "Constructive practice at Empyrean: Experiencing connection without making a person, role or exalted state the property of the ego.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "After meaningful connection, name what you can enact for someone else without claiming the experience makes you superior.",
+      "sourceStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "archetypeResonances": [],
+      "successEvidence": "After a meaningful collective success, someone shares credit, remains open to correction, and serves the next need without claiming special rank.",
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "HISTORICAL_NARRATIVE_AND_IDENTITY",
+          "sourceRecordId": "paradiso:PD10",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            1
+          ],
+          "finding": "Historical/source context: Dante, Paradiso XXX–XXXIII; https://danteworlds.laits.utexas.edu/paradiso/10empyrean.html. Source versus model: Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante. Boundary: Paradiso capacity is not a ranking or automatically inferred archetype.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 2,
+          "lens": "TRIGGER_MOVEMENT_AND_TESTABLE_OBSERVABLES",
+          "sourceRecordId": "paradiso:PD10",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            2
+          ],
+          "finding": "Scene challenge: Experiencing connection without making a person, role or exalted state the property of the ego.. Candidate movement: RELEASE identification → CONNECT without ownership → RECEIVE difference → EXPRESS care without transaction.. Trigger: A moment of closeness, recognition or accomplishment tempts appropriation or spiritual superiority.. Observables: Shares credit, respects autonomy, repairs a harm where possible and does not claim ownership of people or extraordinary states..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 3,
+          "lens": "CHOICE_BASED_PRACTICE_AND_EVIDENCE",
+          "sourceRecordId": "paradiso:PD10",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            3
+          ],
+          "finding": "Source candidate practice: After meaningful connection, name what you can enact for someone else without claiming the experience makes you superior.. Proposed gameboard becoming action: After meaningful connection, name what you can enact for someone else without claiming the experience makes you superior.. Desired evidence: After a meaningful collective success, someone shares credit, remains open to correction, and serves the next need without claiming special rank.. Source behavioral outcome/example: After a meaningful collective success, someone shares credit, remains open to correction, and serves the next need without claiming special rank..",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        },
+        {
+          "pass": 4,
+          "lens": "ALTERNATIVE_EXPLANATION_SEMANTIC_AND_ENGINE_SEAMS",
+          "sourceRecordId": "paradiso:PD10",
+          "sourcePath": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+          "sourceBlobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041",
+          "sourceEvidencePassRefs": [
+            4
+          ],
+          "finding": "Explicit counterexamples/disconfirmation: The Empyrean is Dante's transcendent theology, not a literal human nervous-system state or a CQ threshold. | Uses 'we are all one' to deny harm, refuses apology because separation is an illusion, demands devotion to their awakening.. Paradiso capacity is not a ranking or automatically inferred archetype. Scene-to-source link is exact, but semantic/person assignment is not approved. The existing conditional release entrypoint is relPick; ritual is ritStartPlan; fixed scene instance IDs remain null.",
+          "sourceKind": "SYNTHESIS_OF_EXISTING_FOUR_PASS_SOURCE_RESEARCH_AND_GAMEBOARD",
+          "limits": "Distinct authored analytical review; NOT independent external experiment or newly owner-approved source interpretation."
+        }
+      ],
+      "reviewStatus": "FOUR_ANALYTICAL_LENSES_COMPLETE_NOT_INDEPENDENT_CANON",
+      "existingReleaseMethod": "relPick",
+      "existingRitualMethod": "ritStartPlan",
+      "fixedReleaseProtocolId": null,
+      "fixedBecomingRitualId": null,
+      "canon": false,
+      "runtime": false
+    }
+  ]
+}
