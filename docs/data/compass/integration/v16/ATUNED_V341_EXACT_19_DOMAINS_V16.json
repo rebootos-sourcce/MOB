@@ -6,7 +6,7 @@
     "file": "MOB_Complete_v341.html",
     "sha256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
     "bytes": 16417226,
-    "verifiedBy": "SHA-256 computed from complete raw Drive download, matched expected V15 hash",
+    "verifiedBy": "Three complete raw Google Drive downloads independently materialized and SHA-256 hashed",
     "driveFileIds": [
       "1wlEiHEeL-ApUFEiHXhfndgYVvicx85Uk",
       "1PzdW95quj0BUoLd07Gt14CQflaj9J2bt",
@@ -260,7 +260,13 @@
     "actualCount": 19,
     "allNamedClustersFound": true,
     "allThreeFieldLabelsFound": true,
-    "originalByteHashMatch": true
+    "originalByteHashMatch": true,
+    "independentlyHashedDriveCopies": 3,
+    "independentCopyMatches": [
+      true,
+      true,
+      true
+    ]
   },
   "policy": {
     "sourceRecovered": true,
