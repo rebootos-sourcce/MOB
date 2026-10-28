@@ -1,0 +1,23 @@
+name: ATUNED V16 Recovered Source and Journey Contracts
+on:
+  push:
+    branches:
+      - 'atuned/compass-foundation-closure-20261026'
+  workflow_dispatch:
+jobs:
+  verify-v16-source-and-journey:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check exact nineteen v341 source records, hashes and approval boundary
+        run: node docs/data/compass/integration/v16/validate_v16_v341_source.cjs
+      - name: Exercise Hero Journey CQ boundary, unique releases and conditional ritual paths
+        run: node docs/data/compass/integration/v16/validate_v16_journey_contract.cjs
+      - name: Preserve V14 index integrity
+        run: node docs/data/compass/integration/v14/validate_v14_file_index.cjs
