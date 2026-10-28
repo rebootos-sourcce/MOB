@@ -1,0 +1,155 @@
+{
+  "schema": "ATUNED_FRAMEWORK_RESEARCH_AND_HARMONIZATION_PROGRESS_V6",
+  "date": "2026-10-27",
+  "scope": "Compass / Inferno / Purgatorio / Paradiso / Hero Journey + source-projected Deep Psyche. Not entire app, not clinical validation.",
+  "readiness": {
+    "overallPercent": 72,
+    "method": "Five equal-weight 20-point workstreams; planning score, not automated test percent or production readiness",
+    "workstreams": [
+      {
+        "name": "Map and narrative structure",
+        "points": 20,
+        "max": 20,
+        "details": "26 complete scene contracts, 25 navigational edges"
+      },
+      {
+        "name": "Record harmonization",
+        "points": 18,
+        "max": 20,
+        "details": "31 standardized teacher/inverse research records, 13 teachers /14 poles /14 named contrasts; original 23 preserved; 19 exact v341 wordings blocked"
+      },
+      {
+        "name": "Research coverage",
+        "points": 19,
+        "max": 20,
+        "details": "104 journey-scene analyses, 32 new roster analyses, 16 figure conflict analyses, 84 lexical comparison analyses; exact source/canonical issues pending"
+      },
+      {
+        "name": "Unified graph documentation",
+        "points": 11,
+        "max": 20,
+        "details": "404 source-indexed nodes/875 typed reference edges, 14 new harmonization edges, 0 dangling references, no live consumer promotion"
+      },
+      {
+        "name": "Executable and verified Hero's Journey",
+        "points": 4,
+        "max": 20,
+        "details": "26/26 dynamic release and ritual methods exist, but full browser/user evidence/CQ/Avatar acceptance is not certified"
+      }
+    ],
+    "previousPercent": 67
+  },
+  "newResearch": {
+    "recordsAddedToTeacherRegistry": 8,
+    "teacherFullRecordCount": 31,
+    "sceneResearchRecords": 26,
+    "newScenePasses": 104,
+    "newTeacherInversePasses": 32,
+    "newFigureConflictPasses": 16,
+    "newLexicalComparisonPasses": 84,
+    "totalNewAnalyticalPasses": 236,
+    "independentEmpiricalStudiesClaimed": 0
+  },
+  "harmonized": {
+    "teachers": 13,
+    "compassPoles": 14,
+    "sourceQualifiedNamedInverseProfiles": 14,
+    "abstractInverseProfilesRetained": 4,
+    "sourceApprovedTeacherInverseSemanticEquivalences": 0,
+    "poleJoinRows": 14,
+    "originalTeacherRecordsPreserved": 23
+  },
+  "sourceGaps": {
+    "v341ExactSourceDefinitionsUnverified": 19,
+    "figureSemanticDriftsUnapproved": 4,
+    "paradisoTeacherAsymmetriesUnapproved": 5,
+    "lexicalIdentityMatchesUnapproved": 21,
+    "originalInfernoV1StillUnrecovered": true,
+    "fullNerveToSupercomplexDenominatorUnverified": true
+  },
+  "graph": {
+    "nodes": 404,
+    "typedEdges": 875,
+    "uniqueIsolates": 8,
+    "dangling": 0,
+    "duplicateTyped": 0,
+    "segmentCounts": {
+      "baseline": 300,
+      "inferno_research": 80,
+      "shadow_law_research": 49,
+      "gameboard_navigation": 25,
+      "scene_source": 26,
+      "scene_crosswalk": 6,
+      "scene_archetype": 12,
+      "shadow_source": 14,
+      "pole": 36,
+      "catalog": 14,
+      "deep_psyche_source_branch": 187,
+      "cross_registry_lexical_candidate": 21,
+      "runtime_route_source_references": 52,
+      "teacher_recipe_source_references": 39,
+      "teacher_source_harmonization_v2": 14
+    },
+    "version": "V4",
+    "productionGraphImportsApproved": 0
+  },
+  "records": {
+    "deepPsyche": 149,
+    "inferno": 38,
+    "purgatorio": 23,
+    "paradiso": 10,
+    "shadowAtlas": 30,
+    "core12Archetypes": 12,
+    "teacherInverseResearch": 31,
+    "gameboardScenes": 26,
+    "integrityLaws": 21,
+    "compassPoles": 14,
+    "teacherRitualPresets": 39
+  },
+  "actualRuntimeFacts": {
+    "dynamicReleaseRoutes": 26,
+    "dynamicRitualRoutes": 26,
+    "profileConditional": "user-confirmed imprints and tier pacing",
+    "sceneSpecificFixedProtocolInstanceIds": 0,
+    "sceneSpecificFixedRitualInstanceIds": 0,
+    "actualE2EBrowserCertified": false
+  },
+  "sourceArtifacts": {
+    "join": {
+      "path": "docs/data/compass/integration/v2/TEACHER_POLE_SOURCE_AND_RECIPE_JOIN_V2.json",
+      "sha": "fe24e935e42bf361b1759179bc54bfed072c0fc6"
+    },
+    "conflict": {
+      "path": "docs/data/compass/integration/v4/FOUR_FIGURE_AND_FIVE_PARADISO_DISCREPANCIES_RESEARCH_V2.json",
+      "sha": "814dc534f3665b6d0003e5826d527755bd846ccc"
+    },
+    "teacher": {
+      "path": "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+      "sha": "8c10b4b75e17387a34f84692ba85a6875f5e7671"
+    },
+    "scenes": {
+      "path": "docs/data/compass/gameboard/v2/GAMEBOARD_26_FOUR_PASS_SOURCE_RESEARCH_V2.json",
+      "sha": "69ebea751f666b3a68a26569c6889b301766fd00"
+    },
+    "graph": {
+      "path": "docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json",
+      "sha": "320142d70ccb63e4f22d681a26bc6d25ae03cf18"
+    },
+    "lexical": {
+      "path": "docs/data/compass/integration/v4/DEEP_PSYCHE_COMPASS_21_EXACT_NAME_FOUR_PASS_REVIEWS_V1.json",
+      "sha": "7c21b8a3f576bd0daa485a1d9af05b8aeb3d810c"
+    },
+    "gaps": {
+      "path": "docs/data/compass/integration/v4/DEEP_PSYCHE_19_V341_EXACT_SOURCE_GAP_LEDGER_V1.json",
+      "sha": "08230b61a23446585266a674ae033526e43a5e17"
+    }
+  },
+  "links": {
+    "graph": "docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json",
+    "editor": "docs/data/compass/integration/v4/ATUNED_GRAPH_EDITOR_V4.html",
+    "sourceTest": "docs/data/compass/integration/v4/validate_framework_research_harmonization_v4.cjs",
+    "comparativeTest": "docs/data/compass/integration/v4/validate_semantic_research_four_pass_v4.cjs",
+    "ci": ".github/workflows/compass-unified-graph-v1.yml"
+  },
+  "disclaimer": "All additional passes are source-grounded authored reviews, not independent research studies. The 19 v341 terms have other-version qualified descriptions but lack exact v341 source verification; 0 source ambiguities silently promoted."
+}
