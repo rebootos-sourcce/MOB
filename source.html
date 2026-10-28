@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v686 d57af090 2026-10-28 01:52"><head><meta charset="utf-8">
+<html lang="en" data-build="v693 f15f8a5a 2026-10-28 14:33"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -15985,9 +15985,23 @@ var PCT_KIND={
  /* compute.js:390 */
  integrity: {lo:0, hi:10, src:'engine/compute.js', find:'- JQ*0.42,0,10);',
              say:'integrity, the laws lifted by the poles and pulled down by overshoot'},
- /* compute.js:391 */
- intention: {lo:0, hi:10, src:'engine/compute.js', find:'- JQ*0.30,0,10);',
-             say:'intention, the same laws read seat by seat'},
+ /* compute.js:391. RENAMED FROM intention, 28 October: the word intention is
+    the ruled reading below now, what a person said against what they did,
+    and this kept it as well, which is the exact defect one word per concept
+    exists to stop. This is a law mean read seat by seat, nothing a person
+    committed to or carried out. */
+ lawseat:   {lo:0, hi:10, src:'engine/compute.js', find:'- JQ*0.30,0,10);',
+             say:'the same laws read seat by seat, up the body'},
+ /* ladder.js, intentionRead. Ruled 25 September, "you either did the thing
+    you said you were gonna do or you didn't", said against done over the
+    last seven days, no charge read into it. Wired in 28 October: the
+    function existed, tested, and had never been put on a screen. Profile
+    dependent, so it is not in tests/engine.js's roster scan the way a pure
+    compute() figure is, the same exemption accuracy already carries; its
+    own coverage is tests/engine.js's and tests/daily.js's intentionRead
+    checks, and the fmtPct example below. */
+ intention: {lo:0, hi:100, src:'engine/ladder.js', find:'pct:said?100*did/said:null',
+             say:'what a person said they would do against what they did, the last seven days'},
  /* intake.js:55, the widest gap between a law's three answers, each 0 to 10
     at the boundary (schema.js:1069) */
  spread:    {lo:0, hi:10, src:'engine/intake.js', find:'var spread=Math.max.apply(null,v)-Math.min.apply(null,v);',
@@ -29212,21 +29226,52 @@ function srcPrior(entries){
    if(K2BAND[k]&&(e.bands[k]||0)>0)out[k]=(out[k]||0)+1;});});
  return out;}
 
-/* the rung for one seat, from the three counts. Kept apart so the ladder is
-   one function a test can walk rung by rung. */
-function srcRung(mentions,earlier,reading){
+/* the rung for one seat, from the three counts, and now a fourth: whether
+   the seat sits inside a hyper complex the person's own charge is actually
+   driving right now. Round of 27 October, his words: the sniffer hears a
+   seat once and stops, but the field already knows that seat is load
+   bearing for a pattern running across several addresses at once, the
+   engine's own hy.parts chain, and Source AI should recognise that the same
+   way it recognises a seat it has heard before. Structural evidence reaches
+   the same rung a real earlier commit would (9), never the top rung (10,
+   reserved for a real repeated mention), and never on its own: a seat
+   nobody has said anything about this entry is never asked about, mentions
+   stays the gate at the top of this function. This was built once already,
+   27 October, and was lost before it reached main; rebuilt the same day
+   after it turned out not to be running. */
+function srcRung(mentions,earlier,reading,structural){
  if(!mentions)return 0;
  if(earlier>=2||(earlier>=1&&mentions>=2))return 10;
- if(earlier>=1)return 9;
+ if(earlier>=1||structural)return 9;
  if(mentions>=3)return 8;
  if(mentions>=2)return 7;
  return Math.max(1,Math.min(SRC_ONCE,Math.round(reading||0)));}
+
+/* WHICH SEATS A DRIVEN HYPER COMPLEX ACTUALLY SITS ON. Walks the engine's
+   own chain, hy.parts (complexes) to cx.parts (two saboteurs each) to
+   sab.parts (the real addresses), and collects the seat (band) each address
+   belongs to. Returns a lowercase-keyed set matching srcPrior's own key
+   space, {root:true, solar:true, ...}, never a complex's name: this module's
+   standing rule is it never names a definition to the person, only ever
+   acts on what it recognises, and a seat code is not a name. r is a real
+   compute() result; r.hys is the engine's own hyper complex list. */
+var SRC_B2K=null;
+function srcHyperSeats(r){
+ if(!SRC_B2K){SRC_B2K={};Object.keys(K2BAND).forEach(function(k){SRC_B2K[K2BAND[k]]=k;});}
+ var out={};
+ ((r&&r.hys)||[]).forEach(function(hy){
+  (hy.parts||[]).forEach(function(cx){
+   (cx.parts||[]).forEach(function(sab){
+    (sab.parts||[]).forEach(function(n){
+     var k=n&&n.b&&SRC_B2K[n.b];
+     if(k)out[k]=true;});});});});
+ return out;}
 
 /* HEAR AN ENTRY. text is what the person typed. prior is srcPrior of their
    own earlier entries, or nothing. Returns every seat heard, heaviest rung
    first, with the person's own words for each, which is what Source AI says
    back instead of a definition. */
-function srcHear(text,prior){
+function srcHear(text,prior,active){
  var t=String(text||'');
  var out={unread:true, seats:[], top:null, root:null, asks:false};
  if(!t.trim())return out;
@@ -29250,9 +29295,11 @@ function srcHear(text,prior){
   var w=(a<nm.map.length&&b<nm.map.length)?t.slice(nm.map[a],nm.map[b]+1):s.word;
   if(o.words.indexOf(w)<0)o.words.push(w);});
  var P=prior||{};
+ var A=active||{};
  out.seats=Object.keys(by).map(function(k){var o=by[k];
   o.earlier=P[k]||0;
-  o.rung=srcRung(o.mentions,o.earlier,o.reading);
+  o.structural=!!A[k];
+  o.rung=srcRung(o.mentions,o.earlier,o.reading,o.structural);
   o.reading=Math.round(o.reading*10)/10;
   return o;})
   .filter(function(o){return o.rung>0;})
@@ -33358,6 +33405,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* percent */  PCT_KIND:PCT_KIND, PCT_DASH:PCT_DASH, pct:pct, fmtPct:fmtPct, pctMove:pctMove,
   /* source ai */ SRC_ASK:SRC_ASK, SRC_ROOT:SRC_ROOT, SRC_ONCE:SRC_ONCE, SRC_NEG:SRC_NEG,
                  srcNegated:srcNegated, srcPrior:srcPrior, srcRung:srcRung,
+                 srcHyperSeats:srcHyperSeats,
                  srcHear:srcHear, srcHear:srcHear, srcPrior:srcPrior, srcTurn:srcTurn,
                  SRC_DIM_ORDER:SRC_DIM_ORDER, SRC_DIM_CUE:SRC_DIM_CUE, SRC_DO:SRC_DO,
                  srcDims:srcDims, srcNext:srcNext,
@@ -35445,7 +35493,7 @@ const QICON_D={
     shoot: the thing that grows back when the weight comes off. */
  vitality:'M12 21v-8M12 13c0-3.4 2.4-6 5.6-6.4C17.2 10 15 12.6 12 13'
    +'M12 13c0-2.8-2-5-4.7-5.4C7.7 10.4 9.6 12.4 12 13M9 21h6',
- /* AWARENESS. Intention read against distortion. An aperture, because
+ /* AWARENESS. Law reach read against distortion. An aperture, because
     awareness in this product is the width of what gets through, and the eye
     is already spoken for by perception. */
  awareness:'M12 3.5a8.5 8.5 0 110 17 8.5 8.5 0 010-17M12 3.5L17.8 9.3'
@@ -47903,6 +47951,7 @@ function stRender(){
     the resize observer, the first layout ran at a height of nought and every
     lane sprang in from above the chart on each arrival at the tab. */
  stSize();
+ ST_ACTIVE=typeof srcHyperSeats==='function'?srcHyperSeats(compute()):null;
  stRead(); stSortPaint();
  srcLock(h.querySelector('.st-glow')); srcLock(h.querySelector('#stjr .src-live'));
  var ta=document.getElementById('sttext');
@@ -48031,6 +48080,13 @@ function stBank(){
    picture and the score came to disagree. The mark still runs back over its
    no and is struck, and the bar is still dashed. */
 var STR={t:null,marks:[],toks:[],heard:null};
+/* THE SEATS A DRIVEN HYPER COMPLEX ACTUALLY SITS ON RIGHT NOW, read off the
+   committed profile, never the live draft: compute() only ever reflects
+   S and W as they stand after the last commit, so this is computed once a
+   full stRender(), not on every key in stRefresh()/stRead(), which would
+   cost a real compute() a keystroke for a number that cannot have changed
+   since the last commit anyway. srcHyperSeats lives in engine/sourceai.js. */
+var ST_ACTIVE=null;
 function stMarks(t,p){
  if(!p||typeof marksOf!=='function')return [];
  var marks=marksOf(t,p), nm=normMap(t), modAt={};
@@ -48058,7 +48114,7 @@ function stRead(){
  var t=ST_TEXT, ents=(CURP&&CURP.story&&CURP.story.entries)||[];
  var marks=stMarks(t,ST_PARSED);
  STR={t:t,marks:marks,toks:marks.toks||(t?(t.match(/[A-Za-z']+/g)||[]).map(function(w){return {w:w};}):[]),
-  heard:srcHear(t,srcPrior(ents))};}
+  heard:srcHear(t,srcPrior(ents),ST_ACTIVE)};}
 /* the addresses this entry reaches, or the last committed entry's.
    THE ONES THE WORDS NAMED COME FIRST, and .named says how many of the head of
    the list they are, 17 October. parseStory reaches two kinds of address: the
@@ -50001,7 +50057,14 @@ function stLawPaint(){
   else o+=w.top.map(stLawRow).join('');});
  var g=STLW.gate;
  if(g&&g.intentional){
-  o+=stAnaHead('Intention','your last entry');
+  /* RENAMED FROM INTENTION, 28 October. This heading named the six gates'
+     avoidance cascade (engine/sniff.js sniffGates, engine/verp.js VERP)
+     "Intention" before the ruled Intention, said against done, had a
+     screen of its own. Two different readings sharing one word, the exact
+     defect one word per concept exists to stop. This stays named for what
+     it is: right action read from this entry's own words. The real
+     Intention is on the Instruments row (ui/ui.js). */
+  o+=stAnaHead('Right action','your last entry');
   /* NEVER THE AVOIDANCE NUMBER ALONE, the spec's own rule: it reads as a
      character flaw without the two readings it was built from beside it. */
   o+='<p style="margin:6px 0 2px">Avoidance reads <b>'+g.intentional.avoidance+' per cent</b> in your last entry, built '
@@ -67921,13 +67984,22 @@ function runQDrill(q){
 
 /* THE THREE AXES. energy read on three independent lines, each a pure
    function of quantities already in the reading. Vitality is what is left
-   after apathy and shadow weight. Awareness is intention against
-   distortion. Will is integrity through a clear segment. */
+   after apathy and shadow weight. Awareness is law reach against
+   distortion. Will is integrity through a clear segment.
+
+   RENAMED FROM INTENTION, 28 October. r.It fed this axis under that name
+   since before intention meant anything else. It still does, the arithmetic
+   is unchanged and untested against the new meaning, so it keeps its own
+   name, law reach, the same law mean read seat by seat that feeds the
+   Instruments row (ui/ui.js). The real intention, what a person said against
+   what they did, is wired in there now and does not enter this axis: that
+   would be new, unfitted arithmetic, the same shape of change already tried
+   and killed once inside CQ itself (engine/compute.js, the model 3 note). */
 function runXYZDrill(){
  var r=compute();
  var A=[['Vitality',r.X,'Solar','what is left after apathy and the shadow weight. Apathy <b>'
    +((S.charge.Apathy||0)>0?(S.charge.Apathy).toFixed(1):'\u2013')+'</b>, shadow weight <b>'+(Math.round(r.DQ)||'\u2013')+'</b>.'],
-  ['Awareness',r.Y,'3rd Eye','intention against distortion. Intention <b>'+r.It.toFixed(1)
+  ['Awareness',r.Y,'3rd Eye','law reach against distortion. Law reach <b>'+r.It.toFixed(1)
    +'</b>, distortion <b>'+r.dist.toFixed(1)+'</b>.'],
   ['Will',r.Z,'Root','integrity carried through a clear segment. Integrity <b>'+r.Ig.toFixed(1)
    +'</b>, mean depth <b>'+r.SQm.toFixed(1)+'</b>.']];
@@ -82248,11 +82320,19 @@ function render(){
     registry bounds the same way (engine/pct.js, nought to ten). Each prints
     fmtPct for its own kind now, and nought or an unread profile is the dash. */
  var ins=function(t,line){return '<span title="'+esc(t)+'">'+line+'</span><br>';};
+ /* INTENTION, WIRED IN, 28 October. Ruled 25 September: what a person said
+    they would do against what they did, no charge read into it
+    (intentionRead, engine/ladder.js). Nothing was said in the last seven
+    days reads as unread, not as zero, the same way an unanswered law does
+    not read as a failing one: a blank week is not a broken promise. */
+ var intent=intentionRead(CURP,Date.now());
  $('rows').innerHTML='<span class="k">Instruments</span><br>'
   +ins('How well you keep the 21 laws, lifted by the opposites installed and pulled down by overshoot.',
     'integrity <b>'+fmtPct('integrity',r.Ig,{unread:r.unread})+'</b>')
+  +ins('What you said you would do against what you did, the last seven days. No charge in it, only follow through.',
+    'intention <b>'+(intent.said?fmtPct('intention',intent.pct):PCT_DASH)+'</b>')
   +ins('The same laws read seat by seat, up the body.',
-    'intention <b>'+fmtPct('intention',r.It,{unread:r.unread})+'</b>')
+    'law reach <b>'+fmtPct('lawseat',r.It,{unread:r.unread})+'</b>')
   /* JOUISSANCE WAS ON EIGHTY ONE SCREENS. A French psychoanalytic term, printed
      as an instrument label to a person who has never heard it, with no gloss
      anywhere in the product. One word per concept, and the word has to say
@@ -82719,5 +82799,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005453538"></div>
+<div id="eof" hidden data-len="005458787"></div>
 </body></html>
