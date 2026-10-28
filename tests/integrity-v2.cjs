@@ -104,4 +104,46 @@ for(const p of ['quiz-v2.html','diagnostic-v2.html']){
  ok(c.includes('integrity-v2-data.js')&&c.includes('integrity-v2.js'),'shared scripts wired: '+p);
  ok(c.includes('integrity-v2.css'),'CSS wired: '+p);
 }
+/* Native ATÜNED profile bridge. This must NEVER rewrite legacy intake/CQ. */
+const nativeBankText=fs.readFileSync(path.join(root,'atuned_src/engine/data/diagnostic3.js'),'utf8');
+const nativeBank=vm.runInNewContext(nativeBankText+'\nD3_BANK',{});
+ok(nativeBank.length===21,'native bank has all 21 laws');
+nativeBank.forEach((l,i)=>{
+ ok(l.law===canonical.laws[i].law,'native law matches canonical '+i);
+ l.questions.forEach((q,k)=>ok(q.id===canonical.laws[i].questions[k].id&&
+  q.prompt===canonical.laws[i].questions[k].prompt,'native question ID and wording match '+q.id));
+});
+const nativeEngine=fs.readFileSync(path.join(root,'atuned_src/engine/diagnostic3.js'),'utf8');
+const nativeUI=fs.readFileSync(path.join(root,'atuned_src/ui/diagnostic3.js'),'utf8');
+new vm.Script(nativeEngine,{filename:'diagnostic3.js'});checks++;
+new vm.Script(nativeUI,{filename:'ui/diagnostic3.js'});checks++;
+const bridge=vm.runInNewContext(nativeEngine+'\n({d3Blank,d3ImportV2,d3Counts,d3Valid,d3Answer})',{
+ D3_BANK:nativeBank,S:{rec:'p1'},showRefuse(){return false;},Date,JSON,Math,Number,Object,Array
+});
+const prof={id:'p1',diagnostic3:null};
+const raw={kind:'atuned.integrity21.v2',schemaVersion:'2.0.0',updatedAt:null,answers:{}};
+core.forEach(l=>l.questions.forEach((q,i)=>raw.answers[q.id]=i===0?
+ {status:'answered',value:0,updatedAt:null}:i===1?
+ {status:'not_applicable',value:null,updatedAt:null}:
+ {status:'skipped',value:null,updatedAt:null}));
+let nres=bridge.d3ImportV2(prof,raw,false);
+ok(nres.ok&&nres.imported===30,'native imports 30 Core records');
+ok(bridge.d3Counts(prof).answered===10,'native counts only numeric values');
+ok(prof.diagnostic3.statuses[core[0].questions[1].id]==='not_applicable','native N/A persists separately');
+ok(prof.diagnostic3.statuses[core[0].questions[2].id]==='skipped','native skip persists separately');
+ok(prof.diagnostic3.answers[core[0].questions[0].id]===0,'native zero persists');
+const errs=[];bridge.d3Valid(errs,prof.diagnostic3);
+ok(errs.length===0,'imported native record passes profile validation');
+const pBefore=JSON.stringify(prof.diagnostic3);
+const changed=JSON.parse(JSON.stringify(raw));changed.answers[core[0].questions[0].id].value=8;
+const conflict=bridge.d3ImportV2(prof,changed,false);
+ok(!conflict.ok&&conflict.reason==='conflicts'&&JSON.stringify(prof.diagnostic3)===pBefore,
+ 'conflict blocks atomic import');
+const override=bridge.d3ImportV2(prof,changed,true);
+ok(override.ok&&prof.diagnostic3.answers[core[0].questions[0].id]===8,'explicit conflict resolution changes answer');
+ok(!Object.hasOwn(prof,'intake')&&!Object.hasOwn(prof,'laws'),'legacy intake and CQ unchanged');
+const old={id:'p1',diagnostic3:{v:2,answers:{},startedAt:null,completedAt:null}};
+ok(bridge.d3Answer(old,core[0].questions[0].id,4),'pre-status native profiles still accept new answers');
+ok(old.diagnostic3.statuses[core[0].questions[0].id]==='answered','old native profile gains statuses compatibly');
+
 console.log(JSON.stringify({passed:true,assertions:checks,coreLaws:10,coreResponses:30,remainingLaws:11,remainingResponses:33,total:63,scoring:'provisional descriptive only',accountHandoff:'NOT VERIFIED'},null,2));
