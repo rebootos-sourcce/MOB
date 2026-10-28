@@ -738,15 +738,18 @@ function poleDimPct(tip,side){
 function poleDualBar(nm,opp,lp,rp,cL,cR,ic,big){
  var tip=poleTip(lp,rp), dimL=poleDimPct(tip,'l'), dimR=poleDimPct(tip,'r');
  var icStyle=function(c,dim){return 'color:'+(dim?'color-mix(in srgb,'+c+' '+(100-dim)+'%,var(--dim))':c);};
- /* IF IT HAS A NAME IT HAS AN ICON, the owner's standing rule, carried over
-    from crBadge's own glyph (same markup, same colour-by-seat convention):
-    the address's own axis mark, first in the row, so 112 named addresses
-    still read as 112 distinct marks and not one bar shape repeated. The two
-    end icons below are the bar's own collapsed/open glyphs, the same on
-    every row by design, never this row's identity. */
+ /* IF IT HAS A NAME IT HAS AN ICON, the owner's standing rule. crBadge is
+    the already-built, already-tested carrier of that mark (same ring,
+    same crb-g glyph, same colour-by-seat convention poleDrillHead used to
+    draw by hand), ported rather than redrawn, bare so it reads as a mark
+    and not a second reading. First in the row, so 112 named addresses
+    still read as 112 distinct marks and not one bar shape repeated. The
+    two end icons below are the bar's own collapsed/open glyphs, the same
+    on every row by design, never this row's identity. */
  return '<span class="kbp2'+(big?' kbp2-lg':'')+'" style="--c:'+cL+';--oc:'+cR+'">'
-  +'<span class="kbp2-nm"><span class="kbp2-lwrap"><span class="kbp2-ax"><svg viewBox="0 0 24 24" aria-hidden="true">'
-   +glyphPath(ic)+'</svg></span><span class="kbp2-l">'+esc(nm)+'</span></span>'
+  +'<span class="kbp2-nm"><span class="kbp2-lwrap">'
+   +crBadge(null,0,{size:big?'sm':'xs',bare:true,color:cL,glyph:glyphPath(ic)})
+   +'<span class="kbp2-l">'+esc(nm)+'</span></span>'
    +'<span class="kbp2-r">'+esc(opp)+'</span></span>'
   +'<span class="kbp2-row">'
    +'<svg class="kbp2-ic" viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true" '
@@ -801,15 +804,6 @@ function kbpCss(){
   '.kbp2-lwrap{display:flex;align-items:center;gap:5px;min-width:0;overflow:hidden}',
   '.kbp2-l{color:var(--c);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}',
   '.kbp2-r{color:var(--oc);text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}',
-  /* THE AXIS MARK, the same convention as crBadge's own crb-g: colour by
-     seat, currentColor strokes. IF IT HAS A NAME IT HAS AN ICON, the
-     owner's standing rule; this is what keeps 112 named addresses reading
-     as 112 distinct marks rather than one bar shape repeated. */
-  '.kbp2-ax{flex:0 0 auto;display:grid;place-items:center;width:17px;height:17px;color:var(--c)}',
-  '.kbp2-ax svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;',
-  ' stroke-linecap:round;stroke-linejoin:round}',
-  '.kbp2-lg .kbp2-ax{width:20px;height:20px}',
-  '.kbp2-lg .kbp2-ax svg{width:18px;height:18px}',
   '.kbp2-row{display:flex;align-items:center;gap:7px}',
   /* the icons hold NODE_STRIKE's own colour at a true neutral reading and
      mix toward --dim as a reading commits to the other pole, set per icon

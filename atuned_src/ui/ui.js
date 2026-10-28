@@ -1495,6 +1495,53 @@ function render(){
    reading for the Journal's own Laws accordion; this calls the same
    function rather than re-reading the entries a second way, so the two
    surfaces can never disagree about which entry's reading is current. */
+/* THE CHAIN KEY. Round of 28 October, the shell's own body.html comment
+   above the section carries the full why. Five rows, nerve to root, each a
+   swatch and one sentence. The swatch colors come straight from bc(), the
+   exact function wheel.js paints the chords and beads with, so this list
+   and the wheel's own picture read as one source and not two. Archetype
+   keeps its own gold rather than a seat color, because that is what the
+   wheel already draws it in (GOLDC, ui/component.js); the saboteur row's
+   dot is the conic sweep in head.html's .chk-dot.varies, since a saboteur's
+   own thread is colored by whichever seat it sits at and not by one fixed
+   color the other three tiers share. */
+function renderChainKey(){
+ var h=document.getElementById('chainkey'); if(!h)return;
+ var rows=[
+  {v:true, nm:'Saboteur', d:'Colored by the seat it sits at. The pattern closest to a single story.'},
+  {c:rgba(bc('Solar'),1), nm:'Complex', d:'Two saboteurs joined. Always this color, whichever seat they sit at.'},
+  {c:rgba(bc('Sacral'),1), nm:'Hyper-complex', d:'Complexes joined into one driving pattern.'},
+  {c:rgba(bc('Root'),1), nm:'Super-complex', d:'The deepest join this instrument reads, built from hyper-complexes.'},
+  {c:rgba(GOLDC(),1), nm:'Archetype', d:'The shape the whole pattern points toward.'}];
+ h.innerHTML=rows.map(function(r){
+  return '<div class="chk-row"><span class="chk-dot'+(r.v?' varies':'')+'"'
+   +(r.v?'':' style="background:'+r.c+'"')+'></span>'
+   +'<span class="chk-tx"><b>'+r.nm+'.</b> '+r.d+'</span></div>';}).join('');}
+/* THE FOUR AMPLIFIERS. body.html's own comment above the section carries
+   the full why. Each row is a real address AMPLIFIER already maps to, read
+   the same way every other address on this page is read, BY[i].sq, no new
+   number. Reuses the locked dual-pole glyph (NODE_STRIKE, ui/knowledge.js)
+   and crBadge (ui/component.js) so an amplifier's own charge reads in the
+   same language as every other address on the Field, and a press opens the
+   same node drill a press on any address already opens. */
+function renderAmplifiers(){
+ var h=document.getElementById('amprows'); if(!h)return;
+ var FOUR=['Justification','Entitlement','Perfectionism','Obsession'];
+ var rows=FOUR.map(function(nm){return AMPLIFIER.filter(function(a){return a.nm===nm;})[0];})
+  .filter(Boolean);
+ h.innerHTML=rows.map(function(a){
+  var n=BY[a.i]; if(!n)return '';
+  var p=Math.round((n.sq||0)/10*100), state=dualPoleState(p), c=bc(n.b);
+  var say=a.nm+', '+(n.sq>=0.05?'weight '+n.sq.toFixed(1):'nothing held')+', '+dualPoleStateWord(state)+'.';
+  return '<button type="button" class="amp-row" data-amp-i="'+a.i+'" aria-label="'+esc(say)+'">'
+   +'<span class="amp-nm">'+esc(a.nm)+'</span>'
+   +crBadge(n.b,p,{size:'sm',color:c,raw:n.sq.toFixed(1),glyph:NODE_STRIKE[state],title:a.nm+' · '+dualPoleStateWord(state)})
+   +'</button>';}).join('');
+ var wired=h.getAttribute('data-wired');
+ if(!wired){h.setAttribute('data-wired','1');
+  h.addEventListener('click',function(e){
+   var b=e.target.closest('[data-amp-i]'); if(!b)return;
+   var n=BY[+b.getAttribute('data-amp-i')]; if(n)runNodeDrill(n);});}}
 function renderGates(){
  var h=document.getElementById('gaterows'); if(!h)return;
  h.innerHTML=gatesBlock(null);
@@ -1510,7 +1557,7 @@ function renderGates(){
   g.innerHTML='<p class="ad-p" style="margin-top:10px">Nothing read yet. Write a line in the Journal and the gates fill in from it.</p>';
  }}
  wireKbJump();
- renderAcc(r); renderSpirit(); renderRootSum(); renderPol2(r); syncMx(); renderGates();
+ renderAcc(r); renderSpirit(); renderRootSum(); renderPol2(r); syncMx(); renderGates(); renderChainKey(); renderAmplifiers();
  /* the trace graph's block in the Field's side column, ui/loopread.js */
  if(typeof loopPaint==='function')loopPaint(r);
  /* the dock's circles move into their values rather than snapping, and only
