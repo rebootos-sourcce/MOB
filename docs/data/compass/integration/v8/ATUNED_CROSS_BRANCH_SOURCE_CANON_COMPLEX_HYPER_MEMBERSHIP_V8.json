@@ -1,0 +1,489 @@
+{
+  "schema": "ATUNED_CROSS_BRANCH_SOURCE_CANON_COMPLEX_HYPER_MEMBERSHIP_V8",
+  "date": "2026-10-28",
+  "purpose": "Recover and structurally validate two versioned SOURCE OS CANON membership rosters; no merge into runtime or assertion that owner-referenced eight ordinary Complexes are identical to these 23.",
+  "sources": [
+    {
+      "ref": "atuned/compass-foundation-closure-20261026",
+      "path": "vendor/reboot-os/canon.json",
+      "blobSha": "27a7a178de1e87252fa8e59554a66735dbeb0aed",
+      "version": "1.0.0",
+      "complexCount": 23,
+      "hyperCount": 8
+    },
+    {
+      "ref": "lookdev/canon-performer-hypercomplex-20261027",
+      "path": "vendor/reboot-os/canon.json",
+      "blobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "version": "1.0.1",
+      "complexCount": 23,
+      "hyperCount": 9
+    }
+  ],
+  "provenancePolicy": "Tags R/I are source-described governance labels, not independent evidence of behavior or automatic approval of cross-registry identity, user diagnosis or super-complex membership.",
+  "researchApproval": {
+    "canonicalCrossRegistryPromotions": 0,
+    "activeRuntimeEdgesCreated": 0,
+    "superComplexDefinitionsApproved": 0
+  },
+  "counting": {
+    "sourceSaboteurs": 33,
+    "complexRecords": 23,
+    "sourceTagRComplexes": 13,
+    "sourceTagIComplexes": 10,
+    "hyperComplexRecords": 9,
+    "sourceTagRHyper": 1,
+    "sourceTagIHyper": 8,
+    "complexToSaboteurMemberships": 64,
+    "hyperToComplexMemberships": 24,
+    "allSourceMemberships": 88,
+    "unresolvedMemberReferences": 0,
+    "sourceVersionDelta": "One additional I-tagged The Performer hyper-complex in version 1.0.1",
+    "ownerEightComplexListMatched": false,
+    "sixHyperFamilyTemplateTaxonomyMatched": false
+  },
+  "complexes": [
+    {
+      "sourceIndex": 0,
+      "sourceName": "Dominance Enforcement",
+      "sourceTier": "complex",
+      "sourceTag": "R",
+      "memberSaboteurNames": [
+        "Controller",
+        "Judge"
+      ],
+      "sourceNote": "Named in the malignant narcissism trace.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 1,
+      "sourceName": "Blame Displacement",
+      "sourceTier": "complex",
+      "sourceTag": "R",
+      "memberSaboteurNames": [
+        "Aggressor",
+        "Deflector"
+      ],
+      "sourceNote": "Named in the malignant narcissism trace.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 2,
+      "sourceName": "Superiority-Persecution",
+      "sourceTier": "complex",
+      "sourceTag": "R",
+      "memberSaboteurNames": [
+        "Hyper-Achiever",
+        "Victim"
+      ],
+      "sourceNote": "Named in the malignant narcissism trace. Victim runs split.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 3,
+      "sourceName": "Narcissistic",
+      "sourceTier": "complex",
+      "sourceTag": "R",
+      "memberSaboteurNames": [
+        "Controller",
+        "Hyper-Achiever",
+        "Judge"
+      ],
+      "sourceNote": "Lance dictated: entitlement, justification, comparison, judgment. Four nodes, three of them addressed.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 4,
+      "sourceName": "Machiavellian Tactics",
+      "sourceTier": "complex",
+      "sourceTag": "R",
+      "memberSaboteurNames": [
+        "Manipulator",
+        "Skeptic"
+      ],
+      "sourceNote": "Rebel removed, ruled a Jungian archetype.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 5,
+      "sourceName": "Antisocial",
+      "sourceTier": "complex",
+      "sourceTag": "R",
+      "memberSaboteurNames": [
+        "Aggressor",
+        "Deflector"
+      ],
+      "sourceNote": "Rebel removed.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 6,
+      "sourceName": "Oscillation",
+      "sourceTier": "complex",
+      "sourceTag": "R",
+      "memberSaboteurNames": [
+        "Dramatizer",
+        "Restless",
+        "Victim"
+      ],
+      "sourceNote": "Filed as Bipolar in the March table.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 7,
+      "sourceName": "Abandonment Reactivity",
+      "sourceTier": "complex",
+      "sourceTag": "R",
+      "memberSaboteurNames": [
+        "Victim",
+        "People-Pleaser",
+        "Imposter"
+      ],
+      "sourceNote": "Filed as BPD.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 8,
+      "sourceName": "Rigidity",
+      "sourceTier": "complex",
+      "sourceTag": "R",
+      "memberSaboteurNames": [
+        "Stickler",
+        "Perfectionist",
+        "Hyper-Vigilant"
+      ],
+      "sourceNote": "Filed as OCPD.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 9,
+      "sourceName": "Attention Seeking",
+      "sourceTier": "complex",
+      "sourceTag": "R",
+      "memberSaboteurNames": [
+        "Dramatizer",
+        "People-Pleaser",
+        "Dreamer"
+      ],
+      "sourceNote": "Filed as Histrionic.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 10,
+      "sourceName": "Threat Scanning",
+      "sourceTier": "complex",
+      "sourceTag": "R",
+      "memberSaboteurNames": [
+        "Worrywart",
+        "Hyper-Vigilant",
+        "Avoider"
+      ],
+      "sourceNote": "Filed as Anxiety Disorders.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 11,
+      "sourceName": "Collapse",
+      "sourceTier": "complex",
+      "sourceTag": "R",
+      "memberSaboteurNames": [
+        "Victim",
+        "Pessimist",
+        "Loner"
+      ],
+      "sourceNote": "Filed as Depression.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 12,
+      "sourceName": "Scatter",
+      "sourceTier": "complex",
+      "sourceTag": "R",
+      "memberSaboteurNames": [
+        "Restless",
+        "Dreamer",
+        "Imposter"
+      ],
+      "sourceNote": "Filed as ADHD.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 13,
+      "sourceName": "Anticipatory Freeze",
+      "sourceTier": "complex",
+      "sourceTag": "I",
+      "memberSaboteurNames": [
+        "Overthinker",
+        "Procrastinator",
+        "Avoider"
+      ],
+      "sourceNote": "Negative Affectivity cluster. Anxiousness, perseveration and withdrawal co-load in PID-5. The saboteurs that stall before motion.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 14,
+      "sourceName": "Catastrophic Bracing",
+      "sourceTier": "complex",
+      "sourceTag": "I",
+      "memberSaboteurNames": [
+        "Catastrophizer",
+        "Worrywart",
+        "Hyper-Vigilant"
+      ],
+      "sourceNote": "Negative Affectivity at the high end. Fear 6 to 10 across all three profiles. The body already at the worst outcome.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 15,
+      "sourceName": "Meaning Withdrawal",
+      "sourceTier": "complex",
+      "sourceTag": "I",
+      "memberSaboteurNames": [
+        "Nihilist",
+        "Cynic",
+        "Pessimist"
+      ],
+      "sourceNote": "Detachment spectrum. Anhedonia plus restricted affectivity. All three are disgust-plus-sadness profiles.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 16,
+      "sourceName": "Retreat",
+      "sourceTier": "complex",
+      "sourceTag": "I",
+      "memberSaboteurNames": [
+        "Loner",
+        "Escapist",
+        "Dreamer"
+      ],
+      "sourceNote": "Detachment. Withdrawal and intimacy avoidance. Leaving the room, by distance or by fantasy.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 17,
+      "sourceName": "Cold Analysis",
+      "sourceTier": "complex",
+      "sourceTag": "I",
+      "memberSaboteurNames": [
+        "Hyper-Rational",
+        "Skeptic",
+        "Judge"
+      ],
+      "sourceNote": "Detachment crossing into Antagonism. Restricted affectivity plus callousness. Judgement with the feeling switched off.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 18,
+      "sourceName": "Self-Erasure",
+      "sourceTier": "complex",
+      "sourceTag": "I",
+      "memberSaboteurNames": [
+        "Pleaser",
+        "People-Pleaser",
+        "Enabler"
+      ],
+      "sourceNote": "Other-directedness. Subjugation, self-sacrifice and approval seeking are one schema domain. The self traded for the bond.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 19,
+      "sourceName": "Sacrificial Ledger",
+      "sourceTier": "complex",
+      "sourceTag": "I",
+      "memberSaboteurNames": [
+        "Martyr",
+        "Victim",
+        "Enabler"
+      ],
+      "sourceNote": "Other-directedness with resentment. Self-sacrifice that keeps an account. Giving as a claim.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 20,
+      "sourceName": "Exploitation",
+      "sourceTier": "complex",
+      "sourceTag": "I",
+      "memberSaboteurNames": [
+        "Manipulator",
+        "Aggressor",
+        "Deflector"
+      ],
+      "sourceNote": "Antagonism core. Manipulativeness, deceitfulness and callousness are one PID-5 domain and the D factor explains most of their shared variance.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 21,
+      "sourceName": "Standard Enforcement",
+      "sourceTier": "complex",
+      "sourceTag": "I",
+      "memberSaboteurNames": [
+        "Perfectionist",
+        "Stickler",
+        "Judge"
+      ],
+      "sourceNote": "Rigid perfectionism plus punitiveness. The schema domain of unrelenting standards, pointed outward.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 22,
+      "sourceName": "Imposture",
+      "sourceTier": "complex",
+      "sourceTag": "I",
+      "memberSaboteurNames": [
+        "Imposter",
+        "Deflector",
+        "Overthinker"
+      ],
+      "sourceNote": "Shame at 5 to 7 with concealment. Defectiveness schema plus a coping loop of hiding.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    }
+  ],
+  "hyperComplexes": [
+    {
+      "sourceIndex": 0,
+      "sourceName": "Malignant Narcissism",
+      "sourceTier": "hyper_complex",
+      "sourceTag": "R",
+      "memberComplexNames": [
+        "Narcissistic",
+        "Antisocial"
+      ],
+      "sourceNote": "The only hyper-complex with a written composition anywhere in the corpus.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 1,
+      "sourceName": "Sociopathy",
+      "sourceTier": "hyper_complex",
+      "sourceTag": "I",
+      "memberComplexNames": [
+        "Narcissistic",
+        "Cold Analysis"
+      ],
+      "sourceNote": "Lance dictated: narcissism plus lack of empathy. Cold Analysis is the empathy-off cluster. Kernberg-adjacent, not a DSM entity.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 2,
+      "sourceName": "Psychopathy",
+      "sourceTier": "hyper_complex",
+      "sourceTag": "I",
+      "memberComplexNames": [
+        "Narcissistic",
+        "Antisocial",
+        "Exploitation"
+      ],
+      "sourceNote": "Lance dictated: sociopath plus willingness to see others harmed. The D factor explains 92 percent of common variance in psychopathy.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 3,
+      "sourceName": "Machiavellianism",
+      "sourceTier": "hyper_complex",
+      "sourceTag": "I",
+      "memberComplexNames": [
+        "Machiavellian Tactics",
+        "Dominance Enforcement"
+      ],
+      "sourceNote": "Strategy plus control. Note the literature finds Machiavellianism nearly redundant with psychopathy once D is partialled.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 4,
+      "sourceName": "Megalomania",
+      "sourceTier": "hyper_complex",
+      "sourceTag": "I",
+      "memberComplexNames": [
+        "Narcissistic",
+        "Dominance Enforcement",
+        "Superiority-Persecution"
+      ],
+      "sourceNote": "Lance: malignant base plus superiority complex, grandiosity without the insecurity underneath. Not a research construct in the literature.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 5,
+      "sourceName": "Malignant Grandiosity",
+      "sourceTier": "hyper_complex",
+      "sourceTag": "I",
+      "memberComplexNames": [
+        "Narcissistic",
+        "Superiority-Persecution",
+        "Blame Displacement"
+      ],
+      "sourceNote": "Grandiosity that cannot absorb a consequence. Every failure displaced.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 6,
+      "sourceName": "Dark Triad",
+      "sourceTier": "hyper_complex",
+      "sourceTag": "I",
+      "memberComplexNames": [
+        "Narcissistic",
+        "Machiavellian Tactics",
+        "Antisocial"
+      ],
+      "sourceNote": "Super-complex in Lance's terms. The D factor literature finds one core, not three, which supports treating it as a single object.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 7,
+      "sourceName": "Persecutory Collapse",
+      "sourceTier": "hyper_complex",
+      "sourceTag": "I",
+      "memberComplexNames": [
+        "Collapse",
+        "Abandonment Reactivity",
+        "Sacrificial Ledger"
+      ],
+      "sourceNote": "The internalizing counterpart. HiTOP internalizing spectrum, distress subfactor. The severe end that is not antagonistic.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    },
+    {
+      "sourceIndex": 8,
+      "sourceName": "The Performer",
+      "sourceTier": "hyper_complex",
+      "sourceTag": "I",
+      "memberComplexNames": [
+        "Narcissistic",
+        "Exploitation",
+        "Superiority-Persecution"
+      ],
+      "sourceNote": "Chapter 17, the book's own name: the Creative Industry Hyper-Complex. Entitlement fused with deception fused with superiority, its own three parts, mapped here to Narcissistic (entitlement), Exploitation (deceitfulness) and Superiority-Persecution. The high-performing, articulate, past-achievement-reliant profile, truth-bending as a management strategy. The book calls it a hyper-complex by name; canon.json had no record of it before this entry.",
+      "canonPromotionFromThisAudit": false,
+      "runtimeUseFromThisAudit": false
+    }
+  ]
+}

@@ -34,6 +34,20 @@ assert(review.schema==='ATUNED_UNAPPROVED_SEMANTIC_DECISION_QUEUE_V8'&&review.de
 assert(review.counts.total===30&&review.counts.approved===0&&l.adjudicationQueue.items===30&&l.adjudicationQueue.approved===0,'queue counts incorrect');
 assert(review.decisions.every(x=>!x.approved&&x.selected===null&&x.doesNotChangeRuntime===true),'unapproved relationship falsely promoted');
 assert(new Set(review.decisions.map(x=>x.id)).size===30,'duplicate decision IDs');
+const membership=read('docs/data/compass/integration/v8/ATUNED_CROSS_BRANCH_SOURCE_CANON_COMPLEX_HYPER_MEMBERSHIP_V8.json');
+const baseCanon=read('vendor/reboot-os/canon.json');
+assert(membership.schema==='ATUNED_CROSS_BRANCH_SOURCE_CANON_COMPLEX_HYPER_MEMBERSHIP_V8','membership schema');
+assert(baseCanon.meta.version==='1.0.0'&&baseCanon.registers.complexes.length===23&&baseCanon.registers.hyper_complexes.length===8,'base Canon unexpectedly changed');
+assert(membership.counting.complexRecords===23&&membership.counting.hyperComplexRecords===9&&membership.counting.allSourceMemberships===88,'Canon source count');
+assert(membership.sources[0].blobSha==='27a7a178de1e87252fa8e59554a66735dbeb0aed'&&membership.sources[1].blobSha==='614f28d31461c0226f1905266f2ee056bbb05fe0','source provenance mismatch');
+assert(membership.complexes.length===23&&membership.hyperComplexes.length===9,'member list sizes');
+const sabNames=new Set(baseCanon.registers.saboteurs.map(x=>x[0]));
+const cnames=new Set(membership.complexes.map(x=>x.sourceName));
+assert(membership.complexes.every((x,i)=>x.sourceName===baseCanon.registers.complexes[i][0]&&x.memberSaboteurNames.every(y=>sabNames.has(y))),'complex to saboteur membership invalid');
+assert(membership.hyperComplexes.every(x=>x.memberComplexNames.every(y=>cnames.has(y))),'hyper to complex membership invalid');
+assert(membership.hyperComplexes.slice(0,8).every((x,i)=>x.sourceName===baseCanon.registers.hyper_complexes[i][0]),'base hyper member drift');
+assert(membership.hyperComplexes[8].sourceName==='The Performer'&&membership.hyperComplexes[8].sourceTag==='I','branch-only Performer not properly classified');
+assert(membership.researchApproval.canonicalCrossRegistryPromotions===0&&membership.researchApproval.activeRuntimeEdgesCreated===0&&l.newlyLocatedCrossBranchCanon.ownerEightListUnresolved,'unapproved source promotion');
 const metrics={pass:true,meaning:'All documented closure gates remain honestly OPEN; this is NOT 100% certification',gatesOpen:l.gates.length,sourceBranchesAudited:l.sourceAudit.branchCountInspected,extraCandidateRecordsLocated:l.newlyLocatedCrossBranchSource.sourceRecords,graphNodes:g.nodes.length,graphEdges:g.edges.length,exactSourceDefinitionsOutstanding:19,weightedReadiness:l.readinessBaseline.weightedOverall,runtimeChanges:0};
 console.log(JSON.stringify(metrics,null,2));
 }catch(e){console.error('V8 FAIL: '+e.message);process.exitCode=1}

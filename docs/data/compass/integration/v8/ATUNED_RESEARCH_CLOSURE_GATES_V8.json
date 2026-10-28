@@ -170,5 +170,22 @@
     "approved": 0,
     "open": 30,
     "runtimeChanges": 0
+  },
+  "newlyLocatedCrossBranchCanon": {
+    "path": "docs/data/compass/integration/v8/ATUNED_CROSS_BRANCH_SOURCE_CANON_COMPLEX_HYPER_MEMBERSHIP_V8.json",
+    "workingVersion": "1.0.0",
+    "candidateBranchVersion": "1.0.1",
+    "candidateBranch": "lookdev/canon-performer-hypercomplex-20261027",
+    "sourceVersionBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+    "complexSourceRecords": 23,
+    "hyperSourceRecords": 9,
+    "membershipReferences": 88,
+    "missingMemberNames": 0,
+    "sourceGovLabelRComplex": 13,
+    "sourceGovLabelIComplex": 10,
+    "sourceGovLabelRHyper": 1,
+    "sourceGovLabelIHyper": 8,
+    "runtimePromotions": 0,
+    "ownerEightListUnresolved": true
   }
 }
