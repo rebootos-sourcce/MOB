@@ -37,6 +37,8 @@ jobs:
         run: node docs/data/compass/gameboard/v1/validate_gameboard.cjs
       - name: Validate V8 source recovery ledger and reject false 100 percent closure
         run: node docs/data/compass/integration/v8/validate_closure_gates_v8.cjs
+      - name: Validate V9 all-branch source audit and older-version nonpromotion boundary
+        run: node docs/data/compass/integration/v9/validate_v9_source_scan.cjs
       - name: Report static instance IDs and outstanding acceptance gates
         run: |
           node - <<'NODE'

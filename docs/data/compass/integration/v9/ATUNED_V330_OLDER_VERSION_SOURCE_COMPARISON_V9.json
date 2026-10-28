@@ -1,0 +1,69 @@
+{
+  "schema": "ATUNED_V9_OLDER_VERSION_SOURCE_COMPARISON",
+  "date": "2026-10-28",
+  "artifact": "MOB_Complete_v330.html",
+  "origin": "Project Library file materialized for this review",
+  "bytes": 16374395,
+  "sha256": "1d71431eb3125cd661e74310b296d5812b0b79f2b7e3bd9e44ed9daeda569469",
+  "isV341": false,
+  "sourceQualifiers": [
+    "OLDER_VERSION_EXACT_BYTES_VERIFIED",
+    "NOT_EXACT_V341",
+    "NO_AUTOMATIC_CANON_PROMOTION"
+  ],
+  "selectedFindings": [
+    {
+      "heading": "The Stack Below Awareness",
+      "sourceClaim": "The source states Fetters combine into Saboteurs; Saboteurs into Complexes; Complexes into Hyper-Complexes and then into the Super-Complex or Character.",
+      "contentStatus": "OLDER_VERSION_OBSERVED",
+      "behaviorStatus": "SOURCE_MODEL_NOT_VALIDATED_CLINICAL",
+      "membershipList": false
+    },
+    {
+      "heading": "The Somatic Psychology Stack",
+      "sourceClaim": "A source passage explicitly rejects treating a native archetype and acquired Super-Complex as components of the same composition rule; it says a Mask is an output, not an additional rung.",
+      "contentStatus": "OLDER_VERSION_OBSERVED",
+      "membershipList": false
+    },
+    {
+      "heading": "The Stacking Architecture",
+      "sourceClaim": "The source calls The Performer the Creative Industry Hyper-Complex and describes a fusion of entitlement, deception and superiority.",
+      "contentStatus": "OLDER_VERSION_OBSERVED",
+      "ownerApprovalForRuntime": false
+    },
+    {
+      "heading": "The Stacking Architecture",
+      "sourceClaim": "Older source mentions Narcissism, Sociopath, Psychopath, Megalomania/Grandiosity and Machiavellianism with a progressive structural story. These are author-text categories, not clinical diagnoses.",
+      "contentStatus": "OLDER_VERSION_OBSERVED",
+      "sameAsCurrentCanon": false
+    }
+  ],
+  "negativeFindings": [
+    {
+      "query": "eight complexes / eight complex / 8 complexes",
+      "result": "NO_LITERAL_MATCH_IN_MATERIALIZED_V330",
+      "meaning": "Cannot establish owner-referenced eight ordinary Complex names from this version."
+    }
+  ],
+  "currentCanonComparison": {
+    "source": "vendor/reboot-os/canon.json",
+    "branches": [
+      "atuned/compass-foundation-closure-20261026",
+      "lookdev/canon-performer-hypercomplex-20261027"
+    ],
+    "versionCounts": {
+      "1.0.0": {
+        "complex": 23,
+        "hyper": 8
+      },
+      "1.0.1": {
+        "complex": 23,
+        "hyper": 9
+      }
+    },
+    "versionSpecificConflict": "The eight-Complex owner request does not match the currently recovered 23 Complex names. Preserve distinct taxonomies until source and owner decision.",
+    "newlySupportedOlderSourceName": "The Performer",
+    "sourceVerifiedDoesNotMeanRuntimeIntegrated": true
+  },
+  "requiredNextEvidence": "Recover matching raw v341 bytes for exact definitions; identify Canon version authority and explicit eight-Complex list; resolve author-approved Super-Complex membership."
+}

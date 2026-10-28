@@ -1,0 +1,1047 @@
+{
+  "schema": "ATUNED_V9_ALL_BRANCH_HEAD_SOURCE_PATH_AUDIT",
+  "date": "2026-10-28",
+  "repo": "rebootos-sourcce/MOB",
+  "totalBranchHeads": 201,
+  "scanScope": "201 current branch HEAD recursive Git tree path inventories queried in 12 GitHub tool batches, each using pinned commit SHA. Prior V8 subset is superseded for branch-head pathname coverage. This is NOT every historical git object, past attachment or unrelated repo.",
+  "searchedPatterns": [
+    "exact basename MOB_Complete_v341.html",
+    "MOB_Complete_v340 through v349 basename",
+    "filename containing inferno + original / archive in either order"
+  ],
+  "result": {
+    "exactV341FilenameFound": 0,
+    "v340toV349FilenameFound": 0,
+    "infernoOriginalOrArchiveFilenameFound": 0,
+    "gitTreeTruncations": 0,
+    "branchTreeFetchErrors": 0,
+    "sourceProof": "All 201 returned HEAD trees inspected without truncation; no relevant path match. Inferno v1 research documentation does exist but is not original archive."
+  },
+  "branchRefs": [
+    {
+      "branch": "alpha/p0-quiz-journey-repair-20261010",
+      "commitSha": "7caa08ec5f29f1a5f8f7378636eb204010814c93",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "alpha/p0-release-save-accuracy-20261010",
+      "commitSha": "d9119ffacdf622bb52e664d1bfe14eba005a4836",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "archetype-chakra-style",
+      "commitSha": "eef38c157a13078e5d75ffb11716a0474aafa1ef",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "atunED/inferno-38-template-normalization-2026-10-25",
+      "commitSha": "ddefb20bd10713f41ae2907be3d41ca80a79626e",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "atunED/paradiso-compass-map-v0-2026-10-25",
+      "commitSha": "b46558ad9d72e75f28ccd038a2e837e8ccc1174e",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "atunED/purgatorio-oscillation-v1-2026-10-25",
+      "commitSha": "4668abc5b9eaca12ffe94811c4faed4ca9236ac2",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "atunED/teachers-poles-ascent-alpha-2026-10-25",
+      "commitSha": "0a307ebce099f14720144d00d3566e647798d792",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "atuned/compass-foundation-closure-20261026",
+      "commitSha": "dd0b41ced4abfc04182f1151939f708d3dce482f",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "atuned/deep-psyche-end-to-end-2026-10-26",
+      "commitSha": "d1fa5876367d6d90ac68cd35d323526f3f1dbc83",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "atuned/deep-psyche-kpi-closure-2026-10-24",
+      "commitSha": "364090e26b7cd2d987cbb445ca2e16648186be01",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "atuned/mvp-alpha-recursive-execution",
+      "commitSha": "a682ceaae68e1a2575d8fa1289f8b6c0ce3ee441",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "audit/behavioral-coverage-2026-10-18",
+      "commitSha": "cc961b4b9b3ba28c059adb742318768f20125bd9",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "audit/fetter-saboteur-simulation-plan-2026-10-18",
+      "commitSha": "0fe5d9ac2abf6f9d2a1310cec9d510d2678e1e6b",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "ax8-vritti-fix",
+      "commitSha": "e544c287ed3c5c919260393f5106101c15b77ebf",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "build/atuned-alpha-20261013",
+      "commitSha": "a47fe148e92cf6e628c0a128a09cb58c47dde9de",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "char-torus-merge2",
+      "commitSha": "93352f09d496c42717b9ceb601f6d7a64995237e",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "char-torus-tests",
+      "commitSha": "cf8aae09622fb1fc548566353e5161c3cf733603",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claims-gate-real",
+      "commitSha": "7302e1d4f63df065ed6692869ea9ca823899361d",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/achievements-mockups",
+      "commitSha": "bd862a9f421c15f536bec2083992776a5b0922a0",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/allowance-fixes",
+      "commitSha": "a63f61aa791f03056e735e40e4ba4400e8dc3aaa",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/analytics-drilldown-rb",
+      "commitSha": "1f32a75bb54f0a20cca024e86eabc30c5ca52efa",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/archetype-expression",
+      "commitSha": "3de490cacb406f4f4b002eaa8d8ba541b91cb301",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/block0-baseline",
+      "commitSha": "bee8bb864ea4bece2727e0c3202edf3c973bcf1a",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/block1",
+      "commitSha": "843adea3a6ae797a63b08d0a19745c3950f6a2e2",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/block2a-lean",
+      "commitSha": "617a929cc8d9f4694df0cf09f543d80d1fdc71c6",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/branch-cleanup",
+      "commitSha": "71076137bed9c8767451475f41cc0fb230da9f3a",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/cloudflare-inspect",
+      "commitSha": "662c71906728c564044afdfd231dc2857b28cadb",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/compass-thirteen-rb",
+      "commitSha": "2b1e7cfd42ac64f774891f559fc32adea10eef12",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/copy-delivery-fixes",
+      "commitSha": "cf20a9d8191344b3625ffff323fe82f13cd61b35",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/copy-unpack-sweep",
+      "commitSha": "d9c27ba5fe01fdd4ad8b1adbfc1bbb5b0d9b12db",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/decisions-16-oct",
+      "commitSha": "74a867b869b6de08c4c132b9284658d8eb9a0495",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/decisions-personas-decide",
+      "commitSha": "55fc6e45ace155703447b2f1f4fab31d811577d0",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/discord-feedback",
+      "commitSha": "ae2394bac75724bee73c31e52ee8c1e3496c88bd",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/emmy-context-rule",
+      "commitSha": "6238a7c4a38d031de257b9b317a416281a566f73",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/emmy-install",
+      "commitSha": "2313d8cf021b8439cdefad632d3e0f75af869e37",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/engine-honest-readings",
+      "commitSha": "40dc1298105d7236a4025d7d151ee78da98d568c",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/examples-show-only",
+      "commitSha": "426a635904163f11e173f532254e2cdcf1942216",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/feedback-probe",
+      "commitSha": "0cafda7a0ed9f3ed5ae1e2a55f6b260de5dcb394",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/field-rail-sweep-rz",
+      "commitSha": "93bfb18dc376b63834b121da7d447ba94fea1efd",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/field-stage-390-overlap",
+      "commitSha": "d7e885803f8442883825ed0f83c2cb602c5d9a8f",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/first-visit-guard",
+      "commitSha": "85aeb807ad299356ab2778adf597e8d89eef464b",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/first-visit-signout",
+      "commitSha": "3208c163f2274d0a3ae0f96eddab589eec170e71",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/funnel-continuity-1",
+      "commitSha": "ed2475472b7eef21e5b7f1bfc5a60174b848513b",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/funnel-copy-round-rv",
+      "commitSha": "9eafde42285b5fdcaf0d1da34d6083a6e624075d",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/funnel-creative-direction-rd",
+      "commitSha": "80cefe5ae8f739847dee07de8ddd2a1ca7893c6d",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/funnel-header-round-sa",
+      "commitSha": "ae51cec3f2468c3354092e78473f4320fb119b85",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/funnel-signal-test",
+      "commitSha": "5114930565a069fd6a59272a442d72247073d4c6",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/funnel-tdd-build",
+      "commitSha": "0c24409e73249a3ecb4db82b0b7e69bb6991a275",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/gates-coverage",
+      "commitSha": "abe8553c1da216dbb5d7f4ab016e96f4a0a0d622",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/gift-bank-anxiety",
+      "commitSha": "3a2a077a8645a0f0333f5fc2b5f14b3bcddfab93",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/gift-banks-2",
+      "commitSha": "5b26ca28b2c809f83b8dfcb289da05c3a59eacf0",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/gift-shows-everything",
+      "commitSha": "2b72aab79f3d646fbbe8e7e3de6231914306ac88",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/golden-account-delete-dev7",
+      "commitSha": "1a3aa78bd28c3b8df2c24431da8ff354260cea48",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/golden-g0",
+      "commitSha": "b74e8993cfd5fb26e2e47657f8b0bd105c4638fa",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/handoff-2026-10-15",
+      "commitSha": "121895979c5774b3a359d591b45f721b8420d56d",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/handoff-close",
+      "commitSha": "3f3ace6a8ad0beaeda8b47f96f3a2e309872c95d",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/handoff-docs",
+      "commitSha": "36280ddc088bd98cd0de9fc06bbe98cc15678c65",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/inspect-hand-start",
+      "commitSha": "34e8ef258a77740c22c61b542304a66253542f8a",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/intake-archetype-nest",
+      "commitSha": "d37fd2310efc6f595fb00e0db7936070586b0283",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/kind-bardeen-8r7vse",
+      "commitSha": "90b3c3249aa95b7f2de7eea0598033f8484619bf",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/land-summary",
+      "commitSha": "b7ffde93d861dea64d1fba7ff39860e49787511c",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/laughing-feynman-xhfyj3",
+      "commitSha": "999476cf2b092394e253e6ae75cf82ce407f0e3c",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/legal-pages",
+      "commitSha": "685970e550929a56c91a36022d8656c62963e4e6",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/little-books-review-k7az9s",
+      "commitSha": "e98a057859fb97dbe35fd58a20d944dd29db587d",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/live-test-counts-in-readme-dev7",
+      "commitSha": "74ec5ed9b34926bf28139efa4450c6d83398b67d",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/matrix-strategy",
+      "commitSha": "84474b9514cbc835a3e465ef60011d703ec5e2d7",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/modest-franklin-yzh2ta",
+      "commitSha": "3051a4ae8a56cc0976ab809d87e3be2c361b5e7e",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/move-energetic-summary-left",
+      "commitSha": "aaa7069b886cde97fb9aa4fd8663311f9bc2ed76",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/onboard-copy-arrive-fix",
+      "commitSha": "1122e9dde1c04fe71db40c3adf0363a353940dc3",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/onboard-skip-on-import",
+      "commitSha": "5caf50f136c640948b4d3d35e79f8da83dd5afd5",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/optimistic-darwin-rhld2j",
+      "commitSha": "1705277da6a0fb051a93950a53de1eb05330dbb0",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/p0-team-items",
+      "commitSha": "95765bd0f4c50cce3f52bb93b4847de87eb21e8d",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/p1-batch1",
+      "commitSha": "dc58a76ef87ba330ca4f556a357c5ccf0cc22069",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/p1-batch2",
+      "commitSha": "0029d5e8b7aa140d461afc72865e8d7eedeebe21",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/p1-ci-gates",
+      "commitSha": "96048f1c37127033b36ea0d2b482361b74ec1b87",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/p1-int",
+      "commitSha": "08b5c93a9f069bd27b4dd14ffd00f51c0ae58090",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/p1-no-raw-decimals",
+      "commitSha": "f46f50313fd48de0ac54aeb80192c1b58cc7480e",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/p1a-sniffer",
+      "commitSha": "2bf5cc5a6a1525997d9c1bd6cc786b2e5c4cacaa",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/p1d-fixes",
+      "commitSha": "acbfd105f42f6f97ef17978875013fd73c947598",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/p1g-red",
+      "commitSha": "918990d5dc9d908edea3d3320fb4f15ffac32902",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/p3-heads",
+      "commitSha": "425f6c464bf7daac65c75530161aa2a1c9915e67",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/p3-int",
+      "commitSha": "c32cd846c44ccc72add830f1ee871b65fa15aa11",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/p3-menu",
+      "commitSha": "53e9e2e1d31cd55e93828d17398e58ef1a7bfac1",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/p3-rail",
+      "commitSha": "43af7b5feeec653a013f8ee885cba81a016995e5",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/p3-sound",
+      "commitSha": "f0899e0550093e75fbd1a6181eedf1176dd930cd",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/patterns-follow-money",
+      "commitSha": "c6457623912f1cb52abe06f36eacfbd8742b2cd1",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/paywall-build",
+      "commitSha": "6d5d39ff12fdf827070aedb855d429b68cbdd196",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/paywall-fix-rb",
+      "commitSha": "1ca99ba657f9065d077526b8bf8a89c4551d1f61",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/paywall-journey",
+      "commitSha": "2523ef8d3a6da163366c381715d553a1581b30a9",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/paywall-mockups",
+      "commitSha": "01a6750a77c480b0027518152b657c3380d7a501",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/paywall-storyboard",
+      "commitSha": "1bbe3a02ba54d7af336066f39c58e240abb576fd",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/percent-framework",
+      "commitSha": "ed39965a55fa5d05529abac29fecb96be24af0b3",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/percent-phase-2",
+      "commitSha": "f82827583bf57d89d5cd92644602890dfd3f828b",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/percent-phase-2-s2",
+      "commitSha": "2b71f18b51651b7d61a1ab2164a994614b25a4b2",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/percent-phase-2-s3",
+      "commitSha": "3950ce4ae26472170a66162232eb4c93b1320e5d",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/percent-phase-2-s4",
+      "commitSha": "e67831a10e5a64bb8677fad413e3ce6b5704e611",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/percent-phase-2-s5",
+      "commitSha": "9f24400a4d6297cef599283b9414bfb57435bbcc",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/pin-ubuntu-24",
+      "commitSha": "c2694f765b045e5bab05469d7885e7ee0b4c32c4",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/practitioner-mode-rb",
+      "commitSha": "aa4bd2b78c55df475478387bdfaefdd5693b526a",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/profile-sync-off-alpha-dev7",
+      "commitSha": "95e1938dfac0b87ba218f9aefb90b7cc4ab590d9",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/quirky-pasteur-cpog96",
+      "commitSha": "d53e175305bc0447ad5deffeeb00c87a8d4ea9ae",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/rb-character-aura",
+      "commitSha": "6bc5e540176e1f4c5b73659284cf086c88ba40db",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/rb-field-rail-bars",
+      "commitSha": "3e14b17cc48c160fe040bbb4d390166650443dcb",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/record-gate-ci",
+      "commitSha": "7f044e9da63c22eff7470f558809380ca2c62d83",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/record-tells-truth",
+      "commitSha": "3b41c2c2c468dd5579b700562e25e247159b280e",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/release-chain-fix",
+      "commitSha": "022b31ca27bd1a0939588f5a36221b70453eca1a",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/release-mockups",
+      "commitSha": "06d03dd35879835c3dc7d0eb2f11256e3e270792",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/round-rb-avatar-summary-knowledge",
+      "commitSha": "dd060f0a2b2b96ae6a6d863020f019e14176fce2",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/round-rf-summary-flow",
+      "commitSha": "3edcd0712cbb86c3bc0b5fd90a4c46b128db3158",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/saboteur-cards-round-sb",
+      "commitSha": "aad6f75f303521baa188e20b56af896065aad020",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/safety-words",
+      "commitSha": "f746b87664291a114023b0a3e9b1c462b2381b5d",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/sound-gate-stateful-waits-dev7",
+      "commitSha": "43e1974997fb973a9c74f60ec65463c529caf50b",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/stabilize",
+      "commitSha": "da0e5384ee3fa278d17272c29aa618978e29e04d",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/stripe-go-live-switch-dev7",
+      "commitSha": "e83ed06ddb4b130f924a6019ecd121e98fff58cb",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/sweet-ptolemy-p0pkgw",
+      "commitSha": "0c4ff6d6358aeff70c287034fe3be7c614fa4769",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/tdd-funnel-audit-tomas",
+      "commitSha": "45860b5a01d13d4ce935eb01a2378dd3d16f9e49",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/tier-four-is-practitioner",
+      "commitSha": "92e25b7a2ed5dcc69a9aad4317868f7c344934a1",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/tone-reload-cause",
+      "commitSha": "758fbed0a4595db1710678879ff1bf498748c073",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/tutorial-feeling-words",
+      "commitSha": "8421285dc7b3298a684d126ead7c4723a05cd6d3",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/voice-only",
+      "commitSha": "e990e89f342587a14c2c9ca4d4e5d14d880c0c77",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/welcome-crisis-and-words",
+      "commitSha": "331a66c60b697ae4f56c61c847c907cbf3f3615a",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "claude/wire-law-sniffer-story",
+      "commitSha": "8c904e36942e9f91402dce014b24c47607e04d1b",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "codex/energy-body-model-v1",
+      "commitSha": "f0c29539bd16eb43c8ba939729d577a6507e634f",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "cq-intention-trace-graph-20261028",
+      "commitSha": "9014256fe82ceb56da3fb985d4f17764075a40e6",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "daily-summary-ui",
+      "commitSha": "91afce762eff43aad2c88ccf8a89bf17250b1b3f",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "dev7/p0-alpha-gates-20261010",
+      "commitSha": "74279113003ca02c3675be04cf8d7bff651008b9",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "dev7/p0-alpha-gates-integrated-20261010",
+      "commitSha": "d13bec0803e15baf4c7b278c72735942f0495a71",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "dev7/p0-atomic-release-save",
+      "commitSha": "d040f3fdd33675439190bdbe99e9c5ad50765543",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "dev7/p0-integrated-alpha-check-20261010",
+      "commitSha": "53fa3549202e731031c0d2be100cf1566d8d082d",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "dev7/p0-quiz-first-visit-session",
+      "commitSha": "cb3fa5aef537246964758c6bce32aea6cadb27e5",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "dev7/p1-import-identity-20261010",
+      "commitSha": "fd148e4065a85c99e3bbf28170d3810a6c303d4b",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "dev8/development-log-20261010",
+      "commitSha": "47b487dde8c3ff5892617d8f5af359942fabdf0b",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "dev9/executive-handshake-20261011",
+      "commitSha": "4f2e0f9703b25b41e7d52983b65e7a5d59503a10",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "docs/agreements-readiness-20261011",
+      "commitSha": "5e501f04c44ee42113becbc603ea14edd4dfd0bc",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "docs/atuned-master-index-20261012",
+      "commitSha": "9547523cc383997ee81b3da3924ab20283c7dc9e",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "docs/coordination",
+      "commitSha": "f439456c6d4e5e0f229df54734e811bf72c20ad7",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "docs/execute-dont-stop-ruling",
+      "commitSha": "066da77f124f7d1ad62e46cc7040d3c9fb020744",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "docs/owner-dictation-notes",
+      "commitSha": "a33dc1d4083fc4a1849d75dce29b8c6f2f4ab918",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "docs/p0-alpha-gate-final-status-20261011",
+      "commitSha": "6aa8f9c8ef01fb002eccdd0e780c8306ab73b4af",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "docs/p0-gift-approval-contract-20261013",
+      "commitSha": "7922b2ad51ca52901e3e11fa9cab38033c7d5e19",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "docs/p0-gift-approval-contract-clean-20261013",
+      "commitSha": "280c16cfd927f640c7ea7bba84e0ca8034dadc61",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "docs/p0-gift-approval-contract-main-20261013",
+      "commitSha": "34fefbda52ec04137b6a95f2fe2587556f422cd4",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "f1-distress-detector",
+      "commitSha": "600e65e9e77c660187baf4a24f736c4fdbfc6f58",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "f1-distress-detector-draft2",
+      "commitSha": "e5f7333d21b39be2666fd41da59115df0d90a5c0",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "f5-mini-release",
+      "commitSha": "0468c8cf98d3827204713b0ff934b6396edfec9e",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "f5-onto-f4",
+      "commitSha": "7acd9f2ea4cbca1294f3d9ca9b51a64d99201718",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "feedback-tracker",
+      "commitSha": "53ad9ffa194d4367d5b1bc004db14bea1e37ebf1",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "fix-abstract-word-stacking-architecture",
+      "commitSha": "59f5558f6049caf8cf530c9be224d8e7f4bf671a",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "fix-anatrail-tile-count",
+      "commitSha": "bdca1a2b061f7b13988b2f2ea12fe22b3af92dc7",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "fix-silent-bridge-drops",
+      "commitSha": "3d5da5bb2d18085b45bac83f9a9c1c87d10c0036",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "fix/copy-gate-delete-confirm-20261011",
+      "commitSha": "5c388cd48d2c1254967028271c20515cc149ebcd",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "flow-three-column",
+      "commitSha": "14e6b643eaf4db5d9287270ba27c0416f16b27d2",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "flow3-qn",
+      "commitSha": "9c0364ebacf40cb44b3f8843850a679be1099430",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "funnel-aspirational",
+      "commitSha": "f6cea298675aeab3b2a7e5e853b1a8cf90adaee0",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "funnel-tightened",
+      "commitSha": "aac5579d6f1b2d723935f50c27a36837281c7b84",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "hotfix/main-em-dash-build-break",
+      "commitSha": "b065c87c1ee53a5806349558e4f53549ac8dc41b",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "journal-branding",
+      "commitSha": "7d0452999257c1d2f2d63b00b212d272451056b7",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "lance/lookdev-handoff-2026-10-25",
+      "commitSha": "271a4aa98def34b810bfbe59803e0acd49ce1e3a",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "lookdev/canon-performer-hypercomplex-20261027",
+      "commitSha": "2378f5195b53d913d3c75c1aabd8d656046fbbef",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "lookdev/land-psychopathy-sociopathy-20261027",
+      "commitSha": "feae2fac901724a3e54d772ea5e0381f4b755e91",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "lookdev/mvp-alpha-checklist-2026-10-22",
+      "commitSha": "f10ad2797ca54e753ada6aed1db2f6698791f438",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "lookdev/p0-execution-20261014",
+      "commitSha": "00fa14c32f6c93eae5fc7d41e01c985b34896f82",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "lookdev/sq-and-kundalini-20261027",
+      "commitSha": "366386710c2d89627c16d61946dd8c97fd58d0b8",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "lookdev/wire-the-page-and-dualpole-20261026",
+      "commitSha": "42f985e051ecf526e218be438ef473bd843d5573",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "main",
+      "commitSha": "f15f8a5aebcc437e57ce7da0a105df984fe86435",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "merge-dualpole-field-20261027",
+      "commitSha": "82a2c1b5236349447588027bab0502f7736ce6a6",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "onboarding-cinematic",
+      "commitSha": "c99a7f32387d7bd8457b83c3dbcbc1b12664006d",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "onboarding-ob-boundary-fix",
+      "commitSha": "f0bf894a4511539cce7e5b8506e92fff64700698",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "onboarding-real-skin",
+      "commitSha": "dbdc9017f54902c20830989606bd62b630ac40c4",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "p1/gift-nature-choice-20261011",
+      "commitSha": "e8915db78f2b8b2157b33c66449d00eba150f746",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "p1/gift-nature-client-20261011",
+      "commitSha": "fc7033fb24ec9ed94e2f63563e723b82603b2e68",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "personas-tier-four",
+      "commitSha": "b975640826b942c338d11139c50e146cabd940c5",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "practitioner-analytics",
+      "commitSha": "7279f3937b4372e20b43d311d06c9015b283f7e5",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "profiles-twelve",
+      "commitSha": "a053d787088e36cc3ec5dd10fd47e90268b5f12b",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "project/atuned-geometric-framework",
+      "commitSha": "5ea6e484b67605493a1493e0ddbff80a4d0d82a9",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "ps-practitioner",
+      "commitSha": "5191c99378143aa8bd789655130d6d60da3c685b",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "rb-login-profile-lighting",
+      "commitSha": "2ea6c312742b34bf3010df10f84e7601d023f122",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "recovery/p0-retention-receipt-20261012",
+      "commitSha": "2cebf8039287537165a03d53222bcb72f2734260",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "release-carousel",
+      "commitSha": "0634a16315d1e9c6f35142cc4178fd8d52906f32",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "release-simplify",
+      "commitSha": "9fa2bebcba61267cb49fbbf53925ce5a6c7d0c5e",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "release-verification",
+      "commitSha": "6870d577de64a2ac2ad8156aa762192b96cea361",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "release-verification-merge",
+      "commitSha": "2a5f3cd40062f350e7bca7c91045168fe2c2cdfc",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "ritual-calendar",
+      "commitSha": "fc33b5baf16a7402c32e670a4778fbe63cd51376",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "ritual-symbolic",
+      "commitSha": "5579696a83d299c1f2f6d6f745bc476911246d98",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "round-rb-ritual-page",
+      "commitSha": "08956ab75f3a1b19f3bdc711c6233a5c5f8240fa",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "sniffer-mask-fix",
+      "commitSha": "4f4bd326525e228c526248972632235aa7033225",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "source-ai-chat",
+      "commitSha": "6677a7e47b77061634e7bfa60b7999c984ef7084",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "storyboard-faq-nav",
+      "commitSha": "cdc4984f5b3079736b97e3e5731be1ad8f154a92",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "sweep-108-physical-4-field-anchors-20261028",
+      "commitSha": "ef9b5908f094d6b0569b5139d3b566429785de0d",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "trace-graph-ui",
+      "commitSha": "f32d442b7e96be8474ceac1b126afd93a8893947",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "tutorial-cinematic",
+      "commitSha": "8bb370a59c5b58372d199c7178e1bd562246f515",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "verp-six-gates-field-20261028",
+      "commitSha": "8a548b96cc87bfb48f2b7e314eec880bdf65056f",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "work/deep-psyche-recursive-closure-2026-10-24",
+      "commitSha": "aeaa5522bfa743d7636cae8611332468800d7dae",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "worktree-agent-a1e19222989511ad6",
+      "commitSha": "74b1e8fb59cfed7bf9286c709b159aa2a9e59768",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "worktree-agent-a65a2eddedf17fca7",
+      "commitSha": "baf7309238644d424f5ca57e97c6ae0051034138",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "worktree-agent-ad6238b7878d6984f",
+      "commitSha": "5dcb45d86632f5994b561d5d4dfc899d983096fc",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "worktree-agent-ad7f4b5294abbc82c",
+      "commitSha": "3869d96f04a54b9b87cd0a1848c5de42cdb94922",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "worktree-agent-aecea0c65b338e96c",
+      "commitSha": "538354c05a88ee069e098c2e8c8b1544db34f591",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "worktree-agent-aee1bb1a600b4d30e",
+      "commitSha": "14c3959276217bfbaaa07f7b3ab66b53cb9ed2e0",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "worktree-agent-af1df59152b26830d",
+      "commitSha": "84f6b6add0053b94ac300c0a31dad87dd2c4c861",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    },
+    {
+      "branch": "worktree-agent-afc3efe134955a1f3",
+      "commitSha": "9b0898d2aaa2de469ac77afaf3606e2c061c8a9b",
+      "treePathAudit": "INSPECTED_NO_MATCH"
+    }
+  ],
+  "commitHistoryTextSearch": {
+    "query": "v341",
+    "returnedCommits": 27,
+    "examinedChangedFilenameSets": 27,
+    "matchingExactOriginalFileAdds": 0,
+    "scopeLimit": "Commit-message search only; not complete historical git object traversal."
+  },
+  "otherReposPreviouslyAudited": [
+    "rebootos-sourcce/Reboot-OS@main",
+    "rebootos-sourcce/MOB-Manuscript@main"
+  ],
+  "libraryScope": "Library title search found v330 but no exact v341 by filename; prior upload-referenced v341 extraction has no source bytes",
+  "unresolved": {
+    "exactV341DefinitionCount": 19,
+    "originalInfernoV1": true,
+    "ownerEightOrdinaryComplexNames": true
+  },
+  "productionChanges": 0,
+  "canonPromotions": 0,
+  "completionClaim": false
+}
