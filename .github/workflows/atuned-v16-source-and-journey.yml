@@ -21,5 +21,9 @@ jobs:
         run: node docs/data/compass/integration/v16/validate_v16_v341_19_join.cjs
       - name: Exercise Hero Journey CQ boundary, unique releases and conditional ritual paths
         run: node docs/data/compass/integration/v16/validate_v16_journey_contract.cjs
+      - name: Run existing ATUNED runtime engine contract suite
+        run: node tests/engine.js
+      - name: Run existing practice and ritual contract suite
+        run: node tests/practice.js
       - name: Preserve V14 index integrity
         run: node docs/data/compass/integration/v14/validate_v14_file_index.cjs
