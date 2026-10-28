@@ -44,7 +44,7 @@
     },
     "sceneBindings": {
       "path": "docs/data/compass/gameboard/v2/GAMEBOARD_EXISTING_RELEASE_RITUAL_BINDINGS_V2.json",
-      "blobSha": "94a49a0131a74ac648b864616581eb40399f6e63"
+      "blobSha": "77efe0df4c66a20114f4836628be6ebb240160f8"
     },
     "teacherRecipes": {
       "path": "atuned_src/engine/data/teachers_recipes.js",
