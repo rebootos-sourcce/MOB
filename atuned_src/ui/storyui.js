@@ -574,6 +574,10 @@ function stCommit(){
      and a half written story waiting on the Story page is not its to clear. */
   var wasDraft=CURP.story.draft===ST_TEXT;
   if(wasDraft)delete CURP.story.draft;
+  /* Commit always sends whatever is in the reply line first (see ap.onclick
+     below), so by the time an entry is pushed SRC_CDRAFT is already empty;
+     this only clears what a reload might still be holding from before. */
+  if(CURP.story.reply!==undefined)delete CURP.story.reply;
   stDraftStop();
   /* THE COMMIT SAID "Committed" WHETHER OR NOT ANYTHING WAS SAVED, pass 4,
      probe 6. pSave's answer was dropped, so with a store that refused every
@@ -643,12 +647,20 @@ function stCommit(){
    words that were just deleted; only the write waits, half a second after
    the last change, as obDraft does. A worked example is not a record and is
    never written. Commit and Clear take it off.
-   ============================================================ */
+
+   THE REPLY LINE CARRIES THE SAME PROMISE NOW, round of 28 October. Before
+   this a reply typed into #stcin but never sent lived only in SRC_CDRAFT, a
+   variable, so closing the tab mid-reply lost it the way a half written
+   story used to. It is the one timer below and the one write, on
+   CURP.story.reply beside CURP.story.draft, so a reload or a tab closed
+   inside the half second keeps whichever box had words in it, or both. */
 function stDraft(){
  if(!CURP||!CURP.story||(typeof S!=='undefined'&&S.who!==0))return;
- var v=(ST_TEXT&&ST_TEXT.trim())?ST_TEXT:null;
- if((CURP.story.draft||null)===v)return;
- if(v===null)delete CURP.story.draft; else CURP.story.draft=v;
+ var v=(ST_TEXT&&ST_TEXT.trim())?ST_TEXT:null,
+  r=(typeof SRC_CDRAFT==='string'&&SRC_CDRAFT.trim())?SRC_CDRAFT:null, moved=false;
+ if((CURP.story.draft||null)!==v){ if(v===null)delete CURP.story.draft; else CURP.story.draft=v; moved=true; }
+ if((CURP.story.reply||null)!==r){ if(r===null)delete CURP.story.reply; else CURP.story.reply=r; moved=true; }
+ if(!moved)return;
  stDraftStop(); STV.draftT=setTimeout(stDraftSave,500);}
 function stDraftStop(){ if(STV.draftT){clearTimeout(STV.draftT); STV.draftT=null;} }
 /* a refusal is said once until a save lands again, because a line on every
@@ -665,11 +677,14 @@ function stDraftSave(){
 if(typeof addEventListener==='function')['pagehide','visibilitychange'].forEach(function(ev){
  addEventListener(ev,function(){ if(STV.draftT)stDraftSave(); });});
 /* back into the box when the box is empty, which is a reload or a commit of
-   somebody else's words through stCommit */
+   somebody else's words through stCommit. The two halves are independent: a
+   reload can find words waiting to be sent, words already sent and not yet
+   committed, both, or neither. */
 function stDraftBack(){
- if(ST_TEXT||!CURP||!CURP.story||typeof CURP.story.draft!=='string')return;
- if(typeof S!=='undefined'&&S.who!==0)return;
- ST_TEXT=CURP.story.draft; ST_PARSED=ST_TEXT.trim()?parseStory(ST_TEXT):null;}
+ if(!CURP||!CURP.story||(typeof S!=='undefined'&&S.who!==0))return;
+ if(!ST_TEXT&&typeof CURP.story.draft==='string'){
+  ST_TEXT=CURP.story.draft; ST_PARSED=ST_TEXT.trim()?parseStory(ST_TEXT):null;}
+ if(!SRC_CDRAFT&&typeof CURP.story.reply==='string')SRC_CDRAFT=CURP.story.reply;}
 
 /* refresh only what the text moves, so typing never loses the caret */
 function stRefresh(){
@@ -1371,11 +1386,13 @@ function srcChatSend(){
  return true;}
 /* the reply line. Enter sends and Shift and Enter is a new line, the way a
    conversation box works everywhere else; a draft is kept across a repaint
-   of the page, and Commit counts it as something to commit. */
+   of the page and across a reload, the same promise stDraft keeps for the
+   entry itself (see the block above it), and Commit counts it as something
+   to commit. */
 function srcChatWire(){
  var cin=document.getElementById('stcin'); if(!cin)return;
  var ap=document.getElementById('stapply');
- cin.oninput=function(){SRC_CDRAFT=cin.value; if(ap)ap.disabled=!ST_PARSED&&!cin.value.trim();};
+ cin.oninput=function(){SRC_CDRAFT=cin.value; stDraft(); if(ap)ap.disabled=!ST_PARSED&&!cin.value.trim();};
  cin.onkeydown=function(e){if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault(); srcChatSend();}};
  cin.onfocus=function(){stFocus('write');};
  if(ap&&SRC_CDRAFT.trim())ap.disabled=false;
