@@ -1,0 +1,72 @@
+{
+  "schema": "ATUNED_V16_INDEX_DELTA",
+  "date": "2026-10-28",
+  "firstRead": "docs/ATUNED_MASTER_FILE_INDEX.md",
+  "baseManifest": "docs/data/compass/integration/v14/ATUNED_FILE_LOCATOR_MANIFEST_V14.json",
+  "baseLocatorCount": 563,
+  "deltaLocatorCount": 5,
+  "deltaLocators": [
+    {
+      "repository": "rebootos-sourcce/MOB",
+      "ref": "atuned/compass-foundation-closure-20261026",
+      "path": "docs/data/compass/integration/v16/ATUNED_V341_EXACT_19_DOMAINS_V16.json",
+      "blobSha": "10643917e2677415195b4fe9a6bed52db2f0ceb2",
+      "sizeBytes": 19860,
+      "sourceStatus": "PATH_AND_BLOB_VERIFIED_NO_RUNTIME_PROMOTION"
+    },
+    {
+      "repository": "rebootos-sourcce/MOB",
+      "ref": "atuned/compass-foundation-closure-20261026",
+      "path": "docs/data/compass/integration/v16/validate_v16_v341_source.cjs",
+      "blobSha": "c3dc31bb1b62a7463139e71f046f09aa15f339b3",
+      "sizeBytes": 3073,
+      "sourceStatus": "PATH_AND_BLOB_VERIFIED_NO_RUNTIME_PROMOTION"
+    },
+    {
+      "repository": "rebootos-sourcce/MOB",
+      "ref": "atuned/compass-foundation-closure-20261026",
+      "path": "docs/data/compass/integration/v16/validate_v16_journey_contract.cjs",
+      "blobSha": "d4a31eb9322ccc5f7b2045f01e6c683cc89932d8",
+      "sizeBytes": 4563,
+      "sourceStatus": "PATH_AND_BLOB_VERIFIED_NO_RUNTIME_PROMOTION"
+    },
+    {
+      "repository": "rebootos-sourcce/MOB",
+      "ref": "atuned/compass-foundation-closure-20261026",
+      "path": ".github/workflows/atuned-v16-source-and-journey.yml",
+      "blobSha": "ff7e60c3a3699215120ba984c9e5db39acd33b41",
+      "sizeBytes": 877,
+      "sourceStatus": "PATH_AND_BLOB_VERIFIED_NO_RUNTIME_PROMOTION"
+    },
+    {
+      "repository": "rebootos-sourcce/MOB",
+      "ref": "atuned/compass-foundation-closure-20261026",
+      "path": "docs/data/compass/integration/v16/ATUNED_EXECUTION_STRATEGY_AND_PROGRESS_V16.md",
+      "blobSha": "e113e1f8fd58f54e8782295a066f4cef70b9a17e",
+      "sizeBytes": 7148,
+      "sourceStatus": "PATH_AND_BLOB_VERIFIED_NO_RUNTIME_PROMOTION"
+    }
+  ],
+  "sourceOriginal": {
+    "type": "Google Drive raw original, not Git working-tree blob",
+    "file": "MOB_Complete_v341.html",
+    "sha256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+    "bytes": 16417226,
+    "driveFileIds": [
+      "1wlEiHEeL-ApUFEiHXhfndgYVvicx85Uk",
+      "1PzdW95quj0BUoLd07Gt14CQflaj9J2bt",
+      "1KW4J4Es9hPVGo0qyAy1tiuTrF7ZRfA9G"
+    ],
+    "independentlyVerifiedCopies": 3,
+    "verifiedSourceDefinitions": 19
+  },
+  "authority": "V14 selected Git tree locators remain a frozen path snapshot. V16 delta adds newly created files. Do not add 563 and 5 as disjoint psychological records.",
+  "gates": {
+    "G01": "OPEN: v341 19/19 recovered, Inferno V1 original outstanding",
+    "G02": "OPEN",
+    "G03": "OPEN: original wordings recovered, semantics/approval outstanding",
+    "G04": "OPEN",
+    "G05": "OPEN",
+    "G06": "OPEN"
+  }
+}
