@@ -25,6 +25,8 @@ jobs:
         run: node docs/data/compass/integration/v3/validate_unified_research_graph_v3.cjs
       - name: Validate V4 teacher record harmonization and 104 gameboard research analyses
         run: node docs/data/compass/integration/v4/validate_framework_research_harmonization_v4.cjs
+      - name: Verify 4 figure, 5 Paradiso and 21 lexical evidence reviews (100 additional analytical passes)
+        run: node docs/data/compass/integration/v4/validate_semantic_research_four_pass_v4.cjs
       - name: Validate V3 shadow-law research overlay
         run: node docs/data/compass/integration/v2/validate_shadow_law_layer_evidence_v3.cjs
       - name: Verify baseline Compass foundation graph
