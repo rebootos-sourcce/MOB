@@ -1,0 +1,129 @@
+{
+  "schema": "ATUNED_COMPASS_FRAMEWORK_PROGRESS_V4",
+  "asOf": "2026-10-27",
+  "status": "RESEARCH_GRAPH_UNIFIED; CANONICAL_AND_RUNTIME_ACCEPTANCE_OPEN",
+  "scope": "Compass, Inferno, Purgatorio, Paradiso, research Deep Psyche projection, Hero's Journey (not whole application)",
+  "completion": {
+    "percent": 62,
+    "method": "Five equal 20-point workstreams; audit-informed planning estimate, not test coverage, code coverage, production uptime or clinical validity",
+    "workstreams": [
+      {
+        "name": "Map and narrative structure",
+        "points": 20,
+        "max": 20,
+        "why": "26 game scenes and 25 navigational edges exist"
+      },
+      {
+        "name": "Published, harmonized record coverage",
+        "points": 16,
+        "max": 20,
+        "why": "Most families published; 2 standardized teachers, 6 named counterparts and canonical V1/v341 gaps remain"
+      },
+      {
+        "name": "Research coverage",
+        "points": 17,
+        "max": 20,
+        "why": "Baseline 162 research physical record instances audited; Deep Psyche 149 source records with four reviews; independent research/semantics unresolved"
+      },
+      {
+        "name": "Unified cross-layer graph",
+        "points": 9,
+        "max": 20,
+        "why": "357 addressable graph nodes and 770 typed edges; Deep Psyche 149/149 imported into documentation; 21 cross-registry name matches not approved"
+      },
+      {
+        "name": "Executable and tested Hero's Journey",
+        "points": 0,
+        "max": 20,
+        "why": "26 missing release protocol IDs, 26 missing becoming ritual IDs, no E2E runtime event→CQ→avatar certification"
+      }
+    ]
+  },
+  "graph": {
+    "nodes": 357,
+    "typedEdges": 770,
+    "sourceVerifiedDangling": 0,
+    "duplicates": 0,
+    "isolates": [
+      "purgatorio:P00",
+      "inferno:B15",
+      "shadow:bael",
+      "shadow:antaeus",
+      "shadow:medusa",
+      "shadow:dispater",
+      "shadow:dantedis",
+      "shadow:citydis"
+    ],
+    "edgeGroups": {
+      "baseline": 300,
+      "inferno_research": 80,
+      "shadow_law_research": 49,
+      "gameboard_navigation": 25,
+      "scene_source": 26,
+      "scene_crosswalk": 6,
+      "scene_archetype": 12,
+      "shadow_source": 14,
+      "pole": 36,
+      "catalog": 14,
+      "deep_psyche_source_branch": 187,
+      "cross_registry_lexical_candidate": 21
+    },
+    "readOnly": true,
+    "approvedRuntimeImports": 0
+  },
+  "records": {
+    "inferno": 38,
+    "purgatorio": 23,
+    "paradiso": 10,
+    "coreArchetypes": 12,
+    "shadowIdentity": 30,
+    "publicShadowResearchLabels": 23,
+    "shadowContextOnly": 7,
+    "heroJourneyScenes": 26,
+    "compassEnginePoles": 14,
+    "teacherRosterDistinct": 13,
+    "teacherStandardizedRecords": 11,
+    "integrityLaws": 21,
+    "deepPsycheSourceRecords": 149,
+    "deepPsycheOriginalRelationshipEntries": 374,
+    "deepPsycheNormalizedPairs": 187,
+    "crossNamespaceExactNameCandidates": 21
+  },
+  "wiring": {
+    "baselineCompass": 300,
+    "infernoResearch": 80,
+    "shadowLawResearch": 49,
+    "sceneNavigation": 25,
+    "sceneToSource": 26,
+    "sceneCrosswalk": 6,
+    "sceneArchetype": 12,
+    "shadowToInferno": 14,
+    "teacherPoleShadowAndAxes": 36,
+    "publicEncounterCatalog": 14,
+    "deepPsycheSourcePairs": 187,
+    "crossNamespaceNameOnly": 21,
+    "engineRuntimeIntegration": "UNVERIFIED",
+    "teacherRecipeRuntime": "EXISTS_BUT_NOT_SCENE_JOINED",
+    "traceGraph": "DERIVED_ONLY_PSYCHIC_CHAIN_EXISTS_IN_ENGINE"
+  },
+  "gates": {
+    "deepPsycheSourceVersionGaps": 19,
+    "unresolvedSemanticDrifts": 4,
+    "oneSidedParadisoLinks": 5,
+    "missingSceneReleaseIds": 26,
+    "missingSceneBecomingRitualIds": 26,
+    "originalInfernoV1NotRecovered": true,
+    "superComplexCanonicalMembershipApplied": false,
+    "cqIntentionCanonicalSourceResolved": false,
+    "deepPsychePR131Merged": false,
+    "deploymentCertified": false
+  },
+  "links": {
+    "unified": "docs/data/compass/integration/v3/ATUNED_UNIFIED_RESEARCH_GRAPH_V2.json",
+    "editor": "docs/data/compass/integration/v3/ATUNED_GRAPH_EDITOR_V2.html",
+    "validator": "docs/data/compass/integration/v3/validate_unified_research_graph_v2.cjs",
+    "CI": ".github/workflows/compass-unified-graph-v1.yml",
+    "deepPsychePR": "https://github.com/rebootos-sourcce/MOB/pull/131"
+  },
+  "note": "The 'deep Psyche' 149-record branch is research-projected, not merged into the Compass production branch. GitHub graph and editor are documentation tools. No releases or CQ score changes activated."
+}
