@@ -9346,7 +9346,7 @@ g('PCT · one formula and one registry for every score a person reads (engine/pc
   put('weight',x.SQm,who); put('weight',x.darkV,who); x.maskRing.forEach(m=>put('weight',m.w,who));
   [].concat(x.sabs,x.cxs,x.hys,x.sups).forEach(o=>{put('chain',o.w,who); if(o.score)put('match',o.score,who);});
   put('pole',x.poleMean,who); put('overshoot',x.JQ,who); put('distortion',x.dist,who);
-  put('integrity',x.Ig,who); put('intention',x.It,who);
+  put('integrity',x.Ig,who); put('lawseat',x.It,who);
   put('vitality',x.X,who); put('awareness',x.Y,who); put('will',x.Z,who); put('radiance',x.radiance,who);
   put('energy',(x.X+x.Y+x.Z)/3,who); put('pull',x.PULL,who);
   E.archExprAll().forEach(v=>put('archetype',v,who));
@@ -9365,7 +9365,7 @@ g('PCT · one formula and one registry for every score a person reads (engine/pc
  ok(out.length===0,'no roster reading falls outside the range its kind claims, '+out.length+' do'
   +(out.length?': '+out.slice(0,6).join('; '):''));
  const engineKinds=['cq','dq','expression','law','charge','installed','held','weight','chain','pole','overshoot',
-  'distortion','integrity','intention','vitality','awareness','will','radiance','energy','pull','archetype','axis'];
+  'distortion','integrity','lawseat','vitality','awareness','will','radiance','energy','pull','archetype','axis'];
  const unseen=engineKinds.filter(k=>!seen[k]);
  ok(unseen.length===0,'and every kind the engine computes was actually measured on the roster, missing '+JSON.stringify(unseen));
  /* A CAP HOLDS THE ROSTER IT WAS MEASURED ON: at least 99 in a hundred of its

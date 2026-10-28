@@ -575,13 +575,22 @@ function runQDrill(q){
 
 /* THE THREE AXES. energy read on three independent lines, each a pure
    function of quantities already in the reading. Vitality is what is left
-   after apathy and shadow weight. Awareness is intention against
-   distortion. Will is integrity through a clear segment. */
+   after apathy and shadow weight. Awareness is law reach against
+   distortion. Will is integrity through a clear segment.
+
+   RENAMED FROM INTENTION, 28 October. r.It fed this axis under that name
+   since before intention meant anything else. It still does, the arithmetic
+   is unchanged and untested against the new meaning, so it keeps its own
+   name, law reach, the same law mean read seat by seat that feeds the
+   Instruments row (ui/ui.js). The real intention, what a person said against
+   what they did, is wired in there now and does not enter this axis: that
+   would be new, unfitted arithmetic, the same shape of change already tried
+   and killed once inside CQ itself (engine/compute.js, the model 3 note). */
 function runXYZDrill(){
  var r=compute();
  var A=[['Vitality',r.X,'Solar','what is left after apathy and the shadow weight. Apathy <b>'
    +((S.charge.Apathy||0)>0?(S.charge.Apathy).toFixed(1):'\u2013')+'</b>, shadow weight <b>'+(Math.round(r.DQ)||'\u2013')+'</b>.'],
-  ['Awareness',r.Y,'3rd Eye','intention against distortion. Intention <b>'+r.It.toFixed(1)
+  ['Awareness',r.Y,'3rd Eye','law reach against distortion. Law reach <b>'+r.It.toFixed(1)
    +'</b>, distortion <b>'+r.dist.toFixed(1)+'</b>.'],
   ['Will',r.Z,'Root','integrity carried through a clear segment. Integrity <b>'+r.Ig.toFixed(1)
    +'</b>, mean depth <b>'+r.SQm.toFixed(1)+'</b>.']];

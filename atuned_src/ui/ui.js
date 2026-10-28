@@ -1411,11 +1411,19 @@ function render(){
     registry bounds the same way (engine/pct.js, nought to ten). Each prints
     fmtPct for its own kind now, and nought or an unread profile is the dash. */
  var ins=function(t,line){return '<span title="'+esc(t)+'">'+line+'</span><br>';};
+ /* INTENTION, WIRED IN, 28 October. Ruled 25 September: what a person said
+    they would do against what they did, no charge read into it
+    (intentionRead, engine/ladder.js). Nothing was said in the last seven
+    days reads as unread, not as zero, the same way an unanswered law does
+    not read as a failing one: a blank week is not a broken promise. */
+ var intent=intentionRead(CURP,Date.now());
  $('rows').innerHTML='<span class="k">Instruments</span><br>'
   +ins('How well you keep the 21 laws, lifted by the opposites installed and pulled down by overshoot.',
     'integrity <b>'+fmtPct('integrity',r.Ig,{unread:r.unread})+'</b>')
+  +ins('What you said you would do against what you did, the last seven days. No charge in it, only follow through.',
+    'intention <b>'+(intent.said?fmtPct('intention',intent.pct):PCT_DASH)+'</b>')
   +ins('The same laws read seat by seat, up the body.',
-    'intention <b>'+fmtPct('intention',r.It,{unread:r.unread})+'</b>')
+    'law reach <b>'+fmtPct('lawseat',r.It,{unread:r.unread})+'</b>')
   /* JOUISSANCE WAS ON EIGHTY ONE SCREENS. A French psychoanalytic term, printed
      as an instrument label to a person who has never heard it, with no gloss
      anywhere in the product. One word per concept, and the word has to say
