@@ -1,0 +1,360 @@
+{
+  "schema": "ATUNED_INFERNO_FIGURE_AND_PARADISO_ASYMMETRY_RESEARCH_V2",
+  "date": "2026-10-27",
+  "authority": "FOUR_CONTESTED_SEMANTICS_FOUR_ANALYTICAL_PASSES_EACH_FIVE_ASYMMETRIC_RESONANCES_NOT_CANON",
+  "sourceBlobs": {
+    "graph": {
+      "path": "docs/data/compass/integration/v1/COMPASS_CROSS_LAYER_GRAPH_V1.json",
+      "blobSha": "3e56c60538e9e32e1e3637f42a714bfc29594f48"
+    },
+    "inferno": {
+      "path": "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json",
+      "blobSha": "f3e14b984eb59c37064c20f324b3649261fd9c0a"
+    },
+    "para": {
+      "path": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+      "blobSha": "46243cf6fd3e1da50d329835b1ca2ec1da7b8041"
+    },
+    "teachers": {
+      "path": "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+      "blobSha": "8c10b4b75e17387a34f84692ba85a6875f5e7671"
+    }
+  },
+  "stats": {
+    "figureConflictsReviewed": 4,
+    "analyticalReviewPasses": 16,
+    "semanticEquivalenceApproved": 0,
+    "paradisoOneSidedCasesReviewed": 5,
+    "paradisoOneSidedApproved": 0,
+    "sourceFactsRestored": 4,
+    "ownerNinefoldCompositeInSource": "MODEL_REQUIREMENT_ONLY_NOT_IN_DANTE_TEXT"
+  },
+  "comparisons": [
+    {
+      "id": "compass-inverse:Lucifer",
+      "infernoId": "inferno:F11",
+      "engineName": "Lucifer",
+      "engineBehavior": "False Light",
+      "infernoSourceName": "Lucifer",
+      "originalConflict": "Archive Lucifer = stasis, teacher-inverse definition = false light",
+      "sourceRead": "https://ahc.leeds.ac.uk/discover-dante/doc/inferno/page/6",
+      "sourceObservedAction": "Dante's Lucifer sits trapped in Cocytus and repeatedly wings the lake colder; three faces and jaws appear at the nadir of treachery.",
+      "proposal": "Keep literary Lucifer-as-stasis, engine False-Light pole, and owner ninefold composite as three distinct typed semantic scopes.",
+      "passes": [
+        {
+          "pass": 1,
+          "lens": "NARRATIVE_SOURCE_DIRECT_READING",
+          "finding": "Dante's Lucifer sits trapped in Cocytus and repeatedly wings the lake colder; three faces and jaws appear at the nadir of treachery.",
+          "sourceKind": "EXTERNAL_SOURCE_TEXTUAL_CONTEXT",
+          "sources": [
+            "https://ahc.leeds.ac.uk/discover-dante/doc/inferno/page/6",
+            "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json"
+          ],
+          "limits": "A literary action is source context; human behavior is not diagnosed from a literary metaphor."
+        },
+        {
+          "pass": 2,
+          "lens": "ENGINE_MODEL_INTERPRETATION",
+          "finding": "Engine inverse Lucifer defines False Light: Pride or staged radiance needs applause to sustain itself.. Inferno inferno:F11 defines Research candidate: Lucifer — proposed STASIS_CONDITION family; not a moral or clinical determination.; observed mechanics: In an abstract system, attempts to force escape may reinforce confinement; feedback loops can produce persistent immobilization. This is a metaphor, not Dante's clinical mechanism.. Their descriptions are different scopes; do not silently choose a winner. Owner-specified nine-layer cumulative Lucifer is an additional ATUNED compositional theory, not an explicit claim in Inferno XXXIV.",
+          "sourceKind": "PROJECT_ENGINE_AND_RECONSTRUCTION_CONTRAST",
+          "sources": [
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json"
+          ],
+          "limits": "Engine labels are not proof of historical motive."
+        },
+        {
+          "pass": 3,
+          "lens": "PRACTICAL_DISCRIMINANTS_AND_CONTRADICTION",
+          "finding": "Countertest: A frozen response alone is not proof of self-prioritization, malicious intent, ninefold character architecture, or all other circle mechanisms.. The source can support the narrative event without supporting a fixed personality mechanism. Preserve alternate explanations, context and proportionality.",
+          "sourceKind": "ADVERSARIAL_RESEARCH_ANALYSIS",
+          "sources": [
+            "https://ahc.leeds.ac.uk/discover-dante/doc/inferno/page/6",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json"
+          ],
+          "limits": "Historical behavior cannot be equated with human class or diagnosis."
+        },
+        {
+          "pass": 4,
+          "lens": "SCOPE_SPLIT_AND_APPROVAL_GATE",
+          "finding": "Recommended representation: Keep literary Lucifer-as-stasis, engine False-Light pole, and owner ninefold composite as three distinct typed semantic scopes.. Candidate source identity linkage may remain navigable; semantic equivalence must be explicitly adjudicated. No approved release/ritual ID, CQ equation or graph runtime scoring is changed.",
+          "sourceKind": "ONTOLOGY_AND_PROVENANCE_PROPOSAL",
+          "sources": [
+            "docs/data/compass/integration/v1/COMPASS_CROSS_LAYER_GRAPH_V1.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json"
+          ],
+          "limits": "This pass does not claim owner approval or definitive equivalence."
+        }
+      ],
+      "status": "RESEARCH_DEPTH_PASS_COMPLETE_SEMANTIC_EQUIVALENCE_UNRESOLVED",
+      "canonicalEquivalence": false,
+      "ownerApproval": false,
+      "notRuntime": true
+    },
+    {
+      "id": "compass-inverse:Asmodeus",
+      "infernoId": "inferno:X03",
+      "engineName": "Asmodeus",
+      "engineBehavior": "Compulsive Craving",
+      "infernoSourceName": "Asmodeus",
+      "originalConflict": "Archive Asmodeus = obstruction of intimacy via harm, new record = broad craving",
+      "sourceRead": "https://bible.usccb.org/bible/tobit/3",
+      "sourceObservedAction": "Tobit 3:8 depicts Asmodeus repeatedly killing Sarah's prospective husbands before the marriage could be consummated.",
+      "proposal": "Keep Tobit harm/obstruction as narrative action and the engine craving axis as an unapproved interpretive mapping.",
+      "passes": [
+        {
+          "pass": 1,
+          "lens": "NARRATIVE_SOURCE_DIRECT_READING",
+          "finding": "Tobit 3:8 depicts Asmodeus repeatedly killing Sarah's prospective husbands before the marriage could be consummated.",
+          "sourceKind": "EXTERNAL_SOURCE_TEXTUAL_CONTEXT",
+          "sources": [
+            "https://bible.usccb.org/bible/tobit/3",
+            "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json"
+          ],
+          "limits": "A literary action is source context; human behavior is not diagnosed from a literary metaphor."
+        },
+        {
+          "pass": 2,
+          "lens": "ENGINE_MODEL_INTERPRETATION",
+          "finding": "Engine inverse Asmodeus defines Compulsive Craving: Desire cannot settle and people become instruments of appetite.. Inferno inferno:X03 defines Research candidate: Asmodeus — proposed OBSTRUCTION_OF_INTIMACY_VIA_HARM family; not a moral or clinical determination.; observed mechanics: The narrative contains repeated lethal interference; motives of jealousy, entitlement, lust, or fear are not demonstrated equally across recensions. Any contemporary mechanism is conjecture.. Their descriptions are different scopes; do not silently choose a winner. Broad compulsive craving is the engine's psychological inversion metaphor; Tobit does not assert an internal appetite condition.",
+          "sourceKind": "PROJECT_ENGINE_AND_RECONSTRUCTION_CONTRAST",
+          "sources": [
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json"
+          ],
+          "limits": "Engine labels are not proof of historical motive."
+        },
+        {
+          "pass": 3,
+          "lens": "PRACTICAL_DISCRIMINANTS_AND_CONTRADICTION",
+          "finding": "Countertest: A tragic event, desire, or relationship frustration is not evidence of the source narrative's predatory obstruction.. The source can support the narrative event without supporting a fixed personality mechanism. Preserve alternate explanations, context and proportionality.",
+          "sourceKind": "ADVERSARIAL_RESEARCH_ANALYSIS",
+          "sources": [
+            "https://bible.usccb.org/bible/tobit/3",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json"
+          ],
+          "limits": "Historical behavior cannot be equated with human class or diagnosis."
+        },
+        {
+          "pass": 4,
+          "lens": "SCOPE_SPLIT_AND_APPROVAL_GATE",
+          "finding": "Recommended representation: Keep Tobit harm/obstruction as narrative action and the engine craving axis as an unapproved interpretive mapping.. Candidate source identity linkage may remain navigable; semantic equivalence must be explicitly adjudicated. No approved release/ritual ID, CQ equation or graph runtime scoring is changed.",
+          "sourceKind": "ONTOLOGY_AND_PROVENANCE_PROPOSAL",
+          "sources": [
+            "docs/data/compass/integration/v1/COMPASS_CROSS_LAYER_GRAPH_V1.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json"
+          ],
+          "limits": "This pass does not claim owner approval or definitive equivalence."
+        }
+      ],
+      "status": "RESEARCH_DEPTH_PASS_COMPLETE_SEMANTIC_EQUIVALENCE_UNRESOLVED",
+      "canonicalEquivalence": false,
+      "ownerApproval": false,
+      "notRuntime": true
+    },
+    {
+      "id": "compass-inverse:Charon",
+      "infernoId": "inferno:F01",
+      "engineName": "Charon",
+      "engineBehavior": "Threshold Paralysis",
+      "infernoSourceName": "Charon",
+      "originalConflict": "Archive Charon = threshold gatekeeping, new record = threshold paralysis",
+      "sourceRead": "https://ahc.leeds.ac.uk/discover-dante/doc/inferno/page/3",
+      "sourceObservedAction": "Inferno III depicts Charon refusing passage to living Dante because of his status; Virgil counters him and crossing proceeds.",
+      "proposal": "Distinguish source threshold gatekeeping from modeled internal hesitation; require separate evidence for any personal application.",
+      "passes": [
+        {
+          "pass": 1,
+          "lens": "NARRATIVE_SOURCE_DIRECT_READING",
+          "finding": "Inferno III depicts Charon refusing passage to living Dante because of his status; Virgil counters him and crossing proceeds.",
+          "sourceKind": "EXTERNAL_SOURCE_TEXTUAL_CONTEXT",
+          "sources": [
+            "https://ahc.leeds.ac.uk/discover-dante/doc/inferno/page/3",
+            "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json"
+          ],
+          "limits": "A literary action is source context; human behavior is not diagnosed from a literary metaphor."
+        },
+        {
+          "pass": 2,
+          "lens": "ENGINE_MODEL_INTERPRETATION",
+          "finding": "Engine inverse Charon defines Threshold Paralysis: Connection is deferred indefinitely until impossible certainty arrives.. Inferno inferno:F01 defines Research candidate: Charon — proposed THRESHOLD_GATEKEEPING family; not a moral or clinical determination.; observed mechanics: Anticipated loss of order, control, or safety may motivate gatekeeping. Compliance reinforces the gate; transparent criteria and appeal can distinguish protection from coercive exclusion.. Their descriptions are different scopes; do not silently choose a winner. Threshold Paralysis is an ATUNED engine reinterpretation; being a gatekeeper does not mean Charon himself cannot choose.",
+          "sourceKind": "PROJECT_ENGINE_AND_RECONSTRUCTION_CONTRAST",
+          "sources": [
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json"
+          ],
+          "limits": "Engine labels are not proof of historical motive."
+        },
+        {
+          "pass": 3,
+          "lens": "PRACTICAL_DISCRIMINANTS_AND_CONTRADICTION",
+          "finding": "Countertest: Reasonable access controls protect rights and safety; hesitation under uncertainty is not automatically unjust exclusion.. The source can support the narrative event without supporting a fixed personality mechanism. Preserve alternate explanations, context and proportionality.",
+          "sourceKind": "ADVERSARIAL_RESEARCH_ANALYSIS",
+          "sources": [
+            "https://ahc.leeds.ac.uk/discover-dante/doc/inferno/page/3",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json"
+          ],
+          "limits": "Historical behavior cannot be equated with human class or diagnosis."
+        },
+        {
+          "pass": 4,
+          "lens": "SCOPE_SPLIT_AND_APPROVAL_GATE",
+          "finding": "Recommended representation: Distinguish source threshold gatekeeping from modeled internal hesitation; require separate evidence for any personal application.. Candidate source identity linkage may remain navigable; semantic equivalence must be explicitly adjudicated. No approved release/ritual ID, CQ equation or graph runtime scoring is changed.",
+          "sourceKind": "ONTOLOGY_AND_PROVENANCE_PROPOSAL",
+          "sources": [
+            "docs/data/compass/integration/v1/COMPASS_CROSS_LAYER_GRAPH_V1.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json"
+          ],
+          "limits": "This pass does not claim owner approval or definitive equivalence."
+        }
+      ],
+      "status": "RESEARCH_DEPTH_PASS_COMPLETE_SEMANTIC_EQUIVALENCE_UNRESOLVED",
+      "canonicalEquivalence": false,
+      "ownerApproval": false,
+      "notRuntime": true
+    },
+    {
+      "id": "compass-inverse:The-Furies",
+      "infernoId": "inferno:F06",
+      "engineName": "The Furies",
+      "engineBehavior": "Ideological Rigidity",
+      "infernoSourceName": "Furies",
+      "originalConflict": "Archive Furies = intimidation, new record = ideological rigidity",
+      "sourceRead": "https://dante.princeton.edu/cgi-bin/dante/DispSummaryByTitOrId.pl?INP_TITLE=S+Inf+IX",
+      "sourceObservedAction": "Inferno IX depicts Furies summoning Medusa as a threat at the gate of Dis, before the protagonists enter the circle of heretics.",
+      "proposal": "Separate intimidation in the scene from proposed epistemic rigidity and avoid treating either as a diagnosis.",
+      "passes": [
+        {
+          "pass": 1,
+          "lens": "NARRATIVE_SOURCE_DIRECT_READING",
+          "finding": "Inferno IX depicts Furies summoning Medusa as a threat at the gate of Dis, before the protagonists enter the circle of heretics.",
+          "sourceKind": "EXTERNAL_SOURCE_TEXTUAL_CONTEXT",
+          "sources": [
+            "https://dante.princeton.edu/cgi-bin/dante/DispSummaryByTitOrId.pl?INP_TITLE=S+Inf+IX",
+            "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json"
+          ],
+          "limits": "A literary action is source context; human behavior is not diagnosed from a literary metaphor."
+        },
+        {
+          "pass": 2,
+          "lens": "ENGINE_MODEL_INTERPRETATION",
+          "finding": "Engine inverse The Furies defines Ideological Rigidity: A fixed map is defended against disconfirming experience.. Inferno inferno:F06 defines Research candidate: Furies — proposed INTIMIDATION family; not a moral or clinical determination.; observed mechanics: Threat displays may aim to deter a challenger; compliance reinforces coercive use of fear; clear safety, external oversight, and courage can interrupt.. Their descriptions are different scopes; do not silently choose a winner. Ideological Rigidity is the engine's reverse-pole behavior; it is not a verbatim description of the Furies' threatening action.",
+          "sourceKind": "PROJECT_ENGINE_AND_RECONSTRUCTION_CONTRAST",
+          "sources": [
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json"
+          ],
+          "limits": "Engine labels are not proof of historical motive."
+        },
+        {
+          "pass": 3,
+          "lens": "PRACTICAL_DISCRIMINANTS_AND_CONTRADICTION",
+          "finding": "Countertest: Religious conviction and disagreement do not imply intimidation; protective warning and actual coercive threat must be discriminated.. The source can support the narrative event without supporting a fixed personality mechanism. Preserve alternate explanations, context and proportionality.",
+          "sourceKind": "ADVERSARIAL_RESEARCH_ANALYSIS",
+          "sources": [
+            "https://dante.princeton.edu/cgi-bin/dante/DispSummaryByTitOrId.pl?INP_TITLE=S+Inf+IX",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json"
+          ],
+          "limits": "Historical behavior cannot be equated with human class or diagnosis."
+        },
+        {
+          "pass": 4,
+          "lens": "SCOPE_SPLIT_AND_APPROVAL_GATE",
+          "finding": "Recommended representation: Separate intimidation in the scene from proposed epistemic rigidity and avoid treating either as a diagnosis.. Candidate source identity linkage may remain navigable; semantic equivalence must be explicitly adjudicated. No approved release/ritual ID, CQ equation or graph runtime scoring is changed.",
+          "sourceKind": "ONTOLOGY_AND_PROVENANCE_PROPOSAL",
+          "sources": [
+            "docs/data/compass/integration/v1/COMPASS_CROSS_LAYER_GRAPH_V1.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json"
+          ],
+          "limits": "This pass does not claim owner approval or definitive equivalence."
+        }
+      ],
+      "status": "RESEARCH_DEPTH_PASS_COMPLETE_SEMANTIC_EQUIVALENCE_UNRESOLVED",
+      "canonicalEquivalence": false,
+      "ownerApproval": false,
+      "notRuntime": true
+    }
+  ],
+  "teacherParadisoOneSided": [
+    {
+      "teacherId": "compass-teacher:Buddha",
+      "teacherQuality": "Awareness",
+      "paradisoId": "paradiso:PD06",
+      "paradisoQuality": "Applying transparent standards with humility about what is unknown, especially when holding power over others.",
+      "teacherRegistryAffirms": false,
+      "paradisoRegistryAffirms": true,
+      "reviewQueueAuthority": "PARADISO",
+      "reciprocityIssue": "ONE_SIDED_SOURCE_LISTING_NOT_AN_APPROVED_RESOLVED_PAIR",
+      "recommendedAction": "List as one-sided proposed resonance; add no reciprocal canonical edge until the omitted source owner and behavioral evidence are checked.",
+      "candidateStatus": "RESEARCH_HARMONIZATION_WAITING_ADJUDICATION",
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "teacherId": "compass-teacher:Elijah",
+      "teacherQuality": "Grounded Fire",
+      "paradisoId": "paradiso:PD06",
+      "paradisoQuality": "Applying transparent standards with humility about what is unknown, especially when holding power over others.",
+      "teacherRegistryAffirms": true,
+      "paradisoRegistryAffirms": false,
+      "reviewQueueAuthority": "TEACHERS",
+      "reciprocityIssue": "ONE_SIDED_SOURCE_LISTING_NOT_AN_APPROVED_RESOLVED_PAIR",
+      "recommendedAction": "List as one-sided proposed resonance; add no reciprocal canonical edge until the omitted source owner and behavioral evidence are checked.",
+      "candidateStatus": "RESEARCH_HARMONIZATION_WAITING_ADJUDICATION",
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "teacherId": "compass-teacher:Lao-Tzu",
+      "teacherQuality": "Non-Resistance",
+      "paradisoId": "paradiso:PD10",
+      "paradisoQuality": "Experiencing connection without making a person, role or exalted state the property of the ego.",
+      "teacherRegistryAffirms": false,
+      "paradisoRegistryAffirms": true,
+      "reviewQueueAuthority": "PARADISO",
+      "reciprocityIssue": "ONE_SIDED_SOURCE_LISTING_NOT_AN_APPROVED_RESOLVED_PAIR",
+      "recommendedAction": "List as one-sided proposed resonance; add no reciprocal canonical edge until the omitted source owner and behavioral evidence are checked.",
+      "candidateStatus": "RESEARCH_HARMONIZATION_WAITING_ADJUDICATION",
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "teacherId": "compass-teacher:Moses",
+      "teacherQuality": "Order",
+      "paradisoId": "paradiso:PD09",
+      "paradisoQuality": "Letting intention, understanding and action reinforce one another while revising mistaken models.",
+      "teacherRegistryAffirms": false,
+      "paradisoRegistryAffirms": true,
+      "reviewQueueAuthority": "PARADISO",
+      "reciprocityIssue": "ONE_SIDED_SOURCE_LISTING_NOT_AN_APPROVED_RESOLVED_PAIR",
+      "recommendedAction": "List as one-sided proposed resonance; add no reciprocal canonical edge until the omitted source owner and behavioral evidence are checked.",
+      "candidateStatus": "RESEARCH_HARMONIZATION_WAITING_ADJUDICATION",
+      "canonical": false,
+      "notRuntime": true
+    },
+    {
+      "teacherId": "compass-teacher:Rama",
+      "teacherQuality": "Alignment",
+      "paradisoId": "paradiso:PD06",
+      "paradisoQuality": "Applying transparent standards with humility about what is unknown, especially when holding power over others.",
+      "teacherRegistryAffirms": false,
+      "paradisoRegistryAffirms": true,
+      "reviewQueueAuthority": "PARADISO",
+      "reciprocityIssue": "ONE_SIDED_SOURCE_LISTING_NOT_AN_APPROVED_RESOLVED_PAIR",
+      "recommendedAction": "List as one-sided proposed resonance; add no reciprocal canonical edge until the omitted source owner and behavioral evidence are checked.",
+      "candidateStatus": "RESEARCH_HARMONIZATION_WAITING_ADJUDICATION",
+      "canonical": false,
+      "notRuntime": true
+    }
+  ],
+  "policy": [
+    "Preserve source, metaphor and owner-designed composite as separate meaning scopes.",
+    "Do not infer human moral identity or physiological condition from mythic characters.",
+    "Do not add symmetrical links merely to make the graph look complete; reciprocity requires reviewing both source registries.",
+    "No original source registry rewritten."
+  ]
+}
