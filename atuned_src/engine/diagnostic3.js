@@ -11,6 +11,7 @@ function d3Question(id){
 }
 function d3Ensure(p){if(!p)return null;
  if(!p.diagnostic3||p.diagnostic3.v!==D3_V)p.diagnostic3=d3Blank();
+ if(!p.diagnostic3.statuses||typeof p.diagnostic3.statuses!=='object')p.diagnostic3.statuses={};
  return p.diagnostic3;
 }
 function d3Counts(p){
