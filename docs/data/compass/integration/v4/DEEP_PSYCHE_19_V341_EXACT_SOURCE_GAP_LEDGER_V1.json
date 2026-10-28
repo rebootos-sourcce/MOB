@@ -1,0 +1,444 @@
+{
+  "schema": "ATUNED_DEEP_PSYCHE_19_V341_SOURCE_INTEGRITY_LEDGER_V1",
+  "date": "2026-10-27",
+  "canonicalRule": "Preserve 19 source-qualified v336 meaning records separately from v341 exact wording. No silent substitution, interpolated definition, or merging 18/15/14/19 taxonomies.",
+  "searchedGithub": {
+    "repos": [
+      "rebootos-sourcce/MOB@main",
+      "rebootos-sourcce/Reboot-OS@main",
+      "rebootos-sourcce/MOB-Manuscript@main"
+    ],
+    "treeResults": {
+      "MOB": 6095,
+      "RebootOS": 519,
+      "MOBManuscript": 2
+    },
+    "exactV341PathFound": false,
+    "rootMobSourceHtml": {
+      "path": "source.html",
+      "blobSha": "503343575a7c74932eb2cdd5922c4bbe407aa85d",
+      "declaredBuild": "v686 d57af090 2026-10-28 01:52",
+      "sameAsV341": false
+    },
+    "rebootCorpus": {
+      "path": "atuned/data/corpus/MOB_Complete_v192.html",
+      "sha": "f85f64ee5a3cc72f9fd67bbc2e0cc9a489ef0d06"
+    },
+    "librarySearch": "MOB_Complete_v330.html found; exact v341 not surfaced from search; neither is verification of canonical v341."
+  },
+  "taxonomyCounts": {
+    "olderCanonCandidates": 18,
+    "manuscriptHeadings": 15,
+    "blueprintGeometrySlots": 14,
+    "v341RosterLabels": 19,
+    "rule": "These are different taxonomies/versions with separate identities; do not sum as unique domains or merge by lexical name."
+  },
+  "sourceBranch": "atuned/deep-psyche-end-to-end-2026-10-26",
+  "pinnedDeepPsycheBlobSha": "837da5d0862ca91e5e8a53a64f9505203a845148",
+  "totals": {
+    "rosterLabels": 19,
+    "v341DefinitionVerifications": 0,
+    "crossVersionQualifiedMeaning": 19,
+    "unresolvedExactWordings": 19,
+    "threePassEntries": 57,
+    "ownerApprovedAutomaticMappings": 0
+  },
+  "clusters": {
+    "architect": [
+      "v341-domain:architect:knowledge",
+      "v341-domain:architect:justice",
+      "v341-domain:architect:imperium",
+      "v341-domain:architect:duty",
+      "v341-domain:architect:fate"
+    ],
+    "engine": [
+      "v341-domain:engine:power",
+      "v341-domain:engine:creation",
+      "v341-domain:engine:dissolution",
+      "v341-domain:engine:sacrifice",
+      "v341-domain:engine:death"
+    ],
+    "weaver": [
+      "v341-domain:weaver:love",
+      "v341-domain:weaver:communication",
+      "v341-domain:weaver:healing",
+      "v341-domain:weaver:provision",
+      "v341-domain:weaver:play"
+    ],
+    "witness": [
+      "v341-domain:witness:nature",
+      "v341-domain:witness:trickster",
+      "v341-domain:witness:mystery",
+      "v341-domain:witness:guardian"
+    ]
+  },
+  "records": [
+    {
+      "recordId": "v341-domain:architect:knowledge",
+      "label": "Knowledge",
+      "qualifiedComparisonText": "Knowledge: pattern recognition, codification, teaching, symbolic thinking. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "contentStatus": "source_qualified_v336_complete_v341_exact_pending",
+      "preservedSourceRefs": [
+        "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+      ],
+      "observedResearchPasses": 3,
+      "sourceVersionRequired": "MOB_Complete_v341.html",
+      "sourceVersionRequestedSha256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "retrievedOriginal341": false,
+      "approvedExact341Definition": false,
+      "relatedSourceBoundary": "Current registry contains explicit v336 source-qualified interpretations; do not claim these are the v341 author's exact text.",
+      "resolutionStatus": "BLOCKED_RAW_V341_NOT_VERIFIED",
+      "nextEvidence": "Original v341 file matching documented SHA256 plus independently verified per-record text locator."
+    },
+    {
+      "recordId": "v341-domain:architect:justice",
+      "label": "Justice",
+      "qualifiedComparisonText": "Justice: discernment of truth and falsehood; accountability without cruelty. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "contentStatus": "source_qualified_v336_complete_v341_exact_pending",
+      "preservedSourceRefs": [
+        "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+      ],
+      "observedResearchPasses": 3,
+      "sourceVersionRequired": "MOB_Complete_v341.html",
+      "sourceVersionRequestedSha256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "retrievedOriginal341": false,
+      "approvedExact341Definition": false,
+      "relatedSourceBoundary": "Current registry contains explicit v336 source-qualified interpretations; do not claim these are the v341 author's exact text.",
+      "resolutionStatus": "BLOCKED_RAW_V341_NOT_VERIFIED",
+      "nextEvidence": "Original v341 file matching documented SHA256 plus independently verified per-record text locator."
+    },
+    {
+      "recordId": "v341-domain:architect:imperium",
+      "label": "Imperium",
+      "qualifiedComparisonText": "Imperium: governance, structural authority, organizing chaos into function. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "contentStatus": "source_qualified_v336_complete_v341_exact_pending",
+      "preservedSourceRefs": [
+        "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+      ],
+      "observedResearchPasses": 3,
+      "sourceVersionRequired": "MOB_Complete_v341.html",
+      "sourceVersionRequestedSha256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "retrievedOriginal341": false,
+      "approvedExact341Definition": false,
+      "relatedSourceBoundary": "Current registry contains explicit v336 source-qualified interpretations; do not claim these are the v341 author's exact text.",
+      "resolutionStatus": "BLOCKED_RAW_V341_NOT_VERIFIED",
+      "nextEvidence": "Original v341 file matching documented SHA256 plus independently verified per-record text locator."
+    },
+    {
+      "recordId": "v341-domain:architect:duty",
+      "label": "Duty",
+      "qualifiedComparisonText": "Duty: right action regardless of personal cost; loyalty to what is true. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "contentStatus": "source_qualified_v336_complete_v341_exact_pending",
+      "preservedSourceRefs": [
+        "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+      ],
+      "observedResearchPasses": 3,
+      "sourceVersionRequired": "MOB_Complete_v341.html",
+      "sourceVersionRequestedSha256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "retrievedOriginal341": false,
+      "approvedExact341Definition": false,
+      "relatedSourceBoundary": "Current registry contains explicit v336 source-qualified interpretations; do not claim these are the v341 author's exact text.",
+      "resolutionStatus": "BLOCKED_RAW_V341_NOT_VERIFIED",
+      "nextEvidence": "Original v341 file matching documented SHA256 plus independently verified per-record text locator."
+    },
+    {
+      "recordId": "v341-domain:architect:fate",
+      "label": "Fate",
+      "qualifiedComparisonText": "Fate: pattern timing; knowing when to act without forcing an outcome. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "contentStatus": "source_qualified_v336_complete_v341_exact_pending",
+      "preservedSourceRefs": [
+        "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+      ],
+      "observedResearchPasses": 3,
+      "sourceVersionRequired": "MOB_Complete_v341.html",
+      "sourceVersionRequestedSha256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "retrievedOriginal341": false,
+      "approvedExact341Definition": false,
+      "relatedSourceBoundary": "Current registry contains explicit v336 source-qualified interpretations; do not claim these are the v341 author's exact text.",
+      "resolutionStatus": "BLOCKED_RAW_V341_NOT_VERIFIED",
+      "nextEvidence": "Original v341 file matching documented SHA256 plus independently verified per-record text locator."
+    },
+    {
+      "recordId": "v341-domain:engine:power",
+      "label": "Power",
+      "qualifiedComparisonText": "Power: physical courage, boundary enforcement, protection of what matters; directed force toward obstacles, not people. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "contentStatus": "source_qualified_v336_complete_v341_exact_pending",
+      "preservedSourceRefs": [
+        "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+      ],
+      "observedResearchPasses": 3,
+      "sourceVersionRequired": "MOB_Complete_v341.html",
+      "sourceVersionRequestedSha256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "retrievedOriginal341": false,
+      "approvedExact341Definition": false,
+      "relatedSourceBoundary": "Current registry contains explicit v336 source-qualified interpretations; do not claim these are the v341 author's exact text.",
+      "resolutionStatus": "BLOCKED_RAW_V341_NOT_VERIFIED",
+      "nextEvidence": "Original v341 file matching documented SHA256 plus independently verified per-record text locator."
+    },
+    {
+      "recordId": "v341-domain:engine:creation",
+      "label": "Creation",
+      "qualifiedComparisonText": "Creation: building, execution, turning vision into form; clear survival channel supports creation. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "contentStatus": "source_qualified_v336_complete_v341_exact_pending",
+      "preservedSourceRefs": [
+        "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+      ],
+      "observedResearchPasses": 3,
+      "sourceVersionRequired": "MOB_Complete_v341.html",
+      "sourceVersionRequestedSha256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "retrievedOriginal341": false,
+      "approvedExact341Definition": false,
+      "relatedSourceBoundary": "Current registry contains explicit v336 source-qualified interpretations; do not claim these are the v341 author's exact text.",
+      "resolutionStatus": "BLOCKED_RAW_V341_NOT_VERIFIED",
+      "nextEvidence": "Original v341 file matching documented SHA256 plus independently verified per-record text locator."
+    },
+    {
+      "recordId": "v341-domain:engine:dissolution",
+      "label": "Dissolution",
+      "qualifiedComparisonText": "Dissolution: deliberate ending of what is false or finished to make room for renewal. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "contentStatus": "source_qualified_v336_complete_v341_exact_pending",
+      "preservedSourceRefs": [
+        "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+      ],
+      "observedResearchPasses": 3,
+      "sourceVersionRequired": "MOB_Complete_v341.html",
+      "sourceVersionRequestedSha256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "retrievedOriginal341": false,
+      "approvedExact341Definition": false,
+      "relatedSourceBoundary": "Current registry contains explicit v336 source-qualified interpretations; do not claim these are the v341 author's exact text.",
+      "resolutionStatus": "BLOCKED_RAW_V341_NOT_VERIFIED",
+      "nextEvidence": "Original v341 file matching documented SHA256 plus independently verified per-record text locator."
+    },
+    {
+      "recordId": "v341-domain:engine:sacrifice",
+      "label": "Sacrifice",
+      "qualifiedComparisonText": "Sacrifice: voluntary descent and chosen ordeal that creates insight through experience. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "contentStatus": "source_qualified_v336_complete_v341_exact_pending",
+      "preservedSourceRefs": [
+        "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+      ],
+      "observedResearchPasses": 3,
+      "sourceVersionRequired": "MOB_Complete_v341.html",
+      "sourceVersionRequestedSha256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "retrievedOriginal341": false,
+      "approvedExact341Definition": false,
+      "relatedSourceBoundary": "Current registry contains explicit v336 source-qualified interpretations; do not claim these are the v341 author's exact text.",
+      "resolutionStatus": "BLOCKED_RAW_V341_NOT_VERIFIED",
+      "nextEvidence": "Original v341 file matching documented SHA256 plus independently verified per-record text locator."
+    },
+    {
+      "recordId": "v341-domain:engine:death",
+      "label": "Death",
+      "qualifiedComparisonText": "Death: clean endings and completion; presence at thresholds; release what is finished. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "contentStatus": "source_qualified_v336_complete_v341_exact_pending",
+      "preservedSourceRefs": [
+        "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+      ],
+      "observedResearchPasses": 3,
+      "sourceVersionRequired": "MOB_Complete_v341.html",
+      "sourceVersionRequestedSha256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "retrievedOriginal341": false,
+      "approvedExact341Definition": false,
+      "relatedSourceBoundary": "Current registry contains explicit v336 source-qualified interpretations; do not claim these are the v341 author's exact text.",
+      "resolutionStatus": "BLOCKED_RAW_V341_NOT_VERIFIED",
+      "nextEvidence": "Original v341 file matching documented SHA256 plus independently verified per-record text locator."
+    },
+    {
+      "recordId": "v341-domain:weaver:love",
+      "label": "Love",
+      "qualifiedComparisonText": "Love: union, intimacy, genuine contact; love generated rather than demanded. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "contentStatus": "source_qualified_v336_complete_v341_exact_pending",
+      "preservedSourceRefs": [
+        "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+      ],
+      "observedResearchPasses": 3,
+      "sourceVersionRequired": "MOB_Complete_v341.html",
+      "sourceVersionRequestedSha256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "retrievedOriginal341": false,
+      "approvedExact341Definition": false,
+      "relatedSourceBoundary": "Current registry contains explicit v336 source-qualified interpretations; do not claim these are the v341 author's exact text.",
+      "resolutionStatus": "BLOCKED_RAW_V341_NOT_VERIFIED",
+      "nextEvidence": "Original v341 file matching documented SHA256 plus independently verified per-record text locator."
+    },
+    {
+      "recordId": "v341-domain:weaver:communication",
+      "label": "Communication",
+      "qualifiedComparisonText": "Communication: bridging, translation, precision of language, fast cognition; connection between people and ideas. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "contentStatus": "source_qualified_v336_complete_v341_exact_pending",
+      "preservedSourceRefs": [
+        "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+      ],
+      "observedResearchPasses": 3,
+      "sourceVersionRequired": "MOB_Complete_v341.html",
+      "sourceVersionRequestedSha256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "retrievedOriginal341": false,
+      "approvedExact341Definition": false,
+      "relatedSourceBoundary": "Current registry contains explicit v336 source-qualified interpretations; do not claim these are the v341 author's exact text.",
+      "resolutionStatus": "BLOCKED_RAW_V341_NOT_VERIFIED",
+      "nextEvidence": "Original v341 file matching documented SHA256 plus independently verified per-record text locator."
+    },
+    {
+      "recordId": "v341-domain:weaver:healing",
+      "label": "Healing",
+      "qualifiedComparisonText": "Healing: directed intervention and creating conditions for restoration. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "contentStatus": "source_qualified_v336_complete_v341_exact_pending",
+      "preservedSourceRefs": [
+        "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+      ],
+      "observedResearchPasses": 3,
+      "sourceVersionRequired": "MOB_Complete_v341.html",
+      "sourceVersionRequestedSha256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "retrievedOriginal341": false,
+      "approvedExact341Definition": false,
+      "relatedSourceBoundary": "Current registry contains explicit v336 source-qualified interpretations; do not claim these are the v341 author's exact text.",
+      "resolutionStatus": "BLOCKED_RAW_V341_NOT_VERIFIED",
+      "nextEvidence": "Original v341 file matching documented SHA256 plus independently verified per-record text locator."
+    },
+    {
+      "recordId": "v341-domain:weaver:provision",
+      "label": "Provision",
+      "qualifiedComparisonText": "Provision: ensuring sustainable supplies and support over time. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "contentStatus": "source_qualified_v336_complete_v341_exact_pending",
+      "preservedSourceRefs": [
+        "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+      ],
+      "observedResearchPasses": 3,
+      "sourceVersionRequired": "MOB_Complete_v341.html",
+      "sourceVersionRequestedSha256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "retrievedOriginal341": false,
+      "approvedExact341Definition": false,
+      "relatedSourceBoundary": "Current registry contains explicit v336 source-qualified interpretations; do not claim these are the v341 author's exact text.",
+      "resolutionStatus": "BLOCKED_RAW_V341_NOT_VERIFIED",
+      "nextEvidence": "Original v341 file matching documented SHA256 plus independently verified per-record text locator."
+    },
+    {
+      "recordId": "v341-domain:weaver:play",
+      "label": "Play",
+      "qualifiedComparisonText": "Play: generative engagement, curiosity and awe; creative action for its own sake. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "contentStatus": "source_qualified_v336_complete_v341_exact_pending",
+      "preservedSourceRefs": [
+        "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+      ],
+      "observedResearchPasses": 3,
+      "sourceVersionRequired": "MOB_Complete_v341.html",
+      "sourceVersionRequestedSha256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "retrievedOriginal341": false,
+      "approvedExact341Definition": false,
+      "relatedSourceBoundary": "Current registry contains explicit v336 source-qualified interpretations; do not claim these are the v341 author's exact text.",
+      "resolutionStatus": "BLOCKED_RAW_V341_NOT_VERIFIED",
+      "nextEvidence": "Original v341 file matching documented SHA256 plus independently verified per-record text locator."
+    },
+    {
+      "recordId": "v341-domain:witness:nature",
+      "label": "Nature",
+      "qualifiedComparisonText": "Nature: biological alignment; patient cyclical growth without force. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "contentStatus": "source_qualified_v336_complete_v341_exact_pending",
+      "preservedSourceRefs": [
+        "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+      ],
+      "observedResearchPasses": 3,
+      "sourceVersionRequired": "MOB_Complete_v341.html",
+      "sourceVersionRequestedSha256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "retrievedOriginal341": false,
+      "approvedExact341Definition": false,
+      "relatedSourceBoundary": "Current registry contains explicit v336 source-qualified interpretations; do not claim these are the v341 author's exact text.",
+      "resolutionStatus": "BLOCKED_RAW_V341_NOT_VERIFIED",
+      "nextEvidence": "Original v341 file matching documented SHA256 plus independently verified per-record text locator."
+    },
+    {
+      "recordId": "v341-domain:witness:trickster",
+      "label": "Trickster",
+      "qualifiedComparisonText": "Trickster: disrupting rigid patterns; revealing what is hidden through inversion and creative disorder. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "contentStatus": "source_qualified_v336_complete_v341_exact_pending",
+      "preservedSourceRefs": [
+        "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+      ],
+      "observedResearchPasses": 3,
+      "sourceVersionRequired": "MOB_Complete_v341.html",
+      "sourceVersionRequestedSha256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "retrievedOriginal341": false,
+      "approvedExact341Definition": false,
+      "relatedSourceBoundary": "Current registry contains explicit v336 source-qualified interpretations; do not claim these are the v341 author's exact text.",
+      "resolutionStatus": "BLOCKED_RAW_V341_NOT_VERIFIED",
+      "nextEvidence": "Original v341 file matching documented SHA256 plus independently verified per-record text locator."
+    },
+    {
+      "recordId": "v341-domain:witness:mystery",
+      "label": "Mystery",
+      "qualifiedComparisonText": "Mystery: navigating the unseen and thresholds; holding darkness without being consumed. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "contentStatus": "source_qualified_v336_complete_v341_exact_pending",
+      "preservedSourceRefs": [
+        "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+      ],
+      "observedResearchPasses": 3,
+      "sourceVersionRequired": "MOB_Complete_v341.html",
+      "sourceVersionRequestedSha256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "retrievedOriginal341": false,
+      "approvedExact341Definition": false,
+      "relatedSourceBoundary": "Current registry contains explicit v336 source-qualified interpretations; do not claim these are the v341 author's exact text.",
+      "resolutionStatus": "BLOCKED_RAW_V341_NOT_VERIFIED",
+      "nextEvidence": "Original v341 file matching documented SHA256 plus independently verified per-record text locator."
+    },
+    {
+      "recordId": "v341-domain:witness:guardian",
+      "label": "Guardian",
+      "qualifiedComparisonText": "Guardian: maintaining a protective perimeter without possession or oppression. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "contentStatus": "source_qualified_v336_complete_v341_exact_pending",
+      "preservedSourceRefs": [
+        "MOB_Complete_v341.html upload SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md @ blob ef067ac8385c6686422959d8401cb181a980ecae",
+        "MOB-Manuscript/index.html @ blob 24dea9c95112fe83073e58ef4cb14d7eb5de9928; version label not declared"
+      ],
+      "observedResearchPasses": 3,
+      "sourceVersionRequired": "MOB_Complete_v341.html",
+      "sourceVersionRequestedSha256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "retrievedOriginal341": false,
+      "approvedExact341Definition": false,
+      "relatedSourceBoundary": "Current registry contains explicit v336 source-qualified interpretations; do not claim these are the v341 author's exact text.",
+      "resolutionStatus": "BLOCKED_RAW_V341_NOT_VERIFIED",
+      "nextEvidence": "Original v341 file matching documented SHA256 plus independently verified per-record text locator."
+    }
+  ],
+  "nextTests": [
+    "Recover original exact v341 binary and verify SHA256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+    "For each of 19 entries locate passage/line range and compare definition to v336-qualified text",
+    "Preserve both texts when wording differs; never silently overwrite a source-qualified record",
+    "Owner approve semantic linkage between domain taxonomy and source register before graph runtime mapping"
+  ]
+}
