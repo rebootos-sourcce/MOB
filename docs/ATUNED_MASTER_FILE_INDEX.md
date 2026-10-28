@@ -126,6 +126,12 @@
 - Checked current branch source content headers and SHA for SOURCE OS CANON 1.0.0 and 1.0.1, graph V4 and v341 gap ledger; fetched candidate registry content. The manuscript `index.html` path and blob were located, **but its version and full text were not validated**.
 - Previously recorded V9 Git scope of **201/201 branch HEAD trees**, 5 tags, 27 `v341` keyword commits remains a prior audit, not repeated in this cycle.
 
+### G01/G02 targeted full-content follow-up (after initial tree index)
+- `MOB-Manuscript/index.html` source blob `24dea9c95112fe83073e58ef4cb14d7eb5de9928` was fetched and searched as **5,898,347 UTF-8 characters**. It discusses The Performer and historical Hyper-Complexes, but contains **no exact `MOB_Complete_v341` identifier** or literal `eight complexes` / `8 complexes` / `eight ordinary` roster. This does not establish the manuscript's version or comprehensively rule out an eight-item roster under other headings.
+- MOB working-branch `source.html` blob `c1966eedabd7122936c28af84f4c2c46ee4fea07` was fetched and scanned as **5,419,778 characters**. Its single literal occurrence of `eight complexes` appears inside body-map **visual hub rendering code** discussing **eight visible hubs per tier**, **not** an authoritative eight ordinary Complexes definition/list. It contains no literal `v341` identifier.
+- MOB `atuned_src/engine/data/compass.js` and `docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md` were also read for the same roster phrases. Neither supplies the authoritative ordinary eight-Complex list. The latter is a v341 **extraction note**, not verified raw v341 bytes.
+- Do not count a textual phrase match in code, a historical version label, or the older manuscript's historical Psychopathy super-complex description as current owner-approved Canon. **G01 and G02 remain OPEN**.
+
 ## 6. Index verification
 Run `node docs/data/compass/integration/v14/validate_v14_file_index.cjs` in a local working-branch checkout. The research GitHub Actions workflow also runs this validator on subsequent commits. It checks locator uniqueness, count, existing working-tree source blob SHA-1s and the first-read pointer; **not** original-v341 recovery, semantic authority, cross-repository historical contents or browser E2E. The source index pointer and this workflow were changed after the pinned-base snapshot; the manifest's `postIndexChanges` pins and hash-checks their exact current Git blobs. They are not silently exempt.
 
