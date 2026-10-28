@@ -1,0 +1,359 @@
+{
+  "schema": "ATUNED_V341_EXACT_SOURCE_TO_DEEP_PSYCHE_V16",
+  "date": "2026-10-28",
+  "authority": "AUTHENTICATED_AUTHOR_SOURCE_ID_JOIN_NOT_CANON_OR_RUNTIME",
+  "sourceExtract": "docs/data/compass/integration/v16/ATUNED_V341_EXACT_19_DOMAINS_V16.json",
+  "priorGapLedger": "docs/data/compass/integration/v4/DEEP_PSYCHE_19_V341_EXACT_SOURCE_GAP_LEDGER_V1.json",
+  "originalRawSha256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+  "count": 19,
+  "records": [
+    {
+      "deepPsycheCandidateId": "v341-domain:architect:knowledge",
+      "sourceName": "Knowledge",
+      "sourceCluster": "Architect",
+      "sourceLine": 3917,
+      "v341ExactSource": {
+        "clear": "pattern recognition, codification, teaching, symbolic thinking. The person who reads before being asked to. Somatic knowledge is true knowledge, once it's in the body, deception doesn't work on you. You can feel the lie before it forms a word.",
+        "distorted": "over-intellectualization, false certainty, knowledge as a barrier rather than a bridge.",
+        "templates": "Thoth, Athena, Saraswati, Odin."
+      },
+      "priorQualifiedComparison": "Knowledge: pattern recognition, codification, teaching, symbolic thinking. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "sourceVersion": "v341",
+      "sourceSHA256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "status": "EXACT_ORIGINAL_SOURCE_PROVEN;_CROSS_SYSTEM_CANON_APPROVAL_PENDING",
+      "sameAuthorDomainLabelVerified": true,
+      "semanticEquivalenceApproved": false,
+      "runtimePromoted": false
+    },
+    {
+      "deepPsycheCandidateId": "v341-domain:architect:justice",
+      "sourceName": "Justice",
+      "sourceCluster": "Architect",
+      "sourceLine": 3944,
+      "v341ExactSource": {
+        "clear": "discernment of what's real and what's false. Accountability without cruelty. Moral disorder doesn't just feel wrong, it triggers the nervous system. When truth is a 10, anything less is somatic. You can feel the lie before it forms a word. If you lie, you dysregulate your own nervous system.",
+        "distorted": "rigid judgment, self-righteousness, justice as control.",
+        "templates": "Ma'at, Themis, Forseti."
+      },
+      "priorQualifiedComparison": "Justice: discernment of truth and falsehood; accountability without cruelty. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "sourceVersion": "v341",
+      "sourceSHA256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "status": "EXACT_ORIGINAL_SOURCE_PROVEN;_CROSS_SYSTEM_CANON_APPROVAL_PENDING",
+      "sameAuthorDomainLabelVerified": true,
+      "semanticEquivalenceApproved": false,
+      "runtimePromoted": false
+    },
+    {
+      "deepPsycheCandidateId": "v341-domain:architect:imperium",
+      "sourceName": "Imperium",
+      "sourceCluster": "Architect",
+      "sourceLine": 3926,
+      "v341ExactSource": {
+        "clear": "governance, structural authority, organizing chaos into function. sees how systems should be organized.",
+        "distorted": "domination, entitlement, autocracy.",
+        "templates": "Zeus, Jupiter, Ra."
+      },
+      "priorQualifiedComparison": "Imperium: governance, structural authority, organizing chaos into function. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "sourceVersion": "v341",
+      "sourceSHA256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "status": "EXACT_ORIGINAL_SOURCE_PROVEN;_CROSS_SYSTEM_CANON_APPROVAL_PENDING",
+      "sameAuthorDomainLabelVerified": true,
+      "semanticEquivalenceApproved": false,
+      "runtimePromoted": false
+    },
+    {
+      "deepPsycheCandidateId": "v341-domain:architect:duty",
+      "sourceName": "Duty",
+      "sourceCluster": "Architect",
+      "sourceLine": 3956,
+      "v341ExactSource": {
+        "clear": "right action regardless of personal cost. Loyalty to what's true, not what's comfortable. Does the right thing even when no one is watching.",
+        "distorted": "rigidity, losing self in obligation, duty performed for an audience.",
+        "templates": "Rama, Horus, Michael."
+      },
+      "priorQualifiedComparison": "Duty: right action regardless of personal cost; loyalty to what is true. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "sourceVersion": "v341",
+      "sourceSHA256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "status": "EXACT_ORIGINAL_SOURCE_PROVEN;_CROSS_SYSTEM_CANON_APPROVAL_PENDING",
+      "sameAuthorDomainLabelVerified": true,
+      "semanticEquivalenceApproved": false,
+      "runtimePromoted": false
+    },
+    {
+      "deepPsycheCandidateId": "v341-domain:architect:fate",
+      "sourceName": "Fate",
+      "sourceCluster": "Architect",
+      "sourceLine": 3960,
+      "v341ExactSource": {
+        "clear": "reads the pattern and its timing. Knows what must unfold and when to move. Acts at the right moment without forcing the thread.",
+        "distorted": "fatalism, abdication of choice, reading the pattern as an excuse to never act.",
+        "templates": "the Moirai, the Norns, Fortuna, Kala."
+      },
+      "priorQualifiedComparison": "Fate: pattern timing; knowing when to act without forcing an outcome. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "sourceVersion": "v341",
+      "sourceSHA256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "status": "EXACT_ORIGINAL_SOURCE_PROVEN;_CROSS_SYSTEM_CANON_APPROVAL_PENDING",
+      "sameAuthorDomainLabelVerified": true,
+      "semanticEquivalenceApproved": false,
+      "runtimePromoted": false
+    },
+    {
+      "deepPsycheCandidateId": "v341-domain:engine:power",
+      "sourceName": "Power",
+      "sourceCluster": "Engine",
+      "sourceLine": 3923,
+      "v341ExactSource": {
+        "clear": "physical courage, boundary enforcement, protection of what matters. Directed aggression at obstacles, not people.",
+        "distorted": "domination, violence without purpose, war as identity.",
+        "templates": "Ares, Mars, Sekhmet, Thor."
+      },
+      "priorQualifiedComparison": "Power: physical courage, boundary enforcement, protection of what matters; directed force toward obstacles, not people. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "sourceVersion": "v341",
+      "sourceSHA256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "status": "EXACT_ORIGINAL_SOURCE_PROVEN;_CROSS_SYSTEM_CANON_APPROVAL_PENDING",
+      "sameAuthorDomainLabelVerified": true,
+      "semanticEquivalenceApproved": false,
+      "runtimePromoted": false
+    },
+    {
+      "deepPsycheCandidateId": "v341-domain:engine:creation",
+      "sourceName": "Creation",
+      "sourceCluster": "Engine",
+      "sourceLine": 3929,
+      "v341ExactSource": {
+        "clear": "building, executing, bringing vision into form. Always needed to make things. When you can't create it feels like disconnection, like the system is broken. Financial stress kills creativity not motivationally but anatomically: the survival charge consumes the current before it reaches the generative center. When the root clears, the sacral opens, the creative current flows again. Not as discipline. As a natural consequence of the channel being clear.",
+        "distorted": "perfectionism as paralysis, identity tied to output.",
+        "templates": "Brahma, Ptah, Prometheus."
+      },
+      "priorQualifiedComparison": "Creation: building, execution, turning vision into form; clear survival channel supports creation. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "sourceVersion": "v341",
+      "sourceSHA256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "status": "EXACT_ORIGINAL_SOURCE_PROVEN;_CROSS_SYSTEM_CANON_APPROVAL_PENDING",
+      "sameAuthorDomainLabelVerified": true,
+      "semanticEquivalenceApproved": false,
+      "runtimePromoted": false
+    },
+    {
+      "deepPsycheCandidateId": "v341-domain:engine:dissolution",
+      "sourceName": "Dissolution",
+      "sourceCluster": "Engine",
+      "sourceLine": 3932,
+      "v341ExactSource": {
+        "clear": "deliberate dissolution, clearing what's false or finished, making space for what comes next. Sees what needs to end.",
+        "distorted": "destruction as identity, nihilism, chaos without rebuilding.",
+        "templates": "Shiva, Kali, Loki."
+      },
+      "priorQualifiedComparison": "Dissolution: deliberate ending of what is false or finished to make room for renewal. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "sourceVersion": "v341",
+      "sourceSHA256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "status": "EXACT_ORIGINAL_SOURCE_PROVEN;_CROSS_SYSTEM_CANON_APPROVAL_PENDING",
+      "sameAuthorDomainLabelVerified": true,
+      "semanticEquivalenceApproved": false,
+      "runtimePromoted": false
+    },
+    {
+      "deepPsycheCandidateId": "v341-domain:engine:sacrifice",
+      "sourceName": "Sacrifice",
+      "sourceCluster": "Engine",
+      "sourceLine": 3941,
+      "v341ExactSource": {
+        "clear": "voluntary descent, the chosen ordeal, sacrifice as the mechanism that produces insight unavailable any other way. The knowledge that comes from what was given up, not accumulated. The true utilization of experience: consume as much as possible, then don't hang onto the definitions. Words illuminate, they don't contain.",
+        "distorted": "suffering as identity, the descent without return.",
+        "templates": "Odin, Osiris, Christ, Inanna."
+      },
+      "priorQualifiedComparison": "Sacrifice: voluntary descent and chosen ordeal that creates insight through experience. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "sourceVersion": "v341",
+      "sourceSHA256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "status": "EXACT_ORIGINAL_SOURCE_PROVEN;_CROSS_SYSTEM_CANON_APPROVAL_PENDING",
+      "sameAuthorDomainLabelVerified": true,
+      "semanticEquivalenceApproved": false,
+      "runtimePromoted": false
+    },
+    {
+      "deepPsycheCandidateId": "v341-domain:engine:death",
+      "sourceName": "Death",
+      "sourceCluster": "Engine",
+      "sourceLine": 3960,
+      "v341ExactSource": {
+        "clear": "completion. Endings held cleanly. The threshold kept, the thread cut when the thread is finished, presence with what's dying without flinching. Releases what's done so renewal has room.",
+        "distorted": "morbidity, clinging that refuses every ending, or dealing endings as power.",
+        "templates": "Anubis, Yama, Hel, Thanatos."
+      },
+      "priorQualifiedComparison": "Death: clean endings and completion; presence at thresholds; release what is finished. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "sourceVersion": "v341",
+      "sourceSHA256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "status": "EXACT_ORIGINAL_SOURCE_PROVEN;_CROSS_SYSTEM_CANON_APPROVAL_PENDING",
+      "sameAuthorDomainLabelVerified": true,
+      "semanticEquivalenceApproved": false,
+      "runtimePromoted": false
+    },
+    {
+      "deepPsycheCandidateId": "v341-domain:weaver:love",
+      "sourceName": "Love",
+      "sourceCluster": "Weaver",
+      "sourceLine": 3935,
+      "v341ExactSource": {
+        "clear": "union, intimacy, the force that draws beings into genuine contact. Love as a state the person generates, not receives. Always knew what brings people together.",
+        "distorted": "codependency, possession, love as completion rather than addition.",
+        "templates": "Aphrodite, Hathor, Freya, Oshun."
+      },
+      "priorQualifiedComparison": "Love: union, intimacy, genuine contact; love generated rather than demanded. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "sourceVersion": "v341",
+      "sourceSHA256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "status": "EXACT_ORIGINAL_SOURCE_PROVEN;_CROSS_SYSTEM_CANON_APPROVAL_PENDING",
+      "sameAuthorDomainLabelVerified": true,
+      "semanticEquivalenceApproved": false,
+      "runtimePromoted": false
+    },
+    {
+      "deepPsycheCandidateId": "v341-domain:weaver:communication",
+      "sourceName": "Communication",
+      "sourceCluster": "Weaver",
+      "sourceLine": 3920,
+      "v341ExactSource": {
+        "clear": "bridging, translation, precision of language, fast cognition. The connector, the person who translates between people, between ideas, between worlds.",
+        "distorted": "manipulation, inconsistency, information as leverage.",
+        "templates": "Hermes, Mercury, Elegba."
+      },
+      "priorQualifiedComparison": "Communication: bridging, translation, precision of language, fast cognition; connection between people and ideas. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "sourceVersion": "v341",
+      "sourceSHA256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "status": "EXACT_ORIGINAL_SOURCE_PROVEN;_CROSS_SYSTEM_CANON_APPROVAL_PENDING",
+      "sameAuthorDomainLabelVerified": true,
+      "semanticEquivalenceApproved": false,
+      "runtimePromoted": false
+    },
+    {
+      "deepPsycheCandidateId": "v341-domain:weaver:healing",
+      "sourceName": "Healing",
+      "sourceCluster": "Weaver",
+      "sourceLine": 3938,
+      "v341ExactSource": {
+        "clear": "directed intervention, active clearing, creating conditions in which restoration happens. Finds the broken thing in any room.",
+        "distorted": "rescuer complex, martyrdom, healing as identity.",
+        "templates": "Asclepius, Chiron, Dhanvantari."
+      },
+      "priorQualifiedComparison": "Healing: directed intervention and creating conditions for restoration. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "sourceVersion": "v341",
+      "sourceSHA256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "status": "EXACT_ORIGINAL_SOURCE_PROVEN;_CROSS_SYSTEM_CANON_APPROVAL_PENDING",
+      "sameAuthorDomainLabelVerified": true,
+      "semanticEquivalenceApproved": false,
+      "runtimePromoted": false
+    },
+    {
+      "deepPsycheCandidateId": "v341-domain:weaver:provision",
+      "sourceName": "Provision",
+      "sourceCluster": "Weaver",
+      "sourceLine": 3960,
+      "v341ExactSource": {
+        "clear": "the one who makes sure there's enough, and not only for today. Supply held against a season nobody can see yet. The granary, the harvest, the wage. Provides for, rather than trades with.",
+        "distorted": "worth measured only in what's furnished, hoarding dressed as prudence, the provider who can't be provided for.",
+        "templates": "Demeter, Annapurna, Freyr, Lakshmi."
+      },
+      "priorQualifiedComparison": "Provision: ensuring sustainable supplies and support over time. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "sourceVersion": "v341",
+      "sourceSHA256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "status": "EXACT_ORIGINAL_SOURCE_PROVEN;_CROSS_SYSTEM_CANON_APPROVAL_PENDING",
+      "sameAuthorDomainLabelVerified": true,
+      "semanticEquivalenceApproved": false,
+      "runtimePromoted": false
+    },
+    {
+      "deepPsycheCandidateId": "v341-domain:weaver:play",
+      "sourceName": "Play",
+      "sourceCluster": "Weaver",
+      "sourceLine": 3959,
+      "v341ExactSource": {
+        "clear": "the generative state of pure engagement. Awe. Creativity for its own sake. Not the absence of seriousness, the intelligence serious people miss. Always able to find what's alive in something.",
+        "distorted": "avoidance through play, irresponsibility, lightness that refuses depth.",
+        "templates": "Krishna, Dionysus, Baldur."
+      },
+      "priorQualifiedComparison": "Play: generative engagement, curiosity and awe; creative action for its own sake. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "sourceVersion": "v341",
+      "sourceSHA256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "status": "EXACT_ORIGINAL_SOURCE_PROVEN;_CROSS_SYSTEM_CANON_APPROVAL_PENDING",
+      "sameAuthorDomainLabelVerified": true,
+      "semanticEquivalenceApproved": false,
+      "runtimePromoted": false
+    },
+    {
+      "deepPsycheCandidateId": "v341-domain:witness:nature",
+      "sourceName": "Nature",
+      "sourceCluster": "Witness",
+      "sourceLine": 3950,
+      "v341ExactSource": {
+        "clear": "alignment with biological truth, growth through patience rather than force. Thinks in cycles rather than straight lines.",
+        "distorted": "rejection of structure, naturalism as escape from complexity.",
+        "templates": "Gaia, Cernunnos, Pan."
+      },
+      "priorQualifiedComparison": "Nature: biological alignment; patient cyclical growth without force. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "sourceVersion": "v341",
+      "sourceSHA256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "status": "EXACT_ORIGINAL_SOURCE_PROVEN;_CROSS_SYSTEM_CANON_APPROVAL_PENDING",
+      "sameAuthorDomainLabelVerified": true,
+      "semanticEquivalenceApproved": false,
+      "runtimePromoted": false
+    },
+    {
+      "deepPsycheCandidateId": "v341-domain:witness:trickster",
+      "sourceName": "Trickster",
+      "sourceCluster": "Witness",
+      "sourceLine": 3947,
+      "v341ExactSource": {
+        "clear": "disruption of rigid patterns, revealing what's hidden through inversion, innovation through disorder. Sees the absurdity in what everyone else treats as fixed.",
+        "distorted": "deception as lifestyle, instability mistaken for freedom.",
+        "templates": "Loki, Coyote, Anansi."
+      },
+      "priorQualifiedComparison": "Trickster: disrupting rigid patterns; revealing what is hidden through inversion and creative disorder. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "sourceVersion": "v341",
+      "sourceSHA256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "status": "EXACT_ORIGINAL_SOURCE_PROVEN;_CROSS_SYSTEM_CANON_APPROVAL_PENDING",
+      "sameAuthorDomainLabelVerified": true,
+      "semanticEquivalenceApproved": false,
+      "runtimePromoted": false
+    },
+    {
+      "deepPsycheCandidateId": "v341-domain:witness:mystery",
+      "sourceName": "Mystery",
+      "sourceCluster": "Witness",
+      "sourceLine": 3953,
+      "v341ExactSource": {
+        "clear": "navigation of the unseen, death and rebirth as structural realities. Can hold darkness without being consumed. Always drawn to what's hidden.",
+        "distorted": "obsession with shadow, nihilism, identity built on the margin.",
+        "templates": "Hades, Hecate, Anubis."
+      },
+      "priorQualifiedComparison": "Mystery: navigating the unseen and thresholds; holding darkness without being consumed. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "sourceVersion": "v341",
+      "sourceSHA256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "status": "EXACT_ORIGINAL_SOURCE_PROVEN;_CROSS_SYSTEM_CANON_APPROVAL_PENDING",
+      "sameAuthorDomainLabelVerified": true,
+      "semanticEquivalenceApproved": false,
+      "runtimePromoted": false
+    },
+    {
+      "deepPsycheCandidateId": "v341-domain:witness:guardian",
+      "sourceName": "Guardian",
+      "sourceCluster": "Witness",
+      "sourceLine": 3960,
+      "v341ExactSource": {
+        "clear": "the watch kept. A perimeter held so what's inside can live. Protection without possession, sanctuary without walls that strangle.",
+        "distorted": "overprotection that smothers, vigilance that never rests, walls against life itself.",
+        "templates": "Heimdall, Durga, Hestia, the Lokapalas."
+      },
+      "priorQualifiedComparison": "Guardian: maintaining a protective perimeter without possession or oppression. Source-qualified v336 interpretation; v341 exact wording unverified.",
+      "sourceVersion": "v341",
+      "sourceSHA256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+      "status": "EXACT_ORIGINAL_SOURCE_PROVEN;_CROSS_SYSTEM_CANON_APPROVAL_PENDING",
+      "sameAuthorDomainLabelVerified": true,
+      "semanticEquivalenceApproved": false,
+      "runtimePromoted": false
+    }
+  ],
+  "metrics": {
+    "exactSourceDefinitionsLocated": 19,
+    "rawManuscriptCopiesVerified": 3,
+    "semanticEquivalencesApproved": 0,
+    "runtimePromotions": 0
+  }
+}
