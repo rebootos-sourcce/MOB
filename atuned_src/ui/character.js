@@ -62,7 +62,7 @@ var CHV={pick:null, sel:-1, selAddr:-1, sc:null, ov:null, r:null, raf:0, last:0,
 /* the three overlays and the key they are kept under in the store */
 var CH_OVERLAYS=[
  {k:'cloud', nm:'Point cloud', on:true,
-  d:'The person and the 112 addresses round them, as points.'},
+  d:'The person and the 108 addresses round them, plus the 4 field anchors above and below, as points.'},
  {k:'torus', nm:'Torus', on:true,
   d:'The field round the body. The seats bend it and vitality makes it breathe.'},
  {k:'heat', nm:'Heat map', on:false,
@@ -385,7 +385,7 @@ function chRailHtml(r){
  h+='<div class="pm-eye chr-sp">Light and breath</div><div class="chr-read">'
   +'<div class="chr-row"><span>Coherence</span><b>'+(unread?'–':cq+'%')+'</b><i>'+esc(chSentence(charCohWord(unread?0:cq/100)))+' It lights the figure and sets how wide, bright and whole the field is.</i></div>'
   +'<div class="chr-row"><span>Vitality</span><b>'+(unread?'–':vt.toFixed(2))+'</b><i>'+esc(chVitWord(unread?0:vt))+' It sets how far and how fast the field breathes.</i></div>'
-  +'<div class="chr-row"><span>Decoherence</span><b>'+(unread?'–':dq+'%')+'</b><i>The shadow, all 112 addresses against the most they could hold. It opens the gaps.</i></div></div>'
+  +'<div class="chr-row"><span>Decoherence</span><b>'+(unread?'–':dq+'%')+'</b><i>The shadow, your 108 addresses and 4 field anchors against the most they could hold. It opens the gaps.</i></div></div>'
   /* round RB: the glow behind the figure is a picture too, so it is said */
   +(unread?'':'<p class="chr-note">The glow behind the figure is the colour your whole field gives off: every point\u2019s colour, mixed by how bright it is. It breathes with the field.</p>');
  /* the seven seats: root first as everywhere, each a button that traces it */

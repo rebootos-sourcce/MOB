@@ -107,7 +107,7 @@ function sumGlance(r,noCQ){
      total shadow on all 112 over the most they can hold, so it has a ceiling
      of 100 and the ring is the figure, on the same scale as coherence. */
   ['shadow weight', 'Root', pct('dq',r.DQ)||0, fmtPct('dq',r.DQ,U),
-   'All the charge on all 112 addresses, against the most they could hold.',
+   'All the charge on your 108 addresses and 4 field anchors, against the most they could hold.',
    ''],
   /* THIS PRINTED THE OPPOSITE OF WHAT IT MEASURES. It was labelled "installed"
      and glossed "what has been filled in". SQm is built in compute.js from

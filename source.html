@@ -5,10 +5,10 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v728 dfde770e 2026-10-27 23:14"><head><meta charset="utf-8">
+<html lang="en" data-build="v686 d57af090 2026-10-28 01:52"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
-<meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
+<meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
 <!-- ============================================================
      THE TYPEFACE, CARRIED RATHER THAN FETCHED.
 
@@ -3916,26 +3916,6 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .st-flow[data-focus="read"] .st-colr{flex:1.55 1 0}
 .st-flow[data-focus="release"] .st-colw{flex:1 1 0}
 .st-flow[data-focus="release"] .st-colx{flex:0 0 430px}
-/* SIMPLE, THEN THE DASHBOARD ONE PRESS AWAY, his words, 26 October. The
-   journal alone, full width, until the dashboard button expands the other
-   two back in. The columns are not re-rendered, only resized and hidden,
-   so nothing in them loses state by pressing this. */
-.st-flow.simple .st-colr,.st-flow.simple .st-colx{display:none}
-.st-flow.simple .st-colw{flex:1 1 100%}
-/* SMALL AND CONTAINED TO START, round of 27 October, his words: "right now
-   the journal opens up full screen, I want it to start roughly about 800 by
-   600, and then when I hit the dashboard button it expands and opens up."
-   Simple is the first thing a landing shows (STV.simple defaults true, see
-   the paragraph above), so the box holds to a size that reads as one small
-   instrument rather than the whole page; pressing Dashboard flips STV.simple
-   off and this cap lifts, back to the full width and height the three column
-   layout always had. #story already centers its one child on every width
-   this rule reaches (body.tab-story #story, further down), so the box
-   simply sits in the middle with nothing more needed here. Below 1180 the
-   phone and tablet layout stacks the columns and needs the room it is
-   given, so the override beside that breakpoint's own .st-flow rule lifts
-   the cap back off rather than shrinking a phone screen into 800 by 600. */
-.st-flow.simple{width:800px;max-width:800px;height:600px;max-height:600px}
 .st-pan{display:flex;flex-direction:column;min-width:0;min-height:0;position:relative;
  background:color-mix(in srgb,var(--ink) 3%,transparent);border:1px solid var(--edge);
  border-radius:var(--r-s);padding:14px 16px}
@@ -4425,20 +4405,6 @@ body.punch .src-new{border-color:transparent;background:var(--panel-2)}
 .src-open{font-size:22px;line-height:1.3;color:var(--ink);font-weight:400;margin:4px 0 2px;max-width:44ch;
  transition:font-size var(--t-element) var(--ease-out),color var(--t-element) var(--ease-out)}
 .src-open.quiet{font-size:15px;color:var(--mid)}
-/* LARGE, BEAUTIFUL, FRIENDLY, his own three words, round of 27 October, for
-   the first thing a person sees landing on the journal. One typeface in
-   this file, Inter, so friendly is weight and air rather than a second
-   font: lighter than the body's 400, looser line height, and a touch of
-   negative tracking to keep large letters from reading loose. Still sentence
-   case, still no soft wellness word in the string itself, which is the
-   house voice rule; this is the letterform around words that were already
-   his own. Written .src-ask .src-hero, not .src-hero alone, so it outranks
-   the responsive sheet's own .src-open rule further down at the same single
-   class specificity: equal specificity falls back to source order and that
-   rule sits later in the file, which silently clipped this one at 1180px
-   and under until it was caught here. */
-.src-ask .src-hero{font-size:32px;line-height:1.25;font-weight:300;letter-spacing:-.01em;max-width:30ch}
-@media (max-width:720px){.src-ask .src-hero{font-size:26px}}
 .src-q{font-size:20px;line-height:1.35;color:var(--ink);margin:4px 0 2px;max-width:48ch}
 .src-note{font-size:13px;color:var(--dim);line-height:1.55;margin:3px 0}
 .src-say{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);
@@ -4467,47 +4433,48 @@ body.punch .src-new{border-color:transparent;background:var(--panel-2)}
    on its border, and a scroller clips there. */
 .st-talk{margin-left:auto}
 .st-talk[aria-pressed="true"]{border-color:var(--accent);color:var(--ink)}
-/* THE DASHBOARD BUTTON stands beside Talk, at the same right edge Talk's own
-   margin-left:auto already claims for the pair, so it only needs the gap
-   between them. */
-.st-dash{margin-left:6px}
-/* IT IS ITS MARK NOW AT EVERY WIDTH, the way the bank and the vault are.
-   Dashboard used to keep a printed word beside the icon above the 720px
-   phone cut, which Talk never did, so the two buttons that wear the same
-   pill read as two different rules. Round of 27 October, his words: "the
-   talk button and dashboard in simple buttons need to be more iconic."
-   Dashboard dropped the word everywhere: it was never more than this
-   media query's own job below 720px, and the stdash markup above stopped
-   printing a span at all, so there is nothing left here to hide for it.
-   The word still stays in aria-label and title for a screen reader and
-   for anyone hovering, per the house rule that a symbol never stands
-   without its meaning somewhere beside it. Talk's own span hiding rule
-   stays below untouched: that one still carries the recording dot and
-   the mm:ss clock, neither of which this change touches. */
+/* ON A PHONE IT IS ITS MARK, the way the bank and the vault are, and the word
+   stays in the button for a screen reader. Measured with the word: the
+   name, Talk and Record need 330 pixels and the row has 328 at 390 and 298 at
+   360, so Record dropped to a line of its own under the name. Two classes
+   deep, because the phone rule that lets every child of .st-hd shrink to
+   nothing is later in this sheet and squeezed the mark to sixteen pixels. */
 @media (max-width:720px){
- .st-hd .st-talk,.st-hd .st-dash{flex:0 0 auto;min-width:var(--tap);justify-content:center;padding-left:0;padding-right:0}
+ .st-hd .st-talk{flex:0 0 auto;min-width:var(--tap);justify-content:center;padding-left:0;padding-right:0}
  .st-talk span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}}
 .st-chat .st-glow{flex:1 1 auto;display:flex;flex-direction:column;min-height:0}
 .st-chat .st-pe{flex:1 1 auto;display:flex;flex-direction:column;min-height:260px}
-.src-th{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;margin:0;padding:2px 4px 8px 0;
- list-style:none;display:flex;flex-direction:column;gap:10px}
-/* A NORMAL CHAT DISPLAY, 26 October, his words: "let's go back to a normal
-   chat display, I don't like the chat style that we're using." Replaces the
-   wire-and-node version: each row is a plain bubble, the person's at the
-   right, Source AI's at the left, told apart by side and fill and not by a
-   drawn line between them. */
-.src-tn{position:relative;list-style:none;display:flex}
-.src-tn-me{justify-content:flex-end}
-.src-tn-now,.src-tn-past{justify-content:flex-start}
-.src-bub{max-width:min(60ch,86%);border-radius:var(--r-m);padding:10px 14px;box-sizing:border-box}
-.src-bub-me{background:color-mix(in srgb,var(--c) 16%,var(--panel-2));
- border:1px solid color-mix(in srgb,var(--c) 30%,var(--edge))}
-.src-bub-ai{background:var(--panel-2);border:1px solid var(--edge)}
-.src-tn-now .src-bub-ai{border-color:var(--accent)}
-.src-me{margin:0;font-family:var(--sans);font-size:16px;line-height:1.6;font-weight:400;
- color:var(--ink);white-space:pre-wrap;overflow-wrap:break-word}
+.src-th{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;margin:0;padding:2px 4px 0 0;
+ list-style:none}
+/* a row is its node, its words, and the wire down to the next node. No
+   margin between rows: the wire is exactly a row tall because the next node
+   sits the same distance down its own row as this one does in this. */
+.src-tn{position:relative;list-style:none;min-height:24px;padding:3px 0 14px 32px}
+.src-tn-past{padding-bottom:6px}
+.src-tw{position:absolute;left:0;top:16px;width:24px;overflow:visible;pointer-events:none}
+.src-wire{fill:none;stroke:var(--c);stroke-width:1.5;stroke-linecap:round}
+/* the pulse is frflow's own keyframes, the renditions' tension run, so it is
+   one wave in two places and never a second one drawn to look like it */
+.src-puls{fill:none;stroke-linecap:round;stroke-width:2.2;
+ stroke:color-mix(in srgb,var(--c) 62%,var(--ink));
+ animation:frflow var(--d,3s) linear infinite;animation-delay:var(--ph,0s)}
+body.quiet .src-puls,body.rm .src-puls{display:none}
+@media (prefers-reduced-motion:reduce){.src-puls{display:none}}
+/* the nodes are rings, never fills, on the ground so the wire stops at them.
+   Source AI's are the size of the Field's own address ring and the person's
+   are smaller, so whose turn it was reads before a word does. The live one
+   breathes on the panel's beat, srcBreath, locked to the same clock. */
+.src-nd{position:absolute;left:6px;top:10px;width:12px;height:12px;border-radius:50%;
+ box-sizing:border-box;border:1.6px solid var(--c);background:var(--sunk)}
+.src-tn-me .src-nd{left:8px;top:12px;width:8px;height:8px;border-width:1.4px}
+.src-tn-now .src-nd{animation:srcBreath 4.2s ease-in-out infinite;border-color:var(--accent)}
+body.quiet .src-tn-now .src-nd,body.rm .src-tn-now .src-nd{animation:none}
+@media (prefers-reduced-motion:reduce){.src-tn-now .src-nd{animation:none}}
+/* the person's words in the journal's own hand, light, so the two voices on
+   the thread are told apart by weight and not by a bubble around either */
+.src-me{margin:0;font-family:var(--sans);font-size:16px;line-height:1.6;font-weight:300;
+ color:var(--ink);white-space:pre-wrap;overflow-wrap:break-word;max-width:60ch}
 .src-tn-now .src-open,.src-tn-now .src-q{margin-top:0}
-.src-q.quiet{color:var(--mid);font-size:16px}
 /* the reply line, on the journal box's own ground and type */
 .src-cmp{display:flex;align-items:flex-end;gap:8px}
 .src-cin{flex:1 1 auto;min-width:0;min-height:var(--tap);resize:none;box-sizing:border-box;
@@ -4802,6 +4769,21 @@ body.punch .ip.kid{background:color-mix(in srgb,var(--c) 68%,var(--panel-2))}
 .ad-r span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
 .ad-r em{font-style:normal;font-size:12px;color:var(--heart)}
 .ad-r b{font-weight:500;color:var(--gold);font-family:var(--num);font-variant-numeric:tabular-nums}
+/* THE GATE ROWS' OWN VALUE, reached for the first time outside the gate
+   drill when the Field's own Laws of Action rail section was added, 28
+   October. gatesBlock (ui/drills.js) was already shipped and already
+   correct, drawn only inside the drill until then, so the design gate's
+   CSS coverage check had never walked a tab where .ad-v or .gate-r stood
+   reachable in the document. .ad-v held a plain .ad-r span's own colour
+   with nothing of its own; it is the percent and reads better in the same
+   gold, tabular hand every other reading in this product already uses. */
+.ad-v{color:var(--gold);font-family:var(--num);font-variant-numeric:tabular-nums}
+/* .gate-r NAMES THE ROW FOR THE DELEGATED CLICK (ui/ui.js, .gate-r[data-gate]
+   opens runGatesDrill) and carries no rule of its own: .ad-r's is the whole
+   of its look, on purpose, so a gate row and every other action-drill row
+   stay one visual family. Named here so the design gate's coverage check,
+   which reads a class only off a selector that names it, finds it. */
+.gate-r{}
 .ad-q{font-size:14px;line-height:1.7;color:var(--dim);font-style:italic;
  border-left:3px solid var(--gold);padding-left:12px;margin:8px 0;font-weight:300}
 /* THE SABOTEUR CARD'S QUIET END, round SB. Connected is the engine's own map
@@ -5879,12 +5861,6 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     80 pixels under the first screen. These are the pixels that bought it
     back, and none of them is a tap target. */
  .st-flow{flex-direction:column;height:auto;gap:8px}
- /* THE 800 BY 600 CAP IS A DESKTOP RULE. Stacked, the box needs whatever
-    width and height the phone or tablet actually gives it, same as every
-    other surface in this breakpoint, so the cap above lifts here rather
-    than squeezing a 390 wide screen into a box built for a much larger
-    one. */
- .st-flow.simple{width:100%;max-width:100%;height:auto;max-height:none}
  .st-flow>*,.st-colr>*,.st-colw>*{flex:0 0 auto!important}
  .st-colw,.st-colr,.st-colx{gap:8px}
  .st-pan{padding:10px 12px}
@@ -9285,7 +9261,7 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
          reaches; balance opens its reading. The ids are kept because every
          gate reads them. -->
     <div class="fdial" id="fdial">
-     <div class="polbar" id="polbar" role="img" tabindex="0" aria-label="Orientation. Positive against negative."></div>
+     <div class="polbar" id="polbar" role="img" tabindex="0" aria-label="Orientation. Benign against malignant."></div>
      <button type="button" class="bal" id="bal"
       aria-label="Balance. Masculine against feminine. Opens the reading."></button>
     </div>
@@ -9371,6 +9347,29 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
      <div class="lbl plain">19 domains &times; 9 child emotions</div>
      <div class="mx" id="mx"></div>
      <div class="mxk" id="mxk"></div>
+    </div>
+   </div>
+   <!-- THE SIX GATES, GIVEN A NAMED PLACE ON THIS RAIL. Round of 28 October,
+        his words, after seeing the Field's own small marks for them: "if you
+        look on the field, you'll find the awareness ignorant detach attach
+        intentional aware, that's the only space, those would be great to
+        expose, wouldn't they, maybe they go on our left-hand menu." They
+        already drew as marks on the wheel (the Gates layer, FLAYS in
+        ui/rings.js) and as a reference list on the Codex's own Laws of
+        Action page, and the derived avoidance reading already lived,
+        correctly built with its upstream pair beside it per the engine's
+        own guard against showing it alone, inside the Journal's collapsed
+        Laws accordion. None of those is a named section here. This is.
+        Filled by renderGates(), ui/ui.js, off verpRead() and sniffGates(),
+        read-only: see those files for what guard the avoidance line may
+        never be shown without. -->
+   <div class="lsec" data-sec="gates">
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.1"/><path d="M12 8.9V3.6M9.6 6L12 3.6 14.4 6M12 15.1v5.3"/></svg>Laws of Action</span><i></i></button>
+    <div class="lsec-bd">
+     <div class="tier1">The six gates</div>
+     <p class="stk-def">Read from your own words. Three are the law kept, three the law broken.</p>
+     <div id="gaterows"></div>
+     <div id="gateavoid"></div>
     </div>
    </div>
   </div></div>
@@ -10020,7 +10019,7 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
    nerve, plus 4 field anchors above and below the body.
    ============================================================ */
 const NODES=
-[{"i":1,"k":"Fear","b":"Root","n":"Lumbar Plexus","a":"Instinct, threat","d":"Avoidance","c":"Fear"},{"i":2,"k":"Shame","b":"Root","n":"Pudendal Nerve","a":"Worth, embodiment","d":"Self-rejection","c":"Shame"},{"i":3,"k":"Guilt","b":"Root","n":"Inferior Hypogastric Plexus","a":"Responsibility","d":"Overcompensation","c":"Shame"},{"i":4,"k":"Control","b":"Root","n":"Sacral Nerves","a":"Safety through force","d":"Domination","c":"Fear"},{"i":5,"k":"Insecurity","b":"Root","n":"Pelvic Nerve","a":"Belonging","d":"Dependency","c":"Fear"},{"i":6,"k":"Victimhood","b":"Root","n":"Coccygeal Plexus","a":"Agency","d":"Blame","c":"Sadness"},{"i":7,"k":"Scarcity","b":"Root","n":"Iliac Nerve Branch","a":"Resources","d":"Hoarding","c":"Fear"},{"i":8,"k":"Root_08_Unnamed","b":"Root","n":"Cauda Equina","a":"Privilege","d":"Deservingness","c":null},{"i":9,"k":"Possession","b":"Root","n":"Gluteal Nerve","a":"Attachment","d":"Control of objects","c":"Shock"},{"i":10,"k":"Lethargy","b":"Root","n":"Obturator Nerve","a":"Momentum","d":"Stagnation","c":"Sadness"},{"i":11,"k":"Resistance","b":"Root","n":"Perineal Branch","a":"Change","d":"Holding on","c":"Fear"},{"i":12,"k":"Compulsion","b":"Root","n":"Pelvic Floor Nerves","a":"Safety rituals","d":"Fixation","c":"Fear"},{"i":13,"k":"Disconnection","b":"Root","n":"Sacral Root Ganglia","a":"Presence","d":"Numbness","c":"Sadness"},{"i":14,"k":"Escapism","b":"Root","n":"Sciatic Nerve","a":"Facing pain","d":"Running","c":"Joy"},{"i":15,"k":"Panic","b":"Root","n":"Lumbar Sympathetic Chain","a":"Reaction","d":"Unconsciousness","c":"Fear"},{"i":16,"k":"Collapse","b":"Root","n":"Spinal Cord Base","a":"Structure","d":"Abandoning Self","c":"Sadness"},{"i":17,"k":"Addiction","b":"Sacral","n":"Sacral Plexus","a":"Craving","d":"Obsession","c":"Joy"},{"i":18,"k":"Lust","b":"Sacral","n":"Genitofemoral Nerve","a":"Desire","d":"Objectification","c":"Joy"},{"i":19,"k":"Envy","b":"Sacral","n":"Internal Pudendal Nerve","a":"Lack","d":"Hatred of others' joy","c":"Resentment"},{"i":20,"k":"Jealousy","b":"Sacral","n":"Obturator Nerve","a":"Possessiveness","d":"Paranoia","c":"Resentment"},{"i":21,"k":"Co-Dependency","b":"Sacral","n":"Pelvic Splanchnic Nerves","a":"Neediness","d":"Self-abandonment","c":"Disgust"},{"i":22,"k":"Shame Of Desire","b":"Sacral","n":"Hypogastric Plexus","a":"Repression","d":"Suppression","c":"Joy"},{"i":23,"k":"Hypersexuality","b":"Sacral","n":"Pudendal Plexus","a":"Validation","d":"Dissociation","c":"Joy"},{"i":24,"k":"Avoidance Of Pleasure","b":"Sacral","n":"Pelvic Nerve","a":"Sensuality","d":"Denial of life","c":"Joy"},{"i":25,"k":"Manipulation Through Emotion","b":"Sacral","n":"Uterovaginal Plexus","a":"Control","d":"Emotional blackmail","c":"Anger"},{"i":26,"k":"Oversensitivity","b":"Sacral","n":"Inferior Hypogastric Plexus","a":"Pain threshold","d":"Victim reactivity","c":"Shock"},{"i":27,"k":"Fantasy","b":"Sacral","n":"Splanchnic Root","a":"Escapism","d":"Delusion","c":"Joy"},{"i":28,"k":"Infatuation","b":"Sacral","n":"Lumbar-Sacral Overlap","a":"Projection","d":"Idealization","c":"Joy"},{"i":29,"k":"Obsession","b":"Sacral","n":"Pelvic Ganglia","a":"Focus","d":"Fixation","c":"Fear"},{"i":30,"k":"Guilt Of Pleasure","b":"Sacral","n":"Sacral Outflow","a":"Joy","d":"Self-denial","c":"Joy"},{"i":31,"k":"Need For Approval","b":"Sacral","n":"Iliac Branches","a":"Identity in others","d":"Conformity","c":"Shame"},{"i":32,"k":"Excess Emotion","b":"Sacral","n":"Urogenital Nerve","a":"Drama","d":"Flooding","c":"Shock"},{"i":33,"k":"Pride","b":"Solar","n":"Celiac Plexus","a":"Self-importance","d":"Superiority","c":"Anger"},{"i":34,"k":"Arrogance","b":"Solar","n":"Greater Splanchnic Nerve","a":"Ego","d":"Inflated Self","c":"Anger"},{"i":35,"k":"Competition","b":"Solar","n":"Aortic Plexus","a":"Comparison","d":"Division","c":"Anger"},{"i":36,"k":"Anger","b":"Solar","n":"Celiac Plexus","a":"Power misused","d":"Attack","c":"Anger"},{"i":37,"k":"Judgment","b":"Solar","n":"Splanchnic Plexus","a":"Othering","d":"Projection","c":"Anger"},{"i":38,"k":"Entitlement","b":"Solar","n":"Renal Plexus","a":"Control of outcomes","d":"Deserving","c":"Anger"},{"i":39,"k":"Rebellion","b":"Solar","n":"Renal Ganglia","a":"Defiance","d":"Misalignment","c":"Anger"},{"i":40,"k":"Perfectionism","b":"Solar","n":"Mesenteric Plexus","a":"Idealism","d":"Rigidity","c":"Fear"},{"i":41,"k":"Force","b":"Solar","n":"Splenic Plexus","a":"Control over flow","d":"Overpowering","c":"Fear"},{"i":42,"k":"Rigidity","b":"Solar","n":"Pancreatic Plexus","a":"Will","d":"Inflexibility","c":"Fear"},{"i":43,"k":"Resentment (Solar)","b":"Solar","n":"Suprarenal Plexus","a":"Grudge","d":"Recycled anger","c":"Resentment"},{"i":44,"k":"Unworthiness","b":"Solar","n":"Inferior Mesenteric Plexus","a":"Confidence","d":"Minimization","c":"Shame"},{"i":45,"k":"Anxiety","b":"Solar","n":"Adrenal Medulla","a":"Control of outcomes","d":"Future fear","c":"Fear"},{"i":46,"k":"Self-Judgment (Solar)","b":"Solar","n":"Epigastric Branches","a":"Inner war","d":"Invalidation","c":"Shame"},{"i":47,"k":"Need To Win","b":"Solar","n":"Vagus-Liver Plexus","a":"Ego","d":"Domination","c":"Anger"},{"i":48,"k":"Superiority","b":"Solar","n":"Hepatic Nerve","a":"Hierarchy","d":"Distinction","c":"Anger"},{"i":49,"k":"Hatred","b":"Heart","n":"Cardiac Plexus","a":"Forgiveness","d":"Vengeance","c":"Anger"},{"i":50,"k":"Resentment (Heart)","b":"Heart","n":"Thoracic Nerves","a":"Holding pain","d":"Withholding love","c":"Resentment"},{"i":51,"k":"Self-Judgment (Heart)","b":"Heart","n":"Vagus Nerve","a":"Grace","d":"Harshness","c":"Shame"},{"i":52,"k":"Betrayal","b":"Heart","n":"Thoracic Plexus","a":"Trust","d":"Abandonment","c":"Shock"},{"i":53,"k":"Separation","b":"Heart","n":"Pericardial Nerve","a":"Unity","d":"Isolation","c":"Sadness"},{"i":54,"k":"Martyrdom","b":"Heart","n":"Intercostal Nerves","a":"Self-sacrifice","d":"Guilt-driven love","c":"Sadness"},{"i":55,"k":"Longing","b":"Heart","n":"Cardiac Nerve Plexus","a":"Presence","d":"Fantasy","c":"Sadness"},{"i":56,"k":"Closed Heart","b":"Heart","n":"Costal Branches","a":"Vulnerability","d":"Armor","c":"Sadness"},{"i":57,"k":"Manipulative Kindness","b":"Heart","n":"Phrenic Nerve","a":"Motive","d":"Transactional giving","c":"Anger"},{"i":58,"k":"Expectation","b":"Heart","n":"Pulmonary Nerve Plexus","a":"Outcome","d":"Contractual love","c":"Fear"},{"i":59,"k":"Blame","b":"Heart","n":"Thoracic Ganglia","a":"Responsibility","d":"Externalization","c":"Anger"},{"i":60,"k":"False Love","b":"Heart","n":"Anterior Thoracic Roots","a":"Image","d":"Projection","c":"Disgust"},{"i":61,"k":"Rejection","b":"Heart","n":"Vagal Branches","a":"Inclusion","d":"Othering","c":"Sadness"},{"i":62,"k":"Avoidance Of Grief","b":"Heart","n":"Great Cardiac Nerve","a":"Loss","d":"Suppression","c":"Joy"},{"i":63,"k":"Need To Be Needed","b":"Heart","n":"Coronary Plexus","a":"Identity","d":"Validation","c":"Disgust"},{"i":64,"k":"Deceit","b":"Throat","n":"Cervical Plexus","a":"Honesty","d":"Manipulation","c":"Disgust"},{"i":65,"k":"Self-Silencing","b":"Throat","n":"Vagus Nerve","a":"Voice","d":"Withholding","c":"Shame"},{"i":66,"k":"People Pleasing","b":"Throat","n":"Superior Laryngeal Nerve","a":"Approval","d":"Inauthenticity","c":"Shame"},{"i":67,"k":"Lying","b":"Throat","n":"Recurrent Laryngeal Nerve","a":"Integrity","d":"Protection","c":"Disgust"},{"i":68,"k":"Interrupting","b":"Throat","n":"Pharyngeal Nerve","a":"Listening","d":"Imposition","c":"Anger"},{"i":69,"k":"Comparison","b":"Throat","n":"Accessory Nerve","a":"Voice Identity","d":"Envy","c":"Shame"},{"i":70,"k":"Excuse","b":"Throat","n":"Glossopharyngeal Nerve","a":"Ownership","d":"Victimization","c":"Disgust"},{"i":71,"k":"Stage Performing","b":"Throat","n":"Laryngeal Plexus","a":"Image","d":"Persona","c":"Shock"},{"i":72,"k":"Speaking To Be Right","b":"Throat","n":"Cervical Ganglia","a":"Ego","d":"Righteousness","c":"Anger"},{"i":73,"k":"Manic Expression","b":"Throat","n":"Spinal Accessory Nerve","a":"Over-talking","d":"Energy discharge","c":"Shock"},{"i":74,"k":"Talking To Avoid Feeling","b":"Throat","n":"Subclavian Nerve","a":"Presence","d":"Avoidance","c":"Shock"},{"i":75,"k":"Spiritual Language To Manipulate","b":"Throat","n":"Brachial Plexus","a":"Belonging","d":"Performance","c":"Disgust"},{"i":76,"k":"Delusion","b":"3rd Eye","n":"Optic Nerve","a":"Truth","d":"Illusion","c":"Disgust"},{"i":77,"k":"Cynicism","b":"3rd Eye","n":"Oculomotor Nerve","a":"Clarity","d":"Dismissal","c":"Disgust"},{"i":78,"k":"Distrust","b":"3rd Eye","n":"Abducens Nerve","a":"Faith","d":"Suspicion","c":"Fear"},{"i":79,"k":"Hypervigilance","b":"3rd Eye","n":"Optic Chiasm","a":"Control","d":"Overthinking","c":"Fear"},{"i":80,"k":"Dogma","b":"3rd Eye","n":"Pineal Gland","a":"Belief","d":"Rigidity","c":"Disgust"},{"i":81,"k":"Overanalysis","b":"3rd Eye","n":"Trigeminal Nerve","a":"Clarity","d":"Paralysis","c":"Shock"},{"i":82,"k":"Projection","b":"3rd Eye","n":"Visual Cortex","a":"Othering","d":"Blame","c":"Disgust"},{"i":83,"k":"Paranoia","b":"3rd Eye","n":"Lateral Geniculate","a":"Fear","d":"Narrative spinning","c":"Fear"},{"i":84,"k":"Distortion","b":"3rd Eye","n":"Occipital Nerve","a":"Reality","d":"Mis-seeing","c":"Disgust"},{"i":85,"k":"Doubt","b":"3rd Eye","n":"Cortical Visual Pathway","a":"Intuition","d":"Dismissal","c":"Fear"},{"i":86,"k":"Idealism","b":"3rd Eye","n":"Supraoptic Nucleus","a":"Fantasy","d":"Denial of reality","c":"Joy"},{"i":87,"k":"Lack Of Discernment","b":"3rd Eye","n":"Thalamus","a":"Perception","d":"Blind trust","c":"Disgust"},{"i":88,"k":"Doubt Of Source","b":"Crown","n":"Corpus Callosum","a":"Faith","d":"Separation","c":"Resentment"},{"i":89,"k":"Hubris","b":"Crown","n":"Prefrontal Cortex","a":"Alignment","d":"Ego-God complex","c":"Anger"},{"i":90,"k":"Spiritual Pride","b":"Crown","n":"Pineal-Hypothalamic Axis","a":"Insight","d":"Superiority","c":"Disgust"},{"i":91,"k":"Nihilism","b":"Crown","n":"Parietal Cortex","a":"Meaning","d":"Apathy","c":"Sadness"},{"i":92,"k":"Spiritual Escapism","b":"Crown","n":"Dorsal Raphe Nucleus","a":"Presence","d":"Bypass","c":"Joy"},{"i":93,"k":"False Humility","b":"Crown","n":"Frontal Lobe","a":"Disguise","d":"Manipulation","c":"Shame"},{"i":94,"k":"Seeking Validation","b":"Crown","n":"Cerebral Cortex","a":"Ego","d":"Worship addiction","c":"Shame"},{"i":95,"k":"Savior Complex","b":"Crown","n":"Posterior Cingulate","a":"Responsibility","d":"Overreach","c":"Disgust"},{"i":96,"k":"Condemnation","b":"Crown","n":"Reticular Formation","a":"Mercy","d":"Judgment","c":"Anger"},{"i":97,"k":"Need To Be Special","b":"Crown","n":"Anterior Cingulate","a":"Identity","d":"Distinction","c":"Disgust"},{"i":98,"k":"Unworthy Of Source","b":"Crown","n":"Pineal-Amygdala Axis","a":"Divinity","d":"Disbelief","c":"Resentment"},{"i":99,"k":"Knowing Better Than Source","b":"Crown","n":"Default Mode Network","a":"Will","d":"Arrogance","c":"Resentment"},{"i":100,"k":"Denial Of Truth","b":"Crown","n":"Medial Forebrain Bundle","a":"Insight","d":"Resistance","c":"Resentment"},{"i":101,"k":"Rejection Of Spirit","b":"Crown","n":"Posterior Commissure","a":"Divinity","d":"Abandonment","c":"Resentment"},{"i":102,"k":"Fear Of Source","b":"Crown","n":"Temporal Lobe","a":"Love","d":"Dread","c":"Resentment"},{"i":103,"k":"Anger At Source","b":"Crown","n":"Hypothalamus","a":"Trust","d":"Rebellion","c":"Resentment"},{"i":104,"k":"Forgetfulness","b":"Crown","n":"Hippocampus","a":"Identity","d":"Amnesia","c":"Sadness"},{"i":105,"k":"Denial Of Light","b":"Crown","n":"Epithalamus","a":"Revelation","d":"Avoidance","c":"Resentment"},{"i":106,"k":"Rejection Of Unity","b":"Crown","n":"Neocortex","a":"Connection","d":"Separation","c":"Resentment"},{"i":107,"k":"Self-Exclusion","b":"Crown","n":"Superior Sagittal Sinus","a":"Belonging","d":"Disconnection","c":"Shame"},{"i":108,"k":"Endless Seeking","b":"Crown","n":"Ascension Column","a":"Arrival","d":"Never enough","c":"Sadness"},{"i":109,"k":"Sol Star","b":"Field-Above","n":null,"a":"Higher Self anchor","d":"field","c":null},{"i":110,"k":"Stellar Gateway","b":"Field-Above","n":null,"a":"Source connection","d":"field","c":null},{"i":111,"k":"Earth Star","b":"Field-Below","n":null,"a":"Grounding anchor","d":"field","c":null},{"i":112,"k":"Gaia Gateway","b":"Field-Below","n":null,"a":"Cosmic anchor","d":"field","c":null}];
+[{"i":1,"k":"Fear","b":"Root","n":"Lumbar Plexus","a":"Instinct, threat","d":"Avoidance","c":"Fear"},{"i":2,"k":"Shame","b":"Root","n":"Pudendal Nerve","a":"Worth, embodiment","d":"Self-rejection","c":"Shame"},{"i":3,"k":"Guilt","b":"Root","n":"Inferior Hypogastric Plexus","a":"Responsibility","d":"Overcompensation","c":"Shame"},{"i":4,"k":"Control","b":"Root","n":"Sacral Nerves","a":"Safety through force","d":"Domination","c":"Fear"},{"i":5,"k":"Insecurity","b":"Root","n":"Pelvic Nerve","a":"Belonging","d":"Dependency","c":"Fear"},{"i":6,"k":"Victimhood","b":"Root","n":"Coccygeal Plexus","a":"Agency","d":"Blame","c":"Sadness"},{"i":7,"k":"Scarcity","b":"Root","n":"Iliac Nerve Branch","a":"Resources","d":"Hoarding","c":"Fear"},{"i":8,"k":"Root_08_Unnamed","b":"Root","n":"Cauda Equina","a":"Privilege","d":"Deservingness","c":null},{"i":9,"k":"Possession","b":"Root","n":"Gluteal Nerve","a":"Attachment","d":"Control of objects","c":"Shock"},{"i":10,"k":"Lethargy","b":"Root","n":"Obturator Nerve","a":"Momentum","d":"Stagnation","c":"Sadness"},{"i":11,"k":"Resistance","b":"Root","n":"Perineal Branch","a":"Change","d":"Holding on","c":"Fear"},{"i":12,"k":"Compulsion","b":"Root","n":"Pelvic Floor Nerves","a":"Safety rituals","d":"Fixation","c":"Fear"},{"i":13,"k":"Disconnection","b":"Root","n":"Sacral Root Ganglia","a":"Presence","d":"Numbness","c":"Sadness"},{"i":14,"k":"Escapism","b":"Root","n":"Sciatic Nerve","a":"Facing pain","d":"Running","c":"Joy"},{"i":15,"k":"Panic","b":"Root","n":"Lumbar Sympathetic Chain","a":"Reaction","d":"Unconsciousness","c":"Fear"},{"i":16,"k":"Collapse","b":"Root","n":"Spinal Cord Base","a":"Structure","d":"Abandoning Self","c":"Sadness"},{"i":17,"k":"Addiction","b":"Sacral","n":"Sacral Plexus","a":"Craving","d":"Obsession","c":"Joy"},{"i":18,"k":"Lust","b":"Sacral","n":"Genitofemoral Nerve","a":"Desire","d":"Objectification","c":"Joy"},{"i":19,"k":"Envy","b":"Sacral","n":"Internal Pudendal Nerve","a":"Lack","d":"Hatred of others' joy","c":"Resentment"},{"i":20,"k":"Jealousy","b":"Sacral","n":"Obturator Nerve","a":"Possessiveness","d":"Paranoia","c":"Resentment"},{"i":21,"k":"Co-Dependency","b":"Sacral","n":"Pelvic Splanchnic Nerves","a":"Neediness","d":"Self-abandonment","c":"Disgust"},{"i":22,"k":"Shame Of Desire","b":"Sacral","n":"Hypogastric Plexus","a":"Repression","d":"Suppression","c":"Joy"},{"i":23,"k":"Hypersexuality","b":"Sacral","n":"Pudendal Plexus","a":"Validation","d":"Dissociation","c":"Joy"},{"i":24,"k":"Avoidance Of Pleasure","b":"Sacral","n":"Pelvic Nerve","a":"Sensuality","d":"Denial of life","c":"Joy"},{"i":25,"k":"Manipulation Through Emotion","b":"Sacral","n":"Uterovaginal Plexus","a":"Control","d":"Emotional blackmail","c":"Anger"},{"i":26,"k":"Oversensitivity","b":"Sacral","n":"Inferior Hypogastric Plexus","a":"Pain threshold","d":"Victim reactivity","c":"Shock"},{"i":27,"k":"Fantasy","b":"Sacral","n":"Splanchnic Root","a":"Escapism","d":"Delusion","c":"Joy"},{"i":28,"k":"Infatuation","b":"Sacral","n":"Lumbar-Sacral Overlap","a":"Projection","d":"Idealization","c":"Joy"},{"i":29,"k":"Obsession","b":"Sacral","n":"Pelvic Ganglia","a":"Focus","d":"Fixation","c":"Fear"},{"i":30,"k":"Guilt Of Pleasure","b":"Sacral","n":"Sacral Outflow","a":"Joy","d":"Self-denial","c":"Joy"},{"i":31,"k":"Need For Approval","b":"Sacral","n":"Iliac Branches","a":"Identity in others","d":"Conformity","c":"Shame"},{"i":32,"k":"Excess Emotion","b":"Sacral","n":"Urogenital Nerve","a":"Drama","d":"Flooding","c":"Shock"},{"i":33,"k":"Pride","b":"Solar","n":"Celiac Plexus","a":"Self-importance","d":"Superiority","c":"Anger"},{"i":34,"k":"Arrogance","b":"Solar","n":"Greater Splanchnic Nerve","a":"Ego","d":"Inflated Self","c":"Anger"},{"i":35,"k":"Competition","b":"Solar","n":"Aortic Plexus","a":"Comparison","d":"Division","c":"Anger"},{"i":36,"k":"Anger","b":"Solar","n":"Celiac Plexus","a":"Power misused","d":"Attack","c":"Anger"},{"i":37,"k":"Judgment","b":"Solar","n":"Splanchnic Plexus","a":"Othering","d":"Projection","c":"Anger"},{"i":38,"k":"Entitlement","b":"Solar","n":"Renal Plexus","a":"Control of outcomes","d":"Deserving","c":"Anger"},{"i":39,"k":"Rebellion","b":"Solar","n":"Renal Ganglia","a":"Defiance","d":"Misalignment","c":"Anger"},{"i":40,"k":"Perfectionism","b":"Solar","n":"Mesenteric Plexus","a":"Idealism","d":"Rigidity","c":"Fear"},{"i":41,"k":"Force","b":"Solar","n":"Splenic Plexus","a":"Control over flow","d":"Overpowering","c":"Fear"},{"i":42,"k":"Rigidity","b":"Solar","n":"Pancreatic Plexus","a":"Will","d":"Inflexibility","c":"Fear"},{"i":43,"k":"Resentment (Solar)","b":"Solar","n":"Suprarenal Plexus","a":"Grudge","d":"Recycled anger","c":"Resentment"},{"i":44,"k":"Unworthiness","b":"Solar","n":"Inferior Mesenteric Plexus","a":"Confidence","d":"Minimization","c":"Shame"},{"i":45,"k":"Anxiety","b":"Solar","n":"Adrenal Medulla","a":"Control of outcomes","d":"Future fear","c":"Fear"},{"i":46,"k":"Self-Judgment (Solar)","b":"Solar","n":"Epigastric Branches","a":"Inner war","d":"Invalidation","c":"Shame"},{"i":47,"k":"Need To Win","b":"Solar","n":"Vagus-Liver Plexus","a":"Ego","d":"Domination","c":"Anger"},{"i":48,"k":"Superiority","b":"Solar","n":"Hepatic Nerve","a":"Hierarchy","d":"Distinction","c":"Anger"},{"i":49,"k":"Hatred","b":"Heart","n":"Cardiac Plexus","a":"Forgiveness","d":"Vengeance","c":"Anger"},{"i":50,"k":"Resentment (Heart)","b":"Heart","n":"Thoracic Nerves","a":"Holding pain","d":"Withholding love","c":"Resentment"},{"i":51,"k":"Self-Judgment (Heart)","b":"Heart","n":"Vagus Nerve","a":"Grace","d":"Harshness","c":"Shame"},{"i":52,"k":"Betrayal","b":"Heart","n":"Thoracic Plexus","a":"Trust","d":"Abandonment","c":"Shock"},{"i":53,"k":"Separation","b":"Heart","n":"Pericardial Nerve","a":"Unity","d":"Isolation","c":"Sadness"},{"i":54,"k":"Martyrdom","b":"Heart","n":"Intercostal Nerves","a":"Self-sacrifice","d":"Guilt-driven love","c":"Sadness"},{"i":55,"k":"Longing","b":"Heart","n":"Cardiac Nerve Plexus","a":"Presence","d":"Fantasy","c":"Sadness"},{"i":56,"k":"Closed Heart","b":"Heart","n":"Costal Branches","a":"Vulnerability","d":"Armor","c":"Sadness"},{"i":57,"k":"Manipulative Kindness","b":"Heart","n":"Phrenic Nerve","a":"Motive","d":"Transactional giving","c":"Anger"},{"i":58,"k":"Expectation","b":"Heart","n":"Pulmonary Nerve Plexus","a":"Outcome","d":"Contractual love","c":"Fear"},{"i":59,"k":"Blame","b":"Heart","n":"Thoracic Ganglia","a":"Responsibility","d":"Externalization","c":"Anger"},{"i":60,"k":"False Love","b":"Heart","n":"Anterior Thoracic Roots","a":"Image","d":"Projection","c":"Disgust"},{"i":61,"k":"Rejection","b":"Heart","n":"Vagal Branches","a":"Inclusion","d":"Othering","c":"Sadness"},{"i":62,"k":"Avoidance Of Grief","b":"Heart","n":"Great Cardiac Nerve","a":"Loss","d":"Suppression","c":"Joy"},{"i":63,"k":"Need To Be Needed","b":"Heart","n":"Coronary Plexus","a":"Identity","d":"Validation","c":"Disgust"},{"i":64,"k":"Deceit","b":"Throat","n":"Cervical Plexus","a":"Honesty","d":"Manipulation","c":"Disgust"},{"i":65,"k":"Self-Silencing","b":"Throat","n":"Vagus Nerve","a":"Voice","d":"Withholding","c":"Shame"},{"i":66,"k":"People Pleasing","b":"Throat","n":"Superior Laryngeal Nerve","a":"Approval","d":"Inauthenticity","c":"Shame"},{"i":67,"k":"Lying","b":"Throat","n":"Recurrent Laryngeal Nerve","a":"Integrity","d":"Protection","c":"Disgust"},{"i":68,"k":"Interrupting","b":"Throat","n":"Pharyngeal Nerve","a":"Listening","d":"Imposition","c":"Anger"},{"i":69,"k":"Comparison","b":"Throat","n":"Accessory Nerve","a":"Voice Identity","d":"Envy","c":"Shame"},{"i":70,"k":"Excuse","b":"Throat","n":"Glossopharyngeal Nerve","a":"Ownership","d":"Victimization","c":"Disgust"},{"i":71,"k":"Stage Performing","b":"Throat","n":"Laryngeal Plexus","a":"Image","d":"Persona","c":"Shock"},{"i":72,"k":"Speaking To Be Right","b":"Throat","n":"Cervical Ganglia","a":"Ego","d":"Righteousness","c":"Anger"},{"i":73,"k":"Manic Expression","b":"Throat","n":"Spinal Accessory Nerve","a":"Over-talking","d":"Energy discharge","c":"Shock"},{"i":74,"k":"Talking To Avoid Feeling","b":"Throat","n":"Subclavian Nerve","a":"Presence","d":"Avoidance","c":"Shock"},{"i":75,"k":"Spiritual Language To Manipulate","b":"Throat","n":"Brachial Plexus","a":"Belonging","d":"Performance","c":"Disgust"},{"i":76,"k":"Delusion","b":"3rd Eye","n":"Optic Nerve","a":"Truth","d":"Illusion","c":"Disgust"},{"i":77,"k":"Cynicism","b":"3rd Eye","n":"Oculomotor Nerve","a":"Clarity","d":"Dismissal","c":"Disgust"},{"i":78,"k":"Distrust","b":"3rd Eye","n":"Abducens Nerve","a":"Faith","d":"Suspicion","c":"Fear"},{"i":79,"k":"Hypervigilance","b":"3rd Eye","n":"Optic Chiasm","a":"Control","d":"Overthinking","c":"Fear"},{"i":80,"k":"Dogma","b":"3rd Eye","n":"Pineal Gland","a":"Belief","d":"Rigidity","c":"Disgust"},{"i":81,"k":"Overanalysis","b":"3rd Eye","n":"Trigeminal Nerve","a":"Clarity","d":"Paralysis","c":"Shock"},{"i":82,"k":"Projection","b":"3rd Eye","n":"Visual Cortex","a":"Othering","d":"Blame","c":"Disgust"},{"i":83,"k":"Paranoia","b":"3rd Eye","n":"Lateral Geniculate","a":"Fear","d":"Narrative spinning","c":"Fear"},{"i":84,"k":"Distortion","b":"3rd Eye","n":"Occipital Nerve","a":"Reality","d":"Mis-seeing","c":"Disgust"},{"i":85,"k":"Doubt","b":"3rd Eye","n":"Cortical Visual Pathway","a":"Intuition","d":"Dismissal","c":"Fear"},{"i":86,"k":"Idealism","b":"3rd Eye","n":"Supraoptic Nucleus","a":"Fantasy","d":"Denial of reality","c":"Joy"},{"i":87,"k":"Lack Of Discernment","b":"3rd Eye","n":"Thalamus","a":"Perception","d":"Blind trust","c":"Disgust"},{"i":88,"k":"Doubt Of God","b":"Crown","n":"Corpus Callosum","a":"Faith","d":"Separation","c":"Resentment"},{"i":89,"k":"Hubris","b":"Crown","n":"Prefrontal Cortex","a":"Alignment","d":"Ego-God complex","c":"Anger"},{"i":90,"k":"Spiritual Pride","b":"Crown","n":"Pineal-Hypothalamic Axis","a":"Insight","d":"Superiority","c":"Disgust"},{"i":91,"k":"Nihilism","b":"Crown","n":"Parietal Cortex","a":"Meaning","d":"Apathy","c":"Sadness"},{"i":92,"k":"Spiritual Escapism","b":"Crown","n":"Dorsal Raphe Nucleus","a":"Presence","d":"Bypass","c":"Joy"},{"i":93,"k":"False Humility","b":"Crown","n":"Frontal Lobe","a":"Disguise","d":"Manipulation","c":"Shame"},{"i":94,"k":"Seeking Validation","b":"Crown","n":"Cerebral Cortex","a":"Ego","d":"Worship addiction","c":"Shame"},{"i":95,"k":"Savior Complex","b":"Crown","n":"Posterior Cingulate","a":"Responsibility","d":"Overreach","c":"Disgust"},{"i":96,"k":"Condemnation","b":"Crown","n":"Reticular Formation","a":"Mercy","d":"Judgment","c":"Anger"},{"i":97,"k":"Need To Be Special","b":"Crown","n":"Anterior Cingulate","a":"Identity","d":"Distinction","c":"Disgust"},{"i":98,"k":"Unworthy Of God","b":"Crown","n":"Pineal-Amygdala Axis","a":"Divinity","d":"Disbelief","c":"Resentment"},{"i":99,"k":"Knowing Better Than God","b":"Crown","n":"Default Mode Network","a":"Will","d":"Arrogance","c":"Resentment"},{"i":100,"k":"Denial Of Truth","b":"Crown","n":"Medial Forebrain Bundle","a":"Insight","d":"Resistance","c":"Resentment"},{"i":101,"k":"Rejection Of Spirit","b":"Crown","n":"Posterior Commissure","a":"Divinity","d":"Abandonment","c":"Resentment"},{"i":102,"k":"Fear Of God","b":"Crown","n":"Temporal Lobe","a":"Love","d":"Dread","c":"Resentment"},{"i":103,"k":"Anger At God","b":"Crown","n":"Hypothalamus","a":"Trust","d":"Rebellion","c":"Resentment"},{"i":104,"k":"Forgetfulness","b":"Crown","n":"Hippocampus","a":"Identity","d":"Amnesia","c":"Sadness"},{"i":105,"k":"Denial Of Light","b":"Crown","n":"Epithalamus","a":"Revelation","d":"Avoidance","c":"Resentment"},{"i":106,"k":"Rejection Of Unity","b":"Crown","n":"Neocortex","a":"Connection","d":"Separation","c":"Resentment"},{"i":107,"k":"Self-Exclusion","b":"Crown","n":"Superior Sagittal Sinus","a":"Belonging","d":"Disconnection","c":"Shame"},{"i":108,"k":"Endless Seeking","b":"Crown","n":"Ascension Column","a":"Arrival","d":"Never enough","c":"Sadness"},{"i":109,"k":"Sol Star","b":"Field-Above","n":null,"a":"Higher Self anchor","d":"field","c":null},{"i":110,"k":"Stellar Gateway","b":"Field-Above","n":null,"a":"Source connection","d":"field","c":null},{"i":111,"k":"Earth Star","b":"Field-Below","n":null,"a":"Grounding anchor","d":"field","c":null},{"i":112,"k":"Gaia Gateway","b":"Field-Below","n":null,"a":"Cosmic anchor","d":"field","c":null}];
 /* ============================================================
    SAB_LIB · each named saboteur's three addresses and its family.
 
@@ -10077,8 +10076,8 @@ const NODES=
    and Escapist is the exception. Pessimist met every rule and moved one
    address so that Worrywart could meet rule 4.
    Seven addresses left the library and no row holds them now: 18 Lust, 33
-   Pride, 48 Superiority, 55 Longing, 79 Hypervigilance, 88 Doubt Of Source
-   (named Doubt Of God before 25 October) and 89 Hubris. Eight joined it: 5, 24, 42, 44, 53, 76, 97 and 107. core.js
+   Pride, 48 Superiority, 55 Longing, 79 Hypervigilance, 88 Doubt Of God and
+   89 Hubris. Eight joined it: 5, 24, 42, 44, 53, 76, 97 and 107. core.js
    reads every address no row holds through an inferred cluster, so the
    clusters moved with them, eighteen before and thirteen after. One move
    matters more than the rest: 88 and 89 join the crown's inferred anger
@@ -10311,7 +10310,7 @@ const SAB_LIB=[
     Nihilism, its own name, the "refusal of meaning"; 90 Spiritual Pride,
     insight into superiority, the "contempt" SABAUTH names; 77 Cynicism,
     clarity into dismissal, "despair worn as clarity". It was 91, 88 and 90:
-    88 Doubt Of Source carries Anger, its Resentment label routed by REROUTE.
+    88 Doubt Of God carries Anger, its Resentment label routed by REROUTE.
     Collapse, as it came: TULA names no family for it, and its definition
     removes "the foundation of meaning", the structure given way, which is
     Collapse's d. */
@@ -10466,7 +10465,7 @@ const SAB_LIB=[
  {"nm":"Escapist","nids":[14,27,1],"hcx":"Dissociation"},
  /* S29 Pessimist, sadness and fear, its sadness band the higher. 91
     Nihilism, the first word of its SABAUTH; 83 Paranoia, narrative spinning,
-    the case built "before they materialize"; 98 Unworthy Of Source, divinity
+    the case built "before they materialize"; 98 Unworthy Of God, divinity
     into disbelief, SABAUTH's "hopelessness", "it will not work out". On 22
     October it was 91, 83 and 56 and met every rule. Worrywart's re-grounding
     needed 83 and 56 together and had nothing as close, and two rows may not
@@ -12336,7 +12335,7 @@ function darkRead(mal01, CQ, r){
   /* which step of the descent, and only while both conditions hold */
   step:!dark?null:(tied||descentStep(CQ<21?'Machiavellianism':'Narcissism')),
   refer:dark&&CQ<11,
-  say:!dark?'':'The shape is negative and your energy is decoherent at the same time. '
+  say:!dark?'':'The shape is malignant and your energy is decoherent at the same time. '
    +'That pair is what the descent describes. It is a reading of what is running, not of who is running it.'};}
 /* Which circle a descent has reached. Depth follows coherence, so
    the ladder is read off the same number everything else is. */
@@ -14841,8 +14840,8 @@ var UNPACK_BASE={
  'rail:radiance':'Radiance is vitality, awareness and will put together, and it sets how bright the field behind the wheel is.',
  'rail:flow':'Flow is how much gets from the base of your spine to the top of your head, each seat passing on part of what it gets.',
  'rail:orientation':'Orientation is which way the charge you hold leans, toward costing you nothing or toward taking something from you.',
- 'rail:positive':'Positive is charge you hold that is not costing you anything.',
- 'rail:negative':'Negative is charge you hold that is taking something from you.',
+ 'rail:benign':'Benign is charge you hold that is not costing you anything.',
+ 'rail:malignant':'Malignant is charge you hold that is taking something from you.',
  'rail:balance':'Balance is which way your body moves under what you feel, out toward the world or in toward yourself.',
  'rail:masculine':'Masculine is energy given a shape and a direction and sent outward, and it does not mean men.',
  'rail:feminine':'Feminine is energy held and taken inward, and it does not mean women.',
@@ -15366,24 +15365,14 @@ const CHARGE_LADDER=[
    call; NODES's own Entitlement is address 38. Justification is inferred at
    address 34, which NODES and canon.json's own nodes register both name
    Arrogance. canon.json's open ruling 5: "Justification has no node.
-   Component two of four in narcissism. Inferred candidate: node 034."
-
-   RULED 25 October, his words: "Justification and arrogance in many ways
-   share similar features. Justification is rejection of accountability.
-   Arrogance is using intimidation to avoid accountability. So they share a
-   trait. I would put them together." Address 34 carries both. CLOSED 27
-   October: canon.json's own open ruling 5 is resolved upstream (reboot-os
-   PR #75) and vendor/reboot-os/canon.json is re-pinned to the copy that
-   carries it, so the tag moves to "R" here too, regDiff holding this table
-   to that file row for row the way it always does. Recorded in full in
-   DECISIONS.md. */
+   Component two of four in narcissism. Inferred candidate: node 034." */
 const AMPLIFIER=[
  {c:"AM01",nm:"Entitlement",i:8,tag:"R"},
  {c:"AM02",nm:"Obsession",i:29,tag:"R"},
  {c:"AM03",nm:"Judgment",i:37,tag:"R"},
  {c:"AM04",nm:"Perfectionism",i:40,tag:"R"},
  {c:"AM05",nm:"Comparison",i:69,tag:"R"},
- {c:"AM06",nm:"Justification",i:34,tag:"R"}];
+ {c:"AM06",nm:"Justification",i:34,tag:"I"}];
 
 /* QUADRANTS, canon.json registers.quadrants. The body in four, right and left
    by front and back. Not the Compass's quadrant() (engine/data/compass.js),
@@ -15623,75 +15612,15 @@ try{window.__at&&window.__at('engine/data/registers.js');}catch(e){}
                       is not a body quadrant and has no code.
      organ            ORGAN's c, OG01 and up.
      derived-measure  DERIVED_MEASURE's c, DM01 and up. Awareness and Flow are
-                      laws of HARM as well, by its own E32 and E54, a different
-                      registry from SI's Laws of Moral Integrity and already
-                      coded on its own rows. Vitality is a reading with no code
-                      of its own. Awareness is now also one of SI's 21
-                      (CODE_LAW, LA05) and one of the six gates (CODE_GATE,
-                      GA01), so the bare word is ambiguous among the three, the
-                      true answer this paragraph predicted before law and gate
-                      had codes. Flow names neither, and the recipe that
-                      carries it keeps it unambiguous too, named "Flow
-                      (Krishna)" and never the bare word.
+                      laws of HARM as well, Awareness is one of the six gates,
+                      and Vitality is a reading, and none of those has a code
+                      yet. So the door names the measure alone for now, and
+                      when laws and gates are coded the bare word becomes
+                      ambiguous, which is the true answer.
      sign             CODE_SIGN below, ZS01 and up, from Aries, the order
                       astro.js counts the ecliptic in.
      animal           CODE_ANIMAL below, CA01 and up, from Rat, the order of
                       the cycle.
-
-   SEVEN MORE, ADDITIVE, 26 October. Found by a records-inventory pass that
-   asked why domain, root, mask, law, gate, compass-position and recipe had no
-   code when the rest of this file's own kinds do. No ruling moves and nothing
-   already coded renumbers.
-     domain            CODE_DOMAIN below, DO01 and up, one per record of
-                       DOMAINS, in file order: the nineteen named blueprint
-                       domains under the four roots.
-     root              CODE_ROOT below, RO01 and up, one per record of ROOTD,
-                       in file order: the four roots a domain sits under,
-                       Architect to Witness.
-     mask              CODE_MASK below, MA01 and up, one per record of MASKS,
-                       in file order, all six. MASKS_READ drops Professional
-                       from what is shown, never from what exists, so the code
-                       follows the roster MASKS keeps whole.
-     law               CODE_LAW below, LA01 and up, one per record of SI, in
-                       file order: the 21 Laws of Moral Integrity. HARM is a
-                       different registry under a word this file already used
-                       loosely for it above; this code is SI's alone, and
-                       HARM's own rows already carry a code of their own, E01
-                       and up.
-     gate              CODE_GATE below, GA01 and up, one per record of VERP, in
-                       file order: the six gates, aware to averse. Awareness is
-                       now a law and a gate as well as the derived measure it
-                       already was, so the bare word is ambiguous among the
-                       three, which is the true answer the derived-measure row
-                       above predicted.
-     compass-position  CODE_COMPASS below, CP01 and up, one per record of
-                       MIRROR, in file order: the Compass's eight axes, each a
-                       quality read at one seat between its coherent and its
-                       compressed pole. PATHS and HOME_POLES stand on no axis,
-                       by the file's own ruling, and carry no position code.
-     recipe            CODE_RECIPE below, RC01 and up, one per record of
-                       TEACHER_RECIPES, in file order: the starter recipe for
-                       one pole of the Compass, fourteen for thirteen people,
-                       Jesus at two. Named by its quality and its teacher
-                       together, since who is not unique alone, Jesus recipes
-                       two, and quality is not unique alone either, Light
-                       recipes two.
-
-   NO CODE FOR FIGURE. The Compass draws a cast of named people, and no one
-   table lists them once each: a name sits in MIRROR's up and dn, again in
-   MASTERS, again in BLUEPRINT or in a row of CIRCLES's by, and the same person
-   is more than one of those under the same name. Jesus is MIRROR's up at two
-   axes and a row of MASTERS. Buddha is MIRROR's up, a row of MASTERS and a row
-   of PATHS. Geryon is MIRROR's dn and a CIRCLES governor. Set is MIRROR's dn
-   and a row of BLUEPRINT. A code needs one table in file order, the rule every
-   code above follows, and coding one of these four tables and not the others
-   would be the arbitrary pick this repository has already been bitten by more
-   than once; coding their union would need a merge rule this file does not
-   have and should not invent just to get a number. figure.js, the file the
-   name points to first, is not a cast at all: it is the body outline and the
-   research placements an address stands at, and every address it places
-   already has its code. So figure stays open, for the owner or a later pass
-   once a roster exists to give it one.
 
    THE THREE ROW TABLES. Each row names its source, from CODE_SOURCES, or a
    list of them, or any.
@@ -15705,17 +15634,15 @@ try{window.__at&&window.__at('engine/data/registers.js');}catch(e){}
    tables does, because it says what that source means: canon.json's
    Entitlement is address 8, where MOB's is 38.
 
-   3d2671d9, the copy reboot-os holds. canon.json is 1.0.1, md5 4c6d429d,
-   amended 27 October twice over, reconciled into one upstream commit after
-   this repository briefly carried a vendored copy ahead of its own source:
-   ruling 5 closed (Justification and Arrogance, reboot-os PR #75), and The
-   Performer hyper-complex plus the Borderline-Sociopath open ruling added
-   from the book directly, the owner having authorized that addition
-   (reboot-os PR #76, reconciling the two). 1.0.0 was md5 7e844c0d.
+   Every row says where it was read. Book line numbers are for v192, md5
+   3d2671d9, the copy reboot-os holds. canon.json is 1.0.1, md5 79951697,
+   amended 27 October with The Performer hyper-complex and the Borderline-
+   Sociopath open ruling, both read from the book directly, the owner having
+   authorized this addition. 1.0.0 was md5 7e844c0d.
    ============================================================ */
 const CODE_SOURCES=[
  ['mob','this repository: its own tables, SNIFFER_SPEC.md and DESCENT'],
- ['canon','reboot-os atuned/data/canon.json, SOURCE OS CANON 1.0.1, issued 8 September by the owner, amended 27 October (ruling 5 closed, The Performer, Borderline-Sociopath), md5 4c6d429d, the copy held at vendor/reboot-os/canon.json'],
+ ['canon','reboot-os atuned/data/canon.json, SOURCE OS CANON 1.0.1, issued 8 September by the owner, amended 27 October (The Performer, Borderline-Sociopath), md5 79951697, the copy held at vendor/reboot-os/canon.json'],
  ['book','The Mechanics of Being v192, reboot-os atuned/data/corpus/MOB_Complete_v192.txt, md5 3d2671d9'],
  ['app','the reboot-os app tables, atuned/data/canon_tables: SAB33, SABAUTH, HYPER, NODEREG'],
  ['nodes112','reboot-os atuned/data/nodes_112.json'],
@@ -15740,14 +15667,7 @@ const CODE_KINDS=[
  ['organ','an organ of canon.json\'s organs register'],
  ['derived-measure','one of canon.json\'s derived measures'],
  ['sign','a sign of the zodiac'],
- ['animal','an animal of the Chinese calendar'],
- ['domain','a blueprint domain of DOMAINS, one of the nineteen under a root'],
- ['root','one of the four roots a domain sits under, ROOTD'],
- ['mask','one of the six masks of MASKS'],
- ['law','one of the 21 Laws of Moral Integrity of SI'],
- ['gate','one of the six gates of VERP, aware to averse'],
- ['compass-position','one of the Compass\'s eight mirror axes of MIRROR'],
- ['recipe','the starter recipe for one pole of the Compass, of TEACHER_RECIPES']];
+ ['animal','an animal of the Chinese calendar']];
 
 /* [code, MOB's name, the book's cluster numeral]. HCX_LIB is the same six in
    the same order today, and the gate holds the names, not the order, so a
@@ -15829,69 +15749,6 @@ const CODE_ANIMAL=[['CA01','Rat'],['CA02','Ox'],['CA03','Tiger'],['CA04','Rabbit
  ['CA05','Dragon'],['CA06','Snake'],['CA07','Horse'],['CA08','Goat'],['CA09','Monkey'],
  ['CA10','Rooster'],['CA11','Dog'],['CA12','Pig']];
 
-/* [code, DOMAINS's name]. Row i is DOMAINS[i], and the gate fails if either
-   moves. */
-const CODE_DOMAIN=[
- ['DO01','Knowledge'],['DO02','Justice'],['DO03','Imperium'],['DO04','Duty'],
- ['DO05','Fate'],['DO06','Power'],['DO07','Creation'],['DO08','Dissolution'],
- ['DO09','Descent'],['DO10','Death'],['DO11','Connection'],['DO12','Exchange'],
- ['DO13','Restoration'],['DO14','Provision'],['DO15','Play'],['DO16','Nature'],
- ['DO17','Trickster'],['DO18','Mystery'],['DO19','Guardian']];
-
-/* [code, ROOTD's name]. Row i is ROOTD[i], and the gate fails if either
-   moves. */
-const CODE_ROOT=[['RO01','Architect'],['RO02','Engine'],['RO03','Weaver'],['RO04','Witness']];
-
-/* [code, MASKS's name]. Row i is MASKS[i], and the gate fails if either
-   moves. All six, Child to Ideological: MASKS_READ is the five a reading
-   shows, never the roster a code answers for. */
-const CODE_MASK=[['MA01','Child'],['MA02','Preteen'],['MA03','Teen'],
- ['MA04','Adult'],['MA05','Professional'],['MA06','Ideological']];
-
-/* [code, SI's name]. Row i is SI[i], and the gate fails if either moves. */
-const CODE_LAW=[['LA01','Truth'],['LA02','Transparency'],['LA03','Justice'],
- ['LA04','Unity'],['LA05','Awareness'],['LA06','Nature'],['LA07','Presence'],
- ['LA08','Humility'],['LA09','Equanimity'],['LA10','Compassion'],
- ['LA11','Forgiveness'],['LA12','Generosity'],['LA13','Aesthetic Beauty'],
- ['LA14','Courage'],['LA15','Duty'],['LA16','Responsibility'],
- ['LA17','Accountability'],['LA18','Temperance'],['LA19','Detachment'],
- ['LA20','Non-Harm'],['LA21','Patience']];
-
-/* [code, VERP's name, VERP's own key]. Row i is VERP[i]. The key is kept
-   beside the code because VERP_VS, VERPMULT, VERPCUE and GATEGLYPH are all
-   keyed by it, not by name, so a caller crossing from one of those tables to
-   this one reads the key, never the English word. */
-const CODE_GATE=[['GA01','Awareness','aware'],['GA02','Detachment','detach'],
- ['GA03','Intention','intent'],['GA04','Ignorance','ignore'],
- ['GA05','Attachment','attach'],['GA06','Aversion','averse']];
-
-/* [code, MIRROR's quality, MIRROR's own key]. Row i is MIRROR[i]. The key is
-   kept beside the code because it is what compass.js itself calls identity
-   ("k stays IL, because a key is identity, not a label"), and
-   TEACHER_RECIPES, PATHS and the needle all carry the same key. PATHS and
-   HOME_POLES stand on no axis, by the file's own ruling, and carry no
-   position code; CODE_RECIPE below still codes their rows, because a recipe
-   is the practice content, not the position. */
-const CODE_COMPASS=[['CP01','Light','IL'],['CP02','Desire and will','DE'],
- ['CP03','Order','OR'],['CP04','Power','PO'],['CP05','Perception','PE'],
- ['CP06','Trust','TR'],['CP07','Charge','CH'],['CP08','Revelation','RE']];
-
-/* [code, name, TEACHER_RECIPES's own key]. Row i is TEACHER_RECIPES[i]. The
-   name is the pole's quality and its teacher together, in that shape, because
-   neither alone is unique across the fourteen: Jesus holds two recipes
-   (Light and Revelation) and Light is two recipes' own quality (Jesus's and
-   Akhenaten's). The key is kept for the same reason CODE_GATE and
-   CODE_COMPASS keep theirs: it is what MIRROR, PATHS and BECOMING already
-   call identity, and recipeOf(k) is still how the engine reaches a row,
-   never this code. */
-const CODE_RECIPE=[['RC01','Light (Jesus)','IL'],['RC02','Revelation (Jesus)','RE'],
- ['RC03','Desire and will (Ramakrishna)','DE'],['RC04','Order (Moses)','OR'],
- ['RC05','Power (Musashi)','PO'],['RC06','Perception (Buddha)','PE'],
- ['RC07','Trust (Rumi)','TR'],['RC08','Charge (Elijah)','CH'],
- ['RC09','Flow (Krishna)','FL'],['RC10','Alignment (Rama)','AL'],
- ['RC11','The horizontal (Lao Tzu)','HO'],['RC12','Light (Akhenaten)','SA'],
- ['RC13','Truth (Zoroaster)','TU'],['RC14','Nature (Confucius)','NA']];
-
 /* the child emotions, frozen. The gate holds CHILD and CHARGES to it both ways. */
 const CODE_EMOTION=['Fear','Anger','Shame','Disgust','Apathy','Shock','Sad','Surprise','Anticipation'];
 
@@ -15922,11 +15779,11 @@ const CODE_ALIAS=[
  [['canon','book'],'address','Resentment','43',"canon.json and the book (v192 line 8813) name this address Resentment. MOB names it Resentment (Solar), beside its Resentment (Heart)"],
  [['canon','book'],'address','Self-Judgment','46',"canon.json and the book (v192 line 8816) name this address Self-Judgment. MOB names it Self-Judgment (Solar), beside its Self-Judgment (Heart)"],
  [['canon','book'],'address','Using Spiritual Language to Manipulate','75',"canon.json and the book (v192 line 8847) name this Throat address so. MOB names it Spiritual Language To Manipulate"],
- /* RESOLVED 25 October: canon.json's own lock said the divine term is Source,
-    where MOB, the book and the app wrote God at these five addresses. Ruled
-    "use Source instead of God, for now" and all five renamed in nodes.js, so
-    the five rows this lock used to need are gone: the names agree. "For now"
-    is his own word, so a later ruling could reopen this. */
+ ['canon','address','Doubt of Source','88',"canon.json writes Source where MOB, the book and the app write God, by its own lock that the divine term is Source. MOB names it Doubt Of God"],
+ ['canon','address','Unworthy of Source','98',"canon.json's Source for God. MOB names it Unworthy Of God"],
+ ['canon','address','Knowing Better than Source','99',"canon.json's Source for God. MOB names it Knowing Better Than God"],
+ ['canon','address','Fear of Source','102',"canon.json's Source for God. MOB names it Fear Of God"],
+ ['canon','address','Anger at Source','103',"canon.json's Source for God. MOB names it Anger At God"],
  [['canon','book'],'address','109','112',"canon.json and the book (v192 line 8886) number the field nodes in another order. Their 109 is Gaia Gateway, MOB's 112"],
  [['canon','book'],'address','110','111',"canon.json and the book number the field nodes in another order. Their 110 is Earth Star, MOB's 111"],
  [['canon','book'],'address','111','109',"canon.json and the book number the field nodes in another order. Their 111 is Soul Star, MOB's 109, Sol Star"],
@@ -17389,12 +17246,8 @@ function chgAdd(k,chg,meta){
    tool that produced it and re-runs it when a corpus grows.
 
    THE CORPUS, NAMED. index.html, the owner's own book, 117,716 words and
-   7,667 distinct surface forms, plus every persona voice the product ships
-   (PEOPLE[].says, read off PEOPLE.length and not typed here, the same
-   reason this file no longer counts its own allow list in prose: a persona
-   roster that grows is the same defect as a gate count that grows, and
-   CLAUDE.md already names what that costs). A form neither confirms is not
-   admitted, because admitting it is an
+   7,667 distinct surface forms, plus the fourteen persona voices the product
+   ships. A form neither confirms is not admitted, because admitting it is an
    unmeasured claim. When the record store exists there will be a third and
    much better corpus, and this list grows by re-running the tool rather than
    by anybody's judgement about what a person might write.
@@ -17420,17 +17273,13 @@ var LEX_FOLD_RULES=[
  ['Vy',  function(k){return /[a-z]{2}ied$/.test(k);},                        function(k){return k.slice(0,-3)+'ying';}],
  ['ness',function(k){return /[a-z]{4}$/.test(k)&&!/(ness|ion|ity|ing|ed|s)$/.test(k);},function(k){return k+'ness';}]];
 
-/* THE ALLOW LIST. Every form in it is generated by a rule above from a key
-   above, and confirmed by the named corpus. The gate asserts both, so a form
-   hand typed in here with no reachable base is refused. Its size is read off
-   LEX_FOLD_OK.length and is not typed here: a sentence that counted this list
-   would be bitten by the same defect CLAUDE.md cut the gate counts for, the
-   day after this list grows past whatever number it names. */
+/* THE ALLOW LIST. Twenty seven forms. Every one is generated by a rule above
+   from a key above, and confirmed by the named corpus. The gate asserts both,
+   so a form hand typed in here with no reachable base is refused. */
 var LEX_FOLD_OK=['abandoning','betrays','calmed','calming','clenching','dismissing',
  'draining','drains','flattens','funerals','hurts','interrupting','interrupts',
  'isolating','losses','numbness','overwhelming','rejecting','rejects','resting',
- 'screaming','settling','shocked','snapping','surprised','tensed','terrifying',
- 'tightness','yelling'];
+ 'screaming','settling','snapping','tensed','terrifying','tightness','yelling'];
 
 /* THE REFUSE LIST, and read this before adding to the one above. Each of these
    IS generated by a rule and IS confirmed by the corpus, and each is refused
@@ -17683,25 +17532,6 @@ var LEXSYN={
   'keep thinking about'],
  replaying:['i replay','reliving','relive','flashbacks','flashback',
   'keep going over'],
- /* SHOCK AND SURPRISE, the two canon axes CHG2SEAT and CHG2FET already seat
-    and name but that carry no authored family of their own (sniff.js,
-    lexCanon). Until now the bare axis word was the only route to either
-    reading: measured before this, "I was stunned when she said that" and
-    "I was startled by the noise" read nothing at all. shock and surprise are
-    canon entries already in LEX by the time this pass runs, so they are
-    reached as headwords the same way any other row here is.
-    Confirmed in the book corpus, 26 October (proto/sniffer/plan.js,
-    candidate B, re-run against the current index.html): stunned x2,
-    startled x3, flabbergasted x2, dumbfounded x2, astonished x2, amazed x2.
-    LEFT OUT, AND WHY. blindsided names the same family and is in neither the
-    book nor any of the sixteen persona voices, so it fails the corpus
-    boundary this whole pass stands on, an unmeasured claim refused the same
-    way the fold's own allow list refuses one. stunning and startling fail
-    that same check before their other sense (a stunning view, a startling
-    coincidence, a property of a thing and not a report of the writer) is
-    ever reached. */
- shock:['stunned','startled','flabbergasted','dumbfounded'],
- surprise:['astonished','amazed'],
  /* the idioms, whose rows keep their labels */
  'hated myself':['hate myself','hating myself'],
  'cannot sleep':['cant sleep','couldnt sleep','could not sleep'],
@@ -20063,7 +19893,7 @@ function leadSees(what){ return LEAD_SEES.indexOf(what)>=0; }
    archetypes, laws, gates and shadow", with the laws and the gates said by the
    names the Field's bar prints for them since 22 October, the Laws of Moral
    Integrity and the Laws of Action. */
-const PLAN_ALWAYS=['your 112 addresses','the domains','the archetypes','the Laws of Moral Integrity',
+const PLAN_ALWAYS=['your 108 somatic addresses and 4 field anchors','the domains','the archetypes','the Laws of Moral Integrity',
  'the Laws of Action','shadow','the pain map','every tool','the journal',
  'rerunning anything already open'];
 /* ANNUAL. TWO MONTHS FREE IS OUT, on the owner's ruling.
@@ -28791,16 +28621,7 @@ var LEX_VERSION=lexVersion();
    without a second offset map. Building that map is a new reader of the text,
    which is the risk the review said not to take for alpha. The gap is named in
    TDD-sniffer.md and is held there, not here. */
-/* 'did' ON ITS OWN IS NOT A NEGATION, and it stood in this list anyway. "I
-   did tell him the truth", "I did show up": the bare word is very often
-   affirmative, so any cue sitting within the three word window after it was
-   voided whether or not anything actually denied it. Measured: "Yes, I did,
-   and I lied to them about it afterward." read Truth clean, the instrument
-   missing an admission it should have caught. sourceai.js's own negator
-   list already left it out on exactly this reasoning, srcNegated's comment
-   naming this file's "did" by name as the case to avoid repeating; this is
-   that repair. The contracted forms below are genuine negations and stay. */
-var LAW_NEG=['not','no','never','nobody','none','cannot','cant',
+var LAW_NEG=['not','no','never','nobody','none','cannot','cant','did',
  'didnt','dont','wont','wasnt','isnt','havent','hasnt','couldnt','wouldnt','refuse','refused'];
 var LAW_NEG_W=3;
 function lawNorm(text){
@@ -29391,52 +29212,21 @@ function srcPrior(entries){
    if(K2BAND[k]&&(e.bands[k]||0)>0)out[k]=(out[k]||0)+1;});});
  return out;}
 
-/* WHICH SEATS THE WIDER READING ALREADY SITS ON, ruled 26 October: "I don't
-   think the Source AI has been updated. The latest sniffer plus the wire
-   into the logic system." A hyper complex (compute.js's r.hys) is already
-   two complexes at one family, which is the engine's own bar for "this is
-   not one bad day", the same kind of fact srcPrior reads off committed
-   entries, only read off the whole of compute() instead of the story bank.
-   Seats only, never a name: this walks a hyper complex down to the nodes
-   that carry it (hy.parts, complexes; cx.parts, two saboteurs each; sab.parts,
-   the nodes, each an address with its own seat) and returns which seats, so
-   the caller can treat "the logic system already sees this sitting here" as
-   the same kind of evidence srcPrior already is, and Source AI still never
-   says why, names a complex, or says anything this function could not point
-   at as a seat a person can read back in their own body. */
-var SRC_B2K=null;
-function srcHyperSeats(r){
- if(!SRC_B2K){SRC_B2K={}; Object.keys(K2BAND).forEach(function(k){SRC_B2K[K2BAND[k]]=k;});}
- var seats={};
- ((r&&r.hys)||[]).forEach(function(h){
-  (h.parts||[]).forEach(function(cx){
-   (cx.parts||[]).forEach(function(sab){
-    (sab.parts||[]).forEach(function(n){
-     var k=n&&n.b&&SRC_B2K[n.b]; if(k)seats[k]=1;});});});});
- return seats;}
-
-/* the rung for one seat, from the three counts and whether a hyper complex
-   already sits on this seat. Kept apart so the ladder is one function a test
-   can walk rung by rung. structural does not invent a mention: mentions
-   still gates everything, the same floor earlier always had, so a seat
-   never asked about in this entry still asks about nothing. */
-function srcRung(mentions,earlier,reading,structural){
+/* the rung for one seat, from the three counts. Kept apart so the ladder is
+   one function a test can walk rung by rung. */
+function srcRung(mentions,earlier,reading){
  if(!mentions)return 0;
  if(earlier>=2||(earlier>=1&&mentions>=2))return 10;
- if(earlier>=1||structural)return 9;
+ if(earlier>=1)return 9;
  if(mentions>=3)return 8;
  if(mentions>=2)return 7;
  return Math.max(1,Math.min(SRC_ONCE,Math.round(reading||0)));}
 
 /* HEAR AN ENTRY. text is what the person typed. prior is srcPrior of their
-   own earlier entries, or nothing. active is srcHyperSeats of the current
-   reading, or nothing: a seat this entry mentions that the wider reading
-   already holds structurally reaches the same rung an earlier committed
-   entry would have put it at, so Source AI can ask about it now rather than
-   waiting for it to be written down twice. Returns every seat heard,
-   heaviest rung first, with the person's own words for each, which is what
-   Source AI says back instead of a definition. */
-function srcHear(text,prior,active){
+   own earlier entries, or nothing. Returns every seat heard, heaviest rung
+   first, with the person's own words for each, which is what Source AI says
+   back instead of a definition. */
+function srcHear(text,prior){
  var t=String(text||'');
  var out={unread:true, seats:[], top:null, root:null, asks:false};
  if(!t.trim())return out;
@@ -29459,11 +29249,10 @@ function srcHear(text,prior,active){
   var a=s.at+1, b=s.at+String(s.word).length;
   var w=(a<nm.map.length&&b<nm.map.length)?t.slice(nm.map[a],nm.map[b]+1):s.word;
   if(o.words.indexOf(w)<0)o.words.push(w);});
- var P=prior||{}, A=active||{};
+ var P=prior||{};
  out.seats=Object.keys(by).map(function(k){var o=by[k];
   o.earlier=P[k]||0;
-  o.structural=!!A[k];
-  o.rung=srcRung(o.mentions,o.earlier,o.reading,o.structural);
+  o.rung=srcRung(o.mentions,o.earlier,o.reading);
   o.reading=Math.round(o.reading*10)/10;
   return o;})
   .filter(function(o){return o.rung>0;})
@@ -32981,10 +32770,7 @@ function codeTables(){
   CODE_RETIRED:CODE_RETIRED,
   CHARGE_LADDER:CHARGE_LADDER,AMPLIFIER:AMPLIFIER,BODY_QUADRANT:BODY_QUADRANT,ORGAN:ORGAN,
   DERIVED_MEASURE:DERIVED_MEASURE,CHARGE_QUADRANT:CHARGE_QUADRANT,ASTRO_OVERLAY:ASTRO_OVERLAY,
-  CODE_SIGN:CODE_SIGN,CODE_ANIMAL:CODE_ANIMAL,ZSIGN:ZSIGN,ZI:ZI,CHINESE:CHINESE,HARM:HARM,
-  DOMAINS:DOMAINS,ROOTD:ROOTD,MASKS:MASKS,SI:SI,VERP:VERP,MIRROR:MIRROR,TEACHER_RECIPES:TEACHER_RECIPES,
-  CODE_DOMAIN:CODE_DOMAIN,CODE_ROOT:CODE_ROOT,CODE_MASK:CODE_MASK,CODE_LAW:CODE_LAW,
-  CODE_GATE:CODE_GATE,CODE_COMPASS:CODE_COMPASS,CODE_RECIPE:CODE_RECIPE};}
+  CODE_SIGN:CODE_SIGN,CODE_ANIMAL:CODE_ANIMAL,ZSIGN:ZSIGN,ZI:ZI,CHINESE:CHINESE,HARM:HARM};}
 
 /* THE INDEX. Built from the tables and never stored in them. codeOf keeps
    one for the live tables, which do not change after load. codesCheck builds
@@ -33028,17 +32814,6 @@ function codeIndexOf(t){
  t.DERIVED_MEASURE.forEach(function(r){put(r.c,'derived-measure',r.nm,{charge:r.ch,law:r.el}); named(r.nm,r.c);});
  t.CODE_SIGN.forEach(function(r,i){put(r[0],'sign',r[1],{index:i}); named(r[1],r[0]);});
  t.CODE_ANIMAL.forEach(function(r,i){put(r[0],'animal',r[1],{index:i}); named(r[1],r[0]);});
- /* seven more, additive 26 October: domain, root, mask, law and gate are
-    plain rosters, and compass-position and recipe carry MIRROR's or
-    TEACHER_RECIPES's own key beside the code, the way archetype carries its
-    ARCH index. */
- t.CODE_DOMAIN.forEach(function(r,i){put(r[0],'domain',r[1],{index:i}); named(r[1],r[0]);});
- t.CODE_ROOT.forEach(function(r,i){put(r[0],'root',r[1],{index:i}); named(r[1],r[0]);});
- t.CODE_MASK.forEach(function(r,i){put(r[0],'mask',r[1],{index:i}); named(r[1],r[0]);});
- t.CODE_LAW.forEach(function(r,i){put(r[0],'law',r[1],{index:i}); named(r[1],r[0]);});
- t.CODE_GATE.forEach(function(r,i){put(r[0],'gate',r[1],{index:i,k:r[2]}); named(r[1],r[0]);});
- t.CODE_COMPASS.forEach(function(r,i){put(r[0],'compass-position',r[1],{index:i,k:r[2]}); named(r[1],r[0]);});
- t.CODE_RECIPE.forEach(function(r,i){put(r[0],'recipe',r[1],{index:i,k:r[2]}); named(r[1],r[0]);});
  /* the rows. A row for several sources is one row per source here. */
  var row=function(type,src,kind,label,code,why,date){
   [].concat(src).forEach(function(s){var k=codeKey(label);
@@ -33283,75 +33058,6 @@ function codesCheckInto(t,out){
   if(!res(a[0],{kind:'archetype'}).ok&&!rowSays(a[0],'archetype','unmapped'))
    no('ARCH18 names the archetype '+a[0]+', which has no code and no row saying why not');});
 
- /* SEVEN MORE, ADDITIVE 26 October: domain, root, mask, law, gate,
-    compass-position and recipe. */
- /* domain. p.soul.doms stores the DOMAINS index directly (buildSoul's
-    S.doms, core.js), so a reorder here is the same migration hazard
-    CODE_ARCH guards against above. */
- run(t.CODE_DOMAIN.map(function(r){return r[0];}),'DO',2,'CODE_DOMAIN');
- dupes(t.CODE_DOMAIN.map(function(r){return codeKey(r[1]);})).forEach(function(n){no('CODE_DOMAIN names '+n+' twice');});
- if(t.CODE_DOMAIN.length!==t.DOMAINS.length)
-  no('CODE_DOMAIN has '+t.CODE_DOMAIN.length+' rows and DOMAINS has '+t.DOMAINS.length+', and p.soul.doms stores the DOMAINS index');
- t.DOMAINS.forEach(function(d,i){var r=t.CODE_DOMAIN[i];
-  if(!r||r[1]!==d.nm)no('DOMAINS['+i+'] is '+d.nm+' and CODE_DOMAIN row '+i+' is '+(r?r[1]:'missing')
-   +'. p.soul.doms stores the index, so DOMAINS may not reorder or rename without a migration');});
-
- /* root. S.roots stores the root's own name, never an index, so reordering
-    ROOTD moves no stored profile; this still catches a content accident. */
- run(t.CODE_ROOT.map(function(r){return r[0];}),'RO',2,'CODE_ROOT');
- dupes(t.CODE_ROOT.map(function(r){return codeKey(r[1]);})).forEach(function(n){no('CODE_ROOT names '+n+' twice');});
- if(t.CODE_ROOT.length!==t.ROOTD.length)
-  no('CODE_ROOT has '+t.CODE_ROOT.length+' rows and ROOTD has '+t.ROOTD.length+' roots');
- t.ROOTD.forEach(function(rt,i){var r=t.CODE_ROOT[i];
-  if(!r||r[1]!==rt)no('ROOTD['+i+'] is '+rt+' and CODE_ROOT row '+i+' is '+(r?r[1]:'missing'));});
-
- /* mask. Not stored in a profile at all, computed live every time, so this
-    is a content check and not a migration guard. */
- run(t.CODE_MASK.map(function(r){return r[0];}),'MA',2,'CODE_MASK');
- dupes(t.CODE_MASK.map(function(r){return codeKey(r[1]);})).forEach(function(n){no('CODE_MASK names '+n+' twice');});
- if(t.CODE_MASK.length!==t.MASKS.length)
-  no('CODE_MASK has '+t.CODE_MASK.length+' rows and MASKS has '+t.MASKS.length);
- t.MASKS.forEach(function(m,i){var r=t.CODE_MASK[i];
-  if(!r||r[1]!==m.nm)no('MASKS['+i+'] is '+m.nm+' and CODE_MASK row '+i+' is '+(r?r[1]:'missing'));});
-
- /* law. S.law keys by SI's own name everywhere, never an index. */
- run(t.CODE_LAW.map(function(r){return r[0];}),'LA',2,'CODE_LAW');
- dupes(t.CODE_LAW.map(function(r){return codeKey(r[1]);})).forEach(function(n){no('CODE_LAW names '+n+' twice');});
- if(t.CODE_LAW.length!==t.SI.length)
-  no('CODE_LAW has '+t.CODE_LAW.length+' rows and SI has '+t.SI.length+' laws');
- t.SI.forEach(function(l,i){var r=t.CODE_LAW[i];
-  if(!r||r[1]!==l.nm)no('SI['+i+'] is '+l.nm+' and CODE_LAW row '+i+' is '+(r?r[1]:'missing'));});
-
- /* gate. VERPMIX, VERPMULT, VERPCUE and GATEGLYPH all key by VERP's own k,
-    never an index, so CODE_GATE carries k beside the code and holds it to
-    the same row. */
- run(t.CODE_GATE.map(function(r){return r[0];}),'GA',2,'CODE_GATE');
- dupes(t.CODE_GATE.map(function(r){return codeKey(r[1]);})).forEach(function(n){no('CODE_GATE names '+n+' twice');});
- if(t.CODE_GATE.length!==t.VERP.length)
-  no('CODE_GATE has '+t.CODE_GATE.length+' rows and VERP has '+t.VERP.length+' gates');
- t.VERP.forEach(function(v,i){var r=t.CODE_GATE[i];
-  if(!r||r[1]!==v.nm||r[2]!==v.k)no('VERP['+i+'] is '+v.k+' '+v.nm+' and CODE_GATE row '+i+' is '+(r?r[2]+' '+r[1]:'missing'));});
-
- /* compass-position. compass.js calls MIRROR's own k identity, not a
-    label, so CODE_COMPASS carries it beside the code for the same reason
-    CODE_GATE does. */
- run(t.CODE_COMPASS.map(function(r){return r[0];}),'CP',2,'CODE_COMPASS');
- dupes(t.CODE_COMPASS.map(function(r){return codeKey(r[1]);})).forEach(function(n){no('CODE_COMPASS names '+n+' twice');});
- if(t.CODE_COMPASS.length!==t.MIRROR.length)
-  no('CODE_COMPASS has '+t.CODE_COMPASS.length+' rows and MIRROR has '+t.MIRROR.length+' axes');
- t.MIRROR.forEach(function(m,i){var r=t.CODE_COMPASS[i];
-  if(!r||r[1]!==m.q||r[2]!==m.k)no('MIRROR['+i+'] is '+m.k+' '+m.q+' and CODE_COMPASS row '+i+' is '+(r?r[2]+' '+r[1]:'missing'));});
-
- /* recipe. Named by quality and teacher together, since neither is unique
-    alone across the fourteen (Jesus holds two, Light is two). recipeOf(k)
-    still reaches a row by TEACHER_RECIPES's own key, never by this code. */
- run(t.CODE_RECIPE.map(function(r){return r[0];}),'RC',2,'CODE_RECIPE');
- dupes(t.CODE_RECIPE.map(function(r){return codeKey(r[1]);})).forEach(function(n){no('CODE_RECIPE names '+n+' twice');});
- if(t.CODE_RECIPE.length!==t.TEACHER_RECIPES.length)
-  no('CODE_RECIPE has '+t.CODE_RECIPE.length+' rows and TEACHER_RECIPES has '+t.TEACHER_RECIPES.length+' rows');
- t.TEACHER_RECIPES.forEach(function(p,i){var r=t.CODE_RECIPE[i], nm=p.q+' ('+p.who+')';
-  if(!r||r[1]!==nm||r[2]!==p.k)no('TEACHER_RECIPES['+i+'] is '+p.k+' '+nm+' and CODE_RECIPE row '+i+' is '+(r?r[2]+' '+r[1]:'missing'));});
-
  /* child emotions, and the routing and the rule only ever land on one */
  var emo=t.CODE_EMOTION, child=t.CHILD.map(function(c){return c.nm;});
  dupes(emo).forEach(function(e){no('CODE_EMOTION names '+e+' twice');});
@@ -33560,8 +33266,7 @@ const REG_MAP=[
  ['time_axis','held',[],'how a release settles over the days after it. Nothing here models it, and the rebound days were taken off the release screen by his ruling of 27 September'],
  ['evidence','held',[],'trial and practice figures about the method. Not product data'],
  ['contraindications','held',[],'when a release should not be run, or should be paced. The release screens hold the product\'s own wording'],
- ['open_rulings','held',[],'the owner\'s open questions in that file, carried into CANON-MERGE-PLAN.md'],
- ['resolved_rulings','held',[],'closed as of 27 October, ruling 5, Justification and Arrogance: who ruled it, when, and what changed, carried in full in DECISIONS.md and at engine/data/registers.js\'s own AMPLIFIER comment']];
+ ['open_rulings','held',[],'the owner\'s open questions in that file, carried into CANON-MERGE-PLAN.md']];
 
 /* the ported tables, by register, as regDiff reads them */
 function regDiff(canon){
@@ -33654,7 +33359,6 @@ if(typeof module!=='undefined'&&module.exports){
   /* source ai */ SRC_ASK:SRC_ASK, SRC_ROOT:SRC_ROOT, SRC_ONCE:SRC_ONCE, SRC_NEG:SRC_NEG,
                  srcNegated:srcNegated, srcPrior:srcPrior, srcRung:srcRung,
                  srcHear:srcHear, srcHear:srcHear, srcPrior:srcPrior, srcTurn:srcTurn,
-                 srcHyperSeats:srcHyperSeats,
                  SRC_DIM_ORDER:SRC_DIM_ORDER, SRC_DIM_CUE:SRC_DIM_CUE, SRC_DO:SRC_DO,
                  srcDims:srcDims, srcNext:srcNext,
                  SRC_KINDS:SRC_KINDS, SRC_OUTCOMES:SRC_OUTCOMES,
@@ -34102,13 +33806,13 @@ var CHAR_GROW_S=2.1;
 
 function charSmooth(a,b,v){var t=clamp((v-a)/(b-a),0,1);return t*t*(3-2*t);}
 
-/* A name as a person reads it. The table has "Doubt Of Source" and
-   "Self-Exclusion" and the nerves are "Celiac Plexus", title case all the way
-   down, which in a hover reads as shouting. Sentence case, with the proper
-   nouns kept: Source, the field anchors and a seat named in brackets.
-   Root_08_Unnamed is the one address with no name, and a person is shown
-   "Unnamed, Root 08" and never the key it is stored under. */
-var CHAR_PROPER={Source:1,Sol:1,Star:1,Gaia:1,Earth:1,Stellar:1,Gateway:1,Solar:1,Heart:1};
+/* A name as a person reads it. The table has "Doubt Of God" and "Self-Exclusion"
+   and the nerves are "Celiac Plexus", title case all the way down, which in a
+   hover reads as shouting. Sentence case, with the proper nouns kept: God, the
+   field anchors and a seat named in brackets. Root_08_Unnamed is the one
+   address with no name, and a person is shown "Unnamed, Root 08" and never the
+   key it is stored under. */
+var CHAR_PROPER={God:1,Sol:1,Star:1,Gaia:1,Earth:1,Stellar:1,Gateway:1,Solar:1,Heart:1};
 function charAddrName(k){
  k=String(k==null?'':k);
  var u=/^(\w+)_(\d+)_Unnamed$/.exec(k);
@@ -35501,16 +35205,7 @@ function rbMotion(hosts){
     to=off?0:(parseFloat(el.getAttribute('data-w'))||0),
     pv=el.querySelector('.rb-v'), num=crMoNum(pv?pv.textContent:''), n1=num?num.n:null,
     tt=el.querySelector('.rb-t'), sv=rbSeatsOf(el);
-   /* A ROW STILL SWEEPING ITS OWN FIRST SIGHT IS NOT YET A READING. n1 above
-      is read off .rb-v's live text, and while the entrance tween is running
-      that text is the sweep's own in-between frame, not a new figure from the
-      model. A second call in that window (the rail opening and railFirstSight
-      both call rbMotion on the same render) read that frame back in as if it
-      were fresh, saw it miss the row's own target and reported a chip for a
-      change that never happened, down to the figure the row was sweeping up
-      from. The width survives this, since rbPaint never writes data-w, so it
-      alone still says whether the reading itself has moved. */
-   if(m&&Math.abs(m.w1-to)<.05&&(m.n1===n1||(m.first&&!m.done))){
+   if(m&&Math.abs(m.w1-to)<.05&&m.n1===n1){
     m.tw=tt?tt.offsetWidth:0; m.s1=sv;
     if(!m.done)rbPaint(m,now);
     rbGhost(el,m,now); rbChip(el,m,now); return;}
@@ -39128,8 +38823,8 @@ function verpArrows(cr0){
    A word alone cannot carry a definition, so each depth now has one. Menu is
    one word. Definition is on demand. */
 const VIEWS=[
- {k:'A',nm:'Charge',    layers:'the core, 112 addresses, the wash',
-  tip:'What you are carrying, and where. The core is coherence, the ring is your 112 addresses, the wash is shadow weight.'},
+ {k:'A',nm:'Charge',    layers:'the core, 108 addresses and 4 field anchors, the wash',
+  tip:'What you are carrying, and where. The core is coherence, the ring is your 108 addresses and 4 field anchors, the wash is shadow weight.'},
  {k:'B',nm:'Patterns',  layers:'charge, plus the seats named and the saboteurs',
   tip:'The saboteurs running on top of the charge. Each bead is one, and the threads show which addresses built it.'},
  {k:'C',nm:'Chains',    layers:'patterns, plus complexes, hyper, super, archetypes',
@@ -40310,7 +40005,7 @@ const FLAYS=[
  {k:'domains',nm:'Domains',d:frSegRing(5,8.6,20),
   tip:'The nineteen blueprint domains, what was there before any of it.'},
  {k:'addresses',nm:'Addresses',d:frCirc(12,12,4.2)+frTicks(8,7,10.4),
-  tip:'Your 112 addresses. Each mark is the charge held at one place.'},
+  tip:'Your 108 addresses, plus 4 field anchors above and below the body. Each mark is the charge held at one place.'},
  {k:'stories',nm:'Stories',d:frCirc(12,12,2.6)+'M12 9V4.4M14.6 13.5l4 2.3M9.4 13.5l-4 2.3'
    +frCirc(12,3.4,1.1)+frCirc(19.4,16.2,1.1)+frCirc(4.6,16.2,1.1),
   tip:'One line for each story that put charge on an address.'},
@@ -40326,7 +40021,7 @@ const FLAYS=[
   tip:'The six gates round the core. Each higher gate sits across from the lower one it stands against.'},
  {sep:true},
  {k:'shadow',nm:'Decoherence',d:frCirc(12,12,8.5)+'M7.2 16.6l3.4-3.4M10.2 19.2l6-6M14.6 19.9l4.6-4.6',
-  tip:'Decoherence. The weight on all 112 addresses, as a wash behind everything.'}];
+  tip:'Decoherence. The weight on your 108 addresses and 4 field anchors, as a wash behind everything.'}];
 /* THE SWITCH AND THE ROW ARE NO LONGER BUILT HERE. The layer row, #flay, is
    the glass bar now, and the switch, #fview, moved to the right rail as three
    circles; ui/fieldbar.js builds both. FLAYS stays, because its marks are the
@@ -41602,7 +41297,7 @@ const VICON=[
    .claude/agents/emmy.md. The count in the tooltip is read off SI. */
 const FB_LAYERS=[
  {k:'addresses',g:'carry',nm:'Addresses',ic:FB_IC_ADDR,
-  tip:'Your 112 addresses. Each mark is the charge held at one place.'},
+  tip:'Your 108 addresses, plus 4 field anchors above and below the body. Each mark is the charge held at one place.'},
  {k:'seats',g:'carry',nm:'Assemblage points',ic:FB_IC_SEAT,
   tip:'The seven seats, from the base of your spine to the top of your head.'},
  {k:'laws',g:'carry',nm:'Laws of Moral Integrity',ic:fbFlay('laws'),
@@ -41610,7 +41305,7 @@ const FB_LAYERS=[
  {k:'gates',g:'carry',nm:'Laws of Action',ic:fbFlay('gates'),
   tip:'The Laws of Action round the core, each move of right action set across from the wrong action it stands against.'},
  {k:'shadow',g:'carry',nm:'Decoherence',ic:fbFlay('shadow'),
-  tip:'Decoherence. All the charge on all 112 addresses, shown as a tint behind everything.'},
+  tip:'Decoherence. All the charge on your 108 addresses and 4 field anchors, shown as a tint behind everything.'},
  {k:'stories',g:'carry',nm:'Stories',ic:fbFlay('stories'),
   tip:'One line for each story that put charge on an address.'},
  {k:'saboteurs',g:'run',nm:'Saboteurs',ic:CHAINGLYPH.sab,
@@ -41706,7 +41401,7 @@ function fbValues(r){
   m:anyG?'Ring and number: right action, its share of every Law of Action read in your stories.'
    :'Nothing read yet, so none of your stories has run through the Laws of Action.'};
  V.shadow={p:dqv.p,v:dqv.v,c:seatCol('Root'),
-  m:'Ring and number: shadow weight, DQ, the weight on all 112 addresses.'};
+  m:'Ring and number: shadow weight, DQ, the weight on your 108 addresses and 4 field anchors.'};
  var ai=atomIndex()||{}, traced=carry.length?carry.filter(function(n){return (ai[n.i]||[]).length;}).length/carry.length*100:0;
  V.stories={p:pct('portion',traced/100)||0,v:carry.length?fmtPct('portion',traced/100):dash,c:'var(--accent)',
   m:carry.length?'Ring and number: the share of your carrying addresses a story you wrote reached.'
@@ -47072,7 +46767,7 @@ var CHV={pick:null, sel:-1, selAddr:-1, sc:null, ov:null, r:null, raf:0, last:0,
 /* the three overlays and the key they are kept under in the store */
 var CH_OVERLAYS=[
  {k:'cloud', nm:'Point cloud', on:true,
-  d:'The person and the 112 addresses round them, as points.'},
+  d:'The person and the 108 addresses round them, plus the 4 field anchors above and below, as points.'},
  {k:'torus', nm:'Torus', on:true,
   d:'The field round the body. The seats bend it and vitality makes it breathe.'},
  {k:'heat', nm:'Heat map', on:false,
@@ -47395,7 +47090,7 @@ function chRailHtml(r){
  h+='<div class="pm-eye chr-sp">Light and breath</div><div class="chr-read">'
   +'<div class="chr-row"><span>Coherence</span><b>'+(unread?'–':cq+'%')+'</b><i>'+esc(chSentence(charCohWord(unread?0:cq/100)))+' It lights the figure and sets how wide, bright and whole the field is.</i></div>'
   +'<div class="chr-row"><span>Vitality</span><b>'+(unread?'–':vt.toFixed(2))+'</b><i>'+esc(chVitWord(unread?0:vt))+' It sets how far and how fast the field breathes.</i></div>'
-  +'<div class="chr-row"><span>Decoherence</span><b>'+(unread?'–':dq+'%')+'</b><i>The shadow, all 112 addresses against the most they could hold. It opens the gaps.</i></div></div>'
+  +'<div class="chr-row"><span>Decoherence</span><b>'+(unread?'–':dq+'%')+'</b><i>The shadow, your 108 addresses and 4 field anchors against the most they could hold. It opens the gaps.</i></div></div>'
   /* round RB: the glow behind the figure is a picture too, so it is said */
   +(unread?'':'<p class="chr-note">The glow behind the figure is the colour your whole field gives off: every point\u2019s colour, mixed by how bright it is. It breathes with the field.</p>');
  /* the seven seats: root first as everywhere, each a button that traces it */
@@ -47972,16 +47667,7 @@ function stRender(){
     whole story and then refused it at Commit, which is a control that looks
     like it works until the moment it does not. */
  var show=showOnly();
- /* SIMPLE NEVER COLLAPSES A WORKED EXAMPLE. The write column on an example is
-    one redirect note, never the box, since nothing typed there runs (see the
-    show branch below). Simple mode hides the other two columns to let that
-    column alone set the page's height, which is right when it holds a real
-    box and wrong when it holds one sentence: functional.js caught it as
-    "STORY actually rendered on a phone, box 186", a worked example's row
-    collapsed to the note's own height with nothing left to stretch it. An
-    example is shown in full, the way it always was, and the toggle that
-    makes no sense on it is already hidden beside Talk, both gated on show. */
- var out='<div class="st-flow'+(STV.simple&&!show?' simple':'')+'" id="stflow" data-focus="'+STV.focus+'">'
+ var out='<div class="st-flow" id="stflow" data-focus="'+STV.focus+'">'
   /* ---- the write column: the journal, with Source AI inside it ---- */
   +'<div class="st-colw">'
   +'<div class="st-pan st-jr'+(STV.chat?' st-chat':'')+'" id="stjr">'
@@ -48017,23 +47703,20 @@ function stRender(){
       question button already draws: one drawing per named thing. The margin
       takes the free space, so it and Record stand together at the right
       edge where Record stood alone. See srcThread for what it opens. */
-   /* TALK AND RECORD ARE ONE BUTTON, ruled 25 October: "Talk and Record
-      become one button... the single friendly press." One press opens the
-      conversation and starts listening together; a second press stops
-      listening and leaves the conversation open, since a person mid
-      conversation is not done because the mic paused. */
-   +(show?'':'<button class="st-mic st-talk'+(ST_LISTEN?' on':'')+'" id="sttalk" type="button" '
-   +'aria-pressed="'+!!STV.chat+'" aria-label="'+(ST_LISTEN?'Listening':'Talk')+'" '
-   +'title="'+(ST_LISTEN?'Listening. Press to stop and keep what it heard.'
-     :'Talk it through, one turn at a time. Recording sends the audio to your browser\'s speech service; typing does not leave this device.')+'">'
-   +'<span class="st-dot"></span>'
+   +(show?'':'<button class="st-mic st-talk" id="sttalk" type="button" aria-pressed="'+!!STV.chat+'" '
+   +'title="Write it as a conversation, one turn at a time.">'
    +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
    +'<circle cx="6" cy="6.5" r="3"/><circle cx="18" cy="17.5" r="3"/>'
    +'<path d="M8.4 8.4Q16.5 7 15.6 15.6"/></svg>'
-   /* ICON ONLY, his words just now: "I just want a icon without the text."
-      No printed word on the button, the way the dial's own icon row
-      already does it, round of 18-19 October: "each self-explaining
-      without a caption", named for anyone else by aria-label alone. */
+   +'<span>Talk</span></button>'
+   +'<button class="st-mic'+(ST_LISTEN?' on':'')+'" id="stmic" type="button" '
+   +'title="'+(ST_LISTEN?'Recording. Press to stop and keep what it heard.'
+     :'Record what happened out loud instead of typing it. Recording sends the audio to your browser\'s speech service; typing does not leave this device.')+'">'
+   +'<span class="st-dot"></span>'
+   +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
+   +'<rect x="9" y="3" width="6" height="11" rx="3"/>'
+   +'<path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg>'
+   +'<span>'+(ST_LISTEN?'Recording':'Record')+'</span>'
    /* THE CLOCK, ROUND LV. His words: "I want the time showing how long my
       recording is." mm:ss, in the button itself so it reads as one control
       rather than two things to track, and gone the moment recording is,
@@ -48043,36 +47726,7 @@ function stRender(){
       that shows it runs. */
    +(ST_LISTEN?'<span class="st-mictime" id="stmictime" aria-hidden="true">'
      +stMicFmt(stMicElapsed())+'</span>':'')
-   +'</button>')
-   /* THE DASHBOARD BUTTON. His words: "this needs to be the simple journal
-      plus the dashboard button that expands including the imprints and the
-      release." One press, one toggle: simple shows the Journal alone,
-      pressed shows the three columns this page always had. Wears the same
-      pill as Talk and Record so the row reads as one family of controls.
-
-      ICON ONLY, ROUND OF 27 OCTOBER, his words: "the talk button and
-      dashboard in simple buttons need to be more iconic." Talk already
-      dropped its printed word at his own earlier request; this had kept
-      "Dashboard" or "Simple" printed beside the icon on anything wider than
-      a phone, which read as two different rules on two buttons that wear
-      the same pill. The word moves to aria-label and title, where it was
-      already carried for a screen reader, and the glyph is redrawn plainer:
-      three panes becomes one open square and one divided square, read as
-      "alone" against "in three", rather than three rectangles that needed
-      the word beside them to say which state was which. */
-   +(show?'':'<button class="st-mic st-dash" id="stdash" type="button" '
-   +'aria-pressed="'+!STV.simple+'" aria-label="'+(STV.simple?'Dashboard':'Simple')+'" '
-   +'title="'+(STV.simple?'Show imprints and release alongside the journal.'
-     :'Back to the journal alone.')+'">'
-   +(STV.simple
-    ?'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
-     +'<rect x="3" y="4" width="7" height="16" rx="1.3"/>'
-     +'<rect x="13" y="4" width="8" height="7" rx="1.3"/>'
-     +'<rect x="13" y="14" width="8" height="6" rx="1.3"/></svg>'
-    :'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
-     +'<rect x="4" y="4" width="16" height="16" rx="1.6"/></svg>')
-   +'</button>')
-   +'</div>'
+   +'</button>')+'</div>'
   /* SOURCE AI AND THE JOURNAL'S MENU CHANGED PLACES, round LO, his words: "I
      want you to swap the main journal menu with the source AI question." The
      column read Source AI, then the journal's own top line with Record on it,
@@ -48249,7 +47903,6 @@ function stRender(){
     the resize observer, the first layout ran at a height of nought and every
     lane sprang in from above the chart on each arrival at the tab. */
  stSize();
- ST_ACTIVE=typeof srcHyperSeats==='function'?srcHyperSeats(compute()):null;
  stRead(); stSortPaint();
  srcLock(h.querySelector('.st-glow')); srcLock(h.querySelector('#stjr .src-live'));
  var ta=document.getElementById('sttext');
@@ -48274,20 +47927,11 @@ function stRender(){
  /* a reply still in the line is the person's words, so Commit sends it first
     rather than committing the entry without it */
  if(ap)ap.onclick=function(){if(STV.chat)srcChatSend(); return stCommit();};
- /* ONE BUTTON, BOTH MOVES, ONE TOGGLE. Pressing it on opens the conversation
-    and starts listening together; pressing it off closes the conversation
-    and stops listening together, the same single on/off Talk always was.
-    stMic() renders itself on every path it takes, so this calls it first
-    while STV.chat still reads the old value, then flips STV.chat and
-    renders once more for the swap between #sttext and #stcin. */
+ var mic=document.getElementById('stmic');
+ if(mic)mic.onclick=stMic;
  var tk=document.getElementById('sttalk');
- if(tk)tk.onclick=function(){
-  var opening=!STV.chat;
-  if(opening!==!!ST_LISTEN)stMic();
-  STV.chat=opening; stRender();
+ if(tk)tk.onclick=function(){STV.chat=!STV.chat; stRender();
   var f=document.getElementById(STV.chat?'stcin':'sttext'); if(f)f.focus();};
- var db=document.getElementById('stdash');
- if(db)db.onclick=function(){STV.simple=!STV.simple; stRender();};
  srcChatWire();}
 
 /* ============================================================
@@ -48295,21 +47939,8 @@ function stRender(){
    sorted, which column has the room, which list is up, and whether the bank
    is open. Kept across a return to the tab, never saved.
    ============================================================ */
-/* THE GAP A REAL SECOND PRESS NEVER BEATS. Measured directly: the two clicks
-   of a native double click or double tap land a tenth of a millisecond
-   apart. A hundred milliseconds is a thousand times that gap and still well
-   under what any person perceives as a pause, so a press on Run inside it
-   of stCommit's own reflow (STV.committedAt, below) is refused as the same
-   press landing twice, never as a second one arriving late. */
-var ST_DBLTAP_MS=100;
-/* SIMPLE, THEN THE DASHBOARD ONE PRESS AWAY. His words: "this needs to be the
-   simple journal plus the dashboard button that expands including the
-   imprints and the release... it already starts off in easy mode." Simple is
-   the Journal alone, full width; the dashboard is the three columns this page
-   already had (stCssFlow below). One flag, default on, so a first landing is
-   simple before anyone presses anything. */
 var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:false,law:false,
- unsaved:null,draftT:null,draftFail:false,crisis:false,simple:true};
+ unsaved:null,draftT:null,draftFail:false,crisis:false};
 /* the one width the page changes shape at is the one the product stacks its
    columns at, so the Story cannot be in three columns while the rails are
    already one. */
@@ -48400,15 +48031,6 @@ function stBank(){
    picture and the score came to disagree. The mark still runs back over its
    no and is struck, and the bar is still dashed. */
 var STR={t:null,marks:[],toks:[],heard:null};
-/* WHICH SEATS THE WIDER READING ALREADY SITS ON, read once a render and not
-   once a key. compute() reads the committed profile (S, W), never the live
-   draft, so it cannot change while a person is still typing an entry: only a
-   full render (stRender, on commit, undo, a tab arrival, Talk, the dashboard
-   toggle) needs to ask it again. stRefresh runs on every key and reads this
-   cache rather than calling compute() itself, the same reason the live dot
-   stopped rebuilding on every key, round PW: a forced layout a key is a cost
-   this page already paid once and does not pay twice. */
-var ST_ACTIVE=null;
 function stMarks(t,p){
  if(!p||typeof marksOf!=='function')return [];
  var marks=marksOf(t,p), nm=normMap(t), modAt={};
@@ -48436,7 +48058,7 @@ function stRead(){
  var t=ST_TEXT, ents=(CURP&&CURP.story&&CURP.story.entries)||[];
  var marks=stMarks(t,ST_PARSED);
  STR={t:t,marks:marks,toks:marks.toks||(t?(t.match(/[A-Za-z']+/g)||[]).map(function(w){return {w:w};}):[]),
-  heard:srcHear(t,srcPrior(ents),ST_ACTIVE)};}
+  heard:srcHear(t,srcPrior(ents))};}
 /* the addresses this entry reaches, or the last committed entry's.
    THE ONES THE WORDS NAMED COME FIRST, and .named says how many of the head of
    the list they are, 17 October. parseStory reaches two kinds of address: the
@@ -48584,16 +48206,6 @@ function stCommit(){
     with Run on it: widening it there would push Run off the first screen,
     which is the one thing layout H exists to stop. */
  STV.focus=stPhone()?'write':'release';
- /* AND RUN CAN LAND WHERE COMMIT JUST WAS. Write held the room until this
-    line ran; now Run does, at the same screen position Commit sat at a
-    moment ago. A double tap aimed at Commit then ends its second half on
-    Run: measured at 390 by 844, a native double click after three commits
-    opened a real release two times in three and ran the voice line before
-    anyone pressed Run on purpose. The two clicks of a real double tap land
-    a tenth of a millisecond apart (measured); stRelPanel below refuses a
-    press on Run inside a tenth of a second of this line, which cannot be a
-    second press, only the same one landing twice. */
- STV.committedAt=Date.now();
  /* the crisis line has said what the box is for, and the box has been used */
  STV.crisis=false;
  toYou();syncCh();if(typeof stRender==='function')stRender();render();
@@ -48780,42 +48392,10 @@ var SRC_PASSED=false;
    same line -- not a guess, not drift. Round OT's reasoning kept above
    rather than deleted, in case it needs to be reopened. */
 var SRC_OPEN='What are we talking about today?';
-/* THE NAME, LIFTED OUT, so the landing text and the Talk greeting below ask
-   the same profile the same way once rather than twice. who.first and
-   nothing else, per the paragraph above: a profile called Custom is not
-   greeted as Custom, and a worked example is not greeted by a case name. */
-function srcFirstName(){
- var w=(typeof CURP!=='undefined'&&CURP&&CURP.who)||{};
- return capName(String(w.first||'').trim().split(/\s+/)[0]);}
-/* THE NAME LEADS NOW, round of 27 October, his words: "when I land on the
-   journal, the first time I want to see the text welcome, Lance, what are
-   we talking about today." "Hello, Lance." read as a greeting he had
-   already had; leading with the name and a comma reads as a friend
-   starting the sentence with him, the way the rest of this file's own
-   questions already do. No name is still no greeting, the question stands
-   alone, same as before.
-
-   LOWERCASE ONLY HERE, FOUND BY EMMY'S REVIEW. The name leading the
-   sentence makes SRC_OPEN's own capital W wrong mid sentence: "Derek, What
-   are we talking about today?" reads as two sentences stapled together.
-   SRC_OPEN itself stays capitalised, since srcQuestion and srcChatOpen
-   both still need it to open a sentence on its own; only this one
-   concatenation lowercases its first letter, and only when a name actually
-   leads it. */
 function srcOpen(){
- var f=srcFirstName();
- return f?f+', '+SRC_OPEN.charAt(0).toLowerCase()+SRC_OPEN.slice(1):SRC_OPEN;}
-/* TALK'S OWN GREETING IS A SEPARATE SENTENCE, not this one. His words: "when
-   I hit the talk button, I'm greeted by the software, who repeats the
-   command, welcome Lance, what are we talking about today, from there it's
-   a conversation." Landing on the journal and pressing Talk are two
-   different moments: one is the page waiting to be written in, the other is
-   being met by something that just started listening. srcChatCur below
-   calls this only on the first turn of a fresh conversation, never on a
-   repaint of one already under way. */
-function srcChatOpen(){
- var f=srcFirstName();
- return (f?'Welcome '+f+'. ':'Welcome. ')+SRC_OPEN;}
+ var w=(typeof CURP!=='undefined'&&CURP&&CURP.who)||{};
+ var f=capName(String(w.first||'').trim().split(/\s+/)[0]);
+ return (f?'Hello, '+f+'. ':'')+SRC_OPEN;}
 /* SIMPLE, STRAIGHTFORWARD, DEEP. His three words for what the page should
    ask. Each is a physical event a person can answer from memory, the shape
    funnel/questions.js already proved works in this product, and none of them
@@ -49103,13 +48683,8 @@ function srcPaint(){
    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 5h15v10.5H10l-4.5 4v-4h-1z"/><path d="M10 8.6l-1.1 2.6M14.2 8.6l-1.1 2.6"/></svg>'
    +'</button></div>';
  var q=turn.move==='open'||turn.move==='listen'?srcQuestion():ask;
- /* LARGE AND FRIENDLY, THE FIRST THING ON THE PAGE. His words: "in large
-    beautiful friendly font." src-hero only reaches the landing opener, not
-    the same question once Source AI is listening (below) or the Talk
-    greeting (srcThreadNow), which sit inside a tighter column and a chat
-    bubble where this size would crowd them. */
  if(turn.move==='open')
-  o+='<div class="src-ask">'+srcLand('src-open src-hero',q)+acts+'</div>';
+  o+='<div class="src-ask">'+srcLand('src-open',q)+acts+'</div>';
  else if(turn.move==='ask'){
   o+=srcLand('src-q',ask,'--c:'+seatCol(turn.band))
    +'<div class="src-row"><button type="button" class="btn" id="srcpass">Move on</button>'
@@ -49161,19 +48736,7 @@ function srcPaint(){
  /* talking, every turn Source AI takes is a line it says, once */
  if(cur)said=cur.q;
  var sy=document.getElementById('srcsay');
- /* TALKING, SOURCE AI SAYS IT OUT LOUD, 26 October: "no sound comes out" was
-    true because nothing here had ever called the voice. srcsay's own gate,
-    above, already tells a new thing said from a repaint saying the same
-    thing again; talking reuses that exact gate so the line is spoken once,
-    the moment it is new, and never again on a key that changed nothing.
-    relVoiceOn, relStudioLostSay and speakStudio are the release protocol's
-    own voice (ui/release.js, ui/sound.js), ported and not rebuilt: the same
-    switch, the same server, the same words for a failure. */
- if(sy&&sy.textContent!==said){
-  sy.textContent=said;
-  if(STV.chat&&said&&typeof relVoiceOn==='function'&&relVoiceOn())
-   speakStudio(said,1,'frame',function(){},function(why){
-    status(typeof relStudioLostSay==='function'?relStudioLostSay(why):'The voice did not answer.','fail');});}
+ if(sy&&sy.textContent!==said)sy.textContent=said;
  var mv=document.getElementById('srcpass');
  if(mv)mv.onclick=function(){SRC_PASSED=true;
   SRC_LOG.forEach(function(r){if(r.k===turn.why&&r.seat===turn.seat)r.moved=true;});
@@ -49351,26 +48914,7 @@ var SRC_CHAT=[], SRC_CPRESS=false, SRC_CDRAFT='';
    person pressed for since their last reply stands instead. */
 function srcChatCur(turn,heard,q,ask){
  var top=heard&&heard.top, r={rg:top?top.rung:0, bd:turn.band||(top?top.band:null), mv:turn.move};
- /* THE GREETING REPLACES THE LANDING QUESTION UNTIL THE PERSON SAYS
-    ANYTHING, NOT ONLY ON ONE CALL. "SRC_CHAT is empty" is not the same
-    question as "has the person replied yet", and the first version of this
-    checked SRC_CHAT.length===0, which is true on the very first call and
-    false on every call after, including one with nothing new to show.
-    Found by Emmy's own repro: Talk's onclick starts speech recognition
-    before it sets STV.chat and repaints, and in a browser with no mic
-    permission or no network that recognizer's own error callback fires an
-    instant later and repaints again on its own. By then this function had
-    already pushed the greeting once, SRC_CHAT.length was 1, and the second
-    call fell through to the plain question, which srcChatNote then swapped
-    in over the greeting it had just shown: the greeting flashed and was
-    gone before anyone could read it, sometimes inside the same frame.
-    The actual question is whether the person has answered yet, which is
-    whatever rows besides Source AI's own are in the thread. None means
-    still at the door, however many times this has repainted saying so. */
- if(turn.move==='open'){
-  var stillAtDoor=SRC_CHAT.every(function(r){return r.w==='src';});
-  var oq=stillAtDoor?srcChatOpen():q;
-  r.key='open|'+oq; r.q=oq;}
+ if(turn.move==='open'){r.key='open|'+q; r.q=q;}
  else if(turn.move==='ask'){r.key='ask|'+turn.seat+'|'+turn.why; r.q=ask;}
  else if(turn.move==='pass'){r.key='pass'; r.q='Cool.';}
  else if(SRC_CPRESS&&!SRC_DNONE){r.key='q|'+q; r.q=q; r.mv='asked';}
@@ -49427,17 +48971,10 @@ function srcChatWire(){
  if(ap&&SRC_CDRAFT.trim())ap.disabled=false;
  var sd=document.getElementById('stcsend');
  if(sd)sd.onclick=function(){srcChatSend(); cin.focus();};}
-/* THE THREAD, A NORMAL CHAT DISPLAY. His words, 26 October: "let's go back
-   to a normal chat display, I don't like the chat style that we're using."
-   This replaces the wire-and-node visual (each turn a ring, strung to the
-   next by a drawn, pulsing line) with the ordinary shape of a conversation:
-   a row per turn, the person's on the right, Source AI's on the left, each
-   in its own bubble. No wire is laid between them. A past Source AI turn
-   now shows its own words again; the wire version printed only a bare node
-   for every turn but the last, so a conversation of more than one exchange
-   read as empty rings strung together, no text on any but the newest. The
-   newest Source AI row still carries the live controls, under the same ids,
-   so srcPaint wires them without knowing which view it drew. */
+/* THE THREAD. A row per turn, oldest at the top, each on its node, and under
+   every node but the last the wire down to the next one. The newest Source
+   AI row carries its words and the same controls the panel does, under the
+   same ids, so srcPaint wires them without knowing which view it drew. */
 function srcThread(turn,heard,cur,acts,why){
  var ents=(CURP&&CURP.story&&CURP.story.entries)||[], pr=null, last=-1;
  SRC_CHAT.forEach(function(r,i){if(r.w==='src')last=i;});
@@ -49446,14 +48983,19 @@ function srcThread(turn,heard,cur,acts,why){
   /* a reply's reading is the entry as it stood when it was sent */
   if(r.w==='me'&&r.rg===undefined){pr=pr||srcPrior(ents);
    var hh=srcHear(ST_TEXT.slice(0,r.b),pr); r.rg=hh.top?hh.top.rung:0; r.bd=hh.top?hh.top.band:null;}
-  var col=r.bd?seatCol(r.bd):'var(--dim)';
+  var t=clamp((r.rg||0)/10,0,1), col=r.bd?seatCol(r.bd):'var(--dim)';
   var cls='src-tn src-tn-'+(r.w==='me'?'me':(i===last?'now':'past'));
-  o+='<li class="'+cls+'" style="--c:'+col+'"'+(r.w==='src'&&i!==last?' aria-label="An earlier turn"':'')+'>'
-   +'<div class="src-bub'+(r.w==='me'?' src-bub-me':' src-bub-ai')+'">';
+  o+='<li class="'+cls+'" style="--c:'+col+'"'+(r.w==='src'&&i!==last?' aria-label="An earlier turn"':'')+'>';
+  if(i<SRC_CHAT.length-1){
+   var per=96-48*t, sp=16+68*Math.sqrt(t), dur=per/sp, ph=(((i*12.9898+t*78.233)%1)+1)%1*dur;
+   o+='<svg class="src-tw" aria-hidden="true" data-t="'+t.toFixed(2)+'" data-s="'+(i%2?-1:1)+'">'
+    +'<path class="src-wire" style="opacity:'+(0.4+0.5*t).toFixed(2)+'"/>'
+    +'<path class="src-puls" stroke-dasharray="7 '+(per-7).toFixed(1)+'" style="opacity:'
+    +(0.28+0.72*t).toFixed(2)+';--p:'+per.toFixed(1)+';--d:'+dur.toFixed(2)+'s;--ph:-'+ph.toFixed(2)+'s"/></svg>';}
+  o+='<i class="src-nd"></i>';
   if(r.w==='me')o+='<p class="src-me">'+esc(r.t)+'</p>';
   else if(i===last)o+=srcThreadNow(r,turn,heard,acts,why);
-  else o+='<p class="src-q quiet">'+esc(r.q)+'</p>';
-  o+='</div></li>';});
+  o+='</li>';});
  return o+'</ol>';}
 /* the one live Source AI row, in the panel's own markup for each move */
 function srcThreadNow(r,turn,heard,acts,why){
@@ -49472,11 +49014,22 @@ function srcThreadNow(r,turn,heard,acts,why){
  if(why)o+='<div id="srcwhy" style="margin-top:12px"><span class="pm-eye">Why</span>'
   +'<p class="src-open quiet" style="margin:2px 0 0">'+esc(why)+'</p></div>';
  return o;}
-/* NO WIRES TO LAY ANY MORE, 26 October: srcThread stopped drawing them. This
-   keeps its name and its one real job, which the wire version did at the
-   same place: lock whatever still breathes on the panel's one clock so a
-   repaint does not restart it, and open the thread at its newest turn. */
+/* THE WIRES ARE LAID AFTER THE ROWS ARE. A row's height is only known once it
+   is on the page, and a viewBox stretched to fit would stretch the pulse with
+   it, so every height is read first and every path written after, one layout
+   for the whole thread. Each wire runs from its node to the next row's node,
+   which sits the same distance down its own row, so it is exactly the row
+   tall. The bow is frSag's, scaled down on a short row so a folded turn does
+   not kink. Then the pulses go on the panel's one clock, srcLock, so a
+   repaint does not restart them, and the thread opens at its newest turn. */
 function srcWire(h){
+ var lis=[].slice.call(h.querySelectorAll('.src-tn')), hs=lis.map(function(li){return li.offsetHeight;});
+ lis.forEach(function(li,i){
+  var sv=li.querySelector('.src-tw'); if(!sv)return;
+  var H=hs[i], t=+sv.getAttribute('data-t')||0, s=+sv.getAttribute('data-s')||1;
+  var bow=7*(1.28-0.62*t)*Math.min(1,H/80), d='M12 0Q'+(12+2*s*bow).toFixed(1)+' '+(H/2).toFixed(1)+' 12 '+H;
+  sv.setAttribute('viewBox','0 0 24 '+H); sv.style.height=H+'px';
+  [].forEach.call(sv.querySelectorAll('path'),function(p){p.setAttribute('d',d);});});
  srcLock(h);
  var th=h.querySelector('.src-th'); if(th)th.scrollTop=th.scrollHeight;}
 /* THE RAIL HOST IS STATIC, SO IT IS EMPTIED ON THE WAY OUT. A hidden surface
@@ -49711,20 +49264,14 @@ function stDraw(){
   if(STV.hot===l.key){g.fillStyle=rgba(c,.08*al);g.fillRect(4,y,W-8,h);}
   g.beginPath();g.moveTo(q.x0,y+h-1);g.lineTo(q.x1,y+h-1);g.strokeStyle=rgba(c,(on?.24:.07)*al);g.lineWidth=1;g.stroke();
   var ly=y+h*.6;g.textBaseline='middle';
-  /* a lane too thin for even a small name carries its ring only, never a
-     name over its neighbour's. Below that, a lane short of the full 12px a
-     name was first drawn at still gets one, smaller: seven seats at equal,
-     untouched height on a brand new profile measured at 10px each, all
-     under the old 12px floor, so a first time phone visitor saw seven rings
-     and zero names. 7px is still ring only; a mixed, partly active reading
-     rarely sits there. */
-  if(h<7){if(h>=6){g.beginPath();g.arc(15,y+h/2,Math.min(4,h/2-1),0,TAU);g.strokeStyle=rgba(c,.4*al);g.lineWidth=1.2;g.stroke();}}
+  /* a lane too thin to carry a name carries its ring only, never a name over
+     its neighbour's */
+  if(h<12){if(h>=6){g.beginPath();g.arc(15,y+h/2,Math.min(4,h/2-1),0,TAU);g.strokeStyle=rgba(c,.4*al);g.lineWidth=1.2;g.stroke();}}
   else{
    if(l.icon){g.save();g.translate(8,ly-7);g.scale(14/24,14/24);g.strokeStyle=rgba(c,al);g.lineWidth=1.8*24/14;
     g.lineJoin='round';g.lineCap='round';g.stroke(new Path2D(l.icon));g.restore();}
    else{g.beginPath();g.arc(15,ly,4,0,TAU);g.strokeStyle=rgba(c,(on?1:.45)*al);g.lineWidth=1.6;g.stroke();}
-   var fsz=h<12?10:12;
-   g.fillStyle=rgba(on?mixc(c,ink,.12):c,(on?1:.6)*al);g.font='600 '+fsz+'px Inter,system-ui,sans-serif';g.textAlign='left';
+   g.fillStyle=rgba(on?mixc(c,ink,.12):c,(on?1:.6)*al);g.font='600 12px Inter,system-ui,sans-serif';g.textAlign='left';
    g.fillText(l.label.length>11&&STC.GL<94?l.label.slice(0,10)+'.':l.label,26,ly);}
   if(h>=11)for(var i=0;i<10;i++){var lit=i<Math.round(l.rung);
    g.fillStyle=lit?rgba(c,al):rgba(c,(i>=SRC_ASK-1?.3:.12)*al);g.fillRect(W-STC.GR+8+i*5,ly-5,3,10);}
@@ -50185,10 +49732,6 @@ function stRelPanel(){
  var go=document.getElementById('strun');
  if(go)go.onclick=function(){
   if(!M.sel.length)return;
-  /* THE SAME PRESS, LANDING TWICE. See STV.committedAt and ST_DBLTAP_MS
-     above: a commit just moved Run to this exact spot, and a press this
-     soon after cannot be a person who has seen it there and chosen it. */
-  if(STV.committedAt&&Date.now()-STV.committedAt<ST_DBLTAP_MS)return;
   RUN.speed=2.2/(RUN.pace||1);
   /* the entry is named only when the panel is reading the last commit's own
      addresses: not a bank pick, not a draft still being typed, not the three
@@ -50759,7 +50302,7 @@ function sumGlance(r,noCQ){
      total shadow on all 112 over the most they can hold, so it has a ceiling
      of 100 and the ring is the figure, on the same scale as coherence. */
   ['shadow weight', 'Root', pct('dq',r.DQ)||0, fmtPct('dq',r.DQ,U),
-   'All the charge on all 112 addresses, against the most they could hold.',
+   'All the charge on your 108 addresses and 4 field anchors, against the most they could hold.',
    ''],
   /* THIS PRINTED THE OPPOSITE OF WHAT IT MEASURES. It was labelled "installed"
      and glossed "what has been filled in". SQm is built in compute.js from
@@ -51041,10 +50584,10 @@ function sumStory(r){
     crisis screens. He ruled "Your energy leans malignant" and kept the word,
     and round PO rules that no term stands without its plain meaning in the
     same place. A hover tip is not the same place on a phone, so the sentence
-    the glossary already holds for the word (rail:positive, rail:negative in
-    engine/data/gloss.js, renamed 25 October) follows it on the page, read from that one table so
+    the glossary already holds for the word (rail:benign, rail:malignant in
+    engine/data/gloss.js) follows it on the page, read from that one table so
     the two can never say different things. */
- var leanW=lean.ben>=lean.mal?'positive':'negative';
+ var leanW=lean.ben>=lean.mal?'benign':'malignant';
  p.push(((lean.read===false?'':'Your energy leans <b>'
   +leanW+'</b>'
   +(r.benign===null?'':', toward '+(r.benign?'expanding':'contracting'))+'. '
@@ -57476,7 +57019,7 @@ var RUN={open:false,id:null,first:false,queue:[],plan:[],sec:0,idx:0,phase:'idle
          tally:null,hits:null,settleAt:0,settled:false,
          heavy:{},look:false,rerun:false,pick:[],studioLost:false,
          ask:false,said:null,skip:false,storyT:null,grp:'story',gfocus:0,books:{},
-         mini:false,doseHeld:null,shortSay:''};
+         mini:false,doseHeld:null};
 /* THE RUN IS A PLAN OF THOUGHT LINES, ruled. One pattern is one thought line
    and the line targets the address by way of the channel, so a run is a list
    of address, channel and line, capped at RUN_MAX. It is built when the run is
@@ -57572,17 +57115,8 @@ function relRerunSay(){
    fitting a run is allowed, and it is one per run. The engine's one rule goes
    before the first line is said: on a worked example the protocol does not
    play and the voice is not spoken for a run the end of it would refuse. */
-function relBegin(door){
+function relBegin(){
  if(showRefuse('release'))return;
- /* THE SAME GUARD #strun ALREADY KEEPS, held here too: #strun's own press
-    clicks this button programmatically (ui/storyui.js), so a stray press
-    reaching this one directly, the moment a commit has just moved a button
-    onto it, is refused on the same terms. See STV.committedAt and
-    ST_DBLTAP_MS in ui/storyui.js. */
- /* door is relPick's own call, the door's press already reaching here; see
-    NO SECOND SETUP PAGE in relPick for why the guard is not asked there */
- if(!door&&typeof STV!=='undefined'&&STV.committedAt&&typeof ST_DBLTAP_MS!=='undefined'
-   &&Date.now()-STV.committedAt<ST_DBLTAP_MS)return;
  if(typeof sfx==='function')sfx('begin',true);
  RUN.phase='welcome';RUN.line=0;RUN.idx=0;RUN.pass=0;RUN.halted=false;RUN.paused=false;
  RUN.t0=Date.now();RUN.tEnd=0;RUN.pauseAt=0;RUN.pausedMs=0;relTicker(true);relStep();}
@@ -57701,46 +57235,7 @@ function relPick(nodeIds,from){
  /* the setup carousel opens on its first group, and on stories when any of
     what was picked came from one; the toggle is the person's after that */
  RUN.gfocus=0; RUN.grp=relGroups('story').some(function(g){return g.ei!=null;})?'story':'seat';
- RUN.open=true;
- /* NO SECOND SETUP PAGE, ruled 25 October, his annotated screenshot of the
-    Set up step crossed out corner to corner: "My release protocol, I set up
-    on that page, so I don't have a second setup page." Every door landed on
-    a card of its own here (seat picker, run speed, times said, time, the
-    voice switch) and Run release on it was a second press after the door,
-    so the setup was asked twice: once on the dashboard's Release panel,
-    which already carries Pace and Times said (stRelPanel, ui/storyui.js),
-    and again here. A run that can begin now begins on the door's own press.
-    Pace and times said are what RUN already holds, the panel's or the last
-    run's, a hundred and pace one when nothing has set them. The voice and
-    tone switches were never only here: relSws draws them on the welcome,
-    the opening and the list. End on the welcome is the old Cancel, and it
-    says the same thing: nothing released, nothing charged.
-
-    The card below stays for the two runs that cannot begin, a plan with
-    nothing in it (the empty card, Rerun these) and a worked example (the
-    reading and Close), because those are refusals and not a setup.
-
-    The double tap guard in relBegin is not asked here. It was written for
-    #relgo, a button a commit could move under a finger, and #relgo is gone;
-    the one door a commit moves, #strun, keeps its own guard (ui/storyui.js).
-    Asked here it closed every release a caller opened inside a hundred
-    milliseconds of a commit, which tests/onboarding2.js caught on its first
-    run: the story committed, the release planned, and nothing opened.
-
-    A SHORTER RUN STILL SAYS SO (relShortSay, ruled 17 October). It was a
-    line under the count on this card, before Run. There is no before now,
-    so the welcome carries it, the first screen of the run and the one
-    before any line is said, and the list never does. It is read here,
-    once, off the plan the run was given, because a rerun or a later pick
-    changes what relShortSay would answer. Not through status: measured at
-    1600 and at 390 the message dock sits under the welcome's Skip, Pause
-    and End, so the line was drawn and could not be read. */
- RUN.shortSay='';
- if(!showOnly()&&(RUN.plan||[]).length){
-  RUN.shortSay=relShortSay();
-  relBegin(true);
-  return;}
- relRender();}
+ RUN.open=true; relRender();}
 
 /* ============================================================
    ONE STEP OF THE SCRIPT, read off where the run is. Nothing is
@@ -59478,16 +58973,8 @@ function relCss(){
      the room too. Only the setup's: on the running screen the room comes out
      of the readings, which tests/release-screen.js holds above the controls
      at 1600 by 1000, so the run's foot is left as it was and named in the
-     review of this change rather than moved here.
-     AND THE WELCOME'S AND THE OPENING'S, 26 October. With the setup cut
-     (NO SECOND SETUP PAGE, relPick) the welcome is the first screen every
-     door lands on, and measured on a guest at 1600 and at 390 its Skip,
-     Pause and End sat wholly under the storage line, so the one way out of
-     a release opened by mistake was covered. The run's foot is still left
-     as it was, for the reason above. */
-  'html.keep-on .rel .rel-card[data-ph="setup"] .rel-foot.rel-act,'
-   +'html.keep-on .rel .rel-card[data-ph="welcome"] .rel-foot.rel-act,'
-   +'html.keep-on .rel .rel-card[data-ph="opening"] .rel-foot.rel-act{padding-bottom:calc(var(--keep-h) + 4px)}',
+     review of this change rather than moved here. */
+  'html.keep-on .rel .rel-card[data-ph="setup"] .rel-foot.rel-act{padding-bottom:calc(var(--keep-h) + 4px)}',
   '.rel-foot.rel-act{flex:none;display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;margin:0;',
   ' padding:12px 24px calc(20px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--bg) 62%,transparent)}',
   '.rel-stage{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:min(52vh,500px)}',
@@ -60136,40 +59623,33 @@ function relMarksNow(full){
    own released and recharged counts. On a phone the two panels sit side by
    side under the list, still left and right.
    ============================================================ */
-/* SET UP IS OFF THE RAIL, ruled 25 October with the step it named (NO
-   SECOND SETUP PAGE, relPick). A rail of five that opens on its second dot
-   would tell a person they skipped something. The card a run that cannot
-   begin still draws is not a step of a run, so it answers minus one and
-   draws no rail at all (relTop). */
-var REL_STEPS=['Settle','Release','Rest','Results'];
+var REL_STEPS=['Set up','Settle','Release','Rest','Results'];
 function relStepNow(){
- if(RUN.phase==='welcome'||RUN.phase==='opening')return 0;
- if(RUN.phase==='run')return 1;
- if(RUN.phase==='done')return relResting()?2:3;
- return -1;}
+ if(RUN.phase==='welcome'||RUN.phase==='opening')return 1;
+ if(RUN.phase==='run')return 2;
+ if(RUN.phase==='done')return relResting()?3:4;
+ return 0;}
 /* how far along the rail the fill reaches: whole steps behind, and inside the
    list the share of the plan said, so the line moves while the list runs */
 function relRailP(){
  var k=relStepNow(), w=0;
- if(k===1){var n=(RUN.plan||[]).length*RUN.dose; w=n?(RUN.idx*RUN.dose+RUN.pass)/n:0;}
- if(k===2)w=1-relSettleLeft()/REL_SETTLE_S;
+ if(k===2){var n=(RUN.plan||[]).length*RUN.dose; w=n?(RUN.idx*RUN.dose+RUN.pass)/n:0;}
+ if(k===3)w=1-relSettleLeft()/REL_SETTLE_S;
  return Math.max(0,Math.min(1,(k+w)/(REL_STEPS.length-1)));}
 function relTop(right){
  var k=relStepNow();
  return '<div class="rel-top" id="reltop">'
   +'<span class="rel-word">Release</span>'
-  +(k<0?'<span class="rel-rail" aria-hidden="true"></span>'
-   :'<div class="rel-rail" role="img" aria-label="Step '+(k+1)+' of '+REL_STEPS.length+', '+REL_STEPS[k]+'">'
+  +'<div class="rel-rail" role="img" aria-label="Step '+(k+1)+' of '+REL_STEPS.length+', '+REL_STEPS[k]+'">'
   +'<span class="rel-trk"><i class="rel-fill" style="--p:'+relRailP().toFixed(3)+'"></i>'
   +REL_STEPS.map(function(_,i){return '<b class="rel-dot'+(i<k?' past':'')+(i===k?' on':'')+'"></b>';}).join('')+'</span>'
-  +'<span class="rel-stepw">'+esc(REL_STEPS[k])+'</span></div>')
+  +'<span class="rel-stepw">'+esc(REL_STEPS[k])+'</span></div>'
   +'<span class="rel-topr">'+(right||'')+'</span></div>';}
 /* the rail moved in place on the list, so the fill glides on the context
    duration rather than being rebuilt at its new length every line */
 function relTopSync(){
  var t=document.getElementById('reltop'); if(!t)return;
  var k=relStepNow(), f=t.querySelector('.rel-fill'), w=t.querySelector('.rel-stepw'), r=t.querySelector('.rel-rail');
- if(k<0)return;
  if(f)f.style.setProperty('--p',relRailP().toFixed(3));
  [].slice.call(t.querySelectorAll('.rel-dot')).forEach(function(d,i){
   d.classList.toggle('past',i<k); d.classList.toggle('on',i===k);});
@@ -60463,15 +59943,6 @@ function relRender(){
     skip it into the list. Nothing has been released at this point, so End
     here closes without committing anything. */
  var openFoot='<button class="btn" id="relskip">Skip the opening</button>'+relPauseEnd();
- /* THE CROSS MOVED WITH THE FIRST SCREEN, 26 October. Ruled 2 October: "when
-    I click on a protocol, if I don't want to run it, give me the X so I can
-    have the option of canceling." It stood on the setup, and the setup is
-    cut (NO SECOND SETUP PAGE, relPick), so the welcome is now the screen a
-    click on a protocol lands on. Nothing has been said, released or charged
-    on the welcome or the opening, so it is the same close, relCancel, and it
-    says the same thing. The list has none: End is the way off it, and End
-    there charges what was reached. */
- var openX='<button type="button" class="rel-x" id="relx" aria-label="Cancel">'+relIc('x')+'</button>';
  if(RUN.phase==='welcome'){
   /* HIS VOICE'S SLOT. The line is set at the size .rel-speak sets and does not
      carry that class, on purpose: .rel-speak and .rel-line mean "the line the
@@ -60480,7 +59951,7 @@ function relRender(){
      note says the voice starts at the list, and only while the voice is on,
      because with it off that sentence is not true. */
   var wl=relWelcome();
-  out=relShell({ph:'welcome',col:col0,foot:openFoot,right:openX,
+  out=relShell({ph:'welcome',col:col0,foot:openFoot,
    body:'<div class="rel-stage"><div class="pm-eye" aria-live="polite">Release, opening</div>'
     +'<div class="rel-human">'+esc(st.text)+'</div>'
     +'<div class="rel-dots">'+wl.map(function(_,i){return '<i class="'+(i<=RUN.line?'on':'')+'"></i>';}).join('')+'</div>'
@@ -60492,7 +59963,6 @@ function relRender(){
        sentence that is true of this build: with the voice on, nothing speaks
        until the list, and the voice starts there. */
     +(RUN.line===0&&relVoiceOn()?'<div class="rel-sub">The app voice starts with the list.</div>':'')
-    +(RUN.shortSay?'<div class="rel-note rel-cost" id="relcost">'+esc(RUN.shortSay)+'</div>':'')
     +relClock()+'</div>'+relSws(relNow().n)});
  } else if(RUN.phase==='opening'){
   /* "Release and reframe" was the old name for the mechanic, two words where
@@ -60502,7 +59972,7 @@ function relRender(){
      times": the opening is the instruction to repeat it, so it stands above
      the opening line and stays where it is for the whole list. */
   var pr0=relPrompt(relNow());
-  out=relShell({ph:'opening',col:col0,foot:openFoot,right:openX,
+  out=relShell({ph:'opening',col:col0,foot:openFoot,
    pre:'<div class="rel-pr in" id="relpr" data-k="'+esc(pr0.half)+'"><span>'+esc(pr0.half)+'</span><b>'+esc(pr0.text)+'</b></div>',
    body:'<div class="rel-stage"><div class="pm-eye" aria-live="polite">Release, opening</div>'
     +'<div class="rel-speak">'+esc(st.text)+'</div>'+relClock()+'</div>'+relSws(relNow().n)});
@@ -60638,10 +60108,12 @@ function relRender(){
    +'<button type="button" data-relgrp="story" aria-pressed="'+(RUN.grp!=='seat')+'">Story</button>'
    +'<button type="button" data-relgrp="seat" aria-pressed="'+(RUN.grp==='seat')+'">Seat</button></span></div>'
    +relSetupCar(spent);
-  /* A SHORTER RUN SAYS SO, 17 October, and it is said in relPick now, as the
-     run begins: a run that can begin no longer draws this card at all (NO
-     SECOND SETUP PAGE, relPick), so a line here would be on a card nobody
-     who is short is ever shown. */
+  /* A SHORTER RUN SAYS SO, IN ONE LINE, BEFORE RUN AND NEVER AFTER, 17
+     October. A short allowance cut the run without a sentence. It sits under
+     the count it qualifies, because at the foot of the fields it fell below
+     the first screen at both widths and Run release was pressed over it. */
+  var cost=(!spent&&!showOnly())?relShortSay():'';
+  if(cost)body+='<div class="rel-note rel-cost" id="relcost">'+esc(cost)+'</div>';
   /* NEW OR RERUN, 22.K17, as a pressed pair the way the dose picks are. The
      rerun's price is said before Run release is offered, because a person is
      entitled to see what a run costs before they begin it. */
@@ -60662,14 +60134,34 @@ function relRender(){
      stCommit wrote it before any release could be planned. */
   if(spent)body+='<div class="rel-note" id="relempty">'+esc(relEmptySay(again.length>0))+'</div>'
    +(typeof crisisBtn==='function'?'<p class="crx-line">'+crisisBtn()+'</p>':'');
-  /* RUN SPEED, TIMES SAID, TIME, LEFT AND RIGHT AND THE SWITCHES WERE HERE,
-     round LY ("dials that say time, run speed... number of patterns"), and
-     they are cut with the setup step, ruled 25 October: "My release
-     protocol, I set up on that page, so I don't have a second setup page."
-     Pace and times said are on the dashboard's Release panel (stRelPanel,
-     ui/storyui.js), the voice and tone switches on every screen of the run
-     (relSws). This card is drawn only for a run that cannot begin, and none
-     of those set a run that is not going to happen. */
+  /* HOW MANY PATTERNS, RUN SPEED AND TIME, round LY: "dials that say time, run
+     speed... number of patterns". Time is the length this exact plan will
+     run, read off relSecFrom, the same clock the run shows once it starts. */
+  /* NO DOSE ON THE MINI RELEASE. The ruled size is twelve lines said once, and
+     the card before it says each line is said once, so a field offering a
+     hundred is a control that turns the promised run into another one; the
+     Patterns field here was how "4 lines" became four hundred (M28). The pace
+     and the time stay, because the card says the person sets the pace. A
+     release after this one opens with the dose back. */
+  /* the pace, the patterns and the switches set a run, so on a worked example,
+     where no run begins (showOnly, ruled 16 October), they are not offered:
+     the voice switch there was a preference save the example refused */
+  else if(!showOnly())body+='<div class="rel-fields">'
+    +'<label class="rel-field"><span>Run speed</span><input type="number" id="relpace" min="0.5" max="2" step="0.1" value="'
+     +RUN.pace+'"></label>'
+    /* TIMES SAID, 17 October, and not Patterns: this is how many times each
+       line is said, and the allowance's unit is a line opened, which a dose
+       never spends. One word per concept. */
+    +(relMiniNow()?'':'<label class="rel-field"><span>Times said</span><input type="number" id="reldose" min="1" max="'
+     +REL_DOSES[REL_DOSES.length-1]+'" step="1" value="'+RUN.dose+'"></label>')
+    +'<div class="rel-field"><span>Time</span><b class="rel-time">'+relMMSS(relSecFrom(null))+'</b></div>'
+    /* his three, as quick picks on the same number */
+    +(relMiniNow()?'':'<div class="rel-field"><span>Left and right</span><div class="seg" role="group" aria-label="Times each line is said, left and right">'
+     +REL_DOSES.map(function(d){return '<button type="button" data-reldose="'+d+'" aria-pressed="'
+      +(RUN.dose===d)+'">'+d+'</button>';}).join('')+'</div></div>')
+    +'</div>';
+  /* and no switch for a run that cannot begin */
+  if(!spent&&!showOnly())body+=relSws(null);
 
   out=relShell({ph:'setup',col:col0,body:body,
    right:'<button type="button" class="rel-x" id="relx" aria-label="Cancel">'+relIc('x')+'</button>',
@@ -60688,10 +60180,8 @@ function relRender(){
      ?(again.length?'<button class="btn pri" id="relrerun">'+(again===RUN.pick?'Rerun these':'Rerun your heaviest')+'</button>':'')
       +'<button class="btn" id="relcancel">Close</button>'
       +'<button type="button" class="rel-lk" id="relplan">See the tiers</button>'
-     /* a plan that can run never reaches this card (relPick begins it), so
-        the only way here with one is a begin refused on the way in, and
-        relPick closes on that. Close, for the reason the example gives. */
-     :'<button class="btn" id="relcancel">Close</button>'))});}
+     :'<button class="btn" id="relcancel">Cancel</button>'
+      +'<button class="btn pri" id="relgo">Run release</button>'))});}
  var sc0=document.getElementById('relsc'), keepY=(sc0&&sc0.closest('[data-ph]')
   &&sc0.closest('[data-ph]').getAttribute('data-ph')==='done'&&RUN.phase==='done')?sc0.scrollTop:0;
  if(!kept)h.innerHTML=out;
@@ -60708,9 +60198,9 @@ function relRender(){
     screen disagreeing, which this file does not allow. */
  if((b=document.getElementById('relrest')))b.onclick=function(){
   relHush(); RUN.cool=COOLING.length; RUN.settled=true; relTicker(false); relRender();};
- /* BEGIN WAS THE HAND OVER here, #relgo, and the press a browser needs
-    before it will make a sound. The door's own press is that press now: it
-    reaches relBegin in the same handler, through relPick. */
+ /* BEGIN IS THE HAND OVER, and the press a browser needs before it will make
+    a sound. The technical requirement and the ritual are the same press. */
+ if((b=document.getElementById('relgo')))b.onclick=relBegin;
  /* RERUN THESE, the empty card's first press: the rerun plan for what is
     picked, or for the heaviest addresses already opened when nothing picked
     is (relRerunPick), and the run begins on the same press. relMode narrows
@@ -60741,9 +60231,8 @@ function relRender(){
  if((b=document.getElementById('relrit')))b.onclick=function(){var lg=RUN.log.slice();relClose();ritOpen(lg);};
  /* RUN ANOTHER, round QM: "do you want to run another session, we would
     recommend these". The heaviest addresses still held, by the Release
-    button's own rule (relQueueOf). It opened on the setup and waited for Run
-    release; with the setup cut (relPick) this press is the begin, and End on
-    the welcome still leaves with nothing released and nothing charged. */
+    button's own rule (relQueueOf), opened on the setup, so nothing starts
+    and nothing is charged until Run release is pressed again. */
  if((b=document.getElementById('relagain')))b.onclick=function(){
   var ids=relQueueOf(6).map(function(n){return n.i;});
   if(ids.length)relPick(ids,RUN.storyT?{story_t:RUN.storyT}:null);};
@@ -60764,6 +60253,10 @@ function relRender(){
   if(RUN.paused){RUN.pauseAt=Date.now();relHush();relRender();}
   else {if(RUN.pauseAt)RUN.pausedMs+=Date.now()-RUN.pauseAt; RUN.pauseAt=0; relStep();}};
  if((b=document.getElementById('relbook')))b.onclick=relBookToggle;
+ if((b=document.getElementById('reldose')))b.onchange=function(){
+  RUN.dose=Math.max(1,Math.min(REL_DOSES[REL_DOSES.length-1],Math.round(+this.value)||1));relRender();};
+ h.querySelectorAll('[data-reldose]').forEach(function(el){el.onclick=function(){
+  RUN.dose=+this.getAttribute('data-reldose');relRender();};});
  h.querySelectorAll('[data-relmode]').forEach(function(el){el.onclick=function(){
   relMode(this.getAttribute('data-relmode')==='rerun');};});
  /* WHAT CHANGED, one press. relAnswer writes and then redraws the card, so
@@ -60776,6 +60269,8 @@ function relRender(){
  h.querySelectorAll('[data-relfelt]').forEach(function(el){el.onclick=function(){
   var x=RUN.log[+this.getAttribute('data-relfelt')]; if(!x)return;
   x.felt=!x.felt; this.setAttribute('aria-pressed',String(x.felt));};});
+ if((b=document.getElementById('relpace')))b.onchange=function(){
+  RUN.pace=Math.max(0.5,Math.min(2,Math.round((+this.value||1)*10)/10));relRender();};
  /* uiSet is the one writer for the profile's preferences, so this reports
     through statusSaved like the other switches do. A save that fails leaves
     the tone on for this visit and says it will not survive a reload, and both
@@ -68402,7 +67897,7 @@ function runQDrill(q){
      and the whole of resistance, with CQ divided by it. DQ is the total
      shadow on all 112 now, out of 100, and it pulls on expression. */
   h='<div class="pm-eye">Shadow weight</div><div class="ad-nm">DQ '+(r.DQ>=0.5?Math.round(r.DQ)+'%':'\u2013')+'</div>'
-   +'<div class="pm-eye">How it is built</div><p class="ad-p">The weight at all 112 addresses, summed, out of the most they can hold. '
+   +'<div class="pm-eye">How it is built</div><p class="ad-p">The weight at your 108 addresses and 4 field anchors, summed, out of the most they can hold. '
    +'It is the wash pressing in from the edge of the wheel. It leaves coherence alone and pulls on expression, and an address near 10 pulls far harder than one near 2.</p>'
    +'<div class="pm-eye">Where it sits</div><p class="ad-p">'+(r.loaded.length?'<b>'+r.loaded.length+'</b> addresses carry it. The heaviest:':'No address carries it.')+'</p>'
    +'<div class="ad-rows">'+top.map(addrRow).join('')+'</div>';}
@@ -70217,13 +69712,7 @@ function poleBar(sh){
    are pulled verbatim from the approved render,
    lookdev/handoff/builds/dualpole_icon_live_five_state_20261024.html. */
 var NODE_STRIKE={
- /* THE CENTRE DOT IS A PATH AND NOT A CIRCLE, same two arcs a circle is built
-    from, drawn the same, so it reads identically. A <circle> has no path and
-    the addr deck's own mark count reads a row by its svg path (the pair of
-    colour and path is what a person tells two rows apart by, functional.js's
-    "every card wears a mark"), so every address sitting at open read as
-    carrying no mark at all: 11 cards, on the running deck. */
- op:'<circle cx="12" cy="12" r="7"/><path d="M10.1 12A1.9 1.9 0 1 0 13.9 12A1.9 1.9 0 1 0 10.1 12" style="fill:currentColor;stroke:none"/>',
+ op:'<circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="1.9" style="fill:currentColor;stroke:none"/>',
  im:'<circle cx="12" cy="12" r="7"/><path d="M5 12h4"/>',
  mo:'<circle cx="12" cy="12" r="7"/><path d="M5 12h7.5"/>',
  he:'<circle cx="12" cy="12" r="7"/><path d="M5 12h11"/>',
@@ -80505,12 +79994,7 @@ function obMiniHow(){
  return '<p class="ob-p">Each line is said '+(d===1?'once':d+' times')
   +(voice?', out loud by the app voice.':', and nothing reads it out loud.')
   +(m?' After the last line you rest for '+m+(m===1?' minute':' minutes')+', and a ring counts them down.':'')
-  /* NOT "YOU SET THE PACE" ANY MORE, 26 October. The pace was a field on the
-     release's own setup step, and that step is cut (NO SECOND SETUP PAGE,
-     ui/release.js relPick): this card hands straight into the run, which
-     carries Pause and End and no pace, so the sentence says what the next
-     screen does. tests/firstrelease.js holds it to that screen. */
-  +' You can pause or stop at any line.</p>';}
+  +' You set the pace and can stop at any line.</p>';}
 /* WHY THERE IS NO RELEASE TO BEGIN, when the story read and the plan is still
    refused. Said once, plainly; the route is the button beside it. */
 function obMiniWhy(pl,yes){
@@ -82274,7 +81758,7 @@ const GLYPH_F='<circle cx="12" cy="9" r="6"/><path d="M12 15v7M8.5 19h7"/>';
    ORIENTATION AND BALANCE ARE ONE MECHANIC, AND ONE BAR. FJ in TASKS.md,
    his words: "Orientation and balance, those two elements need to be designed
    the same way, it's the same mechanic." Each is two shares of one whole.
-   Orientation is positive against negative, leanRead, and the two add to 100.
+   Orientation is benign against malignant, leanRead, and the two add to 100.
    Balance is the outward mean against the inward mean, balance(), and as
    shares of their sum they add to 100 as well.
 
@@ -82463,21 +81947,21 @@ function render(){
      per cent benign for somebody who had answered no law at all. */
   if(r.malig===null){$('pol').innerHTML='<div class="bmnote">Coherence is still filling, '
    +'so there is no split to show.</div>'; return;}
-  $('pol').innerHTML='<div class="bmrow"><span class="bmk">Positive</span>'
+  $('pol').innerHTML='<div class="bmrow"><span class="bmk">Benign</span>'
    +'<span class="bmbar"><i style="width:'+ben.toFixed(0)+'%;background:'+PAL.Heart+'"></i></span>'
    /* fmtPct('lean'), 17 October, percent phase 2: a share of nought is the
       dash and never "0%", the registry's one rule for every figure */
    +'<span class="bmv" style="color:'+PAL.Heart+'">'+fmtPct('lean',ben)+'</span></div>'
-   +'<div class="bmrow"><span class="bmk">Negative</span>'
+   +'<div class="bmrow"><span class="bmk">Malignant</span>'
    +'<span class="bmbar"><i style="width:'+mal.toFixed(0)+'%;background:'+PAL.Root+'"></i></span>'
    +'<span class="bmv" style="color:'+PAL.Root+'">'+fmtPct('lean',mal)+'</span></div>'
    /* This said "building more than it costs", which is the ledger sentence and
       the ledger belongs to the scale, where it is defined against the median.
       A field at CQ 39 read Incoherent in the rail and "building more than it
-      costs" two inches away, because this line was reading the positive split
+      costs" two inches away, because this line was reading the benign split
       and not coherence at all. It says what it actually measures. */
-   +'<div class="bmnote">'+(ben>=mal?'most of what is held is positive'
-     :'most of what is held is negative')+'</div>';})();
+   +'<div class="bmnote">'+(ben>=mal?'most of what is held is benign'
+     :'most of what is held is malignant')+'</div>';})();
  /* The how to block sat permanently under the wheel repeating what the depth
     buttons already say. Ruled out. The text survives as the depth button's own
     tooltip, where it is asked for rather than always on. */
@@ -82509,12 +81993,12 @@ function render(){
   /* the meeting point is the benign share, so a malignant swing moves it the
      other way, and the left pole carries the swing for the pair */
   var spec={read:read, whole:true,
-   L:{nm:'Positive',ic:'halo',c:seatCol('Heart'),v:L.ben||0,sw:sw.sw?function(t){return -sw.sw(t);}:null,fw:sw.fw},
-   R:{nm:'Negative',ic:'fork',c:seatCol('Root'),v:L.mal||0}};
+   L:{nm:'Benign',ic:'halo',c:seatCol('Heart'),v:L.ben||0,sw:sw.sw?function(t){return -sw.sw(t);}:null,fw:sw.fw},
+   R:{nm:'Malignant',ic:'fork',c:seatCol('Root'),v:L.mal||0}};
   var n=Math.round(L.cues||0);
   var lean=r.unread?'Nothing read yet, so there is no lean to show.'
    :!read?'Coherence is still filling, so there is no lean to show.'
-   :(L.ben>L.mal?'It leans positive':L.mal>L.ben?'It leans negative':'It is even')
+   :(L.ben>L.mal?'It leans benign':L.mal>L.ben?'It leans malignant':'It is even')
     +', and the notches mark where the two meet. '
     +(n?'It is read from '+(r.malig!==null&&r.malig!==undefined?'your coherence and ':'')+n+' cue'+(n===1?'':'s')+' in your stories.'
       :'No story yet, so it is read from your coherence alone.')
@@ -82824,8 +82308,38 @@ function render(){
     name. Hover shows the meaning in the product's own tooltip. Press takes
     the person to the knowledge page with that entry already open, so a word
     they did not know is two gestures from being a word they do. */
+/* THE SIX GATES, A NAMED PLACE ON THE FIELD'S OWN LEFT RAIL. Round of 28
+   October, his words after finding them only as small marks on the wheel:
+   "those would be great to expose, wouldn't they, maybe they go on our
+   left-hand menu." Ported, not rebuilt: gatesBlock(null) (ui/drills.js) is
+   the same six-row reading already shown inside the gate drill, right
+   action against wrong action, and its rows already wire themselves to
+   that drill through the delegated .gate-r[data-gate] click below, so
+   nothing new needs wiring for a press here to open it.
+
+   THE AVOIDANCE LINE IS NEVER SHOWN ALONE. sniffGates (engine/sniff.js)
+   carries its own structural rule for this exact number: it is read only
+   together with the two upstream gates it was built from. stLawWins
+   (ui/storyui.js) already finds the most recent entry with a real gate
+   reading for the Journal's own Laws accordion; this calls the same
+   function rather than re-reading the entries a second way, so the two
+   surfaces can never disagree about which entry's reading is current. */
+function renderGates(){
+ var h=document.getElementById('gaterows'); if(!h)return;
+ h.innerHTML=gatesBlock(null);
+ var g=document.getElementById('gateavoid'); if(!g)return;
+ if(typeof stLawWins==='function')stLawWins();
+ var gate=(typeof STLW!=='undefined'&&STLW&&STLW.gate)||null;
+ if(gate&&gate.intentional){
+  g.innerHTML='<div class="pm-eye" style="margin-top:14px">Avoidance, your last entry</div>'
+   +'<p class="ad-p">Avoidance reads <b>'+gate.intentional.avoidance+' per cent</b>, built from the two readings below it and never shown without them.</p>'
+   +'<p class="ad-p">Awareness against ignorance: <b>'+Math.round(gate.aware*100)+' per cent</b> awareness.</p>'
+   +'<p class="ad-p">Detachment against attachment: <b>'+Math.round(gate.detached*100)+' per cent</b> detachment.</p>';
+ } else {
+  g.innerHTML='<p class="ad-p" style="margin-top:10px">Nothing read yet. Write a line in the Journal and the gates fill in from it.</p>';
+ }}
  wireKbJump();
- renderAcc(r); renderSpirit(); renderRootSum(); renderPol2(r); syncMx();
+ renderAcc(r); renderSpirit(); renderRootSum(); renderPol2(r); syncMx(); renderGates();
  /* the trace graph's block in the Field's side column, ui/loopread.js */
  if(typeof loopPaint==='function')loopPaint(r);
  /* the dock's circles move into their values rather than snapping, and only
@@ -83205,5 +82719,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005485263"></div>
+<div id="eof" hidden data-len="005453538"></div>
 </body></html>

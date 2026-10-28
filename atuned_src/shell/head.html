@@ -8,7 +8,7 @@
 <html lang="en" data-build="BUILD_STAMP"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
-<meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
+<meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
 <!-- ============================================================
      THE TYPEFACE, CARRIED RATHER THAN FETCHED.
 
@@ -4802,6 +4802,21 @@ body.punch .ip.kid{background:color-mix(in srgb,var(--c) 68%,var(--panel-2))}
 .ad-r span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
 .ad-r em{font-style:normal;font-size:12px;color:var(--heart)}
 .ad-r b{font-weight:500;color:var(--gold);font-family:var(--num);font-variant-numeric:tabular-nums}
+/* THE GATE ROWS' OWN VALUE, reached for the first time outside the gate
+   drill when the Field's own Laws of Action rail section was added, 28
+   October. gatesBlock (ui/drills.js) was already shipped and already
+   correct, drawn only inside the drill until then, so the design gate's
+   CSS coverage check had never walked a tab where .ad-v or .gate-r stood
+   reachable in the document. .ad-v held a plain .ad-r span's own colour
+   with nothing of its own; it is the percent and reads better in the same
+   gold, tabular hand every other reading in this product already uses. */
+.ad-v{color:var(--gold);font-family:var(--num);font-variant-numeric:tabular-nums}
+/* .gate-r NAMES THE ROW FOR THE DELEGATED CLICK (ui/ui.js, .gate-r[data-gate]
+   opens runGatesDrill) and carries no rule of its own: .ad-r's is the whole
+   of its look, on purpose, so a gate row and every other action-drill row
+   stay one visual family. Named here so the design gate's coverage check,
+   which reads a class only off a selector that names it, finds it. */
+.gate-r{}
 .ad-q{font-size:14px;line-height:1.7;color:var(--dim);font-style:italic;
  border-left:3px solid var(--gold);padding-left:12px;margin:8px 0;font-weight:300}
 /* THE SABOTEUR CARD'S QUIET END, round SB. Connected is the engine's own map

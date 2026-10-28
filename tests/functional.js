@@ -4248,7 +4248,7 @@ if(tiers.closed4){
 }
 ok(tiers.called&&tiers.called.what==='checkout'&&tiers.called.tier==='two',
  'a press goes through planOpen to the same seam as Move to, with its own tier: '+JSON.stringify(tiers.called));
-ok(/On every tier, free included/.test(tiers.same)&&/your 112 addresses/i.test(tiers.same)&&/rerunning anything already open/i.test(tiers.same),
+ok(/On every tier, free included/.test(tiers.same)&&/your 108 somatic addresses and 4 field anchors/i.test(tiers.same)&&/rerunning anything already open/i.test(tiers.same),
  'what every tier gets is said once, across the top, from PLAN_ALWAYS');
 ok(!/the whole reading/i.test(tiers.same+tiers.text),
  'and the whole reading is not on every tier any more, so no row says it');

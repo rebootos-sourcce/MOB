@@ -6069,9 +6069,23 @@ var PCT_KIND={
  /* compute.js:390 */
  integrity: {lo:0, hi:10, src:'engine/compute.js', find:'- JQ*0.42,0,10);',
              say:'integrity, the laws lifted by the poles and pulled down by overshoot'},
- /* compute.js:391 */
- intention: {lo:0, hi:10, src:'engine/compute.js', find:'- JQ*0.30,0,10);',
-             say:'intention, the same laws read seat by seat'},
+ /* compute.js:391. RENAMED FROM intention, 28 October: the word intention is
+    the ruled reading below now, what a person said against what they did,
+    and this kept it as well, which is the exact defect one word per concept
+    exists to stop. This is a law mean read seat by seat, nothing a person
+    committed to or carried out. */
+ lawseat:   {lo:0, hi:10, src:'engine/compute.js', find:'- JQ*0.30,0,10);',
+             say:'the same laws read seat by seat, up the body'},
+ /* ladder.js, intentionRead. Ruled 25 September, "you either did the thing
+    you said you were gonna do or you didn't", said against done over the
+    last seven days, no charge read into it. Wired in 28 October: the
+    function existed, tested, and had never been put on a screen. Profile
+    dependent, so it is not in tests/engine.js's roster scan the way a pure
+    compute() figure is, the same exemption accuracy already carries; its
+    own coverage is tests/engine.js's and tests/daily.js's intentionRead
+    checks, and the fmtPct example below. */
+ intention: {lo:0, hi:100, src:'engine/ladder.js', find:'pct:said?100*did/said:null',
+             say:'what a person said they would do against what they did, the last seven days'},
  /* intake.js:55, the widest gap between a law's three answers, each 0 to 10
     at the boundary (schema.js:1069) */
  spread:    {lo:0, hi:10, src:'engine/intake.js', find:'var spread=Math.max.apply(null,v)-Math.min.apply(null,v);',
@@ -9990,7 +10004,7 @@ function leadSees(what){ return LEAD_SEES.indexOf(what)>=0; }
    archetypes, laws, gates and shadow", with the laws and the gates said by the
    names the Field's bar prints for them since 22 October, the Laws of Moral
    Integrity and the Laws of Action. */
-const PLAN_ALWAYS=['your 112 addresses','the domains','the archetypes','the Laws of Moral Integrity',
+const PLAN_ALWAYS=['your 108 somatic addresses and 4 field anchors','the domains','the archetypes','the Laws of Moral Integrity',
  'the Laws of Action','shadow','the pain map','every tool','the journal',
  'rerunning anything already open'];
 /* ANNUAL. TWO MONTHS FREE IS OUT, on the owner's ruling.

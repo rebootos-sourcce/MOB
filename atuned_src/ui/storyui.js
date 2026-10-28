@@ -2561,7 +2561,14 @@ function stLawPaint(){
   else o+=w.top.map(stLawRow).join('');});
  var g=STLW.gate;
  if(g&&g.intentional){
-  o+=stAnaHead('Intention','your last entry');
+  /* RENAMED FROM INTENTION, 28 October. This heading named the six gates'
+     avoidance cascade (engine/sniff.js sniffGates, engine/verp.js VERP)
+     "Intention" before the ruled Intention, said against done, had a
+     screen of its own. Two different readings sharing one word, the exact
+     defect one word per concept exists to stop. This stays named for what
+     it is: right action read from this entry's own words. The real
+     Intention is on the Instruments row (ui/ui.js). */
+  o+=stAnaHead('Right action','your last entry');
   /* NEVER THE AVOIDANCE NUMBER ALONE, the spec's own rule: it reads as a
      character flaw without the two readings it was built from beside it. */
   o+='<p style="margin:6px 0 2px">Avoidance reads <b>'+g.intentional.avoidance+' per cent</b> in your last entry, built '
