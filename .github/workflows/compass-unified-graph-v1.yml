@@ -25,7 +25,11 @@ jobs:
         run: node docs/data/compass/integration/v2/validate_shadow_law_layer_evidence_v3.cjs
       - name: Verify baseline Compass foundation graph
         run: node docs/data/compass/integration/v1/validate_cross_layer.cjs
-      - name: Report gameboard completion gaps (not a completed product gate)
+      - name: Verify all 26 scene release and ritual routes against actual existing engine functions
+        run: node docs/data/compass/gameboard/v2/validate_gameboard_existing_routes_v2.cjs
+      - name: Validate gameboard narrative and dynamic routing contract
+        run: node docs/data/compass/gameboard/v1/validate_gameboard.cjs
+      - name: Report static instance IDs and outstanding acceptance gates
         run: |
           node - <<'NODE'
           const g = require('./docs/data/compass/gameboard/v1/GAMEBOARD_MAP_V1.json');
