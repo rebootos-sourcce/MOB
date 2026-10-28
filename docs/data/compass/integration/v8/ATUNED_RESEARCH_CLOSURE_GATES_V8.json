@@ -187,5 +187,14 @@
     "sourceGovLabelIHyper": 8,
     "runtimePromotions": 0,
     "ownerEightListUnresolved": true
+  },
+  "sourceMembershipOverlay": {
+    "path": "docs/data/compass/integration/v8/ATUNED_READONLY_SOURCE_CANON_MEMBERSHIP_OVERLAY_V8.json",
+    "overlayNodes": 65,
+    "overlayEdges": 88,
+    "approvedRuntimeEdges": 0,
+    "mergedIntoUnifiedV4": false,
+    "syntheticUnionNodesIfApproved": 469,
+    "syntheticUnionEdgesIfApproved": 963
   }
 }

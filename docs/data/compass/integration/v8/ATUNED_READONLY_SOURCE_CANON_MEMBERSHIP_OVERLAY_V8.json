@@ -1,0 +1,1570 @@
+{
+  "schema": "ATUNED_READONLY_SOURCE_CANON_MEMBERSHIP_OVERLAY_V8",
+  "date": "2026-10-28",
+  "authority": "CROSS_BRANCH_SOURCE_EVIDENCE_NONRUNTIME",
+  "source": {
+    "repo": "rebootos-sourcce/MOB",
+    "branch": "lookdev/canon-performer-hypercomplex-20261027",
+    "path": "vendor/reboot-os/canon.json",
+    "blobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+    "version": "1.0.1"
+  },
+  "scope": "Strict source-name membership overlay only. Separate from 404-node/875-edge V4 Compass graph; no automatic mapping to the 108 physical nodes, 33 engine Saboteurs, 21 laws or CQ.",
+  "baseGraph": {
+    "nodes": 404,
+    "typedEdges": 875,
+    "merged": false
+  },
+  "overlayCounts": {
+    "nodes": 65,
+    "edges": 88,
+    "saboteurNodes": 33,
+    "complexNodes": 23,
+    "hyperComplexNodes": 9,
+    "complexToSaboteurEdges": 64,
+    "hyperToComplexEdges": 24,
+    "dangling": 0,
+    "duplicateIds": 0,
+    "approvedRuntimeEdges": 0
+  },
+  "policy": {
+    "notRuntime": true,
+    "notScoring": true,
+    "notOwnerApprovedCrossRegistry": true,
+    "notAPersonDiagnosis": true,
+    "needsSemanticAdjudication": true
+  },
+  "nodes": [
+    {
+      "id": "canon-saboteur:avoider",
+      "label": "Avoider",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:controller",
+      "label": "Controller",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:victim",
+      "label": "Victim",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:perfectionist",
+      "label": "Perfectionist",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:pleaser",
+      "label": "Pleaser",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:hyper-achiever",
+      "label": "Hyper-Achiever",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:hyper-rational",
+      "label": "Hyper-Rational",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:hyper-vigilant",
+      "label": "Hyper-Vigilant",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:restless",
+      "label": "Restless",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:stickler",
+      "label": "Stickler",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:judge",
+      "label": "Judge",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:deflector",
+      "label": "Deflector",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:dramatizer",
+      "label": "Dramatizer",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:worrywart",
+      "label": "Worrywart",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:loner",
+      "label": "Loner",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:people-pleaser",
+      "label": "People-Pleaser",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:skeptic",
+      "label": "Skeptic",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:dreamer",
+      "label": "Dreamer",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:procrastinator",
+      "label": "Procrastinator",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:imposter",
+      "label": "Imposter",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:aggressor",
+      "label": "Aggressor",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:martyr",
+      "label": "Martyr",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:cynic",
+      "label": "Cynic",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:manipulator",
+      "label": "Manipulator",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:overthinker",
+      "label": "Overthinker",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:escapist",
+      "label": "Escapist",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:nihilist",
+      "label": "Nihilist",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:innocent",
+      "label": "Innocent",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:pessimist",
+      "label": "Pessimist",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:catastrophizer",
+      "label": "Catastrophizer",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:enabler",
+      "label": "Enabler",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:control-freak",
+      "label": "Control Freak",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-saboteur:negotiator",
+      "label": "Negotiator",
+      "kind": "source_canon_saboteur",
+      "sourceStatus": "CANON_SOURCE_RECORD_VERSIONED",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-complex:dominance-enforcement",
+      "label": "Dominance Enforcement",
+      "kind": "source_canon_complex",
+      "sourceTag": "R",
+      "sourceIndex": 0,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-complex:blame-displacement",
+      "label": "Blame Displacement",
+      "kind": "source_canon_complex",
+      "sourceTag": "R",
+      "sourceIndex": 1,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-complex:superiority-persecution",
+      "label": "Superiority-Persecution",
+      "kind": "source_canon_complex",
+      "sourceTag": "R",
+      "sourceIndex": 2,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-complex:narcissistic",
+      "label": "Narcissistic",
+      "kind": "source_canon_complex",
+      "sourceTag": "R",
+      "sourceIndex": 3,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-complex:machiavellian-tactics",
+      "label": "Machiavellian Tactics",
+      "kind": "source_canon_complex",
+      "sourceTag": "R",
+      "sourceIndex": 4,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-complex:antisocial",
+      "label": "Antisocial",
+      "kind": "source_canon_complex",
+      "sourceTag": "R",
+      "sourceIndex": 5,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-complex:oscillation",
+      "label": "Oscillation",
+      "kind": "source_canon_complex",
+      "sourceTag": "R",
+      "sourceIndex": 6,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-complex:abandonment-reactivity",
+      "label": "Abandonment Reactivity",
+      "kind": "source_canon_complex",
+      "sourceTag": "R",
+      "sourceIndex": 7,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-complex:rigidity",
+      "label": "Rigidity",
+      "kind": "source_canon_complex",
+      "sourceTag": "R",
+      "sourceIndex": 8,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-complex:attention-seeking",
+      "label": "Attention Seeking",
+      "kind": "source_canon_complex",
+      "sourceTag": "R",
+      "sourceIndex": 9,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-complex:threat-scanning",
+      "label": "Threat Scanning",
+      "kind": "source_canon_complex",
+      "sourceTag": "R",
+      "sourceIndex": 10,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-complex:collapse",
+      "label": "Collapse",
+      "kind": "source_canon_complex",
+      "sourceTag": "R",
+      "sourceIndex": 11,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-complex:scatter",
+      "label": "Scatter",
+      "kind": "source_canon_complex",
+      "sourceTag": "R",
+      "sourceIndex": 12,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-complex:anticipatory-freeze",
+      "label": "Anticipatory Freeze",
+      "kind": "source_canon_complex",
+      "sourceTag": "I",
+      "sourceIndex": 13,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-complex:catastrophic-bracing",
+      "label": "Catastrophic Bracing",
+      "kind": "source_canon_complex",
+      "sourceTag": "I",
+      "sourceIndex": 14,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-complex:meaning-withdrawal",
+      "label": "Meaning Withdrawal",
+      "kind": "source_canon_complex",
+      "sourceTag": "I",
+      "sourceIndex": 15,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-complex:retreat",
+      "label": "Retreat",
+      "kind": "source_canon_complex",
+      "sourceTag": "I",
+      "sourceIndex": 16,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-complex:cold-analysis",
+      "label": "Cold Analysis",
+      "kind": "source_canon_complex",
+      "sourceTag": "I",
+      "sourceIndex": 17,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-complex:self-erasure",
+      "label": "Self-Erasure",
+      "kind": "source_canon_complex",
+      "sourceTag": "I",
+      "sourceIndex": 18,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-complex:sacrificial-ledger",
+      "label": "Sacrificial Ledger",
+      "kind": "source_canon_complex",
+      "sourceTag": "I",
+      "sourceIndex": 19,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-complex:exploitation",
+      "label": "Exploitation",
+      "kind": "source_canon_complex",
+      "sourceTag": "I",
+      "sourceIndex": 20,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-complex:standard-enforcement",
+      "label": "Standard Enforcement",
+      "kind": "source_canon_complex",
+      "sourceTag": "I",
+      "sourceIndex": 21,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-complex:imposture",
+      "label": "Imposture",
+      "kind": "source_canon_complex",
+      "sourceTag": "I",
+      "sourceIndex": 22,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-hyper:malignant-narcissism",
+      "label": "Malignant Narcissism",
+      "kind": "source_canon_hyper_complex",
+      "sourceTag": "R",
+      "sourceIndex": 0,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-hyper:sociopathy",
+      "label": "Sociopathy",
+      "kind": "source_canon_hyper_complex",
+      "sourceTag": "I",
+      "sourceIndex": 1,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-hyper:psychopathy",
+      "label": "Psychopathy",
+      "kind": "source_canon_hyper_complex",
+      "sourceTag": "I",
+      "sourceIndex": 2,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-hyper:machiavellianism",
+      "label": "Machiavellianism",
+      "kind": "source_canon_hyper_complex",
+      "sourceTag": "I",
+      "sourceIndex": 3,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-hyper:megalomania",
+      "label": "Megalomania",
+      "kind": "source_canon_hyper_complex",
+      "sourceTag": "I",
+      "sourceIndex": 4,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-hyper:malignant-grandiosity",
+      "label": "Malignant Grandiosity",
+      "kind": "source_canon_hyper_complex",
+      "sourceTag": "I",
+      "sourceIndex": 5,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-hyper:dark-triad",
+      "label": "Dark Triad",
+      "kind": "source_canon_hyper_complex",
+      "sourceTag": "I",
+      "sourceIndex": 6,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-hyper:persecutory-collapse",
+      "label": "Persecutory Collapse",
+      "kind": "source_canon_hyper_complex",
+      "sourceTag": "I",
+      "sourceIndex": 7,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    },
+    {
+      "id": "canon-hyper:the-performer",
+      "label": "The Performer",
+      "kind": "source_canon_hyper_complex",
+      "sourceTag": "I",
+      "sourceIndex": 8,
+      "sourceStatus": "SOURCE_LABEL_R_OR_I_NOT_CROSS_REGISTRY_APPROVAL",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true
+    }
+  ],
+  "edges": [
+    {
+      "from": "canon-complex:dominance-enforcement",
+      "to": "canon-saboteur:controller",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:dominance-enforcement",
+      "to": "canon-saboteur:judge",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:blame-displacement",
+      "to": "canon-saboteur:aggressor",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:blame-displacement",
+      "to": "canon-saboteur:deflector",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:superiority-persecution",
+      "to": "canon-saboteur:hyper-achiever",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:superiority-persecution",
+      "to": "canon-saboteur:victim",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:narcissistic",
+      "to": "canon-saboteur:controller",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:narcissistic",
+      "to": "canon-saboteur:hyper-achiever",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:narcissistic",
+      "to": "canon-saboteur:judge",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:machiavellian-tactics",
+      "to": "canon-saboteur:manipulator",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:machiavellian-tactics",
+      "to": "canon-saboteur:skeptic",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:antisocial",
+      "to": "canon-saboteur:aggressor",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:antisocial",
+      "to": "canon-saboteur:deflector",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:oscillation",
+      "to": "canon-saboteur:dramatizer",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:oscillation",
+      "to": "canon-saboteur:restless",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:oscillation",
+      "to": "canon-saboteur:victim",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:abandonment-reactivity",
+      "to": "canon-saboteur:victim",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:abandonment-reactivity",
+      "to": "canon-saboteur:people-pleaser",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:abandonment-reactivity",
+      "to": "canon-saboteur:imposter",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:rigidity",
+      "to": "canon-saboteur:stickler",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:rigidity",
+      "to": "canon-saboteur:perfectionist",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:rigidity",
+      "to": "canon-saboteur:hyper-vigilant",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:attention-seeking",
+      "to": "canon-saboteur:dramatizer",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:attention-seeking",
+      "to": "canon-saboteur:people-pleaser",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:attention-seeking",
+      "to": "canon-saboteur:dreamer",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:threat-scanning",
+      "to": "canon-saboteur:worrywart",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:threat-scanning",
+      "to": "canon-saboteur:hyper-vigilant",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:threat-scanning",
+      "to": "canon-saboteur:avoider",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:collapse",
+      "to": "canon-saboteur:victim",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:collapse",
+      "to": "canon-saboteur:pessimist",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:collapse",
+      "to": "canon-saboteur:loner",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:scatter",
+      "to": "canon-saboteur:restless",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:scatter",
+      "to": "canon-saboteur:dreamer",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:scatter",
+      "to": "canon-saboteur:imposter",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:anticipatory-freeze",
+      "to": "canon-saboteur:overthinker",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:anticipatory-freeze",
+      "to": "canon-saboteur:procrastinator",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:anticipatory-freeze",
+      "to": "canon-saboteur:avoider",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:catastrophic-bracing",
+      "to": "canon-saboteur:catastrophizer",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:catastrophic-bracing",
+      "to": "canon-saboteur:worrywart",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:catastrophic-bracing",
+      "to": "canon-saboteur:hyper-vigilant",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:meaning-withdrawal",
+      "to": "canon-saboteur:nihilist",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:meaning-withdrawal",
+      "to": "canon-saboteur:cynic",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:meaning-withdrawal",
+      "to": "canon-saboteur:pessimist",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:retreat",
+      "to": "canon-saboteur:loner",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:retreat",
+      "to": "canon-saboteur:escapist",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:retreat",
+      "to": "canon-saboteur:dreamer",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:cold-analysis",
+      "to": "canon-saboteur:hyper-rational",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:cold-analysis",
+      "to": "canon-saboteur:skeptic",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:cold-analysis",
+      "to": "canon-saboteur:judge",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:self-erasure",
+      "to": "canon-saboteur:pleaser",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:self-erasure",
+      "to": "canon-saboteur:people-pleaser",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:self-erasure",
+      "to": "canon-saboteur:enabler",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:sacrificial-ledger",
+      "to": "canon-saboteur:martyr",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:sacrificial-ledger",
+      "to": "canon-saboteur:victim",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:sacrificial-ledger",
+      "to": "canon-saboteur:enabler",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:exploitation",
+      "to": "canon-saboteur:manipulator",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:exploitation",
+      "to": "canon-saboteur:aggressor",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:exploitation",
+      "to": "canon-saboteur:deflector",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:standard-enforcement",
+      "to": "canon-saboteur:perfectionist",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:standard-enforcement",
+      "to": "canon-saboteur:stickler",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:standard-enforcement",
+      "to": "canon-saboteur:judge",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:imposture",
+      "to": "canon-saboteur:imposter",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:imposture",
+      "to": "canon-saboteur:deflector",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-complex:imposture",
+      "to": "canon-saboteur:overthinker",
+      "type": "source_canon_complex_has_saboteur",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-hyper:malignant-narcissism",
+      "to": "canon-complex:narcissistic",
+      "type": "source_canon_hyper_has_complex",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-hyper:malignant-narcissism",
+      "to": "canon-complex:antisocial",
+      "type": "source_canon_hyper_has_complex",
+      "sourceStatus": "R",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-hyper:sociopathy",
+      "to": "canon-complex:narcissistic",
+      "type": "source_canon_hyper_has_complex",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-hyper:sociopathy",
+      "to": "canon-complex:cold-analysis",
+      "type": "source_canon_hyper_has_complex",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-hyper:psychopathy",
+      "to": "canon-complex:narcissistic",
+      "type": "source_canon_hyper_has_complex",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-hyper:psychopathy",
+      "to": "canon-complex:antisocial",
+      "type": "source_canon_hyper_has_complex",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-hyper:psychopathy",
+      "to": "canon-complex:exploitation",
+      "type": "source_canon_hyper_has_complex",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-hyper:machiavellianism",
+      "to": "canon-complex:machiavellian-tactics",
+      "type": "source_canon_hyper_has_complex",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-hyper:machiavellianism",
+      "to": "canon-complex:dominance-enforcement",
+      "type": "source_canon_hyper_has_complex",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-hyper:megalomania",
+      "to": "canon-complex:narcissistic",
+      "type": "source_canon_hyper_has_complex",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-hyper:megalomania",
+      "to": "canon-complex:dominance-enforcement",
+      "type": "source_canon_hyper_has_complex",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-hyper:megalomania",
+      "to": "canon-complex:superiority-persecution",
+      "type": "source_canon_hyper_has_complex",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-hyper:malignant-grandiosity",
+      "to": "canon-complex:narcissistic",
+      "type": "source_canon_hyper_has_complex",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-hyper:malignant-grandiosity",
+      "to": "canon-complex:superiority-persecution",
+      "type": "source_canon_hyper_has_complex",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-hyper:malignant-grandiosity",
+      "to": "canon-complex:blame-displacement",
+      "type": "source_canon_hyper_has_complex",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-hyper:dark-triad",
+      "to": "canon-complex:narcissistic",
+      "type": "source_canon_hyper_has_complex",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-hyper:dark-triad",
+      "to": "canon-complex:machiavellian-tactics",
+      "type": "source_canon_hyper_has_complex",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-hyper:dark-triad",
+      "to": "canon-complex:antisocial",
+      "type": "source_canon_hyper_has_complex",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-hyper:persecutory-collapse",
+      "to": "canon-complex:collapse",
+      "type": "source_canon_hyper_has_complex",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-hyper:persecutory-collapse",
+      "to": "canon-complex:abandonment-reactivity",
+      "type": "source_canon_hyper_has_complex",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-hyper:persecutory-collapse",
+      "to": "canon-complex:sacrificial-ledger",
+      "type": "source_canon_hyper_has_complex",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-hyper:the-performer",
+      "to": "canon-complex:narcissistic",
+      "type": "source_canon_hyper_has_complex",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-hyper:the-performer",
+      "to": "canon-complex:exploitation",
+      "type": "source_canon_hyper_has_complex",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    },
+    {
+      "from": "canon-hyper:the-performer",
+      "to": "canon-complex:superiority-persecution",
+      "type": "source_canon_hyper_has_complex",
+      "sourceStatus": "I",
+      "sourcePath": "vendor/reboot-os/canon.json",
+      "sourceBlobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "notRuntime": true,
+      "canonCrosswalkApproved": false
+    }
+  ]
+}

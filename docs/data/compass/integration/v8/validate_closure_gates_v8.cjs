@@ -48,6 +48,15 @@ assert(membership.hyperComplexes.every(x=>x.memberComplexNames.every(y=>cnames.h
 assert(membership.hyperComplexes.slice(0,8).every((x,i)=>x.sourceName===baseCanon.registers.hyper_complexes[i][0]),'base hyper member drift');
 assert(membership.hyperComplexes[8].sourceName==='The Performer'&&membership.hyperComplexes[8].sourceTag==='I','branch-only Performer not properly classified');
 assert(membership.researchApproval.canonicalCrossRegistryPromotions===0&&membership.researchApproval.activeRuntimeEdgesCreated===0&&l.newlyLocatedCrossBranchCanon.ownerEightListUnresolved,'unapproved source promotion');
+const overlay=read('docs/data/compass/integration/v8/ATUNED_READONLY_SOURCE_CANON_MEMBERSHIP_OVERLAY_V8.json');
+assert(overlay.schema==='ATUNED_READONLY_SOURCE_CANON_MEMBERSHIP_OVERLAY_V8','overlay schema');
+assert(overlay.nodes.length===65&&overlay.edges.length===88&&overlay.overlayCounts.saboteurNodes===33&&overlay.overlayCounts.complexNodes===23&&overlay.overlayCounts.hyperComplexNodes===9,'overlay nodes/edges');
+assert(overlay.source.blobSha===membership.sources[1].blobSha,'source membership SHA mismatch');
+const overlayIds=new Set(overlay.nodes.map(x=>x.id));
+assert(overlayIds.size===65&&overlay.edges.every(x=>overlayIds.has(x.from)&&overlayIds.has(x.to)&&x.notRuntime===true&&x.canonCrosswalkApproved===false),'overlay dangling, duplicate, or wrong status');
+assert(new Set(overlay.edges.map(x=>x.from+'|'+x.to+'|'+x.type)).size===88,'duplicate overlay edge');
+assert(overlay.nodes.every(x=>x.notRuntime===true)&&overlay.policy.notScoring&&overlay.policy.notRuntime&&!overlay.baseGraph.merged&&l.sourceMembershipOverlay.approvedRuntimeEdges===0,'false overlay promotion');
+assert(overlay.edges.filter(x=>x.type==='source_canon_complex_has_saboteur').length===64&&overlay.edges.filter(x=>x.type==='source_canon_hyper_has_complex').length===24,'edge categories');
 const metrics={pass:true,meaning:'All documented closure gates remain honestly OPEN; this is NOT 100% certification',gatesOpen:l.gates.length,sourceBranchesAudited:l.sourceAudit.branchCountInspected,extraCandidateRecordsLocated:l.newlyLocatedCrossBranchSource.sourceRecords,graphNodes:g.nodes.length,graphEdges:g.edges.length,exactSourceDefinitionsOutstanding:19,weightedReadiness:l.readinessBaseline.weightedOverall,runtimeChanges:0};
 console.log(JSON.stringify(metrics,null,2));
 }catch(e){console.error('V8 FAIL: '+e.message);process.exitCode=1}
