@@ -1,0 +1,42 @@
+name: ATUNED V16 Local Browser Acceptance
+on:
+  push:
+    branches:
+      - 'atuned/compass-foundation-closure-20261026'
+    paths:
+      - '.github/workflows/atuned-v16-browser-acceptance.yml'
+      - 'tests/**'
+      - 'atuned_src/**'
+      - 'source.html'
+  workflow_dispatch:
+jobs:
+  local-browser-contract:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned Playwright and Chromium for offline local-file tests
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.57.0
+          npx playwright install --with-deps chromium
+          echo "CHROME=$(node -e "process.stdout.write(require('playwright').chromium.executablePath())")" >> "$GITHUB_ENV"
+      - name: Run existing Chromium functional gates against local source.html
+        env:
+          ATUNED_FILE: source.html
+        run: node tests/functional.js
+      - name: Run existing Chromium control collision and interaction gates
+        env:
+          ATUNED_FILE: source.html
+        run: node tests/collide.js
+      - name: Run existing Chromium layout and design gates
+        env:
+          ATUNED_FILE: source.html
+        run: node tests/design.js
+      - name: State evidence boundary
+        if: always()
+        run: echo "Local source.html browser checks are not production deploy, external integration, real-user outcome or owner acceptance."
