@@ -126,7 +126,10 @@
 - Checked current branch source content headers and SHA for SOURCE OS CANON 1.0.0 and 1.0.1, graph V4 and v341 gap ledger; fetched candidate registry content. The manuscript `index.html` path and blob were located, **but its version and full text were not validated**.
 - Previously recorded V9 Git scope of **201/201 branch HEAD trees**, 5 tags, 27 `v341` keyword commits remains a prior audit, not repeated in this cycle.
 
-## 6. Locator refresh contract (mandatory every future handshake)
+## 6. Index verification
+Run `node docs/data/compass/integration/v14/validate_v14_file_index.cjs` in a local working-branch checkout. The research GitHub Actions workflow also runs this validator on subsequent commits. It checks locator uniqueness, count, existing working-tree source blob SHA-1s and the first-read pointer; **not** original-v341 recovery, semantic authority, cross-repository historical contents or browser E2E. The historical source pointer is exempted from the pinned-base hash comparison because it was intentionally updated to link to this index.
+
+## 7. Locator refresh contract (mandatory every future handshake)
 - **Never re-search already located paths without evidence of changed refs**. Read this index, use manifest `repository + ref + path + blobSha`, fetch the exact file needed.
 - Before any new write, compare current HEAD to the manifest's `auditedSourceCommit`; refresh changed source paths and **regenerate this manifest**, then update this index and `docs/ATUNED_SOURCE_INDEX.md` pointer.
 - Preserve old source versions and semantic conflicts with labels `SOURCE_OBSERVED`, `OWNER_DIRECTED_MODEL`, `INFERRED_INTERPRETATION`, `UNRESOLVED`, `APPROVED_CANON`, `RUNTIME_VERIFIED`. Never silently merge separate namespaces.
