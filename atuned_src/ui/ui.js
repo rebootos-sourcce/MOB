@@ -1479,8 +1479,38 @@ function render(){
     name. Hover shows the meaning in the product's own tooltip. Press takes
     the person to the knowledge page with that entry already open, so a word
     they did not know is two gestures from being a word they do. */
+/* THE SIX GATES, A NAMED PLACE ON THE FIELD'S OWN LEFT RAIL. Round of 28
+   October, his words after finding them only as small marks on the wheel:
+   "those would be great to expose, wouldn't they, maybe they go on our
+   left-hand menu." Ported, not rebuilt: gatesBlock(null) (ui/drills.js) is
+   the same six-row reading already shown inside the gate drill, right
+   action against wrong action, and its rows already wire themselves to
+   that drill through the delegated .gate-r[data-gate] click below, so
+   nothing new needs wiring for a press here to open it.
+
+   THE AVOIDANCE LINE IS NEVER SHOWN ALONE. sniffGates (engine/sniff.js)
+   carries its own structural rule for this exact number: it is read only
+   together with the two upstream gates it was built from. stLawWins
+   (ui/storyui.js) already finds the most recent entry with a real gate
+   reading for the Journal's own Laws accordion; this calls the same
+   function rather than re-reading the entries a second way, so the two
+   surfaces can never disagree about which entry's reading is current. */
+function renderGates(){
+ var h=document.getElementById('gaterows'); if(!h)return;
+ h.innerHTML=gatesBlock(null);
+ var g=document.getElementById('gateavoid'); if(!g)return;
+ if(typeof stLawWins==='function')stLawWins();
+ var gate=(typeof STLW!=='undefined'&&STLW&&STLW.gate)||null;
+ if(gate&&gate.intentional){
+  g.innerHTML='<div class="pm-eye" style="margin-top:14px">Avoidance, your last entry</div>'
+   +'<p class="ad-p">Avoidance reads <b>'+gate.intentional.avoidance+' per cent</b>, built from the two readings below it and never shown without them.</p>'
+   +'<p class="ad-p">Awareness against ignorance: <b>'+Math.round(gate.aware*100)+' per cent</b> awareness.</p>'
+   +'<p class="ad-p">Detachment against attachment: <b>'+Math.round(gate.detached*100)+' per cent</b> detachment.</p>';
+ } else {
+  g.innerHTML='<p class="ad-p" style="margin-top:10px">Nothing read yet. Write a line in the Journal and the gates fill in from it.</p>';
+ }}
  wireKbJump();
- renderAcc(r); renderSpirit(); renderRootSum(); renderPol2(r); syncMx();
+ renderAcc(r); renderSpirit(); renderRootSum(); renderPol2(r); syncMx(); renderGates();
  /* the trace graph's block in the Field's side column, ui/loopread.js */
  if(typeof loopPaint==='function')loopPaint(r);
  /* the dock's circles move into their values rather than snapping, and only

@@ -267,7 +267,7 @@ function leadSees(what){ return LEAD_SEES.indexOf(what)>=0; }
    archetypes, laws, gates and shadow", with the laws and the gates said by the
    names the Field's bar prints for them since 22 October, the Laws of Moral
    Integrity and the Laws of Action. */
-const PLAN_ALWAYS=['your 112 addresses','the domains','the archetypes','the Laws of Moral Integrity',
+const PLAN_ALWAYS=['your 108 somatic addresses and 4 field anchors','the domains','the archetypes','the Laws of Moral Integrity',
  'the Laws of Action','shadow','the pain map','every tool','the journal',
  'rerunning anything already open'];
 /* ANNUAL. TWO MONTHS FREE IS OUT, on the owner's ruling.

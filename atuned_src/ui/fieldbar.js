@@ -105,7 +105,7 @@ const VICON=[
    .claude/agents/emmy.md. The count in the tooltip is read off SI. */
 const FB_LAYERS=[
  {k:'addresses',g:'carry',nm:'Addresses',ic:FB_IC_ADDR,
-  tip:'Your 112 addresses. Each mark is the charge held at one place.'},
+  tip:'Your 108 addresses, plus 4 field anchors above and below the body. Each mark is the charge held at one place.'},
  {k:'seats',g:'carry',nm:'Assemblage points',ic:FB_IC_SEAT,
   tip:'The seven seats, from the base of your spine to the top of your head.'},
  {k:'laws',g:'carry',nm:'Laws of Moral Integrity',ic:fbFlay('laws'),
@@ -113,7 +113,7 @@ const FB_LAYERS=[
  {k:'gates',g:'carry',nm:'Laws of Action',ic:fbFlay('gates'),
   tip:'The Laws of Action round the core, each move of right action set across from the wrong action it stands against.'},
  {k:'shadow',g:'carry',nm:'Decoherence',ic:fbFlay('shadow'),
-  tip:'Decoherence. All the charge on all 112 addresses, shown as a tint behind everything.'},
+  tip:'Decoherence. All the charge on your 108 addresses and 4 field anchors, shown as a tint behind everything.'},
  {k:'stories',g:'carry',nm:'Stories',ic:fbFlay('stories'),
   tip:'One line for each story that put charge on an address.'},
  {k:'saboteurs',g:'run',nm:'Saboteurs',ic:CHAINGLYPH.sab,
@@ -209,7 +209,7 @@ function fbValues(r){
   m:anyG?'Ring and number: right action, its share of every Law of Action read in your stories.'
    :'Nothing read yet, so none of your stories has run through the Laws of Action.'};
  V.shadow={p:dqv.p,v:dqv.v,c:seatCol('Root'),
-  m:'Ring and number: shadow weight, DQ, the weight on all 112 addresses.'};
+  m:'Ring and number: shadow weight, DQ, the weight on your 108 addresses and 4 field anchors.'};
  var ai=atomIndex()||{}, traced=carry.length?carry.filter(function(n){return (ai[n.i]||[]).length;}).length/carry.length*100:0;
  V.stories={p:pct('portion',traced/100)||0,v:carry.length?fmtPct('portion',traced/100):dash,c:'var(--accent)',
   m:carry.length?'Ring and number: the share of your carrying addresses a story you wrote reached.'

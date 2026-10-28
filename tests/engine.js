@@ -2592,7 +2592,7 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
  ok(PLANS.every(p=>!('see' in p)),'no row of the ladder types a sight of its own, SIGHT is the table');
  ok(PLAN_ALWAYS.length>=3,'and what is on every tier is named rather than remembered');
  /* the laws and the gates by the names the Field's bar prints since 22 October */
- ok(['your 112 addresses','the domains','the archetypes','the Laws of Moral Integrity','the Laws of Action','shadow']
+ ok(['your 108 somatic addresses and 4 field anchors','the domains','the archetypes','the Laws of Moral Integrity','the Laws of Action','shadow']
    .every(w=>PLAN_ALWAYS.indexOf(w)>=0),
   'what is on every tier is the owner\'s own list: addresses, domains, archetypes, the Laws of Moral Integrity, the Laws of Action and shadow');
  ok(!PLAN_ALWAYS.some(w=>/saboteur|complex|character|whole reading/i.test(w)),
