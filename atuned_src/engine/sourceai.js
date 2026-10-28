@@ -109,21 +109,52 @@ function srcPrior(entries){
    if(K2BAND[k]&&(e.bands[k]||0)>0)out[k]=(out[k]||0)+1;});});
  return out;}
 
-/* the rung for one seat, from the three counts. Kept apart so the ladder is
-   one function a test can walk rung by rung. */
-function srcRung(mentions,earlier,reading){
+/* the rung for one seat, from the three counts, and now a fourth: whether
+   the seat sits inside a hyper complex the person's own charge is actually
+   driving right now. Round of 27 October, his words: the sniffer hears a
+   seat once and stops, but the field already knows that seat is load
+   bearing for a pattern running across several addresses at once, the
+   engine's own hy.parts chain, and Source AI should recognise that the same
+   way it recognises a seat it has heard before. Structural evidence reaches
+   the same rung a real earlier commit would (9), never the top rung (10,
+   reserved for a real repeated mention), and never on its own: a seat
+   nobody has said anything about this entry is never asked about, mentions
+   stays the gate at the top of this function. This was built once already,
+   27 October, and was lost before it reached main; rebuilt the same day
+   after it turned out not to be running. */
+function srcRung(mentions,earlier,reading,structural){
  if(!mentions)return 0;
  if(earlier>=2||(earlier>=1&&mentions>=2))return 10;
- if(earlier>=1)return 9;
+ if(earlier>=1||structural)return 9;
  if(mentions>=3)return 8;
  if(mentions>=2)return 7;
  return Math.max(1,Math.min(SRC_ONCE,Math.round(reading||0)));}
+
+/* WHICH SEATS A DRIVEN HYPER COMPLEX ACTUALLY SITS ON. Walks the engine's
+   own chain, hy.parts (complexes) to cx.parts (two saboteurs each) to
+   sab.parts (the real addresses), and collects the seat (band) each address
+   belongs to. Returns a lowercase-keyed set matching srcPrior's own key
+   space, {root:true, solar:true, ...}, never a complex's name: this module's
+   standing rule is it never names a definition to the person, only ever
+   acts on what it recognises, and a seat code is not a name. r is a real
+   compute() result; r.hys is the engine's own hyper complex list. */
+var SRC_B2K=null;
+function srcHyperSeats(r){
+ if(!SRC_B2K){SRC_B2K={};Object.keys(K2BAND).forEach(function(k){SRC_B2K[K2BAND[k]]=k;});}
+ var out={};
+ ((r&&r.hys)||[]).forEach(function(hy){
+  (hy.parts||[]).forEach(function(cx){
+   (cx.parts||[]).forEach(function(sab){
+    (sab.parts||[]).forEach(function(n){
+     var k=n&&n.b&&SRC_B2K[n.b];
+     if(k)out[k]=true;});});});});
+ return out;}
 
 /* HEAR AN ENTRY. text is what the person typed. prior is srcPrior of their
    own earlier entries, or nothing. Returns every seat heard, heaviest rung
    first, with the person's own words for each, which is what Source AI says
    back instead of a definition. */
-function srcHear(text,prior){
+function srcHear(text,prior,active){
  var t=String(text||'');
  var out={unread:true, seats:[], top:null, root:null, asks:false};
  if(!t.trim())return out;
@@ -147,9 +178,11 @@ function srcHear(text,prior){
   var w=(a<nm.map.length&&b<nm.map.length)?t.slice(nm.map[a],nm.map[b]+1):s.word;
   if(o.words.indexOf(w)<0)o.words.push(w);});
  var P=prior||{};
+ var A=active||{};
  out.seats=Object.keys(by).map(function(k){var o=by[k];
   o.earlier=P[k]||0;
-  o.rung=srcRung(o.mentions,o.earlier,o.reading);
+  o.structural=!!A[k];
+  o.rung=srcRung(o.mentions,o.earlier,o.reading,o.structural);
   o.reading=Math.round(o.reading*10)/10;
   return o;})
   .filter(function(o){return o.rung>0;})

@@ -311,6 +311,7 @@ function stRender(){
     the resize observer, the first layout ran at a height of nought and every
     lane sprang in from above the chart on each arrival at the tab. */
  stSize();
+ ST_ACTIVE=typeof srcHyperSeats==='function'?srcHyperSeats(compute()):null;
  stRead(); stSortPaint();
  srcLock(h.querySelector('.st-glow')); srcLock(h.querySelector('#stjr .src-live'));
  var ta=document.getElementById('sttext');
@@ -439,6 +440,13 @@ function stBank(){
    picture and the score came to disagree. The mark still runs back over its
    no and is struck, and the bar is still dashed. */
 var STR={t:null,marks:[],toks:[],heard:null};
+/* THE SEATS A DRIVEN HYPER COMPLEX ACTUALLY SITS ON RIGHT NOW, read off the
+   committed profile, never the live draft: compute() only ever reflects
+   S and W as they stand after the last commit, so this is computed once a
+   full stRender(), not on every key in stRefresh()/stRead(), which would
+   cost a real compute() a keystroke for a number that cannot have changed
+   since the last commit anyway. srcHyperSeats lives in engine/sourceai.js. */
+var ST_ACTIVE=null;
 function stMarks(t,p){
  if(!p||typeof marksOf!=='function')return [];
  var marks=marksOf(t,p), nm=normMap(t), modAt={};
@@ -466,7 +474,7 @@ function stRead(){
  var t=ST_TEXT, ents=(CURP&&CURP.story&&CURP.story.entries)||[];
  var marks=stMarks(t,ST_PARSED);
  STR={t:t,marks:marks,toks:marks.toks||(t?(t.match(/[A-Za-z']+/g)||[]).map(function(w){return {w:w};}):[]),
-  heard:srcHear(t,srcPrior(ents))};}
+  heard:srcHear(t,srcPrior(ents),ST_ACTIVE)};}
 /* the addresses this entry reaches, or the last committed entry's.
    THE ONES THE WORDS NAMED COME FIRST, and .named says how many of the head of
    the list they are, 17 October. parseStory reaches two kinds of address: the
