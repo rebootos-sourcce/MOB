@@ -1,0 +1,1646 @@
+{
+  "schema": "ATUNED_GAMEBOARD_EXISTING_RELEASE_RITUAL_BINDINGS_V2",
+  "date": "2026-10-27",
+  "scope": "26 scene entrypoint routes; fixed authoring IDs remain nullable; not guaranteed executable on every profile",
+  "authority": "REPO_OBSERVED_DERIVED_RUNTIME_ROUTES_NOT_NEW_PROTOCOL_IDS",
+  "sourceBlobs": {
+    "atuned_src/engine/data/hero_journey.js": "f3568b53e2a4d65b763d4139a44dfa26c6a15ef4",
+    "atuned_src/engine/hero_journey.js": "3e97ec7bd77265cddeff5d31ef37736aacf67e3d",
+    "atuned_src/ui/hero_journey.js": "1ed4a820fce88edaca747699e48eb79a520219cc",
+    "atuned_src/ui/release.js": "01679bf2431ff0b7f2ea2b6976cc74e98ef25030",
+    "atuned_src/ui/ritual.js": "d28e875f5ac8f936a2dfde025daeb3ca1af6e364",
+    "atuned_src/engine/data/teachers_recipes.js": "8b4551611accea43f6a23ed49151a6116995c262",
+    "atuned_src/engine/data/practice.js": "18c537e440760e4d7c91c0bd0a0880be0e977db5",
+    "docs/data/compass/gameboard/v1/GAMEBOARD_MAP_V1.json": "4c97cb39cba7d93a671e571c756fcb4c4fe74fc1",
+    "docs/data/compass/gameboard/v1/GAME_LEVEL_TEMPLATE_V1.json": "9d29b91b63a99cf0135c297f78aad0c4fdceddf9",
+    "docs/data/compass/gameboard/v1/validate_gameboard.cjs": "f50edb2f04fdc38eca47ec0a4fae0c6aa2dc4a75"
+  },
+  "sourceDepots": {
+    "MOB": {
+      "repo": "rebootos-sourcce/MOB",
+      "branch": "atuned/compass-foundation-closure-20261026",
+      "runtimeScenes": 26,
+      "teacherStarterRituals": 39,
+      "libraryPractices": 17,
+      "recipeAddedPractices": 28,
+      "starterRecipeStatus": "FIRST_DRAFT"
+    },
+    "RebootOS": {
+      "repo": "rebootos-sourcce/Reboot-OS",
+      "branch": "main",
+      "corpusLetgoCards": {
+        "count": 233,
+        "sourcePath": "atuned/data/letgo/letgo_cards.json",
+        "blobSha": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412"
+      },
+      "legacyTeacherRituals": {
+        "count": 12,
+        "sourcePath": "atuned/data/canon_tables/CRITUAL.json",
+        "blobSha": "0e22ac085880942860aeb8816d9c36c287149b69"
+      },
+      "legacyPracticeLibrary": {
+        "count": 17,
+        "sourcePath": "atuned/data/canon_tables/PRACTICE.json",
+        "blobSha": "d192108fa1e320fdcf2f6d81b764afc1596e007a"
+      },
+      "provenance": "Legacy research/practice content, not evidence of 26 distinct approved scene protocol IDs"
+    }
+  },
+  "distinctions": [
+    "Runtime entrypoint availability is not the same as a per-scene fixed content ID or an accepted per-user Protocol instance.",
+    "Release and ritual are user-triggered and conditional: an encounter may have zero eligible held imprints or no selected practice at pacing.",
+    "Do not assign every scene to a named teacher recipe without verified behavioral source crosswalk and owner approval.",
+    "Shared release mechanics were already wired in shipped Hero's Journey engine before this research overlay; no new engine scoring changes.",
+    "The existing gameboard v1 null fields are legitimate dynamic routing markers, not absence of implementations.",
+    "Do not use LetGo card corpus entries to label users automatically."
+  ],
+  "stats": {
+    "sceneCount": 26,
+    "sourceSceneIds": 26,
+    "routedReleaseEntrypoints": 26,
+    "routedBecomingEntrypoints": 26,
+    "unmappedRuntimeSceneIDs": 0,
+    "staticProtocolInstancesCreated": 0,
+    "staticRitualInstancesCreated": 0,
+    "existingStarterRitualIds": 39,
+    "sourceRecipeStepsWithoutPractice": 0,
+    "requiresUserAndMatchingPatterns": true,
+    "protocolIdFieldsRemainingNull": 26,
+    "ritualIdFieldsRemainingNull": 26
+  },
+  "sceneBindings": [
+    {
+      "sceneId": "game:inferno:L09",
+      "realm": "INFERNO",
+      "sceneLabel": "Treachery",
+      "sourceRecordId": "inferno:L09",
+      "route": "DYNAMIC_PROFILE_DEPENDENT",
+      "release": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "relPick",
+        "resolver": "hjReleaseAddresses",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/release.js",
+        "scoredAddressRule": "SI.law name→seat; held W nodes with n.cf and SQ>=4; max 3",
+        "requires": [
+          "current_user_profile",
+          "eligible_confirmed_imprints",
+          "user_triggered_release"
+        ],
+        "contentProtocolId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "becoming": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "ritStartPlan",
+        "resolver": "hjRitualCandidate",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/ritual.js",
+        "practiceSelector": "ritFor({darkB:firstMatchingSILaw.seat,DQ:computed.DQ})",
+        "cadenceDays": 7,
+        "requires": [
+          "current_user_profile",
+          "law_in_SI",
+          "eligible_practice_at_user_pacing",
+          "user_start_choice"
+        ],
+        "contentRitualId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "sourceStatus": "CODE_OBSERVED_CONDITIONAL_NOT_SCENE_CONTENT_APPROVAL",
+      "noAutomaticUserAssignment": true
+    },
+    {
+      "sceneId": "game:inferno:L08",
+      "realm": "INFERNO",
+      "sceneLabel": "Fraud",
+      "sourceRecordId": "inferno:L08",
+      "route": "DYNAMIC_PROFILE_DEPENDENT",
+      "release": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "relPick",
+        "resolver": "hjReleaseAddresses",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/release.js",
+        "scoredAddressRule": "SI.law name→seat; held W nodes with n.cf and SQ>=4; max 3",
+        "requires": [
+          "current_user_profile",
+          "eligible_confirmed_imprints",
+          "user_triggered_release"
+        ],
+        "contentProtocolId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "becoming": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "ritStartPlan",
+        "resolver": "hjRitualCandidate",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/ritual.js",
+        "practiceSelector": "ritFor({darkB:firstMatchingSILaw.seat,DQ:computed.DQ})",
+        "cadenceDays": 7,
+        "requires": [
+          "current_user_profile",
+          "law_in_SI",
+          "eligible_practice_at_user_pacing",
+          "user_start_choice"
+        ],
+        "contentRitualId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "sourceStatus": "CODE_OBSERVED_CONDITIONAL_NOT_SCENE_CONTENT_APPROVAL",
+      "noAutomaticUserAssignment": true
+    },
+    {
+      "sceneId": "game:inferno:L07",
+      "realm": "INFERNO",
+      "sceneLabel": "Harmful Force",
+      "sourceRecordId": "inferno:L07",
+      "route": "DYNAMIC_PROFILE_DEPENDENT",
+      "release": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "relPick",
+        "resolver": "hjReleaseAddresses",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/release.js",
+        "scoredAddressRule": "SI.law name→seat; held W nodes with n.cf and SQ>=4; max 3",
+        "requires": [
+          "current_user_profile",
+          "eligible_confirmed_imprints",
+          "user_triggered_release"
+        ],
+        "contentProtocolId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "becoming": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "ritStartPlan",
+        "resolver": "hjRitualCandidate",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/ritual.js",
+        "practiceSelector": "ritFor({darkB:firstMatchingSILaw.seat,DQ:computed.DQ})",
+        "cadenceDays": 7,
+        "requires": [
+          "current_user_profile",
+          "law_in_SI",
+          "eligible_practice_at_user_pacing",
+          "user_start_choice"
+        ],
+        "contentRitualId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "sourceStatus": "CODE_OBSERVED_CONDITIONAL_NOT_SCENE_CONTENT_APPROVAL",
+      "noAutomaticUserAssignment": true
+    },
+    {
+      "sceneId": "game:inferno:L06",
+      "realm": "INFERNO",
+      "sceneLabel": "Epistemic Rigidity",
+      "sourceRecordId": "inferno:L06",
+      "route": "DYNAMIC_PROFILE_DEPENDENT",
+      "release": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "relPick",
+        "resolver": "hjReleaseAddresses",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/release.js",
+        "scoredAddressRule": "SI.law name→seat; held W nodes with n.cf and SQ>=4; max 3",
+        "requires": [
+          "current_user_profile",
+          "eligible_confirmed_imprints",
+          "user_triggered_release"
+        ],
+        "contentProtocolId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "becoming": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "ritStartPlan",
+        "resolver": "hjRitualCandidate",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/ritual.js",
+        "practiceSelector": "ritFor({darkB:firstMatchingSILaw.seat,DQ:computed.DQ})",
+        "cadenceDays": 7,
+        "requires": [
+          "current_user_profile",
+          "law_in_SI",
+          "eligible_practice_at_user_pacing",
+          "user_start_choice"
+        ],
+        "contentRitualId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "sourceStatus": "CODE_OBSERVED_CONDITIONAL_NOT_SCENE_CONTENT_APPROVAL",
+      "noAutomaticUserAssignment": true
+    },
+    {
+      "sceneId": "game:inferno:L05",
+      "realm": "INFERNO",
+      "sceneLabel": "Reactivity",
+      "sourceRecordId": "inferno:L05",
+      "route": "DYNAMIC_PROFILE_DEPENDENT",
+      "release": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "relPick",
+        "resolver": "hjReleaseAddresses",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/release.js",
+        "scoredAddressRule": "SI.law name→seat; held W nodes with n.cf and SQ>=4; max 3",
+        "requires": [
+          "current_user_profile",
+          "eligible_confirmed_imprints",
+          "user_triggered_release"
+        ],
+        "contentProtocolId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "becoming": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "ritStartPlan",
+        "resolver": "hjRitualCandidate",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/ritual.js",
+        "practiceSelector": "ritFor({darkB:firstMatchingSILaw.seat,DQ:computed.DQ})",
+        "cadenceDays": 7,
+        "requires": [
+          "current_user_profile",
+          "law_in_SI",
+          "eligible_practice_at_user_pacing",
+          "user_start_choice"
+        ],
+        "contentRitualId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "sourceStatus": "CODE_OBSERVED_CONDITIONAL_NOT_SCENE_CONTENT_APPROVAL",
+      "noAutomaticUserAssignment": true
+    },
+    {
+      "sceneId": "game:inferno:L04",
+      "realm": "INFERNO",
+      "sceneLabel": "Resource Fixation",
+      "sourceRecordId": "inferno:L04",
+      "route": "DYNAMIC_PROFILE_DEPENDENT",
+      "release": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "relPick",
+        "resolver": "hjReleaseAddresses",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/release.js",
+        "scoredAddressRule": "SI.law name→seat; held W nodes with n.cf and SQ>=4; max 3",
+        "requires": [
+          "current_user_profile",
+          "eligible_confirmed_imprints",
+          "user_triggered_release"
+        ],
+        "contentProtocolId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "becoming": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "ritStartPlan",
+        "resolver": "hjRitualCandidate",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/ritual.js",
+        "practiceSelector": "ritFor({darkB:firstMatchingSILaw.seat,DQ:computed.DQ})",
+        "cadenceDays": 7,
+        "requires": [
+          "current_user_profile",
+          "law_in_SI",
+          "eligible_practice_at_user_pacing",
+          "user_start_choice"
+        ],
+        "contentRitualId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "sourceStatus": "CODE_OBSERVED_CONDITIONAL_NOT_SCENE_CONTENT_APPROVAL",
+      "noAutomaticUserAssignment": true
+    },
+    {
+      "sceneId": "game:inferno:L03",
+      "realm": "INFERNO",
+      "sceneLabel": "Consumption",
+      "sourceRecordId": "inferno:L03",
+      "route": "DYNAMIC_PROFILE_DEPENDENT",
+      "release": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "relPick",
+        "resolver": "hjReleaseAddresses",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/release.js",
+        "scoredAddressRule": "SI.law name→seat; held W nodes with n.cf and SQ>=4; max 3",
+        "requires": [
+          "current_user_profile",
+          "eligible_confirmed_imprints",
+          "user_triggered_release"
+        ],
+        "contentProtocolId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "becoming": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "ritStartPlan",
+        "resolver": "hjRitualCandidate",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/ritual.js",
+        "practiceSelector": "ritFor({darkB:firstMatchingSILaw.seat,DQ:computed.DQ})",
+        "cadenceDays": 7,
+        "requires": [
+          "current_user_profile",
+          "law_in_SI",
+          "eligible_practice_at_user_pacing",
+          "user_start_choice"
+        ],
+        "contentRitualId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "sourceStatus": "CODE_OBSERVED_CONDITIONAL_NOT_SCENE_CONTENT_APPROVAL",
+      "noAutomaticUserAssignment": true
+    },
+    {
+      "sceneId": "game:inferno:L02",
+      "realm": "INFERNO",
+      "sceneLabel": "Entitlement",
+      "sourceRecordId": "inferno:L02",
+      "route": "DYNAMIC_PROFILE_DEPENDENT",
+      "release": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "relPick",
+        "resolver": "hjReleaseAddresses",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/release.js",
+        "scoredAddressRule": "SI.law name→seat; held W nodes with n.cf and SQ>=4; max 3",
+        "requires": [
+          "current_user_profile",
+          "eligible_confirmed_imprints",
+          "user_triggered_release"
+        ],
+        "contentProtocolId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "becoming": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "ritStartPlan",
+        "resolver": "hjRitualCandidate",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/ritual.js",
+        "practiceSelector": "ritFor({darkB:firstMatchingSILaw.seat,DQ:computed.DQ})",
+        "cadenceDays": 7,
+        "requires": [
+          "current_user_profile",
+          "law_in_SI",
+          "eligible_practice_at_user_pacing",
+          "user_start_choice"
+        ],
+        "contentRitualId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "sourceStatus": "CODE_OBSERVED_CONDITIONAL_NOT_SCENE_CONTENT_APPROVAL",
+      "noAutomaticUserAssignment": true
+    },
+    {
+      "sceneId": "game:inferno:L01",
+      "realm": "INFERNO",
+      "sceneLabel": "Nonengagement",
+      "sourceRecordId": "inferno:L01",
+      "route": "DYNAMIC_PROFILE_DEPENDENT",
+      "release": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "relPick",
+        "resolver": "hjReleaseAddresses",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/release.js",
+        "scoredAddressRule": "SI.law name→seat; held W nodes with n.cf and SQ>=4; max 3",
+        "requires": [
+          "current_user_profile",
+          "eligible_confirmed_imprints",
+          "user_triggered_release"
+        ],
+        "contentProtocolId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "becoming": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "ritStartPlan",
+        "resolver": "hjRitualCandidate",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/ritual.js",
+        "practiceSelector": "ritFor({darkB:firstMatchingSILaw.seat,DQ:computed.DQ})",
+        "cadenceDays": 7,
+        "requires": [
+          "current_user_profile",
+          "law_in_SI",
+          "eligible_practice_at_user_pacing",
+          "user_start_choice"
+        ],
+        "contentRitualId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "sourceStatus": "CODE_OBSERVED_CONDITIONAL_NOT_SCENE_CONTENT_APPROVAL",
+      "noAutomaticUserAssignment": true
+    },
+    {
+      "sceneId": "game:purgatorio:P01",
+      "realm": "PURGATORIO",
+      "sceneLabel": "Pride → Humility",
+      "sourceRecordId": "purgatorio:P01",
+      "route": "DYNAMIC_PROFILE_DEPENDENT",
+      "release": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "relPick",
+        "resolver": "hjReleaseAddresses",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/release.js",
+        "scoredAddressRule": "SI.law name→seat; held W nodes with n.cf and SQ>=4; max 3",
+        "requires": [
+          "current_user_profile",
+          "eligible_confirmed_imprints",
+          "user_triggered_release"
+        ],
+        "contentProtocolId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "becoming": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "ritStartPlan",
+        "resolver": "hjRitualCandidate",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/ritual.js",
+        "practiceSelector": "ritFor({darkB:firstMatchingSILaw.seat,DQ:computed.DQ})",
+        "cadenceDays": 7,
+        "requires": [
+          "current_user_profile",
+          "law_in_SI",
+          "eligible_practice_at_user_pacing",
+          "user_start_choice"
+        ],
+        "contentRitualId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "sourceStatus": "CODE_OBSERVED_CONDITIONAL_NOT_SCENE_CONTENT_APPROVAL",
+      "noAutomaticUserAssignment": true
+    },
+    {
+      "sceneId": "game:purgatorio:P02",
+      "realm": "PURGATORIO",
+      "sceneLabel": "Envy → Charity / Kindness",
+      "sourceRecordId": "purgatorio:P02",
+      "route": "DYNAMIC_PROFILE_DEPENDENT",
+      "release": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "relPick",
+        "resolver": "hjReleaseAddresses",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/release.js",
+        "scoredAddressRule": "SI.law name→seat; held W nodes with n.cf and SQ>=4; max 3",
+        "requires": [
+          "current_user_profile",
+          "eligible_confirmed_imprints",
+          "user_triggered_release"
+        ],
+        "contentProtocolId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "becoming": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "ritStartPlan",
+        "resolver": "hjRitualCandidate",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/ritual.js",
+        "practiceSelector": "ritFor({darkB:firstMatchingSILaw.seat,DQ:computed.DQ})",
+        "cadenceDays": 7,
+        "requires": [
+          "current_user_profile",
+          "law_in_SI",
+          "eligible_practice_at_user_pacing",
+          "user_start_choice"
+        ],
+        "contentRitualId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "sourceStatus": "CODE_OBSERVED_CONDITIONAL_NOT_SCENE_CONTENT_APPROVAL",
+      "noAutomaticUserAssignment": true
+    },
+    {
+      "sceneId": "game:purgatorio:P03",
+      "realm": "PURGATORIO",
+      "sceneLabel": "Wrath → Meekness / Forbearance",
+      "sourceRecordId": "purgatorio:P03",
+      "route": "DYNAMIC_PROFILE_DEPENDENT",
+      "release": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "relPick",
+        "resolver": "hjReleaseAddresses",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/release.js",
+        "scoredAddressRule": "SI.law name→seat; held W nodes with n.cf and SQ>=4; max 3",
+        "requires": [
+          "current_user_profile",
+          "eligible_confirmed_imprints",
+          "user_triggered_release"
+        ],
+        "contentProtocolId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "becoming": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "ritStartPlan",
+        "resolver": "hjRitualCandidate",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/ritual.js",
+        "practiceSelector": "ritFor({darkB:firstMatchingSILaw.seat,DQ:computed.DQ})",
+        "cadenceDays": 7,
+        "requires": [
+          "current_user_profile",
+          "law_in_SI",
+          "eligible_practice_at_user_pacing",
+          "user_start_choice"
+        ],
+        "contentRitualId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "sourceStatus": "CODE_OBSERVED_CONDITIONAL_NOT_SCENE_CONTENT_APPROVAL",
+      "noAutomaticUserAssignment": true
+    },
+    {
+      "sceneId": "game:purgatorio:P04",
+      "realm": "PURGATORIO",
+      "sceneLabel": "Sloth / Acedia → Zeal / Diligence",
+      "sourceRecordId": "purgatorio:P04",
+      "route": "DYNAMIC_PROFILE_DEPENDENT",
+      "release": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "relPick",
+        "resolver": "hjReleaseAddresses",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/release.js",
+        "scoredAddressRule": "SI.law name→seat; held W nodes with n.cf and SQ>=4; max 3",
+        "requires": [
+          "current_user_profile",
+          "eligible_confirmed_imprints",
+          "user_triggered_release"
+        ],
+        "contentProtocolId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "becoming": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "ritStartPlan",
+        "resolver": "hjRitualCandidate",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/ritual.js",
+        "practiceSelector": "ritFor({darkB:firstMatchingSILaw.seat,DQ:computed.DQ})",
+        "cadenceDays": 7,
+        "requires": [
+          "current_user_profile",
+          "law_in_SI",
+          "eligible_practice_at_user_pacing",
+          "user_start_choice"
+        ],
+        "contentRitualId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "sourceStatus": "CODE_OBSERVED_CONDITIONAL_NOT_SCENE_CONTENT_APPROVAL",
+      "noAutomaticUserAssignment": true
+    },
+    {
+      "sceneId": "game:purgatorio:P05",
+      "realm": "PURGATORIO",
+      "sceneLabel": "Avarice / Prodigality → Generosity / Stewardship",
+      "sourceRecordId": "purgatorio:P05",
+      "route": "DYNAMIC_PROFILE_DEPENDENT",
+      "release": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "relPick",
+        "resolver": "hjReleaseAddresses",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/release.js",
+        "scoredAddressRule": "SI.law name→seat; held W nodes with n.cf and SQ>=4; max 3",
+        "requires": [
+          "current_user_profile",
+          "eligible_confirmed_imprints",
+          "user_triggered_release"
+        ],
+        "contentProtocolId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "becoming": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "ritStartPlan",
+        "resolver": "hjRitualCandidate",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/ritual.js",
+        "practiceSelector": "ritFor({darkB:firstMatchingSILaw.seat,DQ:computed.DQ})",
+        "cadenceDays": 7,
+        "requires": [
+          "current_user_profile",
+          "law_in_SI",
+          "eligible_practice_at_user_pacing",
+          "user_start_choice"
+        ],
+        "contentRitualId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "sourceStatus": "CODE_OBSERVED_CONDITIONAL_NOT_SCENE_CONTENT_APPROVAL",
+      "noAutomaticUserAssignment": true
+    },
+    {
+      "sceneId": "game:purgatorio:P06",
+      "realm": "PURGATORIO",
+      "sceneLabel": "Gluttony → Temperance / Sufficiency",
+      "sourceRecordId": "purgatorio:P06",
+      "route": "DYNAMIC_PROFILE_DEPENDENT",
+      "release": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "relPick",
+        "resolver": "hjReleaseAddresses",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/release.js",
+        "scoredAddressRule": "SI.law name→seat; held W nodes with n.cf and SQ>=4; max 3",
+        "requires": [
+          "current_user_profile",
+          "eligible_confirmed_imprints",
+          "user_triggered_release"
+        ],
+        "contentProtocolId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "becoming": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "ritStartPlan",
+        "resolver": "hjRitualCandidate",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/ritual.js",
+        "practiceSelector": "ritFor({darkB:firstMatchingSILaw.seat,DQ:computed.DQ})",
+        "cadenceDays": 7,
+        "requires": [
+          "current_user_profile",
+          "law_in_SI",
+          "eligible_practice_at_user_pacing",
+          "user_start_choice"
+        ],
+        "contentRitualId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "sourceStatus": "CODE_OBSERVED_CONDITIONAL_NOT_SCENE_CONTENT_APPROVAL",
+      "noAutomaticUserAssignment": true
+    },
+    {
+      "sceneId": "game:purgatorio:P07",
+      "realm": "PURGATORIO",
+      "sceneLabel": "Lust → Chastity / Respectful Intimacy",
+      "sourceRecordId": "purgatorio:P07",
+      "route": "DYNAMIC_PROFILE_DEPENDENT",
+      "release": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "relPick",
+        "resolver": "hjReleaseAddresses",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/release.js",
+        "scoredAddressRule": "SI.law name→seat; held W nodes with n.cf and SQ>=4; max 3",
+        "requires": [
+          "current_user_profile",
+          "eligible_confirmed_imprints",
+          "user_triggered_release"
+        ],
+        "contentProtocolId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "becoming": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "ritStartPlan",
+        "resolver": "hjRitualCandidate",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/ritual.js",
+        "practiceSelector": "ritFor({darkB:firstMatchingSILaw.seat,DQ:computed.DQ})",
+        "cadenceDays": 7,
+        "requires": [
+          "current_user_profile",
+          "law_in_SI",
+          "eligible_practice_at_user_pacing",
+          "user_start_choice"
+        ],
+        "contentRitualId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "sourceStatus": "CODE_OBSERVED_CONDITIONAL_NOT_SCENE_CONTENT_APPROVAL",
+      "noAutomaticUserAssignment": true
+    },
+    {
+      "sceneId": "game:paradiso:PD01",
+      "realm": "PARADISO",
+      "sceneLabel": "Chosen Commitment",
+      "sourceRecordId": "paradiso:PD01",
+      "route": "DYNAMIC_PROFILE_DEPENDENT",
+      "release": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "relPick",
+        "resolver": "hjReleaseAddresses",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/release.js",
+        "scoredAddressRule": "SI.law name→seat; held W nodes with n.cf and SQ>=4; max 3",
+        "requires": [
+          "current_user_profile",
+          "eligible_confirmed_imprints",
+          "user_triggered_release"
+        ],
+        "contentProtocolId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "becoming": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "ritStartPlan",
+        "resolver": "hjRitualCandidate",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/ritual.js",
+        "practiceSelector": "ritFor({darkB:firstMatchingSILaw.seat,DQ:computed.DQ})",
+        "cadenceDays": 7,
+        "requires": [
+          "current_user_profile",
+          "law_in_SI",
+          "eligible_practice_at_user_pacing",
+          "user_start_choice"
+        ],
+        "contentRitualId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "sourceStatus": "CODE_OBSERVED_CONDITIONAL_NOT_SCENE_CONTENT_APPROVAL",
+      "noAutomaticUserAssignment": true
+    },
+    {
+      "sceneId": "game:paradiso:PD02",
+      "realm": "PARADISO",
+      "sceneLabel": "Humble Contribution",
+      "sourceRecordId": "paradiso:PD02",
+      "route": "DYNAMIC_PROFILE_DEPENDENT",
+      "release": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "relPick",
+        "resolver": "hjReleaseAddresses",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/release.js",
+        "scoredAddressRule": "SI.law name→seat; held W nodes with n.cf and SQ>=4; max 3",
+        "requires": [
+          "current_user_profile",
+          "eligible_confirmed_imprints",
+          "user_triggered_release"
+        ],
+        "contentProtocolId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "becoming": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "ritStartPlan",
+        "resolver": "hjRitualCandidate",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/ritual.js",
+        "practiceSelector": "ritFor({darkB:firstMatchingSILaw.seat,DQ:computed.DQ})",
+        "cadenceDays": 7,
+        "requires": [
+          "current_user_profile",
+          "law_in_SI",
+          "eligible_practice_at_user_pacing",
+          "user_start_choice"
+        ],
+        "contentRitualId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "sourceStatus": "CODE_OBSERVED_CONDITIONAL_NOT_SCENE_CONTENT_APPROVAL",
+      "noAutomaticUserAssignment": true
+    },
+    {
+      "sceneId": "game:paradiso:PD03",
+      "realm": "PARADISO",
+      "sceneLabel": "Reciprocal Love",
+      "sourceRecordId": "paradiso:PD03",
+      "route": "DYNAMIC_PROFILE_DEPENDENT",
+      "release": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "relPick",
+        "resolver": "hjReleaseAddresses",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/release.js",
+        "scoredAddressRule": "SI.law name→seat; held W nodes with n.cf and SQ>=4; max 3",
+        "requires": [
+          "current_user_profile",
+          "eligible_confirmed_imprints",
+          "user_triggered_release"
+        ],
+        "contentProtocolId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "becoming": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "ritStartPlan",
+        "resolver": "hjRitualCandidate",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/ritual.js",
+        "practiceSelector": "ritFor({darkB:firstMatchingSILaw.seat,DQ:computed.DQ})",
+        "cadenceDays": 7,
+        "requires": [
+          "current_user_profile",
+          "law_in_SI",
+          "eligible_practice_at_user_pacing",
+          "user_start_choice"
+        ],
+        "contentRitualId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "sourceStatus": "CODE_OBSERVED_CONDITIONAL_NOT_SCENE_CONTENT_APPROVAL",
+      "noAutomaticUserAssignment": true
+    },
+    {
+      "sceneId": "game:paradiso:PD04",
+      "realm": "PARADISO",
+      "sceneLabel": "Truthful Inquiry",
+      "sourceRecordId": "paradiso:PD04",
+      "route": "DYNAMIC_PROFILE_DEPENDENT",
+      "release": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "relPick",
+        "resolver": "hjReleaseAddresses",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/release.js",
+        "scoredAddressRule": "SI.law name→seat; held W nodes with n.cf and SQ>=4; max 3",
+        "requires": [
+          "current_user_profile",
+          "eligible_confirmed_imprints",
+          "user_triggered_release"
+        ],
+        "contentProtocolId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "becoming": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "ritStartPlan",
+        "resolver": "hjRitualCandidate",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/ritual.js",
+        "practiceSelector": "ritFor({darkB:firstMatchingSILaw.seat,DQ:computed.DQ})",
+        "cadenceDays": 7,
+        "requires": [
+          "current_user_profile",
+          "law_in_SI",
+          "eligible_practice_at_user_pacing",
+          "user_start_choice"
+        ],
+        "contentRitualId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "sourceStatus": "CODE_OBSERVED_CONDITIONAL_NOT_SCENE_CONTENT_APPROVAL",
+      "noAutomaticUserAssignment": true
+    },
+    {
+      "sceneId": "game:paradiso:PD05",
+      "realm": "PARADISO",
+      "sceneLabel": "Principled Courage",
+      "sourceRecordId": "paradiso:PD05",
+      "route": "DYNAMIC_PROFILE_DEPENDENT",
+      "release": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "relPick",
+        "resolver": "hjReleaseAddresses",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/release.js",
+        "scoredAddressRule": "SI.law name→seat; held W nodes with n.cf and SQ>=4; max 3",
+        "requires": [
+          "current_user_profile",
+          "eligible_confirmed_imprints",
+          "user_triggered_release"
+        ],
+        "contentProtocolId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "becoming": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "ritStartPlan",
+        "resolver": "hjRitualCandidate",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/ritual.js",
+        "practiceSelector": "ritFor({darkB:firstMatchingSILaw.seat,DQ:computed.DQ})",
+        "cadenceDays": 7,
+        "requires": [
+          "current_user_profile",
+          "law_in_SI",
+          "eligible_practice_at_user_pacing",
+          "user_start_choice"
+        ],
+        "contentRitualId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "sourceStatus": "CODE_OBSERVED_CONDITIONAL_NOT_SCENE_CONTENT_APPROVAL",
+      "noAutomaticUserAssignment": true
+    },
+    {
+      "sceneId": "game:paradiso:PD06",
+      "realm": "PARADISO",
+      "sceneLabel": "Just Leadership",
+      "sourceRecordId": "paradiso:PD06",
+      "route": "DYNAMIC_PROFILE_DEPENDENT",
+      "release": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "relPick",
+        "resolver": "hjReleaseAddresses",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/release.js",
+        "scoredAddressRule": "SI.law name→seat; held W nodes with n.cf and SQ>=4; max 3",
+        "requires": [
+          "current_user_profile",
+          "eligible_confirmed_imprints",
+          "user_triggered_release"
+        ],
+        "contentProtocolId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "becoming": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "ritStartPlan",
+        "resolver": "hjRitualCandidate",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/ritual.js",
+        "practiceSelector": "ritFor({darkB:firstMatchingSILaw.seat,DQ:computed.DQ})",
+        "cadenceDays": 7,
+        "requires": [
+          "current_user_profile",
+          "law_in_SI",
+          "eligible_practice_at_user_pacing",
+          "user_start_choice"
+        ],
+        "contentRitualId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "sourceStatus": "CODE_OBSERVED_CONDITIONAL_NOT_SCENE_CONTENT_APPROVAL",
+      "noAutomaticUserAssignment": true
+    },
+    {
+      "sceneId": "game:paradiso:PD07",
+      "realm": "PARADISO",
+      "sceneLabel": "Quiet Presence",
+      "sourceRecordId": "paradiso:PD07",
+      "route": "DYNAMIC_PROFILE_DEPENDENT",
+      "release": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "relPick",
+        "resolver": "hjReleaseAddresses",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/release.js",
+        "scoredAddressRule": "SI.law name→seat; held W nodes with n.cf and SQ>=4; max 3",
+        "requires": [
+          "current_user_profile",
+          "eligible_confirmed_imprints",
+          "user_triggered_release"
+        ],
+        "contentProtocolId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "becoming": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "ritStartPlan",
+        "resolver": "hjRitualCandidate",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/ritual.js",
+        "practiceSelector": "ritFor({darkB:firstMatchingSILaw.seat,DQ:computed.DQ})",
+        "cadenceDays": 7,
+        "requires": [
+          "current_user_profile",
+          "law_in_SI",
+          "eligible_practice_at_user_pacing",
+          "user_start_choice"
+        ],
+        "contentRitualId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "sourceStatus": "CODE_OBSERVED_CONDITIONAL_NOT_SCENE_CONTENT_APPROVAL",
+      "noAutomaticUserAssignment": true
+    },
+    {
+      "sceneId": "game:paradiso:PD08",
+      "realm": "PARADISO",
+      "sceneLabel": "Hopeful Connection",
+      "sourceRecordId": "paradiso:PD08",
+      "route": "DYNAMIC_PROFILE_DEPENDENT",
+      "release": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "relPick",
+        "resolver": "hjReleaseAddresses",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/release.js",
+        "scoredAddressRule": "SI.law name→seat; held W nodes with n.cf and SQ>=4; max 3",
+        "requires": [
+          "current_user_profile",
+          "eligible_confirmed_imprints",
+          "user_triggered_release"
+        ],
+        "contentProtocolId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "becoming": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "ritStartPlan",
+        "resolver": "hjRitualCandidate",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/ritual.js",
+        "practiceSelector": "ritFor({darkB:firstMatchingSILaw.seat,DQ:computed.DQ})",
+        "cadenceDays": 7,
+        "requires": [
+          "current_user_profile",
+          "law_in_SI",
+          "eligible_practice_at_user_pacing",
+          "user_start_choice"
+        ],
+        "contentRitualId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "sourceStatus": "CODE_OBSERVED_CONDITIONAL_NOT_SCENE_CONTENT_APPROVAL",
+      "noAutomaticUserAssignment": true
+    },
+    {
+      "sceneId": "game:paradiso:PD09",
+      "realm": "PARADISO",
+      "sceneLabel": "Coherent Alignment",
+      "sourceRecordId": "paradiso:PD09",
+      "route": "DYNAMIC_PROFILE_DEPENDENT",
+      "release": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "relPick",
+        "resolver": "hjReleaseAddresses",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/release.js",
+        "scoredAddressRule": "SI.law name→seat; held W nodes with n.cf and SQ>=4; max 3",
+        "requires": [
+          "current_user_profile",
+          "eligible_confirmed_imprints",
+          "user_triggered_release"
+        ],
+        "contentProtocolId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "becoming": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "ritStartPlan",
+        "resolver": "hjRitualCandidate",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/ritual.js",
+        "practiceSelector": "ritFor({darkB:firstMatchingSILaw.seat,DQ:computed.DQ})",
+        "cadenceDays": 7,
+        "requires": [
+          "current_user_profile",
+          "law_in_SI",
+          "eligible_practice_at_user_pacing",
+          "user_start_choice"
+        ],
+        "contentRitualId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "sourceStatus": "CODE_OBSERVED_CONDITIONAL_NOT_SCENE_CONTENT_APPROVAL",
+      "noAutomaticUserAssignment": true
+    },
+    {
+      "sceneId": "game:paradiso:PD10",
+      "realm": "PARADISO",
+      "sceneLabel": "Unity",
+      "sourceRecordId": "paradiso:PD10",
+      "route": "DYNAMIC_PROFILE_DEPENDENT",
+      "release": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "relPick",
+        "resolver": "hjReleaseAddresses",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/release.js",
+        "scoredAddressRule": "SI.law name→seat; held W nodes with n.cf and SQ>=4; max 3",
+        "requires": [
+          "current_user_profile",
+          "eligible_confirmed_imprints",
+          "user_triggered_release"
+        ],
+        "contentProtocolId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "becoming": {
+        "bindingKind": "ENGINE_ENTRYPOINT",
+        "method": "ritStartPlan",
+        "resolver": "hjRitualCandidate",
+        "sourceCode": "atuned_src/ui/hero_journey.js",
+        "implementation": "atuned_src/ui/ritual.js",
+        "practiceSelector": "ritFor({darkB:firstMatchingSILaw.seat,DQ:computed.DQ})",
+        "cadenceDays": 7,
+        "requires": [
+          "current_user_profile",
+          "law_in_SI",
+          "eligible_practice_at_user_pacing",
+          "user_start_choice"
+        ],
+        "contentRitualId": null,
+        "runtimeEntryStatus": "EXISTING_ROUTABLE_SUBJECT_TO_PROFILE"
+      },
+      "sourceStatus": "CODE_OBSERVED_CONDITIONAL_NOT_SCENE_CONTENT_APPROVAL",
+      "noAutomaticUserAssignment": true
+    }
+  ],
+  "teacherStarterRitualCatalog": [
+    {
+      "id": "IL-give",
+      "name": "Give and tell nobody",
+      "steps": [
+        "box",
+        "given"
+      ]
+    },
+    {
+      "id": "IL-need",
+      "name": "Ask what they need",
+      "steps": [
+        "box",
+        "il_need"
+      ]
+    },
+    {
+      "id": "IL-alone",
+      "name": "Kind when alone",
+      "steps": [
+        "il_alone",
+        "given"
+      ]
+    },
+    {
+      "id": "RE-hold",
+      "name": "Hold it a minute",
+      "steps": [
+        "box",
+        "meetit"
+      ]
+    },
+    {
+      "id": "RE-changed",
+      "name": "Say what changed",
+      "steps": [
+        "box",
+        "re_changed"
+      ]
+    },
+    {
+      "id": "RE-jaw",
+      "name": "Loose jaw, open ear",
+      "steps": [
+        "re_jaw",
+        "meetit"
+      ]
+    },
+    {
+      "id": "DE-want",
+      "name": "Name one want",
+      "steps": [
+        "slow",
+        "offered"
+      ]
+    },
+    {
+      "id": "DE-enough",
+      "name": "Say enough",
+      "steps": [
+        "box",
+        "de_enough"
+      ]
+    },
+    {
+      "id": "DE-pull",
+      "name": "Ride the pull",
+      "steps": [
+        "de_pull",
+        "offered"
+      ]
+    },
+    {
+      "id": "OR-rule",
+      "name": "Keep one rule",
+      "steps": [
+        "box",
+        "onerule"
+      ]
+    },
+    {
+      "id": "OR-plan",
+      "name": "Say the plan",
+      "steps": [
+        "box",
+        "or_plan"
+      ]
+    },
+    {
+      "id": "OR-stand",
+      "name": "Who stands on it",
+      "steps": [
+        "or_stand",
+        "onerule"
+      ]
+    },
+    {
+      "id": "PO-cut",
+      "name": "The same cut",
+      "steps": [
+        "box",
+        "samecut"
+      ]
+    },
+    {
+      "id": "PO-small",
+      "name": "The small version",
+      "steps": [
+        "box",
+        "po_small"
+      ]
+    },
+    {
+      "id": "PO-own",
+      "name": "Own the cost",
+      "steps": [
+        "po_own",
+        "samecut"
+      ]
+    },
+    {
+      "id": "PE-name",
+      "name": "Name it",
+      "steps": [
+        "box",
+        "pe_name"
+      ]
+    },
+    {
+      "id": "PE-match",
+      "name": "Face and stomach",
+      "steps": [
+        "box",
+        "pe_match"
+      ]
+    },
+    {
+      "id": "PE-see",
+      "name": "See it as it is",
+      "steps": [
+        "pe_name",
+        "pe_match",
+        "noting"
+      ]
+    },
+    {
+      "id": "TR-land",
+      "name": "Let it land",
+      "steps": [
+        "box",
+        "tr_land"
+      ]
+    },
+    {
+      "id": "TR-tell",
+      "name": "Tell one person",
+      "steps": [
+        "tr_land",
+        "tr_tell"
+      ]
+    },
+    {
+      "id": "CH-move",
+      "name": "Move the heat",
+      "steps": [
+        "box",
+        "ch_move"
+      ]
+    },
+    {
+      "id": "CH-ten",
+      "name": "Take ten minutes",
+      "steps": [
+        "box",
+        "ch_ten"
+      ]
+    },
+    {
+      "id": "CH-feel",
+      "name": "Find it in the body",
+      "steps": [
+        "slow",
+        "resist"
+      ]
+    },
+    {
+      "id": "FL-move",
+      "name": "Let it move",
+      "steps": [
+        "box",
+        "letmove"
+      ]
+    },
+    {
+      "id": "FL-call",
+      "name": "Make the call",
+      "steps": [
+        "box",
+        "fl_call"
+      ]
+    },
+    {
+      "id": "FL-other",
+      "name": "The other way",
+      "steps": [
+        "fl_other",
+        "letmove"
+      ]
+    },
+    {
+      "id": "AL-line",
+      "name": "Hold one line",
+      "steps": [
+        "box",
+        "linehold"
+      ]
+    },
+    {
+      "id": "AL-said",
+      "name": "Do what you said",
+      "steps": [
+        "box",
+        "al_said"
+      ]
+    },
+    {
+      "id": "AL-owe",
+      "name": "What you owe",
+      "steps": [
+        "al_owe",
+        "linehold"
+      ]
+    },
+    {
+      "id": "HO-stop",
+      "name": "Stop one thing",
+      "steps": [
+        "box",
+        "stopone"
+      ]
+    },
+    {
+      "id": "HO-wait",
+      "name": "Say I will wait",
+      "steps": [
+        "ho_open",
+        "ho_wait"
+      ]
+    },
+    {
+      "id": "HO-rest",
+      "name": "Open hands",
+      "steps": [
+        "ho_open",
+        "stopone",
+        "ho_wait"
+      ]
+    },
+    {
+      "id": "SA-hand",
+      "name": "Hand it on",
+      "steps": [
+        "box",
+        "sa_hand"
+      ]
+    },
+    {
+      "id": "SA-name",
+      "name": "Say who gave it",
+      "steps": [
+        "sa_name",
+        "sa_hand"
+      ]
+    },
+    {
+      "id": "TU-plain",
+      "name": "The plain word",
+      "steps": [
+        "box",
+        "tu_plain"
+      ]
+    },
+    {
+      "id": "TU-end",
+      "name": "End the sentence",
+      "steps": [
+        "box",
+        "tu_end"
+      ]
+    },
+    {
+      "id": "TU-both",
+      "name": "Say it and stop",
+      "steps": [
+        "box",
+        "tu_plain",
+        "tu_end"
+      ]
+    },
+    {
+      "id": "NA-tend",
+      "name": "Tend, do not pull",
+      "steps": [
+        "box",
+        "na_tend"
+      ]
+    },
+    {
+      "id": "NA-season",
+      "name": "Name the season",
+      "steps": [
+        "na_season",
+        "na_tend"
+      ]
+    }
+  ],
+  "practiceLibraryKeys": [
+    {
+      "key": "escan",
+      "name": "The Emotional Scan"
+    },
+    {
+      "key": "box",
+      "name": "Box Breathing"
+    },
+    {
+      "key": "slow",
+      "name": "Controlled Breath"
+    },
+    {
+      "key": "sig",
+      "name": "The Signal Test"
+    },
+    {
+      "key": "sysbreath",
+      "name": "Systematic Body Breathing"
+    },
+    {
+      "key": "resist",
+      "name": "Feel the Resistance"
+    },
+    {
+      "key": "truth",
+      "name": "The Somatic Truth Check"
+    },
+    {
+      "key": "heartpt",
+      "name": "Heart Point Focus"
+    },
+    {
+      "key": "noting",
+      "name": "Noting Meditation"
+    },
+    {
+      "key": "listen",
+      "name": "Active Listening"
+    },
+    {
+      "key": "observer",
+      "name": "The Observer Technique"
+    },
+    {
+      "key": "detect",
+      "name": "The Detection Practice"
+    },
+    {
+      "key": "hands",
+      "name": "Healing Hands"
+    },
+    {
+      "key": "hardtrauma",
+      "name": "Hard Trauma Meditation"
+    },
+    {
+      "key": "superego",
+      "name": "Superego Pattern Meditation"
+    },
+    {
+      "key": "chakra",
+      "name": "Individual Chakra Meditation"
+    },
+    {
+      "key": "candle",
+      "name": "Candle Visualisation"
+    }
+  ],
+  "teacherAdditionalPracticeKeys": [
+    {
+      "key": "il_need",
+      "pole": "IL"
+    },
+    {
+      "key": "il_alone",
+      "pole": "IL"
+    },
+    {
+      "key": "re_changed",
+      "pole": "RE"
+    },
+    {
+      "key": "re_jaw",
+      "pole": "RE"
+    },
+    {
+      "key": "de_enough",
+      "pole": "DE"
+    },
+    {
+      "key": "de_pull",
+      "pole": "DE"
+    },
+    {
+      "key": "or_plan",
+      "pole": "OR"
+    },
+    {
+      "key": "or_stand",
+      "pole": "OR"
+    },
+    {
+      "key": "po_small",
+      "pole": "PO"
+    },
+    {
+      "key": "po_own",
+      "pole": "PO"
+    },
+    {
+      "key": "pe_name",
+      "pole": "PE"
+    },
+    {
+      "key": "pe_match",
+      "pole": "PE"
+    },
+    {
+      "key": "tr_land",
+      "pole": "TR"
+    },
+    {
+      "key": "tr_tell",
+      "pole": "TR"
+    },
+    {
+      "key": "ch_move",
+      "pole": "CH"
+    },
+    {
+      "key": "ch_ten",
+      "pole": "CH"
+    },
+    {
+      "key": "fl_call",
+      "pole": "FL"
+    },
+    {
+      "key": "fl_other",
+      "pole": "FL"
+    },
+    {
+      "key": "al_said",
+      "pole": "AL"
+    },
+    {
+      "key": "al_owe",
+      "pole": "AL"
+    },
+    {
+      "key": "ho_wait",
+      "pole": "HO"
+    },
+    {
+      "key": "ho_open",
+      "pole": "HO"
+    },
+    {
+      "key": "sa_hand",
+      "pole": "SA"
+    },
+    {
+      "key": "sa_name",
+      "pole": "SA"
+    },
+    {
+      "key": "tu_plain",
+      "pole": "TU"
+    },
+    {
+      "key": "tu_end",
+      "pole": "TU"
+    },
+    {
+      "key": "na_tend",
+      "pole": "NA"
+    },
+    {
+      "key": "na_season",
+      "pole": "NA"
+    }
+  ],
+  "pending": [
+    "Validate the live button behavior in a browser for profiles with and without eligible imprints and eligible tier practices.",
+    "Do not claim canonical event→CQ→Avatar certification from the presence of entrypoint functions.",
+    "Original gameboard TDD section 7 requires approved scene-specific protocol IDs. Owner adjudication needed if that fixed-ID contract supersedes user-profile dynamic route.",
+    "Actual generated per-user protocol/ritual IDs are minted at acceptance/start; not static research labels."
+  ]
+}
