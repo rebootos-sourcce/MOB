@@ -1,0 +1,84 @@
+{
+  "schema": "ATUNED_V16_G02_EXACT_AUTHOR_ARCHITECTURE_EVIDENCE",
+  "date": "2026-10-28",
+  "original": {
+    "filename": "MOB_Complete_v341.html",
+    "sha256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+    "exactCopyCount": 3
+  },
+  "authority": "AUTHOR_ORIGINAL_SOURCE_PASSAGES; NOT_NEW_CANON_APPROVAL_OR_EMPIRICAL_CLINICAL_ASSERTION",
+  "records": [
+    {
+      "id": "V341-G02-PERFORMER",
+      "line": 7417,
+      "sourceName": "The Performer",
+      "sourceLayer": "Hyper-Complex",
+      "exactExcerpt": "The Performer, Creative Industry Hyper-Complex: entitlement fused with deception fused with superiority.",
+      "status": "ORIGINAL_AUTHOR_NAME_AND_BEHAVIOR_VERIFIED; CANON_MEMBER_IDS_INFERRED_NOT_APPROVED",
+      "doesNotApprove": [
+        "Narcissistic",
+        "Exploitation",
+        "Superiority-Persecution"
+      ]
+    },
+    {
+      "id": "V341-G02-MASK",
+      "line": 3860,
+      "sourceName": "Mask",
+      "sourceLayer": "behavioral output",
+      "exactExcerpt": "The mask isn't a rung sitting on top of the hyper-complex. It's what comes out the far end of the whole steering assembly",
+      "status": "ORIGINAL_AUTHOR_VERSIONED_SOURCE_PROVEN"
+    },
+    {
+      "id": "V341-G02-ADVERSARY",
+      "line": 3865,
+      "sourceName": "Adversary Archetype",
+      "sourceLayer": "Jungian archetype container",
+      "exactExcerpt": "Their behavioral sum corresponds to Malak, Baal, Set, and Lucifer as named modes.",
+      "status": "SOURCE_DISTINCTION; NOT_FOUR_AUTOMATIC_SUPERCOMPLEX_MEMBER_LIST"
+    },
+    {
+      "id": "V341-G02-LUCIFER",
+      "line": 5790,
+      "sourceName": "Lucifer",
+      "sourceLayer": "inverted Illumination pole",
+      "coherentCounterpart": "Jesus",
+      "exactExcerpt": "Illumination · Jesus / Lucifer",
+      "status": "EXACT_SOURCE_MIRROR_PAIR_VERIFIED; NO_RUNTIME_PERSON_LABEL"
+    },
+    {
+      "id": "V341-G02-MOLOCH",
+      "line": 5793,
+      "sourceName": "Moloch",
+      "sourceLayer": "inverted Power pole",
+      "coherentCounterpart": "Musashi",
+      "exactExcerpt": "Power · Musashi / Moloch",
+      "status": "EXACT_SOURCE_MIRROR_PAIR_VERIFIED; NO_RUNTIME_PERSON_LABEL"
+    },
+    {
+      "id": "V341-G02-GERYON",
+      "line": 5794,
+      "sourceName": "Geryon",
+      "sourceLayer": "inverted Perception pole",
+      "coherentCounterpart": "Buddha",
+      "exactExcerpt": "Perception · Buddha / Geryon",
+      "status": "EXACT_SOURCE_MIRROR_PAIR_VERIFIED; NO_RUNTIME_PERSON_LABEL"
+    },
+    {
+      "id": "V341-G02-BAAL",
+      "line": 3865,
+      "sourceName": "Baal",
+      "sourceLayer": "named adversarial mode (not proven unique mirror pair)",
+      "exactExcerpt": "Their behavioral sum corresponds to Malak, Baal, Set, and Lucifer as named modes.",
+      "status": "SOURCE_NAMED; UNIQUE_MIRROR_PAIR_NOT_PROVEN"
+    }
+  ],
+  "unresolved": {
+    "ordinaryEightComplexRoster": "Not located in source under exact eight/eight ordinary/8 Complexes phrases; cannot substitute 23 existing Canon Complexes.",
+    "superComplexMemberIds": "Four named candidates require owner-authoritative stack/membership IDs; not inferred from shared names.",
+    "baalUniqueMirrorPair": "No directly verified distinct one-to-one inverted mirror mapping in matched source excerpt.",
+    "infernoV1Original": "Original archive SHA256 not recovered."
+  },
+  "crossVersionRule": "Preserve later owner rejection of Psychopathy as canonical Super-Complex even when older v341 text calls it one.",
+  "runtimePromotions": 0
+}
