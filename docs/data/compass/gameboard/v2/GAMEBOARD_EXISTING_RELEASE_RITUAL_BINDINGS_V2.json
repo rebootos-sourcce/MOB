@@ -12,8 +12,7 @@
     "atuned_src/engine/data/teachers_recipes.js": "8b4551611accea43f6a23ed49151a6116995c262",
     "atuned_src/engine/data/practice.js": "18c537e440760e4d7c91c0bd0a0880be0e977db5",
     "docs/data/compass/gameboard/v1/GAMEBOARD_MAP_V1.json": "4c97cb39cba7d93a671e571c756fcb4c4fe74fc1",
-    "docs/data/compass/gameboard/v1/GAME_LEVEL_TEMPLATE_V1.json": "9d29b91b63a99cf0135c297f78aad0c4fdceddf9",
-    "docs/data/compass/gameboard/v1/validate_gameboard.cjs": "f50edb2f04fdc38eca47ec0a4fae0c6aa2dc4a75"
+    "docs/data/compass/gameboard/v1/GAME_LEVEL_TEMPLATE_V1.json": "9d29b91b63a99cf0135c297f78aad0c4fdceddf9"
   },
   "sourceDepots": {
     "MOB": {
