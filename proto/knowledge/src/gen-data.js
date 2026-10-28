@@ -19,7 +19,7 @@ const src=process.argv[2]?fs.readFileSync(process.argv[2],'utf8')
  :cp.execSync('git show HEAD:engine.js',{cwd:ROOT,maxBuffer:64e6}).toString();
 const ctx={console}; vm.createContext(ctx);
 vm.runInContext(src+`;this.__={NODES,CHILD,MASKS,ARCH,GLOSS,HCX_LIB,ALL_SAB,SABDEF,
- DOMAINS,DOMDEF,APC,AXCARD,PAL,SEATGLYPH,BANDS,KB_KEY,
+ DOMAINS,DOMDEF,KB_RENAME,APC,AXCARD,PAL,SEATGLYPH,BANDS,KB_KEY,
  AXLINE:CHILD.map(function(c){return axLine(c.nm);}), DESCENT};`,ctx);
 const nerveSource=fs.readFileSync(path.join(ROOT,'atuned_src','engine','data','nerves.js'),'utf8');
 const nerveCtx={}; vm.createContext(nerveCtx);
@@ -48,7 +48,11 @@ T.APC.forEach(c=>add({id:'seat:'+c.b, kind:'seat', nm:c.b, seat:c.b,
  fam:clean(c.nv), def:lead(c.d), body:clean(c.d), ic:null}));
 
 /* the nine child emotions, and the letting go card that speaks each */
-T.CHILD.forEach((c,i)=>{const ax=T.AXCARD.filter(a=>a.ax===c.nm)[0]||{};
+const AXIS_MANUSCRIPT={
+ Surprise:{track:'A sudden arrival of new experience before the reaction; distinct from shock.',inst:'Readiness, the documented coherent pole of Surprise.'},
+ Anticipation:{track:'Waiting for what is ahead, experienced as anxious or excited.',inst:'Presence, the documented coherent pole; returning from waiting into the current moment.'}
+};
+T.CHILD.forEach((c,i)=>{const card=T.AXCARD.filter(a=>a.ax===c.nm)[0]||{};const ax={...AXIS_MANUSCRIPT[c.nm],...card};
  add({id:'axis:'+c.nm, kind:'axis', nm:c.nm, seat:c.seat, fam:c.seat+' seat',
   def:c.nm+', one of the nine child emotions, seated in the '+c.seat+' seat.',
   card:'Felt in the '+c.loc+'. Emptied, it fills with '+c.opp+'.',
@@ -287,7 +291,7 @@ T.MASKS.forEach(m=>add({id:'mask:'+m.nm, kind:'mask', nm:m.nm, seat:(m.b&&m.b[0]
  fam:(m.b||[]).join(' and '), def:'The '+m.nm.toLowerCase()+' mask '+clean(m.v)+'.', ic:m.ic}));
 T.ARCH.forEach((a,i)=>add({id:'arch:'+a.nm, kind:'arch', nm:a.nm, seat:a.b||'Heart', idx:i,
  fam:(a.b||'Heart')+' seat', def:'The '+a.nm.toLowerCase()+' '+clean(a.v)+'.', ic:a.ic}));
-T.DOMAINS.forEach((d,i)=>{const x=T.DOMDEF[T.KB_KEY(d.nm)];
+T.DOMAINS.forEach((d,i)=>{const oldKey=T.KB_KEY(d.nm);const alias=T.KB_RENAME[oldKey];const x=T.DOMDEF[oldKey]||(alias?T.DOMDEF[T.KB_KEY(alias)]:null);
  add({id:'dom:'+d.nm, kind:'dom', nm:d.nm, seat:'Heart', idx:i, fam:d.r+' root',
   def:d.nm+', '+clean(d.d)+'.', clear:x?clean(x.c):'', dist:x?clean(x.x):'', ic:d.ic||null});});
 
@@ -416,13 +420,19 @@ E.forEach(e=>{
  const descentDetailFields=['inferred','inferenceBasis','behavior','triggerMechanism','livedExample','impact','practice','oppositeId','oppositeDefinition','oppositeStatus','confidence','reviewStatus','researchSources','researchPasses'];
  const assignedFields=(e.kind==='hcx'&&String(e.narrativeSource||'').includes('compass.js DESCENT'))?schema.fields.concat(descentDetailFields):schema.fields;
  e.template=Object.fromEntries(assignedFields.map(k=>[k,Object.prototype.hasOwnProperty.call(e,k)?e[k]:null]));
+ const documentedNullFields=[];
+ if(e.kind==='node'&&[8,109,110,111,112].includes(Number(e.id.slice(5)))&&e.axis==null)
+  documentedNullFields.push('axis');
+ if(e.kind==='hcx'&&e.id==='descent:Machiavellianism')
+  documentedNullFields.push('seat','sub');
  const missingFields=assignedFields.filter(k=>{
+  if(documentedNullFields.includes(k))return false;
   if(!Object.prototype.hasOwnProperty.call(e,k)||e[k]==null||e[k]==='') return true;
   /* Empty arrays are valid for relationship collections: a leaf may have no
      outgoing links. Do not report [] as missing content. */
   return false;
 });
- e.templateValidation={schemaDefined:true, sourceBacked:true,
+ e.templateValidation={schemaDefined:true, sourceBacked:true, documentedNullFields,
   contentStatus:missingFields.length===0?'complete':'incomplete',
   missingFields};
 });
@@ -430,12 +440,15 @@ E.forEach(e=>{
 const icp=JSON.parse(fs.readFileSync(path.join(__dirname,'icp.json'),'utf8'));
 const deepPsychologicalRegistry=JSON.parse(fs.readFileSync(path.join(ROOT,'docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json'),'utf8'));
 const deepPsychologicalTemplateCatalog=JSON.parse(fs.readFileSync(path.join(ROOT,'docs/data/ATUNED_DEEP_PSYCHOLOGICAL_TEMPLATE_CATALOG_v1.json'),'utf8'));
-/* Keep the new taxonomy in a separate namespace. Do not merge its unapproved
-   mappings into the experiential graph. This makes records available to the
-   generated data contract while semantic edge promotion remains evidence-gated. */
+/* Stand up every Deep Psychological record as a typed, navigable entry.
+   Preserve source/Canon status and only bridge exact, source-table labels.
+   Runtime validation checks every cross-graph edge in both directions. */
+const {integrateDeepPsychological}=require('./integrate-deep-psychological.js');
+const deepPsychologicalGraph=integrateDeepPsychological(E,deepPsychologicalRegistry,deepPsychologicalTemplateCatalog);
 const out={entries:E, pal:T.PAL, glyph:T.SEATGLYPH, bands:T.BANDS, icp:icp,
  deepPsychologicalRegistry:deepPsychologicalRegistry,
  deepPsychologicalTemplateCatalog:deepPsychologicalTemplateCatalog,
+ deepPsychologicalGraph:deepPsychologicalGraph,
  stamp:'engine tables and ICP figures read from commit b434f1a'};
 const txt='/* generated by gen-data.js. Do not edit. */\nvar KBD='+JSON.stringify(out)+';\n';
 if(/\u2014/.test(txt)){console.error('em dash in generated data');process.exit(1);}

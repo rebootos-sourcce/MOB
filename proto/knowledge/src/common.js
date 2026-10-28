@@ -14,6 +14,15 @@ var KB=(function(){
   node:['Fetter','Fetters'], sab:['Saboteur','Saboteurs'], hcx:['Architecture','Architectures'],
   mask:['Mask','Masks'], arch:['Archetype','Archetypes'], dom:['Domain','Domains'],
   term:['Term','Terms']};
+ /* All generated kinds must be renderable, including source-qualified
+    Deep Psyche records and existing higher-order records. */
+ E.forEach(function(e){
+  if(!KIND[e.kind]){
+   var name=String(e.sourceKind||e.kind).replace(/^psych_/,'').replace(/_/g,' ');
+   name=name.charAt(0).toUpperCase()+name.slice(1);
+   KIND[e.kind]=[name,name+' records'];
+  }
+ });
  /* what each percent is a percent of, from KB_OF in ui/knowledge.js */
  var OF={node:'of the address at full load', axis:'of the axis held', sab:'of the pattern at full weight',
   mask:'of the mask at full weight', arch:'of your strongest archetype', dom:'of your strongest blueprint lobe',
@@ -159,7 +168,8 @@ var KB=(function(){
    +(e.sub?sec('Also called',e.sub):'')
    +(e.out?sec(e.kind==='sab'?'The interrupt':'The release line',e.out):'')
    +(e.inst?sec('What fills it',e.inst):'')
-   +(opt.check===false?'':checkHtml(e))
+   +(e.kind.indexOf('psych_')===0&&e.sourceStatus?sec('Source and review status',e.sourceStatus):'')
+   +(opt.check===false||e.kind.indexOf('psych_')===0?'':checkHtml(e))
    +'</div>'+linksHtml(e)+'</div>';
   return h;}
  function linksHtml(e){

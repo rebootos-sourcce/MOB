@@ -1,0 +1,67 @@
+name: Deep Psyche Runtime Graph
+on:
+  push:
+    branches:
+      - 'atuned/deep-psyche-end-to-end-2026-10-26'
+  pull_request:
+    paths:
+      - 'docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json'
+      - 'proto/knowledge/src/**'
+      - 'atuned_src/**'
+      - 'tools/build-deep-psyche-app.js'
+      - 'tools/audit-deep-psyche-handoff.js'
+      - 'tests/deep-psyche-runtime.js'
+      - 'tests/deep-psyche-app.js'
+      - '.github/workflows/deep-psyche-runtime.yml'
+permissions:
+  contents: write
+concurrency:
+  group: deep-psyche-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned TypeScript toolchain for the production app build
+        run: |
+          npm ci --prefix atuned_funnel_system
+          ln -s "$GITHUB_WORKSPACE/atuned_funnel_system/node_modules" "$GITHUB_WORKSPACE/atuned_src/node_modules"
+          test -x atuned_src/node_modules/.bin/tsc
+      - name: Generate knowledge graph from current engine and Deep Psyche registry
+        run: node proto/knowledge/src/gen-data.js
+      - name: Deep Psyche 149-record runtime integration and nerve traversal
+        run: node tests/deep-psyche-runtime.js
+      - name: Engine and psychological template validator
+        run: node proto/knowledge/src/validate-templates.js
+      - name: Compile shipped app and preserve established build gates
+        run: sh atuned_src/BUILD.sh
+      - name: Validate shipped app registry, navigation and bundle
+        run: node tests/deep-psyche-app.js
+      - name: Source-qualified Deep Psyche 8 structural and provenance audit
+        run: node tools/audit-deep-psyche-handoff.js --strict-structural > deep-psyche-8-audit.json
+      - name: Strict Deep Psyche completion audit (records unresolved gaps without failing job)
+        if: always()
+        run: node proto/knowledge/src/audit-deep-psychological-closure.js > deep-psyche-audit.json
+      - name: Preserve audit artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deep-psyche-graph-audit
+          path: |
+            deep-psyche-audit.json
+            deep-psyche-8-audit.json
+      - name: Commit generated graph on integration branch after successful runtime tests
+        if: github.event_name == 'push' && success()
+        run: |
+          if ! git diff --quiet -- proto/knowledge/src/data.js; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add proto/knowledge/src/data.js
+            git commit -m 'Generate integrated Deep Psyche knowledge data'
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
