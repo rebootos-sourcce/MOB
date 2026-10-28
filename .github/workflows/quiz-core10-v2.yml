@@ -1,0 +1,40 @@
+name: ATUNED Core 10 / Diagnostic V2
+on:
+  push:
+    branches:
+      - atuned/quiz-v2-validation-20261028
+    paths:
+      - 'funnel/integrity-v2*'
+      - 'funnel/quiz-v2.html'
+      - 'funnel/diagnostic-v2.html'
+      - 'docs/data/compass/quiz/**'
+      - 'tests/integrity-v2.cjs'
+      - 'tools/build-integrity-v2-data.cjs'
+      - '.github/workflows/quiz-core10-v2.yml'
+  pull_request:
+    paths:
+      - 'funnel/**'
+      - 'docs/data/compass/quiz/**'
+      - 'tests/integrity-v2.cjs'
+      - 'tools/build-integrity-v2-data.cjs'
+      - '.github/workflows/quiz-core10-v2.yml'
+permissions:
+  contents: read
+jobs:
+  quiz-v2-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check browser JavaScript syntax
+        run: |
+          node --check funnel/integrity-v2.js
+          node --check funnel/integrity-v2-data.js
+      - name: Validate canonical 21-law question structure
+        run: node docs/data/compass/quiz/v2/validate_integrity21_v2.cjs
+      - name: Verify generated browser question bank
+        run: node tools/build-integrity-v2-data.cjs --check
+      - name: Exercise Core 10 to 63 continuity and summary
+        run: node tests/integrity-v2.cjs
