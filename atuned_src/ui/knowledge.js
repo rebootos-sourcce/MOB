@@ -694,57 +694,84 @@ function kbSecName(k){
    which already says how it runs through you, what the opposite
    is, and runs the protocol.
    ============================================================ */
-/* the shares of the tug of war, or null when neither side carries anything,
-   because 0 against 0 is no lean at all and a 50 would claim one. */
-function poleShare(l,r){
- var L=Math.max(0,l||0), R=Math.max(0,r||0), t=L+R;
- if(t<=0)return null;
- var a=Math.round(L/t*100); return {l:a, r:100-a};}
-function poleBar(sh){
- var a=sh?sh.l:50;
- return '<span class="kbp-bar'+(sh?'':' none')+'" aria-hidden="true">'
-  +'<i class="kbp-hl" style="width:'+(sh?a:0)+'%"></i>'
-  +'<i class="kbp-hr" style="width:'+(sh?100-a:0)+'%"></i>'
-  +'<b class="kbp-mk" style="left:'+a+'%"></b></span>';}
-/* THE LOCKED DUAL-POLE DESIGN, sections 99-106 of the look-dev ruling log.
-   Flat chakra fill, one centred circle holding the bare weight (no "%"), a
-   live five-state glyph read off the same x.p this row already carries --
-   his own ruling, section 106 verbatim: "100 divided by 5. open > impaired >
-   moderately impaired > heavily impaired > blocked." Replaces the split-bar/
-   two-badge design below, which was the pre-restyle shape. The five glyphs
-   are pulled verbatim from the approved render,
-   lookdev/handoff/builds/dualpole_icon_live_five_state_20261024.html. */
+/* THE APPROVED DUAL-POLE BAR, round of 28 October, after three real mockup
+   rounds reviewed against real numbers from this build. His words picking
+   it: "those bars are good, let's wire that in... new bars for the left,
+   new bars to the right." Replaces the flat chakra circle (sections 99-106
+   of the look-dev ruling log, built 27 October) and the older split-badge
+   tug-of-war bar it replaced in turn (`poleShare`/`poleBar`, now retired,
+   their job folded into this one function so the deck row and the drill
+   header read the same shape).
+
+   One bar, a centre line at neutral. The address's own name sits over the
+   left end in its seat colour; its real coherent opposite (CHILD's own
+   `.opp`) sits over the right in the house's own opposite colour, Heart's
+   green, the same convention `poleDrillHead` already used. The bar fills
+   outward from centre: left by the held weight, right by the installed
+   weight, both already percents (`kbPct`, nothing recomputed here). The
+   percent sits inside its own fill and nowhere else; a side at zero shows
+   no number, nothing to put one inside.
+
+   The two end icons are NODE_STRIKE's own collapsed and open glyphs, kept
+   from the circle design rather than redrawn. At a true neutral reading
+   both sit at full colour. As a reading commits to one pole, that icon
+   holds its colour and the other mixes toward the theme's own --dim token,
+   in proportion to how far it has committed, so it is still real colour
+   dimming toward grey and never flat transparency fading to nothing. */
 var NODE_STRIKE={
  op:'<circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="1.9" style="fill:currentColor;stroke:none"/>',
  im:'<circle cx="12" cy="12" r="7"/><path d="M5 12h4"/>',
  mo:'<circle cx="12" cy="12" r="7"/><path d="M5 12h7.5"/>',
  he:'<circle cx="12" cy="12" r="7"/><path d="M5 12h11"/>',
  cl:'<circle cx="12" cy="12" r="7"/><path d="M5 12h15"/>'};
-function dualPoleState(p){
- var w=Math.max(0,Math.min(100,+p||0));
- if(w<20)return 'op'; if(w<40)return 'im'; if(w<60)return 'mo'; if(w<80)return 'he';
- return 'cl';}
-function dualPoleStateWord(k){
- return {op:'open',im:'impaired',mo:'moderately impaired',he:'heavily impaired',cl:'blocked'}[k]||'';}
+/* 0 fully collapsed, 50 neutral, 100 fully open, both lp and rp already
+   percents 0 to 100. */
+function poleTip(lp,rp){return 50-(lp||0)/2+(rp||0)/2;}
+function poleLean(tip){
+ if(tip<35)return 'collapsed'; if(tip>65)return 'open'; return 'neutral';}
+/* the mix toward --dim for the losing side, 0 at neutral, up to 85 percent
+   dim at a full pole, so a dimmed icon is still real colour and never gone. */
+function poleDimPct(tip,side){
+ var dist=Math.abs(tip-50)/50, winning=(side==='l')===(tip<=50);
+ if(tip===50||winning)return 0;
+ return Math.round(dist*85);}
+function poleDualBar(nm,opp,lp,rp,cL,cR,ic,big){
+ var tip=poleTip(lp,rp), dimL=poleDimPct(tip,'l'), dimR=poleDimPct(tip,'r');
+ var icStyle=function(c,dim){return 'color:'+(dim?'color-mix(in srgb,'+c+' '+(100-dim)+'%,var(--dim))':c);};
+ /* IF IT HAS A NAME IT HAS AN ICON, the owner's standing rule, carried over
+    from crBadge's own glyph (same markup, same colour-by-seat convention):
+    the address's own axis mark, first in the row, so 112 named addresses
+    still read as 112 distinct marks and not one bar shape repeated. The two
+    end icons below are the bar's own collapsed/open glyphs, the same on
+    every row by design, never this row's identity. */
+ return '<span class="kbp2'+(big?' kbp2-lg':'')+'" style="--c:'+cL+';--oc:'+cR+'">'
+  +'<span class="kbp2-nm"><span class="kbp2-lwrap"><span class="kbp2-ax"><svg viewBox="0 0 24 24" aria-hidden="true">'
+   +glyphPath(ic)+'</svg></span><span class="kbp2-l">'+esc(nm)+'</span></span>'
+   +'<span class="kbp2-r">'+esc(opp)+'</span></span>'
+  +'<span class="kbp2-row">'
+   +'<svg class="kbp2-ic" viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true" '
+    +'style="'+icStyle('var(--c)',dimL)+'">'+NODE_STRIKE.cl+'</svg>'
+   +'<span class="kbp2-bar">'
+    +(lp?'<i class="kbp2-fl" style="width:'+(lp/2)+'%">'+'<b>'+Math.round(lp)+'%</b></i>':'')
+    +(rp?'<i class="kbp2-fr" style="width:'+(rp/2)+'%">'+'<b>'+Math.round(rp)+'%</b></i>':'')
+    +'<i class="kbp2-ctr"></i>'
+   +'</span>'
+   +'<svg class="kbp2-ic" viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true" '
+    +'style="'+icStyle('var(--oc)',dimR)+'">'+NODE_STRIKE.op+'</svg>'
+  +'</span></span>';}
 function kbPoleRow(x,i,seat,c,fam){
- var n=x.o, pole=x.q!=null;
- var wl=pole?n.held:n.sq;
- var state=dualPoleState(x.p);
- /* A ZERO IS NOT SAID AND A SHARE IS NOT SAID AS A SCORE. "weight 0.0" and
-    "0 per cent toward Anger, 100 toward Equanimity" read a nought and a result
-    to a screen reader. The label says what is held, and which way it leans.
-    Round J13. Kept under the new design: the live state word is added, the
-    opposite-pole reading is not, since the locked design carries one pole
-    per row, not two. */
- var say=x.t+', '+(fam||'')+(wl>=0.05?', weight '+wl.toFixed(1):', nothing held')+', '+dualPoleStateWord(state)+'.';
- return '<button type="button" class="kb-row kbp kbp-flat" data-kbi="'+i+'" style="--c:'+c+'"'
+ var n=x.o, oc=seatCol('Heart'), lp=x.p||0, rp=x.q||0;
+ /* A ZERO IS NOT SAID AS A SCORE, round J13, kept: a reading says what each
+    side carries in plain percent, not "0 per cent" read to a screen reader
+    as if it were a result rather than nothing there. */
+ var tip=poleTip(lp,rp);
+ var say=x.t+', '+(fam||'')+(lp?', held '+Math.round(lp)+' per cent':', nothing held')
+  +(rp?', '+esc(x.opp||'its opposite')+' installed '+Math.round(rp)+' per cent':'')
+  +', '+poleLean(tip)+'.';
+ return '<button type="button" class="kb-row kbp" data-kbi="'+i+'" style="--c:'+c+'"'
   +' aria-label="'+esc(say)+'">'
-   +'<span class="kbp-body"><span class="kbp-top">'
-  +'<span class="kb-rt"><span class="kb-rn">'+esc(x.t)+'</span>'
-  +(fam?'<span class="kb-rs">'+esc(fam)+'</span>':'')+'</span>'
-  +crBadge(seat, x.p||0, {size:'sm', color:c, raw:Math.round(x.p||0),
-     glyph:NODE_STRIKE[state], title:x.t+' \u00b7 '+dualPoleStateWord(state)})
-  +'</span></span></button>';}
+   +poleDualBar(x.t,x.opp||'',lp,rp,c,oc,x.ic,false)
+  +'</button>';}
 /* INJECTED, because the stylesheet in the shell is held by another seat this
    round. The precedent is iqArtCss in ui/intakeui.js. Every rule that sets
    geometry names two classes, so none lays a second claim on one class name. */
@@ -756,70 +783,68 @@ function kbpCss(){
      pixels, and at three to a line the names were cut to "Posses..." */
   '.kb-rg.kbp-g{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 36px}',
   '@media (max-width:900px){.kb-rg.kbp-g{grid-template-columns:minmax(0,1fr)}}',
-  '.kb-row.kbp{min-height:72px;min-width:0;gap:8px;padding:9px 8px 9px 2px;align-items:center}',
-  '.kbp .kbp-body{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:8px}',
-  '.kbp .kbp-top,.kbp-dr .kbp-top{display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0}',
-  '.kbp .kbp-side,.kbp-dr .kbp-side{display:flex;align-items:center;gap:8px;min-width:0}',
-  '.kbp .kbp-o,.kbp-dr .kbp-o{flex:0 0 auto;justify-content:flex-end;text-align:right}',
-  '.kbp .kb-rv{margin-left:2px;font-size:14px}',
-  '.kbp .kbp-w,.kbp-dr .kbp-w{font-family:var(--num);font-size:14px;font-weight:500;color:var(--ink);',
-  ' font-variant-numeric:tabular-nums}',
-  '.kbp .kbp-w.z{color:var(--dim);font-weight:400}',
-  '.kbp .kbp-op,.kbp-dr .kbp-op{font-size:13.5px;color:var(--mid);line-height:1.2;white-space:nowrap}',
-  '.kbp .kbp-op.z{color:var(--dim);font-size:12px}',
-  '.kbp .kbp-line,.kbp-dr .kbp-line{display:flex;align-items:center;gap:8px;min-width:0}',
-  '.kbp .kbp-pc,.kbp-dr .kbp-pc{flex:0 0 34px;font-family:var(--num);font-size:12px;color:var(--mid);',
-  ' font-variant-numeric:tabular-nums}',
-  '.kbp .kbp-pc.r,.kbp-dr .kbp-pc.r{text-align:right}',
-  '.kbp .kbp-bar,.kbp-dr .kbp-bar{position:relative;flex:1 1 auto;display:flex;height:8px;min-width:60px;',
-  ' border-radius:4px;background:color-mix(in srgb,var(--ink) 8%,transparent)}',
-  '.kbp-bar .kbp-hl{display:block;height:100%;border-radius:4px 0 0 4px;',
-  ' background:repeating-linear-gradient(135deg,var(--c) 0 2px,transparent 2px 5px);',
-  ' box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--c) 70%,transparent)}',
-  '.kbp-bar .kbp-hr{display:block;height:100%;border-radius:0 4px 4px 0;',
-  ' background:linear-gradient(90deg,color-mix(in srgb,var(--oc) 45%,transparent),var(--oc))}',
-  '.kbp-bar .kbp-mk{position:absolute;top:-4px;width:2px;height:16px;margin-left:-1px;',
-  ' border-radius:1px;background:var(--ink)}',
-  '.kbp-bar.none .kbp-mk{background:var(--dim)}',
-  '.kbp-dr{display:flex;flex-direction:column;gap:10px;margin:12px 0 16px}',
-  '.kbp-dr .kbp-nm{font-size:14px;color:var(--ink)}',
-  '.kbp-dr .kbp-rs{font-size:12px;color:var(--dim)}',
+  '.kb-row.kbp{min-height:60px;min-width:0;gap:8px;padding:9px 8px 9px 2px;align-items:center}',
   '.ad-st .ad-q{margin:0}',
   '.ad-st .ad-stm{font-size:12px;color:var(--dim)}',
   '.ad-st{display:flex;flex-direction:column;gap:6px;padding:10px 0;border-bottom:1px solid var(--edge)}',
   '.ad-st .btn{align-self:flex-start}',
   '.ad-sts{display:flex;flex-direction:column;margin-bottom:6px}',
   '.ad-stw{margin-top:14px}',
-  /* THE FLAT CHAKRA FILL, locked dual-pole design, sections 99-106. The
-     crb ring (crBadge's own centred circle) already draws a progress arc;
-     this forces that arc to one flat seat colour instead of a value sweep,
-     since the locked design shows a flat fill, not a progress ring. */
-  '.kbp-flat .crb .crb-a circle{stroke:var(--c) !important}',
-  /* the first circle is the static background track; the locked design
-     is one flat ring, not a track-plus-value-arc, so the track is hidden
-     and the value arc's dashoffset is forced to 0 so the full ring shows
-     solid rather than a partial sweep. */
-  '.kbp-flat .crb .crb-a circle:first-child{opacity:0}',
-  '.kbp-flat .crb .crb-a circle:last-child{stroke-dashoffset:0 !important}',
-  '.kbp-flat .kb-rn{font-weight:500}'
+  /* THE DUAL-POLE BAR, round of 28 October. One bar, a centre line at
+     neutral, the address's own name over the left end and its real
+     coherent opposite over the right, filling outward from the centre.
+     kbp2 is the whole unit; kbp2-lg is the drill header's larger variant. */
+  '.kbp2{display:flex;flex-direction:column;gap:4px;flex:1 1 auto;min-width:0}',
+  '.kbp2-nm{display:flex;align-items:baseline;justify-content:space-between;gap:10px;',
+  ' font-size:13.5px;font-weight:500;min-width:0}',
+  '.kbp2-lg .kbp2-nm{font-size:15px}',
+  '.kbp2-lwrap{display:flex;align-items:center;gap:5px;min-width:0;overflow:hidden}',
+  '.kbp2-l{color:var(--c);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}',
+  '.kbp2-r{color:var(--oc);text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}',
+  /* THE AXIS MARK, the same convention as crBadge's own crb-g: colour by
+     seat, currentColor strokes. IF IT HAS A NAME IT HAS AN ICON, the
+     owner's standing rule; this is what keeps 112 named addresses reading
+     as 112 distinct marks rather than one bar shape repeated. */
+  '.kbp2-ax{flex:0 0 auto;display:grid;place-items:center;width:17px;height:17px;color:var(--c)}',
+  '.kbp2-ax svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;',
+  ' stroke-linecap:round;stroke-linejoin:round}',
+  '.kbp2-lg .kbp2-ax{width:20px;height:20px}',
+  '.kbp2-lg .kbp2-ax svg{width:18px;height:18px}',
+  '.kbp2-row{display:flex;align-items:center;gap:7px}',
+  /* the icons hold NODE_STRIKE's own colour at a true neutral reading and
+     mix toward --dim as a reading commits to the other pole, set per icon
+     by poleDualBar's own inline style, never by a class here. */
+  '.kbp2-ic{width:17px;height:17px;flex:0 0 auto;transition:color .2s}',
+  '.kbp2-lg .kbp2-ic{width:21px;height:21px}',
+  '.kbp2-bar{position:relative;flex:1 1 auto;height:20px;min-width:40px;border-radius:5px;',
+  ' background:color-mix(in srgb,var(--ink) 8%,transparent);overflow:hidden}',
+  '.kbp2-lg .kbp2-bar{height:25px}',
+  '.kbp2-fl{position:absolute;right:50%;top:0;bottom:0;background:var(--c);',
+  ' border-radius:5px 0 0 5px;display:flex;align-items:center;justify-content:flex-start;',
+  ' padding-left:7px;min-width:0}',
+  '.kbp2-fr{position:absolute;left:50%;top:0;bottom:0;background:var(--oc);',
+  ' border-radius:0 5px 5px 0;display:flex;align-items:center;justify-content:flex-end;',
+  ' padding-right:7px;min-width:0}',
+  /* var(--bg) as the mark on a seat-coloured fill is the same convention
+     practitioner.js's own day cells use (.pr-day.st-completed). */
+  '.kbp2-fl b,.kbp2-fr b{font-family:var(--num);font-size:11px;font-weight:600;color:var(--bg);',
+  ' font-variant-numeric:tabular-nums;white-space:nowrap}',
+  '.kbp2-lg .kbp2-fl b,.kbp2-lg .kbp2-fr b{font-size:12px}',
+  '.kbp2-ctr{position:absolute;left:50%;top:0;bottom:0;width:1px;margin-left:-.5px;',
+  ' background:color-mix(in srgb,var(--ink) 22%,transparent);z-index:2}',
+  '.kbp-dr{display:flex;flex-direction:column;margin:12px 0 16px}'
  ].join('\n');
  document.head.appendChild(st);}
-/* the same pair at the head of the address drill, both sides written out. */
+/* the same pair at the head of the address drill, both sides written out,
+   the big variant of the same bar the deck row uses. */
 function poleDrillHead(n){
  var c=CHILD.filter(function(x){return x.nm===n.cf;})[0];
  if(!c)return '';
  kbpCss();
- var sh=poleShare(n.held,n.rep), oc=seatCol('Heart'), col=seatCol(n.b);
+ var oc=seatCol('Heart'), col=seatCol(n.b);
  return '<div class="kbp-dr" style="--c:'+col+';--oc:'+oc+'">'
-  +'<div class="kbp-top"><span class="kbp-side">'
-  +crBadge(n.b, kbPct(n.held), {size:'sm', bare:true, color:col, glyph:glyphPath(c.ic)})
-  +'<span class="kbp-nm">'+esc(n.k)+'</span><span class="kbp-w">'+(n.held>=0.05?n.held.toFixed(1):'\u2013')+'</span></span>'
-  +'<span class="kbp-side kbp-o"><span class="kbp-w">'+(n.rep>=0.05?n.rep.toFixed(1):'\u2013')+'</span>'
-  +'<span class="kbp-nm">'+esc(c.opp)+'</span>'
-  +crBadge('Heart', kbPct(n.rep), {size:'sm', bare:true, color:oc, glyph:glyphPath(c.ic)})
-  +'</span></div>'
-  +'<div class="kbp-line"><span class="kbp-pc">'+(sh&&sh.l?sh.l+'%':'–')+'</span>'+poleBar(sh)
-  +'<span class="kbp-pc r">'+(sh&&sh.r?sh.r+'%':'–')+'</span></div></div>';}
+  +poleDualBar(n.k, c.opp, kbPct(n.held), kbPct(n.rep), col, oc, c.ic, true)
+  +'</div>';}
 /* one row, one door. every kind routes to the drill that already exists for it. */
 function kbOpen(x){
  if(!x)return;
