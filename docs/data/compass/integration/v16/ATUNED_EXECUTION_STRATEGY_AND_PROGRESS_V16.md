@@ -34,6 +34,14 @@
 - Further runtime authority guard: `hjReleaseAddresses(scene)` derives eligible imprints from `scene.laws`; several scene law mappings remain labelled `ENGINEERING_SUGGESTION_NOT_ACCEPTED_CANON`. Assert correct evidence and conditional suggestions before claiming approved law/scene crosswalks; no automatic law increases.
 - No user-level persistence, actual personal CQ reading, browser environment, deployment, rollback, or production acceptance was executed by these source/unit tests.
 
+## V16 additional evidence: source architecture and verified executable contracts
+
+- **Original author source v341 G02 evidence:** [`ATUNED_V341_CANON_ARCHITECTURE_EVIDENCE_V16.json`](ATUNED_V341_CANON_ARCHITECTURE_EVIDENCE_V16.json) verifies `The Performer` named as a Creative Industry Hyper-Complex at original HTML line 7417 (not its inferred Canon member IDs); the mask treated as **behavioral output** rather than a rung at line 3860; Lucifer / Jesus inverted Illumination line 5790, Moloch / Musashi inverted Power line 5793, Geryon / Buddha inverted Perception line 5794; Baal only as a named adversarial mode at line 3865. These are source-author claims, not clinical diagnoses or newly owner-approved Canon graph edges.
+- **Runtime meter source reconciliation:** `atuned_src/engine/schema.js` defines unique release patterns as **first-time delivered** address/channel/line keys and separately counts all spoken repetitions; `atuned_src/ui/release.js` commits first-time keys only at the cooldown, truncates early-ended plans to reached work, and reruns call the non-new-ground path. The Hero's Journey Board filters only these first-time release keys, not repeated lines or reframes. This resolves the apparent source-unit mismatch at the architectural level, not full persistence E2E.
+- **GitHub Actions executable contracts (confirmed on commit `b8f41347`, run 40727787523):** `node tests/engine.js` **6,247 passed / 0 failed / 10 expected red** (intentional adverse-case detection), and `node tests/practice.js` **780 passed / 0 failed**. V16 source/Journey checks and V14 index integrity passed in the same workflow. These numbers are per-suite executions and must not be added as disjoint test assertions without checking shared fixtures.
+- A separate local-file Chromium functional/collision/design workflow was newly introduced; inspect its exact commit/run results before claiming browser acceptance. A local-file browser pass is not a production deployment certification.
+- **Final-SHA rule:** Every later commit creates a newer SHA; do not certify G05/G06 using only the above `b8f41347` run.
+
 ## Gate ledger (current, not baseline)
 
 | Gate | Subtask verified | Entire gate |
