@@ -17,6 +17,8 @@ jobs:
           node-version: '22'
       - name: Check exact nineteen v341 source records, hashes and approval boundary
         run: node docs/data/compass/integration/v16/validate_v16_v341_source.cjs
+      - name: Verify all 19 v341 text entries align to prior Deep Psyche source IDs
+        run: node docs/data/compass/integration/v16/validate_v16_v341_19_join.cjs
       - name: Exercise Hero Journey CQ boundary, unique releases and conditional ritual paths
         run: node docs/data/compass/integration/v16/validate_v16_journey_contract.cjs
       - name: Preserve V14 index integrity
