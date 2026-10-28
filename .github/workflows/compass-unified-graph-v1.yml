@@ -47,6 +47,10 @@ jobs:
         run: node docs/data/compass/integration/v12/validate_v12_source_reviewer.cjs
       - name: Validate V14 pinned source file index and blob SHAs (research-only)
         run: node docs/data/compass/integration/v14/validate_v14_file_index.cjs
+      - name: Validate V16 recovered v341 domain source and no crosswalk promotions
+        run: node docs/data/compass/integration/v16/validate_v16_v341_source.cjs
+      - name: Exercise V16 Hero Journey CQ, release and ritual eligibility unit contracts
+        run: node docs/data/compass/integration/v16/validate_v16_journey_contract.cjs
       - name: Report static instance IDs and outstanding acceptance gates
         run: |
           node - <<'NODE'
