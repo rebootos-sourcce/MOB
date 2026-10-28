@@ -5,10 +5,10 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v685 7061828c 2026-10-28 01:14"><head><meta charset="utf-8">
+<html lang="en" data-build="v686 d57af090 2026-10-28 01:52"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
-<meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
+<meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
 <!-- ============================================================
      THE TYPEFACE, CARRIED RATHER THAN FETCHED.
 
@@ -19893,7 +19893,7 @@ function leadSees(what){ return LEAD_SEES.indexOf(what)>=0; }
    archetypes, laws, gates and shadow", with the laws and the gates said by the
    names the Field's bar prints for them since 22 October, the Laws of Moral
    Integrity and the Laws of Action. */
-const PLAN_ALWAYS=['your 112 addresses','the domains','the archetypes','the Laws of Moral Integrity',
+const PLAN_ALWAYS=['your 108 somatic addresses and 4 field anchors','the domains','the archetypes','the Laws of Moral Integrity',
  'the Laws of Action','shadow','the pain map','every tool','the journal',
  'rerunning anything already open'];
 /* ANNUAL. TWO MONTHS FREE IS OUT, on the owner's ruling.
@@ -38823,8 +38823,8 @@ function verpArrows(cr0){
    A word alone cannot carry a definition, so each depth now has one. Menu is
    one word. Definition is on demand. */
 const VIEWS=[
- {k:'A',nm:'Charge',    layers:'the core, 112 addresses, the wash',
-  tip:'What you are carrying, and where. The core is coherence, the ring is your 112 addresses, the wash is shadow weight.'},
+ {k:'A',nm:'Charge',    layers:'the core, 108 addresses and 4 field anchors, the wash',
+  tip:'What you are carrying, and where. The core is coherence, the ring is your 108 addresses and 4 field anchors, the wash is shadow weight.'},
  {k:'B',nm:'Patterns',  layers:'charge, plus the seats named and the saboteurs',
   tip:'The saboteurs running on top of the charge. Each bead is one, and the threads show which addresses built it.'},
  {k:'C',nm:'Chains',    layers:'patterns, plus complexes, hyper, super, archetypes',
@@ -40005,7 +40005,7 @@ const FLAYS=[
  {k:'domains',nm:'Domains',d:frSegRing(5,8.6,20),
   tip:'The nineteen blueprint domains, what was there before any of it.'},
  {k:'addresses',nm:'Addresses',d:frCirc(12,12,4.2)+frTicks(8,7,10.4),
-  tip:'Your 112 addresses. Each mark is the charge held at one place.'},
+  tip:'Your 108 addresses, plus 4 field anchors above and below the body. Each mark is the charge held at one place.'},
  {k:'stories',nm:'Stories',d:frCirc(12,12,2.6)+'M12 9V4.4M14.6 13.5l4 2.3M9.4 13.5l-4 2.3'
    +frCirc(12,3.4,1.1)+frCirc(19.4,16.2,1.1)+frCirc(4.6,16.2,1.1),
   tip:'One line for each story that put charge on an address.'},
@@ -40021,7 +40021,7 @@ const FLAYS=[
   tip:'The six gates round the core. Each higher gate sits across from the lower one it stands against.'},
  {sep:true},
  {k:'shadow',nm:'Decoherence',d:frCirc(12,12,8.5)+'M7.2 16.6l3.4-3.4M10.2 19.2l6-6M14.6 19.9l4.6-4.6',
-  tip:'Decoherence. The weight on all 112 addresses, as a wash behind everything.'}];
+  tip:'Decoherence. The weight on your 108 addresses and 4 field anchors, as a wash behind everything.'}];
 /* THE SWITCH AND THE ROW ARE NO LONGER BUILT HERE. The layer row, #flay, is
    the glass bar now, and the switch, #fview, moved to the right rail as three
    circles; ui/fieldbar.js builds both. FLAYS stays, because its marks are the
@@ -41297,7 +41297,7 @@ const VICON=[
    .claude/agents/emmy.md. The count in the tooltip is read off SI. */
 const FB_LAYERS=[
  {k:'addresses',g:'carry',nm:'Addresses',ic:FB_IC_ADDR,
-  tip:'Your 112 addresses. Each mark is the charge held at one place.'},
+  tip:'Your 108 addresses, plus 4 field anchors above and below the body. Each mark is the charge held at one place.'},
  {k:'seats',g:'carry',nm:'Assemblage points',ic:FB_IC_SEAT,
   tip:'The seven seats, from the base of your spine to the top of your head.'},
  {k:'laws',g:'carry',nm:'Laws of Moral Integrity',ic:fbFlay('laws'),
@@ -41305,7 +41305,7 @@ const FB_LAYERS=[
  {k:'gates',g:'carry',nm:'Laws of Action',ic:fbFlay('gates'),
   tip:'The Laws of Action round the core, each move of right action set across from the wrong action it stands against.'},
  {k:'shadow',g:'carry',nm:'Decoherence',ic:fbFlay('shadow'),
-  tip:'Decoherence. All the charge on all 112 addresses, shown as a tint behind everything.'},
+  tip:'Decoherence. All the charge on your 108 addresses and 4 field anchors, shown as a tint behind everything.'},
  {k:'stories',g:'carry',nm:'Stories',ic:fbFlay('stories'),
   tip:'One line for each story that put charge on an address.'},
  {k:'saboteurs',g:'run',nm:'Saboteurs',ic:CHAINGLYPH.sab,
@@ -41401,7 +41401,7 @@ function fbValues(r){
   m:anyG?'Ring and number: right action, its share of every Law of Action read in your stories.'
    :'Nothing read yet, so none of your stories has run through the Laws of Action.'};
  V.shadow={p:dqv.p,v:dqv.v,c:seatCol('Root'),
-  m:'Ring and number: shadow weight, DQ, the weight on all 112 addresses.'};
+  m:'Ring and number: shadow weight, DQ, the weight on your 108 addresses and 4 field anchors.'};
  var ai=atomIndex()||{}, traced=carry.length?carry.filter(function(n){return (ai[n.i]||[]).length;}).length/carry.length*100:0;
  V.stories={p:pct('portion',traced/100)||0,v:carry.length?fmtPct('portion',traced/100):dash,c:'var(--accent)',
   m:carry.length?'Ring and number: the share of your carrying addresses a story you wrote reached.'
@@ -46767,7 +46767,7 @@ var CHV={pick:null, sel:-1, selAddr:-1, sc:null, ov:null, r:null, raf:0, last:0,
 /* the three overlays and the key they are kept under in the store */
 var CH_OVERLAYS=[
  {k:'cloud', nm:'Point cloud', on:true,
-  d:'The person and the 112 addresses round them, as points.'},
+  d:'The person and the 108 addresses round them, plus the 4 field anchors above and below, as points.'},
  {k:'torus', nm:'Torus', on:true,
   d:'The field round the body. The seats bend it and vitality makes it breathe.'},
  {k:'heat', nm:'Heat map', on:false,
@@ -47090,7 +47090,7 @@ function chRailHtml(r){
  h+='<div class="pm-eye chr-sp">Light and breath</div><div class="chr-read">'
   +'<div class="chr-row"><span>Coherence</span><b>'+(unread?'–':cq+'%')+'</b><i>'+esc(chSentence(charCohWord(unread?0:cq/100)))+' It lights the figure and sets how wide, bright and whole the field is.</i></div>'
   +'<div class="chr-row"><span>Vitality</span><b>'+(unread?'–':vt.toFixed(2))+'</b><i>'+esc(chVitWord(unread?0:vt))+' It sets how far and how fast the field breathes.</i></div>'
-  +'<div class="chr-row"><span>Decoherence</span><b>'+(unread?'–':dq+'%')+'</b><i>The shadow, all 112 addresses against the most they could hold. It opens the gaps.</i></div></div>'
+  +'<div class="chr-row"><span>Decoherence</span><b>'+(unread?'–':dq+'%')+'</b><i>The shadow, your 108 addresses and 4 field anchors against the most they could hold. It opens the gaps.</i></div></div>'
   /* round RB: the glow behind the figure is a picture too, so it is said */
   +(unread?'':'<p class="chr-note">The glow behind the figure is the colour your whole field gives off: every point\u2019s colour, mixed by how bright it is. It breathes with the field.</p>');
  /* the seven seats: root first as everywhere, each a button that traces it */
@@ -50302,7 +50302,7 @@ function sumGlance(r,noCQ){
      total shadow on all 112 over the most they can hold, so it has a ceiling
      of 100 and the ring is the figure, on the same scale as coherence. */
   ['shadow weight', 'Root', pct('dq',r.DQ)||0, fmtPct('dq',r.DQ,U),
-   'All the charge on all 112 addresses, against the most they could hold.',
+   'All the charge on your 108 addresses and 4 field anchors, against the most they could hold.',
    ''],
   /* THIS PRINTED THE OPPOSITE OF WHAT IT MEASURES. It was labelled "installed"
      and glossed "what has been filled in". SQm is built in compute.js from
@@ -67897,7 +67897,7 @@ function runQDrill(q){
      and the whole of resistance, with CQ divided by it. DQ is the total
      shadow on all 112 now, out of 100, and it pulls on expression. */
   h='<div class="pm-eye">Shadow weight</div><div class="ad-nm">DQ '+(r.DQ>=0.5?Math.round(r.DQ)+'%':'\u2013')+'</div>'
-   +'<div class="pm-eye">How it is built</div><p class="ad-p">The weight at all 112 addresses, summed, out of the most they can hold. '
+   +'<div class="pm-eye">How it is built</div><p class="ad-p">The weight at your 108 addresses and 4 field anchors, summed, out of the most they can hold. '
    +'It is the wash pressing in from the edge of the wheel. It leaves coherence alone and pulls on expression, and an address near 10 pulls far harder than one near 2.</p>'
    +'<div class="pm-eye">Where it sits</div><p class="ad-p">'+(r.loaded.length?'<b>'+r.loaded.length+'</b> addresses carry it. The heaviest:':'No address carries it.')+'</p>'
    +'<div class="ad-rows">'+top.map(addrRow).join('')+'</div>';}
@@ -82719,5 +82719,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005453180"></div>
+<div id="eof" hidden data-len="005453538"></div>
 </body></html>
