@@ -1,0 +1,352 @@
+{
+  "schema": "ATUNED_SAFE_NONPROMOTION_SOURCE_DISPOSITIONS_V11",
+  "date": "2026-10-28",
+  "authority": "RESEARCH_ONLY_SAFE_DEFAULT",
+  "derivedFrom": {
+    "path": "docs/data/compass/integration/v8/ATUNED_UNAPPROVED_SEMANTIC_DECISION_QUEUE_V8.json",
+    "blobSha": "3b48aea4763d845a3ed94f6c37cdb160ea9f9e3e"
+  },
+  "policy": "Source-only review completes by preserving distinctions. This is NOT owner approval or a decision to permanently reject a conceptual relationship. Later approved equivalence needs an explicit separately verified link and ownership; no score or runtime imports.",
+  "counts": {
+    "all": 30,
+    "figure": 4,
+    "paradiso": 5,
+    "lexical": 21,
+    "sourceSeparationReviewsClosed": 30,
+    "canonicalEquivalentApproved": 0,
+    "pendingPotentialOwnerLinkApprovals": 30,
+    "productionEdgesCreated": 0
+  },
+  "dispositions": [
+    {
+      "id": "FIG-01",
+      "category": "FIGURE_SCOPE",
+      "sourceReviewDisposition": "KEEP_SEPARATE_LITERARY_SOURCE_AND_ENGINE_MODEL",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "Literary action and engine behavioral metaphor remain separate typed scopes."
+    },
+    {
+      "id": "FIG-02",
+      "category": "FIGURE_SCOPE",
+      "sourceReviewDisposition": "KEEP_SEPARATE_LITERARY_SOURCE_AND_ENGINE_MODEL",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "Literary action and engine behavioral metaphor remain separate typed scopes."
+    },
+    {
+      "id": "FIG-03",
+      "category": "FIGURE_SCOPE",
+      "sourceReviewDisposition": "KEEP_SEPARATE_LITERARY_SOURCE_AND_ENGINE_MODEL",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "Literary action and engine behavioral metaphor remain separate typed scopes."
+    },
+    {
+      "id": "FIG-04",
+      "category": "FIGURE_SCOPE",
+      "sourceReviewDisposition": "KEEP_SEPARATE_LITERARY_SOURCE_AND_ENGINE_MODEL",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "Literary action and engine behavioral metaphor remain separate typed scopes."
+    },
+    {
+      "id": "PAR-01",
+      "category": "TEACHER_PARADISO_ASYMMETRY",
+      "sourceReviewDisposition": "PRESERVE_ONE_SIDED_REFERENCES_NO_RECIPROCAL_PROMOTION",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "Do not add absent reciprocal source or scored edge."
+    },
+    {
+      "id": "PAR-02",
+      "category": "TEACHER_PARADISO_ASYMMETRY",
+      "sourceReviewDisposition": "PRESERVE_ONE_SIDED_REFERENCES_NO_RECIPROCAL_PROMOTION",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "Do not add absent reciprocal source or scored edge."
+    },
+    {
+      "id": "PAR-03",
+      "category": "TEACHER_PARADISO_ASYMMETRY",
+      "sourceReviewDisposition": "PRESERVE_ONE_SIDED_REFERENCES_NO_RECIPROCAL_PROMOTION",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "Do not add absent reciprocal source or scored edge."
+    },
+    {
+      "id": "PAR-04",
+      "category": "TEACHER_PARADISO_ASYMMETRY",
+      "sourceReviewDisposition": "PRESERVE_ONE_SIDED_REFERENCES_NO_RECIPROCAL_PROMOTION",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "Do not add absent reciprocal source or scored edge."
+    },
+    {
+      "id": "PAR-05",
+      "category": "TEACHER_PARADISO_ASYMMETRY",
+      "sourceReviewDisposition": "PRESERVE_ONE_SIDED_REFERENCES_NO_RECIPROCAL_PROMOTION",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "Do not add absent reciprocal source or scored edge."
+    },
+    {
+      "id": "LEX-01",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "sourceReviewDisposition": "KEEP_VERSIONED_REGISTRIES_DISTINCT_NAME_ONLY_NAVIGATION",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "The shared lexical label does not establish identical registry semantics."
+    },
+    {
+      "id": "LEX-02",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "sourceReviewDisposition": "KEEP_VERSIONED_REGISTRIES_DISTINCT_NAME_ONLY_NAVIGATION",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "The shared lexical label does not establish identical registry semantics."
+    },
+    {
+      "id": "LEX-03",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "sourceReviewDisposition": "KEEP_VERSIONED_REGISTRIES_DISTINCT_NAME_ONLY_NAVIGATION",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "The shared lexical label does not establish identical registry semantics."
+    },
+    {
+      "id": "LEX-04",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "sourceReviewDisposition": "KEEP_VERSIONED_REGISTRIES_DISTINCT_NAME_ONLY_NAVIGATION",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "The shared lexical label does not establish identical registry semantics."
+    },
+    {
+      "id": "LEX-05",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "sourceReviewDisposition": "KEEP_VERSIONED_REGISTRIES_DISTINCT_NAME_ONLY_NAVIGATION",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "The shared lexical label does not establish identical registry semantics."
+    },
+    {
+      "id": "LEX-06",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "sourceReviewDisposition": "KEEP_VERSIONED_REGISTRIES_DISTINCT_NAME_ONLY_NAVIGATION",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "The shared lexical label does not establish identical registry semantics."
+    },
+    {
+      "id": "LEX-07",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "sourceReviewDisposition": "KEEP_VERSIONED_REGISTRIES_DISTINCT_NAME_ONLY_NAVIGATION",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "The shared lexical label does not establish identical registry semantics."
+    },
+    {
+      "id": "LEX-08",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "sourceReviewDisposition": "KEEP_VERSIONED_REGISTRIES_DISTINCT_NAME_ONLY_NAVIGATION",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "The shared lexical label does not establish identical registry semantics."
+    },
+    {
+      "id": "LEX-09",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "sourceReviewDisposition": "KEEP_VERSIONED_REGISTRIES_DISTINCT_NAME_ONLY_NAVIGATION",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "The shared lexical label does not establish identical registry semantics."
+    },
+    {
+      "id": "LEX-10",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "sourceReviewDisposition": "KEEP_VERSIONED_REGISTRIES_DISTINCT_NAME_ONLY_NAVIGATION",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "The shared lexical label does not establish identical registry semantics."
+    },
+    {
+      "id": "LEX-11",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "sourceReviewDisposition": "KEEP_VERSIONED_REGISTRIES_DISTINCT_NAME_ONLY_NAVIGATION",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "The shared lexical label does not establish identical registry semantics."
+    },
+    {
+      "id": "LEX-12",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "sourceReviewDisposition": "KEEP_VERSIONED_REGISTRIES_DISTINCT_NAME_ONLY_NAVIGATION",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "The shared lexical label does not establish identical registry semantics."
+    },
+    {
+      "id": "LEX-13",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "sourceReviewDisposition": "KEEP_VERSIONED_REGISTRIES_DISTINCT_NAME_ONLY_NAVIGATION",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "The shared lexical label does not establish identical registry semantics."
+    },
+    {
+      "id": "LEX-14",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "sourceReviewDisposition": "KEEP_VERSIONED_REGISTRIES_DISTINCT_NAME_ONLY_NAVIGATION",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "The shared lexical label does not establish identical registry semantics."
+    },
+    {
+      "id": "LEX-15",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "sourceReviewDisposition": "KEEP_VERSIONED_REGISTRIES_DISTINCT_NAME_ONLY_NAVIGATION",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "The shared lexical label does not establish identical registry semantics."
+    },
+    {
+      "id": "LEX-16",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "sourceReviewDisposition": "KEEP_VERSIONED_REGISTRIES_DISTINCT_NAME_ONLY_NAVIGATION",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "The shared lexical label does not establish identical registry semantics."
+    },
+    {
+      "id": "LEX-17",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "sourceReviewDisposition": "KEEP_VERSIONED_REGISTRIES_DISTINCT_NAME_ONLY_NAVIGATION",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "The shared lexical label does not establish identical registry semantics."
+    },
+    {
+      "id": "LEX-18",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "sourceReviewDisposition": "KEEP_VERSIONED_REGISTRIES_DISTINCT_NAME_ONLY_NAVIGATION",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "The shared lexical label does not establish identical registry semantics."
+    },
+    {
+      "id": "LEX-19",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "sourceReviewDisposition": "KEEP_VERSIONED_REGISTRIES_DISTINCT_NAME_ONLY_NAVIGATION",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "The shared lexical label does not establish identical registry semantics."
+    },
+    {
+      "id": "LEX-20",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "sourceReviewDisposition": "KEEP_VERSIONED_REGISTRIES_DISTINCT_NAME_ONLY_NAVIGATION",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "The shared lexical label does not establish identical registry semantics."
+    },
+    {
+      "id": "LEX-21",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "sourceReviewDisposition": "KEEP_VERSIONED_REGISTRIES_DISTINCT_NAME_ONLY_NAVIGATION",
+      "sourceReconciliationStatus": "CLOSED_FOR_NONPROMOTION_DEFAULT",
+      "canonicalEquivalentApproved": false,
+      "ownerSemanticApproval": false,
+      "runtimeWiringCreated": false,
+      "modelSpecificSemanticChoicePending": true,
+      "notes": "The shared lexical label does not establish identical registry semantics."
+    }
+  ]
+}
