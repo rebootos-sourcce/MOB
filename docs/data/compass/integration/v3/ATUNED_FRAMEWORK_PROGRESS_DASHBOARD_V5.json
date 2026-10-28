@@ -1,0 +1,148 @@
+{
+  "schema": "ATUNED_COMPASS_FRAMEWORK_PROGRESS_V5",
+  "asOf": "2026-10-27",
+  "status": "26_RELEASE_AND_26_RITUAL_RUNTIME_ROUTES_VERIFIED_IN_SOURCE; GRAPH_V3_CI_PASSED; BROWSER_QA_OPEN",
+  "scope": "Compass, Inferno, Purgatorio, Paradiso, research Deep Psyche projection, Hero's Journey (not whole application)",
+  "completion": {
+    "percent": 67,
+    "method": "Five equal 20-point workstreams; audit-informed planning estimate, not test coverage, code coverage, production uptime or clinical validity",
+    "workstreams": [
+      {
+        "name": "Map and narrative structure",
+        "points": 20,
+        "max": 20,
+        "why": "26/26 scene records and 25 sequence edges"
+      },
+      {
+        "name": "Published, harmonized record coverage",
+        "points": 16,
+        "max": 20,
+        "why": "39 teacher ritual IDs sourced; remaining cross-version harmonization and semantic approvals unresolved"
+      },
+      {
+        "name": "Documented research coverage",
+        "points": 17,
+        "max": 20,
+        "why": "Existing research registries and Deep Psyche 149-record four-pass review; source independence/canon still open"
+      },
+      {
+        "name": "Unified cross-layer research graph",
+        "points": 10,
+        "max": 20,
+        "why": "398 nodes/861 unique research/source refs; 26 release +26 ritual existing runtime entrypoint links, 39 named recipe sources"
+      },
+      {
+        "name": "Executable and verified Hero Journey",
+        "points": 4,
+        "max": 20,
+        "why": "26/26 existing dynamic release and ritual methods pass static and isolated conditional routing tests; real browser, saved event replay, CQ→Avatar and full accepted per-user instance flow not verified"
+      }
+    ]
+  },
+  "graph": {
+    "nodes": 398,
+    "typedEdges": 861,
+    "sourceVerifiedDangling": 0,
+    "duplicates": 0,
+    "isolates": [
+      "purgatorio:P00",
+      "inferno:B15",
+      "shadow:bael",
+      "shadow:antaeus",
+      "shadow:medusa",
+      "shadow:dispater",
+      "shadow:dantedis",
+      "shadow:citydis"
+    ],
+    "edgeGroups": {
+      "baseline": 300,
+      "inferno_research": 80,
+      "shadow_law_research": 49,
+      "gameboard_navigation": 25,
+      "scene_source": 26,
+      "scene_crosswalk": 6,
+      "scene_archetype": 12,
+      "shadow_source": 14,
+      "pole": 36,
+      "catalog": 14,
+      "deep_psyche_source_branch": 187,
+      "cross_registry_lexical_candidate": 21,
+      "runtime_route_source_references": 52,
+      "teacher_recipe_source_references": 39
+    },
+    "readOnly": true,
+    "approvedRuntimeImports": 0,
+    "realApplicationRouteMethodsPresent": true
+  },
+  "records": {
+    "inferno": 38,
+    "purgatorio": 23,
+    "paradiso": 10,
+    "coreArchetypes": 12,
+    "shadowIdentity": 30,
+    "publicShadowResearchLabels": 23,
+    "shadowContextOnly": 7,
+    "heroJourneyScenes": 26,
+    "compassEnginePoles": 14,
+    "teacherRosterDistinct": 13,
+    "teacherStandardizedRecords": 11,
+    "integrityLaws": 21,
+    "deepPsycheSourceRecords": 149,
+    "deepPsycheOriginalRelationshipEntries": 374,
+    "deepPsycheNormalizedPairs": 187,
+    "crossNamespaceExactNameCandidates": 21,
+    "existingTeacherStarterRitualIDs": 39,
+    "rebootLegacyReleaseCards": 233,
+    "basePracticeLibraryEntries": 17,
+    "recipeAddedPracticeEntries": 28,
+    "teacherSpecificPracticeEntries": 8
+  },
+  "wiring": {
+    "baselineCompass": 300,
+    "infernoResearch": 80,
+    "shadowLawResearch": 49,
+    "sceneNavigation": 25,
+    "sceneToSource": 26,
+    "sceneCrosswalk": 6,
+    "sceneArchetype": 12,
+    "shadowToInferno": 14,
+    "teacherPoleShadowAndAxes": 36,
+    "publicEncounterCatalog": 14,
+    "deepPsycheSourcePairs": 187,
+    "crossNamespaceNameOnly": 21,
+    "engineRuntimeIntegration": "UNVERIFIED",
+    "teacherRecipeRuntime": "EXISTS_BUT_NOT_SCENE_JOINED",
+    "traceGraph": "DERIVED_ONLY_PSYCHIC_CHAIN_EXISTS_IN_ENGINE",
+    "existingSceneToReleaseMethodReferences": 26,
+    "existingSceneToRitualMethodReferences": 26,
+    "teacherPoleToExistingStarterRecipeReferences": 39
+  },
+  "gates": {
+    "deepPsycheSourceVersionGaps": 19,
+    "unresolvedSemanticDrifts": 4,
+    "oneSidedParadisoLinks": 5,
+    "originalInfernoV1NotRecovered": true,
+    "superComplexCanonicalMembershipApplied": false,
+    "cqIntentionCanonicalSourceResolved": false,
+    "deepPsychePR131Merged": false,
+    "deploymentCertified": false,
+    "unallocatedUserSpecificSceneProtocolInstanceIds": 26,
+    "unallocatedUserSpecificSceneRitualInstanceIds": 26,
+    "existingReleaseRoutesSourced": 26,
+    "existingRitualRoutesSourced": 26,
+    "starterRecipeStepResolution": 39,
+    "exactSceneToRecipeSemanticApprovals": 0,
+    "liveBrowserUserJourneyTestPassed": false
+  },
+  "links": {
+    "unified": "docs/data/compass/integration/v3/ATUNED_UNIFIED_RESEARCH_GRAPH_V3.json",
+    "editor": "docs/data/compass/integration/v3/ATUNED_GRAPH_EDITOR_V3.html",
+    "validator": "docs/data/compass/integration/v3/validate_unified_research_graph_v3.cjs",
+    "CI": ".github/workflows/compass-unified-graph-v1.yml",
+    "deepPsychePR": "https://github.com/rebootos-sourcce/MOB/pull/131",
+    "dynamicRouteBindings": "docs/data/compass/gameboard/v2/GAMEBOARD_EXISTING_RELEASE_RITUAL_BINDINGS_V2.json",
+    "dynamicRouteHandshake": "docs/data/compass/gameboard/v2/EXECUTIVE_HANDSHAKE_RELEASE_RITUAL_REDISCOVERY_V2.md",
+    "verifiedCI": "https://github.com/rebootos-sourcce/MOB/actions/runs/40615613591"
+  },
+  "note": "The 26 scene fixed-instance ID fields remain null by design, but all 26 scenes route to actual release and ritual engine methods. This V3 graph is a read-only documentation projection; source app functions predate this work. No scene is assigned a specific starter recipe without consent/evidence."
+}
