@@ -1,0 +1,272 @@
+{
+  "schema": "ATUNED_V341_EXACT_19_DOMAIN_SOURCE_EXTRACTION_V16",
+  "created": "2026-10-28",
+  "status": "VERIFIED_RAW_SHA256_AUTHOR_SOURCE_NOT_RUNTIME_OR_CROSSWALK_APPROVAL",
+  "originalSource": {
+    "file": "MOB_Complete_v341.html",
+    "sha256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+    "bytes": 16417226,
+    "verifiedBy": "SHA-256 computed from complete raw Drive download, matched expected V15 hash",
+    "driveFileIds": [
+      "1wlEiHEeL-ApUFEiHXhfndgYVvicx85Uk",
+      "1PzdW95quj0BUoLd07Gt14CQflaj9J2bt",
+      "1KW4J4Es9hPVGo0qyAy1tiuTrF7ZRfA9G"
+    ],
+    "sourceHeading": "Blueprint Domain Descriptions · All 19",
+    "sourceLines": "3917–3960"
+  },
+  "clusters": {
+    "Architect": [
+      "Knowledge",
+      "Justice",
+      "Imperium",
+      "Duty",
+      "Fate"
+    ],
+    "Engine": [
+      "Power",
+      "Creation",
+      "Dissolution",
+      "Sacrifice",
+      "Death"
+    ],
+    "Weaver": [
+      "Love",
+      "Communication",
+      "Healing",
+      "Provision",
+      "Play"
+    ],
+    "Witness": [
+      "Nature",
+      "Trickster",
+      "Mystery",
+      "Guardian"
+    ]
+  },
+  "records": [
+    {
+      "ordinal": 1,
+      "roman": "I",
+      "name": "Knowledge",
+      "cluster": "Architect",
+      "sourceLine": 3917,
+      "clear": "pattern recognition, codification, teaching, symbolic thinking. The person who reads before being asked to. Somatic knowledge is true knowledge, once it's in the body, deception doesn't work on you. You can feel the lie before it forms a word.",
+      "distorted": "over-intellectualization, false certainty, knowledge as a barrier rather than a bridge.",
+      "templates": "Thoth, Athena, Saraswati, Odin.",
+      "literalHtml": "<p class=\"body-dim\"><strong style=\"color:var(--off)\">Clear:</strong> pattern recognition, codification, teaching, symbolic thinking. The person who reads before being asked to. Somatic knowledge is true knowledge, once it's in the body, deception doesn't work on you. You can feel the lie before it forms a word. <strong style=\"color:var(--off)\">Distorted:</strong> over-intellectualization, false certainty, knowledge as a barrier rather than a bridge. <strong style=\"color:var(--off)\">Templates:</strong> Thoth, Athena, Saraswati, Odin.</p>"
+    },
+    {
+      "ordinal": 2,
+      "roman": "II",
+      "name": "Communication",
+      "cluster": "Weaver",
+      "sourceLine": 3920,
+      "clear": "bridging, translation, precision of language, fast cognition. The connector, the person who translates between people, between ideas, between worlds.",
+      "distorted": "manipulation, inconsistency, information as leverage.",
+      "templates": "Hermes, Mercury, Elegba.",
+      "literalHtml": "<p class=\"body-dim\"><strong style=\"color:var(--off)\">Clear:</strong> bridging, translation, precision of language, fast cognition. The connector, the person who translates between people, between ideas, between worlds. <strong style=\"color:var(--off)\">Distorted:</strong> manipulation, inconsistency, information as leverage. <strong style=\"color:var(--off)\">Templates:</strong> Hermes, Mercury, Elegba.</p>"
+    },
+    {
+      "ordinal": 3,
+      "roman": "III",
+      "name": "Power",
+      "cluster": "Engine",
+      "sourceLine": 3923,
+      "clear": "physical courage, boundary enforcement, protection of what matters. Directed aggression at obstacles, not people.",
+      "distorted": "domination, violence without purpose, war as identity.",
+      "templates": "Ares, Mars, Sekhmet, Thor.",
+      "literalHtml": "<p class=\"body-dim\"><strong style=\"color:var(--off)\">Clear:</strong> physical courage, boundary enforcement, protection of what matters. Directed aggression at obstacles, not people. <strong style=\"color:var(--off)\">Distorted:</strong> domination, violence without purpose, war as identity. <strong style=\"color:var(--off)\">Templates:</strong> Ares, Mars, Sekhmet, Thor.</p>"
+    },
+    {
+      "ordinal": 4,
+      "roman": "IV",
+      "name": "Imperium",
+      "cluster": "Architect",
+      "sourceLine": 3926,
+      "clear": "governance, structural authority, organizing chaos into function. sees how systems should be organized.",
+      "distorted": "domination, entitlement, autocracy.",
+      "templates": "Zeus, Jupiter, Ra.",
+      "literalHtml": "<p class=\"body-dim\"><strong style=\"color:var(--off)\">Clear:</strong> governance, structural authority, organizing chaos into function. sees how systems should be organized. <strong style=\"color:var(--off)\">Distorted:</strong> domination, entitlement, autocracy. <strong style=\"color:var(--off)\">Templates:</strong> Zeus, Jupiter, Ra.</p>"
+    },
+    {
+      "ordinal": 5,
+      "roman": "V",
+      "name": "Creation",
+      "cluster": "Engine",
+      "sourceLine": 3929,
+      "clear": "building, executing, bringing vision into form. Always needed to make things. When you can't create it feels like disconnection, like the system is broken. Financial stress kills creativity not motivationally but anatomically: the survival charge consumes the current before it reaches the generative center. When the root clears, the sacral opens, the creative current flows again. Not as discipline. As a natural consequence of the channel being clear.",
+      "distorted": "perfectionism as paralysis, identity tied to output.",
+      "templates": "Brahma, Ptah, Prometheus.",
+      "literalHtml": "<p class=\"body-dim\"><strong style=\"color:var(--off)\">Clear:</strong> building, executing, bringing vision into form. Always needed to make things. When you can't create it feels like disconnection, like the system is broken. Financial stress kills creativity not motivationally but anatomically: the survival charge consumes the current before it reaches the generative center. When the root clears, the sacral opens, the creative current flows again. Not as discipline. As a natural consequence of the channel being clear. <strong style=\"color:var(--off)\">Distorted:</strong> perfectionism as paralysis, identity tied to output. <strong style=\"color:var(--off)\">Templates:</strong> Brahma, Ptah, Prometheus.</p>"
+    },
+    {
+      "ordinal": 6,
+      "roman": "VI",
+      "name": "Dissolution",
+      "cluster": "Engine",
+      "sourceLine": 3932,
+      "clear": "deliberate dissolution, clearing what's false or finished, making space for what comes next. Sees what needs to end.",
+      "distorted": "destruction as identity, nihilism, chaos without rebuilding.",
+      "templates": "Shiva, Kali, Loki.",
+      "literalHtml": "<p class=\"body-dim\"><strong style=\"color:var(--off)\">Clear:</strong> deliberate dissolution, clearing what's false or finished, making space for what comes next. Sees what needs to end. <strong style=\"color:var(--off)\">Distorted:</strong> destruction as identity, nihilism, chaos without rebuilding. <strong style=\"color:var(--off)\">Templates:</strong> Shiva, Kali, Loki.</p>"
+    },
+    {
+      "ordinal": 7,
+      "roman": "VII",
+      "name": "Love",
+      "cluster": "Weaver",
+      "sourceLine": 3935,
+      "clear": "union, intimacy, the force that draws beings into genuine contact. Love as a state the person generates, not receives. Always knew what brings people together.",
+      "distorted": "codependency, possession, love as completion rather than addition.",
+      "templates": "Aphrodite, Hathor, Freya, Oshun.",
+      "literalHtml": "<p class=\"body-dim\"><strong style=\"color:var(--off)\">Clear:</strong> union, intimacy, the force that draws beings into genuine contact. Love as a state the person generates, not receives. Always knew what brings people together. <strong style=\"color:var(--off)\">Distorted:</strong> codependency, possession, love as completion rather than addition. <strong style=\"color:var(--off)\">Templates:</strong> Aphrodite, Hathor, Freya, Oshun.</p>"
+    },
+    {
+      "ordinal": 8,
+      "roman": "VIII",
+      "name": "Healing",
+      "cluster": "Weaver",
+      "sourceLine": 3938,
+      "clear": "directed intervention, active clearing, creating conditions in which restoration happens. Finds the broken thing in any room.",
+      "distorted": "rescuer complex, martyrdom, healing as identity.",
+      "templates": "Asclepius, Chiron, Dhanvantari.",
+      "literalHtml": "<p class=\"body-dim\"><strong style=\"color:var(--off)\">Clear:</strong> directed intervention, active clearing, creating conditions in which restoration happens. Finds the broken thing in any room. <strong style=\"color:var(--off)\">Distorted:</strong> rescuer complex, martyrdom, healing as identity. <strong style=\"color:var(--off)\">Templates:</strong> Asclepius, Chiron, Dhanvantari.</p>"
+    },
+    {
+      "ordinal": 9,
+      "roman": "IX",
+      "name": "Sacrifice",
+      "cluster": "Engine",
+      "sourceLine": 3941,
+      "clear": "voluntary descent, the chosen ordeal, sacrifice as the mechanism that produces insight unavailable any other way. The knowledge that comes from what was given up, not accumulated. The true utilization of experience: consume as much as possible, then don't hang onto the definitions. Words illuminate, they don't contain.",
+      "distorted": "suffering as identity, the descent without return.",
+      "templates": "Odin, Osiris, Christ, Inanna.",
+      "literalHtml": "<p class=\"body-dim\"><strong style=\"color:var(--off)\">Clear:</strong> voluntary descent, the chosen ordeal, sacrifice as the mechanism that produces insight unavailable any other way. The knowledge that comes from what was given up, not accumulated. The true utilization of experience: consume as much as possible, then don't hang onto the definitions. Words illuminate, they don't contain. <strong style=\"color:var(--off)\">Distorted:</strong> suffering as identity, the descent without return. <strong style=\"color:var(--off)\">Templates:</strong> Odin, Osiris, Christ, Inanna.</p>"
+    },
+    {
+      "ordinal": 10,
+      "roman": "X",
+      "name": "Justice",
+      "cluster": "Architect",
+      "sourceLine": 3944,
+      "clear": "discernment of what's real and what's false. Accountability without cruelty. Moral disorder doesn't just feel wrong, it triggers the nervous system. When truth is a 10, anything less is somatic. You can feel the lie before it forms a word. If you lie, you dysregulate your own nervous system.",
+      "distorted": "rigid judgment, self-righteousness, justice as control.",
+      "templates": "Ma'at, Themis, Forseti.",
+      "literalHtml": "<p class=\"body-dim\"><strong style=\"color:var(--off)\">Clear:</strong> discernment of what's real and what's false. Accountability without cruelty. Moral disorder doesn't just feel wrong, it triggers the nervous system. When truth is a 10, anything less is somatic. You can feel the lie before it forms a word. If you lie, you dysregulate your own nervous system. <strong style=\"color:var(--off)\">Distorted:</strong> rigid judgment, self-righteousness, justice as control. <strong style=\"color:var(--off)\">Templates:</strong> Ma'at, Themis, Forseti.</p>"
+    },
+    {
+      "ordinal": 11,
+      "roman": "XI",
+      "name": "Trickster",
+      "cluster": "Witness",
+      "sourceLine": 3947,
+      "clear": "disruption of rigid patterns, revealing what's hidden through inversion, innovation through disorder. Sees the absurdity in what everyone else treats as fixed.",
+      "distorted": "deception as lifestyle, instability mistaken for freedom.",
+      "templates": "Loki, Coyote, Anansi.",
+      "literalHtml": "<p class=\"body-dim\"><strong style=\"color:var(--off)\">Clear:</strong> disruption of rigid patterns, revealing what's hidden through inversion, innovation through disorder. Sees the absurdity in what everyone else treats as fixed. <strong style=\"color:var(--off)\">Distorted:</strong> deception as lifestyle, instability mistaken for freedom. <strong style=\"color:var(--off)\">Templates:</strong> Loki, Coyote, Anansi.</p>"
+    },
+    {
+      "ordinal": 12,
+      "roman": "XII",
+      "name": "Nature",
+      "cluster": "Witness",
+      "sourceLine": 3950,
+      "clear": "alignment with biological truth, growth through patience rather than force. Thinks in cycles rather than straight lines.",
+      "distorted": "rejection of structure, naturalism as escape from complexity.",
+      "templates": "Gaia, Cernunnos, Pan.",
+      "literalHtml": "<p class=\"body-dim\"><strong style=\"color:var(--off)\">Clear:</strong> alignment with biological truth, growth through patience rather than force. Thinks in cycles rather than straight lines. <strong style=\"color:var(--off)\">Distorted:</strong> rejection of structure, naturalism as escape from complexity. <strong style=\"color:var(--off)\">Templates:</strong> Gaia, Cernunnos, Pan.</p>"
+    },
+    {
+      "ordinal": 13,
+      "roman": "XIII",
+      "name": "Mystery",
+      "cluster": "Witness",
+      "sourceLine": 3953,
+      "clear": "navigation of the unseen, death and rebirth as structural realities. Can hold darkness without being consumed. Always drawn to what's hidden.",
+      "distorted": "obsession with shadow, nihilism, identity built on the margin.",
+      "templates": "Hades, Hecate, Anubis.",
+      "literalHtml": "<p class=\"body-dim\"><strong style=\"color:var(--off)\">Clear:</strong> navigation of the unseen, death and rebirth as structural realities. Can hold darkness without being consumed. Always drawn to what's hidden. <strong style=\"color:var(--off)\">Distorted:</strong> obsession with shadow, nihilism, identity built on the margin. <strong style=\"color:var(--off)\">Templates:</strong> Hades, Hecate, Anubis.</p>"
+    },
+    {
+      "ordinal": 14,
+      "roman": "XIV",
+      "name": "Duty",
+      "cluster": "Architect",
+      "sourceLine": 3956,
+      "clear": "right action regardless of personal cost. Loyalty to what's true, not what's comfortable. Does the right thing even when no one is watching.",
+      "distorted": "rigidity, losing self in obligation, duty performed for an audience.",
+      "templates": "Rama, Horus, Michael.",
+      "literalHtml": "<p class=\"body-dim\"><strong style=\"color:var(--off)\">Clear:</strong> right action regardless of personal cost. Loyalty to what's true, not what's comfortable. Does the right thing even when no one is watching. <strong style=\"color:var(--off)\">Distorted:</strong> rigidity, losing self in obligation, duty performed for an audience. <strong style=\"color:var(--off)\">Templates:</strong> Rama, Horus, Michael.</p>"
+    },
+    {
+      "ordinal": 15,
+      "roman": "XV",
+      "name": "Play",
+      "cluster": "Weaver",
+      "sourceLine": 3959,
+      "clear": "the generative state of pure engagement. Awe. Creativity for its own sake. Not the absence of seriousness, the intelligence serious people miss. Always able to find what's alive in something.",
+      "distorted": "avoidance through play, irresponsibility, lightness that refuses depth.",
+      "templates": "Krishna, Dionysus, Baldur.",
+      "literalHtml": "<p class=\"body-dim\"><strong style=\"color:var(--off)\">Clear:</strong> the generative state of pure engagement. Awe. Creativity for its own sake. Not the absence of seriousness, the intelligence serious people miss. Always able to find what's alive in something. <strong style=\"color:var(--off)\">Distorted:</strong> avoidance through play, irresponsibility, lightness that refuses depth. <strong style=\"color:var(--off)\">Templates:</strong> Krishna, Dionysus, Baldur.</p>"
+    },
+    {
+      "ordinal": 16,
+      "roman": "XVI",
+      "name": "Death",
+      "cluster": "Engine",
+      "sourceLine": 3960,
+      "clear": "completion. Endings held cleanly. The threshold kept, the thread cut when the thread is finished, presence with what's dying without flinching. Releases what's done so renewal has room.",
+      "distorted": "morbidity, clinging that refuses every ending, or dealing endings as power.",
+      "templates": "Anubis, Yama, Hel, Thanatos.",
+      "literalHtml": "<p class=\"body-dim\"><strong style=\"color:var(--off)\">Clear:</strong> completion. Endings held cleanly. The threshold kept, the thread cut when the thread is finished, presence with what's dying without flinching. Releases what's done so renewal has room. <strong style=\"color:var(--off)\">Distorted:</strong> morbidity, clinging that refuses every ending, or dealing endings as power. <strong style=\"color:var(--off)\">Templates:</strong> Anubis, Yama, Hel, Thanatos.</p>"
+    },
+    {
+      "ordinal": 17,
+      "roman": "XVII",
+      "name": "Fate",
+      "cluster": "Architect",
+      "sourceLine": 3960,
+      "clear": "reads the pattern and its timing. Knows what must unfold and when to move. Acts at the right moment without forcing the thread.",
+      "distorted": "fatalism, abdication of choice, reading the pattern as an excuse to never act.",
+      "templates": "the Moirai, the Norns, Fortuna, Kala.",
+      "literalHtml": "<p class=\"body-dim\"><strong style=\"color:var(--off)\">Clear:</strong> reads the pattern and its timing. Knows what must unfold and when to move. Acts at the right moment without forcing the thread. <strong style=\"color:var(--off)\">Distorted:</strong> fatalism, abdication of choice, reading the pattern as an excuse to never act. <strong style=\"color:var(--off)\">Templates:</strong> the Moirai, the Norns, Fortuna, Kala.</p>"
+    },
+    {
+      "ordinal": 18,
+      "roman": "XVIII",
+      "name": "Guardian",
+      "cluster": "Witness",
+      "sourceLine": 3960,
+      "clear": "the watch kept. A perimeter held so what's inside can live. Protection without possession, sanctuary without walls that strangle.",
+      "distorted": "overprotection that smothers, vigilance that never rests, walls against life itself.",
+      "templates": "Heimdall, Durga, Hestia, the Lokapalas.",
+      "literalHtml": "<p class=\"body-dim\"><strong style=\"color:var(--off)\">Clear:</strong> the watch kept. A perimeter held so what's inside can live. Protection without possession, sanctuary without walls that strangle. <strong style=\"color:var(--off)\">Distorted:</strong> overprotection that smothers, vigilance that never rests, walls against life itself. <strong style=\"color:var(--off)\">Templates:</strong> Heimdall, Durga, Hestia, the Lokapalas.</p>"
+    },
+    {
+      "ordinal": 19,
+      "roman": "XIX",
+      "name": "Provision",
+      "cluster": "Weaver",
+      "sourceLine": 3960,
+      "clear": "the one who makes sure there's enough, and not only for today. Supply held against a season nobody can see yet. The granary, the harvest, the wage. Provides for, rather than trades with.",
+      "distorted": "worth measured only in what's furnished, hoarding dressed as prudence, the provider who can't be provided for.",
+      "templates": "Demeter, Annapurna, Freyr, Lakshmi.",
+      "literalHtml": "<p class=\"body-dim\"><strong style=\"color:var(--off)\">Clear:</strong> the one who makes sure there's enough, and not only for today. Supply held against a season nobody can see yet. The granary, the harvest, the wage. Provides for, rather than trades with. <strong style=\"color:var(--off)\">Distorted:</strong> worth measured only in what's furnished, hoarding dressed as prudence, the provider who can't be provided for. <strong style=\"color:var(--off)\">Templates:</strong> Demeter, Annapurna, Freyr, Lakshmi.</p>"
+    }
+  ],
+  "verification": {
+    "expectedCount": 19,
+    "actualCount": 19,
+    "allNamedClustersFound": true,
+    "allThreeFieldLabelsFound": true,
+    "originalByteHashMatch": true
+  },
+  "policy": {
+    "sourceRecovered": true,
+    "exactNineteenTextRecovered": true,
+    "canonMappingApproved": false,
+    "runtimeChanged": false,
+    "scientificValidationAsserted": false
+  }
+}
