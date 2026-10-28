@@ -1,5 +1,7 @@
 # ATUNED — MASTER FILE INDEX / FIRST READ (V14)
 
+> **V16 SOURCE RECOVERY OVERRIDE (2026-10-28):** The historical V14 discussion below says original v341 was unrecovered. That was correct at V14 but is no longer current. Three independent Google Drive copies of `MOB_Complete_v341.html` now match the exact expected SHA-256 `79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4`. The literal Clear/Distorted/Templates text for all **19/19 domains** is recorded in [V16 exact-source dataset](data/compass/integration/v16/ATUNED_V341_EXACT_19_DOMAINS_V16.json). Source recovery does not authorize Canon crosswalks or runtime promotions. Original Inferno V1 is still missing; **G01 through G06 remain OPEN** overall. Read [V16 execution ledger](data/compass/integration/v16/ATUNED_EXECUTION_STRATEGY_AND_PROGRESS_V16.md) and the [V16 five-file index delta](data/compass/integration/v16/ATUNED_FILE_INDEX_DELTA_V16.json) immediately after this master index.
+
 **Read this file first in every continuation thread.** This is the authoritative **location map**, not a promotion of any source to Canon, a replacement for the V13 user-uploaded handshake, or a runtime certification.
 
 - **Date / review snapshot:** 2026-10-28
