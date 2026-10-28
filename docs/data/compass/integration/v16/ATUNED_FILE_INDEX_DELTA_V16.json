@@ -4,7 +4,7 @@
   "firstRead": "docs/ATUNED_MASTER_FILE_INDEX.md",
   "baseManifest": "docs/data/compass/integration/v14/ATUNED_FILE_LOCATOR_MANIFEST_V14.json",
   "baseLocatorCount": 563,
-  "deltaLocatorCount": 7,
+  "deltaLocatorCount": 9,
   "deltaLocators": [
     {
       "repository": "rebootos-sourcce/MOB",
@@ -34,16 +34,16 @@
       "repository": "rebootos-sourcce/MOB",
       "ref": "atuned/compass-foundation-closure-20261026",
       "path": ".github/workflows/atuned-v16-source-and-journey.yml",
-      "blobSha": "7410d4032aeb34389617a9fa90a2a9da7d363c7c",
-      "sizeBytes": 1043,
+      "blobSha": "369665d6cf16fe62e45f253bff41613510a5da3b",
+      "sizeBytes": 1239,
       "sourceStatus": "PATH_AND_BLOB_VERIFIED_NO_RUNTIME_PROMOTION"
     },
     {
       "repository": "rebootos-sourcce/MOB",
       "ref": "atuned/compass-foundation-closure-20261026",
       "path": "docs/data/compass/integration/v16/ATUNED_EXECUTION_STRATEGY_AND_PROGRESS_V16.md",
-      "blobSha": "e113e1f8fd58f54e8782295a066f4cef70b9a17e",
-      "sizeBytes": 7148,
+      "blobSha": "b735f1e79116424e6aeac72cdf1fb70254cc012b",
+      "sizeBytes": 9801,
       "sourceStatus": "PATH_AND_BLOB_VERIFIED_NO_RUNTIME_PROMOTION"
     },
     {
@@ -60,6 +60,22 @@
       "path": "docs/data/compass/integration/v16/validate_v16_v341_19_join.cjs",
       "blobSha": "f71dfb11c6b73fa9ffa3eda13544ea7c5f5a634f",
       "sizeBytes": 2040,
+      "sourceStatus": "PATH_AND_BLOB_VERIFIED_NO_RUNTIME_PROMOTION"
+    },
+    {
+      "repository": "rebootos-sourcce/MOB",
+      "ref": "atuned/compass-foundation-closure-20261026",
+      "path": "docs/data/compass/integration/v16/ATUNED_V341_CANON_ARCHITECTURE_EVIDENCE_V16.json",
+      "blobSha": "12b3fddec824449095e411ca8c9e276e1e30c956",
+      "sizeBytes": 3510,
+      "sourceStatus": "PATH_AND_BLOB_VERIFIED_NO_RUNTIME_PROMOTION"
+    },
+    {
+      "repository": "rebootos-sourcce/MOB",
+      "ref": "atuned/compass-foundation-closure-20261026",
+      "path": ".github/workflows/atuned-v16-browser-acceptance.yml",
+      "blobSha": "260b2de82450802a9a0a4e707f591ff8232fe9bb",
+      "sizeBytes": 1533,
       "sourceStatus": "PATH_AND_BLOB_VERIFIED_NO_RUNTIME_PROMOTION"
     }
   ],
@@ -86,5 +102,6 @@
     "G06": "OPEN"
   },
   "excludeSelf": "This delta file is not self-pinned by blob SHA; avoid cyclic hash. Its own locator must be verified separately.",
-  "notes": "V14 remains frozen; V16 file pointers checked at branch ref and should be repinned if new work advances their blobs."
+  "notes": "V14 is frozen at 563 selected paths, V16 adds nine new paths; delta itself excluded to avoid self-hash recursion. Provenance counts are not psychological record counts; update when refs change.",
+  "firstReadMasterBlobSha": "a18122e99b5fca20195e762ac362dfd6c000e494"
 }
