@@ -1,0 +1,167 @@
+{
+  "schema": "ATUNED_SOURCE_FIRST_CLOSURE_GATES_V8",
+  "date": "2026-10-28",
+  "authority": "RESEARCH_PROVENANCE_AUDIT_NOT_CANON_NOT_RUNTIME",
+  "branch": "atuned/compass-foundation-closure-20261026",
+  "baselineCommit": "47deaf0467bff416de7fc870c8350b892420459a",
+  "scope": "Research-first closure plan for existing Compass/Inferno/Purgatorio/Paradiso/Deep Psyche; runtime is deferred until authoritative source and semantic acceptance.",
+  "method": "100% requires every gate closure with source+approval+test evidence; passing this file's honesty validator is not closure.",
+  "readinessBaseline": {
+    "mapNarrative": 100,
+    "recordHarmonization": 90,
+    "researchCoverage": 95,
+    "unifiedGraph": 55,
+    "heroJourneyE2E": 20,
+    "weightedOverall": 72
+  },
+  "sourceAudit": {
+    "method": "GitHub REST recursive tree checks on selected feature branch heads; Library title/content searches; prior main branch audit in V7. This is not a full scan of all 201 reported branch names or historical git objects.",
+    "branchesInspected": [
+      "atuned/compass-foundation-closure-20261026",
+      "atuned/deep-psyche-end-to-end-2026-10-26",
+      "atuned/deep-psyche-kpi-closure-2026-10-24",
+      "work/deep-psyche-recursive-closure-2026-10-24",
+      "atunED/inferno-38-template-normalization-2026-10-25",
+      "atuned/mvp-alpha-recursive-execution",
+      "audit/behavioral-coverage-2026-10-18",
+      "claude/compass-thirteen-rb",
+      "cq-intention-trace-graph-20261028",
+      "sweep-108-physical-4-field-anchors-20261028",
+      "verp-six-gates-field-20261028",
+      "lookdev/canon-performer-hypercomplex-20261027",
+      "lookdev/land-psychopathy-sociopathy-20261027",
+      "lookdev/wire-the-page-and-dualpole-20261026",
+      "source-ai-chat",
+      "project/atuned-geometric-framework",
+      "trace-graph-ui",
+      "atunED/paradiso-compass-map-v0-2026-10-25",
+      "merge-dualpole-field-20261027",
+      "docs/owner-dictation-notes"
+    ],
+    "branchCountInspected": 20,
+    "branchNamesEnumerated": 201,
+    "exactSourceTarget": "MOB_Complete_v341.html",
+    "expectedSha256": "79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4",
+    "exactSourceRetrieved": false,
+    "exactSourceFileVerified": false,
+    "priorVersionsSubstituteAllowed": false,
+    "infernoOriginalV1ArchiveRecovered": false,
+    "relatedV341SourceText": "docs/ATUNED_DEEP_PSYCHOLOGICAL_V341_CONSCIOUS_DOMAIN_AFFIRMATION_EXTRACTION_2026-10-22.md",
+    "relatedV341SourceTextVerifiedAsOriginalBytes": false,
+    "libraryExactFilenameRetrieved": false,
+    "libraryRelatedArtifact": "MOB_Complete_v330.html"
+  },
+  "newlyLocatedCrossBranchSource": {
+    "repo": "rebootos-sourcce/MOB",
+    "branch": "work/deep-psyche-recursive-closure-2026-10-24",
+    "path": "docs/data/ATUNED_SUPERCOMPLEX_CANDIDATE_REGISTRY_v1.json",
+    "blobSha": "25c91a0be0efa86c13c2db9fc176b11cf8f607d1",
+    "version": "1.1.0",
+    "sourceRecords": 12,
+    "reportedRelationships": 34,
+    "passesPerRecord": 3,
+    "canonicalPromotions": 0,
+    "importToWorkingGraph": false,
+    "records": [
+      "descent-candidate:narcissism",
+      "descent-candidate:machiavellianism",
+      "descent-candidate:psychopathy",
+      "supercomplex-candidate:lucifer",
+      "supercomplex-candidate:geryon",
+      "supercomplex-candidate:baal",
+      "supercomplex-candidate:moloch",
+      "source-contradiction:supercomplex-owner-vs-source-family",
+      "inversion-pole:creator",
+      "opposite:Narcissism",
+      "opposite:Machiavellianism",
+      "opposite:Psychopathy"
+    ],
+    "ownerRejectedSupercomplexCandidate": "descent-candidate:psychopathy",
+    "unverifiedMembershipRule": true
+  },
+  "researchGraphBaseline": {
+    "path": "docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json",
+    "blobSha": "320142d70ccb63e4f22d681a26bc6d25ae03cf18",
+    "nodes": 404,
+    "edges": 875,
+    "dangling": 0,
+    "duplicateTyped": 0,
+    "isolates": 8,
+    "allResearchNotRuntime": true
+  },
+  "sourceRecordCounts": {
+    "deepPsyche": 149,
+    "inferno": 38,
+    "purgatorio": 23,
+    "paradiso": 10,
+    "shadows": 30,
+    "nativeArchetypes": 12,
+    "teacherInverse": 31,
+    "heroJourneyScenes": 26,
+    "integrityLaws": 21,
+    "enginePoles": 14,
+    "teacherStarterRecipes": 39
+  },
+  "openFindings": {
+    "exactV341Wordings": 19,
+    "unrecoveredInfernoV1": true,
+    "figureSemanticConflicts": 4,
+    "paradisoTeacherOneSided": 5,
+    "crossRegistryNameCandidates": 21,
+    "eightOrdinaryComplexesIdentified": false,
+    "hyperSuperMembershipSourceComplete": false,
+    "ownerApprovalForProposedCrosswalks": false,
+    "liveBrowserE2ECertified": false
+  },
+  "gates": [
+    {
+      "id": "G01",
+      "name": "Exact source recovery",
+      "closed": false,
+      "required": "Locate original v341 bytes with SHA-256 and section locators, original Inferno V1 archive, and reconcile every source version.",
+      "evidenceStatus": "20 selected MOB branch trees inspected; prior default branches and Library checked; exact artifacts not retrieved"
+    },
+    {
+      "id": "G02",
+      "name": "Canonical taxonomy",
+      "closed": false,
+      "required": "Recover eight ordinary Complex names; provenance for every Hyper/Super member and inversion; resolve owner-scoped classifications.",
+      "evidenceStatus": "12 existing cross-branch candidate profiles found, none canon-approved"
+    },
+    {
+      "id": "G03",
+      "name": "Record harmonization",
+      "closed": false,
+      "required": "Verify all 19 v341 definitions, four disputes, five Paradiso asymmetries and 21 name candidates by source and authorized Canon rulings.",
+      "evidenceStatus": "Source-qualified candidate records exist; approvals and exact v341 pending"
+    },
+    {
+      "id": "G04",
+      "name": "Typed research graph",
+      "closed": false,
+      "required": "Complete source-owned nerve/fetter/saboteur/complex typed memberships, all directional provenance and false-positive checks without promotion of hypotheses.",
+      "evidenceStatus": "404/875 reference graph structurally documented; full cross-layer membership still open"
+    },
+    {
+      "id": "G05",
+      "name": "Runtime integration",
+      "closed": false,
+      "required": "Verify TRACE→release/reframe→ritual event save/replay→approved CQ/Intention→Hero Journey/avatar through real user profiles.",
+      "evidenceStatus": "26 release and 26 ritual routes already exist; user-level E2E not certified"
+    },
+    {
+      "id": "G06",
+      "name": "Production acceptance",
+      "closed": false,
+      "required": "Run structural/adversarial/browser tests against same final commit, inspect deployments, verify rollback and owner acceptance.",
+      "evidenceStatus": "Prior CI at older commit only; live/browser acceptance outstanding"
+    }
+  ],
+  "runtimeBoundary": {
+    "approvedNewGraphImports": 0,
+    "approvedNewScoringWeights": 0,
+    "newProductionChanges": 0,
+    "staticSceneProtocolIdsMustRemainNull": true,
+    "staticSceneRitualInstanceIdsMustRemainNull": true
+  }
+}

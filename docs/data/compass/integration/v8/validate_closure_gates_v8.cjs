@@ -1,0 +1,34 @@
+#!/usr/bin/env node
+'use strict';
+// Research honesty validator. PASS = correct OPEN state, never 100% completion.
+const fs=require('node:fs'),path=require('node:path');
+const base=path.resolve(__dirname,'../../../../..');
+const read=p=>JSON.parse(fs.readFileSync(path.join(base,p),'utf8'));
+const assert=(v,msg)=>{if(!v)throw Error(msg)};
+const l=read('docs/data/compass/integration/v8/ATUNED_RESEARCH_CLOSURE_GATES_V8.json');
+const g=read('docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json');
+const gaps=read('docs/data/compass/integration/v4/DEEP_PSYCHE_19_V341_EXACT_SOURCE_GAP_LEDGER_V1.json');
+const prog=read('docs/data/compass/integration/v4/ATUNED_RESEARCH_HARMONIZATION_PROGRESS_V6.json');
+try{
+assert(l.schema==='ATUNED_SOURCE_FIRST_CLOSURE_GATES_V8','schema drift');
+assert(l.gates.length===6&&new Set(l.gates.map(x=>x.id)).size===6,'gate ID error');
+assert(l.sourceAudit.branchesInspected.length===l.sourceAudit.branchCountInspected,'branch count incorrect');
+assert(new Set(l.sourceAudit.branchesInspected).size===l.sourceAudit.branchCountInspected,'duplicate branch');
+assert(!l.sourceAudit.exactSourceRetrieved&&!l.sourceAudit.exactSourceFileVerified&&!l.sourceAudit.infernoOriginalV1ArchiveRecovered,'source success falsely claimed');
+assert(l.sourceAudit.expectedSha256===gaps.records[0].sourceVersionRequestedSha256,'v341 expected hash drift');
+assert(gaps.records.length===19&&gaps.records.every(x=>!x.retrievedOriginal341&&!x.approvedExact341Definition),'unverified source erroneously approved');
+assert(l.openFindings.exactV341Wordings===19&&l.openFindings.figureSemanticConflicts===4&&l.openFindings.paradisoTeacherOneSided===5&&l.openFindings.crossRegistryNameCandidates===21,'open findings not tracked');
+assert(l.newlyLocatedCrossBranchSource.sourceRecords===12&&l.newlyLocatedCrossBranchSource.records.length===12&&l.newlyLocatedCrossBranchSource.canonicalPromotions===0&&!l.newlyLocatedCrossBranchSource.importToWorkingGraph,'cross-branch source falsely promoted');
+assert(l.newlyLocatedCrossBranchSource.ownerRejectedSupercomplexCandidate==='descent-candidate:psychopathy','owner rejection drift');
+assert(g.nodes.length===404&&g.edges.length===875,'graph baseline mismatch');
+const ids=new Set(g.nodes.map(x=>x.id));
+assert(ids.size===404,'duplicate nodes');
+assert(g.edges.every(x=>ids.has(x.from)&&ids.has(x.to)&&x.notRuntime),'dangling or promoted links');
+assert(new Set(g.edges.map(x=>x.from+'|'+x.to+'|'+x.type)).size===875,'duplicate typed links');
+assert(l.researchGraphBaseline.nodes===404&&l.researchGraphBaseline.edges===875,'ledger counts drift');
+assert(l.gates.every(x=>x.closed===false&&x.required&&x.evidenceStatus),'false gate close');
+assert(l.readinessBaseline.weightedOverall===prog.readiness.overallPercent&&l.readinessBaseline.weightedOverall<100,'unverified readiness increase');
+assert(Object.values(l.runtimeBoundary).every(v=>v===0||v===true),'runtime boundary drift');
+const metrics={pass:true,meaning:'All documented closure gates remain honestly OPEN; this is NOT 100% certification',gatesOpen:l.gates.length,sourceBranchesAudited:l.sourceAudit.branchCountInspected,extraCandidateRecordsLocated:l.newlyLocatedCrossBranchSource.sourceRecords,graphNodes:g.nodes.length,graphEdges:g.edges.length,exactSourceDefinitionsOutstanding:19,weightedReadiness:l.readinessBaseline.weightedOverall,runtimeChanges:0};
+console.log(JSON.stringify(metrics,null,2));
+}catch(e){console.error('V8 FAIL: '+e.message);process.exitCode=1}

@@ -35,6 +35,8 @@ jobs:
         run: node docs/data/compass/gameboard/v2/validate_gameboard_existing_routes_v2.cjs
       - name: Validate gameboard narrative and dynamic routing contract
         run: node docs/data/compass/gameboard/v1/validate_gameboard.cjs
+      - name: Validate V8 source recovery ledger and reject false 100 percent closure
+        run: node docs/data/compass/integration/v8/validate_closure_gates_v8.cjs
       - name: Report static instance IDs and outstanding acceptance gates
         run: |
           node - <<'NODE'
