@@ -1,0 +1,1310 @@
+{
+  "schema": "ATUNED_DEEP_PSYCHE_COMPASS_21_LEXICAL_SOURCE_REVIEW_V1",
+  "date": "2026-10-27",
+  "authority": "FOUR_PASS_COMPARISON_FOR_EACH_NAME_MATCH_NOT_CANON",
+  "sourceReferences": {
+    "a": {
+      "path": "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+      "blobSha": "3cc04779229fb0ebb041f8b4609e739ab73d9c50"
+    },
+    "g": {
+      "path": "docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json",
+      "blobSha": "320142d70ccb63e4f22d681a26bc6d25ae03cf18"
+    },
+    "t": {
+      "path": "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+      "blobSha": "8c10b4b75e17387a34f84692ba85a6875f5e7671"
+    },
+    "deepPsyche": {
+      "branch": "atuned/deep-psyche-end-to-end-2026-10-26",
+      "path": "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json",
+      "blobSha": "837da5d0862ca91e5e8a53a64f9505203a845148"
+    }
+  },
+  "counts": {
+    "matches": 21,
+    "archetype": 11,
+    "teachers": 10,
+    "analyticalPasses": 84,
+    "ownerApproved": 0
+  },
+  "policy": [
+    "Lexical identity is not semantic identity.",
+    "18 candidate archetypes and 12 core archetypes remain separate; do not merge all 18 with native 12.",
+    "Cultural-figure identity reference does not prove teacher behavioral quality or Paradiso placement.",
+    "No new source version or clinical interpretation is assumed."
+  ],
+  "comparisons": [
+    {
+      "sourceId": "archetype:candidate:warrior",
+      "targetId": "compass-archetype:Warrior",
+      "sourceName": "Warrior",
+      "targetName": "Warrior",
+      "class": "ARCHETYPE_TAXONOMY_COLLISION",
+      "lexicalMatch": true,
+      "conceptualIdentityApproved": false,
+      "depthReviewPasses": [
+        {
+          "pass": 1,
+          "lens": "EXACT_IDENTITY_AND_TEXTUAL_SCOPE",
+          "finding": "Deep Psyche archetype:candidate:warrior (archetype) defines 'Warrior' as: The Warrior is the part of you that meets danger and moves. It is built to protect what matters and to act when others freeze. In its clean form it is courage with a cause.. Compass compass-archetype:Warrior (compass_core_archetype) defines 'Warrior' as: Proportional defense without retaliation. The shared normalized string establishes a search index only; it does not prove the same source version, meaning or taxonomy.",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json"
+          ],
+          "limits": "Historical name identity and conceptual behavior identity are separate questions.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 2,
+          "lens": "COMPARATIVE_BEHAVIORAL_EXPRESSION",
+          "finding": "Deep Psyche expression: The Warrior is the part of you that meets danger and moves. It is built to protect what matters and to act when others freeze. In its clean form it is courage with a cause.. Compass expression: PROTECT → INITIATE → HOLD → REVIEW. These are separately authored descriptions; any overlap or difference must be reviewed as behavior, not resolved by identical capitalization of a label.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "No automatically inferred brain/nerve location or score connection.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 3,
+          "lens": "TAXONOMY_DISCONFIRMATION",
+          "finding": "Deep Psyche holds 18 candidate archetype records, including non-owner-dictated provisional entries; Compass has its own 12 behavioral archetypes. A matching word is insufficient to merge two records or change either denominator. Their behavioral roles must be cross-checked against the source-approved 12 archetype identities.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "Source version and context may legitimately differ.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 4,
+          "lens": "ADJUDICATION_GATE_AND_SOURCE_ROUTING",
+          "finding": "Current classification: ARCHETYPE_TAXONOMY_COLLISION. Keep two IDs (archetype:candidate:warrior and compass-archetype:Warrior) with a typed exact-name candidate edge for navigation. Before consolidation, require matching primary meaning and explicit owner/adjudicator approval, check counterexamples, then separately test permitted consumer semantics. No runtime graph, scoring, or ritual protocol is promoted.",
+          "sources": [
+            "docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json",
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json"
+          ],
+          "limits": "A research review can finish while a canonical equivalence remains unresolved.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        }
+      ],
+      "reviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "notRuntime": true
+    },
+    {
+      "sourceId": "archetype:candidate:innocent",
+      "targetId": "compass-archetype:Innocent",
+      "sourceName": "Innocent",
+      "targetName": "Innocent",
+      "class": "ARCHETYPE_TAXONOMY_COLLISION",
+      "lexicalMatch": true,
+      "conceptualIdentityApproved": false,
+      "depthReviewPasses": [
+        {
+          "pass": 1,
+          "lens": "EXACT_IDENTITY_AND_TEXTUAL_SCOPE",
+          "finding": "Deep Psyche archetype:candidate:innocent (archetype) defines 'Innocent' as: The Innocent meets the world without armor. It expects goodness and gives the benefit of the doubt.. Compass compass-archetype:Innocent (compass_core_archetype) defines 'Innocent' as: Openness paired with verification. The shared normalized string establishes a search index only; it does not prove the same source version, meaning or taxonomy.",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json"
+          ],
+          "limits": "Historical name identity and conceptual behavior identity are separate questions.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 2,
+          "lens": "COMPARATIVE_BEHAVIORAL_EXPRESSION",
+          "finding": "Deep Psyche expression: The Innocent meets the world without armor. It expects goodness and gives the benefit of the doubt.. Compass expression: RECEIVE → SEEK EVIDENCE → PRESERVE OPENNESS. These are separately authored descriptions; any overlap or difference must be reviewed as behavior, not resolved by identical capitalization of a label.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "No automatically inferred brain/nerve location or score connection.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 3,
+          "lens": "TAXONOMY_DISCONFIRMATION",
+          "finding": "Deep Psyche holds 18 candidate archetype records, including non-owner-dictated provisional entries; Compass has its own 12 behavioral archetypes. A matching word is insufficient to merge two records or change either denominator. Their behavioral roles must be cross-checked against the source-approved 12 archetype identities.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "Source version and context may legitimately differ.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 4,
+          "lens": "ADJUDICATION_GATE_AND_SOURCE_ROUTING",
+          "finding": "Current classification: ARCHETYPE_TAXONOMY_COLLISION. Keep two IDs (archetype:candidate:innocent and compass-archetype:Innocent) with a typed exact-name candidate edge for navigation. Before consolidation, require matching primary meaning and explicit owner/adjudicator approval, check counterexamples, then separately test permitted consumer semantics. No runtime graph, scoring, or ritual protocol is promoted.",
+          "sources": [
+            "docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json",
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json"
+          ],
+          "limits": "A research review can finish while a canonical equivalence remains unresolved.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        }
+      ],
+      "reviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "notRuntime": true
+    },
+    {
+      "sourceId": "archetype:candidate:caregiver",
+      "targetId": "compass-archetype:Caregiver",
+      "sourceName": "Caregiver",
+      "targetName": "Caregiver",
+      "class": "ARCHETYPE_TAXONOMY_COLLISION",
+      "lexicalMatch": true,
+      "conceptualIdentityApproved": false,
+      "depthReviewPasses": [
+        {
+          "pass": 1,
+          "lens": "EXACT_IDENTITY_AND_TEXTUAL_SCOPE",
+          "finding": "Deep Psyche archetype:candidate:caregiver (archetype) defines 'Caregiver' as: The Caregiver protects and provides. It is attuned to need and moves to meet it.. Compass compass-archetype:Caregiver (compass_core_archetype) defines 'Caregiver' as: Care with boundaries and reciprocal agency. The shared normalized string establishes a search index only; it does not prove the same source version, meaning or taxonomy.",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json"
+          ],
+          "limits": "Historical name identity and conceptual behavior identity are separate questions.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 2,
+          "lens": "COMPARATIVE_BEHAVIORAL_EXPRESSION",
+          "finding": "Deep Psyche expression: The Caregiver protects and provides. It is attuned to need and moves to meet it.. Compass expression: RECEIVE → CONNECT → OFFER → RELEASE CONTROL. These are separately authored descriptions; any overlap or difference must be reviewed as behavior, not resolved by identical capitalization of a label.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "No automatically inferred brain/nerve location or score connection.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 3,
+          "lens": "TAXONOMY_DISCONFIRMATION",
+          "finding": "Deep Psyche holds 18 candidate archetype records, including non-owner-dictated provisional entries; Compass has its own 12 behavioral archetypes. A matching word is insufficient to merge two records or change either denominator. Their behavioral roles must be cross-checked against the source-approved 12 archetype identities.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "Source version and context may legitimately differ.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 4,
+          "lens": "ADJUDICATION_GATE_AND_SOURCE_ROUTING",
+          "finding": "Current classification: ARCHETYPE_TAXONOMY_COLLISION. Keep two IDs (archetype:candidate:caregiver and compass-archetype:Caregiver) with a typed exact-name candidate edge for navigation. Before consolidation, require matching primary meaning and explicit owner/adjudicator approval, check counterexamples, then separately test permitted consumer semantics. No runtime graph, scoring, or ritual protocol is promoted.",
+          "sources": [
+            "docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json",
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json"
+          ],
+          "limits": "A research review can finish while a canonical equivalence remains unresolved.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        }
+      ],
+      "reviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "notRuntime": true
+    },
+    {
+      "sourceId": "archetype:candidate:explorer",
+      "targetId": "compass-archetype:Explorer",
+      "sourceName": "Explorer",
+      "targetName": "Explorer",
+      "class": "ARCHETYPE_TAXONOMY_COLLISION",
+      "lexicalMatch": true,
+      "conceptualIdentityApproved": false,
+      "depthReviewPasses": [
+        {
+          "pass": 1,
+          "lens": "EXACT_IDENTITY_AND_TEXTUAL_SCOPE",
+          "finding": "Deep Psyche archetype:candidate:explorer (archetype) defines 'Explorer' as: The Explorer seeks. It needs new ground and cannot stay penned for long.. Compass compass-archetype:Explorer (compass_core_archetype) defines 'Explorer' as: Curiosity with risk management and commitments. The shared normalized string establishes a search index only; it does not prove the same source version, meaning or taxonomy.",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json"
+          ],
+          "limits": "Historical name identity and conceptual behavior identity are separate questions.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 2,
+          "lens": "COMPARATIVE_BEHAVIORAL_EXPRESSION",
+          "finding": "Deep Psyche expression: The Explorer seeks. It needs new ground and cannot stay penned for long.. Compass expression: SEEK → APPROACH → OBSERVE → RETURN. These are separately authored descriptions; any overlap or difference must be reviewed as behavior, not resolved by identical capitalization of a label.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "No automatically inferred brain/nerve location or score connection.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 3,
+          "lens": "TAXONOMY_DISCONFIRMATION",
+          "finding": "Deep Psyche holds 18 candidate archetype records, including non-owner-dictated provisional entries; Compass has its own 12 behavioral archetypes. A matching word is insufficient to merge two records or change either denominator. Their behavioral roles must be cross-checked against the source-approved 12 archetype identities.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "Source version and context may legitimately differ.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 4,
+          "lens": "ADJUDICATION_GATE_AND_SOURCE_ROUTING",
+          "finding": "Current classification: ARCHETYPE_TAXONOMY_COLLISION. Keep two IDs (archetype:candidate:explorer and compass-archetype:Explorer) with a typed exact-name candidate edge for navigation. Before consolidation, require matching primary meaning and explicit owner/adjudicator approval, check counterexamples, then separately test permitted consumer semantics. No runtime graph, scoring, or ritual protocol is promoted.",
+          "sources": [
+            "docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json",
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json"
+          ],
+          "limits": "A research review can finish while a canonical equivalence remains unresolved.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        }
+      ],
+      "reviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "notRuntime": true
+    },
+    {
+      "sourceId": "archetype:candidate:lover",
+      "targetId": "compass-archetype:Lover",
+      "sourceName": "Lover",
+      "targetName": "Lover",
+      "class": "ARCHETYPE_TAXONOMY_COLLISION",
+      "lexicalMatch": true,
+      "conceptualIdentityApproved": false,
+      "depthReviewPasses": [
+        {
+          "pass": 1,
+          "lens": "EXACT_IDENTITY_AND_TEXTUAL_SCOPE",
+          "finding": "Deep Psyche archetype:candidate:lover (archetype) defines 'Lover' as: The Lover seeks closeness and beauty. It wants to merge and to be moved.. Compass compass-archetype:Lover (compass_core_archetype) defines 'Lover' as: Honest desire, consent and autonomy. The shared normalized string establishes a search index only; it does not prove the same source version, meaning or taxonomy.",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json"
+          ],
+          "limits": "Historical name identity and conceptual behavior identity are separate questions.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 2,
+          "lens": "COMPARATIVE_BEHAVIORAL_EXPRESSION",
+          "finding": "Deep Psyche expression: The Lover seeks closeness and beauty. It wants to merge and to be moved.. Compass expression: ATTRACT → CONNECT → RECEIVE → RELEASE OWNERSHIP. These are separately authored descriptions; any overlap or difference must be reviewed as behavior, not resolved by identical capitalization of a label.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "No automatically inferred brain/nerve location or score connection.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 3,
+          "lens": "TAXONOMY_DISCONFIRMATION",
+          "finding": "Deep Psyche holds 18 candidate archetype records, including non-owner-dictated provisional entries; Compass has its own 12 behavioral archetypes. A matching word is insufficient to merge two records or change either denominator. Their behavioral roles must be cross-checked against the source-approved 12 archetype identities.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "Source version and context may legitimately differ.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 4,
+          "lens": "ADJUDICATION_GATE_AND_SOURCE_ROUTING",
+          "finding": "Current classification: ARCHETYPE_TAXONOMY_COLLISION. Keep two IDs (archetype:candidate:lover and compass-archetype:Lover) with a typed exact-name candidate edge for navigation. Before consolidation, require matching primary meaning and explicit owner/adjudicator approval, check counterexamples, then separately test permitted consumer semantics. No runtime graph, scoring, or ritual protocol is promoted.",
+          "sources": [
+            "docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json",
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json"
+          ],
+          "limits": "A research review can finish while a canonical equivalence remains unresolved.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        }
+      ],
+      "reviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "notRuntime": true
+    },
+    {
+      "sourceId": "archetype:candidate:creator",
+      "targetId": "compass-archetype:Creator",
+      "sourceName": "Creator",
+      "targetName": "Creator",
+      "class": "ARCHETYPE_TAXONOMY_COLLISION",
+      "lexicalMatch": true,
+      "conceptualIdentityApproved": false,
+      "depthReviewPasses": [
+        {
+          "pass": 1,
+          "lens": "EXACT_IDENTITY_AND_TEXTUAL_SCOPE",
+          "finding": "Deep Psyche archetype:candidate:creator (archetype) defines 'Creator' as: The Creator must externalize what is inside. It builds, makes, brings forth.. Compass compass-archetype:Creator (compass_core_archetype) defines 'Creator' as: Useful craft without perfectionism as identity. The shared normalized string establishes a search index only; it does not prove the same source version, meaning or taxonomy.",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json"
+          ],
+          "limits": "Historical name identity and conceptual behavior identity are separate questions.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 2,
+          "lens": "COMPARATIVE_BEHAVIORAL_EXPRESSION",
+          "finding": "Deep Psyche expression: The Creator must externalize what is inside. It builds, makes, brings forth.. Compass expression: SEEK → TRANSFORM → EXPRESS → RECEIVE CRITIQUE. These are separately authored descriptions; any overlap or difference must be reviewed as behavior, not resolved by identical capitalization of a label.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "No automatically inferred brain/nerve location or score connection.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 3,
+          "lens": "TAXONOMY_DISCONFIRMATION",
+          "finding": "Deep Psyche holds 18 candidate archetype records, including non-owner-dictated provisional entries; Compass has its own 12 behavioral archetypes. A matching word is insufficient to merge two records or change either denominator. Their behavioral roles must be cross-checked against the source-approved 12 archetype identities.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "Source version and context may legitimately differ.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 4,
+          "lens": "ADJUDICATION_GATE_AND_SOURCE_ROUTING",
+          "finding": "Current classification: ARCHETYPE_TAXONOMY_COLLISION. Keep two IDs (archetype:candidate:creator and compass-archetype:Creator) with a typed exact-name candidate edge for navigation. Before consolidation, require matching primary meaning and explicit owner/adjudicator approval, check counterexamples, then separately test permitted consumer semantics. No runtime graph, scoring, or ritual protocol is promoted.",
+          "sources": [
+            "docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json",
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json"
+          ],
+          "limits": "A research review can finish while a canonical equivalence remains unresolved.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        }
+      ],
+      "reviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "notRuntime": true
+    },
+    {
+      "sourceId": "archetype:candidate:jester",
+      "targetId": "compass-archetype:Jester",
+      "sourceName": "Jester",
+      "targetName": "Jester",
+      "class": "ARCHETYPE_TAXONOMY_COLLISION",
+      "lexicalMatch": true,
+      "conceptualIdentityApproved": false,
+      "depthReviewPasses": [
+        {
+          "pass": 1,
+          "lens": "EXACT_IDENTITY_AND_TEXTUAL_SCOPE",
+          "finding": "Deep Psyche archetype:candidate:jester (archetype) defines 'Jester' as: The Jester finds the lightness and breaks tension. It tells the truth disguised as a joke.. Compass compass-archetype:Jester (compass_core_archetype) defines 'Jester' as: Kind humor followed by needed responsibility. The shared normalized string establishes a search index only; it does not prove the same source version, meaning or taxonomy.",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json"
+          ],
+          "limits": "Historical name identity and conceptual behavior identity are separate questions.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 2,
+          "lens": "COMPARATIVE_BEHAVIORAL_EXPRESSION",
+          "finding": "Deep Psyche expression: The Jester finds the lightness and breaks tension. It tells the truth disguised as a joke.. Compass expression: RECEIVE → EXPRESS PLAY → CONNECT → REFOCUS. These are separately authored descriptions; any overlap or difference must be reviewed as behavior, not resolved by identical capitalization of a label.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "No automatically inferred brain/nerve location or score connection.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 3,
+          "lens": "TAXONOMY_DISCONFIRMATION",
+          "finding": "Deep Psyche holds 18 candidate archetype records, including non-owner-dictated provisional entries; Compass has its own 12 behavioral archetypes. A matching word is insufficient to merge two records or change either denominator. Their behavioral roles must be cross-checked against the source-approved 12 archetype identities.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "Source version and context may legitimately differ.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 4,
+          "lens": "ADJUDICATION_GATE_AND_SOURCE_ROUTING",
+          "finding": "Current classification: ARCHETYPE_TAXONOMY_COLLISION. Keep two IDs (archetype:candidate:jester and compass-archetype:Jester) with a typed exact-name candidate edge for navigation. Before consolidation, require matching primary meaning and explicit owner/adjudicator approval, check counterexamples, then separately test permitted consumer semantics. No runtime graph, scoring, or ritual protocol is promoted.",
+          "sources": [
+            "docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json",
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json"
+          ],
+          "limits": "A research review can finish while a canonical equivalence remains unresolved.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        }
+      ],
+      "reviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "notRuntime": true
+    },
+    {
+      "sourceId": "archetype:candidate:sage",
+      "targetId": "compass-archetype:Sage",
+      "sourceName": "Sage",
+      "targetName": "Sage",
+      "class": "ARCHETYPE_TAXONOMY_COLLISION",
+      "lexicalMatch": true,
+      "conceptualIdentityApproved": false,
+      "depthReviewPasses": [
+        {
+          "pass": 1,
+          "lens": "EXACT_IDENTITY_AND_TEXTUAL_SCOPE",
+          "finding": "Deep Psyche archetype:candidate:sage (archetype) defines 'Sage' as: The Sage steps back to see the whole. It seeks understanding over winning.. Compass compass-archetype:Sage (compass_core_archetype) defines 'Sage' as: Evidence-seeking without status defense. The shared normalized string establishes a search index only; it does not prove the same source version, meaning or taxonomy.",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json"
+          ],
+          "limits": "Historical name identity and conceptual behavior identity are separate questions.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 2,
+          "lens": "COMPARATIVE_BEHAVIORAL_EXPRESSION",
+          "finding": "Deep Psyche expression: The Sage steps back to see the whole. It seeks understanding over winning.. Compass expression: RECEIVE → DIFFERENTIATE → SEEK → EXPRESS. These are separately authored descriptions; any overlap or difference must be reviewed as behavior, not resolved by identical capitalization of a label.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "No automatically inferred brain/nerve location or score connection.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 3,
+          "lens": "TAXONOMY_DISCONFIRMATION",
+          "finding": "Deep Psyche holds 18 candidate archetype records, including non-owner-dictated provisional entries; Compass has its own 12 behavioral archetypes. A matching word is insufficient to merge two records or change either denominator. Their behavioral roles must be cross-checked against the source-approved 12 archetype identities.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "Source version and context may legitimately differ.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 4,
+          "lens": "ADJUDICATION_GATE_AND_SOURCE_ROUTING",
+          "finding": "Current classification: ARCHETYPE_TAXONOMY_COLLISION. Keep two IDs (archetype:candidate:sage and compass-archetype:Sage) with a typed exact-name candidate edge for navigation. Before consolidation, require matching primary meaning and explicit owner/adjudicator approval, check counterexamples, then separately test permitted consumer semantics. No runtime graph, scoring, or ritual protocol is promoted.",
+          "sources": [
+            "docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json",
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json"
+          ],
+          "limits": "A research review can finish while a canonical equivalence remains unresolved.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        }
+      ],
+      "reviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "notRuntime": true
+    },
+    {
+      "sourceId": "archetype:candidate:magician",
+      "targetId": "compass-archetype:Magician",
+      "sourceName": "Magician",
+      "targetName": "Magician",
+      "class": "ARCHETYPE_TAXONOMY_COLLISION",
+      "lexicalMatch": true,
+      "conceptualIdentityApproved": false,
+      "depthReviewPasses": [
+        {
+          "pass": 1,
+          "lens": "EXACT_IDENTITY_AND_TEXTUAL_SCOPE",
+          "finding": "Deep Psyche archetype:candidate:magician (archetype) defines 'Magician' as: The Magician turns one thing into another. It works with what others cannot see.. Compass compass-archetype:Magician (compass_core_archetype) defines 'Magician' as: Transparent context change and measured effects. The shared normalized string establishes a search index only; it does not prove the same source version, meaning or taxonomy.",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json"
+          ],
+          "limits": "Historical name identity and conceptual behavior identity are separate questions.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 2,
+          "lens": "COMPARATIVE_BEHAVIORAL_EXPRESSION",
+          "finding": "Deep Psyche expression: The Magician turns one thing into another. It works with what others cannot see.. Compass expression: OBSERVE → REFRAME → TRANSFORM → VERIFY. These are separately authored descriptions; any overlap or difference must be reviewed as behavior, not resolved by identical capitalization of a label.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "No automatically inferred brain/nerve location or score connection.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 3,
+          "lens": "TAXONOMY_DISCONFIRMATION",
+          "finding": "Deep Psyche holds 18 candidate archetype records, including non-owner-dictated provisional entries; Compass has its own 12 behavioral archetypes. A matching word is insufficient to merge two records or change either denominator. Their behavioral roles must be cross-checked against the source-approved 12 archetype identities.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "Source version and context may legitimately differ.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 4,
+          "lens": "ADJUDICATION_GATE_AND_SOURCE_ROUTING",
+          "finding": "Current classification: ARCHETYPE_TAXONOMY_COLLISION. Keep two IDs (archetype:candidate:magician and compass-archetype:Magician) with a typed exact-name candidate edge for navigation. Before consolidation, require matching primary meaning and explicit owner/adjudicator approval, check counterexamples, then separately test permitted consumer semantics. No runtime graph, scoring, or ritual protocol is promoted.",
+          "sources": [
+            "docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json",
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json"
+          ],
+          "limits": "A research review can finish while a canonical equivalence remains unresolved.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        }
+      ],
+      "reviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "notRuntime": true
+    },
+    {
+      "sourceId": "archetype:candidate:ruler",
+      "targetId": "compass-archetype:Ruler",
+      "sourceName": "Ruler",
+      "targetName": "Ruler",
+      "class": "ARCHETYPE_TAXONOMY_COLLISION",
+      "lexicalMatch": true,
+      "conceptualIdentityApproved": false,
+      "depthReviewPasses": [
+        {
+          "pass": 1,
+          "lens": "EXACT_IDENTITY_AND_TEXTUAL_SCOPE",
+          "finding": "Deep Psyche archetype:candidate:ruler (archetype) defines 'Ruler' as: The Ruler orders and leads. It takes responsibility and wants things to work.. Compass compass-archetype:Ruler (compass_core_archetype) defines 'Ruler' as: Fair leadership and reversible decisions. The shared normalized string establishes a search index only; it does not prove the same source version, meaning or taxonomy.",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json"
+          ],
+          "limits": "Historical name identity and conceptual behavior identity are separate questions.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 2,
+          "lens": "COMPARATIVE_BEHAVIORAL_EXPRESSION",
+          "finding": "Deep Psyche expression: The Ruler orders and leads. It takes responsibility and wants things to work.. Compass expression: ORDER → EXPRESS STANDARDS → RECEIVE APPEAL. These are separately authored descriptions; any overlap or difference must be reviewed as behavior, not resolved by identical capitalization of a label.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "No automatically inferred brain/nerve location or score connection.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 3,
+          "lens": "TAXONOMY_DISCONFIRMATION",
+          "finding": "Deep Psyche holds 18 candidate archetype records, including non-owner-dictated provisional entries; Compass has its own 12 behavioral archetypes. A matching word is insufficient to merge two records or change either denominator. Their behavioral roles must be cross-checked against the source-approved 12 archetype identities.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "Source version and context may legitimately differ.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 4,
+          "lens": "ADJUDICATION_GATE_AND_SOURCE_ROUTING",
+          "finding": "Current classification: ARCHETYPE_TAXONOMY_COLLISION. Keep two IDs (archetype:candidate:ruler and compass-archetype:Ruler) with a typed exact-name candidate edge for navigation. Before consolidation, require matching primary meaning and explicit owner/adjudicator approval, check counterexamples, then separately test permitted consumer semantics. No runtime graph, scoring, or ritual protocol is promoted.",
+          "sources": [
+            "docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json",
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json"
+          ],
+          "limits": "A research review can finish while a canonical equivalence remains unresolved.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        }
+      ],
+      "reviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "notRuntime": true
+    },
+    {
+      "sourceId": "archetype:candidate:everyman",
+      "targetId": "compass-archetype:Everyman",
+      "sourceName": "Everyman",
+      "targetName": "Everyman",
+      "class": "ARCHETYPE_TAXONOMY_COLLISION",
+      "lexicalMatch": true,
+      "conceptualIdentityApproved": false,
+      "depthReviewPasses": [
+        {
+          "pass": 1,
+          "lens": "EXACT_IDENTITY_AND_TEXTUAL_SCOPE",
+          "finding": "Deep Psyche archetype:candidate:everyman (archetype) defines 'Everyman' as: The Everyman wants to fit, to belong, to be one of the group rather than set apart.. Compass compass-archetype:Everyman (compass_core_archetype) defines 'Everyman' as: Inclusion without group conformity. The shared normalized string establishes a search index only; it does not prove the same source version, meaning or taxonomy.",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json"
+          ],
+          "limits": "Historical name identity and conceptual behavior identity are separate questions.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 2,
+          "lens": "COMPARATIVE_BEHAVIORAL_EXPRESSION",
+          "finding": "Deep Psyche expression: The Everyman wants to fit, to belong, to be one of the group rather than set apart.. Compass expression: CONNECT → RECEIVE DIFFERENCE → EXPRESS SOLIDARITY. These are separately authored descriptions; any overlap or difference must be reviewed as behavior, not resolved by identical capitalization of a label.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "No automatically inferred brain/nerve location or score connection.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 3,
+          "lens": "TAXONOMY_DISCONFIRMATION",
+          "finding": "Deep Psyche holds 18 candidate archetype records, including non-owner-dictated provisional entries; Compass has its own 12 behavioral archetypes. A matching word is insufficient to merge two records or change either denominator. Their behavioral roles must be cross-checked against the source-approved 12 archetype identities.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "Source version and context may legitimately differ.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 4,
+          "lens": "ADJUDICATION_GATE_AND_SOURCE_ROUTING",
+          "finding": "Current classification: ARCHETYPE_TAXONOMY_COLLISION. Keep two IDs (archetype:candidate:everyman and compass-archetype:Everyman) with a typed exact-name candidate edge for navigation. Before consolidation, require matching primary meaning and explicit owner/adjudicator approval, check counterexamples, then separately test permitted consumer semantics. No runtime graph, scoring, or ritual protocol is promoted.",
+          "sources": [
+            "docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json",
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json"
+          ],
+          "limits": "A research review can finish while a canonical equivalence remains unresolved.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        }
+      ],
+      "reviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "notRuntime": true
+    },
+    {
+      "sourceId": "conscious-figure:rama",
+      "targetId": "compass-teacher:Rama",
+      "sourceName": "Rama",
+      "targetName": "Rama",
+      "class": "HISTORICAL_OR_CULTURAL_NAME_RESOLUTION",
+      "lexicalMatch": true,
+      "conceptualIdentityApproved": false,
+      "depthReviewPasses": [
+        {
+          "pass": 1,
+          "lens": "EXACT_IDENTITY_AND_TEXTUAL_SCOPE",
+          "finding": "Deep Psyche conscious-figure:rama (cultural_figure) defines 'Rama' as: CDOMAIN source row maps this figure to Duty; the meaning of the mapping is not yet established.. Compass compass-teacher:Rama (compass_teacher) defines 'Rama' as: Alignment. The shared normalized string establishes a search index only; it does not prove the same source version, meaning or taxonomy.",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json"
+          ],
+          "limits": "Historical name identity and conceptual behavior identity are separate questions.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 2,
+          "lens": "COMPARATIVE_BEHAVIORAL_EXPRESSION",
+          "finding": "Deep Psyche expression: CDOMAIN source row maps this figure to Duty; the meaning of the mapping is not yet established.. Compass expression: Balance truthful commitment, protection and proportional duty under pressure.. These are separately authored descriptions; any overlap or difference must be reviewed as behavior, not resolved by identical capitalization of a label.",
+          "sources": [
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "No automatically inferred brain/nerve location or score connection.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 3,
+          "lens": "TAXONOMY_DISCONFIRMATION",
+          "finding": "Deep Psyche cultural-figure candidates and the Compass teacher roster are different schemas. A historical/religious figure can be a shared referent without making Deep Psyche domain labels, Paradiso resonances or teacher qualities interchangeable. Claims about the actual source tradition require their own evidence.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "Source version and context may legitimately differ.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 4,
+          "lens": "ADJUDICATION_GATE_AND_SOURCE_ROUTING",
+          "finding": "Current classification: HISTORICAL_OR_CULTURAL_NAME_RESOLUTION. Keep two IDs (conscious-figure:rama and compass-teacher:Rama) with a typed exact-name candidate edge for navigation. Before consolidation, require matching primary meaning and explicit owner/adjudicator approval, check counterexamples, then separately test permitted consumer semantics. No runtime graph, scoring, or ritual protocol is promoted.",
+          "sources": [
+            "docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json"
+          ],
+          "limits": "A research review can finish while a canonical equivalence remains unresolved.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        }
+      ],
+      "reviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "notRuntime": true
+    },
+    {
+      "sourceId": "conscious-figure:krishna",
+      "targetId": "compass-teacher:Krishna",
+      "sourceName": "Krishna",
+      "targetName": "Krishna",
+      "class": "HISTORICAL_OR_CULTURAL_NAME_RESOLUTION",
+      "lexicalMatch": true,
+      "conceptualIdentityApproved": false,
+      "depthReviewPasses": [
+        {
+          "pass": 1,
+          "lens": "EXACT_IDENTITY_AND_TEXTUAL_SCOPE",
+          "finding": "Deep Psyche conscious-figure:krishna (cultural_figure) defines 'Krishna' as: CDOMAIN source row maps this figure to Play; the meaning of the mapping is not yet established.. Compass compass-teacher:Krishna (compass_teacher) defines 'Krishna' as: Flow. The shared normalized string establishes a search index only; it does not prove the same source version, meaning or taxonomy.",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json"
+          ],
+          "limits": "Historical name identity and conceptual behavior identity are separate questions.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 2,
+          "lens": "COMPARATIVE_BEHAVIORAL_EXPRESSION",
+          "finding": "Deep Psyche expression: CDOMAIN source row maps this figure to Play; the meaning of the mapping is not yet established.. Compass expression: Choose an accountable action and release fixation on obtaining personal reward.. These are separately authored descriptions; any overlap or difference must be reviewed as behavior, not resolved by identical capitalization of a label.",
+          "sources": [
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "No automatically inferred brain/nerve location or score connection.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 3,
+          "lens": "TAXONOMY_DISCONFIRMATION",
+          "finding": "Deep Psyche cultural-figure candidates and the Compass teacher roster are different schemas. A historical/religious figure can be a shared referent without making Deep Psyche domain labels, Paradiso resonances or teacher qualities interchangeable. Claims about the actual source tradition require their own evidence.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "Source version and context may legitimately differ.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 4,
+          "lens": "ADJUDICATION_GATE_AND_SOURCE_ROUTING",
+          "finding": "Current classification: HISTORICAL_OR_CULTURAL_NAME_RESOLUTION. Keep two IDs (conscious-figure:krishna and compass-teacher:Krishna) with a typed exact-name candidate edge for navigation. Before consolidation, require matching primary meaning and explicit owner/adjudicator approval, check counterexamples, then separately test permitted consumer semantics. No runtime graph, scoring, or ritual protocol is promoted.",
+          "sources": [
+            "docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json"
+          ],
+          "limits": "A research review can finish while a canonical equivalence remains unresolved.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        }
+      ],
+      "reviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "notRuntime": true
+    },
+    {
+      "sourceId": "conscious-figure:zoroaster",
+      "targetId": "compass-teacher:Zoroaster",
+      "sourceName": "Zoroaster",
+      "targetName": "Zoroaster",
+      "class": "HISTORICAL_OR_CULTURAL_NAME_RESOLUTION",
+      "lexicalMatch": true,
+      "conceptualIdentityApproved": false,
+      "depthReviewPasses": [
+        {
+          "pass": 1,
+          "lens": "EXACT_IDENTITY_AND_TEXTUAL_SCOPE",
+          "finding": "Deep Psyche conscious-figure:zoroaster (cultural_figure) defines 'Zoroaster' as: CDOMAIN source row maps this figure to Knowledge; the meaning of the mapping is not yet established.. Compass compass-teacher:Zoroaster (compass_teacher) defines 'Zoroaster' as: Truth. The shared normalized string establishes a search index only; it does not prove the same source version, meaning or taxonomy.",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json"
+          ],
+          "limits": "Historical name identity and conceptual behavior identity are separate questions.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 2,
+          "lens": "COMPARATIVE_BEHAVIORAL_EXPRESSION",
+          "finding": "Deep Psyche expression: CDOMAIN source row maps this figure to Knowledge; the meaning of the mapping is not yet established.. Compass expression: States what can be known, separates inference from evidence, corrects misrepresentation and follows through with action.. These are separately authored descriptions; any overlap or difference must be reviewed as behavior, not resolved by identical capitalization of a label.",
+          "sources": [
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "No automatically inferred brain/nerve location or score connection.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 3,
+          "lens": "TAXONOMY_DISCONFIRMATION",
+          "finding": "Deep Psyche cultural-figure candidates and the Compass teacher roster are different schemas. A historical/religious figure can be a shared referent without making Deep Psyche domain labels, Paradiso resonances or teacher qualities interchangeable. Claims about the actual source tradition require their own evidence.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "Source version and context may legitimately differ.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 4,
+          "lens": "ADJUDICATION_GATE_AND_SOURCE_ROUTING",
+          "finding": "Current classification: HISTORICAL_OR_CULTURAL_NAME_RESOLUTION. Keep two IDs (conscious-figure:zoroaster and compass-teacher:Zoroaster) with a typed exact-name candidate edge for navigation. Before consolidation, require matching primary meaning and explicit owner/adjudicator approval, check counterexamples, then separately test permitted consumer semantics. No runtime graph, scoring, or ritual protocol is promoted.",
+          "sources": [
+            "docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json"
+          ],
+          "limits": "A research review can finish while a canonical equivalence remains unresolved.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        }
+      ],
+      "reviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "notRuntime": true
+    },
+    {
+      "sourceId": "conscious-figure:akhenaten",
+      "targetId": "compass-teacher:Akhenaten",
+      "sourceName": "Akhenaten",
+      "targetName": "Akhenaten",
+      "class": "HISTORICAL_OR_CULTURAL_NAME_RESOLUTION",
+      "lexicalMatch": true,
+      "conceptualIdentityApproved": false,
+      "depthReviewPasses": [
+        {
+          "pass": 1,
+          "lens": "EXACT_IDENTITY_AND_TEXTUAL_SCOPE",
+          "finding": "Deep Psyche conscious-figure:akhenaten (cultural_figure) defines 'Akhenaten' as: CDOMAIN source row maps this figure to Devotion; the meaning of the mapping is not yet established.. Compass compass-teacher:Akhenaten (compass_teacher) defines 'Akhenaten' as: Light. The shared normalized string establishes a search index only; it does not prove the same source version, meaning or taxonomy.",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json"
+          ],
+          "limits": "Historical name identity and conceptual behavior identity are separate questions.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 2,
+          "lens": "COMPARATIVE_BEHAVIORAL_EXPRESSION",
+          "finding": "Deep Psyche expression: CDOMAIN source row maps this figure to Devotion; the meaning of the mapping is not yet established.. Compass expression: Make a conviction explicit and subject claims to scrutiny instead of using institutional status as proof.. These are separately authored descriptions; any overlap or difference must be reviewed as behavior, not resolved by identical capitalization of a label.",
+          "sources": [
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "No automatically inferred brain/nerve location or score connection.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 3,
+          "lens": "TAXONOMY_DISCONFIRMATION",
+          "finding": "Deep Psyche cultural-figure candidates and the Compass teacher roster are different schemas. A historical/religious figure can be a shared referent without making Deep Psyche domain labels, Paradiso resonances or teacher qualities interchangeable. Claims about the actual source tradition require their own evidence.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "Source version and context may legitimately differ.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 4,
+          "lens": "ADJUDICATION_GATE_AND_SOURCE_ROUTING",
+          "finding": "Current classification: HISTORICAL_OR_CULTURAL_NAME_RESOLUTION. Keep two IDs (conscious-figure:akhenaten and compass-teacher:Akhenaten) with a typed exact-name candidate edge for navigation. Before consolidation, require matching primary meaning and explicit owner/adjudicator approval, check counterexamples, then separately test permitted consumer semantics. No runtime graph, scoring, or ritual protocol is promoted.",
+          "sources": [
+            "docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json"
+          ],
+          "limits": "A research review can finish while a canonical equivalence remains unresolved.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        }
+      ],
+      "reviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "notRuntime": true
+    },
+    {
+      "sourceId": "conscious-figure:buddha",
+      "targetId": "compass-teacher:Buddha",
+      "sourceName": "Buddha",
+      "targetName": "Buddha",
+      "class": "HISTORICAL_OR_CULTURAL_NAME_RESOLUTION",
+      "lexicalMatch": true,
+      "conceptualIdentityApproved": false,
+      "depthReviewPasses": [
+        {
+          "pass": 1,
+          "lens": "EXACT_IDENTITY_AND_TEXTUAL_SCOPE",
+          "finding": "Deep Psyche conscious-figure:buddha (cultural_figure) defines 'Buddha' as: CDOMAIN source row maps this figure to Mystery; the meaning of the mapping is not yet established.. Compass compass-teacher:Buddha (compass_teacher) defines 'Buddha' as: Awareness. The shared normalized string establishes a search index only; it does not prove the same source version, meaning or taxonomy.",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json"
+          ],
+          "limits": "Historical name identity and conceptual behavior identity are separate questions.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 2,
+          "lens": "COMPARATIVE_BEHAVIORAL_EXPRESSION",
+          "finding": "Deep Psyche expression: CDOMAIN source row maps this figure to Mystery; the meaning of the mapping is not yet established.. Compass expression: Notice suffering, distinguish craving from present evidence, act attentively without reactive identification.. These are separately authored descriptions; any overlap or difference must be reviewed as behavior, not resolved by identical capitalization of a label.",
+          "sources": [
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "No automatically inferred brain/nerve location or score connection.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 3,
+          "lens": "TAXONOMY_DISCONFIRMATION",
+          "finding": "Deep Psyche cultural-figure candidates and the Compass teacher roster are different schemas. A historical/religious figure can be a shared referent without making Deep Psyche domain labels, Paradiso resonances or teacher qualities interchangeable. Claims about the actual source tradition require their own evidence.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "Source version and context may legitimately differ.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 4,
+          "lens": "ADJUDICATION_GATE_AND_SOURCE_ROUTING",
+          "finding": "Current classification: HISTORICAL_OR_CULTURAL_NAME_RESOLUTION. Keep two IDs (conscious-figure:buddha and compass-teacher:Buddha) with a typed exact-name candidate edge for navigation. Before consolidation, require matching primary meaning and explicit owner/adjudicator approval, check counterexamples, then separately test permitted consumer semantics. No runtime graph, scoring, or ritual protocol is promoted.",
+          "sources": [
+            "docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json"
+          ],
+          "limits": "A research review can finish while a canonical equivalence remains unresolved.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        }
+      ],
+      "reviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "notRuntime": true
+    },
+    {
+      "sourceId": "conscious-figure:confucius",
+      "targetId": "compass-teacher:Confucius",
+      "sourceName": "Confucius",
+      "targetName": "Confucius",
+      "class": "HISTORICAL_OR_CULTURAL_NAME_RESOLUTION",
+      "lexicalMatch": true,
+      "conceptualIdentityApproved": false,
+      "depthReviewPasses": [
+        {
+          "pass": 1,
+          "lens": "EXACT_IDENTITY_AND_TEXTUAL_SCOPE",
+          "finding": "Deep Psyche conscious-figure:confucius (cultural_figure) defines 'Confucius' as: CDOMAIN source row maps this figure to Justice; the meaning of the mapping is not yet established.. Compass compass-teacher:Confucius (compass_teacher) defines 'Confucius' as: Nature. The shared normalized string establishes a search index only; it does not prove the same source version, meaning or taxonomy.",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json"
+          ],
+          "limits": "Historical name identity and conceptual behavior identity are separate questions.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 2,
+          "lens": "COMPARATIVE_BEHAVIORAL_EXPRESSION",
+          "finding": "Deep Psyche expression: CDOMAIN source row maps this figure to Justice; the meaning of the mapping is not yet established.. Compass expression: Practices accountable care shaped by the observed needs, capacity, timing and consequences of the specific situation.. These are separately authored descriptions; any overlap or difference must be reviewed as behavior, not resolved by identical capitalization of a label.",
+          "sources": [
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "No automatically inferred brain/nerve location or score connection.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 3,
+          "lens": "TAXONOMY_DISCONFIRMATION",
+          "finding": "Deep Psyche cultural-figure candidates and the Compass teacher roster are different schemas. A historical/religious figure can be a shared referent without making Deep Psyche domain labels, Paradiso resonances or teacher qualities interchangeable. Claims about the actual source tradition require their own evidence.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "Source version and context may legitimately differ.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 4,
+          "lens": "ADJUDICATION_GATE_AND_SOURCE_ROUTING",
+          "finding": "Current classification: HISTORICAL_OR_CULTURAL_NAME_RESOLUTION. Keep two IDs (conscious-figure:confucius and compass-teacher:Confucius) with a typed exact-name candidate edge for navigation. Before consolidation, require matching primary meaning and explicit owner/adjudicator approval, check counterexamples, then separately test permitted consumer semantics. No runtime graph, scoring, or ritual protocol is promoted.",
+          "sources": [
+            "docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json"
+          ],
+          "limits": "A research review can finish while a canonical equivalence remains unresolved.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        }
+      ],
+      "reviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "notRuntime": true
+    },
+    {
+      "sourceId": "conscious-figure:jesus",
+      "targetId": "compass-teacher:Jesus",
+      "sourceName": "Jesus",
+      "targetName": "Jesus",
+      "class": "HISTORICAL_OR_CULTURAL_NAME_RESOLUTION",
+      "lexicalMatch": true,
+      "conceptualIdentityApproved": false,
+      "depthReviewPasses": [
+        {
+          "pass": 1,
+          "lens": "EXACT_IDENTITY_AND_TEXTUAL_SCOPE",
+          "finding": "Deep Psyche conscious-figure:jesus (cultural_figure) defines 'Jesus' as: CDOMAIN source row maps this figure to Love; the meaning of the mapping is not yet established.. Compass compass-teacher:Jesus (compass_teacher) defines 'Jesus' as: Love. The shared normalized string establishes a search index only; it does not prove the same source version, meaning or taxonomy.",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json"
+          ],
+          "limits": "Historical name identity and conceptual behavior identity are separate questions.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 2,
+          "lens": "COMPARATIVE_BEHAVIORAL_EXPRESSION",
+          "finding": "Deep Psyche expression: CDOMAIN source row maps this figure to Love; the meaning of the mapping is not yet established.. Compass expression: Extend practical care without a demand for praise; revise hostility while keeping safety and truthful boundaries.. These are separately authored descriptions; any overlap or difference must be reviewed as behavior, not resolved by identical capitalization of a label.",
+          "sources": [
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "No automatically inferred brain/nerve location or score connection.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 3,
+          "lens": "TAXONOMY_DISCONFIRMATION",
+          "finding": "Deep Psyche cultural-figure candidates and the Compass teacher roster are different schemas. A historical/religious figure can be a shared referent without making Deep Psyche domain labels, Paradiso resonances or teacher qualities interchangeable. Claims about the actual source tradition require their own evidence.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "Source version and context may legitimately differ.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 4,
+          "lens": "ADJUDICATION_GATE_AND_SOURCE_ROUTING",
+          "finding": "Current classification: HISTORICAL_OR_CULTURAL_NAME_RESOLUTION. Keep two IDs (conscious-figure:jesus and compass-teacher:Jesus) with a typed exact-name candidate edge for navigation. Before consolidation, require matching primary meaning and explicit owner/adjudicator approval, check counterexamples, then separately test permitted consumer semantics. No runtime graph, scoring, or ritual protocol is promoted.",
+          "sources": [
+            "docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json"
+          ],
+          "limits": "A research review can finish while a canonical equivalence remains unresolved.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        }
+      ],
+      "reviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "notRuntime": true
+    },
+    {
+      "sourceId": "conscious-figure:rumi",
+      "targetId": "compass-teacher:Rumi",
+      "sourceName": "Rumi",
+      "targetName": "Rumi",
+      "class": "HISTORICAL_OR_CULTURAL_NAME_RESOLUTION",
+      "lexicalMatch": true,
+      "conceptualIdentityApproved": false,
+      "depthReviewPasses": [
+        {
+          "pass": 1,
+          "lens": "EXACT_IDENTITY_AND_TEXTUAL_SCOPE",
+          "finding": "Deep Psyche conscious-figure:rumi (cultural_figure) defines 'Rumi' as: CDOMAIN source row maps this figure to Creation; the meaning of the mapping is not yet established.. Compass compass-teacher:Rumi (compass_teacher) defines 'Rumi' as: Beauty. The shared normalized string establishes a search index only; it does not prove the same source version, meaning or taxonomy.",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json"
+          ],
+          "limits": "Historical name identity and conceptual behavior identity are separate questions.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 2,
+          "lens": "COMPARATIVE_BEHAVIORAL_EXPRESSION",
+          "finding": "Deep Psyche expression: CDOMAIN source row maps this figure to Creation; the meaning of the mapping is not yet established.. Compass expression: Remain open to felt connection and give care without using others as a source of status.. These are separately authored descriptions; any overlap or difference must be reviewed as behavior, not resolved by identical capitalization of a label.",
+          "sources": [
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "No automatically inferred brain/nerve location or score connection.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 3,
+          "lens": "TAXONOMY_DISCONFIRMATION",
+          "finding": "Deep Psyche cultural-figure candidates and the Compass teacher roster are different schemas. A historical/religious figure can be a shared referent without making Deep Psyche domain labels, Paradiso resonances or teacher qualities interchangeable. Claims about the actual source tradition require their own evidence.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "Source version and context may legitimately differ.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 4,
+          "lens": "ADJUDICATION_GATE_AND_SOURCE_ROUTING",
+          "finding": "Current classification: HISTORICAL_OR_CULTURAL_NAME_RESOLUTION. Keep two IDs (conscious-figure:rumi and compass-teacher:Rumi) with a typed exact-name candidate edge for navigation. Before consolidation, require matching primary meaning and explicit owner/adjudicator approval, check counterexamples, then separately test permitted consumer semantics. No runtime graph, scoring, or ritual protocol is promoted.",
+          "sources": [
+            "docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json"
+          ],
+          "limits": "A research review can finish while a canonical equivalence remains unresolved.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        }
+      ],
+      "reviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "notRuntime": true
+    },
+    {
+      "sourceId": "conscious-figure:lao-tzu",
+      "targetId": "compass-teacher:Lao-Tzu",
+      "sourceName": "Lao Tzu",
+      "targetName": "Lao Tzu",
+      "class": "HISTORICAL_OR_CULTURAL_NAME_RESOLUTION",
+      "lexicalMatch": true,
+      "conceptualIdentityApproved": false,
+      "depthReviewPasses": [
+        {
+          "pass": 1,
+          "lens": "EXACT_IDENTITY_AND_TEXTUAL_SCOPE",
+          "finding": "Deep Psyche conscious-figure:lao-tzu (cultural_figure) defines 'Lao Tzu' as: CDOMAIN source row maps this figure to Nature; the meaning of the mapping is not yet established.. Compass compass-teacher:Lao-Tzu (compass_teacher) defines 'Lao Tzu' as: Non-Resistance. The shared normalized string establishes a search index only; it does not prove the same source version, meaning or taxonomy.",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json"
+          ],
+          "limits": "Historical name identity and conceptual behavior identity are separate questions.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 2,
+          "lens": "COMPARATIVE_BEHAVIORAL_EXPRESSION",
+          "finding": "Deep Psyche expression: CDOMAIN source row maps this figure to Nature; the meaning of the mapping is not yet established.. Compass expression: Respond in proportion to conditions rather than imposing unnecessary force.. These are separately authored descriptions; any overlap or difference must be reviewed as behavior, not resolved by identical capitalization of a label.",
+          "sources": [
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "No automatically inferred brain/nerve location or score connection.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 3,
+          "lens": "TAXONOMY_DISCONFIRMATION",
+          "finding": "Deep Psyche cultural-figure candidates and the Compass teacher roster are different schemas. A historical/religious figure can be a shared referent without making Deep Psyche domain labels, Paradiso resonances or teacher qualities interchangeable. Claims about the actual source tradition require their own evidence.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "Source version and context may legitimately differ.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 4,
+          "lens": "ADJUDICATION_GATE_AND_SOURCE_ROUTING",
+          "finding": "Current classification: HISTORICAL_OR_CULTURAL_NAME_RESOLUTION. Keep two IDs (conscious-figure:lao-tzu and compass-teacher:Lao-Tzu) with a typed exact-name candidate edge for navigation. Before consolidation, require matching primary meaning and explicit owner/adjudicator approval, check counterexamples, then separately test permitted consumer semantics. No runtime graph, scoring, or ritual protocol is promoted.",
+          "sources": [
+            "docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json"
+          ],
+          "limits": "A research review can finish while a canonical equivalence remains unresolved.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        }
+      ],
+      "reviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "notRuntime": true
+    },
+    {
+      "sourceId": "conscious-figure:moses",
+      "targetId": "compass-teacher:Moses",
+      "sourceName": "Moses",
+      "targetName": "Moses",
+      "class": "HISTORICAL_OR_CULTURAL_NAME_RESOLUTION",
+      "lexicalMatch": true,
+      "conceptualIdentityApproved": false,
+      "depthReviewPasses": [
+        {
+          "pass": 1,
+          "lens": "EXACT_IDENTITY_AND_TEXTUAL_SCOPE",
+          "finding": "Deep Psyche conscious-figure:moses (cultural_figure) defines 'Moses' as: CDOMAIN source row maps this figure to Power; the meaning of the mapping is not yet established.. Compass compass-teacher:Moses (compass_teacher) defines 'Moses' as: Order. The shared normalized string establishes a search index only; it does not prove the same source version, meaning or taxonomy.",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json"
+          ],
+          "limits": "Historical name identity and conceptual behavior identity are separate questions.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 2,
+          "lens": "COMPARATIVE_BEHAVIORAL_EXPRESSION",
+          "finding": "Deep Psyche expression: CDOMAIN source row maps this figure to Power; the meaning of the mapping is not yet established.. Compass expression: Create structures that protect agency and are intelligible to those governed.. These are separately authored descriptions; any overlap or difference must be reviewed as behavior, not resolved by identical capitalization of a label.",
+          "sources": [
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "No automatically inferred brain/nerve location or score connection.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 3,
+          "lens": "TAXONOMY_DISCONFIRMATION",
+          "finding": "Deep Psyche cultural-figure candidates and the Compass teacher roster are different schemas. A historical/religious figure can be a shared referent without making Deep Psyche domain labels, Paradiso resonances or teacher qualities interchangeable. Claims about the actual source tradition require their own evidence.",
+          "sources": [
+            "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json",
+            "docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json"
+          ],
+          "limits": "Source version and context may legitimately differ.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        },
+        {
+          "pass": 4,
+          "lens": "ADJUDICATION_GATE_AND_SOURCE_ROUTING",
+          "finding": "Current classification: HISTORICAL_OR_CULTURAL_NAME_RESOLUTION. Keep two IDs (conscious-figure:moses and compass-teacher:Moses) with a typed exact-name candidate edge for navigation. Before consolidation, require matching primary meaning and explicit owner/adjudicator approval, check counterexamples, then separately test permitted consumer semantics. No runtime graph, scoring, or ritual protocol is promoted.",
+          "sources": [
+            "docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json",
+            "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json"
+          ],
+          "limits": "A research review can finish while a canonical equivalence remains unresolved.",
+          "status": "RESEARCH_COMPARISON_NOT_INDEPENDENT_EMPIRICAL_TEST"
+        }
+      ],
+      "reviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "notRuntime": true
+    }
+  ]
+}
