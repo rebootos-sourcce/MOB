@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v686 d57af090 2026-10-28 01:52"><head><meta charset="utf-8">
+<html lang="en" data-build="v693 f15f8a5a 2026-10-28 14:47"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -2853,6 +2853,31 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
 .mx button[data-sel="1"]{box-shadow:inset 0 0 0 1px var(--gold)}
 .mxk{font-size:12.5px;color:var(--dim);line-height:1.65;margin-top:10px}
 .mxk b{color:var(--ink);font-weight:600}
+
+/* THE CHAIN KEY. One row per tier, nerve to root, a swatch and a sentence.
+   The dot is the exact color the wheel paints that tier's threads and beads
+   with, set inline from bc() at render time, so a swatch here and a bead on
+   the wheel can never read as two different colors for the same tier. */
+.chk-row{display:flex;align-items:flex-start;gap:9px;margin-top:10px}
+.chk-dot{flex:0 0 auto;width:11px;height:11px;border-radius:50%;margin-top:3px;
+ box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+.chk-dot.varies{background:conic-gradient(from 0deg,#e06a5a,#e0a65a,#e0d85a,#6ac17a,#5ac1b8,#5a8fe0,#a05ae0,#e06a5a)}
+.chk-tx{font-size:12.5px;color:var(--dim);line-height:1.5}
+.chk-tx b{color:var(--ink);font-weight:600}
+
+/* THE FOUR AMPLIFIERS. One row each, a name and the real crBadge (.crb,
+   above) reading its own address. Its own small rule rather than
+   knowledge.js's kb-row/kbp, which that file injects itself only once the
+   Knowledge tab has been opened: a press on Field alone, never Knowledge,
+   would have shown these names with no flex, no gap and no border, the
+   classes present with nothing behind them. */
+.amp-row{display:flex;align-items:center;justify-content:space-between;gap:10px;
+ padding:9px 0;border-bottom:1px solid var(--edge);background:none;border-left:0;
+ border-right:0;border-top:0;width:100%;text-align:left;cursor:pointer;color:inherit;
+ font:inherit}
+.amp-row:last-child{border-bottom:0}
+.amp-row:hover{background:var(--sunk)}
+.amp-nm{font-size:13.5px;color:var(--ink)}
 
 /* ---------- spiritual states ---------- */
 .sp-hd{margin:14px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--edge);color:var(--gold)}
@@ -9347,6 +9372,62 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
      <div class="lbl plain">19 domains &times; 9 child emotions</div>
      <div class="mx" id="mx"></div>
      <div class="mxk" id="mxk"></div>
+    </div>
+   </div>
+   <!-- THE CHAIN, READ AT A GLANCE. Round of 28 October, his words after
+        looking at the wheel: "the field needs to be completely updated with
+        the new wiring from nerve to super complex... so the field will be
+        showing the full geometric structure... enhance and elevate it."
+        Checked first, not assumed: the chain already computes and already
+        draws, every thread and bead colored by its own tier (ui/wheel.js,
+        the tier() and bead() calls), and hovering any bead already opens a
+        full readout naming the tier, the pattern and its addresses
+        (describe(), ui/ui.js). None of that needed building. What was
+        missing is this: nothing said so without a hover. A person looking
+        at the wheel cold saw a tangle of color with no key to it, which is
+        exactly what read, reasonably, as unwired.
+
+        This section is the key, read-only, static, filled once by
+        renderChainKey() below off the same bc() colors the wheel itself
+        paints with, so the two can never drift apart. Five rows, nerve to
+        root, each a swatch and the one sentence a person needs before they
+        have hovered anything. -->
+   <div class="lsec" data-sec="chain">
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/><path d="M12 6.6v4M12 13.6v4"/></svg>The chain</span><i></i></button>
+    <div class="lsec-bd">
+     <div class="tier1">Nerve to root</div>
+     <p class="stk-def">Every thread and dot on the wheel is part of one chain. Hover any dot for its name. This is what the colors mean.</p>
+     <div id="chainkey"></div>
+    </div>
+   </div>
+   <!-- THE SUPEREGO, OUTSIDE THE CHAIN. Round of 28 October, his words: "we
+        need the superego complex outside of that," meaning outside the
+        saboteur to super-complex chain above, its own tier. He pointed to
+        the real source: "look for superego in the mechanics of being, it's
+        in there." The manuscript names it plainly: the layer that takes the
+        ego's patterns and builds a defense around them, why seeing a
+        pattern does not change it, since these four supply the reason it is
+        fine to keep.
+
+        The manuscript names four: Justification, Entitlement,
+        Perfectionism, Obsession. The engine's own AMPLIFIER table
+        (engine/data/registers.js) carries six, two more than the book,
+        Judgment and Comparison. This section shows the four the book names.
+        The other two are a real difference between the book and the
+        engine, not resolved here, his call, the same way BOOK-ERRATA.md
+        already tracks every other place the two disagree.
+
+        No new reading, no new sniffer, no consent question: each amplifier
+        is a real address AMPLIFIER already maps to (engine/data/nodes.js),
+        and its weight is the charge already computed there, BY[i].sq, the
+        same number every other charge display on this page already reads
+        and already had consent for. Filled by renderAmplifiers(), ui/ui.js. -->
+   <div class="lsec" data-sec="superego">
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="3"/><path d="M9 9h6v6H9z"/></svg>Superego</span><i></i></button>
+    <div class="lsec-bd">
+     <div class="tier1">Outside the chain</div>
+     <p class="stk-def">The layer that builds a defense around a pattern once it is already there. Why seeing it does not change it.</p>
+     <div id="amprows"></div>
     </div>
    </div>
    <!-- THE SIX GATES, GIVEN A NAMED PLACE ON THIS RAIL. Round of 28 October,
@@ -15985,9 +16066,23 @@ var PCT_KIND={
  /* compute.js:390 */
  integrity: {lo:0, hi:10, src:'engine/compute.js', find:'- JQ*0.42,0,10);',
              say:'integrity, the laws lifted by the poles and pulled down by overshoot'},
- /* compute.js:391 */
- intention: {lo:0, hi:10, src:'engine/compute.js', find:'- JQ*0.30,0,10);',
-             say:'intention, the same laws read seat by seat'},
+ /* compute.js:391. RENAMED FROM intention, 28 October: the word intention is
+    the ruled reading below now, what a person said against what they did,
+    and this kept it as well, which is the exact defect one word per concept
+    exists to stop. This is a law mean read seat by seat, nothing a person
+    committed to or carried out. */
+ lawseat:   {lo:0, hi:10, src:'engine/compute.js', find:'- JQ*0.30,0,10);',
+             say:'the same laws read seat by seat, up the body'},
+ /* ladder.js, intentionRead. Ruled 25 September, "you either did the thing
+    you said you were gonna do or you didn't", said against done over the
+    last seven days, no charge read into it. Wired in 28 October: the
+    function existed, tested, and had never been put on a screen. Profile
+    dependent, so it is not in tests/engine.js's roster scan the way a pure
+    compute() figure is, the same exemption accuracy already carries; its
+    own coverage is tests/engine.js's and tests/daily.js's intentionRead
+    checks, and the fmtPct example below. */
+ intention: {lo:0, hi:100, src:'engine/ladder.js', find:'pct:said?100*did/said:null',
+             say:'what a person said they would do against what they did, the last seven days'},
  /* intake.js:55, the widest gap between a law's three answers, each 0 to 10
     at the boundary (schema.js:1069) */
  spread:    {lo:0, hi:10, src:'engine/intake.js', find:'var spread=Math.max.apply(null,v)-Math.min.apply(null,v);',
@@ -35445,7 +35540,7 @@ const QICON_D={
     shoot: the thing that grows back when the weight comes off. */
  vitality:'M12 21v-8M12 13c0-3.4 2.4-6 5.6-6.4C17.2 10 15 12.6 12 13'
    +'M12 13c0-2.8-2-5-4.7-5.4C7.7 10.4 9.6 12.4 12 13M9 21h6',
- /* AWARENESS. Intention read against distortion. An aperture, because
+ /* AWARENESS. Law reach read against distortion. An aperture, because
     awareness in this product is the width of what gets through, and the eye
     is already spoken for by perception. */
  awareness:'M12 3.5a8.5 8.5 0 110 17 8.5 8.5 0 010-17M12 3.5L17.8 9.3'
@@ -50001,7 +50096,14 @@ function stLawPaint(){
   else o+=w.top.map(stLawRow).join('');});
  var g=STLW.gate;
  if(g&&g.intentional){
-  o+=stAnaHead('Intention','your last entry');
+  /* RENAMED FROM INTENTION, 28 October. This heading named the six gates'
+     avoidance cascade (engine/sniff.js sniffGates, engine/verp.js VERP)
+     "Intention" before the ruled Intention, said against done, had a
+     screen of its own. Two different readings sharing one word, the exact
+     defect one word per concept exists to stop. This stays named for what
+     it is: right action read from this entry's own words. The real
+     Intention is on the Instruments row (ui/ui.js). */
+  o+=stAnaHead('Right action','your last entry');
   /* NEVER THE AVOIDANCE NUMBER ALONE, the spec's own rule: it reads as a
      character flaw without the two readings it was built from beside it. */
   o+='<p style="margin:6px 0 2px">Avoidance reads <b>'+g.intentional.avoidance+' per cent</b> in your last entry, built '
@@ -67921,13 +68023,22 @@ function runQDrill(q){
 
 /* THE THREE AXES. energy read on three independent lines, each a pure
    function of quantities already in the reading. Vitality is what is left
-   after apathy and shadow weight. Awareness is intention against
-   distortion. Will is integrity through a clear segment. */
+   after apathy and shadow weight. Awareness is law reach against
+   distortion. Will is integrity through a clear segment.
+
+   RENAMED FROM INTENTION, 28 October. r.It fed this axis under that name
+   since before intention meant anything else. It still does, the arithmetic
+   is unchanged and untested against the new meaning, so it keeps its own
+   name, law reach, the same law mean read seat by seat that feeds the
+   Instruments row (ui/ui.js). The real intention, what a person said against
+   what they did, is wired in there now and does not enter this axis: that
+   would be new, unfitted arithmetic, the same shape of change already tried
+   and killed once inside CQ itself (engine/compute.js, the model 3 note). */
 function runXYZDrill(){
  var r=compute();
  var A=[['Vitality',r.X,'Solar','what is left after apathy and the shadow weight. Apathy <b>'
    +((S.charge.Apathy||0)>0?(S.charge.Apathy).toFixed(1):'\u2013')+'</b>, shadow weight <b>'+(Math.round(r.DQ)||'\u2013')+'</b>.'],
-  ['Awareness',r.Y,'3rd Eye','intention against distortion. Intention <b>'+r.It.toFixed(1)
+  ['Awareness',r.Y,'3rd Eye','law reach against distortion. Law reach <b>'+r.It.toFixed(1)
    +'</b>, distortion <b>'+r.dist.toFixed(1)+'</b>.'],
   ['Will',r.Z,'Root','integrity carried through a clear segment. Integrity <b>'+r.Ig.toFixed(1)
    +'</b>, mean depth <b>'+r.SQm.toFixed(1)+'</b>.']];
@@ -82248,11 +82359,19 @@ function render(){
     registry bounds the same way (engine/pct.js, nought to ten). Each prints
     fmtPct for its own kind now, and nought or an unread profile is the dash. */
  var ins=function(t,line){return '<span title="'+esc(t)+'">'+line+'</span><br>';};
+ /* INTENTION, WIRED IN, 28 October. Ruled 25 September: what a person said
+    they would do against what they did, no charge read into it
+    (intentionRead, engine/ladder.js). Nothing was said in the last seven
+    days reads as unread, not as zero, the same way an unanswered law does
+    not read as a failing one: a blank week is not a broken promise. */
+ var intent=intentionRead(CURP,Date.now());
  $('rows').innerHTML='<span class="k">Instruments</span><br>'
   +ins('How well you keep the 21 laws, lifted by the opposites installed and pulled down by overshoot.',
     'integrity <b>'+fmtPct('integrity',r.Ig,{unread:r.unread})+'</b>')
+  +ins('What you said you would do against what you did, the last seven days. No charge in it, only follow through.',
+    'intention <b>'+(intent.said?fmtPct('intention',intent.pct):PCT_DASH)+'</b>')
   +ins('The same laws read seat by seat, up the body.',
-    'intention <b>'+fmtPct('intention',r.It,{unread:r.unread})+'</b>')
+    'law reach <b>'+fmtPct('lawseat',r.It,{unread:r.unread})+'</b>')
   /* JOUISSANCE WAS ON EIGHTY ONE SCREENS. A French psychoanalytic term, printed
      as an instrument label to a person who has never heard it, with no gloss
      anywhere in the product. One word per concept, and the word has to say
@@ -82324,6 +82443,53 @@ function render(){
    reading for the Journal's own Laws accordion; this calls the same
    function rather than re-reading the entries a second way, so the two
    surfaces can never disagree about which entry's reading is current. */
+/* THE CHAIN KEY. Round of 28 October, the shell's own body.html comment
+   above the section carries the full why. Five rows, nerve to root, each a
+   swatch and one sentence. The swatch colors come straight from bc(), the
+   exact function wheel.js paints the chords and beads with, so this list
+   and the wheel's own picture read as one source and not two. Archetype
+   keeps its own gold rather than a seat color, because that is what the
+   wheel already draws it in (GOLDC, ui/component.js); the saboteur row's
+   dot is the conic sweep in head.html's .chk-dot.varies, since a saboteur's
+   own thread is colored by whichever seat it sits at and not by one fixed
+   color the other three tiers share. */
+function renderChainKey(){
+ var h=document.getElementById('chainkey'); if(!h)return;
+ var rows=[
+  {v:true, nm:'Saboteur', d:'Colored by the seat it sits at. The pattern closest to a single story.'},
+  {c:rgba(bc('Solar'),1), nm:'Complex', d:'Two saboteurs joined. Always this color, whichever seat they sit at.'},
+  {c:rgba(bc('Sacral'),1), nm:'Hyper-complex', d:'Complexes joined into one driving pattern.'},
+  {c:rgba(bc('Root'),1), nm:'Super-complex', d:'The deepest join this instrument reads, built from hyper-complexes.'},
+  {c:rgba(GOLDC(),1), nm:'Archetype', d:'The shape the whole pattern points toward.'}];
+ h.innerHTML=rows.map(function(r){
+  return '<div class="chk-row"><span class="chk-dot'+(r.v?' varies':'')+'"'
+   +(r.v?'':' style="background:'+r.c+'"')+'></span>'
+   +'<span class="chk-tx"><b>'+r.nm+'.</b> '+r.d+'</span></div>';}).join('');}
+/* THE FOUR AMPLIFIERS. body.html's own comment above the section carries
+   the full why. Each row is a real address AMPLIFIER already maps to, read
+   the same way every other address on this page is read, BY[i].sq, no new
+   number. Reuses the locked dual-pole glyph (NODE_STRIKE, ui/knowledge.js)
+   and crBadge (ui/component.js) so an amplifier's own charge reads in the
+   same language as every other address on the Field, and a press opens the
+   same node drill a press on any address already opens. */
+function renderAmplifiers(){
+ var h=document.getElementById('amprows'); if(!h)return;
+ var FOUR=['Justification','Entitlement','Perfectionism','Obsession'];
+ var rows=FOUR.map(function(nm){return AMPLIFIER.filter(function(a){return a.nm===nm;})[0];})
+  .filter(Boolean);
+ h.innerHTML=rows.map(function(a){
+  var n=BY[a.i]; if(!n)return '';
+  var p=Math.round((n.sq||0)/10*100), state=dualPoleState(p), c=bc(n.b);
+  var say=a.nm+', '+(n.sq>=0.05?'weight '+n.sq.toFixed(1):'nothing held')+', '+dualPoleStateWord(state)+'.';
+  return '<button type="button" class="amp-row" data-amp-i="'+a.i+'" aria-label="'+esc(say)+'">'
+   +'<span class="amp-nm">'+esc(a.nm)+'</span>'
+   +crBadge(n.b,p,{size:'sm',color:c,raw:n.sq.toFixed(1),glyph:NODE_STRIKE[state],title:a.nm+' · '+dualPoleStateWord(state)})
+   +'</button>';}).join('');
+ var wired=h.getAttribute('data-wired');
+ if(!wired){h.setAttribute('data-wired','1');
+  h.addEventListener('click',function(e){
+   var b=e.target.closest('[data-amp-i]'); if(!b)return;
+   var n=BY[+b.getAttribute('data-amp-i')]; if(n)runNodeDrill(n);});}}
 function renderGates(){
  var h=document.getElementById('gaterows'); if(!h)return;
  h.innerHTML=gatesBlock(null);
@@ -82339,7 +82505,7 @@ function renderGates(){
   g.innerHTML='<p class="ad-p" style="margin-top:10px">Nothing read yet. Write a line in the Journal and the gates fill in from it.</p>';
  }}
  wireKbJump();
- renderAcc(r); renderSpirit(); renderRootSum(); renderPol2(r); syncMx(); renderGates();
+ renderAcc(r); renderSpirit(); renderRootSum(); renderPol2(r); syncMx(); renderGates(); renderChainKey(); renderAmplifiers();
  /* the trace graph's block in the Field's side column, ui/loopread.js */
  if(typeof loopPaint==='function')loopPaint(r);
  /* the dock's circles move into their values rather than snapping, and only
@@ -82719,5 +82885,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005453538"></div>
+<div id="eof" hidden data-len="005464719"></div>
 </body></html>
