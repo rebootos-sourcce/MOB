@@ -20,18 +20,21 @@ try{
   must(old.includes('[ATUNED MASTER FILE INDEX / V14](ATUNED_MASTER_FILE_INDEX.md)'),'old index not redirected');
   const local=manifest.locators.filter(x=>x.repository==='rebootos-sourcce/MOB'&&x.ref===manifest.auditedSourceCommit);
   must(local.length===411,'working tree source count drift');
+  must(Object.keys(manifest.postIndexChanges||{}).length===2,'post-index change declaration drift');
+  const permitted=new Set(['docs/ATUNED_SOURCE_INDEX.md','.github/workflows/compass-unified-graph-v1.yml']);
+  must(Object.keys(manifest.postIndexChanges).every(k=>permitted.has(k)),'unexpected exception');
   let checked=0;
   for(const x of local){
     must(/^[a-f0-9]{40}$/.test(x.blobSha),'bad blob SHA '+x.path);
     must(!p.isAbsolute(x.path)&&!x.path.split('/').includes('..'),'unsafe indexed path '+x.path);
     const data=read(x.path);
-    // The durable source pointer was intentionally updated after the pinned pre-index tree.
-    if(x.path==='docs/ATUNED_SOURCE_INDEX.md')continue;
+    // Index setup changed exactly two files after the pre-index tree. Pin their exact new blobs.
     const actual=crypto.createHash('sha1').update('blob '+data.length+'\0').update(data).digest('hex');
-    must(actual===x.blobSha,'stale source file locator: '+x.path+'; refresh manifest');
+    const expected=manifest.postIndexChanges[x.path]?.blobSha||x.blobSha;
+    must(actual===expected,'stale source file locator: '+x.path+'; refresh manifest');
     checked++;
   }
-  must(checked===410,'hash coverage incomplete');
+  must(checked===411,'hash coverage incomplete');
   for(const x of manifest.locators){
     must(x.repository&&x.ref&&x.path&&/^[a-f0-9]{40}$/.test(x.blobSha),'invalid source pointer');
   }
