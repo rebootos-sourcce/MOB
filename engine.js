@@ -13123,7 +13123,13 @@ function validateProfile(o){
      empty one is no draft. Missing is an older record and has none. */
   if(o.story.draft!==undefined&&o.story.draft!==null){
    var sd=vStr(errs,'story.draft',o.story.draft);
-   if(sd!==null&&sd.trim())p.story.draft=sd;}}
+   if(sd!==null&&sd.trim())p.story.draft=sd;}
+  /* THE REPLY LINE'S OWN DRAFT, round of 28 October: a reply typed and not
+     yet sent, held the same way the entry's own draft is. Same rule, same
+     reason: only a string, never capped, missing or empty is no draft. */
+  if(o.story.reply!==undefined&&o.story.reply!==null){
+   var sr=vStr(errs,'story.reply',o.story.reply);
+   if(sr!==null&&sr.trim())p.story.reply=sr;}}
  else if(o.story!==undefined&&o.story!==null)errs.push('story is not an object');
  if(o.meter&&typeof o.meter==='object'){
   var mp=vRange(errs,'meter.lines',o.meter.lines,0,1e9);

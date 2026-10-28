@@ -4195,11 +4195,25 @@ body.tab-story #bRel{display:none}
    take its width, so the stage track is the rest of the row. The bank sets
    st-bank and the rail returns with the Imprints page in it and Selection
    under it, where that page's Detail opens. Stacked, the rail is a block
-   under the surface, so it is simply not there until the bank asks for it. */
+   under the surface, so it is simply not there until the bank asks for it.
+
+   THE LEFT COLUMN IS GONE FROM THE STORY TOO, ROUND OF 28 OCTOBER. His
+   words: "we're going to get rid of the left-hand menu." #lcol on this tab
+   carries none of the story's own data, it is the Field's own rail
+   (Energetic summary, Root Energetics, Awareness, Child emotions, Matrix,
+   Laws of Action), shown here only because colKey() gives Story the same
+   STORE key as Field, so opening the rail on the Field and then switching
+   tabs carried that open state onto the Journal with the wrong headers
+   over it, in the bank too since nothing here had ever scoped the bank's
+   three columns down to two. Shutting it by default was not enough: the
+   person's own past choice on a different surface would reopen it. The fix
+   is the same as the bank's own for the rest of the row: not collapsed,
+   not there, in or out of the bank. */
+body.tab-story #lcol{display:none}
 body.tab-story:not(.st-bank) .mid>.col:not(#lcol){display:none}
 @media (min-width:1181px){
- body.tab-story:not(.st-bank) .mid{grid-template-columns:302px 1fr}
- body.lshut.tab-story:not(.st-bank) .mid{grid-template-columns:58px 1fr}}
+ body.tab-story:not(.st-bank) .mid{grid-template-columns:1fr}
+ body.tab-story.st-bank .mid{grid-template-columns:1fr 336px}}
 /* ---------- the Summary's rail is today's summary, ui/daily.js ----------
    The same step aside as the Story's: on the Summary the rail carries Today
    and Selection, and Today is shown nowhere else. A silent day (nothing read
@@ -4508,12 +4522,6 @@ body.quiet .src-tn-now .src-nd,body.rm .src-tn-now .src-nd{animation:none}
 .src-cin:focus{outline:none;border-color:var(--accent)}
 .src-cin::placeholder{color:var(--dim)}
 body.punch .src-cin{border-color:transparent;background:var(--panel-2)}
-/* stacked, the Story reads journal, Source AI, imprints, release, and the
-   tools after. Without this the whole left rail sat between what a person
-   wrote and what it found whenever the column was open. The breakpoint is the
-   one that stacks the rails. */
-@media (max-width:1180px){body.tab-story #lcol{order:1}}
-
 /* ---------- imprints ---------- */
 .ip-hd{display:flex;align-items:center;justify-content:space-between;gap:10px;
  margin-bottom:11px;flex-wrap:wrap}

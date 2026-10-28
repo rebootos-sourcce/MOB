@@ -102,22 +102,17 @@ function stRender(){
      the word it was always beside. */
   +'<div class="st-hd">'
    +stMark('j','Journal','journal','','<span class="src-live" aria-hidden="true"></span>')
-   /* TALK, PLAN.md C4, his words: "add a button where I can just have a
-      conversation back and forth." It wears Record's own pill, so every
-      lighting that already restyles Record restyles this, and it is a toggle
-      with aria-pressed the way the bank is, because it changes how the column
-      is shown and nothing about what is written. The mark is two rings and
-      the wire between them, the Field's own thread, never the bubble the
-      question button already draws: one drawing per named thing. The margin
-      takes the free space, so it and Record stand together at the right
-      edge where Record stood alone. See srcThread for what it opens. */
-   +(show?'':'<button class="st-mic st-talk" id="sttalk" type="button" aria-pressed="'+!!STV.chat+'" '
-   +'title="Write it as a conversation, one turn at a time.">'
-   +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
-   +'<circle cx="6" cy="6.5" r="3"/><circle cx="18" cy="17.5" r="3"/>'
-   +'<path d="M8.4 8.4Q16.5 7 15.6 15.6"/></svg>'
-   +'<span>Talk</span></button>'
-   +'<button class="st-mic'+(ST_LISTEN?' on':'')+'" id="stmic" type="button" '
+   /* TALK IS GONE AS A TOGGLE, round of 28 October, his words: "the focus
+      needs to be on two-way conversation for the journal ... this needs to
+      be a two-way conversation between me and the source." A button that
+      switched the conversation on and off said the conversation was one
+      choice among others; it is not, it is the only way the Journal now
+      shows Source AI's side, so there is nothing left to toggle. STV.chat
+      is forced true below (see the state block) and the written block
+      srcPaint could still build is simply never reached. Record keeps its
+      own button: it still only starts or stops the microphone, same as
+      before. */
+   +(show?'':'<button class="st-mic'+(ST_LISTEN?' on':'')+'" id="stmic" type="button" '
    +'title="'+(ST_LISTEN?'Recording. Press to stop and keep what it heard.'
      :'Record what happened out loud instead of typing it. Recording sends the audio to your browser\'s speech service; typing does not leave this device.')+'">'
    +'<span class="st-dot"></span>'
@@ -338,9 +333,6 @@ function stRender(){
  if(ap)ap.onclick=function(){if(STV.chat)srcChatSend(); return stCommit();};
  var mic=document.getElementById('stmic');
  if(mic)mic.onclick=stMic;
- var tk=document.getElementById('sttalk');
- if(tk)tk.onclick=function(){STV.chat=!STV.chat; stRender();
-  var f=document.getElementById(STV.chat?'stcin':'sttext'); if(f)f.focus();};
  srcChatWire();}
 
 /* ============================================================
@@ -348,7 +340,11 @@ function stRender(){
    sorted, which column has the room, which list is up, and whether the bank
    is open. Kept across a return to the tab, never saved.
    ============================================================ */
-var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:false,law:false,
+/* CHAT IS ALWAYS TRUE NOW, round of 28 October, his words: "the focus needs
+   to be on two-way conversation for the journal ... this needs to be a
+   two-way conversation between me and the source." Nothing sets it false
+   again: the Talk button that used to toggle it is gone, see stWire. */
+var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:true,law:false,
  unsaved:null,draftT:null,draftFail:false,crisis:false};
 /* the one width the page changes shape at is the one the product stacks its
    columns at, so the Story cannot be in three columns while the rails are
@@ -586,6 +582,10 @@ function stCommit(){
      and a half written story waiting on the Story page is not its to clear. */
   var wasDraft=CURP.story.draft===ST_TEXT;
   if(wasDraft)delete CURP.story.draft;
+  /* Commit always sends whatever is in the reply line first (see ap.onclick
+     below), so by the time an entry is pushed SRC_CDRAFT is already empty;
+     this only clears what a reload might still be holding from before. */
+  if(CURP.story.reply!==undefined)delete CURP.story.reply;
   stDraftStop();
   /* THE COMMIT SAID "Committed" WHETHER OR NOT ANYTHING WAS SAVED, pass 4,
      probe 6. pSave's answer was dropped, so with a store that refused every
@@ -622,8 +622,14 @@ function stCommit(){
     with Run on it: widening it there would push Run off the first screen,
     which is the one thing layout H exists to stop. */
  STV.focus=stPhone()?'write':'release';
- /* the crisis line has said what the box is for, and the box has been used */
- STV.crisis=false;
+ /* the crisis line has said what the box is for, and the box has been used.
+    crisisTalk forced STV.chat false on the way in, deliberately, so a crisis
+    is met in the plain box and not inside a chat bubble; nothing used to set
+    it back since the Talk button did that by hand. With Talk gone the
+    conversation is the Journal's only normal state, so a finished crisis
+    entry returns to it here rather than staying stuck in the write box with
+    no way back. */
+ STV.crisis=false; STV.chat=true;
  toYou();syncCh();if(typeof stRender==='function')stRender();render();
  /* A STORY KEPT WITH STARS IN IT SAYS SO, round QR. The person may choose
     not to type the hidden words, and the entry is still theirs; it is kept
@@ -649,12 +655,20 @@ function stCommit(){
    words that were just deleted; only the write waits, half a second after
    the last change, as obDraft does. A worked example is not a record and is
    never written. Commit and Clear take it off.
-   ============================================================ */
+
+   THE REPLY LINE CARRIES THE SAME PROMISE NOW, round of 28 October. Before
+   this a reply typed into #stcin but never sent lived only in SRC_CDRAFT, a
+   variable, so closing the tab mid-reply lost it the way a half written
+   story used to. It is the one timer below and the one write, on
+   CURP.story.reply beside CURP.story.draft, so a reload or a tab closed
+   inside the half second keeps whichever box had words in it, or both. */
 function stDraft(){
  if(!CURP||!CURP.story||(typeof S!=='undefined'&&S.who!==0))return;
- var v=(ST_TEXT&&ST_TEXT.trim())?ST_TEXT:null;
- if((CURP.story.draft||null)===v)return;
- if(v===null)delete CURP.story.draft; else CURP.story.draft=v;
+ var v=(ST_TEXT&&ST_TEXT.trim())?ST_TEXT:null,
+  r=(typeof SRC_CDRAFT==='string'&&SRC_CDRAFT.trim())?SRC_CDRAFT:null, moved=false;
+ if((CURP.story.draft||null)!==v){ if(v===null)delete CURP.story.draft; else CURP.story.draft=v; moved=true; }
+ if((CURP.story.reply||null)!==r){ if(r===null)delete CURP.story.reply; else CURP.story.reply=r; moved=true; }
+ if(!moved)return;
  stDraftStop(); STV.draftT=setTimeout(stDraftSave,500);}
 function stDraftStop(){ if(STV.draftT){clearTimeout(STV.draftT); STV.draftT=null;} }
 /* a refusal is said once until a save lands again, because a line on every
@@ -671,11 +685,14 @@ function stDraftSave(){
 if(typeof addEventListener==='function')['pagehide','visibilitychange'].forEach(function(ev){
  addEventListener(ev,function(){ if(STV.draftT)stDraftSave(); });});
 /* back into the box when the box is empty, which is a reload or a commit of
-   somebody else's words through stCommit */
+   somebody else's words through stCommit. The two halves are independent: a
+   reload can find words waiting to be sent, words already sent and not yet
+   committed, both, or neither. */
 function stDraftBack(){
- if(ST_TEXT||!CURP||!CURP.story||typeof CURP.story.draft!=='string')return;
- if(typeof S!=='undefined'&&S.who!==0)return;
- ST_TEXT=CURP.story.draft; ST_PARSED=ST_TEXT.trim()?parseStory(ST_TEXT):null;}
+ if(!CURP||!CURP.story||(typeof S!=='undefined'&&S.who!==0))return;
+ if(!ST_TEXT&&typeof CURP.story.draft==='string'){
+  ST_TEXT=CURP.story.draft; ST_PARSED=ST_TEXT.trim()?parseStory(ST_TEXT):null;}
+ if(!SRC_CDRAFT&&typeof CURP.story.reply==='string')SRC_CDRAFT=CURP.story.reply;}
 
 /* refresh only what the text moves, so typing never loses the caret */
 function stRefresh(){
@@ -1377,11 +1394,13 @@ function srcChatSend(){
  return true;}
 /* the reply line. Enter sends and Shift and Enter is a new line, the way a
    conversation box works everywhere else; a draft is kept across a repaint
-   of the page, and Commit counts it as something to commit. */
+   of the page and across a reload, the same promise stDraft keeps for the
+   entry itself (see the block above it), and Commit counts it as something
+   to commit. */
 function srcChatWire(){
  var cin=document.getElementById('stcin'); if(!cin)return;
  var ap=document.getElementById('stapply');
- cin.oninput=function(){SRC_CDRAFT=cin.value; if(ap)ap.disabled=!ST_PARSED&&!cin.value.trim();};
+ cin.oninput=function(){SRC_CDRAFT=cin.value; stDraft(); if(ap)ap.disabled=!ST_PARSED&&!cin.value.trim();};
  cin.onkeydown=function(e){if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault(); srcChatSend();}};
  cin.onfocus=function(){stFocus('write');};
  if(ap&&SRC_CDRAFT.trim())ap.disabled=false;
@@ -1413,7 +1432,15 @@ function srcThread(turn,heard,cur,acts,why){
   else if(i===last)o+=srcThreadNow(r,turn,heard,acts,why);
   o+='</li>';});
  return o+'</ol>';}
-/* the one live Source AI row, in the panel's own markup for each move */
+/* the one live Source AI row, in the panel's own markup for each move.
+   NO GAUGE AND NO WHY HERE ANY MORE, round of 28 October, his words: "I
+   don't want to see the questions written out, this needs to be a two-way
+   conversation between me and the source." A labelled "Why" paragraph and a
+   rung gauge beside "Next question" are a readout glued to the side of the
+   conversation, not a thing either side would say. What Source AI actually
+   says is still exactly r.q, word for word; the reasoning that used to
+   print here still runs and still decides what gets asked (srcWhy, srcLog),
+   it is only no longer printed as its own block. */
 function srcThreadNow(r,turn,heard,acts,why){
  var o='';
  if(turn.move==='ask')
@@ -1424,11 +1451,8 @@ function srcThreadNow(r,turn,heard,acts,why){
   o+='<p class="src-q">Cool.</p><p class="src-note">Nothing more asked in this entry.</p>';
  else{
   o+='<div class="src-ask">'+srcLand('src-open'+(r.key.indexOf('say|')===0?' quiet':''),r.q)+acts+'</div>';
-  if(r.key.indexOf('say|')===0&&heard.top)o+=srcGauge(heard.top);
   if(SRC_DNONE&&turn.move==='open')
    o+='<p class="src-note">Nothing read yet, so there is nothing of yours to ask from. Write a line first.</p>';}
- if(why)o+='<div id="srcwhy" style="margin-top:12px"><span class="pm-eye">Why</span>'
-  +'<p class="src-open quiet" style="margin:2px 0 0">'+esc(why)+'</p></div>';
  return o;}
 /* THE WIRES ARE LAID AFTER THE ROWS ARE. A row's height is only known once it
    is on the page, and a viewBox stretched to fit would stretch the pulse with
@@ -1696,10 +1720,12 @@ function stDraw(){
     [-1,1].forEach(function(sg){var yy=y+h*.5+sg*(h*.18+pos*gp);g.beginPath();g.moveTo(q.x0,yy);g.lineTo(q.x1,yy);
      g.strokeStyle=rgba(c,sa);g.lineWidth=1;g.stroke();});}}});
  g.save();g.beginPath();g.rect(q.x0,0,q.x1-q.x0+2,H);g.clip();
- /* the floor: every word read, a tick. The ones it kept are in their colour */
+ /* THE FLOOR IS GONE, round of 28 October, his words: "get rid of those
+    rainbow colours on the bottom, those don't do anything." It ticked every
+    word read, kept ones in their seat colour, under the lanes this canvas
+    still draws. dx and tw stay: the bars below still measure a word's
+    width by them. */
  var dx=stDx(),tw=Math.max(1.5,dx-(dx>8?4:2));
- STR.toks.forEach(function(o,j){var x=stXOf(j);if(x<q.x0-8)return;
-  g.fillStyle=o.m?rgba(o.m.bn?stCol(o.m.bn):STC.acc,1):rgba(dim,.45);g.fillRect(x,H-STC.FLOOR+6,tw,o.m?9:6);});
  /* the bars */
  var pts=[];
  Object.keys(STC.items).forEach(function(k){var it=STC.items[k],m=it.m,g1=Math.max(0,it.g);if(g1<.01||m.t0<0)return;
@@ -1752,9 +1778,7 @@ function stDraw(){
   if(placed.some(function(r){return !(x0+w<r[0]||x0>r[2]||y1<r[1]||y0>r[3]);}))return;
   placed.push([x0,y0,x0+w,y1]);g.fillStyle=p.m.aside?rgba(dim,.9):rgba(mixc(p.c,ink,.15),1);g.fillText(p.m.txt,p.x,y1);});
  var N2=STR.toks.length;if(N2){var px=stXOf(N2-1)+dx;g.fillStyle=rgba(STC.acc,.55);g.fillRect(px,q.y0,1,H-q.y0-6);}
- g.restore();
- g.fillStyle=rgba(dim,1);g.font='12px Inter,system-ui,sans-serif';g.textAlign='left';g.textBaseline='middle';
- g.fillText('every word',26,H-STC.FLOOR/2+3);}
+ g.restore();}
 function stHot(k){
  if(STV.hot===k)return; STV.hot=k; STC.dirty=true;
  document.querySelectorAll('#stimps .st-grp').forEach(function(gp){gp.classList.toggle('hot',gp.getAttribute('data-k')===k);});}
