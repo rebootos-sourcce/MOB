@@ -67,6 +67,24 @@ Do not merge Baal with Bael, Set with Apep, Dis Pater with Lucifer, or Harpies' 
 The original `MOB_Complete_v341.html` and its 19 exact standalone definitions remain unverified; Library search found an older v330, which is **not a replacement**.
 Owner explicitly rejected Psychopathy as canonical Super-Complex; the engine's legacy `DESCENT` labeling is not authority to reverse that decision.
 
+## Historical Super-Complex membership rule (new source verification)
+The connected `rebootos-sourcce/Reboot-OS` `main` file `atuned/data/canon_tables/ILSTACK.json`, blob `4d578e0d521fe5a73210d8512247a156dcb1b0b2`, states that a Super-Complex is **"Character. Two or more hyper-complexes, so set you cannot see them as separate from you."** It gives the Super-Complex count as `null`. This is a verifiable older source rule, not yet a version-reconciled approval for every proposed shadow figure on the newer MOB branch. Do not count 23 labels as 23 Super-Complexes. No individual shadow here has demonstrated its required two source-backed hyper-complex member IDs plus identity stabilization. Native archetypes and domains are never composed from acquired complexes.
+
+**Intention poles**, per owner research handoff: awareness ↔ ignorance/unawareness, detachment ↔ attachment-to-outcome, intentional/right action ↔ avoidance/wrong action. These are *three polar pairs*, not the eight Compass MIRROR axes. Neither correspondence nor numerical weights may be invented.
+
+## Four explicit semantic drift comparisons
+| Figure | Engine teacher-inverse interpretation | Inferno source-family/behavior | Required disposition |
+|---|---|---|---|
+| Lucifer | False Light; performed radiance, pride, audience | Stasis condition; feedback reinforces immobilization | Retain both; owner's nine-layer composite remains additional structural rule, not literary proof |
+| Asmodeus | Compulsive Craving; appetite without satisfaction | Harmful obstruction of Sarah's prospective marriages in Tobit | Do not equate repeated harm with an inferred universal sexual craving |
+| Charon | Threshold Paralysis; awaits impossible certainty | Acheron crossing and threshold gatekeeping | Gatekeeper's actual function is not proof of paralysis |
+| The Furies | Ideological Rigidity; doctrine defended against experience | Fear induction and intimidation at the gates of Dis | Distinguish literary intimidation from inferred epistemic rigidity |
+
+Reference: `docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json` and `docs/data/inferno/v2/INFERNO_NORMALIZED_RECONSTRUCTION_V2.json`. These conflicts remain **OPEN**, not silently merged or adjudicated.
+
+## Repeatable validation
+Run in a real Node checkout: `node docs/data/compass/integration/v2/validate_shadow_law_layer_evidence_v3.cjs`. The read-only test checks four source blob IDs, original record preservation, 21-field presence, nonruntime law links, source/graph IDs and known unresolved conflicts. **The validator was committed and reread; it has not yet been executed in a checked-out repository or certified by CI.**
+
 ## CQ/Intention blocking seam
 The formula is documented as `CQ = clamp(Integrity × Intention / Resistance, 0, 100)`, but the current engine's band/pole-derived Intention mapping is **not proven equivalent** to the canonical 7-day said-versus-did evidence input. No integration or success claim may bypass this question. Reference: `docs/ATUNED_CQ_COHERENCE_FORMULA_INTEGRATION_TDD_v1.md`.
 
