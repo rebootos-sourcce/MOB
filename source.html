@@ -5,10 +5,10 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v685 7061828c 2026-10-28 00:54"><head><meta charset="utf-8">
+<html lang="en" data-build="v686 d57af090 2026-10-28 01:52"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
-<meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
+<meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
 <!-- ============================================================
      THE TYPEFACE, CARRIED RATHER THAN FETCHED.
 
@@ -4769,6 +4769,21 @@ body.punch .ip.kid{background:color-mix(in srgb,var(--c) 68%,var(--panel-2))}
 .ad-r span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
 .ad-r em{font-style:normal;font-size:12px;color:var(--heart)}
 .ad-r b{font-weight:500;color:var(--gold);font-family:var(--num);font-variant-numeric:tabular-nums}
+/* THE GATE ROWS' OWN VALUE, reached for the first time outside the gate
+   drill when the Field's own Laws of Action rail section was added, 28
+   October. gatesBlock (ui/drills.js) was already shipped and already
+   correct, drawn only inside the drill until then, so the design gate's
+   CSS coverage check had never walked a tab where .ad-v or .gate-r stood
+   reachable in the document. .ad-v held a plain .ad-r span's own colour
+   with nothing of its own; it is the percent and reads better in the same
+   gold, tabular hand every other reading in this product already uses. */
+.ad-v{color:var(--gold);font-family:var(--num);font-variant-numeric:tabular-nums}
+/* .gate-r NAMES THE ROW FOR THE DELEGATED CLICK (ui/ui.js, .gate-r[data-gate]
+   opens runGatesDrill) and carries no rule of its own: .ad-r's is the whole
+   of its look, on purpose, so a gate row and every other action-drill row
+   stay one visual family. Named here so the design gate's coverage check,
+   which reads a class only off a selector that names it, finds it. */
+.gate-r{}
 .ad-q{font-size:14px;line-height:1.7;color:var(--dim);font-style:italic;
  border-left:3px solid var(--gold);padding-left:12px;margin:8px 0;font-weight:300}
 /* THE SABOTEUR CARD'S QUIET END, round SB. Connected is the engine's own map
@@ -9332,6 +9347,29 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
      <div class="lbl plain">19 domains &times; 9 child emotions</div>
      <div class="mx" id="mx"></div>
      <div class="mxk" id="mxk"></div>
+    </div>
+   </div>
+   <!-- THE SIX GATES, GIVEN A NAMED PLACE ON THIS RAIL. Round of 28 October,
+        his words, after seeing the Field's own small marks for them: "if you
+        look on the field, you'll find the awareness ignorant detach attach
+        intentional aware, that's the only space, those would be great to
+        expose, wouldn't they, maybe they go on our left-hand menu." They
+        already drew as marks on the wheel (the Gates layer, FLAYS in
+        ui/rings.js) and as a reference list on the Codex's own Laws of
+        Action page, and the derived avoidance reading already lived,
+        correctly built with its upstream pair beside it per the engine's
+        own guard against showing it alone, inside the Journal's collapsed
+        Laws accordion. None of those is a named section here. This is.
+        Filled by renderGates(), ui/ui.js, off verpRead() and sniffGates(),
+        read-only: see those files for what guard the avoidance line may
+        never be shown without. -->
+   <div class="lsec" data-sec="gates">
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.1"/><path d="M12 8.9V3.6M9.6 6L12 3.6 14.4 6M12 15.1v5.3"/></svg>Laws of Action</span><i></i></button>
+    <div class="lsec-bd">
+     <div class="tier1">The six gates</div>
+     <p class="stk-def">Read from your own words. Three are the law kept, three the law broken.</p>
+     <div id="gaterows"></div>
+     <div id="gateavoid"></div>
     </div>
    </div>
   </div></div>
@@ -19855,7 +19893,7 @@ function leadSees(what){ return LEAD_SEES.indexOf(what)>=0; }
    archetypes, laws, gates and shadow", with the laws and the gates said by the
    names the Field's bar prints for them since 22 October, the Laws of Moral
    Integrity and the Laws of Action. */
-const PLAN_ALWAYS=['your 112 addresses','the domains','the archetypes','the Laws of Moral Integrity',
+const PLAN_ALWAYS=['your 108 somatic addresses and 4 field anchors','the domains','the archetypes','the Laws of Moral Integrity',
  'the Laws of Action','shadow','the pain map','every tool','the journal',
  'rerunning anything already open'];
 /* ANNUAL. TWO MONTHS FREE IS OUT, on the owner's ruling.
@@ -82270,8 +82308,38 @@ function render(){
     name. Hover shows the meaning in the product's own tooltip. Press takes
     the person to the knowledge page with that entry already open, so a word
     they did not know is two gestures from being a word they do. */
+/* THE SIX GATES, A NAMED PLACE ON THE FIELD'S OWN LEFT RAIL. Round of 28
+   October, his words after finding them only as small marks on the wheel:
+   "those would be great to expose, wouldn't they, maybe they go on our
+   left-hand menu." Ported, not rebuilt: gatesBlock(null) (ui/drills.js) is
+   the same six-row reading already shown inside the gate drill, right
+   action against wrong action, and its rows already wire themselves to
+   that drill through the delegated .gate-r[data-gate] click below, so
+   nothing new needs wiring for a press here to open it.
+
+   THE AVOIDANCE LINE IS NEVER SHOWN ALONE. sniffGates (engine/sniff.js)
+   carries its own structural rule for this exact number: it is read only
+   together with the two upstream gates it was built from. stLawWins
+   (ui/storyui.js) already finds the most recent entry with a real gate
+   reading for the Journal's own Laws accordion; this calls the same
+   function rather than re-reading the entries a second way, so the two
+   surfaces can never disagree about which entry's reading is current. */
+function renderGates(){
+ var h=document.getElementById('gaterows'); if(!h)return;
+ h.innerHTML=gatesBlock(null);
+ var g=document.getElementById('gateavoid'); if(!g)return;
+ if(typeof stLawWins==='function')stLawWins();
+ var gate=(typeof STLW!=='undefined'&&STLW&&STLW.gate)||null;
+ if(gate&&gate.intentional){
+  g.innerHTML='<div class="pm-eye" style="margin-top:14px">Avoidance, your last entry</div>'
+   +'<p class="ad-p">Avoidance reads <b>'+gate.intentional.avoidance+' per cent</b>, built from the two readings below it and never shown without them.</p>'
+   +'<p class="ad-p">Awareness against ignorance: <b>'+Math.round(gate.aware*100)+' per cent</b> awareness.</p>'
+   +'<p class="ad-p">Detachment against attachment: <b>'+Math.round(gate.detached*100)+' per cent</b> detachment.</p>';
+ } else {
+  g.innerHTML='<p class="ad-p" style="margin-top:10px">Nothing read yet. Write a line in the Journal and the gates fill in from it.</p>';
+ }}
  wireKbJump();
- renderAcc(r); renderSpirit(); renderRootSum(); renderPol2(r); syncMx();
+ renderAcc(r); renderSpirit(); renderRootSum(); renderPol2(r); syncMx(); renderGates();
  /* the trace graph's block in the Field's side column, ui/loopread.js */
  if(typeof loopPaint==='function')loopPaint(r);
  /* the dock's circles move into their values rather than snapping, and only
@@ -82651,5 +82719,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005448865"></div>
+<div id="eof" hidden data-len="005453538"></div>
 </body></html>
