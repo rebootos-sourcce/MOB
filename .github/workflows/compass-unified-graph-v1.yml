@@ -1,4 +1,4 @@
-name: Compass Unified Research Graph V1-V2
+name: Compass Unified Research Graph V1-V3
 on:
   push:
     branches:
@@ -21,6 +21,8 @@ jobs:
         run: git fetch --no-tags --depth=1 origin atuned/deep-psyche-end-to-end-2026-10-26
       - name: Validate V2 357-node graph, all 187 Deep Psyche pairs and editor JavaScript
         run: node docs/data/compass/integration/v3/validate_unified_research_graph_v2.cjs
+      - name: Validate V3 398-node graph, 861 edges, 26 scene routes and 39 teacher recipes
+        run: node docs/data/compass/integration/v3/validate_unified_research_graph_v3.cjs
       - name: Validate V3 shadow-law research overlay
         run: node docs/data/compass/integration/v2/validate_shadow_law_layer_evidence_v3.cjs
       - name: Verify baseline Compass foundation graph
@@ -35,5 +37,6 @@ jobs:
           const g = require('./docs/data/compass/gameboard/v1/GAMEBOARD_MAP_V1.json');
           const releaseMissing = g.nodes.filter(x=>!x.releaseProtocolId).length;
           const ritualMissing = g.nodes.filter(x=>!x.becomingRitualId).length;
-          console.log(JSON.stringify({scenes:g.nodes.length,releaseProtocolsMissing:releaseMissing,becomingRitualsMissing:ritualMissing,sceneRuntimeAcceptance:'NOT_COMPLETE'},null,2));
+          const routes = require('./docs/data/compass/gameboard/v2/GAMEBOARD_EXISTING_RELEASE_RITUAL_BINDINGS_V2.json');
+          console.log(JSON.stringify({scenes:g.nodes.length,dynamicReleaseEntrypoints:routes.stats.routedReleaseEntrypoints,dynamicRitualEntrypoints:routes.stats.routedBecomingEntrypoints,fixedProtocolInstancesNotPreallocated:releaseMissing,fixedRitualInstancesNotPreallocated:ritualMissing,browserEndToEndAcceptance:'NOT_CERTIFIED'},null,2));
           NODE
