@@ -200,10 +200,27 @@ before any user facing change and carries the measured UX floors.
 
 ## Voice. These are rulings, not preferences.
 
-No em dashes, anywhere, including commit messages and docs. Never say 108; the
-count stated to users is 112. Sentence case, no all caps UI copy. Mechanical
-and precise, no soft wellness language, short sentences, physical metaphors
-only. Muted palette argued from autonomic response. Icons are ring, not fill.
+No em dashes, anywhere, including commit messages and docs. Sentence case, no
+all caps UI copy. Mechanical and precise, no soft wellness language, short
+sentences, physical metaphors only. Muted palette argued from autonomic
+response. Icons are ring, not fill.
+
+**OVERRIDDEN, 28 October: say the real structure, not a flat 112.** His
+words: "We should never talk about 112. It's 108 in the physical body, 4
+non-physical. You already know this. It's in the software. Please stop
+talking about it. Make that change everywhere so it's just done." The
+engine's own data already carried this split before either ruling was
+written, `engine/data/nodes.js`'s own header: "THE 112 ADDRESSES. 108
+somatic, seated at a named plexus or nerve, plus 4 field anchors above and
+below the body." The total is still 112 and nothing in the arithmetic moves;
+what changes is never stating that total as a flat, undifferentiated number
+again. Say the structure: 108 somatic, at a named plexus or nerve, plus 4
+field anchors, two above the body and two below. A screen that already
+established the structure once may still use a bare 112 afterward on that
+same screen, where the reader has the context; a screen that has not is
+never allowed to open on a bare 112. What follows is the ruling this
+replaces, kept for the record: "Never say 108; the count stated to users is
+112."
 
 **Port, do not rebuild.** The arithmetic core keeps its bodies and signatures.
 

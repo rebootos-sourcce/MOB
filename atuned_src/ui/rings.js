@@ -132,7 +132,7 @@ const FLAYS=[
  {k:'domains',nm:'Domains',d:frSegRing(5,8.6,20),
   tip:'The nineteen blueprint domains, what was there before any of it.'},
  {k:'addresses',nm:'Addresses',d:frCirc(12,12,4.2)+frTicks(8,7,10.4),
-  tip:'Your 112 addresses. Each mark is the charge held at one place.'},
+  tip:'Your 108 addresses, plus 4 field anchors above and below the body. Each mark is the charge held at one place.'},
  {k:'stories',nm:'Stories',d:frCirc(12,12,2.6)+'M12 9V4.4M14.6 13.5l4 2.3M9.4 13.5l-4 2.3'
    +frCirc(12,3.4,1.1)+frCirc(19.4,16.2,1.1)+frCirc(4.6,16.2,1.1),
   tip:'One line for each story that put charge on an address.'},
@@ -148,7 +148,7 @@ const FLAYS=[
   tip:'The six gates round the core. Each higher gate sits across from the lower one it stands against.'},
  {sep:true},
  {k:'shadow',nm:'Decoherence',d:frCirc(12,12,8.5)+'M7.2 16.6l3.4-3.4M10.2 19.2l6-6M14.6 19.9l4.6-4.6',
-  tip:'Decoherence. The weight on all 112 addresses, as a wash behind everything.'}];
+  tip:'Decoherence. The weight on your 108 addresses and 4 field anchors, as a wash behind everything.'}];
 /* THE SWITCH AND THE ROW ARE NO LONGER BUILT HERE. The layer row, #flay, is
    the glass bar now, and the switch, #fview, moved to the right rail as three
    circles; ui/fieldbar.js builds both. FLAYS stays, because its marks are the
