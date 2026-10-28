@@ -1,0 +1,274 @@
+{
+  "schema": "ATUNED_CROSS_VERSION_PSYCHETAXONOMY_SEMANTIC_DIFFERENCE_V10",
+  "date": "2026-10-28",
+  "authority": "SOURCE_VERSION_COMPARISON_RESEARCH_ONLY",
+  "sources": {
+    "v192": {
+      "repo": "rebootos-sourcce/Reboot-OS",
+      "path": "atuned/data/corpus/MOB_Complete_v192.txt",
+      "blobSha": "c32b50404b465f7ce4ac9eb9b8457ffbf8f0294f"
+    },
+    "v330": {
+      "artifact": "MOB_Complete_v330.html",
+      "source": "Project Library",
+      "sizeBytes": 16374395,
+      "sha256": "1d71431eb3125cd661e74310b296d5812b0b79f2b7e3bd9e44ed9daeda569469",
+      "validatedRawBytes": true
+    },
+    "canon100": {
+      "branch": "atuned/compass-foundation-closure-20261026",
+      "blobSha": "27a7a178de1e87252fa8e59554a66735dbeb0aed",
+      "version": "1.0.0"
+    },
+    "canon101": {
+      "branch": "lookdev/canon-performer-hypercomplex-20261027",
+      "blobSha": "614f28d31461c0226f1905266f2ee056bbb05fe0",
+      "version": "1.0.1"
+    }
+  },
+  "counts": {
+    "comparisons": 9,
+    "canonicalPromotions": 0,
+    "productionChanges": 0,
+    "ownerEightComplexSourceRecovered": false,
+    "v341ExactRecovered": false
+  },
+  "policy": "Later owner decision takes precedence over a conflicting historical source or implementation kind. Source facts are not diagnoses and do not determine a person's integrity or morality.",
+  "comparisons": [
+    {
+      "id": "TAX-01",
+      "concept": "Psychopathy",
+      "v192": {
+        "location": "Chapter 17, near line 4505",
+        "claim": "Psychopathy described as Dark Triad / Super-Complex",
+        "tag": "HISTORICAL_AUTHOR_TEXT"
+      },
+      "v330": {
+        "location": "The Stacking Architecture",
+        "claim": "Historical formulation still describes Psychopathy as Super-Complex in narrative; not a source of current owner approval",
+        "tag": "OLDER_VERSION_MODEL"
+      },
+      "canon100": {
+        "location": "registers.hyper_complexes",
+        "name": "Psychopathy",
+        "tag": "I",
+        "layer": "hyper_complex"
+      },
+      "canon101": {
+        "location": "registers.hyper_complexes",
+        "name": "Psychopathy",
+        "tag": "I",
+        "layer": "hyper_complex"
+      },
+      "ownerCorrection": {
+        "status": "OWNER_DIRECTED_REJECTION_REPORTED",
+        "source": "docs/ATUNED_SUPER_COMPLEX_PHASE_HANDSHAKE_2026-10-20.md",
+        "rule": "Psychopathy must not be canonically classified as a Super-Complex"
+      },
+      "decision": "REJECT_SUPERCOMPLEX_PROMOTION; retain source conflicts",
+      "canonicalSuperComplex": false,
+      "runtimeModified": false
+    },
+    {
+      "id": "TAX-02",
+      "concept": "The Performer",
+      "v192": {
+        "location": "Chapter 17, near line 4485",
+        "claim": "Named Creative Industry Hyper-Complex; behavioral mixture entitlement, deception, superiority",
+        "tag": "SOURCE_TEXT"
+      },
+      "v330": {
+        "location": "The Stacking Architecture",
+        "claim": "Same named Hyper-Complex and three behavioral ingredients",
+        "tag": "SOURCE_TEXT"
+      },
+      "canon100": {
+        "present": false
+      },
+      "canon101": {
+        "location": "registers.hyper_complexes[8]",
+        "name": "The Performer",
+        "tag": "I",
+        "layer": "hyper_complex",
+        "members": [
+          "Narcissistic",
+          "Exploitation",
+          "Superiority-Persecution"
+        ]
+      },
+      "decision": "AUTHOR_NAME_SOURCE_BACKED; SPECIFIC_NAMED_COMPLEX_MEMBERS_ARE_I_TAGGED_INFERENCE",
+      "sourceNameConfirmed": true,
+      "memberCompositionApproved": false,
+      "runtimeModified": false
+    },
+    {
+      "id": "TAX-03",
+      "concept": "Borderline-Sociopath",
+      "v192": {
+        "location": "Chapter 16 descent, near line 3087",
+        "claim": "Appears as one of six sequential hyper-complex entries",
+        "tag": "HISTORICAL_AUTHOR_TEXT"
+      },
+      "v330": {
+        "location": "Build comment in HTML metadata",
+        "claim": "Borderline-Sociopath removed per author (three orders)",
+        "tag": "BUILD_COMMENT_OWNER_CORRECTION_CLAIM"
+      },
+      "canon100": {
+        "present": false
+      },
+      "canon101": {
+        "location": "open_rulings[11]",
+        "claim": "Unresolved composition, explicitly not registered as Hyper-Complex"
+      },
+      "decision": "KEEP_EXCLUDED_FROM_CANON_RECORDS_AND_OPEN_HISTORICAL_PROVENANCE_CONFLICT",
+      "runtimeModified": false
+    },
+    {
+      "id": "TAX-04",
+      "concept": "Narcissism vs Narcissistic",
+      "v192": {
+        "location": "Six-hyper sequence near line 3083",
+        "claim": "Narcissism appears in six named sequential hyper-complexes",
+        "tag": "HISTORICAL_AUTHOR_TEXT"
+      },
+      "v330": {
+        "location": "The Stacking Architecture",
+        "claim": "Describes four-node Narcissism sequence",
+        "tag": "SOURCE_TEXT"
+      },
+      "canon100": {
+        "location": "registers.complexes",
+        "name": "Narcissistic",
+        "tag": "R",
+        "layer": "complex"
+      },
+      "canon101": {
+        "location": "registers.complexes",
+        "name": "Narcissistic",
+        "tag": "R",
+        "layer": "complex"
+      },
+      "decision": "DISTINCT_RECORD_NAMES_AND_VERSIONS; DO_NOT_ALIAS_OR_PROMOTE_SAME_LAYER",
+      "runtimeModified": false
+    },
+    {
+      "id": "TAX-05",
+      "concept": "Machiavellianism",
+      "v192": {
+        "location": "Chapter 17",
+        "claim": "Treated as Hyper-Complex",
+        "tag": "HISTORICAL_AUTHOR_TEXT"
+      },
+      "v330": {
+        "location": "The Stacking Architecture",
+        "claim": "Treated as Hyper-Complex; behavioral cascade",
+        "tag": "OLDER_VERSION_MODEL"
+      },
+      "canon100": {
+        "location": "registers.hyper_complexes",
+        "name": "Machiavellianism",
+        "tag": "I",
+        "layer": "hyper_complex"
+      },
+      "canon101": {
+        "location": "registers.hyper_complexes",
+        "name": "Machiavellianism",
+        "tag": "I",
+        "layer": "hyper_complex"
+      },
+      "decision": "TIER_LABEL_COMPATIBLE_ACROSS_SOURCES; EXACT_MEMBERSHIP_STILL_I_TAGGED",
+      "runtimeModified": false
+    },
+    {
+      "id": "TAX-06",
+      "concept": "Mask layer versus output",
+      "v192": {
+        "location": "Chapter 16/Stack, near line 3098",
+        "claim": "Seven Mask layers presented as between Saboteurs and Jungian archetypes",
+        "tag": "HISTORICAL_AUTHOR_TEXT"
+      },
+      "v330": {
+        "location": "The Somatic Psychology Stack",
+        "claim": "Mask is output, not another composition rung",
+        "tag": "LATER_VERSION_SOURCE_TEXT"
+      },
+      "canon100": {
+        "location": "registers.masks",
+        "count": 6
+      },
+      "canon101": {
+        "location": "registers.masks",
+        "count": 6
+      },
+      "decision": "PRESERVE_SOURCE_VERSION_CHANGE; AVOID_EXTRA_RUNTIME_RUNG",
+      "runtimeModified": false
+    },
+    {
+      "id": "TAX-07",
+      "concept": "Super-Complex/Character composition",
+      "v192": {
+        "location": "Six Hyper-Complexes section, near line 3084",
+        "claim": "Two Hyper-Complexes merging produce Character",
+        "tag": "HISTORICAL_SOURCE_RULE"
+      },
+      "v330": {
+        "location": "The Stack Below Awareness",
+        "claim": "Complexes into hyper-complexes, those into Super-Complex or Character",
+        "tag": "OLDER_VERSION_SOURCE_RULE"
+      },
+      "canon100": {
+        "location": "locks, supercomplex/character references",
+        "generalCompleteMembershipList": false
+      },
+      "canon101": {
+        "location": "locks, supercomplex/character references",
+        "generalCompleteMembershipList": false
+      },
+      "decision": "GENERAL_SOURCE_CHAIN_SUPPORTED; CANONICAL_NAMED_MEMBERSHIPS_UNVERIFIED",
+      "runtimeModified": false
+    },
+    {
+      "id": "TAX-08",
+      "concept": "Eight ordinary Complexes versus Canon 23",
+      "v192": {
+        "location": "Owner-referenced roster",
+        "exactEightNamesRecovered": false
+      },
+      "v330": {
+        "location": "Library raw text scan",
+        "literalEightComplexesMatch": 0
+      },
+      "canon100": {
+        "complexEntries": 23,
+        "hyperEntries": 8
+      },
+      "canon101": {
+        "complexEntries": 23,
+        "hyperEntries": 9
+      },
+      "decision": "DO_NOT_REINTERPRET_OWNER_EIGHT_AS_THE_CANON_TWENTY_THREE; SOURCE_NEEDED",
+      "runtimeModified": false
+    },
+    {
+      "id": "TAX-09",
+      "concept": "Six Hyper-Complex families versus Canon Hyper records",
+      "v192": {
+        "location": "Chapter 16",
+        "countSixSequential": 6
+      },
+      "v330": {
+        "location": "Hyper-Complex family diagrams",
+        "sixFamiliesNotInstances": true
+      },
+      "canon100": {
+        "hyperEntries": 8
+      },
+      "canon101": {
+        "hyperEntries": 9
+      },
+      "decision": "MAINTAIN_DIFFERENT_DENOMINATORS; NO_CARDINALITY_COLLAPSE",
+      "runtimeModified": false
+    }
+  ]
+}
