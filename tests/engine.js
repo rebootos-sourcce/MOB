@@ -6297,6 +6297,13 @@ g('SA · Source AI hears on the rung, asks at seven, and the person leads');
  ok(srcRung(2,0,0)===7&&srcRung(3,0,0)===8&&srcRung(9,0,0)===8,'a return inside the entry is 7, three or more is 8');
  ok(srcRung(1,1,0)===9,'an earlier entry at the same seat is 9');
  ok(srcRung(2,1,0)===10&&srcRung(1,2,0)===10,'back across entries and again here, or two earlier, is 10');
+ /* STRUCTURAL, THE FOURTH INPUT, 27 October. A seat held inside a hyper
+    complex the person's own charge is actually driving reaches the same
+    rung a real earlier commit would, 9, but never invents a mention and
+    never reaches 10, which stays reserved for a real repeated entry. */
+ ok(E.srcRung(1,0,2,true)===9,'a seat structurally active reaches 9 on one mention');
+ ok(E.srcRung(0,0,0,true)===0,'structural never invents a mention; nothing heard is still 0');
+ ok(E.srcRung(1,0,2,false)===2,'without structural evidence the old ladder is unchanged');
  /* checked against a known case: the probe that set this found the lexicon's
     median word alone reads over 7 on the sniffer's own scale */
  const one=srcHear('i was furious');
@@ -6352,6 +6359,38 @@ g('SA · Source AI hears on the rung, asks at seven, and the person leads');
  const nmC='I am not afraid, still shaking';
  ok(E.clauseFloor(nmC,E.normMap(nmC),E.normMap(nmC).s.indexOf('shaking'))===-1,
   'a comma is not a boundary, so this finds none before "shaking" in a text with no sentence end at all');
+}
+
+g('SA2 · srcHyperSeats, which seats a driven hyper complex actually sits on');
+/* 27 October, his words: Source AI should recognise a seat the field already
+   knows is load bearing for a pattern running across several addresses, the
+   same way it recognises a seat it has heard before, without ever naming
+   the complex. Driven the same way the adjacent Grandiosity and Psychopathy
+   tests already drive a real hyper complex: every Root address pushed hard
+   enough to form saboteurs, which pair into complexes, which pair into a
+   hyper complex, through the real compute(), never a hand built object. */
+{
+ const {S,W,buildSoul,LAW_UNSET,SINAMES,compute,srcHyperSeats,srcHear,K2BAND}=E;
+ SINAMES.forEach(l=>{LAW_UNSET[l]=false;});
+ buildSoul();
+ const before=srcHyperSeats(compute());
+ ok(Object.keys(before).length===0,'nothing driven, nothing active, got '+JSON.stringify(before));
+ W.filter(n=>n.b==='Root').forEach(n=>{S.addr[n.i]=9; S.charge[n.cf]=9;});
+ const r=compute();
+ ok((r.hys||[]).length>0,'driving every Root address this hard forms at least one real hyper complex');
+ const active=srcHyperSeats(r);
+ ok(active.root===true,'the seat actually driven is in the active set, got '+JSON.stringify(active));
+ Object.keys(active).forEach(function(k){
+  ok(Object.keys(K2BAND).indexOf(k)>=0,'every key is a real seat code, never a complex name, got "'+k+'"');});
+ /* the seat's own entry reaches rung 9 off one mention plus structural
+    evidence, where one mention alone would floor far lower */
+ const heard=srcHear('I felt afraid',null,active);
+ ok(heard.top&&heard.top.seat==='root'&&heard.top.structural===true&&heard.top.rung===9,
+  'one real mention, structurally active, reaches 9, got '+JSON.stringify(heard.top));
+ /* a seat that is active but the person said nothing about is never asked:
+    mentions still gates the top of srcRung */
+ const silent=srcHear('',null,active);
+ ok(silent.unread===true,'nothing typed is still nothing heard, structural evidence never invents a mention');
 }
 
 g('GR · a word that names shame reads as shame, at the seat it sits at');

@@ -986,8 +986,15 @@ const kb=await page.evaluate(()=>{
   if(!document.querySelectorAll('.kb-row').length){empty.push(k);return;}
   walked++;
   {const cards=[...document.querySelectorAll('.kb-row')];
-   const ps=cards.map(c=>{const a=c.querySelector('svg path');
-    return a?a.getAttribute('d'):null;});
+   /* A MARK IS NOT ALWAYS A PATH, AND THE GLYPH IS NOT THE FIRST SVG IN THE
+      ROW. crBadge draws two svgs: .crb-a, the charge ring, identical shape
+      on every row; .crb-g, the glyph itself. The dual-pole open state draws
+      its glyph as two bare circles with no <path>, so reading the row's
+      first <path> happened to land on the glyph for every other state by
+      accident, found none for open, and called a real, visible mark blank.
+      Read the glyph svg by its own class, whatever shapes it is made of. */
+   const ps=cards.map(c=>{const a=c.querySelector('.crb-g svg');
+    return a?a.innerHTML:null;});
    /* THE MARK ON A ROW IS COMPOSED OF TWO CHANNELS and one of them is colour.
       Counting the path alone counts half the mark and would have reported the
       fetters deck as seven marks when the seat is what separates a Root Fear
@@ -1116,11 +1123,21 @@ ok(kb.opened===kb.walked,'every section opens a drill, got '+kb.opened
 
    Measured on the running deck: the pair takes the distinct marks from 7 to
    40 and the worst collision from 21 rows to 10. Asserted as a floor, because
-   a new axis is a reason to have more marks and never a reason to fail. */
+   a new axis is a reason to have more marks and never a reason to fail.
+
+   RECALIBRATED 28 OCTOBER. That 40 described the old per-node icon design.
+   The locked dual-pole design (section 106 of the look-dev ruling) draws one
+   of five live-state glyphs per address instead, which is a deliberate
+   shrink in mark variety for a clearer reading, not a regression, and the
+   stale floor of 30 failed every run against a design it was never measuring.
+   Read off a real browser on James, the heaviest roster persona, with the
+   row's own glyph svg (.crb-g svg), not the first path in the row: the ring
+   arc drawn behind it is also an svg and has no path, which is a second,
+   separate bug this same recalibration fixed, see the mark reader above. */
 {const want={law:21, mask:5, sab:6, harm:27, fetter:9};
  /* mask was 6, round NE: Professional hidden and not calculated, so the
     deck reads five distinct mask marks now, not a regression. */
- const floor={addr:30};
+ const floor={addr:18};
  Object.keys(floor).forEach(k=>{const m=kb.marks[k];
   ok(m&&m.pair>=floor[k],'the '+k+' deck composes its mark, '
    +(m?m.pair:0)+' distinct seat and glyph pairs against a floor of '+floor[k]

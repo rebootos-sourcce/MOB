@@ -2854,6 +2854,31 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
 .mxk{font-size:12.5px;color:var(--dim);line-height:1.65;margin-top:10px}
 .mxk b{color:var(--ink);font-weight:600}
 
+/* THE CHAIN KEY. One row per tier, nerve to root, a swatch and a sentence.
+   The dot is the exact color the wheel paints that tier's threads and beads
+   with, set inline from bc() at render time, so a swatch here and a bead on
+   the wheel can never read as two different colors for the same tier. */
+.chk-row{display:flex;align-items:flex-start;gap:9px;margin-top:10px}
+.chk-dot{flex:0 0 auto;width:11px;height:11px;border-radius:50%;margin-top:3px;
+ box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+.chk-dot.varies{background:conic-gradient(from 0deg,#e06a5a,#e0a65a,#e0d85a,#6ac17a,#5ac1b8,#5a8fe0,#a05ae0,#e06a5a)}
+.chk-tx{font-size:12.5px;color:var(--dim);line-height:1.5}
+.chk-tx b{color:var(--ink);font-weight:600}
+
+/* THE FOUR AMPLIFIERS. One row each, a name and the real crBadge (.crb,
+   above) reading its own address. Its own small rule rather than
+   knowledge.js's kb-row/kbp, which that file injects itself only once the
+   Knowledge tab has been opened: a press on Field alone, never Knowledge,
+   would have shown these names with no flex, no gap and no border, the
+   classes present with nothing behind them. */
+.amp-row{display:flex;align-items:center;justify-content:space-between;gap:10px;
+ padding:9px 0;border-bottom:1px solid var(--edge);background:none;border-left:0;
+ border-right:0;border-top:0;width:100%;text-align:left;cursor:pointer;color:inherit;
+ font:inherit}
+.amp-row:last-child{border-bottom:0}
+.amp-row:hover{background:var(--sunk)}
+.amp-nm{font-size:13.5px;color:var(--ink)}
+
 /* ---------- spiritual states ---------- */
 .sp-hd{margin:14px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--edge);color:var(--gold)}
 /* THE VALUE HOLDS ITS LINE AND THE NOTE TAKES WHAT IS LEFT. The value was the
