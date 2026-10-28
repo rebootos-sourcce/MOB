@@ -181,14 +181,24 @@ function summary(){
  (challenges.length?challenges.map(function(l){return esc(l.law)+' under pressure ('+answer(l.questions[1]).value+'/10)';}).join(' · '):'Not enough pressure ratings yet.')+'</p>'+
  '<p class="notice">These rankings cover only the questions you answered. The protective mechanism questions do not prove motives, saboteurs, complexes, or a physical condition. You can reject any proposed interpretation.</p></div>'+
  '<div class="panel"><h2>Your exact report by law</h2>'+summaryRows(activeLaws)+'</div>'+
+ '<div class="panel"><h2>One real-world example to test</h2>'+
+ (challenges.length&&challenges[0].vignette?
+ '<p class="smallcaps">'+esc(challenges[0].law)+' · illustrative situation</p>'+
+ '<h3>'+esc(challenges[0].vignette.title)+'</h3>'+
+ '<p>'+esc(challenges[0].vignette.story)+'</p>'+
+ '<p><b>One action to consider:</b> '+esc(challenges[0].vignette.becomingAction)+'</p>'+
+ '<p class="micro">'+esc(challenges[0].vignette.contextBoundary)+'</p>'+
+ '<p class="notice">This story is an example, not something we know happened to you. Keep or reject it based on your lived experience.</p>'
+ :'<p>When you have an example from your own day, the application can help you test a possible pattern.</p>')+
+ '</div>'+
  '<div class="panel"><h2>What has not been measured</h2>'+
  '<p>'+a.unanswered+' unanswered prompts, '+a.not_applicable+' N/A, '+a.skipped+' skipped. '+(mode==='core'?'The remaining eleven laws are not included in this initial snapshot. ':'')+
  'No canonical CQ has been calculated, and we have not read personal stories, specific body tissue, hidden beliefs, or intentions.</p>'+
  '<p>Try a concrete event next: What happened, what did you do, and what did you notice? You decide whether any interpretation fits.</p></div>'+
  '<div class="row"><button class="primary" data-act="edit">Review my questions</button>'+
  (mode==='core'?'<a class="primary" href="diagnostic-v2.html">Continue the remaining 33</a>':'<a class="primary" href="quiz-v2.html">Review the original 30</a>')+
- '<a class="secondary" href="../source.html">Explore ATÜNED app</a></div>'+
- '<div class="panel"><h2>Keep your reading</h2><p>The updated diagnostic uses the same local answers. Native account/profile ingestion is not yet connected: opening the app does not automatically import this assessment.</p>'+
+ '<a class="secondary" href="../source.html">Open app and import responses</a></div>'+
+ '<div class="panel"><h2>Keep your reading</h2><p>The updated diagnostic uses the same local answers. The app now has an explicit Core 10 import control inside its three-register Diagnostic. After opening the app, open Diagnostic, choose Import from this browser, or import your downloaded quiz file. The app does not auto-import without your choice. Cross-device account synchronization is not yet verified.</p>'+
  actions()+'</div><p class="micro">'+completed+'/63 recorded question statuses overall. Your answer history and canonical IDs remain exportable without rerating answered Core 10 laws.</p></section>';
 }
 function render(){
