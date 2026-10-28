@@ -9,6 +9,8 @@ on:
       - 'funnel/diagnostic-v2.html'
       - 'docs/data/compass/quiz/**'
       - 'tests/integrity-v2.cjs'
+      - 'atuned_src/engine/diagnostic3.js'
+      - 'atuned_src/ui/diagnostic3.js'
       - 'tools/build-integrity-v2-data.cjs'
       - '.github/workflows/quiz-core10-v2.yml'
   pull_request:
@@ -32,6 +34,8 @@ jobs:
         run: |
           node --check funnel/integrity-v2.js
           node --check funnel/integrity-v2-data.js
+          node --check atuned_src/engine/diagnostic3.js
+          node --check atuned_src/ui/diagnostic3.js
       - name: Validate canonical 21-law question structure
         run: node docs/data/compass/quiz/v2/validate_integrity21_v2.cjs
       - name: Verify generated browser question bank
