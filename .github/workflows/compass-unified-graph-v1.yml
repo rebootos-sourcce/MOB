@@ -43,6 +43,8 @@ jobs:
         run: node docs/data/compass/integration/v10/validate_v10_version_conflicts.cjs
       - name: Validate V11 source-only safe dispositions without canonical promotion
         run: node docs/data/compass/integration/v11/validate_v11_source_dispositions.cjs
+      - name: Verify V12 offline evidence reviewer embeds source-only graph, overlay and decision data
+        run: node docs/data/compass/integration/v12/validate_v12_source_reviewer.cjs
       - name: Report static instance IDs and outstanding acceptance gates
         run: |
           node - <<'NODE'
