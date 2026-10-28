@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v686 d57af090 2026-10-28 01:52"><head><meta charset="utf-8">
+<html lang="en" data-build="v693 f15f8a5a 2026-10-28 15:21"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -4170,11 +4170,25 @@ body.tab-story #bRel{display:none}
    take its width, so the stage track is the rest of the row. The bank sets
    st-bank and the rail returns with the Imprints page in it and Selection
    under it, where that page's Detail opens. Stacked, the rail is a block
-   under the surface, so it is simply not there until the bank asks for it. */
+   under the surface, so it is simply not there until the bank asks for it.
+
+   THE LEFT COLUMN IS GONE FROM THE STORY TOO, ROUND OF 28 OCTOBER. His
+   words: "we're going to get rid of the left-hand menu." #lcol on this tab
+   carries none of the story's own data, it is the Field's own rail
+   (Energetic summary, Root Energetics, Awareness, Child emotions, Matrix,
+   Laws of Action), shown here only because colKey() gives Story the same
+   STORE key as Field, so opening the rail on the Field and then switching
+   tabs carried that open state onto the Journal with the wrong headers
+   over it, in the bank too since nothing here had ever scoped the bank's
+   three columns down to two. Shutting it by default was not enough: the
+   person's own past choice on a different surface would reopen it. The fix
+   is the same as the bank's own for the rest of the row: not collapsed,
+   not there, in or out of the bank. */
+body.tab-story #lcol{display:none}
 body.tab-story:not(.st-bank) .mid>.col:not(#lcol){display:none}
 @media (min-width:1181px){
- body.tab-story:not(.st-bank) .mid{grid-template-columns:302px 1fr}
- body.lshut.tab-story:not(.st-bank) .mid{grid-template-columns:58px 1fr}}
+ body.tab-story:not(.st-bank) .mid{grid-template-columns:1fr}
+ body.tab-story.st-bank .mid{grid-template-columns:1fr 336px}}
 /* ---------- the Summary's rail is today's summary, ui/daily.js ----------
    The same step aside as the Story's: on the Summary the rail carries Today
    and Selection, and Today is shown nowhere else. A silent day (nothing read
@@ -4483,12 +4497,6 @@ body.quiet .src-tn-now .src-nd,body.rm .src-tn-now .src-nd{animation:none}
 .src-cin:focus{outline:none;border-color:var(--accent)}
 .src-cin::placeholder{color:var(--dim)}
 body.punch .src-cin{border-color:transparent;background:var(--panel-2)}
-/* stacked, the Story reads journal, Source AI, imprints, release, and the
-   tools after. Without this the whole left rail sat between what a person
-   wrote and what it found whenever the column was open. The breakpoint is the
-   one that stacks the rails. */
-@media (max-width:1180px){body.tab-story #lcol{order:1}}
-
 /* ---------- imprints ---------- */
 .ip-hd{display:flex;align-items:center;justify-content:space-between;gap:10px;
  margin-bottom:11px;flex-wrap:wrap}
@@ -15985,9 +15993,23 @@ var PCT_KIND={
  /* compute.js:390 */
  integrity: {lo:0, hi:10, src:'engine/compute.js', find:'- JQ*0.42,0,10);',
              say:'integrity, the laws lifted by the poles and pulled down by overshoot'},
- /* compute.js:391 */
- intention: {lo:0, hi:10, src:'engine/compute.js', find:'- JQ*0.30,0,10);',
-             say:'intention, the same laws read seat by seat'},
+ /* compute.js:391. RENAMED FROM intention, 28 October: the word intention is
+    the ruled reading below now, what a person said against what they did,
+    and this kept it as well, which is the exact defect one word per concept
+    exists to stop. This is a law mean read seat by seat, nothing a person
+    committed to or carried out. */
+ lawseat:   {lo:0, hi:10, src:'engine/compute.js', find:'- JQ*0.30,0,10);',
+             say:'the same laws read seat by seat, up the body'},
+ /* ladder.js, intentionRead. Ruled 25 September, "you either did the thing
+    you said you were gonna do or you didn't", said against done over the
+    last seven days, no charge read into it. Wired in 28 October: the
+    function existed, tested, and had never been put on a screen. Profile
+    dependent, so it is not in tests/engine.js's roster scan the way a pure
+    compute() figure is, the same exemption accuracy already carries; its
+    own coverage is tests/engine.js's and tests/daily.js's intentionRead
+    checks, and the fmtPct example below. */
+ intention: {lo:0, hi:100, src:'engine/ladder.js', find:'pct:said?100*did/said:null',
+             say:'what a person said they would do against what they did, the last seven days'},
  /* intake.js:55, the widest gap between a law's three answers, each 0 to 10
     at the boundary (schema.js:1069) */
  spread:    {lo:0, hi:10, src:'engine/intake.js', find:'var spread=Math.max.apply(null,v)-Math.min.apply(null,v);',
@@ -35445,7 +35467,7 @@ const QICON_D={
     shoot: the thing that grows back when the weight comes off. */
  vitality:'M12 21v-8M12 13c0-3.4 2.4-6 5.6-6.4C17.2 10 15 12.6 12 13'
    +'M12 13c0-2.8-2-5-4.7-5.4C7.7 10.4 9.6 12.4 12 13M9 21h6',
- /* AWARENESS. Intention read against distortion. An aperture, because
+ /* AWARENESS. Law reach read against distortion. An aperture, because
     awareness in this product is the width of what gets through, and the eye
     is already spoken for by perception. */
  awareness:'M12 3.5a8.5 8.5 0 110 17 8.5 8.5 0 010-17M12 3.5L17.8 9.3'
@@ -47694,22 +47716,17 @@ function stRender(){
      the word it was always beside. */
   +'<div class="st-hd">'
    +stMark('j','Journal','journal','','<span class="src-live" aria-hidden="true"></span>')
-   /* TALK, PLAN.md C4, his words: "add a button where I can just have a
-      conversation back and forth." It wears Record's own pill, so every
-      lighting that already restyles Record restyles this, and it is a toggle
-      with aria-pressed the way the bank is, because it changes how the column
-      is shown and nothing about what is written. The mark is two rings and
-      the wire between them, the Field's own thread, never the bubble the
-      question button already draws: one drawing per named thing. The margin
-      takes the free space, so it and Record stand together at the right
-      edge where Record stood alone. See srcThread for what it opens. */
-   +(show?'':'<button class="st-mic st-talk" id="sttalk" type="button" aria-pressed="'+!!STV.chat+'" '
-   +'title="Write it as a conversation, one turn at a time.">'
-   +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
-   +'<circle cx="6" cy="6.5" r="3"/><circle cx="18" cy="17.5" r="3"/>'
-   +'<path d="M8.4 8.4Q16.5 7 15.6 15.6"/></svg>'
-   +'<span>Talk</span></button>'
-   +'<button class="st-mic'+(ST_LISTEN?' on':'')+'" id="stmic" type="button" '
+   /* TALK IS GONE AS A TOGGLE, round of 28 October, his words: "the focus
+      needs to be on two-way conversation for the journal ... this needs to
+      be a two-way conversation between me and the source." A button that
+      switched the conversation on and off said the conversation was one
+      choice among others; it is not, it is the only way the Journal now
+      shows Source AI's side, so there is nothing left to toggle. STV.chat
+      is forced true below (see the state block) and the written block
+      srcPaint could still build is simply never reached. Record keeps its
+      own button: it still only starts or stops the microphone, same as
+      before. */
+   +(show?'':'<button class="st-mic'+(ST_LISTEN?' on':'')+'" id="stmic" type="button" '
    +'title="'+(ST_LISTEN?'Recording. Press to stop and keep what it heard.'
      :'Record what happened out loud instead of typing it. Recording sends the audio to your browser\'s speech service; typing does not leave this device.')+'">'
    +'<span class="st-dot"></span>'
@@ -47929,9 +47946,6 @@ function stRender(){
  if(ap)ap.onclick=function(){if(STV.chat)srcChatSend(); return stCommit();};
  var mic=document.getElementById('stmic');
  if(mic)mic.onclick=stMic;
- var tk=document.getElementById('sttalk');
- if(tk)tk.onclick=function(){STV.chat=!STV.chat; stRender();
-  var f=document.getElementById(STV.chat?'stcin':'sttext'); if(f)f.focus();};
  srcChatWire();}
 
 /* ============================================================
@@ -47939,7 +47953,11 @@ function stRender(){
    sorted, which column has the room, which list is up, and whether the bank
    is open. Kept across a return to the tab, never saved.
    ============================================================ */
-var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:false,law:false,
+/* CHAT IS ALWAYS TRUE NOW, round of 28 October, his words: "the focus needs
+   to be on two-way conversation for the journal ... this needs to be a
+   two-way conversation between me and the source." Nothing sets it false
+   again: the Talk button that used to toggle it is gone, see stWire. */
+var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:true,law:false,
  unsaved:null,draftT:null,draftFail:false,crisis:false};
 /* the one width the page changes shape at is the one the product stacks its
    columns at, so the Story cannot be in three columns while the rails are
@@ -48206,8 +48224,14 @@ function stCommit(){
     with Run on it: widening it there would push Run off the first screen,
     which is the one thing layout H exists to stop. */
  STV.focus=stPhone()?'write':'release';
- /* the crisis line has said what the box is for, and the box has been used */
- STV.crisis=false;
+ /* the crisis line has said what the box is for, and the box has been used.
+    crisisTalk forced STV.chat false on the way in, deliberately, so a crisis
+    is met in the plain box and not inside a chat bubble; nothing used to set
+    it back since the Talk button did that by hand. With Talk gone the
+    conversation is the Journal's only normal state, so a finished crisis
+    entry returns to it here rather than staying stuck in the write box with
+    no way back. */
+ STV.crisis=false; STV.chat=true;
  toYou();syncCh();if(typeof stRender==='function')stRender();render();
  /* A STORY KEPT WITH STARS IN IT SAYS SO, round QR. The person may choose
     not to type the hidden words, and the entry is still theirs; it is kept
@@ -48997,7 +49021,15 @@ function srcThread(turn,heard,cur,acts,why){
   else if(i===last)o+=srcThreadNow(r,turn,heard,acts,why);
   o+='</li>';});
  return o+'</ol>';}
-/* the one live Source AI row, in the panel's own markup for each move */
+/* the one live Source AI row, in the panel's own markup for each move.
+   NO GAUGE AND NO WHY HERE ANY MORE, round of 28 October, his words: "I
+   don't want to see the questions written out, this needs to be a two-way
+   conversation between me and the source." A labelled "Why" paragraph and a
+   rung gauge beside "Next question" are a readout glued to the side of the
+   conversation, not a thing either side would say. What Source AI actually
+   says is still exactly r.q, word for word; the reasoning that used to
+   print here still runs and still decides what gets asked (srcWhy, srcLog),
+   it is only no longer printed as its own block. */
 function srcThreadNow(r,turn,heard,acts,why){
  var o='';
  if(turn.move==='ask')
@@ -49008,11 +49040,8 @@ function srcThreadNow(r,turn,heard,acts,why){
   o+='<p class="src-q">Cool.</p><p class="src-note">Nothing more asked in this entry.</p>';
  else{
   o+='<div class="src-ask">'+srcLand('src-open'+(r.key.indexOf('say|')===0?' quiet':''),r.q)+acts+'</div>';
-  if(r.key.indexOf('say|')===0&&heard.top)o+=srcGauge(heard.top);
   if(SRC_DNONE&&turn.move==='open')
    o+='<p class="src-note">Nothing read yet, so there is nothing of yours to ask from. Write a line first.</p>';}
- if(why)o+='<div id="srcwhy" style="margin-top:12px"><span class="pm-eye">Why</span>'
-  +'<p class="src-open quiet" style="margin:2px 0 0">'+esc(why)+'</p></div>';
  return o;}
 /* THE WIRES ARE LAID AFTER THE ROWS ARE. A row's height is only known once it
    is on the page, and a viewBox stretched to fit would stretch the pulse with
@@ -49280,10 +49309,12 @@ function stDraw(){
     [-1,1].forEach(function(sg){var yy=y+h*.5+sg*(h*.18+pos*gp);g.beginPath();g.moveTo(q.x0,yy);g.lineTo(q.x1,yy);
      g.strokeStyle=rgba(c,sa);g.lineWidth=1;g.stroke();});}}});
  g.save();g.beginPath();g.rect(q.x0,0,q.x1-q.x0+2,H);g.clip();
- /* the floor: every word read, a tick. The ones it kept are in their colour */
+ /* THE FLOOR IS GONE, round of 28 October, his words: "get rid of those
+    rainbow colours on the bottom, those don't do anything." It ticked every
+    word read, kept ones in their seat colour, under the lanes this canvas
+    still draws. dx and tw stay: the bars below still measure a word's
+    width by them. */
  var dx=stDx(),tw=Math.max(1.5,dx-(dx>8?4:2));
- STR.toks.forEach(function(o,j){var x=stXOf(j);if(x<q.x0-8)return;
-  g.fillStyle=o.m?rgba(o.m.bn?stCol(o.m.bn):STC.acc,1):rgba(dim,.45);g.fillRect(x,H-STC.FLOOR+6,tw,o.m?9:6);});
  /* the bars */
  var pts=[];
  Object.keys(STC.items).forEach(function(k){var it=STC.items[k],m=it.m,g1=Math.max(0,it.g);if(g1<.01||m.t0<0)return;
@@ -49336,9 +49367,7 @@ function stDraw(){
   if(placed.some(function(r){return !(x0+w<r[0]||x0>r[2]||y1<r[1]||y0>r[3]);}))return;
   placed.push([x0,y0,x0+w,y1]);g.fillStyle=p.m.aside?rgba(dim,.9):rgba(mixc(p.c,ink,.15),1);g.fillText(p.m.txt,p.x,y1);});
  var N2=STR.toks.length;if(N2){var px=stXOf(N2-1)+dx;g.fillStyle=rgba(STC.acc,.55);g.fillRect(px,q.y0,1,H-q.y0-6);}
- g.restore();
- g.fillStyle=rgba(dim,1);g.font='12px Inter,system-ui,sans-serif';g.textAlign='left';g.textBaseline='middle';
- g.fillText('every word',26,H-STC.FLOOR/2+3);}
+ g.restore();}
 function stHot(k){
  if(STV.hot===k)return; STV.hot=k; STC.dirty=true;
  document.querySelectorAll('#stimps .st-grp').forEach(function(gp){gp.classList.toggle('hot',gp.getAttribute('data-k')===k);});}
@@ -50001,7 +50030,14 @@ function stLawPaint(){
   else o+=w.top.map(stLawRow).join('');});
  var g=STLW.gate;
  if(g&&g.intentional){
-  o+=stAnaHead('Intention','your last entry');
+  /* RENAMED FROM INTENTION, 28 October. This heading named the six gates'
+     avoidance cascade (engine/sniff.js sniffGates, engine/verp.js VERP)
+     "Intention" before the ruled Intention, said against done, had a
+     screen of its own. Two different readings sharing one word, the exact
+     defect one word per concept exists to stop. This stays named for what
+     it is: right action read from this entry's own words. The real
+     Intention is on the Instruments row (ui/ui.js). */
+  o+=stAnaHead('Right action','your last entry');
   /* NEVER THE AVOIDANCE NUMBER ALONE, the spec's own rule: it reads as a
      character flaw without the two readings it was built from beside it. */
   o+='<p style="margin:6px 0 2px">Avoidance reads <b>'+g.intentional.avoidance+' per cent</b> in your last entry, built '
@@ -67921,13 +67957,22 @@ function runQDrill(q){
 
 /* THE THREE AXES. energy read on three independent lines, each a pure
    function of quantities already in the reading. Vitality is what is left
-   after apathy and shadow weight. Awareness is intention against
-   distortion. Will is integrity through a clear segment. */
+   after apathy and shadow weight. Awareness is law reach against
+   distortion. Will is integrity through a clear segment.
+
+   RENAMED FROM INTENTION, 28 October. r.It fed this axis under that name
+   since before intention meant anything else. It still does, the arithmetic
+   is unchanged and untested against the new meaning, so it keeps its own
+   name, law reach, the same law mean read seat by seat that feeds the
+   Instruments row (ui/ui.js). The real intention, what a person said against
+   what they did, is wired in there now and does not enter this axis: that
+   would be new, unfitted arithmetic, the same shape of change already tried
+   and killed once inside CQ itself (engine/compute.js, the model 3 note). */
 function runXYZDrill(){
  var r=compute();
  var A=[['Vitality',r.X,'Solar','what is left after apathy and the shadow weight. Apathy <b>'
    +((S.charge.Apathy||0)>0?(S.charge.Apathy).toFixed(1):'\u2013')+'</b>, shadow weight <b>'+(Math.round(r.DQ)||'\u2013')+'</b>.'],
-  ['Awareness',r.Y,'3rd Eye','intention against distortion. Intention <b>'+r.It.toFixed(1)
+  ['Awareness',r.Y,'3rd Eye','law reach against distortion. Law reach <b>'+r.It.toFixed(1)
    +'</b>, distortion <b>'+r.dist.toFixed(1)+'</b>.'],
   ['Will',r.Z,'Root','integrity carried through a clear segment. Integrity <b>'+r.Ig.toFixed(1)
    +'</b>, mean depth <b>'+r.SQm.toFixed(1)+'</b>.']];
@@ -82248,11 +82293,19 @@ function render(){
     registry bounds the same way (engine/pct.js, nought to ten). Each prints
     fmtPct for its own kind now, and nought or an unread profile is the dash. */
  var ins=function(t,line){return '<span title="'+esc(t)+'">'+line+'</span><br>';};
+ /* INTENTION, WIRED IN, 28 October. Ruled 25 September: what a person said
+    they would do against what they did, no charge read into it
+    (intentionRead, engine/ladder.js). Nothing was said in the last seven
+    days reads as unread, not as zero, the same way an unanswered law does
+    not read as a failing one: a blank week is not a broken promise. */
+ var intent=intentionRead(CURP,Date.now());
  $('rows').innerHTML='<span class="k">Instruments</span><br>'
   +ins('How well you keep the 21 laws, lifted by the opposites installed and pulled down by overshoot.',
     'integrity <b>'+fmtPct('integrity',r.Ig,{unread:r.unread})+'</b>')
+  +ins('What you said you would do against what you did, the last seven days. No charge in it, only follow through.',
+    'intention <b>'+(intent.said?fmtPct('intention',intent.pct):PCT_DASH)+'</b>')
   +ins('The same laws read seat by seat, up the body.',
-    'intention <b>'+fmtPct('intention',r.It,{unread:r.unread})+'</b>')
+    'law reach <b>'+fmtPct('lawseat',r.It,{unread:r.unread})+'</b>')
   /* JOUISSANCE WAS ON EIGHTY ONE SCREENS. A French psychoanalytic term, printed
      as an instrument label to a person who has never heard it, with no gloss
      anywhere in the product. One word per concept, and the word has to say
@@ -82719,5 +82772,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005453538"></div>
+<div id="eof" hidden data-len="005457242"></div>
 </body></html>

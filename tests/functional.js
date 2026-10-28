@@ -266,9 +266,15 @@ console.log('\n=== the six masks, as pixels on the figure ===');
   return {ents:((CURP&&CURP.story&&CURP.story.entries)||[]).length,lit:BMG.masks.map(k=>({nm:k.nm,n:bmMaskLit(k,r)}))};});
  ok(none.ents===0&&none.lit.every(x=>x.n===0),'a profile with no stories lights no mask, '
   +none.ents+' entries, '+none.lit.map(x=>x.nm+' '+x.n).join(', '));
+ /* THE JOURNAL IS CONVERSATION ONLY NOW, round of 28 October: STV.chat is
+    permanent, so #sttext never renders in the ordinary flow and a story
+    is sent through the reply box and then committed, same as a person
+    does. #stapply still finishes the entry; only how the words reach
+    ST_TEXT changed. */
  const commit=async t=>{
   await sp.evaluate(t=>{loadP(0);setTab(TAB.STORY);stRender();
-   const ta=document.getElementById('sttext');ta.value=t;ta.dispatchEvent(new Event('input',{bubbles:true}));},t);
+   const ci=document.getElementById('stcin');ci.value=t;ci.dispatchEvent(new Event('input',{bubbles:true}));
+   srcChatSend();},t);
   await sp.waitForTimeout(60);
   await sp.evaluate(()=>{const b=document.getElementById('stapply');if(b&&!b.disabled)b.click();});
   await sp.waitForTimeout(60);};
@@ -4338,8 +4344,11 @@ ok(tiers.small===0,'every control on the tiers meets the 44 pixel floor, '+tiers
    tabs.findIndex(t=>new RegExp(nm,'i').test(t))); await pa.waitForTimeout(600);};
  /* the journal page's door reads Discover since 23 October */
  await go('Discover');
- await pa.fill('#sttext','I was humiliated in the meeting and I said nothing. '
-  +'My chest went tight and I felt ashamed the rest of the day.');
+ /* conversation only now, round of 28 October: the reply box and a send */
+ await pa.evaluate(()=>{const ci=document.getElementById('stcin');
+  ci.value='I was humiliated in the meeting and I said nothing. '
+   +'My chest went tight and I felt ashamed the rest of the day.';
+  ci.dispatchEvent(new Event('input',{bubbles:true})); srcChatSend();});
  await pa.waitForTimeout(450);
  await pa.evaluate(()=>{const e=document.getElementById('stapply');if(e)e.click();});
  await pa.waitForTimeout(700);
@@ -5914,7 +5923,13 @@ console.log('\n=== the story lights what the engine read, once ===');
   marks:typeof marksOf==='function', norm:typeof normMap==='function'}));
  ok(reach.marks,'marksOf reaches the page from the engine half');
  ok(reach.norm,'and so does normMap');
+ /* THE HIGHLIGHT LAYER IS THE WRITE BOX'S OWN, STILL REAL CODE, round of 28
+    October: the Journal is conversation only now, so this box only renders
+    in a crisis (STV.crisis, ui/crisis.js). What this whole gate holds is
+    still true of that box, so it is reached the same way crisis reaches
+    it, by STV.chat=false, rather than measured on a box that is gone. */
  const lit=reach.marks?await st.evaluate(async()=>{
+  STV.chat=false;
   setTab(TAB.STORY);
   await new Promise(r=>setTimeout(r,320));
   const read=(tag,text)=>{
@@ -6681,7 +6696,8 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  for(const t of ['My chest is tight in every meeting and I have told no one.',
                  'I felt nothing when we let forty people go and that frightens me.']){
   await fp.evaluate(t=>{loadP(0);setTab(TAB.STORY);stRender();
-   const ta=document.getElementById('sttext');ta.value=t;ta.dispatchEvent(new Event('input',{bubbles:true}));},t);
+   const ci=document.getElementById('stcin');ci.value=t;ci.dispatchEvent(new Event('input',{bubbles:true}));
+   srcChatSend();},t);
   await fp.waitForTimeout(60);
   await fp.evaluate(()=>{const b=document.getElementById('stapply');if(b&&!b.disabled)b.click();});
   await fp.waitForTimeout(60);}
