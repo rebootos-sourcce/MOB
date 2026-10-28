@@ -5692,5 +5692,17 @@
       "verification": "CONTENT_AND_SHA_VERIFIED",
       "sourceStatus": "RESEARCH_CANDIDATES_NOT_CANON"
     }
-  ]
+  ],
+  "postIndexChanges": {
+    ".github/workflows/compass-unified-graph-v1.yml": {
+      "blobSha": "6cb70192409bbd3f882133f2d3c364029b88b32a",
+      "changedAtCommit": "1e606a31f22d55db251b09600b6ebc52640fabc6",
+      "purpose": "Add V14 validator CI step after pinned source snapshot"
+    },
+    "docs/ATUNED_SOURCE_INDEX.md": {
+      "blobSha": "fc989241ac2011fd16e8126c288e9576edce2acc",
+      "changedAtCommit": "53b41aa039b015210620cfeedbf1c111d174afd6",
+      "purpose": "Set first-read source index pointer after pinned source snapshot"
+    }
+  }
 }
