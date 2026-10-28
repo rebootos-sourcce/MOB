@@ -1,4 +1,4 @@
-name: Compass Unified Research Graph V1-V3
+name: Compass Unified Research Graph V1-V4
 on:
   push:
     branches:
@@ -23,6 +23,8 @@ jobs:
         run: node docs/data/compass/integration/v3/validate_unified_research_graph_v2.cjs
       - name: Validate V3 398-node graph, 861 edges, 26 scene routes and 39 teacher recipes
         run: node docs/data/compass/integration/v3/validate_unified_research_graph_v3.cjs
+      - name: Validate V4 teacher record harmonization and 104 gameboard research analyses
+        run: node docs/data/compass/integration/v4/validate_framework_research_harmonization_v4.cjs
       - name: Validate V3 shadow-law research overlay
         run: node docs/data/compass/integration/v2/validate_shadow_law_layer_evidence_v3.cjs
       - name: Verify baseline Compass foundation graph
