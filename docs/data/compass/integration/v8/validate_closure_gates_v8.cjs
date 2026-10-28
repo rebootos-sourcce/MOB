@@ -29,6 +29,11 @@ assert(l.researchGraphBaseline.nodes===404&&l.researchGraphBaseline.edges===875,
 assert(l.gates.every(x=>x.closed===false&&x.required&&x.evidenceStatus),'false gate close');
 assert(l.readinessBaseline.weightedOverall===prog.readiness.overallPercent&&l.readinessBaseline.weightedOverall<100,'unverified readiness increase');
 assert(Object.values(l.runtimeBoundary).every(v=>v===0||v===true),'runtime boundary drift');
+const review=read('docs/data/compass/integration/v8/ATUNED_UNAPPROVED_SEMANTIC_DECISION_QUEUE_V8.json');
+assert(review.schema==='ATUNED_UNAPPROVED_SEMANTIC_DECISION_QUEUE_V8'&&review.decisions.length===30,'decision queue invalid');
+assert(review.counts.total===30&&review.counts.approved===0&&l.adjudicationQueue.items===30&&l.adjudicationQueue.approved===0,'queue counts incorrect');
+assert(review.decisions.every(x=>!x.approved&&x.selected===null&&x.doesNotChangeRuntime===true),'unapproved relationship falsely promoted');
+assert(new Set(review.decisions.map(x=>x.id)).size===30,'duplicate decision IDs');
 const metrics={pass:true,meaning:'All documented closure gates remain honestly OPEN; this is NOT 100% certification',gatesOpen:l.gates.length,sourceBranchesAudited:l.sourceAudit.branchCountInspected,extraCandidateRecordsLocated:l.newlyLocatedCrossBranchSource.sourceRecords,graphNodes:g.nodes.length,graphEdges:g.edges.length,exactSourceDefinitionsOutstanding:19,weightedReadiness:l.readinessBaseline.weightedOverall,runtimeChanges:0};
 console.log(JSON.stringify(metrics,null,2));
 }catch(e){console.error('V8 FAIL: '+e.message);process.exitCode=1}

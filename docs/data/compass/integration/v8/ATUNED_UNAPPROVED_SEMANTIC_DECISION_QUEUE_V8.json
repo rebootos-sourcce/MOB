@@ -1,0 +1,595 @@
+{
+  "schema": "ATUNED_UNAPPROVED_SEMANTIC_DECISION_QUEUE_V8",
+  "date": "2026-10-28",
+  "authority": "RESEARCH_REVIEW_NOT_OWNER_APPROVED",
+  "sourceFiles": [
+    {
+      "path": "docs/data/compass/integration/v4/FOUR_FIGURE_AND_FIVE_PARADISO_DISCREPANCIES_RESEARCH_V2.json",
+      "blobSha": "814dc534f3665b6d0003e5826d527755bd846ccc"
+    },
+    {
+      "path": "docs/data/compass/integration/v4/DEEP_PSYCHE_COMPASS_21_EXACT_NAME_FOUR_PASS_REVIEWS_V1.json",
+      "blobSha": "7c21b8a3f576bd0daa485a1d9af05b8aeb3d810c"
+    }
+  ],
+  "counts": {
+    "figure": 4,
+    "teacherParadiso": 5,
+    "lexical": 21,
+    "total": 30,
+    "approved": 0
+  },
+  "operatingRule": "Choices are review options, not actions. A choice is not approved by its presence; prior source fields are unchanged. No runtime use without explicit source/CANON approval and accepted test.",
+  "decisions": [
+    {
+      "id": "FIG-01",
+      "category": "FIGURE_SCOPE",
+      "subject": "Lucifer",
+      "sourceId": "inferno:F11",
+      "engineId": "compass-inverse:Lucifer",
+      "conflict": "Archive Lucifer = stasis, teacher-inverse definition = false light",
+      "sourceObservedAction": "Dante's Lucifer sits trapped in Cocytus and repeatedly wings the lake colder; three faces and jaws appear at the nadir of treachery.",
+      "sourceProposal": "Keep literary Lucifer-as-stasis, engine False-Light pole, and owner ninefold composite as three distinct typed semantic scopes.",
+      "status": "PENDING_OWNER_CANON_RULING",
+      "approved": false,
+      "choices": [
+        "KEEP_DISTINCT_SOURCE_AND_MODEL_SCOPES",
+        "APPROVE_EXPLICIT_TYPED_CROSSWALK_WITH_EVIDENCE",
+        "REJECT_MODEL_EQUIVALENCE"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "FIG-02",
+      "category": "FIGURE_SCOPE",
+      "subject": "Asmodeus",
+      "sourceId": "inferno:X03",
+      "engineId": "compass-inverse:Asmodeus",
+      "conflict": "Archive Asmodeus = obstruction of intimacy via harm, new record = broad craving",
+      "sourceObservedAction": "Tobit 3:8 depicts Asmodeus repeatedly killing Sarah's prospective husbands before the marriage could be consummated.",
+      "sourceProposal": "Keep Tobit harm/obstruction as narrative action and the engine craving axis as an unapproved interpretive mapping.",
+      "status": "PENDING_OWNER_CANON_RULING",
+      "approved": false,
+      "choices": [
+        "KEEP_DISTINCT_SOURCE_AND_MODEL_SCOPES",
+        "APPROVE_EXPLICIT_TYPED_CROSSWALK_WITH_EVIDENCE",
+        "REJECT_MODEL_EQUIVALENCE"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "FIG-03",
+      "category": "FIGURE_SCOPE",
+      "subject": "Charon",
+      "sourceId": "inferno:F01",
+      "engineId": "compass-inverse:Charon",
+      "conflict": "Archive Charon = threshold gatekeeping, new record = threshold paralysis",
+      "sourceObservedAction": "Inferno III depicts Charon refusing passage to living Dante because of his status; Virgil counters him and crossing proceeds.",
+      "sourceProposal": "Distinguish source threshold gatekeeping from modeled internal hesitation; require separate evidence for any personal application.",
+      "status": "PENDING_OWNER_CANON_RULING",
+      "approved": false,
+      "choices": [
+        "KEEP_DISTINCT_SOURCE_AND_MODEL_SCOPES",
+        "APPROVE_EXPLICIT_TYPED_CROSSWALK_WITH_EVIDENCE",
+        "REJECT_MODEL_EQUIVALENCE"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "FIG-04",
+      "category": "FIGURE_SCOPE",
+      "subject": "The Furies",
+      "sourceId": "inferno:F06",
+      "engineId": "compass-inverse:The-Furies",
+      "conflict": "Archive Furies = intimidation, new record = ideological rigidity",
+      "sourceObservedAction": "Inferno IX depicts Furies summoning Medusa as a threat at the gate of Dis, before the protagonists enter the circle of heretics.",
+      "sourceProposal": "Separate intimidation in the scene from proposed epistemic rigidity and avoid treating either as a diagnosis.",
+      "status": "PENDING_OWNER_CANON_RULING",
+      "approved": false,
+      "choices": [
+        "KEEP_DISTINCT_SOURCE_AND_MODEL_SCOPES",
+        "APPROVE_EXPLICIT_TYPED_CROSSWALK_WITH_EVIDENCE",
+        "REJECT_MODEL_EQUIVALENCE"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "PAR-01",
+      "category": "TEACHER_PARADISO_ASYMMETRY",
+      "subject": "compass-teacher:Buddha ↔ paradiso:PD06",
+      "teacherId": "compass-teacher:Buddha",
+      "paradisoId": "paradiso:PD06",
+      "teacherAffirms": false,
+      "paradisoAffirms": true,
+      "sourceStatus": "RESEARCH_HARMONIZATION_WAITING_ADJUDICATION",
+      "status": "PENDING_SOURCE_OWNER_AND_CANON_REVIEW",
+      "approved": false,
+      "choices": [
+        "RETAIN_ONE_SIDED_SOURCE_RESONANCE",
+        "APPROVE_SOURCE_SUPPORTED_RECIPROCAL_MAPPING",
+        "REJECT_RESONANCE"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "PAR-02",
+      "category": "TEACHER_PARADISO_ASYMMETRY",
+      "subject": "compass-teacher:Elijah ↔ paradiso:PD06",
+      "teacherId": "compass-teacher:Elijah",
+      "paradisoId": "paradiso:PD06",
+      "teacherAffirms": true,
+      "paradisoAffirms": false,
+      "sourceStatus": "RESEARCH_HARMONIZATION_WAITING_ADJUDICATION",
+      "status": "PENDING_SOURCE_OWNER_AND_CANON_REVIEW",
+      "approved": false,
+      "choices": [
+        "RETAIN_ONE_SIDED_SOURCE_RESONANCE",
+        "APPROVE_SOURCE_SUPPORTED_RECIPROCAL_MAPPING",
+        "REJECT_RESONANCE"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "PAR-03",
+      "category": "TEACHER_PARADISO_ASYMMETRY",
+      "subject": "compass-teacher:Lao-Tzu ↔ paradiso:PD10",
+      "teacherId": "compass-teacher:Lao-Tzu",
+      "paradisoId": "paradiso:PD10",
+      "teacherAffirms": false,
+      "paradisoAffirms": true,
+      "sourceStatus": "RESEARCH_HARMONIZATION_WAITING_ADJUDICATION",
+      "status": "PENDING_SOURCE_OWNER_AND_CANON_REVIEW",
+      "approved": false,
+      "choices": [
+        "RETAIN_ONE_SIDED_SOURCE_RESONANCE",
+        "APPROVE_SOURCE_SUPPORTED_RECIPROCAL_MAPPING",
+        "REJECT_RESONANCE"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "PAR-04",
+      "category": "TEACHER_PARADISO_ASYMMETRY",
+      "subject": "compass-teacher:Moses ↔ paradiso:PD09",
+      "teacherId": "compass-teacher:Moses",
+      "paradisoId": "paradiso:PD09",
+      "teacherAffirms": false,
+      "paradisoAffirms": true,
+      "sourceStatus": "RESEARCH_HARMONIZATION_WAITING_ADJUDICATION",
+      "status": "PENDING_SOURCE_OWNER_AND_CANON_REVIEW",
+      "approved": false,
+      "choices": [
+        "RETAIN_ONE_SIDED_SOURCE_RESONANCE",
+        "APPROVE_SOURCE_SUPPORTED_RECIPROCAL_MAPPING",
+        "REJECT_RESONANCE"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "PAR-05",
+      "category": "TEACHER_PARADISO_ASYMMETRY",
+      "subject": "compass-teacher:Rama ↔ paradiso:PD06",
+      "teacherId": "compass-teacher:Rama",
+      "paradisoId": "paradiso:PD06",
+      "teacherAffirms": false,
+      "paradisoAffirms": true,
+      "sourceStatus": "RESEARCH_HARMONIZATION_WAITING_ADJUDICATION",
+      "status": "PENDING_SOURCE_OWNER_AND_CANON_REVIEW",
+      "approved": false,
+      "choices": [
+        "RETAIN_ONE_SIDED_SOURCE_RESONANCE",
+        "APPROVE_SOURCE_SUPPORTED_RECIPROCAL_MAPPING",
+        "REJECT_RESONANCE"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "LEX-01",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "subject": "Warrior / Warrior",
+      "sourceId": "archetype:candidate:warrior",
+      "targetId": "compass-archetype:Warrior",
+      "class": "ARCHETYPE_TAXONOMY_COLLISION",
+      "lexicalOnly": true,
+      "sourceReviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "status": "PENDING_SOURCE_IDENTITY_RECONCILIATION",
+      "approved": false,
+      "choices": [
+        "KEEP_SEPARATE_SOURCE_REGISTRIES",
+        "APPROVE_VERSIONED_TYPED_IDENTITY_WITH_EVIDENCE",
+        "REJECT_IDENTITY_MATCH"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "LEX-02",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "subject": "Innocent / Innocent",
+      "sourceId": "archetype:candidate:innocent",
+      "targetId": "compass-archetype:Innocent",
+      "class": "ARCHETYPE_TAXONOMY_COLLISION",
+      "lexicalOnly": true,
+      "sourceReviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "status": "PENDING_SOURCE_IDENTITY_RECONCILIATION",
+      "approved": false,
+      "choices": [
+        "KEEP_SEPARATE_SOURCE_REGISTRIES",
+        "APPROVE_VERSIONED_TYPED_IDENTITY_WITH_EVIDENCE",
+        "REJECT_IDENTITY_MATCH"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "LEX-03",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "subject": "Caregiver / Caregiver",
+      "sourceId": "archetype:candidate:caregiver",
+      "targetId": "compass-archetype:Caregiver",
+      "class": "ARCHETYPE_TAXONOMY_COLLISION",
+      "lexicalOnly": true,
+      "sourceReviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "status": "PENDING_SOURCE_IDENTITY_RECONCILIATION",
+      "approved": false,
+      "choices": [
+        "KEEP_SEPARATE_SOURCE_REGISTRIES",
+        "APPROVE_VERSIONED_TYPED_IDENTITY_WITH_EVIDENCE",
+        "REJECT_IDENTITY_MATCH"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "LEX-04",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "subject": "Explorer / Explorer",
+      "sourceId": "archetype:candidate:explorer",
+      "targetId": "compass-archetype:Explorer",
+      "class": "ARCHETYPE_TAXONOMY_COLLISION",
+      "lexicalOnly": true,
+      "sourceReviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "status": "PENDING_SOURCE_IDENTITY_RECONCILIATION",
+      "approved": false,
+      "choices": [
+        "KEEP_SEPARATE_SOURCE_REGISTRIES",
+        "APPROVE_VERSIONED_TYPED_IDENTITY_WITH_EVIDENCE",
+        "REJECT_IDENTITY_MATCH"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "LEX-05",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "subject": "Lover / Lover",
+      "sourceId": "archetype:candidate:lover",
+      "targetId": "compass-archetype:Lover",
+      "class": "ARCHETYPE_TAXONOMY_COLLISION",
+      "lexicalOnly": true,
+      "sourceReviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "status": "PENDING_SOURCE_IDENTITY_RECONCILIATION",
+      "approved": false,
+      "choices": [
+        "KEEP_SEPARATE_SOURCE_REGISTRIES",
+        "APPROVE_VERSIONED_TYPED_IDENTITY_WITH_EVIDENCE",
+        "REJECT_IDENTITY_MATCH"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "LEX-06",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "subject": "Creator / Creator",
+      "sourceId": "archetype:candidate:creator",
+      "targetId": "compass-archetype:Creator",
+      "class": "ARCHETYPE_TAXONOMY_COLLISION",
+      "lexicalOnly": true,
+      "sourceReviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "status": "PENDING_SOURCE_IDENTITY_RECONCILIATION",
+      "approved": false,
+      "choices": [
+        "KEEP_SEPARATE_SOURCE_REGISTRIES",
+        "APPROVE_VERSIONED_TYPED_IDENTITY_WITH_EVIDENCE",
+        "REJECT_IDENTITY_MATCH"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "LEX-07",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "subject": "Jester / Jester",
+      "sourceId": "archetype:candidate:jester",
+      "targetId": "compass-archetype:Jester",
+      "class": "ARCHETYPE_TAXONOMY_COLLISION",
+      "lexicalOnly": true,
+      "sourceReviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "status": "PENDING_SOURCE_IDENTITY_RECONCILIATION",
+      "approved": false,
+      "choices": [
+        "KEEP_SEPARATE_SOURCE_REGISTRIES",
+        "APPROVE_VERSIONED_TYPED_IDENTITY_WITH_EVIDENCE",
+        "REJECT_IDENTITY_MATCH"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "LEX-08",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "subject": "Sage / Sage",
+      "sourceId": "archetype:candidate:sage",
+      "targetId": "compass-archetype:Sage",
+      "class": "ARCHETYPE_TAXONOMY_COLLISION",
+      "lexicalOnly": true,
+      "sourceReviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "status": "PENDING_SOURCE_IDENTITY_RECONCILIATION",
+      "approved": false,
+      "choices": [
+        "KEEP_SEPARATE_SOURCE_REGISTRIES",
+        "APPROVE_VERSIONED_TYPED_IDENTITY_WITH_EVIDENCE",
+        "REJECT_IDENTITY_MATCH"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "LEX-09",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "subject": "Magician / Magician",
+      "sourceId": "archetype:candidate:magician",
+      "targetId": "compass-archetype:Magician",
+      "class": "ARCHETYPE_TAXONOMY_COLLISION",
+      "lexicalOnly": true,
+      "sourceReviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "status": "PENDING_SOURCE_IDENTITY_RECONCILIATION",
+      "approved": false,
+      "choices": [
+        "KEEP_SEPARATE_SOURCE_REGISTRIES",
+        "APPROVE_VERSIONED_TYPED_IDENTITY_WITH_EVIDENCE",
+        "REJECT_IDENTITY_MATCH"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "LEX-10",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "subject": "Ruler / Ruler",
+      "sourceId": "archetype:candidate:ruler",
+      "targetId": "compass-archetype:Ruler",
+      "class": "ARCHETYPE_TAXONOMY_COLLISION",
+      "lexicalOnly": true,
+      "sourceReviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "status": "PENDING_SOURCE_IDENTITY_RECONCILIATION",
+      "approved": false,
+      "choices": [
+        "KEEP_SEPARATE_SOURCE_REGISTRIES",
+        "APPROVE_VERSIONED_TYPED_IDENTITY_WITH_EVIDENCE",
+        "REJECT_IDENTITY_MATCH"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "LEX-11",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "subject": "Everyman / Everyman",
+      "sourceId": "archetype:candidate:everyman",
+      "targetId": "compass-archetype:Everyman",
+      "class": "ARCHETYPE_TAXONOMY_COLLISION",
+      "lexicalOnly": true,
+      "sourceReviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "status": "PENDING_SOURCE_IDENTITY_RECONCILIATION",
+      "approved": false,
+      "choices": [
+        "KEEP_SEPARATE_SOURCE_REGISTRIES",
+        "APPROVE_VERSIONED_TYPED_IDENTITY_WITH_EVIDENCE",
+        "REJECT_IDENTITY_MATCH"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "LEX-12",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "subject": "Rama / Rama",
+      "sourceId": "conscious-figure:rama",
+      "targetId": "compass-teacher:Rama",
+      "class": "HISTORICAL_OR_CULTURAL_NAME_RESOLUTION",
+      "lexicalOnly": true,
+      "sourceReviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "status": "PENDING_SOURCE_IDENTITY_RECONCILIATION",
+      "approved": false,
+      "choices": [
+        "KEEP_SEPARATE_SOURCE_REGISTRIES",
+        "APPROVE_VERSIONED_TYPED_IDENTITY_WITH_EVIDENCE",
+        "REJECT_IDENTITY_MATCH"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "LEX-13",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "subject": "Krishna / Krishna",
+      "sourceId": "conscious-figure:krishna",
+      "targetId": "compass-teacher:Krishna",
+      "class": "HISTORICAL_OR_CULTURAL_NAME_RESOLUTION",
+      "lexicalOnly": true,
+      "sourceReviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "status": "PENDING_SOURCE_IDENTITY_RECONCILIATION",
+      "approved": false,
+      "choices": [
+        "KEEP_SEPARATE_SOURCE_REGISTRIES",
+        "APPROVE_VERSIONED_TYPED_IDENTITY_WITH_EVIDENCE",
+        "REJECT_IDENTITY_MATCH"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "LEX-14",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "subject": "Zoroaster / Zoroaster",
+      "sourceId": "conscious-figure:zoroaster",
+      "targetId": "compass-teacher:Zoroaster",
+      "class": "HISTORICAL_OR_CULTURAL_NAME_RESOLUTION",
+      "lexicalOnly": true,
+      "sourceReviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "status": "PENDING_SOURCE_IDENTITY_RECONCILIATION",
+      "approved": false,
+      "choices": [
+        "KEEP_SEPARATE_SOURCE_REGISTRIES",
+        "APPROVE_VERSIONED_TYPED_IDENTITY_WITH_EVIDENCE",
+        "REJECT_IDENTITY_MATCH"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "LEX-15",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "subject": "Akhenaten / Akhenaten",
+      "sourceId": "conscious-figure:akhenaten",
+      "targetId": "compass-teacher:Akhenaten",
+      "class": "HISTORICAL_OR_CULTURAL_NAME_RESOLUTION",
+      "lexicalOnly": true,
+      "sourceReviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "status": "PENDING_SOURCE_IDENTITY_RECONCILIATION",
+      "approved": false,
+      "choices": [
+        "KEEP_SEPARATE_SOURCE_REGISTRIES",
+        "APPROVE_VERSIONED_TYPED_IDENTITY_WITH_EVIDENCE",
+        "REJECT_IDENTITY_MATCH"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "LEX-16",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "subject": "Buddha / Buddha",
+      "sourceId": "conscious-figure:buddha",
+      "targetId": "compass-teacher:Buddha",
+      "class": "HISTORICAL_OR_CULTURAL_NAME_RESOLUTION",
+      "lexicalOnly": true,
+      "sourceReviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "status": "PENDING_SOURCE_IDENTITY_RECONCILIATION",
+      "approved": false,
+      "choices": [
+        "KEEP_SEPARATE_SOURCE_REGISTRIES",
+        "APPROVE_VERSIONED_TYPED_IDENTITY_WITH_EVIDENCE",
+        "REJECT_IDENTITY_MATCH"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "LEX-17",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "subject": "Confucius / Confucius",
+      "sourceId": "conscious-figure:confucius",
+      "targetId": "compass-teacher:Confucius",
+      "class": "HISTORICAL_OR_CULTURAL_NAME_RESOLUTION",
+      "lexicalOnly": true,
+      "sourceReviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "status": "PENDING_SOURCE_IDENTITY_RECONCILIATION",
+      "approved": false,
+      "choices": [
+        "KEEP_SEPARATE_SOURCE_REGISTRIES",
+        "APPROVE_VERSIONED_TYPED_IDENTITY_WITH_EVIDENCE",
+        "REJECT_IDENTITY_MATCH"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "LEX-18",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "subject": "Jesus / Jesus",
+      "sourceId": "conscious-figure:jesus",
+      "targetId": "compass-teacher:Jesus",
+      "class": "HISTORICAL_OR_CULTURAL_NAME_RESOLUTION",
+      "lexicalOnly": true,
+      "sourceReviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "status": "PENDING_SOURCE_IDENTITY_RECONCILIATION",
+      "approved": false,
+      "choices": [
+        "KEEP_SEPARATE_SOURCE_REGISTRIES",
+        "APPROVE_VERSIONED_TYPED_IDENTITY_WITH_EVIDENCE",
+        "REJECT_IDENTITY_MATCH"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "LEX-19",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "subject": "Rumi / Rumi",
+      "sourceId": "conscious-figure:rumi",
+      "targetId": "compass-teacher:Rumi",
+      "class": "HISTORICAL_OR_CULTURAL_NAME_RESOLUTION",
+      "lexicalOnly": true,
+      "sourceReviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "status": "PENDING_SOURCE_IDENTITY_RECONCILIATION",
+      "approved": false,
+      "choices": [
+        "KEEP_SEPARATE_SOURCE_REGISTRIES",
+        "APPROVE_VERSIONED_TYPED_IDENTITY_WITH_EVIDENCE",
+        "REJECT_IDENTITY_MATCH"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "LEX-20",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "subject": "Lao Tzu / Lao Tzu",
+      "sourceId": "conscious-figure:lao-tzu",
+      "targetId": "compass-teacher:Lao-Tzu",
+      "class": "HISTORICAL_OR_CULTURAL_NAME_RESOLUTION",
+      "lexicalOnly": true,
+      "sourceReviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "status": "PENDING_SOURCE_IDENTITY_RECONCILIATION",
+      "approved": false,
+      "choices": [
+        "KEEP_SEPARATE_SOURCE_REGISTRIES",
+        "APPROVE_VERSIONED_TYPED_IDENTITY_WITH_EVIDENCE",
+        "REJECT_IDENTITY_MATCH"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    },
+    {
+      "id": "LEX-21",
+      "category": "CROSS_REGISTRY_NAME_COLLISION",
+      "subject": "Moses / Moses",
+      "sourceId": "conscious-figure:moses",
+      "targetId": "compass-teacher:Moses",
+      "class": "HISTORICAL_OR_CULTURAL_NAME_RESOLUTION",
+      "lexicalOnly": true,
+      "sourceReviewStatus": "FOUR_SOURCE_CONSTRAINED_COMPARISON_PASSES_COMPLETE_MAPPING_NOT_APPROVED",
+      "status": "PENDING_SOURCE_IDENTITY_RECONCILIATION",
+      "approved": false,
+      "choices": [
+        "KEEP_SEPARATE_SOURCE_REGISTRIES",
+        "APPROVE_VERSIONED_TYPED_IDENTITY_WITH_EVIDENCE",
+        "REJECT_IDENTITY_MATCH"
+      ],
+      "selected": null,
+      "doesNotChangeRuntime": true
+    }
+  ]
+}

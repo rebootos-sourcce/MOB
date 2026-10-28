@@ -163,5 +163,12 @@
     "newProductionChanges": 0,
     "staticSceneProtocolIdsMustRemainNull": true,
     "staticSceneRitualInstanceIdsMustRemainNull": true
+  },
+  "adjudicationQueue": {
+    "path": "docs/data/compass/integration/v8/ATUNED_UNAPPROVED_SEMANTIC_DECISION_QUEUE_V8.json",
+    "items": 30,
+    "approved": 0,
+    "open": 30,
+    "runtimeChanges": 0
   }
 }

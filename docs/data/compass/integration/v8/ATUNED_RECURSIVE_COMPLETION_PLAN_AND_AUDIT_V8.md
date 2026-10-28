@@ -50,3 +50,8 @@
 **72% overall** = narrative **100**, records **90**, research **95**, graph **55**, verified Journey **20** (equal 20-point workstreams). Graph **404/875**, zero dangling, eight isolates. Source collections: Deep Psyche 149; Inferno 38; Purgatorio 23; Paradiso 10; Shadow 30; core 12; teacher/inverse 31; Journey 26; laws 21; poles 14; recipe presets 39. Overlap across registries is not unique conditions.
 
 **New artifact:** `docs/data/compass/integration/v8/ATUNED_RESEARCH_CLOSURE_GATES_V8.json` records audit scope and evidence. The V8 validator enforces unresolved source/canonical/runtime gates, so a false 100% cannot pass its check. Its PASS means accurate status reporting, *not closure*. Preserve the V7 handoff as baseline until its source gaps truly close.
+
+## V8 decision queue — 30 canonical review items
+`docs/data/compass/integration/v8/ATUNED_UNAPPROVED_SEMANTIC_DECISION_QUEUE_V8.json` preserves 4 figure disputes, 5 one-sided teacher–Paradiso links and 21 exact-name collisions as **30 distinct pending decisions**. Each item includes the original source IDs, comparison reason, permitted review choices, null decision and explicit non-runtime status. None is approved by generation. These are not 30 new psychological conditions or 30 missing runtime functions.
+
+**Review routing:** Literary/figure issue -> keep source action and engine interpretation distinct; Paradiso asymmetry -> preserve one-way references unless both sources/owner approve symmetry; lexical collision -> do not promote shared spelling into a canonical identity edge. Owner choices are required only after source evidence and any genuinely objective discrepancies are reconciled.
