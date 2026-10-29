@@ -1746,10 +1746,13 @@ function renderAvatar(){
   h+='<section class="av-arch"><div class="av-row2 av-archg">'+W2.html+avDetail(st,W2.sel)+'</div></section>';}
  /* the intake host goes home before the paint, which would otherwise take it */
  avIqHome();
+ /* Celestial is a read-only context on ALL Avatar subtabs; it never edits CURP. */
+ h+='<section class="av-celestial" data-avcelestial></section>';
  host.innerHTML=h+'</div>';
  avShowIntake();
  AV.sig=avSig();
- avBind(host,st);}
+ avBind(host,st);
+ if(typeof avCelestialAttach==='function')avCelestialAttach(host);}
 /* repaint only when something the page reads has moved. renderIntake calls
    this on every press of its own, and a press on a law must not throw away a
    half typed pair. A ritual marked done moves the cycles without changing how
