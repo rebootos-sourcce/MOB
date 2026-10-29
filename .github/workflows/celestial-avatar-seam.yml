@@ -6,6 +6,7 @@ on:
     paths:
       - 'atuned_src/**'
       - 'tests/celestial_bridge.js'
+      - 'tests/celestial_browser.js'
       - 'tools/regen-celestial-browser-bridge.cjs'
       - '.github/workflows/celestial-avatar-seam.yml'
   workflow_dispatch:
@@ -23,10 +24,16 @@ jobs:
       - name: Verify 36 sources, 15 groups, 1728 combinations, Avatar mount and score isolation
         run: node tests/celestial_bridge.js
       - name: Install TypeScript required by existing slim delivery build
-        run: npm install --no-save --ignore-scripts typescript@5.9.3
+        run: npm install --no-save --ignore-scripts typescript@5.9.3 playwright@1.56.1
       - name: Check canonical-source regeneration tool syntax
         run: node --check tools/regen-celestial-browser-bridge.cjs
       - name: Validate ordered full application build
         run: sh atuned_src/BUILD.sh /tmp/atuned-celestial.html
+      - name: Install headless Chromium for true Avatar panel acceptance
+        run: npx playwright install chromium
+      - name: Real-browser synthetic-profile Avatar panel and CQ invariance
+        env:
+          ATUNED_FILE: /tmp/atuned-celestial.html
+        run: node tests/celestial_browser.js
       - name: Validate browser engine is host independent
         run: sh atuned_src/BUILD-engine.sh /tmp/atuned-celestial-engine.js
