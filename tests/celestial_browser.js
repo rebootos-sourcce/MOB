@@ -25,8 +25,18 @@ const {chromium}=require('playwright');
    return {before,cq,host:!!document.querySelector('[data-avcelestial]')};
   });
   assert.equal(initial.host,true,'actual Avatar panel must contain the new host');
-  await page.locator('[data-avcel-toggle]').click({timeout:10000,force:true});
-  await page.waitForSelector('[data-cal-mask]',{timeout:10000});
+  /* The actual application opens on Discover. Avatar is in the Play section.
+     Calling renderAvatar() does not display its hidden #iq container. Enter
+     through the real section and tab controls; never force-click a hidden UI. */
+  await page.locator('#secbar .secb[data-sec="play"]').click({timeout:10000});
+  const avatarTab=page.locator('#tabbar .tabtop[data-tabk="5"]');
+  await avatarTab.waitFor({state:'visible',timeout:10000});
+  await avatarTab.click({timeout:10000});
+  await page.waitForFunction(()=>S.tab===TAB.INTAKE && !!document.querySelector('#avbody [data-avcelestial]'));
+  const toggle=page.locator('#avbody [data-avcel-toggle]');
+  await toggle.waitFor({state:'visible',timeout:10000});
+  await toggle.click({timeout:10000});
+  await page.locator('[data-cal-mask]').waitFor({state:'visible',timeout:10000});
   const state=await page.evaluate(()=>{
    const root=document.querySelector('[data-celestial-avatar-cascade]');
    return {root:!!root,text:root&&root.textContent,
@@ -35,7 +45,7 @@ const {chromium}=require('playwright');
   assert.equal(state.root,true);
   assert.equal(state.systems,36);
   assert.match(state.text,/Human Design/i);
-  await page.locator('[data-cal-mask]').selectOption('mask:Professional',{force:true});
+  await page.locator('[data-cal-mask]').selectOption('mask:Professional');
   const mod=await page.evaluate(()=>({
    read:document.querySelector('[data-celestial-avatar-cascade]')?.textContent||'',
    after:JSON.stringify(CURP),cq:compute().CQ
@@ -43,7 +53,7 @@ const {chromium}=require('playwright');
   assert.match(mod.read,/Professional mask/);
   assert.equal(mod.after,initial.before,'Avatar panel cannot rewrite CURP');
   assert.equal(mod.cq,initial.cq,'Avatar panel cannot change CQ');
-  await page.locator('[data-avcel-toggle]').click({force:true});
+  await toggle.click();
   assert.equal(await page.locator('[data-cal-mask]').count(),0);
   assert.deepEqual(errors,[],'browser JS errors');
   console.log(JSON.stringify({result:'PASS',real_browser:true,avatar_host:true,
