@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v703 f6ab4f33 2026-10-28 19:53"><head><meta charset="utf-8">
+<html lang="en" data-build="v705 17ceab45 2026-10-29 08:21"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -3983,6 +3983,10 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
  stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .st-mk h3{margin:0;font-family:var(--sans);font-size:20px;line-height:1.15;color:var(--ink);
  white-space:nowrap}
+/* the Dashboard and Record buttons travel together on the right so .st-hd's
+   own space-between keeps two groups, the name and the controls, not three
+   items spread evenly with Dashboard stranded in the middle */
+.st-hdbtns{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .st-mk-j h3{font-weight:300;letter-spacing:.005em}
 .st-mk-i h3{font-weight:700;letter-spacing:-.03em}
 .st-mk-r h3{font-weight:400;letter-spacing:.11em}
@@ -4091,13 +4095,18 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    beat, and the elapsed time sits inside the same pill. Transform and
    opacity only, so quiet and reduced motion hold the dot and the ring lit
    and still rather than run either faster. */
-.st-mic{min-height:var(--tap);display:inline-flex;align-items:center;gap:8px;
+.st-mic,.st-dash{min-height:var(--tap);display:inline-flex;align-items:center;gap:8px;
  background:var(--panel-2);border:1px solid var(--edge);color:var(--mid);
  border-radius:var(--r-xs);padding:7px 15px;font-family:var(--sans);font-size:13.5px;cursor:pointer;
  transition:background var(--t-element) var(--ease-out),border-color var(--t-element) var(--ease-out),
   color var(--t-element) var(--ease-out)}
-.st-mic svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;
+.st-mic svg,.st-dash svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;
  stroke-linejoin:round;flex:0 0 auto}
+.st-dash:hover{color:var(--ink);border-color:var(--mid)}
+/* the eyebrow above Source AI's own line, round of 29 October: see storyui.js
+   for the ruling. tier1 is the house's own small-label class; this only
+   tightens the gap to the glow it sits beside. */
+.st-talklbl{margin:0 0 6px 2px}
 .st-dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;position:relative;
  background:var(--alarm);transition:background var(--t-element) var(--ease-out)}
 .st-mic.on{background:var(--alarm);border-color:var(--alarm);color:#fff;font-weight:500}
@@ -47837,6 +47846,21 @@ function stRender(){
      the word it was always beside. */
   +'<div class="st-hd">'
    +stMark('j','Journal','journal','','<span class="src-live" aria-hidden="true"></span>')
+   +'<div class="st-hdbtns">'
+   /* THE DASHBOARD DOOR, round of 29 October. Lance asked for a Dashboard
+      button on the Journal. His own 20 September ruling already named what
+      that word means in this product: "THE AVATAR IS THE DASHBOARD" (TASKS.md
+      0o), the avatar reading across every tool at once. The Avatar already
+      exists and already renders (TAB.INTAKE, nm:'Avatar', renderAvatar() in
+      ui/avatarui.js), so this is a door to the surface already carrying that
+      name, not a new screen. If the full avatar-as-dashboard build (TASKS.md
+      AV1-AV4, unchecked) later changes what Avatar shows, this button still
+      opens the right tab without changing here. */
+   +(show?'':'<button class="st-dash" id="stdash" type="button" title="Open the avatar, your dashboard across every tool">'
+   +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">'
+   +'<rect x="3.5" y="3.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.4"/>'
+   +'<rect x="3.5" y="13.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.4"/></svg>'
+   +'<span>Dashboard</span></button>')
    /* TALK IS GONE AS A TOGGLE, round of 28 October, his words: "the focus
       needs to be on two-way conversation for the journal ... this needs to
       be a two-way conversation between me and the source." A button that
@@ -47864,7 +47888,7 @@ function stRender(){
       that shows it runs. */
    +(ST_LISTEN?'<span class="st-mictime" id="stmictime" aria-hidden="true">'
      +stMicFmt(stMicElapsed())+'</span>':'')
-   +'</button>')+'</div>'
+   +'</button>')+'</div></div>'
   /* SOURCE AI AND THE JOURNAL'S MENU CHANGED PLACES, round LO, his words: "I
      want you to swap the main journal menu with the source AI question." The
      column read Source AI, then the journal's own top line with Record on it,
@@ -47894,7 +47918,17 @@ function stRender(){
      .src-comb. It is a sibling of #stsrc and not inside it, for the reason
      the halo is: srcPaint rewrites #stsrc on every key, and the floor is
      painted once a render. srcLock puts every loop in here on one clock. */
-  +(show?showNote('story','st-show'):'<div class="st-glow"><div class="st-pe" id="stsrc" aria-label="Question"></div>'
+  /* TALK, NOT CHAT, round of 29 October. His words: "Source AI should be the
+     primary talking feature. It's a talk, not a chat now." The word "chat"
+     never appeared as copy anywhere on this page (STV.chat, srcChat* and
+     .st-chat are code names, never shown), so this is not a find-and-replace.
+     It is naming the thing out loud the way Journal, Imprints and Release
+     already are: one small word above Source AI's own line, in the same
+     tier1 eyebrow every other named panel on this build uses, so a person
+     sees what this is before they read a single line of it. Static, outside
+     #stsrc, for the same reason srcComb is: srcPaint rewrites #stsrc's own
+     innerHTML on every key and this label does not change. */
+  +(show?showNote('story','st-show'):'<div class="st-glow"><p class="tier1 st-talklbl">Talk</p><div class="st-pe" id="stsrc" aria-label="Question"></div>'
   +srcComb()+'</div>'
   /* THE FETTERS LIGHT UP IN THE PERSON'S OWN SENTENCE.
 
@@ -48068,6 +48102,8 @@ function stRender(){
  if(ap)ap.onclick=function(){if(STV.chat)srcChatSend(); return stCommit();};
  var mic=document.getElementById('stmic');
  if(mic)mic.onclick=stMic;
+ var dash=document.getElementById('stdash');
+ if(dash)dash.onclick=function(){setTab(TAB.INTAKE); if(typeof renderAvatar==='function')renderAvatar();};
  srcChatWire();}
 
 /* ============================================================
@@ -82965,5 +83001,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005469737"></div>
+<div id="eof" hidden data-len="005472499"></div>
 </body></html>
