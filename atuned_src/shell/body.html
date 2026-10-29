@@ -1042,6 +1042,85 @@
      <div class="mxk" id="mxk"></div>
     </div>
    </div>
+   <!-- THE CHAIN, READ AT A GLANCE. Round of 28 October, his words after
+        looking at the wheel: "the field needs to be completely updated with
+        the new wiring from nerve to super complex... so the field will be
+        showing the full geometric structure... enhance and elevate it."
+        Checked first, not assumed: the chain already computes and already
+        draws, every thread and bead colored by its own tier (ui/wheel.js,
+        the tier() and bead() calls), and hovering any bead already opens a
+        full readout naming the tier, the pattern and its addresses
+        (describe(), ui/ui.js). None of that needed building. What was
+        missing is this: nothing said so without a hover. A person looking
+        at the wheel cold saw a tangle of color with no key to it, which is
+        exactly what read, reasonably, as unwired.
+
+        This section is the key, read-only, static, filled once by
+        renderChainKey() below off the same bc() colors the wheel itself
+        paints with, so the two can never drift apart. Five rows, nerve to
+        root, each a swatch and the one sentence a person needs before they
+        have hovered anything. -->
+   <div class="lsec" data-sec="chain">
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/><path d="M12 6.6v4M12 13.6v4"/></svg>The chain</span><i></i></button>
+    <div class="lsec-bd">
+     <div class="tier1">Nerve to root</div>
+     <p class="stk-def">Every thread and dot on the wheel is part of one chain. Hover any dot for its name. This is what the colors mean.</p>
+     <div id="chainkey"></div>
+    </div>
+   </div>
+   <!-- THE SUPEREGO, OUTSIDE THE CHAIN. Round of 28 October, his words: "we
+        need the superego complex outside of that," meaning outside the
+        saboteur to super-complex chain above, its own tier. He pointed to
+        the real source: "look for superego in the mechanics of being, it's
+        in there." The manuscript names it plainly: the layer that takes the
+        ego's patterns and builds a defense around them, why seeing a
+        pattern does not change it, since these four supply the reason it is
+        fine to keep.
+
+        The manuscript names four: Justification, Entitlement,
+        Perfectionism, Obsession. The engine's own AMPLIFIER table
+        (engine/data/registers.js) carries six, two more than the book,
+        Judgment and Comparison. This section shows the four the book names.
+        The other two are a real difference between the book and the
+        engine, not resolved here, his call, the same way BOOK-ERRATA.md
+        already tracks every other place the two disagree.
+
+        No new reading, no new sniffer, no consent question: each amplifier
+        is a real address AMPLIFIER already maps to (engine/data/nodes.js),
+        and its weight is the charge already computed there, BY[i].sq, the
+        same number every other charge display on this page already reads
+        and already had consent for. Filled by renderAmplifiers(), ui/ui.js. -->
+   <div class="lsec" data-sec="superego">
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="3"/><path d="M9 9h6v6H9z"/></svg>Superego</span><i></i></button>
+    <div class="lsec-bd">
+     <div class="tier1">Outside the chain</div>
+     <p class="stk-def">The layer that builds a defense around a pattern once it is already there. Why seeing it does not change it.</p>
+     <div id="amprows"></div>
+    </div>
+   </div>
+   <!-- THE SIX GATES, GIVEN A NAMED PLACE ON THIS RAIL. Round of 28 October,
+        his words, after seeing the Field's own small marks for them: "if you
+        look on the field, you'll find the awareness ignorant detach attach
+        intentional aware, that's the only space, those would be great to
+        expose, wouldn't they, maybe they go on our left-hand menu." They
+        already drew as marks on the wheel (the Gates layer, FLAYS in
+        ui/rings.js) and as a reference list on the Codex's own Laws of
+        Action page, and the derived avoidance reading already lived,
+        correctly built with its upstream pair beside it per the engine's
+        own guard against showing it alone, inside the Journal's collapsed
+        Laws accordion. None of those is a named section here. This is.
+        Filled by renderGates(), ui/ui.js, off verpRead() and sniffGates(),
+        read-only: see those files for what guard the avoidance line may
+        never be shown without. -->
+   <div class="lsec" data-sec="gates">
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.1"/><path d="M12 8.9V3.6M9.6 6L12 3.6 14.4 6M12 15.1v5.3"/></svg>Laws of Action</span><i></i></button>
+    <div class="lsec-bd">
+     <div class="tier1">The six gates</div>
+     <p class="stk-def">Read from your own words. Three are the law kept, three the law broken.</p>
+     <div id="gaterows"></div>
+     <div id="gateavoid"></div>
+    </div>
+   </div>
   </div></div>
 
   <!-- ============ STAGE ============ -->

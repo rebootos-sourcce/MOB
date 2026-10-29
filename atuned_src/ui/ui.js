@@ -1411,11 +1411,19 @@ function render(){
     registry bounds the same way (engine/pct.js, nought to ten). Each prints
     fmtPct for its own kind now, and nought or an unread profile is the dash. */
  var ins=function(t,line){return '<span title="'+esc(t)+'">'+line+'</span><br>';};
+ /* INTENTION, WIRED IN, 28 October. Ruled 25 September: what a person said
+    they would do against what they did, no charge read into it
+    (intentionRead, engine/ladder.js). Nothing was said in the last seven
+    days reads as unread, not as zero, the same way an unanswered law does
+    not read as a failing one: a blank week is not a broken promise. */
+ var intent=intentionRead(CURP,Date.now());
  $('rows').innerHTML='<span class="k">Instruments</span><br>'
   +ins('How well you keep the 21 laws, lifted by the opposites installed and pulled down by overshoot.',
     'integrity <b>'+fmtPct('integrity',r.Ig,{unread:r.unread})+'</b>')
+  +ins('What you said you would do against what you did, the last seven days. No charge in it, only follow through.',
+    'intention <b>'+(intent.said?fmtPct('intention',intent.pct):PCT_DASH)+'</b>')
   +ins('The same laws read seat by seat, up the body.',
-    'intention <b>'+fmtPct('intention',r.It,{unread:r.unread})+'</b>')
+    'law reach <b>'+fmtPct('lawseat',r.It,{unread:r.unread})+'</b>')
   /* JOUISSANCE WAS ON EIGHTY ONE SCREENS. A French psychoanalytic term, printed
      as an instrument label to a person who has never heard it, with no gloss
      anywhere in the product. One word per concept, and the word has to say
@@ -1471,8 +1479,85 @@ function render(){
     name. Hover shows the meaning in the product's own tooltip. Press takes
     the person to the knowledge page with that entry already open, so a word
     they did not know is two gestures from being a word they do. */
+/* THE SIX GATES, A NAMED PLACE ON THE FIELD'S OWN LEFT RAIL. Round of 28
+   October, his words after finding them only as small marks on the wheel:
+   "those would be great to expose, wouldn't they, maybe they go on our
+   left-hand menu." Ported, not rebuilt: gatesBlock(null) (ui/drills.js) is
+   the same six-row reading already shown inside the gate drill, right
+   action against wrong action, and its rows already wire themselves to
+   that drill through the delegated .gate-r[data-gate] click below, so
+   nothing new needs wiring for a press here to open it.
+
+   THE AVOIDANCE LINE IS NEVER SHOWN ALONE. sniffGates (engine/sniff.js)
+   carries its own structural rule for this exact number: it is read only
+   together with the two upstream gates it was built from. stLawWins
+   (ui/storyui.js) already finds the most recent entry with a real gate
+   reading for the Journal's own Laws accordion; this calls the same
+   function rather than re-reading the entries a second way, so the two
+   surfaces can never disagree about which entry's reading is current. */
+/* THE CHAIN KEY. Round of 28 October, the shell's own body.html comment
+   above the section carries the full why. Five rows, nerve to root, each a
+   swatch and one sentence. The swatch colors come straight from bc(), the
+   exact function wheel.js paints the chords and beads with, so this list
+   and the wheel's own picture read as one source and not two. Archetype
+   keeps its own gold rather than a seat color, because that is what the
+   wheel already draws it in (GOLDC, ui/component.js); the saboteur row's
+   dot is the conic sweep in head.html's .chk-dot.varies, since a saboteur's
+   own thread is colored by whichever seat it sits at and not by one fixed
+   color the other three tiers share. */
+function renderChainKey(){
+ var h=document.getElementById('chainkey'); if(!h)return;
+ var rows=[
+  {v:true, nm:'Saboteur', d:'Colored by the seat it sits at. The pattern closest to a single story.'},
+  {c:rgba(bc('Solar'),1), nm:'Complex', d:'Two saboteurs joined. Always this color, whichever seat they sit at.'},
+  {c:rgba(bc('Sacral'),1), nm:'Hyper-complex', d:'Complexes joined into one driving pattern.'},
+  {c:rgba(bc('Root'),1), nm:'Super-complex', d:'The deepest join this instrument reads, built from hyper-complexes.'},
+  {c:rgba(GOLDC(),1), nm:'Archetype', d:'The shape the whole pattern points toward.'}];
+ h.innerHTML=rows.map(function(r){
+  return '<div class="chk-row"><span class="chk-dot'+(r.v?' varies':'')+'"'
+   +(r.v?'':' style="background:'+r.c+'"')+'></span>'
+   +'<span class="chk-tx"><b>'+r.nm+'.</b> '+r.d+'</span></div>';}).join('');}
+/* THE FOUR AMPLIFIERS. body.html's own comment above the section carries
+   the full why. Each row is a real address AMPLIFIER already maps to, read
+   the same way every other address on this page is read, BY[i].sq, no new
+   number. Reuses the locked dual-pole glyph (NODE_STRIKE, ui/knowledge.js)
+   and crBadge (ui/component.js) so an amplifier's own charge reads in the
+   same language as every other address on the Field, and a press opens the
+   same node drill a press on any address already opens. */
+function renderAmplifiers(){
+ var h=document.getElementById('amprows'); if(!h)return;
+ var FOUR=['Justification','Entitlement','Perfectionism','Obsession'];
+ var rows=FOUR.map(function(nm){return AMPLIFIER.filter(function(a){return a.nm===nm;})[0];})
+  .filter(Boolean);
+ h.innerHTML=rows.map(function(a){
+  var n=BY[a.i]; if(!n)return '';
+  var p=Math.round((n.sq||0)/10*100), state=dualPoleState(p), c=bc(n.b);
+  var say=a.nm+', '+(n.sq>=0.05?'weight '+n.sq.toFixed(1):'nothing held')+', '+dualPoleStateWord(state)+'.';
+  return '<button type="button" class="amp-row" data-amp-i="'+a.i+'" aria-label="'+esc(say)+'">'
+   +'<span class="amp-nm">'+esc(a.nm)+'</span>'
+   +crBadge(n.b,p,{size:'sm',color:c,raw:n.sq.toFixed(1),glyph:NODE_STRIKE[state],title:a.nm+' · '+dualPoleStateWord(state)})
+   +'</button>';}).join('');
+ var wired=h.getAttribute('data-wired');
+ if(!wired){h.setAttribute('data-wired','1');
+  h.addEventListener('click',function(e){
+   var b=e.target.closest('[data-amp-i]'); if(!b)return;
+   var n=BY[+b.getAttribute('data-amp-i')]; if(n)runNodeDrill(n);});}}
+function renderGates(){
+ var h=document.getElementById('gaterows'); if(!h)return;
+ h.innerHTML=gatesBlock(null);
+ var g=document.getElementById('gateavoid'); if(!g)return;
+ if(typeof stLawWins==='function')stLawWins();
+ var gate=(typeof STLW!=='undefined'&&STLW&&STLW.gate)||null;
+ if(gate&&gate.intentional){
+  g.innerHTML='<div class="pm-eye" style="margin-top:14px">Avoidance, your last entry</div>'
+   +'<p class="ad-p">Avoidance reads <b>'+gate.intentional.avoidance+' per cent</b>, built from the two readings below it and never shown without them.</p>'
+   +'<p class="ad-p">Awareness against ignorance: <b>'+Math.round(gate.aware*100)+' per cent</b> awareness.</p>'
+   +'<p class="ad-p">Detachment against attachment: <b>'+Math.round(gate.detached*100)+' per cent</b> detachment.</p>';
+ } else {
+  g.innerHTML='<p class="ad-p" style="margin-top:10px">Nothing read yet. Write a line in the Journal and the gates fill in from it.</p>';
+ }}
  wireKbJump();
- renderAcc(r); renderSpirit(); renderRootSum(); renderPol2(r); syncMx();
+ renderAcc(r); renderSpirit(); renderRootSum(); renderPol2(r); syncMx(); renderGates(); renderChainKey(); renderAmplifiers();
  /* the trace graph's block in the Field's side column, ui/loopread.js */
  if(typeof loopPaint==='function')loopPaint(r);
  /* the dock's circles move into their values rather than snapping, and only

@@ -108,11 +108,15 @@ const ev = async (page, fn, arg) => { try { return await page.evaluate(fn, arg);
       await ev(page, () => { var d = document.getElementById('msgdock'); if (d) d.style.visibility = 'hidden'; });
       return { ctx, page, errs };
     };
-    /* the journal, through its own box and its own Commit */
+    /* the journal, through its own box and its own Commit. Conversation
+       only now, round of 28 October, so the words reach ST_TEXT through
+       the reply box and a send, the same as a person does. */
     const commit = async (page, text) => {
       await ev(page, () => { setTab(TAB.STORY); });
       await page.waitForTimeout(200);
-      await page.fill('#sttext', text); await page.waitForTimeout(200);
+      await ev(page, t => { const ci = document.getElementById('stcin');
+        ci.value = t; ci.dispatchEvent(new Event('input', { bubbles: true })); srcChatSend(); }, text);
+      await page.waitForTimeout(200);
       await page.click('#stapply'); await page.waitForTimeout(400);
     };
 

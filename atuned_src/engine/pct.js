@@ -71,6 +71,13 @@ var PCT_KIND={
  /* compute.js:408, all 112 addresses summed over 1120, each sq at most 10 */
  dq:        {lo:0, hi:100, src:'engine/compute.js', find:'const DQ=SQ.reduce((a,v)=>a+v,0)/1120*100;',
              say:'decoherence, the shadow on all 112 against the most they could hold'},
+ /* compute.js, 27 October, CQ's own complement: the 21 laws read on their
+    shadow side, 100-CQ by construction. Not the same quantity as dq above:
+    dq is what the 112 addresses measure is actually carried, lawsq is only
+    what the law answers imply alone. Null while CQ is still filling, same
+    guard as tier, so a partial intake never reads a false shadow. */
+ lawsq:     {lo:0, hi:100, src:'engine/compute.js', find:'const lawSQ=complete?clamp(100-CQ,0,100):null;',
+             say:'the shadow the law answers alone imply, CQ\'s own complement'},
  /* compute.js:448, CQ times what the pull leaves, PULL nought to one. The
     headroom exHeadroom returns, compute.js:585, is a gap on this same scale,
     so it asks this kind too: three points of expression is 3%. */
@@ -109,8 +116,11 @@ var PCT_KIND={
  /* schema.js:1041 on the axis, and compute.js:293 at one address */
  installed: {lo:0, hi:10, src:'engine/schema.js', find:"vRange(errs,'axes.'+c.nm+'.opp',a.opp,0,10)",
              say:'an opposite installed'},
- /* compute.js:290, the charge held at one address before the opposite */
- held:      {lo:0, hi:10, src:'engine/compute.js', find:'n.held = n.cf?clamp(S.charge[n.cf]*n.susc*(1-relief*0.42),0,10):0;',
+ /* compute.js, the charge held at one address before the opposite. base
+    folds in S.addr, the named-address layer added 26 October, before the
+    susceptibility and relief scaling; the clamp and its bound are the
+    same line they always were. */
+ held:      {lo:0, hi:10, src:'engine/compute.js', find:'n.held = n.cf?clamp(base*n.susc*(1-relief*0.42),0,10):0;',
              say:'the charge held at one address'},
  /* compute.js:295, sq, what is left at one address after the opposite. A mean
     of sq stays on the same scale, so SQm (compute.js:318), the heaviest seat
@@ -135,9 +145,23 @@ var PCT_KIND={
  /* compute.js:390 */
  integrity: {lo:0, hi:10, src:'engine/compute.js', find:'- JQ*0.42,0,10);',
              say:'integrity, the laws lifted by the poles and pulled down by overshoot'},
- /* compute.js:391 */
- intention: {lo:0, hi:10, src:'engine/compute.js', find:'- JQ*0.30,0,10);',
-             say:'intention, the same laws read seat by seat'},
+ /* compute.js:391. RENAMED FROM intention, 28 October: the word intention is
+    the ruled reading below now, what a person said against what they did,
+    and this kept it as well, which is the exact defect one word per concept
+    exists to stop. This is a law mean read seat by seat, nothing a person
+    committed to or carried out. */
+ lawseat:   {lo:0, hi:10, src:'engine/compute.js', find:'- JQ*0.30,0,10);',
+             say:'the same laws read seat by seat, up the body'},
+ /* ladder.js, intentionRead. Ruled 25 September, "you either did the thing
+    you said you were gonna do or you didn't", said against done over the
+    last seven days, no charge read into it. Wired in 28 October: the
+    function existed, tested, and had never been put on a screen. Profile
+    dependent, so it is not in tests/engine.js's roster scan the way a pure
+    compute() figure is, the same exemption accuracy already carries; its
+    own coverage is tests/engine.js's and tests/daily.js's intentionRead
+    checks, and the fmtPct example below. */
+ intention: {lo:0, hi:100, src:'engine/ladder.js', find:'pct:said?100*did/said:null',
+             say:'what a person said they would do against what they did, the last seven days'},
  /* intake.js:55, the widest gap between a law's three answers, each 0 to 10
     at the boundary (schema.js:1069) */
  spread:    {lo:0, hi:10, src:'engine/intake.js', find:'var spread=Math.max.apply(null,v)-Math.min.apply(null,v);',

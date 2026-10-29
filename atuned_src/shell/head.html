@@ -8,7 +8,7 @@
 <html lang="en" data-build="BUILD_STAMP"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
-<meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
+<meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
 <!-- ============================================================
      THE TYPEFACE, CARRIED RATHER THAN FETCHED.
 
@@ -2854,6 +2854,31 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
 .mxk{font-size:12.5px;color:var(--dim);line-height:1.65;margin-top:10px}
 .mxk b{color:var(--ink);font-weight:600}
 
+/* THE CHAIN KEY. One row per tier, nerve to root, a swatch and a sentence.
+   The dot is the exact color the wheel paints that tier's threads and beads
+   with, set inline from bc() at render time, so a swatch here and a bead on
+   the wheel can never read as two different colors for the same tier. */
+.chk-row{display:flex;align-items:flex-start;gap:9px;margin-top:10px}
+.chk-dot{flex:0 0 auto;width:11px;height:11px;border-radius:50%;margin-top:3px;
+ box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+.chk-dot.varies{background:conic-gradient(from 0deg,#e06a5a,#e0a65a,#e0d85a,#6ac17a,#5ac1b8,#5a8fe0,#a05ae0,#e06a5a)}
+.chk-tx{font-size:12.5px;color:var(--dim);line-height:1.5}
+.chk-tx b{color:var(--ink);font-weight:600}
+
+/* THE FOUR AMPLIFIERS. One row each, a name and the real crBadge (.crb,
+   above) reading its own address. Its own small rule rather than
+   knowledge.js's kb-row/kbp, which that file injects itself only once the
+   Knowledge tab has been opened: a press on Field alone, never Knowledge,
+   would have shown these names with no flex, no gap and no border, the
+   classes present with nothing behind them. */
+.amp-row{display:flex;align-items:center;justify-content:space-between;gap:10px;
+ padding:9px 0;border-bottom:1px solid var(--edge);background:none;border-left:0;
+ border-right:0;border-top:0;width:100%;text-align:left;cursor:pointer;color:inherit;
+ font:inherit}
+.amp-row:last-child{border-bottom:0}
+.amp-row:hover{background:var(--sunk)}
+.amp-nm{font-size:13.5px;color:var(--ink)}
+
 /* ---------- spiritual states ---------- */
 .sp-hd{margin:14px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--edge);color:var(--gold)}
 /* THE VALUE HOLDS ITS LINE AND THE NOTE TAKES WHAT IS LEFT. The value was the
@@ -3916,6 +3941,13 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .st-flow[data-focus="read"] .st-colr{flex:1.55 1 0}
 .st-flow[data-focus="release"] .st-colw{flex:1 1 0}
 .st-flow[data-focus="release"] .st-colx{flex:0 0 430px}
+/* SIMPLE ON LANDING, round of 29 October, his words: "when I land on this
+   page, it starts off in simple mode." Imprints and Release are real
+   panels, not removed, only shut until Dashboard opens them (STV.dash,
+   ui/storyui.js). The Journal takes the width they would have used. */
+.st-flow.st-simple .st-colr,.st-flow.st-simple .st-colx{display:none}
+.st-flow.st-simple .st-colw{flex:1 1 0;max-width:900px;margin:0 auto}
+.st-dash.on{color:var(--accent);border-color:var(--accent)}
 .st-pan{display:flex;flex-direction:column;min-width:0;min-height:0;position:relative;
  background:color-mix(in srgb,var(--ink) 3%,transparent);border:1px solid var(--edge);
  border-radius:var(--r-s);padding:14px 16px}
@@ -3958,6 +3990,10 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
  stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .st-mk h3{margin:0;font-family:var(--sans);font-size:20px;line-height:1.15;color:var(--ink);
  white-space:nowrap}
+/* the Dashboard and Record buttons travel together on the right so .st-hd's
+   own space-between keeps two groups, the name and the controls, not three
+   items spread evenly with Dashboard stranded in the middle */
+.st-hdbtns{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .st-mk-j h3{font-weight:300;letter-spacing:.005em}
 .st-mk-i h3{font-weight:700;letter-spacing:-.03em}
 .st-mk-r h3{font-weight:400;letter-spacing:.11em}
@@ -4066,13 +4102,18 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    beat, and the elapsed time sits inside the same pill. Transform and
    opacity only, so quiet and reduced motion hold the dot and the ring lit
    and still rather than run either faster. */
-.st-mic{min-height:var(--tap);display:inline-flex;align-items:center;gap:8px;
+.st-mic,.st-dash{min-height:var(--tap);display:inline-flex;align-items:center;gap:8px;
  background:var(--panel-2);border:1px solid var(--edge);color:var(--mid);
  border-radius:var(--r-xs);padding:7px 15px;font-family:var(--sans);font-size:13.5px;cursor:pointer;
  transition:background var(--t-element) var(--ease-out),border-color var(--t-element) var(--ease-out),
   color var(--t-element) var(--ease-out)}
-.st-mic svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;
+.st-mic svg,.st-dash svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;
  stroke-linejoin:round;flex:0 0 auto}
+.st-dash:hover{color:var(--ink);border-color:var(--mid)}
+/* the eyebrow above Source AI's own line, round of 29 October: see storyui.js
+   for the ruling. tier1 is the house's own small-label class; this only
+   tightens the gap to the glow it sits beside. */
+.st-talklbl{margin:0 0 6px 2px}
 .st-dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;position:relative;
  background:var(--alarm);transition:background var(--t-element) var(--ease-out)}
 .st-mic.on{background:var(--alarm);border-color:var(--alarm);color:#fff;font-weight:500}
@@ -4170,11 +4211,25 @@ body.tab-story #bRel{display:none}
    take its width, so the stage track is the rest of the row. The bank sets
    st-bank and the rail returns with the Imprints page in it and Selection
    under it, where that page's Detail opens. Stacked, the rail is a block
-   under the surface, so it is simply not there until the bank asks for it. */
+   under the surface, so it is simply not there until the bank asks for it.
+
+   THE LEFT COLUMN IS GONE FROM THE STORY TOO, ROUND OF 28 OCTOBER. His
+   words: "we're going to get rid of the left-hand menu." #lcol on this tab
+   carries none of the story's own data, it is the Field's own rail
+   (Energetic summary, Root Energetics, Awareness, Child emotions, Matrix,
+   Laws of Action), shown here only because colKey() gives Story the same
+   STORE key as Field, so opening the rail on the Field and then switching
+   tabs carried that open state onto the Journal with the wrong headers
+   over it, in the bank too since nothing here had ever scoped the bank's
+   three columns down to two. Shutting it by default was not enough: the
+   person's own past choice on a different surface would reopen it. The fix
+   is the same as the bank's own for the rest of the row: not collapsed,
+   not there, in or out of the bank. */
+body.tab-story #lcol{display:none}
 body.tab-story:not(.st-bank) .mid>.col:not(#lcol){display:none}
 @media (min-width:1181px){
- body.tab-story:not(.st-bank) .mid{grid-template-columns:302px 1fr}
- body.lshut.tab-story:not(.st-bank) .mid{grid-template-columns:58px 1fr}}
+ body.tab-story:not(.st-bank) .mid{grid-template-columns:1fr}
+ body.tab-story.st-bank .mid{grid-template-columns:1fr 336px}}
 /* ---------- the Summary's rail is today's summary, ui/daily.js ----------
    The same step aside as the Story's: on the Summary the rail carries Today
    and Selection, and Today is shown nowhere else. A silent day (nothing read
@@ -4483,12 +4538,6 @@ body.quiet .src-tn-now .src-nd,body.rm .src-tn-now .src-nd{animation:none}
 .src-cin:focus{outline:none;border-color:var(--accent)}
 .src-cin::placeholder{color:var(--dim)}
 body.punch .src-cin{border-color:transparent;background:var(--panel-2)}
-/* stacked, the Story reads journal, Source AI, imprints, release, and the
-   tools after. Without this the whole left rail sat between what a person
-   wrote and what it found whenever the column was open. The breakpoint is the
-   one that stacks the rails. */
-@media (max-width:1180px){body.tab-story #lcol{order:1}}
-
 /* ---------- imprints ---------- */
 .ip-hd{display:flex;align-items:center;justify-content:space-between;gap:10px;
  margin-bottom:11px;flex-wrap:wrap}
@@ -4769,6 +4818,21 @@ body.punch .ip.kid{background:color-mix(in srgb,var(--c) 68%,var(--panel-2))}
 .ad-r span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
 .ad-r em{font-style:normal;font-size:12px;color:var(--heart)}
 .ad-r b{font-weight:500;color:var(--gold);font-family:var(--num);font-variant-numeric:tabular-nums}
+/* THE GATE ROWS' OWN VALUE, reached for the first time outside the gate
+   drill when the Field's own Laws of Action rail section was added, 28
+   October. gatesBlock (ui/drills.js) was already shipped and already
+   correct, drawn only inside the drill until then, so the design gate's
+   CSS coverage check had never walked a tab where .ad-v or .gate-r stood
+   reachable in the document. .ad-v held a plain .ad-r span's own colour
+   with nothing of its own; it is the percent and reads better in the same
+   gold, tabular hand every other reading in this product already uses. */
+.ad-v{color:var(--gold);font-family:var(--num);font-variant-numeric:tabular-nums}
+/* .gate-r NAMES THE ROW FOR THE DELEGATED CLICK (ui/ui.js, .gate-r[data-gate]
+   opens runGatesDrill) and carries no rule of its own: .ad-r's is the whole
+   of its look, on purpose, so a gate row and every other action-drill row
+   stay one visual family. Named here so the design gate's coverage check,
+   which reads a class only off a selector that names it, finds it. */
+.gate-r{}
 .ad-q{font-size:14px;line-height:1.7;color:var(--dim);font-style:italic;
  border-left:3px solid var(--gold);padding-left:12px;margin:8px 0;font-weight:300}
 /* THE SABOTEUR CARD'S QUIET END, round SB. Connected is the engine's own map
@@ -5847,6 +5911,15 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     back, and none of them is a tap target. */
  .st-flow{flex-direction:column;height:auto;gap:8px}
  .st-flow>*,.st-colr>*,.st-colw>*{flex:0 0 auto!important}
+ /* SIMPLE MODE, ALONE ON A PHONE, NEEDS ITS OWN FLOOR. With Imprints and
+    Release hidden (st-simple, the Dashboard toggle, round of 29 October),
+    the Journal is the only child left in this column flow, and flex:0 0
+    auto above sizes every child off its own content. Nothing here asks the
+    Journal's own content to grow past it, so with nothing held above it the
+    panel sat at the height of one line, 168 of 844: the functional gate's
+    own "actually rendered on a phone" check against #story caught it. A
+    floor the other two columns used to supply by sitting beside it. */
+ .st-flow.st-simple .st-pan.st-jr{min-height:60vh}
  .st-colw,.st-colr,.st-colx{gap:8px}
  .st-pan{padding:10px 12px}
  .st-hd{margin-bottom:6px}

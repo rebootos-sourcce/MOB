@@ -3036,3 +3036,51 @@ His words: "Check to see if there's a second onboarding. Right now, there's been
 - **Kept, on purpose:** the sheet host the welcome after paying borrowed, renamed `#paidwelcome` and now its own; the chain the onboarding's end card draws its rows in; `ui.tutorialSeen` on the record; and `'tutorial'` among the doors a journey walk may name (`JOURNEY_DOORS`), because a record carrying an older value is read and never refused. The journey record landed on 9 October, after the switch panel was gone, so no person could have written that door; only gates did. `tests/journey2.js` still holds that such a walk resumes on the onboarding's own card and ends on its end card.
 - **What else changes:** `sniffStory`, the full story reader, has no screen that calls it now. The tutorial was its only one. It stays in the engine, exported and held by `tests/engine.js`, and its route into screens was already ruled for after alpha (the 9 October entry above).
 - **Held by** `tests/onboarding2.js`, section 2, which reads the running page: no name of the tutorial on it, no rule of its poses, no host of its own, and no row for it in Account. Those four fail by name on `45fe5649`, the build from before this change. The checks that rode the tutorial's screens and still describe the product moved: the stage checks (no card chrome, a ghost with no live control, nothing running under reduced motion) onto the onboarding's own stage, and the release question gate onto the same two calls the tutorial made, `stCommit` and `obMini` handed to `relPick`.
+
+## The fetter's two poles are a nerve's freeze or flight, neutral at the centre, 27 October
+
+His words, reviewing the Field with the dual-pole rows on screen: "I realized
+that the fetter state having both poles is showing two things, the freeze or
+flight state of a nerve and then the center point is neutral. So the express
+collapsed is really showing the state of the nerve. It's very good."
+
+"Nerve" is his own word for the floor of the stack ruled 23 October, "our
+stack goes psychophysical, that's nerve, to super complex": the fetter and its
+address is the nerve. A fetter already carries two values, the charge it
+holds (`n.sq`, read as the held pole) and the coherent opposite installed
+against it (`n.pole`, see `ui/imprints.js` and `ui/map.js`). The reading above
+says what the two together have always been showing, read correctly for the
+first time: not a split scorecard of shadow against virtue, but which way
+that one nerve has tipped away from a centre where neither pole is pulling.
+Held high and installed low is the nerve pulled to one side. Installed high
+and held low is the nerve pulled to the other. Centre, where the two draw
+close, is the nerve regulated.
+
+Expression (`EX` in `engine/compute.js`, `CQ*(1-PULL)`, where `PULL` is the
+average drag every held address exerts against the person's will) is the
+figure that already moves with this. A collapsed Expression is not a separate
+fact about the person: it is this same tipped state, read off every nerve at
+once rather than one address at a time. CQ itself stays fixed (it is read
+from the law answers alone, ruled 25 September and reaffirmed since), so a
+low Expression is always the nerves pulling against a steady CQ, never CQ
+itself moving.
+
+Nothing in the arithmetic changed. This is a naming of what `n.sq`, `n.pole`
+and `EX` already compute, so the next reader of this code, or of a fetter
+drill on screen, has the right word for it.
+
+His words, settled in conversation: "Narcissism is a subset of psychopathy and Machiavellianism... sociopath would be a hypercomplex and psychopath would be a supercomplex. But a very particular archetype." This resolves his 20 October strike (`0e53d037`, "Remove disputed Psychopathy supercomplex classification"), which changed only `docs/ATUNED_LAYER_COUNT_DASHBOARD_2026-10-20.md` and never reached the code.
+
+- **Sociopathy is the Predatory family's own hyper complex.** `compute()` already built it (`kind:'hy'`, `nm:'Predatory'`). It is now a DESCENT entry of its own in `engine/data/compass.js`, `kind:'hyper complex'`, `fam:'Predatory'`. The name is the structure's (Sociopathy, not sociopath), the way the descent names a pattern and never a person, and it is the name `CODE_STRUCT` already codes, X25.
+- **Psychopathy is a super complex, and only one particular one:** the Grandiosity hyper complex and the Predatory one together. Its entry keeps `kind:'super complex'` and gains `pair:['Grandiosity','Predatory']`. `compute()` reads that pair into `r.psychopathy`, a separate field that is never pushed into `sups`. It is set wherever the two rank by weight, under the same weight gate as every super complex (a mean of 5.6). `inSups` says whether the generic pairing by rank also paired them.
+- **The dark read now lights a tied step only when the chain holds it.** It used to light Psychopathy for anybody dark under expression 11. The referral to a licensed clinician is unchanged and still follows depth alone, because it is a safety rule and not a label.
+- **What it changed on the roster:** one reading out of sixteen. Tomas is dark, carries Grandiosity and no Predatory, and was shown Psychopathy; he is now shown Machiavellianism. Every number on every profile is unchanged.
+- **Open, and his:** whether a heavy hyper complex may carry a marginal one past the gate. The mean lets a Grandiosity of 8.7 carry a Predatory of 5.5. The generic super complex does the same today, so a floor for each part would move both rules, and that call is his. Sociopathy's behaviour, practice and counterpart are unwritten on purpose: they are `null` in the record rather than invented.
+
+## Execute, do not stop and wait. Ruled 22 October.
+
+His words: "when I give you a command, you exercise it. If there's a prior command that's blocking it, you can talk to me about it, but don't ever stop doing it." A standing instruction for how work gets carried out, not limited to one task.
+
+A prior ruling (the locked CQ formula, a content decision only he can make, anything that needs his word before it is right rather than before it is built) is a real reason to talk to him about a command before carrying it out. It is never a reason to stop and only report. Where a command meets no such ruling, the work gets done, not written up as a plan for him to approve. Reporting instead of building, when nothing actually blocks the building, is the failure this entry exists to name.
+
+The occasion: asked on 22 October to find out where all the latest code for the nerve to super complex structure actually is, after a report that morning had described the real detection chain (nerve, address, fetter, saboteur, complex, hyper-complex) as already wired, without having looked at `proto/knowledge/`, a separate prototype area where the same campaign had written a full second layer of behavior, trigger, lived example, impact and practice content for all six real hyper-complex families, plus four competing page designs for showing it, none of it connected to the shipped app. The miss was not looking hard enough before reporting complete, not a blocking ruling anywhere in the way.

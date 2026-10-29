@@ -25,6 +25,12 @@ function blankProfile(name){
   name:name||'New profile', created:new Date().toISOString(), updated:null,
   soul:{doms:[0], arcs:[0,1], roots:[]},            /* the invariant */
   axes:{},                                          /* nine poled child fetters */
+  /* THE NAMED-ADDRESS LAYER, engine/sniff.js's applyStoryAddr, 26 October.
+     Additive: an older record has none, which is a record no story ever
+     named a specific place in, not a broken one, and no SCHEMA_V bump,
+     same standing as p.practice below. Keyed by NODES[].i, the address's
+     own number; empty until a story names one. */
+  addr:{},
   /* who. name, sex at birth, and the birth moment. Nothing derived is
      stored: the energetics are pure functions of these three strings, so a
      sixth system still costs nothing. timeUnknown is explicit, because an
@@ -238,6 +244,9 @@ function loadProfile(p){
     person carrying on all nine (AXIS_BLANK, above) */
  CHILD.forEach(function(c){var a=p.axes[c.nm]||{};
   S.charge[c.nm]=a.held!=null?a.held:AXIS_BLANK; S.replace[c.nm]=a.opp||0;});
+ /* a record from before this layer has none, which is a record no story
+    ever named a specific address in, not a broken one */
+ S.addr=Object.assign({},p.addr||{});
  /* an old name's score is carried across rather than dropped back to the
     default a person never entered (LAW_WAS, above) */
  var LAWWAS=LAW_WAS;
@@ -272,6 +281,7 @@ function loadProfile(p){
 function saveProfile(p){
  p.soul={doms:S.doms.slice(),arcs:S.arcs.slice(),roots:S.roots.slice()};
  CHILD.forEach(function(c){p.axes[c.nm]={held:S.charge[c.nm],opp:S.replace[c.nm]||0};});
+ p.addr=Object.assign({},S.addr);
  /* A LAW NOBODY MEASURED MUST NOT COME BACK MEASURED.
 
     null in p.laws means not yet measured, and every surface that asks whether
@@ -1092,6 +1102,16 @@ function validateProfile(o){
   var q=vRange(errs,'axes.'+c.nm+'.opp',a.opp,0,10);
   if(h!==null)p.axes[c.nm].held=h;
   if(q!==null)p.axes[c.nm].opp=q;});}
+ /* THE NAMED-ADDRESS LAYER, 26 October. Keyed by NODES[].i, the address
+    itself; a key that names no node is refused by name, the same
+    boundary the trace graph already holds its own node references to
+    (BY[i], above). */
+ if(o.addr&&typeof o.addr==='object'&&!Array.isArray(o.addr)){
+  Object.keys(o.addr).forEach(function(k){
+   var i=+k;
+   if(!Number.isFinite(i)||!BY[i]){errs.push('addr may not carry '+k);return;}
+   var v=vRange(errs,'addr.'+k,o.addr[k],0,10);
+   if(v!==null)p.addr[k]=v;});}
  /* the 21 laws. null is a law not yet measured and is not an error.
     AN OLD NAME IS READ AS THE LAW IT BECAME (lawNameOf, above), only where the
     record does not carry the current name at all, so the current name wins
@@ -1196,7 +1216,13 @@ function validateProfile(o){
      empty one is no draft. Missing is an older record and has none. */
   if(o.story.draft!==undefined&&o.story.draft!==null){
    var sd=vStr(errs,'story.draft',o.story.draft);
-   if(sd!==null&&sd.trim())p.story.draft=sd;}}
+   if(sd!==null&&sd.trim())p.story.draft=sd;}
+  /* THE REPLY LINE'S OWN DRAFT, round of 28 October: a reply typed and not
+     yet sent, held the same way the entry's own draft is. Same rule, same
+     reason: only a string, never capped, missing or empty is no draft. */
+  if(o.story.reply!==undefined&&o.story.reply!==null){
+   var sr=vStr(errs,'story.reply',o.story.reply);
+   if(sr!==null&&sr.trim())p.story.reply=sr;}}
  else if(o.story!==undefined&&o.story!==null)errs.push('story is not an object');
  if(o.meter&&typeof o.meter==='object'){
   var mp=vRange(errs,'meter.lines',o.meter.lines,0,1e9);

@@ -2237,9 +2237,98 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
  ok(darkRead(0.1,5).dark===false,'and a decoherent field with a benign shape is not either');
  ok(darkRead(0.9,5).dark===true,'the two together is');
  ok(darkRead(0.9,5).refer===true,'and at the floor it refers out');
- ok(darkRead(0.9,5).step&&darkRead(0.9,5).step.refer===true,'to the step that says so');
+ /* CHANGED 26 OCTOBER, with the ruling that ties Psychopathy to the chain.
+    This read "to the step that says so": the floor lit Psychopathy for any
+    dark field. A field handed no chain now names an untied step at the
+    floor, and the referral stays on, because it follows depth and not the
+    step. */
+ ok(darkRead(0.9,5).step&&darkRead(0.9,5).step.nm==='Machiavellianism'&&darkRead(0.9,5).refer===true,
+  'with no chain behind it the floor refers out and names no tied step, got '+(darkRead(0.9,5).step||{}).nm);
  ok(/licensed clinician/.test(DESCENT_REFER),'the referral names a clinician');
- ok(DESCENT.length===3&&DESCENT[2].refer===true,'three steps and the last is not ours to work');
+ /* CHANGED 26 OCTOBER. This counted three steps and read the last by
+    position, the two habits the repository rules out. Read by name. */
+ {const psyE=E.descentStep('Psychopathy'), socE=E.descentStep('Sociopathy');
+  ok(psyE&&psyE.refer===true&&DESCENT[DESCENT.length-1]===psyE,'the last step is Psychopathy and it is not ours to work');
+  ok(psyE.kind==='super complex'&&JSON.stringify(psyE.pair)==='["Grandiosity","Predatory"]',
+   'Psychopathy is a super complex of exactly Grandiosity and Predatory, '+JSON.stringify(psyE.pair));
+  ok(socE&&socE.kind==='hyper complex'&&socE.fam==='Predatory'&&!socE.refer,
+   'Sociopathy is the Predatory hyper complex and refers nobody by itself');
+  ok(E.HCX_LIB.some(h=>h.nm===socE.fam)&&psyE.pair.every(f=>E.HCX_LIB.some(h=>h.nm===f)),
+   'and every family a step is tied to is a family HCX_LIB carries');
+  /* the step is read off the chain it is handed, never off depth */
+  const hy=(nm,w,over)=>({kind:'hy',nm:nm,w:w,over:!!over});
+  ok(darkRead(0.9,25,{hys:[hy('Predatory',7)],psychopathy:null}).step===socE,
+   'a Predatory hyper complex in a dark field names Sociopathy, at any depth of the dark read');
+  ok(darkRead(0.9,5,{hys:[hy('Predatory',7,true)],psychopathy:null}).step!==socE,
+   'an overshoot is not its family');
+  ok(darkRead(0.9,25,{hys:[hy('Grandiosity',7),hy('Predatory',7)],psychopathy:{named:'Psychopathy'}}).step===psyE,
+   'the named super complex names Psychopathy, the deepest tied step first');
+  ok(darkRead(0.9,25,{hys:[hy('Grandiosity',7),hy('Predatory',7)],psychopathy:{named:'Psychopathy'}}).refer===false,
+   'and naming it does not move the referral, which still follows depth');
+  ok(darkRead(0.9,70,{hys:[hy('Predatory',7)],psychopathy:{named:'Psychopathy'}}).step===null,
+   'and nothing is named outside the dark read');}
+
+ /* THE NAMED SUPER COMPLEX IN THE ENGINE, 26 October. The contract, held on
+    every field the roster and a drive at named saboteurs can make: r.psychopathy
+    is set exactly when a Grandiosity and a Predatory hyper complex are both
+    in hys, neither overshot, at a mean weight that passes the super complex's
+    own gate, and inSups says whether the generic pairing by rank also paired
+    them. It never enters sups. Two of the driven fields must produce it, one
+    of them where the pairing by rank did not, or the probe proves nothing. */
+ {const drive=(names,ch,law,extra)=>{
+   reset(0,0,law);
+   Object.keys(S.addr).forEach(k=>{delete S.addr[k];});
+   const cfs={};
+   names.forEach(nm=>E.ALL_SAB.filter(s=>s.nm===nm)[0].nids.forEach(i=>{
+    S.addr[i]=10; const n=W.filter(x=>x.i===i)[0]; if(n&&n.cf)cfs[n.cf]=1;}));
+   Object.keys(cfs).forEach(c=>{S.charge[c]=ch;});
+   (extra||[]).forEach(nm=>E.ALL_SAB.filter(s=>s.nm===nm)[0].nids.forEach(i=>{S.addr[i]=10;}));
+   return compute();};
+  const G=['Micromanager','Hyper-Achiever','Judge','Dramatizer','Dreamer'];
+  const Pd=['Aggressor','Deflector','Skeptic','Manipulator'];
+  const heavy=E.ALL_SAB.filter(s=>!s.unnamed&&(s.hcx==='Collapse'||s.hcx==='Rigidity')).map(s=>s.nm);
+  const runs=[];
+  /* the roster read the way group 'the tier words' reads it, rd above */
+  PEOPLE.forEach(p=>{Object.keys(S.addr).forEach(k=>{delete S.addr[k];});
+   S.doms=p.doms?p.doms.slice():[p.dom]; S.arcs=p.arcs?p.arcs.slice():[p.a1,p.a2];
+   S.roots=p.roots?p.roots.slice():[]; buildSoul();
+   CHARGES.forEach(c=>{S.charge[c]=(p.c&&p.c[c])||0; S.replace[c]=(p.rep&&p.rep[c])||0;});
+   const LS=LAWSET[p.nm]||{_:E.LAW_DEFAULT};
+   SINAMES.forEach(l=>S.law[l]=(LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:E.LAW_DEFAULT)); lawsIn();
+   runs.push(['roster '+p.nm,compute()]);});
+  [4,5,6,7].forEach(ch=>{
+   runs.push(['Grandiosity at '+ch,drive(G,ch,2)]);
+   runs.push(['Predatory at '+ch,drive(Pd,ch,2)]);
+   runs.push(['both at '+ch,drive(G.concat(Pd),ch,2)]);
+   runs.push(['both at '+ch+' under Collapse and Rigidity',drive(G.concat(Pd),ch,2,heavy)]);});
+  /* a flat field with both families light: both hyper complexes form and
+     sit under the gate, which is the field that holds the gate itself */
+  {reset(5,0,2); Object.keys(S.addr).forEach(k=>{delete S.addr[k];});
+   /* Dreamer left out: with it Grandiosity clears the gate on its own */
+   G.filter(nm=>nm!=='Dreamer').concat(Pd).forEach(nm=>E.ALL_SAB.filter(s=>s.nm===nm)[0].nids.forEach(i=>{S.addr[i]=5;}));
+   runs.push(['both light on a flat field',compute()]);}
+  let bad=[], fired=0, offRank=0, under=0;
+  runs.forEach(([nm,r])=>{
+   const parts=r.hys.filter(h=>!h.over&&(h.nm==='Grandiosity'||h.nm==='Predatory'));
+   const w=parts.length===2?(parts[0].w+parts[1].w)/2:0;
+   const want=parts.length===2&&w>=5.6;
+   if(parts.length===2&&w<5.6)under++;
+   const p=r.psychopathy;
+   if(want!==!!p)bad.push(nm+': want '+want+' got '+!!p);
+   if(p){fired++;
+    const both=r.sups.some(s=>s.parts.indexOf(parts[0])>=0&&s.parts.indexOf(parts[1])>=0);
+    if(p.inSups!==both)bad.push(nm+': inSups '+p.inSups+' against '+both);
+    if(!p.inSups)offRank++;
+    if(r.sups.indexOf(p)>=0)bad.push(nm+': it entered sups');
+    if(p.named!=='Psychopathy'||p.kind!=='sup'||Math.abs(p.w-w)>1e-9)bad.push(nm+': shape '+p.named+' '+p.kind+' '+p.w);}});
+  ok(bad.length===0,'r.psychopathy is set exactly when both hyper complexes clear the gate, on '+runs.length+' fields: '+bad.slice(0,3).join('; '));
+  ok(fired>=2,'and a drive at named saboteurs produces it, '+fired+' times');
+  ok(under>=1,'and a field where both form under the gate is in the sweep, so the gate is held too, '+under+' times');
+  ok(offRank>=1,'including where the pairing by rank paired them with something else, '+offRank+' times');
+  ok(drive(Pd,5,2).psychopathy===null&&drive(Pd,5,2).hys.some(h=>h.nm==='Predatory'),
+   'Predatory alone builds its hyper complex and no Psychopathy');
+  Object.keys(S.addr).forEach(k=>{delete S.addr[k];});
+  reset();}
  /* never a label on a person. the sentence has to say what it is a reading of. */
  ok(/not of who is running it/.test(darkRead(0.9,5).say),
   'and the dark read says it is a reading of what runs, not of the person');
@@ -2503,7 +2592,7 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
  ok(PLANS.every(p=>!('see' in p)),'no row of the ladder types a sight of its own, SIGHT is the table');
  ok(PLAN_ALWAYS.length>=3,'and what is on every tier is named rather than remembered');
  /* the laws and the gates by the names the Field's bar prints since 22 October */
- ok(['your 112 addresses','the domains','the archetypes','the Laws of Moral Integrity','the Laws of Action','shadow']
+ ok(['your 108 somatic addresses and 4 field anchors','the domains','the archetypes','the Laws of Moral Integrity','the Laws of Action','shadow']
    .every(w=>PLAN_ALWAYS.indexOf(w)>=0),
   'what is on every tier is the owner\'s own list: addresses, domains, archetypes, the Laws of Moral Integrity, the Laws of Action and shadow');
  ok(!PLAN_ALWAYS.some(w=>/saboteur|complex|character|whole reading/i.test(w)),
@@ -4965,6 +5054,152 @@ g('36b · the fitted CQ model, reproduced from the simulation that fitted it');
  }
 }
 
+g('36f · lawSQ, CQ\'s own complement, 27 October');
+/* He asked, verbatim: a self-reported shadow built purely from the 21 laws,
+   so it sums to 100 with CQ by construction, standing beside DQ rather than
+   replacing it. Proven first by simulation (lookdev/handoff/
+   CQ_DQ_SOURCE_OF_TRUTH_2026-10-27.md): strict complementarity between CQ
+   and the real, address-based DQ breaks the release mechanic, so this is a
+   second, separate number, never a redefinition of DQ. */
+{
+ const r0=reset(0,0,5);
+ near(r0.CQ+r0.lawSQ,100,1e-9,'CQ and lawSQ sum to 100 by construction, got '+r0.CQ+' and '+r0.lawSQ);
+ ok(r0.lawSQ===50,'every law 5: lawSQ is 50, got '+r0.lawSQ);
+ const rPerfect=reset(10,0,10);
+ ok(rPerfect.CQ===100&&rPerfect.lawSQ===0,
+  'every law 10, heavily loaded: CQ 100 and lawSQ 0, even though DQ is still '+rPerfect.DQ.toFixed(1)+
+  ' -- lawSQ is the self-report, not what is actually carried');
+ const rZero=reset(0,0,0);
+ ok(rZero.CQ===0&&rZero.lawSQ===100,'every law 0: CQ 0, lawSQ 100, got '+rZero.CQ+', '+rZero.lawSQ);
+
+ /* a few hundred random complete fields, the identity must hold exactly every time */
+ let x=23>>>0; const rnd=()=>{x^=x<<13;x>>>=0;x^=x>>>17;x^=x<<5;x>>>=0;return x/4294967296;};
+ let offCount=0;
+ for(let i=0;i<500;i++){
+  S.doms=[Math.floor(rnd()*19)];S.arcs=[Math.floor(rnd()*12)];S.roots=[];buildSoul();
+  CHARGES.forEach(c=>{S.charge[c]=+(rnd()*10).toFixed(2);S.replace[c]=+(rnd()<.5?0:rnd()*10).toFixed(2);});
+  SINAMES.forEach(l=>S.law[l]=Math.round(rnd()*10)); lawsIn();
+  const r=compute();
+  if(Math.abs((r.CQ+r.lawSQ)-100)>1e-9)offCount++;}
+ ok(offCount===0,'CQ+lawSQ=100 held on 500 random complete fields, off '+offCount);
+
+ /* unread and incomplete: null, never a number built off answers that have
+    not landed, the same guard tier already uses */
+ E.loadProfile(E.blankProfile('lawSQ, nothing entered'));
+ ok(compute().lawSQ===null,'nothing entered: lawSQ is null, not a false 100');
+ {const p=E.blankProfile('lawSQ, filling'); E.loadProfile(p);
+  p.intake.answers[0]=7; E.iqApply(p);
+  ok(compute().lawSQ===null,'one law answered of 21: lawSQ still null, not a partial shadow reading');}
+
+ /* the release probe again, now also watching lawSQ: the charge half must
+    never move it (it cannot see the 112 addresses), and the law half, which
+    raises CQ, must lower it by exactly as much */
+ const mem2={}; E.bindStore(k=>mem2[k]===undefined?null:mem2[k],(k,v)=>{mem2[k]=String(v);});
+ const CH2=['Rlimit','Llimit','Rtruth','Ltruth'];
+ let rec2=null, runs2=0, lawSQoffChargeHalf=0, lawSQoffLawHalf=0;
+ for(let i=0;i<500;i++){
+  if(i%100===0)rec2=E.pImport(JSON.stringify(E.blankProfile('lawSQ release probe '+i)));
+  S.doms=[Math.floor(rnd()*19)];S.arcs=[Math.floor(rnd()*12)];S.roots=[];buildSoul();
+  CHARGES.forEach(c=>{S.charge[c]=+(rnd()*10).toFixed(2);S.replace[c]=+(rnd()<.5?0:rnd()*10).toFixed(2);});
+  SINAMES.forEach(l=>S.law[l]=Math.round(rnd()*10)); lawsIn();
+  const r0b=compute();
+  const q=W.filter(n=>n.sq>0).sort((a,b)=>b.sq-a.sq).slice(0,1+Math.floor(rnd()*4));
+  if(!q.length)continue; runs2++;
+  q.forEach(n=>{const d=-Math.round(n.sq*10*0.21+2);
+   const share=Math.abs(d)/10/Math.max(1,q.filter(o=>o.cf===n.cf).length);
+   S.charge[n.cf]=E.clamp((S.charge[n.cf]||0)-share,0,10);
+   S.replace[n.cf]=E.clamp((S.replace[n.cf]||0)+share*0.62,0,10);});
+  const rMidB=compute();
+  if(rMidB.lawSQ!==null&&r0b.lawSQ!==null&&Math.abs(rMidB.lawSQ-r0b.lawSQ)>1e-9)lawSQoffChargeHalf++;
+  const m2=E.meterRun(rec2,E.meterPlan(rec2,q.map(n=>n.i),CH2,25));
+  E.releaseWork(rec2,m2.fresh);
+  const r1b=compute();
+  if(r1b.lawSQ!==null&&rMidB.lawSQ!==null&&Math.abs((r1b.lawSQ-rMidB.lawSQ)-(-(r1b.CQ-rMidB.CQ)))>1e-6)lawSQoffLawHalf++;}
+ ok(runs2>450,'the lawSQ release probe ran, '+runs2);
+ ok(lawSQoffChargeHalf===0,'the charge half of a release never moves lawSQ, moved '+lawSQoffChargeHalf);
+ ok(lawSQoffLawHalf===0,'the law half moves lawSQ by exactly the negative of what it moves CQ, off '+lawSQoffLawHalf);
+ E.current().work={}; E.bindStore(()=>null,()=>{});
+
+ /* the percent table, same rigor as cq and dq: cited, clamped, fetched */
+ ok(E.PCT_KIND.lawsq&&E.PCT_KIND.lawsq.lo===0&&E.PCT_KIND.lawsq.hi===100,
+  'PCT_KIND carries lawsq, 0 to 100');
+}
+
+g('36g · the Kundalini rise, ported from proto/avatar/rise.js, 27 October');
+/* The computation only: engine/plan.js keeps built:false on purpose, because
+   no screen draws this yet (checked directly: flipping it would list the
+   Kundalini as a tier-two benefit on the pricing page with nothing anywhere
+   showing it, exactly what that table's own comment already warns against).
+   This group proves the arithmetic itself is real and correct. */
+{
+ const {riseSeats,seatTrans,riseRead,riseFrom,riseReach,riseLevers,riseBase,riseDelta}=E;
+ ok(JSON.stringify(riseSeats())===JSON.stringify(BANDS),'riseSeats is BANDS, root to crown, by name');
+
+ /* the clamp ceiling this arithmetic depends on, cited and checked like
+    every PCT_KIND entry is, so a change to n.open's clamp fails this test by
+    name instead of silently bending the rise */
+ const fs=require('fs');
+ const src=fs.readFileSync('atuned_src/engine/compute.js','utf8');
+ ok(src.indexOf('n.open = clamp(1-n.sq/10 + n.pole/26,0,1.18)')>=0,
+  'rise.js\'s OPEN_CAP (1.18) is still the real clamp on n.open in compute.js');
+ ok(E.OPEN_CAP===1.18,'OPEN_CAP is 1.18, got '+E.OPEN_CAP);
+
+ /* a clean field: every law 10, nothing held, every opposite installed at 10.
+    Every seat should transmit at or near full, reach close to 7, pct close
+    to 100. */
+ const rClean=reset(0,10,10);
+ const riseClean=riseRead(rClean);
+ ok(riseClean.pct>95,'a clean field with every opposite installed reads close to full rise, got '+riseClean.pct);
+ ok(riseClean.reach>6.5&&riseClean.reach<=7,'reach sits just under 7 seats, got '+riseClean.reach.toFixed(3));
+
+ /* a fully blocked field: everything held, nothing released, every law at 0 */
+ const rBlocked=reset(10,0,0);
+ const riseBlocked=riseRead(rBlocked);
+ ok(riseBlocked.pct<riseClean.pct,'a heavily loaded field rises less than a clean one, '+riseBlocked.pct+' against '+riseClean.pct);
+ ok(riseBlocked.blocked!==null&&BANDS.indexOf(riseBlocked.blocked)>=0,
+  'a blocked field names a real seat as its blockage, got '+riseBlocked.blocked);
+ ok(riseBlocked.at===null||BANDS.indexOf(riseBlocked.at.b)>=0,
+  'the address at the blockage, if named, sits at the blocked seat');
+
+ /* reach is the series product, by hand, against the engine's own t() */
+ const t=riseClean.t; let cum=1,reachCheck=0;
+ BANDS.forEach(b=>{cum*=t[b]; reachCheck+=cum;});
+ near(riseClean.reach,reachCheck,1e-9,'reach is the running product of the seven seats\' own transmission, root first');
+
+ /* never a height with no seat: blocked is null only when reach is the full 7 */
+ ok(riseClean.blocked!==null||riseClean.reach>=7-1e-9,
+  'blocked is null only at a full, unblocked reach');
+
+ /* the reach ceiling: everything cleared, nothing simulated, moves only on
+    conduct (a law), never on a release -- checked directly */
+ const rReachProbe=reset(6,2,7);
+ const reachA=riseReach(), lawBefore=S.law.Compassion;
+ S.law.Compassion=Math.min(10,lawBefore+2); lawsIn();
+ const reachB=riseReach();
+ S.law.Compassion=lawBefore; lawsIn();
+ const chargeBefore=S.charge.Anger; S.charge.Anger=E.clamp(chargeBefore+3,0,10);
+ const reachC=riseReach();
+ S.charge.Anger=chargeBefore;
+ ok(reachB.pct>=reachA.pct,'the reach ceiling never falls when a law rises, '+reachA.pct+' to '+reachB.pct);
+ ok(reachC.pct===reachA.pct,'the reach ceiling does not move on a charge change, held is zero by construction, '+reachA.pct+' against '+reachC.pct);
+
+ /* levers: a real seat, both directions computed, one named bigger */
+ if(riseBlocked.blocked){
+  const lv=riseLevers(riseBlocked.blocked);
+  ok(lv.seat===riseBlocked.blocked,'levers are computed at the blocked seat');
+  ok(lv.release.to>=lv.now-1e-9,'a quarter of release work never lowers transmission, '+lv.now.toFixed(3)+' to '+lv.release.to.toFixed(3));
+  ok(lv.law.to>=lv.now-1e-9,'two points on the weakest law never lowers transmission, '+lv.now.toFixed(3)+' to '+lv.law.to.toFixed(3));
+  ok(lv.bigger==='law'||lv.bigger==='release'||lv.bigger==='level','bigger names one of the two levers or a tie, got '+lv.bigger);
+ }
+
+ /* baseline and delta: no change reads d 0, nothing is stored by this file itself */
+ const base=riseBase();
+ const delta0=riseDelta(rBlocked,base);
+ near(delta0.d,0,1e-9,'no change since the baseline reads a delta of 0, got '+delta0.d);
+ const noBase=riseDelta(rBlocked,null);
+ ok(noBase.has===false&&noBase.from===null,'with no baseline the height still reads and the from mark is absent');
+}
+
 g('36c · intention is what was said against what was done, and no charge');
 /* The ruled model's intention (cq-unified.md B.1): 100 times did over said
    in the last seven days, null when nothing was said. A saved ritual is the
@@ -6062,6 +6297,13 @@ g('SA · Source AI hears on the rung, asks at seven, and the person leads');
  ok(srcRung(2,0,0)===7&&srcRung(3,0,0)===8&&srcRung(9,0,0)===8,'a return inside the entry is 7, three or more is 8');
  ok(srcRung(1,1,0)===9,'an earlier entry at the same seat is 9');
  ok(srcRung(2,1,0)===10&&srcRung(1,2,0)===10,'back across entries and again here, or two earlier, is 10');
+ /* STRUCTURAL, THE FOURTH INPUT, 27 October. A seat held inside a hyper
+    complex the person's own charge is actually driving reaches the same
+    rung a real earlier commit would, 9, but never invents a mention and
+    never reaches 10, which stays reserved for a real repeated entry. */
+ ok(E.srcRung(1,0,2,true)===9,'a seat structurally active reaches 9 on one mention');
+ ok(E.srcRung(0,0,0,true)===0,'structural never invents a mention; nothing heard is still 0');
+ ok(E.srcRung(1,0,2,false)===2,'without structural evidence the old ladder is unchanged');
  /* checked against a known case: the probe that set this found the lexicon's
     median word alone reads over 7 on the sniffer's own scale */
  const one=srcHear('i was furious');
@@ -6117,6 +6359,38 @@ g('SA · Source AI hears on the rung, asks at seven, and the person leads');
  const nmC='I am not afraid, still shaking';
  ok(E.clauseFloor(nmC,E.normMap(nmC),E.normMap(nmC).s.indexOf('shaking'))===-1,
   'a comma is not a boundary, so this finds none before "shaking" in a text with no sentence end at all');
+}
+
+g('SA2 · srcHyperSeats, which seats a driven hyper complex actually sits on');
+/* 27 October, his words: Source AI should recognise a seat the field already
+   knows is load bearing for a pattern running across several addresses, the
+   same way it recognises a seat it has heard before, without ever naming
+   the complex. Driven the same way the adjacent Grandiosity and Psychopathy
+   tests already drive a real hyper complex: every Root address pushed hard
+   enough to form saboteurs, which pair into complexes, which pair into a
+   hyper complex, through the real compute(), never a hand built object. */
+{
+ const {S,W,buildSoul,LAW_UNSET,SINAMES,compute,srcHyperSeats,srcHear,K2BAND}=E;
+ SINAMES.forEach(l=>{LAW_UNSET[l]=false;});
+ buildSoul();
+ const before=srcHyperSeats(compute());
+ ok(Object.keys(before).length===0,'nothing driven, nothing active, got '+JSON.stringify(before));
+ W.filter(n=>n.b==='Root').forEach(n=>{S.addr[n.i]=9; S.charge[n.cf]=9;});
+ const r=compute();
+ ok((r.hys||[]).length>0,'driving every Root address this hard forms at least one real hyper complex');
+ const active=srcHyperSeats(r);
+ ok(active.root===true,'the seat actually driven is in the active set, got '+JSON.stringify(active));
+ Object.keys(active).forEach(function(k){
+  ok(Object.keys(K2BAND).indexOf(k)>=0,'every key is a real seat code, never a complex name, got "'+k+'"');});
+ /* the seat's own entry reaches rung 9 off one mention plus structural
+    evidence, where one mention alone would floor far lower */
+ const heard=srcHear('I felt afraid',null,active);
+ ok(heard.top&&heard.top.seat==='root'&&heard.top.structural===true&&heard.top.rung===9,
+  'one real mention, structurally active, reaches 9, got '+JSON.stringify(heard.top));
+ /* a seat that is active but the person said nothing about is never asked:
+    mentions still gates the top of srcRung */
+ const silent=srcHear('',null,active);
+ ok(silent.unread===true,'nothing typed is still nothing heard, structural evidence never invents a mention');
 }
 
 g('GR · a word that names shame reads as shame, at the seat it sits at');
@@ -9111,7 +9385,7 @@ g('PCT · one formula and one registry for every score a person reads (engine/pc
   put('weight',x.SQm,who); put('weight',x.darkV,who); x.maskRing.forEach(m=>put('weight',m.w,who));
   [].concat(x.sabs,x.cxs,x.hys,x.sups).forEach(o=>{put('chain',o.w,who); if(o.score)put('match',o.score,who);});
   put('pole',x.poleMean,who); put('overshoot',x.JQ,who); put('distortion',x.dist,who);
-  put('integrity',x.Ig,who); put('intention',x.It,who);
+  put('integrity',x.Ig,who); put('lawseat',x.It,who);
   put('vitality',x.X,who); put('awareness',x.Y,who); put('will',x.Z,who); put('radiance',x.radiance,who);
   put('energy',(x.X+x.Y+x.Z)/3,who); put('pull',x.PULL,who);
   E.archExprAll().forEach(v=>put('archetype',v,who));
@@ -9130,7 +9404,7 @@ g('PCT · one formula and one registry for every score a person reads (engine/pc
  ok(out.length===0,'no roster reading falls outside the range its kind claims, '+out.length+' do'
   +(out.length?': '+out.slice(0,6).join('; '):''));
  const engineKinds=['cq','dq','expression','law','charge','installed','held','weight','chain','pole','overshoot',
-  'distortion','integrity','intention','vitality','awareness','will','radiance','energy','pull','archetype','axis'];
+  'distortion','integrity','lawseat','vitality','awareness','will','radiance','energy','pull','archetype','axis'];
  const unseen=engineKinds.filter(k=>!seen[k]);
  ok(unseen.length===0,'and every kind the engine computes was actually measured on the roster, missing '+JSON.stringify(unseen));
  /* A CAP HOLDS THE ROSTER IT WAS MEASURED ON: at least 99 in a hundred of its

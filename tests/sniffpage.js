@@ -48,11 +48,19 @@ async function open(browser, w, h) {
   const p = await cx.newPage();
   p.errs = []; p.on('pageerror', e => p.errs.push(String(e && e.message || e)));
   await p.goto(FILE, { waitUntil: 'load' }); await booted(p);
-  await p.evaluate(() => { setTab(TAB.STORY); render(); });
+  /* THIS FILE READS THE WRITE BOX'S OWN LAYER, round of 28 October: the
+     Journal is conversation only now, so #sthl and #sttext only render in a
+     crisis (STV.crisis, ui/crisis.js). What this file holds, the struck
+     marks over denied and other-person words, is still real there, so it
+     is reached the way crisis reaches it rather than measured on a box
+     that is gone from the ordinary flow. */
+  await p.evaluate(() => { STV.chat = false; setTab(TAB.STORY); render(); });
   await p.waitForTimeout(400);
   p.cx = cx; return p;
 }
-const type = async (p, t) => { await p.fill('#sttext', t); await p.waitForTimeout(300); };
+const type = async (p, t) => { await p.evaluate(t => {
+ ST_TEXT = t; ST_PARSED = ST_TEXT.trim() ? parseStory(ST_TEXT) : null; stRefresh(); }, t);
+ await p.waitForTimeout(300); };
 
 /* the page as a person sees it, and the engine's own lists beside it. The
    engine's quotes are cut from the letters typed through normMap's own map,

@@ -106,7 +106,12 @@ function lockSees(k){ return planSees(lockPlan(),k,lockGift()); }
    switch: the key kept the rung's old name when the owner gave the word
    Character to the whole of it, 23 October, because a key is identity */
 const LOCK_OF_LAYER={saboteurs:'sab',complexes:'cx',hyper:'hy',character:'sup',
- sab:'sab',cx:'cx',hy:'hy',sup:'sup',masks:'mask',mask:'mask',registers:'reg',reg:'reg'};
+ sab:'sab',cx:'cx',hy:'hy',sup:'sup',masks:'mask',mask:'mask',registers:'reg',reg:'reg',
+ /* the Kundalini's computation is real (engine/rise.js, 27 October); its
+    screen is not built yet, so SIGHT still carries it built:false and
+    sightRows() still leaves it off the tiers page. This entry only readies
+    lockFor('kund') for the control a future screen will need. */
+ kund:'kund'};
 function lockFor(layer){ return LOCK_OF_LAYER[layer]||null; }
 /* which gate a pattern's kind belongs to, for a list that mixes the four */
 function lockKind(kind){ return LOCK_OF_LAYER[kind]||null; }
@@ -220,6 +225,8 @@ function sightR(r){
  v.cxs=planSees(pl,'cx',gf)?r.cxs:[];
  v.hys=planSees(pl,'hy',gf)?r.hys:[];
  v.sups=planSees(pl,'sup',gf)?r.sups:[];
+ /* the named super complex is that rung, so it locks with it */
+ v.psychopathy=planSees(pl,'sup',gf)?r.psychopathy:null;
  v.mask=v.sups[0]||v.hys[0]||v.cxs[0]||v.sabs[0]||null;
  /* the layers the plan cannot see, so a renderer can say why a list is empty
     instead of saying nothing is running */

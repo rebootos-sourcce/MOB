@@ -328,7 +328,14 @@ function compute(){
  W.forEach(n=>{
   /* a closed law at this band lets charge sit deeper. integrity is local. */
   const relief=bandIg(n.b)/10;
-  n.held = n.cf?clamp(S.charge[n.cf]*n.susc*(1-relief*0.42),0,10):0;
+  /* THE NAMED ADDRESS CARRIES MORE THAN ITS SHARE, 26 October. S.addr is
+     engine/sniff.js's applyStoryAddr, additive on top of the fetter spread
+     below it, never in place of it: an address nobody's words ever named
+     reads exactly as it did before this line existed. One the words did
+     name reads at least that much heavier, whatever its own susceptibility
+     would otherwise have given it. */
+  const base = S.charge[n.cf]+(S.addr[n.i]||0);
+  n.held = n.cf?clamp(base*n.susc*(1-relief*0.42),0,10):0;
   /* the coherent opposite installed at the same address. an address with the
      opposite in does not merely read zero, it conducts. */
   n.rep  = n.cf?clamp((S.replace[n.cf]||0)*(0.72+0.28*relief),0,10):0;
@@ -458,9 +465,37 @@ function compute(){
     w:fam.reduce((a,p)=>a+p.w,0)/fam.length,ang:meanAng(fam.map(p=>p.ang))});});
  hys.sort((a,b)=>b.w-a.w);
  const sups=[];
+ /* the super complex's own gate, named once so the named one below keeps it */
+ const SUP_W=5.6;
  for(let i=0;i+1<hys.length;i+=2){const parts=hys.slice(i,i+2),w=(parts[0].w+parts[1].w)/2;
-  if(w>=5.6)sups.push({kind:'sup',nm:parts[0].nm+' / '+parts[1].nm,parts,w,
+  if(w>=SUP_W)sups.push({kind:'sup',nm:parts[0].nm+' / '+parts[1].nm,parts,w,
    ang:meanAng(parts.map(p=>p.ang))});}
+ /* THE ONE NAMED SUPER COMPLEX, ruled 26 October: Psychopathy is the
+    Grandiosity hyper complex and the Predatory one together, "a very
+    particular archetype", and not any two hyper complexes that happen to sit
+    next to each other. The pairing above takes whatever is adjacent in
+    weight, so whether it pairs these two is a coincidence of rank, and this
+    asks for the two families by name, wherever they rank. It is never pushed
+    into sups: that would move dist, the mask and every count of the rung for
+    a field the generic rule did not pair, and conflate two mechanics.
+
+    The same weight gate as the rung it is said to sit on. Two hyper
+    complexes under SUP_W are not a super complex anywhere in this engine,
+    and a false Psychopathy costs more than a missed one, so the named one is
+    held to the generic bar and never to a lower one. An overshoot family is
+    not its family: Grandiosity overshot is a different hyper complex.
+
+    Same shape as a sup, heaviest first as the pairing above orders its
+    parts, so where both rules pair the two, the names agree; inSups says
+    whether they did. The pair is read off the DESCENT entry, never typed. */
+ const psyD=DESCENT.filter(d=>d.nm==='Psychopathy')[0]||null;
+ const psyParts=psyD&&psyD.pair?hys.filter(h=>!h.over&&psyD.pair.indexOf(h.nm)>=0):[];
+ const psyW=psyParts.length===2?(psyParts[0].w+psyParts[1].w)/2:0;
+ const psychopathy=(psyParts.length===2&&psyW>=SUP_W)
+  ?{kind:'sup',nm:psyParts[0].nm+' / '+psyParts[1].nm,named:psyD.nm,parts:psyParts,w:psyW,
+    ang:meanAng(psyParts.map(p=>p.ang)),
+    inSups:sups.some(s=>s.parts.indexOf(psyParts[0])>=0&&s.parts.indexOf(psyParts[1])>=0)}
+  :null;
  /* the five masks a reading is taken on. Professional is hidden, round NE. */
  const maskRing=MASKS_READ.map(m=>{
   const seg=W.filter(n=>m.b.indexOf(n.b)>=0);
@@ -538,6 +573,23 @@ function compute(){
  /* each law as answered, plus what releases at its seat have added since. See
     LIFT_R above. It is still a law score and nothing else. */
  const CQ=cqSum();
+ /* LAWSQ, 27 October. His own reading: the 21 laws, on their shadow side,
+    are one term that produces a shadow by construction, CQ's own complement.
+    Not named SQ: SQ is already the 112 addresses' own array, below, load-
+    bearing in PULL and Vitality, and a second thing by that name would be
+    the exact defect CODE_ALIAS exists to prevent, two things sharing one
+    word. lawSQ is read-only arithmetic, not a fit: `100-CQ`, always, by the
+    same identity that makes 21 answers over 210 and their complement over
+    210 sum to 100 every time. It stands beside DQ, never in place of it.
+    DQ is what the 112 addresses measure a person is actually carrying;
+    lawSQ is what their own law answers imply alone, nothing else counted.
+    A real release that clears carried charge moves DQ and never lawSQ,
+    proven by simulation before this landed: forcing DQ itself to equal
+    this number made 2,000 of 2,000 real releases invisible, since CQ never
+    reads an address. Gated the same way tier is: an incomplete intake
+    would read a lawSQ building toward false certainty off answers that
+    have not landed, the same shape of bug `unread` already exists to stop. */
+ const lawSQ=complete?clamp(100-CQ,0,100):null;
  /* THE SEESAW. Expression is CQ times what the shadow leaves, and this is
     where Integrity times Intention divided by Resistance actually runs:
     Integrity is the plank (CQ itself), Intention and Resistance are the two
@@ -659,7 +711,7 @@ function compute(){
     something true to point at. */
  const carrying=W.filter(n=>n.sq>0).sort((a,b)=>b.sq-a.sq);
  return {loaded,carrying,heaviest:carrying[0]||null,
-  sabs,cxs,hys,sups,maskRing,DQ,SQ,PULL,EX,Rz,vf:_vf,SQm,poleMean,JQ,excess,
+  sabs,cxs,hys,sups,psychopathy,maskRing,DQ,lawSQ,SQ,PULL,EX,Rz,vf:_vf,SQm,poleMean,JQ,excess,
   FAM_POLE,dist,Ig,It,seats:seatRows(),CQ,answered,complete,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
   outward,organized,gov,
   will,drag,mask,darkB,darkV,root,rootsIn,weakL,balance:balance()};

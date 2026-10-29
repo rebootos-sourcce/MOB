@@ -11,10 +11,11 @@
    What it holds, each read off the SAVED record after a reload and never
    only off a live variable:
 
-     the Story page keeps a half written story across a reload, and Clear
-     and Commit each take it off the record;
+     the Story page keeps a half written entry across a reload, and an
+     unsent reply in the reply line keeps its own draft the same way; Clear
+     and Commit each take both off the record;
      with a store that refuses writes, Commit never says "Committed", says
-     plainly that nothing reached the record, leaves the words in the box,
+     plainly that nothing reached the record, leaves the words in the entry,
      and a second press asks the browser again rather than writing the story
      twice; once the store works, the same press lands one entry;
      with a store that refuses writes, a finished release says it was not
@@ -27,7 +28,14 @@
    the release, and that line was the commit's: saveYou's debounced write
    fired 400 ms after Commit, inside the probe's next step. Measured here by
    reading each message the moment it is written.
-   ============================================================ */
+
+   THE JOURNAL IS CONVERSATION ONLY NOW, round of 28 October: the plain
+   write box (#sttext) does not render in the ordinary flow any more, words
+   reach the entry through the reply line (#stcin) and a send, and the reply
+   line carries its own draft (CURP.story.reply) the same way the entry
+   carries its (CURP.story.draft), both through stDraft in
+   atuned_src/ui/storyui.js. What this file checks did not change; how the
+   words get into the entry did. */
 const { chromium } = require('playwright');
 const path = require('path');
 const FILE = path.resolve(process.env.ATUNED_FILE || path.join(__dirname, '..', 'source.html'));
@@ -40,7 +48,14 @@ const ok = (c, m) => { if (c) { pass++; console.log('  ok   ' + m); } else { fai
 
 const booted = async p => { await p.waitForFunction(() => document.body.classList.contains('booted'), null, { timeout: 20000 }).catch(() => {}); };
 async function story(p) { await p.evaluate(() => setTab(TAB.STORY)); await p.waitForTimeout(300); }
-const box = p => p.evaluate(() => { const t = document.getElementById('sttext'); return t ? t.value : null; });
+/* box reads the reply line's own draft, the unsent words; entryText reads
+   the whole entry the conversation has built so far, sent but not yet
+   committed. They are two different drafts now (CURP.story.reply and
+   CURP.story.draft) and this file holds both. */
+const box = p => p.evaluate(() => { const t = document.getElementById('stcin'); return t ? t.value : null; });
+const entryText = p => p.evaluate(() => typeof ST_TEXT === 'string' ? ST_TEXT : null);
+/* a reply sent the way a person sends one, Enter in the reply line */
+const send = async (p, t) => { await p.fill('#stcin', t); await p.press('#stcin', 'Enter'); await p.waitForTimeout(200); };
 const saved = p => p.evaluate(() => { try { return JSON.parse(localStorage.getItem(PKEY) || '[]'); } catch (e) { return null; } });
 const own = recs => (recs || [])[0] || null;
 /* the store refuses the record's key, the way a full disk or a blocked store does */
@@ -65,20 +80,31 @@ require('./net.js').guardBrowser(browser);
   await p.goto('file://' + FILE + '?dev=1', { waitUntil: 'load' }); await booted(p);
   console.log(`\n=== the first writes tell the truth, at ${W} by ${H} ===`);
 
-  console.log('\n-- the Story draft --');
+  console.log('\n-- the entry\'s draft, sent but not committed --');
   await story(p);
-  await p.fill('#sttext', HALF); await p.waitForTimeout(900);
-  ok(own(await saved(p)) && own(await saved(p)).story.draft === HALF, 'a half written story is on the saved record');
+  await send(p, HALF);
+  await p.waitForTimeout(900);
+  ok(own(await saved(p)) && own(await saved(p)).story.draft === HALF, 'a sent but uncommitted entry is on the saved record');
   await p.reload({ waitUntil: 'load' }); await booted(p); await story(p);
-  ok((await box(p)) === HALF, 'and is back in the box after a reload');
+  ok((await entryText(p)) === HALF, 'and is back in the entry after a reload');
   await p.click('#stclear'); await p.waitForTimeout(200);
   ok(own(await saved(p)) && own(await saved(p)).story.draft === undefined, 'Clear takes it off the saved record at once');
   await p.reload({ waitUntil: 'load' }); await booted(p); await story(p);
-  ok((await box(p)) === '', 'and the box is empty after a reload');
+  ok((await entryText(p)) === '', 'and the entry is empty after a reload');
+
+  console.log('\n-- the reply line\'s own draft, never sent --');
+  await p.fill('#stcin', HALF); await p.waitForTimeout(900);
+  ok(own(await saved(p)) && own(await saved(p)).story.reply === HALF, 'an unsent reply is on the saved record');
+  await p.reload({ waitUntil: 'load' }); await booted(p); await story(p);
+  ok((await box(p)) === HALF, 'and is back in the reply line after a reload');
+  await p.click('#stclear'); await p.waitForTimeout(200);
+  ok(own(await saved(p)) && own(await saved(p)).story.reply === undefined, 'Clear takes it off the saved record at once');
+  await p.reload({ waitUntil: 'load' }); await booted(p); await story(p);
+  ok((await box(p)) === '', 'and the reply line is empty after a reload');
 
   console.log('\n-- Commit with a store that refuses --');
   const n0 = (own(await saved(p)) || { story: { entries: [] } }).story.entries.length;
-  await p.fill('#sttext', STORY); await p.waitForTimeout(700);
+  await send(p, STORY); await p.waitForTimeout(500);
   await refuse(p, true); await clearLog(p);
   await press(p, '#stapply'); await p.waitForTimeout(700);
   let L = await log(p);
@@ -87,7 +113,7 @@ require('./net.js').guardBrowser(browser);
   ok(L.length && /would not save/.test(L[L.length - 1].m) && /still in the box/.test(L[L.length - 1].m),
     'it says the browser would not save and the words are still in the box');
   ok(!L.some(x => /Error\.$/.test(x.m)), 'no line ends on "Error."');
-  ok((await box(p)) === STORY, 'the words are still in the box');
+  ok((await entryText(p)) === STORY, 'the words are still in the entry');
   const mem1 = await p.evaluate(() => CURP.story.entries.length);
   await press(p, '#stapply'); await p.waitForTimeout(300);
   ok((await p.evaluate(() => CURP.story.entries.length)) === mem1, 'a second press asks again and does not write the story twice');
@@ -182,8 +208,14 @@ require('./net.js').guardBrowser(browser);
      close the page inside 100 ms with no unload prompt, open a new page in the
      same context, and read the record that came back. A fresh context, so the
      blank store has no record to hide a missing write, and no init script, which
-     can leave the page on a store Chromium never connected (tests/seed.js). */
-  console.log('\n-- the Story draft, a page closed inside the half second --');
+     can leave the page on a store Chromium never connected (tests/seed.js).
+
+     THIS IS THE REPLY LINE'S OWN CASE NOW, round of 28 October: a reply
+     typed into #stcin and never sent is the one box an ordinary session
+     leaves words in, so it is the one that most needs to survive a tab
+     closed mid debounce. Same timer, same flush, CURP.story.reply beside
+     CURP.story.draft. */
+  console.log('\n-- the reply line\'s draft, a page closed inside the half second --');
   const cx2 = await browser.newContext({ viewport: { width: W, height: H } });
   await cx2.route(/workers\.dev/, r => r.abort('failed'));
   const open2 = async () => {
@@ -193,14 +225,14 @@ require('./net.js').guardBrowser(browser);
     return q;
   };
   const q1 = await open2(); await story(q1);
-  await q1.fill('#sttext', HALF);
+  await q1.fill('#stcin', HALF);
   const t0 = Date.now(); await q1.close({ runBeforeUnload: false });
   const gone = Date.now() - t0;
   const q2 = await open2();
-  const back = await q2.evaluate(() => CURP && CURP.story ? CURP.story.draft : null);
-  ok(back === HALF, 'a page closed ' + gone + ' ms after the last key keeps the sentence: ' + JSON.stringify(back));
+  const back = await q2.evaluate(() => CURP && CURP.story ? CURP.story.reply : null);
+  ok(back === HALF, 'a page closed ' + gone + ' ms after the last key keeps the unsent reply: ' + JSON.stringify(back));
   await story(q2);
-  ok((await box(q2)) === HALF, 'and it is back in the box');
+  ok((await box(q2)) === HALF, 'and it is back in the reply line');
   await q2.click('#stclear'); await q2.close();
 
   /* the same half second on the first run's story step, kept on the walk */

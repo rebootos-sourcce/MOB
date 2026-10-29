@@ -266,9 +266,15 @@ console.log('\n=== the six masks, as pixels on the figure ===');
   return {ents:((CURP&&CURP.story&&CURP.story.entries)||[]).length,lit:BMG.masks.map(k=>({nm:k.nm,n:bmMaskLit(k,r)}))};});
  ok(none.ents===0&&none.lit.every(x=>x.n===0),'a profile with no stories lights no mask, '
   +none.ents+' entries, '+none.lit.map(x=>x.nm+' '+x.n).join(', '));
+ /* THE JOURNAL IS CONVERSATION ONLY NOW, round of 28 October: STV.chat is
+    permanent, so #sttext never renders in the ordinary flow and a story
+    is sent through the reply box and then committed, same as a person
+    does. #stapply still finishes the entry; only how the words reach
+    ST_TEXT changed. */
  const commit=async t=>{
   await sp.evaluate(t=>{loadP(0);setTab(TAB.STORY);stRender();
-   const ta=document.getElementById('sttext');ta.value=t;ta.dispatchEvent(new Event('input',{bubbles:true}));},t);
+   const ci=document.getElementById('stcin');ci.value=t;ci.dispatchEvent(new Event('input',{bubbles:true}));
+   srcChatSend();},t);
   await sp.waitForTimeout(60);
   await sp.evaluate(()=>{const b=document.getElementById('stapply');if(b&&!b.disabled)b.click();});
   await sp.waitForTimeout(60);};
@@ -980,8 +986,15 @@ const kb=await page.evaluate(()=>{
   if(!document.querySelectorAll('.kb-row').length){empty.push(k);return;}
   walked++;
   {const cards=[...document.querySelectorAll('.kb-row')];
-   const ps=cards.map(c=>{const a=c.querySelector('svg path');
-    return a?a.getAttribute('d'):null;});
+   /* A MARK IS NOT ALWAYS A PATH, AND THE GLYPH IS NOT THE FIRST SVG IN THE
+      ROW. crBadge draws two svgs: .crb-a, the charge ring, identical shape
+      on every row; .crb-g, the glyph itself. The dual-pole open state draws
+      its glyph as two bare circles with no <path>, so reading the row's
+      first <path> happened to land on the glyph for every other state by
+      accident, found none for open, and called a real, visible mark blank.
+      Read the glyph svg by its own class, whatever shapes it is made of. */
+   const ps=cards.map(c=>{const a=c.querySelector('.crb-g svg');
+    return a?a.innerHTML:null;});
    /* THE MARK ON A ROW IS COMPOSED OF TWO CHANNELS and one of them is colour.
       Counting the path alone counts half the mark and would have reported the
       fetters deck as seven marks when the seat is what separates a Root Fear
@@ -1110,11 +1123,21 @@ ok(kb.opened===kb.walked,'every section opens a drill, got '+kb.opened
 
    Measured on the running deck: the pair takes the distinct marks from 7 to
    40 and the worst collision from 21 rows to 10. Asserted as a floor, because
-   a new axis is a reason to have more marks and never a reason to fail. */
+   a new axis is a reason to have more marks and never a reason to fail.
+
+   RECALIBRATED 28 OCTOBER. That 40 described the old per-node icon design.
+   The locked dual-pole design (section 106 of the look-dev ruling) draws one
+   of five live-state glyphs per address instead, which is a deliberate
+   shrink in mark variety for a clearer reading, not a regression, and the
+   stale floor of 30 failed every run against a design it was never measuring.
+   Read off a real browser on James, the heaviest roster persona, with the
+   row's own glyph svg (.crb-g svg), not the first path in the row: the ring
+   arc drawn behind it is also an svg and has no path, which is a second,
+   separate bug this same recalibration fixed, see the mark reader above. */
 {const want={law:21, mask:5, sab:6, harm:27, fetter:9};
  /* mask was 6, round NE: Professional hidden and not calculated, so the
     deck reads five distinct mask marks now, not a regression. */
- const floor={addr:30};
+ const floor={addr:18};
  Object.keys(floor).forEach(k=>{const m=kb.marks[k];
   ok(m&&m.pair>=floor[k],'the '+k+' deck composes its mark, '
    +(m?m.pair:0)+' distinct seat and glyph pairs against a floor of '+floor[k]
@@ -4241,7 +4264,7 @@ if(tiers.closed4){
 }
 ok(tiers.called&&tiers.called.what==='checkout'&&tiers.called.tier==='two',
  'a press goes through planOpen to the same seam as Move to, with its own tier: '+JSON.stringify(tiers.called));
-ok(/On every tier, free included/.test(tiers.same)&&/your 112 addresses/i.test(tiers.same)&&/rerunning anything already open/i.test(tiers.same),
+ok(/On every tier, free included/.test(tiers.same)&&/your 108 somatic addresses and 4 field anchors/i.test(tiers.same)&&/rerunning anything already open/i.test(tiers.same),
  'what every tier gets is said once, across the top, from PLAN_ALWAYS');
 ok(!/the whole reading/i.test(tiers.same+tiers.text),
  'and the whole reading is not on every tier any more, so no row says it');
@@ -4338,8 +4361,11 @@ ok(tiers.small===0,'every control on the tiers meets the 44 pixel floor, '+tiers
    tabs.findIndex(t=>new RegExp(nm,'i').test(t))); await pa.waitForTimeout(600);};
  /* the journal page's door reads Discover since 23 October */
  await go('Discover');
- await pa.fill('#sttext','I was humiliated in the meeting and I said nothing. '
-  +'My chest went tight and I felt ashamed the rest of the day.');
+ /* conversation only now, round of 28 October: the reply box and a send */
+ await pa.evaluate(()=>{const ci=document.getElementById('stcin');
+  ci.value='I was humiliated in the meeting and I said nothing. '
+   +'My chest went tight and I felt ashamed the rest of the day.';
+  ci.dispatchEvent(new Event('input',{bubbles:true})); srcChatSend();});
  await pa.waitForTimeout(450);
  await pa.evaluate(()=>{const e=document.getElementById('stapply');if(e)e.click();});
  await pa.waitForTimeout(700);
@@ -5914,7 +5940,13 @@ console.log('\n=== the story lights what the engine read, once ===');
   marks:typeof marksOf==='function', norm:typeof normMap==='function'}));
  ok(reach.marks,'marksOf reaches the page from the engine half');
  ok(reach.norm,'and so does normMap');
+ /* THE HIGHLIGHT LAYER IS THE WRITE BOX'S OWN, STILL REAL CODE, round of 28
+    October: the Journal is conversation only now, so this box only renders
+    in a crisis (STV.crisis, ui/crisis.js). What this whole gate holds is
+    still true of that box, so it is reached the same way crisis reaches
+    it, by STV.chat=false, rather than measured on a box that is gone. */
  const lit=reach.marks?await st.evaluate(async()=>{
+  STV.chat=false;
   setTab(TAB.STORY);
   await new Promise(r=>setTimeout(r,320));
   const read=(tag,text)=>{
@@ -6048,7 +6080,11 @@ console.log('\n=== a sentence does not disappear at a pause, round NU ===');
      sentence, the real API's own shape once a result is final */
   rec.onresult({resultIndex:1,results:{0:seg('I felt insecure about it.'),
    1:seg('Then I spoke up anyway.'),length:2}});
-  const out=ST_TEXT; rec.stop(); return out;});
+  /* TALK FILLS THE REPLY NOW, NOT THE ENTRY, round of 29 October: dictation
+     goes where typing goes, SRC_CDRAFT, so the same accumulation this test
+     holds is read off the reply line and not off ST_TEXT, which dictation no
+     longer touches at all. See the ruling at stMic in ui/storyui.js. */
+  const out=SRC_CDRAFT; rec.stop(); return out;});
  ok(/insecure/.test(heard)&&/spoke up/.test(heard),
   'both sentences survive the pause between them, got '+JSON.stringify(heard));
  await st.close();
@@ -6681,7 +6717,8 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  for(const t of ['My chest is tight in every meeting and I have told no one.',
                  'I felt nothing when we let forty people go and that frightens me.']){
   await fp.evaluate(t=>{loadP(0);setTab(TAB.STORY);stRender();
-   const ta=document.getElementById('sttext');ta.value=t;ta.dispatchEvent(new Event('input',{bubbles:true}));},t);
+   const ci=document.getElementById('stcin');ci.value=t;ci.dispatchEvent(new Event('input',{bubbles:true}));
+   srcChatSend();},t);
   await fp.waitForTimeout(60);
   await fp.evaluate(()=>{const b=document.getElementById('stapply');if(b&&!b.disabled)b.click();});
   await fp.waitForTimeout(60);}

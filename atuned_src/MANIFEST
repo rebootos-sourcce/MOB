@@ -61,6 +61,7 @@ engine/codes.js
 engine/registers.js
 engine/export.js
 engine/charfield.js
+engine/rise.js
 engine/ritex.js
 engine/archexpr.js
 engine/showonly.js

@@ -1,16 +1,22 @@
 #!/usr/bin/env node
 /* ============================================================
-   TALK, IN A REAL BROWSER. PLAN.md section C item 4.
+   THE CONVERSATION, IN A REAL BROWSER. PLAN.md section C item 4, carried
+   forward round of 28 October: the Journal is conversation only now, STV.chat
+   is forced true and the Talk button that used to toggle it is gone (his
+   words: "this needs to be a two-way conversation between me and the
+   source"). What this file held about the toggle itself (Talk off on
+   arrival, pressing it to swap the box for the line, pressing it again to
+   swap back and keep what was typed) is gone with the button: there is
+   nothing left to toggle, so nothing here presses one.
    NODE_PATH=/opt/node22/lib/node_modules node tests/srcchat.js
    SHOTS=dir  also writes the screenshots a person looks at
 
-   Talk draws the Source AI loop as a thread. Nothing in the engine changed
-   for it, so what this holds is the page: that a reply really is appended to
-   the one entry, on a line of its own, so the reading is the reading the box
-   would give; that the thread shows one question and never asks the same why
-   twice; that Move on still ends the asking; and that a committed
-   conversation keeps exactly what the box keeps, a kind and a seat per
-   question and never a question's words.
+   What still holds, because none of it was ever about the toggle: that a
+   reply really is appended to the one entry, on a line of its own, so the
+   reading is the reading a single block of text would give; that the thread
+   shows one question and never asks the same why twice; that Move on still
+   ends the asking; and that a committed conversation keeps exactly what the
+   entry keeps, a kind and a seat per question and never a question's words.
 
    CHECKED AGAINST TWO KNOWN BAD COPIES FIRST, the standing rule. One page
    whose send joins a reply with a space, where the first turn's "not"
@@ -37,7 +43,10 @@ const booted = async p => {
   await p.waitForTimeout(120); };
 const shot = async (p, nm) => { if (SHOTS) { await p.mouse.move(1, 1); await p.waitForTimeout(1800); await p.screenshot({ path: path.join(SHOTS, nm) }); console.log('  shot  ' + nm); } };
 
-/* the thread as a person sees it, and the state behind it */
+/* the thread as a person sees it, and the state behind it. box and pressed
+   read for what is no longer there (#sttext, #sttalk): on arrival and
+   through the whole run both must read absent, since the plain box and its
+   toggle only exist during a crisis now, never in this file's own flow. */
 const look = p => p.evaluate(() => {
   const rows = [...document.querySelectorAll('#stsrc .src-tn')];
   return {
@@ -50,7 +59,7 @@ const look = p => p.evaluate(() => {
     move: srcTurn(STR.heard, { typed: !!ST_TEXT.trim(), passed: SRC_PASSED }).move,
     pass: !!document.getElementById('srcpass'),
     box: !!document.getElementById('sttext'), line: !!document.getElementById('stcin'),
-    pressed: (document.getElementById('sttalk') || { getAttribute() { return null; } }).getAttribute('aria-pressed'),
+    toggle: !!document.getElementById('sttalk'),
     ts: [...document.querySelectorAll('#stsrc .src-tw')].map(s => +s.getAttribute('data-t')),
     puls: [...document.querySelectorAll('#stsrc .src-puls')].map(e => ({ an: getComputedStyle(e).animationName, d: e.getAttribute('d') || '', disp: getComputedStyle(e).display })),
     said: (document.getElementById('srcsay') || {}).textContent || ''
@@ -70,9 +79,10 @@ async function open(browser, w, h, opt) {
 
 /* the conversation every check below walks: a negation that must not reach
    across a turn, a seat that comes back across turns until it is asked
-   about, and an answer to that ask that must not raise a second one */
+   about, and an answer to that ask that must not raise a second one. The
+   conversation is the Journal's only state now, so there is no toggle to
+   press first; a is the state the moment the page opens. */
 async function talk(p, nm) {
-  await p.click('#sttalk'); await p.waitForTimeout(250);
   const a = await look(p);
   if (nm) await shot(p, nm);
   await say(p, 'I did not sleep');
@@ -99,7 +109,6 @@ require('./net.js').guardBrowser(browser);
         ST_TEXT = base + (base ? ' ' : '') + v; SRC_CHAT.push({ w: 'me', a: a, b: ST_TEXT.length, t: v });
         cin.value = ''; ST_PARSED = parseStory(ST_TEXT); stRefresh(); return true; }; });
     /* the line calls srcChatSend by name when Enter lands, so this is the one it reaches */
-    await p.click('#sttalk'); await p.waitForTimeout(200);
     await say(p, 'I did not sleep'); await say(p, 'afraid all night.');
     const b = await look(p);
     ok(!(b.top && b.top.m === 1 && b.top.n === 0), 'the boundary check catches a space join: top ' + JSON.stringify(b.top));
@@ -119,12 +128,10 @@ require('./net.js').guardBrowser(browser);
     await p.cx.close();
   }
 
-  console.log('\n=== Talk at 1600 by 1000 ===');
+  console.log('\n=== the conversation at 1600 by 1000 ===');
   const p = await open(browser, 1600, 1000);
-  const r0 = await look(p);
-  ok(r0.pressed === 'false' && r0.box && !r0.line, 'Talk is off on arrival and the journal box is the box');
   const { a, b, c, d } = await talk(p, 'talk-1600-open.png');
-  ok(a.pressed === 'true' && !a.box && a.line, 'Talk pressed: the reply line replaces the box');
+  ok(!a.toggle && !a.box && a.line, 'the reply line is there from the start, with no toggle and no write box to press it from');
   const open1 = await p.evaluate(() => srcOpen());
   ok(a.rows.length === 1 && a.now === 1 && a.rows[0].say.indexOf(open1) === 0, 'an empty entry opens on the opener, one row: ' + JSON.stringify(a.rows[0] && a.rows[0].say.slice(0, 60)));
   ok(b.text === 'I did not sleep\nafraid all night.', 'each reply is appended to the one entry on its own line: ' + JSON.stringify(b.text));
@@ -170,38 +177,37 @@ require('./net.js').guardBrowser(browser);
   ok(!/You wrote|It lands|Cool\.|What are we writing|Why there/.test(g.json), 'no line Source AI said is anywhere on the record');
   ok(g.chat === 1 && g.text === '', 'the thread goes with the entry: one row, the opener, on the next');
 
-  /* the same entry written in the box asks the same thing and keeps the same */
+  /* the same entry written straight into ST_TEXT asks the same thing and
+     keeps the same, which is the point of the gate and nothing about the
+     toggle: asked is read off the finished text, not off how many turns
+     the conversation took to reach it. The plain box only renders during a
+     crisis now (crisisTalk, ui/crisis.js), so this reaches it the same way
+     a crisis does, STV.chat=false, rather than through the ordinary flow. */
   {
     const q = await open(browser, 1600, 1000);
+    await q.evaluate(() => { STV.chat = false; setTab(TAB.STORY); render(); });
+    await q.waitForTimeout(200);
     await q.fill('#sttext', g.x.text.split('\nThen I left.')[0].split('\nAfraid, afraid')[0]);
     await q.waitForTimeout(300);
     await q.click('#srcpass'); await q.waitForTimeout(150);
     await q.fill('#sttext', g.x.text); await q.waitForTimeout(300);
     await q.click('#stapply'); await q.waitForTimeout(600);
     const box = await q.evaluate(() => { const es = CURP.story.entries; return es[es.length - 1].asked; });
-    ok(JSON.stringify(box) === JSON.stringify(g.x.asked), 'the same words through the box keep the same asked: ' + JSON.stringify(box));
-    ok(!q.errs.length, 'no page errors in the box run: ' + q.errs.join(' | '));
+    ok(JSON.stringify(box) === JSON.stringify(g.x.asked), 'the same words written straight into the entry keep the same asked: ' + JSON.stringify(box));
+    ok(!q.errs.length, 'no page errors in that run: ' + q.errs.join(' | '));
     await q.cx.close();
   }
 
-  /* off and on again: the box holds the replies, and text added there is a turn */
-  await say(p, 'I did not say anything.');
-  await p.click('#sttalk'); await p.waitForTimeout(250);
-  const h1 = await p.evaluate(() => document.getElementById('sttext').value);
-  ok(h1 === 'I did not say anything.', 'Talk off puts the box back holding the entry: ' + JSON.stringify(h1));
-  await p.fill('#sttext', h1 + '\nMy jaw went tight.'); await p.waitForTimeout(200);
-  await p.click('#sttalk'); await p.waitForTimeout(250);
-  const h2 = await look(p);
-  ok(h2.rows.filter(x => x.cls === 'src-tn-me').map(x => x.say).join('|') === 'I did not say anything.|My jaw went tight.', 'what was added in the box is the next turn');
-  await p.click('#sttalk'); await p.waitForTimeout(200);
-  await p.fill('#sttext', 'I said nothing at all.\nMy jaw went tight.'); await p.waitForTimeout(200);
-  await p.click('#sttalk'); await p.waitForTimeout(250);
-  const h3 = await look(p);
-  ok(h3.rows.filter(x => x.cls === 'src-tn-me').map(x => x.say).join('|') === 'I said nothing at all.\nMy jaw went tight.', 'an earlier turn edited in the box starts the thread again from the entry');
+  /* THE TOGGLE ROUND TRIP IS GONE WITH THE TOGGLE, round of 28 October. This
+     used to hold that pressing Talk off put the thread's words back in the
+     plain box, that text added there became the next turn, and that editing
+     an earlier turn in the box restarted the thread from the entry. None of
+     that has a door any more: there is one box, the reply line, and it is
+     never swapped for another. */
   ok(!p.errs.length, 'no page errors at 1600: ' + p.errs.join(' | '));
   await p.cx.close();
 
-  console.log('\n=== Talk at 390 by 844, reduced motion ===');
+  console.log('\n=== the conversation at 390 by 844, reduced motion ===');
   {
     const q = await open(browser, 390, 844, { reducedMotion: 'reduce' });
     await talk(q);
@@ -211,10 +217,11 @@ require('./net.js').guardBrowser(browser);
       line: (() => { const r = document.getElementById('stcin').getBoundingClientRect(); return { top: r.top, h: r.height, w: r.width }; })(),
       send: (() => { const r = document.getElementById('stcsend').getBoundingClientRect(); return { w: r.width, h: r.height }; })() }));
     ok(fit.sw <= fit.w, 'no sideways scroll at 390: ' + fit.sw + ' of ' + fit.w);
-    /* the row that first put Record on a line of its own, then squeezed Talk to sixteen pixels */
-    const row = await q.evaluate(() => { const t = document.getElementById('sttalk').getBoundingClientRect(), m = document.getElementById('stmic').getBoundingClientRect();
-      return { tt: Math.round(t.top), mt: Math.round(m.top), tw: Math.round(t.width), th: Math.round(t.height) }; });
-    ok(row.tt === row.mt && row.tw >= 44 && row.th >= 44, 'Talk and Record share the row, and Talk is tap sized: ' + JSON.stringify(row));
+    /* Talk is gone, round of 28 October: Record no longer shares its row
+       with a second button, it stands on its own, and is still tap sized */
+    const mic = await q.evaluate(() => { const r = document.getElementById('stmic').getBoundingClientRect();
+      return { w: Math.round(r.width), h: Math.round(r.height) }; });
+    ok(mic.w >= 44 && mic.h >= 44, 'Record is tap sized on its own: ' + JSON.stringify(mic));
     ok(fit.send.w >= 44 && fit.send.h >= 44 && fit.line.h >= 44, 'the send and the line are tap sized: ' + JSON.stringify(fit));
     await q.evaluate(() => { const t = document.querySelector('#stjr'); t.scrollIntoView(); });
     await shot(q, 'talk-390-ask.png');

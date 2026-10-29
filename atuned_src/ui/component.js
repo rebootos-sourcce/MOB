@@ -916,7 +916,7 @@ const QICON_D={
     shoot: the thing that grows back when the weight comes off. */
  vitality:'M12 21v-8M12 13c0-3.4 2.4-6 5.6-6.4C17.2 10 15 12.6 12 13'
    +'M12 13c0-2.8-2-5-4.7-5.4C7.7 10.4 9.6 12.4 12 13M9 21h6',
- /* AWARENESS. Intention read against distortion. An aperture, because
+ /* AWARENESS. Law reach read against distortion. An aperture, because
     awareness in this product is the width of what gets through, and the eye
     is already spoken for by perception. */
  awareness:'M12 3.5a8.5 8.5 0 110 17 8.5 8.5 0 010-17M12 3.5L17.8 9.3'

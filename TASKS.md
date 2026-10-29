@@ -8049,6 +8049,15 @@ person reasons their way to a number instead of feeling one.
 Editorial and narrative own it. No ambiguous question, anywhere, ever.
 *Small once W1 and W2 are settled.*
 
+**W4. Crisis mode still shows the old written box.** `ui/crisis.js`, `ui/storyui.js`
+Found by audit, 29 October. `crisisTalk()` reverts to the pre-chat written-box
+view (`sttext`, the full reasoning paragraph, "Answer in the journal, or leave
+it") instead of the conversation box the rest of the Journal now uses, because
+its branch only ran when `STV.chat` could be false and `STV.chat` is always
+true now. Ruled 29 October, his words: "Ignore crisis mode. Put that in the
+backlog. We're not talking about it anymore." Backlogged, not started.
+*Small to medium. Touch nothing safety relevant, only which markup renders.*
+
 ## X. The sniffer.
 
 **X1. Get closer to the root pattern.** `engine/sniff.js`

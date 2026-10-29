@@ -75,7 +75,7 @@ function stRender(){
     whole story and then refused it at Commit, which is a control that looks
     like it works until the moment it does not. */
  var show=showOnly();
- var out='<div class="st-flow" id="stflow" data-focus="'+STV.focus+'">'
+ var out='<div class="st-flow'+(STV.dash?'':' st-simple')+'" id="stflow" data-focus="'+STV.focus+'">'
   /* ---- the write column: the journal, with Source AI inside it ---- */
   +'<div class="st-colw">'
   +'<div class="st-pan st-jr'+(STV.chat?' st-chat':'')+'" id="stjr">'
@@ -101,30 +101,26 @@ function stRender(){
      the question box is idle and holds lit while it reads, and it sits beside
      the word it was always beside. */
   +'<div class="st-hd">'
-   +stMark('j','Journal','journal','','<span class="src-live" aria-hidden="true"></span>')
-   /* TALK, PLAN.md C4, his words: "add a button where I can just have a
-      conversation back and forth." It wears Record's own pill, so every
-      lighting that already restyles Record restyles this, and it is a toggle
-      with aria-pressed the way the bank is, because it changes how the column
-      is shown and nothing about what is written. The mark is two rings and
-      the wire between them, the Field's own thread, never the bubble the
-      question button already draws: one drawing per named thing. The margin
-      takes the free space, so it and Record stand together at the right
-      edge where Record stood alone. See srcThread for what it opens. */
-   +(show?'':'<button class="st-mic st-talk" id="sttalk" type="button" aria-pressed="'+!!STV.chat+'" '
-   +'title="Write it as a conversation, one turn at a time.">'
-   +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
-   +'<circle cx="6" cy="6.5" r="3"/><circle cx="18" cy="17.5" r="3"/>'
-   +'<path d="M8.4 8.4Q16.5 7 15.6 15.6"/></svg>'
-   +'<span>Talk</span></button>'
-   +'<button class="st-mic'+(ST_LISTEN?' on':'')+'" id="stmic" type="button" '
-   +'title="'+(ST_LISTEN?'Recording. Press to stop and keep what it heard.'
-     :'Record what happened out loud instead of typing it. Recording sends the audio to your browser\'s speech service; typing does not leave this device.')+'">'
+   /* THE JOURNAL MARK IS GONE FROM THIS HEADER, round of 29 October, his
+      words: "the icon for journal and the text journal remove." Talk takes
+      its place on the left; Dashboard keeps the right. stMark('j',...) is
+      still the Discover door's own name elsewhere (TABDEF, the section
+      itself), only this panel's own repeated word is cut. */
+   +'<div class="st-hdbtns">'
+   /* TALK, THE ONLY CONTROL ON THE LEFT, round of 29 October. His words:
+      "when I press dashboard these should be... the talk button move it to
+      the left side... this is simply just a talk button, where I can have a
+      normal two-way conversation with source AI." Still the same control
+      that starts or stops the microphone (stMic); the word changed, not the
+      wiring. The clock and the dot are unchanged. */
+   +(show?'':'<button class="st-mic'+(ST_LISTEN?' on':'')+'" id="stmic" type="button" '
+   +'title="'+(ST_LISTEN?'Listening. Press to stop and keep what it heard.'
+     :'Talk instead of typing. What you say goes to your browser\'s speech service; typing does not leave this device.')+'">'
    +'<span class="st-dot"></span>'
    +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
    +'<rect x="9" y="3" width="6" height="11" rx="3"/>'
    +'<path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg>'
-   +'<span>'+(ST_LISTEN?'Recording':'Record')+'</span>'
+   +'<span>'+(ST_LISTEN?'Listening':'Talk')+'</span>'
    /* THE CLOCK, ROUND LV. His words: "I want the time showing how long my
       recording is." mm:ss, in the button itself so it reads as one control
       rather than two things to track, and gone the moment recording is,
@@ -134,7 +130,23 @@ function stRender(){
       that shows it runs. */
    +(ST_LISTEN?'<span class="st-mictime" id="stmictime" aria-hidden="true">'
      +stMicFmt(stMicElapsed())+'</span>':'')
-   +'</button>')+'</div>'
+   +'</button>')
+   +'<span class="src-live" aria-hidden="true"></span>'
+   /* THE DASHBOARD DOOR, ON THE RIGHT, round of 29 October. His own 20
+      September ruling already named what that word means in this product:
+      "THE AVATAR IS THE DASHBOARD" (TASKS.md 0o), the avatar reading across
+      every tool at once. The Avatar already exists and already renders
+      (TAB.INTAKE, nm:'Avatar', renderAvatar() in ui/avatarui.js). Pressing
+      it no longer opens that tab: it toggles Imprints and Release open or
+      shut beside the conversation, simple on landing, his words "when I
+      land on this page it starts off in simple mode" and "if I press it
+      dashboard icon is lit up." stStoryDashToggle, bound below. */
+   +(show?'':'<button class="st-dash'+(STV.dash?' on':'')+'" id="stdash" type="button" title="Show Imprints and Release beside the conversation">'
+   +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">'
+   +'<rect x="3.5" y="3.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.4"/>'
+   +'<rect x="3.5" y="13.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.4"/></svg>'
+   +'<span>Dashboard</span></button>')
+   +'</div></div>'
   /* SOURCE AI AND THE JOURNAL'S MENU CHANGED PLACES, round LO, his words: "I
      want you to swap the main journal menu with the source AI question." The
      column read Source AI, then the journal's own top line with Record on it,
@@ -164,8 +176,17 @@ function stRender(){
      .src-comb. It is a sibling of #stsrc and not inside it, for the reason
      the halo is: srcPaint rewrites #stsrc on every key, and the floor is
      painted once a render. srcLock puts every loop in here on one clock. */
-  +(show?showNote('story','st-show'):'<div class="st-glow"><div class="st-pe" id="stsrc" aria-label="Question"></div>'
-  +srcComb()+'</div>'
+  /* THE EYEBROW IS GONE, round of 29 October, his words: "get rid of that
+     text that says talk." The Talk button named on the left is the label
+     now; Source AI's own line carries no second name above it. */
+  /* THE GRADIENT BAR UNDER SOURCE AI IS GONE, round of 29 October. A second,
+     separate rainbow element from the per-word floor strip cut 28 October
+     (srcComb's seat-colour gradient, not the trace canvas): missed twice
+     before a photo made it obvious it sat right over the reply box. His
+     words both times were "get rid of those rainbow colours," and this is
+     the one that was still there. srcComb() itself stays defined, in case a
+     later screen wants it, only this call is cut. */
+  +(show?showNote('story','st-show'):'<div class="st-glow"><div class="st-pe" id="stsrc" aria-label="Question"></div></div>'
   /* THE FETTERS LIGHT UP IN THE PERSON'S OWN SENTENCE.
 
      The sniffer already names every word it is reading and which seat that
@@ -195,7 +216,11 @@ function stRender(){
     +crisisReachBtn('st-crxline')+'</div>':'')
   +(STV.chat
    ?'<div class="src-cmp"><textarea id="stcin" class="src-cin" rows="2" spellcheck="false" '
-    +'aria-label="Your reply" placeholder="Write back. Enter sends.">'+esc(SRC_CDRAFT)+'</textarea>'
+    /* THE PLACEHOLDER IS GONE, round of 29 October, his words: "get rid of
+       right back enter sends," heard off "Write back. Enter sends." The
+       field still has its screen-reader name; nothing visible stands in it
+       empty. */
+    +'aria-label="Your reply">'+esc(SRC_CDRAFT)+'</textarea>'
     +'<button type="button" class="src-new" id="stcsend" aria-label="Send" title="Send">'
     +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6.5l5.5 5.5-5.5 5.5"/></svg>'
     +'</button></div>'
@@ -288,9 +313,13 @@ function stRender(){
   +'<div class="st-pan st-ls" id="stls" aria-label="Imprints, listed">'
    +'<div class="st-lshd" id="stlshd"></div><div class="st-lsb" id="stimps"></div></div>'
   +'</div>'
-  /* ---- the release column. It keeps the id its rail section had. The
-     analytics preview is last in it, closed, see stAnaHtml. ---- */
-  +'<div class="st-colx"><div class="st-rl" id="strel" aria-label="Release"></div>'+stAnaHtml()+stLawHtml()+'</div>'
+  /* ---- the release column. It keeps the id its rail section had. ----
+     ANALYTICS PREVIEW AND LAWS NOTICED ARE GONE FROM THIS COLUMN, round of
+     29 October, his words: "get rid of the analytics preview button... get
+     rid of the laws notice that." stAnaHtml() and stLawHtml() stay defined,
+     only the calls here are cut; nothing else in the product reached them
+     through this column. */
+  +'<div class="st-colx"><div class="st-rl" id="strel" aria-label="Release"></div></div>'
   +'</div>'
   /* WHAT A SCREEN READER HEARS IS WHAT SOURCE AI SAYS, ONCE. The column is
      rewritten on every keystroke, so a live column would read itself aloud
@@ -311,6 +340,7 @@ function stRender(){
     the resize observer, the first layout ran at a height of nought and every
     lane sprang in from above the chart on each arrival at the tab. */
  stSize();
+ ST_ACTIVE=typeof srcHyperSeats==='function'?srcHyperSeats(compute()):null;
  stRead(); stSortPaint();
  srcLock(h.querySelector('.st-glow')); srcLock(h.querySelector('#stjr .src-live'));
  var ta=document.getElementById('sttext');
@@ -337,9 +367,15 @@ function stRender(){
  if(ap)ap.onclick=function(){if(STV.chat)srcChatSend(); return stCommit();};
  var mic=document.getElementById('stmic');
  if(mic)mic.onclick=stMic;
- var tk=document.getElementById('sttalk');
- if(tk)tk.onclick=function(){STV.chat=!STV.chat; stRender();
-  var f=document.getElementById(STV.chat?'stcin':'sttext'); if(f)f.focus();};
+ /* DASHBOARD TOGGLES, ON THIS SCREEN, round of 29 October. His words: "when
+    I land on this page it starts off in simple mode... if I press it
+    dashboard icon is lit up." It no longer leaves the Journal for the
+    Avatar tab; it shows or hides the real Imprints and Release columns
+    already built beside it, nothing invented. stRender() repaints the
+    whole flow, so the hidden columns' own content stays current under
+    .st-flow.dash-simple's display:none the moment Dashboard opens them. */
+ var dash=document.getElementById('stdash');
+ if(dash)dash.onclick=function(){STV.dash=!STV.dash; stRender();};
  srcChatWire();}
 
 /* ============================================================
@@ -347,8 +383,15 @@ function stRender(){
    sorted, which column has the room, which list is up, and whether the bank
    is open. Kept across a return to the tab, never saved.
    ============================================================ */
-var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:false,law:false,
- unsaved:null,draftT:null,draftFail:false,crisis:false};
+/* CHAT IS ALWAYS TRUE NOW, round of 28 October, his words: "the focus needs
+   to be on two-way conversation for the journal ... this needs to be a
+   two-way conversation between me and the source." Nothing sets it false
+   again: the Talk button that used to toggle it is gone, see stWire. */
+/* DASHBOARD STARTS OFF, round of 29 October, his words: "when I land on this
+   page, it starts off in simple mode." Imprints and Release are real panels,
+   not removed, only shut until Dashboard is pressed; see stStoryDashToggle. */
+var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:true,law:false,
+ unsaved:null,draftT:null,draftFail:false,crisis:false,dash:false};
 /* the one width the page changes shape at is the one the product stacks its
    columns at, so the Story cannot be in three columns while the rails are
    already one. */
@@ -439,6 +482,13 @@ function stBank(){
    picture and the score came to disagree. The mark still runs back over its
    no and is struck, and the bar is still dashed. */
 var STR={t:null,marks:[],toks:[],heard:null};
+/* THE SEATS A DRIVEN HYPER COMPLEX ACTUALLY SITS ON RIGHT NOW, read off the
+   committed profile, never the live draft: compute() only ever reflects
+   S and W as they stand after the last commit, so this is computed once a
+   full stRender(), not on every key in stRefresh()/stRead(), which would
+   cost a real compute() a keystroke for a number that cannot have changed
+   since the last commit anyway. srcHyperSeats lives in engine/sourceai.js. */
+var ST_ACTIVE=null;
 function stMarks(t,p){
  if(!p||typeof marksOf!=='function')return [];
  var marks=marksOf(t,p), nm=normMap(t), modAt={};
@@ -466,7 +516,7 @@ function stRead(){
  var t=ST_TEXT, ents=(CURP&&CURP.story&&CURP.story.entries)||[];
  var marks=stMarks(t,ST_PARSED);
  STR={t:t,marks:marks,toks:marks.toks||(t?(t.match(/[A-Za-z']+/g)||[]).map(function(w){return {w:w};}):[]),
-  heard:srcHear(t,srcPrior(ents))};}
+  heard:srcHear(t,srcPrior(ents),ST_ACTIVE)};}
 /* the addresses this entry reaches, or the last committed entry's.
    THE ONES THE WORDS NAMED COME FIRST, and .named says how many of the head of
    the list they are, 17 October. parseStory reaches two kinds of address: the
@@ -542,7 +592,7 @@ function stCommit(){
  if(k&&!again){
   /* the field is about to change and until now there was no way back */
   undoPush('committing the story');
-  applyStory(ST_TEXT); verpApply(ST_TEXT); leanApply(ST_TEXT);
+  applyStory(ST_TEXT); applyStoryAddr(ST_TEXT); verpApply(ST_TEXT); leanApply(ST_TEXT);
   /* THE CHARGE HAS TO REACH THE MIRROR, OR THE NEXT VISIT TAKES IT BACK OUT.
      applyStory writes S and pSave writes the record, and neither writes
      PEOPLE[0], which is the table loadP(0) reads the person's field back out
@@ -578,6 +628,10 @@ function stCommit(){
      and a half written story waiting on the Story page is not its to clear. */
   var wasDraft=CURP.story.draft===ST_TEXT;
   if(wasDraft)delete CURP.story.draft;
+  /* Commit always sends whatever is in the reply line first (see ap.onclick
+     below), so by the time an entry is pushed SRC_CDRAFT is already empty;
+     this only clears what a reload might still be holding from before. */
+  if(CURP.story.reply!==undefined)delete CURP.story.reply;
   stDraftStop();
   /* THE COMMIT SAID "Committed" WHETHER OR NOT ANYTHING WAS SAVED, pass 4,
      probe 6. pSave's answer was dropped, so with a store that refused every
@@ -614,8 +668,14 @@ function stCommit(){
     with Run on it: widening it there would push Run off the first screen,
     which is the one thing layout H exists to stop. */
  STV.focus=stPhone()?'write':'release';
- /* the crisis line has said what the box is for, and the box has been used */
- STV.crisis=false;
+ /* the crisis line has said what the box is for, and the box has been used.
+    crisisTalk forced STV.chat false on the way in, deliberately, so a crisis
+    is met in the plain box and not inside a chat bubble; nothing used to set
+    it back since the Talk button did that by hand. With Talk gone the
+    conversation is the Journal's only normal state, so a finished crisis
+    entry returns to it here rather than staying stuck in the write box with
+    no way back. */
+ STV.crisis=false; STV.chat=true;
  toYou();syncCh();if(typeof stRender==='function')stRender();render();
  /* A STORY KEPT WITH STARS IN IT SAYS SO, round QR. The person may choose
     not to type the hidden words, and the entry is still theirs; it is kept
@@ -641,12 +701,20 @@ function stCommit(){
    words that were just deleted; only the write waits, half a second after
    the last change, as obDraft does. A worked example is not a record and is
    never written. Commit and Clear take it off.
-   ============================================================ */
+
+   THE REPLY LINE CARRIES THE SAME PROMISE NOW, round of 28 October. Before
+   this a reply typed into #stcin but never sent lived only in SRC_CDRAFT, a
+   variable, so closing the tab mid-reply lost it the way a half written
+   story used to. It is the one timer below and the one write, on
+   CURP.story.reply beside CURP.story.draft, so a reload or a tab closed
+   inside the half second keeps whichever box had words in it, or both. */
 function stDraft(){
  if(!CURP||!CURP.story||(typeof S!=='undefined'&&S.who!==0))return;
- var v=(ST_TEXT&&ST_TEXT.trim())?ST_TEXT:null;
- if((CURP.story.draft||null)===v)return;
- if(v===null)delete CURP.story.draft; else CURP.story.draft=v;
+ var v=(ST_TEXT&&ST_TEXT.trim())?ST_TEXT:null,
+  r=(typeof SRC_CDRAFT==='string'&&SRC_CDRAFT.trim())?SRC_CDRAFT:null, moved=false;
+ if((CURP.story.draft||null)!==v){ if(v===null)delete CURP.story.draft; else CURP.story.draft=v; moved=true; }
+ if((CURP.story.reply||null)!==r){ if(r===null)delete CURP.story.reply; else CURP.story.reply=r; moved=true; }
+ if(!moved)return;
  stDraftStop(); STV.draftT=setTimeout(stDraftSave,500);}
 function stDraftStop(){ if(STV.draftT){clearTimeout(STV.draftT); STV.draftT=null;} }
 /* a refusal is said once until a save lands again, because a line on every
@@ -663,11 +731,14 @@ function stDraftSave(){
 if(typeof addEventListener==='function')['pagehide','visibilitychange'].forEach(function(ev){
  addEventListener(ev,function(){ if(STV.draftT)stDraftSave(); });});
 /* back into the box when the box is empty, which is a reload or a commit of
-   somebody else's words through stCommit */
+   somebody else's words through stCommit. The two halves are independent: a
+   reload can find words waiting to be sent, words already sent and not yet
+   committed, both, or neither. */
 function stDraftBack(){
- if(ST_TEXT||!CURP||!CURP.story||typeof CURP.story.draft!=='string')return;
- if(typeof S!=='undefined'&&S.who!==0)return;
- ST_TEXT=CURP.story.draft; ST_PARSED=ST_TEXT.trim()?parseStory(ST_TEXT):null;}
+ if(!CURP||!CURP.story||(typeof S!=='undefined'&&S.who!==0))return;
+ if(!ST_TEXT&&typeof CURP.story.draft==='string'){
+  ST_TEXT=CURP.story.draft; ST_PARSED=ST_TEXT.trim()?parseStory(ST_TEXT):null;}
+ if(!SRC_CDRAFT&&typeof CURP.story.reply==='string')SRC_CDRAFT=CURP.story.reply;}
 
 /* refresh only what the text moves, so typing never loses the caret */
 function stRefresh(){
@@ -793,8 +864,13 @@ var SRC_PASSED=false;
 /* ROUND OT, his words: "I want the output to be a little bit more casual. So I
    was saying, what would you like to write about today? Say, what are we
    writing about today?" The round JS wording above is replaced by the one he
-   first offered at round GO, at his own request. */
-var SRC_OPEN='What are we writing about today?';
+   first offered at round GO, at his own request.
+   SUPERSEDED, look-dev reconciliation, section 109, his words with a Page
+   mock-up in front of him: "What are we talking about today? That's new.
+   That's what we're using." A later, explicit, in-context ruling over the
+   same line -- not a guess, not drift. Round OT's reasoning kept above
+   rather than deleted, in case it needs to be reopened. */
+var SRC_OPEN='What are we talking about today?';
 function srcOpen(){
  var w=(typeof CURP!=='undefined'&&CURP&&CURP.who)||{};
  var f=capName(String(w.first||'').trim().split(/\s+/)[0]);
@@ -1040,9 +1116,16 @@ function srcGauge(top){
  return '<div class="src-row"><span class="src-gauge" style="--c:'+seatCol(top.band)+'">'
   +'<span>Next question</span>'+srcPips(top.rung,seatCol(top.band))
   +'<span class="src-seat">'+esc(top.band)+'</span></span></div>';}
+/* NOT "NOTHING READ". Round OY, 1 October, caught by his own screenshot: the
+   panel read "53 words read, 1 kept" beside this line reading "Nothing read
+   yet, so nothing is asked" on the same entry, which is the house's own empty
+   state wording (V19, atuned-voice SKILL.md) borrowed for a state where it is
+   false. Words were read; no seat was found in them. Those are different
+   facts and V19 is reserved for the first one (nothing written at all, see
+   the literal strings beside SRC_DNONE below, which are that true case).
+   This says the true one instead. */
 function srcNone(){
- return 'Nothing read yet, so '+(SRC_DNONE?'there is nothing of yours to ask from':'nothing is asked')
-  +'. Say what your body did, and where.';}
+ return 'Nothing placed yet, so nothing is asked. Say what your body did, and where.';}
 function srcPaint(){
  var h=document.getElementById('stsrc'); if(!h)return;
  var heard=STR.heard||srcHear(ST_TEXT,null);
@@ -1078,13 +1161,13 @@ function srcPaint(){
     an ask, which has its own question and Move on, and not after Move on,
     which is final for the entry. A press repaints and puts the focus back on
     the button pressed, so the next press is one key away. */
- var acts='<div class="src-acts">'
-   +'<button type="button" class="src-new" id="srcnew" aria-label="Another question" title="Another question">'
-   +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4.5h-4.5"/></svg>'
-   +'</button>'
-   +'<button type="button" class="src-new" id="srcdyn" aria-label="A question from what you wrote" title="A question from what you wrote">'
-   +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 5h15v10.5H10l-4.5 4v-4h-1z"/><path d="M10 8.6l-1.1 2.6M14.2 8.6l-1.1 2.6"/></svg>'
-   +'</button></div>';
+ /* THE TWO PRESSES ARE GONE, round of 29 October, his words: "get rid of the
+    another question button... get rid of a question from what you wrote
+    button because we have rules for the way source AI behaves. We don't
+    need these anymore." srcNextQ() and srcDyn() stay defined and reachable
+    (press() below still wires #srcnew/#srcdyn if either ever returns), only
+    the buttons that called them are cut. */
+ var acts='';
  var q=turn.move==='open'||turn.move==='listen'?srcQuestion():ask;
  if(turn.move==='open')
   o+='<div class="src-ask">'+srcLand('src-open',q)+acts+'</div>';
@@ -1364,11 +1447,13 @@ function srcChatSend(){
  return true;}
 /* the reply line. Enter sends and Shift and Enter is a new line, the way a
    conversation box works everywhere else; a draft is kept across a repaint
-   of the page, and Commit counts it as something to commit. */
+   of the page and across a reload, the same promise stDraft keeps for the
+   entry itself (see the block above it), and Commit counts it as something
+   to commit. */
 function srcChatWire(){
  var cin=document.getElementById('stcin'); if(!cin)return;
  var ap=document.getElementById('stapply');
- cin.oninput=function(){SRC_CDRAFT=cin.value; if(ap)ap.disabled=!ST_PARSED&&!cin.value.trim();};
+ cin.oninput=function(){SRC_CDRAFT=cin.value; stDraft(); if(ap)ap.disabled=!ST_PARSED&&!cin.value.trim();};
  cin.onkeydown=function(e){if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault(); srcChatSend();}};
  cin.onfocus=function(){stFocus('write');};
  if(ap&&SRC_CDRAFT.trim())ap.disabled=false;
@@ -1400,7 +1485,15 @@ function srcThread(turn,heard,cur,acts,why){
   else if(i===last)o+=srcThreadNow(r,turn,heard,acts,why);
   o+='</li>';});
  return o+'</ol>';}
-/* the one live Source AI row, in the panel's own markup for each move */
+/* the one live Source AI row, in the panel's own markup for each move.
+   NO GAUGE AND NO WHY HERE ANY MORE, round of 28 October, his words: "I
+   don't want to see the questions written out, this needs to be a two-way
+   conversation between me and the source." A labelled "Why" paragraph and a
+   rung gauge beside "Next question" are a readout glued to the side of the
+   conversation, not a thing either side would say. What Source AI actually
+   says is still exactly r.q, word for word; the reasoning that used to
+   print here still runs and still decides what gets asked (srcWhy, srcLog),
+   it is only no longer printed as its own block. */
 function srcThreadNow(r,turn,heard,acts,why){
  var o='';
  if(turn.move==='ask')
@@ -1411,11 +1504,8 @@ function srcThreadNow(r,turn,heard,acts,why){
   o+='<p class="src-q">Cool.</p><p class="src-note">Nothing more asked in this entry.</p>';
  else{
   o+='<div class="src-ask">'+srcLand('src-open'+(r.key.indexOf('say|')===0?' quiet':''),r.q)+acts+'</div>';
-  if(r.key.indexOf('say|')===0&&heard.top)o+=srcGauge(heard.top);
   if(SRC_DNONE&&turn.move==='open')
    o+='<p class="src-note">Nothing read yet, so there is nothing of yours to ask from. Write a line first.</p>';}
- if(why)o+='<div id="srcwhy" style="margin-top:12px"><span class="pm-eye">Why</span>'
-  +'<p class="src-open quiet" style="margin:2px 0 0">'+esc(why)+'</p></div>';
  return o;}
 /* THE WIRES ARE LAID AFTER THE ROWS ARE. A row's height is only known once it
    is on the page, and a viewBox stretched to fit would stretch the pulse with
@@ -1683,10 +1773,12 @@ function stDraw(){
     [-1,1].forEach(function(sg){var yy=y+h*.5+sg*(h*.18+pos*gp);g.beginPath();g.moveTo(q.x0,yy);g.lineTo(q.x1,yy);
      g.strokeStyle=rgba(c,sa);g.lineWidth=1;g.stroke();});}}});
  g.save();g.beginPath();g.rect(q.x0,0,q.x1-q.x0+2,H);g.clip();
- /* the floor: every word read, a tick. The ones it kept are in their colour */
+ /* THE FLOOR IS GONE, round of 28 October, his words: "get rid of those
+    rainbow colours on the bottom, those don't do anything." It ticked every
+    word read, kept ones in their seat colour, under the lanes this canvas
+    still draws. dx and tw stay: the bars below still measure a word's
+    width by them. */
  var dx=stDx(),tw=Math.max(1.5,dx-(dx>8?4:2));
- STR.toks.forEach(function(o,j){var x=stXOf(j);if(x<q.x0-8)return;
-  g.fillStyle=o.m?rgba(o.m.bn?stCol(o.m.bn):STC.acc,1):rgba(dim,.45);g.fillRect(x,H-STC.FLOOR+6,tw,o.m?9:6);});
  /* the bars */
  var pts=[];
  Object.keys(STC.items).forEach(function(k){var it=STC.items[k],m=it.m,g1=Math.max(0,it.g);if(g1<.01||m.t0<0)return;
@@ -1739,9 +1831,7 @@ function stDraw(){
   if(placed.some(function(r){return !(x0+w<r[0]||x0>r[2]||y1<r[1]||y0>r[3]);}))return;
   placed.push([x0,y0,x0+w,y1]);g.fillStyle=p.m.aside?rgba(dim,.9):rgba(mixc(p.c,ink,.15),1);g.fillText(p.m.txt,p.x,y1);});
  var N2=STR.toks.length;if(N2){var px=stXOf(N2-1)+dx;g.fillStyle=rgba(STC.acc,.55);g.fillRect(px,q.y0,1,H-q.y0-6);}
- g.restore();
- g.fillStyle=rgba(dim,1);g.font='12px Inter,system-ui,sans-serif';g.textAlign='left';g.textBaseline='middle';
- g.fillText('every word',26,H-STC.FLOOR/2+3);}
+ g.restore();}
 function stHot(k){
  if(STV.hot===k)return; STV.hot=k; STC.dirty=true;
  document.querySelectorAll('#stimps .st-grp').forEach(function(gp){gp.classList.toggle('hot',gp.getAttribute('data-k')===k);});}
@@ -1936,19 +2026,12 @@ function stListPaint(){
  if(STV.list==='vault'){stVaultPaint(hd,box);return;}
  /* the person's own draft is not read onto a worked example's page */
  var p=showOnly()?null:ST_PARSED,n=p?p.imprints.length:0,o='';
- hd.textContent='Pending imprints, by '+ST_SORTS.filter(function(s){return s[0]===STV.sort;})[0][1].toLowerCase();
- /* THE EMPTY STATE SAYS WHAT IS TRUE. After a commit the box is empty and the
-    person has just written, so "you have not written anything yet" would be
-    the false empty state ui/imprints.js already records. */
- if(!n){
-  /* a worked example has no journal to gather from (showOnly, ruled 16
-     October), so the line does not invite writing that cannot happen */
-  box.innerHTML='<p class="st-none">'+(showOnly()?'Nothing is pending. On your own profile, what you write gathers here.'
-   :ST_TEXT.trim()
-   ?'Nothing in this entry reads as held yet. Keep writing, or write where you felt it.'
-   :(STV.lastFound.length?'Your last entry is in the field and its addresses are queued in the release. The next entry gathers here.'
-    :'You have not written anything yet. Whatever you write gets pulled apart and collected here.'))+'</p>';
-  ST_SEEN={};return;}
+ /* THE HEADING AND THE EMPTY-STATE SENTENCE ARE GONE, round of 29 October,
+    his words: "get rid of the text pending imprints by seat... you have not
+    written anything yet." The sort control above it still says which sort
+    is active; the box is simply blank until there is something to list. */
+ hd.textContent='';
+ if(!n){ box.innerHTML=''; ST_SEEN={}; return; }
  var seen={};
  STC.lm.lanes.forEach(function(l){if(!l.imps||!l.imps.length)return;var c=seatCol(l.seat),pills=[],fold={};
   /* AN AXIS NAMED IS NOT AN ADDRESS NAMED, S4 of the 9 October sniffer audit,
@@ -2080,9 +2163,11 @@ function stRelPanel(){
  var M=stRelModel(), o='';
  o+=stMark('r','Release','release','st-rlhd')
   +'<div class="st-rlmid">';
- /* The refusal stays, because with nothing held the panel would be a button
-    that does nothing and no word why. */
- if(!M.take.length)o+='<p class="st-none">Nothing is held above the line yet, so there is nothing to release.</p>';
+ /* THE SENTENCE IS GONE, round of 29 October, his words: "get rid of the text
+    that says nothing is held above the line yet." Run release still carries
+    its own disabled state with nothing to release; this panel is simply
+    blank above it until there is. */
+ if(!M.take.length){}
  else o+='<div class="st-rings">'+M.take.map(function(a){var on=ST_OFF[a.i]!==true;
    return '<button type="button" class="st-rq" data-rq="'+a.i+'" aria-pressed="'+on+'" '
     +'aria-label="'+esc(a.k+', '+a.b)+'" title="'+esc(a.k+', '+a.b)+'">'+crNode(a,'sm',{raw:'',title:''})+'</button>';}).join('')
@@ -2404,7 +2489,14 @@ function stLawPaint(){
   else o+=w.top.map(stLawRow).join('');});
  var g=STLW.gate;
  if(g&&g.intentional){
-  o+=stAnaHead('Intention','your last entry');
+  /* RENAMED FROM INTENTION, 28 October. This heading named the six gates'
+     avoidance cascade (engine/sniff.js sniffGates, engine/verp.js VERP)
+     "Intention" before the ruled Intention, said against done, had a
+     screen of its own. Two different readings sharing one word, the exact
+     defect one word per concept exists to stop. This stays named for what
+     it is: right action read from this entry's own words. The real
+     Intention is on the Instruments row (ui/ui.js). */
+  o+=stAnaHead('Right action','your last entry');
   /* NEVER THE AVOIDANCE NUMBER ALONE, the spec's own rule: it reads as a
      character flaw without the two readings it was built from beside it. */
   o+='<p style="margin:6px 0 2px">Avoidance reads <b>'+g.intentional.avoidance+' per cent</b> in your last entry, built '
@@ -2565,7 +2657,17 @@ function stMic(){
     `heard` now accumulates every FINAL result as it finalises, so a
     sentence survives a pause. `live` is only ever the current interim
     phrase, shown but never kept until the browser itself marks it final. */
- var heard=ST_TEXT;
+ /* TALK FILLS THE REPLY, IT DOES NOT WRITE THE ENTRY. Found by audit, 29
+    October: speaking wrote straight into ST_TEXT, the entry itself, past
+    SRC_CDRAFT and #stcin entirely, so a reply half typed before Talk was
+    pressed sat in the box untouched while the entry grew underneath it, and
+    Send then stitched the two together in an order nobody chose. Dictation
+    is typing by voice, so it goes where typing goes: the base it continues
+    from is whatever is already in the reply box, not the whole entry, and it
+    lands back in the same place, same as every key does (cin.oninput above).
+    Source AI reacts on Send, exactly as it does for a typed reply, never
+    mid-sentence. */
+ var heard=SRC_CDRAFT;
  /* STARS FROM THE SPEECH SERVICE ARE SAID ONCE, round QR. The browser's
     speech service filters what it counts as swearing before the words reach
     this handler, and nothing here can undo it (maskedRuns, engine/sniff.js).
@@ -2578,8 +2680,7 @@ function stMic(){
    var t=e.results[i][0].transcript;
    if(e.results[i].isFinal) fin+=t; else live+=t;}
   if(fin) heard=(heard+' '+fin).trim();
-  ST_TEXT=(heard+' '+live).trim();
-  ST_PARSED=ST_TEXT?parseStory(ST_TEXT):null; stDraft(); stRender();
+  SRC_CDRAFT=(heard+' '+live).trim(); stDraft(); stRender();
   var hid=maskedRuns(heard).length;
   if(fin&&hid>hidAt){
    status('Dictation hid '+(hid-hidAt===1?'a word':(hid-hidAt)+' words')
@@ -2590,7 +2691,40 @@ function stMic(){
  ST_REC.onerror=function(e){ST_LISTEN=false;ST_LISTEN_T0=null;stRender();
   stMicSay((e&&e.error)||'unknown');};
  try{ ST_REC.start(); ST_LISTEN=true; ST_LISTEN_T0=performance.now(); stRender();
-  status('Recording. Press again to stop.','ok'); }
+  status('Recording. Press again to stop.','ok'); stSrcSpeak(); }
  catch(err){ ST_LISTEN=false; ST_LISTEN_T0=null; stRender();
   status('Recording could not start. '+(err&&err.message?err.message:'')+
    ' Typing works.','fail'); }}
+/* SOURCE AI GREETS OUT LOUD WHEN TALK IS PRESSED, round of 29 October, his
+   words: "when I hit the talk button, I want to be greeted by the AI. So I
+   need to hear the voice." The voice is ElevenLabs and there is no other
+   (ui/release.js's own ruling, 9 October): this calls the same authVoice()
+   Release already proves works, never a browser voice. Reads whatever
+   Source AI is currently showing in #stsrc, the greeting on a fresh page or
+   the live question once one has been asked, so the line spoken is always
+   the line on screen and never typed twice.
+
+   NEEDS THE REAL SERVER, NOT A LOCAL FILE. The Worker that holds the
+   ElevenLabs key answers only its own origin (ALLOWED_ORIGIN, reboot-os
+   server/wrangler.toml), the same reason stMic() above already refuses the
+   microphone on a page opened from a file. A build opened locally cannot
+   reach it; the hosted site can, the same as Release already does. Failure
+   is reported through status(), per the house rule that a control never
+   claims success before it has it, and names the file-opened case by name
+   rather than leaving a person to guess at "failed to fetch". */
+function stSrcSpeak(){
+ var el=document.getElementById('stsrc'); if(!el)return;
+ var text=(el.textContent||'').trim(); if(!text)return;
+ if(typeof authVoice!=='function')return;
+ if(typeof isSecureContext!=='undefined'&&!isSecureContext){
+  status('Source AI cannot speak from a file. Open the hosted build to hear it.','fail'); return; }
+ authVoice(text,'frame').then(function(r){
+  if(!r||!r.ok){
+   status('Source AI could not speak that line. '+
+    (r&&r.status===429?'The voice has reached today\'s limit.':'Try again in a moment.'),'fail');
+   return;}
+  var url=URL.createObjectURL(r.blob);
+  var a=new Audio(url);
+  a.onended=function(){URL.revokeObjectURL(url);};
+  a.play().catch(function(){status('Source AI\'s voice is ready but the browser blocked playing it.','fail');});
+ });}

@@ -706,37 +706,45 @@ function poleBar(sh){
   +'<i class="kbp-hl" style="width:'+(sh?a:0)+'%"></i>'
   +'<i class="kbp-hr" style="width:'+(sh?100-a:0)+'%"></i>'
   +'<b class="kbp-mk" style="left:'+a+'%"></b></span>';}
+/* THE LOCKED DUAL-POLE DESIGN, sections 99-106 of the look-dev ruling log.
+   Flat chakra fill, one centred circle holding the bare weight (no "%"), a
+   live five-state glyph read off the same x.p this row already carries --
+   his own ruling, section 106 verbatim: "100 divided by 5. open > impaired >
+   moderately impaired > heavily impaired > blocked." Replaces the split-bar/
+   two-badge design below, which was the pre-restyle shape. The five glyphs
+   are pulled verbatim from the approved render,
+   lookdev/handoff/builds/dualpole_icon_live_five_state_20261024.html. */
+var NODE_STRIKE={
+ op:'<circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="1.9" style="fill:currentColor;stroke:none"/>',
+ im:'<circle cx="12" cy="12" r="7"/><path d="M5 12h4"/>',
+ mo:'<circle cx="12" cy="12" r="7"/><path d="M5 12h7.5"/>',
+ he:'<circle cx="12" cy="12" r="7"/><path d="M5 12h11"/>',
+ cl:'<circle cx="12" cy="12" r="7"/><path d="M5 12h15"/>'};
+function dualPoleState(p){
+ var w=Math.max(0,Math.min(100,+p||0));
+ if(w<20)return 'op'; if(w<40)return 'im'; if(w<60)return 'mo'; if(w<80)return 'he';
+ return 'cl';}
+function dualPoleStateWord(k){
+ return {op:'open',im:'impaired',mo:'moderately impaired',he:'heavily impaired',cl:'blocked'}[k]||'';}
 function kbPoleRow(x,i,seat,c,fam){
- var n=x.o, oc=seatCol('Heart'), pole=x.q!=null;
- var wl=pole?n.held:n.sq, wr=pole?n.rep:null;
- var sh=pole?poleShare(wl,wr):null;
+ var n=x.o, pole=x.q!=null;
+ var wl=pole?n.held:n.sq;
+ var state=dualPoleState(x.p);
  /* A ZERO IS NOT SAID AND A SHARE IS NOT SAID AS A SCORE. "weight 0.0" and
     "0 per cent toward Anger, 100 toward Equanimity" read a nought and a result
     to a screen reader. The label says what is held, and which way it leans.
-    Round J13. */
- var say=x.t+', '+(fam||'')+(wl>=0.05?', weight '+wl.toFixed(1):', nothing held')+'.'
-  +(pole?' Opposite, '+x.opp+(wr>=0.05?', weight '+wr.toFixed(1):', nothing installed')+'.'
-    +(sh?' Leans toward '+(sh.l>=sh.r?x.t:x.opp)+'.':''):' No opposite.');
- return '<button type="button" class="kb-row kbp" data-kbi="'+i+'" style="--c:'+c+';--oc:'+oc+'"'
+    Round J13. Kept under the new design: the live state word is added, the
+    opposite-pole reading is not, since the locked design carries one pole
+    per row, not two. */
+ var say=x.t+', '+(fam||'')+(wl>=0.05?', weight '+wl.toFixed(1):', nothing held')+', '+dualPoleStateWord(state)+'.';
+ return '<button type="button" class="kb-row kbp kbp-flat" data-kbi="'+i+'" style="--c:'+c+'"'
   +' aria-label="'+esc(say)+'">'
    +'<span class="kbp-body"><span class="kbp-top">'
-  +'<span class="kbp-side">'
-  +crBadge(seat, x.p||0, {size:'sm', bare:true, color:c,
-     glyph:glyphPath(x.ic), title:x.t+(wl>=0.05?' · '+wl.toFixed(1):'')})
   +'<span class="kb-rt"><span class="kb-rn">'+esc(x.t)+'</span>'
   +(fam?'<span class="kb-rs">'+esc(fam)+'</span>':'')+'</span>'
-  +'<span class="kb-rv'+(wl>=0.05?'':' z')+'">'+(wl>=0.05?wl.toFixed(1):'\u2013')+'</span></span>'
-  +(pole?'<span class="kbp-side kbp-o">'
-    +'<span class="kbp-w'+(wr>=0.05?'':' z')+'">'+(wr>=0.05?wr.toFixed(1):'\u2013')+'</span>'
-    +'<span class="kbp-op">'+esc(x.opp)+'</span>'
-    +crBadge('Heart', x.q||0, {size:'sm', bare:true, color:oc,
-      glyph:glyphPath(x.ic), title:x.opp+(wr>=0.05?' · '+wr.toFixed(1):'')})+'</span>'
-   :'<span class="kbp-side kbp-o"><span class="kbp-op z">no opposite</span></span>')
-  +'</span>'
-  +'<span class="kbp-line"><span class="kbp-pc">'+(sh&&sh.l?sh.l+'%':'–')+'</span>'
-  +poleBar(sh)
-  +'<span class="kbp-pc r">'+(sh&&sh.r?sh.r+'%':'–')+'</span></span>'
-  +'</span></button>';}
+  +crBadge(seat, x.p||0, {size:'sm', color:c, raw:Math.round(x.p||0),
+     glyph:NODE_STRIKE[state], title:x.t+' \u00b7 '+dualPoleStateWord(state)})
+  +'</span></span></button>';}
 /* INJECTED, because the stylesheet in the shell is held by another seat this
    round. The precedent is iqArtCss in ui/intakeui.js. Every rule that sets
    geometry names two classes, so none lays a second claim on one class name. */
@@ -781,7 +789,19 @@ function kbpCss(){
   '.ad-st{display:flex;flex-direction:column;gap:6px;padding:10px 0;border-bottom:1px solid var(--edge)}',
   '.ad-st .btn{align-self:flex-start}',
   '.ad-sts{display:flex;flex-direction:column;margin-bottom:6px}',
-  '.ad-stw{margin-top:14px}'
+  '.ad-stw{margin-top:14px}',
+  /* THE FLAT CHAKRA FILL, locked dual-pole design, sections 99-106. The
+     crb ring (crBadge's own centred circle) already draws a progress arc;
+     this forces that arc to one flat seat colour instead of a value sweep,
+     since the locked design shows a flat fill, not a progress ring. */
+  '.kbp-flat .crb .crb-a circle{stroke:var(--c) !important}',
+  /* the first circle is the static background track; the locked design
+     is one flat ring, not a track-plus-value-arc, so the track is hidden
+     and the value arc's dashoffset is forced to 0 so the full ring shows
+     solid rather than a partial sweep. */
+  '.kbp-flat .crb .crb-a circle:first-child{opacity:0}',
+  '.kbp-flat .crb .crb-a circle:last-child{stroke-dashoffset:0 !important}',
+  '.kbp-flat .kb-rn{font-weight:500}'
  ].join('\n');
  document.head.appendChild(st);}
 /* the same pair at the head of the address drill, both sides written out. */

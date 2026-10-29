@@ -551,7 +551,7 @@ function runQDrill(q){
      and the whole of resistance, with CQ divided by it. DQ is the total
      shadow on all 112 now, out of 100, and it pulls on expression. */
   h='<div class="pm-eye">Shadow weight</div><div class="ad-nm">DQ '+(r.DQ>=0.5?Math.round(r.DQ)+'%':'\u2013')+'</div>'
-   +'<div class="pm-eye">How it is built</div><p class="ad-p">The weight at all 112 addresses, summed, out of the most they can hold. '
+   +'<div class="pm-eye">How it is built</div><p class="ad-p">The weight at your 108 addresses and 4 field anchors, summed, out of the most they can hold. '
    +'It is the wash pressing in from the edge of the wheel. It leaves coherence alone and pulls on expression, and an address near 10 pulls far harder than one near 2.</p>'
    +'<div class="pm-eye">Where it sits</div><p class="ad-p">'+(r.loaded.length?'<b>'+r.loaded.length+'</b> addresses carry it. The heaviest:':'No address carries it.')+'</p>'
    +'<div class="ad-rows">'+top.map(addrRow).join('')+'</div>';}
@@ -575,13 +575,22 @@ function runQDrill(q){
 
 /* THE THREE AXES. energy read on three independent lines, each a pure
    function of quantities already in the reading. Vitality is what is left
-   after apathy and shadow weight. Awareness is intention against
-   distortion. Will is integrity through a clear segment. */
+   after apathy and shadow weight. Awareness is law reach against
+   distortion. Will is integrity through a clear segment.
+
+   RENAMED FROM INTENTION, 28 October. r.It fed this axis under that name
+   since before intention meant anything else. It still does, the arithmetic
+   is unchanged and untested against the new meaning, so it keeps its own
+   name, law reach, the same law mean read seat by seat that feeds the
+   Instruments row (ui/ui.js). The real intention, what a person said against
+   what they did, is wired in there now and does not enter this axis: that
+   would be new, unfitted arithmetic, the same shape of change already tried
+   and killed once inside CQ itself (engine/compute.js, the model 3 note). */
 function runXYZDrill(){
  var r=compute();
  var A=[['Vitality',r.X,'Solar','what is left after apathy and the shadow weight. Apathy <b>'
    +((S.charge.Apathy||0)>0?(S.charge.Apathy).toFixed(1):'\u2013')+'</b>, shadow weight <b>'+(Math.round(r.DQ)||'\u2013')+'</b>.'],
-  ['Awareness',r.Y,'3rd Eye','intention against distortion. Intention <b>'+r.It.toFixed(1)
+  ['Awareness',r.Y,'3rd Eye','law reach against distortion. Law reach <b>'+r.It.toFixed(1)
    +'</b>, distortion <b>'+r.dist.toFixed(1)+'</b>.'],
   ['Will',r.Z,'Root','integrity carried through a clear segment. Integrity <b>'+r.Ig.toFixed(1)
    +'</b>, mean depth <b>'+r.SQm.toFixed(1)+'</b>.']];
@@ -739,6 +748,15 @@ function runFetterDrill(c){
   +'. Seated at the '+esc(c.seat).toLowerCase()+'.</p>'
   +'<div class="pm-eye">Both halves</div><p class="ad-p">Held <b>'+held.toFixed(1)+'</b>. '
   +esc(c.opp)+' installed <b>'+inst.toFixed(1)+'</b>. Release empties the address, the opposite is what fills it.</p>'
+  /* THE CENTRE IS CALM, NOT A THIRD HALF. His words, 27 October, reading this
+     exact pair on screen: "the fetter state having both poles is showing two
+     things, the freeze or flight state of a nerve and then the center point
+     is neutral." One sentence, no new number: held and installed are the two
+     sides this nerve can tip toward, and level between them is where it is
+     not tipped either way. DECISIONS.md carries the full ruling and the map
+     to EX, the figure that moves with this across every nerve at once. */
+  +'<div class="pm-eye">Which way it leans</div><p class="ad-p">Held high or installed high, either one '
+  +'is this nerve pulled to that side. Level between them is the centre, where it is not pulled either way.</p>'
   +'<div class="pm-eye">It runs '+at.length+' addresses</div><div class="ad-rows">'
   +at.slice(0,10).map(addrRow).join('')
   +(at.length>10?'<div class="pm-more">and '+(at.length-10)+' more</div>':'')+'</div>';
@@ -1042,7 +1060,12 @@ function runPoleDrill(end){
      him, so the referral reaches the person it was written for. Whether the
      tier word names CQ or expression is the owner's open question 1; a
      safety referral is not a label, so it does not wait on that. */
-  var dk=darkRead(r.malig===null?null:r.malig/100,r.EX), circ=r.complete?circleAt(r.EX):null;
+  /* THE STEP IS READ OFF THE CHAIN AS THE PLAN SEES IT, 26 October. This
+     drill reads compute() whole, and a tied step (Sociopathy, Psychopathy)
+     lit from a rung the plan hides would show the rung through the side
+     door. sightR empties the hidden rungs and the step falls back to depth. */
+  var dk=darkRead(r.malig===null?null:r.malig/100,r.EX,typeof sightR==='function'?sightR(r):r),
+   circ=r.complete?circleAt(r.EX):null;
   h+='<div class="pm-eye">The blueprint, where the downward cone ends</div><div class="ad-rows">';
   BLUEPRINT.forEach(function(x){
    h+='<div class="ad-r static" title="'+esc(x.d)+'"><span class="ad-k">'
