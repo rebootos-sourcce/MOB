@@ -1,0 +1,35 @@
+{
+  "templateId": "TPL-ATUNED-GAME_LEVEL-V1",
+  "required": [
+    "id",
+    "realm",
+    "order",
+    "label",
+    "sourceRecordId",
+    "sourceStatus",
+    "challenge",
+    "knowledge",
+    "releaseCandidate",
+    "becomingCandidate",
+    "guideBehavior",
+    "successEvidence",
+    "releaseProtocolId",
+    "becomingRitualId",
+    "avatarEffect",
+    "unlock",
+    "progression",
+    "public"
+  ],
+  "genre": "INTERACTIVE_NARRATIVE_BEHAVIOR_MAP",
+  "publicRepresentation": {
+    "hideSourceFigureNames": true,
+    "noClinicalOrMoralLabels": true,
+    "display": "Challenge, Knowledge, Release, Become, Guide, Avatar Trace"
+  },
+  "sourceOwnership": {
+    "INFERNO": "Inferno archive, crosswalks and shadow trait library",
+    "PURGATORIO": "Purgatorio terraces plus vice/capacity",
+    "PARADISO": "Paradiso v0 spheres plus 12 archetype resonances"
+  },
+  "runtimeStatus": "NOT_IMPLEMENTED"
+}

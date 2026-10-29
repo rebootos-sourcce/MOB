@@ -450,8 +450,8 @@ function journeyMade(p){
    It does not touch the record it reads. It reads it through validateProfile,
    which builds a fresh object, so what is returned shares nothing with the live
    profile and a caller that edits the packet cannot move the person's data. */
-var JOURNEY_CLAIM_SEND=['soul','axes','addr','laws','seed','intake','work','gates','story',
- 'rituals','history','meter','avatar','purpose','practice','trace','summaries','journey'];
+var JOURNEY_CLAIM_SEND=['soul','axes','addr','laws','seed','intake','diagnostic3','work','gates','story',
+ 'rituals','ritualPlans','history','meter','avatar','purpose','practice','trace','summaries','journey'];
 var JOURNEY_CLAIM_NEVER=['v','id','name','created','updated','who','ui','plan'];
 var JOURNEY_CLAIM_V=1;
 function journeyClaim(record,now){

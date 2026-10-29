@@ -262,7 +262,7 @@ var RIT_TM_MAX=RIT_MIN_MAX;
 var RIT_EX={};
 function ritPlans(){
  if(!CURP||!CURP.id)return [];
- var a=ritSideAll()[CURP.id];
+ var a=Array.isArray(CURP.ritualPlans)?CURP.ritualPlans:ritSideAll()[CURP.id];
  if(!Array.isArray(a)&&!ritOwn())a=RIT_EX[CURP.id];
  if(!Array.isArray(a))return [];
  return a.filter(ritPlanOk).map(function(p){
@@ -274,7 +274,9 @@ function ritPlans(){
    throws on quota or on a blocked origin, answers false. */
 function ritPlanPut(list){
  if(!ritOwn()||typeof STORE_BOUND==='undefined'||!STORE_BOUND)return false;
- try{var all=ritSideAll(); all[CURP.id]=list; STORE.set(RIT_KEY,JSON.stringify(all)); return true;}
+ try{if(!Array.isArray(list)||list.length>256||list.some(function(p){return !ritPlanOk(p);} ))return false;
+  var all=ritSideAll(); all[CURP.id]=list; STORE.set(RIT_KEY,JSON.stringify(all));
+  CURP.ritualPlans=JSON.parse(JSON.stringify(list)); return true;}
  catch(e){return false;}}
 
 function ritToday0(){return pracDay(Date.now());}

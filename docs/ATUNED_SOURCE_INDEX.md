@@ -61,3 +61,24 @@ When a source or audit file is discovered, add its repository-relative path, rol
 - [Deep-Psychological Code-to-Registry Contract Comparison, 2026-10-22](ATUNED_DEEP_PSYCHOLOGICAL_CODE_TO_REGISTRY_CONTRACT_2026-10-22.md), exact engine template fields, validator rules, compatibility gaps, and implementation gates.
 - [Deep-Psychological Three-Pass Research Audit, 2026-10-22](ATUNED_DEEP_PSYCHOLOGICAL_THREE_PASS_RESEARCH_AUDIT_2026-10-22.md), source inventory, three-pass findings, 107 registry entries, provenance conflicts, and blocked work.
 
+
+## Purgatorio oscillation research and records (2026-10-25)
+- [Purgatorio full 23-record registry](data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json): seven terraces, seven vice expressions, seven constructive counterparts, two boundary records; four researched layers and 21 Super-Complex-compatible fields each.
+- [All 23 Purgatorio readable records](data/purgatorio/v1/PURGATORIO_23_RECORDS_READABLE.md): collected narrative and research passes; [individual records](data/purgatorio/v1/records/P01.md) also stored under `docs/data/purgatorio/v1/records/` as `P00.md`, `P01.md`–`P07.md`, `P01-V.md`–`P07-V.md`, `P01-C.md`–`P07-C.md`, and `P08.md`.
+- [Purgatorio research and integration TDD](data/purgatorio/v1/PURGATORIO_RESEARCH_AND_TDD.md): the Compass 40–60 oscillation layer and the no-new-CQ-formula contract.
+- [Purgatorio executive handoff](data/purgatorio/v1/EXECUTIVE_HANDSHAKE_START_HERE.md) and [Inferno/Compass crosswalk](data/purgatorio/v1/PURGATORIO_INFERNO_COMPASS_CROSSWALK.csv).
+- [Host-free Purgatorio reader](data/purgatorio/v1/src/purgatorio-oscillation.js) and [unit tests](data/purgatorio/v1/tests/purgatorio.test.js). These are **not loaded into the live Compass UI yet**.
+
+**Source of truth:** This branch's versioned `docs/data/purgatorio/v1/` directory. Purgatorio is an owner-approved behavioral model; no external certification gate. Production UI integration and runtime graph edges remain implementation work.
+
+## Paradiso Compass records and integrity crosswalk (2026-10-25)
+- [Executive handshake](data/paradiso/v0/EXECUTIVE_HANDSHAKE_PARADISO_2026-10-25.md)
+- [10 structured records](data/paradiso/v0/PARADISO_REGISTRY_V0.json) and individual `data/paradiso/v0/records/PD01.md` through `PD10.md`
+- [21 canonical law coverage](data/paradiso/v0/INTEGRITY_21_COVERAGE_AND_INTERPRETATION.md) and [44 mapped law relationships](data/paradiso/v0/PARADISO_21_INTEGRITY_LAWS_44_RELATIONSHIPS.csv)
+- [Research / Technical Design](data/paradiso/v0/PARADISO_RESEARCH_MAP_TDD_v0.md) and [audit manifest](data/paradiso/v0/PARADISO_VALIDATION_MANIFEST_V0.json)
+- These are source-preserving research records on a feature branch, not merged/live app wiring. All 11 known masters preserved; twelfth master remains unassigned.
+
+## Twelve core Compass archetype research records (2026-10-25)
+- [12 core behavioral archetype records in the engine-compatible 21-field shape](data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json)
+- Individual dossiers: `data/compass/archetypes/v1/records/Warrior.md`, `Sage.md`, `Rebel.md`, `Caregiver.md`, `Creator.md`, `Magician.md`, `Ruler.md`, `Explorer.md`, `Lover.md`, `Jester.md`, `Everyman.md`, `Innocent.md`
+- Four analytical lenses per archetype; original `canon.js#ARCH` definitions preserved. These are **12 core archetypes**, not the **11 masters** or **10 Paradiso spheres**.

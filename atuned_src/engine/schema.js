@@ -123,7 +123,7 @@ function blankProfile(name){
      stored, because a derived value that is also stored is one that can
      drift. */
   avatar:avatarBlank(), purpose:purposeBlank(),
-  laws:{}, intake:{answers:{}, done:[], startedAt:null, completedAt:null,
+  laws:{}, diagnostic3:null, intake:{answers:{}, done:[], startedAt:null, completedAt:null,
    /* the three blocks stacked under the 63, engine/intakemore.js. Evidence and
       read by no sum. Additive: an older record has none and is filled from this
       blank, with no SCHEMA_V bump. */
@@ -137,7 +137,7 @@ function blankProfile(name){
   work:{},
   gates:{verp:{aware:0,detach:0,intent:0,ignore:0,attach:0,averse:0},
          lean:{benign:0,malignant:0}},   /* the cost multiplier, v2 */
-  story:{entries:[]}, rituals:[], history:[],
+  story:{entries:[]}, rituals:[], ritualPlans:null, history:[],
   /* THE PRACTICE OBJECTS, engine/practice.js. Additive: an older record has
      none and is filled from this blank, and no SCHEMA_V bump, which is the
      owner's call. p.rituals above is the Ritual tab's day log and is a
@@ -324,6 +324,7 @@ function saveProfile(p){
     comes through here, the release's included, so the stored counter is never
     a save behind the ground it counts (journeyGiftSync, engine/journey.js). */
  if(p.journey&&p.journey.gift)journeyGiftSync(p);
+ if(typeof hjStampOrigin==='function')hjStampOrigin(p);
  p.updated=new Date().toISOString(); p.v=SCHEMA_V;
  return p;}
 /* a snapshot is what Analytics plots. derived only, never inputs.
@@ -1161,6 +1162,7 @@ function validateProfile(o){
   if(o.gates.lean&&typeof o.gates.lean==='object')['benign','malignant'].forEach(function(k){
    var v=vRange(errs,'gates.lean.'+k,o.gates.lean[k],0,1e6); if(v!==null)p.gates.lean[k]=v;});}
  /* the 63 answers */
+ if(o.diagnostic3!==undefined)p.diagnostic3=d3Valid(errs,o.diagnostic3);
  if(o.intake&&typeof o.intake==='object'){
   if(o.intake.answers&&typeof o.intake.answers==='object')Object.keys(o.intake.answers).forEach(function(k){
    var i=+k; if(!NUM(i)||i<0||i>62||i%1!==0){errs.push('intake answer key '+k+' is not 0 to 62');return;}
@@ -1405,6 +1407,20 @@ function validateProfile(o){
    if(AV_STATUS.indexOf(o.avatar.status)>=0)p.avatar.status=o.avatar.status;
    else errs.push('avatar.status '+JSON.stringify(o.avatar.status)+' is not one of '+AV_STATUS.join(', '));}
   else p.avatar.status=p.avatar.built?'active':'draft';
+  /* Hero's Journey: canonical CQ origin and independently selected quest.
+     Both fields are explicit in the boundary so export/import preserves them. */
+  if(o.avatar.activeJourneyScene!==undefined&&o.avatar.activeJourneyScene!==null){
+   if(typeof o.avatar.activeJourneyScene==='string'&&typeof hjScene==='function'&&hjScene(o.avatar.activeJourneyScene))
+    p.avatar.activeJourneyScene=o.avatar.activeJourneyScene;
+   else errs.push('avatar.activeJourneyScene is not a known Hero Journey encounter');}
+  if(o.avatar.cqOrigin!==undefined&&o.avatar.cqOrigin!==null){
+   var og=o.avatar.cqOrigin;
+   if(og&&typeof og==='object'&&!Array.isArray(og)
+      &&typeof og.cq==='number'&&isFinite(og.cq)&&og.cq>=0&&og.cq<=100
+      &&typeof og.m==='number'&&Number.isInteger(og.m)&&og.m>=1&&og.m<=CQ_MODEL&&typeof og.at==='string'&&!isNaN(Date.parse(og.at))
+      &&typeof og.source==='string'&&og.source.length<=64)
+    p.avatar.cqOrigin={cq:og.cq,m:og.m,at:og.at,source:og.source};
+   else errs.push('avatar.cqOrigin is not a valid same-model full CQ baseline');}
   if(o.avatar.movedAt!==undefined&&o.avatar.movedAt!==null){
    if(typeof o.avatar.movedAt==='string'&&!isNaN(new Date(o.avatar.movedAt).getTime()))p.avatar.movedAt=o.avatar.movedAt;
    else errs.push('avatar.movedAt is not a date');}
@@ -1483,6 +1499,40 @@ function validateProfile(o){
  if(Array.isArray(o.rituals))p.rituals=o.rituals
   .map(function(x,i){return vRitual(errs,i,x);}).filter(Boolean);
  else if(o.rituals!==undefined&&o.rituals!==null)errs.push('rituals is not a list');
+
+ /* ACTIVE RITUAL PLANS MOVE WITH THE PROFILE. null is the old record, whose
+  * plans live beside it in RIT_KEY; [] means the owner deliberately has
+  * none. Keep the same fields ritPlanOk reads and reject malformed imports. */
+ if(o.ritualPlans!==undefined&&o.ritualPlans!==null){
+  if(!Array.isArray(o.ritualPlans)||o.ritualPlans.length>256)errs.push('ritualPlans must be a list of at most 256 plans');
+  else{
+   var seenPlan={};p.ritualPlans=[];
+   o.ritualPlans.forEach(function(x,i){
+    var k='ritualPlans['+i+']',ok=true;
+    if(!x||typeof x!=='object'||Array.isArray(x)){errs.push(k+' is not a plan');return;}
+    vKeys(errs,k,x,['id','steps','when','where','days','from','stop','band','track','rel','tc','tags','on','tm']);
+    if(typeof x.id!=='string'||!x.id||x.id.length>=40||seenPlan[x.id]){errs.push(k+'.id is invalid or repeated');ok=false;}
+    else seenPlan[x.id]=1;
+    if(!Array.isArray(x.steps)||!x.steps.length||x.steps.length>PRACTICE.length
+       ||x.steps.some(function(s){return typeof s!=='string'||!RIT_STEP[s];})){errs.push(k+'.steps is not a set of known practices');ok=false;}
+    if(typeof x.days!=='number'||x.days%1||x.days<0||x.days>3660){errs.push(k+'.days is not a whole number 0 to 3660');ok=false;}
+    if(typeof x.from!=='string'||pracDay(x.from)===null){errs.push(k+'.from is not a date');ok=false;}
+    if(x.stop!=null&&(typeof x.stop!=='string'||pracDay(x.stop)===null)){errs.push(k+'.stop is not a date');ok=false;}
+    ['when','where'].forEach(function(f){if(x[f]!=null&&(typeof x[f]!=='string'||x[f].length>RIT_PLAN_MAX)){errs.push(k+'.'+f+' is not text within cap');ok=false;}});
+    if(x.band&&BANDS.indexOf(x.band)<0){errs.push(k+'.band is not a seat');ok=false;}
+    if(x.track&&!RIT_TRACK[x.track]){errs.push(k+'.track is not a practice track');ok=false;}
+    if(x.rel!=null&&(typeof x.rel!=='number'||!BY[x.rel])){errs.push(k+'.rel is not an address');ok=false;}
+    if(x.tc!=null&&(typeof x.tc!=='string'||!becomingOf(x.tc))){errs.push(k+'.tc is not a teacher pole');ok=false;}
+    if(x.tags!=null&&(!Array.isArray(x.tags)||x.tags.length>BANDS.length||x.tags.some(function(b,n){return BANDS.indexOf(b)<0||x.tags.indexOf(b)!==n;}))){errs.push(k+'.tags must be unique seats');ok=false;}
+    if(x.on!=null&&(!Array.isArray(x.on)||x.on.length<1||x.on.length>7||x.on.some(function(d,n){return typeof d!=='number'||d%1||d<0||d>6||x.on.indexOf(d)!==n;}))){errs.push(k+'.on must be unique weekdays');ok=false;}
+    if(x.tm!=null&&(typeof x.tm!=='number'||x.tm%1||x.tm<1||x.tm>RIT_MIN_MAX)){errs.push(k+'.tm is not a valid duration');ok=false;}
+    if(ok)p.ritualPlans.push({id:x.id,steps:x.steps.slice(),when:x.when||'',where:x.where||'',days:x.days,
+      from:x.from,stop:x.stop||null,band:x.band||'',track:x.track||'',rel:x.rel==null?null:x.rel,
+      tc:x.tc||null,tags:(x.tags||[]).slice(),on:x.on?x.on.slice():null,tm:x.tm==null?null:x.tm});
+   });
+  }
+ }
+
  /* THE PRACTICE OBJECTS, through their own boundary (practiceValidate,
     engine/practice.js), into the same errs, so one bad practice refuses the
     whole record and pImport stays atomic. Missing or null is an older

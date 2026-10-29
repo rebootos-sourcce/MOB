@@ -1,0 +1,566 @@
+{
+  "version": "1.0.0",
+  "state": "PUBLIC_GAMEBOARD_PROJECTION_NOT_RUNTIME",
+  "hero": "You",
+  "guide": "Source AI",
+  "guideRole": "Virgil-inspired guide",
+  "realms": [
+    "INFERNO",
+    "PURGATORIO",
+    "PARADISO"
+  ],
+  "levels": [
+    {
+      "id": "game:inferno:L01",
+      "realm": "INFERNO",
+      "order": 1,
+      "label": "Nonengagement",
+      "challenge": "Repeatedly dismisses relevant evidence or withdraws from inquiry without evaluation.",
+      "knowledge": "Inferno IV / Limbo. Literary condition is not moralized behavior; candidate is ATUNED interpretive hypothesis.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Ask what evidence was considered, what was safely available, and whether the person wants to test an alternative. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "releaseProtocolAvailable": false,
+      "becomingRitualAvailable": false,
+      "canRevisit": true,
+      "noAutomaticMoralRank": true
+    },
+    {
+      "id": "game:inferno:L02",
+      "realm": "INFERNO",
+      "order": 2,
+      "label": "Entitlement",
+      "challenge": "Disregards another person's agency in pursuit of being desired or rewarded.",
+      "knowledge": "Inferno V / Lust; distinguish desire from disregarding informed consent.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Name what you wanted, where consent or boundaries mattered, and what a freely chosen alternative would respect. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "releaseProtocolAvailable": false,
+      "becomingRitualAvailable": false,
+      "canRevisit": true,
+      "noAutomaticMoralRank": true
+    },
+    {
+      "id": "game:inferno:L03",
+      "realm": "INFERNO",
+      "order": 3,
+      "label": "Consumption",
+      "challenge": "Returns repeatedly to more consumption despite meaningful known cost.",
+      "knowledge": "Inferno VI / Gluttony; do not pathologize food, hunger or pleasure.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Notice the repeating reach, the actual need, and a voluntary safer alternative. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "releaseProtocolAvailable": false,
+      "becomingRitualAvailable": false,
+      "canRevisit": true,
+      "noAutomaticMoralRank": true
+    },
+    {
+      "id": "game:inferno:L04",
+      "realm": "INFERNO",
+      "order": 4,
+      "label": "Resource Fixation",
+      "challenge": "Repeatedly hoards or recklessly spends resources despite meaningful obligations.",
+      "knowledge": "Inferno VII / Avarice and prodigality; distinguishes overguarding from reckless waste.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Track one concrete decision and ask whom it served and what actual need or obligation it missed. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "releaseProtocolAvailable": false,
+      "becomingRitualAvailable": false,
+      "canRevisit": true,
+      "noAutomaticMoralRank": true
+    },
+    {
+      "id": "game:inferno:L05",
+      "realm": "INFERNO",
+      "order": 5,
+      "label": "Reactivity",
+      "challenge": "Escalates or covertly withdraws through anger with harmful consequences.",
+      "knowledge": "Inferno VII–VIII / Wrath and sullenness; legitimate anger does not by itself show vice.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Observe the sequence between trigger, bodily response, reaction and consequence; choose a bounded response. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "releaseProtocolAvailable": false,
+      "becomingRitualAvailable": false,
+      "canRevisit": true,
+      "noAutomaticMoralRank": true
+    },
+    {
+      "id": "game:inferno:L06",
+      "realm": "INFERNO",
+      "order": 6,
+      "label": "Epistemic Rigidity",
+      "challenge": "Refuses standards of evidence while punishing disagreement or shutting out correction.",
+      "knowledge": "Inferno IX–XI / Heresy; purely interpretive metaphor, never faith/nonbelief as a diagnostic category.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Name a belief and a real counterexample; ask what evidence could fairly revise your position. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "releaseProtocolAvailable": false,
+      "becomingRitualAvailable": false,
+      "canRevisit": true,
+      "noAutomaticMoralRank": true
+    },
+    {
+      "id": "game:inferno:L07",
+      "realm": "INFERNO",
+      "order": 7,
+      "label": "Harmful Force",
+      "challenge": "Uses threat, destruction, coercion or injury beyond proportional protection.",
+      "knowledge": "Inferno XII–XVII / Violence; no invitation to revisit unsafe encounters.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Describe the concrete harmful action and immediate safety considerations; choose non-harming boundaries. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "releaseProtocolAvailable": false,
+      "becomingRitualAvailable": false,
+      "canRevisit": true,
+      "noAutomaticMoralRank": true
+    },
+    {
+      "id": "game:inferno:L08",
+      "realm": "INFERNO",
+      "order": 8,
+      "label": "Fraud",
+      "challenge": "Knowingly presents a deceptive claim that affects another person's choices.",
+      "knowledge": "Inferno XVIII–XXX / Fraud / Malebolge; deliberate deception is essential.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Name the representation, hidden relevant fact, reliance and harm; choose truthful repair only if safe. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "releaseProtocolAvailable": false,
+      "becomingRitualAvailable": false,
+      "canRevisit": true,
+      "noAutomaticMoralRank": true
+    },
+    {
+      "id": "game:inferno:L09",
+      "realm": "INFERNO",
+      "order": 9,
+      "label": "Treachery",
+      "challenge": "Violates a trusted relationship or duty intentionally.",
+      "knowledge": "Inferno XXXII–XXXIV / Treachery; stasis is narrative result, not behavior.",
+      "releaseCandidate": "Source AI invites an opt-in reflection: Identify the duty of trust and action that broke it, then choose accountability without self-abuse. Existing release practices require separate authorized IDs.",
+      "becomingCandidate": "A constructive counterpart is chosen by the user or suggested from an approved Purgatorio crosswalk; do not manufacture a counterpart.",
+      "guideBehavior": "VIRGIL: orient to the challenge; ask one grounded question; do not classify the person.",
+      "successEvidence": "A user records a concrete observation and a voluntary next action; no claim of permanent pattern clearance.",
+      "releaseProtocolAvailable": false,
+      "becomingRitualAvailable": false,
+      "canRevisit": true,
+      "noAutomaticMoralRank": true
+    },
+    {
+      "id": "game:purgatorio:P01",
+      "realm": "PURGATORIO",
+      "order": 1,
+      "label": "Pride → Humility",
+      "challenge": "I must be above others to be worthy, safe, or seen.",
+      "knowledge": "TERRACE 1: Pride ↔ Humility DANTE: Purgatorio X–XII. The proud bend beneath stone, while carved examples of humility reverse their former upward self-display. Dante begins the seven-terrace purification here. LIMITING BELIEF: I must be above others to be worthy, safe, or seen.",
+      "releaseCandidate": "Observe the recurring Pride movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+      "becomingCandidate": "Name a correction accurately, credit another person by name, and make one repair without explaining away the impact.",
+      "guideBehavior": "VIRGIL: recognize the oscillation, invite release, ask what real-world behavior is different.",
+      "successEvidence": "In an actual status threat, receives feedback, credits another, corrects course, and can repeat this without rank restoration.",
+      "releaseProtocolAvailable": false,
+      "becomingRitualAvailable": false,
+      "canRevisit": true,
+      "noAutomaticMoralRank": true
+    },
+    {
+      "id": "game:purgatorio:P02",
+      "realm": "PURGATORIO",
+      "order": 2,
+      "label": "Envy → Charity / Kindness",
+      "challenge": "Someone else receiving goodness reduces what is possible for me.",
+      "knowledge": "TERRACE 2: Envy ↔ Charity / Kindness DANTE: Purgatorio XIII–XV. Penitents are seated together with their eyes sewn shut; voices recount acts of selfless love, and Sapia recognizes rejoicing in others’ misfortune. LIMITING BELIEF: Someone else receiving goodness reduces what is possible for me.",
+      "releaseCandidate": "Observe the recurring Envy movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+      "becomingCandidate": "State one real thing you value in the other person, offer non-transactional support when appropriate, then take one step toward your own goal.",
+      "guideBehavior": "VIRGIL: recognize the oscillation, invite release, ask what real-world behavior is different.",
+      "successEvidence": "Can witness a peer’s success without punishment, support their success where appropriate, and keep a clear personal path.",
+      "releaseProtocolAvailable": false,
+      "becomingRitualAvailable": false,
+      "canRevisit": true,
+      "noAutomaticMoralRank": true
+    },
+    {
+      "id": "game:purgatorio:P03",
+      "realm": "PURGATORIO",
+      "order": 3,
+      "label": "Wrath → Meekness / Forbearance",
+      "challenge": "If I do not attack or punish, I lose power and will be harmed.",
+      "knowledge": "TERRACE 3: Wrath ↔ Meekness / Forbearance DANTE: Purgatorio XV–XVII. The angry walk through blinding smoke and receive visions of measured responses, forgiveness, and peacemaking. LIMITING BELIEF: If I do not attack or punish, I lose power and will be harmed.",
+      "releaseCandidate": "Observe the recurring Wrath movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+      "becomingCandidate": "Pause one breath before replying; describe what happened without motive claims; state a concrete boundary and next action.",
+      "guideBehavior": "VIRGIL: recognize the oscillation, invite release, ask what real-world behavior is different.",
+      "successEvidence": "During real provocation, sets limits without humiliation, violence, or prolonged retaliation and repairs harm when needed.",
+      "releaseProtocolAvailable": false,
+      "becomingRitualAvailable": false,
+      "canRevisit": true,
+      "noAutomaticMoralRank": true
+    },
+    {
+      "id": "game:purgatorio:P04",
+      "realm": "PURGATORIO",
+      "order": 4,
+      "label": "Sloth / Acedia → Zeal / Diligence",
+      "challenge": "My effort will not matter, or beginning will expose that I cannot succeed.",
+      "knowledge": "TERRACE 4: Sloth / Acedia ↔ Zeal / Diligence DANTE: Purgatorio XVII–XIX. Virgil locates sloth at the center of the mountain as insufficient love of a good; the penitents run with urgent energy and cite examples of zeal. LIMITING BELIEF: My effort will not matter, or beginning will expose that I cannot succeed.",
+      "releaseCandidate": "Observe the recurring Sloth / Acedia movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+      "becomingCandidate": "Choose one meaningful task smaller than five minutes; begin, record completion, then stop or continue by choice.",
+      "guideBehavior": "VIRGIL: recognize the oscillation, invite release, ask what real-world behavior is different.",
+      "successEvidence": "Repeatedly begins chosen, appropriately sized action under uncertainty and uses recovery without self-attack.",
+      "releaseProtocolAvailable": false,
+      "becomingRitualAvailable": false,
+      "canRevisit": true,
+      "noAutomaticMoralRank": true
+    },
+    {
+      "id": "game:purgatorio:P05",
+      "realm": "PURGATORIO",
+      "order": 5,
+      "label": "Avarice / Prodigality → Generosity / Stewardship",
+      "challenge": "I am safe and valuable only if I keep more than enough—or spend to prove that I matter.",
+      "knowledge": "TERRACE 5: Avarice / Prodigality ↔ Generosity / Stewardship DANTE: Purgatorio XIX–XXII. Dante places avarice AND wasteful prodigality on the same terrace; the penitents lie face down, and examples praise generosity and honorable use of goods. LIMITING BELIEF: I am safe and valuable only if I keep more than enough—or spend to prove that I matter.",
+      "releaseCandidate": "Observe the recurring Avarice / Prodigality movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+      "becomingCandidate": "Identify one resource choice: fulfill an obligation, release one unnecessary grasp, or practice bounded generosity without debt or resentment.",
+      "guideBehavior": "VIRGIL: recognize the oscillation, invite release, ask what real-world behavior is different.",
+      "successEvidence": "Makes sustainable resource decisions under scarcity cues, honors obligations, and gives freely only within real capacity.",
+      "releaseProtocolAvailable": false,
+      "becomingRitualAvailable": false,
+      "canRevisit": true,
+      "noAutomaticMoralRank": true
+    },
+    {
+      "id": "game:purgatorio:P06",
+      "realm": "PURGATORIO",
+      "order": 6,
+      "label": "Gluttony → Temperance / Sufficiency",
+      "challenge": "More consumption will finally fill the discomfort or emptiness I feel.",
+      "knowledge": "TERRACE 6: Gluttony ↔ Temperance / Sufficiency DANTE: Purgatorio XXII–XXIV. The sixth terrace places desired fruit and water out of reach; exemplary stories emphasize temperance and right relation to appetite. LIMITING BELIEF: More consumption will finally fill the discomfort or emptiness I feel.",
+      "releaseCandidate": "Observe the recurring Gluttony movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+      "becomingCandidate": "Before a habitual reach, ask “What do I actually need?”; choose nourishment, rest, connection, pleasure, or a pause deliberately.",
+      "guideBehavior": "VIRGIL: recognize the oscillation, invite release, ask what real-world behavior is different.",
+      "successEvidence": "Experiences discomfort or appetite, accurately distinguishes needs, and chooses sufficient behavior without harsh deprivation.",
+      "releaseProtocolAvailable": false,
+      "becomingRitualAvailable": false,
+      "canRevisit": true,
+      "noAutomaticMoralRank": true
+    },
+    {
+      "id": "game:purgatorio:P07",
+      "realm": "PURGATORIO",
+      "order": 7,
+      "label": "Lust → Chastity / Respectful Intimacy",
+      "challenge": "Being desired, possessing someone, or obtaining pleasure is what makes me worthy or complete.",
+      "knowledge": "TERRACE 7: Lust ↔ Chastity / Respectful Intimacy DANTE: Purgatorio XXV–XXVII. Dante depicts the seventh terrace as purifying desire by fire, with examples of chastity. Historical theology and the poem’s judgments about sexuality are not imported as contemporary behavioral judgments. LIMITING BELIEF: Being desired, possessing someone, or obtaining pleasure is what makes me worthy or complete.",
+      "releaseCandidate": "Observe the recurring Lust movement without diagnosing identity; choose a fitting release practice and keep its ID null until an approved Purgatorio protocol exists.",
+      "becomingCandidate": "State what you want and what you can offer honestly; invite a real yes or no; respect the answer without punishment.",
+      "guideBehavior": "VIRGIL: recognize the oscillation, invite release, ask what real-world behavior is different.",
+      "successEvidence": "Responds to attraction or rejection with consent, candor, reciprocal care, and preserved autonomy.",
+      "releaseProtocolAvailable": false,
+      "becomingRitualAvailable": false,
+      "canRevisit": true,
+      "noAutomaticMoralRank": true
+    },
+    {
+      "id": "game:paradiso:PD01",
+      "realm": "PARADISO",
+      "order": 1,
+      "label": "Chosen Commitment",
+      "challenge": "Staying true to a chosen commitment while acknowledging limits, coercion, and what was beyond one's control.",
+      "knowledge": "Constructive practice at Moon: Staying true to a chosen commitment while acknowledging limits, coercion, and what was beyond one's control.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "Name one freely chosen commitment, the constraint it faces, and one truthful action possible today.",
+      "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+      "successEvidence": "A worker reports accurately which obligations they could meet after an emergency, instead of claiming to have delivered what was impossible.",
+      "releaseProtocolAvailable": false,
+      "becomingRitualAvailable": false,
+      "canRevisit": true,
+      "noAutomaticMoralRank": true
+    },
+    {
+      "id": "game:paradiso:PD02",
+      "realm": "PARADISO",
+      "order": 2,
+      "label": "Humble Contribution",
+      "challenge": "Doing work that benefits others without making reputation the condition of effort.",
+      "knowledge": "Constructive practice at Mercury: Doing work that benefits others without making reputation the condition of effort.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "Choose one valuable action no one will notice; record its real result and whether visibility was needed.",
+      "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+      "successEvidence": "A team member documents another person's contribution and completes an unglamorous repair without demanding acknowledgment.",
+      "releaseProtocolAvailable": false,
+      "becomingRitualAvailable": false,
+      "canRevisit": true,
+      "noAutomaticMoralRank": true
+    },
+    {
+      "id": "game:paradiso:PD03",
+      "realm": "PARADISO",
+      "order": 3,
+      "label": "Reciprocal Love",
+      "challenge": "Treating desire as energy for consensual, reciprocal connection without turning a person into possession or proof of worth.",
+      "knowledge": "Constructive practice at Venus: Treating desire as energy for consensual, reciprocal connection without turning a person into possession or proof of worth.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "State a desire without demand, ask what the other person chooses, and honor the answer.",
+      "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+      "successEvidence": "Someone voices attraction honestly, hears a refusal, respects it, and stays humane and self-respecting.",
+      "releaseProtocolAvailable": false,
+      "becomingRitualAvailable": false,
+      "canRevisit": true,
+      "noAutomaticMoralRank": true
+    },
+    {
+      "id": "game:paradiso:PD04",
+      "realm": "PARADISO",
+      "order": 4,
+      "label": "Truthful Inquiry",
+      "challenge": "Seeking truth through evidence, humility and the capacity to recognize insight in those who disagree.",
+      "knowledge": "Constructive practice at Sun: Seeking truth through evidence, humility and the capacity to recognize insight in those who disagree.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "Name a belief, the strongest counterevidence, and the specific observation that would change your view.",
+      "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+      "successEvidence": "A researcher updates a cherished hypothesis after testing it and openly credits a different school of thought.",
+      "releaseProtocolAvailable": false,
+      "becomingRitualAvailable": false,
+      "canRevisit": true,
+      "noAutomaticMoralRank": true
+    },
+    {
+      "id": "game:paradiso:PD05",
+      "realm": "PARADISO",
+      "order": 5,
+      "label": "Principled Courage",
+      "challenge": "Bearing a real cost to uphold a justified principle while using the least harmful effective means.",
+      "knowledge": "Constructive practice at Mars: Bearing a real cost to uphold a justified principle while using the least harmful effective means.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "Identify a difficult protective act, its real risks, and the least harmful way to take it.",
+      "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+      "successEvidence": "A colleague challenges retaliation against a vulnerable coworker and accepts personal risk without threatening anyone.",
+      "releaseProtocolAvailable": false,
+      "becomingRitualAvailable": false,
+      "canRevisit": true,
+      "noAutomaticMoralRank": true
+    },
+    {
+      "id": "game:paradiso:PD06",
+      "realm": "PARADISO",
+      "order": 6,
+      "label": "Just Leadership",
+      "challenge": "Applying transparent standards with humility about what is unknown, especially when holding power over others.",
+      "knowledge": "Constructive practice at Jupiter: Applying transparent standards with humility about what is unknown, especially when holding power over others.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "Audit one decision for conflicts, excluded voices, evidence and a fair appeal route.",
+      "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+      "successEvidence": "A manager discloses a conflict, hears the affected people, applies known criteria, and explains a reversible decision.",
+      "releaseProtocolAvailable": false,
+      "becomingRitualAvailable": false,
+      "canRevisit": true,
+      "noAutomaticMoralRank": true
+    },
+    {
+      "id": "game:paradiso:PD07",
+      "realm": "PARADISO",
+      "order": 7,
+      "label": "Quiet Presence",
+      "challenge": "Remaining available to experience without needing constant output, noise, explanation or performance.",
+      "knowledge": "Constructive practice at Saturn: Remaining available to experience without needing constant output, noise, explanation or performance.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "Choose five minutes of quiet; afterward record what was actually observed, not what was hoped for.",
+      "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+      "successEvidence": "A person spends a deliberate quiet interval noticing what is present, then returns to a task with clearer priorities.",
+      "releaseProtocolAvailable": false,
+      "becomingRitualAvailable": false,
+      "canRevisit": true,
+      "noAutomaticMoralRank": true
+    },
+    {
+      "id": "game:paradiso:PD08",
+      "realm": "PARADISO",
+      "order": 8,
+      "label": "Hopeful Connection",
+      "challenge": "Holding realistic trust, future-directed possibility and generous regard together without losing factual judgment.",
+      "knowledge": "Constructive practice at Fixed Stars: Holding realistic trust, future-directed possibility and generous regard together without losing factual judgment.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "Write one warranted trust, one evidence-based hope and one tangible act of care; test each in action.",
+      "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+      "successEvidence": "A team names uncertainty, commits to a realistic path, and supports an affected member without concealing risks.",
+      "releaseProtocolAvailable": false,
+      "becomingRitualAvailable": false,
+      "canRevisit": true,
+      "noAutomaticMoralRank": true
+    },
+    {
+      "id": "game:paradiso:PD09",
+      "realm": "PARADISO",
+      "order": 9,
+      "label": "Coherent Alignment",
+      "challenge": "Letting intention, understanding and action reinforce one another while revising mistaken models.",
+      "knowledge": "Constructive practice at Primum Mobile: Letting intention, understanding and action reinforce one another while revising mistaken models.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "Identify one mismatch between your mental model and outcomes; correct the model and one process.",
+      "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+      "successEvidence": "A team discovers an inverted assumption, revises the workflow, and coordinates action without hiding the error.",
+      "releaseProtocolAvailable": false,
+      "becomingRitualAvailable": false,
+      "canRevisit": true,
+      "noAutomaticMoralRank": true
+    },
+    {
+      "id": "game:paradiso:PD10",
+      "realm": "PARADISO",
+      "order": 10,
+      "label": "Unity",
+      "challenge": "Experiencing connection without making a person, role or exalted state the property of the ego.",
+      "knowledge": "Constructive practice at Empyrean: Experiencing connection without making a person, role or exalted state the property of the ego.",
+      "releaseCandidate": "Notice the distorted imitation named in the source record, if personally relevant; no automatic negative assignment.",
+      "becomingCandidate": "After meaningful connection, name what you can enact for someone else without claiming the experience makes you superior.",
+      "guideBehavior": "SOURCE AI AS ASCENT GUIDE: offer one becoming ritual, invite choice, help notice truthful action without announcing attainment.",
+      "successEvidence": "After a meaningful collective success, someone shares credit, remains open to correction, and serves the next need without claiming special rank.",
+      "releaseProtocolAvailable": false,
+      "becomingRitualAvailable": false,
+      "canRevisit": true,
+      "noAutomaticMoralRank": true
+    }
+  ],
+  "shadowEncounterLibrary": [
+    {
+      "publicId": "SH011",
+      "poleKey": "IL",
+      "label": "Separation",
+      "challenge": "Cuts off reciprocal connection through self-prioritization"
+    },
+    {
+      "publicId": "SH006",
+      "poleKey": "RE",
+      "label": "Vengeance",
+      "challenge": "Pursues retaliation and threatens others into stopping"
+    },
+    {
+      "publicId": "SH014",
+      "poleKey": "DE",
+      "label": "Obstruction",
+      "challenge": "Sabotages consenting relationships through concrete interference or harm"
+    },
+    {
+      "publicId": "SH015",
+      "poleKey": "OR",
+      "label": "Internal Sabotage",
+      "challenge": "Corrupts a shared structure while benefiting from insider access"
+    },
+    {
+      "publicId": "SH016",
+      "poleKey": "PO",
+      "label": "Sacrificial Extraction",
+      "challenge": "Sacrifices dependents' welfare to maintain status or institution"
+    },
+    {
+      "publicId": "SH009",
+      "poleKey": "PE",
+      "label": "Fraud",
+      "challenge": "Claims integrity while concealing harmful contrary facts"
+    },
+    {
+      "publicId": "SH001",
+      "poleKey": "TR",
+      "label": "Gatekeeping",
+      "challenge": "Sets terms for admission and refuses passage"
+    },
+    {
+      "publicId": "SH005",
+      "poleKey": "CH",
+      "label": "Reactivity",
+      "challenge": "Anger spikes beyond what safety requires"
+    },
+    {
+      "publicId": "SH017",
+      "poleKey": "FL",
+      "label": "Poisoning",
+      "challenge": "Creates persistent exposure to something known to harm others"
+    },
+    {
+      "publicId": "SH018",
+      "poleKey": "AL",
+      "label": "Coercive Abduction",
+      "challenge": "Overrides consent through force and deceptive approach"
+    },
+    {
+      "publicId": "SH019",
+      "poleKey": "HO",
+      "label": "Forced Alteration",
+      "challenge": "Forces alterations without understanding effects"
+    },
+    {
+      "publicId": "SH020",
+      "poleKey": "SA",
+      "label": "Sabotage",
+      "challenge": "Blocks important collective processes for destructive effect"
+    },
+    {
+      "publicId": "SH021",
+      "poleKey": "TU",
+      "label": "Deceit",
+      "challenge": "Creates false accounts for others to rely on"
+    },
+    {
+      "publicId": "SH022",
+      "poleKey": "NA",
+      "label": "Forced Growth",
+      "challenge": "Intervenes to accelerate development and damages the result"
+    }
+  ],
+  "ascentArchetypeLibrary": [
+    {
+      "name": "Warrior",
+      "behavior": "PROTECT → INITIATE → HOLD → REVIEW"
+    },
+    {
+      "name": "Sage",
+      "behavior": "RECEIVE → DIFFERENTIATE → SEEK → EXPRESS"
+    },
+    {
+      "name": "Rebel",
+      "behavior": "REPEL → EXAMINE → EXPRESS → TRANSFORM"
+    },
+    {
+      "name": "Caregiver",
+      "behavior": "RECEIVE → CONNECT → OFFER → RELEASE CONTROL"
+    },
+    {
+      "name": "Creator",
+      "behavior": "SEEK → TRANSFORM → EXPRESS → RECEIVE CRITIQUE"
+    },
+    {
+      "name": "Magician",
+      "behavior": "OBSERVE → REFRAME → TRANSFORM → VERIFY"
+    },
+    {
+      "name": "Ruler",
+      "behavior": "ORDER → EXPRESS STANDARDS → RECEIVE APPEAL"
+    },
+    {
+      "name": "Explorer",
+      "behavior": "SEEK → APPROACH → OBSERVE → RETURN"
+    },
+    {
+      "name": "Lover",
+      "behavior": "ATTRACT → CONNECT → RECEIVE → RELEASE OWNERSHIP"
+    },
+    {
+      "name": "Jester",
+      "behavior": "RECEIVE → EXPRESS PLAY → CONNECT → REFOCUS"
+    },
+    {
+      "name": "Everyman",
+      "behavior": "CONNECT → RECEIVE DIFFERENCE → EXPRESS SOLIDARITY"
+    },
+    {
+      "name": "Innocent",
+      "behavior": "RECEIVE → SEEK EVIDENCE → PRESERVE OPENNESS"
+    }
+  ]
+}

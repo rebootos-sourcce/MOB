@@ -1,0 +1,834 @@
+{
+  "version": "1.0.0",
+  "created": "2026-10-26",
+  "title": "ATUNED integrity quiz — three depths",
+  "status": "PROPOSED_NOT_RUNTIME_NOT_PSYCHOMETRICALLY_VALIDATED",
+  "ownerIntent": "Two deepening questions beyond the visible behavior, down to what the person expects and protects.",
+  "canon": {
+    "path": "atuned_src/engine/data/canon.js",
+    "laws": 21
+  },
+  "counts": {
+    "lawRecords": 21,
+    "numericQuestions": 42,
+    "mechanismQuestions": 21,
+    "total": 63
+  },
+  "contract": {
+    "timeWindow": "Past 30 days, on occasions when it was reasonably possible to act",
+    "anchors": {
+      "0": "Never",
+      "5": "About half the eligible times",
+      "10": "Always"
+    },
+    "skipStates": [
+      "Not applicable (no opportunity)",
+      "Prefer not to answer"
+    ],
+    "scoring": "Q1 baseline is self-reported, Q2 is contextual frequency separately shown, Q3 is an unscored optional mechanism hypothesis. No CQ arithmetic or profile write in this content release.",
+    "safety": "Do not score a user's choice for safety, privacy, exhaustion, disability, scarcity, coercion or lack of opportunity as dishonesty or low integrity; distinguish voluntary actions from constrained choices.",
+    "mechanism": "Only the user's confirmation can establish what a named option means in their own account. Options are not diagnoses or model-determined facts.",
+    "journal": "Keep q1/q2/q3, context, date, model version and user confirmation separate. Propose rather than silently apply future evidence adjustments.",
+    "migration": "This does not replace the existing 100-item negative-event funnel bank or 21x3 left/right/neutral intake; requires distinct versioned IDs and approved canonical CQ integration."
+  },
+  "records": [
+    {
+      "id": "integrity3:truth",
+      "law": "Truth",
+      "band": "Throat",
+      "depths": [
+        {
+          "depth": 1,
+          "role": "BEHAVIOR",
+          "question": "When someone needed an honest answer, how often did you give it?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 2,
+          "role": "PRESSURE",
+          "question": "When honesty could upset someone, how often did you still tell the truth when safe?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 3,
+          "role": "PROTECTIVE_EXPECTATION",
+          "question": "When you held back, what were you afraid might happen?",
+          "response": "UNSCORED_USER_SELECTION",
+          "options": [
+            "Rejection",
+            "Conflict",
+            "Punishment",
+            "Loss of privacy",
+            "It was unsafe",
+            "Something else, in my own words",
+            "None of these",
+            "I'm not sure",
+            "Prefer not to answer"
+          ]
+        }
+      ],
+      "status": "DRAFT_NOT_RUNTIME",
+      "sourceLaw": "atuned_src/engine/data/canon.js#SI"
+    },
+    {
+      "id": "integrity3:transparency",
+      "law": "Transparency",
+      "band": "Throat",
+      "depths": [
+        {
+          "depth": 1,
+          "role": "BEHAVIOR",
+          "question": "When your choices affected someone, how often did you share what they needed to know?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 2,
+          "role": "PRESSURE",
+          "question": "When admitting a mistake felt embarrassing, how often did you tell them?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 3,
+          "role": "PROTECTIVE_EXPECTATION",
+          "question": "When you hid something important, what were you trying to protect?",
+          "response": "UNSCORED_USER_SELECTION",
+          "options": [
+            "Reputation",
+            "Trust",
+            "Privacy",
+            "Safety",
+            "Avoiding blame",
+            "Something else, in my own words",
+            "None of these",
+            "I'm not sure",
+            "Prefer not to answer"
+          ]
+        }
+      ],
+      "status": "DRAFT_NOT_RUNTIME",
+      "sourceLaw": "atuned_src/engine/data/canon.js#SI"
+    },
+    {
+      "id": "integrity3:justice",
+      "law": "Justice",
+      "band": "Throat",
+      "depths": [
+        {
+          "depth": 1,
+          "role": "BEHAVIOR",
+          "question": "When deciding what was fair, how often did you use the same rules for yourself and others?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 2,
+          "role": "PRESSURE",
+          "question": "When being fair cost you something, how often did you still act fairly?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 3,
+          "role": "PROTECTIVE_EXPECTATION",
+          "question": "When fairness was hard, what did you fear losing?",
+          "response": "UNSCORED_USER_SELECTION",
+          "options": [
+            "Advantage",
+            "Group approval",
+            "Security",
+            "Control",
+            "Peace",
+            "Something else, in my own words",
+            "None of these",
+            "I'm not sure",
+            "Prefer not to answer"
+          ]
+        }
+      ],
+      "status": "DRAFT_NOT_RUNTIME",
+      "sourceLaw": "atuned_src/engine/data/canon.js#SI"
+    },
+    {
+      "id": "integrity3:unity",
+      "law": "Unity",
+      "band": "Crown",
+      "depths": [
+        {
+          "depth": 1,
+          "role": "BEHAVIOR",
+          "question": "When someone disagreed with you, how often did you treat them with respect?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 2,
+          "role": "PRESSURE",
+          "question": "When your group judged someone, how often did you decide for yourself how to treat them?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 3,
+          "role": "PROTECTIVE_EXPECTATION",
+          "question": "When respect was difficult, what felt threatened?",
+          "response": "UNSCORED_USER_SELECTION",
+          "options": [
+            "Belonging",
+            "Values",
+            "Safety",
+            "Pride",
+            "Old hurt",
+            "Something else, in my own words",
+            "None of these",
+            "I'm not sure",
+            "Prefer not to answer"
+          ]
+        }
+      ],
+      "status": "DRAFT_NOT_RUNTIME",
+      "sourceLaw": "atuned_src/engine/data/canon.js#SI"
+    },
+    {
+      "id": "integrity3:awareness",
+      "law": "Awareness",
+      "band": "Crown",
+      "depths": [
+        {
+          "depth": 1,
+          "role": "BEHAVIOR",
+          "question": "When you felt a strong reaction, how often did you notice it before acting?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 2,
+          "role": "PRESSURE",
+          "question": "When you were rushed or upset, how often did you check what drove your reaction?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 3,
+          "role": "PROTECTIVE_EXPECTATION",
+          "question": "When you reacted automatically, what got in the way of noticing?",
+          "response": "UNSCORED_USER_SELECTION",
+          "options": [
+            "Too much speed",
+            "Habit",
+            "Overwhelm",
+            "Wanting relief",
+            "Unclear feelings",
+            "Something else, in my own words",
+            "None of these",
+            "I'm not sure",
+            "Prefer not to answer"
+          ]
+        }
+      ],
+      "status": "DRAFT_NOT_RUNTIME",
+      "sourceLaw": "atuned_src/engine/data/canon.js#SI"
+    },
+    {
+      "id": "integrity3:nature",
+      "law": "Nature",
+      "band": "Crown",
+      "depths": [
+        {
+          "depth": 1,
+          "role": "BEHAVIOR",
+          "question": "When something was beyond your control, how often did you adjust what you could do?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 2,
+          "role": "PRESSURE",
+          "question": "When a process needed time, how often did you let it follow a realistic pace?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 3,
+          "role": "PROTECTIVE_EXPECTATION",
+          "question": "When you pushed against what you couldn't change, what worried you?",
+          "response": "UNSCORED_USER_SELECTION",
+          "options": [
+            "Falling behind",
+            "Loss of control",
+            "Judgment",
+            "Bad outcome",
+            "Uncertainty",
+            "Something else, in my own words",
+            "None of these",
+            "I'm not sure",
+            "Prefer not to answer"
+          ]
+        }
+      ],
+      "status": "DRAFT_NOT_RUNTIME",
+      "sourceLaw": "atuned_src/engine/data/canon.js#SI"
+    },
+    {
+      "id": "integrity3:presence",
+      "law": "Presence",
+      "band": "3rd Eye",
+      "depths": [
+        {
+          "depth": 1,
+          "role": "BEHAVIOR",
+          "question": "When someone was speaking, how often did you give them your attention?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 2,
+          "role": "PRESSURE",
+          "question": "When worry or distraction interrupted you, how often did you return to the moment?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 3,
+          "role": "PROTECTIVE_EXPECTATION",
+          "question": "When you drifted away, what drew your attention?",
+          "response": "UNSCORED_USER_SELECTION",
+          "options": [
+            "Future worries",
+            "Past events",
+            "Overload",
+            "Restlessness",
+            "Wanting escape",
+            "Something else, in my own words",
+            "None of these",
+            "I'm not sure",
+            "Prefer not to answer"
+          ]
+        }
+      ],
+      "status": "DRAFT_NOT_RUNTIME",
+      "sourceLaw": "atuned_src/engine/data/canon.js#SI"
+    },
+    {
+      "id": "integrity3:humility",
+      "law": "Humility",
+      "band": "3rd Eye",
+      "depths": [
+        {
+          "depth": 1,
+          "role": "BEHAVIOR",
+          "question": "When shown a real mistake, how often did you consider it fairly?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 2,
+          "role": "PRESSURE",
+          "question": "When admitting an error could embarrass you, how often did you acknowledge it?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 3,
+          "role": "PROTECTIVE_EXPECTATION",
+          "question": "When correction felt hard, what did you expect would happen?",
+          "response": "UNSCORED_USER_SELECTION",
+          "options": [
+            "Looking foolish",
+            "Losing respect",
+            "Being blamed",
+            "Loss of control",
+            "Feeling ashamed",
+            "Something else, in my own words",
+            "None of these",
+            "I'm not sure",
+            "Prefer not to answer"
+          ]
+        }
+      ],
+      "status": "DRAFT_NOT_RUNTIME",
+      "sourceLaw": "atuned_src/engine/data/canon.js#SI"
+    },
+    {
+      "id": "integrity3:equanimity",
+      "law": "Equanimity",
+      "band": "3rd Eye",
+      "depths": [
+        {
+          "depth": 1,
+          "role": "BEHAVIOR",
+          "question": "When plans changed suddenly, how often did you pause before responding?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 2,
+          "role": "PRESSURE",
+          "question": "When frustrated, how often did you avoid passing it on to someone else?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 3,
+          "role": "PROTECTIVE_EXPECTATION",
+          "question": "When your reaction felt larger than the event, what was already happening?",
+          "response": "UNSCORED_USER_SELECTION",
+          "options": [
+            "Exhaustion",
+            "Feeling unheard",
+            "Fear",
+            "Pressure",
+            "Expecting trouble",
+            "Something else, in my own words",
+            "None of these",
+            "I'm not sure",
+            "Prefer not to answer"
+          ]
+        }
+      ],
+      "status": "DRAFT_NOT_RUNTIME",
+      "sourceLaw": "atuned_src/engine/data/canon.js#SI"
+    },
+    {
+      "id": "integrity3:compassion",
+      "law": "Compassion",
+      "band": "Heart",
+      "depths": [
+        {
+          "depth": 1,
+          "role": "BEHAVIOR",
+          "question": "When someone struggled, how often did you take their feelings seriously?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 2,
+          "role": "PRESSURE",
+          "question": "When tired or annoyed, how often did you stay kind without ignoring your limits?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 3,
+          "role": "PROTECTIVE_EXPECTATION",
+          "question": "When you pulled away from someone's pain, what made it hard?",
+          "response": "UNSCORED_USER_SELECTION",
+          "options": [
+            "Being drained",
+            "Not knowing how to help",
+            "Fear of getting pulled in",
+            "Discomfort",
+            "My own hurt",
+            "Something else, in my own words",
+            "None of these",
+            "I'm not sure",
+            "Prefer not to answer"
+          ]
+        }
+      ],
+      "status": "DRAFT_NOT_RUNTIME",
+      "sourceLaw": "atuned_src/engine/data/canon.js#SI"
+    },
+    {
+      "id": "integrity3:forgiveness",
+      "law": "Forgiveness",
+      "band": "Heart",
+      "depths": [
+        {
+          "depth": 1,
+          "role": "BEHAVIOR",
+          "question": "When someone hurt you, how often did you choose not to retaliate?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 2,
+          "role": "PRESSURE",
+          "question": "When an old hurt returned, how often did you keep it from controlling how you treated others?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 3,
+          "role": "PROTECTIVE_EXPECTATION",
+          "question": "When you couldn't let the hurt settle, what still mattered to you?",
+          "response": "UNSCORED_USER_SELECTION",
+          "options": [
+            "Safety",
+            "Acknowledgment",
+            "Fear of repeat harm",
+            "Justice",
+            "Not being ready",
+            "Something else, in my own words",
+            "None of these",
+            "I'm not sure",
+            "Prefer not to answer"
+          ]
+        }
+      ],
+      "status": "DRAFT_NOT_RUNTIME",
+      "sourceLaw": "atuned_src/engine/data/canon.js#SI"
+    },
+    {
+      "id": "integrity3:generosity",
+      "law": "Generosity",
+      "band": "Heart",
+      "depths": [
+        {
+          "depth": 1,
+          "role": "BEHAVIOR",
+          "question": "When you had resources to spare, how often did you help without expecting repayment?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 2,
+          "role": "PRESSURE",
+          "question": "When no one would notice, how often did you still choose to help when you could?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 3,
+          "role": "PROTECTIVE_EXPECTATION",
+          "question": "When giving was hard, what were you trying to protect?",
+          "response": "UNSCORED_USER_SELECTION",
+          "options": [
+            "Having enough",
+            "Not being used",
+            "Recognition",
+            "Time and energy",
+            "A boundary",
+            "Something else, in my own words",
+            "None of these",
+            "I'm not sure",
+            "Prefer not to answer"
+          ]
+        }
+      ],
+      "status": "DRAFT_NOT_RUNTIME",
+      "sourceLaw": "atuned_src/engine/data/canon.js#SI"
+    },
+    {
+      "id": "integrity3:aesthetic-beauty",
+      "law": "Aesthetic Beauty",
+      "band": "Heart",
+      "depths": [
+        {
+          "depth": 1,
+          "role": "BEHAVIOR",
+          "question": "When making or caring for something, how often did you give it the care it needed?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 2,
+          "role": "PRESSURE",
+          "question": "When rushed, how often did you still make a thoughtful choice about quality?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 3,
+          "role": "PROTECTIVE_EXPECTATION",
+          "question": "When you stopped caring about the result, what was underneath it?",
+          "response": "UNSCORED_USER_SELECTION",
+          "options": [
+            "Exhaustion",
+            "Feeling it doesn't matter",
+            "Fear of imperfection",
+            "Time pressure",
+            "Lack of choice",
+            "Something else, in my own words",
+            "None of these",
+            "I'm not sure",
+            "Prefer not to answer"
+          ]
+        }
+      ],
+      "status": "DRAFT_NOT_RUNTIME",
+      "sourceLaw": "atuned_src/engine/data/canon.js#SI"
+    },
+    {
+      "id": "integrity3:courage",
+      "law": "Courage",
+      "band": "Solar",
+      "depths": [
+        {
+          "depth": 1,
+          "role": "BEHAVIOR",
+          "question": "When something mattered but felt scary, how often did you take a reasonably safe step?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 2,
+          "role": "PRESSURE",
+          "question": "When speaking up might bring disapproval, how often did you speak when safe?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 3,
+          "role": "PROTECTIVE_EXPECTATION",
+          "question": "When you held back, what did you expect could happen?",
+          "response": "UNSCORED_USER_SELECTION",
+          "options": [
+            "Rejection",
+            "Loss",
+            "Conflict",
+            "Uncertainty",
+            "Real danger",
+            "Something else, in my own words",
+            "None of these",
+            "I'm not sure",
+            "Prefer not to answer"
+          ]
+        }
+      ],
+      "status": "DRAFT_NOT_RUNTIME",
+      "sourceLaw": "atuned_src/engine/data/canon.js#SI"
+    },
+    {
+      "id": "integrity3:duty",
+      "law": "Duty",
+      "band": "Solar",
+      "depths": [
+        {
+          "depth": 1,
+          "role": "BEHAVIOR",
+          "question": "When you made a promise you could reasonably keep, how often did you follow through?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 2,
+          "role": "PRESSURE",
+          "question": "When you couldn't meet a commitment, how often did you tell the other person in time?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 3,
+          "role": "PROTECTIVE_EXPECTATION",
+          "question": "When a commitment slipped, what got in the way?",
+          "response": "UNSCORED_USER_SELECTION",
+          "options": [
+            "Overload",
+            "Difficulty saying no",
+            "Fear of disappointing someone",
+            "Avoidance",
+            "Changed circumstances",
+            "Something else, in my own words",
+            "None of these",
+            "I'm not sure",
+            "Prefer not to answer"
+          ]
+        }
+      ],
+      "status": "DRAFT_NOT_RUNTIME",
+      "sourceLaw": "atuned_src/engine/data/canon.js#SI"
+    },
+    {
+      "id": "integrity3:responsibility",
+      "law": "Responsibility",
+      "band": "Solar",
+      "depths": [
+        {
+          "depth": 1,
+          "role": "BEHAVIOR",
+          "question": "When your actions caused a problem, how often did you acknowledge your part?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 2,
+          "role": "PRESSURE",
+          "question": "When other people also made mistakes, how often did you still name your part?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 3,
+          "role": "PROTECTIVE_EXPECTATION",
+          "question": "When ownership was hard, what did you expect could happen?",
+          "response": "UNSCORED_USER_SELECTION",
+          "options": [
+            "Total blame",
+            "Looking weak",
+            "Losing trust",
+            "More demands",
+            "Punishment",
+            "Something else, in my own words",
+            "None of these",
+            "I'm not sure",
+            "Prefer not to answer"
+          ]
+        }
+      ],
+      "status": "DRAFT_NOT_RUNTIME",
+      "sourceLaw": "atuned_src/engine/data/canon.js#SI"
+    },
+    {
+      "id": "integrity3:accountability",
+      "law": "Accountability",
+      "band": "Solar",
+      "depths": [
+        {
+          "depth": 1,
+          "role": "BEHAVIOR",
+          "question": "When a mistake affected someone, how often did you try to repair it?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 2,
+          "role": "PRESSURE",
+          "question": "When apologizing was uncomfortable, how often did you apologize directly when appropriate?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 3,
+          "role": "PROTECTIVE_EXPECTATION",
+          "question": "When you delayed repair, what stopped you?",
+          "response": "UNSCORED_USER_SELECTION",
+          "options": [
+            "Shame",
+            "Rejection",
+            "Punishment",
+            "Not knowing what to do",
+            "Feeling it was too late",
+            "Something else, in my own words",
+            "None of these",
+            "I'm not sure",
+            "Prefer not to answer"
+          ]
+        }
+      ],
+      "status": "DRAFT_NOT_RUNTIME",
+      "sourceLaw": "atuned_src/engine/data/canon.js#SI"
+    },
+    {
+      "id": "integrity3:temperance",
+      "law": "Temperance",
+      "band": "Sacral",
+      "depths": [
+        {
+          "depth": 1,
+          "role": "BEHAVIOR",
+          "question": "When you'd had enough of something you wanted, how often did you stop?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 2,
+          "role": "PRESSURE",
+          "question": "When stressed, how often did you choose what you needed over an escape that left you worse off?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 3,
+          "role": "PROTECTIVE_EXPECTATION",
+          "question": "When you kept going past enough, what were you looking for?",
+          "response": "UNSCORED_USER_SELECTION",
+          "options": [
+            "Comfort",
+            "Stress relief",
+            "Control",
+            "Filling emptiness",
+            "Automatic habit",
+            "Something else, in my own words",
+            "None of these",
+            "I'm not sure",
+            "Prefer not to answer"
+          ]
+        }
+      ],
+      "status": "DRAFT_NOT_RUNTIME",
+      "sourceLaw": "atuned_src/engine/data/canon.js#SI"
+    },
+    {
+      "id": "integrity3:detachment",
+      "law": "Detachment",
+      "band": "Sacral",
+      "depths": [
+        {
+          "depth": 1,
+          "role": "BEHAVIOR",
+          "question": "When outcomes were uncertain, how often did you do your part without trying to control everything?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 2,
+          "role": "PRESSURE",
+          "question": "When others chose something you disliked, how often did you respect their choice while keeping your boundaries?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 3,
+          "role": "PROTECTIVE_EXPECTATION",
+          "question": "When letting go was hard, what were you afraid might happen?",
+          "response": "UNSCORED_USER_SELECTION",
+          "options": [
+            "Losing someone",
+            "Bad consequences",
+            "Powerlessness",
+            "Disappointment",
+            "Insecurity",
+            "Something else, in my own words",
+            "None of these",
+            "I'm not sure",
+            "Prefer not to answer"
+          ]
+        }
+      ],
+      "status": "DRAFT_NOT_RUNTIME",
+      "sourceLaw": "atuned_src/engine/data/canon.js#SI"
+    },
+    {
+      "id": "integrity3:non-harm",
+      "law": "Non-Harm",
+      "band": "Root",
+      "depths": [
+        {
+          "depth": 1,
+          "role": "BEHAVIOR",
+          "question": "When upset, how often did you avoid unnecessary harm in what you said or did?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 2,
+          "role": "PRESSURE",
+          "question": "When setting a boundary, how often did you do it without trying to punish the other person?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 3,
+          "role": "PROTECTIVE_EXPECTATION",
+          "question": "When you wanted to hurt back, what felt threatened?",
+          "response": "UNSCORED_USER_SELECTION",
+          "options": [
+            "Being heard",
+            "Respect",
+            "Control",
+            "Safety",
+            "Being understood",
+            "Something else, in my own words",
+            "None of these",
+            "I'm not sure",
+            "Prefer not to answer"
+          ]
+        }
+      ],
+      "status": "DRAFT_NOT_RUNTIME",
+      "sourceLaw": "atuned_src/engine/data/canon.js#SI"
+    },
+    {
+      "id": "integrity3:patience",
+      "law": "Patience",
+      "band": "Root",
+      "depths": [
+        {
+          "depth": 1,
+          "role": "BEHAVIOR",
+          "question": "When you had to wait, how often did you stay respectful?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 2,
+          "role": "PRESSURE",
+          "question": "When someone's pace slowed you down, how often did you avoid taking frustration out on them?",
+          "response": "FREQUENCY_0_TO_10"
+        },
+        {
+          "depth": 3,
+          "role": "PROTECTIVE_EXPECTATION",
+          "question": "When waiting felt difficult, what worried you?",
+          "response": "UNSCORED_USER_SELECTION",
+          "options": [
+            "Falling behind",
+            "Missing an opportunity",
+            "Loss of control",
+            "Being ignored",
+            "Overload",
+            "Something else, in my own words",
+            "None of these",
+            "I'm not sure",
+            "Prefer not to answer"
+          ]
+        }
+      ],
+      "status": "DRAFT_NOT_RUNTIME",
+      "sourceLaw": "atuned_src/engine/data/canon.js#SI"
+    }
+  ]
+}

@@ -48,6 +48,7 @@ const AV_CAP={name:60, title:80, description:280, tag:60, tags:60};
 function avatarBlank(){
  return {built:false, at:null, reviewedAt:null, pairs:[],
   name:'', title:'', description:'', version:1, status:'draft',
+  cqOrigin:null, activeJourneyScene:null,
   arch:{}, load0:{}, tags:{}, movedAt:null};}
 /* the status a record carries, or for one written before there was a status,
    the one its own built flag already said */

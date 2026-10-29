@@ -1730,7 +1730,7 @@ function renderAvatar(){
  if(!AV.sub)AV.sub='becoming';
  var st=avState(), h='<div class="av">'+avHead(st);
  if(AV.sub==='becoming'){
-  h+=avHero(st)+'<div class="avh-under">'+avMenu(st)+'</div>';
+  h+=hjPanel(st)+avHero(st)+'<div class="avh-under">'+avMenu(st)+'</div>';
   h+=avPairs(st)+'<div class="av-row2">'+avCycHTML(st)+avRitHTML(st)+'</div>'+avRunHTML(st);}
  else if(AV.sub==='purpose'){
   h+=avPurposeHTML();}
@@ -1749,7 +1749,8 @@ function renderAvatar(){
  host.innerHTML=h+'</div>';
  avShowIntake();
  AV.sig=avSig();
- avBind(host,st);}
+ avBind(host,st);
+ if(typeof hjBind==='function')hjBind(host);}
 /* repaint only when something the page reads has moved. renderIntake calls
    this on every press of its own, and a press on a law must not throw away a
    half typed pair. A ritual marked done moves the cycles without changing how
@@ -1777,7 +1778,9 @@ function avSig(){
  /* the identity and the purpose map are the page's too since round RB */
  var A=p.avatar||{}, idk=[A.name,A.title,A.description,A.version,A.reviewedAt].join('/');
  var pu=JSON.stringify(p.purpose||{});
- return [S.who, p.id, e.length, av.length, R.length, dn, s.toFixed(4), S.theme, ans, pl, idk, pu].join('|');}
+ var ht=(p.history||[]), hm=p.meter||{}, cq=(typeof compute==='function')?compute().CQ:null;
+ return [S.who, p.id, e.length, av.length, R.length, dn, s.toFixed(4), S.theme, ans, pl, idk, pu,
+  cq, (hm.unique||[]).length, ht.length, A.activeJourneyScene].join('|');}
 function avRefresh(){
  var host=document.getElementById('avbody');
  if(host&&(!host.firstChild||AV.sig!==avSig()))renderAvatar();

@@ -1,0 +1,2542 @@
+{
+  "schemaVersion": "1.0.0",
+  "templateId": "TPL-HIDDEN-FIGURE-V1",
+  "release": "SHADOW_30_SOURCE_AND_BEHAVIOR_V1",
+  "date": "2026-10-25",
+  "status": "RESEARCH_AND_PUBLIC_PROJECTION_ONLY",
+  "sourceRoots": [
+    "COMPASS.zip/01_INFERNO/INFERNO_NORMALIZED_REGISTRY_V1.json",
+    "atuned_src/engine/data/compass.js",
+    "atuned_src/engine/data/teachers_recipes.js",
+    "docs/data/compass/teachers/v1/TEACHER_OPPOSITES_REGISTRY_V1.json"
+  ],
+  "coverage": {
+    "records": 30,
+    "infernoFigureAndCrossTradition": 14,
+    "existing14CompassPoleTraits": 14,
+    "eligibleShortLabels": 23,
+    "contextOnly": 7,
+    "sourceLenses": 90,
+    "unchangedTaxonomies": [
+      "9 Inferno circles",
+      "15 Inferno behaviors",
+      "12 core behavioral archetypes",
+      "4 provisional inverse mechanisms"
+    ]
+  },
+  "records": [
+    {
+      "id": "shadow:charon",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "Charon",
+      "hiddenIdentity": "Charon",
+      "fam": "Compass/Inferno",
+      "def": "Gatekeeping",
+      "displayLabel": "Gatekeeping",
+      "body": "Controls passage across Acheron and refuses an unqualified living traveler Negative only if boundary is unfair or coercively exclusionary",
+      "inferred": false,
+      "inferenceBasis": "SOURCE",
+      "behavior": "Sets terms for admission and refuses passage",
+      "triggerMechanism": "Controls passage across Acheron and refuses an unqualified living traveler",
+      "livedExample": "Sets terms for admission and refuses passage",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": "compass:pole:TR",
+      "oppositeDefinition": "Negative only if boundary is unfair or coercively exclusionary",
+      "oppositeStatus": "ENGINE_POLE_IDENTITY_JOIN_ONLY",
+      "confidence": {
+        "source": "HIGH",
+        "semantic": "SOURCE",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Inferno III",
+      "researchSources": [
+        "https://www.ccel.org/d/dante/inferno/infer01.htm"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Inferno III: Controls passage across Acheron and refuses an unqualified living traveler",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Gatekeeping. Negative only if boundary is unfair or coercively exclusionary. Observable signature: Sets terms for admission and refuses passage",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Fair boundaries are protective, not inherently harmful. Source category is SOURCE; confidence is HIGH. Do not infer individual diagnosis.",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "id": "compass:pole:TR",
+          "type": "POLE_SOURCE_IDENTITY_NOT_EQUIVALENCE"
+        }
+      ],
+      "sourceIdentityStatus": "SOURCE",
+      "sourceInfernoId": "inferno:F01",
+      "candidateCompassAxis": "TR",
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Fair boundaries are protective, not inherently harmful",
+      "sourceObservedAction": "Controls passage across Acheron and refuses an unqualified living traveler",
+      "modelInterpretation": "Negative only if boundary is unfair or coercively exclusionary",
+      "sourceContext": "Inferno III",
+      "status": "DRAFT_SOURCE_OR_MODEL",
+      "poleKey": "TR",
+      "public": {
+        "publicId": "SH001",
+        "label": "Gatekeeping",
+        "behavior": "Sets terms for admission and refuses passage",
+        "identityVisible": false,
+        "displayEnabled": true
+      },
+      "aliases": [],
+      "identityRelation": null
+    },
+    {
+      "id": "shadow:minos",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "Minos",
+      "hiddenIdentity": "Minos",
+      "fam": "Compass/Inferno",
+      "def": "Judgment",
+      "displayLabel": "Judgment",
+      "body": "Hears confessions and classifies souls by destination Excessive rigid labeling is a hypothesis, not the judge's sole role",
+      "inferred": false,
+      "inferenceBasis": "SOURCE",
+      "behavior": "Assigns people fixed categories",
+      "triggerMechanism": "Hears confessions and classifies souls by destination",
+      "livedExample": "Assigns people fixed categories",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": null,
+      "oppositeDefinition": "Excessive rigid labeling is a hypothesis, not the judge's sole role",
+      "oppositeStatus": "NO_POLE",
+      "confidence": {
+        "source": "HIGH",
+        "semantic": "SOURCE",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Inferno V",
+      "researchSources": [
+        "https://www.ccel.org/d/dante/inferno/infer01.htm"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Inferno V: Hears confessions and classifies souls by destination",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Judgment. Excessive rigid labeling is a hypothesis, not the judge's sole role. Observable signature: Assigns people fixed categories",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Evidence-based reviewable decisions are essential. Source category is SOURCE; confidence is HIGH. Do not infer individual diagnosis.",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm"
+          ]
+        }
+      ],
+      "links": [],
+      "sourceIdentityStatus": "SOURCE",
+      "sourceInfernoId": "inferno:F02",
+      "candidateCompassAxis": null,
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Evidence-based reviewable decisions are essential",
+      "sourceObservedAction": "Hears confessions and classifies souls by destination",
+      "modelInterpretation": "Excessive rigid labeling is a hypothesis, not the judge's sole role",
+      "sourceContext": "Inferno V",
+      "status": "DRAFT_SOURCE_OR_MODEL",
+      "poleKey": null,
+      "public": {
+        "publicId": "SH002",
+        "label": "Judgment",
+        "behavior": "Assigns people fixed categories",
+        "identityVisible": false,
+        "displayEnabled": true
+      },
+      "aliases": [],
+      "identityRelation": null
+    },
+    {
+      "id": "shadow:cerberus",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "Cerberus",
+      "hiddenIdentity": "Cerberus",
+      "fam": "Compass/Inferno",
+      "def": "Insatiability",
+      "displayLabel": "Insatiability",
+      "body": "Attacks and torments gluttons as a ravenous three-headed guard Unbounded acquisition despite sufficient intake",
+      "inferred": true,
+      "inferenceBasis": "INTERPRETIVE",
+      "behavior": "Continues ravenous intake despite harm",
+      "triggerMechanism": "Attacks and torments gluttons as a ravenous three-headed guard",
+      "livedExample": "Continues ravenous intake despite harm",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": null,
+      "oppositeDefinition": "Unbounded acquisition despite sufficient intake",
+      "oppositeStatus": "NO_POLE",
+      "confidence": {
+        "source": "MEDIUM",
+        "semantic": "INTERPRETIVE",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Inferno VI",
+      "researchSources": [
+        "https://www.ccel.org/d/dante/inferno/infer01.htm"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Inferno VI: Attacks and torments gluttons as a ravenous three-headed guard",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Insatiability. Unbounded acquisition despite sufficient intake. Observable signature: Continues ravenous intake despite harm",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Hunger or enjoyment alone is not excess. Source category is INTERPRETIVE; confidence is MEDIUM. Do not infer individual diagnosis.",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm"
+          ]
+        }
+      ],
+      "links": [],
+      "sourceIdentityStatus": "INTERPRETIVE",
+      "sourceInfernoId": "inferno:F03",
+      "candidateCompassAxis": null,
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Hunger or enjoyment alone is not excess",
+      "sourceObservedAction": "Attacks and torments gluttons as a ravenous three-headed guard",
+      "modelInterpretation": "Unbounded acquisition despite sufficient intake",
+      "sourceContext": "Inferno VI",
+      "status": "DRAFT_SOURCE_OR_MODEL",
+      "poleKey": null,
+      "public": {
+        "publicId": "SH003",
+        "label": "Insatiability",
+        "behavior": "Continues ravenous intake despite harm",
+        "identityVisible": false,
+        "displayEnabled": true
+      },
+      "aliases": [],
+      "identityRelation": null
+    },
+    {
+      "id": "shadow:plutus",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "Plutus",
+      "hiddenIdentity": "Plutus",
+      "fam": "Compass/Inferno",
+      "def": "Possessiveness",
+      "displayLabel": "Possessiveness",
+      "body": "Guards the region of avarice and prodigality Possessive guarding inferred from thematic location",
+      "inferred": true,
+      "inferenceBasis": "INTERPRETIVE",
+      "behavior": "Denies access to shared resources despite responsibility",
+      "triggerMechanism": "Guards the region of avarice and prodigality",
+      "livedExample": "Denies access to shared resources despite responsibility",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": null,
+      "oppositeDefinition": "Possessive guarding inferred from thematic location",
+      "oppositeStatus": "NO_POLE",
+      "confidence": {
+        "source": "MEDIUM",
+        "semantic": "INTERPRETIVE",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Inferno VII",
+      "researchSources": [
+        "https://www.ccel.org/d/dante/inferno/infer01.htm"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Inferno VII: Guards the region of avarice and prodigality",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Possessiveness. Possessive guarding inferred from thematic location. Observable signature: Denies access to shared resources despite responsibility",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Legitimate saving and boundaries are not hoarding. Source category is INTERPRETIVE; confidence is MEDIUM. Do not infer individual diagnosis.",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm"
+          ]
+        }
+      ],
+      "links": [],
+      "sourceIdentityStatus": "INTERPRETIVE",
+      "sourceInfernoId": "inferno:F04",
+      "candidateCompassAxis": null,
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Legitimate saving and boundaries are not hoarding",
+      "sourceObservedAction": "Guards the region of avarice and prodigality",
+      "modelInterpretation": "Possessive guarding inferred from thematic location",
+      "sourceContext": "Inferno VII",
+      "status": "DRAFT_SOURCE_OR_MODEL",
+      "poleKey": null,
+      "public": {
+        "publicId": "SH004",
+        "label": "Possessiveness",
+        "behavior": "Denies access to shared resources despite responsibility",
+        "identityVisible": false,
+        "displayEnabled": true
+      },
+      "aliases": [],
+      "identityRelation": null
+    },
+    {
+      "id": "shadow:phlegyas",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "Phlegyas",
+      "hiddenIdentity": "Phlegyas",
+      "fam": "Compass/Inferno",
+      "def": "Reactivity",
+      "displayLabel": "Reactivity",
+      "body": "Approaches angrily and transports travelers along the Styx Disproportionate escalation to challenge",
+      "inferred": true,
+      "inferenceBasis": "SOURCE_MODEL",
+      "behavior": "Anger spikes beyond what safety requires",
+      "triggerMechanism": "Approaches angrily and transports travelers along the Styx",
+      "livedExample": "Anger spikes beyond what safety requires",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": "compass:pole:CH",
+      "oppositeDefinition": "Disproportionate escalation to challenge",
+      "oppositeStatus": "ENGINE_POLE_IDENTITY_JOIN_ONLY",
+      "confidence": {
+        "source": "HIGH",
+        "semantic": "SOURCE_MODEL",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Inferno VIII",
+      "researchSources": [
+        "https://www.ccel.org/d/dante/inferno/infer01.htm"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Inferno VIII: Approaches angrily and transports travelers along the Styx",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Reactivity. Disproportionate escalation to challenge. Observable signature: Anger spikes beyond what safety requires",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Proportionate protective force is not disordered reactivity. Source category is SOURCE_MODEL; confidence is HIGH. Do not infer individual diagnosis.",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "id": "compass:pole:CH",
+          "type": "POLE_SOURCE_IDENTITY_NOT_EQUIVALENCE"
+        }
+      ],
+      "sourceIdentityStatus": "SOURCE_MODEL",
+      "sourceInfernoId": "inferno:F05",
+      "candidateCompassAxis": "CH",
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Proportionate protective force is not disordered reactivity",
+      "sourceObservedAction": "Approaches angrily and transports travelers along the Styx",
+      "modelInterpretation": "Disproportionate escalation to challenge",
+      "sourceContext": "Inferno VIII",
+      "status": "DRAFT_SOURCE_OR_MODEL",
+      "poleKey": "CH",
+      "public": {
+        "publicId": "SH005",
+        "label": "Reactivity",
+        "behavior": "Anger spikes beyond what safety requires",
+        "identityVisible": false,
+        "displayEnabled": true
+      },
+      "aliases": [],
+      "identityRelation": null
+    },
+    {
+      "id": "shadow:furies",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "The Furies",
+      "hiddenIdentity": "The Furies",
+      "fam": "Compass/Inferno",
+      "def": "Vengeance",
+      "displayLabel": "Vengeance",
+      "body": "Pursue blood offenses; threaten travelers in Dante and invoke Medusa Retribution is general; intimidation is Dante's tactic, not doctrinal rigidity",
+      "inferred": false,
+      "inferenceBasis": "SOURCE",
+      "behavior": "Pursues retaliation and threatens others into stopping",
+      "triggerMechanism": "Pursue blood offenses; threaten travelers in Dante and invoke Medusa",
+      "livedExample": "Pursues retaliation and threatens others into stopping",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": "compass:pole:RE",
+      "oppositeDefinition": "Retribution is general; intimidation is Dante's tactic, not doctrinal rigidity",
+      "oppositeStatus": "ENGINE_POLE_IDENTITY_JOIN_ONLY",
+      "confidence": {
+        "source": "HIGH",
+        "semantic": "SOURCE",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Aeschylus Eumenides; Inferno IX",
+      "researchSources": [
+        "https://www.theoi.com/Text/AeschylusEumenides.html",
+        "https://www.ccel.org/d/dante/inferno/infer01.htm"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Aeschylus Eumenides; Inferno IX: Pursue blood offenses; threaten travelers in Dante and invoke Medusa",
+          "sources": [
+            "https://www.theoi.com/Text/AeschylusEumenides.html",
+            "https://www.ccel.org/d/dante/inferno/infer01.htm"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Vengeance. Retribution is general; intimidation is Dante's tactic, not doctrinal rigidity. Observable signature: Pursues retaliation and threatens others into stopping",
+          "sources": [
+            "https://www.theoi.com/Text/AeschylusEumenides.html",
+            "https://www.ccel.org/d/dante/inferno/infer01.htm",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Aeschylus shows they can accept changed arrangements. Source category is SOURCE; confidence is HIGH. Do not infer individual diagnosis.",
+          "sources": [
+            "https://www.theoi.com/Text/AeschylusEumenides.html",
+            "https://www.ccel.org/d/dante/inferno/infer01.htm"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "id": "compass:pole:RE",
+          "type": "POLE_SOURCE_IDENTITY_NOT_EQUIVALENCE"
+        }
+      ],
+      "sourceIdentityStatus": "SOURCE",
+      "sourceInfernoId": "inferno:F06",
+      "candidateCompassAxis": "RE",
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Aeschylus shows they can accept changed arrangements",
+      "sourceObservedAction": "Pursue blood offenses; threaten travelers in Dante and invoke Medusa",
+      "modelInterpretation": "Retribution is general; intimidation is Dante's tactic, not doctrinal rigidity",
+      "sourceContext": "Aeschylus Eumenides; Inferno IX",
+      "status": "DRAFT_SOURCE_OR_MODEL",
+      "poleKey": "RE",
+      "public": {
+        "publicId": "SH006",
+        "label": "Vengeance",
+        "behavior": "Pursues retaliation and threatens others into stopping",
+        "identityVisible": false,
+        "displayEnabled": true
+      },
+      "aliases": [],
+      "identityRelation": null
+    },
+    {
+      "id": "shadow:minotaur",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "Minotaur",
+      "hiddenIdentity": "Minotaur",
+      "fam": "Compass/Inferno",
+      "def": "Violence",
+      "displayLabel": "Violence",
+      "body": "Rages at the descent to the violent circle Harmful force unchecked by proportionality",
+      "inferred": true,
+      "inferenceBasis": "SOURCE_MODEL",
+      "behavior": "Lashes out to hurt instead of protect",
+      "triggerMechanism": "Rages at the descent to the violent circle",
+      "livedExample": "Lashes out to hurt instead of protect",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": null,
+      "oppositeDefinition": "Harmful force unchecked by proportionality",
+      "oppositeStatus": "NO_POLE",
+      "confidence": {
+        "source": "MEDIUM",
+        "semantic": "SOURCE_MODEL",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Inferno XII",
+      "researchSources": [
+        "https://www.ccel.org/d/dante/inferno/infer01.htm"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Inferno XII: Rages at the descent to the violent circle",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Violence. Harmful force unchecked by proportionality. Observable signature: Lashes out to hurt instead of protect",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Force in immediate legitimate defense can be necessary. Source category is SOURCE_MODEL; confidence is MEDIUM. Do not infer individual diagnosis.",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm"
+          ]
+        }
+      ],
+      "links": [],
+      "sourceIdentityStatus": "SOURCE_MODEL",
+      "sourceInfernoId": "inferno:F07",
+      "candidateCompassAxis": null,
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Force in immediate legitimate defense can be necessary",
+      "sourceObservedAction": "Rages at the descent to the violent circle",
+      "modelInterpretation": "Harmful force unchecked by proportionality",
+      "sourceContext": "Inferno XII",
+      "status": "DRAFT_SOURCE_OR_MODEL",
+      "poleKey": null,
+      "public": {
+        "publicId": "SH007",
+        "label": "Violence",
+        "behavior": "Lashes out to hurt instead of protect",
+        "identityVisible": false,
+        "displayEnabled": true
+      },
+      "aliases": [],
+      "identityRelation": null
+    },
+    {
+      "id": "shadow:harpies",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "The Harpies",
+      "hiddenIdentity": "The Harpies",
+      "fam": "Compass/Inferno",
+      "def": "Torment",
+      "displayLabel": "Torment",
+      "body": "Damage trees inhabited by condemned souls Degradation is inflicted by Harpies, not the victims' self-harm",
+      "inferred": false,
+      "inferenceBasis": "SOURCE",
+      "behavior": "Repeatedly injures or humiliates someone vulnerable",
+      "triggerMechanism": "Damage trees inhabited by condemned souls",
+      "livedExample": "Repeatedly injures or humiliates someone vulnerable",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": null,
+      "oppositeDefinition": "Degradation is inflicted by Harpies, not the victims' self-harm",
+      "oppositeStatus": "NO_POLE",
+      "confidence": {
+        "source": "HIGH",
+        "semantic": "SOURCE",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Inferno XIII",
+      "researchSources": [
+        "https://www.ccel.org/d/dante/inferno/infer01.htm"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Inferno XIII: Damage trees inhabited by condemned souls",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Torment. Degradation is inflicted by Harpies, not the victims' self-harm. Observable signature: Repeatedly injures or humiliates someone vulnerable",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Victim's fate does not determine agent's psychology. Source category is SOURCE; confidence is HIGH. Do not infer individual diagnosis.",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm"
+          ]
+        }
+      ],
+      "links": [],
+      "sourceIdentityStatus": "SOURCE",
+      "sourceInfernoId": "inferno:F08",
+      "candidateCompassAxis": null,
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Victim's fate does not determine agent's psychology",
+      "sourceObservedAction": "Damage trees inhabited by condemned souls",
+      "modelInterpretation": "Degradation is inflicted by Harpies, not the victims' self-harm",
+      "sourceContext": "Inferno XIII",
+      "status": "DRAFT_SOURCE_OR_MODEL",
+      "poleKey": null,
+      "public": {
+        "publicId": "SH008",
+        "label": "Torment",
+        "behavior": "Repeatedly injures or humiliates someone vulnerable",
+        "identityVisible": false,
+        "displayEnabled": true
+      },
+      "aliases": [],
+      "identityRelation": null
+    },
+    {
+      "id": "shadow:geryon",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "Geryon",
+      "hiddenIdentity": "Geryon",
+      "fam": "Compass/Inferno",
+      "def": "Fraud",
+      "displayLabel": "Fraud",
+      "body": "A benevolent-looking human face hides serpent form and stinging tail Material deception concealed behind trustworthy presentation",
+      "inferred": false,
+      "inferenceBasis": "SOURCE",
+      "behavior": "Claims integrity while concealing harmful contrary facts",
+      "triggerMechanism": "A benevolent-looking human face hides serpent form and stinging tail",
+      "livedExample": "Claims integrity while concealing harmful contrary facts",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": "compass:pole:PE",
+      "oppositeDefinition": "Material deception concealed behind trustworthy presentation",
+      "oppositeStatus": "ENGINE_POLE_IDENTITY_JOIN_ONLY",
+      "confidence": {
+        "source": "HIGH",
+        "semantic": "SOURCE",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Inferno XVII, distinct from Greek cattle story",
+      "researchSources": [
+        "https://dante.princeton.edu/cgi-bin/dante/DispToynbeeByTitOrId.pl?INP_ID=212821"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Inferno XVII, distinct from Greek cattle story: A benevolent-looking human face hides serpent form and stinging tail",
+          "sources": [
+            "https://dante.princeton.edu/cgi-bin/dante/DispToynbeeByTitOrId.pl?INP_ID=212821"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Fraud. Material deception concealed behind trustworthy presentation. Observable signature: Claims integrity while concealing harmful contrary facts",
+          "sources": [
+            "https://dante.princeton.edu/cgi-bin/dante/DispToynbeeByTitOrId.pl?INP_ID=212821",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Mistake or costume without intentional deception is not fraud. Source category is SOURCE; confidence is HIGH. Do not infer individual diagnosis.",
+          "sources": [
+            "https://dante.princeton.edu/cgi-bin/dante/DispToynbeeByTitOrId.pl?INP_ID=212821"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "id": "compass:pole:PE",
+          "type": "POLE_SOURCE_IDENTITY_NOT_EQUIVALENCE"
+        }
+      ],
+      "sourceIdentityStatus": "SOURCE",
+      "sourceInfernoId": "inferno:F09",
+      "candidateCompassAxis": "PE",
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Mistake or costume without intentional deception is not fraud",
+      "sourceObservedAction": "A benevolent-looking human face hides serpent form and stinging tail",
+      "modelInterpretation": "Material deception concealed behind trustworthy presentation",
+      "sourceContext": "Inferno XVII, distinct from Greek cattle story",
+      "status": "DRAFT_SOURCE_OR_MODEL",
+      "poleKey": "PE",
+      "public": {
+        "publicId": "SH009",
+        "label": "Fraud",
+        "behavior": "Claims integrity while concealing harmful contrary facts",
+        "identityVisible": false,
+        "displayEnabled": true
+      },
+      "aliases": [
+        "Garion",
+        "Gerion"
+      ],
+      "identityRelation": null
+    },
+    {
+      "id": "shadow:giants",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "The Giants",
+      "hiddenIdentity": "The Giants",
+      "fam": "Compass/Inferno",
+      "def": "Overreach",
+      "displayLabel": "Overreach",
+      "body": "A mixed group including hostile punished giants and helping Antaeus Not defensible as one universal negative default",
+      "inferred": true,
+      "inferenceBasis": "COMPOSITE",
+      "behavior": "Sometimes disproportionate power is used to challenge others",
+      "triggerMechanism": "A mixed group including hostile punished giants and helping Antaeus",
+      "livedExample": "Sometimes disproportionate power is used to challenge others",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": null,
+      "oppositeDefinition": "Not defensible as one universal negative default",
+      "oppositeStatus": "NO_POLE",
+      "confidence": {
+        "source": "LOW",
+        "semantic": "COMPOSITE",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Inferno XXXI",
+      "researchSources": [
+        "https://ahc.leeds.ac.uk/discover-dante/doc/inferno/page/6"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Inferno XXXI: A mixed group including hostile punished giants and helping Antaeus",
+          "sources": [
+            "https://ahc.leeds.ac.uk/discover-dante/doc/inferno/page/6"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Overreach. Not defensible as one universal negative default. Observable signature: Sometimes disproportionate power is used to challenge others",
+          "sources": [
+            "https://ahc.leeds.ac.uk/discover-dante/doc/inferno/page/6",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Antaeus helps; never assign the same vice to all giants. Source category is COMPOSITE; confidence is LOW. Do not infer individual diagnosis.",
+          "sources": [
+            "https://ahc.leeds.ac.uk/discover-dante/doc/inferno/page/6"
+          ]
+        }
+      ],
+      "links": [],
+      "sourceIdentityStatus": "COMPOSITE",
+      "sourceInfernoId": "inferno:F10",
+      "candidateCompassAxis": null,
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Antaeus helps; never assign the same vice to all giants",
+      "sourceObservedAction": "A mixed group including hostile punished giants and helping Antaeus",
+      "modelInterpretation": "Not defensible as one universal negative default",
+      "sourceContext": "Inferno XXXI",
+      "status": "HIDDEN_COMPOSITE",
+      "poleKey": null,
+      "public": {
+        "publicId": "SH010",
+        "label": "Overreach",
+        "behavior": "Sometimes disproportionate power is used to challenge others",
+        "identityVisible": false,
+        "displayEnabled": false
+      },
+      "aliases": [],
+      "identityRelation": null
+    },
+    {
+      "id": "shadow:lucifer",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "Lucifer",
+      "hiddenIdentity": "Lucifer",
+      "fam": "Compass/Inferno",
+      "def": "Separation",
+      "displayLabel": "Separation",
+      "body": "Immobilized at Cocytus; repeated wingbeats worsen frozen condition ATUNED connects self-exalting pride to isolation from Source; poem depicts stasis",
+      "inferred": true,
+      "inferenceBasis": "MODEL_SUPPORTED",
+      "behavior": "Cuts off reciprocal connection through self-prioritization",
+      "triggerMechanism": "Immobilized at Cocytus; repeated wingbeats worsen frozen condition",
+      "livedExample": "Cuts off reciprocal connection through self-prioritization",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": "compass:pole:IL",
+      "oppositeDefinition": "ATUNED connects self-exalting pride to isolation from Source; poem depicts stasis",
+      "oppositeStatus": "ENGINE_POLE_IDENTITY_JOIN_ONLY",
+      "confidence": {
+        "source": "MODEL",
+        "semantic": "MODEL_SUPPORTED",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Inferno XXXIV plus ATUNED blueprint",
+      "researchSources": [
+        "https://www.ccel.org/d/dante/inferno/infer01.htm"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Inferno XXXIV plus ATUNED blueprint: Immobilized at Cocytus; repeated wingbeats worsen frozen condition",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Separation. ATUNED connects self-exalting pride to isolation from Source; poem depicts stasis. Observable signature: Cuts off reciprocal connection through self-prioritization",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Depression and immobility are not moral failure. Source category is MODEL_SUPPORTED; confidence is MODEL. Do not infer individual diagnosis.",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "id": "compass:pole:IL",
+          "type": "POLE_SOURCE_IDENTITY_NOT_EQUIVALENCE"
+        }
+      ],
+      "sourceIdentityStatus": "MODEL_SUPPORTED",
+      "sourceInfernoId": "inferno:F11",
+      "candidateCompassAxis": "IL",
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Depression and immobility are not moral failure",
+      "sourceObservedAction": "Immobilized at Cocytus; repeated wingbeats worsen frozen condition",
+      "modelInterpretation": "ATUNED connects self-exalting pride to isolation from Source; poem depicts stasis",
+      "sourceContext": "Inferno XXXIV plus ATUNED blueprint",
+      "status": "DRAFT_SOURCE_OR_MODEL",
+      "poleKey": "IL",
+      "public": {
+        "publicId": "SH011",
+        "label": "Separation",
+        "behavior": "Cuts off reciprocal connection through self-prioritization",
+        "identityVisible": false,
+        "displayEnabled": true
+      },
+      "aliases": [],
+      "identityRelation": null
+    },
+    {
+      "id": "shadow:malak",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "Malak",
+      "hiddenIdentity": "Malak",
+      "fam": "Compass/Inferno",
+      "def": "Extractive Control",
+      "displayLabel": "Extractive Control",
+      "body": "No verified ancient negative figure; mal'akh denotes messenger/angel Owner blueprint assigns inverted governance and cold systemic extraction",
+      "inferred": true,
+      "inferenceBasis": "MODEL_ONLY",
+      "behavior": "Uses rules and hierarchy to exploit dependent people",
+      "triggerMechanism": "No verified ancient negative figure; mal'akh denotes messenger/angel",
+      "livedExample": "Uses rules and hierarchy to exploit dependent people",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": null,
+      "oppositeDefinition": "Owner blueprint assigns inverted governance and cold systemic extraction",
+      "oppositeStatus": "NO_POLE",
+      "confidence": {
+        "source": "MODEL",
+        "semantic": "MODEL_ONLY",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Owner BLUEPRINT; historical identity unresolved",
+      "researchSources": [
+        "https://biblehub.com/strongs/hebrew/4397.htm"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Owner BLUEPRINT; historical identity unresolved: No verified ancient negative figure; mal'akh denotes messenger/angel",
+          "sources": [
+            "https://biblehub.com/strongs/hebrew/4397.htm"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Extractive Control. Owner blueprint assigns inverted governance and cold systemic extraction. Observable signature: Uses rules and hierarchy to exploit dependent people",
+          "sources": [
+            "https://biblehub.com/strongs/hebrew/4397.htm",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: The word messenger or angel does not designate a malign being. Source category is MODEL_ONLY; confidence is MODEL. Do not infer individual diagnosis.",
+          "sources": [
+            "https://biblehub.com/strongs/hebrew/4397.htm"
+          ]
+        }
+      ],
+      "links": [],
+      "sourceIdentityStatus": "MODEL_ONLY",
+      "sourceInfernoId": "inferno:X01",
+      "candidateCompassAxis": null,
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "The word messenger or angel does not designate a malign being",
+      "sourceObservedAction": "No verified ancient negative figure; mal'akh denotes messenger/angel",
+      "modelInterpretation": "Owner blueprint assigns inverted governance and cold systemic extraction",
+      "sourceContext": "Owner BLUEPRINT; historical identity unresolved",
+      "status": "ATUNED_ONLY_NO_SOURCE_IDENTITY",
+      "poleKey": null,
+      "public": {
+        "publicId": "SH012",
+        "label": "Extractive Control",
+        "behavior": "Uses rules and hierarchy to exploit dependent people",
+        "identityVisible": false,
+        "displayEnabled": true
+      },
+      "aliases": [],
+      "identityRelation": null
+    },
+    {
+      "id": "shadow:baal",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "Baal",
+      "hiddenIdentity": "Baal",
+      "fam": "Compass/Inferno",
+      "def": "Unchecked Appetite",
+      "displayLabel": "Unchecked Appetite",
+      "body": "Ugaritic Baal/Hadad is storm and fertility god, not inherently appetite personified Owner BLUEPRINT uses appetite without direction; model-only",
+      "inferred": true,
+      "inferenceBasis": "MODEL_ONLY",
+      "behavior": "Consumes resources without regard for downstream costs",
+      "triggerMechanism": "Ugaritic Baal/Hadad is storm and fertility god, not inherently appetite personified",
+      "livedExample": "Consumes resources without regard for downstream costs",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": null,
+      "oppositeDefinition": "Owner BLUEPRINT uses appetite without direction; model-only",
+      "oppositeStatus": "NO_POLE",
+      "confidence": {
+        "source": "MODEL",
+        "semantic": "MODEL_ONLY",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Owner BLUEPRINT; Ugaritic Baal distinct from Goetic Bael",
+      "researchSources": [
+        "https://www.metmuseum.org/ja/essays/the-gods-and-goddesses-of-canaan"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Owner BLUEPRINT; Ugaritic Baal distinct from Goetic Bael: Ugaritic Baal/Hadad is storm and fertility god, not inherently appetite personified",
+          "sources": [
+            "https://www.metmuseum.org/ja/essays/the-gods-and-goddesses-of-canaan"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Unchecked Appetite. Owner BLUEPRINT uses appetite without direction; model-only. Observable signature: Consumes resources without regard for downstream costs",
+          "sources": [
+            "https://www.metmuseum.org/ja/essays/the-gods-and-goddesses-of-canaan",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Do not demonize Canaanite deity or his ancient worshippers. Source category is MODEL_ONLY; confidence is MODEL. Do not infer individual diagnosis.",
+          "sources": [
+            "https://www.metmuseum.org/ja/essays/the-gods-and-goddesses-of-canaan"
+          ]
+        }
+      ],
+      "links": [],
+      "sourceIdentityStatus": "MODEL_ONLY",
+      "sourceInfernoId": "inferno:X02",
+      "candidateCompassAxis": null,
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Do not demonize Canaanite deity or his ancient worshippers",
+      "sourceObservedAction": "Ugaritic Baal/Hadad is storm and fertility god, not inherently appetite personified",
+      "modelInterpretation": "Owner BLUEPRINT uses appetite without direction; model-only",
+      "sourceContext": "Owner BLUEPRINT; Ugaritic Baal distinct from Goetic Bael",
+      "status": "ATUNED_ONLY_NO_SOURCE_IDENTITY",
+      "poleKey": null,
+      "public": {
+        "publicId": "SH013",
+        "label": "Unchecked Appetite",
+        "behavior": "Consumes resources without regard for downstream costs",
+        "identityVisible": false,
+        "displayEnabled": true
+      },
+      "aliases": [],
+      "identityRelation": null
+    },
+    {
+      "id": "shadow:asmodeus",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "Asmodeus",
+      "hiddenIdentity": "Asmodeus",
+      "fam": "Compass/Inferno",
+      "def": "Obstruction",
+      "displayLabel": "Obstruction",
+      "body": "Kills Sarah's seven prospective husbands, blocking marriage Possessive intent version-dependent; repeated obstruction directly evidenced",
+      "inferred": false,
+      "inferenceBasis": "SOURCE",
+      "behavior": "Sabotages consenting relationships through concrete interference or harm",
+      "triggerMechanism": "Kills Sarah's seven prospective husbands, blocking marriage",
+      "livedExample": "Sabotages consenting relationships through concrete interference or harm",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": "compass:pole:DE",
+      "oppositeDefinition": "Possessive intent version-dependent; repeated obstruction directly evidenced",
+      "oppositeStatus": "ENGINE_POLE_IDENTITY_JOIN_ONLY",
+      "confidence": {
+        "source": "HIGH",
+        "semantic": "SOURCE",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Tobit 3/6/8; later grimoire separate",
+      "researchSources": [
+        "https://bible.usccb.org/bible/tobit/3"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Tobit 3/6/8; later grimoire separate: Kills Sarah's seven prospective husbands, blocking marriage",
+          "sources": [
+            "https://bible.usccb.org/bible/tobit/3"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Obstruction. Possessive intent version-dependent; repeated obstruction directly evidenced. Observable signature: Sabotages consenting relationships through concrete interference or harm",
+          "sources": [
+            "https://bible.usccb.org/bible/tobit/3",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Ordinary desire is not coercive obstruction. Source category is SOURCE; confidence is HIGH. Do not infer individual diagnosis.",
+          "sources": [
+            "https://bible.usccb.org/bible/tobit/3"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "id": "compass:pole:DE",
+          "type": "POLE_SOURCE_IDENTITY_NOT_EQUIVALENCE"
+        }
+      ],
+      "sourceIdentityStatus": "SOURCE",
+      "sourceInfernoId": "inferno:X03",
+      "candidateCompassAxis": "DE",
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Ordinary desire is not coercive obstruction",
+      "sourceObservedAction": "Kills Sarah's seven prospective husbands, blocking marriage",
+      "modelInterpretation": "Possessive intent version-dependent; repeated obstruction directly evidenced",
+      "sourceContext": "Tobit 3/6/8; later grimoire separate",
+      "status": "DRAFT_SOURCE_OR_MODEL",
+      "poleKey": "DE",
+      "public": {
+        "publicId": "SH014",
+        "label": "Obstruction",
+        "behavior": "Sabotages consenting relationships through concrete interference or harm",
+        "identityVisible": false,
+        "displayEnabled": true
+      },
+      "aliases": [],
+      "identityRelation": null
+    },
+    {
+      "id": "shadow:set",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "Set",
+      "hiddenIdentity": "Set",
+      "fam": "Compass/Inferno",
+      "def": "Internal Sabotage",
+      "displayLabel": "Internal Sabotage",
+      "body": "Kills Osiris and contests power; also protects Ra from Apep Owner Compass interpretation narrows to discord inside a trusted system",
+      "inferred": true,
+      "inferenceBasis": "MODEL_SUPPORTED",
+      "behavior": "Corrupts a shared structure while benefiting from insider access",
+      "triggerMechanism": "Kills Osiris and contests power; also protects Ra from Apep",
+      "livedExample": "Corrupts a shared structure while benefiting from insider access",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": "compass:pole:OR",
+      "oppositeDefinition": "Owner Compass interpretation narrows to discord inside a trusted system",
+      "oppositeStatus": "ENGINE_POLE_IDENTITY_JOIN_ONLY",
+      "confidence": {
+        "source": "MODEL",
+        "semantic": "MODEL_SUPPORTED",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Osiris myth and Ra protection, different roles",
+      "researchSources": [
+        "https://egyptianmuseum.org/deities-seth"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Osiris myth and Ra protection, different roles: Kills Osiris and contests power; also protects Ra from Apep",
+          "sources": [
+            "https://egyptianmuseum.org/deities-seth"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Internal Sabotage. Owner Compass interpretation narrows to discord inside a trusted system. Observable signature: Corrupts a shared structure while benefiting from insider access",
+          "sources": [
+            "https://egyptianmuseum.org/deities-seth",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Set also protects Ra; cannot flatten Egyptian religious history. Source category is MODEL_SUPPORTED; confidence is MODEL. Do not infer individual diagnosis.",
+          "sources": [
+            "https://egyptianmuseum.org/deities-seth"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "id": "compass:pole:OR",
+          "type": "POLE_SOURCE_IDENTITY_NOT_EQUIVALENCE"
+        }
+      ],
+      "sourceIdentityStatus": "MODEL_SUPPORTED",
+      "sourceInfernoId": null,
+      "candidateCompassAxis": "OR",
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Set also protects Ra; cannot flatten Egyptian religious history",
+      "sourceObservedAction": "Kills Osiris and contests power; also protects Ra from Apep",
+      "modelInterpretation": "Owner Compass interpretation narrows to discord inside a trusted system",
+      "sourceContext": "Osiris myth and Ra protection, different roles",
+      "status": "DRAFT_SOURCE_OR_MODEL",
+      "poleKey": "OR",
+      "public": {
+        "publicId": "SH015",
+        "label": "Internal Sabotage",
+        "behavior": "Corrupts a shared structure while benefiting from insider access",
+        "identityVisible": false,
+        "displayEnabled": true
+      },
+      "aliases": [],
+      "identityRelation": null
+    },
+    {
+      "id": "shadow:moloch",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "Moloch",
+      "hiddenIdentity": "Moloch",
+      "fam": "Compass/Inferno",
+      "def": "Sacrificial Extraction",
+      "displayLabel": "Sacrificial Extraction",
+      "body": "Molek associations concern condemned sacrifice; god-versus-rite interpretation disputed ATUNED model of power requiring damaging payment by others",
+      "inferred": true,
+      "inferenceBasis": "MODEL_SUPPORTED",
+      "behavior": "Sacrifices dependents' welfare to maintain status or institution",
+      "triggerMechanism": "Molek associations concern condemned sacrifice; god-versus-rite interpretation disputed",
+      "livedExample": "Sacrifices dependents' welfare to maintain status or institution",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": "compass:pole:PO",
+      "oppositeDefinition": "ATUNED model of power requiring damaging payment by others",
+      "oppositeStatus": "ENGINE_POLE_IDENTITY_JOIN_ONLY",
+      "confidence": {
+        "source": "MEDIUM",
+        "semantic": "MODEL_SUPPORTED",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Leviticus/Tophet traditions",
+      "researchSources": [
+        "https://academic.oup.com/edited-volume/60552/chapter-abstract/523947655"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Leviticus/Tophet traditions: Molek associations concern condemned sacrifice; god-versus-rite interpretation disputed",
+          "sources": [
+            "https://academic.oup.com/edited-volume/60552/chapter-abstract/523947655"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Sacrificial Extraction. ATUNED model of power requiring damaging payment by others. Observable signature: Sacrifices dependents' welfare to maintain status or institution",
+          "sources": [
+            "https://academic.oup.com/edited-volume/60552/chapter-abstract/523947655",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Scholarship disputes whether named deity or sacrifice category. Source category is MODEL_SUPPORTED; confidence is MEDIUM. Do not infer individual diagnosis.",
+          "sources": [
+            "https://academic.oup.com/edited-volume/60552/chapter-abstract/523947655"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "id": "compass:pole:PO",
+          "type": "POLE_SOURCE_IDENTITY_NOT_EQUIVALENCE"
+        }
+      ],
+      "sourceIdentityStatus": "MODEL_SUPPORTED",
+      "sourceInfernoId": null,
+      "candidateCompassAxis": "PO",
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Scholarship disputes whether named deity or sacrifice category",
+      "sourceObservedAction": "Molek associations concern condemned sacrifice; god-versus-rite interpretation disputed",
+      "modelInterpretation": "ATUNED model of power requiring damaging payment by others",
+      "sourceContext": "Leviticus/Tophet traditions",
+      "status": "DRAFT_SOURCE_OR_MODEL",
+      "poleKey": "PO",
+      "public": {
+        "publicId": "SH016",
+        "label": "Sacrificial Extraction",
+        "behavior": "Sacrifices dependents' welfare to maintain status or institution",
+        "identityVisible": false,
+        "displayEnabled": true
+      },
+      "aliases": [],
+      "identityRelation": null
+    },
+    {
+      "id": "shadow:kaliya",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "Kaliya",
+      "hiddenIdentity": "Kaliya",
+      "fam": "Compass/Inferno",
+      "def": "Poisoning",
+      "displayLabel": "Poisoning",
+      "body": "Poisons Yamuna and entraps Krishna in serpent coils Poisons or contaminates a shared environment",
+      "inferred": false,
+      "inferenceBasis": "SOURCE",
+      "behavior": "Creates persistent exposure to something known to harm others",
+      "triggerMechanism": "Poisons Yamuna and entraps Krishna in serpent coils",
+      "livedExample": "Creates persistent exposure to something known to harm others",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": "compass:pole:FL",
+      "oppositeDefinition": "Poisons or contaminates a shared environment",
+      "oppositeStatus": "ENGINE_POLE_IDENTITY_JOIN_ONLY",
+      "confidence": {
+        "source": "HIGH",
+        "semantic": "SOURCE",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Bhagavata Purana 10.16",
+      "researchSources": [
+        "https://vedabase.io/en/library/sb/10/16/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Bhagavata Purana 10.16: Poisons Yamuna and entraps Krishna in serpent coils",
+          "sources": [
+            "https://vedabase.io/en/library/sb/10/16/"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Poisoning. Poisons or contaminates a shared environment. Observable signature: Creates persistent exposure to something known to harm others",
+          "sources": [
+            "https://vedabase.io/en/library/sb/10/16/",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Defensive conduct alone is not deliberate contamination. Source category is SOURCE; confidence is HIGH. Do not infer individual diagnosis.",
+          "sources": [
+            "https://vedabase.io/en/library/sb/10/16/"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "id": "compass:pole:FL",
+          "type": "POLE_SOURCE_IDENTITY_NOT_EQUIVALENCE"
+        }
+      ],
+      "sourceIdentityStatus": "SOURCE",
+      "sourceInfernoId": null,
+      "candidateCompassAxis": "FL",
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Defensive conduct alone is not deliberate contamination",
+      "sourceObservedAction": "Poisons Yamuna and entraps Krishna in serpent coils",
+      "modelInterpretation": "Poisons or contaminates a shared environment",
+      "sourceContext": "Bhagavata Purana 10.16",
+      "status": "DRAFT_SOURCE_OR_MODEL",
+      "poleKey": "FL",
+      "public": {
+        "publicId": "SH017",
+        "label": "Poisoning",
+        "behavior": "Creates persistent exposure to something known to harm others",
+        "identityVisible": false,
+        "displayEnabled": true
+      },
+      "aliases": [],
+      "identityRelation": null
+    },
+    {
+      "id": "shadow:ravana",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "Ravana",
+      "hiddenIdentity": "Ravana",
+      "fam": "Compass/Inferno",
+      "def": "Coercive Abduction",
+      "displayLabel": "Coercive Abduction",
+      "body": "Seizes Sita against her will and forcibly removes her Coerces outcomes despite another's refusal or autonomy",
+      "inferred": false,
+      "inferenceBasis": "SOURCE",
+      "behavior": "Overrides consent through force and deceptive approach",
+      "triggerMechanism": "Seizes Sita against her will and forcibly removes her",
+      "livedExample": "Overrides consent through force and deceptive approach",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": "compass:pole:AL",
+      "oppositeDefinition": "Coerces outcomes despite another's refusal or autonomy",
+      "oppositeStatus": "ENGINE_POLE_IDENTITY_JOIN_ONLY",
+      "confidence": {
+        "source": "HIGH",
+        "semantic": "SOURCE",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Valmiki Ramayana Book III",
+      "researchSources": [
+        "https://divinity-adhoc.library.yale.edu/RG310-Hein/9780691206868.pdf"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Valmiki Ramayana Book III: Seizes Sita against her will and forcibly removes her",
+          "sources": [
+            "https://divinity-adhoc.library.yale.edu/RG310-Hein/9780691206868.pdf"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Coercive Abduction. Coerces outcomes despite another's refusal or autonomy. Observable signature: Overrides consent through force and deceptive approach",
+          "sources": [
+            "https://divinity-adhoc.library.yale.edu/RG310-Hein/9780691206868.pdf",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Other learned attributes do not erase the particular abduction. Source category is SOURCE; confidence is HIGH. Do not infer individual diagnosis.",
+          "sources": [
+            "https://divinity-adhoc.library.yale.edu/RG310-Hein/9780691206868.pdf"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "id": "compass:pole:AL",
+          "type": "POLE_SOURCE_IDENTITY_NOT_EQUIVALENCE"
+        }
+      ],
+      "sourceIdentityStatus": "SOURCE",
+      "sourceInfernoId": null,
+      "candidateCompassAxis": "AL",
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Other learned attributes do not erase the particular abduction",
+      "sourceObservedAction": "Seizes Sita against her will and forcibly removes her",
+      "modelInterpretation": "Coerces outcomes despite another's refusal or autonomy",
+      "sourceContext": "Valmiki Ramayana Book III",
+      "status": "DRAFT_SOURCE_OR_MODEL",
+      "poleKey": "AL",
+      "public": {
+        "publicId": "SH018",
+        "label": "Coercive Abduction",
+        "behavior": "Overrides consent through force and deceptive approach",
+        "identityVisible": false,
+        "displayEnabled": true
+      },
+      "aliases": [],
+      "identityRelation": null
+    },
+    {
+      "id": "shadow:shuhu",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "Shu and Hu",
+      "hiddenIdentity": "Shu and Hu",
+      "fam": "Compass/Inferno",
+      "def": "Forced Alteration",
+      "displayLabel": "Forced Alteration",
+      "body": "Bore holes in Hundun as gratitude and kill him through interference Uninvited intervention that destroys intrinsic integrity",
+      "inferred": false,
+      "inferenceBasis": "SOURCE",
+      "behavior": "Forces alterations without understanding effects",
+      "triggerMechanism": "Bore holes in Hundun as gratitude and kill him through interference",
+      "livedExample": "Forces alterations without understanding effects",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": "compass:pole:HO",
+      "oppositeDefinition": "Uninvited intervention that destroys intrinsic integrity",
+      "oppositeStatus": "ENGINE_POLE_IDENTITY_JOIN_ONLY",
+      "confidence": {
+        "source": "HIGH",
+        "semantic": "SOURCE",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Zhuangzi 7",
+      "researchSources": [
+        "https://www.beidou-digital.com/classics/zhuangzi/7"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Zhuangzi 7: Bore holes in Hundun as gratitude and kill him through interference",
+          "sources": [
+            "https://www.beidou-digital.com/classics/zhuangzi/7"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Forced Alteration. Uninvited intervention that destroys intrinsic integrity. Observable signature: Forces alterations without understanding effects",
+          "sources": [
+            "https://www.beidou-digital.com/classics/zhuangzi/7",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Motive is kindness, not proven malice; effect still harmful. Source category is SOURCE; confidence is HIGH. Do not infer individual diagnosis.",
+          "sources": [
+            "https://www.beidou-digital.com/classics/zhuangzi/7"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "id": "compass:pole:HO",
+          "type": "POLE_SOURCE_IDENTITY_NOT_EQUIVALENCE"
+        }
+      ],
+      "sourceIdentityStatus": "SOURCE",
+      "sourceInfernoId": null,
+      "candidateCompassAxis": "HO",
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Motive is kindness, not proven malice; effect still harmful",
+      "sourceObservedAction": "Bore holes in Hundun as gratitude and kill him through interference",
+      "modelInterpretation": "Uninvited intervention that destroys intrinsic integrity",
+      "sourceContext": "Zhuangzi 7",
+      "status": "DRAFT_SOURCE_OR_MODEL",
+      "poleKey": "HO",
+      "public": {
+        "publicId": "SH019",
+        "label": "Forced Alteration",
+        "behavior": "Forces alterations without understanding effects",
+        "identityVisible": false,
+        "displayEnabled": true
+      },
+      "aliases": [],
+      "identityRelation": null
+    },
+    {
+      "id": "shadow:apep",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "Apep",
+      "hiddenIdentity": "Apep",
+      "fam": "Compass/Inferno",
+      "def": "Sabotage",
+      "displayLabel": "Sabotage",
+      "body": "Attempts to stop Ra's barque and prevent sunrise Interference with life-sustaining recurrence",
+      "inferred": false,
+      "inferenceBasis": "SOURCE",
+      "behavior": "Blocks important collective processes for destructive effect",
+      "triggerMechanism": "Attempts to stop Ra's barque and prevent sunrise",
+      "livedExample": "Blocks important collective processes for destructive effect",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": "compass:pole:SA",
+      "oppositeDefinition": "Interference with life-sustaining recurrence",
+      "oppositeStatus": "ENGINE_POLE_IDENTITY_JOIN_ONLY",
+      "confidence": {
+        "source": "HIGH",
+        "semantic": "SOURCE",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Egyptian solar myth",
+      "researchSources": [
+        "https://globalegyptianmuseum.org/glossary.aspx?id=71"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Egyptian solar myth: Attempts to stop Ra's barque and prevent sunrise",
+          "sources": [
+            "https://globalegyptianmuseum.org/glossary.aspx?id=71"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Sabotage. Interference with life-sustaining recurrence. Observable signature: Blocks important collective processes for destructive effect",
+          "sources": [
+            "https://globalegyptianmuseum.org/glossary.aspx?id=71",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Set is Apep's opponent in Ra tradition, never merge. Source category is SOURCE; confidence is HIGH. Do not infer individual diagnosis.",
+          "sources": [
+            "https://globalegyptianmuseum.org/glossary.aspx?id=71"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "id": "compass:pole:SA",
+          "type": "POLE_SOURCE_IDENTITY_NOT_EQUIVALENCE"
+        }
+      ],
+      "sourceIdentityStatus": "SOURCE",
+      "sourceInfernoId": null,
+      "candidateCompassAxis": "SA",
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Set is Apep's opponent in Ra tradition, never merge",
+      "sourceObservedAction": "Attempts to stop Ra's barque and prevent sunrise",
+      "modelInterpretation": "Interference with life-sustaining recurrence",
+      "sourceContext": "Egyptian solar myth",
+      "status": "DRAFT_SOURCE_OR_MODEL",
+      "poleKey": "SA",
+      "public": {
+        "publicId": "SH020",
+        "label": "Sabotage",
+        "behavior": "Blocks important collective processes for destructive effect",
+        "identityVisible": false,
+        "displayEnabled": true
+      },
+      "aliases": [],
+      "identityRelation": null
+    },
+    {
+      "id": "shadow:druj",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "Druj / The Lie",
+      "hiddenIdentity": "Druj / The Lie",
+      "fam": "Compass/Inferno",
+      "def": "Deceit",
+      "displayLabel": "Deceit",
+      "body": "Avestan anti-Asha principle of falsehood or deceptive illusion of order Knowing distortion of truth rather than differing beliefs",
+      "inferred": false,
+      "inferenceBasis": "SOURCE",
+      "behavior": "Creates false accounts for others to rely on",
+      "triggerMechanism": "Avestan anti-Asha principle of falsehood or deceptive illusion of order",
+      "livedExample": "Creates false accounts for others to rely on",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": "compass:pole:TU",
+      "oppositeDefinition": "Knowing distortion of truth rather than differing beliefs",
+      "oppositeStatus": "ENGINE_POLE_IDENTITY_JOIN_ONLY",
+      "confidence": {
+        "source": "HIGH",
+        "semantic": "SOURCE",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Avestan tradition; concept/personification",
+      "researchSources": [
+        "https://www.iranicaonline.org/articles/druj/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Avestan tradition; concept/personification: Avestan anti-Asha principle of falsehood or deceptive illusion of order",
+          "sources": [
+            "https://www.iranicaonline.org/articles/druj/"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Deceit. Knowing distortion of truth rather than differing beliefs. Observable signature: Creates false accounts for others to rely on",
+          "sources": [
+            "https://www.iranicaonline.org/articles/druj/",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Uncertainty and disagreement do not establish intent to deceive. Source category is SOURCE; confidence is HIGH. Do not infer individual diagnosis.",
+          "sources": [
+            "https://www.iranicaonline.org/articles/druj/"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "id": "compass:pole:TU",
+          "type": "POLE_SOURCE_IDENTITY_NOT_EQUIVALENCE"
+        }
+      ],
+      "sourceIdentityStatus": "SOURCE",
+      "sourceInfernoId": null,
+      "candidateCompassAxis": "TU",
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Uncertainty and disagreement do not establish intent to deceive",
+      "sourceObservedAction": "Avestan anti-Asha principle of falsehood or deceptive illusion of order",
+      "modelInterpretation": "Knowing distortion of truth rather than differing beliefs",
+      "sourceContext": "Avestan tradition; concept/personification",
+      "status": "DRAFT_SOURCE_OR_MODEL",
+      "poleKey": "TU",
+      "public": {
+        "publicId": "SH021",
+        "label": "Deceit",
+        "behavior": "Creates false accounts for others to rely on",
+        "identityVisible": false,
+        "displayEnabled": true
+      },
+      "aliases": [
+        "The Lie",
+        "Druj"
+      ],
+      "identityRelation": null
+    },
+    {
+      "id": "shadow:farmer",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "The farmer of Song",
+      "hiddenIdentity": "The farmer of Song",
+      "fam": "Compass/Inferno",
+      "def": "Forced Growth",
+      "displayLabel": "Forced Growth",
+      "body": "Pulls seedlings to hasten growth, killing them Premature forcing of processes with irreversible consequences",
+      "inferred": false,
+      "inferenceBasis": "SOURCE",
+      "behavior": "Intervenes to accelerate development and damages the result",
+      "triggerMechanism": "Pulls seedlings to hasten growth, killing them",
+      "livedExample": "Intervenes to accelerate development and damages the result",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": "compass:pole:NA",
+      "oppositeDefinition": "Premature forcing of processes with irreversible consequences",
+      "oppositeStatus": "ENGINE_POLE_IDENTITY_JOIN_ONLY",
+      "confidence": {
+        "source": "HIGH",
+        "semantic": "SOURCE",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Mencius Gongsun Chou I.2",
+      "researchSources": [
+        "https://mencius-mengzi.org/en/glossary/yamiao-zhuzhang/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Mencius Gongsun Chou I.2: Pulls seedlings to hasten growth, killing them",
+          "sources": [
+            "https://mencius-mengzi.org/en/glossary/yamiao-zhuzhang/"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Forced Growth. Premature forcing of processes with irreversible consequences. Observable signature: Intervenes to accelerate development and damages the result",
+          "sources": [
+            "https://mencius-mengzi.org/en/glossary/yamiao-zhuzhang/",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Mistaken aid does not imply intent to injure. Source category is SOURCE; confidence is HIGH. Do not infer individual diagnosis.",
+          "sources": [
+            "https://mencius-mengzi.org/en/glossary/yamiao-zhuzhang/"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "id": "compass:pole:NA",
+          "type": "POLE_SOURCE_IDENTITY_NOT_EQUIVALENCE"
+        }
+      ],
+      "sourceIdentityStatus": "SOURCE",
+      "sourceInfernoId": null,
+      "candidateCompassAxis": "NA",
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Mistaken aid does not imply intent to injure",
+      "sourceObservedAction": "Pulls seedlings to hasten growth, killing them",
+      "modelInterpretation": "Premature forcing of processes with irreversible consequences",
+      "sourceContext": "Mencius Gongsun Chou I.2",
+      "status": "DRAFT_SOURCE_OR_MODEL",
+      "poleKey": "NA",
+      "public": {
+        "publicId": "SH022",
+        "label": "Forced Growth",
+        "behavior": "Intervenes to accelerate development and damages the result",
+        "identityVisible": false,
+        "displayEnabled": true
+      },
+      "aliases": [],
+      "identityRelation": null
+    },
+    {
+      "id": "shadow:bael",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "Bael (Goetia)",
+      "hiddenIdentity": "Bael (Goetia)",
+      "fam": "Compass/Inferno",
+      "def": "Concealment",
+      "displayLabel": "Concealment",
+      "body": "Later Ars Goetia spirit said to enable invisibility Not demonstrated to be morally harmful default",
+      "inferred": true,
+      "inferenceBasis": "CONTEXT",
+      "behavior": "Hides presence or grants concealment",
+      "triggerMechanism": "Later Ars Goetia spirit said to enable invisibility",
+      "livedExample": "Hides presence or grants concealment",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": null,
+      "oppositeDefinition": "Not demonstrated to be morally harmful default",
+      "oppositeStatus": "NO_POLE",
+      "confidence": {
+        "source": "HIGH",
+        "semantic": "CONTEXT",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Ars Goetia distinct from Ugaritic Baal",
+      "researchSources": [
+        "https://www.gutenberg.org/files/72679/72679-h/72679-h.htm"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Ars Goetia distinct from Ugaritic Baal: Later Ars Goetia spirit said to enable invisibility",
+          "sources": [
+            "https://www.gutenberg.org/files/72679/72679-h/72679-h.htm"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Concealment. Not demonstrated to be morally harmful default. Observable signature: Hides presence or grants concealment",
+          "sources": [
+            "https://www.gutenberg.org/files/72679/72679-h/72679-h.htm",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Privacy and safety may legitimately require concealment. Source category is CONTEXT; confidence is HIGH. Do not infer individual diagnosis.",
+          "sources": [
+            "https://www.gutenberg.org/files/72679/72679-h/72679-h.htm"
+          ]
+        }
+      ],
+      "links": [],
+      "sourceIdentityStatus": "CONTEXT",
+      "sourceInfernoId": null,
+      "candidateCompassAxis": null,
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Privacy and safety may legitimately require concealment",
+      "sourceObservedAction": "Later Ars Goetia spirit said to enable invisibility",
+      "modelInterpretation": "Not demonstrated to be morally harmful default",
+      "sourceContext": "Ars Goetia distinct from Ugaritic Baal",
+      "status": "HIDDEN_CONTEXT",
+      "poleKey": null,
+      "public": {
+        "publicId": "SH023",
+        "label": "Concealment",
+        "behavior": "Hides presence or grants concealment",
+        "identityVisible": false,
+        "displayEnabled": false
+      },
+      "aliases": [],
+      "identityRelation": "DISTINCT_FROM_BAAL"
+    },
+    {
+      "id": "shadow:nimrod",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "Nimrod",
+      "hiddenIdentity": "Nimrod",
+      "fam": "Compass/Inferno",
+      "def": "Hubris",
+      "displayLabel": "Hubris",
+      "body": "Dante associates Nimrod with Babel confusion Monumental overreach is Dante's interpretive framing",
+      "inferred": true,
+      "inferenceBasis": "INTERPRETIVE",
+      "behavior": "Overbuilds an imposing plan at cost of collective understanding",
+      "triggerMechanism": "Dante associates Nimrod with Babel confusion",
+      "livedExample": "Overbuilds an imposing plan at cost of collective understanding",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": null,
+      "oppositeDefinition": "Monumental overreach is Dante's interpretive framing",
+      "oppositeStatus": "NO_POLE",
+      "confidence": {
+        "source": "MEDIUM",
+        "semantic": "INTERPRETIVE",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Inferno XXXI",
+      "researchSources": [
+        "https://ahc.leeds.ac.uk/discover-dante/doc/inferno/page/6"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Inferno XXXI: Dante associates Nimrod with Babel confusion",
+          "sources": [
+            "https://ahc.leeds.ac.uk/discover-dante/doc/inferno/page/6"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Hubris. Monumental overreach is Dante's interpretive framing. Observable signature: Overbuilds an imposing plan at cost of collective understanding",
+          "sources": [
+            "https://ahc.leeds.ac.uk/discover-dante/doc/inferno/page/6",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Bible-to-Nimrod/Babel link is itself later interpretation. Source category is INTERPRETIVE; confidence is MEDIUM. Do not infer individual diagnosis.",
+          "sources": [
+            "https://ahc.leeds.ac.uk/discover-dante/doc/inferno/page/6"
+          ]
+        }
+      ],
+      "links": [],
+      "sourceIdentityStatus": "INTERPRETIVE",
+      "sourceInfernoId": null,
+      "candidateCompassAxis": null,
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Bible-to-Nimrod/Babel link is itself later interpretation",
+      "sourceObservedAction": "Dante associates Nimrod with Babel confusion",
+      "modelInterpretation": "Monumental overreach is Dante's interpretive framing",
+      "sourceContext": "Inferno XXXI",
+      "status": "DRAFT_SOURCE_OR_MODEL",
+      "poleKey": null,
+      "public": {
+        "publicId": "SH024",
+        "label": "Hubris",
+        "behavior": "Overbuilds an imposing plan at cost of collective understanding",
+        "identityVisible": false,
+        "displayEnabled": true
+      },
+      "aliases": [],
+      "identityRelation": null
+    },
+    {
+      "id": "shadow:ephialtes",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "Ephialtes",
+      "hiddenIdentity": "Ephialtes",
+      "fam": "Compass/Inferno",
+      "def": "Defiance",
+      "displayLabel": "Defiance",
+      "body": "Punished giant characterized by challenge to Olympian authority Violent rebellion against limits in one mythic context",
+      "inferred": true,
+      "inferenceBasis": "INTERPRETIVE",
+      "behavior": "Exerts force to overthrow established boundaries",
+      "triggerMechanism": "Punished giant characterized by challenge to Olympian authority",
+      "livedExample": "Exerts force to overthrow established boundaries",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": null,
+      "oppositeDefinition": "Violent rebellion against limits in one mythic context",
+      "oppositeStatus": "NO_POLE",
+      "confidence": {
+        "source": "MEDIUM",
+        "semantic": "INTERPRETIVE",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Inferno XXXI",
+      "researchSources": [
+        "https://ahc.leeds.ac.uk/discover-dante/doc/inferno/page/6"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Inferno XXXI: Punished giant characterized by challenge to Olympian authority",
+          "sources": [
+            "https://ahc.leeds.ac.uk/discover-dante/doc/inferno/page/6"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Defiance. Violent rebellion against limits in one mythic context. Observable signature: Exerts force to overthrow established boundaries",
+          "sources": [
+            "https://ahc.leeds.ac.uk/discover-dante/doc/inferno/page/6",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Resistance to an unjust authority is not inherently wrong. Source category is INTERPRETIVE; confidence is MEDIUM. Do not infer individual diagnosis.",
+          "sources": [
+            "https://ahc.leeds.ac.uk/discover-dante/doc/inferno/page/6"
+          ]
+        }
+      ],
+      "links": [],
+      "sourceIdentityStatus": "INTERPRETIVE",
+      "sourceInfernoId": null,
+      "candidateCompassAxis": null,
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Resistance to an unjust authority is not inherently wrong",
+      "sourceObservedAction": "Punished giant characterized by challenge to Olympian authority",
+      "modelInterpretation": "Violent rebellion against limits in one mythic context",
+      "sourceContext": "Inferno XXXI",
+      "status": "DRAFT_SOURCE_OR_MODEL",
+      "poleKey": null,
+      "public": {
+        "publicId": "SH025",
+        "label": "Defiance",
+        "behavior": "Exerts force to overthrow established boundaries",
+        "identityVisible": false,
+        "displayEnabled": true
+      },
+      "aliases": [],
+      "identityRelation": null
+    },
+    {
+      "id": "shadow:antaeus",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "Antaeus",
+      "hiddenIdentity": "Antaeus",
+      "fam": "Compass/Inferno",
+      "def": "Assistance",
+      "displayLabel": "Assistance",
+      "body": "Offers effective aid to lower travelers through infernal well No defensible negative default",
+      "inferred": true,
+      "inferenceBasis": "CONTEXT",
+      "behavior": "Helps those unable to traverse a cliff unaided",
+      "triggerMechanism": "Offers effective aid to lower travelers through infernal well",
+      "livedExample": "Helps those unable to traverse a cliff unaided",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": null,
+      "oppositeDefinition": "No defensible negative default",
+      "oppositeStatus": "NO_POLE",
+      "confidence": {
+        "source": "HIGH",
+        "semantic": "CONTEXT",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Inferno XXXI",
+      "researchSources": [
+        "https://ahc.leeds.ac.uk/discover-dante/doc/inferno/page/6"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Inferno XXXI: Offers effective aid to lower travelers through infernal well",
+          "sources": [
+            "https://ahc.leeds.ac.uk/discover-dante/doc/inferno/page/6"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Assistance. No defensible negative default. Observable signature: Helps those unable to traverse a cliff unaided",
+          "sources": [
+            "https://ahc.leeds.ac.uk/discover-dante/doc/inferno/page/6",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Counterexample to universal Giant=Domination label. Source category is CONTEXT; confidence is HIGH. Do not infer individual diagnosis.",
+          "sources": [
+            "https://ahc.leeds.ac.uk/discover-dante/doc/inferno/page/6"
+          ]
+        }
+      ],
+      "links": [],
+      "sourceIdentityStatus": "CONTEXT",
+      "sourceInfernoId": null,
+      "candidateCompassAxis": null,
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Counterexample to universal Giant=Domination label",
+      "sourceObservedAction": "Offers effective aid to lower travelers through infernal well",
+      "modelInterpretation": "No defensible negative default",
+      "sourceContext": "Inferno XXXI",
+      "status": "HIDDEN_CONTEXT",
+      "poleKey": null,
+      "public": {
+        "publicId": "SH026",
+        "label": "Assistance",
+        "behavior": "Helps those unable to traverse a cliff unaided",
+        "identityVisible": false,
+        "displayEnabled": false
+      },
+      "aliases": [],
+      "identityRelation": null
+    },
+    {
+      "id": "shadow:medusa",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "Medusa",
+      "hiddenIdentity": "Medusa",
+      "fam": "Compass/Inferno",
+      "def": "Petrification",
+      "displayLabel": "Petrification",
+      "body": "Furies threaten travelers with her petrifying gaze Threatened effect, not demonstrated human intent or personality",
+      "inferred": true,
+      "inferenceBasis": "CONTEXT",
+      "behavior": "Paralysis is the danger in the scene",
+      "triggerMechanism": "Furies threaten travelers with her petrifying gaze",
+      "livedExample": "Paralysis is the danger in the scene",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": null,
+      "oppositeDefinition": "Threatened effect, not demonstrated human intent or personality",
+      "oppositeStatus": "NO_POLE",
+      "confidence": {
+        "source": "MEDIUM",
+        "semantic": "CONTEXT",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Inferno IX",
+      "researchSources": [
+        "https://www.ccel.org/d/dante/inferno/infer01.htm"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Inferno IX: Furies threaten travelers with her petrifying gaze",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Petrification. Threatened effect, not demonstrated human intent or personality. Observable signature: Paralysis is the danger in the scene",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Myth's victim status cannot be translated to human vice. Source category is CONTEXT; confidence is MEDIUM. Do not infer individual diagnosis.",
+          "sources": [
+            "https://www.ccel.org/d/dante/inferno/infer01.htm"
+          ]
+        }
+      ],
+      "links": [],
+      "sourceIdentityStatus": "CONTEXT",
+      "sourceInfernoId": null,
+      "candidateCompassAxis": null,
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Myth's victim status cannot be translated to human vice",
+      "sourceObservedAction": "Furies threaten travelers with her petrifying gaze",
+      "modelInterpretation": "Threatened effect, not demonstrated human intent or personality",
+      "sourceContext": "Inferno IX",
+      "status": "HIDDEN_CONTEXT",
+      "poleKey": null,
+      "public": {
+        "publicId": "SH027",
+        "label": "Petrification",
+        "behavior": "Paralysis is the danger in the scene",
+        "identityVisible": false,
+        "displayEnabled": false
+      },
+      "aliases": [],
+      "identityRelation": null
+    },
+    {
+      "id": "shadow:dispater",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "Dis Pater (Roman)",
+      "hiddenIdentity": "Dis Pater (Roman)",
+      "fam": "Compass/Inferno",
+      "def": "Underworld Sovereignty",
+      "displayLabel": "Underworld Sovereignty",
+      "body": "Roman chthonic wealth/underworld god sometimes identified with Pluto No source-based negative behavioral diagnosis",
+      "inferred": true,
+      "inferenceBasis": "CONTEXT",
+      "behavior": "Mythic rulership of the underworld and wealth",
+      "triggerMechanism": "Roman chthonic wealth/underworld god sometimes identified with Pluto",
+      "livedExample": "Mythic rulership of the underworld and wealth",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": null,
+      "oppositeDefinition": "No source-based negative behavioral diagnosis",
+      "oppositeStatus": "NO_POLE",
+      "confidence": {
+        "source": "HIGH",
+        "semantic": "CONTEXT",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Roman religion; separate from literary alias",
+      "researchSources": [
+        "https://dante.princeton.edu/cgi-bin/dante/DispToynbeeByTitOrId.pl?INP_ID=201813"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Roman religion; separate from literary alias: Roman chthonic wealth/underworld god sometimes identified with Pluto",
+          "sources": [
+            "https://dante.princeton.edu/cgi-bin/dante/DispToynbeeByTitOrId.pl?INP_ID=201813"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Underworld Sovereignty. No source-based negative behavioral diagnosis. Observable signature: Mythic rulership of the underworld and wealth",
+          "sources": [
+            "https://dante.princeton.edu/cgi-bin/dante/DispToynbeeByTitOrId.pl?INP_ID=201813",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Do not conflate with Dante's Lucifer. Source category is CONTEXT; confidence is HIGH. Do not infer individual diagnosis.",
+          "sources": [
+            "https://dante.princeton.edu/cgi-bin/dante/DispToynbeeByTitOrId.pl?INP_ID=201813"
+          ]
+        }
+      ],
+      "links": [],
+      "sourceIdentityStatus": "CONTEXT",
+      "sourceInfernoId": null,
+      "candidateCompassAxis": null,
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Do not conflate with Dante's Lucifer",
+      "sourceObservedAction": "Roman chthonic wealth/underworld god sometimes identified with Pluto",
+      "modelInterpretation": "No source-based negative behavioral diagnosis",
+      "sourceContext": "Roman religion; separate from literary alias",
+      "status": "HIDDEN_CONTEXT",
+      "poleKey": null,
+      "public": {
+        "publicId": "SH028",
+        "label": "Underworld Sovereignty",
+        "behavior": "Mythic rulership of the underworld and wealth",
+        "identityVisible": false,
+        "displayEnabled": false
+      },
+      "aliases": [],
+      "identityRelation": "ROMAN_NOT_LUCIFER"
+    },
+    {
+      "id": "shadow:dantedis",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "Dis (Dante alias)",
+      "hiddenIdentity": "Dis (Dante alias)",
+      "fam": "Compass/Inferno",
+      "def": "Separation",
+      "displayLabel": "Separation",
+      "body": "One Dante name for Lucifer rather than independent personality Alias of existing Lucifer/Separation model, not new shadow",
+      "inferred": true,
+      "inferenceBasis": "ALIAS",
+      "behavior": "No distinct action beyond referent",
+      "triggerMechanism": "One Dante name for Lucifer rather than independent personality",
+      "livedExample": "No distinct action beyond referent",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": null,
+      "oppositeDefinition": "Alias of existing Lucifer/Separation model, not new shadow",
+      "oppositeStatus": "NO_POLE",
+      "confidence": {
+        "source": "HIGH",
+        "semantic": "ALIAS",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Inferno XXXIV and scholastic commentary",
+      "researchSources": [
+        "https://dante.princeton.edu/cgi-bin/dante/DispToynbeeByTitOrId.pl?INP_ID=201813"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Inferno XXXIV and scholastic commentary: One Dante name for Lucifer rather than independent personality",
+          "sources": [
+            "https://dante.princeton.edu/cgi-bin/dante/DispToynbeeByTitOrId.pl?INP_ID=201813"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Separation. Alias of existing Lucifer/Separation model, not new shadow. Observable signature: No distinct action beyond referent",
+          "sources": [
+            "https://dante.princeton.edu/cgi-bin/dante/DispToynbeeByTitOrId.pl?INP_ID=201813",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Do not inflate node count with a second Lucifer. Source category is ALIAS; confidence is HIGH. Do not infer individual diagnosis.",
+          "sources": [
+            "https://dante.princeton.edu/cgi-bin/dante/DispToynbeeByTitOrId.pl?INP_ID=201813"
+          ]
+        }
+      ],
+      "links": [],
+      "sourceIdentityStatus": "ALIAS",
+      "sourceInfernoId": null,
+      "candidateCompassAxis": null,
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Do not inflate node count with a second Lucifer",
+      "sourceObservedAction": "One Dante name for Lucifer rather than independent personality",
+      "modelInterpretation": "Alias of existing Lucifer/Separation model, not new shadow",
+      "sourceContext": "Inferno XXXIV and scholastic commentary",
+      "status": "HIDDEN_ALIAS",
+      "poleKey": null,
+      "public": {
+        "publicId": "SH029",
+        "label": "Separation",
+        "behavior": "No distinct action beyond referent",
+        "identityVisible": false,
+        "displayEnabled": false
+      },
+      "aliases": [
+        "Dis",
+        "Dite"
+      ],
+      "identityRelation": "ALIAS_OF_LUCIFER"
+    },
+    {
+      "id": "shadow:citydis",
+      "kind": "shadow_behavior_record",
+      "templateId": "TPL-HIDDEN-FIGURE-V1",
+      "nm": "City of Dis",
+      "hiddenIdentity": "City of Dis",
+      "fam": "Compass/Inferno",
+      "def": "Defended Threshold",
+      "displayLabel": "Defended Threshold",
+      "body": "Fortified region of lower Hell and its resisting gates Setting or place, not human character",
+      "inferred": true,
+      "inferenceBasis": "SETTING",
+      "behavior": "Physical and institutional exclusion at gateway",
+      "triggerMechanism": "Fortified region of lower Hell and its resisting gates",
+      "livedExample": "Physical and institutional exclusion at gateway",
+      "impact": "Observational model only, not a moral or clinical diagnosis",
+      "practice": "No release protocol authorized",
+      "oppositeId": null,
+      "oppositeDefinition": "Setting or place, not human character",
+      "oppositeStatus": "NO_POLE",
+      "confidence": {
+        "source": "HIGH",
+        "semantic": "SETTING",
+        "integration": "NOT_RUNTIME"
+      },
+      "reviewStatus": "RESEARCH_V1_THREE_DEPTH_LENSES",
+      "refer": false,
+      "narrativeSource": "Inferno VIII–IX",
+      "researchSources": [
+        "https://dante.princeton.edu/cgi-bin/dante/DispToynbeeByTitOrId.pl?INP_ID=201813"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "lens": "SOURCE_IDENTITY",
+          "finding": "Inferno VIII–IX: Fortified region of lower Hell and its resisting gates",
+          "sources": [
+            "https://dante.princeton.edu/cgi-bin/dante/DispToynbeeByTitOrId.pl?INP_ID=201813"
+          ]
+        },
+        {
+          "pass": 2,
+          "lens": "BEHAVIOR_MOVEMENT",
+          "finding": "Default Defended Threshold. Setting or place, not human character. Observable signature: Physical and institutional exclusion at gateway",
+          "sources": [
+            "https://dante.princeton.edu/cgi-bin/dante/DispToynbeeByTitOrId.pl?INP_ID=201813",
+            "atuned_src/engine/data/compass.js"
+          ]
+        },
+        {
+          "pass": 3,
+          "lens": "DISCONFIRMATION",
+          "finding": "False positive boundary: Places do not have intrinsic behavioral diagnosis. Source category is SETTING; confidence is HIGH. Do not infer individual diagnosis.",
+          "sources": [
+            "https://dante.princeton.edu/cgi-bin/dante/DispToynbeeByTitOrId.pl?INP_ID=201813"
+          ]
+        }
+      ],
+      "links": [],
+      "sourceIdentityStatus": "SETTING",
+      "sourceInfernoId": null,
+      "candidateCompassAxis": null,
+      "releaseProtocolOwner": "PURGATORIO",
+      "releaseProtocolId": null,
+      "releaseProtocolStatus": "NOT_ASSIGNED",
+      "safetyBoundary": "Places do not have intrinsic behavioral diagnosis",
+      "sourceObservedAction": "Fortified region of lower Hell and its resisting gates",
+      "modelInterpretation": "Setting or place, not human character",
+      "sourceContext": "Inferno VIII–IX",
+      "status": "HIDDEN_SETTING",
+      "poleKey": null,
+      "public": {
+        "publicId": "SH030",
+        "label": "Defended Threshold",
+        "behavior": "Physical and institutional exclusion at gateway",
+        "identityVisible": false,
+        "displayEnabled": false
+      },
+      "aliases": [],
+      "identityRelation": null
+    }
+  ]
+}

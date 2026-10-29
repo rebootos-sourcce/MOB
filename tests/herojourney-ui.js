@@ -1,0 +1,149 @@
+'use strict';
+/* Real-browser check of the CQ-centered living avatar and Board.
+   Run from repo root after BUILD.sh and npm-installed Playwright. */
+const {chromium}=require('playwright');
+const assert=require('node:assert/strict');
+const path=require('node:path');
+const url='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1';
+(async()=>{
+ const browser=await chromium.launch({headless:true,executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome',args:['--no-sandbox']});
+ try{
+  const page=await browser.newPage({viewport:{width:1200,height:900}});
+  const errors=[];page.on('pageerror',e=>errors.push(String(e.message)));
+  await page.goto(url);
+  await page.waitForFunction(()=>document.body.classList.contains('booted'),null,{timeout:25000});
+  const result=await page.evaluate(()=>{
+   loadP(0);setTab(TAB.INTAKE);AV.sub='becoming';renderAvatar();
+   const host=document.getElementById('avbody');
+   const data={rendered:!!host.querySelector('.hj-panel'),partial:hjRead(CURP,compute()).complete};
+   const p=CURP;
+   /* All actual law inputs are set, including deliberate sixes. */
+   SI.forEach(l=>{p.laws[l.nm]=6;S.law[l.nm]=6;LAW_UNSET[l.nm]=false;});
+   const save=pSave();
+   renderAvatar();
+   const full=hjRead(CURP,compute());
+   data.save=save;
+   data.complete=full.complete;
+   data.start=full.cq;
+   data.stage=full.location&&full.location.id;
+   data.origin=full.origin&&full.origin.cq;
+   data.figure=!!host.querySelector('.hj-avatar-form');
+   host.querySelector('[data-hjexpand]').click();
+   data.nodes=host.querySelectorAll('[data-hjscene]').length;
+   const sceneButton=host.querySelector('[data-hjscene="game:inferno:L08"]');
+   if(sceneButton)sceneButton.click();
+   data.scenePersisted=CURP.avatar.activeJourneyScene;
+   data.selected=hjRead(CURP,compute()).active.id;
+   const copy=validateProfile(JSON.parse(JSON.stringify(CURP)));
+   data.exported=copy.ok&&copy.profile.avatar.activeJourneyScene===data.selected
+    &&!!copy.profile.avatar.cqOrigin&&copy.profile.avatar.cqOrigin.cq===60;
+   /* Reassessment changes CQ, not cumulative release milestones. */
+   S.law.Truth=4;p.laws.Truth=4;
+   lawAnswered(p,'Truth');pSave();renderAvatar();
+   const after=hjRead(CURP,compute());
+   data.after=after.cq;
+   data.afterScene=after.location&&after.location.id;
+   data.baselineKept=after.origin&&after.origin.cq===60;
+   data.releaseMilestoneZero=after.uniqueReleaseCount===0;
+   /* The real Ritual Builder must now keep plan state on the profile as well
+      as the old side store, including the selected Board's practice. */
+   const did=ritStartPlan({steps:['box'],band:'Root',track:'Body',days:7},null);
+   data.ritualStarted=!!did;
+   data.ritualOwned=Array.isArray(CURP.ritualPlans)&&CURP.ritualPlans.some(x=>x.steps.indexOf('box')>=0);
+   /* A real daily ritual log changes practice history, never the CQ scorer. */
+   const practiceCQ=compute().CQ;
+   const practicePlan=(CURP.ritualPlans||[]).filter(x=>x.steps.indexOf('box')>=0).slice(-1)[0];
+   if(practicePlan)ritLog(practicePlan.id);
+   data.ritualDayLogged=CURP.rituals.some(x=>x.steps&&x.steps.indexOf('box')>=0&&ritIsDone(x));
+   data.ritualKeepsCQ=compute().CQ===practiceCQ;
+   const ritualExport=validateProfile(JSON.parse(JSON.stringify(CURP)));
+   data.ritualExport=ritualExport.ok&&Array.isArray(ritualExport.profile.ritualPlans)
+    &&ritualExport.profile.ritualPlans.some(x=>x.steps.indexOf('box')>=0);
+   /* The new Diagnostic is separate from the prior CQ scorer, but shares
+      the owner's Core 10 and remaining 11 in the same screen. */
+   renderIntake();
+   const diag=document.querySelector('.d3-panel');
+   data.diagAppears=!!diag;
+   const toggle=diag&&diag.querySelector('[data-d3toggle]');
+   if(toggle)toggle.click();
+   data.diagNodes=document.querySelectorAll('[data-d3law]').length;
+   const zero=document.querySelector('[data-d3answer="0"]');
+   if(zero)zero.click();
+   data.diagPersisted=CURP.diagnostic3&&CURP.diagnostic3.answers[D3_BANK[0].questions[0].id]===0;
+   const diagCopy=validateProfile(JSON.parse(JSON.stringify(CURP)));
+   data.diagExport=diagCopy.ok&&diagCopy.profile.diagnostic3&&diagCopy.profile.diagnostic3.answers[D3_BANK[0].questions[0].id]===0;
+   AV.sub='becoming';renderAvatar();
+   HJ_EXPANDED=true;renderAvatar();
+   const invite=document.querySelector('[data-hjaffirm]');
+   data.affirmationDoor=!!invite;
+   if(invite)invite.click();
+   data.affirmationSeat=AV.seat;
+   data.affirmationEditor=!!document.querySelector('[data-avf="be"]');
+   /* Visitor selection is an ephemeral view, not a write to the owner. */
+   const savedOwn=avOwn, savedView=HJ_VIEW_ONLY;
+   const persistedScene=CURP.avatar.activeJourneyScene;
+   try {
+    avOwn=function(){return false;};
+    HJ_EXPANDED=true;renderAvatar();
+    const visitorButton=document.querySelector('[data-hjscene="game:purgatorio:P02"]');
+    if(visitorButton)visitorButton.click();
+    data.visitorSelected=HJ_VIEW_ONLY;
+    const shown=document.querySelector('.hj-story b');
+    data.visitorShowsChosen=!!shown&&shown.textContent===hjScene('game:purgatorio:P02').title;
+    data.visitorPreservesOwner=CURP.avatar.activeJourneyScene===persistedScene;
+   }finally{avOwn=savedOwn;HJ_VIEW_ONLY=savedView;}
+   return data;
+  });
+  assert.equal(result.rendered,true,'Board renders on existing avatar');
+  assert.equal(result.partial,false,'unanswered laws cannot locate user');
+  assert.equal(result.save,true,'full profile saves');
+  assert.equal(result.complete,true,'all 21 laws resolve CQ');
+  assert.equal(result.stage,'game:paradiso:PD01','60 maps into Paradiso');
+  assert.equal(result.origin,60,'baseline recorded once');
+  assert.equal(result.figure,true,'avatar shows living form');
+  assert.equal(result.nodes,26,'all 26 encounters are selectable');
+  assert.equal(result.scenePersisted,'game:inferno:L08');
+  assert.equal(result.selected,result.scenePersisted);
+  assert.equal(result.exported,true,'active encounter and CQ origin round trip');
+  assert.equal(result.afterScene,'game:purgatorio:P07','drop below 60 changes coordinate');
+  assert.equal(result.baselineKept,true,'old CQ baseline retained');
+  assert.equal(result.releaseMilestoneZero,true,'reassessment is not a release');
+  assert.equal(result.ritualStarted,true,'ritual starts using existing builder');
+  assert.equal(result.ritualOwned,true,'plan is stored on the owned record');
+  assert.equal(result.ritualDayLogged,true,'existing Ritual Builder records completed daily practice');
+  assert.equal(result.ritualKeepsCQ,true,'daily practice cannot grant synthetic CQ lift');
+  assert.equal(result.ritualExport,true,'plan survives strict export/import boundary');
+  assert.equal(result.diagAppears,true,'three-channel Diagnostic is visible');
+  assert.equal(result.diagNodes,21,'all 21 laws can be visited');
+  assert.equal(result.diagPersisted,true,'zero is a valid self report');
+  assert.equal(result.diagExport,true,'self-report persists through profile validation');
+  assert.equal(result.affirmationDoor,true,'ascent offers a becoming affirmation');
+  assert.equal(result.affirmationSeat,'Throat','Truth scene opens its law seat');
+  assert.equal(result.affirmationEditor,true,'existing avatar writer is used');
+  assert.equal(result.visitorSelected,'game:purgatorio:P02','visitor may select an encounter');
+  assert.equal(result.visitorShowsChosen,true,'visitor sees the selected encounter, not the saved owner quest');
+  assert.equal(result.visitorPreservesOwner,true,'visitor does not overwrite owner-selected encounter');
+  /* The same actual Board must remain navigable at mobile width with motion disabled. */
+  await page.setViewportSize({width:390,height:844});
+  await page.emulateMedia({reducedMotion:'reduce'});
+  const mobile=await page.evaluate(()=>{
+   AV.sub='becoming';HJ_EXPANDED=true;renderAvatar();
+   const board=document.querySelector('.hj-panel');
+   const grid=board&&board.querySelector('.hj-scenes');
+   const node=grid&&grid.querySelector('[data-hjscene]');
+   const figure=board&&board.querySelector('svg.hj-avatar-form');
+   return {visible:!!board&&!!grid,scenes:grid?grid.querySelectorAll('[data-hjscene]').length:0,
+    columns:grid?getComputedStyle(grid).gridTemplateColumns.split(/\s+/).filter(Boolean).length:0,
+    noMotion:!!node&&getComputedStyle(node).animationName==='none'&&getComputedStyle(node).transitionDuration==='0s',
+    figureAccessible:!!figure&&figure.getAttribute('role')==='img'&&!!figure.getAttribute('aria-label')};
+  });
+  assert.equal(mobile.visible,true,'Board remains present at phone width');
+  assert.equal(mobile.scenes,26,'all encounters remain accessible on phone');
+  assert.equal(mobile.columns,9,'phone layout uses compact nine-column grid');
+  assert.equal(mobile.noMotion,true,'reduced-motion preference disables motion');
+  assert.equal(mobile.figureAccessible,true,'living avatar retains its descriptive image label');
+  assert.equal(errors.length,0,'browser execution has no unhandled errors: '+errors.join('; '));
+  console.log('PASS hero journey real-browser: '+JSON.stringify(result));
+  await page.close();
+ }finally{await browser.close();}
+})().catch(e=>{console.error(e);process.exit(1);});

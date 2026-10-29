@@ -1,0 +1,161 @@
+{
+  "schemaVersion": "1.0.0",
+  "status": "ARCHITECTURE_NOT_IMPLEMENTED",
+  "ownerLocks": {
+    "avatarCentral": true,
+    "cqMovesAvatar": true,
+    "visualFormChangesWithCq": true,
+    "realmBands": [
+      0,
+      40,
+      60,
+      100
+    ],
+    "releasesMetric": "UNIQUE_COMPLETED_RELEASE_SIDE_LINE_KEYS",
+    "ritualPractice": "LOG_ONLY; NO AUTOMATIC CQ LIFT"
+  },
+  "authoritativeInputs": [
+    {
+      "name": "cq",
+      "source": "compute().CQ",
+      "guard": "cqSpan().complete && 21 non-null canonical laws; model version CQ_MODEL",
+      "storage": "DERIVED; only versioned history snapshots on profile"
+    },
+    {
+      "name": "uniqueReleaseKeys",
+      "source": "CURP.meter.unique",
+      "guard": "successfully committed and persisted",
+      "storage": "ON_PROFILE; existing writer meterRun"
+    },
+    {
+      "name": "cqHistory",
+      "source": "CURP.history[*] where m matches CQ_MODEL",
+      "guard": "complete reading; baseline stamped when first complete; never treat formula migration as progress",
+      "storage": "ON_PROFILE; pSaveSnap"
+    },
+    {
+      "name": "avatarDeclared",
+      "source": "CURP.avatar",
+      "guard": "identity and becoming pair fields kept and preserved",
+      "storage": "ON_PROFILE; avatarFill"
+    },
+    {
+      "name": "ritualPractice",
+      "source": "CURP.rituals",
+      "guard": "done dates from ritual writer",
+      "storage": "ON_PROFILE; ritWrite"
+    },
+    {
+      "name": "ritualPlans",
+      "source": "ritPlans(), current side storage",
+      "guard": "not portable across devices yet; migration needed",
+      "storage": "BESIDE_RECORD; not guaranteed in profile export"
+    },
+    {
+      "name": "storyImprints",
+      "source": "parseStory/sniffStory, CURP.story.entries, CURP.trace",
+      "guard": "user declared vs engine inferred provenance preserved",
+      "storage": "profile + derived"
+    },
+    {
+      "name": "realmSceneData",
+      "source": "CQ_POSITION_26_SCENE_MAP_V1.json",
+      "guard": "only after complete reading",
+      "storage": "READ_ONLY_PACKAGE"
+    }
+  ],
+  "releaseSemantics": {
+    "existingMeter": "meter.unique contains Llimit/Rlimit and Ltruth/Rtruth unique line keys; code charges all four",
+    "countedForAvatar": "Only keys that identify Llimit or Rlimit (release-side), once each; example '4:Llimit:0'; unique count = unique eligible persisted release keys",
+    "excluded": "Reruns, Ltruth/Rtruth (reframes), unsaved runs, previews, UI progress ticks, daily affirmations",
+    "retained": "Existing meter.unique remains the single writer for all paid new ground; milestone derived with filter, never a competing mutable count",
+    "userTerminology": "One unique 'pattern' means one released line key per current engine definition, not necessarily one entire narrative imprint or complex",
+    "snapshot": "Optional archived release-key total only on model-compatible snapshots, so history cannot be fabricated backwards"
+  },
+  "projectedState": {
+    "cqPosition": {
+      "status": "unread | provisional | resolved",
+      "cqValue": "number|null",
+      "cqModel": "integer|null",
+      "answeredLaws": "integer",
+      "realm": "INFERNO|PURGATORIO|PARADISO|null",
+      "stageId": "string|null",
+      "continuousPercent": "number|null"
+    },
+    "evolution": {
+      "uniqueReleasedPatterns": "integer",
+      "cqBaseline": "number|null",
+      "cqNow": "number|null",
+      "cqDeltaFromBaseline": "number|null",
+      "cqLastChange": "number|null",
+      "releaseMilestones": "derivation from saved release-side keys, not daily streak",
+      "history": "same-CQ_MODEL snapshots"
+    },
+    "form": {
+      "cueDriver": "CQ continuous position + independently earned unique-release marks",
+      "heroModel": "existing avatar ring/identity/pairs are preserved; visuals adapt to continuous CQ and chronicle releases",
+      "artDirection": "Visual morphology/material/light specifics need art-directed assets; do not invent a final character skin",
+      "lowCq": "show contracted state rather than a stigma or diagnosis",
+      "highCq": "show open state; not automatic holiness",
+      "reversedCq": "representation updates honestly without removing earned release history",
+      "accessibleMode": "equivalent numeric/current/state readings without animated transformation"
+    },
+    "route": {
+      "cqLocation": "derived map scene matching CQ",
+      "activeEncounterId": "separate explicit user-selected scene ID|null",
+      "candidateChallenges": "from sniffer and crosswalk; require permission before assignment",
+      "selectedRelease": "existing relPick canonical targets",
+      "selectedRitual": "existing ritStartPlan with stable IDs"
+    }
+  },
+  "events": [
+    {
+      "kind": "STORY_COMMITTED",
+      "writer": "stCommit/applyStory",
+      "effect": "POSSIBLE_IMPRINT_ONLY",
+      "cqImpact": "none directly unless canonical law revision is independently accepted"
+    },
+    {
+      "kind": "LAW_ASSESSED",
+      "writer": "iqAnswer/iqApply or future one canonical diagnostic adapter",
+      "effect": "revised law baseline",
+      "cqImpact": "recompute from canonical engine; resets relevant law lift via lawAnswered"
+    },
+    {
+      "kind": "RELEASE_COMPLETED",
+      "writer": "relCoolDown→meterRun/ releaseWork→pSaveSnap",
+      "effect": "persist new unique keys, modeled lift, history",
+      "cqImpact": "only releaseWork's canonical lift"
+    },
+    {
+      "kind": "RITUAL_PRACTICED",
+      "writer": "ritLog/ritMarkOn/ritRelDone",
+      "effect": "habit/activity history",
+      "cqImpact": "none; practice alone not proof of law improvement"
+    },
+    {
+      "kind": "EVIDENCE_APPROVED",
+      "writer": "future journal evidence consent interface",
+      "effect": "accepted observation tied to law, original preserved",
+      "cqImpact": "only if it triggers an explicit owner-approved law remeasurement"
+    },
+    {
+      "kind": "PROFILE_IMPORTED",
+      "writer": "pImport→validateProfile",
+      "effect": "restore canonical state",
+      "cqImpact": "recompute, no extra increment/duplicate milestone"
+    }
+  ],
+  "invariants": [
+    "Exactly one source for CQ: compute().CQ, no avatar-specific recomputation.",
+    "Position only when full 21-law CQ is genuinely complete (not seeded or skipped).",
+    "No persistent stageId required: derive on render to avoid drift.",
+    "All CQ snapshots compare only same model version, with baseline from first complete reading.",
+    "Unique release milestones never increment on rerun or truth-side installation.",
+    "Ritual practice is logged even with no CQ change and must never trigger artificial increase.",
+    "Active encounter may be anywhere, irrespective of numerical CQ waypoint.",
+    "No diagnosis or moral character label inferred from map position.",
+    "Profile export/import must preserve identity, CQ inputs, history, release keys, and user-selected journey, including consent.",
+    "Declines and downward CQ movement are represented without deleting earned work."
+  ]
+}

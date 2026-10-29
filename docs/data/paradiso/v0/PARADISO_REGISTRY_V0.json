@@ -1,0 +1,2563 @@
+{
+  "meta": {
+    "release": "2026-10-25",
+    "status": "PARADISO_TEN_BEHAVIORAL_RECORDS_RESEARCH_COMPLETE_LAW_MAP_CANDIDATE; NOT_RUNTIME",
+    "scope": "COMPASS_ONLY",
+    "sourceBaseBranch": "atunED/purgatorio-oscillation-v1-2026-10-25",
+    "count": 10,
+    "recordIds": [
+      "paradiso:PD01",
+      "paradiso:PD02",
+      "paradiso:PD03",
+      "paradiso:PD04",
+      "paradiso:PD05",
+      "paradiso:PD06",
+      "paradiso:PD07",
+      "paradiso:PD08",
+      "paradiso:PD09",
+      "paradiso:PD10"
+    ],
+    "requiredTemplateKeys": [
+      "nm",
+      "fam",
+      "def",
+      "body",
+      "inferred",
+      "inferenceBasis",
+      "behavior",
+      "triggerMechanism",
+      "livedExample",
+      "impact",
+      "practice",
+      "oppositeId",
+      "oppositeDefinition",
+      "oppositeStatus",
+      "confidence",
+      "reviewStatus",
+      "refer",
+      "narrativeSource",
+      "researchSources",
+      "researchPasses",
+      "links"
+    ],
+    "staticValidation": "PASS",
+    "sourcesPerRecord": 3,
+    "analyticalSectionsPerRecord": 4,
+    "independentSourcePassCertification": "NOT_COMPLETE",
+    "oppositesApproved": 0,
+    "liveRuntimeEdges": 0,
+    "verifiedExistingMasters": 11,
+    "twelveMasterProblem": "OWNER_NAME_UNRESOLVED",
+    "inferno38PublishedInFull": "NOT_CONFIRMED",
+    "purgatorio23GitHub": true,
+    "purgatorioLive": false,
+    "revision": "v1-four-lens-law-crosswalk",
+    "date": "2026-10-25",
+    "exactCanonLawCount": 21,
+    "canonLawSource": "atuned_src/engine/data/canon.js#SI",
+    "lawSourceSha": "96b5961ea6b24d76788f2bd57919a0bd6aeb94c4",
+    "allCanonicalLawNames": [
+      {
+        "name": "Truth",
+        "band": "Throat"
+      },
+      {
+        "name": "Transparency",
+        "band": "Throat"
+      },
+      {
+        "name": "Justice",
+        "band": "Throat"
+      },
+      {
+        "name": "Unity",
+        "band": "Crown"
+      },
+      {
+        "name": "Awareness",
+        "band": "Crown"
+      },
+      {
+        "name": "Nature",
+        "band": "Crown"
+      },
+      {
+        "name": "Presence",
+        "band": "3rd Eye"
+      },
+      {
+        "name": "Humility",
+        "band": "3rd Eye"
+      },
+      {
+        "name": "Equanimity",
+        "band": "3rd Eye"
+      },
+      {
+        "name": "Compassion",
+        "band": "Heart"
+      },
+      {
+        "name": "Forgiveness",
+        "band": "Heart"
+      },
+      {
+        "name": "Generosity",
+        "band": "Heart"
+      },
+      {
+        "name": "Aesthetic Beauty",
+        "band": "Heart"
+      },
+      {
+        "name": "Courage",
+        "band": "Solar"
+      },
+      {
+        "name": "Duty",
+        "band": "Solar"
+      },
+      {
+        "name": "Responsibility",
+        "band": "Solar"
+      },
+      {
+        "name": "Accountability",
+        "band": "Solar"
+      },
+      {
+        "name": "Temperance",
+        "band": "Sacral"
+      },
+      {
+        "name": "Detachment",
+        "band": "Sacral"
+      },
+      {
+        "name": "Non-Harm",
+        "band": "Root"
+      },
+      {
+        "name": "Patience",
+        "band": "Root"
+      }
+    ],
+    "lawCrosswalkMappingEdges": 44,
+    "lawsWithParadisoResonances": 21,
+    "sourcePassCount": 40,
+    "independentStudyStatus": "TWO_LITERARY_SOURCES_AND_ONE_FRAMEWORK_SOURCE_PLUS_PSYCHOLOGY_PER_RECORD; NOT_EXPERIMENTALLY_VERIFIED",
+    "existingMastersReferenced": [
+      "Rama",
+      "Moses",
+      "Musashi",
+      "Ramakrishna",
+      "Rumi",
+      "Jesus",
+      "Buddha",
+      "Akhenaten",
+      "Elijah",
+      "Lao Tzu",
+      "Krishna"
+    ],
+    "masterCountVerified": 11,
+    "missingMaster12": "UNNAMED_BY_OWNER; NOT_INVENTED",
+    "structuralCheck": "PASS",
+    "runtimeIntegrityEdges": 0
+  },
+  "records": [
+    {
+      "id": "paradiso:PD01",
+      "kind": "paradiso_sphere",
+      "sourceOrder": 1,
+      "sourceSphere": "Moon",
+      "sourceCantos": "I–V",
+      "archetypeRole": "CONSTRUCTIVE_CAPACITY_MAPPING_NOT_NEW_ENGINE_ARCHETYPE",
+      "candidateCompassAxes": [
+        "TR",
+        "OR"
+      ],
+      "templateId": "TPL-PARADISO-SUPERCOMPLEX-COMPAT-V0",
+      "nm": "Paradiso 01 — Moon",
+      "fam": "Compass / Paradiso / coherent-capacity source-space",
+      "def": "Staying true to a chosen commitment while acknowledging limits, coercion, and what was beyond one's control.",
+      "body": "DANTE: Vows under constraint; Piccarda Donati and Constance; Dante distinguishes coercion from inward fidelity. ATUNED BEHAVIORAL INTERPRETATION: Fidelity under pressure. MOVEMENT: RECEIVE reality → DIFFERENTIATE chosen from imposed duty → PRESERVE honest commitment → RELEASE false self-blame. DISCRIMINANT: Do not blame those coerced into breaking vows; faithfulness is not compliance with abuse or impossible promises.\n\nINTEGRITY-LAW CROSSWALK: Duty [Solar], Responsibility [Solar], Truth [Throat], Patience [Root]. PRIMARY: Duty, Responsibility. COUNTERFEIT: Duty without consent becomes coercion; responsibility misassigned to a victim becomes self-blame; patience becomes indefinite toleration. OBSERVABLE SHIFT: A promise is renegotiated promptly when circumstances change; no false fulfillment is claimed; affected people receive clear notice; threats are documented. NEGATIVE TEST: Repeated promises without follow-through or coerced agreement presented as voluntary devotion. SOURCE BOUNDARY: Cultural or family pressure can mimic chosen duty. Distinguish choice, safety, contract, disability and consent.",
+      "inferred": true,
+      "inferenceBasis": "Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante",
+      "behavior": "RECEIVE reality → DIFFERENTIATE chosen from imposed duty → PRESERVE honest commitment → RELEASE false self-blame.",
+      "triggerMechanism": "A promise collides with external coercion, a real safety obligation, or changing capacity.",
+      "livedExample": "A worker reports accurately which obligations they could meet after an emergency, instead of claiming to have delivered what was impossible.",
+      "impact": "Integrity and trust improve when commitments are precise, revisable, and not confused with submission.",
+      "practice": "Name one freely chosen commitment, the constraint it faces, and one truthful action possible today.",
+      "oppositeId": null,
+      "oppositeDefinition": "Untruthful compliance, false claims of perfection, or treating coercion as voluntary failure.",
+      "oppositeStatus": "UNRESOLVED; contrast is not an approved canonical inverse",
+      "confidence": {
+        "literary": "TWO_SOURCES_CHECKED",
+        "lawNames": "EXACT_FROM_ACTIVE_CANON",
+        "lawMatches": "ATUNED_BEHAVIORAL_MAPPING",
+        "psych": "ANALOGICAL_SUPPORT_NOT_PERSON_SPECIFIC_VALIDATION",
+        "runtime": "NOT_CONNECTED"
+      },
+      "reviewStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "refer": "Paradiso I–V",
+      "narrativeSource": "Dante, Paradiso I–V; https://danteworlds.laits.utexas.edu/paradiso/01moon.html",
+      "researchSources": [
+        "https://danteworlds.laits.utexas.edu/paradiso/01moon.html",
+        "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso/page/3",
+        "https://github.com/rebootos-sourcce/MOB/blob/atunED/paradiso-compass-map-v0-2026-10-25/atuned_src/engine/data/canon.js",
+        "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+        "https://pubmed.ncbi.nlm.nih.gov/15661671/",
+        "https://pubmed.ncbi.nlm.nih.gov/21516581/",
+        "https://pubmed.ncbi.nlm.nih.gov/34569872/",
+        "https://pubmed.ncbi.nlm.nih.gov/11419803/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "SOURCE_STUDY_DANTE",
+          "discipline": "Dante text and commentary",
+          "finding": "Piccarda's incomplete vow is caused by violent removal from the convent; Beatrice differentiates types of will, debates responsibility under coercion, and warns against foolish vows. A vow has moral gravity, but blind performance of a harmful promise is not virtue.",
+          "literarySource": "https://danteworlds.laits.utexas.edu/paradiso/01moon.html",
+          "supportingSource": "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso/page/3",
+          "claimBoundary": "Historical/literary meaning, not a clinical or biometric assertion",
+          "researchStatus": "SOURCE_REVIEWED"
+        },
+        {
+          "pass": 2,
+          "name": "MOVEMENT_DECOMPOSITION",
+          "discipline": "behavioral mechanism in ATUNED terms",
+          "finding": "Fidelity means choosing obligations honestly and accounting for feasible conduct, not claiming one must die to meet externally imposed demands.",
+          "movement": "RECEIVE reality → DIFFERENTIATE chosen from imposed duty → PRESERVE honest commitment → RELEASE false self-blame.",
+          "trigger": "A promise collides with external coercion, a real safety obligation, or changing capacity.",
+          "observable": "A worker reports accurately which obligations they could meet after an emergency, instead of claiming to have delivered what was impossible.",
+          "alternatives": "Cultural or family pressure can mimic chosen duty. Distinguish choice, safety, contract, disability and consent.",
+          "sourceRefs": [
+            "atuned_src/engine/data/compass.js",
+            "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json"
+          ],
+          "researchStatus": "AUTHORING_INFERENCE"
+        },
+        {
+          "pass": 3,
+          "name": "INTEGRITY_LAWS_21_CROSSWALK",
+          "discipline": "exact canonical law matching (many-to-many)",
+          "finding": "Existing 21-law SI source exact names and bands. In this source-space: Duty (Solar): chosen responsibility is acted upon; Responsibility (Solar): real commitments are carried; Truth (Throat): the actual limits are reported; Patience (Root): time is allowed for a realistic response. These are behavioral alignment hypotheses, not new independent laws or CQ inputs.",
+          "lawRefs": [
+            {
+              "lawName": "Duty",
+              "band": "Solar",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "PRIMARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Responsibility",
+              "band": "Solar",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "PRIMARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Truth",
+              "band": "Throat",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "SECONDARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Patience",
+              "band": "Root",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "SECONDARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            }
+          ],
+          "researchStatus": "CANONICAL_NOMENCLATURE_VERIFIED_MAPPING_INTERPRETIVE"
+        },
+        {
+          "pass": 4,
+          "name": "ADVERSARIAL_AND_PSYCHOLOGY_CHECK",
+          "discipline": "counterevidence, false positives, real-world test",
+          "finding": "Distorted imitation: Duty without consent becomes coercion; responsibility misassigned to a victim becomes self-blame; patience becomes indefinite toleration. Disconfirming behavior: Repeated promises without follow-through or coerced agreement presented as voluntary devotion. More than a self-rating is needed to claim behavior change.",
+          "supportingFramework": "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+          "additionalBehavioralResearch": [
+            "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+            "https://pubmed.ncbi.nlm.nih.gov/15661671/",
+            "https://pubmed.ncbi.nlm.nih.gov/21516581/",
+            "https://pubmed.ncbi.nlm.nih.gov/34569872/",
+            "https://pubmed.ncbi.nlm.nih.gov/11419803/"
+          ],
+          "observableChange": "A promise is renegotiated promptly when circumstances change; no false fulfillment is claimed; affected people receive clear notice; threats are documented.",
+          "safetyBoundary": "Cultural or family pressure can mimic chosen duty. Distinguish choice, safety, contract, disability and consent.",
+          "proofRule": "Do not auto-compute CQ or a sphere position from this profile; require reported or observed action.",
+          "researchStatus": "CONSTRUCT_VALIDITY_GUARD_NOT_CAUSAL_VERIFICATION"
+        }
+      ],
+      "links": [
+        {
+          "id": "purgatorio:P08",
+          "type": "PROPOSED_JOURNEY_TRANSITION",
+          "status": "NOT_WIRED"
+        },
+        {
+          "id": "compass:axis:TR",
+          "type": "BEHAVIORAL_RESONANCE_CANDIDATE",
+          "status": "NOT_APPROVED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Duty",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Responsibility",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Truth",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Patience",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        }
+      ],
+      "integrityLawLinks": [
+        {
+          "lawName": "Duty",
+          "band": "Solar",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "PRIMARY",
+          "movementEvidence": "chosen responsibility is acted upon",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Responsibility",
+          "band": "Solar",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "PRIMARY",
+          "movementEvidence": "real commitments are carried",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Truth",
+          "band": "Throat",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "SECONDARY",
+          "movementEvidence": "the actual limits are reported",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Patience",
+          "band": "Root",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "SECONDARY",
+          "movementEvidence": "time is allowed for a realistic response",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        }
+      ],
+      "behavioralEvidenceCriteria": "A promise is renegotiated promptly when circumstances change; no false fulfillment is claimed; affected people receive clear notice; threats are documented.",
+      "disconfirmation": "Repeated promises without follow-through or coerced agreement presented as voluntary devotion.",
+      "falsePositiveGuard": "Cultural or family pressure can mimic chosen duty. Distinguish choice, safety, contract, disability and consent.",
+      "distortedImitation": "Duty without consent becomes coercion; responsibility misassigned to a victim becomes self-blame; patience becomes indefinite toleration.",
+      "compassMasterResonances": [
+        {
+          "name": "Rama",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        },
+        {
+          "name": "Moses",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        }
+      ],
+      "purgatorioConstructiveResonances": [
+        {
+          "recordId": "purgatorio:P01-C",
+          "status": "INFERRED_NOT_RUNTIME"
+        },
+        {
+          "recordId": "purgatorio:P04-C",
+          "status": "INFERRED_NOT_RUNTIME"
+        }
+      ],
+      "researchVersion": "v1-four-lens-2026-10-25"
+    },
+    {
+      "id": "paradiso:PD02",
+      "kind": "paradiso_sphere",
+      "sourceOrder": 2,
+      "sourceSphere": "Mercury",
+      "sourceCantos": "V–VII",
+      "archetypeRole": "CONSTRUCTIVE_CAPACITY_MAPPING_NOT_NEW_ENGINE_ARCHETYPE",
+      "candidateCompassAxes": [
+        "IL",
+        "PO"
+      ],
+      "templateId": "TPL-PARADISO-SUPERCOMPLEX-COMPAT-V0",
+      "nm": "Paradiso 02 — Mercury",
+      "fam": "Compass / Paradiso / coherent-capacity source-space",
+      "def": "Doing work that benefits others without making reputation the condition of effort.",
+      "body": "DANTE: Justinian and Romeo; virtuous service complicated by a desire for fame and worldly honor. ATUNED BEHAVIORAL INTERPRETATION: Service without applause. MOVEMENT: SEEK contribution → EXPRESS useful work → RELEASE audience-dependence → CONNECT results to shared benefit. DISCRIMINANT: Leadership and fair recognition are not vanity; exploitation and invisibility are not duties.\n\nINTEGRITY-LAW CROSSWALK: Humility [3rd Eye], Generosity [Heart], Duty [Solar], Transparency [Throat]. PRIMARY: Humility, Generosity. COUNTERFEIT: Public modesty performed to win fame, hidden coercion in 'service,' or treating legitimate payment and fair credit as vice. OBSERVABLE SHIFT: Provides a useful service, credits contributors, makes the work auditable and accepts appropriate acknowledgement without chasing an audience. NEGATIVE TEST: Changes priorities solely to gain acclaim; demands visibility before helping; withholds credit from the actual doer. SOURCE BOUNDARY: Working professionally for salary, acclaim, promotion or visibility is not automatically selfish; evaluate concrete motive and harm.",
+      "inferred": true,
+      "inferenceBasis": "Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante",
+      "behavior": "SEEK contribution → EXPRESS useful work → RELEASE audience-dependence → CONNECT results to shared benefit.",
+      "triggerMechanism": "A useful act will be unseen, or a peer receives public credit.",
+      "livedExample": "A team member documents another person's contribution and completes an unglamorous repair without demanding acknowledgment.",
+      "impact": "The work becomes more reliable and public credit becomes less central to self-worth.",
+      "practice": "Choose one valuable action no one will notice; record its real result and whether visibility was needed.",
+      "oppositeId": null,
+      "oppositeDefinition": "Work motivated solely by status or prestige, presented as disinterested service.",
+      "oppositeStatus": "UNRESOLVED; contrast is not an approved canonical inverse",
+      "confidence": {
+        "literary": "TWO_SOURCES_CHECKED",
+        "lawNames": "EXACT_FROM_ACTIVE_CANON",
+        "lawMatches": "ATUNED_BEHAVIORAL_MAPPING",
+        "psych": "ANALOGICAL_SUPPORT_NOT_PERSON_SPECIFIC_VALIDATION",
+        "runtime": "NOT_CONNECTED"
+      },
+      "reviewStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "refer": "Paradiso V–VII",
+      "narrativeSource": "Dante, Paradiso V–VII; https://danteworlds.laits.utexas.edu/paradiso/02mercury.html",
+      "researchSources": [
+        "https://danteworlds.laits.utexas.edu/paradiso/02mercury.html",
+        "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso/page/3",
+        "https://github.com/rebootos-sourcce/MOB/blob/atunED/paradiso-compass-map-v0-2026-10-25/atuned_src/engine/data/canon.js",
+        "https://pubmed.ncbi.nlm.nih.gov/21516581/",
+        "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+        "https://pubmed.ncbi.nlm.nih.gov/15661671/",
+        "https://pubmed.ncbi.nlm.nih.gov/34569872/",
+        "https://pubmed.ncbi.nlm.nih.gov/11419803/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "SOURCE_STUDY_DANTE",
+          "discipline": "Dante text and commentary",
+          "finding": "Justinian describes mighty achievements alongside the prestige-seeking motive that diminished pure devotion; Romeo is unjustly driven away despite faithful service. Glory is an imperfect motive, not the same as failure to do good.",
+          "literarySource": "https://danteworlds.laits.utexas.edu/paradiso/02mercury.html",
+          "supportingSource": "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso/page/3",
+          "claimBoundary": "Historical/literary meaning, not a clinical or biometric assertion",
+          "researchStatus": "SOURCE_REVIEWED"
+        },
+        {
+          "pass": 2,
+          "name": "MOVEMENT_DECOMPOSITION",
+          "discipline": "behavioral mechanism in ATUNED terms",
+          "finding": "Service becomes constructive when work and beneficiaries matter without requiring admiration. Credit and contribution can coexist.",
+          "movement": "SEEK contribution → EXPRESS useful work → RELEASE audience-dependence → CONNECT results to shared benefit.",
+          "trigger": "A useful act will be unseen, or a peer receives public credit.",
+          "observable": "A team member documents another person's contribution and completes an unglamorous repair without demanding acknowledgment.",
+          "alternatives": "Working professionally for salary, acclaim, promotion or visibility is not automatically selfish; evaluate concrete motive and harm.",
+          "sourceRefs": [
+            "atuned_src/engine/data/compass.js",
+            "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json"
+          ],
+          "researchStatus": "AUTHORING_INFERENCE"
+        },
+        {
+          "pass": 3,
+          "name": "INTEGRITY_LAWS_21_CROSSWALK",
+          "discipline": "exact canonical law matching (many-to-many)",
+          "finding": "Existing 21-law SI source exact names and bands. In this source-space: Humility (3rd Eye): accurate status rather than superiority; Generosity (Heart): value flows toward others; Duty (Solar): unseen work is completed; Transparency (Throat): contribution and limits are visible. These are behavioral alignment hypotheses, not new independent laws or CQ inputs.",
+          "lawRefs": [
+            {
+              "lawName": "Humility",
+              "band": "3rd Eye",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "PRIMARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Generosity",
+              "band": "Heart",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "PRIMARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Duty",
+              "band": "Solar",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "SECONDARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Transparency",
+              "band": "Throat",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "SECONDARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            }
+          ],
+          "researchStatus": "CANONICAL_NOMENCLATURE_VERIFIED_MAPPING_INTERPRETIVE"
+        },
+        {
+          "pass": 4,
+          "name": "ADVERSARIAL_AND_PSYCHOLOGY_CHECK",
+          "discipline": "counterevidence, false positives, real-world test",
+          "finding": "Distorted imitation: Public modesty performed to win fame, hidden coercion in 'service,' or treating legitimate payment and fair credit as vice. Disconfirming behavior: Changes priorities solely to gain acclaim; demands visibility before helping; withholds credit from the actual doer. More than a self-rating is needed to claim behavior change.",
+          "supportingFramework": "https://pubmed.ncbi.nlm.nih.gov/21516581/",
+          "additionalBehavioralResearch": [
+            "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+            "https://pubmed.ncbi.nlm.nih.gov/15661671/",
+            "https://pubmed.ncbi.nlm.nih.gov/21516581/",
+            "https://pubmed.ncbi.nlm.nih.gov/34569872/",
+            "https://pubmed.ncbi.nlm.nih.gov/11419803/"
+          ],
+          "observableChange": "Provides a useful service, credits contributors, makes the work auditable and accepts appropriate acknowledgement without chasing an audience.",
+          "safetyBoundary": "Working professionally for salary, acclaim, promotion or visibility is not automatically selfish; evaluate concrete motive and harm.",
+          "proofRule": "Do not auto-compute CQ or a sphere position from this profile; require reported or observed action.",
+          "researchStatus": "CONSTRUCT_VALIDITY_GUARD_NOT_CAUSAL_VERIFICATION"
+        }
+      ],
+      "links": [
+        {
+          "id": "purgatorio:P08",
+          "type": "PROPOSED_JOURNEY_TRANSITION",
+          "status": "NOT_WIRED"
+        },
+        {
+          "id": "compass:axis:IL",
+          "type": "BEHAVIORAL_RESONANCE_CANDIDATE",
+          "status": "NOT_APPROVED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Humility",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Generosity",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Duty",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Transparency",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        }
+      ],
+      "integrityLawLinks": [
+        {
+          "lawName": "Humility",
+          "band": "3rd Eye",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "PRIMARY",
+          "movementEvidence": "accurate status rather than superiority",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Generosity",
+          "band": "Heart",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "PRIMARY",
+          "movementEvidence": "value flows toward others",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Duty",
+          "band": "Solar",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "SECONDARY",
+          "movementEvidence": "unseen work is completed",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Transparency",
+          "band": "Throat",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "SECONDARY",
+          "movementEvidence": "contribution and limits are visible",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        }
+      ],
+      "behavioralEvidenceCriteria": "Provides a useful service, credits contributors, makes the work auditable and accepts appropriate acknowledgement without chasing an audience.",
+      "disconfirmation": "Changes priorities solely to gain acclaim; demands visibility before helping; withholds credit from the actual doer.",
+      "falsePositiveGuard": "Working professionally for salary, acclaim, promotion or visibility is not automatically selfish; evaluate concrete motive and harm.",
+      "distortedImitation": "Public modesty performed to win fame, hidden coercion in 'service,' or treating legitimate payment and fair credit as vice.",
+      "compassMasterResonances": [
+        {
+          "name": "Musashi",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        },
+        {
+          "name": "Ramakrishna",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        }
+      ],
+      "purgatorioConstructiveResonances": [
+        {
+          "recordId": "purgatorio:P01-C",
+          "status": "INFERRED_NOT_RUNTIME"
+        },
+        {
+          "recordId": "purgatorio:P05-C",
+          "status": "INFERRED_NOT_RUNTIME"
+        }
+      ],
+      "researchVersion": "v1-four-lens-2026-10-25"
+    },
+    {
+      "id": "paradiso:PD03",
+      "kind": "paradiso_sphere",
+      "sourceOrder": 3,
+      "sourceSphere": "Venus",
+      "sourceCantos": "VIII–IX",
+      "archetypeRole": "CONSTRUCTIVE_CAPACITY_MAPPING_NOT_NEW_ENGINE_ARCHETYPE",
+      "candidateCompassAxes": [
+        "DE",
+        "IL"
+      ],
+      "templateId": "TPL-PARADISO-SUPERCOMPLEX-COMPAT-V0",
+      "nm": "Paradiso 03 — Venus",
+      "fam": "Compass / Paradiso / coherent-capacity source-space",
+      "def": "Treating desire as energy for consensual, reciprocal connection without turning a person into possession or proof of worth.",
+      "body": "DANTE: Charles Martel, Cunizza, Folco, Rahab; love and desire are transformed in the blessed rather than erased. ATUNED BEHAVIORAL INTERPRETATION: Mutual love and honest desire. MOVEMENT: ATTRACT → CONNECT with consent → RECEIVE the other's perspective → RELEASE ownership. DISCRIMINANT: Consent, pleasure, orientation, sexual activity and ordinary desire are not moral defects.\n\nINTEGRITY-LAW CROSSWALK: Compassion [Heart], Detachment [Sacral], Non-Harm [Root], Generosity [Heart], Nature [Crown]. PRIMARY: Compassion, Non-Harm. COUNTERFEIT: Attachment called love; self-erasure called generosity; withholding warmth called detachment; biological essentialism misread as Nature. OBSERVABLE SHIFT: Explicit consent checked, limits respected, welcome given without debt, differences accepted, a refusal followed without retaliation. NEGATIVE TEST: Persists after refusal, extracts intimacy for proof of worth, assigns rigid identity from someone's supposed 'nature'. SOURCE BOUNDARY: Loving intensely, consenting sexuality and disappointment are not by themselves decoherent behavior.",
+      "inferred": true,
+      "inferenceBasis": "Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante",
+      "behavior": "ATTRACT → CONNECT with consent → RECEIVE the other's perspective → RELEASE ownership.",
+      "triggerMechanism": "Longing, rejection, infatuation or an opportunity to coerce affection.",
+      "livedExample": "Someone voices attraction honestly, hears a refusal, respects it, and stays humane and self-respecting.",
+      "impact": "Relating becomes more reciprocal; desire no longer dictates ownership or deception.",
+      "practice": "State a desire without demand, ask what the other person chooses, and honor the answer.",
+      "oppositeId": null,
+      "oppositeDefinition": "Manipulation, coercion, possessiveness, or claiming intimacy where no mutuality exists.",
+      "oppositeStatus": "UNRESOLVED; contrast is not an approved canonical inverse",
+      "confidence": {
+        "literary": "TWO_SOURCES_CHECKED",
+        "lawNames": "EXACT_FROM_ACTIVE_CANON",
+        "lawMatches": "ATUNED_BEHAVIORAL_MAPPING",
+        "psych": "ANALOGICAL_SUPPORT_NOT_PERSON_SPECIFIC_VALIDATION",
+        "runtime": "NOT_CONNECTED"
+      },
+      "reviewStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "refer": "Paradiso VIII–IX",
+      "narrativeSource": "Dante, Paradiso VIII–IX; https://danteworlds.laits.utexas.edu/paradiso/03venus.html",
+      "researchSources": [
+        "https://danteworlds.laits.utexas.edu/paradiso/03venus.html",
+        "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso/page/3",
+        "https://github.com/rebootos-sourcce/MOB/blob/atunED/paradiso-compass-map-v0-2026-10-25/atuned_src/engine/data/canon.js",
+        "https://www.sciencedirect.com/science/article/pii/S0191886925000091",
+        "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+        "https://pubmed.ncbi.nlm.nih.gov/15661671/",
+        "https://pubmed.ncbi.nlm.nih.gov/21516581/",
+        "https://pubmed.ncbi.nlm.nih.gov/34569872/",
+        "https://pubmed.ncbi.nlm.nih.gov/11419803/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "SOURCE_STUDY_DANTE",
+          "discipline": "Dante text and commentary",
+          "finding": "Cunizza, Folco and Rahab appear as beloved spirits; Charles Martel argues for distinct human dispositions and criticizes forcing people into unsuitable roles. The literary question is transformation of earthly love, not criminalization of desire.",
+          "literarySource": "https://danteworlds.laits.utexas.edu/paradiso/03venus.html",
+          "supportingSource": "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso/page/3",
+          "claimBoundary": "Historical/literary meaning, not a clinical or biometric assertion",
+          "researchStatus": "SOURCE_REVIEWED"
+        },
+        {
+          "pass": 2,
+          "name": "MOVEMENT_DECOMPOSITION",
+          "discipline": "behavioral mechanism in ATUNED terms",
+          "finding": "Mature love allows desire, reciprocity, and difference without ownership, compulsion or extraction.",
+          "movement": "ATTRACT → CONNECT with consent → RECEIVE the other's perspective → RELEASE ownership.",
+          "trigger": "Longing, rejection, infatuation or an opportunity to coerce affection.",
+          "observable": "Someone voices attraction honestly, hears a refusal, respects it, and stays humane and self-respecting.",
+          "alternatives": "Loving intensely, consenting sexuality and disappointment are not by themselves decoherent behavior.",
+          "sourceRefs": [
+            "atuned_src/engine/data/compass.js",
+            "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json"
+          ],
+          "researchStatus": "AUTHORING_INFERENCE"
+        },
+        {
+          "pass": 3,
+          "name": "INTEGRITY_LAWS_21_CROSSWALK",
+          "discipline": "exact canonical law matching (many-to-many)",
+          "finding": "Existing 21-law SI source exact names and bands. In this source-space: Compassion (Heart): acts from regard for another's welfare; Detachment (Sacral): releases ownership without withdrawing care; Non-Harm (Root): does not exploit vulnerability; Generosity (Heart): care is given freely with boundaries; Nature (Crown): accepts individual difference. These are behavioral alignment hypotheses, not new independent laws or CQ inputs.",
+          "lawRefs": [
+            {
+              "lawName": "Compassion",
+              "band": "Heart",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "PRIMARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Detachment",
+              "band": "Sacral",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "SECONDARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Non-Harm",
+              "band": "Root",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "PRIMARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Generosity",
+              "band": "Heart",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "SECONDARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Nature",
+              "band": "Crown",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "SECONDARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            }
+          ],
+          "researchStatus": "CANONICAL_NOMENCLATURE_VERIFIED_MAPPING_INTERPRETIVE"
+        },
+        {
+          "pass": 4,
+          "name": "ADVERSARIAL_AND_PSYCHOLOGY_CHECK",
+          "discipline": "counterevidence, false positives, real-world test",
+          "finding": "Distorted imitation: Attachment called love; self-erasure called generosity; withholding warmth called detachment; biological essentialism misread as Nature. Disconfirming behavior: Persists after refusal, extracts intimacy for proof of worth, assigns rigid identity from someone's supposed 'nature'. More than a self-rating is needed to claim behavior change.",
+          "supportingFramework": "https://www.sciencedirect.com/science/article/pii/S0191886925000091",
+          "additionalBehavioralResearch": [
+            "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+            "https://pubmed.ncbi.nlm.nih.gov/15661671/",
+            "https://pubmed.ncbi.nlm.nih.gov/21516581/",
+            "https://pubmed.ncbi.nlm.nih.gov/34569872/",
+            "https://pubmed.ncbi.nlm.nih.gov/11419803/"
+          ],
+          "observableChange": "Explicit consent checked, limits respected, welcome given without debt, differences accepted, a refusal followed without retaliation.",
+          "safetyBoundary": "Loving intensely, consenting sexuality and disappointment are not by themselves decoherent behavior.",
+          "proofRule": "Do not auto-compute CQ or a sphere position from this profile; require reported or observed action.",
+          "researchStatus": "CONSTRUCT_VALIDITY_GUARD_NOT_CAUSAL_VERIFICATION"
+        }
+      ],
+      "links": [
+        {
+          "id": "purgatorio:P08",
+          "type": "PROPOSED_JOURNEY_TRANSITION",
+          "status": "NOT_WIRED"
+        },
+        {
+          "id": "compass:axis:DE",
+          "type": "BEHAVIORAL_RESONANCE_CANDIDATE",
+          "status": "NOT_APPROVED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Compassion",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Detachment",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Non-Harm",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Generosity",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Nature",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        }
+      ],
+      "integrityLawLinks": [
+        {
+          "lawName": "Compassion",
+          "band": "Heart",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "PRIMARY",
+          "movementEvidence": "acts from regard for another's welfare",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Detachment",
+          "band": "Sacral",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "SECONDARY",
+          "movementEvidence": "releases ownership without withdrawing care",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Non-Harm",
+          "band": "Root",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "PRIMARY",
+          "movementEvidence": "does not exploit vulnerability",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Generosity",
+          "band": "Heart",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "SECONDARY",
+          "movementEvidence": "care is given freely with boundaries",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Nature",
+          "band": "Crown",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "SECONDARY",
+          "movementEvidence": "accepts individual difference",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        }
+      ],
+      "behavioralEvidenceCriteria": "Explicit consent checked, limits respected, welcome given without debt, differences accepted, a refusal followed without retaliation.",
+      "disconfirmation": "Persists after refusal, extracts intimacy for proof of worth, assigns rigid identity from someone's supposed 'nature'.",
+      "falsePositiveGuard": "Loving intensely, consenting sexuality and disappointment are not by themselves decoherent behavior.",
+      "distortedImitation": "Attachment called love; self-erasure called generosity; withholding warmth called detachment; biological essentialism misread as Nature.",
+      "compassMasterResonances": [
+        {
+          "name": "Rumi",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        },
+        {
+          "name": "Jesus",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        },
+        {
+          "name": "Ramakrishna",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        }
+      ],
+      "purgatorioConstructiveResonances": [
+        {
+          "recordId": "purgatorio:P07-C",
+          "status": "INFERRED_NOT_RUNTIME"
+        },
+        {
+          "recordId": "purgatorio:P02-C",
+          "status": "INFERRED_NOT_RUNTIME"
+        }
+      ],
+      "researchVersion": "v1-four-lens-2026-10-25"
+    },
+    {
+      "id": "paradiso:PD04",
+      "kind": "paradiso_sphere",
+      "sourceOrder": 4,
+      "sourceSphere": "Sun",
+      "sourceCantos": "X–XIV",
+      "archetypeRole": "CONSTRUCTIVE_CAPACITY_MAPPING_NOT_NEW_ENGINE_ARCHETYPE",
+      "candidateCompassAxes": [
+        "PE",
+        "RE",
+        "OR"
+      ],
+      "templateId": "TPL-PARADISO-SUPERCOMPLEX-COMPAT-V0",
+      "nm": "Paradiso 04 — Sun",
+      "fam": "Compass / Paradiso / coherent-capacity source-space",
+      "def": "Seeking truth through evidence, humility and the capacity to recognize insight in those who disagree.",
+      "body": "DANTE: Thomas Aquinas, Bonaventure and two circles of wise spirits honor rivals and exchange praise across orders. ATUNED BEHAVIORAL INTERPRETATION: Collaborative wisdom. MOVEMENT: SEEK understanding → RECEIVE contradiction → DIFFERENTIATE evidence from certainty → CONNECT perspectives. DISCRIMINANT: Wisdom is not information hoarding, credential worship or retreat from practical accountability.\n\nINTEGRITY-LAW CROSSWALK: Truth [Throat], Awareness [Crown], Humility [3rd Eye], Transparency [Throat]. PRIMARY: Truth, Humility. COUNTERFEIT: Intellectual superiority dressed as truth, endless doubt dressed as humility, data cherry-picked under the word discernment. OBSERVABLE SHIFT: Names an actual error, revises a position with evidence, acknowledges an opponent's genuine contribution, publishes corrections. NEGATIVE TEST: Refuses to answer counterevidence, withholds disconfirming data or claims certainty by authority alone. SOURCE BOUNDARY: Expertise and firm conclusions are consistent with humility when evidence and revision conditions are explicit.",
+      "inferred": true,
+      "inferenceBasis": "Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante",
+      "behavior": "SEEK understanding → RECEIVE contradiction → DIFFERENTIATE evidence from certainty → CONNECT perspectives.",
+      "triggerMechanism": "A credible critic contradicts a belief or a rival produces a better explanation.",
+      "livedExample": "A researcher updates a cherished hypothesis after testing it and openly credits a different school of thought.",
+      "impact": "Shared understanding improves; certainty no longer substitutes for inquiry.",
+      "practice": "Name a belief, the strongest counterevidence, and the specific observation that would change your view.",
+      "oppositeId": null,
+      "oppositeDefinition": "Dogmatism, intellectual domination or selective use of evidence to appear wise.",
+      "oppositeStatus": "UNRESOLVED; contrast is not an approved canonical inverse",
+      "confidence": {
+        "literary": "TWO_SOURCES_CHECKED",
+        "lawNames": "EXACT_FROM_ACTIVE_CANON",
+        "lawMatches": "ATUNED_BEHAVIORAL_MAPPING",
+        "psych": "ANALOGICAL_SUPPORT_NOT_PERSON_SPECIFIC_VALIDATION",
+        "runtime": "NOT_CONNECTED"
+      },
+      "reviewStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "refer": "Paradiso X–XIV",
+      "narrativeSource": "Dante, Paradiso X–XIV; https://danteworlds.laits.utexas.edu/paradiso/04sun.html",
+      "researchSources": [
+        "https://danteworlds.laits.utexas.edu/paradiso/04sun.html",
+        "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso/page/4",
+        "https://github.com/rebootos-sourcce/MOB/blob/atunED/paradiso-compass-map-v0-2026-10-25/atuned_src/engine/data/canon.js",
+        "https://pubmed.ncbi.nlm.nih.gov/34569872/",
+        "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+        "https://pubmed.ncbi.nlm.nih.gov/15661671/",
+        "https://pubmed.ncbi.nlm.nih.gov/21516581/",
+        "https://pubmed.ncbi.nlm.nih.gov/11419803/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "SOURCE_STUDY_DANTE",
+          "discipline": "Dante text and commentary",
+          "finding": "Thomas Aquinas praises Francis, while Bonaventure praises Dominic across the rival orders, each criticizing failures within his own community. Thomas revises an apparently absolute claim about Solomon; inquiry models correction.",
+          "literarySource": "https://danteworlds.laits.utexas.edu/paradiso/04sun.html",
+          "supportingSource": "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso/page/4",
+          "claimBoundary": "Historical/literary meaning, not a clinical or biometric assertion",
+          "researchStatus": "SOURCE_REVIEWED"
+        },
+        {
+          "pass": 2,
+          "name": "MOVEMENT_DECOMPOSITION",
+          "discipline": "behavioral mechanism in ATUNED terms",
+          "finding": "Wisdom is the capacity to revise an explanation and credit insight regardless of loyalty, status or institution.",
+          "movement": "SEEK understanding → RECEIVE contradiction → DIFFERENTIATE evidence from certainty → CONNECT perspectives.",
+          "trigger": "A credible critic contradicts a belief or a rival produces a better explanation.",
+          "observable": "A researcher updates a cherished hypothesis after testing it and openly credits a different school of thought.",
+          "alternatives": "Expertise and firm conclusions are consistent with humility when evidence and revision conditions are explicit.",
+          "sourceRefs": [
+            "atuned_src/engine/data/compass.js",
+            "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json"
+          ],
+          "researchStatus": "AUTHORING_INFERENCE"
+        },
+        {
+          "pass": 3,
+          "name": "INTEGRITY_LAWS_21_CROSSWALK",
+          "discipline": "exact canonical law matching (many-to-many)",
+          "finding": "Existing 21-law SI source exact names and bands. In this source-space: Truth (Throat): separates tested claim from reputation; Awareness (Crown): notices overlooked evidence; Humility (3rd Eye): admits the limits of knowing; Transparency (Throat): shows sources and revisions. These are behavioral alignment hypotheses, not new independent laws or CQ inputs.",
+          "lawRefs": [
+            {
+              "lawName": "Truth",
+              "band": "Throat",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "PRIMARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Awareness",
+              "band": "Crown",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "SECONDARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Humility",
+              "band": "3rd Eye",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "PRIMARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Transparency",
+              "band": "Throat",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "SECONDARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            }
+          ],
+          "researchStatus": "CANONICAL_NOMENCLATURE_VERIFIED_MAPPING_INTERPRETIVE"
+        },
+        {
+          "pass": 4,
+          "name": "ADVERSARIAL_AND_PSYCHOLOGY_CHECK",
+          "discipline": "counterevidence, false positives, real-world test",
+          "finding": "Distorted imitation: Intellectual superiority dressed as truth, endless doubt dressed as humility, data cherry-picked under the word discernment. Disconfirming behavior: Refuses to answer counterevidence, withholds disconfirming data or claims certainty by authority alone. More than a self-rating is needed to claim behavior change.",
+          "supportingFramework": "https://pubmed.ncbi.nlm.nih.gov/34569872/",
+          "additionalBehavioralResearch": [
+            "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+            "https://pubmed.ncbi.nlm.nih.gov/15661671/",
+            "https://pubmed.ncbi.nlm.nih.gov/21516581/",
+            "https://pubmed.ncbi.nlm.nih.gov/34569872/",
+            "https://pubmed.ncbi.nlm.nih.gov/11419803/"
+          ],
+          "observableChange": "Names an actual error, revises a position with evidence, acknowledges an opponent's genuine contribution, publishes corrections.",
+          "safetyBoundary": "Expertise and firm conclusions are consistent with humility when evidence and revision conditions are explicit.",
+          "proofRule": "Do not auto-compute CQ or a sphere position from this profile; require reported or observed action.",
+          "researchStatus": "CONSTRUCT_VALIDITY_GUARD_NOT_CAUSAL_VERIFICATION"
+        }
+      ],
+      "links": [
+        {
+          "id": "purgatorio:P08",
+          "type": "PROPOSED_JOURNEY_TRANSITION",
+          "status": "NOT_WIRED"
+        },
+        {
+          "id": "compass:axis:PE",
+          "type": "BEHAVIORAL_RESONANCE_CANDIDATE",
+          "status": "NOT_APPROVED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Truth",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Awareness",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Humility",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Transparency",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        }
+      ],
+      "integrityLawLinks": [
+        {
+          "lawName": "Truth",
+          "band": "Throat",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "PRIMARY",
+          "movementEvidence": "separates tested claim from reputation",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Awareness",
+          "band": "Crown",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "SECONDARY",
+          "movementEvidence": "notices overlooked evidence",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Humility",
+          "band": "3rd Eye",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "PRIMARY",
+          "movementEvidence": "admits the limits of knowing",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Transparency",
+          "band": "Throat",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "SECONDARY",
+          "movementEvidence": "shows sources and revisions",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        }
+      ],
+      "behavioralEvidenceCriteria": "Names an actual error, revises a position with evidence, acknowledges an opponent's genuine contribution, publishes corrections.",
+      "disconfirmation": "Refuses to answer counterevidence, withholds disconfirming data or claims certainty by authority alone.",
+      "falsePositiveGuard": "Expertise and firm conclusions are consistent with humility when evidence and revision conditions are explicit.",
+      "distortedImitation": "Intellectual superiority dressed as truth, endless doubt dressed as humility, data cherry-picked under the word discernment.",
+      "compassMasterResonances": [
+        {
+          "name": "Buddha",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        },
+        {
+          "name": "Akhenaten",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        }
+      ],
+      "purgatorioConstructiveResonances": [
+        {
+          "recordId": "purgatorio:P01-C",
+          "status": "INFERRED_NOT_RUNTIME"
+        },
+        {
+          "recordId": "purgatorio:P02-C",
+          "status": "INFERRED_NOT_RUNTIME"
+        }
+      ],
+      "researchVersion": "v1-four-lens-2026-10-25"
+    },
+    {
+      "id": "paradiso:PD05",
+      "kind": "paradiso_sphere",
+      "sourceOrder": 5,
+      "sourceSphere": "Mars",
+      "sourceCantos": "XIV–XVIII",
+      "archetypeRole": "CONSTRUCTIVE_CAPACITY_MAPPING_NOT_NEW_ENGINE_ARCHETYPE",
+      "candidateCompassAxes": [
+        "CH",
+        "PO",
+        "IL"
+      ],
+      "templateId": "TPL-PARADISO-SUPERCOMPLEX-COMPAT-V0",
+      "nm": "Paradiso 05 — Mars",
+      "fam": "Compass / Paradiso / coherent-capacity source-space",
+      "def": "Bearing a real cost to uphold a justified principle while using the least harmful effective means.",
+      "body": "DANTE: Cacciaguida and the cross of holy warriors; faith, sacrifice and courage depicted through Dante's medieval political theology. ATUNED BEHAVIORAL INTERPRETATION: Courageous principled action. MOVEMENT: PROTECT → INITIATE chosen action → HOLD a boundary → RELEASE needless aggression. DISCRIMINANT: Dante's Crusade setting is literary-historical, not permission to romanticize religious warfare or violence.\n\nINTEGRITY-LAW CROSSWALK: Courage [Solar], Duty [Solar], Non-Harm [Root], Accountability [Solar]. PRIMARY: Courage, Non-Harm. COUNTERFEIT: Reckless warfare glorified as bravery, martyrdom sought for identity, threats justified by righteousness. OBSERVABLE SHIFT: Names a vulnerable person who needs protection, speaks a hard truth with a plan, avoids unnecessary injury, answers for foreseeable consequences. NEGATIVE TEST: Enjoys harming an adversary, escalates under criticism or calls collateral damage courageous by definition. SOURCE BOUNDARY: Self-defense and protecting others are situational; evaluate necessity, proportionality, available nonviolent actions.",
+      "inferred": true,
+      "inferenceBasis": "Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante",
+      "behavior": "PROTECT → INITIATE chosen action → HOLD a boundary → RELEASE needless aggression.",
+      "triggerMechanism": "A principle is costly to defend, or force seems easier than patient courage.",
+      "livedExample": "A colleague challenges retaliation against a vulnerable coworker and accepts personal risk without threatening anyone.",
+      "impact": "Reliability and protection increase without glorifying aggression.",
+      "practice": "Identify a difficult protective act, its real risks, and the least harmful way to take it.",
+      "oppositeId": null,
+      "oppositeDefinition": "Aggression, conquest or sacrificial performance falsely labeled courage.",
+      "oppositeStatus": "UNRESOLVED; contrast is not an approved canonical inverse",
+      "confidence": {
+        "literary": "TWO_SOURCES_CHECKED",
+        "lawNames": "EXACT_FROM_ACTIVE_CANON",
+        "lawMatches": "ATUNED_BEHAVIORAL_MAPPING",
+        "psych": "ANALOGICAL_SUPPORT_NOT_PERSON_SPECIFIC_VALIDATION",
+        "runtime": "NOT_CONNECTED"
+      },
+      "reviewStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "refer": "Paradiso XIV–XVIII",
+      "narrativeSource": "Dante, Paradiso XIV–XVIII; https://danteworlds.laits.utexas.edu/paradiso/05mars.html",
+      "researchSources": [
+        "https://danteworlds.laits.utexas.edu/paradiso/05mars.html",
+        "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso/page/5",
+        "https://github.com/rebootos-sourcce/MOB/blob/atunED/paradiso-compass-map-v0-2026-10-25/atuned_src/engine/data/canon.js",
+        "https://pubmed.ncbi.nlm.nih.gov/15661671/",
+        "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+        "https://pubmed.ncbi.nlm.nih.gov/21516581/",
+        "https://pubmed.ncbi.nlm.nih.gov/34569872/",
+        "https://pubmed.ncbi.nlm.nih.gov/11419803/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "SOURCE_STUDY_DANTE",
+          "discipline": "Dante text and commentary",
+          "finding": "Cacciaguida tells Dante he will endure exile yet must tell difficult truths. Mars also carries the medieval imagery of crusaders and sacred warfare; its historical violence must not be taken as an instruction to modern users.",
+          "literarySource": "https://danteworlds.laits.utexas.edu/paradiso/05mars.html",
+          "supportingSource": "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso/page/5",
+          "claimBoundary": "Historical/literary meaning, not a clinical or biometric assertion",
+          "researchStatus": "SOURCE_REVIEWED"
+        },
+        {
+          "pass": 2,
+          "name": "MOVEMENT_DECOMPOSITION",
+          "discipline": "behavioral mechanism in ATUNED terms",
+          "finding": "Courage is principled action with real cost and controlled force; non-harm constrains courage so aggression is never its proxy.",
+          "movement": "PROTECT → INITIATE chosen action → HOLD a boundary → RELEASE needless aggression.",
+          "trigger": "A principle is costly to defend, or force seems easier than patient courage.",
+          "observable": "A colleague challenges retaliation against a vulnerable coworker and accepts personal risk without threatening anyone.",
+          "alternatives": "Self-defense and protecting others are situational; evaluate necessity, proportionality, available nonviolent actions.",
+          "sourceRefs": [
+            "atuned_src/engine/data/compass.js",
+            "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json"
+          ],
+          "researchStatus": "AUTHORING_INFERENCE"
+        },
+        {
+          "pass": 3,
+          "name": "INTEGRITY_LAWS_21_CROSSWALK",
+          "discipline": "exact canonical law matching (many-to-many)",
+          "finding": "Existing 21-law SI source exact names and bands. In this source-space: Courage (Solar): acts despite justified fear; Duty (Solar): carries voluntarily chosen obligations; Non-Harm (Root): avoids disproportionate harm; Accountability (Solar): owns the actual consequences. These are behavioral alignment hypotheses, not new independent laws or CQ inputs.",
+          "lawRefs": [
+            {
+              "lawName": "Courage",
+              "band": "Solar",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "PRIMARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Duty",
+              "band": "Solar",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "SECONDARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Non-Harm",
+              "band": "Root",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "PRIMARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Accountability",
+              "band": "Solar",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "SECONDARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            }
+          ],
+          "researchStatus": "CANONICAL_NOMENCLATURE_VERIFIED_MAPPING_INTERPRETIVE"
+        },
+        {
+          "pass": 4,
+          "name": "ADVERSARIAL_AND_PSYCHOLOGY_CHECK",
+          "discipline": "counterevidence, false positives, real-world test",
+          "finding": "Distorted imitation: Reckless warfare glorified as bravery, martyrdom sought for identity, threats justified by righteousness. Disconfirming behavior: Enjoys harming an adversary, escalates under criticism or calls collateral damage courageous by definition. More than a self-rating is needed to claim behavior change.",
+          "supportingFramework": "https://pubmed.ncbi.nlm.nih.gov/15661671/",
+          "additionalBehavioralResearch": [
+            "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+            "https://pubmed.ncbi.nlm.nih.gov/15661671/",
+            "https://pubmed.ncbi.nlm.nih.gov/21516581/",
+            "https://pubmed.ncbi.nlm.nih.gov/34569872/",
+            "https://pubmed.ncbi.nlm.nih.gov/11419803/"
+          ],
+          "observableChange": "Names a vulnerable person who needs protection, speaks a hard truth with a plan, avoids unnecessary injury, answers for foreseeable consequences.",
+          "safetyBoundary": "Self-defense and protecting others are situational; evaluate necessity, proportionality, available nonviolent actions.",
+          "proofRule": "Do not auto-compute CQ or a sphere position from this profile; require reported or observed action.",
+          "researchStatus": "CONSTRUCT_VALIDITY_GUARD_NOT_CAUSAL_VERIFICATION"
+        }
+      ],
+      "links": [
+        {
+          "id": "purgatorio:P08",
+          "type": "PROPOSED_JOURNEY_TRANSITION",
+          "status": "NOT_WIRED"
+        },
+        {
+          "id": "compass:axis:CH",
+          "type": "BEHAVIORAL_RESONANCE_CANDIDATE",
+          "status": "NOT_APPROVED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Courage",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Duty",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Non-Harm",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Accountability",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        }
+      ],
+      "integrityLawLinks": [
+        {
+          "lawName": "Courage",
+          "band": "Solar",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "PRIMARY",
+          "movementEvidence": "acts despite justified fear",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Duty",
+          "band": "Solar",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "SECONDARY",
+          "movementEvidence": "carries voluntarily chosen obligations",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Non-Harm",
+          "band": "Root",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "PRIMARY",
+          "movementEvidence": "avoids disproportionate harm",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Accountability",
+          "band": "Solar",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "SECONDARY",
+          "movementEvidence": "owns the actual consequences",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        }
+      ],
+      "behavioralEvidenceCriteria": "Names a vulnerable person who needs protection, speaks a hard truth with a plan, avoids unnecessary injury, answers for foreseeable consequences.",
+      "disconfirmation": "Enjoys harming an adversary, escalates under criticism or calls collateral damage courageous by definition.",
+      "falsePositiveGuard": "Self-defense and protecting others are situational; evaluate necessity, proportionality, available nonviolent actions.",
+      "distortedImitation": "Reckless warfare glorified as bravery, martyrdom sought for identity, threats justified by righteousness.",
+      "compassMasterResonances": [
+        {
+          "name": "Musashi",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        },
+        {
+          "name": "Elijah",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        },
+        {
+          "name": "Rama",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        }
+      ],
+      "purgatorioConstructiveResonances": [
+        {
+          "recordId": "purgatorio:P03-C",
+          "status": "INFERRED_NOT_RUNTIME"
+        },
+        {
+          "recordId": "purgatorio:P01-C",
+          "status": "INFERRED_NOT_RUNTIME"
+        }
+      ],
+      "researchVersion": "v1-four-lens-2026-10-25"
+    },
+    {
+      "id": "paradiso:PD06",
+      "kind": "paradiso_sphere",
+      "sourceOrder": 6,
+      "sourceSphere": "Jupiter",
+      "sourceCantos": "XVIII–XX",
+      "archetypeRole": "CONSTRUCTIVE_CAPACITY_MAPPING_NOT_NEW_ENGINE_ARCHETYPE",
+      "candidateCompassAxes": [
+        "OR",
+        "PO",
+        "PE"
+      ],
+      "templateId": "TPL-PARADISO-SUPERCOMPLEX-COMPAT-V0",
+      "nm": "Paradiso 06 — Jupiter",
+      "fam": "Compass / Paradiso / coherent-capacity source-space",
+      "def": "Applying transparent standards with humility about what is unknown, especially when holding power over others.",
+      "body": "DANTE: Just rulers form the eagle; Dante questions limited human judgments, exclusion and failures of political justice. ATUNED BEHAVIORAL INTERPRETATION: Accountable justice. MOVEMENT: RECEIVE facts → DIFFERENTIATE interests → ORDER fair procedure → EXPRESS accountable decision. DISCRIMINANT: A favorable outcome is not proof of justice; formal authority and religious identity do not establish moral merit.\n\nINTEGRITY-LAW CROSSWALK: Justice [Throat], Transparency [Throat], Accountability [Solar], Responsibility [Solar]. PRIMARY: Justice, Accountability. COUNTERFEIT: A ruler assumes justice because of their own authority, hides criteria, evades review or labels opponents unworthy. OBSERVABLE SHIFT: Applies declared standards, records rationale, discloses conflicts, hears impacted parties, permits correction or appeal. NEGATIVE TEST: Exempts allies, suppresses dissent, changes the standards after choosing the beneficiary. SOURCE BOUNDARY: A procedural step alone does not guarantee a just outcome; consequences and unequal access still matter.",
+      "inferred": true,
+      "inferenceBasis": "Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante",
+      "behavior": "RECEIVE facts → DIFFERENTIATE interests → ORDER fair procedure → EXPRESS accountable decision.",
+      "triggerMechanism": "An institution must decide under uncertainty or personal allegiance conflicts with fair process.",
+      "livedExample": "A manager discloses a conflict, hears the affected people, applies known criteria, and explains a reversible decision.",
+      "impact": "Power becomes reviewable and avoidable harm decreases.",
+      "practice": "Audit one decision for conflicts, excluded voices, evidence and a fair appeal route.",
+      "oppositeId": null,
+      "oppositeDefinition": "Arbitrary punishment, favoritism, secrecy or equating one's certainty with universal justice.",
+      "oppositeStatus": "UNRESOLVED; contrast is not an approved canonical inverse",
+      "confidence": {
+        "literary": "TWO_SOURCES_CHECKED",
+        "lawNames": "EXACT_FROM_ACTIVE_CANON",
+        "lawMatches": "ATUNED_BEHAVIORAL_MAPPING",
+        "psych": "ANALOGICAL_SUPPORT_NOT_PERSON_SPECIFIC_VALIDATION",
+        "runtime": "NOT_CONNECTED"
+      },
+      "reviewStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "refer": "Paradiso XVIII–XX",
+      "narrativeSource": "Dante, Paradiso XVIII–XX; https://danteworlds.laits.utexas.edu/paradiso/06jupiter.html",
+      "researchSources": [
+        "https://danteworlds.laits.utexas.edu/paradiso/06jupiter.html",
+        "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso/page/5",
+        "https://github.com/rebootos-sourcce/MOB/blob/atunED/paradiso-compass-map-v0-2026-10-25/atuned_src/engine/data/canon.js",
+        "https://pubmed.ncbi.nlm.nih.gov/11419803/",
+        "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+        "https://pubmed.ncbi.nlm.nih.gov/15661671/",
+        "https://pubmed.ncbi.nlm.nih.gov/21516581/",
+        "https://pubmed.ncbi.nlm.nih.gov/34569872/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "SOURCE_STUDY_DANTE",
+          "discipline": "Dante text and commentary",
+          "finding": "Dante's eagle of justice includes Trajan and Ripheus, figures who unsettle easy assumptions of who's saved. The poem insists ordinary humans cannot presume full knowledge of ultimate justice.",
+          "literarySource": "https://danteworlds.laits.utexas.edu/paradiso/06jupiter.html",
+          "supportingSource": "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso/page/5",
+          "claimBoundary": "Historical/literary meaning, not a clinical or biometric assertion",
+          "researchStatus": "SOURCE_REVIEWED"
+        },
+        {
+          "pass": 2,
+          "name": "MOVEMENT_DECOMPOSITION",
+          "discipline": "behavioral mechanism in ATUNED terms",
+          "finding": "Fair decisions require reason-giving, conflict disclosure, reviewability and humility about evidence; equal dignity is not achieved by arbitrary certainty.",
+          "movement": "RECEIVE facts → DIFFERENTIATE interests → ORDER fair procedure → EXPRESS accountable decision.",
+          "trigger": "An institution must decide under uncertainty or personal allegiance conflicts with fair process.",
+          "observable": "A manager discloses a conflict, hears the affected people, applies known criteria, and explains a reversible decision.",
+          "alternatives": "A procedural step alone does not guarantee a just outcome; consequences and unequal access still matter.",
+          "sourceRefs": [
+            "atuned_src/engine/data/compass.js",
+            "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json"
+          ],
+          "researchStatus": "AUTHORING_INFERENCE"
+        },
+        {
+          "pass": 3,
+          "name": "INTEGRITY_LAWS_21_CROSSWALK",
+          "discipline": "exact canonical law matching (many-to-many)",
+          "finding": "Existing 21-law SI source exact names and bands. In this source-space: Justice (Throat): standards protect all sides; Transparency (Throat): reason and conflicts are exposed; Accountability (Solar): decision is reviewable; Responsibility (Solar): the decision-maker owns impact. These are behavioral alignment hypotheses, not new independent laws or CQ inputs.",
+          "lawRefs": [
+            {
+              "lawName": "Justice",
+              "band": "Throat",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "PRIMARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Transparency",
+              "band": "Throat",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "SECONDARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Accountability",
+              "band": "Solar",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "PRIMARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Responsibility",
+              "band": "Solar",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "SECONDARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            }
+          ],
+          "researchStatus": "CANONICAL_NOMENCLATURE_VERIFIED_MAPPING_INTERPRETIVE"
+        },
+        {
+          "pass": 4,
+          "name": "ADVERSARIAL_AND_PSYCHOLOGY_CHECK",
+          "discipline": "counterevidence, false positives, real-world test",
+          "finding": "Distorted imitation: A ruler assumes justice because of their own authority, hides criteria, evades review or labels opponents unworthy. Disconfirming behavior: Exempts allies, suppresses dissent, changes the standards after choosing the beneficiary. More than a self-rating is needed to claim behavior change.",
+          "supportingFramework": "https://pubmed.ncbi.nlm.nih.gov/11419803/",
+          "additionalBehavioralResearch": [
+            "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+            "https://pubmed.ncbi.nlm.nih.gov/15661671/",
+            "https://pubmed.ncbi.nlm.nih.gov/21516581/",
+            "https://pubmed.ncbi.nlm.nih.gov/34569872/",
+            "https://pubmed.ncbi.nlm.nih.gov/11419803/"
+          ],
+          "observableChange": "Applies declared standards, records rationale, discloses conflicts, hears impacted parties, permits correction or appeal.",
+          "safetyBoundary": "A procedural step alone does not guarantee a just outcome; consequences and unequal access still matter.",
+          "proofRule": "Do not auto-compute CQ or a sphere position from this profile; require reported or observed action.",
+          "researchStatus": "CONSTRUCT_VALIDITY_GUARD_NOT_CAUSAL_VERIFICATION"
+        }
+      ],
+      "links": [
+        {
+          "id": "purgatorio:P08",
+          "type": "PROPOSED_JOURNEY_TRANSITION",
+          "status": "NOT_WIRED"
+        },
+        {
+          "id": "compass:axis:OR",
+          "type": "BEHAVIORAL_RESONANCE_CANDIDATE",
+          "status": "NOT_APPROVED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Justice",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Transparency",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Accountability",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Responsibility",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        }
+      ],
+      "integrityLawLinks": [
+        {
+          "lawName": "Justice",
+          "band": "Throat",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "PRIMARY",
+          "movementEvidence": "standards protect all sides",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Transparency",
+          "band": "Throat",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "SECONDARY",
+          "movementEvidence": "reason and conflicts are exposed",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Accountability",
+          "band": "Solar",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "PRIMARY",
+          "movementEvidence": "decision is reviewable",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Responsibility",
+          "band": "Solar",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "SECONDARY",
+          "movementEvidence": "the decision-maker owns impact",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        }
+      ],
+      "behavioralEvidenceCriteria": "Applies declared standards, records rationale, discloses conflicts, hears impacted parties, permits correction or appeal.",
+      "disconfirmation": "Exempts allies, suppresses dissent, changes the standards after choosing the beneficiary.",
+      "falsePositiveGuard": "A procedural step alone does not guarantee a just outcome; consequences and unequal access still matter.",
+      "distortedImitation": "A ruler assumes justice because of their own authority, hides criteria, evades review or labels opponents unworthy.",
+      "compassMasterResonances": [
+        {
+          "name": "Moses",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        },
+        {
+          "name": "Rama",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        },
+        {
+          "name": "Buddha",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        }
+      ],
+      "purgatorioConstructiveResonances": [
+        {
+          "recordId": "purgatorio:P01-C",
+          "status": "INFERRED_NOT_RUNTIME"
+        },
+        {
+          "recordId": "purgatorio:P05-C",
+          "status": "INFERRED_NOT_RUNTIME"
+        }
+      ],
+      "researchVersion": "v1-four-lens-2026-10-25"
+    },
+    {
+      "id": "paradiso:PD07",
+      "kind": "paradiso_sphere",
+      "sourceOrder": 7,
+      "sourceSphere": "Saturn",
+      "sourceCantos": "XXI–XXII",
+      "archetypeRole": "CONSTRUCTIVE_CAPACITY_MAPPING_NOT_NEW_ENGINE_ARCHETYPE",
+      "candidateCompassAxes": [
+        "RE",
+        "TR",
+        "PE"
+      ],
+      "templateId": "TPL-PARADISO-SUPERCOMPLEX-COMPAT-V0",
+      "nm": "Paradiso 07 — Saturn",
+      "fam": "Compass / Paradiso / coherent-capacity source-space",
+      "def": "Remaining available to experience without needing constant output, noise, explanation or performance.",
+      "body": "DANTE: Peter Damian and Benedict on the contemplative ladder; silence when celestial song would overwhelm Dante. ATUNED BEHAVIORAL INTERPRETATION: Contemplative presence. MOVEMENT: WITHDRAW from stimulation → RECEIVE present experience → HOLD attention → RELEASE compulsive doing. DISCRIMINANT: Rest, disability, fatigue and reasonable withdrawal are not sloth; contemplation is not evasion.\n\nINTEGRITY-LAW CROSSWALK: Presence [3rd Eye], Equanimity [3rd Eye], Patience [Root], Awareness [Crown]. PRIMARY: Presence, Equanimity. COUNTERFEIT: Withdrawal disguises fear of action; serenity denies another's injury; retreat becomes a badge of superiority. OBSERVABLE SHIFT: Tracks what was actually experienced, regulates response under provocation, returns to an agreed task or protective action. NEGATIVE TEST: Uses 'being above it' to abandon responsibility or refuses timely intervention. SOURCE BOUNDARY: Quiet time, illness, disability and deliberate rest must not be pathologized as sloth.",
+      "inferred": true,
+      "inferenceBasis": "Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante",
+      "behavior": "WITHDRAW from stimulation → RECEIVE present experience → HOLD attention → RELEASE compulsive doing.",
+      "triggerMechanism": "Silence or nonproductivity provokes discomfort and urges constant stimulation.",
+      "livedExample": "A person spends a deliberate quiet interval noticing what is present, then returns to a task with clearer priorities.",
+      "impact": "Attention and discernment can recover from constant reactivity.",
+      "practice": "Choose five minutes of quiet; afterward record what was actually observed, not what was hoped for.",
+      "oppositeId": null,
+      "oppositeDefinition": "Disengagement or avoidance framed as spiritual superiority.",
+      "oppositeStatus": "UNRESOLVED; contrast is not an approved canonical inverse",
+      "confidence": {
+        "literary": "TWO_SOURCES_CHECKED",
+        "lawNames": "EXACT_FROM_ACTIVE_CANON",
+        "lawMatches": "ATUNED_BEHAVIORAL_MAPPING",
+        "psych": "ANALOGICAL_SUPPORT_NOT_PERSON_SPECIFIC_VALIDATION",
+        "runtime": "NOT_CONNECTED"
+      },
+      "reviewStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "refer": "Paradiso XXI–XXII",
+      "narrativeSource": "Dante, Paradiso XXI–XXII; https://danteworlds.laits.utexas.edu/paradiso/07saturn.html",
+      "researchSources": [
+        "https://danteworlds.laits.utexas.edu/paradiso/07saturn.html",
+        "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso/page/5",
+        "https://github.com/rebootos-sourcce/MOB/blob/atunED/paradiso-compass-map-v0-2026-10-25/atuned_src/engine/data/canon.js",
+        "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+        "https://pubmed.ncbi.nlm.nih.gov/15661671/",
+        "https://pubmed.ncbi.nlm.nih.gov/21516581/",
+        "https://pubmed.ncbi.nlm.nih.gov/34569872/",
+        "https://pubmed.ncbi.nlm.nih.gov/11419803/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "SOURCE_STUDY_DANTE",
+          "discipline": "Dante text and commentary",
+          "finding": "Peter Damian and Benedict inhabit the contemplative sphere, with a golden ladder and silence because sound would overwhelm Dante's senses; both denounce corrupt religious leadership. Contemplation is not refusal to see injustice.",
+          "literarySource": "https://danteworlds.laits.utexas.edu/paradiso/07saturn.html",
+          "supportingSource": "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso/page/5",
+          "claimBoundary": "Historical/literary meaning, not a clinical or biometric assertion",
+          "researchStatus": "SOURCE_REVIEWED"
+        },
+        {
+          "pass": 2,
+          "name": "MOVEMENT_DECOMPOSITION",
+          "discipline": "behavioral mechanism in ATUNED terms",
+          "finding": "Presence receives current conditions, tolerates silence and acts from observation rather than compulsion or prestige.",
+          "movement": "WITHDRAW from stimulation → RECEIVE present experience → HOLD attention → RELEASE compulsive doing.",
+          "trigger": "Silence or nonproductivity provokes discomfort and urges constant stimulation.",
+          "observable": "A person spends a deliberate quiet interval noticing what is present, then returns to a task with clearer priorities.",
+          "alternatives": "Quiet time, illness, disability and deliberate rest must not be pathologized as sloth.",
+          "sourceRefs": [
+            "atuned_src/engine/data/compass.js",
+            "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json"
+          ],
+          "researchStatus": "AUTHORING_INFERENCE"
+        },
+        {
+          "pass": 3,
+          "name": "INTEGRITY_LAWS_21_CROSSWALK",
+          "discipline": "exact canonical law matching (many-to-many)",
+          "finding": "Existing 21-law SI source exact names and bands. In this source-space: Presence (3rd Eye): attends to direct experience; Equanimity (3rd Eye): responds without being ruled by reactivity; Patience (Root): allows time to judge accurately; Awareness (Crown): detects a new fact. These are behavioral alignment hypotheses, not new independent laws or CQ inputs.",
+          "lawRefs": [
+            {
+              "lawName": "Presence",
+              "band": "3rd Eye",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "PRIMARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Equanimity",
+              "band": "3rd Eye",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "PRIMARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Patience",
+              "band": "Root",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "SECONDARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Awareness",
+              "band": "Crown",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "SECONDARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            }
+          ],
+          "researchStatus": "CANONICAL_NOMENCLATURE_VERIFIED_MAPPING_INTERPRETIVE"
+        },
+        {
+          "pass": 4,
+          "name": "ADVERSARIAL_AND_PSYCHOLOGY_CHECK",
+          "discipline": "counterevidence, false positives, real-world test",
+          "finding": "Distorted imitation: Withdrawal disguises fear of action; serenity denies another's injury; retreat becomes a badge of superiority. Disconfirming behavior: Uses 'being above it' to abandon responsibility or refuses timely intervention. More than a self-rating is needed to claim behavior change.",
+          "supportingFramework": "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+          "additionalBehavioralResearch": [
+            "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+            "https://pubmed.ncbi.nlm.nih.gov/15661671/",
+            "https://pubmed.ncbi.nlm.nih.gov/21516581/",
+            "https://pubmed.ncbi.nlm.nih.gov/34569872/",
+            "https://pubmed.ncbi.nlm.nih.gov/11419803/"
+          ],
+          "observableChange": "Tracks what was actually experienced, regulates response under provocation, returns to an agreed task or protective action.",
+          "safetyBoundary": "Quiet time, illness, disability and deliberate rest must not be pathologized as sloth.",
+          "proofRule": "Do not auto-compute CQ or a sphere position from this profile; require reported or observed action.",
+          "researchStatus": "CONSTRUCT_VALIDITY_GUARD_NOT_CAUSAL_VERIFICATION"
+        }
+      ],
+      "links": [
+        {
+          "id": "purgatorio:P08",
+          "type": "PROPOSED_JOURNEY_TRANSITION",
+          "status": "NOT_WIRED"
+        },
+        {
+          "id": "compass:axis:RE",
+          "type": "BEHAVIORAL_RESONANCE_CANDIDATE",
+          "status": "NOT_APPROVED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Presence",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Equanimity",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Patience",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Awareness",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        }
+      ],
+      "integrityLawLinks": [
+        {
+          "lawName": "Presence",
+          "band": "3rd Eye",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "PRIMARY",
+          "movementEvidence": "attends to direct experience",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Equanimity",
+          "band": "3rd Eye",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "PRIMARY",
+          "movementEvidence": "responds without being ruled by reactivity",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Patience",
+          "band": "Root",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "SECONDARY",
+          "movementEvidence": "allows time to judge accurately",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Awareness",
+          "band": "Crown",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "SECONDARY",
+          "movementEvidence": "detects a new fact",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        }
+      ],
+      "behavioralEvidenceCriteria": "Tracks what was actually experienced, regulates response under provocation, returns to an agreed task or protective action.",
+      "disconfirmation": "Uses 'being above it' to abandon responsibility or refuses timely intervention.",
+      "falsePositiveGuard": "Quiet time, illness, disability and deliberate rest must not be pathologized as sloth.",
+      "distortedImitation": "Withdrawal disguises fear of action; serenity denies another's injury; retreat becomes a badge of superiority.",
+      "compassMasterResonances": [
+        {
+          "name": "Lao Tzu",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        },
+        {
+          "name": "Buddha",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        }
+      ],
+      "purgatorioConstructiveResonances": [
+        {
+          "recordId": "purgatorio:P04-C",
+          "status": "INFERRED_NOT_RUNTIME"
+        },
+        {
+          "recordId": "purgatorio:P03-C",
+          "status": "INFERRED_NOT_RUNTIME"
+        }
+      ],
+      "researchVersion": "v1-four-lens-2026-10-25"
+    },
+    {
+      "id": "paradiso:PD08",
+      "kind": "paradiso_sphere",
+      "sourceOrder": 8,
+      "sourceSphere": "Fixed Stars",
+      "sourceCantos": "XXII–XXVII",
+      "archetypeRole": "CONSTRUCTIVE_CAPACITY_MAPPING_NOT_NEW_ENGINE_ARCHETYPE",
+      "candidateCompassAxes": [
+        "TR",
+        "IL",
+        "DE"
+      ],
+      "templateId": "TPL-PARADISO-SUPERCOMPLEX-COMPAT-V0",
+      "nm": "Paradiso 08 — Fixed Stars",
+      "fam": "Compass / Paradiso / coherent-capacity source-space",
+      "def": "Holding realistic trust, future-directed possibility and generous regard together without losing factual judgment.",
+      "body": "DANTE: Peter, James and John question Dante respectively on faith, hope and love; the Church Triumphant appears. ATUNED BEHAVIORAL INTERPRETATION: Trust, hope and love in action. MOVEMENT: PRESERVE warranted trust → SEEK viable future → CONNECT compassionately → EXPRESS follow-through. DISCRIMINANT: Faith is not credulity, hope is not denial, and love is not enabling harm; Dante's theology is source context, not a user requirement.\n\nINTEGRITY-LAW CROSSWALK: Compassion [Heart], Unity [Crown], Generosity [Heart], Courage [Solar], Forgiveness [Heart]. PRIMARY: Compassion, Unity. COUNTERFEIT: Blind belief made into trust; unrealistic assurance made into hope; enabling harmful behavior called love. OBSERVABLE SHIFT: Admits uncertainty, sets viable commitments, helps at personal cost within capacity, confronts harm without stripping anyone's dignity. NEGATIVE TEST: Ignores evidence, makes unfounded promises or demands unconditional access in the name of love. SOURCE BOUNDARY: Religious faith is the poem's source concept; the ATUNED behavior does not require adherence to that belief.",
+      "inferred": true,
+      "inferenceBasis": "Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante",
+      "behavior": "PRESERVE warranted trust → SEEK viable future → CONNECT compassionately → EXPRESS follow-through.",
+      "triggerMechanism": "Doubt, a discouraging setback or another person's need tests professed values.",
+      "livedExample": "A team names uncertainty, commits to a realistic path, and supports an affected member without concealing risks.",
+      "impact": "Professed values become visible as reciprocal, sustained conduct.",
+      "practice": "Write one warranted trust, one evidence-based hope and one tangible act of care; test each in action.",
+      "oppositeId": null,
+      "oppositeDefinition": "Unfounded certainty, magical reassurance or conditional charity.",
+      "oppositeStatus": "UNRESOLVED; contrast is not an approved canonical inverse",
+      "confidence": {
+        "literary": "TWO_SOURCES_CHECKED",
+        "lawNames": "EXACT_FROM_ACTIVE_CANON",
+        "lawMatches": "ATUNED_BEHAVIORAL_MAPPING",
+        "psych": "ANALOGICAL_SUPPORT_NOT_PERSON_SPECIFIC_VALIDATION",
+        "runtime": "NOT_CONNECTED"
+      },
+      "reviewStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "refer": "Paradiso XXII–XXVII",
+      "narrativeSource": "Dante, Paradiso XXII–XXVII; https://danteworlds.laits.utexas.edu/paradiso/08fixedstars.html",
+      "researchSources": [
+        "https://danteworlds.laits.utexas.edu/paradiso/08fixedstars.html",
+        "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso/page/6",
+        "https://github.com/rebootos-sourcce/MOB/blob/atunED/paradiso-compass-map-v0-2026-10-25/atuned_src/engine/data/canon.js",
+        "https://www.sciencedirect.com/science/article/pii/S0191886925000091",
+        "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+        "https://pubmed.ncbi.nlm.nih.gov/15661671/",
+        "https://pubmed.ncbi.nlm.nih.gov/21516581/",
+        "https://pubmed.ncbi.nlm.nih.gov/34569872/",
+        "https://pubmed.ncbi.nlm.nih.gov/11419803/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "SOURCE_STUDY_DANTE",
+          "discipline": "Dante text and commentary",
+          "finding": "Peter, James and John test faith, hope and charity, respectively; Peter also condemns corruption. Love is an active theological virtue, and Dante does not reduce it to unlimited credulity or non-confrontation.",
+          "literarySource": "https://danteworlds.laits.utexas.edu/paradiso/08fixedstars.html",
+          "supportingSource": "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso/page/6",
+          "claimBoundary": "Historical/literary meaning, not a clinical or biometric assertion",
+          "researchStatus": "SOURCE_REVIEWED"
+        },
+        {
+          "pass": 2,
+          "name": "MOVEMENT_DECOMPOSITION",
+          "discipline": "behavioral mechanism in ATUNED terms",
+          "finding": "Trust, hope and love are practiced as grounded mutual commitment, genuine help, hard truth and refusal to dehumanize.",
+          "movement": "PRESERVE warranted trust → SEEK viable future → CONNECT compassionately → EXPRESS follow-through.",
+          "trigger": "Doubt, a discouraging setback or another person's need tests professed values.",
+          "observable": "A team names uncertainty, commits to a realistic path, and supports an affected member without concealing risks.",
+          "alternatives": "Religious faith is the poem's source concept; the ATUNED behavior does not require adherence to that belief.",
+          "sourceRefs": [
+            "atuned_src/engine/data/compass.js",
+            "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json"
+          ],
+          "researchStatus": "AUTHORING_INFERENCE"
+        },
+        {
+          "pass": 3,
+          "name": "INTEGRITY_LAWS_21_CROSSWALK",
+          "discipline": "exact canonical law matching (many-to-many)",
+          "finding": "Existing 21-law SI source exact names and bands. In this source-space: Compassion (Heart): gives care with boundaries; Unity (Crown): preserves shared dignity amid difference; Generosity (Heart): provides help without collecting debt; Courage (Solar): confronts harmful conduct despite risk; Forgiveness (Heart): allows repair without forced reconciliation. These are behavioral alignment hypotheses, not new independent laws or CQ inputs.",
+          "lawRefs": [
+            {
+              "lawName": "Compassion",
+              "band": "Heart",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "PRIMARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Unity",
+              "band": "Crown",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "PRIMARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Generosity",
+              "band": "Heart",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "SECONDARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Courage",
+              "band": "Solar",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "SECONDARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Forgiveness",
+              "band": "Heart",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "SECONDARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            }
+          ],
+          "researchStatus": "CANONICAL_NOMENCLATURE_VERIFIED_MAPPING_INTERPRETIVE"
+        },
+        {
+          "pass": 4,
+          "name": "ADVERSARIAL_AND_PSYCHOLOGY_CHECK",
+          "discipline": "counterevidence, false positives, real-world test",
+          "finding": "Distorted imitation: Blind belief made into trust; unrealistic assurance made into hope; enabling harmful behavior called love. Disconfirming behavior: Ignores evidence, makes unfounded promises or demands unconditional access in the name of love. More than a self-rating is needed to claim behavior change.",
+          "supportingFramework": "https://www.sciencedirect.com/science/article/pii/S0191886925000091",
+          "additionalBehavioralResearch": [
+            "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+            "https://pubmed.ncbi.nlm.nih.gov/15661671/",
+            "https://pubmed.ncbi.nlm.nih.gov/21516581/",
+            "https://pubmed.ncbi.nlm.nih.gov/34569872/",
+            "https://pubmed.ncbi.nlm.nih.gov/11419803/"
+          ],
+          "observableChange": "Admits uncertainty, sets viable commitments, helps at personal cost within capacity, confronts harm without stripping anyone's dignity.",
+          "safetyBoundary": "Religious faith is the poem's source concept; the ATUNED behavior does not require adherence to that belief.",
+          "proofRule": "Do not auto-compute CQ or a sphere position from this profile; require reported or observed action.",
+          "researchStatus": "CONSTRUCT_VALIDITY_GUARD_NOT_CAUSAL_VERIFICATION"
+        }
+      ],
+      "links": [
+        {
+          "id": "purgatorio:P08",
+          "type": "PROPOSED_JOURNEY_TRANSITION",
+          "status": "NOT_WIRED"
+        },
+        {
+          "id": "compass:axis:TR",
+          "type": "BEHAVIORAL_RESONANCE_CANDIDATE",
+          "status": "NOT_APPROVED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Compassion",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Unity",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Generosity",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Courage",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Forgiveness",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        }
+      ],
+      "integrityLawLinks": [
+        {
+          "lawName": "Compassion",
+          "band": "Heart",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "PRIMARY",
+          "movementEvidence": "gives care with boundaries",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Unity",
+          "band": "Crown",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "PRIMARY",
+          "movementEvidence": "preserves shared dignity amid difference",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Generosity",
+          "band": "Heart",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "SECONDARY",
+          "movementEvidence": "provides help without collecting debt",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Courage",
+          "band": "Solar",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "SECONDARY",
+          "movementEvidence": "confronts harmful conduct despite risk",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Forgiveness",
+          "band": "Heart",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "SECONDARY",
+          "movementEvidence": "allows repair without forced reconciliation",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        }
+      ],
+      "behavioralEvidenceCriteria": "Admits uncertainty, sets viable commitments, helps at personal cost within capacity, confronts harm without stripping anyone's dignity.",
+      "disconfirmation": "Ignores evidence, makes unfounded promises or demands unconditional access in the name of love.",
+      "falsePositiveGuard": "Religious faith is the poem's source concept; the ATUNED behavior does not require adherence to that belief.",
+      "distortedImitation": "Blind belief made into trust; unrealistic assurance made into hope; enabling harmful behavior called love.",
+      "compassMasterResonances": [
+        {
+          "name": "Jesus",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        },
+        {
+          "name": "Rumi",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        },
+        {
+          "name": "Krishna",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        }
+      ],
+      "purgatorioConstructiveResonances": [
+        {
+          "recordId": "purgatorio:P02-C",
+          "status": "INFERRED_NOT_RUNTIME"
+        },
+        {
+          "recordId": "purgatorio:P03-C",
+          "status": "INFERRED_NOT_RUNTIME"
+        }
+      ],
+      "researchVersion": "v1-four-lens-2026-10-25"
+    },
+    {
+      "id": "paradiso:PD09",
+      "kind": "paradiso_sphere",
+      "sourceOrder": 9,
+      "sourceSphere": "Primum Mobile",
+      "sourceCantos": "XXVII–XXX",
+      "archetypeRole": "CONSTRUCTIVE_CAPACITY_MAPPING_NOT_NEW_ENGINE_ARCHETYPE",
+      "candidateCompassAxes": [
+        "OR",
+        "RE",
+        "PO"
+      ],
+      "templateId": "TPL-PARADISO-SUPERCOMPLEX-COMPAT-V0",
+      "nm": "Paradiso 09 — Primum Mobile",
+      "fam": "Compass / Paradiso / coherent-capacity source-space",
+      "def": "Letting intention, understanding and action reinforce one another while revising mistaken models.",
+      "body": "DANTE: The first mover and nine angelic orders; Beatrice explains their apparent inverse relation to heavenly spheres. ATUNED BEHAVIORAL INTERPRETATION: Coherent ordering of action. MOVEMENT: ORDER purpose → CONNECT interdependent actions → TRANSFORM mistaken assumptions → PRESERVE movement. DISCRIMINANT: The nine angelic orders are literary-theological constructs; no literal energy, neuroscience or physical mechanics follow.\n\nINTEGRITY-LAW CROSSWALK: Accountability [Solar], Responsibility [Solar], Nature [Crown], Temperance [Sacral]. PRIMARY: Responsibility, Temperance. COUNTERFEIT: Authoritarian rigidity named order, inferred cosmic laws posed as physical science, selective model adjustments to preserve authority. OBSERVABLE SHIFT: Detects a wrong assumption, revises the system without concealing error, makes roles and feedback transparent, restrains excess control. NEGATIVE TEST: Cannot admit a faulty model, silences users whose data contradict it or treats metaphysical analogy as measurement. SOURCE BOUNDARY: Nature is an existing ATUNED integrity-law label here, not a claim that medieval cosmology describes physics.",
+      "inferred": true,
+      "inferenceBasis": "Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante",
+      "behavior": "ORDER purpose → CONNECT interdependent actions → TRANSFORM mistaken assumptions → PRESERVE movement.",
+      "triggerMechanism": "System complexity, clashing models or authority claims obstruct a clear course.",
+      "livedExample": "A team discovers an inverted assumption, revises the workflow, and coordinates action without hiding the error.",
+      "impact": "The system becomes more legible and adaptable without requiring coercive order.",
+      "practice": "Identify one mismatch between your mental model and outcomes; correct the model and one process.",
+      "oppositeId": null,
+      "oppositeDefinition": "Rigid hierarchy, total control or spiritual claims used to suppress correction.",
+      "oppositeStatus": "UNRESOLVED; contrast is not an approved canonical inverse",
+      "confidence": {
+        "literary": "TWO_SOURCES_CHECKED",
+        "lawNames": "EXACT_FROM_ACTIVE_CANON",
+        "lawMatches": "ATUNED_BEHAVIORAL_MAPPING",
+        "psych": "ANALOGICAL_SUPPORT_NOT_PERSON_SPECIFIC_VALIDATION",
+        "runtime": "NOT_CONNECTED"
+      },
+      "reviewStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "refer": "Paradiso XXVII–XXX",
+      "narrativeSource": "Dante, Paradiso XXVII–XXX; https://danteworlds.laits.utexas.edu/paradiso/09primum.html",
+      "researchSources": [
+        "https://danteworlds.laits.utexas.edu/paradiso/09primum.html",
+        "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso/page/7",
+        "https://github.com/rebootos-sourcce/MOB/blob/atunED/paradiso-compass-map-v0-2026-10-25/atuned_src/engine/data/canon.js",
+        "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+        "https://pubmed.ncbi.nlm.nih.gov/15661671/",
+        "https://pubmed.ncbi.nlm.nih.gov/21516581/",
+        "https://pubmed.ncbi.nlm.nih.gov/34569872/",
+        "https://pubmed.ncbi.nlm.nih.gov/11419803/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "SOURCE_STUDY_DANTE",
+          "discipline": "Dante text and commentary",
+          "finding": "The Primum Mobile contains nine angelic circles whose distances reverse the apparent ranking of nine celestial spheres; Beatrice explains that their relation is not measured by the same geometry. The critique of greedy preachers warns against claiming insight for gain.",
+          "literarySource": "https://danteworlds.laits.utexas.edu/paradiso/09primum.html",
+          "supportingSource": "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso/page/7",
+          "claimBoundary": "Historical/literary meaning, not a clinical or biometric assertion",
+          "researchStatus": "SOURCE_REVIEWED"
+        },
+        {
+          "pass": 2,
+          "name": "MOVEMENT_DECOMPOSITION",
+          "discipline": "behavioral mechanism in ATUNED terms",
+          "finding": "Coherence in complex systems is alignment of responsible action to reality, not the rigid control of everyone under a hierarchy.",
+          "movement": "ORDER purpose → CONNECT interdependent actions → TRANSFORM mistaken assumptions → PRESERVE movement.",
+          "trigger": "System complexity, clashing models or authority claims obstruct a clear course.",
+          "observable": "A team discovers an inverted assumption, revises the workflow, and coordinates action without hiding the error.",
+          "alternatives": "Nature is an existing ATUNED integrity-law label here, not a claim that medieval cosmology describes physics.",
+          "sourceRefs": [
+            "atuned_src/engine/data/compass.js",
+            "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json"
+          ],
+          "researchStatus": "AUTHORING_INFERENCE"
+        },
+        {
+          "pass": 3,
+          "name": "INTEGRITY_LAWS_21_CROSSWALK",
+          "discipline": "exact canonical law matching (many-to-many)",
+          "finding": "Existing 21-law SI source exact names and bands. In this source-space: Accountability (Solar): makes errors and corrections legible; Responsibility (Solar): carries the system's impact; Nature (Crown): respects real conditions rather than wishes; Temperance (Sacral): does not impose more structure than serves the purpose. These are behavioral alignment hypotheses, not new independent laws or CQ inputs.",
+          "lawRefs": [
+            {
+              "lawName": "Accountability",
+              "band": "Solar",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "SECONDARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Responsibility",
+              "band": "Solar",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "PRIMARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Nature",
+              "band": "Crown",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "SECONDARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Temperance",
+              "band": "Sacral",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "PRIMARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            }
+          ],
+          "researchStatus": "CANONICAL_NOMENCLATURE_VERIFIED_MAPPING_INTERPRETIVE"
+        },
+        {
+          "pass": 4,
+          "name": "ADVERSARIAL_AND_PSYCHOLOGY_CHECK",
+          "discipline": "counterevidence, false positives, real-world test",
+          "finding": "Distorted imitation: Authoritarian rigidity named order, inferred cosmic laws posed as physical science, selective model adjustments to preserve authority. Disconfirming behavior: Cannot admit a faulty model, silences users whose data contradict it or treats metaphysical analogy as measurement. More than a self-rating is needed to claim behavior change.",
+          "supportingFramework": "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+          "additionalBehavioralResearch": [
+            "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+            "https://pubmed.ncbi.nlm.nih.gov/15661671/",
+            "https://pubmed.ncbi.nlm.nih.gov/21516581/",
+            "https://pubmed.ncbi.nlm.nih.gov/34569872/",
+            "https://pubmed.ncbi.nlm.nih.gov/11419803/"
+          ],
+          "observableChange": "Detects a wrong assumption, revises the system without concealing error, makes roles and feedback transparent, restrains excess control.",
+          "safetyBoundary": "Nature is an existing ATUNED integrity-law label here, not a claim that medieval cosmology describes physics.",
+          "proofRule": "Do not auto-compute CQ or a sphere position from this profile; require reported or observed action.",
+          "researchStatus": "CONSTRUCT_VALIDITY_GUARD_NOT_CAUSAL_VERIFICATION"
+        }
+      ],
+      "links": [
+        {
+          "id": "purgatorio:P08",
+          "type": "PROPOSED_JOURNEY_TRANSITION",
+          "status": "NOT_WIRED"
+        },
+        {
+          "id": "compass:axis:OR",
+          "type": "BEHAVIORAL_RESONANCE_CANDIDATE",
+          "status": "NOT_APPROVED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Accountability",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Responsibility",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Nature",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Temperance",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        }
+      ],
+      "integrityLawLinks": [
+        {
+          "lawName": "Accountability",
+          "band": "Solar",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "SECONDARY",
+          "movementEvidence": "makes errors and corrections legible",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Responsibility",
+          "band": "Solar",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "PRIMARY",
+          "movementEvidence": "carries the system's impact",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Nature",
+          "band": "Crown",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "SECONDARY",
+          "movementEvidence": "respects real conditions rather than wishes",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Temperance",
+          "band": "Sacral",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "PRIMARY",
+          "movementEvidence": "does not impose more structure than serves the purpose",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        }
+      ],
+      "behavioralEvidenceCriteria": "Detects a wrong assumption, revises the system without concealing error, makes roles and feedback transparent, restrains excess control.",
+      "disconfirmation": "Cannot admit a faulty model, silences users whose data contradict it or treats metaphysical analogy as measurement.",
+      "falsePositiveGuard": "Nature is an existing ATUNED integrity-law label here, not a claim that medieval cosmology describes physics.",
+      "distortedImitation": "Authoritarian rigidity named order, inferred cosmic laws posed as physical science, selective model adjustments to preserve authority.",
+      "compassMasterResonances": [
+        {
+          "name": "Krishna",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        },
+        {
+          "name": "Rama",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        },
+        {
+          "name": "Moses",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        },
+        {
+          "name": "Lao Tzu",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        }
+      ],
+      "purgatorioConstructiveResonances": [
+        {
+          "recordId": "purgatorio:P04-C",
+          "status": "INFERRED_NOT_RUNTIME"
+        },
+        {
+          "recordId": "purgatorio:P05-C",
+          "status": "INFERRED_NOT_RUNTIME"
+        }
+      ],
+      "researchVersion": "v1-four-lens-2026-10-25"
+    },
+    {
+      "id": "paradiso:PD10",
+      "kind": "paradiso_sphere",
+      "sourceOrder": 10,
+      "sourceSphere": "Empyrean",
+      "sourceCantos": "XXX–XXXIII",
+      "archetypeRole": "CONSTRUCTIVE_CAPACITY_MAPPING_NOT_NEW_ENGINE_ARCHETYPE",
+      "candidateCompassAxes": [
+        "IL",
+        "RE",
+        "TR"
+      ],
+      "templateId": "TPL-PARADISO-SUPERCOMPLEX-COMPAT-V0",
+      "nm": "Paradiso 10 — Empyrean",
+      "fam": "Compass / Paradiso / coherent-capacity source-space",
+      "def": "Experiencing connection without making a person, role or exalted state the property of the ego.",
+      "body": "DANTE: Beyond the moving spheres: river of light, white rose, Saint Bernard, and an inexpressible final vision of love. ATUNED BEHAVIORAL INTERPRETATION: Nonpossessive unity and unforced expression. MOVEMENT: RELEASE identification → CONNECT without ownership → RECEIVE difference → EXPRESS care without transaction. DISCRIMINANT: The Empyrean is not a CQ=100 badge, an automatic neurological state, or a claim that a user has become God; Source is not a destination.\n\nINTEGRITY-LAW CROSSWALK: Unity [Crown], Aesthetic Beauty [Heart], Compassion [Heart], Forgiveness [Heart], Detachment [Sacral], Presence [3rd Eye]. PRIMARY: Unity, Detachment. COUNTERFEIT: Spiritual superiority masquerades as unity, emotional numbness as detachment, bypassing accountability as forgiveness. OBSERVABLE SHIFT: Shares credit, respects autonomy, repairs a harm where possible and does not claim ownership of people or extraordinary states. NEGATIVE TEST: Uses 'we are all one' to deny harm, refuses apology because separation is an illusion, demands devotion to their awakening. SOURCE BOUNDARY: The Empyrean is Dante's transcendent theology, not a literal human nervous-system state or a CQ threshold.",
+      "inferred": true,
+      "inferenceBasis": "Explicit ATUNED behavioral interpretation of literary source; observable claims not empirically validated from Dante",
+      "behavior": "RELEASE identification → CONNECT without ownership → RECEIVE difference → EXPRESS care without transaction.",
+      "triggerMechanism": "A moment of closeness, recognition or accomplishment tempts appropriation or spiritual superiority.",
+      "livedExample": "After a meaningful collective success, someone shares credit, remains open to correction, and serves the next need without claiming special rank.",
+      "impact": "Connection is less conditional and the person can return to ordinary conduct without identity inflation.",
+      "practice": "After meaningful connection, name what you can enact for someone else without claiming the experience makes you superior.",
+      "oppositeId": null,
+      "oppositeDefinition": "Performative transcendence, dissociation, exceptionalism or spiritualized manipulation.",
+      "oppositeStatus": "UNRESOLVED; contrast is not an approved canonical inverse",
+      "confidence": {
+        "literary": "TWO_SOURCES_CHECKED",
+        "lawNames": "EXACT_FROM_ACTIVE_CANON",
+        "lawMatches": "ATUNED_BEHAVIORAL_MAPPING",
+        "psych": "ANALOGICAL_SUPPORT_NOT_PERSON_SPECIFIC_VALIDATION",
+        "runtime": "NOT_CONNECTED"
+      },
+      "reviewStatus": "OWNER_DIRECTED_PARADISO_LAW_CROSSWALK_RESEARCH_COMPLETE; RUNTIME_NOT_WIRED",
+      "refer": "Paradiso XXX–XXXIII",
+      "narrativeSource": "Dante, Paradiso XXX–XXXIII; https://danteworlds.laits.utexas.edu/paradiso/10empyrean.html",
+      "researchSources": [
+        "https://danteworlds.laits.utexas.edu/paradiso/10empyrean.html",
+        "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso",
+        "https://github.com/rebootos-sourcce/MOB/blob/atunED/paradiso-compass-map-v0-2026-10-25/atuned_src/engine/data/canon.js",
+        "https://pubmed.ncbi.nlm.nih.gov/21516581/",
+        "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+        "https://pubmed.ncbi.nlm.nih.gov/15661671/",
+        "https://pubmed.ncbi.nlm.nih.gov/21516581/",
+        "https://pubmed.ncbi.nlm.nih.gov/34569872/",
+        "https://pubmed.ncbi.nlm.nih.gov/11419803/"
+      ],
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "SOURCE_STUDY_DANTE",
+          "discipline": "Dante text and commentary",
+          "finding": "Beyond the moving spheres the Empyrean contains the river of light, heavenly rose and the blessed in their true home. Bernard prepares Dante's final vision, whose central image is loving motion; the visions also expose the limit of representation.",
+          "literarySource": "https://danteworlds.laits.utexas.edu/paradiso/10empyrean.html",
+          "supportingSource": "https://ahc.leeds.ac.uk/discover-dante/doc/paradiso",
+          "claimBoundary": "Historical/literary meaning, not a clinical or biometric assertion",
+          "researchStatus": "SOURCE_REVIEWED"
+        },
+        {
+          "pass": 2,
+          "name": "MOVEMENT_DECOMPOSITION",
+          "discipline": "behavioral mechanism in ATUNED terms",
+          "finding": "Unity shows as connection without erasing others, aesthetic appreciation without appropriation and love without a demand for rank or possession.",
+          "movement": "RELEASE identification → CONNECT without ownership → RECEIVE difference → EXPRESS care without transaction.",
+          "trigger": "A moment of closeness, recognition or accomplishment tempts appropriation or spiritual superiority.",
+          "observable": "After a meaningful collective success, someone shares credit, remains open to correction, and serves the next need without claiming special rank.",
+          "alternatives": "The Empyrean is Dante's transcendent theology, not a literal human nervous-system state or a CQ threshold.",
+          "sourceRefs": [
+            "atuned_src/engine/data/compass.js",
+            "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json"
+          ],
+          "researchStatus": "AUTHORING_INFERENCE"
+        },
+        {
+          "pass": 3,
+          "name": "INTEGRITY_LAWS_21_CROSSWALK",
+          "discipline": "exact canonical law matching (many-to-many)",
+          "finding": "Existing 21-law SI source exact names and bands. In this source-space: Unity (Crown): connection preserves difference; Aesthetic Beauty (Heart): recognizes form and value without possession; Compassion (Heart): compassion is carried into action; Forgiveness (Heart): repair remains available without forced reconciliation; Detachment (Sacral): relinquishes exclusive claims; Presence (3rd Eye): stays grounded in the current situation. These are behavioral alignment hypotheses, not new independent laws or CQ inputs.",
+          "lawRefs": [
+            {
+              "lawName": "Unity",
+              "band": "Crown",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "PRIMARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Aesthetic Beauty",
+              "band": "Heart",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "SECONDARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Compassion",
+              "band": "Heart",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "SECONDARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Forgiveness",
+              "band": "Heart",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "SECONDARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Detachment",
+              "band": "Sacral",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "PRIMARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            },
+            {
+              "lawName": "Presence",
+              "band": "3rd Eye",
+              "sourcePath": "atuned_src/engine/data/canon.js#SI",
+              "relation": "SECONDARY_CONSTRUCTIVE_RESONANCE",
+              "status": "MAPPING_CANDIDATE"
+            }
+          ],
+          "researchStatus": "CANONICAL_NOMENCLATURE_VERIFIED_MAPPING_INTERPRETIVE"
+        },
+        {
+          "pass": 4,
+          "name": "ADVERSARIAL_AND_PSYCHOLOGY_CHECK",
+          "discipline": "counterevidence, false positives, real-world test",
+          "finding": "Distorted imitation: Spiritual superiority masquerades as unity, emotional numbness as detachment, bypassing accountability as forgiveness. Disconfirming behavior: Uses 'we are all one' to deny harm, refuses apology because separation is an illusion, demands devotion to their awakening. More than a self-rating is needed to claim behavior change.",
+          "supportingFramework": "https://pubmed.ncbi.nlm.nih.gov/21516581/",
+          "additionalBehavioralResearch": [
+            "https://pubmed.ncbi.nlm.nih.gov/38615492/",
+            "https://pubmed.ncbi.nlm.nih.gov/15661671/",
+            "https://pubmed.ncbi.nlm.nih.gov/21516581/",
+            "https://pubmed.ncbi.nlm.nih.gov/34569872/",
+            "https://pubmed.ncbi.nlm.nih.gov/11419803/"
+          ],
+          "observableChange": "Shares credit, respects autonomy, repairs a harm where possible and does not claim ownership of people or extraordinary states.",
+          "safetyBoundary": "The Empyrean is Dante's transcendent theology, not a literal human nervous-system state or a CQ threshold.",
+          "proofRule": "Do not auto-compute CQ or a sphere position from this profile; require reported or observed action.",
+          "researchStatus": "CONSTRUCT_VALIDITY_GUARD_NOT_CAUSAL_VERIFICATION"
+        }
+      ],
+      "links": [
+        {
+          "id": "purgatorio:P08",
+          "type": "PROPOSED_JOURNEY_TRANSITION",
+          "status": "NOT_WIRED"
+        },
+        {
+          "id": "compass:axis:IL",
+          "type": "BEHAVIORAL_RESONANCE_CANDIDATE",
+          "status": "NOT_APPROVED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Unity",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Aesthetic Beauty",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Compassion",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Forgiveness",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Detachment",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        },
+        {
+          "type": "LAW_BEHAVIOR_CANDIDATE",
+          "lawName": "Presence",
+          "source": "atuned_src/engine/data/canon.js#SI",
+          "status": "NOT_WIRED"
+        }
+      ],
+      "integrityLawLinks": [
+        {
+          "lawName": "Unity",
+          "band": "Crown",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "PRIMARY",
+          "movementEvidence": "connection preserves difference",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Aesthetic Beauty",
+          "band": "Heart",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "SECONDARY",
+          "movementEvidence": "recognizes form and value without possession",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Compassion",
+          "band": "Heart",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "SECONDARY",
+          "movementEvidence": "compassion is carried into action",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Forgiveness",
+          "band": "Heart",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "SECONDARY",
+          "movementEvidence": "repair remains available without forced reconciliation",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Detachment",
+          "band": "Sacral",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "PRIMARY",
+          "movementEvidence": "relinquishes exclusive claims",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        },
+        {
+          "lawName": "Presence",
+          "band": "3rd Eye",
+          "sourceRecord": "atuned_src/engine/data/canon.js#SI",
+          "strength": "SECONDARY",
+          "movementEvidence": "stays grounded in the current situation",
+          "status": "OWNER_DIRECTED_MAPPING_INTERPRETIVE_NOT_RUNTIME_EDGE"
+        }
+      ],
+      "behavioralEvidenceCriteria": "Shares credit, respects autonomy, repairs a harm where possible and does not claim ownership of people or extraordinary states.",
+      "disconfirmation": "Uses 'we are all one' to deny harm, refuses apology because separation is an illusion, demands devotion to their awakening.",
+      "falsePositiveGuard": "The Empyrean is Dante's transcendent theology, not a literal human nervous-system state or a CQ threshold.",
+      "distortedImitation": "Spiritual superiority masquerades as unity, emotional numbness as detachment, bypassing accountability as forgiveness.",
+      "compassMasterResonances": [
+        {
+          "name": "Jesus",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        },
+        {
+          "name": "Rumi",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        },
+        {
+          "name": "Akhenaten",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        },
+        {
+          "name": "Lao Tzu",
+          "status": "RESONANCE_ONLY_NOT_IDENTITY",
+          "source": "atuned_src/engine/data/compass.js#MASTERS"
+        }
+      ],
+      "purgatorioConstructiveResonances": [
+        {
+          "recordId": "purgatorio:P08",
+          "status": "INFERRED_NOT_RUNTIME"
+        },
+        {
+          "recordId": "purgatorio:P02-C",
+          "status": "INFERRED_NOT_RUNTIME"
+        }
+      ],
+      "researchVersion": "v1-four-lens-2026-10-25"
+    }
+  ]
+}
