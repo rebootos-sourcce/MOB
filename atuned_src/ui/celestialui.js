@@ -1,5 +1,5 @@
 /* ============================================================
-   CELESTIAL INTO AVATAR — read-only, profile-derived overlay.
+   CELESTIAL INTO AVATAR - read-only, profile-derived overlay.
    No API calls, no profile save, no CQ/DQ/SQ, no Trace Graph mutations.
    Sources generated from Reboot-OS canonical record fields.
    MOB retains ownership of avatar, birth and story calculations.
