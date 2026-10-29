@@ -354,7 +354,8 @@ const HYPERCOMPLEX_AXIS_ROUTES={
  'Collapse':['Fear','Shame','Insecurity'],
  'Rigidity':['Control','Shame','Fear'],
  'Dysregulation':['Fear','Anger','Shame'],
- 'Dissociation':['Fear','Shame','Insecurity']
+ 'Dissociation':['Fear','Shame','Insecurity'],
+ 'Machiavellianism':['Fear','Control','Shame']
 };
 E.filter(e=>e.kind==='hypercomplex').forEach(h=>{
  const routeAxes=HYPERCOMPLEX_AXIS_ROUTES[h.nm]||[];
