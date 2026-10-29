@@ -70,6 +70,7 @@ function avCelestialAttach(host){
   body.textContent='Celestial record projection is not included in this build.';
   return;
  }
+ avCelCloseMounted();
  var p=avCelProfile();
  if(!p.ready){body.textContent=p.why;return;}
  var args={selected_ids:p.selected_ids,hd:p.hd,trace_graph:avCelTrace(),
