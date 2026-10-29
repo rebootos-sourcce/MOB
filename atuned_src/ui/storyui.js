@@ -102,6 +102,21 @@ function stRender(){
      the word it was always beside. */
   +'<div class="st-hd">'
    +stMark('j','Journal','journal','','<span class="src-live" aria-hidden="true"></span>')
+   +'<div class="st-hdbtns">'
+   /* THE DASHBOARD DOOR, round of 29 October. Lance asked for a Dashboard
+      button on the Journal. His own 20 September ruling already named what
+      that word means in this product: "THE AVATAR IS THE DASHBOARD" (TASKS.md
+      0o), the avatar reading across every tool at once. The Avatar already
+      exists and already renders (TAB.INTAKE, nm:'Avatar', renderAvatar() in
+      ui/avatarui.js), so this is a door to the surface already carrying that
+      name, not a new screen. If the full avatar-as-dashboard build (TASKS.md
+      AV1-AV4, unchecked) later changes what Avatar shows, this button still
+      opens the right tab without changing here. */
+   +(show?'':'<button class="st-dash" id="stdash" type="button" title="Open the avatar, your dashboard across every tool">'
+   +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">'
+   +'<rect x="3.5" y="3.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.4"/>'
+   +'<rect x="3.5" y="13.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.4"/></svg>'
+   +'<span>Dashboard</span></button>')
    /* TALK IS GONE AS A TOGGLE, round of 28 October, his words: "the focus
       needs to be on two-way conversation for the journal ... this needs to
       be a two-way conversation between me and the source." A button that
@@ -129,7 +144,7 @@ function stRender(){
       that shows it runs. */
    +(ST_LISTEN?'<span class="st-mictime" id="stmictime" aria-hidden="true">'
      +stMicFmt(stMicElapsed())+'</span>':'')
-   +'</button>')+'</div>'
+   +'</button>')+'</div></div>'
   /* SOURCE AI AND THE JOURNAL'S MENU CHANGED PLACES, round LO, his words: "I
      want you to swap the main journal menu with the source AI question." The
      column read Source AI, then the journal's own top line with Record on it,
@@ -159,7 +174,17 @@ function stRender(){
      .src-comb. It is a sibling of #stsrc and not inside it, for the reason
      the halo is: srcPaint rewrites #stsrc on every key, and the floor is
      painted once a render. srcLock puts every loop in here on one clock. */
-  +(show?showNote('story','st-show'):'<div class="st-glow"><div class="st-pe" id="stsrc" aria-label="Question"></div>'
+  /* TALK, NOT CHAT, round of 29 October. His words: "Source AI should be the
+     primary talking feature. It's a talk, not a chat now." The word "chat"
+     never appeared as copy anywhere on this page (STV.chat, srcChat* and
+     .st-chat are code names, never shown), so this is not a find-and-replace.
+     It is naming the thing out loud the way Journal, Imprints and Release
+     already are: one small word above Source AI's own line, in the same
+     tier1 eyebrow every other named panel on this build uses, so a person
+     sees what this is before they read a single line of it. Static, outside
+     #stsrc, for the same reason srcComb is: srcPaint rewrites #stsrc's own
+     innerHTML on every key and this label does not change. */
+  +(show?showNote('story','st-show'):'<div class="st-glow"><p class="tier1 st-talklbl">Talk</p><div class="st-pe" id="stsrc" aria-label="Question"></div>'
   +srcComb()+'</div>'
   /* THE FETTERS LIGHT UP IN THE PERSON'S OWN SENTENCE.
 
@@ -333,6 +358,8 @@ function stRender(){
  if(ap)ap.onclick=function(){if(STV.chat)srcChatSend(); return stCommit();};
  var mic=document.getElementById('stmic');
  if(mic)mic.onclick=stMic;
+ var dash=document.getElementById('stdash');
+ if(dash)dash.onclick=function(){setTab(TAB.INTAKE); if(typeof renderAvatar==='function')renderAvatar();};
  srcChatWire();}
 
 /* ============================================================

@@ -3983,6 +3983,10 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
  stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .st-mk h3{margin:0;font-family:var(--sans);font-size:20px;line-height:1.15;color:var(--ink);
  white-space:nowrap}
+/* the Dashboard and Record buttons travel together on the right so .st-hd's
+   own space-between keeps two groups, the name and the controls, not three
+   items spread evenly with Dashboard stranded in the middle */
+.st-hdbtns{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .st-mk-j h3{font-weight:300;letter-spacing:.005em}
 .st-mk-i h3{font-weight:700;letter-spacing:-.03em}
 .st-mk-r h3{font-weight:400;letter-spacing:.11em}
@@ -4091,13 +4095,18 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    beat, and the elapsed time sits inside the same pill. Transform and
    opacity only, so quiet and reduced motion hold the dot and the ring lit
    and still rather than run either faster. */
-.st-mic{min-height:var(--tap);display:inline-flex;align-items:center;gap:8px;
+.st-mic,.st-dash{min-height:var(--tap);display:inline-flex;align-items:center;gap:8px;
  background:var(--panel-2);border:1px solid var(--edge);color:var(--mid);
  border-radius:var(--r-xs);padding:7px 15px;font-family:var(--sans);font-size:13.5px;cursor:pointer;
  transition:background var(--t-element) var(--ease-out),border-color var(--t-element) var(--ease-out),
   color var(--t-element) var(--ease-out)}
-.st-mic svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;
+.st-mic svg,.st-dash svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;
  stroke-linejoin:round;flex:0 0 auto}
+.st-dash:hover{color:var(--ink);border-color:var(--mid)}
+/* the eyebrow above Source AI's own line, round of 29 October: see storyui.js
+   for the ruling. tier1 is the house's own small-label class; this only
+   tightens the gap to the glow it sits beside. */
+.st-talklbl{margin:0 0 6px 2px}
 .st-dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;position:relative;
  background:var(--alarm);transition:background var(--t-element) var(--ease-out)}
 .st-mic.on{background:var(--alarm);border-color:var(--alarm);color:#fff;font-weight:500}
