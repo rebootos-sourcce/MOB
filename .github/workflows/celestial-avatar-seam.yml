@@ -1,0 +1,27 @@
+name: Celestial Avatar Seam
+on:
+  push:
+    branches:
+      - celestial/avatar-overlay-seam-2026-10-29
+    paths:
+      - 'atuned_src/**'
+      - 'tests/celestial_bridge.js'
+      - '.github/workflows/celestial-avatar-seam.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  seam:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify 36 sources, 15 groups, 1728 combinations, Avatar mount and score isolation
+        run: node tests/celestial_bridge.js
+      - name: Validate ordered full application build
+        run: sh atuned_src/BUILD.sh /tmp/atuned-celestial.html
+      - name: Validate browser engine is host independent
+        run: sh atuned_src/BUILD-engine.sh /tmp/atuned-celestial-engine.js
