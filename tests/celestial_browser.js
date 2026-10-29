@@ -39,7 +39,23 @@ const {chromium}=require('playwright');
   /* The actual application opens on Discover. Avatar is in the Play section.
      Calling renderAvatar() does not display its hidden #iq container. Enter
      through the real section and tab controls; never force-click a hidden UI. */
-  await page.locator('#secbar .secb[data-sec="play"]').click({timeout:10000});
+  /* The navigation can start folded (tabnames checkbox). Unfold it by
+     its genuine accessible control before selecting a different section. */
+  const fold=page.locator('#tabnames');
+  if(!(await fold.isChecked()))await fold.check({timeout:10000});
+  const nav=await page.evaluate(()=>{
+   const play=document.querySelector('#secbar .secb[data-sec="play"]');
+   const top=document.querySelector('.top');
+   const cs=play&&getComputedStyle(play);
+   return {width:innerWidth,folded:!document.getElementById('tabnames').checked,
+    section:top&&top.getAttribute('data-sec'),
+    display:cs&&cs.display,visibility:cs&&cs.visibility,
+    rect:play&&play.getBoundingClientRect().toJSON()};
+  });
+  console.log('Avatar navigation preflight '+JSON.stringify(nav));
+  const play=page.locator('#secbar .secb[data-sec="play"]');
+  await play.waitFor({state:'visible',timeout:10000});
+  await play.click({timeout:10000});
   const avatarTab=page.locator('#tabbar .tabtop[data-tabk="5"]');
   await avatarTab.waitFor({state:'visible',timeout:10000});
   await avatarTab.click({timeout:10000});
