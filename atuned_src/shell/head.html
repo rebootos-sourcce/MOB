@@ -4000,6 +4000,7 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .st-mk-r svg{stroke:var(--glow,var(--accent))}
 /* ---- the instrument's panel: the name, the bank and the vault, the sort ---- */
 .st-chd{display:flex;align-items:center;gap:8px;min-height:24px}
+.st-chd #stapply{margin-left:auto}
 .st-ico{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);min-width:var(--tap);
  padding:0 11px;border-radius:999px;border:1px solid var(--edge-2);background:transparent;
  cursor:pointer;font-family:var(--sans);font-size:13px;color:var(--mid);justify-content:center;
@@ -4462,6 +4463,14 @@ body.punch .src-new{border-color:transparent;background:var(--panel-2)}
 .src-open.quiet{font-size:15px;color:var(--mid)}
 .src-q{font-size:20px;line-height:1.35;color:var(--ink);margin:4px 0 2px;max-width:48ch}
 .src-note{font-size:13px;color:var(--dim);line-height:1.55;margin:3px 0}
+/* THE LIVE CAPTION, round of 29 October: provisional, said while a sentence
+   is still forming, gone the instant it finalises into a real turn. The
+   pulse says so without a word, opacity only, never the scale micPulse
+   uses: a line of text swelling and shrinking reads as broken, not alive. */
+.src-livecap{font-size:13px;color:var(--mid);line-height:1.55;margin:6px 0 0;font-style:italic;
+ animation:capPulse 1.6s ease-in-out infinite}
+@keyframes capPulse{0%,100%{opacity:1}50%{opacity:.55}}
+body.quiet .src-livecap,body.rm .src-livecap{animation:none;opacity:.85}
 .src-say{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);
  white-space:nowrap;margin:0}
 .src-row{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;margin-top:8px}

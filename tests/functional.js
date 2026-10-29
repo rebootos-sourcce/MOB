@@ -6080,11 +6080,11 @@ console.log('\n=== a sentence does not disappear at a pause, round NU ===');
      sentence, the real API's own shape once a result is final */
   rec.onresult({resultIndex:1,results:{0:seg('I felt insecure about it.'),
    1:seg('Then I spoke up anyway.'),length:2}});
-  /* TALK FILLS THE REPLY NOW, NOT THE ENTRY, round of 29 October: dictation
-     goes where typing goes, SRC_CDRAFT, so the same accumulation this test
-     holds is read off the reply line and not off ST_TEXT, which dictation no
-     longer touches at all. See the ruling at stMic in ui/storyui.js. */
-  const out=SRC_CDRAFT; rec.stop(); return out;});
+  /* TALK COMMITS AS IT GOES, round of 29 October: a finalised sentence is a
+     turn the moment it finalises (srcTurnCommit), landing straight in
+     ST_TEXT the same as it always has, so this still reads off ST_TEXT. See
+     the ruling at stMic in ui/storyui.js. */
+  const out=ST_TEXT; rec.stop(); return out;});
  ok(/insecure/.test(heard)&&/spoke up/.test(heard),
   'both sentences survive the pause between them, got '+JSON.stringify(heard));
  await st.close();
