@@ -16,6 +16,11 @@ const {chromium}=require('playwright');
   await page.waitForFunction(()=>typeof AT_CELESTIAL==='object' &&
    typeof AT_CELESTIAL_SNAPSHOT==='object' && typeof renderAvatar==='function' &&
    typeof CURP==='object' && typeof S==='object',{timeout:30000});
+  /* The opening film deliberately consumes the first press as Skip, without
+     forwarding it to Guest. Wait until it is actually gone, as the existing
+     tests/boot.js acceptance contract requires. */
+  await page.waitForFunction(()=>document.documentElement.getAttribute('data-boot')==='ok' &&
+   !document.getElementById('boot'),null,{timeout:30000});
   /* Use the application's genuine Guest entry point, not loginClose() or a
      hidden-element force click. No credentials or remote accounts are used. */
   const guest=page.locator('#loginb-skip');
