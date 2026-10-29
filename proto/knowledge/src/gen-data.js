@@ -135,8 +135,8 @@ T.HCX_LIB.forEach(h=>add({id:'hcx:'+h.nm, kind:'hcx', nm:h.nm, seat:h.b, fam:'ar
    Do not treat this small explicit descent as a complete complex registry. */
 T.DESCENT.forEach((d,i)=>add({
  id:'descent:'+d.nm,
- kind:d.kind==='complex'?'complex':(d.kind==='super complex'?'supercomplex':'hcx'),
- nm:d.nm, seat:null, fam:'higher-order descent',
+ kind:d.kind==='complex'?'complex':(d.kind==='super complex'?'supercomplex':(d.kind==='hyper complex'?'hypercomplex':'hcx')),
+ nm:d.nm, seat:null, fam:'higher-order descent', cluster:'higher-order descent',
  def:clean(d.d), body:clean(d.d),
  inferred:!!d.content.inferred,
  inferenceBasis:d.content.inferenceBasis,
