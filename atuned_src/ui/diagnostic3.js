@@ -15,7 +15,7 @@ function d3Css(){
  '.d3-question{border-top:1px solid var(--edge-2);padding-top:12px;margin:12px 0}',
  '.d3-prompt{font-size:16px;line-height:1.48;font-weight:600;margin:8px 0}',
  '.d3-values{display:flex;flex-wrap:wrap;gap:5px;margin:10px 0}',
- '.d3-values button,.d3-nav button,.d3-head button{border:1px solid var(--edge-2);border-radius:8px;background:var(--panel);color:var(--ink);font:inherit;min-width:34px;min-height:36px;cursor:pointer}',
+ '.d3-values button,.d3-nav button,.d3-head button{border:1px solid var(--edge-2);border-radius:8px;background:var(--panel);color:var(--ink);font:inherit;min-width:34px;min-height:var(--tap);cursor:pointer}',
  '.d3-values button[aria-pressed="true"]{background:color-mix(in srgb,var(--accent) 25%,var(--panel));border-color:var(--accent)}',
  '.d3-nav{display:flex;gap:8px;margin-top:8px}',
  '.d3-note{font-size:12px;color:var(--mid);line-height:1.4}'
