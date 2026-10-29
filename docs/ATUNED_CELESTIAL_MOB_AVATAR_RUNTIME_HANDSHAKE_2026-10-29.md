@@ -1,3 +1,11 @@
+# Latest V12 checkpoint — two-repository audit and source-sync verified
+
+Current feature-branch review: [MOB draft PR #149](https://github.com/rebootos-sourcce/MOB/pull/149). The source regeneration tool [`tools/regen-celestial-browser-bridge.cjs`](https://github.com/rebootos-sourcce/MOB/blob/celestial/avatar-overlay-seam-2026-10-29/tools/regen-celestial-browser-bridge.cjs) is committed and syntax-checked. **The generated 36-record source snapshot and 6-module browser adapter were independently reconstructed from live Reboot-OS canonical files and matched their checked-in MOB files byte-for-byte**, including original SHA provenance (15 source JSON files + six source modules). Source data remains in the private Reboot repo; to regenerate you need a local authorized checkout, not an unauthorized public CI fetch.
+
+[Latest green MOB full build / 1,728 profile / script syntax run 40890827922](https://github.com/rebootos-sourcce/MOB/actions/runs/40890827922). [V12 weighted task matrix and XAI remaining work](https://github.com/rebootos-sourcce/Reboot-OS/blob/celestial/records-semantic-crosswalk-2026-10-28/atuned/data/celestial/CELESTIAL_CROSS_REPO_RUNTIME_SEAM_COMPLETION_V12_2026-10-29.md). No production merge or native Graph Editor persistence claimed.
+
+---
+
 # ATUNED Celestial → MOB Avatar — Runtime Integration Handshake
 Date: 2026-10-29 · Status: **source and build seam wired in draft MOB feature branch; production merge / real browser acceptance separate.**
 
