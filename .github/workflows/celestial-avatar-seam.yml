@@ -7,6 +7,7 @@ on:
       - 'atuned_src/**'
       - 'tests/celestial_bridge.js'
       - 'tests/celestial_browser.js'
+      - 'tests/graph_draft_inspector.js'
       - 'tools/regen-celestial-browser-bridge.cjs'
       - '.github/workflows/celestial-avatar-seam.yml'
   workflow_dispatch:
@@ -23,6 +24,8 @@ jobs:
           node-version: '22'
       - name: Verify 36 sources, 15 groups, 1728 combinations, Avatar mount and score isolation
         run: node tests/celestial_bridge.js
+      - name: Verify disabled-by-default D1-auth graph inspector in real Avatar host
+        run: node tests/graph_draft_inspector.js
       - name: Install TypeScript required by existing slim delivery build
         run: npm install --no-save --ignore-scripts typescript@5.9.3 playwright@1.56.1
       - name: Check canonical-source regeneration tool syntax
