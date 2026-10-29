@@ -51,6 +51,48 @@ function avCelCloseMounted(){
   try{AVCE.mounted.destroy();}catch(e){} }
  AVCE.mounted=null;
 }
+// An optional, explicitly opened, account-authorized read-only draft
+// inspector. Not a native graph writer or Celestial evidence importer.
+function avCelGraphAttach(entry){
+ var root=entry.querySelector('[data-avcel-graph]');
+ if(!root||typeof authGraphDraftRead!=='function')return;
+ root.innerHTML='<button type="button" class="btn" data-avcel-graph-read>Inspect graph draft</button>'
+  +'<p data-avcel-graph-status role="status" aria-live="polite"></p>';
+ var btn=root.querySelector('[data-avcel-graph-read]');
+ var status=root.querySelector('[data-avcel-graph-status]');
+ if(!btn||!status)return;
+ btn.onclick=function(){
+  var whoAtClick=AVCE.who;
+  btn.disabled=true;
+  status.textContent='Checking your account draft…';
+  authGraphDraftRead('primary').then(function(reply){
+   if(whoAtClick!==AVCE.who)return;
+   if(!reply||!reply.ok){
+    status.textContent='Graph draft is unavailable. No data was changed.';
+    return;
+   }
+   var body=reply.body;
+   if(!body||body.found!==true){
+    status.textContent='No account graph draft is stored.';
+    return;
+   }
+   var doc=body.document;
+   if(!doc||doc.schema!=='atuned.graph.draft_sandbox.v1'
+     ||!Array.isArray(doc.versions)){
+    status.textContent='The stored graph draft could not be verified.';
+    return;
+   }
+   var version=doc.versions[doc.versions.length-1]||null;
+   var graph=version&&version.graph;
+   var nodes=graph&&Array.isArray(graph.nodes)?graph.nodes.length:0;
+   var edges=graph&&Array.isArray(graph.edges)?graph.edges.length:0;
+   status.textContent='Account draft '+(version?version.version:'none')
+    +' · '+nodes+' nodes · '+edges+' links · view only.';
+  },function(){
+   if(whoAtClick===AVCE.who)status.textContent='Graph draft request failed. No data was changed.';
+  }).then(function(){if(whoAtClick===AVCE.who)btn.disabled=false;});
+ };
+}
 function avCelestialAttach(host){
  if(!host||typeof host.querySelector!=='function')return;
  var entry=host.querySelector('[data-avcelestial]');
@@ -62,9 +104,14 @@ function avCelestialAttach(host){
     just because the tab was visited. */
  entry.innerHTML='<button type="button" class="btn" data-avcel-toggle aria-expanded="'+
   (AVCE.open?'true':'false')+'">Celestial lens '+(AVCE.open?'−':'+')+'</button>'+
-  '<div data-avcel-body></div>';
+  '<div data-avcel-body></div>'
+  +(typeof GRAPH_DRAFT_INSPECTOR_ENABLED!=='undefined'&&GRAPH_DRAFT_INSPECTOR_ENABLED
+    &&typeof authSession==='function'&&authSession()
+    &&typeof S!=='undefined'&&S.who===0
+      ?'<div data-avcel-graph></div>':'');
  var btn=entry.querySelector('[data-avcel-toggle]'),body=entry.querySelector('[data-avcel-body]');
  btn.onclick=function(){AVCE.open=!AVCE.open;avCelCloseMounted();avCelestialAttach(host);};
+ avCelGraphAttach(entry);
  if(!AVCE.open)return;
  if(typeof AT_CELESTIAL==='undefined'||typeof AT_CELESTIAL_SNAPSHOT==='undefined'){
   body.textContent='Celestial record projection is not included in this build.';
