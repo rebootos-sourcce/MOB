@@ -376,6 +376,22 @@ working app he could not keep. Send it with the card set to attach. State the
 second route beside it: the branch is pushed, so every file also has a raw
 address he can save from a browser. A build he cannot save has not shipped.
 
+**Testing the voice locally needs a real address, not a double click.** Ruled
+29 October, his words: "I should be able to do all this local. I should not
+have to go to a pushed website. That's a problem." Opening `source.html`
+straight off disk sends the browser's origin as `null`, and the voice server
+(reboot-os, `atuned/server/src/index.js`) has refused that origin on purpose
+since 16 October: nothing tells a stranger's downloaded copy apart from the
+owner's own, so a flat-out local allowance would have reopened the hole that
+rule closed. `http://localhost` is different, a stranger's browser never
+visits a local port on its own the way it opens a downloaded file, so the
+server now also answers it (`LOCAL_ORIGIN`, reboot-os `index.js`, 29
+October). `tools/serve-local.sh [port]`, run from this repo's root, puts the
+build at `http://localhost:<port>/source.html` instead of `file://`; opened
+there in a real browser, the voice and anything else gated the same way work
+exactly as they do on atuned.world. A file opened straight off disk still
+reads `null` and is still refused, on purpose.
+
 ## Reporting to the owner. Ruled 21 September.
 
 **Four headings, in his order, and nothing else.** His words: "the output is

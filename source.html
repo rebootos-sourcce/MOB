@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v712 7c224510 2026-10-29 19:25"><head><meta charset="utf-8">
+<html lang="en" data-build="v715 95594053 2026-10-29 22:03"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -4000,6 +4000,7 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .st-mk-r svg{stroke:var(--glow,var(--accent))}
 /* ---- the instrument's panel: the name, the bank and the vault, the sort ---- */
 .st-chd{display:flex;align-items:center;gap:8px;min-height:24px}
+.st-chd #stapply{margin-left:auto}
 .st-ico{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);min-width:var(--tap);
  padding:0 11px;border-radius:999px;border:1px solid var(--edge-2);background:transparent;
  cursor:pointer;font-family:var(--sans);font-size:13px;color:var(--mid);justify-content:center;
@@ -4462,6 +4463,14 @@ body.punch .src-new{border-color:transparent;background:var(--panel-2)}
 .src-open.quiet{font-size:15px;color:var(--mid)}
 .src-q{font-size:20px;line-height:1.35;color:var(--ink);margin:4px 0 2px;max-width:48ch}
 .src-note{font-size:13px;color:var(--dim);line-height:1.55;margin:3px 0}
+/* THE LIVE CAPTION, round of 29 October: provisional, said while a sentence
+   is still forming, gone the instant it finalises into a real turn. The
+   pulse says so without a word, opacity only, never the scale micPulse
+   uses: a line of text swelling and shrinking reads as broken, not alive. */
+.src-livecap{font-size:13px;color:var(--mid);line-height:1.55;margin:6px 0 0;font-style:italic;
+ animation:capPulse 1.6s ease-in-out infinite}
+@keyframes capPulse{0%,100%{opacity:1}50%{opacity:.55}}
+body.quiet .src-livecap,body.rm .src-livecap{animation:none;opacity:.85}
 .src-say{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);
  white-space:nowrap;margin:0}
 .src-row{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;margin-top:8px}
@@ -47446,7 +47455,7 @@ try{window.__at&&window.__at('ui/character.js');}catch(e){}
    gather as they are found and nothing touches the field until you
    commit.
    ============================================================ */
-var ST_TEXT='', ST_PARSED=null, ST_REC=null, ST_LISTEN=false;
+var ST_TEXT='', ST_PARSED=null, ST_REC=null, ST_LISTEN=false, ST_LIVE='';
 var IMP_GROUP='band', IMP_PICK={};
 var IMP_GROUPS=[['band','Seat'],['charge','Charge'],['sab','Saboteur'],
                 ['story','Story'],['expr','Expression']];
@@ -47892,6 +47901,14 @@ function stRender(){
      +stMicFmt(stMicElapsed())+'</span>':'')
    +'</button>')
    +'<span class="src-live" aria-hidden="true"></span>'
+   +'</div>'
+   /* THE DASHBOARD DOOR STANDS ON ITS OWN NOW, round of 29 October, found by
+      his own screenshot of the real site: Dashboard sat right beside Talk on
+      the left, both inside .st-hdbtns, which left .st-hd with one child and
+      nothing for its own justify-content:space-between to push apart. The
+      comment above always said Dashboard keeps the right; the markup did
+      not. A sibling of .st-hdbtns, not a child of it, is what that rule
+      needs to do anything. */
    /* THE DASHBOARD DOOR, ON THE RIGHT, round of 29 October. His own 20
       September ruling already named what that word means in this product:
       "THE AVATAR IS THE DASHBOARD" (TASKS.md 0o), the avatar reading across
@@ -47906,7 +47923,7 @@ function stRender(){
    +'<rect x="3.5" y="3.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.4"/>'
    +'<rect x="3.5" y="13.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.4"/></svg>'
    +'<span>Dashboard</span></button>')
-   +'</div></div>'
+   +'</div>'
   /* SOURCE AI AND THE JOURNAL'S MENU CHANGED PLACES, round LO, his words: "I
      want you to swap the main journal menu with the source AI question." The
      column read Source AI, then the journal's own top line with Record on it,
@@ -47946,7 +47963,17 @@ function stRender(){
      words both times were "get rid of those rainbow colours," and this is
      the one that was still there. srcComb() itself stays defined, in case a
      later screen wants it, only this call is cut. */
-  +(show?showNote('story','st-show'):'<div class="st-glow"><div class="st-pe" id="stsrc" aria-label="Question"></div></div>'
+  +(show?showNote('story','st-show'):'<div class="st-glow"><div class="st-pe" id="stsrc" aria-label="Question"></div>'
+  /* WHAT YOU ARE SAYING, WHILE YOU ARE SAYING IT, round of 29 October. His
+     words: "I should see my input as I'm talking." Not the reply box, which
+     a normal speech conversation has no reason to open (see stMic and
+     srcTurnCommit): the words a sentence is still becoming, read straight
+     off the speech service's own interim result, shown and gone the moment
+     that sentence finalises and lands as a real turn. aria-live so a screen
+     reader hears it grow the way a sighted ear does. */
+  +(ST_LISTEN?'<p class="src-livecap" id="stlivecap" aria-live="polite">'
+    +esc(ST_LIVE||'Listening')+'</p>':'')
+  +'</div>'
   /* THE FETTERS LIGHT UP IN THE PERSON'S OWN SENTENCE.
 
      The sniffer already names every word it is reading and which seat that
@@ -48015,14 +48042,25 @@ function stRender(){
      keeps the two buttons at the right edge where the counter pushed them.
      The prototype this page is ported from put a word count back here, and
      it stays out: the ruling is his and names this exact place. */
+  /* COMMIT STANDS WHERE THE BANK IS ON SCREEN, round of 29 October, his
+     words: "the commit button should be on the bank." Dashboard shuts the
+     bank away in simple mode (his own earlier ruling, "when I land on this
+     page it starts off in simple mode"), and a button nobody can reach is
+     not moved, it is lost: caught by tests/srcchat.js timing out on a
+     hidden #stapply before this read STV.dash. So Commit lives here, next
+     to Clear, exactly when there is no bank on screen to carry it
+     (!STV.chat, the crisis door's own contract tests/onboarding2.js holds,
+     or STV.chat&&!STV.dash, simple mode); the bank carries it itself,
+     below, the moment STV.dash opens it. One #stapply at a time, never
+     both, never neither. */
   +'<div class="st-bar'+(STV.crisis&&!STV.chat?' st-bar-crx':'')+'">'
    /* the second door, at the foot, where the person finishes: see the crisis
       line above. Left of the spacer, so Clear and Commit keep their edge. */
    +(STV.crisis&&!STV.chat?crisisReachBtn('st-crxbar'):'')
    +'<span class="st-ct" aria-hidden="true"></span>'
    +'<button class="btn" id="stclear">Clear</button>'
-   +'<button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
-    +'Commit'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button>'
+   +(STV.chat&&STV.dash?'':'<button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
+    +'Commit'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button>')
   +'</div>')+'</div></div>'
   /* ---- the read column: the instrument over the list ---- */
   +'<div class="st-colr">'
@@ -48048,7 +48086,16 @@ function stRender(){
     +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5h16v14H4zM7 18.5v2M17 18.5v2"/>'
     +'<circle cx="12" cy="11.5" r="3.6"/><path d="M12 7.9v1.2M12 13.9v1.2"/></svg>'
     +'<span class="st-lb">Vault</span><b id="stvn">\u2013</b></button>'
-   +'<button type="button" class="btn st-open" id="stlist">List</button></div>'
+   +'<button type="button" class="btn st-open" id="stlist">List</button>'
+   /* COMMIT, ON THE BANK, round of 29 October: see the ruling at .st-bar
+      above. Same id, same class, same wiring (stRender's wire-up below
+      finds it by id, not by where it sits), only where it renders moved:
+      the bank is what Commit fills, so Commit stands on the bank, whenever
+      the bank is the thing on screen (STV.dash). This whole panel is
+      display:none in simple mode, so Commit cannot live only here. */
+   +(STV.chat&&STV.dash?'<button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
+     +'Commit'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button>':'')
+   +'</div>'
    +'<div class="st-sort" id="stsort" role="group" aria-label="Sort imprints by"></div>'
    /* the key probe is never shown. The canvas cannot read a custom property,
       so the chart reads the lighting's ink and dim off these two computed
@@ -49191,19 +49238,25 @@ function srcChatNote(cur){
  if(L&&L.key===cur.key){L.q=cur.q; L.mv=cur.mv; L.rg=cur.rg; L.bd=cur.bd; return;}
  if(L&&!after&&/^(open|q|say)\|/.test(L.key)){SRC_CHAT[li]=cur; return;}
  SRC_CHAT.push(cur);}
-/* SEND. The reply joins the entry on its own line, see the block above for
-   why a newline and why the trailing spaces go, and the page reads it the way
-   a key in the box is read: parse, then stRefresh, which repaints the thread. */
-function srcChatSend(){
- var cin=document.getElementById('stcin'), v=String(cin?cin.value:SRC_CDRAFT).trim();
- if(!v)return false;
+/* A TURN LANDS. The reply joins the entry on its own line, see the block
+   above for why a newline and why the trailing spaces go, and the page
+   reads it the way a key in the box is read: parse, then stRefresh, which
+   repaints the thread. One door for a turn to land through, typed or
+   spoken (see stMic), so Source AI asks and the bank fills exactly the
+   same way whichever one it was. */
+function srcTurnCommit(v){
+ v=String(v||'').trim(); if(!v)return false;
  srcChatSync();
  var base=ST_TEXT.replace(/\s+$/,''), a=base.length+(base?1:0);
  ST_TEXT=base+(base?'\n':'')+v;
  SRC_CHAT.push({w:'me', a:a, b:ST_TEXT.length, t:v});
- SRC_CDRAFT=''; SRC_CPRESS=false; if(cin)cin.value='';
  ST_PARSED=parseStory(ST_TEXT); stRefresh();
- if(cin)cin.focus();
+ return true;}
+/* SEND, the typed door onto srcTurnCommit. */
+function srcChatSend(){
+ var cin=document.getElementById('stcin'), v=String(cin?cin.value:SRC_CDRAFT).trim();
+ if(!srcTurnCommit(v))return false;
+ SRC_CDRAFT=''; SRC_CPRESS=false; if(cin){cin.value=''; cin.focus();}
  return true;}
 /* the reply line. Enter sends and Shift and Enter is a new line, the way a
    conversation box works everywhere else; a draft is kept across a repaint
@@ -50407,51 +50460,52 @@ function stMic(){
    +'not turn the microphone on. Typing works.','fail'); return; }
  if(ST_REC&&ST_LISTEN){ ST_REC.stop(); ST_LISTEN=false; ST_LISTEN_T0=null; stRender(); return; }
  ST_REC=new SR(); ST_REC.continuous=true; ST_REC.interimResults=true; ST_REC.lang='en-US';
- /* HIS OWN REPORT: "every sentence I stop and pause at seems like it
-    disappears." Reproduced. The first cut kept one frozen `base`, set once
-    at Record, and rebuilt ST_TEXT from it plus whatever `e.resultIndex`
-    pointed at on every event. A pause is exactly when the browser finalises
-    the sentence just spoken and the NEXT event's resultIndex moves past it,
-    so the text this rebuilt from `base` onward never carried that sentence
-    forward: it was read once, into a result this handler then threw away.
-    `heard` now accumulates every FINAL result as it finalises, so a
-    sentence survives a pause. `live` is only ever the current interim
-    phrase, shown but never kept until the browser itself marks it final. */
- /* TALK FILLS THE REPLY, IT DOES NOT WRITE THE ENTRY. Found by audit, 29
-    October: speaking wrote straight into ST_TEXT, the entry itself, past
-    SRC_CDRAFT and #stcin entirely, so a reply half typed before Talk was
-    pressed sat in the box untouched while the entry grew underneath it, and
-    Send then stitched the two together in an order nobody chose. Dictation
-    is typing by voice, so it goes where typing goes: the base it continues
-    from is whatever is already in the reply box, not the whole entry, and it
-    lands back in the same place, same as every key does (cin.oninput above).
-    Source AI reacts on Send, exactly as it does for a typed reply, never
-    mid-sentence. */
- var heard=SRC_CDRAFT;
+ /* A NORMAL SPEECH CONVERSATION, round of 29 October, his words: "I hit the
+    talk button and whatever I say enters into the text field. That should
+    not happen... If there was no text field, I should be able to talk to
+    the AI, see its output, and I should see my input as I'm talking." Talk
+    no longer writes the reply box at all (the SRC_CDRAFT routing this
+    carried until today's audit fix stays wrong for the same reason the bug
+    it fixed was wrong, only one step further back: a voice conversation is
+    not typing, by mouth or by hand, so it does not need the box typing
+    uses). Each sentence becomes a real turn, srcTurnCommit, the instant the
+    speech service finalises it: Source AI reacts turn by turn, and the bank
+    fills as each one lands, because landing a turn is exactly what already
+    drives both. What has not finalised yet is never kept, only shown,
+    ST_LIVE, read by stRender at #stlivecap, and cleared the moment either
+    it finalises into a turn or listening stops. */
+ /* HIS OWN REPORT, EARLIER: "every sentence I stop and pause at seems like
+    it disappears." Reproduced against the real bug: a pause is exactly when
+    the speech service finalises the sentence just spoken and the next
+    event's resultIndex moves past it, so code that rebuilt its text from a
+    single frozen base lost that sentence. Committing a turn the moment it
+    finalises cannot have that bug: each finalised chunk lands in ST_TEXT on
+    its own, through srcTurnCommit, and nothing after ever rewrites it. */
  /* STARS FROM THE SPEECH SERVICE ARE SAID ONCE, round QR. The browser's
     speech service filters what it counts as swearing before the words reach
     this handler, and nothing here can undo it (maskedRuns, engine/sniff.js).
     The line under the box says so for as long as stars are there; the status
     line says it once, when a recording first brings new ones in, so a person
-    talking with their eyes off the screen still hears it. */
- var hidAt=maskedRuns(heard).length;
+    talking with their eyes off the screen still hears it. Read off ST_TEXT
+    itself now, since a finalised sentence lands there directly. */
+ var hidAt=maskedRuns(ST_TEXT).length;
  ST_REC.onresult=function(e){var fin='',live='';
   for(var i=e.resultIndex;i<e.results.length;i++){
    var t=e.results[i][0].transcript;
    if(e.results[i].isFinal) fin+=t; else live+=t;}
-  if(fin) heard=(heard+' '+fin).trim();
-  SRC_CDRAFT=(heard+' '+live).trim(); stDraft(); stRender();
-  var hid=maskedRuns(heard).length;
+  if(fin.trim())srcTurnCommit(fin);
+  ST_LIVE=live; stRender();
+  var hid=maskedRuns(ST_TEXT).length;
   if(fin&&hid>hidAt){
    status('Dictation hid '+(hid-hidAt===1?'a word':(hid-hidAt)+' words')
     +' behind stars. Type '+(hid-hidAt===1?'it':'them')+' over the stars to have '
     +(hid-hidAt===1?'it':'them')+' read.','fail');
    hidAt=hid;}};
- ST_REC.onend=function(){ST_LISTEN=false;ST_LISTEN_T0=null;stRender();};
- ST_REC.onerror=function(e){ST_LISTEN=false;ST_LISTEN_T0=null;stRender();
+ ST_REC.onend=function(){ST_LISTEN=false;ST_LISTEN_T0=null;ST_LIVE='';stRender();};
+ ST_REC.onerror=function(e){ST_LISTEN=false;ST_LISTEN_T0=null;ST_LIVE='';stRender();
   stMicSay((e&&e.error)||'unknown');};
  try{ ST_REC.start(); ST_LISTEN=true; ST_LISTEN_T0=performance.now(); stRender();
-  status('Recording. Press again to stop.','ok'); stSrcSpeak(); }
+  status('Listening. Press again to stop.','ok'); stSrcSpeak(); }
  catch(err){ ST_LISTEN=false; ST_LISTEN_T0=null; stRender();
   status('Recording could not start. '+(err&&err.message?err.message:'')+
    ' Typing works.','fail'); }}
@@ -83080,5 +83134,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005477231"></div>
+<div id="eof" hidden data-len="005480830"></div>
 </body></html>
