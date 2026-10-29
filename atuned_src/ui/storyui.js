@@ -2661,7 +2661,40 @@ function stMic(){
  ST_REC.onerror=function(e){ST_LISTEN=false;ST_LISTEN_T0=null;stRender();
   stMicSay((e&&e.error)||'unknown');};
  try{ ST_REC.start(); ST_LISTEN=true; ST_LISTEN_T0=performance.now(); stRender();
-  status('Recording. Press again to stop.','ok'); }
+  status('Recording. Press again to stop.','ok'); stSrcSpeak(); }
  catch(err){ ST_LISTEN=false; ST_LISTEN_T0=null; stRender();
   status('Recording could not start. '+(err&&err.message?err.message:'')+
    ' Typing works.','fail'); }}
+/* SOURCE AI GREETS OUT LOUD WHEN TALK IS PRESSED, round of 29 October, his
+   words: "when I hit the talk button, I want to be greeted by the AI. So I
+   need to hear the voice." The voice is ElevenLabs and there is no other
+   (ui/release.js's own ruling, 9 October): this calls the same authVoice()
+   Release already proves works, never a browser voice. Reads whatever
+   Source AI is currently showing in #stsrc, the greeting on a fresh page or
+   the live question once one has been asked, so the line spoken is always
+   the line on screen and never typed twice.
+
+   NEEDS THE REAL SERVER, NOT A LOCAL FILE. The Worker that holds the
+   ElevenLabs key answers only its own origin (ALLOWED_ORIGIN, reboot-os
+   server/wrangler.toml), the same reason stMic() above already refuses the
+   microphone on a page opened from a file. A build opened locally cannot
+   reach it; the hosted site can, the same as Release already does. Failure
+   is reported through status(), per the house rule that a control never
+   claims success before it has it, and names the file-opened case by name
+   rather than leaving a person to guess at "failed to fetch". */
+function stSrcSpeak(){
+ var el=document.getElementById('stsrc'); if(!el)return;
+ var text=(el.textContent||'').trim(); if(!text)return;
+ if(typeof authVoice!=='function')return;
+ if(typeof isSecureContext!=='undefined'&&!isSecureContext){
+  status('Source AI cannot speak from a file. Open the hosted build to hear it.','fail'); return; }
+ authVoice(text,'frame').then(function(r){
+  if(!r||!r.ok){
+   status('Source AI could not speak that line. '+
+    (r&&r.status===429?'The voice has reached today\'s limit.':'Try again in a moment.'),'fail');
+   return;}
+  var url=URL.createObjectURL(r.blob);
+  var a=new Audio(url);
+  a.onended=function(){URL.revokeObjectURL(url);};
+  a.play().catch(function(){status('Source AI\'s voice is ready but the browser blocked playing it.','fail');});
+ });}
