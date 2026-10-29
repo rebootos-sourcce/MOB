@@ -6,6 +6,7 @@ on:
     paths:
       - 'atuned_src/**'
       - 'tests/celestial_bridge.js'
+      - 'tools/regen-celestial-browser-bridge.cjs'
       - '.github/workflows/celestial-avatar-seam.yml'
   workflow_dispatch:
 permissions:
@@ -23,6 +24,8 @@ jobs:
         run: node tests/celestial_bridge.js
       - name: Install TypeScript required by existing slim delivery build
         run: npm install --no-save --ignore-scripts typescript@5.9.3
+      - name: Check canonical-source regeneration tool syntax
+        run: node --check tools/regen-celestial-browser-bridge.cjs
       - name: Validate ordered full application build
         run: sh atuned_src/BUILD.sh /tmp/atuned-celestial.html
       - name: Validate browser engine is host independent
