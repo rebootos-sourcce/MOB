@@ -11,10 +11,10 @@ const SYSTEMS = Object.freeze({
   eastern_astrology: 'eastern:animal:',
   modern_western_pythagorean: 'numerology:pythagorean:number:'
 });
-function requireTrue(condition, message) {
+  function requireTrue(condition, message) {
   if (!condition) throw new Error('Source AI resolver: ' + message);
 }
-function selectedFields(record) {
+  function selectedFields(record) {
   const interpretation = record.interpretation || {};
   const readable = (v) => typeof v === 'string' ? v : null;
   const array = (v) => Array.isArray(v) ? v.filter(x => typeof x === 'string') : [];
@@ -35,7 +35,7 @@ function selectedFields(record) {
     }
   };
 }
-function resolveSourceAIRecords({ selected_ids, records, crosswalk }) {
+  function resolveSourceAIRecords({ selected_ids, records, crosswalk }) {
   requireTrue(Array.isArray(selected_ids) && selected_ids.length === 3,
     'exactly one selection per system required');
   requireTrue(Array.isArray(records) && crosswalk && Array.isArray(crosswalk.crosswalks),
@@ -143,8 +143,8 @@ const DIMENSIONS = [
   re:/\b(strateg\w*|plan\w*|organis\w*|organiz\w*|anticipat\w*|system\w*|order\w*|prepare\w*)\b/i,
   question:'What is useful to plan now, and what can stay open to new information?'}
 ];
-function assert(v, m) { if(!v) throw new Error('Source AI synthesis: '+m); }
-function evidenceFor(material, dim) {
+  function assert(v, m) { if(!v) throw new Error('Source AI synthesis: '+m); }
+  function evidenceFor(material, dim) {
   const result = [];
   for (const r of material) {
     const samples = [{field:'essence',value:r.essence,weight:3}]
@@ -158,7 +158,7 @@ function evidenceFor(material, dim) {
   }
   return result;
 }
-function synthesizeSourceAI(resolution) {
+  function synthesizeSourceAI(resolution) {
   assert(resolution && resolution.score_permission===false &&
     resolution.may_affect_coherence===false && resolution.computational_effect==='none',
     'resolver scoring firewall');
@@ -214,8 +214,8 @@ function synthesizeSourceAI(resolution) {
   out.narrative=narrateSourceAI(out,material,main);
   return out;
 }
-function lowerStart(s){return s ? s.charAt(0).toLowerCase()+s.slice(1) : '';}
-function narrateSourceAI(result,materials,dimension) {
+  function lowerStart(s){return s ? s.charAt(0).toLowerCase()+s.slice(1) : '';}
+  function narrateSourceAI(result,materials,dimension) {
   const names=materials.map(r=>r.name);
   const exact=result.overlap && result.overlap.kind==='authored_group_unapproved';
   let text;
@@ -295,7 +295,7 @@ const SITUATIONS={
 const norm=s=>typeof s==='string'?s.trim():null;
 const strip=s=>(norm(s)||'').replace(/[.!?]+$/,'');
 const lower=s=>s?s[0].toLowerCase()+s.slice(1):'';
-function cue(full,source){
+  function cue(full,source){
  const arc=full.behavioral_arc||{}, energy=full.behavior_energy_v1||{};
  const value=(opts)=>opts.map(([field,v])=>norm(v)?{field,value:v}:null).find(Boolean)||null;
  return {
@@ -310,7 +310,7 @@ function cue(full,source){
    contrast_provenance:{record_id:source.id,constructive_field:source.provenance.constructive_field,costly_field:source.provenance.costly_field}
  };
 }
-function composeReading(synthesis,cues){
+  function composeReading(synthesis,cues){
  if(!synthesis.overlap){
   return 'These records do not describe one clearly shared behavior. Each has its own emphasis, and forcing them into a single story would obscure those differences. We can begin instead with a decision you remember clearly, then ask which descriptions, if any, help explain what you actually did.';
  }
@@ -324,7 +324,7 @@ function composeReading(synthesis,cues){
  const opening=frame?frame.opening:'One recurring theme across these records is '+lower(o.label)+'.';
  const first='One description emphasizes '+lower(strip(a.essence))+'; another emphasizes '+lower(strip(b.essence))+'.';
  const thirdLine=third&&third.id!==a.id&&third.id!==b.id
-   ? ' A third angle is '+lower(strip(third.essence))+' — a consideration that can reinforce or complicate the first two.'
+   ? ' A third angle is '+lower(strip(third.essence))+' - a consideration that can reinforce or complicate the first two.'
    : '';
  const positives=cues.map(c=>c.constructive).filter(Boolean).slice(0,3);
  const negatives=cues.map(c=>c.costly).filter(Boolean).slice(0,3);
@@ -335,7 +335,7 @@ function composeReading(synthesis,cues){
  const test='The meaningful distinction is '+decision.charAt(0).toLowerCase()+decision.slice(1).replace(/[.!?]+$/,'')+'.';
  return [opening,first+thirdLine,balance,pressure,test].join(' ');
 }
-function buildSourceOSReading({selected_ids,records,crosswalk}){
+  function buildSourceOSReading({selected_ids,records,crosswalk}){
  const resolution=resolveSourceAIRecords({selected_ids,records,crosswalk});
  const synthesis=synthesizeSourceAI(resolution);
  const sourceMap=new Map(records.map(r=>[r.id,r]));
@@ -375,17 +375,17 @@ const {buildSourceOSReading}=require('./source-ai-reading-pipeline.cjs');
 const ROOT='celestial:layer', SYSTEM='celestial:system:human_design';
 const SOURCE_HD='MOB/atuned_src/engine/birth.js#hdOf';
 const SOURCE_ASTRO='MOB/atuned_src/engine/astro.js#gateOf';
-function check(v,msg){if(!v)throw new Error('Human Design peer seam: '+msg)}
-function flagFree(o){return o&&o.score_permission===false&&o.may_affect_coherence===false&&o.computational_effect==='none'}
-function nullish(v){return v===null||v===undefined}
-function gates(g){
+  function check(v,msg){if(!v)throw new Error('Human Design peer seam: '+msg)}
+  function flagFree(o){return o&&o.score_permission===false&&o.may_affect_coherence===false&&o.computational_effect==='none'}
+  function nullish(v){return v===null||v===undefined}
+  function gates(g){
  if(nullish(g))return null;
  check(g&&typeof g==='object'&&Number.isInteger(g.gate)&&g.gate>=1&&g.gate<=64,'gate 1..64 required');
  check(Number.isInteger(g.line)&&g.line>=1&&g.line<=6,'line 1..6 required');
  return {gate:g.gate,line:g.line,gate_id:'human_design:gate:'+g.gate,reference_only:true,
    semantic_meaning_record_id:null};
 }
-function humanDesignContext({hd=null,provenance=SOURCE_HD,calculation_policy='MOB_HD_SOLAR_GATE_V1_UNREVIEWED'}={}){
+  function humanDesignContext({hd=null,provenance=SOURCE_HD,calculation_policy='MOB_HD_SOLAR_GATE_V1_UNREVIEWED'}={}){
  check(typeof provenance==='string'&&provenance===SOURCE_HD,'only confirmed existing MOB HD source accepted in v1');
  let p=null,d=null,profile=null, unresolved='No Human Design birth derivation supplied';
  if(hd!==null){
@@ -422,7 +422,7 @@ function humanDesignContext({hd=null,provenance=SOURCE_HD,calculation_policy='MO
   graph_import_allowed:false
  };
 }
-function fourPeerProjection({records,crosswalk,targetRegistry=[],approvedMappings=[]}){
+  function fourPeerProjection({records,crosswalk,targetRegistry=[],approvedMappings=[]}){
  const base=buildCelestialParentProjection({records,crosswalk,targetRegistry,approvedMappings});
  check(base.nodes.some(x=>x.id===ROOT)&&!base.nodes.some(x=>x.id===SYSTEM),'base graph incompatible');
  check(base.edges.every(flagFree),'base graph score firewall');
@@ -447,7 +447,7 @@ function fourPeerProjection({records,crosswalk,targetRegistry=[],approvedMapping
  check(ids.size===result.nodes.length&&result.edges.every(x=>ids.has(x.from)&&ids.has(x.to)),'graph endpoints or duplicate nodes');
  return result;
 }
-function fourPeerReading({selected_ids,records,crosswalk,hd=null}){
+  function fourPeerReading({selected_ids,records,crosswalk,hd=null}){
  const base=buildSourceOSReading({selected_ids,records,crosswalk});
  check(flagFree(base)&&base.graph_import_allowed===false,'legacy tri-system packet contract violated');
  const human_design=humanDesignContext({hd});
@@ -479,15 +479,15 @@ const LAYERS=Object.freeze([
  'outcome','ritual','practice_event','context'
 ]);
 const PROVENANCE=Object.freeze(['known','inferred','proposed','user_confirmed','observed']);
-function invariant(ok,why){if(!ok)throw new Error('Celestial Avatar Cascade: '+why);}
-function name(v){return typeof v==='string'&&v.trim()?v.trim():null;}
-function quoteRef(r) {return {record_id:r.id,field:r.field,verbatim:r.verbatim};}
-function graphKey(n){
+  function invariant(ok,why){if(!ok)throw new Error('Celestial Avatar Cascade: '+why);}
+  function name(v){return typeof v==='string'&&v.trim()?v.trim():null;}
+  function quoteRef(r) {return {record_id:r.id,field:r.field,verbatim:r.verbatim};}
+  function graphKey(n){
  if(!n||typeof n!=='object')return null;
  if(name(n.key))return n.key;
  return name(n.type)&&name(n.id)?n.type+':'+n.id:null;
 }
-function readTrace(graph){
+  function readTrace(graph){
  if(graph==null)return {nodes:[],edges:[],byKey:new Map(),links:new Map()};
  invariant(graph&&Array.isArray(graph.nodes)&&Array.isArray(graph.edges),'trace graph must have nodes and edges');
  const byKey=new Map(),links=new Map();
@@ -509,7 +509,7 @@ function readTrace(graph){
  }
  return {nodes:[...byKey.values()],edges:graph.edges,byKey,links};
 }
-function route(graph,start,maxDepth=7){
+  function route(graph,start,maxDepth=7){
  if(!start||!graph.byKey.has(start))return {focus_found:false,neighbors:[],paths:[]};
  invariant(Number.isInteger(maxDepth)&&maxDepth>=0&&maxDepth<=20,'invalid maximum depth');
  const q=[{key:start,path:[],depth:0}], seen=new Set([start]),neighbors=[],paths=[];
@@ -532,7 +532,7 @@ function route(graph,start,maxDepth=7){
  }
  return {focus_found:true,neighbors,paths};
 }
-function sourceMotion(cues){
+  function sourceMotion(cues){
  return cues.map(c=>({
   record_id:c.id,label:c.name,
   context_trigger:c.trigger?{field:c.trigger.field,verbatim:c.trigger.value}:null,
@@ -545,7 +545,7 @@ function sourceMotion(cues){
   inspired_alternative:c.next_step?{field:c.next_step.field,verbatim:c.next_step.value}:null
  }));
 }
-function avatarPair(avatar,pairId){
+  function avatarPair(avatar,pairId){
  if(!pairId)return null;
  invariant(avatar&&Array.isArray(avatar.pairs),'avatar pairs required for selected pair ID');
  const matches=avatar.pairs.filter(p=>p&&p.id===pairId);
@@ -554,7 +554,7 @@ function avatarPair(avatar,pairId){
   source:'MOB/atuned_src/engine/avatar.js',owner:'user_authored',
   current_progress:null,may_advance_from_celestial:false};
 }
-function selectedMask(masks,maskId){
+  function selectedMask(masks,maskId){
  if(!maskId)return null;
  invariant(Array.isArray(masks),'mask registry required');
  const m=masks.filter(x=>x&&x.id===maskId);
@@ -564,7 +564,7 @@ function selectedMask(masks,maskId){
   source_path:m[0].source_path,kind:'expression_modulator_not_graph_ancestry',
   activated_by_evidence:false};
 }
-function evidenceRefs(evidence,graph){
+  function evidenceRefs(evidence,graph){
  invariant(Array.isArray(evidence),'evidence references must be an array');
  return evidence.map(e=>{
   invariant(e&&name(e.id)&&name(e.kind),'evidence ID and kind required');
@@ -578,7 +578,7 @@ function evidenceRefs(evidence,graph){
     supports_motif:e.supports_motif===true,counterexample:e.kind==='counterexample'};
  });
 }
-function buildCelestialAvatarCascade({
+  function buildCelestialAvatarCascade({
  selected_ids,records,crosswalk,hd=null,
  trace_graph=null,focused_layer='celestial',focused_record_id=null,
  selected_mask_id=null,mask_registry=[],avatar=null,avatar_pair_id=null,
@@ -655,11 +655,11 @@ unit("./celestial-avatar-cascade-view.cjs",function(module,require){
 const {buildCelestialAvatarCascade,readTrace}=require('./celestial-avatar-cascade.cjs');
 const esc=x=>String(x==null?'':x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const label=x=>x?esc(x):'Not established';
-function list(items,render,empty='No supporting records available'){
+  function list(items,render,empty='No supporting records available'){
  return items&&items.length?'<ul>'+items.map(x=>'<li>'+render(x)+'</li>').join('')+'</ul>':
  '<p class="cal-muted">'+esc(empty)+'</p>';
 }
-function renderCelestialAvatarCascade(view,choices={}){
+  function renderCelestialAvatarCascade(view,choices={}){
  if(!view||view.schema!=='atuned.celestial.avatar_cascade_view.v1')
   throw new Error('Cascade view renderer requires a V10 view model');
  const opts=(items,selected,fmt)=>items.map(x=>{
@@ -681,7 +681,7 @@ function renderCelestialAvatarCascade(view,choices={}){
   '<p><b>Costly:</b> '+label(x.shadow_expression?.verbatim)+'</p>'+
   '<p><b>Hinge:</b> '+label(x.behavioral_hinge?.verbatim)+'</p></article>').join('');
  const pathText=view.psyche.observed_ancestor_descendant_paths.slice(0,50).map(p=>
-  '<li><strong>'+esc(p.target_key)+'</strong> — '+p.steps.map(s=>
+  '<li><strong>'+esc(p.target_key)+'</strong> - '+p.steps.map(s=>
    esc(s.from+' '+s.relation+' '+s.to+' ['+s.provenance+']')).join(' / ')+'</li>').join('');
  const hd=view.lens.human_design;
  return '<section class="cal-root" data-celestial-avatar-cascade="v1" aria-label="Celestial behavioral avatar lens">'+
@@ -721,7 +721,7 @@ function renderCelestialAvatarCascade(view,choices={}){
  '<p class="cal-muted">Read-only · No CQ/DQ/SQ, profile, fetter, nerve or avatar state is modified.</p>'+
  '</section>';
 }
-function mountCelestialAvatarCascade(container,inputs){
+  function mountCelestialAvatarCascade(container,inputs){
  if(!container||typeof container.querySelector!=='function')throw new Error('DOM container required');
  const options={mask_registry:inputs.mask_registry||[],avatar:inputs.avatar||null,
   trace_graph:inputs.trace_graph||null};
@@ -755,6 +755,6 @@ function mountCelestialAvatarCascade(container,inputs){
 module.exports={renderCelestialAvatarCascade,mountCelestialAvatarCascade,esc};
 
 });
-function src(){if(typeof AT_CELESTIAL_SNAPSHOT==='undefined')throw Error('Celestial snapshot missing');return AT_CELESTIAL_SNAPSHOT;}
+  function src(){if(typeof AT_CELESTIAL_SNAPSHOT==='undefined')throw Error('Celestial snapshot missing');return AT_CELESTIAL_SNAPSHOT;}
 return {snapshot:src,build:function(args){var d=src();return mods['./celestial-avatar-cascade.cjs'].buildCelestialAvatarCascade(Object.assign({records:d.records,crosswalk:d.crosswalk},args||{}));},render:mods['./celestial-avatar-cascade-view.cjs'].renderCelestialAvatarCascade,mount:function(container,args){var d=src();return mods['./celestial-avatar-cascade-view.cjs'].mountCelestialAvatarCascade(container,Object.assign({records:d.records,crosswalk:d.crosswalk},args||{}));}};
 })();
