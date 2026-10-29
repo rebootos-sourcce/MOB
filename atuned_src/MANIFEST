@@ -11,6 +11,7 @@ engine/data/practice.js
 engine/data/teachers_recipes.js
 engine/data/affirm.js
 engine/data/people.js
+engine/data/celestial_snapshot.js
 engine/data/zones.js
 engine/data/catalog.js
 engine/data/kb.js
@@ -47,6 +48,7 @@ engine/astro.js
 engine/birth.js
 engine/numerology.js
 engine/overlap.js
+engine/celestial_portal.js
 engine/seed.js
 engine/read.js
 engine/ladder.js
@@ -77,6 +79,7 @@ ui/storyui.js
 ui/summary.js
 ui/daily.js
 ui/analytics.js
+ui/celestialui.js
 ui/avatarui.js
 ui/intakeui.js
 ui/release.js
