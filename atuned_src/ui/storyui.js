@@ -75,7 +75,7 @@ function stRender(){
     whole story and then refused it at Commit, which is a control that looks
     like it works until the moment it does not. */
  var show=showOnly();
- var out='<div class="st-flow" id="stflow" data-focus="'+STV.focus+'">'
+ var out='<div class="st-flow'+(STV.dash?'':' st-simple')+'" id="stflow" data-focus="'+STV.focus+'">'
   /* ---- the write column: the journal, with Source AI inside it ---- */
   +'<div class="st-colw">'
   +'<div class="st-pan st-jr'+(STV.chat?' st-chat':'')+'" id="stjr">'
@@ -101,40 +101,26 @@ function stRender(){
      the question box is idle and holds lit while it reads, and it sits beside
      the word it was always beside. */
   +'<div class="st-hd">'
-   +stMark('j','Journal','journal','','<span class="src-live" aria-hidden="true"></span>')
+   /* THE JOURNAL MARK IS GONE FROM THIS HEADER, round of 29 October, his
+      words: "the icon for journal and the text journal remove." Talk takes
+      its place on the left; Dashboard keeps the right. stMark('j',...) is
+      still the Discover door's own name elsewhere (TABDEF, the section
+      itself), only this panel's own repeated word is cut. */
    +'<div class="st-hdbtns">'
-   /* THE DASHBOARD DOOR, round of 29 October. Lance asked for a Dashboard
-      button on the Journal. His own 20 September ruling already named what
-      that word means in this product: "THE AVATAR IS THE DASHBOARD" (TASKS.md
-      0o), the avatar reading across every tool at once. The Avatar already
-      exists and already renders (TAB.INTAKE, nm:'Avatar', renderAvatar() in
-      ui/avatarui.js), so this is a door to the surface already carrying that
-      name, not a new screen. If the full avatar-as-dashboard build (TASKS.md
-      AV1-AV4, unchecked) later changes what Avatar shows, this button still
-      opens the right tab without changing here. */
-   +(show?'':'<button class="st-dash" id="stdash" type="button" title="Open the avatar, your dashboard across every tool">'
-   +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">'
-   +'<rect x="3.5" y="3.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.4"/>'
-   +'<rect x="3.5" y="13.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.4"/></svg>'
-   +'<span>Dashboard</span></button>')
-   /* TALK IS GONE AS A TOGGLE, round of 28 October, his words: "the focus
-      needs to be on two-way conversation for the journal ... this needs to
-      be a two-way conversation between me and the source." A button that
-      switched the conversation on and off said the conversation was one
-      choice among others; it is not, it is the only way the Journal now
-      shows Source AI's side, so there is nothing left to toggle. STV.chat
-      is forced true below (see the state block) and the written block
-      srcPaint could still build is simply never reached. Record keeps its
-      own button: it still only starts or stops the microphone, same as
-      before. */
+   /* TALK, THE ONLY CONTROL ON THE LEFT, round of 29 October. His words:
+      "when I press dashboard these should be... the talk button move it to
+      the left side... this is simply just a talk button, where I can have a
+      normal two-way conversation with source AI." Still the same control
+      that starts or stops the microphone (stMic); the word changed, not the
+      wiring. The clock and the dot are unchanged. */
    +(show?'':'<button class="st-mic'+(ST_LISTEN?' on':'')+'" id="stmic" type="button" '
-   +'title="'+(ST_LISTEN?'Recording. Press to stop and keep what it heard.'
-     :'Record what happened out loud instead of typing it. Recording sends the audio to your browser\'s speech service; typing does not leave this device.')+'">'
+   +'title="'+(ST_LISTEN?'Listening. Press to stop and keep what it heard.'
+     :'Talk instead of typing. What you say goes to your browser\'s speech service; typing does not leave this device.')+'">'
    +'<span class="st-dot"></span>'
    +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
    +'<rect x="9" y="3" width="6" height="11" rx="3"/>'
    +'<path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg>'
-   +'<span>'+(ST_LISTEN?'Recording':'Record')+'</span>'
+   +'<span>'+(ST_LISTEN?'Listening':'Talk')+'</span>'
    /* THE CLOCK, ROUND LV. His words: "I want the time showing how long my
       recording is." mm:ss, in the button itself so it reads as one control
       rather than two things to track, and gone the moment recording is,
@@ -144,7 +130,23 @@ function stRender(){
       that shows it runs. */
    +(ST_LISTEN?'<span class="st-mictime" id="stmictime" aria-hidden="true">'
      +stMicFmt(stMicElapsed())+'</span>':'')
-   +'</button>')+'</div></div>'
+   +'</button>')
+   +'<span class="src-live" aria-hidden="true"></span>'
+   /* THE DASHBOARD DOOR, ON THE RIGHT, round of 29 October. His own 20
+      September ruling already named what that word means in this product:
+      "THE AVATAR IS THE DASHBOARD" (TASKS.md 0o), the avatar reading across
+      every tool at once. The Avatar already exists and already renders
+      (TAB.INTAKE, nm:'Avatar', renderAvatar() in ui/avatarui.js). Pressing
+      it no longer opens that tab: it toggles Imprints and Release open or
+      shut beside the conversation, simple on landing, his words "when I
+      land on this page it starts off in simple mode" and "if I press it
+      dashboard icon is lit up." stStoryDashToggle, bound below. */
+   +(show?'':'<button class="st-dash'+(STV.dash?' on':'')+'" id="stdash" type="button" title="Show Imprints and Release beside the conversation">'
+   +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">'
+   +'<rect x="3.5" y="3.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.4"/>'
+   +'<rect x="3.5" y="13.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.4"/></svg>'
+   +'<span>Dashboard</span></button>')
+   +'</div></div>'
   /* SOURCE AI AND THE JOURNAL'S MENU CHANGED PLACES, round LO, his words: "I
      want you to swap the main journal menu with the source AI question." The
      column read Source AI, then the journal's own top line with Record on it,
@@ -174,18 +176,17 @@ function stRender(){
      .src-comb. It is a sibling of #stsrc and not inside it, for the reason
      the halo is: srcPaint rewrites #stsrc on every key, and the floor is
      painted once a render. srcLock puts every loop in here on one clock. */
-  /* TALK, NOT CHAT, round of 29 October. His words: "Source AI should be the
-     primary talking feature. It's a talk, not a chat now." The word "chat"
-     never appeared as copy anywhere on this page (STV.chat, srcChat* and
-     .st-chat are code names, never shown), so this is not a find-and-replace.
-     It is naming the thing out loud the way Journal, Imprints and Release
-     already are: one small word above Source AI's own line, in the same
-     tier1 eyebrow every other named panel on this build uses, so a person
-     sees what this is before they read a single line of it. Static, outside
-     #stsrc, for the same reason srcComb is: srcPaint rewrites #stsrc's own
-     innerHTML on every key and this label does not change. */
-  +(show?showNote('story','st-show'):'<div class="st-glow"><p class="tier1 st-talklbl">Talk</p><div class="st-pe" id="stsrc" aria-label="Question"></div>'
-  +srcComb()+'</div>'
+  /* THE EYEBROW IS GONE, round of 29 October, his words: "get rid of that
+     text that says talk." The Talk button named on the left is the label
+     now; Source AI's own line carries no second name above it. */
+  /* THE GRADIENT BAR UNDER SOURCE AI IS GONE, round of 29 October. A second,
+     separate rainbow element from the per-word floor strip cut 28 October
+     (srcComb's seat-colour gradient, not the trace canvas): missed twice
+     before a photo made it obvious it sat right over the reply box. His
+     words both times were "get rid of those rainbow colours," and this is
+     the one that was still there. srcComb() itself stays defined, in case a
+     later screen wants it, only this call is cut. */
+  +(show?showNote('story','st-show'):'<div class="st-glow"><div class="st-pe" id="stsrc" aria-label="Question"></div></div>'
   /* THE FETTERS LIGHT UP IN THE PERSON'S OWN SENTENCE.
 
      The sniffer already names every word it is reading and which seat that
@@ -215,7 +216,11 @@ function stRender(){
     +crisisReachBtn('st-crxline')+'</div>':'')
   +(STV.chat
    ?'<div class="src-cmp"><textarea id="stcin" class="src-cin" rows="2" spellcheck="false" '
-    +'aria-label="Your reply" placeholder="Write back. Enter sends.">'+esc(SRC_CDRAFT)+'</textarea>'
+    /* THE PLACEHOLDER IS GONE, round of 29 October, his words: "get rid of
+       right back enter sends," heard off "Write back. Enter sends." The
+       field still has its screen-reader name; nothing visible stands in it
+       empty. */
+    +'aria-label="Your reply">'+esc(SRC_CDRAFT)+'</textarea>'
     +'<button type="button" class="src-new" id="stcsend" aria-label="Send" title="Send">'
     +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6.5l5.5 5.5-5.5 5.5"/></svg>'
     +'</button></div>'
@@ -308,9 +313,13 @@ function stRender(){
   +'<div class="st-pan st-ls" id="stls" aria-label="Imprints, listed">'
    +'<div class="st-lshd" id="stlshd"></div><div class="st-lsb" id="stimps"></div></div>'
   +'</div>'
-  /* ---- the release column. It keeps the id its rail section had. The
-     analytics preview is last in it, closed, see stAnaHtml. ---- */
-  +'<div class="st-colx"><div class="st-rl" id="strel" aria-label="Release"></div>'+stAnaHtml()+stLawHtml()+'</div>'
+  /* ---- the release column. It keeps the id its rail section had. ----
+     ANALYTICS PREVIEW AND LAWS NOTICED ARE GONE FROM THIS COLUMN, round of
+     29 October, his words: "get rid of the analytics preview button... get
+     rid of the laws notice that." stAnaHtml() and stLawHtml() stay defined,
+     only the calls here are cut; nothing else in the product reached them
+     through this column. */
+  +'<div class="st-colx"><div class="st-rl" id="strel" aria-label="Release"></div></div>'
   +'</div>'
   /* WHAT A SCREEN READER HEARS IS WHAT SOURCE AI SAYS, ONCE. The column is
      rewritten on every keystroke, so a live column would read itself aloud
@@ -358,8 +367,15 @@ function stRender(){
  if(ap)ap.onclick=function(){if(STV.chat)srcChatSend(); return stCommit();};
  var mic=document.getElementById('stmic');
  if(mic)mic.onclick=stMic;
+ /* DASHBOARD TOGGLES, ON THIS SCREEN, round of 29 October. His words: "when
+    I land on this page it starts off in simple mode... if I press it
+    dashboard icon is lit up." It no longer leaves the Journal for the
+    Avatar tab; it shows or hides the real Imprints and Release columns
+    already built beside it, nothing invented. stRender() repaints the
+    whole flow, so the hidden columns' own content stays current under
+    .st-flow.dash-simple's display:none the moment Dashboard opens them. */
  var dash=document.getElementById('stdash');
- if(dash)dash.onclick=function(){setTab(TAB.INTAKE); if(typeof renderAvatar==='function')renderAvatar();};
+ if(dash)dash.onclick=function(){STV.dash=!STV.dash; stRender();};
  srcChatWire();}
 
 /* ============================================================
@@ -371,8 +387,11 @@ function stRender(){
    to be on two-way conversation for the journal ... this needs to be a
    two-way conversation between me and the source." Nothing sets it false
    again: the Talk button that used to toggle it is gone, see stWire. */
+/* DASHBOARD STARTS OFF, round of 29 October, his words: "when I land on this
+   page, it starts off in simple mode." Imprints and Release are real panels,
+   not removed, only shut until Dashboard is pressed; see stStoryDashToggle. */
 var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:true,law:false,
- unsaved:null,draftT:null,draftFail:false,crisis:false};
+ unsaved:null,draftT:null,draftFail:false,crisis:false,dash:false};
 /* the one width the page changes shape at is the one the product stacks its
    columns at, so the Story cannot be in three columns while the rails are
    already one. */
@@ -1135,13 +1154,13 @@ function srcPaint(){
     an ask, which has its own question and Move on, and not after Move on,
     which is final for the entry. A press repaints and puts the focus back on
     the button pressed, so the next press is one key away. */
- var acts='<div class="src-acts">'
-   +'<button type="button" class="src-new" id="srcnew" aria-label="Another question" title="Another question">'
-   +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4.5h-4.5"/></svg>'
-   +'</button>'
-   +'<button type="button" class="src-new" id="srcdyn" aria-label="A question from what you wrote" title="A question from what you wrote">'
-   +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 5h15v10.5H10l-4.5 4v-4h-1z"/><path d="M10 8.6l-1.1 2.6M14.2 8.6l-1.1 2.6"/></svg>'
-   +'</button></div>';
+ /* THE TWO PRESSES ARE GONE, round of 29 October, his words: "get rid of the
+    another question button... get rid of a question from what you wrote
+    button because we have rules for the way source AI behaves. We don't
+    need these anymore." srcNextQ() and srcDyn() stay defined and reachable
+    (press() below still wires #srcnew/#srcdyn if either ever returns), only
+    the buttons that called them are cut. */
+ var acts='';
  var q=turn.move==='open'||turn.move==='listen'?srcQuestion():ask;
  if(turn.move==='open')
   o+='<div class="src-ask">'+srcLand('src-open',q)+acts+'</div>';
@@ -2000,19 +2019,12 @@ function stListPaint(){
  if(STV.list==='vault'){stVaultPaint(hd,box);return;}
  /* the person's own draft is not read onto a worked example's page */
  var p=showOnly()?null:ST_PARSED,n=p?p.imprints.length:0,o='';
- hd.textContent='Pending imprints, by '+ST_SORTS.filter(function(s){return s[0]===STV.sort;})[0][1].toLowerCase();
- /* THE EMPTY STATE SAYS WHAT IS TRUE. After a commit the box is empty and the
-    person has just written, so "you have not written anything yet" would be
-    the false empty state ui/imprints.js already records. */
- if(!n){
-  /* a worked example has no journal to gather from (showOnly, ruled 16
-     October), so the line does not invite writing that cannot happen */
-  box.innerHTML='<p class="st-none">'+(showOnly()?'Nothing is pending. On your own profile, what you write gathers here.'
-   :ST_TEXT.trim()
-   ?'Nothing in this entry reads as held yet. Keep writing, or write where you felt it.'
-   :(STV.lastFound.length?'Your last entry is in the field and its addresses are queued in the release. The next entry gathers here.'
-    :'You have not written anything yet. Whatever you write gets pulled apart and collected here.'))+'</p>';
-  ST_SEEN={};return;}
+ /* THE HEADING AND THE EMPTY-STATE SENTENCE ARE GONE, round of 29 October,
+    his words: "get rid of the text pending imprints by seat... you have not
+    written anything yet." The sort control above it still says which sort
+    is active; the box is simply blank until there is something to list. */
+ hd.textContent='';
+ if(!n){ box.innerHTML=''; ST_SEEN={}; return; }
  var seen={};
  STC.lm.lanes.forEach(function(l){if(!l.imps||!l.imps.length)return;var c=seatCol(l.seat),pills=[],fold={};
   /* AN AXIS NAMED IS NOT AN ADDRESS NAMED, S4 of the 9 October sniffer audit,
@@ -2144,9 +2156,11 @@ function stRelPanel(){
  var M=stRelModel(), o='';
  o+=stMark('r','Release','release','st-rlhd')
   +'<div class="st-rlmid">';
- /* The refusal stays, because with nothing held the panel would be a button
-    that does nothing and no word why. */
- if(!M.take.length)o+='<p class="st-none">Nothing is held above the line yet, so there is nothing to release.</p>';
+ /* THE SENTENCE IS GONE, round of 29 October, his words: "get rid of the text
+    that says nothing is held above the line yet." Run release still carries
+    its own disabled state with nothing to release; this panel is simply
+    blank above it until there is. */
+ if(!M.take.length){}
  else o+='<div class="st-rings">'+M.take.map(function(a){var on=ST_OFF[a.i]!==true;
    return '<button type="button" class="st-rq" data-rq="'+a.i+'" aria-pressed="'+on+'" '
     +'aria-label="'+esc(a.k+', '+a.b)+'" title="'+esc(a.k+', '+a.b)+'">'+crNode(a,'sm',{raw:'',title:''})+'</button>';}).join('')
