@@ -21,6 +21,8 @@ jobs:
           node-version: '22'
       - name: Verify 36 sources, 15 groups, 1728 combinations, Avatar mount and score isolation
         run: node tests/celestial_bridge.js
+      - name: Install TypeScript required by existing slim delivery build
+        run: npm install --no-save --ignore-scripts typescript@5.9.3
       - name: Validate ordered full application build
         run: sh atuned_src/BUILD.sh /tmp/atuned-celestial.html
       - name: Validate browser engine is host independent
