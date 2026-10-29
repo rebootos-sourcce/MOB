@@ -1116,9 +1116,16 @@ function srcGauge(top){
  return '<div class="src-row"><span class="src-gauge" style="--c:'+seatCol(top.band)+'">'
   +'<span>Next question</span>'+srcPips(top.rung,seatCol(top.band))
   +'<span class="src-seat">'+esc(top.band)+'</span></span></div>';}
+/* NOT "NOTHING READ". Round OY, 1 October, caught by his own screenshot: the
+   panel read "53 words read, 1 kept" beside this line reading "Nothing read
+   yet, so nothing is asked" on the same entry, which is the house's own empty
+   state wording (V19, atuned-voice SKILL.md) borrowed for a state where it is
+   false. Words were read; no seat was found in them. Those are different
+   facts and V19 is reserved for the first one (nothing written at all, see
+   the literal strings beside SRC_DNONE below, which are that true case).
+   This says the true one instead. */
 function srcNone(){
- return 'Nothing read yet, so '+(SRC_DNONE?'there is nothing of yours to ask from':'nothing is asked')
-  +'. Say what your body did, and where.';}
+ return 'Nothing placed yet, so nothing is asked. Say what your body did, and where.';}
 function srcPaint(){
  var h=document.getElementById('stsrc'); if(!h)return;
  var heard=STR.heard||srcHear(ST_TEXT,null);
@@ -2650,7 +2657,17 @@ function stMic(){
     `heard` now accumulates every FINAL result as it finalises, so a
     sentence survives a pause. `live` is only ever the current interim
     phrase, shown but never kept until the browser itself marks it final. */
- var heard=ST_TEXT;
+ /* TALK FILLS THE REPLY, IT DOES NOT WRITE THE ENTRY. Found by audit, 29
+    October: speaking wrote straight into ST_TEXT, the entry itself, past
+    SRC_CDRAFT and #stcin entirely, so a reply half typed before Talk was
+    pressed sat in the box untouched while the entry grew underneath it, and
+    Send then stitched the two together in an order nobody chose. Dictation
+    is typing by voice, so it goes where typing goes: the base it continues
+    from is whatever is already in the reply box, not the whole entry, and it
+    lands back in the same place, same as every key does (cin.oninput above).
+    Source AI reacts on Send, exactly as it does for a typed reply, never
+    mid-sentence. */
+ var heard=SRC_CDRAFT;
  /* STARS FROM THE SPEECH SERVICE ARE SAID ONCE, round QR. The browser's
     speech service filters what it counts as swearing before the words reach
     this handler, and nothing here can undo it (maskedRuns, engine/sniff.js).
@@ -2663,8 +2680,7 @@ function stMic(){
    var t=e.results[i][0].transcript;
    if(e.results[i].isFinal) fin+=t; else live+=t;}
   if(fin) heard=(heard+' '+fin).trim();
-  ST_TEXT=(heard+' '+live).trim();
-  ST_PARSED=ST_TEXT?parseStory(ST_TEXT):null; stDraft(); stRender();
+  SRC_CDRAFT=(heard+' '+live).trim(); stDraft(); stRender();
   var hid=maskedRuns(heard).length;
   if(fin&&hid>hidAt){
    status('Dictation hid '+(hid-hidAt===1?'a word':(hid-hidAt)+' words')
