@@ -1,3 +1,9 @@
+# V12 real-browser acceptance add-on (2026-10-29)
+
+A headless Chromium regression is now committed at [MOB `tests/celestial_browser.js`](https://github.com/rebootos-sourcce/MOB/blob/celestial/avatar-overlay-seam-2026-10-29/tests/celestial_browser.js). It loads the actual generated MOB HTML, uses a synthetic in-memory birth profile, opens the real Avatar Celestial panel, changes the mask selector and checks unchanged CURP/CQ and browser errors. [MOB CI workflow](https://github.com/rebootos-sourcce/MOB/blob/celestial/avatar-overlay-seam-2026-10-29/.github/workflows/celestial-avatar-seam.yml) now provisions Playwright and Chromium. **The browser acceptance job is still queued; do not mark this test as passing.** The already green [Node/full-build run 40890827922](https://github.com/rebootos-sourcce/MOB/actions/runs/40890827922) remains the verified engineering baseline. [MOB draft PR #149](https://github.com/rebootos-sourcce/MOB/pull/149) stays open/unmerged.
+
+---
+
 # Latest V12 checkpoint — two-repository audit and source-sync verified
 
 Current feature-branch review: [MOB draft PR #149](https://github.com/rebootos-sourcce/MOB/pull/149). The source regeneration tool [`tools/regen-celestial-browser-bridge.cjs`](https://github.com/rebootos-sourcce/MOB/blob/celestial/avatar-overlay-seam-2026-10-29/tools/regen-celestial-browser-bridge.cjs) is committed and syntax-checked. **The generated 36-record source snapshot and 6-module browser adapter were independently reconstructed from live Reboot-OS canonical files and matched their checked-in MOB files byte-for-byte**, including original SHA provenance (15 source JSON files + six source modules). Source data remains in the private Reboot repo; to regenerate you need a local authorized checkout, not an unauthorized public CI fetch.
