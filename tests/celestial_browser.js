@@ -47,9 +47,13 @@ const {chromium}=require('playwright');
    const play=document.querySelector('#secbar .secb[data-sec="play"]');
    const top=document.querySelector('.top');
    const cs=play&&getComputedStyle(play);
+   const hierarchy=[];for(let e=play;e&&hierarchy.length<7;e=e.parentElement){
+    const c=getComputedStyle(e);hierarchy.push({tag:e.tagName,id:e.id,cls:e.className,
+     display:c.display,visibility:c.visibility,opacity:c.opacity,hidden:e.hidden});}
    return {width:innerWidth,folded:!document.getElementById('tabnames').checked,
     section:top&&top.getAttribute('data-sec'),
-    display:cs&&cs.display,visibility:cs&&cs.visibility,
+    foldedRuleMatches:play.matches('.tabnames-i:not(:checked)~.secbar .secb:not([aria-pressed=true])'),
+    display:cs&&cs.display,visibility:cs&&cs.visibility,hierarchy:hierarchy,
     rect:play&&play.getBoundingClientRect().toJSON()};
   });
   console.log('Avatar navigation preflight '+JSON.stringify(nav));
