@@ -44,9 +44,8 @@ const {chromium}=require('playwright');
    /* Synthetic birth date; do not alter any stored record. */
    if(!CURP.who)CURP.who={};
    CURP.who.born={date:'2000-04-06',timeUnknown:true,time:'',place:'',zone:''};
-   const before=JSON.stringify(CURP), cq=compute().CQ;
    renderAvatar();
-   return {before,cq,host:!!document.querySelector('[data-avcelestial]')};
+   return {host:!!document.querySelector('[data-avcelestial]')};
   });
   assert.equal(initial.host,true,'actual Avatar panel must contain the new host');
   /* The actual application opens on Discover. Avatar is in the Play section.
@@ -77,6 +76,10 @@ const {chromium}=require('playwright');
   await avatarTab.waitFor({state:'visible',timeout:10000});
   await avatarTab.click({timeout:10000});
   await page.waitForFunction(()=>S.tab===TAB.INTAKE && !!document.querySelector('#avbody [data-avcelestial]'));
+  /* The existing Avatar lifecycle stamps avatar.movedAt when this tab is
+     entered. Take the score/profile baseline AFTER that native lifecycle
+     but BEFORE the optional read-only Celestial overlay is opened. */
+  const baseline=await page.evaluate(()=>({before:JSON.stringify(CURP),cq:compute().CQ}));
   const toggle=page.locator('#avbody [data-avcel-toggle]');
   await toggle.waitFor({state:'visible',timeout:10000});
   await toggle.click({timeout:10000});
@@ -95,8 +98,8 @@ const {chromium}=require('playwright');
    after:JSON.stringify(CURP),cq:compute().CQ
   }));
   assert.match(mod.read,/Professional mask/);
-  assert.equal(mod.after,initial.before,'Avatar panel cannot rewrite CURP');
-  assert.equal(mod.cq,initial.cq,'Avatar panel cannot change CQ');
+  assert.equal(mod.after,baseline.before,'Celestial overlay cannot rewrite CURP after Avatar tab entry');
+  assert.equal(mod.cq,baseline.cq,'Celestial overlay cannot change CQ after Avatar tab entry');
   await toggle.click();
   assert.equal(await page.locator('[data-cal-mask]').count(),0);
   assert.deepEqual(errors,[],'browser JS errors');
