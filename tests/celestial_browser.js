@@ -30,11 +30,13 @@ const {chromium}=require('playwright');
   /* Guest can open the genuine first-run onboarding stage. Its body.ob-on
      state deliberately hides the whole .app, including Play navigation.
      Choose the visible "Not now" control before testing the Avatar. */
+  await page.waitForFunction(()=>document.body.classList.contains('ob-on') &&
+   typeof OB==='object' && OB.open===true,null,{timeout:15000});
   const onboarding=page.locator('#ob .obx-top .obx-x[data-ob="skip"]');
-  if(await onboarding.isVisible()){
-   await onboarding.click({timeout:10000});
-   await page.waitForFunction(()=>!document.body.classList.contains('ob-on'),null,{timeout:12000});
-  }
+  await onboarding.waitFor({state:'visible',timeout:15000});
+  await onboarding.click({timeout:15000});
+  await page.waitForFunction(()=>!document.body.classList.contains('ob-on') &&
+   OB.open===false,null,{timeout:15000});
   const initial=await page.evaluate(()=>{
    /* Synthetic birth date; do not alter any stored record. */
    if(!CURP.who)CURP.who={};
