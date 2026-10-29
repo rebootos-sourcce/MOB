@@ -32,7 +32,10 @@ const {chromium}=require('playwright');
      Choose the visible "Not now" control before testing the Avatar. */
   await page.waitForFunction(()=>document.body.classList.contains('ob-on') &&
    typeof OB==='object' && OB.open===true,null,{timeout:15000});
-  const onboarding=page.locator('#ob .obx-top .obx-x[data-ob="skip"]');
+  /* Step zero intentionally hides the stage-top Not now (#ob .obx-x).
+     Its real, visible Not now is in the welcome card's .obx-slot; use it. */
+  await page.waitForFunction(()=>OB.step===0,null,{timeout:15000});
+  const onboarding=page.locator('#ob .obx-slot [data-ob="skip"]');
   await onboarding.waitFor({state:'visible',timeout:15000});
   await onboarding.click({timeout:15000});
   await page.waitForFunction(()=>!document.body.classList.contains('ob-on') &&
