@@ -16,6 +16,12 @@ const {chromium}=require('playwright');
   await page.waitForFunction(()=>typeof AT_CELESTIAL==='object' &&
    typeof AT_CELESTIAL_SNAPSHOT==='object' && typeof renderAvatar==='function' &&
    typeof CURP==='object' && typeof S==='object',{timeout:30000});
+  /* Use the application's genuine Guest entry point, not loginClose() or a
+     hidden-element force click. No credentials or remote accounts are used. */
+  const guest=page.locator('#loginb-skip');
+  await guest.waitFor({state:'visible',timeout:15000});
+  await guest.click({timeout:15000});
+  await page.waitForFunction(()=>getComputedStyle(document.getElementById('login')).display==='none');
   const initial=await page.evaluate(()=>{
    /* Synthetic birth date; do not alter any stored record. */
    if(!CURP.who)CURP.who={};
