@@ -6,7 +6,7 @@ const assert=require('node:assert/strict');
 const path=require('node:path');
 const url='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1';
 (async()=>{
- const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
+ const browser=await chromium.launch({headless:true,executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome',args:['--no-sandbox']});
  try{
   const page=await browser.newPage({viewport:{width:1200,height:900}});
   const errors=[];page.on('pageerror',e=>errors.push(String(e.message)));
