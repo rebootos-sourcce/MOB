@@ -1544,6 +1544,45 @@ function srcChatWire(){
    as the ones in front of them; a ring with nothing in it had no equivalent
    once there was no ring. srcchat.js's own check reads the new rule:
    the thread is the whole conversation in order, not one line at a time. */
+/* THE PERSON'S OWN BUBBLE SHOWS WHAT THE SNIFFER FOUND, round of 29
+   October, his words: "sentences that are sniffed are bolded with their
+   chakra color. The intensity modifier is italicized... as a person's
+   having their text conversation, they're seeing visually the construct
+   of their story." THE RULING ITSELF IS OLD: "Bold and coloured" is
+   already the rule at .st-f in the shell, reverted there only because
+   that layer sits behind a live textarea and bold glyphs are wider than
+   the box's own 300 weight, which drags the caret out of register with
+   what a person is looking at. A bubble is not a textarea overlay and
+   carries no caret to protect, so the true ruling runs here unreverted:
+   real bold, real colour, real italic on a mark whose intensity was
+   modified (m.mod, storyHits). The struck and dashed-underline treatments
+   for a no and an about-someone-else word are the same rules stHLHtml
+   already draws, read off the same STR.marks, so the two surfaces never
+   disagree about which letters were scored.
+
+   READ OFF STR.marks, THE WHOLE ENTRY'S OWN MARKS, SLICED TO THE TURN.
+   marksOf runs on the whole accumulated text, not a fragment, so a turn's
+   own marks are exactly the ones whose span falls inside its own [a,b)
+   stretch of ST_TEXT; stRead() keeps STR.marks current with ST_TEXT on
+   every refresh, srcTurnCommit's own call to stRefresh() included, so by
+   the time srcThread runs after a commit the marks for the turn just
+   landed are already there. */
+function srcMeHtml(from,to){
+ var marks=STR.marks.filter(function(m){
+  var back=m.neg?m.negFrom:m.oth?m.whoFrom:null;
+  var start=(back!=null)?back:m.s;
+  return start>=from&&m.e<=to;});
+ if(!marks.length)return esc(ST_TEXT.slice(from,to));
+ var out='',last=from;
+ marks.forEach(function(m){
+  var back=m.neg?m.negFrom:m.oth?m.whoFrom:null;
+  var start=(back!=null&&back>=last)?back:m.s;
+  out+=esc(ST_TEXT.slice(last,start))
+   +'<mark class="src-f'+(m.neg?' neg':m.oth?' oth':'')+(m.mod?' mod':'')+'" '
+   +'style="--c:'+(m.bn?seatCol(m.bn):'var(--accent)')+'">'
+   +esc(ST_TEXT.slice(start,m.e))+'</mark>';
+  last=m.e;});
+ return out+esc(ST_TEXT.slice(last,to));}
 function srcThread(turn,heard,cur,acts,why){
  var ents=(CURP&&CURP.story&&CURP.story.entries)||[], pr=null, last=-1;
  SRC_CHAT.forEach(function(r,i){if(r.w==='src')last=i;});
@@ -1559,7 +1598,7 @@ function srcThread(turn,heard,cur,acts,why){
      with its own border scheme; r.bd and the rung read above still feed
      srcThreadNow's own seat colour where a live ask still uses one
      (srcLand's style argument), unrelated to the bubble's own ground. */
-  if(r.w==='me')o+='<div class="src-bub src-bub-me"><p class="src-me">'+esc(r.t)+'</p></div>';
+  if(r.w==='me')o+='<div class="src-bub src-bub-me"><p class="src-me">'+srcMeHtml(r.a,r.b)+'</p></div>';
   else if(i===last)o+='<div class="src-bub src-bub-src">'+srcThreadNow(r,turn,heard,acts,why)+'</div>';
   else o+='<div class="src-bub src-bub-src src-bub-past"><p class="src-q">'+esc(r.q)+'</p></div>';
   o+='</li>';});

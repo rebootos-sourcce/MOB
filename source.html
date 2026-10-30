@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v719 58a4d42e 2026-10-30 02:16"><head><meta charset="utf-8">
+<html lang="en" data-build="v720 c031dc15 2026-10-30 04:10"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -4574,6 +4574,31 @@ body.quiet .src-livecap,body.rm .src-livecap{animation:none;opacity:.85}
  font-family:inherit;font-size:inherit;line-height:inherit;font-weight:inherit;color:inherit}
 .src-bub .src-note{opacity:.75;margin-top:6px}
 .src-bub .src-row{margin-top:10px}
+/* WHAT THE SNIFFER FOUND, SHOWN IN THE BUBBLE ITSELF, round of 29 October:
+   see the ruling at srcMeHtml in ui/storyui.js. Real bold and real colour,
+   the rule as it was written before the textarea's own caret forced a
+   compromise elsewhere (.st-f); a bubble carries no caret, so nothing
+   here needs the tint-and-box-shadow stand in. A mark whose intensity
+   was read as modified (storyHits' own mod, m.mod) carries italic too.
+   Negated and about-someone-else stay the same two rules S1 and S2
+   already draw on the legacy box (.st-f.neg, .st-f.oth), struck and
+   dotted-underlined, so the two surfaces never disagree. */
+/* background:none overrides the browser's own default yellow highlight on
+   a bare <mark>, which otherwise wins over color alone */
+.src-f{background:none;font-weight:700;color:var(--c)}
+.src-f.mod{font-style:italic}
+.src-f.neg{font-weight:400;font-style:normal;color:var(--dim);text-decoration:line-through;
+ text-decoration-color:color-mix(in srgb,var(--c) 70%,transparent)}
+.src-f.oth{font-weight:400;color:var(--dim);text-decoration:underline dotted}
+/* ON THE FILLED BUBBLE, THE COLOUR IS BLENDED TOWARD on-accent, never raw.
+   The person's own bubble is a solid accent fill; a seat colour picked to
+   read against the sunk ground elsewhere in the product is not chosen
+   against an accent fill and is not a contrast pair this product has
+   ever measured. Blended, it still reads as that seat's own hue and
+   always resolves toward the one ink already proven to sit on the
+   accent (.btn.pri and the rest), so it cannot fall below it. */
+.src-bub-me .src-f{color:color-mix(in srgb,var(--c) 55%,var(--on-accent))}
+.src-bub-me .src-f.neg,.src-bub-me .src-f.oth{color:color-mix(in srgb,var(--on-accent) 60%,transparent)}
 .src-tn-now .src-open,.src-tn-now .src-q{margin-top:0}
 /* the reply line, on the journal box's own ground and type */
 .src-cmp{display:flex;align-items:flex-end;gap:8px}
@@ -49351,6 +49376,45 @@ function srcChatWire(){
    as the ones in front of them; a ring with nothing in it had no equivalent
    once there was no ring. srcchat.js's own check reads the new rule:
    the thread is the whole conversation in order, not one line at a time. */
+/* THE PERSON'S OWN BUBBLE SHOWS WHAT THE SNIFFER FOUND, round of 29
+   October, his words: "sentences that are sniffed are bolded with their
+   chakra color. The intensity modifier is italicized... as a person's
+   having their text conversation, they're seeing visually the construct
+   of their story." THE RULING ITSELF IS OLD: "Bold and coloured" is
+   already the rule at .st-f in the shell, reverted there only because
+   that layer sits behind a live textarea and bold glyphs are wider than
+   the box's own 300 weight, which drags the caret out of register with
+   what a person is looking at. A bubble is not a textarea overlay and
+   carries no caret to protect, so the true ruling runs here unreverted:
+   real bold, real colour, real italic on a mark whose intensity was
+   modified (m.mod, storyHits). The struck and dashed-underline treatments
+   for a no and an about-someone-else word are the same rules stHLHtml
+   already draws, read off the same STR.marks, so the two surfaces never
+   disagree about which letters were scored.
+
+   READ OFF STR.marks, THE WHOLE ENTRY'S OWN MARKS, SLICED TO THE TURN.
+   marksOf runs on the whole accumulated text, not a fragment, so a turn's
+   own marks are exactly the ones whose span falls inside its own [a,b)
+   stretch of ST_TEXT; stRead() keeps STR.marks current with ST_TEXT on
+   every refresh, srcTurnCommit's own call to stRefresh() included, so by
+   the time srcThread runs after a commit the marks for the turn just
+   landed are already there. */
+function srcMeHtml(from,to){
+ var marks=STR.marks.filter(function(m){
+  var back=m.neg?m.negFrom:m.oth?m.whoFrom:null;
+  var start=(back!=null)?back:m.s;
+  return start>=from&&m.e<=to;});
+ if(!marks.length)return esc(ST_TEXT.slice(from,to));
+ var out='',last=from;
+ marks.forEach(function(m){
+  var back=m.neg?m.negFrom:m.oth?m.whoFrom:null;
+  var start=(back!=null&&back>=last)?back:m.s;
+  out+=esc(ST_TEXT.slice(last,start))
+   +'<mark class="src-f'+(m.neg?' neg':m.oth?' oth':'')+(m.mod?' mod':'')+'" '
+   +'style="--c:'+(m.bn?seatCol(m.bn):'var(--accent)')+'">'
+   +esc(ST_TEXT.slice(start,m.e))+'</mark>';
+  last=m.e;});
+ return out+esc(ST_TEXT.slice(last,to));}
 function srcThread(turn,heard,cur,acts,why){
  var ents=(CURP&&CURP.story&&CURP.story.entries)||[], pr=null, last=-1;
  SRC_CHAT.forEach(function(r,i){if(r.w==='src')last=i;});
@@ -49366,7 +49430,7 @@ function srcThread(turn,heard,cur,acts,why){
      with its own border scheme; r.bd and the rung read above still feed
      srcThreadNow's own seat colour where a live ask still uses one
      (srcLand's style argument), unrelated to the bubble's own ground. */
-  if(r.w==='me')o+='<div class="src-bub src-bub-me"><p class="src-me">'+esc(r.t)+'</p></div>';
+  if(r.w==='me')o+='<div class="src-bub src-bub-me"><p class="src-me">'+srcMeHtml(r.a,r.b)+'</p></div>';
   else if(i===last)o+='<div class="src-bub src-bub-src">'+srcThreadNow(r,turn,heard,acts,why)+'</div>';
   else o+='<div class="src-bub src-bub-src src-bub-past"><p class="src-q">'+esc(r.q)+'</p></div>';
   o+='</li>';});
@@ -83244,5 +83308,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005487911"></div>
+<div id="eof" hidden data-len="005491871"></div>
 </body></html>
