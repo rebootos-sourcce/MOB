@@ -78,7 +78,7 @@ g('LO2 · observatory.html, real Chromium: lineage() against the same real conne
 (async function(){
  const {chromium}=require('playwright');
  const url='file://'+path.join(ROOT,'mockups','layer-observatory','observatory.html')+'?p=Tomas&view=hy&mode=thread';
- const b=await chromium.launch({executablePath:process.env.CHROMIUM||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
  const errs=[];
  const p=await b.newPage();
  p.on('pageerror',e=>errs.push('pageerror: '+e.message));
