@@ -293,6 +293,8 @@ The Source conversation must interpret **the specific descriptors in the person'
 
 **Mandatory detail and tests:** [Source Signal Register + Intensity Sniffer TDD Addendum](ATUNED_SOURCE_SIGNAL_REGISTER_INTENSITY_SNIFFER_TDD_ADDENDUM_2026-10-29.md). It defines scope/negation/attribution/tense and independent-episode handling, separate coherent/shadow evidence, raw-span highlights, provisional Imprints versus accepted Bank inventory, and acceptance gates. This addendum is the implementation-grade source for this sublayer; the main experience remains conversation-first. No runtime modification or empirical validation is implied.
 
+**New 2026-10-29 owner clarification — universal language and inherited scripts:** phrases such as "I always", "our family always", and "I don't want to anymore" can signal generalized expectations, possible family-conditioned rules and emerging agency. They must be parsed together with speaker, scope, exceptions, endorsement and desired change. No "always" token alone creates charge, a root cause, an ancestral diagnosis, or an Imprint; see section 10 of the [Signal Register + Intensity Sniffer Addendum](ATUNED_SOURCE_SIGNAL_REGISTER_INTENSITY_SNIFFER_TDD_ADDENDUM_2026-10-29.md).
+
 ## 10. Source authority, conflicts, and durable navigation
 
 - Owner rulings, **29 October 2026** (this conversation): new category of intelligence; Source at design-target CQ 100; moral integrity across 21 laws; truthful discernment over praise or judgment; stories connect toward their root, led by user; warm friend-like peer, not buddy; summaries should clarify; conversation is the system, text-entry predecessor is retired.
