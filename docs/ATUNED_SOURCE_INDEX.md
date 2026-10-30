@@ -1,3 +1,8 @@
+
+## Current SOURCE experience authority — 2026-10-29
+
+- [SOURCE Conversation-First Soul TDD, 2026-10-29](ATUNED_SOURCE_CONVERSATION_FIRST_SOUL_TDD_2026-10-29.md) — **new design baseline**: conversation as primary interface, Source behavioral constitution and CQ 100 target, natural dialogue architecture, living visual presence, visual review, 21 proposed loss-of-integrity candidate profiles, acceptance gates. Replaces **text-first UX assumptions** in older Source/Story specs; preserves their historical record and non-UX constraints. Status: PROPOSED DESIGN, NOT IMPLEMENTED.
+
 # ATÜNED Durable Source Index
 
 - [Deep-Psychological Code-to-Registry Contract Comparison](ATUNED_DEEP_PSYCHOLOGICAL_CODE_TO_REGISTRY_CONTRACT_2026-10-22.md), exact existing engine template/validator contract and field-by-field gap analysis.
