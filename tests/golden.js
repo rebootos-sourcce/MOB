@@ -799,7 +799,11 @@ async function door(browser, SITE, cut, giftAt) {
   ok(num(relUp) != null && Math.abs(num(relUp) - +(L1.CQ - cq0).toFixed(2)) < 1e-9, 'and the same lift, ' + J(relUp) + ' against ' + (L1.CQ - cq0).toFixed(2));
   await Q.tab(2);
   const top = await Q.settled('#railtop .cr .v');
-  const key = await Q.settled('#key [data-pair="cqdq"] .rb2-p.l .rb2-v');
+  /* NAMED CHANGE, 30 October, r1: the coherence pair prints one figure, the
+     leaning side's share, so it is CQ only when CQ leads. CQ itself is always
+     said by its own door, the pair's left half, first in its spoken name. */
+  await Q.settled('#key [data-pair="coh"] .rb2-v');
+  const key = await page.evaluate(() => { const e = document.querySelector('#key [data-pair="coh"] .rb2-k.l'); return e ? e.getAttribute('aria-label') : null; });
   await Q.tab(1);
   const sum1 = await Q.settled('#sum .cr[title^="Coherence"] .v');
   const round = Math.round(L1.CQ);

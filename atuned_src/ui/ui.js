@@ -940,6 +940,11 @@ const GLYPH_F='<circle cx="12" cy="9" r="6"/><path d="M12 15v7M8.5 19h7"/>';
 
    UNREAD SAYS NOTHING. Both ends keep their marks and words and print a dash,
    and no colour is laid, which is the rule both dials held.
+
+   AND SINCE 30 OCTOBER THE BAR IS r1's PAIR, the owner's pick for the rail:
+   a track with a line at 50 and one mark, the fill growing from the centre
+   toward the lean, one figure over the line. rbPair in ui/component.js says
+   how it reads; what is above is the drawing it replaced.
    ============================================================ */
 /* WHERE THE FIELD'S HALF OF THE LEAN SWINGS. leanRead blends the field's lean
    with the story's by trust, and the field's lean is a function of coherence:
@@ -953,7 +958,9 @@ function leanSwing(r,L){
  var fm=function(cq){return cq>=50?0:(50-cq)/50*100;};
  var at=function(cq){return (fm(cq)-f0)*(1-tr);};
  var lo=at(rg.hi), hi=at(rg.lo);
- return {fw:Math.abs(hi-lo),
+ /* lo and hi are the two ends of that wander as offsets of the malignant
+    share, so the r1 rail can draw the band the swing stays inside */
+ return {fw:Math.abs(hi-lo), lo:lo, hi:hi,
   sw:hi-lo>0.05?function(t){return at(clamp(r.CQ+rbDrift(t)*half,0,100));}:null};}
 function renderBal(r){
  var e=document.getElementById('bal'); if(!e)return;
@@ -981,7 +988,7 @@ function renderBal(r){
   R:{nm:'Feminine',ic:'<g>'+GLYPH_F+'</g>',c:seatCol('Throat'),v:100-m}};
  /* THE SPLIT WAS SAID TWICE AND BOTH TIMES AS A SCORE, round J13. The bar
     draws the split; the sentence says which way it leans and stops. */
- var lean=read?(b.lean===0?'It is even':'It leans '+(b.lean>0?'masculine':'feminine'))+', and the notches mark where the two meet.'
+ var lean=read?(b.lean===0?'It is even':'It leans '+(b.lean>0?'masculine':'feminine'))+', and the mark on the line shows where you sit.'
   :'Not read yet. Neither side reaches 1, so no direction is named.';
  var say=rbPairSays('Balance',spec,lean)+ref;
  e.innerHTML=rbPair('bal',spec);
@@ -1132,7 +1139,9 @@ function render(){
  /* ORIENTATION, benign against malignant, on the rail's one pair bar, round
     RB, ported in the P3 menu pass (rbPair, ui/component.js). The two poles
     press in from their own ends and meet where the lean is, so the thing a
-    person sees is still the lean itself: which way, and how far.
+    person sees is still the lean itself: which way, and how far. Since 30
+    October it is r1's pair (rbPair): the mark stands where the lean is, and
+    the band is leanSwing's range, so it says the same two things.
 
     THE HALO AND THE PITCHFORK, round OT, his words: "benign malignant, I want
     a halo and a pitchfork." The closed ring and the broken ring this bar wore
@@ -1157,15 +1166,17 @@ function render(){
      other way, and the left pole carries the swing for the pair */
   var spec={read:read, whole:true,
    L:{nm:'Benign',ic:'halo',c:seatCol('Heart'),v:L.ben||0,sw:sw.sw?function(t){return -sw.sw(t);}:null,fw:sw.fw},
-   R:{nm:'Malignant',ic:'fork',c:seatCol('Root'),v:L.mal||0}};
+   R:{nm:'Malignant',ic:'fork',c:seatCol('Root'),v:L.mal||0},
+   /* the band, as benign shares: the malignant wander, turned */
+   band:sw.sw?[(L.ben||0)-sw.hi,(L.ben||0)-sw.lo]:null};
   var n=Math.round(L.cues||0);
   var lean=r.unread?'Nothing read yet, so there is no lean to show.'
    :!read?'Coherence is still filling, so there is no lean to show.'
    :(L.ben>L.mal?'It leans benign':L.mal>L.ben?'It leans malignant':'It is even')
-    +', and the notches mark where the two meet. '
+    +', and the mark on the line shows where you sit. '
     +(n?'It is read from '+(r.malig!==null&&r.malig!==undefined?'your coherence and ':'')+n+' cue'+(n===1?'':'s')+' in your stories.'
       :'No story yet, so it is read from your coherence alone.')
-    +(sw.sw?' Where they meet moves with your coherence.':'');
+    +(sw.sw?' The faint mark moves with your coherence, inside the pale band it can reach.':'');
   var say=rbPairSays('Orientation',spec,lean);
   pb.innerHTML=rbPair('lean',spec);
   pb.setAttribute('data-tip-k','Orientation'); pb.setAttribute('data-tip',say);
@@ -1196,19 +1207,37 @@ function render(){
     shadow pulses by, rbPair's comment says which numbers. An unread field
     draws the two ends and two dashes, never a number nobody entered. SQ stays
     off this rail (EZ: "SQ is a total sum of the DQ anyway") and on the glass
-    bar. Accuracy keeps its circle on the stage (round LR). */
+    bar. Accuracy keeps its circle on the stage (round LR).
+
+    COHERENCE IS CQ AGAINST ITS OWN SHADOW, 30 October, r1 from
+    mockups/dual-readings, which the owner picked: "Yeah, those are the menus
+    I like. For the left-hand side." What is above was true until then. The
+    review's reason for the change: a line at 50 between CQ and DQ draws a
+    figure the engine does not compute, and no sampled person got past 60 on
+    DQ. lawSQ, the shadow the law answers alone leave (engine/compute.js, 27
+    October), is 100 less CQ by construction, so CQ and Shadow are a true
+    pair with a true centre. DQ is an amount now and is the first row under
+    How much, still its own door, still the root seat's red. Both halves of
+    this pair open CQ's reading, because the shadow is CQ's own complement and
+    has no reading apart from it.
+
+    AND IT IS SILENT UNTIL THE LAWS ARE ALL ANSWERED. lawSQ is null on an
+    incomplete intake, the engine's own guard against a shadow building
+    toward false certainty, so the pair draws no mark and prints a dash
+    rather than a 100 less CQ the engine refused to state. */
  (function(){
   var cr0=r.unread?null:cqRange(r.CQ), half=cr0?(cr0.hi-cr0.lo)/2:0;
-  var dq=clamp((+r.DQ||0)/100,0,1), amp=(+r.DQ||0)*PUL_WAVE*dq;
-  var spec={read:!r.unread, whole:false,
-   L:{nm:'CQ',ic:'cq',c:'var(--accent)',v:r.unread?0:r.CQ,q:'cq',fk:'laws',kind:'cq',
-    sw:half>0.05?function(t){return rbDrift(t)*half;}:null, fw:cr0?cr0.hi-cr0.lo:0,
-    note:r.unread?'Not read yet.':'The edge of the blue moves through the range your coherence swings in, and the notches mark where it stands now.'},
-   R:{nm:'DQ',ic:'dq',c:seatCol('Root'),v:r.unread?0:r.DQ,q:'dq',fk:'shadow',kind:'dq',
-    sw:amp>0.05?function(t){return amp*Math.sin(t*TAU*PUL_WAVE_HZ);}:null, fw:2*amp,
-    note:r.unread?'Not read yet.':'The edge of the red breathes with your shadow, and the notches mark where it stands now.'}};
-  $('key').innerHTML=rbPair('cqdq',spec);
-  rbPairSet('cqdq',spec);})();
+  var read=!r.unread&&r.lawSQ!==null&&r.lawSQ!==undefined;
+  var wait=r.unread?'Not read yet.':'Coherence is still filling, so it has no shadow to set against yet.';
+  var spec={read:read, whole:true,
+   L:{nm:'CQ',ic:'cq',c:'var(--accent)',v:read?r.CQ:0,q:'cq',fk:'laws',kind:'cq',
+    sw:read&&half>0.05?function(t){return rbDrift(t)*half;}:null,
+    note:read?'The pale band is the range your coherence swings in, the faint mark moves through it, and the solid mark is where it stands now.':wait},
+   R:{nm:'Shadow',ic:'shadow',c:seatCol('Root'),v:read?r.lawSQ:0,q:'cq',fk:'laws',kind:'lawsq',
+    note:read?'It is 100 less CQ, read from your law answers alone. The charge you carry, DQ, is its own reading under How much.':wait},
+   band:read&&half>0.05?[cr0.lo,cr0.hi]:null};
+  $('key').innerHTML=rbPair('coh',spec);
+  rbPairSet('coh',spec);})();
  /* TWO KINDS, TWO STRIPS. Ruled, and the grouping is his: CQ, DQ and SQ are
     one kind of reading. Vitality, awareness, will and flow are another, and
     they go lower left. Radiance joined them as a bar, round RB and round RZ,
@@ -1230,18 +1259,32 @@ function render(){
      phase 2: they filled X*100 and printed X.toFixed(2), so vitality was drawn
      as 17 and read as 0.17. One figure now, the registry's. */
   var u={unread:r.unread};
+  /* DQ LEADS THE AMOUNTS, 30 October, r1: it is a figure out of a hundred
+     from none, so it fills from the left end like the five under it, in the
+     root seat's red, and a rise in it is the one move here that is a cost
+     (bad, so its chip says so). Radiance is drawn in light, not a seat's
+     colour, because it is the brightness of the field and not a seat, the
+     r1 review's reading of round RZ. The ink, warmed by the Solar seat, so a
+     lighting that turns the ink dark turns Radiance with it. */
   lo.innerHTML=
-   rbRow('xyz','Vitality',pct('vitality',r.X),fmtPct('vitality',r.X,u),
+   rbRow('dq','DQ',pct('dq',r.DQ),fmtPct('dq',r.DQ,u),
+    {unread:r.unread,fk:'shadow',ic:'dq',col:seatCol('Root'),bad:true,title:rbSay('DQ')+nr})
+  +rbRow('xyz','Vitality',pct('vitality',r.X),fmtPct('vitality',r.X,u),
     {unread:r.unread,fk:'core',ic:'vitality',col:seatCol('Solar'),title:rbSay('Vitality')+nr})
   +rbRow('xyz','Awareness',pct('awareness',r.Y),fmtPct('awareness',r.Y,u),
     {unread:r.unread,fk:'core',ic:'awareness',col:seatCol('3rd Eye'),title:rbSay('Awareness')+nr})
   +rbRow('xyz','Will',pct('will',r.Z),fmtPct('will',r.Z,u),
     {unread:r.unread,fk:'core',ic:'will',col:seatCol('Throat'),title:rbSay('Will')+nr})
   +rbRow('xyz','Radiance',r.unread?0:pct('radiance',r.radiance),fmtPct('radiance',r.radiance,u),
-    {unread:r.unread,fk:'core',ic:'rad',title:rbSay('Radiance')+nr})
+    {unread:r.unread,fk:'core',ic:'rad',col:'color-mix(in srgb,var(--ink) 86%,'+seatCol('Solar')+')',title:rbSay('Radiance')+nr})
   +rbRow('flow','Flow',pct('flow',f),fmtPct('flow',f,u),
-    {unread:r.unread,fk:'seats',ic:'flow',wave:rbSeatPass(),rate:lerp(PUL_LO,PUL_HI,clamp((+r.DQ||0)/100,0,1)),
-     title:rbSay('Flow')+(r.unread?nr:' The wave inside runs root to crown, and a seat that holds charge back roughens it where it sits.')});})();
+    {unread:r.unread,fk:'seats',ic:'flow',col:'var(--ink)',cells:rbSeatPass(),held:rbSeatHeld(),names:rbSeatNames(),
+     title:rbSay('Flow')+(r.unread?nr:' Seven cells run root to crown. The colour in each is what that seat passes on and the hatching is what it holds back. A seat is blocked when it is holding charge and passes on the least of the seats that are, and it is ringed.')});})();
+ /* THE TWO FAMILY HEADS carry their sentence from the meaning table, the
+    same way every word on the rail does, so the tooltip, the spoken name and
+    the gate read one sentence (body.html says why they are there) */
+ [['rbgha','Where you lean'],['rbghb','How much']].forEach(function(h){var e=$(h[0]); if(!e)return;
+  var say=rbSay(h[1]); e.setAttribute('data-tip',say); e.setAttribute('aria-label',h[1]+'. '+say);});
  /* who, and what is running hottest in them. */
  (function(){
   function row(k,n,pc){return '<div class="tierow"><span class="tk">'+k+'</span>'

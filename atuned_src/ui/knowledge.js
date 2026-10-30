@@ -724,6 +724,19 @@ var NODE_STRIKE={
  mo:'<circle cx="12" cy="12" r="7"/><path d="M5 12h7.5"/>',
  he:'<circle cx="12" cy="12" r="7"/><path d="M5 12h11"/>',
  cl:'<circle cx="12" cy="12" r="7"/><path d="M5 12h15"/>'};
+/* RESTORED 30 October, SI8 in TASKS.md. 3cdc18dc moved the deck onto
+   poleTip and poleDualBar and deleted these two with the row code they
+   served, but renderAmplifiers in ui/ui.js, the Field's four amplifier rows,
+   still calls both, so every loadP and every render threw "dualPoleState is
+   not defined" and the boot guard spoke over a page that never drew. Put
+   back verbatim from 82a2c1b5, beside NODE_STRIKE, whose keys they return.
+   Only these two: the deck itself is SI9's. */
+function dualPoleState(p){
+ var w=Math.max(0,Math.min(100,+p||0));
+ if(w<20)return 'op'; if(w<40)return 'im'; if(w<60)return 'mo'; if(w<80)return 'he';
+ return 'cl';}
+function dualPoleStateWord(k){
+ return {op:'open',im:'impaired',mo:'moderately impaired',he:'heavily impaired',cl:'blocked'}[k]||'';}
 /* 0 fully collapsed, 50 neutral, 100 fully open, both lp and rp already
    percents 0 to 100. */
 function poleTip(lp,rp){return 50-(lp||0)/2+(rp||0)/2;}
