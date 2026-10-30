@@ -1,0 +1,1487 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/rebootos-sourcce/MOB/blob/design/source-conversation-first-soul-2026-10-29/docs/data/ATUNED_SOURCE_CONVERSATION_SEAM_SCHEMA_v1.json",
+  "title": "ATÜNED SOURCE Inter-System Conversation Event Envelope (proposed)",
+  "description": "Design-only serialized boundary. NOT a current runtime API. Numeric CQ authority is external; language observations are not clinical measurements. Presence cues must not imply physiology.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "event_id",
+    "event_type",
+    "occurred_at",
+    "correlation_id",
+    "actor",
+    "subject_scope",
+    "payload",
+    "provenance",
+    "consent",
+    "state"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_type": {
+      "enum": [
+        "TURN_INPUT",
+        "REGISTER_EVIDENCE",
+        "OBSERVATION",
+        "HYPOTHESIS_CANDIDATE",
+        "GRAPH_RELATION_PROPOSAL",
+        "CQ_SNAPSHOT",
+        "IMPRINT_PREVIEW",
+        "IMPRINT_ACCEPT_REQUEST",
+        "SOURCE_DECISION",
+        "PRESENCE_CUE",
+        "SUBSYSTEM_RECEIPT",
+        "USER_CORRECTION",
+        "RELEASE_REQUEST",
+        "RITUAL_PLAN_PROPOSAL",
+        "GRAPH_PROPOSAL_ACCEPT_REQUEST"
+      ]
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "correlation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "actor": {
+      "type": "object",
+      "required": [
+        "kind",
+        "id"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "user",
+            "source",
+            "sniffer",
+            "graph",
+            "cq",
+            "bank",
+            "release",
+            "ritual",
+            "renderer",
+            "system"
+          ]
+        },
+        "id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "subject_scope": {
+      "type": "object",
+      "required": [
+        "subject_id",
+        "tenant_id"
+      ],
+      "properties": {
+        "subject_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tenant_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "payload": {
+      "type": "object"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    },
+    "consent": {
+      "$ref": "#/$defs/Consent"
+    },
+    "state": {
+      "enum": [
+        "OBSERVED",
+        "PROPOSED",
+        "PENDING",
+        "SUPPORTED",
+        "ACCEPTED",
+        "REJECTED",
+        "SUPERSEDED",
+        "FAILED",
+        "RETRACTED"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "const": "TURN_INPUT"
+          }
+        },
+        "required": [
+          "event_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/TurnInput"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "const": "REGISTER_EVIDENCE"
+          }
+        },
+        "required": [
+          "event_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/RegisterEvidence"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "const": "OBSERVATION"
+          }
+        },
+        "required": [
+          "event_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/Observation"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "const": "HYPOTHESIS_CANDIDATE"
+          }
+        },
+        "required": [
+          "event_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/Hypothesis"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "const": "GRAPH_RELATION_PROPOSAL"
+          }
+        },
+        "required": [
+          "event_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/GraphRelationProposal"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "const": "CQ_SNAPSHOT"
+          }
+        },
+        "required": [
+          "event_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/CQSnapshot"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "const": "IMPRINT_PREVIEW"
+          }
+        },
+        "required": [
+          "event_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/ImprintCandidate"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "const": "IMPRINT_ACCEPT_REQUEST"
+          }
+        },
+        "required": [
+          "event_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/SubsystemRequest"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "const": "SOURCE_DECISION"
+          }
+        },
+        "required": [
+          "event_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/SourceDecision"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "const": "PRESENCE_CUE"
+          }
+        },
+        "required": [
+          "event_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/PresenceCue"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "const": "SUBSYSTEM_RECEIPT"
+          }
+        },
+        "required": [
+          "event_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/SubsystemReceipt"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "const": "USER_CORRECTION"
+          }
+        },
+        "required": [
+          "event_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/UserCorrection"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "const": "RELEASE_REQUEST"
+          }
+        },
+        "required": [
+          "event_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/SubsystemRequest"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "const": "RITUAL_PLAN_PROPOSAL"
+          }
+        },
+        "required": [
+          "event_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/SubsystemRequest"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "const": "GRAPH_PROPOSAL_ACCEPT_REQUEST"
+          }
+        },
+        "required": [
+          "event_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/SubsystemRequest"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "Reference": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "RawSpan": {
+      "type": "object",
+      "required": [
+        "text",
+        "start",
+        "end",
+        "transcript_revision"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "start": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "transcript_revision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "Provenance": {
+      "type": "object",
+      "required": [
+        "source_refs",
+        "evidence_ids"
+      ],
+      "properties": {
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Reference"
+          }
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "model_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "record_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "uncertainty": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "Consent": {
+      "type": "object",
+      "required": [
+        "processing",
+        "storage",
+        "sharing"
+      ],
+      "properties": {
+        "processing": {
+          "enum": [
+            "allowed",
+            "denied",
+            "not_requested",
+            "unknown"
+          ]
+        },
+        "storage": {
+          "enum": [
+            "allowed",
+            "denied",
+            "not_requested",
+            "unknown"
+          ]
+        },
+        "sharing": {
+          "enum": [
+            "allowed",
+            "denied",
+            "not_requested",
+            "unknown"
+          ]
+        },
+        "purpose": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "policy_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "TurnInput": {
+      "type": "object",
+      "required": [
+        "turn_id",
+        "session_id",
+        "source",
+        "asr_status",
+        "utterance",
+        "revision"
+      ],
+      "properties": {
+        "turn_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "session_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "enum": [
+            "voice",
+            "text"
+          ]
+        },
+        "asr_status": {
+          "enum": [
+            "provisional",
+            "final",
+            "not_applicable"
+          ]
+        },
+        "utterance": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "topic": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "speaker_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "EvidenceAnchor": {
+      "type": "object",
+      "required": [
+        "evidence_id",
+        "turn_id",
+        "span",
+        "who",
+        "tense",
+        "polarity",
+        "experience_status",
+        "source_ref"
+      ],
+      "properties": {
+        "evidence_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "turn_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "span": {
+          "$ref": "#/$defs/RawSpan"
+        },
+        "who": {
+          "enum": [
+            "self",
+            "other",
+            "quoted",
+            "unclear"
+          ]
+        },
+        "tense": {
+          "enum": [
+            "past",
+            "present",
+            "future",
+            "hypothetical",
+            "unclear"
+          ]
+        },
+        "polarity": {
+          "enum": [
+            "affirmed",
+            "denied",
+            "qualified",
+            "unclear"
+          ]
+        },
+        "experience_status": {
+          "enum": [
+            "reported",
+            "inferred",
+            "unclear"
+          ]
+        },
+        "source_ref": {
+          "$ref": "#/$defs/Reference"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RegisterEvidence": {
+      "type": "object",
+      "required": [
+        "evidence_id",
+        "anchor",
+        "descriptor",
+        "modifier",
+        "quantifier",
+        "register_candidates",
+        "certainty",
+        "notes"
+      ],
+      "properties": {
+        "evidence_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "anchor": {
+          "$ref": "#/$defs/EvidenceAnchor"
+        },
+        "descriptor": {
+          "type": "object",
+          "required": [
+            "surface",
+            "lemma",
+            "kind"
+          ],
+          "properties": {
+            "surface": {
+              "type": "string",
+              "minLength": 1
+            },
+            "lemma": {
+              "type": "string",
+              "minLength": 1
+            },
+            "kind": {
+              "enum": [
+                "adjective",
+                "emotion",
+                "event",
+                "belief_frame",
+                "action",
+                "somatic",
+                "quantifier",
+                "other"
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "modifier": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "required": [
+                "surface",
+                "scope",
+                "degree",
+                "multiplier"
+              ],
+              "properties": {
+                "surface": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "scope": {
+                  "$ref": "#/$defs/RawSpan"
+                },
+                "degree": {
+                  "enum": [
+                    "low",
+                    "medium",
+                    "high",
+                    "unclear"
+                  ]
+                },
+                "multiplier": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        "quantifier": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "episode_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "independent_episode": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "register_candidates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "axis",
+              "seat",
+              "direction",
+              "lexicon_weight",
+              "mapping_confidence",
+              "source"
+            ],
+            "properties": {
+              "axis": {
+                "type": "string",
+                "minLength": 1
+              },
+              "seat": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "direction": {
+                "enum": [
+                  "shadow_candidate",
+                  "coherent_candidate",
+                  "unknown"
+                ]
+              },
+              "lexicon_weight": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "mapping_confidence": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0,
+                "maximum": 1
+              },
+              "source": {
+                "$ref": "#/$defs/Reference"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "belief_frame": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "certainty": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "Observation": {
+      "type": "object",
+      "required": [
+        "observation_id",
+        "turn_id",
+        "evidence_ids",
+        "what_user_said",
+        "system_noticed",
+        "hypothesis_ids",
+        "user_verification",
+        "revision"
+      ],
+      "properties": {
+        "observation_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "turn_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "what_user_said": {
+          "type": "string",
+          "minLength": 1
+        },
+        "system_noticed": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "hypothesis_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "user_verification": {
+          "enum": [
+            "pending",
+            "confirmed",
+            "rejected",
+            "corrected",
+            "not_requested"
+          ]
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "supersedes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "Hypothesis": {
+      "type": "object",
+      "required": [
+        "hypothesis_id",
+        "claim",
+        "evidence_ids",
+        "alternative_claims",
+        "contradiction_ids",
+        "confidence",
+        "epistemic_status"
+      ],
+      "properties": {
+        "hypothesis_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "claim": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "alternative_claims": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "contradiction_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "confidence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "epistemic_status": {
+          "enum": [
+            "PROPOSED",
+            "SUPPORTED",
+            "USER_CONFIRMED",
+            "REJECTED",
+            "SUPERSEDED"
+          ]
+        },
+        "source_lens": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "correction_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "GraphRelationProposal": {
+      "type": "object",
+      "required": [
+        "proposal_id",
+        "source_node_id",
+        "target_node_id",
+        "relationship_type",
+        "evidence_ids",
+        "alternative_hypothesis_ids",
+        "status",
+        "user_confirmation",
+        "taxonomy_version"
+      ],
+      "properties": {
+        "proposal_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_node_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target_node_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "relationship_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "alternative_hypothesis_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "status": {
+          "enum": [
+            "PROPOSED",
+            "PENDING_REVIEW",
+            "REJECTED",
+            "ACCEPTED",
+            "SUPERSEDED"
+          ]
+        },
+        "user_confirmation": {
+          "enum": [
+            "pending",
+            "confirmed",
+            "rejected",
+            "not_applicable"
+          ]
+        },
+        "taxonomy_version": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "CQSnapshot": {
+      "type": "object",
+      "required": [
+        "model_version",
+        "formula_status",
+        "cq",
+        "integrity",
+        "intention",
+        "resistance",
+        "source_refs"
+      ],
+      "properties": {
+        "model_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "formula_status": {
+          "enum": [
+            "accepted",
+            "unresolved",
+            "unavailable"
+          ]
+        },
+        "cq": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 100
+        },
+        "integrity": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 10
+        },
+        "intention": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 10
+        },
+        "resistance": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Reference"
+          }
+        },
+        "answered_laws": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 21
+        },
+        "comparable_with_previous": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "ImprintCandidate": {
+      "type": "object",
+      "required": [
+        "imprint_id",
+        "evidence_ids",
+        "record_ref",
+        "hypothesis_id",
+        "status",
+        "storage_approved",
+        "bank_receipt_id"
+      ],
+      "properties": {
+        "imprint_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "record_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Reference"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "hypothesis_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status": {
+          "enum": [
+            "PREVIEW",
+            "PENDING_USER",
+            "ACCEPT_REQUESTED",
+            "ACCEPTED",
+            "REJECTED",
+            "RETRACTED"
+          ]
+        },
+        "storage_approved": {
+          "type": "boolean"
+        },
+        "bank_receipt_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "SourceDecision": {
+      "type": "object",
+      "required": [
+        "turn_id",
+        "move",
+        "response_text",
+        "question_count",
+        "important_uncertainty",
+        "supporting_evidence_ids",
+        "integrity_guard_checks",
+        "user_directive_honored",
+        "action_request_ids"
+      ],
+      "properties": {
+        "turn_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "move": {
+          "enum": [
+            "receive",
+            "clarify",
+            "reflect",
+            "connect",
+            "discriminate",
+            "synthesize",
+            "assist",
+            "yield"
+          ]
+        },
+        "response_text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "question_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "important_uncertainty": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "supporting_evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "integrity_guard_checks": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "user_directive_honored": {
+          "type": "boolean"
+        },
+        "action_request_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "PresenceCue": {
+      "type": "object",
+      "required": [
+        "cue",
+        "turn_id",
+        "evidence_ids",
+        "related_hypothesis_id",
+        "asserted_measurement"
+      ],
+      "properties": {
+        "cue": {
+          "enum": [
+            "available",
+            "listening",
+            "considering",
+            "speaking",
+            "quiet",
+            "connection_tentative",
+            "connection_supported",
+            "retract"
+          ]
+        },
+        "turn_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "related_hypothesis_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "asserted_measurement": {
+          "const": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "SubsystemReceipt": {
+      "type": "object",
+      "required": [
+        "request_event_id",
+        "subsystem",
+        "status",
+        "authoritative_object_id",
+        "authoritative_version",
+        "failure_code"
+      ],
+      "properties": {
+        "request_event_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "subsystem": {
+          "enum": [
+            "graph",
+            "cq",
+            "bank",
+            "release",
+            "ritual",
+            "record_registry",
+            "other"
+          ]
+        },
+        "status": {
+          "enum": [
+            "accepted",
+            "rejected",
+            "pending",
+            "failed"
+          ]
+        },
+        "authoritative_object_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "authoritative_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "failure_code": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "UserCorrection": {
+      "type": "object",
+      "required": [
+        "target_event_id",
+        "corrected_evidence_ids",
+        "new_text",
+        "correction_type"
+      ],
+      "properties": {
+        "target_event_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "corrected_evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "new_text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "correction_type": {
+          "enum": [
+            "transcript",
+            "attribution",
+            "interpretation",
+            "permission",
+            "deletion"
+          ]
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "SubsystemRequest": {
+      "type": "object",
+      "required": [
+        "request_id",
+        "target",
+        "operation",
+        "reference_ids",
+        "user_permission_ref",
+        "status"
+      ],
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
+          "enum": [
+            "bank",
+            "graph",
+            "release",
+            "ritual"
+          ]
+        },
+        "operation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reference_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "user_permission_ref": {
+          "$ref": "#/$defs/Reference"
+        },
+        "status": {
+          "const": "PENDING"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
