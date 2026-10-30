@@ -27,7 +27,7 @@ function d3Panel(p){
  var c=d3Counts(p),q=p.diagnostic3||d3Blank();
  var s='<section class="d3-panel" aria-label="Three-register behavioral diagnostic">';
  s+='<div class="d3-head"><b>Behavior · Pressure · Mechanism</b><button type="button" data-d3toggle aria-expanded="'+(D3_OPEN?'true':'false')+'">'+(D3_OPEN?'Hide':'Open')+'</button></div>';
- s+='<div class="d3-sub">'+c.answered+' of 63 answered · '+c.coreLaws+' of 10 Core laws · '+c.completeLaws+' of 21 total</div>';
+ s+='<div class="d3-sub">'+c.answered+' answered · '+c.coreLaws+' Core laws · '+c.completeLaws+' total</div>';
  if(!D3_OPEN)return s+'</section>';
  s+='<div class="d3-note">Answer for situations that actually happened in the last 30 days. 0 = never; 5 = about half; 10 = always. If it did not occur, choose N/A. The third answer measures a defensive response and does not directly add to CQ.</div>';
  s+='<div class="d3-head"><button type="button" data-d3core> '+(D3_CORE_ONLY?'Show all 21 laws':'Show Core 10 only')+'</button></div>';
