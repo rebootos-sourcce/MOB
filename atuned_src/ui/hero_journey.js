@@ -22,7 +22,7 @@ function hjFigureHtml(h){
     +'" fill="var(--accent)" opacity="'+(.3+openness*.6).toFixed(2)+'"/>';
  }).join('');
  return '<svg class="hj-avatar-form" viewBox="0 0 100 128" role="img" aria-label="Your living avatar form reflects CQ '
-  +(h.cq===null?'not yet measured':h.cq.toFixed(1)+' out of 100')+' and '
+  +(h.cq===null?'not yet measured':h.cq.toFixed(1))+' and '
   +h.uniqueReleaseCount+' unique releases">'
   +'<defs><radialGradient id="hj-field" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="var(--accent)" stop-opacity="'+glow+'"/><stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/></radialGradient></defs>'
   +'<ellipse cx="50" cy="63" rx="'+(26+openness*24).toFixed(1)+'" ry="58" fill="url(#hj-field)"/>'
