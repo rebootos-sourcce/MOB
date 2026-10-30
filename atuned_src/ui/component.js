@@ -1531,8 +1531,10 @@ addEventListener('click',function(e){
  if(!b)return;
  var k=b.getAttribute('data-start');
  if(k==='story'){setTab(TAB.STORY);render();
-  /* talking, the box a person writes in is the reply line */
-  var ta=document.getElementById('sttext')||document.getElementById('stcin'); if(ta)ta.focus(); return;}
+  /* voice is the one door now, round of 29 October; #sttext is still the
+     crisis path's own box and still gets the focus when that is what is
+     on screen (STV.crisis&&!STV.chat) */
+  var ta=document.getElementById('sttext')||document.getElementById('stmic'); if(ta)ta.focus(); return;}
  if(k==='nine'){runRecogniseDrill();return;}
  if(k==='ages'){runAgeDrill();return;}
  if(k==='avatar'){runAvatarDrill();return;}});

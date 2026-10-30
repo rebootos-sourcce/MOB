@@ -266,15 +266,13 @@ console.log('\n=== the six masks, as pixels on the figure ===');
   return {ents:((CURP&&CURP.story&&CURP.story.entries)||[]).length,lit:BMG.masks.map(k=>({nm:k.nm,n:bmMaskLit(k,r)}))};});
  ok(none.ents===0&&none.lit.every(x=>x.n===0),'a profile with no stories lights no mask, '
   +none.ents+' entries, '+none.lit.map(x=>x.nm+' '+x.n).join(', '));
- /* THE JOURNAL IS CONVERSATION ONLY NOW, round of 28 October: STV.chat is
-    permanent, so #sttext never renders in the ordinary flow and a story
-    is sent through the reply box and then committed, same as a person
-    does. #stapply still finishes the entry; only how the words reach
-    ST_TEXT changed. */
+ /* THE JOURNAL IS VOICE ONLY NOW, round of 29 October: there is no reply
+    box to fill and send any more, only srcTurnCommit, the one door a turn
+    lands through whether it is typed or spoken (see the ruling at stMic
+    in ui/storyui.js). #stapply still finishes the entry; only how the
+    words reach ST_TEXT changed. */
  const commit=async t=>{
-  await sp.evaluate(t=>{loadP(0);setTab(TAB.STORY);stRender();
-   const ci=document.getElementById('stcin');ci.value=t;ci.dispatchEvent(new Event('input',{bubbles:true}));
-   srcChatSend();},t);
+  await sp.evaluate(t=>{loadP(0);setTab(TAB.STORY);stRender();srcTurnCommit(t);},t);
   await sp.waitForTimeout(60);
   await sp.evaluate(()=>{const b=document.getElementById('stapply');if(b&&!b.disabled)b.click();});
   await sp.waitForTimeout(60);};
@@ -4361,11 +4359,9 @@ ok(tiers.small===0,'every control on the tiers meets the 44 pixel floor, '+tiers
    tabs.findIndex(t=>new RegExp(nm,'i').test(t))); await pa.waitForTimeout(600);};
  /* the journal page's door reads Discover since 23 October */
  await go('Discover');
- /* conversation only now, round of 28 October: the reply box and a send */
- await pa.evaluate(()=>{const ci=document.getElementById('stcin');
-  ci.value='I was humiliated in the meeting and I said nothing. '
-   +'My chest went tight and I felt ashamed the rest of the day.';
-  ci.dispatchEvent(new Event('input',{bubbles:true})); srcChatSend();});
+ /* voice only now, round of 29 October: srcTurnCommit is the one door */
+ await pa.evaluate(()=>{srcTurnCommit('I was humiliated in the meeting and I said nothing. '
+   +'My chest went tight and I felt ashamed the rest of the day.');});
  await pa.waitForTimeout(450);
  await pa.evaluate(()=>{const e=document.getElementById('stapply');if(e)e.click();});
  await pa.waitForTimeout(700);
@@ -6090,6 +6086,75 @@ console.log('\n=== a sentence does not disappear at a pause, round NU ===');
  await st.close();
 }
 
+console.log('\n=== "it can\'t hear me": a browser that ends its own listening is restarted, round of 29 October ===');
+/* HIS OWN REPORT: the button said Listening and it was not hearing him.
+   Reproduced against the real cause: Chrome's own continuous recognition
+   still ends itself on its own, well before a person is done talking, and
+   the old onend read that exactly the same as the person pressing stop, so
+   the mic looked live while the browser had already walked away from it.
+   No real microphone here: the stand-in's onend fires on its own, the way
+   the browser's does, never because anyone pressed Record again, and start
+   is counted so a restart is read off the count and not guessed at. */
+{
+ const st=await browser.newPage({viewport:{width:1600,height:1000}});
+ await st.goto(FILE,{waitUntil:'load'}); await booted(st);
+ const r=await st.evaluate(()=>{
+  setTab(TAB.STORY);
+  function FakeSR(){this.starts=0;}
+  FakeSR.prototype.start=function(){this.starts++;};
+  FakeSR.prototype.stop=function(){if(this.onend)this.onend();};
+  window.SpeechRecognition=FakeSR;
+  ST_TEXT=''; stMic();
+  const rec=ST_REC, before=rec.starts;
+  /* the browser's own end, unasked: nobody pressed Record again */
+  rec.onend();
+  const afterEnd={starts:rec.starts,listen:ST_LISTEN,same:ST_REC===rec};
+  /* a sentence still lands after the restart, so the restart is a real one */
+  rec.onresult({resultIndex:0,results:{0:{0:{transcript:'Still here.'},isFinal:true,length:1},length:1}});
+  const afterSay={text:ST_TEXT,listen:ST_LISTEN};
+  /* now the person presses Record again, the real stop: no further restart */
+  stMic();
+  const afterStop={listen:ST_LISTEN,starts:rec.starts};
+  return {before,afterEnd,afterSay,afterStop};});
+ ok(r.afterEnd.starts===r.before+1&&r.afterEnd.listen&&r.afterEnd.same,
+  'the browser\'s own end restarts the same recognizer rather than reading as a stop: '+JSON.stringify(r.afterEnd));
+ ok(/Still here/.test(r.afterSay.text)&&r.afterSay.listen,
+  'and it is still listening, a sentence after the restart lands: '+JSON.stringify(r.afterSay));
+ ok(!r.afterStop.listen&&r.afterStop.starts===r.before+1,
+  'a press on Record is still a real stop, with no further restart: '+JSON.stringify(r.afterStop));
+ await st.close();
+}
+
+console.log('\n=== "it can\'t hear me": no-speech alone is never read as a failure ===');
+/* the browser's own no-speech error precedes its own onend on a silent
+   stretch; stMicSay must never speak for it, since the browser is about to
+   recover on its own through the restart the test above holds. Read off
+   MSG_LOG, the one place status() ever writes (see log() in tests/honest.js
+   for the same read), rather than intercepting status itself: window.status
+   is the browser's own status bar property and not a safe thing to shadow. */
+{
+ const st=await browser.newPage({viewport:{width:1600,height:1000}});
+ await st.goto(FILE,{waitUntil:'load'}); await booted(st);
+ const r=await st.evaluate(()=>{
+  setTab(TAB.STORY);
+  function FakeSR(){this.starts=0;}
+  FakeSR.prototype.start=function(){this.starts++;};
+  FakeSR.prototype.stop=function(){};
+  window.SpeechRecognition=FakeSR;
+  ST_TEXT=''; stMic();
+  MSG_LOG.length=0;
+  ST_REC.onerror({error:'no-speech'});
+  const afterError={listen:ST_LISTEN,msgs:MSG_LOG.map(m=>m.msg)};
+  ST_REC.onend();
+  const afterEnd={listen:ST_LISTEN,starts:ST_REC.starts,msgs:MSG_LOG.map(m=>m.msg)};
+  return {afterError,afterEnd};});
+ ok(r.afterError.listen&&!r.afterError.msgs.length,
+  'no-speech alone says nothing and does not stop listening: '+JSON.stringify(r.afterError));
+ ok(r.afterEnd.listen&&r.afterEnd.starts>=1&&!r.afterEnd.msgs.length,
+  'the onend that follows it restarts quietly, the real recovery: '+JSON.stringify(r.afterEnd));
+ await st.close();
+}
+
 /* ---------------------------------------------------------------------------
    THE SEAT TONE. Ruled 25 September, on hearing it: the Solfeggio number of
    the seat being released, chosen by the address and never by a picker, on a
@@ -6716,9 +6781,7 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
     them, through the Story tab, on the person's own profile. */
  for(const t of ['My chest is tight in every meeting and I have told no one.',
                  'I felt nothing when we let forty people go and that frightens me.']){
-  await fp.evaluate(t=>{loadP(0);setTab(TAB.STORY);stRender();
-   const ci=document.getElementById('stcin');ci.value=t;ci.dispatchEvent(new Event('input',{bubbles:true}));
-   srcChatSend();},t);
+  await fp.evaluate(t=>{loadP(0);setTab(TAB.STORY);stRender();srcTurnCommit(t);},t);
   await fp.waitForTimeout(60);
   await fp.evaluate(()=>{const b=document.getElementById('stapply');if(b&&!b.disabled)b.click();});
   await fp.waitForTimeout(60);}

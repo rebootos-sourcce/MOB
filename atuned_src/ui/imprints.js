@@ -4,7 +4,7 @@
    gather as they are found and nothing touches the field until you
    commit.
    ============================================================ */
-var ST_TEXT='', ST_PARSED=null, ST_REC=null, ST_LISTEN=false, ST_LIVE='';
+var ST_TEXT='', ST_PARSED=null, ST_REC=null, ST_LISTEN=false, ST_LIVE='', ST_WANT_LISTEN=false;
 var IMP_GROUP='band', IMP_PICK={};
 var IMP_GROUPS=[['band','Seat'],['charge','Charge'],['sab','Saboteur'],
                 ['story','Story'],['expr','Expression']];

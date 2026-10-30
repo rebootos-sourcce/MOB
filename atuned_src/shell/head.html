@@ -3998,9 +3998,15 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .st-mk-i h3{font-weight:700;letter-spacing:-.03em}
 .st-mk-r h3{font-weight:400;letter-spacing:.11em}
 .st-mk-r svg{stroke:var(--glow,var(--accent))}
-/* ---- the instrument's panel: the name, the bank and the vault, the sort ---- */
+/* ---- the instrument's panel: the name, the view icons, the sort ---- */
 .st-chd{display:flex;align-items:center;gap:8px;min-height:24px}
-.st-chd #stapply{margin-left:auto}
+/* ---- the list panel's own icon row: the bank and the archive, round of
+   29 October. A sibling of #stlshd and never inside it, because
+   stListPaint() owns #stlshd and rewrites it on every repaint; see the
+   ruling at stRender in ui/storyui.js. */
+.st-lsico{display:flex;align-items:center;justify-content:flex-end;gap:8px;min-height:24px;margin-bottom:6px}
+/* ---- Commit, at the foot of the whole read column, round of 29 October ---- */
+.st-rft{display:flex;justify-content:flex-end;flex:0 0 auto}
 .st-ico{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);min-width:var(--tap);
  padding:0 11px;border-radius:999px;border:1px solid var(--edge-2);background:transparent;
  cursor:pointer;font-family:var(--sans);font-size:13px;color:var(--mid);justify-content:center;

@@ -1005,12 +1005,12 @@ console.log('\n=== Is this a crisis, on the welcome and after it (16 October) ==
    :(doors.length===2&&doors.every(d=>d.t==='Reach someone now'&&d.h>=44)&&doors.some(d=>d.row)&&doors.some(d=>d.bar)),
    (narrow?'Reach someone now stands beside the line, on the first screen, and only there':'Reach someone now stands beside the line and beside Commit')
    +', at the floor'+at+', '+JSON.stringify(doors));
-  /* and the door never splits Clear from Commit: the first cut wrapped at 390
-     with the door on Clear's line and Commit alone below it */
-  const pair=await page.evaluate(()=>{const c=document.getElementById('stclear'), m=document.getElementById('stapply');
-   if(!c||!m)return null; const a=c.getBoundingClientRect(), b=m.getBoundingClientRect();
-   return {sameLine:Math.abs(a.top-b.top)<2, order:b.left>a.right, right:Math.round(innerWidth-b.right)};});
-  ok(pair&&pair.sameLine&&pair.order,'with Clear and Commit still side by side, Commit last'+at+', '+JSON.stringify(pair));
+  /* CLEAR IS GONE, round of 29 October: see the ruling at .st-bar in
+     ui/storyui.js. This used to check the door never split Clear from
+     Commit on the same line; there is only Commit on that line now, so the
+     one thing left to hold is that Commit itself is still there to find. */
+  const commitHere=await page.evaluate(()=>!!document.getElementById('stapply'));
+  ok(commitHere,'with Commit still on the bar'+at);
   /* a missing door is a named failure and not a thirty second click timeout
      that ends the run before the checks after it */
   const doorSel=narrow?'.st-crxrow [data-crisis="reachnow"]':'.st-bar [data-crisis="reachnow"]';

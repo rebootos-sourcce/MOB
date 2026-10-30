@@ -743,11 +743,10 @@ async function door(browser, SITE, cut, giftAt) {
   station(5, 'Q: the first release, from the Story page');
   await Q.tab(0);
   const cq0 = (await Q.live()).CQ;
-  /* conversation only now, round of 28 October: #sttext does not render in
-     the ordinary flow, so the story reaches ST_TEXT through the reply box
-     and a send, the way a person does. */
-  await page.evaluate(t => { const ci = document.getElementById('stcin');
-   if (ci) { ci.value = t; ci.dispatchEvent(new Event('input', { bubbles: true })); srcChatSend(); } }, STORY).catch(() => {});
+  /* voice only now, round of 29 October: #sttext does not render in the
+     ordinary flow, so the story reaches ST_TEXT through srcTurnCommit, the
+     one door a turn lands through whether it is typed or spoken. */
+  await page.evaluate(t => { if (typeof srcTurnCommit === 'function') srcTurnCommit(t); }, STORY).catch(() => {});
   await page.waitForTimeout(500);
   ok(await Q.click('#stapply'), 'the story is written and Commit is there to press', 'no way to keep a story');
   const kept = await Q.waitSaid(/^\|Committed\. \d+ imprints? written to the field\./, 5000);

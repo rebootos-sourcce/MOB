@@ -232,17 +232,15 @@ function stRender(){
   +(STV.crisis&&!STV.chat?'<div class="st-crxrow">'
     +'<p class="st-mask st-crisis" id="stcrisis" role="note">'+esc(CRISIS_SAY.story)+'</p>'
     +crisisReachBtn('st-crxline')+'</div>':'')
-  +(STV.chat
-   ?'<div class="src-cmp"><textarea id="stcin" class="src-cin" rows="2" spellcheck="false" '
-    /* THE PLACEHOLDER IS GONE, round of 29 October, his words: "get rid of
-       right back enter sends," heard off "Write back. Enter sends." The
-       field still has its screen-reader name; nothing visible stands in it
-       empty. */
-    +'aria-label="Your reply">'+esc(SRC_CDRAFT)+'</textarea>'
-    +'<button type="button" class="src-new" id="stcsend" aria-label="Send" title="Send">'
-    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6.5l5.5 5.5-5.5 5.5"/></svg>'
-    +'</button></div>'
-   :'<div class="st-ed"><div class="st-hl" id="sthl" aria-hidden="true"></div>'
+  /* THE REPLY LINE IS GONE, round of 29 October, his words: "let's get rid
+     of the text field entirely. Get rid of the text field, the arrow plus
+     clear. This is going to be a conversation dashboard." #stcin and
+     #stcsend stood for typing a reply by hand; there is no hand typed
+     reply any more, voice is the only door a turn comes through
+     (srcTurnCommit, stMic). srcChatSend(), SRC_CDRAFT and srcChatWire()
+     stay defined, reachable only from the legacy !STV.chat box below,
+     which this build never renders outside a test forcing that state. */
+  +(STV.chat?'':'<div class="st-ed"><div class="st-hl" id="sthl" aria-hidden="true"></div>'
     +'<textarea id="sttext" class="st-ta" spellcheck="false" aria-label="The day" '
     +'placeholder="What happened. Write it the way you would say it out loud.">'+esc(ST_TEXT)+'</textarea></div>')
   /* WORDS DICTATION HID BEHIND STARS, said under the box they are in, round
@@ -278,25 +276,44 @@ function stRender(){
      bank away in simple mode (his own earlier ruling, "when I land on this
      page it starts off in simple mode"), and a button nobody can reach is
      not moved, it is lost: caught by tests/srcchat.js timing out on a
-     hidden #stapply before this read STV.dash. So Commit lives here, next
-     to Clear, exactly when there is no bank on screen to carry it
-     (!STV.chat, the crisis door's own contract tests/onboarding2.js holds,
-     or STV.chat&&!STV.dash, simple mode); the bank carries it itself,
-     below, the moment STV.dash opens it. One #stapply at a time, never
-     both, never neither. */
+     hidden #stapply before this read STV.dash. So Commit lives here,
+     exactly when there is no bank on screen to carry it (!STV.chat, the
+     crisis door's own contract tests/onboarding2.js holds, or
+     STV.chat&&!STV.dash, simple mode); the bank carries it itself, below,
+     the moment STV.dash opens it. One #stapply at a time, never both,
+     never neither.
+
+     CLEAR IS GONE, round of 29 October, the same line as the text field:
+     "get rid of the text field, the arrow plus clear." Clear wrote ST_TEXT
+     back to empty; there is no hand typed text to clear any more, only
+     turns landed by srcTurnCommit, and undo already carries the way back
+     past a turn that should not have landed (undoPush, engine/undo.js). */
   +'<div class="st-bar'+(STV.crisis&&!STV.chat?' st-bar-crx':'')+'">'
    /* the second door, at the foot, where the person finishes: see the crisis
-      line above. Left of the spacer, so Clear and Commit keep their edge. */
+      line above. */
    +(STV.crisis&&!STV.chat?crisisReachBtn('st-crxbar'):'')
-   +'<span class="st-ct" aria-hidden="true"></span>'
-   +'<button class="btn" id="stclear">Clear</button>'
-   +(STV.chat&&STV.dash?'':'<button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
+   +(STV.chat&&STV.dash?'':'<span class="st-ct" aria-hidden="true"></span>'
+    +'<button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
     +'Commit'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button>')
   +'</div>')+'</div></div>'
-  /* ---- the read column: the instrument over the list ---- */
+  /* ---- the read column: the list, the instrument, then Commit ----
+     RE-STACKED FROM AN ANNOTATED SCREENSHOT, round of 29 October. His own
+     markings on the Derek profile: the list moves above the chart; the
+     bank and archive icons move to the right side of the list's own
+     header, where their own toggle lives; the chart's view icons
+     (stViewHtml) move to the chart's own header, upper right; Commit
+     moves to the foot of the whole column, lower right.
+
+     THE ICONS CANNOT LIVE INSIDE #stlshd ITSELF. stListPaint() owns that
+     element and rewrites it, text and all, on every repaint (a sort, a
+     vault toggle, a fresh render): anything static put there is gone the
+     first time the list repaints. .st-lsico is a sibling wrapper, never
+     touched by stListPaint, so the icons are a fixture of the panel and
+     not of the list. Same lesson .st-chd already stood on: an element a
+     renderer owns is not also a shelf for something else to sit on. */
   +'<div class="st-colr">'
-  +'<div class="st-pan st-ch" id="stch" aria-label="Imprints, as read">'
-   +'<div class="st-chd">'+stMark('i','Imprints','imprint')+'<span class="st-tag" id="stpend"></span>'
+  +'<div class="st-pan st-ls" id="stls" aria-label="Imprints, listed">'
+   +'<div class="st-lsico">'
    /* THE BANK AND THE VAULT, round IG, his words: "We need to be able to see
       the bank as an icon, which goes to the main imprints page. And the
       vault, which is what's been released." Both were icons with their word
@@ -304,52 +321,43 @@ function stRender(){
       word off at every width, his words: "for the bank and the vault, I just
       want their icons only, not the text." The word is still in the button,
       clipped the way a folded tab's name is, so a screen reader still hears
-      Bank and Vault; .st-lb in the shell does it. The vault keeps its count,
-      which is a figure and not a label, as it always has on a phone. He also
-      asked for the two to swap places and withdrew it in the same breath,
-      "actually, never mind", so they stand where they stood. */
+      it; .st-lb in the shell does it. The vault keeps its count, which is a
+      figure and not a label, as it always has on a phone. */
    +'<button type="button" class="st-ico" id="stbank" aria-pressed="'+STV.bank+'" '
-    +'title="The bank: every imprint you hold, on the Imprints page">'
+    +'title="Imprints: every one you hold, to select what you release">'
     +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.5L12 4l9 5.5M5 10v8M9.7 10v8M14.3 10v8M19 10v8M3 20.5h18"/></svg>'
-    +'<span class="st-lb">Bank</span></button>'
+    +'<span class="st-lb">Imprints</span></button>'
    +'<button type="button" class="st-ico" id="stvault" aria-pressed="'+(STV.list==='vault')+'" '
-    +'title="The vault: what you have released">'
+    +'title="Archive: what you have released">'
     +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5h16v14H4zM7 18.5v2M17 18.5v2"/>'
     +'<circle cx="12" cy="11.5" r="3.6"/><path d="M12 7.9v1.2M12 13.9v1.2"/></svg>'
-    +'<span class="st-lb">Vault</span><b id="stvn">\u2013</b></button>'
-   +'<button type="button" class="btn st-open" id="stlist">List</button>'
-   /* COMMIT, ON THE BANK, round of 29 October: see the ruling at .st-bar
-      above. Same id, same class, same wiring (stRender's wire-up below
-      finds it by id, not by where it sits), only where it renders moved:
-      the bank is what Commit fills, so Commit stands on the bank, whenever
-      the bank is the thing on screen (STV.dash). This whole panel is
-      display:none in simple mode, so Commit cannot live only here. */
-   +(STV.chat&&STV.dash?'<button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
-     +'Commit'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button>':'')
+    +'<span class="st-lb">Archive</span><b id="stvn">\u2013</b></button>'
    +'</div>'
+   +'<div class="st-lshd" id="stlshd"></div><div class="st-lsb" id="stimps"></div></div>'
+  +'<div class="st-pan st-ch" id="stch" aria-label="Imprints, as read">'
+   /* THE LIST DOOR STAYS HERE, NOT WITH THE BANK AND THE ARCHIVE. It exists
+      for the phone, where .st-ls folds away outside read focus (see the
+      rule at .st-open below), and its one job is to bring that panel back
+      into view; a door inside the panel it opens cannot be pressed once
+      that panel is the one thing hidden. #stch stays visible at every
+      focus, so the door stands here. */
+   +'<div class="st-chd">'+stMark('i','Imprints','imprint')+'<span class="st-tag" id="stpend"></span>'
+   +'<button type="button" class="btn st-open" id="stlist">List</button>'+stViewHtml()+'</div>'
    +'<div class="st-sort" id="stsort" role="group" aria-label="Sort imprints by"></div>'
    /* the key probe is never shown. The canvas cannot read a custom property,
       so the chart reads the lighting's ink and dim off these two computed
       colours, which is the one answer that follows every lighting. */
    +'<div class="st-cvw" id="stcvw"><canvas id="stcv" aria-hidden="true"></canvas><i class="st-cvk"></i></div>'
-   /* THE VIEW TOGGLE SITS ON THE CHART'S OWN CAPTION LINE, under the drawing
-      it changes. It was first put at the end of the sort row, and measured
-      there it opened a line of its own whenever the journal had the room:
-      the chart lost 48 of its 273 pixels at 1600 by 1000, and at 1280 by 800
-      it reached its 120 pixel floor and this caption ran 9 pixels past the
-      panel's edge. Here it costs the chart 23 pixels at every width and
-      overflows nothing at 1280 by 800. The words wrap beside it rather than
-      being cut, so the count is whole on a phone.
-      THE ROW IS AN INNER WRAPPER, NOT THE LINE ITSELF. Set on #stctr, the
-      inline display beat the stacked rule that hides this line until the
-      imprints are touched, and at 390 by 844 the caption came back on the
-      arrival screen and pushed Run to the bottom edge, which is the one
-      thing layout H exists to stop. The class keeps the say over whether the
-      line shows; the wrapper only lays it out. */
-   +'<div class="st-ctr" id="stctr"><div style="display:flex;align-items:center;gap:8px">'
-   +'<span id="stctrt" style="flex:1 1 0;min-width:0"></span>'+stViewHtml()+'</div></div></div>'
-  +'<div class="st-pan st-ls" id="stls" aria-label="Imprints, listed">'
-   +'<div class="st-lshd" id="stlshd"></div><div class="st-lsb" id="stimps"></div></div>'
+   +'<div class="st-ctr" id="stctr"><span id="stctrt"></span></div></div>'
+  /* COMMIT, AT THE FOOT OF THE COLUMN, round of 29 October, on top of the
+     earlier ruling "the commit button should be on the bank": the bank is
+     this whole column now, not one panel inside it, so Commit stands at
+     its foot rather than inside either panel, lower right as marked. One
+     #stapply, same id and wiring stRender's wire-up finds by id below; the
+     !STV.dash and !STV.chat placements in .st-bar above still carry it
+     when this column itself is not on screen to carry it instead. */
+  +(STV.chat&&STV.dash?'<div class="st-rft"><button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
+    +'Commit'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button></div>':'')
   +'</div>'
   /* ---- the release column. It keeps the id its rail section had. ----
      ANALYTICS PREVIEW AND LAWS NOTICED ARE GONE FROM THIS COLUMN, round of
@@ -394,15 +402,11 @@ function stRender(){
  stWire();
  stAnaWire();
  stLawWire();
- var cl=document.getElementById('stclear');
- /* Clear writes at once rather than in half a second, so a reload straight
-    after it never brings the words back */
- if(cl)cl.onclick=function(){ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;srcFresh();
-  stDraft();if(STV.draftT)stDraftSave();stRender();};
  var ap=document.getElementById('stapply');
- /* a reply still in the line is the person's words, so Commit sends it first
-    rather than committing the entry without it */
- if(ap)ap.onclick=function(){if(STV.chat)srcChatSend(); return stCommit();};
+ /* srcChatSend() used to run first here, sending a reply still sitting in
+    the typed box before Commit read the entry; the box is gone (see the
+    ruling at .st-bar above) and there is nothing left for it to send. */
+ if(ap)ap.onclick=stCommit;
  var mic=document.getElementById('stmic');
  if(mic)mic.onclick=stMic;
  /* DASHBOARD TOGGLES, ON THIS SCREEN, round of 29 October. His words: "when
@@ -455,8 +459,11 @@ function stWire(){
  on('strel','click',function(e){if(!(e.target&&e.target.closest&&e.target.closest('#strun')))stFocus('release');});
  on('stlist','click',function(){stFocus('read');});
  on('stbank','click',stBank);
- /* the press bubbles on to #stch, which gives the imprints column the room */
- document.querySelectorAll('#stctr [data-view]').forEach(function(b){
+ /* the press bubbles on to #stch, which gives the imprints column the room.
+    THE VIEW ICONS MOVED TO .st-chd, round of 29 October (see the ruling at
+    stRender above): [data-view] on its own still finds the one group that
+    exists on the page, wherever it stands. */
+ document.querySelectorAll('[data-view]').forEach(function(b){
   b.addEventListener('click',function(){stView(b.getAttribute('data-view'));});});
  on('stvault','click',function(){
   STV.list=STV.list==='vault'?'entry':'vault';
@@ -1658,7 +1665,8 @@ function stView(v){
  if(STV.view===v)return; STV.view=v;
  /* the Strip's slide is banked from the moment it is up, never before */
  STC.shift=0; STC.lastN=STR.toks.length; stSeatT(); STC.dirty=true;
- document.querySelectorAll('#stctr [data-view]').forEach(function(b){
+ /* moved to .st-chd, round of 29 October: see the ruling at stRender */
+ document.querySelectorAll('[data-view]').forEach(function(b){
   b.setAttribute('aria-pressed',b.getAttribute('data-view')===v);});}
 function stSortPaint(){
  var el=document.getElementById('stsort'); if(!el)return;
@@ -2033,16 +2041,20 @@ function stDrawStrip(){
    the tag sat on. The other three states
    each say something only the tag says and they stay: how many are pending,
    that the words kept nothing, and that the last entry was committed. The
-   span stays in place empty, because it is the spacer that holds the Bank
-   and the Vault at the row's right edge. */
+   span stays in place empty, because it is the spacer that holds the view
+   icons at the row's right edge (the Bank and the Vault moved to the
+   list's own header, round of 29 October, see the ruling at stRender). */
 function stPendPaint(){
  var e=document.getElementById('stpend'); if(!e)return;
  var n=ST_PARSED?ST_PARSED.imprints.length:0;
  e.textContent=n?n+' pending':(ST_TEXT.trim()?'Nothing kept yet':(STV.lastFound.length?'Committed':''));
  var l=document.getElementById('stlist'); if(l)l.textContent=n?'List '+n:'List';}
 function stCtrPaint(){
- /* its own span, because the line also carries the view toggle and writing
-    the whole line's text would take the three buttons off it */
+ /* its own span rather than the line itself: the view toggle lived here
+    and this kept the words from overwriting its buttons. It moved to
+    .st-chd, round of 29 October, and the span stayed rather than being
+    folded back into #stctr, since nothing else needs this line's text
+    written any other way. */
  var e=document.getElementById('stctrt'); if(!e)return;
  /* KEPT IS WHAT COUNTS, AND SET ASIDE IS THE ENGINE'S DENIED, S1. kept used
     to count every mark, the struck ones with them, so "2 kept, 1 set aside"
@@ -2689,7 +2701,8 @@ function stMic(){
   ST_LISTEN=false; ST_LISTEN_T0=null; stRender();
   status('Recording needs a secure page. Opened from a file, the browser will '
    +'not turn the microphone on. Typing works.','fail'); return; }
- if(ST_REC&&ST_LISTEN){ ST_REC.stop(); ST_LISTEN=false; ST_LISTEN_T0=null; stRender(); return; }
+ if(ST_REC&&ST_LISTEN){ ST_WANT_LISTEN=false; ST_REC.stop(); ST_LISTEN=false; ST_LISTEN_T0=null; stRender(); return; }
+ ST_WANT_LISTEN=true;
  ST_REC=new SR(); ST_REC.continuous=true; ST_REC.interimResults=true; ST_REC.lang='en-US';
  /* A NORMAL SPEECH CONVERSATION, round of 29 October, his words: "I hit the
     talk button and whatever I say enters into the text field. That should
@@ -2732,12 +2745,26 @@ function stMic(){
     +' behind stars. Type '+(hid-hidAt===1?'it':'them')+' over the stars to have '
     +(hid-hidAt===1?'it':'them')+' read.','fail');
    hidAt=hid;}};
- ST_REC.onend=function(){ST_LISTEN=false;ST_LISTEN_T0=null;ST_LIVE='';stRender();};
- ST_REC.onerror=function(e){ST_LISTEN=false;ST_LISTEN_T0=null;ST_LIVE='';stRender();
-  stMicSay((e&&e.error)||'unknown');};
+ /* CAN'T HEAR ME, round of 29 October: Chrome's own continuous recognition
+    still ends itself on its own, silently, well before the person is done
+    talking, and the old onend read that the same as the person pressing
+    stop. The mic looked live (the button still said Listening) while the
+    browser had already walked away from it. ST_WANT_LISTEN is the person's
+    own intent, set true here and only ever set false by the stop branch
+    above or a fatal error below, so an onend that fires while it is still
+    true is the browser's own idea and gets restarted rather than believed. */
+ ST_REC.onend=function(){ST_LIVE='';
+  if(ST_WANT_LISTEN){ try{ ST_REC.start(); stRender(); return; }catch(err){} }
+  ST_WANT_LISTEN=false; ST_LISTEN=false; ST_LISTEN_T0=null; stRender();};
+ ST_REC.onerror=function(e){var code=(e&&e.error)||'unknown';
+  /* no-speech is the browser noticing silence, not a failure, and onend
+     follows it either way; restarting there, not here, keeps one path. */
+  if(code==='no-speech')return;
+  ST_WANT_LISTEN=false; ST_LISTEN=false; ST_LISTEN_T0=null; ST_LIVE=''; stRender();
+  stMicSay(code);};
  try{ ST_REC.start(); ST_LISTEN=true; ST_LISTEN_T0=performance.now(); stRender();
   status('Listening. Press again to stop.','ok'); stSrcSpeak(); }
- catch(err){ ST_LISTEN=false; ST_LISTEN_T0=null; stRender();
+ catch(err){ ST_WANT_LISTEN=false; ST_LISTEN=false; ST_LISTEN_T0=null; stRender();
   status('Recording could not start. '+(err&&err.message?err.message:'')+
    ' Typing works.','fail'); }}
 /* SOURCE AI GREETS OUT LOUD WHEN TALK IS PRESSED, round of 29 October, his

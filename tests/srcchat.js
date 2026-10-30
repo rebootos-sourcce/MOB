@@ -46,7 +46,11 @@ const shot = async (p, nm) => { if (SHOTS) { await p.mouse.move(1, 1); await p.w
 /* the thread as a person sees it, and the state behind it. box and pressed
    read for what is no longer there (#sttext, #sttalk): on arrival and
    through the whole run both must read absent, since the plain box and its
-   toggle only exist during a crisis now, never in this file's own flow. */
+   toggle only exist during a crisis now, never in this file's own flow.
+   THE REPLY LINE IS GONE TOO, round of 29 October: #stcin and #stcsend
+   stood for typing a reply by hand, and voice is the only door a turn
+   comes through now (srcTurnCommit, stMic in ui/storyui.js). mic reads for
+   the one door that is left. */
 const look = p => p.evaluate(() => {
   const rows = [...document.querySelectorAll('#stsrc .src-tn')];
   return {
@@ -58,14 +62,33 @@ const look = p => p.evaluate(() => {
     top: STR.heard && STR.heard.top ? { seat: STR.heard.top.seat, m: STR.heard.top.mentions, n: STR.heard.top.negated, rung: STR.heard.top.rung } : null,
     move: srcTurn(STR.heard, { typed: !!ST_TEXT.trim(), passed: SRC_PASSED }).move,
     pass: !!document.getElementById('srcpass'),
-    box: !!document.getElementById('sttext'), line: !!document.getElementById('stcin'),
+    box: !!document.getElementById('sttext'), mic: !!document.getElementById('stmic'),
     toggle: !!document.getElementById('sttalk'),
     ts: [...document.querySelectorAll('#stsrc .src-tw')].map(s => +s.getAttribute('data-t')),
     puls: [...document.querySelectorAll('#stsrc .src-puls')].map(e => ({ an: getComputedStyle(e).animationName, d: e.getAttribute('d') || '', disp: getComputedStyle(e).display })),
     said: (document.getElementById('srcsay') || {}).textContent || ''
   };
 });
-const say = async (p, t) => { await p.fill('#stcin', t); await p.press('#stcin', 'Enter'); await p.waitForTimeout(250); };
+/* A TURN NOW LANDS BY VOICE ONLY, round of 29 October. No real microphone
+   here: a stand-in SpeechRecognition fires one finalised result, the exact
+   shape stMic reads a sentence off of (see the same stand-in at tests/
+   functional.js, "a sentence does not disappear at a pause"). The mic is
+   started once and left listening across every say() in a run, the way a
+   real conversation runs one recording through many sentences, not a
+   start and stop per word. */
+const say = async (p, t) => {
+  await p.evaluate(text => {
+    if (!window.SpeechRecognition && !window.webkitSpeechRecognition) {
+      function FakeSR() {}
+      FakeSR.prototype.start = function () {};
+      FakeSR.prototype.stop = function () { if (this.onend) this.onend(); };
+      window.SpeechRecognition = FakeSR;
+    }
+    if (!ST_LISTEN) stMic();
+    ST_REC.onresult({ resultIndex: 0, results: { 0: { 0: { transcript: text }, isFinal: true, length: 1 }, length: 1 } });
+  }, t);
+  await p.waitForTimeout(250);
+};
 
 async function open(browser, w, h, opt) {
   const cx = await browser.newContext(Object.assign({ viewport: { width: w, height: h } }, opt || {}));
@@ -103,12 +126,12 @@ require('./net.js').guardBrowser(browser);
   {
     const p = await open(browser, 1600, 1000);
     await p.evaluate(() => {
-      srcChatSend = function () {
-        const cin = document.getElementById('stcin'), v = cin.value.trim(); if (!v) return false;
+      srcTurnCommit = function (v) {
+        v = String(v || '').trim(); if (!v) return false;
         srcChatSync(); const base = ST_TEXT, a = base.length + (base ? 1 : 0);
         ST_TEXT = base + (base ? ' ' : '') + v; SRC_CHAT.push({ w: 'me', a: a, b: ST_TEXT.length, t: v });
-        cin.value = ''; ST_PARSED = parseStory(ST_TEXT); stRefresh(); return true; }; });
-    /* the line calls srcChatSend by name when Enter lands, so this is the one it reaches */
+        ST_PARSED = parseStory(ST_TEXT); stRefresh(); return true; }; });
+    /* a finalised chunk calls srcTurnCommit by name, so this is the one it reaches */
     await say(p, 'I did not sleep'); await say(p, 'afraid all night.');
     const b = await look(p);
     ok(!(b.top && b.top.m === 1 && b.top.n === 0), 'the boundary check catches a space join: top ' + JSON.stringify(b.top));
@@ -131,7 +154,7 @@ require('./net.js').guardBrowser(browser);
   console.log('\n=== the conversation at 1600 by 1000 ===');
   const p = await open(browser, 1600, 1000);
   const { a, b, c, d } = await talk(p, 'talk-1600-open.png');
-  ok(!a.toggle && !a.box && a.line, 'the reply line is there from the start, with no toggle and no write box to press it from');
+  ok(!a.toggle && !a.box && a.mic, 'Record is there from the start, with no toggle and no write box to press instead of it');
   const open1 = await p.evaluate(() => srcOpen());
   ok(a.rows.length === 1 && a.now === 1 && a.rows[0].say.indexOf(open1) === 0, 'an empty entry opens on the opener, one row: ' + JSON.stringify(a.rows[0] && a.rows[0].say.slice(0, 60)));
   ok(b.text === 'I did not sleep\nafraid all night.', 'each reply is appended to the one entry on its own line: ' + JSON.stringify(b.text));
@@ -163,9 +186,12 @@ require('./net.js').guardBrowser(browser);
     await p.evaluate(() => { const b = [...document.querySelectorAll('#themes button')].find(x => /dark/i.test(x.getAttribute('aria-label') || x.textContent)); if (b) b.click(); });
   }
 
-  /* commit, with a reply still in the line */
-  await p.fill('#stcin', 'Then I left.');
-  const parity = await p.evaluate(() => srcAsked(SRC_LOG, (ST_TEXT + '\nThen I left.').length));
+  /* commit, the moment after the last sentence lands. There is no reply
+     left sitting unsent any more, round of 29 October: a spoken sentence
+     is already a turn in ST_TEXT the instant it finalises (srcTurnCommit),
+     so Commit here finishes an entry that already carries every word. */
+  await say(p, 'Then I left.');
+  const parity = await p.evaluate(() => srcAsked(SRC_LOG, ST_TEXT.length));
   await p.click('#stapply'); await p.waitForTimeout(600);
   const g = await p.evaluate(() => { const es = CURP.story.entries, x = es[es.length - 1];
     return { x, keys: Object.keys(x).sort(), chat: SRC_CHAT.length, text: ST_TEXT, json: JSON.stringify(CURP) }; });
@@ -213,16 +239,14 @@ require('./net.js').guardBrowser(browser);
     await talk(q);
     const z = await look(q);
     ok(z.puls.length && z.puls.every(x => x.disp === 'none'), 'reduced motion keeps the wires and drops the pulses');
-    const fit = await q.evaluate(() => ({ sw: document.documentElement.scrollWidth, w: innerWidth,
-      line: (() => { const r = document.getElementById('stcin').getBoundingClientRect(); return { top: r.top, h: r.height, w: r.width }; })(),
-      send: (() => { const r = document.getElementById('stcsend').getBoundingClientRect(); return { w: r.width, h: r.height }; })() }));
+    const fit = await q.evaluate(() => ({ sw: document.documentElement.scrollWidth, w: innerWidth }));
     ok(fit.sw <= fit.w, 'no sideways scroll at 390: ' + fit.sw + ' of ' + fit.w);
-    /* Talk is gone, round of 28 October: Record no longer shares its row
-       with a second button, it stands on its own, and is still tap sized */
+    /* Talk is gone, round of 28 October, and the reply line and its send are
+       gone with the text field, round of 29 October: Record stands on its
+       own, the one door, and is still tap sized. */
     const mic = await q.evaluate(() => { const r = document.getElementById('stmic').getBoundingClientRect();
       return { w: Math.round(r.width), h: Math.round(r.height) }; });
     ok(mic.w >= 44 && mic.h >= 44, 'Record is tap sized on its own: ' + JSON.stringify(mic));
-    ok(fit.send.w >= 44 && fit.send.h >= 44 && fit.line.h >= 44, 'the send and the line are tap sized: ' + JSON.stringify(fit));
     await q.evaluate(() => { const t = document.querySelector('#stjr'); t.scrollIntoView(); });
     await shot(q, 'talk-390-ask.png');
     ok(!q.errs.length, 'no page errors at 390: ' + q.errs.join(' | '));
