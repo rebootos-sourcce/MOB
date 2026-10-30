@@ -3424,10 +3424,14 @@ function relRender(){
   else if(!showOnly())body+='<div class="rel-fields">'
     +'<label class="rel-field"><span>Run speed</span><input type="number" id="relpace" min="0.5" max="2" step="0.1" value="'
      +RUN.pace+'"></label>'
-    /* TIMES SAID, 17 October, and not Patterns: this is how many times each
-       line is said, and the allowance's unit is a line opened, which a dose
-       never spends. One word per concept. */
-    +(relMiniNow()?'':'<label class="rel-field"><span>Times said</span><input type="number" id="reldose" min="1" max="'
+    /* PATTERNS, round of 29 October, overriding 17 October's own ruling
+       (kept for the record: that round called it Times said rather than
+       Patterns, since this is how many times each line is said and the
+       allowance's unit, a line opened, is never what a dose spends). His
+       words today put it back to Patterns on the Story page's own
+       matching field (ui/storyui.js, stRelPanel), so this one reads the
+       same word rather than disagree with it again. */
+    +(relMiniNow()?'':'<label class="rel-field"><span>Patterns</span><input type="number" id="reldose" min="1" max="'
      +REL_DOSES[REL_DOSES.length-1]+'" step="1" value="'+RUN.dose+'"></label>')
     +'<div class="rel-field"><span>Time</span><b class="rel-time">'+relMMSS(relSecFrom(null))+'</b></div>'
     /* his three, as quick picks on the same number */
@@ -3456,7 +3460,9 @@ function relRender(){
       +'<button class="btn" id="relcancel">Close</button>'
       +'<button type="button" class="rel-lk" id="relplan">See the tiers</button>'
      :'<button class="btn" id="relcancel">Cancel</button>'
-      +'<button class="btn pri" id="relgo">Run release</button>'))});}
+      /* RELEASE, not Run release, round of 29 October: see the ruling at
+         the matching button in ui/storyui.js, stRelPanel. */
+      +'<button class="btn pri" id="relgo">Release</button>'))});}
  var sc0=document.getElementById('relsc'), keepY=(sc0&&sc0.closest('[data-ph]')
   &&sc0.closest('[data-ph]').getAttribute('data-ph')==='done'&&RUN.phase==='done')?sc0.scrollTop:0;
  if(!kept)h.innerHTML=out;

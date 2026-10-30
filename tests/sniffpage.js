@@ -75,12 +75,18 @@ const story = p => p.evaluate(() => {
       const a = nm.map[(h[from] != null ? h[from] : h.at) + 1], b = nm.map[h.at + String(h.t).length] + 1;
       if (seen[a]) return; seen[a] = 1; out.push(t.slice(a, b)); });
     return out; };
+  /* THE CAPTION IS GONE, round of 29 October: see the ruling at stCtrPaint's
+     old site in ui/storyui.js. It used to print "N words read, M kept,
+     ..." for a person to read; this reads the same three counts straight
+     off STR.marks and STR.toks, the engine's own flags, the way the
+     caption itself used to, rather than off a sentence built to be read. */
+  const ng = STR.marks.filter(m => m.neg).length, no = STR.marks.filter(m => m.oth).length;
   return {
     text: t,
     marks: [...document.querySelectorAll('#sthl mark')].map(m => ({ t: m.textContent, neg: m.classList.contains('neg'), oth: m.classList.contains('oth') })),
     denied: quote(P && P.denied, 'negAt'),
     others: quote(P && P.others, 'whoAt'),
-    ctr: (document.getElementById('stctrt') || {}).textContent || '',
+    counts: { words: STR.toks.length, kept: STR.marks.length - ng - no, negated: ng, other: no },
     list: (document.getElementById('stimps') || {}).textContent || '',
     commit: (document.getElementById('stapply') || {}).textContent || ''
   };
@@ -99,10 +105,8 @@ require('./net.js').guardBrowser(browser);
     ok(!!s.denied && s.denied.join('|') === 'not angry', 'the engine lists the denied word on the parse: ' + JSON.stringify(s.denied));
     ok(!!s.denied && struck.join('|') === s.denied.join('|'), 'the struck marks are exactly the engine\'s denied words: ' + JSON.stringify(struck));
     const kept = s.marks.filter(m => !m.neg && !m.oth).length, k = struck.length;
-    const mk = s.ctr.match(/(\d+) kept/), mn = s.ctr.match(/(\d+) set aside after a no/);
-    ok(!!mk && +mk[1] === kept, 'the counter\'s kept is the marks that count, ' + kept + ': ' + JSON.stringify(s.ctr));
-    ok(!!mn && +mn[1] === k, 'and its set aside is the engine\'s denied count, ' + k + ', said in plain words: ' + JSON.stringify(s.ctr));
-    ok(!/negated/.test(s.ctr), 'the counter carries no word a ten year old would ask about: ' + JSON.stringify(s.ctr));
+    ok(s.counts.kept === kept, 'the engine\'s own kept count is the marks that count, ' + kept + ': ' + JSON.stringify(s.counts));
+    ok(s.counts.negated === k, 'and its set aside is the engine\'s denied count, ' + k + ': ' + JSON.stringify(s.counts));
 
     /* P3-1 of the inference audit, 24 October: a calm word said with a no is
        set aside like any other word, denied on the parse, struck on the page
@@ -113,8 +117,7 @@ require('./net.js').guardBrowser(browser);
     const cs = c.marks.filter(m => m.neg).map(m => m.t);
     ok(!!c.denied && c.denied.join('|') === 'not grateful' && cs.join('|') === 'not grateful',
       'a calm word after a no is denied on the parse and struck on the page: ' + JSON.stringify({ denied: c.denied, struck: cs }));
-    const cn = c.ctr.match(/(\d+) set aside after a no/);
-    ok(!!cn && +cn[1] === 1, 'and the counter sets it aside: ' + JSON.stringify(c.ctr));
+    ok(c.counts.negated === 1, 'and the engine sets it aside: ' + JSON.stringify(c.counts));
 
     await type(p, 'I was not angry.');
     const d = await story(p);
@@ -158,9 +161,9 @@ require('./net.js').guardBrowser(browser);
     ok(!!s.others && s.others.join('|') === 'He is furious', 'the engine lists the word about someone else on the parse: ' + JSON.stringify(s.others));
     ok(!!s.others && set.join('|') === s.others.join('|') && !s.marks.some(m => m.oth && m.neg),
       'the page draws exactly those as set aside, from the person to the word, and not struck: ' + JSON.stringify(s.marks));
-    const kept = s.marks.filter(m => !m.neg && !m.oth).length, mo = s.ctr.match(/(\d+) about someone else/), mk = s.ctr.match(/(\d+) kept/);
-    ok(!!mo && +mo[1] === set.length && !!mk && +mk[1] === kept,
-      'the counter keeps ' + kept + ' and sets ' + set.length + ' aside as about someone else: ' + JSON.stringify(s.ctr));
+    const kept = s.marks.filter(m => !m.neg && !m.oth).length;
+    ok(s.counts.other === set.length && s.counts.kept === kept,
+      'the engine keeps ' + kept + ' and sets ' + set.length + ' aside as about someone else: ' + JSON.stringify(s.counts));
     await type(p, 'He is furious.');
     const d = await story(p);
     ok(d.commit === 'Commit', 'someone else\'s charge alone gives Commit nothing to count: ' + JSON.stringify(d.commit));

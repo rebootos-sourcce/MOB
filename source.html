@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v718 bf233a3a 2026-10-30 01:09"><head><meta charset="utf-8">
+<html lang="en" data-build="v719 58a4d42e 2026-10-30 02:16"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -4005,8 +4005,15 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 /* ---- the list panel's own icon row: the bank and the archive, round of
    29 October. A sibling of #stlshd and never inside it, because
    stListPaint() owns #stlshd and rewrites it on every repaint; see the
-   ruling at stRender in ui/storyui.js. */
-.st-lsico{display:flex;align-items:center;justify-content:flex-end;gap:8px;min-height:24px;margin-bottom:6px}
+   ruling at stRender in ui/storyui.js.
+   A BLACK GROUND UNDER THE ICONS, round of 29 October, his words: "the
+   bank looks really boring, so I want a black background behind the
+   icons." The sunk ground, not a literal black: the same recessed surface
+   the chart's own canvas already sits on (.st-cvw), so the row reads as a
+   held panel and stays the correct ink on the two paper lightings rather
+   than a black square sitting wrong on a white page. */
+.st-lsico{display:flex;align-items:center;justify-content:flex-end;gap:8px;min-height:var(--tap);
+ margin-bottom:6px;padding:6px 8px;border-radius:var(--r-xs);background:var(--sunk)}
 /* ---- Commit, at the foot of the whole read column, round of 29 October ---- */
 .st-rft{display:flex;justify-content:flex-end;flex:0 0 auto}
 .st-ico{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);min-width:var(--tap);
@@ -4037,7 +4044,8 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
  background:var(--sunk);overflow:hidden;color:var(--ink)}
 .st-cvw canvas{position:absolute;inset:0;display:block;width:100%;height:100%}
 .st-cvk{display:none;color:var(--dim);border-top:1px solid var(--accent)}
-.st-ctr{font-size:12.5px;color:var(--dim);margin-top:6px;min-height:18px}
+/* .st-ctr is gone, round of 29 October: see the ruling at stCtrPaint's own
+   old site in ui/storyui.js. */
 /* ---- the list: this entry by lane, or the vault ---- */
 .st-lshd{font-size:12px;font-weight:600;color:var(--dim);min-height:22px}
 .st-lsb{flex:1 1 auto;overflow:auto;margin:4px -6px 0;padding:0 6px;
@@ -4345,11 +4353,9 @@ body.tab-summary .lsec.sum-rail.dl-empty{display:none}
 @keyframes srcPass{0%{transform:translateY(0);opacity:0}6%{opacity:.7}
  25%{transform:translateY(163%);opacity:0}100%{transform:translateY(163%);opacity:0}}
 @keyframes srcScan{from{transform:translateY(0)}to{transform:translateY(163%)}}
-.src-live{width:6px;height:6px;border-radius:50%;flex:0 0 auto;background:var(--accent);
- animation:srcBreath 4.2s ease-in-out infinite}
-@keyframes srcBreath{0%,100%{opacity:.35;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
-.st-jr:has(#stsrc.hear) .src-live{animation:none;opacity:1;transform:scale(1.15);
- box-shadow:0 0 6px var(--accent)}
+/* .src-live, the dot beside Chat, and its own srcBreath keyframe are gone,
+   round of 29 October: see the ruling at its old markup site in
+   ui/storyui.js. */
 .src-land .src-w{display:inline-block;animation:srcWd var(--t-element) var(--ease-out) both;
  animation-delay:calc(var(--i) * var(--t-stagger) * .5)}
 @keyframes srcWd{from{opacity:0;transform:translateY(.28em);color:var(--accent)}
@@ -4360,11 +4366,9 @@ body.tab-summary .lsec.sum-rail.dl-empty{display:none}
  animation-delay:calc(var(--n) * var(--t-stagger) * .5 + var(--t-element))}
 @keyframes srcCur{0%{opacity:1}25%{opacity:0}50%{opacity:1}75%,100%{opacity:0}}
 body.quiet .st-pe::before,body.rm .st-pe::before,body.quiet .st-pe::after,body.rm .st-pe::after{animation:none;opacity:0}
-body.quiet .src-live,body.rm .src-live{animation:none;opacity:1;transform:none}
 body.quiet .src-land .src-w,body.rm .src-land .src-w,
 body.quiet .src-land::after,body.rm .src-land::after{animation:none}
-@media (prefers-reduced-motion:reduce){.st-pe::before,.st-pe::after{display:none}
- .src-live{animation:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.st-pe::before,.st-pe::after{display:none}}
 /* ---------- Source AI, deeper still. Round LV ----------
    His words: "I want that location to feel like it's alive and innovative,
    like it's a part of the screen that has a different nature to it, and I
@@ -4546,21 +4550,29 @@ body.quiet .src-livecap,body.rm .src-livecap{animation:none;opacity:.85}
 .src-tn{display:flex;list-style:none;margin:10px 0}
 .src-tn-me{justify-content:flex-end}
 .src-tn-now,.src-tn-past{justify-content:flex-start}
-.src-bub{max-width:82%;border-radius:var(--r-s);padding:10px 14px}
-/* Source AI's bubble carries a thin edge in the seat colour its turn read,
-   the one piece of the old wire's colour coding worth keeping: which body
-   seat a turn concerned, read at a glance without a legend. */
-.src-bub-src{background:var(--sunk);border:1px solid var(--edge);
- border-left:3px solid var(--c,var(--accent))}
+/* ONE BUBBLE SHAPE, round of 29 October, his words: "I need a more
+   unifying style. We've got two different kind of bubble styles
+   happening, and that's not working. Also, two different font styles,
+   and that's definitely not working." The first build gave Source AI's
+   bubble a plain edge plus a second, thicker, seat-coloured edge on its
+   left, a second border scheme the person's own bubble never carried, and
+   left .src-q/.src-open at the 20 to 22px size they were built for as a
+   single standalone headline, against .src-me's 16px: two shapes, two
+   type scales, on the same window. Now there is one shape (radius,
+   padding, type) for every bubble, and the only differences left are the
+   two a real two-sided conversation needs: which side it sits on, and
+   its fill. */
+.src-bub{max-width:82%;border-radius:var(--r-s);padding:10px 14px;
+ font-family:var(--sans);font-size:16px;line-height:1.6;font-weight:400}
+.src-bub-src{background:var(--sunk);border:1px solid var(--edge);color:var(--ink)}
 .src-bub-past{opacity:.82}
 .src-bub-me{background:var(--accent);color:var(--on-accent)}
-/* the person's words in the journal's own hand, told apart from Source AI's
-   by which side of the window they sit on, not by weight any more: a filled
-   bubble needs its own text colour and font-weight 300 on var(--on-accent)
-   read thin against a filled accent on more than one lighting. */
-.src-me{margin:0;font-family:var(--sans);font-size:16px;line-height:1.6;font-weight:400;
- color:inherit;white-space:pre-wrap;overflow-wrap:break-word}
-.src-bub-src .src-q,.src-bub-src .src-open{margin:0;max-width:none}
+.src-me{margin:0;color:inherit;white-space:pre-wrap;overflow-wrap:break-word}
+/* every paragraph a bubble can hold reads at the bubble's own one size,
+   never its old standalone size, whichever class built it */
+.src-bub .src-q,.src-bub .src-open,.src-bub .src-note{margin:0;max-width:none;
+ font-family:inherit;font-size:inherit;line-height:inherit;font-weight:inherit;color:inherit}
+.src-bub .src-note{opacity:.75;margin-top:6px}
 .src-bub .src-row{margin-top:10px}
 .src-tn-now .src-open,.src-tn-now .src-q{margin-top:0}
 /* the reply line, on the journal box's own ground and type */
@@ -5967,7 +5979,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  .st-flow:not([data-focus="write"]) .st-hl{min-height:96px}
  .st-cvw{flex:0 0 auto;height:230px;min-height:0}
  .st-flow:not([data-focus="read"]) .st-cvw{height:100px}
- .st-flow:not([data-focus="read"]) .st-sort,.st-flow:not([data-focus="read"]) .st-ctr,
+ .st-flow:not([data-focus="read"]) .st-sort,
  .st-flow:not([data-focus="read"]) .st-ls{display:none}
  .st-flow:not([data-focus="read"]) .st-open{display:inline-flex}
  /* the list door carries the pending count, "List 12", so while it shows the
@@ -47926,7 +47938,12 @@ function stRender(){
    +(ST_LISTEN?'<span class="st-mictime" id="stmictime" aria-hidden="true">'
      +stMicFmt(stMicElapsed())+'</span>':'')
    +'</button>')
-   +'<span class="src-live" aria-hidden="true"></span>'
+   /* THE DOT IS GONE, round of 29 October, his words: "the chat icon still
+      looks really boring, get rid of the blue dot next to it." .src-live
+      was the live breathing dot beside Chat, tied to Source AI's own
+      hearing state (srcHearing below). Nothing else showed that state, so
+      removing it is a real loss of a signal, not only a cosmetic one, and
+      is his call to make, taken as said. */
    +'</div>'
    /* THE DASHBOARD DOOR STANDS ON ITS OWN NOW, round of 29 October, found by
       his own screenshot of the real site: Dashboard sat right beside Talk on
@@ -48119,12 +48136,10 @@ function stRender(){
       focus, so the door stands here. */
    +'<div class="st-chd">'+stMark('i','Imprints','imprint')+'<span class="st-tag" id="stpend"></span>'
    +'<button type="button" class="btn st-open" id="stlist">List</button>'+stViewHtml()+'</div>'
-   +'<div class="st-sort" id="stsort" role="group" aria-label="Sort imprints by"></div>'
    /* the key probe is never shown. The canvas cannot read a custom property,
       so the chart reads the lighting's ink and dim off these two computed
       colours, which is the one answer that follows every lighting. */
-   +'<div class="st-cvw" id="stcvw"><canvas id="stcv" aria-hidden="true"></canvas><i class="st-cvk"></i></div>'
-   +'<div class="st-ctr" id="stctr"><span id="stctrt"></span></div></div>'
+   +'<div class="st-cvw" id="stcvw"><canvas id="stcv" aria-hidden="true"></canvas><i class="st-cvk"></i></div></div>'
   +'<div class="st-pan st-ls" id="stls" aria-label="Imprints, listed">'
    +'<div class="st-lsico">'
    /* THE BANK AND THE VAULT, round IG, his words: "We need to be able to see
@@ -48146,6 +48161,13 @@ function stRender(){
     +'<circle cx="12" cy="11.5" r="3.6"/><path d="M12 7.9v1.2M12 13.9v1.2"/></svg>'
     +'<span class="st-lb">Archive</span><b id="stvn">\u2013</b></button>'
    +'</div>'
+   /* SORT MOVED INTO THE BANK, round of 29 October, his words: "sort,
+      weight, charge, etc., belongs in the bank menu." It sorts the list
+      directly below it (and the chart with it, one lane model for both,
+      see stLaneModel), so its new seat is the list panel's own menu row
+      rather than the chart's. Same id, same wiring, stSortPaint finds it
+      by id wherever it stands. */
+   +'<div class="st-sort" id="stsort" role="group" aria-label="Sort imprints by"></div>'
    +'<div class="st-lshd" id="stlshd"></div><div class="st-lsb" id="stimps"></div></div>'
   /* COMMIT, AT THE FOOT OF THE COLUMN, round of 29 October, on top of the
      earlier ruling "the commit button should be on the bank": the bank is
@@ -48186,7 +48208,8 @@ function stRender(){
  stSize();
  ST_ACTIVE=typeof srcHyperSeats==='function'?srcHyperSeats(compute()):null;
  stRead(); stSortPaint();
- srcLock(h.querySelector('.st-glow')); srcLock(h.querySelector('#stjr .src-live'));
+ /* the live dot's own lock call is gone with the dot, round of 29 October */
+ srcLock(h.querySelector('.st-glow'));
  var ta=document.getElementById('sttext');
  if(ta){ta.oninput=function(){ ST_TEXT=ta.value;
   ST_PARSED=ST_TEXT.trim()?parseStory(ST_TEXT):null; stRefresh(); };
@@ -48616,7 +48639,7 @@ function stAsidePaint(){
 /* everything below the sentence, off the one read */
 function stPaintAll(){
  STC.sync(); stRelayout();
- srcPaint(); stPendPaint(); stCtrPaint(); stListPaint(); stVaultCount(); stRelPanel();
+ srcPaint(); stPendPaint(); stListPaint(); stVaultCount(); stRelPanel();
  impRender();}
 /* THE FIELD MOVED UNDER THE PAGE. render() calls this on the Story, because
    a release that finishes, an undo, or a profile change all change what is
@@ -49167,7 +49190,9 @@ function srcHearing(h){
  h.classList.add('hear');
  clearTimeout(SRC_HT);
  SRC_HT=setTimeout(function(){var e=document.getElementById('stsrc');
-  if(e){e.classList.remove('hear'); srcLock(document.querySelector('#stjr .src-live'));}},1100);}
+  /* the live dot's own lock call is gone with the dot, round of 29
+     October; .hear itself still drives #stsrc's own halo and stays */
+  if(e)e.classList.remove('hear');},1100);}
 /* ============================================================
    TALK. PLAN.md section C item 4, his words: "make source a socially chat
    interactive," "add a button where I can just have a conversation back and
@@ -49334,12 +49359,16 @@ function srcThread(turn,heard,cur,acts,why){
   /* a reply's reading is the entry as it stood when it was sent */
   if(r.w==='me'&&r.rg===undefined){pr=pr||srcPrior(ents);
    var hh=srcHear(ST_TEXT.slice(0,r.b),pr); r.rg=hh.top?hh.top.rung:0; r.bd=hh.top?hh.top.band:null;}
-  var col=r.bd?seatCol(r.bd):'var(--accent)';
   var cls='src-tn src-tn-'+(r.w==='me'?'me':(i===last?'now':'past'));
   o+='<li class="'+cls+'"'+(r.w==='src'&&i!==last?' aria-label="An earlier turn"':'')+'>';
+  /* ONE BUBBLE SHAPE, round of 29 October: see the ruling at .src-bub in
+     the shell. The per-turn seat colour on the AI bubble's edge is gone
+     with its own border scheme; r.bd and the rung read above still feed
+     srcThreadNow's own seat colour where a live ask still uses one
+     (srcLand's style argument), unrelated to the bubble's own ground. */
   if(r.w==='me')o+='<div class="src-bub src-bub-me"><p class="src-me">'+esc(r.t)+'</p></div>';
-  else if(i===last)o+='<div class="src-bub src-bub-src" style="--c:'+col+'">'+srcThreadNow(r,turn,heard,acts,why)+'</div>';
-  else o+='<div class="src-bub src-bub-src src-bub-past" style="--c:'+col+'"><p class="src-q">'+esc(r.q)+'</p></div>';
+  else if(i===last)o+='<div class="src-bub src-bub-src">'+srcThreadNow(r,turn,heard,acts,why)+'</div>';
+  else o+='<div class="src-bub src-bub-src src-bub-past"><p class="src-q">'+esc(r.q)+'</p></div>';
   o+='</li>';});
  return o+'</ol>';}
 /* the one live Source AI row, in the panel's own markup for each move.
@@ -49850,25 +49879,15 @@ function stPendPaint(){
  var n=ST_PARSED?ST_PARSED.imprints.length:0;
  e.textContent=n?n+' pending':(ST_TEXT.trim()?'Nothing kept yet':(STV.lastFound.length?'Committed':''));
  var l=document.getElementById('stlist'); if(l)l.textContent=n?'List '+n:'List';}
-function stCtrPaint(){
- /* its own span rather than the line itself: the view toggle lived here
-    and this kept the words from overwriting its buttons. It moved to
-    .st-chd, round of 29 October, and the span stayed rather than being
-    folded back into #stctr, since nothing else needs this line's text
-    written any other way. */
- var e=document.getElementById('stctrt'); if(!e)return;
- /* KEPT IS WHAT COUNTS, AND SET ASIDE IS THE ENGINE'S DENIED, S1. kept used
-    to count every mark, the struck ones with them, so "2 kept, 1 set aside"
-    said three words were read where two were. The flag is marksOf's, so
-    this number and the struck marks are one count. "Negated" was the one
-    word on the line a ten year old would ask about; "after a no" is the
-    same fact in words the person already has. */
- /* AND SOMEONE ELSE'S, S2, from the same flags: a word the engine held as
-    about someone else is not kept and is not a no, so it has its own count */
- var toks=STR.toks,ng=STR.marks.filter(function(m){return m.neg;}).length,
-  no=STR.marks.filter(function(m){return m.oth;}).length,tg=STR.marks.length-ng-no;
- e.textContent=toks.length?(toks.length+' words read, '+tg+' kept'+(ng?', '+ng+' set aside after a no':'')
-  +(no?', '+no+' about someone else':'')):'';}
+/* THE CAPTION UNDER THE CHART IS GONE, round of 29 October, his words:
+   "get rid of the text that says 29 words read to kept." stCtrPaint used
+   to write it into #stctrt; both are gone with it, #stctr's own div along
+   with them since it held nothing else. The counts themselves, kept, set
+   aside after a no, about someone else, still come off STR.marks and
+   STR.toks exactly as this function read them; tests/sniffpage.js reads
+   them the same way directly off STR now rather than off a caption built
+   to show a person, which is a cleaner read in its own right and not only
+   a consequence of the caption going. */
 
 /* ============================================================
    THE LIST, in the lanes' order, so a sort moves the chart and the list
@@ -49915,9 +49934,13 @@ function stListPaint(){
      halves of the engine disagreeing. Since S1 a word said with a no charges
      no seat, so a lane here always has a word that counts, and a note that
      said otherwise would be a false sentence. */
-  var note;
-  if(STV.sort!=='charge')note='<em>'+pills.length+' pending</em>';
-  else note='<em>at '+l.bands.map(srcSeatSay).join(', ')+'</em>';
+  /* THE PENDING COUNT IS GONE FROM EVERY GROUP HEADING, round of 29
+     October, his words: "get rid of one pending, one pending." It repeated
+     once per seat and said nothing the pills under it did not already
+     show by being there. The charge sort's own note, which seats a charge
+     group spans, is a different sentence and stays. */
+  var note='';
+  if(STV.sort==='charge')note='<em>at '+l.bands.map(srcSeatSay).join(', ')+'</em>';
   var sym=l.icon?stSvg(l.icon):'<span class="st-ring"></span>';
   o+='<div class="st-grp'+(STV.hot===l.key?' hot':'')+'" data-k="'+esc(l.key)+'" style="--c:'+c+'">'
    +'<div class="st-ghd"><b>'+sym+esc(l.label)+'</b>'+note+'</div><div class="st-pills">'
@@ -50032,20 +50055,33 @@ function stRelPanel(){
  o+='</div><div class="st-rlfoot">'
   /* pace and patterns set the run, so they go with it on a worked example */
   +(showOnly()?'':'<div class="rel-fields st-fields">'
-   +'<label class="rel-field"><span>Pace</span><input type="number" id="strpace" min="0.5" max="2" step="0.1" value="'+RUN.pace+'"></label>'
-   /* TIMES SAID, 17 October, the card's own word and the card's own ceiling.
-      It said Patterns, which since the allowance is the unit a run spends and
-      not how often a line is said, and it capped at the fifty a printed card
-      carries while the card offers a hundred and opens there, so a hundred
-      showed in a field whose ceiling was fifty and any edit cut it in half. */
-   +'<label class="rel-field"><span>Times said</span><input type="number" id="strdose" min="1" max="'+stDoseMax()+'" step="1" value="'+RUN.dose+'"></label>'
+   /* PACE READ RUN SPEED ALREADY ON THE CARD, round LY, his words then:
+      "run speed instead of pace." This panel never got that update; round
+      of 29 October his words made it plain it still said Pace, so it now
+      reads what the card already reads, the two kept in step the way
+      Times said was kept in step with the card below. The field's id and
+      RUN.pace are untouched, only the label moved. */
+   +'<label class="rel-field"><span>Run speed</span><input type="number" id="strpace" min="0.5" max="2" step="0.1" value="'+RUN.pace+'"></label>'
+   /* PATTERNS, round of 29 October, overriding the 17 October ruling below
+      kept for the record: his words then were that Times said is the
+      card's own word for the allowance's real unit, not Patterns, because
+      the field counts how often a line is said and not a pattern count.
+      His words today, looking at this exact panel, were to call it
+      Patterns anyway, so both this field and the card's own
+      (ui/release.js) now read Patterns; a mismatch between the two was
+      the thing the earlier rename existed to prevent, so both still
+      agree, only on the opposite word. */
+   +'<label class="rel-field"><span>Patterns</span><input type="number" id="strdose" min="1" max="'+stDoseMax()+'" step="1" value="'+RUN.dose+'"></label>'
   +'</div>')
   /* ENABLED ON A SELECTION, NOT ON A PRICE, so a spent allowance still
      reaches the card that refuses it and says why. */
   /* and on a worked example it is the preview line, ruled 16 October: the
      rings above are the reading and stay, Run is the run and does not */
   +(showOnly()?showNote('release','st-show')
-   :'<button type="button" class="st-go" id="strun"'+(M.sel.length?'':' disabled')+'>Run release</button>')+'</div>';
+   /* RELEASE, not Run release, round of 29 October, his words: "change run
+      release to just release." The card's own button (ui/release.js)
+      renamed the same way, same reason the fields above stay matched. */
+   :'<button type="button" class="st-go" id="strun"'+(M.sel.length?'':' disabled')+'>Release</button>')+'</div>';
  e.innerHTML=o;
  /* lit from within, in the heaviest selected seat's colour, as bright as
     that address is heavy. Round HX, B, which he did not strike.
@@ -60559,10 +60595,14 @@ function relRender(){
   else if(!showOnly())body+='<div class="rel-fields">'
     +'<label class="rel-field"><span>Run speed</span><input type="number" id="relpace" min="0.5" max="2" step="0.1" value="'
      +RUN.pace+'"></label>'
-    /* TIMES SAID, 17 October, and not Patterns: this is how many times each
-       line is said, and the allowance's unit is a line opened, which a dose
-       never spends. One word per concept. */
-    +(relMiniNow()?'':'<label class="rel-field"><span>Times said</span><input type="number" id="reldose" min="1" max="'
+    /* PATTERNS, round of 29 October, overriding 17 October's own ruling
+       (kept for the record: that round called it Times said rather than
+       Patterns, since this is how many times each line is said and the
+       allowance's unit, a line opened, is never what a dose spends). His
+       words today put it back to Patterns on the Story page's own
+       matching field (ui/storyui.js, stRelPanel), so this one reads the
+       same word rather than disagree with it again. */
+    +(relMiniNow()?'':'<label class="rel-field"><span>Patterns</span><input type="number" id="reldose" min="1" max="'
      +REL_DOSES[REL_DOSES.length-1]+'" step="1" value="'+RUN.dose+'"></label>')
     +'<div class="rel-field"><span>Time</span><b class="rel-time">'+relMMSS(relSecFrom(null))+'</b></div>'
     /* his three, as quick picks on the same number */
@@ -60591,7 +60631,9 @@ function relRender(){
       +'<button class="btn" id="relcancel">Close</button>'
       +'<button type="button" class="rel-lk" id="relplan">See the tiers</button>'
      :'<button class="btn" id="relcancel">Cancel</button>'
-      +'<button class="btn pri" id="relgo">Run release</button>'))});}
+      /* RELEASE, not Run release, round of 29 October: see the ruling at
+         the matching button in ui/storyui.js, stRelPanel. */
+      +'<button class="btn pri" id="relgo">Release</button>'))});}
  var sc0=document.getElementById('relsc'), keepY=(sc0&&sc0.closest('[data-ph]')
   &&sc0.closest('[data-ph]').getAttribute('data-ph')==='done'&&RUN.phase==='done')?sc0.scrollTop:0;
  if(!kept)h.innerHTML=out;
@@ -78954,8 +78996,17 @@ try{window.__at&&window.__at('ui/crisis.js');}catch(e){}
    a frame that looks like a safety check but answers no real signal would be
    worse than adding nothing, so none is added here. See obStory below,
    where the first stranger's words are actually read, for the same warning
-   placed at the exact line it describes. Tracked in the owner's plan as J0,
-   a ship blocker for any build a stranger who is not the owner can reach.
+   placed at the exact line it describes. Tracked in the owner's plan as J0.
+
+   P3, NOT A SHIP BLOCKER, ruled 30 October: his words, "place a P0 the
+   safety are broken in production right now. The safety gap. I want to
+   handle that, but not for the MVP alpha... down prioritize that. As a
+   P3." J0 was already closed as a question round QW (WAITING-ON-YOU.md,
+   "I'm not dealing with crisis shit right now... stop asking until we move
+   towards the release candidate") and is needed for MVP beta, not alpha.
+   Still said loudly, because an open gap silently dropped is the failure
+   this header warns against either way; only its urgency moved, not
+   whether it is real.
 
    AND A BUTTON IS NOT A DETECTOR, 16 October. He ruled the crisis option onto
    the welcome as a choice: "Is this a crisis? Hit that button." It is in the
@@ -83193,5 +83244,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005484671"></div>
+<div id="eof" hidden data-len="005487911"></div>
 </body></html>

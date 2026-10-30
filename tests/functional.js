@@ -3007,6 +3007,11 @@ const relrun=await page.evaluate(()=>{
  relPick(held);
  o.plan=RUN.plan.length;
  o.setup=(document.getElementById('rel').textContent||'').replace(/\s+/g,' ');
+ /* read off the button itself, not the blob: "Release" alone also matches
+    the card's own heading, which was already true before the button's
+    own rename, round of 29 October, so the blob regex alone cannot tell
+    the two apart. */
+ o.goText=(document.getElementById('relgo')||{}).textContent||'';
  o.distinct=new Set(RUN.plan).size;
  /* THE PERSON WHO RAN IT IS THE PERSON CHARGED, and nothing in the run moves
     who that is. An earlier build repointed CURP at the person's own record
@@ -3060,19 +3065,22 @@ ok(relrun.distinct===relrun.plan,'and never repeats a line inside one run');
    was there to keep. */
 /* "Pace" read "Run speed" from round LY, his own words, "run speed instead
    of pace"; the field's id and RUN.pace are untouched, only the label moved. */
+/* "TIMES SAID" READ "PATTERNS" AGAIN, round of 29 October, overriding the
+   17 October rename this file used to test for by name: his words today,
+   looking at the Story page's own matching field, put Patterns back. The
+   card's button is Release now too, not Run release, same round. */
 /* "RELEASE YOUR SELECTIONS" CAME OFF, round QH, his words: "get rid of the
    text that says release your selections. I want this to show me the stories
    or the patterns that I'm about to release." The heading's place is the
    Story and Seat toggle, and the selection is shown as what it is, each group
    with its count of patterns. */
 ok(!/Release your selections/i.test(relrun.setup)&&/Story/.test(relrun.setup)&&/Seat/.test(relrun.setup)
- /* counted in lines and the dose named Times said since 17 October: a
-    pattern is the allowance's unit, and these count lines said, every pass
-    (tests/allowance.js, 8). The controls he named are all still here. */
- &&/\d+ ?lines/.test(relrun.setup)&&/Run speed/.test(relrun.setup)
- &&/Times said/.test(relrun.setup)&&/Run release/.test(relrun.setup),
+ /* counted in lines and the dose named Patterns again since 29 October,
+    the controls he named are all still here */
+ &&/\d+ ?lines/.test(relrun.setup)&&/Run speed/.test(relrun.setup)&&/Patterns/.test(relrun.setup)
+ &&relrun.goText.trim()==='Release',
  'the setup is what is picked, by story or seat with its patterns, run speed, how many patterns and one button: '
- +relrun.setup.slice(0,160));
+ +relrun.setup.slice(0,160)+' | button: '+relrun.goText);
 ok(!/patterns of the|thought lines? of new ground|you have left|empties the story/.test(relrun.setup),
  'and it quotes no cost and no framing, '+relrun.setup.slice(0,160));
 ok(relrun.beforeWho===0&&relrun.afterWho===0,

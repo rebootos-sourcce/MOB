@@ -4005,8 +4005,15 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 /* ---- the list panel's own icon row: the bank and the archive, round of
    29 October. A sibling of #stlshd and never inside it, because
    stListPaint() owns #stlshd and rewrites it on every repaint; see the
-   ruling at stRender in ui/storyui.js. */
-.st-lsico{display:flex;align-items:center;justify-content:flex-end;gap:8px;min-height:24px;margin-bottom:6px}
+   ruling at stRender in ui/storyui.js.
+   A BLACK GROUND UNDER THE ICONS, round of 29 October, his words: "the
+   bank looks really boring, so I want a black background behind the
+   icons." The sunk ground, not a literal black: the same recessed surface
+   the chart's own canvas already sits on (.st-cvw), so the row reads as a
+   held panel and stays the correct ink on the two paper lightings rather
+   than a black square sitting wrong on a white page. */
+.st-lsico{display:flex;align-items:center;justify-content:flex-end;gap:8px;min-height:var(--tap);
+ margin-bottom:6px;padding:6px 8px;border-radius:var(--r-xs);background:var(--sunk)}
 /* ---- Commit, at the foot of the whole read column, round of 29 October ---- */
 .st-rft{display:flex;justify-content:flex-end;flex:0 0 auto}
 .st-ico{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);min-width:var(--tap);
@@ -4037,7 +4044,8 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
  background:var(--sunk);overflow:hidden;color:var(--ink)}
 .st-cvw canvas{position:absolute;inset:0;display:block;width:100%;height:100%}
 .st-cvk{display:none;color:var(--dim);border-top:1px solid var(--accent)}
-.st-ctr{font-size:12.5px;color:var(--dim);margin-top:6px;min-height:18px}
+/* .st-ctr is gone, round of 29 October: see the ruling at stCtrPaint's own
+   old site in ui/storyui.js. */
 /* ---- the list: this entry by lane, or the vault ---- */
 .st-lshd{font-size:12px;font-weight:600;color:var(--dim);min-height:22px}
 .st-lsb{flex:1 1 auto;overflow:auto;margin:4px -6px 0;padding:0 6px;
@@ -4345,11 +4353,9 @@ body.tab-summary .lsec.sum-rail.dl-empty{display:none}
 @keyframes srcPass{0%{transform:translateY(0);opacity:0}6%{opacity:.7}
  25%{transform:translateY(163%);opacity:0}100%{transform:translateY(163%);opacity:0}}
 @keyframes srcScan{from{transform:translateY(0)}to{transform:translateY(163%)}}
-.src-live{width:6px;height:6px;border-radius:50%;flex:0 0 auto;background:var(--accent);
- animation:srcBreath 4.2s ease-in-out infinite}
-@keyframes srcBreath{0%,100%{opacity:.35;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
-.st-jr:has(#stsrc.hear) .src-live{animation:none;opacity:1;transform:scale(1.15);
- box-shadow:0 0 6px var(--accent)}
+/* .src-live, the dot beside Chat, and its own srcBreath keyframe are gone,
+   round of 29 October: see the ruling at its old markup site in
+   ui/storyui.js. */
 .src-land .src-w{display:inline-block;animation:srcWd var(--t-element) var(--ease-out) both;
  animation-delay:calc(var(--i) * var(--t-stagger) * .5)}
 @keyframes srcWd{from{opacity:0;transform:translateY(.28em);color:var(--accent)}
@@ -4360,11 +4366,9 @@ body.tab-summary .lsec.sum-rail.dl-empty{display:none}
  animation-delay:calc(var(--n) * var(--t-stagger) * .5 + var(--t-element))}
 @keyframes srcCur{0%{opacity:1}25%{opacity:0}50%{opacity:1}75%,100%{opacity:0}}
 body.quiet .st-pe::before,body.rm .st-pe::before,body.quiet .st-pe::after,body.rm .st-pe::after{animation:none;opacity:0}
-body.quiet .src-live,body.rm .src-live{animation:none;opacity:1;transform:none}
 body.quiet .src-land .src-w,body.rm .src-land .src-w,
 body.quiet .src-land::after,body.rm .src-land::after{animation:none}
-@media (prefers-reduced-motion:reduce){.st-pe::before,.st-pe::after{display:none}
- .src-live{animation:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.st-pe::before,.st-pe::after{display:none}}
 /* ---------- Source AI, deeper still. Round LV ----------
    His words: "I want that location to feel like it's alive and innovative,
    like it's a part of the screen that has a different nature to it, and I
@@ -4546,21 +4550,29 @@ body.quiet .src-livecap,body.rm .src-livecap{animation:none;opacity:.85}
 .src-tn{display:flex;list-style:none;margin:10px 0}
 .src-tn-me{justify-content:flex-end}
 .src-tn-now,.src-tn-past{justify-content:flex-start}
-.src-bub{max-width:82%;border-radius:var(--r-s);padding:10px 14px}
-/* Source AI's bubble carries a thin edge in the seat colour its turn read,
-   the one piece of the old wire's colour coding worth keeping: which body
-   seat a turn concerned, read at a glance without a legend. */
-.src-bub-src{background:var(--sunk);border:1px solid var(--edge);
- border-left:3px solid var(--c,var(--accent))}
+/* ONE BUBBLE SHAPE, round of 29 October, his words: "I need a more
+   unifying style. We've got two different kind of bubble styles
+   happening, and that's not working. Also, two different font styles,
+   and that's definitely not working." The first build gave Source AI's
+   bubble a plain edge plus a second, thicker, seat-coloured edge on its
+   left, a second border scheme the person's own bubble never carried, and
+   left .src-q/.src-open at the 20 to 22px size they were built for as a
+   single standalone headline, against .src-me's 16px: two shapes, two
+   type scales, on the same window. Now there is one shape (radius,
+   padding, type) for every bubble, and the only differences left are the
+   two a real two-sided conversation needs: which side it sits on, and
+   its fill. */
+.src-bub{max-width:82%;border-radius:var(--r-s);padding:10px 14px;
+ font-family:var(--sans);font-size:16px;line-height:1.6;font-weight:400}
+.src-bub-src{background:var(--sunk);border:1px solid var(--edge);color:var(--ink)}
 .src-bub-past{opacity:.82}
 .src-bub-me{background:var(--accent);color:var(--on-accent)}
-/* the person's words in the journal's own hand, told apart from Source AI's
-   by which side of the window they sit on, not by weight any more: a filled
-   bubble needs its own text colour and font-weight 300 on var(--on-accent)
-   read thin against a filled accent on more than one lighting. */
-.src-me{margin:0;font-family:var(--sans);font-size:16px;line-height:1.6;font-weight:400;
- color:inherit;white-space:pre-wrap;overflow-wrap:break-word}
-.src-bub-src .src-q,.src-bub-src .src-open{margin:0;max-width:none}
+.src-me{margin:0;color:inherit;white-space:pre-wrap;overflow-wrap:break-word}
+/* every paragraph a bubble can hold reads at the bubble's own one size,
+   never its old standalone size, whichever class built it */
+.src-bub .src-q,.src-bub .src-open,.src-bub .src-note{margin:0;max-width:none;
+ font-family:inherit;font-size:inherit;line-height:inherit;font-weight:inherit;color:inherit}
+.src-bub .src-note{opacity:.75;margin-top:6px}
 .src-bub .src-row{margin-top:10px}
 .src-tn-now .src-open,.src-tn-now .src-q{margin-top:0}
 /* the reply line, on the journal box's own ground and type */
@@ -5967,7 +5979,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  .st-flow:not([data-focus="write"]) .st-hl{min-height:96px}
  .st-cvw{flex:0 0 auto;height:230px;min-height:0}
  .st-flow:not([data-focus="read"]) .st-cvw{height:100px}
- .st-flow:not([data-focus="read"]) .st-sort,.st-flow:not([data-focus="read"]) .st-ctr,
+ .st-flow:not([data-focus="read"]) .st-sort,
  .st-flow:not([data-focus="read"]) .st-ls{display:none}
  .st-flow:not([data-focus="read"]) .st-open{display:inline-flex}
  /* the list door carries the pending count, "List 12", so while it shows the
