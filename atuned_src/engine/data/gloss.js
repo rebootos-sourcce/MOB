@@ -194,6 +194,13 @@ var UNPACK_BASE={
  'rail:balance':'Balance is which way your body moves under what you feel, out toward the world or in toward yourself.',
  'rail:masculine':'Masculine is energy given a shape and a direction and sent outward, and it does not mean men.',
  'rail:feminine':'Feminine is energy held and taken inward, and it does not mean women.',
+ /* 30 October, r1 from mockups/dual-readings, which the owner picked for
+    the rail. Shadow is lawSQ, CQ's own complement, the other end of the
+    coherence pair; the two heads name the rail's two families, a pair read
+    from its centre and an amount read from none. */
+ 'rail:shadow':'Shadow, on this line, is the part of the laws your answers leave out, which is always 100 less CQ.',
+ 'rail:where you lean':'Each pair is one reading, where the line down the middle is 50 and 50 and the mark is where you sit.',
+ 'rail:how much':'Each is one reading, from none of it at the left end to all of it at the right.',
  /* ROUND RG, the copy sweep. His words: "you read 62 above the oscillating
     band. Your integrity is 6.2. Integrity is the hull. It's got to be human."
     Integrity was printed as a figure on the Compass with no meaning anywhere

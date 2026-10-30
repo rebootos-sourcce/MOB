@@ -1471,26 +1471,26 @@ console.log('\n=== a figure is legible against the ground it is printed on ===')
     chip[k].px=+parseFloat(getComputedStyle(v).fontSize).toFixed(1);
     chip[k].txt=v.textContent.trim();}});
   if(probe)probe.remove();
-  /* THE PAIR BARS' FIGURES, round RB, ported in the P3 menu pass. Orientation
-     and balance were a dial whose fill reached under one end figure; every
-     pair on the rail is rbPair now, where each pole's colour lies at its own
-     end under its own word and share, and the edge of the colour swings. So
-     each figure is measured three times, over the bare track and over each
-     pole's colour at full strength, and the worst is what is held: whatever
-     the reading and wherever the edge has swung to, the figure sits on one
-     of those grounds or a blend between them. Read for every pair, the CQ and
-     DQ bar with them. */
+  /* THE PAIR BARS' FIGURES. NAMED CHANGE, 30 October: r1 "the level" from
+     mockups/dual-readings replaced round RB's bar, so a pair prints one
+     figure, over the centre line, in the leaning side's colour, on the bare
+     panel and never over a fill. Which side that is depends on the person,
+     so the figure is measured in each pole's colour in turn: whichever way
+     anybody leans, it is one of those two. Six measurements, as before, two
+     a pair. The first r1 build printed it in the pole's colour itself, and
+     the root red, the shadow side of coherence and the malignant side of
+     orientation, measured 4.14 to 1 on the panel at 15px, read off this
+     check on 30 October. */
   const dial=[];
   document.querySelectorAll('#fdock .rb2').forEach(pr=>{
-   const base=painted(pr);
-   const colOf=k=>{const t=document.createElement('i'); t.style.color='var('+k+')'; pr.appendChild(t);
-    const c=rgb(getComputedStyle(t).color).c; t.remove(); return c;};
-   const fills=[comp(colOf('--lc'),0.40,base),comp(colOf('--rc'),0.40,base)];
+   const v=pr.querySelector('.rb2-v'); if(!v)return;
+   const base=painted(v), was=pr.style.getPropertyValue('--sc');
    ['l','r'].forEach(side=>{
-    const v=pr.querySelector('.rb2-p.'+side+' .rb2-v'); if(!v)return;
-    const r=Math.min.apply(null,[base].concat(fills).map(g=>ratio(lum(inkOn(v,g)),lum(g))));
-    dial.push({lean:pr.getAttribute('data-pair')+':'+side, covered:true, pilled:false,
-     px:+parseFloat(getComputedStyle(v).fontSize).toFixed(1), r:+r.toFixed(2)});});});
+    pr.style.setProperty('--sc','var(--'+side+'c)');
+    const r=ratio(lum(inkOn(v,base)),lum(base));
+    dial.push({lean:pr.getAttribute('data-pair')+':'+side, covered:false, pilled:false,
+     px:+parseFloat(getComputedStyle(v).fontSize).toFixed(1), r:+r.toFixed(2)});});
+   pr.style.setProperty('--sc',was);});
   return {chip, dial};});
  const FLOOR=4.5;
  ok(seen.chip.plain.n>0,'the Field draws ring chips to measure, got '+seen.chip.plain.n);
@@ -1504,11 +1504,11 @@ console.log('\n=== a figure is legible against the ground it is printed on ===')
   +seen.chip.plain.n+' on '+seen.chip.plain.seat);
  console.log('  chip hot   '+seen.chip.hot.r.toFixed(2)+'  worst of '
   +seen.chip.hot.n+' on '+seen.chip.hot.seat);
- ok(seen.dial.length===6,'the three pair bars have six end figures to measure, got '+seen.dial.length);
+ ok(seen.dial.length===6,'the three pairs have one figure each to measure in two colours, got '+seen.dial.length);
  seen.dial.forEach(d=>{
-  ok(d.r>=FLOOR,'the '+d.lean+' figure holds '+FLOOR+' to 1 on the bare track and on either pole\'s full colour, worst '
+  ok(d.r>=FLOOR,'the '+d.lean+' figure holds '+FLOOR+' to 1 on the panel when that side is the one leaned to, '
    +d.r+' at '+d.px+'px');
-  console.log('  pair '+d.lean.padEnd(10)+d.r.toFixed(2)+'  worse of track and fill');});
+  console.log('  pair '+d.lean.padEnd(10)+d.r.toFixed(2)+'  in that side\'s colour, on the panel');});
  await fg.close();
 }
 

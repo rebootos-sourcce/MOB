@@ -118,7 +118,9 @@ const READ=`(function(){
     await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
     const R=compute(), t=q=>{const e=document.querySelector(q); return e?e.textContent.trim():null;};
     const aff=(R.aff||[]).map((v,i)=>({i,v})).sort((a,b)=>b.v-a.v), top=aff[0]||{i:0};
-    const pair=Array.from(document.querySelectorAll('#key .rb2-v')).map(e=>e.textContent.trim());
+    /* NAMED CHANGE, 30 October, r1: the coherence pair prints one figure, so
+       CQ is read off its own door's spoken name, and DQ is an amount row */
+    const cqDoor=document.querySelector('#key .rb2-k.l'), cqSaid=cqDoor?(/^CQ, ([^.]*%|–)/.exec(cqDoor.getAttribute('aria-label')||'')||[])[1]:null;
     const dock={}; document.querySelectorAll('#keylo .rbar').forEach(b=>{dock[(b.querySelector('.rb-n')||{}).textContent.trim()]=(b.querySelector('.rb-v')||{}).textContent.trim();});
     const node=Array.from(document.querySelectorAll('.cr,.crb')).filter(e=>/ seat\. /.test(e.getAttribute('title')||''))
      .map(e=>(e.querySelector('.v,.crb-v')||{}).textContent||'');
@@ -126,7 +128,7 @@ const READ=`(function(){
     return {unread:!!R.unread,
      got:{laws:t('#fbar [data-fb=laws] .fb-v'),shadow:t('#fbar [data-fb=shadow] .fb-v'),addresses:t('#fbar [data-fb=addresses] .fb-v'),
       seats:t('#fbar [data-fb=seats] .fb-v'),archetypes:t('#fbar [data-fb=archetypes] .fb-v'),ring:t('#railtop .cr .v'),
-      cq:pair[0],dq:pair[1],vit:dock.Vitality,flow:dock.Flow,acc:t('#acc .cr .v'),pol:pol},
+      cq:cqSaid||null,dq:dock.DQ,vit:dock.Vitality,flow:dock.Flow,acc:t('#acc .cr .v'),pol:pol},
      want:{laws:fmtPct('cq',R.CQ),shadow:fmtPct('dq',R.DQ),addresses:fmtPct('weight',R.SQm),seats:fmtPct('weight',R.darkV||0),
       archetypes:fmtPct('archetype',archExpr(top.i)),ring:fmtPct('cq',R.CQ),cq:fmtPct('cq',R.CQ),dq:fmtPct('dq',R.DQ),
       vit:fmtPct('vitality',R.X),flow:fmtPct('flow',flSpeed()),acc:fmtPct('accuracy',accuracy(R).pct),pol:pol===null?null:fmtPct('cq',R.CQ)},
