@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1724 acd8d0b5 2026-10-30 00:17"><head><meta charset="utf-8">
+<html lang="en" data-build="v333 678f117 2026-10-30 01:10"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -54885,7 +54885,7 @@ function hjFigureHtml(h){
     +'" fill="var(--accent)" opacity="'+(.3+openness*.6).toFixed(2)+'"/>';
  }).join('');
  return '<svg class="hj-avatar-form" viewBox="0 0 100 128" role="img" aria-label="Your living avatar form reflects CQ '
-  +(h.cq===null?'not yet measured':h.cq.toFixed(1)+' out of 100')+' and '
+  +(h.cq===null?'not yet measured':h.cq.toFixed(1))+' and '
   +h.uniqueReleaseCount+' unique releases">'
   +'<defs><radialGradient id="hj-field" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="var(--accent)" stop-opacity="'+glow+'"/><stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/></radialGradient></defs>'
   +'<ellipse cx="50" cy="63" rx="'+(26+openness*24).toFixed(1)+'" ry="58" fill="url(#hj-field)"/>'
@@ -56640,7 +56640,7 @@ function d3Panel(p){
  var c=d3Counts(p),q=p.diagnostic3||d3Blank();
  var s='<section class="d3-panel" aria-label="Three-register behavioral diagnostic">';
  s+='<div class="d3-head"><b>Behavior · Pressure · Mechanism</b><button type="button" data-d3toggle aria-expanded="'+(D3_OPEN?'true':'false')+'">'+(D3_OPEN?'Hide':'Open')+'</button></div>';
- s+='<div class="d3-sub">'+c.answered+' of 63 answered · '+c.coreLaws+' of 10 Core laws · '+c.completeLaws+' of 21 total</div>';
+ s+='<div class="d3-sub">'+c.answered+' answered · '+c.coreLaws+' Core laws · '+c.completeLaws+' total</div>';
  if(!D3_OPEN)return s+'</section>';
  s+='<div class="d3-note">Answer for situations that actually happened in the last 30 days. 0 = never; 5 = about half; 10 = always. If it did not occur, choose N/A. The third answer measures a defensive response and does not directly add to CQ.</div>';
  s+='<div class="d3-head"><button type="button" data-d3core> '+(D3_CORE_ONLY?'Show all 21 laws':'Show Core 10 only')+'</button></div>';
@@ -82627,5 +82627,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005501504"></div>
+<div id="eof" hidden data-len="005501470"></div>
 </body></html>
