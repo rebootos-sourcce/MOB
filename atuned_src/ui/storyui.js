@@ -1025,7 +1025,119 @@ function srcAsk(t,words){
  if(t.why==='earlier')
   return said+'It lands '+at+', and an earlier entry did too. What takes you back there?';
  if(ws.length>1)return said+'Both land '+at+'. Why there?';
+ /* ONE MENTION REACHES HERE SINCE 27 OCTOBER, a seat the field's own driven
+    pattern sits on (srcRung, engine/sourceai.js), and this line then read
+    "You wrote “afraid” once. It lands at the base of your spine each time."
+    Measured round SK, 30 October. Once and each time cannot both be true,
+    so one mention says it lands, and no count. */
+ if((+t.mentions||0)<2)return said+'It lands '+at+'. Why there?';
  return (q?'You wrote '+q+' '+srcTimes(t.mentions)+'. ':'')+'It lands '+at+(q?' each time':' '+srcTimes(t.mentions))+'. Why there?';}
+/* ============================================================
+   THE ASK, CHECKED BEFORE IT IS SHOWN. Round SK, 30 October, his words
+   about the live chat: "This is the behavior I want source AI to take on
+   during chat. It's currently not doing that. It's currently acting like a
+   chatbot." The behaviour is his own blueprint, Journal Mode, 4 October,
+   and its section 35 is ten checks every question passes or is
+   regenerated. They are srcVet in engine/qcheck.js, and this is where the
+   ask goes through them.
+
+   WHAT IT CHANGES ON SCREEN, said plainly. srcAsk's own line is tried first
+   and still decides the lead: the person's words in quotes, and where they
+   land, which since round SK and the seam package is said only about a seat
+   the person confirmed (EV_PLACEABLE, engine/evidence.js), so in practice
+   the lead is their words alone (srcLeadOk below). Its last sentence was a why, "Why there?",
+   "What takes you back there?", "What sits at the bottom of it?", and every
+   one fails: point 4, a why asks for a cause and not what happened, or point
+   5, "takes you" casts the person as pushed. Measured on the story bank,
+   186 asks, none passed as written. So the lead stays and the question
+   becomes the first of the document's own family questions that passes all
+   ten, in its own priority order: what did you do, what would you rather be
+   doing, what happens next, where do you feel it, and on. Nothing is
+   written here; every question is a line from his document.
+
+   THIS REVERSES ONE LINE OF A RULING, AND SAYS SO. DECISIONS.md, 27
+   September: "Why questions are its questions, and it never answers one."
+   His 4 October document has no why among its questions, its section 24
+   lists the ones to prefer, and on 30 October he pointed at it as the
+   behaviour he wants. The later word wins, and the earlier is recorded as
+   superseded there rather than deleted.
+
+   When nothing passes, the lead stands alone and nothing is asked, which is
+   the document's Space, and once the lead was said its own Space line,
+   SRC_SPACE, stands instead (srcAskVetted). SRC_VET keeps the last result, every refusal with
+   its reason, for a gate and for whoever asks why a line was not shown. */
+var SRC_VET=null;
+/* THE LINES SOURCE AI ALREADY ASKED IN THIS ENTRY: every one the person has
+   replied under. The one still waiting for a reply is not a repeat of
+   itself, so it is left out, and it is repainted on every key. Once a reply
+   lands under it, it has been asked, and point 10 will not ask it again:
+   the next question after a reply is a new turn. Before round SK an ask
+   about the same seat rewrote its own row in place across a reply, which
+   was right while it could only ever ask the same why. */
+function srcSaidBefore(){
+ var out=[], pend=null;
+ SRC_CHAT.forEach(function(r){
+  if(r.w==='src'){pend=r.q||null; return;}
+  if(r.w==='me'&&pend){out.push(pend); pend=null;}});
+ return out;}
+/* one ledger a text: srcPaint runs on every key and the ledger only moves
+   when the text, the committed entries or the field's pattern do */
+var SRC_LEDGER=null, SRC_LEDGER_K='';
+/* THE PERSON'S ANSWERS IN THIS ENTRY, round SK: a spoken "that doesn't fit
+   me" is a no on the claim Source AI was on (srcTurnCommit). Page memory,
+   cleared with the entry by srcFresh, never kept: keeping a verdict is the
+   additive field TASKS.md SK1 names, not built. SRC_VENT is the person
+   asking to be heard and not asked, the package's VENT. */
+var SRC_VERDICTS=[], SRC_VENT=false;
+function srcLedgerNow(){
+ var ents=(CURP&&CURP.story&&CURP.story.entries)||[];
+ var asked=SRC_LOG.map(function(r){return r.seat;}).filter(Boolean);
+ var k=ST_TEXT+'\u0000'+ents.length+'\u0000'+JSON.stringify(ST_ACTIVE||null)+'\u0000'+JSON.stringify(SRC_VERDICTS)+'\u0000'+asked.join();
+ if(!SRC_LEDGER||k!==SRC_LEDGER_K){
+  SRC_LEDGER=evLedger(ST_TEXT,ents,{active:ST_ACTIVE, verdicts:SRC_VERDICTS, asked:asked}); SRC_LEDGER_K=k;}
+ return SRC_LEDGER;}
+/* THE LEAD IS SAID ONCE A SEAT. Seen on the page, round SK: every ask
+   about the same seat opened on the same mirror, "You wrote “afraid” three
+   times. It lands at the base of your spine each time.", which is a script
+   saying its line again. Once a person has replied under an ask about this
+   seat, the next ask is the question alone: the mirror was heard. */
+function srcLeadSaid(seat){
+ var pend=false, said=false;
+ SRC_CHAT.forEach(function(r){
+  if(r.w==='src'){pend=!!(r.key&&r.key.indexOf('ask|'+seat+'|')===0); return;}
+  if(r.w==='me'&&pend){said=true; pend=false;}});
+ return said;}
+/* THE LEAD IS CHECKED A SENTENCE AT A TIME, round SK. srcAsk's lead says
+   the person's words back and, after them, where they land. Since the seam
+   package a place is said only about a claim the person confirmed (point 7,
+   engine/qcheck.js), so the sentences that fail are dropped and the ones
+   that pass, the person's own words said back, stay. */
+function srcLeadOk(lead,L,seat){
+ return (String(lead).match(/[^.]+\./g)||[]).map(function(x){return x.trim();}).filter(function(x){
+  return x&&srcVetSay(x,{text:ST_TEXT, ledger:L},seat).ok;}).join(' ');}
+/* AN ASK IS BUILT ONCE FOR WHAT IT DEPENDS ON, round SK: the text, the
+   conversation so far, the answers given, the move and its seat. srcPaint
+   runs on every render, most of which change none of those, and the ten
+   checks cost an animation frame when run on all of them (measured, see
+   qcFind in engine/qcheck.js). */
+var SRC_ASK_K='', SRC_ASK_V='';
+function srcAskVetted(turn,heard){
+ var k=[ST_TEXT,SRC_CHAT.length,JSON.stringify(SRC_VERDICTS),SRC_PASSED,turn.seat,turn.why,turn.mentions,srcLedgerNow()===SRC_LEDGER&&SRC_LEDGER_K].join('\u0000');
+ if(k===SRC_ASK_K&&SRC_VET)return SRC_ASK_V;
+ SRC_ASK_V=srcAskBuild(turn,heard); SRC_ASK_K=k; return SRC_ASK_V;}
+function srcAskBuild(turn,heard){
+ var full=srcAsk(turn,heard&&heard.top&&heard.top.words), cut=full.lastIndexOf('. ');
+ var L=srcLedgerNow();
+ var lead=srcLeadSaid(turn.seat)?'':srcLeadOk(cut>=0?full.slice(0,cut+1):'',L,turn.seat);
+ var r=srcChoose([{q:full, base:full, family:'why', target:turn.seat}].concat(srcFamilyCands(lead,turn.seat)),
+  {text:ST_TEXT, ledger:L, asked:srcSaidBefore(), passed:SRC_PASSED});
+ SRC_VET=r;
+ /* NOTHING LEFT THAT PASSES, and the lead already said: the document's
+    Space, in its own words, section 23, "Keep writing." Reproduced round
+    SK: sixteen replies about one seat ran every family question once, nine
+    distinct, and the tenth turn drew an empty bubble. */
+ return r.ok?r.q:(lead||SRC_SPACE);}
+var SRC_SPACE='Keep writing.';
 
 /* A QUESTION FROM WHAT YOU WROTE. Round LT, his words: "Then you need to be
    another button next to it that makes it dynamic." He did not say what
@@ -1061,7 +1173,7 @@ function srcLog(k,seat){
 /* a new entry is a new conversation: the built question quoted the last one.
    The thread goes with it, and so does a reply still in the line, which on a
    commit has already been sent into the entry and on Clear is cleared. */
-function srcFresh(){SRC_DQ='';SRC_DW='';SRC_DN=0;SRC_DNONE=false;SRC_LOG=[];SRC_DK=[];
+function srcFresh(){SRC_DQ='';SRC_DW='';SRC_DN=0;SRC_DNONE=false;SRC_LOG=[];SRC_DK=[];SRC_VET=null;SRC_VERDICTS=[];SRC_VENT=false;SRC_ASK_K='';
  SRC_CHAT=[];SRC_CPRESS=false;SRC_CDRAFT='';}
 /* THE BUTTON'S QUESTIONS, ONE PER DIMENSION, 20.H1. It walked four of these
    by how many times it was pressed; srcNext now picks the dimension the
@@ -1091,6 +1203,15 @@ var SRC_DIMQ={
  prediction:function(w){return (w?'You wrote '+w+'. ':'')+'What did you expect would happen?';},
  behaviour:function(w){return (w?'You wrote '+w+'. ':'')+'What did you do straight after?';},
  meaning:function(w){return (w?'You wrote '+w+'. ':'')+'What does that mean to you?';}};
+/* THE BUTTON'S QUESTION GOES THROUGH THE SAME TEN CHECKS, round SK. No button
+   calls srcDyn since 29 October; if one ever does, what it builds is checked
+   exactly as the ask is, and a line that fails is not shown: the caller
+   already reads an empty answer as nothing to ask (SRC_DNONE). */
+function srcDimVet(q,k,seat){
+ var r=srcVet({q:q, dim:k, family:'dim', target:seat||null},
+  {text:ST_TEXT, ledger:srcLedgerNow(), asked:srcSaidBefore(), passed:SRC_PASSED});
+ SRC_VET={ok:r.ok, q:r.ok?q:'', cand:null, tried:[{q:q, fails:r.fails}]};
+ return r.ok?q:'';}
 function srcDyn(heard,entries,text){
  var n=SRC_DN++, seats=((heard&&heard.seats)||[]).filter(function(s){return s.words&&s.words.length;});
  var t=String(text||''), dims=t.trim()?srcDims(t):null;
@@ -1099,7 +1220,7 @@ function srcDyn(heard,entries,text){
   var s=seats[n%seats.length], lap=Math.floor(n/seats.length);
   SRC_DW=s.words[lap%s.words.length];
   SRC_DK.push(k); srcLog(k,s.seat);
-  return SRC_DIMQ[k]('“'+SRC_DW+'”',srcPlace(s.band));}
+  return srcDimVet(SRC_DIMQ[k]('“'+SRC_DW+'”',srcPlace(s.band)),k,s.seat);}
  SRC_DW='';
  /* HEARD AT NO SEAT, AND STILL WRITTEN. 20.H6 says what the instrument read
     nothing in; an entry it read nothing in is still the person's own words,
@@ -1108,7 +1229,7 @@ function srcDyn(heard,entries,text){
     it reaches back to earlier ones. */
  if(k&&unmarkedOf(t,parseStory(t)).unmarked>0){
   SRC_DK.push(k); srcLog(k,null);
-  return SRC_DIMQ[k]('',null);}
+  return srcDimVet(SRC_DIMQ[k]('',null),k,null);}
  var ents=entries||[], pr=srcPrior(ents);
  var ks=Object.keys(pr).sort(function(a,b){return pr[b]-pr[a]||(a<b?-1:1);});
  if(!ks.length)return '';
@@ -1192,6 +1313,15 @@ function srcPaint(){
     longer true, so it goes and the walk's own question comes back */
  if(SRC_DQ&&SRC_DW&&ST_TEXT.indexOf(SRC_DW)<0){SRC_DQ='';SRC_DW='';}
  var turn=srcTurn(heard,{typed:!!ST_TEXT.trim(),passed:SRC_PASSED});
+ /* THE PERSON'S OWN WORDS ABOUT THE CONVERSATION, round SK, the seam
+    package's VENT and CORRECT. srcTurn is the engine's and is unchanged;
+    the page reads two more things it cannot. A seat the person said does
+    not fit is not asked about again, the move falls back to listening. And
+    a person who asked to vent is listened to and asked nothing, for the
+    rest of the entry, the way Move on is final for it. */
+ if(turn.move==='ask'){var Lt=srcLedgerNow(), ct=Lt.claims[turn.seat];
+  if(ct&&(ct.state==='rejected'||ct.state==='corrected'))turn={move:'listen'};}
+ if(SRC_VENT&&(turn.move==='ask'||turn.move==='listen'))turn={move:'vent'};
  /* THE LIVE MARK. A dot beside the name that breathes while Source AI is
     idle and holds lit while it is reading, see srcHearing. It is drawn and
     carries no word, because "thinking" printed on a scripted reader would be
@@ -1202,7 +1332,7 @@ function srcPaint(){
     render there and not on every key here, which is cheaper, and the lock
     below has nothing of its own left to put on the beat. */
  var o='';
- var ask=turn.move==='ask'?srcAsk(turn,heard.top&&heard.top.words):'';
+ var ask=turn.move==='ask'?srcAskVetted(turn,heard):'';
  /* an ask on screen is a question asked, 20.H5: its why and its seat */
  if(turn.move==='ask')srcLog(turn.why,turn.seat);
  /* THE QUESTION, AND THE TWO PRESSES THAT CHANGE IT, ON THE RIGHT. Round LT,
@@ -1236,6 +1366,8 @@ function srcPaint(){
    +'<span class="src-note">Answer in the journal, or leave it.</span></div>';}
  else if(turn.move==='pass'){
   o+='<p class="src-q">Cool.</p><p class="src-note">Nothing more asked in this entry.</p>';}
+ else if(turn.move==='vent'){
+  o+='<p class="src-q">'+esc(SRC_LISTENING)+'</p>';}
  else{
   /* listening, the question steps back, unless the person asked for this
      one: a question built from their words is the one thing on this move
@@ -1276,7 +1408,7 @@ function srcPaint(){
     143 to 190 over the same typed line, and that cost is gone with it. */
  /* a screen reader hears the opener, an ask, "Cool.", and while listening
     only a question the person pressed for. */
- var said=turn.move==='open'?q:(turn.move==='ask'?ask:(turn.move==='pass'?'Cool.'
+ var said=turn.move==='open'?q:(turn.move==='ask'?ask:(turn.move==='pass'?'Cool.':turn.move==='vent'?SRC_LISTENING
   :((SRC_DQ||SRC_QI>=0)?q:'')));
  /* talking, every turn Source AI takes is a line it says, once */
  if(cur)said=cur.q;
@@ -1462,11 +1594,31 @@ var SRC_CHAT=[], SRC_CPRESS=false, SRC_CDRAFT='';
 function srcChatCur(turn,heard,q,ask){
  var top=heard&&heard.top, r={rg:top?top.rung:0, bd:turn.band||(top?top.band:null), mv:turn.move};
  if(turn.move==='open'){r.key='open|'+q; r.q=q;}
- else if(turn.move==='ask'){r.key='ask|'+turn.seat+'|'+turn.why; r.q=ask;}
+ /* an ask's key carries the family question since round SK: the lead's
+    count still updates in place, and a new question after a reply is a new
+    turn, never the earlier one rewritten under the person's answer */
+ else if(turn.move==='ask'){r.key='ask|'+turn.seat+'|'+turn.why+'|'+((SRC_VET&&SRC_VET.cand&&SRC_VET.cand.base)||''); r.q=ask;}
  else if(turn.move==='pass'){r.key='pass'; r.q='Cool.';}
+ else if(turn.move==='vent'){r.key='vent'; r.q=SRC_LISTENING;}
  else if(SRC_CPRESS&&!SRC_DNONE){r.key='q|'+q; r.q=q; r.mv='asked';}
- else if(top){var w=srcQuote(top.words);
-  r.key='say|'+top.seat; r.q=(w?'You wrote '+w+'. ':'')+'It lands '+srcPlace(top.band)+'.';}
+ /* LISTENING, IT SAYS BACK THE THREAD, round SK. Two changes, both his
+    blueprint's. The seat is the ledger's thread, the one with the newest
+    evidence, where it was srcHear's top: on the document's own section 40
+    session the top held "want to disappear" three turns running after
+    "guilty" arrived, and the chat said the same line three times. And the
+    place is said only once the person confirmed the seat (EV_PLACEABLE),
+    the seam package's "no unconfirmed ontology label", stricter than the
+    4 October document's section 23, "only when evidence supports it". So
+    it says the words and not the place, which is the Mirror. The chart
+    still draws the lane. */
+ /* a seat the person turned down is not said back to them either: with no
+    other thread, Source AI listens, round SK */
+ else if(top&&!srcLedgerNow().thread&&srcLedgerNow().claims[top.seat]&&
+  ['rejected','corrected'].indexOf(srcLedgerNow().claims[top.seat].state)>=0){r.key='say|'; r.q=SRC_LISTENING;}
+ else if(top){var L=srcLedgerNow(), c=(L.thread&&L.claims[L.thread])||top, w=srcQuote(c.words);
+  var line=(w?'You wrote '+w+'. ':'')+'It lands '+srcPlace(c.band)+'.';
+  if(!srcVetSay(line,{text:ST_TEXT, ledger:L},c.seat).ok)line=w?'You wrote '+w+'.':srcNone();
+  r.key='say|'+c.seat; r.q=line;}
  else{r.key='say|'; r.q=srcNone();}
  r.w='src'; return r;}
 /* THE REPLIES STILL MATCH THE ENTRY. Text added in the box, or by Record,
@@ -1498,8 +1650,28 @@ function srcChatNote(cur){
    repaints the thread. One door for a turn to land through, typed or
    spoken (see stMic), so Source AI asks and the bank fills exactly the
    same way whichever one it was. */
+/* the seam package's own line for VENT, 06_DIALOGUE_TDD.md: "I'm listening."
+   [No evaluation or immediate excavation.] */
+var SRC_LISTENING='I\u2019m listening.';
+/* A TURN THAT IS ABOUT THE CONVERSATION, round SK, read by srcIntent in
+   engine/evidence.js before the turn lands. Move on said in words is the
+   Move on button, exactly: the same flag, the same outcome kept on the
+   entry. A no to a reading is a verdict on the claim Source AI was on, the
+   one it last asked about or the thread it last said back, and nothing is
+   kept beyond the entry. Venting is listened to. */
+function srcIntentLand(v){
+ var it=srcIntent(v); if(!it)return null;
+ if(it.intent==='move_on'){
+  if(!SRC_PASSED&&SRC_LOG.length)SRC_LOG[SRC_LOG.length-1].moved=true;
+  SRC_PASSED=true;}
+ else if(it.intent==='vent')SRC_VENT=true;
+ else if(it.intent==='reject'){
+  var L=srcLedgerNow(), seat=(SRC_VET&&SRC_VET.cand&&SRC_VET.cand.target)||L.thread;
+  if(seat){var r=evVerdict(SRC_VERDICTS,seat,'no'); if(r.ok)SRC_VERDICTS=r.verdicts;}}
+ return it;}
 function srcTurnCommit(v){
  v=String(v||'').trim(); if(!v)return false;
+ srcIntentLand(v);
  srcChatSync();
  var base=ST_TEXT.replace(/\s+$/,''), a=base.length+(base?1:0);
  ST_TEXT=base+(base?'\n':'')+v;
@@ -1620,6 +1792,8 @@ function srcThreadNow(r,turn,heard,acts,why){
    +'<span class="src-note">Answer below, or leave it.</span></div>';
  else if(turn.move==='pass')
   o+='<p class="src-q">Cool.</p><p class="src-note">Nothing more asked in this entry.</p>';
+ else if(turn.move==='vent')
+  o+='<p class="src-q">'+esc(r.q)+'</p>';
  else{
   o+='<div class="src-ask">'+srcLand('src-open'+(r.key.indexOf('say|')===0?' quiet':''),r.q)+acts+'</div>';
   if(SRC_DNONE&&turn.move==='open')

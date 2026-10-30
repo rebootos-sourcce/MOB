@@ -65,6 +65,11 @@ const look = p => p.evaluate(() => {
     now: rows.filter(li => li.classList.contains('src-tn-now')).length,
     pastWords: rows.filter(li => li.classList.contains('src-tn-past')).map(li => li.textContent.trim()).filter(Boolean),
     asks: SRC_CHAT.filter(r => r.key && r.key.indexOf('ask|') === 0).length,
+    /* ROUND SK: every ask on the thread and whether it passes the ten
+       checks of engine/qcheck.js, read in the page against the page's own
+       entry and ledger, so the gate holds what is on screen and not a copy */
+    askQs: SRC_CHAT.filter(r => r.key && r.key.indexOf('ask|') === 0).map(r => r.q),
+    vet: SRC_VET ? { ok: SRC_VET.ok, q: SRC_VET.q, tried: SRC_VET.tried.length } : null,
     top: STR.heard && STR.heard.top ? { seat: STR.heard.top.seat, m: STR.heard.top.mentions, n: STR.heard.top.negated, rung: STR.heard.top.rung } : null,
     move: srcTurn(STR.heard, { typed: !!ST_TEXT.trim(), passed: SRC_PASSED }).move,
     pass: !!document.getElementById('srcpass'),
@@ -154,6 +159,18 @@ require('./net.js').guardBrowser(browser);
     await p.cx.close();
   }
 
+  /* KNOWN BAD, round SK: a page whose ask skips the ten checks, srcAsk's own
+     line straight to the screen. The checks above must fail on it. */
+  console.log('\n=== known bad first: an ask that skips the question check ===');
+  {
+    const p = await open(browser, 1600, 1000);
+    await p.evaluate(() => { srcAskVetted = function (turn, heard) { SRC_VET = null; return srcAsk(turn, heard && heard.top && heard.top.words); }; });
+    const { c, d } = await talk(p);
+    ok(!(c.vet && c.vet.ok) && d.askQs.some(q => /Why there|takes you back|bottom of it/.test(q)),
+      'the check catches an unchecked ask: ' + JSON.stringify(d.askQs));
+    await p.cx.close();
+  }
+
   console.log('\n=== the conversation at 1600 by 1000 ===');
   const p = await open(browser, 1600, 1000);
   const { a, b, c, d } = await talk(p, 'talk-1600-open.png');
@@ -167,7 +184,25 @@ require('./net.js').guardBrowser(browser);
   ok(c.move === 'ask' && c.pass && c.top.rung >= 7, 'the seat coming back across turns is asked about, rung ' + (c.top && c.top.rung));
   ok(c.said && c.rows.filter(x => x.cls === 'src-tn-now')[0].say.indexOf(c.said) === 0, 'the screen reader line carries the live turn: ' + JSON.stringify(c.said.slice(0, 70)));
   ok(d.now === 1 && d.pastWords.length > 0 && d.pastWords.every(Boolean), 'a text window, not a ring: every earlier Source AI turn still reads in full, ' + d.pastWords.length + ' with words');
-  ok(d.asks === 1, 'an answer to the ask does not ask the same why again: ' + d.asks + ' ask rows');
+  /* ROUND SK. This read d.asks === 1, "an answer to the ask does not ask
+     the same why again", which held while the ask could only ever be the
+     same why rewritten in place. Every ask now goes through the ten checks
+     (srcAskVetted, ui/storyui.js), and a question the person has replied
+     under counts as asked, so the turn after an answer is a new question.
+     What the old line protected still holds, harder: no question twice. */
+  const qOf = x => x.slice(x.lastIndexOf('. ') + 2);
+  ok(d.asks >= 1 && new Set(d.askQs.map(qOf)).size === d.askQs.length, 'an answer to the ask is never followed by the same question again: ' + JSON.stringify(d.askQs));
+  const firstAsk = c.rows.filter(x => x.cls === 'src-tn-now')[0].say;
+  ok(d.askQs[0] && firstAsk.indexOf(d.askQs[0]) === 0, 'and the question the person answered is not rewritten under their answer: ' + JSON.stringify([firstAsk.slice(0, 50), d.askQs[0] && d.askQs[0].slice(0, 50)]));
+  ok(c.vet && c.vet.ok && c.rows.filter(x => x.cls === 'src-tn-now')[0].say.indexOf(c.vet.q) === 0,
+    'the ask on screen is the one that passed the ten checks: ' + JSON.stringify(c.vet));
+  ok(d.askQs.every(q => !/Why there|takes you back|bottom of it/.test(q)), 'and no ask on the thread is a why: ' + JSON.stringify(d.askQs));
+  const fams = await p.evaluate(() => SRC_CHAT.filter(r => r.key && r.key.indexOf('ask|') === 0).map(r => qcFamilyOf(r.q)));
+  ok(fams.every((f, i) => i === 0 || f !== fams[i - 1]), 'two asks in a row are never the same family, section 22: ' + JSON.stringify(fams));
+  ok(d.askQs.slice(1).every(q => q.indexOf('You wrote') < 0), 'and the mirror is said once a seat, the next ask is the question alone: ' + JSON.stringify(d.askQs));
+  const reVet = await p.evaluate(() => SRC_CHAT.filter(r => r.key && r.key.indexOf('ask|') === 0).map(r =>
+    srcVet({ q: r.q, family: 'probe', target: STR.heard.top.seat }, { text: ST_TEXT, ledger: srcLedgerNow() }).fails.filter(f => [1, 2, 3, 4, 5, 6, 7].indexOf(f.n) >= 0).map(f => f.n)));
+  ok(reVet.every(f => !f.length), 'every ask on the thread still passes points one to seven against the whole entry: ' + JSON.stringify(reVet));
   const me = d.rows.filter(x => x.cls === 'src-tn-me').map(x => x.say);
   ok(me.join('|') === 'I did not sleep|afraid all night.|Still afraid when he called.|I am afraid of what he says next.', 'every reply stands in the thread in the person\'s words');
   ok(d.wires === 0, 'the daisy chain is gone: no node, no wire, no pulse in the markup, ' + d.wires + ' found');
@@ -236,6 +271,55 @@ require('./net.js').guardBrowser(browser);
      never swapped for another. */
   ok(!p.errs.length, 'no page errors at 1600: ' + p.errs.join(' | '));
   await p.cx.close();
+
+  /* ROUND SK, REPRODUCED FIRST: one seat talked about long enough runs every
+     family question once, and the turn after that drew an empty bubble. It
+     says the document's Space, "Keep writing.", and never nothing. */
+  console.log('\n=== a long conversation about one seat ===');
+  {
+    const q = await open(browser, 1600, 1000);
+    const said = ['I was afraid all night.', 'Still afraid.', 'afraid of him.', 'afraid again.', 'so afraid.', 'afraid today.', 'afraid now.',
+      'afraid still.', 'afraid, afraid.', 'afraid at work.', 'afraid at home.', 'afraid in bed.', 'afraid when he called.', 'afraid all day.'];
+    for (const t of said) { await q.evaluate(t => srcTurnCommit(t), t); await q.waitForTimeout(60); }
+    const rows = await q.evaluate(() => SRC_CHAT.filter(r => r.w === 'src').map(r => r.q));
+    ok(rows.every(r => String(r || '').trim()), 'no Source AI turn is ever empty: ' + JSON.stringify(rows.map(r => String(r).slice(-30))));
+    ok(rows[rows.length - 1] === 'Keep writing.', 'and when every question has been asked it says the document\'s Space: ' + JSON.stringify(rows[rows.length - 1]));
+    ok(!q.errs.length, 'no page errors in that run: ' + q.errs.join(' | '));
+    await q.cx.close();
+  }
+
+  /* ROUND SK, the seam package's VENT, MOVE_ON and CORRECT, said and not
+     pressed. Its own vectors: "I just want to vent", "I don't want to talk
+     about it anymore", "No, that interpretation doesn't fit me". Before
+     this, each was read as more story and the next question came. */
+  console.log('\n=== the person says what they want from the conversation ===');
+  {
+    const row = q => q.evaluate(() => { const r = SRC_CHAT.filter(x => x.w === 'src'); return r[r.length - 1]; });
+    const asking = async (q) => { for (const t of ['I was afraid all night.', 'Still afraid.']) { await q.evaluate(t => srcTurnCommit(t), t); await q.waitForTimeout(80); } };
+    let q = await open(browser, 1600, 1000);
+    await asking(q); const was = await row(q);
+    await q.evaluate(t => srcTurnCommit(t), "No, that interpretation doesn't fit me"); await q.waitForTimeout(120);
+    const st = await q.evaluate(() => ({ v: SRC_VERDICTS, s: srcLedgerNow().claims.root && srcLedgerNow().claims.root.state }));
+    await q.evaluate(t => srcTurnCommit(t), 'afraid again'); await q.waitForTimeout(120);
+    const after = await row(q);
+    ok(/^ask\|/.test(was.key) && st.s === 'rejected', 'a no said in words lands as a no on the seat it was asking about: ' + JSON.stringify(st));
+    ok(!/^ask\|root/.test(after.key), 'and that seat is not asked about again, however often it comes back: ' + JSON.stringify(after.q));
+    await q.cx.close();
+    q = await open(browser, 1600, 1000);
+    await asking(q);
+    await q.evaluate(t => srcTurnCommit(t), "I don't want to talk about it anymore"); await q.waitForTimeout(120);
+    const mv = await q.evaluate(() => ({ passed: SRC_PASSED, last: SRC_CHAT.filter(x => x.w === 'src').pop().q, log: SRC_LOG.map(r => r.moved) }));
+    ok(mv.passed && mv.last === 'Cool.' && mv.log.some(Boolean), 'asking to stop in words is Move on: "Cool.", and the entry keeps that the person moved on, ' + JSON.stringify(mv));
+    await q.cx.close();
+    q = await open(browser, 1600, 1000);
+    await q.evaluate(t => srcTurnCommit(t), 'I just want to vent'); await q.waitForTimeout(80);
+    await asking(q);
+    const vn = await q.evaluate(() => ({ rows: SRC_CHAT.filter(x => x.w === 'src').map(x => x.q), open: srcOpen(), line: SRC_LISTENING }));
+    ok(vn.rows.slice(1).length && vn.rows.slice(1).every(x => x === vn.line) && vn.rows[0] === vn.open,
+      'asking to vent is listened to and asked nothing, even when a seat comes back: ' + JSON.stringify(vn.rows));
+    ok(!q.errs.length, 'no page errors in those runs: ' + q.errs.join(' | '));
+    await q.cx.close();
+  }
 
   console.log('\n=== the conversation at 390 by 844, reduced motion ===');
   {
