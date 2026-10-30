@@ -183,7 +183,102 @@ Not verified as implemented: modifier scope calibration, independent-event count
 
 **Metrics proposed, not achieved:** 100% of visible highlights trace to correct original spans; 100% of stored Imprints trace to permitted evidence and a versioned model; 0 wrong-person Imprints in the adversarial test suite; 0 negated-emotion-as-affirmed failures in the suite; 0 same-event-as-independent-recurrence mistakes in the suite. These are acceptance thresholds, not observed rates.
 
-## 10. Measurements and values
+
+## 10. Universal-quantifier and intergenerational-script listening — owner addition, 2026-10-29
+
+**Owner's governing example:** "Our family always does [something] for Christmas. But I don't want to do that anymore." The significant signal is not just the Christmas tradition or the word *always*. It is the conjunction of **a group-level inherited script, a statement of regularity/obligation, and the person's explicit intention to diverge**. This is unusually useful conversational evidence of a **possible family-conditioned expectation meeting emerging personal agency**, without proving that the tradition is harmful, the family is pathological, or a subconscious mechanism has been confirmed.
+
+### 10.1 Detection classes
+
+- **Universal/frequency markers:** always; never; every time; all the time; forever; constantly; invariably; nobody; everyone; every single; nothing ever; I can't ever. Treat these as clues about the speaker's *scope of generalization*, not verified universal facts.
+- **Obligation and permission frames:** have to; must; should; supposed to; that's just what we do; I'm not allowed; in our family you don't; everyone expects; because that's how I was raised.
+- **Intergenerational/family transmission language:** our family; in my family; my parents; my mother/father; my grandparents; growing up; every Christmas; it's tradition; my family taught me; we've always done it that way. Distinguish family custom from imposed obligation, and a person's report from actual independently verified family history.
+- **Agency / divergence markers:** I don't want to anymore; I'd rather; I choose; I'm not doing that this year; I can't keep doing this; I feel obligated; I want something different; I'm setting a boundary.
+- **Emotion and somatic context:** anxious, angry, afraid, guilty, relieved, conflicted, exhausted, tight chest and scoped intensity language may co-occur, but are not prerequisites for recognizing a potential limiting frame.
+
+The detector must capture **who** the alleged rule applies to, **where it came from as reported**, **what behavior is expected**, **whether the speaker endorses, resists, or merely reports it**, **what they want instead**, and **whether they report a real choice or consequence**.
+
+### 10.2 Keep four separate evidence objects
+
+1. **GENERALIZATION:** "I always feel anxious" reports a broad perceived regularity; Source may investigate frequency, exceptions and context. It is not proof the experience is literally constant or that "always" is consciously deceptive.
+2. **FAMILY_SCRIPT:** "Our family always has Christmas at Grandma's" reports a recurring convention. That can be accurate and benign. "Always" alone is not a negative charge, an integrity violation, or a limiting belief.
+3. **INTERNALIZED_RULE_HYPOTHESIS:** "I have to go or I'm a bad daughter" adds a conditional self-judgment or obligation. This more specifically supports exploring whether a family expectation has become a self-limiting rule.
+4. **DIVERGENCE / CHOSEN_DIRECTION:** "I don't want to do that anymore" explicitly conveys a desire for change. Preserve it as a distinct first-person intention and possible assertion of agency; do **not** misclassify "don't" as a negation of the family custom or automatically treat resistance to tradition as incoherent.
+
+**Important:** A reported inherited norm is not necessarily "ancestral trauma"; the Sniffer cannot discover an ancestral origin, subconscious imprint, or genealogical causal mechanism from one phrase. It can flag **possible intergenerational transmission** for the person to confirm or correct.
+
+### 10.3 Proposed cross-clause detection rule
+
+~~~~text
+Detect universal/frequency/obligation marker
+    → find grammatical subject + speaker and attribution
+    → find action or emotional state it scopes over
+    → look for family-origin / cultural norm / past conditioning evidence
+    → look for the speaker's present endorsement, uncertainty, resistance or desire
+    → look for "but / however / anymore / instead" and contrast across clauses
+    → emit separate GENERALIZATION / FAMILY_SCRIPT / RULE_HYPOTHESIS / DIVERGENCE events
+    → optionally propose a typed, tentative "inherited expectation → personal tension" edge
+    → keep Source's conversational question or reflection independent of the graph guess
+~~~~
+
+**Do not create an absolute frequency score from a word.** The lexical marker raises *investigative relevance*, not the person's emotional-charge value or the law-violation score. A single "always" should not silently become multiple episodes. Quantifiers in quoted speech must remain attributed to the quoted speaker. "Not always" weakens the quantifier. "I will always love you" may be an expression of commitment, not limiting rigidity. Treat sarcasm, metaphor and hyperbole as unresolved when ambiguous.
+
+### 10.4 Concrete dialogue examples and better Source responses
+
+**Person:** "Our family always goes to my parents' for Christmas, but I don't want to do that anymore."
+
+**Source:** "It sounds like the tradition is established, but your relationship to it is changing. What part of it no longer feels right to you?"
+
+This accurately hears the inherited expectation **and** the person's agency. Source must not say "your family programmed you" or "that's ancestral trauma." If the person says "It's simply too expensive to travel," Source must follow that practical explanation instead of forcing an archetypal root.
+
+**Person:** "I always feel anxious around my family."
+
+**Source:** "When you say 'always,' is there a particular moment around them when the anxiety tends to start?"
+
+The question explores the generalized claim while allowing the person to clarify or offer an exception. Do not tell them their word *always* is false.
+
+**Person:** "My sister always complains about Christmas."
+
+**Source:** "What happens when she complains?"
+
+This reports the speaker's perception of someone else's behavior. It must not score the sister's integrity, diagnose her, or install an imprint on the speaker.
+
+### 10.5 Data model addition (proposed, not deployed)
+
+A quantified-language event should optionally carry:
+- quantifier_surface, quantifier_scope_span, quantifier_type, and literal_frequency_verified: unknown;
+- subject, experiencer, quoted_speaker, tense, polarity, modal_strength, frequency_assertion and observed_episodes[];
+- family_source_reported, inherited_rule_text, rule_endorsement: yes/no/unclear;
+- divergence_text, desired_direction, obligation_pressure, agency_status: explicit/provisional/unknown;
+- candidate_relation_type: familial_expectation_conflict or generalized_belief; anchor_evidence_ids[], counterevidence_ids[], uncertainty and owner_confirmation;
+- allowed_destinations: live_trace, provisional_imprint, consented_bank, graph_proposal, with independent permission and evidence gates.
+
+Only the actual original phrasing and confirmed personal history qualify as evidence. The model's labels remain **interpretive metadata** with an explicit citation to their utterance spans. No invented "ancestral" causal edge enters canon or the user's permanent Bank.
+
+### 10.6 Acceptance tests to add to the Sniffer/Source suite
+
+1. "Our family always has dinner at seven" → FAMILY_SCRIPT candidate, **no automatic negative charge**.
+2. "We always go to Grandma's; I don't want to anymore" → FAMILY_SCRIPT plus DIVERGENCE, distinct spans, no moral judgment.
+3. "I have to go or I'm a bad child" → conditional self-worth RULE_HYPOTHESIS with possible social origin; no claim of proven source.
+4. "I always feel anxious" → self GENERALIZATION, **not a quantified 24/7 intensity**.
+5. "My sister always complains" → claim about sister; not an integrity score for writer or sister.
+6. "Mom said 'You always ruin things'" → **quoted other-person attribution**, not automatically speaker-endorsed.
+7. "It isn't always like that" → negated/qualified universality; do not emit asserted-always.
+8. "I will always be there for you" → commitment, not a default limiting belief.
+9. "We always spend Christmas together, and I love it" → positive endorsed family tradition, no forced release.
+10. "I don't want that anymore" after a family-rule turn → the system carries forward the right conversational referent and recognizes changing personal direction without a new keyword search.
+11. "Our family always... but now I choose..." → explicit contradiction/transition in the same turn; Source tracks both, not a one-dimensional negative tag.
+12. A user rejects an inherited-pattern interpretation → hypothesis retracts and the provisional graph edge/Imprint is removed or corrected, without deleting their original words.
+
+**P0 quality gate:** zero false promotions from universal-language marker alone into a verified belief, ancestry claim, charge, integrity violation, or banked Imprint on this adversarial test suite. Verify with code, conversational runs, graph/Bank traces and user-correction behavior; until then the rule remains a **design specification**.
+
+### 10.7 Design assessment
+
+Generalized language can be a strong cue to explore a person's perceived rules and constraints, especially beside family context and an explicit wish for change. Its meaning is **context dependent**: actual recurrent customs, harmless habits, exaggerations and future commitments also use universal words. Source should attend to the possible structure without declaring it to be the hidden cause.
+
+**Owner-directed design alignment:** 0.99. **Contextual specificity:** 0.97. **Claim that "always" alone establishes a subconscious limiting belief:** unsupported. **Implementation:** not changed.
+
+## 11. Measurements and values
 
 - Faithfulness to the newest user-described Sniffer behavior: **0.98 confidence**.
 - Compatibility with checked lexical/Imprint documentation: **0.95 confidence**.
