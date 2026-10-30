@@ -295,6 +295,8 @@ The Source conversation must interpret **the specific descriptors in the person'
 
 **New 2026-10-29 owner clarification — universal language and inherited scripts:** phrases such as "I always", "our family always", and "I don't want to anymore" can signal generalized expectations, possible family-conditioned rules and emerging agency. They must be parsed together with speaker, scope, exceptions, endorsement and desired change. No "always" token alone creates charge, a root cause, an ancestral diagnosis, or an Imprint; see section 10 of the [Signal Register + Intensity Sniffer Addendum](ATUNED_SOURCE_SIGNAL_REGISTER_INTENSITY_SNIFFER_TDD_ADDENDUM_2026-10-29.md).
 
+**2026-10-29 build-design handoff:** The complete multi-system topology, 13 provider/consumer seams, permission/correction rules and unresolved compatibility conflicts are in [SOURCE Intelligence Architecture & Seams TDD](ATUNED_SOURCE_INTELLIGENCE_SEAMS_ARCHITECTURE_TDD_2026-10-29.md), with [event schema](data/ATUNED_SOURCE_CONVERSATION_SEAM_SCHEMA_v1.json) and [acceptance matrix](ATUNED_SOURCE_CONTRACT_ACCEPTANCE_MATRIX_2026-10-29.md). These are **design artifacts, not executable runtime or app changes**.
+
 ## 10. Source authority, conflicts, and durable navigation
 
 - Owner rulings, **29 October 2026** (this conversation): new category of intelligence; Source at design-target CQ 100; moral integrity across 21 laws; truthful discernment over praise or judgment; stories connect toward their root, led by user; warm friend-like peer, not buddy; summaries should clarify; conversation is the system, text-entry predecessor is retired.
