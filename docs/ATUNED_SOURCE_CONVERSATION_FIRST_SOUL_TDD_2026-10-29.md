@@ -287,6 +287,12 @@ These are **future target values, not measured results**. Add a comparison again
 
 **Implementation rule:** documentation is not runtime behavior. Until code, tests, screen recordings and evaluations verify this, status remains DESIGN ONLY. No code modifications are authorized or implied by this TDD.
 
+## NEW ACTIVE DESIGN LAYER — 2026-10-29: Adjectives, intensity, register, recurrence and Bank
+
+The Source conversation must interpret **the specific descriptors in the person's own language, their scoped intensity modifiers, chakra/seat register candidates, beliefs without emotion words, and the movement of those signals across independent episodes**. The Sniffer highlights what was actually heard and may prepare provisional Imprints; the Bank records appropriately authorized and evidence-linked patterns. Raw word frequency is not automatically the number of experiences, a physiological intensity reading, a limiting belief, or an integrity violation. The meaning must be discerned in conversation, not dictated by a keyword table.
+
+**Mandatory detail and tests:** [Source Signal Register + Intensity Sniffer TDD Addendum](ATUNED_SOURCE_SIGNAL_REGISTER_INTENSITY_SNIFFER_TDD_ADDENDUM_2026-10-29.md). It defines scope/negation/attribution/tense and independent-episode handling, separate coherent/shadow evidence, raw-span highlights, provisional Imprints versus accepted Bank inventory, and acceptance gates. This addendum is the implementation-grade source for this sublayer; the main experience remains conversation-first. No runtime modification or empirical validation is implied.
+
 ## 10. Source authority, conflicts, and durable navigation
 
 - Owner rulings, **29 October 2026** (this conversation): new category of intelligence; Source at design-target CQ 100; moral integrity across 21 laws; truthful discernment over praise or judgment; stories connect toward their root, led by user; warm friend-like peer, not buddy; summaries should clarify; conversation is the system, text-entry predecessor is retired.
