@@ -19440,6 +19440,748 @@ function srcAsked(log,len){
  return out;}
 /* the most an entry can carry: every kind at every seat and at none. */
 function srcAskedMax(){return SRC_KINDS.length*(Object.keys(K2BAND).length+1);}
+/* ============================================================
+   THE EVIDENCE LEDGER, P0 of the Journal Mode blueprint. Round SK, 30
+   October, TASKS.md. The document is atuned_source_ai_journal_mode_TDDB.md,
+   his own Drive, 4 October, and its rule is "the system proposes, the person
+   verifies". Its section 15 names eight states and this is them, as data.
+
+   WHAT A CLAIM IS, AND WHAT EVIDENCE IS. They are two things and a mark used
+   to be both. A mark from marksOf (engine/sniff.js) holds the person's own
+   letters, s to e, and the seat the lexicon put them at. The letters are
+   what was said. The seat is what the engine made of them. So here the
+   letters are EVIDENCE, and the seat is a CLAIM that cites them. Source AI
+   may only ever say a claim when the evidence under it is good enough, and
+   the person is the only one who can say a claim is theirs.
+
+   THE EIGHT STATES, AND WHO MAY SET EACH ONE.
+
+     observed   evidence only. The words were written. Every evidence row
+                is observed; a claim is never observed, because a claim is
+                always the engine's reading of something observed.
+     inferred   a claim with nothing said for it in this entry: an earlier
+                entry's stored seat key, or the field's own driven pattern.
+                Held, never asked about, never said.
+     candidate  heard once in this entry and nothing else behind it.
+     supported  more than one piece of evidence points the same way: heard
+                twice or more in this entry, or once here and in an earlier
+                entry, or once here at a seat a driven hyper complex sits on
+                (his ruling of 27 October, srcRung in engine/sourceai.js:
+                the field's pattern is built from his own committed charge,
+                so it is his evidence, not the engine's guess).
+     confirmed  the person said yes.
+     rejected   the person said not me.
+     corrected  the person said what it is instead, in their own words.
+     unknown    the person said they are not sure. And the root, always,
+                at this stage: see evRoot.
+
+   THE ONE INVARIANT EVERYTHING ELSE SERVES. The engine moves a claim only
+   between inferred, candidate and supported. confirmed, rejected, corrected
+   and unknown are reachable ONLY through a verdict the person gave, evVerdict
+   below, and a verdict outranks any amount of new evidence: a seat the person
+   said not me to stays rejected however often the story comes back to it,
+   until the person says otherwise. That is the document's "no silent
+   promotion" and "correction dominance" (section 53, 2 and 5).
+
+   ONE READER, NOT TWO. The counts a claim's state is read from are srcHear's
+   own (mentions, earlier, structural), so the state and the rung can never
+   disagree about how often a seat was heard. The spans come off marksOf, the
+   same list the person's own bubble is drawn from. tests/evidence.js holds
+   the two to the same count on every line of the story bank.
+
+   HOW THIS MAPS ONTO THE TRACE GRAPH, SO IT IS NOT A SECOND MODEL. trace.js
+   already carries five provenance words, TRACE_SRC, and its own warning is
+   that a second model beside the real engine is how two truths appear. The
+   eight states are finer than the five, and EV_TRACE says exactly where each
+   one lands: every engine state is the graph's inferred, a yes and a
+   correction are its user_confirmed, and a no and an unknown have no
+   provenance there at all, which is trace.js's own standing gap (a refusal
+   is F16, the owner's). Nothing here writes the graph yet.
+
+   PRIVACY, CHECKED FIRST, and it decides the shape. The ledger is DERIVED,
+   never stored. It reads the entry being written, and from earlier entries
+   only the seat keys a commit already stored (srcPrior), never their text:
+   that is the narrow reading of DESIGN-sniffer.md question 12, which is
+   still the owner's. An evidence row holds offsets into the text the person
+   is writing; the letters are sliced for a caller and never kept a second
+   time. A verdict is page memory in P0, passed in by the caller, and nothing
+   here reaches the record. Keeping a verdict on the entry is P2, an additive
+   field beside ob.yes and ob.no, and it is not built.
+
+   THE ENGINE MAY NOT TOUCH THE HOST, and this file does not.
+   ============================================================ */
+var EV_STATES=['observed','inferred','candidate','supported','confirmed','rejected','corrected','unknown'];
+/* the states only a person can put a claim into */
+var EV_PERSON=['confirmed','rejected','corrected','unknown'];
+/* the states the engine itself may set, from counts */
+var EV_ENGINE=['inferred','candidate','supported'];
+/* a claim Source AI may name to the person: there is more than one piece of
+   evidence under it, or the person already said it is theirs */
+var EV_NAMEABLE=['supported','confirmed','corrected'];
+/* the person's four answers, and the state each one sets */
+var EV_VERDICT={yes:'confirmed', no:'rejected', fix:'corrected', unsure:'unknown'};
+/* section 15's arrows. The engine's run is observed to inferred to candidate
+   to supported. Section 15 draws the person's reject and correct off
+   candidate and supported only, and this widens it on purpose: section 52's
+   second test is that a person can reject an interpretation "without
+   fighting the system", so a no is honoured from every state a claim can be
+   in, a confirmed one included, because a person may change their mind. */
+var EV_MOVES={
+ observed:['inferred','unknown'],
+ inferred:['candidate','supported','confirmed','rejected','corrected','unknown'],
+ candidate:['supported','confirmed','rejected','corrected','unknown'],
+ supported:['confirmed','rejected','corrected','unknown'],
+ confirmed:['rejected','corrected','unknown'],
+ rejected:['confirmed','corrected','unknown'],
+ corrected:['confirmed','rejected','corrected','unknown'],
+ unknown:['confirmed','rejected','corrected']};
+/* where each state lands in trace.js's own vocabulary, TRACE_SRC */
+var EV_TRACE={observed:null, inferred:'inferred', candidate:'inferred', supported:'inferred',
+ confirmed:'user_confirmed', corrected:'user_confirmed', rejected:null, unknown:null};
+function evTraceSrc(state){ return EV_TRACE.hasOwnProperty(state)?EV_TRACE[state]:null; }
+function evCan(from,to){ return !!(EV_MOVES[from]&&EV_MOVES[from].indexOf(to)>=0); }
+
+/* THE STATE THE ENGINE READS OFF THE COUNTS, before any verdict. c carries
+   srcHear's own three numbers. Returns null when there is nothing at all. */
+function evEngineState(c){
+ var m=+c.mentions||0, e=+c.earlier||0, st=!!c.structural;
+ if(!m)return (e>0||st)?'inferred':null;
+ if(m>=2||e>=1||st)return 'supported';
+ return 'candidate';}
+/* the plain because for each engine state, which is the explainability duty:
+   Source AI can always say why it holds what it holds. */
+function evWhy(c,state){
+ var m=+c.mentions||0, e=+c.earlier||0;
+ if(state==='confirmed')return 'you said yes to this';
+ if(state==='rejected')return 'you said this is not you';
+ if(state==='corrected')return 'you said what it is instead';
+ if(state==='unknown')return 'you said you are not sure';
+ if(state==='inferred')return e?'an earlier entry landed here, and nothing in this one has':'the field holds a pattern here, and nothing in this entry has said it';
+ if(state==='supported'){
+  if(m>=2)return 'heard '+m+' times in this entry';
+  if(e>=1)return 'heard in this entry and in an earlier one';
+  return 'heard in this entry, at a seat the field already holds a pattern on';}
+ return 'heard once in this entry';}
+
+/* THE CUES srcDims ALREADY READS, AS EVIDENCE WITH AN ADDRESS. srcDims says
+   which of the document's dimensions an entry answers and with which cue,
+   and gives no place. A behaviour the person wrote, "I keep", is observed
+   language exactly as much as a feeling word is, and the document's whole
+   claim is that behaviour comes before labels, so it is kept as evidence
+   too, with no seat: a cue is never a claim about where anything lands. */
+function evCueRows(t,dims,nm){
+ var out=[], seen={};
+ Object.keys((dims&&dims.answered)||{}).forEach(function(k){
+  dims.answered[k].forEach(function(c){
+   var needle=' '+String(c)+' ', from=0, i;
+   while((i=nm.s.indexOf(needle,from))>=0){from=i+1;
+    var a=i+1, b=i+String(c).length;
+    if(a>=nm.map.length||b>=nm.map.length)continue;
+    var s=nm.map[a], e=nm.map[b]+1, key=k+'|'+s+'|'+e;
+    if(seen[key])continue; seen[key]=1;
+    out.push({kind:k, s:s, e:e, cue:String(c)});}});});
+ return out;}
+
+/* BUILD THE LEDGER. text is the entry being written. entries is the person's
+   committed entries, of which only the stored seat keys are read. o is
+   {active, verdicts, asked}: active is srcHyperSeats of a real reading,
+   verdicts the person's answers this session, [{seat, v, fix}], in the order
+   given, and asked the seat keys Source AI has asked about in this entry.
+   Pure: reads nothing else and writes nothing, the field included. */
+function evLedger(text,entries,o){
+ o=o||{};
+ var t=String(text||''), out={ev:[], claims:{}, order:[], thread:null, root:null, verdicts:[]};
+ var prior=srcPrior(entries||[]);
+ var heard=srcHear(t,prior,o.active||null);
+ var p=t.trim()?parseStory(t):null, nm=normMap(t);
+ /* EVIDENCE, the marks. Every one, said or not: a word said with a no is
+    evidence the person said no, and a word about someone else is evidence
+    about someone else. Neither is ever counted for a claim. */
+ var marks=p?marksOf(t,p):[];
+ marks.forEach(function(m,i){
+  out.ev.push({id:'w'+i, src:'mark', s:m.s, e:m.e, text:t.slice(m.s,m.e),
+   seat:m.seat||null, kind:m.seat?'seat':(m.coh?'coherent':'word'),
+   said:m.neg?'denied':(m.other?'other':'said'), state:'observed'});});
+ /* EVIDENCE, the cues */
+ var dims=t.trim()?srcDims(t):null;
+ evCueRows(t,dims,nm).forEach(function(r,i){
+  out.ev.push({id:'c'+i, src:'cue', s:r.s, e:r.e, text:t.slice(r.s,r.e), seat:null,
+   kind:r.kind, cue:r.cue, said:'said', state:'observed'});});
+ /* EVIDENCE, earlier entries, as the seat keys their commits stored and
+    nothing more. No span and no text, by the privacy rule above. */
+ Object.keys(prior).forEach(function(k){
+  out.ev.push({id:'e:'+k, src:'earlier', s:null, e:null, text:null, seat:k,
+   kind:'seat', said:'said', count:prior[k], state:'observed'});});
+ /* WHICH SPANS A SEAT'S CLAIM CITES, walked the way srcHear walks them,
+    pathOf's own steps, and joined to the marks by where they start. Not by
+    the mark's own seat: the two readers can disagree. Measured round SK on
+    the story bank, "I sat in the car outside work": the hit for "outside"
+    carries no band, so marksOf leaves it uncoloured in the person's bubble,
+    while pathOf resolves it to the crown and srcHear counts it there. A
+    claim that cited by the mark's seat would cite nothing for a mention it
+    counts, which is the traceability the document's section 53 rules out.
+    So it cites the span srcHear counted, and the row says the mark read it
+    elsewhere (seatSaid), which is the disagreement kept as data rather than
+    hidden. Which reader is right is the sniffer's to settle, not this file's. */
+ var cite={}, den={}, oth={};
+ if(p){
+  (p.denied||[]).forEach(function(h){den[h.at]=1;});
+  (p.others||[]).forEach(function(h){oth[h.at]=1;});
+  pathOf(storyHits(p)).steps.forEach(function(st){
+   if(!st.seat||st.coherent||oth[st.at]||den[st.at])return;
+   var a=nm.map[st.at+1]; if(a==null)return;
+   var x=null; out.ev.forEach(function(r){if(r.src==='mark'&&r.s===a&&!x)x=r;});
+   if(!x)return;
+   if(x.seat!==st.seat)x.seatSaid=st.seat;
+   var l=cite[st.seat]=cite[st.seat]||[]; if(l.indexOf(x.id)<0)l.push(x.id);});}
+ /* CLAIMS, one a seat, off srcHear's own counts */
+ var mk=function(k,h){
+  var c={key:'seat:'+k, seat:k, band:K2BAND[k], mentions:h?h.mentions:0,
+   earlier:prior[k]||0, structural:!!(h?h.structural:(o.active&&o.active[k])),
+   rung:h?h.rung:0, words:h?h.words.slice():[], ev:[], last:-1, verdict:null,
+   asked:(o.asked||[]).indexOf(k)>=0};
+  (cite[k]||[]).forEach(function(id){var x=null; out.ev.forEach(function(r){if(r.id===id)x=r;});
+   c.ev.push(id); if(x&&x.s>c.last)c.last=x.s;});
+  if(prior[k])c.ev.push('e:'+k);
+  c.state=evEngineState(c); return c;};
+ (heard.seats||[]).forEach(function(h){out.claims[h.seat]=mk(h.seat,h);});
+ Object.keys(prior).forEach(function(k){if(!out.claims[k]&&K2BAND[k])out.claims[k]=mk(k,null);});
+ Object.keys(o.active||{}).forEach(function(k){if(!out.claims[k]&&K2BAND[k])out.claims[k]=mk(k,null);});
+ Object.keys(out.claims).forEach(function(k){if(!out.claims[k].state)delete out.claims[k];});
+ /* VERDICTS, the person's, last one wins. A verdict about a seat nothing was
+    heard at is still the person's word and is held: it is not the engine's
+    to drop. A verdict that is not one of the four answers is refused here by
+    name and never applied. */
+ (o.verdicts||[]).forEach(function(v){
+  var r=evVerdictOk(v);
+  if(!r.ok){out.verdicts.push({seat:v&&v.seat, refused:r.why}); return;}
+  var c=out.claims[v.seat]||(out.claims[v.seat]=mk(v.seat,null));
+  var to=EV_VERDICT[v.v], from=c.state||'unknown';
+  /* the same answer twice is the same state, and anything else must be an
+     arrow EV_MOVES draws, so the table is the rule and not a comment */
+  if(from!==to&&!evCan(from,to)){out.verdicts.push({seat:v.seat, v:v.v, refused:'no move from '+from+' to '+to}); return;}
+  c.verdict={v:v.v, fix:v.v==='fix'?String(v.fix).trim():null};
+  c.state=to;
+  out.verdicts.push({seat:v.seat, v:v.v});});
+ Object.keys(out.claims).forEach(function(k){var c=out.claims[k];
+  c.why=evWhy(c,c.state); c.trace=evTraceSrc(c.state); c.seam=evSeamState(c);});
+ out.order=evOrder(out.claims);
+ out.thread=evThread(out.claims,heard.seats);
+ out.root=evRoot(out.claims);
+ out.dims=dims;
+ return out;}
+/* a verdict the ledger will take, or the reason it will not */
+function evVerdictOk(v){
+ if(!v||typeof v!=='object')return {ok:false, why:'a verdict is an object'};
+ if(!K2BAND[v.seat])return {ok:false, why:'no seat called '+JSON.stringify(v.seat)};
+ if(!EV_VERDICT.hasOwnProperty(v.v))return {ok:false, why:'the answers are yes, no, fix and unsure, not '+JSON.stringify(v.v)};
+ if(v.v==='fix'&&!String(v.fix||'').trim())return {ok:false, why:'a correction needs the person\'s own words'};
+ return {ok:true};}
+/* ADD A VERDICT, returning the new list and never touching the one given.
+   The one door into a person state. */
+function evVerdict(verdicts,seat,v,fix){
+ var x={seat:seat, v:v}; if(v==='fix')x.fix=fix;
+ var r=evVerdictOk(x);
+ if(!r.ok)return {ok:false, why:r.why, verdicts:(verdicts||[]).slice()};
+ return {ok:true, verdicts:(verdicts||[]).concat([x])};}
+
+/* THE ORDER, strongest state first, then the most recent evidence in this
+   entry, then the seat key, so it is a property of the text and never of
+   object key order. */
+var EV_RANK={confirmed:6, corrected:5, supported:4, candidate:3, unknown:2, inferred:1, rejected:0};
+function evOrder(claims){
+ return Object.keys(claims).sort(function(a,b){var x=claims[a], y=claims[b];
+  return (EV_RANK[y.state]-EV_RANK[x.state])||(y.last-x.last)||(a<b?-1:1);});}
+/* THE ACTIVE THREAD, the document's "select active thread". The claim the
+   person is talking about now: one with words in this entry, never one they
+   said not me to or corrected.
+
+   WHEN SOURCE AI MAY NAME ONE, it is the one srcHear ranks first among the
+   nameable, so the thread and the ask (srcTurn, rung first, his ruling at
+   round GO) are read by one reader and can never point at two seats.
+
+   WHEN IT MAY NAME NONE, it is the one with the newest evidence. Measured on
+   the document's own section 40 session: srcHear's order, rung then reading
+   then seat key, held "want to disappear" at the heart three turns running
+   after "guilty" had arrived at the solar plexus, because both read rung six
+   and heart sorts before solar, so the chat said the same line back three
+   times. The thread is what the person is writing about now.
+
+   heard is srcHear's own seat list, in its order. Null when no claim has
+   words here. */
+function evThread(claims,heard){
+ var live=Object.keys(claims).filter(function(k){var c=claims[k];
+  return c.mentions>0&&c.state!=='rejected'&&c.state!=='corrected';});
+ if(!live.length)return null;
+ var nm=(heard||[]).map(function(h){return h.seat;}).filter(function(k){
+  return live.indexOf(k)>=0&&EV_NAMEABLE.indexOf(claims[k].state)>=0;});
+ if(nm.length)return nm[0];
+ return live.sort(function(a,b){return (claims[b].last-claims[a].last)||(a<b?-1:1);})[0];}
+/* THE ROOT IS UNKNOWN, and at P0 it always is. The document, section 18 and
+   51.10: a root is the earliest supported origin the person's own evidence
+   reaches, through history, an event, an impression and a rule, and "if it
+   cannot be established, UNKNOWN is the correct result". Nothing in this
+   engine traces history yet, so no chain can close. What a seat coming back
+   across entries does earn is permission to ask about history, which is
+   the document's own precondition (section 18, "begins only with enough
+   evidence of repetition"), and that is what history names. srcHear's
+   rung ten is still called the root candidate in sourceai.js; under the
+   document it is this, the door to history, and not a root. */
+function evRoot(claims){
+ var h=Object.keys(claims).filter(function(k){var c=claims[k];
+  return c.mentions>0&&c.earlier>0&&EV_NAMEABLE.indexOf(c.state)>=0;});
+ return {state:'unknown', why:'no history has been traced, so no origin is supported', history:h.sort()};}
+
+/* ============================================================
+   THE SEAM PACKAGE'S LIFECYCLE, AND WHERE THESE STATES LAND IN IT. Round SK,
+   30 October. His later document, ATUNED_SOURCE_AI_SEAM_READY_HANDOFF,
+   02_SOURCE_AI_ENGINEERING_TDD.md section 4, the same day as this file, is
+   narrower than the 4 October one and wins where the two disagree:
+
+     CANDIDATE -> ASKED -> CONFIRMED | REFINED | REJECTED | UNRESOLVED, and
+     with further evidence REPEATED, WEAKENED, DISPUTED, INTEGRATED.
+
+   Its rule that changes the reading: "Repeated expressions in one event do
+   not count as independent episodes." So a seat heard twice inside one
+   entry is still one episode, and stays CANDIDATE, however supported this
+   file calls it; only a seat heard here AND in an earlier entry is
+   REPEATED. The eight states are kept, because the 4 October document's
+   questions still read them, and each is mapped, not swapped:
+
+     observed   evidence only, no candidate state
+     inferred   nothing said in this event, so no candidate in it
+     candidate  CANDIDATE, or ASKED once Source AI asked about it
+     supported  REPEATED when an earlier entry is behind it, otherwise
+                CANDIDATE (or ASKED), by the one-event rule above
+     confirmed  CONFIRMED      corrected  REFINED
+     rejected   REJECTED       unknown    UNRESOLVED
+
+   WEAKENED, DISPUTED and INTEGRATED are never produced, and that is said
+   rather than faked: weakened needs evidence that moves against a claim
+   over time, disputed needs the person's answer and new evidence to
+   conflict, and integrated needs "explicit comparable behavioral evidence"
+   after a release. Nothing in this engine measures any of the three.
+
+   Its rejection rule is kept, more strictly: "Rejection must not be
+   silently resurrected from a synonym hit; new separate evidence is needed
+   to reopen." Here only the person reopens a claim they turned down.
+   ============================================================ */
+var EV_SEAM_STATES=['CANDIDATE','ASKED','CONFIRMED','REFINED','REJECTED','UNRESOLVED',
+ 'REPEATED','WEAKENED','DISPUTED','INTEGRATED'];
+var EV_SEAM_NEVER=['WEAKENED','DISPUTED','INTEGRATED'];
+var EV_SEAM_PERSON={confirmed:'CONFIRMED', corrected:'REFINED', rejected:'REJECTED', unknown:'UNRESOLVED'};
+function evSeamState(c){
+ if(!c||!c.state)return null;
+ if(EV_SEAM_PERSON[c.state])return EV_SEAM_PERSON[c.state];
+ if(c.state==='observed'||c.state==='inferred'||!c.mentions)return null;
+ if(c.asked)return 'ASKED';
+ if(c.earlier>0)return 'REPEATED';
+ return 'CANDIDATE';}
+/* A PLACE IS SAID ONLY ONCE THE PERSON HAS SAID THE CLAIM IS THEIRS. The
+   package, 06_DIALOGUE_TDD.md: "Do not map to a chakra as fact without
+   user evidence", and "the spoken language should not reveal an
+   unconfirmed ontology label"; 02 section 3: "No reported somatic location
+   -> null, never invented anatomy." Where a story lands is this product's
+   own mapping, a hypothesis in its words, so naming it needs the person's
+   yes or their correction, not only more evidence. A place word the person
+   wrote themselves is their language and is always theirs to hear back. */
+var EV_PLACEABLE=['confirmed','corrected'];
+
+/* ============================================================
+   WHAT THE PERSON SAYS ABOUT THE CONVERSATION ITSELF. Round SK. The package's
+   dialogue states VENT, MOVE_ON and the CORRECT branch, 02 section 5:
+   "If caller says 'just vent,' stay in LISTEN", "MOVE_ON ends excavation for
+   this episode", and 06: "User rejecting a candidate -> mark rejected and
+   stop pressing it." Its own vectors are "I just want to vent", "I don't
+   want to talk about it anymore" and "No, that interpretation doesn't fit
+   me". Measured before this, on all three: nothing read them, so a person
+   who said any of them straight after a question was asked the next one.
+
+   READ OFF A SHORT LIST ON PURPOSE. A phrase list is inspectable and a
+   person can see why it fired. Each phrase is about the conversation and not
+   about life: "move on" alone is left out because "I can't move on from
+   him" is grief, not a request, and asking nothing after it would be the
+   miss. A phrase said with a no before it ("I don't want to vent") does not
+   count, by srcNegated, the same two word window the sniffer uses. A reject
+   phrase counts only in a short turn, because "that's not me" inside a long
+   story is far more often about something in the story.
+
+   Returns {intent, cue} or null. move_on outranks reject outranks vent: a
+   turn that both turns down a reading and asks to stop is a request to
+   stop. Pure, reads only the turn. */
+var SRC_INTENT={
+ move_on:['dont want to talk about it','do not want to talk about it','dont want to talk about this',
+  'dont want to talk anymore','dont want to talk any more','stop asking','no more questions',
+  'change the subject','talk about something else'],
+ reject:['doesnt fit me','that doesnt fit','does not fit me','thats not me','that is not me',
+  'thats not it','that is not it','thats not right','thats wrong','not what i meant','youre wrong',
+  'you are wrong'],
+ vent:['just want to vent','want to vent','need to vent','just venting','let me vent',
+  'just want to get it out','just need to get it out','just want to talk','just listen']};
+var SRC_INTENT_ORDER=['move_on','reject','vent'];
+var SRC_INTENT_SHORT=12;
+function srcIntent(turn){
+ var nm=normMap(String(turn||'')), s=nm.s, words=s.trim()?s.trim().split(' ').length:0;
+ if(!words)return null;
+ for(var i=0;i<SRC_INTENT_ORDER.length;i++){var k=SRC_INTENT_ORDER[i], list=SRC_INTENT[k];
+  if(k==='reject'&&words>SRC_INTENT_SHORT)continue;
+  for(var j=0;j<list.length;j++){var c=' '+list[j]+' ', at=s.indexOf(c);
+   if(at<0)continue;
+   /* the phrases that carry their own no are read as said; the others are
+      set aside when a no stands before them */
+   if(!/^(dont|do not)/.test(list[j])&&srcNegated(s,at+1))continue;
+   return {intent:k, cue:list[j]};}}
+ return null;}
+/* ============================================================
+   THE QUESTION CHECK, section 35 of the Journal Mode blueprint, ten points,
+   as code every question Source AI builds passes through before it is shown.
+   Round SK, 30 October, TASKS.md.
+
+   The document's words: "Every generated question should pass: Is it one
+   question? Is it clear? Does it use the user's language? Does it ask about
+   observable experience? Does it preserve agency? Does it avoid inserting a
+   diagnosis? Does it avoid naming an unsupported pattern? Does it reduce
+   uncertainty? Does it advance the active thread? Is it necessary now? If
+   not, regenerate."
+
+   EACH POINT IS A RULE A PERSON COULD CHECK BY READING THE LINE. None is a
+   score and none has a weight, because there is no labelled set of good and
+   bad questions to fit a weight against, and a weight nobody can explain is
+   a magic number. A question passes all ten or it is refused, and the refusal
+   names the point and the words that failed it.
+
+   WHAT A QUESTION IS CHECKED AGAINST. A candidate is {q, dim, family,
+   target}: the line, the dimension of srcDims it asks about if any, the
+   question family it was drawn from, and the seat key it is about. The
+   context is {text, ledger, asked, passed}: the person's own words, the
+   evidence ledger (engine/evidence.js), the lines already shown in this
+   entry, and whether they moved on.
+
+   QUOTES ARE THE PERSON'S, AND ARE READ APART. Anything inside quote marks
+   must be the person's own letters (point 3), and is then left out of every
+   other point: "You wrote “I have to”" quotes a person, and is not Source AI
+   telling them they have to.
+
+   WHAT THIS DOES NOT DO, said so nobody reads more into it. It does not judge
+   whether a question is a good one. It refuses the kinds of bad the document
+   names, and it is only as wide as its lists: a leading question built from
+   words none of them hold would pass. The lists are written out below so
+   that gap is visible rather than assumed away.
+   ============================================================ */
+
+/* THE QUESTION FAMILIES, the document's own wording, section 7 and section
+   24, and nothing written here. Each carries the dimension of srcDims it
+   asks about, where one fits, and what evidence it needs before it may be
+   asked: repetition needs a claim with more than one piece of evidence
+   under it, and history and origin need that claim heard across entries too,
+   section 18: root tracing "begins only with enough evidence of repetition
+   or persistence".
+
+   THE ORDER IS SECTION 6's PRIORITY ORDER, clarification, behaviour,
+   intention, immediate consequence, body, repetition, function, history,
+   origin. Section 7 files "What happens next?" under behaviour; section 6
+   names immediate consequence as its own step, and that is where it sits,
+   with no dimension, because srcDims has none for what happened next.
+   Agency waits for a behaviour: section 2.3 asks "What would you rather be
+   doing?" of somebody who said what they do, to find the competing choice,
+   and asked of "I am terrified" it contrasts nothing. Measured on the story
+   bank before this gate, it was the line chosen after a bare feeling word.
+   "What gets in the way of doing it?" is left out: it assumes a blocked
+   intention the person may never have stated, which is section 2.3's
+   warning about agency.
+   Clarification is held back (need 'unclear'): the document gives the
+   reading of what is unclear to a language model, section 38, and this
+   product has none, so nothing can set it yet and it is never chosen. Two of
+   the document's own lines fail its own section 8 unless the person used
+   the word first, and are kept so the check is seen to catch them: "What
+   part feels uncertain?" plants uncertain, and "What does that let you
+   avoid?" plants avoidance. */
+var SRC_FAMILY=[
+ {family:'clarification', need:'unclear', dim:null, q:'What do you mean by that?'},
+ {family:'clarification', need:'unclear', dim:null, q:'What part feels uncertain?'},
+ {family:'behaviour', dim:'behaviour', q:'What did you do?'},
+ {family:'agency', need:'behaviour', dim:'goal', q:'What would you rather be doing?'},
+ {family:'agency', need:'behaviour', dim:'goal', q:'What did you want to do?'},
+ {family:'consequence', dim:null, q:'What happens next?'},
+ {family:'body', dim:'body', q:'Where do you feel it?'},
+ {family:'body', dim:'body', q:'What do you notice first?'},
+ {family:'repetition', need:'supported', dim:null, q:'When else does this happen?'},
+ {family:'repetition', need:'supported', dim:null, q:'Where else does this happen?'},
+ {family:'function', dim:'behaviour', q:'What changes after you do it?'},
+ {family:'function', dim:'behaviour', q:'What does that let you avoid?'},
+ {family:'history', need:'history', dim:null, q:'How long has this been happening?'},
+ {family:'history', need:'history', dim:null, q:'What was happening then?'},
+ {family:'origin', need:'history', dim:null, q:'What happened the first time you remember this?'}];
+
+/* POINT 2, CLEAR. The document: "approximately a 10th-grade comprehension
+   level", short sentences, concrete words, no academic terms. Read on the
+   question sentence, quotes left out, as a Flesch Kincaid grade, with
+   syllables counted by vowel groups. That count is rough and is the only one
+   the engine can make with no dictionary; its own bad example, "What is the
+   primary unresolved component of the recollection?", grades past twelve on
+   it and its good one, "What part feels uncertain?", under four. */
+var QC_GRADE=10, QC_QWORDS=14, QC_WORDS=32;
+/* the document's own academic examples, and the therapeutic cliches section
+   24 says to avoid. Pop words a person might well use themselves, trigger
+   and process among them, are left off rather than guessed at. */
+var QC_JARGON=['somatic','manifestation','localized','localised','component','unresolved',
+ 'recollection','dysregulation','dysregulated','trauma','traumatic','nervous system',
+ 'attachment','projection','inner child','shadow work','boundaries','cognitive','emotional state'];
+function qcSyl(w){
+ w=String(w).toLowerCase().replace(/[^a-z]/g,''); if(!w)return 0;
+ if(w.length<=3)return 1;
+ w=w.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/,'').replace(/^y/,'');
+ var g=w.match(/[aeiouy]{1,2}/g); return g?g.length:1;}
+function qcGrade(s){
+ var ws=String(s).split(/\s+/).filter(function(w){return /[a-z]/i.test(w);});
+ if(!ws.length)return 0;
+ var sy=ws.reduce(function(a,w){return a+qcSyl(w);},0);
+ return Math.round((0.39*ws.length+11.8*(sy/ws.length)-15.59)*10)/10;}
+
+/* POINT 4, OBSERVABLE. A question about what happened, what was done, felt
+   or noticed, where and when. Asking why asks for an explanation, and an
+   explanation is not experience: the document's preferred questions, section
+   24, have no why among them, and its root tracing walks what happened, what
+   was decided, what was learned. */
+var QC_CAUSE=['why','what causes','what caused','the reason','do you think','bottom of it',
+ 'deep down','really about'];
+/* POINT 5, AGENCY. Nothing that casts the person as pushed by a force, and
+   nothing that tells them what they must do. Section 2.3: behaviour is not
+   treated as involuntary. */
+var QC_FORCE=['made you','make you','makes you','forced you','takes you','drives you',
+ 'pulls you','cant help','couldnt help','you always','you never','you should','you need to',
+ 'you have to','you must'];
+/* POINT 6, NO DIAGNOSIS. Every canon name (the addresses, the saboteurs, the
+   charges) and these labels, unless the person wrote the word first. And
+   every word the sniffer itself reads as charge in the question: the same
+   reader that reads the person reads Source AI, so "Are you feeling shame?"
+   is caught by the lexicon that knows shame, not by a second list of
+   feelings that would drift from it. */
+var QC_LABELS=['pattern','saboteur','fetter','complex','diagnosis','disorder','chakra','blockage',
+ 'wound','abandonment','avoidance','avoid','avoiding','withdrawal','withdraw','control',
+ 'controlling','codependent','codependency','narcissist','narcissistic','people pleaser',
+ 'perfectionist','perfectionism','parents','mother','father','mom','mum','dad','childhood',
+ 'child','family','ancestors','lazy','root'];
+/* POINT 7, NO UNSUPPORTED PATTERN. A line that says a word came back says a
+   claim, and may only say one the ledger holds as nameable (EV_NAMEABLE). A
+   line that says where something lands needs more, the person's own yes or
+   correction (EV_PLACEABLE), since round SK; see QC_LANDS. The places are the seat names and the body's
+   own place words, SOMA_PLACE_WORDS, as srcAsk and srcWhy say them. */
+var QC_AGAIN=['again','twice','three times','each time','every time','keep coming','comes back',
+ 'come back','earlier entry','wrote before','last time'];
+/* SINCE ROUND SK a place is its own rule, stricter than a return: where a
+   story lands is said only about a claim the person confirmed or corrected
+   (EV_PLACEABLE, engine/evidence.js, and the package's reasons beside it),
+   while saying a word came back needs only that it did. "lands" moved here
+   from the list above, because "it lands" is a place said. */
+var QC_LANDS=['lands','land'];
+/* place words that name no seat: "what happens in your body" asks about the
+   body and says nothing about where a story lands. And srcDims's own
+   SRC_BODY_NOT, the place words ordinary sentences use for something else,
+   "takes you back", "on the other hand". */
+var QC_NOTPLACE=['body','skin','muscles'];
+var QC_PLACE=null;
+function qcPlaces(){
+ if(QC_PLACE)return QC_PLACE;
+ QC_PLACE=['base of your spine','low in your belly','behind your stomach','around your heart',
+  'in your throat','behind your eyes','top of your head','solar plexus','third eye']
+  .concat(SOMA_PLACE_WORDS.filter(function(w){
+   return QC_NOTPLACE.indexOf(w)<0&&SRC_BODY_NOT.indexOf(w)<0;}));
+ return QC_PLACE;}
+var QC_CANON=null;
+function qcCanon(){
+ if(QC_CANON)return QC_CANON;
+ var s={};
+ NODES.forEach(function(n){if(n&&n.n)s[String(n.n).toLowerCase()]=1;});
+ SAB33.forEach(function(x){s[String(x[0]).toLowerCase().replace(/-/g,' ')]=1;});
+ CHARGES.forEach(function(c){s[String(c).toLowerCase()]=1;});
+ QC_LABELS.forEach(function(w){s[w]=1;});
+ QC_CANON=Object.keys(s).sort();
+ return QC_CANON;}
+
+/* the line apart from its quotes, and the quotes */
+var QC_QUOTE=/[“"]([^”"]+)[”"]/g;
+function qcSplit(q){
+ var quotes=[], m; QC_QUOTE.lastIndex=0;
+ while((m=QC_QUOTE.exec(q)))quotes.push(m[1]);
+ return {quotes:quotes, bare:String(q).replace(QC_QUOTE,' ')};}
+/* the question sentence: the last one, the one that ends on the mark. No
+   lookbehind in the pattern: an engine regex an older Safari cannot parse is
+   a parse error, and a parse error here stops every file after it. */
+function qcAsked(bare){
+ var s=String(bare).trim(), m=s.match(/[^.!?]*\?\s*$/);
+ if(m)return m[0].trim();
+ var parts=s.split(/[.!?]\s+/).filter(function(x){return x.trim();});
+ return parts.length?parts[parts.length-1]:'';}
+function qcHas(norm,w){ return norm.indexOf(' '+w+' ')>=0; }
+/* every phrase on the list the line holds, read on normMap's own copy.
+   EACH LIST IS NORMALISED ONCE, round SK. Measured: one ask ran sixteen
+   candidates through ten checks and normalised every word of every list each
+   time, the canon list alone 179 names, about 25 ms an ask in node, paid on
+   every repaint of the page. That was enough to swallow an animation frame:
+   tests/functional.js caught the vitality bar arriving at its end two frames
+   after a render, on this build and not on the one before it. The lists are
+   fixed at load, so their normal form is kept beside them. */
+function qcNorm(list){
+ if(!list.__qn)Object.defineProperty(list,'__qn',{value:list.map(function(w){return normMap(w).s.trim();})});
+ return list.__qn;}
+function qcFind(norm,list){
+ var n=qcNorm(list); return list.filter(function(w,i){return qcHas(norm,n[i]);}); }
+/* the sniffer's own read of a line, kept for the lines asked again and again:
+   the family questions never change and the lead changes only with the text */
+var QC_READ={}, QC_READ_N=0;
+function qcRead(bare){
+ if(QC_READ.hasOwnProperty(bare))return QC_READ[bare];
+ if(++QC_READ_N>400){QC_READ={}; QC_READ_N=1;}
+ return (QC_READ[bare]=storyHits(parseStory(bare)).map(function(h){return String(h.t).trim();}));}
+var QC_SAID_T=null, QC_SAID_S='';
+function qcSaid(text){ if(text!==QC_SAID_T){QC_SAID_T=text; QC_SAID_S=normMap(text).s;} return QC_SAID_S; }
+var QC_ASKW=['what','where','when','who','how','which','why','is','are','do','does','did','can',
+ 'could','would','will','have','has'];
+
+/* CHECK ONE CANDIDATE. Returns {ok, q, checks, fails}; checks is all ten,
+   in the document's order, each {n, rule, ok, why}. Pure. */
+function srcVet(cand,ctx){
+ cand=cand||{}; ctx=ctx||{};
+ var q=String(cand.q||'').trim(), text=String(ctx.text||''), L=ctx.ledger||null;
+ var said=qcSaid(text), sp=qcSplit(q), bare=sp.bare, nb=normMap(bare).s;
+ var asked=qcAsked(bare), na=normMap(asked).s;
+ var claim=(L&&cand.target&&L.claims)?L.claims[cand.target]||null:null;
+ var nameable=!!(claim&&EV_NAMEABLE.indexOf(claim.state)>=0);
+ var checks=[], add=function(n,rule,ok,why){checks.push({n:n, rule:rule, ok:!!ok, why:ok?'':why});};
+ var notSaid=function(list){var n=qcNorm(list); return list.filter(function(w,i){return !qcHas(said,n[i]);});};
+
+ /* 1 ONE QUESTION. One mark, at the end, and one asking clause: a leading
+    "when you say it," or "if it," is a condition and not a second question. */
+ var marks=(q.match(/\?/g)||[]).length;
+ var body=asked.toLowerCase().replace(/[^a-z,\s]/g,' ').replace(/^\s*(when|if)\b[^,]*,/,' ');
+ var clauses=body.split(/,| and | or | but /).map(function(x){return x.trim().split(' ')[0];})
+  .filter(function(w){return QC_ASKW.indexOf(w)>=0;}).length;
+ add(1,'one question',marks===1&&/\?\s*$/.test(q)&&clauses<=1,
+  marks!==1?(marks+' question marks'):(!/\?\s*$/.test(q)?'it does not end on the question':'two questions in one sentence'));
+
+ /* 2 CLEAR */
+ var aw=asked.split(/\s+/).filter(function(w){return /[a-z]/i.test(w);}).length;
+ var lw=bare.split(/\s+/).filter(function(w){return /[a-z]/i.test(w);}).length+sp.quotes.join(' ').split(/\s+/).filter(Boolean).length;
+ var gr=qcGrade(asked), jar=notSaid(qcFind(nb,QC_JARGON));
+ add(2,'clear',gr<=QC_GRADE&&aw<=QC_QWORDS&&lw<=QC_WORDS&&!jar.length,
+  jar.length?('words a ten year old would not use: '+jar.join(', ')):
+  (gr>QC_GRADE?('reads at grade '+gr+', over '+QC_GRADE):(aw>QC_QWORDS?('the question is '+aw+' words, over '+QC_QWORDS):('the line is '+lw+' words, over '+QC_WORDS))));
+
+ /* 3 THE PERSON'S OWN LANGUAGE. Every quote is letters they wrote. */
+ var bad=sp.quotes.filter(function(x){var n=normMap(x).s.trim(); return !n||!qcHas(said,n);});
+ add(3,'the person\'s own words',!bad.length,'quotes words they did not write: '+bad.join(', '));
+
+ /* 4 OBSERVABLE */
+ var cause=qcFind(na,QC_CAUSE);
+ add(4,'observable experience',!cause.length,'asks for a cause, not what happened: '+cause.join(', '));
+
+ /* 5 AGENCY */
+ var force=qcFind(nb,QC_FORCE);
+ add(5,'agency',!force.length,'casts the person as pushed or told: '+force.join(', '));
+
+ /* 6 NO DIAGNOSIS. Canon names and labels, then the sniffer's own read. */
+ var named=notSaid(qcFind(nb,qcCanon()));
+ var charged=[];
+ qcRead(bare).forEach(function(w){
+  if(w&&!qcHas(said,w)&&charged.indexOf(w)<0)charged.push(w);});
+ add(6,'no diagnosis',!named.length&&!charged.length,
+  'names what the person did not say: '+named.concat(charged.filter(function(w){return named.indexOf(w)<0;})).join(', '));
+
+ /* 7 NO UNSUPPORTED PATTERN */
+ var says=notSaid(qcFind(nb,QC_AGAIN));
+ var where=notSaid(qcFind(nb,QC_LANDS.concat(qcPlaces())));
+ var placeable=!!(claim&&EV_PLACEABLE.indexOf(claim.state)>=0);
+ var need=cand.need||'';
+ var fam=need==='supported'||need==='history';
+ var okAgain=(!says.length||nameable)&&(!fam||nameable);
+ var okWhere=!where.length||placeable;
+ var okHist=need!=='history'||!!(claim&&claim.earlier>0);
+ add(7,'no unsupported pattern',okAgain&&okWhere&&okHist,
+  !claim&&(says.length||where.length||fam)?'it says a pattern and is about no claim':
+  (!okWhere?('says where it lands, '+where.join(', ')+', about a claim the person has not confirmed, held as '+claim.state):
+  (!okAgain?('says '+(says.join(', ')||cand.family)+' about a claim held only as '+claim.state):
+  'asks about history before the seat has come back across entries')));
+
+ /* 8 REDUCES UNCERTAINTY. It must say what it is for, and not ask what the
+    entry already answers while something else is still open. */
+ var dims=L&&L.dims, open=(dims&&dims.open)||[];
+ var purpose=!!(cand.dim||cand.family);
+ var answered=!!(cand.dim&&dims&&dims.answered&&dims.answered[cand.dim]);
+ var other=open.filter(function(k){return k!==cand.dim;}).length>0;
+ var noDo=cand.need==='behaviour'&&!(dims&&dims.answered&&dims.answered.behaviour);
+ add(8,'reduces uncertainty',purpose&&!(answered&&other)&&!noDo,
+  !purpose?'it carries no purpose':(noDo?'it asks what else they wanted before they said what they did':
+  ('the entry already answers '+cand.dim+', while '+open.join(', ')+' is open')));
+
+ /* 9 ADVANCES THE ACTIVE THREAD */
+ var thr=L?L.thread:null;
+ add(9,'advances the thread',!thr||cand.target===thr,
+  'it is about '+(cand.target||'nothing')+', and the person is writing about '+thr);
+
+ /* 10 NECESSARY NOW. A repeat is the same question sentence, whatever lead
+    stands before it: "You wrote it twice. What did you do?" and "You wrote
+    it three times. What did you do?" are one question asked twice. Measured
+    on the page, round SK: compared as whole lines, the count in the lead
+    moved and the same question passed as new. */
+ var qOf=function(x){return normMap(qcAsked(qcSplit(String(x)).bare)).s.trim();};
+ var nq=qOf(q), rep=!!nq&&(ctx.asked||[]).some(function(a){return qOf(a)===nq;});
+ var closed=!!(claim&&(claim.state==='rejected'||claim.state==='corrected'));
+ var stop=need==='unclear';
+ add(10,'necessary now',!ctx.passed&&!rep&&!closed&&!stop,
+  ctx.passed?'the person moved on':(rep?'already asked in this entry':
+  (closed?'the person already answered this claim':'nothing has said what is unclear')));
+
+ var fails=checks.filter(function(c){return !c.ok;});
+ return {ok:!fails.length, q:q, checks:checks, fails:fails};}
+
+/* REGENERATE, the document's last word on section 35. Tries each candidate
+   in the order given and returns the first that passes all ten, with every
+   refusal on the way, so a caller and a gate can both say why a line was
+   not shown. When nothing passes it returns no question at all, which is
+   section 23's Space: Source AI says nothing rather than something that
+   fails. */
+/* A FAMILY ALREADY ASKED WAITS. Section 22: stop or change direction when
+   "the next question would be repetitive". Seen on the page, round SK: the
+   person answered "What would you rather be doing?" with something else,
+   and the next turn was "What did you want to do?", the same question in
+   other words. So among the candidates, one from a family not yet asked in
+   this entry goes before one from a family that has been, each keeping its
+   place otherwise, which is srcNext's own novelty rule (engine/sourceai.js)
+   read for families. A family is known by its question, off SRC_FAMILY. */
+function qcFamilyOf(line){
+ var nq=normMap(qcAsked(qcSplit(String(line)).bare)).s.trim(), out=null;
+ SRC_FAMILY.forEach(function(f){if(!out&&normMap(f.q).s.trim()===nq)out=f.family;});
+ return out;}
+function srcChoose(cands,ctx){
+ var tried=[], used={};
+ ((ctx&&ctx.asked)||[]).forEach(function(a){var f=qcFamilyOf(a); if(f)used[f]=1;});
+ var list=(cands||[]).map(function(c,i){return {c:c, i:i, w:(c&&used[c.family])?1:0};})
+  .sort(function(a,b){return a.w-b.w||a.i-b.i;}).map(function(x){return x.c;});
+ for(var i=0;i<list.length;i++){
+  var r=srcVet(list[i],ctx); tried.push({q:r.q, fails:r.fails});
+  if(r.ok)return {ok:true, q:r.q, cand:list[i], tried:tried};}
+ return {ok:false, q:'', cand:null, tried:tried};}
+/* THE FAMILY QUESTIONS AS CANDIDATES about one claim, each after a lead the
+   caller builds from the person's own words (a mirror, section 23), in the
+   document's order. */
+function srcFamilyCands(lead,target){
+ var pre=String(lead||'').trim();
+ return SRC_FAMILY.map(function(f){
+  return {q:(pre?pre+' ':'')+f.q, base:f.q, dim:f.dim, family:f.family, need:f.need||'', target:target||null};});}
+/* A LINE THAT SAYS AND DOES NOT ASK, section 23's Mirror and Name. Three of
+   the ten points are about any line Source AI says, not only a question: the
+   quotes are the person's (3), nothing is diagnosed (6), and no claim is
+   said that the ledger does not hold as nameable (7). Mirror says the
+   person's words back; Name says where they land, and section 23 allows
+   that "only when evidence supports it". Same rules, same code: this is
+   srcVet's own result with the seven points that only a question has set
+   aside. */
+function srcVetSay(line,ctx,target){
+ var r=srcVet({q:String(line||'').trim()+' ?', target:target||null, family:'say'},ctx);
+ var keep=r.checks.filter(function(c){return c.n===3||c.n===6||c.n===7;});
+ var fails=keep.filter(function(c){return !c.ok;});
+ return {ok:!fails.length, line:String(line||'').trim(), checks:keep, fails:fails};}
 
 /* ============================================================
    ASTRO. The actual sky, computed here, offline, from the birth
@@ -23293,6 +24035,18 @@ if(typeof module!=='undefined'&&module.exports){
                  srcDims:srcDims, srcNext:srcNext,
                  SRC_KINDS:SRC_KINDS, SRC_OUTCOMES:SRC_OUTCOMES,
                  srcAsked:srcAsked, srcAskedMax:srcAskedMax,
+  /* evidence */  EV_STATES:EV_STATES, EV_PERSON:EV_PERSON, EV_ENGINE:EV_ENGINE, EV_NAMEABLE:EV_NAMEABLE,
+                 EV_VERDICT:EV_VERDICT, EV_MOVES:EV_MOVES, EV_TRACE:EV_TRACE, EV_RANK:EV_RANK,
+                 evTraceSrc:evTraceSrc, evCan:evCan, evEngineState:evEngineState, evWhy:evWhy,
+                 evLedger:evLedger, evVerdict:evVerdict, evVerdictOk:evVerdictOk,
+                 evOrder:evOrder, evThread:evThread, evRoot:evRoot,
+                 EV_SEAM_STATES:EV_SEAM_STATES, EV_SEAM_NEVER:EV_SEAM_NEVER, EV_SEAM_PERSON:EV_SEAM_PERSON,
+                 EV_PLACEABLE:EV_PLACEABLE, evSeamState:evSeamState,
+                 SRC_INTENT:SRC_INTENT, SRC_INTENT_ORDER:SRC_INTENT_ORDER, SRC_INTENT_SHORT:SRC_INTENT_SHORT, srcIntent:srcIntent,
+  /* qcheck */    SRC_FAMILY:SRC_FAMILY, QC_GRADE:QC_GRADE, QC_QWORDS:QC_QWORDS, QC_WORDS:QC_WORDS,
+                 QC_JARGON:QC_JARGON, QC_CAUSE:QC_CAUSE, QC_FORCE:QC_FORCE, QC_LABELS:QC_LABELS,
+                 QC_AGAIN:QC_AGAIN, QC_LANDS:QC_LANDS, qcGrade:qcGrade, qcSyl:qcSyl, qcCanon:qcCanon, qcPlaces:qcPlaces,
+                 srcVet:srcVet, srcVetSay:srcVetSay, srcChoose:srcChoose, qcFamilyOf:qcFamilyOf, srcFamilyCands:srcFamilyCands,
   /* undo */     undoPush:undoPush, undoPop:undoPop, undoDepth:undoDepth,
                  redoPop:redoPop, redoDepth:redoDepth, redoPeek:redoPeek,
                   undoPeek:undoPeek, undoClear:undoClear, UNDO_MAX:UNDO_MAX,

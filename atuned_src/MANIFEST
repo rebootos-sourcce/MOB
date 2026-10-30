@@ -43,6 +43,8 @@ engine/intake.js
 engine/intakemore.js
 engine/sniff.js
 engine/sourceai.js
+engine/evidence.js
+engine/qcheck.js
 engine/astro.js
 engine/birth.js
 engine/numerology.js

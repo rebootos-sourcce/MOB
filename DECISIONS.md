@@ -2006,6 +2006,20 @@ carries both rulings, 20 September's and this one. What he settled, in short:
 - **Why questions are its questions,** and it never answers one. That
   completes the 20 September line, "it may not say why", rather than
   reversing it: the instrument does not measure cause, the person can find it.
+  **Superseded in part, 30 October, round SK in `TASKS.md`.** His words about
+  the live Journal chat: "This is the behavior I want source AI to take on
+  during chat. It's currently not doing that. It's currently acting like a
+  chatbot." He pointed at his own blueprint, "Atüned Source AI, Journal Mode",
+  Drive, 4 October, which lists the questions to prefer (section 24) with no
+  why among them and checks every question for "observable experience"
+  (section 35). So Source AI still never answers a why, and it no longer asks
+  one either: the ask keeps its lead in the person's own words and its last
+  sentence is the first of the blueprint's own questions that passes the ten
+  checks (`engine/qcheck.js`). And since his seam package of the same day
+  (`ATUNED_SOURCE_AI_SEAM_READY_HANDOFF_2026-10-30`, "the spoken language
+  should not reveal an unconfirmed ontology label") the lead no longer says
+  where it lands until the person has confirmed it. Kept here rather than
+  deleted, in case he wants the why back.
 - **A peer and a companion, not a clinician and not a friend,** who sees a
   person for their authentic nature and not for the conditions that created
   them. Core programming: a pattern is a condition that runs through a person,
