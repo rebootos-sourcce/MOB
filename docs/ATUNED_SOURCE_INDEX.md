@@ -1,7 +1,7 @@
 
 ## Current SOURCE experience authority — 2026-10-29
 
-- [SOURCE Signal Register + Intensity Sniffer TDD addendum, 2026-10-29](ATUNED_SOURCE_SIGNAL_REGISTER_INTENSITY_SNIFFER_TDD_ADDENDUM_2026-10-29.md) — conversational detection of adjectives, scoped intensity and frequency, chakra/seat candidates, structural limiting-belief phrases, original-text highlights, provisional Imprints, governed Bank persistence and evidence-based recurrence; DESIGN ONLY.
+- [SOURCE Signal Register + Intensity Sniffer TDD addendum, 2026-10-29](ATUNED_SOURCE_SIGNAL_REGISTER_INTENSITY_SNIFFER_TDD_ADDENDUM_2026-10-29.md) — conversational detection of adjectives, **universal quantifiers and family scripts**, user-directed divergence, scoped intensity and frequency, chakra/seat candidates, structural limiting-belief phrases, original-text highlights, provisional Imprints, governed Bank persistence and evidence-based recurrence; DESIGN ONLY.
 
 
 - [SOURCE Conversation-First Soul TDD, 2026-10-29](ATUNED_SOURCE_CONVERSATION_FIRST_SOUL_TDD_2026-10-29.md) — **new design baseline**: conversation as primary interface, Source behavioral constitution and CQ 100 target, natural dialogue architecture, living visual presence, visual review, 21 proposed loss-of-integrity candidate profiles, acceptance gates. Replaces **text-first UX assumptions** in older Source/Story specs; preserves their historical record and non-UX constraints. Status: PROPOSED DESIGN, NOT IMPLEMENTED.
