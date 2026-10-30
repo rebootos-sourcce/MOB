@@ -1,6 +1,11 @@
 
 ## Current SOURCE experience authority — 2026-10-29
 
+- [SOURCE Intelligence Architecture & 13 cross-system seams TDD — 2026-10-29](ATUNED_SOURCE_INTELLIGENCE_SEAMS_ARCHITECTURE_TDD_2026-10-29.md) — read FIRST for SOURCE as top-level orchestrator; provider/consumer contracts, CQ/record/graph/Bank compatibility gates, consent, correction, statuses and handoff. **DESIGN ONLY**.
+- [SOURCE Conversation Event Schema v1 — 2026-10-29](data/ATUNED_SOURCE_CONVERSATION_SEAM_SCHEMA_v1.json) — proposed versioned envelopes, 15 event types, 17 reusable definitions. **No app code changed**.
+- [SOURCE Contract Acceptance Matrix — 2026-10-29](ATUNED_SOURCE_CONTRACT_ACCEPTANCE_MATRIX_2026-10-29.md) — 13 seam tests, 24 conversation cases, schema/ledger checks, 21-law guard and runtime gating. **Tests specified; not executed**.
+
+
 - [SOURCE Signal Register + Intensity Sniffer TDD addendum, 2026-10-29](ATUNED_SOURCE_SIGNAL_REGISTER_INTENSITY_SNIFFER_TDD_ADDENDUM_2026-10-29.md) — conversational detection of adjectives, **universal quantifiers and family scripts**, user-directed divergence, scoped intensity and frequency, chakra/seat candidates, structural limiting-belief phrases, original-text highlights, provisional Imprints, governed Bank persistence and evidence-based recurrence; DESIGN ONLY.
 
 
