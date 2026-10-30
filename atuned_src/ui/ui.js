@@ -1117,21 +1117,23 @@ function render(){
      per cent benign for somebody who had answered no law at all. */
   if(r.malig===null){$('pol').innerHTML='<div class="bmnote">Coherence is still filling, '
    +'so there is no split to show.</div>'; return;}
-  $('pol').innerHTML='<div class="bmrow"><span class="bmk">Benign</span>'
+  $('pol').innerHTML='<div class="bmrow"><span class="bmk">Positive</span>'
    +'<span class="bmbar"><i style="width:'+ben.toFixed(0)+'%;background:'+PAL.Heart+'"></i></span>'
    /* fmtPct('lean'), 17 October, percent phase 2: a share of nought is the
       dash and never "0%", the registry's one rule for every figure */
    +'<span class="bmv" style="color:'+PAL.Heart+'">'+fmtPct('lean',ben)+'</span></div>'
-   +'<div class="bmrow"><span class="bmk">Malignant</span>'
+   +'<div class="bmrow"><span class="bmk">Negative</span>'
    +'<span class="bmbar"><i style="width:'+mal.toFixed(0)+'%;background:'+PAL.Root+'"></i></span>'
    +'<span class="bmv" style="color:'+PAL.Root+'">'+fmtPct('lean',mal)+'</span></div>'
    /* This said "building more than it costs", which is the ledger sentence and
       the ledger belongs to the scale, where it is defined against the median.
       A field at CQ 39 read Incoherent in the rail and "building more than it
-      costs" two inches away, because this line was reading the benign split
-      and not coherence at all. It says what it actually measures. */
-   +'<div class="bmnote">'+(ben>=mal?'most of what is held is benign'
-     :'most of what is held is malignant')+'</div>';})();
+      costs" two inches away, because this line was reading the positive split
+      and not coherence at all. It says what it actually measures.
+      RENAMED 30 October, his ruling against religious tone: benign/malignant
+      became positive/negative. */
+   +'<div class="bmnote">'+(ben>=mal?'most of what is held is positive'
+     :'most of what is held is negative')+'</div>';})();
  /* The how to block sat permanently under the wheel repeating what the depth
     buttons already say. Ruled out. The text survives as the depth button's own
     tooltip, where it is asked for rather than always on. */
@@ -1165,14 +1167,16 @@ function render(){
   /* the meeting point is the benign share, so a malignant swing moves it the
      other way, and the left pole carries the swing for the pair */
   var spec={read:read, whole:true,
-   L:{nm:'Benign',ic:'halo',c:seatCol('Heart'),v:L.ben||0,sw:sw.sw?function(t){return -sw.sw(t);}:null,fw:sw.fw},
-   R:{nm:'Malignant',ic:'fork',c:seatCol('Root'),v:L.mal||0},
-   /* the band, as benign shares: the malignant wander, turned */
+   L:{nm:'Positive',ic:'halo',c:seatCol('Heart'),v:L.ben||0,sw:sw.sw?function(t){return -sw.sw(t);}:null,fw:sw.fw},
+   R:{nm:'Negative',ic:'fork',c:seatCol('Root'),v:L.mal||0},
+   /* the band, as positive shares: the negative wander, turned. RENAMED 30
+      October, his ruling against religious tone: benign/malignant became
+      positive/negative, the 25 October wording this branch now carries. */
    band:sw.sw?[(L.ben||0)-sw.hi,(L.ben||0)-sw.lo]:null};
   var n=Math.round(L.cues||0);
   var lean=r.unread?'Nothing read yet, so there is no lean to show.'
    :!read?'Coherence is still filling, so there is no lean to show.'
-   :(L.ben>L.mal?'It leans benign':L.mal>L.ben?'It leans malignant':'It is even')
+   :(L.ben>L.mal?'It leans positive':L.mal>L.ben?'It leans negative':'It is even')
     +', and the mark on the line shows where you sit. '
     +(n?'It is read from '+(r.malig!==null&&r.malig!==undefined?'your coherence and ':'')+n+' cue'+(n===1?'':'s')+' in your stories.'
       :'No story yet, so it is read from your coherence alone.')

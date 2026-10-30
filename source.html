@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v725 a66ae8c8 2026-10-30 15:16"><head><meta charset="utf-8">
+<html lang="en" data-build="v737 6c800f2e 2026-10-30 17:11"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -2074,11 +2074,14 @@ body:not(.tab-field) .fdock{display:none}
 .rb-ic{flex:0 0 auto;width:18px;height:18px;margin:0;fill:none;stroke:currentColor;stroke-width:1.6;
  stroke-linecap:round;stroke-linejoin:round}
 .rb-n .rb-ic{color:var(--c)}
-/* where Flow is blocked, beside its word, in the blocked seat's colour */
-.rb-sub{font-style:normal;font-size:11.5px;color:var(--dim);min-width:0;overflow:hidden;text-overflow:ellipsis}
-/* lifted toward the ink for the reason .rb2-v gives: "blocked at Root"
-   in the root red measured 4.14 to 1 on the panel */
-.rb-sub.bk{color:color-mix(in srgb,var(--bc) 70%,var(--ink))}
+/* WHERE FLOW IS BLOCKED, SAID, NOT SHOWN. His words, 30 October: "get rid of
+   the text that says... blocked by at solar." The row already says the same
+   thing twice more: the seat's own name lights under its cell and the cell
+   itself is ringed, so the caption was the third copy of one fact. The node
+   stays in the document, for the screen reader that only gets this element's
+   own text and for the gate that reads it, and is taken off the page the
+   standard way: a 1px box with its overflow and its edges clipped away. */
+.rb-sub{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%)}
 .rb-v{grid-column:3;font-family:var(--num);font-variant-numeric:tabular-nums;font-size:14px;font-weight:600;
  line-height:1;color:var(--ink);text-align:right}
 .rb-t{position:relative;display:block;height:16px;margin-top:5px;border-radius:8px;
@@ -9383,7 +9386,7 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
          own mark and its one sentence, read off the meaning table at render,
          so the grammar is said where it is drawn. The ids are kept because
          every gate reads them; the order of the three hosts is what moved. -->
-    <div class="rb-fam" id="rbgha" tabindex="0" data-tip-k="Where you lean"><svg class="rb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5v17M3.5 12h17"/><circle cx="16.5" cy="12" r="2.4"/></svg>Where you lean</div>
+    <div class="rb-fam" id="rbgha" tabindex="0" data-tip-k="Where you lean"><svg class="rb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5v17M3.5 12h17"/><circle cx="16.5" cy="12" r="2.4"/></svg></div>
     <div class="fdrow">
      <div class="key" id="key" aria-label="What the instrument reads"></div>
     </div>
@@ -9408,11 +9411,11 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
          reaches; balance opens its reading. The ids are kept because every
          gate reads them. -->
     <div class="fdial" id="fdial">
-     <div class="polbar" id="polbar" role="img" tabindex="0" aria-label="Orientation. Benign against malignant."></div>
+     <div class="polbar" id="polbar" role="img" tabindex="0" aria-label="Orientation. Positive against negative."></div>
      <button type="button" class="bal" id="bal"
       aria-label="Balance. Masculine against feminine. Opens the reading."></button>
     </div>
-    <div class="rb-fam rb-fam2" id="rbghb" tabindex="0" data-tip-k="How much"><svg class="rb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 7v10M3.5 12h11.5"/><circle cx="17.4" cy="12" r="2.4"/></svg>How much</div>
+    <div class="rb-fam rb-fam2" id="rbghb" tabindex="0" data-tip-k="How much"><svg class="rb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 7v10M3.5 12h11.5"/><circle cx="17.4" cy="12" r="2.4"/></svg></div>
     <div class="keylo" id="keylo" aria-label="What is moving through you"></div>
    </div>
    <!-- SPIRIT, THEN PSYCHE. Ruled 26 September, CH in TASKS.md: "I want to
@@ -15045,8 +15048,8 @@ var UNPACK_BASE={
  'rail:radiance':'Radiance is vitality, awareness and will put together, and it sets how bright the field behind the wheel is.',
  'rail:flow':'Flow is how much gets from the base of your spine to the top of your head, each seat passing on part of what it gets.',
  'rail:orientation':'Orientation is which way the charge you hold leans, toward costing you nothing or toward taking something from you.',
- 'rail:benign':'Benign is charge you hold that is not costing you anything.',
- 'rail:malignant':'Malignant is charge you hold that is taking something from you.',
+ 'rail:positive':'Positive is charge you hold that is not costing you anything.',
+ 'rail:negative':'Negative is charge you hold that is taking something from you.',
  'rail:balance':'Balance is which way your body moves under what you feel, out toward the world or in toward yourself.',
  'rail:masculine':'Masculine is energy given a shape and a direction and sent outward, and it does not mean men.',
  'rail:feminine':'Feminine is energy held and taken inward, and it does not mean women.',
@@ -82598,21 +82601,23 @@ function render(){
      per cent benign for somebody who had answered no law at all. */
   if(r.malig===null){$('pol').innerHTML='<div class="bmnote">Coherence is still filling, '
    +'so there is no split to show.</div>'; return;}
-  $('pol').innerHTML='<div class="bmrow"><span class="bmk">Benign</span>'
+  $('pol').innerHTML='<div class="bmrow"><span class="bmk">Positive</span>'
    +'<span class="bmbar"><i style="width:'+ben.toFixed(0)+'%;background:'+PAL.Heart+'"></i></span>'
    /* fmtPct('lean'), 17 October, percent phase 2: a share of nought is the
       dash and never "0%", the registry's one rule for every figure */
    +'<span class="bmv" style="color:'+PAL.Heart+'">'+fmtPct('lean',ben)+'</span></div>'
-   +'<div class="bmrow"><span class="bmk">Malignant</span>'
+   +'<div class="bmrow"><span class="bmk">Negative</span>'
    +'<span class="bmbar"><i style="width:'+mal.toFixed(0)+'%;background:'+PAL.Root+'"></i></span>'
    +'<span class="bmv" style="color:'+PAL.Root+'">'+fmtPct('lean',mal)+'</span></div>'
    /* This said "building more than it costs", which is the ledger sentence and
       the ledger belongs to the scale, where it is defined against the median.
       A field at CQ 39 read Incoherent in the rail and "building more than it
-      costs" two inches away, because this line was reading the benign split
-      and not coherence at all. It says what it actually measures. */
-   +'<div class="bmnote">'+(ben>=mal?'most of what is held is benign'
-     :'most of what is held is malignant')+'</div>';})();
+      costs" two inches away, because this line was reading the positive split
+      and not coherence at all. It says what it actually measures.
+      RENAMED 30 October, his ruling against religious tone: benign/malignant
+      became positive/negative. */
+   +'<div class="bmnote">'+(ben>=mal?'most of what is held is positive'
+     :'most of what is held is negative')+'</div>';})();
  /* The how to block sat permanently under the wheel repeating what the depth
     buttons already say. Ruled out. The text survives as the depth button's own
     tooltip, where it is asked for rather than always on. */
@@ -82646,14 +82651,16 @@ function render(){
   /* the meeting point is the benign share, so a malignant swing moves it the
      other way, and the left pole carries the swing for the pair */
   var spec={read:read, whole:true,
-   L:{nm:'Benign',ic:'halo',c:seatCol('Heart'),v:L.ben||0,sw:sw.sw?function(t){return -sw.sw(t);}:null,fw:sw.fw},
-   R:{nm:'Malignant',ic:'fork',c:seatCol('Root'),v:L.mal||0},
-   /* the band, as benign shares: the malignant wander, turned */
+   L:{nm:'Positive',ic:'halo',c:seatCol('Heart'),v:L.ben||0,sw:sw.sw?function(t){return -sw.sw(t);}:null,fw:sw.fw},
+   R:{nm:'Negative',ic:'fork',c:seatCol('Root'),v:L.mal||0},
+   /* the band, as positive shares: the negative wander, turned. RENAMED 30
+      October, his ruling against religious tone: benign/malignant became
+      positive/negative, the 25 October wording this branch now carries. */
    band:sw.sw?[(L.ben||0)-sw.hi,(L.ben||0)-sw.lo]:null};
   var n=Math.round(L.cues||0);
   var lean=r.unread?'Nothing read yet, so there is no lean to show.'
    :!read?'Coherence is still filling, so there is no lean to show.'
-   :(L.ben>L.mal?'It leans benign':L.mal>L.ben?'It leans malignant':'It is even')
+   :(L.ben>L.mal?'It leans positive':L.mal>L.ben?'It leans negative':'It is even')
     +', and the mark on the line shows where you sit. '
     +(n?'It is read from '+(r.malig!==null&&r.malig!==undefined?'your coherence and ':'')+n+' cue'+(n===1?'':'s')+' in your stories.'
       :'No story yet, so it is read from your coherence alone.')
@@ -83461,5 +83468,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005502763"></div>
+<div id="eof" hidden data-len="005503285"></div>
 </body></html>

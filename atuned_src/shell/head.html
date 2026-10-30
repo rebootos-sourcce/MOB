@@ -2074,11 +2074,14 @@ body:not(.tab-field) .fdock{display:none}
 .rb-ic{flex:0 0 auto;width:18px;height:18px;margin:0;fill:none;stroke:currentColor;stroke-width:1.6;
  stroke-linecap:round;stroke-linejoin:round}
 .rb-n .rb-ic{color:var(--c)}
-/* where Flow is blocked, beside its word, in the blocked seat's colour */
-.rb-sub{font-style:normal;font-size:11.5px;color:var(--dim);min-width:0;overflow:hidden;text-overflow:ellipsis}
-/* lifted toward the ink for the reason .rb2-v gives: "blocked at Root"
-   in the root red measured 4.14 to 1 on the panel */
-.rb-sub.bk{color:color-mix(in srgb,var(--bc) 70%,var(--ink))}
+/* WHERE FLOW IS BLOCKED, SAID, NOT SHOWN. His words, 30 October: "get rid of
+   the text that says... blocked by at solar." The row already says the same
+   thing twice more: the seat's own name lights under its cell and the cell
+   itself is ringed, so the caption was the third copy of one fact. The node
+   stays in the document, for the screen reader that only gets this element's
+   own text and for the gate that reads it, and is taken off the page the
+   standard way: a 1px box with its overflow and its edges clipped away. */
+.rb-sub{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%)}
 .rb-v{grid-column:3;font-family:var(--num);font-variant-numeric:tabular-nums;font-size:14px;font-weight:600;
  line-height:1;color:var(--ink);text-align:right}
 .rb-t{position:relative;display:block;height:16px;margin-top:5px;border-radius:8px;

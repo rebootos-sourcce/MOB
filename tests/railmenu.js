@@ -88,10 +88,14 @@ async function railMenuGate(browser,FILE,ok,booted){
       head it is drawn in carries a word. Outside those its own parent has to
       carry one. Figures, dashes and the pair's chevrons beside its figure
       are not words, and a chevron is not a mark that needs one: it points at
-      the lit pole's word on the same line. */
+      the lit pole's word on the same line. A family head's icon is the same
+      case as a pair pole's icon (.rb2-f): its word moved into data-tip-k and
+      the spoken name on 30 October, his words, "get rid of the text that
+      says where you lean and how much", so the mark itself carries no word
+      any more and is excluded the same way a pair pole already was. */
    window.__rmBareMarks=function(root){var bad=[];
     root.querySelectorAll('svg').forEach(function(s){if(!__rmVis(s))return;
-     if(s.closest('.rb2-f,.rb-cells'))return;
+     if(s.closest('.rb2-f,.rb-cells,.rb-fam'))return;
      var unit=s.closest('.rbar,.rb2-p,.rb-fam')||s.parentElement;
      var words=((unit&&unit.innerText)||'').replace(/[\\s\\u2013\\d.%+-]+/g,'');
      if(!words)bad.push((s.outerHTML||'').slice(0,60));});
@@ -139,7 +143,7 @@ async function railMenuGate(browser,FILE,ok,booted){
     tracks:[...new Set(rows.filter(e=>!e.classList.contains('rb-flow')).map(e=>Math.round((e.querySelector('.rb-t,.rb2-t')||{getBoundingClientRect:()=>({height:0})}).getBoundingClientRect().height)))],
     flowTrack:Math.round((d.querySelector('.rbar.rb-flow .rb-t')||{getBoundingClientRect:()=>({height:0})}).getBoundingClientRect().height),
     stacked:rr.every((r,i)=>i===0||r.top>=rr[i-1].bottom-0.5),
-    heads:[...d.querySelectorAll('.rb-fam')].filter(__rmVis).map(e=>e.textContent.trim()),
+    heads:[...d.querySelectorAll('.rb-fam')].filter(__rmVis).map(e=>e.getAttribute('data-tip-k')||''),
     headAbove:(()=>{const a=document.getElementById('rbgha'),b=document.getElementById('rbghb');if(!a||!b)return false;
      const ar=a.getBoundingClientRect(),br=b.getBoundingClientRect(),firstPair=pairs[0],firstBar=singles[0];
      return ar.bottom<=firstPair.getBoundingClientRect().top+0.5&&br.top>=pairs[pairs.length-1].getBoundingClientRect().bottom-0.5&&br.bottom<=firstBar.getBoundingClientRect().top+0.5;})(),
@@ -187,14 +191,14 @@ async function railMenuGate(browser,FILE,ok,booted){
     'RM2: '+tag+'the pair prints one figure, the leaning side\'s share, '+JSON.stringify(st.pairFigs[0])+' for CQ '+st.cq.toFixed(1)+' and shadow '+(st.lawSQ===null?'null':st.lawSQ.toFixed(1)));
    ok(!!st.dqRow&&st.dqRow.nm==='DQ'&&st.dqRow.c===st.root&&Math.abs(st.dqRow.fill-Math.round(st.dq))<0.1&&st.dqRow.v===pc(st.dq),
     'RM2: '+tag+'DQ is an amount in the root red, filled to its own figure and printing it, '+JSON.stringify(st.dqRow)+' for '+st.dq.toFixed(1));
-   ok(JSON.stringify(st.pairNames.slice(1))==='[["Benign","Malignant"],["Masculine","Feminine"]]',
+   ok(JSON.stringify(st.pairNames.slice(1))==='[["Positive","Negative"],["Masculine","Feminine"]]',
     'RM4: '+tag+'orientation and balance are the same pair, '+JSON.stringify(st.pairNames.slice(1)));
-   ok(!!st.halo&&st.leanIc===st.halo&&!!st.fork&&st.malIc===st.fork,'RM5: '+tag+'benign carries the halo and malignant the pitchfork, '+JSON.stringify({l:st.leanIc,r:st.malIc}));
+   ok(!!st.halo&&st.leanIc===st.halo&&!!st.fork&&st.malIc===st.fork,'RM5: '+tag+'positive carries the halo and negative the pitchfork, '+JSON.stringify({l:st.leanIc,r:st.malIc}));
    const col={}; st.singleCol.forEach(x=>col[x[0]]=x[1]);
    ok(['Vitality','Awareness','Will'].every(k=>col[k]===st.want[k]),'RM6: '+tag+'vitality yellow, awareness indigo, will blue, '+JSON.stringify({got:col,want:st.want}));
    ok(st.marks.length===0,'RM7: '+tag+'no mark stands alone in the block, '+JSON.stringify(st.marks));
    const words=st.words.map(x=>x.word);
-   ok(['CQ','Shadow','DQ','Vitality','Awareness','Will','Radiance','Flow','Benign','Malignant','Masculine','Feminine','Where you lean','How much'].every(x=>words.indexOf(x)>=0),
+   ok(['CQ','Shadow','DQ','Vitality','Awareness','Will','Radiance','Flow','Positive','Negative','Masculine','Feminine'].every(x=>words.indexOf(x)>=0),
     'RM8: '+tag+'every word the menu prints is found by the scan, '+JSON.stringify(words));
    st.words.forEach(x=>ok(x.entry&&x.glossed,'RM8: '+tag+'"'+x.word+'" carries its plain meaning'+(x.entry?'':' and the table has no sentence for it')));
    ok(st.dockR<=st.panelR+0.5&&st.panelScroll<=1,'RM11: '+tag+'the block stays inside its column and the column does not scroll sideways, '+JSON.stringify({dock:st.dockR,panel:st.panelR,scroll:st.panelScroll}));
@@ -236,7 +240,7 @@ async function railMenuGate(browser,FILE,ok,booted){
   const pairOk=(p,left,lw,rw)=>{if(!p)return false; const x=100-left, lr=Math.round(left), fig=lr>50?lr+'%':lr<50?(100-lr)+'%':'50%';
    return Math.abs(p.x-x)<0.05&&Math.abs(p.fl-Math.max(0,50-x)/50)<0.001&&Math.abs(p.fr-Math.max(0,x-50)/50)<0.001
     &&p.fig===fig&&JSON.stringify(p.lit)===JSON.stringify(lr>50?[lw]:lr<50?[rw]:[]);};
-  ok(pairOk(whole.lean,whole.ben,'Benign','Malignant'),'RM4: '+tag+'orientation: mark at the malignant share, fill from the centre toward the lean, the leaning figure, the leaning pole lit, '+JSON.stringify({got:whole.lean,ben:whole.ben}));
+  ok(pairOk(whole.lean,whole.ben,'Positive','Negative'),'RM4: '+tag+'orientation: mark at the negative share, fill from the centre toward the lean, the leaning figure, the leaning pole lit, '+JSON.stringify({got:whole.lean,ben:whole.ben}));
   ok(pairOk(whole.bal,whole.masc,'Masculine','Feminine'),'RM4: '+tag+'balance, the same, '+JSON.stringify({got:whole.bal,masc:whole.masc}));
 
   /* ---- RM13: flow ---- */
@@ -270,7 +274,7 @@ async function railMenuGate(browser,FILE,ok,booted){
    const half=s=>d.querySelector('.rb2[data-pair=coh] .rb2-k.'+s);
    const row=word=>[...d.querySelectorAll('.rbar')].find(e=>((e.querySelector('.rb-n')||{}).textContent||'').trim()===word);
    const need=[[half('l'),'CQ'],[half('r'),'Shadow'],[row('DQ'),'DQ'],[row('Vitality'),'Vitality'],[row('Awareness'),'Awareness'],[row('Will'),'Will'],
-    [row('Radiance'),'Radiance'],[row('Flow'),'Flow'],[document.getElementById('polbar'),'Benign'],[document.getElementById('polbar'),'Malignant'],
+    [row('Radiance'),'Radiance'],[row('Flow'),'Flow'],[document.getElementById('polbar'),'Positive'],[document.getElementById('polbar'),'Negative'],
     [document.getElementById('bal'),'Masculine'],[document.getElementById('bal'),'Feminine'],
     [document.getElementById('rbgha'),'Where you lean'],[document.getElementById('rbghb'),'How much']];
    return need.map(([el,word])=>{

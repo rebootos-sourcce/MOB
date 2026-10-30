@@ -5887,7 +5887,7 @@ console.log('\n=== the orientation dial says nothing about an unread field ===')
    h:pb?Math.round(pb.getBoundingClientRect().height):0};
   return {blank, read};});
  ok(dial.blank.unread,'an arrival who has entered nothing reads as unread');
- ok(!/\d/.test(dial.blank.text||'x')&&/Benign/.test(dial.blank.text)&&/Malignant/.test(dial.blank.text),
+ ok(!/\d/.test(dial.blank.text||'x')&&/Positive/.test(dial.blank.text)&&/Negative/.test(dial.blank.text),
   'and the bar prints no figure at all, only its two words and dashes, got '+JSON.stringify(dial.blank.text));
  ok(dial.blank.fill===false,'and lays no colour');
  ok(dial.blank.mid===true,'and keeps its track, so the bar is still a bar');
@@ -6972,7 +6972,7 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  ok(dock.inLeft&&!dock.inStage&&dock.keylo,'the readings sit at the head of the left rail and none of them along the stage\'s foot');
  ok(JSON.stringify(dock.bar.names)==='["DQ","Vitality","Awareness","Will","Radiance","Flow"]',
   'r1: six amounts in reading order, DQ leading them, '+JSON.stringify(dock.bar.names));
- ok(JSON.stringify(dock.bar.pairNames)==='[["CQ","Shadow"],["Benign","Malignant"],["Masculine","Feminine"]]',
+ ok(JSON.stringify(dock.bar.pairNames)==='[["CQ","Shadow"],["Positive","Negative"],["Masculine","Feminine"]]',
   'r1: three pairs, CQ against its own shadow and not against DQ, '+JSON.stringify(dock.bar.pairNames));
  ok(dock.bar.stacked&&dock.bar.oneColumn,'r1: all nine stacked one on top of the next, in one column of one width, '+JSON.stringify({stacked:dock.bar.stacked,oneColumn:dock.bar.oneColumn}));
  ok(dock.bar.tall>=44,'r1: every row at the 44px floor, '+JSON.stringify(dock.bar.heights));
