@@ -3947,7 +3947,9 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    ui/storyui.js). The Journal takes the width they would have used. */
 .st-flow.st-simple .st-colr,.st-flow.st-simple .st-colx{display:none}
 .st-flow.st-simple .st-colw{flex:1 1 0;max-width:900px;margin:0 auto}
-.st-dash.on{color:var(--accent);border-color:var(--accent)}
+/* .st-dash.on's own rule moved beside .st-mic and .st-dash's shared base,
+   round of 29 October, where the "standout" ruling lives: see the ruling
+   there rather than two rules for the same state in two places. */
 .st-pan{display:flex;flex-direction:column;min-width:0;min-height:0;position:relative;
  background:color-mix(in srgb,var(--ink) 3%,transparent);border:1px solid var(--edge);
  border-radius:var(--r-s);padding:14px 16px}
@@ -4109,21 +4111,39 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    beat, and the elapsed time sits inside the same pill. Transform and
    opacity only, so quiet and reduced motion hold the dot and the ring lit
    and still rather than run either faster. */
+/* TWO CONTROLS THAT STAND OUT, round of 29 October, his words looking at the
+   plain ghost pill both carried: "the dashboard button and the talk button,
+   both need a standout and look sexy. Right now they look very shitty."
+   The fill and border still move per lighting (the rules below this one
+   still own those), so the lift is in what no lighting overrides: full ink
+   instead of mid for the word and the icon, a pill rather than the small
+   corner radius every plain button carries, more weight on the word, and a
+   glow in the accent that sits on the control at rest and not only on
+   press, so it reads as a control worth noticing before a hand reaches it. */
 .st-mic,.st-dash{min-height:var(--tap);display:inline-flex;align-items:center;gap:8px;
- background:var(--panel-2);border:1px solid var(--edge);color:var(--mid);
- border-radius:var(--r-xs);padding:7px 15px;font-family:var(--sans);font-size:13.5px;cursor:pointer;
+ background:var(--panel-2);border:1px solid var(--edge);color:var(--ink);font-weight:600;
+ border-radius:999px;padding:8px 18px;font-family:var(--sans);font-size:13.5px;cursor:pointer;
+ box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 38%,transparent),
+  0 2px 10px color-mix(in srgb,var(--accent) 22%,transparent);
  transition:background var(--t-element) var(--ease-out),border-color var(--t-element) var(--ease-out),
-  color var(--t-element) var(--ease-out)}
-.st-mic svg,.st-dash svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;
+  color var(--t-element) var(--ease-out),box-shadow var(--t-element) var(--ease-out),
+  transform var(--t-micro) var(--ease-out)}
+.st-mic svg,.st-dash svg{fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;
  stroke-linejoin:round;flex:0 0 auto}
-.st-dash:hover{color:var(--ink);border-color:var(--mid)}
+.st-mic:hover,.st-dash:hover{color:var(--ink);border-color:var(--mid);transform:translateY(-1px);
+ box-shadow:0 0 0 1.5px var(--accent),0 4px 14px color-mix(in srgb,var(--accent) 30%,transparent)}
+/* Dashboard filled when it is open, the same accent-on-accent pairing the
+   Commit button already carries, so "on" reads as on and not just outlined */
+.st-dash.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);
+ box-shadow:0 0 0 1.5px var(--accent),0 2px 12px color-mix(in srgb,var(--accent) 38%,transparent)}
 /* the eyebrow above Source AI's own line, round of 29 October: see storyui.js
    for the ruling. tier1 is the house's own small-label class; this only
    tightens the gap to the glow it sits beside. */
 .st-talklbl{margin:0 0 6px 2px}
 .st-dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;position:relative;
  background:var(--alarm);transition:background var(--t-element) var(--ease-out)}
-.st-mic.on{background:var(--alarm);border-color:var(--alarm);color:#fff;font-weight:500}
+.st-mic.on{background:var(--alarm);border-color:var(--alarm);color:#fff;font-weight:500;
+ box-shadow:0 0 0 1.5px var(--alarm),0 2px 12px color-mix(in srgb,var(--alarm) 38%,transparent)}
 .st-mic.on .st-dot{background:#fff;animation:micPulse 1.15s ease-in-out infinite}
 /* the ring is the dot's own ::after, not a third element, so it travels
    with it and needs nothing wired */
@@ -4514,36 +4534,34 @@ body.quiet .src-livecap,body.rm .src-livecap{animation:none;opacity:.85}
  .st-talk span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}}
 .st-chat .st-glow{flex:1 1 auto;display:flex;flex-direction:column;min-height:0}
 .st-chat .st-pe{flex:1 1 auto;display:flex;flex-direction:column;min-height:260px}
-.src-th{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;margin:0;padding:2px 4px 0 0;
+.src-th{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;margin:0;padding:2px 4px 8px 0;
  list-style:none}
-/* a row is its node, its words, and the wire down to the next node. No
-   margin between rows: the wire is exactly a row tall because the next node
-   sits the same distance down its own row as this one does in this. */
-.src-tn{position:relative;list-style:none;min-height:24px;padding:3px 0 14px 32px}
-.src-tn-past{padding-bottom:6px}
-.src-tw{position:absolute;left:0;top:16px;width:24px;overflow:visible;pointer-events:none}
-.src-wire{fill:none;stroke:var(--c);stroke-width:1.5;stroke-linecap:round}
-/* the pulse is frflow's own keyframes, the renditions' tension run, so it is
-   one wave in two places and never a second one drawn to look like it */
-.src-puls{fill:none;stroke-linecap:round;stroke-width:2.2;
- stroke:color-mix(in srgb,var(--c) 62%,var(--ink));
- animation:frflow var(--d,3s) linear infinite;animation-delay:var(--ph,0s)}
-body.quiet .src-puls,body.rm .src-puls{display:none}
-@media (prefers-reduced-motion:reduce){.src-puls{display:none}}
-/* the nodes are rings, never fills, on the ground so the wire stops at them.
-   Source AI's are the size of the Field's own address ring and the person's
-   are smaller, so whose turn it was reads before a word does. The live one
-   breathes on the panel's beat, srcBreath, locked to the same clock. */
-.src-nd{position:absolute;left:6px;top:10px;width:12px;height:12px;border-radius:50%;
- box-sizing:border-box;border:1.6px solid var(--c);background:var(--sunk)}
-.src-tn-me .src-nd{left:8px;top:12px;width:8px;height:8px;border-width:1.4px}
-.src-tn-now .src-nd{animation:srcBreath 4.2s ease-in-out infinite;border-color:var(--accent)}
-body.quiet .src-tn-now .src-nd,body.rm .src-tn-now .src-nd{animation:none}
-@media (prefers-reduced-motion:reduce){.src-tn-now .src-nd{animation:none}}
-/* the person's words in the journal's own hand, light, so the two voices on
-   the thread are told apart by weight and not by a bubble around either */
-.src-me{margin:0;font-family:var(--sans);font-size:16px;line-height:1.6;font-weight:300;
- color:var(--ink);white-space:pre-wrap;overflow-wrap:break-word;max-width:60ch}
+/* A TEXT WINDOW, round of 29 October, his words on seeing the ring and wire
+   build: "the chat area is fucking hideous. Get rid of that daisy chain
+   chat... this is now a text window between AI on the left, me on the
+   right." A row is a bubble now, nothing else: no node, no wire, no pulse.
+   Source AI's bubble holds the left edge, the person's holds the right,
+   the way every ordinary chat window reads, and whose turn it was shows
+   in which side a bubble sits on rather than in a ring's own size. */
+.src-tn{display:flex;list-style:none;margin:10px 0}
+.src-tn-me{justify-content:flex-end}
+.src-tn-now,.src-tn-past{justify-content:flex-start}
+.src-bub{max-width:82%;border-radius:var(--r-s);padding:10px 14px}
+/* Source AI's bubble carries a thin edge in the seat colour its turn read,
+   the one piece of the old wire's colour coding worth keeping: which body
+   seat a turn concerned, read at a glance without a legend. */
+.src-bub-src{background:var(--sunk);border:1px solid var(--edge);
+ border-left:3px solid var(--c,var(--accent))}
+.src-bub-past{opacity:.82}
+.src-bub-me{background:var(--accent);color:var(--on-accent)}
+/* the person's words in the journal's own hand, told apart from Source AI's
+   by which side of the window they sit on, not by weight any more: a filled
+   bubble needs its own text colour and font-weight 300 on var(--on-accent)
+   read thin against a filled accent on more than one lighting. */
+.src-me{margin:0;font-family:var(--sans);font-size:16px;line-height:1.6;font-weight:400;
+ color:inherit;white-space:pre-wrap;overflow-wrap:break-word}
+.src-bub-src .src-q,.src-bub-src .src-open{margin:0;max-width:none}
+.src-bub .src-row{margin-top:10px}
 .src-tn-now .src-open,.src-tn-now .src-q{margin-top:0}
 /* the reply line, on the journal box's own ground and type */
 .src-cmp{display:flex;align-items:flex-end;gap:8px}

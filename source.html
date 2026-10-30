@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v717 9d3c25ac 2026-10-30 00:05"><head><meta charset="utf-8">
+<html lang="en" data-build="v718 bf233a3a 2026-10-30 01:09"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -3947,7 +3947,9 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    ui/storyui.js). The Journal takes the width they would have used. */
 .st-flow.st-simple .st-colr,.st-flow.st-simple .st-colx{display:none}
 .st-flow.st-simple .st-colw{flex:1 1 0;max-width:900px;margin:0 auto}
-.st-dash.on{color:var(--accent);border-color:var(--accent)}
+/* .st-dash.on's own rule moved beside .st-mic and .st-dash's shared base,
+   round of 29 October, where the "standout" ruling lives: see the ruling
+   there rather than two rules for the same state in two places. */
 .st-pan{display:flex;flex-direction:column;min-width:0;min-height:0;position:relative;
  background:color-mix(in srgb,var(--ink) 3%,transparent);border:1px solid var(--edge);
  border-radius:var(--r-s);padding:14px 16px}
@@ -4109,21 +4111,39 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    beat, and the elapsed time sits inside the same pill. Transform and
    opacity only, so quiet and reduced motion hold the dot and the ring lit
    and still rather than run either faster. */
+/* TWO CONTROLS THAT STAND OUT, round of 29 October, his words looking at the
+   plain ghost pill both carried: "the dashboard button and the talk button,
+   both need a standout and look sexy. Right now they look very shitty."
+   The fill and border still move per lighting (the rules below this one
+   still own those), so the lift is in what no lighting overrides: full ink
+   instead of mid for the word and the icon, a pill rather than the small
+   corner radius every plain button carries, more weight on the word, and a
+   glow in the accent that sits on the control at rest and not only on
+   press, so it reads as a control worth noticing before a hand reaches it. */
 .st-mic,.st-dash{min-height:var(--tap);display:inline-flex;align-items:center;gap:8px;
- background:var(--panel-2);border:1px solid var(--edge);color:var(--mid);
- border-radius:var(--r-xs);padding:7px 15px;font-family:var(--sans);font-size:13.5px;cursor:pointer;
+ background:var(--panel-2);border:1px solid var(--edge);color:var(--ink);font-weight:600;
+ border-radius:999px;padding:8px 18px;font-family:var(--sans);font-size:13.5px;cursor:pointer;
+ box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 38%,transparent),
+  0 2px 10px color-mix(in srgb,var(--accent) 22%,transparent);
  transition:background var(--t-element) var(--ease-out),border-color var(--t-element) var(--ease-out),
-  color var(--t-element) var(--ease-out)}
-.st-mic svg,.st-dash svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;
+  color var(--t-element) var(--ease-out),box-shadow var(--t-element) var(--ease-out),
+  transform var(--t-micro) var(--ease-out)}
+.st-mic svg,.st-dash svg{fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;
  stroke-linejoin:round;flex:0 0 auto}
-.st-dash:hover{color:var(--ink);border-color:var(--mid)}
+.st-mic:hover,.st-dash:hover{color:var(--ink);border-color:var(--mid);transform:translateY(-1px);
+ box-shadow:0 0 0 1.5px var(--accent),0 4px 14px color-mix(in srgb,var(--accent) 30%,transparent)}
+/* Dashboard filled when it is open, the same accent-on-accent pairing the
+   Commit button already carries, so "on" reads as on and not just outlined */
+.st-dash.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);
+ box-shadow:0 0 0 1.5px var(--accent),0 2px 12px color-mix(in srgb,var(--accent) 38%,transparent)}
 /* the eyebrow above Source AI's own line, round of 29 October: see storyui.js
    for the ruling. tier1 is the house's own small-label class; this only
    tightens the gap to the glow it sits beside. */
 .st-talklbl{margin:0 0 6px 2px}
 .st-dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;position:relative;
  background:var(--alarm);transition:background var(--t-element) var(--ease-out)}
-.st-mic.on{background:var(--alarm);border-color:var(--alarm);color:#fff;font-weight:500}
+.st-mic.on{background:var(--alarm);border-color:var(--alarm);color:#fff;font-weight:500;
+ box-shadow:0 0 0 1.5px var(--alarm),0 2px 12px color-mix(in srgb,var(--alarm) 38%,transparent)}
 .st-mic.on .st-dot{background:#fff;animation:micPulse 1.15s ease-in-out infinite}
 /* the ring is the dot's own ::after, not a third element, so it travels
    with it and needs nothing wired */
@@ -4514,36 +4534,34 @@ body.quiet .src-livecap,body.rm .src-livecap{animation:none;opacity:.85}
  .st-talk span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}}
 .st-chat .st-glow{flex:1 1 auto;display:flex;flex-direction:column;min-height:0}
 .st-chat .st-pe{flex:1 1 auto;display:flex;flex-direction:column;min-height:260px}
-.src-th{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;margin:0;padding:2px 4px 0 0;
+.src-th{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;margin:0;padding:2px 4px 8px 0;
  list-style:none}
-/* a row is its node, its words, and the wire down to the next node. No
-   margin between rows: the wire is exactly a row tall because the next node
-   sits the same distance down its own row as this one does in this. */
-.src-tn{position:relative;list-style:none;min-height:24px;padding:3px 0 14px 32px}
-.src-tn-past{padding-bottom:6px}
-.src-tw{position:absolute;left:0;top:16px;width:24px;overflow:visible;pointer-events:none}
-.src-wire{fill:none;stroke:var(--c);stroke-width:1.5;stroke-linecap:round}
-/* the pulse is frflow's own keyframes, the renditions' tension run, so it is
-   one wave in two places and never a second one drawn to look like it */
-.src-puls{fill:none;stroke-linecap:round;stroke-width:2.2;
- stroke:color-mix(in srgb,var(--c) 62%,var(--ink));
- animation:frflow var(--d,3s) linear infinite;animation-delay:var(--ph,0s)}
-body.quiet .src-puls,body.rm .src-puls{display:none}
-@media (prefers-reduced-motion:reduce){.src-puls{display:none}}
-/* the nodes are rings, never fills, on the ground so the wire stops at them.
-   Source AI's are the size of the Field's own address ring and the person's
-   are smaller, so whose turn it was reads before a word does. The live one
-   breathes on the panel's beat, srcBreath, locked to the same clock. */
-.src-nd{position:absolute;left:6px;top:10px;width:12px;height:12px;border-radius:50%;
- box-sizing:border-box;border:1.6px solid var(--c);background:var(--sunk)}
-.src-tn-me .src-nd{left:8px;top:12px;width:8px;height:8px;border-width:1.4px}
-.src-tn-now .src-nd{animation:srcBreath 4.2s ease-in-out infinite;border-color:var(--accent)}
-body.quiet .src-tn-now .src-nd,body.rm .src-tn-now .src-nd{animation:none}
-@media (prefers-reduced-motion:reduce){.src-tn-now .src-nd{animation:none}}
-/* the person's words in the journal's own hand, light, so the two voices on
-   the thread are told apart by weight and not by a bubble around either */
-.src-me{margin:0;font-family:var(--sans);font-size:16px;line-height:1.6;font-weight:300;
- color:var(--ink);white-space:pre-wrap;overflow-wrap:break-word;max-width:60ch}
+/* A TEXT WINDOW, round of 29 October, his words on seeing the ring and wire
+   build: "the chat area is fucking hideous. Get rid of that daisy chain
+   chat... this is now a text window between AI on the left, me on the
+   right." A row is a bubble now, nothing else: no node, no wire, no pulse.
+   Source AI's bubble holds the left edge, the person's holds the right,
+   the way every ordinary chat window reads, and whose turn it was shows
+   in which side a bubble sits on rather than in a ring's own size. */
+.src-tn{display:flex;list-style:none;margin:10px 0}
+.src-tn-me{justify-content:flex-end}
+.src-tn-now,.src-tn-past{justify-content:flex-start}
+.src-bub{max-width:82%;border-radius:var(--r-s);padding:10px 14px}
+/* Source AI's bubble carries a thin edge in the seat colour its turn read,
+   the one piece of the old wire's colour coding worth keeping: which body
+   seat a turn concerned, read at a glance without a legend. */
+.src-bub-src{background:var(--sunk);border:1px solid var(--edge);
+ border-left:3px solid var(--c,var(--accent))}
+.src-bub-past{opacity:.82}
+.src-bub-me{background:var(--accent);color:var(--on-accent)}
+/* the person's words in the journal's own hand, told apart from Source AI's
+   by which side of the window they sit on, not by weight any more: a filled
+   bubble needs its own text colour and font-weight 300 on var(--on-accent)
+   read thin against a filled accent on more than one lighting. */
+.src-me{margin:0;font-family:var(--sans);font-size:16px;line-height:1.6;font-weight:400;
+ color:inherit;white-space:pre-wrap;overflow-wrap:break-word}
+.src-bub-src .src-q,.src-bub-src .src-open{margin:0;max-width:none}
+.src-bub .src-row{margin-top:10px}
 .src-tn-now .src-open,.src-tn-now .src-q{margin-top:0}
 /* the reply line, on the journal box's own ground and type */
 .src-cmp{display:flex;align-items:flex-end;gap:8px}
@@ -47884,20 +47902,20 @@ function stRender(){
       still the Discover door's own name elsewhere (TABDEF, the section
       itself), only this panel's own repeated word is cut. */
    +'<div class="st-hdbtns">'
-   /* TALK, THE ONLY CONTROL ON THE LEFT, round of 29 October. His words:
-      "when I press dashboard these should be... the talk button move it to
-      the left side... this is simply just a talk button, where I can have a
-      normal two-way conversation with source AI." Still the same control
-      that starts or stops the microphone (stMic); the word changed, not the
-      wiring. The clock and the dot are unchanged. */
+   /* CHAT, THE ONLY CONTROL ON THE LEFT, round of 29 October, name changed a
+      second time the same day: "the talk button, you're going to change to
+      chat," looking at the new text window it opens onto (see the ruling at
+      srcThread). Still the same control that starts or stops the
+      microphone (stMic); the word changed, not the wiring. The clock and
+      the dot are unchanged. */
    +(show?'':'<button class="st-mic'+(ST_LISTEN?' on':'')+'" id="stmic" type="button" '
    +'title="'+(ST_LISTEN?'Listening. Press to stop and keep what it heard.'
-     :'Talk instead of typing. What you say goes to your browser\'s speech service; typing does not leave this device.')+'">'
+     :'Chat by speaking instead of typing. What you say goes to your browser\'s speech service; typing does not leave this device.')+'">'
    +'<span class="st-dot"></span>'
    +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
    +'<rect x="9" y="3" width="6" height="11" rx="3"/>'
    +'<path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg>'
-   +'<span>'+(ST_LISTEN?'Listening':'Talk')+'</span>'
+   +'<span>'+(ST_LISTEN?'Listening':'Chat')+'</span>'
    /* THE CLOCK, ROUND LV. His words: "I want the time showing how long my
       recording is." mm:ss, in the button itself so it reads as one control
       rather than two things to track, and gone the moment recording is,
@@ -48073,13 +48091,16 @@ function stRender(){
     +'<button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
     +'Commit'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button>')
   +'</div>')+'</div></div>'
-  /* ---- the read column: the list, the instrument, then Commit ----
-     RE-STACKED FROM AN ANNOTATED SCREENSHOT, round of 29 October. His own
-     markings on the Derek profile: the list moves above the chart; the
-     bank and archive icons move to the right side of the list's own
-     header, where their own toggle lives; the chart's view icons
-     (stViewHtml) move to the chart's own header, upper right; Commit
-     moves to the foot of the whole column, lower right.
+  /* ---- the read column: the instrument, the list, then Commit ----
+     SWAPPED BACK, round of 29 October, second pass. The round before this
+     one put the list above the chart; looking at it built, his ruling
+     reversed: "reverse or swap the location of the analyzing layer and
+     the imprints... make sure their associated buttons are with them."
+     The analyzing layer is the chart (it reads the lanes), so it goes
+     back on top; the pills list goes back under it. Each panel is still
+     its own self-contained block, icon row included, so swapping their
+     order here is all swapping them takes: nothing moved out from under
+     either one's own buttons.
 
      THE ICONS CANNOT LIVE INSIDE #stlshd ITSELF. stListPaint() owns that
      element and rewrites it, text and all, on every repaint (a sort, a
@@ -48089,6 +48110,21 @@ function stRender(){
      not of the list. Same lesson .st-chd already stood on: an element a
      renderer owns is not also a shelf for something else to sit on. */
   +'<div class="st-colr">'
+  +'<div class="st-pan st-ch" id="stch" aria-label="Imprints, as read">'
+   /* THE LIST DOOR STAYS HERE, NOT WITH THE BANK AND THE ARCHIVE. It exists
+      for the phone, where .st-ls folds away outside read focus (see the
+      rule at .st-open below), and its one job is to bring that panel back
+      into view; a door inside the panel it opens cannot be pressed once
+      that panel is the one thing hidden. #stch stays visible at every
+      focus, so the door stands here. */
+   +'<div class="st-chd">'+stMark('i','Imprints','imprint')+'<span class="st-tag" id="stpend"></span>'
+   +'<button type="button" class="btn st-open" id="stlist">List</button>'+stViewHtml()+'</div>'
+   +'<div class="st-sort" id="stsort" role="group" aria-label="Sort imprints by"></div>'
+   /* the key probe is never shown. The canvas cannot read a custom property,
+      so the chart reads the lighting's ink and dim off these two computed
+      colours, which is the one answer that follows every lighting. */
+   +'<div class="st-cvw" id="stcvw"><canvas id="stcv" aria-hidden="true"></canvas><i class="st-cvk"></i></div>'
+   +'<div class="st-ctr" id="stctr"><span id="stctrt"></span></div></div>'
   +'<div class="st-pan st-ls" id="stls" aria-label="Imprints, listed">'
    +'<div class="st-lsico">'
    /* THE BANK AND THE VAULT, round IG, his words: "We need to be able to see
@@ -48111,21 +48147,6 @@ function stRender(){
     +'<span class="st-lb">Archive</span><b id="stvn">\u2013</b></button>'
    +'</div>'
    +'<div class="st-lshd" id="stlshd"></div><div class="st-lsb" id="stimps"></div></div>'
-  +'<div class="st-pan st-ch" id="stch" aria-label="Imprints, as read">'
-   /* THE LIST DOOR STAYS HERE, NOT WITH THE BANK AND THE ARCHIVE. It exists
-      for the phone, where .st-ls folds away outside read focus (see the
-      rule at .st-open below), and its one job is to bring that panel back
-      into view; a door inside the panel it opens cannot be pressed once
-      that panel is the one thing hidden. #stch stays visible at every
-      focus, so the door stands here. */
-   +'<div class="st-chd">'+stMark('i','Imprints','imprint')+'<span class="st-tag" id="stpend"></span>'
-   +'<button type="button" class="btn st-open" id="stlist">List</button>'+stViewHtml()+'</div>'
-   +'<div class="st-sort" id="stsort" role="group" aria-label="Sort imprints by"></div>'
-   /* the key probe is never shown. The canvas cannot read a custom property,
-      so the chart reads the lighting's ink and dim off these two computed
-      colours, which is the one answer that follows every lighting. */
-   +'<div class="st-cvw" id="stcvw"><canvas id="stcv" aria-hidden="true"></canvas><i class="st-cvk"></i></div>'
-   +'<div class="st-ctr" id="stctr"><span id="stctrt"></span></div></div>'
   /* COMMIT, AT THE FOOT OF THE COLUMN, round of 29 October, on top of the
      earlier ruling "the commit button should be on the bank": the bank is
      this whole column now, not one panel inside it, so Commit stands at
@@ -49287,10 +49308,24 @@ function srcChatWire(){
  if(ap&&SRC_CDRAFT.trim())ap.disabled=false;
  var sd=document.getElementById('stcsend');
  if(sd)sd.onclick=function(){srcChatSend(); cin.focus();};}
-/* THE THREAD. A row per turn, oldest at the top, each on its node, and under
-   every node but the last the wire down to the next one. The newest Source
-   AI row carries its words and the same controls the panel does, under the
-   same ids, so srcPaint wires them without knowing which view it drew. */
+/* THE THREAD IS A TEXT WINDOW NOW, round of 29 October, his words, looking
+   at the ring-and-wire build: "the chat area is fucking hideous. Get rid
+   of that daisy chain chat that's no longer happening. This is now a text
+   window between AI on the left, me on the right." The wire, the pulse and
+   the node ring are gone; a turn is a bubble, Source AI's on the left,
+   the person's on the right, oldest at the top, the way every other chat
+   window reads. The newest Source AI row still carries the same controls
+   the panel does, under the same ids, so srcPaint wires them without
+   knowing which view it drew.
+
+   EVERY TURN PRINTS NOW, past ones included. The ring design held only the
+   last Source AI turn to a question and showed nothing for an earlier one,
+   on purpose (tests/srcchat.js still holds a probe proving that rule would
+   have been caught if broken). A text window is read the way any chat is,
+   top to bottom, so the words a person is scrolled past are read the same
+   as the ones in front of them; a ring with nothing in it had no equivalent
+   once there was no ring. srcchat.js's own check reads the new rule:
+   the thread is the whole conversation in order, not one line at a time. */
 function srcThread(turn,heard,cur,acts,why){
  var ents=(CURP&&CURP.story&&CURP.story.entries)||[], pr=null, last=-1;
  SRC_CHAT.forEach(function(r,i){if(r.w==='src')last=i;});
@@ -49299,18 +49334,12 @@ function srcThread(turn,heard,cur,acts,why){
   /* a reply's reading is the entry as it stood when it was sent */
   if(r.w==='me'&&r.rg===undefined){pr=pr||srcPrior(ents);
    var hh=srcHear(ST_TEXT.slice(0,r.b),pr); r.rg=hh.top?hh.top.rung:0; r.bd=hh.top?hh.top.band:null;}
-  var t=clamp((r.rg||0)/10,0,1), col=r.bd?seatCol(r.bd):'var(--dim)';
+  var col=r.bd?seatCol(r.bd):'var(--accent)';
   var cls='src-tn src-tn-'+(r.w==='me'?'me':(i===last?'now':'past'));
-  o+='<li class="'+cls+'" style="--c:'+col+'"'+(r.w==='src'&&i!==last?' aria-label="An earlier turn"':'')+'>';
-  if(i<SRC_CHAT.length-1){
-   var per=96-48*t, sp=16+68*Math.sqrt(t), dur=per/sp, ph=(((i*12.9898+t*78.233)%1)+1)%1*dur;
-   o+='<svg class="src-tw" aria-hidden="true" data-t="'+t.toFixed(2)+'" data-s="'+(i%2?-1:1)+'">'
-    +'<path class="src-wire" style="opacity:'+(0.4+0.5*t).toFixed(2)+'"/>'
-    +'<path class="src-puls" stroke-dasharray="7 '+(per-7).toFixed(1)+'" style="opacity:'
-    +(0.28+0.72*t).toFixed(2)+';--p:'+per.toFixed(1)+';--d:'+dur.toFixed(2)+'s;--ph:-'+ph.toFixed(2)+'s"/></svg>';}
-  o+='<i class="src-nd"></i>';
-  if(r.w==='me')o+='<p class="src-me">'+esc(r.t)+'</p>';
-  else if(i===last)o+=srcThreadNow(r,turn,heard,acts,why);
+  o+='<li class="'+cls+'"'+(r.w==='src'&&i!==last?' aria-label="An earlier turn"':'')+'>';
+  if(r.w==='me')o+='<div class="src-bub src-bub-me"><p class="src-me">'+esc(r.t)+'</p></div>';
+  else if(i===last)o+='<div class="src-bub src-bub-src" style="--c:'+col+'">'+srcThreadNow(r,turn,heard,acts,why)+'</div>';
+  else o+='<div class="src-bub src-bub-src src-bub-past" style="--c:'+col+'"><p class="src-q">'+esc(r.q)+'</p></div>';
   o+='</li>';});
  return o+'</ol>';}
 /* the one live Source AI row, in the panel's own markup for each move.
@@ -49335,22 +49364,17 @@ function srcThreadNow(r,turn,heard,acts,why){
   if(SRC_DNONE&&turn.move==='open')
    o+='<p class="src-note">Nothing read yet, so there is nothing of yours to ask from. Write a line first.</p>';}
  return o;}
-/* THE WIRES ARE LAID AFTER THE ROWS ARE. A row's height is only known once it
-   is on the page, and a viewBox stretched to fit would stretch the pulse with
-   it, so every height is read first and every path written after, one layout
-   for the whole thread. Each wire runs from its node to the next row's node,
-   which sits the same distance down its own row, so it is exactly the row
-   tall. The bow is frSag's, scaled down on a short row so a folded turn does
-   not kink. Then the pulses go on the panel's one clock, srcLock, so a
-   repaint does not restart them, and the thread opens at its newest turn. */
+/* THE THREAD SETTLES AFTER THE ROWS ARE ON THE PAGE. This used to lay the
+   wire and the pulse down a row at a time, sized off each row's own
+   height once it had one; there is no wire any more (see the ruling at
+   srcThread above), so what is left is what that code also always did:
+   the panel's one clock locks here so a repaint does not restart the live
+   dot's own breathing, and the thread opens scrolled to its newest turn,
+   the bottom, the way a text window opens on whatever was said last. Kept
+   under its old name: stRender's own call site finds it by name and
+   nothing about when it runs changed, only what it had to do once it got
+   here. */
 function srcWire(h){
- var lis=[].slice.call(h.querySelectorAll('.src-tn')), hs=lis.map(function(li){return li.offsetHeight;});
- lis.forEach(function(li,i){
-  var sv=li.querySelector('.src-tw'); if(!sv)return;
-  var H=hs[i], t=+sv.getAttribute('data-t')||0, s=+sv.getAttribute('data-s')||1;
-  var bow=7*(1.28-0.62*t)*Math.min(1,H/80), d='M12 0Q'+(12+2*s*bow).toFixed(1)+' '+(H/2).toFixed(1)+' 12 '+H;
-  sv.setAttribute('viewBox','0 0 24 '+H); sv.style.height=H+'px';
-  [].forEach.call(sv.querySelectorAll('path'),function(p){p.setAttribute('d',d);});});
  srcLock(h);
  var th=h.querySelector('.src-th'); if(th)th.scrollTop=th.scrollHeight;}
 /* THE RAIL HOST IS STATIC, SO IT IS EMPTIED ON THE WAY OUT. A hidden surface
@@ -83169,5 +83193,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005483134"></div>
+<div id="eof" hidden data-len="005484671"></div>
 </body></html>

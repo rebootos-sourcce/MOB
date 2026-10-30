@@ -107,20 +107,20 @@ function stRender(){
       still the Discover door's own name elsewhere (TABDEF, the section
       itself), only this panel's own repeated word is cut. */
    +'<div class="st-hdbtns">'
-   /* TALK, THE ONLY CONTROL ON THE LEFT, round of 29 October. His words:
-      "when I press dashboard these should be... the talk button move it to
-      the left side... this is simply just a talk button, where I can have a
-      normal two-way conversation with source AI." Still the same control
-      that starts or stops the microphone (stMic); the word changed, not the
-      wiring. The clock and the dot are unchanged. */
+   /* CHAT, THE ONLY CONTROL ON THE LEFT, round of 29 October, name changed a
+      second time the same day: "the talk button, you're going to change to
+      chat," looking at the new text window it opens onto (see the ruling at
+      srcThread). Still the same control that starts or stops the
+      microphone (stMic); the word changed, not the wiring. The clock and
+      the dot are unchanged. */
    +(show?'':'<button class="st-mic'+(ST_LISTEN?' on':'')+'" id="stmic" type="button" '
    +'title="'+(ST_LISTEN?'Listening. Press to stop and keep what it heard.'
-     :'Talk instead of typing. What you say goes to your browser\'s speech service; typing does not leave this device.')+'">'
+     :'Chat by speaking instead of typing. What you say goes to your browser\'s speech service; typing does not leave this device.')+'">'
    +'<span class="st-dot"></span>'
    +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
    +'<rect x="9" y="3" width="6" height="11" rx="3"/>'
    +'<path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg>'
-   +'<span>'+(ST_LISTEN?'Listening':'Talk')+'</span>'
+   +'<span>'+(ST_LISTEN?'Listening':'Chat')+'</span>'
    /* THE CLOCK, ROUND LV. His words: "I want the time showing how long my
       recording is." mm:ss, in the button itself so it reads as one control
       rather than two things to track, and gone the moment recording is,
@@ -296,13 +296,16 @@ function stRender(){
     +'<button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
     +'Commit'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button>')
   +'</div>')+'</div></div>'
-  /* ---- the read column: the list, the instrument, then Commit ----
-     RE-STACKED FROM AN ANNOTATED SCREENSHOT, round of 29 October. His own
-     markings on the Derek profile: the list moves above the chart; the
-     bank and archive icons move to the right side of the list's own
-     header, where their own toggle lives; the chart's view icons
-     (stViewHtml) move to the chart's own header, upper right; Commit
-     moves to the foot of the whole column, lower right.
+  /* ---- the read column: the instrument, the list, then Commit ----
+     SWAPPED BACK, round of 29 October, second pass. The round before this
+     one put the list above the chart; looking at it built, his ruling
+     reversed: "reverse or swap the location of the analyzing layer and
+     the imprints... make sure their associated buttons are with them."
+     The analyzing layer is the chart (it reads the lanes), so it goes
+     back on top; the pills list goes back under it. Each panel is still
+     its own self-contained block, icon row included, so swapping their
+     order here is all swapping them takes: nothing moved out from under
+     either one's own buttons.
 
      THE ICONS CANNOT LIVE INSIDE #stlshd ITSELF. stListPaint() owns that
      element and rewrites it, text and all, on every repaint (a sort, a
@@ -312,6 +315,21 @@ function stRender(){
      not of the list. Same lesson .st-chd already stood on: an element a
      renderer owns is not also a shelf for something else to sit on. */
   +'<div class="st-colr">'
+  +'<div class="st-pan st-ch" id="stch" aria-label="Imprints, as read">'
+   /* THE LIST DOOR STAYS HERE, NOT WITH THE BANK AND THE ARCHIVE. It exists
+      for the phone, where .st-ls folds away outside read focus (see the
+      rule at .st-open below), and its one job is to bring that panel back
+      into view; a door inside the panel it opens cannot be pressed once
+      that panel is the one thing hidden. #stch stays visible at every
+      focus, so the door stands here. */
+   +'<div class="st-chd">'+stMark('i','Imprints','imprint')+'<span class="st-tag" id="stpend"></span>'
+   +'<button type="button" class="btn st-open" id="stlist">List</button>'+stViewHtml()+'</div>'
+   +'<div class="st-sort" id="stsort" role="group" aria-label="Sort imprints by"></div>'
+   /* the key probe is never shown. The canvas cannot read a custom property,
+      so the chart reads the lighting's ink and dim off these two computed
+      colours, which is the one answer that follows every lighting. */
+   +'<div class="st-cvw" id="stcvw"><canvas id="stcv" aria-hidden="true"></canvas><i class="st-cvk"></i></div>'
+   +'<div class="st-ctr" id="stctr"><span id="stctrt"></span></div></div>'
   +'<div class="st-pan st-ls" id="stls" aria-label="Imprints, listed">'
    +'<div class="st-lsico">'
    /* THE BANK AND THE VAULT, round IG, his words: "We need to be able to see
@@ -334,21 +352,6 @@ function stRender(){
     +'<span class="st-lb">Archive</span><b id="stvn">\u2013</b></button>'
    +'</div>'
    +'<div class="st-lshd" id="stlshd"></div><div class="st-lsb" id="stimps"></div></div>'
-  +'<div class="st-pan st-ch" id="stch" aria-label="Imprints, as read">'
-   /* THE LIST DOOR STAYS HERE, NOT WITH THE BANK AND THE ARCHIVE. It exists
-      for the phone, where .st-ls folds away outside read focus (see the
-      rule at .st-open below), and its one job is to bring that panel back
-      into view; a door inside the panel it opens cannot be pressed once
-      that panel is the one thing hidden. #stch stays visible at every
-      focus, so the door stands here. */
-   +'<div class="st-chd">'+stMark('i','Imprints','imprint')+'<span class="st-tag" id="stpend"></span>'
-   +'<button type="button" class="btn st-open" id="stlist">List</button>'+stViewHtml()+'</div>'
-   +'<div class="st-sort" id="stsort" role="group" aria-label="Sort imprints by"></div>'
-   /* the key probe is never shown. The canvas cannot read a custom property,
-      so the chart reads the lighting's ink and dim off these two computed
-      colours, which is the one answer that follows every lighting. */
-   +'<div class="st-cvw" id="stcvw"><canvas id="stcv" aria-hidden="true"></canvas><i class="st-cvk"></i></div>'
-   +'<div class="st-ctr" id="stctr"><span id="stctrt"></span></div></div>'
   /* COMMIT, AT THE FOOT OF THE COLUMN, round of 29 October, on top of the
      earlier ruling "the commit button should be on the bank": the bank is
      this whole column now, not one panel inside it, so Commit stands at
@@ -1510,10 +1513,24 @@ function srcChatWire(){
  if(ap&&SRC_CDRAFT.trim())ap.disabled=false;
  var sd=document.getElementById('stcsend');
  if(sd)sd.onclick=function(){srcChatSend(); cin.focus();};}
-/* THE THREAD. A row per turn, oldest at the top, each on its node, and under
-   every node but the last the wire down to the next one. The newest Source
-   AI row carries its words and the same controls the panel does, under the
-   same ids, so srcPaint wires them without knowing which view it drew. */
+/* THE THREAD IS A TEXT WINDOW NOW, round of 29 October, his words, looking
+   at the ring-and-wire build: "the chat area is fucking hideous. Get rid
+   of that daisy chain chat that's no longer happening. This is now a text
+   window between AI on the left, me on the right." The wire, the pulse and
+   the node ring are gone; a turn is a bubble, Source AI's on the left,
+   the person's on the right, oldest at the top, the way every other chat
+   window reads. The newest Source AI row still carries the same controls
+   the panel does, under the same ids, so srcPaint wires them without
+   knowing which view it drew.
+
+   EVERY TURN PRINTS NOW, past ones included. The ring design held only the
+   last Source AI turn to a question and showed nothing for an earlier one,
+   on purpose (tests/srcchat.js still holds a probe proving that rule would
+   have been caught if broken). A text window is read the way any chat is,
+   top to bottom, so the words a person is scrolled past are read the same
+   as the ones in front of them; a ring with nothing in it had no equivalent
+   once there was no ring. srcchat.js's own check reads the new rule:
+   the thread is the whole conversation in order, not one line at a time. */
 function srcThread(turn,heard,cur,acts,why){
  var ents=(CURP&&CURP.story&&CURP.story.entries)||[], pr=null, last=-1;
  SRC_CHAT.forEach(function(r,i){if(r.w==='src')last=i;});
@@ -1522,18 +1539,12 @@ function srcThread(turn,heard,cur,acts,why){
   /* a reply's reading is the entry as it stood when it was sent */
   if(r.w==='me'&&r.rg===undefined){pr=pr||srcPrior(ents);
    var hh=srcHear(ST_TEXT.slice(0,r.b),pr); r.rg=hh.top?hh.top.rung:0; r.bd=hh.top?hh.top.band:null;}
-  var t=clamp((r.rg||0)/10,0,1), col=r.bd?seatCol(r.bd):'var(--dim)';
+  var col=r.bd?seatCol(r.bd):'var(--accent)';
   var cls='src-tn src-tn-'+(r.w==='me'?'me':(i===last?'now':'past'));
-  o+='<li class="'+cls+'" style="--c:'+col+'"'+(r.w==='src'&&i!==last?' aria-label="An earlier turn"':'')+'>';
-  if(i<SRC_CHAT.length-1){
-   var per=96-48*t, sp=16+68*Math.sqrt(t), dur=per/sp, ph=(((i*12.9898+t*78.233)%1)+1)%1*dur;
-   o+='<svg class="src-tw" aria-hidden="true" data-t="'+t.toFixed(2)+'" data-s="'+(i%2?-1:1)+'">'
-    +'<path class="src-wire" style="opacity:'+(0.4+0.5*t).toFixed(2)+'"/>'
-    +'<path class="src-puls" stroke-dasharray="7 '+(per-7).toFixed(1)+'" style="opacity:'
-    +(0.28+0.72*t).toFixed(2)+';--p:'+per.toFixed(1)+';--d:'+dur.toFixed(2)+'s;--ph:-'+ph.toFixed(2)+'s"/></svg>';}
-  o+='<i class="src-nd"></i>';
-  if(r.w==='me')o+='<p class="src-me">'+esc(r.t)+'</p>';
-  else if(i===last)o+=srcThreadNow(r,turn,heard,acts,why);
+  o+='<li class="'+cls+'"'+(r.w==='src'&&i!==last?' aria-label="An earlier turn"':'')+'>';
+  if(r.w==='me')o+='<div class="src-bub src-bub-me"><p class="src-me">'+esc(r.t)+'</p></div>';
+  else if(i===last)o+='<div class="src-bub src-bub-src" style="--c:'+col+'">'+srcThreadNow(r,turn,heard,acts,why)+'</div>';
+  else o+='<div class="src-bub src-bub-src src-bub-past" style="--c:'+col+'"><p class="src-q">'+esc(r.q)+'</p></div>';
   o+='</li>';});
  return o+'</ol>';}
 /* the one live Source AI row, in the panel's own markup for each move.
@@ -1558,22 +1569,17 @@ function srcThreadNow(r,turn,heard,acts,why){
   if(SRC_DNONE&&turn.move==='open')
    o+='<p class="src-note">Nothing read yet, so there is nothing of yours to ask from. Write a line first.</p>';}
  return o;}
-/* THE WIRES ARE LAID AFTER THE ROWS ARE. A row's height is only known once it
-   is on the page, and a viewBox stretched to fit would stretch the pulse with
-   it, so every height is read first and every path written after, one layout
-   for the whole thread. Each wire runs from its node to the next row's node,
-   which sits the same distance down its own row, so it is exactly the row
-   tall. The bow is frSag's, scaled down on a short row so a folded turn does
-   not kink. Then the pulses go on the panel's one clock, srcLock, so a
-   repaint does not restart them, and the thread opens at its newest turn. */
+/* THE THREAD SETTLES AFTER THE ROWS ARE ON THE PAGE. This used to lay the
+   wire and the pulse down a row at a time, sized off each row's own
+   height once it had one; there is no wire any more (see the ruling at
+   srcThread above), so what is left is what that code also always did:
+   the panel's one clock locks here so a repaint does not restart the live
+   dot's own breathing, and the thread opens scrolled to its newest turn,
+   the bottom, the way a text window opens on whatever was said last. Kept
+   under its old name: stRender's own call site finds it by name and
+   nothing about when it runs changed, only what it had to do once it got
+   here. */
 function srcWire(h){
- var lis=[].slice.call(h.querySelectorAll('.src-tn')), hs=lis.map(function(li){return li.offsetHeight;});
- lis.forEach(function(li,i){
-  var sv=li.querySelector('.src-tw'); if(!sv)return;
-  var H=hs[i], t=+sv.getAttribute('data-t')||0, s=+sv.getAttribute('data-s')||1;
-  var bow=7*(1.28-0.62*t)*Math.min(1,H/80), d='M12 0Q'+(12+2*s*bow).toFixed(1)+' '+(H/2).toFixed(1)+' 12 '+H;
-  sv.setAttribute('viewBox','0 0 24 '+H); sv.style.height=H+'px';
-  [].forEach.call(sv.querySelectorAll('path'),function(p){p.setAttribute('d',d);});});
  srcLock(h);
  var th=h.querySelector('.src-th'); if(th)th.scrollTop=th.scrollHeight;}
 /* THE RAIL HOST IS STATIC, SO IT IS EMPTIED ON THE WAY OUT. A hidden surface

@@ -14,15 +14,21 @@
    What still holds, because none of it was ever about the toggle: that a
    reply really is appended to the one entry, on a line of its own, so the
    reading is the reading a single block of text would give; that the thread
-   shows one question and never asks the same why twice; that Move on still
-   ends the asking; and that a committed conversation keeps exactly what the
-   entry keeps, a kind and a seat per question and never a question's words.
+   never asks the same why twice; that Move on still ends the asking; and
+   that a committed conversation keeps exactly what the entry keeps, a kind
+   and a seat per question and never a question's words.
 
-   CHECKED AGAINST TWO KNOWN BAD COPIES FIRST, the standing rule. One page
-   whose send joins a reply with a space, where the first turn's "not"
-   reaches into the next: the boundary check must fail on it. One whose
-   thread prints every earlier question: the one question check must fail on
-   it. A gate that passes a broken page is not a gate.
+   THE THREAD PRINTS EVERY TURN NOW, round of 29 October: see the ruling at
+   srcThread in ui/storyui.js. The ring design held only the last Source AI
+   turn to a question on screen and this file once held a known bad copy
+   proving the probe would catch a build that printed every earlier one; a
+   text window is read top to bottom like any other, so printing every turn
+   is the rule now and that known bad copy is gone with the rule it tested.
+
+   CHECKED AGAINST A KNOWN BAD COPY FIRST, the standing rule. A page whose
+   send joins a reply with a space, where the first turn's "not" reaches
+   into the next: the boundary check must fail on it. A gate that passes a
+   broken page is not a gate.
 
    No count is typed into this file. Read the counts off the run.
    ============================================================ */
@@ -64,8 +70,18 @@ const look = p => p.evaluate(() => {
     pass: !!document.getElementById('srcpass'),
     box: !!document.getElementById('sttext'), mic: !!document.getElementById('stmic'),
     toggle: !!document.getElementById('sttalk'),
-    ts: [...document.querySelectorAll('#stsrc .src-tw')].map(s => +s.getAttribute('data-t')),
-    puls: [...document.querySelectorAll('#stsrc .src-puls')].map(e => ({ an: getComputedStyle(e).animationName, d: e.getAttribute('d') || '', disp: getComputedStyle(e).display })),
+    /* THE DAISY CHAIN IS GONE, round of 29 October: no node, no wire, no
+       pulse, a bubble each side instead (see the ruling at srcThread in
+       ui/storyui.js). wires reads for the old markup being truly gone;
+       meSide and srcSide read which edge each row's bubble actually sits
+       on, geometry and not a guess from a class name. */
+    wires: document.querySelectorAll('#stsrc .src-tw, #stsrc .src-nd, #stsrc .src-puls').length,
+    meSide: [...document.querySelectorAll('#stsrc .src-tn-me .src-bub')].map(b => {
+      const r = b.getBoundingClientRect(), p = b.closest('.src-th').getBoundingClientRect();
+      return (p.right - r.right) < (r.left - p.left); }),
+    srcSide: [...document.querySelectorAll('#stsrc .src-tn-now .src-bub, #stsrc .src-tn-past .src-bub')].map(b => {
+      const r = b.getBoundingClientRect(), p = b.closest('.src-th').getBoundingClientRect();
+      return (r.left - p.left) < (p.right - r.right); }),
     said: (document.getElementById('srcsay') || {}).textContent || ''
   };
 });
@@ -138,19 +154,6 @@ require('./net.js').guardBrowser(browser);
     await p.cx.close();
   }
 
-  console.log('\n=== known bad first: a thread that prints every question ===');
-  {
-    const p = await open(browser, 1600, 1000);
-    const r = await talk(p);
-    const bad = await p.evaluate(() => {
-      /* every Source AI row carrying its words, the defect the rule is for */
-      [...document.querySelectorAll('#stsrc .src-tn-past')].forEach((li, i) => {
-        const q = SRC_CHAT.filter(x => x.w === 'src')[i]; if (q) li.insertAdjacentHTML('beforeend', '<p class="src-q">' + q.q + '</p>'); });
-      return [...document.querySelectorAll('#stsrc .src-tn-past')].map(li => li.textContent.trim()).filter(Boolean).length; });
-    ok(bad > 0, 'the one question check catches a thread printing earlier questions, ' + bad + ' found');
-    await p.cx.close();
-  }
-
   console.log('\n=== the conversation at 1600 by 1000 ===');
   const p = await open(browser, 1600, 1000);
   const { a, b, c, d } = await talk(p, 'talk-1600-open.png');
@@ -163,12 +166,13 @@ require('./net.js').guardBrowser(browser);
   ok(alone && b.top.seat === alone.seat && b.top.rung === alone.rung, 'and it reads what the reply reads alone, ' + JSON.stringify(alone));
   ok(c.move === 'ask' && c.pass && c.top.rung >= 7, 'the seat coming back across turns is asked about, rung ' + (c.top && c.top.rung));
   ok(c.said && c.rows.filter(x => x.cls === 'src-tn-now')[0].say.indexOf(c.said) === 0, 'the screen reader line carries the live turn: ' + JSON.stringify(c.said.slice(0, 70)));
-  ok(d.now === 1 && d.pastWords.length === 0, 'one question on screen: every earlier Source AI turn is its ring, ' + d.pastWords.length + ' with words');
+  ok(d.now === 1 && d.pastWords.length > 0 && d.pastWords.every(Boolean), 'a text window, not a ring: every earlier Source AI turn still reads in full, ' + d.pastWords.length + ' with words');
   ok(d.asks === 1, 'an answer to the ask does not ask the same why again: ' + d.asks + ' ask rows');
   const me = d.rows.filter(x => x.cls === 'src-tn-me').map(x => x.say);
   ok(me.join('|') === 'I did not sleep|afraid all night.|Still afraid when he called.|I am afraid of what he says next.', 'every reply stands in the thread in the person\'s words');
-  ok(d.ts.length === d.rows.length - 1 && d.ts.some(t => t >= 0.7) && d.ts[0] < 0.7, 'a wire under every row but the last, tightening to the rung: ' + d.ts.join(' '));
-  ok(d.puls.length && d.puls.every(x => x.an === 'frflow' && /^M12 0Q/.test(x.d)), 'every wire carries a pulse on frflow, laid after the rows: ' + d.puls.length);
+  ok(d.wires === 0, 'the daisy chain is gone: no node, no wire, no pulse in the markup, ' + d.wires + ' found');
+  ok(d.meSide.length && d.meSide.every(Boolean), 'every reply sits on the right, a bubble each: ' + JSON.stringify(d.meSide));
+  ok(d.srcSide.length && d.srcSide.every(Boolean), 'every Source AI turn sits on the left, a bubble each: ' + JSON.stringify(d.srcSide));
   await shot(p, 'talk-1600-ask.png');
 
   /* move on, and a reply after it */
@@ -238,7 +242,7 @@ require('./net.js').guardBrowser(browser);
     const q = await open(browser, 390, 844, { reducedMotion: 'reduce' });
     await talk(q);
     const z = await look(q);
-    ok(z.puls.length && z.puls.every(x => x.disp === 'none'), 'reduced motion keeps the wires and drops the pulses');
+    ok(z.wires === 0, 'the daisy chain is gone at 390 too, nothing left for reduced motion to quiet: ' + z.wires + ' found');
     const fit = await q.evaluate(() => ({ sw: document.documentElement.scrollWidth, w: innerWidth }));
     ok(fit.sw <= fit.w, 'no sideways scroll at 390: ' + fit.sw + ' of ' + fit.w);
     /* Talk is gone, round of 28 October, and the reply line and its send are

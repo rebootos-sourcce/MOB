@@ -52,8 +52,17 @@
    a frame that looks like a safety check but answers no real signal would be
    worse than adding nothing, so none is added here. See obStory below,
    where the first stranger's words are actually read, for the same warning
-   placed at the exact line it describes. Tracked in the owner's plan as J0,
-   a ship blocker for any build a stranger who is not the owner can reach.
+   placed at the exact line it describes. Tracked in the owner's plan as J0.
+
+   P3, NOT A SHIP BLOCKER, ruled 30 October: his words, "place a P0 the
+   safety are broken in production right now. The safety gap. I want to
+   handle that, but not for the MVP alpha... down prioritize that. As a
+   P3." J0 was already closed as a question round QW (WAITING-ON-YOU.md,
+   "I'm not dealing with crisis shit right now... stop asking until we move
+   towards the release candidate") and is needed for MVP beta, not alpha.
+   Still said loudly, because an open gap silently dropped is the failure
+   this header warns against either way; only its urgency moved, not
+   whether it is real.
 
    AND A BUTTON IS NOT A DETECTOR, 16 October. He ruled the crisis option onto
    the welcome as a choice: "Is this a crisis? Hit that button." It is in the

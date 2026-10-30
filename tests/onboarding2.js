@@ -1127,7 +1127,18 @@ console.log('\n=== J0, the distress gap, reported rather than papered over ===')
 /* THIS IS NOT A SAFETY TEST. It cannot be: there is nothing in this engine
    to test. It is a standing check that nobody has quietly added a decorative
    frame that LOOKS like a safety check while answering no real signal,
-   which would be worse than the gap it is reporting. */
+   which would be worse than the gap it is reporting.
+
+   P3, NOT A SHIP BLOCKER, ruled 30 October: his words, "place a P0 the
+   safety are broken in production right now. The safety gap. I want to
+   handle that, but not for the MVP alpha... down prioritize that. As a
+   P3." J0 was already closed as a question round QW (WAITING-ON-YOU.md,
+   "I'm not dealing with crisis shit right now... stop asking until we move
+   towards the release candidate"), never formally entered the backlog as a
+   P0, and is needed for MVP beta, not alpha. This line used to call it a
+   ship blocker, which was never true after round QW and is now also
+   contrary to a direct ruling; kept here as the standing, honest report
+   that the gap is real, no longer dressed as more urgent than it is. */
 {
  const page=await browser.newPage({viewport:{width:1600,height:1000}});
  await page.goto(FILE+'?dev=1',{waitUntil:'load'}); await booted(page);
@@ -1136,10 +1147,10 @@ console.log('\n=== J0, the distress gap, reported rather than papered over ===')
   stopFrame:document.querySelectorAll('[class*="stop"],[id*="stop"]').length,
   src:String(window.obStoryDone||'')}));
  await page.close();
- console.log('  J0 STILL OPEN: no distress detector runs on a stranger\'s first story before it is');
- console.log('  committed. typeof a detector function: '+q.detector+' (expect undefined). This is a');
- console.log('  ship blocker for any build a stranger who is not the owner can reach, named as such in');
- console.log('  atuned_src/ui/onboard.js\'s own header, at the exact line obStoryDone hands the words to parseStory.');
+ console.log('  J0 STILL OPEN, P3 for MVP beta (round QW, confirmed 30 October): no distress');
+ console.log('  detector runs on a stranger\'s first story before it is committed. typeof a detector');
+ console.log('  function: '+q.detector+' (expect undefined), named at the exact line in');
+ console.log('  atuned_src/ui/onboard.js\'s own header where obStoryDone hands the words to parseStory.');
  ok(q.detector==='undefined',
   'confirmed: no distress detector exists in this build (the gap is real, not assumed)');
 }
