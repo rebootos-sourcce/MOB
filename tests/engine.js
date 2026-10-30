@@ -7368,6 +7368,10 @@ g('QB · what onboarding writes on the entry comes back through the boundary, an
 /* the trace graph, engine/trace.js. Its gate is its own file and reports
    through this one's ok(), so its count is in the line below. */
 require('./trace.js')(E,ok,g);
+/* the parent/child blend summarizer over it, engine/tracesummary.js, a
+   sibling file on purpose (see its own header). Its gate is its own file
+   too, reporting through this one's ok() the same way. */
+require('./tracesummary.js')(E,ok,g);
 /* the loop read over it, engine/loop.js: the one read of the graph a screen
    asks. Its own file, reporting through this one's ok() */
 require('./loop.js')(E,ok,g);

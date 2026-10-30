@@ -309,6 +309,9 @@ if(typeof module!=='undefined'&&module.exports){
                   traceNeighbors:traceNeighbors, tracePath:tracePath, traceOrphans:traceOrphans,
                   traceCycles:traceCycles, validateTrace:validateTrace, traceApply:traceApply,
                   traceFromRecord:traceFromRecord, traceStoryIds:traceStoryIds, traceRitualIds:traceRitualIds,
+  /* the parent/child blend summarizer, engine/tracesummary.js: a sibling
+     file, never a block inside trace.js itself, see its own header */
+                  traceSummary:traceSummary,
   /* the loop read, engine/loop.js: the one read of the graph a screen asks */
                   loopRead:loopRead, LOOP_SHOW:LOOP_SHOW,
   /* a worked example's history, engine/pracex.js, for the practitioner page */
