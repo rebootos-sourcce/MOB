@@ -331,6 +331,12 @@ jobs:
           # colour, and each moved surface prints the registry's form. New, so
           # report only first.
           - { gate: pct, timeout: 20, command: node tests/pct.js }
+          # 30 October: layer-observatory (tests/layer-observatory.js), the
+          # mockups/layer-observatory UI wired to trace.js's real traversal
+          # instead of a frozen hand-built dump, checked against an
+          # independently rebuilt graph and a real-Chromium open of the page.
+          # New, so report only first.
+          - { gate: layer-observatory, timeout: 20, command: node tests/layer-observatory.js }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
