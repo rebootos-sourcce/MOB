@@ -2,7 +2,7 @@
 **Version:** 1.0 (new conversation-first baseline)  
 **Date:** 2026-10-29  
 **Status:** PROPOSED DESIGN / NOT IMPLEMENTED / NOT USER-TESTED  
-**Repository:** \`rebootos-sourcce/MOB\`  
+**Repository:** `rebootos-sourcce/MOB`  
 **Authority:** Owner's 2026-10-29 direction, superseding the earlier text-journal interaction design.
 
 ## 0. The decisive change
@@ -33,7 +33,7 @@ Governing philosophy:
 
 ### 1.1 Coherence mandate
 
-\`CQ = clamp((Integrity × Intention) / Resistance, 0, 100)\`.
+`CQ = clamp((Integrity × Intention) / Resistance, 0, 100)`.
 
 **Source's design target is CQ 100**: target Integrity 10/10, Intention 10/10, and a normalized Resistance factor of 1 at its floor. The original formula must not be treated as an empirical claim that deployed AI can be proven morally perfect. Define normalization/versioning and measure the actual behavior. The existing CQ numerical mapping has an unresolved disagreement about whether "intention" means action-linked follow-through or a band-derived value; this document does **not** silently resolve or change that calculation.
 
@@ -53,7 +53,7 @@ No required topic, prompt picker, mood questionnaire, intake form, tag, or choic
 
 ### 2.2 Conversation loop
 
-\`\`\`text
+```text
 USER speaks (or types) → conversational turn arrives
   → preserve exact wording, attribution, negation, time and context
   → distinguish observations, emotions, interpretations, requests and uncertainty
@@ -64,7 +64,7 @@ USER speaks (or types) → conversational turn arrives
   → say ONE natural response
   → invite correction through demeanor, not a repetitive disclaimer
   → update the evolving story model without silently asserting causation
-\`\`\`
+```
 
 Permitted next moves:
 1. **Receive:** listen without a question; provide space or a small acknowledgment.
@@ -164,7 +164,7 @@ A later summary, **if further stories support it**, might say: "You've described
 
 ## 6. Technical architecture: separate perception, judgment, expression and rendering
 
-\`\`\`text
+```text
 Multimodal input (voice/text) + explicit consent
         ↓
 Turn normalization (ASR correction, speaker, tense, negation, uncertainty)
@@ -184,13 +184,13 @@ Natural-language / optional spoken response
 Presence + visual-story choreography from declared semantic events
         ↓
 User correction / conversation state / optional consented save
-\`\`\`
+```
 
 The model, not a predetermined sentence table, must formulate natural answers; deterministic components enforce hard constraints, privacy, provenance, and event contracts. A Sniffer hit is an input feature, **not** a sentence of truth. Keep existing compute/CQ code unchanged pending separate model governance. Interface must not show raw internal models by default.
 
 Suggested turn contract (names provisional, not a claim about current schema):
 
-\`\`\`json
+```json
 {
   "turn_id": "uuid",
   "user_utterance": {"text": "...", "source": "voice|text", "asr_provisional": false},
@@ -202,13 +202,13 @@ Suggested turn contract (names provisional, not a claim about current schema):
   "visual_events": [{"type": "considering|speaking|connection_tentative|connection_supported|quiet", "evidence_ids": []}],
   "safety": {"law_checks": [], "unsupported_claims": [], "user_directive_honored": true}
 }
-\`\`\`
+```
 
 No hidden claim becomes an evidence object by being generated. All evidence anchors must resolve to actual utterances or authorized data.
 
 ## 7. Loss-of-integrity records: 21 behavior-first candidate profiles
 
-**Source of law names:** \`atuned_src/engine/data/canon.js\` \`SI\`, 21 entries. The signatures and corrective rules below are **new candidate behavioral specifications**, not pre-existing owner-approved canon or clinical facts. The older \`LAWVIO\` lookup in \`engine/sniff.js\` does not match all 21 current names (it contains Ownership/Wisdom but omits Responsibility/Accountability), so it is not authoritative for these records.
+**Source of law names:** `atuned_src/engine/data/canon.js` `SI`, 21 entries. The signatures and corrective rules below are **new candidate behavioral specifications**, not pre-existing owner-approved canon or clinical facts. The older `LAWVIO` lookup in `engine/sniff.js` does not match all 21 current names (it contains Ownership/Wisdom but omits Responsibility/Accountability), so it is not authoritative for these records.
 
 | Law | Observable Source loss-of-integrity behavior | Required counter-behavior |
 |---|---|---|
@@ -234,15 +234,15 @@ No hidden claim becomes an evidence object by being generated. All evidence anch
 | Non-Harm | gives dangerous certainty, a diagnosis, or privacy-violating output | avoid foreseeable harm, respect boundaries and uncertainty |
 | Patience | interrupts, repeats unanswered questions, or rushes to a neat root | tolerate silence, wait for evidence, allow ambiguity |
 
-Each law gets a separate stable record under \`source-integrity-loss:<law-slug>\` and the **existing shared record envelope** (\`id, kind, nm, seat, fam, def, body, links, templateId, template, templateValidation, sourceRefs, sourceClaims, researchPasses[3], status, taxonomyVersion\`). For the Source-specific extension add: \`trigger\`, \`observableFailure\`, \`nonExample\`, \`repairAction\`, \`userFacingWording\`, \`guard\`, \`tests[]\`, \`evidenceThreshold\`, \`falsePositiveRisk\`, \`auditTrail\`. No invented parent/child/nerve edge; integrity checks are cross-cutting peers. A 21-row inventory is not proof that 21 template-complete and researched canonical records exist. Maintain separate proposal/research/implementation/verified status.
+Each law gets a separate stable record under `source-integrity-loss:<law-slug>` and the **existing shared record envelope** (`id, kind, nm, seat, fam, def, body, links, templateId, template, templateValidation, sourceRefs, sourceClaims, researchPasses[3], status, taxonomyVersion`). For the Source-specific extension add: `trigger`, `observableFailure`, `nonExample`, `repairAction`, `userFacingWording`, `guard`, `tests[]`, `evidenceThreshold`, `falsePositiveRisk`, `auditTrail`. No invented parent/child/nerve edge; integrity checks are cross-cutting peers. A 21-row inventory is not proof that 21 template-complete and researched canonical records exist. Maintain separate proposal/research/implementation/verified status.
 
 At runtime the integrity guardian reviews candidate response *and tool actions*:
-\`\`\`text
+```text
 candidate → attribution/tense/negation check → evidence/provenance check
           → 21-law behavior checks → user agency/privacy check
           → allow | repair/regenerate | decline/escalate as needed
           → log decisions without saving unconsented personal content
-\`\`\`
+```
 
 Do not transform a suspected integrity violation in the user's narrative into a moral accusation. The 21 record set first governs **Source's own behavior**; any later analysis of a user's actions needs independent owner-approved semantics and evidence.
 
