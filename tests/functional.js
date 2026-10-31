@@ -2127,7 +2127,7 @@ ok(/blueprint you were born on|no birth data/.test(sum.text),
 /* 16 October, his words: "change the field to 'your energy leans malignant',
    because energy is more natural. Field is just too abstract." So the subject
    is held, and the word after it, and the old subject is held out. */
-ok(/Your energy leans (?:benign|malignant)\b/.test(sum.text)&&!/the field leans/i.test(sum.text),
+ok(/Your energy leans (?:positive|negative)\b/.test(sum.text)&&!/the field leans/i.test(sum.text),
  'and closes on which way your energy leans, never the field');
 ok(!/undefined|NaN|\[object/.test(sum.text),'and nothing leaked a placeholder');
 console.log(' ',JSON.stringify({glance:sum.glance,rows:sum.structRows,chips:sum.chips,

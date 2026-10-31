@@ -1081,11 +1081,13 @@ console.log('\n=== the floor band says where to go and gives the door to it (16 
    'on the floor band the crisis button sits directly under "Where it goes"'+at+', '+JSON.stringify(plate.text));
   ok(plate.b&&plate.b.on&&plate.b.h>=44&&plate.rel&&plate.b.fs===plate.rel.fs&&plate.b.c===plate.rel.c,
    'at the tap floor, in the size and ink of the page\'s own Run a release'+at+', '+JSON.stringify({b:plate.b,rel:plate.rel}));
-  /* benign and malignant carry their plain meaning in the sentence that says
-     them, round PO's rule, and the meaning is the glossary's own sentence */
+  /* positive and negative carry their plain meaning in the sentence that says
+     them, round PO's rule, and the meaning is the glossary's own sentence.
+     Renamed from benign/malignant, 30 October, his words: "change it to
+     positive and negative". */
   const lean=await page.evaluate(()=>{const p=[...document.querySelectorAll('.s-story .s-p')]
-    .map(e=>e.textContent).find(t=>/Your energy leans (benign|malignant)/.test(t))||'';
-   const w=(p.match(/Your energy leans (benign|malignant)/)||[])[1]||null;
+    .map(e=>e.textContent).find(t=>/Your energy leans (positive|negative)/.test(t))||'';
+   const w=(p.match(/Your energy leans (positive|negative)/)||[])[1]||null;
    return {w, p, says:w?unpackOf(w,'rail'):null};});
   ok(lean.w&&lean.says&&lean.p.indexOf(lean.says)>lean.p.indexOf('Your energy leans'),
    'the reading says what '+lean.w+' means in the same sentence run'+at+', '+JSON.stringify(lean.p.slice(0,200)));

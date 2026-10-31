@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v738 3a0cf29f 2026-10-30 17:50"><head><meta charset="utf-8">
+<html lang="en" data-build="v2721 ee481d79 2026-10-31 04:39"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -52107,10 +52107,14 @@ function sumStory(r){
     crisis screens. He ruled "Your energy leans malignant" and kept the word,
     and round PO rules that no term stands without its plain meaning in the
     same place. A hover tip is not the same place on a phone, so the sentence
-    the glossary already holds for the word (rail:benign, rail:malignant in
-    engine/data/gloss.js) follows it on the page, read from that one table so
-    the two can never say different things. */
- var leanW=lean.ben>=lean.mal?'benign':'malignant';
+    the glossary already holds for the word follows it on the page, read from
+    that one table so the two can never say different things.
+    RENAMED 30 October, his words: "change it to positive and negative."
+    The glossary keys moved too (rail:positive, rail:negative in
+    engine/data/gloss.js); lean.ben, lean.mal and r.benign below are the
+    engine's own field names and are untouched, only the word shown and
+    looked up changed. */
+ var leanW=lean.ben>=lean.mal?'positive':'negative';
  p.push(((lean.read===false?'':'Your energy leans <b>'
   +leanW+'</b>'
   +(r.benign===null?'':', toward '+(r.benign?'expanding':'contracting'))+'. '
@@ -84400,5 +84404,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005560575"></div>
+<div id="eof" hidden data-len="005560825"></div>
 </body></html>
