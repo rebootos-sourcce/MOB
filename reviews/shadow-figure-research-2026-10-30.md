@@ -401,3 +401,65 @@ Asked once, because it blocks the build and nothing else does:
 > count of descent layers (your 27 October model, where Lucifer is all nine)?
 > The first keeps Psychopathy as it is and needs a new rule for Lucifer. The
 > second rebuilds the top rung, and Psychopathy would need placing again.
+
+## Narrative review, 31 October 2026
+
+June Okonkwo-Lund, narrative seat. These are the labels only. The concepts are
+taken as given for this pass. Every word was checked for collisions against the
+build at `a2f46272`, not against the draft on its own. `check.py --line` passes
+every draft string and every replacement below with no hard failures. That
+tells us the mechanics are fine and nothing else: every verdict here comes down
+to truth or a collision, and the gate cannot read either.
+
+Halves that pass as written: **One face**, **Others pay**, **Bent truth**, and
+**Harm counted** as a meaning line. No pair passes whole.
+
+| Super complex | Draft | Verdict | Reason | Use instead |
+|---|---|---|---|---|
+| Psychopathy | Harm ignored / Harm counted | Revise | It is a clinical term, not a religious one, so the ruling does not reach it (see below). And "ignored" overstates. The record says harm "is always a neutral option", which means it counts for nothing. "Ignored" means it was seen and looked away from | The shown label stays **Psychopathy**. Its meaning line: **Harm uncounted** / **Harm counted**. As a sentence: "Harm to someone else does not stop the hand." / "Harm to someone else stops the hand." The Non-Harm law's own mark is "the hand is stopped, not raised" |
+| Lucifer | Sealed off / Fully open | Reject | "Open" is the lightest node state rung. "Fully opened" already ships for an address with nothing left to release (`ui/onboard.js:1531`), so the clear side would read as a body reading. "Sealed" is the product's word for a saved profile and a fixed daily sentence | Name nothing until the rule is ruled: two words cannot hold nine layers. If it lands on the Light axis line the engine already ships ("Pride as false light"): **Borrowed light** / **Own light**. A ten year old knows moonlight is borrowed |
+| Geryon | Two-faced / One face | Revise running, pass clear | "Two-faced" is the insult people throw at a person, which is a judgement under V9, and James hears an accusation. The noun counts what is there, one face shown and one underneath. "One face" is the card art's own word and sits on nothing a person sees | **Two faces** / **One face**. "Front" was avoided because the body has a front in this product (`figure.js`, "the front of the armpit") |
+| Asmodeus | Never enough / Enough | Revise both | "Never enough" is already, word for word, the distortion of address 108, Endless Seeking at the Crown (`nodes.js`), and the cue phrase for circle 4, Greed (`lexicon.js:1140`). One phrase would name two things. "Enough" alone in a label slot reads as somebody shouting stop | **Bottomless want** / **Want met** |
+| Moloch | Others pay / Own cost | Pass running, revise clear | "Others pay" is the figure's own shipped line, "Discipline that others pay for", and `POLE_MEANS` already explains it. "Own cost" reads as an order, own the cost, which is the Musashi ritual's wording, so a Reading slot would be doing an Instruction's job | **Others pay** / **Self pays** |
+| Set | Insider chaos / Kept rules | Reject both | Fails pass 1 on the surface it would print on. The dark read's four corners file chaos under the Demon and the Storm. Set's line is "engineered" and "strategy", which is the organised corner. "Chaos" puts Set in the wrong corner and breaks "Chaos is not malice", his ruling in `compass.js`. "Insider" is office and stock market language. "Kept" is a shipped label for days (`ui/ritcal.js`, `ui/ritual.js`, `ui/daily.js`) | **Inside job** / **Solid rules**. Avoided "ground" (an old figure label, and Elijah's "grounded fire"), "floor" (the Root affirmation "The floor holds it"), "held" (the house word for an address carrying charge), and "bearing" (a direction word, on the Compass) |
+| Druj | Bent truth / Plain truth | Pass running, revise clear | "Bent truth" matches the mark the Lie already wears: "the plumb line broken and turned aside". The Truth law's mark is a plumb line, so the opposite of bent is straight. "Plain" changes the picture halfway | **Bent truth** / **Straight truth**. The pole already ships as "The Lie" (`HOME_POLES`), so this figure has two shown names unless the pole moves too |
+| Baal | String pulling / Making | Reject both | "Pulling strings" means using friends in high places to get a favour, which is not this behaviour. Manipulation already has a name, the Manipulator saboteur, and this would be a second name for it. No documented opposite sits under "Making", and on its own it names a hobby | Show nothing on either side until an opposite is documented, and that silence is the copy decision. If he wants a word for the running side now: **Puppeteering**, from his card art. It stands on the Manipulator's ground |
+
+### Is a behaviour name safe beside the referral?
+
+No. Not as the shown label. **Psychopathy** stays on that row.
+
+The referral itself is a different category from a label. The code says so in
+both places that touch it (`darkRead` in `compass.js`, the dark read in
+`ui/drills.js`). It prints on depth alone, below CQ 11, whatever the row is
+called, and it contains no name. No naming sweep touches `DESCENT_REFER`. It
+moves only on a referral ruling.
+
+The row beside it keeps the clinical name, for four reasons:
+
+1. His words were "religious tones". Psychopathy is a research term with no
+   religious tone in it, so it falls outside the ruling as he worded it.
+2. The referral sends the person to a licensed clinician. The name is the one
+   word the product and that clinician both use. No clinician has heard "Harm
+   uncounted", so the handoff breaks at the door.
+3. The row sits in a list of four: Narcissism, Machiavellianism, Sociopathy,
+   Psychopathy. Rename one and it reads as the everyday one, when it is the
+   heaviest and the only one that brings the referral with it.
+4. A behaviour phrase sounds like something a practice can fix tonight. The
+   referral says this is past what a person can work on alone. The clinical
+   name agrees with the referral, and the behaviour phrase says the opposite.
+
+The record already decided this, above `DESCENT` in `compass.js`: "A clinical
+name belongs behind that gate."
+
+What the row actually lacks is its meaning (V9, V23). Right now the meaning
+sits only in a hover title, and it is the codex line, "Structural absence of
+the empathy feedback loop", which fails V21. The behaviour words go there:
+
+    Psychopathy. Harm to someone else does not stop the hand.
+
+The brief gate reads that as a mirror line with no findings, at grade 2.9.
+
+There is one limit, and it is mine. Whether a lay person should see a clinical
+term at all is a clinical question, not a copy question. The record marks the
+wording "requires expert review", and this note is not that review.
