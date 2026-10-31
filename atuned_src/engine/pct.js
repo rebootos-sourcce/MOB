@@ -98,6 +98,22 @@ var PCT_KIND={
  /* ui/ritual.js:1087, the days kept against the days due */
  kept:      {lo:0, hi:100, src:'ui/ritual.js', find:'pct:100*kept/due',
              say:'the days a ritual was kept against the days it was due'},
+ /* engine/sniff.js sniffGates, the avoidance cascade: 14.5 of 100 with both
+    upstream gates clean and rising 28.7 for each one distorted (GATE_BASE,
+    GATE_STEP). The object itself carries of:100, so this kind does too.
+    Guard 5 there is structural: never shown without the two upstream
+    readings beside it, because the number alone reads as a character flaw.
+    Added with the ui/storyui.js sweep of percent phase 3, which hand rolled
+    the figure with the word "per cent" and no dash for a reading never read. */
+ avoid:     {lo:0, hi:100, src:'engine/sniff.js', find:'avoidance:Math.round((GATE_BASE+GATE_STEP*dist)*10)/10,',
+             say:'the avoidance cascade, read only with its upstream pair'},
+ /* engine/compute.js accuracy(), the held and installed evidence feeding
+    the fit (eff=held+inst*0.35 through 1-e^(-eff/ACC_K)), pre-rounded like
+    a gate's share. Added with the ui/personas.js sweep of percent phase 3,
+    which hand rolled 'signal '+a.signal+'%' with no dash for a field with
+    none of it yet. */
+ signal:    {lo:0, hi:100, src:'engine/compute.js', find:'signal:Math.round(sig*100)};}',
+             say:'the held and installed evidence feeding the accuracy fit'},
 
  /* ---------- nought to ten ---------- */
  /* schema.js:1047, the boundary refuses a law outside 0 to 10 by name */
@@ -138,6 +154,16 @@ var PCT_KIND={
  /* compute.js:391 */
  intention: {lo:0, hi:10, src:'engine/compute.js', find:'- JQ*0.30,0,10);',
              say:'intention, the same laws read seat by seat'},
+ /* expression.js:8, exprFill: ig*(1-load*1.25), clamped 0 to 10 like every
+    other seat figure. Not the kind "expression" above, which is EX, the one
+    aggregate the whole field reads at a glance; this is the one channel
+    exprRead() walks at a time, each with its own fill and its own leak (10
+    minus this). Added with the ui/imprints.js sweep of percent phase 3,
+    which had reused "integrity" here on a coincidence of range alone: the
+    same 0 to 10, a different formula, a citation naming JQ for a value
+    that was never JQ's. */
+ exprfill:  {lo:0, hi:10, src:'engine/expression.js', find:'return clamp(ig*(1-load*1.25),0,10);}',
+             say:'how open this one expression channel is'},
  /* intake.js:55, the widest gap between a law's three answers, each 0 to 10
     at the boundary (schema.js:1069) */
  spread:    {lo:0, hi:10, src:'engine/intake.js', find:'var spread=Math.max.apply(null,v)-Math.min.apply(null,v);',
@@ -221,7 +247,25 @@ var PCT_KIND={
              say:'how much a seat leaks'},
  /* ui/avatarui.js:624, the mean of the avatar's closures */
  complete:  {lo:0, hi:1, src:'ui/avatarui.js', find:'var overall=cs.length?cs.reduce(function(s,v){return s+v;},0)/cs.length:null;',
-             say:'the avatar\'s percent complete'}};
+             say:'the avatar\'s percent complete'},
+ /* engine/seed.js seedShare, how much of what the nine axes carry is still
+    the stated four letter type, against how far the person has moved it
+    since. Added with the ui/intakeui.js sweep of percent phase 3: it hand
+    rolled Math.round(share*100)+'%' with no dash for a share of nothing,
+    which this kind now carries like every other. */
+ seedshare: {lo:0, hi:1, src:'engine/seed.js', find:'return Math.round(seeded/(seeded+moved)*100)/100;}',
+             say:'how much of the field is still the stated seed'},
+ /* engine/sniff.js sniffGates' side(), aware.clean and detached.clean: each
+    0 to 1, the right action's share of its own upstream pair, aware against
+    ignore and detached against attach. Added with the ui/storyui.js sweep
+    of percent phase 3. */
+ clean:     {lo:0, hi:1, src:'engine/sniff.js', find:'return {clean:n?u/n:null, distortion:n?d/n:null, n:n, read:n>0};}',
+             say:'the right action\'s share of its own upstream pair'},
+ /* engine/compute.js accuracy(), the mean fill across the ten expression
+    axes (exprRead, engine/expression.js), which widens the fit's spread
+    when it is low. Added with the ui/personas.js sweep of percent phase 3. */
+ exq:       {lo:0, hi:1, src:'engine/compute.js', find:'var exq=clamp(E.reduce(function(a,x){return a+x.fill;},0)/E.length/10,0,1);',
+             say:'the mean fill across the ten expression axes'}};
 
 /* THE FORMULA. Null for anything that is not a number, so a caller can tell
    "nothing to read" from "read, and it is nought" and never prints a zero over

@@ -1986,7 +1986,7 @@ function stListPaint(){
      +'title="'+esc(q.st?'Your words named '+String(q.fet||'').toLowerCase()+'. This seat has no address for it, so the charge stays at the seat.'
       :q.inf?'The seat was read. The words did not name this address.'
       :'Your words named '+String(q.fet||'').toLowerCase()+'.')+'">'
-     +'<span class="st-ring"></span>'+esc(q.label)+' <small>+'+(Math.round(q.amt*10)/10)+'</small></span>';}).join('')
+     +'<span class="st-ring"></span>'+esc(q.label)+' <small>+'+fmtPct('atom',q.amt)+'</small></span>';}).join('')
    +'</div></div>';});
  ST_SEEN=seen; box.innerHTML=o;
  box.querySelectorAll('.st-grp').forEach(function(gp){
@@ -2407,15 +2407,15 @@ function stLawPaint(){
   o+=stAnaHead('Intention','your last entry');
   /* NEVER THE AVOIDANCE NUMBER ALONE, the spec's own rule: it reads as a
      character flaw without the two readings it was built from beside it. */
-  o+='<p style="margin:6px 0 2px">Avoidance reads <b>'+g.intentional.avoidance+' per cent</b> in your last entry, built '
+  o+='<p style="margin:6px 0 2px">Avoidance reads <b>'+fmtPct('avoid',g.intentional.avoidance)+'</b> in your last entry, built '
    +'from the two readings below it and never shown without them.</p>'
    /* TWO LAWS OF ACTION, EACH AGAINST THE MOVE ACROSS FROM IT. These read
       "Aware against reactive, clean", and sniffGates (engine/sniff.js) scores
       aware against ignore, so reactive named an end the figure never counts,
       and clean was the spec's word for the share. Each figure is the right
       action's share of its own pair. */
-   +'<p style="margin:2px 0">Awareness against ignorance: <b>'+Math.round(g.aware*100)+' per cent</b> awareness.</p>'
-   +'<p style="margin:2px 0">Detachment against attachment: <b>'+Math.round(g.detached*100)+' per cent</b> detachment.</p>';}
+   +'<p style="margin:2px 0">Awareness against ignorance: <b>'+fmtPct('clean',g.aware)+'</b> awareness.</p>'
+   +'<p style="margin:2px 0">Detachment against attachment: <b>'+fmtPct('clean',g.detached)+'</b> detachment.</p>';}
  b.innerHTML=o;}
 
 /* ============================================================

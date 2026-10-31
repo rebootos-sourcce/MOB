@@ -397,21 +397,21 @@ console.log('\n=== the six masks, as pixels on the figure ===');
   /* THE LEADING PATTERN, the largest of S.charge, first of a tie as CHILD lists them */
   let li=0; CHILD.forEach((c,i)=>{if((+S.charge[c.nm]||0)>(+S.charge[CHILD[li].nm]||0))li=i;});
   const lead=rail.querySelector('.chr-lead');
-  out.lead={want:CHILD[li].nm,fig:(+S.charge[CHILD[li].nm]||0).toFixed(1),got:lead?lead.textContent:''};
+  out.lead={want:CHILD[li].nm,fig:fmtPct('charge',+S.charge[CHILD[li].nm]||0),got:lead?lead.textContent:''};
   /* TRACE. The toggle opens the card on the heaviest leak. */
   const SF=seatField(), byMean=SF.map((s,k)=>k).sort((a,b)=>SF[b].mean-SF[a].mean||a-b);
   const trace=host.querySelector('[data-chov="trace"]');
   trace.click(); await fr();
   let card=rail.querySelector('.chr-trace');
   const tabs=card?[...card.querySelectorAll('.chr-tabs [data-chtrace]')]:[];
-  const ct=card?card.textContent:'', am=/Address (\d+)/.exec(ct), cm=/Charge ([\d.]+)/.exec(ct);
+  const ct=card?card.textContent:'', am=/Address (\d+)/.exec(ct), cm=/Charge ([\d.]+%?|–)/.exec(ct);
   const N=am?+am[1]:-1, af=addrField().filter(a=>a.i===N)[0];
   const q=card&&card.querySelector('.chr-q'), qt=q?q.textContent.replace(/^“|”$/g,'').replace(/\.\.\.$/,''):'';
   out.trace={pressed:trace.getAttribute('aria-pressed'),tracing:host.classList.contains('chp-tracing'),card:!!card,sel:CHV.sel,
    tabs:tabs.map(b=>+b.getAttribute('data-chtrace')),on:tabs.filter(b=>b.getAttribute('aria-pressed')==='true').map(b=>+b.getAttribute('data-chtrace')),
    names:tabs.map(b=>b.textContent.trim()),seats:tabs.map(b=>BANDS[+b.getAttribute('data-chtrace')]),byMean:byMean,meanSeats:byMean.map(k=>BANDS[k]),
    topSh:charSmooth(CHAR_SEAT_LO,CHAR_SEAT_FULL,SF[byMean[0]].mean),
-   addr:{N:N,seat:BY[N]?BY[N].b:null,want:BANDS[CHV.sel],field:af?af.field:null,got:cm?cm[1]:null,charge:af?af.sq.toFixed(1):null},
+   addr:{N:N,seat:BY[N]?BY[N].b:null,want:BANDS[CHV.sel],field:af?af.field:null,got:cm?cm[1]:null,charge:af?fmtPct('weight',af.sq):null},
    story:{q:qt,own:!!qt&&CURP.story.entries.some(e=>String(e.text).indexOf(qt)===0)}};
   /* Close trace puts all of it down */
   const tc=document.getElementById('chtc'); if(tc)tc.click(); await fr();
@@ -424,7 +424,7 @@ console.log('\n=== the six masks, as pixels on the figure ===');
   const rc=cv.getBoundingClientRect(), ap=sc.AP.slice().sort((a,b)=>sc.achT[b[2]]-sc.achT[a[2]])[0];
   cv.dispatchEvent(new PointerEvent('pointermove',{clientX:rc.left+ap[0],clientY:rc.top+ap[1],pointerType:'mouse',bubbles:true}));
   const hf=addrField()[ap[2]], hl=document.getElementById('chhover');
-  out.hover={name:hf.name,charge:hf.sq.toFixed(1),txt:hl?hl.textContent:''};
+  out.hover={name:hf.name,charge:fmtPct('weight',hf.sq),txt:hl?hl.textContent:''};
   cv.dispatchEvent(new PointerEvent('pointerleave',{pointerType:'mouse',bubbles:true}));
   out.hover.off=hl?hl.textContent:'';
   /* READ THIS MASK opens its summary in Selection */
@@ -2441,9 +2441,23 @@ ok(open_.after===false&&open_.afterShown===false,
 const virginSweep=await page.evaluate(()=>{
  toYou();
  const keptLaws=CURP&&CURP.laws?JSON.parse(JSON.stringify(CURP.laws)):null;
+ const keptIntake=CURP&&CURP.intake&&CURP.intake.answers?JSON.parse(JSON.stringify(CURP.intake.answers)):null;
  if(CURP)CURP.laws={};
+ /* THE SPREAD IS ALSO DERIVED FROM THE DEFAULT SIX, percent phase 3. iqScore
+    reads the three per-question answers under each law, not S.law's own
+    committed figure, so this profile's real spread from an earlier step
+    could still be read off it. Cleared and restored the same way laws is. */
+ if(CURP&&CURP.intake)CURP.intake.answers={};
  CHILD.forEach(c=>{S.charge[c.nm]=0;S.replace[c.nm]=0;});
  SI.forEach(l=>{S.law[l.nm]=6;});
+ /* EVERY TAB, NOT ONLY FIELD. A tab renders when it is set and not on every
+    tick, so the Avatar's own intake summary (#iqbody) stayed drawn from
+    whatever this profile last showed there and kept a real, non-default
+    spread in the page's hidden markup. It surfaced once that figure carried
+    a percent sign (engine/pct.js) and not before, which is this sweep's own
+    signal working and not a new leak: the whole page is only honestly swept
+    once every door onto it has actually been opened. */
+ TABDEF.forEach(function(t){setTab(t.k); render();});
  setTab(TAB.FIELD); layout(); draw(compute());
  const r=compute();
  /* the whole rendered page, not one element, because the last time this was
@@ -2457,6 +2471,7 @@ const virginSweep=await page.evaluate(()=>{
  /* the canvas core is pixels, so it is read from what draw was asked to write */
  o.pol=(document.getElementById('pol').textContent||'').replace(/\s+/g,' ');
  if(CURP&&keptLaws)CURP.laws=keptLaws;
+ if(CURP&&CURP.intake&&keptIntake)CURP.intake.answers=keptIntake;
  return o;});
 ok(virginSweep.unread,'the field reads as unread');
 /* CHANGED 25 SEPTEMBER. These asserted the arithmetic still produced a

@@ -232,10 +232,10 @@ function ritSugMark(x,b){
  var cf=n&&n.cf?CHILD.filter(function(c){return c.nm===n.cf;})[0]:null;
  var glyph=(x.rel!=null&&cf)?glyphPath(cf.ic):(SEATGLYPH[b]||SEATGLYPH._);
  var col=b?seatCol(b):'var(--accent)';
- var badge=crBadge(b,n?n.sq*10:0,{size:'md', color:col, glyph:glyph, raw:n?n.sq.toFixed(1):'–'});
+ var badge=crBadge(b,n?n.sq*10:0,{size:'md', color:col, glyph:glyph, raw:n?fmtPct('weight',n.sq):'–'});
  var says=!b?'No seat yet, so the mark is empty.'
   :n?'The mark is '+(x.rel!=null&&cf?'the pattern '+cf.nm.toLowerCase()+', ':'the seat, ')+'and the ring is '
-    +String(n.k).toLowerCase()+' held at '+ritThe(b)+', at '+n.sq.toFixed(1)+'.'
+    +String(n.k).toLowerCase()+' held at '+ritThe(b)+', at '+fmtPct('weight',n.sq)+'.'
   :'The mark is the seat. Nothing is held at '+ritThe(b)+', so the ring is empty.';
  return {badge:badge, says:says};}
 
@@ -277,8 +277,8 @@ function ritAvHtml(st){
  var all=A0&&A0.overall!=null?A0.overall:null, pc=all===null?0:Math.round(all*100);
  var hero='<span class="rv-avhero"'+rvTip('Your avatar',
    'Percent complete: how much of what your avatar\'s stories carried has gone since you wrote them. The same figure the Avatar page draws round its core.',
-   all===null?'':'Complete|'+pc+'%|100%','Avatar')+'>'
-  +cr('Heart',pc,{size:'hero', hot:false, color:'var(--k)', glyph:(typeof AV_IC!=='undefined'?AV_IC.person:SEATGLYPH._), raw:all===null?'–':pc+'%'})
+   all===null?'':'Complete|'+fmtPct('complete',all)+'|100%','Avatar')+'>'
+  +cr('Heart',pc,{size:'hero', hot:false, color:'var(--k)', glyph:(typeof AV_IC!=='undefined'?AV_IC.person:SEATGLYPH._), raw:fmtPct('complete',all)})
   +'<span class="rv-avhl">Avatar</span></span>';
  var cyc='<div class="rv-avc"'+rvTip('Cycles',
    'Each day you keep a ritual turns your avatar one seat, root to crown. Seven days make a turn, and three turns make a cycle.',
@@ -300,8 +300,8 @@ function ritAvHtml(st){
    :fed.length?'Fed by '+fed.map(function(p){return ritName(p.steps);}).join(', ')+'.':'No ritual at this seat yet.';
   return '<li class="rv-avs'+(fed.length?' rv-fed':'')+'" style="--c:'+seatCol(b)+';--i:'+i+'"'
    +rvTip(A.nm+', at '+ritThe(b),'"'+String(x.pair.be).replace(/^"+|"+$/g,'')+'" '+said,
-    ap===null?'':'Complete|'+ap+'%|100%',A.about)+'>'
-   +crBadge(b,ap||0,{size:'md', glyph:(typeof AV_IC!=='undefined'&&AV_IC[A.k])||SEATGLYPH[b], raw:ap===null?'–':ap+'%'})
+    ap===null?'':'Complete|'+fmtPct('complete',ar.pct)+'|100%',A.about)+'>'
+   +crBadge(b,ap||0,{size:'md', glyph:(typeof AV_IC!=='undefined'&&AV_IC[A.k])||SEATGLYPH[b], raw:ap===null?'–':fmtPct('complete',ar.pct)})
    +'<span class="rv-avn">'+esc(A.nm)+'</span><i class="rv-avd" aria-hidden="true"></i></li>';}).join('')+'</ul>';
  return '<section class="rv-sec rv-c rv-c-av" data-slot="top-left"><div class="rv-hd"><span class="rv-h">Ritual to avatar</span></div>'
   +'<p class="rv-mean">Your avatar\'s percent complete, the cycles your kept days turn, and each seat your avatar has a story at.</p>'

@@ -248,7 +248,6 @@ function avArc(cx,cy,r,f){if(f<=0)return ''; if(f>=1)f=0.9999;
  var a0=-Math.PI/2,a1=a0+f*Math.PI*2;
  return 'M'+avP(cx+r*Math.cos(a0))+' '+avP(cy+r*Math.sin(a0))+' A'+r+' '+r+' 0 '+(f>0.5?1:0)
   +' 1 '+avP(cx+r*Math.cos(a1))+' '+avP(cy+r*Math.sin(a1));}
-function avPct(f){return f==null?'–':Math.round(f*100)+'%';}
 
 /* ---------------- whose record this is ----------------
    A worked example is a demonstration and not a record, so nothing on this
@@ -733,7 +732,7 @@ function avRing(st){
   var c=avPos(x.a,ORB), A=st.areas[x.k], on=sel===x.b;
   return '<button type="button" class="av-sat avh-sat'+(on?' av-on':'')+(A.set?' avh-set':'')+'" data-avsat="'+x.k+'" style="left:'
    +avP(c[0])+'%;top:'+avP(c[1])+'%;--c:'+seatCol(x.b)+'" aria-pressed="'+on+'" aria-label="'+x.nm+', '+AV_THE[x.b]+', '
-   +(A.set?'story written':'nothing written')+(A.pct==null?'':', '+Math.round(A.pct*100)+' percent complete')+'">'
+   +(A.set?'story written':'nothing written')+(A.pct==null?'':', '+fmtPct('complete',A.pct)+' complete')+'">'
    +avSvg(AV_IC[x.k])
    +(A.set?'<span class="avs-tick" aria-hidden="true">'+avSvg(AV_OK)+'</span>':'')+'</button>';}).join('');
  /* each ring's name sits under it. Inside the orbit, where GG put them, the
@@ -1097,7 +1096,7 @@ function avMenu(st){
  var editing=!!(x&&AV.edit===x.i);
  var hd='<div class="av-ph avm-hd"><span class="av-pic">'+avSvg(AV_IC[A.k])+'</span>'
   +'<div><div class="av-pn">'+A.nm+'</div><p class="av-pa">'+AV_THE[b]+'</p></div>'
-  +(x&&x.c!=null?'<span class="av-pp">'+avPct(x.c)+'<small>Complete</small></span>':'')+'</div>';
+  +(x&&x.c!=null?'<span class="av-pp">'+fmtPct('complete',x.c)+'<small>Complete</small></span>':'')+'</div>';
  return '<aside class="av-card av-panel avm" style="--c:'+seatCol(b)+'">'+tabs+hd
   +(x&&!editing?avSeatWritten(st,b,x):'')+'</aside>';}
 /* what the sniffer hears while the release line is typed: where it lands,
@@ -1147,7 +1146,7 @@ function avRunHTML(st){
   out+='<button type="button" class="av-run-row'+(on?' av-on':'')+'" data-avsab="'+esc(x.nm)+'" aria-pressed="'+on+'" style="--c:'+c+'">'
    +'<span class="av-run-ic"><svg viewBox="0 0 24 24" aria-hidden="true">'+glyphPath(x.fam?x.fam.ic:'')+'</svg></span>'
    +'<span class="av-run-nm">'+esc(x.nm)+'</span>'
-   +'<span class="av-run-v">'+x.w.toFixed(1)+'</span>'
+   +'<span class="av-run-v">'+fmtPct('chain',x.w)+'</span>'
    +'<span class="av-run-d av-'+x.dir+'">'+(R.written?x.dir:'')+'</span>'
    +'<span class="av-run-bar"><i style="width:'+Math.min(100,x.w*10).toFixed(0)+'%"></i></span></button>';});
  return out+'</div></section>';}

@@ -829,8 +829,8 @@ function rbPairSays(pairWord,o,lean){
  var s=[rbSay(pairWord),rbSay(o.L.nm),rbSay(o.R.nm)].filter(Boolean).join(' ');
  return (s+(lean?' '+lean:'')).trim();}
 function rbPairAria(pairWord,o,say,does){
- var f=function(P){var p=pct(P.kind||'lean',P.v);
-  return P.nm+' '+(o.read?(p>0?p+' per cent':'zero'):'not read yet');};
+ var f=function(P){var fp=fmtPct(P.kind||'lean',P.v);
+  return P.nm+' '+(o.read?(fp!==PCT_DASH?fp:'zero'):'not read yet');};
  return pairWord+'. '+f(o.L)+', '+f(o.R)+'. '+say+(does?' '+does:'');}
 /* a reading arrives. o is rbPair's own spec, with each pole's v, its swing
    sw(t) as an offset from v in the same units, and fw, the width that swing
