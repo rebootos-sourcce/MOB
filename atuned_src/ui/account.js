@@ -762,7 +762,11 @@ function accWire(){
  /* the same importer the profile sheet draws, under its own ids, and the page
     redraws on a load that landed because the record's own name is printed on it */
  if(typeof recordImportWire==='function')recordImportWire('ac',function(){renderAccount();});
- var hw=$('achowto'); if(hw)hw.onclick=function(){sheetOpen(helpSheet());};
+ /* helpSheet() opens the sheet itself and returns nothing; wrapping it in
+    another sheetOpen() here opened the right sheet and then immediately
+    overwrote it with the literal word "undefined". Found by uiux-architect,
+    31 October, reproducing the real button press. */
+ var hw=$('achowto'); if(hw)hw.onclick=function(){helpSheet();};
  var ac=$('achelpc'); if(ac)ac.onclick=function(){obCompose('comment');};
  var os=$('acobsend'); if(os)os.onclick=function(){obFlush(os);};
  var aq=$('achelpq'); if(aq)aq.onclick=function(){obCompose('question');};

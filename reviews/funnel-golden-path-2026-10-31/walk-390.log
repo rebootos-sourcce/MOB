@@ -1,0 +1,70 @@
+
+== 0. the dead control probe, against a known dead and a known live button
+  FAIL  the probe reads a dead button as dead and a live one as live, at the top and mid page  {"pd":{"live":false,"scrolled":false,"drift":false},"pl":{"live":true,"scrolled":false,"drift":false},"pdm":{"live":true,"scrolled":false,"drift":false},"plm":{"live":true,"scrolled":false,"drift":true}}
+
+== 1. the funnel landing, 390 wide
+  PASS  the landing does not scroll sideways  0
+  PASS  no broken image on the landing  []
+  PASS  no undefined, NaN, null or [object on the landing
+  PASS  every link on the landing points at a file or an anchor that exists  {"badLinks":[],"hashMiss":[]}
+  29 visible buttons on the landing at load
+  FAIL  every visible button on the landing does something when pressed  ["Stress","Anger","Fear","Overwhelm","Grief","Tension"]
+
+== 2. the quiz, from the landing's own door
+  PASS  the landing has a Take quiz door
+  PASS  the door opens the quiz  "http://127.0.0.1:35883/atuned-quiz.html"
+  PASS  the quiz opening does not scroll sideways  0
+  PASS  the signal says back what was noticed  "Before the questions / There it is."
+  PASS  every question answered by its own buttons, and the last opens the reading  {"presses":100,"total":100,"qs":{"answered":100,"state":"read"},"stuck":null}
+
+== 3. the reading, layer by layer
+  PASS  Keep reading opens five layers, one at a time  5
+  PASS  each layer carries real text, not an empty box  ["1:652","2:209","3:2538","4:1179","5:613"]
+  PASS  the reading prints no undefined, NaN, null or [object
+  PASS  the reading prints a coherence figure and its tier word  {"cq":"51","tier":"Even"}
+  PASS  the figure is explained beside it (what it is, what 100 means)
+  PASS  the figure printed is the engine's own CQ  {"printed":"51","engine":51.476190476190474}
+  FAIL  house percent rule: CQ prints as N% (PERCENT-FRAMEWORK rule 6)  {"printed":"51","fmtPct":"51%"}
+  FAIL  house percent rule: law and seat scores print as percent, not 0.0 out of ten (rule 1, the "6.2" example)  {"laws":["1.5","2.5","3.5","3.8","3.8"],"seats":["3.3","2.7","1.7","2.1","1.8","1.6","2.8"]}
+  PASS  the reading does not scroll sideways  0
+  PASS  no broken image in the quiz  []
+
+== 3b. a story in the quiz, then the door
+  PASS  the story is read and says what it lit  "What your words lit / Your words landed at a seat and named nothing exact. / "
+  PASS  Open the app with my record is armed with the record
+  PASS  the link carries a whole record with its 21 laws  21
+  PASS  the funnel sent nothing to any server on the way  {"worker":0,"cut":[]}
+  PASS  the plain Open the app door points at the deployed app name  "atuned.html"
+
+== 4. the app opened from the link, and Create account
+  PASS  the app opens with its door standing and says the record arrived  "Loaded Web reading from the link. Nothing else was touched."
+  PASS  the door is up and the record is off the address bar  {"login":true,"hash":"","name":"Web reading","btns":["Log in","Create account","Guest"]}
+  PASS  one sign up reached the server with the typed email and was made  [201]
+  PASS  the app says the account was made  ["Account created. Signed in as walk.390@example.com."]
+  PASS  the door closes and no onboarding asks again what the quiz asked  {"login":false,"ob":false}
+  PASS  the sign in is held in this browser  "walk.390@example.com"
+  PASS  first arrival from the funnel lands on Summary (9 October ruling)  {"tab":1,"SUMMARY":1,"sumVisible":true}
+  PASS  Summary has a reading, not the empty four doors  {"unread":false}
+  PASS  the 21 laws in the app are the laws the quiz scored
+  PASS  the app's coherence is the quiz's  {"app":51.476190476190474,"quiz":"51"}
+  PASS  Summary carries real text  2969
+  PASS  Summary prints no undefined, NaN, null or [object
+  PASS  the Summary coherence plate prints a percent once all laws are answered, a word before  {"v":"51%","complete":true,"want":"51%"}
+  NOTE  the quiz story is not in the app record (the quiz door says "Your story is not in it", by design)
+  PASS  Summary does not scroll sideways  0
+  PASS  no broken image in the app  []
+
+== 5. reload, and the first landing happens once
+  PASS  after a reload: still signed in, same record, same laws  {"login":false,"name":"Web reading"}
+  PASS  and still on Summary, where they left off  1
+  PASS  left on Discover, a reload opens Discover, not Summary again (once only)  {"tab":0,"STORY":0}
+
+== 6. errors and the network
+  first visit calls: ["POST /v1/funnel/session 201","POST /v1/funnel/session/ID/attach 200"]
+  all worker calls: ["POST /v1/funnel/session 201","POST /v1/auth/signup 201","POST /v1/funnel/session/ID/attach 200","GET /v1/me 200","GET /v1/me 200","GET /v1/me 200"]
+  PASS  no page error anywhere on the walk  []
+  PASS  no console error anywhere on the walk  []
+  PASS  no request to the site failed and nothing asked for a file that is not deployed  {"failedReq":[],"misses":[]}
+  PASS  nothing reached for any other host  []
+
+===== 390x844: 44 passed, 4 failed =====

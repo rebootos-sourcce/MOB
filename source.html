@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2729 06f73d4b 2026-10-31 15:19"><head><meta charset="utf-8">
+<html lang="en" data-build="v2732 578aa1a7 2026-10-31 16:52"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -76608,7 +76608,11 @@ function accWire(){
  /* the same importer the profile sheet draws, under its own ids, and the page
     redraws on a load that landed because the record's own name is printed on it */
  if(typeof recordImportWire==='function')recordImportWire('ac',function(){renderAccount();});
- var hw=$('achowto'); if(hw)hw.onclick=function(){sheetOpen(helpSheet());};
+ /* helpSheet() opens the sheet itself and returns nothing; wrapping it in
+    another sheetOpen() here opened the right sheet and then immediately
+    overwrote it with the literal word "undefined". Found by uiux-architect,
+    31 October, reproducing the real button press. */
+ var hw=$('achowto'); if(hw)hw.onclick=function(){helpSheet();};
  var ac=$('achelpc'); if(ac)ac.onclick=function(){obCompose('comment');};
  var os=$('acobsend'); if(os)os.onclick=function(){obFlush(os);};
  var aq=$('achelpq'); if(aq)aq.onclick=function(){obCompose('question');};
@@ -84917,5 +84921,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005594249"></div>
+<div id="eof" hidden data-len="005594517"></div>
 </body></html>
