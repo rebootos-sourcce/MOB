@@ -212,12 +212,14 @@ function judgeDepth(x) {
   set('cons', (prose(d3.payoff, 40) ? 0.5 : 0) + (prose(d3.cost, 40) ? 0.5 : 0), 'payoff and cost, each at least 40 characters');
   set('scene', prose(d3.scene, 120) ? 1 : prose(d3.scene) ? 0.5 : 0, 'a lived scene, at least 120 characters');
   set('inv', prose(d3.inversion, 60) ? 1 : prose(d3.inversion) ? 0.5 : 0, 'the healthy inversion as behaviour, at least 60 characters');
-  // The rubric's counterexample is two things: the same behaviour when it is
-  // healthy, and the same behaviour with another cause. One alone is half.
+  // The audit's rubric: "a counterexample, where the same behaviour is
+  // healthy or has another cause". Either kind is enough, but it must say
+  // which, because a machine cannot tell a counterexample from a caveat. The
+  // first cut demanded both kinds, which is stricter than the rule it claims
+  // to hold, and the 31 October sweep caught it. An unkinded one is half.
   const ce = Array.isArray(d3.counterexamples) ? d3.counterexamples.filter(c => c && prose(c.text, 60)) : [];
-  const kinds = new Set(ce.map(c => c.kind));
-  set('ctr', kinds.has('healthy') && kinds.has('other-cause') ? 1 : ce.length ? 0.5 : 0,
-    'counterexamples[] with both kinds, healthy and other-cause, each at least 60 characters');
+  set('ctr', ce.some(c => c.kind === 'healthy' || c.kind === 'other-cause') ? 1 : ce.length ? 0.5 : 0,
+    'counterexamples[] with at least one of kind healthy or other-cause, each at least 60 characters');
   const rq = Array.isArray(d4.recognition) ? d4.recognition : [];
   set('rq', rq.length && rq.every(q => prose(q) && /\?\s*$/.test(q)) ? 1 : rq.length ? 0.5 : 0, 'recognition[] of real questions');
   const ds = Array.isArray(d4.disconfirmers) ? d4.disconfirmers.filter(s => prose(s, 60)) : [];
@@ -349,7 +351,7 @@ function selfTest(T) {
   const drop = {
     def: x => { x.d1.definition = 'Short.'; }, prov: x => { x.d1.provenance = []; }, poles: x => { delete x.d2.opposite; },
     trig: x => { delete x.d3.trigger; }, beh: x => { delete x.d3.move; }, cons: x => { delete x.d3.cost; }, scene: x => { delete x.d3.scene; },
-    inv: x => { delete x.d3.inversion; }, ctr: x => { x.d3.counterexamples = x.d3.counterexamples.slice(0, 1); },
+    inv: x => { delete x.d3.inversion; }, ctr: x => { x.d3.counterexamples = x.d3.counterexamples.map(c => ({ text: c.text })); },
     rq: x => { x.d4.recognition = ['a statement and not a question at all.']; }, dis: x => { x.d4.disconfirmers = []; },
     evc: x => { x.d4.evidenceClass = { d1: 'fact' }; }, rp4: x => { x.d4.researchPasses.pop(); },
   };
@@ -416,6 +418,126 @@ function gate(T) {
   return F ? 1 : 0;
 }
 
+/* ---------- --sweep: what is already written somewhere, read out of git ---------- */
+// The owner, 31 October: "The records are largely filled up on the GitHub
+// server. So search for what you have first. And you shouldn't have to keep
+// searching." tools/records-sources.json lists every location the first sweep
+// found across 353 MOB and 85 reboot-os refs; this reads each one with git
+// show, no checkout, so a branch nobody merged is still read, and maps it onto
+// the depth record shape by meaning and only by meaning. A field that is
+// weaker than the component goes to the weaker slot or nowhere: a single
+// counterexampleGuard carries no kind, so it can only ever be half of ctr, and
+// a contextualDiscriminant is a question about neighbours, not a disconfirmer.
+// Then the same judgeDepth that scores a draft scores it, so a template that
+// filled every field with the same sentence scores what it is.
+const { execFileSync } = require('child_process');
+const strs = a => (Array.isArray(a) ? a : a == null ? [] : [a]).map(x => typeof x === 'string' ? x : x && (x.url || x.source || x.title || x.id || JSON.stringify(x))).filter(Boolean);
+// An evidence label is credited when the source labelled the pass at all, in
+// its own words, mapped onto T1's four. An unlabelled pass is unlabelled.
+const evcOf = s => { s = String(s || '').toLowerCase(); return !s ? null : /practition/.test(s) ? 'practitioner-interpretation' : /empiric|unverified/.test(s) ? 'unverified-empirical'
+  : /editor|hypoth|synth|infer|interpret/.test(s) ? 'editorial-hypothesis'
+  // repository_static_metadata is the celestial pass 4 label: a fact read off
+  // the repository, which is source-originated. The first cut read it as no
+  // label and failed four passes that were labelled.
+  : /source|histor|fact|canon|tradition|repositor|metadata/.test(s) ? 'source-originated' : null; };
+const normPasses = rp => (rp || []).map(p => ({ pass: 'p' + String(p.pass).replace(/\D/g, ''), finding: [].concat(p.finding || p.findings || p.analysis || []).join(' '),
+  sources: strs(p.sources || p.source_refs || p.researchSources), evidence: evcOf(p.evidence_class || p.evidence || p.lens) }));
+// A source that labels every pass has labelled its claims, pass by pass, so
+// the record's evidence class is read off its passes: p1 for d1, p3 for d3,
+// p4 for d4. One unlabelled pass and the record has no class.
+const ext = o => {
+  const x = Object.assign({ reviewState: 'draft', ownerApproved: false }, o), rp = ((x.d4 || {}).researchPasses) || [];
+  const by = n => (rp.find(p => p.pass === 'p' + n) || {}).evidence;
+  if (rp.length === 4 && rp.every(p => p.evidence) && !(x.d4 || {}).evidenceClass) x.d4.evidenceClass = { d1: by(1), d3: by(3), d4: by(4) };
+  return x;
+};
+const ADAPT = {
+  sab33: (j, T) => j.records.map(r => [(T.SABDEF[key(r.saboteurName)] || {}).c ? 'sab:' + T.SABDEF[key(r.saboteurName)].c : null, '#' + r.id, ext({
+    d1: { definition: (r.sourceFields || {}).source_definition },
+    d3: { trigger: (r.sourceFields || {}).source_activation_context, inversion: (r.sourceFields || {}).source_intervention_text,
+      counterexamples: r.counterexampleGuard ? [{ text: r.counterexampleGuard }] : [] },
+    d4: { researchPasses: normPasses(r.researchPasses) } })]),
+  fetter108: j => j.records.map(r => ['node:' + parseInt(String(r.nodeId).replace(/\D/g, ''), 10), '#' + r.id, ext({
+    d3: { move: r.behavioralHypothesis, counterexamples: r.counterexampleGuard ? [{ text: r.counterexampleGuard }] : [] },
+    d4: { researchPasses: normPasses(r.researchPasses) } })]),
+  family9: j => j.records.map(r => [/^descent-/.test(r.id.split(':')[1]) ? 'descent:' + r.name : 'hcx:' + r.name, '#' + r.id, ext({
+    d2: { opposite: r.constructiveExpression }, d3: { move: r.shadowOrLoadMechanism }, d4: { researchPasses: normPasses(r.researchPasses) } })]),
+  hcx18: j => j.records.map(r => {
+    const m = r.id.match(/^(?:hcx|hypercomplex):(.+)$/), inv = r.id.match(/^inferred:hypercomplex-inverse:(.+)$/);
+    return [m ? 'hcx:' + m[1] : inv ? 'hcxo:' + inv[1] : null, '#' + r.id, ext({ d1: { definition: r.researchQualifiedDefinition }, d4: { researchPasses: normPasses(r.researchPasses) } })];
+  }),
+  overlay: j => j.records.map(r => [/^(axis|node):/.test(r.id) ? r.id : null, '#' + r.id, ext({ d1: { definition: r.def }, d4: { researchPasses: normPasses(r.researchPasses) } })]),
+  hcxmodes: (src) => {
+    const a = src.indexOf('const HYPERCOMPLEX_MODES=['), b = src.indexOf('];', a);
+    if (a < 0 || b < 0) return [];
+    // a data literal sliced out of the file and evaluated with nothing in scope
+    const M = vm.runInNewContext('(' + src.slice(a + 'const HYPERCOMPLEX_MODES='.length, b + 1) + ')', {});
+    return M.map(m => ['hcx:' + m.name, '#HYPERCOMPLEX_MODES ' + m.name, ext({
+      d1: { definition: m.definition }, d2: { opposite: m.inverseDefinition },
+      d3: { move: m.behavior, trigger: m.triggerMechanism, scene: m.livedExample, payoff: m.impact, inversion: m.practice } })]);
+  },
+  kindrec: j => j.records.map(r => ['arch:' + r.nm, '#' + r.id, ext({
+    d1: { definition: r.def }, d2: { opposite: r.oppositeDefinition },
+    d3: { move: r.behavior, trigger: r.triggerMechanism, scene: r.livedExample, payoff: r.impact, inversion: r.practice },
+    d4: { researchPasses: normPasses(r.researchPasses) } })]),
+  teach31: (j, T) => {
+    const poles = [].concat(T.MIRROR, T.PATHS, T.HOME_POLES), out = [];
+    j.records.forEach(r => {
+      const nm = String(r.nm || '').toLowerCase(), hit = poles.filter(p => String(r.id).startsWith('compass-teacher:') ? String(p.up).toLowerCase() === nm
+        : String(p.dn).toLowerCase() === nm || String(p.dn).toLowerCase() === 'the ' + nm);
+      [...new Set(hit.map(p => p.k))].forEach(k => out.push(['pole:' + k, '#' + r.id, ext({
+        d1: { definition: r.def }, d2: { opposite: r.oppositeDefinition },
+        d3: { move: r.behavior, trigger: r.triggerMechanism, scene: r.livedExample, payoff: r.impact, inversion: r.practice },
+        d4: { researchPasses: normPasses(r.researchPasses) } })]));
+    });
+    return out;
+  },
+  dom19: j => j.records.map(r => ['dom:' + r.name, '#' + r.name, ext({ d1: { definition: r.clear }, d2: { opposite: r.distorted } })]),
+  celestial: (j, T, table) => {
+    const R = Array.isArray(j) ? j : (j.records || Object.values(j).find(Array.isArray) || []);
+    const keys = Object.keys(T[table] || {});
+    return R.map(r => {
+      const nm = String(r.display_name || r.canonical_name || '').replace(/^The\s+/, ''), k = keys.find(x => x.toLowerCase() === nm.toLowerCase());
+      const arc = r.behavioral_arc || {};
+      return [k ? 'line:' + table + ':' + k : null, '#' + r.id, ext({
+        d1: { definition: r.essence }, d3: { scene: arc.scene, trigger: arc.loop, inversion: arc.inversion },
+        d4: { recognition: strs(r.recognition_questions), disconfirmers: strs(r.counterevidence || arc.counterevidence), researchPasses: normPasses(r.research_passes) } })];
+    });
+  },
+};
+
+function sweep(T, R) {
+  const M = JSON.parse(fs.readFileSync(path.join(__dirname, 'records-sources.json'), 'utf8'));
+  const at = {}, notes = [];
+  R.forEach(r => { at[r.id] = []; });
+  for (const s of M.sources) {
+    const repo = path.resolve(ROOT, M.repos[s.repo] || '.');
+    let text;
+    try { text = execFileSync('git', ['-C', repo, 'show', s.ref + ':' + s.path], { encoding: 'utf8', maxBuffer: 64 << 20, stdio: ['ignore', 'pipe', 'ignore'] }); }
+    catch (e) { notes.push('UNREADABLE ' + s.id + ': ' + s.repo + ' ' + s.ref + ':' + s.path + ' did not resolve. Fetch it, or fix the manifest.'); continue; }
+    const [ad, table] = s.adapter.replace(/^presence:/, 'celestial:').split(':');
+    let rows;
+    try { rows = ad === 'hcxmodes' ? ADAPT.hcxmodes(text) : ADAPT[ad](JSON.parse(text), T, table); }
+    catch (e) { notes.push('UNREAD ' + s.id + ': adapter ' + ad + ' failed, ' + e.message); continue; }
+    let mapped = 0, stray = [];
+    rows.forEach(([id, loc, x]) => {
+      if (!id || !at[id]) { stray.push(loc); return; }
+      const j = judgeDepth(x); mapped++;
+      at[id].push({ src: s.id, where: s.repo + ' ' + s.ref + ':' + s.path + ' ' + loc, o: j.o, errors: j.errors, passes: (((x.d4 || {}).researchPasses) || []).length });
+    });
+    notes.push(s.id + ': ' + mapped + ' rows onto records' + (stray.length ? ', ' + stray.length + ' onto no record (' + stray.slice(0, 4).join(', ') + (stray.length > 4 ? ', ...' : '') + ')' : ''));
+  }
+  // The best a record could reach if every location were wired: per
+  // component, the strongest of the canon and each external copy. A refused
+  // copy, placeholder text or a stored join, adds nothing.
+  R.forEach(r => {
+    const c = Object.assign({}, r.c);
+    at[r.id].forEach(e => { if (!e.errors.length) COMP.forEach(k => { if (k !== 'joins' && c[k] !== 'n' && (e.o[k] || 0) > c[k]) c[k] = e.o[k]; }); });
+    r.wired = { c, g: grade(c) }; r.wired.pass = Object.values(r.wired.g).every(v => v === 'P' || v === 'N'); r.at = at[r.id];
+  });
+  return notes;
+}
+
 function main(argv) {
   let engine = path.resolve(process.env.ENGINE || path.join(ROOT, 'engine.js')), drafts = null, json = null, rec = null, mode = 'table';
   for (let i = 0; i < argv.length; i++) {
@@ -426,15 +548,45 @@ function main(argv) {
     else if (a === '--record') { rec = argv[++i]; mode = 'record'; }
     else if (a === '--missing') mode = 'missing';
     else if (a === '--gate') mode = 'gate';
+    else if (a === '--sweep') mode = 'sweep';
     else { console.log('FAIL unknown option ' + a); return 1; }
   }
   const T = loadEngine(engine);
   if (mode === 'gate') return gate(T);
   let D0 = {};
   if (drafts) {
-    try { D0 = JSON.parse(fs.readFileSync(drafts, 'utf8')).records || {}; } catch (e) { console.log('FAIL ' + drafts + ': ' + e.message); return 1; }
+    // A folder is read whole, every *.json in it, so records/depth/ is one
+    // argument however many files it grows to. A key in two files is refused:
+    // two drafts of one record is two truths.
+    try {
+      const files = fs.statSync(drafts).isDirectory() ? fs.readdirSync(drafts).filter(f => f.endsWith('.json')).sort().map(f => path.join(drafts, f)) : [drafts];
+      for (const f of files) {
+        const recs = JSON.parse(fs.readFileSync(f, 'utf8')).records || {};
+        for (const k of Object.keys(recs)) { if (D0[k]) { console.log('FAIL ' + k + ' is drafted in two files, the second ' + f); return 1; } D0[k] = recs[k]; }
+      }
+    } catch (e) { console.log('FAIL ' + drafts + ': ' + e.message); return 1; }
   }
   const { R, orphanDepth } = registry(T, D0);
+  if (mode === 'sweep') {
+    const notes = sweep(T, R);
+    notes.forEach(n => console.log('  ' + n));
+    const cats = [...new Set(R.map(r => r.cat))];
+    console.log('\n' + 'category'.padEnd(26) + '   n  found  D3 full  D4 full  all  (now: found means content in at least one location outside the engine)');
+    cats.forEach(c => {
+      const a = R.filter(r => r.cat === c);
+      console.log(c.padEnd(26).slice(0, 26) + String(a.length).padStart(4) + String(a.filter(r => r.at.length).length).padStart(7)
+        + String(a.filter(r => r.wired.g.D3 === 'P').length).padStart(9) + String(a.filter(r => r.wired.g.D4 === 'P').length).padStart(9) + String(a.filter(r => r.wired.pass).length).padStart(5));
+    });
+    const gain = COMP.map(k => k + ' ' + R.filter(r => r.c[k] !== 1 && r.wired.c[k] === 1).length).join(', ');
+    console.log('\nrecords found in at least one location: ' + R.filter(r => r.at.length).length + ' of ' + R.length);
+    console.log('components that would become full if every location were wired: ' + gain);
+    console.log('if every location were wired: ' + R.filter(r => r.wired.pass).length + ' of ' + R.length + ' pass all four depths; D3 ' + R.filter(r => r.wired.g.D3 === 'P').length
+      + ', D4 ' + R.filter(r => r.wired.g.D4 === 'P').length + '. None of it is owner approved.');
+    if (json) fs.writeFileSync(json, JSON.stringify(R.map(r => ({ id: r.id, cat: r.cat, nm: r.nm, now: r.g, wired: r.wired.g, wiredPass: r.wired.pass,
+      wiredMissing: COMP.filter(k => r.wired.c[k] !== 'n' && r.wired.c[k] < 1),
+      locations: r.at.map(e => ({ where: e.where, passes: e.passes, full: COMP.filter(k => e.o[k] === 1), partial: COMP.filter(k => e.o[k] > 0 && e.o[k] < 1), refused: e.errors })) })), null, 1));
+    return 0;
+  }
   if (json) fs.writeFileSync(json, JSON.stringify(R.map(r => ({ id: r.id, cat: r.cat, nm: r.nm, depth: r.g, pass: r.pass, ownerApproved: !!r.ownerApproved,
     depthFrom: r.depthFrom || null, missing: r.missing, components: r.c, errors: r.errors || [] })), null, 1));
   if (mode === 'record') {
@@ -456,4 +608,4 @@ function main(argv) {
 }
 
 if (require.main === module) process.exit(main(process.argv.slice(2)));
-module.exports = { loadEngine, inventory, judgeDepth, registry, measure };
+module.exports = { loadEngine, inventory, judgeDepth, registry, measure, sweep, ADAPT };

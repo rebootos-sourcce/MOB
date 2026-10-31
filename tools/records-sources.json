@@ -1,0 +1,23 @@
+{
+  "about": [
+    "Every location outside the live engine that holds per record content for the 379 records tools/records.js counts, found by a sweep of every branch of MOB (353 remote refs) and reboot-os (85) on 31 October 2026. Read by node tools/records.js --sweep, which pulls each file straight out of git (git show ref:path), maps its fields onto the depth record shape by meaning, and scores it with the same strict checker as a draft. So the question 'is it already written somewhere' is a run, not a search.",
+    "Add a location here when you find one, with the ref that holds it and the adapter that reads it. A location that no longer resolves is reported by name, never skipped quietly. Nothing here is canon: content is canon only in atuned_src/engine, and approved only with the owner's name and date.",
+    "Found and NOT listed, with the reason. reboot-os atuned/data/psyche_node_descriptive_templates.json and psyche_entity_descriptive_templates.json (branch docs/psyche-hierarchy-end-to-end-tdd-2026-10-19): 112 node and 73 entity shells whose interpretation text is null on every record, by their own counts. reboot-os lookdev/handoff/COMPLEX_RECORDS_RESEARCH_PILOT_BATCH1..4_2026-10-29.md (main): real drafted research for the 23 complexes of reboot-os canon.json, a taxonomy the MOB engine does not hold as records, so it maps onto none of the 379; it is the best existing source for the audit's open complex record question. MOB docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json (main): 147 records keyed by its own taxonomy, the source the 33 and 108 registries below were generated from."
+  ],
+  "repos": { "MOB": ".", "reboot-os": "../reboot-os" },
+  "sources": [
+    { "id": "sab33", "repo": "MOB", "ref": "origin/work/deep-psyche-recursive-closure-2026-10-24", "path": "docs/data/ATUNED_SABOTEUR_DEEP_RESEARCH_REGISTRY_33_v1.json", "adapter": "sab33", "covers": "Saboteur, named" },
+    { "id": "fetter108", "repo": "MOB", "ref": "origin/work/deep-psyche-recursive-closure-2026-10-24", "path": "docs/data/ATUNED_FETTER_DEEP_RESEARCH_REGISTRY_108_v1.json", "adapter": "fetter108", "covers": "Fetter address" },
+    { "id": "family9", "repo": "MOB", "ref": "origin/work/deep-psyche-recursive-closure-2026-10-24", "path": "docs/data/ATUNED_SABOTEUR_FAMILY_TEMPLATE_RESEARCH_REGISTRY_9_v1.json", "adapter": "family9", "covers": "Hyper complex, family; Descent" },
+    { "id": "hcx18", "repo": "MOB", "ref": "origin/work/deep-psyche-recursive-closure-2026-10-24", "path": "docs/data/ATUNED_RUNTIME_RESEARCH_OVERLAY_HCX_MODES_INVERSES_18_v1.json", "adapter": "hcx18", "covers": "Hyper complex, family; Hyper complex, overshoot" },
+    { "id": "axes16", "repo": "MOB", "ref": "origin/work/deep-psyche-recursive-closure-2026-10-24", "path": "docs/data/ATUNED_RUNTIME_RESEARCH_OVERLAY_SEATS_AXES_v1.json", "adapter": "overlay", "covers": "Axis (child emotion)" },
+    { "id": "anchors4", "repo": "MOB", "ref": "origin/work/deep-psyche-recursive-closure-2026-10-24", "path": "docs/data/ATUNED_RUNTIME_RESEARCH_OVERLAY_NODE_FIELD_ANCHORS_4_v1.json", "adapter": "overlay", "covers": "Field anchor" },
+    { "id": "hcxmodes", "repo": "MOB", "ref": "origin/main", "path": "proto/knowledge/src/gen-data.js", "adapter": "hcxmodes", "covers": "Hyper complex, family; Hyper complex, overshoot" },
+    { "id": "arch12", "repo": "MOB", "ref": "origin/atunED/paradiso-compass-map-v0-2026-10-25", "path": "docs/data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json", "adapter": "kindrec", "covers": "Archetype" },
+    { "id": "teach31", "repo": "MOB", "ref": "origin/atuned/compass-foundation-closure-20261026", "path": "docs/data/compass/teachers/v2/TEACHER_OPPOSITES_REGISTRY_V2_RESEARCH.json", "adapter": "teach31", "covers": "Compass pole and recipe" },
+    { "id": "dom19", "repo": "MOB", "ref": "origin/atuned/compass-foundation-closure-20261026", "path": "docs/data/compass/integration/v16/ATUNED_V341_EXACT_19_DOMAINS_V16.json", "adapter": "dom19", "covers": "Domain" },
+    { "id": "celestial-western", "repo": "reboot-os", "ref": "origin/main", "path": "atuned/data/celestial/western_astrology/records.json", "adapter": "presence:SIGN_RUNS", "covers": "Blueprint line (signs)" },
+    { "id": "celestial-animals", "repo": "reboot-os", "ref": "origin/main", "path": "atuned/data/celestial/eastern_astrology/animals.json", "adapter": "presence:CH_RUNS", "covers": "Blueprint line (animals)" },
+    { "id": "celestial-phases", "repo": "reboot-os", "ref": "origin/main", "path": "atuned/data/celestial/eastern_astrology/phases.json", "adapter": "presence:CE_RUNS", "covers": "Blueprint line (elements)" }
+  ]
+}

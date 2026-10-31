@@ -4,7 +4,7 @@
     "Three named saboteurs, chosen because the category is the most exposed (31 of 33 land on the reference roster, 106 appearances) and closest to the template, so the pilot measures the cost of finishing a record and not of starting one: Hyper-Achiever S06 (6 appearances, the most of any named saboteur), Pleaser S05 (5) and Catastrophizer S30 (3, whose trigger the audit named as three words).",
     "Grounded in the engine's own rows for each, quoted in pass 2: SABDEF in atuned_src/engine/data/kb.js, SABCARD in atuned_src/engine/data/sabcard.js, SAB_LIB and SAB33 (addresses and axis charges), NODES in atuned_src/engine/data/nodes.js. Nothing here changes an address, a charge or a join.",
     "Every behaviour claim is an interpretive hypothesis, not a prediction or a diagnosis, and is labelled with T1's four evidence words. CITATIONS ARE FROM THE DRAFTING SEAT'S KNOWLEDGE AND WERE NOT RE-READ AGAINST THE TEXTS IN THIS SESSION, which had no library access. Each needs a source check before reviewState can move past draft. That check is part of the remaining cost, and is counted in the estimate.",
-    "Check it: node tools/records.js --drafts reviews/records-depth-pilot-2026-10-31.json --record sab:S06"
+    "Check it: node tools/records.js --drafts records/depth/saboteurs-pilot-2026-10-31.json --record sab:S06"
   ],
   "records": {
     "sab:S06": {
