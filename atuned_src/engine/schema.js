@@ -159,6 +159,30 @@ function blankProfile(name){
     boundary does not name is deleted on the next load. */
  p.summaries=dlyBlank();
  return p;}
+/* THE NAMES THIS PRODUCT GIVES A RECORD, WHICH ARE NEVER A PERSON'S. A
+   profile's name does two jobs: it labels the record in the list and the
+   status line ("Loaded Web reading from the link"), and once a person types
+   their own into Settings it is what Summary's plate and the rail's card call
+   them, by its first word. The readers knew one label, You, so every other
+   name the product writes was printed as a person's: a funnel arrival was
+   greeted as "Web" in the largest type on the first screen the 9 October
+   ruling lands them on (reviews/funnel-golden-path-2026-10-31.md, F3), and
+   a nameless paste would have been greeted as "Imported".
+   Each is written here or in a caller and nowhere else:
+     You          the default record, engine/profiles.js and ui/personas.js
+     New profile  blankProfile above, called with no name
+     Imported     validateProfile, a pasted record that carries no name
+     unnamed      engine/read.js and pImport's restore, a record that is
+                  only ever read and never shown
+     Web reading  funnel/quiz.html, the record the quiz hands to the app
+   The label stays the record's, because the list and the status line need a
+   word for it. ownName is how a surface asks whether the person gave one:
+   the name as typed, or the empty string. Compared without case, because the
+   plate compared after capName and "you" typed by hand meant the same. */
+var REC_NAMES=['You','New profile','Imported','unnamed','Web reading'];
+function ownName(nm){
+ var s=String(nm==null?'':nm).trim(), k=s.toLowerCase();
+ return REC_NAMES.some(function(x){return x.toLowerCase()===k;})?'':s;}
 /* WHICH LAWS ARE SITTING ON THE SEED, AND WHAT THEY WERE SEEDED WITH.
    LAW_DEFAULT is the seed itself and it moved to engine/core.js, which is the
    module that first uses it: this one named the number and core.js printed a

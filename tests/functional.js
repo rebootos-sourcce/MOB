@@ -7079,6 +7079,33 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  ok(!om.soulOpen&&om.fold.length===2&&om.fold.every(f=>f[1]>=44)&&om.foldCircles>=2,'OM: the Awareness grids fold to a domain line and an archetype line, each 44 or more, '+JSON.stringify(om.fold));
  ok(/^Decoherence/.test(om.shadowCircle||''),'OM: the circle it pairs with says Decoherence, '+om.shadowCircle);
  ok(!om.overlay&&!om.rail2,'OO: nothing of the left menu is drawn on the stage, and option two is not on by default');
+ /* THE CHAIN KEY SAYS ONLY WHAT IS COMPUTED, round of 31 October. Its fifth
+    row read "Archetype: the shape the whole pattern points toward" under a
+    heading that made it a tier of the chain, and compute() stops at the
+    super complex. The four field anchors were in no key, the drill printed
+    more left at Sol Star than was ever held, and the renditions' hover gave
+    an anchor no weight. Each figure is read off FIELD, never typed, so the
+    checks hold for whichever person this page carries. */
+ const ck=await fp.evaluate(()=>{
+  const k=document.getElementById('chainkey'), r=compute();
+  const pc=n=>Math.max(0,Math.min(100,Math.round((n.sq||0)*10)));
+  const up=FIELD.filter(n=>n.b==='Field-Above'), dn=FIELD.filter(n=>n.b==='Field-Below');
+  return {rows:k?[...k.querySelectorAll('.chk-row')].map(x=>x.textContent):[],
+   head:(document.querySelector('.lsec[data-sec=chain] .tier1')||{}).textContent,
+   unread:!!r.unread, above:pc(up[0]), below:pc(dn[0]),
+   drill:nodeDrillHtml(up[0]), hover:frDescribe({k:'anchor',n:dn[0]},r)};});
+ const ckNm=ck.rows.map(t=>t.split('.')[0]);
+ ok(ck.head==='Nerve to super-complex'&&ckNm.slice(0,4).join()==='Saboteur,Complex,Hyper-complex,Super-complex',
+  'chain key: the chain is four tiers, nerve to super-complex, '+JSON.stringify([ck.head,ckNm]));
+ ok(ckNm[4]==='Archetype'&&/^Archetype\. Not part of the chain\./.test(ck.rows[4])&&!ck.rows.some(t=>/points toward/.test(t)),
+  'chain key: Archetype is named a pick outside the chain, never a tier it climbs into, '+JSON.stringify(ck.rows[4]));
+ ok(!ck.unread&&ckNm[5]==='Field anchors'&&ck.rows[5].indexOf('crown above at '+ck.above+'%')>=0
+  &&ck.rows[5].indexOf('root below at '+ck.below+'%')>=0&&/decoherence/.test(ck.rows[5]),
+  'chain key: the four field anchors carry their seat\'s live average and say it counts in decoherence, '+JSON.stringify([ck.above,ck.below,ck.rows[5]]));
+ ok(!/Charge held here/.test(ck.drill)&&ck.drill.indexOf('average weight of the crown seat it extends, <b>'+ck.above+'%</b>')>=0,
+  'an anchor\'s drill states its seat average and never "held 0.0, left after that" more');
+ ok(ck.hover.indexOf('average weight of the root seat it extends, <b>'+ck.below+'%</b>')>=0&&/decoherence/.test(ck.hover),
+  'an anchor\'s hover on a rendition carries its weight and where it counts');
  await fp.evaluate(()=>{const s=document.querySelector('#lpanel .lsec[data-sec=soul]');if(s&&!s.classList.contains('open'))s.querySelector('.lsec-hd').click();});
  await fp.waitForTimeout(300);
 

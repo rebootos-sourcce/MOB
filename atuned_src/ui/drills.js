@@ -298,6 +298,29 @@ function lawDrillHtml(l,o){
    Analytics traces a pattern down to this card and must show this card, not
    a second one. o.ana turns the Feeds chips into rows that climb back up the
    chain, because a trace that can only go down is half a trace. */
+/* WHAT A FIELD ANCHOR IS, ONE SENTENCE FOR EVERY PLACE THAT SHOWS ONE.
+   Round of 31 October. The four outside the body (Sol Star, Stellar Gateway,
+   Earth Star, Gaia Gateway) were shown three ways and none of them said what
+   the engine does with them. The drill below printed "Charge held here 0.0.
+   Left after that 3.2.", which reads as more left than was ever held, because
+   compute() forces held to 0 on these four and then writes sq as the mean of
+   the seat they extend (engine/compute.js, THE FOUR OUTSIDE THE BODY ARE SQ
+   TOO, ruled 25 September). The renditions' hover named the anchor and gave
+   no weight at all, and the chain key on the Field never mentioned them.
+
+   This says only what the code does: no nerve and no axis under them, so
+   nothing in the saboteur chain reads them; a weight that is the seat's
+   average; and that weight counted in DQ, which is the one place compute()
+   uses it. No ruling gives them more than that yet (TASKS.md SH12 and CB10
+   are open, and the torus field they may belong on is not built), so this
+   does not invent more. Null for every address that is not one of the four,
+   so a caller can branch on it. */
+function anchorSeat(n){return !n?null:n.b==='Field-Above'?'Crown':n.b==='Field-Below'?'Root':null;}
+function anchorSays(n){var s=anchorSeat(n); if(!s)return null;
+ var p=Math.max(0,Math.min(100,Math.round((n.sq||0)*10)));
+ return 'No nerve sits under it, so it holds no charge of its own and no saboteur forms here. '
+  +'It carries the average weight of the '+s.toLowerCase()+' seat it extends, <b>'+p+'%</b>. '
+  +'That weight counts in decoherence, your total shadow, and nowhere in the chain.';}
 function runNodeDrill(n){if(n)rdShell(nodeDrillHtml(n));}
 function nodeDrillHtml(n,o){
  o=o||{};
@@ -318,10 +341,13 @@ function nodeDrillHtml(n,o){
   /* both ends of the pole, the same bar the codex row draws. Round JQ. */
   +(typeof poleDrillHead==='function'?poleDrillHead(n):'')
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
-  +'Charge held here <b>'+fmtPct('held',n.held)+'</b>. '
-  +(c.opp?esc(c.opp)+' installed <b>'+fmtPct('installed',n.rep)+'</b>. ':'')
-  +'Left after that <b>'+fmtPct('weight',n.sq)+'</b>.'
-  +(n.d?' It shows up as '+esc(n.d.toLowerCase())+'.':'')+'</p>'
+  /* a field anchor's d is the word "field", a category and not a behaviour,
+     so it never reaches "It shows up as field." */
+  +(anchorSeat(n)?anchorSays(n)
+   :'Charge held here <b>'+fmtPct('held',n.held)+'</b>. '
+   +(c.opp?esc(c.opp)+' installed <b>'+fmtPct('installed',n.rep)+'</b>. ':'')
+   +'Left after that <b>'+fmtPct('weight',n.sq)+'</b>.'
+   +(n.d?' It shows up as '+esc(n.d.toLowerCase())+'.':''))+'</p>'
   +'<div class="pm-eye">The opposite</div><p class="ad-p">'
   +(c.opp?'The other end of <b>'+c.nm.toLowerCase()+'</b> is <b>'+c.opp.toLowerCase()+'</b>. '
     +c.nm+' itself lives mainly at the '+c.addr.toLowerCase()+(c.loc?', in the '+esc(c.loc):'')

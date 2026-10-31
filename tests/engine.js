@@ -326,6 +326,18 @@ ok(JSON.stringify(S.doms)===JSON.stringify([3,7]),'soul survives');
 ok(prof.v===E.SCHEMA_V,'schema version stamped');
 ok(Object.keys(prof.axes).length===9&&Object.keys(prof.laws).length===21,
    '9 axes and 21 laws in the object');
+/* A RECORD'S LABEL IS NOT A PERSON'S NAME, F3 of the 31 October walk: the
+   quiz's "Web reading" printed as a person called Web. Every label the
+   product writes reads as no name, in any case; the default blankProfile
+   writes is one of them, so the list cannot lose the name it gives; and a
+   real name passes through as typed, which is the known good case. */
+E.REC_NAMES.forEach(n=>{
+ ok(E.ownName(n)==='','the label '+JSON.stringify(n)+' reads as a person\'s name: '+JSON.stringify(E.ownName(n)));
+ ok(E.ownName('  '+n.toUpperCase()+' ')==='','the label '+JSON.stringify(n)+' in capitals reads as a name');});
+ok(E.ownName(E.blankProfile().name)==='','blankProfile\'s own default, '+JSON.stringify(E.blankProfile().name)+', reads as a name');
+ok(E.ownName(' Marcus Webb ')==='Marcus Webb'&&E.ownName('Web')==='Web',
+   'a real name does not pass through as typed: '+JSON.stringify([E.ownName(' Marcus Webb '),E.ownName('Web')]));
+ok(E.ownName(null)===''&&E.ownName(undefined)===''&&E.ownName('')==='','an absent name is not the empty string');
 const snap=E.snapshot(prof);
 /* 16 since 25 September: m, which arithmetic wrote the row, because cq and
    dq changed meaning and a row from each must never be compared as a move. */

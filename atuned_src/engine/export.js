@@ -163,6 +163,9 @@ if(typeof module!=='undefined'&&module.exports){
                   gatesClear:gatesClear, gatesLoad:gatesLoad, gatesSave:gatesSave,
   /* schema */    blankProfile:blankProfile, AXIS_BLANK:AXIS_BLANK, loadProfile:loadProfile,
                   saveProfile:saveProfile, snapshot:snapshot, LAW_DEFAULT:LAW_DEFAULT,
+  /* the record labels the product writes, and the one question a surface
+     asks of a name, F3 of the 31 October walk */
+                  REC_NAMES:REC_NAMES, ownName:ownName,
   /* the twenty one on every history row, the one law over time a graph reads,
      and the renames both the loader and the boundary read */
                   snapLaws:snapLaws, lawSeries:lawSeries, LAW_WAS:LAW_WAS,
