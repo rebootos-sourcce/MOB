@@ -1380,8 +1380,11 @@ function render(){
      Settings, which is where account.js writes CURP.name. The first word of
      it, the way sumPlate on the Summary prints the same name over the same
      reading, so the two surfaces call a person one thing. A record nobody has
-     named is still called You, because that is the name pNew gave it. */
-  var who=capName(p.you?(String((CURP&&CURP.name)||'').trim().split(/\s+/)[0]||'You'):p.nm);
+     named is still called You, because that is the name pNew gave it.
+     And a record the product named is not named either: this split "Web
+     reading" and printed Web, beside the plate printing the same, F3 of the
+     31 October walk. ownName, engine/schema.js, is the one list. */
+  var who=capName(p.you?(ownName(CURP&&CURP.name).split(/\s+/)[0]||'You'):p.nm);
   /* THE AGE AND ROLE LINE IS GONE, ON HIS RULING. Round IX, his words: "get
      rid of that 44 creative director. That's nonsense junk." It was the worked
      example's own casting note, p.age and p.role, and it read nothing: a

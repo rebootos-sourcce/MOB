@@ -503,6 +503,27 @@ async function door(browser, SITE, cut, giftAt) {
       : (/^(early|partial)$/.test(sumCQ) && num(sumCQ) == null),
     'Summary prints how much of the quiz\'s reading is in: a word while the laws are being answered, CQ as a percent equal to its ring once all are, ' + J({ sumCQ, plate }),
     'Summary prints a bare coherence figure, a word outside the ladder, or a percent its ring does not draw');
+  /* ONE READING, ONE FIGURE, A PRESS APART. 31 October, the QA walk's F2:
+     the quiz printed a bare "51" and Summary "51%" for the same record.
+     Station 2 compared the two as numbers, which is why it never saw it. The
+     strings are compared here, once the plate prints a figure at all. */
+  ok(!plate.complete || sumCQ === quizCQ,
+    'the quiz printed coherence as Summary prints it for the same record: quiz ' + J(quizCQ) + ', Summary ' + J(sumCQ),
+    'two figures for one reading, a press apart');
+  /* NOBODY CALLED WEB. 31 October, the QA walk's F3: the quiz names the
+     record it hands over "Web reading", a label for the record, and the plate
+     printed its first word as the person's name in the largest type on the
+     page. The rail's card reads the same name the same way. A record nobody
+     has named prints the house's own word, You, on both, and never a word of
+     the label. */
+  const whoSaid = await page.evaluate(() => {
+    const t = s => { const e = document.querySelector(s); return e ? e.textContent.trim() : null; };
+    return { plate: t('#sum .s-pname'), rail: t('#person h3') }; });
+  const labelWords = String(landed || '').toLowerCase().split(/\s+/).filter(Boolean);
+  ok((whoSaid.plate === null || whoSaid.plate === 'You') && (whoSaid.rail === null || whoSaid.rail === 'You')
+      && labelWords.every(x => [whoSaid.plate, whoSaid.rail].every(s => String(s || '').toLowerCase().indexOf(x) < 0)),
+    'a funnel arrival who gave no name is called no name: plate ' + J(whoSaid.plate) + ', rail ' + J(whoSaid.rail) + ', record ' + J(landed),
+    'the first screen greets them by a word of the record\'s label');
   await Q.click('#profbtn'); await Q.click('[data-pms="account"]');
   await page.waitForTimeout(250);
   const accHd = await page.evaluate(() => { const h = document.querySelector('#settings .ac-hd'); return h ? h.innerText : ''; });

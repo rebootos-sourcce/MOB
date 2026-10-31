@@ -906,9 +906,12 @@ function sumNamed(B){
  if(c)rows+=sgMeet('NUM_CORE','<span class="s-num-g">'+N.expression+'</span>','Expression',
   String(N.expression),[sgCap(c.ex)+'.',unpackOf('expression')].filter(function(x){return !sumSaid(x);}),'',null,unp('expression','Expression'));
  return sgStage(2,'Named',rows);}
+/* the person's own name, or nothing. It knew one label the product gives a
+   record, You, so "Web reading" printed as a person called Web on the first
+   screen after the funnel, F3 of the 31 October walk. ownName in
+   engine/schema.js knows every label the product writes. */
 function sumRealName(){
- var nm=capName(String((CURP&&CURP.name)||'').trim());
- return (nm&&nm!=='You')?nm:'';}
+ return capName(ownName(CURP&&CURP.name));}
 function sumNameBlock(B,fallback){
  var nm=sumRealName(), first=nm.split(/\s+/)[0]||(fallback?'You':'');
  var line=(CURP&&CURP.who&&CURP.who.line)?'<div class="s-pwho">'+esc(CURP.who.line)+'</div>':'';
