@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v694 1a7900e9 2026-10-28 16:23"><head><meta charset="utf-8">
+<html lang="en" data-build="v2668 c108e5aa 2026-10-31 18:52"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -9342,6 +9342,42 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
     <div class="aw-sum" id="awsum"></div>
    </div>
    <h2 class="rblk">Psyche</h2>
+   <!-- THE BOOK'S OWN STACK, READ AS A STACK AND NOT GUESSED AT. His round of
+        28 October asked for "the full cascade wiring of the Psyche stack" on
+        this rail. The Mechanics of Being numbers it, layer 4 through 10 (1
+        through 3 sit below the body, layer 9 already shipped its own section
+        above, Superego). This is the index: which of the rest already has a
+        real reading on this rail, under its own name below, and which does
+        not, named honestly rather than built from a guess.
+
+        6 and 8 are two readings of the same nine fetters in Child emotions
+        below, under two of the book's own names: the nerve's own tilt (6,
+        fight or flight, the dual pole ruling of 27 October, DECISIONS.md)
+        and the nine words that fetter names (8, ego). 7 is the six gates
+        below, under its own name (action response: aware, detached,
+        intentional against attached, ignorant, avoiding, the exact words of
+        round 28 October's Laws of Action section above). 4 and 5 have no
+        computed reading: the book places them before a feeling or a charge
+        is recorded, and nothing in this engine measures a layer before that
+        point, so nothing is invented to fill the row. 10, the koshas, is not
+        a disagreement this product gets to settle: BOOK-ERRATA.md's own
+        finding 8 is that the book itself prints three different,
+        incompatible rosters for it, so there is no one list to build from
+        yet. Static, no render function: nothing in this section is a
+        number, so nothing here can drift out of sync with one. -->
+   <div class="lsec" data-sec="stack">
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l8.5 4.3-8.5 4.3-8.5-4.3z"/><path d="M3.5 12l8.5 4.3 8.5-4.3M3.5 16.3l8.5 4.3 8.5-4.3"/></svg>The stack</span><i></i></button>
+    <div class="lsec-bd">
+     <div class="tier1">His book's own layers</div>
+     <p class="stk-def">The Mechanics of Being numbers the layers a signal passes through on its way to a story. Some of them this engine already reads, under their own name, below. Some it does not yet.</p>
+     <div class="chk-row"><span class="chk-dot" style="background:var(--mid)"></span><span class="chk-tx"><b>4, imagination.</b> The mind running a possibility forward or back in time. Not computed. Nothing here measures a layer before a feeling is recorded.</span></div>
+     <div class="chk-row"><span class="chk-dot" style="background:var(--mid)"></span><span class="chk-tx"><b>5, frequency intensity.</b> The charge a signal carries before it is labelled. Not computed. The charge shown everywhere on this app is this layer's result, not the layer itself.</span></div>
+     <div class="chk-row"><span class="chk-dot" style="background:var(--good)"></span><span class="chk-tx"><b>6, fight or flight.</b> The organism's yes or no, before a feeling has a name. Real, below. The same nine fetters in Child emotions, read as one tilt rather than nine words.</span></div>
+     <div class="chk-row"><span class="chk-dot" style="background:var(--good)"></span><span class="chk-tx"><b>7, action response.</b> Attached and ignorant is the pattern's default. Aware and detached is the way out. Real, below. The six gates in Laws of Action, under its own name.</span></div>
+     <div class="chk-row"><span class="chk-dot" style="background:var(--good)"></span><span class="chk-tx"><b>8, ego, nine words.</b> Fear, anger, shame, disgust, grief, receiving blocked, apathy, shock, sad. Real, below, seven of the nine: Child emotions reads fear, anger, shame, disgust, apathy, shock and sad. Its other two are surprise and anticipation, not grief or receiving blocked. Open, not merged silently, his call, DECISIONS.md.</span></div>
+     <div class="chk-row"><span class="chk-dot" style="background:var(--mid)"></span><span class="chk-tx"><b>10, the koshas.</b> The elements, the body, the mind, the energy, the intelligence, the peace, the awareness, the soul. Not computed. The book itself gives three different counts for this, BOOK-ERRATA.md finding 8.</span></div>
+    </div>
+   </div>
    <div class="lsec" data-sec="fetters">
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.5a3.6 3.6 0 013.6 3.6v7.8a3.6 3.6 0 01-7.2 0V8.1A3.6 3.6 0 0112 4.5"/></svg>Child emotions</span><i></i></button>
     <div class="lsec-bd">
@@ -40150,7 +40186,10 @@ const FLAYS=[
   tip:'The six gates round the core. Each higher gate sits across from the lower one it stands against.'},
  {sep:true},
  {k:'shadow',nm:'Decoherence',d:frCirc(12,12,8.5)+'M7.2 16.6l3.4-3.4M10.2 19.2l6-6M14.6 19.9l4.6-4.6',
-  tip:'Decoherence. The weight on your 108 addresses and 4 field anchors, as a wash behind everything.'}];
+  /* MATCHED TO GLOSS'S OWN DQ ENTRY (engine/data/kb.js), round 28 October:
+     see fieldbar.js's own shadow tip, fixed the same round for the same
+     reason, the ceiling DQ is read against. */
+  tip:'Decoherence. The weight on your 108 addresses and 4 field anchors, against the most they could hold, as a wash behind everything.'}];
 /* THE SWITCH AND THE ROW ARE NO LONGER BUILT HERE. The layer row, #flay, is
    the glass bar now, and the switch, #fview, moved to the right rail as three
    circles; ui/fieldbar.js builds both. FLAYS stays, because its marks are the
@@ -41434,7 +41473,11 @@ const FB_LAYERS=[
  {k:'gates',g:'carry',nm:'Laws of Action',ic:fbFlay('gates'),
   tip:'The Laws of Action round the core, each move of right action set across from the wrong action it stands against.'},
  {k:'shadow',g:'carry',nm:'Decoherence',ic:fbFlay('shadow'),
-  tip:'Decoherence. All the charge on your 108 addresses and 4 field anchors, shown as a tint behind everything.'},
+  /* MATCHED TO GLOSS'S OWN DQ ENTRY (engine/data/kb.js), round 28 October:
+     this tip said "all the charge... shown as a tint", which drops the
+     ceiling DQ is read against and reads as an unbounded sum rather than
+     the shadow's own share of the most those addresses could hold. */
+  tip:'Decoherence. The weight on your 108 addresses and 4 field anchors, against the most they could hold, shown as a tint behind everything.'},
  {k:'stories',g:'carry',nm:'Stories',ic:fbFlay('stories'),
   tip:'One line for each story that put charge on an address.'},
  {k:'saboteurs',g:'run',nm:'Saboteurs',ic:CHAINGLYPH.sab,
@@ -82927,5 +82970,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005467202"></div>
+<div id="eof" hidden data-len="005471940"></div>
 </body></html>
