@@ -28,6 +28,7 @@ if(typeof module!=='undefined'&&module.exports){
                  EV_SEAM_STATES:EV_SEAM_STATES, EV_SEAM_NEVER:EV_SEAM_NEVER, EV_SEAM_PERSON:EV_SEAM_PERSON,
                  EV_PLACEABLE:EV_PLACEABLE, evSeamState:evSeamState,
                  SRC_INTENT:SRC_INTENT, SRC_INTENT_ORDER:SRC_INTENT_ORDER, SRC_INTENT_SHORT:SRC_INTENT_SHORT, srcIntent:srcIntent,
+                 SRC_SHIFT_PAIR:SRC_SHIFT_PAIR, SRC_ACT:SRC_ACT, SRC_ACT_ORDER:SRC_ACT_ORDER, SRC_ACT_SHORT:SRC_ACT_SHORT, srcAct:srcAct,
   /* qcheck */    SRC_FAMILY:SRC_FAMILY, QC_GRADE:QC_GRADE, QC_QWORDS:QC_QWORDS, QC_WORDS:QC_WORDS,
                  QC_JARGON:QC_JARGON, QC_CAUSE:QC_CAUSE, QC_FORCE:QC_FORCE, QC_LABELS:QC_LABELS,
                  QC_AGAIN:QC_AGAIN, QC_LANDS:QC_LANDS, qcGrade:qcGrade, qcSyl:qcSyl, qcCanon:qcCanon, qcPlaces:qcPlaces,

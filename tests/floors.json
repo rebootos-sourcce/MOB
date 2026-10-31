@@ -25,6 +25,7 @@
     "Raise a floor by editing this file on purpose, in the same change that adds the checks, from a green run. Never lower one to get green. Nothing writes this file.",
     "Lowered 30 October: sniffpage 80 to 79, honest 37 to 32. Neither is a check let off. sniffpage lost the one assertion that read the sniffer's own on-screen caption ('the counter carries no word a ten year old would ask about'), because the caption itself is gone, round of 29 October, replaced by counts read straight off the engine's own marks; the test file already carries the comment recording this and already reads 79 passed, 0 failed on main. honest lost the five checks of 'the reply line's own draft, never sent', because the reply line (#stcin) and Clear are both gone, round of 29 October, 'let's get rid of the text field entirely... this is going to be a conversation dashboard'; the test file already carries the comment recording this and already reads 32 passed, 0 failed on main. Both read off two green local runs on commit ee481d79 before this change, confirming the drop is the removed feature and not a flake, matching the same pattern as the 23 October Day One tutorial lowering above.",
     "Raised 30 October: srcchat 29 to 43, for the fourteen checks the evidence ledger and question-integrity build added to the live Journal chat (engine/evidence.js, engine/qcheck.js, srcAskVetted and srcIntentLand in ui/storyui.js), read off two green local runs on commit ee481d79, 43 passed, 0 failed on each.",
+    "Raised 31 October: srcchat 43 to 88, for the checks the conversation fix added (reviews/source-ai-conversation-diagnosis-2026-10-31.md, Part 1): the stand-in microphone now installs under headless Chromium, so one recording runs through a whole conversation for the first time, and each of the diagnosis's transcripts is held to one new Source AI turn a turn, no turn word for word the one before it, and every new turn spoken in its own words; with the known bad copy of the old srcChatNote, the change of subject, the pause while Source AI speaks, the resent sentence and the second press of Chat. Two of the old checks were rewritten rather than dropped, because they held the silence as the rule: after Move on and while venting each turn is now answered, still asking nothing. Read off two green local runs on the uncommitted tree on 6c3c0f48, 88 passed, 0 failed on each. evidence.js, which carries the engine half (srcAct and the shift intent), has no floor here and none was added: it read 125 passed before this change and 140 after.",
     "expected_red_max is the most expected red a gate may print. tools/floors.js fails a gate above its ceiling, and fails a gate that prints an expected red count with no ceiling here, so a failing check cannot be let off as expected red unseen. Added empty on 9 October: the lead sets each value from a clean full run, as printed, and until then the engine's floor step fails by name. It drops to 0 in the change that turns the expected reds green."
   ],
   "expected_red_max": {
@@ -48,7 +49,7 @@
     "journey2": 140,
     "onboarding2": 289,
     "sniffpage": 79,
-    "srcchat": 43,
+    "srcchat": 88,
     "practitioner": 60,
     "release-screen": 153,
     "release-percent": 8,
