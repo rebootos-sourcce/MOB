@@ -86,6 +86,18 @@ async function lockGate(browser,FILE,ok,booted){
   /* each orb's own size on the top tier, to hold a locked one to: against a
      different layer it differs by its label, which is not the lock's doing */
   await as('four');
+  /* THE GRAPH A SCREEN IS HANDED GOES THROUGH THE SAME LOCK, 31 October
+     (readSeenOf, ui/lock.js). On the top tier it carries the chain the page
+     draws, under the record's own stamp, and nothing in it is refused. */
+  /* a build without the door answers missing and fails the checks below,
+     rather than throwing and ending every gate after this one */
+  const graphOf=()=>pg.evaluate(()=>{
+   if(typeof readSeenOf!=='function'||typeof readHeld!=='function')return {missing:true};
+   const rd=readSeenOf(CURP), g=traceFromRecord(CURP,undefined,rd);
+   return {stamped:!!rd&&rd.rec===CURP.id, held:(readHeld(CURP)||{sabs:[]}).sabs.length,
+    rungs:g.nodes.filter(n=>TRACE_CHAIN.indexOf(n.type)>=0).length, refused:g.refused.length};});
+  const gTop=await graphOf();
+  ok(gTop.stamped&&gTop.rungs>0&&gTop.refused===0,tag+'on the top tier the graph a screen is handed carries the chain, '+JSON.stringify(gTop));
   const full={};
   for(const lk of Object.values(BAR)){
    if(phone)await pg.evaluate(()=>fbOpenPanel(true));
@@ -185,6 +197,9 @@ async function lockGate(browser,FILE,ok,booted){
   ok(dw.seen===0&&dw.cx===0&&dw.hy===0&&dw.sup===0,tag+'and the reading a free person is handed holds none of it');
   ok(!dw.vis.some(k=>Object.values(BAR).indexOf(k)>=0),tag+'no chain layer is visible, '+dw.vis.join());
   ok(dw.hit===0,tag+'the wheel holds no saboteur, complex, hyper or character target, '+dw.hit);
+  const gFree=await graphOf();
+  ok(gFree.held>0&&gFree.rungs===0&&gFree.refused===0,
+   tag+'and the graph a screen is handed holds no rung of it, while what is held still has '+gFree.held+' saboteurs, '+JSON.stringify(gFree));
   /* a layer the person had on comes back when the plan covers it: layChosen is theirs */
   const chosen=await pg.evaluate(()=>layChosen().saboteurs===1);
   ok(chosen,tag+'the set the person chose is kept under the lock, so paying brings their own layers back');

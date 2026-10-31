@@ -699,6 +699,25 @@ SUITES.drawer=function(E,ok){
  ok(vr.ok,'a day whose recorded addresses no longer match today\'s reading is still a valid day: the boundary cannot know');
  const sd=E.dlyWhy(vr.profile,on.day.id,si);
  ok(sd.read.differs===true&&sd.read.shown[0].addr!==sh.read.shown[0].addr&&sd.read.today.length>0,'and the drawer says they differ and shows both, rather than answering from today\'s lexicon');
+ /* THE DRAWER CAN BE HANDED THE READING, AND THE DAY NEVER IS, 31 October.
+    dlyGraph takes a reading of this record and then carries the chain;
+    dlyWhy passes opt.reading to it; the composer and the seal hand it none,
+    because a day may not cite a rung (dlyGraph, engine/daily.js). The
+    fixture's own field runs no saboteur, so this is the same record, its
+    stories, practice and day, held at seven on every axis, the field the trace
+    gate reaches the top rung on. The known case first, or the graph check
+    proves nothing. */
+ const wq=clone(w.p); E.CHILD.forEach(c=>{wq.axes[c.nm]={held:7,opp:0};});
+ E.loadProfile(wq);
+ const RH=typeof E.readHeld==='function'?E.readHeld(wq):null, rung=g=>((g&&g.nodes)||[]).filter(n=>E.TRACE_CHAIN.indexOf(n.type)>=0).length;
+ ok(!!RH&&RH.sabs.length>0,'the held field runs a saboteur, '+(RH?RH.sabs.length:'no held reading'));
+ if(RH&&RH.sabs.length&&typeof E.dlyGraph==='function'){
+  const gR=E.dlyGraph(wq,RH), gN=E.dlyGraph(wq);
+  ok(rung(gN)===0&&rung(gR)>0&&gR.refused.length===0,'the drawer\'s graph carries the chain when it is handed the reading and none without, '+rung(gR)+' rungs against '+rung(gN)+', refused '+J(gR.refused).slice(0,120));
+  const dN=E.dlyWhy(wq,sid,0), dR=E.dlyWhy(wq,sid,0,{reading:RH});
+  ok(dN.ok&&dR.ok&&J(dR.refs)===J(dN.refs)&&J(dR.orphans)===J(dN.orphans),'and the drawer handed it resolves the same references and flags the same orphans');
+  ok(J(E.dlyCompose(wq,NOW,{reading:RH}))===J(E.dlyCompose(wq,NOW)),'and a day composed with one in hand is the day composed without');}
+ E.loadProfile(w.p);
  /* THE SEAM. practice allows fetter:Fear, and the graph refused it. */
  const q=E.blankProfile('seam'); let Q=q.practice;
  const g2=(act,a)=>{const r=E.practiceDo(Q,act,a,NOW); if(r.ok)Q=r.P; else bad=act+': '+(r.errs||[]).join('|');};

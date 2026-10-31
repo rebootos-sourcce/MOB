@@ -158,7 +158,7 @@ if(typeof module!=='undefined'&&module.exports){
                   VERPCUE:VERPCUE, VERPMULT:VERPMULT, VERP_VS:VERP_VS,
                   LEAN_FRAME_W:LEAN_FRAME_W, LEAN_TRUST_CAP:LEAN_TRUST_CAP,
                   LEAN_TRUST_HALF:LEAN_TRUST_HALF, LEAN_MIN_CH:LEAN_MIN_CH,
-  /* the door */  read:read, input:input, throughput:throughput, output:output,
+  /* the door */  read:read, input:input, throughput:throughput, output:output, readHeld:readHeld,
                   gatesClear:gatesClear, gatesLoad:gatesLoad, gatesSave:gatesSave,
   /* schema */    blankProfile:blankProfile, AXIS_BLANK:AXIS_BLANK, loadProfile:loadProfile,
                   saveProfile:saveProfile, snapshot:snapshot, LAW_DEFAULT:LAW_DEFAULT,
@@ -171,7 +171,7 @@ if(typeof module!=='undefined'&&module.exports){
      has been loaded clears these to say the values it set were answered;
      otherwise a law set to exactly the seed reads as unanswered, which is
      saveProfile's documented blind spot and correct for a person. */
-                  LAW_UNSET:LAW_UNSET,
+                  LAW_UNSET:LAW_UNSET, SOUL_FROM:SOUL_FROM,
                   pExport:pExport, pImport:pImport, validateProfile:validateProfile, importError:importError,
                   importRefuse:importRefuse, linkWrap:linkWrap, linkUnwrap:linkUnwrap,
                   LINK_V:LINK_V, LINK_MAX:LINK_MAX,
@@ -315,7 +315,7 @@ if(typeof module!=='undefined'&&module.exports){
                   TRACE_LOOP:TRACE_LOOP, TRACE_INVERSE:TRACE_INVERSE, TRACE_SYMMETRIC:TRACE_SYMMETRIC,
                   TRACE_CAUSE_SRC:TRACE_CAUSE_SRC, TRACE_PROMOTE:TRACE_PROMOTE, TRACE_TABLE:TRACE_TABLE,
                   TRACE_RESOLVED:TRACE_RESOLVED, TRACE_NEEDS:TRACE_NEEDS, TRACE_MAX:TRACE_MAX,
-                  TRACE_ID_MAX:TRACE_ID_MAX,
+                  TRACE_ID_MAX:TRACE_ID_MAX, TRACE_NAMED:TRACE_NAMED,
                   traceKey:traceKey, traceSplit:traceSplit, traceNew:traceNew, traceRuleOf:traceRuleOf,
                   traceAddNode:traceAddNode, traceAddEdge:traceAddEdge, traceRemoveEdge:traceRemoveEdge,
                   traceNeighbors:traceNeighbors, tracePath:tracePath, traceOrphans:traceOrphans,
@@ -371,7 +371,7 @@ if(typeof module!=='undefined'&&module.exports){
                   dlyToday:dlyToday, dlySize:dlySize,
                   dlyCtx:dlyCtx, dlyChanges:dlyChanges, dlyContra:dlyContra, dlyFocus:dlyFocus,
                   dlyUnread:dlyUnread, dlyCompose:dlyCompose, dlyGround:dlyGround, dlyNotes:dlyNotes,
-                  dlyResolve:dlyResolve, dlySeal:dlySeal, dlyDayOpen:dlyDayOpen, dlyWhy:dlyWhy,
+                  dlyResolve:dlyResolve, dlyGraph:dlyGraph, dlySeal:dlySeal, dlyDayOpen:dlyDayOpen, dlyWhy:dlyWhy,
   /* the first release's size and where a person is on the way in,
      engine/data/onboarding.js and engine/journey.js. Reads only. */
                   ONB_MINI_ADDRS:ONB_MINI_ADDRS, ONB_MINI_DOSE:ONB_MINI_DOSE, ONB_CHANS:ONB_CHANS,
