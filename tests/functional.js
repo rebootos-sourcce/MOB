@@ -7314,8 +7314,20 @@ console.log('\n=== FJ: words with the zoom, layers that move, one dial in two de
     come back on the same curve off FZ.s */
  for(const v of ['frames','dial']){
   await fj.evaluate(v=>{fviewSet(v);},v); await fr2();
+  /* WAITS FOR THE REAL STATE, NOT A GUESSED DELAY, round of 31 October. A
+     fixed 220ms against the CSS's own 120ms (--t-micro) fade was margin
+     enough on a quiet machine and not on a busy one: three other gates
+     running alongside this one lost the race on "frames" 1x, read 0 names
+     expected and some number of names still mid fade. Polling for the
+     count this zoom should settle on, up to two full seconds, passes at
+     the same speed when the machine is quiet and never flakes when it is
+     not; if the fade genuinely never finishes the poll times out and the
+     ok() below reports the real, unsettled count rather than a lucky one. */
   const at=async s=>{await fj.evaluate(s=>{const h=document.getElementById('frend');FZ={s:1,x:0,y:0};
-   fzAt(s,h.clientWidth*.5,h.clientHeight*.12);},s); await fj.waitForTimeout(220);
+   fzAt(s,h.clientWidth*.5,h.clientHeight*.12);},s);
+   await fj.waitForFunction(s=>{const h=document.getElementById('frend');
+    const shown=sel=>[...h.querySelectorAll(sel)].filter(e=>getComputedStyle(e).visibility!=='hidden'&&!e.classList.contains('hid')).length;
+    return s===1?shown('.frnm span')===0:shown('.frnm span')>0;},s,{timeout:2000}).catch(()=>{});
    return fj.evaluate(()=>{const h=document.getElementById('frend');
     const shown=sel=>[...h.querySelectorAll(sel)].filter(e=>getComputedStyle(e).visibility!=='hidden'&&!e.classList.contains('hid')).length;
     return {notext:h.classList.contains('notext'),tx:+h.style.getPropertyValue('--fztx'),
