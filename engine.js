@@ -19815,18 +19815,36 @@ var EV_PLACEABLE=['confirmed','corrected'];
 
    Returns {intent, cue} or null. move_on outranks reject outranks vent: a
    turn that both turns down a reading and asks to stop is a request to
-   stop. Pure, reads only the turn. */
+   stop. Pure, reads only the turn.
+
+   A CHANGE OF SUBJECT IS NOT A STOP, 31 October. "change the subject" and
+   "talk about something else" sat in the move_on list, so a person who
+   asked to talk about something else was told "Cool." and then met with
+   silence for the rest of the entry, about the new subject too: reproduced
+   in reviews/source-ai-conversation-diagnosis-2026-10-31.md, transcript 3.
+   They are shift now, which sets the old subject down and keeps asking
+   about the new one (the page's SRC_FROM, ui/storyui.js). shift outranks
+   move_on, because "I don't want to talk about this, can we talk about
+   something else" asks to go on, about something else. And the shape he
+   actually used, "I want to talk about my brother instead", names the new
+   subject inside the request, so a turn holding both "talk about" and
+   "instead" is a shift too: SRC_SHIFT_PAIR, each pair a phrase and the word
+   that has to follow it. */
 var SRC_INTENT={
+ shift:['change the subject','change of subject','talk about something else','talk about something different',
+  'something else to talk about','different subject','different topic','new subject','new topic',
+  'rather talk about'],
  move_on:['dont want to talk about it','do not want to talk about it','dont want to talk about this',
   'dont want to talk anymore','dont want to talk any more','stop asking','no more questions',
-  'change the subject','talk about something else'],
+  'enough questions','stop talking','can we stop','lets stop'],
  reject:['doesnt fit me','that doesnt fit','does not fit me','thats not me','that is not me',
   'thats not it','that is not it','thats not right','thats wrong','not what i meant','youre wrong',
   'you are wrong'],
  vent:['just want to vent','want to vent','need to vent','just venting','let me vent',
   'just want to get it out','just need to get it out','just want to talk','just listen']};
-var SRC_INTENT_ORDER=['move_on','reject','vent'];
+var SRC_INTENT_ORDER=['shift','move_on','reject','vent'];
 var SRC_INTENT_SHORT=12;
+var SRC_SHIFT_PAIR=[['talk about','instead']];
 function srcIntent(turn){
  var nm=normMap(String(turn||'')), s=nm.s, words=s.trim()?s.trim().split(' ').length:0;
  if(!words)return null;
@@ -19837,7 +19855,73 @@ function srcIntent(turn){
    /* the phrases that carry their own no are read as said; the others are
       set aside when a no stands before them */
    if(!/^(dont|do not)/.test(list[j])&&srcNegated(s,at+1))continue;
-   return {intent:k, cue:list[j]};}}
+   return {intent:k, cue:list[j]};}
+  if(k==='shift')for(var q=0;q<SRC_SHIFT_PAIR.length;q++){var a=s.indexOf(' '+SRC_SHIFT_PAIR[q][0]+' ');
+   if(a>=0&&!srcNegated(s,a+1)&&s.indexOf(' '+SRC_SHIFT_PAIR[q][1]+' ',a)>a)
+    return {intent:'shift', cue:SRC_SHIFT_PAIR[q].join(' ')};}}
+ return null;}
+
+/* ============================================================
+   A TURN THAT IS ONLY TALK, 31 October. His session opened on "can you hear
+   me", twice, and Source AI's only reply to a turn with no feeling word in
+   it was the panel's own status line, "Nothing placed yet, so nothing is
+   asked", which reads as an instrument talking about itself, and then, by
+   the bug in srcChatNote, nothing at all. Measured in the diagnosis
+   (reviews/source-ai-conversation-diagnosis-2026-10-31.md): a greeting, a
+   check that it can hear, a question to Source AI and a bare "yeah" all
+   fell through to the same line or to silence.
+
+   Four acts, read the way srcIntent reads vent: a short stated list a
+   person can read and see why it fired, never a guess.
+
+     check  can you hear me, are you there, is this working
+     ask    a question about Source AI itself: what is this, who are you
+     greet  a turn that opens on hello, hi or hey, or asks how it is
+     brief  a turn made only of yes, yeah, okay, no and their kind
+
+   Each is read only in a short turn, and the page answers it only when the
+   turn carries no seat of its own (srcActNow, ui/storyui.js): "hello, I am
+   so anxious" is about being anxious, and the feeling is answered. A brief
+   turn has to be brief all the way through, every word on the list, so
+   "okay so then she left" is a story and not an okay. Pure, reads only the
+   turn, and nothing it returns reaches the record.
+
+   Returns {act, cue} or null, in SRC_ACT_ORDER: a check outranks a
+   question outranks a greeting outranks a yes, so "hello, can you hear me"
+   is answered as a check. */
+var SRC_ACT={
+ check:['can you hear me','do you hear me','can you hear','are you there','are you listening',
+  'is this working','is it working','is this on','is this thing on','anyone there','anybody there',
+  'can you understand me','hello hello','testing'],
+ ask:['what is this','whats this','what is source','who are you','what are you','how does this work',
+  'how does it work','how do i use this','how do i do this','what do you do','what can you do',
+  'what do i do','what should i say','what do i say','what should i talk about','what do i talk about',
+  'are you real','are you a person','are you human','are you a robot','are you a bot','are you ai',
+  'are you an ai','is this ai','is this a person','what am i supposed to do'],
+ greet:['hi','hello','hey','hiya','good morning','good afternoon','good evening','how are you'],
+ brief:['yeah','yes','yep','yup','yea','ya','ok','okay','sure','mm','mhm','hmm','uh','huh','um',
+  'right','true','maybe','no','nope','nah','not','really','i','guess','suppose','think','so',
+  'kind','sort','of','dont','know','dunno','fine','alright','cool']};
+var SRC_ACT_ORDER=['check','ask','greet','brief'];
+var SRC_ACT_SHORT={check:8, ask:SRC_INTENT_SHORT, greet:6, brief:5};
+function srcAct(turn){
+ var s=normMap(String(turn||'')).s, ws=s.trim()?s.trim().split(' '):[];
+ if(!ws.length)return null;
+ for(var i=0;i<SRC_ACT_ORDER.length;i++){var k=SRC_ACT_ORDER[i], list=SRC_ACT[k];
+  if(ws.length>SRC_ACT_SHORT[k])continue;
+  if(k==='brief'){
+   if(ws.every(function(w){return list.indexOf(w)>=0;}))return {act:k, cue:ws.join(' ')};
+   continue;}
+  for(var j=0;j<list.length;j++){var at=s.indexOf(' '+list[j]+' ');
+   if(at<0)continue;
+   /* a greeting opens the turn, "hi" anywhere else is a word in a story;
+      "how are you" is the one asked anywhere in it. NO NEGATION GUARD,
+      unlike srcIntent: every act but brief is a question to Source AI, and
+      a no before one, "No, can you hear me?", answers something else and
+      leaves the question standing. Found by coverage, 31 October, where
+      the guard never ran and would have filed that turn as nothing. */
+   if(k==='greet'&&at!==0&&list[j]!=='how are you')continue;
+   return {act:k, cue:list[j]};}}
  return null;}
 /* ============================================================
    THE QUESTION CHECK, section 35 of the Journal Mode blueprint, ten points,
@@ -24050,6 +24134,7 @@ if(typeof module!=='undefined'&&module.exports){
                  EV_SEAM_STATES:EV_SEAM_STATES, EV_SEAM_NEVER:EV_SEAM_NEVER, EV_SEAM_PERSON:EV_SEAM_PERSON,
                  EV_PLACEABLE:EV_PLACEABLE, evSeamState:evSeamState,
                  SRC_INTENT:SRC_INTENT, SRC_INTENT_ORDER:SRC_INTENT_ORDER, SRC_INTENT_SHORT:SRC_INTENT_SHORT, srcIntent:srcIntent,
+                 SRC_SHIFT_PAIR:SRC_SHIFT_PAIR, SRC_ACT:SRC_ACT, SRC_ACT_ORDER:SRC_ACT_ORDER, SRC_ACT_SHORT:SRC_ACT_SHORT, srcAct:srcAct,
   /* qcheck */    SRC_FAMILY:SRC_FAMILY, QC_GRADE:QC_GRADE, QC_QWORDS:QC_QWORDS, QC_WORDS:QC_WORDS,
                  QC_JARGON:QC_JARGON, QC_CAUSE:QC_CAUSE, QC_FORCE:QC_FORCE, QC_LABELS:QC_LABELS,
                  QC_AGAIN:QC_AGAIN, QC_LANDS:QC_LANDS, qcGrade:qcGrade, qcSyl:qcSyl, qcCanon:qcCanon, qcPlaces:qcPlaces,

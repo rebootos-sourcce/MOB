@@ -279,7 +279,28 @@ g('SK2 · the person\'s words about the conversation: vent, move on, and that do
  ok(it("I don't want to vent")===null,'a no before it sets it aside');
  ok(it("I can't move on from him")===null,'and grief about moving on is not a request to move on');
  ok(it("That's not me at all, I was never like that with my brother when we were kids growing up")===null,'a no inside a long story is about the story, not the reading');
- ok(it('I was furious')===null&&it('')===null,'and a story is not a request at all');}
+ ok(it('I was furious')===null&&it('')===null,'and a story is not a request at all');
+ /* 31 October: a change of subject was filed as Move on, so asking to talk
+    about something else ended all asking, about the new subject too
+    (reviews/source-ai-conversation-diagnosis-2026-10-31.md, transcript 3) */
+ ok(it('Can we talk about something else?')==='shift'&&it("Let's change the subject")==='shift','asking to talk about something else is a change of subject, not a stop');
+ ok(it('Anyway, I want to talk about my brother instead.')==='shift','and so is naming the new subject with instead, the way he said it');
+ ok(it("I don't want to talk about this, can we talk about something else")==='shift','a shift outranks a stop: he asked to go on, about something else');
+ ok(it('I talked about it with her instead of shouting')===null,'"instead" in a story is not a request: it needs "talk about" before it');
+ ok(it('No more questions.')==='move_on'&&it('Can we stop?')==='move_on','stopping is still Move on');}
+
+g('SK2b · a turn that is only talk: a check, a question to Source AI, a greeting, a yes');
+{const {srcAct}=E, a=t=>{const r=srcAct(t);return r&&r.act;};
+ ok(a('Can you hear me?')==='check'&&a('Are you there?')==='check'&&a('Hello, can you hear me?')==='check','a check that it hears is a check, ahead of the hello in it');
+ ok(a('What is this?')==='ask'&&a('Who are you?')==='ask'&&a('How does this work?')==='ask','a question about Source AI itself is an ask');
+ ok(a('Hi.')==='greet'&&a('Hello?')==='greet'&&a('How are you?')==='greet'&&a('Well, how are you?')==='greet','a greeting is a greeting, and how are you is asked anywhere in a short turn');
+ ok(a('No, can you hear me?')==='check','a no before a check answers something else, and the check stands');
+ ok(a('Yes I said hi')===null,'a hi that does not open the turn is not a greeting');
+ ok(a('Yeah.')==='brief'&&a('Okay.')==='brief'&&a("I don't know.")==='brief'&&a('No.')==='brief','a turn of only yes, okay and no is brief');
+ ok(a('Okay so then she left.')===null&&a('Yeah he shouted at me.')===null,'a story that opens on okay or yeah is a story, every word has to be on the list');
+ ok(a('I said hi to him and he walked off.')===null,'"hi" inside a story is not a greeting, a greeting opens the turn');
+ ok(a('I was afraid all night.')===null&&a('')===null,'and a feeling is not an act at all');
+ ok(a('Can you hear me? I have been so anxious about the meeting tomorrow morning at the office.')===null,'a long turn is never an act, whatever it opens on');}
 
 g('SK3 · the package\'s thirty vectors, run against this engine: what holds, and what is known not to');
 {const fs=require('fs'), crypto=require('crypto'), f=path.resolve('tests/fixtures/source_semantic_contract_vectors.json');

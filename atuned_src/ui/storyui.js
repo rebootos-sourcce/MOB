@@ -1089,12 +1089,37 @@ var SRC_LEDGER=null, SRC_LEDGER_K='';
    additive field TASKS.md SK1 names, not built. SRC_VENT is the person
    asking to be heard and not asked, the package's VENT. */
 var SRC_VERDICTS=[], SRC_VENT=false;
-function srcLedgerNow(){
+/* WHERE THE CONVERSATION'S SUBJECT STARTS, 31 October. An offset into
+   ST_TEXT, set by srcTurnCommit at the start of a turn that asks to change
+   the subject (srcIntent's shift, engine/evidence.js), and nought for the
+   whole entry. Before it, a change of subject was filed as Move on, and the
+   seat asked about was always srcHear's top, the one mentioned most, so the
+   old subject kept the question after the person had left it: reproduced
+   in reviews/source-ai-conversation-diagnosis-2026-10-31.md, transcript 3,
+   the job fear still the top seat three turns after "I want to talk about
+   my brother instead".
+
+   WHAT IT MOVES AND WHAT IT DOES NOT. What Source AI reads to decide its
+   next line, the seat it hears (srcHeardNow), the ledger (srcLedgerNow) and
+   the text the ten checks hold a line against, reads from here on. The
+   entry does not: ST_TEXT, the parse, the bank and what Commit keeps are
+   the whole entry, both subjects, exactly as before. Setting a subject
+   down is a choice about the conversation and never edits the record.
+   Page memory, cleared with the thread by srcFresh. */
+var SRC_FROM=0;
+function srcConvText(){
+ if(SRC_FROM>ST_TEXT.length)SRC_FROM=0;
+ return SRC_FROM?ST_TEXT.slice(SRC_FROM):ST_TEXT;}
+function srcHeardNow(){
+ if(!SRC_FROM)return STR.heard||srcHear(ST_TEXT,null);
  var ents=(CURP&&CURP.story&&CURP.story.entries)||[];
+ return srcHear(srcConvText(),srcPrior(ents),ST_ACTIVE);}
+function srcLedgerNow(){
+ var ents=(CURP&&CURP.story&&CURP.story.entries)||[], t=srcConvText();
  var asked=SRC_LOG.map(function(r){return r.seat;}).filter(Boolean);
- var k=ST_TEXT+'\u0000'+ents.length+'\u0000'+JSON.stringify(ST_ACTIVE||null)+'\u0000'+JSON.stringify(SRC_VERDICTS)+'\u0000'+asked.join();
+ var k=t+'\u0000'+ents.length+'\u0000'+JSON.stringify(ST_ACTIVE||null)+'\u0000'+JSON.stringify(SRC_VERDICTS)+'\u0000'+asked.join();
  if(!SRC_LEDGER||k!==SRC_LEDGER_K){
-  SRC_LEDGER=evLedger(ST_TEXT,ents,{active:ST_ACTIVE, verdicts:SRC_VERDICTS, asked:asked}); SRC_LEDGER_K=k;}
+  SRC_LEDGER=evLedger(t,ents,{active:ST_ACTIVE, verdicts:SRC_VERDICTS, asked:asked}); SRC_LEDGER_K=k;}
  return SRC_LEDGER;}
 /* THE LEAD IS SAID ONCE A SEAT. Seen on the page, round SK: every ask
    about the same seat opened on the same mirror, "You wrote “afraid” three
@@ -1114,7 +1139,7 @@ function srcLeadSaid(seat){
    that pass, the person's own words said back, stay. */
 function srcLeadOk(lead,L,seat){
  return (String(lead).match(/[^.]+\./g)||[]).map(function(x){return x.trim();}).filter(function(x){
-  return x&&srcVetSay(x,{text:ST_TEXT, ledger:L},seat).ok;}).join(' ');}
+  return x&&srcVetSay(x,{text:srcConvText(), ledger:L},seat).ok;}).join(' ');}
 /* AN ASK IS BUILT ONCE FOR WHAT IT DEPENDS ON, round SK: the text, the
    conversation so far, the answers given, the move and its seat. srcPaint
    runs on every render, most of which change none of those, and the ten
@@ -1122,7 +1147,7 @@ function srcLeadOk(lead,L,seat){
    qcFind in engine/qcheck.js). */
 var SRC_ASK_K='', SRC_ASK_V='';
 function srcAskVetted(turn,heard){
- var k=[ST_TEXT,SRC_CHAT.length,JSON.stringify(SRC_VERDICTS),SRC_PASSED,turn.seat,turn.why,turn.mentions,srcLedgerNow()===SRC_LEDGER&&SRC_LEDGER_K].join('\u0000');
+ var k=[ST_TEXT,SRC_FROM,SRC_CHAT.length,JSON.stringify(SRC_VERDICTS),SRC_PASSED,turn.seat,turn.why,turn.mentions,srcLedgerNow()===SRC_LEDGER&&SRC_LEDGER_K].join('\u0000');
  if(k===SRC_ASK_K&&SRC_VET)return SRC_ASK_V;
  SRC_ASK_V=srcAskBuild(turn,heard); SRC_ASK_K=k; return SRC_ASK_V;}
 function srcAskBuild(turn,heard){
@@ -1130,7 +1155,7 @@ function srcAskBuild(turn,heard){
  var L=srcLedgerNow();
  var lead=srcLeadSaid(turn.seat)?'':srcLeadOk(cut>=0?full.slice(0,cut+1):'',L,turn.seat);
  var r=srcChoose([{q:full, base:full, family:'why', target:turn.seat}].concat(srcFamilyCands(lead,turn.seat)),
-  {text:ST_TEXT, ledger:L, asked:srcSaidBefore(), passed:SRC_PASSED});
+  {text:srcConvText(), ledger:L, asked:srcSaidBefore(), passed:SRC_PASSED});
  SRC_VET=r;
  /* NOTHING LEFT THAT PASSES, and the lead already said: the document's
     Space, in its own words, section 23, "Keep writing." Reproduced round
@@ -1173,7 +1198,7 @@ function srcLog(k,seat){
 /* a new entry is a new conversation: the built question quoted the last one.
    The thread goes with it, and so does a reply still in the line, which on a
    commit has already been sent into the entry and on Clear is cleared. */
-function srcFresh(){SRC_DQ='';SRC_DW='';SRC_DN=0;SRC_DNONE=false;SRC_LOG=[];SRC_DK=[];SRC_VET=null;SRC_VERDICTS=[];SRC_VENT=false;SRC_ASK_K='';
+function srcFresh(){SRC_DQ='';SRC_DW='';SRC_DN=0;SRC_DNONE=false;SRC_LOG=[];SRC_DK=[];SRC_VET=null;SRC_VERDICTS=[];SRC_VENT=false;SRC_ASK_K='';SRC_FROM=0;
  SRC_CHAT=[];SRC_CPRESS=false;SRC_CDRAFT='';}
 /* THE BUTTON'S QUESTIONS, ONE PER DIMENSION, 20.H1. It walked four of these
    by how many times it was pressed; srcNext now picks the dimension the
@@ -1308,7 +1333,7 @@ function srcNone(){
  return 'Nothing placed yet, so nothing is asked. Say what your body did, and where.';}
 function srcPaint(){
  var h=document.getElementById('stsrc'); if(!h)return;
- var heard=STR.heard||srcHear(ST_TEXT,null);
+ var heard=srcHeardNow();
  /* a built question that quotes a word the person has since deleted is no
     longer true, so it goes and the walk's own question comes back */
  if(SRC_DQ&&SRC_DW&&ST_TEXT.indexOf(SRC_DW)<0){SRC_DQ='';SRC_DW='';}
@@ -1322,6 +1347,14 @@ function srcPaint(){
  if(turn.move==='ask'){var Lt=srcLedgerNow(), ct=Lt.claims[turn.seat];
   if(ct&&(ct.state==='rejected'||ct.state==='corrected'))turn={move:'listen'};}
  if(SRC_VENT&&(turn.move==='ask'||turn.move==='listen'))turn={move:'vent'};
+ /* A TURN THAT IS ONLY TALK IS ANSWERED AS TALK, 31 October: see srcAct in
+    engine/evidence.js. It is answered before anything is asked, so a
+    person who says "can you hear me" while a seat sits at seven is told it
+    hears them and is not handed the next family question; and it is set
+    here, before srcLog, so a question that was never shown is never logged
+    as asked. Move on and venting keep their move, only the line changes. */
+ var act=STV.chat?srcActNow():null;
+ if(act){if(turn.move==='ask'||turn.move==='listen')turn={move:'listen'}; turn.act=act;}
  /* THE LIVE MARK. A dot beside the name that breathes while Source AI is
     idle and holds lit while it is reading, see srcHearing. It is drawn and
     carries no word, because "thinking" printed on a scripted reader would be
@@ -1394,13 +1427,23 @@ function srcPaint(){
     the same turn, the same question, and the same srcLog row for an ask, so
     what the entry keeps at commit is identical whichever way it was shown.
     Only the markup is swapped, and the wiring below finds the same ids. */
- var cur=null;
- if(STV.chat){cur=srcChatCur(turn,heard,q,ask); srcChatSync(); srcChatNote(cur);
+ var cur=null, fresh=false;
+ if(STV.chat){cur=srcChatCur(turn,heard,q,ask); srcChatSync(); fresh=srcChatNote(cur);
   o=srcThread(turn,heard,cur,acts,why);}
  h.innerHTML=o;
  SRC_SHOWN=cur?cur.q:(turn.move==='pass'?'':q);
  if(cur)srcWire(h);
  srcHearing(h);
+ /* EVERY NEW TURN SOURCE AI TAKES IS SAID OUT LOUD while Talk is on, 31
+    October. stSrcSpeak had one caller, the Talk press, so the greeting was
+    the only line he ever heard, and on a screen where voice is the only
+    way in he spoke, heard nothing, and said it again. Only a row
+    srcChatNote added is spoken, never a repaint of one already there, and
+    its own words, cur.q. While Talk is off nothing is spoken, the same
+    rule the greeting already keeps: the voice belongs to the spoken
+    conversation, and a reply nobody is listening for is a bill for
+    nothing. */
+ if(fresh&&ST_WANT_LISTEN)stSrcSpeak(cur.q);
  /* the dot used to be rebuilt here on every key and put back on the beat.
     Since round QB it lives in the Journal row, which a key never rewrites,
     so it is locked once a render with the halo, and again when it lets go,
@@ -1593,14 +1636,34 @@ var SRC_CHAT=[], SRC_CPRESS=false, SRC_CDRAFT='';
    person pressed for since their last reply stands instead. */
 function srcChatCur(turn,heard,q,ask){
  var top=heard&&heard.top, r={rg:top?top.rung:0, bd:turn.band||(top?top.band:null), mv:turn.move};
- if(turn.move==='open'){r.key='open|'+q; r.q=q;}
+ if(turn.move==='open'){r.key='open|'+q; r.q=q; r.w='src'; return r;}
+ /* NEVER THE SAME LINE TWICE RUNNING, 31 October. Since srcChatNote gives
+    every turn its own new row, a reply that is the same as the last one
+    would be said again word for word, which is the other half of what he
+    heard as a script. So each move offers its lines in order and srcPick
+    takes the first not yet said in this conversation, and failing that the
+    first that is not the line just said, with SRC_HEARD always behind
+    them. said is srcSaidBefore, the lines the person has replied under,
+    which leaves out the row being repainted, so a repaint picks what the
+    push picked. */
+ var said=srcSaidBefore(), keys=srcChatKeysBefore(), lines;
+ if(turn.act){r.key='act|'+turn.act; lines=SRC_ACT_SAY[turn.act];}
  /* an ask's key carries the family question since round SK: the lead's
     count still updates in place, and a new question after a reply is a new
     turn, never the earlier one rewritten under the person's answer */
- else if(turn.move==='ask'){r.key='ask|'+turn.seat+'|'+turn.why+'|'+((SRC_VET&&SRC_VET.cand&&SRC_VET.cand.base)||''); r.q=ask;}
- else if(turn.move==='pass'){r.key='pass'; r.q='Cool.';}
- else if(turn.move==='vent'){r.key='vent'; r.q=SRC_LISTENING;}
- else if(SRC_CPRESS&&!SRC_DNONE){r.key='q|'+q; r.q=q; r.mv='asked';}
+ else if(turn.move==='ask'){r.key='ask|'+turn.seat+'|'+turn.why+'|'+((SRC_VET&&SRC_VET.cand&&SRC_VET.cand.base)||''); lines=[ask];}
+ /* AFTER "Cool." IT STILL ANSWERS, AND STILL ASKS NOTHING. Move on was a
+    key that never changed, so every turn after it was the same row updated
+    in place, and a person who moved on was met with silence for the rest
+    of the entry (the diagnosis, transcripts 3 and 5). "Cool." is said once,
+    for the turn or the press that moved on; every turn after it is
+    listened to. Venting is the same: "I'm listening." once, then listened
+    to. Neither ever asks, which is what both rulings say. */
+ else if(turn.move==='pass'){
+  if(keys.some(function(k){return /^pass/.test(k);})){r.key='pass|'; lines=[];} else {r.key='pass'; lines=['Cool.'];}}
+ else if(turn.move==='vent'){
+  if(keys.some(function(k){return /^vent/.test(k);})){r.key='vent|'; lines=[];} else {r.key='vent'; lines=[SRC_LISTENING];}}
+ else if(SRC_CPRESS&&!SRC_DNONE){r.key='q|'+q; lines=[q]; r.mv='asked';}
  /* LISTENING, IT SAYS BACK THE THREAD, round SK. Two changes, both his
     blueprint's. The seat is the ledger's thread, the one with the newest
     evidence, where it was srcHear's top: on the document's own section 40
@@ -1614,13 +1677,43 @@ function srcChatCur(turn,heard,q,ask){
  /* a seat the person turned down is not said back to them either: with no
     other thread, Source AI listens, round SK */
  else if(top&&!srcLedgerNow().thread&&srcLedgerNow().claims[top.seat]&&
-  ['rejected','corrected'].indexOf(srcLedgerNow().claims[top.seat].state)>=0){r.key='say|'; r.q=SRC_LISTENING;}
- else if(top){var L=srcLedgerNow(), c=(L.thread&&L.claims[L.thread])||top, w=srcQuote(c.words);
+  ['rejected','corrected'].indexOf(srcLedgerNow().claims[top.seat].state)>=0){r.key='say|'; lines=[SRC_LISTENING];}
+ else if(top){var L=srcLedgerNow(), c=(L.thread&&L.claims[L.thread])||top, w=srcQuote(c.words), ctx={text:srcConvText(), ledger:L};
   var line=(w?'You wrote '+w+'. ':'')+'It lands '+srcPlace(c.band)+'.';
-  if(!srcVetSay(line,{text:ST_TEXT, ledger:L},c.seat).ok)line=w?'You wrote '+w+'.':srcNone();
-  r.key='say|'+c.seat; r.q=line;}
- else{r.key='say|'; r.q=srcNone();}
+  if(!srcVetSay(line,ctx,c.seat).ok)line=w?'You wrote '+w+'.':srcNone();
+  /* the same word said again is said back with how often, and only when
+     that count is the ledger's own and the line passes the same checks */
+  var more=(w&&(c.words||[]).length===1&&(+c.mentions||0)>1)?'You wrote '+w+' '+srcTimes(c.mentions)+'.':'';
+  r.key='say|'+c.seat; lines=[line].concat(more&&srcVetSay(more,ctx,c.seat).ok?[more]:[]);}
+ else{r.key='say|'; lines=[srcNone()];}
+ r.q=srcPick(lines.concat(SRC_HEARD),said);
  r.w='src'; return r;}
+function srcPick(lines,said){
+ var prev=said.length?said[said.length-1]:null, i;
+ for(i=0;i<lines.length;i++)if(lines[i]&&said.indexOf(lines[i])<0)return lines[i];
+ for(i=0;i<lines.length;i++)if(lines[i]&&lines[i]!==prev)return lines[i];
+ return lines[0]||'';}
+/* the keys of the Source AI rows the person has replied under, srcSaidBefore's
+   rule read for keys. "Cool." and "I'm listening." are said once in the whole
+   conversation, so it is any of them and not only the last: a turn that is
+   only talk after Move on is answered as talk, and the turn after that must
+   not say "Cool." and its note again. */
+function srcChatKeysBefore(){
+ var out=[], pend=null;
+ SRC_CHAT.forEach(function(r){if(r.w==='src'){pend=r.key||''; return;} if(pend!==null){out.push(pend); pend=null;}});
+ return out;}
+/* THE NEWEST TURN, IF IT IS ONLY TALK: srcAct's act, or shift for a change
+   of subject, and only when the turn carries no seat of its own. A turn
+   that is about the conversation in srcIntent's other three senses already
+   has its own answer (Move on, venting, a no), so it is never an act. */
+function srcActNow(){
+ var t=null; SRC_CHAT.forEach(function(r){if(r.w==='me')t=r.t;});
+ if(!t)return null;
+ var it=srcIntent(t);
+ if(it&&it.intent!=='shift')return null;
+ if(srcHear(t,null).seats.length)return null;
+ if(it)return 'shift';
+ var a=srcAct(t); return a?a.act:null;}
 /* THE REPLIES STILL MATCH THE ENTRY. Text added in the box, or by Record,
    since the last row is the person's next turn. Text changed inside an
    earlier turn means the rows no longer say what the entry says, so the
@@ -1629,21 +1722,39 @@ function srcChatCur(turn,heard,q,ask){
 function srcChatSync(){
  var t=ST_TEXT, end=0, okk=SRC_CHAT.every(function(r){
   if(r.w!=='me')return true; end=r.b; return t.slice(r.a,r.b)===r.t;});
- if(!okk){SRC_CHAT=[]; end=0;}
+ /* the subject's start was an offset into the entry the rows described */
+ if(!okk){SRC_CHAT=[]; end=0; SRC_FROM=0;}
  var tail=t.slice(end), lead=tail.length-tail.replace(/^\s+/,'').length, v=tail.trim();
  if(v)SRC_CHAT.push({w:'me', a:end+lead, b:end+lead+v.length, t:v});}
 /* A NEW TURN IS NOTED, OR THE LAST ONE IS UPDATED. Same key, the same turn
    with its words refreshed. Nothing written since a question the person
    pressed for, or since a line said back, and the new one takes its place:
    pressing for another question is asking for that one instead. Otherwise it
-   is a new turn, and the one before it folds to its ring. */
+   is a new turn, and the one before it folds to its ring.
+
+   A PERSON WHO HAS SPOKEN GETS A NEW TURN, ALWAYS, 31 October. The same key
+   rule above ran first whatever had happened since, so a reply with the
+   key of the last bubble updated that bubble in place and added nothing.
+   Every turn with no seat in it is key say|, every vented turn vent, every
+   turn after Move on pass, so his second "can you hear me" drew nothing on
+   screen and nothing in the ear (reviews/source-ai-conversation-diagnosis-
+   2026-10-31.md, transcript 1). The rule is from 3 October, when the chat
+   was a ring whose one live row was the only one with words, and updating
+   it was right; the thread became a text window that prints every turn on
+   29 October and this was not revisited. Updating in place is for a
+   repaint with no new turn from the person, which is all it was ever for.
+
+   Returns true when it added a row Source AI has not said yet, which is
+   what srcPaint speaks. The opener is not one: Talk greets on its own. */
 function srcChatNote(cur){
  var li=-1, after=false;
  SRC_CHAT.forEach(function(r,i){if(r.w==='src'){li=i; after=false;} else if(li>=0)after=true;});
  var L=li>=0?SRC_CHAT[li]:null;
- if(L&&L.key===cur.key){L.q=cur.q; L.mv=cur.mv; L.rg=cur.rg; L.bd=cur.bd; return;}
- if(L&&!after&&/^(open|q|say)\|/.test(L.key)){SRC_CHAT[li]=cur; return;}
- SRC_CHAT.push(cur);}
+ if(after){SRC_CHAT.push(cur); return true;}
+ if(L&&L.key===cur.key){L.q=cur.q; L.mv=cur.mv; L.rg=cur.rg; L.bd=cur.bd; return false;}
+ if(L&&/^(open|q|say)\|/.test(L.key)){SRC_CHAT[li]=cur; return false;}
+ SRC_CHAT.push(cur);
+ return !/^open\|/.test(cur.key);}
 /* A TURN LANDS. The reply joins the entry on its own line, see the block
    above for why a newline and why the trailing spaces go, and the page
    reads it the way a key in the box is read: parse, then stRefresh, which
@@ -1653,12 +1764,51 @@ function srcChatNote(cur){
 /* the seam package's own line for VENT, 06_DIALOGUE_TDD.md: "I'm listening."
    [No evaluation or immediate excavation.] */
 var SRC_LISTENING='I\u2019m listening.';
+/* WHAT SOURCE AI SAYS TO A TURN THAT IS ONLY TALK, 31 October, read by
+   srcAct and srcIntent's shift in engine/evidence.js. Before this every one
+   of them got the panel's status line, "Nothing placed yet, so nothing is
+   asked", or silence. Each answers what was actually said, in as few words
+   as stay true, and each list runs in order so a second "can you hear me"
+   is answered and never with the first answer again (srcPick).
+
+     check  he asked whether it hears him. It says yes, first, and then
+            hands him the opener's own question, SRC_OPEN, his ruled line,
+            rather than a second wording of it. The second says where his
+            words go, which is the true sign it heard: they are on the
+            right, in his bubble.
+     greet  a greeting back, the opener's question again, and nothing
+            about how Source AI is, since it is not anything.
+     ask    what it is, said as what it does, no more than the engine
+            does: it reads where what he says sits in his body and asks
+            one question at a time. "find where it sits" names no place,
+            which point 7 keeps for a seat he confirmed.
+     brief  a yeah is an answer with nothing in it, so it asks for one
+            sentence more, and never steps to the next family question
+     shift  the old subject set down, his physical word for it, and the
+            floor moved under it (SRC_FROM). Asking goes on, about what he
+            says next.
+   None holds a why, a place, a canon name or a feeling word, so each
+   passes srcVetSay as written; tests/srcchat.js holds that. */
+var SRC_ACT_SAY={
+ check:['Yes, I hear you. '+SRC_OPEN, 'I hear you. Every sentence you say shows up on the right.',
+  'Still here, and I hear you. Say what happened.'],
+ greet:['Hello. I hear you. '+SRC_OPEN, 'Here, and listening. What happened today?', 'Still here. Say what happened.'],
+ ask:['I am Source AI. You say what happened, and I find where it sits in your body. I ask one question at a time.',
+  'I work only from what you say. Say one thing that happened today.',
+  'Say what happened, in your own words. I follow where it goes.'],
+ brief:['Say more about that.', 'Go on. One sentence about what happened.', 'Keep going.'],
+ shift:['Okay. We set that down. What do you want to talk about instead?', 'Okay, new subject. Go ahead.', 'Okay. What is next?']};
+/* listening, with nothing asked: what stands behind every list, so no turn
+   is ever answered with the line it was answered with last time */
+var SRC_HEARD=[SRC_LISTENING, 'Go on.', 'Still here. Keep going.'];
 /* A TURN THAT IS ABOUT THE CONVERSATION, round SK, read by srcIntent in
    engine/evidence.js before the turn lands. Move on said in words is the
    Move on button, exactly: the same flag, the same outcome kept on the
    entry. A no to a reading is a verdict on the claim Source AI was on, the
    one it last asked about or the thread it last said back, and nothing is
-   kept beyond the entry. Venting is listened to. */
+   kept beyond the entry. Venting is listened to. A change of subject sets
+   nothing here: srcTurnCommit moves SRC_FROM once it knows where the turn
+   lands in the entry. */
 function srcIntentLand(v){
  var it=srcIntent(v); if(!it)return null;
  if(it.intent==='move_on'){
@@ -1671,10 +1821,14 @@ function srcIntentLand(v){
  return it;}
 function srcTurnCommit(v){
  v=String(v||'').trim(); if(!v)return false;
- srcIntentLand(v);
+ var it=srcIntentLand(v);
  srcChatSync();
  var base=ST_TEXT.replace(/\s+$/,''), a=base.length+(base?1:0);
  ST_TEXT=base+(base?'\n':'')+v;
+ /* a change of subject moves the conversation's start to this turn, which
+    is kept in it because it may already name the new subject; see
+    SRC_FROM */
+ if(it&&it.intent==='shift')SRC_FROM=a;
  SRC_CHAT.push({w:'me', a:a, b:ST_TEXT.length, t:v});
  ST_PARSED=parseStory(ST_TEXT); stRefresh();
  return true;}
@@ -1790,8 +1944,10 @@ function srcThreadNow(r,turn,heard,acts,why){
   o+=srcLand('src-q',r.q,'--c:'+seatCol(turn.band))
    +'<div class="src-row"><button type="button" class="btn" id="srcpass">Move on</button>'
    +'<span class="src-note">Answer below, or leave it.</span></div>';
+ /* the row's own words since 31 October: after "Cool." a turn is answered
+    with a listening line, and the note stands under "Cool." alone */
  else if(turn.move==='pass')
-  o+='<p class="src-q">Cool.</p><p class="src-note">Nothing more asked in this entry.</p>';
+  o+='<p class="src-q">'+esc(r.q)+'</p>'+(r.key==='pass'?'<p class="src-note">Nothing more asked in this entry.</p>':'');
  else if(turn.move==='vent')
   o+='<p class="src-q">'+esc(r.q)+'</p>';
  else{
@@ -2945,6 +3101,9 @@ function stMic(){
   status('Recording needs a secure page. Opened from a file, the browser will '
    +'not turn the microphone on. Typing works.','fail'); return; }
  if(ST_REC&&ST_LISTEN){ ST_WANT_LISTEN=false; ST_REC.stop(); ST_LISTEN=false; ST_LISTEN_T0=null; stRender(); return; }
+ /* a recording never starts under a line still playing from the last one,
+    or the microphone would take it for the person */
+ srcVoiceStop(); ST_HUSH=false;
  ST_WANT_LISTEN=true;
  ST_REC=new SR(); ST_REC.continuous=true; ST_REC.interimResults=true; ST_REC.lang='en-US';
  /* A NORMAL SPEECH CONVERSATION, round of 29 October, his words: "I hit the
@@ -2975,11 +3134,29 @@ function stMic(){
     line says it once, when a recording first brings new ones in, so a person
     talking with their eyes off the screen still hears it. Read off ST_TEXT
     itself now, since a finalised sentence lands there directly. */
+ /* A SENTENCE IS COMMITTED ONCE, 31 October. Every final from resultIndex
+    on used to be committed, with no memory of which were already in, so a
+    browser that reports an earlier final again (Chrome's continuous
+    recognition is known to on some Android builds) filed it as a second
+    turn: measured in reviews/source-ai-conversation-diagnosis-2026-10-31.md,
+    transcript 7, and not measured on his device, so this is a guard and not
+    a fix for something seen there. A result keeps its index for the whole
+    of one recording, so ST_REC_DONE holds the indices already in and is
+    emptied whenever a recording starts, in stMicGo, because a new one
+    counts from nought. It is by index and never by text: a person who says
+    "can you hear me" twice said it twice, and that is his complaint.
+
+    AND NOTHING IS HEARD WHILE SOURCE AI SPEAKS. The recording is stopped
+    for the length of the line (stHush), and anything still delivered in
+    that window is dropped here: it is Source AI's own voice coming back
+    through the microphone, and filing it as his turn would have it answer
+    itself. */
  var hidAt=maskedRuns(ST_TEXT).length;
  ST_REC.onresult=function(e){var fin='',live='';
+  if(ST_HUSH)return;
   for(var i=e.resultIndex;i<e.results.length;i++){
    var t=e.results[i][0].transcript;
-   if(e.results[i].isFinal) fin+=t; else live+=t;}
+   if(e.results[i].isFinal){ if(ST_REC_DONE[i])continue; ST_REC_DONE[i]=1; fin+=t; } else live+=t;}
   if(fin.trim())srcTurnCommit(fin);
   ST_LIVE=live; stRender();
   var hid=maskedRuns(ST_TEXT).length;
@@ -2996,16 +3173,22 @@ function stMic(){
     own intent, set true here and only ever set false by the stop branch
     above or a fatal error below, so an onend that fires while it is still
     true is the browser's own idea and gets restarted rather than believed. */
- ST_REC.onend=function(){ST_LIVE='';
-  if(ST_WANT_LISTEN){ try{ ST_REC.start(); stRender(); return; }catch(err){} }
+ /* an end while Source AI speaks is the pause stHush asked for: the person
+    still wants to be heard, so nothing is reset, and stHush starts the
+    recording again when the line is done */
+ ST_REC.onend=function(){ST_LIVE=''; ST_REC_ON=false;
+  if(ST_WANT_LISTEN&&ST_HUSH){ stRender(); return; }
+  if(ST_WANT_LISTEN){ try{ stMicGo(); stRender(); return; }catch(err){} }
   ST_WANT_LISTEN=false; ST_LISTEN=false; ST_LISTEN_T0=null; stRender();};
  ST_REC.onerror=function(e){var code=(e&&e.error)||'unknown';
   /* no-speech is the browser noticing silence, not a failure, and onend
      follows it either way; restarting there, not here, keeps one path. */
   if(code==='no-speech')return;
+  /* aborted while Source AI speaks is the pause itself, not a failure */
+  if(code==='aborted'&&ST_HUSH)return;
   ST_WANT_LISTEN=false; ST_LISTEN=false; ST_LISTEN_T0=null; ST_LIVE=''; stRender();
   stMicSay(code);};
- try{ ST_REC.start(); ST_LISTEN=true; ST_LISTEN_T0=performance.now(); stRender();
+ try{ stMicGo(); ST_LISTEN=true; ST_LISTEN_T0=performance.now(); stRender();
   status('Listening. Press again to stop.','ok'); stSrcSpeak(); }
  catch(err){ ST_WANT_LISTEN=false; ST_LISTEN=false; ST_LISTEN_T0=null; stRender();
   status('Recording could not start. '+(err&&err.message?err.message:'')+
@@ -3027,19 +3210,81 @@ function stMic(){
    is reported through status(), per the house rule that a control never
    claims success before it has it, and names the file-opened case by name
    rather than leaving a person to guess at "failed to fetch". */
-function stSrcSpeak(){
- var el=document.getElementById('stsrc'); if(!el)return;
- var text=(el.textContent||'').trim(); if(!text)return;
+/* ONE LINE, NEVER THE PANEL, 31 October. This read #stsrc's whole
+   textContent, which was the greeting on a fresh page and, once there was a
+   thread, the entire thread run together with the button labels: the second
+   press of Talk sent the voice "...What did you do?Move onAnswer below, or
+   leave it." (the diagnosis, transcript 6). It speaks the line it is
+   handed now, srcPaint's new row, and with none, the newest line Source AI
+   has on the thread, which on a fresh page is the opener. That keeps the
+   ruling above: the line spoken is the line on screen.
+
+   A NEWER LINE WINS. Each call takes a number, and an answer that comes
+   back for an older one is dropped, so a slow line can never play over the
+   reply to a turn the person has already moved past; a line that does play
+   stops the one before it. And it holds the recording for as long as it
+   plays, stHush, so the microphone does not hear Source AI and file it as
+   the person's next turn, a risk that only arrived once every reply was
+   spoken. The diagnosis asks for that pause to be measured on real
+   speakers before it is trusted, and it has not been: this is measured on
+   the stand-in in tests/srcchat.js only. */
+var SRC_VOICE={seq:0, el:null, url:'', t:0};
+/* the longest a line may hold the recording. A reply is a sentence or two,
+   well under ten seconds spoken; an audio element that never reports its
+   end must not leave the person unheard for the rest of the conversation. */
+var SRC_VOICE_MAX=30000;
+function srcSayNow(){
+ var q=''; SRC_CHAT.forEach(function(r){if(r.w==='src'&&r.q)q=r.q;});
+ return q||srcOpen();}
+function srcVoiceStop(){
+ clearTimeout(SRC_VOICE.t);
+ try{ if(SRC_VOICE.el){ SRC_VOICE.el.onended=SRC_VOICE.el.onerror=null; SRC_VOICE.el.pause(); } }catch(e){}
+ try{ if(SRC_VOICE.url)URL.revokeObjectURL(SRC_VOICE.url); }catch(e){}
+ SRC_VOICE.el=null; SRC_VOICE.url='';}
+function stSrcSpeak(line){
+ var text=String(line==null?srcSayNow():line).trim(); if(!text)return;
  if(typeof authVoice!=='function')return;
  if(typeof isSecureContext!=='undefined'&&!isSecureContext){
   status('Source AI cannot speak from a file. Open the hosted build to hear it.','fail'); return; }
+ var seq=++SRC_VOICE.seq;
  authVoice(text,'frame').then(function(r){
+  if(seq!==SRC_VOICE.seq)return;
   if(!r||!r.ok){
    status('Source AI could not speak that line. '+
     (r&&r.status===429?'The voice has reached today\'s limit.':'Try again in a moment.'),'fail');
    return;}
+  srcVoiceStop();
   var url=URL.createObjectURL(r.blob);
   var a=new Audio(url);
-  a.onended=function(){URL.revokeObjectURL(url);};
-  a.play().catch(function(){status('Source AI\'s voice is ready but the browser blocked playing it.','fail');});
+  SRC_VOICE.el=a; SRC_VOICE.url=url;
+  var done=function(){ if(SRC_VOICE.el!==a)return; srcVoiceStop(); stHush(false); };
+  a.onended=done; a.onerror=done;
+  SRC_VOICE.t=setTimeout(done,SRC_VOICE_MAX);
+  stHush(true);
+  var pl=a.play();
+  if(pl&&pl.catch)pl.catch(function(){done(); status('Source AI\'s voice is ready but the browser blocked playing it.','fail');});
  });}
+/* THE RECORDING, HELD WHILE SOURCE AI SPEAKS. ST_HUSH is the hold.
+   ST_REC_ON is whether the recogniser is running, which ST_LISTEN is not:
+   ST_LISTEN is what the button says, and through a hold the button still
+   says Listening, because the person has not stopped. abort and not stop,
+   because stop hands back what it heard so far, and what it hears from the
+   moment the voice starts is the voice. A stand-in with no abort is
+   stopped instead. A recording that will not start again is reported, the
+   house rule for anything that can fail, rather than leaving a button that
+   says Listening over a microphone that is off. */
+var ST_HUSH=false, ST_REC_ON=false, ST_REC_DONE={};
+function stMicGo(){ ST_REC_DONE={}; ST_REC.start(); ST_REC_ON=true; }
+function stHush(on){
+ if(on){ if(ST_HUSH)return; ST_HUSH=true; ST_LIVE='';
+  if(ST_REC&&ST_REC_ON){ try{ if(typeof ST_REC.abort==='function')ST_REC.abort(); else ST_REC.stop(); }catch(e){} }
+  return;}
+ if(!ST_HUSH)return;
+ ST_HUSH=false;
+ if(!ST_WANT_LISTEN||!ST_REC||ST_REC_ON)return;
+ try{ stMicGo(); stRender(); }
+ catch(err){ ST_WANT_LISTEN=false; ST_LISTEN=false; ST_LISTEN_T0=null; stRender();
+  /* the button's own word, Chat, see stRender: a status line that names a
+     control by another word sends a person looking for a button that is
+     not there */
+  status('Recording stopped after Source AI spoke. Press Chat to start it again.','fail'); }}
