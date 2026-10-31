@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2734 87c386a2 2026-10-31 19:36"><head><meta charset="utf-8">
+<html lang="en" data-build="v2736 d46be066 2026-10-31 19:58"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -2885,6 +2885,10 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
 .chk-dot{flex:0 0 auto;width:11px;height:11px;border-radius:50%;margin-top:3px;
  box-shadow:0 0 0 1px rgba(0,0,0,.25)}
 .chk-dot.varies{background:conic-gradient(from 0deg,#e06a5a,#e0a65a,#e0d85a,#6ac17a,#5ac1b8,#5a8fe0,#a05ae0,#e06a5a)}
+/* a field anchor sits at no seat and has no colour of its own yet (CB10,
+   open), and every rendition draws it as an unfilled ring, so its swatch is
+   that ring and not a dot of a colour the drawing never uses */
+.chk-dot.ring{background:transparent;box-shadow:inset 0 0 0 1.4px var(--ink);opacity:.6}
 .chk-tx{font-size:12.5px;color:var(--dim);line-height:1.5}
 .chk-tx b{color:var(--ink);font-weight:600}
 
@@ -9516,13 +9520,19 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
 
         This section is the key, read-only, static, filled once by
         renderChainKey() below off the same bc() colors the wheel itself
-        paints with, so the two can never drift apart. Five rows, nerve to
-        root, each a swatch and the one sentence a person needs before they
-        have hovered anything. -->
+        paints with, so the two can never drift apart. Four rows, nerve to
+        super-complex, each a swatch and the one sentence a person needs
+        before they have hovered anything.
+
+        Round of 31 October: it said five rows, nerve to root, and the fifth
+        was Archetype, a tier no code computes. The chain stops at the super
+        complex, so the heading says that, and Archetype moved under "Outside
+        the chain" with the four field anchors, each saying what it really
+        is. renderChainKey() carries the full why. -->
    <div class="lsec" data-sec="chain">
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/><path d="M12 6.6v4M12 13.6v4"/></svg>The chain</span><i></i></button>
     <div class="lsec-bd">
-     <div class="tier1">Nerve to root</div>
+     <div class="tier1">Nerve to super-complex</div>
      <p class="stk-def">Every thread and dot on the wheel is part of one chain. Hover any dot for its name. This is what the colors mean.</p>
      <div id="chainkey"></div>
     </div>
@@ -69710,6 +69720,29 @@ function lawDrillHtml(l,o){
    Analytics traces a pattern down to this card and must show this card, not
    a second one. o.ana turns the Feeds chips into rows that climb back up the
    chain, because a trace that can only go down is half a trace. */
+/* WHAT A FIELD ANCHOR IS, ONE SENTENCE FOR EVERY PLACE THAT SHOWS ONE.
+   Round of 31 October. The four outside the body (Sol Star, Stellar Gateway,
+   Earth Star, Gaia Gateway) were shown three ways and none of them said what
+   the engine does with them. The drill below printed "Charge held here 0.0.
+   Left after that 3.2.", which reads as more left than was ever held, because
+   compute() forces held to 0 on these four and then writes sq as the mean of
+   the seat they extend (engine/compute.js, THE FOUR OUTSIDE THE BODY ARE SQ
+   TOO, ruled 25 September). The renditions' hover named the anchor and gave
+   no weight at all, and the chain key on the Field never mentioned them.
+
+   This says only what the code does: no nerve and no axis under them, so
+   nothing in the saboteur chain reads them; a weight that is the seat's
+   average; and that weight counted in DQ, which is the one place compute()
+   uses it. No ruling gives them more than that yet (TASKS.md SH12 and CB10
+   are open, and the torus field they may belong on is not built), so this
+   does not invent more. Null for every address that is not one of the four,
+   so a caller can branch on it. */
+function anchorSeat(n){return !n?null:n.b==='Field-Above'?'Crown':n.b==='Field-Below'?'Root':null;}
+function anchorSays(n){var s=anchorSeat(n); if(!s)return null;
+ var p=Math.max(0,Math.min(100,Math.round((n.sq||0)*10)));
+ return 'No nerve sits under it, so it holds no charge of its own and no saboteur forms here. '
+  +'It carries the average weight of the '+s.toLowerCase()+' seat it extends, <b>'+p+'%</b>. '
+  +'That weight counts in decoherence, your total shadow, and nowhere in the chain.';}
 function runNodeDrill(n){if(n)rdShell(nodeDrillHtml(n));}
 function nodeDrillHtml(n,o){
  o=o||{};
@@ -69730,10 +69763,13 @@ function nodeDrillHtml(n,o){
   /* both ends of the pole, the same bar the codex row draws. Round JQ. */
   +(typeof poleDrillHead==='function'?poleDrillHead(n):'')
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
-  +'Charge held here <b>'+n.held.toFixed(1)+'</b>. '
-  +(c.opp?esc(c.opp)+' installed <b>'+n.rep.toFixed(1)+'</b>. ':'')
-  +'Left after that <b>'+n.sq.toFixed(1)+'</b>.'
-  +(n.d?' It shows up as '+esc(n.d.toLowerCase())+'.':'')+'</p>'
+  /* a field anchor's d is the word "field", a category and not a behaviour,
+     so it never reaches "It shows up as field." */
+  +(anchorSeat(n)?anchorSays(n)
+   :'Charge held here <b>'+n.held.toFixed(1)+'</b>. '
+   +(c.opp?esc(c.opp)+' installed <b>'+n.rep.toFixed(1)+'</b>. ':'')
+   +'Left after that <b>'+n.sq.toFixed(1)+'</b>.'
+   +(n.d?' It shows up as '+esc(n.d.toLowerCase())+'.':''))+'</p>'
   +'<div class="pm-eye">The opposite</div><p class="ad-p">'
   +(c.opp?'The other end of <b>'+c.nm.toLowerCase()+'</b> is <b>'+c.opp.toLowerCase()+'</b>. '
     +c.nm+' itself lives mainly at the '+c.addr.toLowerCase()+(c.loc?', in the '+esc(c.loc):'')
@@ -83433,7 +83469,11 @@ function wireTouch(k){
 function frDescribe(h,r){
  if(h.k==='seat'){var n=W.filter(function(x){return x.b===h.b;}).length;
   return '<u>seat</u> <b>'+esc(h.b)+'</b><hr>'+n+' addresses<hr><b>Click for detail.</b>';}
- if(h.k==='anchor')return '<u>outside the body</u> <b>'+esc(h.n.k)+'</b><hr>'+esc(h.n.a||'');
+ /* the anchor named itself and stopped, so a ring a person hovered carried a
+    weight that counts in DQ and said nothing about it. anchorSays
+    (ui/drills.js) is the same sentence the drill prints. */
+ if(h.k==='anchor')return '<u>outside the body</u> <b>'+esc(h.n.k)+'</b><hr>'+esc(h.n.a||'')
+  +(anchorSays(h.n)?'<hr>'+anchorSays(h.n):'');
  return describe(h,r,true);}
 (function(){
  var fr=$('frend'); if(!fr)return;
@@ -84521,19 +84561,44 @@ function render(){
    wheel already draws it in (GOLDC, ui/component.js); the saboteur row's
    dot is the conic sweep in head.html's .chk-dot.varies, since a saboteur's
    own thread is colored by whichever seat it sits at and not by one fixed
-   color the other three tiers share. */
-function renderChainKey(){
+   color the other three tiers share.
+
+   ARCHETYPE IS NOT A FIFTH TIER, AND THE KEY SAID IT WAS. Round of 31
+   October. The fifth row read "Archetype: the shape the whole pattern points
+   toward", under a heading that called all five one chain. compute() builds
+   saboteur, complex, hyper complex and super complex and stops there
+   (engine/compute.js, sups); nothing reads a super complex upward into an
+   archetype. The gold ring is affinity() (engine/core.js) off DOMAIN, which
+   buildSoul makes from the archetypes and domains a person picked at setup,
+   and suscAll() turns DOMAIN into n.susc, how readily each address takes a
+   story's charge. So archetype runs into the chain, it never comes out of it,
+   and the row now says that, under its own label beside the four field
+   anchors, which are the other thing on the Field outside the chain. The
+   anchors' row reads their live weight off BY, the same objects compute()
+   writes, and drops the figure on an unread reading, where it would be a
+   zero nobody entered. Their swatch is a ring, which is how every rendition
+   draws them (ui/rings.js); their colour is CB10 and still open. */
+function renderChainKey(r){
  var h=document.getElementById('chainkey'); if(!h)return;
+ var row=function(x){
+  return '<div class="chk-row"><span class="chk-dot'+(x.v?' varies':x.ring?' ring':'')+'"'
+   +(x.c?' style="background:'+x.c+'"':'')+'></span>'
+   +'<span class="chk-tx"><b>'+x.nm+'.</b> '+x.d+'</span></div>';};
  var rows=[
   {v:true, nm:'Saboteur', d:'Colored by the seat it sits at. The pattern closest to a single story.'},
   {c:rgba(bc('Solar'),1), nm:'Complex', d:'Two saboteurs joined. Always this color, whichever seat they sit at.'},
   {c:rgba(bc('Sacral'),1), nm:'Hyper-complex', d:'Complexes joined into one driving pattern.'},
-  {c:rgba(bc('Root'),1), nm:'Super-complex', d:'The deepest join this instrument reads, built from hyper-complexes.'},
-  {c:rgba(GOLDC(),1), nm:'Archetype', d:'The shape the whole pattern points toward.'}];
- h.innerHTML=rows.map(function(r){
-  return '<div class="chk-row"><span class="chk-dot'+(r.v?' varies':'')+'"'
-   +(r.v?'':' style="background:'+r.c+'"')+'></span>'
-   +'<span class="chk-tx"><b>'+r.nm+'.</b> '+r.d+'</span></div>';}).join('');}
+  {c:rgba(bc('Root'),1), nm:'Super-complex', d:'The deepest join this instrument reads, built from hyper-complexes. The chain ends here.'}];
+ var pctAt=function(i){var n=BY[i];return n?Math.max(0,Math.min(100,Math.round((n.sq||0)*10))):0;};
+ var live=r&&!r.unread;
+ var outside=[
+  {c:rgba(GOLDC(),1), nm:'Archetype', d:'Not part of the chain. It is the pick you made at setup. It sets how readily each address takes charge from a story, so it shapes the chain and is never built from it.'},
+  {ring:true, nm:'Field anchors', d:'The 4 places outside the body: Sol Star and Stellar Gateway above the head, Earth Star and Gaia Gateway below the feet. No nerve sits under them, so no saboteur forms there. Each carries the average weight of the seat it extends'
+   +(live?', the crown above at <b>'+pctAt(109)+'%</b> and the root below at <b>'+pctAt(111)+'%</b>':', the crown above and the root below')
+   +'. That weight counts in decoherence, your total shadow.'}];
+ h.innerHTML=rows.map(row).join('')
+  +'<div class="tier1" style="margin-top:14px">Outside the chain</div>'
+  +outside.map(row).join('');}
 /* THE FOUR AMPLIFIERS. body.html's own comment above the section carries
    the full why. Each row is a real address AMPLIFIER already maps to, read
    the same way every other address on this page is read, BY[i].sq, no new
@@ -84574,7 +84639,7 @@ function renderGates(){
   g.innerHTML='<p class="ad-p" style="margin-top:10px">Nothing read yet. Write a line in the Journal and the gates fill in from it.</p>';
  }}
  wireKbJump();
- renderAcc(r); renderSpirit(); renderRootSum(); renderPol2(r); syncMx(); renderGates(); renderChainKey(); renderAmplifiers();
+ renderAcc(r); renderSpirit(); renderRootSum(); renderPol2(r); syncMx(); renderGates(); renderChainKey(r); renderAmplifiers();
  /* the trace graph's block in the Field's side column, ui/loopread.js */
  if(typeof loopPaint==='function')loopPaint(r);
  /* the dock's circles move into their values rather than snapping, and only
@@ -84954,5 +85019,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005596785"></div>
+<div id="eof" hidden data-len="005601573"></div>
 </body></html>
