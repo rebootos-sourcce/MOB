@@ -419,16 +419,40 @@ const SIZE = c => '"' + c.t + '" ' + c.w + 'x' + c.h
       for (let k = 1; k <= N; k++) ok(has(sa, k), '@' + w + ': the whole reading is missing layer ' + k + '\'s data');
     }
 
-    const rd = await page.evaluate(() => ({
-      sections: document.querySelectorAll('.read section').length,
-      seats: [...document.querySelectorAll('.seats li')].map(li => ({
-        nm: li.querySelector('b').textContent.trim(),
-        v: parseFloat(li.querySelector('em').textContent) })),
-      bigring: document.querySelectorAll('.bigring .ring-b').length,
-      acts: document.querySelectorAll('.acts button').length,
-      text: document.body.innerText.trim().length,
-      cq: (document.querySelector('.cq b') || {}).textContent
-    }));
+    /* THE QUIZ PRINTS THE APP'S PERCENT, 31 October, percent phase 2 slice 6
+       (HANDOFF-2026-10-15/PERCENT-PHASE-2-2026-10-17.md), which was never
+       built. The quiz printed coherence as a bare "50" while the app printed
+       "50%" for the same record one press later, and the laws and seats as
+       "3.8" under "out of ten". The QA walk of 31 October found it, F2.
+       NAMED CHANGE: this gate held the defect as the pass, /^\d+$/ on the
+       coherence figure, "the reading prints no coherence figure". It holds
+       the registry's figure now. Every figure is read against fmtPct in the
+       page, which is the engine's own, and every bar against pct for the
+       same kind, because the rule is the ring: the percent printed is the
+       fill drawn for that quantity. A seat row is a mean of sq, which the
+       registry files under weight (engine/pct.js). */
+    const rd = await page.evaluate(() => {
+      const s = scored(), r = read(s.p).reading;
+      const fig = e => (e && e.textContent || '').trim();
+      const bar = li => parseFloat((li.querySelector('.tr i') || { style: {} }).style.width);
+      const lawV = {}; s.laws.forEach(l => { lawV[l.nm] = l.v; });
+      return {
+        sections: document.querySelectorAll('.read section').length,
+        seats: [...document.querySelectorAll('.seats li')].map((li, i) => ({
+          nm: li.querySelector('b').textContent.trim(), say: fig(li.querySelector('em')), bar: bar(li),
+          want: fmtPct('weight', (LOADS || [])[i] || 0), fill: pct('weight', (LOADS || [])[i] || 0) || 0,
+          v: (LOADS || [])[i] || 0 })),
+        laws: [...document.querySelectorAll('.laws li')].map(li => {
+          const nm = li.querySelector('b').textContent.trim();
+          return { nm, say: fig(li.querySelector('em')), bar: bar(li),
+            want: fmtPct('law', lawV[nm]), fill: pct('law', lawV[nm]) || 0 }; }),
+        bigring: document.querySelectorAll('.bigring .ring-b').length,
+        acts: document.querySelectorAll('.acts button').length,
+        text: document.body.innerText.trim().length,
+        cq: fig(document.querySelector('.cq b')), cqWant: fmtPct('cq', r.CQ),
+        tenths: [...document.querySelectorAll('.read p.sm')].map(p => p.textContent).filter(t => /out of ten/.test(t))
+      };
+    });
     ok(rd.sections > 0, '@' + w + ': the reading has no sections');
     ok(rd.seats.length === shape.seats.length,
       '@' + w + ': the reading prints ' + rd.seats.length + ' seats for ' + shape.seats.length);
@@ -436,15 +460,29 @@ const SIZE = c => '"' + c.t + '" ' + c.w + 'x' + c.h
       '@' + w + ': the reading draws ' + rd.bigring + ' bands for ' + shape.seats.length);
     ok(rd.acts > 0, '@' + w + ': the reading offers nothing to do next');
     ok(rd.text > 0, '@' + w + ': the reading is empty');
-    ok(/^\d+$/.test(String(rd.cq || '')), '@' + w + ': the reading prints no coherence figure');
+    ok(rd.cq === rd.cqWant && /^(\d+%|–)$/.test(rd.cq),
+      '@' + w + ': the reading prints coherence "' + rd.cq + '", the registry prints "' + rd.cqWant + '"');
+    ok(rd.laws.length > 0, '@' + w + ': the reading prints no laws');
+    rd.laws.forEach(l => {
+      ok(l.say === l.want, '@' + w + ': the law ' + l.nm + ' prints "' + l.say + '", the registry prints "' + l.want + '"');
+      ok(Math.abs(l.bar - l.fill) < 0.5, '@' + w + ': the law ' + l.nm + ' draws ' + l.bar + '% and prints ' + l.say);
+    });
+    rd.seats.forEach(x => {
+      ok(x.say === x.want, '@' + w + ': the seat ' + x.nm + ' prints "' + x.say + '", the registry prints "' + x.want + '"');
+      ok(Math.abs(x.bar - x.fill) < 0.5, '@' + w + ': the seat ' + x.nm + ' draws ' + x.bar + '% and prints ' + x.say);
+    });
+    ok(rd.tenths.length === 0, '@' + w + ': the reading still says "out of ten" over a percent: ' + rd.tenths.join(' | '));
 
     /* 7. one arithmetic. The heaviest band the ring named has to be the
-       heaviest row the bars print. */
-    const heaviestBar = rd.seats.slice().sort((a, b) => b.v - a.v)[0];
+       heaviest row the bars print. A row printed as the dash carries
+       nothing, so it reads as nought, never as a figure parseFloat cannot
+       read. */
+    const printed = x => x.say === '–' ? 0 : parseFloat(x.say);
+    const heaviestBar = rd.seats.slice().sort((a, b) => printed(b) - printed(a))[0];
     ok(label.indexOf(heaviestBar.nm) >= 0,
       '@' + w + ': the ring says "' + label + '" and the bars say ' + heaviestBar.nm);
     console.log('  reading: ' + rd.sections + ' sections, coherence ' + rd.cq
-      + ', heaviest ' + heaviestBar.nm + ' at ' + heaviestBar.v
+      + ', heaviest ' + heaviestBar.nm + ' at ' + heaviestBar.say
       + ', ' + rd.acts + ' things to do next');
 
     /* no dead end: every control on the reading still responds */
@@ -870,6 +908,75 @@ const SIZE = c => '"' + c.t + '" ' + c.w + 'x' + c.h
     await nctx.close();
   }
 
+
+  /* ---------- the landing's naming, beat 02 ----------
+     THE SIX NAMES WERE DEAD FOR FOUR WEEKS AND THIS FILE WAS GREEN THE WHOLE
+     TIME. Every one of them was measured at 44 by 44 in check 3 above and
+     not one was ever pressed. The handler that sets SG.named (feelBtns, Round
+     RD, 61a44ed7, 3 October) went missing in the 4 October merge 0c24409e,
+     neither parent of which carries it, while the canvas that reads SG.named
+     stayed. Found by hand on 31 October, reviews/funnel-golden-path-
+     2026-10-31.md, F1. So each name is pressed here, the way a person
+     presses it: tapped on a touch screen at 390, clicked at 1600, and once
+     more under reduced motion, which takes its own draw path in the handler.
+
+     Held: a press reads pressed and only that name does; the status line
+     says the word back; a second press takes it back and empties the line;
+     no press throws. SG itself is closed inside the page's script, so the
+     gate reads what a person reads, the pressed state and the line.
+
+     THE LANDING SNAPS BETWEEN FRAMES ON ITS OWN SCROLL, and the QA walk's
+     first probe counted a snap still settling as a press. The frame is
+     scrolled to and left to settle before the first press. The names come
+     off the markup, never typed here.
+     Checked against the build without the handler first: it fails there at
+     both widths and under reduced motion, every name. */
+  for (const [w, hgt] of WIDTHS) {
+    for (const reduce of [false, true]) {
+      if (reduce && w < 400) continue;          /* one reduced run is the draw path; the width is not */
+      const tag = 'naming @' + w + (reduce ? ' reduced' : '');
+      console.log('\n--- the landing naming, beat 02, @' + w + (reduce ? ', reduced motion' : '') + ' ---');
+      const touch = w < 400;
+      const fctx = await browser.newContext({ viewport: { width: w, height: hgt }, hasTouch: touch, isMobile: touch,
+        reducedMotion: reduce ? 'reduce' : 'no-preference' });
+      const fp = await fctx.newPage();
+      const ferr = [];
+      fp.on('pageerror', e => ferr.push(String(e && e.message || e)));
+      await fp.goto('file://' + path.join(DIR, 'index.html'), { waitUntil: 'load' });
+      await fp.evaluate(() => document.getElementById('name').scrollIntoView({ block: 'center', behavior: 'instant' }));
+      let lastY = -1;
+      for (let k = 0; k < 20; k++) {             /* settled: the same scroll twice running */
+        await fp.waitForTimeout(150);
+        const y = await fp.evaluate(() => scrollY);
+        if (y === lastY) break; lastY = y;
+      }
+      const names = await fp.$$eval('#name .feel button', b => b.map(x => ({ f: x.dataset.f, t: x.textContent.trim() })));
+      ok(names.length > 0, tag + ': the naming frame has no names to press');
+      const stateOf = () => fp.evaluate(() => ({
+        on: [...document.querySelectorAll('#name .feel button')].filter(b => b.getAttribute('aria-pressed') === 'true').map(b => b.dataset.f),
+        said: (document.getElementById('named') || {}).textContent || '' }));
+      const press = async f => { const b = fp.locator('#name .feel button[data-f="' + f + '"]');
+        if (touch) await b.tap(); else await b.click(); };
+      let live = 0;
+      for (const n of names) {
+        await press(n.f);
+        const s = await stateOf();
+        const good = s.on.length === 1 && s.on[0] === n.f && s.said.toLowerCase().indexOf(n.t.toLowerCase()) >= 0;
+        ok(good, tag + ': pressing ' + n.t + ' left pressed [' + s.on.join(',') + '] and the line "' + s.said + '"');
+        if (good) live++;
+      }
+      /* the last name pressed is still held, so a second press on it takes it back */
+      const lastN = names[names.length - 1];
+      await press(lastN.f);
+      const off = await stateOf();
+      ok(off.on.length === 0 && off.said === '',
+        tag + ': a second press on ' + lastN.t + ' left pressed [' + off.on.join(',') + '] and the line "' + off.said + '"');
+      ok(ferr.length === 0, tag + ': the landing threw: ' + ferr.slice(0, 2).join(' | '));
+      console.log('  ' + live + ' of ' + names.length + ' names register when pressed' + (touch ? ' (tapped)' : '')
+        + ', second press takes it back: ' + (off.on.length === 0 && off.said === ''));
+      await fctx.close();
+    }
+  }
 
   /* ---------- the landing's signal test, his slide 03 ----------
      ATUNED-Funnel-Signal-Story-Pattern-Release-Reframe-TDD-v1.md sections 8
