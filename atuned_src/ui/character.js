@@ -311,10 +311,18 @@ function chHover(j,seat){
 function chGraph(){
  var p=(typeof CURP!=='undefined')?CURP:null;
  if(!p||!p.story||!Array.isArray(p.story.entries)||!p.story.entries.length||typeof traceFromRecord!=='function')return null;
- /* read once per record and per count of entries: the graph parses every story */
- var key=(p.id||'')+'|'+p.story.entries.length+'|'+(p.story.entries[p.story.entries.length-1].t||'');
+ /* THE GRAPH CARRIES THE CHAIN THIS PLAN MAY SEE, 31 October. It was built with
+    no reading, so the graph behind the trace card held no saboteur, complex,
+    hyper complex or super complex for anybody (the nerve to celestial audit's
+    first gap). readSeenOf hands it the reading the page is already drawn from,
+    through the plan's lock. The card below reads only story to address edges,
+    so nothing it prints moves. */
+ var rd=null; try{rd=readSeenOf(p);}catch(e){rd=null;}
+ /* read once per record, per count of entries and per chain: the graph parses
+    every story, and a release moves the chain without a new entry */
+ var key=(p.id||'')+'|'+p.story.entries.length+'|'+(p.story.entries[p.story.entries.length-1].t||'')+'|'+readSeenSig(rd);
  if(CHV.tg&&CHV.tg.key===key)return CHV.tg;
- var g=null,ids=null; try{g=traceFromRecord(p);ids=traceStoryIds(p);}catch(e){g=null;}
+ var g=null,ids=null; try{g=traceFromRecord(p,undefined,rd);ids=traceStoryIds(p);}catch(e){g=null;}
  CHV.tg=g?{key:key,g:g,ids:ids,entries:p.story.entries}:{key:key,g:null};
  return CHV.tg.g?CHV.tg:null;}
 function chChain(k){

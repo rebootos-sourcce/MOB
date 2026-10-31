@@ -6254,6 +6254,65 @@ g('LK · an old law name is the law it became at every door, and a key the bound
  reset();
 }
 
+g('SO · a soul nobody picked says it was filled in, and an older one is unknown');
+/* THE NERVE TO CELESTIAL AUDIT'S THIRD GAP, 31 October. Every record is born
+   with Knowledge, under the Architect root, and Warrior and Sage, which weighs
+   Apathy and Shock 1.3 times at every address carrying them, and nothing on
+   the record said whether anybody chose it. soul.from says so now (SOUL_FROM,
+   engine/schema.js). Checked against the build before the fix first: there no
+   soul carries a mark, so every check below that asks for one fails, and the
+   checks that the arithmetic did not move pass on both. */
+{
+ const {blankProfile,saveProfile,loadProfile,validateProfile,read}=E;
+ /* read off the engine, and never thrown on when it is not there: a group that
+    throws ends the run, and the groups after it go unread */
+ const SOUL_FROM=Array.isArray(E.SOUL_FROM)?E.SOUL_FROM:[];
+ const J=JSON.stringify, clone=o=>JSON.parse(J(o));
+ ok(J(SOUL_FROM)===J(['default','picked']),'the mark is one of two words, got '+J(SOUL_FROM));
+ const b=blankProfile('so');
+ ok(b.soul&&b.soul.from==='default','a new record\'s soul says it was filled in, got '+J(b.soul));
+ /* THE BOUNDARY */
+ const none=clone(b); delete none.soul;
+ const v0=validateProfile(none);
+ ok(v0.ok&&v0.profile.soul.from==='default'&&J(v0.profile.soul.doms)==='[0]'&&J(v0.profile.soul.arcs)==='[0,1]',
+  'a record carrying no soul is filled with the three and marked filled, got '+J(v0.ok?v0.profile.soul:v0.errs));
+ const older=clone(b); delete older.soul.from;
+ const v1=validateProfile(older);
+ ok(v1.ok&&!('from' in v1.profile.soul),
+  'a soul with no mark, which every record before today carries, is unknown and never filled, even holding the three, got '+J(v1.ok?v1.profile.soul:v1.errs));
+ const olderPick=clone(older); olderPick.soul.doms=[4];
+ const v2=validateProfile(olderPick);
+ ok(v2.ok&&!('from' in v2.profile.soul),'and never picked either, whatever it holds, got '+J(v2.ok?v2.profile.soul:v2.errs));
+ SOUL_FROM.forEach(w=>{const o=clone(b); o.soul.from=w; const v=validateProfile(o);
+  ok(v.ok&&v.profile.soul.from===w,'a soul marked '+w+' crosses the boundary marked '+w);});
+ [['chosen','"chosen"'],[true,'true'],[0,'0']].forEach(([x,as])=>{const o=clone(b); o.soul.from=x; const v=validateProfile(o);
+  ok(!v.ok&&v.errs.indexOf('soul.from is '+as+', which is not one of '+SOUL_FROM.join(', '))>=0,
+   'a mark that is neither word is refused by name, never read as one, '+as+', got '+J(v.ok?'it loaded':v.errs).slice(0,160));});
+ const v1rec=clone(older); v1rec.v=1; delete v1rec.gates;
+ const vv=validateProfile(v1rec);
+ ok(vv.ok&&!('from' in vv.profile.soul),'a version 1 record still loads, with its soul unknown, '+J(vv.ok?'ok':vv.errs).slice(0,150));
+ /* THE SAVE decides it, the way a seeded law is decided */
+ const p=clone(b); loadProfile(p); saveProfile(p);
+ ok(p.soul.from==='default','a soul nobody moved is saved still marked filled in');
+ S.doms=[9]; buildSoul(); saveProfile(p);
+ ok(p.soul.from==='picked'&&J(p.soul.doms)==='[9]','one moved off what the record held is saved marked picked, got '+J(p.soul));
+ S.doms=[0]; buildSoul(); saveProfile(p);
+ ok(p.soul.from==='picked','and stays picked when it is moved back to the three: somebody chose it, then chose again');
+ const q=clone(v1.profile); loadProfile(q); saveProfile(q);
+ ok(!('from' in q.soul),'an unknown soul nobody moves is saved unknown, not promoted to filled, got '+J(q.soul));
+ S.arcs=[2,3]; buildSoul(); saveProfile(q);
+ ok(q.soul.from==='picked','and one somebody moves is saved picked');
+ const back=validateProfile(clone(q));
+ ok(back.ok&&back.profile.soul.from==='picked','the mark survives the round trip through the boundary');
+ /* AND THE READING DID NOT MOVE. The mark is a record of where the soul came
+    from; what a filled soul should do to the weighting is the owner's call. */
+ const held=o=>{CHILD.forEach(c=>{o.axes[c.nm]={held:5,opp:0};}); return o;};
+ const r1=read(held(clone(b))).reading, r2=read(held(clone(older))).reading;
+ ok(r1.sabs.length>0&&r1.DQ===r2.DQ&&r1.CQ===r2.CQ&&J(r1.sabs.map(s=>s.nm))===J(r2.sabs.map(s=>s.nm))&&r1.pi===r2.pi,
+  'a filled soul and an unknown one holding the same three read the same, DQ '+r1.DQ+' and '+r2.DQ+', '+r1.sabs.length+' saboteurs');
+ reset();
+}
+
 g('SS · a primary saboteur sits where its addresses are');
 /* SYSTEMS AUDIT SG-05, 24 October. The Analytics archetype card and the Avatar
    page printed the third column of ARCH18 as the primary saboteur's seat, and

@@ -389,10 +389,14 @@ function sumStory(r){
     crisis screens. He ruled "Your energy leans malignant" and kept the word,
     and round PO rules that no term stands without its plain meaning in the
     same place. A hover tip is not the same place on a phone, so the sentence
-    the glossary already holds for the word (rail:benign, rail:malignant in
-    engine/data/gloss.js) follows it on the page, read from that one table so
-    the two can never say different things. */
- var leanW=lean.ben>=lean.mal?'benign':'malignant';
+    the glossary already holds for the word follows it on the page, read from
+    that one table so the two can never say different things.
+    RENAMED 30 October, his words: "change it to positive and negative."
+    The glossary keys moved too (rail:positive, rail:negative in
+    engine/data/gloss.js); lean.ben, lean.mal and r.benign below are the
+    engine's own field names and are untouched, only the word shown and
+    looked up changed. */
+ var leanW=lean.ben>=lean.mal?'positive':'negative';
  p.push(((lean.read===false?'':'Your energy leans <b>'
   +leanW+'</b>'
   +(r.benign===null?'':', toward '+(r.benign?'expanding':'contracting'))+'. '

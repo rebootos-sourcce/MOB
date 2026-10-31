@@ -1,0 +1,63 @@
+/* R3, the common axis. columns: name, scale, figure; the scale column is
+   one width down the whole panel, so every axis lines up */
+.blk{position:relative;--nmw:92px;--fgw:52px}
+.rw{display:grid;grid-template-columns:var(--nmw) 1fr var(--fgw);align-items:center;min-height:44px;column-gap:8px;outline:none;border-radius:8px}
+.rw:focus-visible{box-shadow:0 0 0 2px var(--ink)}
+.pr{min-height:50px}
+.rw .rs{grid-column:1/-1}
+.nm{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--ink);font-weight:500;white-space:nowrap;min-width:0;outline:none}
+.nm .ic{color:var(--c)}
+.sc{position:relative;display:grid;grid-template-columns:18px 1fr 18px;align-items:center;column-gap:4px;height:100%}
+.am .sc{grid-template-columns:1fr}
+.pl .ic{width:16px;height:16px;display:block}
+.pl{outline:none}
+.ln{position:relative;height:16px}
+.ln>i{position:absolute;display:block}
+.base{left:0;right:0;top:7.25px;height:1.5px;background:rgba(239,237,232,.2);border-radius:1px}
+.pr .base{background:linear-gradient(90deg,var(--lc) 0 50%,var(--rc) 50% 100%);opacity:.45}
+.off .base{opacity:.25}
+.band{top:3px;height:10px;border-radius:5px;background:rgba(239,237,232,.1)}
+.stem{top:6.5px;height:3px;width:50%}
+.stem.l{right:50%;transform-origin:100% 50%;background:var(--lc);transform:scaleX(0)}
+.stem.r{left:50%;transform-origin:0 50%;background:var(--rc);transform:scaleX(0)}
+.am .stem{left:0;width:100%;background:var(--c);opacity:.85;transform-origin:0 50%;transform:scaleX(0)}
+.hold{left:0;top:0;width:100%;height:16px;pointer-events:none;will-change:transform}
+.dot{position:absolute;left:-7px;top:1px;width:14px;height:14px;border-radius:50%;border:2.5px solid var(--sc,var(--c));background:var(--panel)}
+.am .dot{border-color:var(--c)}
+.gdot{position:absolute;left:-1px;top:2px;width:2px;height:12px;border-radius:1px;background:var(--ink);opacity:.35}
+.pws{grid-column:1/-1;display:flex;justify-content:space-between;font-size:11px;line-height:1;color:var(--dim);margin-top:3px}
+.pw.lit{color:var(--ink)}
+.pr .sc{padding-top:8px}
+.fg{display:inline-flex;align-items:center;justify-content:flex-end;gap:2px;font-size:14px;font-weight:600;color:var(--sc,var(--ink));white-space:nowrap}
+.am .fg{color:var(--ink)}
+.off .fg{color:var(--dim)}
+.fg .ch{width:12px;height:12px;stroke-width:2.2}
+/* the shared lines, laid once over the whole block */
+.spine{position:absolute;top:18px;bottom:6px;width:2px;margin-left:-1px;background:var(--ink);opacity:.5;border-radius:1px;
+ left:calc(var(--nmw) + 8px + 22px + (100% - var(--nmw) - var(--fgw) - 16px - 44px)/2)}
+.ax{display:grid;font-size:11px;color:var(--dim);height:16px;align-items:end;margin-left:calc(var(--nmw) + 8px);margin-right:calc(var(--fgw) + 8px)}
+.A .ax{grid-template-columns:1fr auto 1fr;padding:0 22px}
+.ax .even{color:var(--mid)}
+.B .ax{margin-left:calc(var(--nmw) + 8px);margin-right:calc(var(--fgw) + 8px);display:flex;justify-content:space-between}
+.gl{position:absolute;top:20px;bottom:0;width:1px;background:rgba(239,237,232,.07);
+ left:calc(var(--nmw) + 8px + (100% - var(--nmw) - var(--fgw) - 16px)*var(--g))}
+.g0{--g:0}.g1{--g:.25}.g2{--g:.5}.g3{--g:.75}.g4{--g:1}
+.B .rw,.stair{position:relative;z-index:1}
+.stair{margin:2px 0 6px;padding:8px 8px 6px;background:var(--panel-2);border-radius:10px}
+.stair svg{display:block;width:100%;height:84px;overflow:visible}
+.stair .g{stroke:rgba(239,237,232,.1);stroke-width:1;vector-effect:non-scaling-stroke;fill:none}
+.stair .col{opacity:.06}.stair .col.bk{opacity:.22}
+.stair .kept{fill:rgba(239,237,232,.17)}
+.stair .edge{fill:none;stroke:var(--ink);stroke-width:2;vector-effect:non-scaling-stroke;stroke-linejoin:round}
+.stair .lost{fill:url(#r3h);stroke:none}
+.sl{display:grid;grid-template-columns:repeat(7,1fr);font-size:11px;color:var(--dim);text-align:center;margin-top:5px}
+.sl span{outline:none}
+.sl .bk{color:var(--sc);font-weight:600}
+.key{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:6px;font-size:11px;color:var(--dim)}
+.key i{display:inline-block;width:10px;height:10px;border-radius:2px;vertical-align:-1px;margin-right:5px}
+.key .k1{background:rgba(239,237,232,.22)}
+.key .k2{background:repeating-linear-gradient(135deg,rgba(239,237,232,.35) 0 1.5px,transparent 1.5px 4px)}
+.key .kb{font-weight:600}
+.stair.off .kept,.stair.off .edge{display:none}
+
+.rw[data-k="DQ"]{margin-bottom:8px}
