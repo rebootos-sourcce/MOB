@@ -177,6 +177,12 @@ jobs:
       # runner. It fails the day the door is closed without saying so.
       - name: plan self grant watch
         run: node tests/plan-selfgrant.js 2>&1 | tee "$RUNNER_TEMP/gates/plan-selfgrant.log"
+      # The records against the four depth template, 31 October. The audit
+      # that found 0 of 379 was a one time scratchpad run; this reads the
+      # count off the engine on every push and fails when it moves either way
+      # without tests/records-coverage.json moving with it.
+      - name: records coverage registry
+        run: node tools/records.js --gate 2>&1 | tee "$RUNNER_TEMP/gates/records.log"
       - name: voice check, his own objections as rules
         run: python3 .claude/skills/atuned-voice/check.py --objections
       - name: workflow lint, this file held to its own shape
@@ -201,7 +207,7 @@ jobs:
       # A gate that lost its tests still exits 0. The floors are in
       # tests/floors.json and are raised on purpose, never lowered to get green.
       - name: floors
-        run: node tools/floors.js --self-test && node tools/floors.js engine funnel-package plan-selfgrant
+        run: node tools/floors.js --self-test && node tools/floors.js engine funnel-package plan-selfgrant records
 
   # The required browser gates, one job each, in parallel, each on its own
   # runner with the chromium that playwright 1.56.1 installs. CHROME carries

@@ -1,0 +1,32 @@
+{
+  "about": [
+    "What tools/records.js --gate holds the registry to, in both directions. Below a value is coverage going backwards; above it is progress not written down, and both fail. Change a value only in the change that moves it, read off that run, never by hand from a document.",
+    "Written 31 October 2026 off main d46be066 (engine.js md5 prefix 4e5becaf), the first run of the registry. On that run it agreed with the 31 October audit's pass A (reviews/records-template-audit-2026-10-31.md) on all 379 records, component by component. components_full counts the records holding each component in full; partial counts as absent, per T1 and T2: a record does not pass merely because every field contains text.",
+    "Draft depth records (reviews/records-depth-pilot-2026-10-31.json) are never read by the gate. A draft is not canon, and owner_approved moves only with an approval carrying reviewState owner-approved, a name and a date."
+  ],
+  "records": 379,
+  "pass_all": 0,
+  "owner_approved": 0,
+  "pass_depth": {
+    "D1": 25,
+    "D2": 33,
+    "D3": 0,
+    "D4": 0
+  },
+  "components_full": {
+    "def": 184,
+    "prov": 28,
+    "joins": 279,
+    "poles": 44,
+    "trig": 44,
+    "beh": 165,
+    "cons": 3,
+    "scene": 36,
+    "inv": 59,
+    "ctr": 0,
+    "rq": 17,
+    "dis": 0,
+    "evc": 44,
+    "rp4": 0
+  }
+}
