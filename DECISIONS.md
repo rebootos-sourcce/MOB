@@ -2006,6 +2006,20 @@ carries both rulings, 20 September's and this one. What he settled, in short:
 - **Why questions are its questions,** and it never answers one. That
   completes the 20 September line, "it may not say why", rather than
   reversing it: the instrument does not measure cause, the person can find it.
+  **Superseded in part, 30 October, round SK in `TASKS.md`.** His words about
+  the live Journal chat: "This is the behavior I want source AI to take on
+  during chat. It's currently not doing that. It's currently acting like a
+  chatbot." He pointed at his own blueprint, "Atüned Source AI, Journal Mode",
+  Drive, 4 October, which lists the questions to prefer (section 24) with no
+  why among them and checks every question for "observable experience"
+  (section 35). So Source AI still never answers a why, and it no longer asks
+  one either: the ask keeps its lead in the person's own words and its last
+  sentence is the first of the blueprint's own questions that passes the ten
+  checks (`engine/qcheck.js`). And since his seam package of the same day
+  (`ATUNED_SOURCE_AI_SEAM_READY_HANDOFF_2026-10-30`, "the spoken language
+  should not reveal an unconfirmed ontology label") the lead no longer says
+  where it lands until the person has confirmed it. Kept here rather than
+  deleted, in case he wants the why back.
 - **A peer and a companion, not a clinician and not a friend,** who sees a
   person for their authentic nature and not for the conditions that created
   them. Core programming: a pattern is a condition that runs through a person,
@@ -2846,7 +2860,7 @@ Ruled by the owner on 16 October, in his words, and recorded the same day.
 
 - **A crisis button in the welcome, chosen by the person.** "Maybe it belongs in the pop-up, the welcome. Maybe it's an option. Is this a crisis? Hit that button. Tell me about it. Do you need immediate emergency contact, or would you like to talk it through? It's always a story." This is a plain button the person presses, with two ways out: reach someone now (988 call or text, text HOME to 741741, 911 in danger) or talk it through (it goes to the Story box). It supersedes the 9 October deferral for the button only. The automatic detection that reads what a person writes (the branches `claude/b2a-crisis` and `claude/b2a-crisis2`) is still deferred, and the ten expected red cases stay.
 - **"Collapsed" goes.** The lowest band is renamed Contracted. His reason: "the energy wants to expand, not collapse".
-- **"Your energy", not "the field", in a reading about the person.** "Your energy leans malignant", because "energy is more natural. Field is just too abstract." The tab called Field keeps its name. The words benign and malignant stay as he dictated them.
+- **"Your energy", not "the field", in a reading about the person.** "Your energy leans malignant", because "energy is more natural. Field is just too abstract." The tab called Field keeps its name. **The words benign and malignant were ruled OVERRIDDEN 30 October**, his words: "Yeah, change it to positive and negative. We need to start changing the kind of religious tones." "Your energy leans" still stands; the word after it is positive or negative now, everywhere it shipped, including the glossary meaning printed beside it. Kept here for the record, since this line was the one place that written ruling never got updated to match, caught 31 October when he found an old build still showing the old words and asked whether the rename had actually landed anywhere.
 - **Every score, weight and measure prints as a percent.** "Instead of 0.0, site wide, we need to convert those numbers into percent. I think it's a more natural language for people to understand. So we need to create a framework and a formula and to make sure that all of our elements are percent-based. If it says 6.2, then we should change that to percent. If it's 112 patterns, just leave it alone. Or, sorry, chakras, leave it alone." Counts of things stay as counts. The percent printed is the fill of the ring or bar drawn for that quantity. A change is said as before and after. This supersedes round PQ's "just a number" for CQ and DQ, the 9 October no percent ruling, the 15 October P0 item that took the percent signs off, and the 16 October whole number weights (MOB PR 83). The 14 October ruling of no raw scores stands: a percent of a defined maximum is not a raw score.
 - **A privacy policy and terms are required, and served.** "It's very important to us. Transparency is important to us. We also need our terms. We're not a clinician. What we are is a practice based off of direct experience that has been tested out in the field." The pages were drafts in `funnel/legal/` that the deploy never copied to atuned.world. They are served, linked and made true. Efficacy words ("highly effective, rapid") are left out of the legal text on purpose, because a terms page that promises results contradicts "not a clinician"; they stay his for marketing pages.
 - **Open, not ruled:** sign in with Google or Apple is not built (email and password only); whether to add it is open. Password reset by email needs a mail key on the server that is not set; until it is, reset answers 503.
@@ -3036,3 +3050,61 @@ His words: "Check to see if there's a second onboarding. Right now, there's been
 - **Kept, on purpose:** the sheet host the welcome after paying borrowed, renamed `#paidwelcome` and now its own; the chain the onboarding's end card draws its rows in; `ui.tutorialSeen` on the record; and `'tutorial'` among the doors a journey walk may name (`JOURNEY_DOORS`), because a record carrying an older value is read and never refused. The journey record landed on 9 October, after the switch panel was gone, so no person could have written that door; only gates did. `tests/journey2.js` still holds that such a walk resumes on the onboarding's own card and ends on its end card.
 - **What else changes:** `sniffStory`, the full story reader, has no screen that calls it now. The tutorial was its only one. It stays in the engine, exported and held by `tests/engine.js`, and its route into screens was already ruled for after alpha (the 9 October entry above).
 - **Held by** `tests/onboarding2.js`, section 2, which reads the running page: no name of the tutorial on it, no rule of its poses, no host of its own, and no row for it in Account. Those four fail by name on `45fe5649`, the build from before this change. The checks that rode the tutorial's screens and still describe the product moved: the stage checks (no card chrome, a ghost with no live control, nothing running under reduced motion) onto the onboarding's own stage, and the release question gate onto the same two calls the tutorial made, `stCommit` and `obMini` handed to `relPick`.
+
+## The fetter's two poles are a nerve's freeze or flight, neutral at the centre, 27 October
+
+His words, reviewing the Field with the dual-pole rows on screen: "I realized
+that the fetter state having both poles is showing two things, the freeze or
+flight state of a nerve and then the center point is neutral. So the express
+collapsed is really showing the state of the nerve. It's very good."
+
+"Nerve" is his own word for the floor of the stack ruled 23 October, "our
+stack goes psychophysical, that's nerve, to super complex": the fetter and its
+address is the nerve. A fetter already carries two values, the charge it
+holds (`n.sq`, read as the held pole) and the coherent opposite installed
+against it (`n.pole`, see `ui/imprints.js` and `ui/map.js`). The reading above
+says what the two together have always been showing, read correctly for the
+first time: not a split scorecard of shadow against virtue, but which way
+that one nerve has tipped away from a centre where neither pole is pulling.
+Held high and installed low is the nerve pulled to one side. Installed high
+and held low is the nerve pulled to the other. Centre, where the two draw
+close, is the nerve regulated.
+
+Expression (`EX` in `engine/compute.js`, `CQ*(1-PULL)`, where `PULL` is the
+average drag every held address exerts against the person's will) is the
+figure that already moves with this. A collapsed Expression is not a separate
+fact about the person: it is this same tipped state, read off every nerve at
+once rather than one address at a time. CQ itself stays fixed (it is read
+from the law answers alone, ruled 25 September and reaffirmed since), so a
+low Expression is always the nerves pulling against a steady CQ, never CQ
+itself moving.
+
+Nothing in the arithmetic changed. This is a naming of what `n.sq`, `n.pole`
+and `EX` already compute, so the next reader of this code, or of a fetter
+drill on screen, has the right word for it.
+
+His words, settled in conversation: "Narcissism is a subset of psychopathy and Machiavellianism... sociopath would be a hypercomplex and psychopath would be a supercomplex. But a very particular archetype." This resolves his 20 October strike (`0e53d037`, "Remove disputed Psychopathy supercomplex classification"), which changed only `docs/ATUNED_LAYER_COUNT_DASHBOARD_2026-10-20.md` and never reached the code.
+
+- **Sociopathy is the Predatory family's own hyper complex.** `compute()` already built it (`kind:'hy'`, `nm:'Predatory'`). It is now a DESCENT entry of its own in `engine/data/compass.js`, `kind:'hyper complex'`, `fam:'Predatory'`. The name is the structure's (Sociopathy, not sociopath), the way the descent names a pattern and never a person, and it is the name `CODE_STRUCT` already codes, X25.
+- **Psychopathy is a super complex, and only one particular one:** the Grandiosity hyper complex and the Predatory one together. Its entry keeps `kind:'super complex'` and gains `pair:['Grandiosity','Predatory']`. `compute()` reads that pair into `r.psychopathy`, a separate field that is never pushed into `sups`. It is set wherever the two rank by weight, under the same weight gate as every super complex (a mean of 5.6). `inSups` says whether the generic pairing by rank also paired them.
+- **The dark read now lights a tied step only when the chain holds it.** It used to light Psychopathy for anybody dark under expression 11. The referral to a licensed clinician is unchanged and still follows depth alone, because it is a safety rule and not a label.
+- **What it changed on the roster:** one reading out of sixteen. Tomas is dark, carries Grandiosity and no Predatory, and was shown Psychopathy; he is now shown Machiavellianism. Every number on every profile is unchanged.
+- **Open, and his:** whether a heavy hyper complex may carry a marginal one past the gate. The mean lets a Grandiosity of 8.7 carry a Predatory of 5.5. The generic super complex does the same today, so a floor for each part would move both rules, and that call is his. Sociopathy's behaviour, practice and counterpart are unwritten on purpose: they are `null` in the record rather than invented.
+
+## Execute, do not stop and wait. Ruled 22 October.
+
+His words: "when I give you a command, you exercise it. If there's a prior command that's blocking it, you can talk to me about it, but don't ever stop doing it." A standing instruction for how work gets carried out, not limited to one task.
+
+A prior ruling (the locked CQ formula, a content decision only he can make, anything that needs his word before it is right rather than before it is built) is a real reason to talk to him about a command before carrying it out. It is never a reason to stop and only report. Where a command meets no such ruling, the work gets done, not written up as a plan for him to approve. Reporting instead of building, when nothing actually blocks the building, is the failure this entry exists to name.
+
+The occasion: asked on 22 October to find out where all the latest code for the nerve to super complex structure actually is, after a report that morning had described the real detection chain (nerve, address, fetter, saboteur, complex, hyper-complex) as already wired, without having looked at `proto/knowledge/`, a separate prototype area where the same campaign had written a full second layer of behavior, trigger, lived example, impact and practice content for all six real hyper-complex families, plus four competing page designs for showing it, none of it connected to the shipped app. The miss was not looking hard enough before reporting complete, not a blocking ruling anywhere in the way.
+
+## Away from the mythological names, toward the behavioural ones. Ruled 30 October.
+
+His words: "We need to start changing the kind of religious tones. To something more practical. Right, so instead of referring to a person as Lucifer or Moloch, we want to describe the behavior in a single word. Or two."
+
+Checked before scoping it: the product already states the intent this ruling now makes explicit. `ui/drills.js`, the Compass section header: "Rendered as behaviours and never as figures. Nobody meets Lucifer. A person runs pride as false light, and the name is what four thousand years of people called that behaviour when they saw it. That is the only reason the names earn their place: they carry the historical footprint, and the echo is in the room today." So the names were already meant to ride alongside a behavioural description, never stand in for the person. What his ruling adds: even riding alongside is now too much, in his own example ("instead of referring to a person as Lucifer or Moloch"). The behavioural word leads and is what a person is shown; the mythological name, if it survives anywhere, is footnote, not label.
+
+Where the names actually live, checked by grep rather than assumed: `atuned_src/engine/data/compass.js` (797 lines, the Compass/Inferno data itself) and `atuned_src/engine/data/teachers_recipes.js` (426 lines, the teacher/inverse pairs), both real, both shipped. Not yet read in full or catalogued figure by figure; that is the next step, not done tonight. **Not executed this round.** This is a content and naming pass across a real data table, not a copy tweak, and it needs its own scoped round: read every figure name actually in `compass.js` and `teachers_recipes.js`, confirm which ones are user-facing today versus already behind the "rendered as behaviours" principle above, propose the one or two word behavioural replacement for each, and bring the list to him rather than guess forty names in one pass.
+
+**Names ruled so far, 30 October, as he works through the list.** Druj is Deception (or Deceiver, if a person-word is needed), opposite Honesty: his words, thinking it through out loud, "truth is the opposite of deceive... deception is just a lie, but you could also say transparency, or honesty. Honesty is probably more real, probably the one." Geryon is Fraud: his words, "Geryon is fraud," which also matches the one already in the research file's own table, Dante's eighth circle. Full detail and the still open structural question (Geryon shares the engine's one real two-piece pattern with Psychopathy, naming him does not by itself tell the two apart) is `TASKS.md` round SM, SM14 to SM16.

@@ -62,7 +62,7 @@ var CHV={pick:null, sel:-1, selAddr:-1, sc:null, ov:null, r:null, raf:0, last:0,
 /* the three overlays and the key they are kept under in the store */
 var CH_OVERLAYS=[
  {k:'cloud', nm:'Point cloud', on:true,
-  d:'The person and the 112 addresses round them, as points.'},
+  d:'The person and the 108 addresses round them, plus the 4 field anchors above and below, as points.'},
  {k:'torus', nm:'Torus', on:true,
   d:'The field round the body. The seats bend it and vitality makes it breathe.'},
  {k:'heat', nm:'Heat map', on:false,
@@ -311,10 +311,18 @@ function chHover(j,seat){
 function chGraph(){
  var p=(typeof CURP!=='undefined')?CURP:null;
  if(!p||!p.story||!Array.isArray(p.story.entries)||!p.story.entries.length||typeof traceFromRecord!=='function')return null;
- /* read once per record and per count of entries: the graph parses every story */
- var key=(p.id||'')+'|'+p.story.entries.length+'|'+(p.story.entries[p.story.entries.length-1].t||'');
+ /* THE GRAPH CARRIES THE CHAIN THIS PLAN MAY SEE, 31 October. It was built with
+    no reading, so the graph behind the trace card held no saboteur, complex,
+    hyper complex or super complex for anybody (the nerve to celestial audit's
+    first gap). readSeenOf hands it the reading the page is already drawn from,
+    through the plan's lock. The card below reads only story to address edges,
+    so nothing it prints moves. */
+ var rd=null; try{rd=readSeenOf(p);}catch(e){rd=null;}
+ /* read once per record, per count of entries and per chain: the graph parses
+    every story, and a release moves the chain without a new entry */
+ var key=(p.id||'')+'|'+p.story.entries.length+'|'+(p.story.entries[p.story.entries.length-1].t||'')+'|'+readSeenSig(rd);
  if(CHV.tg&&CHV.tg.key===key)return CHV.tg;
- var g=null,ids=null; try{g=traceFromRecord(p);ids=traceStoryIds(p);}catch(e){g=null;}
+ var g=null,ids=null; try{g=traceFromRecord(p,undefined,rd);ids=traceStoryIds(p);}catch(e){g=null;}
  CHV.tg=g?{key:key,g:g,ids:ids,entries:p.story.entries}:{key:key,g:null};
  return CHV.tg.g?CHV.tg:null;}
 function chChain(k){
@@ -385,7 +393,7 @@ function chRailHtml(r){
  h+='<div class="pm-eye chr-sp">Light and breath</div><div class="chr-read">'
   +'<div class="chr-row"><span>Coherence</span><b>'+fmtPct('cq',cq,{unread:unread})+'</b><i>'+esc(chSentence(charCohWord(unread?0:cq/100)))+' It lights the figure and sets how wide, bright and whole the field is.</i></div>'
   +'<div class="chr-row"><span>Vitality</span><b>'+fmtPct('vitality',vt,{unread:unread})+'</b><i>'+esc(chVitWord(unread?0:vt))+' It sets how far and how fast the field breathes.</i></div>'
-  +'<div class="chr-row"><span>Decoherence</span><b>'+fmtPct('dq',dq,{unread:unread})+'</b><i>The shadow, all 112 addresses against the most they could hold. It opens the gaps.</i></div></div>'
+  +'<div class="chr-row"><span>Decoherence</span><b>'+fmtPct('dq',dq,{unread:unread})+'</b><i>The shadow, your 108 addresses and 4 field anchors against the most they could hold. It opens the gaps.</i></div></div>'
   /* round RB: the glow behind the figure is a picture too, so it is said */
   +(unread?'':'<p class="chr-note">The glow behind the figure is the colour your whole field gives off: every point\u2019s colour, mixed by how bright it is. It breathes with the field.</p>');
  /* the seven seats: root first as everywhere, each a button that traces it */

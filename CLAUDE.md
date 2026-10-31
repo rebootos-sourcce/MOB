@@ -200,10 +200,27 @@ before any user facing change and carries the measured UX floors.
 
 ## Voice. These are rulings, not preferences.
 
-No em dashes, anywhere, including commit messages and docs. Never say 108; the
-count stated to users is 112. Sentence case, no all caps UI copy. Mechanical
-and precise, no soft wellness language, short sentences, physical metaphors
-only. Muted palette argued from autonomic response. Icons are ring, not fill.
+No em dashes, anywhere, including commit messages and docs. Sentence case, no
+all caps UI copy. Mechanical and precise, no soft wellness language, short
+sentences, physical metaphors only. Muted palette argued from autonomic
+response. Icons are ring, not fill.
+
+**OVERRIDDEN, 28 October: say the real structure, not a flat 112.** His
+words: "We should never talk about 112. It's 108 in the physical body, 4
+non-physical. You already know this. It's in the software. Please stop
+talking about it. Make that change everywhere so it's just done." The
+engine's own data already carried this split before either ruling was
+written, `engine/data/nodes.js`'s own header: "THE 112 ADDRESSES. 108
+somatic, seated at a named plexus or nerve, plus 4 field anchors above and
+below the body." The total is still 112 and nothing in the arithmetic moves;
+what changes is never stating that total as a flat, undifferentiated number
+again. Say the structure: 108 somatic, at a named plexus or nerve, plus 4
+field anchors, two above the body and two below. A screen that already
+established the structure once may still use a bare 112 afterward on that
+same screen, where the reader has the context; a screen that has not is
+never allowed to open on a bare 112. What follows is the ruling this
+replaces, kept for the record: "Never say 108; the count stated to users is
+112."
 
 **Port, do not rebuild.** The arithmetic core keeps its bodies and signatures.
 
@@ -358,6 +375,22 @@ download in its dropdown and no right click save, so the owner sat looking at a
 working app he could not keep. Send it with the card set to attach. State the
 second route beside it: the branch is pushed, so every file also has a raw
 address he can save from a browser. A build he cannot save has not shipped.
+
+**Testing the voice locally needs a real address, not a double click.** Ruled
+29 October, his words: "I should be able to do all this local. I should not
+have to go to a pushed website. That's a problem." Opening `source.html`
+straight off disk sends the browser's origin as `null`, and the voice server
+(reboot-os, `atuned/server/src/index.js`) has refused that origin on purpose
+since 16 October: nothing tells a stranger's downloaded copy apart from the
+owner's own, so a flat-out local allowance would have reopened the hole that
+rule closed. `http://localhost` is different, a stranger's browser never
+visits a local port on its own the way it opens a downloaded file, so the
+server now also answers it (`LOCAL_ORIGIN`, reboot-os `index.js`, 29
+October). `tools/serve-local.sh [port]`, run from this repo's root, puts the
+build at `http://localhost:<port>/source.html` instead of `file://`; opened
+there in a real browser, the voice and anything else gated the same way work
+exactly as they do on atuned.world. A file opened straight off disk still
+reads `null` and is still refused, on purpose.
 
 ## Reporting to the owner. Ruled 21 September.
 

@@ -666,8 +666,8 @@ function verpArrows(cr0){
    A word alone cannot carry a definition, so each depth now has one. Menu is
    one word. Definition is on demand. */
 const VIEWS=[
- {k:'A',nm:'Charge',    layers:'the core, 112 addresses, the wash',
-  tip:'What you are carrying, and where. The core is coherence, the ring is your 112 addresses, the wash is shadow weight.'},
+ {k:'A',nm:'Charge',    layers:'the core, 108 addresses and 4 field anchors, the wash',
+  tip:'What you are carrying, and where. The core is coherence, the ring is your 108 addresses and 4 field anchors, the wash is shadow weight.'},
  {k:'B',nm:'Patterns',  layers:'charge, plus the seats named and the saboteurs',
   tip:'The saboteurs running on top of the charge. Each bead is one, and the threads show which addresses built it.'},
  {k:'C',nm:'Chains',    layers:'patterns, plus complexes, hyper, super, archetypes',

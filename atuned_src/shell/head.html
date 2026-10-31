@@ -8,7 +8,7 @@
 <html lang="en" data-build="BUILD_STAMP"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
-<meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
+<meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
 <!-- ============================================================
      THE TYPEFACE, CARRIED RATHER THAN FETCHED.
 
@@ -2043,28 +2043,62 @@ body:not(.tab-field) .fdock{display:none}
    are the first group, the four that move through a person the second, a
    hairline between them. The fill and its colour are written inline by
    rbRow (ui/component.js); this sheet only lays them out. */
+/* r1, THE LEVEL, 30 October. ui/component.js rbRow and rbPair say why. One
+   row is one line of words over one track, for both families: the same line
+   height, the same 16px track, the same gap. A pair's track has a line at 50
+   and one mark; an amount's fills from the left end with ticks at the
+   quarters. What the row grammar of round OG was, a 44px fill with the words
+   inside it and drawn twice so a letter turned at the edge, is what the
+   review said made a lean and an amount look alike, and it is gone. Every
+   row is still a door at the 44px floor: the words, the gap and the track
+   are 57 between them. */
 .fdock{gap:2px}
 .fdock .fdrow{display:block;min-width:0}
-.fdock .fdrow .key,.fdock .keylo{display:flex;flex-direction:column;align-items:stretch;gap:2px;flex-wrap:nowrap}
-.fdock .keylo{margin-top:6px;padding-top:6px;border-top:1px solid var(--edge)}
-.fdock .kb.rbar{position:relative;display:block;width:100%;min-width:0;height:var(--tap);
- min-height:var(--tap);padding:0;border:0;border-radius:var(--r-xs);overflow:hidden;
- background:rgba(128,128,128,.14);box-shadow:inset 0 0 0 1px var(--edge);text-align:left;
- white-space:nowrap;cursor:pointer}
-/* the fill is the row itself, and a soft light travels along its edge so a
-   bar reads as live and not as a printed rectangle; reduced motion holds it */
-.rb-t{position:absolute;inset:0;display:block;border-radius:inherit;overflow:hidden}
-.rb-t i{display:block;height:100%;background:linear-gradient(90deg,color-mix(in srgb,var(--c) 78%,#000),var(--c));
- position:relative;overflow:hidden}
-.rb-t i::after{content:"";position:absolute;top:0;bottom:0;right:0;width:26px;
- background:linear-gradient(90deg,transparent,rgba(255,255,255,.34));opacity:.7}
+.fdock .fdrow .key,.fdock .keylo{display:flex;flex-direction:column;align-items:stretch;gap:4px;flex-wrap:nowrap}
+/* THE FAMILY HEADS: the family's mark, its word, and its sentence one hold
+   or one focus away. A carrier the keyboard reaches, so at the 44px floor. */
+.rb-fam{display:flex;align-items:center;gap:8px;min-height:var(--tap);padding:0 2px;color:var(--mid);
+ font-size:12px;font-weight:500;border-radius:var(--r-xs);cursor:help}
+.rb-fam .rb-ic{width:16px;height:16px;margin:0;color:var(--dim)}
+.rb-fam:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.rb-fam2{margin-top:8px;border-top:1px solid var(--edge);border-radius:0}
+.fdock .kb.rbar{position:relative;display:block;width:100%;min-width:0;min-height:var(--tap);
+ padding:6px 2px 8px;border:0;border-radius:var(--r-xs);background:transparent;box-shadow:none;
+ text-align:left;white-space:nowrap;cursor:pointer;color:var(--ink)}
+/* round 3 of the r1 review: DQ is the one amount where more is worse, so it
+   has a gap of its own above the five where more is better */
+#keylo .rbar[data-q=dq]{margin-bottom:10px}
+.rb-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:6px;height:22px}
+.rb-n{display:inline-flex;align-items:center;gap:7px;min-width:0;font-size:13px;font-weight:500;line-height:1.2;
+ color:var(--ink);letter-spacing:.01em}
+.rb-ic{flex:0 0 auto;width:18px;height:18px;margin:0;fill:none;stroke:currentColor;stroke-width:1.6;
+ stroke-linecap:round;stroke-linejoin:round}
+.rb-n .rb-ic{color:var(--c)}
+/* WHERE FLOW IS BLOCKED, SAID, NOT SHOWN. His words, 30 October: "get rid of
+   the text that says... blocked by at solar." The row already says the same
+   thing twice more: the seat's own name lights under its cell and the cell
+   itself is ringed, so the caption was the third copy of one fact. The node
+   stays in the document, for the screen reader that only gets this element's
+   own text and for the gate that reads it, and is taken off the page the
+   standard way: a 1px box with its overflow and its edges clipped away. */
+.rb-sub{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%)}
+.rb-v{grid-column:3;font-family:var(--num);font-variant-numeric:tabular-nums;font-size:14px;font-weight:600;
+ line-height:1;color:var(--ink);text-align:right}
+.rb-t{position:relative;display:block;height:16px;margin-top:5px;border-radius:8px;
+ background:rgba(128,128,128,.14);overflow:hidden}
+.rb-t s{position:absolute;top:0;bottom:0;width:1px;background:color-mix(in srgb,var(--ink) 9%,transparent)}
+.rb-f{position:absolute;left:0;top:0;bottom:0;display:block;background:var(--c);border-radius:0 3px 3px 0;overflow:hidden}
+/* the head: a 2px edge in the ink at the end of the fill, so a small figure
+   still has an end the eye can find. A fill of nought has no width to carry
+   it, so it is not drawn. */
+.rb-f::after{content:"";position:absolute;top:0;bottom:0;right:0;width:2px;background:var(--ink);opacity:.9}
 /* ROUND OJ. A reading is live, so the light in it travels: a soft band runs
    along the fill from the empty end to the edge and starts again, at the
    rate the Field's own threads run on (--rate, written by rbRate from the
-   Shadow layer's DQ), and the six rows take it up in reading order, a beat
+   Shadow layer's DQ), and the rows take it up in reading order, a beat
    apart, the way the Field takes up its seven seats. Transform and opacity
    only. An unread row has no fill and so no light: idle looks idle. */
-.rb-t i::before{content:"";position:absolute;inset:0;transform:translateX(-100%);
+.rb-f::before{content:"";position:absolute;inset:0;transform:translateX(-100%);
  background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.2) 50%,transparent 70%);
  animation:rbsweep calc(var(--t-breath) * 1.5 / var(--rate,1)) var(--ease-breath) infinite;
  animation-delay:calc(var(--k,0) * var(--t-stagger) * 7)}
@@ -2074,46 +2108,44 @@ body:not(.tab-field) .fdock{display:none}
 #keylo .rbar:nth-child(3){--k:3}
 #keylo .rbar:nth-child(4){--k:4}
 #keylo .rbar:nth-child(5){--k:5}
-.rbar.off .rb-t i::before,.rbar.off .rb-t i::after{display:none}
-/* WHAT CHANGED. A hairline where the fill stood, fading over 2.4 seconds. */
-.rbar.rb-gh .rb-t::after{content:"";position:absolute;top:7px;bottom:7px;left:var(--gw,0%);width:2px;
+#keylo .rbar:nth-child(6){--k:6}
+.rbar.off .rb-f{display:none}
+/* WHAT CHANGED. A hairline where the fill stood, fading over 2.4 seconds.
+   Not on Flow, whose cells carry seven figures and have no one place a fill
+   stood. */
+.rbar.rb-gh:not(.rb-flow) .rb-t::after{content:"";position:absolute;top:2px;bottom:2px;left:var(--gw,0%);width:2px;
  margin-left:-1px;border-radius:1px;background:var(--ink);opacity:0;
  animation:rbghost 2.4s var(--ease-out) var(--gd,0ms) 1 both}
 @keyframes rbghost{0%{opacity:.9}65%{opacity:.5}100%{opacity:0}}
-/* THE ROW'S OTHER PARTS, round OJ, and the one motion language they share
-   (ui/component.js, rbFx). The mark is drawn in the word's own ink, inside
-   .rb-n, so the clipped second copy carries it across the fill's edge with
-   the word. */
-.rb-ic{flex:0 0 auto;width:16px;height:16px;margin-right:8px;fill:none;stroke:currentColor;stroke-width:1.7;
- stroke-linecap:round;stroke-linejoin:round}
 /* the leading edge of the fill, which only ever shows while a reading moves */
 .rb-h{position:absolute;left:0;top:0;bottom:0;width:4px;margin-left:-4px;opacity:0;pointer-events:none;
  background:linear-gradient(90deg,transparent,rgba(255,255,255,.85));will-change:transform,opacity}
-/* the share of the fill the shadow is holding, along the fill's foot where no
-   word sits */
-.rb-pull{position:absolute;right:0;bottom:0;height:5px;
- background:repeating-linear-gradient(135deg,rgba(0,0,0,.55) 0 2px,rgba(0,0,0,.12) 2px 4px)}
-/* FLOW'S WAVE RIDES INSIDE ITS BAR, round RB, ported in the P3 menu pass:
-   "This stack of elements should all be bar style." The row is 44px like
-   every other, filled to its figure, and the seven stretches of the wave,
-   root to crown, each in its seat's colour over a faint band of the same, sit
-   between the name and the number. A bead rides it at the Field's rate and
-   loses light at each seat by the share that seat holds back. The decoherence
-   hashes went with the same ruling, into the CQ and DQ pair. */
-.rb-wave{position:absolute;display:block;pointer-events:none}
-.rbar.rb-wavein .rb-wave{left:92px;right:62px;top:9px;bottom:9px}
-.rb-wave svg{display:block;width:100%;height:100%;overflow:visible}
-.rb-wave .wb rect{opacity:.11}
-.rb-wave .wm{fill:none;stroke:var(--edge-2);stroke-width:1;stroke-dasharray:2 4;vector-effect:non-scaling-stroke}
-.rb-wave .wv{fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
-.rb-bead{fill:var(--ink)}
-body.quiet .rb-bead,body.rm .rb-bead{display:none}
-@media (prefers-reduced-motion:reduce){.rb-bead{display:none}}
-.rbar.off .rb-h,.rbar.off .rb-pull{display:none}
-/* the chip, with a ground of its own, because it lies across the fill's edge
-   and has to read on either side of it. In over 90ms and a 4px rise to rest,
-   held, out by 2.2s; set by a negative delay so a rewrite continues it. */
-.rb-d{position:absolute;right:60px;top:50%;margin-top:-9px;height:18px;padding:0 6px;border-radius:9px;
+.rbar.off .rb-h{display:none}
+/* FLOW, SEVEN CELLS, root to crown. A cell is its seat's colour risen from
+   the foot to what the seat passes on, over a hatching that is what it holds
+   back. The flow track is 24px and not 16, round 3 of the r1 review: it
+   carries seven readings and a 16px cell could not show Diane's Solar
+   holding back a quarter. The ring on the blocked cell is laid over the
+   fill and not under it, which the mockup had backwards: an inset shadow on
+   the cell was covered by the cell's own colour wherever it was full. */
+.rb-t.rb-cells{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;height:24px;
+ background:transparent;border-radius:0;overflow:visible}
+.rb-cell{position:relative;display:block;border-radius:3px;overflow:hidden;
+ background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--ink) 11%,transparent) 0 1.5px,transparent 1.5px 4px),rgba(128,128,128,.14)}
+.rb-cell:first-child{border-radius:8px 3px 3px 8px}
+.rb-cell:nth-child(7){border-radius:3px 8px 8px 3px}
+.rb-cell b{position:absolute;inset:0;display:block;background:var(--sc);transform-origin:50% 100%}
+.rb-cell.bk::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 1.5px var(--ink)}
+.rb-step{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.rb-step path{fill:none;stroke:var(--ink);stroke-width:1.5;vector-effect:non-scaling-stroke;opacity:.9}
+.rb-seats{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;margin-top:4px;font-size:11px;
+ color:var(--dim);text-align:center}
+.rb-seats span{overflow:hidden;white-space:nowrap}
+.rb-seats .bk{font-weight:600;color:color-mix(in srgb,var(--bc) 70%,var(--ink))}
+/* the chip, on the line of words beside the figure it is the change in. In
+   over 90ms and a 4px rise to rest, held, out by 2.2s; set by a negative
+   delay so a rewrite continues it. */
+.rb-d{position:absolute;right:52px;top:8px;height:18px;padding:0 6px;border-radius:9px;
  background:var(--panel-2);box-shadow:inset 0 0 0 1px var(--edge-2);font-family:var(--num);font-size:11px;
  font-weight:600;line-height:18px;font-variant-numeric:tabular-nums;color:var(--ink);opacity:0;pointer-events:none}
 .rb-d.bad{color:var(--alarm)}
@@ -2123,24 +2155,15 @@ body.quiet .rb-bead,body.rm .rb-bead{display:none}
    timer clears it (rbChip), because a reduced motion profile has every CSS
    animation off at the root and a chip cleared by one would never print. */
 .rb-d.on.st{opacity:1;animation:none;transform:none}
-.rb-row{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;
- gap:10px;padding:0 12px;pointer-events:none}
-.rb-n{display:flex;align-items:center;font-size:13.5px;font-weight:500;line-height:1.2;color:var(--ink);letter-spacing:.01em}
-.rb-v{font-family:var(--num);font-variant-numeric:tabular-nums;font-size:16px;font-weight:600;
- line-height:1;color:var(--ink);text-align:right}
-/* the same words again, dark, and shown only over the fill: the clip is the
-   filled width, so a letter turns at the edge of the bar */
-.rb-over .rb-n,.rb-over .rb-v{color:var(--on,#0B0D10)}
-.rb-over{clip-path:inset(0 calc(100% - var(--w,0%)) 0 0)}
 /* PAIRED. A row lights the glass bar's circle for the same reading, and the
    circle lights the row, one ring in the row's own colour. */
 .fdock .kb.rbar:hover,.fdock .kb.rbar.rb-hot{box-shadow:inset 0 0 0 1px var(--c)}
 .fdock .kb.rbar:focus-visible{outline:2px solid var(--c);outline-offset:1px}
 .rbar.off .rb-v,.rbar.off .rb-n{color:var(--dim)}
-.rbar.off .rb-over{display:none}
-body.quiet .rb-t i::before,body.rm .rb-t i::before,body.quiet .rb-t i::after,body.rm .rb-t i::after{animation:none}
+.rbar.off .rb-n .rb-ic{color:var(--dim)}
+body.quiet .rb-f::before,body.rm .rb-f::before{animation:none}
 @media (prefers-reduced-motion:reduce){
- .rb-t i::before,.rb-t i::after{animation:none}}
+ .rb-f::before{animation:none}}
 .fdock .kb:hover{background:transparent}
 .fdock .kb:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .key{display:flex;flex-wrap:nowrap;gap:4px;align-items:center}
@@ -2853,6 +2876,31 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
 .mx button[data-sel="1"]{box-shadow:inset 0 0 0 1px var(--gold)}
 .mxk{font-size:12.5px;color:var(--dim);line-height:1.65;margin-top:10px}
 .mxk b{color:var(--ink);font-weight:600}
+
+/* THE CHAIN KEY. One row per tier, nerve to root, a swatch and a sentence.
+   The dot is the exact color the wheel paints that tier's threads and beads
+   with, set inline from bc() at render time, so a swatch here and a bead on
+   the wheel can never read as two different colors for the same tier. */
+.chk-row{display:flex;align-items:flex-start;gap:9px;margin-top:10px}
+.chk-dot{flex:0 0 auto;width:11px;height:11px;border-radius:50%;margin-top:3px;
+ box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+.chk-dot.varies{background:conic-gradient(from 0deg,#e06a5a,#e0a65a,#e0d85a,#6ac17a,#5ac1b8,#5a8fe0,#a05ae0,#e06a5a)}
+.chk-tx{font-size:12.5px;color:var(--dim);line-height:1.5}
+.chk-tx b{color:var(--ink);font-weight:600}
+
+/* THE FOUR AMPLIFIERS. One row each, a name and the real crBadge (.crb,
+   above) reading its own address. Its own small rule rather than
+   knowledge.js's kb-row/kbp, which that file injects itself only once the
+   Knowledge tab has been opened: a press on Field alone, never Knowledge,
+   would have shown these names with no flex, no gap and no border, the
+   classes present with nothing behind them. */
+.amp-row{display:flex;align-items:center;justify-content:space-between;gap:10px;
+ padding:9px 0;border-bottom:1px solid var(--edge);background:none;border-left:0;
+ border-right:0;border-top:0;width:100%;text-align:left;cursor:pointer;color:inherit;
+ font:inherit}
+.amp-row:last-child{border-bottom:0}
+.amp-row:hover{background:var(--sunk)}
+.amp-nm{font-size:13.5px;color:var(--ink)}
 
 /* ---------- spiritual states ---------- */
 .sp-hd{margin:14px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--edge);color:var(--gold)}
@@ -3916,6 +3964,15 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .st-flow[data-focus="read"] .st-colr{flex:1.55 1 0}
 .st-flow[data-focus="release"] .st-colw{flex:1 1 0}
 .st-flow[data-focus="release"] .st-colx{flex:0 0 430px}
+/* SIMPLE ON LANDING, round of 29 October, his words: "when I land on this
+   page, it starts off in simple mode." Imprints and Release are real
+   panels, not removed, only shut until Dashboard opens them (STV.dash,
+   ui/storyui.js). The Journal takes the width they would have used. */
+.st-flow.st-simple .st-colr,.st-flow.st-simple .st-colx{display:none}
+.st-flow.st-simple .st-colw{flex:1 1 0;max-width:900px;margin:0 auto}
+/* .st-dash.on's own rule moved beside .st-mic and .st-dash's shared base,
+   round of 29 October, where the "standout" ruling lives: see the ruling
+   there rather than two rules for the same state in two places. */
 .st-pan{display:flex;flex-direction:column;min-width:0;min-height:0;position:relative;
  background:color-mix(in srgb,var(--ink) 3%,transparent);border:1px solid var(--edge);
  border-radius:var(--r-s);padding:14px 16px}
@@ -3958,12 +4015,30 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
  stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .st-mk h3{margin:0;font-family:var(--sans);font-size:20px;line-height:1.15;color:var(--ink);
  white-space:nowrap}
+/* the Dashboard and Record buttons travel together on the right so .st-hd's
+   own space-between keeps two groups, the name and the controls, not three
+   items spread evenly with Dashboard stranded in the middle */
+.st-hdbtns{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .st-mk-j h3{font-weight:300;letter-spacing:.005em}
 .st-mk-i h3{font-weight:700;letter-spacing:-.03em}
 .st-mk-r h3{font-weight:400;letter-spacing:.11em}
 .st-mk-r svg{stroke:var(--glow,var(--accent))}
-/* ---- the instrument's panel: the name, the bank and the vault, the sort ---- */
+/* ---- the instrument's panel: the name, the view icons, the sort ---- */
 .st-chd{display:flex;align-items:center;gap:8px;min-height:24px}
+/* ---- the list panel's own icon row: the bank and the archive, round of
+   29 October. A sibling of #stlshd and never inside it, because
+   stListPaint() owns #stlshd and rewrites it on every repaint; see the
+   ruling at stRender in ui/storyui.js.
+   A BLACK GROUND UNDER THE ICONS, round of 29 October, his words: "the
+   bank looks really boring, so I want a black background behind the
+   icons." The sunk ground, not a literal black: the same recessed surface
+   the chart's own canvas already sits on (.st-cvw), so the row reads as a
+   held panel and stays the correct ink on the two paper lightings rather
+   than a black square sitting wrong on a white page. */
+.st-lsico{display:flex;align-items:center;justify-content:flex-end;gap:8px;min-height:var(--tap);
+ margin-bottom:6px;padding:6px 8px;border-radius:var(--r-xs);background:var(--sunk)}
+/* ---- Commit, at the foot of the whole read column, round of 29 October ---- */
+.st-rft{display:flex;justify-content:flex-end;flex:0 0 auto}
 .st-ico{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);min-width:var(--tap);
  padding:0 11px;border-radius:999px;border:1px solid var(--edge-2);background:transparent;
  cursor:pointer;font-family:var(--sans);font-size:13px;color:var(--mid);justify-content:center;
@@ -3992,7 +4067,8 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
  background:var(--sunk);overflow:hidden;color:var(--ink)}
 .st-cvw canvas{position:absolute;inset:0;display:block;width:100%;height:100%}
 .st-cvk{display:none;color:var(--dim);border-top:1px solid var(--accent)}
-.st-ctr{font-size:12.5px;color:var(--dim);margin-top:6px;min-height:18px}
+/* .st-ctr is gone, round of 29 October: see the ruling at stCtrPaint's own
+   old site in ui/storyui.js. */
 /* ---- the list: this entry by lane, or the vault ---- */
 .st-lshd{font-size:12px;font-weight:600;color:var(--dim);min-height:22px}
 .st-lsb{flex:1 1 auto;overflow:auto;margin:4px -6px 0;padding:0 6px;
@@ -4066,16 +4142,39 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    beat, and the elapsed time sits inside the same pill. Transform and
    opacity only, so quiet and reduced motion hold the dot and the ring lit
    and still rather than run either faster. */
-.st-mic{min-height:var(--tap);display:inline-flex;align-items:center;gap:8px;
- background:var(--panel-2);border:1px solid var(--edge);color:var(--mid);
- border-radius:var(--r-xs);padding:7px 15px;font-family:var(--sans);font-size:13.5px;cursor:pointer;
+/* TWO CONTROLS THAT STAND OUT, round of 29 October, his words looking at the
+   plain ghost pill both carried: "the dashboard button and the talk button,
+   both need a standout and look sexy. Right now they look very shitty."
+   The fill and border still move per lighting (the rules below this one
+   still own those), so the lift is in what no lighting overrides: full ink
+   instead of mid for the word and the icon, a pill rather than the small
+   corner radius every plain button carries, more weight on the word, and a
+   glow in the accent that sits on the control at rest and not only on
+   press, so it reads as a control worth noticing before a hand reaches it. */
+.st-mic,.st-dash{min-height:var(--tap);display:inline-flex;align-items:center;gap:8px;
+ background:var(--panel-2);border:1px solid var(--edge);color:var(--ink);font-weight:600;
+ border-radius:999px;padding:8px 18px;font-family:var(--sans);font-size:13.5px;cursor:pointer;
+ box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 38%,transparent),
+  0 2px 10px color-mix(in srgb,var(--accent) 22%,transparent);
  transition:background var(--t-element) var(--ease-out),border-color var(--t-element) var(--ease-out),
-  color var(--t-element) var(--ease-out)}
-.st-mic svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;
+  color var(--t-element) var(--ease-out),box-shadow var(--t-element) var(--ease-out),
+  transform var(--t-micro) var(--ease-out)}
+.st-mic svg,.st-dash svg{fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;
  stroke-linejoin:round;flex:0 0 auto}
+.st-mic:hover,.st-dash:hover{color:var(--ink);border-color:var(--mid);transform:translateY(-1px);
+ box-shadow:0 0 0 1.5px var(--accent),0 4px 14px color-mix(in srgb,var(--accent) 30%,transparent)}
+/* Dashboard filled when it is open, the same accent-on-accent pairing the
+   Commit button already carries, so "on" reads as on and not just outlined */
+.st-dash.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);
+ box-shadow:0 0 0 1.5px var(--accent),0 2px 12px color-mix(in srgb,var(--accent) 38%,transparent)}
+/* the eyebrow above Source AI's own line, round of 29 October: see storyui.js
+   for the ruling. tier1 is the house's own small-label class; this only
+   tightens the gap to the glow it sits beside. */
+.st-talklbl{margin:0 0 6px 2px}
 .st-dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;position:relative;
  background:var(--alarm);transition:background var(--t-element) var(--ease-out)}
-.st-mic.on{background:var(--alarm);border-color:var(--alarm);color:#fff;font-weight:500}
+.st-mic.on{background:var(--alarm);border-color:var(--alarm);color:#fff;font-weight:500;
+ box-shadow:0 0 0 1.5px var(--alarm),0 2px 12px color-mix(in srgb,var(--alarm) 38%,transparent)}
 .st-mic.on .st-dot{background:#fff;animation:micPulse 1.15s ease-in-out infinite}
 /* the ring is the dot's own ::after, not a third element, so it travels
    with it and needs nothing wired */
@@ -4170,11 +4269,25 @@ body.tab-story #bRel{display:none}
    take its width, so the stage track is the rest of the row. The bank sets
    st-bank and the rail returns with the Imprints page in it and Selection
    under it, where that page's Detail opens. Stacked, the rail is a block
-   under the surface, so it is simply not there until the bank asks for it. */
+   under the surface, so it is simply not there until the bank asks for it.
+
+   THE LEFT COLUMN IS GONE FROM THE STORY TOO, ROUND OF 28 OCTOBER. His
+   words: "we're going to get rid of the left-hand menu." #lcol on this tab
+   carries none of the story's own data, it is the Field's own rail
+   (Energetic summary, Root Energetics, Awareness, Child emotions, Matrix,
+   Laws of Action), shown here only because colKey() gives Story the same
+   STORE key as Field, so opening the rail on the Field and then switching
+   tabs carried that open state onto the Journal with the wrong headers
+   over it, in the bank too since nothing here had ever scoped the bank's
+   three columns down to two. Shutting it by default was not enough: the
+   person's own past choice on a different surface would reopen it. The fix
+   is the same as the bank's own for the rest of the row: not collapsed,
+   not there, in or out of the bank. */
+body.tab-story #lcol{display:none}
 body.tab-story:not(.st-bank) .mid>.col:not(#lcol){display:none}
 @media (min-width:1181px){
- body.tab-story:not(.st-bank) .mid{grid-template-columns:302px 1fr}
- body.lshut.tab-story:not(.st-bank) .mid{grid-template-columns:58px 1fr}}
+ body.tab-story:not(.st-bank) .mid{grid-template-columns:1fr}
+ body.tab-story.st-bank .mid{grid-template-columns:1fr 336px}}
 /* ---------- the Summary's rail is today's summary, ui/daily.js ----------
    The same step aside as the Story's: on the Summary the rail carries Today
    and Selection, and Today is shown nowhere else. A silent day (nothing read
@@ -4263,11 +4376,9 @@ body.tab-summary .lsec.sum-rail.dl-empty{display:none}
 @keyframes srcPass{0%{transform:translateY(0);opacity:0}6%{opacity:.7}
  25%{transform:translateY(163%);opacity:0}100%{transform:translateY(163%);opacity:0}}
 @keyframes srcScan{from{transform:translateY(0)}to{transform:translateY(163%)}}
-.src-live{width:6px;height:6px;border-radius:50%;flex:0 0 auto;background:var(--accent);
- animation:srcBreath 4.2s ease-in-out infinite}
-@keyframes srcBreath{0%,100%{opacity:.35;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
-.st-jr:has(#stsrc.hear) .src-live{animation:none;opacity:1;transform:scale(1.15);
- box-shadow:0 0 6px var(--accent)}
+/* .src-live, the dot beside Chat, and its own srcBreath keyframe are gone,
+   round of 29 October: see the ruling at its old markup site in
+   ui/storyui.js. */
 .src-land .src-w{display:inline-block;animation:srcWd var(--t-element) var(--ease-out) both;
  animation-delay:calc(var(--i) * var(--t-stagger) * .5)}
 @keyframes srcWd{from{opacity:0;transform:translateY(.28em);color:var(--accent)}
@@ -4278,11 +4389,9 @@ body.tab-summary .lsec.sum-rail.dl-empty{display:none}
  animation-delay:calc(var(--n) * var(--t-stagger) * .5 + var(--t-element))}
 @keyframes srcCur{0%{opacity:1}25%{opacity:0}50%{opacity:1}75%,100%{opacity:0}}
 body.quiet .st-pe::before,body.rm .st-pe::before,body.quiet .st-pe::after,body.rm .st-pe::after{animation:none;opacity:0}
-body.quiet .src-live,body.rm .src-live{animation:none;opacity:1;transform:none}
 body.quiet .src-land .src-w,body.rm .src-land .src-w,
 body.quiet .src-land::after,body.rm .src-land::after{animation:none}
-@media (prefers-reduced-motion:reduce){.st-pe::before,.st-pe::after{display:none}
- .src-live{animation:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.st-pe::before,.st-pe::after{display:none}}
 /* ---------- Source AI, deeper still. Round LV ----------
    His words: "I want that location to feel like it's alive and innovative,
    like it's a part of the screen that has a different nature to it, and I
@@ -4407,6 +4516,14 @@ body.punch .src-new{border-color:transparent;background:var(--panel-2)}
 .src-open.quiet{font-size:15px;color:var(--mid)}
 .src-q{font-size:20px;line-height:1.35;color:var(--ink);margin:4px 0 2px;max-width:48ch}
 .src-note{font-size:13px;color:var(--dim);line-height:1.55;margin:3px 0}
+/* THE LIVE CAPTION, round of 29 October: provisional, said while a sentence
+   is still forming, gone the instant it finalises into a real turn. The
+   pulse says so without a word, opacity only, never the scale micPulse
+   uses: a line of text swelling and shrinking reads as broken, not alive. */
+.src-livecap{font-size:13px;color:var(--mid);line-height:1.55;margin:6px 0 0;font-style:italic;
+ animation:capPulse 1.6s ease-in-out infinite}
+@keyframes capPulse{0%,100%{opacity:1}50%{opacity:.55}}
+body.quiet .src-livecap,body.rm .src-livecap{animation:none;opacity:.85}
 .src-say{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);
  white-space:nowrap;margin:0}
 .src-row{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;margin-top:8px}
@@ -4444,36 +4561,67 @@ body.punch .src-new{border-color:transparent;background:var(--panel-2)}
  .st-talk span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}}
 .st-chat .st-glow{flex:1 1 auto;display:flex;flex-direction:column;min-height:0}
 .st-chat .st-pe{flex:1 1 auto;display:flex;flex-direction:column;min-height:260px}
-.src-th{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;margin:0;padding:2px 4px 0 0;
+.src-th{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;margin:0;padding:2px 4px 8px 0;
  list-style:none}
-/* a row is its node, its words, and the wire down to the next node. No
-   margin between rows: the wire is exactly a row tall because the next node
-   sits the same distance down its own row as this one does in this. */
-.src-tn{position:relative;list-style:none;min-height:24px;padding:3px 0 14px 32px}
-.src-tn-past{padding-bottom:6px}
-.src-tw{position:absolute;left:0;top:16px;width:24px;overflow:visible;pointer-events:none}
-.src-wire{fill:none;stroke:var(--c);stroke-width:1.5;stroke-linecap:round}
-/* the pulse is frflow's own keyframes, the renditions' tension run, so it is
-   one wave in two places and never a second one drawn to look like it */
-.src-puls{fill:none;stroke-linecap:round;stroke-width:2.2;
- stroke:color-mix(in srgb,var(--c) 62%,var(--ink));
- animation:frflow var(--d,3s) linear infinite;animation-delay:var(--ph,0s)}
-body.quiet .src-puls,body.rm .src-puls{display:none}
-@media (prefers-reduced-motion:reduce){.src-puls{display:none}}
-/* the nodes are rings, never fills, on the ground so the wire stops at them.
-   Source AI's are the size of the Field's own address ring and the person's
-   are smaller, so whose turn it was reads before a word does. The live one
-   breathes on the panel's beat, srcBreath, locked to the same clock. */
-.src-nd{position:absolute;left:6px;top:10px;width:12px;height:12px;border-radius:50%;
- box-sizing:border-box;border:1.6px solid var(--c);background:var(--sunk)}
-.src-tn-me .src-nd{left:8px;top:12px;width:8px;height:8px;border-width:1.4px}
-.src-tn-now .src-nd{animation:srcBreath 4.2s ease-in-out infinite;border-color:var(--accent)}
-body.quiet .src-tn-now .src-nd,body.rm .src-tn-now .src-nd{animation:none}
-@media (prefers-reduced-motion:reduce){.src-tn-now .src-nd{animation:none}}
-/* the person's words in the journal's own hand, light, so the two voices on
-   the thread are told apart by weight and not by a bubble around either */
-.src-me{margin:0;font-family:var(--sans);font-size:16px;line-height:1.6;font-weight:300;
- color:var(--ink);white-space:pre-wrap;overflow-wrap:break-word;max-width:60ch}
+/* A TEXT WINDOW, round of 29 October, his words on seeing the ring and wire
+   build: "the chat area is fucking hideous. Get rid of that daisy chain
+   chat... this is now a text window between AI on the left, me on the
+   right." A row is a bubble now, nothing else: no node, no wire, no pulse.
+   Source AI's bubble holds the left edge, the person's holds the right,
+   the way every ordinary chat window reads, and whose turn it was shows
+   in which side a bubble sits on rather than in a ring's own size. */
+.src-tn{display:flex;list-style:none;margin:10px 0}
+.src-tn-me{justify-content:flex-end}
+.src-tn-now,.src-tn-past{justify-content:flex-start}
+/* ONE BUBBLE SHAPE, round of 29 October, his words: "I need a more
+   unifying style. We've got two different kind of bubble styles
+   happening, and that's not working. Also, two different font styles,
+   and that's definitely not working." The first build gave Source AI's
+   bubble a plain edge plus a second, thicker, seat-coloured edge on its
+   left, a second border scheme the person's own bubble never carried, and
+   left .src-q/.src-open at the 20 to 22px size they were built for as a
+   single standalone headline, against .src-me's 16px: two shapes, two
+   type scales, on the same window. Now there is one shape (radius,
+   padding, type) for every bubble, and the only differences left are the
+   two a real two-sided conversation needs: which side it sits on, and
+   its fill. */
+.src-bub{max-width:82%;border-radius:var(--r-s);padding:10px 14px;
+ font-family:var(--sans);font-size:16px;line-height:1.6;font-weight:400}
+.src-bub-src{background:var(--sunk);border:1px solid var(--edge);color:var(--ink)}
+.src-bub-past{opacity:.82}
+.src-bub-me{background:var(--accent);color:var(--on-accent)}
+.src-me{margin:0;color:inherit;white-space:pre-wrap;overflow-wrap:break-word}
+/* every paragraph a bubble can hold reads at the bubble's own one size,
+   never its old standalone size, whichever class built it */
+.src-bub .src-q,.src-bub .src-open,.src-bub .src-note{margin:0;max-width:none;
+ font-family:inherit;font-size:inherit;line-height:inherit;font-weight:inherit;color:inherit}
+.src-bub .src-note{opacity:.75;margin-top:6px}
+.src-bub .src-row{margin-top:10px}
+/* WHAT THE SNIFFER FOUND, SHOWN IN THE BUBBLE ITSELF, round of 29 October:
+   see the ruling at srcMeHtml in ui/storyui.js. Real bold and real colour,
+   the rule as it was written before the textarea's own caret forced a
+   compromise elsewhere (.st-f); a bubble carries no caret, so nothing
+   here needs the tint-and-box-shadow stand in. A mark whose intensity
+   was read as modified (storyHits' own mod, m.mod) carries italic too.
+   Negated and about-someone-else stay the same two rules S1 and S2
+   already draw on the legacy box (.st-f.neg, .st-f.oth), struck and
+   dotted-underlined, so the two surfaces never disagree. */
+/* background:none overrides the browser's own default yellow highlight on
+   a bare <mark>, which otherwise wins over color alone */
+.src-f{background:none;font-weight:700;color:var(--c)}
+.src-f.mod{font-style:italic}
+.src-f.neg{font-weight:400;font-style:normal;color:var(--dim);text-decoration:line-through;
+ text-decoration-color:color-mix(in srgb,var(--c) 70%,transparent)}
+.src-f.oth{font-weight:400;color:var(--dim);text-decoration:underline dotted}
+/* ON THE FILLED BUBBLE, THE COLOUR IS BLENDED TOWARD on-accent, never raw.
+   The person's own bubble is a solid accent fill; a seat colour picked to
+   read against the sunk ground elsewhere in the product is not chosen
+   against an accent fill and is not a contrast pair this product has
+   ever measured. Blended, it still reads as that seat's own hue and
+   always resolves toward the one ink already proven to sit on the
+   accent (.btn.pri and the rest), so it cannot fall below it. */
+.src-bub-me .src-f{color:color-mix(in srgb,var(--c) 55%,var(--on-accent))}
+.src-bub-me .src-f.neg,.src-bub-me .src-f.oth{color:color-mix(in srgb,var(--on-accent) 60%,transparent)}
 .src-tn-now .src-open,.src-tn-now .src-q{margin-top:0}
 /* the reply line, on the journal box's own ground and type */
 .src-cmp{display:flex;align-items:flex-end;gap:8px}
@@ -4483,12 +4631,6 @@ body.quiet .src-tn-now .src-nd,body.rm .src-tn-now .src-nd{animation:none}
 .src-cin:focus{outline:none;border-color:var(--accent)}
 .src-cin::placeholder{color:var(--dim)}
 body.punch .src-cin{border-color:transparent;background:var(--panel-2)}
-/* stacked, the Story reads journal, Source AI, imprints, release, and the
-   tools after. Without this the whole left rail sat between what a person
-   wrote and what it found whenever the column was open. The breakpoint is the
-   one that stacks the rails. */
-@media (max-width:1180px){body.tab-story #lcol{order:1}}
-
 /* ---------- imprints ---------- */
 .ip-hd{display:flex;align-items:center;justify-content:space-between;gap:10px;
  margin-bottom:11px;flex-wrap:wrap}
@@ -4769,6 +4911,21 @@ body.punch .ip.kid{background:color-mix(in srgb,var(--c) 68%,var(--panel-2))}
 .ad-r span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
 .ad-r em{font-style:normal;font-size:12px;color:var(--heart)}
 .ad-r b{font-weight:500;color:var(--gold);font-family:var(--num);font-variant-numeric:tabular-nums}
+/* THE GATE ROWS' OWN VALUE, reached for the first time outside the gate
+   drill when the Field's own Laws of Action rail section was added, 28
+   October. gatesBlock (ui/drills.js) was already shipped and already
+   correct, drawn only inside the drill until then, so the design gate's
+   CSS coverage check had never walked a tab where .ad-v or .gate-r stood
+   reachable in the document. .ad-v held a plain .ad-r span's own colour
+   with nothing of its own; it is the percent and reads better in the same
+   gold, tabular hand every other reading in this product already uses. */
+.ad-v{color:var(--gold);font-family:var(--num);font-variant-numeric:tabular-nums}
+/* .gate-r NAMES THE ROW FOR THE DELEGATED CLICK (ui/ui.js, .gate-r[data-gate]
+   opens runGatesDrill) and carries no rule of its own: .ad-r's is the whole
+   of its look, on purpose, so a gate row and every other action-drill row
+   stay one visual family. Named here so the design gate's coverage check,
+   which reads a class only off a selector that names it, finds it. */
+.gate-r{}
 .ad-q{font-size:14px;line-height:1.7;color:var(--dim);font-style:italic;
  border-left:3px solid var(--gold);padding-left:12px;margin:8px 0;font-weight:300}
 /* THE SABOTEUR CARD'S QUIET END, round SB. Connected is the engine's own map
@@ -5847,6 +6004,15 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     back, and none of them is a tap target. */
  .st-flow{flex-direction:column;height:auto;gap:8px}
  .st-flow>*,.st-colr>*,.st-colw>*{flex:0 0 auto!important}
+ /* SIMPLE MODE, ALONE ON A PHONE, NEEDS ITS OWN FLOOR. With Imprints and
+    Release hidden (st-simple, the Dashboard toggle, round of 29 October),
+    the Journal is the only child left in this column flow, and flex:0 0
+    auto above sizes every child off its own content. Nothing here asks the
+    Journal's own content to grow past it, so with nothing held above it the
+    panel sat at the height of one line, 168 of 844: the functional gate's
+    own "actually rendered on a phone" check against #story caught it. A
+    floor the other two columns used to supply by sitting beside it. */
+ .st-flow.st-simple .st-pan.st-jr{min-height:60vh}
  .st-colw,.st-colr,.st-colx{gap:8px}
  .st-pan{padding:10px 12px}
  .st-hd{margin-bottom:6px}
@@ -5861,7 +6027,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  .st-flow:not([data-focus="write"]) .st-hl{min-height:96px}
  .st-cvw{flex:0 0 auto;height:230px;min-height:0}
  .st-flow:not([data-focus="read"]) .st-cvw{height:100px}
- .st-flow:not([data-focus="read"]) .st-sort,.st-flow:not([data-focus="read"]) .st-ctr,
+ .st-flow:not([data-focus="read"]) .st-sort,
  .st-flow:not([data-focus="read"]) .st-ls{display:none}
  .st-flow:not([data-focus="read"]) .st-open{display:inline-flex}
  /* the list door carries the pending count, "List 12", so while it shows the
@@ -8149,65 +8315,56 @@ body.quiet .sp-pulse,body.rm .sp-pulse{display:none}
 
 
 /* ============================================================
-   THE PAIR BAR, round RB, ported in the P3 menu pass. ui/component.js rbPair.
-   His words, round RB: "This stack of elements should all be bar style with
-   the symbolic icon and the text inside of the bar itself to maximize space.
-   Coherence, decoherence is CQ and DQ is on the same bar. As opposing colors
-   with the termination gradient as the oscillating the numbers that the user
-   oscillates."
-
-   One shell with the single bar: the same 44px, the same track, the same
-   radius and inset edge, the same 12px inset for the words and the same 16px
-   marks. Each pole is its colour laid at forty percent over the track, which
-   keeps the panel's own ink legible on it in every lighting, and its mark in
-   the pole's colour, which is the legend: the mark says which colour is
-   which. Where a colour ends it fades over the stretch the reading swings
-   through (--fl, --fr, written per reading in pixels), and the fade itself is
-   moved by a transform, so a frame of swing is a compositor move.
-
-   A pole's word sits over its figure, because two words and two figures on
-   one line do not fit a rail 264 pixels wide: Masculine and Feminine with
-   their shares need about 290. The pole's own words are drawn for the eye
-   and hidden from a screen reader, which hears the half or the host instead,
-   once.
-
-   The wire the readings hung on is gone with the same ruling, and with round
-   RZ's "Kill it": it was the unnamed vertical bar beside them, and the
-   Radiance line that hung off its end is a bar like the rest.
+   THE PAIR, r1, 30 October. ui/component.js rbPair. A line of words over a
+   track with a line at 50 and one mark. Each pole's mark and word at its own
+   end, the leaning pole lit; over the centre line one figure in the leaning
+   side's colour, with a chevron pointing to it. The track's halves are tinted
+   faintly in their poles' colours, which is the legend, and the fill grows
+   from the centre toward the lean. A pale band is the range the reading
+   wanders in and a faint mark wanders inside it; the solid mark, ringed in
+   the panel's own colour so it reads over either fill, is the figure printed.
+   Every position is a percent transform on a layer of its own.
    ============================================================ */
-.fdock .rb2{position:relative;display:block;width:100%;min-width:0;height:var(--tap);min-height:var(--tap);
- border-radius:var(--r-xs);overflow:hidden;background:rgba(128,128,128,.14);box-shadow:inset 0 0 0 1px var(--edge);
- white-space:nowrap;text-align:left}
-.rb2-t{position:absolute;inset:0;display:block;border-radius:inherit;overflow:hidden}
-.rb2-l,.rb2-r{position:absolute;top:0;bottom:0;width:200%;will-change:transform;display:block}
-.rb2-l{left:-100%;background:linear-gradient(90deg,color-mix(in srgb,var(--lc) 40%,transparent) calc(100% - var(--fl,4px)),
- color-mix(in srgb,var(--lc) 0%,transparent) 100%)}
-.rb2-r{left:0;background:linear-gradient(90deg,color-mix(in srgb,var(--rc) 0%,transparent) 0,
- color-mix(in srgb,var(--rc) 40%,transparent) var(--fr,4px))}
-/* where the figure is now: a notch in the ink at the bar's top and foot, a
-   caliper's two jaws, because the edge of the colour moves and the number
-   does not. Notches and not a line through the bar, so the mark never
-   crosses the words that sit over it. */
-.rb2-now{position:absolute;inset:0;display:block;will-change:transform;pointer-events:none}
-.rb2-now::before,.rb2-now::after{content:"";position:absolute;left:-1px;width:2px;height:7px;
- background:var(--ink);opacity:.7}
-.rb2-now::before{top:0;border-radius:0 0 1px 1px}
-.rb2-now::after{bottom:0;border-radius:1px 1px 0 0}
-/* a whole pair has one meeting point, so its one notch carries the most ink */
-.rb2.whole .rb2-now::before,.rb2.whole .rb2-now::after{opacity:.85}
-.rb2.off .rb2-l,.rb2.off .rb2-r,.rb2.off .rb2-now{display:none}
-.rb2-p{position:absolute;top:0;bottom:0;display:flex;align-items:center;gap:8px;pointer-events:none;z-index:1;
- color:var(--ink)}
-.rb2-p.l{left:12px}
-.rb2-p.r{right:12px}
-.rb2-p .rb-ic{margin:0;color:var(--pc)}
-.rb2-x{display:flex;flex-direction:column;gap:2px;line-height:1}
-.rb2-p.r .rb2-x{align-items:flex-end}
-.rb2-n{font-size:12px;font-weight:500;letter-spacing:.01em;color:var(--ink)}
-.rb2-v{font-family:var(--num);font-variant-numeric:tabular-nums;font-size:14px;font-weight:600;color:var(--ink)}
-.rb2.off .rb2-v,.rb2.off .rb2-n{color:var(--dim)}
-.rb2.off .rb2-p .rb-ic{color:var(--dim)}
-/* each pole that is its own reading is its own door, half the bar each */
+.fdock .rb2{position:relative;display:block;width:100%;min-width:0;min-height:var(--tap);padding:6px 2px 8px;
+ border-radius:var(--r-xs);white-space:nowrap;text-align:left}
+.rb2-ln{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:6px;height:22px}
+.rb2-p{display:inline-flex;align-items:center;gap:6px;min-width:0;color:var(--dim)}
+.rb2-p.r{justify-self:end}
+.rb2-p .rb-ic{margin:0;color:var(--pc);opacity:.75}
+.rb2-p.lit{color:var(--ink)}
+.rb2-p.lit .rb-ic{opacity:1}
+.rb2-n{font-size:12px;font-weight:500;letter-spacing:.01em;color:inherit;overflow:hidden;text-overflow:ellipsis}
+.rb2-f{display:inline-flex;align-items:center;gap:4px;justify-self:center}
+.rb2-f .rb-ic{width:13px;height:13px;color:var(--sc);stroke-width:2}
+/* THE FIGURE IS THE SIDE'S COLOUR LIFTED TOWARD THE INK, not the colour
+   itself. Measured 30 October on the panel at 15px: the root red, the shadow
+   end of coherence and the malignant end of orientation, read 4.14 to 1
+   against the text floor of 4.5, and every other pole passed. A fifth of
+   ink cleared it there and not under Lumen, where Solar read 4.17 and
+   Sacral 3.96; three tenths clears every lighting, worst 4.67 on Lumen. It
+   keeps the hue. The chevron beside it is a mark, not text, and keeps the
+   colour as it is. */
+.rb2-v{font-family:var(--num);font-variant-numeric:tabular-nums;font-size:15px;font-weight:600;
+ color:color-mix(in srgb,var(--sc) 70%,var(--ink))}
+.rb2-t{position:relative;display:block;height:16px;margin-top:5px;border-radius:8px;background:rgba(128,128,128,.14)}
+.rb2-t>i{position:absolute;top:0;bottom:0;display:block}
+.rb2-t>i.rb2-h{width:50%;opacity:.16}
+.rb2-t>i.rb2-h.l{left:0;background:var(--lc);border-radius:8px 0 0 8px}
+.rb2-t>i.rb2-h.r{right:0;background:var(--rc);border-radius:0 8px 8px 0}
+.rb2-t>i.rb2-band{background:color-mix(in srgb,var(--ink) 13%,transparent)}
+.rb2-t>i.rb2-fl{width:50%;will-change:transform}
+.rb2-t>i.rb2-fl.l{right:50%;transform-origin:100% 50%;background:var(--lc);border-radius:8px 0 0 8px}
+.rb2-t>i.rb2-fl.r{left:50%;transform-origin:0 50%;background:var(--rc);border-radius:0 8px 8px 0}
+.rb2-t>i.rb2-mid{left:50%;width:2px;margin-left:-1px;top:-4px;bottom:-4px;background:var(--ink);opacity:.55;border-radius:1px}
+.rb2-t>i.rb2-ride{left:-4px;right:-4px;top:-6px;bottom:-6px;overflow:hidden;pointer-events:none}
+.rb2-hold{position:absolute;left:4px;right:4px;top:6px;bottom:6px;display:block;pointer-events:none;will-change:transform}
+.rb2-nd>i{position:absolute;left:-2px;top:-5px;bottom:-5px;width:4px;border-radius:2px;background:var(--ink);
+ box-shadow:0 0 0 2px var(--panel)}
+.rb2-gh>i{position:absolute;left:-1px;top:2px;bottom:2px;width:2px;border-radius:1px;background:var(--ink);opacity:.35}
+.rb2.off .rb2-t>i.rb2-h{opacity:.07}
+.rb2.off .rb2-v{color:var(--dim)}
+.rb2.off .rb2-p .rb-ic{color:var(--dim);opacity:1}
+/* each pole that is its own reading is its own door, half the row each */
 .fdock .rb2-k{position:absolute;top:0;bottom:0;width:50%;min-height:var(--tap);margin:0;padding:0;z-index:2;
  border:0;border-radius:0;background:transparent;cursor:pointer;display:block}
 .fdock .rb2-k.l{left:0;border-radius:var(--r-xs) 0 0 var(--r-xs)}
@@ -8216,18 +8373,16 @@ body.quiet .sp-pulse,body.rm .sp-pulse{display:none}
 .fdock .rb2-k:focus-visible{outline:2px solid var(--pc);outline-offset:-2px}
 
 
-/* ORIENTATION AND BALANCE, UNDER THE READINGS, round OM, and bars since round
-   RB: the same left edge, the same width and the same hairline between the
-   groups as the rows above, and nothing over or under them. Balance is a
-   door and orientation a carrier, and both take the keyboard's ring. */
-.fdial{margin-top:6px;padding-top:6px;border-top:1px solid var(--edge);display:flex;flex-direction:column;gap:2px}
+/* ORIENTATION AND BALANCE, under coherence, round OM, and in the same family
+   since r1: pairs together, with no hairline between them. Balance is a door
+   and orientation a carrier, and both take the keyboard's ring. */
+.fdial{display:flex;flex-direction:column;gap:4px;margin-top:4px}
 .fdial .polbar{margin:0;border-radius:var(--r-xs);cursor:help}
 .fdial .polbar:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .fdial .bal{display:block;width:100%;padding:0;min-height:var(--tap);margin:0;border:0;background:none;
  border-radius:var(--r-xs);cursor:pointer;font:inherit;color:inherit}
 .fdial .bal:hover .rb2{box-shadow:inset 0 0 0 1px var(--edge-2)}
 .fdial .bal:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-@media (max-width:1180px){.fdial{margin-top:10px}}
 
 
 /* THE AWARENESS FOLD, round OM, ui/railtiles.js awSum. Two lines of what was

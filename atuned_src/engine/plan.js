@@ -62,14 +62,19 @@
    below it, and the table is checked for that in tests/engine.js.
 
    built:false MARKS A ROW WITH NO SURFACE YET, and the copy readers below skip
-   it. The owner ruled "Tier two unlocks the Kundalini" on 1 October and the
-   shipped app has a glossary entry for it and nothing that draws it (the rise
-   bar is in proto/avatar/rise.js, which is not in the build). The row is here
-   so the ruling is held in the one table and planSees answers it, but a tiers
-   page that listed it under tier two would be selling something that is not
-   there, so planAdds, planSeesAt, planLockedSay and the lock lists leave it
-   out until the surface exists. Building it is one word here, built:true, and
-   one lockApply on its control.
+   it. The owner ruled "Tier two unlocks the Kundalini" on 1 October.
+
+   PORTED 27 OCTOBER: proto/avatar/rise.js, the finished, measured prototype,
+   is now engine/rise.js, real, tested, and callable (riseRead, riseReach,
+   riseLevers, riseBase, riseDelta). built STAYS false. Checked before
+   flipping it: sightRows() feeds ui/paywall.js's own tier comparison
+   directly, so built:true would list the Kundalini as a tier-two benefit on
+   the pricing page today, with no screen anywhere drawing it -- the exact
+   thing this comment already warned against, "selling something that is not
+   there." The computation existing is not the surface existing; both were
+   always the condition, not either. kund is added to LOCK_OF_LAYER
+   (ui/lock.js) so the one lockApply a real control will need, once a
+   screen is designed and built for it, has a real lock ready to call.
 
    THE TIERS OF THE TWO THAT ARE NOT RUNGS. The owner ruled the point cloud
    on 1 October, in answer to the question this table asked: "Tier three
@@ -262,7 +267,7 @@ function leadSees(what){ return LEAD_SEES.indexOf(what)>=0; }
    archetypes, laws, gates and shadow", with the laws and the gates said by the
    names the Field's bar prints for them since 22 October, the Laws of Moral
    Integrity and the Laws of Action. */
-const PLAN_ALWAYS=['your 112 addresses','the domains','the archetypes','the Laws of Moral Integrity',
+const PLAN_ALWAYS=['your 108 somatic addresses and 4 field anchors','the domains','the archetypes','the Laws of Moral Integrity',
  'the Laws of Action','shadow','the pain map','every tool','the journal',
  'rerunning anything already open'];
 /* ANNUAL. TWO MONTHS FREE IS OUT, on the owner's ruling.

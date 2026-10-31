@@ -1,8 +1,9 @@
 {
  "meta": {
   "name": "SOURCE OS CANON",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "issued": "2026-09-08",
+  "amended": "2026-10-27, The Performer hyper-complex and the Borderline-Sociopath open ruling, both from the book, chapter 17",
   "principal": "Lance Powell, Tula Unified LLC",
   "source_build": {
    "file": "MOB_Complete_v184.html",
@@ -2033,6 +2034,17 @@
     ],
     "I",
     "The internalizing counterpart. HiTOP internalizing spectrum, distress subfactor. The severe end that is not antagonistic."
+   ],
+   [
+    "The Performer",
+    "☆",
+    [
+     "Narcissistic",
+     "Exploitation",
+     "Superiority-Persecution"
+    ],
+    "I",
+    "Chapter 17, the book's own name: the Creative Industry Hyper-Complex. Entitlement fused with deception fused with superiority, its own three parts, mapped here to Narcissistic (entitlement), Exploitation (deceitfulness) and Superiority-Persecution. The high-performing, articulate, past-achievement-reliant profile, truth-bending as a management strategy. The book calls it a hyper-complex by name; canon.json had no record of it before this entry."
    ]
   ],
   "amplifiers": [
@@ -3387,6 +3399,14 @@
    "detail": "The formula is commutative in its two instruments. Intention 2 with Integrity 8 scores what Intention 8 with Integrity 2 scores. The narcissism material requires them to differ. Not solved by the square root.",
    "blocks": [
     "formula.operational"
+   ]
+  },
+  {
+   "id": 12,
+   "item": "Borderline-Sociopath's composition",
+   "detail": "Chapter 17 names it in the descent, between Psychopathy and Megalomania, by effect only: partial empathy suppression, functional in social structures. The book gives no saboteur or complex breakdown, the way it does for The Performer's entitlement/deception/superiority. Guessing a composition from the other entries' shape would be inventing content the book never wrote. Not entered as a hyper-complex until the composition is ruled or sourced.",
+   "blocks": [
+    "registers.hyper_complexes"
    ]
   }
  ]

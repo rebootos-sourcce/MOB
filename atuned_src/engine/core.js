@@ -472,7 +472,13 @@ const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
     on. Yeah, everything should start on." 3 is Blueprint, the preset that is
     every layer in LAYADD, so the first frame draws all of it and a press on
     the bar takes a layer away rather than having to find it. */
- theme:'dark',hover:null,pin:null,t:0,replace:{},view:3,who:0,tab:TABHOME,
+ theme:'dark',hover:null,pin:null,t:0,replace:{},
+ /* addr: an address-keyed additive layer, engine/sniff.js's applyStoryAddr.
+    charge above is per fetter and spreads by susceptibility alone; this is
+    the one place a story's own named address, not just its feeling, is
+    kept. Empty until a story names a specific place; compute() adds it on
+    top of the fetter spread, never in place of it. */
+ addr:{},view:3,who:0,tab:TABHOME,
  /* atom: the one story weight being held on the wheel, past the fetter
     layer. {i:node id, ei:entry index}, or null for none held. View state,
     like pin and hover, so it is not persisted and not validated. */

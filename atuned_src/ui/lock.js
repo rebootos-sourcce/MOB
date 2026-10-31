@@ -106,7 +106,12 @@ function lockSees(k){ return planSees(lockPlan(),k,lockGift()); }
    switch: the key kept the rung's old name when the owner gave the word
    Character to the whole of it, 23 October, because a key is identity */
 const LOCK_OF_LAYER={saboteurs:'sab',complexes:'cx',hyper:'hy',character:'sup',
- sab:'sab',cx:'cx',hy:'hy',sup:'sup',masks:'mask',mask:'mask',registers:'reg',reg:'reg'};
+ sab:'sab',cx:'cx',hy:'hy',sup:'sup',masks:'mask',mask:'mask',registers:'reg',reg:'reg',
+ /* the Kundalini's computation is real (engine/rise.js, 27 October); its
+    screen is not built yet, so SIGHT still carries it built:false and
+    sightRows() still leaves it off the tiers page. This entry only readies
+    lockFor('kund') for the control a future screen will need. */
+ kund:'kund'};
 function lockFor(layer){ return LOCK_OF_LAYER[layer]||null; }
 /* which gate a pattern's kind belongs to, for a list that mixes the four */
 function lockKind(kind){ return LOCK_OF_LAYER[kind]||null; }
@@ -220,6 +225,8 @@ function sightR(r){
  v.cxs=planSees(pl,'cx',gf)?r.cxs:[];
  v.hys=planSees(pl,'hy',gf)?r.hys:[];
  v.sups=planSees(pl,'sup',gf)?r.sups:[];
+ /* the named super complex is that rung, so it locks with it */
+ v.psychopathy=planSees(pl,'sup',gf)?r.psychopathy:null;
  v.mask=v.sups[0]||v.hys[0]||v.cxs[0]||v.sabs[0]||null;
  /* the layers the plan cannot see, so a renderer can say why a list is empty
     instead of saying nothing is running */
@@ -228,6 +235,26 @@ function sightR(r){
 /* compute(), as a person on this plan may see it. Surfaces that draw or list
    the chain call this and not compute(). */
 function computeSeen(){ return sightR(compute()); }
+/* THE READING A RECORD'S GRAPH IS HANDED, as this plan may see it, 31 October.
+   A graph handed a reading carries the chain (engine/trace.js), and a graph is
+   one more place a rung could be listed from, so the reading goes through the
+   same lock as every list: a plan that cannot see saboteurs hands its graph
+   none, and sightR keeps the record's stamp on the copy, so what it can see
+   still reaches the graph. readHeld is null for a record that is not the one
+   loaded, and sightR passes null through, so that graph carries no chain. */
+function readSeenOf(p){ return sightR(readHeld(p)); }
+/* what a graph built off that reading depends on, for a cache key: each rung's
+   name, the weight the graph keeps on it to a tenth, and what it counts, which
+   is what traceFromRecord takes off a reading and nothing more. A release can
+   move the chain with no new entry, and a saboteur can keep its name and move
+   to other addresses, so a graph cached on entries or names alone would keep
+   the old chain. */
+function readSeenSig(r){
+ if(!r)return '';
+ var one=function(x){return x?x.nm+'~'+Math.round((+x.w||0)*10)+'('+(Array.isArray(x.parts)?x.parts:[]).map(function(q){
+  return q?(q.i!=null?q.i:q.nm):'';}).join(' ')+')':'';};
+ var all=function(l){return (Array.isArray(l)?l:[]).map(one).join(',');};
+ return [all(r.sabs),all(r.cxs),all(r.hys),all(r.sups),r.psychopathy?r.psychopathy.named+one(r.psychopathy):''].join('|');}
 
 /* THE DOORS. A page that is locked has its button in the bar greyed too, so the
    lock is on the way in as well as on the page. Painted on every render and in

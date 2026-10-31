@@ -59,9 +59,9 @@ async function anaTrailGate(browser,FILE,ok,booted){
     edges:document.querySelectorAll('#ana .ana-g-h[data-ana],#ana .ana-g-r[data-ana]').length,
     rungs:document.querySelectorAll('#ana .ana-rung[data-ana]').length,
     laws:document.querySelectorAll('#ana .ana-lw[data-ana]').length, nlaws:SI.length,
-    seats:BANDS.length, feel:CHILD.length};});
+    seats:BANDS.length, feel:CHILD.length, ntiles:Object.keys(ANA_MET).length};});
   ok(page.bubbles>0&&page.doors===page.bubbles,'AT1: '+tag+'every bubble is a door a keyboard reaches, '+page.doors+' of '+page.bubbles);
-  ok(page.tiles===6&&page.cells>0&&page.edges===page.seats+page.feel&&page.rungs===5&&page.laws===page.nlaws,
+  ok(page.tiles===page.ntiles&&page.cells>0&&page.edges===page.seats+page.feel&&page.rungs===5&&page.laws===page.nlaws,
    'AT1: '+tag+'the readings, the squares, both edges, the chain and every law are doors, '+JSON.stringify(page));
 
   /* ---- AT1: each kind of door opens a card ---- */

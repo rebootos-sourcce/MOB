@@ -743,8 +743,10 @@ async function door(browser, SITE, cut, giftAt) {
   station(5, 'Q: the first release, from the Story page');
   await Q.tab(0);
   const cq0 = (await Q.live()).CQ;
-  await page.fill('#sttext', STORY).catch(() => {});
-  await page.dispatchEvent('#sttext', 'input').catch(() => {});
+  /* voice only now, round of 29 October: #sttext does not render in the
+     ordinary flow, so the story reaches ST_TEXT through srcTurnCommit, the
+     one door a turn lands through whether it is typed or spoken. */
+  await page.evaluate(t => { if (typeof srcTurnCommit === 'function') srcTurnCommit(t); }, STORY).catch(() => {});
   await page.waitForTimeout(500);
   ok(await Q.click('#stapply'), 'the story is written and Commit is there to press', 'no way to keep a story');
   const kept = await Q.waitSaid(/^\|Committed\. \d+ imprints? written to the field\./, 5000);
@@ -797,7 +799,11 @@ async function door(browser, SITE, cut, giftAt) {
   ok(num(relUp) != null && Math.abs(num(relUp) - +(L1.CQ - cq0).toFixed(2)) < 1e-9, 'and the same lift, ' + J(relUp) + ' against ' + (L1.CQ - cq0).toFixed(2));
   await Q.tab(2);
   const top = await Q.settled('#railtop .cr .v');
-  const key = await Q.settled('#key [data-pair="cqdq"] .rb2-p.l .rb2-v');
+  /* NAMED CHANGE, 30 October, r1: the coherence pair prints one figure, the
+     leaning side's share, so it is CQ only when CQ leads. CQ itself is always
+     said by its own door, the pair's left half, first in its spoken name. */
+  await Q.settled('#key [data-pair="coh"] .rb2-v');
+  const key = await page.evaluate(() => { const e = document.querySelector('#key [data-pair="coh"] .rb2-k.l'); return e ? e.getAttribute('aria-label') : null; });
   await Q.tab(1);
   const sum1 = await Q.settled('#sum .cr[title^="Coherence"] .v');
   const round = Math.round(L1.CQ);

@@ -197,7 +197,7 @@ function exdepthFill(rec,p,now){
  (h.r||[]).forEach(function(x){ev.push({k:'r', back:x[0], n:x[1], dose:x[2]});});
  /* oldest first, and on one day the story before the release */
  ev.sort(function(a,b){return b.back-a.back||(a.k===b.k?0:(a.k==='e'?-1:1));});
- var c0=Object.assign({},S.charge), r0=Object.assign({},S.replace);
+ var c0=Object.assign({},S.charge), r0=Object.assign({},S.replace), a0=Object.assign({},S.addr);
  var v0=Object.assign({},VERPMIX), l0=Object.assign({},LEANMIX);
  var out={entries:0, imprints:0, runs:0, lines:0, addrs:0};
  /* ALL OR NOTHING. A history the engine refuses half way would otherwise
@@ -218,7 +218,7 @@ function exdepthFill(rec,p,now){
    var at=exdepthAt(now,x.back,EXDEPTH_HOUR[x.k]);
    if(x.k==='e'){
     var P=parseStory(x.text), k=P.imprints.length;
-    if(k){applyStory(x.text); verpApply(x.text); leanApply(x.text);}
+    if(k){applyStory(x.text); applyStoryAddr(x.text); verpApply(x.text); leanApply(x.text);}
     rec.story.entries.push({t:at, text:x.text, imprints:k, bands:P.bands, lex:LEX_VERSION});
     out.entries++; out.imprints+=k; return;}
    compute();
@@ -256,7 +256,7 @@ function exdepthFill(rec,p,now){
   throw e;}
  finally{
   SHOW_REPLAY--;
-  exdepthPut(S.charge,c0); exdepthPut(S.replace,r0);
+  exdepthPut(S.charge,c0); exdepthPut(S.replace,r0); exdepthPut(S.addr,a0);
   exdepthPut(VERPMIX,v0); exdepthPut(LEANMIX,l0);
   compute();}
  return out;}
