@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2724 9c245b6e 2026-10-31 06:06"><head><meta charset="utf-8">
+<html lang="en" data-build="v2725 6c3c0f48 2026-10-31 06:08"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -21062,10 +21062,19 @@ var TRACE_V=1;
    Still 4 after 23 October, on purpose. That day the fourth rung's type
    was renamed, character to super_complex, on the owner's ruling (below).
    A rename is not a new derivation: the same rungs come off the same lists
-   with the same edges. And no graph the product builds or stores holds a
-   rung, because a day's graph is read with no reading and every door
+   with the same edges. And no graph the product stores holds a rung,
+   because a day is grounded on a graph read with no reading and every door
    refuses the chain's types. So a day stamped 4 means what it meant, and a
-   new number would only stop an older build opening a newer record. */
+   new number would only stop an older build opening a newer record.
+   Still 4 after 31 October, for that same reason, on two changes. The
+   Character page's graph and the loop read's are handed the reading now (the
+   nerve to celestial audit's first gap), which is this number's derivation
+   reaching the graphs a screen is drawn from, not a new one: those graphs are
+   read on every paint and never stored. And a reading's named super complex
+   is a node (TRACE_NAMED, below), one more rung taken off the same reading
+   under the same rules. Neither moves what a day is grounded on, and the
+   number is stamped only on days (dlySeal, engine/daily.js), whose range check
+   would refuse a 5 in every build before this one. */
 var TRACE_ALG=4;
 
 /* THE CHAIN'S FOUR RUNGS, in the order they stack, TDD section 16's second
@@ -21417,6 +21426,23 @@ var TRACE_CHAIN_OF=[
  {type:'complex', list:'cxs', why:'the reading compounded this saboteur with another of its family into this complex. A registration, not a cause'},
  {type:'hyper_complex', list:'hys', why:'the reading compounded this complex into its family\'s hyper-complex. A registration, not a cause'},
  {type:'super_complex', list:'sups', why:'the reading paired this hyper-complex with another into this super-complex. A registration, not a cause'}];
+/* THE ONE NAMED SUPER COMPLEX, off r.psychopathy and never off sups, 31
+   October (the nerve to celestial audit's second gap). compute() asks for the
+   Grandiosity and Predatory hyper complexes by name, wherever they rank, on the
+   owner's ruling of 26 October, and keeps the result out of sups on purpose so
+   it moves no count (engine/compute.js). The chain above reads sups only, so
+   Psychopathy, the one super complex the product names, was never a node, even
+   on a graph handed the reading that held it.
+
+   Its id is the name the DESCENT entry gives it, which compute() copies to
+   named and nothing here types. The name was settled on 30 October (TASKS.md,
+   round SM): it keeps its clinical name. It sits on the super complex rung
+   because the descent files it there, so it is that type and not a fifth one.
+   When the pairing by rank also paired the two, the graph holds both nodes,
+   the generic one under its pair's name and this one under its own, because
+   they are two rules that happened to agree, and inSups says they did. */
+var TRACE_NAMED={type:'super_complex', list:'psychopathy', part:'hyper_complex', from:'hys',
+ why:'the reading found this hyper-complex and the one it is named with, which together are the one named super-complex, asked for by name and not paired by rank. A registration, not a cause'};
 /* why a type may not come in through a door, or null */
 function traceChainWhy(type){
  return TRACE_CHAIN.indexOf(type)>=0
@@ -21907,7 +21933,7 @@ function traceReadingWhy(p,r){
   return 'the reading carries no record stamp, so it could be the reading of whatever field was loaded; read() stamps one';
  if(typeof p.id!=='string'||!p.id)return 'this record has no id, so no reading can be shown to be its own';
  if(r.rec!==p.id)return 'the reading is of another record';
- var below=null;
+ var below=null, of={};
  for(var i=0;i<TRACE_CHAIN_OF.length;i++){
   var row=TRACE_CHAIN_OF[i], list=r[row.list], here=Object.create(null);
   if(!Array.isArray(list))return 'the reading has no '+row.list+' list';
@@ -21925,7 +21951,26 @@ function traceReadingWhy(p,r){
      if(a===null||!/^[0-9]+$/.test(a)||!BY[+a])return at+' '+x.nm+' counts a part that is not one of the 112 addresses';}
     else if(typeof q.nm!=='string'||!below[q.nm])
      return at+' '+x.nm+' counts '+String(q.nm)+', which is not a '+TRACE_CHAIN_OF[i-1].type+' of this reading';}}
-  below=here;}
+  below=here; of[row.list]=here;}
+ return traceNamedWhy(r,of);}
+/* THE NAMED ONE, under the same all or nothing as every rung. Absent is a
+   reading from before 26 October, and null is a field that does not hold it or
+   a plan that may not see it (sightR, ui/lock.js), and both are no named node.
+   Present, it is two hyper complexes of this same reading, under a name the
+   pairing by rank does not already use, or the whole reading is refused. */
+function traceNamedWhy(r,of){
+ var x=r[TRACE_NAMED.list], at=TRACE_NAMED.list;
+ if(x===undefined||x===null)return null;
+ if(typeof x!=='object'||Array.isArray(x))return at+' is not an object';
+ var nm=typeof x.named==='string'?x.named:null;
+ var w=traceIdWhy(TRACE_NAMED.type,nm); if(w)return at+' '+w;
+ if(of.sups[nm])return at+' names '+nm+', which the pairing by rank already names';
+ if(!Array.isArray(x.parts)||x.parts.length!==2)return at+' '+nm+' does not count two hyper-complexes';
+ for(var k=0;k<2;k++){
+  var q=x.parts[k];
+  if(!q||typeof q!=='object')return at+' '+nm+' has a part that is not an object';
+  if(typeof q.nm!=='string'||!of[TRACE_NAMED.from][q.nm])return at+' '+nm+' counts '+String(q.nm)+', which is not a '+TRACE_NAMED.part+' of this reading';}
+ if(x.parts[0].nm===x.parts[1].nm)return at+' '+nm+' counts '+x.parts[0].nm+' twice';
  return null;}
 /* what a rung carries beside its key: its weight as compute() wrote it,
    its family, and whether it is the overshoot. Never d, the line a person
@@ -21938,6 +21983,13 @@ function traceChainAttrs(type,x){
  a.family=type==='hyper_complex'?x.nm:(typeof x.hcx==='string'?x.hcx:null);
  a.over=!!x.over;
  if(type==='saboteur')a.unnamed=!!x.unnamed;
+ return a;}
+/* and the named one: its weight the same way, that it is the named one, and
+   whether the pairing by rank paired the same two. Never d or refer, the line
+   and the referral the descent prints, for the reason above. */
+function traceNamedAttrs(x){
+ var a=traceChainAttrs(TRACE_NAMED.type,x);
+ a.named=true; a.inSups=!!x.inSups;
  return a;}
 
 /* ============================================================
@@ -22132,17 +22184,25 @@ function traceFromRecord(p,intents,reading){
  if(reading!==undefined&&reading!==null){
   var rw=traceReadingWhy(p,reading);
   if(rw)g.refused.push({reading:true, why:rw});
-  else TRACE_CHAIN_OF.forEach(function(row,i){
-   reading[row.list].forEach(function(x){
-    var ck=node(row.type,x.nm,'inferred',traceChainAttrs(row.type,x));
-    if(!ck)return;
-    var seen={};
-    x.parts.forEach(function(q){
-     var from=i===0?node('pattern',traceId(q.i),'known',tracePatternAttrs(traceId(q.i)))
-      :traceKey(TRACE_CHAIN_OF[i-1].type,q.nm);
-     if(from===null||seen[from])return;
-     seen[from]=1;
-     edge(from,'supports',ck,'inferred',{derived:true, why:row.why});});});});}
+  else{
+   TRACE_CHAIN_OF.forEach(function(row,i){
+    reading[row.list].forEach(function(x){
+     var ck=node(row.type,x.nm,'inferred',traceChainAttrs(row.type,x));
+     if(!ck)return;
+     var seen={};
+     x.parts.forEach(function(q){
+      var from=i===0?node('pattern',traceId(q.i),'known',tracePatternAttrs(traceId(q.i)))
+       :traceKey(TRACE_CHAIN_OF[i-1].type,q.nm);
+      if(from===null||seen[from])return;
+      seen[from]=1;
+      edge(from,'supports',ck,'inferred',{derived:true, why:row.why});});});});
+   /* the named super complex last, once the hyper complexes it counts are
+      nodes, by the same rule table and with the same refusal on a miss */
+   var nx=reading[TRACE_NAMED.list];
+   if(nx){
+    var nk=node(TRACE_NAMED.type,nx.named,'inferred',traceNamedAttrs(nx));
+    if(nk)nx.parts.forEach(function(q){
+     edge(traceKey(TRACE_NAMED.part,q.nm),'supports',nk,'inferred',{derived:true, why:TRACE_NAMED.why});});}}}
  /* every derived node so far is the record's own */
  g.nodes.forEach(function(n){n.derived=true;});
 
@@ -22225,7 +22285,8 @@ const AXIS_BLANK=0;
 function blankProfile(name){
  var p={v:SCHEMA_V, id:'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),
   name:name||'New profile', created:new Date().toISOString(), updated:null,
-  soul:{doms:[0], arcs:[0,1], roots:[]},            /* the invariant */
+  /* from says this soul was filled in and not picked (SOUL_FROM, below) */
+  soul:{doms:[0], arcs:[0,1], roots:[], from:'default'},  /* the invariant */
   axes:{},                                          /* nine poled child fetters */
   /* THE NAMED-ADDRESS LAYER, engine/sniff.js's applyStoryAddr, 26 October.
      Additive: an older record has none, which is a record no story ever
@@ -22366,6 +22427,35 @@ function blankProfile(name){
    literal 6 beside a comment about it, and ui/personas.js then named two more
    numbers for the same quantity. One declaration, at the first use. */
 var LAW_UNSET={}, LAW_SEED={};
+/* WHETHER A SOUL WAS PICKED, the nerve to celestial audit's third gap, 31
+   October. Every record is born with Knowledge, under the Architect root, and
+   Warrior and Sage (blankProfile above), and loadProfile and validateProfile
+   fill the same three into a record that has none. The domain is not a label:
+   suscAll reads it, so that soul takes Apathy and Shock at 1.3 times at every
+   address carrying them. Nothing on the record said whether a person chose it,
+   so somebody who never opened the domain picker read exactly like somebody
+   who picked Knowledge. The laws had this problem and solved it with the
+   unset marks above; the soul's arrays cannot be null, so it carries its mark
+   as soul.from instead.
+
+     'default'   filled in. Nobody has moved it since.
+     'picked'    it has moved off what the record held, so somebody chose it.
+     absent      a record from before this mark, which is unknown and is never
+                 read as either. No SCHEMA_V bump: v1 and v2 records load as
+                 they did, and an older build drops the key and reads the soul.
+
+   It is decided at the save, the way a seeded law is (saveProfile), so no
+   control has to remember to set it: a soul that differs from the one the
+   record held was moved by a person, by undo, or by a worked example loading
+   its own. The cost is the law's: a person who opens the picker and leaves
+   exactly Knowledge, Warrior and Sage stays default, which understates a
+   choice where the old record invented one for everybody. Nothing reads the
+   mark yet; what a defaulted soul should do to the weighting is the owner's. */
+var SOUL_FROM=['default','picked'];
+/* the soul as loadProfile puts it into S, so the save compares like with like */
+function soulAsLoaded(s){
+ s=(s&&typeof s==='object')?s:{};
+ return {doms:(s.doms||[0]).slice(), arcs:(s.arcs||[0,1]).slice(), roots:(s.roots||[]).slice()};}
 /* WHAT A LAW WAS CALLED BEFORE, current name to old. Expression and
    Discernment were the twenty one until the owner ruled that Justice and
    Humility are. A law is keyed by name in every saved profile, so an old name
@@ -22435,7 +22525,7 @@ function loadProfile(p){
  /* soul was the one field this did not fill, and it is the one the next line
     reads without a guard. Six fields were defended and the seventh took the
     boot down. */
- if(!p.soul)p.soul={doms:[0],arcs:[0,1],roots:[]};
+ if(!p.soul)p.soul={doms:[0],arcs:[0,1],roots:[],from:'default'};
  /* and a record from before the archetype and axis blocks has no answers to
     them, which is a record that was never asked */
  ixFill(p);
@@ -22481,7 +22571,13 @@ function loadProfile(p){
  LAW_REC=p;
  return p;}
 function saveProfile(p){
- p.soul={doms:S.doms.slice(),arcs:S.arcs.slice(),roots:S.roots.slice()};
+ /* THE SOUL KEEPS ITS MARK, and a soul that moved off what the record held is
+    marked picked (SOUL_FROM, above). Absent stays absent while nothing moves. */
+ var soulWas=p.soul, soulNow={doms:S.doms.slice(),arcs:S.arcs.slice(),roots:S.roots.slice()};
+ var soulMark=(soulWas&&SOUL_FROM.indexOf(soulWas.from)>=0)?soulWas.from:null;
+ if(JSON.stringify(soulAsLoaded(soulWas))!==JSON.stringify(soulNow))soulMark='picked';
+ if(soulMark)soulNow.from=soulMark;
+ p.soul=soulNow;
  CHILD.forEach(function(c){p.axes[c.nm]={held:S.charge[c.nm],opp:S.replace[c.nm]||0};});
  p.addr=Object.assign({},S.addr);
  /* A LAW NOBODY MEASURED MUST NOT COME BACK MEASURED.
@@ -23345,7 +23441,15 @@ function validateProfile(o){
    errs.push('soul.roots holds '+(typeof r==='string'?r:'a '+typeof r)+', which is not one of '+ROOTD.join(', '));
    return false;});
   if(!p.soul.doms.length)p.soul.doms=[0];
-  if(!p.soul.arcs.length)p.soul.arcs=[0,1];}
+  if(!p.soul.arcs.length)p.soul.arcs=[0,1];
+  /* THE MARK (SOUL_FROM, above). The blank this starts from says default,
+     which is true only of a record that carried no soul, so a soul with no
+     mark is read as unknown and never as filled. One of the two words, or
+     refused by name. */
+  if(o.soul.from===undefined)delete p.soul.from;
+  else if(SOUL_FROM.indexOf(o.soul.from)<0)
+   errs.push('soul.from is '+JSON.stringify(o.soul.from)+', which is not one of '+SOUL_FROM.join(', '));
+  else p.soul.from=o.soul.from;}
  /* gate evidence. counts of sentences, so any non negative integer. A key
     beside the two bags, or inside one, that this build does not count is
     refused by name, SG-09: canon.json spells the third gate Intentional, and a
@@ -26362,14 +26466,23 @@ function loopProtocols(P){
   if(x.status==='rejected')rejected.push(x);});
  return {latest:by, rejected:rejected};}
 
-function loopRead(p){
+/* THE READING, WHEN THE CALLER HAS ONE, the first gap of the nerve to celestial
+   audit (reviews/nerve-to-celestial-audit-2026-10-30.md). The graph this
+   reads carries the chain only when it is handed a reading of this same record
+   (THE READING HANDED IN, engine/trace.js), and it was never handed one, so
+   the loop surface's graph held no saboteur and no complex for anybody. It is
+   taken and never made here: a reading made here would load a record, and
+   this file promises the same answer whatever is loaded. Nothing below reads a
+   rung, every row is a pattern, so the answer is the same with or without it;
+   what changes is that the graph under it is the whole one. */
+function loopRead(p,reading){
  var out={entries:0, patterns:[], confirmed:0, unanswered:0, more:0,
   declined:[], practice:{done:0, older:0, events:0}, misses:[],
   restated:0, gaps:0, next:null, empty:true};
  if(!p||typeof p!=='object')return out;
  var P=(p.practice&&typeof p.practice==='object')?p.practice:null;
  var g=null;
- try{g=traceFromRecord(p,P?practiceTraceIntents(P):[]);}catch(e){g=null;}
+ try{g=traceFromRecord(p,P?practiceTraceIntents(P):[],reading);}catch(e){g=null;}
  if(!g)return out;
  out.entries=((p.story&&Array.isArray(p.story.entries))?p.story.entries:[]).length;
  out.restated=(g.restated||[]).length;
@@ -31682,6 +31795,28 @@ function read(prof,opts){
  r.rec=(o.story&&!o.write)?null:(typeof p.id==='string'&&p.id?p.id:null);
  return {profile:p, reading:r, snapshot:snapshot(p)};}
 
+/* ---------- the reading of what is already loaded ----------
+   THE PRODUCT'S GRAPHS ARE BUILT WHILE A RECORD IS LOADED, AND read() WOULD
+   UNLOAD IT. The nerve to celestial audit of 31 October asked that the three
+   graph builds a screen is drawn from be handed read(p).reading. read() starts
+   with loadProfile, which rewrites S from the record on disk: anything in the
+   working state that is ahead of the record is gone, and on the practitioner
+   page, where the record is not the one loaded at all, a stranger's field is
+   left in S for the next pSave to write onto the person's own record. So the
+   screens are not handed read().
+
+   They are handed this. compute() of the field already loaded, which is the
+   reading every screen is already drawn from, stamped with the record only
+   when S.rec says the field was loaded from that record. S.rec is the same
+   binding profHold (engine/profiles.js) asks before it writes S onto a record,
+   so a field trusted to be written as this record's is the field read as this
+   record's, and nothing else is. Any other record, or one with no id, is null,
+   which traceFromRecord reads as no reading. Nothing is loaded or written. */
+function readHeld(p){
+ if(!p||typeof p!=='object'||typeof p.id!=='string'||!p.id||S.rec!==p.id)return null;
+ var r=compute(); r.rec=p.id;
+ return r;}
+
 try{window.__at&&window.__at('engine/read.js');}catch(e){}
 /* ============================================================
    THE LADDER. What you have done, and what it has cost you to do it.
@@ -32443,9 +32578,11 @@ function dlyRefWhy(type,id){
  /* THE CHAIN'S FOUR RUNGS ARE GRAPH TYPES AND STILL NOT EVIDENCE A DAY
     CITES, 22 October. They joined TRACE_NODE_TYPES with the chain
     (engine/trace.js), and the line below would have let a stored day carry
-    one through this boundary, where before it was refused. A day's graph
-    (dlyGraph) is read with no reading and holds no rung, so such a
-    citation could never resolve. Refused by name, so a day citing a rung
+    one through this boundary, where before it was refused. A day is
+    grounded on a graph read with no reading, which holds no rung, so such a
+    citation could never resolve (dlyGraph can take a reading since 31
+    October, and the grounding still hands it none, for the reason given
+    there). Refused by name, so a day citing a rung
     is somebody's decision and not a side effect of a vocabulary growing. */
  if(TRACE_CHAIN.indexOf(type)>=0)return 'names a rung of the chain, which a day does not cite: '+type;
  if(TRACE_NODE_TYPES.indexOf(type)>=0)return null;
@@ -33165,8 +33302,21 @@ var DLY_RX={
 /* a reference, resolved against the record or the graph, with what it is as
    provenance. null is a reference that names nothing, which is fabricated
    evidence. */
-function dlyGraph(p){
- try{return traceFromRecord(p,practiceTraceIntents(p.practice));}catch(e){return null;}}
+/* THE READING IS OPTIONAL AND IS NEVER MADE HERE, the nerve to celestial
+   audit's first gap, 31 October. Handed one of this record (THE READING HANDED
+   IN, engine/trace.js), the graph carries the chain; dlyWhy takes it from its
+   caller as opt.reading, because a path between two things a day cites can run
+   through a saboteur both are part of, and the drawer should show the graph
+   that is there.
+
+   THE DAY'S OWN GROUNDING IS STILL READ WITH NONE, ON PURPOSE. dlyResolve only
+   asks whether a cited node exists, and a day may not cite a rung (dlyRefWhy).
+   Handing the composer a reading would let a sentence citing one resolve while
+   the draft is made and be refused only when it is sealed, so a day that froze
+   yesterday would fail today on a vocabulary that grew. A rung a day cites
+   stays somebody's decision at the boundary, not a side effect here. */
+function dlyGraph(p,reading){
+ try{return traceFromRecord(p,practiceTraceIntents(p.practice),reading);}catch(e){return null;}}
 function dlyResolve(p,ref,gx){
  var t=ref&&ref.type, id=ref&&ref.id, i;
  if(typeof t!=='string'||typeof id!=='string')return null;
@@ -33343,7 +33493,7 @@ function dlyWhy(p,sid,idx,opt){
  if(!day)return {ok:false, why:'no frozen day is named '+sid};
  var st=day.st[idx];
  if(!st)return {ok:false, why:'day '+sid+' has no statement '+idx};
- var g=(opt&&opt.graph)||dlyGraph(p), gx={p:p, graph:g, reads:{}};
+ var g=(opt&&opt.graph)||dlyGraph(p,opt&&opt.reading), gx={p:p, graph:g, reads:{}};
  var ids=traceStoryIds(p), ents=(p.story&&p.story.entries)||[], keys=[];
  var refs=st.ev.map(function(r){
   var res=dlyResolve(p,r,gx), kind=r.type==='kb'?'kb':(DLY_REC.indexOf(r.type)>=0?'record':'graph');
@@ -34516,7 +34666,7 @@ if(typeof module!=='undefined'&&module.exports){
                   VERPCUE:VERPCUE, VERPMULT:VERPMULT, VERP_VS:VERP_VS,
                   LEAN_FRAME_W:LEAN_FRAME_W, LEAN_TRUST_CAP:LEAN_TRUST_CAP,
                   LEAN_TRUST_HALF:LEAN_TRUST_HALF, LEAN_MIN_CH:LEAN_MIN_CH,
-  /* the door */  read:read, input:input, throughput:throughput, output:output,
+  /* the door */  read:read, input:input, throughput:throughput, output:output, readHeld:readHeld,
                   gatesClear:gatesClear, gatesLoad:gatesLoad, gatesSave:gatesSave,
   /* schema */    blankProfile:blankProfile, AXIS_BLANK:AXIS_BLANK, loadProfile:loadProfile,
                   saveProfile:saveProfile, snapshot:snapshot, LAW_DEFAULT:LAW_DEFAULT,
@@ -34529,7 +34679,7 @@ if(typeof module!=='undefined'&&module.exports){
      has been loaded clears these to say the values it set were answered;
      otherwise a law set to exactly the seed reads as unanswered, which is
      saveProfile's documented blind spot and correct for a person. */
-                  LAW_UNSET:LAW_UNSET,
+                  LAW_UNSET:LAW_UNSET, SOUL_FROM:SOUL_FROM,
                   pExport:pExport, pImport:pImport, validateProfile:validateProfile, importError:importError,
                   importRefuse:importRefuse, linkWrap:linkWrap, linkUnwrap:linkUnwrap,
                   LINK_V:LINK_V, LINK_MAX:LINK_MAX,
@@ -34673,7 +34823,7 @@ if(typeof module!=='undefined'&&module.exports){
                   TRACE_LOOP:TRACE_LOOP, TRACE_INVERSE:TRACE_INVERSE, TRACE_SYMMETRIC:TRACE_SYMMETRIC,
                   TRACE_CAUSE_SRC:TRACE_CAUSE_SRC, TRACE_PROMOTE:TRACE_PROMOTE, TRACE_TABLE:TRACE_TABLE,
                   TRACE_RESOLVED:TRACE_RESOLVED, TRACE_NEEDS:TRACE_NEEDS, TRACE_MAX:TRACE_MAX,
-                  TRACE_ID_MAX:TRACE_ID_MAX,
+                  TRACE_ID_MAX:TRACE_ID_MAX, TRACE_NAMED:TRACE_NAMED,
                   traceKey:traceKey, traceSplit:traceSplit, traceNew:traceNew, traceRuleOf:traceRuleOf,
                   traceAddNode:traceAddNode, traceAddEdge:traceAddEdge, traceRemoveEdge:traceRemoveEdge,
                   traceNeighbors:traceNeighbors, tracePath:tracePath, traceOrphans:traceOrphans,
@@ -34729,7 +34879,7 @@ if(typeof module!=='undefined'&&module.exports){
                   dlyToday:dlyToday, dlySize:dlySize,
                   dlyCtx:dlyCtx, dlyChanges:dlyChanges, dlyContra:dlyContra, dlyFocus:dlyFocus,
                   dlyUnread:dlyUnread, dlyCompose:dlyCompose, dlyGround:dlyGround, dlyNotes:dlyNotes,
-                  dlyResolve:dlyResolve, dlySeal:dlySeal, dlyDayOpen:dlyDayOpen, dlyWhy:dlyWhy,
+                  dlyResolve:dlyResolve, dlyGraph:dlyGraph, dlySeal:dlySeal, dlyDayOpen:dlyDayOpen, dlyWhy:dlyWhy,
   /* the first release's size and where a person is on the way in,
      engine/data/onboarding.js and engine/journey.js. Reads only. */
                   ONB_MINI_ADDRS:ONB_MINI_ADDRS, ONB_MINI_DOSE:ONB_MINI_DOSE, ONB_CHANS:ONB_CHANS,
@@ -39121,6 +39271,26 @@ function sightR(r){
 /* compute(), as a person on this plan may see it. Surfaces that draw or list
    the chain call this and not compute(). */
 function computeSeen(){ return sightR(compute()); }
+/* THE READING A RECORD'S GRAPH IS HANDED, as this plan may see it, 31 October.
+   A graph handed a reading carries the chain (engine/trace.js), and a graph is
+   one more place a rung could be listed from, so the reading goes through the
+   same lock as every list: a plan that cannot see saboteurs hands its graph
+   none, and sightR keeps the record's stamp on the copy, so what it can see
+   still reaches the graph. readHeld is null for a record that is not the one
+   loaded, and sightR passes null through, so that graph carries no chain. */
+function readSeenOf(p){ return sightR(readHeld(p)); }
+/* what a graph built off that reading depends on, for a cache key: each rung's
+   name, the weight the graph keeps on it to a tenth, and what it counts, which
+   is what traceFromRecord takes off a reading and nothing more. A release can
+   move the chain with no new entry, and a saboteur can keep its name and move
+   to other addresses, so a graph cached on entries or names alone would keep
+   the old chain. */
+function readSeenSig(r){
+ if(!r)return '';
+ var one=function(x){return x?x.nm+'~'+Math.round((+x.w||0)*10)+'('+(Array.isArray(x.parts)?x.parts:[]).map(function(q){
+  return q?(q.i!=null?q.i:q.nm):'';}).join(' ')+')':'';};
+ var all=function(l){return (Array.isArray(l)?l:[]).map(one).join(',');};
+ return [all(r.sabs),all(r.cxs),all(r.hys),all(r.sups),r.psychopathy?r.psychopathy.named+one(r.psychopathy):''].join('|');}
 
 /* THE DOORS. A page that is locked has its button in the bar greyed too, so the
    lock is on the way in as well as on the page. Painted on every render and in
@@ -48095,10 +48265,18 @@ function chHover(j,seat){
 function chGraph(){
  var p=(typeof CURP!=='undefined')?CURP:null;
  if(!p||!p.story||!Array.isArray(p.story.entries)||!p.story.entries.length||typeof traceFromRecord!=='function')return null;
- /* read once per record and per count of entries: the graph parses every story */
- var key=(p.id||'')+'|'+p.story.entries.length+'|'+(p.story.entries[p.story.entries.length-1].t||'');
+ /* THE GRAPH CARRIES THE CHAIN THIS PLAN MAY SEE, 31 October. It was built with
+    no reading, so the graph behind the trace card held no saboteur, complex,
+    hyper complex or super complex for anybody (the nerve to celestial audit's
+    first gap). readSeenOf hands it the reading the page is already drawn from,
+    through the plan's lock. The card below reads only story to address edges,
+    so nothing it prints moves. */
+ var rd=null; try{rd=readSeenOf(p);}catch(e){rd=null;}
+ /* read once per record, per count of entries and per chain: the graph parses
+    every story, and a release moves the chain without a new entry */
+ var key=(p.id||'')+'|'+p.story.entries.length+'|'+(p.story.entries[p.story.entries.length-1].t||'')+'|'+readSeenSig(rd);
  if(CHV.tg&&CHV.tg.key===key)return CHV.tg;
- var g=null,ids=null; try{g=traceFromRecord(p);ids=traceStoryIds(p);}catch(e){g=null;}
+ var g=null,ids=null; try{g=traceFromRecord(p,undefined,rd);ids=traceStoryIds(p);}catch(e){g=null;}
  CHV.tg=g?{key:key,g:g,ids:ids,entries:p.story.entries}:{key:key,g:null};
  return CHV.tg.g?CHV.tg:null;}
 function chChain(k){
@@ -79377,10 +79555,15 @@ function loopSig(p){
    (p.meter&&p.meter.unique)||[], (p.rituals||[]).map(function(x){return [x&&x.t,x&&x.done];}),
    p.practice||null, p.trace||null, p.soul||null]);}
  catch(e){return String(Math.random());}}
+/* AND THE READING IT IS HANDED, through the plan's lock, so the graph under the
+   loop read carries the chain this plan may see (readSeenOf, ui/lock.js; the
+   nerve to celestial audit's first gap, 31 October). Part of the key, because
+   it is now one of the things the graph reads. */
 function loopOf(p){
- var s=loopSig(p);
+ var rd=null; try{rd=readSeenOf(p);}catch(e){rd=null;}
+ var s=loopSig(p)+'|'+readSeenSig(rd);
  if(LP.memo&&s===LP.sig)return LP.memo;
- var L=null; try{L=loopRead(p);}catch(e){L=null;}
+ var L=null; try{L=loopRead(p,rd);}catch(e){L=null;}
  LP.memo=L; LP.sig=s; return L;}
 
 /* a count. A zero is a dash, and the label is one word that carries its
@@ -84404,5 +84587,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005560825"></div>
+<div id="eof" hidden data-len="005573368"></div>
 </body></html>

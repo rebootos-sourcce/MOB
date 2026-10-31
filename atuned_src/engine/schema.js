@@ -23,7 +23,8 @@ const AXIS_BLANK=0;
 function blankProfile(name){
  var p={v:SCHEMA_V, id:'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),
   name:name||'New profile', created:new Date().toISOString(), updated:null,
-  soul:{doms:[0], arcs:[0,1], roots:[]},            /* the invariant */
+  /* from says this soul was filled in and not picked (SOUL_FROM, below) */
+  soul:{doms:[0], arcs:[0,1], roots:[], from:'default'},  /* the invariant */
   axes:{},                                          /* nine poled child fetters */
   /* THE NAMED-ADDRESS LAYER, engine/sniff.js's applyStoryAddr, 26 October.
      Additive: an older record has none, which is a record no story ever
@@ -164,6 +165,35 @@ function blankProfile(name){
    literal 6 beside a comment about it, and ui/personas.js then named two more
    numbers for the same quantity. One declaration, at the first use. */
 var LAW_UNSET={}, LAW_SEED={};
+/* WHETHER A SOUL WAS PICKED, the nerve to celestial audit's third gap, 31
+   October. Every record is born with Knowledge, under the Architect root, and
+   Warrior and Sage (blankProfile above), and loadProfile and validateProfile
+   fill the same three into a record that has none. The domain is not a label:
+   suscAll reads it, so that soul takes Apathy and Shock at 1.3 times at every
+   address carrying them. Nothing on the record said whether a person chose it,
+   so somebody who never opened the domain picker read exactly like somebody
+   who picked Knowledge. The laws had this problem and solved it with the
+   unset marks above; the soul's arrays cannot be null, so it carries its mark
+   as soul.from instead.
+
+     'default'   filled in. Nobody has moved it since.
+     'picked'    it has moved off what the record held, so somebody chose it.
+     absent      a record from before this mark, which is unknown and is never
+                 read as either. No SCHEMA_V bump: v1 and v2 records load as
+                 they did, and an older build drops the key and reads the soul.
+
+   It is decided at the save, the way a seeded law is (saveProfile), so no
+   control has to remember to set it: a soul that differs from the one the
+   record held was moved by a person, by undo, or by a worked example loading
+   its own. The cost is the law's: a person who opens the picker and leaves
+   exactly Knowledge, Warrior and Sage stays default, which understates a
+   choice where the old record invented one for everybody. Nothing reads the
+   mark yet; what a defaulted soul should do to the weighting is the owner's. */
+var SOUL_FROM=['default','picked'];
+/* the soul as loadProfile puts it into S, so the save compares like with like */
+function soulAsLoaded(s){
+ s=(s&&typeof s==='object')?s:{};
+ return {doms:(s.doms||[0]).slice(), arcs:(s.arcs||[0,1]).slice(), roots:(s.roots||[]).slice()};}
 /* WHAT A LAW WAS CALLED BEFORE, current name to old. Expression and
    Discernment were the twenty one until the owner ruled that Justice and
    Humility are. A law is keyed by name in every saved profile, so an old name
@@ -233,7 +263,7 @@ function loadProfile(p){
  /* soul was the one field this did not fill, and it is the one the next line
     reads without a guard. Six fields were defended and the seventh took the
     boot down. */
- if(!p.soul)p.soul={doms:[0],arcs:[0,1],roots:[]};
+ if(!p.soul)p.soul={doms:[0],arcs:[0,1],roots:[],from:'default'};
  /* and a record from before the archetype and axis blocks has no answers to
     them, which is a record that was never asked */
  ixFill(p);
@@ -279,7 +309,13 @@ function loadProfile(p){
  LAW_REC=p;
  return p;}
 function saveProfile(p){
- p.soul={doms:S.doms.slice(),arcs:S.arcs.slice(),roots:S.roots.slice()};
+ /* THE SOUL KEEPS ITS MARK, and a soul that moved off what the record held is
+    marked picked (SOUL_FROM, above). Absent stays absent while nothing moves. */
+ var soulWas=p.soul, soulNow={doms:S.doms.slice(),arcs:S.arcs.slice(),roots:S.roots.slice()};
+ var soulMark=(soulWas&&SOUL_FROM.indexOf(soulWas.from)>=0)?soulWas.from:null;
+ if(JSON.stringify(soulAsLoaded(soulWas))!==JSON.stringify(soulNow))soulMark='picked';
+ if(soulMark)soulNow.from=soulMark;
+ p.soul=soulNow;
  CHILD.forEach(function(c){p.axes[c.nm]={held:S.charge[c.nm],opp:S.replace[c.nm]||0};});
  p.addr=Object.assign({},S.addr);
  /* A LAW NOBODY MEASURED MUST NOT COME BACK MEASURED.
@@ -1143,7 +1179,15 @@ function validateProfile(o){
    errs.push('soul.roots holds '+(typeof r==='string'?r:'a '+typeof r)+', which is not one of '+ROOTD.join(', '));
    return false;});
   if(!p.soul.doms.length)p.soul.doms=[0];
-  if(!p.soul.arcs.length)p.soul.arcs=[0,1];}
+  if(!p.soul.arcs.length)p.soul.arcs=[0,1];
+  /* THE MARK (SOUL_FROM, above). The blank this starts from says default,
+     which is true only of a record that carried no soul, so a soul with no
+     mark is read as unknown and never as filled. One of the two words, or
+     refused by name. */
+  if(o.soul.from===undefined)delete p.soul.from;
+  else if(SOUL_FROM.indexOf(o.soul.from)<0)
+   errs.push('soul.from is '+JSON.stringify(o.soul.from)+', which is not one of '+SOUL_FROM.join(', '));
+  else p.soul.from=o.soul.from;}
  /* gate evidence. counts of sentences, so any non negative integer. A key
     beside the two bags, or inside one, that this build does not count is
     refused by name, SG-09: canon.json spells the third gate Intentional, and a

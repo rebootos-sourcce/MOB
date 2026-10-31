@@ -65,6 +65,21 @@ function loadedRec(E){
  const v=E.validateProfile(JSON.parse(JSON.stringify(P)));
  return v.ok?v.profile:null;}
 
+/* TWO FIELDS THAT REACH THE NAMED SUPER COMPLEX, found by a sweep on 31
+   October, because the loaded record above does not reach it. In the first
+   only the named rule pairs Grandiosity with Predatory: the pairing by rank
+   puts other hyper complexes between them. In the second both rules pair the
+   same two. TG11d asserts each is still that case rather than trusting this
+   comment, and stops if one is not. Through the boundary, like worked(). */
+function namedRec(E,both){
+ const p=E.blankProfile(both?'named-both':'named-only');
+ p.id=both?'tg11d-both':'tg11d-only';
+ const hi=['Fear','Anger','Apathy'];
+ E.CHILD.forEach(c=>{p.axes[c.nm]={held:hi.indexOf(c.nm)>=0?7:(both?2:(c.nm==='Shame'?5:0)),opp:0};});
+ p.soul={doms:[both?6:3],arcs:[0,1],roots:[]};
+ const v=E.validateProfile(JSON.parse(JSON.stringify(p)));
+ return v.ok?v.profile:null;}
+
 /* an id that is valid for each type, two per type for same type rules */
 const IDS={pattern:['12','13'],release:['12:Llimit','13:Rlimit'],reframe:['12:Ltruth','13:Rtruth']};
 const idOf=(t,i)=>(IDS[t]||[t+'A',t+'B'])[i||0];
@@ -551,8 +566,12 @@ function suite(T,E,ok,g){
   const G=T.traceFromRecord(P,undefined,RD);
   ok(G.refused.length===0,'every rung and every part passes the rule table, refused '+J(G.refused).slice(0,240));
   ok(T.traceCycles(G).illegal.length===0,'and the chain closes no illegal loop');
+  /* the named super complex is a super_complex node too, off its own field
+     and not off sups (TG11d), so it is counted here when this field holds it */
+  const NAMED=RD.psychopathy?[RD.psychopathy]:[];
   CH.forEach(t=>{
-   const got=G.nodes.filter(n=>n.type===t).map(n=>n.id).sort(), want=(RD[LIST[t]]||[]).map(x=>x.nm).sort();
+   const got=G.nodes.filter(n=>n.type===t).map(n=>n.id).sort(),
+    want=(RD[LIST[t]]||[]).map(x=>x.nm).concat(t==='super_complex'?NAMED.map(x=>x.named):[]).sort();
    ok(want.length>0&&J(got)===J(want),'one '+t+' per entry of the reading\'s '+LIST[t]+', '+got.length+' against '+want.length);});
   const rungs=G.nodes.filter(n=>isRung(n.type));
   ok(rungs.length>0&&rungs.every(n=>n.src==='inferred'&&n.derived===true&&n.was===undefined),
@@ -567,6 +586,7 @@ function suite(T,E,ok,g){
   const want=new Set();
   CH.forEach(t=>(RD[LIST[t]]||[]).forEach(x=>x.parts.forEach(q=>
    want.add((t==='saboteur'?'pattern:'+q.i:BELOW[t]+':'+q.nm)+' > '+t+':'+x.nm))));
+  NAMED.forEach(x=>x.parts.forEach(q=>want.add('hyper_complex:'+q.nm+' > super_complex:'+x.named)));
   const got=new Set(ce.map(e=>e.from+' > '+e.to));
   ok(want.size===got.size&&got.size===ce.length&&[...want].every(k=>got.has(k)),
    'one edge per part the reading counted, '+ce.length+' edges against '+want.size+' parts');
@@ -670,6 +690,105 @@ function suite(T,E,ok,g){
   ok(RG.refused.filter(x=>x.stored&&has(x,'read off the reading')).length===2,
    'the stored layer of a record that skipped the boundary refuses a rung and an edge to one, by name, where the reading derived the same rung');
   ok(RG.edges.filter(e=>e.to===sk).every(e=>e.src==='inferred'),'and nothing stored confirms a part of the chain');
+ }
+
+ g('TG11d · the named super complex is a node, read by name and never off sups');
+ /* The nerve to celestial audit's second gap, 31 October. compute() builds
+    r.psychopathy by asking for the two hyper complexes the DESCENT entry pairs,
+    and keeps it out of sups, and the chain read sups only, so the one super
+    complex the product names was never in any graph. Checked against the
+    build before this: every check below that looks for the node fails there. */
+ tg11d:{
+  const D=(E.DESCENT||[]).find(d=>d.nm==='Psychopathy');
+  ok(!!D&&Array.isArray(D.pair)&&D.pair.length===2,'the descent names the pair it is built from, got '+J(D&&D.pair));
+  if(!D)break tg11d;
+  const pairKeys=D.pair.map(h=>'hyper_complex:'+h).sort();
+  for(const both of [false,true]){
+   const tag=both?'where both rules pair them: ':'where only the named rule pairs them: ';
+   const P=namedRec(E,both);
+   ok(!!P,tag+'the record passes the boundary');
+   if(!P)break tg11d;
+   const RD=E.read(JSON.parse(J(P))).reading, X=RD.psychopathy;
+   /* THE KNOWN CASE FIRST, both halves of it */
+   const generic=(RD.sups||[]).some(s=>s.parts.map(h=>h.nm).sort().join()===D.pair.slice().sort().join());
+   ok(!!X&&X.inSups===both&&generic===both,
+    tag+'the field is the case it is named for, named '+J(X&&X.named)+', inSups '+J(X&&X.inSups)+', sups '+J((RD.sups||[]).map(s=>s.nm)));
+   if(!X||X.inSups!==both||generic!==both)break tg11d;
+   ok(X.named===D.nm&&J(X.parts.map(h=>h.nm).sort())===J(D.pair.slice().sort()),
+    tag+'the reading names it off the descent, '+X.named+' of '+J(X.parts.map(h=>h.nm)));
+   const G=T.traceFromRecord(P,undefined,RD);
+   ok(G.refused.length===0,tag+'nothing is refused, '+J(G.refused).slice(0,240));
+   const N=G.nodes.find(n=>n.type==='super_complex'&&n.id===D.nm);
+   ok(!!N&&N.src==='inferred'&&N.derived===true&&N.was===undefined,tag+'it is a super_complex node under its own name, inferred and derived, got '+J(N));
+   ok(!!N&&N.named===true&&N.inSups===both&&N.w===Math.round(X.w*10)/10,
+    tag+'carrying that it is the named one, whether rank paired it too, and its weight, got '+J(N));
+   ok(!!N&&N.d===undefined&&N.sub===undefined&&N.refer===undefined&&N.content===undefined,
+    tag+'and not the line, the referral or the descent\'s text, which a graph is no place to print from');
+   const into=G.edges.filter(e=>e.to==='super_complex:'+D.nm);
+   ok(J(into.map(e=>e.from).sort())===J(pairKeys)&&into.every(e=>e.edge==='supports'&&e.src==='inferred'&&e.derived===true&&/not a cause/.test(e.why||'')),
+    tag+'two edges in, one from each hyper complex of the pair, supports, inferred, and not a cause, got '+J(into.map(e=>e.from+' '+e.edge+' '+e.src)));
+   /* r.sups IS NOT MOVED: every other super_complex node is a pairing by rank */
+   const rest=G.nodes.filter(n=>n.type==='super_complex'&&n!==N).map(n=>n.id).sort();
+   ok(J(rest)===J((RD.sups||[]).map(s=>s.nm).sort()),tag+'and every other super complex is one of sups, exactly, got '+J(rest));
+   /* nerve to the named one */
+   const hy=X.parts[0], cx=hy.parts[0], sb=cx.parts[0], addr=sb.parts[0].i;
+   const walk=T.tracePath(G,'pattern:'+addr,'super_complex:'+D.nm);
+   ok(!!walk&&walk.length===4&&walk.every(s=>s.edge==='supports'),tag+'an address reaches it in four steps, got '+J(walk&&walk.map(s=>s.to)));
+   /* ABSENT AND NULL ARE NO NODE AND NO REFUSAL. Absent is a reading from
+      before 26 October; null is a field without it, or a plan that may not
+      see the rung (sightR, ui/lock.js) */
+   const gone=Object.assign({},RD); delete gone.psychopathy;
+   const G0=T.traceFromRecord(P,undefined,gone), Gn=T.traceFromRecord(P,undefined,Object.assign({},RD,{psychopathy:null}));
+   ok(!G0.nodes.some(n=>n.type==='super_complex'&&n.id===D.nm)&&G0.refused.length===0&&J(Gn)===J(G0),
+    tag+'a reading without it, or with it null, is the graph with no named node and nothing refused');
+   ok(!T.traceFromRecord(P).nodes.some(n=>n.id===D.nm),tag+'and with no reading there is none');
+   /* ALL OR NOTHING, the chain's own rule, on this one too */
+   const refusedAs=(mut,frag,what)=>{const r=JSON.parse(J(RD)); mut(r);
+    const Y=safe(()=>T.traceFromRecord(P,undefined,r));
+    ok(!!Y&&!Y.threw&&!Y.nodes.some(n=>CH.indexOf(n.type)>=0)&&Y.refused.some(x=>x.reading===true&&has(x,frag)),
+     tag+what+', got '+J(Y&&(Y.threw||Y.refused)).slice(0,200));};
+   refusedAs(r=>{r.psychopathy='x';},'psychopathy is not an object','a named one that is not an object refuses the whole reading');
+   refusedAs(r=>{r.psychopathy.named=7;},'id is not a string','a named one whose name is not text refuses it');
+   refusedAs(r=>{r.psychopathy.named=r.sups[0].nm;},'already names','a named one under a name the pairing by rank uses refuses it');
+   refusedAs(r=>{r.psychopathy.parts[0].nm='nobody';},'which is not a hyper_complex of this reading','a named one counting a hyper complex the reading does not hold refuses it');
+   refusedAs(r=>{r.psychopathy.parts.pop();},'does not count two','a named one counting one hyper complex refuses it');
+   refusedAs(r=>{r.psychopathy.parts[0]=null;},'has a part that is not an object','a named one with a part that is not an object refuses it');
+   refusedAs(r=>{r.psychopathy.parts[1]=r.psychopathy.parts[0];},'twice','a named one counting the same hyper complex twice refuses it');
+   const an=safe(()=>T.traceAddNode(G,'super_complex',D.nm,'inferred'));
+   ok(!!an&&!an.ok&&has(an,'read off the reading'),tag+'and it is never added by hand');}
+ }
+
+ g('TG11e · the graph a screen is drawn from is handed the reading, and loads nothing');
+ /* The nerve to celestial audit's first gap, 31 October. The Character page and
+    the loop read built their graphs with no reading. They cannot be handed
+    read(): it loads the record, which drops a working state that is ahead of
+    the disk and, on the practitioner page, leaves a stranger's field in S. So
+    they are handed readHeld, compute() of what is loaded, stamped only when
+    S.rec says it was loaded from that record. Checked against the build before
+    this, where readHeld does not exist and every check here fails. */
+ {
+  const P=loadedRec(E);
+  ok(!!P&&typeof E.readHeld==='function','the door exists and the record passes the boundary');
+  if(P&&typeof E.readHeld==='function'){
+   E.loadProfile(JSON.parse(J(P)));
+   const state=()=>J([E.S.charge,E.S.replace,E.S.law,E.S.doms,E.S.arcs,E.S.roots,E.S.addr,E.S.rec,E.W.map(n=>n.susc)]);
+   const before=state();
+   const H=E.readHeld(P);
+   ok(state()===before,'reading what is held loads nothing and writes nothing');
+   ok(!!H&&H.rec===P.id,'and it is stamped with the record the field was loaded from');
+   const GH=T.traceFromRecord(P,undefined,H), GR=T.traceFromRecord(P,undefined,E.read(JSON.parse(J(P))).reading);
+   const rungs=g=>g.nodes.filter(n=>CH.indexOf(n.type)>=0).map(n=>n.type+':'+n.id+':'+n.w).sort();
+   ok(GH.refused.length===0&&rungs(GH).length>0,'the graph takes it and carries the chain, '+rungs(GH).length+' rungs, refused '+J(GH.refused).slice(0,160));
+   ok(J(rungs(GH))===J(rungs(GR)),'the same chain read() would have given, on a field loaded from the record and not moved since');
+   E.loadProfile(soulOf(E,'Sofia'));
+   ok(E.readHeld(P)===null,'a record that is not the one loaded has no held reading, so its graph carries no chain');
+   const noId=JSON.parse(J(P)); delete noId.id;
+   ok(E.readHeld(noId)===null&&E.readHeld(null)===null,'nor does a record with no id, or no record');
+   /* THE LOOP READ SAYS THE SAME WITH THE CHAIN UNDER IT. Every row it lists is
+      a pattern, so the reading changes the graph and not the surface. */
+   E.loadProfile(JSON.parse(J(P)));
+   const L0=E.loopRead(P), L1=E.loopRead(P,E.readHeld(P));
+   ok(L0.patterns.length>0&&J(L1)===J(L0),'the loop read handed the reading lists exactly what it listed without one, '+L0.patterns.length+' patterns');}
  }
  g('TG12 · same record, same graph, whatever is loaded');
  {
@@ -832,6 +951,20 @@ function mutants(E){
     const q=(r&&typeof r==='object'&&!Array.isArray(r)&&p&&typeof p==='object')?Object.assign({},r,{rec:p.id}):r;
     return E.traceFromRecord(p,i,q);}})],
   ['the reading is ignored', Object.assign({},X,{traceFromRecord:function(p,i){return E.traceFromRecord(p,i);}})],
+  /* the named super complex, 31 October. Each is a plausible way to wire it
+     wrong: leave it out, file it under its pair's name, or push it into sups,
+     which compute() refuses to do because it would move every count */
+  ['the named super complex is left out', Object.assign({},X,{traceFromRecord:function(p,i,r){
+    const q=(r&&typeof r==='object')?Object.assign({},r,{psychopathy:null}):r;
+    return E.traceFromRecord(p,i,q);}})],
+  ['the named super complex is filed under its pair\'s name', Object.assign({},X,{traceFromRecord:function(p,i,r){
+    const q=(r&&typeof r==='object'&&r.psychopathy)?Object.assign({},r,{psychopathy:Object.assign({},r.psychopathy,{named:r.psychopathy.nm})}):r;
+    return E.traceFromRecord(p,i,q);}})],
+  ['the named super complex is pushed into sups', Object.assign({},X,{traceFromRecord:function(p,i,r){
+    const x=r&&typeof r==='object'?r.psychopathy:null;
+    const q=(x&&Array.isArray(r.sups)&&!r.sups.some(s=>s.nm===x.named))
+     ?Object.assign({},r,{sups:r.sups.concat([Object.assign({},x,{nm:x.named})]),psychopathy:null}):r;
+    return E.traceFromRecord(p,i,q);}})],
   ['a stored rung passes the boundary', Object.assign({},X,{validateTrace:function(o){
     const r=E.validateTrace(o);
     if(!r.ok&&r.errs.length&&r.errs.every(x=>/read off the reading/.test(x)))return {ok:true,errs:[],trace:o};

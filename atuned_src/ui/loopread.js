@@ -50,10 +50,15 @@ function loopSig(p){
    (p.meter&&p.meter.unique)||[], (p.rituals||[]).map(function(x){return [x&&x.t,x&&x.done];}),
    p.practice||null, p.trace||null, p.soul||null]);}
  catch(e){return String(Math.random());}}
+/* AND THE READING IT IS HANDED, through the plan's lock, so the graph under the
+   loop read carries the chain this plan may see (readSeenOf, ui/lock.js; the
+   nerve to celestial audit's first gap, 31 October). Part of the key, because
+   it is now one of the things the graph reads. */
 function loopOf(p){
- var s=loopSig(p);
+ var rd=null; try{rd=readSeenOf(p);}catch(e){rd=null;}
+ var s=loopSig(p)+'|'+readSeenSig(rd);
  if(LP.memo&&s===LP.sig)return LP.memo;
- var L=null; try{L=loopRead(p);}catch(e){L=null;}
+ var L=null; try{L=loopRead(p,rd);}catch(e){L=null;}
  LP.memo=L; LP.sig=s; return L;}
 
 /* a count. A zero is a dash, and the label is one word that carries its
