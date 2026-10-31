@@ -379,7 +379,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* the first release's size and where a person is on the way in,
      engine/data/onboarding.js and engine/journey.js. Reads only. */
                   ONB_MINI_ADDRS:ONB_MINI_ADDRS, ONB_MINI_DOSE:ONB_MINI_DOSE, ONB_CHANS:ONB_CHANS,
-                  OB_STARTS:OB_STARTS, OB_FEELS:OB_FEELS, OB_PLACES:OB_PLACES,
+                  OB_STARTS:OB_STARTS, OB_GIFT_NATURES:OB_GIFT_NATURES, OB_FEELS:OB_FEELS, OB_PLACES:OB_PLACES,
                   journeyRead:journeyRead, onbMiniPlan:onbMiniPlan,
   /* the crisis button's numbers and words, engine/data/crisis.js. Reads only. */
                   CRISIS_LINES:CRISIS_LINES, CRISIS_SAY:CRISIS_SAY,
@@ -392,7 +392,8 @@ if(typeof module!=='undefined'&&module.exports){
                   journeyBlank:journeyBlank, journeyValidate:journeyValidate,
                   journeyLog:journeyLog, journeyLogged:journeyLogged, journeyWalk:journeyWalk,
                   journeyGiftRead:journeyGiftRead, journeyGiftSync:journeyGiftSync,
-                  journeyGiftIssue:journeyGiftIssue, journeyMade:journeyMade,
+                  journeyGiftIssue:journeyGiftIssue, journeyGiftNature:journeyGiftNature,
+                  journeyMade:journeyMade,
                   journeyClaim:journeyClaim, journeyClaimCheck:journeyClaimCheck,
                   releaseVerify:releaseVerify, releaseVerifyAt:releaseVerifyAt,
                   RV_METRIC:RV_METRIC, RV_ANSWERS:RV_ANSWERS, RV_SAY:RV_SAY,

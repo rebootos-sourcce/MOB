@@ -361,6 +361,11 @@ boundary(E,ok){
  C('an unknown key on the gift',o=>{o.journey.gift.tier='four';},'journey.gift may not carry tier');
  C('a gift that is not an object',o=>{o.journey.gift=5;},'journey.gift is not an object');
  C('a gift counter with no number in it',o=>{delete o.journey.gift.granted;},'journey.gift.granted is not a whole number');
+ /* the starter set's nature, 31 October: one of the six, never one of the
+    twelve starts that is not also a nature, and never a word nobody named */
+ C('a gift nature that is not one of the six',o=>{o.journey.gift.giftNatureId='joy';},'journey.gift.giftNatureId is not one of the six gift natures');
+ C('a starting point given as a gift nature',o=>{o.journey.gift.giftNatureId='selfworth';},'journey.gift.giftNatureId is not one of the six gift natures');
+ C('a gift nature that is not a word',o=>{o.journey.gift.giftNatureId=3;},'journey.gift.giftNatureId is not one of the six gift natures');
  /* the walk */
  C('a walk at a station that does not exist',o=>{o.journey.walk.step='checkout';},'journey.walk.step is not a station of the first run: checkout');
  C('a walk through a door that does not exist',o=>{o.journey.walk.door='quiz';},'journey.walk.door is not onboarding or tutorial');
@@ -390,6 +395,15 @@ boundary(E,ok){
  /* a clean record is never refused for what the journey is allowed to hold */
  const g1=clone(base); g1.journey.gift.src='funnel';
  ok(E.validateProfile(g1).ok,'a gift issued by the funnel is a gift');
+ /* every one of the six loads and comes back as it went in, and a gift with
+    none comes back with none, not with a null the record never had */
+ E.OB_GIFT_NATURES.forEach(x=>{const gn=clone(base); gn.journey.gift.giftNatureId=x.k;
+  const v=E.validateProfile(gn);
+  ok(v.ok&&v.profile.journey.gift.giftNatureId===x.k,'a gift whose nature is '+x.k+' loads and keeps it: '+J(v.ok&&v.profile.journey.gift));});
+ {const v=E.validateProfile(clone(base));
+  ok(v.ok&&!('giftNatureId' in v.profile.journey.gift),'a gift with no nature loads with no nature key: '+J(v.ok&&v.profile.journey.gift));}
+ {const gn=clone(base); gn.journey.gift.giftNatureId=null;
+  ok(E.validateProfile(gn).ok,'a gift nature written as null is a gift with none');}
  const g2=clone(base); g2.journey.log=[{seq:1,type:'tier_viewed',at:at(-1),ref:'2026-10-01T09:00:00.000Z',d:{n:3,kind:'free',seen:true}}];
  ok(E.validateProfile(g2).ok,'a log line may reference an entry by its date and carry counts, words and flags');
  const g3=clone(base); g3.journey.walk={step:'story',door:'onboarding',pick:0,feel:-1,place:-1,ans:{},
@@ -464,6 +478,42 @@ gift(E,ok){
  ok(p.journey.log.filter(e=>e.type==='starter_gift_issued').length===1,'and logs nothing');
  {const ng=E.blankProfile('ng'); ok(E.journeyGiftSync(ng)===null&&!ng.journey,'syncing a gift that was never issued issues nothing');}
  ok(E.journeyGiftIssue(null,'app').ok===false,'no record is refused');
+ /* THE STARTER SET'S NATURE, 31 October, ported from branch
+    p1/gift-nature-choice-20261011 onto the counter as it stands: the counter
+    is still issued at the pick, and the nature is a second write onto it,
+    once, after the server has said a set of that nature is ready. */
+ ok(E.OB_GIFT_NATURES.map(x=>x.k).join()==='anxiety,overwhelm,burnout,depression,grief,sadness',
+  'the six natures are the ruled six, in order: '+E.OB_GIFT_NATURES.map(x=>x.k).join());
+ ok(E.journeyGiftRead(p).giftNatureId===null,'an issued gift has no nature until one is bound: '+J(E.journeyGiftRead(p).giftNatureId));
+ {const before=J(p.journey);
+  [['no record',()=>E.journeyGiftNature(null,'grief'),'no record'],
+   ['a word that is not a nature',()=>E.journeyGiftNature(p,'joy'),'must be one of anxiety, overwhelm, burnout, depression, grief, sadness'],
+   ['a starting point that is not a nature',()=>E.journeyGiftNature(p,'selfworth'),'must be one of'],
+   ['nothing at all',()=>E.journeyGiftNature(p),'must be one of'],
+   ['a gift never issued',()=>E.journeyGiftNature(E.blankProfile('nogift'),'grief'),'journey.gift is not issued']]
+  .forEach(x=>{const q=x[1](); ok(q.ok===false&&q.why.indexOf(x[2])>=0,x[0]+' is refused naming '+J(x[2])+': '+J(q.why));});
+  ok(J(p.journey)===before,'and every refusal left the journey as it was');}
+ {const nlog=p.journey.log.length;
+  const b=E.journeyGiftNature(p,'grief');
+  ok(b.ok&&b.bound===true&&p.journey.gift.giftNatureId==='grief'&&E.journeyGiftRead(p).giftNatureId==='grief',
+   'a nature binds to the issued gift: '+J(p.journey.gift));
+  ok(p.journey.gift.at===at(-4)&&p.journey.gift.src==='app'&&p.journey.gift.used===12,'and moves nothing else on it');
+  ok(p.journey.log.length===nlog,'and writes no log line, because the TDD names no event for it');
+  const same=E.journeyGiftNature(p,'grief');
+  ok(same.ok&&same.bound===false,'the same nature again changes nothing and says so');
+  const other=E.journeyGiftNature(p,'sadness');
+  ok(other.ok===false&&other.why.indexOf('already recorded as grief')>=0&&p.journey.gift.giftNatureId==='grief',
+   'a second, different nature is refused and the first stands: '+J(other.why));
+  ok(E.validateProfile(clone(p)).ok,'a record with a bound nature loads');}
+ E.OB_GIFT_NATURES.forEach((x,i)=>{const q=E.blankProfile('nature'+i); E.journeyGiftIssue(q,'app',at(-2));
+  const b=E.journeyGiftNature(q,x.k);
+  ok(b.ok&&b.bound&&q.journey.gift.giftNatureId===x.k,'the nature '+x.k+' binds');});
+ /* A NATURE CANNOT GRANT. The allowance reads the meter and GIFT_N, so a
+    bound nature leaves the budget exactly where it was. */
+ {const q=fixture(E,3); E.journeyGiftIssue(q,'app',at(-2));
+  const b0=J(E.planAllowance(q.plan,q.meter.unique.length,E.meterGiftAt(q),at(0)));
+  E.journeyGiftNature(q,'depression');
+  ok(J(E.planAllowance(q.plan,q.meter.unique.length,E.meterGiftAt(q),at(0)))===b0,'a bound nature does not move planAllowance');}
  /* THE COUNTER COUNTS. A release opens new ground and the next save moves the
     stored counter in the same write, through saveProfile, the one writer
     every save goes through. */

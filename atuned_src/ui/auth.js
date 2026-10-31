@@ -221,7 +221,18 @@ function authFunnelCheckpoint(patch){
     var g=funnelSession()||f;
     funnelKeep(Object.assign({},g,{session:r.body.session,userId:r.body.session.userId||g.userId||null}));
     authFunnelJoin();
-    return {ok:true,session:r.body.session};
+    /* AND THE GIFT, passed through as the server said it. The Worker that
+       knows a gift nature (Reboot-OS branch alpha/p1-fixed-pattern-gift-
+       contract-20261010) answers a checkpoint with the gift's snapshot and
+       giftVerified beside the session, because "a gift ID alone is not a
+       usable bank". This returned the session and dropped both, so the only
+       thing a caller could check was starterGiftId, which the live Worker
+       sets for a ground pick alone (migration 0015). The gift picker in
+       ui/onboard.js confirms on these two, and every other caller reads
+       ok and session exactly as before. */
+    return {ok:true,session:r.body.session,
+     gift:(r.body.gift&&typeof r.body.gift==='object')?r.body.gift:null,
+     giftVerified:r.body.giftVerified===true};
    }
    return {ok:false,status:r.status,body:r.body};
   });

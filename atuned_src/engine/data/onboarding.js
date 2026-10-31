@@ -66,6 +66,22 @@ var OB_STARTS=[
  {k:'relationships',n:'Relationships'},{k:'pain',n:'Pain'},
  {k:'selfworth',n:'Self-worth'},{k:'purpose',n:'Purpose'},{k:'money',n:'Money'},
  {k:'other',n:'Something else'}];
+/* THE SIX GIFT NATURES, ruled 14 October and recorded in Reboot-OS: anxiety,
+   overwhelm, burnout, depression, grief, sadness, each with its own fixed
+   bank of 100 patterns, separate from the twelve starts above. Ported from
+   branch p1/gift-nature-choice-20261011, which typed the six twice, once here
+   and once in engine/journey.js; the boundary reads this list now, so the
+   picker and the record cannot disagree about what a nature is. The keys are
+   the Worker's own (its validateCheckpointPatch, Reboot-OS branch
+   alpha/p1-fixed-pattern-gift-contract-20261010) and are stored, so they are
+   identity and never renamed. Four of them share a key with a start
+   (anxiety, overwhelm, burnout, grief) and are still a different answer: the
+   start says what brought a person here, this says which starter set they
+   chose, and a person may begin from purpose and choose grief. */
+var OB_GIFT_NATURES=[
+ {k:'anxiety',n:'Anxiety'},{k:'overwhelm',n:'Overwhelm'},
+ {k:'burnout',n:'Burnout'},{k:'depression',n:'Depression'},
+ {k:'grief',n:'Grief'},{k:'sadness',n:'Sadness'}];
 /* THE SIX FEELING WORDS, the same six the mockup's FEELS carries. Neither
    set is tinted to a seat: a feeling is not one place in the body, and
    tinting it that way would be a claim this sheet has not earned. */

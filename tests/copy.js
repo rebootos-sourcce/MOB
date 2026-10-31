@@ -18,6 +18,8 @@
      the person picks a topic         that topic's key, one of twelve
                                       (ui/onboard.js, authFunnelCheckpoint)
      the walk through is finished     that it was finished
+     the gift card after the end      the starter set picked, one of six words
+                                      (ui/onboard.js obGiftAsk, 31 October)
      the first release ends           a random code for that release
      an answer to What changed        a random code for the answer, not the answer
      sign in                          the email, the password, and the first
@@ -189,7 +191,11 @@ const PAGE_NEED={'privacy.html':'privacy-page','terms.html':'terms-page'};
    it can reach. */
 const SENDS=[
  ['POST', /\/v1\/funnel\/session$/, ['anonymousId']],
- ['PATCH', /\/v1\/funnel\/session\/[^/]+\/checkpoint$/, ['selectedGroundId','tutorialCompleted','firstReleaseId','verificationId']],
+ /* giftNatureId from 31 October, the gift card's own checkpoint. Named here
+    in the same change as the sentences on the first card, the Privacy
+    section, the FAQ, the privacy page and the consumer health data page
+    that say it goes */
+ ['PATCH', /\/v1\/funnel\/session\/[^/]+\/checkpoint$/, ['selectedGroundId','giftNatureId','tutorialCompleted','firstReleaseId','verificationId']],
  ['POST', /\/v1\/funnel\/session\/[^/]+\/attach$/, ['credential']]];
 
 const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1';

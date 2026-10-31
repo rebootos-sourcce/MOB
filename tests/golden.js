@@ -1117,6 +1117,24 @@ async function door(browser, SITE, cut, giftAt) {
   o = await ob();
   const END = await po2.evaluate(() => typeof OB_END === 'number' ? OB_END : -1);
   ok(o.open && o.step === END && /Here is what you made/.test(o.card), 'Done brings the person to the end card, which says what they made');
+  /* THE GIFT CARD, after the summary and after the sign up, 31 October: "That
+     needs to be in there after your summary when you onboard. Like once you
+     sign up." This door made an account, so this is the person he named. The
+     fake Worker refuses a checkpoint field it does not know, as the live one
+     does, so this holds what production does today: the pick goes, is
+     refused, is said, and nothing is written. */
+  await O.click('[data-ob="endgift"]');
+  o = await ob();
+  ok(o.open && o.step === END && /What would help most right now\?/.test(o.card), 'Continue on the end card opens the gift card, signed in');
+  await O.click('#ob [data-obgift="4"]');
+  await po2.waitForFunction(() => OB.giftRes !== 'saving', null, { timeout: 8000 }).catch(() => {});
+  o = await ob();
+  const giftO = await po2.evaluate(() => ({ res: OB.giftRes, nat: (CURP.journey && CURP.journey.gift && CURP.journey.gift.giftNatureId) || null }));
+  const giftAsk = wo.reqs('PATCH', /\/checkpoint$/).filter(q => q.body && 'giftNatureId' in q.body);
+  ok(giftAsk.length === 1 && giftAsk[0].status === 400 && J(Object.keys(giftAsk[0].body)) === J(['giftNatureId']),
+    'the pick is sent alone and the server, which does not know the field, refuses it: ' + J(giftAsk.map(q => [q.status, q.body])));
+  ok(giftO.res === 'unverified' && giftO.nat === null && /did not confirm Grief, so nothing was added/.test(o.card),
+    'and the card says so and writes nothing: ' + J(giftO), 'a gift the server refused is claimed');
   await O.click('[data-ob="endin"]');
   await po2.waitForTimeout(800);
   ok(!(await ob()).open, 'Go in closes the first run');

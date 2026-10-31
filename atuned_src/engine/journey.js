@@ -116,7 +116,15 @@ function jyLog(errs,x,i,nowMs){
  return {seq:x.seq, type:x.type, at:at, ref:ref, d:d};}
 
 /* ---------------- the gift, as the owner's counter ---------------- */
-var JY_GIFT_KEYS=['at','src','granted','used','remaining'];
+/* giftNatureId is the starter set the person chose, one of OB_GIFT_NATURES,
+   and it is written only once the server has confirmed a ready set of that
+   nature (journeyGiftNature below). It is optional, and it is carried out of
+   the boundary only when it is there: written as null on every gift that
+   never had one, it would change the bytes of every record that walked the
+   first run before the picker existed, which this file promises not to do. */
+var JY_GIFT_KEYS=['at','src','granted','used','remaining','giftNatureId'];
+function jyGiftNatureOk(k){
+ return typeof k==='string'&&OB_GIFT_NATURES.some(function(x){return x.k===k;});}
 function jyGift(errs,g,nowMs){
  var path='journey.gift';
  if(g===null||g===undefined)return null;
@@ -124,6 +132,8 @@ function jyGift(errs,g,nowMs){
  vKeys(errs,path,g,JY_GIFT_KEYS);
  var at=jyDate(errs,path+'.at',g.at,nowMs);
  if(JOURNEY_SRC.indexOf(g.src)<0)errs.push(path+'.src is not funnel or app');
+ var nat=(g.giftNatureId===undefined||g.giftNatureId===null)?null:g.giftNatureId;
+ if(nat!==null&&!jyGiftNatureOk(nat))errs.push(path+'.giftNatureId is not one of the six gift natures');
  var gr=jyInt(errs,path+'.granted',g.granted,0,1e6);
  var us=jyInt(errs,path+'.used',g.used,0,gr===null?1e6:gr);
  var rm=jyInt(errs,path+'.remaining',g.remaining,0,1e6);
@@ -133,7 +143,9 @@ function jyGift(errs,g,nowMs){
  if(gr!==null&&us!==null&&rm!==null&&us+rm!==gr)
   errs.push(path+'.remaining is '+rm+' and used is '+us+', which do not make '+gr);
  if(at===null||gr===null||us===null||rm===null)return null;
- return {at:at, src:g.src, granted:gr, used:us, remaining:rm};}
+ var out={at:at, src:g.src, granted:gr, used:us, remaining:rm};
+ if(nat!==null&&jyGiftNatureOk(nat))out.giftNatureId=nat;
+ return out;}
 
 /* ---------------- the walk: where the first run stands ---------------- */
 /* WHAT A RELOAD NEEDS TO PUT A PERSON BACK WHERE THEY WERE, and nothing else.
@@ -259,6 +271,7 @@ function journeyGiftRead(p){
  var used=Math.min(GIFT_N,n);
  return {granted:GIFT_N, used:used, remaining:GIFT_N-used, spent:used>=GIFT_N,
   issued:!!g, at:g?g.at:null, src:g?g.src:null,
+  giftNatureId:(g&&g.giftNatureId)||null,
   drift:!!g&&(g.used!==used||g.remaining!==GIFT_N-used)};}
 /* WRITE THE COUNTER'S USED AND REMAINING from the meter. The one place the
    stored half is written, so it is the one place that can be wrong, and
@@ -280,6 +293,34 @@ function journeyGiftIssue(p,src,now){
  j.gift={at:jyAt(now), src:src, granted:r.granted, used:r.used, remaining:r.remaining};
  var lg=journeyLog(p,'starter_gift_issued',null,{granted:r.granted},now);
  return {ok:true, issued:true, gift:j.gift, logged:lg.ok};}
+/* THE STARTER SET THE PERSON CHOSE, BOUND TO THE GIFT ONCE. Ported from branch
+   p1/gift-nature-choice-20261011, which made journeyGiftIssue refuse any gift
+   with no nature and moved the issue off the pick. That branch never ran
+   tests/journey2.js, which holds "the gift is issued at the pick", and on the
+   live Worker, which refuses the field, it would have issued no counter to
+   anybody. So the counter is still issued at the pick, as ruled (round OX,
+   ruling 3), and the nature is a second write onto it.
+
+   The caller writes this only after the server has said a ready set of that
+   nature exists (obGiftOk in ui/onboard.js). The engine cannot see the server,
+   so what it can hold is the shape: a known nature, a gift that exists, and
+   one nature for the life of the record. A second, different nature is
+   refused by name, never written over the first, because the set the server
+   issued does not change when somebody presses another chip. The free
+   allowance never reads any of this: planAllowance counts meter.unique
+   against GIFT_N, so a nature cannot grant a pattern. It writes no log line:
+   JOURNEY_EVENTS is held equal to the TDD's own list and names no event for
+   it, and a new kind is a change to that document first. */
+function journeyGiftNature(p,nature){
+ if(!p)return {ok:false, why:'no record'};
+ if(!jyGiftNatureOk(nature))
+  return {ok:false, why:'journey.gift.giftNatureId must be one of '+OB_GIFT_NATURES.map(function(x){return x.k;}).join(', ')};
+ var g=p.journey&&p.journey.gift;
+ if(!g)return {ok:false, why:'journey.gift is not issued, so it has no nature to take'};
+ if(g.giftNatureId===nature)return {ok:true, bound:false, gift:g};
+ if(g.giftNatureId)return {ok:false, why:'journey.gift.giftNatureId is already recorded as '+g.giftNatureId};
+ g.giftNatureId=nature;
+ return {ok:true, bound:true, gift:g};}
 /* THE COUNTER SPACE, ruled "we can use that counter space for other things",
    is not built: no other thing has been named to count, and a writer nothing
    calls is a control with no button. 3869d96 carried one (journeyGiftExtra). */
