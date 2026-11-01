@@ -58,11 +58,16 @@ function srcVoiceIntelligence(text,record,opts){
   graphStatus:v.graph.status,recordScope:'ACTIVE_RECORD_ONLY',
   coherence:'NOT_MEASURED',ancestry:'NOT_ASSESSED',
   userLead:true,automaticQuestions:false,evidence:[],
-  graphMatches:v.graph.matched,claims:[],
+  graphMatches:v.graph.matched,claims:[], narrative:null,
   gaps:['ancestral lineage relationships not independently measured',
    'CQDQ law grades and full knowledge graph traversal not connected to voice'],
   instruction:'Respond to actual words. An inference is not an identity or a cause. Never auto-prompt.'};
  if(!t.trim())return {voice:v.voice,intelligence:out};
+ /* Read user-attributed narrative over a bounded explicit session window.
+  * No historic raw journal or user identifiers leave this function. */
+ var userTurns=Array.isArray(o.turns)?o.turns.slice(-11).filter(function(x){return typeof x==='string';}):[];
+ if(userTurns[userTurns.length-1]!==t)userTurns.push(t);
+ out.narrative=srcVoiceNarrative(userTurns);
  /* A tool consumer must not get any historical raw journal text or profile
   * identifiers. The ledger is computed locally; only this turn's words and
   * the non-identifying claim state leave this seam. */
