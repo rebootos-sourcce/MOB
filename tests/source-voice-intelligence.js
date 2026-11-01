@@ -1,0 +1,38 @@
+'use strict';
+/* Source voice, record graph, and intelligence integration contract.
+ * This is a new test in the existing engine with the actual canonical data. */
+const assert=require('node:assert/strict');
+const path=require('node:path');
+const E=require(path.resolve(process.env.ENGINE||'engine.js'));
+const user=E.blankProfile('DO_NOT_DISCLOSE_NAME');
+user.id='DO_NOT_DISCLOSE_ID';
+assert.equal(typeof E.srcVoiceGraph,'function');
+assert.equal(typeof E.srcVoiceIntelligence,'function');
+const none=E.srcVoiceGraph('I felt afraid.',null,{allowProfile:true});
+assert.equal(none.graph.status,'NO_RECORD');
+const hidden=E.srcVoiceGraph('I felt afraid.',user,{allowProfile:false});
+assert.equal(hidden.graph.status,'CONSENT_REQUIRED');
+assert.equal(hidden.graph.matched.length,0);
+const prior=JSON.stringify(user);
+const graph=E.srcVoiceGraph('I felt afraid.',user,{allowProfile:true});
+assert.equal(graph.graph.status,'READ');
+assert.equal(graph.graph.engine,'MOB/traceFromRecord');
+assert.equal(JSON.stringify(user),prior,'read-only graph must not mutate record');
+const first=E.srcVoiceIntelligence('My mother always hid her feelings.',user,{allowProfile:true});
+const second=E.srcVoiceIntelligence('My mother always hid her feelings.',user,{allowProfile:true});
+assert.deepEqual(first,second,'deterministic for the same record');
+assert.equal(first.intelligence.status,'READ');
+assert.equal(first.intelligence.coherence,'NOT_MEASURED');
+assert.equal(first.intelligence.ancestry,'NOT_ASSESSED');
+assert.equal(first.intelligence.graphStatus,'READ');
+assert.ok(Array.isArray(first.intelligence.evidence));
+assert.ok(Array.isArray(first.intelligence.graphMatches));
+assert.equal(JSON.stringify(first).includes(user.name),false,'do not leak record name');
+assert.equal(JSON.stringify(first).includes(user.id),false,'do not leak record id');
+const noCon=E.srcVoiceIntelligence('I feel sad.',user,{allowProfile:false});
+assert.equal(noCon.intelligence.graphStatus,'CONSENT_REQUIRED');
+assert.equal(noCon.intelligence.coherence,'NOT_MEASURED');
+assert.ok(!JSON.stringify(noCon).includes(user.name));
+const neg=E.srcVoiceIntelligence('I was not angry.',user,{allowProfile:true});
+assert.equal(neg.voice.axes.some(x=>x.axis==='Anger'&&x.shadow>0),false);
+console.log('Source voice -> Sniffer -> record graph -> intelligence contract PASS');
