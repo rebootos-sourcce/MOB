@@ -45,6 +45,7 @@ engine/sniff.js
 engine/sourceai.js
 engine/voice_sniffer.js
 engine/evidence.js
+engine/voice_intelligence.js
 engine/qcheck.js
 engine/astro.js
 engine/birth.js
