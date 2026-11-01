@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2747 81802814 2026-11-01 16:53"><head><meta charset="utf-8">
+<html lang="en" data-build="v2748 65cd029d 2026-11-01 21:47"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -3162,6 +3162,55 @@ body.punch .s-readbox,body.punch .s-out{background:var(--panel-2);border-color:t
 /* the plate */
 .sg-who .s-plate{margin-bottom:0;padding:0 0 4px;border-bottom:0}
 .sg-who .s-pname{font-size:clamp(34px,4.2vw,50px)}
+/* ============================================================
+   THE STARTER GIFT, ON SUMMARY. Ported from the approved standalone mock,
+   round SQ, 1 November, scaled for a card on this page rather than a full
+   screen: the ring at 220px, not 360, six tiles at a size that still reads
+   as giant against this card's own width without forcing the page to
+   scroll past its own content. Every colour and token here is one already
+   defined above; nothing is reinvented or hard-coded. */
+.sg-gift{align-items:center;text-align:center;gap:4px;padding:28px 24px 24px}
+.sg-gift-ringwrap{width:min(220px,46vw);aspect-ratio:1;margin:4px 0 20px;position:relative}
+.sg-gift-ringwrap svg{width:100%;height:100%;overflow:visible}
+.sg-gift-wave{fill:none;stroke:url(#sggiftgrad);stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round}
+.sg-gift-halo{fill:none;stroke:url(#sggiftgrad);stroke-width:4.5;stroke-linejoin:round;stroke-linecap:round;opacity:.18}
+.sg-gift-h{font-size:clamp(24px,2.6vw,30px);font-weight:600;letter-spacing:-.015em;margin:0 0 10px;
+ line-height:1.08;text-wrap:balance}
+.sg-gift .ob-p{font-size:14.5px;line-height:1.6;color:var(--mid);max-width:44ch;margin:0 0 6px}
+.sg-gift .ob-dim{color:var(--dim)}
+.sg-giftrows{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;max-width:640px;
+ margin:18px 0 20px}
+.sg-giftrow{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:9px;padding:20px 6px 16px;background:var(--bg);border:1px solid var(--edge);border-radius:var(--r-s);
+ cursor:pointer;min-height:132px;color:var(--ink);font-family:inherit;
+ transition:border-color .2s var(--ease-out,ease),background .2s var(--ease-out,ease),transform .15s}
+.sg-giftrow:hover{border-color:var(--edge-2)}
+.sg-giftrow:active{transform:scale(.97)}
+.sg-giftrow.on{border-color:var(--c);background:color-mix(in srgb,var(--c) 9%,var(--bg))}
+.sg-gift-ic{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+ background:radial-gradient(circle at 50% 38%,color-mix(in srgb,var(--c) 30%,var(--bg)) 0%,
+  color-mix(in srgb,var(--c) 18%,var(--bg)) 72%);
+ border:1px solid color-mix(in srgb,var(--c) 34%,transparent);
+ transition:background .24s,box-shadow .24s,border-color .2s}
+.sg-giftrow.on .sg-gift-ic{border-color:var(--c);
+ background:radial-gradient(circle at 50% 36%,color-mix(in srgb,var(--c) 52%,var(--bg)) 0%,
+  color-mix(in srgb,var(--c) 36%,var(--bg)) 76%);
+ box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 18%,transparent),
+  0 0 20px 2px color-mix(in srgb,var(--c) 38%,transparent)}
+.sg-gift-ic svg{width:26px;height:26px;fill:none;stroke:color-mix(in srgb,var(--c) 25%,var(--ink));
+ stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:stroke .2s}
+.sg-giftrow.on .sg-gift-ic svg{stroke:color-mix(in srgb,var(--c) 12%,#fff)}
+.sg-gift-n{font-size:13.5px;font-weight:600;letter-spacing:-.005em}
+.sg-gift-tip{position:absolute;left:50%;bottom:calc(100% + 8px);transform:translate(-50%,4px);width:210px;
+ background:var(--sunk);border:1px solid var(--edge-2);border-radius:10px;padding:10px 12px;
+ font-size:12px;line-height:1.45;color:var(--mid);text-align:left;font-weight:400;
+ opacity:0;pointer-events:none;transition:opacity .16s,transform .16s;box-shadow:0 8px 20px rgba(0,0,0,.4);z-index:5}
+.sg-giftrow:hover .sg-gift-tip,.sg-giftrow:focus-visible .sg-gift-tip{opacity:1;transform:translate(-50%,0)}
+@media(max-width:600px){.sg-gift-tip{display:none}
+ .sg-giftrows{gap:8px} .sg-giftrow{min-height:108px;padding:14px 4px 12px}
+ .sg-gift-ic{width:44px;height:44px} .sg-gift-ic svg{width:22px;height:22px}}
+.sg-gift-acts{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:640px;margin-top:4px}
+@media(prefers-reduced-motion:reduce){.sg-gift-wave,.sg-gift-halo{transition:none}}
 .sg-who .sg-plain{grid-template-columns:1fr}
 /* the first drivers: a cascade, one numbered ring after another on a line */
 .sg-c-k{font-size:12px;font-weight:600;color:var(--dim)}
@@ -15418,9 +15467,18 @@ var OB_GIFT_NATURES=[
  {k:'anxiety',n:'Anxiety'},{k:'overwhelm',n:'Overwhelm'},
  {k:'burnout',n:'Burnout'},{k:'depression',n:'Depression'},
  {k:'grief',n:'Grief'},{k:'sadness',n:'Sadness'}];
-/* THE SIX FEELING WORDS, the same six the mockup's FEELS carries. Neither
-   set is tinted to a seat: a feeling is not one place in the body, and
-   tinting it that way would be a claim this sheet has not earned. */
+/* OVERRIDDEN, round SQ, 1 November: the six gift tiles on Summary (sumGift,
+   ui/summary.js) tint each nature to a seat. His words, said twice: "their
+   colours to reflect the chakra in which they are going to heal," then
+   "have their backgrounds... representative of the colour." This sheet's
+   own six keys are not reassigned to carry that claim, only the picker's
+   icon badges and the ring's own kick carry a colour, and the UI side
+   records its own reading of which seat each one leans toward (sumGiftSeat,
+   ui/summary.js), named there rather than silently decided here. What
+   follows is the ruling this replaces, kept for the record: "Neither set is
+   tinted to a seat: a feeling is not one place in the body, and tinting it
+   that way would be a claim this sheet has not earned." OB_FEELS still
+   carries no seat and is unaffected; nothing has asked to change it. */
 var OB_FEELS=[{k:'heavy',n:'Heavy'},{k:'tight',n:'Tight'},{k:'numb',n:'Numb'},
  {k:'restless',n:'Restless'},{k:'hollow',n:'Hollow'},{k:'hot',n:'Hot'}];
 /* THE SEVEN BODY PLACES, one on each seat, root to crown, the engine's own
@@ -53080,6 +53138,7 @@ function sumRender(){
  var r=computeSeen();
  h.innerHTML='<div class="sum-wrap">'+(r.unread?sumUnread(r):sumFull(r))+'</div>';
  sumWire();
+ if(document.getElementById('sggiftring')&&typeof sumGiftRingBoot==='function')sumGiftRingBoot();
  /* and its side column, today's summary, off the same reading. A paint and
     never a write: the day is frozen by sumDayOpen, after this returns. */
  if(typeof sumDayPaint==='function')sumDayPaint(r);}
@@ -53113,11 +53172,18 @@ function sumUnread(r){
     first drivers, and the four doors stand on the left, so the way in is on the
     first screen beside it and the page is two equal halves, not one half and a
     hole. Nothing here is read off the field, so nothing here is a reading. */
- if(rc)return sumWho(r,B,false)
+ /* THE GIFT SHOWS HERE TOO, round SQ, 1 November. sumWho's full branch is
+    the only caller sumGift() had, and a first-time arrival who has not had
+    a story read yet lands on exactly this unread page, per the storyboard
+    a probe of the real flow produced: a fresh profile closes onboarding
+    onto this page, not the full one. The free gift has no reading
+    precondition (lockGift alone), so withholding it here left the person
+    the owner means to reach never seeing it. */
+ if(rc)return sumWho(r,B,false)+sumGift()
   +'<div class="sg-two sg-lead"><section class="sg-card sg-start" data-grp="start">'+hero+'</section>'+rc+'</div>'
   +sumMarks(B,r)
   +(B.N?'<div class="sg-folds sg-one">'+sgFold('num','Numerology, in full',sumNum(r,true))+'</div>':'');
- return sumWho(r,B,false)+hero+sumSpirit(r)+sumNum(r);}
+ return sumWho(r,B,false)+sumGift()+hero+sumSpirit(r)+sumNum(r);}
 
 /* ============================================================
    THE SUMMARY, REBUILT. Named wrong four times and this is the correction.
@@ -53413,19 +53479,326 @@ function sumWho(r,B,full){
  if(!full&&!(B.sp||B.N||sumRealName()))return '';
  return sgZone('who','Who this is',
   full?sumPlate(r,B)+sumGift():'<div class="s-plate sg-plain"><div class="s-pl-l">'+sumNameBlock(B,false)+'</div></div>');}
-/* THE GIFT, SAID ONCE AND QUIETLY, under the name on the page a new person
-   lands on (tabLandFirst, ui/panels.js). The ruling is "100 patterns, free,
-   with everything visible", and the lock now keeps it (lockGift, ui/lock.js),
-   so nothing on this page is padlocked while it lasts. This is the one line
-   that says why. No count of what is left, no price and no button: the first
-   screen is the person's reading, opened, and not a shop. The count is in
-   Billing and on the card before a release, where it is spent. Read off the
-   lock's own answer, so it goes when the padlocks come back, and never on a
-   worked example. The size is GIFT_N and not a typed hundred. */
+/* THE GIFT, under the name on the page a new person lands on (tabLandFirst,
+   ui/panels.js). The ruling is "100 patterns, free, with everything
+   visible", and the lock keeps it (lockGift, ui/lock.js), so nothing on
+   this page is padlocked while it lasts.
+
+   THE STARTER SET IS PICKED HERE NOW, round SQ, 1 November, moved off a
+   second onboarding card (ui/onboard.js held the history; see its own note
+   where obGiftCard used to live). The owner's words: "after your summary
+   when you onboard. Like once you sign up," and a person who has reached
+   this page, closed, has done exactly that. While the gift is active and
+   nothing has been picked or skipped, this prints the full picker
+   (sumGiftCard); once one of those is true, or the gift is spent, it prints
+   the one quiet line it always did, read off GIFT_N and never a typed
+   hundred. */
 function sumGift(){
  if(typeof lockGift!=='function'||!lockGift())return '';
+ var had=(typeof journeyGiftRead==='function'&&CURP)?journeyGiftRead(CURP).giftNatureId:null;
+ var skipped=!!(CURP&&CURP.ui&&CURP.ui.giftSkipped);
+ /* THE ANSWER IS SEEN BEFORE IT GOES QUIET. had alone would drop straight
+    to the one-line notice the instant journeyGiftNature writes, in the
+    same render that set it, so a person would never actually see "Your
+    starter set is ready." SG_GIFT.res still holding issued or unavailable
+    means this session just got that answer, so the resolved card stays up
+    through this visit; only a later visit, with no res to say otherwise,
+    quiets to the line. */
+ if(!had&&!skipped)return sumGiftCard();
+ if(SG_GIFT.res==='issued'||SG_GIFT.res==='unavailable')return sumGiftCard();
  return '<p class="s-src" id="sumgift">Your gift: '+GIFT_N+' '+unp('pattern','patterns','gift')
   +', no card. Everything is open.</p>';}
+
+/* ============================================================
+   THE STARTER SET, PICKED ON THE PAGE A NEW PERSON LANDS ON. Ported whole
+   from ui/onboard.js (obGiftCard and around it), round SQ, 1 November: the
+   server contract is unchanged, only where the question is asked. Design is
+   the approved mock, carried further on the owner's own direction after
+   it: giant tiles, a ring built as a Kuramoto model (96 phases, coupled,
+   drawn as one smooth wave rather than spokes) that distorts in its own
+   shape for whichever of the six is picked and settles back on its own,
+   and a background tint per tile read off the seat it leans toward
+   (sumGiftSeat), overriding OB_GIFT_NATURES' own standing "not tinted"
+   comment on the owner's repeated instruction, recorded there.
+
+   STILL ONE PICK, NOT SIX: the server's own contract (authFunnelCheckpoint,
+   reboot-os funnel.js validateCheckpointPatch) takes one giftNatureId, not a
+   list, so this row list stays a single pick.
+
+   WHAT IS NEVER CLAIMED. Nothing is written to the record until the
+   server's own yes (sumGiftOk), and a refusal is said, with the pick still
+   pressed, so trying again is one press: a control never claims success
+   before it has it. Checked 1 November against reboot-os main: the live
+   Worker still refuses giftNatureId by name (a 400), and the branch that
+   teaches it the field (alpha/p1-fixed-pattern-gift-contract-20261010) is
+   unmerged, so every pick reads unverified until that branch lands. Nothing
+   here is broken by that: the 100 free patterns are planAllowance's and
+   stand either way, this card just cannot confirm a flavour yet. The six
+   tooltip sentences below are a first pass, not yet checked by the house
+   voice gate or Emmy; they ship because the mechanism needs a body to look
+   at, not because the words are final.
+   ============================================================ */
+var SG_GIFT={pick:null,res:null,ask:0};
+/* which seat each nature leans toward, for the tile's own tint and the
+   ring's kick. A reading, not an engine fact: unlike OB_PLACES, which
+   seatCol tints because the place really is that seat, this is the UI's
+   own call, named here rather than silently decided in the markup. */
+function sumGiftSeat(k){
+ return {anxiety:'Root',overwhelm:'3rd Eye',burnout:'Solar',
+  depression:'Throat',grief:'Heart',sadness:'Sacral'}[k]||'Heart';}
+var SG_GIFT_GLYPH={
+ anxiety:'<path d="M3 12h3.1l1.7-4.6 3 9.4 3-9.4 1.7 4.6H21"/>',
+ overwhelm:'<circle cx="12" cy="17.3" r="1.25"/><path d="M6.6 13.8a5.5 5.5 0 0110.8 0"/>'
+  +'<path d="M3.3 16.6a9 9 0 0117.4 0"/>',
+ burnout:'<path d="M17 6.3A8 8 0 1112 4"/><circle cx="12" cy="4" r="1.2"/>',
+ depression:'<circle cx="12" cy="13.2" r="7"/><path d="M5.4 8.1h13.2"/>',
+ grief:'<circle cx="8.6" cy="12" r="5"/><circle cx="15.4" cy="12" r="5" stroke-dasharray="2 2.6"/>',
+ sadness:'<path d="M12 3.2c4.1 5 6.2 8.6 6.2 11.6a6.2 6.2 0 11-12.4 0c0-3 2.1-6.6 6.2-11.6z"/>'};
+var SG_GIFT_SAY={
+ anxiety:'An alarm that will not switch off. The body stays braced for a threat that already '
+  +'passed, held tight through the chest and gut. Left running, it drains sleep and focus.',
+ overwhelm:'Too much arriving at once with no way to sort it. The nervous system floods instead '
+  +'of filtering, so everything reads as urgent together. Left running, small tasks start to feel large.',
+ burnout:'Output kept running past what the tank held. The drive to produce stays lit after the '
+  +'fuel underneath it is gone. Left running, rest stops actually restoring you.',
+ depression:'The system turns its own volume down. Drive, motion and feeling get throttled '
+  +'together, all at once. Left running, less of each day reaches you.',
+ grief:'A real loss the body has not finished moving through. What is gone keeps resurfacing '
+  +'because the charge around it is still held. Left running, it can flatten everything else beside it.',
+ sadness:'Something mattered, and it is gone. Held low and quiet, usually in the chest, it is the '
+  +'correct response and not a malfunction. Left unreleased, it settles into the body as weight.'};
+function sumGiftRows(items,sel){
+ return '<div class="sg-giftrows" role="group" aria-label="Pick one">'
+  +items.map(function(x,i){
+   var on=sel===i, seat=sumGiftSeat(x.k);
+   return '<button type="button" class="sg-giftrow'+(on?' on':'')+'" aria-pressed="'+(on?'true':'false')+'"'
+    +' data-sggift="'+i+'" style="--c:'+seatCol(seat)+'">'
+    +'<span class="sg-gift-tip" role="tooltip">'+esc(SG_GIFT_SAY[x.k]||'')+'</span>'
+    +'<span class="sg-gift-ic" aria-hidden="true"><svg viewBox="0 0 24 24">'+(SG_GIFT_GLYPH[x.k]||'')+'</svg></span>'
+    +'<span class="sg-gift-n">'+esc(x.n)+'</span>'
+    +'</button>';}).join('')
+  +'</div>';}
+function sumGiftLeft(){
+ var al=(typeof meterBudget==='function'&&CURP)?meterBudget(CURP).allow:null;
+ return (al&&al.inGift)?'<p class="ob-p">You have '+esc(al.say)+'.</p>':'';}
+function sumGiftSkip(){
+ if(!CURP)return;
+ if(!CURP.ui||typeof CURP.ui!=='object')CURP.ui={};
+ CURP.ui.giftSkipped=true;
+ if(typeof pSave==='function'&&!pSave()&&typeof status==='function')
+  status('This browser would not save. The starter set will offer again.','fail');
+ if(typeof sumRender==='function')sumRender();}
+function sumGiftCard(){
+ var res=SG_GIFT.res, nat=(SG_GIFT.pick!=null)?OB_GIFT_NATURES[SG_GIFT.pick]:null, nm=nat?nat.n:'';
+ var unpack='<span class="ob-dim">A pattern is one line you have not said before.</span>';
+ var head='<div class="sg-gift-ringwrap" id="sggiftring"><svg viewBox="0 0 200 200" id="sggiftringsvg">'
+  +'<defs><linearGradient id="sggiftgrad" gradientUnits="userSpaceOnUse" x1="100" y1="30" x2="100" y2="170">'
+  +'<stop offset="0%" stop-color="'+seatCol('Crown')+'"/><stop offset="16.667%" stop-color="'+seatCol('3rd Eye')+'"/>'
+  +'<stop offset="33.333%" stop-color="'+seatCol('Throat')+'"/><stop offset="50%" stop-color="'+seatCol('Heart')+'"/>'
+  +'<stop offset="66.667%" stop-color="'+seatCol('Solar')+'"/><stop offset="83.333%" stop-color="'+seatCol('Sacral')+'"/>'
+  +'<stop offset="100%" stop-color="'+seatCol('Root')+'"/></linearGradient></defs>'
+  +'<path class="sg-gift-halo" id="sggifthalo"></path><path class="sg-gift-wave" id="sggiftwave"></path></svg></div>';
+ if(res==='saving')return '<section class="sg-card sg-gift" data-grp="gift">'+head
+  +'<h3 class="sg-gift-h">Starting gift</h3>'
+  +'<p class="ob-p ob-dim" role="status">Checking '+esc(nm)+' with the server.</p></section>';
+ if(res==='issued')return '<section class="sg-card sg-gift" data-grp="gift">'+head
+  +'<h3 class="sg-gift-h">Your starter set is ready.</h3>'
+  +'<p class="ob-p">'+esc(nm)+', 100 patterns. Our server holds them for you. '+unpack+'</p></section>';
+ if(res==='unavailable')return '<section class="sg-card sg-gift" data-grp="gift">'+head
+  +'<h3 class="sg-gift-h">No set is ready for '+esc(nm)+' yet.</h3>'
+  +'<p class="ob-p">Your pick is saved. Nothing was added.</p>'+sumGiftLeft()+'</section>';
+ return '<section class="sg-card sg-gift" data-grp="gift">'+head
+  +'<h3 class="sg-gift-h">Starting gift</h3>'
+  +'<p class="ob-p">We want to thank you for starting. Pick one of these and we will look '
+  +'for a starter set made for it, 100 patterns. '+unpack+'</p>'
+  +sumGiftRows(OB_GIFT_NATURES,SG_GIFT.pick)
+  +(res==='unverified'?'<p class="ob-p" role="status">The server did not confirm '+esc(nm)
+   +', so nothing was added. Press it again to try again, or skip.</p>'+sumGiftLeft():'')
+  +'<div class="sg-gift-acts">'
+  +'<button type="button" class="btn" data-sg="giftskip">Skip</button>'
+  +'<button type="button" class="btn pri" data-sg="giftadd"'+(SG_GIFT.pick==null?' disabled':'')+'>Add to bank</button>'
+  +'</div></section>';}
+/* THE SERVER'S YES, and nothing short of it. r is authFunnelCheckpoint's
+   answer, read the same strict way onboard.js's obGiftOk/obGiftSaved did:
+   a half answer, an old Worker or a stub that says ok to everything reads
+   as no (see ui/onboard.js's own note on this contract for the history). */
+function sumGiftOk(r,k){
+ var s=r&&r.session, g=r&&r.gift;
+ return !!(r&&r.ok&&r.giftVerified===true&&s&&s.giftNatureId===k&&s.starterGiftId
+  &&g&&g.ready===true&&g.giftNatureId===k&&g.id===s.starterGiftId);}
+function sumGiftSaved(r,k){
+ var g=r&&r.gift;
+ return !!(r&&r.ok&&r.giftVerified===true&&r.session&&r.session.giftNatureId===k
+  &&(!g||(g.giftNatureId===k&&g.ready!==true)));}
+function sumGiftAsk(i){
+ var nat=OB_GIFT_NATURES[i]; if(!nat||SG_GIFT.res==='saving')return;
+ var ask=++SG_GIFT.ask;
+ SG_GIFT.pick=i; SG_GIFT.res='saving'; if(typeof sumRender==='function')sumRender();
+ var req;
+ try{ req=(typeof authFunnelCheckpoint==='function')?authFunnelCheckpoint({giftNatureId:nat.k}):null; }
+ catch(e){ req=null; }
+ Promise.resolve(req||{ok:false,status:0}).then(function(r){ return r; },function(){ return {ok:false,status:0}; })
+  .then(function(r){
+   var res=sumGiftOk(r,nat.k)?'issued':sumGiftSaved(r,nat.k)?'unavailable':'unverified';
+   if(res==='issued'&&CURP){
+    var gn=(typeof journeyGiftNature==='function')?journeyGiftNature(CURP,nat.k):{ok:false,why:'no writer'};
+    if(!gn.ok&&typeof status==='function')status(gn.why,'fail');
+    else if(gn.bound&&typeof pSave==='function')pSave();}
+   if(res==='unverified'&&typeof status==='function')
+    status('The server did not confirm your starter set. Nothing was added.','fail');
+   if(ask!==SG_GIFT.ask)return;
+   SG_GIFT.res=res;
+   if(typeof sumRender==='function')sumRender();});}
+/* THE RING IS A WAVE, PORTED WHOLE FROM THE APPROVED MOCK. 96 Kuramoto
+   oscillators, coupled toward a shared mean phase, drawn as one smooth
+   closed path rather than spokes; a pick drives the same physics into one
+   of six distinct, timed shapes (SG_SIG) for a few seconds and lets go, and
+   the ordinary coupling pulls it back to a round, still circle on its own.
+   The render host is looked up by id on every call rather than captured
+   once, and the frame loop stops itself the instant that host is no longer
+   in the document, however the card left (a decision made, a tab change,
+   Summary rebuilt under it), so a re-render never leaves a second loop
+   running on a detached node, the leak the repo has already hunted down
+   once (e4061fb3). */
+(function(){
+ var N=96, cx=100, cy=100, BASE_R=58;
+ function clamp01(x){return x<0?0:x>1?1:x;}
+ function smoothstep(a,b,x){x=clamp01((x-a)/(b-a)); return x*x*(3-2*x);}
+ function wrapA(a){return a-2*Math.PI*Math.floor((a+Math.PI)/(2*Math.PI));}
+ function angDist(a,b){return Math.abs(wrapA(a-b));}
+ function seatAngles(y0){
+  var s=Math.max(-1,Math.min(1,2*y0-1)), a1=Math.asin(s);
+  return [wrapA(a1), wrapA(Math.PI-a1)];}
+ var seatY={Crown:0,'3rd Eye':1/6,Throat:2/6,Heart:3/6,Solar:4/6,Sacral:5/6,Root:1};
+ var pts=null, bias=null, kloc=null, drives=null;
+ function reset(){
+  pts=[]; for(var i=0;i<N;i++)pts.push({baseA:(i/N)*Math.PI*2-Math.PI/2,
+   theta:Math.random()*Math.PI*2, omega:(Math.random()-0.5)*2.6});
+  bias=new Float32Array(N); kloc=new Float32Array(N); drives=[];}
+ function bandWeights(angles,hw){
+  var w=new Float32Array(N), side=new Float32Array(N);
+  for(var j=0;j<N;j++){
+   var best=Infinity, bi=0;
+   for(var k=0;k<angles.length;k++){var d=angDist(pts[j].baseA,angles[k]); if(d<best){best=d; bi=k;}}
+   side[j]=bi===0?1:-1;
+   w[j]=best>=hw?0:0.5*(1+Math.cos(Math.PI*best/hw));}
+  return {w:w,side:side};}
+ var SG_SIG={
+  anxiety:function(y0){
+   var bs=bandWeights(seatAngles(y0),0.45);
+   return {dur:1100, apply:function(t){
+    var e=smoothstep(0,90,t)*(1-smoothstep(650,1100,t)), f=7+3*Math.min(1,t/700);
+    for(var j=0;j<N;j++){var w=bs.w[j]; if(!w)continue;
+     bias[j]+=1.3*e*w*bs.side[j]*Math.sin(2*Math.PI*f*t/1000+j*0.3);
+     kloc[j]=Math.min(kloc[j],1-0.8*w);}
+    return 1;}};},
+  overwhelm:function(y0){
+   var base=seatAngles(y0)[0];
+   var sites=[base,base+2.1,base+3.6,base+0.9,base+5.0].map(function(a){return bandWeights([a],0.3);});
+   var onset=[0,150,300,450,600], sign=[1,-1,1,-1,1];
+   return {dur:2000, apply:function(t){
+    for(var s=0;s<sites.length;s++){
+     var lt=t-onset[s]; if(lt<0||lt>500)continue;
+     var e=smoothstep(0,80,lt)*(1-smoothstep(300,500,lt)), bw=sites[s];
+     for(var j=0;j<N;j++){var w=bw.w[j]; if(!w)continue;
+      bias[j]+=sign[s]*1.8*e*w;
+      kloc[j]=Math.min(kloc[j],1-0.65*w);}}
+    return 1-0.75*smoothstep(0,300,t)*(1-smoothstep(1300,2000,t));}};},
+  burnout:function(y0){
+   var bs=bandWeights(seatAngles(y0),0.7);
+   return {dur:2600, apply:function(t){
+    var grip=smoothstep(0,500,t)*(1-smoothstep(1700,2600,t)), sag=1-smoothstep(1700,2000,t);
+    for(var j=0;j<N;j++){var w=bs.w[j]; if(!w)continue;
+     bias[j]+=-0.6*w*sag;
+     kloc[j]=Math.min(kloc[j],1-0.92*w*grip);}
+    return 1;}};},
+  depression:function(y0){
+   var bs=bandWeights(seatAngles(y0),0.6);
+   return {dur:3000, apply:function(t){
+    var env=smoothstep(0,900,t)*(1-smoothstep(2100,3000,t));
+    for(var j=0;j<N;j++){var w=bs.w[j]; if(!w)continue;
+     bias[j]+=-3.3*env*w;
+     kloc[j]=Math.min(kloc[j],1-0.6*w*env);}
+    return 1+0.6*env;}};},
+  grief:function(y0){
+   var bs=bandWeights(seatAngles(y0),0.4);
+   return {dur:2400, apply:function(t){
+    var e1=smoothstep(0,300,t)*(1-smoothstep(700,1400,t));
+    var e2=t<1500?0:smoothstep(1500,1800,t)*(1-smoothstep(2000,2400,t));
+    for(var j=0;j<N;j++){var w=bs.w[j]; if(!w)continue;
+     bias[j]+=(2.4*e1+1.0*e2)*w;
+     kloc[j]=Math.min(kloc[j],1-0.75*w);}
+    return 1;}};},
+  sadness:function(y0){
+   var bs=bandWeights(seatAngles(y0),0.45);
+   return {dur:2600, apply:function(t){
+    var e=smoothstep(0,600,t)*(1-smoothstep(1900,2300,t))
+     -0.2*smoothstep(1900,2100,t)*(1-smoothstep(2300,2600,t));
+    var heave=1+0.2*Math.sin(2*Math.PI*0.4*t/1000);
+    for(var j=0;j<N;j++){var w=bs.w[j]; if(!w)continue;
+     bias[j]+=1.5*e*heave*w;
+     kloc[j]=Math.min(kloc[j],1-0.6*w);}
+    return 1;}};}};
+ var xs=new Array(N), ys=new Array(N), u=new Array(N), us=new Array(N);
+ function buildPath(wave,halo,R_,psi,driveAmp){
+  for(var i=0;i<N;i++)u[i]=Math.sin(pts[i].theta-psi);
+  for(var pass=0;pass<2;pass++){
+   for(var i=0;i<N;i++)us[i]=0.25*u[(i-1+N)%N]+0.5*u[i]+0.25*u[(i+1)%N];
+   var tmp=u; u=us; us=tmp;}
+  var A=7*Math.max(Math.pow(1-R_,1.5), driveAmp||0);
+  for(var i=0;i<N;i++){
+   var r=BASE_R+A*u[i];
+   xs[i]=cx+Math.cos(pts[i].baseA)*r; ys[i]=cy+Math.sin(pts[i].baseA)*r;}
+  var d='';
+  for(var i=0;i<N;i++){
+   var i0=(i-1+N)%N, i1=(i+1)%N, i2=(i+2)%N;
+   var c1x=xs[i]+(xs[i1]-xs[i0])/6, c1y=ys[i]+(ys[i1]-ys[i0])/6;
+   var c2x=xs[i1]-(xs[i2]-xs[i])/6, c2y=ys[i1]-(ys[i2]-ys[i])/6;
+   d+=(i===0?'M'+xs[0].toFixed(1)+','+ys[0].toFixed(1):'')
+    +'C'+c1x.toFixed(1)+','+c1y.toFixed(1)+' '+c2x.toFixed(1)+','+c2y.toFixed(1)+' '+xs[i1].toFixed(1)+','+ys[i1].toFixed(1)+' ';}
+  d+='Z'; wave.setAttribute('d',d); halo.setAttribute('d',d);}
+ var running=false, driveHoldUntil=0;
+ function frame(ts){
+  var host=document.getElementById('sggiftring');
+  if(!host||!document.body.contains(host)){ running=false; return; }
+  var wave=document.getElementById('sggiftwave'), halo=document.getElementById('sggifthalo');
+  if(!wave||!halo){ running=false; return; }
+  var sx=0,sy=0;
+  for(var i=0;i<N;i++){sx+=Math.cos(pts[i].theta); sy+=Math.sin(pts[i].theta);}
+  var R_=Math.sqrt(sx*sx+sy*sy)/N, psi=Math.atan2(sy,sx);
+  var K=9, holding=ts<driveHoldUntil;
+  bias.fill(0); kloc.fill(1); var kgMul=1;
+  for(var di=drives.length-1;di>=0;di--){
+   var dr=drives[di], elapsed=ts-dr.t0;
+   if(elapsed>dr.dur){drives.splice(di,1); continue;}
+   kgMul*=dr.apply(elapsed);}
+  var k2=holding?K:K*0.9;
+  for(var j=0;j<N;j++)pts[j].theta+=(pts[j].omega+bias[j]+k2*kgMul*kloc[j]*R_*Math.sin(psi-pts[j].theta))*0.033*2.2;
+  var sinceHold=ts-driveHoldUntil, driveAmp=sinceHold<0?1:Math.max(0,1-sinceHold/600);
+  buildPath(wave,halo,R_,psi,driveAmp);
+  requestAnimationFrame(frame);}
+ function ensureRunning(){
+  if(running)return; var host=document.getElementById('sggiftring'); if(!host)return;
+  if(!pts)reset();
+  running=true; requestAnimationFrame(frame);}
+ /* A PICK DISTURBS ITS OWN SEAT, in its own signature's shape, and nothing
+    else is said. seat is the nature's own lean (sumGiftSeat); a second pick
+    clears whatever drive was running rather than blending into it. */
+ window.sumGiftKick=function(natureKey){
+  if(!pts)reset();
+  var seat=sumGiftSeat(natureKey), y0=seatY[seat]; if(y0==null)return;
+  var make=SG_SIG[natureKey]; if(!make)return;
+  var d=make(y0); d.t0=performance.now();
+  drives.length=0; drives.push(d);
+  driveHoldUntil=d.t0+d.dur+800;
+  ensureRunning();};
+ /* called after every render that can hold the gift card, not only the
+    first: the DOM node is rebuilt whole each time (sumRender), but the
+    oscillator state must not be, or picking a tile would reset the ring
+    to full chaos instead of kicking an already settled one. Only the
+    first call, when pts is still unset, seeds the phases. */
+ window.sumGiftRingBoot=function(){ if(!pts)reset(); ensureRunning(); };
+})();
 /* the first drivers card. Unread or read, it is only what a birth and a name
    say, so it is real or it is absent. */
 function sumDrivers(B,r){
@@ -53883,6 +54256,24 @@ function sumWire(){
  h.addEventListener('toggle',function(ev){var d=ev.target;
   if(d&&d.getAttribute&&d.getAttribute('data-fold'))SUM_OPEN[d.getAttribute('data-fold')]=d.open;},true);
  h.addEventListener('click',function(ev){
+  var gc=ev.target.closest?ev.target.closest('[data-sggift]'):null;
+  if(gc){
+   /* ONE PATTERN, NOT SEVERAL: picking a tile only selects it, the same
+      radio behaviour the approved mock proved, so a second tap on a
+      different tile replaces the first rather than adding to it. The ask
+      itself waits for Add to bank, which matches the mock's two-step
+      shape and leaves the tile tap free to kick the ring right away. */
+   var i=+gc.getAttribute('data-sggift');
+   if(SG_GIFT.res!=null)return; /* a question already sent is not reopened by a stray tap */
+   SG_GIFT.pick=i; if(typeof sumRender==='function')sumRender();
+   var nat=OB_GIFT_NATURES[i];
+   if(nat&&typeof sumGiftKick==='function')sumGiftKick(nat.k);
+   return; }
+  var sg=ev.target.closest?ev.target.closest('[data-sg]'):null;
+  if(sg){ var sk=sg.getAttribute('data-sg');
+   if(sk==='giftskip'){ sumGiftSkip(); return; }
+   if(sk==='giftadd'){ if(SG_GIFT.pick!=null)sumGiftAsk(SG_GIFT.pick); return; }
+   return; }
   var b=ev.target.closest?ev.target.closest('[data-sout],[data-sp],[data-num],[data-arch],[data-dom],[data-seat],[data-mask],[data-gl],[data-igspan]'):null;
   if(!b)return;
   /* the integrity chart's own span. It repaints the surface rather than the
@@ -80956,13 +81347,14 @@ var OB={open:false, step:0, replay:false,
     and never on a replay from Settings. door: which door the first release
     went through, which decides what its plan is read from. made: what the
     first release made, read off the claim packet for the end card. */
- rec:false, door:'onboarding', made:null, draftT:null, failSaid:false,
- /* THE GIFT CARD, after the end card (obGiftCard). giftOn: it is the card on
-    screen. giftPick: the chosen nature's position in OB_GIFT_NATURES, kept
-    after a refusal so trying again is one press. giftRes: null before a
-    press, then saving, issued, unavailable or unverified. giftAsk: which
-    press an answer belongs to, so a late answer never redraws a newer one. */
- giftOn:false, giftPick:null, giftRes:null, giftAsk:0};
+ rec:false, door:'onboarding', made:null, draftT:null, failSaid:false};
+ /* THE STARTER GIFT IS NOT PICKED HERE ANY MORE. Round SQ, 1 November: the
+    owner's ruling is that a person has effectively signed up once they have
+    landed on Summary, so the pick moved there (sumGift, ui/summary.js),
+    shown the first time the gift is still active and nothing has been
+    decided yet. What was OB.giftOn/giftPick/giftRes/giftAsk is now SG_GIFT
+    in summary.js, the same shape, read by the same name a reader of this
+    file might still look for it under. */
 
 /* ============================================================
    THE SKIN, ROUND QG. "Redesign this in our field compass or body style.
@@ -81493,7 +81885,6 @@ function obOpen(replay){
  OB.text=''; OB.commit=null; OB.corr=''; OB.fixes=[];
  OB.read=null; OB.fixReads=[]; OB.ans={}; OB.more={}; OB.plan=null;
  OB.door='onboarding'; OB.made=null; OB.failSaid=false;
- OB.giftOn=false; OB.giftPick=null; OB.giftRes=null; OB.giftAsk++;
  if(OB.draftT){ clearTimeout(OB.draftT); OB.draftT=null; }
  /* F13: a first run resumes where its walk stands, or starts its record */
  obBegin(!!replay);
@@ -82005,7 +82396,7 @@ function obRender(){
   out=obMirrorCard();
  }
  else if(s===OB_END){
-  out=OB.giftOn?obGiftCard():obEndCard();
+  out=obEndCard();
  }
  else {
   out=obBridgeCard();
@@ -82015,18 +82406,6 @@ function obRender(){
  var sw=obSwap(h,out,{s:s, shown:OB.shown, attr:'data-step', rail:obRail});
  var moved=sw.moved, arrive=sw.arrive, card=sw.card;
  OB.shown=s;
- /* THE GIFT CARD'S OWN TOP BAR, round SP. His words: "Get rid of the text
-    that says every step done. Get rid of the text that says this is a
-    crisis." Both are the shared stage's, built once in obStage and worn by
-    every step (the crisis door is a safety feature he ruled on 16 October,
-    "Is this a crisis? Hit that button," so it is hidden here and nowhere
-    else: every other step still carries it). Toggled at render time rather
-    than carved out of obStage, since obStage runs once per open and the
-    gift state is not known that early. */
- var crx=h.querySelector('.obx-crx'), stp=h.querySelector('.obx-step');
- var onGift=!!(OB.giftOn&&s===OB_END);
- if(crx)crx.hidden=onGift;
- if(stp&&onGift)stp.innerHTML='';
  var ta=document.getElementById('obtext');
  var obMask=function(){var m=document.getElementById('obmask'); if(!m||!ta)return;
   var runs=maskedRuns(ta.value); m.hidden=!runs.length; m.textContent=maskedSay(runs);};
@@ -82552,179 +82931,30 @@ function obEndCard(){
   +obMadeMarks(m)
   +(means?'<p class="ob-p ob-dim">'+esc(means)+'</p>':'')
   +gift,
-  /* Continue, and not Go in: the gift card follows this one (obGiftCard),
-     so this press no longer leaves the sheet. Go in moved to the card that
-     does. */
-  '<button type="button" class="btn pri" data-ob="endgift">Continue</button>');}
+  /* Go in, straight off this card. The starter set is no longer picked here:
+     round SQ, 1 November, moved it to the page a new person lands on
+     (sumGift, ui/summary.js), after Summary, which is when the owner ruled
+     a person has effectively signed up. */
+  '<button type="button" class="btn pri" data-ob="endin">Go in</button>');}
 
 /* ============================================================
-   THE STARTER SET, CHOSEN AFTER THE SUMMARY. The owner, 31 October: "The
-   other gift is being able to select the free patterns as your starter.
-   That needs to be in there after your summary when you onboard. Like once
-   you sign up." The summary is the end card above, Here is what you made,
-   the one card that sums up the first run, and it sits behind the door
-   (ui/login.js) for everybody, so the card after it is after the sign up
-   for anybody who made an account. Guests meet it too: the first visit's
-   session is what the server joins to an account at sign in
-   (authFunnelAttach), so a choice made as a guest is not lost by signing up
-   later.
-
-   PORTED FROM p1/gift-nature-choice-20261011, which put this question on
-   Ask, straight after the twelve starts, and sent both answers in one
-   checkpoint. Two things changed on the way, and each was a defect there.
-
-   THE LIVE WORKER REFUSES THE FIELD. Its validateCheckpointPatch names four
-   keys and answers anything else with a 400 (Reboot-OS atuned/server/src/
-   funnel.js on main); the branch that teaches it giftNatureId is unmerged.
-   Sent with the ground, the ground was refused with it, and the ground is the
-   one checkpoint the live server stores today. So the start goes alone, at
-   the pick, as before, and this goes in a checkpoint of its own.
-
-   A GIFT ID IS NOT A CONFIRMATION. The branch read session.starterGiftId as
-   the server's yes. The live Worker sets that for a ground pick alone
-   (migration 0015), so it would have recorded a set of a nature nobody
-   issued. The yes is now the contract that branch's Worker states, "a gift
-   ID alone is not a usable bank": giftVerified, a gift that is ready, and the
-   chosen nature on both the session and the gift (obGiftOk).
-
-   WHAT IS NEVER CLAIMED. Nothing is written to the record until that yes,
-   and a refusal is said, with the pick still pressed, so trying again is one
-   press: a control never claims success before it has it. The 100 free
-   patterns are planAllowance's and stand either way, so no line here says a
-   person has no gift. And nothing in this build reads the set's 100 pattern
-   ids into a release yet, so the yes says the server holds the set and stops
-   there.
-   ============================================================ */
-/* THE CARD CHANGES AND THE STATION DOES NOT. obSwap reads a redraw on the
-   same step as an answer pressed in place, the mirror's case, so it moves no
-   focus and keeps the scroll. Between the end card and this one the whole
-   card is new, and the button that was pressed is gone with the old one, so
-   focus would fall to the body. It goes to the new heading, at the top. */
-/* THE SIX RING GLYPHS, round SP, the owner's own words: "those should be
-   icons with their symbols next to them." 24x24, stroke only, no fill, on
-   the same rule the Field's own icon-badges keep and CLAUDE.md names: icons
-   are ring, not fill. Not tinted to a seat, on purpose: OB_GIFT_NATURES'
-   own standing comment says a feeling is not one place in the body and a
-   seat tint would be a claim this sheet has not earned, so these read by
-   shape alone, in one ink, the way the row's own selected state (below)
-   carries colour instead. */
-var OB_GIFT_GLYPH={
- anxiety:'<path d="M3 12h3.1l1.7-4.6 3 9.4 3-9.4 1.7 4.6H21"/>',
- overwhelm:'<circle cx="12" cy="17.3" r="1.25"/><path d="M6.6 13.8a5.5 5.5 0 0110.8 0"/>'
-  +'<path d="M3.3 16.6a9 9 0 0117.4 0"/>',
- burnout:'<path d="M17 6.3A8 8 0 1112 4"/><circle cx="12" cy="4" r="1.2"/>',
- depression:'<circle cx="12" cy="13.2" r="7"/><path d="M5.4 8.1h13.2"/>',
- grief:'<circle cx="8.6" cy="12" r="5"/><circle cx="15.4" cy="12" r="5" stroke-dasharray="2 2.6"/>',
- sadness:'<path d="M12 3.2c4.1 5 6.2 8.6 6.2 11.6a6.2 6.2 0 11-12.4 0c0-3 2.1-6.6 6.2-11.6z"/>'};
-/* THE SIX, STACKED, round SP: "there's six, so it should be stacked." One
-   row each, the icon at the left and a mirrored ring at the right, so a row
-   reads the same as a Compass rail entry: a mark, a name, a value. sel is
-   the picked index, the single-pick contract obGiftAsk below still keeps
-   (see its own note on multi-select). */
-function obGiftRows(items,sel){
- return '<div class="ob-giftrows" role="group" aria-label="Pick one">'
-  +items.map(function(x,i){
-   var on=sel===i;
-   return '<button type="button" class="ob-giftrow'+(on?' on':'')+'" aria-pressed="'+(on?'true':'false')+'"'
-    +' data-obgift="'+i+'" style="--ci:'+i+'">'
-    +'<span class="ob-gift-ic" aria-hidden="true"><svg viewBox="0 0 24 24">'+(OB_GIFT_GLYPH[x.k]||'')+'</svg></span>'
-    +'<span class="ob-gift-n">'+esc(x.n)+'</span>'
-    +'<span class="ob-gift-ct">100 patterns</span>'
-    +'<span class="ob-gift-sel" aria-hidden="true"></span>'
-    +'</button>';}).join('')
-  +'</div>';}
-function obGiftFocus(){
- var h=document.getElementById('ob'), c=h&&h.querySelector('.ob-card');
- var sc=c&&c.querySelector('.ob-scroll'); if(sc)sc.scrollTop=0;
- var hd=c&&c.querySelector('.ob-h'); if(hd)hd.focus({preventScroll:true});}
-function obGiftLeft(){
- var al=(typeof meterBudget==='function'&&CURP)?meterBudget(CURP).allow:null;
- /* the allowance's own sentence, the one obGiftSay and the end card print,
-    so the gift has one wording */
- return (al&&al.inGift)?'<p class="ob-p">You have '+esc(al.say)+'.</p>':'';}
-/* ROUND SP, THE REDESIGN. His words: "The design for the gift. Is a D,
-   Emmy." Pulled from the Field, the Body and the Compass, mostly the Field.
-   The heading is "Starting gift" now, said once, carried on every state of
-   this card so the eyebrow and the heading never say the same thing twice.
-   The body drops "journey": the standing voice rule (check.py's own SOFT
-   list) refuses it as soft wellness language, so his sense is kept and the
-   word is not. "Pattern" and "bank" are unpacked in the same breath they are
-   said, on the rule that a term never stands alone.
-
-   STILL ONE PICK, NOT SIX, on purpose, named here rather than silently
-   decided. His copy said "select the ones you want", which reads as more
-   than one. Checked before building: the server's own contract
-   (authFunnelCheckpoint, reboot-os funnel.js validateCheckpointPatch) takes
-   one giftNatureId, not a list, and of the six only Anxiety has a built
-   pattern bank behind it today (the 15 October gift bank check). Turning
-   this into a real multi-pick is a backend and content project, not a
-   render change, so the row list below stays a single pick, the same
-   obGiftAsk contract as before, and the copy says "Pick one" rather than
-   promise a capability that is not there yet. */
-function obGiftCard(){
- var res=OB.giftRes, nat=(OB.giftPick!=null)?OB_GIFT_NATURES[OB.giftPick]:null, nm=nat?nat.n:'';
- var unpack='<span class="ob-dim">A pattern is one line you have not said before.</span>';
- if(res==='saving')return obCard('Gift','Starting gift',
-  '<p class="ob-p ob-dim" role="status">Checking '+esc(nm)+' with the server.</p>','');
- if(res==='issued')return obCard('Gift','Your starter set is ready.',
-  '<p class="ob-p">'+esc(nm)+', 100 patterns. Our server holds them for you. '+unpack+'</p>',
-  '<button type="button" class="btn pri" data-ob="endin">Go in</button>');
- if(res==='unavailable')return obCard('Gift','No set is ready for '+nm+' yet.',
-  '<p class="ob-p">Your pick is saved. Nothing was added.</p>'+obGiftLeft(),
-  '<button type="button" class="btn pri" data-ob="endin">Go in</button>');
- /* the question, and after a refusal the same question with the refusal said
-    under it and the pick still pressed */
- return obCard('Gift','Starting gift',
-  '<p class="ob-p">We want to thank you for starting. Pick one of these and we will look '
-  +'for a starter set made for it, 100 patterns. '+unpack+'</p>'
-  +'<p class="ob-p ob-dim">It can be different from what brought you here. Your pick goes to our '
-  +'server, and the set it finds goes into your bank, the store everything you release draws from.</p>'
-  +obGiftRows(OB_GIFT_NATURES,OB.giftPick)
-  +(res==='unverified'?'<p class="ob-p" role="status">The server did not confirm '+esc(nm)
-   +', so nothing was added. Press it again to try again, or skip.</p>'+obGiftLeft():''),
-  '<button type="button" class="btn" data-ob="endin">Skip</button>'
-  +'<button type="button" class="btn" data-ob="back">Back</button>');}
-/* THE SERVER'S YES, and nothing short of it. r is authFunnelCheckpoint's
-   answer. Every part is the Worker's own contract for a usable set
-   (validateStarterGiftSnapshot, on the branch named above), read here so a
-   half answer, an old Worker or a stub that says ok to everything reads as
-   no. */
-function obGiftOk(r,k){
- var s=r&&r.session, g=r&&r.gift;
- return !!(r&&r.ok&&r.giftVerified===true&&s&&s.giftNatureId===k&&s.starterGiftId
-  &&g&&g.ready===true&&g.giftNatureId===k&&g.id===s.starterGiftId);}
-/* saved, and no set to give: the server took the pick, read its gift back
-   and found none ready for that nature. Read the same strict way: a session
-   that does not carry the pick did not save it, and a gift of another nature
-   is the server disagreeing with itself. The first cut read only the session,
-   so a session saying grief beside a ready set of sadness was said as "No set
-   is ready for Grief yet", a sentence about a set the answer never
-   described. tests/onboarding2.js caught it on that exact answer. */
-function obGiftSaved(r,k){
- var g=r&&r.gift;
- return !!(r&&r.ok&&r.giftVerified===true&&r.session&&r.session.giftNatureId===k
-  &&(!g||(g.giftNatureId===k&&g.ready!==true)));}
-function obGiftAsk(i){
- var nat=OB_GIFT_NATURES[i]; if(!nat||OB.giftRes==='saving')return;
- var ask=++OB.giftAsk;
- OB.giftPick=i; OB.giftRes='saving'; obRender();
- var req;
- try{ req=(typeof authFunnelCheckpoint==='function')?authFunnelCheckpoint({giftNatureId:nat.k}):null; }
- catch(e){ req=null; }
- Promise.resolve(req||{ok:false,status:0}).then(function(r){ return r; },function(){ return {ok:false,status:0}; })
-  .then(function(r){
-   /* a yes is written even when the sheet has closed under it: the server
-      holds the set either way, and the record should say so. Only the
-      drawing is skipped. */
-   var res=obGiftOk(r,nat.k)?'issued':obGiftSaved(r,nat.k)?'unavailable':'unverified';
-   if(res==='issued'&&OB.rec&&CURP){
-    var gn=journeyGiftNature(CURP,nat.k);
-    if(!gn.ok)obJyFail(gn.why); else if(gn.bound)obSave();}
-   if(res==='unverified'&&typeof status==='function')
-    status('The server did not confirm your starter set. Nothing was added.','fail');
-   if(ask!==OB.giftAsk)return;
-   OB.giftRes=res;
-   if(OB.open&&OB.giftOn&&OB.step===OB_END)obRender();});}
+   THE STARTER SET MOVED TO THE REAL SUMMARY, round SQ, 1 November. This
+   whole card used to live here, at a second end-of-onboarding station,
+   against the owner's own 31 October words: "That needs to be in there
+   after your summary when you onboard. Like once you sign up." The build
+   that landed here read "your summary" as the end card above, Here is what
+   you made, since that is the one card in this sheet that sums up the
+   first run. Said plainly rather than quietly fixed: that was the wrong
+   summary. Told the storyboard on 1 November, the owner named the real one,
+   the Summary tab a first-time arrival lands on (tabLandFirst, ui/panels.js)
+   once onboarding has closed, and his reason: a person who has reached it
+   has effectively signed up. obGiftCard, obGiftRows, OB_GIFT_GLYPH,
+   obGiftAsk, obGiftOk and obGiftSaved now live in ui/summary.js, shown by
+   sumGift() in place of its old one-line notice, for as long as the free
+   gift is active and nothing has been picked or skipped yet. The server
+   contract (authFunnelCheckpoint, one giftNatureId, the live Worker's own
+   400 on anything else, a gift ID alone is not a confirmation) is unchanged,
+   only where the question is asked. ============================================================ */
 
 /* ---- one listener for the whole sheet ---- */
 addEventListener('click',function(e){
@@ -82741,8 +82971,6 @@ addEventListener('click',function(e){
    var gi=journeyGiftIssue(CURP,'app'); if(!gi.ok)obJyFail(gi.why); }
   OB.step=2; obRender(); return;
  }
- var gc=t.closest?t.closest('[data-obgift]'):null;
- if(gc){ obGiftAsk(+gc.getAttribute('data-obgift')); return; }
  var fe=t.closest?t.closest('[data-obfeel]'):null;
  if(fe){ OB.feel=+fe.getAttribute('data-obfeel'); OB.step=4; obRender(); return; }
  var pl=t.closest?t.closest('[data-obplace]'):null;
@@ -82757,17 +82985,7 @@ addEventListener('click',function(e){
  var b=t.closest?t.closest('[data-ob]'):null; if(!b)return;
  var k=b.getAttribute('data-ob');
  if(k==='next'){ OB.step++; obRender(); return; }
- /* the gift card is a second card on the end station, so Back from it is
-    the end card, never the station before it */
- if(k==='back'&&OB.giftOn){ OB.giftOn=false; obRender(); obGiftFocus(); return; }
  if(k==='back'){ OB.step=Math.max(0,OB.step-1); obRender(); return; }
- if(k==='endgift'){
-  /* a nature already on the record, after a reload, is shown as the yes it
-     was and never asked again: the server refuses a second one by name */
-  var had=(typeof journeyGiftRead==='function'&&CURP)?journeyGiftRead(CURP).giftNatureId:null;
-  OB.giftOn=true;
-  if(had){ OB.giftPick=OB_GIFT_NATURES.map(function(x){return x.k;}).indexOf(had); OB.giftRes='issued'; }
-  obRender(); obGiftFocus(); return; }
  if(k==='storydone'){ obStoryDone(); return; }
  if(k==='storyskip'){
   /* a story read on an earlier Done and then withdrawn is not left pending */
@@ -82824,9 +83042,10 @@ addEventListener('click',function(e){
     send the new name from here, with tests/copy.js's table of sends moved in
     the same change.
 
-    GO IN SITS ON THE GIFT CARD NOW, 31 October, as Go in or Skip, because
-    the gift card follows the end card (obGiftCard). The mark is unchanged and
-    is still sent once, on the press that leaves the sheet. */
+    GO IN SITS ON THE END CARD AGAIN, round SQ, 1 November: the gift card
+    that used to follow it moved to the real Summary page (ui/summary.js),
+    so this press is once more the one that leaves the sheet. The mark is
+    unchanged and is still sent once, here. */
  if(k==='endin'){
   if(typeof authFunnelCheckpoint==='function')authFunnelCheckpoint({tutorialCompleted:true});
   obClose('end'); return; }
@@ -85466,5 +85685,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005632495"></div>
+<div id="eof" hidden data-len="005645832"></div>
 </body></html>

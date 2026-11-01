@@ -1177,10 +1177,14 @@ console.log('\n=== the gift card asks the server, and writes only on a whole yes
   journeyGiftIssue(CURP,'app'); OB.rec=true;
   return {ok:s&&s.ok, nat:journeyGiftRead(CURP).giftNatureId};});
  ok(set.ok&&set.nat===null,'a first visit against the stub, and an issued gift with no nature: '+JSON.stringify(set));
+ /* THE ASK MOVED TO SUMMARY, round SQ, 1 November: obGiftAsk is now
+    sumGiftAsk and OB.giftRes is SG_GIFT.res, ported whole (ui/summary.js's
+    own note on the move). The contract under test, the stub server and
+    every case below are unchanged; only the names and the sheet are. */
  const ask=async(i)=>page.evaluate(async i=>{
-  OB.giftRes=null; obGiftAsk(i);
-  const t0=Date.now(); while(OB.giftRes==='saving'&&Date.now()-t0<8000)await new Promise(r=>setTimeout(r,25));
-  return {res:OB.giftRes, nat:(CURP.journey&&CURP.journey.gift&&CURP.journey.gift.giftNatureId)||null,
+  SG_GIFT.res=null; sumGiftAsk(i);
+  const t0=Date.now(); while(SG_GIFT.res==='saving'&&Date.now()-t0<8000)await new Promise(r=>setTimeout(r,25));
+  return {res:SG_GIFT.res, nat:(CURP.journey&&CURP.journey.gift&&CURP.journey.gift.giftNatureId)||null,
    status:(document.getElementById('status')||{}).textContent||''};},i);
  const cases=[
   ['old','the live Worker, which refuses the field with a 400','unverified'],

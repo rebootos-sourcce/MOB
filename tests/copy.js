@@ -18,8 +18,9 @@
      the person picks a topic         that topic's key, one of twelve
                                       (ui/onboard.js, authFunnelCheckpoint)
      the walk through is finished     that it was finished
-     the gift card after the end      the starter set picked, one of six words
-                                      (ui/onboard.js obGiftAsk, 31 October)
+     the starter gift, on Summary     the starter set picked, one of six words
+                                      (ui/summary.js sumGiftAsk, moved from
+                                      onboard.js's obGiftAsk round SQ, 1 Nov)
      the first release ends           a random code for that release
      an answer to What changed        a random code for the answer, not the answer
      sign in                          the email, the password, and the first

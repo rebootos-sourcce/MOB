@@ -103,13 +103,14 @@ var OB={open:false, step:0, replay:false,
     and never on a replay from Settings. door: which door the first release
     went through, which decides what its plan is read from. made: what the
     first release made, read off the claim packet for the end card. */
- rec:false, door:'onboarding', made:null, draftT:null, failSaid:false,
- /* THE GIFT CARD, after the end card (obGiftCard). giftOn: it is the card on
-    screen. giftPick: the chosen nature's position in OB_GIFT_NATURES, kept
-    after a refusal so trying again is one press. giftRes: null before a
-    press, then saving, issued, unavailable or unverified. giftAsk: which
-    press an answer belongs to, so a late answer never redraws a newer one. */
- giftOn:false, giftPick:null, giftRes:null, giftAsk:0};
+ rec:false, door:'onboarding', made:null, draftT:null, failSaid:false};
+ /* THE STARTER GIFT IS NOT PICKED HERE ANY MORE. Round SQ, 1 November: the
+    owner's ruling is that a person has effectively signed up once they have
+    landed on Summary, so the pick moved there (sumGift, ui/summary.js),
+    shown the first time the gift is still active and nothing has been
+    decided yet. What was OB.giftOn/giftPick/giftRes/giftAsk is now SG_GIFT
+    in summary.js, the same shape, read by the same name a reader of this
+    file might still look for it under. */
 
 /* ============================================================
    THE SKIN, ROUND QG. "Redesign this in our field compass or body style.
@@ -640,7 +641,6 @@ function obOpen(replay){
  OB.text=''; OB.commit=null; OB.corr=''; OB.fixes=[];
  OB.read=null; OB.fixReads=[]; OB.ans={}; OB.more={}; OB.plan=null;
  OB.door='onboarding'; OB.made=null; OB.failSaid=false;
- OB.giftOn=false; OB.giftPick=null; OB.giftRes=null; OB.giftAsk++;
  if(OB.draftT){ clearTimeout(OB.draftT); OB.draftT=null; }
  /* F13: a first run resumes where its walk stands, or starts its record */
  obBegin(!!replay);
@@ -1152,7 +1152,7 @@ function obRender(){
   out=obMirrorCard();
  }
  else if(s===OB_END){
-  out=OB.giftOn?obGiftCard():obEndCard();
+  out=obEndCard();
  }
  else {
   out=obBridgeCard();
@@ -1162,18 +1162,6 @@ function obRender(){
  var sw=obSwap(h,out,{s:s, shown:OB.shown, attr:'data-step', rail:obRail});
  var moved=sw.moved, arrive=sw.arrive, card=sw.card;
  OB.shown=s;
- /* THE GIFT CARD'S OWN TOP BAR, round SP. His words: "Get rid of the text
-    that says every step done. Get rid of the text that says this is a
-    crisis." Both are the shared stage's, built once in obStage and worn by
-    every step (the crisis door is a safety feature he ruled on 16 October,
-    "Is this a crisis? Hit that button," so it is hidden here and nowhere
-    else: every other step still carries it). Toggled at render time rather
-    than carved out of obStage, since obStage runs once per open and the
-    gift state is not known that early. */
- var crx=h.querySelector('.obx-crx'), stp=h.querySelector('.obx-step');
- var onGift=!!(OB.giftOn&&s===OB_END);
- if(crx)crx.hidden=onGift;
- if(stp&&onGift)stp.innerHTML='';
  var ta=document.getElementById('obtext');
  var obMask=function(){var m=document.getElementById('obmask'); if(!m||!ta)return;
   var runs=maskedRuns(ta.value); m.hidden=!runs.length; m.textContent=maskedSay(runs);};
@@ -1699,179 +1687,30 @@ function obEndCard(){
   +obMadeMarks(m)
   +(means?'<p class="ob-p ob-dim">'+esc(means)+'</p>':'')
   +gift,
-  /* Continue, and not Go in: the gift card follows this one (obGiftCard),
-     so this press no longer leaves the sheet. Go in moved to the card that
-     does. */
-  '<button type="button" class="btn pri" data-ob="endgift">Continue</button>');}
+  /* Go in, straight off this card. The starter set is no longer picked here:
+     round SQ, 1 November, moved it to the page a new person lands on
+     (sumGift, ui/summary.js), after Summary, which is when the owner ruled
+     a person has effectively signed up. */
+  '<button type="button" class="btn pri" data-ob="endin">Go in</button>');}
 
 /* ============================================================
-   THE STARTER SET, CHOSEN AFTER THE SUMMARY. The owner, 31 October: "The
-   other gift is being able to select the free patterns as your starter.
-   That needs to be in there after your summary when you onboard. Like once
-   you sign up." The summary is the end card above, Here is what you made,
-   the one card that sums up the first run, and it sits behind the door
-   (ui/login.js) for everybody, so the card after it is after the sign up
-   for anybody who made an account. Guests meet it too: the first visit's
-   session is what the server joins to an account at sign in
-   (authFunnelAttach), so a choice made as a guest is not lost by signing up
-   later.
-
-   PORTED FROM p1/gift-nature-choice-20261011, which put this question on
-   Ask, straight after the twelve starts, and sent both answers in one
-   checkpoint. Two things changed on the way, and each was a defect there.
-
-   THE LIVE WORKER REFUSES THE FIELD. Its validateCheckpointPatch names four
-   keys and answers anything else with a 400 (Reboot-OS atuned/server/src/
-   funnel.js on main); the branch that teaches it giftNatureId is unmerged.
-   Sent with the ground, the ground was refused with it, and the ground is the
-   one checkpoint the live server stores today. So the start goes alone, at
-   the pick, as before, and this goes in a checkpoint of its own.
-
-   A GIFT ID IS NOT A CONFIRMATION. The branch read session.starterGiftId as
-   the server's yes. The live Worker sets that for a ground pick alone
-   (migration 0015), so it would have recorded a set of a nature nobody
-   issued. The yes is now the contract that branch's Worker states, "a gift
-   ID alone is not a usable bank": giftVerified, a gift that is ready, and the
-   chosen nature on both the session and the gift (obGiftOk).
-
-   WHAT IS NEVER CLAIMED. Nothing is written to the record until that yes,
-   and a refusal is said, with the pick still pressed, so trying again is one
-   press: a control never claims success before it has it. The 100 free
-   patterns are planAllowance's and stand either way, so no line here says a
-   person has no gift. And nothing in this build reads the set's 100 pattern
-   ids into a release yet, so the yes says the server holds the set and stops
-   there.
-   ============================================================ */
-/* THE CARD CHANGES AND THE STATION DOES NOT. obSwap reads a redraw on the
-   same step as an answer pressed in place, the mirror's case, so it moves no
-   focus and keeps the scroll. Between the end card and this one the whole
-   card is new, and the button that was pressed is gone with the old one, so
-   focus would fall to the body. It goes to the new heading, at the top. */
-/* THE SIX RING GLYPHS, round SP, the owner's own words: "those should be
-   icons with their symbols next to them." 24x24, stroke only, no fill, on
-   the same rule the Field's own icon-badges keep and CLAUDE.md names: icons
-   are ring, not fill. Not tinted to a seat, on purpose: OB_GIFT_NATURES'
-   own standing comment says a feeling is not one place in the body and a
-   seat tint would be a claim this sheet has not earned, so these read by
-   shape alone, in one ink, the way the row's own selected state (below)
-   carries colour instead. */
-var OB_GIFT_GLYPH={
- anxiety:'<path d="M3 12h3.1l1.7-4.6 3 9.4 3-9.4 1.7 4.6H21"/>',
- overwhelm:'<circle cx="12" cy="17.3" r="1.25"/><path d="M6.6 13.8a5.5 5.5 0 0110.8 0"/>'
-  +'<path d="M3.3 16.6a9 9 0 0117.4 0"/>',
- burnout:'<path d="M17 6.3A8 8 0 1112 4"/><circle cx="12" cy="4" r="1.2"/>',
- depression:'<circle cx="12" cy="13.2" r="7"/><path d="M5.4 8.1h13.2"/>',
- grief:'<circle cx="8.6" cy="12" r="5"/><circle cx="15.4" cy="12" r="5" stroke-dasharray="2 2.6"/>',
- sadness:'<path d="M12 3.2c4.1 5 6.2 8.6 6.2 11.6a6.2 6.2 0 11-12.4 0c0-3 2.1-6.6 6.2-11.6z"/>'};
-/* THE SIX, STACKED, round SP: "there's six, so it should be stacked." One
-   row each, the icon at the left and a mirrored ring at the right, so a row
-   reads the same as a Compass rail entry: a mark, a name, a value. sel is
-   the picked index, the single-pick contract obGiftAsk below still keeps
-   (see its own note on multi-select). */
-function obGiftRows(items,sel){
- return '<div class="ob-giftrows" role="group" aria-label="Pick one">'
-  +items.map(function(x,i){
-   var on=sel===i;
-   return '<button type="button" class="ob-giftrow'+(on?' on':'')+'" aria-pressed="'+(on?'true':'false')+'"'
-    +' data-obgift="'+i+'" style="--ci:'+i+'">'
-    +'<span class="ob-gift-ic" aria-hidden="true"><svg viewBox="0 0 24 24">'+(OB_GIFT_GLYPH[x.k]||'')+'</svg></span>'
-    +'<span class="ob-gift-n">'+esc(x.n)+'</span>'
-    +'<span class="ob-gift-ct">100 patterns</span>'
-    +'<span class="ob-gift-sel" aria-hidden="true"></span>'
-    +'</button>';}).join('')
-  +'</div>';}
-function obGiftFocus(){
- var h=document.getElementById('ob'), c=h&&h.querySelector('.ob-card');
- var sc=c&&c.querySelector('.ob-scroll'); if(sc)sc.scrollTop=0;
- var hd=c&&c.querySelector('.ob-h'); if(hd)hd.focus({preventScroll:true});}
-function obGiftLeft(){
- var al=(typeof meterBudget==='function'&&CURP)?meterBudget(CURP).allow:null;
- /* the allowance's own sentence, the one obGiftSay and the end card print,
-    so the gift has one wording */
- return (al&&al.inGift)?'<p class="ob-p">You have '+esc(al.say)+'.</p>':'';}
-/* ROUND SP, THE REDESIGN. His words: "The design for the gift. Is a D,
-   Emmy." Pulled from the Field, the Body and the Compass, mostly the Field.
-   The heading is "Starting gift" now, said once, carried on every state of
-   this card so the eyebrow and the heading never say the same thing twice.
-   The body drops "journey": the standing voice rule (check.py's own SOFT
-   list) refuses it as soft wellness language, so his sense is kept and the
-   word is not. "Pattern" and "bank" are unpacked in the same breath they are
-   said, on the rule that a term never stands alone.
-
-   STILL ONE PICK, NOT SIX, on purpose, named here rather than silently
-   decided. His copy said "select the ones you want", which reads as more
-   than one. Checked before building: the server's own contract
-   (authFunnelCheckpoint, reboot-os funnel.js validateCheckpointPatch) takes
-   one giftNatureId, not a list, and of the six only Anxiety has a built
-   pattern bank behind it today (the 15 October gift bank check). Turning
-   this into a real multi-pick is a backend and content project, not a
-   render change, so the row list below stays a single pick, the same
-   obGiftAsk contract as before, and the copy says "Pick one" rather than
-   promise a capability that is not there yet. */
-function obGiftCard(){
- var res=OB.giftRes, nat=(OB.giftPick!=null)?OB_GIFT_NATURES[OB.giftPick]:null, nm=nat?nat.n:'';
- var unpack='<span class="ob-dim">A pattern is one line you have not said before.</span>';
- if(res==='saving')return obCard('Gift','Starting gift',
-  '<p class="ob-p ob-dim" role="status">Checking '+esc(nm)+' with the server.</p>','');
- if(res==='issued')return obCard('Gift','Your starter set is ready.',
-  '<p class="ob-p">'+esc(nm)+', 100 patterns. Our server holds them for you. '+unpack+'</p>',
-  '<button type="button" class="btn pri" data-ob="endin">Go in</button>');
- if(res==='unavailable')return obCard('Gift','No set is ready for '+nm+' yet.',
-  '<p class="ob-p">Your pick is saved. Nothing was added.</p>'+obGiftLeft(),
-  '<button type="button" class="btn pri" data-ob="endin">Go in</button>');
- /* the question, and after a refusal the same question with the refusal said
-    under it and the pick still pressed */
- return obCard('Gift','Starting gift',
-  '<p class="ob-p">We want to thank you for starting. Pick one of these and we will look '
-  +'for a starter set made for it, 100 patterns. '+unpack+'</p>'
-  +'<p class="ob-p ob-dim">It can be different from what brought you here. Your pick goes to our '
-  +'server, and the set it finds goes into your bank, the store everything you release draws from.</p>'
-  +obGiftRows(OB_GIFT_NATURES,OB.giftPick)
-  +(res==='unverified'?'<p class="ob-p" role="status">The server did not confirm '+esc(nm)
-   +', so nothing was added. Press it again to try again, or skip.</p>'+obGiftLeft():''),
-  '<button type="button" class="btn" data-ob="endin">Skip</button>'
-  +'<button type="button" class="btn" data-ob="back">Back</button>');}
-/* THE SERVER'S YES, and nothing short of it. r is authFunnelCheckpoint's
-   answer. Every part is the Worker's own contract for a usable set
-   (validateStarterGiftSnapshot, on the branch named above), read here so a
-   half answer, an old Worker or a stub that says ok to everything reads as
-   no. */
-function obGiftOk(r,k){
- var s=r&&r.session, g=r&&r.gift;
- return !!(r&&r.ok&&r.giftVerified===true&&s&&s.giftNatureId===k&&s.starterGiftId
-  &&g&&g.ready===true&&g.giftNatureId===k&&g.id===s.starterGiftId);}
-/* saved, and no set to give: the server took the pick, read its gift back
-   and found none ready for that nature. Read the same strict way: a session
-   that does not carry the pick did not save it, and a gift of another nature
-   is the server disagreeing with itself. The first cut read only the session,
-   so a session saying grief beside a ready set of sadness was said as "No set
-   is ready for Grief yet", a sentence about a set the answer never
-   described. tests/onboarding2.js caught it on that exact answer. */
-function obGiftSaved(r,k){
- var g=r&&r.gift;
- return !!(r&&r.ok&&r.giftVerified===true&&r.session&&r.session.giftNatureId===k
-  &&(!g||(g.giftNatureId===k&&g.ready!==true)));}
-function obGiftAsk(i){
- var nat=OB_GIFT_NATURES[i]; if(!nat||OB.giftRes==='saving')return;
- var ask=++OB.giftAsk;
- OB.giftPick=i; OB.giftRes='saving'; obRender();
- var req;
- try{ req=(typeof authFunnelCheckpoint==='function')?authFunnelCheckpoint({giftNatureId:nat.k}):null; }
- catch(e){ req=null; }
- Promise.resolve(req||{ok:false,status:0}).then(function(r){ return r; },function(){ return {ok:false,status:0}; })
-  .then(function(r){
-   /* a yes is written even when the sheet has closed under it: the server
-      holds the set either way, and the record should say so. Only the
-      drawing is skipped. */
-   var res=obGiftOk(r,nat.k)?'issued':obGiftSaved(r,nat.k)?'unavailable':'unverified';
-   if(res==='issued'&&OB.rec&&CURP){
-    var gn=journeyGiftNature(CURP,nat.k);
-    if(!gn.ok)obJyFail(gn.why); else if(gn.bound)obSave();}
-   if(res==='unverified'&&typeof status==='function')
-    status('The server did not confirm your starter set. Nothing was added.','fail');
-   if(ask!==OB.giftAsk)return;
-   OB.giftRes=res;
-   if(OB.open&&OB.giftOn&&OB.step===OB_END)obRender();});}
+   THE STARTER SET MOVED TO THE REAL SUMMARY, round SQ, 1 November. This
+   whole card used to live here, at a second end-of-onboarding station,
+   against the owner's own 31 October words: "That needs to be in there
+   after your summary when you onboard. Like once you sign up." The build
+   that landed here read "your summary" as the end card above, Here is what
+   you made, since that is the one card in this sheet that sums up the
+   first run. Said plainly rather than quietly fixed: that was the wrong
+   summary. Told the storyboard on 1 November, the owner named the real one,
+   the Summary tab a first-time arrival lands on (tabLandFirst, ui/panels.js)
+   once onboarding has closed, and his reason: a person who has reached it
+   has effectively signed up. obGiftCard, obGiftRows, OB_GIFT_GLYPH,
+   obGiftAsk, obGiftOk and obGiftSaved now live in ui/summary.js, shown by
+   sumGift() in place of its old one-line notice, for as long as the free
+   gift is active and nothing has been picked or skipped yet. The server
+   contract (authFunnelCheckpoint, one giftNatureId, the live Worker's own
+   400 on anything else, a gift ID alone is not a confirmation) is unchanged,
+   only where the question is asked. ============================================================ */
 
 /* ---- one listener for the whole sheet ---- */
 addEventListener('click',function(e){
@@ -1888,8 +1727,6 @@ addEventListener('click',function(e){
    var gi=journeyGiftIssue(CURP,'app'); if(!gi.ok)obJyFail(gi.why); }
   OB.step=2; obRender(); return;
  }
- var gc=t.closest?t.closest('[data-obgift]'):null;
- if(gc){ obGiftAsk(+gc.getAttribute('data-obgift')); return; }
  var fe=t.closest?t.closest('[data-obfeel]'):null;
  if(fe){ OB.feel=+fe.getAttribute('data-obfeel'); OB.step=4; obRender(); return; }
  var pl=t.closest?t.closest('[data-obplace]'):null;
@@ -1904,17 +1741,7 @@ addEventListener('click',function(e){
  var b=t.closest?t.closest('[data-ob]'):null; if(!b)return;
  var k=b.getAttribute('data-ob');
  if(k==='next'){ OB.step++; obRender(); return; }
- /* the gift card is a second card on the end station, so Back from it is
-    the end card, never the station before it */
- if(k==='back'&&OB.giftOn){ OB.giftOn=false; obRender(); obGiftFocus(); return; }
  if(k==='back'){ OB.step=Math.max(0,OB.step-1); obRender(); return; }
- if(k==='endgift'){
-  /* a nature already on the record, after a reload, is shown as the yes it
-     was and never asked again: the server refuses a second one by name */
-  var had=(typeof journeyGiftRead==='function'&&CURP)?journeyGiftRead(CURP).giftNatureId:null;
-  OB.giftOn=true;
-  if(had){ OB.giftPick=OB_GIFT_NATURES.map(function(x){return x.k;}).indexOf(had); OB.giftRes='issued'; }
-  obRender(); obGiftFocus(); return; }
  if(k==='storydone'){ obStoryDone(); return; }
  if(k==='storyskip'){
   /* a story read on an earlier Done and then withdrawn is not left pending */
@@ -1971,9 +1798,10 @@ addEventListener('click',function(e){
     send the new name from here, with tests/copy.js's table of sends moved in
     the same change.
 
-    GO IN SITS ON THE GIFT CARD NOW, 31 October, as Go in or Skip, because
-    the gift card follows the end card (obGiftCard). The mark is unchanged and
-    is still sent once, on the press that leaves the sheet. */
+    GO IN SITS ON THE END CARD AGAIN, round SQ, 1 November: the gift card
+    that used to follow it moved to the real Summary page (ui/summary.js),
+    so this press is once more the one that leaves the sheet. The mark is
+    unchanged and is still sent once, here. */
  if(k==='endin'){
   if(typeof authFunnelCheckpoint==='function')authFunnelCheckpoint({tutorialCompleted:true});
   obClose('end'); return; }

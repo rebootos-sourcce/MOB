@@ -1117,27 +1117,32 @@ async function door(browser, SITE, cut, giftAt) {
   o = await ob();
   const END = await po2.evaluate(() => typeof OB_END === 'number' ? OB_END : -1);
   ok(o.open && o.step === END && /Here is what you made/.test(o.card), 'Done brings the person to the end card, which says what they made');
-  /* THE GIFT CARD, after the summary and after the sign up, 31 October: "That
-     needs to be in there after your summary when you onboard. Like once you
-     sign up." This door made an account, so this is the person he named. The
-     fake Worker refuses a checkpoint field it does not know, as the live one
-     does, so this holds what production does today: the pick goes, is
-     refused, is said, and nothing is written. */
-  await O.click('[data-ob="endgift"]');
-  o = await ob();
-  ok(o.open && o.step === END && /Starting gift/.test(o.card), 'Continue on the end card opens the gift card, signed in');
-  await O.click('#ob [data-obgift="4"]');
-  await po2.waitForFunction(() => OB.giftRes !== 'saving', null, { timeout: 8000 }).catch(() => {});
-  o = await ob();
-  const giftO = await po2.evaluate(() => ({ res: OB.giftRes, nat: (CURP.journey && CURP.journey.gift && CURP.journey.gift.giftNatureId) || null }));
-  const giftAsk = wo.reqs('PATCH', /\/checkpoint$/).filter(q => q.body && 'giftNatureId' in q.body);
-  ok(giftAsk.length === 1 && giftAsk[0].status === 400 && J(Object.keys(giftAsk[0].body)) === J(['giftNatureId']),
-    'the pick is sent alone and the server, which does not know the field, refuses it: ' + J(giftAsk.map(q => [q.status, q.body])));
-  ok(giftO.res === 'unverified' && giftO.nat === null && /did not confirm Grief, so nothing was added/.test(o.card),
-    'and the card says so and writes nothing: ' + J(giftO), 'a gift the server refused is claimed');
+  /* THE STARTER GIFT, ON SUMMARY, round SQ, 1 November, moved off a second
+     onboarding card on the owner's own correction of "after your summary
+     when you onboard. Like once you sign up": the real summary is the
+     Summary tab, which obClose's own tabLandFirst opens once per device on
+     the way out, below, not the end card above. The fake Worker refuses a
+     checkpoint field it does not know, as the live one does, so this holds
+     what production does today: the pick goes, is refused, is said, and
+     nothing is written. */
   await O.click('[data-ob="endin"]');
   await po2.waitForTimeout(800);
   ok(!(await ob()).open, 'Go in closes the first run');
+  await po2.waitForFunction(() => typeof TAB !== 'undefined' && S.tab === TAB.SUMMARY, null, { timeout: 8000 }).catch(() => {});
+  ok(await po2.evaluate(() => typeof TAB !== 'undefined' && S.tab === TAB.SUMMARY), 'closing the first run lands the first arrival on Summary');
+  await po2.waitForSelector('.sg-giftrow', { timeout: 8000 }).catch(() => {});
+  const giftCard = await po2.evaluate(() => (document.querySelector('.sg-gift') || {}).innerText || '');
+  ok(/Starting gift/.test(giftCard), 'Summary carries the starter gift, signed in: ' + J(giftCard.slice(0, 40)));
+  await O.click('[data-sggift="4"]');
+  await O.click('[data-sg="giftadd"]');
+  await po2.waitForFunction(() => SG_GIFT.res !== 'saving', null, { timeout: 8000 }).catch(() => {});
+  const giftO = await po2.evaluate(() => ({ res: SG_GIFT.res, nat: (CURP.journey && CURP.journey.gift && CURP.journey.gift.giftNatureId) || null,
+    card: (document.querySelector('.sg-gift') || {}).innerText || '' }));
+  const giftAsk = wo.reqs('PATCH', /\/checkpoint$/).filter(q => q.body && 'giftNatureId' in q.body);
+  ok(giftAsk.length === 1 && giftAsk[0].status === 400 && J(Object.keys(giftAsk[0].body)) === J(['giftNatureId']),
+    'the pick is sent alone and the server, which does not know the field, refuses it: ' + J(giftAsk.map(q => [q.status, q.body])));
+  ok(giftO.res === 'unverified' && giftO.nat === null && /did not confirm Grief, so nothing was added/.test(giftO.card),
+    'and the card says so and writes nothing: ' + J(giftO), 'a gift the server refused is claimed');
   await O.reload();
   const so = await O.saved(), recO = so.rec || {};
   const keysO = (recO.meter && recO.meter.unique) || [];

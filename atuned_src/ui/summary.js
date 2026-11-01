@@ -649,6 +649,7 @@ function sumRender(){
  var r=computeSeen();
  h.innerHTML='<div class="sum-wrap">'+(r.unread?sumUnread(r):sumFull(r))+'</div>';
  sumWire();
+ if(document.getElementById('sggiftring')&&typeof sumGiftRingBoot==='function')sumGiftRingBoot();
  /* and its side column, today's summary, off the same reading. A paint and
     never a write: the day is frozen by sumDayOpen, after this returns. */
  if(typeof sumDayPaint==='function')sumDayPaint(r);}
@@ -682,11 +683,18 @@ function sumUnread(r){
     first drivers, and the four doors stand on the left, so the way in is on the
     first screen beside it and the page is two equal halves, not one half and a
     hole. Nothing here is read off the field, so nothing here is a reading. */
- if(rc)return sumWho(r,B,false)
+ /* THE GIFT SHOWS HERE TOO, round SQ, 1 November. sumWho's full branch is
+    the only caller sumGift() had, and a first-time arrival who has not had
+    a story read yet lands on exactly this unread page, per the storyboard
+    a probe of the real flow produced: a fresh profile closes onboarding
+    onto this page, not the full one. The free gift has no reading
+    precondition (lockGift alone), so withholding it here left the person
+    the owner means to reach never seeing it. */
+ if(rc)return sumWho(r,B,false)+sumGift()
   +'<div class="sg-two sg-lead"><section class="sg-card sg-start" data-grp="start">'+hero+'</section>'+rc+'</div>'
   +sumMarks(B,r)
   +(B.N?'<div class="sg-folds sg-one">'+sgFold('num','Numerology, in full',sumNum(r,true))+'</div>':'');
- return sumWho(r,B,false)+hero+sumSpirit(r)+sumNum(r);}
+ return sumWho(r,B,false)+sumGift()+hero+sumSpirit(r)+sumNum(r);}
 
 /* ============================================================
    THE SUMMARY, REBUILT. Named wrong four times and this is the correction.
@@ -982,19 +990,326 @@ function sumWho(r,B,full){
  if(!full&&!(B.sp||B.N||sumRealName()))return '';
  return sgZone('who','Who this is',
   full?sumPlate(r,B)+sumGift():'<div class="s-plate sg-plain"><div class="s-pl-l">'+sumNameBlock(B,false)+'</div></div>');}
-/* THE GIFT, SAID ONCE AND QUIETLY, under the name on the page a new person
-   lands on (tabLandFirst, ui/panels.js). The ruling is "100 patterns, free,
-   with everything visible", and the lock now keeps it (lockGift, ui/lock.js),
-   so nothing on this page is padlocked while it lasts. This is the one line
-   that says why. No count of what is left, no price and no button: the first
-   screen is the person's reading, opened, and not a shop. The count is in
-   Billing and on the card before a release, where it is spent. Read off the
-   lock's own answer, so it goes when the padlocks come back, and never on a
-   worked example. The size is GIFT_N and not a typed hundred. */
+/* THE GIFT, under the name on the page a new person lands on (tabLandFirst,
+   ui/panels.js). The ruling is "100 patterns, free, with everything
+   visible", and the lock keeps it (lockGift, ui/lock.js), so nothing on
+   this page is padlocked while it lasts.
+
+   THE STARTER SET IS PICKED HERE NOW, round SQ, 1 November, moved off a
+   second onboarding card (ui/onboard.js held the history; see its own note
+   where obGiftCard used to live). The owner's words: "after your summary
+   when you onboard. Like once you sign up," and a person who has reached
+   this page, closed, has done exactly that. While the gift is active and
+   nothing has been picked or skipped, this prints the full picker
+   (sumGiftCard); once one of those is true, or the gift is spent, it prints
+   the one quiet line it always did, read off GIFT_N and never a typed
+   hundred. */
 function sumGift(){
  if(typeof lockGift!=='function'||!lockGift())return '';
+ var had=(typeof journeyGiftRead==='function'&&CURP)?journeyGiftRead(CURP).giftNatureId:null;
+ var skipped=!!(CURP&&CURP.ui&&CURP.ui.giftSkipped);
+ /* THE ANSWER IS SEEN BEFORE IT GOES QUIET. had alone would drop straight
+    to the one-line notice the instant journeyGiftNature writes, in the
+    same render that set it, so a person would never actually see "Your
+    starter set is ready." SG_GIFT.res still holding issued or unavailable
+    means this session just got that answer, so the resolved card stays up
+    through this visit; only a later visit, with no res to say otherwise,
+    quiets to the line. */
+ if(!had&&!skipped)return sumGiftCard();
+ if(SG_GIFT.res==='issued'||SG_GIFT.res==='unavailable')return sumGiftCard();
  return '<p class="s-src" id="sumgift">Your gift: '+GIFT_N+' '+unp('pattern','patterns','gift')
   +', no card. Everything is open.</p>';}
+
+/* ============================================================
+   THE STARTER SET, PICKED ON THE PAGE A NEW PERSON LANDS ON. Ported whole
+   from ui/onboard.js (obGiftCard and around it), round SQ, 1 November: the
+   server contract is unchanged, only where the question is asked. Design is
+   the approved mock, carried further on the owner's own direction after
+   it: giant tiles, a ring built as a Kuramoto model (96 phases, coupled,
+   drawn as one smooth wave rather than spokes) that distorts in its own
+   shape for whichever of the six is picked and settles back on its own,
+   and a background tint per tile read off the seat it leans toward
+   (sumGiftSeat), overriding OB_GIFT_NATURES' own standing "not tinted"
+   comment on the owner's repeated instruction, recorded there.
+
+   STILL ONE PICK, NOT SIX: the server's own contract (authFunnelCheckpoint,
+   reboot-os funnel.js validateCheckpointPatch) takes one giftNatureId, not a
+   list, so this row list stays a single pick.
+
+   WHAT IS NEVER CLAIMED. Nothing is written to the record until the
+   server's own yes (sumGiftOk), and a refusal is said, with the pick still
+   pressed, so trying again is one press: a control never claims success
+   before it has it. Checked 1 November against reboot-os main: the live
+   Worker still refuses giftNatureId by name (a 400), and the branch that
+   teaches it the field (alpha/p1-fixed-pattern-gift-contract-20261010) is
+   unmerged, so every pick reads unverified until that branch lands. Nothing
+   here is broken by that: the 100 free patterns are planAllowance's and
+   stand either way, this card just cannot confirm a flavour yet. The six
+   tooltip sentences below are a first pass, not yet checked by the house
+   voice gate or Emmy; they ship because the mechanism needs a body to look
+   at, not because the words are final.
+   ============================================================ */
+var SG_GIFT={pick:null,res:null,ask:0};
+/* which seat each nature leans toward, for the tile's own tint and the
+   ring's kick. A reading, not an engine fact: unlike OB_PLACES, which
+   seatCol tints because the place really is that seat, this is the UI's
+   own call, named here rather than silently decided in the markup. */
+function sumGiftSeat(k){
+ return {anxiety:'Root',overwhelm:'3rd Eye',burnout:'Solar',
+  depression:'Throat',grief:'Heart',sadness:'Sacral'}[k]||'Heart';}
+var SG_GIFT_GLYPH={
+ anxiety:'<path d="M3 12h3.1l1.7-4.6 3 9.4 3-9.4 1.7 4.6H21"/>',
+ overwhelm:'<circle cx="12" cy="17.3" r="1.25"/><path d="M6.6 13.8a5.5 5.5 0 0110.8 0"/>'
+  +'<path d="M3.3 16.6a9 9 0 0117.4 0"/>',
+ burnout:'<path d="M17 6.3A8 8 0 1112 4"/><circle cx="12" cy="4" r="1.2"/>',
+ depression:'<circle cx="12" cy="13.2" r="7"/><path d="M5.4 8.1h13.2"/>',
+ grief:'<circle cx="8.6" cy="12" r="5"/><circle cx="15.4" cy="12" r="5" stroke-dasharray="2 2.6"/>',
+ sadness:'<path d="M12 3.2c4.1 5 6.2 8.6 6.2 11.6a6.2 6.2 0 11-12.4 0c0-3 2.1-6.6 6.2-11.6z"/>'};
+var SG_GIFT_SAY={
+ anxiety:'An alarm that will not switch off. The body stays braced for a threat that already '
+  +'passed, held tight through the chest and gut. Left running, it drains sleep and focus.',
+ overwhelm:'Too much arriving at once with no way to sort it. The nervous system floods instead '
+  +'of filtering, so everything reads as urgent together. Left running, small tasks start to feel large.',
+ burnout:'Output kept running past what the tank held. The drive to produce stays lit after the '
+  +'fuel underneath it is gone. Left running, rest stops actually restoring you.',
+ depression:'The system turns its own volume down. Drive, motion and feeling get throttled '
+  +'together, all at once. Left running, less of each day reaches you.',
+ grief:'A real loss the body has not finished moving through. What is gone keeps resurfacing '
+  +'because the charge around it is still held. Left running, it can flatten everything else beside it.',
+ sadness:'Something mattered, and it is gone. Held low and quiet, usually in the chest, it is the '
+  +'correct response and not a malfunction. Left unreleased, it settles into the body as weight.'};
+function sumGiftRows(items,sel){
+ return '<div class="sg-giftrows" role="group" aria-label="Pick one">'
+  +items.map(function(x,i){
+   var on=sel===i, seat=sumGiftSeat(x.k);
+   return '<button type="button" class="sg-giftrow'+(on?' on':'')+'" aria-pressed="'+(on?'true':'false')+'"'
+    +' data-sggift="'+i+'" style="--c:'+seatCol(seat)+'">'
+    +'<span class="sg-gift-tip" role="tooltip">'+esc(SG_GIFT_SAY[x.k]||'')+'</span>'
+    +'<span class="sg-gift-ic" aria-hidden="true"><svg viewBox="0 0 24 24">'+(SG_GIFT_GLYPH[x.k]||'')+'</svg></span>'
+    +'<span class="sg-gift-n">'+esc(x.n)+'</span>'
+    +'</button>';}).join('')
+  +'</div>';}
+function sumGiftLeft(){
+ var al=(typeof meterBudget==='function'&&CURP)?meterBudget(CURP).allow:null;
+ return (al&&al.inGift)?'<p class="ob-p">You have '+esc(al.say)+'.</p>':'';}
+function sumGiftSkip(){
+ if(!CURP)return;
+ if(!CURP.ui||typeof CURP.ui!=='object')CURP.ui={};
+ CURP.ui.giftSkipped=true;
+ if(typeof pSave==='function'&&!pSave()&&typeof status==='function')
+  status('This browser would not save. The starter set will offer again.','fail');
+ if(typeof sumRender==='function')sumRender();}
+function sumGiftCard(){
+ var res=SG_GIFT.res, nat=(SG_GIFT.pick!=null)?OB_GIFT_NATURES[SG_GIFT.pick]:null, nm=nat?nat.n:'';
+ var unpack='<span class="ob-dim">A pattern is one line you have not said before.</span>';
+ var head='<div class="sg-gift-ringwrap" id="sggiftring"><svg viewBox="0 0 200 200" id="sggiftringsvg">'
+  +'<defs><linearGradient id="sggiftgrad" gradientUnits="userSpaceOnUse" x1="100" y1="30" x2="100" y2="170">'
+  +'<stop offset="0%" stop-color="'+seatCol('Crown')+'"/><stop offset="16.667%" stop-color="'+seatCol('3rd Eye')+'"/>'
+  +'<stop offset="33.333%" stop-color="'+seatCol('Throat')+'"/><stop offset="50%" stop-color="'+seatCol('Heart')+'"/>'
+  +'<stop offset="66.667%" stop-color="'+seatCol('Solar')+'"/><stop offset="83.333%" stop-color="'+seatCol('Sacral')+'"/>'
+  +'<stop offset="100%" stop-color="'+seatCol('Root')+'"/></linearGradient></defs>'
+  +'<path class="sg-gift-halo" id="sggifthalo"></path><path class="sg-gift-wave" id="sggiftwave"></path></svg></div>';
+ if(res==='saving')return '<section class="sg-card sg-gift" data-grp="gift">'+head
+  +'<h3 class="sg-gift-h">Starting gift</h3>'
+  +'<p class="ob-p ob-dim" role="status">Checking '+esc(nm)+' with the server.</p></section>';
+ if(res==='issued')return '<section class="sg-card sg-gift" data-grp="gift">'+head
+  +'<h3 class="sg-gift-h">Your starter set is ready.</h3>'
+  +'<p class="ob-p">'+esc(nm)+', 100 patterns. Our server holds them for you. '+unpack+'</p></section>';
+ if(res==='unavailable')return '<section class="sg-card sg-gift" data-grp="gift">'+head
+  +'<h3 class="sg-gift-h">No set is ready for '+esc(nm)+' yet.</h3>'
+  +'<p class="ob-p">Your pick is saved. Nothing was added.</p>'+sumGiftLeft()+'</section>';
+ return '<section class="sg-card sg-gift" data-grp="gift">'+head
+  +'<h3 class="sg-gift-h">Starting gift</h3>'
+  +'<p class="ob-p">We want to thank you for starting. Pick one of these and we will look '
+  +'for a starter set made for it, 100 patterns. '+unpack+'</p>'
+  +sumGiftRows(OB_GIFT_NATURES,SG_GIFT.pick)
+  +(res==='unverified'?'<p class="ob-p" role="status">The server did not confirm '+esc(nm)
+   +', so nothing was added. Press it again to try again, or skip.</p>'+sumGiftLeft():'')
+  +'<div class="sg-gift-acts">'
+  +'<button type="button" class="btn" data-sg="giftskip">Skip</button>'
+  +'<button type="button" class="btn pri" data-sg="giftadd"'+(SG_GIFT.pick==null?' disabled':'')+'>Add to bank</button>'
+  +'</div></section>';}
+/* THE SERVER'S YES, and nothing short of it. r is authFunnelCheckpoint's
+   answer, read the same strict way onboard.js's obGiftOk/obGiftSaved did:
+   a half answer, an old Worker or a stub that says ok to everything reads
+   as no (see ui/onboard.js's own note on this contract for the history). */
+function sumGiftOk(r,k){
+ var s=r&&r.session, g=r&&r.gift;
+ return !!(r&&r.ok&&r.giftVerified===true&&s&&s.giftNatureId===k&&s.starterGiftId
+  &&g&&g.ready===true&&g.giftNatureId===k&&g.id===s.starterGiftId);}
+function sumGiftSaved(r,k){
+ var g=r&&r.gift;
+ return !!(r&&r.ok&&r.giftVerified===true&&r.session&&r.session.giftNatureId===k
+  &&(!g||(g.giftNatureId===k&&g.ready!==true)));}
+function sumGiftAsk(i){
+ var nat=OB_GIFT_NATURES[i]; if(!nat||SG_GIFT.res==='saving')return;
+ var ask=++SG_GIFT.ask;
+ SG_GIFT.pick=i; SG_GIFT.res='saving'; if(typeof sumRender==='function')sumRender();
+ var req;
+ try{ req=(typeof authFunnelCheckpoint==='function')?authFunnelCheckpoint({giftNatureId:nat.k}):null; }
+ catch(e){ req=null; }
+ Promise.resolve(req||{ok:false,status:0}).then(function(r){ return r; },function(){ return {ok:false,status:0}; })
+  .then(function(r){
+   var res=sumGiftOk(r,nat.k)?'issued':sumGiftSaved(r,nat.k)?'unavailable':'unverified';
+   if(res==='issued'&&CURP){
+    var gn=(typeof journeyGiftNature==='function')?journeyGiftNature(CURP,nat.k):{ok:false,why:'no writer'};
+    if(!gn.ok&&typeof status==='function')status(gn.why,'fail');
+    else if(gn.bound&&typeof pSave==='function')pSave();}
+   if(res==='unverified'&&typeof status==='function')
+    status('The server did not confirm your starter set. Nothing was added.','fail');
+   if(ask!==SG_GIFT.ask)return;
+   SG_GIFT.res=res;
+   if(typeof sumRender==='function')sumRender();});}
+/* THE RING IS A WAVE, PORTED WHOLE FROM THE APPROVED MOCK. 96 Kuramoto
+   oscillators, coupled toward a shared mean phase, drawn as one smooth
+   closed path rather than spokes; a pick drives the same physics into one
+   of six distinct, timed shapes (SG_SIG) for a few seconds and lets go, and
+   the ordinary coupling pulls it back to a round, still circle on its own.
+   The render host is looked up by id on every call rather than captured
+   once, and the frame loop stops itself the instant that host is no longer
+   in the document, however the card left (a decision made, a tab change,
+   Summary rebuilt under it), so a re-render never leaves a second loop
+   running on a detached node, the leak the repo has already hunted down
+   once (e4061fb3). */
+(function(){
+ var N=96, cx=100, cy=100, BASE_R=58;
+ function clamp01(x){return x<0?0:x>1?1:x;}
+ function smoothstep(a,b,x){x=clamp01((x-a)/(b-a)); return x*x*(3-2*x);}
+ function wrapA(a){return a-2*Math.PI*Math.floor((a+Math.PI)/(2*Math.PI));}
+ function angDist(a,b){return Math.abs(wrapA(a-b));}
+ function seatAngles(y0){
+  var s=Math.max(-1,Math.min(1,2*y0-1)), a1=Math.asin(s);
+  return [wrapA(a1), wrapA(Math.PI-a1)];}
+ var seatY={Crown:0,'3rd Eye':1/6,Throat:2/6,Heart:3/6,Solar:4/6,Sacral:5/6,Root:1};
+ var pts=null, bias=null, kloc=null, drives=null;
+ function reset(){
+  pts=[]; for(var i=0;i<N;i++)pts.push({baseA:(i/N)*Math.PI*2-Math.PI/2,
+   theta:Math.random()*Math.PI*2, omega:(Math.random()-0.5)*2.6});
+  bias=new Float32Array(N); kloc=new Float32Array(N); drives=[];}
+ function bandWeights(angles,hw){
+  var w=new Float32Array(N), side=new Float32Array(N);
+  for(var j=0;j<N;j++){
+   var best=Infinity, bi=0;
+   for(var k=0;k<angles.length;k++){var d=angDist(pts[j].baseA,angles[k]); if(d<best){best=d; bi=k;}}
+   side[j]=bi===0?1:-1;
+   w[j]=best>=hw?0:0.5*(1+Math.cos(Math.PI*best/hw));}
+  return {w:w,side:side};}
+ var SG_SIG={
+  anxiety:function(y0){
+   var bs=bandWeights(seatAngles(y0),0.45);
+   return {dur:1100, apply:function(t){
+    var e=smoothstep(0,90,t)*(1-smoothstep(650,1100,t)), f=7+3*Math.min(1,t/700);
+    for(var j=0;j<N;j++){var w=bs.w[j]; if(!w)continue;
+     bias[j]+=1.3*e*w*bs.side[j]*Math.sin(2*Math.PI*f*t/1000+j*0.3);
+     kloc[j]=Math.min(kloc[j],1-0.8*w);}
+    return 1;}};},
+  overwhelm:function(y0){
+   var base=seatAngles(y0)[0];
+   var sites=[base,base+2.1,base+3.6,base+0.9,base+5.0].map(function(a){return bandWeights([a],0.3);});
+   var onset=[0,150,300,450,600], sign=[1,-1,1,-1,1];
+   return {dur:2000, apply:function(t){
+    for(var s=0;s<sites.length;s++){
+     var lt=t-onset[s]; if(lt<0||lt>500)continue;
+     var e=smoothstep(0,80,lt)*(1-smoothstep(300,500,lt)), bw=sites[s];
+     for(var j=0;j<N;j++){var w=bw.w[j]; if(!w)continue;
+      bias[j]+=sign[s]*1.8*e*w;
+      kloc[j]=Math.min(kloc[j],1-0.65*w);}}
+    return 1-0.75*smoothstep(0,300,t)*(1-smoothstep(1300,2000,t));}};},
+  burnout:function(y0){
+   var bs=bandWeights(seatAngles(y0),0.7);
+   return {dur:2600, apply:function(t){
+    var grip=smoothstep(0,500,t)*(1-smoothstep(1700,2600,t)), sag=1-smoothstep(1700,2000,t);
+    for(var j=0;j<N;j++){var w=bs.w[j]; if(!w)continue;
+     bias[j]+=-0.6*w*sag;
+     kloc[j]=Math.min(kloc[j],1-0.92*w*grip);}
+    return 1;}};},
+  depression:function(y0){
+   var bs=bandWeights(seatAngles(y0),0.6);
+   return {dur:3000, apply:function(t){
+    var env=smoothstep(0,900,t)*(1-smoothstep(2100,3000,t));
+    for(var j=0;j<N;j++){var w=bs.w[j]; if(!w)continue;
+     bias[j]+=-3.3*env*w;
+     kloc[j]=Math.min(kloc[j],1-0.6*w*env);}
+    return 1+0.6*env;}};},
+  grief:function(y0){
+   var bs=bandWeights(seatAngles(y0),0.4);
+   return {dur:2400, apply:function(t){
+    var e1=smoothstep(0,300,t)*(1-smoothstep(700,1400,t));
+    var e2=t<1500?0:smoothstep(1500,1800,t)*(1-smoothstep(2000,2400,t));
+    for(var j=0;j<N;j++){var w=bs.w[j]; if(!w)continue;
+     bias[j]+=(2.4*e1+1.0*e2)*w;
+     kloc[j]=Math.min(kloc[j],1-0.75*w);}
+    return 1;}};},
+  sadness:function(y0){
+   var bs=bandWeights(seatAngles(y0),0.45);
+   return {dur:2600, apply:function(t){
+    var e=smoothstep(0,600,t)*(1-smoothstep(1900,2300,t))
+     -0.2*smoothstep(1900,2100,t)*(1-smoothstep(2300,2600,t));
+    var heave=1+0.2*Math.sin(2*Math.PI*0.4*t/1000);
+    for(var j=0;j<N;j++){var w=bs.w[j]; if(!w)continue;
+     bias[j]+=1.5*e*heave*w;
+     kloc[j]=Math.min(kloc[j],1-0.6*w);}
+    return 1;}};}};
+ var xs=new Array(N), ys=new Array(N), u=new Array(N), us=new Array(N);
+ function buildPath(wave,halo,R_,psi,driveAmp){
+  for(var i=0;i<N;i++)u[i]=Math.sin(pts[i].theta-psi);
+  for(var pass=0;pass<2;pass++){
+   for(var i=0;i<N;i++)us[i]=0.25*u[(i-1+N)%N]+0.5*u[i]+0.25*u[(i+1)%N];
+   var tmp=u; u=us; us=tmp;}
+  var A=7*Math.max(Math.pow(1-R_,1.5), driveAmp||0);
+  for(var i=0;i<N;i++){
+   var r=BASE_R+A*u[i];
+   xs[i]=cx+Math.cos(pts[i].baseA)*r; ys[i]=cy+Math.sin(pts[i].baseA)*r;}
+  var d='';
+  for(var i=0;i<N;i++){
+   var i0=(i-1+N)%N, i1=(i+1)%N, i2=(i+2)%N;
+   var c1x=xs[i]+(xs[i1]-xs[i0])/6, c1y=ys[i]+(ys[i1]-ys[i0])/6;
+   var c2x=xs[i1]-(xs[i2]-xs[i])/6, c2y=ys[i1]-(ys[i2]-ys[i])/6;
+   d+=(i===0?'M'+xs[0].toFixed(1)+','+ys[0].toFixed(1):'')
+    +'C'+c1x.toFixed(1)+','+c1y.toFixed(1)+' '+c2x.toFixed(1)+','+c2y.toFixed(1)+' '+xs[i1].toFixed(1)+','+ys[i1].toFixed(1)+' ';}
+  d+='Z'; wave.setAttribute('d',d); halo.setAttribute('d',d);}
+ var running=false, driveHoldUntil=0;
+ function frame(ts){
+  var host=document.getElementById('sggiftring');
+  if(!host||!document.body.contains(host)){ running=false; return; }
+  var wave=document.getElementById('sggiftwave'), halo=document.getElementById('sggifthalo');
+  if(!wave||!halo){ running=false; return; }
+  var sx=0,sy=0;
+  for(var i=0;i<N;i++){sx+=Math.cos(pts[i].theta); sy+=Math.sin(pts[i].theta);}
+  var R_=Math.sqrt(sx*sx+sy*sy)/N, psi=Math.atan2(sy,sx);
+  var K=9, holding=ts<driveHoldUntil;
+  bias.fill(0); kloc.fill(1); var kgMul=1;
+  for(var di=drives.length-1;di>=0;di--){
+   var dr=drives[di], elapsed=ts-dr.t0;
+   if(elapsed>dr.dur){drives.splice(di,1); continue;}
+   kgMul*=dr.apply(elapsed);}
+  var k2=holding?K:K*0.9;
+  for(var j=0;j<N;j++)pts[j].theta+=(pts[j].omega+bias[j]+k2*kgMul*kloc[j]*R_*Math.sin(psi-pts[j].theta))*0.033*2.2;
+  var sinceHold=ts-driveHoldUntil, driveAmp=sinceHold<0?1:Math.max(0,1-sinceHold/600);
+  buildPath(wave,halo,R_,psi,driveAmp);
+  requestAnimationFrame(frame);}
+ function ensureRunning(){
+  if(running)return; var host=document.getElementById('sggiftring'); if(!host)return;
+  if(!pts)reset();
+  running=true; requestAnimationFrame(frame);}
+ /* A PICK DISTURBS ITS OWN SEAT, in its own signature's shape, and nothing
+    else is said. seat is the nature's own lean (sumGiftSeat); a second pick
+    clears whatever drive was running rather than blending into it. */
+ window.sumGiftKick=function(natureKey){
+  if(!pts)reset();
+  var seat=sumGiftSeat(natureKey), y0=seatY[seat]; if(y0==null)return;
+  var make=SG_SIG[natureKey]; if(!make)return;
+  var d=make(y0); d.t0=performance.now();
+  drives.length=0; drives.push(d);
+  driveHoldUntil=d.t0+d.dur+800;
+  ensureRunning();};
+ /* called after every render that can hold the gift card, not only the
+    first: the DOM node is rebuilt whole each time (sumRender), but the
+    oscillator state must not be, or picking a tile would reset the ring
+    to full chaos instead of kicking an already settled one. Only the
+    first call, when pts is still unset, seeds the phases. */
+ window.sumGiftRingBoot=function(){ if(!pts)reset(); ensureRunning(); };
+})();
 /* the first drivers card. Unread or read, it is only what a birth and a name
    say, so it is real or it is absent. */
 function sumDrivers(B,r){
@@ -1452,6 +1767,24 @@ function sumWire(){
  h.addEventListener('toggle',function(ev){var d=ev.target;
   if(d&&d.getAttribute&&d.getAttribute('data-fold'))SUM_OPEN[d.getAttribute('data-fold')]=d.open;},true);
  h.addEventListener('click',function(ev){
+  var gc=ev.target.closest?ev.target.closest('[data-sggift]'):null;
+  if(gc){
+   /* ONE PATTERN, NOT SEVERAL: picking a tile only selects it, the same
+      radio behaviour the approved mock proved, so a second tap on a
+      different tile replaces the first rather than adding to it. The ask
+      itself waits for Add to bank, which matches the mock's two-step
+      shape and leaves the tile tap free to kick the ring right away. */
+   var i=+gc.getAttribute('data-sggift');
+   if(SG_GIFT.res!=null)return; /* a question already sent is not reopened by a stray tap */
+   SG_GIFT.pick=i; if(typeof sumRender==='function')sumRender();
+   var nat=OB_GIFT_NATURES[i];
+   if(nat&&typeof sumGiftKick==='function')sumGiftKick(nat.k);
+   return; }
+  var sg=ev.target.closest?ev.target.closest('[data-sg]'):null;
+  if(sg){ var sk=sg.getAttribute('data-sg');
+   if(sk==='giftskip'){ sumGiftSkip(); return; }
+   if(sk==='giftadd'){ if(SG_GIFT.pick!=null)sumGiftAsk(SG_GIFT.pick); return; }
+   return; }
   var b=ev.target.closest?ev.target.closest('[data-sout],[data-sp],[data-num],[data-arch],[data-dom],[data-seat],[data-mask],[data-gl],[data-igspan]'):null;
   if(!b)return;
   /* the integrity chart's own span. It repaints the surface rather than the

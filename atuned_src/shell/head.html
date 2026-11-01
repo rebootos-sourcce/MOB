@@ -3162,6 +3162,55 @@ body.punch .s-readbox,body.punch .s-out{background:var(--panel-2);border-color:t
 /* the plate */
 .sg-who .s-plate{margin-bottom:0;padding:0 0 4px;border-bottom:0}
 .sg-who .s-pname{font-size:clamp(34px,4.2vw,50px)}
+/* ============================================================
+   THE STARTER GIFT, ON SUMMARY. Ported from the approved standalone mock,
+   round SQ, 1 November, scaled for a card on this page rather than a full
+   screen: the ring at 220px, not 360, six tiles at a size that still reads
+   as giant against this card's own width without forcing the page to
+   scroll past its own content. Every colour and token here is one already
+   defined above; nothing is reinvented or hard-coded. */
+.sg-gift{align-items:center;text-align:center;gap:4px;padding:28px 24px 24px}
+.sg-gift-ringwrap{width:min(220px,46vw);aspect-ratio:1;margin:4px 0 20px;position:relative}
+.sg-gift-ringwrap svg{width:100%;height:100%;overflow:visible}
+.sg-gift-wave{fill:none;stroke:url(#sggiftgrad);stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round}
+.sg-gift-halo{fill:none;stroke:url(#sggiftgrad);stroke-width:4.5;stroke-linejoin:round;stroke-linecap:round;opacity:.18}
+.sg-gift-h{font-size:clamp(24px,2.6vw,30px);font-weight:600;letter-spacing:-.015em;margin:0 0 10px;
+ line-height:1.08;text-wrap:balance}
+.sg-gift .ob-p{font-size:14.5px;line-height:1.6;color:var(--mid);max-width:44ch;margin:0 0 6px}
+.sg-gift .ob-dim{color:var(--dim)}
+.sg-giftrows{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;max-width:640px;
+ margin:18px 0 20px}
+.sg-giftrow{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:9px;padding:20px 6px 16px;background:var(--bg);border:1px solid var(--edge);border-radius:var(--r-s);
+ cursor:pointer;min-height:132px;color:var(--ink);font-family:inherit;
+ transition:border-color .2s var(--ease-out,ease),background .2s var(--ease-out,ease),transform .15s}
+.sg-giftrow:hover{border-color:var(--edge-2)}
+.sg-giftrow:active{transform:scale(.97)}
+.sg-giftrow.on{border-color:var(--c);background:color-mix(in srgb,var(--c) 9%,var(--bg))}
+.sg-gift-ic{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+ background:radial-gradient(circle at 50% 38%,color-mix(in srgb,var(--c) 30%,var(--bg)) 0%,
+  color-mix(in srgb,var(--c) 18%,var(--bg)) 72%);
+ border:1px solid color-mix(in srgb,var(--c) 34%,transparent);
+ transition:background .24s,box-shadow .24s,border-color .2s}
+.sg-giftrow.on .sg-gift-ic{border-color:var(--c);
+ background:radial-gradient(circle at 50% 36%,color-mix(in srgb,var(--c) 52%,var(--bg)) 0%,
+  color-mix(in srgb,var(--c) 36%,var(--bg)) 76%);
+ box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 18%,transparent),
+  0 0 20px 2px color-mix(in srgb,var(--c) 38%,transparent)}
+.sg-gift-ic svg{width:26px;height:26px;fill:none;stroke:color-mix(in srgb,var(--c) 25%,var(--ink));
+ stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:stroke .2s}
+.sg-giftrow.on .sg-gift-ic svg{stroke:color-mix(in srgb,var(--c) 12%,#fff)}
+.sg-gift-n{font-size:13.5px;font-weight:600;letter-spacing:-.005em}
+.sg-gift-tip{position:absolute;left:50%;bottom:calc(100% + 8px);transform:translate(-50%,4px);width:210px;
+ background:var(--sunk);border:1px solid var(--edge-2);border-radius:10px;padding:10px 12px;
+ font-size:12px;line-height:1.45;color:var(--mid);text-align:left;font-weight:400;
+ opacity:0;pointer-events:none;transition:opacity .16s,transform .16s;box-shadow:0 8px 20px rgba(0,0,0,.4);z-index:5}
+.sg-giftrow:hover .sg-gift-tip,.sg-giftrow:focus-visible .sg-gift-tip{opacity:1;transform:translate(-50%,0)}
+@media(max-width:600px){.sg-gift-tip{display:none}
+ .sg-giftrows{gap:8px} .sg-giftrow{min-height:108px;padding:14px 4px 12px}
+ .sg-gift-ic{width:44px;height:44px} .sg-gift-ic svg{width:22px;height:22px}}
+.sg-gift-acts{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:640px;margin-top:4px}
+@media(prefers-reduced-motion:reduce){.sg-gift-wave,.sg-gift-halo{transition:none}}
 .sg-who .sg-plain{grid-template-columns:1fr}
 /* the first drivers: a cascade, one numbered ring after another on a line */
 .sg-c-k{font-size:12px;font-weight:600;color:var(--dim)}
