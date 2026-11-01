@@ -6,15 +6,25 @@
 function srcVoiceGraph(text,record,opts){
  var o=opts||{}, voice=srcVoiceSniff(text,o.prior,o.active);
  var base={status:'UNREAD',engine:'MOB/traceFromRecord',scope:'ACTIVE_RECORD_ONLY',
-  matched:[], graphNodes:0, graphEdges:0, gaps:0, refused:0};
+  matched:[], graphNodes:0, graphEdges:0, structures:[], gaps:0, refused:0};
  if(!String(text||'').trim())return {voice:voice,graph:base};
  if(o.allowProfile!==true){base.status='CONSENT_REQUIRED';return {voice:voice,graph:base};}
  if(!record||typeof record!=='object'||Array.isArray(record)){
   base.status='NO_RECORD';return {voice:voice,graph:base};}
  /* Do not silently fall back to CURP, all profiles, a remote graph, or a
   * record with another identity. The caller must pass its active record. */
- var g=traceFromRecord(record,null,o.reading);
- base.status='READ';base.graphNodes=g.nodes.length;base.graphEdges=g.edges.length;
+ /* A profile's canonical compute result is included only when the record
+  * is currently held by the engine; readHeld refuses mismatched identities.
+  * Never load a different record to make a chain appear. */
+ var reading=o.reading!==undefined?o.reading:
+  (typeof readHeld==='function'?readHeld(record):null);
+ var g=traceFromRecord(record,null,reading);
+ base.status=(g.refused||[]).length?'PARTIAL':'READ';
+ base.graphNodes=g.nodes.length;base.graphEdges=g.edges.length;
+ var typeCounts={};
+ (g.nodes||[]).forEach(function(n){typeCounts[n.type]=(typeCounts[n.type]||0)+1;});
+ base.structures=Object.keys(typeCounts).sort().map(function(k){
+  return {type:k,count:typeCounts[k],source:'derived canonical record trace'};});
  base.gaps=(g.gaps||[]).length;base.refused=(g.refused||[]).length;
  var seats={};(voice.seats||[]).forEach(function(s){seats[s.seat]=s;});
  var nodes={};(g.nodes||[]).forEach(function(n){nodes[n.type+':'+n.id]=n;});
