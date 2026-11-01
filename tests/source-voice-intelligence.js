@@ -51,4 +51,11 @@ assert.equal(E.srcVoiceCanon('law','truth').status,'READ');
 assert.equal(E.srcVoiceCanon('expression','compassion').status,'UNREAD');
 assert.equal(E.srcVoiceCanon('address','fear',3).status,'READ');
 assert.equal(E.srcVoiceCanon('saboteur','absolutely-not-a-pattern').status,'UNREAD');
+
+const story=E.srcVoiceIntelligence('Now I see their patterns in myself.',user,{allowProfile:false,
+  turns:['My sister was indignant, my mother avoidant and my father angry.']});
+assert.equal(story.intelligence.narrative.familyToSelf,'FAMILY_TO_SELF_CANDIDATE');
+assert.equal(story.intelligence.narrative.ancestralCausation,'NOT_ESTABLISHED');
+assert.equal(story.intelligence.graphStatus,'CONSENT_REQUIRED');
+assert.ok(story.intelligence.claims.every(x=>Number.isInteger(x.evidenceCount)&&x.evidenceCount>=0));
 console.log('Source voice -> Sniffer -> record graph -> intelligence contract PASS');
