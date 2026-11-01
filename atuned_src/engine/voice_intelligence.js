@@ -108,7 +108,12 @@ function srcVoiceCanon(kind,query,limit){
   {kind:'archetype',source:'ARCH',rows:ARCH.map(function(x){return {name:x.nm,seat:x.b};})},
   {kind:'domain',source:'DOMAINS',rows:DOMAINS.map(function(x){return {name:x.nm,root:x.r};})},
   {kind:'mask',source:'MASKS',rows:MASKS.map(function(x){return {name:x.nm};})},
-  {kind:'chakra',source:'BANDS',rows:BANDS.map(function(x){return {name:x};})}
+  {kind:'chakra',source:'BANDS',rows:BANDS.map(function(x){return {name:x};})},
+  {kind:'pattern',source:'PATTERN96',rows:PATTERN96.map(function(p){
+   return {name:p.name,id:p.id,layer:p.layer,domain:p.domain,
+    scientificStatus:p.scientificStatus};})},
+  {kind:'researchanchor',source:'RESEARCHANCHOR',rows:RESEARCHANCHOR.map(function(a){
+   return {name:a.label,id:a.id,namespace:a.namespace};})}
  ];
  var inventory=registries.map(function(r){return {kind:r.kind,source:r.source,count:r.rows.length};});
  if(!q)return {status:'INDEX',source:'MOB canonical loaded tables',
@@ -124,4 +129,20 @@ function srcVoiceCanon(kind,query,limit){
   records:matches.slice(0,cap),
   more:matches.length>cap,
   note:'A name match is a catalog entry, not an observation about a person.'};
+}
+
+/* A single PATTERN96 record, with its research anchors resolved. The catalog
+ * search above returns a name and an id; a caller that already has the id
+ * uses this to read the full record rather than guessing at a shape. */
+function srcVoicePattern(id){
+ var pid=String(id||'').toUpperCase().trim();
+ var rec=null;
+ for(var i=0;i<PATTERN96.length;i++){if(PATTERN96[i].id===pid){rec=PATTERN96[i];break;}}
+ if(!rec)return {status:'UNREAD',id:pid,record:null,anchors:[]};
+ var anchors=(rec.researchAnchorIds||[]).map(function(aid){
+  for(var j=0;j<RESEARCHANCHOR.length;j++){if(RESEARCHANCHOR[j].id===aid)return RESEARCHANCHOR[j];}
+  return {id:aid,namespace:null,label:null,note:null,url:null,kind:null,unresolved:true};
+ });
+ return {status:'READ',id:pid,record:rec,anchors:anchors,
+  note:'A named pattern is a catalog entry with its own stated alternative explanations, never a diagnosis or a measured CQ.'};
 }

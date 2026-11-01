@@ -41,16 +41,44 @@ const inventory=E.srcVoiceCanon('all','');
 assert.equal(inventory.status,'INDEX');
 assert.equal(inventory.inventory.find(x=>x.kind==='address').count,E.NODES.length);
 assert.equal(inventory.inventory.find(x=>x.kind==='saboteur').count,E.SAB33.length);
-assert.equal(inventory.inventory.length,9,'read canonical registries from loaded source, not a hand count');
+assert.equal(inventory.inventory.length,E.PATTERN96?11:9,'read canonical registries from loaded source, not a hand count');
 assert.equal(inventory.inventory.find(x=>x.kind==='law').count,E.SI.length);
 assert.equal(inventory.inventory.find(x=>x.kind==='expression').count,E.EXPR.length);
 assert.equal(inventory.inventory.find(x=>x.kind==='archetype').count,E.ARCH.length);
 assert.equal(inventory.inventory.find(x=>x.kind==='mask').count,E.MASKS.length);
 assert.equal(inventory.inventory.find(x=>x.kind==='chakra').count,E.BANDS.length);
+assert.equal(inventory.inventory.find(x=>x.kind==='pattern').count,E.PATTERN96.length);
+assert.equal(inventory.inventory.find(x=>x.kind==='researchanchor').count,E.RESEARCHANCHOR.length);
 assert.equal(E.srcVoiceCanon('law','truth').status,'READ');
 assert.equal(E.srcVoiceCanon('expression','compassion').status,'UNREAD');
 assert.equal(E.srcVoiceCanon('address','fear',3).status,'READ');
 assert.equal(E.srcVoiceCanon('saboteur','absolutely-not-a-pattern').status,'UNREAD');
+
+/* the 96-pattern content library, PORTED 2026-11-01: 32 ancestral, 32
+ * generational, 32 parental, each with its own alternative explanations
+ * and research anchors, never a diagnosis or a measured CQ. */
+assert.equal(E.PATTERN96.length,96);
+assert.equal(E.PATTERN96.filter(p=>p.layer==='ancestral').length,32);
+assert.equal(E.PATTERN96.filter(p=>p.layer==='generational').length,32);
+assert.equal(E.PATTERN96.filter(p=>p.layer==='parental').length,32);
+assert.ok(E.PATTERN96.every(p=>p.scientificStatus==='evidence_informed_design_category_not_validated_diagnostic_construct'),
+ 'every pattern record states its own non diagnostic status');
+const patternHit=E.srcVoiceCanon('pattern','emotional distance');
+assert.equal(patternHit.status,'READ');
+assert.equal(patternHit.records[0].record.id,'AP-01');
+assert.equal(E.srcVoiceCanon('pattern','absolutely-not-a-real-pattern').status,'UNREAD');
+assert.equal(typeof E.srcVoicePattern,'function');
+const ap01=E.srcVoicePattern('ap-01');
+assert.equal(ap01.status,'READ');
+assert.equal(ap01.record.name,'Emotional distance');
+assert.ok(ap01.anchors.length>0,'every research anchor id on a pattern resolves');
+assert.ok(ap01.anchors.every(a=>a.unresolved!==true),'no dangling research anchor id on AP-01');
+assert.equal(E.srcVoicePattern('not-a-real-id').status,'UNREAD');
+E.PATTERN96.forEach(function(p){
+ p.researchAnchorIds.forEach(function(aid){
+  assert.ok(E.RESEARCHANCHOR.some(a=>a.id===aid),'dangling research anchor id '+aid+' on '+p.id);
+ });
+});
 
 const story=E.srcVoiceIntelligence('Now I see their patterns in myself.',user,{allowProfile:false,
   turns:['My sister was indignant, my mother avoidant and my father angry.']});
