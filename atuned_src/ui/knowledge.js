@@ -960,7 +960,7 @@ function deckRender(){
       hand, believing and feeling, which was a third list of them. */
    +'<p>'+esc(C3_STEM+String(n.k).toLowerCase()+'.')+'</p></div>'
   +'<div class="card-ft"><span>axis '+esc(n.cf||'unrouted')+(opp?', toward '+esc(opp):'')+'</span>'
-   +'<span class="card-sq">'+n.sq.toFixed(1)+'</span></div>'
+   +'<span class="card-sq">'+fmtPct('weight',n.sq)+'</span></div>'
   +'<div class="card-act"><button class="btn" id="cardnext">Deal another</button>'
    +'<button class="btn" id="cardopen">Open the address</button>'
    +'<button class="btn" id="cardx">Close</button></div>'

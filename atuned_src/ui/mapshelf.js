@@ -37,7 +37,7 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
    sh+='<button class="pm-li'+(PMPICK===m.o?' on':'')+'" data-it="'+m.rank+'">'
     +'<i style="background:'+(PMC[m.band]||'#888')+'"></i>'
     +'<span class="pm-ln">'+esc(m.nm)+'</span>'
-    +'<span class="pm-lw">'+(m.v*10).toFixed(1)+'</span>'
+    +'<span class="pm-lw">'+fmtPct('chain',m.v*10)+'</span>'
     +(m.sub?'<span class="pm-ls">'+esc(m.sub)+'</span>':'')
     +'<span class="pm-lk">'+m.links.length+' address'+(m.links.length===1?'':'es')+'</span></button>';});
   sh+='</div>';
@@ -49,7 +49,7 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
    var opp=(CHILD.filter(function(c){return c.nm===m.o.cf;})[0]||{}).opp||'';
    sh+='<button class="pm-li" data-seat="'+B2K[m.band]+'"><i style="background:'+(PMC[m.band]||'#888')+'"></i>'
     +'<span class="pm-ln">'+esc(m.nm)+'</span>'
-    +'<span class="pm-lw">'+m.o.sq.toFixed(1)+'</span>'
+    +'<span class="pm-lw">'+fmtPct('weight',m.o.sq)+'</span>'
     +'<span class="pm-ls">toward '+esc(opp||'no pole')+'</span>'
     +'<span class="pm-lk">'+m.band+'</span></button>';});
   sh+='</div>';}
@@ -85,7 +85,7 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
    +'<span class="pm-sv">'+(s.hot?s.hot+' held':'clear')+'</span>'
    /* A SEAT WITH NOTHING ON IT PASSES EVERYTHING, which is the default and not
       a measurement, so the share is a dash until something is held. J13. */
-   +'<span class="pm-sp">'+(s.hot?Math.round(s.pass*100)+'%':'\u2013')+'</span>'
+   +'<span class="pm-sp">'+(s.hot?fmtPct('pass',s.pass):'\u2013')+'</span>'
    +'<span class="pm-sk">'+s.p.nv+'</span></button>';});
  sh+='</div>';
  el.innerHTML=sh;
@@ -159,22 +159,22 @@ function runSeatFlowDrill(k){
   /* the Flow circle's step, KV, so the answer to a pressed seat says the
      same word the figure prints beside it; a phone has no lane for the word */
   +'<div class="pm-grid"><span>flow</span><b>'+bmFlowStep(ss.pass)+'</b>'
-  +'<span>passes</span><b>'+(ss.hot?Math.round(ss.pass*100)+'%':'\u2013')+'</b>'
+  +'<span>passes</span><b>'+(ss.hot?fmtPct('pass',ss.pass):'\u2013')+'</b>'
   +'<span>held</span><b>'+(ss.hot||'\u2013')+'</b>'
-  +'<span>mean SQ</span><b>'+(ss.mean>0?ss.mean.toFixed(1):'\u2013')+'</b>'
-  +'<span>integrity</span><b>'+(unreadNow()?'\u2013':bandIg(bnd).toFixed(1))+'</b></div>'
+  +'<span>mean SQ</span><b>'+(ss.mean>0?fmtPct('weight',ss.mean):'\u2013')+'</b>'
+  +'<span>integrity</span><b>'+(unreadNow()?'\u2013':fmtPct('integrity',bandIg(bnd)))+'</b></div>'
   /* plain, because six words is a sentence and not a label (shell/head.html,
      the capitalize rule), so it keeps the case it is written in */
   +'<div class="pm-eye plain" style="margin-top:12px">Laws of Moral Integrity seated here</div><div class="pm-chips">'
   +lws.map(function(l){return '<span class="pm-chip" style="opacity:'
-    +(0.4+S.law[l.nm]/10*0.6).toFixed(2)+'">'+l.nm+(unreadNow()?'':' '+S.law[l.nm].toFixed(1))+'</span>';}).join('')+'</div>'
+    +(0.4+S.law[l.nm]/10*0.6).toFixed(2)+'">'+l.nm+(unreadNow()?'':' '+fmtPct('law',S.law[l.nm]))+'</span>';}).join('')+'</div>'
   +'<div class="pm-eye" style="margin-top:12px">Addresses</div><div class="pm-rows">';
  seg.slice(0,8).forEach(function(n){
   var opp3=(CHILD.filter(function(c){return c.nm===n.cf;})[0]||{}).opp||'';
   /* the address number is the data model read out loud, CO-15, and the row
      reads as a name now */
   h+='<div class="pm-r"><span>'+esc(n.k)+'</span><em>toward '
-   +esc(opp3||'no pole')+(n.pole>=4?', installed':'')+'</em><b>'+(n.sq>0?n.sq.toFixed(1):'\u2013')+'</b></div>';});
+   +esc(opp3||'no pole')+(n.pole>=4?', installed':'')+'</em><b>'+(n.sq>0?fmtPct('weight',n.sq):'\u2013')+'</b></div>';});
  h+='</div>';
  rdShell(h);}
 /* one painted region: what it presents as, and what is heaviest under it */
@@ -192,6 +192,6 @@ function runPainDrill(k){
   rn.slice(0,6).forEach(function(n){
    var opp=(CHILD.filter(function(c){return c.nm===n.cf;})[0]||{}).opp||'';
    h+='<div class="pm-r"><span>'+esc(n.k)+'</span><em>toward '+esc(opp||'no pole')
-    +'</em><b>'+n.sq.toFixed(1)+'</b></div>';});
+    +'</em><b>'+fmtPct('weight',n.sq)+'</b></div>';});
   h+='</div>';}
  rdShell(h);}

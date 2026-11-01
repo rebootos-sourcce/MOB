@@ -888,6 +888,12 @@ function rbPair(k,o){
 function rbPairSays(pairWord,o,lean){
  var s=[rbSay(pairWord),rbSay(o.L.nm),rbSay(o.R.nm)].filter(Boolean).join(' ');
  return (s+(lean?' '+lean:'')).trim();}
+/* SAID IN WORDS, NOT PRINTED. This already read the registry, pct() off the
+   pole's own kind, so the figure is the one the bar prints. Percent phase 3
+   swapped it for fmtPct and the spoken name became "62%" and the dash, which
+   a screen reader says as a symbol and which tests/functional.js's RB check,
+   reading "N per cent" or "zero", failed on both pairs. A spoken name says
+   the figure the way it is spoken. Put back as it was. */
 function rbPairAria(pairWord,o,say,does){
  var f=function(P){var p=pct(P.kind||'lean',P.v);
   return P.nm+' '+(o.read?(p>0?p+' per cent':'zero'):'not read yet');};
