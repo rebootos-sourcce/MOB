@@ -33733,3 +33733,7 @@ His words, in order: the funnel, quiz, summary and create-account need checking 
 
 - [ ] **SO1b. His: Practitioner is closed. Found, not guessed.** The founding offer can't actually be sold today. Needs his call: open checkout early (even without the cohort tools), take names now and bill once it opens, or hold the whole offer until Practitioner is real.
 - [ ] **SO1c. His: the ten open questions in the simulation**, before any billing logic gets built. Full list in the review file.
+
+## Round SP, 1 November. The 7 disk-cleanup rescue branches: kept, not decided on yet
+
+His ruling, on the 7 orphan branches reported on the build-status dashboard (a sound map, an onboarding mockup, journey work, a story-redesign mockup, the recipe engine / teachers panel, login/identity work, a left-menu rail redesign; none has a PR, each is one commit, 1,200 to 7,900 lines, about 4 weeks old): "keep the 7 orphan branches. These are part of our backlog. Once we get to our MVPA, we'll revisit these." Read as: not deleted, not reviewed now, parked as backlog until MVPA (the MVP alpha milestone). Nothing on these branches is to be touched, pruned, or force-pushed before that revisit. Whoever reaches MVPA planning should read this entry and `reviews/` for the exact branch names before deciding what, if anything, in them still matters.
