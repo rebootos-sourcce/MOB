@@ -16,7 +16,7 @@ if(typeof module!=='undefined'&&module.exports){
                  srcNegated:srcNegated, srcPrior:srcPrior, srcRung:srcRung,
                  srcHyperSeats:srcHyperSeats,
                  srcHear:srcHear, srcVoiceSniff:srcVoiceSniff,
-                 srcVoiceNarrative:srcVoiceNarrative, srcVoiceGraph:srcVoiceGraph, srcVoiceIntelligence:srcVoiceIntelligence, srcVoiceCanon:srcVoiceCanon,
+                 srcVoiceNarrative:srcVoiceNarrative, srcVoiceChargeCycle:srcVoiceChargeCycle, SRC_TULA_LADDERS:SRC_TULA_LADDERS, srcVoiceGraph:srcVoiceGraph, srcVoiceIntelligence:srcVoiceIntelligence, srcVoiceCanon:srcVoiceCanon,
                  srcPrior:srcPrior, srcTurn:srcTurn,
                  SRC_DIM_ORDER:SRC_DIM_ORDER, SRC_DIM_CUE:SRC_DIM_CUE, SRC_DO:SRC_DO,
                  srcDims:srcDims, srcNext:srcNext,
