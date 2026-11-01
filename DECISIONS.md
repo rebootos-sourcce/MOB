@@ -3036,3 +3036,23 @@ His words: "Check to see if there's a second onboarding. Right now, there's been
 - **Kept, on purpose:** the sheet host the welcome after paying borrowed, renamed `#paidwelcome` and now its own; the chain the onboarding's end card draws its rows in; `ui.tutorialSeen` on the record; and `'tutorial'` among the doors a journey walk may name (`JOURNEY_DOORS`), because a record carrying an older value is read and never refused. The journey record landed on 9 October, after the switch panel was gone, so no person could have written that door; only gates did. `tests/journey2.js` still holds that such a walk resumes on the onboarding's own card and ends on its end card.
 - **What else changes:** `sniffStory`, the full story reader, has no screen that calls it now. The tutorial was its only one. It stays in the engine, exported and held by `tests/engine.js`, and its route into screens was already ruled for after alpha (the 9 October entry above).
 - **Held by** `tests/onboarding2.js`, section 2, which reads the running page: no name of the tutorial on it, no rule of its poses, no host of its own, and no row for it in Account. Those four fail by name on `45fe5649`, the build from before this change. The checks that rode the tutorial's screens and still describe the product moved: the stage checks (no card chrome, a ghost with no live control, nothing running under reduced motion) onto the onboarding's own stage, and the release question gate onto the same two calls the tutorial made, `stCommit` and `obMini` handed to `relPick`.
+
+## Glass is shelved for look development, 1 November
+
+His words: "I think we'll keep the designs that we currently have in Engine. I
+think as far as our look development, pushing our look development further, I
+think we're going to abandon the glass style. It may come back in some other
+skin, but for now, I don't want to think about it. It's contaminating our
+execution."
+
+- **Shelved, not deleted.** No glass/frosted material (blur, translucency,
+  the material named in `atuned/docs/bibles/OWNER_RULINGS.md`'s art-direction
+  palette, "light, vector, glass") in any new look-development pass from this
+  date forward, across Field, Journal, or any other surface. It may return as
+  its own named skin later, by his word alone, not by a designer's default.
+- **What stands:** the designs already approved and in Engine keep their
+  current look; this ruling does not retroactively redesign anything already
+  shipped. It governs what comes next, not what already exists.
+- **Named trigger:** Journal's round-4 mock-up (the black panel, frosted
+  header treatment) is the specific instance he reacted to; the ruling is
+  broader than that one mock-up, covering the material itself, not one screen.
