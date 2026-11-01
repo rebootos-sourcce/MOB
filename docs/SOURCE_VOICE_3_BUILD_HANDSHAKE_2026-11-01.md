@@ -64,3 +64,12 @@ This handoff is an honest integration status, not a claim of 100% completion.
 2. Run new narrative and three-build tests with actual canonical engine; fix observed failures, not guessed ones.
 3. Integrate a consent-aware same-origin browser host into the deployed voice page. Test with real spoken user turns, inactivity, explicit corrections and transcript provenance, using synthetic examples in permanent reports.
 4. Expand the remaining graph/canonical family indexes under source-of-truth registry contracts. Implement independent lineage and CQDQ verification; do not assign 10/10 law scores without evaluation.
+
+
+## Emotional charge-cycle TDD (2026-11-01)
+- **New canonical engineering proposal:** [`docs/SOURCE_EMOTION_CHARGE_CYCLE_TDD_2026-11-01.md`](https://github.com/rebootos-sourcce/MOB/blob/source-voice-sniffer-readonly-20261031/docs/SOURCE_EMOTION_CHARGE_CYCLE_TDD_2026-11-01.md) — TULA “Laws of Emotion” / story-bearing charge-up and charge-down. Reads actual source PDF pages 1–21, distinguishes the seven 1–9 word ladders from seven conceptual curves, and proposes an episode/subject/time model.
+- **Owner ruling:** Every emotional cycle has a build-side story and a subsequent charge-down/aftermath-side story; neither follows a mandatory word sequence. For anger, TULA p16 post-peak labels include embarrassed, ashamed, guilty and humiliated, but also hostile/aggressive terms. Reflection is **not automatically recovery**.
+- **Crucial user test:** “I got pissed off” → Anger colloquial lexical family, rank unknown, phase unknown, no guessed CQ or Gaussian coordinate. “I pissed off my father” does NOT say speaker is angry.
+- **Owner ZIP:** `SOURCE_AI_TULA_CHARGE_CYCLE_EXECUTIVE_2026-11-01.zip` (downloadable in ChatGPT owner conversation, **not committed to GitHub**) contains full 4,735-word spec, machine-readable 63-term catalog, source PDF, JSON Schema and 37 synthetic semantic acceptance fixtures.
+- **Local V6:** `SOURCE_AI_TULA_BELL_V6.html` (ZIP only) passed 26/26 headless Chromium behavior/phrase/UI checks. This is *not* production or a working cross-turn charge-cycle engine.
+- **Next engineering:** Implement `srcVoiceChargeCycle` read-only alongside existing `srcVoiceNarrative`; feed its evidence-linked `phase` and independent `chargeDirection` into `srcVoiceIntelligence`, map to canonical CHILD/graph only with consent; add per-case real canonical engine tests and a grounded two-sided visualization. Preserve no unsolicited idle questions. Existing CI/build and production same-origin graph gaps remain OPEN.
