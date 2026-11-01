@@ -80,7 +80,7 @@ function srcVoiceIntelligence(text,record,opts){
    kind:e.kind||null,said:e.said||'unknown',status:'USER_REPORTED'};});
  out.claims=(ledger.order||[]).slice(0,7).map(function(k){
   var c=ledger.claims[k]||{};
-  return {state:c.state||'unknown',evidenceCount:(c.refs||[]).length,
+  return {state:c.state||'unknown',evidenceCount:Array.isArray(c.ev)?c.ev.length:0,
    reportedSeat:c.state==='confirmed'||c.state==='corrected'?k:null,
    status:'not a diagnosis or identity'};});
  if(v.graph.status!=='READ')out.gaps.push('record graph access not available: '+v.graph.status);
