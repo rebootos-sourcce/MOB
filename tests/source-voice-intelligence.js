@@ -17,6 +17,8 @@ const prior=JSON.stringify(user);
 const graph=E.srcVoiceGraph('I felt afraid.',user,{allowProfile:true});
 assert.equal(graph.graph.status,'READ');
 assert.equal(graph.graph.engine,'MOB/traceFromRecord');
+assert.ok(Array.isArray(graph.graph.structures),'graph exposes only anonymized structural coverage');
+assert.equal(graph.graph.structures.some(x=>x.type==='pattern'),true);
 assert.equal(JSON.stringify(user),prior,'read-only graph must not mutate record');
 const first=E.srcVoiceIntelligence('My mother always hid her feelings.',user,{allowProfile:true});
 const second=E.srcVoiceIntelligence('My mother always hid her feelings.',user,{allowProfile:true});
