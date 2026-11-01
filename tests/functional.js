@@ -2487,8 +2487,21 @@ const virginSweep=await page.evaluate(()=>{
     spread in the page's hidden markup. It surfaced once that figure carried
     a percent sign (engine/pct.js) and not before, which is this sweep's own
     signal working and not a new leak: the whole page is only honestly swept
-    once every door onto it has actually been opened. */
+    once every door onto it has actually been opened.
+
+    AND TABEXTRA TOO, not only TABDEF. This swept every tab in the bar and
+    still failed, intermittently, on a stray 77% traced by ancestor path to
+    `#games`'s own match game: `mtBlock()` reads S.charge off CHILD, which
+    this sweep does zero, but only once Games itself renders and recomputes
+    it. Games (7) and Settings (9) are deliberately not in TABDEF, having no
+    door in the bar (core.js's own comment on TABEXTRA), so this loop never
+    reached Games, and whatever charge a prior test's real playthrough left
+    on MT.pick (module state, never reset by toYou or loadP) sat stale in
+    Games' markup for the rest of the run. monitor.js already walks TABDEF
+    and TABEXTRA together for exactly this reason; this sweep now does the
+    same. */
  TABDEF.forEach(function(t){setTab(t.k); render();});
+ Object.keys(TABEXTRA).forEach(function(k){setTab(TABEXTRA[k].k); render();});
  setTab(TAB.FIELD); layout(); draw(compute());
  const r=compute();
  /* the whole rendered page, not one element, because the last time this was
