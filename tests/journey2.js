@@ -327,14 +327,21 @@ for(const [W,H] of WIDTHS){
    res:(typeof SG_GIFT!=='undefined')?SG_GIFT.res:null,
    nat:(CURP.journey&&CURP.journey.gift&&CURP.journey.gift.giftNatureId)||null,
    status:(document.getElementById('status')||{}).textContent||'',
+   tip:(()=>{const t=c?c.querySelector('.tipu'):null;
+    return t?{term:t.textContent,say:t.getAttribute('data-tip')}:null;})(),
    card:c?c.innerText:''};});
  const settle=()=>page.waitForFunction(()=>SG_GIFT.res!=='saving',null,{timeout:8000}).catch(()=>{});
  await page.waitForSelector('.sg-giftrow',{timeout:8000}).catch(()=>{});
  let gc=await giftCard();
  ok(/Starting gift/.test(gc.card),tag+'Summary carries the starter gift, on the station it lands on: '+J(gc.card.slice(0,40)));
  ok(J(gc.chips)===J(NATS),tag+'the gift offers the six natures: '+J(gc.chips));
- ok(/starter set made for it, 100 patterns/.test(gc.card)&&/A pattern is one line you have not said before\./.test(gc.card),
-  tag+'it says what it is choosing, and what a pattern is, on the card: '+J(gc.card.slice(0,160)));
+ /* round SQ, 1 November: "patterns" carries its meaning on the term
+    itself now (unp('pattern','patterns','gift'), same as the quiet
+    notice this card replaces), not as a second sentence beside it that
+    said the same thing twice. */
+ ok(/starter set made for it, 100 patterns/.test(gc.card)&&!!gc.tip
+  &&gc.tip.term==='patterns'&&gc.tip.say==='A pattern is one line you have not said before.',
+  tag+'it says what it is choosing, and what a pattern is, on the card: '+J({card:gc.card.slice(0,160),tip:gc.tip}));
  ok(gc.btns.length===NATS.length+2&&gc.btns.some(b=>b.k==='giftskip'&&b.t==='Skip')&&gc.btns.some(b=>b.k==='giftadd'),
   tag+'six choices, Skip and Add to bank: '+J(gc.btns.map(b=>b.t)));
  ok(gc.btns.every(b=>b.w>=44&&b.h>=44),tag+'every control on it is at least 44 by 44: '+J(gc.btns.filter(b=>b.w<44||b.h<44).map(b=>[b.t,Math.round(b.w),Math.round(b.h)])));

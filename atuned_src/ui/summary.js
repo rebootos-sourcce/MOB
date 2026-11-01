@@ -1101,7 +1101,12 @@ function sumGiftSkip(){
  if(typeof sumRender==='function')sumRender();}
 function sumGiftCard(){
  var res=SG_GIFT.res, nat=(SG_GIFT.pick!=null)?OB_GIFT_NATURES[SG_GIFT.pick]:null, nm=nat?nat.n:'';
- var unpack='<span class="ob-dim">A pattern is one line you have not said before.</span>';
+ /* UNPACK EVERY SYMBOL, CLAUDE.md: "patterns" carries its meaning on the
+    term itself, the same way the one-line notice below does
+    (unp('pattern','patterns','gift')), never as a plain sentence beside
+    it. And the count is GIFT_N, the engine's own, never a typed 100: that
+    is the exact defect class CLAUDE.md names nine times over. */
+ var pat=unp('pattern','patterns','gift');
  var head='<div class="sg-gift-ringwrap" id="sggiftring"><svg viewBox="0 0 200 200" id="sggiftringsvg">'
   +'<defs><linearGradient id="sggiftgrad" gradientUnits="userSpaceOnUse" x1="100" y1="30" x2="100" y2="170">'
   +'<stop offset="0%" stop-color="'+seatCol('Crown')+'"/><stop offset="16.667%" stop-color="'+seatCol('3rd Eye')+'"/>'
@@ -1114,14 +1119,14 @@ function sumGiftCard(){
   +'<p class="ob-p ob-dim" role="status">Checking '+esc(nm)+' with the server.</p></section>';
  if(res==='issued')return '<section class="sg-card sg-gift" data-grp="gift">'+head
   +'<h3 class="sg-gift-h">Your starter set is ready.</h3>'
-  +'<p class="ob-p">'+esc(nm)+', 100 patterns. Our server holds them for you. '+unpack+'</p></section>';
+  +'<p class="ob-p">'+esc(nm)+', '+GIFT_N+' '+pat+'. Our server holds them for you.</p></section>';
  if(res==='unavailable')return '<section class="sg-card sg-gift" data-grp="gift">'+head
   +'<h3 class="sg-gift-h">No set is ready for '+esc(nm)+' yet.</h3>'
   +'<p class="ob-p">Your pick is saved. Nothing was added.</p>'+sumGiftLeft()+'</section>';
  return '<section class="sg-card sg-gift" data-grp="gift">'+head
   +'<h3 class="sg-gift-h">Starting gift</h3>'
   +'<p class="ob-p">We want to thank you for starting. Pick one of these and we will look '
-  +'for a starter set made for it, 100 patterns. '+unpack+'</p>'
+  +'for a starter set made for it, '+GIFT_N+' '+pat+'.</p>'
   +sumGiftRows(OB_GIFT_NATURES,SG_GIFT.pick)
   +(res==='unverified'?'<p class="ob-p" role="status">The server did not confirm '+esc(nm)
    +', so nothing was added. Press it again to try again, or skip.</p>'+sumGiftLeft():'')

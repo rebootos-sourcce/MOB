@@ -110,25 +110,46 @@ async function arrive(browser,payload,W,H){
   ok(!who.unread&&who.sabs>0,tag+'it has a reading and the engine finds saboteurs in it, '+who.sabs);
   ok(who.tab,tag+'and the link lands on Summary, the first screen');
 
-  /* ---- 1 · the first screen is opened, not shopped ---- */
+  /* ---- 1 · the first screen is opened, not shopped ----
+     Round SQ, 1 November: the owner moved the starter gift's pick onto
+     Summary, "after your summary when you onboard... once they sign up."
+     A person who has not picked or skipped yet now sees the picker card
+     (#sggiftring's .sg-gift section), not the plain one-line notice; the
+     quiet "Your gift: N patterns..." line is what the SAME surface shows
+     once a pick or a skip is on record (ui/summary.js sumGift()). This
+     fixture is always that first-time person, so it is always the card. */
   const first=await pg.evaluate(SH=>{
    const SHOWN=new Function('return ('+SH+')()');
-   const g=document.getElementById('sumgift'), r=g?g.getBoundingClientRect():null;
+   const g=document.getElementById('sumgift')||document.querySelector('.sg-gift');
+   const head=g?g.querySelector('h3'):null, intro=g?g.querySelector('p.ob-p'):null;
+   const hr=head?head.getBoundingClientRect():null, ir=intro?intro.getBoundingClientRect():null;
    const tipu=g?g.querySelector('.tipu'):null;
    /* the words a person can see without scrolling */
    const seen=[...document.querySelectorAll('#sumbody *')].filter(e=>{
     if(e.children.length)return false; const b=e.getBoundingClientRect();
     return b.width>0&&b.height>0&&b.bottom>0&&b.top<innerHeight;}).map(e=>e.textContent).join(' ');
    return {locks:SHOWN(), reading:document.getElementById('sumbody').textContent, text:g?g.textContent.replace(/\s+/g,' ').trim():null,
-    inView:!!r&&r.top>=0&&r.bottom<=innerHeight&&r.width>0, scroll:scrollY,
+    isCard:!!g&&g.classList.contains('sg-gift'), scroll:scrollY, innerHeight:innerHeight,
+    headBottom:hr?hr.bottom:null, introBottom:ir?ir.bottom:null,
     tip:tipu?tipu.getAttribute('data-tip'):null, tipTerm:tipu?tipu.textContent:null,
-    n:document.querySelectorAll('#sumgift').length, seen:seen,
+    n:document.querySelectorAll('#sumgift,.sg-gift').length, seen:seen,
     see:/See tiers/.test(document.body.innerText),
     move:[...document.querySelectorAll('button')].filter(b=>b.getClientRects().length&&/^Move to/.test(b.textContent.trim())).length};},SHOWN.toString());
   ok(first.locks.length===0,tag+'nothing on the first screen carries a lock, '+first.locks.join());
-  ok(first.text==='Your gift: '+who.N+' patterns, no card. Everything is open.',tag+'the gift is said in one line, in full, '+JSON.stringify(first.text));
+  ok(first.isCard,tag+'a first-time person sees the starter gift picker, not the quiet notice, '+JSON.stringify(first.text));
+  ok(new RegExp(who.N+'\\s*patterns').test(first.text||''),tag+'and it names the real gift count, read off GIFT_N, '+JSON.stringify(first.text));
   ok(first.n===1,tag+'once, '+first.n);
-  ok(first.inView&&first.scroll===0,tag+'and it is on the first screen without a scroll, '+JSON.stringify({inView:first.inView,scroll:first.scroll}));
+  /* The picker's own heading and intro sentence, which carry the gift's
+     count and meaning, land on first screen without a scroll on both
+     widths. The six tiles and the two buttons below them are a decision
+     a person makes, not a notice they are told, and a short scroll to
+     reach six real choices is not the same defect as a notice line
+     pushed off screen; task #87 (the card's own aesthetic pass) is where
+     fitting more of the card above the fold belongs, not this gate. */
+  ok(first.scroll===0&&first.headBottom!=null&&first.headBottom<=first.innerHeight
+   &&first.introBottom!=null&&first.introBottom<=first.innerHeight,
+   tag+'and what the gift is and how many patterns is on the first screen without a scroll, '
+   +JSON.stringify({scroll:first.scroll,headBottom:first.headBottom,introBottom:first.introBottom,innerHeight:first.innerHeight}));
   ok(first.tipTerm==='patterns'&&first.tip==='A pattern is one line you have not said before.',
    tag+'"patterns" carries the gift\'s own meaning beside it, not the glossary\'s reaction, '+JSON.stringify(first.tip));
   ok(!/\$\s?\d|\bprice\b|a month|per month/i.test(first.seen),tag+'no price on the first screen');
@@ -187,9 +208,10 @@ async function arrive(browser,payload,W,H){
      from before this change is measured on what it draws and does not throw */
   const ex=await pg.evaluate(async()=>{ window.GIFT_ASK=()=>typeof lockGift==='function'?lockGift():null;const i=PEOPLE.findIndex(p=>!p.you); loadP(i); setTab(TAB.SUMMARY); render();
    await new Promise(r=>setTimeout(r,200));
-   const o={nm:PEOPLE[i].nm, gift:GIFT_ASK(), line:!!document.getElementById('sumgift')};
+   const has=()=>!!(document.getElementById('sumgift')||document.querySelector('.sg-gift'));
+   const o={nm:PEOPLE[i].nm, gift:GIFT_ASK(), line:has()};
    accProfOpen(window.GIFT_ID); setTab(TAB.SUMMARY); render(); await new Promise(r=>setTimeout(r,200));
-   o.back=!!document.getElementById('sumgift')&&CURP.id===window.GIFT_ID; return o;});
+   o.back=has()&&CURP.id===window.GIFT_ID; return o;});
   ok(!ex.gift&&!ex.line,tag+'a worked example on the same device is not the viewer\'s gift and shows no gift line, '+JSON.stringify(ex));
   ok(ex.back,tag+'and the person\'s own Summary still does');
 

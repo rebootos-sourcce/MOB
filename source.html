@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2748 65cd029d 2026-11-01 21:47"><head><meta charset="utf-8">
+<html lang="en" data-build="v2751 55583849 2026-11-01 23:39"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -53590,7 +53590,12 @@ function sumGiftSkip(){
  if(typeof sumRender==='function')sumRender();}
 function sumGiftCard(){
  var res=SG_GIFT.res, nat=(SG_GIFT.pick!=null)?OB_GIFT_NATURES[SG_GIFT.pick]:null, nm=nat?nat.n:'';
- var unpack='<span class="ob-dim">A pattern is one line you have not said before.</span>';
+ /* UNPACK EVERY SYMBOL, CLAUDE.md: "patterns" carries its meaning on the
+    term itself, the same way the one-line notice below does
+    (unp('pattern','patterns','gift')), never as a plain sentence beside
+    it. And the count is GIFT_N, the engine's own, never a typed 100: that
+    is the exact defect class CLAUDE.md names nine times over. */
+ var pat=unp('pattern','patterns','gift');
  var head='<div class="sg-gift-ringwrap" id="sggiftring"><svg viewBox="0 0 200 200" id="sggiftringsvg">'
   +'<defs><linearGradient id="sggiftgrad" gradientUnits="userSpaceOnUse" x1="100" y1="30" x2="100" y2="170">'
   +'<stop offset="0%" stop-color="'+seatCol('Crown')+'"/><stop offset="16.667%" stop-color="'+seatCol('3rd Eye')+'"/>'
@@ -53603,14 +53608,14 @@ function sumGiftCard(){
   +'<p class="ob-p ob-dim" role="status">Checking '+esc(nm)+' with the server.</p></section>';
  if(res==='issued')return '<section class="sg-card sg-gift" data-grp="gift">'+head
   +'<h3 class="sg-gift-h">Your starter set is ready.</h3>'
-  +'<p class="ob-p">'+esc(nm)+', 100 patterns. Our server holds them for you. '+unpack+'</p></section>';
+  +'<p class="ob-p">'+esc(nm)+', '+GIFT_N+' '+pat+'. Our server holds them for you.</p></section>';
  if(res==='unavailable')return '<section class="sg-card sg-gift" data-grp="gift">'+head
   +'<h3 class="sg-gift-h">No set is ready for '+esc(nm)+' yet.</h3>'
   +'<p class="ob-p">Your pick is saved. Nothing was added.</p>'+sumGiftLeft()+'</section>';
  return '<section class="sg-card sg-gift" data-grp="gift">'+head
   +'<h3 class="sg-gift-h">Starting gift</h3>'
   +'<p class="ob-p">We want to thank you for starting. Pick one of these and we will look '
-  +'for a starter set made for it, 100 patterns. '+unpack+'</p>'
+  +'for a starter set made for it, '+GIFT_N+' '+pat+'.</p>'
   +sumGiftRows(OB_GIFT_NATURES,SG_GIFT.pick)
   +(res==='unverified'?'<p class="ob-p" role="status">The server did not confirm '+esc(nm)
    +', so nothing was added. Press it again to try again, or skip.</p>'+sumGiftLeft():'')
@@ -85685,5 +85690,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005645832"></div>
+<div id="eof" hidden data-len="005646123"></div>
 </body></html>
