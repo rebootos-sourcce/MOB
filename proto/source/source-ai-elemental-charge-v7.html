@@ -891,6 +891,12 @@ function srcVoiceChargeCycle(turns,opts){
  if(phase==='PAST_REFLECTION')rank=null;
  if(!self.length&&active.length===1&&active[0].subject==='self')episodeFamily=null;
  if(corrected){episodeFamily=null;rank=null;}
+ /* Preserve corrections as explicit provenance. An earlier report can be
+    observed without continuing to count it as a current positive claim. */
+ if(corrected&&/\b(?:wasn't|wasn’t|was not|never|not)\s+(?:really\s+)?angry\b/i.test(now)){
+  obs.forEach(function(x){if(x.turn<texts.length-1&&x.family==='Anger'&&x.subject==='self'){
+   x.retracted=true;x.affirmed=false;x.status='CORRECTED_BY_SPEAKER';}});
+ }
  var events=[];
  if(up||rankedRise)events.push({type:'BUILD',evidence:up?'explicit intensification':'ordered ranked terms'});
  if(choice)events.push({type:'CHOICE',evidence:'explicit decision language'});
