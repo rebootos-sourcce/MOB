@@ -46,6 +46,7 @@ engine/sourceai.js
 engine/voice_sniffer.js
 engine/evidence.js
 engine/voice_narrative.js
+engine/voice_charge_cycle.js
 engine/voice_intelligence.js
 engine/qcheck.js
 engine/astro.js
