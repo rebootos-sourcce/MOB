@@ -71,3 +71,33 @@ function srcVoiceIntelligence(text,record,opts){
  if(v.graph.status!=='READ')out.gaps.push('record graph access not available: '+v.graph.status);
  return {voice:v.voice,intelligence:out};
 }
+
+/* Actual canon registry retrieval for explicit questions, not user profiling.
+ * The source records are the ones already loaded into the engine. An empty
+ * query returns counts; other queries return small sourced name matches.
+ * Never claim a matching word proves that somebody carries that pattern. */
+function srcVoiceCanon(kind,query,limit){
+ var k=String(kind||'all').toLowerCase(), q=String(query||'').toLowerCase().trim();
+ var cap=Math.max(1,Math.min(12,Math.floor(+limit||6)));
+ var registries=[
+  {kind:'address',source:'NODES',rows:NODES.map(function(n){
+   return {id:n.i,name:n.k,seat:n.b,category:n.c||null};})},
+  {kind:'saboteur',source:'SAB33',rows:SAB33.map(function(r){
+   return {name:r[0],axisBands:r[1].map(function(b){return b[0];})};})},
+  {kind:'axis',source:'CHARGES',rows:CHARGES.map(function(c){return {name:c};})}
+ ];
+ var inventory=registries.map(function(r){return {kind:r.kind,source:r.source,count:r.rows.length};});
+ if(!q)return {status:'INDEX',source:'MOB canonical loaded tables',
+  inventory:inventory,records:[],otherRegistries:'NOT_INDEXED_BY_VOICE'};
+ var matches=[];
+ registries.forEach(function(r){
+  if(k!=='all'&&k!==r.kind)return;
+  r.rows.forEach(function(x){
+   if(String(x.name||'').toLowerCase().indexOf(q)>=0)matches.push({
+    kind:r.kind,source:r.source,record:x});});});
+ return {status:matches.length?'READ':'UNREAD',
+  source:'MOB canonical loaded tables',inventory:inventory,
+  records:matches.slice(0,cap),
+  more:matches.length>cap,
+  note:'A name match is a catalog entry, not an observation about a person.'};
+}
