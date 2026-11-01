@@ -99,7 +99,13 @@ function srcVoiceCanon(kind,query,limit){
    return {id:n.i,name:n.k,seat:n.b,category:n.c||null};})},
   {kind:'saboteur',source:'SAB33',rows:SAB33.map(function(r){
    return {name:r[0],axisBands:r[1].map(function(b){return b[0];})};})},
-  {kind:'axis',source:'CHARGES',rows:CHARGES.map(function(c){return {name:c};})}
+  {kind:'axis',source:'CHARGES',rows:CHARGES.map(function(c){return {name:c};})},
+  {kind:'law',source:'SI',rows:SI.map(function(x){return {name:x.nm,seat:x.b};})},
+  {kind:'expression',source:'EXPR',rows:EXPR.map(function(x){return {name:x.nm,seat:x.b};})},
+  {kind:'archetype',source:'ARCH',rows:ARCH.map(function(x){return {name:x.nm,seat:x.b};})},
+  {kind:'domain',source:'DOMAINS',rows:DOMAINS.map(function(x){return {name:x.nm,root:x.r};})},
+  {kind:'mask',source:'MASKS',rows:MASKS.map(function(x){return {name:x.nm};})},
+  {kind:'chakra',source:'BANDS',rows:BANDS.map(function(x){return {name:x};})}
  ];
  var inventory=registries.map(function(r){return {kind:r.kind,source:r.source,count:r.rows.length};});
  if(!q)return {status:'INDEX',source:'MOB canonical loaded tables',
