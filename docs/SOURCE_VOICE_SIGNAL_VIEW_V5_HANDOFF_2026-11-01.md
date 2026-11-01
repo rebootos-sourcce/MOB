@@ -41,3 +41,8 @@ The six provisional phrase mappings are not newly approved canon entries. They h
 - No production source/build modified by this particular visualization pass.
 
 **Next-AI reading order:** this file -> `docs/SOURCE_VOICE_3_BUILD_HANDSHAKE_2026-11-01.md` -> `reviews/SPEC-source-ai.md` -> `SNIFFER_SPEC.md` -> PR code/tests -> the owner's V5 ZIP index. Update the executive handshake after every verified status change.
+
+## Verified GitHub prototype source (same branch)
+- `proto/source/source-ai-signal-v5.html` is the **actual complete tested V5 prototype**, committed on this draft branch (blob SHA `cc210ba1643225e0a2d0ef0c1c233d6b19bfd1a3`). A full GitHub readback matched the tested conversation file exactly (70,237 characters). This corrects the older note that only the owner chat contained the HTML.
+- `proto/source/README.md` explains UI detection boundaries and links to canonical integration.
+- The **executive ZIP**, builder, tests, and screenshot remain user-downloadable conversation artifacts, not all stored as repo files.
