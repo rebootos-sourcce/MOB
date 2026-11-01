@@ -300,22 +300,26 @@ for(const [W,H] of WIDTHS){
     of the two answers a person can be shown. What each server answer reads
     as, through the real request, is tests/onboarding2.js's. ---- */
  const NATS=['Anxiety','Overwhelm','Burnout','Depression','Grief','Sadness'];
+ /* round SP: the row carries its name in .ob-gift-n beside a "100 patterns"
+    caption the old chip never had, so the row's own name is read off that
+    span and not the whole button. */
  const giftCard=()=>page.evaluate(()=>{const c=document.querySelector('#ob .ob-card');
-  return {chips:[...document.querySelectorAll('#ob [data-obgift]')].map(b=>b.textContent.trim()),
+  const giftName=b=>{const n=b.querySelector('.ob-gift-n'); return (n||b).textContent.trim();};
+  return {chips:[...document.querySelectorAll('#ob [data-obgift]')].map(giftName),
    btns:[...document.querySelectorAll('#ob .ob-card button')].filter(b=>b.getClientRects().length).map(b=>{const r=b.getBoundingClientRect();
     return {k:b.getAttribute('data-ob')||('gift'+b.getAttribute('data-obgift')),t:b.textContent.trim(),w:r.width,h:r.height};}),
    focus:!!(document.activeElement&&document.activeElement.classList.contains('ob-h')),
    over:!c||document.documentElement.scrollWidth>innerWidth||Math.round(c.getBoundingClientRect().right)>innerWidth,
-   pressed:[...document.querySelectorAll('#ob [data-obgift].on')].map(b=>b.textContent.trim()),
+   pressed:[...document.querySelectorAll('#ob [data-obgift].on')].map(giftName),
    res:OB.giftRes, nat:(CURP.journey&&CURP.journey.gift&&CURP.journey.gift.giftNatureId)||null,
    status:(document.getElementById('status')||{}).textContent||''};});
  const settle=()=>page.waitForFunction(()=>OB.giftRes!=='saving',null,{timeout:8000}).catch(()=>{});
  await click('[data-ob="endgift"]'); s=await st(); let gc=await giftCard();
- ok(s.open&&s.step===END&&s.h==='What would help most right now?',tag+'Continue opens the gift card on the same station: '+J({step:s.step,h:s.h}));
+ ok(s.open&&s.step===END&&s.h==='Starting gift',tag+'Continue opens the gift card on the same station: '+J({step:s.step,h:s.h}));
  ok(J(gc.chips)===J(NATS),tag+'the gift card offers the six natures: '+J(gc.chips));
- ok(/starter set of 100 patterns/.test(s.card)&&/A pattern is one line you have not said before\./.test(s.card),
+ ok(/starter set made for it, 100 patterns/.test(s.card)&&/A pattern is one line you have not said before\./.test(s.card),
   tag+'it says what it is choosing, and what a pattern is, on the card: '+J(s.card.slice(0,160)));
- ok(/Your pick is sent to our server\./.test(s.card),tag+'and that the pick is sent, before it is pressed');
+ ok(/Your pick goes to our server/.test(s.card),tag+'and that the pick is sent, before it is pressed');
  ok(gc.btns.length===NATS.length+2&&gc.btns.some(b=>b.k==='endin'&&b.t==='Skip')&&gc.btns.some(b=>b.k==='back'),
   tag+'six choices, Skip and Back: '+J(gc.btns.map(b=>b.t)));
  ok(gc.btns.every(b=>b.w>=44&&b.h>=44),tag+'every control on it is at least 44 by 44: '+J(gc.btns.filter(b=>b.w<44||b.h<44).map(b=>[b.t,Math.round(b.w),Math.round(b.h)])));
@@ -363,7 +367,7 @@ for(const [W,H] of WIDTHS){
  ok(s.open&&s.step===END&&/Here is what you made/.test(s.card),tag+'a reload on the gift card resumes on the end card');
  await click('[data-ob="endgift"]'); s=await st(); gc=await giftCard();
  if(yesAt)ok(s.h==='Your starter set is ready.'&&gc.chips.length===0&&gc.nat==='grief',tag+'and the yes is shown as it was, never asked again: '+J({h:s.h,chips:gc.chips.length}));
- else ok(s.h==='What would help most right now?'&&gc.chips.length===NATS.length,tag+'and a pick nothing recorded is asked again: '+J(s.h));
+ else ok(s.h==='Starting gift'&&gc.chips.length===NATS.length,tag+'and a pick nothing recorded is asked again: '+J(s.h));
 
  /* ---- 11. go in, and the first run is over ---- */
  const went=await click('[data-ob="endin"]'); await page.waitForTimeout(700);
@@ -441,7 +445,7 @@ console.log('\n=== a walk the tutorial door left: the same resume, the same end 
     station's, whichever door the walk came through */
  await click('[data-ob="endgift"]');
  const gift=await page.evaluate(()=>({h:(document.querySelector('#ob .ob-h')||{}).textContent||'',n:document.querySelectorAll('#ob [data-obgift]').length}));
- ok(gift.h==='What would help most right now?'&&gift.n===6,tag+'and Continue opens the same gift card: '+J(gift));
+ ok(gift.h==='Starting gift'&&gift.n===6,tag+'and Continue opens the same gift card: '+J(gift));
  await click('[data-ob="endin"]'); await page.waitForTimeout(600);
  const fin=await page.evaluate(()=>({open:!!(typeof OB!=='undefined'&&OB.open),onb:!!(CURP&&CURP.ui&&CURP.ui.onboarded)}));
  ok(!fin.open&&fin.onb,tag+'and Skip on it finishes the first run');

@@ -7064,6 +7064,51 @@ body.punch .ob-mk-tk{display:none}
 .ob-figsay{margin:0 0 12px;text-align:center;max-width:none}
 .ob-seatsay{margin-top:10px}
 .ob-foot{margin-top:16px;color:var(--dim);font-size:12.5px}
+/* THE GIFT'S SIX, ROUND SP. His words: "there's six, so it should be
+   stacked... this entire design needs to be symmetrical." One row each, the
+   icon at the left and a mirrored ring at the right, so the row's own two
+   ends balance the way a Compass rail entry's mark and value do. Pulled
+   from the Field's own row language (.ob-mk above), not copied: these carry
+   no seat tint (OB_GIFT_NATURES' own rule, a feeling is not a seat), so the
+   ring, not the colour, is what reads at a glance. */
+.ob-giftrows{display:flex;flex-direction:column;gap:8px;margin:16px 0 4px}
+.ob-giftrow{display:flex;align-items:center;gap:14px;width:100%;min-height:56px;
+ padding:10px 18px;background:var(--sunk);border:1px solid var(--edge);border-radius:var(--r-s);
+ color:var(--ink);text-align:left;cursor:pointer;font:inherit;
+ transition:border-color var(--t-micro) var(--ease-out),background var(--t-micro) var(--ease-out)}
+.ob-giftrow:hover{border-color:var(--edge-2)}
+.ob-giftrow:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ob-giftrow.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 9%,var(--sunk))}
+.ob-gift-ic{flex:0 0 auto;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;
+ justify-content:center;background:color-mix(in srgb,var(--accent) 8%,var(--sunk));border:1px solid var(--edge);
+ transition:border-color var(--t-micro) var(--ease-out),background var(--t-micro) var(--ease-out)}
+.ob-giftrow.on .ob-gift-ic{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 20%,var(--sunk))}
+.ob-gift-ic svg{width:22px;height:22px;fill:none;stroke:var(--mid);stroke-width:1.6;
+ stroke-linecap:round;stroke-linejoin:round;transition:stroke var(--t-micro) var(--ease-out)}
+.ob-giftrow.on .ob-gift-ic svg{stroke:var(--accent)}
+.ob-gift-n{flex:1 1 auto;font-size:16px;font-weight:500;letter-spacing:-.005em}
+.ob-gift-ct{flex:0 0 auto;font-size:12.5px;color:var(--dim)}
+/* the mirrored ring, right of the row, the same shape as the icon badge's
+   own track so the row reads symmetrically: a mark at each end. Selected
+   draws a second, inner ring rather than a fill, on the house's own rule
+   that an icon is a ring and never a fill. */
+.ob-gift-sel{flex:0 0 auto;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--edge-2);
+ position:relative;transition:border-color var(--t-micro) var(--ease-out)}
+.ob-giftrow.on .ob-gift-sel{border-color:var(--accent)}
+.ob-gift-sel::after{content:'';position:absolute;inset:5px;border-radius:50%;border:2px solid var(--accent);
+ opacity:0;transform:scale(.5);transition:opacity .2s var(--ease-out),transform .28s var(--ease-out)}
+.ob-giftrow.on .ob-gift-sel::after{opacity:1;transform:scale(1)}
+/* a held choice breathes, the Field's own 4.2 second wave, so the one row in
+   hand reads as live rather than merely switched on */
+.ob-giftrow.on{animation:obGiftBreathe var(--t-breath) var(--ease-breath) infinite alternate}
+@keyframes obGiftBreathe{from{border-color:var(--accent)}
+ to{border-color:color-mix(in srgb,var(--accent) 55%,var(--edge))}}
+@media (prefers-reduced-motion:reduce){.ob-giftrow.on{animation:none}}
+@media(max-width:479px){
+ .ob-giftrow{padding:8px 14px;gap:10px;min-height:52px}
+ .ob-gift-ct{display:none}}
+body.punch .ob-gift-ic{background:color-mix(in srgb,var(--accent) 22%,var(--sunk));border-color:transparent}
+body.punch .ob-giftrow.on{background:color-mix(in srgb,var(--accent) 16%,var(--sunk))}
 /* ---------- the loop, and it closes ---------- */
 .ob-loopw{display:grid;grid-template-columns:116px 1fr;gap:16px;align-items:center;
  margin:14px 0 4px}
@@ -7500,7 +7545,16 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
 /* at desktop width the card does not scroll, so the actions never need a
    backing: the hard black block behind them was the one hard edge on a screen
    built from soft light (art direction, 16 October). */
-@media (min-width:900px){.obx .ob-scroll .ob-acts{background:none}}
+@media (min-width:900px){.obx .ob-scroll .ob-acts{background:none}
+ /* THE GIFT CARD IS THE ONE EXCEPTION, round SP. Six rows plus a refusal
+    line can run past 88vh even at desktop width, which the rule above never
+    expected ("at desktop width the card does not scroll"). Measured: the
+    retry state overlapped Skip over its own allowance sentence with no
+    scrim to separate them. Scoped to this card alone with :has, already
+    used the same way two rows up, rather than touching every other card's
+    desktop behaviour for one card's edge case. */
+ .obx .ob-scroll:has(.ob-giftrows) .ob-acts{
+  background:linear-gradient(to top,color-mix(in srgb,var(--bg) 96%,#000) 62%,transparent)}}
 .obx .btn{min-height:48px;padding:0 22px;font-size:15px}
 .obx .btn:active{scale:.97}
 .obx .btn.pri{min-height:54px;padding:0 26px 0 30px;display:inline-flex;align-items:center;gap:14px;font-size:15.5px;
@@ -7675,11 +7729,17 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
 .obx-enter .obx-in>.ob-grid{animation:none}
 .obx-enter .ob-grid>.ob-g{animation:obxRise .44s cubic-bezier(.22,1,.36,1) both;
  animation-delay:calc(var(--d0) + var(--si,0) * 70ms + var(--ci,0) * 80ms)}
+/* THE GIFT ROWS RISE THE SAME WAY THE CHAIN DOES, round SP, 70ms apart,
+   top to bottom, reading order. --ci is set per row by obStagger. */
+.obx-enter .obx-in>.ob-giftrows{animation:none}
+.obx-enter .ob-giftrows>.ob-giftrow{animation:obxRise .4s cubic-bezier(.22,1,.36,1) both;
+ animation-delay:calc(var(--d0) + var(--si,0) * 70ms + var(--ci,0) * 70ms)}
 @media(max-width:899px){
  .obx .ob-grid{margin:18px 0 14px}
  .obx .ob-g{padding-bottom:14px}}
 @media (prefers-reduced-motion:reduce){
  .obx-enter .ob-grid>.ob-g{animation:none}
+ .obx-enter .ob-giftrows>.ob-giftrow{animation:none}
  /* MEASURED, round QJ: with reduced motion set, the primary's arrow still
     slid 4px on hover. The document wide *{transition:none!important} does
     not reach it, because * matches no pseudo element. Seen as the one running

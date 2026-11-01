@@ -1125,7 +1125,7 @@ async function door(browser, SITE, cut, giftAt) {
      refused, is said, and nothing is written. */
   await O.click('[data-ob="endgift"]');
   o = await ob();
-  ok(o.open && o.step === END && /What would help most right now\?/.test(o.card), 'Continue on the end card opens the gift card, signed in');
+  ok(o.open && o.step === END && /Starting gift/.test(o.card), 'Continue on the end card opens the gift card, signed in');
   await O.click('#ob [data-obgift="4"]');
   await po2.waitForFunction(() => OB.giftRes !== 'saving', null, { timeout: 8000 }).catch(() => {});
   o = await ob();

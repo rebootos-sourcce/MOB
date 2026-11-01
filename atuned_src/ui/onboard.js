@@ -1162,6 +1162,18 @@ function obRender(){
  var sw=obSwap(h,out,{s:s, shown:OB.shown, attr:'data-step', rail:obRail});
  var moved=sw.moved, arrive=sw.arrive, card=sw.card;
  OB.shown=s;
+ /* THE GIFT CARD'S OWN TOP BAR, round SP. His words: "Get rid of the text
+    that says every step done. Get rid of the text that says this is a
+    crisis." Both are the shared stage's, built once in obStage and worn by
+    every step (the crisis door is a safety feature he ruled on 16 October,
+    "Is this a crisis? Hit that button," so it is hidden here and nowhere
+    else: every other step still carries it). Toggled at render time rather
+    than carved out of obStage, since obStage runs once per open and the
+    gift state is not known that early. */
+ var crx=h.querySelector('.obx-crx'), stp=h.querySelector('.obx-step');
+ var onGift=!!(OB.giftOn&&s===OB_END);
+ if(crx)crx.hidden=onGift;
+ if(stp&&onGift)stp.innerHTML='';
  var ta=document.getElementById('obtext');
  var obMask=function(){var m=document.getElementById('obmask'); if(!m||!ta)return;
   var runs=maskedRuns(ta.value); m.hidden=!runs.length; m.textContent=maskedSay(runs);};
@@ -1735,6 +1747,39 @@ function obEndCard(){
    focus and keeps the scroll. Between the end card and this one the whole
    card is new, and the button that was pressed is gone with the old one, so
    focus would fall to the body. It goes to the new heading, at the top. */
+/* THE SIX RING GLYPHS, round SP, the owner's own words: "those should be
+   icons with their symbols next to them." 24x24, stroke only, no fill, on
+   the same rule the Field's own icon-badges keep and CLAUDE.md names: icons
+   are ring, not fill. Not tinted to a seat, on purpose: OB_GIFT_NATURES'
+   own standing comment says a feeling is not one place in the body and a
+   seat tint would be a claim this sheet has not earned, so these read by
+   shape alone, in one ink, the way the row's own selected state (below)
+   carries colour instead. */
+var OB_GIFT_GLYPH={
+ anxiety:'<path d="M3 12h3.1l1.7-4.6 3 9.4 3-9.4 1.7 4.6H21"/>',
+ overwhelm:'<circle cx="12" cy="17.3" r="1.25"/><path d="M6.6 13.8a5.5 5.5 0 0110.8 0"/>'
+  +'<path d="M3.3 16.6a9 9 0 0117.4 0"/>',
+ burnout:'<path d="M17 6.3A8 8 0 1112 4"/><circle cx="12" cy="4" r="1.2"/>',
+ depression:'<circle cx="12" cy="13.2" r="7"/><path d="M5.4 8.1h13.2"/>',
+ grief:'<circle cx="8.6" cy="12" r="5"/><circle cx="15.4" cy="12" r="5" stroke-dasharray="2 2.6"/>',
+ sadness:'<path d="M12 3.2c4.1 5 6.2 8.6 6.2 11.6a6.2 6.2 0 11-12.4 0c0-3 2.1-6.6 6.2-11.6z"/>'};
+/* THE SIX, STACKED, round SP: "there's six, so it should be stacked." One
+   row each, the icon at the left and a mirrored ring at the right, so a row
+   reads the same as a Compass rail entry: a mark, a name, a value. sel is
+   the picked index, the single-pick contract obGiftAsk below still keeps
+   (see its own note on multi-select). */
+function obGiftRows(items,sel){
+ return '<div class="ob-giftrows" role="group" aria-label="Pick one">'
+  +items.map(function(x,i){
+   var on=sel===i;
+   return '<button type="button" class="ob-giftrow'+(on?' on':'')+'" aria-pressed="'+(on?'true':'false')+'"'
+    +' data-obgift="'+i+'" style="--ci:'+i+'">'
+    +'<span class="ob-gift-ic" aria-hidden="true"><svg viewBox="0 0 24 24">'+(OB_GIFT_GLYPH[x.k]||'')+'</svg></span>'
+    +'<span class="ob-gift-n">'+esc(x.n)+'</span>'
+    +'<span class="ob-gift-ct">100 patterns</span>'
+    +'<span class="ob-gift-sel" aria-hidden="true"></span>'
+    +'</button>';}).join('')
+  +'</div>';}
 function obGiftFocus(){
  var h=document.getElementById('ob'), c=h&&h.querySelector('.ob-card');
  var sc=c&&c.querySelector('.ob-scroll'); if(sc)sc.scrollTop=0;
@@ -1744,10 +1789,29 @@ function obGiftLeft(){
  /* the allowance's own sentence, the one obGiftSay and the end card print,
     so the gift has one wording */
  return (al&&al.inGift)?'<p class="ob-p">You have '+esc(al.say)+'.</p>':'';}
+/* ROUND SP, THE REDESIGN. His words: "The design for the gift. Is a D,
+   Emmy." Pulled from the Field, the Body and the Compass, mostly the Field.
+   The heading is "Starting gift" now, said once, carried on every state of
+   this card so the eyebrow and the heading never say the same thing twice.
+   The body drops "journey": the standing voice rule (check.py's own SOFT
+   list) refuses it as soft wellness language, so his sense is kept and the
+   word is not. "Pattern" and "bank" are unpacked in the same breath they are
+   said, on the rule that a term never stands alone.
+
+   STILL ONE PICK, NOT SIX, on purpose, named here rather than silently
+   decided. His copy said "select the ones you want", which reads as more
+   than one. Checked before building: the server's own contract
+   (authFunnelCheckpoint, reboot-os funnel.js validateCheckpointPatch) takes
+   one giftNatureId, not a list, and of the six only Anxiety has a built
+   pattern bank behind it today (the 15 October gift bank check). Turning
+   this into a real multi-pick is a backend and content project, not a
+   render change, so the row list below stays a single pick, the same
+   obGiftAsk contract as before, and the copy says "Pick one" rather than
+   promise a capability that is not there yet. */
 function obGiftCard(){
  var res=OB.giftRes, nat=(OB.giftPick!=null)?OB_GIFT_NATURES[OB.giftPick]:null, nm=nat?nat.n:'';
  var unpack='<span class="ob-dim">A pattern is one line you have not said before.</span>';
- if(res==='saving')return obCard('Gift','What would help most right now?',
+ if(res==='saving')return obCard('Gift','Starting gift',
   '<p class="ob-p ob-dim" role="status">Checking '+esc(nm)+' with the server.</p>','');
  if(res==='issued')return obCard('Gift','Your starter set is ready.',
   '<p class="ob-p">'+esc(nm)+', 100 patterns. Our server holds them for you. '+unpack+'</p>',
@@ -1757,10 +1821,12 @@ function obGiftCard(){
   '<button type="button" class="btn pri" data-ob="endin">Go in</button>');
  /* the question, and after a refusal the same question with the refusal said
     under it and the pick still pressed */
- return obCard('Gift','What would help most right now?',
-  '<p class="ob-p">Pick one. Our server looks for a starter set of 100 patterns made for it. '+unpack+'</p>'
-  +'<p class="ob-p ob-dim">It can be different from what brought you here. Your pick is sent to our server.</p>'
-  +obChips(OB_GIFT_NATURES,'obgift',OB.giftPick,false)
+ return obCard('Gift','Starting gift',
+  '<p class="ob-p">We want to thank you for starting. Pick one of these and we will look '
+  +'for a starter set made for it, 100 patterns. '+unpack+'</p>'
+  +'<p class="ob-p ob-dim">It can be different from what brought you here. Your pick goes to our '
+  +'server, and the set it finds goes into your bank, the store everything you release draws from.</p>'
+  +obGiftRows(OB_GIFT_NATURES,OB.giftPick)
   +(res==='unverified'?'<p class="ob-p" role="status">The server did not confirm '+esc(nm)
    +', so nothing was added. Press it again to try again, or skip.</p>'+obGiftLeft():''),
   '<button type="button" class="btn" data-ob="endin">Skip</button>'
