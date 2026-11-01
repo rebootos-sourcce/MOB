@@ -29,4 +29,9 @@ assert.equal(neg.familyToSelf,'SELF_RESEMBLANCE_UNSPECIFIED');
 const hyp=N(['Imagine my mom was angry and my sister indignant','I see their patterns in myself']);
 assert.equal(hyp.ancestralCausation,'NOT_ESTABLISHED');
 assert.equal(JSON.stringify(a).includes('DO_NOT_DISCLOSE'),false);
+
+assert.equal(N(['My mother is angry.','I don't know whether I see their patterns in myself.']).familyToSelf,'NOT_REPORTED');
+assert.equal(N(['My mother is angry.','Maybe I see their patterns in myself.']).familyToSelf,'NOT_REPORTED');
+assert.equal(N(['Imagine my mother is angry and I see their patterns in myself.']).familyToSelf,'NOT_REPORTED');
+assert.equal(N(['Hypothetically my mother was angry','My grandmother was angry']).multiGeneration,'NOT_ESTABLISHED');
 console.log('SOURCE narrative attribution/ancestral humility contract PASS');
