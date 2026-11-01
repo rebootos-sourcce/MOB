@@ -1125,6 +1125,98 @@ console.log('\n=== the floor band says where to go and gives the door to it (16 
  }
 }
 
+console.log('\n=== the gift card asks the server, and writes only on a whole yes (31 October) ===');
+/* THE STARTER SET'S CHECKPOINT, ported from p1/gift-nature-choice-20261011
+   and moved after the end card on the owner's word, 31 October: "That needs
+   to be in there after your summary when you onboard." tests/journey2.js
+   walks the card itself at both widths with the server unreachable. This
+   holds what the card does with each answer a server can give, through the
+   real authFunnelCheckpoint and a stub Worker on the network, so the
+   request, its one key and the pass through of gift and giftVerified are
+   the product's own and not a function swapped in.
+
+   KNOWN BAD CASES FIRST, by name. The live Worker answers the field with a
+   400 (its validateCheckpointPatch names four keys). The old branch read a
+   session carrying starterGiftId as the yes, and the live Worker sets that
+   for a ground pick alone, so a 200 with a gift id and nothing else must
+   read as no. So must a ready gift of the wrong nature. Only then the two
+   answers the Worker that knows the field gives: saved with no set ready,
+   and a whole yes. */
+{
+ const page=await browser.newPage({viewport:{width:1600,height:1000}});
+ const errs=[]; page.on('pageerror',e=>errs.push(e.message));
+ const CORS={'access-control-allow-origin':'*','access-control-allow-methods':'GET, POST, PATCH, OPTIONS',
+  'access-control-allow-headers':'content-type, authorization, x-funnel-credential'};
+ let mode='old'; const asks=[];
+ const sess=(k,extra)=>Object.assign({id:'giftgate',anonymousId:'giftgate-anon',userId:null,
+  selectedGroundId:'purpose',giftNatureId:k,starterGiftId:'gift-1'},extra||{});
+ const ready=k=>({id:'gift-1',ready:true,giftNatureId:k,selectedGroundId:'purpose',granted:100,items:100});
+ await page.route(/giftgate\.stub\.test/,r=>{
+  const q=r.request();
+  if(q.method()==='OPTIONS')return r.fulfill({status:204,headers:CORS});
+  const u=q.url(); let body=null; try{body=JSON.parse(q.postData()||'null');}catch(e){}
+  const json=(status,o)=>r.fulfill({status:status,headers:Object.assign({'content-type':'application/json'},CORS),body:JSON.stringify(o)});
+  if(/\/v1\/funnel\/session$/.test(u))
+   return json(200,{session:sess(null,{starterGiftId:null}),credential:'giftgate-credential-0123456789abcdef'});
+  if(/\/checkpoint$/.test(u)){
+   asks.push({m:q.method(),body:body,cred:q.headers()['x-funnel-credential']||null});
+   const k=body&&body.giftNatureId;
+   if(mode==='old')return json(400,{error:'unknown funnel checkpoint field: giftNatureId'});
+   if(mode==='idonly')return json(200,{session:sess(k)});
+   if(mode==='wrong')return json(200,{session:sess(k),gift:ready('sadness'),giftVerified:true});
+   if(mode==='unread')return json(200,{session:sess(k),gift:null,giftVerified:false});
+   if(mode==='notready')return json(200,{session:sess(k),gift:Object.assign(ready(k),{ready:false}),giftVerified:true});
+   return json(200,{session:sess(k),gift:ready(k),giftVerified:true});}
+  return r.abort();});
+ await page.goto(FILE+'?dev=1',{waitUntil:'load'}); await booted(page);
+ /* the first visit, made against the stub, and a first run's gift on the
+    record, which the pick issues before the card is ever reached */
+ const set=await page.evaluate(async()=>{
+  AUTH_API='https://giftgate.stub.test';
+  const s=await authFunnelStart();
+  journeyGiftIssue(CURP,'app'); OB.rec=true;
+  return {ok:s&&s.ok, nat:journeyGiftRead(CURP).giftNatureId};});
+ ok(set.ok&&set.nat===null,'a first visit against the stub, and an issued gift with no nature: '+JSON.stringify(set));
+ /* THE ASK MOVED TO SUMMARY, round SQ, 1 November: obGiftAsk is now
+    sumGiftAsk and OB.giftRes is SG_GIFT.res, ported whole (ui/summary.js's
+    own note on the move). The contract under test, the stub server and
+    every case below are unchanged; only the names and the sheet are. */
+ const ask=async(i)=>page.evaluate(async i=>{
+  SG_GIFT.res=null; sumGiftAsk(i);
+  const t0=Date.now(); while(SG_GIFT.res==='saving'&&Date.now()-t0<8000)await new Promise(r=>setTimeout(r,25));
+  return {res:SG_GIFT.res, nat:(CURP.journey&&CURP.journey.gift&&CURP.journey.gift.giftNatureId)||null,
+   status:(document.getElementById('status')||{}).textContent||''};},i);
+ const cases=[
+  ['old','the live Worker, which refuses the field with a 400','unverified'],
+  ['idonly','a 200 with a gift id and no verified gift, the old branch\'s yes','unverified'],
+  ['wrong','a ready gift of another nature','unverified'],
+  ['unread','a gift the server could not read back','unverified'],
+  ['notready','the pick saved and no set ready for it','unavailable']];
+ for(const [m,what,want] of cases){
+  mode=m; const r=await ask(4);   /* grief */
+  ok(r.res===want&&r.nat===null,what+' reads as '+want+' and writes no nature: '+JSON.stringify(r));}
+ mode='old'; const said=await ask(4);
+ ok(/did not confirm your starter set\. Nothing was added\./.test(said.status),
+  'a refusal is said on the status line: '+JSON.stringify(said.status));
+ /* every press sent one checkpoint carrying the one key, with the visit's pass */
+ ok(asks.length>=cases.length&&asks.every(a=>a.m==='PATCH'&&a.body&&Object.keys(a.body).join()==='giftNatureId'&&a.body.giftNatureId==='grief'&&a.cred),
+  'each press sends one PATCH carrying only giftNatureId, with the first visit\'s pass: '+JSON.stringify(asks.slice(0,2)));
+ /* and the whole yes */
+ mode='ready'; const yes=await ask(4);
+ ok(yes.res==='issued'&&yes.nat==='grief','a whole yes binds the nature to the gift: '+JSON.stringify(yes));
+ const kept=await page.evaluate(()=>{const raw=STORE.get(PKEY)||'';
+  const v=validateProfile(JSON.parse(JSON.stringify(CURP)));
+  return {saved:raw.indexOf('"giftNatureId":"grief"')>=0, loads:v.ok};});
+ ok(kept.saved,'the yes is written to the store, not only to memory: '+JSON.stringify(kept));
+ ok(kept.loads,'and the record with it still passes its own boundary: '+JSON.stringify(kept));
+ /* a second, different press after the yes is refused by the record, never
+    written over the first */
+ mode='ready'; const again=await ask(5);   /* sadness */
+ ok(again.nat==='grief','a later yes for another nature does not overwrite the first: '+JSON.stringify(again));
+ ok(errs.length===0,'no script error across every answer: '+errs.slice(0,3).join(' | '));
+ await page.close();
+}
+
 console.log('\n=== J0, the distress gap, reported rather than papered over ===');
 /* THIS IS NOT A SAFETY TEST. It cannot be: there is nothing in this engine
    to test. It is a standing check that nobody has quietly added a decorative

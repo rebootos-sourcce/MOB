@@ -27,6 +27,11 @@
         released, the answer to What changed and the gift, and every figure on
         it is the claim packet's (journeyClaim), which carries no name and no
         birth data. Go in ends the first run and it never opens again.
+     4b THE GIFT CARD COMES AFTER THE END CARD, 31 October. Continue opens it:
+        six natures, Skip and Back, every control 44 by 44 and nothing off
+        the side of the screen. A pick the server does not confirm is said,
+        stays pressed and is never written; a yes is written and never asked
+        again after a reload.
      5  NOTHING IS BROKEN ON THE WAY. No script error, no console error from
         the product, no placeholder word on any card, and every control on the
         end card does something and is at least 44 by 44.
@@ -275,6 +280,9 @@ for(const [W,H] of WIDTHS){
  const ends=await page.evaluate(()=>[...document.querySelectorAll('#ob .ob-card button,#ob .obx-x')].map(b=>{const r=b.getBoundingClientRect();
   const cs=getComputedStyle(b); return {k:b.getAttribute('data-ob'),t:b.textContent.trim(),w:r.width,h:r.height,
    shown:cs.visibility!=='hidden'&&cs.display!=='none'&&r.width>0};}).filter(b=>b.shown));
+ /* GO IN, SINCE ROUND SQ, 1 NOVEMBER: the gift card that used to follow this
+    one moved to Summary (ui/summary.js's own note carries the history), so
+    Go in is once more this card's only way on. */
  ok(ends.length>=1&&ends.every(b=>b.k==='endin'),tag+'the end card has one way on, Go in, and nothing else to press: '+J(ends.map(b=>b.t)));
  ok(ends.every(b=>b.w>=44&&b.h>=44),tag+'and it is at least 44 by 44: '+J(ends.map(b=>[Math.round(b.w),Math.round(b.h)])));
  await placeholders('the end card'); await shot('end');
@@ -290,8 +298,96 @@ for(const [W,H] of WIDTHS){
  ok(went&&!s.open&&fin.onb,tag+'Go in closes the first run and marks it finished: '+J({went:went,open:s.open,onb:fin.onb}));
  j=await rec();
  ok(logged(j,'tutorial_completed')&&logged(j,'software_entered'),tag+'and the log says it ended and the person went in');
+ const landed=await page.waitForFunction(()=>typeof TAB!=='undefined'&&S.tab===TAB.SUMMARY,null,{timeout:8000}).then(()=>true,()=>false);
+ ok(landed,tag+'and the first arrival lands on Summary');
+
+ /* ---- 11. the starter gift, on Summary. 31 October, the owner: "The
+    other gift is being able to select the free patterns as your starter.
+    That needs to be in there after your summary when you onboard." Round
+    SQ, 1 November, corrected where "your summary" actually pointed: not
+    this end card, the real Summary tab (ui/summary.js's own note on the
+    move carries why). The server is cut in this gate, which is the first
+    thing the card has to survive: a pick it cannot confirm is said, kept
+    selected, and never written. Then the server's answer is put in at the
+    one function the card asks, a yes at 1600 and saved with no set at
+    390, so each width walks one of the two answers a person can be shown.
+    What each server answer reads as, through the real request, is
+    tests/onboarding2.js's. ---- */
+ const NATS=['Anxiety','Overwhelm','Burnout','Depression','Grief','Sadness'];
+ /* round SP: the tile carries its name in .sg-gift-n, the same rule the
+    row it replaced kept in .ob-gift-n, so the name is read off that span
+    and not the whole button. */
+ const giftCard=()=>page.evaluate(()=>{const c=document.querySelector('.sg-gift');
+  const giftName=b=>{const n=b.querySelector('.sg-gift-n'); return (n||b).textContent.trim();};
+  return {chips:[...document.querySelectorAll('[data-sggift]')].map(giftName),
+   btns:[...document.querySelectorAll('.sg-gift button')].filter(b=>b.getClientRects().length).map(b=>{const r=b.getBoundingClientRect();
+    return {k:b.getAttribute('data-sg')||('gift'+b.getAttribute('data-sggift')),t:b.textContent.trim(),w:r.width,h:r.height};}),
+   over:!c||document.documentElement.scrollWidth>innerWidth||Math.round(c.getBoundingClientRect().right)>innerWidth,
+   pressed:[...document.querySelectorAll('[data-sggift].on')].map(giftName),
+   res:(typeof SG_GIFT!=='undefined')?SG_GIFT.res:null,
+   nat:(CURP.journey&&CURP.journey.gift&&CURP.journey.gift.giftNatureId)||null,
+   status:(document.getElementById('status')||{}).textContent||'',
+   tip:(()=>{const t=c?c.querySelector('.tipu'):null;
+    return t?{term:t.textContent,say:t.getAttribute('data-tip')}:null;})(),
+   card:c?c.innerText:''};});
+ const settle=()=>page.waitForFunction(()=>SG_GIFT.res!=='saving',null,{timeout:8000}).catch(()=>{});
+ await page.waitForSelector('.sg-giftrow',{timeout:8000}).catch(()=>{});
+ let gc=await giftCard();
+ ok(/Starting gift/.test(gc.card),tag+'Summary carries the starter gift, on the station it lands on: '+J(gc.card.slice(0,40)));
+ ok(J(gc.chips)===J(NATS),tag+'the gift offers the six natures: '+J(gc.chips));
+ /* round SQ, 1 November: "patterns" carries its meaning on the term
+    itself now (unp('pattern','patterns','gift'), same as the quiet
+    notice this card replaces), not as a second sentence beside it that
+    said the same thing twice. */
+ ok(/starter set made for it, 100 patterns/.test(gc.card)&&!!gc.tip
+  &&gc.tip.term==='patterns'&&gc.tip.say==='A pattern is one line you have not said before.',
+  tag+'it says what it is choosing, and what a pattern is, on the card: '+J({card:gc.card.slice(0,160),tip:gc.tip}));
+ ok(gc.btns.length===NATS.length+2&&gc.btns.some(b=>b.k==='giftskip'&&b.t==='Skip')&&gc.btns.some(b=>b.k==='giftadd'),
+  tag+'six choices, Skip and Add to bank: '+J(gc.btns.map(b=>b.t)));
+ ok(gc.btns.every(b=>b.w>=44&&b.h>=44),tag+'every control on it is at least 44 by 44: '+J(gc.btns.filter(b=>b.w<44||b.h<44).map(b=>[b.t,Math.round(b.w),Math.round(b.h)])));
+ ok(!gc.over,tag+'nothing on it runs off the side of the screen');
+ ok(gc.nat===null,tag+'and nothing is on the record before a press');
+ await placeholders('the gift card'); await shot('gift');
+ await click('[data-sggift="4"]'); gc=await giftCard();
+ ok(J(gc.pressed)===J(['Grief']),tag+'a tap selects the tile, before anything is sent: '+J(gc.pressed));
+ ok(gc.nat===null&&gc.res===null,tag+'and still nothing is sent or written on the tap alone');
+ await click('[data-sg="giftadd"]'); await settle(); gc=await giftCard();
+ ok(gc.res==='unverified'&&/The server did not confirm Grief, so nothing was added\./.test(gc.card),
+  tag+'with no server, the pick is refused and said on the card: '+J({res:gc.res,card:gc.card.slice(-200)}));
+ ok(/did not confirm your starter set/.test(gc.status),tag+'and on the status line: '+J(gc.status));
+ ok(J(gc.pressed)===J(['Grief']),tag+'the pick stays pressed, so trying again is one press: '+J(gc.pressed));
+ ok(gc.nat===null,tag+'and nothing is written to the record');
+ ok(new RegExp('You have '+(GIFT-size)+' patterns left of the '+GIFT+' you were given').test(gc.card),
+  tag+'the free patterns are said to stand: '+((gc.card.match(/You have [^.]*given/)||['none'])[0]));
+ ok(gc.btns.every(b=>b.w>=44&&b.h>=44)&&!gc.over,tag+'and the refused card still fits and every control is 44 by 44');
+ await placeholders('the refused gift card'); await shot('gift-refused');
+ const yesAt=(W>=900);
+ await page.evaluate(yes=>{window.__giftPatch=[];
+  window.authFunnelCheckpoint=function(p){window.__giftPatch.push(p); const k=p&&p.giftNatureId, s={giftNatureId:k,starterGiftId:'gift-1'};
+   return Promise.resolve({ok:true,session:s,gift:{id:'gift-1',ready:yes,giftNatureId:k},giftVerified:true});};},yesAt);
+ await click('[data-sg="giftadd"]'); await settle();
+ gc=await giftCard();
+ const patch=await page.evaluate(()=>window.__giftPatch);
+ ok(J(patch)===J([{giftNatureId:'grief'}]),tag+'the press sends the nature alone, never with the ground: '+J(patch));
+ if(yesAt){
+  ok(gc.res==='issued'&&/Your starter set is ready\./.test(gc.card)&&/Grief, 100 patterns\./.test(gc.card),tag+'a whole yes is said: '+J(gc.card));
+  ok(gc.nat==='grief',tag+'and only then is the nature on the record: '+J(gc.nat));
+ } else {
+  ok(gc.res==='unavailable'&&/No set is ready for Grief yet\./.test(gc.card)&&/Your pick is saved\. Nothing was added\./.test(gc.card),
+   tag+'saved with no set is said as that: '+J(gc.card));
+  ok(gc.nat===null,tag+'and writes no nature: '+J(gc.nat));
+ }
+ await placeholders('the answered gift card'); await shot('gift-answered');
+ j=await rec();
+ ok(!!(j&&j.gift&&(j.gift.giftNatureId||null)===(yesAt?'grief':null)),tag+'the record holds exactly what the server confirmed: '+J(j&&j.gift));
+ /* a reload keeps the first run closed and lands back on Summary; a yes is
+    not asked again, and a pick nothing recorded is */
  await reload(); s=await st();
- ok(!s.open,tag+'a reload after that opens no first run again');
+ ok(!s.open,tag+'a reload after the first run is closed opens no first run again');
+ await page.waitForFunction(()=>typeof TAB!=='undefined'&&S.tab===TAB.SUMMARY,null,{timeout:8000}).catch(()=>{});
+ gc=await giftCard();
+ if(yesAt)ok(gc.chips.length===0&&gc.nat==='grief',tag+'and the yes is shown as it was, never asked again: '+J({chips:gc.chips.length,nat:gc.nat}));
+ else ok(gc.chips.length===NATS.length,tag+'and a pick nothing recorded is asked again: '+J(gc.chips.length));
  ok(errs.length===0,tag+'no script error the whole way: '+errs.slice(0,3).join(' | '));
  ok(cerrs.length===0,tag+'no console error from the product the whole way: '+cerrs.slice(0,3).join(' | '));
  await ctx.close();
@@ -355,9 +451,16 @@ console.log('\n=== a walk the tutorial door left: the same resume, the same end 
   end:typeof OB_END==='number'?OB_END:-1, card:(document.querySelector('#ob .ob-card')||{}).innerText||''}));
  ok(end.open&&end.step===end.end&&/Here is what you made/.test(end.card)&&/\d+ lines? at \d+ places?/.test(end.card),
   tag+'its release ends on the same end card: '+J({o:end.open,s:end.step}));
+ /* the gift card follows this walk too, wherever the door came through,
+    but round SQ (1 November) moved it off the end station onto Summary;
+    the main walk above already tests it in full, so this door only
+    confirms it still shows up at all. */
  await click('[data-ob="endin"]'); await page.waitForTimeout(600);
  const fin=await page.evaluate(()=>({open:!!(typeof OB!=='undefined'&&OB.open),onb:!!(CURP&&CURP.ui&&CURP.ui.onboarded)}));
  ok(!fin.open&&fin.onb,tag+'and Go in finishes the first run');
+ await page.waitForSelector('.sg-giftrow',{timeout:8000}).catch(()=>{});
+ const gift=await page.evaluate(()=>({h:(document.querySelector('.sg-gift-h')||{}).textContent||'',n:document.querySelectorAll('[data-sggift]').length}));
+ ok(gift.h==='Starting gift'&&gift.n===6,tag+'and the same gift card is waiting on Summary: '+J(gift));
  ok(errs.length===0,tag+'no script error: '+errs.slice(0,3).join(' | '));
  await ctx.close();
 }

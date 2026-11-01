@@ -66,9 +66,34 @@ var OB_STARTS=[
  {k:'relationships',n:'Relationships'},{k:'pain',n:'Pain'},
  {k:'selfworth',n:'Self-worth'},{k:'purpose',n:'Purpose'},{k:'money',n:'Money'},
  {k:'other',n:'Something else'}];
-/* THE SIX FEELING WORDS, the same six the mockup's FEELS carries. Neither
-   set is tinted to a seat: a feeling is not one place in the body, and
-   tinting it that way would be a claim this sheet has not earned. */
+/* THE SIX GIFT NATURES, ruled 14 October and recorded in Reboot-OS: anxiety,
+   overwhelm, burnout, depression, grief, sadness, each with its own fixed
+   bank of 100 patterns, separate from the twelve starts above. Ported from
+   branch p1/gift-nature-choice-20261011, which typed the six twice, once here
+   and once in engine/journey.js; the boundary reads this list now, so the
+   picker and the record cannot disagree about what a nature is. The keys are
+   the Worker's own (its validateCheckpointPatch, Reboot-OS branch
+   alpha/p1-fixed-pattern-gift-contract-20261010) and are stored, so they are
+   identity and never renamed. Four of them share a key with a start
+   (anxiety, overwhelm, burnout, grief) and are still a different answer: the
+   start says what brought a person here, this says which starter set they
+   chose, and a person may begin from purpose and choose grief. */
+var OB_GIFT_NATURES=[
+ {k:'anxiety',n:'Anxiety'},{k:'overwhelm',n:'Overwhelm'},
+ {k:'burnout',n:'Burnout'},{k:'depression',n:'Depression'},
+ {k:'grief',n:'Grief'},{k:'sadness',n:'Sadness'}];
+/* OVERRIDDEN, round SQ, 1 November: the six gift tiles on Summary (sumGift,
+   ui/summary.js) tint each nature to a seat. His words, said twice: "their
+   colours to reflect the chakra in which they are going to heal," then
+   "have their backgrounds... representative of the colour." This sheet's
+   own six keys are not reassigned to carry that claim, only the picker's
+   icon badges and the ring's own kick carry a colour, and the UI side
+   records its own reading of which seat each one leans toward (sumGiftSeat,
+   ui/summary.js), named there rather than silently decided here. What
+   follows is the ruling this replaces, kept for the record: "Neither set is
+   tinted to a seat: a feeling is not one place in the body, and tinting it
+   that way would be a claim this sheet has not earned." OB_FEELS still
+   carries no seat and is unaffected; nothing has asked to change it. */
 var OB_FEELS=[{k:'heavy',n:'Heavy'},{k:'tight',n:'Tight'},{k:'numb',n:'Numb'},
  {k:'restless',n:'Restless'},{k:'hollow',n:'Hollow'},{k:'hot',n:'Hot'}];
 /* THE SEVEN BODY PLACES, one on each seat, root to crown, the engine's own

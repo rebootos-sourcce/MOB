@@ -365,6 +365,17 @@ When the user creates an account, the funnel state transfers directly into the a
 
 There should be no manual export or import.
 
+## Amended 31 October: the person chooses the starter set, after the summary
+
+The owner, 31 October: "The other gift is being able to select the free patterns as your starter. That needs to be in there after your summary when you onboard. Like once you sign up." With the 14 October ruling that the gift has six natures, each with its own fixed bank of 100 patterns and separate from the twelve starting points, this replaces "relevant to the selected starting ground" above.
+
+- The counter of 100 free patterns is still issued when the starting point is picked. The free allowance never depends on the choice below.
+- After the end card ("Here is what you made."), the first run shows one more card: "What would help most right now?", with the six natures: Anxiety (`anxiety`), Overwhelm (`overwhelm`), Burnout (`burnout`), Depression (`depression`), Grief (`grief`), Sadness (`sadness`). It can differ from the starting point. Skip goes in without one.
+- The pick is sent to the server as its own checkpoint, `giftNatureId`, never in the same request as `selected_ground_id`.
+- The record carries the nature only once the server confirms a ready, verified set of that nature (`giftVerified`, a ready gift, and the nature on both the session and the gift). A pick the server refuses or cannot confirm is said on the card, stays pressed so it can be tried again, and is never written. A pick saved with no set ready is said as that.
+- The live Worker does not accept `giftNatureId` yet. Its counterpart is Reboot-OS branch `alpha/p1-fixed-pattern-gift-contract-20261010` (migration 0018), unmerged. Until it deploys, every pick is refused and said.
+- Not built in either repository: reading the set's 100 pattern ids into a release.
+
 ## Starter Gift Object
 
 ```yaml

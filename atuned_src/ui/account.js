@@ -489,11 +489,15 @@ function accPrivacy(){
     name. authFunnelStart sends the code, authFunnelCheckpoint the topic and
     the three marks (tutorialCompleted, firstReleaseId, verificationId, the
     last an id and never the answer), authFunnelAttach joins them at sign in.
-    Every other send says so at its own control. */
+    Every other send says so at its own control. And from 31 October the gift
+    card after the end of the opening (ui/onboard.js obGiftCard) sends the
+    starter set picked, giftNatureId, one of six words such as grief, which is
+    health information on the privacy page's own rule, so it is named here. */
  h+=accGroup('What is sent','',
    'A first visit sends our server a random code made for this browser and the '
    +'topic you pick under What brought you here. After that it sends a mark when '
-   +'you finish the opening, finish your first release, or answer What changed. '
+   +'you finish the opening, finish your first release, or answer What changed, '
+   +'and the gift you pick at the end of the opening, such as grief. '
    +'What you answered is not sent. A sign in sends your email and password and '
    +'joins those marks to your account. Feedback, dictation, the voice that reads '
    +'a release, and payment each say what they send where you use them.');

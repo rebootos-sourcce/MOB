@@ -104,6 +104,13 @@ var OB={open:false, step:0, replay:false,
     went through, which decides what its plan is read from. made: what the
     first release made, read off the claim packet for the end card. */
  rec:false, door:'onboarding', made:null, draftT:null, failSaid:false};
+ /* THE STARTER GIFT IS NOT PICKED HERE ANY MORE. Round SQ, 1 November: the
+    owner's ruling is that a person has effectively signed up once they have
+    landed on Summary, so the pick moved there (sumGift, ui/summary.js),
+    shown the first time the gift is still active and nothing has been
+    decided yet. What was OB.giftOn/giftPick/giftRes/giftAsk is now SG_GIFT
+    in summary.js, the same shape, read by the same name a reader of this
+    file might still look for it under. */
 
 /* ============================================================
    THE SKIN, ROUND QG. "Redesign this in our field compass or body style.
@@ -726,7 +733,8 @@ function obClose(how){
    WHAT IS WRITTEN, each where it happens: the start, the starting point and
    the gift it issues, the story and its reading, a correction, the answers at
    Commit, the hand off to the release, the release landing and what was said
-   about it, and the end. The walk is written on every card the sheet draws,
+   about it, the starter set chosen after the end card once the server has
+   confirmed it (obGiftAsk), and the end. The walk is written on every card the sheet draws,
    so the record always says where the person stands. No word of the story is
    in the log; the walk holds the draft only until it is committed.
    ============================================================ */
@@ -1018,8 +1026,14 @@ function obRender(){
       inside the line, because .obx .ob-foot is a flex row that draws a rule
       before its first child, and two bare links in it became three columns of
       text squeezed beside the rule at 390 wide. */
+   /* AND THE GIFT YOU PICK AT THE END, 31 October, the day the gift card
+      (obGiftCard) started sending its own checkpoint. A focus of grief or
+      depression is health information on the privacy page's own rule, so a
+      card that names what goes and leaves it out is the sentence above
+      being false again. */
    +'<p class="ob-p ob-foot"><span>Your story and your name stay on this device. Our server gets a '
-   +'random code for this browser, the topic you pick next, and which steps you finish. '
+   +'random code for this browser, the topic you pick next, the gift you pick at the end, '
+   +'and which steps you finish. '
    +legalLink('privacy')+' and '+legalLink('terms')+' say the rest.</span></p>',
    '<button type="button" class="btn pri" data-ob="next">Come in</button>'
    +'<button type="button" class="btn" data-ob="skip">Not now</button>');
@@ -1673,7 +1687,30 @@ function obEndCard(){
   +obMadeMarks(m)
   +(means?'<p class="ob-p ob-dim">'+esc(means)+'</p>':'')
   +gift,
+  /* Go in, straight off this card. The starter set is no longer picked here:
+     round SQ, 1 November, moved it to the page a new person lands on
+     (sumGift, ui/summary.js), after Summary, which is when the owner ruled
+     a person has effectively signed up. */
   '<button type="button" class="btn pri" data-ob="endin">Go in</button>');}
+
+/* ============================================================
+   THE STARTER SET MOVED TO THE REAL SUMMARY, round SQ, 1 November. This
+   whole card used to live here, at a second end-of-onboarding station,
+   against the owner's own 31 October words: "That needs to be in there
+   after your summary when you onboard. Like once you sign up." The build
+   that landed here read "your summary" as the end card above, Here is what
+   you made, since that is the one card in this sheet that sums up the
+   first run. Said plainly rather than quietly fixed: that was the wrong
+   summary. Told the storyboard on 1 November, the owner named the real one,
+   the Summary tab a first-time arrival lands on (tabLandFirst, ui/panels.js)
+   once onboarding has closed, and his reason: a person who has reached it
+   has effectively signed up. obGiftCard, obGiftRows, OB_GIFT_GLYPH,
+   obGiftAsk, obGiftOk and obGiftSaved now live in ui/summary.js, shown by
+   sumGift() in place of its old one-line notice, for as long as the free
+   gift is active and nothing has been picked or skipped yet. The server
+   contract (authFunnelCheckpoint, one giftNatureId, the live Worker's own
+   400 on anything else, a gift ID alone is not a confirmation) is unchanged,
+   only where the question is asked. ============================================================ */
 
 /* ---- one listener for the whole sheet ---- */
 addEventListener('click',function(e){
@@ -1759,7 +1796,12 @@ addEventListener('click',function(e){
     mark for every person who finishes. A rename starts on the server: accept
     both names, migrate the column and the functions, deploy, and only then
     send the new name from here, with tests/copy.js's table of sends moved in
-    the same change. */
+    the same change.
+
+    GO IN SITS ON THE END CARD AGAIN, round SQ, 1 November: the gift card
+    that used to follow it moved to the real Summary page (ui/summary.js),
+    so this press is once more the one that leaves the sheet. The mark is
+    unchanged and is still sent once, here. */
  if(k==='endin'){
   if(typeof authFunnelCheckpoint==='function')authFunnelCheckpoint({tutorialCompleted:true});
   obClose('end'); return; }
