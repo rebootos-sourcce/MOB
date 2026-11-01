@@ -2470,7 +2470,17 @@ const virginSweep=await page.evaluate(()=>{
     could still be read off it. Cleared and restored the same way laws is. */
  if(CURP&&CURP.intake)CURP.intake.answers={};
  CHILD.forEach(c=>{S.charge[c.nm]=0;S.replace[c.nm]=0;});
- SI.forEach(l=>{S.law[l.nm]=6;});
+ /* A LAW COUNTS AS ANSWERED BY lawIn(), NOT BY S.law HOLDING A NUMBER.
+    Setting S.law alone left LAW_UNSET and LAW_SEED holding whatever this
+    profile's own history had set them to earlier in this same run, so
+    lawIn() read every law as answered, r.complete came back true, and
+    coneRead() printed Integrity off the fabricated 6es as a real figure:
+    percent phase 3 turned that bare "7.7" into "77%", which this sweep
+    is built to catch, and it did. loadProfile and practitioner.js's own
+    reset both set S.law, LAW_UNSET and LAW_SEED together for exactly
+    this reason; this sweep now does the same, and restores all three. */
+ const keptUnset=Object.assign({},LAW_UNSET), keptSeed=Object.assign({},LAW_SEED);
+ SI.forEach(l=>{S.law[l.nm]=6; LAW_UNSET[l.nm]=true; LAW_SEED[l.nm]=6;});
  /* EVERY TAB, NOT ONLY FIELD. A tab renders when it is set and not on every
     tick, so the Avatar's own intake summary (#iqbody) stayed drawn from
     whatever this profile last showed there and kept a real, non-default
@@ -2493,6 +2503,7 @@ const virginSweep=await page.evaluate(()=>{
  o.pol=(document.getElementById('pol').textContent||'').replace(/\s+/g,' ');
  if(CURP&&keptLaws)CURP.laws=keptLaws;
  if(CURP&&CURP.intake&&keptIntake)CURP.intake.answers=keptIntake;
+ Object.assign(LAW_UNSET,keptUnset); Object.assign(LAW_SEED,keptSeed);
  return o;});
 ok(virginSweep.unread,'the field reads as unread');
 /* CHANGED 25 SEPTEMBER. These asserted the arithmetic still produced a
