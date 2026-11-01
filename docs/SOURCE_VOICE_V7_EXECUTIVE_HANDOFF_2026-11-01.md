@@ -44,3 +44,6 @@ One word does not establish where a person is on a curve. `pissed off` is a prov
 
 ## Continuation protocol
 DO NOT replace the existing One-Button voice agent or clone engine rules. Implement above the existing canonical reader. Keep PR draft until full gates pass. Update this document and the PR body as test status changes, with exact SHA, commands, failures and follow-up patches. The owner asked to end this thread with the executive ZIP so a next thread can resume from this index without repeating repo search.
+
+## Continuation superseding this V7-only index — V11 local pain/ancestry (2026-11-01)
+Read [SOURCE_VOICE_PAIN_ANCESTRY_V11_LOCAL_HANDOFF_2026-11-01.md](SOURCE_VOICE_PAIN_ANCESTRY_V11_LOCAL_HANDOFF_2026-11-01.md) first for the latest owner-approved scope and the local V11 ZIP name/index. It documents 45 interpretive pain records, **165/165 isolated local tests**, a clause-first reader, read-only ecosystem bus, and bank consent controls. The owner-referenced 96 AP/GP/PP records remain **unverified**; manuscript's 17 inherited nodes are **not the same registry**. Actual V11 runtime modules and full ZIP are conversation artifacts, not in this branch. The canonical voice reader, engine build freshness gate, and live voice+profile wiring remain unverified. Do not merge or deploy based on local tests alone.
