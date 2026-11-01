@@ -45,3 +45,22 @@ MOB already has a real typed, record-derived trace graph in `atuned_src/engine/t
 5. Run real speech / turn silence / negation / correction / multi-session ancestor tests. Close PR only after checks pass and owner approval.
 
 This handoff is an honest integration status, not a claim of 100% completion.
+
+## Recursion pass: November 1 narrative and canonical catalog expansion
+
+- Added `atuned_src/engine/voice_narrative.js` and `tests/source-voice-narrative.js`; loaded in MANIFEST before intelligence, exported from `engine/export.js`.
+- `srcVoiceNarrative(turns)` treats speakers as separate subjects, distinguishes reported family observations from self-recognition, lets later explicit rejections override earlier proposals, refuses hypothetical/uncertain statements as confirmed resemblance, and reports multigenerational *similarity* only when parent and older generation are explicitly attributed the same descriptor.
+- `srcVoiceIntelligence(text,record,{turns,allowProfile})` composes this narrative with `evLedger` and the record graph without writing records or assuming ancestral cause.
+- Corrected evidence count from nonexistent `claim.refs` to the authoritative `claim.ev` field in the canonical ledger.
+- Extended `srcVoiceCanon` from three to nine direct canonical arrays: NODES, SAB33, CHARGES, SI, EXPR, ARCH, DOMAINS, MASKS, BANDS. No invented user identity relationship, and this is *not* the whole MOB or Mechanics of Being record inventory.
+- Added regression assertions to engine tests for narrative, corrections, negation, consent, and nine registry inventories.
+- Direct V8 evaluation of the **committed** `srcVoiceNarrative` logic: 15/15 base cases plus 5 uncertainty/hypothetical checks passed. Stubbed engine integration contract including graph consent and catalog lookup also passed, but **does not substitute for running the actual engine bundle**.
+- Downloadable isolated `SOURCE_AI_NARRATIVE_V4.html`: retained existing V2 working ElevenLabs agent and one-button UI; optional same-origin `srcVoiceIntelligence` hook is invoked only when the hosting application provides it. Access to profile records requires both `ATUNED_SOURCE_VOICE_CONTEXT.allowProfile===true` and `.userConsent===true`; standalone file never loads a user record. Local Chromium mock integration: 14/14 page/consent tests, 6/6 simulated start/transcript/tool/context/stop tests passed.
+- PR #163 is still DRAFT, UNMERGED; all recent CI runs are QUEUED. Prior generated-product freshness failure persists until a full repository build. No honest claim of live production canonical graph, all records, or CQDQ calibration.
+- Important: the uploaded V4 HTML is not magically able to import a private production engine from `file://`. Until the host wires the exact exported function, its browser tool is a provisional narrative reader.
+
+### Follow-on before merging
+1. Rebuild generated products via repo scripts in an authorized full checkout; commit source.html, engine.js and funnel/packed dependencies as one coherent update.
+2. Run new narrative and three-build tests with actual canonical engine; fix observed failures, not guessed ones.
+3. Integrate a consent-aware same-origin browser host into the deployed voice page. Test with real spoken user turns, inactivity, explicit corrections and transcript provenance, using synthetic examples in permanent reports.
+4. Expand the remaining graph/canonical family indexes under source-of-truth registry contracts. Implement independent lineage and CQDQ verification; do not assign 10/10 law scores without evaluation.
