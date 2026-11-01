@@ -58,7 +58,7 @@ function srcVoiceIntelligence(text,record,opts){
   graphStatus:v.graph.status,recordScope:'ACTIVE_RECORD_ONLY',
   coherence:'NOT_MEASURED',ancestry:'NOT_ASSESSED',
   userLead:true,automaticQuestions:false,evidence:[],
-  graphMatches:v.graph.matched,claims:[], narrative:null,
+  graphMatches:v.graph.matched,claims:[], narrative:null,emotionCycle:null,
   gaps:['ancestral lineage relationships not independently measured',
    'CQDQ law grades and full knowledge graph traversal not connected to voice'],
   instruction:'Respond to actual words. An inference is not an identity or a cause. Never auto-prompt.'};
@@ -68,6 +68,9 @@ function srcVoiceIntelligence(text,record,opts){
  var userTurns=Array.isArray(o.turns)?o.turns.slice(-11).filter(function(x){return typeof x==='string';}):[];
  if(userTurns[userTurns.length-1]!==t)userTurns.push(t);
  out.narrative=srcVoiceNarrative(userTurns);
+ /* The TULA episode reader is a pure report of explicit user turns. A rank
+  * refers to the exact source adjective, never to CQ, profile or curve height. */
+ out.emotionCycle=srcVoiceChargeCycle(userTurns);
  /* A tool consumer must not get any historical raw journal text or profile
   * identifiers. The ledger is computed locally; only this turn's words and
   * the non-identifying claim state leave this seam. */
