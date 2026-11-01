@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#090e18"><title>Source AI · Signal View V5</title>
+<style>
+:root{color-scheme:dark;--ink:#edf3fa;--muted:#8ca1b9;--frame:rgba(179,204,226,.15);--bg:#080d16;--cyan:#7ce5e5;--gold:#e8b99c}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font:400 14px/1.5 system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:var(--ink);background:radial-gradient(circle at 38% 22%,#1a2d43,transparent 50%),linear-gradient(145deg,#080d16,#0a1321 68%,#0d1422)}
+.shell{max-width:1360px;margin:0 auto;min-height:100vh;padding:23px clamp(16px,3vw,42px) 18px;display:flex;flex-direction:column}.top{display:flex;align-items:center;justify-content:space-between;gap:12px}.logo{font-weight:680;letter-spacing:.3em;font-size:12px}.logo em{font-style:normal;letter-spacing:.13em;color:var(--cyan)}.presence{display:flex;align-items:center;gap:9px;color:#aac1d0;font-size:12px}.led{height:7px;width:7px;border-radius:100%;background:#7184a1;box-shadow:0 0 9px #4b6f8a}body[data-state=connected] .led{background:#85dcc1;box-shadow:0 0 10px #85dcc1}body[data-state=connecting] .led{background:#edc285}
+.layout{display:grid;grid-template-columns:minmax(320px,1fr) minmax(330px,450px);gap:clamp(20px,4vw,66px);align-items:center;flex:1}.hero{text-align:center}.hero h1{font-weight:350;font-size:clamp(25px,3vw,40px);letter-spacing:.085em;margin:0 0 12px}.hero h1 strong{font-weight:620}
+.orb-btn{border:0;background:transparent;position:relative;width:min(60vw,430px);height:min(60vw,430px);min-width:260px;min-height:260px;max-width:430px;max-height:430px;margin:0 auto;display:block;cursor:pointer;border-radius:100%;isolation:isolate}.orb-btn:disabled{opacity:.5;cursor:wait}.orb-btn:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}.orb-btn:before{content:'';position:absolute;inset:10%;border:1px solid #82caca18;border-radius:100%;box-shadow:0 0 78px #52c3db18}#orb{width:100%;height:100%;display:block}.orb-center{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}.orb-center svg{height:29px;width:29px;opacity:.66;filter:drop-shadow(0 0 10px #b5f1f3)}.square{display:none}body[data-state=connected] .square{display:block}body[data-state=connected] .play{display:none}.channels{display:flex;justify-content:center;gap:26px;color:#90a9bf;font-size:12px}.channels span{display:flex;gap:7px;align-items:center}.channels i{width:7px;height:7px;display:block;border-radius:100%;background:var(--cyan)}.channels span:last-child i{background:var(--gold)}.status{font-size:12px;color:#a9c2d1;min-height:22px;margin:14px auto 0;max-width:420px}.status.errorcopy{color:#ffc9a7;font-weight:610;line-height:1.6}.billing-help{display:none;max-width:410px;margin:12px auto 0;padding:13px 15px;border:1px solid #d69d5a55;border-radius:11px;text-align:left;color:#d5dce8;font-size:12px;background:#31292044}.billing-help.visible{display:block}.billing-help strong{color:#f4d0af}.billing-help a{color:#9fe3eb;text-decoration:underline}
+.tracker{background:linear-gradient(140deg,#1b2b3ca8,#0e1727bb);border:1px solid var(--frame);border-radius:23px;box-shadow:0 18px 55px #0002;padding:21px 20px 18px;min-height:500px;align-self:center}.tracker-header{display:flex;justify-content:space-between;align-items:center}.tracker h2{font-size:14px;letter-spacing:.06em;margin:0;font-weight:660}.smallbadge{font-size:10px;color:#a8d8d3;border:1px solid #69b5b144;padding:3px 8px;border-radius:18px}.sub{font-size:11px;color:var(--muted);margin:4px 0 18px}.label{font-size:10px;text-transform:uppercase;letter-spacing:.13em;color:#94b3c8;margin-bottom:9px}.section{padding:15px 0;border-top:1px solid var(--frame)}.speech{font-size:17px;line-height:1.8;min-height:100px;max-height:180px;overflow-y:auto;overflow-wrap:anywhere}.speech .idle-text{color:#8e9eaf;font-size:13px}.word{display:inline-block;border-radius:5px;margin:0 2px 3px 0;padding:0 3px;transition:background .13s,color .13s}.word.match{background:color-mix(in srgb,var(--tone) 20%,transparent);border-bottom:2px solid var(--tone);color:#fff}.word.negated{background:transparent;border-bottom:1px dashed #b7b7b7;color:#bfc9d2}.word.theme{border-bottom:1px dotted var(--tone);color:#d9e5f0}.word.interim{opacity:.55}.word.observed{border-bottom:2px solid #c7abed;background:#b590e51c;color:#f5e8ff}.word:focus-visible{outline:2px solid white}.source-text{font-size:12px;color:#d7bba8;min-height:22px;max-height:60px;overflow:auto}.zones{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.zone{height:45px;border-radius:8px;position:relative;border:1px solid #ffffff16;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:#bec9d8;opacity:.52;transition:opacity .2s,transform .2s,border .2s}.zone .light{background:var(--tone);border-radius:100%;width:9px;height:9px;margin-bottom:4px}.zone.active{opacity:1;border-color:var(--tone);transform:translateY(-3px);box-shadow:0 0 15px color-mix(in srgb,var(--tone) 30%,transparent)}
+.matches{display:flex;gap:7px;flex-wrap:wrap;min-height:53px;align-content:start}.card{border:1px solid color-mix(in srgb,var(--tone) 35%,transparent);background:color-mix(in srgb,var(--tone) 12%,transparent);padding:7px 9px;border-radius:11px;font-size:12px}.card b{font-weight:650}.card small{font-size:10px;color:#bdc7d5;display:block}.hint{font-size:11px;color:#95adc0;line-height:1.55}.minirow{display:flex;align-items:center;justify-content:space-between;gap:9px}.mode{color:#b8bfc5;font-size:10px}.footer{display:flex;justify-content:space-between;gap:15px;color:#8597ab;font-size:10px;margin-top:16px}.privacy summary{cursor:pointer}.privacy p{max-width:340px}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+@media(max-width:920px){.layout{grid-template-columns:1fr;gap:30px;padding:35px 0}.tracker{width:min(100%,640px);margin:auto;min-height:auto}.orb-btn{width:min(80vw,380px);height:min(80vw,380px)}.hero h1{margin:0 0 9px}.footer{flex-wrap:wrap}}@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.narrative-list{display:flex;flex-direction:column;gap:8px;min-height:45px}.narrative-row{font-size:12px;color:#cfdaed;line-height:1.52;background:#11223888;border-left:2px solid #b590e5;padding:7px 10px;border-radius:4px}.narrative-row small{display:block;color:#96aabb;font-size:10px}.rule-list{display:flex;gap:6px;flex-wrap:wrap;min-height:45px;align-content:start}
+.rule-chip{font-size:11px;line-height:1.35;background:#183043;border:1px solid #50758a66;border-radius:10px;padding:6px 9px;color:#d0eaf5}
+.rule-chip small{display:block;color:#9ab3c6;font-size:10px;margin-top:2px}
+.rulebook{font-size:11px;color:#aebfcf}.rulebook summary{cursor:pointer;padding:7px 0}
+.rulebook p{color:#9cb4c7;margin:5px 0 8px}
+
+/* V5 live signal view. The old ID surfaces stay in the DOM for compatibility but are not visible. */
+.tracker{padding:19px 22px;min-height:535px;align-self:center;overflow:hidden}
+.tracker>.section,.tracker>.hint{display:none!important}
+.tracker-header,.tracker>.sub{margin-bottom:10px}
+.tracker-header .smallbadge{font-size:9px;letter-spacing:.06em}
+.visual-v5{display:flex;flex-direction:column;gap:0}
+.v5-header,.v5-cap{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.v5-header{margin:2px 0 18px}.v5-headline{font-size:17px;letter-spacing:-.02em;font-weight:560}
+.v5-eyebrow,.v5-cap,.v5-mini span,.v5-response>span{font-size:9px;color:#8295ab;letter-spacing:.13em;font-weight:650}
+.v5-state{border:1px solid #5ddac354;color:#a4e5d5;border-radius:30px;padding:4px 10px;font-size:10px}
+.v5-chakra{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:9px;height:57px;align-items:end}
+.v5-stripe{height:100%;position:relative;border-radius:7px 7px 3px 3px;background:#ffffff09;overflow:hidden;border:1px solid #ffffff0d}
+.v5-stripe-fill{position:absolute;bottom:0;left:0;right:0;min-height:3px;height:var(--v5-h,6%);background:linear-gradient(0deg,var(--v5-c),color-mix(in srgb,var(--v5-c) 48%,transparent));opacity:var(--v5-opacity,.34);transition:height .4s,opacity .4s}
+.v5-stripe:after{content:'';position:absolute;top:0;left:0;right:0;height:100%;background:repeating-linear-gradient(0deg,transparent 0 9px,#090c1938 9px 10px)}
+.v5-keys{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin:6px 0 21px}.v5-keys span{text-align:center;font-size:9px;color:#8799aa}
+.v5-cap{border-top:1px solid #ffffff14;padding-top:14px;margin-bottom:9px}.v5-cap span:nth-child(2){font-size:9px;letter-spacing:normal;color:#8496ac}
+.v5-channels{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin-bottom:17px}
+.v5-channel{text-align:center;padding:7px 0;border:1px solid #ffffff19;background:#ffffff05;border-radius:8px;font-size:9px;color:#7f91a7;min-width:0;transition:background .2s,color .2s}
+.v5-channel.active{background:#78ccd125;color:#d4f3f1;border-color:#81ced96e}
+.v5-channel strong{display:block;font-size:13px;line-height:1.2;font-weight:600}
+.v5-transcript{border:1px solid #ffffff16;background:#060d1895;border-radius:12px;padding:11px 13px;margin-bottom:16px;min-height:91px;max-height:165px;overflow-y:auto}
+.v5-transcript .speech{font-size:15px;line-height:1.9;min-height:60px;max-height:none;overflow:visible}
+.v5-transcript .word{margin:0;padding:0 1px;display:inline;border-radius:3px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.v5-transcript .word.match{background:color-mix(in srgb,var(--tone) 24%,transparent)}
+.v5-transcript .word.fuzzy{background:color-mix(in srgb,var(--tone) 14%,transparent);border-bottom:2px dotted var(--tone);color:#f2f6fa}
+.v5-transcript .word.full-phrase{box-shadow:inset 0 -5px color-mix(in srgb,var(--tone) 20%,transparent)}
+.v5-transcript .word.negated{border-bottom:2px dashed #95a0b5;color:#c3c5d5;background:#9ca4bd12}
+.v5-transcript .word.channel-word:not(.match):not(.fuzzy){text-decoration:underline;text-decoration-color:#a8d7d98b;text-underline-offset:4px}
+.v5-relations{display:flex;align-items:center;gap:4px;min-height:55px;overflow:hidden;margin-bottom:14px}
+.v5-rel-node{background:#ffffff0b;border:1px solid #ffffff26;border-radius:9px;padding:6px 8px;flex:1;text-align:center;font-size:10px;min-width:0;color:#cdd9e8}
+.v5-rel-node strong{display:block;font-size:11px;color:#e1d9fc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v5-rel-arrow{color:#8499bc;font-size:15px}
+.v5-rel-dim{color:#8799ab;font-size:11px}
+.v5-footstats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-bottom:9px}
+.v5-mini{background:#ffffff08;border-radius:9px;padding:9px 8px;min-height:57px;min-width:0}
+.v5-mini span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:8px}.v5-mini b{display:block;font-weight:540;font-size:12px;margin-top:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.v5-candidates{display:flex;flex-wrap:wrap;gap:5px;min-height:24px;align-items:start;margin:5px 0 8px}
+.v5-candidate{border-radius:6px;font-size:10px;padding:4px 7px;background:color-mix(in srgb,var(--v5-c) 13%,transparent);border:1px solid color-mix(in srgb,var(--v5-c) 45%,transparent);color:#e6ebf4}
+.v5-legend{display:flex;flex-wrap:wrap;gap:14px;font-size:9px;color:#8fa1b6;margin-bottom:14px}.v5-legend span{display:flex;align-items:center;gap:5px}.v5-legend i{width:14px;border-bottom:2px solid #b6ced7}.v5-legend .v5-lg-dotted{border-bottom-style:dotted}.v5-legend .v5-lg-dashed{border-bottom-style:dashed}
+.v5-response{border-top:1px solid #ffffff16;padding-top:10px}.v5-response .source-text{font-size:11px;min-height:18px;max-height:55px;line-height:1.6;color:#c2cad7;overflow:auto}
+@media(max-width:500px){.tracker{padding:14px}.v5-rel-node{font-size:9px;padding:5px}.v5-footstats{gap:4px}.v5-keys span{font-size:8px}}
+
+</style></head><body data-state="idle"><div class="shell">
+<header class="top"><div class="logo">SOURCE <em>AI</em></div><div class="presence"><span class="led" aria-hidden="true"></span><span id="presence">Ready</span></div></header>
+<main class="layout"><section class="hero" aria-label="Voice conversation"><h1><strong>Source</strong> AI</h1><button class="orb-btn" id="voiceButton" type="button" aria-label="Start Source AI conversation" aria-pressed="false" title="Start or end conversation"><canvas id="orb" width="720" height="720" aria-hidden="true"></canvas><span class="orb-center" aria-hidden="true"><svg class="play" viewBox="0 0 30 30"><path d="M11 7.5L22 15 11 22.5Z" fill="#d4f2f5"/></svg><svg class="square" viewBox="0 0 30 30"><rect x="10" y="10" width="10" height="10" rx="2" fill="#d4f2f5"/></svg></span></button><div class="channels"><span><i></i>You</span><span><i></i>Source AI</span></div><p class="status" id="status" role="status" aria-live="polite">Touch the orb to begin</p><div class="billing-help" id="billingHelp" role="alert"><strong>ElevenLabs credit limit reached.</strong> Recent sessions were rejected before audio began. In your ElevenLabs account, check Usage / Billing and restore available credits. Then click the orb to retry. The listening tracker is available, but voice conversations cannot start until the service allows new sessions.</div></section>
+<aside class="tracker" aria-label="Live word and chakra tracker"><div class="tracker-header"><h2>Source · Signals</h2><span class="smallbadge" id="engineBadge">LOCAL EVIDENCE</span></div><p class="sub">Listening for meaning · evidence before labels</p>
+<div class="visual-v5" id="visualV5"><div class="v5-header"><div><div class="v5-eyebrow">LIVE PATTERN MAP</div><div class="v5-headline">What your words reveal</div></div><span class="v5-state" id="v5State">Waiting</span></div>
+<div class="v5-chakra" id="v5Chakra" aria-label="Seven chakra language cues"></div>
+<div class="v5-keys"><span>Root</span><span>Sacral</span><span>Solar</span><span>Heart</span><span>Throat</span><span>Brow</span><span>Crown</span></div>
+<div class="v5-cap"><span>CHANNELS</span><span id="v5ChannelDetail">Words, not identities</span></div><div class="v5-channels" id="v5Channels"></div>
+<div class="v5-cap"><span>YOUR STORY</span><span id="v5EvidenceCount">No evidence yet</span></div><div id="v5TranscriptMount" class="v5-transcript"></div>
+<div class="v5-cap"><span>STORY LINKS</span><span class="v5-micro">Tentative · user-reported</span></div><div class="v5-relations" id="v5Relations" aria-label="Story relationships"></div>
+<div class="v5-footstats"><div class="v5-mini"><span>CHILD EMOTION</span><b id="v5Emotion">Unknown</b></div><div class="v5-mini"><span>INTENSITY WORDS</span><b id="v5Intensity">Not reported</b></div><div class="v5-mini"><span>ACTION / CHOICE</span><b id="v5Action">Unknown</b></div></div>
+<div id="v5Candidate" class="v5-candidates" aria-live="polite"></div><div class="v5-legend"><span><i class="v5-lg-solid"></i>Direct word</span><span><i class="v5-lg-dotted"></i>Similar meaning</span><span><i class="v5-lg-dashed"></i>Negated / uncertain</span></div>
+<div class="v5-response"><span>SOURCE AI</span><div id="v5SourceMount"></div></div>
+</div>
+<div class="section"><div class="minirow"><div class="label">Your words</div><div id="captionMode" class="mode">Ready</div></div><div class="speech" id="speech"><span class="idle-text">Your words appear when you speak.</span></div></div>
+<div class="section"><div class="minirow"><div class="label">Sniffer connection</div><div class="mode" id="snifferConnection" aria-live="polite">Waiting for voice</div></div><div class="label">Behavioral &amp; family listening signals</div><div id="ruleSignals" class="rule-list" aria-live="off"><span class="hint">Waiting for spoken evidence.</span></div><details class="rulebook"><summary>Which rules are active?</summary><p>Source listens for personal stories and imprints; parental versus ancestral patterns; culture and conditioning; repetitions; beliefs and perceptions; thoughts, feelings and body cues; choice versus automatic reactions; truth and accountability; intention versus action; boundaries, compassion and non-harm; coherent changes and corrections. It references 21 integrity laws and the 112-fetter vocabulary. These are evidence-based inquiry signals, not diagnoses, numerical CQ readings, or a connected production Sniffer.</p></details></div>
+<div class="section"><div class="label">Narrative: family → self</div><div class="narrative-list" id="narrativeSignals" aria-live="off"><span class="hint">Listening for story relationships, not labels.</span></div></div>
+<div class="section"><div class="label">Chakra colors</div><div class="zones" id="zones"></div></div>
+<div class="section"><div class="label">Fetters — exact canonical matches</div><div class="matches" id="matches"><span class="hint">No matched fetters yet.</span></div></div>
+<div class="section"><div class="label">Source AI response</div><div class="source-text" id="sourceText">Waiting for a conversation.</div></div>
+<p class="hint" id="evidenceNote">A matching word is not evidence that you embody a fetter. Negations and ambiguous expressions stay unconfirmed. The browser evidence tool is connected to Source AI; the full canonical Sniffer, graph and CQDQ are not.</p>
+</aside></main><footer class="footer"><span>Read-only live browser signal tool; the full production Sniffer and CQDQ remain separate. Visual evidence resets on refresh.</span><details class="privacy"><summary>Privacy</summary><p>Voice audio is handled by ElevenLabs under the connected agent settings. On supported browsers, interim captions also use the browser's speech recognition service, which may transmit audio to its provider. This page does not upload tracker results or store a history.</p></details></footer></div>
+<script type="module">
+const AGENT_ID='agent_8301m6aqwbrje4v8218ty5rz2w2b';
+const CHAKRAS={root:['Root','#D6524C'],sacral:['Sacral','#D8924E'],solar:['Solar','#DABF6A'],heart:['Heart','#5FD5A6'],throat:['Throat','#5EBBDB'],eye:['Brow','#7D93E0'],crown:['Crown','#A77EDB']};
+const CANON_TEXT=`1|Fear|root
+2|Shame|root
+3|Guilt|root
+4|Control|root
+5|Insecurity|root
+6|Victimhood|root
+7|Scarcity|root
+8|Entitlement (Root)|root
+9|Possession|root
+10|Lethargy|root
+11|Resistance|root
+12|Compulsion|root
+13|Disconnection|root
+14|Escapism|root
+15|Panic|root
+16|Collapse|root
+17|Addiction|sacral
+18|Lust|sacral
+19|Envy|sacral
+20|Jealousy|sacral
+21|Co-Dependency|sacral
+22|Shame Of Desire|sacral
+23|Hypersexuality|sacral
+24|Avoidance Of Pleasure|sacral
+25|Manipulation Through Emotion|sacral
+26|Oversensitivity|sacral
+27|Fantasy|sacral
+28|Infatuation|sacral
+29|Obsession|sacral
+30|Guilt Of Pleasure|sacral
+31|Need For Approval|sacral
+32|Excess Emotion|sacral
+33|Pride|solar
+34|Arrogance|solar
+35|Competition|solar
+36|Anger|solar
+37|Judgment|solar
+38|Entitlement|solar
+39|Rebellion|solar
+40|Perfectionism|solar
+41|Force|solar
+42|Rigidity|solar
+43|Resentment (Solar)|solar
+44|Unworthiness|solar
+45|Anxiety|solar
+46|Self-Judgment (Solar)|solar
+47|Need To Win|solar
+48|Superiority|solar
+49|Hatred|heart
+50|Resentment (Heart)|heart
+51|Self-Judgment (Heart)|heart
+52|Betrayal|heart
+53|Separation|heart
+54|Martyrdom|heart
+55|Longing|heart
+56|Closed Heart|heart
+57|Manipulative Kindness|heart
+58|Expectation|heart
+59|Blame|heart
+60|False Love|heart
+61|Rejection|heart
+62|Avoidance Of Grief|heart
+63|Need To Be Needed|heart
+64|Deceit|throat
+65|Self-Silencing|throat
+66|People Pleasing|throat
+67|Lying|throat
+68|Interrupting|throat
+69|Comparison|throat
+70|Excuse|throat
+71|Stage Performing|throat
+72|Speaking To Be Right|throat
+73|Manic Expression|throat
+74|Talking To Avoid Feeling|throat
+75|Spiritual Language To Manipulate|throat
+76|Delusion|eye
+77|Cynicism|eye
+78|Distrust|eye
+79|Hypervigilance|eye
+80|Dogma|eye
+81|Overanalysis|eye
+82|Projection|eye
+83|Paranoia|eye
+84|Distortion|eye
+85|Doubt|eye
+86|Idealism|eye
+87|Lack Of Discernment|eye
+88|Doubt Of God|crown
+89|Hubris|crown
+90|Spiritual Pride|crown
+91|Nihilism|crown
+92|Spiritual Escapism|crown
+93|False Humility|crown
+94|Seeking Validation|crown
+95|Savior Complex|crown
+96|Condemnation|crown
+97|Need To Be Special|crown
+98|Unworthy Of God|crown
+99|Knowing Better Than God|crown
+100|Denial Of Truth|crown
+101|Rejection Of Spirit|crown
+102|Fear Of God|crown
+103|Anger At God|crown
+104|Forgetfulness|crown
+105|Denial Of Light|crown
+106|Rejection Of Unity|crown
+107|Self-Exclusion|crown
+108|Endless Seeking|crown
+109|Soul Star|crown
+110|Stellar Gateway|crown
+111|Earth Star|root
+112|Gaia Gateway|root`;
+const CANON=CANON_TEXT.trim().split('\n').map(line=>{let [id,name,band]=line.split('|');return{id:+id,name,band}});
+// Lexical evidence only: a synonym or phrase is a proposed candidate, not a diagnosis or confirmed fetter.
+const ALIASES={fear:['afraid','scared','frightened','fearful'],shame:['ashamed','shameful'],guilt:['guilty'],control:['controlling'],insecurity:['insecure'],jealousy:['jealous'],obsession:['obsessed','obsessing'],perfectionism:['perfectionist'],anger:['angry'],betrayal:['betrayed'],resentment:['resentful'],deceit:['deceptive'],lying:['lied','lie'],distrust:['distrustful'],projection:['projecting'],judgment:['judgmental','judging'],avoidance:['avoided','avoiding']};
+const themeWords={grief:'heart',grieving:'heart',sadness:'heart',sad:'heart',sorrow:'heart'};
+const stopNeg=new Set(['not','never','no','without',"don't","didn't","doesn't","wasn't","weren't","isn't","aren't","can't","couldn't","won't","haven't","hadn't","hardly"]);
+const escapeRe=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+function normalize(s){return s.toLowerCase().replace(/[’]/g,"'").replace(/[^a-z0-9'\s-]+/g,' ').replace(/-+/g,' ').replace(/\s+/g,' ').trim()}
+const CANON_SINGLE=CANON.filter(x=>x.name.split(' ').length===1||x.name==='Entitlement (Root)').map(x=>({...x,word:normalize(x.name.replace(/\s*\([^)]*\)$/, ''))}));
+const CANON_MULTI=CANON.filter(x=>x.name.split(' ').length>1 && !/\((Root|Heart|Solar)\)/.test(x.name)).map(x=>({...x,word:normalize(x.name)}));
+function negated(tokens,start){return tokens.slice(Math.max(0,start-4),start).some(t=>stopNeg.has(t))}
+function analyze(text){const raw=normalize(text),tokens=raw.match(/[a-z0-9']+/g)||[];const spans=[];const matches=[];const taken=new Set();const occupied=new Set();
+ const add=(i,len,candidate,kind)=>{const key=candidate.id+'@'+i; if(taken.has(key))return;taken.add(key);if(len>1)for(let j=i;j<i+len;j++)occupied.add(j);const n=negated(tokens,i);spans.push({start:i,end:i+len,band:candidate.band,candidate,negated:n,kind});if(!n&&kind==='fetter')matches.push(candidate)};
+ // Multiword canonical labels must match the ENTIRE phrase. 'Grief' never implies 'Avoidance Of Grief'.
+ const all=[...CANON_MULTI].sort((a,b)=>b.word.length-a.word.length);
+ for(const c of all){const phrase=c.word.split(' ');for(let i=0;i<=tokens.length-phrase.length;i++){if(phrase.every((w,j)=>tokens[i+j]===w))add(i,phrase.length,c,'fetter')}}
+ for(let i=0;i<tokens.length;i++){if(!occupied.has(i)&&tokens[i]!=='entitlement'){for(const c of CANON_SINGLE){const ws=[c.word,...(ALIASES[c.word]||[])];if(ws.includes(tokens[i]))add(i,1,c,'fetter')}}if(themeWords[tokens[i]]){spans.push({start:i,end:i+1,band:themeWords[tokens[i]],candidate:null,negated:negated(tokens,i),kind:'theme'})}}
+ for(let i=0;i<tokens.length;i++)if(DESC_WORDS.has(tokens[i])&&!spans.some(z=>z.start<=i&&z.end>i))spans.push({start:i,end:i+1,band:null,candidate:null,negated:negated(tokens,i),kind:'observed'});
+ return{tokens,spans,matches:[...new Map(matches.map(x=>[x.id,x])).values()]};}
+
+// Project TDD derived listening *signal* rules. This isolated visual scanner cannot
+// substitute for the canonical Sniffer/graph. It never assigns causes, diagnoses or CQ.
+const SOURCE_RULES=[
+ {id:'R01',name:'Generational pattern',desc:'A repeated family pattern across generations is explicitly described'},
+ {id:'R02',name:'Family history',desc:'Family lineage is mentioned; a repeated inherited pattern is NOT established'},
+ {id:'R03',name:'Parental learning',desc:'Caregiver/parent relationship is described; not automatically ancestral'},
+ {id:'R04',name:'Cultural conditioning',desc:'Social norms, schooling, or learned group expectations are described'},
+ {id:'R05',name:'Learned story or belief',desc:'A belief, expectation or internal rule is explicitly stated'},
+ {id:'R06',name:'Behavior repeating',desc:'Repetition is reported, not yet independently corroborated'},
+ {id:'R07',name:'Choice and avoidance',desc:'A described action, non-action or competing choice may merit clarification'},
+ {id:'R08',name:'Intention versus action',desc:'Tension between intended and actual behavior is described'},
+ {id:'R09',name:'Emotion or energy',desc:'The person reports an emotional state; no somatic address inferred'},
+ {id:'R10',name:'Body sensation',desc:'A body signal is reported, not diagnosed or assigned a nerve'},
+ {id:'R11',name:'Relationship pattern',desc:'Behavior in a relationship is described'},
+ {id:'R12',name:'Truth and expression',desc:'Truth, withholding, speaking, or concealment is described'},
+ {id:'R13',name:'Ownership and repair',desc:'Accountability, responsibility or a repair attempt is described'},
+ {id:'R14',name:'Care and boundaries',desc:'Empathy, compassion, boundaries or non-harm is relevant'},
+ {id:'R15',name:'Attachment and control',desc:'Choice and autonomy around an outcome are described'},
+ {id:'R16',name:'Correction or negation',desc:'A denial, rejection or correction requires earlier hypotheses be reconsidered'},
+ {id:'R17',name:'Coherent response',desc:'A helpful choice, strength, change or repair is reported'},
+ {id:'R18',name:'Explicit inquiry',desc:'The speaker asks Source to explain its listening logic'},
+ {id:'R19',name:'Family-to-self recognition',desc:'The speaker explicitly notices resemblance between family patterns and their own behavior, which remains unspecified'},
+ {id:'R20',name:'Described relative behavior',desc:'The speaker reports a concrete description of another family member; it is not their own diagnosis'}
+];
+function scanRules(input){
+ const t=normalize(input||''), hit=new Map();if(!t)return[];
+ const add=(id)=>{const v=SOURCE_RULES.find(x=>x.id===id);if(v)hit.set(id,v)};
+ const parent=/\b(my |our |their )?(mother|mom|mum|father|dad|parents|stepmother|stepfather|caregiver|raised by)\b/;
+ const older=/\b(grandmother|grandfather|grandparents|grandma|grandpa|great grand|great-grand|ancestors|ancestral)\b/;
+ const inherited=/\b(generations?|generational|passed down|family pattern|runs in (my |our )?family|inherited|lineage)\b/;
+ const repeat=/\b(both|same (thing|way|pattern)|just like|every generation|again and again|kept|always|repeated|repeats|pattern|taught|learned|handed down|passed down)\b/;
+ const contrast=/\b(unlike|but (my|her|his|their)|different from|whereas|in contrast to|not like)\b/;
+ // A parent mention is not evidence of ancestry. Co-present grandparent
+ // and parent requires a repetition statement, not just a family roll call.
+ if(older.test(t)||inherited.test(t)){
+   if(((parent.test(t)&&older.test(t)&&repeat.test(t)&&!contrast.test(t)) ||
+       /\b(across|through|for) (at least )?(two|three|four|multiple|several) generations\b/.test(t) ||
+       /\b(same (pattern|behavior|behaviour)|both|again)\b.*\b(grandmother|grandfather|grandparents|grandma|grandpa)\b/.test(t)&&parent.test(t))
+      && !/\b(i don't believe|i doubt|is it true|hypothetically)\b/.test(t))add('R01');
+   else add('R02');
+ }
+ if(parent.test(t))add('R03');
+ if(/\b(school|culture|cultural|society|social|religion|religious|raised to|raised with|was taught|were taught|expected of (us|me)|supposed to|tradition|community|classmates|peer pressure)\b/.test(t))add('R04');
+ if(/\b(i (believe|think|assume|used to think|tell myself|was taught)|i('m| am) (supposed|expected)|i have to|i must|i should|the rule (was|is)|my belief|it means that|if i .* then)\b/.test(t))add('R05');
+ if(/\b(always|often|every time|again|over and over|kept doing|keep doing|same pattern|habit|repeatedly|constantly|whenever)\b/.test(t))add('R06');
+ if(/\b(avoid|avoided|avoiding|put off|procrastinat|didn't go|did not go|choose|chose|decided|refused|walked away|stopped trying|couldn't bring myself|don't want to)\b/.test(t))add('R07');
+ if(/\b(i wanted to|i meant to|i intended to|i planned to|i was going to|i promised|but instead|even though i wanted|i tried to)\b/.test(t))add('R08');
+ if(/\b(i (feel|felt|am feeling|was feeling)|hurt|angry|sad|afraid|anxious|scared|joy|happy|ashamed|guilt|grief|lonely|proud|hopeful|relieved|resent|exhausted|numb|worried)\b/.test(t))add('R09');
+ if(/\b(my (stomach|throat|chest|jaw|back|shoulders|head|heart|neck|hands|body)|tight chest|muscles|heartbeat|shaking|tension in|felt it in|body felt|my breathing)\b/.test(t))add('R10');
+ if(/\b(my (partner|friend|wife|husband|boss|colleague|mother|father|parents|child|son|daughter|family)|our relationship|she told me|he told me|they told me|we argued)\b/.test(t))add('R11');
+ if(/\b(lied|lie to|lying|hide the truth|hid the truth|honest|dishonest|deceive|speak up|spoke up|silent|withheld|didn't say|did not say|told the truth|said what)\b/.test(t))add('R12');
+ if(/\b(my fault|i caused|i apologized|i apologised|i took responsibility|i own|accountab|made it right|i fixed|i admitted|i broke my promise|i kept my word|i promised)\b/.test(t))add('R13');
+ if(/\b(care for|cared for|kindness|compassion|empathy|support|helped|hurt someone|boundar|i said no|set a limit|non.?harm|forgiv|protect)\b/.test(t))add('R14');
+ if(/\b(control|controlling|can't let go|cannot let go|hold on to|attached|detach|outcome|make them|forcing|let them decide|allow them)\b/.test(t))add('R15');
+ if(/\b(no i meant|that's not what i meant|you misunderstood|i didn't|i did not|i never|not true|not anymore|actually i|correction|that's wrong|but not)\b/.test(t))add('R16');
+ if(/\b(i (changed|chose|learned|helped|apologized|apologised|forgave|set a boundary|stopped|repaired)|i'm doing better|i am doing better|no longer|instead i|now i|i kept my word)\b/.test(t))add('R17');
+ if(/\b(what (rules|patterns|signals)|what are you listening|how do you (detect|decide|listen)|sniffer rules|ancestral patterns)\b/.test(t))add('R18');
+ const narrative=scanNarrative(input||'');
+ if(narrative.selfRecognition)add('R19');
+ if(narrative.statements.some(x=>!x.negated))add('R20');
+ return [...hit.values()];
+}
+function renderSignals(text,interim){
+ const target=document.getElementById('ruleSignals');if(!target)return;
+ target.replaceChildren();const signals=scanRules(text);const recent=signals.slice(0,7);
+ if(!recent.length){const span=document.createElement('span');span.className='hint';span.textContent='No supported rule-family cue yet. Listening without guessing.';target.append(span);return}
+ for(const item of recent){const span=document.createElement('span');span.className='rule-chip';span.textContent=item.name;span.title=item.desc+(interim?' (interim speech)':' (spoken report; unverified)');const sub=document.createElement('small');sub.textContent=interim?'Interim cue':'Reported cue · unverified';span.append(sub);target.append(span)}
+}
+
+
+/* Narrative evidence reader. This is a structural conversation cue, not a
+ * diagnosis, proved ancestral cause, or substitution for MOB's Sniffer.
+ * A reported relative's behavior must not silently become the user's own.
+ * A user saying they notice resemblance does not identify which attribute.
+ */
+const OBSERVED_WORDS=new Set(['indignant','indignation','avoidant','avoiding','angry','resentful','dismissive','rejected','unloved','hurt','afraid','defensive','critical','judgmental','distant','withdrawn','disrespectful','resentment']);
+const DESC_WORDS=new Set(['indignant','indignation','avoidant','dismissive','defensive','disrespectful','withdrawn','critical']);
+const FAMILY_PEOPLE=/\b(?:my|our)\s+(sister|brother|mother|mom|mum|father|dad|parents|grandmother|grandfather|grandparent|aunt|uncle)\b/gi;
+function scanNarrative(text){
+ const original=String(text||''),t=normalize(original), statements=[];
+ const family=[...original.matchAll(FAMILY_PEOPLE)];
+ for(let i=0;i<family.length;i++){
+  const m=family[i],who=m[1].toLowerCase();
+  let slice=original.slice(m.index+m[0].length,Math.min(original.length,m.index+110));
+  if(family[i+1])slice=slice.slice(0,Math.max(0,family[i+1].index-(m.index+m[0].length)));
+  slice=slice.split(/[.!?;]/)[0];
+  // No attribution from a distant or negated mention, and no global labels.
+  let cues=[...normalize(slice).matchAll(/\b(indignant|indignation|avoidant|avoiding|angry|resentful|dismissive|rejected|unloved|hurt|afraid|defensive|critical|judgmental|distant|withdrawn|disrespectful|resentment)\b/g)];
+  for(const cue of cues.slice(0,3)){
+   const prior=normalize(slice.slice(0,cue.index));
+   const negated=/\b(?:not|never|isn't|wasn't|doesn't|no longer|is not|was not)\b(?:\s+\w+){0,2}\s*$/.test(prior);
+   statements.push({who,term:cue[1],source:'user-reported description of another person',negated,confirmed:false});
+  }
+ }
+ const selfRecognition=/\b(?:i\s+(?:can\s+)?(?:also\s+)?(?:see|recognize|recognise|notice|find)\s+(?:some\s+of\s+)?(?:their|those|the|my family'?s|these)\s+(?:patterns?|traits?|behavio[u]?rs?|things?|habits?)\s+(?:in|within)\s+(?:myself|me)|(?:the same|those|their)\s+patterns?\s+(?:are|is|show(?:ing)?)\s+(?:in|within)\s+me|i\s+(?:can\s+)?(?:see|notice|recognize|recognise)\s+(?:them|it)\s+(?:in|within)\s+(?:myself|me)|i\s+have\s+(?:those|the same|similar)\s+patterns?)\b/i.test(original);
+ const deniedSelf=/\b(?:i\s+(?:don't|do not|never|can't|cannot)\s+(?:see|recognize|recognise|notice|have)|none\s+of\s+(?:their|those)\s+patterns?\s+are\s+in\s+me|not\s+in\s+myself)\b/i.test(original);
+ const self= selfRecognition&&!deniedSelf;
+ const beliefs=[];
+ if(/\bi\s+(?:don't|do not)\s+think\s+i\s+(?:have|'ve)\s+ever\s+been\s+loved\b|\bi\s+(?:have|'ve)\s+never\s+been\s+loved\b/i.test(original))beliefs.push({kind:'self-worth belief',note:'The person reports wondering whether they were loved. This is their experience, not an independently established family fact.'});
+ if(/\bi\s+(?:have|'ve)\s+(?:always\s+)?felt\s+rejected\b/i.test(original))beliefs.push({kind:'felt rejection',note:'The person reports feeling rejected. No family member intention was established.'});
+ const describedFamily=statements.filter(x=>!x.negated);
+ return {
+  statements,beliefs,
+  familyToSelf:self && describedFamily.length>0,
+  selfRecognition:self,
+  selfRecognitionState:self?'first-person self-reported recognition of possible shared patterns; which behavior is not established':deniedSelf?'explicit denial or correction':'not reported',
+  lineageStatus: self?'FAMILY_TO_SELF_CANDIDATE_NOT_PROVEN_ANCESTRAL':'NO_PROVEN_ANCESTRAL_EVIDENCE',
+  why: self?'The user explicitly reports recognizing family patterns in themselves. Similarity does not prove an inherited mechanism.':'No explicit family-to-self self-attribution detected.'
+ };
+}
+function renderNarrative(text,interim){
+ const host=document.getElementById('narrativeSignals');if(!host)return;
+ host.replaceChildren();const n=scanNarrative(text);const rows=[];
+ if(n.beliefs.length)rows.push({main:n.beliefs.map(x=>x.kind).join(' + '),sub:'First-person experience · reported, not verified as an external fact'});
+ for(const o of n.statements.slice(-5))if(!o.negated)rows.push({main:o.who+' → '+o.term,sub:'Your description of a family member · not assigned to you'});
+ if(n.selfRecognition)rows.push({main:'Family → self recognition',sub:'You report seeing similar patterns in yourself; which specific behavior is still open'});
+ if(!rows.length){const hint=document.createElement('span');hint.className='hint';hint.textContent='No relational narrative candidate yet. Unknown is valid.';host.append(hint);return;}
+ for(const row of rows.slice(-7)){const item=document.createElement('div');item.className='narrative-row';item.textContent=row.main;const sub=document.createElement('small');sub.textContent=(interim?'Interim · ':'Reported · ')+row.sub;item.append(sub);host.append(item)}
+}
+const q=id=>document.getElementById(id),button=q('voiceButton'),speech=q('speech'),matchesEl=q('matches'),zones=q('zones'),note=q('evidenceNote'),mode=q('captionMode'),sourceText=q('sourceText');
+let session=null,connecting=false,libraryPromise=null,connectionErrorLatched=false,startedAt=0,currentWords='',lastCommitted='',lastSource='',state='idle',recognizer=null,recognitionActive=false,recognitionAllowed=false,recRestart=0,mutedForAgent=false,lastConfirmTime=0,lastFinalText='',inputLevel=0,outputLevel=0,visualInput=0,visualOutput=0,meter=null;const maxWords=110;
+function stateChange(s,message){state=s;document.body.dataset.state=s;q('presence').textContent=({idle:'Ready',connecting:'Connecting',connected:'Connected',error:'Connection issue'})[s];q('status').textContent=message||({idle:'Touch the orb to begin',connecting:'Connecting to Source AI…',connected:'Connected — speak naturally',error:'Connection issue'})[s];q('status').classList.toggle('errorcopy',s==='error');button.disabled=s==='connecting';button.setAttribute('aria-pressed',s==='connected'?'true':'false');button.setAttribute('aria-label',s==='connected'?'End Source AI conversation':'Start Source AI conversation')}
+function describeProviderError(err){let parts=[];try{parts.push(typeof err==='string'?err:JSON.stringify(err));}catch{};for(const v of [err?.message,err?.reason,err?.error?.reason,err?.error?.message,err?.detail,err?.code])if(v!==undefined)parts.push(String(v));const t=parts.join(' ').toLowerCase();if(/quota.exceeded|out of credits|insufficient credits|credit balance|code["\s:]+3000/.test(t))return {quota:true,message:'ElevenLabs has run out of credits. Restore credits in ElevenLabs Usage / Billing, then click to retry.'};if(/notallowederror|permission|denied/.test(t))return {quota:false,message:'Microphone permission blocked. Allow microphone access in your browser, then retry.'};return {quota:false,message:'ElevenLabs could not start. Recent calls were also blocked by exhausted credits. Check ElevenLabs Usage / Billing first.'}}
+function connectionFailure(err){console.warn('Source AI connection could not start',err);connectionErrorLatched=true;const m=describeProviderError(err);stateChange('error',m.message);q('billingHelp').classList.add('visible');q('snifferConnection').textContent='Voice service unavailable';}
+function render(text,interim=false){const a=analyze(text);renderSignals(text,interim);renderNarrative(text,interim);speech.replaceChildren();const tail=a.tokens.slice(-maxWords);const offset=a.tokens.length-tail.length;const wordMatches=[...String(text||'').matchAll(/[a-z0-9]+(?:['’][a-z0-9]+)*/gi)];const originalOK=wordMatches.length===a.tokens.length;
+ let picked=[];for(let i=0;i<tail.length;i++){const idx=i+offset;const candidates=a.spans.filter(s=>s.start<=idx&&s.end>idx).sort((x,y)=>({fetter:0,observed:1,theme:2}[x.kind]??3)-({fetter:0,observed:1,theme:2}[y.kind]??3));const hit=candidates[0];const el=document.createElement('span');el.className='word'+(hit?(hit.negated?' negated':hit.kind==='theme'?' theme':hit.kind==='observed'?' observed':' match'):'')+(interim?' interim':'');el.textContent=originalOK?wordMatches[idx][0]:tail[i];if(hit){if(hit.band&&CHAKRAS[hit.band])el.style.setProperty('--tone',CHAKRAS[hit.band][1]);el.title=(hit.negated?'Negated mention; not assigned: ':hit.kind==='theme'?'Theme only — no fetter inferred: ':hit.kind==='observed'?'Observed descriptor, relationship context required: ':'Possible lexical match only: ')+(hit.candidate?hit.candidate.name+' #'+hit.candidate.id:hit.kind==='observed'?el.textContent:(CHAKRAS[hit.band]?.[0]||'Unknown'));}if(i>0){const gap=originalOK?String(text).slice(wordMatches[idx-1].index+wordMatches[idx-1][0].length,wordMatches[idx].index):' ';speech.append(document.createTextNode(gap||' '))}speech.append(el)}if(originalOK&&tail.length){let finalMatch=wordMatches.at(-1);speech.append(document.createTextNode(String(text).slice(finalMatch.index+finalMatch[0].length)))}if(!tail.length){const i=document.createElement('span');i.className='idle-text';i.textContent='Your words appear when you speak.';speech.append(i)}speech.scrollTop=speech.scrollHeight;
+ const activeBands=new Set(a.spans.filter(s=>!s.negated&&s.band).map(s=>s.band));for(const e of zones.children)e.classList.toggle('active',activeBands.has(e.dataset.band));matchesEl.replaceChildren();const seen=new Set();for(const c of a.matches){if(seen.has(c.id))continue;seen.add(c.id);const node=document.createElement('span');node.className='card';node.style.setProperty('--tone',CHAKRAS[c.band][1]);const head=document.createElement('b');head.textContent=c.name;const sub=document.createElement('small');sub.textContent=CHAKRAS[c.band][0]+' • fetter '+c.id+' • unverified';node.append(head,sub);matchesEl.append(node)}if(!seen.size){let x=document.createElement('span');x.className='hint';x.textContent=a.spans.some(s=>s.negated)?'Only negated or non-fetter cues detected.':'No canonical fetter match. Unresolved rather than guessed.';matchesEl.append(x)}
+ const hasTheme=a.spans.some(s=>s.kind==='theme');note.textContent=seen.size?'These are word-level candidates, not verified behavioral patterns. A fetter requires context and confirmation. The canonical Sniffer/graph/CQDQ is connected only when loaded by the production host.':hasTheme?'A color may indicate a chakra theme without any fetter match. No behavioral conclusion has been made.':'Unknown is valid. No chakra or fetter is assigned without supporting evidence. The canonical Sniffer/graph/CQDQ is connected only when loaded by the production host.';}
+for(const [band,[name,color]] of Object.entries(CHAKRAS)){const item=document.createElement('div');item.className='zone';item.dataset.band=band;item.style.setProperty('--tone',color);const dot=document.createElement('i');dot.className='light';const t=document.createElement('span');t.textContent=name;item.append(dot,t);zones.append(item)}
+// Web Speech API provides interim words where permitted. ElevenLabs final transcript remains the authority for completed turns.
+function beginRecognizer(){const R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R){mode.textContent='Per-turn captions';return}if(recognizer)return;try{recognizer=new R();recognizer.lang='en-US';recognizer.continuous=true;recognizer.interimResults=true;recognizer.maxAlternatives=1;recognizer.onresult=e=>{if(mutedForAgent||state!=='connected')return;recRestart=0;let words='';for(let i=0;i<e.results.length;i++)words+=' '+(e.results[i][0]?.transcript||'');words=words.trim();if(!words)return;currentWords=words;mode.textContent=[...e.results].slice(e.resultIndex).some(x=>!x.isFinal)?'Live • interim':'Live • recognized';render((lastCommitted+' '+words).trim(),true)};recognizer.onerror=e=>{if(['not-allowed','service-not-allowed'].includes(e.error)){recognitionAllowed=false;mode.textContent='Per-turn captions'}else mode.textContent='Live captions limited'};recognizer.onend=()=>{recognitionActive=false;if(state==='connected'&&!mutedForAgent&&recognitionAllowed){recRestart++;setTimeout(tryRecognizer,Math.min(recRestart*550,6000))}};recognitionAllowed=true;tryRecognizer()}catch(e){recognizer=null;mode.textContent='Per-turn captions'}}
+function tryRecognizer(){if(!recognizer||recognitionActive||!recognitionAllowed||state!=='connected'||mutedForAgent)return;try{recognizer.start();recognitionActive=true;mode.textContent='Live • browser captions'}catch(e){mode.textContent='Per-turn captions'}}
+function pauseRecognizer(){if(recognizer&&recognitionActive){try{recognizer.stop()}catch{}recognitionActive=false}}
+function endRecognizer(){recognitionAllowed=false;pauseRecognizer();recognizer=null;currentWords='';mode.textContent='Ready'}
+function onUserFinal(raw){const text=(raw||'').trim();if(!text)return;const now=Date.now();if(text===lastFinalText&&now-lastConfirmTime<4500)return;lastFinalText=text;lastConfirmTime=now;lastCommitted=(lastCommitted+' '+text).trim().split(/\s+/).slice(-140).join(' ');currentWords='';mode.textContent='ElevenLabs transcript';rememberTurn(text);render(lastCommitted,false)}
+
+// LIVE BRIDGE: the agent calls read_sniffer_evidence through ElevenLabs
+// clientTools. Only confirmed user transcript callbacks can populate this.
+// No browser data is put in localStorage, and nothing is scored as CQ.
+const utteranceLedger=[];
+let evidenceToolCalls=0, toolAnsweredTurn=0, lastUserTurn=0,lastContextSignal='';
+function evidenceForTurn(phrase){
+ const detected=scanRules(phrase);
+ const a=analyze(phrase);
+ const allowedIds=new Set(a.matches.map(m=>m.id));
+ const matched=a.matches.filter((m,i,self)=>self.findIndex(z=>z.id===m.id)===i)
+  .slice(0,8).map(m=>({id:m.id,name:m.name,band:m.band,source:'exact lexical mention',status:'candidate only'}));
+ const spans=a.spans.filter(x=>!x.negated&&x.kind==='theme').slice(0,6)
+  .map(x=>({seat:x.band,source:'theme lexical mention, not inferred address',status:'candidate only'}));
+ return {ruleFamilies:detected.map(x=>({id:x.id,name:x.name,note:x.desc})),
+   literalFetterMentions:matched,chakraThemeMentions:spans,
+   negationPresent:detected.some(x=>x.id==='R16'),
+   narrative:scanNarrative(utteranceLedger.slice(-10).map(x=>x.text).join(' ')),
+   evidenceStatus:'user reported; no confirmed behavioral interpretation'};
+}
+function crossTurnFamilyEvidence(){
+ const turns=utteranceLedger.slice(-5).map(x=>normalize(x.text));
+ if(turns.length<2)return null;
+ const hasParent=turns.some(t=>/\b(my |our )(mom|mum|mother|dad|father|parents)\b/.test(t));
+ const hasOlder=turns.some(t=>/\b(my |our )(grandmother|grandfather|grandparents|grandma|grandpa)\b/.test(t));
+ const explicitSame=turns.some(t=>/\b(did the same|same (thing|way|pattern|behavior|behaviour)|just like|exactly like|passed (it|that) down|runs in (my|our) family)\b/.test(t));
+ const contrasts=turns.some(t=>/\b(unlike|different from|not like|whereas|in contrast to)\b/.test(t));
+ if(!/\b(mother|mom|mum|father|dad|parents|grandmother|grandfather|grandparents|grandma|grandpa|same thing|same pattern|just like)\b/.test(turns.at(-1)))return null;
+ return hasParent&&hasOlder&&explicitSame&&!contrasts?
+ {status:'possible multigenerational similarity reported across turns; not inheritance or cause',evidence:'user explicitly mentions a parent and older generation with comparison language',verified:false}:null;
+}
+function rememberTurn(text){
+ utteranceLedger.push({text,turn:++lastUserTurn});
+ if(utteranceLedger.length>12)utteranceLedger.shift();
+ q('snifferConnection').textContent='Speech received · ready to inspect';
+ const reading=scanNarrative(utteranceLedger.slice(-10).map(x=>x.text).join(' '));
+ const v5Current=v5Scan(text);
+ const summary=JSON.stringify({family:reading.statements.filter(x=>!x.negated).map(x=>({who:x.who,term:x.term})).slice(-5),selfRecognition:reading.selfRecognition,beliefs:reading.beliefs.map(x=>x.kind),language:v5Current.cues.slice(0,5).map(x=>({label:x.label,status:x.negated?'denied':'unverified candidate'})),channels:v5Current.channels,intensityWords:v5Current.modifiers});
+ if(summary!==lastContextSignal && (reading.statements.length||reading.selfRecognition||reading.beliefs.length||v5Current.cues.length||v5Current.channels.length)){
+   lastContextSignal=summary;
+   // SDK contextual updates are NOT user messages: they do not trigger speech.
+   // No additional inference beyond the explicitly user-reported statements.
+   try{session?.sendContextualUpdate?.('Read-only Source evidence: '+summary+'. These are reported phrases, not verified traits. Family-to-self resemblance is a candidate, never proven inheritance. Do not automatically ask another question.');}catch(e){console.warn('Non-interrupting evidence update unavailable',e)}
+ }
+}
+function readSnifferEvidence(){
+ evidenceToolCalls++;
+ const latest=utteranceLedger.at(-1);
+ const node=q('snifferConnection');
+ if(!latest){node.textContent='No confirmed speech';return {available:false,reason:'No confirmed user transcript received by this browser; do not infer a result',canonicalSnifferConnected:false};}
+  const hasCanonical=typeof window.srcVoiceIntelligence==='function'||typeof window.srcVoiceSniff==='function'||typeof window.sniffStory==='function';
+ const reading=evidenceForTurn(latest.text);
+ const result={
+  available:true,mode:'read-only actual ElevenLabs transcript -> browser evidence rule families',
+  canonicalSnifferConnected:hasCanonical,
+  rulebookPresent:true,
+  lastSpokenTurn:latest.turn,
+  evidenceAlreadyReturned:latest.turn===toolAnsweredTurn,
+  statement:latest.text.slice(0,600),
+  ...reading,
+  crossTurnCandidate:crossTurnFamilyEvidence(),
+  caveat:'Rule-family and word matches are not calibrated canonical Sniffer/CQDQ outputs. Do not score or classify a person. Source remains a peer; user verifies.'
+ };
+  // The production host may expose an actual consent-scoped, same-origin engine.
+  // A standalone file never invents or loads a profile. This is a READ only.
+  if(typeof window.srcVoiceIntelligence==='function'){
+   try{
+    const host=window.ATUNED_SOURCE_VOICE_CONTEXT;
+    const consent=!!(host&&host.allowProfile===true&&host.userConsent===true);
+    const currentRecord=consent?host.activeRecord:null;
+    const currentTurns=utteranceLedger.slice(-12).map(x=>x.text);
+    const rr=window.srcVoiceIntelligence(latest.text,currentRecord,{allowProfile:consent,turns:currentTurns});
+    result.canonicalSnifferConnected=rr?.voice?.engine==='MOB/sniffStory+srcHear';
+    result.canonicalIntelligence={
+     source:rr?.intelligence?.engine||'Unavailable',
+     graphStatus:rr?.intelligence?.graphStatus||'UNREAD',
+     narrative:rr?.intelligence?.narrative||null,
+     evidence:(rr?.intelligence?.evidence||[]).slice(0,8),
+     graphMatches:(rr?.intelligence?.graphMatches||[]).slice(0,8),
+     coherence:'NOT_MEASURED',ancestry:'NOT_ASSESSED',
+     profileReadAllowed:consent,
+     status:'READ_ONLY, NO PROFILE WRITE'};
+   }catch(e){result.canonicalSnifferConnected=false;result.canonicalIntelligence={status:'UNAVAILABLE',reason:'Production read failed; no profile or CQ data invented'};}
+  }
+  if(hasCanonical && typeof window.srcVoiceIntelligence!=='function'){
+  try{
+   const rr=typeof window.srcVoiceSniff==='function'?window.srcVoiceSniff(latest.text,{},{}):window.sniffStory(latest.text);
+   result.canonicalSniffer={
+    status:rr.status||'READ, unverified',
+    engine:rr.engine||'MOB canonical sniffStory',
+    axes:(rr.axes||[]).filter(v=>v.because?.length).slice(0,9).map(v=>({axis:v.axis,shadow:v.shadow,coherent:v.coherent,because:v.because})),
+    laws:(rr.laws||[]).slice(0,9).map(v=>({law:v.law,because:v.because,direction:v.direction})),
+    saboteurs:(rr.saboteurs||[]).slice(0,6).map(v=>({name:v.name,id:v.id,because:v.because,status:'hypothesis'})),
+    coverageGaps:rr.gaps||null
+   };
+  }catch(e){result.canonicalSnifferConnected=false;result.canonicalSniffer={status:'UNREAD',reason:'Canonical engine unavailable in this browser'};}
+ }
+ toolAnsweredTurn=latest.turn;
+ node.textContent=result.canonicalSnifferConnected?'Canonical read-only engine queried':'Live narrative evidence sent to Source';
+ q('engineBadge').textContent=result.canonicalSnifferConnected?'CANONICAL READ':'LOCAL EVIDENCE';
+ return result;
+}
+const getText=x=>typeof x==='string'?x:typeof x?.message==='string'?x.message:typeof x?.text==='string'?x.text:'';
+async function loadSDK(){if(libraryPromise)return libraryPromise;libraryPromise=(async()=>{let err;for(const url of ['https://esm.sh/@elevenlabs/client@1.21.0?bundle','https://cdn.jsdelivr.net/npm/@elevenlabs/client@1.21.0/+esm']){try{let m=await import(url);if(m?.Conversation?.startSession)return m.Conversation}catch(e){err=e}}throw err||new Error('ElevenLabs SDK could not be loaded')})();return libraryPromise}
+function stopMeters(){if(meter){clearInterval(meter);meter=null}inputLevel=0;outputLevel=0}
+function startMeters(){stopMeters();meter=setInterval(async()=>{if(!session)return;try{const [i,o]=await Promise.all([Promise.resolve(session.getInputVolume?.()??0),Promise.resolve(session.getOutputVolume?.()??0)]);inputLevel=Math.min(1,Math.max(0,+i||0));outputLevel=Math.min(1,Math.max(0,+o||0))}catch{}},105)}
+async function toggle(){
+ if(connecting)return;
+ if(session){connecting=true;const old=session;session=null;endRecognizer();stopMeters();stateChange('idle','Ending conversation…');try{await old.endSession()}catch{}finally{connecting=false;stateChange('idle')}return;}
+ connecting=true;connectionErrorLatched=false;startedAt=Date.now();q('billingHelp').classList.remove('visible');stateChange('connecting','Connecting to ElevenLabs…');
+ try{
+  if(!navigator.mediaDevices?.getUserMedia)throw new Error('Microphone permission unavailable. Use Chrome or Edge.');
+  const Conversation=await loadSDK();
+  const callbacks={agentId:AGENT_ID,connectionType:'webrtc',clientTools:{read_sniffer_evidence:readSnifferEvidence},
+    onConnect:()=>{if(!connectionErrorLatched)stateChange('connected','Connected — speak naturally')},
+    onDisconnect:()=>{session=null;endRecognizer();stopMeters();if(!connectionErrorLatched){if(Date.now()-startedAt<8000)connectionFailure('ElevenLabs disconnected during startup; recent calls have exhausted credits');else stateChange('idle','Conversation ended')}},
+    onStatusChange:e=>{if((e?.status||e)==='connected'&&!connectionErrorLatched)stateChange('connected')},
+    onModeChange:e=>{const m=e?.mode||e;if(m==='speaking'){mutedForAgent=true;pauseRecognizer()}else if(m==='listening'){mutedForAgent=false;tryRecognizer()}},
+    onUserTranscript:e=>onUserFinal(getText(e)),
+    onMessage:e=>{const txt=getText(e),who=(e?.role||e?.source||'').toLowerCase();if(who==='user')onUserFinal(txt);if(who==='ai'||who==='agent'){lastSource=txt;sourceText.textContent=txt.slice(-300)}},
+    onError:e=>connectionFailure(e)};
+  const s=await Conversation.startSession(callbacks);
+  if(connectionErrorLatched){try{await s?.endSession?.()}catch{};session=null;return;}
+  session=s;stateChange('connected','Connected — speak naturally');startMeters();beginRecognizer();
+ }catch(e){session=null;endRecognizer();stopMeters();connectionFailure(e)}
+ finally{connecting=false;button.disabled=false}
+}
+button.addEventListener('click',toggle);window.addEventListener('pagehide',()=>{endRecognizer();stopMeters();if(session){try{session.endSession()}catch{}session=null}});
+// Audio-reactive orb retains the original two-voice cyan and amber visual system.
+const canvas=q('orb'),ctx=canvas.getContext('2d');let W=720,t0=performance.now();function resize(){const b=canvas.getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=canvas.height=Math.max(300,Math.round(b.width*dpr));W=canvas.width}window.addEventListener('resize',resize);resize();function frame(now){const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches,t=reduced?0:(now-t0)/1000,c=W/2,r=W*.26;visualInput+=(inputLevel-visualInput)*.15;visualOutput+=(outputLevel-visualOutput)*.15;ctx.clearRect(0,0,W,W);ctx.save();ctx.translate(c,c);let bg=ctx.createRadialGradient(0,0,0,0,0,r*1.7);bg.addColorStop(0,'#4b9bb422');bg.addColorStop(1,'#12253600');ctx.fillStyle=bg;ctx.beginPath();ctx.arc(0,0,r*1.7,0,2*Math.PI);ctx.fill();const layers=[{c:[124,229,229],v:visualInput,r:r},{c:[232,185,156],v:visualOutput,r:r*.77}];for(const l of layers){for(let j=0;j<2;j++){ctx.beginPath();ctx.shadowColor=`rgba(${l.c},.45)`;ctx.shadowBlur=17;ctx.lineWidth=(j?4:2)*W/720;ctx.strokeStyle=`rgba(${l.c},${j?.19:.8})`;for(let i=0;i<=200;i++){const a=i/200*Math.PI*2,p=Math.sin(a*9+t*.7)*(.04+l.v*.3)+Math.cos(a*17-t*.5)*(.015+l.v*.07),v=l.r*(1+(reduced?0:p));let x=Math.cos(a)*v,y=Math.sin(a)*v;i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.closePath();ctx.stroke()}}ctx.restore();requestAnimationFrame(frame)}requestAnimationFrame(frame);
+
+// SOURCE SIGNAL VIEW V5. Read-only narrative evidence, not a new CQDQ scorer.
+// Direct lexical canon is retained. Semantic variants below are *proposals* for
+// the graph ontology and require owner approval; no new fetter IDs are made up.
+const V5_COLOR={root:'#D6524C',sacral:'#D8924E',solar:'#DABF6A',heart:'#5FD5A6',throat:'#5EBBDB',eye:'#7D93E0',crown:'#A77EDB'};
+const V5_CHANNELS=[
+ {key:'believe',short:'BEL',label:'Believe',re:/\b(?:i\s+believe|i\s+assume|my\s+belief|it\s+must\s+be|the\s+rule\s+is)\b/i},
+ {key:'perceive',short:'SEE',label:'Perceive',re:/\b(?:i\s+see|i\s+notice|i\s+recogniz(?:e|ed)|it\s+looks|it\s+seems|i\s+perceive)\b/i},
+ {key:'think',short:'THK',label:'Think',re:/\b(?:i\s+(?:do\s+not\s+|don.t\s+)?think|i\s+thought|i\s+wonder|i\s+figured|i\s+reasoned)\b/i},
+ {key:'behave',short:'BEH',label:'Behave',re:/\b(?:i\s+(?:often|always|usually)\s+|i\s+keep\s+|i\s+tend\s+to\s+|every\s+time\s+i\s+|i\s+habitually)\b/i},
+ {key:'act',short:'ACT',label:'Act',re:/\b(?:i\s+(?:did|chose|decided|went|left|acted|stopped|apologi[sz]ed|avoided|helped|said\s+no|told)\b|i\s+(?:am\s+going\s+to|will)\b)/i},
+ {key:'say',short:'SAY',label:'Say',re:/\b(?:i\s+said|i\s+told|i\s+spoke|i\s+asked|they\s+said|he\s+said|she\s+said|i\s+say)\b/i},
+ {key:'feel',short:'FEEL',label:'Feel',re:/\b(?:i\s+(?:(?:have|have\s+always|always)\s+)?(?:feel|felt|am\s+feeling)|it\s+hurt|i\s+was\s+(?:angry|sad|scared|upset))\b/i}
+];
+// Explicit phrase-equivalence candidates; not calibrated psychological readings.
+const V5_PHRASES=[
+ {label:'Rejection / belonging',band:'heart',emotion:'Sad',pattern:/\b(?:(?:feel|feeling|felt)\s+(?:left\s+out|rejected|unwanted|unloved|excluded|like\s+an\s+outsider)|never\s+(?:felt\s+)?(?:loved|accepted)|(?:nobody|no\s+one)\s+(?:cares|loves\s+me|wants\s+me)|shut\s+(?:me\s+)?out|did(?:n.t|\s+not)\s+belong|pushed\s+(?:me\s+)?away)\b/gi},
+ {label:'Anger / indignation',band:'solar',emotion:'Anger',pattern:/\b(?:indignant|indignation|outraged|enraged|furious|livid|seething|boiling\s+with\s+anger|blew\s+up|lost\s+(?:his|her|my|their)\s+temper|snapped\s+at\s+(?:me|him|her|them))\b/gi},
+ {label:'Avoidance / withdrawal',band:'sacral',emotion:null,pattern:/\b(?:avoidant|avoiding\s+(?:the\s+)?(?:issue|conversation|conflict|people)|would(?:n.t|\s+not)\s+talk\s+about\s+it|shut\s+down\s+when\s+confronted|dodg(?:ed|ing)\s+(?:the\s+)?question|kept\s+distance|pulled\s+away\s+from\s+me|would\s+never\s+engage)\b/gi},
+ {label:'Fear / safety',band:'root',emotion:'Fear',pattern:/\b(?:terrified|petrified|panicked|in\s+danger|afraid\s+to\s+|scared\s+to\s+death|felt\s+unsafe|worried\s+for\s+my\s+safety)\b/gi},
+ {label:'Shame / worth',band:'solar',emotion:'Shame',pattern:/\b(?:not\s+good\s+enough|felt\s+(?:worthless|ashamed|humiliated)|i\s+am\s+(?:a\s+failure|worthless)|did(?:n.t|\s+not)\s+deserve\s+(?:love|respect))\b/gi},
+ {label:'Being unheard',band:'throat',emotion:null,pattern:/\b(?:talk(?:ed)?\s+over\s+me|would(?:n.t|\s+not)\s+listen\s+to\s+me|never\s+let\s+me\s+speak|silenced\s+me|my\s+voice\s+(?:didn.t|did\s+not)\s+matter)\b/gi}
+];
+const V5_MODIFIERS=[
+ {name:'Slight',re:/\b(?:slightly|a\s+little|somewhat|kind\s+of|a\s+bit)\b/gi},
+ {name:'Strong',re:/\b(?:very|really|so\s+much|deeply|extremely|intensely|completely|totally)\b/gi},
+ {name:'Repeated',re:/\b(?:always|never|constantly|every\s+time|over\s+and\s+over|again\s+and\s+again)\b/gi}
+];
+const V5_CHILD=[['Fear','root',/\b(?:fear|scared|afraid|terrified|panic|unsafe)\b/i],['Anger','solar',/\b(?:angry|anger|indignant|outraged|furious|rage)\b/i],['Shame','sacral',/\b(?:ashamed|shame|worthless|embarrassed|humiliated)\b/i],['Disgust','sacral',/\b(?:disgusted|repulsed|revolted)\b/i],['Apathy','throat',/\b(?:apathetic|numb|indifferent|no\s+energy)\b/i],['Shock','eye',/\b(?:shocked|stunned|frozen)\b/i],['Sad','heart',/\b(?:sad|rejected|unloved|grief|heartbroken|alone)\b/i],['Surprise','heart',/\b(?:surprised|astonished|unexpected)\b/i],['Anticipation','solar',/\b(?:anticipating|dreading|expecting|bracing)\b/i]];
+function v5Negated(t,at){return /\b(?:not|never|no|without|isn.t|wasn.t|don.t|didn.t|cannot|can.t|unlike|hypothetically)\s+(?:\w+\s+){0,3}$/i.test(t.slice(Math.max(0,at-65),at))}
+function v5Scan(text){
+ const s=String(text||''),cues=[];
+ for(const rule of V5_PHRASES){rule.pattern.lastIndex=0;for(const m of s.matchAll(rule.pattern)){const n=v5Negated(s,m.index);cues.push({start:m.index,end:m.index+m[0].length,band:rule.band,source:'fuzzy',label:rule.label,emotion:rule.emotion,negated:n,full:false});}}
+ // Exact canonical matches from the original engine vocabulary remain solid.
+ const a=analyze(s);const originals=[...s.matchAll(/[a-z0-9]+(?:['’][a-z0-9]+)*/gi)];
+ for(const span of a.spans){if(span.kind!=='fetter'||!span.candidate||span.start>=originals.length||span.end>originals.length)continue;
+  const from=originals[span.start].index,to=originals[span.end-1].index+originals[span.end-1][0].length;
+  cues.push({start:from,end:to,band:span.band,source:'canonical',label:span.candidate.name,canonicalId:span.candidate.id,negated:span.negated,full:false});}
+ // Full-clause highlight ONLY when the clause contains a coherent, single-band
+ // theme, plus an explicit personal report; no mixed-band sentence wash.
+ const clauses=[...s.matchAll(/[^.!?;]+[.!?;]?/g)];
+ for(const m of clauses){const start=m.index,end=start+m[0].length,local=cues.filter(x=>!x.negated&&x.start>=start&&x.end<=end),bands=[...new Set(local.map(x=>x.band))];
+  if(bands.length!==1||!local.length||!(/\b(?:i|my|me|he|she|they|mother|father|sister|brother|dad|mom)\b/i.test(m[0])))continue;
+  // Requirement: a meaningful matched phrase (>= 2 words), OR two same-band cues.
+  if(!local.some(x=>x.end-x.start>=11)||local.length<1)continue;
+  for(const item of local)item.full=true;
+ }
+ const channels=V5_CHANNELS.filter(x=>x.re.test(s)).map(x=>x.key);
+ const mods=V5_MODIFIERS.filter(x=>{x.re.lastIndex=0;return x.re.test(s)}).map(x=>x.name);
+ const child=V5_CHILD.filter(x=>x[2].test(s)&&!v5Negated(s,s.search(x[2]))).map(x=>({name:x[0],band:x[1]}));
+ let action='Not assessed';if(/\b(?:i\s+(?:apologi[sz]ed|helped|set\s+a\s+boundary|made\s+amends|admitted|chose|decided|refused)|i\s+said\s+no)\b/i.test(s))action='Action reported';
+ else if(/\b(?:i\s+(?:wanted|planned|meant|intended|promised)\s+to|but\s+instead|i\s+did(?:n.t|\s+not))\b/i.test(s))action='Intention / action gap';
+ return {cues,channels,modifiers:mods,child,action,narrative:scanNarrative(s)};
+}
+// Populate visual signal controls with nodes that do not contain inferred labels.
+const v5BarHost=q('v5Chakra'),v5ChannelHost=q('v5Channels');
+Object.entries(CHAKRAS).forEach(([band,[name,color]])=>{const node=document.createElement('div');node.className='v5-stripe';node.dataset.band=band;node.title=name+' · language cue activity (not an energy measurement)';node.style.setProperty('--v5-c',color);const fill=document.createElement('span');fill.className='v5-stripe-fill';node.append(fill);v5BarHost.append(node)});
+V5_CHANNELS.forEach(c=>{const el=document.createElement('span');el.className='v5-channel';el.dataset.channel=c.key;el.title=c.label;const code=document.createElement('strong');code.textContent=c.short;const full=document.createTextNode(c.label);el.append(code,full);v5ChannelHost.append(el)});
+q('v5TranscriptMount').append(speech);q('v5SourceMount').append(sourceText);
+function v5PaintTranscript(text,reading,interim){
+ const phrase=String(text||''),terms=[...phrase.matchAll(/[a-z0-9]+(?:['’][a-z0-9]+)*/gi)];
+ speech.replaceChildren();if(!terms.length){const s=document.createElement('span');s.className='idle-text';s.textContent='Speak naturally. Source will listen.';speech.append(s);return}
+ const visible=terms.slice(-115),offset=visible[0].index;let cur=offset;
+ for(const word of visible){if(word.index>cur)speech.append(document.createTextNode(phrase.slice(cur,word.index)));
+  const matched=reading.cues.filter(x=>x.start<word.index+word[0].length&&x.end>word.index).sort((a,b)=>(a.source==='canonical'?0:1)-(b.source==='canonical'?0:1));
+  const match=matched[0],p=document.createElement('span');p.className='word'+(interim?' interim':'');p.textContent=word[0];
+  if(match){p.classList.add(match.negated?'negated':match.source==='canonical'?'match':'fuzzy');if(match.full)p.classList.add('full-phrase');if(match.band)p.style.setProperty('--tone',V5_COLOR[match.band]);p.title=(match.negated?'Denied / hypothetical mention':match.source==='canonical'?'Exact canonical label':'Similar-meaning candidate')+' · '+match.label+' · '+(match.band||'unassigned')+' · not a diagnosis';}
+  if(V5_CHANNELS.some(c=>c.re.test(phrase.slice(Math.max(0,word.index-12),Math.min(phrase.length,word.index+word[0].length+10)))))p.classList.add('channel-word');
+  speech.append(p);cur=word.index+word[0].length;
+ }
+ if(cur<phrase.length)speech.append(document.createTextNode(phrase.slice(cur)));speech.scrollTop=speech.scrollHeight;
+}
+function v5Update(text,interim=false){
+ const reading=v5Scan(text), active=reading.cues.filter(c=>!c.negated),bandCount={};for(const c of active)bandCount[c.band]=(bandCount[c.band]||0)+1;
+ for(const bar of v5BarHost.children){const n=bandCount[bar.dataset.band]||0;bar.style.setProperty('--v5-h',n?Math.min(90,13+20*n)+'%':'6%');bar.style.setProperty('--v5-opacity',n?'1':'.34');}
+ for(const el of v5ChannelHost.children)el.classList.toggle('active',reading.channels.includes(el.dataset.channel));
+ q('v5ChannelDetail').textContent=reading.channels.length?reading.channels.length+' channels observed':'No channel yet';
+ // The same-origin production host may provide a canonical engine read.
+ // Profile access requires both consent flags; standalone file remains local.
+ let engineReading=null;
+ if(!interim&&typeof window.srcVoiceIntelligence==='function'&&utteranceLedger.length){
+  const host=window.ATUNED_SOURCE_VOICE_CONTEXT;
+  const consent=!!(host&&host.userConsent===true&&host.allowProfile===true);
+  try{const rr=window.srcVoiceIntelligence(utteranceLedger.at(-1).text,consent?host.activeRecord:null,{allowProfile:consent,turns:utteranceLedger.slice(-10).map(x=>x.text)});
+   if(rr?.voice?.engine==='MOB/sniffStory+srcHear')engineReading={voice:rr.voice,intelligence:rr.intelligence,consent};
+  }catch(e){console.warn('Canonical engine unavailable; only local language cues displayed');}
+ }
+ q('engineBadge').textContent=engineReading?'CANONICAL READ':'LOCAL CANDIDATES';
+ if(engineReading){
+  const observed=engineReading.voice.seats||[];
+  for(const entry of observed){let k=String(entry.seat||'').toLowerCase().replace(/3rd ?eye/,'eye').replace(/plexus/g,'').trim();if(k==='brow')k='eye';const bar=[...v5BarHost.children].find(x=>x.dataset.band===k);if(bar){const old=bandCount[k]||0;bar.style.setProperty('--v5-h',Math.min(90,13+20*Math.max(old,entry.mentions||0))+'%');bar.style.setProperty('--v5-opacity','1');}}
+ }
+ q('v5State').textContent=engineReading?(engineReading.intelligence?.graphStatus==='READ'?'Graph read':'Sniffer read'):interim?'Interim':active.length?'Tracking':'Listening';
+ q('v5EvidenceCount').textContent=active.length+' language cue'+(active.length===1?'':'s');
+ q('v5Emotion').textContent=reading.child.length?reading.child.slice(0,2).map(x=>x.name).join(' · '):'Unknown';
+ q('v5Intensity').textContent=reading.modifiers.length?reading.modifiers.join(' · '):'Not reported';
+ q('v5Action').textContent=reading.action;
+ const rel=q('v5Relations');rel.replaceChildren();const n=reading.narrative,rels=n.statements.filter(x=>!x.negated).slice(-2);
+ if(n.familyToSelf||n.selfRecognition){let role=rels.map(x=>x.who).join(' + ')||'Family';for(const [i,t] of [role,'Similar patterns','Self report'].entries()){if(i){const sep=document.createElement('span');sep.className='v5-rel-arrow';sep.textContent='→';rel.append(sep)}const box=document.createElement('div');box.className='v5-rel-node';const textNode=document.createElement('strong');textNode.textContent=t;box.append(textNode);rel.append(box)}}
+ else if(rels.length){for(const r of rels){const item=document.createElement('div');item.className='v5-rel-node';const top=document.createElement('strong');top.textContent=r.who;item.append(top,document.createTextNode(r.term));rel.append(item)}}
+ else{const msg=document.createElement('span');msg.className='v5-rel-dim';msg.textContent='Waiting for a relationship or story connection';rel.append(msg)}
+ const list=q('v5Candidate');list.replaceChildren();const seen=new Set();for(const c of active){if(seen.has(c.label))continue;seen.add(c.label);if(seen.size>3)break;const el=document.createElement('span');el.className='v5-candidate';el.style.setProperty('--v5-c',V5_COLOR[c.band]||'#8bacc4');el.title=c.source==='canonical'?'Exact word in canonical address vocabulary':'Fuzzy phrase candidate; canonical mapping unapproved';el.textContent=c.label+(c.source==='canonical'?' · direct':' · possible');list.append(el)}
+ v5PaintTranscript(text,reading,interim);return reading;
+}
+// Keep the provider and original client evidence tool unchanged; add only a
+// bounded account of the semantic cues to its returned read-only evidence.
+const v5PriorTool=readSnifferEvidence;
+readSnifferEvidence=function(){const result=v5PriorTool();const turn=utteranceLedger.at(-1);if(turn){const scan=v5Scan(turn.text);result.languageSignals={semanticCandidates:scan.cues.slice(0,10).map(c=>({label:c.label,band:c.band,source:c.source,status:c.negated?'negated':'unverified',fullClause:c.full})),channels:scan.channels,intensityWords:scan.modifiers,childEmotionMentions:scan.child.map(c=>c.name),actionObservation:scan.action};}return result};
+const v5PriorRender=render;
+render=function(text,interim=false){v5PriorRender(text,interim);return v5Update(text,interim)};
+if(new URL(location.href).searchParams.has('tracker_test')){window.__v5Test={scan:v5Scan,update:v5Update,agent:AGENT_ID};}
+if(new URL(location.href).searchParams.has('demo'))render('I have always felt rejected by my family. My sister is indignant, my mother is avoidant, and my father is angry. Now I see their patterns in myself. I am really upset.');
+
+// Read-only integration probe for browser-level mock tests; no raw recording or API keys.
+if(new URL(location.href).searchParams.has('tracker_test'))window.__trackerTest={analyze,render,onUserFinal,canonCount:CANON.length,readSnifferEvidence,ledger:utteranceLedger,scanRules,scanNarrative,renderNarrative,connectionFailure,describeProviderError};
+</script></body></html>
