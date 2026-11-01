@@ -658,6 +658,7 @@ function tulaColl(s){const matches=[];for(const rule of TULA_COLLOQUIAL){rule.ph
 function tulaExact(s){const hits=[];for(const [family,words] of Object.entries(TULA_LADDERS))for(let i=0;i<words.length;i++){
  const word=words[i];const e=word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&').replace(/-/g,'[-\\s]');
  const re=new RegExp('\\b'+e+'\\b','gi');for(const m of s.matchAll(re)){
+ if(word.toLowerCase()==='down'&&/\b(?:calmed?|settled|cooled)\s+down\b/i.test(s.slice(Math.max(0,m.index-22),m.index+m[0].length)))continue;
  hits.push({family,rank:i+1,word:m[0],start:m.index,end:m.index+m[0].length,band:TULA_BANDS[family],source:'TULA exact ladder',negated:v5Negated(s,m.index)});
  }}
  // 'Horrified' is Fear 9 and Disgust 8 in TULA. Preserve ambiguity.
