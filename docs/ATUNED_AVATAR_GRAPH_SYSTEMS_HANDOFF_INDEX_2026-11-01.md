@@ -38,3 +38,7 @@
 - 7/7 focused V8 isolated checks on the updated adapter (not full Node suite).
 - Cross-AI explicit replies: 2/4; PR #164 draft/unmerged.
 - **Systems documentation completeness:** architecture contract and TDD matrix written; composed integration gates outstanding. **Production readiness:** not verified.
+
+## Most recent verification note
+- After the six new tests, all **29/29 isolated named test bodies passed in a V8 harness** against the fetched committed adapter; this does not certify Node.js or production. GitHub exact-head workflow [41386733147](https://github.com/rebootos-sourcce/MOB/actions/runs/41386733147) was queued when checked.
+- Full repository checkout was not available here due GitHub DNS failure; no canonical generated artifacts have been rebuilt or committed. The product-freshness gate remains the known blocker.
