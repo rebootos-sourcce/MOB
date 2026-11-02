@@ -1104,6 +1104,7 @@ function avGraphHTML(st){
   selection:{kind:'seat',id:st.seat},engine:e,limit:6});
  var body='';
  if(g.status==='no_evidence')body='<p class="av-p">No personal connections recorded at this seat.</p>';
+ if(g.status==='no_evidence'&&g.graph&&g.graph.flagged)body+='<p class="av-p">Some connections were flagged and excluded.</p>';
  else if(g.status!=='ready'&&g.status!=='partial')
   body='<p class="av-p">Connections are unavailable for this reading.</p>';
  else{
@@ -1118,7 +1119,7 @@ function avGraphHTML(st){
      +'<b>'+esc(n.label)+'</b><span class="av-pa" style="display:block">'
      +esc(qual(n))+'</span></li>';}).join('')+'</ul>';
   if(g.truncated)body+='<p class="av-p">More connections exist.</p>';
-  if(g.status==='partial')body+='<p class="av-p">Some graph inputs were refused.</p>';
+  if(g.status==='partial')body+='<p class="av-p">Some connections were flagged or refused; supported connections remain visible.</p>';
  }
  return '<section class="avs-graph" aria-label="Connections">'+b+body+'</section>';
 }
