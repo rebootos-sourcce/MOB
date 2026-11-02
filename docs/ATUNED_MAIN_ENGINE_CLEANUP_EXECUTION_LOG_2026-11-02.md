@@ -55,4 +55,4 @@ F05 feedback abuse controls are important but require Cloudflare policy or state
 - This document was created on a **docs-only audit branch**. No source code, release settings, or production data were changed by this logging action.
 
 ## Measurements
-**Audited findings:** 14/14. **Prior Source PR fix:** one commit. **Selected jobs:** 3/3 recorded; **new implementations this turn:** 0. **Live production verification:** UNKNOWN. **Queue strategy logged:** yes (L012–L013). **New feature implementation in this queue:** 0. **Recommendation confidence:** 0.92 (subjective after F14 scope correction).
+**Audited findings:** 14/14. **Prior Source PR fix:** one commit. **Selected jobs:** 3/3 recorded; **new candidate implementation PRs this turn:** 2. **Live production verification:** UNKNOWN. **Queue strategy logged:** yes (L012–L013). **Q1 CI verified:** yes; **Q2/Q3 CI:** queued. **Recommendation confidence:** 0.92 (subjective after F14 scope correction).
