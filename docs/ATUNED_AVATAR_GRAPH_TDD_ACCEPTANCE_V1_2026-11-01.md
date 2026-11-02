@@ -60,11 +60,11 @@ A person selects a legitimate Avatar seat or canonical graph node. The system re
 | AG-20 | Real generated MOB bundle exports `avatarGraphProject` and canonical Trace | R | Existing |
 | AG-21 | Worked fixture has a genuinely supported canonical seat | R | Existing |
 | AG-22 | Only canonical node/edge types may leave the projection | R | Existing |
-| AG-23 | Practice-intent failure or malformed intents returns unavailable, no profile mutation | P/U | Planned |
-| AG-24 | Canonical seat casing normalizes without changing meaning | P/U | Planned |
-| AG-25 | Non-function trace helpers and thrown trace provider fail closed | P/U | Planned |
-| AG-26 | Graph provider returns malformed neighbors => fail closed rather than throw or silently misstate completeness | P/U | Planned; inspect implementation |
-| AG-27 | Query with `unread:true` does not count as measured | P/U | Planned |
+| AG-23 | Practice-intent failure or malformed intents returns unavailable, no profile mutation | U (new) | Implemented; Node CI pending |
+| AG-24 | Canonical seat casing normalizes without changing meaning | U (new) | Implemented; Node CI pending |
+| AG-25 | Non-function trace helpers and thrown trace provider fail closed | U (new) | Implemented thrown provider; non-function covered by existing interface guard |
+| AG-26 | Graph provider returns malformed neighbors => fail closed rather than throw or silently misstate completeness | U (new) | Implemented and V8-preflight validated; Node CI pending |
+| AG-27 | Query with `unread:true` does not count as measured | U (new) | Implemented; Node CI pending |
 | AG-28 | Entitlement-restricted reading never exposes hidden chain content through the raw record | P/C | Must test with tier fixtures |
 | AG-29 | Profile switch / consent revocation clears UI projection state, never reuses last person's nodes | C | Other UI AI executes |
 | AG-30 | Source AI narrates only permitted graph links; correction precedence and cited evidence maintained | C #163 | Cross-branch pending |
@@ -122,3 +122,10 @@ A person selects a legitimate Avatar seat or canonical graph node. The system re
 | Main merge/deploy | Neither done | HOLD |
 
 **Any final 100% claim requires all relevant engineering gates and real runtime tests—not just 34 targeted passes.**
+
+## G. Systems iteration — 2026-11-01, after owner delegated visuals
+- New tests committed on the isolated branch in `tests/avatargraph.js`, commit `cf0d28127f27898dcfa8232f906bdf099d07128b`: six new named cases (case-normalized seat, unread state, thrown/malformed practice intents, thrown graph provider, malformed/throwing neighbors); anticipated suite size **29**, not yet independently run by Node on the new commit.
+- **Red case reproduced before repair:** `traceNeighbors()` returning `null` caused an uncaught `TypeError` at `near.forEach`. A throwing neighbor provider was previously swallowed as an empty chain, which could misrepresent incomplete evidence.
+- **Green fix committed** `89f7b0d8851e34cb970778c11ceb1ca81e104a10`: in `atuned_src/engine/avatargraph.js` only, malformed/throwing neighbor traversal returns `{status:'unavailable',nodes:[],edges:[]}` rather than a throw or silently underreporting connections. Existing result schema v2 unchanged; no Trace, UI, score, or profile write.
+- **Independent isolated V8 preflight:** 7/7 focused outcomes passed using code fetched from the GitHub branch. These include the six named new tests split into seven checks for `null` and thrown neighbor providers. This is **not** a substitute for the Node suite or CI.
+- **Remaining:** run `node tests/avatargraph.js` (expected 29/29) and `node tests/avatargraph-runtime.js` (11/11), then full committed-product gate on exact branch head. Visual acceptance remains assigned to the other Avatar/UI AI.
