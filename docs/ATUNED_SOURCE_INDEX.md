@@ -71,3 +71,9 @@ When a source or audit file is discovered, add its repository-relative path, rol
 - [96 patterns, 32 ancestral/32 generational/32 parental](../atuned_src/engine/data/patterns96.js) and [62 research anchors](../atuned_src/engine/data/researchanchors.js), catalog records, not validated diagnostic categories.
 - [Hardened staged evidence bus v1.1](../atuned_src/engine/source_evidence_bus.js) and [standalone 52-check test](../proto/source/source-evidence-bus-v1.test.js), no profile export and no runtime/consumer wiring.
 - [Draft PR #163](https://github.com/rebootos-sourcce/MOB/pull/163); verify newest commit's GitHub Actions status. Older CI run #41365137545: `gates-fast` failed voice-copy objections despite observed engine/browser passes.
+
+## SOURCE AI-4 V16 latest handoff (2026-11-01, PR #163 draft, unmerged)
+- **[Read V16 offline-host build handoff first](SOURCE_AI4_V16_OFFLINE_SEAM_HANDOFF_2026-11-01.md).** 92/92 isolated Node assertions (52 staged bus + 40 mock-authority trust boundary), not production auth/CI. All live routes remain 0/9.
+- **[Source AI-4 Collaboration Log, Pass 6](SOURCE_AI4_COLLABORATION_LOG_2026-11-01.md)** records actual source SHAs, tests, 18 copy STOP findings and next actions.
+- **Reproducible ZIP in ATUNED Library:** `/ATUNED/SOURCE_AI4/ATUNED_SOURCE_AI4_V16_OFFLINE_BUILD.zip` (11 files, CRC pass). Also attached in owner chat. ZIP is not committed to the MOB codebase.
+- **V15 A07 candidate still not committed.** Canonical narrative source was not updated. Original owner V11 45 pain records ZIP missing from accessible files. No real authenticated session host, no generated build, no full green CI, no merge or deployment.
