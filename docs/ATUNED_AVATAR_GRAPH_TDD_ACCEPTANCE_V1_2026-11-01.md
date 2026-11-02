@@ -129,3 +129,9 @@ A person selects a legitimate Avatar seat or canonical graph node. The system re
 - **Green fix committed** `89f7b0d8851e34cb970778c11ceb1ca81e104a10`: in `atuned_src/engine/avatargraph.js` only, malformed/throwing neighbor traversal returns `{status:'unavailable',nodes:[],edges:[]}` rather than a throw or silently underreporting connections. Existing result schema v2 unchanged; no Trace, UI, score, or profile write.
 - **Independent isolated V8 preflight:** 7/7 focused outcomes passed using code fetched from the GitHub branch. These include the six named new tests split into seven checks for `null` and thrown neighbor providers. This is **not** a substitute for the Node suite or CI.
 - **Remaining:** run `node tests/avatargraph.js` (expected 29/29) and `node tests/avatargraph-runtime.js` (11/11), then full committed-product gate on exact branch head. Visual acceptance remains assigned to the other Avatar/UI AI.
+
+## H. Expanded isolated test pass (same branch source; not GitHub Actions)
+- Fetched the committed `atuned_src/engine/avatargraph.js` and `tests/avatargraph.js` from branch HEAD. Executed all named test bodies in an isolated V8 harness with an equivalent minimal strict assertion shim and the fetched adapter module.
+- Result: **29/29 named tests passed**; no changed assertions or CI gate bypass. This is an independent adapter-code execution check, but **not** a Node.js process, not a compiled production engine, and not exact-head GitHub CI. Prior real-engine result remains 11/11 on earlier GitHub commit.
+- The discovered non-array / throwing canonical neighbor regression is covered by the expanded test suite and now returns `unavailable` rather than crashing or silently omitting edges.
+- The full GitHub workflow for the current documentation/code head was queued on inspection; keep generated-product freshness red until proven otherwise.
