@@ -1,4 +1,4 @@
-# ATÜNED Avatar × Graph Intelligence — TDD / Engineering Acceptance v1
+# ATÜNED Avatar × Graph Intelligence, TDD / Engineering Acceptance v1
 **Owner:** systems/logic AI on draft MOB PR #164. **Reviewer:** other Avatar/UI AI for presentation only. **Authority:** `docs/ATUNED_AVATAR_GRAPH_SYSTEM_ARCHITECTURE_CONTRACT_V1_2026-11-01.md`.
 **Date:** 2026-11-01 Pacific. **Mode:** test-first acceptance specification, NOT a claim all planned tests have been implemented or passed.
 
@@ -12,7 +12,7 @@ A person selects a legitimate Avatar seat or canonical graph node. The system re
 - `selection.kind='seat'`: Root, Sacral, Solar, Heart, Throat, 3rd Eye, Crown (canonical, case-insensitive selection).
 - `selection.kind='pattern'`: numeric canonical address ID, **not** a free-form label.
 - `selection.kind='structure'`: one of `saboteur,complex,hyper_complex,super_complex` with bounded canonical ID.
-- Other layers—including masks, celestial attributes, boundary, ritual, release—**are not currently graph-selectable**. Give `unsupported_selection`; do not silently guess an address.
+- Other layers, including masks, celestial attributes, boundary, ritual, release, **are not currently graph-selectable**. Give `unsupported_selection`; do not silently guess an address.
 - Before calling the graph engine, validate explicit authorization, a usable record identity, valid engine, supported selection and `reading.rec === profile.id` when a reading is supplied.
 - `AVATAR_GRAPH.project` must be pure/deterministic for identical immutable inputs. No call to `read(CURP)` from UI; use `readSeenOf(CURP)`.
 - `status` is a closed vocabulary: `access_denied`, `no_record`, `unavailable`, `unsupported_selection`, `reading_mismatch`, `no_evidence`, `graph_refused`, `partial`, `ready`.
@@ -121,9 +121,9 @@ A person selects a legitimate Avatar seat or canonical graph node. The system re
 | Approval #149/#163 | No verified green light | Pending |
 | Main merge/deploy | Neither done | HOLD |
 
-**Any final 100% claim requires all relevant engineering gates and real runtime tests—not just 34 targeted passes.**
+**Any final 100% claim requires all relevant engineering gates and real runtime tests, not just 34 targeted passes.**
 
-## G. Systems iteration — 2026-11-01, after owner delegated visuals
+## G. Systems iteration, 2026-11-01, after owner delegated visuals
 - New tests committed on the isolated branch in `tests/avatargraph.js`, commit `cf0d28127f27898dcfa8232f906bdf099d07128b`: six new named cases (case-normalized seat, unread state, thrown/malformed practice intents, thrown graph provider, malformed/throwing neighbors); anticipated suite size **29**, not yet independently run by Node on the new commit.
 - **Red case reproduced before repair:** `traceNeighbors()` returning `null` caused an uncaught `TypeError` at `near.forEach`. A throwing neighbor provider was previously swallowed as an empty chain, which could misrepresent incomplete evidence.
 - **Green fix committed** `89f7b0d8851e34cb970778c11ceb1ca81e104a10`: in `atuned_src/engine/avatargraph.js` only, malformed/throwing neighbor traversal returns `{status:'unavailable',nodes:[],edges:[]}` rather than a throw or silently underreporting connections. Existing result schema v2 unchanged; no Trace, UI, score, or profile write.

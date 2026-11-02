@@ -1,4 +1,4 @@
-# ATÜNED Avatar — Stand-Up First / Risk Register
+# ATÜNED Avatar, Stand-Up First / Risk Register
 **Owner's direction (Nov 1, 2026):** Stand the product up. **Non-canonical inputs are flagged, not a whole-product blocker.** This replaces earlier blanket "HOLD until perfect" language. Valid functionality proceeds; imperfect optional integrations may remain in a degraded state. Do not make up measurements, evidence or readiness.
 
 ## Operating rule
@@ -26,13 +26,13 @@ On [draft PR #164](https://github.com/rebootos-sourcce/MOB/pull/164), `atuned_sr
 - UI AI should render `graph.flagged` and `notice` as a mild, nonblocking data-warning when the Connections panel opens. The current minimal UI may still say "refused" for `partial`: update its wording in the UI owner's implementation, not by hijacking their design branch.
 
 ## Practical route to stand-up
-**Phase A — functional core:** Keep the currently verified base app and record loading operational. Disable/remove any optional new connection surface if its runtime is absent, rather than crash the app. Demonstrate story/seat read with an existing user record and unknown-state when blank.
+**Phase A, functional core:** Keep the currently verified base app and record loading operational. Disable/remove any optional new connection surface if its runtime is absent, rather than crash the app. Demonstrate story/seat read with an existing user record and unknown-state when blank.
 
-**Phase B — build-to-release:** Run the canonical build on a full repo checkout; commit the genuine generated bundles. Verify startup, no profile crossover, nonmutation of CQ/SQ/DQ, and a user can open/close the available Connections panel. Treat cosmetic imperfections as issue tickets, not build failures.
+**Phase B, build-to-release:** Run the canonical build on a full repo checkout; commit the genuine generated bundles. Verify startup, no profile crossover, nonmutation of CQ/SQ/DQ, and a user can open/close the available Connections panel. Treat cosmetic imperfections as issue tickets, not build failures.
 
-**Phase C — progressive optional integration:** Compose #157/#158 as compatible readers once tests pass; Source AI #163 and Celestial #149 may follow independently. Do not wait for every future AI module to stand up a base product. Do not merge conflicting code without actual integration review.
+**Phase C, progressive optional integration:** Compose #157/#158 as compatible readers once tests pass; Source AI #163 and Celestial #149 may follow independently. Do not wait for every future AI module to stand up a base product. Do not merge conflicting code without actual integration review.
 
-**Phase D — UI ownership:** Separate AI reviews layout, hit targets, wording, 21-law visualization, and visual identity. Systems AI supplies flags/contract/test data; no competing approval loop.
+**Phase D, UI ownership:** Separate AI reviews layout, hit targets, wording, 21-law visualization, and visual identity. Systems AI supplies flags/contract/test data; no competing approval loop.
 
 ## Acceptance and measurements
 - New isolated tests reflect nonblocking semantics and explicitly retain valid personal evidence while reporting flags.

@@ -1,4 +1,4 @@
-# ATÜNED Avatar × Canonical Trace — Engineering Round 2 Verification
+# ATÜNED Avatar × Canonical Trace, Engineering Round 2 Verification
 **Date:** 2026-11-01 Pacific. **Stream:** systems-only, isolated draft PR #164. **Status:** expanded adapter preflight GREEN; exact-head CI and generated-product freshness PENDING/BLOCKED. **Visual ownership:** parallel Avatar/UI AI; **no visual signoff here**.
 
 ## Execution strategy and scope
@@ -15,7 +15,7 @@
 - Executed all **34/34 named isolated tests** from the actual fetched branch files in the isolated V8 code harness with a strict-assert compatible shim. Node/CI identity is **not claimed**.
 - Independently executed **29/29 local Node tests** on the earlier v0.8 ZIP adapter with the new isolated safeguards applied. This is a local equivalence test, **not** an exact byte-for-byte GitHub HEAD checkout.
 - Previously validated on an **older exact GitHub commit**: **23/23 Node isolated** plus **11/11 real generated MOB engine**; current expanded 34-test head and the real-engine suite still need GitHub CI.
-- Latest checked GitHub Actions run for fix commit: https://github.com/rebootos-sourcce/MOB/actions/runs/41390488867 — **queued** when inspected. Earlier 29/30 full job count is historical, not current-head verification.
+- Latest checked GitHub Actions run for fix commit: https://github.com/rebootos-sourcce/MOB/actions/runs/41390488867, **queued** when inspected. Earlier 29/30 full job count is historical, not current-head verification.
 
 ## Red–green defect ledger
 | ID | Before repair | After repair and executable regression |

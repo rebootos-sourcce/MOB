@@ -1,4 +1,4 @@
-# ATÜNED Avatar × Graph Intelligence — System architecture & interface contract v1
+# ATÜNED Avatar × Graph Intelligence, System architecture & interface contract v1
 **Date:** 2026-11-01 Pacific. **Status:** engineering contract for draft PR #164; **not** a claim of production deployment.
 **Responsibility assignment (owner decision):** This branch owns system architecture, logic, contract design, TDD and evidence/provenance correctness. The other Avatar/UI AI owns visual design iteration, component composition, interface acceptance and visual signoff. No visual approval is sought or asserted by this branch. Both sides must still coordinate before production merge.
 
