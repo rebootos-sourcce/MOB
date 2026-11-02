@@ -93,3 +93,17 @@ I am building Avatar's read-only projection and optional UI disclosure on branch
 - **Cross-branch responses:** #157 GREEN LIGHT, #158 GREEN LIGHT; #163 Source AI has not answered and Reboot-OS `SOURCE_AI_PARALLEL_SIGNAL.md` remains PENDING; #149 Celestial has not answered. Two of four explicit responses verified. All PRs #157/#158/#163/#149/#164 remain open; #164 draft and unmerged.
 - Latest inspected branch head before this log update: `d8ae668459652a1b20a420fa6632425597f32b62`. Workflow [41382222928](https://github.com/rebootos-sourcce/MOB/actions/runs/41382222928) for that head is QUEUED. CSS-fix-specific [41382013280](https://github.com/rebootos-sourcce/MOB/actions/runs/41382013280) also remains QUEUED (no result). No fresh CI pass claimed.
 - No additional runtime changes authorized until exact-head CI establishes a defect; the known generated-product mismatches still require canonical regeneration and commit. **HOLD** production integration pending full CI, Source/Celestial compatibility and owner visual acceptance.
+
+
+## Systems scope correction and RED/GREEN iteration — 2026-11-01 PT
+**OWNER DECISION:** The parallel Avatar/UI AI owns interface design, layout choices, and *visual signoff*. This branch owns **systems architecture, graph logic, TDD, provenance, identity, integration contracts and systems acceptance**. CI design tests remain technical gates, not an instruction to obtain UI signoff here.
+
+**New read-first index:** `docs/ATUNED_AVATAR_GRAPH_SYSTEMS_HANDOFF_INDEX_2026-11-01.md`. Read in order:
+1. `docs/ATUNED_AVATAR_GRAPH_SYSTEM_ARCHITECTURE_CONTRACT_V1_2026-11-01.md` (contract and ownership; first engineering commit `ec33c4557b816e9b571d7c2f9746b61134262b0e`).
+2. `docs/ATUNED_AVATAR_GRAPH_TDD_ACCEPTANCE_V1_2026-11-01.md` (39 requirement IDs; engineering and visual gates separated).
+3. This chronological handshake, then actual code and tests.
+**TDD status:** six new named regression tests in `tests/avatargraph.js` (`cf0d28127f27898dcfa8232f906bdf099d07128b`); previous 23 tests -> expected 29 when Node CI reruns. Not yet independently certified as 29/29.
+**Real defect/fix:** malformed `traceNeighbors` response `null` produced uncaught `TypeError`; a thrown provider was silently treated as no neighbors. Isolated read-only fix in `atuned_src/engine/avatargraph.js` (`89f7b0d8851e34cb970778c11ceb1ca81e104a10`): both now return `unavailable` with no personal nodes/edges. No canonical Trace, Source, UI, score, profile or Release change. Seven focused isolated V8 test outcomes passed after fix; these are **not** full Node CI.
+**Latest last-known full CI evidence:** run 41382848109 on an older head, **29/30 passed**, failure only canonical generated-product freshness. This is not a pass for the newly committed tests/fix/docs. Exact-head CI must be inspected.
+**Compatibility:** #157 and #158 have explicit GREEN LIGHT; #149 and #163 awaiting responses. No implicit consent. Branch #164 remains draft. No production merge, deploy or overwrite of any other AI work.
+**Remaining systems gates:** full expanded unit + real-engine CI; canonical generated-product regeneration; complete plan/consent and composed-source tests; reviewers' explicit approvals; separate visual handoff to other AI. **Status: HOLD production integration.**
