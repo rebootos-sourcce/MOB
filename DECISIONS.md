@@ -3108,3 +3108,48 @@ Checked before scoping it: the product already states the intent this ruling now
 Where the names actually live, checked by grep rather than assumed: `atuned_src/engine/data/compass.js` (797 lines, the Compass/Inferno data itself) and `atuned_src/engine/data/teachers_recipes.js` (426 lines, the teacher/inverse pairs), both real, both shipped. Not yet read in full or catalogued figure by figure; that is the next step, not done tonight. **Not executed this round.** This is a content and naming pass across a real data table, not a copy tweak, and it needs its own scoped round: read every figure name actually in `compass.js` and `teachers_recipes.js`, confirm which ones are user-facing today versus already behind the "rendered as behaviours" principle above, propose the one or two word behavioural replacement for each, and bring the list to him rather than guess forty names in one pass.
 
 **Names ruled so far, 30 October, as he works through the list.** Druj is Deception (or Deceiver, if a person-word is needed), opposite Honesty: his words, thinking it through out loud, "truth is the opposite of deceive... deception is just a lie, but you could also say transparency, or honesty. Honesty is probably more real, probably the one." Geryon is Fraud: his words, "Geryon is fraud," which also matches the one already in the research file's own table, Dante's eighth circle. Full detail and the still open structural question (Geryon shares the engine's one real two-piece pattern with Psychopathy, naming him does not by itself tell the two apart) is `TASKS.md` round SM, SM14 to SM16.
+
+## The book's own stack, read as a stack on the Field's left rail, 28 October
+
+His round, after the superego section landed: "the full cascade wiring of the
+Psyche stack for the field in the left menu." The Mechanics of Being numbers
+the layers a signal passes through, 4 to 10 above the body (1 to 3 sit below
+it, 9 already has its own section, Superego). This entry is the record of
+which layers this engine can honestly claim and which it cannot; the rail's
+own "The stack" section (`shell/body.html`, `data-sec="stack"`) is the same
+list, read by the owner rather than only by a seat.
+
+- **4, imagination, and 5, frequency intensity: not computed.** The book
+  places both before a feeling or a charge exists ("the mind simulating
+  possible realities from incoming data", "the energetic charge applied to
+  the signal... before the signal is labeled"). Nothing in this engine
+  measures a layer before that point; the charge shown everywhere on the app
+  already is layer 5's own result, not the layer itself. No row was built
+  rather than guess at one.
+- **6, fight or flight, and 7, action response: real, already shipped,
+  under different names.** 6 is the 27 October ruling above, read in full:
+  the fetter's own dual pole is the nerve's tilt toward freeze or flight. 7
+  is the Laws of Action section the Field's rail already carries ("the
+  awareness ignorant detach attach intentional aware", round 28 October):
+  the book's own words for it, "negative: attached to outcome, ignorant of
+  what needs doing, avoiding. positive: aware of what needs doing, detached
+  from outcome, moving with intention", are the same four words in the same
+  two pairs. Nothing new was built; the stack section names what already
+  exists.
+- **8, ego, nine words: real, and a real discrepancy, not merged silently.**
+  The book's nine: fear, anger, shame, disgust, grief, receiving blocked,
+  apathy, shock, sad. The engine's nine poled axes, `CHILD` in
+  `engine/data/canon.js`: Fear, Anger, Shame, Disgust, Apathy, Shock, Sad,
+  Surprise, Anticipation. Seven of the nine agree by name. The book's grief
+  and receiving blocked are not among the engine's nine; the engine's
+  Surprise and Anticipation are not among the book's nine, and carry their
+  own poling ruling (14 September, for Anticipation, Surprise and Shock).
+  Which seven is not an open question; which other two the full nine should
+  be is. Not resolved here, the same discipline this file already holds for
+  the superego's four against canon's six.
+- **10, the koshas: not computed, and not a pick between rosters.**
+  `BOOK-ERRATA.md` finding 8 already has it: the book's own chapter 10 names
+  eight, its own glossary names six, and the two sixes are not the same six.
+  A ninth term appears in neither. Building a koshas row would mean choosing
+  one of three incompatible lists the book gives for itself, which is a
+  finding for that file, not a build for this one.
