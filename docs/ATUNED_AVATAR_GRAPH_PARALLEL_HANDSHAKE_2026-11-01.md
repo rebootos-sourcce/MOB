@@ -107,3 +107,11 @@ I am building Avatar's read-only projection and optional UI disclosure on branch
 **Latest last-known full CI evidence:** run 41382848109 on an older head, **29/30 passed**, failure only canonical generated-product freshness. This is not a pass for the newly committed tests/fix/docs. Exact-head CI must be inspected.
 **Compatibility:** #157 and #158 have explicit GREEN LIGHT; #149 and #163 awaiting responses. No implicit consent. Branch #164 remains draft. No production merge, deploy or overwrite of any other AI work.
 **Remaining systems gates:** full expanded unit + real-engine CI; canonical generated-product regeneration; complete plan/consent and composed-source tests; reviewers' explicit approvals; separate visual handoff to other AI. **Status: HOLD production integration.**
+
+
+## Focused verification and build environment limitation — 2026-11-01 PT
+- Executed the full **29/29 named isolated regression tests** from current GitHub file content inside a V8 harness with strict assertion shim. They all passed. The expanded Node.js CI and real-engine acceptance must still run at exact current head. This is a *local-equivalent* check, not GitHub CI.
+- GitHub workflow for latest checked head `b140d3cfcbf1af4863b915b76fb4cf501eead2a7` was `QUEUED`: [run 41386733147](https://github.com/rebootos-sourcce/MOB/actions/runs/41386733147). Never label queued as green.
+- Attempt to access full GitHub checkout from this container failed with `Could not resolve host: github.com`; existing previous CI run 41382848109 provided **no downloadable workflow artifacts**. Therefore a canonical generated-product rebuild/commit is **not completed**; never hand-edit generated source or bypass `tools/products.js`.
+- Other AI UI ownership is explicit in [systems index](ATUNED_AVATAR_GRAPH_SYSTEMS_HANDOFF_INDEX_2026-11-01.md), and a [PR #164 coordination comment](https://github.com/rebootos-sourcce/MOB/pull/164#issuecomment-6568809835) was posted. The other AI can proceed with UI approval independently; this branch remains on systems/TDD/contract safety only.
+- Next: inspect exact-head CI for 29/29 Node tests and 11/11 real-engine tests; fix actual defects only; obtain full checkout for legitimate artifact regeneration; complete #149/#163 approvals. **HOLD** production merge/deploy.
