@@ -149,6 +149,10 @@ jobs:
       # engine.js, and the quiz that funnel/BUILD-single.sh packs carries it.
       - name: build, the engine first
         run: ./atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh && ./funnel/BUILD-single.sh
+      - name: read-only Avatar graph gates
+        run: |
+          node tests/avatargraph.js
+          node tests/avatargraph-runtime.js
       # THE COMMITTED PRODUCTS ARE THIS SOURCE'S, 16 October. The build above
       # rewrote source.html, engine.js and atuned-packed.html in the checkout;
       # tools/products.js reads the committed copies from git and fails when
