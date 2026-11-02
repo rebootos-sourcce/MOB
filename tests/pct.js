@@ -26,7 +26,7 @@
         form, read against fmtPct off the same compute(), and prints no bare
         decimal where a score stood. A surface joins this list in the change
         that moves it, so the list is the record of what has moved: S1 the
-        shared ring and the Field, S2 Summary, S3 Analytics and the record.
+        shared ring and the Field, S2 Summary, S3 Analytics and the record, S4 the drills and the hover lines.
 
    It walks with reduced motion, so every ring is at its value the frame it
    is written and the count up tween in ui/component.js never stands between
@@ -118,7 +118,9 @@ const READ=`(function(){
     await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
     const R=compute(), t=q=>{const e=document.querySelector(q); return e?e.textContent.trim():null;};
     const aff=(R.aff||[]).map((v,i)=>({i,v})).sort((a,b)=>b.v-a.v), top=aff[0]||{i:0};
-    const pair=Array.from(document.querySelectorAll('#key .rb2-v')).map(e=>e.textContent.trim());
+    /* NAMED CHANGE, 30 October, r1: the coherence pair prints one figure, so
+       CQ is read off its own door's spoken name, and DQ is an amount row */
+    const cqDoor=document.querySelector('#key .rb2-k.l'), cqSaid=cqDoor?(/^CQ, ([^.]*%|–)/.exec(cqDoor.getAttribute('aria-label')||'')||[])[1]:null;
     const dock={}; document.querySelectorAll('#keylo .rbar').forEach(b=>{dock[(b.querySelector('.rb-n')||{}).textContent.trim()]=(b.querySelector('.rb-v')||{}).textContent.trim();});
     const node=Array.from(document.querySelectorAll('.cr,.crb')).filter(e=>/ seat\. /.test(e.getAttribute('title')||''))
      .map(e=>(e.querySelector('.v,.crb-v')||{}).textContent||'');
@@ -126,7 +128,7 @@ const READ=`(function(){
     return {unread:!!R.unread,
      got:{laws:t('#fbar [data-fb=laws] .fb-v'),shadow:t('#fbar [data-fb=shadow] .fb-v'),addresses:t('#fbar [data-fb=addresses] .fb-v'),
       seats:t('#fbar [data-fb=seats] .fb-v'),archetypes:t('#fbar [data-fb=archetypes] .fb-v'),ring:t('#railtop .cr .v'),
-      cq:pair[0],dq:pair[1],vit:dock.Vitality,flow:dock.Flow,acc:t('#acc .cr .v'),pol:pol},
+      cq:cqSaid||null,dq:dock.DQ,vit:dock.Vitality,flow:dock.Flow,acc:t('#acc .cr .v'),pol:pol},
      want:{laws:fmtPct('cq',R.CQ),shadow:fmtPct('dq',R.DQ),addresses:fmtPct('weight',R.SQm),seats:fmtPct('weight',R.darkV||0),
       archetypes:fmtPct('archetype',archExpr(top.i)),ring:fmtPct('cq',R.CQ),cq:fmtPct('cq',R.CQ),dq:fmtPct('dq',R.DQ),
       vit:fmtPct('vitality',R.X),flow:fmtPct('flow',flSpeed()),acc:fmtPct('accuracy',accuracy(R).pct),pol:pol===null?null:fmtPct('cq',R.CQ)},
@@ -196,6 +198,36 @@ const READ=`(function(){
    const kinded=s.recCells.filter(c=>/Coherence|Shadow|Carried|installed|Overshot/.test(c.k||''));
    ok(kinded.every(c=>/^(\d+%|–)$/.test((c.a||'').trim())&&/^(\d+%|–)$/.test((c.b||'').trim())&&!/[+−-]\d/.test(c.d||'')),
     'S3: '+tag+'the record prints each score as two percents and a word, '+J(kinded.slice(0,3)));
+  }
+  /* ---------- S, slice 4: the drills and the hover lines ---------- */
+  for(const who of ['Marcus','James','Diane']){
+   const tag=W+' '+who+': ';
+   const s=await page.evaluate(async who=>{
+    loadP(PEOPLE.findIndex(x=>x.nm===who)); setTab(TAB.FIELD); render();
+    const R=compute(), out={}, txt=()=>{const d=document.getElementById('rdrill');return d?d.innerText:'';};
+    const top=R.loaded.slice().sort((a,b)=>b.sq-a.sq)[0], pat=[].concat(R.sabs,R.cxs,R.hys,R.sups)[0];
+    const runs={core:()=>runCoreDrill(),xyz:()=>runXYZDrill(),flow:()=>runFlowDrill(),bal:()=>runBalDrill(),
+     dq:()=>runQDrill('dq'),sq:()=>runQDrill('sq'),pole:()=>runQDrill('pole'),compass:()=>runCompassDrill(),
+     law:()=>runLawDrill(SI[0]),node:()=>top&&runNodeDrill(top),fetter:()=>runFetterDrill(CHILD[0]),
+     arch:()=>runArchDrill(ARCH[R.pi]),mask:()=>R.maskRing&&R.maskRing[0]&&runMaskDrill(R.maskRing[0]),
+     up:()=>runPoleDrill('up'),acc:()=>runAccDrill()};
+    for(const k of Object.keys(runs)){try{runs[k]();out[k]=txt();}catch(e){out[k]='THREW '+e.message;}
+     try{rdClose();}catch(e){}}
+    const tips={core:describe({k:'core'},R,true),node:top?describe({k:'node',n:top},R,true):'',
+     law:describe({k:'law',j:0},R,true),arch:describe({k:'arch',j:R.pi},R,true),
+     chain:pat?describe({k:pat.kind,o:pat},R,true):''};
+    Object.keys(tips).forEach(k=>{tips[k]=String(tips[k]||'').replace(/<[^>]+>/g,' ');});
+    return {unread:!!R.unread,out,tips,cq:fmtPct('cq',R.CQ)};},who);
+   ok(!s.unread,'S4: '+tag+'the example reads');
+   const D=/(?<![\d.×])\b\d+\.\d{1,2}\b(?!\s*(?:Hz|×|%))/g;
+   for(const k of Object.keys(s.out)){
+    ok(!/^THREW/.test(s.out[k]),'S4: '+tag+'the '+k+' drill opens, '+J(s.out[k].slice(0,80)));
+    const m=s.out[k].match(D)||[];
+    ok(m.length===0,'S4: '+tag+'the '+k+' drill prints no decimal figure, '+J(m.slice(0,6)));}
+   ok(s.out.core.indexOf('CQ '+s.cq)>=0,'S4: '+tag+'the core drill heads with CQ as a percent, '+J(s.cq));
+   for(const k of Object.keys(s.tips)){const m=s.tips[k].match(D)||[];
+    ok(m.length===0,'S4: '+tag+'the '+k+' hover prints no decimal figure, '+J(m.slice(0,6)));}
+   ok(s.tips.core.indexOf('CQ '+s.cq)>=0,'S4: '+tag+'the core hover heads with CQ as a percent');
   }
   /* and an unread profile prints the dash in every one of them, never 0% */
   const u=await page.evaluate(async()=>{loadP(0); setTab(TAB.FIELD); render();

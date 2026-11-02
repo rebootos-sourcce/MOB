@@ -82,10 +82,19 @@ var TRACE_V=1;
    Still 4 after 23 October, on purpose. That day the fourth rung's type
    was renamed, character to super_complex, on the owner's ruling (below).
    A rename is not a new derivation: the same rungs come off the same lists
-   with the same edges. And no graph the product builds or stores holds a
-   rung, because a day's graph is read with no reading and every door
+   with the same edges. And no graph the product stores holds a rung,
+   because a day is grounded on a graph read with no reading and every door
    refuses the chain's types. So a day stamped 4 means what it meant, and a
-   new number would only stop an older build opening a newer record. */
+   new number would only stop an older build opening a newer record.
+   Still 4 after 31 October, for that same reason, on two changes. The
+   Character page's graph and the loop read's are handed the reading now (the
+   nerve to celestial audit's first gap), which is this number's derivation
+   reaching the graphs a screen is drawn from, not a new one: those graphs are
+   read on every paint and never stored. And a reading's named super complex
+   is a node (TRACE_NAMED, below), one more rung taken off the same reading
+   under the same rules. Neither moves what a day is grounded on, and the
+   number is stamped only on days (dlySeal, engine/daily.js), whose range check
+   would refuse a 5 in every build before this one. */
 var TRACE_ALG=4;
 
 /* THE CHAIN'S FOUR RUNGS, in the order they stack, TDD section 16's second
@@ -437,6 +446,23 @@ var TRACE_CHAIN_OF=[
  {type:'complex', list:'cxs', why:'the reading compounded this saboteur with another of its family into this complex. A registration, not a cause'},
  {type:'hyper_complex', list:'hys', why:'the reading compounded this complex into its family\'s hyper-complex. A registration, not a cause'},
  {type:'super_complex', list:'sups', why:'the reading paired this hyper-complex with another into this super-complex. A registration, not a cause'}];
+/* THE ONE NAMED SUPER COMPLEX, off r.psychopathy and never off sups, 31
+   October (the nerve to celestial audit's second gap). compute() asks for the
+   Grandiosity and Predatory hyper complexes by name, wherever they rank, on the
+   owner's ruling of 26 October, and keeps the result out of sups on purpose so
+   it moves no count (engine/compute.js). The chain above reads sups only, so
+   Psychopathy, the one super complex the product names, was never a node, even
+   on a graph handed the reading that held it.
+
+   Its id is the name the DESCENT entry gives it, which compute() copies to
+   named and nothing here types. The name was settled on 30 October (TASKS.md,
+   round SM): it keeps its clinical name. It sits on the super complex rung
+   because the descent files it there, so it is that type and not a fifth one.
+   When the pairing by rank also paired the two, the graph holds both nodes,
+   the generic one under its pair's name and this one under its own, because
+   they are two rules that happened to agree, and inSups says they did. */
+var TRACE_NAMED={type:'super_complex', list:'psychopathy', part:'hyper_complex', from:'hys',
+ why:'the reading found this hyper-complex and the one it is named with, which together are the one named super-complex, asked for by name and not paired by rank. A registration, not a cause'};
 /* why a type may not come in through a door, or null */
 function traceChainWhy(type){
  return TRACE_CHAIN.indexOf(type)>=0
@@ -927,7 +953,7 @@ function traceReadingWhy(p,r){
   return 'the reading carries no record stamp, so it could be the reading of whatever field was loaded; read() stamps one';
  if(typeof p.id!=='string'||!p.id)return 'this record has no id, so no reading can be shown to be its own';
  if(r.rec!==p.id)return 'the reading is of another record';
- var below=null;
+ var below=null, of={};
  for(var i=0;i<TRACE_CHAIN_OF.length;i++){
   var row=TRACE_CHAIN_OF[i], list=r[row.list], here=Object.create(null);
   if(!Array.isArray(list))return 'the reading has no '+row.list+' list';
@@ -945,7 +971,26 @@ function traceReadingWhy(p,r){
      if(a===null||!/^[0-9]+$/.test(a)||!BY[+a])return at+' '+x.nm+' counts a part that is not one of the 112 addresses';}
     else if(typeof q.nm!=='string'||!below[q.nm])
      return at+' '+x.nm+' counts '+String(q.nm)+', which is not a '+TRACE_CHAIN_OF[i-1].type+' of this reading';}}
-  below=here;}
+  below=here; of[row.list]=here;}
+ return traceNamedWhy(r,of);}
+/* THE NAMED ONE, under the same all or nothing as every rung. Absent is a
+   reading from before 26 October, and null is a field that does not hold it or
+   a plan that may not see it (sightR, ui/lock.js), and both are no named node.
+   Present, it is two hyper complexes of this same reading, under a name the
+   pairing by rank does not already use, or the whole reading is refused. */
+function traceNamedWhy(r,of){
+ var x=r[TRACE_NAMED.list], at=TRACE_NAMED.list;
+ if(x===undefined||x===null)return null;
+ if(typeof x!=='object'||Array.isArray(x))return at+' is not an object';
+ var nm=typeof x.named==='string'?x.named:null;
+ var w=traceIdWhy(TRACE_NAMED.type,nm); if(w)return at+' '+w;
+ if(of.sups[nm])return at+' names '+nm+', which the pairing by rank already names';
+ if(!Array.isArray(x.parts)||x.parts.length!==2)return at+' '+nm+' does not count two hyper-complexes';
+ for(var k=0;k<2;k++){
+  var q=x.parts[k];
+  if(!q||typeof q!=='object')return at+' '+nm+' has a part that is not an object';
+  if(typeof q.nm!=='string'||!of[TRACE_NAMED.from][q.nm])return at+' '+nm+' counts '+String(q.nm)+', which is not a '+TRACE_NAMED.part+' of this reading';}
+ if(x.parts[0].nm===x.parts[1].nm)return at+' '+nm+' counts '+x.parts[0].nm+' twice';
  return null;}
 /* what a rung carries beside its key: its weight as compute() wrote it,
    its family, and whether it is the overshoot. Never d, the line a person
@@ -958,6 +1003,13 @@ function traceChainAttrs(type,x){
  a.family=type==='hyper_complex'?x.nm:(typeof x.hcx==='string'?x.hcx:null);
  a.over=!!x.over;
  if(type==='saboteur')a.unnamed=!!x.unnamed;
+ return a;}
+/* and the named one: its weight the same way, that it is the named one, and
+   whether the pairing by rank paired the same two. Never d or refer, the line
+   and the referral the descent prints, for the reason above. */
+function traceNamedAttrs(x){
+ var a=traceChainAttrs(TRACE_NAMED.type,x);
+ a.named=true; a.inSups=!!x.inSups;
  return a;}
 
 /* ============================================================
@@ -1152,17 +1204,25 @@ function traceFromRecord(p,intents,reading){
  if(reading!==undefined&&reading!==null){
   var rw=traceReadingWhy(p,reading);
   if(rw)g.refused.push({reading:true, why:rw});
-  else TRACE_CHAIN_OF.forEach(function(row,i){
-   reading[row.list].forEach(function(x){
-    var ck=node(row.type,x.nm,'inferred',traceChainAttrs(row.type,x));
-    if(!ck)return;
-    var seen={};
-    x.parts.forEach(function(q){
-     var from=i===0?node('pattern',traceId(q.i),'known',tracePatternAttrs(traceId(q.i)))
-      :traceKey(TRACE_CHAIN_OF[i-1].type,q.nm);
-     if(from===null||seen[from])return;
-     seen[from]=1;
-     edge(from,'supports',ck,'inferred',{derived:true, why:row.why});});});});}
+  else{
+   TRACE_CHAIN_OF.forEach(function(row,i){
+    reading[row.list].forEach(function(x){
+     var ck=node(row.type,x.nm,'inferred',traceChainAttrs(row.type,x));
+     if(!ck)return;
+     var seen={};
+     x.parts.forEach(function(q){
+      var from=i===0?node('pattern',traceId(q.i),'known',tracePatternAttrs(traceId(q.i)))
+       :traceKey(TRACE_CHAIN_OF[i-1].type,q.nm);
+      if(from===null||seen[from])return;
+      seen[from]=1;
+      edge(from,'supports',ck,'inferred',{derived:true, why:row.why});});});});
+   /* the named super complex last, once the hyper complexes it counts are
+      nodes, by the same rule table and with the same refusal on a miss */
+   var nx=reading[TRACE_NAMED.list];
+   if(nx){
+    var nk=node(TRACE_NAMED.type,nx.named,'inferred',traceNamedAttrs(nx));
+    if(nk)nx.parts.forEach(function(q){
+     edge(traceKey(TRACE_NAMED.part,q.nm),'supports',nk,'inferred',{derived:true, why:TRACE_NAMED.why});});}}}
  /* every derived node so far is the record's own */
  g.nodes.forEach(function(n){n.derived=true;});
 

@@ -146,8 +146,9 @@ function changed for it, so the gate is the page.
 
 `tests/srcchat.js` holds that a reply is appended to the one entry on a line of
 its own, so a "not" in one turn does not reach into the next and a seat that
-comes back across turns is asked about; that only the newest Source AI turn
-carries words and an answer to an ask does not ask the same why again; that
+comes back across turns is asked about; that the ask on screen is the one
+that passed the ten question checks, no ask is a why, and an answer is never
+followed by the same question again or by the answered one rewritten; that
 Move on still ends the asking; that Commit sends a reply still in the line and
 the entry keeps exactly the keys a box entry keeps, its `asked` a kind, a seat
 and an outcome and never a question's words, the same `asked` the same words
@@ -157,6 +158,28 @@ scrolls sideways and the controls are tap sized. It first runs on two known bad
 copies of the page, one whose send joins with a space and one whose thread
 prints every question, and each must fail its check. Read the counts off the
 run.
+Since round SK it also runs on a page whose ask skips the question check, and
+that must fail too.
+
+Source AI's evidence ledger and question check, the Journal Mode blueprint's
+P0, are engine code and have their own headless gate.
+
+    node tests/evidence.js
+
+`tests/evidence.js` holds the eight evidence states as data and who may set
+each; that with no verdict nothing on the story bank reaches a person state;
+that a claim's count is srcHear's and every span slices back to the person's
+own letters; that an earlier entry gives its stored seat keys and never its
+text; that a no outranks any amount of new evidence; that the root stays
+unknown; that the thread follows what the person is writing now; and that
+each of the ten question checks refuses the thing it names, the blueprint's
+own leading examples included. Since round SK it also maps every state onto
+the seam package's lifecycle, reads vent, move on and "that doesn't fit" off a
+turn, and runs the package's thirty vectors from `tests/fixtures/`, a byte for
+byte copy held to the package manifest's checksum: what holds is asserted, and
+what is known not to hold (tense, the conditional, done to read as did) is
+expected red, so a fix is noticed. It prints how many of the asks the story bank
+produces pass as written and what they become. Read the counts off the run.
 
 ## Becoming S1 to S3, Knowledge by seat, Summary's lead row
 

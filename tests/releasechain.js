@@ -108,14 +108,13 @@ const ev = async (page, fn, arg) => { try { return await page.evaluate(fn, arg);
       await ev(page, () => { var d = document.getElementById('msgdock'); if (d) d.style.visibility = 'hidden'; });
       return { ctx, page, errs };
     };
-    /* the journal, through its own box and its own Commit. Conversation
-       only now, round of 28 October, so the words reach ST_TEXT through
-       the reply box and a send, the same as a person does. */
+    /* the journal, through its own Commit. Voice only now, round of
+       29 October, so the words reach ST_TEXT through srcTurnCommit, the
+       one door a turn lands through whether it is typed or spoken. */
     const commit = async (page, text) => {
       await ev(page, () => { setTab(TAB.STORY); });
       await page.waitForTimeout(200);
-      await ev(page, t => { const ci = document.getElementById('stcin');
-        ci.value = t; ci.dispatchEvent(new Event('input', { bubbles: true })); srcChatSend(); }, text);
+      await ev(page, t => { srcTurnCommit(t); }, text);
       await page.waitForTimeout(200);
       await page.click('#stapply'); await page.waitForTimeout(400);
     };
@@ -152,7 +151,10 @@ const ev = async (page, fn, arg) => { try { return await page.evaluate(fn, arg);
       const f5 = await ev(page, () => { var f = document.getElementById('strdose'), l = f && f.closest('label');
         return { label: l ? (l.querySelector('span') || {}).textContent : null, max: f ? +f.max : null, value: f ? +f.value : null, dose: RUN.dose,
           card: typeof REL_DOSES !== 'undefined' ? REL_DOSES[REL_DOSES.length - 1] : null }; });
-      ok(f5.label === 'Times said', '5. the Story\'s field says Times said, the card\'s word, not Patterns: ' + J(f5.label));
+      /* PATTERNS, not Times said, round of 29 October, overriding 17
+         October's own rename this check used to hold the opposite way;
+         the Story's field and the card's own are kept in step either way. */
+      ok(f5.label === 'Patterns', '5. the Story\'s field says Patterns, the card\'s word: ' + J(f5.label));
       ok(f5.max === f5.card && f5.value <= f5.max, '5. and its ceiling is the card\'s own, so the default it shows is one it allows: ' + J(f5));
       /* the press the Story's Run release makes, with the setup drawn first,
          and a short dose so the walk covers every block */

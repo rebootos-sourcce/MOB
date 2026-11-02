@@ -263,9 +263,11 @@ function dlyRefWhy(type,id){
  /* THE CHAIN'S FOUR RUNGS ARE GRAPH TYPES AND STILL NOT EVIDENCE A DAY
     CITES, 22 October. They joined TRACE_NODE_TYPES with the chain
     (engine/trace.js), and the line below would have let a stored day carry
-    one through this boundary, where before it was refused. A day's graph
-    (dlyGraph) is read with no reading and holds no rung, so such a
-    citation could never resolve. Refused by name, so a day citing a rung
+    one through this boundary, where before it was refused. A day is
+    grounded on a graph read with no reading, which holds no rung, so such a
+    citation could never resolve (dlyGraph can take a reading since 31
+    October, and the grounding still hands it none, for the reason given
+    there). Refused by name, so a day citing a rung
     is somebody's decision and not a side effect of a vocabulary growing. */
  if(TRACE_CHAIN.indexOf(type)>=0)return 'names a rung of the chain, which a day does not cite: '+type;
  if(TRACE_NODE_TYPES.indexOf(type)>=0)return null;
@@ -985,8 +987,21 @@ var DLY_RX={
 /* a reference, resolved against the record or the graph, with what it is as
    provenance. null is a reference that names nothing, which is fabricated
    evidence. */
-function dlyGraph(p){
- try{return traceFromRecord(p,practiceTraceIntents(p.practice));}catch(e){return null;}}
+/* THE READING IS OPTIONAL AND IS NEVER MADE HERE, the nerve to celestial
+   audit's first gap, 31 October. Handed one of this record (THE READING HANDED
+   IN, engine/trace.js), the graph carries the chain; dlyWhy takes it from its
+   caller as opt.reading, because a path between two things a day cites can run
+   through a saboteur both are part of, and the drawer should show the graph
+   that is there.
+
+   THE DAY'S OWN GROUNDING IS STILL READ WITH NONE, ON PURPOSE. dlyResolve only
+   asks whether a cited node exists, and a day may not cite a rung (dlyRefWhy).
+   Handing the composer a reading would let a sentence citing one resolve while
+   the draft is made and be refused only when it is sealed, so a day that froze
+   yesterday would fail today on a vocabulary that grew. A rung a day cites
+   stays somebody's decision at the boundary, not a side effect here. */
+function dlyGraph(p,reading){
+ try{return traceFromRecord(p,practiceTraceIntents(p.practice),reading);}catch(e){return null;}}
 function dlyResolve(p,ref,gx){
  var t=ref&&ref.type, id=ref&&ref.id, i;
  if(typeof t!=='string'||typeof id!=='string')return null;
@@ -1163,7 +1178,7 @@ function dlyWhy(p,sid,idx,opt){
  if(!day)return {ok:false, why:'no frozen day is named '+sid};
  var st=day.st[idx];
  if(!st)return {ok:false, why:'day '+sid+' has no statement '+idx};
- var g=(opt&&opt.graph)||dlyGraph(p), gx={p:p, graph:g, reads:{}};
+ var g=(opt&&opt.graph)||dlyGraph(p,opt&&opt.reading), gx={p:p, graph:g, reads:{}};
  var ids=traceStoryIds(p), ents=(p.story&&p.story.entries)||[], keys=[];
  var refs=st.ev.map(function(r){
   var res=dlyResolve(p,r,gx), kind=r.type==='kb'?'kb':(DLY_REC.indexOf(r.type)>=0?'record':'graph');
