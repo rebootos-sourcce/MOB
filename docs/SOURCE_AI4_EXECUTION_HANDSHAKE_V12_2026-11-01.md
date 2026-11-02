@@ -62,3 +62,9 @@ V11 reported local suite: 165/165, NOT independently re-run.
 Pain NP source import, live voice host, law grades, true CQ, persistence and deployment: NOT VERIFIED.
 
 Successor must confirm current branch/head and tests, then update this handshake, collaboration log and master index. Never report 100% from source-only staging.
+
+## V13 override / pre-wiring correction (2026-11-01)
+**Read `docs/SOURCE_AI4_PREWIRING_GAP_AUDIT_V13_2026-11-01.md` before this V12 historical handoff.** Critical A01: the V12 implementation could treat a caller-supplied `hostVerifiedActiveRecord` flag as if it authenticated profile access. This is a trust-boundary defect. It has been corrected in v1.1 of `source_evidence_bus.js`: `profileShare` is now always false, graphStatus is never exported, and the nine candidate envelopes have `action:'NONE'`, `dispatch:'NONE'`, ephemeral-only references. A trusted same-origin, identity-bound host is mandatory before profile wiring. No code in the staged adapter can itself establish real authentication.
+Audit-tested local Node v22 script now reports **52/52 checks PASS** (exact committed Git blobs source `0d5688af...`, test `0b37e3d...`). This is **not full CI**, and neither manifest integration nor production routing was done.
+The earlier confirmed run `41365137545` on V12 head `389263c8...` had generated product/engine/browser steps pass, but fast-gate voice-copy objection check **failed**. Inspect newer V13 run separately. Owner V11 ZIP / NP-001..045 original clause/bus implementation and signed-off body/112 mapping remain unavailable. **INTEGRATION HOLD: NO LIVE WIRING / MERGE / DEPLOY.**
+All previous V12 counts are historical; 9 packet *shapes* remain 0 actual consumer routes. The successor reads V13 audit → this handshake → collaboration log → index/register → source tests, and updates all four artifacts after substantive work.
