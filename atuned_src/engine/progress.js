@@ -147,7 +147,11 @@ function progressSettle(p,now){
  (old.marks||[]).forEach(function(x){got[x.k]=1;});
  markTest(p,now).forEach(function(x){if(!got[x.k]){
   var def=PG_MARKS.filter(function(m){return m.k===x.k;})[0];
-  if(def)add.marks.push({k:x.k,at:x.at,v:def.v,ev:x.ev});
+  if(def){
+   /* A fresh state mark has a real grant moment. Older unbagged profiles
+      cannot reconstruct when the state first crossed, so backfill stays undated. */
+   var at=x.at===null&&p&&p.progress?new Date(pgNow(now)).toISOString():x.at;
+   add.marks.push({k:x.k,at:at,v:def.v,ev:x.ev});}
   got[x.k]=1;}});
  return add;
 }
@@ -201,9 +205,15 @@ function progressValidate(errs,o,path){
  return blank;
 }
 function progressApply(p,add){
- var old=(p&&p.progress)||progressBlank(),a=add||{},errs=[],fresh=progressBlank();
- fresh.credits=old.credits.concat(a.credits||[]);fresh.marks=old.marks.concat(a.marks||[]);
- fresh.seen=old.seen.concat(a.seen||[]);
+ var old=(p&&p.progress)||progressBlank(),a=add||{},errs=[];
+ Object.keys(a).forEach(function(k){if(['credits','marks','seen'].indexOf(k)<0)
+  errs.push('progress addition may not carry '+k);});
+ var checked=progressValidate(errs,old,'progress');
+ if(errs.length)return {ok:false,errs:errs};
+ var fresh=progressBlank();
+ fresh.credits=checked.credits.concat(a.credits||[]);
+ fresh.marks=checked.marks.concat(a.marks||[]);
+ fresh.seen=checked.seen.concat(a.seen||[]);
  var v=progressValidate(errs,fresh,'progress');
  return errs.length?{ok:false,errs:errs}:{ok:true,progress:v};
 }
