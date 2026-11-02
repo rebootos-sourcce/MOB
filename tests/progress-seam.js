@@ -77,6 +77,9 @@ eq(e.PG_MARKS.filter(m=>m.k==='turned').length,0,'old turned key not stored');
  const err4=[];
  e.progressValidate(err4,{...p.progress,credits:[{id:'rd:20759',n:7,r:99,at:day(90)}]},'progress');
  eq(err4.length,0,'newer rules and future stamps preserved');
+ const err5=[];
+ e.progressValidate(err5,{...p.progress,credits:[{id:'rd:020759',n:5,r:1,at:NOW}]},'progress');
+ yes(err5.some(x=>x.includes('credited event')),'canonical day id blocks alternate keys');
 }
 {
  const p=blank(),f={allowed:{saboteur:true},present:{saboteur:true},graphReady:true};
