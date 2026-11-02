@@ -93,4 +93,33 @@ test('malformed or throwing neighbors fail closed without partial claims',()=>{
  assert.equal(y.status,'unavailable');assert.equal(y.edges.length,0);
 });
 
+
+test('noncanonical edge provenance is excluded, not presented as evidence',()=>{
+ const g=clone(graph);
+ g.edges.push({from:'pattern:12',edge:'supports',to:'saboteur:Avoider',src:'made_up'});
+ const x=run({kind:'seat',id:'Root'},{engine:{...engine,traceFromRecord:()=>g}});
+ assert.equal(x.status,'ready');
+ assert.equal(x.edges.length,1);
+ assert.equal(x.edges[0].provenance,'inferred');
+});
+test('duplicate connections do not multiply edges or evidence counts',()=>{
+ const g=clone(graph);
+ for(let i=0;i<500;i++)g.edges.push({from:'pattern:12',edge:'supports',to:'saboteur:Avoider',src:'inferred'});
+ const x=run({kind:'seat',id:'Root'},{engine:{...engine,traceFromRecord:()=>g}});
+ assert.equal(x.nodes.length,2);
+ assert.equal(x.edges.length,1);
+ assert.equal(x.evidence.inferred,1);
+});
+test('large canonical graph caps edges at 64 and signals truncation',()=>{
+ const nodes=Array.from({length:16},(_,i)=>({type:'pattern',id:String(i+1),name:'Address '+(i+1),seat:'Root',src:'known'}));
+ const edges=nodes.map(n=>({from:'story:fixture',to:'pattern:'+n.id,edge:'supports',src:'user_confirmed'}));
+ for(const a of nodes)for(const b of nodes)if(a!==b)edges.push({from:'pattern:'+a.id,to:'pattern:'+b.id,edge:'supports',src:'inferred'});
+ const g={alg:4,gaps:[],refused:[],nodes:[...nodes,{type:'story',id:'fixture',src:'known'}],edges};
+ const x=run({kind:'seat',id:'Root'},{profile:{id:'record-A'},reading:null,engine:{...engine,traceFromRecord:()=>g},limit:16});
+ assert.equal(x.nodes.length,16);
+ assert.equal(x.edges.length,64);
+ assert.equal(x.evidence.inferred,64);
+ assert.equal(x.truncated,true);
+});
+
 console.log('AVATAR GRAPH '+passed+'/'+passed+' passed');
