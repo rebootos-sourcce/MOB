@@ -1,0 +1,26 @@
+/* V2, dial */
+.v2{display:grid;grid-template-columns:minmax(0,1fr) 460px;gap:40px;max-width:1520px;margin:0 auto;padding:20px 32px 64px;align-items:start}
+.dialw{display:flex;justify-content:center;position:sticky;top:12px}
+.dialsvg{display:block;overflow:visible}
+.ar.tick .r{stroke-width:1.5px;stroke-linecap:round}
+.ar.tick .g{stroke-width:4px}
+.ar.tick.hot .r{stroke-width:2.5px}
+.col{padding-top:12px}
+.hz2{margin-top:24px}
+.hz2 .fig{font-size:28px;font-weight:600;letter-spacing:-.01em;line-height:1.1}
+.hz2 .fig small{font-size:15px;font-weight:400;color:var(--mid);letter-spacing:0}
+.hz2 p{margin:6px 0 0;font-size:13px;color:var(--mid)}
+.hz2 .wf{color:var(--dim)}
+.dkey{list-style:none;margin:16px 0 0;padding:16px 0 0;border-top:1px solid var(--edge);display:flex;flex-direction:column;gap:12px}
+.dkey li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:12px;font-size:13px;color:var(--mid);line-height:1.45}
+.dkey b{color:var(--ink);font-weight:500}
+.dkey svg{width:24px;height:24px;fill:none;stroke-width:1.8;stroke-linecap:round}
+.lh{margin:28px 0 12px;font-size:13px;font-weight:500;color:var(--dim)}
+.ledger{display:flex;flex-direction:column;gap:10px}
+.ledger .buy{padding:10px 4px}
+@media (max-width:1100px){.v2{grid-template-columns:minmax(0,1fr) 380px;gap:24px}}
+@media (max-width:700px){
+ .v2{display:block;padding:12px 16px 48px}
+ .dialw{position:static;margin:0 -8px}
+ .col h1{margin-top:8px}
+}
