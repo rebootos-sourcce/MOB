@@ -7950,6 +7950,20 @@ const W=[];BANDS.forEach(b=>SOM.filter(n=>n.b===b).forEach(n=>W.push(n)));
 W.forEach((n,i)=>{n.slot=i;n.ang=(i/108)*Math.PI*2-Math.PI/2;
  n.cf = ANTKEY.test(n.k)?'Anticipation' : SURPKEY.test(n.k)?'Surprise'
       : HEARTKEY.test(n.k)?'Sad' : (REROUTE[n.c]||null);});
+/* THE FETTERS GET A RING POSITION TOO, the real floor the chain runs on
+   (engine/trace.js: "a fetter is the classification several addresses
+   share... and carries no address-level content of its own"). Set once,
+   here, beside W's own .ang above and for the same reason: a stable
+   position computed from real data rather than redrawn every frame. Each
+   fetter sits at the mean angle of the real addresses it classifies
+   (n.cf===c.nm), so the wheel's new fetter ring sits where its own
+   addresses actually cluster, never at an arbitrary even spacing. kind is
+   set here and not in engine/data/canon.js, because canon.js is the ported
+   table (SNIFFER_SPEC's own) and this is wiring: the one property every
+   wheel bead needs so hitPress (ui/ui.js) can tell what it hit, the same
+   way a saboteur, complex, hyper or super complex already carries .kind. */
+CHILD.forEach(c=>{var parts=W.filter(n=>n.cf===c.nm);
+ c.kind='fet'; c.ang=parts.length?meanAng(parts.map(n=>n.ang)):-Math.PI/2;});
 const BY={};NODES.forEach(n=>BY[n.i]=n);
 const NAMED=new Set();SAB_LIB.forEach(s=>s.nids.forEach(i=>NAMED.add(i)));
 /* the six families are poled. collapsed on the left, overshot on the right.
@@ -11355,6 +11369,41 @@ function traceNeighbors(g,node,edgeType){
   else if(e.to===k)out.push({key:e.from, edge:e.edge, dir:'in', src:e.src, e:e});});
  return out.sort(function(a,b){
   return a.key<b.key?-1:a.key>b.key?1:(a.edge<b.edge?-1:a.edge>b.edge?1:(a.dir<b.dir?-1:a.dir>b.dir?1:0));});}
+
+/* ALL THE CHILDREN DOWN, FLAT. The real gap neither function above closes:
+   traceNeighbors reads one hop only, by design, for one selected node's
+   own immediate parents and children; tracePath finds a path between two
+   NAMED nodes, never a subtree grown from one. "If I shift click I get
+   all the children down" needs the full descending subtree, not one hop.
+
+   Same primitive as traceNeighbors just above it: walk g.edges directly,
+   never the ix cache (traceIx is for the add/remove path's own cycle and
+   lookup checks; a reader builds nothing it does not need). Filtered to
+   the one edge type the chain itself is built from, 'supports'
+   (TRACE_RULES: pattern supports saboteur, saboteur supports complex, and
+   on up) -- no other edge type names a child built from a parent on this
+   graph, so no other edge type belongs in a descent. 'supports' runs
+   child-to-parent (e.from is the child, e.to the parent: THE CHAIN, above,
+   and traceEdgeAdd's own refusal of any other source for it), so a
+   node's children are found on e.to===the node, read off e.from.
+
+   Recurses hop by hop off the running frontier, breadth first, the same
+   discipline traceReach already uses one call up (walk, mark seen, do not
+   revisit), until nothing more is found, and returns the flat, sorted set
+   of keys reached -- never the edges, never the node itself (a node is
+   not its own descendant), the key alone, because that is the one thing
+   a shift-click selection needs to add to S.pin's array. */
+function traceDescendants(g,key){
+ if(!traceIsGraph(g))return [];
+ var k=traceRef(key);
+ if(k===null)return [];
+ var seen={}, q=[k], out=[];
+ while(q.length){
+  var cur=q.shift();
+  traceLive(g.edges).forEach(function(e){
+   if(e.edge==='supports'&&e.to===cur&&!seen[e.from]){
+    seen[e.from]=1; out.push(e.from); q.push(e.from);}});}
+ return out.sort();}
 
 /* THE SHORTEST CHAIN from one node to another, as the edges walked, or
    null. o.undirected walks edges either way, which the document's own
@@ -24936,7 +24985,7 @@ if(typeof module!=='undefined'&&module.exports){
                   TRACE_ID_MAX:TRACE_ID_MAX, TRACE_NAMED:TRACE_NAMED,
                   traceKey:traceKey, traceSplit:traceSplit, traceNew:traceNew, traceRuleOf:traceRuleOf,
                   traceAddNode:traceAddNode, traceAddEdge:traceAddEdge, traceRemoveEdge:traceRemoveEdge,
-                  traceNeighbors:traceNeighbors, tracePath:tracePath, traceOrphans:traceOrphans,
+                  traceNeighbors:traceNeighbors, traceDescendants:traceDescendants, tracePath:tracePath, traceOrphans:traceOrphans,
                   traceCycles:traceCycles, validateTrace:validateTrace, traceApply:traceApply,
                   traceFromRecord:traceFromRecord, traceStoryIds:traceStoryIds, traceRitualIds:traceRitualIds,
   /* the parent/child blend summarizer, engine/tracesummary.js: a sibling

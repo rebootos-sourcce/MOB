@@ -322,7 +322,7 @@ if(typeof module!=='undefined'&&module.exports){
                   TRACE_ID_MAX:TRACE_ID_MAX, TRACE_NAMED:TRACE_NAMED,
                   traceKey:traceKey, traceSplit:traceSplit, traceNew:traceNew, traceRuleOf:traceRuleOf,
                   traceAddNode:traceAddNode, traceAddEdge:traceAddEdge, traceRemoveEdge:traceRemoveEdge,
-                  traceNeighbors:traceNeighbors, tracePath:tracePath, traceOrphans:traceOrphans,
+                  traceNeighbors:traceNeighbors, traceDescendants:traceDescendants, tracePath:tracePath, traceOrphans:traceOrphans,
                   traceCycles:traceCycles, validateTrace:validateTrace, traceApply:traceApply,
                   traceFromRecord:traceFromRecord, traceStoryIds:traceStoryIds, traceRitualIds:traceRitualIds,
   /* the parent/child blend summarizer, engine/tracesummary.js: a sibling
