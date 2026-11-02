@@ -34,3 +34,11 @@ This repository has active work from multiple agents. Before integration: rebase
 
 ## Ratings (not verified completion)
 Documentation and seam mapping: 0.95. Candidate isolated tests: 36/36. Full production engine tests: NOT RUN. UI/browser tests: NOT RUN. Merged mainline: NO. Confidence that merge contract identifies main risks: 0.90.
+
+
+## Verification follow-up in the same session
+15. STATIC PARSE: compiled the staged progress.js and tests/progress-seam.js source strings with JavaScript Function constructor. Caught a duplicate const declaration in the test fixture block before runtime; fixed it in tests/progress-seam.js at commit 8e2711d328b269a80198388ba75afba949610886.
+16. STATIC PARSE RETEST: both files now parse in an isolated V8 context.
+17. REGRESSION RETEST: post-hardening candidate passed 14 additional isolated JS assertions, 14/14, 0 failures. These check progress blank, done status, points, deleted evidence persistence, invalid old/addition bags, future-version retention and host-free syntax.
+18. ENVIRONMENT BOUNDARY: no full main compiled engine executed; GitHub fetch of generated engine.js produced no usable content, and a many-module concurrent fetch attempt exceeded the connector's call cap. This is a known test gap, not a green result.
+19. NEXT AI: run node tests/progress-seam.js in a complete checkout, then full engine and browser gates. If a gate fails, fix in the seam branch, log exactly which behavior changed, and do not claim merge-ready without it.
