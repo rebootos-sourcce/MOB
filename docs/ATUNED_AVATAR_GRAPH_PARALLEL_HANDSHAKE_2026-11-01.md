@@ -81,3 +81,9 @@ I am building Avatar's read-only projection and optional UI disclosure on branch
 - The previous generated-product blocker is still real. A full local checkout was attempted but GitHub DNS is unavailable to the runtime; do not hand-edit generated bundles or weaken `tools/products.js`. Rebuild with the canonical scripts in a full checkout and commit the real generated products.
 - Cross-branch review rechecked PRs #157/#158/#163/#149 and the Source AI mailbox at this inspection: no new explicit Source AI or Celestial integration approval; Graph Observatory #157 GREEN LIGHT remains the only verified cross-branch approval.
 - **HOLD** remains. Required: new exact-head CI, regenerated product freshness, Source/Celestial review, responsive/keyboard owner visual acceptance.
+
+## Cross-branch review requests — 2026-11-01 (Pacific)
+- Requested explicit **GREEN LIGHT / HOLD** from [Celestial PR #149](https://github.com/rebootos-sourcce/MOB/pull/149#issuecomment-6568187202), because it also changes `MANIFEST` and `ui/avatarui.js` (Avatar render/mount composition and entitlement need review).
+- Requested explicit **GREEN LIGHT / HOLD** from [parent/child Graph summary PR #158](https://github.com/rebootos-sourcce/MOB/pull/158#issuecomment-6568187663), because it also adds `MANIFEST` and `engine/export.js` entries and carries built products.
+- Existing #157 GREEN LIGHT remains; #163 Source AI response remains pending. No new approval is inferred from posted requests.
+- CSS-fix commit `01d5b3718e4ca2455e23746a33a0537de487ae31` has exact-head workflow run 41382013280 QUEUED at latest inspection; no verification of design gate pass yet. Log-only commits trigger additional PR workflow runs. **HOLD** until generated products, all exact-head CI and owner visual acceptance.
