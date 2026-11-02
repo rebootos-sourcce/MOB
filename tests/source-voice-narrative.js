@@ -57,4 +57,13 @@ assert.equal(N(['My mother was angry. I see their patterns in myself. I do not s
 assert.equal(N(['My mother was angry. I do not see those patterns in myself. I see their patterns in myself.'])
  .familyToSelf,'FAMILY_TO_SELF_CANDIDATE');
 
+
+// A07 recurring reversals: final explicit, non-hypothetical statement wins.
+assert.equal(N(['My mother was angry. I see their patterns in myself. I do not see those patterns in myself. I see their patterns in myself.']).familyToSelf,'FAMILY_TO_SELF_CANDIDATE');
+assert.equal(N(['My mother was angry. I do not see those patterns in myself. I see their patterns in myself. I do not see those patterns in myself.']).familyToSelf,'REJECTED_BY_SPEAKER');
+assert.equal(N(['My mother was angry. I see their patterns in myself. Maybe I do not see those patterns in myself.']).familyToSelf,'FAMILY_TO_SELF_CANDIDATE');
+assert.equal(N(['My mother was angry. Maybe I see their patterns in myself. I do not see those patterns in myself.']).familyToSelf,'REJECTED_BY_SPEAKER');
+assert.equal(N(['My mother was angry. Imagine I see their patterns in myself.']).familyToSelf,'NOT_REPORTED');
+assert.equal(N(['My mother was angry. I do not see those patterns in myself.','I see their patterns in myself.']).familyToSelf,'FAMILY_TO_SELF_CANDIDATE');
+
 console.log('SOURCE narrative attribution/ancestral humility contract PASS');
