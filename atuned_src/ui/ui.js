@@ -1016,10 +1016,28 @@ function railStack(r){
   var open=isOpen(k);
   var g=SECGLYPH[k], ic=g?'<svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true">'
    +(g.charAt(0)==='<'?g:'<path d="'+g+'"/>')+'</svg>':'';
+  /* INLINE, NOT LEFT TO THE CLASS ALONE, caught live, not assumed: a
+     .lsec-bd's real CSS rule is ".lsec.open .lsec-bd{display:block}", a
+     DESCENDANT selector with no "nearest ancestor" meaning in CSS --
+     #stack's whole panel is already a permanently-open top-level .lsec
+     itself (data-sec="you", shell/body.html), so every tier nested inside
+     it matched that rule through the OUTER section's own open class,
+     whether or not the TIER itself carried one. Checked by reading
+     getComputedStyle, not by trusting the class list: every .lsec-bd
+     under #stack came back display:block regardless of its own tier's
+     open/closed state, the exact "defined is not wired" shape this
+     project's own CLAUDE.md names. The class stays, for every other real
+     rule it still correctly carries (padding, the chevron, the gold on
+     open); the one property the nested case breaks is set here directly,
+     inline, which always outranks the class in the cascade regardless of
+     which ancestor a selector happens to match. */
   return '<div class="lsec'+(open?' open':'')+'" data-tier="'+k+'">'
-   +'<button type="button" class="lsec-hd" data-tier="'+k+'" aria-expanded="'+open+'">'
-    +'<span>'+ic+'<span class="tier1" style="margin:0">'+esc(nm)+'</span></span><i></i></button>'
-   +'<div class="lsec-bd"><p class="stk-def">'+esc(def)+'</p>'+body+'</div></div>';}
+   +'<button type="button" class="lsec-hd" data-tier="'+k+'" aria-expanded="'+open
+    +'" style="color:'+(open?'var(--gold)':'var(--mid)')+'">'
+    +'<span>'+ic+'<span class="tier1" style="margin:0">'+esc(nm)+'</span></span>'
+    +'<i style="transform:rotate('+(open?'-135deg':'45deg')+')"></i></button>'
+   +'<div class="lsec-bd" style="display:'+(open?'block':'none')+'">'
+    +'<p class="stk-def">'+esc(def)+'</p>'+body+'</div></div>';}
  var h=CHAINTIERS.map(function(t){
    var list={sup:sups,hy:hys,cx:cxs,sab:sabs}[t.k];
    var body=list.length?chkTier(t.k,list,t.seat)
