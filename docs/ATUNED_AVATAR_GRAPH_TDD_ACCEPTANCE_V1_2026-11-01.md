@@ -135,3 +135,9 @@ A person selects a legitimate Avatar seat or canonical graph node. The system re
 - Result: **29/29 named tests passed**; no changed assertions or CI gate bypass. This is an independent adapter-code execution check, but **not** a Node.js process, not a compiled production engine, and not exact-head GitHub CI. Prior real-engine result remains 11/11 on earlier GitHub commit.
 - The discovered non-array / throwing canonical neighbor regression is covered by the expanded test suite and now returns `unavailable` rather than crashing or silently omitting edges.
 - The full GitHub workflow for the current documentation/code head was queued on inspection; keep generated-product freshness red until proven otherwise.
+
+## I. Round 2 expanded red-green verification (last update)
+- The 29-case unit suite now contains **34 named regression tests**; the five additional cases cover forged relationship provenance, duplicate links/evidence, dense-graph 64-edge cap with truncation, malformed canonical node provenance and unrecognized relationship bootstrap.
+- All **34/34 passed in a V8 runtime** executing the exact fetched GitHub adapter and regression test source. This is not yet exact-head Node CI. The local Node package reproduction passed **29/29** after implementing equivalent safeguards.
+- AG-07 and AG-38 have expanded isolated coverage; AG-28 (host entitlement), AG-29 (consent/profile switch), AG-30/32/33 (composed branches), AG-34 (fresh generated products), and AG-35/36 (UI-owner acceptance) **remain open**.
+- Adapter source commit: `f7c4ab99594046cd8e0d2005bf70e87808250272`. See [round 2 verification](ATUNED_AVATAR_GRAPH_ROUND2_VERIFICATION_2026-11-01.md) for failure reproductions, blob SHAs, exact test interpretation and remaining gates.
