@@ -1069,8 +1069,15 @@ const kb=await page.evaluate(()=>{
   'the left rail calls the nine child emotions, got '+kb.rail.join(', '));
  ok(kb.rail.indexOf('Fetters')<0,
   'and the rail no longer calls the nine fetters');
- ok(/^Child emotions/.test(kb.stack[0]||''),
-  'the stack tab calls them child emotions, got '+(kb.stack[0]||'nothing'));
+ /* NOT INDEX 0 ANY MORE, 2 November: #stack is six nested disclosure
+    tiers now, Super-complex down to Nerve (FIELD_RIGHTSIDE_BLEND_
+    STRATEGY_2026-11-02.md), not five flat tabs opening on Child emotions
+    by default. The real check this assertion exists for -- the renamed
+    word actually reaches this surface, in this exact spelling -- still
+    holds and is still checked, just not pinned to a position the
+    redesign deliberately no longer holds. */
+ ok(kb.stack.some(t=>/^Child emotions/.test(t)),
+  'the stack calls them child emotions somewhere on it, got '+JSON.stringify(kb.stack.slice(0,8)));
  ok(!/child fetter/i.test(kb.text),
   'and the phrase child fetter reaches no surface');}
 /* ALL 112, NEVER 108. W is the 108 somatic addresses and the four field
@@ -6957,8 +6964,21 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  const dock=await fp.evaluate(async()=>{const d=document.getElementById('fdock'),left=document.getElementById('lcol');
   await new Promise(r=>setTimeout(r,ENTER_SPAN+9*ENTER_STAGGER+250));
   const mid=r=>r.top+r.height/2;
-  const rows=[...d.querySelectorAll('.rbar,.rb2')].filter(e=>e.offsetParent), rr=rows.map(e=>e.getBoundingClientRect());
-  const bars=[...d.querySelectorAll('.rbar')], rc=bars.map(e=>e.getBoundingClientRect());
+  /* FOUR OF THE SIX AMOUNTS ARE crBadge RINGS NOW, NOT .rbar FILLS (2
+     November, Root Energetics' own bar-to-badge round): Vitality,
+     Awareness, Will and Radiance. DQ and Flow stay .rbar, DQ on its own
+     standing exception and Flow because its real seven-seat cell
+     breakdown has no badge equivalent and two dedicated suites
+     (tests/railmenu.js RM13, this file's own om block further down) still
+     read it cell by cell -- see ui/ui.js's #keylo comment for the full
+     reasoning, named there rather than silently kept. amountRows reads
+     both kinds, in the one real DOM order (#keylo's own render order),
+     so want[i] below still lines up with amountRows[i] exactly as it did
+     when every row was the same shape. */
+  const amountRows=[...d.querySelectorAll('#keylo .rbar,#keylo .kb:not(.rbar)')];
+  const trueBars=amountRows.filter(e=>e.classList.contains('rbar'));
+  const badgeRows=amountRows.filter(e=>!e.classList.contains('rbar'));
+  const rows=[...d.querySelectorAll('.rbar,.rb2,#keylo .kb:not(.rbar)')].filter(e=>e.offsetParent), rr=rows.map(e=>e.getBoundingClientRect());
   const R=compute(), f=flSpeed();
   /* NAMED CHANGE, percent phase 2 slice 1, 17 October: each bar fills
      pct(kind, value), the whole percent its figure prints (engine/pct.js),
@@ -6973,19 +6993,33 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
    ['Radiance',pct('radiance',R.radiance),'color-mix(in srgb,var(--ink) 86%,'+seatCol('Solar')+')'],['Flow',pct('flow',f),'var(--ink)']];
   const pairs=[...d.querySelectorAll('.rb2')];
   const sp=v=>String(v||'').replace(/\s+/g,'').toLowerCase();
-  const bar={names:bars.map(e=>e.querySelector('.rb-n').textContent),
+  const ringC=2*Math.PI*13.5; /* CRB.sm.r, component.js: crBadge's 'sm' radius, the size rbBadgeRow always asks for */
+  const ringPct=e=>{const arc=e.querySelector('svg.crb-a circle:last-child'); if(!arc)return null;
+   return Math.max(0,Math.min(100,(1-parseFloat(getComputedStyle(arc).strokeDashoffset)/ringC)*100));};
+  const bar={names:amountRows.map(e=>(e.querySelector('.rb-n')||e.querySelector('.stk-nm')).textContent),
    pairNames:pairs.map(p=>[...p.querySelectorAll('.rb2-n')].map(n=>n.textContent)),
    stacked:rr.every((r,i)=>i===0||r.top>=rr[i-1].bottom-0.5),
    oneColumn:new Set(rr.map(r=>Math.round(r.left))).size===1&&new Set(rr.map(r=>Math.round(r.width))).size===1,
    heights:[...new Set(rr.map(r=>Math.round(r.height)))],
-   fills:bars.map((e,i)=>{const f=e.querySelector('.rb-f'); return want[i][0]==='Flow'?!f:!!f&&Math.abs(parseFloat(f.style.width)-Math.max(0,Math.min(100,want[i][1])))<0.1;}),
-   colours:bars.map((e,i)=>sp(e.style.getPropertyValue('--c'))===sp(want[i][2])),
+   fills:amountRows.map((e,i)=>{
+    if(want[i][0]==='Flow'){const f=e.querySelector('.rb-f'); return !f;}
+    if(e.classList.contains('rbar')){const f=e.querySelector('.rb-f');
+     return !!f&&Math.abs(parseFloat(f.style.width)-Math.max(0,Math.min(100,want[i][1])))<0.1;}
+    const got=ringPct(e); return got!==null&&Math.abs(got-Math.max(0,Math.min(100,want[i][1])))<0.6;}),
+   colours:amountRows.map((e,i)=>{
+    if(e.classList.contains('rbar'))return sp(e.style.getPropertyValue('--c'))===sp(want[i][2]);
+    const b=e.querySelector('.crb'); return !!b&&sp(b.style.getPropertyValue('--c'))===sp(want[i][2]);}),
    tall:Math.min(...rr.map(r=>r.height)),
    /* r1: the name and the figure sit on one line inside the row and above
-      its track, never inside a fill, and nothing draws them twice */
-   inside:bars.every(e=>{const b=e.getBoundingClientRect(),n=e.querySelector('.rb-n').getBoundingClientRect(),v=e.querySelector('.rb-v').getBoundingClientRect(),
+      its track, never inside a fill, and nothing draws them twice -- for
+      the two still-bars. For the four badges, the same claim in their own
+      shape: the ring sits left, the name sits right, both inside the row
+      and on the row's own line, never stacked two lines deep. */
+   inside:trueBars.every(e=>{const b=e.getBoundingClientRect(),n=e.querySelector('.rb-n').getBoundingClientRect(),v=e.querySelector('.rb-v').getBoundingClientRect(),
     t=e.querySelector('.rb-t').getBoundingClientRect();
-    return n.top>=b.top&&v.top>=b.top&&n.bottom<=t.top+0.5&&v.bottom<=t.top+0.5&&Math.abs((n.top+n.bottom)/2-(v.top+v.bottom)/2)<2&&v.right<=b.right;}),
+    return n.top>=b.top&&v.top>=b.top&&n.bottom<=t.top+0.5&&v.bottom<=t.top+0.5&&Math.abs((n.top+n.bottom)/2-(v.top+v.bottom)/2)<2&&v.right<=b.right;})
+   &&badgeRows.every(e=>{const b=e.getBoundingClientRect(),badge=e.querySelector('.crb').getBoundingClientRect(),nm=e.querySelector('.stk-nm').getBoundingClientRect();
+    return badge.left>=b.left-0.5&&nm.right<=b.right+0.5&&badge.right<=nm.left+1&&Math.abs((badge.top+badge.bottom)/2-(nm.top+nm.bottom)/2)<8;}),
    /* in a pair, each pole's mark and word sit on the row's line, at its own
       end, with the one figure between them */
    pairInside:pairs.every(p=>{const b=p.getBoundingClientRect(), ps=[...p.querySelectorAll('.rb2-p')].map(x=>x.getBoundingClientRect()), f=p.querySelector('.rb2-f').getBoundingClientRect();
@@ -7030,20 +7064,35 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  /* THE CIRCLES MOVE INTO A CHANGED VALUE rather than snapping, EZ: "I want to
     be able to see the animations on these." Sampled a frame after a load that
     moves CQ: the ring is on its way and not yet at the end. */
- /* CQ is half of the pair since round RB, so the single bar sampled is
+ /* CQ is half of the pair since round RB, so the single reading sampled is
     vitality, and the CQ pole is read off the pair's own record in the frame
     the change lands: it leaves from where it stood for the new figure, which
-    is a sweep and not a snap whatever the machine's frame rate. */
+    is a sweep and not a snap whatever the machine's frame rate.
+
+    VITALITY IS A crBadge RING NOW, not a .rbar fill (2 November, Root
+    Energetics' own bar-to-badge round): the same crMotion that already
+    tweens #acc and the chain rail tweens it (CRMO_SEL='.cr,.crb',
+    component.js), so this samples the ring's own stroke-dashoffset against
+    the real circumference crBadge's 'sm' size draws at (CRB.sm.r=13.5)
+    rather than a bar's width, and reads the goal independently off
+    pct('vitality',...) rather than off a data-w crBadge does not carry,
+    the same way the CQ pole's own goal is read off RB2.coh.l1 and not off
+    the DOM mid-sweep. Checked live before writing this version, not
+    assumed: a real Marcus-to-James load was sampled and the three points
+    (was/mid/end) came back correctly ordered and the end point landed
+    within half a percent of the independently computed goal. */
  const mo=await fp.evaluate(async()=>{loadP(PERSON('Marcus'));render();
-  const bar=()=>document.querySelector('#keylo .rbar[data-q=xyz] .rb-f');
+  const arc=()=>document.querySelector('#keylo [data-q=xyz] svg.crb-a circle:last-child');
+  const ringC=2*Math.PI*13.5;
+  const pctOf=()=>Math.max(0,Math.min(100,(1-parseFloat(getComputedStyle(arc()).strokeDashoffset)/ringC)*100));
   await new Promise(r=>setTimeout(r,ENTER_SPAN+9*ENTER_STAGGER+250));
-  const was=parseFloat(bar().style.width), cqWas=RB2.coh.l1; loadP(PERSON('James'));render();
-  const goal2=parseFloat(document.querySelector('#keylo .rbar[data-q=xyz]').getAttribute('data-w'));
+  const was=pctOf(), cqWas=RB2.coh.l1; loadP(PERSON('James'));render();
+  const goal2=Math.max(0,Math.min(100,pct('vitality',compute().X)));
   const cqFrom=RB2.coh.l0, cqTo=RB2.coh.l1;
   await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
-  const mid2=parseFloat(bar().style.width);
+  const mid2=pctOf();
   await new Promise(r=>setTimeout(r,ENTER_SPAN+120));
-  const end=parseFloat(bar().style.width);
+  const end=pctOf();
   return {was,goal2,mid2,end,cqWas,cqFrom,cqTo,cqWant:compute().CQ};});
  ok(Math.abs(mo.goal2-mo.was)>1&&Math.abs(mo.mid2-mo.goal2)>0.5&&Math.abs(mo.mid2-mo.was)>0.01,
   'a changed vitality sweeps, part way a frame in: from '+mo.was.toFixed(1)+' toward '+mo.goal2.toFixed(1)+', at '+mo.mid2.toFixed(1));
@@ -7080,7 +7129,10 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   const fl=document.querySelector('#fdock .rbar[data-q=flow]'), pair=document.querySelector('#fdock .rb2[data-pair=coh]');
   const end=d=>+(/V(-?[\d.]+)H700$/.exec(d)||[,NaN])[1];
   const dock=document.getElementById('fdock');
-  return {rows:dock.querySelectorAll('.rbar,.rb2').length,
+  /* Vitality/Awareness/Will/Radiance are .kb (crBadge rows) now, not
+     .rbar, same round as the dock test above; the row count below counts
+     both kinds so "six rows" still means six, not two. */
+  return {rows:dock.querySelectorAll('.rbar,.rb2,#keylo .kb:not(.rbar)').length,
    hashes:dock.querySelectorAll('.rb-hash').length,
    cohName:pair?[...pair.querySelectorAll('.rb2-n')].map(n=>n.textContent).join():'',
    dqRow:!!dock.querySelector('#keylo .rbar[data-q=dq]'),

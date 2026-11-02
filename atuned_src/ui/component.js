@@ -594,6 +594,53 @@ function rbRow(q,nm,pct,raw,o){
   +'<span class="rb-v">'+esc(raw)+'</span></span>'
   +track+seats
   +'<span class="rb-d" aria-hidden="true"></span></button>';}
+/* ONE READING, ICON-LED, 2 November. His own words looking at the wheel's
+   nested chain next to this stack of bars: the right rail got crBadge
+   (component.js's own words on it: "the named things print as a word and
+   a bare figure... after twenty of them down a rail a person is reading a
+   spreadsheet of feelings") and the left rail's own Vitality/Awareness/
+   Will/Radiance bars never did. Same component, ported wholesale: the
+   seat's own colour and the registry's own fmtPct reading are the two
+   inputs crBadge already takes, so nothing here computes a figure rbRow
+   did not already compute, only the shape it is shown in changes.
+
+   FOUR OF THE FIVE NAMED, NOT ALL FIVE. Flow stays rbRow/rbRow's own
+   bar, checked before converting it, not assumed: its bar is the only one
+   of the five that is not a single figure. It draws the real seven-seat
+   breakdown (rbSeatPass/rbSeatHeld/rbSeatNames) at a glance, two real
+   test suites read cell by cell (tests/railmenu.js RM13, tests/
+   functional.js's om block), and a badge would either drop that reading
+   from the always-visible rail to one press away or need both suites
+   rebuilt to check it there instead -- named open in ui/ui.js's own
+   #keylo comment, not forced through here.
+
+   REVERSES PART OF ROUND OG/RB'S "EVERY ELEMENT OF THE BLOCK IS ONE BAR"
+   RULING, NAMED PLAINLY RATHER THAN QUIETLY. That ruling covered all
+   eight rows in this block; tonight's instruction
+   (FIELD_RIGHTSIDE_BLEND_STRATEGY_2026-11-02.md's own Root Energetics
+   section) explicitly keeps it for CQ/DQ (the letters are the icon, a
+   separate, still-standing ruling) and for Orientation/Balance (flagged
+   there by name, "do not convert"), and lifts it for Vitality, Awareness,
+   Will and Radiance. tests/functional.js's own dock test, written for the
+   all-bar shape, is updated in the same round to check this one for what
+   it really is now, never left checking a bar that no longer exists.
+
+   kb (dispatch, .kb[data-q], unchanged) and stk-r (the chain rail's own
+   full-width icon-led row, reused whole rather than drawn again) do the
+   whole layout job between them; nothing new is declared for a design
+   gate to find unstyled (the exact mistake caught and reversed earlier
+   tonight on the right rail's own disclosure wrapper). A caller telling
+   one of these apart from a real .rbar reads the real mark already on
+   it, .crb (crBadge's own), never a class added only for that. */
+function rbBadgeRow(q,nm,seat,pct,raw,o){
+ o=o||{};
+ var p=Math.max(0,Math.min(100,+pct||0)), read=!o.unread;
+ return '<button type="button" class="kb stk-r'+(read?'':' off')+'" data-q="'+q+'"'
+  +(o.fk?' data-fk="'+o.fk+'"':'')+(o.bad?' data-bad="1"':'')
+  +(o.title?' data-tip-k="'+esc(nm)+'" data-tip="'+esc(o.title)+'"':'')
+  +' aria-label="'+esc(rbAria(nm,raw,read,o.title,'Opens the reading.'))+'">'
+  +crBadge(seat,read?p:0,{size:'sm',raw:raw,color:o.color,glyph:o.glyph})
+  +'<span class="stk-nm">'+esc(nm)+'</span></button>';}
 /* THE BARS RUN AT THE FIELD'S OWN RATE. pulseRate in ui/wheel.js is the one
    clock every thread on the Field runs on, and it is the Shadow layer's: DQ
    sets how fast. A bar's light sweeps at that rate, so a person carrying more

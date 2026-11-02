@@ -1001,23 +1001,47 @@ function railStack(r){
     below; everything a tier's body prints (data-sk/data-si/data-fet/
     data-addr) is unchanged and answers the SAME delegated handler it
     already did as a flat tab. */
+ /* EVERY SECTION HEADER CARRIES ITS MARK, the standing rule every other
+    .lsec-hd on the page already holds (tests/functional.js, fv.bare) --
+    missed on the first pass of this disclosure, caught live rather than
+    assumed. Each tier gets the same glyph its own chain of badges already
+    draws: CHAINGLYPH for the four chain rungs and the fetter floor
+    (identical mark the wheel, the glass bar and chkTier's own rows all
+    already use for the same tier, one concept one mark), SEATGLYPH's own
+    generic node circle for Nerve, which is addresses and not a seat or a
+    rung. */
+ var SECGLYPH={sup:CHAINGLYPH.sup, hy:CHAINGLYPH.hy, cx:CHAINGLYPH.cx, sab:CHAINGLYPH.sab,
+  fet:CHAINGLYPH.fet, nerve:SEATGLYPH._};
  function sec(k,nm,def,body){
   var open=isOpen(k);
+  var g=SECGLYPH[k], ic=g?'<svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true">'
+   +(g.charAt(0)==='<'?g:'<path d="'+g+'"/>')+'</svg>':'';
   return '<div class="lsec'+(open?' open':'')+'" data-tier="'+k+'">'
    +'<button type="button" class="lsec-hd" data-tier="'+k+'" aria-expanded="'+open+'">'
-    +'<span><span class="tier1" style="margin:0">'+esc(nm)+'</span></span><i></i></button>'
+    +'<span>'+ic+'<span class="tier1" style="margin:0">'+esc(nm)+'</span></span><i></i></button>'
    +'<div class="lsec-bd"><p class="stk-def">'+esc(def)+'</p>'+body+'</div></div>';}
  var h=CHAINTIERS.map(function(t){
    var list={sup:sups,hy:hys,cx:cxs,sab:sabs}[t.k];
    var body=list.length?chkTier(t.k,list,t.seat)
     :(lockSees(t.k)?'<p class="ad-p" style="margin:4px 0 0 2px">Nothing at this tier yet.</p>':lockPanelHtml(t.k));
    return sec(t.k,t.nm,t.def,body);}).join('')
-  /* FETTER, ALL NINE, ALWAYS -- the identical block renderChainKey builds
-     for the left rail, chkTier's own icon-led crBadge row, one per CHILD,
-     the heaviest marked dominant. Never locked, matching the tab this
-     tier was before (TABS.forEach above skipped 'fet' for the same reason:
-     the nine child emotions are the floor, not a plan-gated rung). */
-  +sec('fet','Fetter','The nine child emotions. No reading of their own, only the addresses they classify.',
+  /* CHILD EMOTIONS, NOT FETTER, ON PURPOSE, DIFFERENT FROM renderChainKey's
+     OWN INTERNAL SUB-HEADING. The owner's own ruling (tests/functional.js,
+     "ONE WORD PER CONCEPT, AND THIS ONE WAS CARRYING TWO"): a fetter is a
+     node, the 112; the nine poled axes this tier actually lists are Child
+     emotions, and "the right rail's stack counts them" under that exact
+     name is the standing cross-surface check for it, the same discipline
+     that already keeps the left rail's dedicated sliders section off the
+     word Fetters. The flat tab this tier replaces (STACK_TAB) was always
+     labelled Child emotions for the identical reason; the heading stays
+     that word now that it is a disclosure instead of a tab, never
+     borrowing renderChainKey's shorter internal label, which names the
+     row inside the chain legend and is never a reachable surface of its
+     own the way this heading now is. All nine always draw, matching the
+     tab this tier was before (TABS.forEach above skipped 'fet' for the
+     same reason: the nine child emotions are the floor, not a plan-gated
+     rung). */
+  +sec('fet','Child emotions','The nine poled axes a charge runs on. No reading of their own, only the addresses they classify.',
    (function(){var hi=CHILD.reduce(function(a,c){return (S.charge[c.nm]||0)>(S.charge[a.nm]||0)?c:a;},CHILD[0]);
     return CHILD.map(function(c,ci){var v=S.charge[c.nm]||0, f=fmtPct('charge',v), dom=live&&c===hi&&v>0;
      return '<button type="button" class="stk-r" data-fet="'+ci+'">'
@@ -1430,17 +1454,42 @@ function render(){
      colour, because it is the brightness of the field and not a seat, the
      r1 review's reading of round RZ. The ink, warmed by the Solar seat, so a
      lighting that turns the ink dark turns Radiance with it. */
+  /* DQ AND FLOW STAY BARS, both named exceptions now, not four left to
+     convert and one quietly skipped. DQ: component.js's own note above
+     rbBadgeRow, it fills from the left like a real amount and its chip
+     reads bad on a rise, which a ring does not carry. FLOW: checked
+     before converting it, not assumed -- its bar is the one row in this
+     block that is not a single figure. rbRow's cells draw the real seven-
+     seat breakdown (rbSeatPass/rbSeatHeld/rbSeatNames) at a glance, with
+     its own blocked-seat ring and sentence, and two real test suites read
+     that breakdown cell by cell (tests/railmenu.js RM13, tests/
+     functional.js's om block). A badge would either drop that reading
+     from the always-visible rail to one press away in runFlowDrill, or
+     need both suites rebuilt to check it there instead -- a real second
+     piece of work this round did not reach with the same rigor as the
+     rest of it, so Flow is named here as genuinely still open rather than
+     forced. Vitality, Awareness, Will and Radiance carried none of that:
+     each was always one figure, so converting them loses nothing a test
+     was reading off their own old shape, only where the fill is drawn. */
   lo.innerHTML=
    rbRow('dq','DQ',pct('dq',r.DQ),fmtPct('dq',r.DQ,u),
     {unread:r.unread,fk:'shadow',ic:'dq',col:seatCol('Root'),bad:true,title:rbSay('DQ')+nr})
-  +rbRow('xyz','Vitality',pct('vitality',r.X),fmtPct('vitality',r.X,u),
-    {unread:r.unread,fk:'core',ic:'vitality',col:seatCol('Solar'),title:rbSay('Vitality')+nr})
-  +rbRow('xyz','Awareness',pct('awareness',r.Y),fmtPct('awareness',r.Y,u),
-    {unread:r.unread,fk:'core',ic:'awareness',col:seatCol('3rd Eye'),title:rbSay('Awareness')+nr})
-  +rbRow('xyz','Will',pct('will',r.Z),fmtPct('will',r.Z,u),
-    {unread:r.unread,fk:'core',ic:'will',col:seatCol('Throat'),title:rbSay('Will')+nr})
-  +rbRow('xyz','Radiance',r.unread?0:pct('radiance',r.radiance),fmtPct('radiance',r.radiance,u),
-    {unread:r.unread,fk:'core',ic:'rad',col:'color-mix(in srgb,var(--ink) 86%,'+seatCol('Solar')+')',title:rbSay('Radiance')+nr})
+  +rbBadgeRow('xyz','Vitality','Solar',pct('vitality',r.X),fmtPct('vitality',r.X,u),
+    {unread:r.unread,fk:'core',glyph:'<path d="'+QICON_D.vitality+'"/>',title:rbSay('Vitality')+nr})
+  +rbBadgeRow('xyz','Awareness','3rd Eye',pct('awareness',r.Y),fmtPct('awareness',r.Y,u),
+    {unread:r.unread,fk:'core',glyph:'<path d="'+QICON_D.awareness+'"/>',title:rbSay('Awareness')+nr})
+  +rbBadgeRow('xyz','Will','Throat',pct('will',r.Z),fmtPct('will',r.Z,u),
+    {unread:r.unread,fk:'core',glyph:'<path d="'+QICON_D.will+'"/>',title:rbSay('Will')+nr})
+  +rbBadgeRow('xyz','Radiance',null,r.unread?0:pct('radiance',r.radiance),fmtPct('radiance',r.radiance,u),
+    /* RB_IC.rad, unlike QICON_D's entries, is already a complete glyph
+       fragment (a circle plus its own rays, not a bare path's d string --
+       rbIcon, component.js, hands it straight into an <svg> with no
+       <path d="..."> wrapper of its own), so it is handed to crBadge the
+       same way, unwrapped. Wrapping it a second time, caught live by
+       design.js's own console-error check ("Expected moveto path
+       command"), produced a <path d="<circle cx=..."> that no browser
+       can parse; fixed here, at the one call site that had it wrong. */
+    {unread:r.unread,fk:'core',color:'color-mix(in srgb,var(--ink) 86%,'+seatCol('Solar')+')',glyph:RB_IC.rad,title:rbSay('Radiance')+nr})
   +rbRow('flow','Flow',pct('flow',f),fmtPct('flow',f,u),
     {unread:r.unread,fk:'seats',ic:'flow',col:'var(--ink)',cells:rbSeatPass(),held:rbSeatHeld(),names:rbSeatNames(),
      title:rbSay('Flow')+(r.unread?nr:' Seven cells run root to crown. The colour in each is what that seat passes on and the hatching is what it holds back. A seat is blocked when it is holding charge and passes on the least of the seats that are, and it is ringed.')});})();
@@ -1872,7 +1921,13 @@ function renderGates(){
  /* the dock's circles move into their values rather than snapping, and only
     after all three of its hosts are written, so one stagger runs across the
     two rows in reading order. ui/component.js, crMotion. */
- crMotion([$('acc')]); rbMotion([$('key'),$('keylo')]); rbRate(r); rlArcs(r);
+ /* keylo carries both a bar (DQ, rbMotion's own .rbar sweep) and five
+    crBadge rings now (Vitality/Awareness/Will/Radiance/Flow, this round):
+    crMotion already tweens every .crb on the page the identical way it
+    already tweens #acc and the chain rail, CRMO_SEL='.cr,.crb', so the
+    five ask it for the same sweep DQ keeps through rbMotion, not a new
+    animation system. */
+ crMotion([$('acc'),$('keylo')]); rbMotion([$('key'),$('keylo')]); rbRate(r); rlArcs(r);
  /* the rail's pairs take their elements and their fades after the rows have
     been written, ui/component.js rbPairs. The wire the six rows used to hang
     on is gone, rounds RZ and RB: it was the vertical bar he asked about, "I

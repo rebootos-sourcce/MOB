@@ -82,16 +82,25 @@ function tsPartRow(part){
    why, never a blank box and never an invented reading. */
 function tsBlockHtml(type,id){
  var g=tsCurrentGraph();
- if(!g)return '<div class="pm-eye">Feeds up, and the blend</div>'
+ /* .plain ON EVERY .pm-eye THAT IS A REAL SENTENCE, not a short label, 2
+    November: design.js's own capitalize-coverage gate reads every string
+    rendered in a .pm-eye (head.html's own text-transform:capitalize rule)
+    and refuses one with a comma or more than four words that is not
+    marked .plain, the exact defect a capitalize transform mangles word by
+    word. Caught live once this block's own fallback and closing headers
+    started rendering in #person on every load (item 3, this round)
+    instead of only behind a drill click; fixed at the source here so
+    every caller, drill and summary alike, gets it right. */
+ if(!g)return '<div class="pm-eye plain">Feeds up, and the blend</div>'
   +'<p class="ad-p">Nothing read yet. Write a line in the Journal and this fills in from it.</p>';
  var res=traceSummary(g,traceKey(type,id));
- if(!res.ok)return '<div class="pm-eye">Feeds up, and the blend</div>'
+ if(!res.ok)return '<div class="pm-eye plain">Feeds up, and the blend</div>'
   +'<p class="ad-p">'+esc(res.why)+'</p>';
  var up=res.parents||[], h='';
  h+='<div class="pm-eye">Feeds up'+(up.length?' ('+up.length+')':'')+'</div>';
  if(up.length)h+='<div class="ts-rows">'+up.map(tsPartRow).join('')+'</div>';
  else h+='<p class="ad-p">Nothing sits above it yet on this graph: either the chain stops here by design, or this one has not compounded with another of its kind yet.</p>';
- h+='<div class="pm-eye">Source AI, blended from the records above and below</div>'
+ h+='<div class="pm-eye plain">Source AI, blended from the records above and below</div>'
   +'<p class="ad-p ts-narr">'+esc(res.summary||'')+'</p>';
  return h;}
 
@@ -107,13 +116,15 @@ function tsBlockHtml(type,id){
    kind. */
 function tsSetBlockHtml(keys){
  var g=tsCurrentGraph();
- if(!g)return '<div class="pm-eye">Selected together, and the blend</div>'
+ /* .plain on every real sentence here too, the identical fix and the
+    identical reason as tsBlockHtml just above. */
+ if(!g)return '<div class="pm-eye plain">Selected together, and the blend</div>'
   +'<p class="ad-p">Nothing read yet. Write a line in the Journal and this fills in from it.</p>';
  var res=traceSummarySet(g,keys);
- if(!res.ok)return '<div class="pm-eye">Selected together, and the blend</div>'
+ if(!res.ok)return '<div class="pm-eye plain">Selected together, and the blend</div>'
   +'<p class="ad-p">'+esc(res.why)+'</p>';
  var h='<div class="pm-eye">Selected together ('+res.members.length+')</div>'
   +'<div class="ts-rows">'+res.members.map(tsPartRow).join('')+'</div>';
- h+='<div class="pm-eye">Source AI, blended from the whole selection</div>'
+ h+='<div class="pm-eye plain">Source AI, blended from the whole selection</div>'
   +'<p class="ad-p ts-narr">'+esc(res.summary||'')+'</p>';
  return h;}

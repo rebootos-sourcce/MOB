@@ -77,6 +77,12 @@ $('allCh').addEventListener('input',function(e){toYou();
  CHARGES.forEach(function(c){S.charge[c]=+e.target.value;});syncCh();saveYou();render();});
 $('allRep').addEventListener('input',function(e){toYou();
  CHARGES.forEach(function(c){S.replace[c]=+e.target.value;});syncCh();saveYou();render();});
+/* CHILD EMOTIONS' OWN DOOR OUT TO INTAKE, same section, body.html's own
+   comment above #chgoq carries the full why. setTab is the one real call
+   every other door to a tab already makes; nothing new is invented here,
+   this section just gets the one it did not have. */
+(function(){var go=$('chgoq'); if(!go)return;
+ go.addEventListener('click',function(){setTab(TAB.QUESTIONS);render();});})();
 /* THE BULK LAW SLIDER ANSWERS NOTHING, P2-5 of the inference audit, 24
    October. It set every law in one drag, and a law moved off its seed counts
    as answered (lawIn, saveProfile), so one gesture filled all 21 and CQ, the
