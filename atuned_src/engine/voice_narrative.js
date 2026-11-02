@@ -38,13 +38,26 @@ function srcVoiceNarrative(turns){
   });
   /* Self reports and uncertainty are scoped to their own sentence;
    * latest explicit correction wins within a turn as well as across turns. */
-  var yes=selfYes.exec(text), no=selfNo.exec(text);
-  if(yes){
-   var selfClause=text.slice(0,yes.index+yes[0].length).split(/[.!?;]/).pop();
-   if(!hypothetical.test(selfClause)&&!uncertainSelf.test(selfClause))
-    selfReports.push({turn:turn,offset:yes.index,state:'CANDIDATE_RESEMBLANCE_REPORTED'});
+  /* Process all assertions chronologically, including repeated reversals. */
+  var events=[], match, yesRx=new RegExp(selfYes.source,'gi'),
+      noRx=new RegExp(selfNo.source,'gi');
+  while((match=yesRx.exec(text))!==null){
+   events.push({offset:match.index,end:yesRx.lastIndex,positive:true});
+   if(!match[0].length)yesRx.lastIndex++;
   }
-  if(no)corrections.push({turn:turn,offset:no.index,state:'SELF_RESEMBLANCE_DENIED'});
+  while((match=noRx.exec(text))!==null){
+   events.push({offset:match.index,end:noRx.lastIndex,positive:false});
+   if(!match[0].length)noRx.lastIndex++;
+  }
+  events.sort(function(a,b){return a.offset-b.offset || a.end-b.end;});
+  events.forEach(function(event){
+   var clause=text.slice(0,event.end).split(/[.!?;]/).pop();
+   if(hypothetical.test(clause)||uncertainSelf.test(clause))return;
+   if(event.positive)
+    selfReports.push({turn:turn,offset:event.offset,state:'CANDIDATE_RESEMBLANCE_REPORTED'});
+   else
+    corrections.push({turn:turn,offset:event.offset,state:'SELF_RESEMBLANCE_DENIED'});
+  });
  });
  var lastYes=selfReports.length?selfReports[selfReports.length-1]:null;
  var lastNo=corrections.length?corrections[corrections.length-1]:null;
