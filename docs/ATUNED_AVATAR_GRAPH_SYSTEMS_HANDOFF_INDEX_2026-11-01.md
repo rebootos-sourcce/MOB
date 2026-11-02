@@ -42,3 +42,6 @@
 ## Most recent verification note
 - After the six new tests, all **29/29 isolated named test bodies passed in a V8 harness** against the fetched committed adapter; this does not certify Node.js or production. GitHub exact-head workflow [41386733147](https://github.com/rebootos-sourcce/MOB/actions/runs/41386733147) was queued when checked.
 - Full repository checkout was not available here due GitHub DNS failure; no canonical generated artifacts have been rebuilt or committed. The product-freshness gate remains the known blocker.
+
+## Machine-readable consumer contract
+- [Projection output JSON Schema v2](ATUNED_AVATAR_GRAPH_PROJECTION_V2.schema.json) documents the exact allowed status, canonical selector, node, edge, evidence, graph and uncertainty fields returned by `AVATAR_GRAPH.project`. It is a parsing/integration artifact, not an authorization token or claim of production compliance. Cross-AI consumers should consume only v2 fields and request review before changing status meanings.
