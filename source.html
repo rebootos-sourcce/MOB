@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2758 ff83e746 2026-11-02 15:04"><head><meta charset="utf-8">
+<html lang="en" data-build="v2759 d5db0e55 2026-11-02 15:27"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -84483,88 +84483,173 @@ function railFold(){
    ============================================================ */
 /* The one line that is always on screen: coherence, the tier it names, and
    how much of the field is carrying. Everything else folds behind a label. */
-/* The stack. Under the reading, a row of tabs: the nine fetters, then the
-   saboteurs, complexes, hyper complexes and super complexes running now.
-   Every row shows both halves of its pole: the charge held on the left and
-   the coherent opposite installed on the right. A row is a door to the
-   drill. The stack was five count lines. */
-var STACK_TAB='fet';
-function poleOf(o){
- var lv=leaves(o), fs=[]; lv.forEach(function(n){if(n.cf&&fs.indexOf(n.cf)<0)fs.push(n.cf);});
- if(!fs.length)return 0; var t=0; fs.forEach(function(f){t+=(S.replace[f]||0);}); return t/fs.length;}
+/* THE STACK, NESTED NOW, 2 November. His own words looking at this rail:
+   "that should all be nested, or parented from parent down... so it
+   doesn't look so sloppy." The five flat pill-tabs (fet/sab/cx/hy/sup, one
+   open at a time, STACK_TAB) are gone. In their place: the same real chain
+   order the left rail's renderChainKey() already draws, Super-complex down
+   to Nerve, as collapsed-by-tier disclosure sections instead of tabs, each
+   carrying chkTier's own icon-led crBadge rows wholesale -- CHAINTIERS
+   below is the one array both renderChainKey and railStack now read, so
+   the name, the sentence and the seat colour can never drift between the
+   two rails. poleOf (the old fetter/chain rows' "opposite installed"
+   second column) comes off with the tabs it belonged to: chkTier's rows
+   are weight-led, one number, the fix component.js's own comment already
+   names for this exact symptom ("a spreadsheet of feelings"); a row's
+   opposite is still one press away, in the drill it already opens. */
+var CHAINTIERS=[
+ {k:'sup',nm:'Super-complex',seat:'Root',
+  def:'The deepest join this instrument reads, built from hyper-complexes. The chain ends here.'},
+ {k:'hy',nm:'Hyper-complex',seat:'Sacral',
+  def:'Complexes joined, one ring further out.'},
+ {k:'cx',nm:'Complex',seat:'Solar',
+  def:'Two saboteurs joined.'},
+ {k:'sab',nm:'Saboteur',seat:'Root',
+  def:'The pattern closest to a single story, coloured by the seat it sits at.'}];
+/* WHICH TIER IS OPEN. A plain object, not a single string like STACK_TAB
+   was, because more than one tier can stand open at once now. A tier not
+   yet in this set reads its default off the current selection (below); once
+   a person presses a tier's own header it is in this set and that press is
+   remembered until the next one, the same way a disclosure anywhere else on
+   this product stays how a person left it. */
+var STK_OPEN={};
+/* THE TIER HOLDING THE CURRENT SELECTION, so the rail answers "where does
+   what I just pressed live" by opening there, not by asking a second press.
+   S.pin carries .kind for every chain node (sab/cx/hy/sup) and, since the
+   fetter tier joined the wheel, for a fetter too (engine/core.js: "CHILD
+   needs no such rebuild... kind is set here"); an address node carries no
+   .kind at all, only .sq and .b, which is how fbUnpin's own FB_PINK fallback
+   already tells a bare address apart from everything named. Nothing
+   selected opens Child emotions, the one tier that is never empty (nine
+   fixed rows) and the tab this rail opened to before tabs existed. */
+function stkDefTier(){
+ var p=S.pin;
+ if(p&&p.kind&&(p.kind==='fet'||CHAINTIERS.some(function(t){return t.k===p.kind;})))return p.kind;
+ if(p&&p.sq!==undefined&&p.b!==undefined)return 'nerve';
+ return 'fet';}
+/* ============================================================
+   THE CHAIN, LIVE. FIELD_REDESIGN_BRIEF_2026-11-01.md Part 1: this replaces
+   the static colour legend ("Saboteur. Colored by the seat it sits at...")
+   with the actual list of real nodes, top to bottom, Super-complex through
+   Nerve, each a tier of trace.js's own TRACE_CHAIN or the real floor beneath
+   it. The tier colour stays exactly what the wheel already paints each tier
+   (bc('Solar') for every complex, bc('Sacral') for every hyper-complex,
+   bc('Root') for every super-complex, bc(parts[0].b), the saboteur's own
+   seat, for every saboteur -- ui/wheel.js's own bead() calls, unchanged by
+   this rewrite), so the rail and the wheel never disagree about what a
+   colour here means. Dominant reuses the gold ring (cr's own on:true,
+   var(--gold) box-shadow; personas.js's mxKey, "a gold ring marks a pair
+   that weighs more together"), never a second colour or a second number.
+   Tapping a row opens the same drill a press on the wheel's own bead
+   already opens (hitPress, this file), through the SAME delegated handler
+   that already answers data-sk/data-si/data-fet for the stack rail
+   (railStack, below); nerve rows reuse data-addr and addrRow's own existing
+   handler, so the floor's own row needs no new dispatch at all.
+
+   MOVED TO TRUE TOP LEVEL, 2 November, out of render()'s own body where it
+   sat nested (and worked, but only for renderChainKey, render()'s own
+   sibling at that same nesting -- a plain top-level function, which
+   railStack below now is, cannot see a name nested inside a different
+   function, and chkTier is a pure function of its own three arguments,
+   nothing in render()'s closure, so moving it changes no behaviour, only
+   who can reach it). */
+/* ICON-LED, not a ring the size of a full stop beside the name carrying the
+   weight. The ring at 'xs' (18px box, an 8px glyph) was the stk-r rows'
+   whole mark, CHAINGLYPH's locked rings and lattice drawn too small to read
+   as anything but a coloured dot, so the row was the name, text first and
+   text led, exactly the complaint: "where are my icons... way too much
+   text." crBadge at 'sm' is the real fix already shipped for the identical
+   symptom (component.js's own words on crBadge: "the named things print as
+   a word and a bare figure... after twenty of them down a rail a person is
+   reading a spreadsheet of feelings"), already the nerve tier's own row
+   below (crbNode) and the Running-now list's (rows.slice(0,8) above): badge
+   leads, name follows and ellipses, one pattern for every row that is many
+   of a kind down this rail. Same CHAINGLYPH, same colour, same weight,
+   same dominant mark (crBadge's new on:dom, wired above) as the ring gave,
+   only big enough now to be seen as a shape before it is read as a name. */
+function chkTier(kind,list,seat){
+ var idx=list.map(function(o,i){return {o:o,i:i};}).sort(function(a,b){return b.o.w-a.o.w;});
+ var cap=kind==='sab'?6:4;
+ if(!idx.length)return '<p class="ad-p" style="margin:4px 0 0 2px">Nothing at this tier yet.</p>';
+ return idx.slice(0,cap).map(function(pair,rank){var o=pair.o, dom=rank===0, f=fmtPct('chain',o.w),
+   b=kind==='sab'?((o.parts&&o.parts[0]&&o.parts[0].b)||seat):seat;
+  return '<button type="button" class="stk-r" data-sk="'+kind+'" data-si="'+pair.i+'">'
+   +crBadge(b,pct('chain',o.w)||0,{size:'sm',raw:f,on:dom,
+     glyph:'<path d="'+CHAINGLYPH[kind]+'"/>',title:o.nm+', '+f+(o.over?', overshot':'')})
+   +'<span class="stk-nm">'+esc(o.nm)+(o.unnamed?'<em>inferred</em>':'')+(dom?'<em>heaviest</em>':'')+'</span></button>';}).join('')
+  +(idx.length>cap?'<div class="pm-more">and '+(idx.length-cap)+' more</div>':'');}
+/* THE SELF-SELECTED MARK, NERVE TIER ONLY. Reads the real field trace.js's own
+   yesOf() reads (e.ob.yes, the mirror card's Yes written onto a story entry),
+   rather than rebuilding the whole trace graph for one boolean in a rail row:
+   yesOf promotes the SAME field into a user_confirmed edge, so this is the
+   field the graph's own answer is made from, not a second guess at it.
+   loopread.js's own two words for this, reused verbatim below: User confirmed.
+   Moved to true top level alongside chkTier, same round, same reason. */
+function nodeConfirmed(i){
+ try{
+  var p=(typeof CURP!=='undefined')?CURP:null;
+  var ents=(p&&p.story&&Array.isArray(p.story.entries))?p.story.entries:[];
+  return ents.some(function(e){return e&&e.ob&&Array.isArray(e.ob.yes)&&e.ob.yes.indexOf(i)>=0;});
+ }catch(err){return false;}}
 function railStack(r){
  var e=document.getElementById('stack'); if(!e)return;
- /* THE STACK CARRIES ITS SYMBOLS. Every named thing in this product has a
-    glyph and these five rungs were the last strip without one. The glyphs are
-    the chain itself: one ring is a fetter, two locked rings a saboteur, three
-    a complex, a lattice a hyper complex, and a ring in a ring the super
-    complex, which is the one a person cannot see as separate from themselves.
-    Its tab read Character until the owner's ruling of 23 October gave that
-    word to the whole of it, the Character page; the key stays sup. */
- var TABS=[
-  /* the key is 'fet' and stays 'fet': a key is identity and identity is
-     never renamed here. The label is what a person reads and it moves. */
-  ['fet','Child emotions',CHILD.length,CHAINGLYPH.fet],
-  /* the four tiers' marks are CHAINGLYPH in ui/component.js, shared with
-     the glass bar's switches for the same four */
-  ['sab','Saboteurs',r.sabs.length,CHAINGLYPH.sab],
-  ['cx','Complexes',r.cxs.length,CHAINGLYPH.cx],
-  ['hy','Hyper',r.hys.length,CHAINGLYPH.hy],
-  ['sup','Super',r.sups.length,CHAINGLYPH.sup]];
- var h='<div class="stk-tabs" role="tablist">'+TABS.map(function(t){
-  return '<button type="button" role="tab" class="stk-t'+(STACK_TAB===t[0]?' on':'')+'" data-st="'+t[0]+'" '
-   +'aria-selected="'+(STACK_TAB===t[0])+'" title="'+esc(t[1])+'">'
-   +svgI('<path d="'+t[3]+'"/>')
-   +'<span>'+t[1]+'</span>'+(t[2]?' <b>'+t[2]+'</b>':'')+'</button>';}).join('')+'</div>';
- if(STACK_TAB==='fet'){
-  /* ONE WORD PER CONCEPT. This header said held and installed, the rail four
-     inches to the left said held and opposite, and the owner asked what either
-     of them meant. They are the two ends of one axis: the state you are
-     carrying, and the coherent quality on the other side of it. Held and
-     opposite, in both places, with the definition said once here rather than
-     left in a tooltip nothing on a phone can reach. */
-  /* AND THE DEFINITION IS OFF THE RAIL NOW. Round HS: "get rid of all this
-     like second or three third tier text ... we have overlays for all this
-     shit." A four line
-     legend sat above the nine rows on every tab. Each row is a door to its
-     axis's drill, and the drill says both ends and what fills each, so the
-     definition is one press away on a phone as well as a desk, and the rule
-     against a definition living only in a tooltip still holds. The two column
-     words stay, and the same two words are the drill's. */
-  h+='<div class="stk-hd"><span>held</span><span>opposite</span></div>';
-  h+=CHILD.map(function(c,ci){var v=S.charge[c.nm]||0, p=S.replace[c.nm]||0;
-   /* each axis carries its own glyph. canon.js has had one on every entry
-      since the port and nothing in the rails was drawing them. */
-   /* A ROW IS A DOOR NOW, which is what let the legend above come off. It was
-      a static row and the only place held and opposite were defined was the
-      legend, so the legend was cut only once each row opened runFetterDrill,
-      the axis's own drill, which says both halves and what fills each. */
-   return '<button type="button" class="stk-r" data-fet="'+ci+'"><span class="stk-l">'
-    /* held and installed as percents, 17 October, percent phase 2: each ring
-       fills pct(kind) and prints fmtPct(kind), the registry's one formula */
-    +(function(fv,fp){return cr(c.seat,pct('charge',v)||0,{size:'xs',raw:fv,glyph:'<path d="'+c.ic+'"/>',
-      title:c.nm+(fv!==PCT_DASH?' held '+fv:', nothing held')})+esc(c.nm)+'</span>'
-    +'<span class="stk-p">'+esc(c.opp)
-    +cr('Heart',pct('installed',p)||0,{size:'xs',raw:fp,hot:false,
-      glyph:'<path d="'+c.ic+'"/>',title:c.opp+(fp!==PCT_DASH?' installed '+fp:', nothing installed')});}(fmtPct('charge',v),fmtPct('installed',p)))
-    +'</span></button>';}).join('');}
- else{
-  var list={sab:r.sabs,cx:r.cxs,hy:r.hys,sup:r.sups}[STACK_TAB]||[];
-  h+=list.length?'<div class="stk-hd"><span>weight</span><span>opposite in</span></div>':'';
-  h+=list.length?list.map(function(o,i){var p=poleOf(o);
-   return '<button type="button" class="stk-r'+(S.pin===o?' on':'')+'" data-sk="'+STACK_TAB+'" data-si="'+i+'">'
-    +'<span class="stk-l">'+crPat(o,'xs')+esc(o.nm)+(o.unnamed?'<em>inferred</em>':'')+'</span>'
-    +'<span class="stk-p">'+(function(fp){return cr('Heart',pct('installed',p)||0,{size:'xs',raw:fp,hot:false,
-      title:fp!==PCT_DASH?'Opposite installed '+fp:'Nothing installed'});}(fmtPct('installed',p)))+'</span></button>';}).join('')
-   :(lockSees(STACK_TAB)?'<div class="rnone">Nothing at this layer.</div>':lockPanelHtml(STACK_TAB));}
+ var live=r&&!r.unread;
+ var sups=live?r.sups:[], hys=live?r.hys:[], cxs=live?r.cxs:[], sabs=live?r.sabs:[];
+ var openDef=stkDefTier();
+ function isOpen(k){return (k in STK_OPEN)?STK_OPEN[k]:(k===openDef);}
+ /* ONE DISCLOSURE SHAPE for every tier. Reuses the .lsec/.lsec-hd/.lsec-bd
+    classes and CSS the left rail's own top-level sections already draw
+    (head.html: ".lsec-bd{display:none} .lsec.open .lsec-bd{display:block}",
+    the chevron on .lsec-hd i) so a tier here looks and behaves like every
+    other disclosure on the product, with no new CSS and no reach into
+    wireSections/OPENSEC, which is sized for whole rail sections and their
+    own scroll-to-top-on-open behaviour -- too heavy for a row inside a
+    section that is already open. data-tier on both the wrapper and the
+    header is read by the one new click case below; everything a tier's
+    body prints (data-sk/data-si/data-fet/data-addr) is unchanged and
+    answers the SAME delegated handler it already did as a flat tab. */
+ function sec(k,nm,def,body){
+  var open=isOpen(k);
+  return '<div class="lsec stk-tier'+(open?' open':'')+'" data-tier="'+k+'">'
+   +'<button type="button" class="lsec-hd stk-dh" data-tier="'+k+'" aria-expanded="'+open+'">'
+    +'<span><span class="tier1" style="margin:0">'+esc(nm)+'</span></span><i></i></button>'
+   +'<div class="lsec-bd"><p class="stk-def">'+esc(def)+'</p>'+body+'</div></div>';}
+ var h=CHAINTIERS.map(function(t){
+   var list={sup:sups,hy:hys,cx:cxs,sab:sabs}[t.k];
+   var body=list.length?chkTier(t.k,list,t.seat)
+    :(lockSees(t.k)?'<p class="ad-p" style="margin:4px 0 0 2px">Nothing at this tier yet.</p>':lockPanelHtml(t.k));
+   return sec(t.k,t.nm,t.def,body);}).join('')
+  /* FETTER, ALL NINE, ALWAYS -- the identical block renderChainKey builds
+     for the left rail, chkTier's own icon-led crBadge row, one per CHILD,
+     the heaviest marked dominant. Never locked, matching the tab this
+     tier was before (TABS.forEach above skipped 'fet' for the same reason:
+     the nine child emotions are the floor, not a plan-gated rung). */
+  +sec('fet','Fetter','The nine child emotions. No reading of their own, only the addresses they classify.',
+   (function(){var hi=CHILD.reduce(function(a,c){return (S.charge[c.nm]||0)>(S.charge[a.nm]||0)?c:a;},CHILD[0]);
+    return CHILD.map(function(c,ci){var v=S.charge[c.nm]||0, f=fmtPct('charge',v), dom=live&&c===hi&&v>0;
+     return '<button type="button" class="stk-r" data-fet="'+ci+'">'
+      +crBadge(c.seat,pct('charge',v)||0,{size:'sm',raw:f,on:dom,
+        glyph:'<path d="'+c.ic+'"/>',title:c.nm+', '+f})
+      +'<span class="stk-nm">'+esc(c.nm)+(dom?'<em>heaviest</em>':'')+'</span></button>';}).join('');})())
+  /* NERVE, THE REAL FLOOR -- the same addresses-actually-carrying block
+     renderChainKey builds, reusing .ad-r/data-addr, the one handler every
+     address row on this product already answers through. Never locked. */
+  +sec('nerve','Nerve','The real addresses actually carrying charge right now.',
+   (function(){
+    var nerve=(live?W.filter(function(n){return n.sq>=4;}):[]).slice().sort(function(a,b){return b.sq-a.sq;});
+    if(!nerve.length)return '<p class="ad-p" style="margin:4px 0 0 2px">Nothing is carrying yet.</p>';
+    var cap=6;
+    return nerve.slice(0,cap).map(function(n,i){var dom=i===0, conf=nodeConfirmed(n.i);
+      return '<button type="button" class="ad-r" data-addr="'+n.i+'" title="Open '+esc(n.k)+'">'
+       +crbNode(n,'sm',{on:dom})+'<span>'+esc(n.k)+'</span>'
+       +'<em>'+(conf?'User confirmed':esc(n.b))+'</em></button>';}).join('')
+     +(nerve.length>cap?'<div class="pm-more">and '+(nerve.length-cap)+' more</div>':'');})());
  e.innerHTML=h;
- /* THE STACK'S TABS ARE THE RAIL'S ROW OF WHAT IS RUNNING, so a tab above the
-    plan is greyed and padlocked with its description, and its count is not
-    printed: a "3" on a locked tab says how many saboteurs somebody has. The tab
-    that was open when a plan lapsed is left open, on the lock's own panel, so
-    the list never reads "nothing at this layer" about a layer it cannot see. */
- TABS.forEach(function(t){if(t[0]==='fet')return;
-  lockApply(e.querySelector('.stk-t[data-st="'+t[0]+'"]'),t[0]);});}
+ /* A TIER ABOVE THE PLAN IS STILL GREYED AND PADLOCKED WITH ITS
+    DESCRIPTION, the same ruling the flat tabs carried forward (TABS.forEach
+    above, now CHAINTIERS): the header itself is the lock's control now,
+    since there is no separate tab strip left to carry the mark. */
+ CHAINTIERS.forEach(function(t){lockApply(e.querySelector('.stk-dh[data-tier="'+t.k+'"]'),t.k);});}
 /* THE BALANCE STRIP, AND WHICH END IS WHICH.
 
    The two poles are masculine and feminine. cards.js states the codex
@@ -85235,61 +85320,16 @@ function render(){
    writes, and drops the figure on an unread reading, where it would be a
    zero nobody entered. Their swatch is a ring, which is how every rendition
    draws them (ui/rings.js); their colour is CB10 and still open. */
-/* THE SELF-SELECTED MARK, NERVE TIER ONLY. Reads the real field trace.js's own
-   yesOf() reads (e.ob.yes, the mirror card's Yes written onto a story entry),
-   rather than rebuilding the whole trace graph for one boolean in a rail row:
-   yesOf promotes the SAME field into a user_confirmed edge, so this is the
-   field the graph's own answer is made from, not a second guess at it.
-   loopread.js's own two words for this, reused verbatim below: User confirmed. */
-function nodeConfirmed(i){
- try{
-  var p=(typeof CURP!=='undefined')?CURP:null;
-  var ents=(p&&p.story&&Array.isArray(p.story.entries))?p.story.entries:[];
-  return ents.some(function(e){return e&&e.ob&&Array.isArray(e.ob.yes)&&e.ob.yes.indexOf(i)>=0;});
- }catch(err){return false;}}
-/* ============================================================
-   THE CHAIN, LIVE. FIELD_REDESIGN_BRIEF_2026-11-01.md Part 1: this replaces
-   the static colour legend ("Saboteur. Colored by the seat it sits at...")
-   with the actual list of real nodes, top to bottom, Super-complex through
-   Nerve, each a tier of trace.js's own TRACE_CHAIN or the real floor beneath
-   it. The tier colour stays exactly what the wheel already paints each tier
-   (bc('Solar') for every complex, bc('Sacral') for every hyper-complex,
-   bc('Root') for every super-complex, bc(parts[0].b), the saboteur's own
-   seat, for every saboteur -- ui/wheel.js's own bead() calls, unchanged by
-   this rewrite), so the rail and the wheel never disagree about what a
-   colour here means. Dominant reuses the gold ring (cr's own on:true,
-   var(--gold) box-shadow; personas.js's mxKey, "a gold ring marks a pair
-   that weighs more together"), never a second colour or a second number.
-   Tapping a row opens the same drill a press on the wheel's own bead
-   already opens (hitPress, this file), through the SAME delegated handler
-   that already answers data-sk/data-si/data-fet for the stack rail
-   (railStack, above); nerve rows reuse data-addr and addrRow's own existing
-   handler, so the floor's own row needs no new dispatch at all. */
-/* ICON-LED, not a ring the size of a full stop beside the name carrying the
-   weight. The ring at 'xs' (18px box, an 8px glyph) was the stk-r rows'
-   whole mark, CHAINGLYPH's locked rings and lattice drawn too small to read
-   as anything but a coloured dot, so the row was the name, text first and
-   text led, exactly the complaint: "where are my icons... way too much
-   text." crBadge at 'sm' is the real fix already shipped for the identical
-   symptom (component.js's own words on crBadge: "the named things print as
-   a word and a bare figure... after twenty of them down a rail a person is
-   reading a spreadsheet of feelings"), already the nerve tier's own row
-   below (crbNode) and the Running-now list's (rows.slice(0,8) above): badge
-   leads, name follows and ellipses, one pattern for every row that is many
-   of a kind down this rail. Same CHAINGLYPH, same colour, same weight,
-   same dominant mark (crBadge's new on:dom, wired above) as the ring gave,
-   only big enough now to be seen as a shape before it is read as a name. */
-function chkTier(kind,list,seat){
- var idx=list.map(function(o,i){return {o:o,i:i};}).sort(function(a,b){return b.o.w-a.o.w;});
- var cap=kind==='sab'?6:4;
- if(!idx.length)return '<p class="ad-p" style="margin:4px 0 0 2px">Nothing at this tier yet.</p>';
- return idx.slice(0,cap).map(function(pair,rank){var o=pair.o, dom=rank===0, f=fmtPct('chain',o.w),
-   b=kind==='sab'?((o.parts&&o.parts[0]&&o.parts[0].b)||seat):seat;
-  return '<button type="button" class="stk-r" data-sk="'+kind+'" data-si="'+pair.i+'">'
-   +crBadge(b,pct('chain',o.w)||0,{size:'sm',raw:f,on:dom,
-     glyph:'<path d="'+CHAINGLYPH[kind]+'"/>',title:o.nm+', '+f+(o.over?', overshot':'')})
-   +'<span class="stk-nm">'+esc(o.nm)+(o.unnamed?'<em>inferred</em>':'')+(dom?'<em>heaviest</em>':'')+'</span></button>';}).join('')
-  +(idx.length>cap?'<div class="pm-more">and '+(idx.length-cap)+' more</div>':'');}
+/* nodeConfirmed moved to true top level too, same reason and same round as
+   chkTier above: railStack's own nerve tier needs it and a plain top-level
+   function cannot see a name nested inside render(). renderChainKey, which
+   also calls it, still can -- an outer-scope name is visible from a nested
+   one either way, so this move changes nothing it already did. */
+/* chkTier moved to true top level, above render(), 2 November: see the one
+   comment that now sits with it, just above railStack. It was nested inside
+   render() here, which is why only renderChainKey (render()'s own sibling
+   at this same nesting) could ever call it; railStack, a true top-level
+   function, could not see it at all, and did not until this moved. */
 function renderChainKey(r){
  var h=document.getElementById('chainkey'); if(!h)return;
  var row=function(x){
@@ -85306,14 +85346,12 @@ function renderChainKey(r){
     super-complex" + its own stk-def line) rather than nesting a sentence
     inside tier1 itself, which the capitalize transform would have carried
     word by word, the exact defect head.html's own hatch comment records. */
- var chain='<div class="tier1">Super-complex</div><p class="stk-def">The deepest join this instrument reads, built from hyper-complexes. The chain ends here.</p>'
-  +chkTier('sup',sups,'Root')
-  +'<div class="tier1">Hyper-complex</div><p class="stk-def">Complexes joined, one ring further out.</p>'
-  +chkTier('hy',hys,'Sacral')
-  +'<div class="tier1">Complex</div><p class="stk-def">Two saboteurs joined.</p>'
-  +chkTier('cx',cxs,'Solar')
-  +'<div class="tier1">Saboteur</div><p class="stk-def">The pattern closest to a single story, coloured by the seat it sits at.</p>'
-  +chkTier('sab',sabs,'Root')
+ /* CHAINTIERS, above railStack, is the one real array for this order now:
+    name, seat and sentence read off it here and again for the right rail's
+    own nested disclosure, so the two surfaces cannot drift apart. */
+ var chain=CHAINTIERS.map(function(t){
+   var list={sup:sups,hy:hys,cx:cxs,sab:sabs}[t.k];
+   return '<div class="tier1">'+t.nm+'</div><p class="stk-def">'+t.def+'</p>'+chkTier(t.k,list,t.seat);}).join('')
   /* FETTER, ALL NINE, ALWAYS. "No running or not": trace.js's own words, a
      fetter "carries no address-level content of its own", only the real
      addresses it classifies, so there is no active/inactive split to filter
@@ -85529,8 +85567,15 @@ bindSend(authFeedback);
 /* One delegated handler for every address row the drills render, so a row
    opens the address it names instead of being a dead end. */
 document.addEventListener('click',function(e){
- var st=e.target.closest?e.target.closest('.stk-t[data-st]'):null;
- if(st){STACK_TAB=st.getAttribute('data-st');railStack(computeSeen());return;}
+ /* A TIER'S OWN HEADER OPENS AND CLOSES IT. The one new click case this
+    round added, because the five flat tabs it replaces are gone (above);
+    everything a tier's body prints still answers one of the existing cases
+    below unchanged. Reads the DOM for whether the tier is open now rather
+    than recomputing stkDefTier()'s default, so a press always does what it
+    looks like it will do, whatever put it in that state. */
+ var dh=e.target.closest?e.target.closest('.stk-dh[data-tier]'):null;
+ if(dh){var tk=dh.getAttribute('data-tier'), sec=dh.closest('.stk-tier');
+  STK_OPEN[tk]=!(sec&&sec.classList.contains('open')); railStack(computeSeen()); return;}
  var fr=e.target.closest?e.target.closest('.stk-r[data-fet]'):null;
  if(fr){var fc=CHILD[+fr.getAttribute('data-fet')]; if(fc){S.pin=null; runFetterDrill(fc);} return;}
  var sr=e.target.closest?e.target.closest('.stk-r[data-sk]'):null;
@@ -85769,5 +85814,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005653916"></div>
+<div id="eof" hidden data-len="005656725"></div>
 </body></html>
