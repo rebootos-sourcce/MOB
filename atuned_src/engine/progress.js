@@ -157,7 +157,7 @@ function progressSettle(p,now){
 }
 function pgValidId(id){if(typeof id!=='string')return false;
  var m=/^(rd|sd):(-?\d+)$/.exec(id);
- if(m)return isFinite(+m[2])&&Math.floor(+m[2])===+m[2];
+ if(m)return /^(?:0|[1-9][0-9]*|-[1-9][0-9]*)$/.test(m[2]);
  m=/^ad:(\d+)$/.exec(id);return !!m&&(+m[1]>=0&&+m[1]<112&&String(+m[1])===m[1]);}
 function progressValidate(errs,o,path){
  path=path||'progress';
