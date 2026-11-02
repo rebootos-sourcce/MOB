@@ -52,3 +52,9 @@
 - Current source fix commit `f7c4ab99594046cd8e0d2005bf70e87808250272`; source blob `7c8485eb170eed4fa70a171dd46c8cc6588ff9b8`; tests blob `53189d1d22f4395b522e1200b4bf73336630a198`.
 - Latest test-fix GitHub Actions [41390488867](https://github.com/rebootos-sourcce/MOB/actions/runs/41390488867) **queued when checked**. Prior 29/30 CI and 11/11 real-engine tests are from an older commit; no exact-head green or production approval.
 - **Engineering remaining:** exact-head Node and compiled engine jobs, authentic full-checkout generated-product rebuild/freshness, entitlement/consent and four-branch composition, #149 and #163 explicit review. **Production HOLD; other Avatar/UI AI retains visual signoff.**
+
+## Owner stand-up directive — current policy
+- **Read [stand-up-first risk register](ATUNED_AVATAR_STANDUP_RISK_REGISTER_2026-11-01.md) before interpreting any earlier "HOLD" language.** Optional noncanonical data now produces `graph.flagged` and a partial/readable result, not an all-product stop. Only actual access/data/core-operation failures gate the affected unsafe path.
+- Branch `atuned_src/engine/avatargraph.js` + `tests/avatargraph.js` revised to this rule. **35/35 isolated tests passed** on fetched source under a V8 harness; updated exact-head GitHub CI remains unverified.
+- **Ship staged functionality:** core first, optional Source/Celestial/Graph features progressively enabled when verified. Generating executable derived bundles is still necessary before claiming new code runs in the product.
+- The other Avatar/UI AI retains visual design/approval; noncritical visual polish is not a systems-engineering blocker.
