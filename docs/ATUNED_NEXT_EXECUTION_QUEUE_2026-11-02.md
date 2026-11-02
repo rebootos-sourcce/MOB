@@ -1,6 +1,6 @@
 # ATÜNED — Next execution queue: smallest work, highest leverage
 
-**Created:** 2026-11-02 (UTC) · **Owner boundary:** MOB `main` publishes `atuned.world`; Reboot-OS owns supporting backend APIs. **Status: PLAN ONLY; zero merges/deployments authorized by this document.**
+**Created:** 2026-11-02 (UTC) · **Owner boundary:** MOB `main` publishes `atuned.world`; Reboot-OS owns supporting backend APIs. **Status: IMPLEMENTED IN ISOLATED DRAFT PRs (#166 and #167); no merges/deployments authorized by this document.**
 **Find this from:** [persistent cleanup log](./ATUNED_MAIN_ENGINE_CLEANUP_EXECUTION_LOG_2026-11-02.md) in [draft PR #165](https://github.com/rebootos-sourcce/MOB/pull/165).
 
 ## Verify before taking ownership
@@ -39,6 +39,13 @@ smallest remaining fix     isolated tooling branch
 | Q2 | **F09 / P2: Reproducible toolchain** | In a **new isolated branch**, inspect existing package/lock strategy and green runtime versions. Pin currently floating `typescript` installs (several jobs) and `wrangler@4` to exact proven versions. Preserve build order, rollback, generated file checks and deploy behavior. | Fresh environment builds match tracked artifacts; all required gates green; tool versions and rollback guard checked; separate review PR. | `.github/workflows/deploy.yml`, appropriate package/lock metadata | Impact 5/5 · effort 2/5 · conf 0.92 |
 | Q3 | **F14 / P2: Independent public-site verification** | Preserve **existing Cloudflare SHA readback**. Add a small **read-only** external smoke probe on public site and documented critical routes; classify `PASS`/`FAIL`/`UNKNOWN`. When commit readback is unavailable outside privileged deploy, report `UNKNOWN`, not invented proof. | Networked job reports endpoint/HTTP availability without customer data; deploy readback remains untouched; fixture/offline probe and one real external run linked; separate review PR. | Probe + reporting CI, not deployment secrets logic | Impact 4/5 incremental · effort 2/5 · conf 0.88 |
 
+## Work executed in the current round (2026-11-02)
+- **Q0:** MOB main `b6f4c161` and open PR heads refreshed.
+- **Q1:** Source #163 exact-head fast gate PASS, full gate still unverified; no edits to owner branch.
+- **Q2:** [Draft #166](https://github.com/rebootos-sourcce/MOB/pull/166) head `a282b66`: 4 TypeScript direct-version pins and 1 Wrangler direct-version pin. CI pending. **Transitive resolution not locked.**
+- **Q3:** [Draft #167](https://github.com/rebootos-sourcce/MOB/pull/167) head `4fb9aa1`: public health probe + isolated workflow. PR self-tests and live network validation pending. This is not a Cloudflare deployment SHA proof.
+- **Two-way communication:** [PR #165 conversation](https://github.com/rebootos-sourcce/MOB/pull/165#issuecomment-6584943115) and [living log](./ATUNED_MAIN_ENGINE_CLEANUP_EXECUTION_LOG_2026-11-02.md), append new numbered entries and reply with exact references.
+
 ## Safe sequencing and concurrency
 1. **Q0 first.** Cancel duplicate work when the code or review state has superseded the plan.
 2. **Q1 fastest win:** close with evidence if CI is already green. Reopen only for actual remaining failure. Do not write to the branch while its owner is changing it.
@@ -60,4 +67,4 @@ Use `L012+` IDs; include UTC date, repo + branch + SHA, file(s), GitHub PR/workf
 If an implementation succeeds, update the log and this queue file in PR #165 (or superseding handoff) without claiming the docs branch itself is merged.
 
 ## Measurements / ratings
-**Queue:** 3 projects + 1 evidence gate · **Current implementation this queue:** 0 · **Required tests to retain:** 5/5 · **Actual #163 gates-fast observed:** PASS · **Actual #163 full gate observed:** IN PROGRESS · **Existing deploy SHA readback:** PRESENT · **Production claims:** not independently reverified · **Overall plan confidence:** 0.92 (subjective, updated from prior 0.93).
+**Queue:** 3 projects + 1 evidence gate · **Current implementation this queue:** 2 draft PRs (Q2+Q3), no merges · **Required tests to retain:** 5/5 · **Actual #163 gates-fast observed:** PASS · **Actual #163 full gate observed:** IN PROGRESS · **Existing deploy SHA readback:** PRESENT · **Production claims:** not independently reverified · **Overall plan confidence:** 0.92 (subjective, updated from prior 0.93).
