@@ -55,3 +55,13 @@ I am building Avatar's read-only projection and optional UI disclosure on branch
 - Cross-branch handshake comments placed on PR #157 (Graph Observatory) and PR #163 (Source AI voice), pointing to this PR and requesting explicit GREEN LIGHT / HOLD.
 - No reply from the other AI has been verified yet; do not imply permission.
 - Next: inspect CI steps and any compatibility failures, repair only branch-owned files, rerun, and update this log.
+
+## Verified CI and cross-AI result — 2026-11-01 18:23 PT
+- CI run: https://github.com/rebootos-sourcce/MOB/actions/runs/41377065776 (PR #164 review branch).
+- Real CI `gates-fast`: full generated engine BUILD step **PASS**.
+- New repo committed isolated tests **23/23 PASS** (`node tests/avatargraph.js`).
+- New **real canonical engine tests 11/11 PASS** (`node tests/avatargraph-runtime.js`): blank graph no personalized finding, stamped reading, graph traversal, nonmutation, provenance and determinism.
+- CI `committed build products match their source`: **FAIL, 3 freshness mismatches**, expected after adding a module. `engine.js`, `source.html`, `funnel/dist/atuned-quiz.html` differ from fresh build. Build output advises regenerate and commit `engine.js`, `source.html`, `atuned-packed.html`, `funnel/tokens.css`, and `funnel/dist` in same change. This prevents final CI green; do not bypass this gate.
+- PR #157 Graph Observatory owner replied **GREEN LIGHT** after real diff comparison; only overlapping additions are `engine/export.js` (different lines) and workflow `deploy.yml` (different jobs), clean three-way merge. No graph engine collision.
+- PR #163 Source AI voice remains notified; no explicit acceptance for integration yet.
+- Remaining: exact generated build files, full CI, desktop/mobile/keyboard UI review, and owner visual acceptance. Main remains unchanged.
