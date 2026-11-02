@@ -41,6 +41,7 @@ jobs:
         run: |
           node tests/avatargraph.js
           node tests/avatargraph-runtime.js
+          node tests/avatargraph-ui-contract.js
           node tests/engine.js
       - name: Assemble shareable local candidate without publishing
         run: |
