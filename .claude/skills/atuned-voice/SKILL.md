@@ -1345,11 +1345,18 @@ unmeasurable part left out is a lie about how much has been checked.
 A record about the copy is not copy. `NOT_COPY` in `check.py` names each path
 that holds one, with the reason, and every mode reads through the one function
 that applies it, the brief included, so no two probes disagree about which
-strings are a record. Two paths are on it, both on the descent records in
-`engine/data/compass.js`: `content.researchPasses`, the research passes behind
-each record, and `content.inferenceBasis`, why the record is called source
-defined or inferred. Added 23 October, when those two fields were most of the
-abstract-word stops on the build and nothing that ships read either one.
+strings are a record. The paths are read off `NOT_COPY` and printed by the
+run, not counted here. The first two went on 23 October, on the descent
+records in `engine/data/compass.js`: `content.researchPasses`, the research
+passes behind each record, and `content.inferenceBasis`, why the record is
+called source defined or inferred. They were most of the abstract-word stops on
+the build that day and nothing that ships read either one. On 2 November the
+evidence fields of the pattern library joined them, by the owner's ruling: the
+citation and the stated limit of each `RESEARCHANCHOR` row, and the
+`evidenceFitNote` of each `PATTERN96` row. The stops left on the build that day
+were four published paper titles, and a paper title rewritten to pass a plain
+words gate is a false citation. The pattern content in the same rows,
+`generationalTransformation` among it, stays copy.
 
 **Two keys, and a path needs both.** It is named as a record, with the reason,
 and nothing that ships reads it. The second key is measured on every run, never
@@ -1360,6 +1367,23 @@ copy again and the run names the line that reads them. The paint is held in
 dark read draws. Unread alone is never enough. `behavior`, `practice` and the
 rest of each descent template stay under every gate though nothing renders them
 yet, because copy is checked where it is kept, before a surface shows it.
+
+**A table can name its routes out, and then the second key is a closure.**
+Searching for a key's name cannot hold for a key like `label` or `note`, which
+`ui/` reads off objects that have nothing to do with the table. So `NOT_COPY_ROUTES` names every
+way a table's rows leave its data file: a function that hands them on, or a
+second declaration built from them, each with what it carries. For such a
+table the rule holds only while nothing that ships names the table or a route
+outside their own declarations and `module.exports`, with comments stripped,
+since a comment is not a route. A new reader of the table lapses it even if it
+takes only a name off a row, and so does any caller of a route, until somebody
+adds that reader to the routes and says why. A route declared and found
+nowhere lapses it too, because a renamed route is an unnamed reader. This is
+stricter than the name search: it also catches the whole entry walk, because
+`srcVoicePattern` hands on whole rows and is held as a route.
+`test_not_copy.py` holds it against the real tree and against a small built
+tree for each way it must lapse. It was checked by breaking the mechanism
+first, and every break failed it.
 
 Every mode of `check.py` that reads the file prints what it set aside, how many
 strings, and what they would carry as copy under each family of gates, so a set
@@ -1384,6 +1408,8 @@ than no tool. If you extend the gate, break a known good line with it first.
                                           the brief, by layer, new findings only
     python3 .claude/skills/atuned-voice/test_brief.py
                                           the brief engine's own gate
+    python3 .claude/skills/atuned-voice/test_not_copy.py
+                                          what the gates set aside, and why
     python3 tools/objections.py           renders COPY-OBJECTIONS.md and .html
     python3 tools/terms.py                terminology drift, V14
     node tests/design.js                  all caps, type floor
