@@ -4,7 +4,7 @@
    gather as they are found and nothing touches the field until you
    commit.
    ============================================================ */
-var ST_TEXT='', ST_PARSED=null, ST_REC=null, ST_LISTEN=false, ST_LIVE='';
+var ST_TEXT='', ST_PARSED=null, ST_REC=null, ST_LISTEN=false, ST_LIVE='', ST_WANT_LISTEN=false;
 var IMP_GROUP='band', IMP_PICK={};
 var IMP_GROUPS=[['band','Seat'],['charge','Charge'],['sab','Saboteur'],
                 ['story','Story'],['expr','Expression']];
@@ -71,15 +71,15 @@ function impPill(n,maxW,IX,ghost,inferred){
  var fs=(13+rel*4).toFixed(1), pad=(6+rel*5).toFixed(0);
  var opp=(CHILD.filter(function(x){return x.nm===n.cf;})[0]||{}).opp||'';
  var on=!!IMP_PICK[n.i], hot=n.sq>=9;
- var val=ghost?('+'+ghost.toFixed(1)):(installed?('\u2713 '+n.pole.toFixed(1)):n.sq.toFixed(1));
+ var val=ghost?('+'+fmtPct('atom',ghost)):(installed?('\u2713 '+fmtPct('pole',n.pole)):fmtPct('weight',n.sq));
  /* V21. This read "Shame, toward Worth · Root · SQ 5.4 · pain 3 · feeds 2":
     a variable name and two bare counts. Each figure now says what it counts.
     feeds is the saboteurs the address is part of, from impIndex. */
  var fed=IX.feeds[n.i]||0;
  var title=n.k+(opp?', toward '+opp:'')+', '+n.b.toLowerCase()+' seat. '
-  +(ghost?'Waiting to land: '+ghost.toFixed(1)+'.'
-    :(installed?opp+' installed at '+n.pole.toFixed(1)+'.'
-      :'Charge left '+n.sq.toFixed(1)+', pain '+painOf(n,IX.bandLoad)
+  +(ghost?'Waiting to land: '+fmtPct('atom',ghost)+'.'
+    :(installed?opp+' installed at '+fmtPct('pole',n.pole)+'.'
+      :'Charge left '+fmtPct('weight',n.sq)+', pain '+painOf(n,IX.bandLoad)
        /* the saboteur count is a reading of saboteurs, which a plan below
           tier one cannot see: "part of 0 saboteurs" would be a false statement
           about somebody who is part of several */
@@ -217,7 +217,7 @@ function impRender(){
    h+='<div class="ip-kr" style="--c:'+seatCol(k.seat)+'">'
     +'<span class="ip-kn">'+esc(k.ax)+'</span>'
     +'<span class="ip-ka">at the '+esc(String(k.seat).toLowerCase())+', '
-    +esc(k.at.k)+'</span><b>'+k.at.sq.toFixed(1)+'</b></div>';});}
+    +esc(k.at.k)+'</span><b>'+fmtPct('weight',k.at.sq)+'</b></div>';});}
  function cloud(list,gl,gi){var s='<div class="ip-cloud">';
   list.forEach(function(n){s+=impPill(n,maxW,IX,gl?gl[n.i]:0,gi&&gi[n.i]);});return s+'</div>';}
  if(IMP_GROUP==='band'){
@@ -255,7 +255,7 @@ function impRender(){
    var seg=live.filter(function(n){return n.cf===c.nm;});
    if(!seg.length)return;
    h+='<div class="ip-bh" style="--c:'+seatCol(c.seat)+'">'+c.nm+' toward '+c.opp
-    +'<em class="plain">held '+(S.charge[c.nm]||0).toFixed(1)+', opposite '+(S.replace[c.nm]||0).toFixed(1)
+    +'<em class="plain">held '+fmtPct('charge',S.charge[c.nm]||0)+', opposite '+fmtPct('installed',S.replace[c.nm]||0)
     +'</em></div>'+cloud(seg);});
  } else if(IMP_GROUP==='sab'){
   if(!lockSees('sab')) h+=lockPanelHtml('sab');
@@ -264,7 +264,7 @@ function impRender(){
    var lv=leaves(s).filter(function(n){return n.sq>=4;});
    if(!lv.length)return;
    h+='<div class="ip-bh" style="--c:'+(s.over?'var(--alarm)':seatCol(lv[0].b))+'">'+esc(s.nm)
-    +'<em class="plain">'+(s.score?s.score+'% match, ':'')+'weight '+s.w.toFixed(1)+'</em></div>'+cloud(lv);});
+    +'<em class="plain">'+(s.score?fmtPct('match',s.score)+' match, ':'')+'weight '+fmtPct('chain',s.w)+'</em></div>'+cloud(lv);});
  } else if(IMP_GROUP==='story'){
   /* grouped by the entry that put the weight there */
   var ents=((CURP&&CURP.story&&CURP.story.entries)||[]);
@@ -281,7 +281,7 @@ function impRender(){
   exprRead().sort(function(a,b){return a.fill-b.fill;}).forEach(function(e){
    var seg=live.filter(function(n){return n.b===e.b;});
    h+='<div class="ip-bh" style="--c:'+seatCol(e.b)+'">'+e.nm
-    +'<em class="plain">fill '+e.fill.toFixed(1)+', leaks '+e.sh+'</em></div>'
+    +'<em class="plain">fill '+fmtPct('exprfill',e.fill)+', leaks '+e.sh+'</em></div>'
     +(seg.length?cloud(seg):'<div class="ip-none" style="padding:6px 0">nothing held at the '
       +e.b.toLowerCase()+'</div>');});}
  var picked=Object.keys(IMP_PICK).filter(function(k){return IMP_PICK[k];});

@@ -3770,7 +3770,7 @@ var KB_RENAME={"descent":"Sacrifice","connection":"Love","exchange":"Communicati
    the hull, and CQ is its number. CQ read "your coherence number", the same
    collapse from the other side. Intention opens on what you meant against
    what you still do, which is the reading intentionRead makes. */
-var GLOSS=[{"t":"Address","d":"One exact place in your body where a pattern sits. Every pattern has one. Release works at that place in the body, not on your thoughts."},{"t":"Allostatic load","d":"The wear on your body from stress that keeps switching on and never fully switches off. It builds up like interest on a debt nobody paid. In this model, release brings it down by working on the addresses where that stress is held. This instrument does not measure it."},{"t":"Archetype","d":"One of 12 kinds of character you are born with. Domains feed your blueprint, and your blueprint splits into the twelve archetypes, each its own step. An archetype has no address of its own, so there is nothing at one place to release. Release work changes where a pattern points, not what the archetype is."},{"t":"Ascension","d":"When the world around you, and your own feelings, stop steering you. Things lose their grip because your survival patterns have stopped giving the orders. It is a way of running, not a finish line, so no number of releases counts you in."},{"t":"Attention","d":"Where you point your mind. It comes two ways: wide, taking everything in, or narrow, fixed on one thing. Attention steers. Will pushes."},{"t":"Aura","d":"A field around the body, said to come from the state of your nerves. This instrument does not measure it, and neither does any other. Living tissue does give off a very faint light, from ordinary cell chemistry, but nobody has shown that light carries the state of your nerves. The word stays as a way to talk about how other people feel you, not as a reading."},{"t":"Awareness","d":"How far open the soul's window is. The wider it opens, the more of what is really there you take in."},{"t":"Biophoton field","d":"Very faint light given off by living tissue, too faint for your eyes to see. It is real, and labs have measured it since the 1950s. It comes from the cells' normal chemistry, not from the state of your nerves. This product does not claim it carries the aura, and nothing in the instrument reads it."},{"t":"Chakra","d":"A seat. In this model, a field you cannot touch, made by a bundle of nerves. There are seven, from the base of the spine to the top of the head, though that exact count is a modern Western idea from 1927; older traditions count five, six, eight or more. The word is kept because the work is done in it, not because anyone has measured one."},{"t":"Charge","d":"Survival energy stuck at one place in the body. It gets stuck when a stress reaction starts and never gets to finish. When your attention reaches it, it feels like heat, pressure, tingling or weight."},{"t":"Clair","d":"A sense beyond the five: seeing, hearing, feeling or knowing something without eyes, ears, skin or working it out. The names are clairvoyance, clairaudience, clairsentience and claircognizance, and there are others. Soma breaks them apart. Clear the soma and they work together."},{"t":"Coherence","d":"When what you mean, what you do and what your body does all point the same way, with fewer parts of you pulling against each other. The instrument works it out from your answers. It does not measure your body. CQ is its number."},{"t":"Replacement state","d":"The quality a pattern was blocking, installed at the same address once the charge there is released. Where fear was held, trust. It shows up in what you do, what you feel and what your body does. It is not a general good feeling. It is the one quality this pattern kept out."},{"t":"Consciousness","d":"Energy that carries information, and you meet it two ways. At its widest it has no edges and no focus: infinite consciousness. At its narrowest it is you, aware, in one place. The same thing, seen through a wide opening or a small one."},{"t":"CQ","d":"Coherence Quotient. It reads your integrity and nothing else. You answer questions on the 21 Laws of Moral Integrity, each scored 0 to 10, and CQ adds them up, out of 210. Nothing else goes into it. It starts at 0 and fills as you answer. The shadow never pulls it down. The shadow pulls on how you come across instead."},{"t":"Distortion","d":"What happens to what you mean when it passes through places in the body that carry charge. The message leaves whole and comes out bent, like a straight stick that looks bent in water. It is a word for that bending and not a separate number: it used to be the same reading as SQ under a second name."},{"t":"DQ","d":"Decoherence, the shadow number. All the weight held at all 112 addresses, added up, against the most they could hold. A high DQ reads as energy spent holding up parts of you that pull against each other."},{"t":"Drag","d":"Everything slowing your willpower down, added together. Charge at your addresses and the saboteurs running on it pull on the link between mind, body and spirit, like a heavy bag. The instrument works it out from what you enter. It does not measure your muscles or any inflammation. In this model, drag is why willpower runs out."},{"t":"Earth Star","d":"A point just outside the body, at the centre between your feet. It holds you to the ground the way an anchor holds a boat."},{"t":"Ego","d":"The mind stuck to the body. It is never quite here: it flips between thinking and feeling to get through the day, and fear does the steering. The ego is the mask your character wears. It is your DQ, every SQ that is running, and every pattern and every kind of awareness that comes with living as a body, all added up."},{"t":"Fetter","d":"A named pattern that sits at one address and fires when something matches it. There is one at every address, 112 in all: the ones in the body, plus four just outside it, two above the head and two below the feet. It fires when the match arrives, however long ago it was put there."},{"t":"Five paths","d":"Five ways into the work, each named for a teacher. Krishna, flow. Buddha, awareness. Christ, the body. Rama, alignment. Lao Tzu, the horizontal. All five end at the same Source, and the Anchor Principle runs under all of them."},{"t":"Hardened mask","d":"The part of what life taught you that does not wear off with time or with a big change in your life. In this model, release at the address is what clears it. That is the model's claim. Nothing here has measured it. Habits you keep going by repeating them are different: a change in your life can clear those on its own."},{"t":"Hyper-complex","d":"A named group of saboteurs that run together as one. Heavier than a single saboteur, because each pattern in the group keeps the others going."},{"t":"Integrity","d":"How closely you keep the 21 Laws of Moral Integrity, and the first part of your coherence. It lifts your nervous system by keeping you inside your own moral lines, the way a ship's hull has to be whole, a hundred percent, or the water gets in. CQ is its number."},{"t":"Intention","d":"What you meant to do, and how much of it you still do when a strong feeling rises. It is part willpower, part wanting, part drive. Moving toward something feels good. If you have not picked what you want, avoiding things takes its place."},{"t":"Justification mechanic","d":"The way the body protects its own patterns. Blaming, changing the subject and making excuses are a tag fighting back, the way your body fights a germ. The body guards the pattern because the truth feels too hard to face. Narcissism is this, turned all the way up."},{"t":"Karma","d":"What your thoughts and actions send out into the world, and what comes back to you because of them. It goes round, like an echo. It comes back so you can learn the lesson, get past it, and send it on so it never comes back again. Karma is cause and effect, bouncing between you and the world."},{"t":"Kosha","d":"One of six layers that everything you live through passes through, like light through six panes of coloured glass. The six are the body, energy, the mind, wisdom, bliss and language. Each one changes what passes through it."},{"t":"Kundalini","d":"Life energy stored at the base of the spine. It rises from there to the top of the head once enough addresses along the way are cleared, the way water runs once a pipe is unblocked."},{"t":"Letting go","d":"The release protocol. It does two things, in order. First it lowers the charge at an address. Then, while that place is still open, it installs the quality the pattern was blocking. An affirmation does only the second and skips the first."},{"t":"Limiting belief","d":"A tag that squeezes something big you lived through into a small label. Every time you say I am this, you make one. That is how labels work, not a judgment on you. The label is always smaller than what happened."},{"t":"Mask","d":"Built up distortion that has started to pass for who you are. It is what most people call their personality: patterns stored at addresses in the body, firing the way life trained them to. The mask is not who you are."},{"t":"Memory","d":"What is left when a vritti is taken as yours: what came in through your senses and your feelings, named as yours and stored in the body."},{"t":"Merkaba","d":"A spinning shape made of energy, used in the release protocol. Its top half spins left and its bottom half spins right. Spinning against each other, they shake up the flow at an address, and that opens it for release."},{"t":"Node","d":"Another word for an address: one exact place on the body's energy map. There are 112. Most are in the body. Four sit just outside it: the Earth Star, centred between your feet, the Gaia Gateway below it, the Sol Star just above your head, and the Stellar Gateway above that."},{"t":"Ojas","d":"A Sanskrit word meaning vigour: life energy that builds up in meditation and wraps around you like a cocoon, spinning on its own to wake the nervous system and let stress out. It is also the protocol for an address too dense or too numb to feel, stage 4 or stage 5, bringing back enough feeling there for release to start."},{"t":"Perception","d":"How you take in what is around you and make sense of it. It turns raw energy into pictures, words and feelings you can understand."},{"t":"Plexus","d":"A bundle of nerves you could find in the body, like the solar plexus behind your stomach. The plexus is the wiring. The chakra is the field the wiring gives off. Trouble in the nerves shows up as trouble in the chakra."},{"t":"Presence","d":"How much of you other people can feel when you walk into a room."},{"t":"Primary node","d":"The main address carrying charge in a group of addresses around it. Clear it and the ones around it let go on their own. Work on the others without finding it, and only part of the charge comes out."},{"t":"Pure perception","d":"All the clairs working together, with nothing bending them. Thoughts still come. What changes is that every sense is open at once and they agree. It opens up as the soma gets lighter and the walls between the clairs come down."},{"t":"Reading-as-release","d":"Release that happens by reading. You read a Letting Go sequence, written the right way, and the body releases at the place the sequence names. Nothing to picture in your head. Reading the lines does both steps."},{"t":"Release","d":"Stored charge leaving the body through the nerves. You can feel it and see it: heat, shaking, tears, a change in your breathing. The pattern loses what was powering it."},{"t":"Resistance","d":"All the drag added together: the charge held at every address, made heavier or lighter by what your stories show, pushing back against the signal moving through you. The instrument works it out from what you enter. It does not measure inflammation or anything else in your body. Release brings it down by lowering the charge it is made of. It does not change your CQ, which is the laws alone."},{"t":"Saboteur","d":"One of 33 named patterns of behavior, each one a fetter squeezed into a habit you keep repeating. Each has its own belief, its own place in the body and its own feeling."},{"t":"Self-unraveling state","d":"When enough gates have cleared, the body starts releasing by itself. The soma lets go without you running the protocol. This is how you know a release session worked: the body keeps releasing on its own, and not only the one address you worked on."},{"t":"Signal chain","d":"The loop everything runs through, every moment. It starts in the field of awareness around you and goes through your senses, your nerves, your brain, your thinking, how it relates to you, the three axes, your feelings, the rules you were raised with, the koshas and your archetypes, then back out to the field."},{"t":"Soma","d":"The field of energy your nervous system gives off, set by the state it is in. As soma builds up it becomes load, like weight in a backpack. Where soma fields overlap they break up what you can perceive and make walls your awareness cannot see through."},{"t":"Sol Star","d":"A point just above the top of your head. It is where you reach past your body and open out to the field around you."},{"t":"Source","d":"The field as it is before any pattern is put in. The bedrock under everything else. What is left when every pattern is cleared."},{"t":"Superego","d":"The part of the mind that guards what you were told. It is made of the stories and rules an adult handed down to you. It sits on the surface and protects those beliefs. The ego goes deeper, because the ego lives in the body."},{"t":"Tag","d":"The moment something that hit you hard gets a name and gets stored at an address. The name locks it in. From then on the body watches for anything that matches, and when it finds one, the pattern stored there fires."},{"t":"Two mechanics","d":"The two steps a full release needs, in this order. First, Release: the charge at the address goes down. Second, Embodied Truth: while the address is open, the quality the pattern was blocking is installed. Do the first without the second and the address is left with nothing to run instead."},{"t":"Vritti","d":"A ripple of what you sense and what you feel, coming in from outside. It travels along your nerves to your brain, where it is put together and noticed. Once you take it as yours, the vritti is what caves in the nerve, the chakra and your field of awareness."},{"t":"Willpower","d":"How much push you have to spend, not a kind of person. It works like a battery: sleep charges it, and pushing through resistance drains it. Release the charge stuck in your body and the drag drops, so willpower goes up. It has no reading of its own; what drags on it shows up as Resistance, which is already read."}];
+var GLOSS=[{"t":"Address","d":"One exact place in your body where a pattern sits. Every pattern has one. Release works at that place in the body, not on your thoughts."},{"t":"Allostatic load","d":"The wear on your body from stress that keeps switching on and never fully switches off. It builds up like interest on a debt nobody paid. In this model, release brings it down by working on the addresses where that stress is held. This instrument does not measure it."},{"t":"Archetype","d":"One of 12 kinds of character you are born with. Domains feed your blueprint, and your blueprint splits into the twelve archetypes, each its own step. An archetype has no address of its own, so there is nothing at one place to release. Release work changes where a pattern points, not what the archetype is."},{"t":"Ascension","d":"When the world around you, and your own feelings, stop steering you. Things lose their grip because your survival patterns have stopped giving the orders. It is a way of running, not a finish line, so no number of releases counts you in."},{"t":"Attention","d":"Where you point your mind. It comes two ways: wide, taking everything in, or narrow, fixed on one thing. Attention steers. Will pushes."},{"t":"Aura","d":"A field around the body, said to come from the state of your nerves. This instrument does not measure it, and neither does any other. Living tissue does give off a very faint light, from ordinary cell chemistry, but nobody has shown that light carries the state of your nerves. The word stays as a way to talk about how other people feel you, not as a reading."},{"t":"Awareness","d":"How far open the soul's window is. The wider it opens, the more of what is really there you take in."},{"t":"Biophoton field","d":"Very faint light given off by living tissue, too faint for your eyes to see. It is real, and labs have measured it since the 1950s. It comes from the cells' normal chemistry, not from the state of your nerves. This product does not claim it carries the aura, and nothing in the instrument reads it."},{"t":"Chakra","d":"A seat. In this model, a field you cannot touch, made by a bundle of nerves. There are seven, from the base of the spine to the top of the head, though that exact count is a modern Western idea from 1927; older traditions count five, six, eight or more. The word is kept because the work is done in it, not because anyone has measured one."},{"t":"Charge","d":"Survival energy stuck at one place in the body. It gets stuck when a stress reaction starts and never gets to finish. When your attention reaches it, it feels like heat, pressure, tingling or weight."},{"t":"Clair","d":"A sense beyond the five: seeing, hearing, feeling or knowing something without eyes, ears, skin or working it out. The names are clairvoyance, clairaudience, clairsentience and claircognizance, and there are others. Soma breaks them apart. Clear the soma and they work together."},{"t":"Coherence","d":"When what you mean, what you do and what your body does all point the same way, with fewer parts of you pulling against each other. The instrument works it out from your answers. It does not measure your body. CQ is its number."},{"t":"Replacement state","d":"The quality a pattern was blocking, installed at the same address once the charge there is released. Where fear was held, trust. It shows up in what you do, what you feel and what your body does. It is not a general good feeling. It is the one quality this pattern kept out."},{"t":"Consciousness","d":"Energy that carries information, and you meet it two ways. At its widest it has no edges and no focus: infinite consciousness. At its narrowest it is you, aware, in one place. The same thing, seen through a wide opening or a small one."},{"t":"CQ","d":"Coherence Quotient. It reads your integrity and nothing else. You answer questions on the 21 Laws of Moral Integrity, each scored 0 to 10, and CQ adds them up, out of 210. Nothing else goes into it. It starts at 0 and fills as you answer. The shadow never pulls it down. The shadow pulls on how you come across instead."},{"t":"Distortion","d":"What happens to what you mean when it passes through places in the body that carry charge. The message leaves whole and comes out bent, like a straight stick that looks bent in water. It is a word for that bending and not a separate number: it used to be the same reading as SQ under a second name."},{"t":"DQ","d":"Decoherence, the shadow number. All the weight held at the 108 addresses in the body plus the 4 field anchors just outside it, added up, against the most they could hold. A high DQ reads as energy spent holding up parts of you that pull against each other."},{"t":"Drag","d":"Everything slowing your willpower down, added together. Charge at your addresses and the saboteurs running on it pull on the link between mind, body and spirit, like a heavy bag. The instrument works it out from what you enter. It does not measure your muscles or any inflammation. In this model, drag is why willpower runs out."},{"t":"Earth Star","d":"A point just outside the body, at the centre between your feet. It holds you to the ground the way an anchor holds a boat."},{"t":"Ego","d":"The mind stuck to the body. It is never quite here: it flips between thinking and feeling to get through the day, and fear does the steering. The ego is the mask your character wears. It is your DQ, every SQ that is running, and every pattern and every kind of awareness that comes with living as a body, all added up."},{"t":"Fetter","d":"A named pattern that sits at one address and fires when something matches it. There is one at every address, 112 in all: the ones in the body, plus four just outside it, two above the head and two below the feet. It fires when the match arrives, however long ago it was put there."},{"t":"Five paths","d":"Five ways into the work, each named for a teacher. Krishna, flow. Buddha, awareness. Christ, the body. Rama, alignment. Lao Tzu, the horizontal. All five end at the same Source, and the Anchor Principle runs under all of them."},{"t":"Hardened mask","d":"The part of what life taught you that does not wear off with time or with a big change in your life. In this model, release at the address is what clears it. That is the model's claim. Nothing here has measured it. Habits you keep going by repeating them are different: a change in your life can clear those on its own."},{"t":"Hyper-complex","d":"A named group of saboteurs that run together as one. Heavier than a single saboteur, because each pattern in the group keeps the others going."},{"t":"Integrity","d":"How closely you keep the 21 Laws of Moral Integrity, and the first part of your coherence. It lifts your nervous system by keeping you inside your own moral lines, the way a ship's hull has to be whole, a hundred percent, or the water gets in. CQ is its number."},{"t":"Intention","d":"What you meant to do, and how much of it you still do when a strong feeling rises. It is part willpower, part wanting, part drive. Moving toward something feels good. If you have not picked what you want, avoiding things takes its place."},{"t":"Justification mechanic","d":"The way the body protects its own patterns. Blaming, changing the subject and making excuses are a tag fighting back, the way your body fights a germ. The body guards the pattern because the truth feels too hard to face. Narcissism is this, turned all the way up."},{"t":"Karma","d":"What your thoughts and actions send out into the world, and what comes back to you because of them. It goes round, like an echo. It comes back so you can learn the lesson, get past it, and send it on so it never comes back again. Karma is cause and effect, bouncing between you and the world."},{"t":"Kosha","d":"One of six layers that everything you live through passes through, like light through six panes of coloured glass. The six are the body, energy, the mind, wisdom, bliss and language. Each one changes what passes through it."},{"t":"Kundalini","d":"Life energy stored at the base of the spine. It rises from there to the top of the head once enough addresses along the way are cleared, the way water runs once a pipe is unblocked."},{"t":"Letting go","d":"The release protocol. It does two things, in order. First it lowers the charge at an address. Then, while that place is still open, it installs the quality the pattern was blocking. An affirmation does only the second and skips the first."},{"t":"Limiting belief","d":"A tag that squeezes something big you lived through into a small label. Every time you say I am this, you make one. That is how labels work, not a judgment on you. The label is always smaller than what happened."},{"t":"Mask","d":"Built up distortion that has started to pass for who you are. It is what most people call their personality: patterns stored at addresses in the body, firing the way life trained them to. The mask is not who you are."},{"t":"Memory","d":"What is left when a vritti is taken as yours: what came in through your senses and your feelings, named as yours and stored in the body."},{"t":"Merkaba","d":"A spinning shape made of energy, used in the release protocol. Its top half spins left and its bottom half spins right. Spinning against each other, they shake up the flow at an address, and that opens it for release."},{"t":"Node","d":"Another word for an address: one exact place on the body's energy map. There are 112. Most are in the body. Four sit just outside it: the Earth Star, centred between your feet, the Gaia Gateway below it, the Sol Star just above your head, and the Stellar Gateway above that."},{"t":"Ojas","d":"A Sanskrit word meaning vigour: life energy that builds up in meditation and wraps around you like a cocoon, spinning on its own to wake the nervous system and let stress out. It is also the protocol for an address too dense or too numb to feel, stage 4 or stage 5, bringing back enough feeling there for release to start."},{"t":"Perception","d":"How you take in what is around you and make sense of it. It turns raw energy into pictures, words and feelings you can understand."},{"t":"Plexus","d":"A bundle of nerves you could find in the body, like the solar plexus behind your stomach. The plexus is the wiring. The chakra is the field the wiring gives off. Trouble in the nerves shows up as trouble in the chakra."},{"t":"Presence","d":"How much of you other people can feel when you walk into a room."},{"t":"Primary node","d":"The main address carrying charge in a group of addresses around it. Clear it and the ones around it let go on their own. Work on the others without finding it, and only part of the charge comes out."},{"t":"Pure perception","d":"All the clairs working together, with nothing bending them. Thoughts still come. What changes is that every sense is open at once and they agree. It opens up as the soma gets lighter and the walls between the clairs come down."},{"t":"Reading-as-release","d":"Release that happens by reading. You read a Letting Go sequence, written the right way, and the body releases at the place the sequence names. Nothing to picture in your head. Reading the lines does both steps."},{"t":"Release","d":"Stored charge leaving the body through the nerves. You can feel it and see it: heat, shaking, tears, a change in your breathing. The pattern loses what was powering it."},{"t":"Resistance","d":"All the drag added together: the charge held at every address, made heavier or lighter by what your stories show, pushing back against the signal moving through you. The instrument works it out from what you enter. It does not measure inflammation or anything else in your body. Release brings it down by lowering the charge it is made of. It does not change your CQ, which is the laws alone."},{"t":"Saboteur","d":"One of 33 named patterns of behavior, each one a fetter squeezed into a habit you keep repeating. Each has its own belief, its own place in the body and its own feeling."},{"t":"Self-unraveling state","d":"When enough gates have cleared, the body starts releasing by itself. The soma lets go without you running the protocol. This is how you know a release session worked: the body keeps releasing on its own, and not only the one address you worked on."},{"t":"Signal chain","d":"The loop everything runs through, every moment. It starts in the field of awareness around you and goes through your senses, your nerves, your brain, your thinking, how it relates to you, the three axes, your feelings, the rules you were raised with, the koshas and your archetypes, then back out to the field."},{"t":"Soma","d":"The field of energy your nervous system gives off, set by the state it is in. As soma builds up it becomes load, like weight in a backpack. Where soma fields overlap they break up what you can perceive and make walls your awareness cannot see through."},{"t":"Sol Star","d":"A point just above the top of your head. It is where you reach past your body and open out to the field around you."},{"t":"Source","d":"The field as it is before any pattern is put in. The bedrock under everything else. What is left when every pattern is cleared."},{"t":"Superego","d":"The part of the mind that guards what you were told. It is made of the stories and rules an adult handed down to you. It sits on the surface and protects those beliefs. The ego goes deeper, because the ego lives in the body."},{"t":"Tag","d":"The moment something that hit you hard gets a name and gets stored at an address. The name locks it in. From then on the body watches for anything that matches, and when it finds one, the pattern stored there fires."},{"t":"Two mechanics","d":"The two steps a full release needs, in this order. First, Release: the charge at the address goes down. Second, Embodied Truth: while the address is open, the quality the pattern was blocking is installed. Do the first without the second and the address is left with nothing to run instead."},{"t":"Vritti","d":"A ripple of what you sense and what you feel, coming in from outside. It travels along your nerves to your brain, where it is put together and noticed. Once you take it as yours, the vritti is what caves in the nerve, the chakra and your field of awareness."},{"t":"Willpower","d":"How much push you have to spend, not a kind of person. It works like a battery: sleep charges it, and pushing through resistance drains it. Release the charge stuck in your body and the drag drops, so willpower goes up. It has no reading of its own; what drags on it shows up as Resistance, which is already read."}];
 var HARM=[{"c":"E01","t":"All Is One","a":"nature","ch":"Chapter 19"},{"c":"E02","t":"All Is Motion","a":"nature","ch":"Chapter 19"},{"c":"E03","t":"Polarity","a":"nature","ch":"Chapter 19"},{"c":"E04","t":"All Fields Correspond","a":"nature","ch":"Chapter 19"},{"c":"E05","t":"Like Fields Attract","a":"nature","ch":"Chapter 19"},{"c":"E06","t":"Inspired Action","a":"nature","ch":"Chapter 19"},{"c":"E07","t":"Transmutation","a":"nature","ch":"Chapter 19"},{"c":"E08","t":"Cause & Effect","a":"nature","ch":"Chapter 19"},{"c":"E09","t":"Compensation","a":"nature","ch":"Chapter 19"},{"c":"E10","t":"Potential","a":"nature","ch":"Chapter 19"},{"c":"E11","t":"Relativity","a":"nature","ch":"Chapter 19"},{"c":"E12","t":"Rhythm","a":"nature","ch":"Chapter 19"},{"c":"E13","t":"Gender","a":"nature","ch":"Chapter 19"},{"c":"E14","t":"Form","a":"human","ch":"Chapter 19"},{"c":"E15","t":"Archetype","a":"human","ch":"Chapter 19"},{"c":"E16","t":"Biofield","a":"human","ch":"Chapter 19"},{"c":"E17","t":"Attunement","a":"human","ch":"Chapter 19"},{"c":"E18","t":"Perception","a":"human","ch":"Chapter 19"},{"c":"E19","t":"Intelligence","a":"human","ch":"Chapter 19"},{"c":"E20","t":"Pleasure & Pain","a":"human","ch":"Chapter 19"},{"c":"E21","t":"The Three Axes","a":"human","ch":"Chapter 19"},{"c":"E22","t":"Symbol","a":"human","ch":"Chapter 19"},{"c":"E23","t":"Identity","a":"human","ch":"Chapter 19"},{"c":"E24","t":"Choice","a":"human","ch":"Chapter 19"},{"c":"E25","t":"Ego","a":"human","ch":"Chapter 19"},{"c":"E26","t":"Intention","a":"human","ch":"Chapter 19"},{"c":"E27","t":"Action","a":"human","ch":"Chapter 19"},{"c":"E28","t":"Memory","a":"human","ch":"Chapter 19"},{"c":"E29","t":"Truth","a":"spirit","ch":"Chapter 19"},{"c":"E30","t":"Transparency","a":"spirit","ch":"Chapter 19"},{"c":"E31","t":"Unity","a":"spirit","ch":"Chapter 19"},{"c":"E32","t":"Awareness","a":"spirit","ch":"Chapter 19"},{"c":"E33","t":"Presence","a":"spirit","ch":"Chapter 19"},{"c":"E34","t":"Equanimity","a":"spirit","ch":"Chapter 19"},{"c":"E35","t":"Compassion","a":"spirit","ch":"Chapter 19"},{"c":"E36","t":"Forgiveness","a":"spirit","ch":"Chapter 19"},{"c":"E37","t":"Courage","a":"spirit","ch":"Chapter 19"},{"c":"E38","t":"Temperance","a":"spirit","ch":"Chapter 19"},{"c":"E39","t":"Duty","a":"spirit","ch":"Chapter 19"},{"c":"E40","t":"Accountability","a":"spirit","ch":"Chapter 19"},{"c":"E41","t":"Justice","a":"spirit","ch":"Chapter 19"},{"c":"E42","t":"Non-Harm","a":"spirit","ch":"Chapter 19"},{"c":"E43","t":"Responsibility","a":"spirit","ch":"Chapter 19"},{"c":"E44","t":"Humility","a":"spirit","ch":"Chapter 19"},{"c":"E45","t":"Generosity","a":"spirit","ch":"Chapter 19"},{"c":"E46","t":"Detachment","a":"spirit","ch":"Chapter 19"},{"c":"E47","t":"Patience","a":"spirit","ch":"Chapter 19"},{"c":"E48","t":"Aesthetic Beauty","a":"spirit","ch":"Chapter 19"},{"c":"E49","t":"Nature","a":"spirit","ch":"Chapter 19"},{"c":"E50","t":"Peace","a":"express","ch":"Chapter 19"},{"c":"E51","t":"Play","a":"express","ch":"Chapter 19"},{"c":"E52","t":"Curiosity","a":"express","ch":"Chapter 19"},{"c":"E53","t":"Creativity","a":"express","ch":"Chapter 19"},{"c":"E54","t":"Flow","a":"express","ch":"Chapter 19"},{"c":"E55","t":"Wonder","a":"express","ch":"Chapter 19"},{"c":"E56","t":"Order","a":"express","ch":"Chapter 19"},{"c":"E57","t":"Love","a":"express","ch":"Chapter 19"},{"c":"E58","t":"Purpose","a":"express","ch":"Chapter 19"},{"c":"E59","t":"Will","a":"express","ch":"Chapter 19"},{"c":"E60","t":"Fear · Safety","a":"emotion","ch":"Chapter 19"},{"c":"E61","t":"Anger · Calm","a":"emotion","ch":"Chapter 19"},{"c":"E62","t":"Shame · Worth","a":"emotion","ch":"Chapter 19"},{"c":"E63","t":"Disgust · Acceptance","a":"emotion","ch":"Chapter 19"},{"c":"E64","t":"Apathy · Joy","a":"emotion","ch":"Chapter 19"},{"c":"E65","t":"Shock","a":"emotion","ch":"Chapter 19"},{"c":"E66","t":"Sad · Happy","a":"emotion","ch":"Chapter 19"},{"c":"E67","t":"Surprise","a":"emotion","ch":"Chapter 19"},{"c":"E68","t":"Anticipation","a":"emotion","ch":"Chapter 19"},{"c":"E69","t":"Physical","a":"measure","ch":"Chapter 19"},{"c":"E70","t":"Intellectual","a":"measure","ch":"Chapter 19"},{"c":"E71","t":"Emotional","a":"measure","ch":"Chapter 19"},{"c":"E72","t":"Wisdom","a":"measure","ch":"Chapter 19"},{"c":"E73","t":"Adversity","a":"measure","ch":"Chapter 19"},{"c":"E74","t":"Coherence","a":"measure","ch":"Chapter 19"},{"c":"E75","t":"Meta- Awareness","a":"meta","ch":"Chapter 19"},{"c":"E76","t":"Coherence","a":"meta","ch":"Chapter 19"}];
 var HARM_AX={nature:'Laws of Nature',human:'Laws of Human Nature',spirit:'Laws of Moral Integrity',
  express:'Laws of Expression',emotion:'The nine architectures',measure:'The instruments',meta:'The frame'};
@@ -4792,11 +4792,18 @@ var UNPACK_BASE={
  'rail:radiance':'Radiance is vitality, awareness and will put together, and it sets how bright the field behind the wheel is.',
  'rail:flow':'Flow is how much gets from the base of your spine to the top of your head, each seat passing on part of what it gets.',
  'rail:orientation':'Orientation is which way the charge you hold leans, toward costing you nothing or toward taking something from you.',
- 'rail:benign':'Benign is charge you hold that is not costing you anything.',
- 'rail:malignant':'Malignant is charge you hold that is taking something from you.',
+ 'rail:positive':'Positive is charge you hold that is not costing you anything.',
+ 'rail:negative':'Negative is charge you hold that is taking something from you.',
  'rail:balance':'Balance is which way your body moves under what you feel, out toward the world or in toward yourself.',
  'rail:masculine':'Masculine is energy given a shape and a direction and sent outward, and it does not mean men.',
  'rail:feminine':'Feminine is energy held and taken inward, and it does not mean women.',
+ /* 30 October, r1 from mockups/dual-readings, which the owner picked for
+    the rail. Shadow is lawSQ, CQ's own complement, the other end of the
+    coherence pair; the two heads name the rail's two families, a pair read
+    from its centre and an amount read from none. */
+ 'rail:shadow':'Shadow, on this line, is the part of the laws your answers leave out, which is always 100 less CQ.',
+ 'rail:where you lean':'Each pair is one reading, where the line down the middle is 50 and 50 and the mark is where you sit.',
+ 'rail:how much':'Each is one reading, from none of it at the left end to all of it at the right.',
  /* ROUND RG, the copy sweep. His words: "you read 62 above the oscillating
     band. Your integrity is 6.2. Integrity is the hull. It's got to be human."
     Integrity was printed as a figure on the Compass with no meaning anywhere
@@ -5887,6 +5894,22 @@ var PCT_KIND={
  /* ui/ritual.js:1087, the days kept against the days due */
  kept:      {lo:0, hi:100, src:'ui/ritual.js', find:'pct:100*kept/due',
              say:'the days a ritual was kept against the days it was due'},
+ /* engine/sniff.js sniffGates, the avoidance cascade: 14.5 of 100 with both
+    upstream gates clean and rising 28.7 for each one distorted (GATE_BASE,
+    GATE_STEP). The object itself carries of:100, so this kind does too.
+    Guard 5 there is structural: never shown without the two upstream
+    readings beside it, because the number alone reads as a character flaw.
+    Added with the ui/storyui.js sweep of percent phase 3, which hand rolled
+    the figure with the word "per cent" and no dash for a reading never read. */
+ avoid:     {lo:0, hi:100, src:'engine/sniff.js', find:'avoidance:Math.round((GATE_BASE+GATE_STEP*dist)*10)/10,',
+             say:'the avoidance cascade, read only with its upstream pair'},
+ /* engine/compute.js accuracy(), the held and installed evidence feeding
+    the fit (eff=held+inst*0.35 through 1-e^(-eff/ACC_K)), pre-rounded like
+    a gate's share. Added with the ui/personas.js sweep of percent phase 3,
+    which hand rolled 'signal '+a.signal+'%' with no dash for a field with
+    none of it yet. */
+ signal:    {lo:0, hi:100, src:'engine/compute.js', find:'signal:Math.round(sig*100)};}',
+             say:'the held and installed evidence feeding the accuracy fit'},
 
  /* ---------- nought to ten ---------- */
  /* schema.js:1047, the boundary refuses a law outside 0 to 10 by name */
@@ -5944,6 +5967,16 @@ var PCT_KIND={
     checks, and the fmtPct example below. */
  intention: {lo:0, hi:100, src:'engine/ladder.js', find:'pct:said?100*did/said:null',
              say:'what a person said they would do against what they did, the last seven days'},
+ /* expression.js:8, exprFill: ig*(1-load*1.25), clamped 0 to 10 like every
+    other seat figure. Not the kind "expression" above, which is EX, the one
+    aggregate the whole field reads at a glance; this is the one channel
+    exprRead() walks at a time, each with its own fill and its own leak (10
+    minus this). Added with the ui/imprints.js sweep of percent phase 3,
+    which had reused "integrity" here on a coincidence of range alone: the
+    same 0 to 10, a different formula, a citation naming JQ for a value
+    that was never JQ's. */
+ exprfill:  {lo:0, hi:10, src:'engine/expression.js', find:'return clamp(ig*(1-load*1.25),0,10);}',
+             say:'how open this one expression channel is'},
  /* intake.js:55, the widest gap between a law's three answers, each 0 to 10
     at the boundary (schema.js:1069) */
  spread:    {lo:0, hi:10, src:'engine/intake.js', find:'var spread=Math.max.apply(null,v)-Math.min.apply(null,v);',
@@ -6027,7 +6060,25 @@ var PCT_KIND={
              say:'how much a seat leaks'},
  /* ui/avatarui.js:624, the mean of the avatar's closures */
  complete:  {lo:0, hi:1, src:'ui/avatarui.js', find:'var overall=cs.length?cs.reduce(function(s,v){return s+v;},0)/cs.length:null;',
-             say:'the avatar\'s percent complete'}};
+             say:'the avatar\'s percent complete'},
+ /* engine/seed.js seedShare, how much of what the nine axes carry is still
+    the stated four letter type, against how far the person has moved it
+    since. Added with the ui/intakeui.js sweep of percent phase 3: it hand
+    rolled Math.round(share*100)+'%' with no dash for a share of nothing,
+    which this kind now carries like every other. */
+ seedshare: {lo:0, hi:1, src:'engine/seed.js', find:'return Math.round(seeded/(seeded+moved)*100)/100;}',
+             say:'how much of the field is still the stated seed'},
+ /* engine/sniff.js sniffGates' side(), aware.clean and detached.clean: each
+    0 to 1, the right action's share of its own upstream pair, aware against
+    ignore and detached against attach. Added with the ui/storyui.js sweep
+    of percent phase 3. */
+ clean:     {lo:0, hi:1, src:'engine/sniff.js', find:'return {clean:n?u/n:null, distortion:n?d/n:null, n:n, read:n>0};}',
+             say:'the right action\'s share of its own upstream pair'},
+ /* engine/compute.js accuracy(), the mean fill across the ten expression
+    axes (exprRead, engine/expression.js), which widens the fit's spread
+    when it is low. Added with the ui/personas.js sweep of percent phase 3. */
+ exq:       {lo:0, hi:1, src:'engine/compute.js', find:'var exq=clamp(E.reduce(function(a,x){return a+x.fill;},0)/E.length/10,0,1);',
+             say:'the mean fill across the ten expression axes'}};
 
 /* THE FORMULA. Null for anything that is not a number, so a caller can tell
    "nothing to read" from "read, and it is nought" and never prints a zero over
@@ -10771,10 +10822,19 @@ var TRACE_V=1;
    Still 4 after 23 October, on purpose. That day the fourth rung's type
    was renamed, character to super_complex, on the owner's ruling (below).
    A rename is not a new derivation: the same rungs come off the same lists
-   with the same edges. And no graph the product builds or stores holds a
-   rung, because a day's graph is read with no reading and every door
+   with the same edges. And no graph the product stores holds a rung,
+   because a day is grounded on a graph read with no reading and every door
    refuses the chain's types. So a day stamped 4 means what it meant, and a
-   new number would only stop an older build opening a newer record. */
+   new number would only stop an older build opening a newer record.
+   Still 4 after 31 October, for that same reason, on two changes. The
+   Character page's graph and the loop read's are handed the reading now (the
+   nerve to celestial audit's first gap), which is this number's derivation
+   reaching the graphs a screen is drawn from, not a new one: those graphs are
+   read on every paint and never stored. And a reading's named super complex
+   is a node (TRACE_NAMED, below), one more rung taken off the same reading
+   under the same rules. Neither moves what a day is grounded on, and the
+   number is stamped only on days (dlySeal, engine/daily.js), whose range check
+   would refuse a 5 in every build before this one. */
 var TRACE_ALG=4;
 
 /* THE CHAIN'S FOUR RUNGS, in the order they stack, TDD section 16's second
@@ -11126,6 +11186,23 @@ var TRACE_CHAIN_OF=[
  {type:'complex', list:'cxs', why:'the reading compounded this saboteur with another of its family into this complex. A registration, not a cause'},
  {type:'hyper_complex', list:'hys', why:'the reading compounded this complex into its family\'s hyper-complex. A registration, not a cause'},
  {type:'super_complex', list:'sups', why:'the reading paired this hyper-complex with another into this super-complex. A registration, not a cause'}];
+/* THE ONE NAMED SUPER COMPLEX, off r.psychopathy and never off sups, 31
+   October (the nerve to celestial audit's second gap). compute() asks for the
+   Grandiosity and Predatory hyper complexes by name, wherever they rank, on the
+   owner's ruling of 26 October, and keeps the result out of sups on purpose so
+   it moves no count (engine/compute.js). The chain above reads sups only, so
+   Psychopathy, the one super complex the product names, was never a node, even
+   on a graph handed the reading that held it.
+
+   Its id is the name the DESCENT entry gives it, which compute() copies to
+   named and nothing here types. The name was settled on 30 October (TASKS.md,
+   round SM): it keeps its clinical name. It sits on the super complex rung
+   because the descent files it there, so it is that type and not a fifth one.
+   When the pairing by rank also paired the two, the graph holds both nodes,
+   the generic one under its pair's name and this one under its own, because
+   they are two rules that happened to agree, and inSups says they did. */
+var TRACE_NAMED={type:'super_complex', list:'psychopathy', part:'hyper_complex', from:'hys',
+ why:'the reading found this hyper-complex and the one it is named with, which together are the one named super-complex, asked for by name and not paired by rank. A registration, not a cause'};
 /* why a type may not come in through a door, or null */
 function traceChainWhy(type){
  return TRACE_CHAIN.indexOf(type)>=0
@@ -11616,7 +11693,7 @@ function traceReadingWhy(p,r){
   return 'the reading carries no record stamp, so it could be the reading of whatever field was loaded; read() stamps one';
  if(typeof p.id!=='string'||!p.id)return 'this record has no id, so no reading can be shown to be its own';
  if(r.rec!==p.id)return 'the reading is of another record';
- var below=null;
+ var below=null, of={};
  for(var i=0;i<TRACE_CHAIN_OF.length;i++){
   var row=TRACE_CHAIN_OF[i], list=r[row.list], here=Object.create(null);
   if(!Array.isArray(list))return 'the reading has no '+row.list+' list';
@@ -11634,7 +11711,26 @@ function traceReadingWhy(p,r){
      if(a===null||!/^[0-9]+$/.test(a)||!BY[+a])return at+' '+x.nm+' counts a part that is not one of the 112 addresses';}
     else if(typeof q.nm!=='string'||!below[q.nm])
      return at+' '+x.nm+' counts '+String(q.nm)+', which is not a '+TRACE_CHAIN_OF[i-1].type+' of this reading';}}
-  below=here;}
+  below=here; of[row.list]=here;}
+ return traceNamedWhy(r,of);}
+/* THE NAMED ONE, under the same all or nothing as every rung. Absent is a
+   reading from before 26 October, and null is a field that does not hold it or
+   a plan that may not see it (sightR, ui/lock.js), and both are no named node.
+   Present, it is two hyper complexes of this same reading, under a name the
+   pairing by rank does not already use, or the whole reading is refused. */
+function traceNamedWhy(r,of){
+ var x=r[TRACE_NAMED.list], at=TRACE_NAMED.list;
+ if(x===undefined||x===null)return null;
+ if(typeof x!=='object'||Array.isArray(x))return at+' is not an object';
+ var nm=typeof x.named==='string'?x.named:null;
+ var w=traceIdWhy(TRACE_NAMED.type,nm); if(w)return at+' '+w;
+ if(of.sups[nm])return at+' names '+nm+', which the pairing by rank already names';
+ if(!Array.isArray(x.parts)||x.parts.length!==2)return at+' '+nm+' does not count two hyper-complexes';
+ for(var k=0;k<2;k++){
+  var q=x.parts[k];
+  if(!q||typeof q!=='object')return at+' '+nm+' has a part that is not an object';
+  if(typeof q.nm!=='string'||!of[TRACE_NAMED.from][q.nm])return at+' '+nm+' counts '+String(q.nm)+', which is not a '+TRACE_NAMED.part+' of this reading';}
+ if(x.parts[0].nm===x.parts[1].nm)return at+' '+nm+' counts '+x.parts[0].nm+' twice';
  return null;}
 /* what a rung carries beside its key: its weight as compute() wrote it,
    its family, and whether it is the overshoot. Never d, the line a person
@@ -11647,6 +11743,13 @@ function traceChainAttrs(type,x){
  a.family=type==='hyper_complex'?x.nm:(typeof x.hcx==='string'?x.hcx:null);
  a.over=!!x.over;
  if(type==='saboteur')a.unnamed=!!x.unnamed;
+ return a;}
+/* and the named one: its weight the same way, that it is the named one, and
+   whether the pairing by rank paired the same two. Never d or refer, the line
+   and the referral the descent prints, for the reason above. */
+function traceNamedAttrs(x){
+ var a=traceChainAttrs(TRACE_NAMED.type,x);
+ a.named=true; a.inSups=!!x.inSups;
  return a;}
 
 /* ============================================================
@@ -11841,17 +11944,25 @@ function traceFromRecord(p,intents,reading){
  if(reading!==undefined&&reading!==null){
   var rw=traceReadingWhy(p,reading);
   if(rw)g.refused.push({reading:true, why:rw});
-  else TRACE_CHAIN_OF.forEach(function(row,i){
-   reading[row.list].forEach(function(x){
-    var ck=node(row.type,x.nm,'inferred',traceChainAttrs(row.type,x));
-    if(!ck)return;
-    var seen={};
-    x.parts.forEach(function(q){
-     var from=i===0?node('pattern',traceId(q.i),'known',tracePatternAttrs(traceId(q.i)))
-      :traceKey(TRACE_CHAIN_OF[i-1].type,q.nm);
-     if(from===null||seen[from])return;
-     seen[from]=1;
-     edge(from,'supports',ck,'inferred',{derived:true, why:row.why});});});});}
+  else{
+   TRACE_CHAIN_OF.forEach(function(row,i){
+    reading[row.list].forEach(function(x){
+     var ck=node(row.type,x.nm,'inferred',traceChainAttrs(row.type,x));
+     if(!ck)return;
+     var seen={};
+     x.parts.forEach(function(q){
+      var from=i===0?node('pattern',traceId(q.i),'known',tracePatternAttrs(traceId(q.i)))
+       :traceKey(TRACE_CHAIN_OF[i-1].type,q.nm);
+      if(from===null||seen[from])return;
+      seen[from]=1;
+      edge(from,'supports',ck,'inferred',{derived:true, why:row.why});});});});
+   /* the named super complex last, once the hyper complexes it counts are
+      nodes, by the same rule table and with the same refusal on a miss */
+   var nx=reading[TRACE_NAMED.list];
+   if(nx){
+    var nk=node(TRACE_NAMED.type,nx.named,'inferred',traceNamedAttrs(nx));
+    if(nk)nx.parts.forEach(function(q){
+     edge(traceKey(TRACE_NAMED.part,q.nm),'supports',nk,'inferred',{derived:true, why:TRACE_NAMED.why});});}}}
  /* every derived node so far is the record's own */
  g.nodes.forEach(function(n){n.derived=true;});
 
@@ -12222,7 +12333,8 @@ const AXIS_BLANK=0;
 function blankProfile(name){
  var p={v:SCHEMA_V, id:'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),
   name:name||'New profile', created:new Date().toISOString(), updated:null,
-  soul:{doms:[0], arcs:[0,1], roots:[]},            /* the invariant */
+  /* from says this soul was filled in and not picked (SOUL_FROM, below) */
+  soul:{doms:[0], arcs:[0,1], roots:[], from:'default'},  /* the invariant */
   axes:{},                                          /* nine poled child fetters */
   /* THE NAMED-ADDRESS LAYER, engine/sniff.js's applyStoryAddr, 26 October.
      Additive: an older record has none, which is a record no story ever
@@ -12357,12 +12469,65 @@ function blankProfile(name){
     boundary does not name is deleted on the next load. */
  p.summaries=dlyBlank();
  return p;}
+/* THE NAMES THIS PRODUCT GIVES A RECORD, WHICH ARE NEVER A PERSON'S. A
+   profile's name does two jobs: it labels the record in the list and the
+   status line ("Loaded Web reading from the link"), and once a person types
+   their own into Settings it is what Summary's plate and the rail's card call
+   them, by its first word. The readers knew one label, You, so every other
+   name the product writes was printed as a person's: a funnel arrival was
+   greeted as "Web" in the largest type on the first screen the 9 October
+   ruling lands them on (reviews/funnel-golden-path-2026-10-31.md, F3), and
+   a nameless paste would have been greeted as "Imported".
+   Each is written here or in a caller and nowhere else:
+     You          the default record, engine/profiles.js and ui/personas.js
+     New profile  blankProfile above, called with no name
+     Imported     validateProfile, a pasted record that carries no name
+     unnamed      engine/read.js and pImport's restore, a record that is
+                  only ever read and never shown
+     Web reading  funnel/quiz.html, the record the quiz hands to the app
+   The label stays the record's, because the list and the status line need a
+   word for it. ownName is how a surface asks whether the person gave one:
+   the name as typed, or the empty string. Compared without case, because the
+   plate compared after capName and "you" typed by hand meant the same. */
+var REC_NAMES=['You','New profile','Imported','unnamed','Web reading'];
+function ownName(nm){
+ var s=String(nm==null?'':nm).trim(), k=s.toLowerCase();
+ return REC_NAMES.some(function(x){return x.toLowerCase()===k;})?'':s;}
 /* WHICH LAWS ARE SITTING ON THE SEED, AND WHAT THEY WERE SEEDED WITH.
    LAW_DEFAULT is the seed itself and it moved to engine/core.js, which is the
    module that first uses it: this one named the number and core.js printed a
    literal 6 beside a comment about it, and ui/personas.js then named two more
    numbers for the same quantity. One declaration, at the first use. */
 var LAW_UNSET={}, LAW_SEED={};
+/* WHETHER A SOUL WAS PICKED, the nerve to celestial audit's third gap, 31
+   October. Every record is born with Knowledge, under the Architect root, and
+   Warrior and Sage (blankProfile above), and loadProfile and validateProfile
+   fill the same three into a record that has none. The domain is not a label:
+   suscAll reads it, so that soul takes Apathy and Shock at 1.3 times at every
+   address carrying them. Nothing on the record said whether a person chose it,
+   so somebody who never opened the domain picker read exactly like somebody
+   who picked Knowledge. The laws had this problem and solved it with the
+   unset marks above; the soul's arrays cannot be null, so it carries its mark
+   as soul.from instead.
+
+     'default'   filled in. Nobody has moved it since.
+     'picked'    it has moved off what the record held, so somebody chose it.
+     absent      a record from before this mark, which is unknown and is never
+                 read as either. No SCHEMA_V bump: v1 and v2 records load as
+                 they did, and an older build drops the key and reads the soul.
+
+   It is decided at the save, the way a seeded law is (saveProfile), so no
+   control has to remember to set it: a soul that differs from the one the
+   record held was moved by a person, by undo, or by a worked example loading
+   its own. The cost is the law's: a person who opens the picker and leaves
+   exactly Knowledge, Warrior and Sage stays default, which understates a
+   choice where the old record invented one for everybody. Nothing reads the
+   mark yet; what a defaulted soul should do to the weighting is the owner's. */
+var SOUL_FROM=['default','picked'];
+/* the soul as loadProfile puts it into S, so the save compares like with like */
+function soulAsLoaded(s){
+ s=(s&&typeof s==='object')?s:{};
+ return {doms:(s.doms||[0]).slice(), arcs:(s.arcs||[0,1]).slice(), roots:(s.roots||[]).slice()};}
 /* WHAT A LAW WAS CALLED BEFORE, current name to old. Expression and
    Discernment were the twenty one until the owner ruled that Justice and
    Humility are. A law is keyed by name in every saved profile, so an old name
@@ -12432,7 +12597,7 @@ function loadProfile(p){
  /* soul was the one field this did not fill, and it is the one the next line
     reads without a guard. Six fields were defended and the seventh took the
     boot down. */
- if(!p.soul)p.soul={doms:[0],arcs:[0,1],roots:[]};
+ if(!p.soul)p.soul={doms:[0],arcs:[0,1],roots:[],from:'default'};
  /* and a record from before the archetype and axis blocks has no answers to
     them, which is a record that was never asked */
  ixFill(p);
@@ -12478,7 +12643,13 @@ function loadProfile(p){
  LAW_REC=p;
  return p;}
 function saveProfile(p){
- p.soul={doms:S.doms.slice(),arcs:S.arcs.slice(),roots:S.roots.slice()};
+ /* THE SOUL KEEPS ITS MARK, and a soul that moved off what the record held is
+    marked picked (SOUL_FROM, above). Absent stays absent while nothing moves. */
+ var soulWas=p.soul, soulNow={doms:S.doms.slice(),arcs:S.arcs.slice(),roots:S.roots.slice()};
+ var soulMark=(soulWas&&SOUL_FROM.indexOf(soulWas.from)>=0)?soulWas.from:null;
+ if(JSON.stringify(soulAsLoaded(soulWas))!==JSON.stringify(soulNow))soulMark='picked';
+ if(soulMark)soulNow.from=soulMark;
+ p.soul=soulNow;
  CHILD.forEach(function(c){p.axes[c.nm]={held:S.charge[c.nm],opp:S.replace[c.nm]||0};});
  p.addr=Object.assign({},S.addr);
  /* A LAW NOBODY MEASURED MUST NOT COME BACK MEASURED.
@@ -13342,7 +13513,15 @@ function validateProfile(o){
    errs.push('soul.roots holds '+(typeof r==='string'?r:'a '+typeof r)+', which is not one of '+ROOTD.join(', '));
    return false;});
   if(!p.soul.doms.length)p.soul.doms=[0];
-  if(!p.soul.arcs.length)p.soul.arcs=[0,1];}
+  if(!p.soul.arcs.length)p.soul.arcs=[0,1];
+  /* THE MARK (SOUL_FROM, above). The blank this starts from says default,
+     which is true only of a record that carried no soul, so a soul with no
+     mark is read as unknown and never as filled. One of the two words, or
+     refused by name. */
+  if(o.soul.from===undefined)delete p.soul.from;
+  else if(SOUL_FROM.indexOf(o.soul.from)<0)
+   errs.push('soul.from is '+JSON.stringify(o.soul.from)+', which is not one of '+SOUL_FROM.join(', '));
+  else p.soul.from=o.soul.from;}
  /* gate evidence. counts of sentences, so any non negative integer. A key
     beside the two bags, or inside one, that this build does not count is
     refused by name, SG-09: canon.json spells the third gate Intentional, and a
@@ -16351,14 +16530,23 @@ function loopProtocols(P){
   if(x.status==='rejected')rejected.push(x);});
  return {latest:by, rejected:rejected};}
 
-function loopRead(p){
+/* THE READING, WHEN THE CALLER HAS ONE, the first gap of the nerve to celestial
+   audit (reviews/nerve-to-celestial-audit-2026-10-30.md). The graph this
+   reads carries the chain only when it is handed a reading of this same record
+   (THE READING HANDED IN, engine/trace.js), and it was never handed one, so
+   the loop surface's graph held no saboteur and no complex for anybody. It is
+   taken and never made here: a reading made here would load a record, and
+   this file promises the same answer whatever is loaded. Nothing below reads a
+   rung, every row is a pattern, so the answer is the same with or without it;
+   what changes is that the graph under it is the whole one. */
+function loopRead(p,reading){
  var out={entries:0, patterns:[], confirmed:0, unanswered:0, more:0,
   declined:[], practice:{done:0, older:0, events:0}, misses:[],
   restated:0, gaps:0, next:null, empty:true};
  if(!p||typeof p!=='object')return out;
  var P=(p.practice&&typeof p.practice==='object')?p.practice:null;
  var g=null;
- try{g=traceFromRecord(p,P?practiceTraceIntents(P):[]);}catch(e){g=null;}
+ try{g=traceFromRecord(p,P?practiceTraceIntents(P):[],reading);}catch(e){g=null;}
  if(!g)return out;
  out.entries=((p.story&&Array.isArray(p.story.entries))?p.story.entries:[]).length;
  out.restated=(g.restated||[]).length;
@@ -19730,6 +19918,832 @@ function srcAsked(log,len){
  return out;}
 /* the most an entry can carry: every kind at every seat and at none. */
 function srcAskedMax(){return SRC_KINDS.length*(Object.keys(K2BAND).length+1);}
+/* ============================================================
+   THE EVIDENCE LEDGER, P0 of the Journal Mode blueprint. Round SK, 30
+   October, TASKS.md. The document is atuned_source_ai_journal_mode_TDDB.md,
+   his own Drive, 4 October, and its rule is "the system proposes, the person
+   verifies". Its section 15 names eight states and this is them, as data.
+
+   WHAT A CLAIM IS, AND WHAT EVIDENCE IS. They are two things and a mark used
+   to be both. A mark from marksOf (engine/sniff.js) holds the person's own
+   letters, s to e, and the seat the lexicon put them at. The letters are
+   what was said. The seat is what the engine made of them. So here the
+   letters are EVIDENCE, and the seat is a CLAIM that cites them. Source AI
+   may only ever say a claim when the evidence under it is good enough, and
+   the person is the only one who can say a claim is theirs.
+
+   THE EIGHT STATES, AND WHO MAY SET EACH ONE.
+
+     observed   evidence only. The words were written. Every evidence row
+                is observed; a claim is never observed, because a claim is
+                always the engine's reading of something observed.
+     inferred   a claim with nothing said for it in this entry: an earlier
+                entry's stored seat key, or the field's own driven pattern.
+                Held, never asked about, never said.
+     candidate  heard once in this entry and nothing else behind it.
+     supported  more than one piece of evidence points the same way: heard
+                twice or more in this entry, or once here and in an earlier
+                entry, or once here at a seat a driven hyper complex sits on
+                (his ruling of 27 October, srcRung in engine/sourceai.js:
+                the field's pattern is built from his own committed charge,
+                so it is his evidence, not the engine's guess).
+     confirmed  the person said yes.
+     rejected   the person said not me.
+     corrected  the person said what it is instead, in their own words.
+     unknown    the person said they are not sure. And the root, always,
+                at this stage: see evRoot.
+
+   THE ONE INVARIANT EVERYTHING ELSE SERVES. The engine moves a claim only
+   between inferred, candidate and supported. confirmed, rejected, corrected
+   and unknown are reachable ONLY through a verdict the person gave, evVerdict
+   below, and a verdict outranks any amount of new evidence: a seat the person
+   said not me to stays rejected however often the story comes back to it,
+   until the person says otherwise. That is the document's "no silent
+   promotion" and "correction dominance" (section 53, 2 and 5).
+
+   ONE READER, NOT TWO. The counts a claim's state is read from are srcHear's
+   own (mentions, earlier, structural), so the state and the rung can never
+   disagree about how often a seat was heard. The spans come off marksOf, the
+   same list the person's own bubble is drawn from. tests/evidence.js holds
+   the two to the same count on every line of the story bank.
+
+   HOW THIS MAPS ONTO THE TRACE GRAPH, SO IT IS NOT A SECOND MODEL. trace.js
+   already carries five provenance words, TRACE_SRC, and its own warning is
+   that a second model beside the real engine is how two truths appear. The
+   eight states are finer than the five, and EV_TRACE says exactly where each
+   one lands: every engine state is the graph's inferred, a yes and a
+   correction are its user_confirmed, and a no and an unknown have no
+   provenance there at all, which is trace.js's own standing gap (a refusal
+   is F16, the owner's). Nothing here writes the graph yet.
+
+   PRIVACY, CHECKED FIRST, and it decides the shape. The ledger is DERIVED,
+   never stored. It reads the entry being written, and from earlier entries
+   only the seat keys a commit already stored (srcPrior), never their text:
+   that is the narrow reading of DESIGN-sniffer.md question 12, which is
+   still the owner's. An evidence row holds offsets into the text the person
+   is writing; the letters are sliced for a caller and never kept a second
+   time. A verdict is page memory in P0, passed in by the caller, and nothing
+   here reaches the record. Keeping a verdict on the entry is P2, an additive
+   field beside ob.yes and ob.no, and it is not built.
+
+   THE ENGINE MAY NOT TOUCH THE HOST, and this file does not.
+   ============================================================ */
+var EV_STATES=['observed','inferred','candidate','supported','confirmed','rejected','corrected','unknown'];
+/* the states only a person can put a claim into */
+var EV_PERSON=['confirmed','rejected','corrected','unknown'];
+/* the states the engine itself may set, from counts */
+var EV_ENGINE=['inferred','candidate','supported'];
+/* a claim Source AI may name to the person: there is more than one piece of
+   evidence under it, or the person already said it is theirs */
+var EV_NAMEABLE=['supported','confirmed','corrected'];
+/* the person's four answers, and the state each one sets */
+var EV_VERDICT={yes:'confirmed', no:'rejected', fix:'corrected', unsure:'unknown'};
+/* section 15's arrows. The engine's run is observed to inferred to candidate
+   to supported. Section 15 draws the person's reject and correct off
+   candidate and supported only, and this widens it on purpose: section 52's
+   second test is that a person can reject an interpretation "without
+   fighting the system", so a no is honoured from every state a claim can be
+   in, a confirmed one included, because a person may change their mind. */
+var EV_MOVES={
+ observed:['inferred','unknown'],
+ inferred:['candidate','supported','confirmed','rejected','corrected','unknown'],
+ candidate:['supported','confirmed','rejected','corrected','unknown'],
+ supported:['confirmed','rejected','corrected','unknown'],
+ confirmed:['rejected','corrected','unknown'],
+ rejected:['confirmed','corrected','unknown'],
+ corrected:['confirmed','rejected','corrected','unknown'],
+ unknown:['confirmed','rejected','corrected']};
+/* where each state lands in trace.js's own vocabulary, TRACE_SRC */
+var EV_TRACE={observed:null, inferred:'inferred', candidate:'inferred', supported:'inferred',
+ confirmed:'user_confirmed', corrected:'user_confirmed', rejected:null, unknown:null};
+function evTraceSrc(state){ return EV_TRACE.hasOwnProperty(state)?EV_TRACE[state]:null; }
+function evCan(from,to){ return !!(EV_MOVES[from]&&EV_MOVES[from].indexOf(to)>=0); }
+
+/* THE STATE THE ENGINE READS OFF THE COUNTS, before any verdict. c carries
+   srcHear's own three numbers. Returns null when there is nothing at all. */
+function evEngineState(c){
+ var m=+c.mentions||0, e=+c.earlier||0, st=!!c.structural;
+ if(!m)return (e>0||st)?'inferred':null;
+ if(m>=2||e>=1||st)return 'supported';
+ return 'candidate';}
+/* the plain because for each engine state, which is the explainability duty:
+   Source AI can always say why it holds what it holds. */
+function evWhy(c,state){
+ var m=+c.mentions||0, e=+c.earlier||0;
+ if(state==='confirmed')return 'you said yes to this';
+ if(state==='rejected')return 'you said this is not you';
+ if(state==='corrected')return 'you said what it is instead';
+ if(state==='unknown')return 'you said you are not sure';
+ if(state==='inferred')return e?'an earlier entry landed here, and nothing in this one has':'the field holds a pattern here, and nothing in this entry has said it';
+ if(state==='supported'){
+  if(m>=2)return 'heard '+m+' times in this entry';
+  if(e>=1)return 'heard in this entry and in an earlier one';
+  return 'heard in this entry, at a seat the field already holds a pattern on';}
+ return 'heard once in this entry';}
+
+/* THE CUES srcDims ALREADY READS, AS EVIDENCE WITH AN ADDRESS. srcDims says
+   which of the document's dimensions an entry answers and with which cue,
+   and gives no place. A behaviour the person wrote, "I keep", is observed
+   language exactly as much as a feeling word is, and the document's whole
+   claim is that behaviour comes before labels, so it is kept as evidence
+   too, with no seat: a cue is never a claim about where anything lands. */
+function evCueRows(t,dims,nm){
+ var out=[], seen={};
+ Object.keys((dims&&dims.answered)||{}).forEach(function(k){
+  dims.answered[k].forEach(function(c){
+   var needle=' '+String(c)+' ', from=0, i;
+   while((i=nm.s.indexOf(needle,from))>=0){from=i+1;
+    var a=i+1, b=i+String(c).length;
+    if(a>=nm.map.length||b>=nm.map.length)continue;
+    var s=nm.map[a], e=nm.map[b]+1, key=k+'|'+s+'|'+e;
+    if(seen[key])continue; seen[key]=1;
+    out.push({kind:k, s:s, e:e, cue:String(c)});}});});
+ return out;}
+
+/* BUILD THE LEDGER. text is the entry being written. entries is the person's
+   committed entries, of which only the stored seat keys are read. o is
+   {active, verdicts, asked}: active is srcHyperSeats of a real reading,
+   verdicts the person's answers this session, [{seat, v, fix}], in the order
+   given, and asked the seat keys Source AI has asked about in this entry.
+   Pure: reads nothing else and writes nothing, the field included. */
+function evLedger(text,entries,o){
+ o=o||{};
+ var t=String(text||''), out={ev:[], claims:{}, order:[], thread:null, root:null, verdicts:[]};
+ var prior=srcPrior(entries||[]);
+ var heard=srcHear(t,prior,o.active||null);
+ var p=t.trim()?parseStory(t):null, nm=normMap(t);
+ /* EVIDENCE, the marks. Every one, said or not: a word said with a no is
+    evidence the person said no, and a word about someone else is evidence
+    about someone else. Neither is ever counted for a claim. */
+ var marks=p?marksOf(t,p):[];
+ marks.forEach(function(m,i){
+  out.ev.push({id:'w'+i, src:'mark', s:m.s, e:m.e, text:t.slice(m.s,m.e),
+   seat:m.seat||null, kind:m.seat?'seat':(m.coh?'coherent':'word'),
+   said:m.neg?'denied':(m.other?'other':'said'), state:'observed'});});
+ /* EVIDENCE, the cues */
+ var dims=t.trim()?srcDims(t):null;
+ evCueRows(t,dims,nm).forEach(function(r,i){
+  out.ev.push({id:'c'+i, src:'cue', s:r.s, e:r.e, text:t.slice(r.s,r.e), seat:null,
+   kind:r.kind, cue:r.cue, said:'said', state:'observed'});});
+ /* EVIDENCE, earlier entries, as the seat keys their commits stored and
+    nothing more. No span and no text, by the privacy rule above. */
+ Object.keys(prior).forEach(function(k){
+  out.ev.push({id:'e:'+k, src:'earlier', s:null, e:null, text:null, seat:k,
+   kind:'seat', said:'said', count:prior[k], state:'observed'});});
+ /* WHICH SPANS A SEAT'S CLAIM CITES, walked the way srcHear walks them,
+    pathOf's own steps, and joined to the marks by where they start. Not by
+    the mark's own seat: the two readers can disagree. Measured round SK on
+    the story bank, "I sat in the car outside work": the hit for "outside"
+    carries no band, so marksOf leaves it uncoloured in the person's bubble,
+    while pathOf resolves it to the crown and srcHear counts it there. A
+    claim that cited by the mark's seat would cite nothing for a mention it
+    counts, which is the traceability the document's section 53 rules out.
+    So it cites the span srcHear counted, and the row says the mark read it
+    elsewhere (seatSaid), which is the disagreement kept as data rather than
+    hidden. Which reader is right is the sniffer's to settle, not this file's. */
+ var cite={}, den={}, oth={};
+ if(p){
+  (p.denied||[]).forEach(function(h){den[h.at]=1;});
+  (p.others||[]).forEach(function(h){oth[h.at]=1;});
+  pathOf(storyHits(p)).steps.forEach(function(st){
+   if(!st.seat||st.coherent||oth[st.at]||den[st.at])return;
+   var a=nm.map[st.at+1]; if(a==null)return;
+   var x=null; out.ev.forEach(function(r){if(r.src==='mark'&&r.s===a&&!x)x=r;});
+   if(!x)return;
+   if(x.seat!==st.seat)x.seatSaid=st.seat;
+   var l=cite[st.seat]=cite[st.seat]||[]; if(l.indexOf(x.id)<0)l.push(x.id);});}
+ /* CLAIMS, one a seat, off srcHear's own counts */
+ var mk=function(k,h){
+  var c={key:'seat:'+k, seat:k, band:K2BAND[k], mentions:h?h.mentions:0,
+   earlier:prior[k]||0, structural:!!(h?h.structural:(o.active&&o.active[k])),
+   rung:h?h.rung:0, words:h?h.words.slice():[], ev:[], last:-1, verdict:null,
+   asked:(o.asked||[]).indexOf(k)>=0};
+  (cite[k]||[]).forEach(function(id){var x=null; out.ev.forEach(function(r){if(r.id===id)x=r;});
+   c.ev.push(id); if(x&&x.s>c.last)c.last=x.s;});
+  if(prior[k])c.ev.push('e:'+k);
+  c.state=evEngineState(c); return c;};
+ (heard.seats||[]).forEach(function(h){out.claims[h.seat]=mk(h.seat,h);});
+ Object.keys(prior).forEach(function(k){if(!out.claims[k]&&K2BAND[k])out.claims[k]=mk(k,null);});
+ Object.keys(o.active||{}).forEach(function(k){if(!out.claims[k]&&K2BAND[k])out.claims[k]=mk(k,null);});
+ Object.keys(out.claims).forEach(function(k){if(!out.claims[k].state)delete out.claims[k];});
+ /* VERDICTS, the person's, last one wins. A verdict about a seat nothing was
+    heard at is still the person's word and is held: it is not the engine's
+    to drop. A verdict that is not one of the four answers is refused here by
+    name and never applied. */
+ (o.verdicts||[]).forEach(function(v){
+  var r=evVerdictOk(v);
+  if(!r.ok){out.verdicts.push({seat:v&&v.seat, refused:r.why}); return;}
+  var c=out.claims[v.seat]||(out.claims[v.seat]=mk(v.seat,null));
+  var to=EV_VERDICT[v.v], from=c.state||'unknown';
+  /* the same answer twice is the same state, and anything else must be an
+     arrow EV_MOVES draws, so the table is the rule and not a comment */
+  if(from!==to&&!evCan(from,to)){out.verdicts.push({seat:v.seat, v:v.v, refused:'no move from '+from+' to '+to}); return;}
+  c.verdict={v:v.v, fix:v.v==='fix'?String(v.fix).trim():null};
+  c.state=to;
+  out.verdicts.push({seat:v.seat, v:v.v});});
+ Object.keys(out.claims).forEach(function(k){var c=out.claims[k];
+  c.why=evWhy(c,c.state); c.trace=evTraceSrc(c.state); c.seam=evSeamState(c);});
+ out.order=evOrder(out.claims);
+ out.thread=evThread(out.claims,heard.seats);
+ out.root=evRoot(out.claims);
+ out.dims=dims;
+ return out;}
+/* a verdict the ledger will take, or the reason it will not */
+function evVerdictOk(v){
+ if(!v||typeof v!=='object')return {ok:false, why:'a verdict is an object'};
+ if(!K2BAND[v.seat])return {ok:false, why:'no seat called '+JSON.stringify(v.seat)};
+ if(!EV_VERDICT.hasOwnProperty(v.v))return {ok:false, why:'the answers are yes, no, fix and unsure, not '+JSON.stringify(v.v)};
+ if(v.v==='fix'&&!String(v.fix||'').trim())return {ok:false, why:'a correction needs the person\'s own words'};
+ return {ok:true};}
+/* ADD A VERDICT, returning the new list and never touching the one given.
+   The one door into a person state. */
+function evVerdict(verdicts,seat,v,fix){
+ var x={seat:seat, v:v}; if(v==='fix')x.fix=fix;
+ var r=evVerdictOk(x);
+ if(!r.ok)return {ok:false, why:r.why, verdicts:(verdicts||[]).slice()};
+ return {ok:true, verdicts:(verdicts||[]).concat([x])};}
+
+/* THE ORDER, strongest state first, then the most recent evidence in this
+   entry, then the seat key, so it is a property of the text and never of
+   object key order. */
+var EV_RANK={confirmed:6, corrected:5, supported:4, candidate:3, unknown:2, inferred:1, rejected:0};
+function evOrder(claims){
+ return Object.keys(claims).sort(function(a,b){var x=claims[a], y=claims[b];
+  return (EV_RANK[y.state]-EV_RANK[x.state])||(y.last-x.last)||(a<b?-1:1);});}
+/* THE ACTIVE THREAD, the document's "select active thread". The claim the
+   person is talking about now: one with words in this entry, never one they
+   said not me to or corrected.
+
+   WHEN SOURCE AI MAY NAME ONE, it is the one srcHear ranks first among the
+   nameable, so the thread and the ask (srcTurn, rung first, his ruling at
+   round GO) are read by one reader and can never point at two seats.
+
+   WHEN IT MAY NAME NONE, it is the one with the newest evidence. Measured on
+   the document's own section 40 session: srcHear's order, rung then reading
+   then seat key, held "want to disappear" at the heart three turns running
+   after "guilty" had arrived at the solar plexus, because both read rung six
+   and heart sorts before solar, so the chat said the same line back three
+   times. The thread is what the person is writing about now.
+
+   heard is srcHear's own seat list, in its order. Null when no claim has
+   words here. */
+function evThread(claims,heard){
+ var live=Object.keys(claims).filter(function(k){var c=claims[k];
+  return c.mentions>0&&c.state!=='rejected'&&c.state!=='corrected';});
+ if(!live.length)return null;
+ var nm=(heard||[]).map(function(h){return h.seat;}).filter(function(k){
+  return live.indexOf(k)>=0&&EV_NAMEABLE.indexOf(claims[k].state)>=0;});
+ if(nm.length)return nm[0];
+ return live.sort(function(a,b){return (claims[b].last-claims[a].last)||(a<b?-1:1);})[0];}
+/* THE ROOT IS UNKNOWN, and at P0 it always is. The document, section 18 and
+   51.10: a root is the earliest supported origin the person's own evidence
+   reaches, through history, an event, an impression and a rule, and "if it
+   cannot be established, UNKNOWN is the correct result". Nothing in this
+   engine traces history yet, so no chain can close. What a seat coming back
+   across entries does earn is permission to ask about history, which is
+   the document's own precondition (section 18, "begins only with enough
+   evidence of repetition"), and that is what history names. srcHear's
+   rung ten is still called the root candidate in sourceai.js; under the
+   document it is this, the door to history, and not a root. */
+function evRoot(claims){
+ var h=Object.keys(claims).filter(function(k){var c=claims[k];
+  return c.mentions>0&&c.earlier>0&&EV_NAMEABLE.indexOf(c.state)>=0;});
+ return {state:'unknown', why:'no history has been traced, so no origin is supported', history:h.sort()};}
+
+/* ============================================================
+   THE SEAM PACKAGE'S LIFECYCLE, AND WHERE THESE STATES LAND IN IT. Round SK,
+   30 October. His later document, ATUNED_SOURCE_AI_SEAM_READY_HANDOFF,
+   02_SOURCE_AI_ENGINEERING_TDD.md section 4, the same day as this file, is
+   narrower than the 4 October one and wins where the two disagree:
+
+     CANDIDATE -> ASKED -> CONFIRMED | REFINED | REJECTED | UNRESOLVED, and
+     with further evidence REPEATED, WEAKENED, DISPUTED, INTEGRATED.
+
+   Its rule that changes the reading: "Repeated expressions in one event do
+   not count as independent episodes." So a seat heard twice inside one
+   entry is still one episode, and stays CANDIDATE, however supported this
+   file calls it; only a seat heard here AND in an earlier entry is
+   REPEATED. The eight states are kept, because the 4 October document's
+   questions still read them, and each is mapped, not swapped:
+
+     observed   evidence only, no candidate state
+     inferred   nothing said in this event, so no candidate in it
+     candidate  CANDIDATE, or ASKED once Source AI asked about it
+     supported  REPEATED when an earlier entry is behind it, otherwise
+                CANDIDATE (or ASKED), by the one-event rule above
+     confirmed  CONFIRMED      corrected  REFINED
+     rejected   REJECTED       unknown    UNRESOLVED
+
+   WEAKENED, DISPUTED and INTEGRATED are never produced, and that is said
+   rather than faked: weakened needs evidence that moves against a claim
+   over time, disputed needs the person's answer and new evidence to
+   conflict, and integrated needs "explicit comparable behavioral evidence"
+   after a release. Nothing in this engine measures any of the three.
+
+   Its rejection rule is kept, more strictly: "Rejection must not be
+   silently resurrected from a synonym hit; new separate evidence is needed
+   to reopen." Here only the person reopens a claim they turned down.
+   ============================================================ */
+var EV_SEAM_STATES=['CANDIDATE','ASKED','CONFIRMED','REFINED','REJECTED','UNRESOLVED',
+ 'REPEATED','WEAKENED','DISPUTED','INTEGRATED'];
+var EV_SEAM_NEVER=['WEAKENED','DISPUTED','INTEGRATED'];
+var EV_SEAM_PERSON={confirmed:'CONFIRMED', corrected:'REFINED', rejected:'REJECTED', unknown:'UNRESOLVED'};
+function evSeamState(c){
+ if(!c||!c.state)return null;
+ if(EV_SEAM_PERSON[c.state])return EV_SEAM_PERSON[c.state];
+ if(c.state==='observed'||c.state==='inferred'||!c.mentions)return null;
+ if(c.asked)return 'ASKED';
+ if(c.earlier>0)return 'REPEATED';
+ return 'CANDIDATE';}
+/* A PLACE IS SAID ONLY ONCE THE PERSON HAS SAID THE CLAIM IS THEIRS. The
+   package, 06_DIALOGUE_TDD.md: "Do not map to a chakra as fact without
+   user evidence", and "the spoken language should not reveal an
+   unconfirmed ontology label"; 02 section 3: "No reported somatic location
+   -> null, never invented anatomy." Where a story lands is this product's
+   own mapping, a hypothesis in its words, so naming it needs the person's
+   yes or their correction, not only more evidence. A place word the person
+   wrote themselves is their language and is always theirs to hear back. */
+var EV_PLACEABLE=['confirmed','corrected'];
+
+/* ============================================================
+   WHAT THE PERSON SAYS ABOUT THE CONVERSATION ITSELF. Round SK. The package's
+   dialogue states VENT, MOVE_ON and the CORRECT branch, 02 section 5:
+   "If caller says 'just vent,' stay in LISTEN", "MOVE_ON ends excavation for
+   this episode", and 06: "User rejecting a candidate -> mark rejected and
+   stop pressing it." Its own vectors are "I just want to vent", "I don't
+   want to talk about it anymore" and "No, that interpretation doesn't fit
+   me". Measured before this, on all three: nothing read them, so a person
+   who said any of them straight after a question was asked the next one.
+
+   READ OFF A SHORT LIST ON PURPOSE. A phrase list is inspectable and a
+   person can see why it fired. Each phrase is about the conversation and not
+   about life: "move on" alone is left out because "I can't move on from
+   him" is grief, not a request, and asking nothing after it would be the
+   miss. A phrase said with a no before it ("I don't want to vent") does not
+   count, by srcNegated, the same two word window the sniffer uses. A reject
+   phrase counts only in a short turn, because "that's not me" inside a long
+   story is far more often about something in the story.
+
+   Returns {intent, cue} or null. move_on outranks reject outranks vent: a
+   turn that both turns down a reading and asks to stop is a request to
+   stop. Pure, reads only the turn.
+
+   A CHANGE OF SUBJECT IS NOT A STOP, 31 October. "change the subject" and
+   "talk about something else" sat in the move_on list, so a person who
+   asked to talk about something else was told "Cool." and then met with
+   silence for the rest of the entry, about the new subject too: reproduced
+   in reviews/source-ai-conversation-diagnosis-2026-10-31.md, transcript 3.
+   They are shift now, which sets the old subject down and keeps asking
+   about the new one (the page's SRC_FROM, ui/storyui.js). shift outranks
+   move_on, because "I don't want to talk about this, can we talk about
+   something else" asks to go on, about something else. And the shape he
+   actually used, "I want to talk about my brother instead", names the new
+   subject inside the request, so a turn holding both "talk about" and
+   "instead" is a shift too: SRC_SHIFT_PAIR, each pair a phrase and the word
+   that has to follow it. */
+var SRC_INTENT={
+ shift:['change the subject','change of subject','talk about something else','talk about something different',
+  'something else to talk about','different subject','different topic','new subject','new topic',
+  'rather talk about'],
+ move_on:['dont want to talk about it','do not want to talk about it','dont want to talk about this',
+  'dont want to talk anymore','dont want to talk any more','stop asking','no more questions',
+  'enough questions','stop talking','can we stop','lets stop'],
+ reject:['doesnt fit me','that doesnt fit','does not fit me','thats not me','that is not me',
+  'thats not it','that is not it','thats not right','thats wrong','not what i meant','youre wrong',
+  'you are wrong'],
+ vent:['just want to vent','want to vent','need to vent','just venting','let me vent',
+  'just want to get it out','just need to get it out','just want to talk','just listen']};
+var SRC_INTENT_ORDER=['shift','move_on','reject','vent'];
+var SRC_INTENT_SHORT=12;
+var SRC_SHIFT_PAIR=[['talk about','instead']];
+function srcIntent(turn){
+ var nm=normMap(String(turn||'')), s=nm.s, words=s.trim()?s.trim().split(' ').length:0;
+ if(!words)return null;
+ for(var i=0;i<SRC_INTENT_ORDER.length;i++){var k=SRC_INTENT_ORDER[i], list=SRC_INTENT[k];
+  if(k==='reject'&&words>SRC_INTENT_SHORT)continue;
+  for(var j=0;j<list.length;j++){var c=' '+list[j]+' ', at=s.indexOf(c);
+   if(at<0)continue;
+   /* the phrases that carry their own no are read as said; the others are
+      set aside when a no stands before them */
+   if(!/^(dont|do not)/.test(list[j])&&srcNegated(s,at+1))continue;
+   return {intent:k, cue:list[j]};}
+  if(k==='shift')for(var q=0;q<SRC_SHIFT_PAIR.length;q++){var a=s.indexOf(' '+SRC_SHIFT_PAIR[q][0]+' ');
+   if(a>=0&&!srcNegated(s,a+1)&&s.indexOf(' '+SRC_SHIFT_PAIR[q][1]+' ',a)>a)
+    return {intent:'shift', cue:SRC_SHIFT_PAIR[q].join(' ')};}}
+ return null;}
+
+/* ============================================================
+   A TURN THAT IS ONLY TALK, 31 October. His session opened on "can you hear
+   me", twice, and Source AI's only reply to a turn with no feeling word in
+   it was the panel's own status line, "Nothing placed yet, so nothing is
+   asked", which reads as an instrument talking about itself, and then, by
+   the bug in srcChatNote, nothing at all. Measured in the diagnosis
+   (reviews/source-ai-conversation-diagnosis-2026-10-31.md): a greeting, a
+   check that it can hear, a question to Source AI and a bare "yeah" all
+   fell through to the same line or to silence.
+
+   Four acts, read the way srcIntent reads vent: a short stated list a
+   person can read and see why it fired, never a guess.
+
+     check  can you hear me, are you there, is this working
+     ask    a question about Source AI itself: what is this, who are you
+     greet  a turn that opens on hello, hi or hey, or asks how it is
+     brief  a turn made only of yes, yeah, okay, no and their kind
+
+   Each is read only in a short turn, and the page answers it only when the
+   turn carries no seat of its own (srcActNow, ui/storyui.js): "hello, I am
+   so anxious" is about being anxious, and the feeling is answered. A brief
+   turn has to be brief all the way through, every word on the list, so
+   "okay so then she left" is a story and not an okay. Pure, reads only the
+   turn, and nothing it returns reaches the record.
+
+   Returns {act, cue} or null, in SRC_ACT_ORDER: a check outranks a
+   question outranks a greeting outranks a yes, so "hello, can you hear me"
+   is answered as a check. */
+var SRC_ACT={
+ check:['can you hear me','do you hear me','can you hear','are you there','are you listening',
+  'is this working','is it working','is this on','is this thing on','anyone there','anybody there',
+  'can you understand me','hello hello','testing'],
+ ask:['what is this','whats this','what is source','who are you','what are you','how does this work',
+  'how does it work','how do i use this','how do i do this','what do you do','what can you do',
+  'what do i do','what should i say','what do i say','what should i talk about','what do i talk about',
+  'are you real','are you a person','are you human','are you a robot','are you a bot','are you ai',
+  'are you an ai','is this ai','is this a person','what am i supposed to do'],
+ greet:['hi','hello','hey','hiya','good morning','good afternoon','good evening','how are you'],
+ brief:['yeah','yes','yep','yup','yea','ya','ok','okay','sure','mm','mhm','hmm','uh','huh','um',
+  'right','true','maybe','no','nope','nah','not','really','i','guess','suppose','think','so',
+  'kind','sort','of','dont','know','dunno','fine','alright','cool']};
+var SRC_ACT_ORDER=['check','ask','greet','brief'];
+var SRC_ACT_SHORT={check:8, ask:SRC_INTENT_SHORT, greet:6, brief:5};
+function srcAct(turn){
+ var s=normMap(String(turn||'')).s, ws=s.trim()?s.trim().split(' '):[];
+ if(!ws.length)return null;
+ for(var i=0;i<SRC_ACT_ORDER.length;i++){var k=SRC_ACT_ORDER[i], list=SRC_ACT[k];
+  if(ws.length>SRC_ACT_SHORT[k])continue;
+  if(k==='brief'){
+   if(ws.every(function(w){return list.indexOf(w)>=0;}))return {act:k, cue:ws.join(' ')};
+   continue;}
+  for(var j=0;j<list.length;j++){var at=s.indexOf(' '+list[j]+' ');
+   if(at<0)continue;
+   /* a greeting opens the turn, "hi" anywhere else is a word in a story;
+      "how are you" is the one asked anywhere in it. NO NEGATION GUARD,
+      unlike srcIntent: every act but brief is a question to Source AI, and
+      a no before one, "No, can you hear me?", answers something else and
+      leaves the question standing. Found by coverage, 31 October, where
+      the guard never ran and would have filed that turn as nothing. */
+   if(k==='greet'&&at!==0&&list[j]!=='how are you')continue;
+   return {act:k, cue:list[j]};}}
+ return null;}
+/* ============================================================
+   THE QUESTION CHECK, section 35 of the Journal Mode blueprint, ten points,
+   as code every question Source AI builds passes through before it is shown.
+   Round SK, 30 October, TASKS.md.
+
+   The document's words: "Every generated question should pass: Is it one
+   question? Is it clear? Does it use the user's language? Does it ask about
+   observable experience? Does it preserve agency? Does it avoid inserting a
+   diagnosis? Does it avoid naming an unsupported pattern? Does it reduce
+   uncertainty? Does it advance the active thread? Is it necessary now? If
+   not, regenerate."
+
+   EACH POINT IS A RULE A PERSON COULD CHECK BY READING THE LINE. None is a
+   score and none has a weight, because there is no labelled set of good and
+   bad questions to fit a weight against, and a weight nobody can explain is
+   a magic number. A question passes all ten or it is refused, and the refusal
+   names the point and the words that failed it.
+
+   WHAT A QUESTION IS CHECKED AGAINST. A candidate is {q, dim, family,
+   target}: the line, the dimension of srcDims it asks about if any, the
+   question family it was drawn from, and the seat key it is about. The
+   context is {text, ledger, asked, passed}: the person's own words, the
+   evidence ledger (engine/evidence.js), the lines already shown in this
+   entry, and whether they moved on.
+
+   QUOTES ARE THE PERSON'S, AND ARE READ APART. Anything inside quote marks
+   must be the person's own letters (point 3), and is then left out of every
+   other point: "You wrote “I have to”" quotes a person, and is not Source AI
+   telling them they have to.
+
+   WHAT THIS DOES NOT DO, said so nobody reads more into it. It does not judge
+   whether a question is a good one. It refuses the kinds of bad the document
+   names, and it is only as wide as its lists: a leading question built from
+   words none of them hold would pass. The lists are written out below so
+   that gap is visible rather than assumed away.
+   ============================================================ */
+
+/* THE QUESTION FAMILIES, the document's own wording, section 7 and section
+   24, and nothing written here. Each carries the dimension of srcDims it
+   asks about, where one fits, and what evidence it needs before it may be
+   asked: repetition needs a claim with more than one piece of evidence
+   under it, and history and origin need that claim heard across entries too,
+   section 18: root tracing "begins only with enough evidence of repetition
+   or persistence".
+
+   THE ORDER IS SECTION 6's PRIORITY ORDER, clarification, behaviour,
+   intention, immediate consequence, body, repetition, function, history,
+   origin. Section 7 files "What happens next?" under behaviour; section 6
+   names immediate consequence as its own step, and that is where it sits,
+   with no dimension, because srcDims has none for what happened next.
+   Agency waits for a behaviour: section 2.3 asks "What would you rather be
+   doing?" of somebody who said what they do, to find the competing choice,
+   and asked of "I am terrified" it contrasts nothing. Measured on the story
+   bank before this gate, it was the line chosen after a bare feeling word.
+   "What gets in the way of doing it?" is left out: it assumes a blocked
+   intention the person may never have stated, which is section 2.3's
+   warning about agency.
+   Clarification is held back (need 'unclear'): the document gives the
+   reading of what is unclear to a language model, section 38, and this
+   product has none, so nothing can set it yet and it is never chosen. Two of
+   the document's own lines fail its own section 8 unless the person used
+   the word first, and are kept so the check is seen to catch them: "What
+   part feels uncertain?" plants uncertain, and "What does that let you
+   avoid?" plants avoidance. */
+var SRC_FAMILY=[
+ {family:'clarification', need:'unclear', dim:null, q:'What do you mean by that?'},
+ {family:'clarification', need:'unclear', dim:null, q:'What part feels uncertain?'},
+ {family:'behaviour', dim:'behaviour', q:'What did you do?'},
+ {family:'agency', need:'behaviour', dim:'goal', q:'What would you rather be doing?'},
+ {family:'agency', need:'behaviour', dim:'goal', q:'What did you want to do?'},
+ {family:'consequence', dim:null, q:'What happens next?'},
+ {family:'body', dim:'body', q:'Where do you feel it?'},
+ {family:'body', dim:'body', q:'What do you notice first?'},
+ {family:'repetition', need:'supported', dim:null, q:'When else does this happen?'},
+ {family:'repetition', need:'supported', dim:null, q:'Where else does this happen?'},
+ {family:'function', dim:'behaviour', q:'What changes after you do it?'},
+ {family:'function', dim:'behaviour', q:'What does that let you avoid?'},
+ {family:'history', need:'history', dim:null, q:'How long has this been happening?'},
+ {family:'history', need:'history', dim:null, q:'What was happening then?'},
+ {family:'origin', need:'history', dim:null, q:'What happened the first time you remember this?'}];
+
+/* POINT 2, CLEAR. The document: "approximately a 10th-grade comprehension
+   level", short sentences, concrete words, no academic terms. Read on the
+   question sentence, quotes left out, as a Flesch Kincaid grade, with
+   syllables counted by vowel groups. That count is rough and is the only one
+   the engine can make with no dictionary; its own bad example, "What is the
+   primary unresolved component of the recollection?", grades past twelve on
+   it and its good one, "What part feels uncertain?", under four. */
+var QC_GRADE=10, QC_QWORDS=14, QC_WORDS=32;
+/* the document's own academic examples, and the therapeutic cliches section
+   24 says to avoid. Pop words a person might well use themselves, trigger
+   and process among them, are left off rather than guessed at. */
+var QC_JARGON=['somatic','manifestation','localized','localised','component','unresolved',
+ 'recollection','dysregulation','dysregulated','trauma','traumatic','nervous system',
+ 'attachment','projection','inner child','shadow work','boundaries','cognitive','emotional state'];
+function qcSyl(w){
+ w=String(w).toLowerCase().replace(/[^a-z]/g,''); if(!w)return 0;
+ if(w.length<=3)return 1;
+ w=w.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/,'').replace(/^y/,'');
+ var g=w.match(/[aeiouy]{1,2}/g); return g?g.length:1;}
+function qcGrade(s){
+ var ws=String(s).split(/\s+/).filter(function(w){return /[a-z]/i.test(w);});
+ if(!ws.length)return 0;
+ var sy=ws.reduce(function(a,w){return a+qcSyl(w);},0);
+ return Math.round((0.39*ws.length+11.8*(sy/ws.length)-15.59)*10)/10;}
+
+/* POINT 4, OBSERVABLE. A question about what happened, what was done, felt
+   or noticed, where and when. Asking why asks for an explanation, and an
+   explanation is not experience: the document's preferred questions, section
+   24, have no why among them, and its root tracing walks what happened, what
+   was decided, what was learned. */
+var QC_CAUSE=['why','what causes','what caused','the reason','do you think','bottom of it',
+ 'deep down','really about'];
+/* POINT 5, AGENCY. Nothing that casts the person as pushed by a force, and
+   nothing that tells them what they must do. Section 2.3: behaviour is not
+   treated as involuntary. */
+var QC_FORCE=['made you','make you','makes you','forced you','takes you','drives you',
+ 'pulls you','cant help','couldnt help','you always','you never','you should','you need to',
+ 'you have to','you must'];
+/* POINT 6, NO DIAGNOSIS. Every canon name (the addresses, the saboteurs, the
+   charges) and these labels, unless the person wrote the word first. And
+   every word the sniffer itself reads as charge in the question: the same
+   reader that reads the person reads Source AI, so "Are you feeling shame?"
+   is caught by the lexicon that knows shame, not by a second list of
+   feelings that would drift from it. */
+var QC_LABELS=['pattern','saboteur','fetter','complex','diagnosis','disorder','chakra','blockage',
+ 'wound','abandonment','avoidance','avoid','avoiding','withdrawal','withdraw','control',
+ 'controlling','codependent','codependency','narcissist','narcissistic','people pleaser',
+ 'perfectionist','perfectionism','parents','mother','father','mom','mum','dad','childhood',
+ 'child','family','ancestors','lazy','root'];
+/* POINT 7, NO UNSUPPORTED PATTERN. A line that says a word came back says a
+   claim, and may only say one the ledger holds as nameable (EV_NAMEABLE). A
+   line that says where something lands needs more, the person's own yes or
+   correction (EV_PLACEABLE), since round SK; see QC_LANDS. The places are the seat names and the body's
+   own place words, SOMA_PLACE_WORDS, as srcAsk and srcWhy say them. */
+var QC_AGAIN=['again','twice','three times','each time','every time','keep coming','comes back',
+ 'come back','earlier entry','wrote before','last time'];
+/* SINCE ROUND SK a place is its own rule, stricter than a return: where a
+   story lands is said only about a claim the person confirmed or corrected
+   (EV_PLACEABLE, engine/evidence.js, and the package's reasons beside it),
+   while saying a word came back needs only that it did. "lands" moved here
+   from the list above, because "it lands" is a place said. */
+var QC_LANDS=['lands','land'];
+/* place words that name no seat: "what happens in your body" asks about the
+   body and says nothing about where a story lands. And srcDims's own
+   SRC_BODY_NOT, the place words ordinary sentences use for something else,
+   "takes you back", "on the other hand". */
+var QC_NOTPLACE=['body','skin','muscles'];
+var QC_PLACE=null;
+function qcPlaces(){
+ if(QC_PLACE)return QC_PLACE;
+ QC_PLACE=['base of your spine','low in your belly','behind your stomach','around your heart',
+  'in your throat','behind your eyes','top of your head','solar plexus','third eye']
+  .concat(SOMA_PLACE_WORDS.filter(function(w){
+   return QC_NOTPLACE.indexOf(w)<0&&SRC_BODY_NOT.indexOf(w)<0;}));
+ return QC_PLACE;}
+var QC_CANON=null;
+function qcCanon(){
+ if(QC_CANON)return QC_CANON;
+ var s={};
+ NODES.forEach(function(n){if(n&&n.n)s[String(n.n).toLowerCase()]=1;});
+ SAB33.forEach(function(x){s[String(x[0]).toLowerCase().replace(/-/g,' ')]=1;});
+ CHARGES.forEach(function(c){s[String(c).toLowerCase()]=1;});
+ QC_LABELS.forEach(function(w){s[w]=1;});
+ QC_CANON=Object.keys(s).sort();
+ return QC_CANON;}
+
+/* the line apart from its quotes, and the quotes */
+var QC_QUOTE=/[“"]([^”"]+)[”"]/g;
+function qcSplit(q){
+ var quotes=[], m; QC_QUOTE.lastIndex=0;
+ while((m=QC_QUOTE.exec(q)))quotes.push(m[1]);
+ return {quotes:quotes, bare:String(q).replace(QC_QUOTE,' ')};}
+/* the question sentence: the last one, the one that ends on the mark. No
+   lookbehind in the pattern: an engine regex an older Safari cannot parse is
+   a parse error, and a parse error here stops every file after it. */
+function qcAsked(bare){
+ var s=String(bare).trim(), m=s.match(/[^.!?]*\?\s*$/);
+ if(m)return m[0].trim();
+ var parts=s.split(/[.!?]\s+/).filter(function(x){return x.trim();});
+ return parts.length?parts[parts.length-1]:'';}
+function qcHas(norm,w){ return norm.indexOf(' '+w+' ')>=0; }
+/* every phrase on the list the line holds, read on normMap's own copy.
+   EACH LIST IS NORMALISED ONCE, round SK. Measured: one ask ran sixteen
+   candidates through ten checks and normalised every word of every list each
+   time, the canon list alone 179 names, about 25 ms an ask in node, paid on
+   every repaint of the page. That was enough to swallow an animation frame:
+   tests/functional.js caught the vitality bar arriving at its end two frames
+   after a render, on this build and not on the one before it. The lists are
+   fixed at load, so their normal form is kept beside them. */
+function qcNorm(list){
+ if(!list.__qn)Object.defineProperty(list,'__qn',{value:list.map(function(w){return normMap(w).s.trim();})});
+ return list.__qn;}
+function qcFind(norm,list){
+ var n=qcNorm(list); return list.filter(function(w,i){return qcHas(norm,n[i]);}); }
+/* the sniffer's own read of a line, kept for the lines asked again and again:
+   the family questions never change and the lead changes only with the text */
+var QC_READ={}, QC_READ_N=0;
+function qcRead(bare){
+ if(QC_READ.hasOwnProperty(bare))return QC_READ[bare];
+ if(++QC_READ_N>400){QC_READ={}; QC_READ_N=1;}
+ return (QC_READ[bare]=storyHits(parseStory(bare)).map(function(h){return String(h.t).trim();}));}
+var QC_SAID_T=null, QC_SAID_S='';
+function qcSaid(text){ if(text!==QC_SAID_T){QC_SAID_T=text; QC_SAID_S=normMap(text).s;} return QC_SAID_S; }
+var QC_ASKW=['what','where','when','who','how','which','why','is','are','do','does','did','can',
+ 'could','would','will','have','has'];
+
+/* CHECK ONE CANDIDATE. Returns {ok, q, checks, fails}; checks is all ten,
+   in the document's order, each {n, rule, ok, why}. Pure. */
+function srcVet(cand,ctx){
+ cand=cand||{}; ctx=ctx||{};
+ var q=String(cand.q||'').trim(), text=String(ctx.text||''), L=ctx.ledger||null;
+ var said=qcSaid(text), sp=qcSplit(q), bare=sp.bare, nb=normMap(bare).s;
+ var asked=qcAsked(bare), na=normMap(asked).s;
+ var claim=(L&&cand.target&&L.claims)?L.claims[cand.target]||null:null;
+ var nameable=!!(claim&&EV_NAMEABLE.indexOf(claim.state)>=0);
+ var checks=[], add=function(n,rule,ok,why){checks.push({n:n, rule:rule, ok:!!ok, why:ok?'':why});};
+ var notSaid=function(list){var n=qcNorm(list); return list.filter(function(w,i){return !qcHas(said,n[i]);});};
+
+ /* 1 ONE QUESTION. One mark, at the end, and one asking clause: a leading
+    "when you say it," or "if it," is a condition and not a second question. */
+ var marks=(q.match(/\?/g)||[]).length;
+ var body=asked.toLowerCase().replace(/[^a-z,\s]/g,' ').replace(/^\s*(when|if)\b[^,]*,/,' ');
+ var clauses=body.split(/,| and | or | but /).map(function(x){return x.trim().split(' ')[0];})
+  .filter(function(w){return QC_ASKW.indexOf(w)>=0;}).length;
+ add(1,'one question',marks===1&&/\?\s*$/.test(q)&&clauses<=1,
+  marks!==1?(marks+' question marks'):(!/\?\s*$/.test(q)?'it does not end on the question':'two questions in one sentence'));
+
+ /* 2 CLEAR */
+ var aw=asked.split(/\s+/).filter(function(w){return /[a-z]/i.test(w);}).length;
+ var lw=bare.split(/\s+/).filter(function(w){return /[a-z]/i.test(w);}).length+sp.quotes.join(' ').split(/\s+/).filter(Boolean).length;
+ var gr=qcGrade(asked), jar=notSaid(qcFind(nb,QC_JARGON));
+ add(2,'clear',gr<=QC_GRADE&&aw<=QC_QWORDS&&lw<=QC_WORDS&&!jar.length,
+  jar.length?('words a ten year old would not use: '+jar.join(', ')):
+  (gr>QC_GRADE?('reads at grade '+gr+', over '+QC_GRADE):(aw>QC_QWORDS?('the question is '+aw+' words, over '+QC_QWORDS):('the line is '+lw+' words, over '+QC_WORDS))));
+
+ /* 3 THE PERSON'S OWN LANGUAGE. Every quote is letters they wrote. */
+ var bad=sp.quotes.filter(function(x){var n=normMap(x).s.trim(); return !n||!qcHas(said,n);});
+ add(3,'the person\'s own words',!bad.length,'quotes words they did not write: '+bad.join(', '));
+
+ /* 4 OBSERVABLE */
+ var cause=qcFind(na,QC_CAUSE);
+ add(4,'observable experience',!cause.length,'asks for a cause, not what happened: '+cause.join(', '));
+
+ /* 5 AGENCY */
+ var force=qcFind(nb,QC_FORCE);
+ add(5,'agency',!force.length,'casts the person as pushed or told: '+force.join(', '));
+
+ /* 6 NO DIAGNOSIS. Canon names and labels, then the sniffer's own read. */
+ var named=notSaid(qcFind(nb,qcCanon()));
+ var charged=[];
+ qcRead(bare).forEach(function(w){
+  if(w&&!qcHas(said,w)&&charged.indexOf(w)<0)charged.push(w);});
+ add(6,'no diagnosis',!named.length&&!charged.length,
+  'names what the person did not say: '+named.concat(charged.filter(function(w){return named.indexOf(w)<0;})).join(', '));
+
+ /* 7 NO UNSUPPORTED PATTERN */
+ var says=notSaid(qcFind(nb,QC_AGAIN));
+ var where=notSaid(qcFind(nb,QC_LANDS.concat(qcPlaces())));
+ var placeable=!!(claim&&EV_PLACEABLE.indexOf(claim.state)>=0);
+ var need=cand.need||'';
+ var fam=need==='supported'||need==='history';
+ var okAgain=(!says.length||nameable)&&(!fam||nameable);
+ var okWhere=!where.length||placeable;
+ var okHist=need!=='history'||!!(claim&&claim.earlier>0);
+ add(7,'no unsupported pattern',okAgain&&okWhere&&okHist,
+  !claim&&(says.length||where.length||fam)?'it says a pattern and is about no claim':
+  (!okWhere?('says where it lands, '+where.join(', ')+', about a claim the person has not confirmed, held as '+claim.state):
+  (!okAgain?('says '+(says.join(', ')||cand.family)+' about a claim held only as '+claim.state):
+  'asks about history before the seat has come back across entries')));
+
+ /* 8 REDUCES UNCERTAINTY. It must say what it is for, and not ask what the
+    entry already answers while something else is still open. */
+ var dims=L&&L.dims, open=(dims&&dims.open)||[];
+ var purpose=!!(cand.dim||cand.family);
+ var answered=!!(cand.dim&&dims&&dims.answered&&dims.answered[cand.dim]);
+ var other=open.filter(function(k){return k!==cand.dim;}).length>0;
+ var noDo=cand.need==='behaviour'&&!(dims&&dims.answered&&dims.answered.behaviour);
+ add(8,'reduces uncertainty',purpose&&!(answered&&other)&&!noDo,
+  !purpose?'it carries no purpose':(noDo?'it asks what else they wanted before they said what they did':
+  ('the entry already answers '+cand.dim+', while '+open.join(', ')+' is open')));
+
+ /* 9 ADVANCES THE ACTIVE THREAD */
+ var thr=L?L.thread:null;
+ add(9,'advances the thread',!thr||cand.target===thr,
+  'it is about '+(cand.target||'nothing')+', and the person is writing about '+thr);
+
+ /* 10 NECESSARY NOW. A repeat is the same question sentence, whatever lead
+    stands before it: "You wrote it twice. What did you do?" and "You wrote
+    it three times. What did you do?" are one question asked twice. Measured
+    on the page, round SK: compared as whole lines, the count in the lead
+    moved and the same question passed as new. */
+ var qOf=function(x){return normMap(qcAsked(qcSplit(String(x)).bare)).s.trim();};
+ var nq=qOf(q), rep=!!nq&&(ctx.asked||[]).some(function(a){return qOf(a)===nq;});
+ var closed=!!(claim&&(claim.state==='rejected'||claim.state==='corrected'));
+ var stop=need==='unclear';
+ add(10,'necessary now',!ctx.passed&&!rep&&!closed&&!stop,
+  ctx.passed?'the person moved on':(rep?'already asked in this entry':
+  (closed?'the person already answered this claim':'nothing has said what is unclear')));
+
+ var fails=checks.filter(function(c){return !c.ok;});
+ return {ok:!fails.length, q:q, checks:checks, fails:fails};}
+
+/* REGENERATE, the document's last word on section 35. Tries each candidate
+   in the order given and returns the first that passes all ten, with every
+   refusal on the way, so a caller and a gate can both say why a line was
+   not shown. When nothing passes it returns no question at all, which is
+   section 23's Space: Source AI says nothing rather than something that
+   fails. */
+/* A FAMILY ALREADY ASKED WAITS. Section 22: stop or change direction when
+   "the next question would be repetitive". Seen on the page, round SK: the
+   person answered "What would you rather be doing?" with something else,
+   and the next turn was "What did you want to do?", the same question in
+   other words. So among the candidates, one from a family not yet asked in
+   this entry goes before one from a family that has been, each keeping its
+   place otherwise, which is srcNext's own novelty rule (engine/sourceai.js)
+   read for families. A family is known by its question, off SRC_FAMILY. */
+function qcFamilyOf(line){
+ var nq=normMap(qcAsked(qcSplit(String(line)).bare)).s.trim(), out=null;
+ SRC_FAMILY.forEach(function(f){if(!out&&normMap(f.q).s.trim()===nq)out=f.family;});
+ return out;}
+function srcChoose(cands,ctx){
+ var tried=[], used={};
+ ((ctx&&ctx.asked)||[]).forEach(function(a){var f=qcFamilyOf(a); if(f)used[f]=1;});
+ var list=(cands||[]).map(function(c,i){return {c:c, i:i, w:(c&&used[c.family])?1:0};})
+  .sort(function(a,b){return a.w-b.w||a.i-b.i;}).map(function(x){return x.c;});
+ for(var i=0;i<list.length;i++){
+  var r=srcVet(list[i],ctx); tried.push({q:r.q, fails:r.fails});
+  if(r.ok)return {ok:true, q:r.q, cand:list[i], tried:tried};}
+ return {ok:false, q:'', cand:null, tried:tried};}
+/* THE FAMILY QUESTIONS AS CANDIDATES about one claim, each after a lead the
+   caller builds from the person's own words (a mirror, section 23), in the
+   document's order. */
+function srcFamilyCands(lead,target){
+ var pre=String(lead||'').trim();
+ return SRC_FAMILY.map(function(f){
+  return {q:(pre?pre+' ':'')+f.q, base:f.q, dim:f.dim, family:f.family, need:f.need||'', target:target||null};});}
+/* A LINE THAT SAYS AND DOES NOT ASK, section 23's Mirror and Name. Three of
+   the ten points are about any line Source AI says, not only a question: the
+   quotes are the person's (3), nothing is diagnosed (6), and no claim is
+   said that the ledger does not hold as nameable (7). Mirror says the
+   person's words back; Name says where they land, and section 23 allows
+   that "only when evidence supports it". Same rules, same code: this is
+   srcVet's own result with the seven points that only a question has set
+   aside. */
+function srcVetSay(line,ctx,target){
+ var r=srcVet({q:String(line||'').trim()+' ?', target:target||null, family:'say'},ctx);
+ var keep=r.checks.filter(function(c){return c.n===3||c.n===6||c.n===7;});
+ var fails=keep.filter(function(c){return !c.ok;});
+ return {ok:!fails.length, line:String(line||'').trim(), checks:keep, fails:fails};}
 
 /* ============================================================
    ASTRO. The actual sky, computed here, offline, from the birth
@@ -20900,6 +21914,28 @@ function read(prof,opts){
  if(o.write)output(p);
  r.rec=(o.story&&!o.write)?null:(typeof p.id==='string'&&p.id?p.id:null);
  return {profile:p, reading:r, snapshot:snapshot(p)};}
+
+/* ---------- the reading of what is already loaded ----------
+   THE PRODUCT'S GRAPHS ARE BUILT WHILE A RECORD IS LOADED, AND read() WOULD
+   UNLOAD IT. The nerve to celestial audit of 31 October asked that the three
+   graph builds a screen is drawn from be handed read(p).reading. read() starts
+   with loadProfile, which rewrites S from the record on disk: anything in the
+   working state that is ahead of the record is gone, and on the practitioner
+   page, where the record is not the one loaded at all, a stranger's field is
+   left in S for the next pSave to write onto the person's own record. So the
+   screens are not handed read().
+
+   They are handed this. compute() of the field already loaded, which is the
+   reading every screen is already drawn from, stamped with the record only
+   when S.rec says the field was loaded from that record. S.rec is the same
+   binding profHold (engine/profiles.js) asks before it writes S onto a record,
+   so a field trusted to be written as this record's is the field read as this
+   record's, and nothing else is. Any other record, or one with no id, is null,
+   which traceFromRecord reads as no reading. Nothing is loaded or written. */
+function readHeld(p){
+ if(!p||typeof p!=='object'||typeof p.id!=='string'||!p.id||S.rec!==p.id)return null;
+ var r=compute(); r.rec=p.id;
+ return r;}
 /* ============================================================
    THE LADDER. What you have done, and what it has cost you to do it.
 
@@ -21658,9 +22694,11 @@ function dlyRefWhy(type,id){
  /* THE CHAIN'S FOUR RUNGS ARE GRAPH TYPES AND STILL NOT EVIDENCE A DAY
     CITES, 22 October. They joined TRACE_NODE_TYPES with the chain
     (engine/trace.js), and the line below would have let a stored day carry
-    one through this boundary, where before it was refused. A day's graph
-    (dlyGraph) is read with no reading and holds no rung, so such a
-    citation could never resolve. Refused by name, so a day citing a rung
+    one through this boundary, where before it was refused. A day is
+    grounded on a graph read with no reading, which holds no rung, so such a
+    citation could never resolve (dlyGraph can take a reading since 31
+    October, and the grounding still hands it none, for the reason given
+    there). Refused by name, so a day citing a rung
     is somebody's decision and not a side effect of a vocabulary growing. */
  if(TRACE_CHAIN.indexOf(type)>=0)return 'names a rung of the chain, which a day does not cite: '+type;
  if(TRACE_NODE_TYPES.indexOf(type)>=0)return null;
@@ -22380,8 +23418,21 @@ var DLY_RX={
 /* a reference, resolved against the record or the graph, with what it is as
    provenance. null is a reference that names nothing, which is fabricated
    evidence. */
-function dlyGraph(p){
- try{return traceFromRecord(p,practiceTraceIntents(p.practice));}catch(e){return null;}}
+/* THE READING IS OPTIONAL AND IS NEVER MADE HERE, the nerve to celestial
+   audit's first gap, 31 October. Handed one of this record (THE READING HANDED
+   IN, engine/trace.js), the graph carries the chain; dlyWhy takes it from its
+   caller as opt.reading, because a path between two things a day cites can run
+   through a saboteur both are part of, and the drawer should show the graph
+   that is there.
+
+   THE DAY'S OWN GROUNDING IS STILL READ WITH NONE, ON PURPOSE. dlyResolve only
+   asks whether a cited node exists, and a day may not cite a rung (dlyRefWhy).
+   Handing the composer a reading would let a sentence citing one resolve while
+   the draft is made and be refused only when it is sealed, so a day that froze
+   yesterday would fail today on a vocabulary that grew. A rung a day cites
+   stays somebody's decision at the boundary, not a side effect here. */
+function dlyGraph(p,reading){
+ try{return traceFromRecord(p,practiceTraceIntents(p.practice),reading);}catch(e){return null;}}
 function dlyResolve(p,ref,gx){
  var t=ref&&ref.type, id=ref&&ref.id, i;
  if(typeof t!=='string'||typeof id!=='string')return null;
@@ -22558,7 +23609,7 @@ function dlyWhy(p,sid,idx,opt){
  if(!day)return {ok:false, why:'no frozen day is named '+sid};
  var st=day.st[idx];
  if(!st)return {ok:false, why:'day '+sid+' has no statement '+idx};
- var g=(opt&&opt.graph)||dlyGraph(p), gx={p:p, graph:g, reads:{}};
+ var g=(opt&&opt.graph)||dlyGraph(p,opt&&opt.reading), gx={p:p, graph:g, reads:{}};
  var ids=traceStoryIds(p), ents=(p.story&&p.story.entries)||[], keys=[];
  var refs=st.ev.map(function(r){
   var res=dlyResolve(p,r,gx), kind=r.type==='kb'?'kb':(DLY_REC.indexOf(r.type)>=0?'record':'graph');
@@ -23583,6 +24634,19 @@ if(typeof module!=='undefined'&&module.exports){
                  srcDims:srcDims, srcNext:srcNext,
                  SRC_KINDS:SRC_KINDS, SRC_OUTCOMES:SRC_OUTCOMES,
                  srcAsked:srcAsked, srcAskedMax:srcAskedMax,
+  /* evidence */  EV_STATES:EV_STATES, EV_PERSON:EV_PERSON, EV_ENGINE:EV_ENGINE, EV_NAMEABLE:EV_NAMEABLE,
+                 EV_VERDICT:EV_VERDICT, EV_MOVES:EV_MOVES, EV_TRACE:EV_TRACE, EV_RANK:EV_RANK,
+                 evTraceSrc:evTraceSrc, evCan:evCan, evEngineState:evEngineState, evWhy:evWhy,
+                 evLedger:evLedger, evVerdict:evVerdict, evVerdictOk:evVerdictOk,
+                 evOrder:evOrder, evThread:evThread, evRoot:evRoot,
+                 EV_SEAM_STATES:EV_SEAM_STATES, EV_SEAM_NEVER:EV_SEAM_NEVER, EV_SEAM_PERSON:EV_SEAM_PERSON,
+                 EV_PLACEABLE:EV_PLACEABLE, evSeamState:evSeamState,
+                 SRC_INTENT:SRC_INTENT, SRC_INTENT_ORDER:SRC_INTENT_ORDER, SRC_INTENT_SHORT:SRC_INTENT_SHORT, srcIntent:srcIntent,
+                 SRC_SHIFT_PAIR:SRC_SHIFT_PAIR, SRC_ACT:SRC_ACT, SRC_ACT_ORDER:SRC_ACT_ORDER, SRC_ACT_SHORT:SRC_ACT_SHORT, srcAct:srcAct,
+  /* qcheck */    SRC_FAMILY:SRC_FAMILY, QC_GRADE:QC_GRADE, QC_QWORDS:QC_QWORDS, QC_WORDS:QC_WORDS,
+                 QC_JARGON:QC_JARGON, QC_CAUSE:QC_CAUSE, QC_FORCE:QC_FORCE, QC_LABELS:QC_LABELS,
+                 QC_AGAIN:QC_AGAIN, QC_LANDS:QC_LANDS, qcGrade:qcGrade, qcSyl:qcSyl, qcCanon:qcCanon, qcPlaces:qcPlaces,
+                 srcVet:srcVet, srcVetSay:srcVetSay, srcChoose:srcChoose, qcFamilyOf:qcFamilyOf, srcFamilyCands:srcFamilyCands,
   /* undo */     undoPush:undoPush, undoPop:undoPop, undoDepth:undoDepth,
                  redoPop:redoPop, redoDepth:redoDepth, redoPeek:redoPeek,
                   undoPeek:undoPeek, undoClear:undoClear, UNDO_MAX:UNDO_MAX,
@@ -23709,10 +24773,13 @@ if(typeof module!=='undefined'&&module.exports){
                   VERPCUE:VERPCUE, VERPMULT:VERPMULT, VERP_VS:VERP_VS,
                   LEAN_FRAME_W:LEAN_FRAME_W, LEAN_TRUST_CAP:LEAN_TRUST_CAP,
                   LEAN_TRUST_HALF:LEAN_TRUST_HALF, LEAN_MIN_CH:LEAN_MIN_CH,
-  /* the door */  read:read, input:input, throughput:throughput, output:output,
+  /* the door */  read:read, input:input, throughput:throughput, output:output, readHeld:readHeld,
                   gatesClear:gatesClear, gatesLoad:gatesLoad, gatesSave:gatesSave,
   /* schema */    blankProfile:blankProfile, AXIS_BLANK:AXIS_BLANK, loadProfile:loadProfile,
                   saveProfile:saveProfile, snapshot:snapshot, LAW_DEFAULT:LAW_DEFAULT,
+  /* the record labels the product writes, and the one question a surface
+     asks of a name, F3 of the 31 October walk */
+                  REC_NAMES:REC_NAMES, ownName:ownName,
   /* the twenty one on every history row, the one law over time a graph reads,
      and the renames both the loader and the boundary read */
                   snapLaws:snapLaws, lawSeries:lawSeries, LAW_WAS:LAW_WAS,
@@ -23722,7 +24789,7 @@ if(typeof module!=='undefined'&&module.exports){
      has been loaded clears these to say the values it set were answered;
      otherwise a law set to exactly the seed reads as unanswered, which is
      saveProfile's documented blind spot and correct for a person. */
-                  LAW_UNSET:LAW_UNSET,
+                  LAW_UNSET:LAW_UNSET, SOUL_FROM:SOUL_FROM,
                   pExport:pExport, pImport:pImport, validateProfile:validateProfile, importError:importError,
                   importRefuse:importRefuse, linkWrap:linkWrap, linkUnwrap:linkUnwrap,
                   LINK_V:LINK_V, LINK_MAX:LINK_MAX,
@@ -23866,7 +24933,7 @@ if(typeof module!=='undefined'&&module.exports){
                   TRACE_LOOP:TRACE_LOOP, TRACE_INVERSE:TRACE_INVERSE, TRACE_SYMMETRIC:TRACE_SYMMETRIC,
                   TRACE_CAUSE_SRC:TRACE_CAUSE_SRC, TRACE_PROMOTE:TRACE_PROMOTE, TRACE_TABLE:TRACE_TABLE,
                   TRACE_RESOLVED:TRACE_RESOLVED, TRACE_NEEDS:TRACE_NEEDS, TRACE_MAX:TRACE_MAX,
-                  TRACE_ID_MAX:TRACE_ID_MAX,
+                  TRACE_ID_MAX:TRACE_ID_MAX, TRACE_NAMED:TRACE_NAMED,
                   traceKey:traceKey, traceSplit:traceSplit, traceNew:traceNew, traceRuleOf:traceRuleOf,
                   traceAddNode:traceAddNode, traceAddEdge:traceAddEdge, traceRemoveEdge:traceRemoveEdge,
                   traceNeighbors:traceNeighbors, tracePath:tracePath, traceOrphans:traceOrphans,
@@ -23925,7 +24992,7 @@ if(typeof module!=='undefined'&&module.exports){
                   dlyToday:dlyToday, dlySize:dlySize,
                   dlyCtx:dlyCtx, dlyChanges:dlyChanges, dlyContra:dlyContra, dlyFocus:dlyFocus,
                   dlyUnread:dlyUnread, dlyCompose:dlyCompose, dlyGround:dlyGround, dlyNotes:dlyNotes,
-                  dlyResolve:dlyResolve, dlySeal:dlySeal, dlyDayOpen:dlyDayOpen, dlyWhy:dlyWhy,
+                  dlyResolve:dlyResolve, dlyGraph:dlyGraph, dlySeal:dlySeal, dlyDayOpen:dlyDayOpen, dlyWhy:dlyWhy,
   /* the first release's size and where a person is on the way in,
      engine/data/onboarding.js and engine/journey.js. Reads only. */
                   ONB_MINI_ADDRS:ONB_MINI_ADDRS, ONB_MINI_DOSE:ONB_MINI_DOSE, ONB_CHANS:ONB_CHANS,

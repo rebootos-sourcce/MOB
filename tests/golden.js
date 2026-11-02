@@ -503,6 +503,27 @@ async function door(browser, SITE, cut, giftAt) {
       : (/^(early|partial)$/.test(sumCQ) && num(sumCQ) == null),
     'Summary prints how much of the quiz\'s reading is in: a word while the laws are being answered, CQ as a percent equal to its ring once all are, ' + J({ sumCQ, plate }),
     'Summary prints a bare coherence figure, a word outside the ladder, or a percent its ring does not draw');
+  /* ONE READING, ONE FIGURE, A PRESS APART. 31 October, the QA walk's F2:
+     the quiz printed a bare "51" and Summary "51%" for the same record.
+     Station 2 compared the two as numbers, which is why it never saw it. The
+     strings are compared here, once the plate prints a figure at all. */
+  ok(!plate.complete || sumCQ === quizCQ,
+    'the quiz printed coherence as Summary prints it for the same record: quiz ' + J(quizCQ) + ', Summary ' + J(sumCQ),
+    'two figures for one reading, a press apart');
+  /* NOBODY CALLED WEB. 31 October, the QA walk's F3: the quiz names the
+     record it hands over "Web reading", a label for the record, and the plate
+     printed its first word as the person's name in the largest type on the
+     page. The rail's card reads the same name the same way. A record nobody
+     has named prints the house's own word, You, on both, and never a word of
+     the label. */
+  const whoSaid = await page.evaluate(() => {
+    const t = s => { const e = document.querySelector(s); return e ? e.textContent.trim() : null; };
+    return { plate: t('#sum .s-pname'), rail: t('#person h3') }; });
+  const labelWords = String(landed || '').toLowerCase().split(/\s+/).filter(Boolean);
+  ok((whoSaid.plate === null || whoSaid.plate === 'You') && (whoSaid.rail === null || whoSaid.rail === 'You')
+      && labelWords.every(x => [whoSaid.plate, whoSaid.rail].every(s => String(s || '').toLowerCase().indexOf(x) < 0)),
+    'a funnel arrival who gave no name is called no name: plate ' + J(whoSaid.plate) + ', rail ' + J(whoSaid.rail) + ', record ' + J(landed),
+    'the first screen greets them by a word of the record\'s label');
   await Q.click('#profbtn'); await Q.click('[data-pms="account"]');
   await page.waitForTimeout(250);
   const accHd = await page.evaluate(() => { const h = document.querySelector('#settings .ac-hd'); return h ? h.innerText : ''; });
@@ -743,11 +764,10 @@ async function door(browser, SITE, cut, giftAt) {
   station(5, 'Q: the first release, from the Story page');
   await Q.tab(0);
   const cq0 = (await Q.live()).CQ;
-  /* conversation only now, round of 28 October: #sttext does not render in
-     the ordinary flow, so the story reaches ST_TEXT through the reply box
-     and a send, the way a person does. */
-  await page.evaluate(t => { const ci = document.getElementById('stcin');
-   if (ci) { ci.value = t; ci.dispatchEvent(new Event('input', { bubbles: true })); srcChatSend(); } }, STORY).catch(() => {});
+  /* voice only now, round of 29 October: #sttext does not render in the
+     ordinary flow, so the story reaches ST_TEXT through srcTurnCommit, the
+     one door a turn lands through whether it is typed or spoken. */
+  await page.evaluate(t => { if (typeof srcTurnCommit === 'function') srcTurnCommit(t); }, STORY).catch(() => {});
   await page.waitForTimeout(500);
   ok(await Q.click('#stapply'), 'the story is written and Commit is there to press', 'no way to keep a story');
   const kept = await Q.waitSaid(/^\|Committed\. \d+ imprints? written to the field\./, 5000);
@@ -800,7 +820,11 @@ async function door(browser, SITE, cut, giftAt) {
   ok(num(relUp) != null && Math.abs(num(relUp) - +(L1.CQ - cq0).toFixed(2)) < 1e-9, 'and the same lift, ' + J(relUp) + ' against ' + (L1.CQ - cq0).toFixed(2));
   await Q.tab(2);
   const top = await Q.settled('#railtop .cr .v');
-  const key = await Q.settled('#key [data-pair="cqdq"] .rb2-p.l .rb2-v');
+  /* NAMED CHANGE, 30 October, r1: the coherence pair prints one figure, the
+     leaning side's share, so it is CQ only when CQ leads. CQ itself is always
+     said by its own door, the pair's left half, first in its spoken name. */
+  await Q.settled('#key [data-pair="coh"] .rb2-v');
+  const key = await page.evaluate(() => { const e = document.querySelector('#key [data-pair="coh"] .rb2-k.l'); return e ? e.getAttribute('aria-label') : null; });
   await Q.tab(1);
   const sum1 = await Q.settled('#sum .cr[title^="Coherence"] .v');
   const round = Math.round(L1.CQ);
@@ -1216,6 +1240,13 @@ async function door(browser, SITE, cut, giftAt) {
       if (moved < ms - 60000) { await pr.clock.fastForward(ms - moved); moved = (await plan()).now - was; }
       return moved >= ms - 60000; };
     const day = p => ((p.now - t0) / DAY).toFixed(3);
+    /* a read fires off a promise chain through authCall, so a fixed wait
+       races it under load: the probe this fix came from caught it failing
+       two runs in three with several other Playwright suites running at
+       once. Poll the real count instead. */
+    const waitReads = async (n, timeout) => { const start = Date.now();
+      while (reads() < n && Date.now() - start < timeout) await pr.waitForTimeout(50);
+      return reads(); };
     const p0 = await plan();
     ok(p0.k === 'one' && p0.state === 'live' && reads() === 1, 'at boot the plan is read once and tier one is in force: ' + J([p0.k, p0.state, reads()]));
     /* the renewal at Stripe on the period end: the server now holds the next period */
@@ -1235,8 +1266,8 @@ async function door(browser, SITE, cut, giftAt) {
     ok(reads() === 2, 'coming back to the tab within the hour of the last read sends nothing: ' + reads() + ' reads');
     await forward(2 * 3600e3);
     await pr.evaluate(() => { document.dispatchEvent(new Event('visibilitychange')); });
-    await pr.waitForTimeout(800);
-    ok(reads() === 3, 'and coming back after an hour reads the plan once more: ' + reads() + ' reads');
+    const r3 = await waitReads(3, 15000);
+    ok(r3 === 3, 'and coming back after an hour reads the plan once more: ' + r3 + ' reads');
     ok(R.errs.length === 0, 'no script error on this door: ' + R.errs.slice(0, 2).join(' | '));
     await R.ctx.close();
   }

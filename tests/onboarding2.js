@@ -1005,12 +1005,12 @@ console.log('\n=== Is this a crisis, on the welcome and after it (16 October) ==
    :(doors.length===2&&doors.every(d=>d.t==='Reach someone now'&&d.h>=44)&&doors.some(d=>d.row)&&doors.some(d=>d.bar)),
    (narrow?'Reach someone now stands beside the line, on the first screen, and only there':'Reach someone now stands beside the line and beside Commit')
    +', at the floor'+at+', '+JSON.stringify(doors));
-  /* and the door never splits Clear from Commit: the first cut wrapped at 390
-     with the door on Clear's line and Commit alone below it */
-  const pair=await page.evaluate(()=>{const c=document.getElementById('stclear'), m=document.getElementById('stapply');
-   if(!c||!m)return null; const a=c.getBoundingClientRect(), b=m.getBoundingClientRect();
-   return {sameLine:Math.abs(a.top-b.top)<2, order:b.left>a.right, right:Math.round(innerWidth-b.right)};});
-  ok(pair&&pair.sameLine&&pair.order,'with Clear and Commit still side by side, Commit last'+at+', '+JSON.stringify(pair));
+  /* CLEAR IS GONE, round of 29 October: see the ruling at .st-bar in
+     ui/storyui.js. This used to check the door never split Clear from
+     Commit on the same line; there is only Commit on that line now, so the
+     one thing left to hold is that Commit itself is still there to find. */
+  const commitHere=await page.evaluate(()=>!!document.getElementById('stapply'));
+  ok(commitHere,'with Commit still on the bar'+at);
   /* a missing door is a named failure and not a thirty second click timeout
      that ends the run before the checks after it */
   const doorSel=narrow?'.st-crxrow [data-crisis="reachnow"]':'.st-bar [data-crisis="reachnow"]';
@@ -1081,11 +1081,13 @@ console.log('\n=== the floor band says where to go and gives the door to it (16 
    'on the floor band the crisis button sits directly under "Where it goes"'+at+', '+JSON.stringify(plate.text));
   ok(plate.b&&plate.b.on&&plate.b.h>=44&&plate.rel&&plate.b.fs===plate.rel.fs&&plate.b.c===plate.rel.c,
    'at the tap floor, in the size and ink of the page\'s own Run a release'+at+', '+JSON.stringify({b:plate.b,rel:plate.rel}));
-  /* benign and malignant carry their plain meaning in the sentence that says
-     them, round PO's rule, and the meaning is the glossary's own sentence */
+  /* positive and negative carry their plain meaning in the sentence that says
+     them, round PO's rule, and the meaning is the glossary's own sentence.
+     Renamed from benign/malignant, 30 October, his words: "change it to
+     positive and negative". */
   const lean=await page.evaluate(()=>{const p=[...document.querySelectorAll('.s-story .s-p')]
-    .map(e=>e.textContent).find(t=>/Your energy leans (benign|malignant)/.test(t))||'';
-   const w=(p.match(/Your energy leans (benign|malignant)/)||[])[1]||null;
+    .map(e=>e.textContent).find(t=>/Your energy leans (positive|negative)/.test(t))||'';
+   const w=(p.match(/Your energy leans (positive|negative)/)||[])[1]||null;
    return {w, p, says:w?unpackOf(w,'rail'):null};});
   ok(lean.w&&lean.says&&lean.p.indexOf(lean.says)>lean.p.indexOf('Your energy leans'),
    'the reading says what '+lean.w+' means in the same sentence run'+at+', '+JSON.stringify(lean.p.slice(0,200)));
@@ -1127,7 +1129,18 @@ console.log('\n=== J0, the distress gap, reported rather than papered over ===')
 /* THIS IS NOT A SAFETY TEST. It cannot be: there is nothing in this engine
    to test. It is a standing check that nobody has quietly added a decorative
    frame that LOOKS like a safety check while answering no real signal,
-   which would be worse than the gap it is reporting. */
+   which would be worse than the gap it is reporting.
+
+   P3, NOT A SHIP BLOCKER, ruled 30 October: his words, "place a P0 the
+   safety are broken in production right now. The safety gap. I want to
+   handle that, but not for the MVP alpha... down prioritize that. As a
+   P3." J0 was already closed as a question round QW (WAITING-ON-YOU.md,
+   "I'm not dealing with crisis shit right now... stop asking until we move
+   towards the release candidate"), never formally entered the backlog as a
+   P0, and is needed for MVP beta, not alpha. This line used to call it a
+   ship blocker, which was never true after round QW and is now also
+   contrary to a direct ruling; kept here as the standing, honest report
+   that the gap is real, no longer dressed as more urgent than it is. */
 {
  const page=await browser.newPage({viewport:{width:1600,height:1000}});
  await page.goto(FILE+'?dev=1',{waitUntil:'load'}); await booted(page);
@@ -1136,10 +1149,10 @@ console.log('\n=== J0, the distress gap, reported rather than papered over ===')
   stopFrame:document.querySelectorAll('[class*="stop"],[id*="stop"]').length,
   src:String(window.obStoryDone||'')}));
  await page.close();
- console.log('  J0 STILL OPEN: no distress detector runs on a stranger\'s first story before it is');
- console.log('  committed. typeof a detector function: '+q.detector+' (expect undefined). This is a');
- console.log('  ship blocker for any build a stranger who is not the owner can reach, named as such in');
- console.log('  atuned_src/ui/onboard.js\'s own header, at the exact line obStoryDone hands the words to parseStory.');
+ console.log('  J0 STILL OPEN, P3 for MVP beta (round QW, confirmed 30 October): no distress');
+ console.log('  detector runs on a stranger\'s first story before it is committed. typeof a detector');
+ console.log('  function: '+q.detector+' (expect undefined), named at the exact line in');
+ console.log('  atuned_src/ui/onboard.js\'s own header where obStoryDone hands the words to parseStory.');
  ok(q.detector==='undefined',
   'confirmed: no distress detector exists in this build (the gap is real, not assumed)');
 }
