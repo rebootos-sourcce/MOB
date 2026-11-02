@@ -35,7 +35,7 @@ function personal(e,reading){
  return false;
 }
 function relation(e){return !!(e&&e.edge!=='causes'&&REL.indexOf(e.edge)>=0&&TYPES.indexOf(kind(e.from))>=0&&TYPES.indexOf(kind(e.to))>=0&&
- (e.edge==='supports'||e.edge==='obstructs'||e.edge==='reinforces')&&e.src!=='known');}
+ (e.edge==='supports'||e.edge==='obstructs'||e.edge==='reinforces')&&PROVENANCE.indexOf(e.src)>=0&&e.src!=='known');}
 function safeNode(n,p){
  var id=String(n.id),type=n.type,st=type==='pattern'?verdict(p,id):'not_recorded';
  var label=type==='pattern'?String(n.name||n.fetter||('Address '+id)):id;
@@ -101,9 +101,16 @@ function project(args){
  if(x.status==='conflicted')out.evidence.conflicted++;
  return x;});
  var chosen=Object.create(null);out.nodes.forEach(function(n){chosen[n.key]=1;});
+ var edgeSeen=Object.create(null),storySeen=Object.create(null);
  g.edges.forEach(function(x){if(!x||x.edge==='causes')return;
- if(chosen[x.to]&&kind(x.from)==='story'&&x.edge==='supports')out.evidence.storyLinks++;
+ if(chosen[x.to]&&kind(x.from)==='story'&&x.edge==='supports'){
+ var sk=JSON.stringify([x.from,x.to]);
+ if(!storySeen[sk]){storySeen[sk]=1;out.evidence.storyLinks++;}}
  if(chosen[x.from]&&chosen[x.to]&&relation(x)){
+ var ek=JSON.stringify([x.from,x.to,x.edge,x.src]);
+ if(edgeSeen[ek])return;
+ edgeSeen[ek]=1;
+ if(out.edges.length>=64){out.truncated=true;return;}
  if(own(out.evidence,x.src))out.evidence[x.src]++;
  out.edges.push({from:x.from,to:x.to,relationship:x.edge,provenance:x.src});}
  });
