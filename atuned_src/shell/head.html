@@ -5547,6 +5547,16 @@ body.quiet .av-pulse,body.rm .av-pulse{animation:none}
 .av-wcore-nm{font-size:16px;font-weight:600;color:var(--ink);margin-top:6px}
 /* the panel beside the ring */
 .av-panel{border-top:3px solid var(--c,var(--edge-2))}
+/* The read-only Connections door belongs to the selected seat's menu.
+   A real style (not a lint exemption); closed by default and 44px tappable. */
+.avs-graph{margin-top:14px;padding-top:9px;border-top:1px solid var(--edge);min-width:0}
+.avs-graph [data-avgraph]{min-height:44px;width:100%;display:block;text-align:left;
+ padding:10px 12px;border:1px solid var(--edge-2);border-radius:var(--r);
+ color:var(--ink);background:var(--panel-2);font:inherit;cursor:pointer}
+.avs-graph [data-avgraph]:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.av-graph-list{margin:8px 0;padding:0;list-style:none;max-width:100%}
+.av-graph-list>li{padding:9px 0;border-bottom:1px solid var(--edge);overflow-wrap:anywhere}
+.av-graph-list .av-pa{display:block}
 .av-ph{display:flex;align-items:center;gap:12px;margin-bottom:12px}
 .av-ph>div{flex:1 1 auto;min-width:0}
 .av-pic{flex:0 0 auto;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
