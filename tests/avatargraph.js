@@ -61,4 +61,36 @@ test('unrelated refusals produce partial results',()=>{
 test('deterministic projection',()=>assert.deepEqual(run({kind:'seat',id:'Root'}),run({kind:'seat',id:'Root'})));
 test('no unapproved high layers',()=>assert.equal(run({kind:'structure',type:'mask',id:'Ideological'}).status,'unsupported_selection'));
 test('unknown seat refuses without graph call',()=>{let n=called;assert.equal(run({kind:'seat',id:'missing'}).status,'unsupported_selection');assert.equal(called,n);});
+
+test('canonical seat matching is case insensitive',()=>{
+ const x=run({kind:'seat',id:'rOoT'});
+ assert.equal(x.status,'ready');
+ assert.deepEqual(x.selection,{kind:'seat',id:'Root'});
+});
+test('unread reading remains not measured',()=>{
+ const x=run({kind:'seat',id:'Root'},{reading:{rec:'record-A',unread:true}});
+ assert.equal(x.readingStatus,'not_measured');
+});
+test('practice-intent provider refusal fails closed',()=>{
+ const p={...profile,practice:{}};
+ const x=run({kind:'seat',id:'Root'},{profile:p,engine:{...engine,practiceTraceIntents:()=>{throw Error('fixture failure');}}});
+ assert.equal(x.status,'unavailable');assert.equal(x.nodes.length,0);
+});
+test('non-array practice-intent response fails closed',()=>{
+ const p={...profile,practice:{}};
+ const x=run({kind:'seat',id:'Root'},{profile:p,engine:{...engine,practiceTraceIntents:()=>({})}});
+ assert.equal(x.status,'unavailable');
+});
+test('canonical graph derivation exception fails closed',()=>{
+ const x=run({kind:'seat',id:'Root'},{engine:{...engine,traceFromRecord:()=>{throw Error('fixture failure');}}});
+ assert.equal(x.status,'unavailable');assert.equal(x.nodes.length,0);
+});
+test('malformed or throwing neighbors fail closed without partial claims',()=>{
+ const e={...engine,traceNeighbors:()=>null};
+ const x=run({kind:'seat',id:'Root'},{engine:e});
+ assert.equal(x.status,'unavailable');assert.equal(x.nodes.length,0);
+ const y=run({kind:'seat',id:'Root'},{engine:{...engine,traceNeighbors:()=>{throw Error('fixture failure');}}});
+ assert.equal(y.status,'unavailable');assert.equal(y.edges.length,0);
+});
+
 console.log('AVATAR GRAPH '+passed+'/'+passed+' passed');
