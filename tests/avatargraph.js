@@ -122,4 +122,17 @@ test('large canonical graph caps edges at 64 and signals truncation',()=>{
  assert.equal(x.truncated,true);
 });
 
+
+test('invalid canonical node provenance does not become inferred',()=>{
+ const g=clone(graph);g.nodes[0].src='invented';
+ const x=run({kind:'seat',id:'Root'},{engine:{...engine,traceFromRecord:()=>g}});
+ assert.equal(x.status,'unavailable');assert.equal(x.nodes.length,0);
+});
+test('unknown graph relationship never makes taxonomy personal',()=>{
+ const g={alg:4,gaps:[],refused:[],nodes:[{type:'pattern',id:'12',name:'Compulsion',seat:'Root',src:'known'}],
+ edges:[{from:'story:fixture',to:'pattern:12',edge:'unlisted',src:'user_confirmed'}]};
+ const x=run({kind:'seat',id:'Root'},{profile:{id:'record-A'},reading:null,engine:{...engine,traceFromRecord:()=>g}});
+ assert.equal(x.status,'no_evidence');assert.equal(x.nodes.length,0);
+});
+
 console.log('AVATAR GRAPH '+passed+'/'+passed+' passed');
