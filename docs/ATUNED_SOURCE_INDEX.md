@@ -61,7 +61,9 @@ When a source or audit file is discovered, add its repository-relative path, rol
 - [Deep-Psychological Code-to-Registry Contract Comparison, 2026-10-22](ATUNED_DEEP_PSYCHOLOGICAL_CODE_TO_REGISTRY_CONTRACT_2026-10-22.md), exact engine template fields, validator rules, compatibility gaps, and implementation gates.
 - [Deep-Psychological Three-Pass Research Audit, 2026-10-22](ATUNED_DEEP_PSYCHOLOGICAL_THREE_PASS_RESEARCH_AUDIT_2026-10-22.md), source inventory, three-pass findings, 107 registry entries, provenance conflicts, and blocked work.
 
-## SOURCE AI-4 current pre-wiring gate (2026-11-01 V13; draft PR #163)
+## SOURCE AI-4 current pre-wiring gate (2026-11-01 V15 candidate; draft PR #163)
+- **Latest continuation, read before working:** [Source AI-4 Collaboration Log](SOURCE_AI4_COLLABORATION_LOG_2026-11-01.md), **Pass 5**: validated in-memory 43/43 A07 correction assertions; canonical source update blocked, NOT COMMITTED; owner ZIP and official CI unresolved. Owner handoff ZIP is attached to the chat, not installed on GitHub.
+- **Authorized integration hold persists:** no production wiring, merge, deployment, invented CQ scores or invented 45 pain records. See V13 audit and original V11 handoff.
 - **START HERE for Source AI integration:** [V13 Pre-Wiring Gap Audit](SOURCE_AI4_PREWIRING_GAP_AUDIT_V13_2026-11-01.md), findings A01–A08, checked CI and explicit **NO LIVE WIRING** until P0 acceptance gates.
 - [V12 Executive Execution Handshake](SOURCE_AI4_EXECUTION_HANDSHAKE_V12_2026-11-01.md), historical full continuation; its V12 profileShare allowance is superseded by the V13 audit.
 - [Source AI-4 Collaboration Log](SOURCE_AI4_COLLABORATION_LOG_2026-11-01.md), maintained commits and measurements; update on every implementation step.
