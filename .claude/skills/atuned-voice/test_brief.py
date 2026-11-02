@@ -322,7 +322,7 @@ REAL = [
     ('atuned_src/ui/release.js', r'^that I am$', 'flow', 'DISCOVER'),
     ('atuned_src/ui/personas.js', r'^A worked example shows every reading and runs nothing', 'information', 'none'),
     ('atuned_src/ui/storyui.js', r'^What happened\. Write it', 'discovery', 'DISCOVER'),
-    ('atuned_src/ui/fieldbar.js', r'^Your 112 addresses\. Each mark', 'tooltip', 'PLAY'),
+    ('atuned_src/ui/fieldbar.js', r'^Your 108 addresses, plus 4 field anchors', 'tooltip', 'PLAY'),
     ('atuned_src/ui/summary.js', r'^There is no birth data on file', 'mirror', 'PLAY'),
     ('atuned_src/shell/body.html', r'^Discover$', 'button', 'none'),
     ('funnel/questions.js', r'^You say yes while your chest tightens', 'discovery', 'none'),

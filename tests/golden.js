@@ -1232,13 +1232,47 @@ async function door(browser, SITE, cut, giftAt) {
     const plan = () => pr.evaluate(() => { const pl = CURP && CURP.plan;
       return { k: planOf(pl).k, state: planState(pl), until: pl && pl.until, now: Date.now() }; });
     const reads = () => wr.reqs('GET', /^\/v1\/me$/).length;
-    /* THE GATE CHECKS ITS OWN CLOCK. A fast forward that did not move the page
-       measures day 2, which reads live and would pass for the wrong reason: the
-       probe this station came from caught one such run in ten. */
-    const forward = async ms => { const was = (await plan()).now; await pr.clock.fastForward(ms);
-      let moved = (await plan()).now - was;
-      if (moved < ms - 60000) { await pr.clock.fastForward(ms - moved); moved = (await plan()).now - was; }
-      return moved >= ms - 60000; };
+    /* THE GATE HOLDS ITS OWN CLOCK STILL BEFORE IT MOVES IT, 2 November.
+       Playwright's clock, installed and left running, fires the page's due
+       timers from a loop of its own on a real timer. fastForward runs a second
+       loop, and whichever loop finishes last sets the clock to the tick it
+       started for (_runTo and _advanceNow in playwright-core's clockSource,
+       1.56.1), so a running loop that finishes after a fast forward puts the
+       page back where it was before the jump. On a blank page with a rAF loop
+       and an interval due, 11 fast forwards of 60 read two hours on at once
+       and nought hours 300 ms later; with nothing due, 0 of 60. That is the
+       "one run in ten" the first self check here caught, and it was still
+       live, because the check read the clock once, straight after the jump,
+       and the rewind lands after it: station R read 2 where it meant 3, one
+       run in fifteen solo, with forward() reporting the move it had lost.
+       Paused, there is no running loop and nothing to finish late, so every
+       fast forward stays where it lands. The page boots on a running clock
+       and is held still here, once the plan is read. A loop already in flight
+       when the clock is held can still finish once, so the hold waits until
+       the held clock reads the same over a stretch before anything is moved. */
+    const hold = async () => {
+      for (let i = 0; i < 5; i++) {
+        const at = (await plan()).now + 1000;
+        if (await pr.clock.pauseAt(at).then(() => true, () => false)) break; }
+      const start = Date.now(); let last = null, same = 0;
+      while (Date.now() - start < 10000) { const n = (await plan()).now;
+        if (n === last) { if (++same >= 6) return true; } else { same = 0; last = n; }
+        await pr.waitForTimeout(50); }
+      return false; };
+    ok(await hold(), 'the page clock is held still before the gate moves it, so no running loop of Playwright\'s can undo a move');
+    /* THE GATE CHECKS ITS OWN CLOCK, against the day it means. A fast forward
+       that did not hold measures the day before, which would fail or pass for
+       the wrong reason. Each move is to a target set once, so a short move is
+       made up to the target and never past it: a corrective jump past the
+       target would also carry the clock over a read still in flight and fire
+       its own fifteen second timeout (AUTH_WAIT_MS, ui/auth.js), which reads
+       an unread renewal as an ending. */
+    const forward = async ms => { const target = (await plan()).now + ms;
+      for (let i = 0; i < 3; i++) { const short = target - (await plan()).now;
+        if (short <= 1000) break;
+        await pr.clock.fastForward(short); }
+      const off = (await plan()).now - target;
+      return off >= -1000 && off <= 1000; };
     const day = p => ((p.now - t0) / DAY).toFixed(3);
     /* a read fires off a promise chain through authCall, so a fixed wait
        races it under load: the probe this fix came from caught it failing
@@ -1264,8 +1298,12 @@ async function door(browser, SITE, cut, giftAt) {
     await pr.evaluate(() => { window.dispatchEvent(new Event('focus')); document.dispatchEvent(new Event('visibilitychange')); });
     await pr.waitForTimeout(400);
     ok(reads() === 2, 'coming back to the tab within the hour of the last read sends nothing: ' + reads() + ' reads');
-    await forward(2 * 3600e3);
-    await pr.evaluate(() => { document.dispatchEvent(new Event('visibilitychange')); });
+    const fwd2 = await forward(2 * 3600e3);
+    /* the clock the page's own handler reads, taken in the same task as the
+       event it answers, so nothing can move it in between */
+    const seen = await pr.evaluate(() => { const t = Date.now(); document.dispatchEvent(new Event('visibilitychange')); return t; });
+    ok(fwd2 && seen - t0 >= 6 * DAY + 3 * 3600e3 - 60000, 'the page clock moved two hours more and held, so the page comes back on day '
+      + ((seen - t0) / DAY).toFixed(3) + ', two hours after its last read');
     const r3 = await waitReads(3, 15000);
     ok(r3 === 3, 'and coming back after an hour reads the plan once more: ' + r3 + ' reads');
     ok(R.errs.length === 0, 'no script error on this door: ' + R.errs.slice(0, 2).join(' | '));
