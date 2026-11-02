@@ -120,6 +120,18 @@ const FB_LAYERS=[
   tip:'Decoherence. The weight on your 108 addresses and 4 field anchors, against the most they could hold, shown as a tint behind everything.'},
  {k:'stories',g:'carry',nm:'Stories',ic:fbFlay('stories'),
   tip:'One line for each story that put charge on an address.'},
+ /* FETTER, THE ONE TIER MISSING FROM THIS BAR, added 2 November. It
+    classifies addresses (CHILD, 'carry' above), but engine/trace.js is
+    explicit that a saboteur IS "a configuration of fetters at specific
+    intensities" (engine/data/canon.js, sabFetters): it is the floor the
+    'run' group above it actually runs on, not a second thing you carry. So
+    it joins 'run', first, ahead of the saboteurs it is the floor under,
+    matching where ui/wheel.js now puts it in LAYADD. Child emotions is the
+    name the stack rail (railStack, ui/ui.js) and the drill (runFetterDrill,
+    ui/drills.js) already use for this tier; the bar says the same word, one
+    concept one mark, one concept one name. */
+ {k:'fetters',g:'run',nm:'Child emotions',ic:CHAINGLYPH.fet,
+  tip:'The nine child emotions. Each saboteur is a configuration of these at a given intensity: the floor the chain above it runs on.'},
  {k:'saboteurs',g:'run',nm:'Saboteurs',ic:CHAINGLYPH.sab,
   tip:'The saboteurs running on the charge, threaded to the addresses that built them.'},
  {k:'complexes',g:'run',nm:'Complexes',ic:CHAINGLYPH.cx,
@@ -218,6 +230,17 @@ function fbValues(r){
  V.stories={p:pct('portion',traced/100)||0,v:carry.length?fmtPct('portion',traced/100):dash,c:'var(--accent)',
   m:carry.length?'Ring and number: the share of your carrying addresses a story you wrote reached.'
    :'Nothing is carrying charge yet.'};
+ /* THE FETTER RING READS THE MEAN HELD ACROSS THE NINE, the same real
+    S.charge the stack rail's own 'Child emotions' tab already prints
+    (railStack, ui/ui.js) and runFetterDrill already drills into. Its colour
+    is the heaviest one's own seat, the same pattern 'seats' above already
+    takes off r.darkB: the ring paints the axis actually pulling hardest. */
+ var fetHi=CHILD.reduce(function(a,c){return (S.charge[c.nm]||0)>(S.charge[a.nm]||0)?c:a;},CHILD[0]);
+ var fetMean=CHILD.reduce(function(a,c){return a+(S.charge[c.nm]||0);},0)/CHILD.length;
+ var fm=P('charge',fetMean);
+ V.fetters={p:fm.p,v:fm.v,c:seatCol(fetHi.seat),
+  m:fm.v!==dash?'Ring and number: the mean charge held across the nine child emotions, heaviest at '+fetHi.nm+'.'
+   :'Ring and number: the mean charge held across the nine child emotions. Nothing is held yet.'};
  [['saboteurs',r.sabs,r.sabs[0]&&r.sabs[0].parts[0]?r.sabs[0].parts[0].b:r.darkB],
   ['complexes',r.cxs,'Solar'],['hyper',r.hys,'Sacral'],['character',r.sups,'Root']].forEach(function(t){
   var p=fbReach(t[1],carry);
@@ -259,8 +282,8 @@ function fbCluster(g,label){
  return c;}
 /* A PINNED THING WHOSE LAYER HAS GONE OFF IS LET GO, or the rest of the web
    would stay dimmed around something no longer drawn */
-const FB_PINK={node:'addresses',seat:'seats',law:'laws',gate:'gates',atom:'stories',sab:'saboteurs',
- cx:'complexes',hy:'hyper',sup:'character',arch:'archetypes',dom:'domains'};
+const FB_PINK={node:'addresses',seat:'seats',law:'laws',gate:'gates',atom:'stories',fet:'fetters',
+ sab:'saboteurs',cx:'complexes',hy:'hyper',sup:'character',arch:'archetypes',dom:'domains'};
 function fbUnpin(){var p=S.pin;if(!p)return;
  var k=FB_PINK[p.kind]||(p.sq!==undefined&&p.b?'addresses':null);
  if(k&&!layerOn(k))S.pin=null;}
