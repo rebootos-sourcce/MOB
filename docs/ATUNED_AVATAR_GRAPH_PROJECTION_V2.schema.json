@@ -1,0 +1,304 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/rebootos-sourcce/MOB/blob/work/avatar-graph-readonly-v08-20261101/docs/ATUNED_AVATAR_GRAPH_PROJECTION_V2.schema.json",
+  "title": "ATÜNED Avatar read-only canonical Trace projection v2",
+  "description": "Wire contract for AVATAR_GRAPH.project(args) on draft PR #164. Describes output only, not authorization of a caller. Does not certify production integration.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "v",
+    "status",
+    "readingStatus",
+    "selection",
+    "nodes",
+    "edges",
+    "evidence",
+    "graph",
+    "truncated",
+    "notice"
+  ],
+  "properties": {
+    "v": {
+      "const": 2
+    },
+    "status": {
+      "enum": [
+        "access_denied",
+        "no_record",
+        "unavailable",
+        "unsupported_selection",
+        "reading_mismatch",
+        "no_evidence",
+        "graph_refused",
+        "partial",
+        "ready"
+      ]
+    },
+    "readingStatus": {
+      "enum": [
+        "measured",
+        "not_measured"
+      ]
+    },
+    "selection": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id"
+          ],
+          "properties": {
+            "kind": {
+              "const": "seat"
+            },
+            "id": {
+              "enum": [
+                "Root",
+                "Sacral",
+                "Solar",
+                "Heart",
+                "Throat",
+                "3rd Eye",
+                "Crown"
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id"
+          ],
+          "properties": {
+            "kind": {
+              "const": "pattern"
+            },
+            "id": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,2})$"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "type",
+            "id"
+          ],
+          "properties": {
+            "kind": {
+              "const": "structure"
+            },
+            "type": {
+              "enum": [
+                "saboteur",
+                "complex",
+                "hyper_complex",
+                "super_complex"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120
+            }
+          }
+        }
+      ]
+    },
+    "nodes": {
+      "type": "array",
+      "maxItems": 16,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "key",
+          "type",
+          "label",
+          "seat",
+          "provenance",
+          "status",
+          "weight"
+        ],
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "pattern",
+              "saboteur",
+              "complex",
+              "hyper_complex",
+              "super_complex"
+            ]
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "seat": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "provenance": {
+            "enum": [
+              "known",
+              "inferred",
+              "proposed",
+              "user_confirmed",
+              "observed"
+            ]
+          },
+          "status": {
+            "enum": [
+              "not_recorded",
+              "confirmed",
+              "rejected",
+              "conflicted"
+            ]
+          },
+          "weight": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "from",
+          "to",
+          "relationship",
+          "provenance"
+        ],
+        "properties": {
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          },
+          "relationship": {
+            "enum": [
+              "supports",
+              "obstructs",
+              "reinforces"
+            ]
+          },
+          "provenance": {
+            "enum": [
+              "known",
+              "inferred",
+              "proposed",
+              "user_confirmed",
+              "observed"
+            ]
+          }
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "known",
+        "inferred",
+        "proposed",
+        "user_confirmed",
+        "observed",
+        "storyLinks",
+        "confirmed",
+        "rejected",
+        "conflicted"
+      ],
+      "properties": {
+        "known": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "inferred": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "proposed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "user_confirmed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "observed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "storyLinks": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "confirmed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "rejected": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "conflicted": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "graph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "alg",
+        "gaps",
+        "refused"
+      ],
+      "properties": {
+        "alg": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "gaps": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "refused": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "truncated": {
+      "type": "boolean"
+    },
+    "notice": {
+      "type": "string"
+    }
+  }
+}
