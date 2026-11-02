@@ -668,8 +668,8 @@ function verpArrows(cr0){
 const VIEWS=[
  {k:'A',nm:'Charge',    layers:'the core, 108 addresses and 4 field anchors, the wash',
   tip:'What you are carrying, and where. The core is coherence, the ring is your 108 addresses and 4 field anchors, the wash is shadow weight.'},
- {k:'B',nm:'Patterns',  layers:'charge, plus the seats named and the saboteurs',
-  tip:'The saboteurs running on top of the charge. Each bead is one, and the threads show which addresses built it.'},
+ {k:'B',nm:'Patterns',  layers:'charge, plus the seats named, the fetters and the saboteurs',
+  tip:'The nine fetters and the saboteurs running on top of the charge. Each bead is one, and the threads show which addresses built it.'},
  {k:'C',nm:'Chains',    layers:'patterns, plus complexes, hyper, super, archetypes',
   tip:'How a pattern compounds. Saboteur into complex into hyper complex into super complex, inward, each built from the one outside it.'},
  {k:'D',nm:'Blueprint', layers:'chains, plus 19 domains, 21 laws',
@@ -725,7 +725,7 @@ const WHEEL_ZOOM_MAX=7;
    The key character is the super complexes' switch. It kept the rung's old
    name on 23 October, when the owner gave the word Character to the whole
    of it, because a key is identity; ui/fieldbar.js says why in full. */
-const LAYADD=[['addresses','laws','gates','shadow','stories'],['seats','saboteurs'],
+const LAYADD=[['addresses','laws','gates','shadow','stories'],['seats','saboteurs','fetters'],
  ['complexes','hyper','character','archetypes'],['domains']];
 var LAYSET=null;
 function layPreset(i){var s={};for(var j=0;j<=i&&j<LAYADD.length;j++)LAYADD[j].forEach(function(k){s[k]=1;});return s;}
@@ -1219,6 +1219,12 @@ function drawWheel0(r,L){
     do not fly out of the core */
  const R={shell:shellR,arch:U*.60,sab:lAt([U*.56,U*.56,U*.545,U*.50],LF),cx:U*.425,hy:U*.335,
   sup:U*.255,dom:U*.93};
+ /* FETTER SITS BETWEEN THE SHELL AND THE SABOTEUR RING, the real floor the
+    chain above it runs on (engine/trace.js), so its radius is simply the
+    midpoint of the two real radii either side of it rather than a new
+    constant, and it moves with them at every depth without needing its own
+    entry in lGeo. */
+ R.fet=(R.shell+R.sab)/2;
  const coreBase=lAt([U*.30,U*.26,U*.20,U*.155],LF);
  /* THE RING'S OWN EDGE, the one line nothing may cross, ruled 26 September.
     The shell, or at Blueprint the domain ring outside it. Published for the
@@ -1229,6 +1235,24 @@ function drawWheel0(r,L){
 
  /* --- chain chords, C and D --- */
  PUL.length=0;
+ /* FETTER CHORDS, drawn before the compounding web below so they sit
+    underneath it: fetter is the floor, not a link in the compounding chain
+    (trace.js: "a fetter is the classification several addresses share...
+    and carries no address-level content of its own"), so it gets the plain
+    style the saboteur-to-address line already uses at L===1 below, one
+    thread per real address into its own fetter, never the heavier
+    weight/tension tier() machinery built for a thing that compounds. D
+    gates it the same way lay() gates everything else: drawn only while
+    fetters or their fade is still live. */
+ if(D.fetters&&D.addresses){
+  var fetA2=LA.fetters.v;
+  CHILD.forEach(function(c){
+   var held=Math.min(1,(S.charge[c.nm]||0)/10), al=(0.14+held*0.34)*fetA2;
+   if(al<=0.003)return;
+   W.filter(function(n){return n.cf===c.nm;}).forEach(function(n){
+    g.beginPath();g.moveTo(CX+Math.cos(n.ang)*R.shell*.92,CY+Math.sin(n.ang)*R.shell*.92);
+    g.lineTo(CX+Math.cos(c.ang)*R.fet,CY+Math.sin(c.ang)*R.fet);
+    g.strokeStyle=rgba(bc(c.seat),al);g.lineWidth=1;g.stroke();});});}
  /* the curved web holds while any tier that needs it is still leaving, so the
     threads fade with their beads instead of straightening under them */
  if(L>=2||D.complexes||D.hyper||D.character||D.archetypes){
@@ -1658,6 +1682,19 @@ function drawWheel0(r,L){
  /* no depth test on the beads: a tier is on only at a depth that has its
     ring, which layNeeds guarantees, and a tier on its way out has to be drawn
     at the depth it is leaving from */
+ /* THE NINE FETTERS, one bead each, same tap as a saboteur's. c.kind='fet'
+    and c.ang are set once in engine/core.js, so bead()'s own on/hover check
+    (S.hover===o||S.pin===o) compares the same real singleton every frame,
+    unlike a saboteur's own object which compute() rebuilds each call; CHILD
+    needs no such rebuild because it carries no per-frame reading of its
+    own, only S.charge beside it. Size reads real held charge, same pattern
+    every other bead already scales by its own weight. All nine draw always
+    (there are only nine, and a fetter has nothing to be "not running":
+    trace.js's own words, "carries no address-level content of its own", so
+    there is no running/not-running split to draw here the way a saboteur
+    has one). */
+ lay('fetters',()=>{CHILD.forEach(c=>bead(c,R.fet,4.2+Math.min(1,(S.charge[c.nm]||0)/10)*2.4,bc(c.seat)));
+  if(L===1)CHILD.forEach(c=>nameplate(c,R.fet,bc(c.seat),5.4));});
  lay('saboteurs',()=>{r.sabs.forEach(s=>bead(s,R.sab,5.4,bc(s.parts[0].b)));
   /* B names the saboteurs, because they are the layer. C and D name only the
      heaviest things: the wheel is showing structure by then, and the right rail

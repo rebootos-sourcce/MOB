@@ -829,7 +829,16 @@ function runFetterDrill(c){
   +'is this nerve pulled to that side. Level between them is the centre, where it is not pulled either way.</p>'
   +'<div class="pm-eye">It runs '+at.length+' addresses</div><div class="ad-rows">'
   +at.slice(0,10).map(addrRow).join('')
-  +(at.length>10?'<div class="pm-more">and '+(at.length-10)+' more</div>':'')+'</div>';
+  +(at.length>10?'<div class="pm-more">and '+(at.length-10)+' more</div>':'')+'</div>'
+  /* WHAT THIS FETTER ITSELF FEEDS, the identical gap runDrill's own tsBlockHtml
+     call already closed for a saboteur, complex, hyper or super complex (the
+     comment above runDrill, this file): "Made of" above is the downward
+     direction (the addresses it classifies); nothing said what a fetter
+     itself feeds UP into until this line. traceKey's real id for a fetter is
+     'fetter:'+its own CHILD name (engine/trace.js, TRACE_FETTER, the exact
+     spelling practice.js already writes), confirmed against the real graph
+     builder before this was wired, not guessed. */
+  +(typeof tsBlockHtml==='function'?tsBlockHtml('pattern','fetter:'+c.nm):'');
  rdShell(h);}
 
 /* a saboteur the reading is not currently carrying. it still has a definition. */
