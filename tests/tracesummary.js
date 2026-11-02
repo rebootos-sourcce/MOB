@@ -259,6 +259,71 @@ function suite(E,ok,g){
   const r=E.traceSummary(graphs.Sofia.g,'complex:'+striker.nm);
   ok(r.ok&&has(r.summary,'the real children, but none carries further content on file'),
    'Sofia’s Striker complex reads "the real children", not "the real childs": '+r.summary.slice(0,260));}
+
+ g('TS10 · traceSummarySet, the chain-local multi-select blend, over a real shift-click selection');
+ ok(!E.traceSummarySet({not:'a graph'},['pattern:1']).ok,'not a graph is refused');
+ ok(!E.traceSummarySet(G0,[]).ok,'an empty selection is refused, not silently narrated as one node');
+ ok(!E.traceSummarySet(G0,null).ok,'a selection that is not an array is refused, not thrown');
+ ok(!E.traceSummarySet(G0,['nonsense:doesnotexist','ghost:also-nothing']).ok,
+  'a selection naming no real node at all on this graph is refused by name');
+ if(realSup){
+  const g2=tomasReal.g;
+  const anchorKey='super_complex:'+realSup.nm;
+  /* THE REAL SELECTION: the anchor plus every real node traceDescendants
+     finds under it, the exact set a shift-click on the super complex
+     builds (chainPinKey + traceDescendants, ui/ui.js). Checked against an
+     independently rebuilt graph, the same discipline every group above
+     already runs, never trusting traceSummarySet's own word for what it
+     resolved. */
+  const freshDesc=E.traceDescendants(graphOf(E,profiles.Tomas).g,anchorKey).sort();
+  const desc=E.traceDescendants(g2,anchorKey).sort();
+  ok(JSON.stringify(desc)===JSON.stringify(freshDesc)&&desc.length>0,
+   'traceDescendants off the same anchor matches an independent rebuild, got '+JSON.stringify(desc)+' vs '+JSON.stringify(freshDesc));
+  const keys=[anchorKey].concat(desc);
+  const rs=E.traceSummarySet(g2,keys);
+  ok(rs.ok&&Array.isArray(rs.members),'a real multi-node selection resolves');
+  ok(rs.members.length===keys.length,
+   'every real key in the selection resolves to a member, none silently dropped, got '+rs.members.length+' of '+keys.length);
+  ok(rs.members.every(m=>keys.indexOf(m.key)>=0),'every resolved member is one of the keys actually handed in, nothing added');
+  /* the full chain sits in one blend: a super complex (no card, by design),
+     at least one hyper complex (real HCX_LIB family line) and at least one
+     saboteur or address somewhere under it */
+  const types=rs.members.map(m=>m.type);
+  ok(types.indexOf('super_complex')>=0&&types.indexOf('hyper_complex')>=0&&types.indexOf('complex')>=0&&types.indexOf('saboteur')>=0,
+   'the blend spans the real chain, super complex down through saboteur, got types: '+JSON.stringify(types));
+  const hyMember=rs.members.find(m=>m.type==='hyper_complex'&&m.card.found);
+  ok(!hyMember||has(rs.summary,hyMember.card.fields.familyLine),
+   'a real hyper complex family line inside the blend is quoted verbatim in the paragraph, not paraphrased');
+  ok(rs.summary.indexOf('The selection, blended across')===0,
+   'a selection of more than one real node says so plainly, up front, got: '+rs.summary.slice(0,80));
+  ok(has(rs.summary,String(rs.members.length)),'the paragraph names the real count it blended, not a vague "several"');
+  ok(rs.summary.indexOf('—')<0&&rs.summary.indexOf('–')<0,'no em dash or en dash in the blended paragraph (VOICE.md)');
+  ok(rs.summary.indexOf('[object')<0&&rs.summary.indexOf('undefined')<0,
+   'no leaked object or undefined in the blended paragraph, got: '+rs.summary.slice(0,200));
+
+  /* A STALE KEY ALONGSIDE REAL ONES IS DROPPED, NOT A HOLE. One bad member
+     must never sink an otherwise real blend: the single-node traceSummary
+     refuses a whole call on one bad key because it has only the one, a set
+     with others still narrates them. */
+  const withGhost=E.traceSummarySet(g2,keys.concat(['saboteur:this-does-not-exist']));
+  ok(withGhost.ok&&withGhost.members.length===rs.members.length,
+   'a stale key mixed into an otherwise real selection is dropped silently, the rest still narrated');
+
+  /* ONE SELECTED NODE, the degenerate case: the same shape as a plain
+     click before any shift-click widened it, and it still blends (of one),
+     reading close to traceSummary's own single-node voice rather than a
+     different mechanism entirely. */
+  const one=E.traceSummarySet(g2,[anchorKey]);
+  ok(one.ok&&one.members.length===1&&one.summary.indexOf('The selection is')===0,
+   'exactly one real key still resolves and narrates, phrased for one rather than "blended across 1 real nodes"');}
+
+ g('TS11 · privacy and the fuzz, the same discipline TG14 runs on trace.js itself');
+ {
+  const junk=[undefined,null,0,'x',[],{},{nodes:5,edges:'e'},{nodes:[null],edges:[null]}];
+  let threw=null;
+  junk.forEach(a=>junk.forEach(b=>{try{E.traceSummarySet(a,b);}catch(e){threw=threw||('traceSummarySet('+JSON.stringify(a)+','+JSON.stringify(b)+'): '+e.message);}}));
+  ok(!threw,'traceSummarySet never throws on bad input'+(threw?': '+threw:''));
+ }
 }
 
 module.exports=function run(E,ok,g){ suite(E,ok,g); };

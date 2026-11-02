@@ -288,3 +288,102 @@ function traceSummary(g,node){
   node:{type:self.type, id:self.id, key:key, attrs:self, card:selfCard},
   parents:parents, children:children,
   summary:traceSummaryNarrate(self,selfCard,parents,children)};}
+
+/* ============================================================
+   traceSummarySet(g, keys)
+
+   THE CHAIN-LOCAL MULTI-SELECT NARRATOR. A sibling to traceSummary just
+   above, same file, same resolve-then-narrate discipline, for the one
+   case traceSummary is explicitly not built for: more than one selected
+   node blended into ONE paragraph, not N separate "The selected X..."
+   paragraphs stitched together (a list, not a blend --
+   FIELD_RIGHTSIDE_BLEND_STRATEGY_2026-11-02.md's own pass 3, same
+   conclusion, same reason). His own words, extended: "if I shift click I
+   get all the children down" -- traceDescendants (trace.js) is the one
+   real walk that call needed; this is the other half, one blended read
+   over the shift-clicked node plus that walk's own result.
+
+   keys is an array of node refs, the same form traceSummary's own node
+   param takes (a key string or {type,id}). This function does not care
+   where the array came from or how large it is: it resolves whatever
+   real nodes are handed to it, silently drops anything that names no
+   real node on this graph (the same refusal traceSummary makes for a
+   single node, applied per member rather than failing the whole call for
+   one bad key), and says plainly when nothing real is left.
+
+   NOT THE BLEND BRIEF'S MECHANISM. CELESTIAL_PATTERN_BLEND_SYSTEM_BRIEF_
+   2026-11-01.md's load-word match is for registers with NO graph edge
+   between them at all (celestial, archetype, domain); every member
+   handed here already sits on THIS graph, already reachable from the
+   anchor by a real 'supports' edge (that is what traceDescendants walked
+   to find it), so narrating off that real edge is the honest read, not a
+   weaker string-equality guess layered on top of a connection already
+   known. The Blend still runs once more, on top, against the composed
+   set this function returns -- that part of the Blend brief needs no
+   change, per the strategy doc's own closing line. */
+
+/* ONE SET, RESOLVED. Each member gets the identical treatment
+   traceSummary's own decorate() gives a parent or a child: its real
+   content off traceSummaryCard, found honestly false where nothing
+   resolves, never guessed. A ref naming no real node on this graph (a
+   stale key, a typo) is dropped here rather than carried as a hole in
+   the set: the single-node traceSummary refuses an unknown node whole
+   because it has only the one to refuse; a set with one bad member
+   still has the others to narrate. */
+function traceSummarySetResolve(g,keys){
+ var ix=traceIx(g), seen={}, members=[];
+ (Array.isArray(keys)?keys:[]).forEach(function(k){
+  var key=traceRef(k);
+  if(key===null||seen[key])return;
+  var found=ix.node[key];
+  if(!found)return;
+  seen[key]=1;
+  var s=traceSplit(key);
+  members.push({key:key, type:s.type, id:s.id, attrs:found,
+   card:traceSummaryCard(s.type,s.id,found)});});
+ return members.sort(function(a,b){return a.key<b.key?-1:a.key>b.key?1:0;});}
+
+/* ONE CLAUSE OVER THE WHOLE SELECTION, the same grouping idiom
+   traceSummaryClause already runs for one side's parents or children,
+   extended from "all parents" / "all children" to "all selected": the
+   members with real content named and quoted, crediting which tier each
+   one is (traceSummaryWord), the members without set apart and named
+   plainly, never blended into one borrowed sentence that would claim a
+   connection the records themselves do not carry. */
+function traceSummarySetClause(members){
+ if(!members.length)return 'nothing real is selected';
+ var withCard=members.filter(function(x){return x.card.found;});
+ if(!withCard.length)
+  return traceSummaryList(members.map(function(x){return traceSummaryWord(x.type,x.id)+' '+x.card.label;}))
+   +' (the selection, but none carries further content on file)';
+ var parts=withCard.map(function(x){
+  var line=traceSummaryOwnLine(x.card.fields);
+  return traceSummaryWord(x.type,x.id)+' '+x.card.label+(line?', read as '+line:'');});
+ var thin=members.filter(function(x){return !x.card.found;});
+ var tail=thin.length?('; '+traceSummaryList(thin.map(function(x){return traceSummaryWord(x.type,x.id)+' '+x.card.label;}))
+   +' carr'+(thin.length>1?'y':'ies')+' nothing further on file'):'';
+ return parts.join('; ')+tail;}
+
+/* RESOLVE THEN NARRATE, over a set. One paragraph, hedged, crediting each
+   tier the way traceSummaryClause already credits a parent or a child,
+   closing on the identical honest line traceSummaryNarrate closes every
+   paragraph with, so a person reading either kind of blend never meets a
+   different voice. */
+function traceSummarySetNarrate(members){
+ if(!members.length)
+  return 'Nothing real is selected on this graph. This paragraph narrates what the graph and the library already hold. It does not compute a score, and it does not write a release, a reframe or a ritual.';
+ var sentences=[(members.length>1?'The selection, blended across '+members.length+' real nodes, is '
+   :'The selection is ')+traceSummarySetClause(members)+'.'];
+ var withCard=members.filter(function(x){return x.card.found;});
+ if(withCard.length>1)
+  sentences.push('Read together, '+traceSummaryList(withCard.map(function(x){return traceSummaryWord(x.type,x.id)+' '+x.card.label;}))
+   +' are all counted toward this one selection by the reading, a registration and not a claim that one causes another or the person.');
+ sentences.push('This paragraph narrates what the graph and the library already hold. It does not compute a score, and it does not write a release, a reframe or a ritual.');
+ return sentences.join(' ');}
+
+function traceSummarySet(g,keys){
+ if(!traceIsGraph(g))return {ok:false, why:'there is no graph to read'};
+ if(!Array.isArray(keys)||!keys.length)return {ok:false, why:'nothing is selected'};
+ var members=traceSummarySetResolve(g,keys);
+ if(!members.length)return {ok:false, why:'none of the selection names a real node on this graph'};
+ return {ok:true, members:members, summary:traceSummarySetNarrate(members)};}

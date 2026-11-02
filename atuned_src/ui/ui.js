@@ -266,10 +266,18 @@ function hitPress(h,e){
     runFetterDrill (data-fet, below). Early, like law/seat/dom/arch above,
     because runFetterDrill takes the CHILD row directly and not the generic
     o.kind dispatch runDrill gives sab/cx/hy/sup. */
- if(h.k==='fet'){S.pin=(S.pin===h.o)?null:h.o; runFetterDrill(h.o); render(); return;}
+ if(h.k==='fet'){S.pin=(S.pin===h.o)?null:h.o; runFetterDrill(h.o);
+  /* chainPinToggle is handed h.o itself, never S.pin: S.pin's own toggle
+     (the line just above) can land on null on a second press of a node
+     already multi-selected from a DIFFERENT prior press, and null tells
+     chainPinKey nothing about which key was actually just pressed. The
+     node pressed is always h.o, whatever S.pin's own single-selection
+     state does around it. */
+  chainPinToggle(h.o,!!e.shiftKey); render(); return;}
  var o=h.o||null;
  var same=o&&S.pin&&S.pin.nm===o.nm&&S.pin.kind===o.kind;
- S.pin=same?null:o; runDrill(S.pin); render();}
+ S.pin=same?null:o; runDrill(S.pin);
+ chainPinToggle(o,!!e.shiftKey); render();}
 /* THE FRAME. The wheel is the instrument and a person reads it by moving in.
    The pointer keeps the address under it fixed while the scale changes, so
    zooming toward a segment lands on that segment. F reframes. */
@@ -854,6 +862,38 @@ var CHAINTIERS=[
   def:'Two saboteurs joined.'},
  {k:'sab',nm:'Saboteur',seat:'Root',
   def:'The pattern closest to a single story, coloured by the seat it sits at.'}];
+/* ONE CHAIN-ELIGIBLE NODE'S REAL GRAPH KEY, off S.pin's own shape, the
+   EXACT mapping runDrill and runFetterDrill already open the same node
+   through (ui/drills.js lines 236 and 841), so a key made here and a key
+   made there are always the same string, never a second guess at one
+   traceSummary/traceDescendants would refuse to resolve. A saboteur,
+   complex, hyper or super complex carries .kind and .nm (engine/
+   compute.js's own pushSab/cxs.push/...); a fetter carries .kind==='fet'
+   and .nm (CHILD, engine/core.js: "kind is set here"); anything else
+   (a plain address node, which carries no .kind at all) is not a chain
+   node this helper names, because an address is already the floor, THE
+   CHAIN (trace.js) -- it is read by its own .i directly, never through
+   this. null for anything that is none of these. */
+function chainPinKey(o){
+ if(!o)return null;
+ if(o.kind==='fet')return 'pattern:fetter:'+o.nm;
+ if(o.kind&&{sab:1,cx:1,hy:1,sup:1}[o.kind])
+  return {sab:'saboteur',cx:'complex',hy:'hyper_complex',sup:'super_complex'}[o.kind]+':'+o.nm;
+ return null;}
+/* THE SHIFT-CLICK TOGGLE ITSELF, the exact S.doms/S.arcs pattern
+   (ui/ui.js, ~lines 226-240): a plain click replaces the array with just
+   this one key (or empties it, pressing the same node again); a
+   shift-click toggles this one key's membership, leaving every other key
+   already in the array alone. Called from every place a chain node or
+   fetter is pressed (the wheel's hitPress and the right rail's delegated
+   handler, below), so the two surfaces can never disagree about what is
+   shift-selected. */
+function chainPinToggle(o,shift){
+ var k=chainPinKey(o);
+ if(!k){ if(!shift)S.pinAnchors=[]; return; }
+ if(!shift){ S.pinAnchors=[k]; return; }
+ var i=S.pinAnchors.indexOf(k);
+ if(i>=0)S.pinAnchors.splice(i,1); else S.pinAnchors.push(k);}
 /* WHICH TIER IS OPEN. A plain object, not a single string like STACK_TAB
    was, because more than one tier can stand open at once now. A tier not
    yet in this set reads its default off the current selection (below); once
@@ -1563,7 +1603,27 @@ function render(){
       while unread or nothing is carrying: tsBlockHtml's own honest hedge
       says why, the same idiom every other empty state on this product
       uses, never a blank box and never an invented reading. */
+   /* THE MULTI-SELECT BLEND TAKES OVER, ONLY ONCE THERE IS ONE TO BLEND.
+      S.pinAnchors past one member means a shift-click actually widened
+      the chain selection (chainPinToggle, above railStack); the full key
+      set it narrates is this round's own real extension, traceDescendants
+      (engine/trace.js) run from each anchor, unioned with the anchors
+      themselves, so "all the children down" from every shift-clicked node
+      is in the blend, not just the nodes a finger actually touched. One
+      anchor or none falls straight through to the single-node paragraph
+      just below, unchanged: this is additive, never a second code path
+      for the common case item 3 already proved. */
    +(function(){
+     if(S.pinAnchors.length>1&&typeof tsSetBlockHtml==='function'&&typeof traceDescendants==='function'){
+      var g=typeof tsCurrentGraph==='function'?tsCurrentGraph():null;
+      if(g){
+       var all=[], seen={};
+       S.pinAnchors.forEach(function(k){
+        [k].concat(traceDescendants(g,k)).forEach(function(x){if(!seen[x]){seen[x]=1; all.push(x);}});});
+       if(all.length>1)return tsSetBlockHtml(all);}}
+     return '';}())
+   +(function(){
+     if(S.pinAnchors.length>1)return '';
      if(typeof tsBlockHtml!=='function')return '';
      var key=null, pin=S.pin;
      if(pin){
@@ -1956,10 +2016,21 @@ document.addEventListener('click',function(e){
  if(dh){var tk=dh.getAttribute('data-tier'), sec=dh.closest('.lsec[data-tier]');
   STK_OPEN[tk]=!(sec&&sec.classList.contains('open')); railStack(computeSeen()); return;}
  var fr=e.target.closest?e.target.closest('.stk-r[data-fet]'):null;
- if(fr){var fc=CHILD[+fr.getAttribute('data-fet')]; if(fc){S.pin=null; runFetterDrill(fc);} return;}
+ if(fr){var fc=CHILD[+fr.getAttribute('data-fet')]; if(fc){S.pin=null; runFetterDrill(fc);
+   /* S.pin stays null on this path, as it already did (above fc's own
+      drill paints itself and this was never a persisted selection on the
+      rail the way the wheel's own bead toggle is) -- the chain multi-select
+      cares which fetter was just pressed, not what S.pin says, so it is
+      handed fc directly, shift-click still toggling exactly as elsewhere. */
+   chainPinToggle(fc,!!e.shiftKey); render();} return;}
  var sr=e.target.closest?e.target.closest('.stk-r[data-sk]'):null;
  if(sr){var rr=computeSeen(), o=({sab:rr.sabs,cx:rr.cxs,hy:rr.hys,sup:rr.sups}[sr.getAttribute('data-sk')]||[])[+sr.getAttribute('data-si')];
-  if(o){var same=S.pin&&S.pin.nm===o.nm&&S.pin.kind===o.kind; S.pin=same?null:o; runDrill(S.pin); render();} return;}
+  if(o){var same=S.pin&&S.pin.nm===o.nm&&S.pin.kind===o.kind; S.pin=same?null:o; runDrill(S.pin);
+   /* o itself, never S.pin: see the identical note on hitPress's own
+      generic chain case, ui/ui.js above -- S.pin's own same-check can
+      already be a different node's doing by the time a second shift
+      press on this one lands. */
+   chainPinToggle(o,!!e.shiftKey); render();} return;}
  var kb=e.target.closest?e.target.closest('.kb[data-q]'):null;
  if(kb){S.pin=null;ANA_PICK=null;runQDrill(kb.getAttribute('data-q'));return;}
  var gate=e.target.closest?e.target.closest('.gate-r[data-gate]'):null;

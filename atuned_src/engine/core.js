@@ -486,7 +486,18 @@ const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
     on. Yeah, everything should start on." 3 is Blueprint, the preset that is
     every layer in LAYADD, so the first frame draws all of it and a press on
     the bar takes a layer away rather than having to find it. */
- theme:'dark',hover:null,pin:null,t:0,replace:{},
+ theme:'dark',hover:null,pin:null,
+ /* THE SHIFT-CLICKED CHAIN SELECTION, "or equivalent" to S.pin itself
+    (FIELD_RIGHTSIDE_BLEND_STRATEGY_2026-11-02.md, pass 3): a plain click on
+    a chain node or fetter still only ever sets the one S.pin it always
+    did, untouched by this; a shift-click additionally toggles that node's
+    own real graph key into or out of this array, the exact S.doms/S.arcs
+    toggle (ui/ui.js, ~lines 226-240) applied to the chain instead of the
+    soul. Holds keys, not objects, because the one thing a key set needs to
+    survive a render is string identity, not an object a later compute()
+    pass might rebuild. View state, like pin and hover: not persisted, not
+    validated. */
+ pinAnchors:[],t:0,replace:{},
  /* addr: an address-keyed additive layer, engine/sniff.js's applyStoryAddr.
     charge above is per fetter and spreads by susceptibility alone; this is
     the one place a story's own named address, not just its feeling, is

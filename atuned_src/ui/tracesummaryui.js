@@ -94,3 +94,26 @@ function tsBlockHtml(type,id){
  h+='<div class="pm-eye">Source AI, blended from the records above and below</div>'
   +'<p class="ad-p ts-narr">'+esc(res.summary||'')+'</p>';
  return h;}
+
+/* THE CHAIN-LOCAL MULTI-SELECT BLOCK, the one call site for
+   traceSummarySet (engine/tracesummary.js), the way tsBlockHtml just
+   above is the one call site for traceSummary. keys is the real array a
+   shift-click builds (S.pinAnchors, ui/ui.js): the anchor plus every
+   traceDescendants found under it, widened again by each further
+   shift-click. Each member reuses tsPartRow unchanged -- a
+   traceSummarySet member carries the exact same {key,type,id,card} shape
+   traceSummary's own parents/children already do, so the one row
+   renderer this file already has needed no change at all to read either
+   kind. */
+function tsSetBlockHtml(keys){
+ var g=tsCurrentGraph();
+ if(!g)return '<div class="pm-eye">Selected together, and the blend</div>'
+  +'<p class="ad-p">Nothing read yet. Write a line in the Journal and this fills in from it.</p>';
+ var res=traceSummarySet(g,keys);
+ if(!res.ok)return '<div class="pm-eye">Selected together, and the blend</div>'
+  +'<p class="ad-p">'+esc(res.why)+'</p>';
+ var h='<div class="pm-eye">Selected together ('+res.members.length+')</div>'
+  +'<div class="ts-rows">'+res.members.map(tsPartRow).join('')+'</div>';
+ h+='<div class="pm-eye">Source AI, blended from the whole selection</div>'
+  +'<p class="ad-p ts-narr">'+esc(res.summary||'')+'</p>';
+ return h;}
