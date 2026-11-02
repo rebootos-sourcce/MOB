@@ -271,6 +271,39 @@ function suite(T,E,ok,g){
    'association between two patterns has no direction, so the reverse is a repeat');
  }
 
+ g('TG5b · traceDescendants, all the children down, over supports only');
+ {
+  const G=T.traceNew();
+  /* THE CHAIN, assembled directly. traceAddNode refuses a saboteur,
+     complex, hyper or super complex by name (traceChainWhy, trace.js: "a
+     ... is read off the reading on every read... never added by hand"),
+     so a graph carrying the chain is built the way traceFromRecord itself
+     builds one, past the public door, not through it -- the same
+     tolerance traceLive's own comment already names ("a graph assembled
+     by hand... must not throw"). Four real rungs, two addresses under the
+     one saboteur, so the branching case (two children, not one) is real
+     too. */
+  const sup=(from,to)=>({from:from, edge:'supports', to:to, src:'inferred'});
+  G.edges.push(sup('pattern:12','saboteur:S'), sup('pattern:13','saboteur:S'),
+   sup('saboteur:S','complex:C'), sup('complex:C','hyper_complex:H'),
+   sup('hyper_complex:H','super_complex:U'));
+  /* a non-supports edge touching one of the same keys must never leak into
+     a descent: the filter is the one thing this function exists to prove */
+  G.edges.push({from:'pattern:12', edge:'associated_with', to:'pattern:14', src:'proposed'});
+
+  const full=T.traceDescendants(G,'super_complex:U');
+  ok(J(full)===J(['complex:C','hyper_complex:H','pattern:12','pattern:13','saboteur:S']),
+   'the full subtree under the super-complex, all four rungs down, got '+J(full));
+  ok(J(T.traceDescendants(G,'saboteur:S'))===J(['pattern:12','pattern:13']),
+   'one hop down from the saboteur is its two addresses, branching kept, not just one');
+  ok(T.traceDescendants(G,'complex:C').length===3,'a complex\'s subtree is the saboteur and both addresses under it');
+  ok(T.traceDescendants(G,'pattern:12').length===0,'an address is the floor: nothing is under it');
+  ok(T.traceDescendants(G,'pattern:14').length===0,'associated_with is not supports, so it never surfaces as a descendant');
+  ok(T.traceDescendants(G,'saboteur:ghost').length===0,'a node not in the graph has no descendants, the empty answer, not a throw');
+  ok(T.traceDescendants(null,'saboteur:S').length===0,'not a graph at all is the same empty answer, not a throw');
+  ok(T.traceDescendants(G).length===0,'no key at all is the same empty answer, not a throw');
+ }
+
  g('TG6 · paths, and a proposal never answers for a confirmation');
  {
   const G=T.traceNew();
@@ -886,7 +919,7 @@ function suite(T,E,ok,g){
  g('TG14 · privacy, and nothing thrown');
  {
   ok(E.OB_KEYS.indexOf('trace')<0,'the outbox has no key a graph could ride out on');
-  const fns=['traceAddNode','traceAddEdge','traceRemoveEdge','traceNeighbors','tracePath','traceOrphans','traceCycles','validateTrace','traceApply','traceFromRecord'];
+  const fns=['traceAddNode','traceAddEdge','traceRemoveEdge','traceNeighbors','traceDescendants','tracePath','traceOrphans','traceCycles','validateTrace','traceApply','traceFromRecord'];
   const junk=[undefined,null,0,'x',[],{},{nodes:5,edges:'e'},{nodes:[null],edges:[null]}];
   fns.forEach(f=>{let threw=null;
    junk.forEach(a=>junk.forEach(b=>{try{T[f](a,b,a,b,a);}catch(e){threw=threw||(f+'('+J(a)+','+J(b)+'): '+e.message);}}));
@@ -917,6 +950,14 @@ function mutants(E){
      const i=kk.indexOf(':'); g.nodes.push({type:kk.slice(0,i),id:kk.slice(i+1),src:s});}});
     return E.traceAddEdge(g,f,e,t,s,o);}})],
   ['gaps are hidden', Object.assign({},X,{traceOrphans:function(){return {isolated:[],missing:[],dangling:[],gaps:[],unchecked:{}};}})],
+  /* traceDescendants stops at one hop, the exact defect TG5b exists to
+     catch: "all the children down" read as traceNeighbors' one hop, which
+     looks the same on a shallow graph and is wrong on every real chain
+     past a saboteur */
+  ['traceDescendants reads one hop, not the full subtree', Object.assign({},X,{
+    traceDescendants:function(g,key){
+     const n=E.traceNeighbors(g,key,'supports');
+     return n.filter(x=>x.dir==='in').map(x=>x.key).sort();}})],
   ['loops are not checked', Object.assign({},X,{
     traceAddEdge:function(g,f,e,t,s,o){const r=E.traceAddEdge(g,f,e,t,s,o);
      if(!r.ok&&/does not loop/.test(r.why)){g.edges.push({from:keyOf(f),to:keyOf(t),edge:e,src:s}); return {ok:true,added:true};}
