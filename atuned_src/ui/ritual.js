@@ -1099,8 +1099,8 @@ function ritPctHtml(p,today,size){
  var b=ritSeat(p), col=ritCol(p), P=ritPct(p,today), nm=ritName(p.steps);
  var where=b?ritTagNm(b)+' seat':'No seat';
  var o={size:size||'sm', color:col, glyph:SEATGLYPH[b]||SEATGLYPH._}, badge, body, n='';
- if(P){var pc=Math.round(P.pct);
-  badge=crBadge(b,P.pct,Object.assign(o,{raw:pc+'%'}));
+ if(P){
+  badge=crBadge(b,P.pct,Object.assign(o,{raw:fmtPct('kept',P.pct)}));
   body='Percent complete: the days you kept it, of the days it is set for. A kept day stays kept, so the ring only fills.';
   n='Kept|'+acctDays(P.kept)+'|'+P.due+' set';}
  else{var k=ritRunRead(p,today).kept;

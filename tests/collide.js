@@ -342,11 +342,12 @@ console.log('\n=== Discover: every visible control takes a press, short windows 
 for(const w of [[1366,657],[1280,600],[1600,700],[1600,1000],[390,844]]){
  await p.setViewportSize({width:w[0],height:w[1]});await p.waitForTimeout(200);
  await p.evaluate(()=>{loadP(0);setTab(TAB.STORY);render();});await p.waitForTimeout(400);
- /* the journal is conversation only now, round of 28 October, so the
-    story reaches ST_TEXT through the reply box and a send, not a fill */
- await p.evaluate(()=>{const ci=document.getElementById('stcin');
-  ci.value='I keep replaying what she said and I am furious and ashamed.';
-  ci.dispatchEvent(new Event('input',{bubbles:true}));srcChatSend();});await p.waitForTimeout(500);
+ /* THE JOURNAL IS VOICE ONLY NOW, round of 29 October: there is no reply box
+    or send to fill, only srcTurnCommit, the one door a turn lands through
+    whether it is typed or spoken (see the ruling at stMic in ui/storyui.js).
+    No real microphone in this check, so it calls the door directly. */
+ await p.evaluate(()=>{srcTurnCommit('I keep replaying what she said and I am furious and ashamed.');});
+ await p.waitForTimeout(500);
  const r=await p.evaluate(()=>{
   const vw=innerWidth,vh=innerHeight,out={n:0,bad:[]};
   const clipped=(el,x,y)=>{for(let a=el.parentElement;a&&a!==document.documentElement;a=a.parentElement){

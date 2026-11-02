@@ -20,6 +20,19 @@ if(typeof module!=='undefined'&&module.exports){
                  srcDims:srcDims, srcNext:srcNext,
                  SRC_KINDS:SRC_KINDS, SRC_OUTCOMES:SRC_OUTCOMES,
                  srcAsked:srcAsked, srcAskedMax:srcAskedMax,
+  /* evidence */  EV_STATES:EV_STATES, EV_PERSON:EV_PERSON, EV_ENGINE:EV_ENGINE, EV_NAMEABLE:EV_NAMEABLE,
+                 EV_VERDICT:EV_VERDICT, EV_MOVES:EV_MOVES, EV_TRACE:EV_TRACE, EV_RANK:EV_RANK,
+                 evTraceSrc:evTraceSrc, evCan:evCan, evEngineState:evEngineState, evWhy:evWhy,
+                 evLedger:evLedger, evVerdict:evVerdict, evVerdictOk:evVerdictOk,
+                 evOrder:evOrder, evThread:evThread, evRoot:evRoot,
+                 EV_SEAM_STATES:EV_SEAM_STATES, EV_SEAM_NEVER:EV_SEAM_NEVER, EV_SEAM_PERSON:EV_SEAM_PERSON,
+                 EV_PLACEABLE:EV_PLACEABLE, evSeamState:evSeamState,
+                 SRC_INTENT:SRC_INTENT, SRC_INTENT_ORDER:SRC_INTENT_ORDER, SRC_INTENT_SHORT:SRC_INTENT_SHORT, srcIntent:srcIntent,
+                 SRC_SHIFT_PAIR:SRC_SHIFT_PAIR, SRC_ACT:SRC_ACT, SRC_ACT_ORDER:SRC_ACT_ORDER, SRC_ACT_SHORT:SRC_ACT_SHORT, srcAct:srcAct,
+  /* qcheck */    SRC_FAMILY:SRC_FAMILY, QC_GRADE:QC_GRADE, QC_QWORDS:QC_QWORDS, QC_WORDS:QC_WORDS,
+                 QC_JARGON:QC_JARGON, QC_CAUSE:QC_CAUSE, QC_FORCE:QC_FORCE, QC_LABELS:QC_LABELS,
+                 QC_AGAIN:QC_AGAIN, QC_LANDS:QC_LANDS, qcGrade:qcGrade, qcSyl:qcSyl, qcCanon:qcCanon, qcPlaces:qcPlaces,
+                 srcVet:srcVet, srcVetSay:srcVetSay, srcChoose:srcChoose, qcFamilyOf:qcFamilyOf, srcFamilyCands:srcFamilyCands,
   /* undo */     undoPush:undoPush, undoPop:undoPop, undoDepth:undoDepth,
                  redoPop:redoPop, redoDepth:redoDepth, redoPeek:redoPeek,
                   undoPeek:undoPeek, undoClear:undoClear, UNDO_MAX:UNDO_MAX,
@@ -151,10 +164,13 @@ if(typeof module!=='undefined'&&module.exports){
                   VERPCUE:VERPCUE, VERPMULT:VERPMULT, VERP_VS:VERP_VS,
                   LEAN_FRAME_W:LEAN_FRAME_W, LEAN_TRUST_CAP:LEAN_TRUST_CAP,
                   LEAN_TRUST_HALF:LEAN_TRUST_HALF, LEAN_MIN_CH:LEAN_MIN_CH,
-  /* the door */  read:read, input:input, throughput:throughput, output:output,
+  /* the door */  read:read, input:input, throughput:throughput, output:output, readHeld:readHeld,
                   gatesClear:gatesClear, gatesLoad:gatesLoad, gatesSave:gatesSave,
   /* schema */    blankProfile:blankProfile, AXIS_BLANK:AXIS_BLANK, loadProfile:loadProfile,
                   saveProfile:saveProfile, snapshot:snapshot, LAW_DEFAULT:LAW_DEFAULT,
+  /* the record labels the product writes, and the one question a surface
+     asks of a name, F3 of the 31 October walk */
+                  REC_NAMES:REC_NAMES, ownName:ownName,
   /* the twenty one on every history row, the one law over time a graph reads,
      and the renames both the loader and the boundary read */
                   snapLaws:snapLaws, lawSeries:lawSeries, LAW_WAS:LAW_WAS,
@@ -164,7 +180,7 @@ if(typeof module!=='undefined'&&module.exports){
      has been loaded clears these to say the values it set were answered;
      otherwise a law set to exactly the seed reads as unanswered, which is
      saveProfile's documented blind spot and correct for a person. */
-                  LAW_UNSET:LAW_UNSET,
+                  LAW_UNSET:LAW_UNSET, SOUL_FROM:SOUL_FROM,
                   pExport:pExport, pImport:pImport, validateProfile:validateProfile, importError:importError,
                   importRefuse:importRefuse, linkWrap:linkWrap, linkUnwrap:linkUnwrap,
                   LINK_V:LINK_V, LINK_MAX:LINK_MAX,
@@ -308,7 +324,7 @@ if(typeof module!=='undefined'&&module.exports){
                   TRACE_LOOP:TRACE_LOOP, TRACE_INVERSE:TRACE_INVERSE, TRACE_SYMMETRIC:TRACE_SYMMETRIC,
                   TRACE_CAUSE_SRC:TRACE_CAUSE_SRC, TRACE_PROMOTE:TRACE_PROMOTE, TRACE_TABLE:TRACE_TABLE,
                   TRACE_RESOLVED:TRACE_RESOLVED, TRACE_NEEDS:TRACE_NEEDS, TRACE_MAX:TRACE_MAX,
-                  TRACE_ID_MAX:TRACE_ID_MAX,
+                  TRACE_ID_MAX:TRACE_ID_MAX, TRACE_NAMED:TRACE_NAMED,
                   traceKey:traceKey, traceSplit:traceSplit, traceNew:traceNew, traceRuleOf:traceRuleOf,
                   traceAddNode:traceAddNode, traceAddEdge:traceAddEdge, traceRemoveEdge:traceRemoveEdge,
                   traceNeighbors:traceNeighbors, tracePath:tracePath, traceOrphans:traceOrphans,
@@ -364,7 +380,7 @@ if(typeof module!=='undefined'&&module.exports){
                   dlyToday:dlyToday, dlySize:dlySize,
                   dlyCtx:dlyCtx, dlyChanges:dlyChanges, dlyContra:dlyContra, dlyFocus:dlyFocus,
                   dlyUnread:dlyUnread, dlyCompose:dlyCompose, dlyGround:dlyGround, dlyNotes:dlyNotes,
-                  dlyResolve:dlyResolve, dlySeal:dlySeal, dlyDayOpen:dlyDayOpen, dlyWhy:dlyWhy,
+                  dlyResolve:dlyResolve, dlyGraph:dlyGraph, dlySeal:dlySeal, dlyDayOpen:dlyDayOpen, dlyWhy:dlyWhy,
   /* the first release's size and where a person is on the way in,
      engine/data/onboarding.js and engine/journey.js. Reads only. */
                   ONB_MINI_ADDRS:ONB_MINI_ADDRS, ONB_MINI_DOSE:ONB_MINI_DOSE, ONB_CHANS:ONB_CHANS,

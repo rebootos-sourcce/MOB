@@ -68,14 +68,23 @@ function loopProtocols(P){
   if(x.status==='rejected')rejected.push(x);});
  return {latest:by, rejected:rejected};}
 
-function loopRead(p){
+/* THE READING, WHEN THE CALLER HAS ONE, the first gap of the nerve to celestial
+   audit (reviews/nerve-to-celestial-audit-2026-10-30.md). The graph this
+   reads carries the chain only when it is handed a reading of this same record
+   (THE READING HANDED IN, engine/trace.js), and it was never handed one, so
+   the loop surface's graph held no saboteur and no complex for anybody. It is
+   taken and never made here: a reading made here would load a record, and
+   this file promises the same answer whatever is loaded. Nothing below reads a
+   rung, every row is a pattern, so the answer is the same with or without it;
+   what changes is that the graph under it is the whole one. */
+function loopRead(p,reading){
  var out={entries:0, patterns:[], confirmed:0, unanswered:0, more:0,
   declined:[], practice:{done:0, older:0, events:0}, misses:[],
   restated:0, gaps:0, next:null, empty:true};
  if(!p||typeof p!=='object')return out;
  var P=(p.practice&&typeof p.practice==='object')?p.practice:null;
  var g=null;
- try{g=traceFromRecord(p,P?practiceTraceIntents(P):[]);}catch(e){g=null;}
+ try{g=traceFromRecord(p,P?practiceTraceIntents(P):[],reading);}catch(e){g=null;}
  if(!g)return out;
  out.entries=((p.story&&Array.isArray(p.story.entries))?p.story.entries:[]).length;
  out.restated=(g.restated||[]).length;

@@ -266,15 +266,13 @@ console.log('\n=== the six masks, as pixels on the figure ===');
   return {ents:((CURP&&CURP.story&&CURP.story.entries)||[]).length,lit:BMG.masks.map(k=>({nm:k.nm,n:bmMaskLit(k,r)}))};});
  ok(none.ents===0&&none.lit.every(x=>x.n===0),'a profile with no stories lights no mask, '
   +none.ents+' entries, '+none.lit.map(x=>x.nm+' '+x.n).join(', '));
- /* THE JOURNAL IS CONVERSATION ONLY NOW, round of 28 October: STV.chat is
-    permanent, so #sttext never renders in the ordinary flow and a story
-    is sent through the reply box and then committed, same as a person
-    does. #stapply still finishes the entry; only how the words reach
-    ST_TEXT changed. */
+ /* THE JOURNAL IS VOICE ONLY NOW, round of 29 October: there is no reply
+    box to fill and send any more, only srcTurnCommit, the one door a turn
+    lands through whether it is typed or spoken (see the ruling at stMic
+    in ui/storyui.js). #stapply still finishes the entry; only how the
+    words reach ST_TEXT changed. */
  const commit=async t=>{
-  await sp.evaluate(t=>{loadP(0);setTab(TAB.STORY);stRender();
-   const ci=document.getElementById('stcin');ci.value=t;ci.dispatchEvent(new Event('input',{bubbles:true}));
-   srcChatSend();},t);
+  await sp.evaluate(t=>{loadP(0);setTab(TAB.STORY);stRender();srcTurnCommit(t);},t);
   await sp.waitForTimeout(60);
   await sp.evaluate(()=>{const b=document.getElementById('stapply');if(b&&!b.disabled)b.click();});
   await sp.waitForTimeout(60);};
@@ -403,21 +401,21 @@ console.log('\n=== the six masks, as pixels on the figure ===');
   /* THE LEADING PATTERN, the largest of S.charge, first of a tie as CHILD lists them */
   let li=0; CHILD.forEach((c,i)=>{if((+S.charge[c.nm]||0)>(+S.charge[CHILD[li].nm]||0))li=i;});
   const lead=rail.querySelector('.chr-lead');
-  out.lead={want:CHILD[li].nm,fig:(+S.charge[CHILD[li].nm]||0).toFixed(1),got:lead?lead.textContent:''};
+  out.lead={want:CHILD[li].nm,fig:fmtPct('charge',+S.charge[CHILD[li].nm]||0),got:lead?lead.textContent:''};
   /* TRACE. The toggle opens the card on the heaviest leak. */
   const SF=seatField(), byMean=SF.map((s,k)=>k).sort((a,b)=>SF[b].mean-SF[a].mean||a-b);
   const trace=host.querySelector('[data-chov="trace"]');
   trace.click(); await fr();
   let card=rail.querySelector('.chr-trace');
   const tabs=card?[...card.querySelectorAll('.chr-tabs [data-chtrace]')]:[];
-  const ct=card?card.textContent:'', am=/Address (\d+)/.exec(ct), cm=/Charge ([\d.]+)/.exec(ct);
+  const ct=card?card.textContent:'', am=/Address (\d+)/.exec(ct), cm=/Charge ([\d.]+%?|–)/.exec(ct);
   const N=am?+am[1]:-1, af=addrField().filter(a=>a.i===N)[0];
   const q=card&&card.querySelector('.chr-q'), qt=q?q.textContent.replace(/^“|”$/g,'').replace(/\.\.\.$/,''):'';
   out.trace={pressed:trace.getAttribute('aria-pressed'),tracing:host.classList.contains('chp-tracing'),card:!!card,sel:CHV.sel,
    tabs:tabs.map(b=>+b.getAttribute('data-chtrace')),on:tabs.filter(b=>b.getAttribute('aria-pressed')==='true').map(b=>+b.getAttribute('data-chtrace')),
    names:tabs.map(b=>b.textContent.trim()),seats:tabs.map(b=>BANDS[+b.getAttribute('data-chtrace')]),byMean:byMean,meanSeats:byMean.map(k=>BANDS[k]),
    topSh:charSmooth(CHAR_SEAT_LO,CHAR_SEAT_FULL,SF[byMean[0]].mean),
-   addr:{N:N,seat:BY[N]?BY[N].b:null,want:BANDS[CHV.sel],field:af?af.field:null,got:cm?cm[1]:null,charge:af?af.sq.toFixed(1):null},
+   addr:{N:N,seat:BY[N]?BY[N].b:null,want:BANDS[CHV.sel],field:af?af.field:null,got:cm?cm[1]:null,charge:af?fmtPct('weight',af.sq):null},
    story:{q:qt,own:!!qt&&CURP.story.entries.some(e=>String(e.text).indexOf(qt)===0)}};
   /* Close trace puts all of it down */
   const tc=document.getElementById('chtc'); if(tc)tc.click(); await fr();
@@ -430,7 +428,7 @@ console.log('\n=== the six masks, as pixels on the figure ===');
   const rc=cv.getBoundingClientRect(), ap=sc.AP.slice().sort((a,b)=>sc.achT[b[2]]-sc.achT[a[2]])[0];
   cv.dispatchEvent(new PointerEvent('pointermove',{clientX:rc.left+ap[0],clientY:rc.top+ap[1],pointerType:'mouse',bubbles:true}));
   const hf=addrField()[ap[2]], hl=document.getElementById('chhover');
-  out.hover={name:hf.name,charge:hf.sq.toFixed(1),txt:hl?hl.textContent:''};
+  out.hover={name:hf.name,charge:fmtPct('weight',hf.sq),txt:hl?hl.textContent:''};
   cv.dispatchEvent(new PointerEvent('pointerleave',{pointerType:'mouse',bubbles:true}));
   out.hover.off=hl?hl.textContent:'';
   /* READ THIS MASK opens its summary in Selection */
@@ -2129,7 +2127,7 @@ ok(/blueprint you were born on|no birth data/.test(sum.text),
 /* 16 October, his words: "change the field to 'your energy leans malignant',
    because energy is more natural. Field is just too abstract." So the subject
    is held, and the word after it, and the old subject is held out. */
-ok(/Your energy leans (?:benign|malignant)\b/.test(sum.text)&&!/the field leans/i.test(sum.text),
+ok(/Your energy leans (?:positive|negative)\b/.test(sum.text)&&!/the field leans/i.test(sum.text),
  'and closes on which way your energy leans, never the field');
 ok(!/undefined|NaN|\[object/.test(sum.text),'and nothing leaked a placeholder');
 console.log(' ',JSON.stringify({glance:sum.glance,rows:sum.structRows,chips:sum.chips,
@@ -2464,9 +2462,46 @@ ok(open_.after===false&&open_.afterShown===false,
 const virginSweep=await page.evaluate(()=>{
  toYou();
  const keptLaws=CURP&&CURP.laws?JSON.parse(JSON.stringify(CURP.laws)):null;
+ const keptIntake=CURP&&CURP.intake&&CURP.intake.answers?JSON.parse(JSON.stringify(CURP.intake.answers)):null;
  if(CURP)CURP.laws={};
+ /* THE SPREAD IS ALSO DERIVED FROM THE DEFAULT SIX, percent phase 3. iqScore
+    reads the three per-question answers under each law, not S.law's own
+    committed figure, so this profile's real spread from an earlier step
+    could still be read off it. Cleared and restored the same way laws is. */
+ if(CURP&&CURP.intake)CURP.intake.answers={};
  CHILD.forEach(c=>{S.charge[c.nm]=0;S.replace[c.nm]=0;});
- SI.forEach(l=>{S.law[l.nm]=6;});
+ /* A LAW COUNTS AS ANSWERED BY lawIn(), NOT BY S.law HOLDING A NUMBER.
+    Setting S.law alone left LAW_UNSET and LAW_SEED holding whatever this
+    profile's own history had set them to earlier in this same run, so
+    lawIn() read every law as answered, r.complete came back true, and
+    coneRead() printed Integrity off the fabricated 6es as a real figure:
+    percent phase 3 turned that bare "7.7" into "77%", which this sweep
+    is built to catch, and it did. loadProfile and practitioner.js's own
+    reset both set S.law, LAW_UNSET and LAW_SEED together for exactly
+    this reason; this sweep now does the same, and restores all three. */
+ const keptUnset=Object.assign({},LAW_UNSET), keptSeed=Object.assign({},LAW_SEED);
+ SI.forEach(l=>{S.law[l.nm]=6; LAW_UNSET[l.nm]=true; LAW_SEED[l.nm]=6;});
+ /* EVERY TAB, NOT ONLY FIELD. A tab renders when it is set and not on every
+    tick, so the Avatar's own intake summary (#iqbody) stayed drawn from
+    whatever this profile last showed there and kept a real, non-default
+    spread in the page's hidden markup. It surfaced once that figure carried
+    a percent sign (engine/pct.js) and not before, which is this sweep's own
+    signal working and not a new leak: the whole page is only honestly swept
+    once every door onto it has actually been opened.
+
+    AND TABEXTRA TOO, not only TABDEF. This swept every tab in the bar and
+    still failed, intermittently, on a stray 77% traced by ancestor path to
+    `#games`'s own match game: `mtBlock()` reads S.charge off CHILD, which
+    this sweep does zero, but only once Games itself renders and recomputes
+    it. Games (7) and Settings (9) are deliberately not in TABDEF, having no
+    door in the bar (core.js's own comment on TABEXTRA), so this loop never
+    reached Games, and whatever charge a prior test's real playthrough left
+    on MT.pick (module state, never reset by toYou or loadP) sat stale in
+    Games' markup for the rest of the run. monitor.js already walks TABDEF
+    and TABEXTRA together for exactly this reason; this sweep now does the
+    same. */
+ TABDEF.forEach(function(t){setTab(t.k); render();});
+ Object.keys(TABEXTRA).forEach(function(k){setTab(TABEXTRA[k].k); render();});
  setTab(TAB.FIELD); layout(); draw(compute());
  const r=compute();
  /* the whole rendered page, not one element, because the last time this was
@@ -2480,6 +2515,8 @@ const virginSweep=await page.evaluate(()=>{
  /* the canvas core is pixels, so it is read from what draw was asked to write */
  o.pol=(document.getElementById('pol').textContent||'').replace(/\s+/g,' ');
  if(CURP&&keptLaws)CURP.laws=keptLaws;
+ if(CURP&&CURP.intake&&keptIntake)CURP.intake.answers=keptIntake;
+ Object.assign(LAW_UNSET,keptUnset); Object.assign(LAW_SEED,keptSeed);
  return o;});
 ok(virginSweep.unread,'the field reads as unread');
 /* CHANGED 25 SEPTEMBER. These asserted the arithmetic still produced a
@@ -3009,6 +3046,11 @@ const relrun=await page.evaluate(()=>{
  relPick(held);
  o.plan=RUN.plan.length;
  o.setup=(document.getElementById('rel').textContent||'').replace(/\s+/g,' ');
+ /* read off the button itself, not the blob: "Release" alone also matches
+    the card's own heading, which was already true before the button's
+    own rename, round of 29 October, so the blob regex alone cannot tell
+    the two apart. */
+ o.goText=(document.getElementById('relgo')||{}).textContent||'';
  o.distinct=new Set(RUN.plan).size;
  /* THE PERSON WHO RAN IT IS THE PERSON CHARGED, and nothing in the run moves
     who that is. An earlier build repointed CURP at the person's own record
@@ -3062,19 +3104,22 @@ ok(relrun.distinct===relrun.plan,'and never repeats a line inside one run');
    was there to keep. */
 /* "Pace" read "Run speed" from round LY, his own words, "run speed instead
    of pace"; the field's id and RUN.pace are untouched, only the label moved. */
+/* "TIMES SAID" READ "PATTERNS" AGAIN, round of 29 October, overriding the
+   17 October rename this file used to test for by name: his words today,
+   looking at the Story page's own matching field, put Patterns back. The
+   card's button is Release now too, not Run release, same round. */
 /* "RELEASE YOUR SELECTIONS" CAME OFF, round QH, his words: "get rid of the
    text that says release your selections. I want this to show me the stories
    or the patterns that I'm about to release." The heading's place is the
    Story and Seat toggle, and the selection is shown as what it is, each group
    with its count of patterns. */
 ok(!/Release your selections/i.test(relrun.setup)&&/Story/.test(relrun.setup)&&/Seat/.test(relrun.setup)
- /* counted in lines and the dose named Times said since 17 October: a
-    pattern is the allowance's unit, and these count lines said, every pass
-    (tests/allowance.js, 8). The controls he named are all still here. */
- &&/\d+ ?lines/.test(relrun.setup)&&/Run speed/.test(relrun.setup)
- &&/Times said/.test(relrun.setup)&&/Run release/.test(relrun.setup),
+ /* counted in lines and the dose named Patterns again since 29 October,
+    the controls he named are all still here */
+ &&/\d+ ?lines/.test(relrun.setup)&&/Run speed/.test(relrun.setup)&&/Patterns/.test(relrun.setup)
+ &&relrun.goText.trim()==='Release',
  'the setup is what is picked, by story or seat with its patterns, run speed, how many patterns and one button: '
- +relrun.setup.slice(0,160));
+ +relrun.setup.slice(0,160)+' | button: '+relrun.goText);
 ok(!/patterns of the|thought lines? of new ground|you have left|empties the story/.test(relrun.setup),
  'and it quotes no cost and no framing, '+relrun.setup.slice(0,160));
 ok(relrun.beforeWho===0&&relrun.afterWho===0,
@@ -4361,11 +4406,9 @@ ok(tiers.small===0,'every control on the tiers meets the 44 pixel floor, '+tiers
    tabs.findIndex(t=>new RegExp(nm,'i').test(t))); await pa.waitForTimeout(600);};
  /* the journal page's door reads Discover since 23 October */
  await go('Discover');
- /* conversation only now, round of 28 October: the reply box and a send */
- await pa.evaluate(()=>{const ci=document.getElementById('stcin');
-  ci.value='I was humiliated in the meeting and I said nothing. '
-   +'My chest went tight and I felt ashamed the rest of the day.';
-  ci.dispatchEvent(new Event('input',{bubbles:true})); srcChatSend();});
+ /* voice only now, round of 29 October: srcTurnCommit is the one door */
+ await pa.evaluate(()=>{srcTurnCommit('I was humiliated in the meeting and I said nothing. '
+   +'My chest went tight and I felt ashamed the rest of the day.');});
  await pa.waitForTimeout(450);
  await pa.evaluate(()=>{const e=document.getElementById('stapply');if(e)e.click();});
  await pa.waitForTimeout(700);
@@ -5862,8 +5905,10 @@ console.log('\n=== the orientation dial says nothing about an unread field ===')
      not drawn. */
   const pb=document.getElementById('polbar'), pol=document.getElementById('pol');
   const bar=()=>pb&&pb.querySelector('.rb2');
-  const laid=()=>{const b=bar(); if(!b)return false; const l=b.querySelector('.rb2-l');
-   return !b.classList.contains('off')&&!!l&&getComputedStyle(l).display!=='none';};
+  /* NAMED CHANGE, 30 October, r1: a read pair lays its colours as its two
+     tinted halves and stands its mark; an unread one is .off and stands none */
+  const laid=()=>{const b=bar(); if(!b)return false;
+   return !b.classList.contains('off')&&!!b.querySelector('.rb2-nd');};
   const blank={unread:!!compute().unread,
    text:pb?pb.textContent.replace(/\s+/g,''):null,
    fill:laid(),
@@ -5881,7 +5926,7 @@ console.log('\n=== the orientation dial says nothing about an unread field ===')
    h:pb?Math.round(pb.getBoundingClientRect().height):0};
   return {blank, read};});
  ok(dial.blank.unread,'an arrival who has entered nothing reads as unread');
- ok(!/\d/.test(dial.blank.text||'x')&&/Benign/.test(dial.blank.text)&&/Malignant/.test(dial.blank.text),
+ ok(!/\d/.test(dial.blank.text||'x')&&/Positive/.test(dial.blank.text)&&/Negative/.test(dial.blank.text),
   'and the bar prints no figure at all, only its two words and dashes, got '+JSON.stringify(dial.blank.text));
  ok(dial.blank.fill===false,'and lays no colour');
  ok(dial.blank.mid===true,'and keeps its track, so the bar is still a bar');
@@ -6080,13 +6125,82 @@ console.log('\n=== a sentence does not disappear at a pause, round NU ===');
      sentence, the real API's own shape once a result is final */
   rec.onresult({resultIndex:1,results:{0:seg('I felt insecure about it.'),
    1:seg('Then I spoke up anyway.'),length:2}});
-  /* TALK FILLS THE REPLY NOW, NOT THE ENTRY, round of 29 October: dictation
-     goes where typing goes, SRC_CDRAFT, so the same accumulation this test
-     holds is read off the reply line and not off ST_TEXT, which dictation no
-     longer touches at all. See the ruling at stMic in ui/storyui.js. */
-  const out=SRC_CDRAFT; rec.stop(); return out;});
+  /* TALK COMMITS AS IT GOES, round of 29 October: a finalised sentence is a
+     turn the moment it finalises (srcTurnCommit), landing straight in
+     ST_TEXT the same as it always has, so this still reads off ST_TEXT. See
+     the ruling at stMic in ui/storyui.js. */
+  const out=ST_TEXT; rec.stop(); return out;});
  ok(/insecure/.test(heard)&&/spoke up/.test(heard),
   'both sentences survive the pause between them, got '+JSON.stringify(heard));
+ await st.close();
+}
+
+console.log('\n=== "it can\'t hear me": a browser that ends its own listening is restarted, round of 29 October ===');
+/* HIS OWN REPORT: the button said Listening and it was not hearing him.
+   Reproduced against the real cause: Chrome's own continuous recognition
+   still ends itself on its own, well before a person is done talking, and
+   the old onend read that exactly the same as the person pressing stop, so
+   the mic looked live while the browser had already walked away from it.
+   No real microphone here: the stand-in's onend fires on its own, the way
+   the browser's does, never because anyone pressed Record again, and start
+   is counted so a restart is read off the count and not guessed at. */
+{
+ const st=await browser.newPage({viewport:{width:1600,height:1000}});
+ await st.goto(FILE,{waitUntil:'load'}); await booted(st);
+ const r=await st.evaluate(()=>{
+  setTab(TAB.STORY);
+  function FakeSR(){this.starts=0;}
+  FakeSR.prototype.start=function(){this.starts++;};
+  FakeSR.prototype.stop=function(){if(this.onend)this.onend();};
+  window.SpeechRecognition=FakeSR;
+  ST_TEXT=''; stMic();
+  const rec=ST_REC, before=rec.starts;
+  /* the browser's own end, unasked: nobody pressed Record again */
+  rec.onend();
+  const afterEnd={starts:rec.starts,listen:ST_LISTEN,same:ST_REC===rec};
+  /* a sentence still lands after the restart, so the restart is a real one */
+  rec.onresult({resultIndex:0,results:{0:{0:{transcript:'Still here.'},isFinal:true,length:1},length:1}});
+  const afterSay={text:ST_TEXT,listen:ST_LISTEN};
+  /* now the person presses Record again, the real stop: no further restart */
+  stMic();
+  const afterStop={listen:ST_LISTEN,starts:rec.starts};
+  return {before,afterEnd,afterSay,afterStop};});
+ ok(r.afterEnd.starts===r.before+1&&r.afterEnd.listen&&r.afterEnd.same,
+  'the browser\'s own end restarts the same recognizer rather than reading as a stop: '+JSON.stringify(r.afterEnd));
+ ok(/Still here/.test(r.afterSay.text)&&r.afterSay.listen,
+  'and it is still listening, a sentence after the restart lands: '+JSON.stringify(r.afterSay));
+ ok(!r.afterStop.listen&&r.afterStop.starts===r.before+1,
+  'a press on Record is still a real stop, with no further restart: '+JSON.stringify(r.afterStop));
+ await st.close();
+}
+
+console.log('\n=== "it can\'t hear me": no-speech alone is never read as a failure ===');
+/* the browser's own no-speech error precedes its own onend on a silent
+   stretch; stMicSay must never speak for it, since the browser is about to
+   recover on its own through the restart the test above holds. Read off
+   MSG_LOG, the one place status() ever writes (see log() in tests/honest.js
+   for the same read), rather than intercepting status itself: window.status
+   is the browser's own status bar property and not a safe thing to shadow. */
+{
+ const st=await browser.newPage({viewport:{width:1600,height:1000}});
+ await st.goto(FILE,{waitUntil:'load'}); await booted(st);
+ const r=await st.evaluate(()=>{
+  setTab(TAB.STORY);
+  function FakeSR(){this.starts=0;}
+  FakeSR.prototype.start=function(){this.starts++;};
+  FakeSR.prototype.stop=function(){};
+  window.SpeechRecognition=FakeSR;
+  ST_TEXT=''; stMic();
+  MSG_LOG.length=0;
+  ST_REC.onerror({error:'no-speech'});
+  const afterError={listen:ST_LISTEN,msgs:MSG_LOG.map(m=>m.msg)};
+  ST_REC.onend();
+  const afterEnd={listen:ST_LISTEN,starts:ST_REC.starts,msgs:MSG_LOG.map(m=>m.msg)};
+  return {afterError,afterEnd};});
+ ok(r.afterError.listen&&!r.afterError.msgs.length,
+  'no-speech alone says nothing and does not stop listening: '+JSON.stringify(r.afterError));
+ ok(r.afterEnd.listen&&r.afterEnd.starts>=1&&!r.afterEnd.msgs.length,
+  'the onend that follows it restarts quietly, the real recovery: '+JSON.stringify(r.afterEnd));
  await st.close();
 }
 
@@ -6716,9 +6830,7 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
     them, through the Story tab, on the person's own profile. */
  for(const t of ['My chest is tight in every meeting and I have told no one.',
                  'I felt nothing when we let forty people go and that frightens me.']){
-  await fp.evaluate(t=>{loadP(0);setTab(TAB.STORY);stRender();
-   const ci=document.getElementById('stcin');ci.value=t;ci.dispatchEvent(new Event('input',{bubbles:true}));
-   srcChatSend();},t);
+  await fp.evaluate(t=>{loadP(0);setTab(TAB.STORY);stRender();srcTurnCommit(t);},t);
   await fp.waitForTimeout(60);
   await fp.evaluate(()=>{const b=document.getElementById('stapply');if(b&&!b.disabled)b.click();});
   await fp.waitForTimeout(60);}
@@ -6852,27 +6964,34 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
      pct(kind, value), the whole percent its figure prints (engine/pct.js),
      so the fill and the colour ramp are read off that and not off the raw
      value times a hundred. */
-  const want=[['Vitality',pct('vitality',R.X),seatCol('Solar')],['Awareness',pct('awareness',R.Y),seatCol('3rd Eye')],['Will',pct('will',R.Z),seatCol('Throat')],
-   ['Radiance',pct('radiance',R.radiance),null],['Flow',pct('flow',f),null]];
+  /* NAMED CHANGE, 30 October: r1 "the level" from mockups/dual-readings,
+     picked by the owner for the left-hand side. DQ leads the amounts in the
+     root red, Radiance is drawn in light (the ink warmed by Solar), and Flow
+     is seven cells in its seats' own colours with its mark in the ink, so the
+     two that kept the ramp under round OG do not any more. */
+  const want=[['DQ',pct('dq',R.DQ),seatCol('Root')],['Vitality',pct('vitality',R.X),seatCol('Solar')],['Awareness',pct('awareness',R.Y),seatCol('3rd Eye')],['Will',pct('will',R.Z),seatCol('Throat')],
+   ['Radiance',pct('radiance',R.radiance),'color-mix(in srgb,var(--ink) 86%,'+seatCol('Solar')+')'],['Flow',pct('flow',f),'var(--ink)']];
   const pairs=[...d.querySelectorAll('.rb2')];
+  const sp=v=>String(v||'').replace(/\s+/g,'').toLowerCase();
   const bar={names:bars.map(e=>e.querySelector('.rb-n').textContent),
    pairNames:pairs.map(p=>[...p.querySelectorAll('.rb2-n')].map(n=>n.textContent)),
    stacked:rr.every((r,i)=>i===0||r.top>=rr[i-1].bottom-0.5),
    oneColumn:new Set(rr.map(r=>Math.round(r.left))).size===1&&new Set(rr.map(r=>Math.round(r.width))).size===1,
    heights:[...new Set(rr.map(r=>Math.round(r.height)))],
-   fills:bars.map((e,i)=>Math.abs(parseFloat(e.querySelector('.rb-t i').style.width)-Math.max(0,Math.min(100,want[i][1])))<0.1),
-   colours:bars.map((e,i)=>e.style.getPropertyValue('--c').trim().toLowerCase()===(want[i][2]||rbCol(Math.max(0,Math.min(100,want[i][1])),false)).toLowerCase()),
+   fills:bars.map((e,i)=>{const f=e.querySelector('.rb-f'); return want[i][0]==='Flow'?!f:!!f&&Math.abs(parseFloat(f.style.width)-Math.max(0,Math.min(100,want[i][1])))<0.1;}),
+   colours:bars.map((e,i)=>sp(e.style.getPropertyValue('--c'))===sp(want[i][2])),
    tall:Math.min(...rr.map(r=>r.height)),
-   inside:bars.every(e=>{const b=e.getBoundingClientRect(),n=e.querySelector('.rb-n').getBoundingClientRect(),v=e.querySelector('.rb-v').getBoundingClientRect();
-    return n.top>=b.top&&n.bottom<=b.bottom&&v.top>=b.top&&v.bottom<=b.bottom&&n.height<b.height;}),
-   /* in a pair, each pole's mark, word and figure sit inside the bar, at its
-      own end, the left pole left of the right one */
-   pairInside:pairs.every(p=>{const b=p.getBoundingClientRect(), ps=[...p.querySelectorAll('.rb2-p')].map(x=>x.getBoundingClientRect());
+   /* r1: the name and the figure sit on one line inside the row and above
+      its track, never inside a fill, and nothing draws them twice */
+   inside:bars.every(e=>{const b=e.getBoundingClientRect(),n=e.querySelector('.rb-n').getBoundingClientRect(),v=e.querySelector('.rb-v').getBoundingClientRect(),
+    t=e.querySelector('.rb-t').getBoundingClientRect();
+    return n.top>=b.top&&v.top>=b.top&&n.bottom<=t.top+0.5&&v.bottom<=t.top+0.5&&Math.abs((n.top+n.bottom)/2-(v.top+v.bottom)/2)<2&&v.right<=b.right;}),
+   /* in a pair, each pole's mark and word sit on the row's line, at its own
+      end, with the one figure between them */
+   pairInside:pairs.every(p=>{const b=p.getBoundingClientRect(), ps=[...p.querySelectorAll('.rb2-p')].map(x=>x.getBoundingClientRect()), f=p.querySelector('.rb2-f').getBoundingClientRect();
     const ics=p.querySelectorAll('.rb2-p .rb-ic').length;
-    return ps.length===2&&ics===2&&ps.every(x=>x.top>=b.top-0.5&&x.bottom<=b.bottom+0.5&&x.left>=b.left&&x.right<=b.right)&&ps[0].right<ps[1].left;}),
-   turns:bars.every((e,i)=>{const o=e.querySelector('.rb-over'),cs=getComputedStyle(o),base=getComputedStyle(e.querySelector('.rb-n')).color,
-    over=getComputedStyle(o.querySelector('.rb-n')).color;
-    return cs.clipPath!=='none'&&base!==over&&Math.abs(parseFloat(e.style.getPropertyValue('--w'))-parseFloat(e.querySelector('.rb-t i').style.width))<0.1;}),
+    return ps.length===2&&ics===2&&p.querySelectorAll('.rb2-v').length===1&&ps.every(x=>x.top>=b.top-0.5&&x.bottom<=b.bottom+0.5&&x.left>=b.left&&x.right<=b.right)&&ps[0].right<=f.left&&f.right<=ps[1].left;}),
+   twice:d.querySelectorAll('.rb-over').length,
    /* the wire is gone and gives its gutter back: nothing in the dock to the
       left of the bars */
    wire:!!d.querySelector('.rw-bus,.rw-rad'), gutter:Math.round(rr[0].left-d.getBoundingClientRect().left)};
@@ -6890,16 +7009,16 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
     mirror:+Math.abs((ab.left-s.left)-(s.right-Math.max(...zs.map(r=>r.right)))).toFixed(2),
     overlay:typeof OVERLAY!=='undefined'&&OVERLAY.indexOf('acc')>=0}};});
  ok(dock.inLeft&&!dock.inStage&&dock.keylo,'the readings sit at the head of the left rail and none of them along the stage\'s foot');
- ok(JSON.stringify(dock.bar.names)==='["Vitality","Awareness","Will","Radiance","Flow"]',
-  'RB: five single readings in reading order, Radiance a bar among them, '+JSON.stringify(dock.bar.names));
- ok(JSON.stringify(dock.bar.pairNames)==='[["CQ","DQ"],["Benign","Malignant"],["Masculine","Feminine"]]',
-  'RB, OV: three pairs, CQ and DQ on one bar, '+JSON.stringify(dock.bar.pairNames));
- ok(dock.bar.stacked&&dock.bar.oneColumn,'RB: all eight stacked one on top of the next, in one column of one width, '+JSON.stringify({stacked:dock.bar.stacked,oneColumn:dock.bar.oneColumn}));
- ok(dock.bar.heights.length===1&&dock.bar.tall>=44,'RB: every bar the same height, at the 44px floor, '+JSON.stringify(dock.bar.heights));
- ok(dock.bar.fills.every(Boolean),'OG: every single bar is filled to its own figure, '+JSON.stringify(dock.bar.fills));
- ok(dock.bar.colours.every(Boolean),'OT: vitality, awareness and will in their element\'s colour, radiance and flow on the ramp by their figure, '+JSON.stringify(dock.bar.colours));
- ok(dock.bar.inside&&dock.bar.turns,'OG: the name and the number sit inside the bar, which is taller than the words, and the words turn colour at the fill\'s edge, '+JSON.stringify({inside:dock.bar.inside,turns:dock.bar.turns}));
- ok(dock.bar.pairInside,'RB: in every pair both poles\' marks, words and figures sit inside the bar, each at its own end');
+ ok(JSON.stringify(dock.bar.names)==='["DQ","Vitality","Awareness","Will","Radiance","Flow"]',
+  'r1: six amounts in reading order, DQ leading them, '+JSON.stringify(dock.bar.names));
+ ok(JSON.stringify(dock.bar.pairNames)==='[["CQ","Shadow"],["Positive","Negative"],["Masculine","Feminine"]]',
+  'r1: three pairs, CQ against its own shadow and not against DQ, '+JSON.stringify(dock.bar.pairNames));
+ ok(dock.bar.stacked&&dock.bar.oneColumn,'r1: all nine stacked one on top of the next, in one column of one width, '+JSON.stringify({stacked:dock.bar.stacked,oneColumn:dock.bar.oneColumn}));
+ ok(dock.bar.tall>=44,'r1: every row at the 44px floor, '+JSON.stringify(dock.bar.heights));
+ ok(dock.bar.fills.every(Boolean),'OG, r1: every amount is filled to its own figure, and Flow is its cells, '+JSON.stringify(dock.bar.fills));
+ ok(dock.bar.colours.every(Boolean),'OT, r1: DQ in the root red, vitality, awareness and will in their element\'s colour, radiance in light, flow\'s mark in the ink, '+JSON.stringify(dock.bar.colours));
+ ok(dock.bar.inside&&dock.bar.twice===0,'r1: the name and the number sit on one line above the track, never inside a fill and never drawn twice, '+JSON.stringify({inside:dock.bar.inside,twice:dock.bar.twice}));
+ ok(dock.bar.pairInside,'r1: in every pair both poles\' marks and words sit on the row\'s line, each at its own end, with one figure between them');
  ok(!dock.bar.wire&&dock.bar.gutter<=1,'RB, RZ: the unnamed wire beside the bars is gone and its gutter with it, '+JSON.stringify({wire:dock.bar.wire,gutter:dock.bar.gutter}));
  ok(!dock.sq&&dock.sqElsewhere,'SQ is off the dock and only off the dock: the bar\'s Addresses circle still says SQ');
  ok(dock.acc.inStage&&!dock.acc.inLeft&&dock.acc.lowerLeft,
@@ -6916,11 +7035,11 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
     the change lands: it leaves from where it stood for the new figure, which
     is a sweep and not a snap whatever the machine's frame rate. */
  const mo=await fp.evaluate(async()=>{loadP(PERSON('Marcus'));render();
-  const bar=()=>document.querySelector('#keylo .rbar .rb-t i');
+  const bar=()=>document.querySelector('#keylo .rbar[data-q=xyz] .rb-f');
   await new Promise(r=>setTimeout(r,ENTER_SPAN+9*ENTER_STAGGER+250));
-  const was=parseFloat(bar().style.width), cqWas=RB2.cqdq.l1; loadP(PERSON('James'));render();
-  const goal2=parseFloat(document.querySelector('#keylo .rbar').getAttribute('data-w'));
-  const cqFrom=RB2.cqdq.l0, cqTo=RB2.cqdq.l1;
+  const was=parseFloat(bar().style.width), cqWas=RB2.coh.l1; loadP(PERSON('James'));render();
+  const goal2=parseFloat(document.querySelector('#keylo .rbar[data-q=xyz]').getAttribute('data-w'));
+  const cqFrom=RB2.coh.l0, cqTo=RB2.coh.l1;
   await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
   const mid2=parseFloat(bar().style.width);
   await new Promise(r=>setTimeout(r,ENTER_SPAN+120));
@@ -6951,19 +7070,23 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   loadP(PERSON('Tomas'));setTab(TAB.FIELD);render();
   await new Promise(r=>setTimeout(r,ENTER_SPAN+9*ENTER_STAGGER+300));
   /* ROUND RB AND PC, ported in the P3 menu pass: the seven hashes went with
-     "a solid bar of color", and decoherence is the right half of the CQ and DQ
-     pair. The pair's swing is held in tests/railmenu.js. */
-  const fl=document.querySelector('#fdock .rbar[data-q=flow]'), pair=document.querySelector('#fdock .rb2[data-pair=cqdq]');
-  const ys=pass=>rbWavePts(pass).pts.map(p=>p[1]);
-  const full=ys([1,1,1,1,1,1,1]), tom=ys(rbSeatPass());
-  const span=a=>Math.max(...a)-Math.min(...a), rough=a=>a.slice(1).reduce((t,v,i)=>t+Math.abs(v-a[i]),0);
+     "a solid bar of color". NAMED CHANGE, 30 October, r1: the CQ and DQ bar
+     went with RB's drawing, coherence is CQ against its own shadow, DQ is an
+     amount, and round OM's wave is seven cells, which the r1 review records
+     as "OM, Flow as a sine wave: replaced by cells". What OM asked the wave
+     to show is still held, by the cells: a healthy chain, every seat passing
+     everything, ends its step at the top, and a heavy one ends lower. The
+     pair's swing and the cells' own rules are held in tests/railmenu.js. */
+  const fl=document.querySelector('#fdock .rbar[data-q=flow]'), pair=document.querySelector('#fdock .rb2[data-pair=coh]');
+  const end=d=>+(/V(-?[\d.]+)H700$/.exec(d)||[,NaN])[1];
   const dock=document.getElementById('fdock');
   return {rows:dock.querySelectorAll('.rbar,.rb2').length,
    hashes:dock.querySelectorAll('.rb-hash').length,
-   dqName:pair?[...pair.querySelectorAll('.rb2-n')].map(n=>n.textContent).join():'',
-   segs:fl.querySelectorAll('path.wv').length,flTall:fl.getBoundingClientRect().height,
-   healthySpan:+span(full).toFixed(1),healthyRough:+rough(full).toFixed(0),tomSpan:+span(tom).toFixed(1),tomRough:+rough(tom).toFixed(0),
-   range:RB_WV.H-6,
+   cohName:pair?[...pair.querySelectorAll('.rb2-n')].map(n=>n.textContent).join():'',
+   dqRow:!!dock.querySelector('#keylo .rbar[data-q=dq]'),
+   cells:fl.querySelectorAll('.rb-cell').length, wave:fl.querySelectorAll('path.wv,.rb-wave').length,
+   flTall:fl.getBoundingClientRect().height,
+   healthyEnd:end(rbStepD([1,1,1,1,1,1,1])), tomEnd:end(fl.querySelector('.rb-step path').getAttribute('d')), tomFlow:flSpeed()*100,
    dials:dock.contains(document.getElementById('polbar'))&&dock.contains(document.getElementById('bal'))&&!document.getElementById('axpick'),
    oldSection:!!document.querySelector('.lsec[data-sec=lean]'),
    soulOpen:document.querySelector('.lsec[data-sec=soul]').classList.contains('open'),
@@ -6972,14 +7095,41 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
    shadowCircle:(document.querySelector('#fbar [data-fb=shadow]')||{getAttribute:()=>''}).getAttribute('aria-label'),
    overlay:!!document.getElementById('rlink'),
    rail2:document.body.classList.contains('rail2')};});
- ok(om.rows===8&&om.hashes===0&&om.dqName==='CQ,DQ','RB, OV: eight bars, no hash column, and the shadow is the DQ half of the CQ and DQ bar, '+JSON.stringify([om.rows,om.hashes,om.dqName]));
- ok(om.segs===7&&om.flTall>=44&&om.flTall<=46,'RB: Flow\'s wave of seven stretches, one a seat, rides inside a 44px bar, '+om.flTall+'px');
- ok(Math.abs(om.healthySpan-om.range)<1.5&&om.healthyRough<om.tomRough&&om.tomSpan<om.healthySpan,
-  'OM: a healthy wave spans the whole range, '+om.healthySpan+' of '+om.range+', and a heavy person\'s is smaller, '+om.tomSpan+', and rougher, '+om.tomRough+' against '+om.healthyRough);
+ ok(om.rows===9&&om.hashes===0&&om.cohName==='CQ,Shadow'&&om.dqRow,'r1: nine rows, no hash column, coherence is CQ against its shadow and DQ is a row of its own, '+JSON.stringify([om.rows,om.hashes,om.cohName,om.dqRow]));
+ ok(om.cells===7&&om.wave===0&&om.flTall>=44,'r1: Flow is seven cells, one a seat, and the wave is gone, '+JSON.stringify({cells:om.cells,wave:om.wave,tall:om.flTall}));
+ ok(om.healthyEnd===0&&Math.abs(om.tomEnd-(100-om.tomFlow))<0.1,
+  'OM, r1: a healthy chain\'s step ends at the top, and a heavy person\'s ends at what reaches the crown, '+JSON.stringify({healthy:om.healthyEnd,tomas:om.tomEnd,flow:+om.tomFlow.toFixed(2)}));
  ok(om.dials&&!om.oldSection,'OM, RB: orientation and balance sit in the block with the readings, their old section is gone, and so is the switch between two dial designs');
  ok(!om.soulOpen&&om.fold.length===2&&om.fold.every(f=>f[1]>=44)&&om.foldCircles>=2,'OM: the Awareness grids fold to a domain line and an archetype line, each 44 or more, '+JSON.stringify(om.fold));
  ok(/^Decoherence/.test(om.shadowCircle||''),'OM: the circle it pairs with says Decoherence, '+om.shadowCircle);
  ok(!om.overlay&&!om.rail2,'OO: nothing of the left menu is drawn on the stage, and option two is not on by default');
+ /* THE CHAIN KEY SAYS ONLY WHAT IS COMPUTED, round of 31 October. Its fifth
+    row read "Archetype: the shape the whole pattern points toward" under a
+    heading that made it a tier of the chain, and compute() stops at the
+    super complex. The four field anchors were in no key, the drill printed
+    more left at Sol Star than was ever held, and the renditions' hover gave
+    an anchor no weight. Each figure is read off FIELD, never typed, so the
+    checks hold for whichever person this page carries. */
+ const ck=await fp.evaluate(()=>{
+  const k=document.getElementById('chainkey'), r=compute();
+  const pc=n=>Math.max(0,Math.min(100,Math.round((n.sq||0)*10)));
+  const up=FIELD.filter(n=>n.b==='Field-Above'), dn=FIELD.filter(n=>n.b==='Field-Below');
+  return {rows:k?[...k.querySelectorAll('.chk-row')].map(x=>x.textContent):[],
+   head:(document.querySelector('.lsec[data-sec=chain] .tier1')||{}).textContent,
+   unread:!!r.unread, above:pc(up[0]), below:pc(dn[0]),
+   drill:nodeDrillHtml(up[0]), hover:frDescribe({k:'anchor',n:dn[0]},r)};});
+ const ckNm=ck.rows.map(t=>t.split('.')[0]);
+ ok(ck.head==='Nerve to super-complex'&&ckNm.slice(0,4).join()==='Saboteur,Complex,Hyper-complex,Super-complex',
+  'chain key: the chain is four tiers, nerve to super-complex, '+JSON.stringify([ck.head,ckNm]));
+ ok(ckNm[4]==='Archetype'&&/^Archetype\. Not part of the chain\./.test(ck.rows[4])&&!ck.rows.some(t=>/points toward/.test(t)),
+  'chain key: Archetype is named a pick outside the chain, never a tier it climbs into, '+JSON.stringify(ck.rows[4]));
+ ok(!ck.unread&&ckNm[5]==='Field anchors'&&ck.rows[5].indexOf('crown above at '+ck.above+'%')>=0
+  &&ck.rows[5].indexOf('root below at '+ck.below+'%')>=0&&/decoherence/.test(ck.rows[5]),
+  'chain key: the four field anchors carry their seat\'s live average and say it counts in decoherence, '+JSON.stringify([ck.above,ck.below,ck.rows[5]]));
+ ok(!/Charge held here/.test(ck.drill)&&ck.drill.indexOf('average weight of the crown seat it extends, <b>'+ck.above+'%</b>')>=0,
+  'an anchor\'s drill states its seat average and never "held 0.0, left after that" more');
+ ok(ck.hover.indexOf('average weight of the root seat it extends, <b>'+ck.below+'%</b>')>=0&&/decoherence/.test(ck.hover),
+  'an anchor\'s hover on a rendition carries its weight and where it counts');
  await fp.evaluate(()=>{const s=document.querySelector('#lpanel .lsec[data-sec=soul]');if(s&&!s.classList.contains('open'))s.querySelector('.lsec-hd').click();});
  await fp.waitForTimeout(300);
 
@@ -7230,8 +7380,20 @@ console.log('\n=== FJ: words with the zoom, layers that move, one dial in two de
     come back on the same curve off FZ.s */
  for(const v of ['frames','dial']){
   await fj.evaluate(v=>{fviewSet(v);},v); await fr2();
+  /* WAITS FOR THE REAL STATE, NOT A GUESSED DELAY, round of 31 October. A
+     fixed 220ms against the CSS's own 120ms (--t-micro) fade was margin
+     enough on a quiet machine and not on a busy one: three other gates
+     running alongside this one lost the race on "frames" 1x, read 0 names
+     expected and some number of names still mid fade. Polling for the
+     count this zoom should settle on, up to two full seconds, passes at
+     the same speed when the machine is quiet and never flakes when it is
+     not; if the fade genuinely never finishes the poll times out and the
+     ok() below reports the real, unsettled count rather than a lucky one. */
   const at=async s=>{await fj.evaluate(s=>{const h=document.getElementById('frend');FZ={s:1,x:0,y:0};
-   fzAt(s,h.clientWidth*.5,h.clientHeight*.12);},s); await fj.waitForTimeout(220);
+   fzAt(s,h.clientWidth*.5,h.clientHeight*.12);},s);
+   await fj.waitForFunction(s=>{const h=document.getElementById('frend');
+    const shown=sel=>[...h.querySelectorAll(sel)].filter(e=>getComputedStyle(e).visibility!=='hidden'&&!e.classList.contains('hid')).length;
+    return s===1?shown('.frnm span')===0:shown('.frnm span')>0;},s,{timeout:2000}).catch(()=>{});
    return fj.evaluate(()=>{const h=document.getElementById('frend');
     const shown=sel=>[...h.querySelectorAll(sel)].filter(e=>getComputedStyle(e).visibility!=='hidden'&&!e.classList.contains('hid')).length;
     return {notext:h.classList.contains('notext'),tx:+h.style.getPropertyValue('--fztx'),
@@ -7273,21 +7435,25 @@ console.log('\n=== FJ: words with the zoom, layers that move, one dial in two de
  ok(land===0,'a depth set by the program lands on the next frame, archetypes read '+land);
  /* ONE MECHANIC, ONE DRAWING. FJ ruled orientation and balance the same
     mechanic; round RB made both, and CQ against DQ, the rail's one pair bar,
-    ported in the P3 menu pass. Each whole pair's two figures are two shares
-    of one whole, and the heavier pole's colour reaches past the middle
-    toward the lighter end. A zero prints as a dash. The two dial designs and
-    their switch are gone with the dial. */
+    ported in the P3 menu pass. NAMED CHANGE, 30 October: r1's pair. Each
+    whole pair is still two shares of one whole, said in its spoken name; the
+    fill now grows from the centre line toward the heavier pole and the mark
+    stands on that side, at the lighter pole's share from the left end. The
+    two dial designs and their switch are gone with the dial. */
  {const o=await fj.evaluate(async()=>{setTab(TAB.FIELD);render();
    if(document.body.classList.contains('lshut')){document.getElementById('lfold').click();}
    await new Promise(r=>setTimeout(r,ENTER_SPAN+9*ENTER_STAGGER+300));
-   const q=k=>{const m=RB2[k], el=document.querySelector('#fdock .rb2[data-pair='+k+']');
-   return {figs:[...el.querySelectorAll('.rb2-v')].map(v=>{const n=parseFloat(v.textContent);return isFinite(n)?n:0;}),
-    meet:parseFloat((el.querySelector('.rb2-now.l').style.transform.match(/translate3d\(([-\d.]+)px/)||[])[1])/m.wpx*100};};
-   return {pol:q('lean'),bal:q('bal'),axpick:!!document.getElementById('axpick')};});
+   const sc=(e,re)=>{const m=re.exec((e&&e.style.transform)||'');return m?+m[1]:NaN;};
+   const q=(k,host)=>{const el=document.querySelector('#fdock .rb2[data-pair='+k+']'), said=document.getElementById(host).getAttribute('aria-label')||'';
+   return {figs:[...said.matchAll(/(\d+) per cent|zero/g)].slice(0,2).map(m=>m[1]?+m[1]:0),
+    x:sc(el.querySelector('.rb2-nd'),/translateX\((-?[\d.]+)%\)/),
+    fl:sc(el.querySelector('.rb2-fl.l'),/scaleX\((-?[\d.]+)\)/), fr:sc(el.querySelector('.rb2-fl.r'),/scaleX\((-?[\d.]+)\)/)};};
+   return {pol:q('lean','polbar'),bal:q('bal','bal'),axpick:!!document.getElementById('axpick')};});
   for(const k of ['pol','bal']){const x=o[k],sum=x.figs[0]+x.figs[1];
    ok(x.figs.length===2&&Math.abs(sum-100)<=1,'RB: '+k+' carries two shares of one whole, '+x.figs.join(' and '));
    const heavy=x.figs[0]>x.figs[1]?'l':'r';
-   ok(x.figs[0]===x.figs[1]||(heavy==='l'?x.meet>50:x.meet<50),'RB: '+k+'\'s heavier pole reaches past the middle, '+heavy+', meeting at '+x.meet.toFixed(1));}
+   ok(x.figs[0]===x.figs[1]||(heavy==='l'?x.x<50&&x.fl>0&&x.fr===0:x.x>50&&x.fr>0&&x.fl===0),
+    'r1: '+k+'\'s fill grows from the centre toward the heavier pole, '+heavy+', and its mark stands there, at '+x.x.toFixed(1));}
   ok(!o.axpick,'RB: there is one design, so there is no switch');}
  ok(ferr.length===0,'FJ: no errors, '+ferr.join(' | '));
  await fj.close();
@@ -7630,9 +7796,11 @@ await require('./helpstamp.js').helpStampGate(browser,FILE,ok,booted);
 
 /* THE LEFT MENU, tests/railmenu.js, the P3 menu pass. His words, round RB:
    "This stack of elements should all be bar style with the symbolic icon and
-   the text inside of the bar itself to maximize space." A file of its own so
-   it can run alone, called here so a full run holds it too. */
-console.log('\n=== the left menu: one bar style, CQ and DQ on one bar, every word with its meaning ===');
+   the text inside of the bar itself to maximize space." Since 30 October it
+   holds r1, his pick for the left-hand side: "Yeah, those are the menus I
+   like." A file of its own so it can run alone, called here so a full run
+   holds it too. */
+console.log('\n=== the left menu: r1, two families on one grammar, every word with its meaning ===');
 await require('./railmenu.js').railMenuGate(browser,FILE,ok,booted);
 
 await browser.close();

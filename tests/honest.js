@@ -29,13 +29,19 @@
    fired 400 ms after Commit, inside the probe's next step. Measured here by
    reading each message the moment it is written.
 
-   THE JOURNAL IS CONVERSATION ONLY NOW, round of 28 October: the plain
-   write box (#sttext) does not render in the ordinary flow any more, words
-   reach the entry through the reply line (#stcin) and a send, and the reply
-   line carries its own draft (CURP.story.reply) the same way the entry
-   carries its (CURP.story.draft), both through stDraft in
-   atuned_src/ui/storyui.js. What this file checks did not change; how the
-   words get into the entry did. */
+   THE JOURNAL IS VOICE ONLY NOW, round of 29 October: the plain write box
+   (#sttext) does not render in the ordinary flow any more, and neither
+   does the reply line (#stcin) it was ported to first: "let's get rid of
+   the text field entirely... this is going to be a conversation dashboard."
+   Words reach the entry through srcTurnCommit, the one door a turn lands
+   through whether it is typed or spoken (see stMic in ui/storyui.js), and
+   the entry still carries its own draft (CURP.story.draft) through stDraft
+   the same way it always has. The reply line's own second draft
+   (CURP.story.reply) went with the reply line; what it held, an unsent
+   reply surviving a reload, has nothing left to be unsent, so that half of
+   this file is gone and not ported. Clear is gone too, the same ruling, so
+   where this file checked Clear took a draft off the record at once, it now
+   checks only that Commit does, which it already held one section down. */
 const { chromium } = require('playwright');
 const path = require('path');
 const FILE = path.resolve(process.env.ATUNED_FILE || path.join(__dirname, '..', 'source.html'));
@@ -48,14 +54,12 @@ const ok = (c, m) => { if (c) { pass++; console.log('  ok   ' + m); } else { fai
 
 const booted = async p => { await p.waitForFunction(() => document.body.classList.contains('booted'), null, { timeout: 20000 }).catch(() => {}); };
 async function story(p) { await p.evaluate(() => setTab(TAB.STORY)); await p.waitForTimeout(300); }
-/* box reads the reply line's own draft, the unsent words; entryText reads
-   the whole entry the conversation has built so far, sent but not yet
-   committed. They are two different drafts now (CURP.story.reply and
-   CURP.story.draft) and this file holds both. */
-const box = p => p.evaluate(() => { const t = document.getElementById('stcin'); return t ? t.value : null; });
+/* entryText reads the whole entry the conversation has built so far, sent
+   but not yet committed: CURP.story.draft, through stDraft. */
 const entryText = p => p.evaluate(() => typeof ST_TEXT === 'string' ? ST_TEXT : null);
-/* a reply sent the way a person sends one, Enter in the reply line */
-const send = async (p, t) => { await p.fill('#stcin', t); await p.press('#stcin', 'Enter'); await p.waitForTimeout(200); };
+/* a turn landed the way it lands now, through the one door, not a reply
+   line that no longer exists */
+const send = async (p, t) => { await p.evaluate(v => srcTurnCommit(v), t); await p.waitForTimeout(900); };
 const saved = p => p.evaluate(() => { try { return JSON.parse(localStorage.getItem(PKEY) || '[]'); } catch (e) { return null; } });
 const own = recs => (recs || [])[0] || null;
 /* the store refuses the record's key, the way a full disk or a blocked store does */
@@ -83,24 +87,16 @@ require('./net.js').guardBrowser(browser);
   console.log('\n-- the entry\'s draft, sent but not committed --');
   await story(p);
   await send(p, HALF);
-  await p.waitForTimeout(900);
-  ok(own(await saved(p)) && own(await saved(p)).story.draft === HALF, 'a sent but uncommitted entry is on the saved record');
+  ok(own(await saved(p)) && own(await saved(p)).story.draft === HALF, 'a turn landed but not committed is on the saved record');
   await p.reload({ waitUntil: 'load' }); await booted(p); await story(p);
   ok((await entryText(p)) === HALF, 'and is back in the entry after a reload');
-  await p.click('#stclear'); await p.waitForTimeout(200);
-  ok(own(await saved(p)) && own(await saved(p)).story.draft === undefined, 'Clear takes it off the saved record at once');
-  await p.reload({ waitUntil: 'load' }); await booted(p); await story(p);
-  ok((await entryText(p)) === '', 'and the entry is empty after a reload');
-
-  console.log('\n-- the reply line\'s own draft, never sent --');
-  await p.fill('#stcin', HALF); await p.waitForTimeout(900);
-  ok(own(await saved(p)) && own(await saved(p)).story.reply === HALF, 'an unsent reply is on the saved record');
-  await p.reload({ waitUntil: 'load' }); await booted(p); await story(p);
-  ok((await box(p)) === HALF, 'and is back in the reply line after a reload');
-  await p.click('#stclear'); await p.waitForTimeout(200);
-  ok(own(await saved(p)) && own(await saved(p)).story.reply === undefined, 'Clear takes it off the saved record at once');
-  await p.reload({ waitUntil: 'load' }); await booted(p); await story(p);
-  ok((await box(p)) === '', 'and the reply line is empty after a reload');
+  /* THERE IS NO CLEAR ANY MORE to end a draft without committing it; see the
+     ruling at .st-bar in ui/storyui.js. This lands it instead, the one way
+     left, so the sections after it start from an empty entry the way they
+     always have. The press itself is covered elsewhere in this file; here
+     it is only cleanup. */
+  await press(p, '#stapply'); await p.waitForTimeout(300);
+  ok((await entryText(p)) === '', 'and Commit empties the entry the same as it always has');
 
   console.log('\n-- Commit with a store that refuses --');
   const n0 = (own(await saved(p)) || { story: { entries: [] } }).story.entries.length;
@@ -210,12 +206,12 @@ require('./net.js').guardBrowser(browser);
      blank store has no record to hide a missing write, and no init script, which
      can leave the page on a store Chromium never connected (tests/seed.js).
 
-     THIS IS THE REPLY LINE'S OWN CASE NOW, round of 28 October: a reply
-     typed into #stcin and never sent is the one box an ordinary session
-     leaves words in, so it is the one that most needs to survive a tab
-     closed mid debounce. Same timer, same flush, CURP.story.reply beside
-     CURP.story.draft. */
-  console.log('\n-- the reply line\'s draft, a page closed inside the half second --');
+     THE REPLY LINE IS GONE, round of 29 October, and with it the second
+     draft it carried (CURP.story.reply). A turn lands straight in the entry
+     now, through srcTurnCommit, so the entry's own draft (CURP.story.draft)
+     is once again the one box an ordinary session leaves words in, and the
+     one that most needs to survive a tab closed mid debounce. */
+  console.log('\n-- the entry\'s draft, a page closed inside the half second --');
   const cx2 = await browser.newContext({ viewport: { width: W, height: H } });
   await cx2.route(/workers\.dev/, r => r.abort('failed'));
   const open2 = async () => {
@@ -225,15 +221,15 @@ require('./net.js').guardBrowser(browser);
     return q;
   };
   const q1 = await open2(); await story(q1);
-  await q1.fill('#stcin', HALF);
+  await q1.evaluate(v => srcTurnCommit(v), HALF);
   const t0 = Date.now(); await q1.close({ runBeforeUnload: false });
   const gone = Date.now() - t0;
   const q2 = await open2();
-  const back = await q2.evaluate(() => CURP && CURP.story ? CURP.story.reply : null);
-  ok(back === HALF, 'a page closed ' + gone + ' ms after the last key keeps the unsent reply: ' + JSON.stringify(back));
+  const back = await q2.evaluate(() => CURP && CURP.story ? CURP.story.draft : null);
+  ok(back === HALF, 'a page closed ' + gone + ' ms after the last turn keeps the entry\'s draft: ' + JSON.stringify(back));
   await story(q2);
-  ok((await box(q2)) === HALF, 'and it is back in the reply line');
-  await q2.click('#stclear'); await q2.close();
+  ok((await entryText(q2)) === HALF, 'and it is back in the entry');
+  await press(q2, '#stapply'); await q2.close();
 
   /* the same half second on the first run's story step, kept on the walk */
   const o1 = await open2();

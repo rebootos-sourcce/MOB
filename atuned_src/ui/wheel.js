@@ -617,7 +617,7 @@ function verpArrows(cr0){
    g.save();g.font='600 8.5px Inter, system-ui, sans-serif';
    g.textAlign='center';g.textBaseline='middle';
    g.fillStyle=evid?rgba(bgc,1):rgba(ink,.72);
-   g.fillText(evid?v.pct+'%':'\u2013',px+pw/2,py+ph/2+.5);g.restore();}
+   g.fillText(evid?fmtPct('gate',v.pct):'\u2013',px+pw/2,py+ph/2+.5);g.restore();}
   HIT.push({k:'gate',v:v,x:x,y:y,rad:R+9});}
  hi.forEach(function(v,i){gate(v,i,hi.length,true);});
  lo.forEach(function(v,i){gate(v,i,lo.length,false);});

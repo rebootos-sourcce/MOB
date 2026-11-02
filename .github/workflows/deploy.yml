@@ -168,6 +168,10 @@ jobs:
           done
       - name: engine gate
         run: node tests/engine.js 2>&1 | tee "$RUNNER_TEMP/gates/engine.log"
+      # Round SK: Source AI's evidence ledger and its question check, the
+      # Journal Mode blueprint's P0. Node only, against the engine just built.
+      - name: evidence ledger and question check
+        run: node tests/evidence.js 2>&1 | tee "$RUNNER_TEMP/gates/evidence.log"
       # J11, held open on purpose and watched: pImport still accepts a self
       # declared tier four. Node only, so it runs here and not on a browser
       # runner. It fails the day the door is closed without saying so.
