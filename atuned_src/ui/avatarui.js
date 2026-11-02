@@ -1103,8 +1103,10 @@ function avGraphHTML(st){
  var g=AVATAR_GRAPH.project({authorized:avOwn(),profile:CURP,reading:rd,
   selection:{kind:'seat',id:st.seat},engine:e,limit:6});
  var body='';
- if(g.status==='no_evidence')body='<p class="av-p">No personal connections recorded at this seat.</p>';
- if(g.status==='no_evidence'&&g.graph&&g.graph.flagged)body+='<p class="av-p">Some connections were flagged and excluded.</p>';
+ if(g.status==='no_evidence'){
+  body='<p class="av-p">No personal connections recorded at this seat.</p>';
+  if(g.graph&&g.graph.flagged)body+='<p class="av-p">Some connections were flagged and excluded.</p>';
+ }
  else if(g.status!=='ready'&&g.status!=='partial')
   body='<p class="av-p">Connections are unavailable for this reading.</p>';
  else{
