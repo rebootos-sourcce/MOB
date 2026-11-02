@@ -46,6 +46,8 @@ smallest remaining fix     isolated tooling branch
 - **Q3:** [Draft #167](https://github.com/rebootos-sourcce/MOB/pull/167) head `4fb9aa1`: public health probe + isolated workflow. PR self-tests and live network validation pending. This is not a Cloudflare deployment SHA proof.
 - **Two-way communication:** [PR #165 conversation](https://github.com/rebootos-sourcce/MOB/pull/165#issuecomment-6584943115) and [living log](./ATUNED_MAIN_ENGINE_CLEANUP_EXECUTION_LOG_2026-11-02.md), append new numbered entries and reply with exact references.
 
+**Q1 CI VERIFIED** (later result): Source AI #163 run [41496716099](https://github.com/rebootos-sourcce/MOB/actions/runs/41496716099), exact head `aa449a8`, completed SUCCESS; all **45 jobs**, including `gates-fast` and `gates-pass`, passed. This closes the selected **CI integration** task only; it does **not** merge Source AI or validate live voice experience.
+
 ## Safe sequencing and concurrency
 1. **Q0 first.** Cancel duplicate work when the code or review state has superseded the plan.
 2. **Q1 fastest win:** close with evidence if CI is already green. Reopen only for actual remaining failure. Do not write to the branch while its owner is changing it.
