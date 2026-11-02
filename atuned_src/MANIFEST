@@ -5,6 +5,8 @@ engine/data/nodes.js
 engine/data/figure.js
 engine/data/nerves.js
 engine/data/canon.js
+engine/data/patterns96.js
+engine/data/researchanchors.js
 engine/data/compass.js
 engine/data/ages.js
 engine/data/practice.js
@@ -43,7 +45,12 @@ engine/intake.js
 engine/intakemore.js
 engine/sniff.js
 engine/sourceai.js
+engine/voice_sniffer.js
 engine/evidence.js
+engine/voice_narrative.js
+engine/voice_charge_cycle.js
+engine/voice_intelligence.js
+engine/source_evidence_bus.js
 engine/qcheck.js
 engine/astro.js
 engine/birth.js

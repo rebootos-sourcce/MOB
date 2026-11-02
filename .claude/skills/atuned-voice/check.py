@@ -136,6 +136,34 @@ def walk_literals(s):
 # in ui/drills.js, and tests/functional.js holds that what it paints carries
 # none of a record's strings. Tests and tools are not readers: they never put
 # a string in front of a person.
+#
+# A TABLE MAY NAME ITS ROUTES OUT, 2 November. The name search above cannot be
+# stated for a key like label or note: those words are read all over ui/ off
+# objects that have nothing to do with the table, so the rule lapses on its
+# first run and can never hold. Measured at edd64721: the only stops left in
+# --objections were four published paper titles in RESEARCHANCHOR[].label,
+# and a title rewritten to pass a plain words gate is a false citation.
+#
+# So a table can declare, in NOT_COPY_ROUTES, every name its rows leave the
+# data file by: a function that hands them on, or a second declaration built
+# from them. For such a table the second key is measured as a closure rather
+# than by key names. The rule holds only while nothing under NOT_COPY_READERS
+# names the table or any of its routes outside their own declarations and the
+# module.exports map. The table cannot be reached any other way, so a key read
+# off it cannot happen anywhere else. It is stricter than the name search, not
+# looser: a new reader that takes only .name off a row lapses every rule on
+# the table, and so does a caller of a route, until a person adds the reader
+# to the routes and says why. It also sees the whole entry walk the name
+# search admits it cannot, because srcVoicePattern hands on whole rows and is
+# held as a route. A route declared here and found nowhere lapses the rule,
+# because a renamed route is an unnamed reader. Comments are stripped for
+# this measure only: a comment is not a route.
+#
+# A route reads the row, so the keys a route reads are not reads that ship.
+# The table is still copy wherever no route carries it: the pattern content of
+# PATTERN96, generationalTransformation and the rest, stays under every gate.
+# What it cannot see is the class the paragraph above names, plus access built
+# out of a string, and any host outside this repository.
 NOT_COPY = (
     ('DESCENT', ('[]', 'content', 'researchPasses'),
      'the three research passes behind each descent record: what was checked, '
@@ -143,7 +171,29 @@ NOT_COPY = (
     ('DESCENT', ('[]', 'content', 'inferenceBasis'),
      'why each descent record is called source defined or inferred: a note '
      'about the record, not a line in it'),
+    ('RESEARCHANCHOR', ('[]', 'label'),
+     'the citation each research anchor points at, the authors, year and '
+     'published title as the source prints them'),
+    ('RESEARCHANCHOR', ('[]', 'note'),
+     'the scope and limit the source package states for each research anchor'),
+    ('PATTERN96', ('[]', 'evidenceFitNote'),
+     'how well the cited research fits each pattern record: a note about the '
+     'evidence behind the record, not a line in it'),
 )
+NOT_COPY_ROUTES = {
+    'PATTERN96': (
+        ('PATTERN96_BY_LAYER', 'the same rows split by layer, built beside '
+         'the table'),
+        ('srcVoiceCanon', 'the catalog search, which hands on name, id, layer, '
+         'domain and status'),
+        ('srcVoicePattern', 'one whole row with its anchors resolved'),
+    ),
+    'RESEARCHANCHOR': (
+        ('srcVoiceCanon', 'the catalog search, which hands on label, id and '
+         'namespace'),
+        ('srcVoicePattern', 'the anchors of one pattern row, whole'),
+    ),
+}
 NOT_COPY_READERS = ('atuned_src', 'funnel', 'marketing', 'functions')
 NOT_COPY_SKIP = ('dist', 'node_modules')
 NOT_COPY_EXT = ('.js', '.mjs', '.cjs', '.ts', '.html')
@@ -156,7 +206,7 @@ _NC_LAPSED = {}
 
 def not_copy_id(rule):
     """DESCENT[].content.researchPasses, the path as a person would write it."""
-    name, steps, _ = rule
+    name, steps = rule[0], rule[1]
     return name + ''.join('[]' if k == '[]' else '.' + k for k in steps)
 
 
@@ -331,12 +381,14 @@ def not_copy_lapsed():
         return _NC_LAPSED['lapsed']
     pats = {}
     for rule in NOT_COPY:
+        if rule[0] in NOT_COPY_ROUTES:
+            continue
         keys = [k for k in rule[1] if k != '[]']
         alt = [r'\.%s\b' % re.escape(k) for k in keys]
         alt += [r'\[\s*[\'"]%s[\'"]\s*\]' % re.escape(k) for k in keys]
         alt += [r'\b%s\b' % re.escape(keys[-1])]
         pats[not_copy_id(rule)] = re.compile('|'.join(alt))
-    lapsed = {k: [] for k in pats}
+    lapsed = {not_copy_id(rule): [] for rule in NOT_COPY}
     files = []
     for top in NOT_COPY_READERS:
         for d, dirs, fs in os.walk(os.path.join(REPO, top)):
@@ -364,8 +416,88 @@ def not_copy_lapsed():
             for m in p.finditer(s):
                 lapsed[k].append((os.path.relpath(f, REPO),
                                   s.count('\n', 0, m.start()) + 1))
+    for table, reads in _routes_lapsed(files).items():
+        for rule in NOT_COPY:
+            if rule[0] == table:
+                lapsed[not_copy_id(rule)] += reads
     _NC_LAPSED['lapsed'] = lapsed
     return lapsed
+
+
+_JS_TOKEN = re.compile(r"'(?:[^'\\\n]|\\.)*'|\"(?:[^\"\\\n]|\\.)*\"|"
+                       r"`(?:[^`\\]|\\.)*`|//[^\n]*|/\*.*?\*/", re.S)
+
+
+def _blank(s, a, b):
+    """s with s[a:b] turned to spaces, newlines kept, so lines still count."""
+    return s[:a] + re.sub(r'[^\n]', ' ', s[a:b]) + s[b:]
+
+
+def _strip_comments(s):
+    """s with every comment blanked and every string left as it is."""
+    return _JS_TOKEN.sub(lambda m: m.group(0) if m.group(0)[0] in '\'"`'
+                         else re.sub(r'[^\n]', ' ', m.group(0)), s)
+
+
+def _decl_span(s, name):
+    """(start, end) of the whole top level declaration of name, a function or
+    a const, let or var, from its first character to the bracket that closes
+    it, or None. Column 0 only, the way _decl_value reads one: an indented
+    declaration of the same name is a local and is not the route."""
+    n = re.escape(name)
+    m = re.search(r'(?m)^function\s+%s\s*\(' % n, s)
+    if m:
+        p = _close(s, m.end() - 1)
+        e = _close(s, _ws(s, p)) if p > 0 else -1
+        return (m.start(), e) if e > 0 else None
+    m = re.search(r'(?m)^(?:const|let|var)\s+%s\s*=\s*' % n, s)
+    if m:
+        e = _close(s, m.end())
+        return (m.start(), e if e > 0 else _value_end(s, m.end()))
+    return None
+
+
+def _routes_lapsed(files):
+    """{table: [(file, line), ...]} for every table in NOT_COPY_ROUTES: each
+    place something that ships names the table or one of its routes outside
+    their own declarations and the module.exports map, and each route that is
+    declared nowhere. See A TABLE MAY NAME ITS ROUTES OUT, above."""
+    out = {}
+    for table, routes in NOT_COPY_ROUTES.items():
+        names = [table] + [r for r, _ in routes]
+        alt = '|'.join(re.escape(x) for x in names)
+        pat = re.compile(r'(?<![\w$])(?:%s)(?![\w$])' % alt)
+        found, reads = set(), []
+        for f in files:
+            try:
+                s = open(f, encoding='utf-8', errors='replace').read()
+            except OSError:
+                continue
+            if not pat.search(s):
+                continue
+            s = _strip_comments(s)
+            for x in names:
+                span = _decl_span(s, x)
+                if span:
+                    found.add(x)
+                    s = _blank(s, *span)
+            m = re.search(r'module\.exports\s*=\s*', s)
+            e = _close(s, m.end()) if m else -1
+            if e > 0:
+                for x in re.finditer(r'(?<![\w$])(%s)\s*:\s*\1(?![\w$])' % alt,
+                                     s[m.end():e]):
+                    s = _blank(s, m.end() + x.start(), m.end() + x.end())
+            for x in pat.finditer(s):
+                reads.append((os.path.relpath(f, REPO),
+                              s.count('\n', 0, x.start()) + 1))
+        for x in names:
+            if x not in found:
+                reads.append(('%s is named as %s but declared nowhere under %s'
+                              % (x, 'the table' if x == table else
+                                 'a route of ' + table,
+                                 ', '.join(NOT_COPY_READERS)), 0))
+        out[table] = reads
+    return out
 
 
 def not_copy_spans(s):
@@ -419,8 +551,9 @@ def not_copy_block(targets):
                   and not re.search(r'[{}#;=]|px\b|\.js\b', t))
         if reads:
             f, ln = reads[0]
-            state = 'LAPSED, read at %s%s, so its strings are copy again' % (
-                f, (':%d' % ln) if ln else '')
+            state = ('LAPSED, read at %s:%d, so its strings are copy again'
+                     % (f, ln) if ln else
+                     'LAPSED, %s, so its strings are copy again' % f)
         else:
             state = ('holds. %d string%s set aside, which as copy would stop '
                      'the build %d time%s under his objections and %d under '
@@ -430,13 +563,20 @@ def not_copy_block(targets):
         lines.append('  %s' % rid)
         lines.append('      %s' % state)
         lines.append('      %s' % rule[2])
+        routes = NOT_COPY_ROUTES.get(rule[0])
+        if routes and not reads:
+            lines.append('      carried out only by %s, and nothing that ships '
+                         'names %s or a route' % (
+                             ', '.join(r for r, _ in routes), rule[0]))
     if lines:
         lines = ['NOT COPY, SET ASIDE AND NAMED. A record about the copy, kept '
                  'beside it and never printed.'] + lines + [
             '  Holds means no file under %s names the path, read raw on this '
             'run.' % ', '.join(NOT_COPY_READERS),
+            '  For a table with routes it means no file there names the table '
+            'or a route outside their own declarations and module.exports.',
             '  One read lapses the rule. A walk over a whole entry names '
-            'nothing, and this cannot see it.']
+            'nothing, and only the routes see it.']
     return lines
 
 

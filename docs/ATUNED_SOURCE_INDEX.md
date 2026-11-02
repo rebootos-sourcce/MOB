@@ -61,3 +61,19 @@ When a source or audit file is discovered, add its repository-relative path, rol
 - [Deep-Psychological Code-to-Registry Contract Comparison, 2026-10-22](ATUNED_DEEP_PSYCHOLOGICAL_CODE_TO_REGISTRY_CONTRACT_2026-10-22.md), exact engine template fields, validator rules, compatibility gaps, and implementation gates.
 - [Deep-Psychological Three-Pass Research Audit, 2026-10-22](ATUNED_DEEP_PSYCHOLOGICAL_THREE_PASS_RESEARCH_AUDIT_2026-10-22.md), source inventory, three-pass findings, 107 registry entries, provenance conflicts, and blocked work.
 
+## SOURCE AI-4 current pre-wiring gate (2026-11-01 V15 candidate; draft PR #163)
+- **Latest continuation, read before working:** [Source AI-4 Collaboration Log](SOURCE_AI4_COLLABORATION_LOG_2026-11-01.md), **Pass 5**: validated in-memory 43/43 A07 correction assertions; canonical source update blocked, NOT COMMITTED; owner ZIP and official CI unresolved. Owner handoff ZIP is attached to the chat, not installed on GitHub.
+- **Authorized integration hold persists:** no production wiring, merge, deployment, invented CQ scores or invented 45 pain records. See V13 audit and original V11 handoff.
+- **START HERE for Source AI integration:** [V13 Pre-Wiring Gap Audit](SOURCE_AI4_PREWIRING_GAP_AUDIT_V13_2026-11-01.md), findings A01–A08, checked CI and explicit **NO LIVE WIRING** until P0 acceptance gates.
+- [V12 Executive Execution Handshake](SOURCE_AI4_EXECUTION_HANDSHAKE_V12_2026-11-01.md), historical full continuation; its V12 profileShare allowance is superseded by the V13 audit.
+- [Source AI-4 Collaboration Log](SOURCE_AI4_COLLABORATION_LOG_2026-11-01.md), maintained commits and measurements; update on every implementation step.
+- [V11 Local Pain and Ancestry Handoff](SOURCE_VOICE_PAIN_ANCESTRY_V11_LOCAL_HANDOFF_2026-11-01.md), historical 45 pain records and unapproved body mappings; owner's source ZIP not yet in repo.
+- [96 patterns, 32 ancestral/32 generational/32 parental](../atuned_src/engine/data/patterns96.js) and [62 research anchors](../atuned_src/engine/data/researchanchors.js), catalog records, not validated diagnostic categories.
+- [Hardened staged evidence bus v1.1](../atuned_src/engine/source_evidence_bus.js) and [standalone 52-check test](../proto/source/source-evidence-bus-v1.test.js), no profile export and no runtime/consumer wiring.
+- [Draft PR #163](https://github.com/rebootos-sourcce/MOB/pull/163); verify newest commit's GitHub Actions status. Older CI run #41365137545: `gates-fast` failed voice-copy objections despite observed engine/browser passes.
+
+## SOURCE AI-4 V16 latest handoff (2026-11-01, PR #163 draft, unmerged)
+- **[Read V16 offline-host build handoff first](SOURCE_AI4_V16_OFFLINE_SEAM_HANDOFF_2026-11-01.md).** 92/92 isolated Node assertions (52 staged bus + 40 mock-authority trust boundary), not production auth/CI. All live routes remain 0/9.
+- **[Source AI-4 Collaboration Log, Pass 6](SOURCE_AI4_COLLABORATION_LOG_2026-11-01.md)** records actual source SHAs, tests, 18 copy STOP findings and next actions.
+- **Reproducible ZIP in ATUNED Library:** `/ATUNED/SOURCE_AI4/ATUNED_SOURCE_AI4_V16_OFFLINE_BUILD.zip` (11 files, CRC pass). Also attached in owner chat. ZIP is not committed to the MOB codebase.
+- **V15 A07 candidate still not committed.** Canonical narrative source was not updated. Original owner V11 45 pain records ZIP missing from accessible files. No real authenticated session host, no generated build, no full green CI, no merge or deployment.
