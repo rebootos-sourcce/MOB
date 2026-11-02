@@ -172,6 +172,13 @@ jobs:
       # Journal Mode blueprint's P0. Node only, against the engine just built.
       - name: evidence ledger and question check
         run: node tests/evidence.js 2>&1 | tee "$RUNNER_TEMP/gates/evidence.log"
+      - name: Source AI read-only integration contract tests
+        run: |
+          node tests/source-evidence-bus.js
+          node tests/source-voice-charge-cycle.js
+          node tests/source-voice-intelligence.js
+          node tests/source-voice-narrative.js
+          node tests/voice-sniffer.js
       # J11, held open on purpose and watched: pImport still accepts a self
       # declared tier four. Node only, so it runs here and not on a browser
       # runner. It fails the day the door is closed without saying so.
