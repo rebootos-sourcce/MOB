@@ -83,11 +83,18 @@ function project(args){
  function add(n){var k=key(n.type,n.id);if(!lookup[k]||seen[k])return;
  if(picked.length>=limit){out.truncated=true;return;}seen[k]=true;picked.push(n);}
  roots.forEach(add);
+ /* Invalid neighbor results are a provider failure, not an empty personal finding.
+    Fail closed rather than quietly dropping a relationship or throwing at the UI. */
+ var neighborFailure=false;
  roots.forEach(function(n){
- var near=[];try{near=e.traceNeighbors(g,key(n.type,n.id));}catch(x){near=[];}
- near.forEach(function(x){if(x&&own(lookup,x.key)&&personalNodes[x.key]&&
- edges.some(function(y){return (y.from===x.key&&y.to===key(n.type,n.id))||(y.to===x.key&&y.from===key(n.type,n.id));}))add(lookup[x.key]);});
+  if(neighborFailure)return;
+  var near;
+  try{near=e.traceNeighbors(g,key(n.type,n.id));}catch(x){neighborFailure=true;return;}
+  if(!Array.isArray(near)){neighborFailure=true;return;}
+  near.forEach(function(x){if(x&&own(lookup,x.key)&&personalNodes[x.key]&&
+   edges.some(function(y){return (y.from===x.key&&y.to===key(n.type,n.id))||(y.to===x.key&&y.from===key(n.type,n.id));}))add(lookup[x.key]);});
  });
+ if(neighborFailure)return base('unavailable','Canonical graph neighbor traversal unavailable.');
  out.nodes=picked.map(function(n){var x=safeNode(n,p);
  if(x.status==='confirmed')out.evidence.confirmed++;
  if(x.status==='rejected')out.evidence.rejected++;
