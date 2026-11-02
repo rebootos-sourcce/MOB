@@ -34,4 +34,27 @@ assert.equal(N(['My mother is angry.','I do not know whether I see their pattern
 assert.equal(N(['My mother is angry.','Maybe I see their patterns in myself.']).familyToSelf,'NOT_REPORTED');
 assert.equal(N(['Imagine my mother is angry and I see their patterns in myself.']).familyToSelf,'NOT_REPORTED');
 assert.equal(N(['Hypothetically my mother was angry','My grandmother was angry']).multiGeneration,'NOT_ESTABLISHED');
+
+// A07: clause and actor attribution must not promote a speaker's description
+// to their relative; uncertainty and corrections are scoped to their sentence.
+const boundary1=N(['My mother told me I was angry.']);
+assert.equal(boundary1.observations.some(x=>x.role==='mother'&&x.term==='angry'),false);
+const boundary2=N(['My mother called me, but I was angry.']);
+assert.equal(boundary2.observations.some(x=>x.role==='mother'&&x.term==='angry'),false);
+assert.equal(N(['My mother was angry, but I felt hurt']).observations.some(
+ x=>x.role==='mother'&&x.term==='angry'),true);
+const splitHyp=N(['My mother was angry. Maybe my grandmother was angry.']);
+assert.equal(splitHyp.observations.some(
+ x=>x.role==='mother'&&x.term==='angry'&&!x.hypothetical),true);
+assert.equal(splitHyp.observations.some(
+ x=>x.role==='grandmother'&&x.term==='angry'&&x.hypothetical),true);
+assert.equal(N(['My mother was angry. Maybe my father was angry. I see their patterns in myself'])
+ .familyToSelf,'FAMILY_TO_SELF_CANDIDATE');
+assert.equal(N(['My mother was angry. Maybe I see their patterns in myself'])
+ .familyToSelf,'NOT_REPORTED');
+assert.equal(N(['My mother was angry. I see their patterns in myself. I do not see those patterns in myself.'])
+ .familyToSelf,'REJECTED_BY_SPEAKER');
+assert.equal(N(['My mother was angry. I do not see those patterns in myself. I see their patterns in myself.'])
+ .familyToSelf,'FAMILY_TO_SELF_CANDIDATE');
+
 console.log('SOURCE narrative attribution/ancestral humility contract PASS');
