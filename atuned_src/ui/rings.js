@@ -742,7 +742,7 @@ function frCollar(M,cx,cy,edge,sm){
    Each pill is as wide as its figure set at 11 pixels, measured, and the
    widest of the six is what the renditions space the gates by. */
 function frGates(){var V=verpRead(),ev=V.some(function(v){return v.pct>0;});
- var lab=function(v){return ev?v.pct+'%':'–';};
+ var lab=function(v){return ev?fmtPct('gate',v.pct):'–';};
  var pw=function(v){return Math.max(24,Math.ceil(frTextW(lab(v),'600 11px Inter, system-ui, sans-serif'))+10);};
  return {ev:ev,lab:lab,pw:pw,pwMax:Math.max.apply(null,V.map(pw).concat([24])),
   hi:V.filter(function(v){return v.side==='higher';}),lo:V.filter(function(v){return v.side==='lower';})};}
