@@ -15,29 +15,44 @@ function srcVoiceNarrative(turns){
   if(!row.negated&&!row.hypothetical){(familyByTerm[k]||(familyByTerm[k]=[])).push(row.role);}}
  input.forEach(function(raw,turn){
   var text=String(raw||'').slice(0,5000), list=[], m;
-  var hypotheticalTurn=hypothetical.test(text); kin.lastIndex=0;
+  /* Attribute speculation per clause, not per entire turn. */
+  kin.lastIndex=0;
   while((m=kin.exec(text))!==null){list.push({role:m[1].toLowerCase(),start:m.index,end:kin.lastIndex});}
   list.forEach(function(person,i){
    var stop=i+1<list.length?list[i+1].start:text.length;
    var nextSelf=text.slice(person.end).search(/\b(?:i\s+(?:can\s+)?(?:see|notice|recognize|recognise)|i\s+have\s+(?:those|the same))\b/i);
+   /* Do not assign the speaker's first-person descriptor to their relative. */
+   var firstPerson=text.slice(person.end,stop).search(/\b(?:I|we)\s+(?:am|was|were|feel|felt|have|had|became|become|got|can|will|do|did|think|said|say)\b/i);
+   if(firstPerson>=0)stop=Math.min(stop,person.end+firstPerson);
    if(nextSelf>=0)stop=Math.min(stop,person.end+nextSelf);
    var clause=text.slice(person.end,Math.min(stop,person.end+130)).split(/[.!?;]/)[0];
+   var prefix=text.slice(0,person.start).split(/[.!?;]/).pop();
+   var hypotheticalClause=hypothetical.test(prefix)||hypothetical.test(clause)||/\b(?:maybe|perhaps)\b/i.test(prefix);
    descriptors.lastIndex=0;
    var hit;while((hit=descriptors.exec(clause))!==null){
     var pre=clause.slice(Math.max(0,hit.index-45),hit.index).toLowerCase();
     var negated=/\b(?:not|never|no|isn't|wasn't|doesn't|didn't|is not|was not|no longer)\s+(?:\w+\s+){0,2}$/.test(pre);
-    addTerm({turn:turn,role:person.role,term:hit[1].toLowerCase(),negated:negated, hypothetical:hypotheticalTurn,
+    addTerm({turn:turn,role:person.role,term:hit[1].toLowerCase(),negated:negated, hypothetical:hypotheticalClause,
      status:'USER_REPORTED_THIRD_PARTY_DESCRIPTION',sourceOffset:person.end+hit.index});
    }
   });
-  if(selfYes.test(text)&&!hypotheticalTurn&&!uncertainSelf.test(text))selfReports.push({turn:turn,state:'CANDIDATE_RESEMBLANCE_REPORTED'});
-  if(selfNo.test(text))corrections.push({turn:turn,state:'SELF_RESEMBLANCE_DENIED'});
+  /* Self reports and uncertainty are scoped to their own sentence;
+   * latest explicit correction wins within a turn as well as across turns. */
+  var yes=selfYes.exec(text), no=selfNo.exec(text);
+  if(yes){
+   var selfClause=text.slice(0,yes.index+yes[0].length).split(/[.!?;]/).pop();
+   if(!hypothetical.test(selfClause)&&!uncertainSelf.test(selfClause))
+    selfReports.push({turn:turn,offset:yes.index,state:'CANDIDATE_RESEMBLANCE_REPORTED'});
+  }
+  if(no)corrections.push({turn:turn,offset:no.index,state:'SELF_RESEMBLANCE_DENIED'});
  });
- var lastYes=selfReports.length?selfReports[selfReports.length-1].turn:-1;
- var lastNo=corrections.length?corrections[corrections.length-1].turn:-1;
- var state=lastNo>=lastYes&&lastNo>=0?'REJECTED_BY_SPEAKER':
-  lastYes>=0&&descriptions.some(function(d){return !d.negated&&!d.hypothetical;})?'FAMILY_TO_SELF_CANDIDATE':
-  lastYes>=0?'SELF_RESEMBLANCE_UNSPECIFIED':'NOT_REPORTED';
+ var lastYes=selfReports.length?selfReports[selfReports.length-1]:null;
+ var lastNo=corrections.length?corrections[corrections.length-1]:null;
+ var denialWins=lastNo&&(!lastYes||lastNo.turn>lastYes.turn||
+  (lastNo.turn===lastYes.turn&&lastNo.offset>=lastYes.offset));
+ var state=denialWins?'REJECTED_BY_SPEAKER':
+  lastYes&&descriptions.some(function(d){return !d.negated&&!d.hypothetical;})?'FAMILY_TO_SELF_CANDIDATE':
+  lastYes?'SELF_RESEMBLANCE_UNSPECIFIED':'NOT_REPORTED';
  var parentTerms={},elderTerms={};
  descriptions.filter(function(d){return !d.negated&&!d.hypothetical;}).forEach(function(d){
   if(/^(mother|mom|mum|father|dad|parents)$/.test(d.role))parentTerms[d.term]=true;
