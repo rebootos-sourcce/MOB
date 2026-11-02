@@ -153,6 +153,7 @@ jobs:
         run: |
           node tests/avatargraph.js
           node tests/avatargraph-runtime.js
+          node tests/avatargraph-ui-contract.js
       # THE COMMITTED PRODUCTS ARE THIS SOURCE'S, 16 October. The build above
       # rewrote source.html, engine.js and atuned-packed.html in the checkout;
       # tools/products.js reads the committed copies from git and fails when
