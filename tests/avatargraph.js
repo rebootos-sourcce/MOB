@@ -85,12 +85,12 @@ test('canonical graph derivation exception fails closed',()=>{
  const x=run({kind:'seat',id:'Root'},{engine:{...engine,traceFromRecord:()=>{throw Error('fixture failure');}}});
  assert.equal(x.status,'unavailable');assert.equal(x.nodes.length,0);
 });
-test('malformed or throwing neighbors fail closed without partial claims',()=>{
+test('malformed or throwing neighbors are flagged while valid roots remain available',()=>{
  const e={...engine,traceNeighbors:()=>null};
  const x=run({kind:'seat',id:'Root'},{engine:e});
- assert.equal(x.status,'unavailable');assert.equal(x.nodes.length,0);
+ assert.equal(x.status,'partial');assert.ok(x.graph.flagged>=1);assert.ok(x.nodes.length>=1);
  const y=run({kind:'seat',id:'Root'},{engine:{...engine,traceNeighbors:()=>{throw Error('fixture failure');}}});
- assert.equal(y.status,'unavailable');assert.equal(y.edges.length,0);
+ assert.equal(y.status,'partial');assert.ok(y.graph.flagged>=1);assert.ok(y.nodes.length>=1);
 });
 
 
@@ -98,7 +98,8 @@ test('noncanonical edge provenance is excluded, not presented as evidence',()=>{
  const g=clone(graph);
  g.edges.push({from:'pattern:12',edge:'supports',to:'saboteur:Avoider',src:'made_up'});
  const x=run({kind:'seat',id:'Root'},{engine:{...engine,traceFromRecord:()=>g}});
- assert.equal(x.status,'ready');
+ assert.equal(x.status,'partial');
+ assert.ok(x.graph.flagged>=1);
  assert.equal(x.edges.length,1);
  assert.equal(x.edges[0].provenance,'inferred');
 });
@@ -126,13 +127,18 @@ test('large canonical graph caps edges at 64 and signals truncation',()=>{
 test('invalid canonical node provenance does not become inferred',()=>{
  const g=clone(graph);g.nodes[0].src='invented';
  const x=run({kind:'seat',id:'Root'},{engine:{...engine,traceFromRecord:()=>g}});
- assert.equal(x.status,'unavailable');assert.equal(x.nodes.length,0);
+ assert.equal(x.status,'no_evidence');assert.equal(x.nodes.length,0);assert.ok(x.graph.flagged>=1);
 });
 test('unknown graph relationship never makes taxonomy personal',()=>{
  const g={alg:4,gaps:[],refused:[],nodes:[{type:'pattern',id:'12',name:'Compulsion',seat:'Root',src:'known'}],
  edges:[{from:'story:fixture',to:'pattern:12',edge:'unlisted',src:'user_confirmed'}]};
  const x=run({kind:'seat',id:'Root'},{profile:{id:'record-A'},reading:null,engine:{...engine,traceFromRecord:()=>g}});
- assert.equal(x.status,'no_evidence');assert.equal(x.nodes.length,0);
+ assert.equal(x.status,'no_evidence');assert.equal(x.nodes.length,0);assert.ok(x.graph.flagged>=1);
+});
+test('a noncanonical neighbor does not hide other valid personal evidence',()=>{
+ const g=clone(graph);g.nodes.push({type:'complex',id:'broken',src:'unrecognized'});
+ const x=run({kind:'seat',id:'Root'},{engine:{...engine,traceFromRecord:()=>g}});
+ assert.equal(x.status,'partial');assert.equal(x.nodes[0].key,'pattern:12');assert.ok(x.graph.flagged>=1);
 });
 
 console.log('AVATAR GRAPH '+passed+'/'+passed+' passed');
