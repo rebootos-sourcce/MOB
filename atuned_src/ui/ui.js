@@ -949,17 +949,22 @@ function railStack(r){
     classes and CSS the left rail's own top-level sections already draw
     (head.html: ".lsec-bd{display:none} .lsec.open .lsec-bd{display:block}",
     the chevron on .lsec-hd i) so a tier here looks and behaves like every
-    other disclosure on the product, with no new CSS and no reach into
-    wireSections/OPENSEC, which is sized for whole rail sections and their
-    own scroll-to-top-on-open behaviour -- too heavy for a row inside a
-    section that is already open. data-tier on both the wrapper and the
-    header is read by the one new click case below; everything a tier's
-    body prints (data-sk/data-si/data-fet/data-addr) is unchanged and
-    answers the SAME delegated handler it already did as a flat tab. */
+    other disclosure on the product, with NO NEW CLASS and no new CSS (the
+    design gate's own CSS-coverage check refused stk-tier/stk-dh, two class
+    names with no rule, on the first pass of this -- data-tier, already
+    needed for the click case below, is what tells one of these apart from
+    every other .lsec on the page, so the class stayed exactly the same
+    one), and no reach into wireSections/OPENSEC, which is sized for whole
+    rail sections and their own scroll-to-top-on-open behaviour -- too
+    heavy for a row inside a section that is already open. data-tier on
+    both the wrapper and the header is read by the one new click case
+    below; everything a tier's body prints (data-sk/data-si/data-fet/
+    data-addr) is unchanged and answers the SAME delegated handler it
+    already did as a flat tab. */
  function sec(k,nm,def,body){
   var open=isOpen(k);
-  return '<div class="lsec stk-tier'+(open?' open':'')+'" data-tier="'+k+'">'
-   +'<button type="button" class="lsec-hd stk-dh" data-tier="'+k+'" aria-expanded="'+open+'">'
+  return '<div class="lsec'+(open?' open':'')+'" data-tier="'+k+'">'
+   +'<button type="button" class="lsec-hd" data-tier="'+k+'" aria-expanded="'+open+'">'
     +'<span><span class="tier1" style="margin:0">'+esc(nm)+'</span></span><i></i></button>'
    +'<div class="lsec-bd"><p class="stk-def">'+esc(def)+'</p>'+body+'</div></div>';}
  var h=CHAINTIERS.map(function(t){
@@ -997,7 +1002,7 @@ function railStack(r){
     DESCRIPTION, the same ruling the flat tabs carried forward (TABS.forEach
     above, now CHAINTIERS): the header itself is the lock's control now,
     since there is no separate tab strip left to carry the mark. */
- CHAINTIERS.forEach(function(t){lockApply(e.querySelector('.stk-dh[data-tier="'+t.k+'"]'),t.k);});}
+ CHAINTIERS.forEach(function(t){lockApply(e.querySelector('.lsec-hd[data-tier="'+t.k+'"]'),t.k);});}
 /* THE BALANCE STRIP, AND WHICH END IS WHICH.
 
    The two poles are masculine and feminine. cards.js states the codex
@@ -1542,7 +1547,33 @@ function render(){
       already cut this block from printing on an unread record, never
       extended here to the read state). By weight / By assemblage point
       above already rank the same addresses with real per-address content;
-      this block only repeated the job more thinly underneath it. */;
+      this block only repeated the job more thinly underneath it. */
+   /* THE BLEND, NOW IN THE ALWAYS-VISIBLE SUMMARY TOO, 2 November, his own
+      words: "we have canonical data now on the server... start using it."
+      tsBlockHtml (ui/tracesummaryui.js, PR #158's traceSummary wired by PR
+      #161) already prints a real "Feeds up" list plus one narrated
+      paragraph behind the node and chain drills; this points the SAME call
+      at #person's own render pass, not a second mechanism. The selected
+      node when one is pinned, with the EXACT type/id mapping runDrill and
+      runFetterDrill already use for the same node (ui/drills.js lines 236
+      and 841), so the drill and this summary never disagree; otherwise the
+      heaviest address actually carrying charge right now (lit[0], already
+      computed above for By weight), the band-level default, since nothing
+      else on this panel names one address as the current read. Nothing
+      while unread or nothing is carrying: tsBlockHtml's own honest hedge
+      says why, the same idiom every other empty state on this product
+      uses, never a blank box and never an invented reading. */
+   +(function(){
+     if(typeof tsBlockHtml!=='function')return '';
+     var key=null, pin=S.pin;
+     if(pin){
+      if(pin.kind==='fet')key={type:'pattern',id:'fetter:'+pin.nm};
+      else if(pin.kind&&{sab:1,cx:1,hy:1,sup:1}[pin.kind])
+       key={type:{sab:'saboteur',cx:'complex',hy:'hyper_complex',sup:'super_complex'}[pin.kind],id:pin.nm};
+      else if(pin.sq!==undefined&&pin.b!==undefined)key={type:'pattern',id:pin.i};}
+     if(!key&&!r.unread&&lit.length)key={type:'pattern',id:lit[0].i};
+     if(!key)return '';
+     return tsBlockHtml(key.type,key.id);}());
   var ws=$('psum'); if(ws)ws.onclick=function(){S.pin=null; runCompassDrill(); render();};})();
  railStack(r); renderBal(r);
  /* SUPERSEDED ON 2 OCTOBER, CO-31. These once said "of 10" after every
@@ -1921,8 +1952,8 @@ document.addEventListener('click',function(e){
     below unchanged. Reads the DOM for whether the tier is open now rather
     than recomputing stkDefTier()'s default, so a press always does what it
     looks like it will do, whatever put it in that state. */
- var dh=e.target.closest?e.target.closest('.stk-dh[data-tier]'):null;
- if(dh){var tk=dh.getAttribute('data-tier'), sec=dh.closest('.stk-tier');
+ var dh=e.target.closest?e.target.closest('#stack .lsec-hd[data-tier]'):null;
+ if(dh){var tk=dh.getAttribute('data-tier'), sec=dh.closest('.lsec[data-tier]');
   STK_OPEN[tk]=!(sec&&sec.classList.contains('open')); railStack(computeSeen()); return;}
  var fr=e.target.closest?e.target.closest('.stk-r[data-fet]'):null;
  if(fr){var fc=CHILD[+fr.getAttribute('data-fet')]; if(fc){S.pin=null; runFetterDrill(fc);} return;}
