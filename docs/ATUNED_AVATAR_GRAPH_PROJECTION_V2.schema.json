@@ -214,7 +214,8 @@
             ]
           }
         }
-      }
+      },
+      "maxItems": 64
     },
     "evidence": {
       "type": "object",
