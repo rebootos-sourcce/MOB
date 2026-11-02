@@ -45,3 +45,10 @@
 
 ## Machine-readable consumer contract
 - [Projection output JSON Schema v2](ATUNED_AVATAR_GRAPH_PROJECTION_V2.schema.json) documents the exact allowed status, canonical selector, node, edge, evidence, graph and uncertainty fields returned by `AVATAR_GRAPH.project`. It is a parsing/integration artifact, not an authorization token or claim of production compliance. Cross-AI consumers should consume only v2 fields and request review before changing status meanings.
+
+## Round 2: latest engineering verification (supersedes earlier running counts)
+- [Round 2 reproducible defect/repair ledger](ATUNED_AVATAR_GRAPH_ROUND2_VERIFICATION_2026-11-01.md) — 34/34 expanded isolated regression cases against fetched actual GitHub adapter in V8; a **test shim, not Node CI**.
+- [Projection v2 JSON Schema](ATUNED_AVATAR_GRAPH_PROJECTION_V2.schema.json) now caps edges at 64; adapter caps nodes at 16 and edges at 64, deduplicates evidence, excludes unknown edge sources, rejects malformed node provenance and rejects unknown relationships when establishing personal evidence.
+- Current source fix commit `f7c4ab99594046cd8e0d2005bf70e87808250272`; source blob `7c8485eb170eed4fa70a171dd46c8cc6588ff9b8`; tests blob `53189d1d22f4395b522e1200b4bf73336630a198`.
+- Latest test-fix GitHub Actions [41390488867](https://github.com/rebootos-sourcce/MOB/actions/runs/41390488867) **queued when checked**. Prior 29/30 CI and 11/11 real-engine tests are from an older commit; no exact-head green or production approval.
+- **Engineering remaining:** exact-head Node and compiled engine jobs, authentic full-checkout generated-product rebuild/freshness, entitlement/consent and four-branch composition, #149 and #163 explicit review. **Production HOLD; other Avatar/UI AI retains visual signoff.**
