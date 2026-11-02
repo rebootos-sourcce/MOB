@@ -1,0 +1,30 @@
+name: atuned-public-health
+on:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 15 * * *'
+permissions:
+  contents: read
+jobs:
+  offline-probe-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: test public probe without network
+        run: python3 tools/public_health.py --self-test
+  live-readonly-health:
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: check public read-only routes
+        run: python3 tools/public_health.py
