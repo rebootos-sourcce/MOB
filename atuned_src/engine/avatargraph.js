@@ -5,6 +5,7 @@ var VERSION=2,CAP=16,SEATS=['Root','Sacral','Solar','Heart','Throat','3rd Eye','
 var CHAIN=['saboteur','complex','hyper_complex','super_complex'], TYPES=['pattern'].concat(CHAIN);
 var PROVENANCE=['known','inferred','proposed','user_confirmed','observed'];
 var REL=['supports','obstructs','reinforces','addresses','targets','implements','executes','produces','contradicts','replaces','requires','measures','occurs_in','generalizes_to','transfers_to'];
+var CANONICAL_REL=REL.concat(['causes','associated_with','precedes','follows']);
 function key(t,id){return t+':'+id;}
 function kind(k){return String(k).slice(0,String(k).indexOf(':'));}
 function own(o,k){return Object.prototype.hasOwnProperty.call(o,k);}
@@ -17,7 +18,7 @@ function nr(s){
 }
 function base(status,notice){return {v:VERSION,status:status,readingStatus:'not_measured',selection:null,nodes:[],edges:[],
  evidence:{known:0,inferred:0,proposed:0,user_confirmed:0,observed:0,storyLinks:0,confirmed:0,rejected:0,conflicted:0},
- graph:{alg:null,gaps:0,refused:0},truncated:false,notice:notice||'Registration is not causation. An inference is not a diagnosis.'};}
+ graph:{alg:null,gaps:0,refused:0,flagged:0},truncated:false,notice:notice||'Registration is not causation. An inference is not a diagnosis.'};}
 function verdict(p,id){
  var yes=false,no=false,arr=p&&p.story&&Array.isArray(p.story.entries)?p.story.entries:[];
  arr.forEach(function(e){var o=e&&e.ob;if(!o)return;
@@ -61,22 +62,30 @@ function project(args){
  var g;
  try{g=e.traceFromRecord(p,intents,r||undefined);}catch(x){return base('unavailable','Canonical graph read failed.');}
  if(!g||!Array.isArray(g.nodes)||!Array.isArray(g.edges))return base('unavailable','Invalid canonical graph.');
- if(g.nodes.some(function(n){return n&&TYPES.indexOf(n.type)>=0&&PROVENANCE.indexOf(n.src)<0;}))return base('unavailable','Invalid canonical node provenance.');
- out.graph={alg:typeof g.alg==='number'?g.alg:null,gaps:Array.isArray(g.gaps)?g.gaps.length:0,refused:Array.isArray(g.refused)?g.refused.length:0};
+ out.graph={alg:typeof g.alg==='number'?g.alg:null,gaps:Array.isArray(g.gaps)?g.gaps.length:0,refused:Array.isArray(g.refused)?g.refused.length:0,flagged:0};
  if(r&&Array.isArray(g.refused)&&g.refused.some(function(x){return x&&x.reading;})){
  out.status='graph_refused';out.notice='The canonical engine refused this structural reading.';return out;}
- var lookup=Object.create(null),personalNodes=Object.create(null),edges=[];
- g.nodes.forEach(function(n){if(n&&TYPES.indexOf(n.type)>=0)lookup[key(n.type,n.id)]=n;});
- g.edges.forEach(function(x){if(!x||x.edge==='causes')return;
+ /* Isolate noncanonical data: flag the source, not the person or whole product.
+    Invalid nodes and edges cannot become evidence; all valid connections survive. */
+ var lookup=Object.create(null),personalNodes=Object.create(null),edges=[],validNodes=[],validEdges=[];
+ g.nodes.forEach(function(n){
+  if(n&&TYPES.indexOf(n.type)>=0){
+   if(PROVENANCE.indexOf(n.src)<0){out.graph.flagged++;return;}
+   lookup[key(n.type,n.id)]=n;validNodes.push(n);}
+ });
+ g.edges.forEach(function(x){
+  if(!x||CANONICAL_REL.indexOf(x.edge)<0||PROVENANCE.indexOf(x.src)<0){out.graph.flagged++;return;}
+  validEdges.push(x);
+  if(x.edge==='causes')return;
   if(personal(x,r&&!r.unread)){personalNodes[x.from]=true;personalNodes[x.to]=true;}
   if(relation(x))edges.push(x);
  });
  var roots=[];
- if(s.kind==='seat')roots=g.nodes.filter(function(n){return n&&n.type==='pattern'&&n.seat===s.id&&personalNodes[key(n.type,n.id)];});
+ if(s.kind==='seat')roots=validNodes.filter(function(n){return n.type==='pattern'&&n.seat===s.id&&personalNodes[key(n.type,n.id)];});
  else {var wanted=s.kind==='pattern'?key('pattern',s.id):key(s.type,s.id);
   if(own(lookup,wanted)&&personalNodes[wanted])roots=[lookup[wanted]];}
  function score(n){var k=key(n.type,n.id),v=verdict(p,String(n.id));
-  var story=g.edges.some(function(x){return x&&x.to===k&&kind(x.from)==='story'&&x.edge==='supports';});
+  var story=validEdges.some(function(x){return x&&x.to===k&&kind(x.from)==='story'&&x.edge==='supports';});
   return (v==='confirmed'?8:v==='conflicted'?4:v==='rejected'?-8:0)+(story?2:0);}
  roots.sort(function(a,b){return score(b)-score(a)||key(a.type,a.id).localeCompare(key(b.type,b.id));});
  var limit=Number.isInteger(args.limit)?Math.max(1,Math.min(CAP,args.limit)):10;
@@ -95,7 +104,7 @@ function project(args){
   near.forEach(function(x){if(x&&own(lookup,x.key)&&personalNodes[x.key]&&
    edges.some(function(y){return (y.from===x.key&&y.to===key(n.type,n.id))||(y.to===x.key&&y.from===key(n.type,n.id));}))add(lookup[x.key]);});
  });
- if(neighborFailure)return base('unavailable','Canonical graph neighbor traversal unavailable.');
+ if(neighborFailure)out.graph.flagged++;
  out.nodes=picked.map(function(n){var x=safeNode(n,p);
  if(x.status==='confirmed')out.evidence.confirmed++;
  if(x.status==='rejected')out.evidence.rejected++;
@@ -103,7 +112,7 @@ function project(args){
  return x;});
  var chosen=Object.create(null);out.nodes.forEach(function(n){chosen[n.key]=1;});
  var edgeSeen=Object.create(null),storySeen=Object.create(null);
- g.edges.forEach(function(x){if(!x||x.edge==='causes')return;
+ validEdges.forEach(function(x){if(x.edge==='causes')return;
  if(chosen[x.to]&&kind(x.from)==='story'&&x.edge==='supports'){
  var sk=JSON.stringify([x.from,x.to]);
  if(!storySeen[sk]){storySeen[sk]=1;out.evidence.storyLinks++;}}
@@ -115,8 +124,9 @@ function project(args){
  if(own(out.evidence,x.src))out.evidence[x.src]++;
  out.edges.push({from:x.from,to:x.to,relationship:x.edge,provenance:x.src});}
  });
- out.status=out.nodes.length?(out.graph.refused?'partial':'ready'):'no_evidence';
- if(out.status==='partial')out.notice='Some graph inputs were refused. Only supported relationships are shown.';
+ out.status=out.nodes.length?(out.graph.refused||out.graph.flagged?'partial':'ready'):'no_evidence';
+ if(out.status==='partial')out.notice='Some connections are flagged or refused; supported evidence is still shown.';
+ if(out.status==='no_evidence'&&out.graph.flagged)out.notice='Noncanonical connections flagged; no verified personal connections to show.';
  return out;
 }
 return {version:VERSION,seats:SEATS.slice(),project:project};
