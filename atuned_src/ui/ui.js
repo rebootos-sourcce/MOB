@@ -1330,8 +1330,6 @@ function render(){
   var say=rbSay(h[1]); e.setAttribute('data-tip',say); e.setAttribute('aria-label',h[1]+'. '+say);});
  /* who, and what is running hottest in them. */
  (function(){
-  function row(k,n,pc){return '<div class="tierow"><span class="tk">'+k+'</span>'
-   +'<span class="tn">'+n+'</span><span class="tp">'+pc+'</span></div>';}
   /* THE ARCHETYPES AND THE DOMAINS CAME OFF THIS CARD. Round IT in TASKS.md,
      his words: "The archetypes, the domains, that's not what's important.
      What is important is that we're tracking all the things that are the most
@@ -1396,8 +1394,6 @@ function render(){
    ?'<div class="pm-eye" style="margin-top:14px">By weight</div><div class="ad-rows">'+top+'</div>'
     +'<div class="pm-eye" style="margin-top:12px">'+unp('assemblage point','By assemblage point')+'</div><div class="ad-rows">'+per+'</div>'
    :'<div class="pm-eye" style="margin-top:14px">By weight</div><p class="rnone">Nothing is carrying charge yet.</p>';
-  var held=W.filter(function(n){return n.sq>=4;}).length;
-  var inst=W.filter(function(n){return n.pole>=4;}).length;
   /* WHERE TO START. Only while there is nothing to read, because a call to
      action that survives the action is furniture. Two doors and a line saying
      what each one is for, so nobody has to remember a term to find one. */
@@ -1463,28 +1459,14 @@ function render(){
       goes when the state is not empty. */
    +(p.says&&!(p.you&&!r.unread)?'<p class="psay">'+esc(p.says)+'</p>':'')
    +run
-   /* NOTHING READ, SO THE BLOCK IS NOT PRINTED. Four rows read "Carrying
-      nothing yet", "Filled in nothing yet", "Heaviest Root 0.0" and "Most
-      shut Truth at the throat" on a person who has entered nothing: two
-      empty states, a zero, and a verdict about a throat nobody has read,
-      drawn off the default. The four doors above already say "Nothing has
-      been read yet", so the block repeated the empty state in four rows and
-      then invented a finding under it. A value's empty state is a dash and a
-      dash four times is not a sentence. Round J13. */
-   +(r.unread?'':'<div class="pm-eye" style="margin-top:12px">Field</div>'
-   /* "nothing" was being printed over charge a person had entered themselves.
-      If something sits under the line, the row says so rather than reporting
-      a zero that is not true. */
-   /* "nothing above the line" plus "74 under it" wrapped into four lines in a
-      narrow column and read as broken text. One short value, one short note. */
-   /* SAID OUT LOUD. These read "Held nothing" and "Installed nothing", which
-      is the schema talking. A person says what is there and what is not. */
-   +row('Carrying',held?held+' addresses':'nothing yet',
-     held?'':(r.under?r.under+' sitting under the line':''))
-   +row('Filled in',inst?inst+' addresses':'nothing yet','')
-   /* percent phase 2, 17 October: the seat mean on the registry's weight kind */
-   +row('Heaviest',r.darkB,fmtPct('weight',r.darkV))
-   +row('Most shut',r.weakL.nm,'at the '+r.weakL.b.toLowerCase()));
+   /* THE FIELD EYEBROW AND ITS FOUR ROWS (Carrying/Filled in/Heaviest/Most
+      shut) ARE CUT, 2 November, his own words: "this is all nonsense, it's
+      all bullshit." They were counts with no behaviour sentence attached
+      (a dash four times is not a sentence, Round J13, the same ruling that
+      already cut this block from printing on an unread record, never
+      extended here to the read state). By weight / By assemblage point
+      above already rank the same addresses with real per-address content;
+      this block only repeated the job more thinly underneath it. */;
   var ws=$('psum'); if(ws)ws.onclick=function(){S.pin=null; runCompassDrill(); render();};})();
  railStack(r); renderBal(r);
  /* SUPERSEDED ON 2 OCTOBER, CO-31. These once said "of 10" after every
