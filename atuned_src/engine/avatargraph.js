@@ -26,7 +26,7 @@ function verdict(p,id){
  return yes&&no?'conflicted':no?'rejected':yes?'confirmed':'not_recorded';
 }
 function personal(e,reading){
- if(!e||e.edge==='causes')return false;
+ if(!e||e.edge==='causes'||REL.indexOf(e.edge)<0||PROVENANCE.indexOf(e.src)<0)return false;
  if(e.src==='user_confirmed'||e.src==='observed')return true;
  if(e.src==='inferred'&&kind(e.from)==='story'&&kind(e.to)==='pattern'&&e.edge==='supports')return true;
  if(reading&&e.src==='inferred'&&e.edge==='supports'&&
@@ -61,6 +61,7 @@ function project(args){
  var g;
  try{g=e.traceFromRecord(p,intents,r||undefined);}catch(x){return base('unavailable','Canonical graph read failed.');}
  if(!g||!Array.isArray(g.nodes)||!Array.isArray(g.edges))return base('unavailable','Invalid canonical graph.');
+ if(g.nodes.some(function(n){return n&&TYPES.indexOf(n.type)>=0&&PROVENANCE.indexOf(n.src)<0;}))return base('unavailable','Invalid canonical node provenance.');
  out.graph={alg:typeof g.alg==='number'?g.alg:null,gaps:Array.isArray(g.gaps)?g.gaps.length:0,refused:Array.isArray(g.refused)?g.refused.length:0};
  if(r&&Array.isArray(g.refused)&&g.refused.some(function(x){return x&&x.reading;})){
  out.status='graph_refused';out.notice='The canonical engine refused this structural reading.';return out;}
