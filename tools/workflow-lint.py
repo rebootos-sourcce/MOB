@@ -146,6 +146,9 @@ BROWSER = {
 # percent phase 2, 17 October (tests/pct.js): the printed percent is the
 # drawn fill. Report only until three green runs.
     'pct':           ('node tests/pct.js', 20),
+# layer-observatory wired to trace.js's real traversal, 30 October
+# (tests/layer-observatory.js). Report only until three green runs.
+    'layer-observatory': ('node tests/layer-observatory.js', 20),
 }
 # P0 Alpha acceptance: move to the blocking browser matrix, and mutation-test each
 # one so a future refactor cannot silently return it to report-only.
