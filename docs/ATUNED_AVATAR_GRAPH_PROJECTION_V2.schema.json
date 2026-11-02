@@ -276,7 +276,8 @@
       "required": [
         "alg",
         "gaps",
-        "refused"
+        "refused",
+        "flagged"
       ],
       "properties": {
         "alg": {
@@ -292,6 +293,11 @@
         "refused": {
           "type": "integer",
           "minimum": 0
+        },
+        "flagged": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of noncanonical graph objects or malformed neighbor-provider encounters excluded from this projection. Not a score or diagnostic."
         }
       }
     },
