@@ -24,12 +24,17 @@ var HOT_AT=90;                         /* the alarm band. severity gets its own 
 /* one stroked icon, 24 unit box. declared here because this file loads first
    and every renderer after it wants one. */
 const svgI=function(p){return '<svg viewBox="0 0 24 24">'+p+'</svg>';};
-/* THE FOUR TIERS OF A CHAIN, as marks. They were written inline in the
+/* THE FIVE TIERS OF A CHAIN, as marks. They were written inline in the
    rail's stack tabs, railStack in ui/ui.js, and the glass bar needs the same
-   four for its own switches: one concept, one mark, on every surface, which
-   two copies of a path cannot promise. Two locked rings a saboteur, three a
-   complex, a lattice a hyper complex, a ring in a ring the super complex. */
+   five for its own switches: one concept, one mark, on every surface, which
+   two copies of a path cannot promise. One ring a fetter (the floor the rest
+   runs on, "Child emotions" in railStack's own tab), two locked rings a
+   saboteur, three a complex, a lattice a hyper complex, a ring in a ring the
+   super complex. fet is the exact path railStack already shipped for its
+   'fet' tab, promoted here rather than redrawn, so the glass bar, the wheel
+   and the rail's stack tabs never carry three copies of the same mark. */
 const CHAINGLYPH={
+ fet:'M12 4.5a3.6 3.6 0 013.6 3.6v7.8a3.6 3.6 0 01-7.2 0V8.1A3.6 3.6 0 0112 4.5',
  sab:'M8.6 4.8a3.4 3.4 0 013.4 3.4v3.4a3.4 3.4 0 01-6.8 0V8.2a3.4 3.4 0 013.4-3.4'
   +'M15.4 12.4a3.4 3.4 0 013.4 3.4a3.4 3.4 0 01-6.8 0a3.4 3.4 0 013.4-3.4',
  cx:'M9 6.6a3 3 0 110 6 3 3 0 010-6M15 6.6a3 3 0 110 6 3 3 0 010-6'
@@ -1072,7 +1077,14 @@ function crBadge(band,pct,o){
     twice two centimetres apart. The geometry stays here rather than being
     redrawn, which is the porting rule: same box, same radius, same stroke. */
  var bare=!!o.bare;
- return '<span class="crb '+size+(bare?' bare':'')+'" style="--c:'+col+'"'
+ /* THE DOMINANT MARK, carried through from cr()'s own .on (component.js above,
+    "a gold ring marks a pair that weighs more together", personas.js mxKey).
+    crbNode already passed on:dom for the nerve tier's heaviest address and it
+    was a silent no-op, this function reading no o.on at all: the mark was
+    defined at every call site and wired at none of them. Same class, same
+    rule, now on the badge too, so a badge dominant mark reads exactly as a
+    ring's always has. */
+ return '<span class="crb '+size+(bare?' bare':'')+(o.on?' on':'')+'" style="--c:'+col+'"'
   +(o.title?' title="'+esc(o.title)+'"':'')+'>'
   +'<svg class="crb-a" width="'+G.box+'" height="'+G.box+'" aria-hidden="true">'
   +'<circle cx="'+half+'" cy="'+half+'" r="'+G.r+'" fill="none" '

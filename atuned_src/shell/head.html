@@ -2203,6 +2203,9 @@ body.punch canvas#cv{filter:saturate(1.2)}
    which means nothing overflows and nothing can clip it, whatever it is put
    inside. */
 .crb{position:relative;display:inline-block;flex:0 0 auto;box-sizing:content-box}
+/* THE DOMINANT MARK, the badge's own .on, matching .cr.on above: a gold ring
+   round the badge rather than a second colour or a second number. */
+.crb.on{box-shadow:0 0 0 2px var(--gold);border-radius:50%}
 .crb-a{display:block;transform:rotate(-90deg)}
 .crb-g{position:absolute;left:0;top:0;display:grid;place-items:center;color:var(--c);
  pointer-events:none}
@@ -3712,6 +3715,11 @@ body.punch .card{border-color:transparent}
 .stk-r:not(.static):hover,.stk-r.on{background:var(--panel-2)}
 .stk-l,.stk-p{display:inline-flex;align-items:center;gap:6px;min-width:0}
 .stk-l{flex:1 1 auto;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+/* ICON-LED ROWS, the chain key (chkTier, the fetter list, ui/ui.js): the
+   badge (.crb, already flex:0 0 auto) leads, this is what follows it and
+   takes the rest of the row, the same truncation .stk-l always gave the
+   name, now with nothing it has to share its box with. */
+.stk-nm{flex:1 1 auto;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .stk-p{flex:0 0 auto;color:var(--mid);font-size:12px}
 .stk-r em{font-style:normal;color:var(--dim);font-size:11px;margin-left:4px}
 .rows{font-size:13.5px;line-height:1.85;color:var(--dim);margin-top:14px;padding-top:12px;

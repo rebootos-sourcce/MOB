@@ -260,6 +260,13 @@ function hitPress(h,e){
  if(h.k==='gate'){S.pin=null;runGatesDrill(h.v.k);render();return;}
  /* a pole drawn in the core on a phone, GF, is the door the strip's end was */
  if(h.k==='pole'){S.pin=null;runPoleDrill(h.end);render();return;}
+ /* a fetter bead. h.o is the real CHILD entry itself (ui/wheel.js's bead()
+    pushes o straight through, and core.js set .kind='fet' on it once), the
+    same real object the rail's own 'fet' row already opens through
+    runFetterDrill (data-fet, below). Early, like law/seat/dom/arch above,
+    because runFetterDrill takes the CHILD row directly and not the generic
+    o.kind dispatch runDrill gives sab/cx/hy/sup. */
+ if(h.k==='fet'){S.pin=(S.pin===h.o)?null:h.o; runFetterDrill(h.o); render(); return;}
  var o=h.o||null;
  var same=o&&S.pin&&S.pin.nm===o.nm&&S.pin.kind===o.kind;
  S.pin=same?null:o; runDrill(S.pin); render();}
@@ -845,8 +852,7 @@ function railStack(r){
  var TABS=[
   /* the key is 'fet' and stays 'fet': a key is identity and identity is
      never renamed here. The label is what a person reads and it moves. */
-  ['fet','Child emotions',CHILD.length,
-   'M12 4.5a3.6 3.6 0 013.6 3.6v7.8a3.6 3.6 0 01-7.2 0V8.1A3.6 3.6 0 0112 4.5'],
+  ['fet','Child emotions',CHILD.length,CHAINGLYPH.fet],
   /* the four tiers' marks are CHAINGLYPH in ui/component.js, shared with
      the glass bar's switches for the same four */
   ['sab','Saboteurs',r.sabs.length,CHAINGLYPH.sab],
@@ -1595,25 +1601,118 @@ function render(){
    writes, and drops the figure on an unread reading, where it would be a
    zero nobody entered. Their swatch is a ring, which is how every rendition
    draws them (ui/rings.js); their colour is CB10 and still open. */
+/* THE SELF-SELECTED MARK, NERVE TIER ONLY. Reads the real field trace.js's own
+   yesOf() reads (e.ob.yes, the mirror card's Yes written onto a story entry),
+   rather than rebuilding the whole trace graph for one boolean in a rail row:
+   yesOf promotes the SAME field into a user_confirmed edge, so this is the
+   field the graph's own answer is made from, not a second guess at it.
+   loopread.js's own two words for this, reused verbatim below: User confirmed. */
+function nodeConfirmed(i){
+ try{
+  var p=(typeof CURP!=='undefined')?CURP:null;
+  var ents=(p&&p.story&&Array.isArray(p.story.entries))?p.story.entries:[];
+  return ents.some(function(e){return e&&e.ob&&Array.isArray(e.ob.yes)&&e.ob.yes.indexOf(i)>=0;});
+ }catch(err){return false;}}
+/* ============================================================
+   THE CHAIN, LIVE. FIELD_REDESIGN_BRIEF_2026-11-01.md Part 1: this replaces
+   the static colour legend ("Saboteur. Colored by the seat it sits at...")
+   with the actual list of real nodes, top to bottom, Super-complex through
+   Nerve, each a tier of trace.js's own TRACE_CHAIN or the real floor beneath
+   it. The tier colour stays exactly what the wheel already paints each tier
+   (bc('Solar') for every complex, bc('Sacral') for every hyper-complex,
+   bc('Root') for every super-complex, bc(parts[0].b), the saboteur's own
+   seat, for every saboteur -- ui/wheel.js's own bead() calls, unchanged by
+   this rewrite), so the rail and the wheel never disagree about what a
+   colour here means. Dominant reuses the gold ring (cr's own on:true,
+   var(--gold) box-shadow; personas.js's mxKey, "a gold ring marks a pair
+   that weighs more together"), never a second colour or a second number.
+   Tapping a row opens the same drill a press on the wheel's own bead
+   already opens (hitPress, this file), through the SAME delegated handler
+   that already answers data-sk/data-si/data-fet for the stack rail
+   (railStack, above); nerve rows reuse data-addr and addrRow's own existing
+   handler, so the floor's own row needs no new dispatch at all. */
+/* ICON-LED, not a ring the size of a full stop beside the name carrying the
+   weight. The ring at 'xs' (18px box, an 8px glyph) was the stk-r rows'
+   whole mark, CHAINGLYPH's locked rings and lattice drawn too small to read
+   as anything but a coloured dot, so the row was the name, text first and
+   text led, exactly the complaint: "where are my icons... way too much
+   text." crBadge at 'sm' is the real fix already shipped for the identical
+   symptom (component.js's own words on crBadge: "the named things print as
+   a word and a bare figure... after twenty of them down a rail a person is
+   reading a spreadsheet of feelings"), already the nerve tier's own row
+   below (crbNode) and the Running-now list's (rows.slice(0,8) above): badge
+   leads, name follows and ellipses, one pattern for every row that is many
+   of a kind down this rail. Same CHAINGLYPH, same colour, same weight,
+   same dominant mark (crBadge's new on:dom, wired above) as the ring gave,
+   only big enough now to be seen as a shape before it is read as a name. */
+function chkTier(kind,list,seat){
+ var idx=list.map(function(o,i){return {o:o,i:i};}).sort(function(a,b){return b.o.w-a.o.w;});
+ var cap=kind==='sab'?6:4;
+ if(!idx.length)return '<p class="ad-p" style="margin:4px 0 0 2px">Nothing at this tier yet.</p>';
+ return idx.slice(0,cap).map(function(pair,rank){var o=pair.o, dom=rank===0, f=fmtPct('chain',o.w),
+   b=kind==='sab'?((o.parts&&o.parts[0]&&o.parts[0].b)||seat):seat;
+  return '<button type="button" class="stk-r" data-sk="'+kind+'" data-si="'+pair.i+'">'
+   +crBadge(b,pct('chain',o.w)||0,{size:'sm',raw:f,on:dom,
+     glyph:'<path d="'+CHAINGLYPH[kind]+'"/>',title:o.nm+', '+f+(o.over?', overshot':'')})
+   +'<span class="stk-nm">'+esc(o.nm)+(o.unnamed?'<em>inferred</em>':'')+(dom?'<em>heaviest</em>':'')+'</span></button>';}).join('')
+  +(idx.length>cap?'<div class="pm-more">and '+(idx.length-cap)+' more</div>':'');}
 function renderChainKey(r){
  var h=document.getElementById('chainkey'); if(!h)return;
  var row=function(x){
   return '<div class="chk-row"><span class="chk-dot'+(x.v?' varies':x.ring?' ring':'')+'"'
    +(x.c?' style="background:'+x.c+'"':'')+'></span>'
    +'<span class="chk-tx"><b>'+x.nm+'.</b> '+x.d+'</span></div>';};
- var rows=[
-  {v:true, nm:'Saboteur', d:'Colored by the seat it sits at. The pattern closest to a single story.'},
-  {c:rgba(bc('Solar'),1), nm:'Complex', d:'Two saboteurs joined. Always this color, whichever seat they sit at.'},
-  {c:rgba(bc('Sacral'),1), nm:'Hyper-complex', d:'Complexes joined into one driving pattern.'},
-  {c:rgba(bc('Root'),1), nm:'Super-complex', d:'The deepest join this instrument reads, built from hyper-complexes. The chain ends here.'}];
  var pctAt=function(i){var n=BY[i];return n?Math.max(0,Math.min(100,Math.round((n.sq||0)*10))):0;};
  var live=r&&!r.unread;
+ var sups=live?r.sups:[], hys=live?r.hys:[], cxs=live?r.cxs:[], sabs=live?r.sabs:[];
+ /* THE TIER NAME STAYS A LABEL (tier1's own capitalize rule, head.html: "a
+    label is a short name for a region... four words or fewer"), its one
+    sentence goes in its own stk-def paragraph instead, the same pair the
+    static header right above this list already uses ("Nerve to
+    super-complex" + its own stk-def line) rather than nesting a sentence
+    inside tier1 itself, which the capitalize transform would have carried
+    word by word, the exact defect head.html's own hatch comment records. */
+ var chain='<div class="tier1">Super-complex</div><p class="stk-def">The deepest join this instrument reads, built from hyper-complexes. The chain ends here.</p>'
+  +chkTier('sup',sups,'Root')
+  +'<div class="tier1">Hyper-complex</div><p class="stk-def">Complexes joined, one ring further out.</p>'
+  +chkTier('hy',hys,'Sacral')
+  +'<div class="tier1">Complex</div><p class="stk-def">Two saboteurs joined.</p>'
+  +chkTier('cx',cxs,'Solar')
+  +'<div class="tier1">Saboteur</div><p class="stk-def">The pattern closest to a single story, coloured by the seat it sits at.</p>'
+  +chkTier('sab',sabs,'Root')
+  /* FETTER, ALL NINE, ALWAYS. "No running or not": trace.js's own words, a
+     fetter "carries no address-level content of its own", only the real
+     addresses it classifies, so there is no active/inactive split to filter
+     by the way a saboteur has one, and all nine are real whether or not any
+     charge is on them right now. */
+  +'<div class="tier1">Fetter</div><p class="stk-def">The nine child emotions. No reading of their own, only the addresses they classify.</p>'
+  +(function(){var hi=CHILD.reduce(function(a,c){return (S.charge[c.nm]||0)>(S.charge[a.nm]||0)?c:a;},CHILD[0]);
+   return CHILD.map(function(c,ci){var v=S.charge[c.nm]||0, f=fmtPct('charge',v), dom=live&&c===hi&&v>0;
+    return '<button type="button" class="stk-r" data-fet="'+ci+'">'
+     +crBadge(c.seat,pct('charge',v)||0,{size:'sm',raw:f,on:dom,
+       glyph:'<path d="'+c.ic+'"/>',title:c.nm+', '+f})
+     +'<span class="stk-nm">'+esc(c.nm)+(dom?'<em>heaviest</em>':'')+'</span></button>';}).join('');})()
+  /* NERVE, THE REAL FLOOR: the addresses actually carrying right now, same
+     carrying line fbValues (ui/fieldbar.js) already reads, sq>=4. Dominant
+     is the single heaviest of them; self-selected is the person's own Yes,
+     nodeConfirmed above, nerve/address tier only per the brief's own honest
+     limit (yesOf never confirms a saboteur or anything above it). */
+  +'<div class="tier1">Nerve</div><p class="stk-def">The real addresses actually carrying charge right now.</p>'
+  +(function(){
+   var nerve=(live?W.filter(function(n){return n.sq>=4;}):[]).slice().sort(function(a,b){return b.sq-a.sq;});
+   if(!nerve.length)return '<p class="ad-p" style="margin:4px 0 0 2px">Nothing is carrying yet.</p>';
+   var cap=6;
+   return nerve.slice(0,cap).map(function(n,i){var dom=i===0, conf=nodeConfirmed(n.i);
+     return '<button type="button" class="ad-r" data-addr="'+n.i+'" title="Open '+esc(n.k)+'">'
+      +crbNode(n,'sm',{on:dom})+'<span>'+esc(n.k)+'</span>'
+      +'<em>'+(conf?'User confirmed':esc(n.b))+'</em></button>';}).join('')
+    +(nerve.length>cap?'<div class="pm-more">and '+(nerve.length-cap)+' more</div>':'');})();
  var outside=[
   {c:rgba(GOLDC(),1), nm:'Archetype', d:'Not part of the chain. It is the pick you made at setup. It sets how readily each address takes charge from a story, so it shapes the chain and is never built from it.'},
   {ring:true, nm:'Field anchors', d:'The 4 places outside the body: Sol Star and Stellar Gateway above the head, Earth Star and Gaia Gateway below the feet. No nerve sits under them, so no saboteur forms there. Each carries the average weight of the seat it extends'
    +(live?', the crown above at <b>'+pctAt(109)+'%</b> and the root below at <b>'+pctAt(111)+'%</b>':', the crown above and the root below')
    +'. That weight counts in decoherence, your total shadow.'}];
- h.innerHTML=rows.map(row).join('')
+ h.innerHTML=chain
   +'<div class="tier1" style="margin-top:14px">Outside the chain</div>'
   +outside.map(row).join('');}
 /* THE FOUR AMPLIFIERS. body.html's own comment above the section carries
