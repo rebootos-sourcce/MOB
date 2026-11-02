@@ -42,3 +42,10 @@ Documentation and seam mapping: 0.95. Candidate isolated tests: 36/36. Full prod
 17. REGRESSION RETEST: post-hardening candidate passed 14 additional isolated JS assertions, 14/14, 0 failures. These check progress blank, done status, points, deleted evidence persistence, invalid old/addition bags, future-version retention and host-free syntax.
 18. ENVIRONMENT BOUNDARY: no full main compiled engine executed; GitHub fetch of generated engine.js produced no usable content, and a many-module concurrent fetch attempt exceeded the connector's call cap. This is a known test gap, not a green result.
 19. NEXT AI: run node tests/progress-seam.js in a complete checkout, then full engine and browser gates. If a gate fails, fix in the seam branch, log exactly which behavior changed, and do not claim merge-ready without it.
+
+
+## Handoff freeze: draft PR 168
+20. TEST GATE REVIEW: found the candidate test would fail the moment the integrator put progress.js into MANIFEST and would hardcode a mark total that grows stale. Corrected tests/progress-seam.js to load candidate exactly once both before and after MANIFEST integration; replaced fixed catalogue count with named required marks and unique keys. Static JavaScript syntax check passed.
+21. DRAFT PR CREATED: https://github.com/rebootos-sourcce/MOB/pull/168 ; draft true, base main, head feat/achievements-seam-2026-11-02. This is a work handoff, not merge approval.
+22. COMPARED BRANCH: exactly seven new files relative to audited main baseline (engine/progress.js; tests/progress-seam.js; five indexed handoff documents). No existing mainline file is modified.
+23. INTEGRATOR MUST still run candidate Node gate in checkout and then all production build and browser gates. No further unverified results should be described as passing.
