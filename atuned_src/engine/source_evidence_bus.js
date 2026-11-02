@@ -1,5 +1,7 @@
 /* Source AI evidence envelope v1.1, audit-hardened staging adapter.
- * NOT in MANIFEST/export; no production host or consumer is connected.
+ * In MANIFEST and export.js (round SR, 2 November), read-only and callable;
+ * no production host or consumer calls it yet, and every packet it returns
+ * still says NOT_EXPORTED_UNTRUSTED_HOST, ACTION NONE, writeAuthority NONE.
  * Source is untrusted input to this function, even if it has canonical labels.
  * No boolean, including hostVerifiedActiveRecord, authenticates a record.
  * This function creates session-only candidate metadata, not authority.

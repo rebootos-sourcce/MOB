@@ -50,6 +50,7 @@ engine/evidence.js
 engine/voice_narrative.js
 engine/voice_charge_cycle.js
 engine/voice_intelligence.js
+engine/source_evidence_bus.js
 engine/qcheck.js
 engine/astro.js
 engine/birth.js
