@@ -1,0 +1,40 @@
+# ATÜNED Avatar × Graph Intelligence — SYSTEMS handoff index
+**Version:** 2026-11-01, v0.8 engineering stream. **Branch:** `work/avatar-graph-readonly-v08-20261101`. **PR:** https://github.com/rebootos-sourcce/MOB/pull/164 (draft; **do not merge or deploy**).
+
+## Start here, in order
+1. [System architecture & versioned read-only interface contract](ATUNED_AVATAR_GRAPH_SYSTEM_ARCHITECTURE_CONTRACT_V1_2026-11-01.md) — definitions, data ownership, inputs/outputs, provenance, identity/permission boundaries, cross-system seams, responsibility split.
+2. [Engineering TDD, 39 requirement IDs, acceptance matrix and fixtures](ATUNED_AVATAR_GRAPH_TDD_ACCEPTANCE_V1_2026-11-01.md) — RED/GREEN workflow, current tests, blocked composed checks, gate ownership.
+3. [Executive parallel handshake and chronological execution log](ATUNED_AVATAR_GRAPH_PARALLEL_HANDSHAKE_2026-11-01.md) — branch history, CI results, cross-AI approvals and pending build.
+4. [Read-only canonical Avatar graph projection](../atuned_src/engine/avatargraph.js) — current v2 implementation. No parallel graph engine.
+5. [Isolated regression test suite](../tests/avatargraph.js) and [real MOB engine test suite](../tests/avatargraph-runtime.js) — run against exact branch head, not against an old generated bundle.
+6. [MANIFEST](../atuned_src/MANIFEST), [engine exports](../atuned_src/engine/export.js), [CI workflow](../.github/workflows/deploy.yml) — canonical build order and required gates.
+7. [UI integration seam](../atuned_src/ui/avatarui.js) (existing collapsed Connections disclosure) — other Avatar/UI AI owns presentation and visual acceptance; systems AI reviews data/consent contract only.
+8. [Canonical graph](../atuned_src/engine/trace.js), [loaded record read](../atuned_src/engine/read.js), [entitlement read](../atuned_src/ui/lock.js) — preserve these as single authorities.
+
+## Interfaces and concurrent work
+- **#157** Graph Observatory: https://github.com/rebootos-sourcce/MOB/pull/157 — explicit GREEN LIGHT for compatibility; no merge authorization.
+- **#158** Parent/child summary: https://github.com/rebootos-sourcce/MOB/pull/158 — explicit GREEN LIGHT for compatibility; no merge authorization.
+- **#163** Source AI voice and graph: https://github.com/rebootos-sourcce/MOB/pull/163 — explicit compatibility response pending; optional narration is a separate consented consumer.
+- **#149** Celestial Avatar: https://github.com/rebootos-sourcce/MOB/pull/149 — explicit compatibility response pending; shares Avatar render/mount and MANIFEST.
+- All four branch owners can continue their own isolated work. Shared changes require reviewed composition and full CI; do not cross-merge silently.
+
+## What has actually been implemented
+- Read-only Avatar-to-Trace projection, seven-seat selection, bounded evidence-qualified graph nodes and edges, identity/refusal/privacy handling, no score or Release writes.
+- Existing 23 isolated regression checks plus 11 real-engine checks passed on an earlier tested commit.
+- **New:** six isolated regression cases in `tests/avatargraph.js` (expect 29 total on next Node run); malformed `traceNeighbors` data now fails closed as `unavailable`; seven focused isolated V8 checks passed after the fix. The expanded exact-head Node tests are **not yet verified**.
+- Owner changed scope: systems AI owns architecture, logic, TDD and engineering quality; other AI owns visual design, UI approval and layout decisions. Do not treat CI's design checks as final product-visual approval.
+
+## Required to finish the engineering stream
+1. Execute updated isolated `node tests/avatargraph.js` and real-engine `node tests/avatargraph-runtime.js` under GitHub CI (or full trusted checkout).
+2. Regenerate and commit derived artifacts using canonical scripts; product freshness test currently fails.
+3. Run full exact-head CI and recompute 29/30 status (29/30 was the earlier inspected run, not this new head).
+4. Complete privacy/entitlement and composed Source/Celestial acceptance; obtain explicit compatibility replies from #149 and #163.
+5. Hand final verified interface to the other Avatar/UI AI for layout/visual acceptance. Systems stream does not own that approval.
+6. Update this index and executive log on each material change; record exact commit and CI run. No production merge or deployment without all gates.
+
+## Measurements (last reliably checked)
+- Historical GitHub CI: 29/30 successful jobs; sole blocker generated-product freshness.
+- Previously verified 23/23 isolated + 11/11 canonical-engine tests. New six tests require new CI proof.
+- 7/7 focused V8 isolated checks on the updated adapter (not full Node suite).
+- Cross-AI explicit replies: 2/4; PR #164 draft/unmerged.
+- **Systems documentation completeness:** architecture contract and TDD matrix written; composed integration gates outstanding. **Production readiness:** not verified.
