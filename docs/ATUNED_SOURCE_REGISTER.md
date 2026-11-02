@@ -134,3 +134,16 @@ These are retrieval/decision blockers, not evidence of absence. The next pass mu
 
 The new registry is an inventory and research ledger, not a runtime integration. Do not remove prior closure blockers until source denominators, templates, generated output, and graph tests have been verified.
 | `docs/ATUNED_DEEP_PSYCHOLOGICAL_CODE_TO_REGISTRY_CONTRACT_2026-10-22.md` | Exact generator template fields and closure-validator contract compared with the 125-record psychological registry; adapter and runtime gaps | Commit `0fef21a2150df55095a1e08c35212b116ec6d76b` |
+
+## Source AI-4 V13 branch-source register — 2026-11-01 (not main)
+| Repo-relative path | Role and scope | Branch status / evidence |
+| --- | --- | --- |
+| `docs/SOURCE_AI4_PREWIRING_GAP_AUDIT_V13_2026-11-01.md` | **Read first:** reviewed A01–A08 gaps, remediation vs blockers, integration hold | Draft branch; created commit `2e909384f915aa596ce02be7c7f8ff1a4b3bfe7a` |
+| `atuned_src/engine/source_evidence_bus.js` | v1.1 stage-only, caller input untrusted, session candidate envelope, profileShare always false, no dispatch | Blob `0d5688af7aa449f796dea793d7fd022368fbf7d0`, commit `b1fc16ec9154f96e0912b7480082f14fa056ffc4`; NOT in MANIFEST |
+| `proto/source/source-evidence-bus-v1.test.js` | 52 standalone assertions; local Node 22 PASS, NOT official repo gate | Blob `0b37e3dba569eac323029c447eb37e3c5a9635eb`, commit `8b55c9fae8076f01123bc83f9391553d9219f2a8` |
+| `docs/SOURCE_AI4_EXECUTION_HANDSHAKE_V12_2026-11-01.md` | Older continuation, augmented with V13 corrections | Draft; V13 audit overrides obsolete caller-attestation claim |
+| `docs/SOURCE_AI4_COLLABORATION_LOG_2026-11-01.md` | Rolling execution ledger for successor AI | Draft, updated for audit |
+| `atuned_src/engine/data/patterns96.js` | 96 owner-source AP/GP/PP design categories (32 each), non-diagnostic | Existing draft branch source, previously structurally checked |
+| `atuned_src/engine/data/researchanchors.js` | 62 source anchor entries, research limitations | Existing draft branch source, previously checked for unresolved refs |
+| `docs/SOURCE_VOICE_PAIN_ANCESTRY_V11_LOCAL_HANDOFF_2026-11-01.md` | Local V11 owner ZIP pointer and 45 NP candidate mappings | Missing exact ZIP, no approved production mapping |
+CI provenance: run `41365137545` on older V12 head `389263c8af30a7aa9e5d4f21335fe0bd003b91b1`: required fast-gate voice-copy check failed; checked engine/build and browser steps passed. Current commit's CI must be checked independently. Confidence of stage-only local contract: 0.96; production host/security readiness: 0.10.
