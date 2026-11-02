@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2745 54fa9a61 2026-11-02 02:14"><head><meta charset="utf-8">
+<html lang="en" data-build="v2755 6407e572 2026-11-02 02:29"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -4915,6 +4915,17 @@ body.punch .ip.kid{background:color-mix(in srgb,var(--c) 68%,var(--panel-2))}
 .ad-r span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
 .ad-r em{font-style:normal;font-size:12px;color:var(--heart)}
 .ad-r b{font-weight:500;color:var(--gold);font-family:var(--num);font-variant-numeric:tabular-nums}
+/* THE TRACE SUMMARY BLOCK, ui/tracesummaryui.js. "Feeds up" rows read like
+   ad-rows without the button (nothing here is clickable, it is a read, not
+   a control), and the narrated paragraph is set off as a quote so a person
+   can tell prose from the structured rows above it at a glance, the same
+   distinction the FIELD_REDESIGN_BRIEF asked the summary panel to keep. */
+.ts-rows{display:flex;flex-direction:column;gap:7px;margin:6px 0 2px}
+.ts-row{font-size:13.5px;color:var(--ink);padding:5px 6px;border-radius:var(--r-xs);background:var(--panel-2)}
+.ts-kind{font-size:11.5px;color:var(--dim);text-transform:lowercase}
+.ts-line{font-size:12.5px;color:var(--mid);margin-top:2px}
+.ts-why{font-size:12.5px;color:var(--dim);margin-top:2px;font-style:italic}
+.ad-p.ts-narr{border-left:2px solid var(--edge-2);padding-left:11px;color:var(--mid);font-style:italic}
 /* THE GATE ROWS' OWN VALUE, reached for the first time outside the gate
    drill when the Field's own Laws of Action rail section was added, 28
    October. gatesBlock (ui/drills.js) was already shipped and already
@@ -22350,6 +22361,298 @@ function traceFromRecord(p,intents,reading){
  return g;}
 
 try{window.__at&&window.__at('engine/trace.js');}catch(e){}
+/* ============================================================
+   TRACE SUMMARY. One blended, hedged paragraph over a graph
+   engine/trace.js already built: what a node's real parents and
+   real children actually say, read off the libraries that already
+   carry their content, never invented.
+
+   WHAT THIS ANSWERS. Lance's own words, confirmed 2026-10-29: "I
+   should be able to select anywhere in that chain, either in the
+   field or the left-hand menu, and have it show me all the
+   connections parent to child and give me a summary from source AI
+   as a blend of all those records showing me how all the patterns
+   are playing through me." traceSummary(g, node) below is that: it
+   takes the graph traceFromRecord(p, intents, reading) already built
+   for one person and a node already on it, and returns the real
+   parent(s) and real child(ren) THE CHAIN (trace.js) connects it to,
+   plus one paragraph narrating how their real content relates to the
+   selected node.
+
+   A SIBLING FILE, ON PURPOSE, NOT A NEW BLOCK INSIDE trace.js.
+   trace.js's own header says what that file is: it reads the objects
+   that exist and holds the relationships nothing else holds, plain
+   data, safe to JSON round trip. traceChainAttrs there is explicit
+   about why a rung's own display line is kept off the graph node:
+   "never d, the line a person is shown... a graph that carried them
+   would be one more place to print them from." A narrated paragraph
+   IS printing, so it is kept out of that file and reads it instead,
+   the same way engine/loop.js (the one read of the graph a screen
+   asks) already sits beside trace.js rather than inside it. Nothing
+   here adds a node, adds an edge, or changes p.trace: every function
+   below takes a graph and returns data, and never mutates the graph
+   it is handed.
+
+   WHERE A NODE'S REAL CONTENT ACTUALLY LIVES. Checked against the
+   real tables rather than assumed:
+     pattern (address)   engine/data/nodes.js's own 112-row table,
+                          its a (what becomes available) and d (the
+                          collapsed expression), by address number.
+                          A fetter pseudo-pattern (pattern:fetter:X,
+                          THE SIGNAL -> FETTER PATH in trace.js) is
+                          the classification several addresses share
+                          and carries none of that itself.
+     saboteur             engine/data/kb.js's SABDEF.q, the pattern's
+                          own sentence, what it says, and engine/data/
+                          sabcard.js's SABCARD.h and .a, the lived
+                          behaviour and what becomes available, both
+                          keyed by KB_KEY off the name with any
+                          " overshot" suffix stripped first (THE SAME
+                          CLUSTER, OVERSHOT, engine/compute.js). An
+                          unnamed cluster (chain attrs carry
+                          unnamed:true) and a TULA-only name with no
+                          SAB33 row (SABAUTH's own list in
+                          engine/data/canon.js) resolve to neither
+                          table, by design, and the paragraph says so
+                          rather than printing a blank.
+     complex              no table of its own. By THE CHAIN a complex
+                          IS its own two saboteurs compounded
+                          (engine/compute.js, cxs.push), so its real
+                          content is exactly its real children's,
+                          read below it, never guessed at from its own
+                          name (which is literally "A + B", the two
+                          saboteur names joined, not a label a card
+                          could be keyed by).
+     hyper_complex        engine/data/nodes.js's HCX_LIB.d and .sub,
+                          by the family name the rung is literally
+                          named after. An overshoot pairing can carry
+                          a pole family name HCX_LIB has no row for
+                          (FAM_POLE, engine/core.js); checked against
+                          the table by the node's own real name either
+                          way, and reported honestly when it misses
+                          rather than borrowed from the family it is
+                          the overshoot of.
+     super_complex        no table of its own either, same reason as
+                          complex: its name is its two hyper complexes
+                          joined ("A / B"), not a label. DESCENT
+                          (engine/data/compass.js) separately names
+                          Narcissism, Machiavellianism, Sociopathy and
+                          Psychopathy, but those are the dark read's
+                          own clinical register for specific rungs,
+                          held there on purpose and never pushed into
+                          a reading's real sabs/cxs/hys/sups lists
+                          (engine/compute.js says so directly), so a
+                          real super_complex node's own name does not
+                          match a DESCENT entry and this file does not
+                          pretend otherwise by matching on anything
+                          looser than the literal name.
+
+   THE RESOLVE THEN NARRATE IDIOM. The same two steps atuned/data/
+   celestial/integration/source-ai-behavioral-synthesis.cjs and
+   source-ai-reading-pipeline.cjs already run over astrology and
+   numerology records: resolve every real input's own fields first,
+   with where each one came from; find what the resolved set actually
+   shares; narrate it hedged, crediting which side said what, and say
+   plainly when nothing connects rather than forcing a sentence that
+   only sounds like it does. traceSummaryCard below is the resolve
+   half and traceSummaryNarrate the narrate half. Rule 6 (this
+   project's working rules): every number or claim shown to a person
+   is real or it does not ship, so where a side has no real content
+   on file the paragraph names that plainly instead of writing a
+   plausible-sounding line to fill the space.
+
+   WHAT THIS DOES NOT DO. It does not call compute(), does not read or
+   write CQ, DQ or SQ, does not write a release or a reframe, does not
+   write a ritual, and holds no opinion any of those could be checked
+   against. It is a pure read of a graph and a few static libraries,
+   handed back as data and one paragraph of prose.
+   ============================================================ */
+
+/* a chain node's name after compute()'s own " overshot" suffix
+   (engine/compute.js, pushSab) is stripped. Only saboteur names carry
+   that literal suffix; a hyper complex's overshoot is a different,
+   real family name (FAM_POLE), not this pattern, so this helper is
+   never applied to one. */
+function traceSummaryBase(nm){ return String(nm).replace(/ overshot$/,''); }
+
+/* ONE NODE'S REAL CONTENT, read off whichever library actually carries
+   it. Never throws, never guesses: found is false and why names the
+   reason whenever nothing resolves. attrs is the node object already
+   on the graph (traceChainAttrs' or tracePatternAttrs' own output, or
+   {} for a neighbor not found, which traceSummary below never actually
+   hands it, kept only so this function is as safe as the rest of the
+   file against a hand built graph). */
+function traceSummaryCard(type,id,attrs){
+ attrs=attrs||{};
+ if(type==='pattern'){
+  if(/^fetter:/.test(String(id)))
+   return {found:false, label:attrs.fetter||String(id).replace(/^fetter:/,''),
+    why:'a fetter is the classification several addresses share (NODES[].cf), and carries no address-level content of its own'};
+  var n=BY[+id];
+  if(!n)return {found:false, label:String(id), why:'address '+id+' is not on the 112-address table'};
+  return {found:true, label:n.k,
+   fields:{coherent:n.a, distorted:n.d, charge:n.c||null},
+   source:'the 112-address table, NODES['+n.i+'].a and .d for '+n.k};}
+ if(type==='saboteur'){
+  var over=/ overshot$/.test(String(id)), base=traceSummaryBase(id), key=KB_KEY(base),
+   def=SABDEF[key]||null, card=SABCARD[key]||null;
+  if(!def&&!card){
+   if(attrs.unnamed)
+    return {found:false, label:base, over:over,
+     why:'this is an unnamed cluster: it reached the saboteur threshold without matching one of the library\'s 33 named patterns, so no card or definition is on file for it'};
+   return {found:false, label:base, over:over,
+    why:'no saboteur card or definition is on file for '+base+(SABAUTH&&SABAUTH[base]?', though it does carry a composition of its own in SABAUTH':'')};}
+  return {found:true, label:base, over:over,
+   fields:{says:def?def.q:null, livedBehavior:card?card.h:null, becomesAvailable:card?card.a:null},
+   source:'SABDEF.q (what it says) and SABCARD.h/.a (the lived behaviour, and what becomes available) for '+base
+    +(over?', read off the base pattern: the overshoot is the same cluster run past the point it helps, not a different one':'')};}
+ if(type==='complex')
+  return {found:false, label:String(id),
+   why:'a complex has no card of its own; by THE CHAIN it is its own two saboteurs compounded, so its content is exactly its real children\'s, below'};
+ if(type==='hyper_complex'){
+  var h=null;
+  for(var i=0;i<HCX_LIB.length;i++)if(HCX_LIB[i].nm===id){h=HCX_LIB[i]; break;}
+  if(!h)return {found:false, label:String(id), why:'no family entry is on file for '+id};
+  return {found:true, label:h.nm, fields:{familyLine:h.d, clinicalCorrespondence:h.sub||null},
+   source:'HCX_LIB.d and .sub for '+h.nm};}
+ if(type==='super_complex')
+  return {found:false, label:String(id),
+   why:'a super complex has no card of its own; by THE CHAIN it is its own two hyper complexes paired, so its content is exactly its real children\'s, below'};
+ return {found:false, label:String(id), why:'no content source is wired for node type '+type};}
+
+/* THE CHAIN'S OWN DIRECTION, read off traceNeighbors and nothing else:
+   a 'supports' edge runs from the rung below to the rung above
+   (pattern -> saboteur -> complex -> hyper_complex -> super_complex,
+   THE CHAIN, trace.js), so dir:'in' on this node is a real child (a
+   part counted toward it) and dir:'out' is the real parent (the rung
+   it is itself counted toward). The same filter mockups/layer-
+   observatory/build-trace.js's realParts() uses and tests against a
+   real tracePath, not a new convention invented for this file. */
+function traceSummaryParts(g,key){
+ var all=traceNeighbors(g,key,'supports');
+ return {
+  children:all.filter(function(x){return x.dir==='in';}),
+  parents:all.filter(function(x){return x.dir==='out';})};}
+
+/* a type name as a person reads it, never the identifier. */
+var TRACE_SUMMARY_WORD={pattern:'address', saboteur:'saboteur', complex:'complex',
+ hyper_complex:'hyper complex', super_complex:'super complex'};
+function traceSummaryWord(type,id){
+ if(type==='pattern'&&/^fetter:/.test(String(id)))return 'fetter';
+ return TRACE_SUMMARY_WORD[type]||type;}
+/* 'a' or 'an', off the word's own first letter, so "a address" never ships. */
+function traceSummaryArticle(word){ return /^[aeiou]/i.test(word)?'an':'a'; }
+function traceSummaryList(labels){
+ if(!labels.length)return '';
+ if(labels.length===1)return labels[0];
+ return labels.slice(0,-1).join(', ')+' and '+labels[labels.length-1];}
+
+/* ONE NODE'S REAL FIELDS, AS A QUOTED LINE. An address and a saboteur
+   each carry a real pair, not a single line: an address's coherent
+   pole and its collapse (NODES[].a and .d) are two sides of the same
+   row, and a saboteur's own line and what becomes available (SABDEF.q
+   and SABCARD.h/.a) are the pattern and its practice. Quoting only one
+   side of a real pair would be true and still incomplete, so both are
+   named wherever the type carries a pair; a hyper complex's family
+   line (HCX_LIB.d) has no such second side on file and is quoted
+   alone. Never fabricates a joiner between two fields that were never
+   written next to each other: each quoted field stays in its own
+   quotation marks. */
+function traceSummaryOwnLine(fields){
+ fields=fields||{};
+ if(fields.coherent!=null||fields.distorted!=null)
+  return 'coherent, "'+(fields.coherent||'not named')+'"; collapsed, "'+(fields.distorted||'not named')+'"';
+ if(fields.says!=null||fields.livedBehavior!=null){
+  var line=fields.says!=null?'it says "'+fields.says+'"':null,
+   lived=fields.livedBehavior!=null?'lived out as "'+fields.livedBehavior+'"':null;
+  return [line,lived].filter(function(x){return !!x;}).join('; ');}
+ if(fields.familyLine!=null)return 'its family line is "'+fields.familyLine+'"';
+ return null;}
+
+/* ONE SIDE'S CLAUSE, hedged. Quotes a real field when one side has
+   exactly one real-content neighbor (the common case, a saboteur with
+   one complex or one hyper complex with one super complex); with more
+   than one, names each by what it is and credits each a clause rather
+   than blending their words into one borrowed sentence, which would
+   claim a connection between them this file never checked. */
+var TRACE_SUMMARY_PLURAL={child:'children', parent:'parents'};
+function traceSummaryClause(side,items){
+ var withCard=items.filter(function(x){return x.card.found;}),
+  sideWord=items.length>1?TRACE_SUMMARY_PLURAL[side]||(side+'s'):side;
+ if(!items.length)return 'no real '+side+' is on this graph yet';
+ if(!withCard.length)
+  return traceSummaryList(items.map(function(x){return traceSummaryWord(x.type,x.id)+' '+x.card.label;}))
+   +' (the real '+sideWord+', but none carries further content on file)';
+ var parts=withCard.map(function(x){
+  var line=traceSummaryOwnLine(x.card.fields);
+  return traceSummaryWord(x.type,x.id)+' '+x.card.label+(line?', read as '+line:'');});
+ var thin=items.filter(function(x){return !x.card.found;});
+ var tail=thin.length?('; '+traceSummaryList(thin.map(function(x){return traceSummaryWord(x.type,x.id)+' '+x.card.label;}))+' carries nothing further on file'):'';
+ return parts.join('; ')+tail;}
+
+/* RESOLVE THEN NARRATE, the second half. One paragraph, hedged, never
+   asserting a connection the records themselves do not carry (the
+   same discipline atuned/data/celestial/integration/source-ai-
+   behavioral-synthesis.cjs's narrateSourceAI runs over astrology and
+   numerology records). Ends on the same plain accounting those files
+   close with: what kind of statement this is and is not. */
+function traceSummaryNarrate(self,selfCard,parents,children){
+ var word=traceSummaryWord(self.type,self.id), label=selfCard.label||self.id,
+  sentences=[];
+ if(selfCard.found){
+  var own=traceSummaryOwnLine(selfCard.fields);
+  sentences.push('The selected '+word+', '+label+(own?', reads as '+own:'')+'.');}
+ else sentences.push('The selected '+word+', '+label+', carries nothing further on file beyond its own name and weight ('+selfCard.why+').');
+ if(children.length)
+  sentences.push('Below it, the real part'+(children.length>1?'s are':' is')+' '+traceSummaryClause('child',children)+'.');
+ else sentences.push('Nothing sits below it on this graph: '+traceSummaryArticle(word)+' '+word+' is the floor of the chain, or none of its own parts reached the threshold yet.');
+ if(parents.length)
+  sentences.push('Above it, the real part'+(parents.length>1?'s are':' is')+' '+traceSummaryClause('parent',parents)+'.');
+ else sentences.push('Nothing sits above it yet: either the chain stops here by design (a super complex is the top this engine reads) or this one has not compounded with another of its kind yet.');
+ var cWith=children.filter(function(x){return x.card.found;}), pWith=parents.filter(function(x){return x.card.found;});
+ if(cWith.length&&pWith.length)
+  sentences.push('Read together, '+traceSummaryWord(cWith[0].type,cWith[0].id)+' '+cWith[0].card.label+' and '+traceSummaryWord(pWith[0].type,pWith[0].id)+' '+pWith[0].card.label
+   +' are both counted toward this same '+word+' by the reading, a registration and not a claim that one causes the other or the person.');
+ sentences.push('This paragraph narrates what the graph and the library already hold. It does not compute a score, and it does not write a release, a reframe or a ritual.');
+ return sentences.join(' ');}
+
+/* ============================================================
+   traceSummary(g, node)
+
+   g is a graph traceFromRecord already built. node is a key
+   ('saboteur:Negotiator') or a {type,id} ref, the same form
+   tracePath's from/to and traceAddEdge's from/to already take
+   (traceRef). Returns {ok:false, why} by name on anything that is
+   not a real node on this graph, the same convention traceNodeAdd,
+   traceEdgeAdd and validateTrace already use; on a real node it
+   returns the node's own data, its real parents and real children
+   (traceSummaryParts, each decorated with its own real content), and
+   one narrated paragraph blending them, so a caller can show the
+   prose and the records it came from side by side rather than prose
+   alone. Pure: reads g and the static libraries above it in MANIFEST
+   order, mutates neither, and never calls compute().
+   ============================================================ */
+function traceSummary(g,node){
+ if(!traceIsGraph(g))return {ok:false, why:'there is no graph to read'};
+ var key=traceRef(node);
+ if(key===null)return {ok:false, why:'names no node: '+JSON.stringify(node)};
+ var ix=traceIx(g), self=ix.node[key];
+ if(!self)return {ok:false, why:key+' is not a node on this graph'};
+ var parts=traceSummaryParts(g,key);
+ var decorate=function(n){
+  var s=traceSplit(n.key), found=ix.node[n.key]||{};
+  return {key:n.key, type:s.type, id:s.id, edge:n.edge, src:n.src, attrs:found,
+   card:traceSummaryCard(s.type,s.id,found)};};
+ var byKey=function(a,b){return a.key<b.key?-1:a.key>b.key?1:0;};
+ var children=parts.children.map(decorate).sort(byKey);
+ var parents=parts.parents.map(decorate).sort(byKey);
+ var selfCard=traceSummaryCard(self.type,self.id,self);
+ return {ok:true,
+  node:{type:self.type, id:self.id, key:key, attrs:self, card:selfCard},
+  parents:parents, children:children,
+  summary:traceSummaryNarrate(self,selfCard,parents,children)};}
+
+try{window.__at&&window.__at('engine/tracesummary.js');}catch(e){}
 
 /* ============================================================
    SOURCE PROFILE SCHEMA v1 · the cross-compatibility contract.
@@ -35031,6 +35334,9 @@ if(typeof module!=='undefined'&&module.exports){
                   traceNeighbors:traceNeighbors, tracePath:tracePath, traceOrphans:traceOrphans,
                   traceCycles:traceCycles, validateTrace:validateTrace, traceApply:traceApply,
                   traceFromRecord:traceFromRecord, traceStoryIds:traceStoryIds, traceRitualIds:traceRitualIds,
+  /* the parent/child blend summarizer, engine/tracesummary.js: a sibling
+     file, never a block inside trace.js itself, see its own header */
+                  traceSummary:traceSummary,
   /* the loop read, engine/loop.js: the one read of the graph a screen asks */
                   loopRead:loopRead, LOOP_SHOW:LOOP_SHOW,
   /* a worked example's history, engine/pracex.js, for the practitioner page */
@@ -69517,6 +69823,104 @@ function ladderHtml(){
  return h+'</div>';}
 
 try{window.__at&&window.__at('ui/cone.js');}catch(e){}
+/* ============================================================
+   THE TRACE SUMMARY, WIRED INTO THE EXISTING DRILLS. Round of 2 November,
+   continuing PR #161 (the stack section on the left rail) and PR #158
+   (traceSummary(g,node), engine/tracesummary.js), on his own words after
+   seeing the rebuilt wheel: "the full cascade wiring of the Psyche stack
+   for the field... nerve to fetter, address, to saboteur, complex, hyper-
+   complex, super-complex."
+
+   WHAT WAS ALREADY REAL, CHECKED BEFORE ANYTHING WAS ADDED. A click on a
+   wheel bead already opens a real drill: runNodeDrill(n) for an address
+   (ui/drills.js, nodeDrillHtml) and runDrill(o) for a saboteur, complex,
+   hyper-complex or super-complex (ui/drills.js, runDrill), both wired from
+   hitPress in ui/ui.js, both already real and already shipped. The address
+   drill already shows what it "Feeds" upward (the saboteurs or complexes
+   built partly from it). The chain's own four rungs (runDrill) show only
+   what they are "Made of" downward; nothing on this product today shows a
+   saboteur, complex or hyper-complex what it itself feeds into, and
+   nothing on either drill blends the two directions into one read.
+
+   THE ONE REAL GAP THIS FILE CLOSES. traceSummary(g,node) already computes
+   exactly that: real parents (what a node feeds up into) and one narrated
+   paragraph, tested, never wired to a screen. This file is the one real
+   call site. tsBlockHtml(type,id) is appended to both existing drills,
+   never replacing what they already show.
+
+   THE GRAPH. The same one loopRead already builds (engine/loop.js:
+   traceFromRecord(p, practiceTraceIntents(p.practice), readSeenOf(p))),
+   rebuilt here rather than exposed from loopRead, because loopRead's own
+   contract (engine/loop.js) returns processed counts and never the graph
+   itself, and changing that return shape risks every caller and test that
+   already reads it. Memoised the same way loopOf memoises (ui/loopread.js,
+   LP), against the same two things a graph is built from: the record's own
+   signature and the reading it was handed. */
+var TSG={memo:null, sig:''};
+function tsSig(p,rd){
+ var es=(p&&p.story&&p.story.entries)||[];
+ try{return JSON.stringify([p&&p.id||null, es.map(function(e){return [e&&e.t,e&&e.text,e&&e.lex];}),
+  p&&p.practice||null, p&&p.trace||null, p&&p.soul||null, rd&&rd.CQ||null]);}
+ catch(e){return String(Math.random());}}
+function tsGraphFor(p){
+ if(!p||typeof p!=='object')return null;
+ var rd=null; try{rd=readSeenOf(p);}catch(e){rd=null;}
+ var s=tsSig(p,rd);
+ if(TSG.memo&&s===TSG.sig)return TSG.memo;
+ var P=(p.practice&&typeof p.practice==='object')?p.practice:null, g=null;
+ try{g=traceFromRecord(p,P?practiceTraceIntents(P):[],rd);}catch(e){g=null;}
+ TSG.memo=g; TSG.sig=s; return g;}
+function tsCurrentGraph(){ return tsGraphFor(typeof CURP!=='undefined'?CURP:null); }
+
+/* the human word for a graph node's type, fetter split out from pattern the
+   same way traceSummaryWord already does it (engine/tracesummary.js), kept
+   as its own small copy rather than reused directly: that function's own
+   TRACE_SUMMARY_WORD table is for a sentence's subject ("a fetter"), and a
+   drill's small kind tag wants the bare word, no article. */
+function tsWord(type,id){
+ if(type==='pattern'&&/^fetter:/.test(String(id)))return 'fetter';
+ if(type==='pattern')return 'address';
+ return {saboteur:'saboteur', complex:'complex', hyper_complex:'hyper-complex',
+  super_complex:'super-complex'}[type]||type;}
+
+/* one resolved parent or child, as a row: its name, its kind, and its own
+   real content quoted exactly as traceSummaryCard reads it (coherent and
+   collapsed for an address, says/lived for a saboteur, the family line for
+   a hyper-complex), or, honestly, why it carries nothing further. */
+function tsPartRow(part){
+ var card=part.card||{}, nm=esc(card.label!=null?card.label:String(part.id)),
+  kind=esc(tsWord(part.type,part.id)),
+  own=card.found?traceSummaryOwnLine(card.fields):null;
+ return '<div class="ts-row"><b>'+nm+'</b> <span class="ts-kind">'+kind+'</span>'
+  +(own?'<div class="ts-line">'+esc(own)+'</div>'
+    :(card.why?'<div class="ts-why">'+esc(card.why)+'</div>':''))+'</div>';}
+
+/* THE BLOCK ITSELF, appended to an existing drill. type/id are the real
+   graph key (traceKey): 'pattern'/address-number for an address,
+   'pattern'/'fetter:X' for a fetter, 'saboteur'/'complex'/'hyper_complex'/
+   'super_complex' with the node's own real .nm for the chain's four
+   rungs, the exact id traceFromRecord itself keys them by
+   (engine/trace.js, TRACE_CHAIN_OF.forEach, node(row.type,x.nm,...)).
+
+   Silent and honest on an unread record, the same idiom renderGates and
+   loopPaint already use: a cold record shows the sentence that explains
+   why, never a blank box and never an invented reading. */
+function tsBlockHtml(type,id){
+ var g=tsCurrentGraph();
+ if(!g)return '<div class="pm-eye">Feeds up, and the blend</div>'
+  +'<p class="ad-p">Nothing read yet. Write a line in the Journal and this fills in from it.</p>';
+ var res=traceSummary(g,traceKey(type,id));
+ if(!res.ok)return '<div class="pm-eye">Feeds up, and the blend</div>'
+  +'<p class="ad-p">'+esc(res.why)+'</p>';
+ var up=res.parents||[], h='';
+ h+='<div class="pm-eye">Feeds up'+(up.length?' ('+up.length+')':'')+'</div>';
+ if(up.length)h+='<div class="ts-rows">'+up.map(tsPartRow).join('')+'</div>';
+ else h+='<p class="ad-p">Nothing sits above it yet on this graph: either the chain stops here by design, or this one has not compounded with another of its kind yet.</p>';
+ h+='<div class="pm-eye">Source AI, blended from the records above and below</div>'
+  +'<p class="ad-p ts-narr">'+esc(res.summary||'')+'</p>';
+ return h;}
+
+try{window.__at&&window.__at('ui/tracesummaryui.js');}catch(e){}
 
 /* ============================================================
    THE DRILLS. Every element that carries data opens one. Same panel
@@ -69744,7 +70148,16 @@ function runDrill(o){
    return h2+'<p class="ad-p">It runs at the '+esc(chAnd(uncov))+', where no mask is worn yet.</p>';})()
   +'<div class="pm-eye">Made of</div><div class="ad-rows">'
   +lv.slice(0,8).map(addrRow).join('')
-  +(lv.length>8?'<div class="pm-more">and '+(lv.length-8)+' more</div>':'')+'</div>';
+  +(lv.length>8?'<div class="pm-more">and '+(lv.length-8)+' more</div>':'')+'</div>'
+  /* WHAT THIS RUNG ITSELF FEEDS, never shown here before. "Made of" above is
+     the downward direction (leaves(o), every reading already had); nothing
+     said what a saboteur, complex or hyper-complex feeds UP into, or blended
+     the two directions into one read. traceSummary(g,node), PR #158, built
+     and tested, reads exactly that off the same graph loopRead already
+     builds. ui/tracesummaryui.js, tsBlockHtml. */
+  +(typeof tsBlockHtml==='function'
+   ?tsBlockHtml({sab:'saboteur',cx:'complex',hy:'hyper_complex',sup:'super_complex'}[o.kind],o.nm)
+   :'');
  rdShell(h);
  /* a "Runs under" row opens that mask's own drill, the same rail press
     chDrill is already opened by, so "does this show up here" (MX) can be
@@ -69888,6 +70301,16 @@ function nodeDrillHtml(n,o){
      return '<span class="pm-chip'+(o.over?' over':'')+'">'+esc(o.nm)+' '+fmtPct('chain',o.w)+'</span>';}).join('')
     :'<span class="pm-chip">nothing compounds from here</span>')+'</div>')
    :'<div class="pm-eye">Feeds</div>'+lockPanelHtml('sab',{brief:true}));
+ /* THE BLEND, for this one address. "Feeds" above already names what it
+    compounds into (owners, the chain's own four rungs); traceSummary adds
+    the one thing that did not exist anywhere: a narrated paragraph reading
+    the address together with what sits above it, hedged, never a causal
+    claim. ui/tracesummaryui.js, tsBlockHtml, PR #158's traceSummary. */
+ if(lockSees('sab')&&typeof tsBlockHtml==='function')
+  h+='<div class="pm-eye">Source AI, the blend</div><p class="ad-p ts-narr">'
+   +esc((function(){var g=tsCurrentGraph(); if(!g)return '';
+    var res=traceSummary(g,traceKey('pattern',n.i)); return res.ok?res.summary:(res.why||'');})())
+   +'</p>';
  h+=nodeStories(n);
  /* RUN THE PROTOCOL HERE. The reading ended at the reading: a person could see
     exactly which address was costing them and had no way to act on it from
@@ -85162,5 +85585,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005614201"></div>
+<div id="eof" hidden data-len="005640497"></div>
 </body></html>
