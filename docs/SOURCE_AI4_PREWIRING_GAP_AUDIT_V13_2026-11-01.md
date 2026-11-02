@@ -51,3 +51,9 @@ This report supersedes any V12 suggestion that a `hostVerifiedActiveRecord` call
 ## Measurements
 96 AP/GP/PP records historically structurally checked, 62 catalog research anchors, zero unresolved references in prior pass (not reaudited today). v1.1: 9/9 stage-only packet shapes, **0/9 actual consumer routes**. Local hardened tests: **52/52**. Official new-head CI: **pending**. V11 owner NP package: **missing**. Profile access, live mic, persistent Story Bank, law grades, physical/spiritual causal mapping: **not verified**.
 **Confidence**: stage logic 0.96; host security readiness 0.10; canonical behavioral equivalence 0.35; readiness for production wiring 0.15. These are engineering judgments, not measurements of a person's coherence.
+
+
+## 2026-11-01 follow-up execution, A07 partial remedy
+Per the user's instruction to resolve the gaps, the existing canonical narrative reader was adjusted to keep first-person emotion clauses separate from family-member descriptions, scope tentative phrasing per sentence and respect correction order within one turn. Source commit: `206b7f820ef7ddb751de6b6d0f1bdbe4025e1aa2`; regression test commit: `672956a99c237c473fa2c0b2a1849327025f0b7d`. The revised function passed 15/15 targeted V8 checks; committed Node regression was not run in full repo. This partly remedies A07, **not** A04 original V11 equivalence.
+Attempted CI workflow registration was blocked; no CI edit committed. The latest inspected earlier run `41365919478` still failed `gates-fast` with 36 copy findings, 18 blockers; engine 6509 and observed browser jobs passed on that **older** head. Canonical source modifications now require generated outputs to be rebuilt/committed before freshness can be called green. A01–A06 and A08 are not resolved by this pass. See `docs/SOURCE_AI4_COLLABORATION_LOG_2026-11-01.md` for exact implementation and next steps.
+
