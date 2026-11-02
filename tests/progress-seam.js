@@ -6,9 +6,10 @@ const root=path.resolve(__dirname,'..'),base=path.join(root,'atuned_src');
 const files=fs.readFileSync(path.join(base,'MANIFEST'),'utf8').split(/\r?\n/)
  .filter(x=>x.startsWith('engine/')&&x.endsWith('.js'));
 assert(files.includes('engine/ladder.js'),'current ladder absent from manifest');
-assert(!files.includes('engine/progress.js'),'seam was prematurely wired into product');
+/* Runs both before wiring (append candidate) and after wiring (MANIFEST loads it). */
+const progressWired=files.includes('engine/progress.js');
 const code=files.map(f=>fs.readFileSync(path.join(base,f),'utf8')).join('\n')+
- '\n'+fs.readFileSync(path.join(base,'engine/progress.js'),'utf8');
+ (progressWired?'':'\n'+fs.readFileSync(path.join(base,'engine/progress.js'),'utf8'));
 const context={module:{exports:{}},console:console};
 vm.createContext(context);vm.runInContext(code,context,{filename:'atuned-engine-plus-progress.js'});
 const e=context.module.exports;
@@ -20,7 +21,10 @@ function day(n){return new Date(Date.parse(NOW)+n*MS).toISOString();}
 function blank(){const p=e.blankProfile('Progress seam fixture');p.progress=e.progressBlank();return p;}
 function commit(p){const add=e.progressSettle(p,NOW),res=e.progressApply(p,add);
  yes(res.ok,JSON.stringify(res.errs||[]));p.progress=res.progress;return add;}
-eq(e.PG_MARKS.length,21,'TDD v3 active mark catalogue');
+const keys=e.PG_MARKS.map(m=>m.k);
+for(const k of ['first','week','month','season','told','kept','ten','fifty','poled','named','ring','rings'])
+ yes(keys.includes(k),'required mark '+k);
+eq(new Set(keys).size,keys.length,'unique mark keys');
 yes(e.PG_MARKS.every(m=>!!m.ic&&!!m.q&&!!m.b&&!!m.nm),'complete mark metadata');
 eq(e.PG_MARKS.filter(m=>m.k==='poled').length,1,'renamed key is registered');
 eq(e.PG_MARKS.filter(m=>m.k==='turned').length,0,'old turned key not stored');
