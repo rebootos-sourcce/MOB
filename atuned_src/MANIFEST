@@ -91,6 +91,7 @@ ui/accountability.js
 ui/ritstage.js
 ui/ritcal.js
 ui/cone.js
+ui/tracesummaryui.js
 ui/drills.js
 ui/knowledge.js
 ui/record.js
