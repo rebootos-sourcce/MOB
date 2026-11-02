@@ -25,8 +25,8 @@ yes(e.PG_MARKS.every(m=>!!m.ic&&!!m.q&&!!m.b&&!!m.nm),'complete mark metadata');
 eq(e.PG_MARKS.filter(m=>m.k==='poled').length,1,'renamed key is registered');
 eq(e.PG_MARKS.filter(m=>m.k==='turned').length,0,'old turned key not stored');
 {
- const p=blank(),before=JSON.stringify(p);const add=e.progressSettle(p,NOW);
- same(p,JSON.parse(before),'pure settle');eq(add.credits.length,0,'blank no credits');
+ const p=blank(),before=JSON.stringify(p);const firstAdd=e.progressSettle(p,NOW);
+ same(p,JSON.parse(before),'pure settle');eq(firstAdd.credits.length,0,'blank no credits');
  eq(e.pointsRead(p).n,0,'blank zero points');
  p.rituals.push({t:NOW,done:false,min:5});eq(e.progressSettle(p,NOW).credits.length,0,'start is not done');
  yes(!e.markTest(p,NOW).some(m=>m.k==='first'),'start cannot earn first run');
