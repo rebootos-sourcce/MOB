@@ -386,7 +386,9 @@ require('./net.js').guardBrowser(browser);
    'the channel heading is for a screen reader only and names no pole: '+JSON.stringify(qr.heads.slice(0,2)));
   ok(qr.scrWords==='','the scrub carries no left or right under its segments: '+JSON.stringify(qr.scrWords));
   ok(qr.word==='hidden','the top word Release is hidden on the list, where the rail and the prompt say it: '+qr.word);
-  ok(qr.figs.indexOf('This session')<0&&qr.figs[0]==='Remaining'&&qr.figs.indexOf('DQ')>=0&&/\d+ lines this session$/.test(qr.plate),
+  /* release lines since 17 October, the setup's own count: the plate added
+     the reframe half and said twice the setup's number (tests/releasechain.js 6) */
+  ok(qr.figs.indexOf('This session')<0&&qr.figs[0]==='Remaining'&&qr.figs.indexOf('DQ')>=0&&/\d+ release lines? this session$/.test(qr.plate),
    'the row keeps what moves and the session\'s size is on the plate: '+JSON.stringify([qr.figs,qr.plate]));
   if(W===1600)ok(qr.figB!=null&&qr.footT!=null&&qr.figB<=qr.footT,'at 1600 by 1000 the readings end above the controls: '+qr.figB+' against '+qr.footT);
   }catch(e){ok(false,'round QR could not run: '+e.message.split('\n')[0]);}

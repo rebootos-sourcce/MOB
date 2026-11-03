@@ -23,8 +23,15 @@ const AXIS_BLANK=0;
 function blankProfile(name){
  var p={v:SCHEMA_V, id:'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),
   name:name||'New profile', created:new Date().toISOString(), updated:null,
-  soul:{doms:[0], arcs:[0,1], roots:[]},            /* the invariant */
+  /* from says this soul was filled in and not picked (SOUL_FROM, below) */
+  soul:{doms:[0], arcs:[0,1], roots:[], from:'default'},  /* the invariant */
   axes:{},                                          /* nine poled child fetters */
+  /* THE NAMED-ADDRESS LAYER, engine/sniff.js's applyStoryAddr, 26 October.
+     Additive: an older record has none, which is a record no story ever
+     named a specific place in, not a broken one, and no SCHEMA_V bump,
+     same standing as p.practice below. Keyed by NODES[].i, the address's
+     own number; empty until a story names one. */
+  addr:{},
   /* who. name, sex at birth, and the birth moment. Nothing derived is
      stored: the energetics are pure functions of these three strings, so a
      sixth system still costs nothing. timeUnknown is explicit, because an
@@ -152,12 +159,65 @@ function blankProfile(name){
     boundary does not name is deleted on the next load. */
  p.summaries=dlyBlank();
  return p;}
+/* THE NAMES THIS PRODUCT GIVES A RECORD, WHICH ARE NEVER A PERSON'S. A
+   profile's name does two jobs: it labels the record in the list and the
+   status line ("Loaded Web reading from the link"), and once a person types
+   their own into Settings it is what Summary's plate and the rail's card call
+   them, by its first word. The readers knew one label, You, so every other
+   name the product writes was printed as a person's: a funnel arrival was
+   greeted as "Web" in the largest type on the first screen the 9 October
+   ruling lands them on (reviews/funnel-golden-path-2026-10-31.md, F3), and
+   a nameless paste would have been greeted as "Imported".
+   Each is written here or in a caller and nowhere else:
+     You          the default record, engine/profiles.js and ui/personas.js
+     New profile  blankProfile above, called with no name
+     Imported     validateProfile, a pasted record that carries no name
+     unnamed      engine/read.js and pImport's restore, a record that is
+                  only ever read and never shown
+     Web reading  funnel/quiz.html, the record the quiz hands to the app
+   The label stays the record's, because the list and the status line need a
+   word for it. ownName is how a surface asks whether the person gave one:
+   the name as typed, or the empty string. Compared without case, because the
+   plate compared after capName and "you" typed by hand meant the same. */
+var REC_NAMES=['You','New profile','Imported','unnamed','Web reading'];
+function ownName(nm){
+ var s=String(nm==null?'':nm).trim(), k=s.toLowerCase();
+ return REC_NAMES.some(function(x){return x.toLowerCase()===k;})?'':s;}
 /* WHICH LAWS ARE SITTING ON THE SEED, AND WHAT THEY WERE SEEDED WITH.
    LAW_DEFAULT is the seed itself and it moved to engine/core.js, which is the
    module that first uses it: this one named the number and core.js printed a
    literal 6 beside a comment about it, and ui/personas.js then named two more
    numbers for the same quantity. One declaration, at the first use. */
 var LAW_UNSET={}, LAW_SEED={};
+/* WHETHER A SOUL WAS PICKED, the nerve to celestial audit's third gap, 31
+   October. Every record is born with Knowledge, under the Architect root, and
+   Warrior and Sage (blankProfile above), and loadProfile and validateProfile
+   fill the same three into a record that has none. The domain is not a label:
+   suscAll reads it, so that soul takes Apathy and Shock at 1.3 times at every
+   address carrying them. Nothing on the record said whether a person chose it,
+   so somebody who never opened the domain picker read exactly like somebody
+   who picked Knowledge. The laws had this problem and solved it with the
+   unset marks above; the soul's arrays cannot be null, so it carries its mark
+   as soul.from instead.
+
+     'default'   filled in. Nobody has moved it since.
+     'picked'    it has moved off what the record held, so somebody chose it.
+     absent      a record from before this mark, which is unknown and is never
+                 read as either. No SCHEMA_V bump: v1 and v2 records load as
+                 they did, and an older build drops the key and reads the soul.
+
+   It is decided at the save, the way a seeded law is (saveProfile), so no
+   control has to remember to set it: a soul that differs from the one the
+   record held was moved by a person, by undo, or by a worked example loading
+   its own. The cost is the law's: a person who opens the picker and leaves
+   exactly Knowledge, Warrior and Sage stays default, which understates a
+   choice where the old record invented one for everybody. Nothing reads the
+   mark yet; what a defaulted soul should do to the weighting is the owner's. */
+var SOUL_FROM=['default','picked'];
+/* the soul as loadProfile puts it into S, so the save compares like with like */
+function soulAsLoaded(s){
+ s=(s&&typeof s==='object')?s:{};
+ return {doms:(s.doms||[0]).slice(), arcs:(s.arcs||[0,1]).slice(), roots:(s.roots||[]).slice()};}
 /* WHAT A LAW WAS CALLED BEFORE, current name to old. Expression and
    Discernment were the twenty one until the owner ruled that Justice and
    Humility are. A law is keyed by name in every saved profile, so an old name
@@ -168,6 +228,23 @@ var LAW_UNSET={}, LAW_SEED={};
    boundary. Expression is a whole separate law axis in the codex and keeps its
    own name there. */
 var LAW_WAS={Justice:'Expression', Humility:'Discernment'};
+/* WHICH LAW A STORED KEY NAMES, the current name for a current name or an old
+   one, and null for anything else. 24 October, systems audit SG-01.
+
+   The table above was carried across in loadProfile and nowhere else, and no
+   record reached loadProfile with the old key still on it: validateProfile
+   read the laws and the work by their current names only, pStore keeps what
+   validateProfile hands back, and the next save wrote the shorter record over
+   the disk. Measured on 23 October, a record holding Expression 9 and
+   Discernment 2 read Justice 9 and Humility 2 and CQ 77.6 loaded straight, and
+   both as never answered and CQ 72.4 through the boundary, with ok true, no
+   error, and neither answer on the disk after one boot and one save. The
+   boundary reads the laws and the work through this now, the way the history
+   rows below already read lawNow, so one door keeps one rule. */
+function lawNameOf(k){
+ if(SINAMES.indexOf(k)>=0)return k;
+ var cur=Object.keys(LAW_WAS).filter(function(nm){return LAW_WAS[nm]===k;});
+ return cur.length?cur[0]:null;}
 /* AND THE RECORD THEY CAME FROM, as the object. The release lift reads the work
    of the record the laws in S were loaded from and of no other (lawWork,
    engine/compute.js). It was CURP, and the front door loads a profile into S
@@ -210,7 +287,7 @@ function loadProfile(p){
  /* soul was the one field this did not fill, and it is the one the next line
     reads without a guard. Six fields were defended and the seventh took the
     boot down. */
- if(!p.soul)p.soul={doms:[0],arcs:[0,1],roots:[]};
+ if(!p.soul)p.soul={doms:[0],arcs:[0,1],roots:[],from:'default'};
  /* and a record from before the archetype and axis blocks has no answers to
     them, which is a record that was never asked */
  ixFill(p);
@@ -221,6 +298,9 @@ function loadProfile(p){
     person carrying on all nine (AXIS_BLANK, above) */
  CHILD.forEach(function(c){var a=p.axes[c.nm]||{};
   S.charge[c.nm]=a.held!=null?a.held:AXIS_BLANK; S.replace[c.nm]=a.opp||0;});
+ /* a record from before this layer has none, which is a record no story
+    ever named a specific address in, not a broken one */
+ S.addr=Object.assign({},p.addr||{});
  /* an old name's score is carried across rather than dropped back to the
     default a person never entered (LAW_WAS, above) */
  var LAWWAS=LAW_WAS;
@@ -253,8 +333,15 @@ function loadProfile(p){
  LAW_REC=p;
  return p;}
 function saveProfile(p){
- p.soul={doms:S.doms.slice(),arcs:S.arcs.slice(),roots:S.roots.slice()};
+ /* THE SOUL KEEPS ITS MARK, and a soul that moved off what the record held is
+    marked picked (SOUL_FROM, above). Absent stays absent while nothing moves. */
+ var soulWas=p.soul, soulNow={doms:S.doms.slice(),arcs:S.arcs.slice(),roots:S.roots.slice()};
+ var soulMark=(soulWas&&SOUL_FROM.indexOf(soulWas.from)>=0)?soulWas.from:null;
+ if(JSON.stringify(soulAsLoaded(soulWas))!==JSON.stringify(soulNow))soulMark='picked';
+ if(soulMark)soulNow.from=soulMark;
+ p.soul=soulNow;
  CHILD.forEach(function(c){p.axes[c.nm]={held:S.charge[c.nm],opp:S.replace[c.nm]||0};});
+ p.addr=Object.assign({},S.addr);
  /* A LAW NOBODY MEASURED MUST NOT COME BACK MEASURED.
 
     null in p.laws means not yet measured, and every surface that asks whether
@@ -306,10 +393,23 @@ function saveProfile(p){
    uncapped sum over the addresses at 4 or more and is now the 112 over 1120.
    A row written before that carries no m, reads back as 0, and a surface
    comparing two rows must not report the change of formula as a move in the
-   person. tier is null while CQ is still filling. */
+   person. tier is null while CQ is still filling.
+
+   A ROW STAMPED 3 IS REFUSED. Model 3 put Integrity times Intention divided
+   by Resistance inside CQ, was live on this branch on 22 October, and was
+   reverted the same day. validateProfile reads m as 0 to CQ_MODEL, so a row
+   stamped 3 is refused at the boundary by name, and the record carrying it
+   with it, because import is all or nothing. No committed build ever carried
+   model 3, so only a local build of this branch could have written one.
+
+   ch IS THE SUPER COMPLEX COUNT, r.sups. The key is from when that rung was
+   called character, which the owner retired for it on 23 October. It stays
+   ch, because it is on every history row a record already holds and a key
+   is identity; only the label a person reads beside it moved. */
 function snapshot(p){
  var r=compute();
- return {t:new Date().toISOString(), m:CQ_MODEL, cq:Math.round(r.CQ*10)/10, dq:Math.round(r.DQ*100)/100,
+ return {t:new Date().toISOString(), m:CQ_MODEL, cq:Math.round(r.CQ*10)/10,
+  dq:Math.round(r.DQ*100)/100,
   sq:Math.round(r.SQm*100)/100, pole:Math.round(r.poleMean*100)/100,
   jq:Math.round(r.JQ*100)/100, rad:Math.round(r.radiance*1000)/1000,
   loaded:r.loaded.length, sab:r.sabs.length, cx:r.cxs.length, hy:r.hys.length, ch:r.sups.length,
@@ -1042,29 +1142,88 @@ function validateProfile(o){
  if(typeof o.id==='string')p.id=o.id;
  if(typeof o.created==='string')p.created=o.created;
  if(typeof o.updated==='string')p.updated=o.updated;
- /* the nine axes */
- if(o.axes&&typeof o.axes==='object')CHILD.forEach(function(c){
+ /* the nine axes. A KEY THE BOUNDARY DOES NOT NAME IS REFUSED BY NAME, 24
+    October, systems audit SG-09, here and in the laws, the work and the gates
+    below. Each of them read only the keys it knew and dropped the rest with ok
+    true: a record carrying Sadness, the spelling the codes table maps to Sad,
+    loaded with Sad at the blank and nothing said. No build has written any
+    other axis or any other key inside one, so this refuses only a file this
+    product did not write. */
+ if(o.axes&&typeof o.axes==='object'){
+  Object.keys(o.axes).forEach(function(k){
+   if(!CHILD.some(function(c){return c.nm===k;})){errs.push('axes may not carry '+k);return;}
+   var a0=o.axes[k];
+   if(a0&&typeof a0==='object')Object.keys(a0).forEach(function(f){
+    if(f!=='held'&&f!=='opp')errs.push('axes.'+k+' may not carry '+f);});});
+  CHILD.forEach(function(c){
   var a=o.axes[c.nm]; if(!a||typeof a!=='object')return;
   var h=vRange(errs,'axes.'+c.nm+'.held',a.held,0,10);
   var q=vRange(errs,'axes.'+c.nm+'.opp',a.opp,0,10);
   if(h!==null)p.axes[c.nm].held=h;
-  if(q!==null)p.axes[c.nm].opp=q;});
- /* the 21 laws. null is a law not yet measured and is not an error. */
- if(o.laws&&typeof o.laws==='object')SI.forEach(function(l){
+  if(q!==null)p.axes[c.nm].opp=q;});}
+ /* THE NAMED-ADDRESS LAYER, 26 October. Keyed by NODES[].i, the address
+    itself; a key that names no node is refused by name, the same
+    boundary the trace graph already holds its own node references to
+    (BY[i], above). */
+ if(o.addr&&typeof o.addr==='object'&&!Array.isArray(o.addr)){
+  Object.keys(o.addr).forEach(function(k){
+   var i=+k;
+   if(!Number.isFinite(i)||!BY[i]){errs.push('addr may not carry '+k);return;}
+   var v=vRange(errs,'addr.'+k,o.addr[k],0,10);
+   if(v!==null)p.addr[k]=v;});}
+ /* the 21 laws. null is a law not yet measured and is not an error.
+    AN OLD NAME IS READ AS THE LAW IT BECAME (lawNameOf, above), only where the
+    record does not carry the current name at all, so the current name wins
+    where both are carried, the rule the history rows keep. It is refused under
+    the name it was stored under, like any other value. Any other key is
+    refused by name. */
+ if(o.laws&&typeof o.laws==='object'){
+  Object.keys(o.laws).forEach(function(k){if(lawNameOf(k)===null)errs.push('laws may not carry '+k);});
+  SI.forEach(function(l){
   if(o.laws[l.nm]===undefined||o.laws[l.nm]===null)return;
   var v=vRange(errs,'laws.'+l.nm,o.laws[l.nm],0,10);
   if(v!==null)p.laws[l.nm]=v;});
+  SI.forEach(function(l){
+   var was=LAW_WAS[l.nm];
+   if(was===undefined||o.laws[l.nm]!==undefined||o.laws[was]===undefined||o.laws[was]===null)return;
+   var v=vRange(errs,'laws.'+was,o.laws[was],0,10);
+   if(v!==null)p.laws[l.nm]=v;});}
  /* the soul. indexes into fixed tables, so an index outside them is refused. */
  if(o.soul&&typeof o.soul==='object'){
   if(Array.isArray(o.soul.doms))p.soul.doms=o.soul.doms.filter(function(d){
    var v=vRange(errs,'soul.doms',d,0,DOMAINS.length-1);return v!==null;});
   if(Array.isArray(o.soul.arcs))p.soul.arcs=o.soul.arcs.filter(function(a){
    var v=vRange(errs,'soul.arcs',a,0,ARCH.length-1);return v!==null;});
-  if(Array.isArray(o.soul.roots))p.soul.roots=o.soul.roots.filter(function(r){return typeof r==='string';});
+  /* A ROOT IS ONE OF THE FOUR, by name, 24 October, SG-09. Any string was
+     kept, and buildSoul matches a root against DOMAINS by name, so a root it
+     does not know weighted nothing and said nothing. The picker in
+     ui/panels.js only ever writes one of ROOTD. */
+  if(Array.isArray(o.soul.roots))p.soul.roots=o.soul.roots.filter(function(r){
+   if(typeof r==='string'&&ROOTD.indexOf(r)>=0)return true;
+   errs.push('soul.roots holds '+(typeof r==='string'?r:'a '+typeof r)+', which is not one of '+ROOTD.join(', '));
+   return false;});
   if(!p.soul.doms.length)p.soul.doms=[0];
-  if(!p.soul.arcs.length)p.soul.arcs=[0,1];}
- /* gate evidence. counts of sentences, so any non negative integer. */
+  if(!p.soul.arcs.length)p.soul.arcs=[0,1];
+  /* THE MARK (SOUL_FROM, above). The blank this starts from says default,
+     which is true only of a record that carried no soul, so a soul with no
+     mark is read as unknown and never as filled. One of the two words, or
+     refused by name. */
+  if(o.soul.from===undefined)delete p.soul.from;
+  else if(SOUL_FROM.indexOf(o.soul.from)<0)
+   errs.push('soul.from is '+JSON.stringify(o.soul.from)+', which is not one of '+SOUL_FROM.join(', '));
+  else p.soul.from=o.soul.from;}
+ /* gate evidence. counts of sentences, so any non negative integer. A key
+    beside the two bags, or inside one, that this build does not count is
+    refused by name, SG-09: canon.json spells the third gate Intentional, and a
+    count under that name was dropped. verp.js is the one writer, and it writes
+    exactly these. */
  if(o.gates&&typeof o.gates==='object'){
+  var gOwn=function(bag,k){return Object.prototype.hasOwnProperty.call(bag,k);};
+  Object.keys(o.gates).forEach(function(k){if(k!=='verp'&&k!=='lean')errs.push('gates may not carry '+k);});
+  if(o.gates.verp&&typeof o.gates.verp==='object')Object.keys(o.gates.verp).forEach(function(k){
+   if(!gOwn(p.gates.verp,k))errs.push('gates.verp may not carry '+k);});
+  if(o.gates.lean&&typeof o.gates.lean==='object')Object.keys(o.gates.lean).forEach(function(k){
+   if(!gOwn(p.gates.lean,k))errs.push('gates.lean may not carry '+k);});
   if(o.gates.verp&&typeof o.gates.verp==='object')Object.keys(p.gates.verp).forEach(function(k){
    var v=vRange(errs,'gates.verp.'+k,o.gates.verp[k],0,1e6); if(v!==null)p.gates.verp[k]=v;});
   if(o.gates.lean&&typeof o.gates.lean==='object')['benign','malignant'].forEach(function(k){
@@ -1123,7 +1282,13 @@ function validateProfile(o){
      empty one is no draft. Missing is an older record and has none. */
   if(o.story.draft!==undefined&&o.story.draft!==null){
    var sd=vStr(errs,'story.draft',o.story.draft);
-   if(sd!==null&&sd.trim())p.story.draft=sd;}}
+   if(sd!==null&&sd.trim())p.story.draft=sd;}
+  /* THE REPLY LINE'S OWN DRAFT, round of 28 October: a reply typed and not
+     yet sent, held the same way the entry's own draft is. Same rule, same
+     reason: only a string, never capped, missing or empty is no draft. */
+  if(o.story.reply!==undefined&&o.story.reply!==null){
+   var sr=vStr(errs,'story.reply',o.story.reply);
+   if(sr!==null&&sr.trim())p.story.reply=sr;}}
  else if(o.story!==undefined&&o.story!==null)errs.push('story is not an object');
  if(o.meter&&typeof o.meter==='object'){
   var mp=vRange(errs,'meter.lines',o.meter.lines,0,1e9);
@@ -1192,16 +1357,26 @@ function validateProfile(o){
   var seatKeys={};
   p.meter.unique.forEach(function(k){var n=BY[+String(k).split(':')[0]];
    if(n&&n.b)seatKeys[n.b]=(seatKeys[n.b]||0)+1;});
+  /* keyed by law, so it reads an old name the way the laws above do and
+     refuses any other key by name, and every refusal names the key the record
+     stored. A field inside an entry other than its count and the answer it was
+     counted on is refused by name too: compute.js writes exactly those two. */
+  Object.keys(o.work).forEach(function(k){
+   if(lawNameOf(k)===null){errs.push('work may not carry '+k);return;}
+   var w0=o.work[k];
+   if(w0&&typeof w0==='object'&&!Array.isArray(w0))Object.keys(w0).forEach(function(f){
+    if(f!=='n'&&f!=='on')errs.push('work.'+k+' may not carry '+f);});});
   SI.forEach(function(l){
-   var w=o.work[l.nm]; if(w===undefined||w===null)return;
-   if(typeof w!=='object'||Array.isArray(w)){errs.push('work.'+l.nm+' is not an object');return;}
-   var n=vRange(errs,'work.'+l.nm+'.n',w.n,0,1e6);
-   var on=vRange(errs,'work.'+l.nm+'.on',w.on,0,10);
+   var was=LAW_WAS[l.nm], key=(o.work[l.nm]===undefined&&was!==undefined&&o.work[was]!==undefined)?was:l.nm;
+   var w=o.work[key]; if(w===undefined||w===null)return;
+   if(typeof w!=='object'||Array.isArray(w)){errs.push('work.'+key+' is not an object');return;}
+   var n=vRange(errs,'work.'+key+'.n',w.n,0,1e6);
+   var on=vRange(errs,'work.'+key+'.on',w.on,0,10);
    if(n===null||on===null){
-    if(w.n===undefined||w.on===undefined)errs.push('work.'+l.nm+' is not a count and the answer it was counted on');
+    if(w.n===undefined||w.on===undefined)errs.push('work.'+key+' is not a count and the answer it was counted on');
     return;}
-   if(n%1!==0){errs.push('work.'+l.nm+'.n is '+n+', not a whole number of patterns');return;}
-   if(n>(seatKeys[l.b]||0)){errs.push('work.'+l.nm+'.n is '+n+', more than the '
+   if(n%1!==0){errs.push('work.'+key+'.n is '+n+', not a whole number of patterns');return;}
+   if(n>(seatKeys[l.b]||0)){errs.push('work.'+key+'.n is '+n+', more than the '
     +(seatKeys[l.b]||0)+' patterns this record has opened at the '+l.b);return;}
    p.work[l.nm]={n:n,on:on};});}
  else if(o.work!==undefined&&o.work!==null)errs.push('work is not an object');

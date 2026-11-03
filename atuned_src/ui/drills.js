@@ -173,12 +173,13 @@ function runDrill(o){
  var oppOf=function(f){var c=CHILD.filter(function(x){return x.nm===f;})[0];return c?c.opp:'';};
  var opps=fets.map(oppOf).filter(Boolean);
  var inst=fets.filter(function(f){return (S.replace[f]||0)>=4;});
- var TN={sup:'Character layer',hy:'Hyper-complex',cx:'Complex',sab:'Saboteur'};
+ var TN={sup:'Super-complex',hy:'Hyper-complex',cx:'Complex',sab:'Saboteur'};
  var h='<div class="pm-eye">'+(TN[o.kind]||'Pattern')+(o.over?', overshot':'')+'</div>'
   +'<div class="ad-nm">'+esc(o.nm)+'</div>'
   +(o.auth?'<div class="ad-sub">'+esc(o.auth)+'</div>':'')
   +(o.kind==='sab'&&o.unnamed?'<div class="ad-sub">Inferred. The library has no name for this cluster, so it is named for its seat and its child emotion.</div>'
-   :(o.kind==='sab'&&SAB_PI.indexOf(o.nm)>=0?'<div class="ad-sub">One of the ten Positive Intelligence saboteurs, after Shirzad Chamine.</div>':''))
+   :(o.kind==='sab'&&SAB_PI.indexOf(o.nm)>=0?'<div class="ad-sub">One of the ten Positive Intelligence saboteurs, after Shirzad Chamine'
+     +(SAB_PI_AS[o.nm]?', who calls it the '+esc(SAB_PI_AS[o.nm]):'')+'.</div>':''))
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
   +(o.over
    ? 'Jouissance. The coherent opposite installed past the point where it serves. The address '
@@ -189,7 +190,7 @@ function runDrill(o){
      defining the thing by what it is not and the second deferring its subject
      by two words and then explaining itself with a which. Same length, one
      gloss gone, and it starts on the noun. */
-  +(o.kind==='sup'?' A character layer costs more than it looks like it should, '
+  +(o.kind==='sup'?' A super-complex costs more than it looks like it should, '
    +'because you cannot see it as separate from you.':'')
   +(o.score?' Matched at <b>'+o.score+'%</b>'
     +(o.exact?', every charge inside its range.':'.'):'')+'</p>'
@@ -250,8 +251,14 @@ function lawDrillHtml(l,o){
     finding: "Truth 6.0. Working but not strong." lawIn is the engine's own
     answer to whether it was entered. Round J13. */
  var read=(typeof lawIn!=='function')||lawIn(l.nm);
- var h='<div class="pm-eye">Law of integrity, '+l.b.toLowerCase()+'</div>'
-  +'<div class="ad-nm">'+l.nm+(read?' '+v.toFixed(1):'')+'</div>'
+ /* plain: a comma with a word after it makes this a sentence by the
+    capitalize rule in shell/head.html, which the old "Law of integrity, root"
+    broke as well and no walk reached */
+ /* what the instrument reads back from the answer, as a percent, percent
+    phase 2 slice 4. The answer itself stays on nought to ten where it is
+    given (PERCENT-FRAMEWORK-2026-10-16.md, open item 3). */
+ var h='<div class="pm-eye plain">Law of Moral Integrity, '+l.b.toLowerCase()+'</div>'
+  +'<div class="ad-nm">'+l.nm+(read?' '+fmtPct('law',v):'')+'</div>'
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
   /* V21 and pass 1. "Under 4 it is not resisting, it is closed, and
      everything seated there pays for it" read the threshold aloud, ran an
@@ -277,10 +284,12 @@ function lawDrillHtml(l,o){
      under the owner's non clinical ruling: the instrument does not diagnose,
      it asks questions, so the eyebrow names the answers. tests/copy.js bans
      the word on every app surface now. */
-  ? '<div class="pm-eye">From your answers</div><p class="ad-p">Your three answers sit <b>'+sc.spread
-    +'</b> apart, '+sc.lean+'.</p>'
+  ? '<div class="pm-eye">From your answers</div><p class="ad-p">Your three answers '
+    /* the gap as a percent, percent phase 2 slice 4, and a gap of nothing is
+       said, never a dash */
+    +(fmtPct('spread',sc.spread)!==PCT_DASH?'sit <b>'+fmtPct('spread',sc.spread)+'</b> apart':'agree')+', '+sc.lean+'.</p>'
   : '<div class="pm-eye">Not measured</div><p class="ad-p">Not answered in the questions, so '
-    +'it defaults to '+v.toFixed(1)+'. Three questions would replace the guess.</p>';
+    +'it defaults to '+fmtPct('law',v)+'. Three questions would replace the guess.</p>';
  if(hot.length)h+='<div class="pm-eye">Held here</div><div class="ad-rows">'
   +hot.slice(0,6).map(function(n){return addrRow(n,{ana:!!o.ana});}).join('')+'</div>';
  return h;}
@@ -289,6 +298,29 @@ function lawDrillHtml(l,o){
    Analytics traces a pattern down to this card and must show this card, not
    a second one. o.ana turns the Feeds chips into rows that climb back up the
    chain, because a trace that can only go down is half a trace. */
+/* WHAT A FIELD ANCHOR IS, ONE SENTENCE FOR EVERY PLACE THAT SHOWS ONE.
+   Round of 31 October. The four outside the body (Sol Star, Stellar Gateway,
+   Earth Star, Gaia Gateway) were shown three ways and none of them said what
+   the engine does with them. The drill below printed "Charge held here 0.0.
+   Left after that 3.2.", which reads as more left than was ever held, because
+   compute() forces held to 0 on these four and then writes sq as the mean of
+   the seat they extend (engine/compute.js, THE FOUR OUTSIDE THE BODY ARE SQ
+   TOO, ruled 25 September). The renditions' hover named the anchor and gave
+   no weight at all, and the chain key on the Field never mentioned them.
+
+   This says only what the code does: no nerve and no axis under them, so
+   nothing in the saboteur chain reads them; a weight that is the seat's
+   average; and that weight counted in DQ, which is the one place compute()
+   uses it. No ruling gives them more than that yet (TASKS.md SH12 and CB10
+   are open, and the torus field they may belong on is not built), so this
+   does not invent more. Null for every address that is not one of the four,
+   so a caller can branch on it. */
+function anchorSeat(n){return !n?null:n.b==='Field-Above'?'Crown':n.b==='Field-Below'?'Root':null;}
+function anchorSays(n){var s=anchorSeat(n); if(!s)return null;
+ var p=Math.max(0,Math.min(100,Math.round((n.sq||0)*10)));
+ return 'No nerve sits under it, so it holds no charge of its own and no saboteur forms here. '
+  +'It carries the average weight of the '+s.toLowerCase()+' seat it extends, <b>'+p+'%</b>. '
+  +'That weight counts in decoherence, your total shadow, and nowhere in the chain.';}
 function runNodeDrill(n){if(n)rdShell(nodeDrillHtml(n));}
 function nodeDrillHtml(n,o){
  o=o||{};
@@ -309,10 +341,13 @@ function nodeDrillHtml(n,o){
   /* both ends of the pole, the same bar the codex row draws. Round JQ. */
   +(typeof poleDrillHead==='function'?poleDrillHead(n):'')
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
-  +'Charge held here <b>'+n.held.toFixed(1)+'</b>. '
-  +(c.opp?esc(c.opp)+' installed <b>'+n.rep.toFixed(1)+'</b>. ':'')
-  +'Left after that <b>'+n.sq.toFixed(1)+'</b>.'
-  +(n.d?' It shows up as '+esc(n.d.toLowerCase())+'.':'')+'</p>'
+  /* a field anchor's d is the word "field", a category and not a behaviour,
+     so it never reaches "It shows up as field." */
+  +(anchorSeat(n)?anchorSays(n)
+   :'Charge held here <b>'+fmtPct('held',n.held)+'</b>. '
+   +(c.opp?esc(c.opp)+' installed <b>'+fmtPct('installed',n.rep)+'</b>. ':'')
+   +'Left after that <b>'+fmtPct('weight',n.sq)+'</b>.'
+   +(n.d?' It shows up as '+esc(n.d.toLowerCase())+'.':''))+'</p>'
   +'<div class="pm-eye">The opposite</div><p class="ad-p">'
   +(c.opp?'The other end of <b>'+c.nm.toLowerCase()+'</b> is <b>'+c.opp.toLowerCase()+'</b>. '
     +c.nm+' itself lives mainly at the '+c.addr.toLowerCase()+(c.loc?', in the '+esc(c.loc):'')
@@ -331,7 +366,7 @@ function nodeDrillHtml(n,o){
      +owners.slice(0,8).map(anaPatRow).join('')+'</div>'
     :'<div class="pm-eye">Feeds'+(owners.length?' '+owners.length:'')+'</div><div class="pm-chips">'
     +(owners.length?owners.slice(0,8).map(function(o){
-     return '<span class="pm-chip'+(o.over?' over':'')+'">'+esc(o.nm)+' '+o.w.toFixed(1)+'</span>';}).join('')
+     return '<span class="pm-chip'+(o.over?' over':'')+'">'+esc(o.nm)+' '+fmtPct('chain',o.w)+'</span>';}).join('')
     :'<span class="pm-chip">nothing compounds from here</span>')+'</div>')
    :'<div class="pm-eye">Feeds</div>'+lockPanelHtml('sab',{brief:true}));
  h+=nodeStories(n);
@@ -378,7 +413,7 @@ function nodeStories(n){
   var txt=x.text.length>150?x.text.slice(0,150)+'…':x.text;
   h+='<div class="ad-st"><p class="ad-q">'+esc(txt)+'</p>'
    +'<span class="ad-stm">'+esc(new Date(x.t).toLocaleDateString())
-   +', put <b>'+x.amt.toFixed(1)+'</b> here</span>'
+   +', put <b>'+fmtPct('atom',x.amt)+'</b> here</span>'
    +(ids.length?'<button type="button" class="btn" data-protl="'+ids.join(',')+'">'
      +'Release this story</button>':'')+'</div>';});
  if(list.length>3)h+='<div class="pm-more">and '+(list.length-3)+' more</div>';
@@ -428,12 +463,17 @@ function coreRangeSay(r){
  if(!sp.enough)return '<p class="ad-p">There are not enough answers yet to give a range. <b>'
   +sp.answered+'</b> of '+of+' laws are answered.</p>';
  if(!sp.complete)return '<p class="ad-p">With <b>'+sp.answered+'</b> of '+of+' laws answered, the finished figure lands between <b>'
-  +Math.round(sp.lo)+'</b> and <b>'+Math.round(sp.hi)+'</b>. It is <b>'+Math.round(sp.lo)
-  +'</b> if every law still open is answered at nothing, and <b>'+Math.round(sp.hi)+'</b> if every one is answered at ten.</p>';
+  +fmtPct('cq',sp.lo)+'</b> and <b>'+fmtPct('cq',sp.hi)+'</b>. It is <b>'+fmtPct('cq',sp.lo)
+  +'</b> if every law still open is answered at nothing, and <b>'+fmtPct('cq',sp.hi)+'</b> if every one is answered at ten.</p>';
  var rg=cqRange(r.CQ);
- return '<p class="ad-p">The reading swings between <b>'+Math.round(rg.lo)+'</b> and <b>'+Math.round(rg.hi)+'</b>. '
-  +(rg.lo>0&&rg.hi<100?'The figure is the middle of that range, not a mark out of a hundred.'
-   :rg.hi>=100?'The figure sits near the top of that range, because the scale stops at a hundred.'
+ /* "not a mark out of a hundred" went with the percents, percent phase 2
+    slice 4: the figure is printed as a percent now, and a percent is out of
+    a hundred, so the clause contradicted the figure above it. What it warned
+    against is already said where the figure is: a small move is not a
+    reading. */
+ return '<p class="ad-p">The reading swings between <b>'+fmtPct('cq',rg.lo)+'</b> and <b>'+fmtPct('cq',rg.hi)+'</b>. '
+  +(rg.lo>0&&rg.hi<100?'The figure is the middle of that range.'
+   :rg.hi>=100?'The figure sits near the top of that range, because the scale stops at 100%.'
    :'The figure sits near the bottom of that range, because the scale stops at nothing.')+'</p>';}
 function runCoreDrill(){
  var r=compute();
@@ -444,7 +484,7 @@ function runCoreDrill(){
     Field's key draws), so nobody reads 62 without its plus or minus. */
  var h='<div class="pm-eye">The core</div>'
   +'<div class="ad-nm">'+(r.unread?'not read yet'
-    :'CQ '+Math.round(r.CQ)+', '+tierSay(r).toLowerCase())+'</div>'
+    :'CQ '+fmtPct('cq',r.CQ)+', '+tierSay(r).toLowerCase())+'</div>'
   +coreRangeSay(r)
   +'<div class="pm-eye">What coherence is</div><p class="ad-p">'
   +'Coherence is the alignment between the world around you, what arrives from '
@@ -467,13 +507,13 @@ function runCoreDrill(){
     :'<b>'+(SI.length-r.answered)+'</b> are still to answer, and each counts nothing until it is. ')
   +'The shadow does not touch this number. It pulls on expression, which is '
   +'coherence times what the shadow leaves'
-  +(r.unread?'':': expression <b>'+Math.round(r.EX)+'</b>'
-   +(r.PULL>=0.005?', with the shadow taking <b>'+Math.round(r.PULL*100)+' per cent</b>':''))+'.</p>'
+  +(r.unread?'':': expression <b>'+fmtPct('expression',r.EX)+'</b>'
+   +(fmtPct('pull',r.PULL)!==PCT_DASH?', with the shadow taking <b>'+fmtPct('pull',r.PULL)+'</b>':''))+'.</p>'
   +'<div class="pm-eye">The read</div><p class="ad-p">'
   /* benign is null while CQ is still filling, and the clause waits with it */
   +(r.benign===null?'':'Your energy is <b>'
-    +(r.benign?'expanding':'contracting '+r.malig+'%')+'</b>. ')+'Radiance <b>'
-  +(r.radiance*100).toFixed(0)+'%</b>. The field is the geometry of that '
+    +(r.benign?'expanding':'contracting '+fmtPct('lean',r.malig))+'</b>. ')+'Radiance <b>'
+  +fmtPct('radiance',r.radiance)+'</b>. The field is the geometry of that '
   +'radiance. It is harmonic, so patterns sit at registers rather than '
   +'anywhere, and what radiates outward tends to carry the colour of the '
   +'loudest seat. The core takes its colour from the coherence ramp, so '
@@ -481,33 +521,62 @@ function runCoreDrill(){
   +gatesBlock(null);
  rdShell(h);}
 
-/* the six gates. three higher keep charge from binding, three lower bind it.
-   the percent is the share of the story that ran through each gate, the
-   multiplier is what that gate does to everything held. */
+/* THE LAWS OF ACTION, three moves of right action and three of wrong action,
+   each row its share of every Law of Action read in the stories.
+
+   THE MULTIPLIER IS GONE FROM THE ROWS AND THE PARAGRAPH. Each row printed
+   x0.70 or x1.35 and the paragraph called it "the cost on everything held",
+   and nothing held is multiplied by it (engine/verp.js says where it goes).
+   And the two sides were told apart by colour alone, Heart against Root, with
+   no word on the drill to say which was which, so each side stands under its
+   own name now. */
 function gatesBlock(focus){
  var V=verpRead(), evid=V.some(function(v){return v.pct>0;});
- var rows=V.map(function(v){
-  var c=v.side==='higher'?seatCol('Heart'):seatCol('Root');
+ /* v.pct+'%' printed "0%" for a gate with no evidence on a story where some
+    OTHER gate had evidence, because evid is true for the row even when this
+    one is nought. That is the exact defect the dash rule exists for: the
+    hardest carrying zero percent. fmtPct('gate',...), the same registry
+    entry verp.js already matches, prints the dash for that gate instead and
+    leaves the other five alone, percent phase 2 slice 4. */
+ var rows=function(side){return V.filter(function(v){return v.side===side;}).map(function(v){
+  var c=side==='higher'?seatCol('Heart'):seatCol('Root');
   return '<button class="ad-r gate-r'+(focus===v.k?' on':'')+'" data-gate="'+v.k+'" style="--c:'+c+'">'
    +'<span class="ad-k">'+esc(v.nm)+'</span>'
-   +'<span class="ad-v">'+(evid?v.pct+'%':'')+'</span>'
-   +'<span class="ad-m">\u00d7'+v.mult.toFixed(2)+'</span></button>';}).join('');
- /* ACTION, GO in TASKS.md, the bar's name for this layer now, and his reading
-    of it: right action and wrong action. The six keep their own names. */
- return '<div class="pm-eye">Action</div><p class="ad-p">'
-  +(evid?'The share of the story that ran through each of the six. ':'No story yet, so none of the six has evidence. ')
-  +'The higher three leave charge where it is. The lower three bind it, and the multiplier is the cost on everything held.</p>'
-  +'<div class="ad-rows">'+rows+'</div>';}
+   +'<span class="ad-v">'+(evid?fmtPct('gate',v.pct):'')+'</span></button>';}).join('');};
+ /* ACTION, GO in TASKS.md, and his reading of it: right action and wrong
+    action. Named the Laws of Action on 22 October, the third set beside the
+    Laws of Moral Integrity and the Laws of Expression. The six keep their own
+    names. */
+ return '<div class="pm-eye">Laws of Action</div><p class="ad-p">'
+  +'The moves you make when a strong feeling rises. Right action lets the feeling pass. Wrong action makes it stick. '
+  +(evid?'Each row is its share of every Law of Action read in your stories.'
+   :'Nothing read yet, so none of your sentences has run through them.')+'</p>'
+  +'<div class="pm-eye">Right action</div><div class="ad-rows">'+rows('higher')+'</div>'
+  +'<div class="pm-eye">Wrong action</div><div class="ad-rows">'+rows('lower')+'</div>';}
+/* ONE LAW OF ACTION. This said "Everything held is multiplied by 0.70 for the
+   share that runs this way, so it lightens the load", which no arithmetic in
+   the engine does. It says what the move does to a feeling now, names the move
+   across from it in that move's own words (VERP_VS, engine/verp.js), and counts
+   what ran through it.
+
+   NOTHING READ YET ONLY WHEN NOTHING WAS. Once any story has run through any
+   of the six, a gate with none of its own says that, because "nothing read
+   yet" beside five rows carrying a share would be false. */
 function runGatesDrill(k){
- var v=verpRead().filter(function(x){return x.k===k;})[0];
+ var V=verpRead(), v=V.filter(function(x){return x.k===k;})[0];
  if(!v){runCoreDrill();return;}
- var h='<div class="pm-eye">'+(v.side==='higher'?'Higher action':'Lower action')+'</div>'
+ var o=V.filter(function(x){return x.k===VERP_VS[k];})[0], up=v.side==='higher';
+ var read=V.some(function(x){return x.n>0;});
+ var h='<div class="pm-eye">'+(up?'Right action':'Wrong action')+'</div>'
   +'<div class="ad-nm">'+esc(v.nm)+'</div>'
   +'<div class="pm-eye">What it sounds like</div><p class="ad-p">'+esc(v.d)+'</p>'
   +'<div class="pm-eye">What it does</div><p class="ad-p">'
-  +(v.pct?'<b>'+v.pct+'%</b> of the story ran through '+esc(v.nm.toLowerCase())+', '+v.n+' sentence'+(v.n===1?'':'s')+'. ':'Nothing in the story has run through it yet. ')
-  +'Everything held is multiplied by <b>'+v.mult.toFixed(2)+'</b> for the share that runs this way'
-  +(v.mult<1?', so it lightens the load.':v.mult>1?', so it adds to the load.':'.')+'</p>'
+  +(up?'It lets the feeling pass without sticking. ':'It makes the feeling stick in your body as charge. ')
+  +(v.n?'<b>'+v.n+' sentence'+(v.n===1?'':'s')+'</b> ran through '+esc(v.nm.toLowerCase())
+     +', <b>'+fmtPct('gate',v.pct)+'</b> of every Law of Action read in your stories.'
+   :read?'No sentence of yours has run through it yet.'
+   :'Nothing read yet, so no sentence of yours has run through it.')+'</p>'
+  +(o?'<div class="pm-eye">Across from it</div><p class="ad-p"><b>'+esc(o.nm)+'</b>. '+esc(o.d)+'</p>':'')
   +gatesBlock(k);
  rdShell(h);}
 
@@ -523,50 +592,64 @@ function runQDrill(q){
   /* REWRITTEN 25 SEPTEMBER. It said DQ was every address above its floor
      and the whole of resistance, with CQ divided by it. DQ is the total
      shadow on all 112 now, out of 100, and it pulls on expression. */
-  h='<div class="pm-eye">Shadow weight</div><div class="ad-nm">DQ '+(r.DQ>=0.5?Math.round(r.DQ)+'%':'\u2013')+'</div>'
-   +'<div class="pm-eye">How it is built</div><p class="ad-p">The weight at all 112 addresses, summed, out of the most they can hold. '
-   +'It is the wash pressing in from the edge of the wheel. It leaves coherence alone and pulls on expression, and an address near 10 pulls far harder than one near 2.</p>'
+  h='<div class="pm-eye">Shadow weight</div><div class="ad-nm">DQ '+fmtPct('dq',r.DQ)+'</div>'
+   +'<div class="pm-eye">How it is built</div><p class="ad-p">The weight at your 108 addresses and 4 field anchors, summed, out of the most they can hold. '
+   +'It is the wash pressing in from the edge of the wheel. It leaves coherence alone and pulls on expression, and an address near 100% pulls far harder than one near 20%.</p>'
    +'<div class="pm-eye">Where it sits</div><p class="ad-p">'+(r.loaded.length?'<b>'+r.loaded.length+'</b> addresses carry it. The heaviest:':'No address carries it.')+'</p>'
    +'<div class="ad-rows">'+top.map(addrRow).join('')+'</div>';}
  else if(q==='sq'){
-  h='<div class="pm-eye">Segment depth</div><div class="ad-nm">SQ '+r.SQm.toFixed(1)+' mean</div>'
-   +'<div class="pm-eye">How it is built</div><p class="ad-p">The charge held at one address, 0 to 10. '
+  h='<div class="pm-eye">Segment depth</div><div class="ad-nm">SQ '+fmtPct('weight',r.SQm)+' mean</div>'
+   +'<div class="pm-eye">How it is built</div><p class="ad-p">The charge held at one address, from nothing to 100%. '
    +'Each segment of the shell is drawn to its own depth, so the wheel is 112 segments side by side. The mean is across the addresses that hold anything.</p>'
-   +'<div class="pm-eye">Heaviest seat</div><p class="ad-p"><b>'+esc(r.darkB)+'</b> at <b>'+r.darkV.toFixed(1)+'</b>. Click a segment on the wheel to read one address.</p>';}
+   +'<div class="pm-eye">Heaviest seat</div><p class="ad-p"><b>'+esc(r.darkB)+'</b> at <b>'+fmtPct('weight',r.darkV)+'</b>. Click a segment on the wheel to read one address.</p>';}
  else {
   var inst=CHARGES.filter(function(c){return (S.replace[c]||0)>=4;});
-  h='<div class="pm-eye">Pole</div><div class="ad-nm">'+r.poleMean.toFixed(2)+' on average</div>'
+  h='<div class="pm-eye">Pole</div><div class="ad-nm">'+fmtPct('pole',r.poleMean)+' on average</div>'
    /* PASS 1 BEFORE V21. This said the pole was "0 to 1 averaged across the
       nine". compute.js scores each address's pole 0 to 10, as how far the
       installed opposite outweighs the charge held there, and averages it over
       every address in the body. DESIGN-tooltip-copy.md, example 7. */
    +'<div class="pm-eye">How it is built</div><p class="ad-p">Each child emotion has an opposite. Fear turns to trust, and anger to equanimity, a steady calm. '
-   +'Release empties an address and the opposite fills it. The pole is how far the opposite outweighs the charge at each address, 0 to 10, averaged across every address in your body.</p>'
+   +'Release empties an address and the opposite fills it. The pole is how far the opposite outweighs the charge at each address, from nothing to 100%, averaged across every address in your body.</p>'
    +'<div class="pm-eye">Installed</div><p class="ad-p">'+(inst.length?inst.map(function(c){
      var o=CHILD.filter(function(x){return x.nm===c;})[0];return esc(o.opp)+' over '+esc(c);}).join(', ')+'.':'Nothing installed yet.')+'</p>';}
  rdShell(h);}
 
 /* THE THREE AXES. energy read on three independent lines, each a pure
    function of quantities already in the reading. Vitality is what is left
-   after apathy and shadow weight. Awareness is intention against
-   distortion. Will is integrity through a clear segment. */
+   after apathy and shadow weight. Awareness is law reach against
+   distortion. Will is integrity through a clear segment.
+
+   RENAMED FROM INTENTION, 28 October. r.It fed this axis under that name
+   since before intention meant anything else. It still does, the arithmetic
+   is unchanged and untested against the new meaning, so it keeps its own
+   name, law reach, the same law mean read seat by seat that feeds the
+   Instruments row (ui/ui.js). The real intention, what a person said against
+   what they did, is wired in there now and does not enter this axis: that
+   would be new, unfitted arithmetic, the same shape of change already tried
+   and killed once inside CQ itself (engine/compute.js, the model 3 note). */
 function runXYZDrill(){
  var r=compute();
+ /* every figure in these lines on the registry, percent phase 2 slice 4;
+    the fifth slot is each axis's own kind, so the ring and its pill agree */
  var A=[['Vitality',r.X,'Solar','what is left after apathy and the shadow weight. Apathy <b>'
-   +((S.charge.Apathy||0)>0?(S.charge.Apathy).toFixed(1):'\u2013')+'</b>, shadow weight <b>'+(Math.round(r.DQ)||'\u2013')+'</b>.'],
-  ['Awareness',r.Y,'3rd Eye','intention against distortion. Intention <b>'+r.It.toFixed(1)
-   +'</b>, distortion <b>'+r.dist.toFixed(1)+'</b>.'],
-  ['Will',r.Z,'Root','integrity carried through a clear segment. Integrity <b>'+r.Ig.toFixed(1)
-   +'</b>, mean depth <b>'+r.SQm.toFixed(1)+'</b>.']];
+   +fmtPct('charge',S.charge.Apathy||0)+'</b>, shadow weight <b>'+fmtPct('dq',r.DQ)+'</b>.','vitality'],
+  ['Awareness',r.Y,'3rd Eye','law reach against distortion. Law reach <b>'+fmtPct('lawseat',r.It)
+   +'</b>, distortion <b>'+fmtPct('distortion',r.dist)+'</b>.','awareness'],
+  ['Will',r.Z,'Root','integrity carried through a clear segment. Integrity <b>'+fmtPct('integrity',r.Ig)
+   +'</b>, mean depth <b>'+fmtPct('weight',r.SQm)+'</b>.','will']];
  var mean=(r.X+r.Y+r.Z)/3;
  var low=A.slice().sort(function(a,b){return a[1]-b[1];})[0];
- var h='<div class="pm-eye">Energy</div><div class="ad-nm">'+(r.unread?'\u2013':(mean*100).toFixed(0)+'% across three axes')+'</div>'
+ var h='<div class="pm-eye">Energy</div><div class="ad-nm">'+(r.unread?'\u2013':fmtPct('energy',mean)+' across three axes')+'</div>'
   +'<div class="pm-eye">How to read it</div><p class="ad-p">Three independent lines. They do not average into '
   +'a score, they say which of the three is carrying and which is short. Yours reads shortest at <b>'
   +low[0]+'</b>.</p>'
   +'<div class="ad-rows">'+A.map(function(a){
-    return '<div class="ad-r static"><span class="ad-k">'+cr(a[2],a[1]*100,{size:'xs',raw:r.unread?'\u2013':a[1].toFixed(2),hot:false})
-     +a[0]+'</span><span class="ad-m">'+(r.unread?'\u2013':(a[1]*100).toFixed(0)+'%')+'</span></div>';}).join('')+'</div>'
+    /* ONE FIGURE PER ROW. The ring's pill printed 0.17 and the row's end
+       printed 17%, one reading in two units. The pill is the registry's
+       percent now and the end of the row would only say it again (V17). */
+    return '<div class="ad-r static"><span class="ad-k">'+cr(a[2],pct(a[4],a[1])||0,{size:'xs',raw:fmtPct(a[4],a[1],{unread:r.unread}),hot:false})
+     +a[0]+'</span></div>';}).join('')+'</div>'
   +A.map(function(a){return '<div class="pm-eye">'+a[0]+'</div><p class="ad-p">'+a[3]+'</p>';}).join('');
  rdShell(h);}
 
@@ -587,14 +670,16 @@ function runAtomDrill(n,x){
   +'<div class="pm-eye">Your words</div>'
   +'<p class="ad-p"><em>'+esc(x.text)+'</em></p>'
   +'<div class="pm-eye">What it weighed</div><p class="ad-p">'
-  +(d?'Written '+d+'. ':'')+'This entry put <b>'+x.amt.toFixed(1)+'</b> at this '
-  +'address'+(all.length>1?'. The '+all.length+' entries that landed here put <b>'+tot.toFixed(1)
+  /* one entry is the atom kind, several added up the one cap, atomsum,
+     both on nought to ten (engine/pct.js) */
+  +(d?'Written '+d+'. ':'')+'This entry put <b>'+fmtPct('atom',x.amt)+'</b> at this '
+  +'address'+(all.length>1?'. The '+all.length+' entries that landed here put <b>'+fmtPct('atomsum',tot)
     +'</b> in all':'')+'.</p>'
   +'<div class="pm-eye">The address</div><p class="ad-p">'
   +esc(n.k)+' sits at the '+String(n.b).toLowerCase()+', on the <b>'
   +esc(n.cf||'unrouted')+'</b> axis'+(cf&&cf.opp?', against <b>'+esc(cf.opp)+'</b>':'')
-  +'. It is holding <b>'+n.sq.toFixed(1)+'</b> and the opposite is installed at <b>'
-  +(n.pole||0).toFixed(1)+'</b>.</p>'
+  +'. It is holding <b>'+fmtPct('weight',n.sq)+'</b> and the opposite is installed at <b>'
+  +fmtPct('pole',n.pole||0)+'</b>.</p>'
   /* ONE CONTROL, ONE LABEL. The same button, the same data-prot attribute and
      the same handler, two hundred lines above this one, says "Run the protocol
      here", which is the phrasing COPY.md carries as the example and the
@@ -616,7 +701,7 @@ function runFlowDrill(){
  var r=compute(), seats=flSeats(), f=flSpeed();
  var stop=null; seats.slice().reverse().forEach(function(s){if(!stop&&s.held)stop=s;});
  var h='<div class="pm-eye">Flow</div><div class="ad-nm">'+(r.unread?'not read yet'
-    :(f*100).toFixed(0)+'% reaches the crown')+'</div>'
+    :fmtPct('flow',f)+' reaches the crown')+'</div>'
   +'<div class="pm-eye">How it is built</div><p class="ad-p">'
   +'The seven seats pass signal in series, root upward. Each one passes a share '
   +'and the column carries the product of all seven, so one shut seat closes '
@@ -624,9 +709,11 @@ function runFlowDrill(){
   +'page draws as a channel, and where it pinches is where the work is.</p>'
   +'<div class="pm-eye">Seat by seat</div><div class="ad-rows">'
   +seats.slice().reverse().map(function(s){
+    /* one figure per row, the pass as the registry prints it; the end of
+       the row said the same figure again in a second unit */
     return '<div class="ad-r static"><span class="ad-k">'
-     +cr(K2B[s.p.k],s.pass*100,{size:'xs',raw:s.hot?s.pass.toFixed(2):'\u2013',hot:false})+esc(s.p.n)+'</span>'
-     +'<span class="ad-m">'+(s.hot?Math.round(s.pass*100)+'%':'\u2013')+'</span></div>';}).join('')+'</div>'
+     +cr(K2B[s.p.k],pct('pass',s.pass)||0,{size:'xs',raw:s.hot?fmtPct('pass',s.pass):'\u2013',hot:false})+esc(s.p.n)+'</span>'
+     +'</div>';}).join('')+'</div>'
   +'<div class="pm-eye">Where it stops</div><p class="ad-p">'
   +(stop?'The column closes at the <b>'+esc(String(stop.p.n).toLowerCase())+'</b>, which is '
     +'carrying <b>'+stop.hot+'</b> address'+(stop.hot===1?'':'es')+'. Clear those and the '
@@ -640,7 +727,7 @@ function runBalDrill(){
  var sx=CURP&&CURP.who?CURP.who.sex:'';
  var SXN={m:'male',f:'female',o:'other'}[sx]||'';
  var row=function(c,v,col){return '<div class="ad-r static"><span class="ad-k">'
-  +cr(col,v*10,{size:'xs',raw:v.toFixed(1)})+esc(c)+'</span></div>';};
+  +cr(col,pct('charge',v)||0,{size:'xs',raw:fmtPct('charge',v)})+esc(c)+'</span></div>';};
  /* THE SAME REFUSAL IN THE SAME KIND OF SLOT, one door further in. ad-nm is
     the drill's value line and it read "not enough held to read", which is the
     engine's own wording for declining to call a direction, printed where the
@@ -664,7 +751,7 @@ function runBalDrill(){
   +'<div class="pm-eye">How to read it</div><p class="ad-p">The nine axes split by the direction the '
   +'body takes under them. Four discharge outward, five withdraw inward. Four against five is not a '
   +'fair sum, so the means are what compare.'
-  +(b.read?' Outward mean <b>'+b.outMean.toFixed(1)+'</b> against inward mean <b>'+b.inMean.toFixed(1)+'</b>.':'')
+  +(b.read?' Outward mean <b>'+fmtPct('charge',b.outMean)+'</b> against inward mean <b>'+fmtPct('charge',b.inMean)+'</b>.':'')
   /* THE REFUSAL, IN FULL, ONE DOOR IN. The strip's value slot carries a dash
      and nothing else, which is the whole of the fix: a refusal is not a value.
      This is where the refusal is allowed its own sentence, because there is
@@ -710,8 +797,17 @@ function runFetterDrill(c){
   +'<div class="ad-sub">toward '+esc(c.opp)+'</div>'
   +'<div class="pm-eye">Where it sits</div><p class="ad-p">'+esc(c.addr)+', at '+esc(c.loc)
   +'. Seated at the '+esc(c.seat).toLowerCase()+'.</p>'
-  +'<div class="pm-eye">Both halves</div><p class="ad-p">Held <b>'+held.toFixed(1)+'</b>. '
-  +esc(c.opp)+' installed <b>'+inst.toFixed(1)+'</b>. Release empties the address, the opposite is what fills it.</p>'
+  +'<div class="pm-eye">Both halves</div><p class="ad-p">Held <b>'+fmtPct('charge',held)+'</b>. '
+  +esc(c.opp)+' installed <b>'+fmtPct('installed',inst)+'</b>. Release empties the address, the opposite is what fills it.</p>'
+  /* THE CENTRE IS CALM, NOT A THIRD HALF. His words, 27 October, reading this
+     exact pair on screen: "the fetter state having both poles is showing two
+     things, the freeze or flight state of a nerve and then the center point
+     is neutral." One sentence, no new number: held and installed are the two
+     sides this nerve can tip toward, and level between them is where it is
+     not tipped either way. DECISIONS.md carries the full ruling and the map
+     to EX, the figure that moves with this across every nerve at once. */
+  +'<div class="pm-eye">Which way it leans</div><p class="ad-p">Held high or installed high, either one '
+  +'is this nerve pulled to that side. Level between them is the centre, where it is not pulled either way.</p>'
   +'<div class="pm-eye">It runs '+at.length+' addresses</div><div class="ad-rows">'
   +at.slice(0,10).map(addrRow).join('')
   +(at.length>10?'<div class="pm-more">and '+(at.length-10)+' more</div>':'')+'</div>';
@@ -723,7 +819,8 @@ function runSabDrill(s){
  var nodes=(s.nids||[]).map(function(i){return BY[i];}).filter(Boolean);
  var h='<div class="pm-eye">Saboteur, not running</div><div class="ad-nm">'+esc(s.nm)+'</div>'
   +'<div class="ad-sub">'+(s.unnamed?'Inferred from the connection types'
-    :(pi?'One of the ten Positive Intelligence saboteurs, after Shirzad Chamine':'Source library'))+'</div>'
+    :(pi?'One of the ten Positive Intelligence saboteurs, after Shirzad Chamine'
+      +(SAB_PI_AS[s.nm]?', who calls it the '+esc(SAB_PI_AS[s.nm]):''):'Source library'))+'</div>'
   +'<div class="pm-eye">What it would take</div><p class="ad-p">It fires when its addresses carry at '
   +'once. Yours are not carrying enough for it to run, which is why it is here and not on the wheel.'
   +(s.hcx?' It compounds into <b>'+esc(s.hcx)+'</b>.':'')+'</p>'
@@ -762,8 +859,12 @@ function runArchDrill(a){
   +'<div class="ad-sub">how the blueprint expresses</div>'
   +(a.v?'<div class="pm-eye">What it is</div><p class="ad-p">'+esc(a.v)+'</p>':'');
  if(!r.unread&&j>=0&&r.aff)
-  h+='<div class="pm-eye">Where you sit</div><p class="ad-p">Affinity <b>'
-   +Math.round((r.aff[j]||0)*100)+'%</b>.'
+  /* HOW FULLY IT IS EXPRESSED, ruled 16 October, his words: "the archetypes
+     themselves should be 100%. The limiting beliefs are going to drag it
+     down." Affinity, the soul map's lean, still orders the twelve and is
+     printed nowhere (engine/archexpr.js). */
+  h+='<div class="pm-eye">Where you sit</div><p class="ad-p">Expressed <b>'
+   +fmtPct('archetype',archExpr(j))+'</b>. Charge held at its seat pulls it down, and a release lifts it.'
    +(at===0?' Set as your primary.':at>0?' Set as one of yours.':'')+'</p>';
  rdShell(h);}
 function runMaskDrill(m){
@@ -780,7 +881,7 @@ function runMaskDrill(m){
  var hot=W.filter(function(n){return b.indexOf(n.b)>=0&&n.sq>=4;})
   .sort(function(x,y){return y.sq-x.sq;});
  if(!r.unread&&ring){
-  h+='<div class="pm-eye">Where you sit</div><p class="ad-p">Load <b>'+ring.w.toFixed(1)
+  h+='<div class="pm-eye">Where you sit</div><p class="ad-p">Load <b>'+fmtPct('weight',ring.w)
    +'</b>, the mean charge on the addresses under it.</p>';
   if(hot.length)h+='<div class="pm-eye">Held here</div><div class="ad-rows">'
    +hot.slice(0,6).map(addrRow).join('')+'</div>';}
@@ -801,10 +902,14 @@ function runMaskDrill(m){
    field it was composed from, so a gap prints the old copy and never nothing;
    tests/engine.js fails before that can ship.
 
-   CONNECTED IS ONLY WHAT SAB_LIB KNOWS. Thirteen of the 33 have fetters and a
-   family in the engine. The other twenty were left unnamed by the engine on
-   purpose, and a card that drew three addresses for Martyr would be the guess
-   that boundary exists to refuse, so the gap is printed as a gap. The family
+   CONNECTED IS ONLY WHAT SAB_LIB KNOWS. Thirteen of the 33 had fetters and a
+   family in the engine and the other twenty were left unnamed on purpose,
+   because a card that drew three addresses for Martyr would have been a
+   guess. On 22 October the library was filled from each saboteur's own words
+   and its own canon charges, with the grounding written beside every row in
+   engine/data/nodes.js, and the one row that could not be grounded, Innocent,
+   was left out by name. A saboteur with no row still prints the gap as a gap,
+   never a guess. The family
    prints d and never sub: sub is a diagnostic name, and engine/data/nodes.js
    records the day a person was handed "depression, BPD and anxiety" about
    themselves as a subtitle. */
@@ -904,8 +1009,8 @@ function runTeacherDrill(m,end){
   +(r.unread
     ?'Nothing has been entered yet, so this axis has no reading. It is still the axis.'
     :'The '+esc(String(m.seat).toLowerCase())
-     +(Math.round(load*100)>0?' is carrying <b>'+Math.round(load*100)+'%</b> and its integrity reads <b>'
-      :' has nothing held, and its integrity reads <b>')+ig.toFixed(1)
+     +(fmtPct('seatload',load)!==PCT_DASH?' is carrying <b>'+fmtPct('seatload',load)+'</b> and its integrity reads <b>'
+      :' has nothing held, and its integrity reads <b>')+fmtPct('integrity',ig)
      +'</b>.'+(at?' That puts you at <b>'+esc(at)+'</b> on this axis.':''))
   +'</p>'
   +'<div class="pm-eye">The question that separates them</div>'
@@ -961,13 +1066,13 @@ function runPoleDrill(end){
   +'</p>';
  /* where this person sits on each axis, read rather than asked */
  h+='<div class="pm-eye">Where you sit on each</div><div class="ad-rows">';
+ var seatRowsNow=compute().seats;
  MIRROR.forEach(function(m){
-  var grp=W.filter(function(n){return n.b===m.seat;});
-  var load=grp.length?grp.reduce(function(a,n){return a+n.sq;},0)/grp.length:0;
-  var pos=mirrorAt(load,bandIg(m.seat));
+  var row=seatRowsNow.filter(function(s){return s.seat===m.seat;})[0];
+  var pos=compassAt(row); if(pos==null)pos=50;
   var c=seatCol(m.seat);
   h+='<button type="button" class="ad-r" data-mirror="'+m.k+'" title="'+esc(m.ask)+'">'
-   +cr(m.seat,pos,{size:'xs',raw:String(pos),hot:false})
+   +cr(m.seat,pos,{size:'xs',raw:fmtPct('axis',pos),hot:false})
    +'<span>'+esc(up?m.up:m.dn)+'</span>'
    +'<em style="color:'+c+'">'+esc(m.q.toLowerCase())+'</em></button>';});
  h+='</div>';
@@ -1010,7 +1115,12 @@ function runPoleDrill(end){
      him, so the referral reaches the person it was written for. Whether the
      tier word names CQ or expression is the owner's open question 1; a
      safety referral is not a label, so it does not wait on that. */
-  var dk=darkRead(r.malig===null?null:r.malig/100,r.EX), circ=r.complete?circleAt(r.EX):null;
+  /* THE STEP IS READ OFF THE CHAIN AS THE PLAN SEES IT, 26 October. This
+     drill reads compute() whole, and a tied step (Sociopathy, Psychopathy)
+     lit from a rung the plan hides would show the rung through the side
+     door. sightR empties the hidden rungs and the step falls back to depth. */
+  var dk=darkRead(r.malig===null?null:r.malig/100,r.EX,typeof sightR==='function'?sightR(r):r),
+   circ=r.complete?circleAt(r.EX):null;
   h+='<div class="pm-eye">The blueprint, where the downward cone ends</div><div class="ad-rows">';
   BLUEPRINT.forEach(function(x){
    h+='<div class="ad-r static" title="'+esc(x.d)+'"><span class="ad-k">'
@@ -1044,7 +1154,7 @@ function runPoleDrill(end){
    +'is directing or the drag is. '
    +(r.gov
      ?('What is running here reads <b>'+esc(r.gov.nm.replace(/^The /,''))+'</b>: shape '
-       +Math.round(r.outward*100)+', control '+Math.round((r.organized||0)*100)+'.')
+       +fmtPct('shape',r.outward)+', control '+fmtPct('control',r.organized||0)+'.')
      :'Nothing is firing that points either way, so there is no shape to read here.')
    +'</p>'
    +'<p class="ad-p">The devil is the ordinary case, not a rare one: resistance dominating, '
@@ -1176,13 +1286,16 @@ function NUMWORD(n){
  return 'The '+((NUMWORDS[n]||String(n)).toLowerCase());}
 function avOf(){ return (CURP&&CURP.avatar)||avatarBlank(); }
 function avRows(){
- var av=avOf();
+ var av=avOf(), seatRowsNow=compute().seats;
  return (av.pairs||[]).map(function(pr){
   var seg=readSeat(pr.notbe);
   var load=0, ig=6;
-  if(seg){var grp=W.filter(function(n){return n.b===seg;});
-   load=grp.length?grp.reduce(function(a,n){return a+n.sq;},0)/grp.length:0;
-   ig=bandIg(seg);}
+  if(seg){var row=seatRowsNow.filter(function(s){return s.seat===seg;})[0];
+   load=row?row.weight*10:0;
+   /* honest, not bandIg's seeded six: a seat only partly answered no longer
+      blends in a guess for the laws it hasn't got yet. 6 stays the fallback
+      for the true nothing-answered case, same as it always read. */
+   ig=row&&row.ig!=null?row.ig*10:6;}
   return {pair:pr, gap:seg?avatarGap(pr,seg,load,ig):null};});}
 /* the seat a sentence about a bad day resolves to. the story parser already
    does this work, so this asks it rather than owning a second lexicon. */
@@ -1214,9 +1327,9 @@ function runAvatarDrill(){
   rows.forEach(function(r,i){
    var g2=r.gap;
    h+='<button type="button" class="ad-r" data-avp="'+i+'">'
-    +(g2?cr(g2.seat,g2.at,{size:'xs',raw:String(g2.at),hot:false}):'')
+    +(g2?cr(g2.seat,pct('axis',g2.at)||0,{size:'xs',raw:fmtPct('axis',g2.at),hot:false}):'')
     +'<span>'+esc(r.pair.be)+'</span>'
-    +'<em>'+(g2?(g2.clear?'clear':esc(String(g2.seat).toLowerCase())+', '+g2.load.toFixed(1))
+    +'<em>'+(g2?(g2.clear?'clear':esc(String(g2.seat).toLowerCase())+', '+fmtPct('weight',g2.load))
       :'not resolved')+'</em></button>';});
   h+='</div>';
   /* a count against a total is a score, the standing ruling, round RB */
@@ -1250,8 +1363,8 @@ function runAvPair(i){
  if(g2){
   h+='<div class="pm-eye">Where that sits</div>'
    +'<p class="ad-p">The '+String(g2.seat).toLowerCase()+', carrying <b>'
-   +g2.load.toFixed(1)+'</b>. On the axis between the two poles of that seat you read <b>'
-   +g2.at+'</b>.</p>';
+   +fmtPct('weight',g2.load)+'</b>. On the axis between the two poles of that seat you read <b>'
+   +fmtPct('axis',g2.at)+'</b>.</p>';
   var grp=W.filter(function(n){return n.b===g2.seat;})
    .sort(function(a,b){return b.sq-a.sq;}).slice(0,5);
   if(grp.length)h+='<div class="pm-eye">What is in the way</div><div class="ad-rows">'
@@ -1398,9 +1511,13 @@ function runAgeYear(a){
 /* one axis, both ends, and the question that tells them apart */
 function runMirrorDrill(k){
  var m=MIRROR.filter(function(x){return x.k===k;})[0]; if(!m)return;
- var grp=W.filter(function(n){return n.b===m.seat;});
- var load=grp.length?grp.reduce(function(a,n){return a+n.sq;},0)/grp.length:0;
- var pos=mirrorAt(load,bandIg(m.seat)), c=seatCol(m.seat);
+ var row=compute().seats.filter(function(s){return s.seat===m.seat;})[0];
+ /* a null ig means the seat's own laws are not yet answered. The ring still
+    needs a number to draw at; 50 is the least wrong one until this gets its
+    own unread treatment, which is a design pass and not decided here. The
+    value shown as text says so honestly rather than printing a guess. */
+ var pos=compassAt(row), unread=(pos==null); if(unread)pos=50;
+ var c=seatCol(m.seat);
  rdShell('<div class="pm-eye">'+esc(m.q)+'</div>'
   +'<div class="ad-nm">'+esc(m.up)+' against '+esc(m.dn)+'</div>'
   +'<div class="ad-sub">at the '+String(m.seat).toLowerCase()+'</div>'
@@ -1410,9 +1527,9 @@ function runMirrorDrill(k){
   +'<p class="ad-p"><b>'+esc(m.ask)+'</b></p>'
   +'<div class="pm-eye">Where you sit</div>'
   +'<div class="ad-rows"><div class="ad-r static">'
-   +cr(m.seat,pos,{size:'sm',raw:String(pos),hot:false})
+   +cr(m.seat,pos,{size:'sm',raw:fmtPct('axis',pos),hot:false})
    +'<span class="ad-k">'+esc(m.dn)+' at nought, '+esc(m.up)+' at a hundred</span>'
-   +'<span class="ad-v" style="color:'+c+'">'+pos+'</span></div></div>'
+   +'<span class="ad-v" style="color:'+c+'">'+(unread?'not yet answered':fmtPct('axis',pos))+'</span></div></div>'
   +'<p class="ad-p">Read from what is held at the '+String(m.seat).toLowerCase()
   +' and the integrity measured there. Not asked, and not a verdict. Both ends are behaviours '
   +'and the axis is one you are on whether or not you look at it.</p>');}
@@ -1427,11 +1544,13 @@ function runCompassDrill(){
  /* the tier table was a second copy of the one in the engine and could drift
     from it silently. It reads TIERDEF now, which is the only one. */
  var me=r.unread?null:TIER_BY[r.tier];
+ /* in percent, percent phase 2 slice 4: CQ prints as a percent, so
+    the scale it is read against does too */
  var h='<div class="pm-eye">The compass</div><div class="ad-nm">'
-  +(r.unread?'not read yet':'CQ '+Math.round(cq)+', '+tierSay(r).toLowerCase())+'</div>'
-  +'<div class="pm-eye">How to read it</div><p class="ad-p">The line runs 0 at the base to 100 at the crown, and the word changes every ten points. '
-  +'Above '+MEDIAN+' your energy builds more than it costs. Below '+MEDIAN+' it costs more than it builds. '
-  +MEDIAN_LO+' to '+MEDIAN_HI+' is the median range, where the reading crosses the line in both directions'
+  +(r.unread?'not read yet':'CQ '+fmtPct('cq',cq)+', '+tierSay(r).toLowerCase())+'</div>'
+  +'<div class="pm-eye">How to read it</div><p class="ad-p">The line runs from nothing at the base to 100% at the crown, and the word changes every 10%. '
+  +'Above '+MEDIAN+'% your energy builds more than it costs. Below '+MEDIAN+'% it costs more than it builds. '
+  +MEDIAN_LO+'% to '+MEDIAN_HI+'% is the median range, where the reading crosses the line in both directions'
   +(medianRange(cq)&&!r.unread&&r.complete?', and that is where this one sits':'')+'. '
   /* "THE SWING, 11 POINTS" IS GONE FROM HERE TOO. Ruled as a class rather
      than as two strings: "do a sweep of text like that, 100 plus minus 12,
@@ -1524,7 +1643,7 @@ function runSpDrill(kind,val){
   /* the comparison reads CQ against the median, which a CQ still filling
      cannot answer: it would call every Generator's field contracting */
   extra=!r.complete?'A '+val+'. Coherence is still filling, so your energy has no direction to compare yet.'
-   :'A '+val+' at CQ <b>'+Math.round(r.CQ)+'</b>. '
+   :'A '+val+' at CQ <b>'+fmtPct('cq',r.CQ)+'</b>. '
    +((val==='Generator'||val==='Manifesting Generator')===(r.CQ>=50)
      ?'Type and energy point the same way.':'Type and energy point differently.');
  } else if(kind==='auth'){

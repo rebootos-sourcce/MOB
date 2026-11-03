@@ -17,9 +17,7 @@
          them, and the quiz makes no card of them and shows them back.
      S4  no surface that prints an address read from a story says the
          person said or named it, or quotes it as their word, unless the
-         story holds it. And the Day One tutorial's chain card names, as the
-         story, a fetter this story's own reading carries at the seat it
-         prints, never the address's own fetter in its place.
+         story holds it.
      S5  what was read and not counted reaches the person on the Story
          page, under the box, in the engine's one sentence, each with what
          it means beside it, at both widths, and is gone when nothing is.
@@ -50,11 +48,19 @@ async function open(browser, w, h) {
   const p = await cx.newPage();
   p.errs = []; p.on('pageerror', e => p.errs.push(String(e && e.message || e)));
   await p.goto(FILE, { waitUntil: 'load' }); await booted(p);
-  await p.evaluate(() => { setTab(TAB.STORY); render(); });
+  /* THIS FILE READS THE WRITE BOX'S OWN LAYER, round of 28 October: the
+     Journal is conversation only now, so #sthl and #sttext only render in a
+     crisis (STV.crisis, ui/crisis.js). What this file holds, the struck
+     marks over denied and other-person words, is still real there, so it
+     is reached the way crisis reaches it rather than measured on a box
+     that is gone from the ordinary flow. */
+  await p.evaluate(() => { STV.chat = false; setTab(TAB.STORY); render(); });
   await p.waitForTimeout(400);
   p.cx = cx; return p;
 }
-const type = async (p, t) => { await p.fill('#sttext', t); await p.waitForTimeout(300); };
+const type = async (p, t) => { await p.evaluate(t => {
+ ST_TEXT = t; ST_PARSED = ST_TEXT.trim() ? parseStory(ST_TEXT) : null; stRefresh(); }, t);
+ await p.waitForTimeout(300); };
 
 /* the page as a person sees it, and the engine's own lists beside it. The
    engine's quotes are cut from the letters typed through normMap's own map,
@@ -69,12 +75,18 @@ const story = p => p.evaluate(() => {
       const a = nm.map[(h[from] != null ? h[from] : h.at) + 1], b = nm.map[h.at + String(h.t).length] + 1;
       if (seen[a]) return; seen[a] = 1; out.push(t.slice(a, b)); });
     return out; };
+  /* THE CAPTION IS GONE, round of 29 October: see the ruling at stCtrPaint's
+     old site in ui/storyui.js. It used to print "N words read, M kept,
+     ..." for a person to read; this reads the same three counts straight
+     off STR.marks and STR.toks, the engine's own flags, the way the
+     caption itself used to, rather than off a sentence built to be read. */
+  const ng = STR.marks.filter(m => m.neg).length, no = STR.marks.filter(m => m.oth).length;
   return {
     text: t,
     marks: [...document.querySelectorAll('#sthl mark')].map(m => ({ t: m.textContent, neg: m.classList.contains('neg'), oth: m.classList.contains('oth') })),
     denied: quote(P && P.denied, 'negAt'),
     others: quote(P && P.others, 'whoAt'),
-    ctr: (document.getElementById('stctrt') || {}).textContent || '',
+    counts: { words: STR.toks.length, kept: STR.marks.length - ng - no, negated: ng, other: no },
     list: (document.getElementById('stimps') || {}).textContent || '',
     commit: (document.getElementById('stapply') || {}).textContent || ''
   };
@@ -93,10 +105,19 @@ require('./net.js').guardBrowser(browser);
     ok(!!s.denied && s.denied.join('|') === 'not angry', 'the engine lists the denied word on the parse: ' + JSON.stringify(s.denied));
     ok(!!s.denied && struck.join('|') === s.denied.join('|'), 'the struck marks are exactly the engine\'s denied words: ' + JSON.stringify(struck));
     const kept = s.marks.filter(m => !m.neg && !m.oth).length, k = struck.length;
-    const mk = s.ctr.match(/(\d+) kept/), mn = s.ctr.match(/(\d+) set aside after a no/);
-    ok(!!mk && +mk[1] === kept, 'the counter\'s kept is the marks that count, ' + kept + ': ' + JSON.stringify(s.ctr));
-    ok(!!mn && +mn[1] === k, 'and its set aside is the engine\'s denied count, ' + k + ', said in plain words: ' + JSON.stringify(s.ctr));
-    ok(!/negated/.test(s.ctr), 'the counter carries no word a ten year old would ask about: ' + JSON.stringify(s.ctr));
+    ok(s.counts.kept === kept, 'the engine\'s own kept count is the marks that count, ' + kept + ': ' + JSON.stringify(s.counts));
+    ok(s.counts.negated === k, 'and its set aside is the engine\'s denied count, ' + k + ': ' + JSON.stringify(s.counts));
+
+    /* P3-1 of the inference audit, 24 October: a calm word said with a no is
+       set aside like any other word, denied on the parse, struck on the page
+       and counted as set aside, where it used to subtract a calm the person
+       said they did not have */
+    await type(p, 'I am not grateful. I was scared.');
+    const c = await story(p);
+    const cs = c.marks.filter(m => m.neg).map(m => m.t);
+    ok(!!c.denied && c.denied.join('|') === 'not grateful' && cs.join('|') === 'not grateful',
+      'a calm word after a no is denied on the parse and struck on the page: ' + JSON.stringify({ denied: c.denied, struck: cs }));
+    ok(c.counts.negated === 1, 'and the engine sets it aside: ' + JSON.stringify(c.counts));
 
     await type(p, 'I was not angry.');
     const d = await story(p);
@@ -140,9 +161,9 @@ require('./net.js').guardBrowser(browser);
     ok(!!s.others && s.others.join('|') === 'He is furious', 'the engine lists the word about someone else on the parse: ' + JSON.stringify(s.others));
     ok(!!s.others && set.join('|') === s.others.join('|') && !s.marks.some(m => m.oth && m.neg),
       'the page draws exactly those as set aside, from the person to the word, and not struck: ' + JSON.stringify(s.marks));
-    const kept = s.marks.filter(m => !m.neg && !m.oth).length, mo = s.ctr.match(/(\d+) about someone else/), mk = s.ctr.match(/(\d+) kept/);
-    ok(!!mo && +mo[1] === set.length && !!mk && +mk[1] === kept,
-      'the counter keeps ' + kept + ' and sets ' + set.length + ' aside as about someone else: ' + JSON.stringify(s.ctr));
+    const kept = s.marks.filter(m => !m.neg && !m.oth).length;
+    ok(s.counts.other === set.length && s.counts.kept === kept,
+      'the engine keeps ' + kept + ' and sets ' + set.length + ' aside as about someone else: ' + JSON.stringify(s.counts));
     await type(p, 'He is furious.');
     const d = await story(p);
     ok(d.commit === 'Commit', 'someone else\'s charge alone gives Commit nothing to count: ' + JSON.stringify(d.commit));
@@ -177,12 +198,15 @@ require('./net.js').guardBrowser(browser);
          titles its pill as named by the words  title "Named by the words."
                                                 on a pill reading Pride
        Ruling 5 of the review: an explicit axis is not an explicit address.
-       Five surfaces print an address read from a story: the Story page's
-       pending list, the Day One tutorial's first card, the quiz's story
-       cards, the onboarding mirror's rows and the Imprints page's pending
-       pills. Each is driven through its own renderer with the same stories. */
+       Four surfaces print an address read from a story: the Story page's
+       pending list, the quiz's story cards, the onboarding mirror's rows and
+       the Imprints page's pending pills. Each is driven through its own
+       renderer with the same stories. */
     const STORIES = ['I was furious.', 'I am exhausted.', 'My father died last year.',
-      'I was scared and my chest went tight.', 'I am exhausted and furious.'];
+      'I was scared and my chest went tight.', 'I am exhausted and furious.',
+      /* the grief named, which is when the pill printed Martyrdom: the bare
+         sentence above names no feeling and was always folded */
+      'My father died last year and I still cannot stop crying.'];
     const CLAIM = /(you named|you said|your words named|named by (the|your) words)\s+(.{0,60})/ig;
     /* AXES is the nine axis names. Three of them, Fear, Shame and Anger, are
        also address names, and "your words named anger" is a true sentence
@@ -222,6 +246,28 @@ require('./net.js').guardBrowser(browser);
       'and passes a title that names what the words named, not the address');
     ok(judge(ADDR, 'I was furious.', 'around the word “Pride”', []).length === 1, 'and catches an address quoted as the person\'s word');
     ok(judge(ADDR, 'I was furious.', 'You named Pride.', []).length === 1, 'and catches "you named" an address the story does not hold');
+    /* THE CLAIM, NOT ONLY THE WORDING, P0-3 of the inference audit, 23
+       October. The rule above fails a surface only when it says "you said",
+       "you named" or quotes the address. Summary's first card made the same
+       claim with none of those words, "Release this first: Victimhood" after
+       three entries about a father's death, and the journal's pill printed
+       Martyrdom with its only disclosure in a hover title. So the surfaces
+       that print an address as what a person holds are held to the claim
+       itself: no address name the story's letters do not contain, whatever
+       sentence it sits in. Fear, Shame and Anger are address names and also
+       the true word for the feeling, so the nine feelings are not counted.
+       The onboarding mirror and the quiz's story cards print an address as a
+       question, with Yes and Not me beside it, and stay under the rule above. */
+    const foreignIn = (story, label) => {
+      const low = ' ' + String(story).toLowerCase().replace(/[^a-z]+/g, ' ') + ' ';
+      const lab = ' ' + String(label).toLowerCase().replace(/[^a-z]+/g, ' ') + ' ';
+      return ADDR.filter(a => { const w = ' ' + a.toLowerCase().replace(/[^a-z]+/g, ' ').trim() + ' ';
+        return AXES.indexOf(a.toLowerCase()) < 0 && low.indexOf(w) < 0 && lab.indexOf(w) >= 0; }); };
+    ok(foreignIn('My father died last year.', 'Release this first Victimhood').join() === 'Victimhood',
+      'the claim check catches a known bad card, Victimhood for a father\'s death');
+    ok(foreignIn('My father died last year.', 'Release this first Sadness').length === 0
+      && foreignIn('I was afraid.', 'Fear +2.1').length === 0 && foreignIn('I felt pride.', 'Pride +1.5').length === 0,
+      'and passes the feeling the words named, and an address name the person wrote');
     for (const t of STORIES) {
       await type(p, t);
       const story = await p.evaluate(() => ({
@@ -229,6 +275,9 @@ require('./net.js').guardBrowser(browser);
         pills: [...document.querySelectorAll('#stimps .st-pill')].map(e => ({ text: e.textContent, title: e.getAttribute('title') || '' })) }));
       const a = judge(ADDR, t, story.list, story.pills);
       ok(a.length === 0, 'Story page list, ' + JSON.stringify(t) + ': ' + (a.join('; ') || 'clean'));
+      const pc = foreignIn(t, story.pills.map(x => x.text).join(' | '));
+      ok(pc.length === 0 && story.pills.length > 0, 'Story page pills print the feeling and no address the story does not hold, '
+        + JSON.stringify(t) + ': ' + (pc.join(', ') || story.pills.map(x => x.text).join(' | ')));
       const other = await p.evaluate(tt => {
         const ps = parseStory(tt);
         const ob = (typeof obReadOf === 'function') ? obReadOf(ps, 'story', {}).map(obGroup).join('') : '';
@@ -247,55 +296,41 @@ require('./net.js').guardBrowser(browser);
     const ip = await p.evaluate(() => [...document.querySelectorAll('.ip.ghost')].map(e => ({ text: e.textContent, title: e.getAttribute('title') || '' })));
     const c = judge(ADDR, 'I was furious.', ip.map(x => x.title).join(' '), ip);
     ok(c.length === 0, 'Imprints page pending pills: ' + (c.join('; ') || 'clean, ' + ip.length + ' pills'));
+    const ic = foreignIn('I was furious.', ip.map(x => x.text).join(' | '));
+    ok(ic.length === 0 && ip.length > 0, 'Imprints page pending pills print the feeling and no address: '
+      + (ic.join(', ') || ip.map(x => x.text).join(' | ')));
     await p.cx.close();
 
-    /* AND THE TUTORIAL'S SECOND CARD, the chain. Its Story row printed
-       kept[0].cf, the fetter the ADDRESS carries in the 112 table, and not
-       the fetter this story's reading put there. The two part on a stated
-       word: "I am exhausted." is read as apathy, stated, and parseStory seats
-       it at the solar seat's first address, Pride, whose own fetter is anger.
-       So the card said Story, Anger, over a cost line about the Apathy axis,
-       on the card that explains what the person's words did. Made
-       mechanical: the Story row names a fetter one of this story's own
-       imprints carries, at the seat the next row prints, or says not named.
-       Rows are read by what they hold and the seat as the row after Story,
-       so a relabelled seat row does not blind it. */
-    const chainBad = (rows, ims) => {
-      const i = rows.findIndex(r => r.k === 'Story');
-      if (i < 0) return rows.length ? ['no Story row on a card that drew a chain'] : [];
-      const v = rows[i].v, seat = rows[i + 1] ? rows[i + 1].v : null;
-      if (v === 'not named') return [];
-      return ims.some(m => m.fetter === v && m.band === seat) ? []
-        : ['Story reads ' + JSON.stringify(v) + ' at ' + JSON.stringify(seat) + ', and this story carries '
-          + JSON.stringify(ims.map(m => m.fetter + ' at ' + m.band))]; };
-    const EXH = [{ fetter: 'Apathy', band: 'Solar' }];
-    ok(chainBad([{ k: 'Story', v: 'Anger' }, { k: '', v: 'Solar' }], EXH).length === 1,
-      'the chain check catches the address\'s own fetter printed for a stated word: the known bad case');
-    ok(chainBad([{ k: 'Story', v: 'Apathy' }, { k: '', v: 'Solar' }], EXH).length === 0,
-      'and passes the fetter the words stated, at the seat it sits at');
-    ok(chainBad([{ k: 'Story', v: 'Apathy' }, { k: '', v: 'Heart' }], EXH).length === 1,
-      'and catches a carried fetter printed beside a seat it does not sit at');
-
-    /* the Day One tutorial, through its real commit, one fresh page a story */
-    for (const t of STORIES) {
-      const q = await open(browser, 1600, 1000);
-      await q.evaluate(() => tutorialOpen(true)); await q.waitForTimeout(400);
-      await q.fill('#tuttext', t); await q.click('[data-tut="commit"]'); await q.waitForTimeout(400);
-      const card = await q.evaluate(() => (document.getElementById('tutorial') || {}).textContent || '');
-      const d = judge(ADDR, t, card, []);
-      ok(d.length === 0 && card.length > 0, 'Day One tutorial first card, ' + JSON.stringify(t) + ': ' + (d.join('; ') || 'clean'));
-      await q.click('[data-tut="next"]'); await q.waitForTimeout(400);
-      const ch = await q.evaluate(() => ({
-        rows: [...document.querySelectorAll('#tutorial .ob-g')].filter(e => !e.closest('.obx-ghost'))
-          .map(e => ({ k: ((e.querySelector('b') || {}).textContent || '').trim(),
-            v: ((e.querySelector(':scope > span') || {}).textContent || '').trim() })),
-        ims: ((TUT.parsed && TUT.parsed.imprints) || []).map(m => ({ fetter: m.fetter, band: m.band })) }));
-      const e2 = chainBad(ch.rows, ch.ims);
-      ok(e2.length === 0 && ch.rows.length > 0, 'Day One tutorial second card, ' + JSON.stringify(t) + ': '
-        + (e2.join('; ') || (ch.rows.length ? 'clean' : 'no chain drawn')));
-      ok(!q.errs.length, 'no page errors in the tutorial: ' + q.errs.join(' | '));
-      await q.cx.close();
+    /* Analytics and Summary, after real commits on a fresh profile. One grief
+       entry leaves nothing above the line, which is when Analytics names the
+       heaviest address; three put it above, which is when Summary's first
+       card names it. */
+    {
+      const ps = await open(browser, 1600, 1000);
+      const GRIEF = 'My father died last year and I still cannot stop crying.';
+      const commit = () => ps.evaluate(tt => { ST_TEXT = tt; ST_PARSED = parseStory(tt); const c = stCommit(); return !!(c && c.ok); }, GRIEF);
+      ok(await commit(), 'a grief entry commits on a fresh profile');
+      const ana = await ps.evaluate(() => { setTab(TAB.ANALYTICS); render(); return (document.getElementById('ana') || {}).textContent || ''; });
+      const al = (ana.match(/The heaviest[^.]*\./) || [''])[0];
+      const ac = foreignIn(GRIEF, al);
+      ok(!!al && ac.length === 0, 'Analytics names the feeling the heaviest address carries and no address: ' + JSON.stringify(al) + (ac.length ? ' ' + ac.join(', ') : ''));
+      ok(await commit() && await commit(), 'two more grief entries commit');
+      const sum = await ps.evaluate(() => { setTab(TAB.SUMMARY); render();
+        const feel = CHARGES.map(c => { const w = ritCfWord(c); return w.charAt(0).toUpperCase() + w.slice(1); });
+        const cards = [...document.querySelectorAll('.s-out')].map(e => ({ eye: ((e.querySelector('.pm-eye') || {}).textContent || '').trim(),
+          nm: ((e.querySelector('.s-out-n') || {}).textContent || '').trim(), sub: ((e.querySelector('.s-out-s') || {}).textContent || '').trim() }));
+        return { feel, card: cards.filter(c => /^release this first$/i.test(c.eye))[0] || null }; });
+      const sc = sum.card ? foreignIn(GRIEF, sum.card.nm + ' ' + sum.card.sub) : ['no card'];
+      ok(!!sum.card && sc.length === 0 && sum.feel.indexOf(sum.card.nm) >= 0,
+        'Summary\'s first card names the feeling, not an address: ' + JSON.stringify(sum.card) + (sc.length ? ' ' + sc.join(', ') : ''));
+      ok(!ps.errs.length, 'no page errors through the commits, Analytics and Summary: ' + ps.errs.join(' | '));
+      await ps.cx.close();
     }
+
+    /* THE DAY ONE TUTORIAL'S TWO CARDS were driven here too, its first card
+       through the rule above and its second card's chain through a check of
+       its own, until that sequence was removed on 23 October. Both cards
+       went with it, and so did the chain check, which read nothing else. */
 
     /* the quiz's story cards */
     const cx = await browser.newContext({ viewport: { width: 1600, height: 1000 } });

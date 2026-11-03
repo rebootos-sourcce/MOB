@@ -105,12 +105,366 @@ def walk_literals(s):
     return out
 
 
-def literal_iter(s, path):
-    """(start, body) for the literals the gate reads in this file."""
+# ------------------------------------------------------------------- not copy
+#
+# A RECORD ABOUT THE COPY IS NOT COPY, 23 October. Each entry of DESCENT in
+# engine/data/compass.js carries a research record beside its copy: the three
+# passes that checked it, against which sources, and what each found, and the
+# basis for calling the entry source defined or inferred. Those are notes for
+# whoever reviews the entry, written in a reviewer's words, and this gate read
+# them as copy. Measured on 23 October at 45fe5649: nine of the eleven
+# abstract-word stops --objections reported were in researchPasses, and in
+# every other mode the caps gate failed inferenceBasis three times on the
+# word DESCENT. Nothing that ships reads either field.
+#
+# TWO KEYS, AND BOTH ARE NEEDED. A path is set aside only when it is named
+# below with the reason it is a record and not copy, AND nothing that ships
+# reads it. The second key is measured on every run and never assumed:
+# not_copy_lapsed() reads every file under NOT_COPY_READERS, raw, for the
+# names on the path, and one read lapses the rule, so its strings are read as
+# copy again and the run names the line that reads them. Unread alone is not
+# enough. This gate reads the data tables because copy is checked where it is
+# kept, before a surface shows it, so behavior, triggerMechanism, livedExample,
+# impact, practice and the opposite stay under every gate although nothing
+# renders them yet. The other two of the eleven stops are in behavior, and they
+# stay.
+#
+# WHAT THE GUARD CANNOT SEE, said here so it is not taken for more. It reads
+# names: a dot or a bracket on any key of the path, and the last key written
+# anywhere. A walk over a whole entry, Object.keys or JSON.stringify, names
+# none of them. The one route a DESCENT entry has to a screen is the dark read
+# in ui/drills.js, and tests/functional.js holds that what it paints carries
+# none of a record's strings. Tests and tools are not readers: they never put
+# a string in front of a person.
+NOT_COPY = (
+    ('DESCENT', ('[]', 'content', 'researchPasses'),
+     'the three research passes behind each descent record: what was checked, '
+     'against which sources, and what each found'),
+    ('DESCENT', ('[]', 'content', 'inferenceBasis'),
+     'why each descent record is called source defined or inferred: a note '
+     'about the record, not a line in it'),
+)
+NOT_COPY_READERS = ('atuned_src', 'funnel', 'marketing', 'functions')
+NOT_COPY_SKIP = ('dist', 'node_modules')
+NOT_COPY_EXT = ('.js', '.mjs', '.cjs', '.ts', '.html')
+# the repository this file sits in, three folders up, so the guard reads the
+# right tree whatever directory a caller runs it from
+REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                     '..', '..', '..'))
+_NC_LAPSED = {}
+
+
+def not_copy_id(rule):
+    """DESCENT[].content.researchPasses, the path as a person would write it."""
+    name, steps, _ = rule
+    return name + ''.join('[]' if k == '[]' else '.' + k for k in steps)
+
+
+def _js_skip(s, i):
+    """The index just past the string or comment that opens at s[i], or i."""
+    c = s[i]
+    if c in '"\'`':
+        j, n = i + 1, len(s)
+        while j < n and s[j] != c:
+            if s[j] == '\\':
+                j += 2
+                continue
+            if s[j] == '\n' and c != '`':
+                break
+            j += 1
+        return j + 1
+    if s.startswith('//', i):
+        j = s.find('\n', i)
+        return len(s) if j < 0 else j
+    if s.startswith('/*', i):
+        j = s.find('*/', i + 2)
+        return len(s) if j < 0 else j + 2
+    return i
+
+
+def _ws(s, i):
+    """The next index that is not white space or a comment."""
+    n = len(s)
+    while i < n:
+        if s[i].isspace():
+            i += 1
+        elif s.startswith('//', i) or s.startswith('/*', i):
+            i = _js_skip(s, i)
+        else:
+            break
+    return i
+
+
+def _value_end(s, i):
+    """Where a value inside a literal stops: the first comma, semicolon or
+    closing bracket at its own depth, with strings and comments stepped over.
+    For a whole declaration use _close, which matches the bracket exactly and
+    cannot run on into the statement after it."""
+    depth, n = 0, len(s)
+    while i < n:
+        j = _js_skip(s, i)
+        if j != i:
+            i = j
+            continue
+        c = s[i]
+        if c in '([{':
+            depth += 1
+        elif c in ')]}':
+            if depth == 0:
+                return i
+            depth -= 1
+        elif c in ',;' and depth == 0:
+            return i
+        i += 1
+    return n
+
+
+def _close(s, i):
+    """The index just past the bracket that closes the one at s[i], or -1
+    when s[i] opens nothing or the file ends first."""
+    if i < 0 or i >= len(s) or s[i] not in '([{':
+        return -1
+    depth, n = 0, len(s)
+    while i < n:
+        j = _js_skip(s, i)
+        if j != i:
+            i = j
+            continue
+        if s[i] in '([{':
+            depth += 1
+        elif s[i] in ')]}':
+            depth -= 1
+            if depth == 0:
+                return i + 1
+        i += 1
+    return -1
+
+
+_NC_KEY = re.compile(r'[A-Za-z_$][\w$]*')
+
+
+def _members(s, i):
+    """(key, value start, value end) for the object literal opening at s[i].
+    Anything it does not recognise ends the walk early, which sets aside less
+    and never more."""
+    out, n = [], len(s)
+    i = _ws(s, i + 1)
+    while i < n and s[i] != '}':
+        if s[i] in '"\'':
+            j = _js_skip(s, i)
+            key = s[i + 1:j - 1]
+        else:
+            m = _NC_KEY.match(s, i)
+            if not m:
+                return out
+            key, j = m.group(0), m.end()
+        j = _ws(s, j)
+        if j >= n or s[j] != ':':
+            return out
+        a = _ws(s, j + 1)
+        b = _value_end(s, a)
+        out.append((key, a, b))
+        i = _ws(s, b)
+        if i < n and s[i] == ',':
+            i = _ws(s, i + 1)
+        elif i < n and s[i] != '}':
+            return out
+    return out
+
+
+def _elements(s, i):
+    """(value start, value end) for the array literal opening at s[i]."""
+    out, n = [], len(s)
+    i = _ws(s, i + 1)
+    while i < n and s[i] != ']':
+        b = _value_end(s, i)
+        out.append((i, b))
+        i = _ws(s, b)
+        if i < n and s[i] == ',':
+            i = _ws(s, i + 1)
+        elif i < n and s[i] != ']':
+            return out
+    return out
+
+
+def _path_spans(s, i, steps):
+    """[(start, end)] of the values the steps reach from the value at s[i]."""
+    i = _ws(s, i)
+    if i >= len(s):
+        return []
+    if not steps:
+        return [(i, _value_end(s, i))]
+    step, rest = steps[0], steps[1:]
+    if step == '[]':
+        if s[i] != '[':
+            return []
+        return [x for a, _ in _elements(s, i) for x in _path_spans(s, a, rest)]
+    if s[i] != '{':
+        return []
+    return [x for k, a, _ in _members(s, i) if k == step
+            for x in _path_spans(s, a, rest)]
+
+
+def _decl_value(s, name):
+    """Where the value of a top level const, let or var called name opens."""
+    m = re.search(r'(?m)^(?:const|let|var)\s+%s\s*=\s*' % re.escape(name), s)
+    return m.end() if m else -1
+
+
+def _not_copy_raw(s):
+    """[(start, end, rule id)] for every NOT_COPY path in s, holding or not."""
+    out = []
+    for rule in NOT_COPY:
+        i = _decl_value(s, rule[0])
+        if i >= 0:
+            out += [(a, b, not_copy_id(rule)) for a, b in _path_spans(s, i, rule[1])]
+    return out
+
+
+def not_copy_lapsed():
+    """{rule id: [(file, line), ...]}, every place something that ships reads a
+    NOT_COPY path. Measured once a run, raw, with comments left in: a comment
+    that names a path lapses it too, which is the safe way to be wrong. A
+    reader tree that cannot be read lapses every rule, because then nothing
+    has been shown to be unread."""
+    if _NC_LAPSED:
+        return _NC_LAPSED['lapsed']
+    pats = {}
+    for rule in NOT_COPY:
+        keys = [k for k in rule[1] if k != '[]']
+        alt = [r'\.%s\b' % re.escape(k) for k in keys]
+        alt += [r'\[\s*[\'"]%s[\'"]\s*\]' % re.escape(k) for k in keys]
+        alt += [r'\b%s\b' % re.escape(keys[-1])]
+        pats[not_copy_id(rule)] = re.compile('|'.join(alt))
+    lapsed = {k: [] for k in pats}
+    files = []
+    for top in NOT_COPY_READERS:
+        for d, dirs, fs in os.walk(os.path.join(REPO, top)):
+            dirs[:] = sorted(x for x in dirs if x not in NOT_COPY_SKIP)
+            files += [os.path.join(d, f) for f in sorted(fs)
+                      if f.endswith(NOT_COPY_EXT)]
+    if not files:
+        for k in lapsed:
+            lapsed[k].append(('nothing under %s could be read'
+                              % ', '.join(NOT_COPY_READERS), 0))
+    for f in files:
+        try:
+            s = open(f, encoding='utf-8', errors='replace').read()
+        except OSError:
+            continue
+        # a declaration names its own keys, so its value is blanked first,
+        # newlines kept, and only a read from outside it counts. The bracket
+        # is matched exactly: blanking past it could hide a read
+        for rule in NOT_COPY:
+            i = _decl_value(s, rule[0])
+            j = _close(s, i)
+            if j > 0:
+                s = s[:i] + re.sub(r'[^\n]', ' ', s[i:j]) + s[j:]
+        for k, p in pats.items():
+            for m in p.finditer(s):
+                lapsed[k].append((os.path.relpath(f, REPO),
+                                  s.count('\n', 0, m.start()) + 1))
+    _NC_LAPSED['lapsed'] = lapsed
+    return lapsed
+
+
+def not_copy_spans(s):
+    """[(start, end, rule id)] in s for every NOT_COPY rule that holds."""
+    lapsed = not_copy_lapsed()
+    return [x for x in _not_copy_raw(s) if not lapsed.get(x[2])]
+
+
+def _literals(s, path):
+    """(start, body) for every literal the gate can read in this file."""
     if is_data(path):
         return walk_literals(s)
     return [(m.start(), m.group(1))
             for m in re.finditer(r"'((?:[^'\\\n]|\\.)*)'", s)]
+
+
+def literal_iter(s, path):
+    """(start, body) for the literals the gate reads in this file: all of
+    them, less the ones a holding NOT_COPY rule sets aside. Every mode reads
+    through here, so a path is set aside in all of them or in none."""
+    out = _literals(s, path)
+    spans = not_copy_spans(s)
+    if spans:
+        out = [(a, t) for a, t in out if not any(x <= a < y for x, y, _ in spans)]
+    return out
+
+
+def not_copy_block(targets):
+    """What the run set aside and why, over the files it read. A rule that
+    sets nothing aside in these files and holds is not printed."""
+    lapsed = not_copy_lapsed()
+    seen = {}
+    for t in targets:
+        for rid, body in _raw_literals(t):
+            seen.setdefault(rid, []).append(body)
+    lines = []
+    for rule in NOT_COPY:
+        rid = not_copy_id(rule)
+        bodies = seen.get(rid, [])
+        reads = lapsed.get(rid) or []
+        if not bodies and not reads:
+            continue
+        # what the set aside strings would carry as copy, counted the way each
+        # mode counts it, so the number is true in whichever mode prints it:
+        # the sweep reads every literal, the sentence gates only the ones
+        # strings_js keeps
+        obj = sum(1 for t in bodies for _, sev, _ in objection_hits(t)
+                  if sev == 'stop')
+        sen = sum(len(scan(sentences([('', 0, t)]))) for t in bodies
+                  if len(t) >= 14 and re.search(r'[a-z] [a-z]', t)
+                  and not re.search(r'[{}#;=]|px\b|\.js\b', t))
+        if reads:
+            f, ln = reads[0]
+            state = 'LAPSED, read at %s%s, so its strings are copy again' % (
+                f, (':%d' % ln) if ln else '')
+        else:
+            state = ('holds. %d string%s set aside, which as copy would stop '
+                     'the build %d time%s under his objections and %d under '
+                     'the sentence gates' % (
+                         len(bodies), '' if len(bodies) == 1 else 's',
+                         obj, '' if obj == 1 else 's', sen))
+        lines.append('  %s' % rid)
+        lines.append('      %s' % state)
+        lines.append('      %s' % rule[2])
+    if lines:
+        lines = ['NOT COPY, SET ASIDE AND NAMED. A record about the copy, kept '
+                 'beside it and never printed.'] + lines + [
+            '  Holds means no file under %s names the path, read raw on this '
+            'run.' % ', '.join(NOT_COPY_READERS),
+            '  One read lapses the rule. A walk over a whole entry names '
+            'nothing, and this cannot see it.']
+    return lines
+
+
+def _raw_literals(target):
+    """(rule id, body) for every literal a NOT_COPY path holds under target,
+    holding or lapsed, read the way literals_raw reads a file."""
+    out = []
+    if os.path.isdir(target):
+        for f in sorted(os.listdir(target)):
+            out += _raw_literals(os.path.join(target, f))
+        return out
+    if not target.endswith('.js'):
+        return out
+    try:
+        s = open(target, encoding='utf-8').read()
+    except OSError:
+        return out
+    s = re.sub(r'/\*.*?\*/',
+               lambda m: '\n' * m.group(0).count('\n'), s, flags=re.S)
+    spans = _not_copy_raw(s)
+    if not spans:
+        return out
+    for start, body in _literals(s, target):
+        for x, y, rid in spans:
+            if x <= start < y:
+                out.append((rid, body))
+                break
+    return out
 
 
 def root():
@@ -738,6 +1092,9 @@ def report_objections(rt):
             print('          %s' % re.sub(r'\s+', ' ', t)[:120])
         if r['severity'] == 'stop':
             stop += len(hits)
+    nc = not_copy_block([os.path.join(rt, c) for c in CORPUS])
+    if nc:
+        print('\n' + '\n'.join(nc))
     print('\nNOT GATEABLE, AND NAMED RATHER THAN DROPPED.')
     for g in db.get('guidance', []):
         print('  %-28s %s' % (g['id'], ', '.join(g['log'])))
@@ -770,6 +1127,9 @@ def main():
         for c in CORPUS:
             bad += scan_literals(os.path.join(rt, c))
         report('the product as it stands', base, base, bad)
+        nc = not_copy_block([os.path.join(rt, c) for c in CORPUS])
+        if nc:
+            print('\n' + '\n'.join(nc))
         print(UNMEASURABLE)
         return 1 if bad else 0
 
@@ -799,6 +1159,9 @@ def main():
                     continue
                 bad = scan(sents) + scan_literals(path)
                 worst += report(os.path.relpath(path, rt), rates(sents), base, bad, False)
+        nc = not_copy_block([os.path.join(rt, c) for c in CORPUS])
+        if nc:
+            print('\n' + '\n'.join(nc))
         print(UNMEASURABLE)
         return 1 if worst else 0
 
@@ -822,6 +1185,9 @@ def main():
             continue
         sents = sentences(ss)
         fails += report(a, rates(sents), base, scan(sents) + scan_literals(a))
+    nc = not_copy_block([a for a in args if os.path.exists(a)])
+    if nc:
+        print('\n' + '\n'.join(nc))
     print(UNMEASURABLE)
     if unread:
         return 2

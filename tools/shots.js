@@ -21,7 +21,9 @@ const booted=async p=>{try{await p.waitForFunction(
    this list did not carry, so the surface the owner judges by looking was the
    one surface no shot was ever taken of, which is the same hole Settings was
    in before it was added above. It is integer 10. */
-const TABS=[['story',0],['summary',1],['field',2],['energy',3],['analytics',4],
+/* 0 is the journal page, Discover since 23 October, so its shot is named for
+   what a person sees */
+const TABS=[['discover',0],['summary',1],['field',2],['energy',3],['analytics',4],
  ['intake',5],['knowledge',6],['compass',8],['settings',9],['ritual',10],
  ['masks',11],['intake-page',13]];
 (async()=>{

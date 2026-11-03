@@ -759,9 +759,9 @@ function coneSeatAt(t){
    same arithmetic the mirror drill prints, so a node and the drill it opens
    cannot disagree. */
 function coneMirPos(m){
- var grp=W_ADDR().filter(function(n){return n.b===m.seat;});
- var load=grp.length?grp.reduce(function(a,n){return a+n.sq;},0)/grp.length:0;
- return mirrorAt(load,bandIg(m.seat));}
+ var row=compute().seats.filter(function(s){return s.seat===m.seat;})[0];
+ var pos=compassAt(row);
+ return pos==null?50:pos;}
 /* a seat's laws as CQ reads them, out of a hundred. lawNow and not bandIg,
    and an unanswered law as nought, because that is what cqSum does, and the
    shell's mean being CQ is the only reason it is drawn against the coherence
@@ -2482,7 +2482,7 @@ function coneKey(){
     +(dir>0?'M12 20V4M7 9l5-5 5 5':'M12 4v16M7 15l5 5 5-5')
     +'" fill="none" stroke="currentColor" stroke-width="1.7" '
     +'stroke-linecap="round" stroke-linejoin="round"/></svg>'
-    +esc(l.nm)+' <span class="ck-v">'+l.v.toFixed(1)+'</span></span>';};
+    +esc(l.nm)+' <span class="ck-v">'+fmtPct('law',l.v)+'</span></span>';};
   h+=grp('Lifting you',rg.up.map(function(l){
     return row(l,seatCol(PAL[l.b]?l.b:'Heart'),1);}).join(''));
   h+=grp('Pulling you down',rg.dn.map(function(l){
@@ -2689,9 +2689,9 @@ function coneRead(){
  /* "CURRENTLY TURNING" CAME OFF. The direction is read from where integrity
     sits, the top or the bottom half of its range, and not from a change over
     time, so the sentence says what it is read from and claims no movement. */
- return '<p class="cone-p">Your coherence is <b>'+cq+'</b>. '+unpSay('coherence')+' '
+ return '<p class="cone-p">Your coherence is <b>'+fmtPct('cq',r.CQ)+'</b>. '+unpSay('coherence')+' '
   +band+', where most people swing between better days and worse ones.</p>'
-  +'<p class="cone-p">Your integrity is <b>'+r.Ig.toFixed(1)+'</b>. '+unpSay('integrity')+'</p>'
+  +'<p class="cone-p">Your integrity is <b>'+fmtPct('integrity',r.Ig)+'</b>. '+unpSay('integrity')+'</p>'
   +'<p class="cone-p">Integrity is the hull. A hole in it means the ship takes '
   +'on water, and everything above the waterline stops mattering. Integrity '
   +'raises coherence, coherence raises what you can hold to, and that raises '
@@ -2738,7 +2738,7 @@ function coneGraph(){
      explained how the chart fills, which the chart does. */
   h+='<p class="cn-gp">Nothing on the record for this span.</p>';}
  else if(sr.state==='one'){
-  h+='<p class="cn-gp">One reading in this span, at <b>'+Math.round(sr.last)+'</b>. '
+  h+='<p class="cn-gp">One reading in this span, at <b>'+fmtPct('cq',sr.last)+'</b>. '
    +'Two makes a line.</p>';}
  else {
   /* the axis is the range that is actually there, with a floor of ten points
@@ -2759,9 +2759,9 @@ function coneGraph(){
    +'</svg>'
    /* THE NUMBERS ARE PRINTED, NOT HOVERED. A phone has no hover, and the
       reading a person came for is the two ends and the direction. */
-   +'<div class="cn-gf"><span>'+Math.round(sr.first)+'</span>'
+   +'<div class="cn-gf"><span>'+fmtPct('cq',sr.first)+'</span>'
    +'<b>'+(sr.dir==='up'?'up':(sr.dir==='down'?'down':'level'))+'</b>'
-   +'<span>'+Math.round(sr.last)+'</span></div>';}
+   +'<span>'+fmtPct('cq',sr.last)+'</span></div>';}
  h+='<button type="button" class="cn-gmore" id="cngomore">Open the summary</button>';
  return h+'</div>';}
 /* ============================================================
@@ -2793,7 +2793,10 @@ function coneNames(side){
     stage's own glass (.cn-pan in the sheet), and the pane is the figure and
     its overlays and nothing else. Still .cn-nms and still .cn-nr, so every
     gate that finds a row by those names finds it where it was. */
- return '<div class="cn-pan cn-nms cn-nms-'+side+'" role="group" aria-label="Characters, '
+ /* "Teachers", the word the rows themselves use (engine/data/gloss.js,
+    teacher). This said Characters, which a screen reader then read as a
+    second thing called character beside the Character page. */
+ return '<div class="cn-pan cn-nms cn-nms-'+side+'" role="group" aria-label="Teachers, '
   +(side==='l'?'the first half of the axes, and of the poles on no axis'
     :'the second half of the axes, and of the poles on no axis')+'">'
   +half.map(function(x){
@@ -2906,8 +2909,8 @@ function coneAxPaint(){
   var v=M.un?-1:Math.round(clamp(a.x,0,100));
   if(v===o.v)continue; o.v=v;
   o.val.setAttribute('stroke-dasharray',(v<0?0:v)+' 100');
-  o.pv.textContent=v<0?'\u2013':String(v);
-  o.el.setAttribute('aria-label',o.nm+(v<0?'. Nothing read yet.':'. You sit at '+v+' on this axis.'));}}
+  o.pv.textContent=v<0?'\u2013':fmtPct('axis',v);
+  o.el.setAttribute('aria-label',o.nm+(v<0?'. Nothing read yet.':'. You sit at '+fmtPct('axis',v)+' on this axis.'));}}
 function coneRowsFind(){
  var rows=[].slice.call(document.querySelectorAll('#cone .cn-nr[data-cnax]'));
  CONE.rows=rows.map(function(el){
@@ -2994,8 +2997,8 @@ function cnOvList(){
 function cnOvVals(){
  var r=compute(), V={};
  if(r.unread){V.well={p:0,v:'\u2013',c:seatCol(r.darkB||'Root'),m:'Nothing read yet.'};return V;}
- V.well={p:clamp((r.darkV||0)*10,0,100),v:String(Math.round(+r.darkV||0)),c:seatCol(r.darkB),
-  m:'Ring and number: the heaviest assemblage point, '+r.darkB+', at a weight of '+Math.round(+r.darkV||0)+'.'};
+ V.well={p:clamp((r.darkV||0)*10,0,100),v:fmtPct('weight',r.darkV||0),c:seatCol(r.darkB),
+  m:'Ring and number: the heaviest assemblage point, '+r.darkB+', at a weight of '+fmtPct('weight',r.darkV||0)+'.'};
  return V;}
 function cnOvOrb(k,V){
  var o=CN_OV[k], v=V[k];

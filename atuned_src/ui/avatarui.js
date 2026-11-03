@@ -248,7 +248,6 @@ function avArc(cx,cy,r,f){if(f<=0)return ''; if(f>=1)f=0.9999;
  var a0=-Math.PI/2,a1=a0+f*Math.PI*2;
  return 'M'+avP(cx+r*Math.cos(a0))+' '+avP(cy+r*Math.sin(a0))+' A'+r+' '+r+' 0 '+(f>0.5?1:0)
   +' 1 '+avP(cx+r*Math.cos(a1))+' '+avP(cy+r*Math.sin(a1));}
-function avPct(f){return f==null?'–':Math.round(f*100)+'%';}
 
 /* ---------------- whose record this is ----------------
    A worked example is a demonstration and not a record, so nothing on this
@@ -509,9 +508,16 @@ function avRituals(r,rows,rule){
 
 /* ---------------- the archetypes ----------------
    The twelve the instrument reads, ARCH, each seated where ARCH seats it.
-   The primary saboteur and its seat come from ARCH18, the table that carries
-   them, joined by name. ARCH18 calls the Rebel the Outlaw; ARCH is the table
-   the engine reads and the rail prints, so the Rebel keeps its shipped name. */
+   The primary saboteur comes from ARCH18, the table that carries it, joined by
+   name. ARCH18 calls the Rebel the Outlaw; ARCH is the table the engine reads
+   and the rail prints, so the Rebel keeps its shipped name.
+
+   WHERE THAT SABOTEUR SITS IS WHERE ITS ADDRESSES ARE, 24 October, systems
+   audit SG-05: sabS is the seats of its addresses and sabB the one holding the
+   most of them, both read off SAB_LIB by sabSeats and sabSeatMain
+   (engine/core.js). sabB was the third column of ARCH18, which named none of
+   the saboteur's addresses' seats in 9 of its 18 rows: this page put Pleaser at
+   the heart while the body map drew it at the root and the sacral. */
 var AV_DEF={
  Warrior:'The Warrior moves on the threat and counts the damage after. It gets the thing done on a day when feeling it would stop you.',
  Sage:'The Sage reads the situation before it moves. It gives you ground to stand on when the moment is unclear.',
@@ -526,9 +532,12 @@ var AV_DEF={
  Everyman:'The Everyman stays with the room, so it reads the room first. It keeps you in the group.',
  Innocent:'The Innocent takes things at face value. It lets you trust people and start again after a bad day.'};
 /* what taking the role on costs, as a thing that happens in a day. It names
-   the saboteur and never calls the person by it. */
+   the saboteur and never calls the person by it. Keyed by the name ARCH18
+   carries, so S02 is Micromanager here: the owner renamed it in ARCH18 on 18
+   October and this key still said Controller, so the Warrior's line printed
+   empty until 22 October. */
 var AV_IMPACT={
- 'Controller':'Handing a thing over feels like dropping it, so the grip stays on.',
+ 'Micromanager':'Handing a thing over feels like dropping it, so the grip stays on.',
  'Pleaser':'Yes comes out before your own answer has been checked.',
  'Stickler':'Time goes into holding everything to the one right way.',
  'Hyper-Rational':'What cannot be explained gets set aside, feelings first.',
@@ -541,7 +550,8 @@ var AV_IMPACT={
  'Worrywart':'The worst case runs on a loop, and it feels like planning.'};
 var AV_ROSTER=ARCH.map(function(a,i){
  var row=ARCH18.filter(function(x){return (x[0]==='Outlaw'?'Rebel':x[0])===a.nm;})[0]||null;
- return {nm:a.nm, v:a.v, b:a.b, ic:a.ic, i:i, sab:row?row[1]:null, sabB:row?row[2]:null};});
+ return {nm:a.nm, v:a.v, b:a.b, ic:a.ic, i:i, sab:row?row[1]:null,
+  sabS:row?sabSeats(row[1]):[], sabB:row?sabSeatMain(row[1]):null};});
 function avArchByName(nm){
  for(var i=0;i<AV_ROSTER.length;i++)if(AV_ROSTER[i].nm===nm)return AV_ROSTER[i];
  return null;}
@@ -722,7 +732,7 @@ function avRing(st){
   var c=avPos(x.a,ORB), A=st.areas[x.k], on=sel===x.b;
   return '<button type="button" class="av-sat avh-sat'+(on?' av-on':'')+(A.set?' avh-set':'')+'" data-avsat="'+x.k+'" style="left:'
    +avP(c[0])+'%;top:'+avP(c[1])+'%;--c:'+seatCol(x.b)+'" aria-pressed="'+on+'" aria-label="'+x.nm+', '+AV_THE[x.b]+', '
-   +(A.set?'story written':'nothing written')+(A.pct==null?'':', '+Math.round(A.pct*100)+' percent complete')+'">'
+   +(A.set?'story written':'nothing written')+(A.pct==null?'':', '+fmtPct('complete',A.pct)+' complete')+'">'
    +avSvg(AV_IC[x.k])
    +(A.set?'<span class="avs-tick" aria-hidden="true">'+avSvg(AV_OK)+'</span>':'')+'</button>';}).join('');
  /* each ring's name sits under it. Inside the orbit, where GG put them, the
@@ -1086,7 +1096,7 @@ function avMenu(st){
  var editing=!!(x&&AV.edit===x.i);
  var hd='<div class="av-ph avm-hd"><span class="av-pic">'+avSvg(AV_IC[A.k])+'</span>'
   +'<div><div class="av-pn">'+A.nm+'</div><p class="av-pa">'+AV_THE[b]+'</p></div>'
-  +(x&&x.c!=null?'<span class="av-pp">'+avPct(x.c)+'<small>Complete</small></span>':'')+'</div>';
+  +(x&&x.c!=null?'<span class="av-pp">'+fmtPct('complete',x.c)+'<small>Complete</small></span>':'')+'</div>';
  return '<aside class="av-card av-panel avm" style="--c:'+seatCol(b)+'">'+tabs+hd
   +(x&&!editing?avSeatWritten(st,b,x):'')+'</aside>';}
 /* what the sniffer hears while the release line is typed: where it lands,
@@ -1136,7 +1146,7 @@ function avRunHTML(st){
   out+='<button type="button" class="av-run-row'+(on?' av-on':'')+'" data-avsab="'+esc(x.nm)+'" aria-pressed="'+on+'" style="--c:'+c+'">'
    +'<span class="av-run-ic"><svg viewBox="0 0 24 24" aria-hidden="true">'+glyphPath(x.fam?x.fam.ic:'')+'</svg></span>'
    +'<span class="av-run-nm">'+esc(x.nm)+'</span>'
-   +'<span class="av-run-v">'+x.w.toFixed(1)+'</span>'
+   +'<span class="av-run-v">'+fmtPct('chain',x.w)+'</span>'
    +'<span class="av-run-d av-'+x.dir+'">'+(R.written?x.dir:'')+'</span>'
    +'<span class="av-run-bar"><i style="width:'+Math.min(100,x.w*10).toFixed(0)+'%"></i></span></button>';});
  return out+'</div></section>';}
@@ -1274,7 +1284,9 @@ function avDetail(st,a){
   +'<div class="ad-sub">'+esc(ARCH_CREDIT)+'</div>';
  if(a.sab)
   out+='<div class="av-imp" style="--s:'+seatCol(a.sabB)+'"><div class="pm-eye">Impact</div>'
-   +'<p class="av-imp-v"><b>'+esc(a.sab)+'</b><span>primary saboteur, at '+AV_THE[a.sabB]+'</span></p>'
+   +'<p class="av-imp-v"><b>'+esc(a.sab)+'</b><span>primary saboteur'
+   +(a.sabS.length?', its '+unp('address','addresses')+' at '+esc(unpackList(a.sabS.map(function(b){return AV_THE[b];}))):'')
+   +'</span></p>'
    +'<p class="av-imp-c">'+esc(AV_IMPACT[a.sab]||'')+'</p></div>';
  out+=avThreadHTML(st,a);
  out+='<div class="av-pl" id="avsclab">How much of this is you</div>'
@@ -2102,7 +2114,7 @@ function avSeatAdd(b){
  var send=!old||old.notbe!==pr.notbe, p=parseStory(pr.notbe), k=p.imprints.length, msg;
  if(send&&k&&S.who===0){
   undoPush('adding a story to your avatar');
-  applyStory(pr.notbe); verpApply(pr.notbe); leanApply(pr.notbe);
+  applyStory(pr.notbe); applyStoryAddr(pr.notbe); verpApply(pr.notbe); leanApply(pr.notbe);
   saveYou();
   CURP.story=CURP.story||{entries:[]};
   /* stamped with the lexicon that read it, 19.B6, the same as the Story's

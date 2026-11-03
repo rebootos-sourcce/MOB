@@ -33,6 +33,18 @@
    question buttons, the release column lit, no line and no door), and the
    run then stops where it presses a door main does not have.
 
+   BROUGHT CURRENT 3 NOVEMBER, on the merge with main at b6f86211. The
+   Journal became a conversation on 28 October and voice its only door on 29
+   October, so #sttext, the box every leg below typed into, only renders in a
+   crisis now (crisisTalk, ui/crisis.js, sets STV.chat false). The legs that
+   type reach it the way crisisTalk does, and section 10 holds the door a
+   person actually uses: a turn spoken through a stand-in recogniser, the
+   shape tests/srcchat.js drives, at 1600 and at 390, and the Full view's
+   Energy rail (ui/stdash.js, PR 169) beside it. Checked against a known bad
+   case first: on the merge's first cut, which drew the safe row in place of
+   the whole thread, section 10 fails on the person's own rows (2 before, 0
+   after), the defect it was written for.
+
    No count is typed into this file. Read the counts off the run.
    ============================================================ */
 const path = require('path');
@@ -47,17 +59,46 @@ const booted = async p => {
   await p.waitForTimeout(600);
   await p.evaluate(() => { if (typeof OB !== 'undefined' && OB.open && typeof obClose === 'function') obClose(); }).catch(() => {});
   await p.waitForTimeout(120); };
+/* a stand-in recogniser, the same shape tests/srcchat.js installs before
+   the page loads, over both names, so the page's own stMic reads a sentence
+   off it the way it reads Chrome's */
+const MIC = () => {
+  function FakeSR() { FakeSR.made.push(this); this.on = false; this.results = []; }
+  FakeSR.made = [];
+  FakeSR.prototype.start = function () { if (this.on) throw new Error('InvalidStateError'); this.on = true; this.results = []; };
+  FakeSR.prototype._end = function () { if (!this.on) return; this.on = false; const s = this; setTimeout(() => { if (s.onend) s.onend(); }, 0); };
+  FakeSR.prototype.stop = function () { this._end(); };
+  FakeSR.prototype.abort = function () { if (this.on && this.onerror) this.onerror({ error: 'aborted' }); this._end(); };
+  const cur = () => FakeSR.made[FakeSR.made.length - 1];
+  window.__mic = { live: () => !!(cur() && cur().on),
+    say(t) { const r = cur(); if (!r || !r.on) return false; r.results.push({ 0: { transcript: t }, isFinal: true, length: 1 });
+      r.onresult({ resultIndex: r.results.length - 1, results: Object.assign({ length: r.results.length }, r.results) }); return true; } };
+  window.SpeechRecognition = FakeSR; window.webkitSpeechRecognition = FakeSR;
+};
+const VOICE = /\.workers\.dev\/v1\/voice\/synthesize/;
 async function open(browser, w, h) {
   const cx = await browser.newContext({ viewport: { width: w, height: h } });
+  await cx.addInitScript(MIC);
   const p = await cx.newPage();
   p.errs = []; p.on('pageerror', e => p.errs.push(String(e && e.message || e)));
   p.net = []; p.on('request', r => { const u = r.url(); if (!/^(file|data|blob):/.test(u)) p.net.push(u); });
+  p.voice = []; p.on('request', r => { if (VOICE.test(r.url()) && r.method() === 'POST') { try { p.voice.push(JSON.parse(r.postData()).text); } catch (e) { p.voice.push('?'); } } });
   await p.goto(FILE, { waitUntil: 'load' }); await booted(p);
   await p.evaluate(() => { setTab(TAB.STORY); render(); });
   await p.waitForTimeout(400);
   p.cx = cx; return p;
 }
-const type = async (p, t) => { await p.fill('#sttext', t); await p.waitForTimeout(350); };
+/* the box, reached the way crisisTalk reaches it, since it renders nowhere else */
+const type = async (p, t) => {
+  await p.evaluate(() => { if (!document.getElementById('sttext')) { STV.chat = false; stRender(); } });
+  await p.fill('#sttext', t); await p.waitForTimeout(350); };
+/* a turn spoken through the Journal's own door, as tests/srcchat.js says one */
+const say = async (p, t) => {
+  const r = await p.evaluate(async text => {
+    if (!ST_LISTEN) stMic();
+    for (let i = 0; i < 120 && !__mic.live(); i++) await new Promise(r => setTimeout(r, 25));
+    return __mic.say(text); }, t);
+  await p.waitForTimeout(350); return r; };
 const T = 'I keep thinking about killing myself. I have been hurting myself again.';
 const Q = 'I walked to the shop on Tuesday and bought some bread.';
 /* the page as a person sees it */
@@ -135,8 +176,10 @@ const look = p => p.evaluate(() => {
     ok(c.line === SAY.entry, 'the line stays beside the empty box after Commit' + at);
     ok(p.net.length === 0, 'no request left the page on Commit' + at + ': ' + JSON.stringify(p.net));
     const after = await look(p);
-    ok(/Nothing is pending\./.test(after.pend) && !/You have not written anything yet/.test(after.pend),
-      'the pending column says nothing is pending, and not that nothing was written' + at);
+    /* the pending column's empty sentence was cut on main, round of 29
+       October, so what is held now is that nothing false or asking stands */
+    ok(!/You have not written anything yet|write where you felt it|Keep writing/.test(after.pend),
+      'the pending column says neither that nothing was written nor where it was felt' + at + ': ' + JSON.stringify(after.pend));
     await p.screenshot({ path: path.join(process.env.SHOTS || '/tmp', 'safe-committed-' + w + '.png') }).catch(() => {});
     await type(p, 'I was scared and my chest went tight.');
     const nx = await look(p);
@@ -225,7 +268,7 @@ const look = p => p.evaluate(() => {
   console.log('\n=== 2 · after Talk it through there is still one door ===');
   {
     const p = await open(browser, 1600, 1000);
-    await p.evaluate(() => { STV.crisis = true; stRender(); });
+    await p.evaluate(() => { STV.chat = false; STV.crisis = true; stRender(); });
     await p.waitForTimeout(200);
     const was = (await look(p)).reach;
     await type(p, T);
@@ -242,6 +285,56 @@ const look = p => p.evaluate(() => {
       const deep = sniffStory(c.text); return { ok: c.ok, k: c.k, kept: c.kept.length, saved: c.saved, offer: (deep.offer || []).length }; }, T);
     ok(r.ok && r.saved && r.k === 0 && r.kept === 0,
       'stCommit, the path the tutorial writes through, keeps the words and finds nothing, so its release card (off and kept) has nothing to offer: ' + JSON.stringify(r));
+    await p.cx.close();
+  }
+
+  console.log('\n=== 10 · the door a person uses: a turn spoken in the conversation ===');
+  for (const [w, h] of [[1600, 1000], [390, 844]]) {
+    const at = ' @' + w;
+    const p = await open(browser, w, h);
+    const first = 'I had a long day.';
+    ok(await say(p, first), 'the first turn lands through the recogniser' + at);
+    const v0 = p.voice.length;
+    ok(await say(p, 'I keep thinking about killing myself.'), 'and the second' + at);
+    await p.waitForTimeout(400);
+    const s = await p.evaluate(() => ({
+      chat: STV.chat,
+      line: (document.querySelector('#stsrc #stsafe p') || {}).textContent || null,
+      reach: document.querySelectorAll('[data-crisis="reachnow"]').length,
+      me: [...document.querySelectorAll('#stsrc .src-bub-me')].map(e => e.textContent),
+      live: document.querySelectorAll('#stsrc .src-tn-now .src-q, #stsrc .src-tn-now .src-open').length,
+      pass: !!document.getElementById('srcpass'), why: !!document.getElementById('srcwhy'),
+      marks: document.querySelectorAll('#stsrc mark').length,
+      asks: SRC_CHAT.filter(r => r.key && r.key.indexOf('ask|') === 0).length,
+      said: (document.getElementById('srcsay') || {}).textContent || '' }));
+    ok(s.chat && s.line === SAY.entry && s.reach === 1, 'in the conversation, the line in Emmy\'s words and one door' + at + ': ' + JSON.stringify({ line: s.line, reach: s.reach }));
+    ok(JSON.stringify(s.me) === JSON.stringify([first, 'I keep thinking about killing myself.']),
+      'and the person\'s own words stay on the page, both turns' + at + ': ' + JSON.stringify(s.me));
+    ok(s.live === 0 && !s.pass && !s.why && s.asks === 0 && s.marks === 0, 'no reply, no question, no Move on, no why, no lit word' + at + ': ' + JSON.stringify(s));
+    ok(p.voice.length === v0, 'and nothing is spoken back after it' + at + ': ' + JSON.stringify(p.voice.slice(v0)));
+    ok(s.said === SAY.entry, 'a screen reader hears the line' + at);
+    await p.screenshot({ path: path.join(process.env.SHOTS || '/tmp', 'safe-spoken-' + w + '.png') }).catch(() => {});
+    /* the Full view's left rail reads the story being written (ui/stdash.js) */
+    await p.evaluate(() => { STV.dash = true; stRender(); }); await p.waitForTimeout(300);
+    const en = await p.evaluate(() => ({ host: !!document.getElementById('st-energy'),
+      lit: [...document.querySelectorAll('#st-energy-ls li')].filter(li => !/nothing from this story/.test(li.innerHTML)).length,
+      rows: document.querySelectorAll('#st-energy-ls li').length, line: (document.querySelector('#stsafe p') || {}).textContent || null }));
+    ok(en.host && en.lit === 0, 'in the Full view the Energy rail puts nothing at any seat from these words' + at + ': ' + JSON.stringify(en));
+    ok(en.line === SAY.entry, 'and the line stands there too' + at);
+    p.net.length = 0;
+    await p.click('#stapply'); await p.waitForTimeout(600);
+    const c = await p.evaluate(() => { const es = CURP.story.entries, e = es[es.length - 1];
+      return { n: es.length, text: e && e.text, imprints: e && e.imprints, asked: e && e.asked || null,
+        line: (document.querySelector('#stsafe p') || {}).textContent || null }; });
+    ok(c.n === 1 && c.text === first + '\nI keep thinking about killing myself.' && c.imprints === 0 && !c.asked,
+      'Commit keeps the spoken words exactly, with nothing read and nothing asked' + at + ': ' + JSON.stringify(c));
+    ok(c.line === SAY.entry && p.net.length === 0, 'the line stays and no request left the page' + at + ': ' + JSON.stringify(p.net));
+    await p.evaluate(() => { STV.dash = false; stRender(); }); await p.waitForTimeout(200);
+    await say(p, 'I was scared and my chest went tight.'); await p.waitForTimeout(300);
+    const nx = await p.evaluate(() => ({ line: (document.querySelector('#stsafe p') || {}).textContent || null,
+      me: document.querySelectorAll('#stsrc .src-bub-me').length }));
+    ok(nx.line === null && nx.me === 1, 'the next entry starts and the line goes' + at + ': ' + JSON.stringify(nx));
+    ok(!p.errs.length, 'no page errors' + at + ': ' + p.errs.join(' | '));
     await p.cx.close();
   }
 

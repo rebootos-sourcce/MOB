@@ -202,9 +202,6 @@ FILES = {
     # before the instrument
     'atuned_src/ui/onboard.js': (None, ('all', 'information'),
         'the first card. It says what the instrument is and what it does.'),
-    'atuned_src/ui/tutorial.js': (None, ('split',),
-        'the day one tutorial walks every station, so a prompt in it is not '
-        'assigned one.'),
     'atuned_src/ui/login.js': (None, ('all', 'information'),
         'the return door, after the funnel.'),
     'atuned_src/shell/body.html': (None, ('split',),
@@ -758,7 +755,16 @@ def units_js(path, src, line0=0, rel=None):
     nl = line_index(src)
     pts = owners(src)
     out = []
+    # A RECORD ABOUT THE COPY IS NOT COPY, and check.py decides which, with
+    # the guard that lapses a path the moment something that ships reads it.
+    # The brief asks the same function rather than keeping a second list, so
+    # the two never disagree about which strings are a record. They still
+    # read differently: is_copy below drops any string carrying a semicolon,
+    # so the brief never saw the two behavior strings the sweep stops on.
+    nc = check.not_copy_spans(src)
     for c in chains(src):
+        if nc and any(a <= c['start'] < b for a, b, _ in nc):
+            continue
         pre = c['pre']
         sink = None
         for name, rx in SINKS:

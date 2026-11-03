@@ -120,7 +120,7 @@ function mtBlock(c){
   +'<p class="gm-p">It runs <b>'+at.length+'</b> address'+(at.length===1?'':'es')+'. '
   +(live.length?'<b>'+live.length+'</b> of them are carrying in your field right now.'
     :'None of them are carrying in your field right now.')+'</p>'
-  +'<p class="gm-p">Held <b>'+held.toFixed(1)+'</b>. '+esc(c.opp)+' installed <b>'+inst.toFixed(1)+'</b>. '
+  +'<p class="gm-p">Held <b>'+fmtPct('charge',held)+'</b>. '+esc(c.opp)+' installed <b>'+fmtPct('installed',inst)+'</b>. '
   +'A release empties the story held here, and the opposite fills its place.</p>'
   +(live.length?'<button class="btn" data-gmimp="'+esc(c.nm)+'">See the '+live.length+' running you</button>':'')
   +'</div>';}

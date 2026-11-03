@@ -86,23 +86,34 @@ const VICON=[
    thing two things. The rest of the product still says seat in about a
    hundred and twenty places, and whether that sweep goes product wide is his
    call, asked in the round's report rather than done here by default.
-   Laws and Character keep their names: Laws is still open between the
-   options he named, and Character to Masks would have put two buttons on
-   this bar with one name while masks was a layer here. It is not one now:
-   he ruled the masks off every sub menu and onto the Body's figure, CH in
-   TASKS.md, so the bar carries no Masks switch and bmDrawMasks in
-   ui/map.js draws them. */
+   Masks is not a switch here: he ruled the masks off every sub menu and
+   onto the Body's figure, CH in TASKS.md, so the bar carries no Masks
+   switch and bmDrawMasks in ui/map.js draws them.
+
+   THE INNERMOST RING IS SUPER COMPLEXES, 23 October. It was Character, and
+   he ruled that the rung where two hyper complexes join is the super
+   complex and that Character is the whole of it, at the very top
+   (DECISIONS.md, "The full stack, nerve to Character"). The Character page
+   draws that whole, so it keeps the word and this switch gave it up. The
+   key stays character: it is identity, compared by the gates, by lockFor
+   and by the stylesheet's off-character rule, and never shown or stored,
+   so renaming it would move nothing a person sees.
+
+   LAWS AND ACTION ARE NAMED NOW, 22 October: one scheme for the three sets
+   of laws, so Laws is the Laws of Moral Integrity and Action is the Laws of
+   Action. Moral stays in the name on purpose, his 15 October correction in
+   .claude/agents/emmy.md. The count in the tooltip is read off SI. */
 const FB_LAYERS=[
  {k:'addresses',g:'carry',nm:'Addresses',ic:FB_IC_ADDR,
-  tip:'Your 112 addresses. Each mark is the charge held at one place.'},
+  tip:'Your 108 addresses, plus 4 field anchors above and below the body. Each mark is the charge held at one place.'},
  {k:'seats',g:'carry',nm:'Assemblage points',ic:FB_IC_SEAT,
   tip:'The seven seats, from the base of your spine to the top of your head.'},
- {k:'laws',g:'carry',nm:'Laws',ic:fbFlay('laws'),
-  tip:'The twenty one laws, each set at its assemblage point. Their sum is the number at the centre.'},
- {k:'gates',g:'carry',nm:'Action',ic:fbFlay('gates'),
-  tip:'Six ways of meeting a charge, round the core. Awareness, detachment and intention sit across from ignorance, attachment and aversion.'},
+ {k:'laws',g:'carry',nm:'Laws of Moral Integrity',ic:fbFlay('laws'),
+  tip:'The '+SI.length+' Laws of Moral Integrity, each set at its assemblage point. Their sum is the number at the centre.'},
+ {k:'gates',g:'carry',nm:'Laws of Action',ic:fbFlay('gates'),
+  tip:'The Laws of Action round the core, each move of right action set across from the wrong action it stands against.'},
  {k:'shadow',g:'carry',nm:'Decoherence',ic:fbFlay('shadow'),
-  tip:'Decoherence. All the charge on all 112 addresses, shown as a tint behind everything.'},
+  tip:'Decoherence. All the charge on your 108 addresses and 4 field anchors, shown as a tint behind everything.'},
  {k:'stories',g:'carry',nm:'Stories',ic:fbFlay('stories'),
   tip:'One line for each story that put charge on an address.'},
  {k:'saboteurs',g:'run',nm:'Saboteurs',ic:CHAINGLYPH.sab,
@@ -111,8 +122,8 @@ const FB_LAYERS=[
   tip:'Where saboteurs join. Each complex is built from the saboteurs outside it.'},
  {k:'hyper',g:'run',nm:'Hyper complexes',ic:CHAINGLYPH.hy,
   tip:'Where complexes join, one ring further in.'},
- {k:'character',g:'run',nm:'Character',ic:CHAINGLYPH.sup,
-  tip:'The innermost ring. What the whole chain builds up into.'},
+ {k:'character',g:'run',nm:'Super complexes',ic:CHAINGLYPH.sup,
+  tip:'Where two hyper complexes join, the innermost ring.'},
  {k:'archetypes',g:'run',nm:'Archetypes',ic:fbFlay('archetypes'),
   tip:'The twelve archetypes, each set at the assemblage point it runs through.'},
  {k:'domains',g:'before',nm:'Domains',ic:fbFlay('domains'),
@@ -172,36 +183,35 @@ function fbReach(list,carry){
  return carry.filter(function(n){return s[n.i];}).length/carry.length*100;}
 function fbValues(r){
  var V={}, dash='–', carry=W.filter(function(n){return n.sq>=4;});
- /* WHOLE NUMBERS ON THE TWO WEIGHTS, 16 October. The addresses and seats pills
-    printed one decimal ("6.3"), a figure the rest of the page never shows to
-    that precision and a raw score under the 14 October ruling. They print the
-    way CQ and DQ do, a bare whole number, and a weight that rounds to nothing
-    is a dash. The sentences below test the figure the pill prints, so a pill
-    that says a dash never sits beside a tooltip that says something carries. */
- var f1=function(x){var n=Math.round(+x||0); return n>0?String(n):dash;}, pc=function(x){var n=Math.round(+x||0);return n>0?n+'%':dash;};
- /* NO PERCENT ON THE HEADLINE READING, round PQ, his words: "No, it doesn't
-    need to be a percent. Just a number." CQ and DQ are the headline readings
-    and print bare here, as on the wheel's core and the Summary plate. The
-    shares below (gates, stories, archetypes, domains) are shares of a whole
-    and keep their sign. */
- var nb=function(x){var n=Math.round(+x||0);return n>0?String(n):dash;};
- V.addresses={p:r.SQm*10,v:f1(r.SQm),c:seatCol(r.darkB),
-  m:f1(r.SQm)!==dash?'Ring and number: segment depth, SQ, at a weight of '+f1(r.SQm)+'. How deep the held charge sits.'
+ /* EVERY PILL PRINTS ITS RING, 17 October, percent phase 2. Each figure on
+    this bar goes through the registry (engine/pct.js): the ring fills
+    pct(kind, value) and the pill prints fmtPct(kind, value), so the arc and
+    the number are one reading. Before this the two weights filled SQm*10 and
+    printed round(SQm), so a segment depth of 4.4 drew 44 and read 4, the
+    disagreement the inventory names (PERCENT-INVENTORY-2026-10-16.md,
+    ui/fieldbar.js:188 and :191). CQ and DQ printed bare under round PQ; the 16
+    October ruling supersedes it for both, his words: "Instead of 0.0, site
+    wide, we need to convert those numbers into percent." Nought is the dash,
+    so a pill never prints 0% beside a tooltip that says nothing carries. */
+ var P=function(k,x){return {p:pct(k,x)||0,v:fmtPct(k,x)};};
+ var sqm=P('weight',r.SQm), dk=P('weight',r.darkV||0), cq=P('cq',r.CQ), dqv=P('dq',r.DQ);
+ V.addresses={p:sqm.p,v:sqm.v,c:seatCol(r.darkB),
+  m:sqm.v!==dash?'Ring and number: segment depth, SQ, at '+sqm.v+'. How deep the held charge sits.'
    :'Ring and number: segment depth, SQ. Nothing is carrying yet.'};
- V.seats={p:(r.darkV||0)*10,v:f1(r.darkV),c:seatCol(r.darkB),
-  m:f1(r.darkV)!==dash?'Ring and number: the heaviest assemblage point, '+r.darkB+', at a weight of '+f1(r.darkV)+'.'
+ V.seats={p:dk.p,v:dk.v,c:seatCol(r.darkB),
+  m:dk.v!==dash?'Ring and number: the heaviest assemblage point, '+r.darkB+', at '+dk.v+'.'
    :'Ring and number: the heaviest assemblage point. Nothing is carrying yet.'};
- V.laws={p:r.CQ,v:nb(r.CQ),c:seatCol('Crown'),
-  m:'Ring and number: coherence, CQ, which is the laws summed.'};
+ V.laws={p:cq.p,v:cq.v,c:seatCol('Crown'),
+  m:'Ring and number: CQ, the Laws of Moral Integrity added up.'};
  var G=verpRead(), hi=G.filter(function(g){return g.side==='higher';}).reduce(function(a,g){return a+g.pct;},0),
   anyG=G.some(function(g){return g.pct>0;});
- V.gates={p:anyG?hi:0,v:anyG?pc(hi):dash,c:seatCol('Heart'),
-  m:anyG?'Ring and number: how much of what you wrote ran through awareness, detachment and intention.'
-   :'No story has been read for action yet.'};
- V.shadow={p:r.DQ,v:nb(r.DQ),c:seatCol('Root'),
-  m:'Ring and number: shadow weight, DQ, the weight on all 112 addresses.'};
+ V.gates={p:anyG?pct('gate',hi):0,v:anyG?fmtPct('gate',hi):dash,c:seatCol('Heart'),
+  m:anyG?'Ring and number: right action, its share of every Law of Action read in your stories.'
+   :'Nothing read yet, so none of your stories has run through the Laws of Action.'};
+ V.shadow={p:dqv.p,v:dqv.v,c:seatCol('Root'),
+  m:'Ring and number: shadow weight, DQ, the weight on your 108 addresses and 4 field anchors.'};
  var ai=atomIndex()||{}, traced=carry.length?carry.filter(function(n){return (ai[n.i]||[]).length;}).length/carry.length*100:0;
- V.stories={p:traced,v:carry.length?pc(traced):dash,c:'var(--accent)',
+ V.stories={p:pct('portion',traced/100)||0,v:carry.length?fmtPct('portion',traced/100):dash,c:'var(--accent)',
   m:carry.length?'Ring and number: the share of your carrying addresses a story you wrote reached.'
    :'Nothing is carrying charge yet.'};
  [['saboteurs',r.sabs,r.sabs[0]&&r.sabs[0].parts[0]?r.sabs[0].parts[0].b:r.darkB],
@@ -209,15 +219,21 @@ function fbValues(r){
   var p=fbReach(t[1],carry);
   V[t[0]]={p:p,v:String(t[1].length),c:seatCol(t[2]),
    m:'Number: how many are running, as the rail counts them.'
-    +(carry.length?' Ring: the share of your carrying addresses they are built on, '+pc(p)+'.':'')};});
+    +(carry.length?' Ring: the share of your carrying addresses they are built on, '+fmtPct('portion',p/100)+'.':'')};});
+ /* THE FIRST ARCHETYPE, HOW FULLY IT IS EXPRESSED. Ruled 16 October, his
+    words: "the archetypes themselves should be 100%. The limiting beliefs are
+    going to drag it down." The orb printed the first archetype's share of all
+    twelve, the soul map's lean, which no story or release ever moved. affinity
+    still names which archetype is first; the figure is archExpr
+    (engine/archexpr.js), ring and number both. */
  var aff=(r.aff||[]).map(function(v,i){return {i:i,v:v};}).sort(function(a,b){return b.v-a.v;});
- var tot=aff.reduce(function(a,x){return a+x.v;},0)||1, top=aff[0]||{i:0,v:0}, A=ARCH[top.i]||{};
- V.archetypes={p:top.v/tot*100,v:pc(top.v/tot*100),c:seatCol(A.b||'Heart'),
-  m:'Ring and number: '+(A.nm||'the first archetype')+', the first archetype, as its share of how the blueprint expresses.'};
+ var top=aff[0]||{i:0,v:0}, A=ARCH[top.i]||{}, ax=archExpr(top.i);
+ V.archetypes={p:pct('archetype',ax)||0,v:fmtPct('archetype',ax),c:seatCol(A.b||'Heart'),
+  m:'Ring and number: '+(A.nm||'the first archetype')+', the first archetype, and how fully it is expressed. Charge held at its seat pulls it down; a release lifts it.'};
  /* the root's colour off the one ladder every other surface reads, rootPlain,
     and not ROOTCOL, which is the Dark values on every lighting */
  var dm=DOMAIN.reduce(function(a,v){return a+v;},0)/DOMAIN.length*100, d0=DOMAINS[S.doms[0]];
- V.domains={p:dm,v:pc(dm),c:(d0&&rootPlain(d0.r))||'var(--gold)',
+ V.domains={p:pct('domain',dm/100)||0,v:fmtPct('domain',dm/100),c:(d0&&rootPlain(d0.r))||'var(--gold)',
   m:'Ring and number: how far across the nineteen domains your blueprint reaches.'};
  /* NOTHING READ, NOTHING PRINTED. The rail's own rule: the ring draws empty
     and the pill carries a dash, because a figure beside "not read yet" is
@@ -547,9 +563,13 @@ function fbPaint(){
   if(sayP){
    if(bt&&!mk)bt.insertAdjacentHTML('beforeend',lockMarkHtml());
    m.setAttribute('data-tip',sayP); m.setAttribute('data-tip-go',LOCK_GO);
-   m.setAttribute('data-tip-t',VIEWS[pi].nm);}
+   m.setAttribute('data-tip-t',VIEWS[pi].nm);
+   /* what it leaves out, so See tiers can open the paywall at the tier that
+      opens all of it (lockWant, ui/lock.js) */
+   m.setAttribute('data-lock-keys',hid.join(' '));}
   else{if(mk)mk.parentNode.removeChild(mk);
-   m.removeAttribute('data-tip'); m.removeAttribute('data-tip-go'); m.removeAttribute('data-tip-t');}});
+   m.removeAttribute('data-tip'); m.removeAttribute('data-tip-go'); m.removeAttribute('data-tip-t');
+   m.removeAttribute('data-lock-keys');}});
  /* THE RING IS HOW DEEP THE PICTURE GOES, NOT WHETHER IT IS A PRESET. GO in
     TASKS.md, his words: "And depth. It should already start at full depth."
     It did, and does: S.view opens on 3, Blueprint, every layer on, measured on

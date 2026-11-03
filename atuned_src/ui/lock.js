@@ -35,7 +35,8 @@
    A phone has no hover, so on a coarse pointer the press that would have acted
    explains instead, and a press on a locked control does that on every
    pointer. It says what is locked in one plain sentence, which tier unlocks
-   it, and carries one button, See tiers, which opens Billing on the tiers page.
+   it, and carries one button, See tiers, which opened Billing on the tiers
+   page and opens the paywall over the screen since 17 October (lockGo below).
 
    A PANEL is a place that would have held a list or a picture: a rail section,
    the Character page, a Compass view reached with nothing to draw. It cannot
@@ -74,14 +75,43 @@ function lockPlan(){
  if(typeof devSight==='function'&&devSight())
   return {tier:'four',status:'active'};
  return (typeof CURP!=='undefined'&&CURP&&CURP.plan)||null;}
+/* WHETHER THE RECORD THAT IS OPEN IS INSIDE THE GIFT, which sees everything
+   (planSight, engine/plan.js, and the ruling quoted there). Read off the
+   record's own meter through planInGift, the test the allowance spends the
+   gift by, so the padlocks come off and go back at exactly the pattern the
+   Billing count says the gift ran out at.
+
+   Measured 17 October on main at 054ca583, a record from the funnel's link on
+   its first screen: plan free, nothing opened, fifteen saboteurs computed and none
+   shown, two lock panels and See tiers on Summary, nine padlocks on the Field
+   at 1600. That is the person the gift was ruled for, before they had opened
+   a single pattern.
+
+   NEVER FOR A WORKED EXAMPLE. An example's meter is its authored history and
+   says nothing about the viewer's gift, and its sight is the plan loadP gives
+   it (ui/personas.js). The rule that it runs nothing is engine/showonly.js and
+   this does not touch it. NOR UNDER THE HARNESS SEAM: SIGHT_PLAN, when a gate
+   sets one, is the whole answer, which is how the gates measure a tier. */
+function lockGift(){
+ if(SIGHT_PLAN)return false;
+ if(typeof CURP==='undefined'||!CURP)return false;
+ if(typeof showOnly==='function'&&showOnly(CURP))return false;
+ return planInGift((CURP.meter&&CURP.meter.unique)||[]);}
 /* Whether this person may see a thing right now. Read at every call and never
    cached, because a plan can change under an open surface: a payment lands, a
-   subscription lapses, a record is swapped. */
-function lockSees(k){ return planSees(lockPlan(),k); }
+   subscription lapses, a record is swapped, the gift runs out. */
+function lockSees(k){ return planSees(lockPlan(),k,lockGift()); }
 /* the same question for a layer key on the glass bar, which names its rungs
-   saboteurs, complexes, hyper and character */
+   saboteurs, complexes, hyper and character. character is the super complex
+   switch: the key kept the rung's old name when the owner gave the word
+   Character to the whole of it, 23 October, because a key is identity */
 const LOCK_OF_LAYER={saboteurs:'sab',complexes:'cx',hyper:'hy',character:'sup',
- sab:'sab',cx:'cx',hy:'hy',sup:'sup',masks:'mask',mask:'mask',registers:'reg',reg:'reg'};
+ sab:'sab',cx:'cx',hy:'hy',sup:'sup',masks:'mask',mask:'mask',registers:'reg',reg:'reg',
+ /* the Kundalini's computation is real (engine/rise.js, 27 October); its
+    screen is not built yet, so SIGHT still carries it built:false and
+    sightRows() still leaves it off the tiers page. This entry only readies
+    lockFor('kund') for the control a future screen will need. */
+ kund:'kund'};
 function lockFor(layer){ return LOCK_OF_LAYER[layer]||null; }
 /* which gate a pattern's kind belongs to, for a list that mixes the four */
 function lockKind(kind){ return LOCK_OF_LAYER[kind]||null; }
@@ -188,21 +218,43 @@ function lockPanelHtml(k,o){
    is running it, and the owner's ruling names what is running them. */
 function sightR(r){
  if(!r)return r;
- var pl=lockPlan();
- if(SEE_ORDER.every(function(k){return planSees(pl,k);}))return r;
+ var pl=lockPlan(), gf=lockGift();
+ if(SEE_ORDER.every(function(k){return planSees(pl,k,gf);}))return r;
  var v={}, k; for(k in r)v[k]=r[k];
- v.sabs=planSees(pl,'sab')?r.sabs:[];
- v.cxs=planSees(pl,'cx')?r.cxs:[];
- v.hys=planSees(pl,'hy')?r.hys:[];
- v.sups=planSees(pl,'sup')?r.sups:[];
+ v.sabs=planSees(pl,'sab',gf)?r.sabs:[];
+ v.cxs=planSees(pl,'cx',gf)?r.cxs:[];
+ v.hys=planSees(pl,'hy',gf)?r.hys:[];
+ v.sups=planSees(pl,'sup',gf)?r.sups:[];
+ /* the named super complex is that rung, so it locks with it */
+ v.psychopathy=planSees(pl,'sup',gf)?r.psychopathy:null;
  v.mask=v.sups[0]||v.hys[0]||v.cxs[0]||v.sabs[0]||null;
  /* the layers the plan cannot see, so a renderer can say why a list is empty
     instead of saying nothing is running */
- v.locked=SEE_ORDER.filter(function(x){return !planSees(pl,x);});
+ v.locked=SEE_ORDER.filter(function(x){return !planSees(pl,x,gf);});
  return v;}
 /* compute(), as a person on this plan may see it. Surfaces that draw or list
    the chain call this and not compute(). */
 function computeSeen(){ return sightR(compute()); }
+/* THE READING A RECORD'S GRAPH IS HANDED, as this plan may see it, 31 October.
+   A graph handed a reading carries the chain (engine/trace.js), and a graph is
+   one more place a rung could be listed from, so the reading goes through the
+   same lock as every list: a plan that cannot see saboteurs hands its graph
+   none, and sightR keeps the record's stamp on the copy, so what it can see
+   still reaches the graph. readHeld is null for a record that is not the one
+   loaded, and sightR passes null through, so that graph carries no chain. */
+function readSeenOf(p){ return sightR(readHeld(p)); }
+/* what a graph built off that reading depends on, for a cache key: each rung's
+   name, the weight the graph keeps on it to a tenth, and what it counts, which
+   is what traceFromRecord takes off a reading and nothing more. A release can
+   move the chain with no new entry, and a saboteur can keep its name and move
+   to other addresses, so a graph cached on entries or names alone would keep
+   the old chain. */
+function readSeenSig(r){
+ if(!r)return '';
+ var one=function(x){return x?x.nm+'~'+Math.round((+x.w||0)*10)+'('+(Array.isArray(x.parts)?x.parts:[]).map(function(q){
+  return q?(q.i!=null?q.i:q.nm):'';}).join(' ')+')':'';};
+ var all=function(l){return (Array.isArray(l)?l:[]).map(one).join(',');};
+ return [all(r.sabs),all(r.cxs),all(r.hys),all(r.sups),r.psychopathy?r.psychopathy.named+one(r.psychopathy):''].join('|');}
 
 /* THE DOORS. A page that is locked has its button in the bar greyed too, so the
    lock is on the way in as well as on the page. Painted on every render and in
@@ -223,14 +275,41 @@ function lockTabs(){
    the way it reaches every button: Enter and Space fire a click, and a click
    with no pointer behind it (detail 0) puts focus on the panel's button, so a
    person without a mouse can press See tiers without having to find it. */
-function lockGo(){
+/* SEE TIERS OPENS THE PAYWALL, round of 17 October ("Paywall mockup five ...
+   That's the one I'd like to build"). It opened Billing at the tiers page, a
+   page of 488 words with no price in view on a phone, and the lock knew which
+   ring had been pressed and threw it away on the way. The paywall
+   (ui/paywall.js) is a sheet over the screen the person is on, and it is
+   handed the ring, so it marks that ring on every card and puts the one solid
+   button on the cheapest tier that opens it, and the control to put focus back
+   on when it closes.
+
+   WHICH RING. A lock panel names its own (data-lock-panel). A description in
+   the tooltip names the control that built it (TIP.goFor, ui/tip.js), which
+   survives the panel hiding as focus moves onto its button. A depth preset that is only partly
+   locked carries every key it leaves out (data-lock-keys, ui/fieldbar.js), and
+   the ring that counts is the one the highest tier opens, since that tier is
+   the cheapest that opens all of them. */
+function lockWant(keys){
+ var best=null;
+ String(keys||'').split(/\s+/).forEach(function(k){
+  var n=planNeed(k); if(!n)return;
+  if(!best||planRank(n.k)>planRank(planNeed(best).k))best=k;});
+ return best;}
+function lockGo(from){
+ var p=from&&from.closest?from.closest('[data-lock-panel]'):null, k=null, back=from||null;
+ if(p)k=p.getAttribute('data-lock-panel');
+ else if(typeof TIP!=='undefined'&&TIP.goFor&&TIP.goFor.getAttribute){
+  back=TIP.goFor; k=back.getAttribute('data-lock')||lockWant(back.getAttribute('data-lock-keys'));}
  if(typeof TIP!=='undefined')TIP.hide();
- if(typeof planTiersOpen==='function')planTiersOpen();}
+ if(typeof paywallOpen==='function')paywallOpen(k,back);
+ else if(typeof planTiersOpen==='function')planTiersOpen();}
 (function(){
  if(typeof document==='undefined')return;
  document.addEventListener('click',function(ev){
   var t=ev.target; if(!t||!t.closest)return;
-  if(t.closest('.tip-go,.lk-go')){ev.preventDefault(); ev.stopPropagation(); lockGo(); return;}
+  var go=t.closest('.tip-go,.lk-go');
+  if(go){ev.preventDefault(); ev.stopPropagation(); lockGo(go); return;}
   var l=t.closest('[data-lock]');
   if(!l||l.getAttribute('aria-disabled')!=='true')return;
   ev.preventDefault(); ev.stopImmediatePropagation();

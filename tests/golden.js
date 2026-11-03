@@ -45,6 +45,10 @@
      13 Create account from a downloaded copy, against the Worker's one
         allowed origin
 
+     R  A PAGE LEFT OPEN ACROSS A RENEWAL (24 October)
+        a signed in payer's page, never reloaded, its clock moved past the
+        period end: it reads the renewal before the grace reads it as ended
+
    THE SERVER IS A FAKE, AND NOTHING LEAVES THE MACHINE. The site is
    served on 127.0.0.1 the way atuned.world serves it, so the Worker's
    CORS rule (ALLOWED_ORIGIN, one origin) is modelled against a real
@@ -146,7 +150,11 @@ function fakeWorker(origin, giftAt) {
     selectedGroundId: s.selectedGroundId || null, starterGiftId: null, tutorialCompleted: !!s.tutorialCompleted,
     firstReleaseId: s.firstReleaseId || null, verificationId: s.verificationId || null, version: s.version,
     createdAt: s.createdAt, updatedAt: s.updatedAt });
-  const billing = a => { const e = st.ent[a.id]; return e ? { tier: e.tier, status: e.status, since: e.since, until: e.until, store: 'stripe' } : null; };
+  /* ends is sent while the plan is in force and null after, as the real
+     server's billingOf sends it (Reboot-OS src/store.js) */
+  const billing = a => { const e = st.ent[a.id]; if (!e) return null;
+    const live = e.status === 'active' || e.status === 'trialing' || e.status === 'past_due';
+    return { tier: e.tier, status: e.status, since: e.since, until: e.until, store: 'stripe', ends: live ? (e.ends || null) : null }; };
   function handle(method, url, headers, raw) {
     const res = route(method, url, headers, raw);
     st.reqs[st.reqs.length - 1].status = res.status;
@@ -260,10 +268,22 @@ function fakeWorker(origin, giftAt) {
   /* what Stripe's webhook would have told the Worker */
   const paid = () => { const c = st.checkout; if (!c) return false;
     st.ent[c.account] = { tier: c.tier, status: 'active', since: now(), until: new Date(Date.now() + 30 * 864e5).toISOString() }; return true; };
+  /* CANCELLED AT THE PERIOD END, the way the portal does (Reboot-OS
+     tools/stripe-portal.mjs, subscription_cancel at_period_end), 24 October,
+     P3-3 of the 23 October QA pass. This wrote canceled inside the paid period,
+     an immediate cancel the deployed portal never makes, so station 8 passed on
+     a path production does not take. Now the plan stays active and the server
+     names the day it ends (billingOf's ends); endsIn moves the server's
+     calendar to the period's last moments, and over() is Stripe deleting the
+     subscription once the period has run out. */
   const cancelled = () => { const c = st.portal; if (!c || !st.ent[c.account]) return false;
+    st.ent[c.account].ends = st.ent[c.account].until; return true; };
+  const endsIn = ms => { const c = st.portal; if (!c || !st.ent[c.account]) return null;
+    const e = st.ent[c.account]; e.until = e.ends = new Date(Date.now() + ms).toISOString(); return e.ends; };
+  const over = () => { const c = st.portal; if (!c || !st.ent[c.account]) return false;
     st.ent[c.account].status = 'canceled'; return true; };
   const reqs = (meth, re) => st.reqs.filter(q => q.method === meth && re.test(q.path));
-  return { st, handle, paid, cancelled, reqs };
+  return { st, handle, paid, cancelled, endsIn, over, reqs };
 }
 
 /* ---------------- the site, served the way atuned.world serves it ---------------- */
@@ -318,6 +338,12 @@ async function door(browser, SITE, cut, giftAt) {
   await ctx.addInitScript(api => {
     Object.defineProperty(window, 'AUTH_API', { get() { return api; }, set() {}, configurable: false });
   }, API);
+  /* THE DAY PAYING OPENS. The build ships with checkout closed
+     (PLAN_CHECKOUT_OPEN, engine/plan.js), and since 24 October Billing then
+     offers no press (P2-1). This walk pays, so it opens the paywall's own
+     harness seam (PAYWALL_PAY_OPEN, ui/paywall.js), read once at load. It is not
+     a way to pay: in production the server's own switch answers the press. */
+  await ctx.addInitScript(() => { window.PAYWALL_PAY_OPEN = true; });
   const page = await ctx.newPage();
   const errs = [], cerrs = [];
   page.on('pageerror', e => errs.push(String(e && e.message || e)));
@@ -459,11 +485,45 @@ async function door(browser, SITE, cut, giftAt) {
   station(4, 'Q: the reading reaches Summary and the account');
   await Q.tab(1);
   /* 15 October, the owner's 14 October ruling: the plate prints how much has
-     been measured, one of three words, and never the figure. The figure sits
-     one tap down in the core drill with its range. */
+     been measured, one of three words, and never the bare figure. The figure
+     sits one tap down in the core drill with its range.
+     NAMED CHANGE, percent phase 2 slice 2, 17 October: the plate prints the
+     word (early, partial) while the laws are still being answered, and CQ as
+     a percent once every law is, which is where the word said full and where
+     the figure stops moving. The percent is the registry's (engine/pct.js)
+     and equals the plate's own ring. A bare figure, or a word outside the
+     ladder, still fails. */
   const sumCQ = await Q.settled('#sum .cr[title^="Coherence"] .v');
-  ok(/^(early|partial|full)$/.test(sumCQ) && num(sumCQ) == null, 'Summary prints how much of the quiz\'s reading is in, as a word and not the figure: ' + J(sumCQ),
-    'Summary prints the bare coherence figure, or a word outside the ladder');
+  const plate = await page.evaluate(() => { const R = compute(), c = accCover(R);
+    const a = document.querySelector('#sum .cr[title^="Coherence"] svg.arc circle:last-child');
+    const C = a ? parseFloat(a.getAttribute('stroke-dasharray')) : NaN, off = a ? parseFloat(a.getAttribute('stroke-dashoffset')) : NaN;
+    return { complete: !!c.complete, want: fmtPct('cq', R.CQ), fill: C > 0 ? 100 * (1 - off / C) : null }; });
+  ok(plate.complete
+      ? (sumCQ === plate.want && /^\d+%$/.test(sumCQ) && plate.fill !== null && Math.abs(num(sumCQ) - plate.fill) <= 1)
+      : (/^(early|partial)$/.test(sumCQ) && num(sumCQ) == null),
+    'Summary prints how much of the quiz\'s reading is in: a word while the laws are being answered, CQ as a percent equal to its ring once all are, ' + J({ sumCQ, plate }),
+    'Summary prints a bare coherence figure, a word outside the ladder, or a percent its ring does not draw');
+  /* ONE READING, ONE FIGURE, A PRESS APART. 31 October, the QA walk's F2:
+     the quiz printed a bare "51" and Summary "51%" for the same record.
+     Station 2 compared the two as numbers, which is why it never saw it. The
+     strings are compared here, once the plate prints a figure at all. */
+  ok(!plate.complete || sumCQ === quizCQ,
+    'the quiz printed coherence as Summary prints it for the same record: quiz ' + J(quizCQ) + ', Summary ' + J(sumCQ),
+    'two figures for one reading, a press apart');
+  /* NOBODY CALLED WEB. 31 October, the QA walk's F3: the quiz names the
+     record it hands over "Web reading", a label for the record, and the plate
+     printed its first word as the person's name in the largest type on the
+     page. The rail's card reads the same name the same way. A record nobody
+     has named prints the house's own word, You, on both, and never a word of
+     the label. */
+  const whoSaid = await page.evaluate(() => {
+    const t = s => { const e = document.querySelector(s); return e ? e.textContent.trim() : null; };
+    return { plate: t('#sum .s-pname'), rail: t('#person h3') }; });
+  const labelWords = String(landed || '').toLowerCase().split(/\s+/).filter(Boolean);
+  ok((whoSaid.plate === null || whoSaid.plate === 'You') && (whoSaid.rail === null || whoSaid.rail === 'You')
+      && labelWords.every(x => [whoSaid.plate, whoSaid.rail].every(s => String(s || '').toLowerCase().indexOf(x) < 0)),
+    'a funnel arrival who gave no name is called no name: plate ' + J(whoSaid.plate) + ', rail ' + J(whoSaid.rail) + ', record ' + J(landed),
+    'the first screen greets them by a word of the record\'s label');
   await Q.click('#profbtn'); await Q.click('[data-pms="account"]');
   await page.waitForTimeout(250);
   const accHd = await page.evaluate(() => { const h = document.querySelector('#settings .ac-hd'); return h ? h.innerText : ''; });
@@ -704,8 +764,10 @@ async function door(browser, SITE, cut, giftAt) {
   station(5, 'Q: the first release, from the Story page');
   await Q.tab(0);
   const cq0 = (await Q.live()).CQ;
-  await page.fill('#sttext', STORY).catch(() => {});
-  await page.dispatchEvent('#sttext', 'input').catch(() => {});
+  /* voice only now, round of 29 October: #sttext does not render in the
+     ordinary flow, so the story reaches ST_TEXT through srcTurnCommit, the
+     one door a turn lands through whether it is typed or spoken. */
+  await page.evaluate(t => { if (typeof srcTurnCommit === 'function') srcTurnCommit(t); }, STORY).catch(() => {});
   await page.waitForTimeout(500);
   ok(await Q.click('#stapply'), 'the story is written and Commit is there to press', 'no way to keep a story');
   const kept = await Q.waitSaid(/^\|Committed\. \d+ imprints? written to the field\./, 5000);
@@ -758,13 +820,23 @@ async function door(browser, SITE, cut, giftAt) {
   ok(num(relUp) != null && Math.abs(num(relUp) - +(L1.CQ - cq0).toFixed(2)) < 1e-9, 'and the same lift, ' + J(relUp) + ' against ' + (L1.CQ - cq0).toFixed(2));
   await Q.tab(2);
   const top = await Q.settled('#railtop .cr .v');
-  const key = await Q.settled('#key [data-pair="cqdq"] .rb2-p.l .rb2-v');
+  /* NAMED CHANGE, 30 October, r1: the coherence pair prints one figure, the
+     leaning side's share, so it is CQ only when CQ leads. CQ itself is always
+     said by its own door, the pair's left half, first in its spoken name. */
+  await Q.settled('#key [data-pair="coh"] .rb2-v');
+  const key = await page.evaluate(() => { const e = document.querySelector('#key [data-pair="coh"] .rb2-k.l'); return e ? e.getAttribute('aria-label') : null; });
   await Q.tab(1);
   const sum1 = await Q.settled('#sum .cr[title^="Coherence"] .v');
   const round = Math.round(L1.CQ);
   ok(num(top) === round, 'the Field\'s top bar prints it, ' + J(top) + ' against ' + round);
   ok(num(key) === round, 'the Field\'s left key prints it, ' + J(key) + ' against ' + round);
-  ok(/^(early|partial|full)$/.test(sum1) && num(sum1) == null, 'Summary prints how much is measured, not the figure: ' + J(sum1));
+  /* NAMED CHANGE, percent phase 2 slice 2, 17 October, the same change as
+     station 4: the plate prints the word while the laws are being answered
+     and CQ as the registry's percent once all are, the figure the Field's top
+     bar and key print beside it. */
+  const full1 = await page.evaluate(() => !!accCover(compute()).complete);
+  ok(full1 ? (sum1 === round + '%') : (/^(early|partial)$/.test(sum1) && num(sum1) == null),
+    'Summary prints how much is measured: a word while filling, CQ as a percent once every law is answered, ' + J({ sum1, full1, round }));
 
   /* The Alpha gate stops after the accepted quiz-to-first-release walk.
      Billing, cross-device profile sync, and downloaded-file account creation
@@ -812,7 +884,7 @@ async function door(browser, SITE, cut, giftAt) {
   await Q.booted();
   const back = await Q.waitSaid(/Tier one is on this record/, 8000);
   ok(!!back, 'back from Stripe, the app says the plan is on the record, ' + J(back), 'paid, and the app still reads Free');
-  const welcome = await page.waitForFunction(() => { const h = document.getElementById('tutorial');
+  const welcome = await page.waitForFunction(() => { const h = document.getElementById('paidwelcome');
     return h && h.style.display !== 'none' && /You are in/.test(h.innerText) ? true : null; }, null, { timeout: 6000 }).then(() => true, () => false);
   ok(welcome, 'and the welcome after paying opens');
   ok(await page.evaluate(() => location.search.indexOf('billing=') < 0), 'and the return is off the address, so a reload never replays it');
@@ -822,7 +894,10 @@ async function door(browser, SITE, cut, giftAt) {
   ok(!!(sv.rec && sv.rec.plan && sv.rec.plan.tier === 'one' && E.planState(sv.rec.plan) === 'live'), 'after a reload the saved record carries tier one, live: '
     + J(sv.rec && sv.rec.plan && { t: sv.rec.plan.tier, s: sv.rec.plan.status }));
   ok(!!sv.rec && E.planOf(sv.rec.plan).k === 'one', 'and the plan in force reads tier one');
-  ok(await page.evaluate(() => !(document.getElementById('tutorial') && /You are in/.test(document.getElementById('tutorial').innerText))), 'and the welcome never opens twice');
+  /* the host is looked up first and must exist, so a renamed host fails here
+     instead of passing on a null */
+  ok(await page.evaluate(() => { const h = document.getElementById('paidwelcome');
+    return !!h && !/You are in/.test(h.innerText); }), 'and the welcome never opens twice');
 
   station(8, 'Q: quit: cancel the plan, sign out, delete the record');
   await Q.click('#profbtn'); await Q.click('[data-pms="billing"]');
@@ -834,11 +909,29 @@ async function door(browser, SITE, cut, giftAt) {
   const po = wq.reqs('POST', /^\/v1\/billing\/portal$/);
   ok(po.length === 1 && po[0].me === accQ.id, 'it asks the server for the billing portal, signed in');
   ok(page.url().indexOf(PORTAL + '/') === 0, 'and the browser goes to the portal page the server named', 'Manage billing does nothing');
+  /* cancelled at the period end, as the portal does (P3-3, 24 October): the
+     plan stays on to the end of the month paid for, and the app says the day */
   wq.cancelled();
   await page.goto(SITE + '/atuned.html?billing=managed', { waitUntil: 'load' });
   await Q.booted();
-  const ended = await Q.waitSaid(/Tier one has ended, so this record reads Free now\./, 8000);
-  ok(!!ended && /^fail\|/.test(ended), 'back from the portal, the app says the plan has ended, on a held line: ' + J(ended), 'cancelled, and the app still reads tier one');
+  const stops = await Q.waitSaid(/Tier one stops on [^.]+\. It stays on until then, and Manage billing turns it back on\./, 8000);
+  ok(!!stops && /^ok\|/.test(stops), 'back from the portal, the app says the day the plan stops and that it stays on until then: ' + J(stops),
+    'stopped, and the app says nothing');
+  sv = await Q.saved();
+  const stopAt = wq.st.ent[accQ.id] && wq.st.ent[accQ.id].until;
+  ok(!!(sv.rec && sv.rec.plan && E.planState(sv.rec.plan) === 'live' && sv.rec.plan.ends === stopAt && E.planOf(sv.rec.plan).k === 'one'),
+    'and the record keeps tier one on, to the day it stops: ' + J(sv.rec && sv.rec.plan && { t: sv.rec.plan.tier, s: sv.rec.plan.status, ends: sv.rec.plan.ends }));
+  await Q.click('#profbtn'); await Q.click('[data-pms="billing"]');
+  await page.waitForTimeout(300);
+  const endsLine = await page.evaluate(() => { const r = [...document.querySelectorAll('#settings .sh-row')].filter(x => /^State/.test(x.innerText))[0]; return r ? r.innerText : null; });
+  ok(/ends /.test(endsLine || ''), 'and Billing\'s State row says when it ends, ' + J(endsLine));
+  /* the month runs out: the server's calendar moves to the period's last
+     seconds, the page reads that, and its own clock passes the end */
+  const endAt = Date.parse(wq.endsIn(4000));
+  await Q.reload();
+  while (Date.now() < endAt + 600) await page.waitForTimeout(200);
+  /* and Stripe deletes the subscription at the period end */
+  wq.over();
   await Q.reload();
   sv = await Q.saved();
   ok(!!(sv.rec && sv.rec.plan && E.planState(sv.rec.plan) === 'ended' && E.planOf(sv.rec.plan).k === 'free'),
@@ -916,6 +1009,10 @@ async function door(browser, SITE, cut, giftAt) {
   ok(await Q.click('#acdel'), 'Delete this record is there to press');
   const del = await Q.waitSaid(/is deleted from this browser, the only place it was held\./, 6000);
   ok(!!del && del.indexOf(goneName) >= 0, 'and it says what it deleted and where, ' + J(del), 'no word of what went');
+  /* the profile it lands on is the default one, named You, and was said "You is
+     open." until 24 October (ui/account.js, accOpenSay) */
+  ok(!!del && /Your own profile is open\.$/.test(del) && !/\bYou is open\./.test(del),
+    'and the profile it opens is said as the person\'s own, never "You is open.": ' + J(del), 'You is open.');
   await Q.reload();
   sv = await Q.saved();
   ok(!!sv.list && !sv.list.some(p => p && p.id === goneId), 'after a reload the record is gone from this browser');
@@ -1110,6 +1207,107 @@ async function door(browser, SITE, cut, giftAt) {
       + J(f.msg));
     ok(ferrs.length === 0, 'no script error: ' + ferrs.slice(0, 2).join(' | '));
     await cf.close();
+  }
+
+  /* =================================================================
+     R. A PAGE LEFT OPEN ACROSS A RENEWAL, 24 October (P2-2 of the 23 October
+        QA pass). One paying person, signed in, the page never reloaded, its
+        clock moved by Playwright's. The plan is read at boot; the renewal lands
+        at Stripe on the period end; the page has to read the server again
+        before its own three day grace reads that unread renewal as an ending.
+        Before the fix it read Free and "State ended" six days on, and coming
+        back to the tab sent no request.
+     ================================================================= */
+  station('R', 'a page left open across a paid renewal reads the renewal');
+  {
+    const R = await door(browser, SITE, cut), pr = R.page, wr = R.worker;
+    await pr.clock.install({ time: Date.now() });
+    const DAY = 864e5, t0 = Date.now(), at = ms => new Date(ms).toISOString();
+    const acc = { id: 'acc_renew', research_id: 'rsh_renew', email: 'renew.door@example.com', plan: 0, pw: PW };
+    wr.st.acc[acc.id] = acc; wr.st.byMail[acc.email] = acc.id; wr.st.tok.tok_renew = acc.id;
+    wr.st.ent[acc.id] = { tier: 'one', status: 'active', since: at(t0 - 27 * DAY), until: at(t0 + 3 * DAY) };
+    await pr.goto(SITE + '/atuned.html?dev=1', { waitUntil: 'load' }); await R.booted();
+    await pr.evaluate(() => authKeep({ token: 'tok_renew', email: 'renew.door@example.com', accountId: 'acc_renew' }));
+    await R.reload(); await pr.waitForTimeout(800);
+    const plan = () => pr.evaluate(() => { const pl = CURP && CURP.plan;
+      return { k: planOf(pl).k, state: planState(pl), until: pl && pl.until, now: Date.now() }; });
+    const reads = () => wr.reqs('GET', /^\/v1\/me$/).length;
+    /* THE GATE HOLDS ITS OWN CLOCK STILL BEFORE IT MOVES IT, 2 November.
+       Playwright's clock, installed and left running, fires the page's due
+       timers from a loop of its own on a real timer. fastForward runs a second
+       loop, and whichever loop finishes last sets the clock to the tick it
+       started for (_runTo and _advanceNow in playwright-core's clockSource,
+       1.56.1), so a running loop that finishes after a fast forward puts the
+       page back where it was before the jump. On a blank page with a rAF loop
+       and an interval due, 11 fast forwards of 60 read two hours on at once
+       and nought hours 300 ms later; with nothing due, 0 of 60. That is the
+       "one run in ten" the first self check here caught, and it was still
+       live, because the check read the clock once, straight after the jump,
+       and the rewind lands after it: station R read 2 where it meant 3, one
+       run in fifteen solo, with forward() reporting the move it had lost.
+       Paused, there is no running loop and nothing to finish late, so every
+       fast forward stays where it lands. The page boots on a running clock
+       and is held still here, once the plan is read. A loop already in flight
+       when the clock is held can still finish once, so the hold waits until
+       the held clock reads the same over a stretch before anything is moved. */
+    const hold = async () => {
+      for (let i = 0; i < 5; i++) {
+        const at = (await plan()).now + 1000;
+        if (await pr.clock.pauseAt(at).then(() => true, () => false)) break; }
+      const start = Date.now(); let last = null, same = 0;
+      while (Date.now() - start < 10000) { const n = (await plan()).now;
+        if (n === last) { if (++same >= 6) return true; } else { same = 0; last = n; }
+        await pr.waitForTimeout(50); }
+      return false; };
+    ok(await hold(), 'the page clock is held still before the gate moves it, so no running loop of Playwright\'s can undo a move');
+    /* THE GATE CHECKS ITS OWN CLOCK, against the day it means. A fast forward
+       that did not hold measures the day before, which would fail or pass for
+       the wrong reason. Each move is to a target set once, so a short move is
+       made up to the target and never past it: a corrective jump past the
+       target would also carry the clock over a read still in flight and fire
+       its own fifteen second timeout (AUTH_WAIT_MS, ui/auth.js), which reads
+       an unread renewal as an ending. */
+    const forward = async ms => { const target = (await plan()).now + ms;
+      for (let i = 0; i < 3; i++) { const short = target - (await plan()).now;
+        if (short <= 1000) break;
+        await pr.clock.fastForward(short); }
+      const off = (await plan()).now - target;
+      return off >= -1000 && off <= 1000; };
+    const day = p => ((p.now - t0) / DAY).toFixed(3);
+    /* a read fires off a promise chain through authCall, so a fixed wait
+       races it under load: the probe this fix came from caught it failing
+       two runs in three with several other Playwright suites running at
+       once. Poll the real count instead. */
+    const waitReads = async (n, timeout) => { const start = Date.now();
+      while (reads() < n && Date.now() - start < timeout) await pr.waitForTimeout(50);
+      return reads(); };
+    const p0 = await plan();
+    ok(p0.k === 'one' && p0.state === 'live' && reads() === 1, 'at boot the plan is read once and tier one is in force: ' + J([p0.k, p0.state, reads()]));
+    /* the renewal at Stripe on the period end: the server now holds the next period */
+    wr.st.ent[acc.id] = { tier: 'one', status: 'active', since: at(t0 + 3 * DAY), until: at(t0 + 33 * DAY) };
+    const fwd = await forward(6 * DAY + 3600e3);
+    ok(fwd, 'the page clock moved six days and an hour, so what follows is read on that day: day ' + day(await plan()));
+    await pr.waitForTimeout(1200);
+    const p1 = await plan();
+    ok(reads() === 2, 'before its own grace ran out the page asked the server again, with no reload: ' + reads() + ' reads',
+      'no request at all, so the renewal was never read');
+    ok(p1.k === 'one' && p1.state === 'live' && p1.until === at(t0 + 33 * DAY),
+      'and the renewal is on the record: tier one, live, to the new period end, ' + J([p1.k, p1.state, (p1.until || '').slice(0, 10), 'day ' + day(p1)]),
+      'On Free and State ended, with the layers paid for locked, six days after a paid renewal');
+    /* coming back to the tab within the hour sends nothing more */
+    await pr.evaluate(() => { window.dispatchEvent(new Event('focus')); document.dispatchEvent(new Event('visibilitychange')); });
+    await pr.waitForTimeout(400);
+    ok(reads() === 2, 'coming back to the tab within the hour of the last read sends nothing: ' + reads() + ' reads');
+    const fwd2 = await forward(2 * 3600e3);
+    /* the clock the page's own handler reads, taken in the same task as the
+       event it answers, so nothing can move it in between */
+    const seen = await pr.evaluate(() => { const t = Date.now(); document.dispatchEvent(new Event('visibilitychange')); return t; });
+    ok(fwd2 && seen - t0 >= 6 * DAY + 3 * 3600e3 - 60000, 'the page clock moved two hours more and held, so the page comes back on day '
+      + ((seen - t0) / DAY).toFixed(3) + ', two hours after its last read');
+    const r3 = await waitReads(3, 15000);
+    ok(r3 === 3, 'and coming back after an hour reads the plan once more: ' + r3 + ' reads');
+    ok(R.errs.length === 0, 'no script error on this door: ' + R.errs.slice(0, 2).join(' | '));
+    await R.ctx.close();
   }
 
   station(14, 'every door: nothing else was reached');

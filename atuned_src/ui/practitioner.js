@@ -273,13 +273,18 @@ function pracPaint(){
   .forEach(function(e){e.style.display=on?'':'none';});
  if(on)return;
  var top=document.querySelector('.top');
+ /* the bar and the person go home, TABHOME in engine/core.js: Play and the
+    Field while the app opened there, Discover since 23 October. Discover's
+    one door is its section, so its row has no tab to line up and secAlign
+    below returns without measuring, which is correct: nothing is left under
+    the section that went. */
  if(top&&top.getAttribute('data-sec')==='practitioner'){
-  var k=SECOF(TAB.FIELD), pb=document.querySelector('#secbar .secb[data-sec="'+k+'"]');
+  var k=SECOF(TABHOME), pb=document.querySelector('#secbar .secb[data-sec="'+k+'"]');
   top.setAttribute('data-sec',k);
   if(pb&&typeof secAlign==='function'&&!document.querySelector('#secbar .secb[aria-pressed="true"]')){
    pb.setAttribute('aria-pressed','true'); secAlign(); pb.setAttribute('aria-pressed','false');}}
  if(typeof SEC_LAST!=='undefined')delete SEC_LAST.practitioner;
- if(S.tab===TAB.PRACTITIONER)setTab(TAB.FIELD);}
+ if(S.tab===TAB.PRACTITIONER)setTab(TABHOME);}
 
 /* ============================================================
    PR1 TO PR4, round PT: the client list, the reading from structure, private

@@ -99,7 +99,7 @@ thing. Break the co-mingling and the saboteur is gone.
 | ID | Saboteur | Fetters [band] |
 |---|---|---|
 | S01 | Negotiator | Fear [4–6], Apathy [3–5] |
-| S02 | Controller | Fear [7–10], Anger [5–8] |
+| S02 | Micromanager | Fear [7–10], Anger [5–8] |
 | S03 | Victim | Sad [6–8], Anger [5–7], Apathy [2–5] |
 | S04 | Perfectionist | Disgust [5–7], Anger [4–6] |
 | S05 | Pleaser | Apathy [3–5], Fear [3–8] |
@@ -149,7 +149,7 @@ target.
 
 | Archetype | Saboteurs | Address |
 |---|---|---|
-| Warrior | Controller, Judge | Solar Plexus / Throat |
+| Warrior | Micromanager, Judge | Solar Plexus / Throat |
 | Innocent | Pleaser, Avoider | Root / Sacral |
 | Orphan | Victim, Cynic | Root / Crown |
 | Caretaker | Pleaser, Martyr | Heart / Throat |
@@ -160,7 +160,7 @@ target.
 | Jester | Avoider, Hyper-rational | Sacral / Third Eye |
 | Sage | Hyper-rational, Skeptic | Third Eye |
 | Magician | Victim, Manipulator | Crown / Throat |
-| Ruler | Hyper-achiever, Controller | Crown / Solar Plexus |
+| Ruler | Hyper-achiever, Micromanager | Crown / Solar Plexus |
 
 **OPEN:** the roster count is disputed — thirteen here, twelve where the book
 describes the glyph, fifteen in the March library. Do not hardcode the count.

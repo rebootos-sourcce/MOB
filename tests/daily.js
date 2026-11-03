@@ -205,6 +205,11 @@ SUITES.shape=function(E,ok){
  bad(s=>{s.days[0].st[0].ev=[{type:'law',id:5}];},'names no kind of evidence this build holds','a reference whose id is not text');
  bad(s=>{s.days[0].st[0].ev=[{type:'kb',id:'Nonsense'}];},'names no entry in the Knowledge base','a Knowledge base reference to nothing');
  bad(s=>{s.days[0].st[0].ev=[{type:'law',id:'Spite'}];},'names no law','a law that is not one of the 21');
+ /* the chain's four rungs joined the graph's types on 22 October
+    (engine/trace.js), and a day still may not cite one: its graph is read
+    with no reading and holds no rung. Refused as before, now by name. */
+ (E.TRACE_CHAIN||[]).forEach(t=>bad(s=>{s.days[0].st[0].ev=[{type:t,id:'Judge'}];},'names a rung of the chain','a reference to a '+t));
+ ok(Array.isArray(E.TRACE_CHAIN)&&E.TRACE_CHAIN.length>0,'the chain is exported, so the check above walked something');
  bad(s=>{s.days[0].st[0].links=['Nonsense'];},'is not a term in the Knowledge base','a link to no glossary term');
  bad(s=>{s.days[0].st[0].read=[{addr:5000,band:'Heart'}];},'is not one of the addresses','an address that does not exist');
  bad(s=>{s.days[0].st[0].text=s.days[0].st[0].text+' It was 77.';},'prints 77, which is not one of its arguments','a digit that is not an argument');
@@ -694,6 +699,25 @@ SUITES.drawer=function(E,ok){
  ok(vr.ok,'a day whose recorded addresses no longer match today\'s reading is still a valid day: the boundary cannot know');
  const sd=E.dlyWhy(vr.profile,on.day.id,si);
  ok(sd.read.differs===true&&sd.read.shown[0].addr!==sh.read.shown[0].addr&&sd.read.today.length>0,'and the drawer says they differ and shows both, rather than answering from today\'s lexicon');
+ /* THE DRAWER CAN BE HANDED THE READING, AND THE DAY NEVER IS, 31 October.
+    dlyGraph takes a reading of this record and then carries the chain;
+    dlyWhy passes opt.reading to it; the composer and the seal hand it none,
+    because a day may not cite a rung (dlyGraph, engine/daily.js). The
+    fixture's own field runs no saboteur, so this is the same record, its
+    stories, practice and day, held at seven on every axis, the field the trace
+    gate reaches the top rung on. The known case first, or the graph check
+    proves nothing. */
+ const wq=clone(w.p); E.CHILD.forEach(c=>{wq.axes[c.nm]={held:7,opp:0};});
+ E.loadProfile(wq);
+ const RH=typeof E.readHeld==='function'?E.readHeld(wq):null, rung=g=>((g&&g.nodes)||[]).filter(n=>E.TRACE_CHAIN.indexOf(n.type)>=0).length;
+ ok(!!RH&&RH.sabs.length>0,'the held field runs a saboteur, '+(RH?RH.sabs.length:'no held reading'));
+ if(RH&&RH.sabs.length&&typeof E.dlyGraph==='function'){
+  const gR=E.dlyGraph(wq,RH), gN=E.dlyGraph(wq);
+  ok(rung(gN)===0&&rung(gR)>0&&gR.refused.length===0,'the drawer\'s graph carries the chain when it is handed the reading and none without, '+rung(gR)+' rungs against '+rung(gN)+', refused '+J(gR.refused).slice(0,120));
+  const dN=E.dlyWhy(wq,sid,0), dR=E.dlyWhy(wq,sid,0,{reading:RH});
+  ok(dN.ok&&dR.ok&&J(dR.refs)===J(dN.refs)&&J(dR.orphans)===J(dN.orphans),'and the drawer handed it resolves the same references and flags the same orphans');
+  ok(J(E.dlyCompose(wq,NOW,{reading:RH}))===J(E.dlyCompose(wq,NOW)),'and a day composed with one in hand is the day composed without');}
+ E.loadProfile(w.p);
  /* THE SEAM. practice allows fetter:Fear, and the graph refused it. */
  const q=E.blankProfile('seam'); let Q=q.practice;
  const g2=(act,a)=>{const r=E.practiceDo(Q,act,a,NOW); if(r.ok)Q=r.P; else bad=act+': '+(r.errs||[]).join('|');};

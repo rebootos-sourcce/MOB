@@ -12,7 +12,7 @@ for(let rw=0;rw<9;rw++)for(let c=0;c<19;c++){
    return Math.min(18,Math.floor(n.slot/(108/19)))===c&&n.cf===CHILD[rw].nm;});
   const held=seg.length?seg.reduce(function(a,n){return a+n.sq;},0)/seg.length:0;
   $('mxk').innerHTML='<b>'+DOMAINS[c].nm+'</b> × <b>'+CHILD[rw].nm+'</b><br>'
-   +seg.length+' address'+(seg.length===1?'':'es')+', SQ <b>'+held.toFixed(1)+'</b>'
+   +seg.length+' address'+(seg.length===1?'':'es')+', SQ <b>'+fmtPct('weight',held)+'</b>'
    +((AFFIN[DOMAINS[c].r]||[]).indexOf(CHILD[rw].nm)>=0
      ?'<br><b>1.3× affinity pair</b> for '+DOMAINS[c].r:'');});
  $('mx').appendChild(b);MXC.push(b);}
@@ -287,7 +287,9 @@ function renderPol2(r){
  s+='<rect x="'+(x-5)+'" y="'+y60+'" width="10" height="'+(y40-y60).toFixed(1)+'" rx="2" fill="rgba(128,128,128,.10)"/>';
  [[60,y60],[50,mid],[40,y40]].forEach(function(tk){
   s+='<line x1="'+(x-6)+'" y1="'+tk[1]+'" x2="'+(x+6)+'" y2="'+tk[1]+'" stroke="rgba(128,128,128,.34)" stroke-width="1"/>';
-  s+='<text x="'+(x-10)+'" y="'+(tk[1]+3.5)+'" text-anchor="end" class="pol2-t">'+tk[0]+'</text>';});
+  /* the scale in the marker's own unit, 17 October, percent phase 2: a tick
+     at 60 beside a marker reading 62% would be two units on one axis */
+  s+='<text x="'+(x-10)+'" y="'+(tk[1]+3.5)+'" text-anchor="end" class="pol2-t">'+tk[0]+'%</text>';});
  /* THE TWO ENDS ARE DOORS. The compass was a picture of a direction with
     nothing at either end of it. The top of the cone is anchored by the
     twelve, the bottom by the blueprint and the nine circles, and both are
@@ -348,7 +350,7 @@ function renderPol2(r){
     because the picture of an unread field is a real picture, but the number
     beside it is not printed until somebody has entered something. */
  s+='<text x="'+(x+20)+'" y="'+(yB+4).toFixed(1)+'" class="pol2-c" style="fill:'+mc+'">'
-  +(r.unread?'\u2013':Math.round(cq))+'</text></g>';
+  +fmtPct('cq',cq,{unread:r.unread})+'</text></g>';
  el.innerHTML=s+'</svg>';
  POL2.sig=sig; POL2.el=el; POL2.yB=yB;
  POL2.mv=el.querySelector('.pol2-mv');
@@ -360,8 +362,8 @@ function renderAcc(r){
  var el=$('acc'); if(!el)return;
  var a=accuracy(r), w=[];
  if(a.cov<21) w.push((21-a.cov)+' law'+(21-a.cov===1?'':'s')+' not answered yet');
- if(a.signal<70) w.push(a.signal>0?'signal '+a.signal+'%, '+a.held+' held':'no signal yet');
- if(a.exq<0.7) w.push(a.exq>=0.005&&!r.unread?'expression '+Math.round(a.exq*100)+'%':'no expression yet');
+ if(a.signal<70) w.push(a.signal>0?'signal '+fmtPct('signal',a.signal)+', '+a.held+' held':'no signal yet');
+ if(a.exq<0.7) w.push(a.exq>=0.005&&!r.unread?'expression '+fmtPct('exq',a.exq):'no expression yet');
  if(a.deg) w.push(a.deg+(a.deg>1?' pairs':' pair')+' of patterns too alike to tell apart');
  /* This was a figure and three lines of diagnostics, 325 by 140, parked in
     the bottom corner of the stage. A circle inside a rectangle leaves the
@@ -420,7 +422,10 @@ function renderAcc(r){
      larger, on his ruling.
      It lies on the stage again, round LR, level with zoom in the lower left,
      and keeps the orb: zoom's circles beside it are 44, the orb's size. */
-  +cr('Crown',un?0:a.pct,{size:'orb',raw:un?'\u2013':a.pct.toFixed(0),
+  /* a percent, 17 October, percent phase 2: fill and pill are both the
+     registry's accuracy kind (engine/pct.js), so the orb reads 58% and not a
+     bare 58 beside the CQ percents around it */
+  +cr('Crown',un?0:pct('accuracy',a.pct),{size:'orb',raw:fmtPct('accuracy',a.pct,{unread:un}),
     label:'Accuracy',hot:false})
   +'</button>';
  var bt=document.getElementById('accbtn');
@@ -429,11 +434,11 @@ function renderAcc(r){
 function runAccDrill(){
  var r=compute(), a=accuracy(r), w=[];
  if(a.cov<21) w.push((21-a.cov)+' law'+(21-a.cov===1?'':'s')+' not answered yet');
- if(a.signal<70) w.push(a.signal>0?'signal '+a.signal+'%, '+a.held+' held':'no signal yet');
- if(a.exq<0.7) w.push(a.exq>=0.005&&!r.unread?'expression '+Math.round(a.exq*100)+'%':'no expression yet');
+ if(a.signal<70) w.push(a.signal>0?'signal '+fmtPct('signal',a.signal)+', '+a.held+' held':'no signal yet');
+ if(a.exq<0.7) w.push(a.exq>=0.005&&!r.unread?'expression '+fmtPct('exq',a.exq):'no expression yet');
  if(a.deg) w.push(a.deg+(a.deg>1?' pairs':' pair')+' of patterns too alike to tell apart');
  rdShell('<div class="pm-eye">Family identification</div>'
-  +'<div class="ad-nm">'+(!r.unread&&a.pct>=0.05?a.pct.toFixed(1)+'%':'\u2013')+'</div>'
+  +'<div class="ad-nm">'+(!r.unread&&a.pct>=0.05?fmtPct('accuracy',a.pct):'\u2013')+'</div>'
   /* THE SPREAD IS SAID BY ITS CAUSES, NOT BY A TOLERANCE. This printed
      "Plus or minus 11.4 at this reading" and then explained what a narrow
      one and a wide one mean, which is a person being handed a figure and
@@ -450,7 +455,7 @@ function runAccDrill(){
   +'<div class="pm-eye">How reliable</div>'
   +'<p class="ad-p">'+(a.relN>=0.6?'Reliable':(a.relN>=0.3?'Partial':'Too close to call'))
   +'. '+(a.rel>0?'<b>'+a.rel+'%</b> of the laws are':'None of the laws are')+' spread three or more, which is what separates one '
-  +'family from another. Laws of integrity sitting close together name nothing.</p>');}
+  +'family from another. Laws of Moral Integrity sitting close together name nothing.</p>');}
 
 /* ---- personas ---- */
 /* CUSTOM, and a line a person can actually read.
@@ -719,11 +724,19 @@ var SHOW_DOES={
 function showOwnPlan(){
  var own=(typeof PROF_BY!=='undefined')?PROF_BY[PEOPLE[0].nm]:null;
  return (own&&own.plan)||null;}
+/* WHETHER THE OWN RECORD IS INSIDE THE GIFT, off its own meter, for the same
+   reason the plan is read off it: CURP is the example's here. Inside the gift
+   the own profile already shows every layer the example shows, so this line
+   told a new person that saboteurs "open on tier one" on a profile where they
+   were drawn that minute. */
+function showOwnGift(){
+ var own=(typeof PROF_BY!=='undefined')?PROF_BY[PEOPLE[0].nm]:null;
+ return !!own&&planInGift((own.meter&&own.meter.unique)||[]);}
 function showLine(what){
  var head='A worked example shows every reading and runs nothing.';
  if(what==='import')return head+' Open your own profile first, then load the file.';
  var does=SHOW_DOES[what];
- var nx=planNextSight(showOwnPlan());
+ var nx=planNextSight(showOwnPlan(),showOwnGift());
  var tail=nx
   ?(function(t){return t.charAt(0).toUpperCase()+t.slice(1);})(planList(nx.adds.map(function(g){return g.nm;})))
    +' show here, and on your own profile they open on '+planNmIn(nx.to)+'.'

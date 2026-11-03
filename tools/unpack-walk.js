@@ -56,6 +56,7 @@ const SEEDS=[
  ['assemblage point','\\bassemblage points?\\b'],
  ['fetter','\\bfetters?\\b'],['saboteur','\\bsaboteurs?\\b'],
  ['complex','\\bcomplex(es)?\\b'],['hyper complex','\\bhyper[- ]?complex(es)?\\b'],
+ ['super complex','\\bsuper[- ]?complex(es)?\\b'],
  ['character','\\bcharacter\\b'],['mask','\\bmasks?\\b'],
  ['cq','\\bCQ\\b'],
  ['charge','\\bcharge\\b'],['law','\\blaws?\\b'],

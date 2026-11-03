@@ -19,6 +19,9 @@
      3  no control is under 44 by 44. A link inside a paragraph is prose and
         is measured at 24, which is the pointer floor, and every one of them
         is printed rather than hidden, so an exemption cannot quietly grow.
+        Each is measured by the largest single piece the browser draws it
+        in, never by the box around all of its pieces, which a link broken
+        over two lines makes two lines tall.
      4  no page scrolls sideways, and no page is empty.
      5  every internal link points at a file that exists. A funnel with a
         broken route is a funnel with a hole in it.
@@ -85,16 +88,33 @@ const ok = (c, m) => { if (c) PASS++; else { FAIL++; console.log('  FAIL  ' + m)
 /* every interactive thing on the page, with what it measures and whether it
    sits inside a paragraph. A link in a sentence is prose: sizing it to 44
    would break the line box it lives in, so it is held to the 24 pointer floor
-   and printed by name. Everything else is a control and meets 44. */
+   and printed by name. Everything else is a control and meets 44.
+
+   THE BOX AROUND A LINK IS NOT THE LINK, 23 October. This read
+   getBoundingClientRect, and for a link broken over two lines that is one
+   box around both pieces. The buy page's prose link read 49 tall at 390 here
+   and at both widths with Inter absent, as on CI, while each piece a press
+   can land in was 21, measured with elementFromPoint. It passed for that
+   reason alone, and failed only where Inter, a narrow face, kept it on one
+   line: at 1600, on a machine with Inter installed. So each element is
+   measured by the largest single piece getClientRects gives it, and the box
+   stands in only for an element that draws no piece of its own. The label
+   has its white space folded too, so a failure prints on one line.
+   Checked against the known bad case before it was trusted: the buy page
+   from before its fix fails here at both widths, with Inter installed and
+   with it hidden, where the box failed it only at 1600 with Inter installed. */
 const PROBE = () => {
   const out = { ctrl: [], prose: [], links: [] };
   document.querySelectorAll('a[href],button,input,select,textarea,[role="button"]')
     .forEach(n => {
       const r = n.getBoundingClientRect();
       if (r.width === 0 && r.height === 0) return;              /* not shown */
-      const t = (n.textContent || '').trim().slice(0, 36);
-      const rec = { t: t, w: Math.round(r.width), h: Math.round(r.height),
-        tag: n.tagName.toLowerCase() };
+      const q = [...n.getClientRects()].filter(p => p.width > 0 && p.height > 0);
+      const big = q.reduce((a, p) =>
+        Math.min(p.width, p.height) > Math.min(a.width, a.height) ? p : a, q[0] || r);
+      const t = (n.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 36);
+      const rec = { t: t, w: Math.round(big.width), h: Math.round(big.height),
+        pieces: q.length, tag: n.tagName.toLowerCase() };
       (n.closest('p') ? out.prose : out.ctrl).push(rec);
     });
   document.querySelectorAll('a[href]').forEach(n => {
@@ -103,6 +123,10 @@ const PROBE = () => {
   });
   return out;
 };
+/* a measured element as the log prints it, saying how many pieces it was
+   drawn in whenever that was more than one */
+const SIZE = c => '"' + c.t + '" ' + c.w + 'x' + c.h
+  + (c.pieces > 1 ? ' (largest of ' + c.pieces + ' pieces)' : '');
 
 (async () => {
   const browser = await chromium.launch(
@@ -158,10 +182,10 @@ const PROBE = () => {
       const under = pr.ctrl.filter(c => c.w < 44 || c.h < 44);
       ctrlSeen += pr.ctrl.length; proseSeen += pr.prose.length;
       ok(under.length === 0, tag + ': ' + under.length + ' control(s) under 44 by 44: '
-        + under.slice(0, 4).map(c => '"' + c.t + '" ' + c.w + 'x' + c.h).join(', '));
+        + under.slice(0, 4).map(SIZE).join(', '));
       const tiny = pr.prose.filter(c => c.w < 24 || c.h < 24);
       ok(tiny.length === 0, tag + ': ' + tiny.length + ' prose link(s) under 24: '
-        + tiny.slice(0, 4).map(c => '"' + c.t + '" ' + c.w + 'x' + c.h).join(', '));
+        + tiny.slice(0, 4).map(SIZE).join(', '));
       /* 5. every route lands */
       const dead = [...new Set(pr.links)].filter(u => u && !fs.existsSync(path.join(DIR, u)));
       ok(dead.length === 0, tag + ': ' + dead.length + ' route(s) go nowhere: ' + dead.join(' '));
@@ -173,8 +197,7 @@ const PROBE = () => {
         + '  routes ' + [...new Set(pr.links)].length
         + '  requests ' + reqs.length);
       if (pr.prose.length) {
-        console.log('       prose, held at 24: '
-          + pr.prose.map(c => '"' + c.t + '" ' + c.w + 'x' + c.h).join(', '));
+        console.log('       prose, held at 24: ' + pr.prose.map(SIZE).join(', '));
       }
       await ctx.close();
     }
@@ -396,16 +419,40 @@ const PROBE = () => {
       for (let k = 1; k <= N; k++) ok(has(sa, k), '@' + w + ': the whole reading is missing layer ' + k + '\'s data');
     }
 
-    const rd = await page.evaluate(() => ({
-      sections: document.querySelectorAll('.read section').length,
-      seats: [...document.querySelectorAll('.seats li')].map(li => ({
-        nm: li.querySelector('b').textContent.trim(),
-        v: parseFloat(li.querySelector('em').textContent) })),
-      bigring: document.querySelectorAll('.bigring .ring-b').length,
-      acts: document.querySelectorAll('.acts button').length,
-      text: document.body.innerText.trim().length,
-      cq: (document.querySelector('.cq b') || {}).textContent
-    }));
+    /* THE QUIZ PRINTS THE APP'S PERCENT, 31 October, percent phase 2 slice 6
+       (HANDOFF-2026-10-15/PERCENT-PHASE-2-2026-10-17.md), which was never
+       built. The quiz printed coherence as a bare "50" while the app printed
+       "50%" for the same record one press later, and the laws and seats as
+       "3.8" under "out of ten". The QA walk of 31 October found it, F2.
+       NAMED CHANGE: this gate held the defect as the pass, /^\d+$/ on the
+       coherence figure, "the reading prints no coherence figure". It holds
+       the registry's figure now. Every figure is read against fmtPct in the
+       page, which is the engine's own, and every bar against pct for the
+       same kind, because the rule is the ring: the percent printed is the
+       fill drawn for that quantity. A seat row is a mean of sq, which the
+       registry files under weight (engine/pct.js). */
+    const rd = await page.evaluate(() => {
+      const s = scored(), r = read(s.p).reading;
+      const fig = e => (e && e.textContent || '').trim();
+      const bar = li => parseFloat((li.querySelector('.tr i') || { style: {} }).style.width);
+      const lawV = {}; s.laws.forEach(l => { lawV[l.nm] = l.v; });
+      return {
+        sections: document.querySelectorAll('.read section').length,
+        seats: [...document.querySelectorAll('.seats li')].map((li, i) => ({
+          nm: li.querySelector('b').textContent.trim(), say: fig(li.querySelector('em')), bar: bar(li),
+          want: fmtPct('weight', (LOADS || [])[i] || 0), fill: pct('weight', (LOADS || [])[i] || 0) || 0,
+          v: (LOADS || [])[i] || 0 })),
+        laws: [...document.querySelectorAll('.laws li')].map(li => {
+          const nm = li.querySelector('b').textContent.trim();
+          return { nm, say: fig(li.querySelector('em')), bar: bar(li),
+            want: fmtPct('law', lawV[nm]), fill: pct('law', lawV[nm]) || 0 }; }),
+        bigring: document.querySelectorAll('.bigring .ring-b').length,
+        acts: document.querySelectorAll('.acts button').length,
+        text: document.body.innerText.trim().length,
+        cq: fig(document.querySelector('.cq b')), cqWant: fmtPct('cq', r.CQ),
+        tenths: [...document.querySelectorAll('.read p.sm')].map(p => p.textContent).filter(t => /out of ten/.test(t))
+      };
+    });
     ok(rd.sections > 0, '@' + w + ': the reading has no sections');
     ok(rd.seats.length === shape.seats.length,
       '@' + w + ': the reading prints ' + rd.seats.length + ' seats for ' + shape.seats.length);
@@ -413,15 +460,29 @@ const PROBE = () => {
       '@' + w + ': the reading draws ' + rd.bigring + ' bands for ' + shape.seats.length);
     ok(rd.acts > 0, '@' + w + ': the reading offers nothing to do next');
     ok(rd.text > 0, '@' + w + ': the reading is empty');
-    ok(/^\d+$/.test(String(rd.cq || '')), '@' + w + ': the reading prints no coherence figure');
+    ok(rd.cq === rd.cqWant && /^(\d+%|–)$/.test(rd.cq),
+      '@' + w + ': the reading prints coherence "' + rd.cq + '", the registry prints "' + rd.cqWant + '"');
+    ok(rd.laws.length > 0, '@' + w + ': the reading prints no laws');
+    rd.laws.forEach(l => {
+      ok(l.say === l.want, '@' + w + ': the law ' + l.nm + ' prints "' + l.say + '", the registry prints "' + l.want + '"');
+      ok(Math.abs(l.bar - l.fill) < 0.5, '@' + w + ': the law ' + l.nm + ' draws ' + l.bar + '% and prints ' + l.say);
+    });
+    rd.seats.forEach(x => {
+      ok(x.say === x.want, '@' + w + ': the seat ' + x.nm + ' prints "' + x.say + '", the registry prints "' + x.want + '"');
+      ok(Math.abs(x.bar - x.fill) < 0.5, '@' + w + ': the seat ' + x.nm + ' draws ' + x.bar + '% and prints ' + x.say);
+    });
+    ok(rd.tenths.length === 0, '@' + w + ': the reading still says "out of ten" over a percent: ' + rd.tenths.join(' | '));
 
     /* 7. one arithmetic. The heaviest band the ring named has to be the
-       heaviest row the bars print. */
-    const heaviestBar = rd.seats.slice().sort((a, b) => b.v - a.v)[0];
+       heaviest row the bars print. A row printed as the dash carries
+       nothing, so it reads as nought, never as a figure parseFloat cannot
+       read. */
+    const printed = x => x.say === '–' ? 0 : parseFloat(x.say);
+    const heaviestBar = rd.seats.slice().sort((a, b) => printed(b) - printed(a))[0];
     ok(label.indexOf(heaviestBar.nm) >= 0,
       '@' + w + ': the ring says "' + label + '" and the bars say ' + heaviestBar.nm);
     console.log('  reading: ' + rd.sections + ' sections, coherence ' + rd.cq
-      + ', heaviest ' + heaviestBar.nm + ' at ' + heaviestBar.v
+      + ', heaviest ' + heaviestBar.nm + ' at ' + heaviestBar.say
       + ', ' + rd.acts + ' things to do next');
 
     /* no dead end: every control on the reading still responds */
@@ -478,7 +539,7 @@ const PROBE = () => {
     const spr = await page.evaluate(PROBE);
     const sunder = spr.ctrl.filter(c => c.w < 44 || c.h < 44);
     ok(sunder.length === 0, '@' + w + ': ' + sunder.length + ' story control(s) under 44 by 44: '
-      + sunder.slice(0, 4).map(c => '"' + c.t + '" ' + c.w + 'x' + c.h).join(', '));
+      + sunder.slice(0, 4).map(SIZE).join(', '));
 
     /* a press is held, said back, keeps focus, and a second press takes it back */
     const first = asking[0], ai = first.rows[0];
@@ -631,6 +692,37 @@ const PROBE = () => {
          it does, this line moves with it. */
       ok(!/invite somebody|invitations? a month|when they join|refer a friend/i.test(buy.text),
         'buy: promises a referral, and nothing in the product invites anybody or grants patterns for it');
+      /* THE FREE PACE, READ OFF THE ENGINE, 24 October (P2-3 of the 23 October
+         QA pass). The page said "Ten a week against a run of 25 means one
+         release every two and a half weeks", true only while every run cost 25.
+         Since 1 October a run costs the minimum for what was picked, RUN_MIN, so
+         how many releases a week the free grant buys is the engine's number. */
+      {
+        const grant = E.PLAN_BY.free.grant, perWeek = Math.floor(grant / E.RUN_MIN);
+        const WORD = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
+        const either = n => '(' + (WORD[n] || String(n)) + '|' + n + ')';
+        const pace = (buy.text.match(/The free rung banks\.[^\n]*/) || [''])[0];
+        ok(new RegExp('\\b' + either(grant) + ' patterns a week\\b', 'i').test(pace)
+          && new RegExp('\\b' + either(perWeek) + ' releases? a week\\b', 'i').test(pace),
+          'buy: the free pace does not say ' + grant + ' patterns a week is ' + perWeek + ' releases a week (RUN_MIN '
+          + E.RUN_MIN + '), got ' + JSON.stringify(pace));
+        ok(!/two and a half weeks|smaller than a run/i.test(buy.text),
+          'buy: still says the free pace from when every run cost 25');
+      }
+      /* A PAID MONTH IS THAT MONTH'S, 24 October (P2-4). planFromServer writes
+         carried 0 on every new period and carry over for paid tiers is not
+         built (DECISIONS.md, 17 October), so the page that sells the months
+         says so beside the ladder. This moves the day carry over is built. */
+      ok(/a paid month's new patterns are that month's/i.test(buy.text) && /does not carry over/i.test(buy.text),
+        'buy: does not say that a paid month\'s unopened patterns do not carry over at renewal');
+      /* THE EVERY RUNG LINE IN THE APP'S OWN WORDS, 24 October (P3-8). The app
+         says "the Laws of Moral Integrity" and "the Laws of Action" since 22
+         October (PLAN_ALWAYS, engine/plan.js), and the page said "the laws,
+         action". Every item but the rerun clause, which the page says in its own
+         section, is held on the free rung in PLAN_ALWAYS's words. */
+      for (const item of E.PLAN_ALWAYS.filter(x => !/^rerunning/.test(x)))
+        ok((buy.rungs.free || '').indexOf(item.toLowerCase()) >= 0,
+          'buy: the every rung line does not say "' + item + '", the app\'s own words (PLAN_ALWAYS)');
       await ctx.close();
     }
   }
@@ -816,6 +908,75 @@ const PROBE = () => {
     await nctx.close();
   }
 
+
+  /* ---------- the landing's naming, beat 02 ----------
+     THE SIX NAMES WERE DEAD FOR FOUR WEEKS AND THIS FILE WAS GREEN THE WHOLE
+     TIME. Every one of them was measured at 44 by 44 in check 3 above and
+     not one was ever pressed. The handler that sets SG.named (feelBtns, Round
+     RD, 61a44ed7, 3 October) went missing in the 4 October merge 0c24409e,
+     neither parent of which carries it, while the canvas that reads SG.named
+     stayed. Found by hand on 31 October, reviews/funnel-golden-path-
+     2026-10-31.md, F1. So each name is pressed here, the way a person
+     presses it: tapped on a touch screen at 390, clicked at 1600, and once
+     more under reduced motion, which takes its own draw path in the handler.
+
+     Held: a press reads pressed and only that name does; the status line
+     says the word back; a second press takes it back and empties the line;
+     no press throws. SG itself is closed inside the page's script, so the
+     gate reads what a person reads, the pressed state and the line.
+
+     THE LANDING SNAPS BETWEEN FRAMES ON ITS OWN SCROLL, and the QA walk's
+     first probe counted a snap still settling as a press. The frame is
+     scrolled to and left to settle before the first press. The names come
+     off the markup, never typed here.
+     Checked against the build without the handler first: it fails there at
+     both widths and under reduced motion, every name. */
+  for (const [w, hgt] of WIDTHS) {
+    for (const reduce of [false, true]) {
+      if (reduce && w < 400) continue;          /* one reduced run is the draw path; the width is not */
+      const tag = 'naming @' + w + (reduce ? ' reduced' : '');
+      console.log('\n--- the landing naming, beat 02, @' + w + (reduce ? ', reduced motion' : '') + ' ---');
+      const touch = w < 400;
+      const fctx = await browser.newContext({ viewport: { width: w, height: hgt }, hasTouch: touch, isMobile: touch,
+        reducedMotion: reduce ? 'reduce' : 'no-preference' });
+      const fp = await fctx.newPage();
+      const ferr = [];
+      fp.on('pageerror', e => ferr.push(String(e && e.message || e)));
+      await fp.goto('file://' + path.join(DIR, 'index.html'), { waitUntil: 'load' });
+      await fp.evaluate(() => document.getElementById('name').scrollIntoView({ block: 'center', behavior: 'instant' }));
+      let lastY = -1;
+      for (let k = 0; k < 20; k++) {             /* settled: the same scroll twice running */
+        await fp.waitForTimeout(150);
+        const y = await fp.evaluate(() => scrollY);
+        if (y === lastY) break; lastY = y;
+      }
+      const names = await fp.$$eval('#name .feel button', b => b.map(x => ({ f: x.dataset.f, t: x.textContent.trim() })));
+      ok(names.length > 0, tag + ': the naming frame has no names to press');
+      const stateOf = () => fp.evaluate(() => ({
+        on: [...document.querySelectorAll('#name .feel button')].filter(b => b.getAttribute('aria-pressed') === 'true').map(b => b.dataset.f),
+        said: (document.getElementById('named') || {}).textContent || '' }));
+      const press = async f => { const b = fp.locator('#name .feel button[data-f="' + f + '"]');
+        if (touch) await b.tap(); else await b.click(); };
+      let live = 0;
+      for (const n of names) {
+        await press(n.f);
+        const s = await stateOf();
+        const good = s.on.length === 1 && s.on[0] === n.f && s.said.toLowerCase().indexOf(n.t.toLowerCase()) >= 0;
+        ok(good, tag + ': pressing ' + n.t + ' left pressed [' + s.on.join(',') + '] and the line "' + s.said + '"');
+        if (good) live++;
+      }
+      /* the last name pressed is still held, so a second press on it takes it back */
+      const lastN = names[names.length - 1];
+      await press(lastN.f);
+      const off = await stateOf();
+      ok(off.on.length === 0 && off.said === '',
+        tag + ': a second press on ' + lastN.t + ' left pressed [' + off.on.join(',') + '] and the line "' + off.said + '"');
+      ok(ferr.length === 0, tag + ': the landing threw: ' + ferr.slice(0, 2).join(' | '));
+      console.log('  ' + live + ' of ' + names.length + ' names register when pressed' + (touch ? ' (tapped)' : '')
+        + ', second press takes it back: ' + (off.on.length === 0 && off.said === ''));
+      await fctx.close();
+    }
+  }
 
   /* ---------- the landing's signal test, his slide 03 ----------
      ATUNED-Funnel-Signal-Story-Pattern-Release-Reframe-TDD-v1.md sections 8
@@ -1085,6 +1246,65 @@ const PROBE = () => {
     ok(cerrs.length === 0, 'quiz @' + w + ': ' + cerrs.length + ' error(s) in the crisis panel: ' + cerrs.slice(0, 2).join(' | '));
     console.log('  question line, pills, Story door and numbers checked');
     await cctx.close();
+  }
+
+  /* ---------- a saboteur card says when its name is inferred ----------
+     P2-4 of the inference audit, 24 October. Across simulated quiz takers
+     the two names shown most were Diffuse Freezer and Sacral Drifter, which
+     are clusters the engine names for their seat and feeling and are not two
+     of the 33, and their cards read exactly as Judge's does. A card now
+     carries "Inferred:" exactly when its saboteur is flagged unnamed on the
+     reading, and the flag is checked against the 33 themselves, SAB33, so a
+     card can neither hide an inferred name nor call one of the 33 inferred.
+     Answers are searched for on the page's own reader until the four shown
+     hold both kinds, so the check is never vacuous. Checked against the page
+     before this change first, where it fails on the line. */
+  for (const [w, hgt] of WIDTHS) {
+    console.log('\n--- the quiz saboteur cards, inferred or one of the 33, @' + w + ' ---');
+    const ictx = await browser.newContext({ viewport: { width: w, height: hgt } });
+    const ip = await ictx.newPage();
+    const ierrs = [];
+    ip.on('pageerror', e => ierrs.push(String(e && e.message || e)));
+    await ip.goto('file://' + path.join(DIR, 'quiz.html'), { waitUntil: 'load' });
+    const inf = await ip.evaluate(() => {
+      let seed = 11;
+      const R = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+      const cs = [...new Set(QQ.map(q => q.c))];
+      let tries = 0, top = null;
+      for (; tries < 400; tries++) {
+        const lean = {}; cs.forEach(c => { lean[c] = R() * 4; });
+        const ans = {};
+        QQ.forEach((q, i) => { ans[i] = Math.max(0, Math.min(4, Math.round(lean[q.c] + (R() - 0.5) * 2))); });
+        A = ans;
+        const t = topSabs(read(scored().p).reading, 4);
+        if (t.some(s => s.unnamed) && t.some(s => !s.unnamed)) { top = t; break; }
+      }
+      if (!top) return { tries: tries, top: null };
+      STATE = 'read'; READ_AT = 99; render();
+      const of33 = nm => SAB33.some(r => KB_KEY(r[0]) === KB_KEY(nm));
+      const cards = [...document.querySelectorAll('.read .sab')].map(c => ({
+        nm: (c.querySelector('h3') || {}).textContent || '',
+        inferred: [...c.querySelectorAll('.sl b')].some(b => b.textContent === 'Inferred:'),
+        line: ([...c.querySelectorAll('.sl')].filter(d => /^Inferred:/.test(d.textContent))[0] || {}).textContent || '' }));
+      return { tries: tries, top: top.map(s => ({ nm: s.nm, unnamed: !!s.unnamed, of33: of33(s.nm) })), cards: cards };
+    });
+    ok(!!inf.top, '@' + w + ': no answers in ' + inf.tries + ' tries showed an inferred cluster beside one of the 33');
+    if (inf.top) {
+      ok(inf.cards.length === inf.top.length && inf.cards.every((c, i) => c.nm === inf.top[i].nm),
+        '@' + w + ': the cards are the four the reader ranks: ' + JSON.stringify(inf.cards.map(c => c.nm)) + ' against '
+        + JSON.stringify(inf.top.map(s => s.nm)));
+      ok(inf.top.every(s => s.unnamed === !s.of33),
+        '@' + w + ': the engine flags unnamed exactly the names that are not one of the 33: ' + JSON.stringify(inf.top));
+      ok(inf.cards.every((c, i) => c.inferred === !!(inf.top[i] && inf.top[i].unnamed)),
+        '@' + w + ': a card says Inferred exactly when its name is not one of the 33: '
+        + JSON.stringify(inf.cards.map((c, i) => [c.nm, c.inferred, inf.top[i] && inf.top[i].unnamed])));
+      const said = inf.cards.filter(c => c.inferred).map(c => c.line);
+      ok(said.length > 0 && said.every(l => /33/.test(l) && /named for where it sits and the feeling it runs on/.test(l)),
+        '@' + w + ': and the line says what an inferred name is: ' + JSON.stringify(said[0] || ''));
+      console.log('  found in ' + (inf.tries + 1) + ' tries: ' + inf.cards.map(c => c.nm + (c.inferred ? ' (inferred)' : '')).join(', '));
+    }
+    ok(ierrs.length === 0, '@' + w + ': ' + ierrs.length + ' error(s) on the saboteur cards: ' + ierrs.slice(0, 2).join(' | '));
+    await ictx.close();
   }
 
   /* ---------- the sendable build, if it has been made ---------- */

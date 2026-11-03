@@ -157,7 +157,14 @@ const SPY = () => {
   ok(bodies.every(b => typeof b.text === 'string' && /^(list|frame)$/.test(b.style) && ID.test(b.device || '') && Object.keys(b).length === 3),
     'each sent the line, its style and a device code, and nothing else');
   ok(new Set(bodies.map(b => b.device)).size === 1 && anonHeard.r.devStored === bodies[0].device, 'the same device code every time, and kept in the browser');
-  ok(anonHeard.r.audios === anonHeard.asked.length, 'each answer was handed to an audio element, ' + anonHeard.r.audios + ' of ' + anonHeard.asked.length);
+  /* A LINE ALREADY RENDERED IS PLAYED AGAIN WITHOUT A REQUEST, 17 October
+     (studioAsk, ui/sound.js): each answer still reaches an audio element, and
+     a repeat reaches one too, so there are at least as many as requests, and
+     no line is asked for twice (tests/releasechain.js 3 holds the run) */
+  const lines = new Set(bodies.map(b => b.style + '\n' + b.text)).size;
+  ok(anonHeard.r.audios >= anonHeard.asked.length && lines === anonHeard.asked.length,
+    'each answer was handed to an audio element and no line was asked for twice, ' + anonHeard.r.audios + ' played, '
+    + anonHeard.asked.length + ' asked, ' + lines + ' distinct');
   ok(anonHeard.r.lost === false, 'and the run never gave up on the voice: ' + anonHeard.r.status);
 
   const refused = await runWay('signed out, the server refuses', { signed: false }, r =>

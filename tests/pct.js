@@ -1,0 +1,262 @@
+/* ============================================================
+   THE PERCENT IS THE FILL. Percent phase 2, 17 October.
+
+   His words, 16 October: "Instead of 0.0, site wide, we need to convert those
+   numbers into percent. I think it's a more natural language for people to
+   understand." And the rule the framework drew from it
+   (HANDOFF-2026-10-15/PERCENT-FRAMEWORK-2026-10-16.md): the percent printed
+   for a quantity is the fill of the ring or bar drawn for that same quantity,
+   so what is read and what is drawn can never disagree.
+
+   tests/engine.js holds the formula, pct and fmtPct in engine/pct.js. This
+   holds the screen, in a real Chromium, in three parts.
+
+     F  THE FILL. Every ring, badge, glass bar pill and rail bar on every
+        surface TABDEF and TABEXTRA name, at 1600 and at 390, on a blank
+        profile and on loaded worked examples: where the pill prints N%, N is
+        the arc's own fill, within one for the rounding. It reads the arc off
+        the drawing (stroke-dashoffset against stroke-dasharray), never off
+        the code, so a renderer that fills one figure and prints another
+        fails here by name. The inventory found three that did.
+     A  NO ALARM ON A PERCENT. A ring printing a percent is never in the
+        alarm state, the default the team took on 17 October and wrote in
+        DECISIONS.md as his to overrule: red on a percent reads as a failed
+        mark, and nothing here sets out to give one.
+     S  THE SLICES. Each surface phase 2 has moved prints the registry's own
+        form, read against fmtPct off the same compute(), and prints no bare
+        decimal where a score stood. A surface joins this list in the change
+        that moves it, so the list is the record of what has moved: S1 the
+        shared ring and the Field, S2 Summary, S3 Analytics and the record, S4 the drills and the hover lines.
+
+   It walks with reduced motion, so every ring is at its value the frame it
+   is written and the count up tween in ui/component.js never stands between
+   the pill and the arc. Run against the build before slice 1 it fails on the
+   glass bar's two weights (drawn 44, printed 4), the CQ and DQ figures and
+   the rail's 0.17; checked that way first, because a gate that has never
+   failed has not been shown to look.
+   ============================================================ */
+const {chromium}=require('playwright');
+const path=require('path');
+const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1';
+let PASS=0,FAIL=0;
+const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
+const J=JSON.stringify;
+const booted=async p=>{
+ try{await p.waitForFunction(()=>document.body.classList.contains('booted'),null,{timeout:15000});}catch(e){}
+ try{await p.waitForTimeout(600);
+  await p.evaluate(()=>{if(typeof OB!=='undefined'&&OB.open&&typeof obClose==='function')obClose();});
+  await p.waitForTimeout(120);}catch(e){}};
+
+/* every reading on the page that draws a fill and prints a figure, as
+   {where, fill, text, alarm}. The release overlay is left out: its results
+   and its rings are being rebuilt by another seat, and its percent items are
+   listed for that seat in the strategy for this phase. */
+const READ=`(function(){
+ var out=[];
+ function vis(e){return !!(e.offsetParent||e.getClientRects().length);}
+ function where(e){var h=e.closest('[id]');return (h?'#'+h.id:'?')+' '+((e.getAttribute('title')||e.textContent||'').trim().slice(0,40));}
+ function arcFill(c){if(!c)return null;
+  var C=parseFloat(c.getAttribute('stroke-dasharray')), off=parseFloat(c.getAttribute('stroke-dashoffset'));
+  if(!(C>0)||!isFinite(off))return null; return 100*(1-off/C);}
+ document.querySelectorAll('.cr,.crb').forEach(function(e){
+  if(!vis(e)||e.closest('#rel'))return;
+  var c=e.querySelector('svg.arc circle:last-child,svg.crb-a circle:last-child');
+  var v=e.querySelector(':scope > .v,:scope > .crb-v');
+  if(!v)return;
+  var st=c?getComputedStyle(c).stroke:'';
+  out.push({kind:'ring',where:where(e),fill:arcFill(c),text:v.textContent.trim(),
+   alarm:e.classList.contains('hot')||/rgb\\(\\s*255,\\s*(46|21),\\s*(31|0)\\s*\\)|rgb\\(\\s*212,\\s*18,\\s*0\\s*\\)/.test(st)});});
+ document.querySelectorAll('#fbar [data-fb]').forEach(function(b){
+  if(!vis(b))return; var val=b.querySelector('.val'), v=b.querySelector('.fb-v'); if(!val||!v)return;
+  out.push({kind:'pill',where:'#fbar '+b.getAttribute('data-fb'),fill:parseFloat(val.getAttribute('stroke-dasharray')),
+   text:v.textContent.trim(),alarm:false});});
+ document.querySelectorAll('.rbar').forEach(function(b){
+  if(!vis(b))return; var v=b.querySelector('.rb-v'); if(!v)return;
+  out.push({kind:'bar',where:'.rbar '+(b.getAttribute('data-q')||'')+' '+((b.querySelector('.rb-n')||{}).textContent||''),
+   fill:b.classList.contains('off')?0:parseFloat(b.getAttribute('data-w')),text:v.textContent.trim(),alarm:false});});
+ return out;})()`;
+
+(async()=>{
+ const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ require('./net.js').guardBrowser(browser);
+ const people=['', 'Marcus', 'James', 'Diane'];
+ for(const [W,H] of [[1600,1000],[390,844]]){
+  const page=await browser.newPage({viewport:{width:W,height:H},reducedMotion:'reduce'});
+  await page.addInitScript(require('./seed.js').FULL_SIGHT);
+  const errs=[]; page.on('pageerror',e=>errs.push(e.message));
+  await page.goto(FILE,{waitUntil:'load'}); await booted(page);
+  /* the wheel's core is a canvas, so its figure is read off fillText */
+  await page.evaluate(()=>{window.__FT=[];var f=CanvasRenderingContext2D.prototype.fillText;
+   CanvasRenderingContext2D.prototype.fillText=function(t){try{window.__FT.push(String(t));}catch(e){} return f.apply(this,arguments);};});
+  const tabs=await page.evaluate(()=>TABDEF.map(t=>[t.nm,t.k]).concat(Object.keys(TABEXTRA).map(k=>[TABEXTRA[k].nm,TABEXTRA[k].k])));
+  let seen=0, pctSeen=0;
+  for(const who of people){
+   const tag=W+' '+(who||'blank')+': ';
+   for(const [nm,k] of tabs){
+    await page.evaluate(([who,k])=>{
+     const i=who?PEOPLE.findIndex(x=>x.nm===who):0; loadP(i<0?0:i); setTab(k); render();},[who,k]);
+    await page.waitForTimeout(260);
+    const rows=await page.evaluate(READ);
+    seen+=rows.length;
+    for(const x of rows){
+     const m=/^(\d+)%$/.exec(x.text);
+     if(!m)continue; pctSeen++;
+     /* F: the printed percent is the arc's own fill */
+     ok(x.fill!==null&&Math.abs(+m[1]-x.fill)<=1,
+      'F: '+tag+nm+', '+x.kind+' '+J(x.where)+' prints '+x.text+' over a fill of '+(x.fill===null?'nothing':x.fill.toFixed(1)));
+     /* A: and it is never in the alarm state */
+     ok(!x.alarm,'A: '+tag+nm+', '+x.kind+' '+J(x.where)+' prints '+x.text+' in the alarm colour');}}
+  }
+  console.log('  '+W+': '+seen+' readings with a fill read across '+tabs.length+' surfaces, '+pctSeen+' of them printing a percent');
+  ok(pctSeen>0,'F: '+W+': the walk found percents to check, so it is looking at something');
+
+  /* ---------- S, slice 1: the shared ring and the Field's headline ---------- */
+  for(const who of ['Marcus','James','Diane']){
+   const tag=W+' '+who+': ';
+   const s=await page.evaluate(async who=>{
+    loadP(PEOPLE.findIndex(x=>x.nm===who)); setTab(TAB.FIELD); window.__FT=[]; render();
+    await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+    const R=compute(), t=q=>{const e=document.querySelector(q); return e?e.textContent.trim():null;};
+    const aff=(R.aff||[]).map((v,i)=>({i,v})).sort((a,b)=>b.v-a.v), top=aff[0]||{i:0};
+    /* NAMED CHANGE, 30 October, r1: the coherence pair prints one figure, so
+       CQ is read off its own door's spoken name, and DQ is an amount row */
+    const cqDoor=document.querySelector('#key .rb2-k.l'), cqSaid=cqDoor?(/^CQ, ([^.]*%|–)/.exec(cqDoor.getAttribute('aria-label')||'')||[])[1]:null;
+    const dock={}; document.querySelectorAll('#keylo .rbar').forEach(b=>{dock[(b.querySelector('.rb-n')||{}).textContent.trim()]=(b.querySelector('.rb-v')||{}).textContent.trim();});
+    const node=Array.from(document.querySelectorAll('.cr,.crb')).filter(e=>/ seat\. /.test(e.getAttribute('title')||''))
+     .map(e=>(e.querySelector('.v,.crb-v')||{}).textContent||'');
+    const pol=t('#pol2 .pol2-c');
+    return {unread:!!R.unread,
+     got:{laws:t('#fbar [data-fb=laws] .fb-v'),shadow:t('#fbar [data-fb=shadow] .fb-v'),addresses:t('#fbar [data-fb=addresses] .fb-v'),
+      seats:t('#fbar [data-fb=seats] .fb-v'),archetypes:t('#fbar [data-fb=archetypes] .fb-v'),ring:t('#railtop .cr .v'),
+      cq:cqSaid||null,dq:dock.DQ,vit:dock.Vitality,flow:dock.Flow,acc:t('#acc .cr .v'),pol:pol},
+     want:{laws:fmtPct('cq',R.CQ),shadow:fmtPct('dq',R.DQ),addresses:fmtPct('weight',R.SQm),seats:fmtPct('weight',R.darkV||0),
+      archetypes:fmtPct('archetype',archExpr(top.i)),ring:fmtPct('cq',R.CQ),cq:fmtPct('cq',R.CQ),dq:fmtPct('dq',R.DQ),
+      vit:fmtPct('vitality',R.X),flow:fmtPct('flow',flSpeed()),acc:fmtPct('accuracy',accuracy(R).pct),pol:pol===null?null:fmtPct('cq',R.CQ)},
+     node:node, core:window.__FT.indexOf(fmtPct('cq',R.CQ))>=0||Array.from(document.querySelectorAll('.frcq text')).some(e=>e.textContent.indexOf(fmtPct('cq',R.CQ))>=0)};},who);
+   ok(!s.unread,'S1: '+tag+'the example reads');
+   for(const k of Object.keys(s.want)){
+    if(s.got[k]===null&&(k==='acc'||k==='pol'||k==='vit'||k==='flow'))continue;
+    ok(s.got[k]===s.want[k],'S1: '+tag+k+' prints the registry\'s form, '+J(s.got[k])+' against '+J(s.want[k]));}
+   ok(s.node.length>0&&s.node.every(v=>/^(\d+%|–)$/.test(v)),'S1: '+tag+'every address ring prints a percent or the dash, '+J(s.node.slice(0,6)));
+   ok(Object.values(s.got).concat(s.node).every(v=>v===null||!/^\d+\.\d+$/.test(v)),'S1: '+tag+'no bare decimal is left on the Field\'s readings');
+   ok(s.core,'S1: '+tag+'the wheel\'s core draws CQ as the registry prints it');
+  }
+  /* ---------- S, slice 2: Summary ---------- */
+  for(const who of ['Marcus','James','Diane']){
+   const tag=W+' '+who+': ';
+   const s=await page.evaluate(async who=>{
+    loadP(PEOPLE.findIndex(x=>x.nm===who)); setTab(TAB.SUMMARY); render();
+    await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+    const R=compute(), acc=accuracy(R), e=(R.X+R.Y+R.Z)/3, cov=accCover(R);
+    const gl={}; document.querySelectorAll('#sum .s-gl').forEach(b=>{gl[b.getAttribute('data-gl')]=((b.querySelector('.cr .v')||{}).textContent||'').trim();});
+    const plate=((document.querySelector('#sum .s-plate .cr[title^="Coherence"] .v')||{}).textContent||'').trim();
+    const txt=(document.getElementById('sum')||{}).innerText||'';
+    const rows=Array.from(document.querySelectorAll('#sum .s-row .cr .v,#sum .sg-n .cr .v')).map(e=>e.textContent.trim());
+    return {unread:!!R.unread,gl,plate,complete:!!cov.complete,rows,
+     want:{'coherence':fmtPct('cq',R.CQ),'shadow weight':fmtPct('dq',R.DQ),'carried depth':fmtPct('weight',R.SQm),
+      'pole':fmtPct('pole',R.poleMean),'energy':fmtPct('energy',e),'identification':fmtPct('accuracy',acc.pct)},
+     plateWant:cov.complete?fmtPct('cq',R.CQ):accCoverWord(cov),
+     weightBare:(txt.match(/at a weight of \d+(?:\.\d+)?(?!\d|%)/g)||[]),
+     decimal:(txt.match(/\b(?:weight|holding|at|is) \d+\.\d\b/g)||[])};},who);
+   ok(!s.unread,'S2: '+tag+'the example reads');
+   for(const k of Object.keys(s.want)){
+    if(s.gl[k]===undefined)continue;
+    ok(s.gl[k]===s.want[k],'S2: '+tag+'the glance tile '+k+' prints the registry\'s form, '+J(s.gl[k])+' against '+J(s.want[k]));}
+   ok(Object.keys(s.gl).length>=4,'S2: '+tag+'the glance row is there to read, '+J(Object.keys(s.gl)));
+   ok(s.plate===s.plateWant&&(s.complete?/^\d+%$/.test(s.plate):/^(early|partial)$/.test(s.plate)),
+    'S2: '+tag+'the plate prints the word while filling and CQ as a percent once every law is answered, '+J({plate:s.plate,want:s.plateWant,complete:s.complete}));
+   ok(s.rows.length>0&&s.rows.every(v=>/^(\d+%|\u2013)$/.test(v)),'S2: '+tag+'every structure and axis ring prints a percent or the dash, '+J(s.rows.slice(0,8)));
+   ok(s.weightBare.length===0,'S2: '+tag+'no weight in the prose is printed bare, '+J(s.weightBare));
+   ok(s.decimal.length===0,'S2: '+tag+'no decimal figure is left in the prose, '+J(s.decimal));
+  }
+  /* ---------- S, slice 3: Analytics and the record ---------- */
+  for(const who of ['Marcus','James','Diane']){
+   const tag=W+' '+who+': ';
+   const s=await page.evaluate(async who=>{
+    loadP(PEOPLE.findIndex(x=>x.nm===who)); setTab(TAB.ANALYTICS); render();
+    await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+    const R=compute(), acc=accuracy(R), ana=document.getElementById('ana');
+    const t=ana?ana.innerText:'';
+    const badges=ana?Array.from(ana.querySelectorAll('.crb .crb-v,.cr .v')).map(e=>e.textContent.trim()):[];
+    const bubbles=ana?Array.from(ana.querySelectorAll('.ab-v')).map(e=>e.textContent.trim()):[];
+    const accFig=ana?((ana.querySelector('.ab-acc b')||{}).textContent||'').trim():null;
+    /* every one of the six readings opened as a card, so the trail's figures are read too */
+    const cards=[];
+    for(const k of Object.keys(ANA_MET)){const h=anaMetCard(R,k); if(h)cards.push(h.replace(/<[^>]+>/g,' '));}
+    const rec=document.getElementById('rec');
+    const recCells=rec?Array.from(rec.querySelectorAll('.rec-row')).map(x=>({k:(x.querySelector('.rec-k')||{}).textContent,
+     a:(x.querySelector('.rec-a')||{}).textContent,b:(x.querySelector('.rec-b')||{}).textContent,d:(x.querySelector('.rec-d')||{}).textContent})):[];
+    return {unread:!!R.unread,badges,bubbles,accFig,accWant:fmtPct('accuracy',acc.pct),t,cards,recCells};},who);
+   ok(!s.unread&&s.badges.length>0,'S3: '+tag+'Analytics reads, with badges to check');
+   const dec=v=>/^\d+\.\d+$/.test(v);
+   ok(!s.badges.some(dec),'S3: '+tag+'no badge on Analytics prints a decimal, '+J(s.badges.filter(dec).slice(0,6)));
+   ok(!s.bubbles.some(dec),'S3: '+tag+'no bubble prints a decimal or its size floor, '+J(s.bubbles.filter(dec).slice(0,6)));
+   ok(s.accFig===s.accWant,'S3: '+tag+'identification prints the registry\'s form, '+J(s.accFig)+' against '+J(s.accWant));
+   ok(!/\bCQ (?:up|down) \d/.test(s.t)&&!/ per cent\b/.test(s.t),'S3: '+tag+'no change in CQ is a signed move and no figure says per cent');
+   const cardDec=s.cards.map(c=>(c.match(/(?<![\d.×])\b\d+\.\d{1,2}\b(?!\s*(?:Hz|×))/g)||[])).reduce((a,b)=>a.concat(b),[]);
+   ok(cardDec.length===0,'S3: '+tag+'the six reading cards print no decimal figure, '+J(cardDec.slice(0,6)));
+   const kinded=s.recCells.filter(c=>/Coherence|Shadow|Carried|installed|Overshot/.test(c.k||''));
+   ok(kinded.every(c=>/^(\d+%|–)$/.test((c.a||'').trim())&&/^(\d+%|–)$/.test((c.b||'').trim())&&!/[+−-]\d/.test(c.d||'')),
+    'S3: '+tag+'the record prints each score as two percents and a word, '+J(kinded.slice(0,3)));
+  }
+  /* ---------- S, slice 4: the drills and the hover lines ---------- */
+  for(const who of ['Marcus','James','Diane']){
+   const tag=W+' '+who+': ';
+   const s=await page.evaluate(async who=>{
+    loadP(PEOPLE.findIndex(x=>x.nm===who)); setTab(TAB.FIELD); render();
+    const R=compute(), out={}, txt=()=>{const d=document.getElementById('rdrill');return d?d.innerText:'';};
+    const top=R.loaded.slice().sort((a,b)=>b.sq-a.sq)[0], pat=[].concat(R.sabs,R.cxs,R.hys,R.sups)[0];
+    const runs={core:()=>runCoreDrill(),xyz:()=>runXYZDrill(),flow:()=>runFlowDrill(),bal:()=>runBalDrill(),
+     dq:()=>runQDrill('dq'),sq:()=>runQDrill('sq'),pole:()=>runQDrill('pole'),compass:()=>runCompassDrill(),
+     law:()=>runLawDrill(SI[0]),node:()=>top&&runNodeDrill(top),fetter:()=>runFetterDrill(CHILD[0]),
+     arch:()=>runArchDrill(ARCH[R.pi]),mask:()=>R.maskRing&&R.maskRing[0]&&runMaskDrill(R.maskRing[0]),
+     up:()=>runPoleDrill('up'),acc:()=>runAccDrill()};
+    for(const k of Object.keys(runs)){try{runs[k]();out[k]=txt();}catch(e){out[k]='THREW '+e.message;}
+     try{rdClose();}catch(e){}}
+    const tips={core:describe({k:'core'},R,true),node:top?describe({k:'node',n:top},R,true):'',
+     law:describe({k:'law',j:0},R,true),arch:describe({k:'arch',j:R.pi},R,true),
+     chain:pat?describe({k:pat.kind,o:pat},R,true):''};
+    Object.keys(tips).forEach(k=>{tips[k]=String(tips[k]||'').replace(/<[^>]+>/g,' ');});
+    return {unread:!!R.unread,out,tips,cq:fmtPct('cq',R.CQ)};},who);
+   ok(!s.unread,'S4: '+tag+'the example reads');
+   const D=/(?<![\d.×])\b\d+\.\d{1,2}\b(?!\s*(?:Hz|×|%))/g;
+   for(const k of Object.keys(s.out)){
+    ok(!/^THREW/.test(s.out[k]),'S4: '+tag+'the '+k+' drill opens, '+J(s.out[k].slice(0,80)));
+    const m=s.out[k].match(D)||[];
+    ok(m.length===0,'S4: '+tag+'the '+k+' drill prints no decimal figure, '+J(m.slice(0,6)));}
+   ok(s.out.core.indexOf('CQ '+s.cq)>=0,'S4: '+tag+'the core drill heads with CQ as a percent, '+J(s.cq));
+   for(const k of Object.keys(s.tips)){const m=s.tips[k].match(D)||[];
+    ok(m.length===0,'S4: '+tag+'the '+k+' hover prints no decimal figure, '+J(m.slice(0,6)));}
+   ok(s.tips.core.indexOf('CQ '+s.cq)>=0,'S4: '+tag+'the core hover heads with CQ as a percent');
+  }
+  /* and an unread profile prints the dash in every one of them, never 0% */
+  const u=await page.evaluate(async()=>{loadP(0); setTab(TAB.FIELD); render();
+   await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+   const t=q=>{const e=document.querySelector(q); return e?e.textContent.trim():null;};
+   return {unread:!!compute().unread,v:[t('#fbar [data-fb=laws] .fb-v'),t('#fbar [data-fb=shadow] .fb-v'),t('#railtop .cr .v')]
+    .concat(Array.from(document.querySelectorAll('#key .rb2-v,#keylo .rb-v')).map(e=>e.textContent.trim()))};});
+  ok(u.unread&&u.v.length>=5&&u.v.every(v=>v===null||v==='–'),'S1: '+W+' blank: an unread field prints the dash everywhere, '+J(u.v));
+  ok(errs.length===0,'no page error at '+W+': '+errs.slice(0,3).join(' | '));
+  await page.close();
+ }
+
+ /* A, the mechanism: a ring past ninety printing a percent draws its own
+    colour, and one printing anything else keeps the alarm law. Both halves,
+    so this passes because the rule is kept and not because the colour died. */
+ {
+  const page=await browser.newPage({viewport:{width:1600,height:1000}});
+  await page.goto(FILE,{waitUntil:'load'}); await booted(page);
+  const a=await page.evaluate(()=>{
+   const d=document.createElement('div'); document.body.appendChild(d);
+   d.innerHTML=cr('Root',96,{size:'sm',label:'shadow weight'})+cr('Root',96,{size:'sm',label:'shadow weight',raw:'9.6'});
+   const c=d.querySelectorAll('.cr'), f=e=>({hot:e.classList.contains('hot'),v:e.querySelector('.v').textContent,
+    stroke:getComputedStyle(e.querySelector('.arc circle:last-child')).stroke});
+   const o={pct:f(c[0]),bare:f(c[1])}; d.remove(); return o;});
+  ok(a.pct.v==='96%'&&!a.pct.hot,'A: a ring at 96% draws its own colour, not the alarm, '+J(a.pct));
+  ok(a.bare.hot,'A: a ring past ninety that prints no percent still takes the alarm, '+J(a.bare));
+  await page.close();
+ }
+ await browser.close();
+ console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
+ process.exit(FAIL?1:0);
+})();

@@ -36,7 +36,10 @@ const AGES=[
  {a:4,  k:'the first building',   q:'What did you make things out of, and what did you always make?'},
  {a:5,  k:'the first favourite',  q:'What was your favourite, and what was the one you were against?'},
  {a:6,  k:'the first collection', q:'What did you collect, and what made one of them better than another?'},
- {a:7,  k:'the first character',  q:'Who did you pretend to be, and who did you refuse to be?'},
+ /* role and not character, 23 October: Character is the whole person now,
+    the page and the top of the stack, and a year's label may not be a
+    second thing called that on the same screen */
+ {a:7,  k:'the first role',       q:'Who did you pretend to be, and who did you refuse to be?'},
  {a:8,  k:'the first side',       q:'What did you take a side on, at school or at home, that other children took the other side of?'},
  {a:9,  k:'the first mastery',    q:'What were you the one who was good at it, and who was better?'},
  {a:10, k:'the first team',       q:'What were you part of, and who were they against?'},

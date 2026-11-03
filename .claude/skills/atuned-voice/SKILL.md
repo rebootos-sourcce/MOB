@@ -1340,6 +1340,33 @@ unmeasurable part left out is a lie about how much has been checked.
    beside the figure. The bare weight flag sees a missing word, and only in
    the string it reads.
 
+### What It Sets Aside, And Says So On Every Run
+
+A record about the copy is not copy. `NOT_COPY` in `check.py` names each path
+that holds one, with the reason, and every mode reads through the one function
+that applies it, the brief included, so no two probes disagree about which
+strings are a record. Two paths are on it, both on the descent records in
+`engine/data/compass.js`: `content.researchPasses`, the research passes behind
+each record, and `content.inferenceBasis`, why the record is called source
+defined or inferred. Added 23 October, when those two fields were most of the
+abstract-word stops on the build and nothing that ships read either one.
+
+**Two keys, and a path needs both.** It is named as a record, with the reason,
+and nothing that ships reads it. The second key is measured on every run, never
+assumed: every file under `atuned_src`, `funnel`, `marketing` and `functions` is
+read raw for the path's names, and one read lapses the rule, so its strings are
+copy again and the run names the line that reads them. The paint is held in
+`tests/functional.js`, which looks for every string of the record in what the
+dark read draws. Unread alone is never enough. `behavior`, `practice` and the
+rest of each descent template stay under every gate though nothing renders them
+yet, because copy is checked where it is kept, before a surface shows it.
+
+Every mode of `check.py` that reads the file prints what it set aside, how many
+strings, and what they would carry as copy under each family of gates, so a set
+aside is named and never dropped. The brief does not print it: it drops the
+strings the way it drops its own `NOT_COPY_KEYS`, and `--objections` is where
+to read the count.
+
 ### The Gate Was Checked Against Known Good Cases First
 
 The first cut of the naked number gate reported seven findings and five were

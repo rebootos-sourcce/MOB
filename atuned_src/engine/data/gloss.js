@@ -146,11 +146,30 @@ var UNPACK_BASE={
  'fetter':'A fetter is a named pattern that sits at one address and fires when something matches it.',
  'complex':'A complex is two saboteurs from the same family joined into one pattern.',
  'hyper complex':'A hyper complex forms when complexes of the same family run together, one ring further in than a complex.',
- 'character':'Character is the innermost ring, formed when two hyper complexes run together and are heavy enough.',
+ /* THE FOURTH RUNG AND THE TOP ARE TWO WORDS, ruled 23 October. The sentence
+    character carried until then was the rung's, and it moves to super
+    complex unchanged in what it says. Character is his "total sum of the all
+    of it" (27 September), the top of the stack above the masks and above
+    what a person was born with (DECISIONS.md, "The full stack, nerve to
+    Character"), listed bottom to top in his order. */
+ 'super complex':'A super complex forms when two hyper complexes run together and are heavy enough, one ring further in than a hyper complex.',
+ 'character':'Character is the whole of you, added up: your charge, the patterns running on it, your masks and what you were born with.',
  'saboteur':'A saboteur is a named habit that runs on the charge held at several addresses at once.',
  'mask':'A mask is a way of showing up, such as Child or Teen, read from the weight held at a group of seats.',
  'axis':'An axis is a feeling and its opposite, such as fear and trust, and the instrument reads how much of the first is held and how much of the second is in place.',
- 'cq':'CQ is your coherence number, built only from your answers on the laws.',
+ /* CQ IS THE INTEGRITY, NOT THE COHERENCE. This said "your coherence number",
+    which made CQ and coherence one thing. The 25 September ruling makes CQ
+    the 21 laws added up (cqSum, engine/compute.js), and coherence is what
+    that integrity holds up. The coherence sentence below is not touched. */
+ 'cq':'CQ is the Laws of Moral Integrity added up, the integrity that coherence is built on.',
+ /* THE LAWS OF ACTION, 22 October. The six gates took the name the three sets
+    of laws share, read as right action against wrong action. Each sentence
+    says what the move does to a strong feeling, the drill's own words, and
+    none says a gate multiplies anything held, because none does
+    (engine/verp.js). The Laws of Moral Integrity are built below, off SI. */
+ 'laws of action':'The Laws of Action are the moves you make when a strong feeling rises, and each one either meets the feeling or misses it.',
+ 'right action':'Right action is meeting a strong feeling: you notice it, stay out of its story and keep to what you meant.',
+ 'wrong action':'Wrong action is missing a strong feeling, following its story or going around it, and it is how a feeling sticks as charge.',
  /* DQ stood as a bare label on the release clock. Round RG. */
  'dq':'DQ is your shadow weight: all the charge you carry, on every address, against the most your body could hold.',
  'coherence':'Coherence is when what you mean, what you do and what your body does point the same way.',
@@ -170,11 +189,18 @@ var UNPACK_BASE={
  'rail:radiance':'Radiance is vitality, awareness and will put together, and it sets how bright the field behind the wheel is.',
  'rail:flow':'Flow is how much gets from the base of your spine to the top of your head, each seat passing on part of what it gets.',
  'rail:orientation':'Orientation is which way the charge you hold leans, toward costing you nothing or toward taking something from you.',
- 'rail:benign':'Benign is charge you hold that is not costing you anything.',
- 'rail:malignant':'Malignant is charge you hold that is taking something from you.',
+ 'rail:positive':'Positive is charge you hold that is not costing you anything.',
+ 'rail:negative':'Negative is charge you hold that is taking something from you.',
  'rail:balance':'Balance is which way your body moves under what you feel, out toward the world or in toward yourself.',
  'rail:masculine':'Masculine is energy given a shape and a direction and sent outward, and it does not mean men.',
  'rail:feminine':'Feminine is energy held and taken inward, and it does not mean women.',
+ /* 30 October, r1 from mockups/dual-readings, which the owner picked for
+    the rail. Shadow is lawSQ, CQ's own complement, the other end of the
+    coherence pair; the two heads name the rail's two families, a pair read
+    from its centre and an amount read from none. */
+ 'rail:shadow':'Shadow, on this line, is the part of the laws your answers leave out, which is always 100 less CQ.',
+ 'rail:where you lean':'Each pair is one reading, where the line down the middle is 50 and 50 and the mark is where you sit.',
+ 'rail:how much':'Each is one reading, from none of it at the left end to all of it at the right.',
  /* ROUND RG, the copy sweep. His words: "you read 62 above the oscillating
     band. Your integrity is 6.2. Integrity is the hull. It's got to be human."
     Integrity was printed as a figure on the Compass with no meaning anywhere
@@ -189,7 +215,12 @@ var UNPACK_BASE={
     which keeps the bare key above. Two meanings sat on one Summary page. */
  'field:expression':'Expression is the part of your coherence that gets past the charge you carry.',
  /* the line every surface counts held from, BELOW THE LINE in compute.js */
- 'the line':'The line is the point where the charge at one address reaches 4 and starts to cost your body.',
+ /* NO FIGURE IN THE MEANING, 17 October, percent phase 2. This said "reaches
+    4", the weight on nought to ten; every weight prints as a percent now, so
+    4 would contradict the 40% beside it, and this table refuses a percent in
+    any entry (tests/engine.js, PO). The meaning keeps the event; the figure
+    is printed where the line is drawn. */
+ 'the line':'The line is the point where the charge at one address gets heavy enough to start costing your body.',
  /* YOUR PATTERNS, the trace graph's screen (ui/loopread.js, engine/loop.js).
     Each word below is a label that block prints, and its meaning is the
     graph's own: confirmed is a user_confirmed edge, unanswered is everything
@@ -206,6 +237,12 @@ var UNPACK_BASE={
  'release line':'A release line is one spoken line of a release, aimed at one address, to lower the charge held there.',
  'truth line':'A truth line is one spoken line that puts the opposite quality in at the address, where the limit was.',
  'evidence':'Evidence is something noticed or measured after a practice that backs a pattern up or goes against it.',
+ /* THE WORD THE GIFT AND THE ALLOWANCE COUNT IN. A hundred patterns of the gift
+    are a hundred lines, not a hundred reactions, so the sentence above is the
+    wrong one beside "Your gift: 100 patterns" on Summary. This is the gift's
+    own sentence, the one the first release card already prints beside the
+    count (obGiftSay, ui/onboard.js), so it is said one way. */
+ 'gift:pattern':'A pattern is one line you have not said before.',
  /* THE SAME WORDS, READ BY A PRACTITIONER ABOUT A CLIENT, round QB (ui/
     practitioner.js). The entries above speak to the person about themselves,
     "you said yes", and on the practitioner's page the reader is somebody
@@ -285,6 +322,10 @@ function unpackAll(){
    t['law:'+l.nm.toLowerCase()]=l.nm+' is how often you '+(IQ_STEM[l.nm]||'')
     +', when it costs you, when nobody would know and on an ordinary day.';});
   t['law']='A law is one of '+SI.length+' ways of keeping your integrity, read from three questions you answer about each.';}
+ /* the set by its name, 22 October. Its own guard, because it needs only SI,
+    and the law entry above waits on IQ_STEM as well */
+ if(typeof SI!=='undefined')
+  t['laws of moral integrity']='The Laws of Moral Integrity are '+SI.length+' ways of behaving, and each one you keep blocks one way your body gets pulled into stress.';
  /* the nine feelings, as the ends of the nine axes */
  if(typeof CHILD!=='undefined')
   CHILD.forEach(function(c){

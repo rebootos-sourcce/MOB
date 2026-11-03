@@ -29,6 +29,15 @@ ruling at the end of this file, "Sight by tier, round OK". Prices are in
 four runs. Ten a week on the free tier is less than one run, so the free grant
 banks until a run is affordable rather than expiring.
 
+(Recorded 24 October: the second sentence above is superseded, and has been
+since 1 October. A run costs the minimum for what was picked, at least four
+patterns, one address down its four channels (`RUN_MIN`, `engine/plan.js`),
+and 25 is the most a run opens, not its size. So ten a week is two releases a
+week at one address, the free grant is never too small for a run, and it still
+banks. The buy page carried the old pace, one release every two and a half
+weeks, until 24 October; `tests/funnel.js` now reads that sentence against
+`RUN_MIN` and the free grant.)
+
 **Tier four is not more of the same.** It carries the same twelve hundred as
 tier three, so patterns do not separate them at all. What it buys is the cohort
 lead suite: manage profiles, build rituals and build accountability for the
@@ -1997,6 +2006,20 @@ carries both rulings, 20 September's and this one. What he settled, in short:
 - **Why questions are its questions,** and it never answers one. That
   completes the 20 September line, "it may not say why", rather than
   reversing it: the instrument does not measure cause, the person can find it.
+  **Superseded in part, 30 October, round SK in `TASKS.md`.** His words about
+  the live Journal chat: "This is the behavior I want source AI to take on
+  during chat. It's currently not doing that. It's currently acting like a
+  chatbot." He pointed at his own blueprint, "Atüned Source AI, Journal Mode",
+  Drive, 4 October, which lists the questions to prefer (section 24) with no
+  why among them and checks every question for "observable experience"
+  (section 35). So Source AI still never answers a why, and it no longer asks
+  one either: the ask keeps its lead in the person's own words and its last
+  sentence is the first of the blueprint's own questions that passes the ten
+  checks (`engine/qcheck.js`). And since his seam package of the same day
+  (`ATUNED_SOURCE_AI_SEAM_READY_HANDOFF_2026-10-30`, "the spoken language
+  should not reveal an unconfirmed ontology label") the lead no longer says
+  where it lands until the person has confirmed it. Kept here rather than
+  deleted, in case he wants the why back.
 - **A peer and a companion, not a clinician and not a friend,** who sees a
   person for their authentic nature and not for the conditions that created
   them. Core programming: a pattern is a condition that runs through a person,
@@ -2824,6 +2847,8 @@ His words: "fix the 11 Labs voice. The audio is still defaulting to the Claude d
 
 His words: "when a first time user goes from the funnel to the questions to the app, I want them to start on the summary screen. For the first time after that, it'll just be persistent to wherever they left off. But we want to give them right away information on their summary reading."
 
+**Changed 23 October in one place:** a device with no memory opens on Discover now, not the Field. The first arrival still lands on Summary once, as below. See "Discover is the journal, imprints and release", 23 October.
+
 - **First arrival lands on Summary, once per device.** Two doors send it: the record arriving in a link from the funnel, and the first run closing. Summary shows the reading at once.
 - **Every open after that is where the person left off.** The last surface is kept in the browser's own store, not the record. Settings and the practitioner page are never remembered. A device with no memory still opens on the Field (the 19 September ruling stands for it).
 - **Held by `tests/landing.js`**, which fails on the build from before this change.
@@ -2835,7 +2860,7 @@ Ruled by the owner on 16 October, in his words, and recorded the same day.
 
 - **A crisis button in the welcome, chosen by the person.** "Maybe it belongs in the pop-up, the welcome. Maybe it's an option. Is this a crisis? Hit that button. Tell me about it. Do you need immediate emergency contact, or would you like to talk it through? It's always a story." This is a plain button the person presses, with two ways out: reach someone now (988 call or text, text HOME to 741741, 911 in danger) or talk it through (it goes to the Story box). It supersedes the 9 October deferral for the button only. The automatic detection that reads what a person writes (the branches `claude/b2a-crisis` and `claude/b2a-crisis2`) is still deferred, and the ten expected red cases stay.
 - **"Collapsed" goes.** The lowest band is renamed Contracted. His reason: "the energy wants to expand, not collapse".
-- **"Your energy", not "the field", in a reading about the person.** "Your energy leans malignant", because "energy is more natural. Field is just too abstract." The tab called Field keeps its name. The words benign and malignant stay as he dictated them.
+- **"Your energy", not "the field", in a reading about the person.** "Your energy leans malignant", because "energy is more natural. Field is just too abstract." The tab called Field keeps its name. **The words benign and malignant were ruled OVERRIDDEN 30 October**, his words: "Yeah, change it to positive and negative. We need to start changing the kind of religious tones." "Your energy leans" still stands; the word after it is positive or negative now, everywhere it shipped, including the glossary meaning printed beside it. Kept here for the record, since this line was the one place that written ruling never got updated to match, caught 31 October when he found an old build still showing the old words and asked whether the rename had actually landed anywhere.
 - **Every score, weight and measure prints as a percent.** "Instead of 0.0, site wide, we need to convert those numbers into percent. I think it's a more natural language for people to understand. So we need to create a framework and a formula and to make sure that all of our elements are percent-based. If it says 6.2, then we should change that to percent. If it's 112 patterns, just leave it alone. Or, sorry, chakras, leave it alone." Counts of things stay as counts. The percent printed is the fill of the ring or bar drawn for that quantity. A change is said as before and after. This supersedes round PQ's "just a number" for CQ and DQ, the 9 October no percent ruling, the 15 October P0 item that took the percent signs off, and the 16 October whole number weights (MOB PR 83). The 14 October ruling of no raw scores stands: a percent of a defined maximum is not a raw score.
 - **A privacy policy and terms are required, and served.** "It's very important to us. Transparency is important to us. We also need our terms. We're not a clinician. What we are is a practice based off of direct experience that has been tested out in the field." The pages were drafts in `funnel/legal/` that the deploy never copied to atuned.world. They are served, linked and made true. Efficacy words ("highly effective, rapid") are left out of the legal text on purpose, because a terms page that promises results contradicts "not a clinician"; they stay his for marketing pages.
 - **Open, not ruled:** sign in with Google or Apple is not built (email and password only); whether to add it is open. Password reset by email needs a mail key on the server that is not set; until it is, reset answers 503.
@@ -2883,7 +2908,8 @@ A seat decision, taken by the team on the round 3 plan's decision 1 default (a),
 - **The Story page shows one line and one door in its place.** "It is saved. If you want a person now, 988 answers by call or text, any hour." beside Reach someone now, which opens the crisis panel on the numbers. No modal, no sound, no red, no "we noticed". It shows once and nothing escalates. The release column stays reachable and is not offered.
 - **Nothing about a match is stored.** Not on the record, the draft, the export, the outbox or the server. `tests/safepage.js` holds that the export and the whole browser store are the same with and without it.
 - **How to turn it off:** set `on:false` on a family's row in `SAFE_WORDS`. One table, one line each.
-- **Still open, his:** whether this stays; whether the first run should draw the line too (today it only reads nothing there, and its top bar already carries the crisis button); whether the phrase list goes to a clinician (round PW ruled that "explicitly not now").
+- **Taken up by the owner, 3 November.** After typing a harsh test phrase into the Journal on main and getting no safety response, his words: "let's go ahead and complete 108 and get it wired in." So whether this stays is answered. It was brought current with main that night (the Journal is a spoken conversation since 28 and 29 October, and the line now stands in the conversation in place of Source AI's reply, with the person's own turns still on the page). The automatic detector of a person's state is still deferred and still P3 (30 October); this is the phrase stop only.
+- **Still open, his:** whether the first run should draw the line too (today it only reads nothing there, and its top bar already carries the crisis button); whether the phrase list goes to a clinician (round PW ruled that "explicitly not now").
 ## The personas decide, the owner reacts, 17 October
 
 His words: "I'm a reaction person. Emmy's running these designs, and she's got Jimmy Ivy [Jony Ive] and a bunch of other people. If you're asking me stupid-ass questions that these personas should already be able to answer, then we've got a problem."
@@ -2936,10 +2962,180 @@ Five seats read what the code does (the game director, UI and UX, sales, the AI 
 - A chosen rerun: picking which opened lines a rerun says.
 - Grouped runs by cluster, only over links the person's words named or they said yes to.
 - A cap of 25 on free banking (one full run). Today it has none: a year unused banks 530.
-- A prorated upgrade mid month.
+- A prorated upgrade mid month. Built the same day, in the entry below.
 
 **Not built, because he ruled the other way: the cost line under Run.** The seats asked for "Opens 12 new. 388 left this month." under Run in the normal case. He took that line off this card at round IG, 27 September: "Cost runs left, that goes away. And this, just, run release button." `tests/functional.js` holds his cut, so it stays off. It is not put to him as a question (the personas ruling above). A reversal of his own cut is not the seats' to make silently either, so it waits for him to react to the two cards side by side: the card as he cut it, and the card with the line.
 
 **The risk all five named.** Only 65 different sentences sit behind the 21,400 slots one person can open, so a "pattern you have never opened" is often words already heard. Selling never opened patterns is not honest until slots carry distinct sentences. Checkout stays closed.
 
 **Still open in the words:** the glossary defines a pattern as "a reaction you keep having, and the instrument places it at one exact spot in your body", and "Your patterns" is a surface of its own. Making pattern mean the allowance's unit everywhere would reword those, which is his to rule; this round moved only the release card's counts.
+
+## Patterns follow the money, 17 October
+
+The pay cycle run in Stripe test mode (Reboot-OS workflow "e2e paycycle", run 39054584771, 26 steps; Stripe test mode is fake money and a fake calendar) fed the server's own answers into this app's plan arithmetic and found three steps red in it. The server now says, on every account, what was paid this month and when the tier last changed (Reboot-OS PR 67). Each field is optional, and an older server that sends none of them is read exactly as before. Held by `tests/money.js`, which read 24 passed and 27 failed on main before the change.
+
+- **A refused card opens no new patterns (step e1).** Stripe moves the billing month forward on the renewal day even when the card is refused. The app opened a fresh month on it: 100 left became 400 of 400 with nothing paid. Now everything already opened still runs and what was left stays left, and new patterns wait until the bill is paid; the read after it is paid opens the month. Billing's State row says, for as long as it is so: "the card did not go through. Everything you have opened still runs. New patterns wait until the card does, and Manage billing replaces the card." (`planFromServer`, `engine/plan.js`; `planSection`, `ui/panels.js`.)
+- **Default taken, his to overrule: a tier change adds only the share the money covers (step f2).** The month's grant moves by the difference between the two tiers' grants, times the share of the month still to run at the change, which is the same arithmetic Stripe bills the change by. What was opened stays opened. On the run's day 75, tier one to two with 200 left and 0.5484 of the month to go: 200 plus 219, so 419, where the app showed 800. The sales seat's example, day 20 of 30, one to two: 133 more. The next renewal is the new tier's whole grant. A downgrade takes the same share off, never takes back what was opened, and never leaves more than the lower tier's whole grant to open; so tier three spent, down to one and back up on one day, which Stripe nets to about nothing, opens nothing, where it opened 400 and then 1,200.
+- **An ended plan reads free with free's own allowance (step h).** Free restarting from the stop day was built in the entry above. What remained: a plan was only as ended as the last read of the server, so a device signed out or offline kept a stopped plan paid for ever. The end date is read now. A stopped plan ends on its end day exactly. **Default taken, his to overrule: a plan that renews gets three days past its period end before an unread device treats it as ended**, the same three days the server gives an App Store or Google Play plan, because a renewal this device has not read yet is not an ending. Ended either way, free counts from the end day and is never charged for what was opened while paying (`planPast`, `PLAN_GRACE_MS`, `planAllowance`).
+- **Every new field is checked where it comes in.** A wrong type or a value out of range is refused by name and nothing on the record changes, never rounded into range. The record itself gains no field, so the saved format does not move.
+
+
+## Percent phase 2, 17 October: defaults taken, each his to overrule
+
+His words, 17 October: "knock out that percent framework... the percent is how we want people to read the different aspects of the software." Phase 2 moves every screen that prints a score onto the registry (`engine/pct.js`), one pull request per group of screens. The plan is `HANDOFF-2026-10-15/PERCENT-PHASE-2-2026-10-17.md`. These are the team's defaults, taken so the work is not blocked; none is a ruling.
+
+- **No red on a percent.** A ring that prints a percent draws its own colour at every fill, never the alarm red. A high percent in red reads as a failed mark, and the product does not grade people (round OB6's reason: denying a grade plants the idea, and so does a red score). The alarm law stays for a ring that prints anything else, and the rule that a good end reading is never red stays. Held by `tests/pct.js`, part A. If he wants a heavy weight to warn, the next step is a word beside the percent, not a colour on it.
+- **Band names stay as they are.** Severe, Corrupt and the other tier names on the coherence ladder (`TIERDEF`, `engine/data/canon.js`) are unchanged. Flagged because a band name beside a percent reads more like a grade than it did beside a bare number. His to rename.
+- **The Summary plate prints CQ as a percent once every law is answered, and the word (early, partial) before that.** Before every law is answered most of the figure is the default answer, so printing it would claim a reading not taken. The 14 October no raw scores ruling stands: a percent of a defined maximum is not a raw score. Built in slice 2.
+- **The line at 4 reads 40%.** A charge "reaches 4 and starts to cost your body" becomes "reaches 40%".
+- **The one cap stays at 10** (several entries added up at one address print as a percent of 10). Unchanged from phase 1, still open for him.
+- **The release screen waits for its own rebuild.** Its results page and carousel are being rebuilt by another seat, so `ui/release.js` is not touched by phase 2; the percent items it needs are listed in the phase 2 plan for that seat.
+
+## The full stack, nerve to Character, ruled 23 October
+
+His words, close to verbatim, called canon and ordered locked in: "Our
+stack goes psychophysical, that's nerve, to super complex, deep
+psychological, it's our archetypes to domains, and then we have our
+energetic... From fetter to super complex. After the super complex are
+the masks. The mask layer is the hybrid. Then one up from that is the
+archetype to the spiritual. And then at the very top is the character.
+So the whole thing goes from nerve to character."
+
+This settles the one point every earlier reconciliation this session left
+open. Super complex and Character are not the same rung. The ordered
+stack, bottom to top:
+
+1. Nerve (node, fetter), the psychophysical floor.
+2. Saboteur, complex, hyper complex.
+3. **Super complex.** Two or more hyper complexes combined. This is the
+   rung the running engine currently builds and calls Character; it is
+   being renamed, not newly invented, since the arithmetic (two hyper
+   complexes pairing) already exists and already matches his
+   description.
+4. Masks, "the hybrid" layer.
+5. Archetype through domain, "deep psychological," running up to what he
+   calls the spiritual.
+6. **Character, at the very top.** Above masks and above archetype
+   through the spiritual, not a direct pairing of two hyper complexes.
+   His own 27 September words already on record, "the character is a
+   total sum of the all of it," read correctly under this ruling as the
+   whole person, everything below it taken together, not a fourth
+   rung's arithmetic.
+
+Open, not decided here, his to rule on when asked rather than guessed at:
+exactly where the "energetic" band he named sits against this ordered
+list, since the explicit sequence he gave does not mention it by name a
+second time; and what Character computes, if it needs to compute
+anything beyond naming the whole reading, now that it is no longer the
+super complex arithmetic. Both logged as open rather than assumed.
+
+### Built the same day, and what each open point landed on
+
+- **The rename.** The rung `compute()` builds by pairing two hyper complexes (`r.sups`, kind `sup`) is called the super complex everywhere it is printed or named: the Field bar's innermost switch (Super complexes), the right rail's stack tab (Super, beside Hyper), the run cards and the pattern drill (Super-complex), Summary's chain, Analytics' ring, its card and its session rows, the record card, the Dial's callout, the depth menu's Chains line, the tiers page and every lock sentence (`SIGHT` in `engine/plan.js`), the meaning table (`engine/data/gloss.js`, a sentence of its own), and the trace graph's type (`super_complex`, in `engine/trace.js` and in the trace TDD's section 16 and 17 blocks, which `tests/trace.js` reads). The arithmetic and the wiring under it did not move: the same pairs, the same weight line, the same parts.
+- **The keys did not move, on the identity rule.** The kind `sup`, the Field layer key `character`, the history row's `ch` and the codes layer's `family-pair` kind are identity: compared by the gates and the code, and `ch` is stored on every history row a record holds. A key is never renamed for a word, the rule `TAB.INTAKE` and the `seats` key already follow. Each one carries a comment saying it is the super complex. The trace graph's algorithm number stays 4: a rename is not a new derivation, and no graph the product builds or stores holds a rung.
+- **What Character computes: nothing new.** Character is the whole reading, everything `read()` returns for a record, taken together. It is not a fifth rung, not a stored value and not a node type in the trace graph; a record carrying a `character` node is refused by name. His 27 September words ("the character is a total sum of the all of it... You're actually rendering a visualization of what all the masks look like, and what's running it") and the placement above agree on that. No arithmetic was added, because none was ruled, and a stored sum of everything would be a second copy of the reading. Its meaning sentence now says the whole: "Character is the whole of you, added up: your charge, the patterns running on it, your masks and what you were born with."
+- **The Character page keeps its name. Decided, not asked.** Round LP named it ("all of those form the character. So that's the character page. Let's rename masks there to character"), the 27 September ruling describes what it draws, and the placement above puts Character at the top as the whole person, which is what the page draws: the 112 addresses, the saboteurs dimming the body, the masks, coherence and vitality. The collision was the rung printing the same word, so the rung gave it up. Renaming the page to Masks would have reversed round LP and left the top of his stack with no place on screen. `tests/stackname.js` holds it: on every tab, with a person whose reading reaches the rung, the word Character stands only on that page, its door, its rail section and the Play section's title.
+- **Two more things called character, found and fixed.** The Compass's two name panels told a screen reader "Characters" for the teachers; they say Teachers, the word the rows themselves use. And the age ladder's seventh year, "Who did you pretend to be, and who did you refuse to be?", was labelled "the first character"; it is "the first role". The everyday word stays where it means a person's nature and not a thing on screen: an archetype is one of the kinds of character, and the ego is the mask your character wears.
+- **Still open, and his.** Where the energetic band sits in the order, logged above. Whether Character should ever print a figure of its own, one number for the whole person, which would be new arithmetic and his to define. And the mark the super complex wears is the ring in a ring it wore as Character; whether the rung keeps it is a design question nobody has put to him.
+
+## Discover is the journal, imprints and release, and the app opens on it, 23 October
+
+His words, across two messages: "I want to get rid of the Story or move the Story link. Sorry, attach the Story link to Discover. So we're removing the word Story. We're keeping the word Discover... the app opens on Discover. So when you click Discover, you only get the journal and the imprints and the release. If I click on play, then I get all the other tools." And: "Yeah, I've changed that rule. The most important portions of the app are core loop. The core loop is discover, play, flow, and embody. That really is the journal to the release. Plus the ritual."
+
+- **Discover is one page, and pressing Discover opens it.** The journal, the imprints and the release are the three columns of the page that was called Story, and they have carried exactly those names since round QB ("I want journal, the word journal and prints and release"). The imprints are the middle column, what the journal reads, with the bank of every imprint held behind its bank button. The release is the third column, and its Run opens the release card. Nothing new was built for either word. Summary and Analytics are readings of the whole field and are not the imprints.
+- **The word Story is off the bar and off every line that named the page.** The page's door is called Discover. Above phone width there is no second door under the Discover button, because it would print the word twice; on a phone, where the section buttons leave the bar, the door is the first line of the menu. A story is still what a person writes, so the word stays where it names the writing: the first run's writing step, the release card's grouping by story, the Trace chain's story step, the bank's grouping.
+- **Play carries every other tool:** Field, Body, Compass and Character in his Play order, then Avatar, Summary, Intake and Analytics in the order they stood in Discover. The Avatar builds who a person is becoming and the Intake page is the questions, so neither is the journal, the imprints or the release. No identity integer moved.
+- **The app opens on Discover** on a device with no memory, and the wordmark's home and the landing when the practitioner door shuts go there too. The opening is named once in the code, `TABHOME` in `engine/core.js`, because four places each named their own and the boot's own note records what that cost.
+- **Default taken, his to overrule: the first arrival keeps its one landing on Summary.** The funnel's link and the first run closing, once per device, then wherever the person left off, exactly as ruled on 9 October. Why: that ruling is his and is about exactly this moment, a first time user arriving from the funnel, where the 23 October ruling is about where the app opens and names nothing of the funnel; and the gift's line ("Your gift: 100 patterns, no card. Everything is open.") is drawn on Summary as the page a new person lands on, held there by `tests/gift.js`, so moving the landing would take it off a new person's first screen or need it rebuilt on the journal page, which nobody asked for. Landing them on Discover was the first cut of this change and was measured working (the release column offered three of the record's held addresses with Run lit) before it was reversed for those two reasons. The cost: "the app opens on Discover" is true on every open but the first arrival, which meets Discover as the first section on the bar. Sending it to Discover too is one line, at `tabLandFirst` in `ui/panels.js`, once the gift's line has a place on the journal page.
+- **Above phone width the row under Discover is empty and folds to its hairline,** so the journal page takes the line. His model of the bar, round KT, is that a section "opens up a secondary navigation underneath", and this one has none. The section buttons, where a press lands, do not move.
+- **CLAUDE.md still says the app opens on the Field** (the 19 September paragraph and the 9 October addition to it). It was left alone in this change, and this entry supersedes it until that paragraph is updated.
+- **Held by** `tests/landing.js`, which fails by name on the build from before this change, and `tests/functional.js`, which holds every placement by name.
+
+## The Day One tutorial is deleted, not hidden, 23 October
+
+His words: "Check to see if there's a second onboarding. Right now, there's been two onboardings. There's the one that we see, and there's a hidden one. I want that hidden one completely removed. We're not doing that anymore. We're going to be working on the funnel and we're going to be working on the flow into the site."
+
+- **The hidden one was the Day One tutorial** (`ui/tutorial.js`, round NF): five cards, Journal, Discover, Understand, Release and Flow, on the onboarding's own full screen stage, with its own story entry, its own hand off to a first release and its own door on the journey record. No arrival opened it. Its switch, `DEV_PLAY_TUTORIAL` in `ui/login.js`, defaulted off, and the developer panel that could turn it on was deactivated at round RI on 3 October. Its one door was "Replay the Day One tutorial" in Account, under The opening.
+- **The one that is seen is the onboarding** (`ui/onboard.js`): Arrive, Ask, Settle, Feel, Body, Story, Mirror, Next, the first release, then the end card. It opens once behind the login door on a profile that has not been through it. A record arriving from the quiz's link skips it, because `pImport` marks every record it takes as onboarded (`engine/schema.js`). Both unchanged.
+- **Removed:** the module, its switch, its Account row, its five poses and its way of hiding the app (`shell/head.html`), the gate sections that walked its screens, and `tools/tutorial-motion.js`. The question left open at round NF, whether the tutorial should replace the onboarding, follow it, or stay a developer path, is answered: none of the three.
+- **Kept, on purpose:** the sheet host the welcome after paying borrowed, renamed `#paidwelcome` and now its own; the chain the onboarding's end card draws its rows in; `ui.tutorialSeen` on the record; and `'tutorial'` among the doors a journey walk may name (`JOURNEY_DOORS`), because a record carrying an older value is read and never refused. The journey record landed on 9 October, after the switch panel was gone, so no person could have written that door; only gates did. `tests/journey2.js` still holds that such a walk resumes on the onboarding's own card and ends on its end card.
+- **What else changes:** `sniffStory`, the full story reader, has no screen that calls it now. The tutorial was its only one. It stays in the engine, exported and held by `tests/engine.js`, and its route into screens was already ruled for after alpha (the 9 October entry above).
+- **Held by** `tests/onboarding2.js`, section 2, which reads the running page: no name of the tutorial on it, no rule of its poses, no host of its own, and no row for it in Account. Those four fail by name on `45fe5649`, the build from before this change. The checks that rode the tutorial's screens and still describe the product moved: the stage checks (no card chrome, a ghost with no live control, nothing running under reduced motion) onto the onboarding's own stage, and the release question gate onto the same two calls the tutorial made, `stCommit` and `obMini` handed to `relPick`.
+
+## The fetter's two poles are a nerve's freeze or flight, neutral at the centre, 27 October
+
+His words, reviewing the Field with the dual-pole rows on screen: "I realized
+that the fetter state having both poles is showing two things, the freeze or
+flight state of a nerve and then the center point is neutral. So the express
+collapsed is really showing the state of the nerve. It's very good."
+
+"Nerve" is his own word for the floor of the stack ruled 23 October, "our
+stack goes psychophysical, that's nerve, to super complex": the fetter and its
+address is the nerve. A fetter already carries two values, the charge it
+holds (`n.sq`, read as the held pole) and the coherent opposite installed
+against it (`n.pole`, see `ui/imprints.js` and `ui/map.js`). The reading above
+says what the two together have always been showing, read correctly for the
+first time: not a split scorecard of shadow against virtue, but which way
+that one nerve has tipped away from a centre where neither pole is pulling.
+Held high and installed low is the nerve pulled to one side. Installed high
+and held low is the nerve pulled to the other. Centre, where the two draw
+close, is the nerve regulated.
+
+Expression (`EX` in `engine/compute.js`, `CQ*(1-PULL)`, where `PULL` is the
+average drag every held address exerts against the person's will) is the
+figure that already moves with this. A collapsed Expression is not a separate
+fact about the person: it is this same tipped state, read off every nerve at
+once rather than one address at a time. CQ itself stays fixed (it is read
+from the law answers alone, ruled 25 September and reaffirmed since), so a
+low Expression is always the nerves pulling against a steady CQ, never CQ
+itself moving.
+
+Nothing in the arithmetic changed. This is a naming of what `n.sq`, `n.pole`
+and `EX` already compute, so the next reader of this code, or of a fetter
+drill on screen, has the right word for it.
+
+His words, settled in conversation: "Narcissism is a subset of psychopathy and Machiavellianism... sociopath would be a hypercomplex and psychopath would be a supercomplex. But a very particular archetype." This resolves his 20 October strike (`0e53d037`, "Remove disputed Psychopathy supercomplex classification"), which changed only `docs/ATUNED_LAYER_COUNT_DASHBOARD_2026-10-20.md` and never reached the code.
+
+- **Sociopathy is the Predatory family's own hyper complex.** `compute()` already built it (`kind:'hy'`, `nm:'Predatory'`). It is now a DESCENT entry of its own in `engine/data/compass.js`, `kind:'hyper complex'`, `fam:'Predatory'`. The name is the structure's (Sociopathy, not sociopath), the way the descent names a pattern and never a person, and it is the name `CODE_STRUCT` already codes, X25.
+- **Psychopathy is a super complex, and only one particular one:** the Grandiosity hyper complex and the Predatory one together. Its entry keeps `kind:'super complex'` and gains `pair:['Grandiosity','Predatory']`. `compute()` reads that pair into `r.psychopathy`, a separate field that is never pushed into `sups`. It is set wherever the two rank by weight, under the same weight gate as every super complex (a mean of 5.6). `inSups` says whether the generic pairing by rank also paired them.
+- **The dark read now lights a tied step only when the chain holds it.** It used to light Psychopathy for anybody dark under expression 11. The referral to a licensed clinician is unchanged and still follows depth alone, because it is a safety rule and not a label.
+- **What it changed on the roster:** one reading out of sixteen. Tomas is dark, carries Grandiosity and no Predatory, and was shown Psychopathy; he is now shown Machiavellianism. Every number on every profile is unchanged.
+- **Open, and his:** whether a heavy hyper complex may carry a marginal one past the gate. The mean lets a Grandiosity of 8.7 carry a Predatory of 5.5. The generic super complex does the same today, so a floor for each part would move both rules, and that call is his. Sociopathy's behaviour, practice and counterpart are unwritten on purpose: they are `null` in the record rather than invented.
+
+## Execute, do not stop and wait. Ruled 22 October.
+
+His words: "when I give you a command, you exercise it. If there's a prior command that's blocking it, you can talk to me about it, but don't ever stop doing it." A standing instruction for how work gets carried out, not limited to one task.
+
+A prior ruling (the locked CQ formula, a content decision only he can make, anything that needs his word before it is right rather than before it is built) is a real reason to talk to him about a command before carrying it out. It is never a reason to stop and only report. Where a command meets no such ruling, the work gets done, not written up as a plan for him to approve. Reporting instead of building, when nothing actually blocks the building, is the failure this entry exists to name.
+
+The occasion: asked on 22 October to find out where all the latest code for the nerve to super complex structure actually is, after a report that morning had described the real detection chain (nerve, address, fetter, saboteur, complex, hyper-complex) as already wired, without having looked at `proto/knowledge/`, a separate prototype area where the same campaign had written a full second layer of behavior, trigger, lived example, impact and practice content for all six real hyper-complex families, plus four competing page designs for showing it, none of it connected to the shipped app. The miss was not looking hard enough before reporting complete, not a blocking ruling anywhere in the way.
+
+## Away from the mythological names, toward the behavioural ones. Ruled 30 October.
+
+His words: "We need to start changing the kind of religious tones. To something more practical. Right, so instead of referring to a person as Lucifer or Moloch, we want to describe the behavior in a single word. Or two."
+
+Checked before scoping it: the product already states the intent this ruling now makes explicit. `ui/drills.js`, the Compass section header: "Rendered as behaviours and never as figures. Nobody meets Lucifer. A person runs pride as false light, and the name is what four thousand years of people called that behaviour when they saw it. That is the only reason the names earn their place: they carry the historical footprint, and the echo is in the room today." So the names were already meant to ride alongside a behavioural description, never stand in for the person. What his ruling adds: even riding alongside is now too much, in his own example ("instead of referring to a person as Lucifer or Moloch"). The behavioural word leads and is what a person is shown; the mythological name, if it survives anywhere, is footnote, not label.
+
+Where the names actually live, checked by grep rather than assumed: `atuned_src/engine/data/compass.js` (797 lines, the Compass/Inferno data itself) and `atuned_src/engine/data/teachers_recipes.js` (426 lines, the teacher/inverse pairs), both real, both shipped. Not yet read in full or catalogued figure by figure; that is the next step, not done tonight. **Not executed this round.** This is a content and naming pass across a real data table, not a copy tweak, and it needs its own scoped round: read every figure name actually in `compass.js` and `teachers_recipes.js`, confirm which ones are user-facing today versus already behind the "rendered as behaviours" principle above, propose the one or two word behavioural replacement for each, and bring the list to him rather than guess forty names in one pass.
+
+**Names ruled so far, 30 October, as he works through the list.** Druj is Deception (or Deceiver, if a person-word is needed), opposite Honesty: his words, thinking it through out loud, "truth is the opposite of deceive... deception is just a lie, but you could also say transparency, or honesty. Honesty is probably more real, probably the one." Geryon is Fraud: his words, "Geryon is fraud," which also matches the one already in the research file's own table, Dante's eighth circle. Full detail and the still open structural question (Geryon shares the engine's one real two-piece pattern with Psychopathy, naming him does not by itself tell the two apart) is `TASKS.md` round SM, SM14 to SM16.
+
+## The Journal's Full view gets a left menu and a right menu, 2 November
+
+His words: "use a left menu and the right menu." For the Journal's Full view only. Simple is unchanged.
+
+- **It is not a new screen.** The Journal already has a Full and a Simple view: the Dashboard button (`#stdash`, `ui/storyui.js`) sets `STV.dash`, and Simple is where a person lands, his 29 October words "when I land on this page it starts off in simple mode." This ruling fills the Full view's two sides. Pressing Dashboard now also brings back the left column, carrying the Journal's own left rail (`#stleft`, drawn by `ui/stdash.js`) and nothing of the Field's.
+- **Simple keeps no left column,** exactly as ruled 28 October ("we're going to get rid of the left-hand menu"). That ruling's real fault was whose column it was: the Field's rail, under the Field's fold key. In Full the column is the Journal's, under its own fold key (`lcols`, `colKey` in `ui/ui.js`), so a fold made on the Journal never moves the Field's and the reverse.
+- **The right menu is the one the Journal already has.** The bank still opens Imprints and Selection in the right rail (`.st-rail`, `#imp`). Nothing was rebuilt for it.
+- **The left rail's first section is Energy:** all seven seats, Root to Crown, read off this story's own words (`parseStory` bands, the same per-seat scale the Journal's chart already springs to). It says "Nothing read yet" and draws no ring until a story is written.
+
+Seat defaults taken with it, recorded as decided and not asked:
+
+- **Six channels, with Say dropped.** The 26 September ruling above (item 2, "Six channels or nine. RULED SIX"): believing, perceiving, thinking, behaving, acting, feeling. Speaking, saying and doing are not channels, so no Say channel appears anywhere in the Full view.
+- **The Story's commit button keeps its name, Commit.** It is not renamed Release. Release is already taken: it is the third column's name and the release card it opens (23 October entry above), and one word per concept holds.
+- **Energy reads this story, not the whole record.** The record's Energy is the Field's, on the Field's own left rail. The Journal's says so under its heading ("What this story puts at each of the seven seats"), so one word never names two readings on one screen.
+- **The left rail is Full only.** It is hidden in Simple and on every other tab, and emptied when it is hidden, so a hidden rail never holds a stale reading.
+
+Not built yet, because each needs new engine work or a ruling first: Action, Compass, a laws grid, Channels, Patterns, Boundary, and Feelings as a cycling widget. The laws panel the Story page already has is left as it is. A kept and broken laws grid was proposed and is not taken: it needs his ruling.
+
+Held by `tests/stfull.js`, called from `tests/functional.js`. Its first job is the safety precondition: in Full, with chat on, the crisis door is still reached by real presses (profile button, "Is this a crisis?", "Reach someone now") and the three numbers (988, 741741, 911) are on screen and pressable. That was already true before this change and is now held. This is the voluntary door only; there is still no automatic reading of what a person writes.

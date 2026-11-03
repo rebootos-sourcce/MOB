@@ -7,7 +7,7 @@
    other than itself. The gate asserts SAB33 equals this table row for row. */
 module.exports=[
  ['Negotiator',      [['fear',4,6],['apathy',3,5]]],
- ['Controller',      [['fear',7,10],['anger',5,8]]],
+ ['Micromanager',    [['fear',7,10],['anger',5,8]]],
  ['Victim',          [['sadness',6,8],['anger',5,7],['apathy',2,5]]],
  ['Perfectionist',   [['disgust',5,7],['anger',4,6]]],
  ['Pleaser',         [['apathy',3,5],['fear',3,8]]],

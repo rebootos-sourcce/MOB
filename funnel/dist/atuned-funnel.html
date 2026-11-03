@@ -779,7 +779,8 @@ html:not(.js) .sigc{display:none}
  <div class="cap rv" style="--d:.45s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-arrive"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
  <p class="cap-b" id="cap-arrive">The point of light is a signal: something happening in you that has no
  name yet. The faint ring around it is the field. In the Atuned model the ring
- holds 112 addresses, and each address is one place in the body. Nothing of
+ holds 108 somatic addresses, one place in the body each, plus 4 field
+anchors above and below it. Nothing of
  yours is in it yet.</p></div>
 </section>
 
@@ -1014,8 +1015,8 @@ html:not(.js) .sigc{display:none}
  <p class="big rv soft" style="--d:.15s">What starts in childhood shows up in youth, adulthood and professional life.</p>
  <p class="m rv" style="--d:.3s">Atuned looks for the connections.</p>
  <div class="cap rv" style="--d:.45s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-connect"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
- <p class="cap-b" id="cap-connect">The outer ring is the 112 addresses, coloured by the part of the body
- each one belongs to. The points inside are patterns. Each line shows where a
+ <p class="cap-b" id="cap-connect">The outer ring is the 108 somatic addresses, coloured by the part of the body
+each one belongs to, plus 4 field anchors above and below it. The points inside are patterns. Each line shows where a
  pattern pulls. A tighter line, with quicker pulses, pulls harder.</p></div>
 </section>
 
@@ -1796,6 +1797,30 @@ var mx=D.getElementById('mirror'), rdEl=D.getElementById('reading'), sayEl=D.get
   idx=(idx+1)%RD.length;
   rdEl.classList.add('out');
   setTimeout(function(){rdEl.textContent=RD[idx];rdEl.classList.remove('out');},REDUCED?0:180);});});
+
+/* ---------------- beat 02, naming ----------------
+   A press names the point, a second press on the same word takes the name
+   back. The word is said back in the status line and nowhere else: it is
+   not stored and it leaves nothing on the page after it is closed.
+
+   THIS WAS MISSING FROM MAIN FOR FOUR WEEKS. Written in Round RD, 61a44ed7,
+   3 October, and lost in the 4 October merge 0c24409e, neither parent of
+   which carries it. The canvas kept reading SG.named (the ring and the
+   halved shake in sig() and drawSig), so the six names drew correctly and
+   pressing any of them did nothing: aria-pressed stayed false and #named
+   stayed empty. Found by hand on 31 October, reviews/funnel-golden-path-
+   2026-10-31.md, F1. Ported unchanged: SG, sigPulse, REDUCED and draw are
+   the same names in the same scope they were then. tests/funnel.js now
+   presses every name, which is what it never did. */
+var feelBtns=[].slice.call(D.querySelectorAll('#name .feel button')), namedEl=D.getElementById('named');
+feelBtns.forEach(function(b){
+ b.addEventListener('click',function(){
+  var on=b.getAttribute('aria-pressed')!=='true';
+  feelBtns.forEach(function(x){x.setAttribute('aria-pressed',x===b&&on?'true':'false');});
+  SG.named=on?b.textContent.trim().toLowerCase():'';
+  namedEl.textContent=on?'You named the feeling: '+SG.named+'.':'';
+  if(on)sigPulse();
+  if(REDUCED)draw(0);});});
 
 /* ---------------- slide 03, the signal test ----------------
    ATUNED-Funnel-Signal-Story-Pattern-Release-Reframe-TDD-v1.md, sections 8

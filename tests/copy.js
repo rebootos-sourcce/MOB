@@ -82,8 +82,17 @@ const BANNED=[
     raw scores on a person's screen: the two pills and the Analytics line printed
     "at a weight of 6.3" and "CQ up 0.1", figures the page shows nowhere else to
     that precision. They print whole numbers like CQ and DQ */
- ['app', /\bat a weight of \d+\.\d/i, 'a weight prints as a whole number, as CQ and DQ do'],
- ['app', /\bCQ (?:up|down) \d+\.\d\b/i, 'a change in CQ is said in whole numbers, against the figure the page shows'],
+ /* NAMED CHANGE, percent phase 2 slice 2, 17 October: the reason moved. A
+    weight prints as a percent of its range now (engine/pct.js), so a decimal
+    is still banned, and the percent form itself is held on each moved
+    surface by tests/pct.js. The pattern stays as it was until the last
+    writer of a whole number weight moves (slice 5), when it widens to every
+    weight that is not a percent. */
+ ['app', /\bat a weight of \d+\.\d/i, 'a weight prints as a percent of its range, never a decimal'],
+ /* NAMED CHANGE, percent phase 2 slice 3, 17 October: a change in CQ is said
+    as before and after ("CQ moved from 58% to 61%", pctMove in engine/pct.js),
+    so the pattern widens from a decimal move to any signed move */
+ ['app', /\bCQ (?:up|down) \d/i, 'a change in CQ is said as before and after, never as a move in a unit the page does not show'],
  /* the top rung's old name, 17 October, the owner's words: "There are four
     tiers. Free, tier one, tier two, tier three, practitioner." It is keyed four
     and is called Practitioner wherever a person can read it */

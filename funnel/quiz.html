@@ -707,8 +707,14 @@ function viewRead(){
  /* ---- 1. WHERE YOU STAND. Coherence and its word, nothing else. There is
     no direction word here: which way coherence is moving is the owner's open
     question (WAITING-ON-YOU.md item 19) and nothing in the engine computes it. */
+ /* THE FIGURE IS THE APP'S, 31 October, percent phase 2 slice 6, which was
+    never built. This printed Math.round(r.CQ), a bare "51", and the app
+    printed "51%" for the same record one press later, so a stranger read
+    two figures for one reading on the first two screens they ever saw
+    (reviews/funnel-golden-path-2026-10-31.md, F2). fmtPct is the engine's,
+    already inlined in this page, so the two cannot drift again. */
  {eye:'The snapshot', head:'Where you stand today.', top:true,
-  body:'<div class="cqrow"><div class="cq"><b>'+Math.round(r.CQ)+'</b><span>'+esc(r.tier)+'</span></div>'
+  body:'<div class="cqrow"><div class="cq"><b>'+fmtPct('cq',r.CQ)+'</b><span>'+esc(r.tier)+'</span></div>'
   +'<div class="cqsay">'
   +'<p>That is your coherence. One hundred is every law closed with nothing held '
   +'in the body. Coherence is the alignment between what arrives, how you read it, '
@@ -728,7 +734,10 @@ function viewRead(){
     answers the fourth question second. ---- */
  {eye:'The thin laws', head:'Where it leaks.', next:'the five laws holding least',
   body:'<h3>The five laws holding least</h3>'
-  +'<p class="sm">Each law is scored out of ten.</p>'
+  /* "Each law is scored out of ten." sat over figures like 3.8: a count
+     against a total, which V8 retired on 2 October, and the scale went with
+     the figure when the rows moved to percent. */
+  +'<p class="sm">A law holding in full reads 100%.</p>'
   +'<ul class="laws">'+thin.map(lawRow).join('')+'</ul>'
   +'<p class="sm">Holding best: '+held.map(function(l){return esc(l.nm);}).join(', ')+'.</p>'},
 
@@ -760,13 +769,18 @@ function viewRead(){
   +'<p class="sm">Each band is a seat. Its weight is the load it is carrying. '
   +'Root sits at the base and the band climbs the right to Crown.</p></div>'
   +'<div><h3>The load at each seat</h3>'
-  +'<p class="sm">The nine charges from your answers land on the 112 addresses, '
-  +'each one seated, in the Atuned model, at a named plexus or nerve. Average load '
-  +'per seat, out of ten.</p>'
+  +'<p class="sm">The nine charges from your answers land on the 108 somatic addresses, '
+  +'each one seated, in the Atuned model, at a named plexus or nerve, plus 4 field '
+  +'anchors above and below the body. A seat reads 100% when every address on it '
+  +'holds the most it can.</p>'
+  /* a seat's figure is the mean of sq over its addresses, which the
+     registry files under weight (engine/pct.js), and its bar is pct of the
+     same kind, so the bar drawn and the figure printed are one number. It
+     printed x.v.toFixed(1) under "out of ten", F2 of the 31 October walk. */
   +'<ul class="seats">'+bandload.map(function(x){
     return '<li><b>'+esc(x.b)+'</b><span class="tr"><i style="width:'
-     +(Math.min(100,x.v*10))+'%;background:'+cv(x.b)+'"></i></span><em>'
-     +x.v.toFixed(1)+'</em></li>';}).join('')+'</ul>'
+     +(pct('weight',x.v)||0)+'%;background:'+cv(x.b)+'"></i></span><em>'
+     +fmtPct('weight',x.v)+'</em></li>';}).join('')+'</ul>'
   +'<p class="sm">'+esc(r.darkB)+' is carrying the most. '
   +(r.heaviest?('The heaviest single address is '+esc(r.heaviest.k)+', at the '
     +esc(r.heaviest.n||'field')+'. '):'')
@@ -851,9 +865,13 @@ function viewRead(){
  function towardLabel(txt){
   var lead=TIERDEF.some(function(x){return String(txt||'').indexOf(x.nm)===0;});
   return lead?'The next reading up, and how it is reached':'The direction out';}
+ /* a law prints as the app prints it, fmtPct('law'), which is how Analytics
+    and the core drill print the same law for the same record; it printed
+    l.v.toFixed(1), F2 of the 31 October walk. The bar is pct of the same
+    kind, so a law at nought draws nothing and prints the dash. */
  function lawRow(l){
-  return '<li><b>'+esc(l.nm)+'</b><span class="tr"><i style="width:'+(l.v*10)
-   +'%;background:'+cv(l.b)+'"></i></span><em>'+l.v.toFixed(1)+'</em></li>';}
+  return '<li><b>'+esc(l.nm)+'</b><span class="tr"><i style="width:'+(pct('law',l.v)||0)
+   +'%;background:'+cv(l.b)+'"></i></span><em>'+fmtPct('law',l.v)+'</em></li>';}
 
  /* EVERY CARD IS THE SAME KIND OF OBJECT.
 
@@ -883,6 +901,15 @@ function viewRead(){
    +(seen[s.hcx]?'':': '+esc(fam?fam.d:'a contraction that has hardened into a shape'))
    +'</div>';
   seen[s.hcx]=1;
+  /* AN INFERRED NAME SAYS SO, P2-4 of the inference audit, 24 October.
+     Across simulated quiz takers the two names shown most were Diffuse
+     Freezer and Sacral Drifter, and neither is one of the 33: they are
+     clusters the engine names for their seat and feeling (UNNAMED in
+     engine/core.js, flagged unnamed on the reading), and the card printed
+     them exactly as it prints Judge. The word is the app's own, the drill
+     sheet's "Inferred", so one concept keeps one word. */
+  if(s.unnamed)h+='<div class="sl"><b>Inferred:</b> no saboteur of the 33 on file fits '
+   +'these addresses. This cluster is named for where it sits and the feeling it runs on.</div>';
   h+='<div class="sl"><b>What it does:</b> '
    +(d&&d.d?esc(firstSentences(d.d,2))
           :esc('It shows up as '+listOf(parts.map(function(n){return low(n.d);}))+'.'))

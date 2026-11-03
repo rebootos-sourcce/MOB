@@ -132,7 +132,7 @@ const FLAYS=[
  {k:'domains',nm:'Domains',d:frSegRing(5,8.6,20),
   tip:'The nineteen blueprint domains, what was there before any of it.'},
  {k:'addresses',nm:'Addresses',d:frCirc(12,12,4.2)+frTicks(8,7,10.4),
-  tip:'Your 112 addresses. Each mark is the charge held at one place.'},
+  tip:'Your 108 addresses, plus 4 field anchors above and below the body. Each mark is the charge held at one place.'},
  {k:'stories',nm:'Stories',d:frCirc(12,12,2.6)+'M12 9V4.4M14.6 13.5l4 2.3M9.4 13.5l-4 2.3'
    +frCirc(12,3.4,1.1)+frCirc(19.4,16.2,1.1)+frCirc(4.6,16.2,1.1),
   tip:'One line for each story that put charge on an address.'},
@@ -141,14 +141,14 @@ const FLAYS=[
  {k:'patterns',nm:'Patterns',d:frCirc(15.6,8.4,3.2)+'M13.3 10.7L5 19',
   tip:'The saboteurs running on the charge, threaded to the addresses that built them.'},
  {k:'chains',nm:'Chains',d:frCirc(5.4,18.6,1.6)+frCirc(11,13,2.3)+frCirc(17.4,6.6,3)+'M6.6 17.4l2.8-2.8M12.7 11.3l2.6-2.6',
-  tip:'How a pattern compounds: complex, hyper complex, character, inward.'},
+  tip:'How a pattern compounds: complex, hyper complex, super complex, inward.'},
  {k:'laws',nm:'Laws',d:frCirc(12,12,2.4)+frTicks(7,5.2,10,[1,.6,.9,.45,.8,.55,.95]),
   tip:'The twenty one laws, set by seat. Their sum is the number at the centre.'},
  {k:'gates',nm:'Gates',d:frCirc(12,12,3.1)+'M12 8.9V3.6M9.6 6L12 3.6 14.4 6M12 15.1v5.3',
   tip:'The six gates round the core. Each higher gate sits across from the lower one it stands against.'},
  {sep:true},
  {k:'shadow',nm:'Decoherence',d:frCirc(12,12,8.5)+'M7.2 16.6l3.4-3.4M10.2 19.2l6-6M14.6 19.9l4.6-4.6',
-  tip:'Decoherence. The weight on all 112 addresses, as a wash behind everything.'}];
+  tip:'Decoherence. The weight on your 108 addresses and 4 field anchors, as a wash behind everything.'}];
 /* THE SWITCH AND THE ROW ARE NO LONGER BUILT HERE. The layer row, #flay, is
    the glass bar now, and the switch, #fview, moved to the right rail as three
    circles; ui/fieldbar.js builds both. FLAYS stays, because its marks are the
@@ -597,8 +597,13 @@ function frCore(M,r,cx,cy,R,o){
  var rin=R-w/2-2;
  s+=frFeathers(M,r,cx,cy,rin)+'<g class="frcq"><circle class="frcq-bk" cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)
   +'" r="'+(rin*.62).toFixed(1)+'" fill="'+frRgb(M.ground)+'"/>';
- var cq=String(Math.round(r.CQ)),dq=Math.round(+r.DQ||0)>0?String(Math.round(+r.DQ)):'\u2013',lab=11;
- var FC=cq.length>2?cq:'88',FD=dq.length>2?dq:'88';
+ /* CQ AND DQ AS PERCENTS, 17 October, percent phase 2, through the registry
+    (engine/pct.js); the 16 October ruling supersedes round PQ's bare number.
+    Nought is the dash. The fit below still measures the widest two digit
+    figure, now with its sign, so a one digit DQ never sets the coherence
+    larger than a two digit one does. */
+ var cq=fmtPct('cq',r.CQ),dq=fmtPct('dq',r.DQ),lab=11;
+ var FC=cq.length>3?cq:'88%',FD=dq.length>3?dq:'88%';
  var W_=function(str,size,wt){return frTextW(str,wt+' '+size.toFixed(1)+'px Inter, system-ui, sans-serif');};
  /* THE TYPE IS FITTED TO THE HOLE, NOT TO A TABLE. The ring's inside runs
     from 22 pixels of radius on a phone to 57 on a wide screen, and two figures
@@ -702,12 +707,13 @@ function frPoles(M,r,cx,cy,inner){
    two left hand gates further than the four others and leaves every sector on
    the rim where it is. */
 const FR_GATE_AT={intent:-150,aware:-90,detach:-30,averse:30,ignore:90,attach:150};
-const FR_GATE_VS={aware:'ignore',ignore:'aware',detach:'attach',attach:'detach',intent:'averse',averse:'intent'};
+/* each gate's opposite is VERP_VS in engine/verp.js, the one pairing table,
+   which the action drill names it from as well */
 function frCollar(M,cx,cy,edge,sm){
  var G=frGates(),V=G.hi.concat(G.lo),by={};V.forEach(function(v){by[v.k]=v;});
  var rc=edge+(sm?3:4),wc=sm?3:4,span=46*Math.PI/180,gz=sm?11:13,Rg=gz/2+3,ph=15,clear=rc+wc/2+2;
  V.forEach(function(v){var t=(FR_GATE_AT[v.k]||0)*Math.PI/180,ev=G.ev,c=M.seat(v.side==='higher'?'Heart':'Root');
-  var o=by[FR_GATE_VS[v.k]],sum=v.pct+(o?o.pct:0),f=ev&&sum>0?v.pct/sum:0;
+  var o=by[VERP_VS[v.k]],sum=v.pct+(o?o.pct:0),f=ev&&sum>0?v.pct/sum:0;
   var pw=G.pw(v),ct=Math.cos(t),st=Math.sin(t),gr=rc+wc/2+Rg+3,gx,gy,px,py;
   for(var n=0;n<200;n++){gx=cx+ct*gr;gy=cy+st*gr;px=gx+Rg-4;py=gy+Rg-7;
    var nx=Math.max(px,Math.min(cx,px+pw)),ny=Math.max(py,Math.min(cy,py+ph));
@@ -733,7 +739,7 @@ function frCollar(M,cx,cy,edge,sm){
    Each pill is as wide as its figure set at 11 pixels, measured, and the
    widest of the six is what the renditions space the gates by. */
 function frGates(){var V=verpRead(),ev=V.some(function(v){return v.pct>0;});
- var lab=function(v){return ev?v.pct+'%':'–';};
+ var lab=function(v){return ev?fmtPct('gate',v.pct):'–';};
  var pw=function(v){return Math.max(24,Math.ceil(frTextW(lab(v),'600 11px Inter, system-ui, sans-serif'))+10);};
  return {ev:ev,lab:lab,pw:pw,pwMax:Math.max.apply(null,V.map(pw).concat([24])),
   hi:V.filter(function(v){return v.side==='higher';}),lo:V.filter(function(v){return v.side==='lower';})};}
@@ -852,7 +858,7 @@ function frFrames(M,r){
    P.push('<circle data-h="'+M.hid({k:'sab',o:s})+'" cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+rb.toFixed(1)+'"'
     +(s.unnamed?' fill="'+frRgb(M.ground)+'" stroke="'+frRgb(c)+'" stroke-width="1.5"':' fill="'+frRgb(c)+'"')+'/>');});})();
 
- /* chains. complexes, hyper complexes, character, each a frame further in.
+ /* chains. complexes, hyper complexes, super complexes, each a frame further in.
     The threads bow toward the core, because a chain is a pattern compounding
     inward, and drawn straight they ran across the frame as loose string. */
  frChains(M,r,at,[['cx',r.cxs,M.tCx,ring(D.cx),'Solar',3.4,1.5,'sab',M.ixSab,.30],
@@ -884,7 +890,7 @@ function frFrames(M,r){
 /* EACH TIER CARRIES ITS OWN CLASS, T-<tier>, and each thread the class of the
    tier at its far end as well, F-<tier>. The three tiers were one group under
    one switch, and the glass bar gives complexes, hyper complexes and
-   character a switch each; a thread is drawn when both its ends are, so a
+   super complexes a switch each; a thread is drawn when both its ends are, so a
    thread leaves with either. */
 function frChains(M,r,at,tiers,th,sc,frames){
  tiers.forEach(function(T){var key=T[0],list=T[1],ts=T[2],tr=T[3],c=M.seat(T[4]),rb=T[5],wd=T[6],from=at[T[7]],ixf=T[8],pull=T[9];
@@ -1078,18 +1084,24 @@ function frCallouts(M,r,P){
    /* SQ, the product's own word for an address's depth: the readout, the
       badge and the rail all print it that way. The mockup said "Held at",
       and held is the axis charge in the readout two inches away. */
-   push('addresses',a,s.n.k,s.n.b+'. SQ '+s.n.sq.toFixed(1),M.seat(s.n.b),P.hitOf['n'+s.s]);});
+   /* and as a percent, 17 October, percent phase 2: "SQ 4.2" beside a badge
+      printing 42% was one reading in two units on one screen */
+   push('addresses',a,s.n.k,s.n.b+'. SQ '+fmtPct('weight',s.n.sq),M.seat(s.n.b),P.hitOf['n'+s.s]);});
  if(ARCH[r.pi])push('archetypes',P.archAt[r.pi],ARCH[r.pi].nm,'First archetype',M.accent,P.hitOf['a'+r.pi]);
  /* the selected domain is not called out: the left rail already names it, and
     a fifth name in one corner reached the dial's own outer ring */
- r.sups.forEach(function(o,k){push('chains',P.at.sup[k],o.nm,'Character layer',M.seat('Root'),P.hitOf['u'+k]);});
+ r.sups.forEach(function(o,k){push('chains',P.at.sup[k],o.nm,'Super complex',M.seat('Root'),P.hitOf['u'+k]);});
  var shut=SI.map(function(l,i){return {l:l,i:i,v:+S.law[l.nm]||0};})
   .filter(function(x){return typeof lawIn!=='function'||lawIn(x.l.nm);})
   .sort(function(a,b){return a.v-b.v;})[0];
- if(shut)push('laws',P.lawAt[shut.i],shut.l.nm,'Most shut law. '+shut.v.toFixed(1),M.seat(shut.l.b),P.hitOf['l'+shut.i]);
+ /* a law is answered on nought to ten and stays so where it is answered; what
+    the instrument reads back from it prints as a percent, the inventory's
+    recommendation for inputs (PERCENT-FRAMEWORK-2026-10-16.md, open item 3).
+    A law at nought is the dash, the registry's rule. */
+ if(shut)push('laws',P.lawAt[shut.i],shut.l.nm,'Most shut law. '+fmtPct('law',shut.v),M.seat(shut.l.b),P.hitOf['l'+shut.i]);
  var hp=r.sabs.slice().sort(function(a,b){return b.w-a.w;})[0];
  if(hp){var hk=M.ixSab.get(hp);
-  push('patterns',P.at.sab[hk],hp.nm,'Heaviest pattern. Weight '+hp.w.toFixed(1),M.seat((hp.parts[0]&&hp.parts[0].b)||'Root'),P.hitOf['s'+hk]);}
+  push('patterns',P.at.sab[hk],hp.nm,'Heaviest pattern. Weight '+fmtPct('chain',hp.w),M.seat((hp.parts[0]&&hp.parts[0].b)||'Root'),P.hitOf['s'+hk]);}
  /* the box a label takes is the name's line over the line saying what it is,
     30 tall, with the leader meeting it at the name. inRing is flatplate's
     test with the dial's own edge and floor in place of the wheel's. */

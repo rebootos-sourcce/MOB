@@ -128,6 +128,9 @@ BROWSER = {
 # a worked example shows everything and runs nothing, ruled 16 October
 # (engine/showonly.js). Report only until three green runs.
     'examples-showonly': ('node tests/examples-showonly.js', 20),
+# the paywall from mockup five, 17 October (ui/paywall.js). Report only until
+# three green runs.
+    'paywall':       ('node tests/paywall.js', 20),
 # words about ending a life or danger now: no release, no question, the crisis
 # door beside the entry (engine/safe.js), 17 October. Report only until three
 # green runs.
@@ -135,6 +138,18 @@ BROWSER = {
 # the allowance, five seats, 17 October (tests/allowance.js). Report only until
 # three green runs.
     'allowance':     ('node tests/allowance.js', 20),
+# the gift sees everything and is still free, ruled in DECISIONS.md and kept at
+# round PK (tests/gift.js). Report only until three green runs.
+    'gift':          ('node tests/gift.js', 20),
+# patterns follow the money, 17 October (tests/money.js). Report only until
+# three green runs.
+    'money':         ('node tests/money.js', 20),
+# the release chain, 17 October (tests/releasechain.js). Report only until
+# three green runs.
+    'releasechain':  ('node tests/releasechain.js', 20),
+# percent phase 2, 17 October (tests/pct.js): the printed percent is the
+# drawn fill. Report only until three green runs.
+    'pct':           ('node tests/pct.js', 20),
 }
 # P0 Alpha acceptance: move to the blocking browser matrix, and mutation-test each
 # one so a future refactor cannot silently return it to report-only.

@@ -179,7 +179,16 @@ await section('a worked example',async()=>{
  ok(st!=='fail','and nothing says a save failed, because none was tried');
  /* THE TWO DEFECTS F24 NAMED, held on the same page */
  const plate=await p.evaluate(()=>{var e=document.querySelector('#sumbody .s-plate');return e?e.innerText:'';});
- ok(plate.length>0&&!/%/.test(plate),'the headline reading is a number and not a percent (round PQ): '+JSON.stringify(plate.slice(0,60)));
+ /* NAMED CHANGE, percent phase 2 slice 2, 17 October. Round PQ ("Just a
+    number") is superseded for CQ by the 16 October ruling, his words:
+    "Instead of 0.0, site wide, we need to convert those numbers into
+    percent." The plate prints the word while the laws are being answered and
+    CQ as the registry's percent once all are (engine/pct.js), and nothing
+    else on it is a percent. Marcus has answered every law. */
+ const pw=await p.evaluate(()=>{var R=compute();return {full:!!accCover(R).complete,cq:fmtPct('cq',R.CQ)};});
+ const pcs=plate.match(/\d+%/g)||[];
+ ok(plate.length>0&&(pw.full?(pcs.length===1&&pcs[0]===pw.cq):pcs.length===0),
+  'the headline reading is CQ as a percent once every law is answered, and the only percent on the plate: '+JSON.stringify({plate:plate.slice(0,60),want:pw}));
  const dup=(sel)=>p.evaluate(sel=>{var t=document.querySelector(sel).innerText;
   var ss=t.split(/(?<=[.!?])\s+|\n+/).map(function(s){return s.trim();}).filter(function(s){return s.split(/\s+/).length>=5;});
   var cnt={}; ss.forEach(function(s){cnt[s]=(cnt[s]||0)+1;});

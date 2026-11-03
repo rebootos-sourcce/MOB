@@ -157,6 +157,41 @@ const FLOOR_CANVAS=60;
       hollow.length?hollow.map(x=>'#'+x.id).join(' '):rl.length+' hosts, none hollow']);
     if(hollow.length)fails.push(wn+'/'+who+'/'+nm+' rail host '
       +hollow.map(x=>'#'+x.id).join(' ')+' is on the screen with nothing in it');}
+   /* THE JOURNAL HAS TWO VIEWS AND THIS WALKED ONE. Simple is what setTab
+      lands on, so the walk above only ever saw the Journal in Simple. Full
+      (ruled 2 November, "use a left menu and the right menu") brings back the
+      left column with #stleft in it, and #stleft is deliberately not a
+      section, so the rail watch above, which reads [data-rail] hosts, would
+      never see it either. So the Journal is walked three ways by name: Simple,
+      where the rail must be hidden and empty; Full with no story, where Energy
+      must say nothing is read and draw no ring; and Full with a story, where
+      it must draw all seven seats and clear the floor. The story is put into
+      the working text and painted directly, never committed or drafted, and
+      the view is put back to Simple after. */
+   const jr=await p.evaluate(async()=>{
+    const out=[], wait=()=>new Promise(r=>setTimeout(r,320));
+    const m=(nm)=>{const st=document.getElementById('story'), sl=document.getElementById('stleft');
+     const sb=st.getBoundingClientRect(), lb=sl.getBoundingClientRect(), ls=getComputedStyle(sl);
+     out.push({nm, story:(sb.width>0&&sb.height>0)?st.innerHTML.length:0,
+      shown:ls.display!=='none'&&lb.width>0&&lb.height>0&&sl.offsetParent!==null,
+      left:sl.innerHTML.length, text:(sl.innerText||'').trim().length,
+      rings:sl.querySelectorAll('.cr').length, rows:sl.querySelectorAll('.st-en-r').length,
+      none:!!sl.querySelector('#st-energy-none')});};
+    const t0=ST_TEXT, p0=ST_PARSED;
+    setTab(TAB.STORY); STV.dash=false; stRender(); await wait(); m('simple');
+    STV.dash=true; ST_TEXT=''; ST_PARSED=null; stRender(); await wait(); m('full');
+    ST_TEXT='My chest was tight and I felt scared when he shouted at me.'; ST_PARSED=parseStory(ST_TEXT);
+    stDashLeft(); m('full story');
+    ST_TEXT=t0; ST_PARSED=p0; STV.dash=false; stRender();
+    return out;});
+   jr.forEach(r=>{
+    const bad=r.story<FLOOR
+     ||(r.nm==='simple'&&(r.shown||r.left>0))
+     ||(r.nm==='full'&&(!r.shown||!r.none||r.rings>0))
+     ||(r.nm==='full story'&&(!r.shown||r.rows!==7||r.left<FLOOR));
+    rows.push([wn,who,{simple:'jnl simple',full:'jnl full','full story':'jnl story'}[r.nm],bad?'EMPTY':'ok',r.story,r.text,
+     'Journal '+r.nm+': #story, #stleft '+(r.shown?'shown':'hidden')+' '+r.left+' markup, '+r.rows+' seats'+(r.none?', nothing read yet':'')]);
+    if(bad)fails.push(wn+'/'+who+'/journal '+r.nm+' did not render as it should: '+JSON.stringify(r));});
    /* THE RELEASE IS NOT IN TABDEF, so this watch never saw it, and it is the
       one surface built to be heard (DESIGN-release.md section 7: "The release
       surfaces are not in TABDEF, so the watch does not see them"). Its three

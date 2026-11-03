@@ -437,9 +437,11 @@ async function soundGate(browser,FILE,ok,booted){
   return {played:SFX_PLAYED-p0, refuse:(SFX_LAST.refuse||0)>t0};});
  ok(st.played===1&&st.refuse,'a refusal through status sounds refuse, once, '+JSON.stringify(st));
  await pg.waitForTimeout(1600);
+ /* voice only now, round of 29 October: the words reach ST_TEXT through
+    srcTurnCommit, the one door a turn lands through whether it is typed
+    or spoken, not a fill on a box that no longer renders. */
  const commit=async t=>{
-  await pg.evaluate(t=>{loadP(0); setTab(TAB.STORY); stRender();
-   const ta=document.getElementById('sttext'); ta.value=t; ta.dispatchEvent(new Event('input',{bubbles:true}));},t);
+  await pg.evaluate(t=>{loadP(0); setTab(TAB.STORY); stRender(); srcTurnCommit(t);},t);
   await pg.waitForTimeout(80);
   const before=await pg.evaluate(()=>({p:SFX_PLAYED, last:Object.assign({},SFX_LAST),
    n:((CURP.story&&CURP.story.entries)||[]).length}));

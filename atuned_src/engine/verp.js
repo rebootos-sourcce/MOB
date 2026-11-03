@@ -1,9 +1,19 @@
 
 /* ============================================================
-   THE SIX AXES. Three higher gates and three lower gates. This is
-   not a display, it is a COST MULTIPLIER on every held pattern.
-   A lower gate multiplies what the pattern costs down. A higher
-   gate multiplies it up. It moves every CQ in the app.
+   THE LAWS OF ACTION, keyed gates. Right action is aware, detach and
+   intent; wrong action is ignore, attach and averse. Each move of right
+   action stands across from one wrong action, VERP_VS below. The side
+   keys stay higher and lower, because a key is identity.
+
+   VERPMULT reaches Rz only and Rz reaches no surface, so no copy may say
+   a gate multiplies anything held. This header said each gate was "a COST
+   MULTIPLIER on every held pattern" that "moves every CQ in the app", and
+   it had the two sides backwards as well: it said a lower gate multiplied
+   the cost down, where VERPMULT gives the lower three 1.25 to 1.35. The
+   action drill, the Field's tooltip and the wheel repeated it, printing
+   x0.70 beside Awareness and "everything held weighs" under it. CQ is the
+   laws alone (cqSum, engine/compute.js), so the only place the multiplier
+   lands is Rz, which compute() returns and no surface reads.
    ============================================================ */
 var VERP=[
  {k:'aware',  nm:'Awareness',  side:'higher', d:'I was present with the sensation.'},
@@ -12,6 +22,13 @@ var VERP=[
  {k:'ignore', nm:'Ignorance',  side:'lower',  d:'I did not see it coming, or I chose not to look.'},
  {k:'attach', nm:'Attachment', side:'lower',  d:'The story had me. I went with it.'},
  {k:'averse', nm:'Aversion',   side:'lower',  d:'I went around it. I avoided the thing.'}];
+/* WHAT EACH MOVE STANDS ACROSS FROM, both ways round. One table, read by the
+   action drill to name the opposite (ui/drills.js) and by the dial's collar to
+   share a ring between the two ends of a pair (ui/rings.js). It lived in
+   rings.js as FR_GATE_VS, where the drill could reach it only through a
+   renderer's constant, and a second copy in the drill is a pairing that can
+   drift from the one the dial draws. */
+var VERP_VS={aware:'ignore',ignore:'aware',detach:'attach',attach:'detach',intent:'averse',averse:'intent'};
 var VERPMULT={aware:0.7, detach:0.6, intent:0.75, ignore:1.3, attach:1.35, averse:1.25};
 var VERPMIX={aware:0,detach:0,intent:0,ignore:0,attach:0,averse:0};
 var VERPCUE={

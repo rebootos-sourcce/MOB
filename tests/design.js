@@ -111,7 +111,8 @@ console.log('\n=== 2 · one tab surface visible, plus whatever it carries ===');
 const FOLDOF={};
 /* indexed by the TAB integer, not by position, which is the rule this repo
    keeps relearning. 5 is Intake and it is not swept here. */
-const TABN=['Story','Summary','Field','Energy','Analytics','Intake','Knowledge',
+/* 0 is the journal page, named Discover since 23 October */
+const TABN=['Discover','Summary','Field','Energy','Analytics','Intake','Knowledge',
  'Games','Compass','Settings','Ritual','Character','Practitioner','Intake page'];
 /* 11 is the Character page, LP, in the host the Masks door had (LE). It sits
    over the same stage as the Body, so the two are the pair most likely to
@@ -596,7 +597,8 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
     reached its own end before the sheet left, so it was not cut; and the
     Wheel's once a session entrance started no earlier than the first frame
     the sheet began to lift, so it did not run out under a solid sheet. */
- const ev=await p6.evaluate(()=>({log:__BOOTLOG,t0:typeof ENTER_T0==='undefined'?null:ENTER_T0}));
+ const ev=await p6.evaluate(()=>({log:__BOOTLOG,t0:typeof ENTER_T0==='undefined'?null:ENTER_T0,
+   tab:S.tab,field:TAB.FIELD,nm:TABOF(S.tab).nm}));
  /* READ ON THE FADE'S OWN CLOCK, NOT ON THE ORDER TWO EVENTS ARRIVED IN.
     This asked for animationend before the removal. animationend is sent on
     the first frame after the fade's end, and the floor in ui/panels.js
@@ -616,8 +618,25 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
   'the sheet\'s fade played to its end before it left: began '+Math.round(ev.log.start)
   +'ms, due to end '+(fl?Math.round(fl.end):'unknown')+'ms, removed '+Math.round(ev.log.gone)+'ms'
   +(ev.log.end>0?', animationend at '+Math.round(ev.log.end)+'ms':', animationend not reached before the floor'));
- ok(ev.t0>0&&ev.t0>=ev.log.start-5,'the Field\'s entrance started as the sheet lifted, not under it: '
-  +'entrance '+Math.round(ev.t0)+'ms, lift '+Math.round(ev.log.start)+'ms');
+ /* AND SINCE 23 OCTOBER THE APP OPENS ON DISCOVER (TABHOME, engine/core.js),
+    so the Field is not the surface under the sheet. Nothing enters the Field
+    at start up, so its entrance cannot run out under a solid sheet, and it
+    waits for the first visit, where enterStart in ui/wheel.js runs it once a
+    session. Both halves of ET's finding are held on that opening: it did not
+    run under the sheet, and on the first visit it plays, after the sheet has
+    left. Opened on the Field again, the original check is the one that
+    applies, so it is kept for that case and read off where the app opened. */
+ if(ev.tab===ev.field){
+  ok(ev.t0>0&&ev.t0>=ev.log.start-5,'the Field\'s entrance started as the sheet lifted, not under it: '
+   +'entrance '+Math.round(ev.t0)+'ms, lift '+Math.round(ev.log.start)+'ms');
+ }else{
+  ok(ev.t0===null,'the app opened on '+ev.nm+', so the Field\'s entrance did not run under the sheet: '+ev.t0);
+  const first=await p6.evaluate(async()=>{setTab(TAB.FIELD); await new Promise(r=>requestAnimationFrame(()=>r()));
+   return {t0:typeof ENTER_T0==='undefined'?null:ENTER_T0, reduced:typeof REDUCED!=='undefined'&&!!REDUCED};});
+  ok(first.reduced?first.t0===0:(first.t0>0&&first.t0>=ev.log.gone),
+   'and on the first visit to the Field it plays, after the sheet left: entrance '+Math.round(first.t0||0)
+   +'ms, sheet gone '+Math.round(ev.log.gone)+'ms');
+ }
  console.log('  cleared:',late.gone);
  await p6.close();
 }
@@ -856,10 +875,16 @@ console.log('\n=== the alarm law ===');
  ok(bad.length===0,'no good end reading prints in the alarm colour, got '
    +JSON.stringify(bad.slice(0,4)));
  /* AND THE MECHANISM IS STILL LIVE. A ring built past the threshold with no
-    hot decision has to redden, or the gate above is passing on a corpse. */
+    hot decision has to redden, or the gate above is passing on a corpse.
+    NAMED CHANGE, percent phase 2 slice 1, 17 October: a ring that prints a
+    percent no longer takes the alarm at any fill (the default taken in
+    DECISIONS.md, his to overrule: red on a percent reads as a failed mark).
+    The ring built here prints no percent, a charge of 9.6 as a bare figure,
+    so it is the case the alarm law still covers, and tests/pct.js holds the
+    other half, that 96% draws its own colour. */
  const fires=await page.evaluate(()=>{
   const d=document.createElement('div');
-  d.innerHTML=cr('Root',96,{size:'sm',label:'shadow weight'});
+  d.innerHTML=cr('Root',96,{size:'sm',label:'shadow weight',raw:'9.6'});
   document.body.appendChild(d);
   const e=d.querySelector('.cr');
   const arc=e.querySelector('.arc circle:last-child');
@@ -1428,6 +1453,14 @@ console.log('\n=== a figure is legible against the ground it is printed on ===')
   loadP(gi); render();
   await new Promise(r=>setTimeout(r,300));
   const chip={plain:{r:99,n:0},hot:{r:99,n:0}};
+  /* NAMED CHANGE, percent phase 2 slice 1, 17 October: no ring that prints a
+     percent is hot any more (DECISIONS.md, the default taken), and every ring
+     on the Field prints one, so Gordon's Field has no hot chip left to
+     measure. The alarm survives on a ring that prints no percent, so one is
+     put beside the first chip, on the same ground, and measured there. */
+  let probe=null;
+  if(!document.querySelector('.cr.hot')){const c0=document.querySelector('.cr');
+   if(c0){c0.insertAdjacentHTML('afterend',cr('Root',96,{size:'sm',raw:'9.6',label:'probe'}));probe=c0.nextElementSibling;}}
   [...document.querySelectorAll('.cr')].forEach(c=>{
    const v=c.querySelector('.v'); if(!v)return;
    const g=painted(v), r=+ratio(lum(inkOn(v,g)),lum(g)).toFixed(2);
@@ -1437,26 +1470,27 @@ console.log('\n=== a figure is legible against the ground it is printed on ===')
     chip[k].seat=((c.getAttribute('style')||'').match(/--c:\s*([^;]+)/)||[,'?'])[1].trim();
     chip[k].px=+parseFloat(getComputedStyle(v).fontSize).toFixed(1);
     chip[k].txt=v.textContent.trim();}});
-  /* THE PAIR BARS' FIGURES, round RB, ported in the P3 menu pass. Orientation
-     and balance were a dial whose fill reached under one end figure; every
-     pair on the rail is rbPair now, where each pole's colour lies at its own
-     end under its own word and share, and the edge of the colour swings. So
-     each figure is measured three times, over the bare track and over each
-     pole's colour at full strength, and the worst is what is held: whatever
-     the reading and wherever the edge has swung to, the figure sits on one
-     of those grounds or a blend between them. Read for every pair, the CQ and
-     DQ bar with them. */
+  if(probe)probe.remove();
+  /* THE PAIR BARS' FIGURES. NAMED CHANGE, 30 October: r1 "the level" from
+     mockups/dual-readings replaced round RB's bar, so a pair prints one
+     figure, over the centre line, in the leaning side's colour, on the bare
+     panel and never over a fill. Which side that is depends on the person,
+     so the figure is measured in each pole's colour in turn: whichever way
+     anybody leans, it is one of those two. Six measurements, as before, two
+     a pair. The first r1 build printed it in the pole's colour itself, and
+     the root red, the shadow side of coherence and the malignant side of
+     orientation, measured 4.14 to 1 on the panel at 15px, read off this
+     check on 30 October. */
   const dial=[];
   document.querySelectorAll('#fdock .rb2').forEach(pr=>{
-   const base=painted(pr);
-   const colOf=k=>{const t=document.createElement('i'); t.style.color='var('+k+')'; pr.appendChild(t);
-    const c=rgb(getComputedStyle(t).color).c; t.remove(); return c;};
-   const fills=[comp(colOf('--lc'),0.40,base),comp(colOf('--rc'),0.40,base)];
+   const v=pr.querySelector('.rb2-v'); if(!v)return;
+   const base=painted(v), was=pr.style.getPropertyValue('--sc');
    ['l','r'].forEach(side=>{
-    const v=pr.querySelector('.rb2-p.'+side+' .rb2-v'); if(!v)return;
-    const r=Math.min.apply(null,[base].concat(fills).map(g=>ratio(lum(inkOn(v,g)),lum(g))));
-    dial.push({lean:pr.getAttribute('data-pair')+':'+side, covered:true, pilled:false,
-     px:+parseFloat(getComputedStyle(v).fontSize).toFixed(1), r:+r.toFixed(2)});});});
+    pr.style.setProperty('--sc','var(--'+side+'c)');
+    const r=ratio(lum(inkOn(v,base)),lum(base));
+    dial.push({lean:pr.getAttribute('data-pair')+':'+side, covered:false, pilled:false,
+     px:+parseFloat(getComputedStyle(v).fontSize).toFixed(1), r:+r.toFixed(2)});});
+   pr.style.setProperty('--sc',was);});
   return {chip, dial};});
  const FLOOR=4.5;
  ok(seen.chip.plain.n>0,'the Field draws ring chips to measure, got '+seen.chip.plain.n);
@@ -1470,11 +1504,11 @@ console.log('\n=== a figure is legible against the ground it is printed on ===')
   +seen.chip.plain.n+' on '+seen.chip.plain.seat);
  console.log('  chip hot   '+seen.chip.hot.r.toFixed(2)+'  worst of '
   +seen.chip.hot.n+' on '+seen.chip.hot.seat);
- ok(seen.dial.length===6,'the three pair bars have six end figures to measure, got '+seen.dial.length);
+ ok(seen.dial.length===6,'the three pairs have one figure each to measure in two colours, got '+seen.dial.length);
  seen.dial.forEach(d=>{
-  ok(d.r>=FLOOR,'the '+d.lean+' figure holds '+FLOOR+' to 1 on the bare track and on either pole\'s full colour, worst '
+  ok(d.r>=FLOOR,'the '+d.lean+' figure holds '+FLOOR+' to 1 on the panel when that side is the one leaned to, '
    +d.r+' at '+d.px+'px');
-  console.log('  pair '+d.lean.padEnd(10)+d.r.toFixed(2)+'  worse of track and fill');});
+  console.log('  pair '+d.lean.padEnd(10)+d.r.toFixed(2)+'  in that side\'s colour, on the panel');});
  await fg.close();
 }
 
@@ -1594,15 +1628,16 @@ console.log('\n=== the release runs to its end in silence, and says what it spea
  await rp.close();
 }
 
-console.log('\n=== the headline coherence is a number, not a percent ===');
+console.log('\n=== the headline coherence is a percent, equal to its fill ===');
 /* ROUND PQ, his words: "No, it doesn't need to be a percent. Just a number."
-   Recorded in DECISIONS.md for the headline CQ and DQ wherever they stand:
-   the rings, the glass bar, the Summary tile, the Compass centre. The Summary
-   plate and the wheel's core already read bare. On the Field the glass bar's
-   Laws circle (CQ) and Decoherence circle (DQ) and the ring at the foot of
-   the stage (CQ, with its band) still printed 62% and 11%. Held here on
-   Marcus, whose figures are neither empty nor whole: each prints the bare
-   whole number the reading rounds to, and on an unread field a dash. */
+   This section held CQ and DQ bare on the glass bar's Laws and Decoherence
+   circles and the ring at the foot of the stage. SUPERSEDED 16 October, his
+   words: "Instead of 0.0, site wide, we need to convert those numbers into
+   percent." DECISIONS.md records that the ruling replaces round PQ for CQ and
+   DQ. NAMED CHANGE, percent phase 2 slice 1, 17 October: the three now print
+   fmtPct('cq') and fmtPct('dq'), the registry's form (engine/pct.js), and an
+   unread field still prints a dash in all three, never 0%. Held on Marcus,
+   whose figures are neither empty nor whole. */
 {
  const pq=await browser.newPage({viewport:{width:1600,height:1000}});
  await pq.goto(FILE,{waitUntil:'load'}); await booted(pq); await pq.waitForTimeout(700);
@@ -1611,11 +1646,11 @@ console.log('\n=== the headline coherence is a number, not a percent ===');
   await new Promise(r=>setTimeout(r,ENTER_SPAN+12*ENTER_STAGGER+300));
   const R=compute(), t=s=>{const e=document.querySelector(s); return e?e.textContent.trim():null;};
   return {laws:t('#fbar [data-fb=laws] .fb-v'), shadow:t('#fbar [data-fb=shadow] .fb-v'), ring:t('#railtop .cr .v'),
-   cq:String(Math.round(R.CQ)), dq:String(Math.round(R.DQ)), unread:!!R.unread};},'Marcus');
+   cq:fmtPct('cq',R.CQ), dq:fmtPct('dq',R.DQ), unread:!!R.unread};},'Marcus');
  const m=await read();
- ok(!m.unread&&m.laws===m.cq,'PQ: the glass bar\'s Laws circle prints CQ bare, '+m.laws+' against '+m.cq);
- ok(m.shadow===m.dq,'PQ: the Decoherence circle prints DQ bare, '+m.shadow+' against '+m.dq);
- ok(m.ring===m.cq,'PQ: the ring at the foot of the stage prints CQ bare, '+m.ring+' against '+m.cq);
+ ok(!m.unread&&m.laws===m.cq&&/%$/.test(m.laws),'PQ: the glass bar\'s Laws circle prints CQ as a percent, '+m.laws+' against '+m.cq);
+ ok(m.shadow===m.dq&&/%$/.test(m.shadow),'PQ: the Decoherence circle prints DQ as a percent, '+m.shadow+' against '+m.dq);
+ ok(m.ring===m.cq,'PQ: the ring at the foot of the stage prints CQ as a percent, '+m.ring+' against '+m.cq);
  const u=await pq.evaluate(async()=>{loadP(0); setTab(TAB.FIELD); render();
   await new Promise(r=>setTimeout(r,400));
   const t=s=>{const e=document.querySelector(s); return e?e.textContent.trim():null;};

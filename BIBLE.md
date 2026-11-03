@@ -1660,8 +1660,11 @@ different product.
 - **The 21 laws**, seated by band (section 2.1). An unmeasured law reads 6 in
   working state and stays null on the record.
 - **The pattern chain**: 33 saboteurs, then complexes, hyper complexes, and
-  the character layer. Six families with overshot poles (Predatory, Collapse,
-  Rigidity, Dysregulation, Dissociation, Grandiosity).
+  super complexes, the rung this line called the character layer until the
+  owner's ruling of 23 October gave the word Character to the whole of it
+  (`DECISIONS.md`, "The full stack, nerve to Character"). Six families with
+  overshot poles (Predatory, Collapse, Rigidity, Dysregulation, Dissociation,
+  Grandiosity).
 - **The ten bands** on CQ: Mastery 91 to 100, Embodied 81 to 90, Compounding
   71 to 80, Gaining 61 to 70, Even 51 to 60, Oscillating 41 to 50,
   Incoherent 31 to 40, Corrupt 21 to 30, Severe 11 to 20, Collapsed 0 to 10.

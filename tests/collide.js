@@ -337,11 +337,32 @@ for(const w of [[1680,1020],[1440,960],[1280,900],[1180,820],[2560,1400]]){
    Measured as a press at each control's centre, the way a hand lands, and not
    as a rectangle compared with a rectangle.
    ============================================================ */
-console.log('\n=== Story: every visible control takes a press, short windows too ===');
-for(const w of [[1366,657],[1280,600],[1600,700],[1600,1000],[390,844]]){
+/* the journal page, named Discover since 23 October; the integer is still TAB.STORY */
+console.log('\n=== Discover: every visible control takes a press, short windows too ===');
+/* AND IN THE FULL VIEW, 2 November, his words: "use a left menu and the right
+   menu." Dashboard brings back the left column with the Journal's own rail in
+   it (ui/stdash.js), and the bank brings back the right one, so the same
+   press is measured three ways at every window: Simple, which is where a
+   person lands and is the row this check always measured, Full, and Full
+   with the bank open, which is the widest the row gets. */
+for(const w of [[1366,657],[1280,600],[1600,700],[1600,1000],[390,844]])for(const md of ['simple','full','full, bank open']){
  await p.setViewportSize({width:w[0],height:w[1]});await p.waitForTimeout(200);
- await p.evaluate(()=>{loadP(0);setTab(TAB.STORY);render();});await p.waitForTimeout(400);
- await p.fill('#sttext','I keep replaying what she said and I am furious and ashamed.');await p.waitForTimeout(500);
+ /* EACH WINDOW STARTS CLEAN, with no drill carried over from an earlier
+    section of this file. The bank shows the rail's Selection section, where a
+    drill opens, so a drill an earlier section left open turned up here: its
+    sticky Back bar sat over its own Close because the rail was scrolled, and
+    this check counted that as a covered control. Measured 2 November with a
+    drill opened on purpose in the bank, on main and on this branch, Simple
+    and Full: Close takes the press every time. A carried over drill is state
+    from another check, so it is shut here, the way loadP resets the person. */
+ await p.evaluate(md=>{if(typeof rdClose==='function')rdClose();loadP(0);STV.dash=md!=='simple';setTab(TAB.STORY);render();
+  if((md==='full, bank open')!==!!STV.bank)stBank();},md);await p.waitForTimeout(400);
+ /* THE JOURNAL IS VOICE ONLY NOW, round of 29 October: there is no reply box
+    or send to fill, only srcTurnCommit, the one door a turn lands through
+    whether it is typed or spoken (see the ruling at stMic in ui/storyui.js).
+    No real microphone in this check, so it calls the door directly. */
+ await p.evaluate(()=>{srcTurnCommit('I keep replaying what she said and I am furious and ashamed.');});
+ await p.waitForTimeout(500);
  const r=await p.evaluate(()=>{
   const vw=innerWidth,vh=innerHeight,out={n:0,bad:[]};
   const clipped=(el,x,y)=>{for(let a=el.parentElement;a&&a!==document.documentElement;a=a.parentElement){
@@ -357,8 +378,9 @@ for(const w of [[1366,657],[1280,600],[1600,700],[1600,1000],[390,844]]){
    if(h!==el&&!el.contains(h))out.bad.push((el.id?'#'+el.id:el.tagName.toLowerCase()+'.'+String(el.className).split(' ')[0])
     +' "'+(el.textContent||el.value||'').trim().slice(0,18)+'" at '+Math.round(y)+'px under '+(h?(h.id?'#'+h.id:h.tagName.toLowerCase()):'nothing'));});
   return out;});
- ok(r.n>0&&r.bad.length===0,'Story at '+w[0]+' by '+w[1]+': each of '+r.n+' visible controls takes a press at its centre'
+ ok(r.n>0&&r.bad.length===0,'Discover'+(md==='simple'?'':', '+md+',')+' at '+w[0]+' by '+w[1]+': each of '+r.n+' visible controls takes a press at its centre'
   +(r.bad.length?': '+r.bad.join('; '):''));}
+await p.evaluate(()=>{if(STV.bank)stBank(); STV.dash=false; stRender();});
 await p.setViewportSize({width:1680,height:1020});await p.waitForTimeout(160);
 
 await b.close();

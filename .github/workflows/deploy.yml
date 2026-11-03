@@ -168,6 +168,10 @@ jobs:
           done
       - name: engine gate
         run: node tests/engine.js 2>&1 | tee "$RUNNER_TEMP/gates/engine.log"
+      # Round SK: Source AI's evidence ledger and its question check, the
+      # Journal Mode blueprint's P0. Node only, against the engine just built.
+      - name: evidence ledger and question check
+        run: node tests/evidence.js 2>&1 | tee "$RUNNER_TEMP/gates/evidence.log"
       # J11, held open on purpose and watched: pImport still accepts a self
       # declared tier four. Node only, so it runs here and not on a browser
       # runner. It fails the day the door is closed without saying so.
@@ -306,6 +310,10 @@ jobs:
           # 16 October: a worked example shows everything and runs nothing, at
           # every tier (engine/showonly.js). New, so report only first.
           - { gate: examples-showonly, timeout: 20, command: node tests/examples-showonly.js }
+          # 17 October: the paywall from mockup five (ui/paywall.js), every
+          # locked ring opens it, and it sells nothing while checkout is
+          # closed. New, so report only first.
+          - { gate: paywall, timeout: 20, command: node tests/paywall.js }
           # 17 October: words about ending a life or danger now get no release and
           # no question, and the crisis door beside the entry (engine/safe.js).
           # New, so report only first.
@@ -314,6 +322,23 @@ jobs:
           # addresses, no free release, the empty card's rerun first, the plan
           # sheet's day. New, so report only first.
           - { gate: allowance, timeout: 20, command: node tests/allowance.js }
+          # 17 October: a new person on the gift sees everything, with no
+          # padlock and the gift's one line on the first screen, and is still
+          # on free (DECISIONS.md, TALLY ruling 8). New, so report only first.
+          - { gate: gift, timeout: 20, command: node tests/gift.js }
+          # 17 October: patterns follow the money (tests/money.js), the pay cycle
+          # run's three red steps in engine/plan.js. Headless and fast. New, so
+          # report only first.
+          - { gate: money, timeout: 20, command: node tests/money.js }
+          # 17 October: the release chain (tests/releasechain.js), a story's own
+          # addresses run, no line says "I am" onto an address name, the voice
+          # renders a line once. New, so report only first.
+          - { gate: releasechain, timeout: 20, command: node tests/releasechain.js }
+          # 17 October: percent phase 2 (tests/pct.js), every ring and bar
+          # prints its own fill as a percent, no percent is in the alarm
+          # colour, and each moved surface prints the registry's form. New, so
+          # report only first.
+          - { gate: pct, timeout: 20, command: node tests/pct.js }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

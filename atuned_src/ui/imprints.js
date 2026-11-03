@@ -4,7 +4,7 @@
    gather as they are found and nothing touches the field until you
    commit.
    ============================================================ */
-var ST_TEXT='', ST_PARSED=null, ST_REC=null, ST_LISTEN=false;
+var ST_TEXT='', ST_PARSED=null, ST_REC=null, ST_LISTEN=false, ST_LIVE='', ST_WANT_LISTEN=false;
 var IMP_GROUP='band', IMP_PICK={};
 var IMP_GROUPS=[['band','Seat'],['charge','Charge'],['sab','Saboteur'],
                 ['story','Story'],['expr','Expression']];
@@ -30,12 +30,17 @@ function impGhosts(){
      read as four findings. They are one reading: the seat, the fetter, and the
      amount that lands on it, which is their sum. A named ghost keeps one pill
      per address, because each of those carries its own name. */
-  var key=(im.inferred||off)?('f|'+n.b+'|'+im.fetter):('n|'+im.node);
+  /* AND A NAMED GHOST FOLDS THE SAME WAY, P0-3 of the inference audit, 23
+     October. It kept one pill per address under the address's own name, so a
+     sentence that named grief printed Martyrdom. The words named the feeling
+     and the engine picked the addresses, so a named ghost is one pill for
+     its seat and feeling too, and says the feeling. */
+  var key='f|'+n.b+'|'+im.fetter;
   if(out[key]){out[key].amt=Math.round((out[key].amt+im.amt)*10)/10; out[key].n++; return;}
   /* inferred carries through, because the chip is the first place a person
      reads what the instrument thinks their sentence was about. */
   out[key]={node:n,amt:im.amt,inferred:!!im.inferred||off,fet:im.fetter||null,
-   stated:off,n:1};
+   stated:off,named:!im.inferred&&!off,n:1};
   order.push(key);});
  return order.map(function(k){return out[k];});}
 function painOf(n,bandLoad){
@@ -66,15 +71,15 @@ function impPill(n,maxW,IX,ghost,inferred){
  var fs=(13+rel*4).toFixed(1), pad=(6+rel*5).toFixed(0);
  var opp=(CHILD.filter(function(x){return x.nm===n.cf;})[0]||{}).opp||'';
  var on=!!IMP_PICK[n.i], hot=n.sq>=9;
- var val=ghost?('+'+ghost.toFixed(1)):(installed?('\u2713 '+n.pole.toFixed(1)):n.sq.toFixed(1));
+ var val=ghost?('+'+fmtPct('atom',ghost)):(installed?('\u2713 '+fmtPct('pole',n.pole)):fmtPct('weight',n.sq));
  /* V21. This read "Shame, toward Worth · Root · SQ 5.4 · pain 3 · feeds 2":
     a variable name and two bare counts. Each figure now says what it counts.
     feeds is the saboteurs the address is part of, from impIndex. */
  var fed=IX.feeds[n.i]||0;
  var title=n.k+(opp?', toward '+opp:'')+', '+n.b.toLowerCase()+' seat. '
-  +(ghost?'Waiting to land: '+ghost.toFixed(1)+'.'
-    :(installed?opp+' installed at '+n.pole.toFixed(1)+'.'
-      :'Charge left '+n.sq.toFixed(1)+', pain '+painOf(n,IX.bandLoad)
+  +(ghost?'Waiting to land: '+fmtPct('atom',ghost)+'.'
+    :(installed?opp+' installed at '+fmtPct('pole',n.pole)+'.'
+      :'Charge left '+fmtPct('weight',n.sq)+', pain '+painOf(n,IX.bandLoad)
        /* the saboteur count is a reading of saboteurs, which a plan below
           tier one cannot see: "part of 0 saboteurs" would be a false statement
           about somebody who is part of several */
@@ -110,7 +115,9 @@ function impPill(n,maxW,IX,ghost,inferred){
  var fl=(gx&&gx.fet)||n.cf||n.b, seat=String(n.b).toLowerCase();
  var lbl=(ghost&&inferred)?fl:n.k;
  var ttl=(ghost&&inferred)
-   ? ((gx&&gx.stated)
+   ? ((gx&&gx.named)
+     ? fl+' at the '+seat+'. Your words named '+String(fl).toLowerCase()+'.'
+     : (gx&&gx.stated)
      ? fl+' at the '+seat+'. Your words named '+String(fl).toLowerCase()
        +' and this seat has no address for it, so the charge lands on the seat.'
      : fl+' at the '+seat
@@ -120,7 +127,7 @@ function impPill(n,maxW,IX,ghost,inferred){
    : title;
  if(kid)ttl=kid.ax+' sits here. '+ttl;
  return '<button class="ip'+(on?' on':'')+(hot?' hot':'')+(ghost?' ghost':'')
-  +(ghost&&inferred?' infer':'')
+  +(ghost&&inferred&&!(gx&&gx.named)?' infer':'')
   +(kid?' kid':'')
   +(installed?' inst':'')+'" data-imp="'+n.i+'" '
   +'style="--c:'+c+';font-size:'+fs+'px;padding:'+pad+'px '+(+pad+7)+'px" '
@@ -210,7 +217,7 @@ function impRender(){
    h+='<div class="ip-kr" style="--c:'+seatCol(k.seat)+'">'
     +'<span class="ip-kn">'+esc(k.ax)+'</span>'
     +'<span class="ip-ka">at the '+esc(String(k.seat).toLowerCase())+', '
-    +esc(k.at.k)+'</span><b>'+k.at.sq.toFixed(1)+'</b></div>';});}
+    +esc(k.at.k)+'</span><b>'+fmtPct('weight',k.at.sq)+'</b></div>';});}
  function cloud(list,gl,gi){var s='<div class="ip-cloud">';
   list.forEach(function(n){s+=impPill(n,maxW,IX,gl?gl[n.i]:0,gi&&gi[n.i]);});return s+'</div>';}
  if(IMP_GROUP==='band'){
@@ -241,14 +248,14 @@ function impRender(){
     +(gs.length?', '+gs.length+' pending':'')+'</em></div>';
    /* two maps, because ghost is passed as the amount and is a number. The
       inferred flag rides beside it rather than being smuggled onto a float. */
-   var gl={},gi={};gs.forEach(function(x){gl[x.node.i]=x.amt;gi[x.node.i]=x.inferred?x:false;});
+   var gl={},gi={};gs.forEach(function(x){gl[x.node.i]=x.amt;gi[x.node.i]=x;});
    h+=cloud(seg.concat(gs.map(function(x){return x.node;})),gl,gi);});
  } else if(IMP_GROUP==='charge'){
   CHILD.forEach(function(c){
    var seg=live.filter(function(n){return n.cf===c.nm;});
    if(!seg.length)return;
    h+='<div class="ip-bh" style="--c:'+seatCol(c.seat)+'">'+c.nm+' toward '+c.opp
-    +'<em class="plain">held '+(S.charge[c.nm]||0).toFixed(1)+', opposite '+(S.replace[c.nm]||0).toFixed(1)
+    +'<em class="plain">held '+fmtPct('charge',S.charge[c.nm]||0)+', opposite '+fmtPct('installed',S.replace[c.nm]||0)
     +'</em></div>'+cloud(seg);});
  } else if(IMP_GROUP==='sab'){
   if(!lockSees('sab')) h+=lockPanelHtml('sab');
@@ -257,7 +264,7 @@ function impRender(){
    var lv=leaves(s).filter(function(n){return n.sq>=4;});
    if(!lv.length)return;
    h+='<div class="ip-bh" style="--c:'+(s.over?'var(--alarm)':seatCol(lv[0].b))+'">'+esc(s.nm)
-    +'<em class="plain">'+(s.score?s.score+'% match, ':'')+'weight '+s.w.toFixed(1)+'</em></div>'+cloud(lv);});
+    +'<em class="plain">'+(s.score?fmtPct('match',s.score)+' match, ':'')+'weight '+fmtPct('chain',s.w)+'</em></div>'+cloud(lv);});
  } else if(IMP_GROUP==='story'){
   /* grouped by the entry that put the weight there */
   var ents=((CURP&&CURP.story&&CURP.story.entries)||[]);
@@ -274,7 +281,7 @@ function impRender(){
   exprRead().sort(function(a,b){return a.fill-b.fill;}).forEach(function(e){
    var seg=live.filter(function(n){return n.b===e.b;});
    h+='<div class="ip-bh" style="--c:'+seatCol(e.b)+'">'+e.nm
-    +'<em class="plain">fill '+e.fill.toFixed(1)+', leaks '+e.sh+'</em></div>'
+    +'<em class="plain">fill '+fmtPct('exprfill',e.fill)+', leaks '+e.sh+'</em></div>'
     +(seg.length?cloud(seg):'<div class="ip-none" style="padding:6px 0">nothing held at the '
       +e.b.toLowerCase()+'</div>');});}
  var picked=Object.keys(IMP_PICK).filter(function(k){return IMP_PICK[k];});

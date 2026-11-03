@@ -22,8 +22,9 @@
    WHAT IT DOES. Walks the real door (Guest, ui/login.js) through the
    onboarding to the bridge card, at 1600 and at 390, once saying yes to one
    place and once to every place, once with the voice on and once with it
-   off, and the Day One tutorial once, which is the other door that promises
-   the same release. On each it reads the card's own sentence and parses what
+   off. (It walked the Day One tutorial once as well, the other door that
+   promised the same release, until that sequence was removed on 23
+   October.) On each it reads the card's own sentence and parses what
    it promises, then presses Begin and Run release and walks the run to its
    end on the product's own walker, recording every screen. Each promise is
    then held against what the screen did:
@@ -234,26 +235,6 @@ for(const [W,H] of [[1600,1000],[390,844]]){
   hold(tag,card,r,c);
   ok(errs.length===0,tag+'no page error: '+errs.slice(0,3).join(' | '));
   await ctx.close();}}
-
-console.log('\n=== the Day One tutorial\'s first release, the other door into the same promise ===');
-{
- const ctx=await browser.newContext({viewport:{width:1600,height:1000}});
- const page=await ctx.newPage();
- const errs=[]; page.on('pageerror',e=>errs.push(e.message));
- await page.goto(FILE+'?dev=1',{waitUntil:'load'}); await booted(page);
- await page.evaluate(()=>{ if(typeof OB!=='undefined'&&OB.open&&typeof obClose==='function')obClose();
-  loadP(0); CURP.ui=CURP.ui||{}; CURP.ui.tutorialSeen=false; CURP.ui.voice=true; window.relVoiceCan=function(){return true;}; tutorialOpen(true); });
- await page.fill('#tuttext',STORY);
- await page.click('[data-tut="commit"]'); await page.waitForTimeout(80);
- await page.click('#tutorial .obx-slot [data-tut="next"]'); await page.waitForTimeout(80);
- await page.click('#tutorial .obx-slot [data-tut="next"]'); await page.waitForTimeout(80);
- const card=await page.evaluate(()=>(document.querySelector('#tutorial .obx-slot .ob-card')||{}).innerText||'');
- ok(/Begin the release/.test(card),'tutorial: the Release step offers the first release');
- const r=await runFrom(page,'#tutorial .obx-slot [data-tut="release"]');
- hold('tutorial: ',card,r,{all:false});
- ok(errs.length===0,'tutorial: no page error: '+errs.slice(0,3).join(' | '));
- await ctx.close();
-}
 
 await browser.close();
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');

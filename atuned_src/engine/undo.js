@@ -84,7 +84,11 @@ function undoState(){
  CHARGES.forEach(function(k){c[k]=S.charge[k];o[k]=S.replace[k]||0;});
  SINAMES.forEach(function(k){l[k]=S.law[k];});
  var wk=(typeof CURP!=='undefined'&&CURP&&CURP.work)?JSON.parse(JSON.stringify(CURP.work)):null;
- return {charge:c, replace:o, law:l, work:wk,
+ /* the stated type rides with the axes it wrote, so undoing a seed puts back
+    the empty field and takes the type off with it, and the card under the
+    select never claims a seed the axes no longer hold. P0-5. */
+ var sd=(typeof CURP!=='undefined'&&CURP)?(CURP.seed?JSON.parse(JSON.stringify(CURP.seed)):null):undefined;
+ return {charge:c, replace:o, law:l, work:wk, seed:sd,
   doms:S.doms.slice(), arcs:S.arcs.slice(), roots:S.roots.slice(),
   dom:S.dom, a1:S.a1, a2:S.a2};}
 
@@ -117,6 +121,8 @@ function undoApply(s){
  SINAMES.forEach(function(k){if(s.law[k]!==undefined)S.law[k]=s.law[k];});
  /* an entry taken before the lift existed carries no work and leaves it alone */
  if(s.work!=null&&typeof CURP!=='undefined'&&CURP)CURP.work=JSON.parse(JSON.stringify(s.work));
+ /* and an entry taken before the seed rode with it leaves the seed alone */
+ if(s.seed!==undefined&&typeof CURP!=='undefined'&&CURP)CURP.seed=s.seed?JSON.parse(JSON.stringify(s.seed)):null;
  S.doms=s.doms.slice(); S.arcs=s.arcs.slice(); S.roots=s.roots.slice();
  S.dom=s.dom; S.a1=s.a1; S.a2=s.a2;
  buildSoul();

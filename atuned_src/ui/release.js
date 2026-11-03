@@ -479,8 +479,8 @@ function relOpp(n){
    run has no story behind it and its answer carries none.
 
    mini says the run is the mini release a card has just promised, the one
-   onbMiniPlan planned for the onboarding bridge and the Day One tutorial.
-   Neither door said so before, so this opened their twelve lines at the dose
+   onbMiniPlan planned for the onboarding bridge, and until 23 October for
+   the Day One tutorial too. Neither door said so before, so this opened their twelve lines at the dose
    a person last picked, a hundred by default, and the screen after "Your
    first release is 4 lines" said four hundred over 28 minutes (M28). A mini
    run is said ONB_MINI_DOSE times a line, which is the ruled twelve lines
@@ -1135,7 +1135,7 @@ function relSecond(){
    running, and a list read then would leave out the ones the run did
    the most to. An overshot entry is left out: it is the installed
    opposite driven past where it helps, and a release does not work
-   on it. The character layer is left out because he named three
+   on it. The super complex is left out because he named three
    tiers and not four. Kept as names and numbers, never as the live
    objects, which the next compute() rewrites.
    ============================================================ */
@@ -1199,6 +1199,32 @@ function relEndNote(){
     :'You were charged for '+paid+' new '+(paid===1?'line':'lines')+', not for the whole plan. ')
   +'The other '+rest+(rest===1?' line was':' lines were')+' never started'
   +(RUN.rerun?'.':', so '+(rest===1?'it was':'they were')+' not charged.')+'</div>';}
+/* THE GIFT RAN OUT ON THIS RUN, said once, on the results of the run that spent
+   its last pattern, and nowhere else. REVIEW-arch/TALLY.md ruling 8: "the gift
+   end copy says plainly what is kept and what rests, with no countdown". The
+   gift sees everything (lockGift, ui/lock.js), so this is the run after which
+   the padlocks come back, and a person who never saw one would otherwise meet
+   them on the next screen with no word said.
+
+   Read off the meter's own answer for this run, as relEndNote reads it: the
+   unique count now, less what this run added, is the count before it, and the
+   gift ran out here only if it was in force before and is not now. A rerun
+   adds nothing and never crosses. What closes is read off the same table the
+   padlocks read, for the plan in force (lockPlan), so a paid tier names only
+   what is above it and tier three names nothing. "Locked on your plan" is the
+   lock panel's own heading and "deletes nothing" the tiers page's own words
+   for stopping: nothing opened is taken back, the record keeps every release,
+   and a list above the plan says it is locked and never that nothing is
+   running (sightR). Never on a worked example, which runs nothing. */
+function relGiftEnd(){
+ if(RUN.rerun||!RUN.meter||!RUN.meter.added||typeof CURP==='undefined'||!CURP)return '';
+ if(typeof showOnly==='function'&&showOnly(CURP))return '';
+ var now=((CURP.meter&&CURP.meter.unique)||[]).length, was=now-RUN.meter.added;
+ if(!planInGift(was)||planInGift(now))return '';
+ var shut=planSight(lockPlan()).locked.map(function(g){return g.nm;});
+ return '<div class="rel-note" id="relgiftend">This release spent the last of your gift. '
+  +(shut.length?'From here, '+planList(shut)+' are locked on your plan. ':'')
+  +'Nothing you released is deleted.</div>';}
 /* ============================================================
    WHAT CHANGED. The System Congruency TDD, section 15, and the step
    CONGRUENCY-AUDIT.md found missing from every release path: "There is no
@@ -3068,7 +3094,7 @@ function relResults(){
  out+='<div class="pm-eye">Released</div>'
   +'<div class="rel-node rel-rs-hero">'+(RUN.halted?'':'Congratulations. ')
   +'You released '+t.said+(t.said===1?' line':' lines')+' and recharged '+t.put+'.</div>'
-  +relEndNote();
+  +relEndNote()+relGiftEnd();
  /* "NEW MARK" WAS A CLAIM THE RECORD CANNOT MAKE. marksNew is what the ladder
     reads after this run and did not read before it, and nothing stores a mark
     once earned (TDD v3 1.2, unbuilt), so a mark held last week, lost when an
@@ -3249,8 +3275,12 @@ function relRender(){
    /* where in the run, on the plate it describes, rather than a row of its own */
    /* each part whole, so a phone breaks the line between parts and never
       leaves "session" on a line of its own */
+   /* RELEASE LINES, the setup's count, 17 October. This added the reframe
+      half in, so the setup said "3 addresses, 150 lines", Remaining counted
+      down from 150, and this said 300 lines this session, one word for two
+      sizes of the same run. Recharged is counted on the side panels. */
    +'<span class="rel-ct">'+['Pass '+(RUN.pass+1)+' of '+RUN.dose,'address '+(ad.at+1)+' of '+ad.of]
-    .concat(cts&&cts.of?[(cts.of+cts.putOf)+' lines this session']:[])
+    .concat(cts&&cts.of?[cts.of+(cts.of===1?' release line':' release lines')+' this session']:[])
     .map(function(x){return '<span class="rel-nw">'+x+'</span>';}).join(' · ')+'</span></span></div>';
   var info=relTally(cts,live)+relSws(n);
   /* PAUSE AND END ON THE CENTRE LINE, round QM, his words: "You can keep the
@@ -3394,10 +3424,14 @@ function relRender(){
   else if(!showOnly())body+='<div class="rel-fields">'
     +'<label class="rel-field"><span>Run speed</span><input type="number" id="relpace" min="0.5" max="2" step="0.1" value="'
      +RUN.pace+'"></label>'
-    /* TIMES SAID, 17 October, and not Patterns: this is how many times each
-       line is said, and the allowance's unit is a line opened, which a dose
-       never spends. One word per concept. */
-    +(relMiniNow()?'':'<label class="rel-field"><span>Times said</span><input type="number" id="reldose" min="1" max="'
+    /* PATTERNS, round of 29 October, overriding 17 October's own ruling
+       (kept for the record: that round called it Times said rather than
+       Patterns, since this is how many times each line is said and the
+       allowance's unit, a line opened, is never what a dose spends). His
+       words today put it back to Patterns on the Story page's own
+       matching field (ui/storyui.js, stRelPanel), so this one reads the
+       same word rather than disagree with it again. */
+    +(relMiniNow()?'':'<label class="rel-field"><span>Patterns</span><input type="number" id="reldose" min="1" max="'
      +REL_DOSES[REL_DOSES.length-1]+'" step="1" value="'+RUN.dose+'"></label>')
     +'<div class="rel-field"><span>Time</span><b class="rel-time">'+relMMSS(relSecFrom(null))+'</b></div>'
     /* his three, as quick picks on the same number */
@@ -3426,7 +3460,9 @@ function relRender(){
       +'<button class="btn" id="relcancel">Close</button>'
       +'<button type="button" class="rel-lk" id="relplan">See the tiers</button>'
      :'<button class="btn" id="relcancel">Cancel</button>'
-      +'<button class="btn pri" id="relgo">Run release</button>'))});}
+      /* RELEASE, not Run release, round of 29 October: see the ruling at
+         the matching button in ui/storyui.js, stRelPanel. */
+      +'<button class="btn pri" id="relgo">Release</button>'))});}
  var sc0=document.getElementById('relsc'), keepY=(sc0&&sc0.closest('[data-ph]')
   &&sc0.closest('[data-ph]').getAttribute('data-ph')==='done'&&RUN.phase==='done')?sc0.scrollTop:0;
  if(!kept)h.innerHTML=out;
@@ -3465,8 +3501,13 @@ function relRender(){
  /* ROUND NZ. This went to Settings and landed on whichever section was last
     open, the sign in form by default, which says nothing about a plan. It
     opens Billing at the tiers now, ui/plans.js, still through setTab. */
+ /* AND SINCE 17 OCTOBER IT OPENS THE PAYWALL, over the screen, with nothing
+    marked, because nothing locked was pressed. A lock's See tiers opens the
+    paywall (ui/lock.js), and two buttons that say see the tiers must land in
+    one place. Billing is one press from the paywall's foot. */
  if((b=document.getElementById('relplan')))b.onclick=function(){relClose();
-  if(typeof planTiersOpen==='function')planTiersOpen(); else setTab(TAB.SETTINGS);};
+  if(typeof paywallOpen==='function')paywallOpen(null,null);
+  else if(typeof planTiersOpen==='function')planTiersOpen(); else setTab(TAB.SETTINGS);};
  if((b=document.getElementById('relclose')))b.onclick=relClose;
  if((b=document.getElementById('relrit')))b.onclick=function(){var lg=RUN.log.slice();relClose();ritOpen(lg);};
  /* RUN ANOTHER, round QM: "do you want to run another session, we would

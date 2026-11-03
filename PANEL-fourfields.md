@@ -494,7 +494,10 @@ that the measurement is measuring what it claims to.
 **What it shows.** The hero carries everything that can honestly be overlaid,
 which is nine layers: 19 domains on the outermost ring coloured by their root,
 6 masks, 12 archetypes with the leading one at full accent, four rings of chain
-chords from saboteur through complex and hyper complex to character, the 112
+chords from saboteur through complex and hyper complex to super complex (the
+ring this panel called character: the owner renamed that rung on 23 October
+and put Character at the very top of the stack, above the masks and archetype
+through domain, as the whole person rather than a ring), the 112
 addresses with the installed opposite drawn inward at the same address, the
 seven seat bands, the 21 laws as spokes against the core, the six gates on
 stems, and the core. Around it, eight tiles: seven seats, nine axes, twenty one

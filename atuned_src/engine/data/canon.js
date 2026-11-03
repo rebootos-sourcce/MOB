@@ -41,7 +41,7 @@
    ============================================================ */
 var SAB33=[
  ["Negotiator",     [["fear",4,6],["apathy",3,5]]],
- ["Controller",     [["fear",7,10],["anger",5,8]]],
+ ["Micromanager",   [["fear",7,10],["anger",5,8]]],
  ["Victim",         [["sadness",6,8],["anger",5,7],["apathy",2,5]]],
  ["Perfectionist",  [["disgust",5,7],["anger",4,6]]],
  ["Pleaser",        [["apathy",3,5],["fear",3,8]]],
@@ -211,7 +211,9 @@ var SABAUTH={
  'Avoider':"Fear of confrontation + Delusion + Laziness",
  'Bully':"Aggression + Cruelty + Self-importance",
  'Codependent':"Fear of abandonment + Lack of self-esteem + Dependency",
- 'Controller':"Anxiety + Manipulation + Impatience",
+ /* S02, renamed by the owner on 18 October. Keyed by the name the reading
+    prints, because both routes in compute() look this up by s.nm. */
+ 'Micromanager':"Anxiety + Manipulation + Impatience",
  'Critic':"Self-hatred + Judgment of others + Perfectionism",
  'Cynic':"Doubt + Procrastination + Lack of effort",
  'Deflector':"Insecurity + Dishonesty + Pretending",
@@ -236,7 +238,7 @@ var SABAUTH={
  'Victim':"Sadness + Self-loathing + Hopelessness"};
 
 /* archetype rolls up from its primary saboteur. wired into the archetype drill. */
-var ARCH18=[['Warrior','Controller','Solar'],['Caregiver','Pleaser','Heart'],
+var ARCH18=[['Warrior','Micromanager','Solar'],['Caregiver','Pleaser','Heart'],
  ['Creator','Stickler','Throat'],['Sage','Hyper-Rational','3rd Eye'],
  ['Jester','Avoider','Sacral'],['Lover','Hyper-Vigilant','Heart'],
  ['Magician','Victim','Crown'],['Innocent','Restless','Root'],
@@ -313,8 +315,23 @@ const GATEGLYPH={
  ignore:'M2 12s4 5 10 5 10-5 10-5M6 15l-2 3M12 17v3M18 15l2 3',
  attach:'M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.5 1.5M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.5-1.5',
  averse:'M3 19C3 9 21 9 21 19M12 15m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0'};
-const SAB_PI=['Judge','Avoider','Controller','Hyper-Achiever','Hyper-Rational',
+/* SAB_PI IS A LOOKUP, NOT A CITATION, and that decided the 18 October rename
+   here. Nothing prints these strings. ui/drills.js and ui/ui.js ask
+   SAB_PI.indexOf(o.nm) with the name the reading prints, and print a fixed
+   attribution when it answers. So an entry has to be this product's name for
+   the saboteur, or the attribution goes quiet. Since 18 October the range
+   route has named S02 Micromanager and printed no credit for it. With
+   Controller left here once the library carries the new name as well,
+   nothing the engine names is called Controller, and the credit would be
+   gone from S02 everywhere. Renaming his concept and dropping his credit
+   would be the inaccurate outcome, not the consistent one.
+
+   His own name for it is kept as data, in SAB_PI_AS, so the attribution can
+   say it. Chamine calls S02 the Controller; this product calls it the
+   Micromanager. The nine others use his names unchanged. */
+const SAB_PI=['Judge','Avoider','Micromanager','Hyper-Achiever','Hyper-Rational',
  'Hyper-Vigilant','Pleaser','Restless','Stickler','Victim'];
+const SAB_PI_AS={Micromanager:'Controller'};
 /* Inferred saboteurs are clusters the library does not name: two or more
    addresses in one seat carrying the same child fetter. They take an agent
    noun for the fetter so they read alongside the named ones, and they carry
@@ -775,7 +792,7 @@ const TIERDEF=[
   soma:'Caught between the weight in your body and the odd moment of seeing clearly.',
   def:'Your energy costs more than it builds. Charge is held at more addresses than are clearing.',
   energy:'Effort goes in and less comes out. You are working, and the work is going into holding.',
-  toward:'Oscillating, which starts at 41. Take the heaviest seat first. One address cleared where the load actually sits moves this further than ten cleared anywhere else.'},
+  toward:'Oscillating, which starts at 41%. Take the heaviest seat first. One address cleared where the load actually sits moves this further than ten cleared anywhere else.'},
  {at:21, nm:'Corrupt',
   state:'Defensive',
   soma:'Tied to fixed beliefs. Patching over the signs of trouble to protect where you stand.',
@@ -842,7 +859,12 @@ function medianRange(cq){var c=cqShown(cq); return c>=MEDIAN_LO&&c<=MEDIAN_HI;}
 function tierTop(nm){
  for(var i=0;i<TIERDEF.length;i++) if(TIERDEF[i].nm===nm) return i===0?100:TIERDEF[i-1].at-1;
  return 100;}
-function tierRange(t){return t.at+' to '+tierTop(t.nm);}
+/* AND THE RANGE IS IN PERCENT, 17 October, percent phase 2: a band is a range
+   of CQ, and CQ prints as a percent everywhere (engine/pct.js), so the ladder
+   printing "61 to 70" beside a reading of 64% was two units on one scale. The
+   bottom band starts at nought, and nought is never printed as 0%, the
+   registry's one rule, so it reads up to its top. */
+function tierRange(t){return t.at>0?t.at+'% to '+tierTop(t.nm)+'%':'up to '+tierTop(t.nm)+'%';}
 function tierOf(cq){
  var c=cqShown(cq);
  for(var i=0;i<TIERDEF.length;i++) if(c>=TIERDEF[i].at)return TIERDEF[i];

@@ -366,7 +366,10 @@ async function shot(page, name, W) {
       });
       ok(w8.groups && w8.groups.length && w8.groups.every(g => /lines?$/.test(g) && !/pattern/.test(g)), 'each group counts lines said: ' + J(w8.groups));
       ok(w8.sum && /lines\. Each is one release line, said once\.$/.test(w8.sum) && !/pattern/.test(w8.sum), 'and so does the summary: "' + w8.sum + '"');
-      ok(w8.dose === 'Times said', 'the dose is times said, not patterns: ' + w8.dose);
+      /* PATTERNS, not Times said, round of 29 October, overriding 17
+         October's own rename this check used to hold the opposite way;
+         see the ruling at the matching field in ui/storyui.js. */
+      ok(w8.dose === 'Patterns', 'the dose field reads Patterns again: ' + w8.dose);
       ok(w8.closing === 'Congratulations. You finished your release: 200 lines.', 'the closing counts lines: "' + w8.closing + '"');
     }
 
