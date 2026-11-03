@@ -29,3 +29,11 @@
 - Build generated artifacts must be rebuilt from source before integrating.
 
 **Next AI exact starting point:** Read `SOURCE_INDEX_2026-11-03.md` → `COMPASS_HERO_JOURNEY_INTEGRATION_TDD_V2.md` → new crosswalk → `tests/compass-board-contract.js` → CI, only then make further code edits. Update this log, then the handshake.
+
+## Entry 2026-11-03 — Live GitHub Actions failure/retry
+- PR #171 opened as **draft**, stacked on PR #156, with no mainline merge. GitHub compared first delivery as 11 commits ahead / 0 behind, ten changed files.
+- CI run [41674804303](https://github.com/rebootos-sourcce/MOB/actions/runs/41674804303) actually executed host-free engine build, Hero Journey boundary gate, new Compass source contract test, diagnostic test, full existing engine tests, full app build, and funnel adapter suite successfully. Its *browser* step failed before tests could start: `chromium.launch` sought `/opt/pw-browsers/chromium-1194/chrome-linux/chrome` although GitHub Actions Playwright installed a newer browser under `~/.cache/ms-playwright`. This was an executable discovery issue, not evidence of application or archetype failure.
+- Updated `.github/workflows/hero-journey-validation.yml` at commit `7353186a2b30cbbed03aad787d854d49d8532e35` to set `CHROME` from installed Playwright `chromium.executablePath()`, respecting the repository's existing `tests/chrome-path.js` approved expression.
+- Added live source index links in `docs/ATUNED_SOURCE_INDEX.md` so any subsequent AI can find this branch's source index without rediscovery.
+- [Latest browser retry run](https://github.com/rebootos-sourcce/MOB/actions/runs/41675410926) had passed source/engine/build steps as of checked time; full browser readback was not yet confirmed. [Newest index-linked branch workflow](https://github.com/rebootos-sourcce/MOB/actions/runs/41675724933) is separately triggered by later documentation commit.
+- The 7-row Purgatorio provisional crosswalk now includes exactly sourced `trigger`, `defensiveMotion`, `constructiveMotion`, `cycle`, `observableEvidence` and `behavioralCompletion`; semantic narcissism layer IDs remain null, avoiding fabricated clinical relations. Contract test strengthened accordingly.
