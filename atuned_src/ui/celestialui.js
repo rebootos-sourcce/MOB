@@ -46,6 +46,57 @@ function avCelTrace(){
   return traceFromRecord(CURP,null,reading);
  }catch(err){return null;}
 }
+/* MOUNTING IS THE HOST'S HALF, so it lives in ui/. It was bundled into
+   engine/celestial_portal.js as Reboot-OS's mountCelestialAvatarCascade,
+   which wrote innerHTML and added listeners on the node it was handed, and
+   hostfree.py could not see that through a parameter named container. This
+   is that function moved, not redesigned: same settings, same focus entries,
+   same repaint on every change. The engine keeps build, render and readTrace,
+   which only return values.
+
+   One addition. A change listener used to call paint() bare, so a focus the
+   cascade refused threw out of the listener and left the panel frozen on the
+   last good paint. Each listener now goes through the same fallback the first
+   mount already had: the panel says the lens is unavailable and stops. */
+var AVCEL_UNAVAILABLE='Celestial lens is unavailable for these inputs; no data was changed.';
+function avCelMount(container,inputs,onFail){
+ if(!container||typeof container.querySelector!=='function')throw new Error('DOM container required');
+ var options={mask_registry:inputs.mask_registry||[],avatar:inputs.avatar||null,
+  trace_graph:inputs.trace_graph||null};
+ var nodes=AT_CELESTIAL.readTrace(options.trace_graph).nodes;
+ var settings={selected_mask_id:inputs.selected_mask_id||null,
+  avatar_pair_id:inputs.avatar_pair_id||null,
+  focused_record_id:inputs.focused_record_id||null,focused_layer:inputs.focused_layer||'celestial'};
+ var focusEntries=nodes.map(function(x){
+  return {id:x.key,key:x.key,label:x.label+' ('+x.type+')',type:x.type};});
+ var destroyed=false;
+ function repaint(){
+  try{paint();}
+  catch(err){if(!destroyed&&typeof onFail==='function')onFail(err);}
+ }
+ function paint(){
+  if(destroyed)throw new Error('Cascade view already destroyed');
+  var view=AT_CELESTIAL.build(Object.assign({},inputs,settings));
+  container.innerHTML=AT_CELESTIAL.render(view,{
+   masks:options.mask_registry,
+   avatar_pairs:options.avatar&&options.avatar.pairs||[],trace_nodes:focusEntries});
+  var mask=container.querySelector('[data-cal-mask]'),
+   pair=container.querySelector('[data-cal-pair]'),focus=container.querySelector('[data-cal-focus]');
+  if(mask)mask.addEventListener('change',function(){settings.selected_mask_id=mask.value||null;repaint();});
+  if(pair)pair.addEventListener('change',function(){settings.avatar_pair_id=pair.value||null;repaint();});
+  if(focus)focus.addEventListener('change',function(){
+   var hit=nodes.find(function(x){return x.key===focus.value;});
+   settings.focused_record_id=focus.value||null;
+   settings.focused_layer=focus.value?(hit&&hit.type||'story'):'celestial';
+   repaint();
+  });
+  return view;
+ }
+ var first=paint();
+ return {view:first,
+  update:function(next){settings=Object.assign({},settings,next);return paint();},
+  destroy:function(){destroyed=true;container.innerHTML='';}};
+}
 function avCelCloseMounted(){
  if(AVCE.mounted&&typeof AVCE.mounted.destroy==='function'){
   try{AVCE.mounted.destroy();}catch(e){} }
@@ -124,10 +175,17 @@ function avCelestialAttach(host){
   avatar:CURP&&CURP.avatar||null,mask_registry:avCelKnownMasks(),
   focused_layer:'celestial',selected_mask_id:null,
   avatar_pair_id:null,evidence:[]};
- try{
-  AVCE.mounted=AT_CELESTIAL.mount(body,args);
- }catch(err){
-  body.textContent='Celestial lens is unavailable for these inputs; no data was changed.';
+ var mounted=null;
+ function unavailable(){
+  /* A stale controller's failure must not blank a newer mount. */
+  if(AVCE.mounted!==mounted&&mounted!==null)return;
+  body.textContent=AVCEL_UNAVAILABLE;
   AVCE.mounted=null;
+ }
+ try{
+  mounted=avCelMount(body,args,unavailable);
+  AVCE.mounted=mounted;
+ }catch(err){
+  unavailable();
  }
 }
