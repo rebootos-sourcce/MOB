@@ -16,7 +16,18 @@ function panAnd(a){return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' and '
    stack on the right rail already draws the nine axes with them, so the
    sliders draw the same mark for the same thing. The colour is still the
    seat's. ic is optional, so a row with no glyph keeps the dot. */
-function numField(host,name,band,store,key,ic,tip){
+/* q, THE VISIBLE QUESTION, 2 November, added for the Child emotions sliders
+   now that they sit on Intake and are meant to read as questions. NOT
+   folded into tip: tip feeds the .tipu "dotted carrier" (data-tip), and
+   tests/unpack.js's own gate ("every dotted carrier on the Summary says
+   only sentences the table holds") checks every .tipu[data-tip] on the
+   page against the one canonical UNPACK table (engine/data/gloss.js) --
+   real, deliberate, and caught live when IX_AXIS's own question text was
+   tried there first and the gate went red, 44 failures, because that text
+   is real but is not in that table. q is a plain paragraph instead, no
+   .tipu class, so it never enters that gate's scan; tip stays exactly what
+   it already was (the real glossary term), unchanged for every caller. */
+function numField(host,name,band,store,key,ic,tip,q){
  const d=document.createElement('div');d.className='nf';
  const col=band?seatCol(band):'var(--gold)';
  d.innerHTML=(ic?'<i class="nf-g" style="color:'+col+'"><svg viewBox="0 0 24 24" aria-hidden="true">'
@@ -25,7 +36,8 @@ function numField(host,name,band,store,key,ic,tip){
      table, on the label and not on the row: the row holds a slider, and a tap
      on a slider has to be a drag and not an explanation. */
   +'<label'+(tip?' class="tipu" tabindex="0" data-tip-k="'+esc(name)+'" data-tip="'+esc(tip)+'"':'')+'>'+name+'</label>'
-  +'<span class="tr" role="slider" tabindex="0" aria-label="'+name+'" aria-valuemin="0" '
+  +(q?'<p class="nf-q">'+esc(q)+'</p>':'')
+  +'<span class="tr" role="slider" tabindex="0" aria-label="'+name+(q?'. '+q:'')+'" aria-valuemin="0" '
   +'aria-valuemax="10" aria-valuenow="'+store[key]+'"><b style="background:'+col+'"></b></span>'
   +'<input type="number" min="0" max="10" step="0.5" value="'+store[key]+'" aria-label="'+name+'">';
  host.appendChild(d);
@@ -58,9 +70,19 @@ function numField(host,name,band,store,key,ic,tip){
  trk.addEventListener('wheel',function(e){e.preventDefault();set(store[key]+(e.deltaY<0?.5:-.5));},{passive:false});
  inp.addEventListener('wheel',function(e){e.preventDefault();set(store[key]+(e.deltaY<0?.5:-.5));},{passive:false});
  return {inp,tr,trk};}
+/* THE SLIDER NOW SHOWS THE REAL QUESTION TOO, 2 November, grounded in
+   IX_AXIS (engine/data/intakemore.js), the same question Intake's own
+   "Emotional axes" block asks about this exact axis -- not invented copy,
+   the one real question this product already has for it. Read once into a
+   lookup by k, the axis's own CHILD name, because IX_AXIS is a short table
+   scanned by eye elsewhere and a scan per slider on every page load is the
+   wrong trade for nine rows. Passed as numField's own q, not folded into
+   tip -- see numField's comment on why. */
+var IX_AXIS_BY={}; if(typeof IX_AXIS!=='undefined')IX_AXIS.forEach(function(r){IX_AXIS_BY[r.k]=r;});
 const CHF={},RPF={},LWF={};
 CHILD.forEach(function(cf){
- CHF[cf.nm]=numField($('chg'),cf.nm,cf.seat,S.charge,cf.nm,cf.ic,unpackOf(cf.nm,'feeling'));
+ CHF[cf.nm]=numField($('chg'),cf.nm,cf.seat,S.charge,cf.nm,cf.ic,unpackOf(cf.nm,'feeling'),
+   (IX_AXIS_BY[cf.nm]?IX_AXIS_BY[cf.nm].q:null));
  /* the opposite takes the same mark in Heart, as the stack draws it */
  RPF[cf.nm]=numField($('chg'),'toward '+cf.opp,'Heart',S.replace,cf.nm,cf.ic,unpackOf(cf.opp,'opposite'));
  RPF[cf.nm].inp.parentElement.classList.add('oppf');});
@@ -77,12 +99,15 @@ $('allCh').addEventListener('input',function(e){toYou();
  CHARGES.forEach(function(c){S.charge[c]=+e.target.value;});syncCh();saveYou();render();});
 $('allRep').addEventListener('input',function(e){toYou();
  CHARGES.forEach(function(c){S.replace[c]=+e.target.value;});syncCh();saveYou();render();});
-/* CHILD EMOTIONS' OWN DOOR OUT TO INTAKE, same section, body.html's own
-   comment above #chgoq carries the full why. setTab is the one real call
-   every other door to a tab already makes; nothing new is invented here,
-   this section just gets the one it did not have. */
-(function(){var go=$('chgoq'); if(!go)return;
- go.addEventListener('click',function(){setTab(TAB.QUESTIONS);render();});})();
+/* #CHGOQ, THE DOOR OUT TO INTAKE, IS GONE, 2 November, because the sliders
+   it pointed at are not on the left rail to point at any more -- they are
+   on Intake now (body.html's own #iqp comment carries the full why), so a
+   button whose only job was "go to Intake" from a panel that is already on
+   Intake would open the tab it is already open on. Left here, commented,
+   rather than silently dropped: CLAUDE.md rule 1, assert the thing on the
+   other side of a change, and the thing on the other side of removing a
+   button is checking nothing still expects it. Nothing does; $('chgoq')
+   was the only reference (grep, this round).*/
 /* THE BULK LAW SLIDER ANSWERS NOTHING, P2-5 of the inference audit, 24
    October. It set every law in one drag, and a law moved off its seed counts
    as answered (lawIn, saveProfile), so one gesture filled all 21 and CQ, the

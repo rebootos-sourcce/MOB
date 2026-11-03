@@ -383,11 +383,18 @@ function nodeDrillHtml(n,o){
     the one thing that did not exist anywhere: a narrated paragraph reading
     the address together with what sits above it, hedged, never a causal
     claim. ui/tracesummaryui.js, tsBlockHtml, PR #158's traceSummary. */
- if(lockSees('sab')&&typeof tsBlockHtml==='function')
-  h+='<div class="pm-eye">Source AI, the blend</div><p class="ad-p ts-narr">'
-   +esc((function(){var g=tsCurrentGraph(); if(!g)return '';
-    var res=traceSummary(g,traceKey('pattern',n.i)); return res.ok?res.summary:(res.why||'');})())
-   +'</p>';
+ /* TWO REAL PARAGRAPHS HERE TOO, 2 November, second pass: this call site
+    built its own one-paragraph markup directly off res.summary rather than
+    going through tsNarrHtml (ui/tracesummaryui.js), which would have left
+    this one address drill one paragraph behind every other real narration
+    surface the moment that file grew a second paragraph. Routed through
+    the same helper now, so there is one place that decides how a
+    traceSummary result becomes markup. */
+ if(lockSees('sab')&&typeof tsNarrHtml==='function')
+  h+='<div class="pm-eye">Source AI, the blend</div>'
+   +(function(){var g=tsCurrentGraph(); if(!g)return '<p class="ad-p ts-narr"></p>';
+    var res=traceSummary(g,traceKey('pattern',n.i));
+    return res.ok?tsNarrHtml(res):'<p class="ad-p ts-narr">'+esc(res.why||'')+'</p>';})();
  h+=nodeStories(n);
  /* RUN THE PROTOCOL HERE. The reading ended at the reading: a person could see
     exactly which address was costing them and had no way to act on it from

@@ -140,8 +140,20 @@ function traceSummaryCard(type,id,attrs){
    return {found:false, label:base, over:over,
     why:'no saboteur card or definition is on file for '+base+(SABAUTH&&SABAUTH[base]?', though it does carry a composition of its own in SABAUTH':'')};}
   return {found:true, label:base, over:over,
-   fields:{says:def?def.q:null, livedBehavior:card?card.h:null, becomesAvailable:card?card.a:null},
-   source:'SABDEF.q (what it says) and SABCARD.h/.a (the lived behaviour, and what becomes available) for '+base
+   /* behavior and trigger, 2 November, second pass: SABDEF.d (the output
+      behaviour) and SABDEF.t (the trigger it fires on) were on file and
+      resolved nowhere. His own words asking for the richer narration:
+      "what's running... the real behavior/trigger." Added here, at the
+      one resolve point, rather than read a second time inside the
+      narrator, so there is one source for what a saboteur's own fields
+      are, same as every other field this function already carries.
+      nextMove is SABCARD.n, the practice's own reframed command
+      (sabcard.js: "SABDEF.i, same meaning, reframed as notice, separate,
+      choose"), real and already on file, surfaced for the same reason. */
+   fields:{says:def?def.q:null, livedBehavior:card?card.h:null, becomesAvailable:card?card.a:null,
+    behavior:def?def.d:null, trigger:def?def.t:null, nextMove:card?card.n:null},
+   source:'SABDEF.d/.t/.q (the behaviour, the trigger and what it says) and SABCARD.h/.a/.n '
+    +'(the lived behaviour, what becomes available, and the next move) for '+base
     +(over?', read off the base pattern: the overshoot is the same cluster run past the point it helps, not a different one':'')};}
  if(type==='complex')
   return {found:false, label:String(id),
@@ -227,19 +239,39 @@ function traceSummaryClause(side,items){
  var tail=thin.length?('; '+traceSummaryList(thin.map(function(x){return traceSummaryWord(x.type,x.id)+' '+x.card.label;}))+' carries nothing further on file'):'';
  return parts.join('; ')+tail;}
 
-/* RESOLVE THEN NARRATE, the second half. One paragraph, hedged, never
-   asserting a connection the records themselves do not carry (the
-   same discipline atuned/data/celestial/integration/source-ai-
-   behavioral-synthesis.cjs's narrateSourceAI runs over astrology and
-   numerology records). Ends on the same plain accounting those files
-   close with: what kind of statement this is and is not. */
-function traceSummaryNarrate(self,selfCard,parents,children){
- var word=traceSummaryWord(self.type,self.id), label=selfCard.label||self.id,
-  sentences=[];
- if(selfCard.found){
-  var own=traceSummaryOwnLine(selfCard.fields);
-  sentences.push('The selected '+word+', '+label+(own?', reads as '+own:'')+'.');}
- else sentences.push('The selected '+word+', '+label+', carries nothing further on file beyond its own name and weight ('+selfCard.why+').');
+/* PARAGRAPH ONE, WHAT IS RUNNING. His own words, 2 November, second pass,
+   asking for richer narration: "a couple paragraphs... how these patterns
+   work through me," paragraph one "what's running, the real behavior/
+   trigger." A saboteur is the one tier that carries a real behaviour and a
+   real trigger as two separate fields (SABDEF.d/.t, surfaced onto the card
+   just above); every other tier keeps the one self-line it already had
+   (coherent/collapsed for an address, the family line for a hyper-complex,
+   the honest "carries nothing further" for a complex or a super complex,
+   neither of which has a card of its own by THE CHAIN). The old self-line
+   is never dropped, only led with the richer fields when they are real:
+   traceSummaryOwnLine's own says/lived clause still follows, so nothing
+   that was quoted before stops being quoted. */
+function traceSummarySelfPara(self,selfCard){
+ var word=traceSummaryWord(self.type,self.id), label=selfCard.label||self.id;
+ if(!selfCard.found)
+  return 'The selected '+word+', '+label+', carries nothing further on file beyond its own name and weight ('+selfCard.why+').';
+ var f=selfCard.fields||{}, own=traceSummaryOwnLine(f), lead=[];
+ if(f.behavior!=null)lead.push('runs as "'+f.behavior+'"');
+ if(f.trigger!=null)lead.push('fires at "'+f.trigger+'"');
+ if(lead.length)
+  return 'The selected '+word+', '+label+', '+lead.join(' and ')+(own?'; '+own:'')+'.';
+ return 'The selected '+word+', '+label+(own?', reads as '+own:'')+'.';}
+/* PARAGRAPH TWO, THE REAL CASCADE: what is below it, what is above it (what
+   it feeds into), read together, and the closing honest accounting every
+   narration in this file closes on. Unchanged logic from the one-paragraph
+   version, only lifted out so traceSummary can hand back both halves
+   separately as well as joined; a tier with nothing real above or below it
+   still gets this whole paragraph, because the honest "nothing sits below/
+   above it" sentences ARE the real content at a thin tier -- said once,
+   here, never padded with an invented second line to make the paragraph
+   look fuller than the record is. */
+function traceSummaryCascadePara(self,children,parents){
+ var word=traceSummaryWord(self.type,self.id), sentences=[];
  if(children.length)
   sentences.push('Below it, the real part'+(children.length>1?'s are':' is')+' '+traceSummaryClause('child',children)+'.');
  else sentences.push('Nothing sits below it on this graph: '+traceSummaryArticle(word)+' '+word+' is the floor of the chain, or none of its own parts reached the threshold yet.');
@@ -252,6 +284,17 @@ function traceSummaryNarrate(self,selfCard,parents,children){
    +' are both counted toward this same '+word+' by the reading, a registration and not a claim that one causes the other or the person.');
  sentences.push('This paragraph narrates what the graph and the library already hold. It does not compute a score, and it does not write a release, a reframe or a ritual.');
  return sentences.join(' ');}
+/* RESOLVE THEN NARRATE, now two real paragraphs, not one. Returns
+   {p1,p2,full}: full is p1 and p2 joined by a space, kept for every caller
+   that still wants one string (every existing test, and traceSummary's own
+   .summary field, below), p1/p2 for a caller that wants the real paragraph
+   break (ui/tracesummaryui.js). Never a third, invented paragraph: where a
+   tier's own content is thin, that thinness is said plainly inside
+   whichever of the two paragraphs it belongs to, exactly as it already was
+   before this split, never padded to make two paragraphs look even. */
+function traceSummaryNarrate(self,selfCard,parents,children){
+ var p1=traceSummarySelfPara(self,selfCard), p2=traceSummaryCascadePara(self,children,parents);
+ return {p1:p1, p2:p2, full:p1+' '+p2};}
 
 /* ============================================================
    traceSummary(g, node)
@@ -284,10 +327,15 @@ function traceSummary(g,node){
  var children=parts.children.map(decorate).sort(byKey);
  var parents=parts.parents.map(decorate).sort(byKey);
  var selfCard=traceSummaryCard(self.type,self.id,self);
+ var nar=traceSummaryNarrate(self,selfCard,parents,children);
  return {ok:true,
   node:{type:self.type, id:self.id, key:key, attrs:self, card:selfCard},
   parents:parents, children:children,
-  summary:traceSummaryNarrate(self,selfCard,parents,children)};}
+  /* summary stays the one joined string every existing caller and test
+     already reads; summaryParas is the real addition, the same two
+     paragraphs as an array, for a caller that wants the paragraph break
+     itself rather than a string it would have to split back apart. */
+  summary:nar.full, summaryParas:[nar.p1,nar.p2]};}
 
 /* ============================================================
    traceSummarySet(g, keys)
@@ -364,26 +412,34 @@ function traceSummarySetClause(members){
    +' carr'+(thin.length>1?'y':'ies')+' nothing further on file'):'';
  return parts.join('; ')+tail;}
 
-/* RESOLVE THEN NARRATE, over a set. One paragraph, hedged, crediting each
-   tier the way traceSummaryClause already credits a parent or a child,
-   closing on the identical honest line traceSummaryNarrate closes every
-   paragraph with, so a person reading either kind of blend never meets a
-   different voice. */
-function traceSummarySetNarrate(members){
- if(!members.length)
-  return 'Nothing real is selected on this graph. This paragraph narrates what the graph and the library already hold. It does not compute a score, and it does not write a release, a reframe or a ritual.';
- var sentences=[(members.length>1?'The selection, blended across '+members.length+' real nodes, is '
-   :'The selection is ')+traceSummarySetClause(members)+'.'];
- var withCard=members.filter(function(x){return x.card.found;});
+/* RESOLVE THEN NARRATE, over a set, now two real paragraphs the same way
+   traceSummaryNarrate above is: p1 is what the whole selection actually is
+   (the real clause over every member, exactly as it already read), p2 is
+   the cascade over the set -- the "read together" cross-tier sentence,
+   where more than one member carries real content, and the closing honest
+   accounting every narration in this file closes on. A one-member
+   selection (the degenerate case, TS10's own "exactly one real key still
+   resolves") has no read-together sentence at all, so p2 is the closing
+   line alone, said plainly rather than padded. */
+function traceSummarySetSelfPara(members){
+ if(!members.length)return 'Nothing real is selected on this graph.';
+ return (members.length>1?'The selection, blended across '+members.length+' real nodes, is '
+   :'The selection is ')+traceSummarySetClause(members)+'.';}
+function traceSummarySetCascadePara(members){
+ var sentences=[], withCard=members.filter(function(x){return x.card.found;});
  if(withCard.length>1)
   sentences.push('Read together, '+traceSummaryList(withCard.map(function(x){return traceSummaryWord(x.type,x.id)+' '+x.card.label;}))
    +' are all counted toward this one selection by the reading, a registration and not a claim that one causes another or the person.');
  sentences.push('This paragraph narrates what the graph and the library already hold. It does not compute a score, and it does not write a release, a reframe or a ritual.');
  return sentences.join(' ');}
+function traceSummarySetNarrate(members){
+ var p1=traceSummarySetSelfPara(members), p2=traceSummarySetCascadePara(members);
+ return {p1:p1, p2:p2, full:p1+' '+p2};}
 
 function traceSummarySet(g,keys){
  if(!traceIsGraph(g))return {ok:false, why:'there is no graph to read'};
  if(!Array.isArray(keys)||!keys.length)return {ok:false, why:'nothing is selected'};
  var members=traceSummarySetResolve(g,keys);
  if(!members.length)return {ok:false, why:'none of the selection names a real node on this graph'};
- return {ok:true, members:members, summary:traceSummarySetNarrate(members)};}
+ var nar=traceSummarySetNarrate(members);
+ return {ok:true, members:members, summary:nar.full, summaryParas:[nar.p1,nar.p2]};}

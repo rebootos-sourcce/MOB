@@ -581,19 +581,96 @@ function rbRow(q,nm,pct,raw,o){
    +'</span>';
   seats='<span class="rb-seats" aria-hidden="true">'+BANDS.map(function(b,i){
    return '<span'+(i===bl?' class="bk" style="--bc:'+seatCol(b)+'"':'')+'>'+esc((o.names||BANDS)[i])+'</span>';}).join('')+'</span>';}
- else track='<span class="rb-t" aria-hidden="true"><s style="left:25%"></s><s style="left:50%"></s><s style="left:75%"></s>'
-  +'<i class="rb-f" style="width:'+w+'%"></i><em class="rb-h"></em></span>';
+ /* THE PERCENT MOVES INSIDE THE BAR'S OWN FILL, 2 November, his own words
+    looking at the nine axis bars: "the percent goes inside the bar." o.inFill
+    is opt-in, not the row's new default: tests/pct.js (124, 237) and
+    tests/functional.js (7018) read .rb-v's text and its position against
+    .rb-n for DQ and Flow today, and this round touches neither reading --
+    DQ and Flow are not the bars he was looking at, and breaking a pinned
+    geometry test to fix a complaint about a different row would be the
+    "weaken the gate to get green" CLAUDE.md rules against, not a real fix.
+    The one caller opted in is analytics.js's anaAxisCard, the real per-axis
+    bar that is still on screen once Child emotions leaves the left rail
+    (ui/ui.js's #stack, moved to Intake, this same round).
+
+    Right-aligned against the fill's own trailing edge when the fill is wide
+    enough to hold it (mix-blend-mode:difference, so the label reads against
+    any seat colour in any theme without a per-colour tint). THE SAME SMALL-
+    VALUE CUT anaField ALREADY MAKES (ui/analytics.js, p.r<LMIN: a label that
+    does not fit is dropped from the shape it does not fit and read where it
+    does), generalised from a circle's radius to a track's own fill width:
+    below 18%, a short figure like "6%" has no room inside its own colour
+    (his own example), so the label sits just past the fill's trailing edge
+    instead, still inside the track, never forced back up beside the name.
+    read&&... guards an unread row, which keeps its dash on the name line,
+    unchanged, below. */
+ var inFill=!!o.inFill, vIn=inFill&&read&&p>=18;
+ /* THE FAR END, 2 November, fourth pass. His own words looking at rbPair's
+    CQ/Shadow bar beside rbRow's own single-value one: "it's showing the
+    charge at both ends now." rbPair's two ends are two shares of one whole
+    (lv and 100-lv), which is not this axis' real shape -- held and installed
+    are two independent 0-10 readings (engine/schema.js, a.held and a.opp)
+    that do not sum to anything, confirmed on Tomas where installed sits at
+    0 while held runs 6.4 to 9.6 (component.js's own rbChargePair post-mortem,
+    above). So this is not rbPair's center-anchored lean, which only has
+    meaning when both ends share one hundred: it is a second, independent
+    segment, pinned to the track's own far (right) end and sized to its own
+    real percent, the same "press in from an end, sized to the real value"
+    read rbPair's two poles give, applied to a value that does not share a
+    whole with the first. o.pct2 is opt-in, exactly as o.inFill is above: the
+    two existing callers (dq, flow) pass none of it, so their own markup is
+    unchanged, byte for byte, and the pinned geometry tests that read .rb-f's
+    width against rr-i (tests/functional.js's dock block) see no new element
+    at all on either of them. A nought real value (S.replace empty, Tomas's
+    own real case) draws at its real zero width rather than being hidden or
+    faked, CLAUDE.md rule 6: the same "no width to carry it" mechanism
+    .rb-f's own comment already relies on (overflow:hidden on a 0-width box
+    paints nothing), reused rather than a second special case for zero. */
+ var p2=o.pct2!=null?Math.max(0,Math.min(100,+o.pct2||0)):null;
+ var w2=read&&p2!=null?p2.toFixed(2):'0', col2=o.col2||'var(--ink)';
+ if(!o.cells)track='<span class="rb-t" aria-hidden="true"><s style="left:25%"></s><s style="left:50%"></s><s style="left:75%"></s>'
+  +'<i class="rb-f" style="width:'+w+'%">'+(vIn?'<b class="rb-fv">'+esc(raw)+'</b>':'')+'</i>'
+  +(inFill&&read&&!vIn?'<b class="rb-fv rb-fv-out" style="left:'+w+'%">'+esc(raw)+'</b>':'')
+  +(p2!=null?'<i class="rb-f2" style="width:'+w2+'%;--c2:'+col2+'"></i>':'')
+  +'<em class="rb-h"></em></span>';
  var c=read?(o.col||rbCol(p,o.bad)):'var(--dim)';
- return '<button type="button" class="kb rbar'+cls+(read?'':' off')+'" data-q="'+q+'" data-w="'+p.toFixed(2)+'"'
+ /* BARE, THE SAME WORD crBadge ALREADY USES FOR ITS OWN "ring with nowhere
+    of its own to open": a reading hosted inside a card that is already the
+    open drill (ui/analytics.js's anaAxisCard, 2 November, third pass) has
+    no second door to draw, so bare writes a div element, never a button, and
+    carries no data-q and no .kb -- the one global click dispatcher
+    (.kb[data-q], ui/ui.js) never meets a row here that answers to no real
+    key, which a button always would have, CLAUDE.md rule 1's own
+    "assert the thing on the other side" read against this exact primitive.
+
+    o.cls/o.attrs/o.after (the interactive case only) let the one real
+    caller that nests this bar inside an EXISTING .stk-r[data-fet] row
+    (ui/ui.js, #stack's Child emotions tier) fold its own identity onto
+    this element rather than drawing a second one: .stk-r[data-fet] is
+    checked before .kb[data-q] in that dispatcher, so the row still opens
+    runFetterDrill and never the row's own now-pointless data-q. Reused,
+    not rebuilt, and both existing callers (dq, flow) pass none of the
+    three, so their own markup is unchanged, byte for byte. */
+ var bare=!!o.bare, tag=bare?'div':'button';
+ return '<'+tag+(bare?'':' type="button"')+' class="'+(bare?'rbar':'kb rbar')+cls+(read?'':' off')+(o.cls?' '+o.cls:'')+'"'
+  +(bare?'':' data-q="'+q+'"')+' data-w="'+p.toFixed(2)+'"'+(o.attrs||'')
   +(o.fk?' data-fk="'+o.fk+'"':'')+(o.bad?' data-bad="1"':'')
   +(sv?' data-s="'+sv.map(function(v){return v.toFixed(3);}).join(',')+'"':'')
   +' data-v="'+esc(raw)+'" style="--c:'+c+'"'
   +(o.title?' data-tip-k="'+esc(nm)+'" data-tip="'+esc(o.title)+'"':'')
-  +' aria-label="'+esc(rbAria(nm,raw,read,o.title,'Opens the reading.'))+'">'
-  +'<span class="rb-row"><span class="rb-n">'+rbIcon(o.ic)+esc(nm)+'</span>'+sub
-  +'<span class="rb-v">'+esc(raw)+'</span></span>'
+  +' aria-label="'+esc(rbAria(nm,raw,read,o.title,bare?'':'Opens the reading.'))+'">'
+  /* o.after SITS INSIDE .rb-n, RIGHT AFTER THE NAME, the same spot the
+     untouched fetter list (ui/ui.js, chkTier's own "heaviest" em inside
+     .stk-nm) already places it -- read beside the word it marks, not as a
+     stray line of its own under the track. */
+  +'<span class="rb-row"><span class="rb-n">'+rbIcon(o.ic)+esc(nm)+(o.after||'')+'</span>'+sub
+  /* the figure moved into the fill above (o.inFill): printing it here too
+     would be the same number said twice on one row, the exact complaint
+     this round answers elsewhere on the page. Unread still prints its dash
+     here, since an unread row draws no fill for it to move into. */
+  +(inFill&&read?'':'<span class="rb-v">'+esc(raw)+'</span>')+'</span>'
   +track+seats
-  +'<span class="rb-d" aria-hidden="true"></span></button>';}
+  +'<span class="rb-d" aria-hidden="true"></span></'+tag+'>';}
 /* ONE READING, ICON-LED, 2 November. His own words looking at the wheel's
    nested chain next to this stack of bars: the right rail got crBadge
    (component.js's own words on it: "the named things print as a word and
@@ -933,6 +1010,29 @@ function rbPair(k,o){
    +(drift?'<i class="rb2-hold rb2-gh" style="transform:translateX('+x.toFixed(2)+'%)"><i></i></i>':'')
    +'<i class="rb2-hold rb2-nd" style="transform:translateX('+x.toFixed(2)+'%)"><i></i></i></i>':'')+'</span>'
   +key(L,'l')+key(R,'r')+'</span>';}
+/* ============================================================
+   REMOVED, 2 November, third pass: rbChargePair, a CHILD axis' held charge
+   drawn as a share against its installed opposite (held/(held+installed)).
+   His own real screenshot: all nine of #stack's Child emotions rows read
+   100%, bar filled to one side, on all nine. Checked against Tomas's real
+   data before anything was touched: S.replace (installed) is {} for him,
+   so installed is 0 on every one of the nine axes, and held/(held+0) is a
+   flat 100 whatever held itself is -- Tomas's real held charges are 6.4 to
+   9.6 of 10, wide and real, and the share threw all of that away. It
+   degenerated to a meaningless constant exactly when the data looked like
+   his: one side measured, the other not yet. "Switching to a complete bar
+   format," his words looking at it.
+
+   Both real callers (#stack's Child emotions tier, ui/ui.js; ui/
+   analytics.js's anaAxisCard) now call rbRow instead, the one real bar
+   this product already draws for a single 0-100 reading, on the one real
+   figure this axis actually has standing alone: held charge, pct('charge',
+   v). Installed keeps its own real figure where each caller prints it
+   (runFetterDrill already did, ui/drills.js; anaAxisCard's own anaKv row
+   now does too), said plainly, never folded into a ratio with held again.
+   Nothing on this build calls rbChargePair; left here would be a function
+   defined and no longer wired, CLAUDE.md rule 2's own case, so it is cut
+   rather than left as a live landmine beside the bug it was. */
 /* WHAT A HOST CARRIES for a pair that is one reading: its own sentence, then
    each pole's word and sentence, then the lean in words, never as a score.
    The same string is the tooltip's body and, with the figures said first, the

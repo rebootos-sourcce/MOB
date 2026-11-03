@@ -1061,25 +1061,64 @@ const kb=await page.evaluate(()=>{
  ok(kb.names.indexOf('Glossary')<0,
   'and the glossary is not a deck, it is what the search answers with');
  /* THE RENAME REACHES EVERY SURFACE OR IT IS NOT A RENAME. The codex is one
-    of three places the nine are named. The left rail's fourth section holds
-    their sliders and the right rail's stack counts them, and a word that
-    moves in one place and not the others is how this product ends up with two
-    vocabularies for one thing, which is what it just finished removing. */
- ok(kb.rail.indexOf('Child emotions')>=0,
-  'the left rail calls the nine child emotions, got '+kb.rail.join(', '));
+    of three places the nine were named. CHILD EMOTIONS LEFT THE LEFT RAIL
+    AND THE RIGHT RAIL BOTH, 2 November, second pass: his own words, twice
+    in one night, the second time plainer than the first ("the child
+    emotions are getting moved out of the left menu... those are going
+    into the diagnostic, as questions"), so the real sliders (body.html's
+    old data-sec="fetters") and the right rail's read-only tier (#stack's
+    old sec('fet',...)) both moved to Intake this round. kb.rail is every
+    .lsec-hd span on the whole page, not only the left rail's own (it was
+    never scoped tighter than that, checked this round rather than assumed
+    from its name), and the moved section keeps the same .lsec-hd markup at
+    its new address, so it still answers this unscoped scan -- correctly,
+    since it still exists, just not where it used to. The two checks below
+    are scoped to the actual old containers instead, #lpanel and #stack by
+    id, which is what "left the rail" really means. */
+ /* STRUCTURE, NOT A TEXT SCAN. #lpanel's own Awareness section (the koshas
+    row, body.html) names "Child emotions" in a sentence on purpose, cross
+    referencing where the real nine live ("the same nine fetters in Child
+    emotions, read as one tilt rather than nine words") -- a real, correct
+    mention, not a second copy of the section, and a blunt regex over all
+    of #lpanel's text would have flagged that true sentence as a false
+    failure. The real question is whether the section itself is still
+    there: data-sec="fetters" was its own id, never reused for anything
+    else, so its absence is the actual check. */
+ const leftOld=await page.evaluate(()=>({
+  lpanel:!!document.querySelector('#lpanel [data-sec="fetters"]'),
+  stack:/Child emotions/.test((document.getElementById('stack')||{}).textContent||'')}));
+ ok(!leftOld.lpanel,'the left rail panel no longer carries the Child emotions section (moved to Intake)');
  ok(kb.rail.indexOf('Fetters')<0,
-  'and the rail no longer calls the nine fetters');
- /* NOT INDEX 0 ANY MORE, 2 November: #stack is six nested disclosure
-    tiers now, Super-complex down to Nerve (FIELD_RIGHTSIDE_BLEND_
-    STRATEGY_2026-11-02.md), not five flat tabs opening on Child emotions
-    by default. The real check this assertion exists for -- the renamed
-    word actually reaches this surface, in this exact spelling -- still
-    holds and is still checked, just not pinned to a position the
-    redesign deliberately no longer holds. */
- ok(kb.stack.some(t=>/^Child emotions/.test(t)),
-  'the stack calls them child emotions somewhere on it, got '+JSON.stringify(kb.stack.slice(0,8)));
+  'and no rail heading ever calls the nine fetters');
+ ok(!leftOld.stack&&!kb.stack.some(t=>/^Child emotions/.test(t)),
+  'the right rail\'s #stack no longer carries the nine child emotions (moved to Intake), got '+JSON.stringify(kb.stack.slice(0,8)));
  ok(!/child fetter/i.test(kb.text),
-  'and the phrase child fetter reaches no surface');}
+  'and the phrase child fetter reaches no surface');
+ /* THE REAL DESTINATION, CHECKED DIRECTLY, not inferred from the rails'
+    absence: a thing can leave two places and land nowhere. Intake's #iqp
+    (body.html) now carries the same real sliders, same ids, as a static
+    child that survives renderIntake()'s own innerHTML rewrite of #iqbody
+    (the comment on #iqp in body.html explains why it has to sit there and
+    not inside it). CHF is panels.js's own live slider registry, nine keys,
+    one per CHILD axis, so its presence after opening Intake is the real
+    "the controls are alive here" check, not just text on the page. The
+    expected tip is read off IX_AXIS inside the page too -- IX_AXIS is the
+    app's own global, not this test script's, and only exists in that
+    context. */
+ const intakeCh=await page.evaluate(()=>{
+  setTab(TAB.QUESTIONS); render();
+  const host=document.getElementById('iqp');
+  const hasHd=host?/Child emotions/.test(host.textContent):false;
+  const hasChg=!!document.getElementById('chg');
+  const live=typeof CHF==='object'&&CHF&&Object.keys(CHF).length===CHILD.length;
+  const want=(typeof IX_AXIS!=='undefined'?(IX_AXIS.filter(r=>r.k==='Fear')[0]||{}).q:null)||null;
+  const tip=(CHF&&CHF.Fear&&CHF.Fear.inp&&CHF.Fear.inp.parentElement)
+   ?CHF.Fear.inp.parentElement.querySelector('label').getAttribute('data-tip'):null;
+  return {hasHd,hasChg,live,tip,want};});
+ ok(intakeCh.hasHd,'Intake names Child emotions, got '+JSON.stringify(intakeCh));
+ ok(intakeCh.hasChg&&intakeCh.live,'and its real sliders (#chg, CHF) are alive there, got '+JSON.stringify(intakeCh));
+ ok(!!intakeCh.want&&intakeCh.tip===intakeCh.want,
+  'and the Fear slider\'s tip is the real Intake question for it, got '+JSON.stringify(intakeCh));}
 /* ALL 112, NEVER 108. W is the 108 somatic addresses and the four field
    anchors carry Field-Above and Field-Below, which are not seats, so they fell
    out of W and appeared in no deck: the surface that exists to list every
@@ -1726,12 +1765,14 @@ console.log('\n=== GF: two fingers zoom the picture, and nothing else ===');
  /* the bar on a phone: collapsed to one tab, the loader, search (help's old
     place, KC; help itself is on the profile page) and the person
     at the upper right, undo and the bar's lighting menu gone, the strip's
-    poles inside the core. Hidden is not removed: the undo stack still takes. */
+    poles inside the core -- and the strip itself gone outright, 2 November,
+    at every width, not only a phone's. Hidden is not removed: the undo
+    stack still takes. */
  const bar=await touchPg.evaluate(()=>{const d=id=>getComputedStyle(document.getElementById(id)).display;
   undoPush('a phone edit');
   const r=id=>document.getElementById(id).getBoundingClientRect();
   return {tabbar:d('tabbar'),navtog:d('navtog'),psel:d('psel'),hist:d('histpair'),light:d('lightwrap'),
-   pol2:d('pol2'),depth:undoDepth(),poles:HIT.filter(h=>h.k==='pole').length,
+   noStrip:!document.getElementById('pol2'),depth:undoDepth(),poles:HIT.filter(h=>h.k==='pole').length,
    together:Math.abs(r('ploadbtn').top-r('profbtn').top)<1&&r('ploadbtn').right<=r('srchbtn').left&&r('srchbtn').right<=r('profbtn').left,
    round:['ploadbtn','srchbtn','profbtn'].every(id=>getComputedStyle(document.getElementById(id)).borderRadius==='50%'),
    lights:document.querySelectorAll('#navthemes button').length===LIGHTINGS.length};});
@@ -1740,7 +1781,7 @@ console.log('\n=== GF: two fingers zoom the picture, and nothing else ===');
  ok(bar.together&&bar.round,'the loader, search and the person sit together at the upper right, all three round');
  ok(bar.lights,'and every lighting is in the main menu');
  ok(bar.hist==='none'&&bar.depth>0,'undo is hidden on a phone and still takes, depth '+bar.depth);
- ok(bar.pol2==='none'&&bar.poles===2,'the poles are inside the core and the strip under the picture is gone, '+bar.poles+' poles');
+ ok(bar.noStrip&&bar.poles===2,'the poles are inside the core and the strip under the picture does not exist at all, '+bar.poles+' poles');
 
  /* THE CORE'S OWN RELEASE PATH, ON A COARSE POINTER. GF deferred every touch
     to fire on release rather than on press, so a drag could still be told
@@ -2255,7 +2296,13 @@ const pole=await page.evaluate(()=>{
  const o={};
  loadP(GORDON()); setTab(TAB.FIELD); render();
  o.who=(PEOPLE[S.who]||{}).nm;
- o.ends=document.querySelectorAll('#pol2 [data-polend]').length;
+ /* #pol2, the vertical strip, is gone, 2 November. Its two doors are the
+    wheel's own halo and pitchfork now, at every width: HIT on the canvas
+    (wheel), FR_HIT on the SVG renditions (frames, dial). Read whichever the
+    current view actually draws into, the same split fviewOn() already
+    makes everywhere else that reads a hit record. */
+ {const H=(typeof fviewOn==='function'&&fviewOn())?FR_HIT:HIT;
+  o.ends=H.filter(h=>h&&h.k==='pole').length;}
  const txt=()=>(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ');
  runPoleDrill('up'); o.up=txt();
  runPoleDrill('dn'); o.dn=txt();
@@ -6544,13 +6591,12 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   const b=sw.getBoundingClientRect(),s=st.getBoundingClientRect();
   const lead=[...fb.querySelectorAll('.fb-b')].filter(x=>x.offsetParent)[0].getBoundingClientRect();
   const btns=[...sw.querySelectorAll('[data-fview]')];
-  const zm=document.getElementById('fzoom').getBoundingClientRect();
   const d=id=>getComputedStyle(document.getElementById(id)).display;
   return {keys:btns.map(x=>x.getAttribute('data-fview')).join(','),
    pressed:btns.filter(x=>x.getAttribute('aria-pressed')==='true').map(x=>x.getAttribute('data-fview')).join(','),
    inStage:st.contains(sw),rightGap:s.right-b.right,leftGap:lead.left-s.left,
    mid:Math.abs((b.top+b.height/2)-(lead.top+lead.height/2)),barRight:fb.getBoundingClientRect().right,swLeft:b.left,
-   folded:fb.classList.contains('folded'),zoomIn:zm.right<=s.right&&zm.bottom<=s.bottom&&zm.width>0,
+   folded:fb.classList.contains('folded'),noZoomCluster:!document.getElementById('fzoom'),
    words:(sw.innerText||'').trim(),
    sizes:btns.map(x=>{const r=x.getBoundingClientRect();return [Math.round(r.width),Math.round(r.height)];}),
    cv:d('cv'),fbar:d('fbar'),frend:d('frend'),subbar:d('subbar'),
@@ -6570,7 +6616,13 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  ok(place.mid<=2,'and level with the glass bar, centre lines off by '+place.mid.toFixed(1));
  ok(!place.folded&&place.barRight<=place.swLeft,'at 1600 the bar keeps its full row beside it, bar ends '
   +Math.round(place.barRight)+', switch starts '+Math.round(place.swLeft));
- ok(place.zoomIn,'and zoom, which left the bar to make that room, is on the stage');
+ /* #fzoom ITSELF IS GONE, 2 November, his own red marks on the Field
+    screenshot: the camera-like zoom cluster near the "1.0x" reframe pill.
+    Scroll, drag and the minus/plus/F keys still zoom and reframe the
+    picture (ZOOM ATOMISES THE CONSTRUCT, below, drives the real check on
+    that); this asserts the other side, that the control itself left no
+    trace in the document. */
+ ok(place.noZoomCluster,'and the zoom circles that used to leave the bar for their own corner do not exist at all');
  ok(place.words==='','icon only: "I don\'t need the text, just make it the icon", got "'+place.words+'"');
  ok(place.sizes.every(s=>s[0]>=44&&s[1]>=44),'every position clears the 44 pixel tap floor, '+JSON.stringify(place.sizes));
  ok(place.cv==='block'&&place.fbar==='flex'&&place.frend==='none'&&place.subbar==='none',
@@ -6599,9 +6651,17 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  const drawn=async v=>{
   await fp.evaluate(v=>{loadP(PERSON('James'));setTab(TAB.FIELD);layPick(3);fviewSet(v);},v);
   await frame(fp);
+  /* THE GLASS BAR HAS TO BE OPEN TO MEASURE A LAYER CIRCLE'S TAP FLOOR, 2
+     November: it starts shut now (fbShutWire, ui/fieldbar.js), and a circle
+     under display:none measures 0 by 0, which is not the floor failing, it
+     is the floor never having been looked at. Opened here, the same one
+     real press a person makes, before any of the sizes below are read. */
+  await fp.evaluate(()=>{const F=document.getElementById('fbar');
+   if(F&&F.classList.contains('shut'))F.querySelector('.fb-tog').click();});
   return fp.evaluate(L=>{const fr=document.getElementById('frend'),d=id=>getComputedStyle(document.getElementById(id)).display;
    const texts=[...fr.querySelectorAll('text')];
    const lays=[...document.querySelectorAll('#fbar .fb-full [data-fb]')];
+   const cq=Math.round(compute().CQ), cqTxt=cq+'%';
    return {svg:!!fr.querySelector('svg.frsvg'),cv:d('cv'),fbar:d('fbar'),frend:d('frend'),subbar:d('subbar'),
     w:fr.clientWidth,h:fr.clientHeight,
     lays:lays.map(b=>b.getAttribute('data-fb')).sort().join(','),want:[].concat(...LAYADD).sort().join(','),
@@ -6611,8 +6671,15 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
     nodes:FR_HIT.filter(h=>h.k==='node').length,body:W.length,
     outside:FR_HIT.filter(h=>h.k==='anchor'||(h.n&&FIELD.indexOf(h.n)>=0)).map(h=>h.n.k),
     kept:FIELD.length+' '+FIELD.every(n=>isFinite(n.sq)),
-    /* NAMED CHANGE, percent phase 2 slice 1: the core prints CQ as a percent */
-    figures:texts.map(t=>t.textContent).filter(s=>/^\d+%$/.test(s)),cq:Math.round(compute().CQ),
+    /* NAMED CHANGE, percent phase 2 slice 1: the core prints CQ as a percent.
+       TWO VALID SHAPES NOW, 2 November: the core's own fit loop (frCore,
+       ui/rings.js) gives the halo and pitchfork room at every width, not
+       only a phone's, since they are #pol2's doors now wherever #pol2 used
+       to carry them, and a tighter fit falls back from "42%" and "CQ" as
+       two text nodes to one node reading "42%CQ". Either is the real
+       figure, printed once, so both are matched; DQ's own text never ends
+       in "CQ", so neither shape can match it by accident. */
+    figures:texts.map(t=>t.textContent).filter(s=>s===cqTxt||s===cqTxt+'CQ'),cq:cq,
     small:texts.filter(t=>parseFloat(getComputedStyle(t).fontSize)<11).map(t=>t.textContent),
     calls:[...fr.querySelectorAll('[data-call]')].length};},LAYERS);};
  for(const v of ['frames','dial']){
@@ -6891,11 +6958,14 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   for(let i=0;i<4;i++){await fp.mouse.wheel(0,-100);await fp.waitForTimeout(30);}
   const z=await fp.evaluate(p=>{const fr=document.getElementById('frend'),b=fr.getBoundingClientRect();
    return {s:FZ.s,t:fr.querySelector('.frsvg').style.transform,px:p.x-b.left,py:p.y-b.top,
-    wx:(p.x-b.left-FZ.x)/FZ.s,wy:(p.y-b.top-FZ.y)/FZ.s,pill:(document.querySelector('#fzoom [data-fb=zfit] .fb-v')||{}).textContent};},at);
+    wx:(p.x-b.left-FZ.x)/FZ.s,wy:(p.y-b.top-FZ.y)/FZ.s};},at);
   ok(z.s>1.3&&/scale/.test(z.t),v+': the mouse wheel zooms the picture in, to '+z.s.toFixed(2)+'x');
   ok(Math.abs(z.wx-z.px)<1&&Math.abs(z.wy-z.py)<1,v+': about the pointer, the point under it stays under it, '
    +z.wx.toFixed(1)+','+z.wy.toFixed(1)+' against '+z.px.toFixed(1)+','+z.py.toFixed(1));
-  ok(z.pill===z.s.toFixed(1)+'×',v+': and the reframe circle says how far in, '+z.pill);
+  /* THE REFRAME CIRCLE AND ITS PILL ARE GONE WITH #fzoom, 2 November, his
+     own red marks on the Field screenshot. FZ.s above is the real zoom
+     level the mouse wheel just set; there is no on screen pill left to
+     echo it, and that is the point of the cut, not a gap in this check. */
   const d0=await fp.evaluate(()=>({x:FZ.x,y:FZ.y}));
   await fp.mouse.down(); await fp.mouse.move(at.x+60,at.y+40,{steps:8}); await fp.mouse.up();
   await fp.waitForTimeout(60);
@@ -6963,7 +7033,6 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
     in tests/railmenu.js, called at the end of this file. */
  const dock=await fp.evaluate(async()=>{const d=document.getElementById('fdock'),left=document.getElementById('lcol');
   await new Promise(r=>setTimeout(r,ENTER_SPAN+9*ENTER_STAGGER+250));
-  const mid=r=>r.top+r.height/2;
   /* FOUR OF THE SIX AMOUNTS ARE crBadge RINGS NOW, NOT .rbar FILLS (2
      November, Root Energetics' own bar-to-badge round): Vitality,
      Awareness, Will and Radiance. DQ and Flow stay .rbar, DQ on its own
@@ -7030,17 +7099,17 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
       left of the bars */
    wire:!!d.querySelector('.rw-bus,.rw-rad'), gutter:Math.round(rr[0].left-d.getBoundingClientRect().left)};
   const st=document.getElementById('stage'),s=st.getBoundingClientRect(),acc=document.getElementById('acc');
-  const ac=document.querySelector('#accbtn .cr').getBoundingClientRect(),ab=acc.getBoundingClientRect();
-  const zs=[...document.querySelectorAll('#fzoom .fb-b')].filter(x=>x.offsetParent).map(x=>x.getBoundingClientRect());
-  const low=zs.sort((a,b)=>b.bottom-a.bottom)[0];
+  const ab=acc.getBoundingClientRect();
+  /* #fzoom, accuracy's old mirror in the opposite corner, is gone, 2
+     November, his own red marks on the Field screenshot, with nothing to
+     take its place as a second corner to measure against. Accuracy's own
+     position, lower left and on the stage, is unchanged and still checked. */
   return {inLeft:left.contains(d),inStage:st.contains(d),bar,
    sq:!!document.querySelector('#fdock [data-q=sq]'),
    sqElsewhere:/SQ/.test((document.querySelector('#fbar [data-fb=addresses]')||{}).getAttribute('data-tip')||''),
    keylo:left.contains(document.getElementById('keylo')),
    acc:{inStage:st.contains(acc),inLeft:left.contains(acc),
     lowerLeft:ab.left-s.left<s.width/4&&s.bottom-ab.bottom<s.height/8,
-    level:+Math.abs(mid(ac)-mid(low)).toFixed(2),
-    mirror:+Math.abs((ab.left-s.left)-(s.right-Math.max(...zs.map(r=>r.right)))).toFixed(2),
     overlay:typeof OVERLAY!=='undefined'&&OVERLAY.indexOf('acc')>=0}};});
  ok(dock.inLeft&&!dock.inStage&&dock.keylo,'the readings sit at the head of the left rail and none of them along the stage\'s foot');
  ok(JSON.stringify(dock.bar.names)==='["DQ","Vitality","Awareness","Will","Radiance","Flow"]',
@@ -7057,8 +7126,6 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  ok(!dock.sq&&dock.sqElsewhere,'SQ is off the dock and only off the dock: the bar\'s Addresses circle still says SQ');
  ok(dock.acc.inStage&&!dock.acc.inLeft&&dock.acc.lowerLeft,
   'LR: accuracy lies on the stage in its lower left and not in the rail, '+JSON.stringify(dock.acc));
- ok(dock.acc.level<1&&dock.acc.mirror<1,
-  'LR: accuracy\'s circle is level with the lowest zoom circle and as far in from the left as zoom is from the right, '+JSON.stringify(dock.acc));
  ok(dock.acc.overlay,'LR: and it is in OVERLAY, so the wheel measures its radius against it');
 
  /* THE CIRCLES MOVE INTO A CHANGED VALUE rather than snapping, EZ: "I want to
@@ -7448,8 +7515,17 @@ console.log('\n=== FJ: words with the zoom, layers that move, one dial in two de
     return s===1?shown('.frnm span')===0:shown('.frnm span')>0;},s,{timeout:2000}).catch(()=>{});
    return fj.evaluate(()=>{const h=document.getElementById('frend');
     const shown=sel=>[...h.querySelectorAll(sel)].filter(e=>getComputedStyle(e).visibility!=='hidden'&&!e.classList.contains('hid')).length;
+    /* TWO VALID SHAPES NOW, 2 November, the same reason given in "the Field
+       drawn three ways" above: the core's fit gives the halo and pitchfork
+       room at every width now, and a tighter fit reads "42%CQ" in one text
+       node rather than "42%" alone in two. cqTxt anchors the match to the
+       real reading so DQ's own figure, which never ends in "CQ", still
+       cannot be counted by accident. */
+    const cqTxt=Math.round(compute().CQ)+'%';
     return {notext:h.classList.contains('notext'),tx:+h.style.getPropertyValue('--fztx'),
-     names:shown('.frnm span'),calls:shown('[data-call]'),figures:[...h.querySelectorAll('.frsvg text')].filter(t=>/^\d+%$/.test(t.textContent)&&getComputedStyle(t).visibility!=='hidden').length};});};
+     names:shown('.frnm span'),calls:shown('[data-call]'),
+     figures:[...h.querySelectorAll('.frsvg text')].filter(t=>(t.textContent===cqTxt||t.textContent===cqTxt+'CQ')
+      &&getComputedStyle(t).visibility!=='hidden').length};});};
   const a1=await at(1), a2=await at(2);
   ok(a1.notext&&a1.tx===0&&a1.names===0&&a1.calls===0,'"'+v+'" at 1x: no word shown, names '+a1.names+', callouts '+a1.calls);
   ok(a1.figures===1,'"'+v+'" at 1x: the core figure still prints, '+a1.figures);
@@ -7617,26 +7693,36 @@ console.log('\n=== GB: the glass bar closes and opens, and accuracy takes no box
    lead:vis[0]&&vis[0].getAttribute('aria-label'),next:vis[1]&&vis[1].getAttribute('aria-label'),
    x:r.left-st.left,y:r.top-st.top,w:r.width,h:r.height,
    exp:T.getAttribute('aria-expanded'),label:T.getAttribute('aria-label'),stored:STORE.get('fbar')};});
+ /* AND THE BAR ITSELF LANDS SHUT NOW TOO, 2 November, his own red marks on
+    the Field screenshot: the same "nothing stored defaults" rule the
+    column above already keeps (fbShutWire, ui/fieldbar.js, built on
+    colShut's own shape). One circle only, nothing in the store yet. */
+ const first=await bar();
+ ok(first.shut&&first.n===1&&first.label==='Open the tools'&&first.exp==='false'&&first.stored===null,
+  'shut at 1600 on a real first visit, one circle, nothing stored, '+JSON.stringify(first));
+ ok(first.w>=44&&first.h>=44,'the fold clears the 44 pixel tap floor, '+first.w+' by '+first.h);
+ await gp.click('#fbar .fb-tog'); await gp.waitForTimeout(200);
  const open=await bar();
  /* THE FOLD LEADS THE ROW NOW, GO: "the first left, upper left icon. Expand,
     close." Addresses is the first layer, one along. */
- ok(!open.shut&&!open.folded&&open.lead==='Close the tools'&&open.next==='Addresses'&&open.exp==='true',
-  'open at 1600, the full row stands with the fold at its head and Addresses next, '+JSON.stringify(open));
- ok(open.w>=44&&open.h>=44,'the fold clears the 44 pixel tap floor, '+open.w+' by '+open.h);
+ ok(!open.shut&&!open.folded&&open.lead==='Close the tools'&&open.next==='Addresses'&&open.exp==='true'&&open.stored==='open',
+  'one press opens it, the full row stands with the fold at its head and Addresses next, the store keeps it, '+JSON.stringify(open));
+ ok(Math.abs(open.x-first.x)<=1&&Math.abs(open.y-first.y)<=1,'open, the fold stays where it was shut, the upper left corner, at '
+  +Math.round(open.x)+','+Math.round(open.y));
  await gp.click('#fbar .fb-tog'); await gp.waitForTimeout(200);
  const shut=await bar();
  ok(shut.shut&&shut.n===1&&shut.lead==='Open the tools'&&shut.exp==='false'&&shut.stored==='shut',
-  'one press shuts it to the one circle, which now says it opens, and the store keeps it, '+JSON.stringify(shut));
+  'a second press shuts it to the one circle again, which now says it opens, and the store keeps it, '+JSON.stringify(shut));
  ok(Math.abs(shut.x-open.x)<=1&&Math.abs(shut.y-open.y)<=1,'shut, it stays where it was, the upper left corner, at '
   +Math.round(shut.x)+','+Math.round(shut.y));
  await gp.reload({waitUntil:'load'}); await booted(gp);
  await gp.evaluate(()=>{loadP(PERSON('James'));setTab(TAB.FIELD);render();});
  const kept=await bar();
- ok(kept.shut&&kept.n===1,'a reload keeps it shut, '+JSON.stringify(kept));
+ ok(kept.shut&&kept.n===1&&kept.stored==='shut','a reload keeps it shut, because he chose it this time, not only by default, '+JSON.stringify(kept));
  await gp.click('#fbar .fb-tog'); await gp.waitForTimeout(200);
  const back=await bar();
  ok(!back.shut&&!back.folded&&back.lead==='Close the tools'&&back.n===open.n&&back.stored==='open',
-  'and a second press brings back the whole row at 1600, measured afresh, '+JSON.stringify(back));
+  'and a press brings back the whole row at 1600, measured afresh, '+JSON.stringify(back));
  /* the checks below press DQ, which is in the column. Accuracy is on the
     stage since round LR and is pressed where it lies. */
  await gp.click('#lfold'); await gp.waitForTimeout(250);
@@ -7673,6 +7759,17 @@ console.log('\n=== GO: the Field lands with its column shut, two names changed, 
   await pg.evaluate(()=>{setTab(TAB.FIELD);render();}); await pg.waitForTimeout(300);
   return {cx,pg,err};};
  const wide=await land(1600,1000);
+ /* THE GLASS BAR ALSO LANDS SHUT NOW, 2 November, his own red marks on the
+    Field screenshot, the same "nothing stored defaults" rule GO's own
+    column keeps (fbShutWire, ui/fieldbar.js, built on colShut's shape).
+    Asserted here, on a real first visit, before the bar is opened below so
+    the rest of this block can read its full row as it already did. */
+ const fbarFirst=await wide.pg.evaluate(()=>{const F=document.getElementById('fbar');
+  return {shut:F.classList.contains('shut'),stored:STORE.get('fbar'),
+   n:[...F.querySelectorAll('.fb-b')].filter(x=>x.offsetParent).length};});
+ ok(fbarFirst.shut&&fbarFirst.stored===null&&fbarFirst.n===1,
+  'a first visit to the Field at 1600 finds the glass bar shut too, one circle, nothing stored, '+JSON.stringify(fbarFirst));
+ await wide.pg.click('#fbar .fb-tog'); await wide.pg.waitForTimeout(200);
  const a=await wide.pg.evaluate(()=>{const F=document.getElementById('fbar'),
    lay=k=>F.querySelector('.fb-full [data-fb='+k+']'), dv=F.querySelector('[data-fb=depth] .val');
   const names=[...F.querySelectorAll('.fb-full [data-fb]')].map(b=>b.getAttribute('aria-label'));
@@ -7732,7 +7829,12 @@ console.log('\n=== GO: the Field lands with its column shut, two names changed, 
  const g=await narrow.pg.evaluate(()=>({lshut:document.body.classList.contains('lshut'),stored:STORE.get('lcol'),
   dock:!!document.getElementById('fdock').offsetParent,
   lead:[...document.querySelectorAll('#fbar .fb-b')].filter(x=>x.offsetParent).map(x=>x.getAttribute('aria-label'))[0]}));
- ok(!g.lshut&&g.stored===null&&g.dock&&g.lead==='Close the tools','at 390 the column lands open with the readings in view, and the fold leads the bar, '+JSON.stringify(g));
+ /* THE GLASS BAR ITSELF STILL LANDS SHUT AT 390 TOO, 2 November: his own red
+    marks on the Field screenshot named no width, and fbShutWire's default
+    is not width gated, so the fold itself is what leads the bar here now,
+    not the row it used to open onto. The column's own default is
+    unchanged, GF's own ruling: it still lands open on a phone. */
+ ok(!g.lshut&&g.stored===null&&g.dock&&g.lead==='Open the tools','at 390 the column lands open with the readings in view, and the bar\'s fold leads it, shut, '+JSON.stringify(g));
  ok(narrow.err.length===0,'GO at 390: no errors, '+narrow.err.join(' | '));
  await narrow.cx.close();
 }
@@ -7810,7 +7912,13 @@ await require('./sound.js').soundGate(browser,FILE,ok,booted);
    own plan on its own pages, because everything above ran as a person on the
    top tier (tests/seed.js). */
 console.log('\n=== the locks: what a tier cannot see is greyed, padlocked, described and not drawn ===');
-await require('./locks.js').lockGate(browser,FILE,ok,booted);
+/* CAUGHT HERE, NOT LEFT TO THROW, 2 November, same shape as locks.js's own
+   standalone entry point at the foot of that file. A throw this test never
+   catches does not fail this one check, it ends the whole run: every
+   section after this line, the full ones included, goes unreported, which
+   is a worse loss than the one gate this guards. */
+try{await require('./locks.js').lockGate(browser,FILE,ok,booted);}
+catch(e){FAIL++;console.log('  FAIL the locks gate threw: '+e.message);}
 
 /* THE FLOW TOOL SETS, tests/flowtools.js, 2 October. His words: "On the flow
    pages, get rid of the left and right menu. Actually, sorry. Move the new

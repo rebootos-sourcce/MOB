@@ -1656,7 +1656,8 @@ body.tab-field .stage,body.tab-energy .stage,body.tab-compass .stage,body.tab-ma
 
    The legend was cut on 25 September (BA9) and its row is empty now, so it
    is zero high and the wheel has the height back. It stays in the template
-   because the canvas and .pol2 address row 3 by number. */
+   because the canvas addresses row 3 by number (.pol2, which shared the row,
+   is gone, 2 November). */
 /* AND A FOURTH, THE DOCK, 26 September. The key strip left row 1 for it, so
    row 1 is empty and zero high like row 2, and the picture keeps the height
    it had: what the strip took at the head, the dock takes at the foot. */
@@ -1703,9 +1704,9 @@ canvas#cv{display:block;grid-column:2;grid-row:3;width:100%;height:100%;
 .fview{position:absolute;top:8px;right:12px;z-index:6;display:flex;gap:4px;align-items:center;
  padding:2px;border-radius:999px;background:var(--fb-glass);border:1px solid var(--edge-2);
  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px var(--fb-shade)}
-/* the Field's alone. The stage hosts every surface, and three switches for a
-   picture that is not there are three dead controls */
-body:not(.tab-field) .fview,body:not(.tab-field) .fzoom{display:none}
+/* the Field's alone. The stage hosts every surface, and a switch for a
+   picture that is not there is a dead control */
+body:not(.tab-field) .fview{display:none}
 /* a rendition has no reading, so the one that is up carries a whole ring in
    the accent and a lifted disc, and the two that are not stay glass */
 .fview .fb-orb{--c:var(--accent)}
@@ -1713,12 +1714,10 @@ body:not(.tab-field) .fview,body:not(.tab-field) .fzoom{display:none}
 /* and the two that are not up draw no arc at all: a round cap on a dash of
    nought is a dot, and a dot at twelve o'clock read as a reading of one */
 .fview .fb-b:not(.on) .fb-arc .val{opacity:0}
-/* ZOOM, IN THE LOWER RIGHT, out of the bar for the switch's sake. A column,
-   because the lower right of the stage is the compass's lane on the wheel,
-   128 across, and three circles in a row are 136. */
-.fzoom{position:absolute;right:12px;bottom:12px;z-index:6;display:flex}
-/* ROUND OD, his words: "For the zoom icons, have those horizontal instead of vertical." Zoom out, zoom in and reframe sit in a row now, as they already did on a phone. */
-.fzoom .fb-grp{flex-direction:row;gap:6px}
+/* .fzoom, THE ZOOM CIRCLES IN THE LOWER RIGHT, ARE GONE, 2 November, his
+   own red marks on the Field screenshot. Scroll, drag and the minus, plus
+   and F keys still zoom and reframe the picture; only the on screen circles
+   and the "1.0x" pill they carried are gone. */
 #frend{grid-column:2;grid-row:3;width:100%;height:100%;min-width:0;min-height:0;
  position:relative;overflow:hidden}
 /* FRAMES TAKES THE EMPTY LEFT LANE. The lane held the renditions switch and
@@ -1862,10 +1861,10 @@ body:not(.tab-field) .fbar,body:not(.tab-field) .fb-float{display:none!important
    because under Snow the theme's tokens are paper ink and the stage stays
    the ruled #101010: the bar needs the ground's ink, which INK() and frMount
    already choose the same way. */
-.fbar,.fb-float,.fview,.fzoom,.cn-zoom,.cnbar,.cnview,.cn-pan,#railtop,#acc{--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;
+.fbar,.fb-float,.fview,.cn-zoom,.cnbar,.cnview,.cn-pan,#railtop,#acc{--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;
  --edge-2:rgba(255,255,255,.14);--edge:rgba(255,255,255,.09);
  --fb-glass:rgba(22,24,32,.74);--fb-glass-on:rgba(40,44,58,.86);--fb-shade:rgba(0,0,0,.30);--fb-pillbg:#161820}
-.fbar.fb-lt,.fb-float.fb-lt,.fview.fb-lt,.fzoom.fb-lt,.cn-zoom.fb-lt,.cnbar.fb-lt,.cnview.fb-lt,.cn-pan.fb-lt,#railtop.fb-lt,#acc.fb-lt{--ink:#14161C;--mid:#4A4843;--dim:#6E6B65;--accent:#2F6E92;
+.fbar.fb-lt,.fb-float.fb-lt,.fview.fb-lt,.cn-zoom.fb-lt,.cnbar.fb-lt,.cnview.fb-lt,.cn-pan.fb-lt,#railtop.fb-lt,#acc.fb-lt{--ink:#14161C;--mid:#4A4843;--dim:#6E6B65;--accent:#2F6E92;
  --edge-2:rgba(20,22,28,.16);--edge:rgba(20,22,28,.10);
  --fb-glass:rgba(252,252,250,.80);--fb-glass-on:rgba(255,255,255,.94);--fb-shade:rgba(20,22,28,.14);--fb-pillbg:#FAFAF7}
 /* ---- one layer, one object. 44 by 44, the tap floor ---- */
@@ -2092,6 +2091,27 @@ body:not(.tab-field) .fdock{display:none}
    still has an end the eye can find. A fill of nought has no width to carry
    it, so it is not drawn. */
 .rb-f::after{content:"";position:absolute;top:0;bottom:0;right:0;width:2px;background:var(--ink);opacity:.9}
+/* THE FAR END, 2 November, fourth pass (component.js's own rbRow comment
+   says why this is a second independent segment and not rbPair's center
+   lean). Pinned to the track's own right edge, growing left, in --c2 at a
+   third the main fill's weight so an overlap with .rb-f (both readings
+   genuinely high at once) still shows the dominant fill through it rather
+   than hiding one real number under the other. Nought width paints nothing,
+   the same mechanism .rb-f::after's own comment names just above. */
+.rb-f2{position:absolute;right:0;top:0;bottom:0;display:block;background:var(--c2);
+ opacity:.55;border-radius:3px 0 0 3px;overflow:hidden}
+.rb-f2::after{content:"";position:absolute;top:0;bottom:0;left:0;width:2px;background:var(--ink);opacity:.9}
+/* THE IN-FILL FIGURE, 2 November, rbRow's own o.inFill (component.js). White
+   against mix-blend-mode:difference reads on any seat colour in any theme
+   without a per-colour tint, root red to crown violet, dark skin or light.
+   Sits at the fill's own trailing edge, inside the colour it belongs to.
+   .rb-fv-out is the same figure, same size, moved just past the fill when
+   the fill itself is too narrow to hold it (rbRow's own p>=18 cut, the bar
+   equivalent of anaField's p.r<LMIN). */
+.rb-fv{position:absolute;right:6px;top:50%;transform:translateY(-50%);z-index:1;
+ font-family:var(--num);font-variant-numeric:tabular-nums;font-size:11px;font-weight:700;
+ line-height:1;color:#fff;mix-blend-mode:difference;white-space:nowrap;pointer-events:none}
+.rb-fv-out{left:0;margin-left:6px;right:auto;color:var(--ink);mix-blend-mode:normal;font-weight:600}
 /* ROUND OJ. A reading is live, so the light in it travels: a soft band runs
    along the fill from the empty end to the edge and starts again, at the
    rate the Field's own threads run on (--rate, written by rbRate from the
@@ -2352,21 +2372,12 @@ body:not(.tab-field) .acc{display:none}
  font-family:var(--num);font-variant-numeric:tabular-nums}
 .acc-w{font-size:12.5px;color:var(--dim);margin-top:5px;max-width:300px;margin-left:auto;line-height:1.55}
 .acc-lean{opacity:.72;margin-top:3px}
-/* the compass belongs to the field tab alone. in the original both rules
-   declared the same properties, so it floated over every other tab. */
-/* the compass shares the right edge with the accuracy block, which is 124
-   tall. it stops above it rather than running behind it. */
-/* the pole meter rides with the wheel, so it moved down a row with it when the
-   legend took row 2. A child left on the old row would have sat in the
-   legend's line at full height and squeezed it to nothing. */
-.pol2{grid-column:3;grid-row:3;z-index:4;cursor:pointer;height:100%;
- display:flex;align-items:center;justify-content:flex-end;background:none;border:0;
- padding:0 16px 0 8px;margin:0}
-.pol2:hover svg{opacity:.85}
-body:not(.tab-field) .pol2{display:none}
-.pol2 svg{display:block;height:100%;width:104px}
-.pol2-t{font-family:var(--num);font-size:10px;fill:var(--dim)}
-/* the two ends of the cone are doors, so they say so on hover */
+/* .pol2, THE VERTICAL STRIP RULE SET, IS GONE, 2 November, his own red
+   marks on the Field screenshot: the meter between the wheel and the chain
+   panel, ticks at 50/40% with the marker near the real reading. Its two
+   doors into runPoleDrill are the wheel's own halo and pitchfork now, at
+   every width (ui/wheel.js, ui/rings.js), the same door GF already built
+   for a phone. */
 .ad-act{display:flex;gap:7px;flex-wrap:wrap;margin-top:13px}
 /* one question of the age test, with its two answers on the same line */
 .ag-q{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
@@ -2383,9 +2394,6 @@ body:not(.tab-field) .pol2{display:none}
 .stbtn:hover{border-color:var(--gold);background:var(--panel-2)}
 .stbtn b{display:block;font-size:14px;font-weight:600;margin-bottom:3px}
 .stbtn span{display:block;font-size:12.5px;line-height:1.5;color:var(--dim)}
-.p2end{cursor:pointer}
-.pol2:hover .p2end{opacity:1}
-.pol2-c{font-family:var(--num);font-size:11px;font-weight:500}
 
 /* ---------- left rail : collapsible sections ---------- */
 /* THE CORNER ON THE STAGE, NOT THE HEAD OF THE RAIL. Round IT moved it to the
@@ -2860,6 +2868,15 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
 .nf .tr b{display:block;height:100%;border-radius:3px;transition: width var(--t-surface) var(--ease-out)}
 .nf.oppf label{opacity:.74;font-size:13px;padding-left:4px}
 .nf.oppf{margin-bottom:12px;margin-top:-2px}
+/* THE VISIBLE QUESTION, 2 November (numField's own q, ui/panels.js). .nf is
+   one flex row, icon/label/track/input, and stays exactly that for every
+   row with no question (every caller but the Child emotions "held"
+   slider); :has(.nf-q) is scoped so only a row that actually carries one
+   wraps, nothing else on the page changes shape. flex-basis:100% drops the
+   question onto its own full-width line under the label, after the icon's
+   own width, not flush with the panel edge. */
+.nf:has(.nf-q){flex-wrap:wrap;min-height:0;padding-bottom:6px}
+.nf-q{flex:1 1 100%;order:3;margin:2px 0 2px 26px;font-size:12.5px;line-height:1.35;color:var(--dim)}
 .bulk{display:flex;gap:10px;align-items:center;margin-bottom:11px}
 .bulk label{font-size:13.5px;color:var(--mid);flex:0 0 58px}
 .bulk input[type=range]{flex:1 1 auto;-webkit-appearance:none;appearance:none;height:var(--tap);
@@ -3722,6 +3739,51 @@ body.punch .card{border-color:transparent}
 .stk-nm{flex:1 1 auto;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .stk-p{flex:0 0 auto;color:var(--mid);font-size:12px}
 .stk-r em{font-style:normal;color:var(--dim);font-size:11px;margin-left:4px}
+/* THE COMPLETE BAR ROW. .stk-r's own height is a fixed tap target for a
+   badge-and-name row, and its own display:flex lays out a row's children
+   SIDE BY SIDE; this row carries a full rbRow bar instead (ui/component.js,
+   its own o.cls/o.attrs folding the row's stk-r/data-fet identity onto the
+   bar's own element rather than a second wrapper), which is rbRow's own
+   "one line of words over one track" shape (component.js's own card on
+   rbRow, above) and needs the word row and the track stacked, not side by
+   side, so the three properties .stk-r sets that would fight that shape
+   are overridden here: display, so .rb-row and .rb-t stack; min-height, so
+   .stk-r's own fixed tap-target floor does not hold the taller content at
+   its shorter height; position, so a chip or hairline (.rb-d/.rb-t::after,
+   both position:absolute) sits against this row and not some further
+   ancestor. His real screenshot caught the gap this closes: without it the
+   track rendered at 0 width, a flex item with no intrinsic content and no
+   basis, name and figure printed with no bar under them at all, checked
+   live in a browser (CLAUDE.md's own rule on this file) rather than
+   assumed from the markup. RENAMED FROM THE HELD/OPPOSITE BAR ROW, 2
+   November, third pass: the bar itself stopped being a pair (rbChargePair,
+   held against installed) and became one real complete reading (rbRow,
+   held alone), so the row's own name follows it. */
+.stk-rb{display:block;height:auto;min-height:0;position:relative}
+/* TRUE PARENT-CHILD NESTING, 2 November, second pass. His own words looking
+   at the first pass's tier-grouped disclosure: "when I click on a super
+   complex, hyper complex, complex, or saboteur, they should all be nested
+   inside their parent." A row that has real children (chkChainNode, ui/
+   ui.js) carries its own chevron, the same 45/-135deg rotate the section
+   headers already use (.lsec-hd i, above), at a size that fits inside a
+   stk-r row rather than a full section header. A leaf row (a saboteur, or
+   any row with no real child on this graph) carries the spacer instead, so
+   every row's badge still starts at the same left edge regardless of
+   depth. */
+.stk-chev{background:transparent;border:0;padding:0;margin:0;cursor:pointer;color:var(--mid);
+ display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;width:18px;height:34px}
+.stk-chev:hover{color:var(--ink)}
+.stk-chev i{width:7px;height:7px;border-right:1.4px solid currentColor;border-bottom:1.4px solid currentColor;
+ transition:transform var(--t-element) var(--ease-out);display:block}
+.stk-chev-sp{display:inline-block;width:18px;flex:0 0 auto}
+.stk-nrow{display:flex;align-items:center;gap:0}
+.stk-nrow .stk-r{flex:1 1 auto}
+/* RICHER REAL NARRATION, two paragraphs where the real content supports it
+   (engine/tracesummary.js, traceSummaryNarrate / traceSummarySetNarrate):
+   what is running first, the real cascade second. Same .ts-narr look as
+   before, just two blocks instead of one so a person's eye gets a real
+   paragraph break, not a wall of one hedged sentence. */
+.ts-narr+.ts-narr{margin-top:8px}
 .rows{font-size:13.5px;line-height:1.85;color:var(--dim);margin-top:14px;padding-top:12px;
  border-top:1px solid var(--edge)}
 .rows b{color:var(--ink);font-weight:500;font-family:var(--num);font-variant-numeric:tabular-nums}
@@ -6104,28 +6166,23 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     the desktop row does not. */
  .fbar .fb-tog{position:static;order:-1}
  /* the switch keeps its corner on a phone, level with the folded bar, which
-    is one row of two circles here and leaves the right of that row empty.
-    Zoom follows the picture, right aligned, in a row: under it there is no
-    compass lane to keep clear. */
- /* and it keeps 12 of foot under it, the desktop's own, because accuracy
-    lies level with it in the lower left, round LR, placed by that 12 */
- .fzoom{position:static;order:2;align-self:flex-end;margin:8px 22px 12px 12px}
- .fzoom .fb-grp{flex-direction:row}
+    is one row of two circles here and leaves the right of that row empty. */
  /* THE BAND PILL TAKES ITS OWN ROW ON A PHONE, ABOVE ACCURACY. Round OG put
     it beside accuracy at a fixed left of 152, which is desktop arithmetic: on
-    a desktop zoom is in the far corner of a 900 wide stage. On a phone zoom
-    is in flow on that same line, so the line had to hold accuracy 132, the
-    pill up to 213 for Compounding, zoom 144, two gaps of 8 and the two 22
-    insets, 549 in all, and a 390 screen gives it 376. Measured on the build
-    at 390: "62% Gaining" lay under zoom out and zoom in, on every profile
-    and on a blank one, from 360 up to 480, and Compounding still did at 540.
-    The overlap moved with the length of the tier word, so no left value could
-    fix it. The pill goes in flow after the picture, at accuracy's own inset,
-    and zoom stays the last thing in the column, which is what accuracy's
-    bottom of 9 is measured against. Order 2 for both, because the pill is
-    ahead of the canvas in the markup and zoom is after it. The 3 of foot
-    puts 8 between the pill and accuracy, the 8 the desktop keeps between
-    them side by side, since accuracy is 50 high to zoom's 44. */
+    a desktop zoom sat in the far corner of a 900 wide stage. On a phone zoom
+    used to sit in flow on that same line, so the line had to hold accuracy
+    132, the pill up to 213 for Compounding, zoom 144, two gaps of 8 and the
+    two 22 insets, 549 in all, and a 390 screen gives it 376. Measured on the
+    build at 390: "62% Gaining" lay under zoom out and zoom in, on every
+    profile and on a blank one, from 360 up to 480, and Compounding still did
+    at 540. The overlap moved with the length of the tier word, so no left
+    value could fix it. The pill goes in flow after the picture, at
+    accuracy's own inset. Zoom is gone now, 2 November, his own red marks on
+    the Field screenshot, so the pill is the last thing in the column, and
+    accuracy's bottom of 9 is measured against the pill's own bottom instead.
+    The 3 of foot puts 8 between the pill and accuracy, the 8 the desktop
+    keeps between them side by side, since accuracy is 50 high to the pill's
+    44. */
  .railtop{position:static;order:2;align-self:flex-start;margin:8px 12px 3px 22px}
  /* Five blocks were absolutely positioned against a stage that is 900 wide
     on a desktop. At 390 they all landed on each other at the bottom of the
@@ -6226,8 +6283,6 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     zoom's own inset from the side. */
  .acc{left:22px}
  .howto{order:5;margin:12px 0 4px;max-width:none}
- .pol2{order:6;position:static;height:auto;margin:12px auto 0;justify-content:center}
- .pol2 svg{height:190px}
 }
 
 /* ============================================================
@@ -7835,15 +7890,9 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
    the class, its keyframe and its reduced motion case came out with it rather
    than being left behind as dead style that the next reader has to prove is
    dead. */
-/* THE OSCILLATING BAND'S MOVING PARTS. The marker, its ring and its number ride
-   in one group so a frame to frame move is a single transform rather than four
-   geometry writes. will-change lives here rather than inline because a class
-   that appears in the markup and in no stylesheet is a class nobody can find. */
-.pol2-mv{will-change:transform}
-/* the swing pill and the crossbar riding inside it join the same rule. The
-   pill sits over the button's own hit area, and a decoration that eats the
-   press is the same defect as a control with no affordance. */
-.pol2-mk,.pol2-dot,.pol2-ring{pointer-events:none}
+/* THE OSCILLATING BAND'S MOVING PARTS ARE GONE WITH .pol2 ITSELF, 2
+   November: the marker, its ring and its number no longer exist to move.
+   Left out rather than left behind, same rule as THE RULE ITSELF above. */
 @keyframes bootOut{to{opacity:0;visibility:hidden}}
 /* the beat is motion, so somebody who asked the machine to stop moving does
    not get five of them. Same rule as everything else in this sheet: the end
@@ -8083,8 +8132,8 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
    rule here is under the phone width and the desktop is not touched.
 
    Last in the sheet on purpose. Several of these narrow a rule written
-   earlier at the same specificity, .pol2's display and the dock's rings
-   among them, and at equal weight the later rule is the one that holds.
+   earlier at the same specificity, the dock's rings among them, and at
+   equal weight the later rule is the one that holds.
    ============================================================ */
 /* above the phone width the strip still fits, so the fold, the main menu's
    lighting and the loader circle do not exist there */
@@ -8185,17 +8234,19 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
   width:auto;z-index:5}
  .top.navopen .navlight{display:block;order:7;flex:1 1 100%;padding:6px 2px 4px}
 
- /* THE POLES GO INTO THE PICTURE. His words: "The heaven and hell, that's
-    clearly causing a problem, on both of these right now it shows up in the
-    very bottom of the square. I want you to move that inside of the circle,
-    or CQDQ on the square one, and then make the CQDQ a little bit smaller."
-    Measured at 390: the strip sat under the picture as a 190 pixel column and
-    its pitchfork landed on the stage's bottom edge. The halo and the pitchfork
-    are drawn inside the core now, above CQ and below DQ, by frCore in
-    ui/rings.js on Frames and Dial and by solCore in ui/wheel.js on the wheel,
-    the lit one being where the field is heading, and they are doors to the
-    same two drills the strip's ends opened. So the strip goes on a phone. */
- .pol2{display:none}
+ /* THE POLES GO INTO THE PICTURE, ON EVERY WIDTH NOW. His words: "The heaven
+    and hell, that's clearly causing a problem, on both of these right now it
+    shows up in the very bottom of the square. I want you to move that inside
+    of the circle, or CQDQ on the square one, and then make the CQDQ a little
+    bit smaller." Measured at 390: the strip sat under the picture as a 190
+    pixel column and its pitchfork landed on the stage's bottom edge. The halo
+    and the pitchfork are drawn inside the core, above CQ and below DQ, by
+    frCore in ui/rings.js on Frames and Dial and by solCore in ui/wheel.js on
+    the wheel, the lit one being where the field is heading, and they are
+    doors to the same two drills the strip's ends opened. The strip itself,
+    .pol2, is gone at every width now, 2 November, his own red marks on the
+    Field screenshot, and there is nothing left here to hide on a phone: the
+    rule this comment used to hold is gone with it. */
 
  /* ROOT ENERGETICS' READINGS ARE SQUARE BUTTONS ON A PHONE. His words: "I
     want these to be square buttons, these circles are taking up too much
@@ -8348,7 +8399,22 @@ body.quiet .sp-pulse,body.rm .sp-pulse{display:none}
    the panel's own colour so it reads over either fill, is the figure printed.
    Every position is a percent transform on a layer of its own.
    ============================================================ */
-.fdock .rb2{position:relative;display:block;width:100%;min-width:0;min-height:var(--tap);padding:6px 2px 8px;
+/* THE SAME BAR, REUSED WHOLESALE ON THE RIGHT RAIL, 2 November, second
+   pass. His own words: "show the opposites with zero being at the center
+   between the opposites and the charge positive or negative showing where
+   the percent is" -- rbPair (ui/component.js) already is exactly this, and
+   the Held/Installed pair per Child emotion is a real complementary share
+   of one whole (held/(held+installed), the two sides one axis can tip
+   toward, matching runFetterDrill's own prose, ui/drills.js: "held and
+   installed are the two sides this nerve can tip toward, and level
+   between them is where it is not pulled either way"). Reused wholesale,
+   never a second bipolar-bar implementation: the one gap was that this
+   whole block's geometry rule was scoped to .fdock only, so the identical
+   markup rendered inside #stack's own chain tabs or ui/analytics.js's
+   axis card would have painted with no width, no height and no track --
+   defined, not wired, the exact trap CLAUDE.md names. Both real homes
+   added to the one rule rather than copying it a second time. */
+.fdock .rb2,#stack .rb2,.ana-rb2 .rb2{position:relative;display:block;width:100%;min-width:0;min-height:var(--tap);padding:6px 2px 8px;
  border-radius:var(--r-xs);white-space:nowrap;text-align:left}
 .rb2-ln{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:6px;height:22px}
 .rb2-p{display:inline-flex;align-items:center;gap:6px;min-width:0;color:var(--dim)}
@@ -8387,13 +8453,18 @@ body.quiet .sp-pulse,body.rm .sp-pulse{display:none}
 .rb2.off .rb2-t>i.rb2-h{opacity:.07}
 .rb2.off .rb2-v{color:var(--dim)}
 .rb2.off .rb2-p .rb-ic{color:var(--dim);opacity:1}
-/* each pole that is its own reading is its own door, half the row each */
-.fdock .rb2-k{position:absolute;top:0;bottom:0;width:50%;min-height:var(--tap);margin:0;padding:0;z-index:2;
+/* each pole that is its own reading is its own door, half the row each.
+   Not used by the Held/Installed pair below (neither pole is handed a .q
+   of its own, held and installed are two sides of the SAME axis, not two
+   separate readings a press should open), kept scoped the same three ways
+   as the block above only so a future pair that does carry a .q door
+   still gets it right the first time on any of the three surfaces. */
+.fdock .rb2-k,#stack .rb2-k,.ana-rb2 .rb2-k{position:absolute;top:0;bottom:0;width:50%;min-height:var(--tap);margin:0;padding:0;z-index:2;
  border:0;border-radius:0;background:transparent;cursor:pointer;display:block}
-.fdock .rb2-k.l{left:0;border-radius:var(--r-xs) 0 0 var(--r-xs)}
-.fdock .rb2-k.r{right:0;border-radius:0 var(--r-xs) var(--r-xs) 0}
-.fdock .rb2-k:hover,.fdock .rb2-k.rb-hot{box-shadow:inset 0 0 0 1px var(--pc)}
-.fdock .rb2-k:focus-visible{outline:2px solid var(--pc);outline-offset:-2px}
+.fdock .rb2-k.l,#stack .rb2-k.l,.ana-rb2 .rb2-k.l{left:0;border-radius:var(--r-xs) 0 0 var(--r-xs)}
+.fdock .rb2-k.r,#stack .rb2-k.r,.ana-rb2 .rb2-k.r{right:0;border-radius:0 var(--r-xs) var(--r-xs) 0}
+.fdock .rb2-k:hover,.fdock .rb2-k.rb-hot,#stack .rb2-k:hover,#stack .rb2-k.rb-hot,.ana-rb2 .rb2-k:hover,.ana-rb2 .rb2-k.rb-hot{box-shadow:inset 0 0 0 1px var(--pc)}
+.fdock .rb2-k:focus-visible,#stack .rb2-k:focus-visible,.ana-rb2 .rb2-k:focus-visible{outline:2px solid var(--pc);outline-offset:-2px}
 
 
 /* ORIENTATION AND BALANCE, under coherence, round OM, and in the same family

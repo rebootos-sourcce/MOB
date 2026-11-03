@@ -124,18 +124,22 @@ const READ=`(function(){
     const dock={}; document.querySelectorAll('#keylo .rbar').forEach(b=>{dock[(b.querySelector('.rb-n')||{}).textContent.trim()]=(b.querySelector('.rb-v')||{}).textContent.trim();});
     const node=Array.from(document.querySelectorAll('.cr,.crb')).filter(e=>/ seat\. /.test(e.getAttribute('title')||''))
      .map(e=>(e.querySelector('.v,.crb-v')||{}).textContent||'');
-    const pol=t('#pol2 .pol2-c');
+    /* #pol2 IS GONE, 2 November, his own red marks on the Field screenshot:
+       there is no .pol2-c pill left anywhere to read a percent off, so this
+       no longer checks one. The door it carried is the wheel's own halo and
+       pitchfork now (ui/wheel.js, ui/rings.js), which prints no figure of
+       its own and was never part of this percent sweep. */
     return {unread:!!R.unread,
      got:{laws:t('#fbar [data-fb=laws] .fb-v'),shadow:t('#fbar [data-fb=shadow] .fb-v'),addresses:t('#fbar [data-fb=addresses] .fb-v'),
       seats:t('#fbar [data-fb=seats] .fb-v'),archetypes:t('#fbar [data-fb=archetypes] .fb-v'),ring:t('#railtop .cr .v'),
-      cq:cqSaid||null,dq:dock.DQ,vit:dock.Vitality,flow:dock.Flow,acc:t('#acc .cr .v'),pol:pol},
+      cq:cqSaid||null,dq:dock.DQ,vit:dock.Vitality,flow:dock.Flow,acc:t('#acc .cr .v')},
      want:{laws:fmtPct('cq',R.CQ),shadow:fmtPct('dq',R.DQ),addresses:fmtPct('weight',R.SQm),seats:fmtPct('weight',R.darkV||0),
       archetypes:fmtPct('archetype',archExpr(top.i)),ring:fmtPct('cq',R.CQ),cq:fmtPct('cq',R.CQ),dq:fmtPct('dq',R.DQ),
-      vit:fmtPct('vitality',R.X),flow:fmtPct('flow',flSpeed()),acc:fmtPct('accuracy',accuracy(R).pct),pol:pol===null?null:fmtPct('cq',R.CQ)},
+      vit:fmtPct('vitality',R.X),flow:fmtPct('flow',flSpeed()),acc:fmtPct('accuracy',accuracy(R).pct)},
      node:node, core:window.__FT.indexOf(fmtPct('cq',R.CQ))>=0||Array.from(document.querySelectorAll('.frcq text')).some(e=>e.textContent.indexOf(fmtPct('cq',R.CQ))>=0)};},who);
    ok(!s.unread,'S1: '+tag+'the example reads');
    for(const k of Object.keys(s.want)){
-    if(s.got[k]===null&&(k==='acc'||k==='pol'||k==='vit'||k==='flow'))continue;
+    if(s.got[k]===null&&(k==='acc'||k==='vit'||k==='flow'))continue;
     ok(s.got[k]===s.want[k],'S1: '+tag+k+' prints the registry\'s form, '+J(s.got[k])+' against '+J(s.want[k]));}
    ok(s.node.length>0&&s.node.every(v=>/^(\d+%|–)$/.test(v)),'S1: '+tag+'every address ring prints a percent or the dash, '+J(s.node.slice(0,6)));
    ok(Object.values(s.got).concat(s.node).every(v=>v===null||!/^\d+\.\d+$/.test(v)),'S1: '+tag+'no bare decimal is left on the Field\'s readings');

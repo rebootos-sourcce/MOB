@@ -101,8 +101,19 @@ function tsBlockHtml(type,id){
  if(up.length)h+='<div class="ts-rows">'+up.map(tsPartRow).join('')+'</div>';
  else h+='<p class="ad-p">Nothing sits above it yet on this graph: either the chain stops here by design, or this one has not compounded with another of its kind yet.</p>';
  h+='<div class="pm-eye plain">Source AI, blended from the records above and below</div>'
-  +'<p class="ad-p ts-narr">'+esc(res.summary||'')+'</p>';
+  +tsNarrHtml(res);
  return h;}
+/* THE REAL PARAGRAPH BREAK, 2 November, second pass. traceSummary and
+   traceSummarySet (engine/tracesummary.js) now hand back summaryParas, the
+   same real two paragraphs as an array -- what is running, then the real
+   cascade -- rather than one hedged block. One call site for both tsBlock
+   Html and tsSetBlockHtml, so the two never draw it differently. Falls
+   back to the one joined string on an older/foreign result shape rather
+   than throwing, the same defensive habit this file already keeps around
+   res.summary elsewhere. */
+function tsNarrHtml(res){
+ var paras=Array.isArray(res.summaryParas)&&res.summaryParas.length?res.summaryParas:[res.summary||''];
+ return paras.filter(Boolean).map(function(p){return '<p class="ad-p ts-narr">'+esc(p)+'</p>';}).join('');}
 
 /* THE CHAIN-LOCAL MULTI-SELECT BLOCK, the one call site for
    traceSummarySet (engine/tracesummary.js), the way tsBlockHtml just
@@ -126,5 +137,5 @@ function tsSetBlockHtml(keys){
  var h='<div class="pm-eye">Selected together ('+res.members.length+')</div>'
   +'<div class="ts-rows">'+res.members.map(tsPartRow).join('')+'</div>';
  h+='<div class="pm-eye plain">Source AI, blended from the whole selection</div>'
-  +'<p class="ad-p ts-narr">'+esc(res.summary||'')+'</p>';
+  +tsNarrHtml(res);
  return h;}

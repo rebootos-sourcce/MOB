@@ -1069,6 +1069,20 @@ async function atmGate(browser,FILE,ok,booted){
  const lean=await pg.evaluate(()=>{ var a=ATM_BY['air-open'].parts[0], c=ATM_BY['air-close'].parts[0];
   return {open:a.bp1>a.bp, close:c.bp1<c.bp, openA:a.a, closeA:c.a}; });
  ok(lean.open&&lean.close&&lean.openA>lean.closeA,'the air opens up and slow and shuts down and quick, '+JSON.stringify(lean));
+ /* THE GLASS BAR HAS TO BE OPEN TO PRESS A LAYER CIRCLE, 2 November: it
+    starts shut now (fbShutWire, ui/fieldbar.js), and #fbar [data-fb=...]
+    sits under display:none until a person opens it, offsetParent null, the
+    same real press this file's own fold test below already makes. The left
+    column also has to be shut first: this file runs through functional.js
+    too, whose own LCOL_SEED (tests/seed.js) seeds it open on every new
+    context, and an open column leaves the bar too little width for its
+    full row, so opening the bar alone still folds it to Layers and Depth
+    and hides the very circle this section presses. Both are real presses,
+    not a shortcut: a person who wants the bar full would do the same. */
+ await pg.evaluate(()=>{if(!document.body.classList.contains('lshut'))document.getElementById('lfold').click();});
+ await pg.waitForTimeout(150);
+ await pg.evaluate(()=>{const F=document.getElementById('fbar');
+  if(F&&F.classList.contains('shut'))F.querySelector('.fb-tog').click();});
  /* overlays, through the real circles on three surfaces */
  const ov=async sel=>{
   await fresh();
@@ -1120,6 +1134,15 @@ async function atmGate(browser,FILE,ok,booted){
  const hv=async fn=>{ await fresh(); await pg.evaluate(()=>{ window.__h0=atmState().played; });
   await fn(); await pg.waitForTimeout(60); return pg.evaluate(()=>({n:atmState().played-window.__h0, row:atmState().row&&atmState().row.k})); };
  await pg.evaluate(()=>{ setTab(TAB.FIELD); }); await pg.waitForTimeout(400);
+ /* the fold tests just above each pressed their own control twice, which
+    can leave either the column or the bar back where it started or not;
+    both are made sure of here, same reasoning as above, before a circle
+    inside the bar is measured for its hover sweep below. */
+ await pg.evaluate(()=>{if(!document.body.classList.contains('lshut'))document.getElementById('lfold').click();});
+ await pg.waitForTimeout(150);
+ await pg.evaluate(()=>{const F=document.getElementById('fbar');
+  if(F&&F.classList.contains('shut'))F.querySelector('.fb-tog').click();});
+ await pg.waitForTimeout(150);
  const box=async sel=>{ const b=await (await pg.$(sel)).boundingBox(); return {x:b.x+b.width/2,y:b.y+b.height/2}; };
  const sh0=await box('#fbar [data-fb=shadow]');
  const one_=await hv(async()=>{ await pg.mouse.move(cc.x,cc.y); await pg.waitForTimeout(300); await pg.evaluate(()=>{ ATM_HOV=[]; ATM_AT=0; });

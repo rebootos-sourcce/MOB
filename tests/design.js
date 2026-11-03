@@ -88,8 +88,28 @@ console.log('  shell:',JSON.stringify(shell));
 
    The depth row became the glass bar's Depth circle, EV in TASKS.md, so the
    measure moved with it: every circle the bar shows at 1600 is inside the
-   window, and the Depth circle is one of them. */
+   window, and the Depth circle is one of them.
+
+   THE BAR STARTS SHUT NOW, 2 November, his own red marks on the Field
+   screenshot, so a fresh arrival sees only the one toggle circle and none
+   of the rest, Depth included: a store with nothing in it defaults shut
+   (fbShutWire, ui/fieldbar.js), the same rule colShut already keeps for the
+   left column. This measure is about where a circle sits once it is on
+   screen, not about whether the bar opens by default, so it presses the
+   toggle first, the one real way a person reaches that state. */
+/* THE BAR ITSELF STARTS SHUT ON A FRESH ARRIVAL, 2 November, his own red
+   marks on the Field screenshot. Asserted here, on the other side of the
+   change the toggle click below makes, so a later edit that quietly
+   reverted the default would not slip through on a gate that only ever
+   measures the open state. */
+const barShut=await page.evaluate(()=>{setTab(TAB.FIELD);
+ var fb=document.getElementById('fbar');
+ return {shut:fb.classList.contains('shut'),
+  onlyToggle:[...fb.querySelectorAll('.fb-b')].filter(b=>b.offsetParent).length===1};});
+ok(barShut.shut&&barShut.onlyToggle,'the glass bar starts shut on a fresh arrival, one circle showing, got '+JSON.stringify(barShut));
 const depthsOn=await page.evaluate(()=>{setTab(TAB.FIELD);
+ var tog=document.querySelector('#fbar .fb-tog');
+ if(tog&&document.getElementById('fbar').classList.contains('shut'))tog.click();
  return [...document.querySelectorAll('#fbar .fb-b')].filter(b=>b.offsetParent).map(b=>{const r=b.getBoundingClientRect();
   return {nm:b.getAttribute('aria-label'),on:r.width>0&&r.left>=0&&r.right<=innerWidth+0.5};});});
 ok(depthsOn.some(d=>d.nm==='Depth')&&depthsOn.every(d=>d.on),

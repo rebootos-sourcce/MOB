@@ -948,7 +948,7 @@ var ATM_BY={}; ATM.forEach(function(x){ATM_BY[x.k]=x;});
    off BANDS, so a seat is never a table of its own. */
 var ATM_SEAT={
  fb:{addresses:'Root', seats:'Sacral', laws:'Crown', gates:'Heart', shadow:'Root', stories:'Throat',
-  saboteurs:'Solar', complexes:'Heart', hyper:'3rd Eye', character:'Crown', archetypes:'Throat', domains:'3rd Eye'},
+  fetters:'Sacral', saboteurs:'Solar', complexes:'Heart', hyper:'3rd Eye', character:'Crown', archetypes:'Throat', domains:'3rd Eye'},
  bm:{addr:'Root', masks:'Throat', pain:'Root', flow:'Sacral', sab:'Solar', cx:'Heart', hy:'3rd Eye'},
  cn:{top:'Crown', shells:'Heart', flat:'Sacral', reg:'Throat', well:'Root', heat:'Solar', layers:'3rd Eye'}};
 /* THE MAP. First row a control matches wins. sel is what it matches, snd is

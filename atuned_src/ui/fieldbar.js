@@ -271,7 +271,7 @@ function fbValues(r){
 
 /* ---- the hosts, which are in the markup so the bar cannot vanish with a
    failed script, and the pieces built into them once ---- */
-var FB=null, FB_PANEL=null, FB_MENU=null, FB_FOLD=null, FB_SAY=null, FB_ZOOM=null, FB_VIEW=null, FB_TOG=null;
+var FB=null, FB_PANEL=null, FB_MENU=null, FB_FOLD=null, FB_SAY=null, FB_VIEW=null, FB_TOG=null;
 function fbCluster(g,label){
  var c=document.createElement('div'); c.className='fb-grp';
  c.setAttribute('role','group'); c.setAttribute('aria-label',g.nm);
@@ -342,24 +342,14 @@ function fbSay(k){if(!FB_SAY)return;var l=FB_BYK[k],v=FB_VALS[k],on=layerOn(k);
  FB_TOG.classList.add('fb-tog'); FB_TOG.setAttribute('aria-controls','fbar');
  FB_TOG.setAttribute('aria-expanded','true');
  FB.insertBefore(FB_TOG,FB.firstChild);
- /* ZOOM, ON EVERY PICTURE. His words, for Frames: "I want to be able to zoom
-    in and out, and then hit the F key and have it reframe." The wheel already
-    zoomed by scroll and reframed on F with no control you could see; the
-    same three sit at the end of the bar for all three pictures, and the
-    reframe circle's ring and pill carry how far in you are. */
- /* AND THEY LEFT THE BAR FOR #fzoom, EZ in TASKS.md, so that the bar and the
-    Wheel, Frames and Dial overlay can both hold the top of the stage without
-    the bar folding at 1600. Same three circles, same glass, same keys; only
-    the host moved, and #fzoom carries the group's role and name itself. */
- FB_ZOOM=document.getElementById('fzoom');
- var end=document.createElement('div'); end.className='fb-grp';
- [['zout','Zoom out',FB_IC.zout,'Move out. Or press minus.',function(){fieldZoomBy(1/1.25);}],
-  ['zin','Zoom in',FB_IC.zin,'Move in. Or press plus. Scrolling on the picture does the same, and a drag moves it.',function(){fieldZoomBy(1.25);}],
-  ['zfit','Reframe',FB_IC.zfit,'Back to the whole picture. Or press F.',function(){fieldReframe();}]].forEach(function(z){
-  var b=fbOrb({k:z[0],nm:z[1],ic:z[2],tip:z[3],val:z[0]==='zfit'});
-  b.addEventListener('click',function(e){e.stopPropagation();z[4]();});
-  end.appendChild(b);});
- (FB_ZOOM||FB).appendChild(end);
+ /* #fzoom, THE ZOOM CIRCLES AT THE STAGE'S LOWER RIGHT, ARE GONE, 2
+    November, his own red marks on the Field screenshot: the camera-like
+    cluster near the "1.0x" reframe pill. Nothing the three circles did was
+    the only door to it: scrolling on the picture zooms it, a drag pans it,
+    and the keys this group's own tips already named, minus, plus and F,
+    still call fieldZoomBy and fieldReframe directly (ui/ui.js's keydown
+    handler), untouched by this cut. So the real zoom and reframe stay; only
+    the on screen circles, and the pill that printed how far in, are gone. */
  /* arrow keys walk the bar, the way a toolbar should */
  FB.addEventListener('keydown',function(e){
   if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight')return;
@@ -428,7 +418,7 @@ var FB_ENTERED=false;
 const FB_ENTER_STEP=34;
 function fbEnter(){
  if(FB_ENTERED||REDUCED)return; FB_ENTERED=true;
- var hosts=[FB,FB_VIEW,FB_ZOOM].filter(function(h){return h&&h.offsetParent;}), n=0;
+ var hosts=[FB,FB_VIEW].filter(function(h){return h&&h.offsetParent;}), n=0;
  hosts.forEach(function(h){
   [].slice.call(h.querySelectorAll('.fb-b')).filter(function(b){return b.offsetParent;})
    .forEach(function(b){b.style.setProperty('--i',n++);});
@@ -470,10 +460,14 @@ function fbOpenMenu(on){if(!FB_MENU||!FB)return;
  db.setAttribute('aria-expanded',String(on));
  if(on)fbPlace(FB_MENU,db);}
 
-/* ---- the bar shut and open, colFold's shape in ui/ui.js. A store that
-   cannot be read opens the bar, which is the state nobody has to find their
-   way back from. Called at boot as a step, because the store is bound in
-   ui/ui.js, which loads after this file. ---- */
+/* ---- the bar shut and open, colFold's shape in ui/ui.js. AND IT STARTS
+   SHUT, 2 November, his own red marks on the Field screenshot: the glass bar
+   sat open over the wheel on first sight, the way the left column used to
+   (colShut's own GO ruling, above colFold in this file). Only a store with
+   nothing in it defaults, colShut's own rule, read the same way here: a
+   person who has pressed this once keeps their own choice, open or shut, on
+   every later visit, and a store that throws still opens it, the state
+   nobody has to find their way back from. ---- */
 function fbShutPaint(shut){
  if(!FB||!FB_TOG)return;
  FB.classList.toggle('shut',shut);
@@ -485,7 +479,7 @@ function fbShutPaint(shut){
   :'Folds the bar into this one circle. Every layer stays as it was set.');}
 function fbShutWire(){
  if(!FB||!FB_TOG)return;
- var shut=false; try{shut=STORE.get('fbar')==='shut';}catch(e){}
+ var shut=true; try{var got=STORE.get('fbar'); shut=got?(got==='shut'):true;}catch(e){shut=true;}
  fbShutPaint(shut);
  FB_TOG.onclick=function(e){e.stopPropagation();
   var now=!FB.classList.contains('shut');
@@ -539,9 +533,10 @@ function fbPaint(){
     that ground, the one the wheel's domain ring and the renditions use. */
  var lt=stageLight();
  /* and the coherence corner, which lies on the same ground under the switch
-    since round IT and is made of the same glass, and accuracy in the corner
-    opposite zoom since round LR, for the same reason */
- [FB,FB_PANEL,FB_MENU,FB_ZOOM,FB_VIEW,document.getElementById('railtop'),
+    since round IT and is made of the same glass. #fzoom, the opposite
+    corner accuracy once mirrored (round LR), is gone, 2 November; accuracy
+    itself keeps its own glass below. */
+ [FB,FB_PANEL,FB_MENU,FB_VIEW,document.getElementById('railtop'),
   document.getElementById('acc')]
   .forEach(function(x){if(x)x.classList.toggle('fb-lt',lt);});
  document.body.classList.toggle('noshadow',!layerOn('shadow'));
@@ -570,11 +565,10 @@ function fbPaint(){
       null for every layer that is not a rung, which unlocks any orb that was
       locked a paint ago. */
    var lg=lockFor(k); if(lg)lockApply(b,lg,{at:'.fb-orb',corner:true}); else lockClear(b);});});
- var zf=(FB_ZOOM||FB).querySelector('[data-fb=zfit]');
- if(zf){var zn=fieldZoom(),zp=(zn.s-1)/(zn.max-1)*100;
-  zf.querySelector('.val').setAttribute('stroke-dasharray',Math.max(0,Math.min(100,zp)).toFixed(1)+' 100');
-  zf.querySelector('.fb-v').textContent=zn.s.toFixed(1)+'×';
-  zf.classList.toggle('on',zn.s>1.001);}
+ /* THE REFRAME PILL'S PAINT WENT WITH #fzoom, 2 November: there is no
+    [data-fb=zfit] orb left anywhere to carry the "1.0x" reading, so there
+    is nothing here to paint. fieldZoom() itself stays, read by sound.js for
+    the zoom pitch, untouched by this cut. */
  var cur=LAYSET?-1:(S.view|0);
  if(FB_MENU)FB_MENU.querySelectorAll('[data-preset]').forEach(function(m){
   m.setAttribute('aria-checked',String(+m.getAttribute('data-preset')===cur));

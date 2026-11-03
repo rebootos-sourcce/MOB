@@ -86,6 +86,23 @@ async function lockGate(browser,FILE,ok,booted){
   /* each orb's own size on the top tier, to hold a locked one to: against a
      different layer it differs by its label, which is not the lock's doing */
   await as('four');
+  /* THE GLASS BAR HAS TO BE OPEN TO MEASURE A LAYER ORB ON A DESKTOP, 2
+     November: it starts shut now (fbShutWire, ui/fieldbar.js), the same
+     reason the phone branch already opens #fbpanel below with its own
+     fbOpenPanel(true) calls. The left column is shut first: this gate runs
+     through functional.js too, whose LCOL_SEED (tests/seed.js) seeds it
+     open on every new page, and an open column leaves the bar too little
+     width for its full row, folding it to Layers and Depth and hiding the
+     very orbs this gate measures. Opened once here, before the first orb
+     this gate measures; #fbar .fb-full stays in the document either way,
+     so every selector below still finds its element, only its size would
+     read 0 by 0 without this. */
+  if(!phone){
+   await pg.evaluate(()=>{if(!document.body.classList.contains('lshut'))document.getElementById('lfold').click();});
+   await pg.waitForTimeout(150);
+   await pg.evaluate(()=>{const F=document.getElementById('fbar');
+    if(F&&F.classList.contains('shut'))F.querySelector('.fb-tog').click();});
+   await pg.waitForTimeout(150);}
   /* THE GRAPH A SCREEN IS HANDED GOES THROUGH THE SAME LOCK, 31 October
      (readSeenOf, ui/lock.js). On the top tier it carries the chain the page
      draws, under the record's own stamp, and nothing in it is refused. */

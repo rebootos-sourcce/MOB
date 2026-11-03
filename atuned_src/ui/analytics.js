@@ -102,6 +102,24 @@ function anaRender(){
  var loud=[].concat(r.sups,r.hys,r.cxs,r.sabs).sort(function(a,b){return b.w-a.w;})[0];
  var held=W.filter(function(n){return n.sq>=4;});
  var out='<div class="ana-wrap">';
+ /* CQ, DQ, SQ AT THE VERY TOP, 2 November, his own words looking at this
+    page: "at the very top, CQDQ SQ." Reusing this screen's own established
+    tile, ANA_MET's cr() ring with the letters as its icon (component.js's
+    own ruling, "CQ, DQ, SQ is essentially an icon... the letters are the
+    icon"), never inventing a fourth treatment: the same three tiles the
+    Readings strip already drew further down the page, in the order he named.
+    Pulled out of that strip below (never duplicated: a number printed twice
+    on one page is the same "spreadsheet of feelings" complaint this round's
+    other cuts answer) and read through anaMetCard/anaMetRow unchanged, same
+    data-ana="met|..." key, so the drill each one opens is the one this page
+    already had. Hidden on an unread profile, the same guard anaTele already
+    held for these three. */
+ if(!r.unread)out+='<div class="ana-tiles ana-top3">'+['cq','dq','lawsq'].map(function(k){
+   var M=ANA_MET[k], f=M.fig(r);
+   return '<button type="button" class="ana-tile" data-ana="met|'+k+'">'
+    +cr(M.seat,f.p,{size:'md',raw:f.raw,text:M.txt,hot:false,title:M.nm})
+    +'<span class="ana-tile-l" data-tip-k="'+esc(M.nm)+'" data-tip="'+esc(M.tip)+'">'+esc(M.nm)+'</span></button>';}).join('')
+  +'</div>';
  /* Every figure on this tab was bare except CQ, which carries a percent only
     because cr() appends one. A number with no scale is not a reading, it is a
     digit, and six of them sat here on six different scales. */
@@ -152,7 +170,15 @@ function anaRender(){
    /* ROUND RG. The band word stood alone, bold, with nothing on it, which
       is V9's judgement and not a reading. The tier's own first sentence
       rides after it, the same one Clients carries on its tooltip. */
-   :(r.tier?'Your energy reads <b>'+esc(r.tier.toLowerCase())+'</b>. '+unpSay(r.tier,'tier')+' '
+   /* "YOUR ENERGY" SAID TWICE IN A ROW, caught 2 November, his own words
+      naming the exact line: "your energy reads contracted, your energy is
+      fully loaded." unpSay(tier,'tier') is TIERDEF's own def sentence, and
+      every one of the nine starts "Your energy...", so the lead-in that
+      named the tier repeated the subject the authored sentence was about to
+      say again. The tier name is the label now, not a second "reads"
+      clause, and the authored sentence (unchanged, nothing invented) carries
+      the subject once. */
+   :(r.tier?'<b>'+esc(r.tier)+'.</b> '+unpSay(r.tier,'tier')+' '
      :'Coherence is still filling, with <b>'+esc(tierSay(r))+'</b>. ')
    +(loud?'<b>'+esc(loud.nm)+'</b> is the biggest thing running. '
      /* "Nothing is compounding" is a claim about somebody's chain, and a plan
@@ -372,9 +398,17 @@ function anaHot(r){
  if(r.unread||typeof hotList!=='function')return '';
  var L=hotList(), t={expanding:0,collapsing:0,steady:0};
  L.forEach(function(n){t[hotDir(n)]++;});
- var s='<div class="pm-eye" style="margin-top:20px">Running hot</div>';
- if(!L.length)s+='<p class="sum-p">No address is past five. Past five an address pulls '
-  +'more than half as hard as it can, and the ring on the Field bends under it.</p>';
+ /* THE DEFINITION MOVED TO THE EYEBROW'S OWN TITLE, 2 November, his own
+    words quoting the line verbatim back: "Seventy-five addresses are past
+    five where an address, get rid of that shit." The fact (how many, which
+    way each is moving) stays; the standing definition of "past five" that
+    repeated on every single view, printed the same words whether it was 3
+    addresses or 75, moves to a hover on the heading, same place every other
+    held-back definition on this page already lives (ANA_DIRSAY on each
+    direction word, the colour key under "What is running"). */
+ var s='<div class="pm-eye" style="margin-top:20px" title="Past five, an address pulls more '
+  +'than half as hard as it can, and the ring on the Field bends under it.">Running hot</div>';
+ if(!L.length)s+='<p class="sum-p">No address is past five.</p>';
  else s+=anaHotRows(L,t);
  return '<div class="ana-hot">'+s+'</div>';}
 var ANA_DIRSAY={expanding:'Its charge rose on its last change.',
@@ -384,8 +418,7 @@ function anaHotRows(L,t){
  var say=[], s='';
  ['expanding','collapsing','steady'].forEach(function(k){if(t[k])say.push('<b>'+t[k]+'</b> '+k);});
  s='<p class="sum-p"><b>'+L.length+'</b> address'+(L.length===1?' is':'es are')
-  +' past five, where an address pulls more than half as hard as it can and the ring on the '
-  +'Field bends under it. '+say.join(', ')+'.</p>'
+  +' past five. '+say.join(', ')+'.</p>'
   /* HS sweep: a three sentence legend for the three direction words sat
      between the count and the rows. Each word now carries its own meaning as
      its title, and the colour of the word already separates the three. */
@@ -607,9 +640,37 @@ function anaAxisCard(r,nm){
  var where=String(c.addr).indexOf('plexus')>=0?unp('plexus',c.addr):esc(c.addr);
  var h=anaHead(unp('axis','Axis'),c.nm+' toward '+c.opp,where+', '+esc(c.loc));
  var hv=S.charge[c.nm]||0, iv=S.replace[c.nm]||0;
- h+=anaKv([['Held',crBadge(c.seat,pct('charge',hv)||0,{size:'md',raw:fmtPct('charge',hv),title:c.nm+' held'})],
-  ['Installed',crBadge(c.seat,pct('installed',iv)||0,{size:'md',raw:fmtPct('installed',iv),title:c.opp+' installed'})],
-  ['Fetters',anaN(own.length)]]);
+ /* ONE COMPLETE BAR, NOT A RATIO, 2 November, third pass. The bipolar
+    rbChargePair this replaced computed held/(held+installed), which reads
+    100% whenever installed is unmeasured (0) no matter how large or small
+    held is -- the exact real bug his own screenshot caught on #stack's
+    nine rows, confirmed on Tomas (S.replace is {} for him, so every axis'
+    installed is 0) before either site was touched. rbRow (ui/component.js)
+    bare, the same primitive #stack now uses, prints the one real figure
+    this axis actually has on its own: held charge, 0 to 100, never
+    weighed against installed. bare:true because this card is already the
+    open drill -- no data-q, no second door, the same word crBadge's own
+    o.bare already uses for a reading with nowhere of its own to open.
+    Installed keeps its own real figure, said plainly below rather than
+    folded into a ratio that hid it inside the held side's own 100%. */
+ /* inFill:true, 2 November: the percent reads inside the bar's own fill
+    here, his own instruction, rather than beside the name (component.js's
+    own note on rbRow explains why this is the one caller opted in). */
+ /* pct2/col2, 2 November, fourth pass: his own words on rbPair beside this
+    card, "it's showing the charge at both ends now." iv (installed) is the
+    real second value this axis already carries (S.replace, read above for
+    the plain anaKv row); handed to rbRow's own far-end segment rather than
+    a new mechanism, so it draws at its real width -- 0 on Tomas, where
+    S.replace is still {} for every axis, the same real-zero this card's own
+    bar-not-ratio note above already chose over a faked mark. col2 left at
+    rbRow's own default (--ink, muted) rather than a seat colour: installed
+    has no seat of its own apart from the one held already colours this bar
+    in, and a second hue here would read as a second seat rather than a
+    second number on the same one. */
+ h+='<div class="ana-rb2">'+rbRow('axis-'+anaKey('axis',c.nm),c.nm,pct('charge',hv),fmtPct('charge',hv),
+   {unread:r.unread, bare:true, inFill:true, pct2:pct('installed',iv), ic:'<path d="'+c.ic+'"/>', col:seatCol(c.seat),
+    title:c.nm+'. Toward '+c.opp+'.'+(r.unread?'':' '+c.opp+' installed '+fmtPct('installed',iv)+'.')})+'</div>';
+ h+=anaKv([['Fetters',anaN(own.length)],['Installed',fmtPct('installed',iv)]]);
  h+='<p class="ad-p">'+unpSay('axis')+' Held is how much '+c.nm.toLowerCase()+' is stored. Installed is how much '
   +c.opp.toLowerCase()+' is in place. Coherence is the centre of this axis, not either end. It runs through <b>'
   +anaPl(own.length,'fetter','fetters')+'</b>. '+anaHeldSay(own)+'</p>';
@@ -935,8 +996,12 @@ addEventListener('keydown',function(e){
    ============================================================ */
 function anaTele(r){
  if(r.unread)return '';
+ /* CQ, DQ AND SQ MOVED TO THE TOP OF THE PAGE, 2 November (anaRender's own
+    ana-top3 block, above). Left out of this list so the figure prints once,
+    not twice: the tile, its tooltip and its drill (data-ana="met|cq" etc.)
+    are unchanged, only where the button sits moved. */
  var s='<div class="ana-tele"><div class="pm-eye" style="margin-top:20px">Readings</div>'
-  +'<div class="ana-tiles">'+['cq','dq','lawsq','pull','ex','jq','pole'].map(function(k){
+  +'<div class="ana-tiles">'+['pull','ex','jq','pole'].map(function(k){
    var M=ANA_MET[k], f=M.fig(r);
    return '<button type="button" class="ana-tile" data-ana="met|'+k+'">'
     +cr(M.seat,f.p,{size:'md',raw:f.raw,text:M.txt,hot:false,title:M.nm})

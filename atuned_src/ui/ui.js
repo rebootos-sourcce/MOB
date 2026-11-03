@@ -639,7 +639,15 @@ fieldPinch($('frend'),false);
    Energetic summary moved above it from the right rail; both still open
    closed, off the same empty left set below, so the move needed no entry
    here.) */
-var OPENSEC={left:{}, right:{you:1}};
+/* FETTERS DEFAULTS OPEN, 2 November: paintSections() below is the one real
+   place a .lsec's open/closed state is decided, off this object and
+   nothing else -- a static "open" class in the markup (body.html's #iqp
+   block, the Child emotions sliders moved there this round) is overwritten
+   on the very first paint, found live (classList came back bare "lsec",
+   not "lsec open", the moment the engine checked it rather than the markup
+   it shipped). The sliders are controls, not a reading to tuck behind a
+   press, the same reasoning "you" already carries on the right. */
+var OPENSEC={left:{fetters:1}, right:{you:1}};
 /* which surfaces have already had their sections seeded, so a tab opens what
    it is about the first time and never argues with a person who closed it. */
 var SEC_SEEDED={};
@@ -908,13 +916,16 @@ var STK_OPEN={};
    needs no such rebuild... kind is set here"); an address node carries no
    .kind at all, only .sq and .b, which is how fbUnpin's own FB_PINK fallback
    already tells a bare address apart from everything named. Nothing
-   selected opens Child emotions, the one tier that is never empty (nine
-   fixed rows) and the tab this rail opened to before tabs existed. */
+   selected opens Nerve now, 2 November, since Child emotions (the old
+   default, "the one tier that is never empty") left this rail for Intake:
+   Nerve is the next tier down that still draws something on an empty
+   field without a padlock, its own "Nothing is carrying yet" line,
+   written for exactly this case already. */
 function stkDefTier(){
  var p=S.pin;
  if(p&&p.kind&&(p.kind==='fet'||CHAINTIERS.some(function(t){return t.k===p.kind;})))return p.kind;
  if(p&&p.sq!==undefined&&p.b!==undefined)return 'nerve';
- return 'fet';}
+ return 'nerve';}
 /* ============================================================
    THE CHAIN, LIVE. FIELD_REDESIGN_BRIEF_2026-11-01.md Part 1: this replaces
    the static colour legend ("Saboteur. Colored by the seat it sits at...")
@@ -966,6 +977,147 @@ function chkTier(kind,list,seat){
      glyph:'<path d="'+CHAINGLYPH[kind]+'"/>',title:o.nm+', '+f+(o.over?', overshot':'')})
    +'<span class="stk-nm">'+esc(o.nm)+(o.unnamed?'<em>inferred</em>':'')+(dom?'<em>heaviest</em>':'')+'</span></button>';}).join('')
   +(idx.length>cap?'<div class="pm-more">and '+(idx.length-cap)+' more</div>':'');}
+/* ============================================================
+   TRUE PARENT-CHILD NESTING, right rail only, 2 November, second pass. His
+   own words looking at the first pass (chkTier, above, grouped by tier):
+   "when I click on a super complex, hyper complex, complex, or saboteur,
+   they should all be nested inside their parent." The first pass opened
+   "Saboteur" and showed every saboteur in the record; this opens one
+   super-complex and shows its own two hyper-complexes, nested one level in,
+   each opening to its own two complexes, each to its own two saboteurs.
+
+   THE REAL EDGE, confirmed against compute.js before anything below was
+   written (not assumed from THE CHAIN's prose in trace.js): a sup's own
+   .parts are its real two hyper-complexes (compute.js, "sups.push({...
+   parts})"); a hy's .parts are its real complexes ("hys.push({...
+   parts:fam})", fam=cxs.filter(c=>c.hcx===h.nm)); a cx's .parts are its
+   real two saboteurs ("cxs.push({...parts})", parts=fam.slice(i,i+2) off
+   the same sabs array). Every one of these .parts arrays holds the SAME
+   object references the reading's own sabs/cxs/hys/sups arrays hold, not
+   copies, which is why indexOf against the full array below always finds
+   them: this is the identical real data traceNeighbors/traceDescendants
+   (engine/trace.js) walk over the 'supports' edge, read here one layer
+   closer to the reading that built it, with no graph object required in
+   the render path. Saboteur is the floor of this particular nest: its own
+   real children are addresses (THE CHAIN's pattern rung), which the Nerve
+   section below already lists in full, so nesting stops at saboteur on
+   purpose, not by omission. */
+var CHAIN_CHILD_KIND={sup:'hy',hy:'cx',cx:'sab'};
+var CHAIN_PARENT_KIND={hy:'sup',cx:'hy',sab:'cx'};
+function chkFullList(kind,rr){return {sab:rr.sabs,cx:rr.cxs,hy:rr.hys,sup:rr.sups}[kind]||[];}
+function chkNestKey(kind,idx){return kind+':'+idx;}
+/* EXPLICIT STATE WINS OVER THE DEFAULT. A node a person has pressed shut
+   stays shut even if it sits on the path to the current selection, the
+   same "once a person presses a tier's own header it is in this set and
+   that press is remembered" rule STK_OPEN already carries for the old
+   tier headers; this is the identical object for the new per-node rows. */
+var STK_NEST={};
+/* EVERY ANCESTOR OF THE CURRENT SELECTION, so the tree opens to wherever a
+   person just pressed on the wheel or the left rail, the same answer
+   stkDefTier already gives the tier-level disclosure. Walks up by object
+   identity (plist[i].parts.indexOf(node)), never by name, because an
+   unnamed cluster's own name is not unique the way a real object reference
+   always is. */
+function chkAncestors(rr,kind,o){
+ var out={}, k=kind, node=o, guard=0;
+ while(CHAIN_PARENT_KIND[k]&&guard++<8){
+  var pk=CHAIN_PARENT_KIND[k], plist=chkFullList(pk,rr), parent=null;
+  for(var i=0;i<plist.length;i++){if(plist[i].parts&&plist[i].parts.indexOf(node)>=0){parent=plist[i];break;}}
+  if(!parent)break;
+  out[chkNestKey(pk,plist.indexOf(parent))]=1;
+  k=pk; node=parent;}
+ return out;}
+/* FIND THE SAME NODE, IN THIS RENDER'S OWN ARRAYS, BY NAME. compute() (and
+   computeSeen, lock.js) builds a brand new object graph on every single
+   call -- confirmed against compute.js before this was written, not
+   assumed: nothing in it caches against S or memoises, every node is a
+   fresh object pushed in that one call. S.pin is set from WHATEVER call
+   produced the object a person actually pressed (the click handler's own
+   computeSeen(), ui/ui.js above), and render()'s own pass that reaches
+   here calls computeSeen() again, so S.pin is never the SAME reference as
+   anything in rr, even one line later, even though it is the same real
+   node. The existing click handler already knows this and never compares
+   by reference either (the 'sr' case's own same check: "S.pin.nm===o.nm
+   &&S.pin.kind===o.kind"); this is that identical discipline, so the tree
+   actually opens on the node a person just pressed instead of silently
+   finding nothing and defaulting to closed. */
+function chkFindLike(list,o){
+ if(!o)return -1;
+ for(var i=0;i<list.length;i++)if(list[i]&&list[i].nm===o.nm)return i;
+ return -1;}
+/* ONE ROW'S OWN MARKUP, lifted out of chkTier so the badge, the glyph and
+   the dominant mark are drawn identically whether a row sits in the old
+   flat tier (left rail, chkTier, unchanged) or nested here: one function,
+   one look, never a second drawing of the same reading. */
+function chkChainRow(kind,o,idx,seat,dom){
+ var f=fmtPct('chain',o.w), b=kind==='sab'?((o.parts&&o.parts[0]&&o.parts[0].b)||seat):seat;
+ return '<button type="button" class="stk-r" data-sk="'+kind+'" data-si="'+idx+'">'
+  +crBadge(b,pct('chain',o.w)||0,{size:'sm',raw:f,on:dom,
+    glyph:'<path d="'+CHAINGLYPH[kind]+'"/>',title:o.nm+', '+f+(o.over?', overshot':'')})
+  +'<span class="stk-nm">'+esc(o.nm)+(o.unnamed?'<em>inferred</em>':'')+(dom?'<em>heaviest</em>':'')+'</span></button>';}
+/* ONE NODE, AND WHAT IS ACTUALLY UNDER IT. depth is indent only (inline
+   style, no new class per level); opened is chkAncestors' own set, read
+   once per render and handed down rather than recomputed per node.
+
+   LOCKING, MATCHED TO THE OLD TIER'S OWN BEHAVIOUR, NOT A NEW RULE. The
+   flat tier this replaces only ever padlocked an EMPTY tier (chkTier's own
+   caller: "list.length?chkTier(...):(lockSees(t.k)?...:lockPanelHtml(t.k))"
+   -- once a tier had real content it rendered regardless of lockSees, every
+   round before this one). A real, non-empty .parts here is the identical
+   case: hasKids is already "this node's real children exist", so no
+   separate lockSees check belongs here -- adding one would quietly show
+   LESS than the surface it replaces, which is a regression dressed as a
+   gate. */
+function chkChainNode(rr,kind,o,idx,seat,depth,dom,opened){
+ var childKind=CHAIN_CHILD_KIND[kind], kids=(childKind&&o.parts)?o.parts:[], hasKids=kids.length>0;
+ var nk=chkNestKey(kind,idx);
+ var open=hasKids&&(STK_NEST[nk]!==undefined?STK_NEST[nk]:!!opened[nk]);
+ var chev=hasKids
+  ?'<button type="button" class="stk-chev" data-nk="'+kind+'" data-ni="'+idx+'" aria-expanded="'+open
+    +'" aria-label="'+(open?'Collapse ':'Expand ')+esc(o.nm)+'"><i style="transform:rotate('+(open?'-135deg':'45deg')+')"></i></button>'
+  :'<span class="stk-chev-sp" aria-hidden="true"></span>';
+ var row='<div class="stk-nrow" style="margin-left:'+(depth*16)+'px">'+chev+chkChainRow(kind,o,idx,seat,dom)+'</div>';
+ if(!hasKids||!open)return row;
+ var childSeat={hy:'Sacral',cx:'Solar',sab:'Root'}[childKind], full=chkFullList(childKind,rr);
+ return row+kids.slice().sort(function(a,b){return b.w-a.w;}).map(function(co,rank){
+  return chkChainNode(rr,childKind,co,full.indexOf(co),childSeat,depth+1,rank===0,opened);}).join('');}
+/* THE TOP LEVEL. "The top-level list, nothing selected yet, show all
+   super-complexes as entry points, same as today" -- every real sup, flat,
+   capped the same way chkTier already caps a long tier. ORPHANS: a real
+   hyper-complex, complex or saboteur that never reached the rung above it
+   is still a real pattern currently running, and rule 6 (every number
+   shown is real, nothing is quietly dropped) means it still has to be
+   reachable even though the tree above it stops one rung short; appended
+   flat, after the sup list, each still opening its own real children if it
+   has any. */
+function chkChainTree(rr){
+ var sups=rr.sups||[]; if(!sups.length)return '';
+ var opened={};
+ if(S.pin&&S.pin.kind&&CHAINTIERS.some(function(t){return t.k===S.pin.kind;})){
+  var selfList=chkFullList(S.pin.kind,rr), selfIdx=chkFindLike(selfList,S.pin);
+  if(selfIdx>=0){
+   /* resolved: node is THIS render's own object, so chkAncestors' own
+      reference walk over rr's .parts arrays now has something that can
+      actually match. */
+   opened=chkAncestors(rr,S.pin.kind,selfList[selfIdx]);
+   /* THE SELECTED NODE OPENS ITSELF, NOT ONLY THE PATH TO IT. Pressing a
+      super-complex is pressing it to see what is inside it; chkAncestors
+      only marks the nodes ABOVE the selection on the path up to it, so
+      without this the very node a person just pressed would stay shut
+      until a second press on its own chevron. */
+   opened[chkNestKey(S.pin.kind,selfIdx)]=1;}}
+ var cap=8, sorted=sups.slice().sort(function(a,b){return b.w-a.w;});
+ var html=sorted.slice(0,cap).map(function(s,rank){
+  return chkChainNode(rr,'sup',s,rr.sups.indexOf(s),'Root',0,rank===0,opened);}).join('')
+  +(sorted.length>cap?'<div class="pm-more">and '+(sorted.length-cap)+' more</div>':'');
+ ['hy','cx','sab'].forEach(function(k){
+  var full=chkFullList(k,rr), plist=chkFullList(CHAIN_PARENT_KIND[k],rr);
+  var orph=full.filter(function(o){return !plist.some(function(p){return p.parts&&p.parts.indexOf(o)>=0;});});
+  if(!orph.length)return;
+  var seat={hy:'Sacral',cx:'Solar',sab:'Root'}[k];
+  html+=orph.slice().sort(function(a,b){return b.w-a.w;}).map(function(o,rank){
+   return chkChainNode(rr,k,o,full.indexOf(o),seat,0,rank===0,opened);}).join('');});
+ return html;}
 /* THE SELF-SELECTED MARK, NERVE TIER ONLY. Reads the real field trace.js's own
    yesOf() reads (e.ob.yes, the mirror card's Yes written onto a story entry),
    rather than rebuilding the whole trace graph for one boolean in a rail row:
@@ -1038,34 +1190,41 @@ function railStack(r){
     +'<i style="transform:rotate('+(open?'-135deg':'45deg')+')"></i></button>'
    +'<div class="lsec-bd" style="display:'+(open?'block':'none')+'">'
     +'<p class="stk-def">'+esc(def)+'</p>'+body+'</div></div>';}
- var h=CHAINTIERS.map(function(t){
-   var list={sup:sups,hy:hys,cx:cxs,sab:sabs}[t.k];
-   var body=list.length?chkTier(t.k,list,t.seat)
-    :(lockSees(t.k)?'<p class="ad-p" style="margin:4px 0 0 2px">Nothing at this tier yet.</p>':lockPanelHtml(t.k));
-   return sec(t.k,t.nm,t.def,body);}).join('')
-  /* CHILD EMOTIONS, NOT FETTER, ON PURPOSE, DIFFERENT FROM renderChainKey's
-     OWN INTERNAL SUB-HEADING. The owner's own ruling (tests/functional.js,
-     "ONE WORD PER CONCEPT, AND THIS ONE WAS CARRYING TWO"): a fetter is a
-     node, the 112; the nine poled axes this tier actually lists are Child
-     emotions, and "the right rail's stack counts them" under that exact
-     name is the standing cross-surface check for it, the same discipline
-     that already keeps the left rail's dedicated sliders section off the
-     word Fetters. The flat tab this tier replaces (STACK_TAB) was always
-     labelled Child emotions for the identical reason; the heading stays
-     that word now that it is a disclosure instead of a tab, never
-     borrowing renderChainKey's shorter internal label, which names the
-     row inside the chain legend and is never a reachable surface of its
-     own the way this heading now is. All nine always draw, matching the
-     tab this tier was before (TABS.forEach above skipped 'fet' for the
-     same reason: the nine child emotions are the floor, not a plan-gated
-     rung). */
-  +sec('fet','Child emotions','The nine poled axes a charge runs on. No reading of their own, only the addresses they classify.',
-   (function(){var hi=CHILD.reduce(function(a,c){return (S.charge[c.nm]||0)>(S.charge[a.nm]||0)?c:a;},CHILD[0]);
-    return CHILD.map(function(c,ci){var v=S.charge[c.nm]||0, f=fmtPct('charge',v), dom=live&&c===hi&&v>0;
-     return '<button type="button" class="stk-r" data-fet="'+ci+'">'
-      +crBadge(c.seat,pct('charge',v)||0,{size:'sm',raw:f,on:dom,
-        glyph:'<path d="'+c.ic+'"/>',title:c.nm+', '+f})
-      +'<span class="stk-nm">'+esc(c.nm)+(dom?'<em>heaviest</em>':'')+'</span></button>';}).join('');})())
+ /* TRUE NESTING, NOT TIER-GROUPING, 2 November, second pass. His own words,
+    looking at the first pass's four separate flat tiers: "when I click on
+    a super complex, hyper complex, complex, or saboteur, they should all
+    be nested inside their parent." One header now, Super-complex, CHAIN
+    TIERS[0]'s own name and sentence unchanged; chkChainTree (above) is the
+    whole body, real sups at the top as entry points exactly as the old
+    flat tier did ("same as today"), each opening its own real children in
+    place rather than sending a person to a separate flat Hyper-complex,
+    Complex or Saboteur section to find them. lockSees/lockPanelHtml moved
+    from a tier-wide header gate to the exact row the nest would have
+    opened on (chkChainNode), which is finer grained than the old gate, not
+    looser: a plan that could not see Hyper-complex before still cannot see
+    it now, at the point it would have appeared. */
+ var h=sec('sup',CHAINTIERS[0].nm,CHAINTIERS[0].def,
+   sups.length?chkChainTree({sups:sups,hys:hys,cxs:cxs,sabs:sabs})
+    :(lockSees('sup')?'<p class="ad-p" style="margin:4px 0 0 2px">Nothing at this tier yet.</p>':lockPanelHtml('sup')))
+  /* CHILD EMOTIONS LEFT THIS RAIL, 2 November, his own words looking at it:
+     "the child emotions are getting moved out of the left menu... those
+     are going into the diagnostic, as questions." Checked before moving
+     anything: a real question set for these same nine axes already ships
+     on Intake, unrelated to this round -- IX_BLOCKS's own 'axes' block
+     ("Emotional axes", engine/data/intakemore.js's IX_AXIS), each row keyed
+     by the same CHILD[].nm this tier read, already phrased as a question
+     grounded in CHILD[].loc and .opp, already answerable (ixSet) and
+     already rendered unconditionally in iqxHtml, which renderIntake always
+     calls. So "as questions" needed no new engine mechanism invented here:
+     the real gap this tier was the other half of has already been real and
+     live, this whole time, one tab over. What stays true after this tier
+     is cut: the nine axes' own real charge (S.charge, the wheel's own
+     figure, a different reading from Intake's self-report rows and not to
+     be confused with it) is still reachable, both on Analytics ("The nine
+     axes" bubble chart and each axis's own drill card, anaAxisCard) and on
+     the right rail wherever a chain row's narration already names the
+     feeling it runs on -- only this standalone, read-only left-rail block
+     is gone. */
   /* NERVE, THE REAL FLOOR -- the same addresses-actually-carrying block
      renderChainKey builds, reusing .ad-r/data-addr, the one handler every
      address row on this product already answers through. Never locked. */
@@ -1081,10 +1240,15 @@ function railStack(r){
      +(nerve.length>cap?'<div class="pm-more">and '+(nerve.length-cap)+' more</div>':'');})());
  e.innerHTML=h;
  /* A TIER ABOVE THE PLAN IS STILL GREYED AND PADLOCKED WITH ITS
-    DESCRIPTION, the same ruling the flat tabs carried forward (TABS.forEach
-    above, now CHAINTIERS): the header itself is the lock's control now,
-    since there is no separate tab strip left to carry the mark. */
- CHAINTIERS.forEach(function(t){lockApply(e.querySelector('.lsec-hd[data-tier="'+t.k+'"]'),t.k);});}
+    DESCRIPTION, the same ruling the flat tabs carried forward, and to the
+    same real extent they already did: an EMPTY tier shows the padlock
+    (chkChainTree's own top-level branch, above, lockSees('sup') on no real
+    sups at all); real content, once it exists, was never hidden by this
+    gate before this round either (chkChainNode's own comment explains why
+    nothing new was added there). Only one header left to carry the mark,
+    Super-complex, since Hyper-complex, Complex and Saboteur no longer have
+    a header of their own to padlock. */
+ lockApply(e.querySelector('.lsec-hd[data-tier="sup"]'),'sup');}
 /* THE BALANCE STRIP, AND WHICH END IS WHICH.
 
    The two poles are masculine and feminine. cards.js states the codex
@@ -1858,18 +2022,15 @@ function renderChainKey(r){
  var chain=CHAINTIERS.map(function(t){
    var list={sup:sups,hy:hys,cx:cxs,sab:sabs}[t.k];
    return '<div class="tier1">'+t.nm+'</div><p class="stk-def">'+t.def+'</p>'+chkTier(t.k,list,t.seat);}).join('')
-  /* FETTER, ALL NINE, ALWAYS. "No running or not": trace.js's own words, a
-     fetter "carries no address-level content of its own", only the real
-     addresses it classifies, so there is no active/inactive split to filter
-     by the way a saboteur has one, and all nine are real whether or not any
-     charge is on them right now. */
-  +'<div class="tier1">Fetter</div><p class="stk-def">The nine child emotions. No reading of their own, only the addresses they classify.</p>'
-  +(function(){var hi=CHILD.reduce(function(a,c){return (S.charge[c.nm]||0)>(S.charge[a.nm]||0)?c:a;},CHILD[0]);
-   return CHILD.map(function(c,ci){var v=S.charge[c.nm]||0, f=fmtPct('charge',v), dom=live&&c===hi&&v>0;
-    return '<button type="button" class="stk-r" data-fet="'+ci+'">'
-     +crBadge(c.seat,pct('charge',v)||0,{size:'sm',raw:f,on:dom,
-       glyph:'<path d="'+c.ic+'"/>',title:c.nm+', '+f})
-     +'<span class="stk-nm">'+esc(c.nm)+(dom?'<em>heaviest</em>':'')+'</span></button>';}).join('');})()
+  /* FETTER/CHILD EMOTIONS LEFT THIS LEGEND, 2 November, the same move as
+     #stack's own cut above, on the rail he actually named ("the left
+     menu"): this is #chainkey, inside #lpanel, body.html's own id trail,
+     the one of the two real nine-axis lists that is actually on the left.
+     Its content did not vanish: Intake's real "Emotional axes" questions
+     (IX_BLOCKS, see #stack's own note) are where the concept is a question
+     now, and the real charge figure (S.charge) this row used to badge is
+     still read on Analytics ("The nine axes" and each axis's own drill
+     card). */
   /* NERVE, THE REAL FLOOR: the addresses actually carrying right now, same
      carrying line fbValues (ui/fieldbar.js) already reads, sq>=4. Dominant
      is the single heaviest of them; self-selected is the person's own Yes,
@@ -1933,7 +2094,7 @@ function renderGates(){
   g.innerHTML='<p class="ad-p" style="margin-top:10px">Nothing read yet. Write a line in the Journal and the gates fill in from it.</p>';
  }}
  wireKbJump();
- renderAcc(r); renderSpirit(); renderRootSum(); renderPol2(r); syncMx(); renderGates(); renderChainKey(r); renderAmplifiers();
+ renderAcc(r); renderSpirit(); renderRootSum(); syncMx(); renderGates(); renderChainKey(r); renderAmplifiers();
  /* the trace graph's block in the Field's side column, ui/loopread.js */
  if(typeof loopPaint==='function')loopPaint(r);
  /* the dock's circles move into their values rather than snapping, and only
@@ -2014,7 +2175,7 @@ function loop(ts){
  var r=computeSeen();
  /* the wheel breathes, so it is drawn every frame. A rendition does not move,
     and ringsDraw builds it only when its signature does */
- if(S.tab===TAB.FIELD){if(fviewOn())ringsDraw(r);else draw(r);drawAura(r);renderPol2(r);
+ if(S.tab===TAB.FIELD){if(fviewOn())ringsDraw(r);else draw(r);drawAura(r);
   /* the rail's pairs swing on the Field's clock, and nothing they do is
      drawn on the stage */
   rbPairTick(ts);}
@@ -2088,6 +2249,15 @@ document.addEventListener('click',function(e){
  var dh=e.target.closest?e.target.closest('#stack .lsec-hd[data-tier]'):null;
  if(dh){var tk=dh.getAttribute('data-tier'), sec=dh.closest('.lsec[data-tier]');
   STK_OPEN[tk]=!(sec&&sec.classList.contains('open')); railStack(computeSeen()); return;}
+ /* A NODE'S OWN CHEVRON OPENS ITS OWN REAL CHILDREN, NESTED IN PLACE.
+    chkChainNode (above) already drew the chevron's own aria-expanded as the
+    state it just painted, so flipping that is flipping what is on screen,
+    never a second guess at STK_NEST's own default. A sibling element to
+    the row's own .stk-r button, never inside it, so this never fights the
+    data-sk case just below for the same click. */
+ var chv=e.target.closest?e.target.closest('.stk-chev[data-nk]'):null;
+ if(chv){var nk=chv.getAttribute('data-nk')+':'+chv.getAttribute('data-ni');
+  STK_NEST[nk]=chv.getAttribute('aria-expanded')!=='true'; railStack(computeSeen()); return;}
  var fr=e.target.closest?e.target.closest('.stk-r[data-fet]'):null;
  if(fr){var fc=CHILD[+fr.getAttribute('data-fet')]; if(fc){S.pin=null; runFetterDrill(fc);
    /* S.pin stays null on this path, as it already did (above fc's own
@@ -2108,12 +2278,14 @@ document.addEventListener('click',function(e){
  if(kb){S.pin=null;ANA_PICK=null;runQDrill(kb.getAttribute('data-q'));return;}
  var gate=e.target.closest?e.target.closest('.gate-r[data-gate]'):null;
  if(gate){runGatesDrill(gate.getAttribute('data-gate'));return;}
- if(e.target.closest&&e.target.closest('#pol2')){
-  S.pin=null;ANA_PICK=null;
-  /* either end of the cone opens its own roster. the shaft opens the reading. */
-  var pe=e.target.closest('[data-polend]');
-  if(pe)runPoleDrill(pe.getAttribute('data-polend')); else runCompassDrill();
-  return;}
+ /* #pol2, the vertical strip between the wheel and the chain panel, is gone,
+    2 November, his own red marks on the Field screenshot. Its two doors,
+    data-polend up and dn into runPoleDrill, live on: the halo and pitchfork
+    now draw inside the wheel's own core at every width (wheel.js, rings.js),
+    and a press there already reaches runPoleDrill through hitPress/frend's
+    click handler above, the same door the strip's end always was. The
+    reading itself, runCompassDrill, opens from the tier word in #railtop
+    (further down in this file) exactly as it did before this strip existed. */
  if(e.target.closest&&e.target.closest('#bal')){S.pin=null;ANA_PICK=null;runBalDrill();return;}
  var row=e.target.closest?e.target.closest('.ad-r[data-addr]'):null;
  /* a row inside the Analytics trail is that trail's, round RB */

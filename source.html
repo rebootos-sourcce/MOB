@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2765 92058145 2026-11-02 17:07"><head><meta charset="utf-8">
+<html lang="en" data-build="v2766 15ccbe6e 2026-11-03 00:26"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -1656,7 +1656,8 @@ body.tab-field .stage,body.tab-energy .stage,body.tab-compass .stage,body.tab-ma
 
    The legend was cut on 25 September (BA9) and its row is empty now, so it
    is zero high and the wheel has the height back. It stays in the template
-   because the canvas and .pol2 address row 3 by number. */
+   because the canvas addresses row 3 by number (.pol2, which shared the row,
+   is gone, 2 November). */
 /* AND A FOURTH, THE DOCK, 26 September. The key strip left row 1 for it, so
    row 1 is empty and zero high like row 2, and the picture keeps the height
    it had: what the strip took at the head, the dock takes at the foot. */
@@ -1703,9 +1704,9 @@ canvas#cv{display:block;grid-column:2;grid-row:3;width:100%;height:100%;
 .fview{position:absolute;top:8px;right:12px;z-index:6;display:flex;gap:4px;align-items:center;
  padding:2px;border-radius:999px;background:var(--fb-glass);border:1px solid var(--edge-2);
  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px var(--fb-shade)}
-/* the Field's alone. The stage hosts every surface, and three switches for a
-   picture that is not there are three dead controls */
-body:not(.tab-field) .fview,body:not(.tab-field) .fzoom{display:none}
+/* the Field's alone. The stage hosts every surface, and a switch for a
+   picture that is not there is a dead control */
+body:not(.tab-field) .fview{display:none}
 /* a rendition has no reading, so the one that is up carries a whole ring in
    the accent and a lifted disc, and the two that are not stay glass */
 .fview .fb-orb{--c:var(--accent)}
@@ -1713,12 +1714,10 @@ body:not(.tab-field) .fview,body:not(.tab-field) .fzoom{display:none}
 /* and the two that are not up draw no arc at all: a round cap on a dash of
    nought is a dot, and a dot at twelve o'clock read as a reading of one */
 .fview .fb-b:not(.on) .fb-arc .val{opacity:0}
-/* ZOOM, IN THE LOWER RIGHT, out of the bar for the switch's sake. A column,
-   because the lower right of the stage is the compass's lane on the wheel,
-   128 across, and three circles in a row are 136. */
-.fzoom{position:absolute;right:12px;bottom:12px;z-index:6;display:flex}
-/* ROUND OD, his words: "For the zoom icons, have those horizontal instead of vertical." Zoom out, zoom in and reframe sit in a row now, as they already did on a phone. */
-.fzoom .fb-grp{flex-direction:row;gap:6px}
+/* .fzoom, THE ZOOM CIRCLES IN THE LOWER RIGHT, ARE GONE, 2 November, his
+   own red marks on the Field screenshot. Scroll, drag and the minus, plus
+   and F keys still zoom and reframe the picture; only the on screen circles
+   and the "1.0x" pill they carried are gone. */
 #frend{grid-column:2;grid-row:3;width:100%;height:100%;min-width:0;min-height:0;
  position:relative;overflow:hidden}
 /* FRAMES TAKES THE EMPTY LEFT LANE. The lane held the renditions switch and
@@ -1862,10 +1861,10 @@ body:not(.tab-field) .fbar,body:not(.tab-field) .fb-float{display:none!important
    because under Snow the theme's tokens are paper ink and the stage stays
    the ruled #101010: the bar needs the ground's ink, which INK() and frMount
    already choose the same way. */
-.fbar,.fb-float,.fview,.fzoom,.cn-zoom,.cnbar,.cnview,.cn-pan,#railtop,#acc{--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;
+.fbar,.fb-float,.fview,.cn-zoom,.cnbar,.cnview,.cn-pan,#railtop,#acc{--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;
  --edge-2:rgba(255,255,255,.14);--edge:rgba(255,255,255,.09);
  --fb-glass:rgba(22,24,32,.74);--fb-glass-on:rgba(40,44,58,.86);--fb-shade:rgba(0,0,0,.30);--fb-pillbg:#161820}
-.fbar.fb-lt,.fb-float.fb-lt,.fview.fb-lt,.fzoom.fb-lt,.cn-zoom.fb-lt,.cnbar.fb-lt,.cnview.fb-lt,.cn-pan.fb-lt,#railtop.fb-lt,#acc.fb-lt{--ink:#14161C;--mid:#4A4843;--dim:#6E6B65;--accent:#2F6E92;
+.fbar.fb-lt,.fb-float.fb-lt,.fview.fb-lt,.cn-zoom.fb-lt,.cnbar.fb-lt,.cnview.fb-lt,.cn-pan.fb-lt,#railtop.fb-lt,#acc.fb-lt{--ink:#14161C;--mid:#4A4843;--dim:#6E6B65;--accent:#2F6E92;
  --edge-2:rgba(20,22,28,.16);--edge:rgba(20,22,28,.10);
  --fb-glass:rgba(252,252,250,.80);--fb-glass-on:rgba(255,255,255,.94);--fb-shade:rgba(20,22,28,.14);--fb-pillbg:#FAFAF7}
 /* ---- one layer, one object. 44 by 44, the tap floor ---- */
@@ -2092,6 +2091,27 @@ body:not(.tab-field) .fdock{display:none}
    still has an end the eye can find. A fill of nought has no width to carry
    it, so it is not drawn. */
 .rb-f::after{content:"";position:absolute;top:0;bottom:0;right:0;width:2px;background:var(--ink);opacity:.9}
+/* THE FAR END, 2 November, fourth pass (component.js's own rbRow comment
+   says why this is a second independent segment and not rbPair's center
+   lean). Pinned to the track's own right edge, growing left, in --c2 at a
+   third the main fill's weight so an overlap with .rb-f (both readings
+   genuinely high at once) still shows the dominant fill through it rather
+   than hiding one real number under the other. Nought width paints nothing,
+   the same mechanism .rb-f::after's own comment names just above. */
+.rb-f2{position:absolute;right:0;top:0;bottom:0;display:block;background:var(--c2);
+ opacity:.55;border-radius:3px 0 0 3px;overflow:hidden}
+.rb-f2::after{content:"";position:absolute;top:0;bottom:0;left:0;width:2px;background:var(--ink);opacity:.9}
+/* THE IN-FILL FIGURE, 2 November, rbRow's own o.inFill (component.js). White
+   against mix-blend-mode:difference reads on any seat colour in any theme
+   without a per-colour tint, root red to crown violet, dark skin or light.
+   Sits at the fill's own trailing edge, inside the colour it belongs to.
+   .rb-fv-out is the same figure, same size, moved just past the fill when
+   the fill itself is too narrow to hold it (rbRow's own p>=18 cut, the bar
+   equivalent of anaField's p.r<LMIN). */
+.rb-fv{position:absolute;right:6px;top:50%;transform:translateY(-50%);z-index:1;
+ font-family:var(--num);font-variant-numeric:tabular-nums;font-size:11px;font-weight:700;
+ line-height:1;color:#fff;mix-blend-mode:difference;white-space:nowrap;pointer-events:none}
+.rb-fv-out{left:0;margin-left:6px;right:auto;color:var(--ink);mix-blend-mode:normal;font-weight:600}
 /* ROUND OJ. A reading is live, so the light in it travels: a soft band runs
    along the fill from the empty end to the edge and starts again, at the
    rate the Field's own threads run on (--rate, written by rbRate from the
@@ -2352,21 +2372,12 @@ body:not(.tab-field) .acc{display:none}
  font-family:var(--num);font-variant-numeric:tabular-nums}
 .acc-w{font-size:12.5px;color:var(--dim);margin-top:5px;max-width:300px;margin-left:auto;line-height:1.55}
 .acc-lean{opacity:.72;margin-top:3px}
-/* the compass belongs to the field tab alone. in the original both rules
-   declared the same properties, so it floated over every other tab. */
-/* the compass shares the right edge with the accuracy block, which is 124
-   tall. it stops above it rather than running behind it. */
-/* the pole meter rides with the wheel, so it moved down a row with it when the
-   legend took row 2. A child left on the old row would have sat in the
-   legend's line at full height and squeezed it to nothing. */
-.pol2{grid-column:3;grid-row:3;z-index:4;cursor:pointer;height:100%;
- display:flex;align-items:center;justify-content:flex-end;background:none;border:0;
- padding:0 16px 0 8px;margin:0}
-.pol2:hover svg{opacity:.85}
-body:not(.tab-field) .pol2{display:none}
-.pol2 svg{display:block;height:100%;width:104px}
-.pol2-t{font-family:var(--num);font-size:10px;fill:var(--dim)}
-/* the two ends of the cone are doors, so they say so on hover */
+/* .pol2, THE VERTICAL STRIP RULE SET, IS GONE, 2 November, his own red
+   marks on the Field screenshot: the meter between the wheel and the chain
+   panel, ticks at 50/40% with the marker near the real reading. Its two
+   doors into runPoleDrill are the wheel's own halo and pitchfork now, at
+   every width (ui/wheel.js, ui/rings.js), the same door GF already built
+   for a phone. */
 .ad-act{display:flex;gap:7px;flex-wrap:wrap;margin-top:13px}
 /* one question of the age test, with its two answers on the same line */
 .ag-q{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
@@ -2383,9 +2394,6 @@ body:not(.tab-field) .pol2{display:none}
 .stbtn:hover{border-color:var(--gold);background:var(--panel-2)}
 .stbtn b{display:block;font-size:14px;font-weight:600;margin-bottom:3px}
 .stbtn span{display:block;font-size:12.5px;line-height:1.5;color:var(--dim)}
-.p2end{cursor:pointer}
-.pol2:hover .p2end{opacity:1}
-.pol2-c{font-family:var(--num);font-size:11px;font-weight:500}
 
 /* ---------- left rail : collapsible sections ---------- */
 /* THE CORNER ON THE STAGE, NOT THE HEAD OF THE RAIL. Round IT moved it to the
@@ -2860,6 +2868,15 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
 .nf .tr b{display:block;height:100%;border-radius:3px;transition: width var(--t-surface) var(--ease-out)}
 .nf.oppf label{opacity:.74;font-size:13px;padding-left:4px}
 .nf.oppf{margin-bottom:12px;margin-top:-2px}
+/* THE VISIBLE QUESTION, 2 November (numField's own q, ui/panels.js). .nf is
+   one flex row, icon/label/track/input, and stays exactly that for every
+   row with no question (every caller but the Child emotions "held"
+   slider); :has(.nf-q) is scoped so only a row that actually carries one
+   wraps, nothing else on the page changes shape. flex-basis:100% drops the
+   question onto its own full-width line under the label, after the icon's
+   own width, not flush with the panel edge. */
+.nf:has(.nf-q){flex-wrap:wrap;min-height:0;padding-bottom:6px}
+.nf-q{flex:1 1 100%;order:3;margin:2px 0 2px 26px;font-size:12.5px;line-height:1.35;color:var(--dim)}
 .bulk{display:flex;gap:10px;align-items:center;margin-bottom:11px}
 .bulk label{font-size:13.5px;color:var(--mid);flex:0 0 58px}
 .bulk input[type=range]{flex:1 1 auto;-webkit-appearance:none;appearance:none;height:var(--tap);
@@ -3722,6 +3739,51 @@ body.punch .card{border-color:transparent}
 .stk-nm{flex:1 1 auto;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .stk-p{flex:0 0 auto;color:var(--mid);font-size:12px}
 .stk-r em{font-style:normal;color:var(--dim);font-size:11px;margin-left:4px}
+/* THE COMPLETE BAR ROW. .stk-r's own height is a fixed tap target for a
+   badge-and-name row, and its own display:flex lays out a row's children
+   SIDE BY SIDE; this row carries a full rbRow bar instead (ui/component.js,
+   its own o.cls/o.attrs folding the row's stk-r/data-fet identity onto the
+   bar's own element rather than a second wrapper), which is rbRow's own
+   "one line of words over one track" shape (component.js's own card on
+   rbRow, above) and needs the word row and the track stacked, not side by
+   side, so the three properties .stk-r sets that would fight that shape
+   are overridden here: display, so .rb-row and .rb-t stack; min-height, so
+   .stk-r's own fixed tap-target floor does not hold the taller content at
+   its shorter height; position, so a chip or hairline (.rb-d/.rb-t::after,
+   both position:absolute) sits against this row and not some further
+   ancestor. His real screenshot caught the gap this closes: without it the
+   track rendered at 0 width, a flex item with no intrinsic content and no
+   basis, name and figure printed with no bar under them at all, checked
+   live in a browser (CLAUDE.md's own rule on this file) rather than
+   assumed from the markup. RENAMED FROM THE HELD/OPPOSITE BAR ROW, 2
+   November, third pass: the bar itself stopped being a pair (rbChargePair,
+   held against installed) and became one real complete reading (rbRow,
+   held alone), so the row's own name follows it. */
+.stk-rb{display:block;height:auto;min-height:0;position:relative}
+/* TRUE PARENT-CHILD NESTING, 2 November, second pass. His own words looking
+   at the first pass's tier-grouped disclosure: "when I click on a super
+   complex, hyper complex, complex, or saboteur, they should all be nested
+   inside their parent." A row that has real children (chkChainNode, ui/
+   ui.js) carries its own chevron, the same 45/-135deg rotate the section
+   headers already use (.lsec-hd i, above), at a size that fits inside a
+   stk-r row rather than a full section header. A leaf row (a saboteur, or
+   any row with no real child on this graph) carries the spacer instead, so
+   every row's badge still starts at the same left edge regardless of
+   depth. */
+.stk-chev{background:transparent;border:0;padding:0;margin:0;cursor:pointer;color:var(--mid);
+ display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;width:18px;height:34px}
+.stk-chev:hover{color:var(--ink)}
+.stk-chev i{width:7px;height:7px;border-right:1.4px solid currentColor;border-bottom:1.4px solid currentColor;
+ transition:transform var(--t-element) var(--ease-out);display:block}
+.stk-chev-sp{display:inline-block;width:18px;flex:0 0 auto}
+.stk-nrow{display:flex;align-items:center;gap:0}
+.stk-nrow .stk-r{flex:1 1 auto}
+/* RICHER REAL NARRATION, two paragraphs where the real content supports it
+   (engine/tracesummary.js, traceSummaryNarrate / traceSummarySetNarrate):
+   what is running first, the real cascade second. Same .ts-narr look as
+   before, just two blocks instead of one so a person's eye gets a real
+   paragraph break, not a wall of one hedged sentence. */
+.ts-narr+.ts-narr{margin-top:8px}
 .rows{font-size:13.5px;line-height:1.85;color:var(--dim);margin-top:14px;padding-top:12px;
  border-top:1px solid var(--edge)}
 .rows b{color:var(--ink);font-weight:500;font-family:var(--num);font-variant-numeric:tabular-nums}
@@ -6104,28 +6166,23 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     the desktop row does not. */
  .fbar .fb-tog{position:static;order:-1}
  /* the switch keeps its corner on a phone, level with the folded bar, which
-    is one row of two circles here and leaves the right of that row empty.
-    Zoom follows the picture, right aligned, in a row: under it there is no
-    compass lane to keep clear. */
- /* and it keeps 12 of foot under it, the desktop's own, because accuracy
-    lies level with it in the lower left, round LR, placed by that 12 */
- .fzoom{position:static;order:2;align-self:flex-end;margin:8px 22px 12px 12px}
- .fzoom .fb-grp{flex-direction:row}
+    is one row of two circles here and leaves the right of that row empty. */
  /* THE BAND PILL TAKES ITS OWN ROW ON A PHONE, ABOVE ACCURACY. Round OG put
     it beside accuracy at a fixed left of 152, which is desktop arithmetic: on
-    a desktop zoom is in the far corner of a 900 wide stage. On a phone zoom
-    is in flow on that same line, so the line had to hold accuracy 132, the
-    pill up to 213 for Compounding, zoom 144, two gaps of 8 and the two 22
-    insets, 549 in all, and a 390 screen gives it 376. Measured on the build
-    at 390: "62% Gaining" lay under zoom out and zoom in, on every profile
-    and on a blank one, from 360 up to 480, and Compounding still did at 540.
-    The overlap moved with the length of the tier word, so no left value could
-    fix it. The pill goes in flow after the picture, at accuracy's own inset,
-    and zoom stays the last thing in the column, which is what accuracy's
-    bottom of 9 is measured against. Order 2 for both, because the pill is
-    ahead of the canvas in the markup and zoom is after it. The 3 of foot
-    puts 8 between the pill and accuracy, the 8 the desktop keeps between
-    them side by side, since accuracy is 50 high to zoom's 44. */
+    a desktop zoom sat in the far corner of a 900 wide stage. On a phone zoom
+    used to sit in flow on that same line, so the line had to hold accuracy
+    132, the pill up to 213 for Compounding, zoom 144, two gaps of 8 and the
+    two 22 insets, 549 in all, and a 390 screen gives it 376. Measured on the
+    build at 390: "62% Gaining" lay under zoom out and zoom in, on every
+    profile and on a blank one, from 360 up to 480, and Compounding still did
+    at 540. The overlap moved with the length of the tier word, so no left
+    value could fix it. The pill goes in flow after the picture, at
+    accuracy's own inset. Zoom is gone now, 2 November, his own red marks on
+    the Field screenshot, so the pill is the last thing in the column, and
+    accuracy's bottom of 9 is measured against the pill's own bottom instead.
+    The 3 of foot puts 8 between the pill and accuracy, the 8 the desktop
+    keeps between them side by side, since accuracy is 50 high to the pill's
+    44. */
  .railtop{position:static;order:2;align-self:flex-start;margin:8px 12px 3px 22px}
  /* Five blocks were absolutely positioned against a stage that is 900 wide
     on a desktop. At 390 they all landed on each other at the bottom of the
@@ -6226,8 +6283,6 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     zoom's own inset from the side. */
  .acc{left:22px}
  .howto{order:5;margin:12px 0 4px;max-width:none}
- .pol2{order:6;position:static;height:auto;margin:12px auto 0;justify-content:center}
- .pol2 svg{height:190px}
 }
 
 /* ============================================================
@@ -7835,15 +7890,9 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
    the class, its keyframe and its reduced motion case came out with it rather
    than being left behind as dead style that the next reader has to prove is
    dead. */
-/* THE OSCILLATING BAND'S MOVING PARTS. The marker, its ring and its number ride
-   in one group so a frame to frame move is a single transform rather than four
-   geometry writes. will-change lives here rather than inline because a class
-   that appears in the markup and in no stylesheet is a class nobody can find. */
-.pol2-mv{will-change:transform}
-/* the swing pill and the crossbar riding inside it join the same rule. The
-   pill sits over the button's own hit area, and a decoration that eats the
-   press is the same defect as a control with no affordance. */
-.pol2-mk,.pol2-dot,.pol2-ring{pointer-events:none}
+/* THE OSCILLATING BAND'S MOVING PARTS ARE GONE WITH .pol2 ITSELF, 2
+   November: the marker, its ring and its number no longer exist to move.
+   Left out rather than left behind, same rule as THE RULE ITSELF above. */
 @keyframes bootOut{to{opacity:0;visibility:hidden}}
 /* the beat is motion, so somebody who asked the machine to stop moving does
    not get five of them. Same rule as everything else in this sheet: the end
@@ -8083,8 +8132,8 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
    rule here is under the phone width and the desktop is not touched.
 
    Last in the sheet on purpose. Several of these narrow a rule written
-   earlier at the same specificity, .pol2's display and the dock's rings
-   among them, and at equal weight the later rule is the one that holds.
+   earlier at the same specificity, the dock's rings among them, and at
+   equal weight the later rule is the one that holds.
    ============================================================ */
 /* above the phone width the strip still fits, so the fold, the main menu's
    lighting and the loader circle do not exist there */
@@ -8185,17 +8234,19 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
   width:auto;z-index:5}
  .top.navopen .navlight{display:block;order:7;flex:1 1 100%;padding:6px 2px 4px}
 
- /* THE POLES GO INTO THE PICTURE. His words: "The heaven and hell, that's
-    clearly causing a problem, on both of these right now it shows up in the
-    very bottom of the square. I want you to move that inside of the circle,
-    or CQDQ on the square one, and then make the CQDQ a little bit smaller."
-    Measured at 390: the strip sat under the picture as a 190 pixel column and
-    its pitchfork landed on the stage's bottom edge. The halo and the pitchfork
-    are drawn inside the core now, above CQ and below DQ, by frCore in
-    ui/rings.js on Frames and Dial and by solCore in ui/wheel.js on the wheel,
-    the lit one being where the field is heading, and they are doors to the
-    same two drills the strip's ends opened. So the strip goes on a phone. */
- .pol2{display:none}
+ /* THE POLES GO INTO THE PICTURE, ON EVERY WIDTH NOW. His words: "The heaven
+    and hell, that's clearly causing a problem, on both of these right now it
+    shows up in the very bottom of the square. I want you to move that inside
+    of the circle, or CQDQ on the square one, and then make the CQDQ a little
+    bit smaller." Measured at 390: the strip sat under the picture as a 190
+    pixel column and its pitchfork landed on the stage's bottom edge. The halo
+    and the pitchfork are drawn inside the core, above CQ and below DQ, by
+    frCore in ui/rings.js on Frames and Dial and by solCore in ui/wheel.js on
+    the wheel, the lit one being where the field is heading, and they are
+    doors to the same two drills the strip's ends opened. The strip itself,
+    .pol2, is gone at every width now, 2 November, his own red marks on the
+    Field screenshot, and there is nothing left here to hide on a phone: the
+    rule this comment used to hold is gone with it. */
 
  /* ROOT ENERGETICS' READINGS ARE SQUARE BUTTONS ON A PHONE. His words: "I
     want these to be square buttons, these circles are taking up too much
@@ -8348,7 +8399,22 @@ body.quiet .sp-pulse,body.rm .sp-pulse{display:none}
    the panel's own colour so it reads over either fill, is the figure printed.
    Every position is a percent transform on a layer of its own.
    ============================================================ */
-.fdock .rb2{position:relative;display:block;width:100%;min-width:0;min-height:var(--tap);padding:6px 2px 8px;
+/* THE SAME BAR, REUSED WHOLESALE ON THE RIGHT RAIL, 2 November, second
+   pass. His own words: "show the opposites with zero being at the center
+   between the opposites and the charge positive or negative showing where
+   the percent is" -- rbPair (ui/component.js) already is exactly this, and
+   the Held/Installed pair per Child emotion is a real complementary share
+   of one whole (held/(held+installed), the two sides one axis can tip
+   toward, matching runFetterDrill's own prose, ui/drills.js: "held and
+   installed are the two sides this nerve can tip toward, and level
+   between them is where it is not pulled either way"). Reused wholesale,
+   never a second bipolar-bar implementation: the one gap was that this
+   whole block's geometry rule was scoped to .fdock only, so the identical
+   markup rendered inside #stack's own chain tabs or ui/analytics.js's
+   axis card would have painted with no width, no height and no track --
+   defined, not wired, the exact trap CLAUDE.md names. Both real homes
+   added to the one rule rather than copying it a second time. */
+.fdock .rb2,#stack .rb2,.ana-rb2 .rb2{position:relative;display:block;width:100%;min-width:0;min-height:var(--tap);padding:6px 2px 8px;
  border-radius:var(--r-xs);white-space:nowrap;text-align:left}
 .rb2-ln{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:6px;height:22px}
 .rb2-p{display:inline-flex;align-items:center;gap:6px;min-width:0;color:var(--dim)}
@@ -8387,13 +8453,18 @@ body.quiet .sp-pulse,body.rm .sp-pulse{display:none}
 .rb2.off .rb2-t>i.rb2-h{opacity:.07}
 .rb2.off .rb2-v{color:var(--dim)}
 .rb2.off .rb2-p .rb-ic{color:var(--dim);opacity:1}
-/* each pole that is its own reading is its own door, half the row each */
-.fdock .rb2-k{position:absolute;top:0;bottom:0;width:50%;min-height:var(--tap);margin:0;padding:0;z-index:2;
+/* each pole that is its own reading is its own door, half the row each.
+   Not used by the Held/Installed pair below (neither pole is handed a .q
+   of its own, held and installed are two sides of the SAME axis, not two
+   separate readings a press should open), kept scoped the same three ways
+   as the block above only so a future pair that does carry a .q door
+   still gets it right the first time on any of the three surfaces. */
+.fdock .rb2-k,#stack .rb2-k,.ana-rb2 .rb2-k{position:absolute;top:0;bottom:0;width:50%;min-height:var(--tap);margin:0;padding:0;z-index:2;
  border:0;border-radius:0;background:transparent;cursor:pointer;display:block}
-.fdock .rb2-k.l{left:0;border-radius:var(--r-xs) 0 0 var(--r-xs)}
-.fdock .rb2-k.r{right:0;border-radius:0 var(--r-xs) var(--r-xs) 0}
-.fdock .rb2-k:hover,.fdock .rb2-k.rb-hot{box-shadow:inset 0 0 0 1px var(--pc)}
-.fdock .rb2-k:focus-visible{outline:2px solid var(--pc);outline-offset:-2px}
+.fdock .rb2-k.l,#stack .rb2-k.l,.ana-rb2 .rb2-k.l{left:0;border-radius:var(--r-xs) 0 0 var(--r-xs)}
+.fdock .rb2-k.r,#stack .rb2-k.r,.ana-rb2 .rb2-k.r{right:0;border-radius:0 var(--r-xs) var(--r-xs) 0}
+.fdock .rb2-k:hover,.fdock .rb2-k.rb-hot,#stack .rb2-k:hover,#stack .rb2-k.rb-hot,.ana-rb2 .rb2-k:hover,.ana-rb2 .rb2-k.rb-hot{box-shadow:inset 0 0 0 1px var(--pc)}
+.fdock .rb2-k:focus-visible,#stack .rb2-k:focus-visible,.ana-rb2 .rb2-k:focus-visible{outline:2px solid var(--pc);outline-offset:-2px}
 
 
 /* ORIENTATION AND BALANCE, under coherence, round OM, and in the same family
@@ -9396,8 +9467,9 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
         of like the zoom keys on the horizontal line." The first visit lands
         on this column shut, GO, so the one reading that says how far to trust
         the picture was behind a door he did not know to open: "Actually, I
-        don't even see it." It lies on the stage now, beside #fzoom. Still two
-        rows: DQ and CQ, then the four. -->
+        don't even see it." It lies on the stage now, in its own lower left
+        corner (#fzoom, the corner it once mirrored, is gone, 2 November).
+        Still two rows: DQ and CQ, then the four. -->
    <div class="fdock" id="fdock" role="group" aria-label="Readings">
     <!-- TWO FAMILIES, PAIRS FIRST, 30 October. r1 from mockups/dual-readings,
          picked by the owner for the left-hand side: "Yeah, those are the
@@ -9526,39 +9598,6 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
      <div class="chk-row"><span class="chk-dot" style="background:var(--good)"></span><span class="chk-tx"><b>7, action response.</b> Attached and ignorant is the pattern's default. Aware and detached is the way out. Real, below. The six gates in Laws of Action, under its own name.</span></div>
      <div class="chk-row"><span class="chk-dot" style="background:var(--good)"></span><span class="chk-tx"><b>8, ego, nine words.</b> Fear, anger, shame, disgust, grief, receiving blocked, apathy, shock, sad. Real, below, seven of the nine: Child emotions reads fear, anger, shame, disgust, apathy, shock and sad. Its other two are surprise and anticipation, not grief or receiving blocked. Open, not merged silently, his call, DECISIONS.md.</span></div>
      <div class="chk-row"><span class="chk-dot" style="background:var(--mid)"></span><span class="chk-tx"><b>10, the koshas.</b> The elements, the body, the mind, the energy, the intelligence, the peace, the awareness, the soul. Not computed. The book itself gives three different counts for this, BOOK-ERRATA.md finding 8.</span></div>
-    </div>
-   </div>
-   <div class="lsec" data-sec="fetters">
-    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.5a3.6 3.6 0 013.6 3.6v7.8a3.6 3.6 0 01-7.2 0V8.1A3.6 3.6 0 0112 4.5"/></svg>Child emotions</span><i></i></button>
-    <div class="lsec-bd">
-     <!-- THE LABEL RULE, applied. One word where one word will do, and the
-     subtitle says what the control does rather than restating the schema.
-     "nine poled axes, held state then coherent opposite" is the data model
-     read aloud. -->
-     <!-- A PARAGRAPH IN A LABEL IS NOT A CASE PROBLEM. Nineteen words sat in
-     the span of a tier1 and the capitalize rule title cased all of them, and
-     the second clause started lowercase after a comma so it read as a
-     sentence broken in half. The label is the label and the prose goes in the
-     prose class, which on this rail is stk-def, the class that already
-     carries the definition of held and opposite.
-
-     It was also wrong about the controls. "the left slider is how much you
-     carry it" describes one axis and these two sliders set all nine at once,
-     which is the only thing about them a person cannot work out by looking. -->
-     <div class="tier1">Child emotions</div>
-     <p class="stk-def">Both sliders set all nine axes at once.</p>
-     <div class="bulk"><label for="allCh">held</label><input type="range" id="allCh" min="0" max="10" step="0.5" value="3"></div>
-     <div class="bulk"><label for="allRep">opposite</label><input type="range" id="allRep" min="0" max="10" step="0.5" value="0"></div>
-     <div id="chg"></div>
-     <!-- CHILD EMOTIONS ROUTES TO INTAKE, 2 November, his own words: "move
-          child emotions to diagnostic." The word diagnostic is clinical and
-          never ships (tests/copy.js, the 15 October non clinical ruling);
-          Intake, TAB.QUESTIONS's own real on-screen name (core.js: "the
-          diagnostic's 21 blocks of questions," id iqp, label Intake), is the
-          real structured self-report this bulk pair of sliders is a
-          shortcut for, not a replacement of it: the sliders stay, and now
-          so does a real door out to the longer walkthrough. -->
-     <button type="button" class="btn" id="chgoq" style="margin-top:10px">Go deeper in Intake</button>
     </div>
    </div>
    <div class="lsec" data-sec="matrix">
@@ -9700,7 +9739,8 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
         because seven seat names were drawn around the shell and nothing said a
         band could be opened; the bands still open, and only the sentence went.
         Its row in the stage grid is left in the template, empty and zero high,
-        because the canvas and the compass button address row 3 by number. -->
+        because the canvas addresses row 3 by number (the compass button,
+        #pol2, which shared the row, is gone, 2 November). -->
    <!-- THE FIELD DRAWN THREE WAYS. BP8, 25 September. The switch between
         them sat in the stage's left lane and moved to the right rail, ruled:
         "move that to the secondary nav on the right hand side, and let's just
@@ -9709,21 +9749,23 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
    <!-- the two renditions draw into the wheel's own cell, so all three are
         compared on the same ground. ui/rings.js writes it. -->
    <div id="frend" role="img" aria-label="The Field, drawn as nested frames. Every element is also listed in the panels either side." style="display:none"></div>
-   <!-- ZOOM, IN THE LOWER RIGHT. The three zoom circles were the tail of the
-        glass bar, and the bar and the switch above cannot both hold the top
-        of the stage with them in it: at 1600 the stage is 922 across, the
-        bar was 868 of it, and the switch is 146 more. Out of it, the bar
-        fits beside the switch without folding. They sit in the lower right,
-        where a map keeps its zoom, and after the picture on a phone. The
-        bar's own glass; ui/fieldbar.js builds them. -->
-   <div class="fzoom" id="fzoom" role="group" aria-label="Zoom"></div>
-   <!-- ACCURACY, IN THE LOWER LEFT, ZOOM'S MIRROR. Round LR in TASKS.md: "lower
-        left-hand corner, opposite of like the zoom keys on the horizontal
-        line." It comes back from the left rail's dock, where it went at ED,
-        and it lies on the picture the way the band word in the upper right
-        does, in that corner's glass, so it is back in OVERLAY in
-        ui/component.js and the wheel measures its radius against it.
-        renderAcc in ui/personas.js still writes it, by id. -->
+   <!-- #fzoom, THE THREE ZOOM CIRCLES IN THE LOWER RIGHT, ARE GONE, 2
+        November, his own red marks on the Field screenshot, camera-like
+        icons near the "1.0x" reframe pill. Zoom and reframe are not lost
+        with them: scrolling on the picture still zooms it, a drag still
+        pans it, and minus, plus and F still call fieldZoomBy and
+        fieldReframe direct (ui/ui.js's keydown handler), none of which ever
+        lived in this div. -->
+   <!-- ACCURACY, IN THE LOWER LEFT. Round LR in TASKS.md: "lower left-hand
+        corner, opposite of like the zoom keys on the horizontal line," which
+        named where it sits and not a dependency on #fzoom existing; zoom's
+        circles are gone from the opposite corner now, 2 November, and
+        accuracy's own position is unchanged. It comes back from the left
+        rail's dock, where it went at ED, and it lies on the picture the way
+        the band word in the upper right does, in that corner's glass, so it
+        is back in OVERLAY in ui/component.js and the wheel measures its
+        radius against it. renderAcc in ui/personas.js still writes it, by
+        id. -->
    <div class="acc" id="acc"></div>
    <div id="emap" class="emap"></div>
    <!-- THE CHARACTER PAGE, round LP, in the host the Masks door had (round
@@ -9740,7 +9782,45 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
         whole of a shared host deletes its sibling on the way past. -->
    <div id="iq" class="iq"><div id="avbody"></div><div id="iqbody"></div></div>
    <!-- THE INTAKE PAGE, round OG. Empty until it is opened: setTab moves intakeui.js's #iqbody in, and avatarui.js moves it back under #iq. -->
-   <div id="iqp" class="iq"></div>
+   <!-- CHILD EMOTIONS LEFT THE LEFT RAIL FOR HERE, 2 November, his own words
+        the second time, more plainly than the first: "the child emotions
+        are getting moved out of the left menu... those are going into the
+        diagnostic, as questions." The earlier round that round (this same
+        day, the comment this one replaces) read that instruction as "add a
+        door from the slider panel to Intake" and kept the sliders on the
+        left rail; his own words tonight say the sliders themselves move,
+        not a button pointing at them. So they are here now, byte for byte
+        the same controls (numField, panels.js; CHF/RPF; the bulk pair
+        allCh/allRep), same ids, same S.charge/S.replace writes, same
+        undo/sniff wiring -- nothing about what they do changed, only where
+        they stand. Placed as a direct child of #iqp and not inside #iqbody
+        on purpose: intakeui.js's renderIntake() rewrites #iqbody's whole
+        innerHTML on every press (its own comment: "this renderer writes the
+        whole of its host on every press"), which would tear these one-time-
+        bound slider elements out and silently stop their own closures from
+        ever firing again. #iqp itself is never rewritten that way, only
+        has #iqbody appended into and out of it, so a static child here
+        survives every press the way it survived every press on the left
+        rail. Framed with Intake's real question for each axis (IX_AXIS,
+        engine/data/intakemore.js) as each slider's own tip, grounded text,
+        not invented: the slider still sets the one real number (S.charge,
+        0 to 10, direct, not derived from the 108 addresses); the question
+        beside it is the same self-report question Intake's own "Emotional
+        axes" block below asks about the same axis, in words instead of a
+        bare drag, so this control finally reads as the question he asked
+        for and not a bare labelled slider. -->
+   <div id="iqp" class="iq">
+    <div class="lsec open" data-sec="fetters">
+     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.5a3.6 3.6 0 013.6 3.6v7.8a3.6 3.6 0 01-7.2 0V8.1A3.6 3.6 0 0112 4.5"/></svg>Child emotions</span><i></i></button>
+     <div class="lsec-bd">
+      <div class="tier1">Child emotions</div>
+      <p class="stk-def">Both sliders set all nine axes at once.</p>
+      <div class="bulk"><label for="allCh">held</label><input type="range" id="allCh" min="0" max="10" step="0.5" value="3"></div>
+      <div class="bulk"><label for="allRep">opposite</label><input type="range" id="allRep" min="0" max="10" step="0.5" value="0"></div>
+      <div id="chg"></div>
+     </div>
+    </div>
+   </div>
    <!-- KNOWLEDGE ONCE CARRIED GAMES, AND SUMMARY ONCE CARRIED ANALYTICS. Both
         folds are undone now, Games at KT and Analytics at round LV, and this
         note stays for the lesson rather than the state: A TAB HOST THAT
@@ -9818,7 +9898,14 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
    <div class="probe" id="probe"></div>
    <div class="howto" id="howto"></div>
 
-   <button class="pol2" id="pol2" aria-label="The compass. Where coherence sits and how far it swings. Opens the reading."></button>
+   <!-- #pol2, THE VERTICAL STRIP, IS GONE, 2 November, his own red marks on
+        the Field screenshot: a meter between the wheel and the chain panel,
+        ticks at 50/40% with the marker near the real reading. No renderer
+        writes into this id any more (renderPol2 is gone with it in
+        ui/personas.js), so nothing is left half wired. Its two doors into
+        runPoleDrill are the wheel's own halo and pitchfork now, at every
+        width, where GF already put them for a phone (ui/wheel.js,
+        ui/rings.js). -->
   </div>
 
   <!-- ============ RIGHT RAIL ============ -->
@@ -22580,8 +22667,20 @@ function traceSummaryCard(type,id,attrs){
    return {found:false, label:base, over:over,
     why:'no saboteur card or definition is on file for '+base+(SABAUTH&&SABAUTH[base]?', though it does carry a composition of its own in SABAUTH':'')};}
   return {found:true, label:base, over:over,
-   fields:{says:def?def.q:null, livedBehavior:card?card.h:null, becomesAvailable:card?card.a:null},
-   source:'SABDEF.q (what it says) and SABCARD.h/.a (the lived behaviour, and what becomes available) for '+base
+   /* behavior and trigger, 2 November, second pass: SABDEF.d (the output
+      behaviour) and SABDEF.t (the trigger it fires on) were on file and
+      resolved nowhere. His own words asking for the richer narration:
+      "what's running... the real behavior/trigger." Added here, at the
+      one resolve point, rather than read a second time inside the
+      narrator, so there is one source for what a saboteur's own fields
+      are, same as every other field this function already carries.
+      nextMove is SABCARD.n, the practice's own reframed command
+      (sabcard.js: "SABDEF.i, same meaning, reframed as notice, separate,
+      choose"), real and already on file, surfaced for the same reason. */
+   fields:{says:def?def.q:null, livedBehavior:card?card.h:null, becomesAvailable:card?card.a:null,
+    behavior:def?def.d:null, trigger:def?def.t:null, nextMove:card?card.n:null},
+   source:'SABDEF.d/.t/.q (the behaviour, the trigger and what it says) and SABCARD.h/.a/.n '
+    +'(the lived behaviour, what becomes available, and the next move) for '+base
     +(over?', read off the base pattern: the overshoot is the same cluster run past the point it helps, not a different one':'')};}
  if(type==='complex')
   return {found:false, label:String(id),
@@ -22667,19 +22766,39 @@ function traceSummaryClause(side,items){
  var tail=thin.length?('; '+traceSummaryList(thin.map(function(x){return traceSummaryWord(x.type,x.id)+' '+x.card.label;}))+' carries nothing further on file'):'';
  return parts.join('; ')+tail;}
 
-/* RESOLVE THEN NARRATE, the second half. One paragraph, hedged, never
-   asserting a connection the records themselves do not carry (the
-   same discipline atuned/data/celestial/integration/source-ai-
-   behavioral-synthesis.cjs's narrateSourceAI runs over astrology and
-   numerology records). Ends on the same plain accounting those files
-   close with: what kind of statement this is and is not. */
-function traceSummaryNarrate(self,selfCard,parents,children){
- var word=traceSummaryWord(self.type,self.id), label=selfCard.label||self.id,
-  sentences=[];
- if(selfCard.found){
-  var own=traceSummaryOwnLine(selfCard.fields);
-  sentences.push('The selected '+word+', '+label+(own?', reads as '+own:'')+'.');}
- else sentences.push('The selected '+word+', '+label+', carries nothing further on file beyond its own name and weight ('+selfCard.why+').');
+/* PARAGRAPH ONE, WHAT IS RUNNING. His own words, 2 November, second pass,
+   asking for richer narration: "a couple paragraphs... how these patterns
+   work through me," paragraph one "what's running, the real behavior/
+   trigger." A saboteur is the one tier that carries a real behaviour and a
+   real trigger as two separate fields (SABDEF.d/.t, surfaced onto the card
+   just above); every other tier keeps the one self-line it already had
+   (coherent/collapsed for an address, the family line for a hyper-complex,
+   the honest "carries nothing further" for a complex or a super complex,
+   neither of which has a card of its own by THE CHAIN). The old self-line
+   is never dropped, only led with the richer fields when they are real:
+   traceSummaryOwnLine's own says/lived clause still follows, so nothing
+   that was quoted before stops being quoted. */
+function traceSummarySelfPara(self,selfCard){
+ var word=traceSummaryWord(self.type,self.id), label=selfCard.label||self.id;
+ if(!selfCard.found)
+  return 'The selected '+word+', '+label+', carries nothing further on file beyond its own name and weight ('+selfCard.why+').';
+ var f=selfCard.fields||{}, own=traceSummaryOwnLine(f), lead=[];
+ if(f.behavior!=null)lead.push('runs as "'+f.behavior+'"');
+ if(f.trigger!=null)lead.push('fires at "'+f.trigger+'"');
+ if(lead.length)
+  return 'The selected '+word+', '+label+', '+lead.join(' and ')+(own?'; '+own:'')+'.';
+ return 'The selected '+word+', '+label+(own?', reads as '+own:'')+'.';}
+/* PARAGRAPH TWO, THE REAL CASCADE: what is below it, what is above it (what
+   it feeds into), read together, and the closing honest accounting every
+   narration in this file closes on. Unchanged logic from the one-paragraph
+   version, only lifted out so traceSummary can hand back both halves
+   separately as well as joined; a tier with nothing real above or below it
+   still gets this whole paragraph, because the honest "nothing sits below/
+   above it" sentences ARE the real content at a thin tier -- said once,
+   here, never padded with an invented second line to make the paragraph
+   look fuller than the record is. */
+function traceSummaryCascadePara(self,children,parents){
+ var word=traceSummaryWord(self.type,self.id), sentences=[];
  if(children.length)
   sentences.push('Below it, the real part'+(children.length>1?'s are':' is')+' '+traceSummaryClause('child',children)+'.');
  else sentences.push('Nothing sits below it on this graph: '+traceSummaryArticle(word)+' '+word+' is the floor of the chain, or none of its own parts reached the threshold yet.');
@@ -22692,6 +22811,17 @@ function traceSummaryNarrate(self,selfCard,parents,children){
    +' are both counted toward this same '+word+' by the reading, a registration and not a claim that one causes the other or the person.');
  sentences.push('This paragraph narrates what the graph and the library already hold. It does not compute a score, and it does not write a release, a reframe or a ritual.');
  return sentences.join(' ');}
+/* RESOLVE THEN NARRATE, now two real paragraphs, not one. Returns
+   {p1,p2,full}: full is p1 and p2 joined by a space, kept for every caller
+   that still wants one string (every existing test, and traceSummary's own
+   .summary field, below), p1/p2 for a caller that wants the real paragraph
+   break (ui/tracesummaryui.js). Never a third, invented paragraph: where a
+   tier's own content is thin, that thinness is said plainly inside
+   whichever of the two paragraphs it belongs to, exactly as it already was
+   before this split, never padded to make two paragraphs look even. */
+function traceSummaryNarrate(self,selfCard,parents,children){
+ var p1=traceSummarySelfPara(self,selfCard), p2=traceSummaryCascadePara(self,children,parents);
+ return {p1:p1, p2:p2, full:p1+' '+p2};}
 
 /* ============================================================
    traceSummary(g, node)
@@ -22724,10 +22854,15 @@ function traceSummary(g,node){
  var children=parts.children.map(decorate).sort(byKey);
  var parents=parts.parents.map(decorate).sort(byKey);
  var selfCard=traceSummaryCard(self.type,self.id,self);
+ var nar=traceSummaryNarrate(self,selfCard,parents,children);
  return {ok:true,
   node:{type:self.type, id:self.id, key:key, attrs:self, card:selfCard},
   parents:parents, children:children,
-  summary:traceSummaryNarrate(self,selfCard,parents,children)};}
+  /* summary stays the one joined string every existing caller and test
+     already reads; summaryParas is the real addition, the same two
+     paragraphs as an array, for a caller that wants the paragraph break
+     itself rather than a string it would have to split back apart. */
+  summary:nar.full, summaryParas:[nar.p1,nar.p2]};}
 
 /* ============================================================
    traceSummarySet(g, keys)
@@ -22804,29 +22939,37 @@ function traceSummarySetClause(members){
    +' carr'+(thin.length>1?'y':'ies')+' nothing further on file'):'';
  return parts.join('; ')+tail;}
 
-/* RESOLVE THEN NARRATE, over a set. One paragraph, hedged, crediting each
-   tier the way traceSummaryClause already credits a parent or a child,
-   closing on the identical honest line traceSummaryNarrate closes every
-   paragraph with, so a person reading either kind of blend never meets a
-   different voice. */
-function traceSummarySetNarrate(members){
- if(!members.length)
-  return 'Nothing real is selected on this graph. This paragraph narrates what the graph and the library already hold. It does not compute a score, and it does not write a release, a reframe or a ritual.';
- var sentences=[(members.length>1?'The selection, blended across '+members.length+' real nodes, is '
-   :'The selection is ')+traceSummarySetClause(members)+'.'];
- var withCard=members.filter(function(x){return x.card.found;});
+/* RESOLVE THEN NARRATE, over a set, now two real paragraphs the same way
+   traceSummaryNarrate above is: p1 is what the whole selection actually is
+   (the real clause over every member, exactly as it already read), p2 is
+   the cascade over the set -- the "read together" cross-tier sentence,
+   where more than one member carries real content, and the closing honest
+   accounting every narration in this file closes on. A one-member
+   selection (the degenerate case, TS10's own "exactly one real key still
+   resolves") has no read-together sentence at all, so p2 is the closing
+   line alone, said plainly rather than padded. */
+function traceSummarySetSelfPara(members){
+ if(!members.length)return 'Nothing real is selected on this graph.';
+ return (members.length>1?'The selection, blended across '+members.length+' real nodes, is '
+   :'The selection is ')+traceSummarySetClause(members)+'.';}
+function traceSummarySetCascadePara(members){
+ var sentences=[], withCard=members.filter(function(x){return x.card.found;});
  if(withCard.length>1)
   sentences.push('Read together, '+traceSummaryList(withCard.map(function(x){return traceSummaryWord(x.type,x.id)+' '+x.card.label;}))
    +' are all counted toward this one selection by the reading, a registration and not a claim that one causes another or the person.');
  sentences.push('This paragraph narrates what the graph and the library already hold. It does not compute a score, and it does not write a release, a reframe or a ritual.');
  return sentences.join(' ');}
+function traceSummarySetNarrate(members){
+ var p1=traceSummarySetSelfPara(members), p2=traceSummarySetCascadePara(members);
+ return {p1:p1, p2:p2, full:p1+' '+p2};}
 
 function traceSummarySet(g,keys){
  if(!traceIsGraph(g))return {ok:false, why:'there is no graph to read'};
  if(!Array.isArray(keys)||!keys.length)return {ok:false, why:'nothing is selected'};
  var members=traceSummarySetResolve(g,keys);
  if(!members.length)return {ok:false, why:'none of the selection names a real node on this graph'};
- return {ok:true, members:members, summary:traceSummarySetNarrate(members)};}
+ var nar=traceSummarySetNarrate(members);
+ return {ok:true, members:members, summary:nar.full, summaryParas:[nar.p1,nar.p2]};}
 
 try{window.__at&&window.__at('engine/tracesummary.js');}catch(e){}
 
@@ -36971,19 +37114,96 @@ function rbRow(q,nm,pct,raw,o){
    +'</span>';
   seats='<span class="rb-seats" aria-hidden="true">'+BANDS.map(function(b,i){
    return '<span'+(i===bl?' class="bk" style="--bc:'+seatCol(b)+'"':'')+'>'+esc((o.names||BANDS)[i])+'</span>';}).join('')+'</span>';}
- else track='<span class="rb-t" aria-hidden="true"><s style="left:25%"></s><s style="left:50%"></s><s style="left:75%"></s>'
-  +'<i class="rb-f" style="width:'+w+'%"></i><em class="rb-h"></em></span>';
+ /* THE PERCENT MOVES INSIDE THE BAR'S OWN FILL, 2 November, his own words
+    looking at the nine axis bars: "the percent goes inside the bar." o.inFill
+    is opt-in, not the row's new default: tests/pct.js (124, 237) and
+    tests/functional.js (7018) read .rb-v's text and its position against
+    .rb-n for DQ and Flow today, and this round touches neither reading --
+    DQ and Flow are not the bars he was looking at, and breaking a pinned
+    geometry test to fix a complaint about a different row would be the
+    "weaken the gate to get green" CLAUDE.md rules against, not a real fix.
+    The one caller opted in is analytics.js's anaAxisCard, the real per-axis
+    bar that is still on screen once Child emotions leaves the left rail
+    (ui/ui.js's #stack, moved to Intake, this same round).
+
+    Right-aligned against the fill's own trailing edge when the fill is wide
+    enough to hold it (mix-blend-mode:difference, so the label reads against
+    any seat colour in any theme without a per-colour tint). THE SAME SMALL-
+    VALUE CUT anaField ALREADY MAKES (ui/analytics.js, p.r<LMIN: a label that
+    does not fit is dropped from the shape it does not fit and read where it
+    does), generalised from a circle's radius to a track's own fill width:
+    below 18%, a short figure like "6%" has no room inside its own colour
+    (his own example), so the label sits just past the fill's trailing edge
+    instead, still inside the track, never forced back up beside the name.
+    read&&... guards an unread row, which keeps its dash on the name line,
+    unchanged, below. */
+ var inFill=!!o.inFill, vIn=inFill&&read&&p>=18;
+ /* THE FAR END, 2 November, fourth pass. His own words looking at rbPair's
+    CQ/Shadow bar beside rbRow's own single-value one: "it's showing the
+    charge at both ends now." rbPair's two ends are two shares of one whole
+    (lv and 100-lv), which is not this axis' real shape -- held and installed
+    are two independent 0-10 readings (engine/schema.js, a.held and a.opp)
+    that do not sum to anything, confirmed on Tomas where installed sits at
+    0 while held runs 6.4 to 9.6 (component.js's own rbChargePair post-mortem,
+    above). So this is not rbPair's center-anchored lean, which only has
+    meaning when both ends share one hundred: it is a second, independent
+    segment, pinned to the track's own far (right) end and sized to its own
+    real percent, the same "press in from an end, sized to the real value"
+    read rbPair's two poles give, applied to a value that does not share a
+    whole with the first. o.pct2 is opt-in, exactly as o.inFill is above: the
+    two existing callers (dq, flow) pass none of it, so their own markup is
+    unchanged, byte for byte, and the pinned geometry tests that read .rb-f's
+    width against rr-i (tests/functional.js's dock block) see no new element
+    at all on either of them. A nought real value (S.replace empty, Tomas's
+    own real case) draws at its real zero width rather than being hidden or
+    faked, CLAUDE.md rule 6: the same "no width to carry it" mechanism
+    .rb-f's own comment already relies on (overflow:hidden on a 0-width box
+    paints nothing), reused rather than a second special case for zero. */
+ var p2=o.pct2!=null?Math.max(0,Math.min(100,+o.pct2||0)):null;
+ var w2=read&&p2!=null?p2.toFixed(2):'0', col2=o.col2||'var(--ink)';
+ if(!o.cells)track='<span class="rb-t" aria-hidden="true"><s style="left:25%"></s><s style="left:50%"></s><s style="left:75%"></s>'
+  +'<i class="rb-f" style="width:'+w+'%">'+(vIn?'<b class="rb-fv">'+esc(raw)+'</b>':'')+'</i>'
+  +(inFill&&read&&!vIn?'<b class="rb-fv rb-fv-out" style="left:'+w+'%">'+esc(raw)+'</b>':'')
+  +(p2!=null?'<i class="rb-f2" style="width:'+w2+'%;--c2:'+col2+'"></i>':'')
+  +'<em class="rb-h"></em></span>';
  var c=read?(o.col||rbCol(p,o.bad)):'var(--dim)';
- return '<button type="button" class="kb rbar'+cls+(read?'':' off')+'" data-q="'+q+'" data-w="'+p.toFixed(2)+'"'
+ /* BARE, THE SAME WORD crBadge ALREADY USES FOR ITS OWN "ring with nowhere
+    of its own to open": a reading hosted inside a card that is already the
+    open drill (ui/analytics.js's anaAxisCard, 2 November, third pass) has
+    no second door to draw, so bare writes a div element, never a button, and
+    carries no data-q and no .kb -- the one global click dispatcher
+    (.kb[data-q], ui/ui.js) never meets a row here that answers to no real
+    key, which a button always would have, CLAUDE.md rule 1's own
+    "assert the thing on the other side" read against this exact primitive.
+
+    o.cls/o.attrs/o.after (the interactive case only) let the one real
+    caller that nests this bar inside an EXISTING .stk-r[data-fet] row
+    (ui/ui.js, #stack's Child emotions tier) fold its own identity onto
+    this element rather than drawing a second one: .stk-r[data-fet] is
+    checked before .kb[data-q] in that dispatcher, so the row still opens
+    runFetterDrill and never the row's own now-pointless data-q. Reused,
+    not rebuilt, and both existing callers (dq, flow) pass none of the
+    three, so their own markup is unchanged, byte for byte. */
+ var bare=!!o.bare, tag=bare?'div':'button';
+ return '<'+tag+(bare?'':' type="button"')+' class="'+(bare?'rbar':'kb rbar')+cls+(read?'':' off')+(o.cls?' '+o.cls:'')+'"'
+  +(bare?'':' data-q="'+q+'"')+' data-w="'+p.toFixed(2)+'"'+(o.attrs||'')
   +(o.fk?' data-fk="'+o.fk+'"':'')+(o.bad?' data-bad="1"':'')
   +(sv?' data-s="'+sv.map(function(v){return v.toFixed(3);}).join(',')+'"':'')
   +' data-v="'+esc(raw)+'" style="--c:'+c+'"'
   +(o.title?' data-tip-k="'+esc(nm)+'" data-tip="'+esc(o.title)+'"':'')
-  +' aria-label="'+esc(rbAria(nm,raw,read,o.title,'Opens the reading.'))+'">'
-  +'<span class="rb-row"><span class="rb-n">'+rbIcon(o.ic)+esc(nm)+'</span>'+sub
-  +'<span class="rb-v">'+esc(raw)+'</span></span>'
+  +' aria-label="'+esc(rbAria(nm,raw,read,o.title,bare?'':'Opens the reading.'))+'">'
+  /* o.after SITS INSIDE .rb-n, RIGHT AFTER THE NAME, the same spot the
+     untouched fetter list (ui/ui.js, chkTier's own "heaviest" em inside
+     .stk-nm) already places it -- read beside the word it marks, not as a
+     stray line of its own under the track. */
+  +'<span class="rb-row"><span class="rb-n">'+rbIcon(o.ic)+esc(nm)+(o.after||'')+'</span>'+sub
+  /* the figure moved into the fill above (o.inFill): printing it here too
+     would be the same number said twice on one row, the exact complaint
+     this round answers elsewhere on the page. Unread still prints its dash
+     here, since an unread row draws no fill for it to move into. */
+  +(inFill&&read?'':'<span class="rb-v">'+esc(raw)+'</span>')+'</span>'
   +track+seats
-  +'<span class="rb-d" aria-hidden="true"></span></button>';}
+  +'<span class="rb-d" aria-hidden="true"></span></'+tag+'>';}
 /* ONE READING, ICON-LED, 2 November. His own words looking at the wheel's
    nested chain next to this stack of bars: the right rail got crBadge
    (component.js's own words on it: "the named things print as a word and
@@ -37323,6 +37543,29 @@ function rbPair(k,o){
    +(drift?'<i class="rb2-hold rb2-gh" style="transform:translateX('+x.toFixed(2)+'%)"><i></i></i>':'')
    +'<i class="rb2-hold rb2-nd" style="transform:translateX('+x.toFixed(2)+'%)"><i></i></i></i>':'')+'</span>'
   +key(L,'l')+key(R,'r')+'</span>';}
+/* ============================================================
+   REMOVED, 2 November, third pass: rbChargePair, a CHILD axis' held charge
+   drawn as a share against its installed opposite (held/(held+installed)).
+   His own real screenshot: all nine of #stack's Child emotions rows read
+   100%, bar filled to one side, on all nine. Checked against Tomas's real
+   data before anything was touched: S.replace (installed) is {} for him,
+   so installed is 0 on every one of the nine axes, and held/(held+0) is a
+   flat 100 whatever held itself is -- Tomas's real held charges are 6.4 to
+   9.6 of 10, wide and real, and the share threw all of that away. It
+   degenerated to a meaningless constant exactly when the data looked like
+   his: one side measured, the other not yet. "Switching to a complete bar
+   format," his words looking at it.
+
+   Both real callers (#stack's Child emotions tier, ui/ui.js; ui/
+   analytics.js's anaAxisCard) now call rbRow instead, the one real bar
+   this product already draws for a single 0-100 reading, on the one real
+   figure this axis actually has standing alone: held charge, pct('charge',
+   v). Installed keeps its own real figure where each caller prints it
+   (runFetterDrill already did, ui/drills.js; anaAxisCard's own anaKv row
+   now does too), said plainly, never folded into a ratio with held again.
+   Nothing on this build calls rbChargePair; left here would be a function
+   defined and no longer wired, CLAUDE.md rule 2's own case, so it is cut
+   rather than left as a live landmine beside the bug it was. */
 /* WHAT A HOST CARRIES for a pair that is one reading: its own sentence, then
    each pole's word and sentence, then the lean in words, never as a score.
    The same string is the tooltip's body and, with the figures said first, the
@@ -38995,7 +39238,7 @@ var ATM_BY={}; ATM.forEach(function(x){ATM_BY[x.k]=x;});
    off BANDS, so a seat is never a table of its own. */
 var ATM_SEAT={
  fb:{addresses:'Root', seats:'Sacral', laws:'Crown', gates:'Heart', shadow:'Root', stories:'Throat',
-  saboteurs:'Solar', complexes:'Heart', hyper:'3rd Eye', character:'Crown', archetypes:'Throat', domains:'3rd Eye'},
+  fetters:'Sacral', saboteurs:'Solar', complexes:'Heart', hyper:'3rd Eye', character:'Crown', archetypes:'Throat', domains:'3rd Eye'},
  bm:{addr:'Root', masks:'Throat', pain:'Root', flow:'Sacral', sab:'Solar', cx:'Heart', hy:'3rd Eye'},
  cn:{top:'Crown', shells:'Heart', flat:'Sacral', reg:'Throat', well:'Root', heat:'Solar', layers:'3rd Eye'}};
 /* THE MAP. First row a control matches wins. sel is what it matches, snd is
@@ -40678,17 +40921,25 @@ function solCore(r,base){
       Round J13. */}
   g.restore();}
  HIT.push({k:'core',x:CX,y:CY,rad:cr0*1.5});
- /* THE TWO POLES INSIDE THE CIRCLE, on a phone. GF in TASKS.md, his words:
-    "The heaven and hell ... shows up in the very bottom of the square. I want
-    you to move that inside of the circle." The halo over the figure and the
-    pitchfork under it, inside the sphere, in the compass's colours and by its
-    rule for which is lit, the same pair frPoles in ui/rings.js puts in the
-    core of Frames and Dial. They scale with the core, so a pinch is what
-    brings them up to reading size, which is his next sentence: "when I zoom
-    in I can actually see the heaven and hell, like where I'm heading
-    towards." Pushed after the core, so the hit test, which reads HIT from
-    the end, finds either pole before the core it sits in. */
- if(!r.unread&&phoneW()){
+ /* THE TWO POLES INSIDE THE CIRCLE, ON EVERY WIDTH NOW. GF in TASKS.md, his
+    words: "The heaven and hell ... shows up in the very bottom of the
+    square. I want you to move that inside of the circle." The halo over the
+    figure and the pitchfork under it, inside the sphere, in the compass's
+    colours and by its rule for which is lit, the same pair frPoles in
+    ui/rings.js puts in the core of Frames and Dial. They scale with the
+    core, so a pinch is what brings them up to reading size, which is his
+    next sentence: "when I zoom in I can actually see the heaven and hell,
+    like where I'm heading towards." Pushed after the core, so the hit test,
+    which reads HIT from the end, finds either pole before the core it sits
+    in.
+
+    THE phoneW() GATE CAME OFF, 2 November, with the vertical strip,
+    ui/personas.js's #pol2, removed on his own red marks on the Field
+    screenshot. That strip was the only door to runPoleDrill above phone
+    width; the poles going here, into the core, is reuse of the mechanism
+    his own GF ruling already proved out, not a new one, so the door to the
+    reading stays open at every width once the strip is gone. */
+ if(!r.unread){
   var pgs=cr0*0.42, pup=r.CQ>=50, bigP=Math.max(15,Math.min(cr0*0.52,64));
   var ofL=bigP*0.26>=11?bigP*0.26*2.2:0;
   [['up',GL_HALO,CY-Math.max(cr0*0.62,bigP*0.43+pgs*0.45),GOLD,pup],
@@ -42537,17 +42788,25 @@ function frCore(M,r,cx,cy,R,o){
     the figures are one line each from full size, because a stack shrunk to
     fit is a coherence figure that no longer reads as the largest thing on
     the Field. */
- /* ON A PHONE THE FIGURES GIVE THE POLES ROOM, GF in TASKS.md, his words:
-    "move that inside of the circle, or CQDQ on the square one, and then make
-    the CQDQ a little bit smaller." The halo sits over CQ and the pitchfork
-    under DQ, frPoles below, so the figures are fitted to the band between
-    them, yl, as well as to the hole. That is what makes them smaller, and by
-    the fitting rule already here rather than by a size typed in. */
- var ph=phoneW(), yl=ph?(R-w/2-3)*.46:Infinity;
+ /* THE FIGURES GIVE THE POLES ROOM, ON EVERY WIDTH NOW, GF in TASKS.md, his
+    words: "move that inside of the circle, or CQDQ on the square one, and
+    then make the CQDQ a little bit smaller." The halo sits over CQ and the
+    pitchfork under DQ, frPoles below, so the figures are fitted to the band
+    between them, yl, as well as to the hole. That is what makes them
+    smaller, and by the fitting rule already here rather than by a size
+    typed in.
+
+    THE phoneW() GATE CAME OFF, 2 November, with ui/personas.js's #pol2, the
+    vertical strip, removed on his own red marks on the Field screenshot.
+    That strip was Frames' and Dial's only door to runPoleDrill above phone
+    width; drawing the poles in the core at every width, the way GF already
+    proved out for a phone, is reuse of that same mechanism and keeps the
+    door open once the strip is gone. */
+ var yl=(R-w/2-3)*.46;
  var inner=R-w/2-3,fits=function(rows){var H=0;rows.forEach(function(q){H+=q.h+(q.g||0);});
   var y=-H/2,ok=true;rows.forEach(function(q){var y0=y,y1=y+q.h,ym=Math.max(Math.abs(y0),Math.abs(y1));
    if(ym>=inner||ym>yl||q.w/2>Math.sqrt(inner*inner-ym*ym))ok=false;y=y1+(q.g||0);});return ok?H:0;};
- var poles=ph?frPoles(M,r,cx,cy,inner):'';
+ var poles=frPoles(M,r,cx,cy,inner);
  var F1=Math.max(22,38*inner/45),F2=Math.max(13,17*inner/45),lc=lab*.727,k,f1,f2,H;
  for(k=1;k>=.79;k-=.05){f1=F1*k;f2=Math.max(lab,F2*k);
   var g1=Math.max(4,6*inner/45),g2=Math.max(7,11*inner/45);
@@ -43501,7 +43760,7 @@ function fbValues(r){
 
 /* ---- the hosts, which are in the markup so the bar cannot vanish with a
    failed script, and the pieces built into them once ---- */
-var FB=null, FB_PANEL=null, FB_MENU=null, FB_FOLD=null, FB_SAY=null, FB_ZOOM=null, FB_VIEW=null, FB_TOG=null;
+var FB=null, FB_PANEL=null, FB_MENU=null, FB_FOLD=null, FB_SAY=null, FB_VIEW=null, FB_TOG=null;
 function fbCluster(g,label){
  var c=document.createElement('div'); c.className='fb-grp';
  c.setAttribute('role','group'); c.setAttribute('aria-label',g.nm);
@@ -43572,24 +43831,14 @@ function fbSay(k){if(!FB_SAY)return;var l=FB_BYK[k],v=FB_VALS[k],on=layerOn(k);
  FB_TOG.classList.add('fb-tog'); FB_TOG.setAttribute('aria-controls','fbar');
  FB_TOG.setAttribute('aria-expanded','true');
  FB.insertBefore(FB_TOG,FB.firstChild);
- /* ZOOM, ON EVERY PICTURE. His words, for Frames: "I want to be able to zoom
-    in and out, and then hit the F key and have it reframe." The wheel already
-    zoomed by scroll and reframed on F with no control you could see; the
-    same three sit at the end of the bar for all three pictures, and the
-    reframe circle's ring and pill carry how far in you are. */
- /* AND THEY LEFT THE BAR FOR #fzoom, EZ in TASKS.md, so that the bar and the
-    Wheel, Frames and Dial overlay can both hold the top of the stage without
-    the bar folding at 1600. Same three circles, same glass, same keys; only
-    the host moved, and #fzoom carries the group's role and name itself. */
- FB_ZOOM=document.getElementById('fzoom');
- var end=document.createElement('div'); end.className='fb-grp';
- [['zout','Zoom out',FB_IC.zout,'Move out. Or press minus.',function(){fieldZoomBy(1/1.25);}],
-  ['zin','Zoom in',FB_IC.zin,'Move in. Or press plus. Scrolling on the picture does the same, and a drag moves it.',function(){fieldZoomBy(1.25);}],
-  ['zfit','Reframe',FB_IC.zfit,'Back to the whole picture. Or press F.',function(){fieldReframe();}]].forEach(function(z){
-  var b=fbOrb({k:z[0],nm:z[1],ic:z[2],tip:z[3],val:z[0]==='zfit'});
-  b.addEventListener('click',function(e){e.stopPropagation();z[4]();});
-  end.appendChild(b);});
- (FB_ZOOM||FB).appendChild(end);
+ /* #fzoom, THE ZOOM CIRCLES AT THE STAGE'S LOWER RIGHT, ARE GONE, 2
+    November, his own red marks on the Field screenshot: the camera-like
+    cluster near the "1.0x" reframe pill. Nothing the three circles did was
+    the only door to it: scrolling on the picture zooms it, a drag pans it,
+    and the keys this group's own tips already named, minus, plus and F,
+    still call fieldZoomBy and fieldReframe directly (ui/ui.js's keydown
+    handler), untouched by this cut. So the real zoom and reframe stay; only
+    the on screen circles, and the pill that printed how far in, are gone. */
  /* arrow keys walk the bar, the way a toolbar should */
  FB.addEventListener('keydown',function(e){
   if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight')return;
@@ -43658,7 +43907,7 @@ var FB_ENTERED=false;
 const FB_ENTER_STEP=34;
 function fbEnter(){
  if(FB_ENTERED||REDUCED)return; FB_ENTERED=true;
- var hosts=[FB,FB_VIEW,FB_ZOOM].filter(function(h){return h&&h.offsetParent;}), n=0;
+ var hosts=[FB,FB_VIEW].filter(function(h){return h&&h.offsetParent;}), n=0;
  hosts.forEach(function(h){
   [].slice.call(h.querySelectorAll('.fb-b')).filter(function(b){return b.offsetParent;})
    .forEach(function(b){b.style.setProperty('--i',n++);});
@@ -43700,10 +43949,14 @@ function fbOpenMenu(on){if(!FB_MENU||!FB)return;
  db.setAttribute('aria-expanded',String(on));
  if(on)fbPlace(FB_MENU,db);}
 
-/* ---- the bar shut and open, colFold's shape in ui/ui.js. A store that
-   cannot be read opens the bar, which is the state nobody has to find their
-   way back from. Called at boot as a step, because the store is bound in
-   ui/ui.js, which loads after this file. ---- */
+/* ---- the bar shut and open, colFold's shape in ui/ui.js. AND IT STARTS
+   SHUT, 2 November, his own red marks on the Field screenshot: the glass bar
+   sat open over the wheel on first sight, the way the left column used to
+   (colShut's own GO ruling, above colFold in this file). Only a store with
+   nothing in it defaults, colShut's own rule, read the same way here: a
+   person who has pressed this once keeps their own choice, open or shut, on
+   every later visit, and a store that throws still opens it, the state
+   nobody has to find their way back from. ---- */
 function fbShutPaint(shut){
  if(!FB||!FB_TOG)return;
  FB.classList.toggle('shut',shut);
@@ -43715,7 +43968,7 @@ function fbShutPaint(shut){
   :'Folds the bar into this one circle. Every layer stays as it was set.');}
 function fbShutWire(){
  if(!FB||!FB_TOG)return;
- var shut=false; try{shut=STORE.get('fbar')==='shut';}catch(e){}
+ var shut=true; try{var got=STORE.get('fbar'); shut=got?(got==='shut'):true;}catch(e){shut=true;}
  fbShutPaint(shut);
  FB_TOG.onclick=function(e){e.stopPropagation();
   var now=!FB.classList.contains('shut');
@@ -43769,9 +44022,10 @@ function fbPaint(){
     that ground, the one the wheel's domain ring and the renditions use. */
  var lt=stageLight();
  /* and the coherence corner, which lies on the same ground under the switch
-    since round IT and is made of the same glass, and accuracy in the corner
-    opposite zoom since round LR, for the same reason */
- [FB,FB_PANEL,FB_MENU,FB_ZOOM,FB_VIEW,document.getElementById('railtop'),
+    since round IT and is made of the same glass. #fzoom, the opposite
+    corner accuracy once mirrored (round LR), is gone, 2 November; accuracy
+    itself keeps its own glass below. */
+ [FB,FB_PANEL,FB_MENU,FB_VIEW,document.getElementById('railtop'),
   document.getElementById('acc')]
   .forEach(function(x){if(x)x.classList.toggle('fb-lt',lt);});
  document.body.classList.toggle('noshadow',!layerOn('shadow'));
@@ -43800,11 +44054,10 @@ function fbPaint(){
       null for every layer that is not a rung, which unlocks any orb that was
       locked a paint ago. */
    var lg=lockFor(k); if(lg)lockApply(b,lg,{at:'.fb-orb',corner:true}); else lockClear(b);});});
- var zf=(FB_ZOOM||FB).querySelector('[data-fb=zfit]');
- if(zf){var zn=fieldZoom(),zp=(zn.s-1)/(zn.max-1)*100;
-  zf.querySelector('.val').setAttribute('stroke-dasharray',Math.max(0,Math.min(100,zp)).toFixed(1)+' 100');
-  zf.querySelector('.fb-v').textContent=zn.s.toFixed(1)+'×';
-  zf.classList.toggle('on',zn.s>1.001);}
+ /* THE REFRAME PILL'S PAINT WENT WITH #fzoom, 2 November: there is no
+    [data-fb=zfit] orb left anywhere to carry the "1.0x" reading, so there
+    is nothing here to paint. fieldZoom() itself stays, read by sound.js for
+    the zoom pitch, untouched by this cut. */
  var cur=LAYSET?-1:(S.view|0);
  if(FB_MENU)FB_MENU.querySelectorAll('[data-preset]').forEach(function(m){
   m.setAttribute('aria-checked',String(+m.getAttribute('data-preset')===cur));
@@ -54786,6 +55039,24 @@ function anaRender(){
  var loud=[].concat(r.sups,r.hys,r.cxs,r.sabs).sort(function(a,b){return b.w-a.w;})[0];
  var held=W.filter(function(n){return n.sq>=4;});
  var out='<div class="ana-wrap">';
+ /* CQ, DQ, SQ AT THE VERY TOP, 2 November, his own words looking at this
+    page: "at the very top, CQDQ SQ." Reusing this screen's own established
+    tile, ANA_MET's cr() ring with the letters as its icon (component.js's
+    own ruling, "CQ, DQ, SQ is essentially an icon... the letters are the
+    icon"), never inventing a fourth treatment: the same three tiles the
+    Readings strip already drew further down the page, in the order he named.
+    Pulled out of that strip below (never duplicated: a number printed twice
+    on one page is the same "spreadsheet of feelings" complaint this round's
+    other cuts answer) and read through anaMetCard/anaMetRow unchanged, same
+    data-ana="met|..." key, so the drill each one opens is the one this page
+    already had. Hidden on an unread profile, the same guard anaTele already
+    held for these three. */
+ if(!r.unread)out+='<div class="ana-tiles ana-top3">'+['cq','dq','lawsq'].map(function(k){
+   var M=ANA_MET[k], f=M.fig(r);
+   return '<button type="button" class="ana-tile" data-ana="met|'+k+'">'
+    +cr(M.seat,f.p,{size:'md',raw:f.raw,text:M.txt,hot:false,title:M.nm})
+    +'<span class="ana-tile-l" data-tip-k="'+esc(M.nm)+'" data-tip="'+esc(M.tip)+'">'+esc(M.nm)+'</span></button>';}).join('')
+  +'</div>';
  /* Every figure on this tab was bare except CQ, which carries a percent only
     because cr() appends one. A number with no scale is not a reading, it is a
     digit, and six of them sat here on six different scales. */
@@ -54836,7 +55107,15 @@ function anaRender(){
    /* ROUND RG. The band word stood alone, bold, with nothing on it, which
       is V9's judgement and not a reading. The tier's own first sentence
       rides after it, the same one Clients carries on its tooltip. */
-   :(r.tier?'Your energy reads <b>'+esc(r.tier.toLowerCase())+'</b>. '+unpSay(r.tier,'tier')+' '
+   /* "YOUR ENERGY" SAID TWICE IN A ROW, caught 2 November, his own words
+      naming the exact line: "your energy reads contracted, your energy is
+      fully loaded." unpSay(tier,'tier') is TIERDEF's own def sentence, and
+      every one of the nine starts "Your energy...", so the lead-in that
+      named the tier repeated the subject the authored sentence was about to
+      say again. The tier name is the label now, not a second "reads"
+      clause, and the authored sentence (unchanged, nothing invented) carries
+      the subject once. */
+   :(r.tier?'<b>'+esc(r.tier)+'.</b> '+unpSay(r.tier,'tier')+' '
      :'Coherence is still filling, with <b>'+esc(tierSay(r))+'</b>. ')
    +(loud?'<b>'+esc(loud.nm)+'</b> is the biggest thing running. '
      /* "Nothing is compounding" is a claim about somebody's chain, and a plan
@@ -55056,9 +55335,17 @@ function anaHot(r){
  if(r.unread||typeof hotList!=='function')return '';
  var L=hotList(), t={expanding:0,collapsing:0,steady:0};
  L.forEach(function(n){t[hotDir(n)]++;});
- var s='<div class="pm-eye" style="margin-top:20px">Running hot</div>';
- if(!L.length)s+='<p class="sum-p">No address is past five. Past five an address pulls '
-  +'more than half as hard as it can, and the ring on the Field bends under it.</p>';
+ /* THE DEFINITION MOVED TO THE EYEBROW'S OWN TITLE, 2 November, his own
+    words quoting the line verbatim back: "Seventy-five addresses are past
+    five where an address, get rid of that shit." The fact (how many, which
+    way each is moving) stays; the standing definition of "past five" that
+    repeated on every single view, printed the same words whether it was 3
+    addresses or 75, moves to a hover on the heading, same place every other
+    held-back definition on this page already lives (ANA_DIRSAY on each
+    direction word, the colour key under "What is running"). */
+ var s='<div class="pm-eye" style="margin-top:20px" title="Past five, an address pulls more '
+  +'than half as hard as it can, and the ring on the Field bends under it.">Running hot</div>';
+ if(!L.length)s+='<p class="sum-p">No address is past five.</p>';
  else s+=anaHotRows(L,t);
  return '<div class="ana-hot">'+s+'</div>';}
 var ANA_DIRSAY={expanding:'Its charge rose on its last change.',
@@ -55068,8 +55355,7 @@ function anaHotRows(L,t){
  var say=[], s='';
  ['expanding','collapsing','steady'].forEach(function(k){if(t[k])say.push('<b>'+t[k]+'</b> '+k);});
  s='<p class="sum-p"><b>'+L.length+'</b> address'+(L.length===1?' is':'es are')
-  +' past five, where an address pulls more than half as hard as it can and the ring on the '
-  +'Field bends under it. '+say.join(', ')+'.</p>'
+  +' past five. '+say.join(', ')+'.</p>'
   /* HS sweep: a three sentence legend for the three direction words sat
      between the count and the rows. Each word now carries its own meaning as
      its title, and the colour of the word already separates the three. */
@@ -55291,9 +55577,37 @@ function anaAxisCard(r,nm){
  var where=String(c.addr).indexOf('plexus')>=0?unp('plexus',c.addr):esc(c.addr);
  var h=anaHead(unp('axis','Axis'),c.nm+' toward '+c.opp,where+', '+esc(c.loc));
  var hv=S.charge[c.nm]||0, iv=S.replace[c.nm]||0;
- h+=anaKv([['Held',crBadge(c.seat,pct('charge',hv)||0,{size:'md',raw:fmtPct('charge',hv),title:c.nm+' held'})],
-  ['Installed',crBadge(c.seat,pct('installed',iv)||0,{size:'md',raw:fmtPct('installed',iv),title:c.opp+' installed'})],
-  ['Fetters',anaN(own.length)]]);
+ /* ONE COMPLETE BAR, NOT A RATIO, 2 November, third pass. The bipolar
+    rbChargePair this replaced computed held/(held+installed), which reads
+    100% whenever installed is unmeasured (0) no matter how large or small
+    held is -- the exact real bug his own screenshot caught on #stack's
+    nine rows, confirmed on Tomas (S.replace is {} for him, so every axis'
+    installed is 0) before either site was touched. rbRow (ui/component.js)
+    bare, the same primitive #stack now uses, prints the one real figure
+    this axis actually has on its own: held charge, 0 to 100, never
+    weighed against installed. bare:true because this card is already the
+    open drill -- no data-q, no second door, the same word crBadge's own
+    o.bare already uses for a reading with nowhere of its own to open.
+    Installed keeps its own real figure, said plainly below rather than
+    folded into a ratio that hid it inside the held side's own 100%. */
+ /* inFill:true, 2 November: the percent reads inside the bar's own fill
+    here, his own instruction, rather than beside the name (component.js's
+    own note on rbRow explains why this is the one caller opted in). */
+ /* pct2/col2, 2 November, fourth pass: his own words on rbPair beside this
+    card, "it's showing the charge at both ends now." iv (installed) is the
+    real second value this axis already carries (S.replace, read above for
+    the plain anaKv row); handed to rbRow's own far-end segment rather than
+    a new mechanism, so it draws at its real width -- 0 on Tomas, where
+    S.replace is still {} for every axis, the same real-zero this card's own
+    bar-not-ratio note above already chose over a faked mark. col2 left at
+    rbRow's own default (--ink, muted) rather than a seat colour: installed
+    has no seat of its own apart from the one held already colours this bar
+    in, and a second hue here would read as a second seat rather than a
+    second number on the same one. */
+ h+='<div class="ana-rb2">'+rbRow('axis-'+anaKey('axis',c.nm),c.nm,pct('charge',hv),fmtPct('charge',hv),
+   {unread:r.unread, bare:true, inFill:true, pct2:pct('installed',iv), ic:'<path d="'+c.ic+'"/>', col:seatCol(c.seat),
+    title:c.nm+'. Toward '+c.opp+'.'+(r.unread?'':' '+c.opp+' installed '+fmtPct('installed',iv)+'.')})+'</div>';
+ h+=anaKv([['Fetters',anaN(own.length)],['Installed',fmtPct('installed',iv)]]);
  h+='<p class="ad-p">'+unpSay('axis')+' Held is how much '+c.nm.toLowerCase()+' is stored. Installed is how much '
   +c.opp.toLowerCase()+' is in place. Coherence is the centre of this axis, not either end. It runs through <b>'
   +anaPl(own.length,'fetter','fetters')+'</b>. '+anaHeldSay(own)+'</p>';
@@ -55619,8 +55933,12 @@ addEventListener('keydown',function(e){
    ============================================================ */
 function anaTele(r){
  if(r.unread)return '';
+ /* CQ, DQ AND SQ MOVED TO THE TOP OF THE PAGE, 2 November (anaRender's own
+    ana-top3 block, above). Left out of this list so the figure prints once,
+    not twice: the tile, its tooltip and its drill (data-ana="met|cq" etc.)
+    are unchanged, only where the button sits moved. */
  var s='<div class="ana-tele"><div class="pm-eye" style="margin-top:20px">Readings</div>'
-  +'<div class="ana-tiles">'+['cq','dq','lawsq','pull','ex','jq','pole'].map(function(k){
+  +'<div class="ana-tiles">'+['pull','ex','jq','pole'].map(function(k){
    var M=ANA_MET[k], f=M.fig(r);
    return '<button type="button" class="ana-tile" data-ana="met|'+k+'">'
     +cr(M.seat,f.p,{size:'md',raw:f.raw,text:M.txt,hot:false,title:M.nm})
@@ -70221,8 +70539,19 @@ function tsBlockHtml(type,id){
  if(up.length)h+='<div class="ts-rows">'+up.map(tsPartRow).join('')+'</div>';
  else h+='<p class="ad-p">Nothing sits above it yet on this graph: either the chain stops here by design, or this one has not compounded with another of its kind yet.</p>';
  h+='<div class="pm-eye plain">Source AI, blended from the records above and below</div>'
-  +'<p class="ad-p ts-narr">'+esc(res.summary||'')+'</p>';
+  +tsNarrHtml(res);
  return h;}
+/* THE REAL PARAGRAPH BREAK, 2 November, second pass. traceSummary and
+   traceSummarySet (engine/tracesummary.js) now hand back summaryParas, the
+   same real two paragraphs as an array -- what is running, then the real
+   cascade -- rather than one hedged block. One call site for both tsBlock
+   Html and tsSetBlockHtml, so the two never draw it differently. Falls
+   back to the one joined string on an older/foreign result shape rather
+   than throwing, the same defensive habit this file already keeps around
+   res.summary elsewhere. */
+function tsNarrHtml(res){
+ var paras=Array.isArray(res.summaryParas)&&res.summaryParas.length?res.summaryParas:[res.summary||''];
+ return paras.filter(Boolean).map(function(p){return '<p class="ad-p ts-narr">'+esc(p)+'</p>';}).join('');}
 
 /* THE CHAIN-LOCAL MULTI-SELECT BLOCK, the one call site for
    traceSummarySet (engine/tracesummary.js), the way tsBlockHtml just
@@ -70246,7 +70575,7 @@ function tsSetBlockHtml(keys){
  var h='<div class="pm-eye">Selected together ('+res.members.length+')</div>'
   +'<div class="ts-rows">'+res.members.map(tsPartRow).join('')+'</div>';
  h+='<div class="pm-eye plain">Source AI, blended from the whole selection</div>'
-  +'<p class="ad-p ts-narr">'+esc(res.summary||'')+'</p>';
+  +tsNarrHtml(res);
  return h;}
 
 try{window.__at&&window.__at('ui/tracesummaryui.js');}catch(e){}
@@ -70635,11 +70964,18 @@ function nodeDrillHtml(n,o){
     the one thing that did not exist anywhere: a narrated paragraph reading
     the address together with what sits above it, hedged, never a causal
     claim. ui/tracesummaryui.js, tsBlockHtml, PR #158's traceSummary. */
- if(lockSees('sab')&&typeof tsBlockHtml==='function')
-  h+='<div class="pm-eye">Source AI, the blend</div><p class="ad-p ts-narr">'
-   +esc((function(){var g=tsCurrentGraph(); if(!g)return '';
-    var res=traceSummary(g,traceKey('pattern',n.i)); return res.ok?res.summary:(res.why||'');})())
-   +'</p>';
+ /* TWO REAL PARAGRAPHS HERE TOO, 2 November, second pass: this call site
+    built its own one-paragraph markup directly off res.summary rather than
+    going through tsNarrHtml (ui/tracesummaryui.js), which would have left
+    this one address drill one paragraph behind every other real narration
+    surface the moment that file grew a second paragraph. Routed through
+    the same helper now, so there is one place that decides how a
+    traceSummary result becomes markup. */
+ if(lockSees('sab')&&typeof tsNarrHtml==='function')
+  h+='<div class="pm-eye">Source AI, the blend</div>'
+   +(function(){var g=tsCurrentGraph(); if(!g)return '<p class="ad-p ts-narr"></p>';
+    var res=traceSummary(g,traceKey('pattern',n.i));
+    return res.ok?tsNarrHtml(res):'<p class="ad-p ts-narr">'+esc(res.why||'')+'</p>';})();
  h+=nodeStories(n);
  /* RUN THE PROTOCOL HERE. The reading ended at the reading: a person could see
     exactly which address was costing them and had no way to act on it from
@@ -73409,7 +73745,18 @@ function panAnd(a){return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' and '
    stack on the right rail already draws the nine axes with them, so the
    sliders draw the same mark for the same thing. The colour is still the
    seat's. ic is optional, so a row with no glyph keeps the dot. */
-function numField(host,name,band,store,key,ic,tip){
+/* q, THE VISIBLE QUESTION, 2 November, added for the Child emotions sliders
+   now that they sit on Intake and are meant to read as questions. NOT
+   folded into tip: tip feeds the .tipu "dotted carrier" (data-tip), and
+   tests/unpack.js's own gate ("every dotted carrier on the Summary says
+   only sentences the table holds") checks every .tipu[data-tip] on the
+   page against the one canonical UNPACK table (engine/data/gloss.js) --
+   real, deliberate, and caught live when IX_AXIS's own question text was
+   tried there first and the gate went red, 44 failures, because that text
+   is real but is not in that table. q is a plain paragraph instead, no
+   .tipu class, so it never enters that gate's scan; tip stays exactly what
+   it already was (the real glossary term), unchanged for every caller. */
+function numField(host,name,band,store,key,ic,tip,q){
  const d=document.createElement('div');d.className='nf';
  const col=band?seatCol(band):'var(--gold)';
  d.innerHTML=(ic?'<i class="nf-g" style="color:'+col+'"><svg viewBox="0 0 24 24" aria-hidden="true">'
@@ -73418,7 +73765,8 @@ function numField(host,name,band,store,key,ic,tip){
      table, on the label and not on the row: the row holds a slider, and a tap
      on a slider has to be a drag and not an explanation. */
   +'<label'+(tip?' class="tipu" tabindex="0" data-tip-k="'+esc(name)+'" data-tip="'+esc(tip)+'"':'')+'>'+name+'</label>'
-  +'<span class="tr" role="slider" tabindex="0" aria-label="'+name+'" aria-valuemin="0" '
+  +(q?'<p class="nf-q">'+esc(q)+'</p>':'')
+  +'<span class="tr" role="slider" tabindex="0" aria-label="'+name+(q?'. '+q:'')+'" aria-valuemin="0" '
   +'aria-valuemax="10" aria-valuenow="'+store[key]+'"><b style="background:'+col+'"></b></span>'
   +'<input type="number" min="0" max="10" step="0.5" value="'+store[key]+'" aria-label="'+name+'">';
  host.appendChild(d);
@@ -73451,9 +73799,19 @@ function numField(host,name,band,store,key,ic,tip){
  trk.addEventListener('wheel',function(e){e.preventDefault();set(store[key]+(e.deltaY<0?.5:-.5));},{passive:false});
  inp.addEventListener('wheel',function(e){e.preventDefault();set(store[key]+(e.deltaY<0?.5:-.5));},{passive:false});
  return {inp,tr,trk};}
+/* THE SLIDER NOW SHOWS THE REAL QUESTION TOO, 2 November, grounded in
+   IX_AXIS (engine/data/intakemore.js), the same question Intake's own
+   "Emotional axes" block asks about this exact axis -- not invented copy,
+   the one real question this product already has for it. Read once into a
+   lookup by k, the axis's own CHILD name, because IX_AXIS is a short table
+   scanned by eye elsewhere and a scan per slider on every page load is the
+   wrong trade for nine rows. Passed as numField's own q, not folded into
+   tip -- see numField's comment on why. */
+var IX_AXIS_BY={}; if(typeof IX_AXIS!=='undefined')IX_AXIS.forEach(function(r){IX_AXIS_BY[r.k]=r;});
 const CHF={},RPF={},LWF={};
 CHILD.forEach(function(cf){
- CHF[cf.nm]=numField($('chg'),cf.nm,cf.seat,S.charge,cf.nm,cf.ic,unpackOf(cf.nm,'feeling'));
+ CHF[cf.nm]=numField($('chg'),cf.nm,cf.seat,S.charge,cf.nm,cf.ic,unpackOf(cf.nm,'feeling'),
+   (IX_AXIS_BY[cf.nm]?IX_AXIS_BY[cf.nm].q:null));
  /* the opposite takes the same mark in Heart, as the stack draws it */
  RPF[cf.nm]=numField($('chg'),'toward '+cf.opp,'Heart',S.replace,cf.nm,cf.ic,unpackOf(cf.opp,'opposite'));
  RPF[cf.nm].inp.parentElement.classList.add('oppf');});
@@ -73470,12 +73828,15 @@ $('allCh').addEventListener('input',function(e){toYou();
  CHARGES.forEach(function(c){S.charge[c]=+e.target.value;});syncCh();saveYou();render();});
 $('allRep').addEventListener('input',function(e){toYou();
  CHARGES.forEach(function(c){S.replace[c]=+e.target.value;});syncCh();saveYou();render();});
-/* CHILD EMOTIONS' OWN DOOR OUT TO INTAKE, same section, body.html's own
-   comment above #chgoq carries the full why. setTab is the one real call
-   every other door to a tab already makes; nothing new is invented here,
-   this section just gets the one it did not have. */
-(function(){var go=$('chgoq'); if(!go)return;
- go.addEventListener('click',function(){setTab(TAB.QUESTIONS);render();});})();
+/* #CHGOQ, THE DOOR OUT TO INTAKE, IS GONE, 2 November, because the sliders
+   it pointed at are not on the left rail to point at any more -- they are
+   on Intake now (body.html's own #iqp comment carries the full why), so a
+   button whose only job was "go to Intake" from a panel that is already on
+   Intake would open the tab it is already open on. Left here, commented,
+   rather than silently dropped: CLAUDE.md rule 1, assert the thing on the
+   other side of a change, and the thing on the other side of removing a
+   button is checking nothing still expects it. Nothing does; $('chgoq')
+   was the only reference (grep, this round).*/
 /* THE BULK LAW SLIDER ANSWERS NOTHING, P2-5 of the inference audit, 24
    October. It set every law in one drag, and a law moved off its seed counts
    as answered (lawIn, saveProfile), so one gesture filled all 21 and CQ, the
@@ -79789,144 +80150,25 @@ function spNumWire(el){
  el.querySelectorAll('[data-num]').forEach(function(btn){
   btn.onclick=function(){runNumDrill(btn.getAttribute('data-num'));};});}
 
-/* ---- the compass. where coherence sits, and how far it swings. ---- */
-/* THE OSCILLATING BAND, BUILT ONCE AND MOVED EVERY FRAME.
-
-   This wrote its whole SVG through innerHTML on every animation frame, and it
-   is called from the rAF loop while the Field is up. Measured on the Field at
-   1600x1000: 59.96 forced layouts and 59.96 style recalculations per second,
-   which is one of each per frame, from this one write.
-
-   Only four nodes move. Everything else is a function of the reading and is
-   the same on every frame until the reading changes. So the picture is built
-   when its signature changes and the marker is moved by attribute writes after
-   that, which the compositor takes without a layout. The drift is deliberately
-   not in the signature, because the drift is the thing that moves.
-
-   REDUCED gets the end state rather than a slower one: drift is already zero
-   under it, so the signature never changes and nothing is rewritten at all. */
-var POL2={sig:null,el:null,mv:null,yB:0,dy:0};
+/* ---- the compass. where coherence sits, and how far it swings. ----
+   renderPol2 AND #pol2 ARE GONE, 2 November, his own red marks on the Field
+   screenshot: the vertical strip between the wheel and the chain panel,
+   ticks at 50/40% with the marker riding near the real reading. The two
+   doors it carried, data-polend up and dn into runPoleDrill, are not lost
+   with it: wheel.js and rings.js already drew the same halo and pitchfork
+   with the same doors inside the wheel's own core on a phone (GF in
+   TASKS.md), and that drawing now runs at every width instead of being
+   gated to phoneW(), so the reading he called "the heaven and hell" opens
+   from the wheel itself on every surface the strip used to cover. */
 /* WHERE COHERENCE SWINGS, on its own scale. The band narrows as coherence
    rises: tight alignment leaves little room to wander, a decohering field
-   ranges wide. Lifted out of renderPol2 unchanged, because the Field's two
-   renditions draw the same range round their core, and two copies of one
-   formula are two places for one range to be drawn two sizes. */
+   ranges wide. Read by drills.js, ui.js and both renditions in ui/rings.js,
+   which draw the same range round their core, so one formula is one place
+   for it rather than several copies drawn to disagree. */
 function cqRange(cq){
  cq=Math.max(0,Math.min(100,cq));
  var swing=(1-cq/100), band=2.5+swing*swing*26;
  return {cq:cq, band:band, lo:Math.max(0,cq-band/2), hi:Math.min(100,cq+band/2)};}
-function renderPol2(r){
- var el=$('pol2'); if(!el)return;
- /* the labels sit at x+20 and run right, so a 58 wide box cut them off.
-    the box is wide enough to hold what it draws. */
- var H=360,Wd=104,top=30,bot=H-30,x=34;
- var rg=cqRange(r.CQ), cq=rg.cq, bandPts=rg.band;
- var t=REDUCED?0:S.t;
- /* one wander, rbDrift (ui/component.js), shared with the CQ edge of the
-    rail's pair bar, so the marker and the bar swing as one */
- var drift=REDUCED?0:rbDrift(t);
- var live=cq+drift*(bandPts/2);
- var y=bot-(Math.max(0,Math.min(100,live))/100)*(bot-top);
- /* the marker is DRAWN at the undrifted position and MOVED from there */
- var yB=bot-(Math.max(0,Math.min(100,cq))/100)*(bot-top);
- var mid=bot-(bot-top)*0.50, y60=bot-(bot-top)*0.60, y40=bot-(bot-top)*0.40;
- var up=cq>=50, gc=GOLD, rc=PAL.Root;
- var mc=up?gc:rc;
- /* THE SIGNATURE IS CHECKED BEFORE THE PICTURE IS BUILT, not after. Building
-    twenty five SVG nodes into a string and then discovering the string was not
-    needed is the same work as writing it. On the Field this ran every frame. */
- var sig=[Math.round(cq*100),Math.round(bandPts*100),r.unread?1:0,up?1:0,mc,
-          REDUCED?1:0,Wd,H].join('|');
- if(POL2.sig===sig&&POL2.el===el&&el.firstChild){
-  /* HALF PIXEL STEPS, NOT HUNDREDTHS. The drift is slow, about a quarter
-     of a pixel a frame, and a transform written to two decimals changed on
-     every frame, so the marker's layer was re-composited sixty times a
-     second under translucent panes. Measured on the Field under glass, with a
-     second page open as the design gate keeps one: 22.5 frames a second on
-     Gordon, and 23.3, 26.1 and 23.2 on Diane, Rosa and James before the CQ
-     rebuild touched anything. Gordon alone passed, because his old CQ of 0.8
-     pinned the marker at the floor where the drift clamps and nothing was
-     written. At half pixel steps, which is a whole device pixel on a 2x
-     screen, the write lands every few frames: glass 35.9 on Gordon and 35.5
-     on Diane, and every other lighting back near 60. */
-  var dy0=Math.round((y-POL2.yB)*2)/2;
-  if(POL2.mv&&dy0!==POL2.dy){POL2.mv.style.transform='translateY('+dy0+'px)';POL2.dy=dy0;}
-  return;}
- var s='<svg viewBox="0 0 '+Wd+' '+H+'" preserveAspectRatio="xMidYMid meet" aria-hidden="true">';
- s+='<line x1="'+x+'" y1="'+top+'" x2="'+x+'" y2="'+mid+'" stroke="'+gc+'" stroke-width="2.4" stroke-linecap="round" opacity=".85"/>';
- s+='<line x1="'+x+'" y1="'+mid+'" x2="'+x+'" y2="'+bot+'" stroke="'+rc+'" stroke-width="2.4" stroke-linecap="round" opacity=".85"/>';
- s+='<rect x="'+(x-5)+'" y="'+y60+'" width="10" height="'+(y40-y60).toFixed(1)+'" rx="2" fill="rgba(128,128,128,.10)"/>';
- [[60,y60],[50,mid],[40,y40]].forEach(function(tk){
-  s+='<line x1="'+(x-6)+'" y1="'+tk[1]+'" x2="'+(x+6)+'" y2="'+tk[1]+'" stroke="rgba(128,128,128,.34)" stroke-width="1"/>';
-  /* the scale in the marker's own unit, 17 October, percent phase 2: a tick
-     at 60 beside a marker reading 62% would be two units on one axis */
-  s+='<text x="'+(x-10)+'" y="'+(tk[1]+3.5)+'" text-anchor="end" class="pol2-t">'+tk[0]+'%</text>';});
- /* THE TWO ENDS ARE DOORS. The compass was a picture of a direction with
-    nothing at either end of it. The top of the cone is anchored by the
-    twelve, the bottom by the blueprint and the nine circles, and both are
-    behaviours rather than figures. Each end carries its own hit box, which
-    is generous because the glyphs are small, and opens its own roster. */
- s+='<g class="p2end" data-polend="up" opacity="'+(up?1:.35)+'">'
-  +'<rect x="'+(x-22)+'" y="'+(top-30)+'" width="44" height="34" fill="transparent"/>'
-  +'<ellipse cx="'+x+'" cy="'+(top-15)+'" rx="8" ry="3.2" fill="none" stroke="'+gc+'" stroke-width="1.6"/>'
-  +'<path d="M'+(x-7)+' '+(top-4)+' Q'+x+' '+(top-11)+' '+(x+7)+' '+(top-4)+'" fill="none" stroke="'+gc+'" stroke-width="1.3" opacity=".6"/></g>';
- s+='<g class="p2end" data-polend="dn" opacity="'+(up?.35:1)+'">'
-  +'<rect x="'+(x-22)+'" y="'+(bot)+'" width="44" height="32" fill="transparent"/>'
-  +'<path d="M'+x+' '+(bot+22)+' L'+x+' '+(bot+11)+'" stroke="'+rc+'" stroke-width="1.8" fill="none"/>'
-  +'<path d="M'+(x-6)+' '+(bot+11)+' L'+(x-6)+' '+(bot+4)+' M'+x+' '+(bot+11)+' L'+x+' '+(bot+2)
-  +' M'+(x+6)+' '+(bot+11)+' L'+(x+6)+' '+(bot+4)+'" stroke="'+rc+'" stroke-width="1.5" fill="none"/>'
-  +'<path d="M'+(x-7)+' '+(bot+11)+' L'+(x+7)+' '+(bot+11)+'" stroke="'+rc+'" stroke-width="1.5" fill="none"/></g>';
- /* THE RANGE IS A PILL NOW, AND "SWING 11" IS GONE.
-    Ruled: "where is this swing 11, get rid of that", and with it the whole
-    class, "100 plus minus 12, swing 11, that shit has to all go". A figure
-    with a tolerance stapled to it is a lab readout. And the replacement was
-    ruled in the same breath: "give a pill to the lower right side of the
-    number of the coherence slider, like it oscillates within the person's
-    range." So the range is drawn and never stated.
-
-    What was here drew the range twice and said it a third time: a seven wide
-    wash on the line at .16, which is the smudge proto/dials names (an
-    interval is defined by its ends, and a fill with no ends has none), plus
-    the words above it. One drawing, and it is the pill: a capsule on the
-    axis's own scale with a hairline giving it its two ends, sitting in the
-    column right of the number, with the marker's crossbar riding inside it.
-    The number keeps its place because it labels the marker, not the range.
-
-    AND IT DOES NOT DRAW OFF THE DEFAULTS. bandPts is widest at coherence
-    nought, so an empty field drew the widest range this instrument can
-    report, which is it reporting on itself as though it had read somebody.
-    Same rule the number two lines down already kept and this did not.
-
-    THE COLUMN IS FIXED AND IT IS FIXED WHERE IT IS FOR A REASON. The number
-    starts at x+20 and is set in the tabular face at 11px, so three digits
-    reach x+40, and coherence can round to 100. A pill that slid left when
-    the reading dropped under ten would be a frame that moves, and a frame
-    that moves cannot be read against. So it sits at the tightest column that
-    clears the widest number this axis can print, and it stays there. */
- /* AND THE PILL IS GONE, round LU, 29 September, reversing the ruling quoted
-    above. His words, with a screenshot of Gordon at 19 and a circle drawn
-    round it: "on the heaven and hell item on the field page, the halo and
-    pitchfork, there's a little pill to the right of the arrow that got
-    introduced, I want that removed." The capsule went and so did the crossbar
-    that rode inside it, because a tick with no capsule round it is a mark
-    pointing at nothing. The range is still drawn: the marker's own drift below
-    moves through it, bandPts wide, so how far it wanders is the range. */
- /* the marker and its number ride in one group so the frame to frame move is a
-    single compositor transform rather than four geometry writes */
- s+='<g class="pol2-mv">';
- s+='<path class="pol2-mk" d="M'+(x+9)+' '+yB.toFixed(1)+' L'+(x+17)+' '+(yB-4.5).toFixed(1)+' L'+(x+17)+' '+(yB+4.5).toFixed(1)+' Z" fill="'+mc+'"/>';
- s+='<circle class="pol2-dot" cx="'+x+'" cy="'+yB.toFixed(1)+'" r="3.6" fill="'+mc+'"/>';
- s+='<circle class="pol2-ring" cx="'+x+'" cy="'+yB.toFixed(1)+'" r="7" fill="none" stroke="'+mc+'" stroke-width="1" opacity=".45"/>';
- /* not off the defaults. the marker still sits where the arithmetic puts it,
-    because the picture of an unread field is a real picture, but the number
-    beside it is not printed until somebody has entered something. */
- s+='<text x="'+(x+20)+'" y="'+(yB+4).toFixed(1)+'" class="pol2-c" style="fill:'+mc+'">'
-  +fmtPct('cq',cq,{unread:r.unread})+'</text></g>';
- el.innerHTML=s+'</svg>';
- POL2.sig=sig; POL2.el=el; POL2.yB=yB;
- POL2.mv=el.querySelector('.pol2-mv');
- if(POL2.mv)POL2.mv.style.transform='translateY(0px)';
- POL2.dy=0;}
 
 /* ---- accuracy. one value, given room. B19 scope. ---- */
 function renderAcc(r){
@@ -84532,7 +84774,15 @@ fieldPinch($('frend'),false);
    Energetic summary moved above it from the right rail; both still open
    closed, off the same empty left set below, so the move needed no entry
    here.) */
-var OPENSEC={left:{}, right:{you:1}};
+/* FETTERS DEFAULTS OPEN, 2 November: paintSections() below is the one real
+   place a .lsec's open/closed state is decided, off this object and
+   nothing else -- a static "open" class in the markup (body.html's #iqp
+   block, the Child emotions sliders moved there this round) is overwritten
+   on the very first paint, found live (classList came back bare "lsec",
+   not "lsec open", the moment the engine checked it rather than the markup
+   it shipped). The sliders are controls, not a reading to tuck behind a
+   press, the same reasoning "you" already carries on the right. */
+var OPENSEC={left:{fetters:1}, right:{you:1}};
 /* which surfaces have already had their sections seeded, so a tab opens what
    it is about the first time and never argues with a person who closed it. */
 var SEC_SEEDED={};
@@ -84801,13 +85051,16 @@ var STK_OPEN={};
    needs no such rebuild... kind is set here"); an address node carries no
    .kind at all, only .sq and .b, which is how fbUnpin's own FB_PINK fallback
    already tells a bare address apart from everything named. Nothing
-   selected opens Child emotions, the one tier that is never empty (nine
-   fixed rows) and the tab this rail opened to before tabs existed. */
+   selected opens Nerve now, 2 November, since Child emotions (the old
+   default, "the one tier that is never empty") left this rail for Intake:
+   Nerve is the next tier down that still draws something on an empty
+   field without a padlock, its own "Nothing is carrying yet" line,
+   written for exactly this case already. */
 function stkDefTier(){
  var p=S.pin;
  if(p&&p.kind&&(p.kind==='fet'||CHAINTIERS.some(function(t){return t.k===p.kind;})))return p.kind;
  if(p&&p.sq!==undefined&&p.b!==undefined)return 'nerve';
- return 'fet';}
+ return 'nerve';}
 /* ============================================================
    THE CHAIN, LIVE. FIELD_REDESIGN_BRIEF_2026-11-01.md Part 1: this replaces
    the static colour legend ("Saboteur. Colored by the seat it sits at...")
@@ -84859,6 +85112,147 @@ function chkTier(kind,list,seat){
      glyph:'<path d="'+CHAINGLYPH[kind]+'"/>',title:o.nm+', '+f+(o.over?', overshot':'')})
    +'<span class="stk-nm">'+esc(o.nm)+(o.unnamed?'<em>inferred</em>':'')+(dom?'<em>heaviest</em>':'')+'</span></button>';}).join('')
   +(idx.length>cap?'<div class="pm-more">and '+(idx.length-cap)+' more</div>':'');}
+/* ============================================================
+   TRUE PARENT-CHILD NESTING, right rail only, 2 November, second pass. His
+   own words looking at the first pass (chkTier, above, grouped by tier):
+   "when I click on a super complex, hyper complex, complex, or saboteur,
+   they should all be nested inside their parent." The first pass opened
+   "Saboteur" and showed every saboteur in the record; this opens one
+   super-complex and shows its own two hyper-complexes, nested one level in,
+   each opening to its own two complexes, each to its own two saboteurs.
+
+   THE REAL EDGE, confirmed against compute.js before anything below was
+   written (not assumed from THE CHAIN's prose in trace.js): a sup's own
+   .parts are its real two hyper-complexes (compute.js, "sups.push({...
+   parts})"); a hy's .parts are its real complexes ("hys.push({...
+   parts:fam})", fam=cxs.filter(c=>c.hcx===h.nm)); a cx's .parts are its
+   real two saboteurs ("cxs.push({...parts})", parts=fam.slice(i,i+2) off
+   the same sabs array). Every one of these .parts arrays holds the SAME
+   object references the reading's own sabs/cxs/hys/sups arrays hold, not
+   copies, which is why indexOf against the full array below always finds
+   them: this is the identical real data traceNeighbors/traceDescendants
+   (engine/trace.js) walk over the 'supports' edge, read here one layer
+   closer to the reading that built it, with no graph object required in
+   the render path. Saboteur is the floor of this particular nest: its own
+   real children are addresses (THE CHAIN's pattern rung), which the Nerve
+   section below already lists in full, so nesting stops at saboteur on
+   purpose, not by omission. */
+var CHAIN_CHILD_KIND={sup:'hy',hy:'cx',cx:'sab'};
+var CHAIN_PARENT_KIND={hy:'sup',cx:'hy',sab:'cx'};
+function chkFullList(kind,rr){return {sab:rr.sabs,cx:rr.cxs,hy:rr.hys,sup:rr.sups}[kind]||[];}
+function chkNestKey(kind,idx){return kind+':'+idx;}
+/* EXPLICIT STATE WINS OVER THE DEFAULT. A node a person has pressed shut
+   stays shut even if it sits on the path to the current selection, the
+   same "once a person presses a tier's own header it is in this set and
+   that press is remembered" rule STK_OPEN already carries for the old
+   tier headers; this is the identical object for the new per-node rows. */
+var STK_NEST={};
+/* EVERY ANCESTOR OF THE CURRENT SELECTION, so the tree opens to wherever a
+   person just pressed on the wheel or the left rail, the same answer
+   stkDefTier already gives the tier-level disclosure. Walks up by object
+   identity (plist[i].parts.indexOf(node)), never by name, because an
+   unnamed cluster's own name is not unique the way a real object reference
+   always is. */
+function chkAncestors(rr,kind,o){
+ var out={}, k=kind, node=o, guard=0;
+ while(CHAIN_PARENT_KIND[k]&&guard++<8){
+  var pk=CHAIN_PARENT_KIND[k], plist=chkFullList(pk,rr), parent=null;
+  for(var i=0;i<plist.length;i++){if(plist[i].parts&&plist[i].parts.indexOf(node)>=0){parent=plist[i];break;}}
+  if(!parent)break;
+  out[chkNestKey(pk,plist.indexOf(parent))]=1;
+  k=pk; node=parent;}
+ return out;}
+/* FIND THE SAME NODE, IN THIS RENDER'S OWN ARRAYS, BY NAME. compute() (and
+   computeSeen, lock.js) builds a brand new object graph on every single
+   call -- confirmed against compute.js before this was written, not
+   assumed: nothing in it caches against S or memoises, every node is a
+   fresh object pushed in that one call. S.pin is set from WHATEVER call
+   produced the object a person actually pressed (the click handler's own
+   computeSeen(), ui/ui.js above), and render()'s own pass that reaches
+   here calls computeSeen() again, so S.pin is never the SAME reference as
+   anything in rr, even one line later, even though it is the same real
+   node. The existing click handler already knows this and never compares
+   by reference either (the 'sr' case's own same check: "S.pin.nm===o.nm
+   &&S.pin.kind===o.kind"); this is that identical discipline, so the tree
+   actually opens on the node a person just pressed instead of silently
+   finding nothing and defaulting to closed. */
+function chkFindLike(list,o){
+ if(!o)return -1;
+ for(var i=0;i<list.length;i++)if(list[i]&&list[i].nm===o.nm)return i;
+ return -1;}
+/* ONE ROW'S OWN MARKUP, lifted out of chkTier so the badge, the glyph and
+   the dominant mark are drawn identically whether a row sits in the old
+   flat tier (left rail, chkTier, unchanged) or nested here: one function,
+   one look, never a second drawing of the same reading. */
+function chkChainRow(kind,o,idx,seat,dom){
+ var f=fmtPct('chain',o.w), b=kind==='sab'?((o.parts&&o.parts[0]&&o.parts[0].b)||seat):seat;
+ return '<button type="button" class="stk-r" data-sk="'+kind+'" data-si="'+idx+'">'
+  +crBadge(b,pct('chain',o.w)||0,{size:'sm',raw:f,on:dom,
+    glyph:'<path d="'+CHAINGLYPH[kind]+'"/>',title:o.nm+', '+f+(o.over?', overshot':'')})
+  +'<span class="stk-nm">'+esc(o.nm)+(o.unnamed?'<em>inferred</em>':'')+(dom?'<em>heaviest</em>':'')+'</span></button>';}
+/* ONE NODE, AND WHAT IS ACTUALLY UNDER IT. depth is indent only (inline
+   style, no new class per level); opened is chkAncestors' own set, read
+   once per render and handed down rather than recomputed per node.
+
+   LOCKING, MATCHED TO THE OLD TIER'S OWN BEHAVIOUR, NOT A NEW RULE. The
+   flat tier this replaces only ever padlocked an EMPTY tier (chkTier's own
+   caller: "list.length?chkTier(...):(lockSees(t.k)?...:lockPanelHtml(t.k))"
+   -- once a tier had real content it rendered regardless of lockSees, every
+   round before this one). A real, non-empty .parts here is the identical
+   case: hasKids is already "this node's real children exist", so no
+   separate lockSees check belongs here -- adding one would quietly show
+   LESS than the surface it replaces, which is a regression dressed as a
+   gate. */
+function chkChainNode(rr,kind,o,idx,seat,depth,dom,opened){
+ var childKind=CHAIN_CHILD_KIND[kind], kids=(childKind&&o.parts)?o.parts:[], hasKids=kids.length>0;
+ var nk=chkNestKey(kind,idx);
+ var open=hasKids&&(STK_NEST[nk]!==undefined?STK_NEST[nk]:!!opened[nk]);
+ var chev=hasKids
+  ?'<button type="button" class="stk-chev" data-nk="'+kind+'" data-ni="'+idx+'" aria-expanded="'+open
+    +'" aria-label="'+(open?'Collapse ':'Expand ')+esc(o.nm)+'"><i style="transform:rotate('+(open?'-135deg':'45deg')+')"></i></button>'
+  :'<span class="stk-chev-sp" aria-hidden="true"></span>';
+ var row='<div class="stk-nrow" style="margin-left:'+(depth*16)+'px">'+chev+chkChainRow(kind,o,idx,seat,dom)+'</div>';
+ if(!hasKids||!open)return row;
+ var childSeat={hy:'Sacral',cx:'Solar',sab:'Root'}[childKind], full=chkFullList(childKind,rr);
+ return row+kids.slice().sort(function(a,b){return b.w-a.w;}).map(function(co,rank){
+  return chkChainNode(rr,childKind,co,full.indexOf(co),childSeat,depth+1,rank===0,opened);}).join('');}
+/* THE TOP LEVEL. "The top-level list, nothing selected yet, show all
+   super-complexes as entry points, same as today" -- every real sup, flat,
+   capped the same way chkTier already caps a long tier. ORPHANS: a real
+   hyper-complex, complex or saboteur that never reached the rung above it
+   is still a real pattern currently running, and rule 6 (every number
+   shown is real, nothing is quietly dropped) means it still has to be
+   reachable even though the tree above it stops one rung short; appended
+   flat, after the sup list, each still opening its own real children if it
+   has any. */
+function chkChainTree(rr){
+ var sups=rr.sups||[]; if(!sups.length)return '';
+ var opened={};
+ if(S.pin&&S.pin.kind&&CHAINTIERS.some(function(t){return t.k===S.pin.kind;})){
+  var selfList=chkFullList(S.pin.kind,rr), selfIdx=chkFindLike(selfList,S.pin);
+  if(selfIdx>=0){
+   /* resolved: node is THIS render's own object, so chkAncestors' own
+      reference walk over rr's .parts arrays now has something that can
+      actually match. */
+   opened=chkAncestors(rr,S.pin.kind,selfList[selfIdx]);
+   /* THE SELECTED NODE OPENS ITSELF, NOT ONLY THE PATH TO IT. Pressing a
+      super-complex is pressing it to see what is inside it; chkAncestors
+      only marks the nodes ABOVE the selection on the path up to it, so
+      without this the very node a person just pressed would stay shut
+      until a second press on its own chevron. */
+   opened[chkNestKey(S.pin.kind,selfIdx)]=1;}}
+ var cap=8, sorted=sups.slice().sort(function(a,b){return b.w-a.w;});
+ var html=sorted.slice(0,cap).map(function(s,rank){
+  return chkChainNode(rr,'sup',s,rr.sups.indexOf(s),'Root',0,rank===0,opened);}).join('')
+  +(sorted.length>cap?'<div class="pm-more">and '+(sorted.length-cap)+' more</div>':'');
+ ['hy','cx','sab'].forEach(function(k){
+  var full=chkFullList(k,rr), plist=chkFullList(CHAIN_PARENT_KIND[k],rr);
+  var orph=full.filter(function(o){return !plist.some(function(p){return p.parts&&p.parts.indexOf(o)>=0;});});
+  if(!orph.length)return;
+  var seat={hy:'Sacral',cx:'Solar',sab:'Root'}[k];
+  html+=orph.slice().sort(function(a,b){return b.w-a.w;}).map(function(o,rank){
+   return chkChainNode(rr,k,o,full.indexOf(o),seat,0,rank===0,opened);}).join('');});
+ return html;}
 /* THE SELF-SELECTED MARK, NERVE TIER ONLY. Reads the real field trace.js's own
    yesOf() reads (e.ob.yes, the mirror card's Yes written onto a story entry),
    rather than rebuilding the whole trace graph for one boolean in a rail row:
@@ -84931,34 +85325,41 @@ function railStack(r){
     +'<i style="transform:rotate('+(open?'-135deg':'45deg')+')"></i></button>'
    +'<div class="lsec-bd" style="display:'+(open?'block':'none')+'">'
     +'<p class="stk-def">'+esc(def)+'</p>'+body+'</div></div>';}
- var h=CHAINTIERS.map(function(t){
-   var list={sup:sups,hy:hys,cx:cxs,sab:sabs}[t.k];
-   var body=list.length?chkTier(t.k,list,t.seat)
-    :(lockSees(t.k)?'<p class="ad-p" style="margin:4px 0 0 2px">Nothing at this tier yet.</p>':lockPanelHtml(t.k));
-   return sec(t.k,t.nm,t.def,body);}).join('')
-  /* CHILD EMOTIONS, NOT FETTER, ON PURPOSE, DIFFERENT FROM renderChainKey's
-     OWN INTERNAL SUB-HEADING. The owner's own ruling (tests/functional.js,
-     "ONE WORD PER CONCEPT, AND THIS ONE WAS CARRYING TWO"): a fetter is a
-     node, the 112; the nine poled axes this tier actually lists are Child
-     emotions, and "the right rail's stack counts them" under that exact
-     name is the standing cross-surface check for it, the same discipline
-     that already keeps the left rail's dedicated sliders section off the
-     word Fetters. The flat tab this tier replaces (STACK_TAB) was always
-     labelled Child emotions for the identical reason; the heading stays
-     that word now that it is a disclosure instead of a tab, never
-     borrowing renderChainKey's shorter internal label, which names the
-     row inside the chain legend and is never a reachable surface of its
-     own the way this heading now is. All nine always draw, matching the
-     tab this tier was before (TABS.forEach above skipped 'fet' for the
-     same reason: the nine child emotions are the floor, not a plan-gated
-     rung). */
-  +sec('fet','Child emotions','The nine poled axes a charge runs on. No reading of their own, only the addresses they classify.',
-   (function(){var hi=CHILD.reduce(function(a,c){return (S.charge[c.nm]||0)>(S.charge[a.nm]||0)?c:a;},CHILD[0]);
-    return CHILD.map(function(c,ci){var v=S.charge[c.nm]||0, f=fmtPct('charge',v), dom=live&&c===hi&&v>0;
-     return '<button type="button" class="stk-r" data-fet="'+ci+'">'
-      +crBadge(c.seat,pct('charge',v)||0,{size:'sm',raw:f,on:dom,
-        glyph:'<path d="'+c.ic+'"/>',title:c.nm+', '+f})
-      +'<span class="stk-nm">'+esc(c.nm)+(dom?'<em>heaviest</em>':'')+'</span></button>';}).join('');})())
+ /* TRUE NESTING, NOT TIER-GROUPING, 2 November, second pass. His own words,
+    looking at the first pass's four separate flat tiers: "when I click on
+    a super complex, hyper complex, complex, or saboteur, they should all
+    be nested inside their parent." One header now, Super-complex, CHAIN
+    TIERS[0]'s own name and sentence unchanged; chkChainTree (above) is the
+    whole body, real sups at the top as entry points exactly as the old
+    flat tier did ("same as today"), each opening its own real children in
+    place rather than sending a person to a separate flat Hyper-complex,
+    Complex or Saboteur section to find them. lockSees/lockPanelHtml moved
+    from a tier-wide header gate to the exact row the nest would have
+    opened on (chkChainNode), which is finer grained than the old gate, not
+    looser: a plan that could not see Hyper-complex before still cannot see
+    it now, at the point it would have appeared. */
+ var h=sec('sup',CHAINTIERS[0].nm,CHAINTIERS[0].def,
+   sups.length?chkChainTree({sups:sups,hys:hys,cxs:cxs,sabs:sabs})
+    :(lockSees('sup')?'<p class="ad-p" style="margin:4px 0 0 2px">Nothing at this tier yet.</p>':lockPanelHtml('sup')))
+  /* CHILD EMOTIONS LEFT THIS RAIL, 2 November, his own words looking at it:
+     "the child emotions are getting moved out of the left menu... those
+     are going into the diagnostic, as questions." Checked before moving
+     anything: a real question set for these same nine axes already ships
+     on Intake, unrelated to this round -- IX_BLOCKS's own 'axes' block
+     ("Emotional axes", engine/data/intakemore.js's IX_AXIS), each row keyed
+     by the same CHILD[].nm this tier read, already phrased as a question
+     grounded in CHILD[].loc and .opp, already answerable (ixSet) and
+     already rendered unconditionally in iqxHtml, which renderIntake always
+     calls. So "as questions" needed no new engine mechanism invented here:
+     the real gap this tier was the other half of has already been real and
+     live, this whole time, one tab over. What stays true after this tier
+     is cut: the nine axes' own real charge (S.charge, the wheel's own
+     figure, a different reading from Intake's self-report rows and not to
+     be confused with it) is still reachable, both on Analytics ("The nine
+     axes" bubble chart and each axis's own drill card, anaAxisCard) and on
+     the right rail wherever a chain row's narration already names the
+     feeling it runs on -- only this standalone, read-only left-rail block
+     is gone. */
   /* NERVE, THE REAL FLOOR -- the same addresses-actually-carrying block
      renderChainKey builds, reusing .ad-r/data-addr, the one handler every
      address row on this product already answers through. Never locked. */
@@ -84974,10 +85375,15 @@ function railStack(r){
      +(nerve.length>cap?'<div class="pm-more">and '+(nerve.length-cap)+' more</div>':'');})());
  e.innerHTML=h;
  /* A TIER ABOVE THE PLAN IS STILL GREYED AND PADLOCKED WITH ITS
-    DESCRIPTION, the same ruling the flat tabs carried forward (TABS.forEach
-    above, now CHAINTIERS): the header itself is the lock's control now,
-    since there is no separate tab strip left to carry the mark. */
- CHAINTIERS.forEach(function(t){lockApply(e.querySelector('.lsec-hd[data-tier="'+t.k+'"]'),t.k);});}
+    DESCRIPTION, the same ruling the flat tabs carried forward, and to the
+    same real extent they already did: an EMPTY tier shows the padlock
+    (chkChainTree's own top-level branch, above, lockSees('sup') on no real
+    sups at all); real content, once it exists, was never hidden by this
+    gate before this round either (chkChainNode's own comment explains why
+    nothing new was added there). Only one header left to carry the mark,
+    Super-complex, since Hyper-complex, Complex and Saboteur no longer have
+    a header of their own to padlock. */
+ lockApply(e.querySelector('.lsec-hd[data-tier="sup"]'),'sup');}
 /* THE BALANCE STRIP, AND WHICH END IS WHICH.
 
    The two poles are masculine and feminine. cards.js states the codex
@@ -85751,18 +86157,15 @@ function renderChainKey(r){
  var chain=CHAINTIERS.map(function(t){
    var list={sup:sups,hy:hys,cx:cxs,sab:sabs}[t.k];
    return '<div class="tier1">'+t.nm+'</div><p class="stk-def">'+t.def+'</p>'+chkTier(t.k,list,t.seat);}).join('')
-  /* FETTER, ALL NINE, ALWAYS. "No running or not": trace.js's own words, a
-     fetter "carries no address-level content of its own", only the real
-     addresses it classifies, so there is no active/inactive split to filter
-     by the way a saboteur has one, and all nine are real whether or not any
-     charge is on them right now. */
-  +'<div class="tier1">Fetter</div><p class="stk-def">The nine child emotions. No reading of their own, only the addresses they classify.</p>'
-  +(function(){var hi=CHILD.reduce(function(a,c){return (S.charge[c.nm]||0)>(S.charge[a.nm]||0)?c:a;},CHILD[0]);
-   return CHILD.map(function(c,ci){var v=S.charge[c.nm]||0, f=fmtPct('charge',v), dom=live&&c===hi&&v>0;
-    return '<button type="button" class="stk-r" data-fet="'+ci+'">'
-     +crBadge(c.seat,pct('charge',v)||0,{size:'sm',raw:f,on:dom,
-       glyph:'<path d="'+c.ic+'"/>',title:c.nm+', '+f})
-     +'<span class="stk-nm">'+esc(c.nm)+(dom?'<em>heaviest</em>':'')+'</span></button>';}).join('');})()
+  /* FETTER/CHILD EMOTIONS LEFT THIS LEGEND, 2 November, the same move as
+     #stack's own cut above, on the rail he actually named ("the left
+     menu"): this is #chainkey, inside #lpanel, body.html's own id trail,
+     the one of the two real nine-axis lists that is actually on the left.
+     Its content did not vanish: Intake's real "Emotional axes" questions
+     (IX_BLOCKS, see #stack's own note) are where the concept is a question
+     now, and the real charge figure (S.charge) this row used to badge is
+     still read on Analytics ("The nine axes" and each axis's own drill
+     card). */
   /* NERVE, THE REAL FLOOR: the addresses actually carrying right now, same
      carrying line fbValues (ui/fieldbar.js) already reads, sq>=4. Dominant
      is the single heaviest of them; self-selected is the person's own Yes,
@@ -85826,7 +86229,7 @@ function renderGates(){
   g.innerHTML='<p class="ad-p" style="margin-top:10px">Nothing read yet. Write a line in the Journal and the gates fill in from it.</p>';
  }}
  wireKbJump();
- renderAcc(r); renderSpirit(); renderRootSum(); renderPol2(r); syncMx(); renderGates(); renderChainKey(r); renderAmplifiers();
+ renderAcc(r); renderSpirit(); renderRootSum(); syncMx(); renderGates(); renderChainKey(r); renderAmplifiers();
  /* the trace graph's block in the Field's side column, ui/loopread.js */
  if(typeof loopPaint==='function')loopPaint(r);
  /* the dock's circles move into their values rather than snapping, and only
@@ -85907,7 +86310,7 @@ function loop(ts){
  var r=computeSeen();
  /* the wheel breathes, so it is drawn every frame. A rendition does not move,
     and ringsDraw builds it only when its signature does */
- if(S.tab===TAB.FIELD){if(fviewOn())ringsDraw(r);else draw(r);drawAura(r);renderPol2(r);
+ if(S.tab===TAB.FIELD){if(fviewOn())ringsDraw(r);else draw(r);drawAura(r);
   /* the rail's pairs swing on the Field's clock, and nothing they do is
      drawn on the stage */
   rbPairTick(ts);}
@@ -85981,6 +86384,15 @@ document.addEventListener('click',function(e){
  var dh=e.target.closest?e.target.closest('#stack .lsec-hd[data-tier]'):null;
  if(dh){var tk=dh.getAttribute('data-tier'), sec=dh.closest('.lsec[data-tier]');
   STK_OPEN[tk]=!(sec&&sec.classList.contains('open')); railStack(computeSeen()); return;}
+ /* A NODE'S OWN CHEVRON OPENS ITS OWN REAL CHILDREN, NESTED IN PLACE.
+    chkChainNode (above) already drew the chevron's own aria-expanded as the
+    state it just painted, so flipping that is flipping what is on screen,
+    never a second guess at STK_NEST's own default. A sibling element to
+    the row's own .stk-r button, never inside it, so this never fights the
+    data-sk case just below for the same click. */
+ var chv=e.target.closest?e.target.closest('.stk-chev[data-nk]'):null;
+ if(chv){var nk=chv.getAttribute('data-nk')+':'+chv.getAttribute('data-ni');
+  STK_NEST[nk]=chv.getAttribute('aria-expanded')!=='true'; railStack(computeSeen()); return;}
  var fr=e.target.closest?e.target.closest('.stk-r[data-fet]'):null;
  if(fr){var fc=CHILD[+fr.getAttribute('data-fet')]; if(fc){S.pin=null; runFetterDrill(fc);
    /* S.pin stays null on this path, as it already did (above fc's own
@@ -86001,12 +86413,14 @@ document.addEventListener('click',function(e){
  if(kb){S.pin=null;ANA_PICK=null;runQDrill(kb.getAttribute('data-q'));return;}
  var gate=e.target.closest?e.target.closest('.gate-r[data-gate]'):null;
  if(gate){runGatesDrill(gate.getAttribute('data-gate'));return;}
- if(e.target.closest&&e.target.closest('#pol2')){
-  S.pin=null;ANA_PICK=null;
-  /* either end of the cone opens its own roster. the shaft opens the reading. */
-  var pe=e.target.closest('[data-polend]');
-  if(pe)runPoleDrill(pe.getAttribute('data-polend')); else runCompassDrill();
-  return;}
+ /* #pol2, the vertical strip between the wheel and the chain panel, is gone,
+    2 November, his own red marks on the Field screenshot. Its two doors,
+    data-polend up and dn into runPoleDrill, live on: the halo and pitchfork
+    now draw inside the wheel's own core at every width (wheel.js, rings.js),
+    and a press there already reaches runPoleDrill through hitPress/frend's
+    click handler above, the same door the strip's end always was. The
+    reading itself, runCompassDrill, opens from the tier word in #railtop
+    (further down in this file) exactly as it did before this strip existed. */
  if(e.target.closest&&e.target.closest('#bal')){S.pin=null;ANA_PICK=null;runBalDrill();return;}
  var row=e.target.closest?e.target.closest('.ad-r[data-addr]'):null;
  /* a row inside the Analytics trail is that trail's, round RB */
@@ -86230,5 +86644,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005682911"></div>
+<div id="eof" hidden data-len="005711467"></div>
 </body></html>

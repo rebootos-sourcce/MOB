@@ -218,144 +218,25 @@ function spNumWire(el){
  el.querySelectorAll('[data-num]').forEach(function(btn){
   btn.onclick=function(){runNumDrill(btn.getAttribute('data-num'));};});}
 
-/* ---- the compass. where coherence sits, and how far it swings. ---- */
-/* THE OSCILLATING BAND, BUILT ONCE AND MOVED EVERY FRAME.
-
-   This wrote its whole SVG through innerHTML on every animation frame, and it
-   is called from the rAF loop while the Field is up. Measured on the Field at
-   1600x1000: 59.96 forced layouts and 59.96 style recalculations per second,
-   which is one of each per frame, from this one write.
-
-   Only four nodes move. Everything else is a function of the reading and is
-   the same on every frame until the reading changes. So the picture is built
-   when its signature changes and the marker is moved by attribute writes after
-   that, which the compositor takes without a layout. The drift is deliberately
-   not in the signature, because the drift is the thing that moves.
-
-   REDUCED gets the end state rather than a slower one: drift is already zero
-   under it, so the signature never changes and nothing is rewritten at all. */
-var POL2={sig:null,el:null,mv:null,yB:0,dy:0};
+/* ---- the compass. where coherence sits, and how far it swings. ----
+   renderPol2 AND #pol2 ARE GONE, 2 November, his own red marks on the Field
+   screenshot: the vertical strip between the wheel and the chain panel,
+   ticks at 50/40% with the marker riding near the real reading. The two
+   doors it carried, data-polend up and dn into runPoleDrill, are not lost
+   with it: wheel.js and rings.js already drew the same halo and pitchfork
+   with the same doors inside the wheel's own core on a phone (GF in
+   TASKS.md), and that drawing now runs at every width instead of being
+   gated to phoneW(), so the reading he called "the heaven and hell" opens
+   from the wheel itself on every surface the strip used to cover. */
 /* WHERE COHERENCE SWINGS, on its own scale. The band narrows as coherence
    rises: tight alignment leaves little room to wander, a decohering field
-   ranges wide. Lifted out of renderPol2 unchanged, because the Field's two
-   renditions draw the same range round their core, and two copies of one
-   formula are two places for one range to be drawn two sizes. */
+   ranges wide. Read by drills.js, ui.js and both renditions in ui/rings.js,
+   which draw the same range round their core, so one formula is one place
+   for it rather than several copies drawn to disagree. */
 function cqRange(cq){
  cq=Math.max(0,Math.min(100,cq));
  var swing=(1-cq/100), band=2.5+swing*swing*26;
  return {cq:cq, band:band, lo:Math.max(0,cq-band/2), hi:Math.min(100,cq+band/2)};}
-function renderPol2(r){
- var el=$('pol2'); if(!el)return;
- /* the labels sit at x+20 and run right, so a 58 wide box cut them off.
-    the box is wide enough to hold what it draws. */
- var H=360,Wd=104,top=30,bot=H-30,x=34;
- var rg=cqRange(r.CQ), cq=rg.cq, bandPts=rg.band;
- var t=REDUCED?0:S.t;
- /* one wander, rbDrift (ui/component.js), shared with the CQ edge of the
-    rail's pair bar, so the marker and the bar swing as one */
- var drift=REDUCED?0:rbDrift(t);
- var live=cq+drift*(bandPts/2);
- var y=bot-(Math.max(0,Math.min(100,live))/100)*(bot-top);
- /* the marker is DRAWN at the undrifted position and MOVED from there */
- var yB=bot-(Math.max(0,Math.min(100,cq))/100)*(bot-top);
- var mid=bot-(bot-top)*0.50, y60=bot-(bot-top)*0.60, y40=bot-(bot-top)*0.40;
- var up=cq>=50, gc=GOLD, rc=PAL.Root;
- var mc=up?gc:rc;
- /* THE SIGNATURE IS CHECKED BEFORE THE PICTURE IS BUILT, not after. Building
-    twenty five SVG nodes into a string and then discovering the string was not
-    needed is the same work as writing it. On the Field this ran every frame. */
- var sig=[Math.round(cq*100),Math.round(bandPts*100),r.unread?1:0,up?1:0,mc,
-          REDUCED?1:0,Wd,H].join('|');
- if(POL2.sig===sig&&POL2.el===el&&el.firstChild){
-  /* HALF PIXEL STEPS, NOT HUNDREDTHS. The drift is slow, about a quarter
-     of a pixel a frame, and a transform written to two decimals changed on
-     every frame, so the marker's layer was re-composited sixty times a
-     second under translucent panes. Measured on the Field under glass, with a
-     second page open as the design gate keeps one: 22.5 frames a second on
-     Gordon, and 23.3, 26.1 and 23.2 on Diane, Rosa and James before the CQ
-     rebuild touched anything. Gordon alone passed, because his old CQ of 0.8
-     pinned the marker at the floor where the drift clamps and nothing was
-     written. At half pixel steps, which is a whole device pixel on a 2x
-     screen, the write lands every few frames: glass 35.9 on Gordon and 35.5
-     on Diane, and every other lighting back near 60. */
-  var dy0=Math.round((y-POL2.yB)*2)/2;
-  if(POL2.mv&&dy0!==POL2.dy){POL2.mv.style.transform='translateY('+dy0+'px)';POL2.dy=dy0;}
-  return;}
- var s='<svg viewBox="0 0 '+Wd+' '+H+'" preserveAspectRatio="xMidYMid meet" aria-hidden="true">';
- s+='<line x1="'+x+'" y1="'+top+'" x2="'+x+'" y2="'+mid+'" stroke="'+gc+'" stroke-width="2.4" stroke-linecap="round" opacity=".85"/>';
- s+='<line x1="'+x+'" y1="'+mid+'" x2="'+x+'" y2="'+bot+'" stroke="'+rc+'" stroke-width="2.4" stroke-linecap="round" opacity=".85"/>';
- s+='<rect x="'+(x-5)+'" y="'+y60+'" width="10" height="'+(y40-y60).toFixed(1)+'" rx="2" fill="rgba(128,128,128,.10)"/>';
- [[60,y60],[50,mid],[40,y40]].forEach(function(tk){
-  s+='<line x1="'+(x-6)+'" y1="'+tk[1]+'" x2="'+(x+6)+'" y2="'+tk[1]+'" stroke="rgba(128,128,128,.34)" stroke-width="1"/>';
-  /* the scale in the marker's own unit, 17 October, percent phase 2: a tick
-     at 60 beside a marker reading 62% would be two units on one axis */
-  s+='<text x="'+(x-10)+'" y="'+(tk[1]+3.5)+'" text-anchor="end" class="pol2-t">'+tk[0]+'%</text>';});
- /* THE TWO ENDS ARE DOORS. The compass was a picture of a direction with
-    nothing at either end of it. The top of the cone is anchored by the
-    twelve, the bottom by the blueprint and the nine circles, and both are
-    behaviours rather than figures. Each end carries its own hit box, which
-    is generous because the glyphs are small, and opens its own roster. */
- s+='<g class="p2end" data-polend="up" opacity="'+(up?1:.35)+'">'
-  +'<rect x="'+(x-22)+'" y="'+(top-30)+'" width="44" height="34" fill="transparent"/>'
-  +'<ellipse cx="'+x+'" cy="'+(top-15)+'" rx="8" ry="3.2" fill="none" stroke="'+gc+'" stroke-width="1.6"/>'
-  +'<path d="M'+(x-7)+' '+(top-4)+' Q'+x+' '+(top-11)+' '+(x+7)+' '+(top-4)+'" fill="none" stroke="'+gc+'" stroke-width="1.3" opacity=".6"/></g>';
- s+='<g class="p2end" data-polend="dn" opacity="'+(up?.35:1)+'">'
-  +'<rect x="'+(x-22)+'" y="'+(bot)+'" width="44" height="32" fill="transparent"/>'
-  +'<path d="M'+x+' '+(bot+22)+' L'+x+' '+(bot+11)+'" stroke="'+rc+'" stroke-width="1.8" fill="none"/>'
-  +'<path d="M'+(x-6)+' '+(bot+11)+' L'+(x-6)+' '+(bot+4)+' M'+x+' '+(bot+11)+' L'+x+' '+(bot+2)
-  +' M'+(x+6)+' '+(bot+11)+' L'+(x+6)+' '+(bot+4)+'" stroke="'+rc+'" stroke-width="1.5" fill="none"/>'
-  +'<path d="M'+(x-7)+' '+(bot+11)+' L'+(x+7)+' '+(bot+11)+'" stroke="'+rc+'" stroke-width="1.5" fill="none"/></g>';
- /* THE RANGE IS A PILL NOW, AND "SWING 11" IS GONE.
-    Ruled: "where is this swing 11, get rid of that", and with it the whole
-    class, "100 plus minus 12, swing 11, that shit has to all go". A figure
-    with a tolerance stapled to it is a lab readout. And the replacement was
-    ruled in the same breath: "give a pill to the lower right side of the
-    number of the coherence slider, like it oscillates within the person's
-    range." So the range is drawn and never stated.
-
-    What was here drew the range twice and said it a third time: a seven wide
-    wash on the line at .16, which is the smudge proto/dials names (an
-    interval is defined by its ends, and a fill with no ends has none), plus
-    the words above it. One drawing, and it is the pill: a capsule on the
-    axis's own scale with a hairline giving it its two ends, sitting in the
-    column right of the number, with the marker's crossbar riding inside it.
-    The number keeps its place because it labels the marker, not the range.
-
-    AND IT DOES NOT DRAW OFF THE DEFAULTS. bandPts is widest at coherence
-    nought, so an empty field drew the widest range this instrument can
-    report, which is it reporting on itself as though it had read somebody.
-    Same rule the number two lines down already kept and this did not.
-
-    THE COLUMN IS FIXED AND IT IS FIXED WHERE IT IS FOR A REASON. The number
-    starts at x+20 and is set in the tabular face at 11px, so three digits
-    reach x+40, and coherence can round to 100. A pill that slid left when
-    the reading dropped under ten would be a frame that moves, and a frame
-    that moves cannot be read against. So it sits at the tightest column that
-    clears the widest number this axis can print, and it stays there. */
- /* AND THE PILL IS GONE, round LU, 29 September, reversing the ruling quoted
-    above. His words, with a screenshot of Gordon at 19 and a circle drawn
-    round it: "on the heaven and hell item on the field page, the halo and
-    pitchfork, there's a little pill to the right of the arrow that got
-    introduced, I want that removed." The capsule went and so did the crossbar
-    that rode inside it, because a tick with no capsule round it is a mark
-    pointing at nothing. The range is still drawn: the marker's own drift below
-    moves through it, bandPts wide, so how far it wanders is the range. */
- /* the marker and its number ride in one group so the frame to frame move is a
-    single compositor transform rather than four geometry writes */
- s+='<g class="pol2-mv">';
- s+='<path class="pol2-mk" d="M'+(x+9)+' '+yB.toFixed(1)+' L'+(x+17)+' '+(yB-4.5).toFixed(1)+' L'+(x+17)+' '+(yB+4.5).toFixed(1)+' Z" fill="'+mc+'"/>';
- s+='<circle class="pol2-dot" cx="'+x+'" cy="'+yB.toFixed(1)+'" r="3.6" fill="'+mc+'"/>';
- s+='<circle class="pol2-ring" cx="'+x+'" cy="'+yB.toFixed(1)+'" r="7" fill="none" stroke="'+mc+'" stroke-width="1" opacity=".45"/>';
- /* not off the defaults. the marker still sits where the arithmetic puts it,
-    because the picture of an unread field is a real picture, but the number
-    beside it is not printed until somebody has entered something. */
- s+='<text x="'+(x+20)+'" y="'+(yB+4).toFixed(1)+'" class="pol2-c" style="fill:'+mc+'">'
-  +fmtPct('cq',cq,{unread:r.unread})+'</text></g>';
- el.innerHTML=s+'</svg>';
- POL2.sig=sig; POL2.el=el; POL2.yB=yB;
- POL2.mv=el.querySelector('.pol2-mv');
- if(POL2.mv)POL2.mv.style.transform='translateY(0px)';
- POL2.dy=0;}
 
 /* ---- accuracy. one value, given room. B19 scope. ---- */
 function renderAcc(r){

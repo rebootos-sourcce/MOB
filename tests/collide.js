@@ -289,9 +289,9 @@ for(const w of [[1680,1020],[1440,960],[1280,900],[1180,820],[2560,1400]]){
   const sc=cv.width/CW;                       /* canvas units to CSS pixels */
   const boxes=LBL.map(l=>({t:l.t,left:cv.left+l.x*sc,top:cv.top+l.y*sc,
    right:cv.left+(l.x+l.w)*sc,bottom:cv.top+(l.y+l.h)*sc}));
-  /* the ink, not the container. #pol2 is a full height flex box holding a
-     104px drawing, so its bounding box covers half the stage and says nothing
-     about what is painted. a leaf with text, or a drawing, is the ink. */
+  /* the ink, not the container. #fview is a flex box holding three small
+     circles, so its bounding box says nothing about what is actually
+     painted inside it. a leaf with text, or a drawing, is the ink. */
   const ink=[];
   document.querySelectorAll('#stage > *').forEach(e=>{
    if(e.id==='cv'||e.id==='probe')return;   /* probe is the hover readout at the core */

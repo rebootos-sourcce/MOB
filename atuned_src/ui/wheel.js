@@ -523,17 +523,25 @@ function solCore(r,base){
       Round J13. */}
   g.restore();}
  HIT.push({k:'core',x:CX,y:CY,rad:cr0*1.5});
- /* THE TWO POLES INSIDE THE CIRCLE, on a phone. GF in TASKS.md, his words:
-    "The heaven and hell ... shows up in the very bottom of the square. I want
-    you to move that inside of the circle." The halo over the figure and the
-    pitchfork under it, inside the sphere, in the compass's colours and by its
-    rule for which is lit, the same pair frPoles in ui/rings.js puts in the
-    core of Frames and Dial. They scale with the core, so a pinch is what
-    brings them up to reading size, which is his next sentence: "when I zoom
-    in I can actually see the heaven and hell, like where I'm heading
-    towards." Pushed after the core, so the hit test, which reads HIT from
-    the end, finds either pole before the core it sits in. */
- if(!r.unread&&phoneW()){
+ /* THE TWO POLES INSIDE THE CIRCLE, ON EVERY WIDTH NOW. GF in TASKS.md, his
+    words: "The heaven and hell ... shows up in the very bottom of the
+    square. I want you to move that inside of the circle." The halo over the
+    figure and the pitchfork under it, inside the sphere, in the compass's
+    colours and by its rule for which is lit, the same pair frPoles in
+    ui/rings.js puts in the core of Frames and Dial. They scale with the
+    core, so a pinch is what brings them up to reading size, which is his
+    next sentence: "when I zoom in I can actually see the heaven and hell,
+    like where I'm heading towards." Pushed after the core, so the hit test,
+    which reads HIT from the end, finds either pole before the core it sits
+    in.
+
+    THE phoneW() GATE CAME OFF, 2 November, with the vertical strip,
+    ui/personas.js's #pol2, removed on his own red marks on the Field
+    screenshot. That strip was the only door to runPoleDrill above phone
+    width; the poles going here, into the core, is reuse of the mechanism
+    his own GF ruling already proved out, not a new one, so the door to the
+    reading stays open at every width once the strip is gone. */
+ if(!r.unread){
   var pgs=cr0*0.42, pup=r.CQ>=50, bigP=Math.max(15,Math.min(cr0*0.52,64));
   var ofL=bigP*0.26>=11?bigP*0.26*2.2:0;
   [['up',GL_HALO,CY-Math.max(cr0*0.62,bigP*0.43+pgs*0.45),GOLD,pup],

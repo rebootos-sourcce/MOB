@@ -629,17 +629,25 @@ function frCore(M,r,cx,cy,R,o){
     the figures are one line each from full size, because a stack shrunk to
     fit is a coherence figure that no longer reads as the largest thing on
     the Field. */
- /* ON A PHONE THE FIGURES GIVE THE POLES ROOM, GF in TASKS.md, his words:
-    "move that inside of the circle, or CQDQ on the square one, and then make
-    the CQDQ a little bit smaller." The halo sits over CQ and the pitchfork
-    under DQ, frPoles below, so the figures are fitted to the band between
-    them, yl, as well as to the hole. That is what makes them smaller, and by
-    the fitting rule already here rather than by a size typed in. */
- var ph=phoneW(), yl=ph?(R-w/2-3)*.46:Infinity;
+ /* THE FIGURES GIVE THE POLES ROOM, ON EVERY WIDTH NOW, GF in TASKS.md, his
+    words: "move that inside of the circle, or CQDQ on the square one, and
+    then make the CQDQ a little bit smaller." The halo sits over CQ and the
+    pitchfork under DQ, frPoles below, so the figures are fitted to the band
+    between them, yl, as well as to the hole. That is what makes them
+    smaller, and by the fitting rule already here rather than by a size
+    typed in.
+
+    THE phoneW() GATE CAME OFF, 2 November, with ui/personas.js's #pol2, the
+    vertical strip, removed on his own red marks on the Field screenshot.
+    That strip was Frames' and Dial's only door to runPoleDrill above phone
+    width; drawing the poles in the core at every width, the way GF already
+    proved out for a phone, is reuse of that same mechanism and keeps the
+    door open once the strip is gone. */
+ var yl=(R-w/2-3)*.46;
  var inner=R-w/2-3,fits=function(rows){var H=0;rows.forEach(function(q){H+=q.h+(q.g||0);});
   var y=-H/2,ok=true;rows.forEach(function(q){var y0=y,y1=y+q.h,ym=Math.max(Math.abs(y0),Math.abs(y1));
    if(ym>=inner||ym>yl||q.w/2>Math.sqrt(inner*inner-ym*ym))ok=false;y=y1+(q.g||0);});return ok?H:0;};
- var poles=ph?frPoles(M,r,cx,cy,inner):'';
+ var poles=frPoles(M,r,cx,cy,inner);
  var F1=Math.max(22,38*inner/45),F2=Math.max(13,17*inner/45),lc=lab*.727,k,f1,f2,H;
  for(k=1;k>=.79;k-=.05){f1=F1*k;f2=Math.max(lab,F2*k);
   var g1=Math.max(4,6*inner/45),g2=Math.max(7,11*inner/45);
