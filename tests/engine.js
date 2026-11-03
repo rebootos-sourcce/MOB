@@ -8815,6 +8815,76 @@ g('SB · the saboteur card is the same 33 as SABDEF, and its opposites are read 
   +JSON.stringify(orphans.map(s=>s.nm)));
 }
 
+g('SABOP · the saboteur bar\'s one-word opposite is real, grounded in SAB33 and CHILD, never invented');
+/* 3 November, second round. a is a paragraph, which is what SB above already
+   proved and why the bar had nothing to read until now. op is the real
+   compression: one or two of the exact CHILD opp words a's own text already
+   names, never a new word. Held to the same shape missingOpp (SB, above)
+   already holds a to, in the same direction a bad op would actually fail in
+   a build: a word op names that this row's own SAB33 charges do not reach. */
+{
+ const {SABCARD}=E;
+ const KK=s=>String(s).replace(/^[Tt]he\s+/,'').toLowerCase().replace(/-/g,' ');
+ const ax2child=k=>CHILD.find(c=>c.nm===(k==='sadness'?'Sad':k.charAt(0).toUpperCase()+k.slice(1)));
+ /* every real opp word this row's own SAB33 charges can reach, so a word
+    op names outside this set is a word nothing in the row's own canon
+    supports -- the exact "Rest becomes available" shape SB's missingOpp
+    was built to catch, read here against op instead of a. */
+ const reach=r=>r[1].map(p=>ax2child(p[0])).filter(Boolean).map(c=>c.opp);
+ const badOp=(card)=>{const out=[];
+  SAB33.forEach(r=>{const row=card[KK(r[0])]; if(!row||!row.op)return;
+   const own=reach(r), words=row.op.split(/,\s*/);
+   words.forEach(w=>{if(own.indexOf(w)<0)out.push(r[0]+'\'s op names '+w+', which none of its own axes reach');});});
+  return out;};
+ ok(Object.keys(SABCARD).every(k=>typeof SABCARD[k].op==='string'&&SABCARD[k].op.length>0),
+  'every one of the 33 carries a real op, not just a');
+ ok(Object.keys(SABCARD).every(k=>SABCARD[k].op.split(/,\s*/).length<=2),
+  'op is one word or a tight two-word pair, never a third');
+ const bad=JSON.parse(JSON.stringify(SABCARD));
+ bad.martyr.op='Rest';
+ const caught=badOp(bad);
+ ok(caught.length===1&&/^Martyr/.test(caught[0]),
+  'the check fails a word Martyr\'s own axes do not reach, and only it: '+JSON.stringify(caught));
+ const miss=badOp(SABCARD);
+ ok(miss.length===0,'every real op names only words this row\'s own SAB33 axes reach in CHILD: '+JSON.stringify(miss));
+ /* INNOCENT, THE ONE SINGLE-AXIS ROW. SAB33 keys it on fear alone, so it
+    has one real opposite to name and a tight pair would have nowhere real
+    to draw its second word from -- the row this task's own brief said to
+    leave single rather than invent a partner for. */
+ ok(SABCARD.innocent.op==='Trust'&&SABCARD.innocent.op.indexOf(',')<0,
+  'Innocent, fear\'s only row, stays one real word: '+SABCARD.innocent.op);
+ /* THE SHARED POLES ARE REAL, NOT A COLLISION LEFT UNRESOLVED. Where two
+    rows' own SAB33 charges are the exact same set, the canon gives them
+    the exact same coherent pole and op says so plainly; a tighter label
+    would be inventing a difference the canon does not carry. */
+ const setOf=r=>JSON.stringify(reach(r).slice().sort());
+ const bySet={};
+ SAB33.forEach(r=>{const k=setOf(r); (bySet[k]=bySet[k]||[]).push(r[0]);});
+ const shared=Object.keys(bySet).filter(k=>bySet[k].length>1);
+ ok(shared.length>0,'at least one real pole is genuinely shared by more than one saboteur, not every row is unique');
+ const sharedWrong=[];
+ shared.forEach(k=>{const names=bySet[k], ops=names.map(n=>SABCARD[KK(n)].op);
+  if(ops.some(o=>o!==ops[0]))sharedWrong.push(names.join('/')+ ' key on the same real pair but print different ops: '+JSON.stringify(ops));});
+ ok(sharedWrong.length===0,'rows that key on the exact same SAB33 pair print the exact same op: '+JSON.stringify(sharedWrong));
+ /* THE BAR'S OTHER HALF: held and rep. Not just op existing (CLAUDE.md
+    rule 2, "defined is not wired") -- a real saboteur, off a real worked
+    example, must carry a real 0-10 held and a real 0-10 rep, each the
+    mean of its own real address parts' n.held/n.rep, the identical
+    fields and identical mean compute.js's own w already uses for sq. */
+ const p=PEOPLE.find(x=>x.nm==='Tomas');
+ S.doms=[p.dom];S.arcs=[p.a1,p.a2];S.roots=[];buildSoul();
+ CHARGES.forEach(c=>{S.charge[c]=p.c[c]||0;S.replace[c]=(p.rep&&p.rep[c])||0;});
+ const LS=LAWSET.Tomas; SINAMES.forEach(l=>S.law[l]=LS[l]!==undefined?LS[l]:LS._); lawsIn();
+ const rt=compute();
+ ok(rt.sabs.length>0,'Tomas names at least one real saboteur to check held/rep on');
+ ok(rt.sabs.every(s=>typeof s.held==='number'&&!isNaN(s.held)&&s.held>=0&&s.held<=10
+   &&typeof s.rep==='number'&&!isNaN(s.rep)&&s.rep>=0&&s.rep<=10),
+  'every one of Tomas\'s real saboteurs carries a real 0-10 held and rep');
+ ok(rt.sabs.every(s=>Math.abs(s.held-s.parts.reduce((a,n)=>a+n.held,0)/s.parts.length)<1e-9
+   &&Math.abs(s.rep-s.parts.reduce((a,n)=>a+n.rep,0)/s.parts.length)<1e-9),
+  'held and rep are the real mean of this saboteur\'s own real address parts, not a separate figure');
+}
+
 g('SW · a range match is checked at a seat its own first charge can reach');
 /* PIECE ONE OF 22 OCTOBER, core.js SAB_SEAT. compute() names a SAB33 range
    match only when its seat holds an address at sq 3 or more. The seat was

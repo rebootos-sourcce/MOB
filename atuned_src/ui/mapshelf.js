@@ -45,13 +45,36 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
   var top=marks.slice().sort(function(a,b){return b.v-a.v;}).slice(0,10);
   sh+='<div class="pm-eye" style="margin-top:14px">'
    +(PMLAYER==='pain'?'Above the line':'Held addresses')+', '+marks.length+'</div><div class="pm-list">';
-  top.forEach(function(m){
-   var opp=(CHILD.filter(function(c){return c.nm===m.o.cf;})[0]||{}).opp||'';
-   sh+='<button class="pm-li" data-seat="'+B2K[m.band]+'"><i style="background:'+(PMC[m.band]||'#888')+'"></i>'
-    +'<span class="pm-ln">'+esc(m.nm)+'</span>'
-    +'<span class="pm-lw">'+fmtPct('weight',m.o.sq)+'</span>'
-    +'<span class="pm-ls">toward '+esc(opp||'no pole')+'</span>'
-    +'<span class="pm-lk">'+m.band+'</span></button>';});
+  /* THE BAR, NOT THE PLAIN TEXT, 3 November round two, item 2 of the two
+     flagged at the end of round one. This row was already real -- m.o is
+     the real address node (NODES/W), m.o.cf its real charge and m.o.a the
+     real coherent word nodes.js already carries for it, the identical
+     field railStack's own nerve tier and renderChainKey now draw as a bar
+     (ui/ui.js, 'the word at the far end is n.a'). It printed that word as
+     plain text here only because this round's own brief scoped the first
+     pass to the right rail; rbRow (ui/component.js) is reused whole, the
+     same component and the same o.oppWord, not a new one, and not a new
+     opposite lookup either -- the CHILD-table relookup this row used to do
+     by hand for 'opp' is gone, since m.o.a is the more specific word that
+     lookup was approximating. held/installed replace the bare sq this row
+     used to print, the same pct('held',...)/pct('installed',...) kinds the
+     address-level bar already reads everywhere else, so "72" here and "72"
+     on the right rail are never two different numbers for the one node.
+
+     NO o.cls:'pm-li' HERE, caught live: .pm-li is itself a 3-column CSS
+     grid built for the old <i><span><span> markup (head.html,
+     ".pm-li{display:grid;grid-template-columns:10px 1fr auto;...}"), and it
+     collapsed rbRow's own track to nothing the same way .stk-r did on the
+     right rail's identical bar (ui/ui.js, sabOppRow's own comment) -- caught
+     by opening the page, not assumed from the markup, CLAUDE.md rule 5. The
+     click below answers through '[data-seat]' alone, no class required, so
+     dropping the class changes nothing it depends on. */
+  top.forEach(function(m,i){
+   sh+=rbRow('shelf-'+i,m.nm,pct('held',m.o.held),fmtPct('held',m.o.held),
+    {bare:true,attrs:' data-seat="'+B2K[m.band]+'"',inFill:true,
+     pct2:pct('installed',m.o.rep),oppWord:m.o.a,col:PMC[m.band]||'#888',
+     after:' <em style="font-style:normal;font-size:11px;color:var(--dim)">'+esc(m.band)+'</em>',
+     title:m.nm+'. Toward '+m.o.a+'. '+m.o.a+' installed '+fmtPct('installed',m.o.rep)+'.'});});
   sh+='</div>';}
 
  /* THE ANSWER TO A PRESS IS NOT PRINTED HERE ANY MORE. It was, three times

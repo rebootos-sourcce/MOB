@@ -390,7 +390,22 @@ function compute(){
     now takes that row's family from either route, through SAB_LIB_BY in
     core.js. FAM_OF still answers for a range match with no library row. */
  const sabByNm={};
+ /* s.held/s.rep, 3 November, second round: the real charge and the real
+    opposite already installed, at this saboteur's own addresses, averaged
+    the identical way s.w itself already is (ALL_SAB's own route, just
+    below: "w=parts.reduce((a,n)=>a+n.sq,0)/parts.length"). Not a new
+    figure invented for the bar -- every part here is a real address node
+    (compute.js's own W, n.held and n.rep set earlier in this same
+    function), so this is the saboteur-level mean of the exact fields the
+    address-level bar already draws (pct('held',...), pct('installed',...)),
+    read one rung up. Guarded on s.parts being real nodes (every pushSab
+    caller hands it address nodes, never a cx/hy/sup's own .parts of
+    saboteurs), so a future caller that passed something else would get
+    NaN rather than a silently wrong number -- caught by tests/engine.js,
+    which checks every sab carries a real 0-10 held and rep. */
+ const meanField=function(parts,k){return parts.reduce((a,n)=>a+(n[k]||0),0)/parts.length;};
  const pushSab=function(s){
+  if(s.parts&&s.parts.length){s.held=meanField(s.parts,'held');s.rep=meanField(s.parts,'rep');}
   const id=KB_KEY(s.nm), ex=sabByNm[id];
   if(ex){if(s.w<=ex.w)return; sabs[sabs.indexOf(ex)]=s;sabByNm[id]=s;return;}
   sabByNm[id]=s;sabs.push(s);};

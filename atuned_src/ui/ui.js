@@ -917,12 +917,58 @@ function stkDefTier(){
    of a kind down this rail. Same CHAINGLYPH, same colour, same weight,
    same dominant mark (crBadge's new on:dom, wired above) as the ring gave,
    only big enough now to be seen as a shape before it is read as a name. */
+/* THE SABOTEUR BAR, 3 November round two. His own two flagged items, the
+   first of them: a saboteur sat on the single-value crBadge row above
+   because SABCARD's own a is a paragraph, not a word (see SABCARD's own
+   header and tests/engine.js's SB group). SABCARD.op is the real
+   compression now shipped beside it -- one or two of the exact CHILD opp
+   words a's own text already names, never invented (SABOP, tests/
+   engine.js) -- and compute.js's pushSab now carries a real s.held/s.rep,
+   the mean of this saboteur's own real address parts' n.held/n.rep, the
+   identical fields and identical mean-of-parts shape s.w itself already
+   uses for sq. So a saboteur row can draw the SAME rbRow bar the address
+   rows already do (railStack's nerve tier, renderChainKey's own copy of
+   it): held filled against its real percent, rep as the real far segment,
+   op as the real word at the far end.
+
+   null WHEN THE ROW HAS NO REAL BAR TO DRAW, never a fallback fake one:
+   an unnamed/inferred cluster has no SABCARD row at all (chkFullList's
+   own unnamed rows for a sniffed cluster with no SAB33 name), and a row
+   whose own key does not resolve prints nothing here, which the two real
+   callers (chkTier, chkChainRow, both below) read as "draw the old single-
+   value badge instead" -- CLAUDE.md rule 6, no plausible-looking word
+   where there is no real one. */
+function sabOppRow(q,o,idx,dom){
+ if(o.kind!=='sab')return null;
+ var key=KB_KEY(String(o.nm).replace(/ overshot$/,''));
+ var card=(typeof SABCARD!=='undefined'&&SABCARD[key])||null;
+ if(!card||!card.op)return null;
+ var b=(o.parts&&o.parts[0]&&o.parts[0].b)||'Root';
+ var held=o.held||0, rep=o.rep||0;
+ /* NO o.cls HERE, caught live rather than assumed: .stk-r is itself
+    display:flex (head.html, ".stk-r{display:flex;...}"), built for its own
+    badge-plus-name row, and dropping it onto a bare rbRow fights the block
+    stacking .rb-row/.rb-t (the name line, the track beneath it) depend on
+    -- the track collapsed to nothing under it on a first render, caught by
+    opening the actual page rather than trusting the markup alone, CLAUDE.md
+    rule 5. The click still answers through data-sk/data-si alone: the
+    dispatcher below now reads '.rbar[data-sk]' as well as '.stk-r[data-sk]',
+    so a bare row with no stk-r class opens its drill exactly as a stk-r
+    button already does, through the same real branch. */
+ return rbRow(q,o.nm,pct('held',held),fmtPct('held',held),
+  {bare:true,attrs:' data-sk="sab" data-si="'+idx+'"',
+   inFill:true,pct2:pct('installed',rep),oppWord:card.op,col:seatCol(b),
+   ic:'<path d="'+CHAINGLYPH.sab+'"/>',
+   after:(o.unnamed?'<em>inferred</em>':'')+(dom?'<em>heaviest</em>':'')+(o.over?'<em> overshot</em>':''),
+   title:o.nm+'. Toward '+card.op+'.'+(o.over?' Overshot.':'')
+    +' '+card.op+' installed '+fmtPct('installed',rep)+'.'});}
 function chkTier(kind,list,seat){
  var idx=list.map(function(o,i){return {o:o,i:i};}).sort(function(a,b){return b.o.w-a.o.w;});
  var cap=kind==='sab'?6:4;
  if(!idx.length)return '<p class="ad-p" style="margin:4px 0 0 2px">Nothing at this tier yet.</p>';
  return idx.slice(0,cap).map(function(pair,rank){var o=pair.o, dom=rank===0, f=fmtPct('chain',o.w),
    b=kind==='sab'?((o.parts&&o.parts[0]&&o.parts[0].b)||seat):seat;
+  if(kind==='sab'){var bar=sabOppRow('sab-'+pair.i,o,pair.i,dom); if(bar)return bar;}
   return '<button type="button" class="stk-r" data-sk="'+kind+'" data-si="'+pair.i+'">'
    +crBadge(b,pct('chain',o.w)||0,{size:'sm',raw:f,on:dom,
      glyph:'<path d="'+CHAINGLYPH[kind]+'"/>',title:o.nm+', '+f+(o.over?', overshot':'')})
@@ -1002,6 +1048,7 @@ function chkFindLike(list,o){
    one look, never a second drawing of the same reading. */
 function chkChainRow(kind,o,idx,seat,dom){
  var f=fmtPct('chain',o.w), b=kind==='sab'?((o.parts&&o.parts[0]&&o.parts[0].b)||seat):seat;
+ if(kind==='sab'){var bar=sabOppRow('sab-n-'+idx,o,idx,dom); if(bar)return bar;}
  return '<button type="button" class="stk-r" data-sk="'+kind+'" data-si="'+idx+'">'
   +crBadge(b,pct('chain',o.w)||0,{size:'sm',raw:f,on:dom,
     glyph:'<path d="'+CHAINGLYPH[kind]+'"/>',title:o.nm+', '+f+(o.over?', overshot':'')})
@@ -2283,7 +2330,13 @@ document.addEventListener('click',function(e){
       cares which fetter was just pressed, not what S.pin says, so it is
       handed fc directly, shift-click still toggling exactly as elsewhere. */
    chainPinToggle(fc,!!e.shiftKey); render();} return;}
- var sr=e.target.closest?e.target.closest('.stk-r[data-sk]'):null;
+ /* '.rbar[data-sk]' alongside '.stk-r[data-sk]', 3 November round two:
+    sabOppRow's own real bar carries data-sk/data-si but never the stk-r
+    class (that function's own comment says why), so the one real click
+    case every other kind already answers through now also answers a
+    saboteur's own bar, rather than a second, parallel handler for the
+    one kind that draws differently. */
+ var sr=e.target.closest?e.target.closest('.stk-r[data-sk],.rbar[data-sk]'):null;
  if(sr){var rr=computeSeen(), o=({sab:rr.sabs,cx:rr.cxs,hy:rr.hys,sup:rr.sups}[sr.getAttribute('data-sk')]||[])[+sr.getAttribute('data-si')];
   if(o){var same=S.pin&&S.pin.nm===o.nm&&S.pin.kind===o.kind; S.pin=same?null:o; runDrill(S.pin);
    /* o itself, never S.pin: see the identical note on hitPress's own
