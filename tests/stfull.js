@@ -44,6 +44,10 @@
      8  the Journal's fold is its own key, and folding it moves nothing on the
         Field (1600 only, where the column sits beside the stage)
      9  Dashboard pressed again is Simple, exactly as before
+    10  a profile change in Full leaves none of the last person's words, rail,
+        page text or parse on screen, writes nothing onto the new
+        record, brings the words back on the way home, drops the last
+        commit's credit, and the fold reopening runs no fade on the rail
    ============================================================ */
 const path=require('path');
 
@@ -235,6 +239,66 @@ async function stFullGate(browser,FILE,ok,booted){
    left:document.getElementById('stleft').innerHTML}));
   ok(!s5.dash&&!s5.full&&s5.simple&&s5.lcol==='none'&&s5.left==='',at+'Dashboard pressed again is Simple as it was, '+JSON.stringify(s5));
   await p.evaluate(()=>{ST_TEXT='';ST_PARSED=null;if(typeof stDraft==='function')stDraft();});
+
+  /* 10. THE WORDS ARE THE OPEN RECORD'S, 3 November. The bug this holds was
+     on atuned.world from PR #169: in Full, with a story on the Journal, the
+     picker moved to another person and render() reached only stFieldPaint,
+     which refreshed neither the words nor the Energy rail. S.who said Tomas
+     and the rail, the conversation and ST_TEXT were byte for byte You's.
+     The picker is moved by a real selectOption, which fires the same change
+     event a person's choice does (ui/personas.js, loadP). force only skips
+     the visibility wait, because at 390 the select sits behind its menu. */
+  await press(p,'#stdash',ok,at+'Dashboard, on again for the switch');
+  await p.waitForTimeout(200);
+  const MARK='he shouted at me';
+  const a=await p.evaluate(async t=>{loadP(0); ST_TEXT=t; ST_PARSED=parseStory(t); stRefresh();
+   await new Promise(r=>setTimeout(r,650));
+   const other=[...document.querySelectorAll('#psel option')].map(o=>o.value).find(v=>v!=='0');
+   return {other, who:S.who, full:document.body.classList.contains('st-full'),
+    rail:document.getElementById('stleft').innerHTML,
+    rows:[...document.querySelectorAll('#stleft .st-en-r .cr .v')].map(e=>e.textContent).join(',')};},STORY);
+  ok(a.who===0&&a.full&&a.rows.split(',').length===7,at+'the switch is measured from You in Full with seven seats drawn, '+JSON.stringify({who:a.who,full:a.full,rows:a.rows}));
+  await p.selectOption('#psel',a.other,{force:true});
+  await p.waitForTimeout(300);
+  const b=await p.evaluate(m=>({who:S.who, text:ST_TEXT, parsed:!!ST_PARSED,
+   rail:document.getElementById('stleft').innerHTML,
+   rows:document.querySelectorAll('#stleft .st-en-r').length,
+   none:!!document.getElementById('st-energy-none'),
+   page:document.getElementById('story').textContent.indexOf(m)>=0,
+   draft:(CURP&&CURP.story&&CURP.story.draft)||null,
+   youDraft:(PROFILES[0]&&PROFILES[0].story&&PROFILES[0].story.draft)||null}),MARK);
+  ok(b.who===+a.other&&b.text===''&&!b.parsed,at+'after the picker moves, the Journal holds none of the last person\'s words, '+JSON.stringify({who:b.who,text:b.text.slice(0,30),parsed:b.parsed}));
+  ok(b.rail!==a.rail&&b.rows===0&&b.none,at+'and the Energy rail is the new person\'s, silent, not the last person\'s seven seats, '+JSON.stringify({rows:b.rows,none:b.none}));
+  /* the pending imprints (impGhosts) read ST_PARSED, held null above. They
+     are not counted here: on Tomas the story's addresses are already live,
+     so the count reads 0 with or without the leak and would pass for the
+     wrong reason. Measured: 5 on You, 0 on Tomas on the leaking build. */
+  ok(!b.page,at+'and no text on the Journal carries the last person\'s story, '+JSON.stringify({page:b.page}));
+  ok(b.draft===null&&b.youDraft===STORY,at+'the words stay on their own record and are not written onto the new one, '+JSON.stringify({draft:b.draft,you:!!b.youDraft}));
+  await p.selectOption('#psel','0',{force:true});
+  await p.waitForTimeout(300);
+  const c=await p.evaluate(()=>({who:S.who, text:ST_TEXT,
+   rows:[...document.querySelectorAll('#stleft .st-en-r .cr .v')].map(e=>e.textContent).join(',')}));
+  ok(c.who===0&&c.text===STORY&&c.rows===a.rows,at+'and back on You, the words and the same seven figures return, '+JSON.stringify({who:c.who,rows:c.rows,want:a.rows}));
+  /* the last commit is a record's too: STV.lastT is what relPick credits a
+     run to, so it may not survive into the next person's release */
+  const d=await p.evaluate(async()=>{stCommit(); const k={lastT:STV.lastT, found:STV.lastFound.length};
+   const s=document.getElementById('psel'); s.value=[...s.options].map(o=>o.value).find(v=>v!=='0');
+   s.dispatchEvent(new Event('change')); await new Promise(r=>setTimeout(r,200));
+   return {before:k, lastT:STV.lastT, found:STV.lastFound.length};});
+  ok(d.before.lastT!==null&&d.lastT===null&&d.found===0,at+'a commit\'s found imprints and its time do not carry to the next person, '+JSON.stringify(d));
+  await p.evaluate(()=>{loadP(0); setTab(TAB.STORY); render();});
+  /* the fold opening again does not fade the rail in, the rule rmVisible
+     already keeps for first sight (ui/railmotion.js, railOpened) */
+  if(wn==='desktop'){
+   await p.waitForTimeout(300);
+   await press(p,'#lfold',ok,at+'the fold, shut, for the reopen fade');
+   await p.waitForTimeout(200);
+   await press(p,'#lfold',ok,at+'the fold, open again');
+   const an=await p.evaluate(async()=>{await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+    const e=document.getElementById('stleft'); return {shut:document.body.classList.contains('lshut'),
+     n:e.getAnimations().length, rows:e.querySelectorAll('.st-en-r').length+(e.querySelector('#st-energy-none')?1:0)};});
+   ok(!an.shut&&an.rows>0&&an.n===0,at+'reopening the fold runs no fade on the Energy rail, '+JSON.stringify(an));}
 
   ok(errs.length===0,at+'no page error on the way, '+errs.join(' | '));
   await p.close();}}

@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2746 b6f4c161 2026-11-03 00:11"><head><meta charset="utf-8">
+<html lang="en" data-build="v2749 b6f86211 2026-11-03 21:00"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -48773,6 +48773,16 @@ try{window.__at&&window.__at('ui/character.js');}catch(e){}
    commit.
    ============================================================ */
 var ST_TEXT='', ST_PARSED=null, ST_REC=null, ST_LISTEN=false, ST_LIVE='', ST_WANT_LISTEN=false;
+/* THE WORDS BELONG TO A RECORD, 3 November. ST_TEXT and ST_PARSED are one
+   page's variables and CURP moves under them: the picker, an import, a new
+   record. Before this nothing said whose words they were, so a profile
+   change on the Journal left one person's story, its Energy rail and its
+   pending imprints on screen under the next person's name. ST_OWN is the
+   record the words were written on. null is unclaimed, a page that has not
+   written yet, and is taken by the record open when it first writes.
+   stOwn in ui/storyui.js moves it, and every reader asks stMine first. */
+var ST_OWN=null;
+function stMine(){ return !ST_OWN||typeof CURP==='undefined'||ST_OWN===CURP; }
 var IMP_GROUP='band', IMP_PICK={};
 var IMP_GROUPS=[['band','Seat'],['charge','Charge'],['sab','Saboteur'],
                 ['story','Story'],['expr','Expression']];
@@ -48781,7 +48791,7 @@ function impLive(){
 /* pending imprints the sniffer has found but that are not committed yet.
    they draw as ghosts, so you can see where the text is about to land. */
 function impGhosts(){
- if(!ST_PARSED)return [];
+ if(!ST_PARSED||!stMine())return [];
  var out={},seen={},order=[];
  ST_PARSED.imprints.forEach(function(im){
   if(seen[im.node])return; seen[im.node]=1;
@@ -49157,7 +49167,7 @@ function stRender(){
     Journal itself, because stCommit can redraw this page from another tab
     and the class must not outlive stRailClear there. */
  document.body.classList.toggle('st-full',!!STV.dash&&S.tab===TAB.STORY);
- stDraftBack();
+ stOwn(); stDraftBack();
  var p=ST_PARSED;
  /* A WORKED EXAMPLE IS SHOW ONLY, ruled 16 October (engine/showonly.js). Its
     bank, its vault and its imprints are the reading and all of them stay.
@@ -49871,6 +49881,10 @@ function stCommit(){
    CURP.story.reply beside CURP.story.draft, so a reload or a tab closed
    inside the half second keeps whichever box had words in it, or both. */
 function stDraft(){
+ /* never one person's words onto another's record: a voice turn that lands
+    after the picker moved is not the open record's (ST_OWN, ui/imprints.js) */
+ if(!stMine())return;
+ if(CURP)ST_OWN=CURP;
  if(!CURP||!CURP.story||(typeof S!=='undefined'&&S.who!==0))return;
  var v=(ST_TEXT&&ST_TEXT.trim())?ST_TEXT:null,
   r=(typeof SRC_CDRAFT==='string'&&SRC_CDRAFT.trim())?SRC_CDRAFT:null, moved=false;
@@ -49897,10 +49911,39 @@ if(typeof addEventListener==='function')['pagehide','visibilitychange'].forEach(
    reload can find words waiting to be sent, words already sent and not yet
    committed, both, or neither. */
 function stDraftBack(){
+ if(!stMine())return;
  if(!CURP||!CURP.story||(typeof S!=='undefined'&&S.who!==0))return;
  if(!ST_TEXT&&typeof CURP.story.draft==='string'){
-  ST_TEXT=CURP.story.draft; ST_PARSED=ST_TEXT.trim()?parseStory(ST_TEXT):null;}
- if(!SRC_CDRAFT&&typeof CURP.story.reply==='string')SRC_CDRAFT=CURP.story.reply;}
+  ST_TEXT=CURP.story.draft; ST_PARSED=ST_TEXT.trim()?parseStory(ST_TEXT):null; ST_OWN=CURP;}
+ if(!SRC_CDRAFT&&typeof CURP.story.reply==='string'){SRC_CDRAFT=CURP.story.reply; ST_OWN=CURP;}}
+/* THE OPEN RECORD CHANGED UNDER THE JOURNAL, 3 November. Called at the head
+   of render() (ui/ui.js), stRender and stFieldPaint, so every route CURP
+   moves by is met before anything is painted: loadP, the picker, an import,
+   a new record. Returns true when the words were someone else's, so the
+   caller redraws the whole Journal and not only what stFieldPaint patches.
+
+   It is the commit's own reset (stCommit), because a switch is the same
+   fact: the entry on the page is no longer this person's. The words are not
+   lost. stDraft put them on their own record as they were typed, so the
+   pending half second is written now, while they are still that record's,
+   and they come back through stDraftBack when that record is opened again.
+   lastFound and lastT go too: they are the last commit's, and the release
+   picker credits a run to them (relPick's story_t). A recording still
+   running is stopped, because its next words would land on the next record. */
+function stOwn(){
+ var cur=(typeof CURP!=='undefined')?CURP:null;
+ if(ST_OWN===cur)return false;
+ if(ST_OWN===null){ ST_OWN=cur; return false; }
+ if(STV.draftT){ stDraftStop();
+  if(typeof pPersist==='function'&&!pPersist()&&typeof status==='function')
+   status('This browser would not save. The words you left in the Journal are on this page and not on your record.','fail');}
+ if(ST_LISTEN||ST_WANT_LISTEN){ ST_WANT_LISTEN=false; ST_LISTEN=false; ST_LISTEN_T0=null; ST_LIVE='';
+  try{ if(ST_REC)ST_REC.stop(); }catch(e){} }
+ ST_OWN=cur;
+ ST_TEXT=''; ST_PARSED=null; SRC_PASSED=false; if(typeof srcFresh==='function')srcFresh();
+ STV.lastFound=[]; STV.lastT=null; STV.unsaved=null;
+ stDraftBack();
+ return true;}
 
 /* refresh only what the text moves, so typing never loses the caret */
 function stRefresh(){
@@ -49946,8 +49989,15 @@ function stPaintAll(){
    held, what the release column offers and what the vault holds, and none of
    them passes through this file. Without it the vault read 0 after a run
    until the tab was left and entered again. */
-function stFieldPaint(){
+function stFieldPaint(moved){
  if(!document.getElementById('stflow'))return;
+ /* A PROFILE CHANGE IS NOT A PATCH, 3 November. Everything below patches
+    the record's half of the page, and the words, the box, the conversation
+    and the Full view's Energy rail are the other half. They were never
+    refreshed here, so a switch on the Journal kept the last person's story
+    on screen under the next person's name. moved is render()'s own stOwn,
+    which has already run by the time this is reached. */
+ if(stOwn()||moved){ stRender(); return; }
  /* a lighting change arrives here too, and the chart's ink is read off it.
     Only then: reading it forces a style flush, and render() runs on every
     slider step. */
@@ -52461,7 +52511,17 @@ try{window.__at&&window.__at('ui/storyui.js');}catch(e){}
    Running hot list, is the part that is gated on r.unread, and it still is. */
 function stDashLeft(){
  var h=document.getElementById('stleft'); if(!h)return;
- if(!STV.dash){ if(h.innerHTML)h.innerHTML=''; return; }
+ /* ONLY ON THE JOURNAL, the guard stRender already keeps on st-full: stCommit
+    can redraw the Journal from another tab, and #stleft is a static host in
+    #lcol, so a paint off the tab would put this story's seats into another
+    tab's column. */
+ if(!STV.dash||typeof S==='undefined'||S.tab!==TAB.STORY){ if(h.innerHTML)h.innerHTML=''; return; }
+ /* AND ONLY THE OPEN RECORD'S WORDS, 3 November. This reads ST_TEXT and
+    ST_PARSED, which are a record's (ST_OWN, ui/imprints.js). Words written
+    on another record are not this person's reading, so the rail is emptied
+    rather than drawn off them; stOwn, which render() runs first, puts the
+    right words back and the next paint draws them. */
+ if(!stMine()){ if(h.innerHTML)h.innerHTML=''; return; }
  var p=(typeof ST_TEXT==='string'&&ST_TEXT.trim())?ST_PARSED:null;
  var o='<section class="st-en" id="st-energy" aria-labelledby="st-energy-h">'
   +'<h2 class="rblk" id="st-energy-h">Energy</h2>'
@@ -80729,7 +80789,10 @@ function railOpened(){
  /* a render that found the column open has just given it its first sight */
  if(rbStill()||!rmRailOpen()||performance.now()-RM.seenAt<150)return;
  var kids=[]; Array.prototype.forEach.call(document.getElementById('lpanel').children,function(c){
-  if(c.classList.contains('lfold')||!c.offsetParent)return; kids.push(c);});
+  /* not the Journal's Full view rail either, for the reason rmVisible gives
+     above: it is repainted on every key, so a fade aimed at it lands on
+     markup about to be replaced */
+  if(c.classList.contains('lfold')||c.classList.contains('st-lrail')||!c.offsetParent)return; kids.push(c);});
  kids.forEach(function(c,i){if(!c.animate)return;
   c.animate([{opacity:0,transform:'translateX(-10px)'},{opacity:1,transform:'none'}],
    {duration:260,delay:Math.min(i,6)*40,easing:RM_OUT,fill:'backwards'});});}
@@ -81722,7 +81785,7 @@ function obResume(jr){
  if(at==='mirror'){
   OB.text=w.text||'';
   if(OB.text){
-   ST_TEXT=OB.text; ST_PARSED=parseStory(OB.text);
+   ST_TEXT=OB.text; ST_PARSED=parseStory(OB.text); ST_OWN=CURP||null;
    OB.read=obReadOf(ST_PARSED,'s',{});
    w.fixes.forEach(function(v){ OB.fixes.push(v); obFixRead(v); });
    OB.ans=Object.assign({},w.ans);
@@ -82718,7 +82781,7 @@ function obStoryDone(){
  var ta=document.getElementById('obtext'); if(!ta)return;
  var v=ta.value; OB.text=v;
  if(v.trim().split(/\s+/).filter(Boolean).length<3)return;
- ST_TEXT=v; ST_PARSED=v.trim()?parseStory(v):null;
+ ST_TEXT=v; ST_PARSED=v.trim()?parseStory(v):null; ST_OWN=CURP||null;
  OB.commit=null; OB.read=obReadOf(ST_PARSED,'s',{});
  OB.fixReads=[]; OB.fixes=[]; OB.ans={}; OB.more={}; OB.plan=null;
  /* F13: that a story was given and how much it read, never its words. The
@@ -82733,7 +82796,7 @@ function obStoryDone(){
    is exactly the story the mirror showed. ---- */
 function obCommit(){
  if(!OB.text||!OB.text.trim()){ OB.step=7; obRender(); return; }
- ST_TEXT=OB.text; ST_PARSED=parseStory(OB.text); OB.plan=null;
+ ST_TEXT=OB.text; ST_PARSED=parseStory(OB.text); ST_OWN=CURP||null; OB.plan=null;
  var r=stCommit();
  OB.commit=r;
  /* THE TAPS AND THE ANSWERS WRITE TO THE REAL PROFILE THE WAY THE STORY TAB
@@ -84384,6 +84447,10 @@ function probeForWho(){
  if(who===PROBE_WHO)return; PROBE_WHO=who;
  var pr=document.getElementById('probe'); if(pr){pr.classList.remove('on'); pr.innerHTML='';}}
 function render(){
+ /* the Journal's words are a record's (ST_OWN, ui/imprints.js), and every
+    route that moves CURP ends here, so the switch is met before anything is
+    drawn, on every tab. One identity compare when nothing moved. */
+ var stMoved=(typeof stOwn==='function')&&stOwn();
  if(typeof paintUndo==='function')paintUndo();
  probeForWho();
  /* THE READING A PERSON MAY SEE, not compute()'s own. Everything render hands
@@ -84991,7 +85058,7 @@ function renderGates(){
     release column offers and what its vault holds, and none of them passes
     through the Story's own code. Without this the vault read nought after a
     run until the tab was left and entered again. */
- else if(S.tab===TAB.STORY&&typeof stFieldPaint==='function')stFieldPaint();}
+ else if(S.tab===TAB.STORY&&typeof stFieldPaint==='function')stFieldPaint(stMoved);}
 
 /* ---- the loop ---- */
 let last=0;
@@ -85309,5 +85376,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005621521"></div>
+<div id="eof" hidden data-len="005625915"></div>
 </body></html>

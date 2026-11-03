@@ -56,7 +56,17 @@
    Running hot list, is the part that is gated on r.unread, and it still is. */
 function stDashLeft(){
  var h=document.getElementById('stleft'); if(!h)return;
- if(!STV.dash){ if(h.innerHTML)h.innerHTML=''; return; }
+ /* ONLY ON THE JOURNAL, the guard stRender already keeps on st-full: stCommit
+    can redraw the Journal from another tab, and #stleft is a static host in
+    #lcol, so a paint off the tab would put this story's seats into another
+    tab's column. */
+ if(!STV.dash||typeof S==='undefined'||S.tab!==TAB.STORY){ if(h.innerHTML)h.innerHTML=''; return; }
+ /* AND ONLY THE OPEN RECORD'S WORDS, 3 November. This reads ST_TEXT and
+    ST_PARSED, which are a record's (ST_OWN, ui/imprints.js). Words written
+    on another record are not this person's reading, so the rail is emptied
+    rather than drawn off them; stOwn, which render() runs first, puts the
+    right words back and the next paint draws them. */
+ if(!stMine()){ if(h.innerHTML)h.innerHTML=''; return; }
  var p=(typeof ST_TEXT==='string'&&ST_TEXT.trim())?ST_PARSED:null;
  var o='<section class="st-en" id="st-energy" aria-labelledby="st-energy-h">'
   +'<h2 class="rblk" id="st-energy-h">Energy</h2>'

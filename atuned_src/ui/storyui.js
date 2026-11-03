@@ -71,7 +71,7 @@ function stRender(){
     Journal itself, because stCommit can redraw this page from another tab
     and the class must not outlive stRailClear there. */
  document.body.classList.toggle('st-full',!!STV.dash&&S.tab===TAB.STORY);
- stDraftBack();
+ stOwn(); stDraftBack();
  var p=ST_PARSED;
  /* A WORKED EXAMPLE IS SHOW ONLY, ruled 16 October (engine/showonly.js). Its
     bank, its vault and its imprints are the reading and all of them stay.
@@ -785,6 +785,10 @@ function stCommit(){
    CURP.story.reply beside CURP.story.draft, so a reload or a tab closed
    inside the half second keeps whichever box had words in it, or both. */
 function stDraft(){
+ /* never one person's words onto another's record: a voice turn that lands
+    after the picker moved is not the open record's (ST_OWN, ui/imprints.js) */
+ if(!stMine())return;
+ if(CURP)ST_OWN=CURP;
  if(!CURP||!CURP.story||(typeof S!=='undefined'&&S.who!==0))return;
  var v=(ST_TEXT&&ST_TEXT.trim())?ST_TEXT:null,
   r=(typeof SRC_CDRAFT==='string'&&SRC_CDRAFT.trim())?SRC_CDRAFT:null, moved=false;
@@ -811,10 +815,39 @@ if(typeof addEventListener==='function')['pagehide','visibilitychange'].forEach(
    reload can find words waiting to be sent, words already sent and not yet
    committed, both, or neither. */
 function stDraftBack(){
+ if(!stMine())return;
  if(!CURP||!CURP.story||(typeof S!=='undefined'&&S.who!==0))return;
  if(!ST_TEXT&&typeof CURP.story.draft==='string'){
-  ST_TEXT=CURP.story.draft; ST_PARSED=ST_TEXT.trim()?parseStory(ST_TEXT):null;}
- if(!SRC_CDRAFT&&typeof CURP.story.reply==='string')SRC_CDRAFT=CURP.story.reply;}
+  ST_TEXT=CURP.story.draft; ST_PARSED=ST_TEXT.trim()?parseStory(ST_TEXT):null; ST_OWN=CURP;}
+ if(!SRC_CDRAFT&&typeof CURP.story.reply==='string'){SRC_CDRAFT=CURP.story.reply; ST_OWN=CURP;}}
+/* THE OPEN RECORD CHANGED UNDER THE JOURNAL, 3 November. Called at the head
+   of render() (ui/ui.js), stRender and stFieldPaint, so every route CURP
+   moves by is met before anything is painted: loadP, the picker, an import,
+   a new record. Returns true when the words were someone else's, so the
+   caller redraws the whole Journal and not only what stFieldPaint patches.
+
+   It is the commit's own reset (stCommit), because a switch is the same
+   fact: the entry on the page is no longer this person's. The words are not
+   lost. stDraft put them on their own record as they were typed, so the
+   pending half second is written now, while they are still that record's,
+   and they come back through stDraftBack when that record is opened again.
+   lastFound and lastT go too: they are the last commit's, and the release
+   picker credits a run to them (relPick's story_t). A recording still
+   running is stopped, because its next words would land on the next record. */
+function stOwn(){
+ var cur=(typeof CURP!=='undefined')?CURP:null;
+ if(ST_OWN===cur)return false;
+ if(ST_OWN===null){ ST_OWN=cur; return false; }
+ if(STV.draftT){ stDraftStop();
+  if(typeof pPersist==='function'&&!pPersist()&&typeof status==='function')
+   status('This browser would not save. The words you left in the Journal are on this page and not on your record.','fail');}
+ if(ST_LISTEN||ST_WANT_LISTEN){ ST_WANT_LISTEN=false; ST_LISTEN=false; ST_LISTEN_T0=null; ST_LIVE='';
+  try{ if(ST_REC)ST_REC.stop(); }catch(e){} }
+ ST_OWN=cur;
+ ST_TEXT=''; ST_PARSED=null; SRC_PASSED=false; if(typeof srcFresh==='function')srcFresh();
+ STV.lastFound=[]; STV.lastT=null; STV.unsaved=null;
+ stDraftBack();
+ return true;}
 
 /* refresh only what the text moves, so typing never loses the caret */
 function stRefresh(){
@@ -860,8 +893,15 @@ function stPaintAll(){
    held, what the release column offers and what the vault holds, and none of
    them passes through this file. Without it the vault read 0 after a run
    until the tab was left and entered again. */
-function stFieldPaint(){
+function stFieldPaint(moved){
  if(!document.getElementById('stflow'))return;
+ /* A PROFILE CHANGE IS NOT A PATCH, 3 November. Everything below patches
+    the record's half of the page, and the words, the box, the conversation
+    and the Full view's Energy rail are the other half. They were never
+    refreshed here, so a switch on the Journal kept the last person's story
+    on screen under the next person's name. moved is render()'s own stOwn,
+    which has already run by the time this is reached. */
+ if(stOwn()||moved){ stRender(); return; }
  /* a lighting change arrives here too, and the chart's ink is read off it.
     Only then: reading it forces a style flush, and render() runs on every
     slider step. */

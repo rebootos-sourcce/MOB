@@ -114,7 +114,10 @@ function railOpened(){
  /* a render that found the column open has just given it its first sight */
  if(rbStill()||!rmRailOpen()||performance.now()-RM.seenAt<150)return;
  var kids=[]; Array.prototype.forEach.call(document.getElementById('lpanel').children,function(c){
-  if(c.classList.contains('lfold')||!c.offsetParent)return; kids.push(c);});
+  /* not the Journal's Full view rail either, for the reason rmVisible gives
+     above: it is repainted on every key, so a fade aimed at it lands on
+     markup about to be replaced */
+  if(c.classList.contains('lfold')||c.classList.contains('st-lrail')||!c.offsetParent)return; kids.push(c);});
  kids.forEach(function(c,i){if(!c.animate)return;
   c.animate([{opacity:0,transform:'translateX(-10px)'},{opacity:1,transform:'none'}],
    {duration:260,delay:Math.min(i,6)*40,easing:RM_OUT,fill:'backwards'});});}
