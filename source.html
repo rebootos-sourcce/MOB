@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2756 3f762ed9 2026-11-03 03:28"><head><meta charset="utf-8">
+<html lang="en" data-build="v2757 bdd1fcf8 2026-11-03 20:59"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -16188,7 +16188,13 @@ try{window.__at&&window.__at('engine/data/codes.js');}catch(e){}
      old, happy         a death in old age, wished for, is not a wish to die now
      at work, at the gym, working, lifting, to get, to finish, to meet,
        to keep up       "killing myself at work", "killing myself to meet the
-                        deadline": the overwork idiom
+                        deadline": the overwork idiom. to get is held on the
+                        gerund alone and never on kill myself or killed
+                        myself, because "I am going to kill myself to get it
+                        over with" says a death outright
+   A frame row ("going to kill myself") takes the tails of the phrase it ends
+   with unless it has an entry of its own here; the attempt and wish frames
+   have empty ones, see engine/safe.js.
    Each held tail has a test both ways in tests/engine.js: with the tail it
    does not trip, and the same phrase without it does. Idioms that never
    reach this table because no row matches them are tested too: "I could
@@ -16230,11 +16236,19 @@ var SAFE_WORDS=[
   held:{
    'want to die':['laughing','of laughter','of embarrassment','a little','old','happy'],
    'wanna die':['laughing','of laughter','of embarrassment','a little','old','happy'],
-   'wanted to die':['laughing','of laughter','of embarrassment','a little'],
-   'kill myself':['laughing','at work','at the gym','working'],
+   'wanted to die':['laughing','of laughter','of embarrassment','a little','old','happy'],
+   'kill myself':['laughing','at work','at the gym','working','to finish','to meet','to keep up'],
    'killing myself':['laughing','at work','at the gym','working','to get','to finish','to meet','to keep up'],
-   'killed myself':['laughing','at work','at the gym','working'],
-   'hurting myself':['at the gym','lifting','at work']}},
+   'killed myself':['laughing','at work','at the gym','working','to finish','to meet','to keep up'],
+   'hurting myself':['at the gym','lifting','at work'],
+   /* an attempt, a wish or a thought of one: these frames take no tail from
+      the phrase they end with (engine/safe.js), so "I tried to kill myself
+      at work" and "I keep thinking about killing myself at work" trip. The
+      plain future, going to and gonna, is the overwork idiom and takes them */
+   'want to kill myself':[],'wanted to kill myself':[],'wanna kill myself':[],
+   'try to kill myself':[],'tried to kill myself':[],'trying to kill myself':[],
+   'thinking about killing myself':[],'thought about killing myself':[],
+   'thinking of killing myself':[],'thought of killing myself':[]}},
  /* danger now: not safe where they live, or their life threatened */
  {k:'now', on:true,
   say:['never feel safe at home','dont feel safe at home','do not feel safe at home',
@@ -31073,9 +31087,23 @@ function safeOf(text){
   if(!row.on)return;
   row.say.forEach(function(w){
    var at=src.indexOf(' '+w+' ');
-   while(at>=0){ hits.push({t:w, fam:row.k, band:'safe', at:at, held:row.held[w]||null});
+   while(at>=0){ hits.push({t:w, fam:row.k, band:'safe', at:at, held:row.held[w]});
     at=src.indexOf(' '+w+' ',at+1); }});});
  if(!hits.length)return [];
+ /* A FRAME KEEPS THE IDIOM OF THE PHRASE IT ENDS WITH, 3 November. The
+    filter below keeps "going to kill myself" and drops "kill myself", and
+    held was read off the phrase kept, so the tails went with the phrase
+    dropped: "I have been killing myself at work" was the idiom and "I am
+    going to kill myself at work" tripped. Reproduced on the built engine. A
+    frame with no held entry of its own takes the tails of the phrase it ends
+    with, since the tail follows both at the same place. A frame that says an
+    attempt or a thought of one carries its own empty entry in the data file
+    and takes nothing: "I tried to kill myself at work" is not overwork. */
+ hits.forEach(function(h){
+  if(h.held!==undefined)return;
+  hits.forEach(function(o){
+   if(h.held===undefined&&o.held&&o.t.length<h.t.length&&o.at+o.t.length===h.at+h.t.length&&o.at>=h.at)h.held=o.held;});});
+ hits.forEach(function(h){if(h.held===undefined)h.held=null;});
  /* the longer phrase decides for a shorter one inside it, "going to kill
     myself" for "kill myself", so the no in front of the frame is read */
  hits=hits.filter(function(h){
@@ -49981,7 +50009,9 @@ function stRead(){
    the page draws in place of the release and the question. Emmy's ruling,
    17 October: the entry is saved as written, no modal, no sound, no red, no
    "we noticed", one line and one door, once, and nothing escalates if it is
-   left alone. The release column stays reachable and is not offered.
+   left alone. The release column stays reachable and is not offered. The
+   no sound part was lifted for the line alone by the owner on 3 November:
+   in the spoken conversation Source AI says it, once, see srcPaint.
    ============================================================ */
 function stSafe(){
  var t=ST_TEXT||'';
@@ -50536,11 +50566,21 @@ var SRC_VERDICTS=[], SRC_VENT=false;
    down is a choice about the conversation and never edits the record.
    Page memory, cleared with the thread by srcFresh. */
 var SRC_FROM=0;
+/* whether the last paint drew the safe line, so it is spoken once, srcPaint */
+var SRC_SAFE_UP=false;
 function srcConvText(){
  if(SRC_FROM>ST_TEXT.length)SRC_FROM=0;
  return SRC_FROM?ST_TEXT.slice(SRC_FROM):ST_TEXT;}
+/* THE STOP READS THE WHOLE ENTRY, 3 November. A change of subject moves
+   what Source AI reads, and it must never move the stop: "can we talk about
+   something else", said straight after the words, put SRC_FROM past them and
+   the line and the door went from the screen for the rest of the entry,
+   reproduced in tests/safepage.js section 10. Commit already read the whole
+   entry and kept no release; the screen did not. srcHear of the whole entry
+   is heard as safe and nothing else, the same answer the unsliced case gives. */
 function srcHeardNow(){
  if(!SRC_FROM)return STR.heard||srcHear(ST_TEXT,null);
+ if(srcSafe(ST_TEXT))return srcHear(ST_TEXT,null);
  var ents=(CURP&&CURP.story&&CURP.story.entries)||[];
  return srcHear(srcConvText(),srcPrior(ents),ST_ACTIVE);}
 function srcLedgerNow(){
@@ -50882,9 +50922,20 @@ function srcPaint(){
     vanish, measured: two of their own rows before, none after. The thread
     is drawn as it stands, every Source AI row as an earlier one, and the
     line and the door take the place of the reply. Nothing is added to
-    SRC_CHAT, so nothing is spoken and nothing reaches the entry's asked. */
+    SRC_CHAT, so nothing reaches the entry's asked. */
  var safeTh=STV.chat&&turn.move==='safe';
  if(safeTh)o=srcThreadSafe(o);
+ /* AND THE LINE IS SAID OUT LOUD, owner's ruling of 3 November, his words:
+    "Source AI can speak the crisis safety line out loud. We want to take off
+    the no sound rules. Since we're now using voice speech to speech." Scoped
+    to this line alone. It goes through stSrcSpeak, the call every reply
+    below goes through, on the same rule: only while Talk is on, and once,
+    when the line first takes the reply's place, never on a repaint of it
+    and never again when Commit keeps it standing. Its own words and nothing
+    else, the words on the screen. Still nothing is added to SRC_CHAT. */
+ var safeNew=turn.move==='safe'&&!SRC_SAFE_UP;
+ SRC_SAFE_UP=turn.move==='safe';
+ if(safeNew&&safeTh&&ST_WANT_LISTEN)stSrcSpeak(safeSay);
  h.innerHTML=o;
  SRC_SHOWN=cur?cur.q:((turn.move==='pass'||turn.move==='safe')?'':q);
  if(cur||safeTh)srcWire(h);
@@ -52704,6 +52755,9 @@ var SRC_VOICE={seq:0, el:null, url:'', t:0};
    end must not leave the person unheard for the rest of the conversation. */
 var SRC_VOICE_MAX=30000;
 function srcSayNow(){
+ /* the safe line, while it stands in the reply's place: the line spoken is
+    the line on screen, so pressing Talk never reads an earlier question */
+ if(stSafe())return (STV.unsaved||STV.draftFail)?CRISIS_SAY.entryNow:CRISIS_SAY.entry;
  var q=''; SRC_CHAT.forEach(function(r){if(r.w==='src'&&r.q)q=r.q;});
  return q||srcOpen();}
 function srcVoiceStop(){
@@ -85679,5 +85733,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005645291"></div>
+<div id="eof" hidden data-len="005649154"></div>
 </body></html>

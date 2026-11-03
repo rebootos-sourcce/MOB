@@ -5847,7 +5847,13 @@ const CODE_RETIRED=[
      old, happy         a death in old age, wished for, is not a wish to die now
      at work, at the gym, working, lifting, to get, to finish, to meet,
        to keep up       "killing myself at work", "killing myself to meet the
-                        deadline": the overwork idiom
+                        deadline": the overwork idiom. to get is held on the
+                        gerund alone and never on kill myself or killed
+                        myself, because "I am going to kill myself to get it
+                        over with" says a death outright
+   A frame row ("going to kill myself") takes the tails of the phrase it ends
+   with unless it has an entry of its own here; the attempt and wish frames
+   have empty ones, see engine/safe.js.
    Each held tail has a test both ways in tests/engine.js: with the tail it
    does not trip, and the same phrase without it does. Idioms that never
    reach this table because no row matches them are tested too: "I could
@@ -5889,11 +5895,19 @@ var SAFE_WORDS=[
   held:{
    'want to die':['laughing','of laughter','of embarrassment','a little','old','happy'],
    'wanna die':['laughing','of laughter','of embarrassment','a little','old','happy'],
-   'wanted to die':['laughing','of laughter','of embarrassment','a little'],
-   'kill myself':['laughing','at work','at the gym','working'],
+   'wanted to die':['laughing','of laughter','of embarrassment','a little','old','happy'],
+   'kill myself':['laughing','at work','at the gym','working','to finish','to meet','to keep up'],
    'killing myself':['laughing','at work','at the gym','working','to get','to finish','to meet','to keep up'],
-   'killed myself':['laughing','at work','at the gym','working'],
-   'hurting myself':['at the gym','lifting','at work']}},
+   'killed myself':['laughing','at work','at the gym','working','to finish','to meet','to keep up'],
+   'hurting myself':['at the gym','lifting','at work'],
+   /* an attempt, a wish or a thought of one: these frames take no tail from
+      the phrase they end with (engine/safe.js), so "I tried to kill myself
+      at work" and "I keep thinking about killing myself at work" trip. The
+      plain future, going to and gonna, is the overwork idiom and takes them */
+   'want to kill myself':[],'wanted to kill myself':[],'wanna kill myself':[],
+   'try to kill myself':[],'tried to kill myself':[],'trying to kill myself':[],
+   'thinking about killing myself':[],'thought about killing myself':[],
+   'thinking of killing myself':[],'thought of killing myself':[]}},
  /* danger now: not safe where they live, or their life threatened */
  {k:'now', on:true,
   say:['never feel safe at home','dont feel safe at home','do not feel safe at home',
@@ -20684,9 +20698,23 @@ function safeOf(text){
   if(!row.on)return;
   row.say.forEach(function(w){
    var at=src.indexOf(' '+w+' ');
-   while(at>=0){ hits.push({t:w, fam:row.k, band:'safe', at:at, held:row.held[w]||null});
+   while(at>=0){ hits.push({t:w, fam:row.k, band:'safe', at:at, held:row.held[w]});
     at=src.indexOf(' '+w+' ',at+1); }});});
  if(!hits.length)return [];
+ /* A FRAME KEEPS THE IDIOM OF THE PHRASE IT ENDS WITH, 3 November. The
+    filter below keeps "going to kill myself" and drops "kill myself", and
+    held was read off the phrase kept, so the tails went with the phrase
+    dropped: "I have been killing myself at work" was the idiom and "I am
+    going to kill myself at work" tripped. Reproduced on the built engine. A
+    frame with no held entry of its own takes the tails of the phrase it ends
+    with, since the tail follows both at the same place. A frame that says an
+    attempt or a thought of one carries its own empty entry in the data file
+    and takes nothing: "I tried to kill myself at work" is not overwork. */
+ hits.forEach(function(h){
+  if(h.held!==undefined)return;
+  hits.forEach(function(o){
+   if(h.held===undefined&&o.held&&o.t.length<h.t.length&&o.at+o.t.length===h.at+h.t.length&&o.at>=h.at)h.held=o.held;});});
+ hits.forEach(function(h){if(h.held===undefined)h.held=null;});
  /* the longer phrase decides for a shorter one inside it, "going to kill
     myself" for "kill myself", so the no in front of the frame is read */
  hits=hits.filter(function(h){

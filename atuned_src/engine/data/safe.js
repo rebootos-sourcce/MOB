@@ -46,7 +46,13 @@
      old, happy         a death in old age, wished for, is not a wish to die now
      at work, at the gym, working, lifting, to get, to finish, to meet,
        to keep up       "killing myself at work", "killing myself to meet the
-                        deadline": the overwork idiom
+                        deadline": the overwork idiom. to get is held on the
+                        gerund alone and never on kill myself or killed
+                        myself, because "I am going to kill myself to get it
+                        over with" says a death outright
+   A frame row ("going to kill myself") takes the tails of the phrase it ends
+   with unless it has an entry of its own here; the attempt and wish frames
+   have empty ones, see engine/safe.js.
    Each held tail has a test both ways in tests/engine.js: with the tail it
    does not trip, and the same phrase without it does. Idioms that never
    reach this table because no row matches them are tested too: "I could
@@ -88,11 +94,19 @@ var SAFE_WORDS=[
   held:{
    'want to die':['laughing','of laughter','of embarrassment','a little','old','happy'],
    'wanna die':['laughing','of laughter','of embarrassment','a little','old','happy'],
-   'wanted to die':['laughing','of laughter','of embarrassment','a little'],
-   'kill myself':['laughing','at work','at the gym','working'],
+   'wanted to die':['laughing','of laughter','of embarrassment','a little','old','happy'],
+   'kill myself':['laughing','at work','at the gym','working','to finish','to meet','to keep up'],
    'killing myself':['laughing','at work','at the gym','working','to get','to finish','to meet','to keep up'],
-   'killed myself':['laughing','at work','at the gym','working'],
-   'hurting myself':['at the gym','lifting','at work']}},
+   'killed myself':['laughing','at work','at the gym','working','to finish','to meet','to keep up'],
+   'hurting myself':['at the gym','lifting','at work'],
+   /* an attempt, a wish or a thought of one: these frames take no tail from
+      the phrase they end with (engine/safe.js), so "I tried to kill myself
+      at work" and "I keep thinking about killing myself at work" trip. The
+      plain future, going to and gonna, is the overwork idiom and takes them */
+   'want to kill myself':[],'wanted to kill myself':[],'wanna kill myself':[],
+   'try to kill myself':[],'tried to kill myself':[],'trying to kill myself':[],
+   'thinking about killing myself':[],'thought about killing myself':[],
+   'thinking of killing myself':[],'thought of killing myself':[]}},
  /* danger now: not safe where they live, or their life threatened */
  {k:'now', on:true,
   say:['never feel safe at home','dont feel safe at home','do not feel safe at home',

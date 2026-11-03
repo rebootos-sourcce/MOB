@@ -61,9 +61,23 @@ function safeOf(text){
   if(!row.on)return;
   row.say.forEach(function(w){
    var at=src.indexOf(' '+w+' ');
-   while(at>=0){ hits.push({t:w, fam:row.k, band:'safe', at:at, held:row.held[w]||null});
+   while(at>=0){ hits.push({t:w, fam:row.k, band:'safe', at:at, held:row.held[w]});
     at=src.indexOf(' '+w+' ',at+1); }});});
  if(!hits.length)return [];
+ /* A FRAME KEEPS THE IDIOM OF THE PHRASE IT ENDS WITH, 3 November. The
+    filter below keeps "going to kill myself" and drops "kill myself", and
+    held was read off the phrase kept, so the tails went with the phrase
+    dropped: "I have been killing myself at work" was the idiom and "I am
+    going to kill myself at work" tripped. Reproduced on the built engine. A
+    frame with no held entry of its own takes the tails of the phrase it ends
+    with, since the tail follows both at the same place. A frame that says an
+    attempt or a thought of one carries its own empty entry in the data file
+    and takes nothing: "I tried to kill myself at work" is not overwork. */
+ hits.forEach(function(h){
+  if(h.held!==undefined)return;
+  hits.forEach(function(o){
+   if(h.held===undefined&&o.held&&o.t.length<h.t.length&&o.at+o.t.length===h.at+h.t.length&&o.at>=h.at)h.held=o.held;});});
+ hits.forEach(function(h){if(h.held===undefined)h.held=null;});
  /* the longer phrase decides for a shorter one inside it, "going to kill
     myself" for "kill myself", so the no in front of the frame is read */
  hits=hits.filter(function(h){

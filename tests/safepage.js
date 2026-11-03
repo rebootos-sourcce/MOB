@@ -45,6 +45,13 @@
    the whole thread, section 10 fails on the person's own rows (2 before, 0
    after), the defect it was written for.
 
+   SPOKEN, 3 NOVEMBER, the owner's ruling: "Source AI can speak the crisis
+   safety line out loud." Section 10 holds that the line goes to the voice
+   once, in its own words, through the same route every reply uses, and that
+   a change of subject straight after the words does not take the line off
+   the screen. Checked against a known bad case first: on bdd1fcf8 both
+   fail, nothing is sent to the voice and the line leaves the page.
+
    No count is typed into this file. Read the counts off the run.
    ============================================================ */
 const path = require('path');
@@ -311,7 +318,11 @@ const look = p => p.evaluate(() => {
     ok(JSON.stringify(s.me) === JSON.stringify([first, 'I keep thinking about killing myself.']),
       'and the person\'s own words stay on the page, both turns' + at + ': ' + JSON.stringify(s.me));
     ok(s.live === 0 && !s.pass && !s.why && s.asks === 0 && s.marks === 0, 'no reply, no question, no Move on, no why, no lit word' + at + ': ' + JSON.stringify(s));
-    ok(p.voice.length === v0, 'and nothing is spoken back after it' + at + ': ' + JSON.stringify(p.voice.slice(v0)));
+    /* SAID OUT LOUD, the owner's ruling of 3 November: the line, once, in its
+       own words, through the voice route every reply uses (net.js answers it,
+       so this is the real authVoice path). On bdd1fcf8 nothing was sent. */
+    ok(JSON.stringify(p.voice.slice(v0)) === JSON.stringify([SAY.entry]),
+      'Source AI says the line out loud, once, in its own words and nothing else' + at + ': ' + JSON.stringify(p.voice.slice(v0)));
     ok(s.said === SAY.entry, 'a screen reader hears the line' + at);
     await p.screenshot({ path: path.join(process.env.SHOTS || '/tmp', 'safe-spoken-' + w + '.png') }).catch(() => {});
     /* the Full view's left rail reads the story being written (ui/stdash.js) */
@@ -336,6 +347,33 @@ const look = p => p.evaluate(() => {
     ok(nx.line === null && nx.me === 1, 'the next entry starts and the line goes' + at + ': ' + JSON.stringify(nx));
     ok(!p.errs.length, 'no page errors' + at + ': ' + p.errs.join(' | '));
     await p.cx.close();
+
+    /* A CHANGE OF SUBJECT DOES NOT TAKE THE LINE AWAY, 3 November. Asking to
+       talk about something else moves SRC_FROM, what Source AI reads, past
+       the words; on bdd1fcf8 the line and the door then left the screen and
+       an ordinary reply took their place, for the rest of the entry. */
+    const q = await open(browser, w, h);
+    await say(q, first); await say(q, 'I keep thinking about killing myself.'); await q.waitForTimeout(300);
+    const qv = q.voice.length;
+    await say(q, 'Can we talk about something else?'); await q.waitForTimeout(400);
+    const sh = await q.evaluate(() => ({ from: SRC_FROM,
+      line: (document.querySelector('#stsrc #stsafe p') || {}).textContent || null,
+      reach: document.querySelectorAll('[data-crisis="reachnow"]').length,
+      me: document.querySelectorAll('#stsrc .src-bub-me').length,
+      live: document.querySelectorAll('#stsrc .src-tn-now .src-q, #stsrc .src-tn-now .src-open').length,
+      pass: !!document.getElementById('srcpass') }));
+    ok(sh.from > 0, 'the probe moves the subject: SRC_FROM is past the words' + at + ': ' + sh.from);
+    ok(sh.line === SAY.entry && sh.reach === 1 && sh.me === 3 && sh.live === 0 && !sh.pass,
+      'and the line and one door stay, all three turns on the page, no reply in their place' + at + ': ' + JSON.stringify(sh));
+    ok(q.voice.length === qv, 'and the line is not said again on the turn after it' + at + ': ' + JSON.stringify(q.voice.slice(qv)));
+    /* Talk pressed again speaks what is on screen, the line, never an older question */
+    await q.evaluate(() => { stMic(); }); await q.waitForTimeout(250);
+    const tv = q.voice.length;
+    await q.evaluate(() => { stMic(); }); await q.waitForTimeout(500);
+    ok(JSON.stringify(q.voice.slice(tv)) === JSON.stringify([SAY.entry]),
+      'Talk pressed again says the line on screen and nothing else' + at + ': ' + JSON.stringify(q.voice.slice(tv)));
+    ok(!q.errs.length, 'no page errors' + at + ': ' + q.errs.join(' | '));
+    await q.cx.close();
   }
 
   await browser.close();

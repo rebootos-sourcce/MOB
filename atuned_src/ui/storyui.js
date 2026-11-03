@@ -603,7 +603,9 @@ function stRead(){
    the page draws in place of the release and the question. Emmy's ruling,
    17 October: the entry is saved as written, no modal, no sound, no red, no
    "we noticed", one line and one door, once, and nothing escalates if it is
-   left alone. The release column stays reachable and is not offered.
+   left alone. The release column stays reachable and is not offered. The
+   no sound part was lifted for the line alone by the owner on 3 November:
+   in the spoken conversation Source AI says it, once, see srcPaint.
    ============================================================ */
 function stSafe(){
  var t=ST_TEXT||'';
@@ -1158,11 +1160,21 @@ var SRC_VERDICTS=[], SRC_VENT=false;
    down is a choice about the conversation and never edits the record.
    Page memory, cleared with the thread by srcFresh. */
 var SRC_FROM=0;
+/* whether the last paint drew the safe line, so it is spoken once, srcPaint */
+var SRC_SAFE_UP=false;
 function srcConvText(){
  if(SRC_FROM>ST_TEXT.length)SRC_FROM=0;
  return SRC_FROM?ST_TEXT.slice(SRC_FROM):ST_TEXT;}
+/* THE STOP READS THE WHOLE ENTRY, 3 November. A change of subject moves
+   what Source AI reads, and it must never move the stop: "can we talk about
+   something else", said straight after the words, put SRC_FROM past them and
+   the line and the door went from the screen for the rest of the entry,
+   reproduced in tests/safepage.js section 10. Commit already read the whole
+   entry and kept no release; the screen did not. srcHear of the whole entry
+   is heard as safe and nothing else, the same answer the unsliced case gives. */
 function srcHeardNow(){
  if(!SRC_FROM)return STR.heard||srcHear(ST_TEXT,null);
+ if(srcSafe(ST_TEXT))return srcHear(ST_TEXT,null);
  var ents=(CURP&&CURP.story&&CURP.story.entries)||[];
  return srcHear(srcConvText(),srcPrior(ents),ST_ACTIVE);}
 function srcLedgerNow(){
@@ -1504,9 +1516,20 @@ function srcPaint(){
     vanish, measured: two of their own rows before, none after. The thread
     is drawn as it stands, every Source AI row as an earlier one, and the
     line and the door take the place of the reply. Nothing is added to
-    SRC_CHAT, so nothing is spoken and nothing reaches the entry's asked. */
+    SRC_CHAT, so nothing reaches the entry's asked. */
  var safeTh=STV.chat&&turn.move==='safe';
  if(safeTh)o=srcThreadSafe(o);
+ /* AND THE LINE IS SAID OUT LOUD, owner's ruling of 3 November, his words:
+    "Source AI can speak the crisis safety line out loud. We want to take off
+    the no sound rules. Since we're now using voice speech to speech." Scoped
+    to this line alone. It goes through stSrcSpeak, the call every reply
+    below goes through, on the same rule: only while Talk is on, and once,
+    when the line first takes the reply's place, never on a repaint of it
+    and never again when Commit keeps it standing. Its own words and nothing
+    else, the words on the screen. Still nothing is added to SRC_CHAT. */
+ var safeNew=turn.move==='safe'&&!SRC_SAFE_UP;
+ SRC_SAFE_UP=turn.move==='safe';
+ if(safeNew&&safeTh&&ST_WANT_LISTEN)stSrcSpeak(safeSay);
  h.innerHTML=o;
  SRC_SHOWN=cur?cur.q:((turn.move==='pass'||turn.move==='safe')?'':q);
  if(cur||safeTh)srcWire(h);
@@ -3326,6 +3349,9 @@ var SRC_VOICE={seq:0, el:null, url:'', t:0};
    end must not leave the person unheard for the rest of the conversation. */
 var SRC_VOICE_MAX=30000;
 function srcSayNow(){
+ /* the safe line, while it stands in the reply's place: the line spoken is
+    the line on screen, so pressing Talk never reads an earlier question */
+ if(stSafe())return (STV.unsaved||STV.draftFail)?CRISIS_SAY.entryNow:CRISIS_SAY.entry;
  var q=''; SRC_CHAT.forEach(function(r){if(r.w==='src'&&r.q)q=r.q;});
  return q||srcOpen();}
 function srcVoiceStop(){

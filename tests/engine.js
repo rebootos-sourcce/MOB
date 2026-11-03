@@ -9637,6 +9637,31 @@ g('SAFE · words about ending a life or danger now read nothing, and the sniffer
   ['I killed myself at the gym this morning','I killed myself this morning']];
  IDIOM.forEach(([held,bare])=>ok(E.srcSafe(held)===false&&why(held).every(w=>w==='idiom')&&E.srcSafe(bare)===true,
   'held as an idiom: '+JSON.stringify(held)+', and the same phrase bare trips: '+JSON.stringify(bare)));
+ /* A FRAME KEEPS THE IDIOM OF THE PHRASE IT ENDS WITH, 3 November. Before
+    it, the frame decided for "kill myself" and carried no tails, so the same
+    idiom tripped or not by its framing: on bdd1fcf8 every held row below
+    tripped. And the tails the review found missing, each both ways. */
+ const FRAMED=[['I am going to kill myself at work','I am going to kill myself'],
+  ['I am gonna kill myself at the gym today','I am gonna kill myself today'],
+  ['I am going to kill myself laughing','I am going to kill myself'],
+  ['I am going to kill myself to finish this report','I am going to kill myself'],
+  ['I wanted to die old, in my own bed','I wanted to die'],['I wanted to die happy','I wanted to die'],
+  ['I kill myself to finish every report','I kill myself every week'],
+  ['I killed myself to meet that deadline','I killed myself last night'],
+  ['I kill myself to keep up with him','I kill myself']];
+ FRAMED.forEach(([held,bare])=>ok(E.srcSafe(held)===false&&why(held).every(w=>w==='idiom')&&E.srcSafe(bare)===true,
+  'held as an idiom under its frame: '+JSON.stringify(held)+' '+JSON.stringify(why(held))+', and bare trips: '+JSON.stringify(bare)));
+ /* and the frames that say an attempt, a wish or a thought of one take no
+    tail at all, so a place or a purpose after them is never read as the
+    overwork idiom. These trip on bdd1fcf8 and would stop tripping if the
+    tails were handed to every frame; checked by doing exactly that. to get
+    is held on the gerund alone, never on kill myself. */
+ const FRAMETRIP=['I tried to kill myself at work','I keep thinking about killing myself at work',
+  'I want to kill myself at work','I wanted to kill myself laughing','I am trying to kill myself at the gym',
+  'I have been thinking of killing myself to get out of this','I thought about killing myself to finish it',
+  'I am going to kill myself to get it over with','I will kill myself to get away from him'];
+ FRAMETRIP.forEach(t=>ok(E.srcSafe(t)===true&&why(t).indexOf('counts')>=0,
+  'an attempt, a wish or a death said outright trips whatever follows: '+JSON.stringify(t)+' '+JSON.stringify(why(t))));
  ok(E.srcSafe('I want to die. Laughing at me is all they do.'),'an idiom tail in the next sentence is not the idiom');
  /* the controls no row reaches */
  const PLAIN=['I could kill for a coffee','this deadline is killing me','my cutting board is warped','I nearly died laughing',
