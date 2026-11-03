@@ -108,20 +108,23 @@ const VICON=[
 const FB_LAYERS=[
  {k:'addresses',g:'carry',nm:'Addresses',ic:FB_IC_ADDR,
   tip:'Your 108 addresses, plus 4 field anchors above and below the body. Each mark is the charge held at one place.'},
- {k:'seats',g:'carry',nm:'Assemblage points',ic:FB_IC_SEAT,
-  tip:'The seven seats, from the base of your spine to the top of your head.'},
+ /* SEATS, SHADOW AND STORIES ARE OFF THE BAR, 3 November, his own red marks
+    on the Field screenshot: three of the glass bar's own circles individually
+    X'd, not the bar itself. Matched to his marks by percent, not by guess:
+    the Assemblage points circle read 37%, the same figure the reading panel's
+    own "Heaviest: Sacral 37%" prints; Decoherence read 27%, at the Root's
+    colour, DQ's own seat; Stories read a dash, the same as a carry with
+    nothing traced. All three stay real underneath: 'seats' is still in
+    LAYADD (ui/wheel.js), still drawn at Patterns and deeper, still reached
+    from the depth ladder and the four presets; 'shadow' still tints the
+    wash and DQ is still read on the rail, in Summary, Character, Analytics
+    and the drills; 'stories' still draws once a depth reaches it. Only this
+    bar's own single-layer switch for each of the three is gone, because
+    that circle is what he marked. */
  {k:'laws',g:'carry',nm:'Laws of Moral Integrity',ic:fbFlay('laws'),
   tip:'The '+SI.length+' Laws of Moral Integrity, each set at its assemblage point. Their sum is the number at the centre.'},
  {k:'gates',g:'carry',nm:'Laws of Action',ic:fbFlay('gates'),
   tip:'The Laws of Action round the core, each move of right action set across from the wrong action it stands against.'},
- {k:'shadow',g:'carry',nm:'Decoherence',ic:fbFlay('shadow'),
-  /* MATCHED TO GLOSS'S OWN DQ ENTRY (engine/data/kb.js), round 28 October:
-     this tip said "all the charge... shown as a tint", which drops the
-     ceiling DQ is read against and reads as an unbounded sum rather than
-     the shadow's own share of the most those addresses could hold. */
-  tip:'Decoherence. The weight on your 108 addresses and 4 field anchors, against the most they could hold, shown as a tint behind everything.'},
- {k:'stories',g:'carry',nm:'Stories',ic:fbFlay('stories'),
-  tip:'One line for each story that put charge on an address.'},
  /* FETTER, THE ONE TIER MISSING FROM THIS BAR, added 2 November. It
     classifies addresses (CHILD, 'carry' above), but engine/trace.js is
     explicit that a saboteur IS "a configuration of fetters at specific
@@ -212,13 +215,16 @@ function fbValues(r){
     wide, we need to convert those numbers into percent." Nought is the dash,
     so a pill never prints 0% beside a tooltip that says nothing carries. */
  var P=function(k,x){return {p:pct(k,x)||0,v:fmtPct(k,x)};};
- var sqm=P('weight',r.SQm), dk=P('weight',r.darkV||0), cq=P('cq',r.CQ), dqv=P('dq',r.DQ);
+ /* V.seats, V.shadow and V.stories went with their circles, 3 November:
+    computing a reading nothing on the bar prints any more is the exact
+    thing rule 2 warns against, defined with no caller left to read it.
+    dk (the heaviest assemblage point) and the atom-index trace share stay
+    gone with them; r.darkV and atomIndex() are still read wherever the
+    product shows them for real, Summary, Character, Analytics, the rail. */
+ var sqm=P('weight',r.SQm), cq=P('cq',r.CQ);
  V.addresses={p:sqm.p,v:sqm.v,c:seatCol(r.darkB),
   m:sqm.v!==dash?'Ring and number: segment depth, SQ, at '+sqm.v+'. How deep the held charge sits.'
    :'Ring and number: segment depth, SQ. Nothing is carrying yet.'};
- V.seats={p:dk.p,v:dk.v,c:seatCol(r.darkB),
-  m:dk.v!==dash?'Ring and number: the heaviest assemblage point, '+r.darkB+', at '+dk.v+'.'
-   :'Ring and number: the heaviest assemblage point. Nothing is carrying yet.'};
  V.laws={p:cq.p,v:cq.v,c:seatCol('Crown'),
   m:'Ring and number: CQ, the Laws of Moral Integrity added up.'};
  var G=verpRead(), hi=G.filter(function(g){return g.side==='higher';}).reduce(function(a,g){return a+g.pct;},0),
@@ -226,16 +232,10 @@ function fbValues(r){
  V.gates={p:anyG?pct('gate',hi):0,v:anyG?fmtPct('gate',hi):dash,c:seatCol('Heart'),
   m:anyG?'Ring and number: right action, its share of every Law of Action read in your stories.'
    :'Nothing read yet, so none of your stories has run through the Laws of Action.'};
- V.shadow={p:dqv.p,v:dqv.v,c:seatCol('Root'),
-  m:'Ring and number: shadow weight, DQ, the weight on your 108 addresses and 4 field anchors.'};
- var ai=atomIndex()||{}, traced=carry.length?carry.filter(function(n){return (ai[n.i]||[]).length;}).length/carry.length*100:0;
- V.stories={p:pct('portion',traced/100)||0,v:carry.length?fmtPct('portion',traced/100):dash,c:'var(--accent)',
-  m:carry.length?'Ring and number: the share of your carrying addresses a story you wrote reached.'
-   :'Nothing is carrying charge yet.'};
  /* THE FETTER RING READS THE MEAN HELD ACROSS THE NINE, the same real
     S.charge the stack rail's own 'Child emotions' tab already prints
     (railStack, ui/ui.js) and runFetterDrill already drills into. Its colour
-    is the heaviest one's own seat, the same pattern 'seats' above already
+    is the heaviest one's own seat, the same pattern addresses above already
     takes off r.darkB: the ring paints the axis actually pulling hardest. */
  var fetHi=CHILD.reduce(function(a,c){return (S.charge[c.nm]||0)>(S.charge[a.nm]||0)?c:a;},CHILD[0]);
  var fetMean=CHILD.reduce(function(a,c){return a+(S.charge[c.nm]||0);},0)/CHILD.length;

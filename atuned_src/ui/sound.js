@@ -947,7 +947,12 @@ var ATM_BY={}; ATM.forEach(function(x){ATM_BY[x.k]=x;});
    The Compass's seat shells are not here: each rings the seat it is, read
    off BANDS, so a seat is never a table of its own. */
 var ATM_SEAT={
- fb:{addresses:'Root', seats:'Sacral', laws:'Crown', gates:'Heart', shadow:'Root', stories:'Throat',
+ /* seats, shadow and stories left this table 3 November with their own
+    circles off the glass bar (ui/fieldbar.js, FB_LAYERS): tests/sound.js's
+    own map-completeness check (block A) refuses a seat with no layer to
+    pitch, by:'fb'&&!FB_BYK[k], so a pitch for a circle that no longer
+    exists would fail that check rather than sit unread. */
+ fb:{addresses:'Root', laws:'Crown', gates:'Heart',
   fetters:'Sacral', saboteurs:'Solar', complexes:'Heart', hyper:'3rd Eye', character:'Crown', archetypes:'Throat', domains:'3rd Eye'},
  bm:{addr:'Root', masks:'Throat', pain:'Root', flow:'Sacral', sab:'Solar', cx:'Heart', hy:'3rd Eye'},
  cn:{top:'Crown', shells:'Heart', flat:'Sacral', reg:'Throat', well:'Root', heat:'Solar', layers:'3rd Eye'}};

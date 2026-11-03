@@ -1657,7 +1657,17 @@ console.log('\n=== the headline coherence is a percent, equal to its fill ===');
    DQ. NAMED CHANGE, percent phase 2 slice 1, 17 October: the three now print
    fmtPct('cq') and fmtPct('dq'), the registry's form (engine/pct.js), and an
    unread field still prints a dash in all three, never 0%. Held on Marcus,
-   whose figures are neither empty nor whole. */
+   whose figures are neither empty nor whole.
+
+   THE DECOHERENCE CIRCLE IS GONE, 3 November, his own red marks on the Field
+   screenshot: the glass bar's own Decoherence circle, not DQ itself, which is
+   still read in full on the rail, in Summary, Character, Analytics and the
+   drills (ui/ui.js's rbRow('dq',...), ui/summary.js, ui/character.js,
+   ui/drills.js, ui/analytics.js). This section drops the DQ half of its own
+   name along with the circle it measured and asserts the circle's absence
+   instead, so a regression that brings a Decoherence switch back onto this
+   bar still fails it. The CQ half, the Laws circle against the ring at the
+   foot of the stage, is untouched: neither of those circles was marked. */
 {
  const pq=await browser.newPage({viewport:{width:1600,height:1000}});
  await pq.goto(FILE,{waitUntil:'load'}); await booted(pq); await pq.waitForTimeout(700);
@@ -1665,18 +1675,18 @@ console.log('\n=== the headline coherence is a percent, equal to its fill ===');
   loadP(PEOPLE.findIndex(x=>x.nm===nm)); setTab(TAB.FIELD); render();
   await new Promise(r=>setTimeout(r,ENTER_SPAN+12*ENTER_STAGGER+300));
   const R=compute(), t=s=>{const e=document.querySelector(s); return e?e.textContent.trim():null;};
-  return {laws:t('#fbar [data-fb=laws] .fb-v'), shadow:t('#fbar [data-fb=shadow] .fb-v'), ring:t('#railtop .cr .v'),
-   cq:fmtPct('cq',R.CQ), dq:fmtPct('dq',R.DQ), unread:!!R.unread};},'Marcus');
+  return {laws:t('#fbar [data-fb=laws] .fb-v'), shadowGone:!document.querySelector('#fbar [data-fb=shadow]'),
+   ring:t('#railtop .cr .v'), cq:fmtPct('cq',R.CQ), dq:fmtPct('dq',R.DQ), unread:!!R.unread};},'Marcus');
  const m=await read();
  ok(!m.unread&&m.laws===m.cq&&/%$/.test(m.laws),'PQ: the glass bar\'s Laws circle prints CQ as a percent, '+m.laws+' against '+m.cq);
- ok(m.shadow===m.dq&&/%$/.test(m.shadow),'PQ: the Decoherence circle prints DQ as a percent, '+m.shadow+' against '+m.dq);
+ ok(m.shadowGone,'PQ: and the Decoherence circle is gone from the bar, his own mark on it');
  ok(m.ring===m.cq,'PQ: the ring at the foot of the stage prints CQ as a percent, '+m.ring+' against '+m.cq);
  const u=await pq.evaluate(async()=>{loadP(0); setTab(TAB.FIELD); render();
   await new Promise(r=>setTimeout(r,400));
   const t=s=>{const e=document.querySelector(s); return e?e.textContent.trim():null;};
-  return {unread:!!compute().unread, laws:t('#fbar [data-fb=laws] .fb-v'), shadow:t('#fbar [data-fb=shadow] .fb-v'), ring:t('#railtop .cr .v')};});
- ok(u.unread&&[u.laws,u.shadow,u.ring].every(v=>v==='–'),'PQ: and an unread field prints a dash in all three, '+JSON.stringify(u));
- console.log('  Marcus laws '+m.laws+'  shadow '+m.shadow+'  ring '+m.ring+'   unread '+[u.laws,u.shadow,u.ring].join(' '));
+  return {unread:!!compute().unread, laws:t('#fbar [data-fb=laws] .fb-v'), ring:t('#railtop .cr .v')};});
+ ok(u.unread&&[u.laws,u.ring].every(v=>v==='–'),'PQ: and an unread field prints a dash in both, '+JSON.stringify(u));
+ console.log('  Marcus laws '+m.laws+'  ring '+m.ring+'   unread '+[u.laws,u.ring].join(' '));
  await pq.close();
 }
 
