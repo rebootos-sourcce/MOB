@@ -82,7 +82,7 @@ function hjPanel(st){
  var visual=hjFigureHtml(h);
  var out='<section class="hj-panel" aria-label="Hero&#39;s Journey Board and avatar position" style="--hjp:'+pc+';--hjprogress:'+pc+'%">';
  out+='<div class="hj-heading"><div class="hj-title">Hero&#39;s Journey Board</div><div class="hj-metrics">'
-  +'<span class="hj-metric"><b>'+(h.cq===null?' - ':h.cq.toFixed(1))+'</b><small>CQ / 100</small></span>'
+  +'<span class="hj-metric"><b>'+(h.cq===null?' - ':h.cq.toFixed(1))+'</b><small>CQ reading</small></span>'
   +'<span class="hj-metric"><b>'+h.uniqueReleaseCount+'</b><small>Unique releases</small></span>'
   +'<span class="hj-metric"><b>'+(h.delta===null?' - ':(h.delta>=0?'+':'')+h.delta.toFixed(2))+'</b><small>CQ movement</small></span>'
   +'</div></div>';
@@ -91,7 +91,7 @@ function hjPanel(st){
   +'<div class="hj-track"><span class="hj-point"'+(h.cq===null?' style="display:none"':'')+'></span></div>'
   +'<div class="hj-current">'+(loc?hjSafe(loc.realm+' · '+loc.title):'Compass position awaiting all 21 laws')+'</div>'
   +'<div class="hj-desc">'+(h.complete?'Your CQ determines this position. Work can take place anywhere on the path.'
-   :'You have '+h.coverage+' of '+h.total+' laws measured. This is a provisional reading, not a fixed location.')+'</div></div></div>';
+   :'Laws measured: '+h.coverage+'. This is a provisional reading, not a fixed location.')+'</div></div></div>';
  out+='<div class="hj-actions"><button type="button" data-hjexpand aria-expanded="'+(HJ_EXPANDED?'true':'false')+'">'+(HJ_EXPANDED?'Hide':'Explore')+' all 26 locations</button></div>';
  if(HJ_EXPANDED){
   out+='<div class="hj-scenes" role="group" aria-label="Choose an encounter">';
@@ -105,6 +105,7 @@ function hjPanel(st){
     +'<div class="hj-story">'+hjSafe(a.challenge)+'</div>'
     +'<div class="hj-story"><b>Discover:</b> '+hjSafe(a.knowledge)+'</div>'
     +'<div class="hj-story"><b>Become:</b> '+hjSafe(a.becoming)+'</div>'
+     +'<div class="hj-story" data-hjarchetypes><b>Archetype resonances (candidate):</b> '+hjSafe((a.archetypes||[]).length?a.archetypes.map(function(id){return id.split(':').pop();}).join(', '):'No documented resonance for this encounter')+'</div>'
     +'<details class="hj-explain"><summary>Guidance and progress evidence</summary>'
     +'<p><b>Guide:</b> '+hjSafe(a.guide)+'</p>'
     +'<p><b>Look for:</b> '+hjSafe(a.successEvidence)+'</p>'
