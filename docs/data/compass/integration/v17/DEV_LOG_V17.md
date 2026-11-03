@@ -19,3 +19,8 @@ Owner requested continued development and review of the Compass + Funnel folders
 - Strict traceability now: Inferno 8/9, Purgatorio 6/7, Paradiso 10/10. Unresolved: `game:inferno:L06` and `game:purgatorio:P06`.
 - Created `REVIEW_QUEUE_V17.json`: P06-C to PD09 Temperance is a proposed relationship that requires source review; Inferno L06 cannot reuse the quarantined Furies containment claim.
 - Updated validator to check both pending gaps, all intermediate edge IDs, and the absence of the proposed new P06 edge.
+
+## Read-back structural verification, 2026-11-03
+- Independently re-fetched the committed crosswalk JSON and 404/875 source graph. Checked all 26 scene sources and **168 research-only Law routes / 474 individual typed edge traversals**. Zero broken steps, zero unknown Law labels, zero reintroduced literary false containments. Source graph SHA matches the audit manifest. **PASS, structural scope only.**
+- Exact machine-readable record: `VALIDATION_EVIDENCE_V17.json`.
+- GitHub Actions checks were queued when inspected; **no claim of a passing final-SHA CI run**. Draft PR #172 targets the Compass foundation branch, not mainline; no merges or deployments.
