@@ -10,7 +10,9 @@
 - **10 Paradiso research records**: 44 proposed relationships touch **21/21** original integrity-law names.
 - **12/12 core behavioral archetypes** have 12 candidate associations spanning **8/10 Paradiso levels**. The 30 shadow identities are a separate registry; they are not interchangeable with the 12 native archetypes.
 - **Zero direct Inferno→Law or Purgatorio→Law graph links** exist in the inspected reference graph. Paths assembled from other typed candidate links are explicitly marked unapproved and cannot be treated as score authority.
-- Known literary-placement corrections required quarantine of **6 candidate Law paths**. Result: **7/9 Inferno**, **6/7 Purgatorio**, **10/10 Paradiso** stages have a research-only path to at least one Law name. The unresolved scenes are `game:inferno:L01`, `game:inferno:L06`, and `game:purgatorio:P06`.
+- Known literary-placement corrections required quarantine of **6 candidate Law paths**. Result: **8/9 Inferno**, **6/7 Purgatorio**, **10/10 Paradiso** stages have a research-only path to at least one Law name. The two unresolved scenes are `game:inferno:L06` and `game:purgatorio:P06`. **10 additional five-step behavior→terrace→capacity→Paradiso→Law paths** are now traced from preexisting edges; none creates a new source graph edge.
+
+The [V17 review queue](REVIEW_QUEUE_V17.json) documents the two unresolved paths and four known literary-placement corrections. A possible P06 capacity→PD09 Temperance association remains a research proposal, not a graph edge.
 
 ## What the index and graph establish
 The V4 unified research graph contains **404 nodes, 875 typed reference edges**, zero dangling endpoints. Its policy explicitly prohibits using the research graph to recalculate CQ or assigning a person to a level. The V16 master index is the best entrypoint to original source records. Existing release and ritual methods can be referenced, but user-profile-to-board-to-avatar integration remains an unverified separate seam.
