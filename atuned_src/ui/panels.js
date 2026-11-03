@@ -280,12 +280,9 @@ function setTab(i){
      column of the Ritual page, so the ritOpen above paints it with everything
      else, and TAB.ACCOUNT no longer reaches setTab as a tab: it is folded onto
      TAB.RITUAL in engine/core.js and TABREAL answers Ritual for it. */})();
- /* THE FIELD IS DRAWN ONE OF THREE WAYS NOW, BP8, and which of the canvas,
-    the depth row, a rendition and its layer row are up is decided in one
-    place, fviewPaint in ui/rings.js. This showed the canvas and the depth
-    row itself, and a second writer for one display is how a surface ends up
-    showing two pictures at once. */
- fviewPaint(i);
+ /* THE FIELD IS DRAWN ONE WAY NOW, Frames and Dial gone 3 November. The
+    canvas's own display follows the tab-field body class, sheet rule, so
+    there is nothing left for a second writer to decide here. */
  /* Body's layer row lives in the sub bar now, not over the figure */
  var lb=$('lbar'), rb=$('rbar');
  if(lb) lb.style.display=(i===TAB.ENERGY)?'flex':'none';
@@ -321,10 +318,7 @@ function setTab(i){
     This is the one deliberate forced reflow in the product, on a host that was
     about to be laid out anyway. */
  (function(){var h=$(i===TAB.SETTINGS?'settings':TABOF(i).id);
-  /* the Field's entry names the canvas, and that is identity and stays. When
-     a rendition is up it is the picture on screen, so it is the one that
-     arrives; the canvas under it is hidden and would rise unseen. */
-  if(i===TAB.FIELD&&fviewOn())h=$('frend');
+  /* the Field's entry names the canvas, and that is identity and stays. */
   if(!h)return; h.classList.remove('tabin'); void h.offsetWidth;
   h.classList.add('tabin');})();
  /* MEASURE THE CANVAS THE MOMENT IT IS VISIBLE, AND NOT ONE LINE EARLIER.

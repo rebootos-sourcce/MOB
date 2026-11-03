@@ -107,7 +107,7 @@ function chWho(){return (typeof CURP!=='undefined'&&CURP)?(CURP.id||CURP.name||'
 function chSeatName(b){var s=chSeatWord(b);return s.charAt(0).toUpperCase()+s.slice(1);}
 
 /* THE OVERLAYS, kept in the browser's store like the other view preferences
-   (STORE, 'fview', 'bmov'). Nothing stored means the defaults above. A store
+   (STORE, 'bmov'). Nothing stored means the defaults above. A store
    that cannot be read or written leaves the defaults and the page still
    draws: a preference is a convenience and never a reason for the page to
    fail. 'none' is written when all three are off, because an empty string

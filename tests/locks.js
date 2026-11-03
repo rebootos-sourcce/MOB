@@ -73,7 +73,7 @@ async function lockGate(browser,FILE,ok,booted){
     CURP.plan={tier:tier,status:status===undefined?(tier==='free'?'':'active'):status,
      granted:0,carried:0,base:null,since:null,until:null};
     S.view=3; try{LAYSET=null;}catch(e){}
-    setTab(TAB.FIELD); fviewSet('wheel'); render();},[tier,status]);
+    setTab(TAB.FIELD); render();},[tier,status]);
    await pg.waitForTimeout(700);};
   const G=await pg.evaluate(()=>({SIGHT:SIGHT.map(g=>({k:g.k,nm:g.nm,need:g.need,layer:!!g.layer,built:g.built!==false})),
    tiers:TIER_KEYS.slice(),tierNm:Object.fromEntries(PLANS.map(p=>[p.k,p.nm]))}));
@@ -202,7 +202,7 @@ async function lockGate(browser,FILE,ok,booted){
    tag+'and the sheet says which tier the person has and which tier opens what was locked, '+JSON.stringify([landed.you,landed.tip]));
   await pg.evaluate(()=>paywallClose());
 
-  /* ---- 3 · THE DATA IS NOT DRAWN, ON THE WHEEL AND ON FRAMES ---- */
+  /* ---- 3 · THE DATA IS NOT DRAWN, ON THE WHEEL ---- */
   await as('free');
   if(phone)await pg.evaluate(()=>fbOpenPanel(false));
   const dw=await pg.evaluate(()=>({vis:Object.keys(layVisible()),
@@ -220,13 +220,6 @@ async function lockGate(browser,FILE,ok,booted){
   /* a layer the person had on comes back when the plan covers it: layChosen is theirs */
   const chosen=await pg.evaluate(()=>layChosen().saboteurs===1);
   ok(chosen,tag+'the set the person chose is kept under the lock, so paying brings their own layers back');
-  await pg.evaluate(()=>{fviewSet('frames');}); await pg.waitForTimeout(900);
-  const fr=await pg.evaluate(()=>({n:FR_HIT.filter(h=>/^(sab|cx|hy|sup)$/.test(h.k)).length,all:FR_HIT.length}));
-  ok(fr.all>0&&fr.n===0,tag+'Frames holds none either, of '+fr.all+' targets, '+fr.n);
-  await pg.evaluate(()=>{fviewSet('dial');}); await pg.waitForTimeout(900);
-  const di=await pg.evaluate(()=>({n:FR_HIT.filter(h=>/^(sab|cx|hy|sup)$/.test(h.k)).length,all:FR_HIT.length}));
-  ok(di.all>0&&di.n===0,tag+'nor does the Dial, of '+di.all+' targets, '+di.n);
-  await pg.evaluate(()=>{fviewSet('wheel');});
 
   /* ---- 4 · THE DEPTH PRESETS ARE PARTLY LOCKED AND STILL WORK ---- */
   const pre=await pg.evaluate(()=>[...document.querySelectorAll('#fbmenu [data-preset]')].map(m=>({

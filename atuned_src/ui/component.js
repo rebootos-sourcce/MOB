@@ -1302,9 +1302,9 @@ const lerp=(a,b,t)=>a+(b-a)*t;
    question and is left as shipped. Anything that must match the ground and
    not the lighting reads stageLight() below, as rings.js does. */
 const LIGHT=()=>S.theme==='snow'||S.theme==='glasswhite';
-/* what the Field's canvas actually sits on, read off the stage the way
-   frMount in rings.js reads it. The stage carries no transition, so the
-   answer is settled the moment the lighting's class lands. */
+/* what the Field's canvas actually sits on, read off the stage itself. The
+   stage carries no transition, so the answer is settled the moment the
+   lighting's class lands. */
 function stageLight(){
  var st=document.getElementById('stage'),m=st&&/rgba?\(([^)]+)\)/.exec(getComputedStyle(st).backgroundColor);
  var c=m?m[1].split(',').map(parseFloat):[16,16,16];
@@ -1562,9 +1562,8 @@ function arcP(r0,r1,a0,a1){g.beginPath();g.arc(CX,CY,r0,a0,a1);g.arc(CX,CY,r1,a1
    see text when I'm zoomed all the way out. Text only fades in when I'm
    zooming in."
 
-   One curve for all three pictures, read off the zoom each already keeps,
-   S.zoom on the wheel and FZ.s on Frames and Dial, and never off a clock:
-   hold the zoom still and the words hold still with it. At the whole
+   One curve, read off S.zoom, the wheel's own, and never off a clock: hold
+   the zoom still and the words hold still with it. At the whole
    picture, 1x, the answer is 0 and nothing is set at all, not set faint.
    The first notch of the scroll wheel, 1.12x, still reads 0, so a person
    who nudges the wheel by accident gets no flash of type. From there it

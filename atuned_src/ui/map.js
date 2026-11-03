@@ -325,7 +325,8 @@ function pmHead(){return PMLAYER==='bands'&&(PMPICK==='crown'||PMPICK==='eye');}
    ring at its own .85 opacity 2.22. Snow read 4.68 and 4.95 and was right,
    because Snow keeps this host on the ruled #101010, which is why the name
    is the wrong question: LIGHT() says light under Snow and the marks sit on
-   black. frMount in rings.js answers the same question the same way.
+   black. stageLight() in ui/component.js answers the same question the
+   same way for the Field's own stage.
 
    The ground is the first opaque box from the host up, which is the host on
    every lighting today; the walk is there so a see through host cannot hand
@@ -3538,8 +3539,8 @@ function bmBuild(host){
  bmWire();}
 
 /* ---------- the entry, from renderMap and from the Masks door ----------
-   The host is handed in, the way frMount and avBind take theirs: this read
-   #emap by id, which is what kept the figure to one door. */
+   The host is handed in, the way avBind takes its own: this read #emap by
+   id, which is what kept the figure to one door. */
 function bmRender(r,host){
  if(!host)return;
  bmInit(host);

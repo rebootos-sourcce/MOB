@@ -949,17 +949,7 @@ async function atmGate(browser,FILE,ok,booted){
  await pg.waitForTimeout(1900);
  const lv5=await pg.evaluate(()=>({amb:atmState().amb, why:sfxWhy()}));
  ok(lv5.amb===null,'and 1.5 seconds on, the chain is taken down, nothing is left sounding, '+JSON.stringify(lv5));
- /* Frames, the other picture, zooms it too, through its own real wheel */
- await pg.evaluate(()=>{ fviewSet('frames'); }); await pg.waitForTimeout(500);
- const fr=await pg.evaluate(()=>{ const h=document.getElementById('frend'); const b=h&&h.getBoundingClientRect(); return b&&b.width?{x:b.left+b.width/2,y:b.top+b.height/2}:null; });
- let fz=null;
- if(fr){ await pg.mouse.move(fr.x,fr.y); for(let i=0;i<5;i++){ await pg.mouse.wheel(0,-120); await pg.waitForTimeout(40); }
-  const a=await pg.evaluate(()=>{ var s=atmState().amb; return s&&[+s.L.toFixed(2),+s.gain.toFixed(4)]; });
-  await pg.keyboard.press('f'); await pg.waitForTimeout(60);
-  const z=await pg.evaluate(()=>{ var s=atmState().amb; return s&&[s.L,s.gain]; });
-  fz={a:a,z:z}; }
- await pg.evaluate(()=>{ fviewSet('wheel'); atmAmbEnd(); });
- ok(fz&&fz.a&&fz.a[1]>0&&fz.z&&fz.z[1]===0,'on Frames it does the same, up under its wheel and nothing after F, '+JSON.stringify(fz));
+ await pg.evaluate(()=>{ atmAmbEnd(); });
  await pg.waitForTimeout(300);
 
  /* ---------- D. silence, and what is not silence ---------- */

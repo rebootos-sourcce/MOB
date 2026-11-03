@@ -81,8 +81,8 @@ var CONE={open:false, tab:false, spin:0.6, tilt:0.60, drag:null, raf:null, t:0,
 const CONE_ZMAX=4;
 /* THE PAN IS HELD SO THE FIGURE CANNOT LEAVE ITS OWN BOX. At a zoom of z the
    drawing is z times the canvas about its centre, so its edge can travel at
-   most (z-1) half widths before the far edge comes into the box. The same
-   rule as the Field's Frames, fzClamp in ui/rings.js, in centre terms. */
+   most (z-1) half widths before the far edge comes into the box, in centre
+   terms. */
 function coneZClamp(W,H){
  var mx=(CONE.zT-1)*W/2, my=(CONE.zT-1)*H/2;
  CONE.zxT=clamp(CONE.zxT,-mx,mx); CONE.zyT=clamp(CONE.zyT,-my,my);}
@@ -738,8 +738,7 @@ const CONE_SPK=196, CONE_SPC=2*0.42*14;
 /* the seats' stretches of the turn, and each axis's bearing inside its seat.
    Read off W once: engine/core.js sets address i at i over the length of a
    turn from twelve, clockwise, in seat order, so a seat is where the Field
-   has it. A seat holding two axes spreads them evenly across its stretch,
-   which is frSpread's rule in ui/rings.js. */
+   has it. A seat holding two axes spreads them evenly across its stretch. */
 var CONE_SEC=null;
 function coneSec(){
  if(CONE_SEC)return CONE_SEC;

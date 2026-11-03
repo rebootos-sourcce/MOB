@@ -457,66 +457,28 @@ cv.addEventListener('pointerleave',function(){S.hover=null;DRAG=null;rlEcho(null
    gap. Off a line, WIRE_AT is cleared, so coming back to the same line is
    arriving again.
 
-   ONLY ON THE WHEEL. Frames and Dial draw their threads as their own
-   pictures, ui/rings.js, and are not wired here. The wheel is the default
-   and the one every Field check in tests/ measures, and the frames are a
-   second set of hooks for a second time.
+   ONLY ON THE WHEEL, the one rendition left, 3 November, his ruling: "wheel
+   frame dials coming out ... we want to get rid of the others because they
+   don't do anything more than what the main one does." Frames and Dial once
+   drew their own threads as their own pictures, ui/rings.js; that code is
+   gone with them.
    ============================================================ */
 var WIRE_AT=null;
 function wireOn(x,y){
- if(S.tab!==TAB.FIELD||(typeof fviewOn==='function'&&fviewOn()))return null;
+ if(S.tab!==TAB.FIELD)return null;
  return threadAt(x,y);}
 function wireTouch(k){
  var was=WIRE_AT; WIRE_AT=k;
  if(k&&k!==was&&typeof sfx==='function')sfx('spark');}
 /* ============================================================
-   THE RENDITIONS ANSWER THE WAY THE WHEEL DOES. BP8.
-
-   Each mark ui/rings.js draws carries the index of a hit record shaped like
-   the wheel's own, so hovering one puts up this readout in describe()'s words
-   and pressing one runs hitPress, the wheel's own dispatch. The mockups gave
-   every mark a native tooltip instead. Kept, that would have been a second
-   wording of every element on the surface beside the first, and no press on
-   a rendition would have opened anything at all.
-
-   Three differences, each for a reason. Nothing can be dragged, so an
-   address says click and not drag. The core opens on the press, because on
-   the wheel a press on the core also takes hold of the frame to move it, and
-   a rendition has no frame to move. And the two things the wheel never drew
-   get lines of their own: a seat's mark, which carries no word on the
-   drawing, and the four addresses outside the body.
+   THE RENDITIONS' OWN ANSWER PATH IS GONE, 3 November, his ruling: "wheel
+   frame dials coming out ... we want to get rid of the others because they
+   don't do anything more than what the main one does." frDescribe and the
+   pointer handlers on #frend existed only to answer a hover or a press on
+   Frames or Dial, FR_HIT's own marks, neither of which exists any more; the
+   wheel answers its own hover and press through describe() and hitPress
+   below, untouched by this cut.
    ============================================================ */
-function frDescribe(h,r){
- if(h.k==='seat'){var n=W.filter(function(x){return x.b===h.b;}).length;
-  return '<u>seat</u> <b>'+esc(h.b)+'</b><hr>'+n+' addresses<hr><b>Click for detail.</b>';}
- /* the anchor named itself and stopped, so a ring a person hovered carried a
-    weight that counts in DQ and said nothing about it. anchorSays
-    (ui/drills.js) is the same sentence the drill prints. */
- if(h.k==='anchor')return '<u>outside the body</u> <b>'+esc(h.n.k)+'</b><hr>'+esc(h.n.a||'')
-  +(anchorSays(h.n)?'<hr>'+anchorSays(h.n):'');
- return describe(h,r,true);}
-(function(){
- var fr=$('frend'); if(!fr)return;
- var hitOf=function(e){var t=e.target&&e.target.closest?e.target.closest('[data-h]'):null;
-  return t?(FR_HIT[+t.getAttribute('data-h')]||null):null;};
- fr.addEventListener('pointermove',function(e){
-  /* a finger has no hover, the wheel's own reason above */
-  if(e.pointerType==='touch')return;
-  var h=hitOf(e),pr=$('probe'); if(!pr)return;
-  var t=h?frDescribe(h,computeSeen()):'';
-  if(!t){pr.classList.remove('on');return;}
-  pr.innerHTML=t;
-  var b=fr.getBoundingClientRect();
-  probeAt(pr,fr,e.clientX-b.left,e.clientY-b.top);});
- fr.addEventListener('pointerleave',function(){$('probe').classList.remove('on');});
- fr.addEventListener('click',function(e){
-  var h=hitOf(e); if(!h)return;
-  $('probe').classList.remove('on');
-  /* an address outside the body holds no charge of its own and has no drill
-     yet, so its readout promises nothing and the press does nothing */
-  if(h.k==='anchor')return;
-  if(h.k==='core'){S.pin=null;runCoreDrill();render();return;}
-  hitPress(h,e);});})();
 
 /* ============================================================
    THE PINCH. GF in TASKS.md, 27 September, his words: "I want to be able to
@@ -525,33 +487,28 @@ function frDescribe(h,r){
 
    Reproduced before this existed, at 390 with isMobile and hasTouch and two
    real touch points driven through the browser's own input pipeline, a
-   spread from 60 to 200 pixels on each picture:
+   spread from 60 to 200 pixels on the wheel:
 
-     Wheel    S.zoom 1 before and 1 after. Nothing anywhere listened for two
-              fingers: the zoom was wired to the mouse wheel and to keys and
-              to nothing else. touch-action pan-y on the canvas, which is
-              right, kept the browser's own zoom off it, so the gesture went
-              nowhere. Each finger was read as a mouse instead: the first
-              pressed whatever mark it landed on and opened its drill, and
-              moving put the hover readout over the core.
-     Frames   FZ.s 1 before and 1 after, and the page's visualViewport scale
-     Dial     went from 1 to 4.96. #frend had no touch-action, so the browser
-              took the pinch as a zoom of the whole page: the bar, the glass
-              bar and every panel grew with it and the picture's own zoom
-              never moved. That is the "I can pinch zoom here" in the same
-              message, and it is why the overlay dominated there too.
+     S.zoom 1 before and 1 after. Nothing anywhere listened for two fingers:
+     the zoom was wired to the mouse wheel and to keys and to nothing else.
+     touch-action pan-y on the canvas, which is right, kept the browser's own
+     zoom off it, so the gesture went nowhere. Each finger was read as a
+     mouse instead: the first pressed whatever mark it landed on and opened
+     its drill, and moving put the hover readout over the core.
 
-   So both hosts take two fingers here, off the touch events, which are the
+   So the canvas takes two fingers here, off the touch events, which are the
    only events that say how many fingers are down and the only ones whose
    default can still be refused once the browser has seen them. The distance
    between the fingers scales the picture about their midpoint, the midpoint
-   moving pans it, and the wheel and the renditions each go through the zoom
-   they already had, setZoom in this file and fzAt in ui/rings.js, so the
-   ceilings, the layers a zoom brings in and the glass bar's circles all
+   moving pans it, through the wheel's own zoom, setZoom in this file, so the
+   ceiling, the layers a zoom brings in and the glass bar's circles all
    answer to a pinch exactly as they answer to a scroll. One finger is left
    alone entirely: it still scrolls the page, which is the lesson recorded at
    COARSE above and the functional gate's "a finger reads the wheel".
-   ============================================================ */
+
+   Frames and Dial once took the same two fingers on their own host, #frend,
+   through this same function; both are gone, 3 November, his ruling, and
+   fieldPinch now has one caller and one picture to zoom. */
 var FINGERS={}, PINCH=null, PINCH_END=0;
 /* fingers are counted in the capture phase at the window, so the count is
    already right when a host's own pointerdown for the second finger runs */
@@ -560,16 +517,15 @@ addEventListener('pointerdown',function(e){if(e.pointerType==='touch')FINGERS[e.
  addEventListener(t,function(e){delete FINGERS[e.pointerId];},true);});
 function fieldFingers(){return Object.keys(FINGERS).length;}
 /* whatever one finger had started is not also a press, a pan or a drag */
-function fieldPressDrop(){TAP=null;PAN=null;DRAG=null;FZDRAG=null;
+function fieldPressDrop(){TAP=null;PAN=null;DRAG=null;
  var pr=$('probe'); if(pr)pr.classList.remove('on');}
-function fieldPinch(host,wheel){
+function fieldPinch(host){
  if(!host)return;
  var two=function(e){var a=e.touches[0],b=e.touches[1],r=host.getBoundingClientRect();
   return {d:Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY),
    x:(a.clientX+b.clientX)/2-r.left, y:(a.clientY+b.clientY)/2-r.top};};
  host.addEventListener('touchstart',function(e){
   if(S.tab!==TAB.FIELD||e.touches.length<2)return;
-  if(wheel===fviewOn())return;
   PINCH=two(e); fieldPressDrop();
   if(e.cancelable)e.preventDefault();},{passive:false});
  host.addEventListener('touchmove',function(e){
@@ -579,20 +535,15 @@ function fieldPinch(host,wheel){
      makes this uncancelable, and the picture still follows the fingers. */
   if(e.cancelable)e.preventDefault();
   var n=two(e), k=PINCH.d>0?n.d/PINCH.d:1, dx=n.x-PINCH.x, dy=n.y-PINCH.y;
-  if(wheel){
-   setZoom(S.zoom*k,n.x,n.y);
-   if(dx||dy){S.panx=(S.panx||0)+dx; S.pany=(S.pany||0)+dy; reframe(); render();}}
-  else{
-   fzAt(FZ.s*k,n.x,n.y);
-   if(dx||dy){FZ.x+=dx; FZ.y+=dy; fzClamp(); fzApply();}}
+  setZoom(S.zoom*k,n.x,n.y);
+  if(dx||dy){S.panx=(S.panx||0)+dx; S.pany=(S.pany||0)+dy; reframe(); render();}
   PINCH=n;},{passive:false});
  var end=function(e){if(PINCH&&e.touches.length<2){PINCH=null;PINCH_END=performance.now();}};
  host.addEventListener('touchend',end); host.addEventListener('touchcancel',end);
  /* the last finger up after a pinch is not a tap on what it lifted from */
  host.addEventListener('click',function(e){
   if(performance.now()-PINCH_END<400){e.stopPropagation();e.preventDefault();}},true);}
-fieldPinch(cv,true);
-fieldPinch($('frend'),false);
+fieldPinch(cv);
 
 /* ---- collapsible sections ---- */
 /* One open section per rail. It was a single value, so opening anything on
@@ -2173,9 +2124,8 @@ function loop(ts){
     none of them is moving. ui/component.js, rbTick */
  if(RB_LIVE)rbTick(ts);
  var r=computeSeen();
- /* the wheel breathes, so it is drawn every frame. A rendition does not move,
-    and ringsDraw builds it only when its signature does */
- if(S.tab===TAB.FIELD){if(fviewOn())ringsDraw(r);else draw(r);drawAura(r);
+ /* the wheel breathes, so it is drawn every frame. */
+ if(S.tab===TAB.FIELD){draw(r);drawAura(r);
   /* the rail's pairs swing on the Field's clock, and nothing they do is
      drawn on the stage */
   rbPairTick(ts);}
@@ -2281,11 +2231,11 @@ document.addEventListener('click',function(e){
  /* #pol2, the vertical strip between the wheel and the chain panel, is gone,
     2 November, his own red marks on the Field screenshot. Its two doors,
     data-polend up and dn into runPoleDrill, live on: the halo and pitchfork
-    now draw inside the wheel's own core at every width (wheel.js, rings.js),
-    and a press there already reaches runPoleDrill through hitPress/frend's
-    click handler above, the same door the strip's end always was. The
-    reading itself, runCompassDrill, opens from the tier word in #railtop
-    (further down in this file) exactly as it did before this strip existed. */
+    now draw inside the wheel's own core at every width (ui/wheel.js), and a
+    press there already reaches runPoleDrill through hitPress above, the
+    same door the strip's end always was. The reading itself, runCompassDrill,
+    opens from the tier word in #railtop (further down in this file) exactly
+    as it did before this strip existed. */
  if(e.target.closest&&e.target.closest('#bal')){S.pin=null;ANA_PICK=null;runBalDrill();return;}
  var row=e.target.closest?e.target.closest('.ad-r[data-addr]'):null;
  /* a row inside the Analytics trail is that trail's, round RB */
@@ -2430,12 +2380,12 @@ step('record from a link',function(){ RECORD_LINK=recordLinkBoot(); });
    nothing on screen. Both say Field now, as they did before the Summary
    ruling, and the comment says why rather than leaving the next reader to
    wonder which of the two is the live one. */
-/* THE FIELD OPENS DRAWN THE WAY THIS PERSON LEFT IT. Read here and not when
-   ui/rings.js loads, because the browser's store is bound above and a read
-   before that meets the engine's empty one, which would put everybody back
-   on the wheel. Its own step, so a store that throws costs the switch and
-   not the start up. */
-step('field view',function(){FVIEW=fviewGet(); fviewPaint(S.tab);});
+/* THE FIELD OPENS DRAWN AS THE WHEEL. Frames, Dial and the step that read
+   which of the three this person left it on are gone, 3 November, his
+   ruling: "wheel frame dials coming out ... we want to get rid of the
+   others because they don't do anything more than what the main one does."
+   The wheel is the only rendition now, so there is nothing left to read a
+   stored choice for. */
 /* THE PRACTITIONER DOOR, round LL, read off the stored record once it is
    loaded above. applyUiPrefs is not called at start up, so without this the
    switch read on after a reload while the door stayed shut. Its own step, so

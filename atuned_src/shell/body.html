@@ -1161,21 +1161,17 @@
         the bottom don't make sense, you should go on the left hand side." It
         is at the head of the left rail now, as circles. -->
    <!-- THE GLASS BAR. One circle per layer, over the picture, driving the
-        wheel, the frames and the dial alike. It comes before the canvas so a
-        phone, which reads the stage as one column, meets it above the picture
-        it changes. ui/fieldbar.js builds it. -->
+        wheel. It comes before the canvas so a phone, which reads the stage as
+        one column, meets it above the picture it changes. ui/fieldbar.js
+        builds it. -->
    <div class="fbar" id="fbar" role="toolbar" aria-label="Field layers"></div>
-   <!-- WHEEL, FRAMES, DIAL, AS THE OVERLAY IN THE UPPER RIGHT. EZ in TASKS.md,
-        his words: "where are my three fucking styles? On my right hand side
-        overlay. Please give that to me and stop making me ask you for it. This
-        should be opposite of the overlay items that you have on the upper
-        left." It sat in the right rail under the top line from DY to EY,
-        which is where "the secondary nav on the right hand side" was read to
-        mean, and there it read as part of a status panel: he was looking at
-        it and asking where it was. It lies on the picture now, in the corner
-        opposite the glass bar, made of the bar's own glass. Icon only, still,
-        on DR: "I don't need the text, just make it the icon." -->
-   <div class="fview" id="fview" role="group" aria-label="How the Field is drawn"></div>
+   <!-- THE WHEEL, FRAMES, DIAL SWITCH IS GONE, 3 November, his ruling: "wheel
+        frame dials coming out. We just need the field. Whichever the one we
+        normally load up with. We want to get rid of the others because they
+        don't do anything more than what the main one does." The wheel was
+        already the shipped default and the one every Field check in tests/
+        measures; Frames and Dial, their switch and their host div are gone
+        with it, not only hidden. -->
    <!-- THE BAND WORD COMES BACK TO THE CENTRE, AND IT IS HIS REVERSAL. Round
         IT in TASKS.md, his words: "take Gaining off that right panel and move
         it to the centre column, upper right side, so it goes opposite
@@ -1187,9 +1183,7 @@
 
         It keeps the id #railtop, the way #key and #acc kept theirs when they
         moved, so railTop() in ui/ui.js still writes it and crMotion still
-        finds it. Under the Wheel, Frames and Dial switch rather than beside
-        it, because with the left column shut the glass bar runs to within a
-        couple of hundred pixels of that switch at 1600 and folds narrower. -->
+        finds it. -->
    <div id="railtop" class="railtop"></div>
    <!-- THE LEGEND IS GONE. Ruled 25 September (BA9), struck through on a
         screenshot with the worked example notice: "You have unnecessary text,
@@ -1200,14 +1194,7 @@
         Its row in the stage grid is left in the template, empty and zero high,
         because the canvas addresses row 3 by number (the compass button,
         #pol2, which shared the row, is gone, 2 November). -->
-   <!-- THE FIELD DRAWN THREE WAYS. BP8, 25 September. The switch between
-        them sat in the stage's left lane and moved to the right rail, ruled:
-        "move that to the secondary nav on the right hand side, and let's just
-        keep those three options there and let people play around with it." -->
    <canvas id="cv" role="img" aria-label="The field wheel. Every element is also listed in the panels either side."></canvas>
-   <!-- the two renditions draw into the wheel's own cell, so all three are
-        compared on the same ground. ui/rings.js writes it. -->
-   <div id="frend" role="img" aria-label="The Field, drawn as nested frames. Every element is also listed in the panels either side." style="display:none"></div>
    <!-- #fzoom, THE THREE ZOOM CIRCLES IN THE LOWER RIGHT, ARE GONE, 2
         November, his own red marks on the Field screenshot, camera-like
         icons near the "1.0x" reframe pill. Zoom and reframe are not lost

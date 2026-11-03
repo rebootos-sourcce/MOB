@@ -72,47 +72,6 @@ for(const w of [[1680,1020],[390,844]]){
  console.log('  '+w.join('x')+': '+n+' labels over '+people.length+' personas and 4 depths, '
   +(worst?'some past the ring':'none past the ring'));}
 /* ============================================================
-   And nothing past the dial's ring either.
-
-   CR held the wheel to its edge and left the dial's callouts in its
-   corners, asking as its Q5 whether they should come in. Ruled 26
-   September, CT in TASKS.md, "for the field, I do not like the way
-   that the words stick out", so they came in, and this holds them there
-   on every profile at both widths. The dial is SVG and records nothing
-   in LBL, so the ring is measured off the drawing, the outside of the
-   domain band, and each callout line is read at its farthest corner.
-   Run first against the build before the move: it failed there on every
-   profile the dial names anything for.
-
-   A zero here would pass by naming nothing, so the count of lines
-   checked is printed and has to be more than nought at each width.
-   ============================================================ */
-console.log('\n=== every dial callout inside the ring, every persona ===');
-for(const w of [[1680,1020],[390,844]]){
- await p.setViewportSize({width:w[0],height:w[1]});await p.waitForTimeout(160);
- let n=0;
- for(let i=0;i<people.length;i++){
-  const res=await p.evaluate(async a=>{loadP(a);setTab(TAB.FIELD);fviewSet('dial');
-   await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
-   const fr=document.getElementById('frend');
-   const doms=[...fr.querySelectorAll('.L-domains > [data-h]')].map(e=>e.getBoundingClientRect());
-   const x0=Math.min(...doms.map(b=>b.left)),x1=Math.max(...doms.map(b=>b.right));
-   const y0=Math.min(...doms.map(b=>b.top)),y1=Math.max(...doms.map(b=>b.bottom));
-   const cx=(x0+x1)/2,cy=(y0+y1)/2,R=Math.max(x1-x0,y1-y0)/2;
-   const lines=[...fr.querySelectorAll('[data-call] text')].map(t=>({t:t.textContent,b:t.getBoundingClientRect()}));
-   const past=lines.map(o=>({t:o.t,r:Math.max(...[[o.b.left,o.b.top],[o.b.right,o.b.top],[o.b.left,o.b.bottom],
-     [o.b.right,o.b.bottom]].map(q=>Math.hypot(q[0]-cx,q[1]-cy)))-R})).filter(o=>o.r>1);
-   const box=[...fr.querySelectorAll('[data-call]')].map(g=>{const t=[...g.querySelectorAll('text')].map(e=>e.getBoundingClientRect());
-    return {l:Math.min(...t.map(b=>b.left)),r:Math.max(...t.map(b=>b.right)),t:Math.min(...t.map(b=>b.top)),b:Math.max(...t.map(b=>b.bottom))};});
-   let over=0;for(let j=0;j<box.length;j++)for(let k=j+1;k<box.length;k++){const A=box[j],B=box[k];
-    if(A.l<B.r&&B.l<A.r&&A.t<B.b&&B.t<A.b)over++;}
-   return {n:lines.length,past:past.map(o=>o.t+' by '+o.r.toFixed(1)+'px'),over:over};},i);
-  n+=res.n;
-  ok(res.past.length===0,w.join('x')+'/'+people[i]+'/dial: past the ring: '+res.past.join(', '));
-  ok(res.over===0,w.join('x')+'/'+people[i]+'/dial: '+res.over+' callouts overlapping');}
- ok(n>0,w.join('x')+'/dial: the dial named nothing on any profile, so nothing was checked');
- console.log('  '+w.join('x')+': '+n+' callout lines over '+people.length+' personas, checked against the ring');}
-/* ============================================================
    The Compass header clear of the Compass names, and the hint clear
    of the figure.
 
@@ -262,9 +221,6 @@ for(const w of [[1680,1020],[1280,800],[390,844]]){
  ok(!res.regBtn,tag+': the Regulation switch is offered where it draws nothing');
  console.log('  '+tag+': '+(res.said.length?res.said.length+' painted words':'no painted words')
   +', '+res.glyphs+' glyphs, '+res.off+' off the canvas, key '+res.rows+' rows');}
-/* the wheel again, which is what every check below is measured on, and a
-   stored view outlives the page */
-await p.evaluate(()=>fviewSet('wheel'));
 await p.setViewportSize({width:1680,height:1020});await p.waitForTimeout(160);
 /* ============================================================
    A control laid over a label the wheel drew.
@@ -289,9 +245,9 @@ for(const w of [[1680,1020],[1440,960],[1280,900],[1180,820],[2560,1400]]){
   const sc=cv.width/CW;                       /* canvas units to CSS pixels */
   const boxes=LBL.map(l=>({t:l.t,left:cv.left+l.x*sc,top:cv.top+l.y*sc,
    right:cv.left+(l.x+l.w)*sc,bottom:cv.top+(l.y+l.h)*sc}));
-  /* the ink, not the container. #fview is a flex box holding three small
-     circles, so its bounding box says nothing about what is actually
-     painted inside it. a leaf with text, or a drawing, is the ink. */
+  /* the ink, not the container. A control's own wrapper is a flex box, so
+     its bounding box says nothing about what is actually painted inside
+     it. a leaf with text, or a drawing, is the ink. */
   const ink=[];
   document.querySelectorAll('#stage > *').forEach(e=>{
    if(e.id==='cv'||e.id==='probe')return;   /* probe is the hover readout at the core */

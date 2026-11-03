@@ -971,9 +971,9 @@ var ATM_MAP=[
  {kind:'Chip, pill or pressed toggle', sel:'[aria-pressed],.st-rb,.cn-sb,.kb-swb,.rv-sp,.rv-tag2,.rv-wkd', snd:'click-light', hover:true},
  {kind:'List row', sel:'.kb-row,.stk-r', snd:'click-light', hover:true},
  {kind:'Button, link or menu item', sel:'button,[role=button],[role=menuitem],a[href],summary', snd:'click', hover:true},
- {kind:'A press on the Field wheel, Frames or Dial', hook:'hitPress and the wheel\'s press paths in ui/ui.js', snd:'field', fitting:true},
+ {kind:'A press on the Field wheel', hook:'hitPress and the wheel\'s press paths in ui/ui.js', snd:'field', fitting:true},
  {kind:'A sheet opening or closing', hook:'atmWatch, a MutationObserver on #sheet', snd:'air'},
- {kind:'A zoom on the Field', hook:'atmZoom, from setZoom, fzAt and the reframes', snd:'ambience'},
+ {kind:'A zoom on the Field', hook:'atmZoom, from setZoom and the reframes', snd:'ambience'},
  {kind:'A pointer arriving on a control above', hook:'atmOnOver', snd:'hover'}];
 var ATM_ANY=ATM_MAP.filter(function(m){return m.sel;}).map(function(m){return m.sel;}).join(',');
 /* the pitch a seat name sounds at, off the one table the release reads */
@@ -1177,10 +1177,10 @@ function atmAmbKill(){
  var h=ATM_AMB; if(!h)return;
  try{ var t=h.ac.currentTime; h.g.gain.cancelScheduledValues(t); h.g.gain.setTargetAtTime(0,t,0.03); }catch(e){}
  clearTimeout(ATM_AMB_T); ATM_AMB_T=setTimeout(atmAmbEnd,300);}
-/* A ZOOM HAPPENED. s is the zoom and max is its ceiling, from setZoom and from
-   fzAt, the Field's two zooms; a reframe to 1x is a zoom to 1 and lowers the
-   room to nothing. Called for every change, silent or not, and says nothing
-   when the layer is silent. */
+/* A ZOOM HAPPENED. s is the zoom and max is its ceiling, from setZoom, the
+   wheel's own; a reframe to 1x is a zoom to 1 and lowers the room to
+   nothing. Called for every change, silent or not, and says nothing when the
+   layer is silent. */
 function atmZoom(s,max){
  var L=sfxZoomL(s,max);
  if(sfxWhy()){ if(ATM_AMB)atmAmbKill(); return false; }

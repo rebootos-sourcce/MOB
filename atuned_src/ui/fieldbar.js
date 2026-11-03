@@ -15,14 +15,16 @@
    don't want that secondary navigation."
 
    WHAT IT REPLACES. The four depth words in the sub bar (VIEWS in
-   ui/wheel.js), the renditions' ten layer row (FLAYS in ui/rings.js), and
-   the Wheel, Frames, Dial switch in the stage's left lane, which is three
-   circles at the head of the right rail now.
+   ui/wheel.js) and the renditions' ten layer row (FLAYS in ui/rings.js).
+   The Wheel, Frames, Dial switch that stood beside it, three circles at the
+   head of the right rail, is gone too now, 3 November, his ruling: "wheel
+   frame dials coming out ... we want to get rid of the others because they
+   don't do anything more than what the main one does."
 
    WHAT IT DOES NOT TOUCH. compute() and everything under engine/. Every
    saboteur, complex and domain is still read on every frame exactly as
    before. The bar decides what is DRAWN, never what is READ: the layer model
-   is layVisible in ui/wheel.js, and the wheel and both renditions ask it.
+   is layVisible in ui/wheel.js, and the wheel asks it.
 
    PORTED, NOT REBUILT. The prototype reached the wheel by reading drawWheel
    as text, splicing a guard into each layer block and evaluating it back.
@@ -30,8 +32,8 @@
    own questions panel is not carried, because each of its options is either
    ruled or still his to rule, named in the report.
 
-   Loads after ui/rings.js, whose FLAYS and FVIEWS it draws its marks from,
-   and before ui/panels.js, so it reaches for nothing declared later at load.
+   Loads after ui/rings.js, whose FLAYS it draws its marks from, and before
+   ui/panels.js, so it reaches for nothing declared later at load.
    getElementById and not $, which is a const in panels.js.
    ============================================================ */
 
@@ -271,7 +273,7 @@ function fbValues(r){
 
 /* ---- the hosts, which are in the markup so the bar cannot vanish with a
    failed script, and the pieces built into them once ---- */
-var FB=null, FB_PANEL=null, FB_MENU=null, FB_FOLD=null, FB_SAY=null, FB_VIEW=null, FB_TOG=null;
+var FB=null, FB_PANEL=null, FB_MENU=null, FB_FOLD=null, FB_SAY=null, FB_TOG=null;
 function fbCluster(g,label){
  var c=document.createElement('div'); c.className='fb-grp';
  c.setAttribute('role','group'); c.setAttribute('aria-label',g.nm);
@@ -290,7 +292,7 @@ function fbUnpin(){var p=S.pin;if(!p)return;
 /* a press is a person's change, so it moves: layGesture in ui/wheel.js */
 function fbToggle(k){layGesture(); layToggle(k); fbUnpin(); fbSay(k); render();}
 function fbSay(k){if(!FB_SAY)return;var l=FB_BYK[k],v=FB_VALS[k],on=layerOn(k);
- var wait=on&&k==='stories'&&FVIEW==='wheel'&&atomA()<=0;
+ var wait=on&&k==='stories'&&atomA()<=0;
  FB_SAY.innerHTML='<b>'+esc(l.nm)+(on?' on.':' off.')+'</b> '+esc(l.tip)
   +(wait?' They draw once you scroll in on the ring.':'')+(v?' '+esc(v.m):'');}
 
@@ -379,23 +381,11 @@ function fbSay(k){if(!FB_SAY)return;var l=FB_BYK[k],v=FB_VALS[k],on=layerOn(k);
   m.addEventListener('click',function(e){e.stopPropagation();layGesture();layPick(i);S.pin=null;fbOpenMenu(false);render();});
   FB_MENU.appendChild(m);});
 
- /* WHEEL, FRAMES, DIAL, icon only. Ruled in two steps, DR then DY: "it's
-    taking up too much real estate being on the centre pane ... I don't need
-    the text, just make it the icon," and then "move that to the secondary
-    nav on the right hand side." It stood in the right rail on that reading,
-    and EZ is him looking straight at it there and asking where it was, "On
-    my right hand side overlay ... opposite of the overlay items that you
-    have on the upper left." So it is the overlay in the stage's upper right
-    now, the glass bar's mirror. A rendition has no reading, so it carries no
-    pill, and its ring is whole when it is the one up. fviewPaint in
-    ui/rings.js marks which. */
- var sw=FB_VIEW=document.getElementById('fview');
- if(sw)FVIEWS.forEach(function(f){
-  var b=fbOrb({nm:f.nm,ic:f.ic,tip:f.tip});
-  b.setAttribute('data-fview',f.k); b.setAttribute('aria-pressed',f.k===FVIEW);
-  b.addEventListener('click',function(){fviewSet(f.k);});
-  sw.appendChild(b);});
-
+ /* THE WHEEL, FRAMES, DIAL SWITCH IS GONE, 3 November, his ruling: "wheel
+    frame dials coming out ... we want to get rid of the others because they
+    don't do anything more than what the main one does." There is one
+    rendition now, so there is nothing left to switch between and no overlay
+    left to build here. */
  document.addEventListener('click',function(){fbOpenPanel(false);fbOpenMenu(false);});
  document.addEventListener('keydown',function(e){if(e.key==='Escape'){fbOpenPanel(false);fbOpenMenu(false);}});
  addEventListener('scroll',function(){if(FB_MENU&&!FB_MENU.hidden)fbOpenMenu(false);
@@ -418,7 +408,7 @@ var FB_ENTERED=false;
 const FB_ENTER_STEP=34;
 function fbEnter(){
  if(FB_ENTERED||REDUCED)return; FB_ENTERED=true;
- var hosts=[FB,FB_VIEW].filter(function(h){return h&&h.offsetParent;}), n=0;
+ var hosts=[FB].filter(function(h){return h&&h.offsetParent;}), n=0;
  hosts.forEach(function(h){
   [].slice.call(h.querySelectorAll('.fb-b')).filter(function(b){return b.offsetParent;})
    .forEach(function(b){b.style.setProperty('--i',n++);});
@@ -440,7 +430,7 @@ function fbPlace(el,anchor){
    ABOVE IT. Dropped under its circle it covered the whole ring at 390, so a
    press changed a picture nobody could see, which is a dead control with
    extra steps. */
-function fbRingUp(){var pic=document.getElementById(FVIEW==='wheel'?'cv':'frend');if(!pic)return;
+function fbRingUp(){var pic=document.getElementById('cv');if(!pic)return;
  var r=pic.getBoundingClientRect(), room=innerHeight-FB_PANEL.offsetHeight-16;
  if(r.top>=8&&r.bottom<=room)return;
  var by=r.top-Math.max(8,(room-r.height)/2);
@@ -506,11 +496,10 @@ function fbFit(){
     the one circle left, and the width was cached as fitting: opened again at
     1440 the full row would have run under the switch until the next resize. */
  if(FB.classList.contains('shut'))return;
- /* AND THE UPPER RIGHT IS THE SWITCH'S, EZ. The bar fits in what is left
-    beside it, with one bar gap between, or it folds; measured off the switch
-    itself, because its width is the sheet's to decide. */
- var st=document.getElementById('stage'), vw=FB_VIEW&&FB_VIEW.offsetParent?FB_VIEW.offsetWidth+12:0,
-  avail=st?st.clientWidth-28-vw:0;
+ /* THE WHEEL, FRAMES, DIAL SWITCH IS GONE, 3 November, so the bar now fits
+    the whole stage width rather than leaving room for it in the corner. */
+ var st=document.getElementById('stage'),
+  avail=st?st.clientWidth-28:0;
  if(avail<=0||avail===FB_FIT)return;
  FB_FIT=avail;
  FB.classList.remove('folded');
@@ -525,7 +514,7 @@ function fbRead(r){
 /* every object from the state, one writer */
 function fbPaint(){
  if(!FB)return;
- var on=layChosen(), rc=layReached(), wheel=FVIEW==='wheel', atomsOut=atomA()<=0;
+ var on=layChosen(), rc=layReached(), atomsOut=atomA()<=0;
  /* THE GLASS TAKES THE TONE OF WHAT IT LIES ON, NOT OF THE THEME'S NAME.
     Under Snow the panels are light and the stage keeps the ruled #101010, so
     glass made of the panel colour was a grey slab on a black field, measured
@@ -536,7 +525,7 @@ function fbPaint(){
     since round IT and is made of the same glass. #fzoom, the opposite
     corner accuracy once mirrored (round LR), is gone, 2 November; accuracy
     itself keeps its own glass below. */
- [FB,FB_PANEL,FB_MENU,FB_VIEW,document.getElementById('railtop'),
+ [FB,FB_PANEL,FB_MENU,document.getElementById('railtop'),
   document.getElementById('acc')]
   .forEach(function(x){if(x)x.classList.toggle('fb-lt',lt);});
  document.body.classList.toggle('noshadow',!layerOn('shadow'));
@@ -552,7 +541,7 @@ function fbPaint(){
    /* Stories on the wheel are drawn out along each address, past the ring,
       and only once it has been brought close. On, and waiting for that, is
       said on the circle, not hidden. */
-   var wait=isOn&&k==='stories'&&wheel&&atomsOut;
+   var wait=isOn&&k==='stories'&&atomsOut;
    b.classList.toggle('wait',wait);
    fbTip(b,l.tip+(V?' '+V.m:'')+(wait?' On. They draw once you scroll in on the ring.':'')
     +(z?' Brought in by zoom. Zoom out and it goes again.':''));

@@ -527,13 +527,11 @@ function solCore(r,base){
     words: "The heaven and hell ... shows up in the very bottom of the
     square. I want you to move that inside of the circle." The halo over the
     figure and the pitchfork under it, inside the sphere, in the compass's
-    colours and by its rule for which is lit, the same pair frPoles in
-    ui/rings.js puts in the core of Frames and Dial. They scale with the
-    core, so a pinch is what brings them up to reading size, which is his
-    next sentence: "when I zoom in I can actually see the heaven and hell,
-    like where I'm heading towards." Pushed after the core, so the hit test,
-    which reads HIT from the end, finds either pole before the core it sits
-    in.
+    colours and by its rule for which is lit. They scale with the core, so a
+    pinch is what brings them up to reading size, which is his next sentence:
+    "when I zoom in I can actually see the heaven and hell, like where I'm
+    heading towards." Pushed after the core, so the hit test, which reads HIT
+    from the end, finds either pole before the core it sits in.
 
     THE phoneW() GATE CAME OFF, 2 November, with the vertical strip,
     ui/personas.js's #pol2, removed on his own red marks on the Field
@@ -744,7 +742,6 @@ function layWhich(set){for(var i=0;i<LAYADD.length;i++){var p=layPreset(i);
  if(Object.keys(p).length===Object.keys(set).length&&Object.keys(p).every(function(k){return set[k];}))return i;}
  return -1;}
 function layReached(){var out={},on=layChosen(),z=S.zoom||1,extra=0;
- if(typeof FVIEW!=='undefined'&&FVIEW!=='wheel')return out;
  for(var i=1;i<ZOOM_STEP.length;i++)if(z>=ZOOM_STEP[i])extra=i;
  /* ONLY THE DEPTHS PAST THE ONE THE SET ALREADY NEEDS. The prototype walked
     from the first depth, which on a preset changes nothing because every

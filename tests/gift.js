@@ -138,7 +138,7 @@ async function arrive(browser,payload,W,H){
 
   /* ---- 2 · every surface the ruling opens draws ---- */
   const BAR=['saboteurs','complexes','hyper','character'];
-  await pg.evaluate(()=>{setTab(TAB.FIELD);fviewSet('wheel');render();}); await pg.waitForTimeout(900);
+  await pg.evaluate(()=>{setTab(TAB.FIELD);render();}); await pg.waitForTimeout(900);
   if(phone)await pg.evaluate(()=>fbOpenPanel(true));
   const fld=await pg.evaluate(BAR=>{
    const host=window.innerWidth<=720?'#fbpanel':'#fbar .fb-full';
@@ -246,7 +246,7 @@ async function arrive(browser,payload,W,H){
    ok(end.names.indexOf('saboteurs')===0&&end.names.length>1,tag+'and on free that list starts at saboteurs, '+end.names.join());
    ok(end.kept&&end.entries,tag+'every pattern opened before the run is still on the record, and no story went');
    ok(end.again===0,tag+'the next run does not say it again, '+JSON.stringify({plan2:end.plan2,again:end.again}));
-   await pg.evaluate(()=>{setTab(TAB.FIELD);fviewSet('wheel');render();}); await pg.waitForTimeout(900);
+   await pg.evaluate(()=>{setTab(TAB.FIELD);render();}); await pg.waitForTimeout(900);
    const back=await pg.evaluate(()=>{
     const e=document.querySelector('#fbar .fb-full [data-fb="saboteurs"]');
     return {sab:e?e.getAttribute('data-lock'):'missing', engine:compute().sabs.length, seen:computeSeen().sabs.length};});

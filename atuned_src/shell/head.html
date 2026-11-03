@@ -1677,132 +1677,12 @@ canvas#cv{display:block;grid-column:2;grid-row:3;width:100%;height:100%;
    scroll attempt became a charge write. Vertical panning goes to the page
    and a tap still reaches the canvas. */
 @media (pointer:coarse){ canvas#cv{touch-action:pan-y;cursor:default} }
-/* AND THE RENDITIONS THE SAME, GF in TASKS.md. #frend carried no touch-action,
-   so a pinch on Frames or Dial was the browser's and zoomed the whole page by
-   4.96 while the picture's own zoom stayed at 1. pan-y keeps the page's scroll
-   and gives two fingers to fieldPinch in ui/ui.js, as on the wheel. */
-@media (pointer:coarse){ #frend{touch-action:pan-y} }
-/* ============================================================
-   THE FIELD DRAWN THREE WAYS. BP8, 25 September.
-
-   A rendition draws into the canvas's own cell. The switch between the three
-   sat in the stage's left lane, CQ, and is three circles at the head of the
-   right rail now, ruled on DR and DY: "move that to the secondary nav on the
-   right hand side." The layer row that took the depth row's place in the sub
-   bar is gone with it, into the glass bar, which drives all three pictures.
-   ============================================================ */
-/* THE SWITCH IS THE OVERLAY IN THE UPPER RIGHT NOW, EZ in TASKS.md: "On my
-   right hand side overlay ... This should be opposite of the overlay items
-   that you have on the upper left." The glass bar lies at top 10, left 12;
-   this lies at top 10, right 12, in the same strip the stage keeps clear, so
-   the two read as one pair of overlays across the head of the picture.
-
-   Its three circles are the bar's own, the same size, glass, shade and ring,
-   so it carries the bar's weight, and they sit on a capsule of that glass
-   because they are one control choosing one of three, where the bar's
-   circles are thirteen separate switches. The capsule is what says so. */
-.fview{position:absolute;top:8px;right:12px;z-index:6;display:flex;gap:4px;align-items:center;
- padding:2px;border-radius:999px;background:var(--fb-glass);border:1px solid var(--edge-2);
- box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px var(--fb-shade)}
-/* the Field's alone. The stage hosts every surface, and a switch for a
-   picture that is not there is a dead control */
-body:not(.tab-field) .fview{display:none}
-/* a rendition has no reading, so the one that is up carries a whole ring in
-   the accent and a lifted disc, and the two that are not stay glass */
-.fview .fb-orb{--c:var(--accent)}
-.fview .fb-b.on .fb-arc .val{stroke-dasharray:100 100}
-/* and the two that are not up draw no arc at all: a round cap on a dash of
-   nought is a dot, and a dot at twelve o'clock read as a reading of one */
-.fview .fb-b:not(.on) .fb-arc .val{opacity:0}
-/* .fzoom, THE ZOOM CIRCLES IN THE LOWER RIGHT, ARE GONE, 2 November, his
-   own red marks on the Field screenshot. Scroll, drag and the minus, plus
-   and F keys still zoom and reframe the picture; only the on screen circles
-   and the "1.0x" pill they carried are gone. */
-#frend{grid-column:2;grid-row:3;width:100%;height:100%;min-width:0;min-height:0;
- position:relative;overflow:hidden}
-/* FRAMES TAKES THE EMPTY LEFT LANE. The lane held the renditions switch and
-   is empty now, so on a wide screen the frame spans it and runs flush from
-   the stage's left edge to the compass lane. The wheel and the dial are
-   circles and stay in the middle cell. Kept or pulled back is his, ED. */
-@media (min-width:721px){#frend.flush{grid-column:1 / 3}}
-/* zoomed in, the picture can be dragged, and a drag takes no hover on the way */
-#frend.zoomed{cursor:grab}
-#frend.dragging{cursor:grabbing}
-#frend.dragging *{pointer-events:none}
-body:not(.tab-field) #frend{display:none!important}
-/* the picture takes the pointer only where there is something to open. A
-   thread, a hairline or the wash is not a target, and drawn over an address
-   it would have taken the press the address was owed */
-.frsvg{display:block;pointer-events:none}
-.frsvg [data-h]{pointer-events:auto;cursor:pointer}
-.frsvg text{font-family:var(--sans);font-variant-numeric:tabular-nums}
-/* a hidden layer takes its marks and its words with it. One class per switch
-   on the glass bar, off-<layer>, written by frLayers in ui/rings.js. A thread
-   carries the class of the tier at its far end, F-<tier>, so it goes with
-   either end: a thread is drawn when both its ends are. */
-#frend.off-addresses .L-addresses,#frend.off-addresses .F-addr,#frend.off-seats .L-seats,
-#frend.off-laws .L-laws,#frend.off-gates .L-gates,#frend.off-shadow .L-shadow,#frend.off-stories .L-stories,
-#frend.off-saboteurs .L-patterns,#frend.off-saboteurs .F-sab,
-#frend.off-complexes .T-cx,#frend.off-complexes .F-cx,#frend.off-hyper .T-hy,#frend.off-hyper .F-hy,
-#frend.off-character .T-sup,#frend.off-character [data-call=chains],
-#frend.off-archetypes .L-archetypes,#frend.off-domains .L-domains{
- opacity:0;visibility:hidden;pointer-events:none!important;
- transition:opacity var(--t-element) cubic-bezier(.55,.085,.68,.53),visibility 0s linear var(--t-element)}
-/* A LAYER ARRIVES AND LEAVES, FJ in TASKS.md: "where are my animations?" It
-   was display:none, which cannot be animated, so a switch was a cut. Now the
-   layer fades out in 220ms on an ease in, a quadratic one, the canvas's own
-   curve: the steeper ease in the motion table measured as ninety
-   milliseconds of nothing after the press, and is taken out of the picture by
-   visibility once it has, so a hidden layer is still not drawn and still not
-   pressable; and it comes back on --t-context, 420ms, eased out into place,
-   the named step nearest the wheel's own ENTER_SPAN of 380, because every
-   duration in this sheet is one of the four steps and the design gate holds
-   that. Every selector here is inside :where so
-   it weighs nothing, and each off rule above wins its leaving timing over it
-   without an order to keep. The wheel does the same on its canvas, layFade in
-   ui/wheel.js, with the sweep round from twelve o'clock a canvas can clip. */
-:where(#frend) :where([class^="L-"],[class^="T-"],[class*=" F-"]){
- transition:opacity var(--t-context) var(--ease-out),visibility 0s linear 0s}
-/* THE WORDS COME IN WITH THE ZOOM, FJ. txtZoomA in ui/component.js reads the
-   picture's zoom and rings.js writes it here as --fztx, 0 at the whole
-   picture and 1 from 1.75x in. At 0 the host carries notext and the words
-   are taken out, not set faint. The core figure and the gate pills are not
-   words and are not here. */
-/* THE CORE'S FEATHERS ON FRAMES AND DIAL, faded by the zoom, ui/rings.js
-   frFeathers. The figures give ground as the core opens, to under half their
-   size on a backing disc, the wheel's move for the same moment: at three
-   fifths, the first cut, the coherence figure still sat across the triad. */
-#frend .frf0{opacity:var(--frf0,0)}#frend .frf1{opacity:var(--frf1,0)}#frend .frf2{opacity:var(--frf2,0)}
-#frend .frfr{opacity:calc(var(--frfo,0) * .9)}
-#frend .frcq{transform-box:fill-box;transform-origin:center;transform:scale(calc(1 - .55 * var(--frfo,0)))}
-#frend .frcq-bk{opacity:calc(var(--frfo,0) * .86)}
-#frend [data-call],#frend .frnm{opacity:var(--fztx,1);transition:opacity var(--t-micro) var(--ease-out),visibility 0s linear 0s}
-#frend.notext [data-call],#frend.notext .frnm{visibility:hidden;transition:opacity var(--t-micro) cubic-bezier(.55,.085,.68,.53),visibility 0s linear var(--t-micro)}
-/* the names a zoom brings in, set level beside their marks in page pixels, so
-   eleven pixels is eleven pixels at any zoom and never under the floor */
-.frnm{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.frnm span{position:absolute;left:0;top:0;white-space:nowrap;font-size:11.5px;font-weight:500;
- line-height:1;letter-spacing:.005em;color:var(--c);
- text-shadow:0 0 3px var(--g),0 0 3px var(--g),0 0 2px var(--g)}
-.frnm span.hid{visibility:hidden}
-.frnm span.sel{font-weight:600}
-/* THE TENSION RUNS, FJ. The pulses on the renditions' threads sit in their
-   own picture over the main one, so the main picture, thousands of marks, is
-   never repainted for them: only this sheet of a few hundred paths is. */
-.frflow{position:absolute;left:0;top:0;pointer-events:none;will-change:transform}
-/* the picture a switch replaced, dissolving over the new one, ringsDraw */
-.frghost{position:absolute;left:0;top:0;pointer-events:none}
-/* A PULSE RUNS AT ONE SPEED, which is the one place this sheet has a linear
-   curve on purpose: an ease would make every pulse surge and stall once a
-   period, and a wave on a wire does neither. Its speed is the reading. */
-.frflow path{fill:none;stroke-linecap:round;animation:frflow var(--d,3s) linear infinite;
- animation-delay:var(--ph,0s)}
-/* both ends lengths, or the two would not interpolate and the pulse would
-   jump once a period instead of running: measured, a bare number against a
-   calc of a variable reads as one fixed value all the way through */
-@keyframes frflow{from{stroke-dashoffset:0px}to{stroke-dashoffset:calc(var(--p,64) * -1px)}}
-@media (prefers-reduced-motion:reduce){.frflow{display:none}}
-/* and the wheel's wash, which is the page's own canvas and not the picture's.
+/* THE FIELD DRAWN THREE WAYS IS DOWN TO ONE, 3 November, his ruling: "wheel
+   frame dials coming out ... we want to get rid of the others because they
+   don't do anything more than what the main one does." Frames and Dial,
+   their host #frend, their switch .fview and every rule that drew or moved
+   them are gone with that ruling, not only hidden. */
+/* THE WHEEL'S WASH, which is the page's own canvas and not the picture's.
    Its fade is an opacity drawAura sets, auraK in ui/wheel.js; this takes the
    canvas out once that fade has run, and puts it back at once on the way in,
    so the class never cuts a fade short. */
@@ -1859,12 +1739,12 @@ body:not(.tab-field) .fbar,body:not(.tab-field) .fb-float{display:none!important
    takes .fb-lt on a light one. The inks are Dark's own and Glass white's own
    token values and the accent is the pair GOLDC() draws the canvas in,
    because under Snow the theme's tokens are paper ink and the stage stays
-   the ruled #101010: the bar needs the ground's ink, which INK() and frMount
-   already choose the same way. */
-.fbar,.fb-float,.fview,.cn-zoom,.cnbar,.cnview,.cn-pan,#railtop,#acc{--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;
+   the ruled #101010: the bar needs the ground's ink, which INK() already
+   chooses the same way. */
+.fbar,.fb-float,.cn-zoom,.cnbar,.cnview,.cn-pan,#railtop,#acc{--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;
  --edge-2:rgba(255,255,255,.14);--edge:rgba(255,255,255,.09);
  --fb-glass:rgba(22,24,32,.74);--fb-glass-on:rgba(40,44,58,.86);--fb-shade:rgba(0,0,0,.30);--fb-pillbg:#161820}
-.fbar.fb-lt,.fb-float.fb-lt,.fview.fb-lt,.cn-zoom.fb-lt,.cnbar.fb-lt,.cnview.fb-lt,.cn-pan.fb-lt,#railtop.fb-lt,#acc.fb-lt{--ink:#14161C;--mid:#4A4843;--dim:#6E6B65;--accent:#2F6E92;
+.fbar.fb-lt,.fb-float.fb-lt,.cn-zoom.fb-lt,.cnbar.fb-lt,.cnview.fb-lt,.cn-pan.fb-lt,#railtop.fb-lt,#acc.fb-lt{--ink:#14161C;--mid:#4A4843;--dim:#6E6B65;--accent:#2F6E92;
  --edge-2:rgba(20,22,28,.16);--edge:rgba(20,22,28,.10);
  --fb-glass:rgba(252,252,250,.80);--fb-glass-on:rgba(255,255,255,.94);--fb-shade:rgba(20,22,28,.14);--fb-pillbg:#FAFAF7}
 /* ---- one layer, one object. 44 by 44, the tap floor ---- */
@@ -3564,17 +3444,16 @@ body:not(.tab-field) .keylo{display:none}
 .cnbar .fb-tog{order:-1}
 .cnbar.shut>*:not(.fb-tog){display:none}
 .cnbar.shut .fb-tog .lf-ch{transform:rotate(180deg)}
-/* HOW IT IS DRAWN is one of two, so it is the Field's capsule: the circles sit
-   on a lozenge of the glass because they are one control choosing, where the
-   bar's circles are separate switches. The same three rules .fview has. */
+/* HOW IT IS DRAWN is one of two, so it is the Field's own capsule: the
+   circles sit on a lozenge of the glass because they are one control
+   choosing, where the bar's circles are separate switches. */
 .cnview{display:flex;align-items:center;flex:0 0 auto;padding:2px;border-radius:999px;
  background:var(--fb-glass);border:1px solid var(--edge-2);
  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px var(--fb-shade)}
 .cnview .fb-grp{gap:4px}
 /* A WAY OF DRAWING HAS NO READING, so it carries no pill and its ring is
-   whole while it is on and absent while it is off, the rule .fview gives a
-   rendition. A dash of nought with a round cap is a dot, and a dot at twelve
-   o'clock reads as a reading of one. */
+   whole while it is on and absent while it is off. A dash of nought with a
+   round cap is a dot, and a dot at twelve o'clock reads as a reading of one. */
 .cn-st .fb-arc .val{stroke:var(--accent);stroke-dasharray:100 100}
 .cn-st:not(.on) .fb-arc .val{opacity:0}
 .cn-st .fb-arc .val,.cn-b .fb-arc .val,.cn-sb2 .fb-arc .val{transition:opacity var(--t-micro) var(--ease-out)}
@@ -6209,9 +6088,6 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     rendered 10 pixels tall on every phone with 106 pixels of content in it. */
  .emap{position:static;inset:auto;overflow:visible;width:100%;min-height:0;order:0}
  canvas#cv{flex:0 0 auto;height:min(86vw,390px);order:1}
- /* a rendition takes exactly the wheel's square so the three are compared at
-    one size */
- #frend{flex:0 0 auto;height:min(86vw,390px);order:1}
  /* THE COMPASS RENDERED ENTIRELY OFF SCREEN. Measured at 390x844: #conecv at
     y -612, 338 by 591, onScreen false, with its host #cone 10 pixels tall and
     still position:absolute. The tab named Compass showed a person nothing at
@@ -8241,12 +8117,11 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
     bit smaller." Measured at 390: the strip sat under the picture as a 190
     pixel column and its pitchfork landed on the stage's bottom edge. The halo
     and the pitchfork are drawn inside the core, above CQ and below DQ, by
-    frCore in ui/rings.js on Frames and Dial and by solCore in ui/wheel.js on
-    the wheel, the lit one being where the field is heading, and they are
-    doors to the same two drills the strip's ends opened. The strip itself,
-    .pol2, is gone at every width now, 2 November, his own red marks on the
-    Field screenshot, and there is nothing left here to hide on a phone: the
-    rule this comment used to hold is gone with it. */
+    solCore in ui/wheel.js, the lit one being where the field is heading, and
+    they are doors to the same two drills the strip's ends opened. The strip
+    itself, .pol2, is gone at every width now, 2 November, his own red marks
+    on the Field screenshot, and there is nothing left here to hide on a
+    phone: the rule this comment used to hold is gone with it. */
 
  /* ROOT ENERGETICS' READINGS ARE SQUARE BUTTONS ON A PHONE. His words: "I
     want these to be square buttons, these circles are taking up too much
