@@ -76,6 +76,7 @@ ui/chcloud.js
 ui/character.js
 ui/imprints.js
 ui/storyui.js
+ui/stdash.js
 ui/summary.js
 ui/daily.js
 ui/analytics.js

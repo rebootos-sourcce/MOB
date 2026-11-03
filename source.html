@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2742 a5910867 2026-11-01 00:52"><head><meta charset="utf-8">
+<html lang="en" data-build="v2746 b6f4c161 2026-11-03 00:11"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -3987,7 +3987,18 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    its three view icons spilled out under it and the list below was drawn
    over them (tests/collide.js, Story on a short window). The list is the one
    that gives way: it has min-height 0 and scrolls on its own. */
-.st-ls{flex:1 1 0}
+/* AND IT SCROLLS AS A WHOLE WHEN ITS OWN ROWS OUTGROW IT, 2 November. Only
+   the list inside it (#stimps) scrolled, so the rows above that list, the
+   bank and archive icons and the five sort buttons, could not give way, and
+   in a short window they spilled out past the panel's own border onto
+   Commit. Measured at 1280 by 600 on the Full view with its left rail: the
+   column was 234 pixels wide, the sort buttons wrapped to three lines, 140
+   pixels, and the third line sat on Commit, which tests/collide.js caught.
+   main already ran past the border at that window by a smaller margin, the
+   list's heading over Commit's top. Scrolling here keeps every row inside
+   the panel and reachable by the panel's own scrollbar; with room to spare
+   nothing scrolls and nothing moves. */
+.st-ls{flex:1 1 0;overflow-x:hidden;overflow-y:auto}
 .st-eb{font-size:12px;font-weight:600;color:var(--dim)}
 .st-tag{font-size:12px;color:var(--dim);margin-right:auto;white-space:nowrap}
 .st-none{color:var(--dim);font-size:13.5px;line-height:1.55;margin:10px 0 0;max-width:52ch}
@@ -4292,6 +4303,47 @@ body.tab-story:not(.st-bank) .mid>.col:not(#lcol){display:none}
 @media (min-width:1181px){
  body.tab-story:not(.st-bank) .mid{grid-template-columns:1fr}
  body.tab-story.st-bank .mid{grid-template-columns:1fr 336px}}
+/* AND IT COMES BACK IN THE FULL VIEW, AS THE JOURNAL'S OWN. Ruled 2 November,
+   his words: "use a left menu and the right menu." Full only: Simple keeps
+   the ruling above word for word, because st-full is written only while
+   Dashboard is on (ui/storyui.js, the head of stRender).
+
+   The 28 October fault was never the column, it was whose column it was: the
+   Field's rail, under the Field's fold key. So on the Journal the column
+   carries #stleft and nothing else, by the child selector Flow already uses
+   rather than a list of names, so a section added to the left rail later
+   does not turn up here either; and it folds under its own key, 'lcols'
+   (ui/ui.js, colKey). flex and not block, because .col is a flex column and
+   #lpanel's scroll depends on it.
+
+   The right rail is not rebuilt. The bank still sets st-bank and the rail
+   still brings back Imprints and Selection, the rules above. Full adds only
+   the left track ahead of whatever the row already was. */
+body.tab-story.st-full #lcol{display:flex}
+body.tab-story #lpanel>*:not(.lfold):not(.st-lrail){display:none!important}
+body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:none}
+@media (min-width:1181px){
+ body.tab-story.st-full:not(.st-bank) .mid{grid-template-columns:302px 1fr}
+ body.tab-story.st-full.st-bank .mid{grid-template-columns:302px 1fr 336px}
+ body.tab-story.st-full.lshut:not(.st-bank) .mid{grid-template-columns:58px 1fr}
+ body.tab-story.st-full.lshut.st-bank .mid{grid-template-columns:58px 1fr 336px}}
+/* the rail itself. Its heading is the rail's block heading (.rblk), the one
+   the Field's left rail already sets Energy in, and it keeps its right end
+   clear of the column's fold control, which sits over the head of #lpanel
+   (.lfold, absolute, 52 pixels with its margin). Every value is an existing
+   token, so every lighting draws it with no rule of its own. */
+.st-lrail .rblk{padding-right:52px}
+.st-en-sub{margin:4px 2px 10px;font-size:13px;line-height:1.5;color:var(--mid)}
+.st-en-ls{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.st-en-r{display:flex;align-items:center;gap:10px;min-height:var(--tap);padding:0 6px;
+ border-bottom:1px solid var(--edge);font-size:14px;color:var(--ink)}
+.st-en-r:last-child{border-bottom:0}
+/* the ring's pill is as wide as its figure, a dash or 100%, so the ring takes
+   one width and the seven names start on one line, measured at 96 pixels for
+   100% at the sm size on both widths */
+.st-en-r .cr{flex:0 0 auto;min-width:96px}
+.st-en-r .st-en-n{flex:1 1 auto;min-width:0}
+.st-lrail .st-none{margin:6px 2px 0}
 /* ---------- the Summary's rail is today's summary, ui/daily.js ----------
    The same step aside as the Story's: on the Summary the rail carries Today
    and Selection, and Today is shown nowhere else. A silent day (nothing read
@@ -9295,6 +9347,19 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
         Drawn by ritRender in ui/ritual.js, shown on the Ritual tab only,
         head.html beside .fl-rail. -->
    <div class="fl-rail fl-new" id="flownew"><div class="fl-hd" id="flownewhd"></div><div class="rvr" id="flowleft"></div></div>
+   <!-- THE JOURNAL'S FULL VIEW, ITS LEFT RAIL. Ruled 2 November, his words:
+        "use a left menu and the right menu", for the Full view only; Simple
+        is unchanged and keeps no left column, the 28 October ruling.
+
+        Not a .lsec, for #flownew's reason above: it is tied to the Journal's
+        own Full or Simple state, which Dashboard sets, and a section that
+        could fold shut on its own would be a second switch for one view.
+        The column's fold still works, under the Journal's own key
+        (ui/ui.js, colKey). Drawn by stDashLeft in ui/stdash.js, shown on
+        the Journal in Full only, head.html beside the Story's rail rules.
+        Every id it draws carries the st- prefix, because the bare ids it
+        could have borrowed already mean other things in this shell. -->
+   <div class="st-lrail" id="stleft"></div>
    <!-- ENERGETIC SUMMARY, MOVED TO THIS RAIL AND KEPT AT ITS HEAD. 3 October,
         his own words: "For the core energetics that's on the right hand menu
         at the very top, move that to the left hand menu at the very top.
@@ -49086,6 +49151,12 @@ function stMark(k,word,term,cls,tail){
 /* ---- the journal ---- */
 function stRender(){
  var h=document.getElementById('story'); if(!h) return;
+ /* FULL OR SIMPLE, SAID ONCE, before anything is measured: the Full view's
+    left rail takes 302 pixels of the row (shell/head.html, st-full), so the
+    chart below must be sized on the row it will actually have. Only on the
+    Journal itself, because stCommit can redraw this page from another tab
+    and the class must not outlive stRailClear there. */
+ document.body.classList.toggle('st-full',!!STV.dash&&S.tab===TAB.STORY);
  stDraftBack();
  var p=ST_PARSED;
  /* A WORKED EXAMPLE IS SHOW ONLY, ruled 16 October (engine/showonly.js). Its
@@ -49174,7 +49245,8 @@ function stRender(){
       it no longer opens that tab: it toggles Imprints and Release open or
       shut beside the conversation, simple on landing, his words "when I
       land on this page it starts off in simple mode" and "if I press it
-      dashboard icon is lit up." stStoryDashToggle, bound below. */
+      dashboard icon is lit up." Bound below, as #stdash's onclick near the
+      foot of this function. */
    +(show?'':'<button class="st-dash'+(STV.dash?' on':'')+'" id="stdash" type="button" title="Show Imprints and Release beside the conversation">'
    +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">'
    +'<rect x="3.5" y="3.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.4"/>'
@@ -49450,7 +49522,16 @@ function stRender(){
     Avatar tab; it shows or hides the real Imprints and Release columns
     already built beside it, nothing invented. stRender() repaints the
     whole flow, so the hidden columns' own content stays current under
-    .st-flow.dash-simple's display:none the moment Dashboard opens them. */
+    .st-flow.st-simple's display:none the moment Dashboard opens them.
+
+    AND IT TOGGLES THE FULL VIEW'S TWO RAILS, ruled 2 November, his words:
+    "use a left menu and the right menu." The body's st-full class says the
+    Journal is in Full, and the shell reads it to give #lcol back to this tab
+    with #stleft in it (ui/stdash.js). The class is written at the head of
+    stRender from STV.dash and nowhere else, so this press, a return to the
+    tab and a profile change all leave it agreeing with the flow's own
+    st-simple: STV.dash outlives a tab change, and a class set only here
+    would have been gone from a person who left in Full and came back. */
  var dash=document.getElementById('stdash');
  if(dash)dash.onclick=function(){STV.dash=!STV.dash; stRender();};
  srcChatWire();}
@@ -49466,7 +49547,8 @@ function stRender(){
    again: the Talk button that used to toggle it is gone, see stWire. */
 /* DASHBOARD STARTS OFF, round of 29 October, his words: "when I land on this
    page, it starts off in simple mode." Imprints and Release are real panels,
-   not removed, only shut until Dashboard is pressed; see stStoryDashToggle. */
+   not removed, only shut until Dashboard is pressed; see #stdash's onclick
+   at the foot of stRender. */
 var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:true,law:false,
  unsaved:null,draftT:null,draftFail:false,crisis:false,dash:false};
 /* the one width the page changes shape at is the one the product stacks its
@@ -49854,7 +49936,11 @@ function stAsidePaint(){
 function stPaintAll(){
  STC.sync(); stRelayout();
  srcPaint(); stPendPaint(); stListPaint(); stVaultCount(); stRelPanel();
- impRender();}
+ impRender();
+ /* the Full view's left rail reads the same ST_PARSED as everything above,
+    here, so a key typed or a turn landed by voice moves it with the chart
+    (stRefresh reaches this too, not only stRender). ui/stdash.js. */
+ if(typeof stDashLeft==='function')stDashLeft();}
 /* THE FIELD MOVED UNDER THE PAGE. render() calls this on the Story, because
    a release that finishes, an undo, or a profile change all change what is
    held, what the release column offers and what the vault holds, and none of
@@ -50995,7 +51081,13 @@ function srcWire(h){
    with it, so the rail a person comes back to on another tab is that tab's. */
 function stRailClear(){
  var e=document.getElementById('imp'); if(e&&e.innerHTML)e.innerHTML='';
- STV.bank=false; document.body.classList.remove('st-bank');}
+ STV.bank=false; document.body.classList.remove('st-bank');
+ /* and the Full view's left rail goes with it, for the same reason: #stleft
+    is a static host in #lcol, and the class that shows it is this tab's.
+    STV.dash itself is kept, so a person who left in Full comes back in Full,
+    and stRender writes the class again on the way in. */
+ var l=document.getElementById('stleft'); if(l&&l.innerHTML)l.innerHTML='';
+ document.body.classList.remove('st-full');}
 
 /* ============================================================
    THE LANES. One model decides what a lane is and what order the lanes
@@ -52311,6 +52403,83 @@ function stHush(on){
   status('Recording stopped after Source AI spoke. Press Chat to start it again.','fail'); }}
 
 try{window.__at&&window.__at('ui/storyui.js');}catch(e){}
+/* ============================================================
+   THE JOURNAL'S FULL VIEW. Ruled 2 November, his words: "use a left menu
+   and the right menu." Recorded in DECISIONS.md under that date.
+
+   NOT A NEW SCREEN. The Journal already has a Full and a Simple view:
+   Dashboard (#stdash, ui/storyui.js) sets STV.dash, and Simple is what a
+   person lands on, his 29 October words "when I land on this page it starts
+   off in simple mode." This file fills the Full view's left rail and nothing
+   else. The right rail is the one the Journal already has: the bank sets
+   st-bank and the shell brings back Imprints (#imp) and Selection there.
+
+   WHAT IS IN IT, AND WHAT IS NOT YET. Energy, below, is the first section,
+   and it is built only from calls already on main: parseStory's bands, the
+   per-seat scale stSeatT already uses, pct and fmtPct, the cr() ring, and the
+   seat's own sentence in engine/data/gloss.js. Action, Compass, a laws grid,
+   Channels, Patterns, Boundary and Feelings each need new engine work or a
+   ruling first, so none of them is started here and no empty heading stands
+   in for one.
+
+   THE HOST IS STATIC, #stleft in shell/body.html, so it is emptied whenever
+   it is not shown: in Simple here, and on leaving the tab in stRailClear. A
+   hidden surface never sits in the document asserting a stale reading, the
+   rule Summary keeps.
+   ============================================================ */
+
+/* ENERGY, READ OFF THIS STORY. The decision recorded with the ruling: the
+   Journal's Energy reads the story being written, never the whole record.
+   The record's Energy is the Field's, on the Field's own left rail, and one
+   word naming two readings in one place would be two truths on one screen;
+   the line under the heading is what keeps them apart.
+
+   THE SCALE IS THE ONE THE PAGE ALREADY DRAWS. stSeatT in ui/storyui.js
+   lifts each seat to min(10, bands/3), which is also the line in
+   engine/sniff.js that the 'atom' kind in engine/pct.js cites. So the ring
+   here and the seat's spring in the Journal's own chart read one number,
+   and the percent printed is the ring's fill.
+
+   ALL SEVEN, ALWAYS, ROOT TO CROWN, once there is a story. A seat this story
+   has not reached stays in its place with the dash cr() prints for nought,
+   because a list that drops the quiet seats reads as a body with fewer seats
+   in it.
+
+   SILENT WITH NO STORY. Nothing typed and nothing spoken is not seven zeros:
+   a row of dashes on a story that does not exist yet is a reading the
+   instrument did not take. So the section says what is absent, once, in the
+   wording the house keeps for this state, and draws no ring.
+
+   AND r.unread IS NOT WHAT SILENCES IT, which is the rule this page already
+   keeps. r.unread is a claim about the record (engine/compute.js: nothing
+   entered anywhere). This section reads uncommitted words, so on a stranger's
+   first story the record is still unread while the chart beside this rail
+   already lights the seats the words reached. Gated on r.unread, this would
+   go quiet on exactly the story the chart is drawing, which is the
+   disagreement stRead exists to prevent ("the sentence, the chart and the
+   list cannot disagree"). The Journal's own record reader, stAnaPaint's
+   Running hot list, is the part that is gated on r.unread, and it still is. */
+function stDashLeft(){
+ var h=document.getElementById('stleft'); if(!h)return;
+ if(!STV.dash){ if(h.innerHTML)h.innerHTML=''; return; }
+ var p=(typeof ST_TEXT==='string'&&ST_TEXT.trim())?ST_PARSED:null;
+ var o='<section class="st-en" id="st-energy" aria-labelledby="st-energy-h">'
+  +'<h2 class="rblk" id="st-energy-h">Energy</h2>'
+  +'<p class="st-en-sub">What this story puts at each of the seven '+unp('seat','seats')+'.</p>';
+ if(!p){
+  o+='<p class="st-none" id="st-energy-none">Nothing read yet, so no seat holds anything from this story.</p>';}
+ else{
+  o+='<ul class="st-en-ls" id="st-energy-ls">'+BANDS.map(function(b){
+   var raw=p.bands[B2K[b]]||0, v=Math.min(10,raw/3), f=fmtPct('atom',v);
+   return '<li class="st-en-r" data-seat="'+esc(b)+'">'
+    +cr(b,pct('atom',v)||0,{size:'sm',raw:f,hot:false,
+      title:b+(f!==PCT_DASH?', '+f+' from this story':', nothing from this story')})
+    +'<span class="st-en-n">'+unp('seat:'+b.toLowerCase(),b)+'</span></li>';}).join('')
+   +'</ul>';}
+ o+='</section>';
+ h.innerHTML=o;}
+
+try{window.__at&&window.__at('ui/stdash.js');}catch(e){}
 /* ============================================================
    SUMMARY. Five lenses. None of them store anything; each is a pure
    function of soul, axes and laws, so they cannot drift from what the
@@ -80518,6 +80687,16 @@ function rmCascade(items,stagger,base,cap){
 function rmVisible(sel,scope){
  var pr=document.getElementById('lpanel').getBoundingClientRect(), out=[];
  scope.querySelectorAll(sel).forEach(function(el){
+  /* NOT THE JOURNAL'S FULL VIEW RAIL, 2 November (#stleft, ui/stdash.js).
+     It is repainted on every key and every turn by stPaintAll, so an
+     entrance aimed at it lands on an element about to be replaced, and its
+     stagger is timed against the Field's readings bars, which are not on
+     the Journal: measured at 1600, the Energy heading was drawn, went to
+     nothing about 900 ms after Dashboard was pressed, and came back by 1400.
+     A heading that blinks out after it was read is motion saying something
+     changed when nothing did, which the Journal's own chart already refuses
+     (the head of stRender in ui/storyui.js). */
+  if(el.closest&&el.closest('.st-lrail'))return;
   var r=el.getBoundingClientRect(); if(!r.width||r.bottom<=pr.top||r.top>=pr.bottom)return;
   out.push({el:el,r:r,tile:el.classList.contains('ib')||el.classList.contains('rootb')||el.classList.contains('aw-c')});});
  return out;}
@@ -83829,11 +84008,22 @@ var LCOL_BESIDE='(min-width:1181px)';
    read should not end in two open rails of readings. Its own key, the
    Compass's pattern, so a choice made on the Field does not open it here and
    a person who opens it here keeps it open here. */
+/* AND THE JOURNAL HAS ITS OWN, 2 November. It fell through to the Field's
+   'lcol', so the Journal and the Field fought over one fold: recorded 28
+   October at head.html's "THE LEFT COLUMN IS GONE FROM THE STORY TOO", where
+   the Field's open rail turned up over the Journal. The column comes back on
+   the Journal in the Full view only, his words "use a left menu and the right
+   menu", and there it is the Full view's own left rail (ui/stdash.js), the
+   thing a person pressed Dashboard to see. So it defaults open at every
+   width, Flow's reason: a rail that arrives shut on the view that exists to
+   show it is a control hidden with no affordance. Its own key, so a fold made
+   here never moves the Field's and the Field's never moves this one. */
 function colKey(){
  if(typeof TAB==='undefined'||!S)return 'lcol';
  if(S.tab===TAB.COMPASS)return 'lcolc';
  if(S.tab===TAB.RITUAL)return 'lcolf';
  if(S.tab===TAB.KNOW)return 'lcolk';
+ if(S.tab===TAB.STORY)return 'lcols';
  return 'lcol'; }
 function colShut(){
  var beside=true; try{beside=matchMedia(LCOL_BESIDE).matches;}catch(e){}
@@ -83841,7 +84031,7 @@ function colShut(){
  /* only a store with nothing in it defaults, and what it defaults to is the
     surface's own answer: shut where the column is a rail, open where it is
     the menu the surface is for, and shut at every width on Knowledge */
- var dflt=(k==='lcolf')?false:(k==='lcolk')?true:beside;
+ var dflt=(k==='lcolf'||k==='lcols')?false:(k==='lcolk')?true:beside;
  var shut=dflt;
  try{var got=STORE.get(k); shut=got?(got==='shut'):dflt;}catch(e){shut=false;}
  return shut;}
@@ -85119,5 +85309,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005609470"></div>
+<div id="eof" hidden data-len="005621521"></div>
 </body></html>

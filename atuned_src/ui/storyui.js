@@ -65,6 +65,12 @@ function stMark(k,word,term,cls,tail){
 /* ---- the journal ---- */
 function stRender(){
  var h=document.getElementById('story'); if(!h) return;
+ /* FULL OR SIMPLE, SAID ONCE, before anything is measured: the Full view's
+    left rail takes 302 pixels of the row (shell/head.html, st-full), so the
+    chart below must be sized on the row it will actually have. Only on the
+    Journal itself, because stCommit can redraw this page from another tab
+    and the class must not outlive stRailClear there. */
+ document.body.classList.toggle('st-full',!!STV.dash&&S.tab===TAB.STORY);
  stDraftBack();
  var p=ST_PARSED;
  /* A WORKED EXAMPLE IS SHOW ONLY, ruled 16 October (engine/showonly.js). Its
@@ -153,7 +159,8 @@ function stRender(){
       it no longer opens that tab: it toggles Imprints and Release open or
       shut beside the conversation, simple on landing, his words "when I
       land on this page it starts off in simple mode" and "if I press it
-      dashboard icon is lit up." stStoryDashToggle, bound below. */
+      dashboard icon is lit up." Bound below, as #stdash's onclick near the
+      foot of this function. */
    +(show?'':'<button class="st-dash'+(STV.dash?' on':'')+'" id="stdash" type="button" title="Show Imprints and Release beside the conversation">'
    +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">'
    +'<rect x="3.5" y="3.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.4"/>'
@@ -429,7 +436,16 @@ function stRender(){
     Avatar tab; it shows or hides the real Imprints and Release columns
     already built beside it, nothing invented. stRender() repaints the
     whole flow, so the hidden columns' own content stays current under
-    .st-flow.dash-simple's display:none the moment Dashboard opens them. */
+    .st-flow.st-simple's display:none the moment Dashboard opens them.
+
+    AND IT TOGGLES THE FULL VIEW'S TWO RAILS, ruled 2 November, his words:
+    "use a left menu and the right menu." The body's st-full class says the
+    Journal is in Full, and the shell reads it to give #lcol back to this tab
+    with #stleft in it (ui/stdash.js). The class is written at the head of
+    stRender from STV.dash and nowhere else, so this press, a return to the
+    tab and a profile change all leave it agreeing with the flow's own
+    st-simple: STV.dash outlives a tab change, and a class set only here
+    would have been gone from a person who left in Full and came back. */
  var dash=document.getElementById('stdash');
  if(dash)dash.onclick=function(){STV.dash=!STV.dash; stRender();};
  srcChatWire();}
@@ -445,7 +461,8 @@ function stRender(){
    again: the Talk button that used to toggle it is gone, see stWire. */
 /* DASHBOARD STARTS OFF, round of 29 October, his words: "when I land on this
    page, it starts off in simple mode." Imprints and Release are real panels,
-   not removed, only shut until Dashboard is pressed; see stStoryDashToggle. */
+   not removed, only shut until Dashboard is pressed; see #stdash's onclick
+   at the foot of stRender. */
 var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:true,law:false,
  unsaved:null,draftT:null,draftFail:false,crisis:false,dash:false};
 /* the one width the page changes shape at is the one the product stacks its
@@ -833,7 +850,11 @@ function stAsidePaint(){
 function stPaintAll(){
  STC.sync(); stRelayout();
  srcPaint(); stPendPaint(); stListPaint(); stVaultCount(); stRelPanel();
- impRender();}
+ impRender();
+ /* the Full view's left rail reads the same ST_PARSED as everything above,
+    here, so a key typed or a turn landed by voice moves it with the chart
+    (stRefresh reaches this too, not only stRender). ui/stdash.js. */
+ if(typeof stDashLeft==='function')stDashLeft();}
 /* THE FIELD MOVED UNDER THE PAGE. render() calls this on the Story, because
    a release that finishes, an undo, or a profile change all change what is
    held, what the release column offers and what the vault holds, and none of
@@ -1974,7 +1995,13 @@ function srcWire(h){
    with it, so the rail a person comes back to on another tab is that tab's. */
 function stRailClear(){
  var e=document.getElementById('imp'); if(e&&e.innerHTML)e.innerHTML='';
- STV.bank=false; document.body.classList.remove('st-bank');}
+ STV.bank=false; document.body.classList.remove('st-bank');
+ /* and the Full view's left rail goes with it, for the same reason: #stleft
+    is a static host in #lcol, and the class that shows it is this tab's.
+    STV.dash itself is kept, so a person who left in Full comes back in Full,
+    and stRender writes the class again on the way in. */
+ var l=document.getElementById('stleft'); if(l&&l.innerHTML)l.innerHTML='';
+ document.body.classList.remove('st-full');}
 
 /* ============================================================
    THE LANES. One model decides what a lane is and what order the lanes
