@@ -844,6 +844,19 @@
         Drawn by ritRender in ui/ritual.js, shown on the Ritual tab only,
         head.html beside .fl-rail. -->
    <div class="fl-rail fl-new" id="flownew"><div class="fl-hd" id="flownewhd"></div><div class="rvr" id="flowleft"></div></div>
+   <!-- THE JOURNAL'S FULL VIEW, ITS LEFT RAIL. Ruled 2 November, his words:
+        "use a left menu and the right menu", for the Full view only; Simple
+        is unchanged and keeps no left column, the 28 October ruling.
+
+        Not a .lsec, for #flownew's reason above: it is tied to the Journal's
+        own Full or Simple state, which Dashboard sets, and a section that
+        could fold shut on its own would be a second switch for one view.
+        The column's fold still works, under the Journal's own key
+        (ui/ui.js, colKey). Drawn by stDashLeft in ui/stdash.js, shown on
+        the Journal in Full only, head.html beside the Story's rail rules.
+        Every id it draws carries the st- prefix, because the bare ids it
+        could have borrowed already mean other things in this shell. -->
+   <div class="st-lrail" id="stleft"></div>
    <!-- ENERGETIC SUMMARY, MOVED TO THIS RAIL AND KEPT AT ITS HEAD. 3 October,
         his own words: "For the core energetics that's on the right hand menu
         at the very top, move that to the left hand menu at the very top.
