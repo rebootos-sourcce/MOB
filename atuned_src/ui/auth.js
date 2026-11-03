@@ -49,6 +49,22 @@ var VOICE_DEV_KEY='source.voicedev';
    long as a dead connection takes to give up, which in a browser can be
    minutes. */
 var AUTH_WAIT_MS=15000;
+// Read-only Graph Draft inspector, off in all normal builds. D1 Worker
+// authorizes the bearer token; no client Supabase credential or profile write.
+var GRAPH_DRAFT_INSPECTOR_ENABLED=false;
+function authGraphDraftRead(graphId){
+ if(!GRAPH_DRAFT_INSPECTOR_ENABLED)
+  return Promise.resolve({ok:false,status:503,body:{error:'Graph draft inspector is not enabled.'}});
+ var ses=authSession();
+ // Only the signed-in account's primary local profile is eligible. A local
+ // alternate profile is not implicitly the account's graph owner.
+ if(!ses||!ses.token||typeof S==='undefined'||S.who!==0)
+  return Promise.resolve({ok:false,status:401,body:{error:'Signed-in primary profile required.'}});
+ if(typeof graphId!=='string'||!/^[A-Za-z0-9._:-]{1,120}$/.test(graphId))
+  return Promise.resolve({ok:false,status:400,body:{error:'Invalid graph draft ID.'}});
+ return authCall('GET','/v1/graph-drafts/'+encodeURIComponent(graphId),null,ses.token,false);
+}
+
 /* THE SERVER'S OWN BOUNDS, mirrored so a password it will refuse is refused
    here before anything is sent. Read off atuned/server/src/index.js on main,
    30 September: signup requires 8 to MAX_PASSWORD, which is 200, and signin

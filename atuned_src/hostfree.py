@@ -17,6 +17,18 @@ BAD=(r'\b(document|window|navigator|localStorage|sessionStorage'
      r'|requestAnimationFrame|alert|fetch|XMLHttpRequest'
      r'|AudioContext|webkitAudioContext|speechSynthesis'
      r'|SpeechRecognition|webkitSpeechRecognition)\b|new\s+Image\b')
+# Host globals are not the only way in. A function that takes a node as an
+# argument reaches the document without naming it: the Celestial mount sat in
+# engine/ calling container.innerHTML and addEventListener and passed the list
+# above clean, because the page came in through a parameter called container.
+# So the DOM's own members are named too. Checked 3 November against the
+# engine.js built from bf9e53bd: these hit nine times, all in that mount, and
+# nowhere else in engine/.
+DOM=(r'\b(innerHTML|outerHTML|insertAdjacentHTML|querySelector|querySelectorAll'
+     r'|getElementById|getElementsByClassName|getElementsByTagName'
+     r'|addEventListener|removeEventListener|appendChild|removeChild'
+     r'|createElement|textContent|classList|setAttribute)\b')
+BAD=BAD+'|'+DOM
 hits=[(s[:m.start()].count('\n')+1,m.group(0)) for m in re.finditer(BAD,s)]
 if hits:
     for ln,tok in hits[:20]: print('  line %d  %s'%(ln,tok))
