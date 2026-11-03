@@ -1,0 +1,35 @@
+{
+  "schema": "ATUNED_COMPASS_V17_STANDALONE_STATIC_VERIFICATION",
+  "date": "2026-11-03",
+  "sourceBranch": "atuned/compass-realm-law-crosswalk-20261103",
+  "authority": "STATIC_REFERENCE_INTEGRITY_ONLY_NOT_SEMANTIC_CERTIFICATION",
+  "crosswalkBlobSha": "94fe41e42dda0f17d8352f16ec941a3883af9ba3",
+  "sourceGraphBlobSha": "320142d70ccb63e4f22d681a26bc6d25ae03cf18",
+  "checks": {
+    "scenes": 26,
+    "sourceEdges": 26,
+    "laws": 21,
+    "coreArchetypes": 12,
+    "realms": {
+      "INFERNO": 9,
+      "PURGATORIO": 7,
+      "PARADISO": 10
+    },
+    "candidateLawRoutes": 168,
+    "traversedTypedEdgeSteps": 474,
+    "quarantinedFalsePositivePaths": 6,
+    "behaviorBridgePathsAdded": 10,
+    "danglingCandidatePathSteps": 0,
+    "disconnectedCandidatePathSteps": 0,
+    "unknownLaws": 0,
+    "sourceGraphBlobMatches": true
+  },
+  "pendingGaps": [
+    "game:inferno:L06",
+    "game:purgatorio:P06"
+  ],
+  "verdict": "PASS",
+  "ci": "QUEUED_NOT_YET_PASS",
+  "production": "NOT_WIRED",
+  "note": "Generated audit confirmed by a separate fresh read-back of the committed GitHub JSON and source graph. All candidate routes remain research-only."
+}
