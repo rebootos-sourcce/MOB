@@ -20,3 +20,6 @@ Document a source-traced, read-only crosswalk from **26 scene IDs (9 Inferno, 7 
 5. This V17 audit, validator, and development log.
 
 **Do not confuse the master Source index, the graph editor's proposed links, and approved runtime intelligence edges.**
+
+## V19.2 candidate 26-scene Law lens audit (2026-11-03)
+Read [`COMPASS_FOUR_V19_2_LAW_LENS_INDEX.json`](COMPASS_FOUR_V19_2_LAW_LENS_INDEX.json) and the V17 [development log](DEV_LOG_V17.md) for the 26 candidate primary/secondary behavioral Law pairs. L06 and P06 display corrections are separate from their quarantined historical edges. An additional semantic gap is L08 Fraud: V17 graph routes reach no Truth or Transparency link. None of these candidate lenses are Canon, measurement evidence, or application scoring authority. The complete offline creative/audit/test handoff resides in the V19.2 executive ZIP and is not merged into the product mainline.
