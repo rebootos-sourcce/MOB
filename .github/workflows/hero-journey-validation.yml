@@ -39,6 +39,11 @@ jobs:
         run: |
           npm install --prefix atuned_funnel_system --no-save playwright
           ./atuned_funnel_system/node_modules/.bin/playwright install chromium
+      - name: Resolve installed Chromium executable for browser gates
+        run: |
+          CHROME_PATH=$(NODE_PATH="$GITHUB_WORKSPACE/atuned_funnel_system/node_modules" node -e "process.stdout.write(require('playwright').chromium.executablePath())")
+          test -x "$CHROME_PATH"
+          echo "CHROME=$CHROME_PATH" >> "$GITHUB_ENV"
       - name: Exercise actual avatar in Chromium
         run: NODE_PATH="$GITHUB_WORKSPACE/atuned_funnel_system/node_modules" node tests/herojourney-ui.js
       - name: Confirm avatar modules exist in built product
