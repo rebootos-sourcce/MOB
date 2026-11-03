@@ -22,6 +22,14 @@ cut of this lint could not see:
       gates-report-summary, which shows each report only leg's result and
       warns on every one that is not green. deploy, which needs gates-pass and
       never waits for gates-report.
+      tools/gates.js, the one local command that runs what this file runs,
+      can run every step of gates-fast, gates-browser and gates-report, asked
+      with this file's own parsed contents, so a step it cannot run is red
+      here and the two cannot drift apart (3 November).
+      Each gate job, and each matrix leg, has a concurrency group of its
+      own under ${{ github.ref }} that cancels in progress, so a newer push
+      cancels the older run's gates and no two legs of one run cancel each
+      other (3 November).
   R3  The FAQ page is staged for the live site (M48), and so are the three
       legal pages, privacy, terms and consumer-health-data (16 October), which
       were rendered and never staged, so atuned.world served no policy.
@@ -1847,6 +1855,77 @@ class Lint:
                     self.ok(e.get('GH_TOKEN') == '${{ github.token }}',
                             'R2 %s step %r calls gh with no GH_TOKEN: ${{ github.token }}, and gh on a runner refuses to run without it.' % (jid, s.get('name', '')))
 
+    def r2_gates_js(self):
+        """tools/gates.js runs locally what this file runs in CI. Asked with this
+        document, the parsed one in memory and not the file on disk, so a self
+        test break reaches it too, it must name no step it cannot run and must
+        read every step of gates-fast. A step it cannot run is a step CLAUDE.md's
+        one command would skip, which is how the column of ten commands in
+        CLAUDE.md fell behind this file before (3 November)."""
+        p = os.path.join(self.root, 'tools', 'gates.js')
+        if not self.ok(os.path.isfile(p), 'R2 tools/gates.js does not exist, so nothing runs locally what gates-fast runs.'):
+            return
+        node = shutil.which('node')
+        if not self.ok(node is not None, 'R2 node is not on PATH, so tools/gates.js cannot be asked what it would run; every R2 gates.js line is unproven until it is.'):
+            return
+        try:
+            r = subprocess.run([node, p, '--plan', '--json', '--workflow-json', '-'], input=json.dumps(self.doc, default=str),
+                               capture_output=True, text=True, timeout=120, cwd=self.root)
+            plan = json.loads(r.stdout)
+        except (OSError, ValueError, subprocess.SubprocessError) as e:
+            self.ok(False, 'R2 tools/gates.js --plan did not answer with a plan (%s), so whether it can run this file is unknown.' % e.__class__.__name__)
+            return
+        for prob in plan.get('problems') or []:
+            self.ok(False, 'R2 tools/gates.js cannot run what CI runs: %s. Teach tools/gates.js the step (PROVIDED or ENV_ACTIONS) or change the step, so the local run stays the run CI makes.' % prob)
+        self.ok(r.returncode == (1 if plan.get('problems') else 0),
+                'R2 tools/gates.js --plan exited %d with %d unrunnable steps; it must exit non zero exactly when one is unrunnable.' % (r.returncode, len(plan.get('problems') or [])))
+        jobs = {j.get('id'): j for j in plan.get('jobs') or []}
+        for jid in ('gates-fast', 'gates-browser', 'gates-report'):
+            job = self.job(jid)
+            if not job:
+                continue
+            got = jobs.get(jid)
+            self.ok(got is not None and got.get('steps') == len(steps_of(job)),
+                    'R2 tools/gates.js reads %s step%s in %s, and this file has %d, so a step would go unrun locally.'
+                    % (got.get('steps') if got else 'no', '' if got and got.get('steps') == 1 else 's', jid, len(steps_of(job))))
+            if jid != 'gates-fast' and got is not None:
+                want = [str(l.get('gate')) for l in (legs(job) or [])]
+                self.ok(got.get('legs') == want, 'R2 tools/gates.js reads the %s legs as %s and this file has %s.' % (jid, got.get('legs'), want))
+
+    def r2_gate_concurrency(self):
+        """a newer push to the same ref cancels the older run's gates, and every
+        gate job, and every matrix leg, sits in a group of its own. A group is
+        shared by every job of every run, so one group for all of them has the
+        legs of a single run cancel each other, and gates-pass reads cancelled
+        as failed: the form the request for this was first written in
+        (3 November). The deploy job's pages-prod is held apart by R2 above."""
+        seen = {}
+        for jid in ('gates-fast', 'gates-browser', 'gates-report'):
+            job = self.job(jid)
+            if not job:
+                continue
+            conc = job.get('concurrency')
+            if not self.ok(isinstance(conc, dict) and 'group' in conc,
+                           'R2 %s has no concurrency group, so a newer push to the same ref leaves the older run\'s gates running.' % jid):
+                continue
+            self.ok(conc.get('cancel-in-progress') is True,
+                    'R2 %s concurrency has cancel-in-progress %r; it must be true, so a newer push cancels the older run\'s gates.' % (jid, conc.get('cancel-in-progress')))
+            self.ok('${{ github.ref }}' in str(conc.get('group')),
+                    'R2 %s concurrency group %r does not name ${{ github.ref }}, so one branch\'s push cancels another branch\'s gates.' % (jid, conc.get('group')))
+            for leg in (legs(job) or [None]):
+                for ref in (PR_REF, MAIN):
+                    try:
+                        g = tostr(render(conc.get('group'), static_env(leg, ref)))
+                    except ExprError as e:
+                        self.ok(False, 'R2 %s concurrency group does not render: %s.' % (jid, e))
+                        continue
+                    where = jid + (' (%s)' % leg.get('gate') if leg else '')
+                    self.ok(g != 'pages-prod', 'R2 %s shares the deploy job\'s pages-prod group.' % where)
+                    other = seen.get((ref, g))
+                    self.ok(other is None,
+                            'R2 %s and %s share the concurrency group %r, so in one run each cancels the other and gates-pass reads it as failed. Put the job and ${{ matrix.gate }} in the group.' % (other, where, g))
+                    seen.setdefault((ref, g), where)
+
     def r2_paths_exist(self):
         for jid in ('gates-fast', 'gates-browser', 'gates-report', 'deploy'):
             job = self.job(jid)
@@ -2009,6 +2088,8 @@ class Lint:
         self.r4_deploy()
         self.r2_hygiene()
         self.r2_paths_exist()
+        self.r2_gates_js()
+        self.r2_gate_concurrency()
         self.r6_expressions()
         self.r7_hardening()
         return self
@@ -2220,6 +2301,17 @@ BREAKS = [
     ('a pull request title interpolated into a run', lambda d: _job(d, 'gates-fast')['steps'].append({'name': 'x', 'run': 'echo ${{ github.event.pull_request.title }}'})),
     ('an action from outside actions/ and github/', lambda d: _job(d, 'gates-fast')['steps'].append({'uses': 'someone/random-action@main'})),
     ('gh with no token', lambda d: _step(d, 'deploy', ORDER).pop('env')),
+    # every gate job and every leg in a concurrency group of its own (3 November)
+    ('one concurrency group for every gate job', lambda d: [_job(d, j).__setitem__('concurrency', {'group': 'gates-${{ github.ref }}', 'cancel-in-progress': True}) for j in ('gates-fast', 'gates-browser', 'gates-report')]),
+    ('a matrix group without the gate in it', lambda d: _job(d, 'gates-browser')['concurrency'].__setitem__('group', 'gates-${{ github.ref }}-browser')),
+    ('gates-browser without concurrency', lambda d: _job(d, 'gates-browser').pop('concurrency')),
+    ('a gate group that does not cancel', lambda d: _job(d, 'gates-fast')['concurrency'].__setitem__('cancel-in-progress', False)),
+    ('a gate group that ignores the ref', lambda d: _job(d, 'gates-fast')['concurrency'].__setitem__('group', 'gates-fast')),
+    # tools/gates.js must be able to run every step CI's gate jobs run (3 November)
+    ('a gates-fast step tools/gates.js cannot stand in for', lambda d: _job(d, 'gates-fast')['steps'].insert(3, {'uses': 'actions/cache@v4', 'with': {'path': 'node_modules', 'key': 'k'}})),
+    ('a gates-fast step behind an if tools/gates.js does not evaluate', lambda d: _step(d, 'gates-fast', r'tests/evidence\.js').__setitem__('if', "github.event_name == 'pull_request'")),
+    ('the PyYAML install changed under tools/gates.js', lambda d: _sub(d, 'gates-fast', r'pip install', 'pyyaml==6.0.2', 'pyyaml==6.0.2 requests')),
+    ('a browser leg step tools/gates.js cannot fill', lambda d: _step(d, 'gates-browser', r'matrix\.command').__setitem__('env', {'SHA': '${{ github.sha }}'})),
 ]
 
 
