@@ -82,3 +82,12 @@ When a source or audit file is discovered, add its repository-relative path, rol
 - [12 core behavioral archetype records in the engine-compatible 21-field shape](data/compass/archetypes/v1/CORE_12_BEHAVIORAL_ARCHETYPES_REGISTRY_V1.json)
 - Individual dossiers: `data/compass/archetypes/v1/records/Warrior.md`, `Sage.md`, `Rebel.md`, `Caregiver.md`, `Creator.md`, `Magician.md`, `Ruler.md`, `Explorer.md`, `Lover.md`, `Jester.md`, `Everyman.md`, `Innocent.md`
 - Four analytical lenses per archetype; original `canon.js#ARCH` definitions preserved. These are **12 core archetypes**, not the **11 masters** or **10 Paradiso spheres**.
+
+## Compass Hero's Journey Board — 2026-11-03 stacked integration
+- [Compass first-read source index](data/compass/integration/v2/SOURCE_INDEX_2026-11-03.md) — authoritative entry for 26-scene app modules, CQ projections, 12 archetypes, seven Purgatorio terraces, and exact branch/PR context.
+- [Compass three-review integration TDD](data/compass/integration/v2/COMPASS_HERO_JOURNEY_INTEGRATION_TDD_V2.md) — integration boundaries, existing writers, explicit acceptance gates, and unresolved rules.
+- [Compass two-way execution log](data/compass/integration/v2/COMPASS_BUILD_EXECUTION_LOG_2026-11-03.md) — commits, test outcomes, build limitations, next AI continuation.
+- [Compass executive handshake](data/compass/integration/v2/EXECUTIVE_HANDSHAKE_2026-11-03.md) — concise operational handoff; **read index first**.
+- [Seven-terrace narcissism relationship crosswalk](data/compass/integration/v2/PURGATORIO_NARCISSISM_CROSSWALK_PROVISIONAL_V1.json) — actual sourced oscillation mechanics with owner hypothesis and unverified diagnostic joins kept separate.
+- [Compass Board acceptance contract gate](../tests/compass-board-contract.js) — executable structural, semantic-status and CQ coordinate checks.
+- These are **PR #171 candidate files stacked on unmerged PR #156**, not independently certified mainline features. Do not copy into main without source/build/voice/browser CI readback.

@@ -1,0 +1,220 @@
+{
+  "schemaVersion": "1.0.0",
+  "created": "2026-11-03",
+  "title": "Purgatorio Seven-Terrace / Narcissism Relationship Reconciliation",
+  "status": "OWNER_DIRECTION_RECORDED_CROSSWALK_NOT_APPROVED",
+  "ownerDirection": "Narcissism has seven layers in the 40–60 middle band, where the person oscillates.",
+  "documentedCanonicalDistinction": "The seven current Purgatorio records are vice-to-capacity oscillation terraces; narcissism exists separately in the deeper psychological complex research. No verified one-to-one mapping is yet established.",
+  "boundaries": {
+    "minInclusive": 40,
+    "maxExclusive": 60,
+    "positionDriver": "EXISTING_CANONICAL_CQ_ONLY",
+    "terracePositionsAreNotDiagnoses": true
+  },
+  "sourcePaths": [
+    "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+    "docs/data/compass/avatar/v2/CQ_POSITION_26_SCENE_MAP_V1.json",
+    "docs/data/compass/gameboard/v1/GAMEBOARD_MAP_V1.json"
+  ],
+  "mappingPolicy": {
+    "preserveUserConcept": true,
+    "doNotOverwriteSevenTerraceViceCapacityRecords": true,
+    "noAutoInferenceFromCq": true,
+    "noClinicalClassification": true,
+    "approvalRequiredBeforeSemanticJoin": true,
+    "futureJoinRequirements": [
+      "specific behavioral mechanism",
+      "observable behavior and disconfirming counterexample",
+      "source citation",
+      "review status",
+      "user confirmation boundary",
+      "versioned conflict resolution"
+    ],
+    "observeBehaviorNotPersonalityLabel": true,
+    "behavioralEvidenceCannotByItselfEstablishNarcissism": true
+  },
+  "terraces": [
+    {
+      "terraceId": "purgatorio:P01",
+      "boardSceneId": "game:purgatorio:P01",
+      "viceId": "purgatorio:P01-V",
+      "viceName": "Pride",
+      "capacityId": "purgatorio:P01-C",
+      "capacityName": "Humility",
+      "narcissismLayer": {
+        "relationship": "OWNER_HYPOTHESIS_UNRESOLVED",
+        "namedMechanism": null,
+        "evidentialSourceIds": [],
+        "isClinicalClassification": false
+      },
+      "behavioralOscillation": {
+        "sourceStatus": "PERSISTED_PURGATORIO_RECORD_NOT_NARCISSISM_DIAGNOSIS",
+        "trigger": "Correction, another person receiving credit, losing face, public uncertainty, or comparison to an expert.",
+        "defensiveMotion": "EXPAND self-image → CONCEAL fallibility → REPEL correction → HOLD position.",
+        "constructiveMotion": "RECEIVE correction → RELEASE status defense → CONNECT as equals → EXPRESS responsibility.",
+        "cycle": "Status threat → defensive self-elevation → short relief → damaged mutual trust → more vigilance about rank.",
+        "observableEvidence": [
+          "Claims special standing, redirects credit, dismisses criticism, hides mistakes, or insists on being right to preserve rank.",
+          "Acknowledges what is true, credits others, asks for correction, admits limits, and holds equal regard without shrinking."
+        ],
+        "behavioralCompletion": "In an actual status threat, receives feedback, credits another, corrects course, and can repeat this without rank restoration."
+      }
+    },
+    {
+      "terraceId": "purgatorio:P02",
+      "boardSceneId": "game:purgatorio:P02",
+      "viceId": "purgatorio:P02-V",
+      "viceName": "Envy",
+      "capacityId": "purgatorio:P02-C",
+      "capacityName": "Charity / Kindness",
+      "narcissismLayer": {
+        "relationship": "OWNER_HYPOTHESIS_UNRESOLVED",
+        "namedMechanism": null,
+        "evidentialSourceIds": [],
+        "isClinicalClassification": false
+      },
+      "behavioralOscillation": {
+        "sourceStatus": "PERSISTED_PURGATORIO_RECORD_NOT_NARCISSISM_DIAGNOSIS",
+        "trigger": "A peer succeeds, receives attention, is loved, or gains a resource I wanted.",
+        "defensiveMotion": "SEEK comparison → CONTRACT possibility → REPEL another’s good → WITHDRAW warmth.",
+        "constructiveMotion": "RECEIVE another’s good → EXPAND possibility → CONNECT → EXPRESS kindness.",
+        "cycle": "Comparison cue → scarcity belief → devaluation or withdrawal → temporary control → increased comparison.",
+        "observableEvidence": [
+          "Keeps score, discounts achievements, gossips, withdraws goodwill, or gains relief when a rival fails.",
+          "Recognizes another person’s good, offers genuine goodwill or help, and acts toward one’s own values without rivalry."
+        ],
+        "behavioralCompletion": "Can witness a peer’s success without punishment, support their success where appropriate, and keep a clear personal path."
+      }
+    },
+    {
+      "terraceId": "purgatorio:P03",
+      "boardSceneId": "game:purgatorio:P03",
+      "viceId": "purgatorio:P03-V",
+      "viceName": "Wrath",
+      "capacityId": "purgatorio:P03-C",
+      "capacityName": "Meekness / Forbearance",
+      "narcissismLayer": {
+        "relationship": "OWNER_HYPOTHESIS_UNRESOLVED",
+        "namedMechanism": null,
+        "evidentialSourceIds": [],
+        "isClinicalClassification": false
+      },
+      "behavioralOscillation": {
+        "sourceStatus": "PERSISTED_PURGATORIO_RECORD_NOT_NARCISSISM_DIAGNOSIS",
+        "trigger": "Perceived disrespect, threat, betrayal, obstruction, unfair treatment, or loss of control.",
+        "defensiveMotion": "CONTRACT threat focus → INITIATE attack → PENETRATE boundary → HOLD grievance.",
+        "constructiveMotion": "HOLD a pause → RECEIVE facts → EXPRESS firm boundary → RELEASE retaliation.",
+        "cycle": "Threat interpretation → surge or freeze → retaliatory move → short sense of control → worsened threat field.",
+        "observableEvidence": [
+          "Escalates voice or force, assigns hostile intent before checking, attacks character, seeks revenge, or goes into resentful silence.",
+          "Names the harm and boundary directly, maintains restraint, listens for reality, and chooses proportionate action."
+        ],
+        "behavioralCompletion": "During real provocation, sets limits without humiliation, violence, or prolonged retaliation and repairs harm when needed."
+      }
+    },
+    {
+      "terraceId": "purgatorio:P04",
+      "boardSceneId": "game:purgatorio:P04",
+      "viceId": "purgatorio:P04-V",
+      "viceName": "Sloth / Acedia",
+      "capacityId": "purgatorio:P04-C",
+      "capacityName": "Zeal / Diligence",
+      "narcissismLayer": {
+        "relationship": "OWNER_HYPOTHESIS_UNRESOLVED",
+        "namedMechanism": null,
+        "evidentialSourceIds": [],
+        "isClinicalClassification": false
+      },
+      "behavioralOscillation": {
+        "sourceStatus": "PERSISTED_PURGATORIO_RECORD_NOT_NARCISSISM_DIAGNOSIS",
+        "trigger": "Overwhelm, fear of failure, uncertain payoff, monotony, fatigue, shame, or too-large commitments.",
+        "defensiveMotion": "AVOID difficulty → WITHDRAW initiative → HOLD imagined failure → PRESERVE stuckness.",
+        "constructiveMotion": "RECEIVE capacity limits → INITIATE small action → PRESERVE continuity → EXPAND agency.",
+        "cycle": "Demand → hopeless forecast → avoidance → immediate relief → rising burden → renewed avoidance.",
+        "observableEvidence": [
+          "Repeatedly delays chosen action, escapes into distraction, passively agrees while not starting, or abandons meaningful commitments.",
+          "Begins a viable action, stays with a manageable commitment, requests necessary support, and returns after interruption."
+        ],
+        "behavioralCompletion": "Repeatedly begins chosen, appropriately sized action under uncertainty and uses recovery without self-attack."
+      }
+    },
+    {
+      "terraceId": "purgatorio:P05",
+      "boardSceneId": "game:purgatorio:P05",
+      "viceId": "purgatorio:P05-V",
+      "viceName": "Avarice / Prodigality",
+      "capacityId": "purgatorio:P05-C",
+      "capacityName": "Generosity / Stewardship",
+      "narcissismLayer": {
+        "relationship": "OWNER_HYPOTHESIS_UNRESOLVED",
+        "namedMechanism": null,
+        "evidentialSourceIds": [],
+        "isClinicalClassification": false
+      },
+      "behavioralOscillation": {
+        "sourceStatus": "PERSISTED_PURGATORIO_RECORD_NOT_NARCISSISM_DIAGNOSIS",
+        "trigger": "Fear of loss, comparison, insecurity, sudden money, status pressure, or opportunity to control through resources.",
+        "defensiveMotion": "ATTACH to resource → HOLD or DISRUPT its flow → CONTRACT safety to possession → REPEL reciprocity.",
+        "constructiveMotion": "PRESERVE essentials → RECEIVE enough → RELEASE unnecessary control → CONNECT through fair exchange.",
+        "cycle": "Loss cue → possession-as-safety belief → hoard or prove worth through spending → short relief → deeper insecurity.",
+        "observableEvidence": [
+          "Hoarding beyond needs or spending to secure approval; leverages possession for control; sacrifices trust to acquisition.",
+          "Meets responsibilities, budgets realistically, shares without coercion, and uses resources for actual values and relationships."
+        ],
+        "behavioralCompletion": "Makes sustainable resource decisions under scarcity cues, honors obligations, and gives freely only within real capacity."
+      }
+    },
+    {
+      "terraceId": "purgatorio:P06",
+      "boardSceneId": "game:purgatorio:P06",
+      "viceId": "purgatorio:P06-V",
+      "viceName": "Gluttony",
+      "capacityId": "purgatorio:P06-C",
+      "capacityName": "Temperance / Sufficiency",
+      "narcissismLayer": {
+        "relationship": "OWNER_HYPOTHESIS_UNRESOLVED",
+        "namedMechanism": null,
+        "evidentialSourceIds": [],
+        "isClinicalClassification": false
+      },
+      "behavioralOscillation": {
+        "sourceStatus": "PERSISTED_PURGATORIO_RECORD_NOT_NARCISSISM_DIAGNOSIS",
+        "trigger": "Stress, emptiness, boredom, reward cues, loneliness, uncertainty, or fatigue.",
+        "defensiveMotion": "SEEK relief → APPROACH substitute → HOLD repetition → AVOID underlying feeling.",
+        "constructiveMotion": "RECEIVE signal → DIFFERENTIATE need from substitute → HOLD enough → RELEASE compulsive repetition.",
+        "cycle": "Discomfort → substitute intake → short relief → unmet need persists → repeat.",
+        "observableEvidence": [
+          "Repeatedly consumes or seeks stimulation past a chosen useful limit while the underlying need remains unaddressed.",
+          "Names the need, enjoys pleasure consciously, recognizes enough, and stops or changes course when appropriate."
+        ],
+        "behavioralCompletion": "Experiences discomfort or appetite, accurately distinguishes needs, and chooses sufficient behavior without harsh deprivation."
+      }
+    },
+    {
+      "terraceId": "purgatorio:P07",
+      "boardSceneId": "game:purgatorio:P07",
+      "viceId": "purgatorio:P07-V",
+      "viceName": "Lust",
+      "capacityId": "purgatorio:P07-C",
+      "capacityName": "Chastity / Respectful Intimacy",
+      "narcissismLayer": {
+        "relationship": "OWNER_HYPOTHESIS_UNRESOLVED",
+        "namedMechanism": null,
+        "evidentialSourceIds": [],
+        "isClinicalClassification": false
+      },
+      "behavioralOscillation": {
+        "sourceStatus": "PERSISTED_PURGATORIO_RECORD_NOT_NARCISSISM_DIAGNOSIS",
+        "trigger": "Attraction, rejection, boredom, fear of intimacy, insecurity, novelty, or relationship conflict.",
+        "defensiveMotion": "ATTRACT validation → PENETRATE boundaries → CONCEAL need → AVOID genuine intimacy.",
+        "constructiveMotion": "RECEIVE desire → DIFFERENTIATE self from other → CONNECT consensually → HOLD respect.",
+        "cycle": "Worth threat or craving → pursuit of validation through another → short relief → loneliness or conflict → renewed pursuit.",
+        "observableEvidence": [
+          "Uses seduction to control, obscures intentions, pressures boundaries, treats people as sources of validation, or pursues repeated novelty despite harm.",
+          "Feels desire without coercion, communicates intentions, checks consent, respects refusal, and integrates sexuality with care."
+        ],
+        "behavioralCompletion": "Responds to attraction or rejection with consent, candor, reciprocal care, and preserved autonomy."
+      }
+    }
+  ]
+}

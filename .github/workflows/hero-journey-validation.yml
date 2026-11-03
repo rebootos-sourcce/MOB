@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - 'atunED/teachers-poles-ascent-alpha-2026-10-25'
+      - 'work/compass-board-contract-2026-11-03'
   workflow_dispatch:
 jobs:
   validate:
@@ -24,18 +25,27 @@ jobs:
         run: sh ./atuned_src/BUILD-engine.sh
       - name: Check Hero Journey coordinates and milestones
         run: node tests/herojourney.js
+      - name: Reconcile Compass realms, archetypes, and seven terrace boundaries
+        run: node tests/compass-board-contract.js
       - name: Core 10 to full 21 self-report boundary
         run: node tests/diagnostic3.js
       - name: Existing engine contract suite
         run: node tests/engine.js
       - name: Build complete app and its packaging
         run: PATH="$GITHUB_WORKSPACE/atuned_funnel_system/node_modules/.bin:$PATH" sh ./atuned_src/BUILD.sh
+      - name: Enforce customer-facing voice and objections contract
+        run: python3 .claude/skills/atuned-voice/check.py --objections
       - name: Verify the funnel's typed adapter suite
         run: npm test --prefix atuned_funnel_system
       - name: Install headless browser test runner
         run: |
           npm install --prefix atuned_funnel_system --no-save playwright
           ./atuned_funnel_system/node_modules/.bin/playwright install chromium
+      - name: Resolve installed Chromium executable for browser gates
+        run: |
+          CHROME_PATH=$(NODE_PATH="$GITHUB_WORKSPACE/atuned_funnel_system/node_modules" node -e "process.stdout.write(require('playwright').chromium.executablePath())")
+          test -x "$CHROME_PATH"
+          echo "CHROME=$CHROME_PATH" >> "$GITHUB_ENV"
       - name: Exercise actual avatar in Chromium
         run: NODE_PATH="$GITHUB_WORKSPACE/atuned_funnel_system/node_modules" node tests/herojourney-ui.js
       - name: Confirm avatar modules exist in built product
