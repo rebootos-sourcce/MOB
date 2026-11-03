@@ -40,7 +40,8 @@
     "notApprovedCanon": true,
     "notProduction": true,
     "technicalFailureNonPenalty": true,
-    "sourceGraphUnmodified": true
+    "sourceGraphUnmodified": true,
+    "knownLiteraryBoundaryExceptionsBlocked": true
   },
   "stats": {
     "sceneCount": 26,
@@ -61,7 +62,7 @@
     "shadowLawCandidateEdges": 49,
     "indirectLawTraceByRealm": {
       "INFERNO": {
-        "scenesWithPaths": 9,
+        "scenesWithPaths": 7,
         "sceneCount": 9,
         "distinctLaws": 21
       },
@@ -75,7 +76,8 @@
         "sceneCount": 10,
         "distinctLaws": 21
       }
-    }
+    },
+    "quarantinedCandidatePaths": 6
   },
   "canonicalLawIds": [
     "canon-law:Truth",
@@ -142,79 +144,17 @@
       ],
       "documentedPurgatorioTerraces": [],
       "documentedParadisoResonances": [],
-      "lawCandidateRoutes": [
+      "lawCandidateRoutes": [],
+      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
+      "candidateRoutesQuarantined": 2,
+      "knownLiteraryBoundaryWarnings": [
         {
-          "lawId": "canon-law:Justice",
-          "lawName": "Justice",
-          "via": "LEVEL_FIGURE_SHADOW_LAW",
-          "path": [
-            {
-              "from": "inferno:L01",
-              "to": "inferno:F01",
-              "type": "level_contains_figure_candidate",
-              "documentedFrom": "inferno:L01",
-              "documentedTo": "inferno:F01",
-              "reverseTraversal": false,
-              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
-            },
-            {
-              "from": "inferno:F01",
-              "to": "shadow:charon",
-              "type": "shadow_source_reference",
-              "documentedFrom": "shadow:charon",
-              "documentedTo": "inferno:F01",
-              "reverseTraversal": true,
-              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
-            },
-            {
-              "from": "shadow:charon",
-              "to": "canon-law:Justice",
-              "type": "POSSIBLE_BEHAVIORAL_INTEGRITY_CORRELATE",
-              "documentedFrom": "shadow:charon",
-              "documentedTo": "canon-law:Justice",
-              "reverseTraversal": false,
-              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
-            }
-          ],
-          "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
-        },
-        {
-          "lawId": "canon-law:Transparency",
-          "lawName": "Transparency",
-          "via": "LEVEL_FIGURE_SHADOW_LAW",
-          "path": [
-            {
-              "from": "inferno:L01",
-              "to": "inferno:F01",
-              "type": "level_contains_figure_candidate",
-              "documentedFrom": "inferno:L01",
-              "documentedTo": "inferno:F01",
-              "reverseTraversal": false,
-              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
-            },
-            {
-              "from": "inferno:F01",
-              "to": "shadow:charon",
-              "type": "shadow_source_reference",
-              "documentedFrom": "shadow:charon",
-              "documentedTo": "inferno:F01",
-              "reverseTraversal": true,
-              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
-            },
-            {
-              "from": "shadow:charon",
-              "to": "canon-law:Transparency",
-              "type": "POSSIBLE_BEHAVIORAL_INTEGRITY_CORRELATE",
-              "documentedFrom": "shadow:charon",
-              "documentedTo": "canon-law:Transparency",
-              "reverseTraversal": false,
-              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
-            }
-          ],
-          "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
+          "sourceLink": "inferno:L01 -> inferno:F01",
+          "interpretation": "threshold_before_circle",
+          "sourceBasis": "Charon is in Inferno III at the Acheron crossing, prior to Circle I/Inferno IV",
+          "promotionAllowed": false
         }
-      ],
-      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk"
+      ]
     },
     {
       "sceneId": "game:inferno:L02",
@@ -542,7 +482,9 @@
           "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
         }
       ],
-      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk"
+      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
+      "candidateRoutesQuarantined": 0,
+      "knownLiteraryBoundaryWarnings": []
     },
     {
       "sceneId": "game:inferno:L03",
@@ -646,7 +588,9 @@
           "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
         }
       ],
-      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk"
+      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
+      "candidateRoutesQuarantined": 0,
+      "knownLiteraryBoundaryWarnings": []
     },
     {
       "sceneId": "game:inferno:L04",
@@ -1067,7 +1011,9 @@
           "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
         }
       ],
-      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk"
+      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
+      "candidateRoutesQuarantined": 0,
+      "knownLiteraryBoundaryWarnings": []
     },
     {
       "sceneId": "game:inferno:L05",
@@ -1803,7 +1749,9 @@
           "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
         }
       ],
-      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk"
+      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
+      "candidateRoutesQuarantined": 0,
+      "knownLiteraryBoundaryWarnings": []
     },
     {
       "sceneId": "game:inferno:L06",
@@ -1830,79 +1778,17 @@
       "documentedInfernoBehaviorCandidates": [],
       "documentedPurgatorioTerraces": [],
       "documentedParadisoResonances": [],
-      "lawCandidateRoutes": [
+      "lawCandidateRoutes": [],
+      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
+      "candidateRoutesQuarantined": 2,
+      "knownLiteraryBoundaryWarnings": [
         {
-          "lawId": "canon-law:Compassion",
-          "lawName": "Compassion",
-          "via": "LEVEL_FIGURE_SHADOW_LAW",
-          "path": [
-            {
-              "from": "inferno:L06",
-              "to": "inferno:F06",
-              "type": "level_contains_figure_candidate",
-              "documentedFrom": "inferno:L06",
-              "documentedTo": "inferno:F06",
-              "reverseTraversal": false,
-              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
-            },
-            {
-              "from": "inferno:F06",
-              "to": "shadow:furies",
-              "type": "shadow_source_reference",
-              "documentedFrom": "shadow:furies",
-              "documentedTo": "inferno:F06",
-              "reverseTraversal": true,
-              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
-            },
-            {
-              "from": "shadow:furies",
-              "to": "canon-law:Compassion",
-              "type": "POSSIBLE_BEHAVIORAL_INTEGRITY_CORRELATE",
-              "documentedFrom": "shadow:furies",
-              "documentedTo": "canon-law:Compassion",
-              "reverseTraversal": false,
-              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
-            }
-          ],
-          "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
-        },
-        {
-          "lawId": "canon-law:Non-Harm",
-          "lawName": "Non-Harm",
-          "via": "LEVEL_FIGURE_SHADOW_LAW",
-          "path": [
-            {
-              "from": "inferno:L06",
-              "to": "inferno:F06",
-              "type": "level_contains_figure_candidate",
-              "documentedFrom": "inferno:L06",
-              "documentedTo": "inferno:F06",
-              "reverseTraversal": false,
-              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
-            },
-            {
-              "from": "inferno:F06",
-              "to": "shadow:furies",
-              "type": "shadow_source_reference",
-              "documentedFrom": "shadow:furies",
-              "documentedTo": "inferno:F06",
-              "reverseTraversal": true,
-              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
-            },
-            {
-              "from": "shadow:furies",
-              "to": "canon-law:Non-Harm",
-              "type": "POSSIBLE_BEHAVIORAL_INTEGRITY_CORRELATE",
-              "documentedFrom": "shadow:furies",
-              "documentedTo": "canon-law:Non-Harm",
-              "reverseTraversal": false,
-              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
-            }
-          ],
-          "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
+          "sourceLink": "inferno:L06 -> inferno:F06",
+          "interpretation": "gates_to_circle",
+          "sourceBasis": "Furies appear at the walls/gates of Dis in Inferno IX, approaching heresy rather than straightforward containment within Circle VI",
+          "promotionAllowed": false
         }
-      ],
-      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk"
+      ]
     },
     {
       "sceneId": "game:inferno:L07",
@@ -2039,7 +1925,9 @@
           "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
         }
       ],
-      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk"
+      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
+      "candidateRoutesQuarantined": 0,
+      "knownLiteraryBoundaryWarnings": []
     },
     {
       "sceneId": "game:inferno:L08",
@@ -2569,76 +2457,6 @@
           "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
         },
         {
-          "lawId": "canon-law:Transparency",
-          "lawName": "Transparency",
-          "via": "LEVEL_FIGURE_SHADOW_LAW",
-          "path": [
-            {
-              "from": "inferno:L08",
-              "to": "inferno:F09",
-              "type": "level_contains_figure_candidate",
-              "documentedFrom": "inferno:L08",
-              "documentedTo": "inferno:F09",
-              "reverseTraversal": false,
-              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
-            },
-            {
-              "from": "inferno:F09",
-              "to": "shadow:geryon",
-              "type": "shadow_source_reference",
-              "documentedFrom": "shadow:geryon",
-              "documentedTo": "inferno:F09",
-              "reverseTraversal": true,
-              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
-            },
-            {
-              "from": "shadow:geryon",
-              "to": "canon-law:Transparency",
-              "type": "POSSIBLE_BEHAVIORAL_INTEGRITY_CORRELATE",
-              "documentedFrom": "shadow:geryon",
-              "documentedTo": "canon-law:Transparency",
-              "reverseTraversal": false,
-              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
-            }
-          ],
-          "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
-        },
-        {
-          "lawId": "canon-law:Truth",
-          "lawName": "Truth",
-          "via": "LEVEL_FIGURE_SHADOW_LAW",
-          "path": [
-            {
-              "from": "inferno:L08",
-              "to": "inferno:F09",
-              "type": "level_contains_figure_candidate",
-              "documentedFrom": "inferno:L08",
-              "documentedTo": "inferno:F09",
-              "reverseTraversal": false,
-              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
-            },
-            {
-              "from": "inferno:F09",
-              "to": "shadow:geryon",
-              "type": "shadow_source_reference",
-              "documentedFrom": "shadow:geryon",
-              "documentedTo": "inferno:F09",
-              "reverseTraversal": true,
-              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
-            },
-            {
-              "from": "shadow:geryon",
-              "to": "canon-law:Truth",
-              "type": "POSSIBLE_BEHAVIORAL_INTEGRITY_CORRELATE",
-              "documentedFrom": "shadow:geryon",
-              "documentedTo": "canon-law:Truth",
-              "reverseTraversal": false,
-              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
-            }
-          ],
-          "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
-        },
-        {
           "lawId": "canon-law:Unity",
           "lawName": "Unity",
           "via": "LEVEL_TERRACE_CAPACITY_PARADISO → paradiso:PD08",
@@ -2683,7 +2501,16 @@
           "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
         }
       ],
-      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk"
+      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
+      "candidateRoutesQuarantined": 2,
+      "knownLiteraryBoundaryWarnings": [
+        {
+          "sourceLink": "inferno:L08 -> inferno:F09",
+          "interpretation": "transport_to_circle",
+          "sourceBasis": "Geryon carries travelers down from Circle VII to VIII, not securely a resident member of VIII",
+          "promotionAllowed": false
+        }
+      ]
     },
     {
       "sceneId": "game:inferno:L09",
@@ -2820,7 +2647,16 @@
           "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
         }
       ],
-      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk"
+      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
+      "candidateRoutesQuarantined": 0,
+      "knownLiteraryBoundaryWarnings": [
+        {
+          "sourceLink": "inferno:L09 -> inferno:F10",
+          "interpretation": "threshold_before_circle",
+          "sourceBasis": "Giants appear in Inferno XXXI at descent toward Cocytus, preceding Circle IX proper",
+          "promotionAllowed": false
+        }
+      ]
     },
     {
       "sceneId": "game:purgatorio:P01",
@@ -3279,7 +3115,9 @@
           "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
         }
       ],
-      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk"
+      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
+      "candidateRoutesQuarantined": 0,
+      "knownLiteraryBoundaryWarnings": []
     },
     {
       "sceneId": "game:purgatorio:P02",
@@ -3807,7 +3645,9 @@
           "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
         }
       ],
-      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk"
+      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
+      "candidateRoutesQuarantined": 0,
+      "knownLiteraryBoundaryWarnings": []
     },
     {
       "sceneId": "game:purgatorio:P03",
@@ -4264,7 +4104,9 @@
           "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
         }
       ],
-      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk"
+      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
+      "candidateRoutesQuarantined": 0,
+      "knownLiteraryBoundaryWarnings": []
     },
     {
       "sceneId": "game:purgatorio:P04",
@@ -4650,7 +4492,9 @@
           "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
         }
       ],
-      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk"
+      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
+      "candidateRoutesQuarantined": 0,
+      "knownLiteraryBoundaryWarnings": []
     },
     {
       "sceneId": "game:purgatorio:P05",
@@ -5001,7 +4845,9 @@
           "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
         }
       ],
-      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk"
+      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
+      "candidateRoutesQuarantined": 0,
+      "knownLiteraryBoundaryWarnings": []
     },
     {
       "sceneId": "game:purgatorio:P06",
@@ -5027,7 +4873,9 @@
       "documentedPurgatorioTerraces": [],
       "documentedParadisoResonances": [],
       "lawCandidateRoutes": [],
-      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk"
+      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
+      "candidateRoutesQuarantined": 0,
+      "knownLiteraryBoundaryWarnings": []
     },
     {
       "sceneId": "game:purgatorio:P07",
@@ -5233,7 +5081,9 @@
           "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
         }
       ],
-      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk"
+      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
+      "candidateRoutesQuarantined": 0,
+      "knownLiteraryBoundaryWarnings": []
     },
     {
       "sceneId": "game:paradiso:PD01",
@@ -5332,7 +5182,9 @@
           "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
         }
       ],
-      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk"
+      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
+      "candidateRoutesQuarantined": 0,
+      "knownLiteraryBoundaryWarnings": []
     },
     {
       "sceneId": "game:paradiso:PD02",
@@ -5427,7 +5279,9 @@
           "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
         }
       ],
-      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk"
+      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
+      "candidateRoutesQuarantined": 0,
+      "knownLiteraryBoundaryWarnings": []
     },
     {
       "sceneId": "game:paradiso:PD03",
@@ -5543,7 +5397,9 @@
           "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
         }
       ],
-      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk"
+      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
+      "candidateRoutesQuarantined": 0,
+      "knownLiteraryBoundaryWarnings": []
     },
     {
       "sceneId": "game:paradiso:PD04",
@@ -5642,7 +5498,9 @@
           "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
         }
       ],
-      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk"
+      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
+      "candidateRoutesQuarantined": 0,
+      "knownLiteraryBoundaryWarnings": []
     },
     {
       "sceneId": "game:paradiso:PD05",
@@ -5741,7 +5599,9 @@
           "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
         }
       ],
-      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk"
+      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
+      "candidateRoutesQuarantined": 0,
+      "knownLiteraryBoundaryWarnings": []
     },
     {
       "sceneId": "game:paradiso:PD06",
@@ -5842,7 +5702,9 @@
           "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
         }
       ],
-      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk"
+      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
+      "candidateRoutesQuarantined": 0,
+      "knownLiteraryBoundaryWarnings": []
     },
     {
       "sceneId": "game:paradiso:PD07",
@@ -5941,7 +5803,9 @@
           "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
         }
       ],
-      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk"
+      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
+      "candidateRoutesQuarantined": 0,
+      "knownLiteraryBoundaryWarnings": []
     },
     {
       "sceneId": "game:paradiso:PD08",
@@ -6061,7 +5925,9 @@
           "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
         }
       ],
-      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk"
+      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
+      "candidateRoutesQuarantined": 0,
+      "knownLiteraryBoundaryWarnings": []
     },
     {
       "sceneId": "game:paradiso:PD09",
@@ -6162,7 +6028,9 @@
           "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
         }
       ],
-      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk"
+      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
+      "candidateRoutesQuarantined": 0,
+      "knownLiteraryBoundaryWarnings": []
     },
     {
       "sceneId": "game:paradiso:PD10",
@@ -6291,7 +6159,35 @@
           "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
         }
       ],
-      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk"
+      "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
+      "candidateRoutesQuarantined": 0,
+      "knownLiteraryBoundaryWarnings": []
+    }
+  ],
+  "sourceCorrectionsApplied": [
+    {
+      "candidate": "inferno:L01 -> inferno:F01",
+      "readAs": "threshold_before_circle",
+      "promotionAllowed": false,
+      "sourcePath": "docs/data/compass/integration/v1/INFERNO_CROSS_REGISTRY_SOURCE_BRIDGE_V1.json"
+    },
+    {
+      "candidate": "inferno:L06 -> inferno:F06",
+      "readAs": "gates_to_circle",
+      "promotionAllowed": false,
+      "sourcePath": "docs/data/compass/integration/v1/INFERNO_CROSS_REGISTRY_SOURCE_BRIDGE_V1.json"
+    },
+    {
+      "candidate": "inferno:L08 -> inferno:F09",
+      "readAs": "transport_to_circle",
+      "promotionAllowed": false,
+      "sourcePath": "docs/data/compass/integration/v1/INFERNO_CROSS_REGISTRY_SOURCE_BRIDGE_V1.json"
+    },
+    {
+      "candidate": "inferno:L09 -> inferno:F10",
+      "readAs": "threshold_before_circle",
+      "promotionAllowed": false,
+      "sourcePath": "docs/data/compass/integration/v1/INFERNO_CROSS_REGISTRY_SOURCE_BRIDGE_V1.json"
     }
   ]
 }
