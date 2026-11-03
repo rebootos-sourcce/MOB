@@ -44,7 +44,7 @@ assert.equal(linked.size,12,'every one of the 12 overlays represented');
 assert.equal(live.filter(x=>(x.archetypes||[]).length>0).length,8,
  'eight candidate scene anchors on authored map; no invented 26-way placements');
 assert.equal(projection.positions.length,26,'full 26-stage CQ projection');
-assert.deepEqual(projection.positions.map(x=>x.sceneId),live.map(x=>x.id),
+assert.deepEqual(projection.positions.map(x=>x.sceneId),Array.from(live,x=>x.id),
  'CQ mapping order agrees with runtime source');
 const boundaries=[
  [0,'game:inferno:L09'],[39.999,'game:inferno:L01'],
