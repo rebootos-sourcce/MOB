@@ -146,7 +146,7 @@ if(require.main===module){
    await p.evaluate(()=>{ if(typeof OB!=='undefined'&&OB.open&&typeof obClose==='function')obClose(); });
    await p.waitForTimeout(120); }catch(e){}};
  (async()=>{
-  const browser=await chromium.launch();
+  const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
   require('./net.js').guardBrowser(browser);
   const {FULL_SIGHT}=require('./seed.js');
   browser.newPage=(orig=>async function(...a){const pg=await orig.apply(this,a); await pg.addInitScript(FULL_SIGHT); return pg;})(browser.newPage);
