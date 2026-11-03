@@ -13,3 +13,9 @@ Owner requested continued development and review of the Compass + Funnel folders
 - Next AI: run the validator, inspect unresolved scene source semantics, obtain approval for evidence-bearing runtime edges before designing any scorer updates. Keep the master index and log synchronized.
 
 **Validation status:** complete audit paths checked for typed graph-edge existence during generation. GitHub Actions/Node on the final committed SHA remain to be verified; do not report CI as passed until then.
+
+## Subsequent V17 source-bridge extension and gap queue
+- Added 10 research-only paths through documented Inferno behavior→Purgatorio→constructive capacity→Paradiso→Law links; paths are five typed steps maximum, not new graph edges.
+- Strict traceability now: Inferno 8/9, Purgatorio 6/7, Paradiso 10/10. Unresolved: `game:inferno:L06` and `game:purgatorio:P06`.
+- Created `REVIEW_QUEUE_V17.json`: P06-C to PD09 Temperance is a proposed relationship that requires source review; Inferno L06 cannot reuse the quarantined Furies containment claim.
+- Updated validator to check both pending gaps, all intermediate edge IDs, and the absence of the proposed new P06 edge.
