@@ -667,8 +667,23 @@ function rbRow(q,nm,pct,raw,o){
   /* the figure moved into the fill above (o.inFill): printing it here too
      would be the same number said twice on one row, the exact complaint
      this round answers elsewhere on the page. Unread still prints its dash
-     here, since an unread row draws no fill for it to move into. */
-  +(inFill&&read?'':'<span class="rb-v">'+esc(raw)+'</span>')+'</span>'
+     here, since an unread row draws no fill for it to move into.
+
+     o.oppWord, 3 November: the real coherent word an address carries
+     opposite its held name (engine/data/nodes.js's own "a" field, read by
+     the one caller that passes this, ui/ui.js's railStack nerve tier). The
+     slot this fills is .rb-v, the same grid cell the percent already
+     vacates once it moves into the fill (inFill, just above) -- a word and
+     a number were never going to share one cell, so this only ever prints
+     where that cell is actually free, never beside the number it would
+     otherwise collide with. Smaller and dimmer than the percent ever was
+     (.rb-opp), the same "held end full weight, coherent end dimmer" the
+     brief's own charge-at-both-ends convention already set on the far
+     end's fill (o.col2's own muted default, just below). Read-gated like
+     every other figure on the row: an unread address names no opposite
+     either, which the fallback branch's own dash already covers. */
+  +(inFill&&read?(o.oppWord?'<span class="rb-v rb-opp">'+esc(o.oppWord)+'</span>':'')
+    :'<span class="rb-v">'+esc(raw)+'</span>')+'</span>'
   +track+seats
   +'<span class="rb-d" aria-hidden="true"></span></'+tag+'>';}
 /* ONE READING, ICON-LED, 2 November. His own words looking at the wheel's

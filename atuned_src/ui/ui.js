@@ -1177,17 +1177,50 @@ function railStack(r){
      feeling it runs on -- only this standalone, read-only left-rail block
      is gone. */
   /* NERVE, THE REAL FLOOR -- the same addresses-actually-carrying block
-     renderChainKey builds, reusing .ad-r/data-addr, the one handler every
-     address row on this product already answers through. Never locked. */
+     renderChainKey builds. Never locked.
+
+     THE BAR, NOT THE RING, 3 November. His own words looking at this exact
+     list tonight: "right now I see root, sacral, solar, heart, throat.
+     What I don't see is the opposite. What I don't see are the bars. That
+     show the amount of weight positive or negative." Each row named its
+     seat where the ring once sat (n.b, the "root, sacral, solar..." he
+     is reading) and showed no opposite at all -- crbNode's own ring carries
+     one figure, sq, with nothing to pair it against. rbRow (component.js),
+     the real bar every axis row on Analytics already draws tonight, is
+     reused whole rather than rebuilt: held is n.held, the charge actually
+     at this address (engine/compute.js), drawn as the fill and its real
+     percent (pct('held',...), the one PCT_KIND entry named for exactly this
+     figure); the far segment is n.rep, the real opposite already installed
+     at the same address (pct('installed',...), same kind axis level uses);
+     the word at the far end is n.a, engine/data/nodes.js's own real
+     coherent quality for this address -- confirmed directly against that
+     file before this was written, not assumed from the brief that flagged
+     it missing in October: every one of the 112 rows carries it. bare:true
+     and data-addr in o.attrs, not data-q, because this row answers the
+     SAME delegated handler every address row on the product already does
+     (the click case just above this function now reads the bare attribute
+     rather than requiring .ad-r, so nothing here is a second, parallel
+     door). on:dom, the dominant ring crbNode carried, is not reproduced --
+     rbRow has no dominant-ring concept, and inventing one would be the
+     parallel component this round's own brief rules out building; the
+     heaviest of the six still reads first, in sort order. "User confirmed"
+     moves into o.after, the slot rbRow's own comment already names for a
+     short mark right after the name (chkTier's "heaviest" em, the same
+     spot) -- nodeConfirmed is a real reader of the person's own Yes
+     (yesOf), and dropping its one real caller here would leave it defined
+     with none, the exact shape CLAUDE.md's rule 2 calls out by name. */
   +sec('nerve','Nerve','The real addresses actually carrying charge right now.',
    (function(){
     var nerve=(live?W.filter(function(n){return n.sq>=4;}):[]).slice().sort(function(a,b){return b.sq-a.sq;});
     if(!nerve.length)return '<p class="ad-p" style="margin:4px 0 0 2px">Nothing is carrying yet.</p>';
     var cap=6;
-    return nerve.slice(0,cap).map(function(n,i){var dom=i===0, conf=nodeConfirmed(n.i);
-      return '<button type="button" class="ad-r" data-addr="'+n.i+'" title="Open '+esc(n.k)+'">'
-       +crbNode(n,'sm',{on:dom})+'<span>'+esc(n.k)+'</span>'
-       +'<em>'+(conf?'User confirmed':esc(n.b))+'</em></button>';}).join('')
+    return nerve.slice(0,cap).map(function(n){
+      var conf=nodeConfirmed(n.i);
+      return rbRow('addr-'+n.i,n.k,pct('held',n.held),fmtPct('held',n.held),
+       {bare:true,inFill:true,pct2:pct('installed',n.rep),oppWord:n.a,col:seatCol(n.b),
+        attrs:' data-addr="'+n.i+'"',after:conf?'<em class="rb-conf"> &middot; confirmed</em>':'',
+        title:n.k+'. Toward '+n.a+'.'+(conf?' You confirmed this one.':'')
+         +' '+n.a+' installed '+fmtPct('installed',n.rep)+'.'});}).join('')
      +(nerve.length>cap?'<div class="pm-more">and '+(nerve.length-cap)+' more</div>':'');})());
  e.innerHTML=h;
  /* A TIER ABOVE THE PLAN IS STILL GREYED AND PADLOCKED WITH ITS
@@ -1679,14 +1712,38 @@ function render(){
      Secondary over the list by point would call the second list lesser, and it
      is not: it is the same addresses cut a second way, and on Marcus
      Co-Dependency and False Love sit in both. */
+  /* THE BAR, NOT THE RING, 3 November, the same round and the same real
+     fields as railStack's own nerve tier (see that function's own note):
+     n.held filled against its real percent, n.rep as the real far segment,
+     n.a as the real coherent word at the far end -- rbRow (component.js)
+     reused a third time rather than built again. This is the list his own
+     words named directly: "one row per assemblage point, Root to Crown...
+     so the card runs up the body the way the ring does" is this file's own
+     comment just above, and "root, sacral, solar, heart, throat" is that
+     same BANDS order read back to him with no opposite and no bar under
+     it, exactly what the per-band loop below used to draw with addrRow's
+     ring. RANK and the band word, which used to be the row's whole right
+     side (addrRow's o.em), move into o.after instead, in the same ink they
+     always carried -- real information, kept, not dropped to make room for
+     the real word that replaces it. */
   var RANK=['Primary','Secondary','Tertiary'];
   var top=lit.slice(0,3).map(function(n,i){
    var d=typeof hotDir==='function'?hotDir(n):'steady';
-   return addrRow(n,{em:RANK[i]+(d==='steady'?'':', '+d),
-    ink:typeof anaHotInk==='function'?anaHotInk(d):null});}).join('');
+   var rankTxt=RANK[i]+(d==='steady'?'':', '+d);
+   var inkc=typeof anaHotInk==='function'?anaHotInk(d):'var(--dim)';
+   return rbRow('rb-top-'+n.i,n.k,pct('held',n.held),fmtPct('held',n.held),
+    {bare:true,inFill:true,pct2:pct('installed',n.rep),oppWord:n.a,col:seatCol(n.b),
+     attrs:' data-addr="'+n.i+'"',
+     after:' <em style="font-style:normal;font-size:11px;color:'+inkc+'">'+esc(rankTxt)+'</em>',
+     title:n.k+'. '+rankTxt+'. Toward '+n.a+'. '+n.a+' installed '+fmtPct('installed',n.rep)+'.'});}).join('');
   var per=BANDS.map(function(b){
    var n=lit.filter(function(x){return x.b===b;})[0];
-   return n?addrRow(n,{em:b,ink:seatCol(b)}):'';}).join('');
+   if(!n)return '';
+   return rbRow('rb-ap-'+n.i,n.k,pct('held',n.held),fmtPct('held',n.held),
+    {bare:true,inFill:true,pct2:pct('installed',n.rep),oppWord:n.a,col:seatCol(b),
+     attrs:' data-addr="'+n.i+'"',
+     after:' <em style="font-style:normal;font-size:11px;color:'+seatCol(b)+'">'+esc(b)+'</em>',
+     title:n.k+'. '+b+'. Toward '+n.a+'. '+n.a+' installed '+fmtPct('installed',n.rep)+'.'});}).join('');
   /* the rail's own empty sentence for a field with nothing charged, the one
      the glass bar prints on its Stories circle, and nothing at all on an
      unread field, where the doors above already say where to start */
@@ -1983,19 +2040,29 @@ function renderChainKey(r){
      still read on Analytics ("The nine axes" and each axis's own drill
      card). */
   /* NERVE, THE REAL FLOOR: the addresses actually carrying right now, same
-     carrying line fbValues (ui/fieldbar.js) already reads, sq>=4. Dominant
-     is the single heaviest of them; self-selected is the person's own Yes,
-     nodeConfirmed above, nerve/address tier only per the brief's own honest
-     limit (yesOf never confirms a saboteur or anything above it). */
+     carrying line fbValues (ui/fieldbar.js) already reads, sq>=4.
+
+     THE SAME BAR railStack's OWN NERVE TIER NOW DRAWS, 3 November: this
+     legend is #chainkey's own copy of that exact list (left rail, #lpanel),
+     and it sat closed by default (.lsec not .open) so it was not what he
+     was looking at when he named "root, sacral, solar, heart, throat" --
+     but a person who does open it would have read the old ring-plus-seat
+     row here while the right rail already answered in bars, one reading
+     drawn two ways on the same screen. rbRow, the identical real component
+     and the identical real fields (n.held, n.rep, n.a), reused again rather
+     than left half done on this, its other copy. */
   +'<div class="tier1">Nerve</div><p class="stk-def">The real addresses actually carrying charge right now.</p>'
   +(function(){
    var nerve=(live?W.filter(function(n){return n.sq>=4;}):[]).slice().sort(function(a,b){return b.sq-a.sq;});
    if(!nerve.length)return '<p class="ad-p" style="margin:4px 0 0 2px">Nothing is carrying yet.</p>';
    var cap=6;
-   return nerve.slice(0,cap).map(function(n,i){var dom=i===0, conf=nodeConfirmed(n.i);
-     return '<button type="button" class="ad-r" data-addr="'+n.i+'" title="Open '+esc(n.k)+'">'
-      +crbNode(n,'sm',{on:dom})+'<span>'+esc(n.k)+'</span>'
-      +'<em>'+(conf?'User confirmed':esc(n.b))+'</em></button>';}).join('')
+   return nerve.slice(0,cap).map(function(n){
+     var conf=nodeConfirmed(n.i);
+     return rbRow('addr-'+n.i,n.k,pct('held',n.held),fmtPct('held',n.held),
+      {bare:true,inFill:true,pct2:pct('installed',n.rep),oppWord:n.a,col:seatCol(n.b),
+       attrs:' data-addr="'+n.i+'"',after:conf?'<em class="rb-conf"> &middot; confirmed</em>':'',
+       title:n.k+'. Toward '+n.a+'.'+(conf?' You confirmed this one.':'')
+        +' '+n.a+' installed '+fmtPct('installed',n.rep)+'.'});}).join('')
     +(nerve.length>cap?'<div class="pm-more">and '+(nerve.length-cap)+' more</div>':'');})();
  var outside=[
   {c:rgba(GOLDC(),1), nm:'Archetype', d:'Not part of the chain. It is the pick you made at setup. It sets how readily each address takes charge from a story, so it shapes the chain and is never built from it.'},
@@ -2237,7 +2304,18 @@ document.addEventListener('click',function(e){
     opens from the tier word in #railtop (further down in this file) exactly
     as it did before this strip existed. */
  if(e.target.closest&&e.target.closest('#bal')){S.pin=null;ANA_PICK=null;runBalDrill();return;}
- var row=e.target.closest?e.target.closest('.ad-r[data-addr]'):null;
+ /* [data-addr] ALONE, NOT '.ad-r[data-addr]', 3 November: railStack's own
+    nerve tier draws its rows as rbRow bars now (component.js), bare class
+    "rbar" and never "ad-r" -- .ad-r's own CSS is a three column grid built
+    for crbNode's ring-plus-two-spans shape, and forcing it onto rbRow's
+    stacked name-over-track markup would grid the track and the name row
+    side by side instead of one over the other. data-addr was always the
+    real marker every one of these rows answers to (the comment this handler
+    already carried: "data-addr) is unchanged and answers the SAME delegated
+    handler"), .ad-r just the one class every existing producer happened to
+    also carry, so widening the selector to the attribute alone changes
+    nothing for them and is what lets a bare rbar row answer the same door. */
+ var row=e.target.closest?e.target.closest('[data-addr]'):null;
  /* a row inside the Analytics trail is that trail's, round RB */
  if(!row||row.hasAttribute('data-ana'))return;
  var n=BY[+row.getAttribute('data-addr')];

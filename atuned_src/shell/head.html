@@ -1963,6 +1963,16 @@ body:not(.tab-field) .fdock{display:none}
 .rb-sub{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%)}
 .rb-v{grid-column:3;font-family:var(--num);font-variant-numeric:tabular-nums;font-size:14px;font-weight:600;
  line-height:1;color:var(--ink);text-align:right}
+/* THE COHERENT WORD, 3 November. rbRow's own o.oppWord (component.js): the
+   far end's NAME, not its number, so it reads as a word and never as a
+   second figure beside the first. Smaller and dimmer than .rb-v's own
+   percent weight, the same "held full weight, coherent dimmer" the far
+   fill segment (.rb-f2) already reads at a third the opacity. */
+.rb-v.rb-opp{font-size:12px;font-weight:500;font-family:var(--sans);font-variant-numeric:normal;color:var(--dim)}
+/* THE CONFIRMED MARK, 3 November, rbRow's own o.after slot (component.js):
+   the one real mark nodeConfirmed's own reading used to carry on crbNode's
+   ring, said beside the name instead now that the ring is gone. */
+.rb-n .rb-conf{font-style:normal;font-size:11px;font-weight:500;color:var(--dim)}
 .rb-t{position:relative;display:block;height:16px;margin-top:5px;border-radius:8px;
  background:rgba(128,128,128,.14);overflow:hidden}
 .rb-t s{position:absolute;top:0;bottom:0;width:1px;background:color-mix(in srgb,var(--ink) 9%,transparent)}
