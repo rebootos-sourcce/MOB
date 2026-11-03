@@ -9,6 +9,7 @@ Document a source-traced, read-only crosswalk from **26 scene IDs (9 Inferno, 7 
 - `CROSSWALK_EXECUTIVE_HANDSHAKE_V17.md`: scope, measured findings, exceptions, interpretation and next seams.
 - `validate_realm_crosswalk_v17.cjs`: offline consistency checks against V4 graph, without mutating it.
 - `DEV_LOG_V17.md`: append-only handoff activity and open questions.
+- `REVIEW_QUEUE_V17.json`: two open route gaps, source qualifications, and proposed review criteria.
 
 ## Start in source order
 1. `docs/ATUNED_MASTER_FILE_INDEX.md` and its V16 override.
