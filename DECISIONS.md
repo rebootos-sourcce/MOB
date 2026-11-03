@@ -3109,15 +3109,19 @@ Where the names actually live, checked by grep rather than assumed: `atuned_src/
 
 **Names ruled so far, 30 October, as he works through the list.** Druj is Deception (or Deceiver, if a person-word is needed), opposite Honesty: his words, thinking it through out loud, "truth is the opposite of deceive... deception is just a lie, but you could also say transparency, or honesty. Honesty is probably more real, probably the one." Geryon is Fraud: his words, "Geryon is fraud," which also matches the one already in the research file's own table, Dante's eighth circle. Full detail and the still open structural question (Geryon shares the engine's one real two-piece pattern with Psychopathy, naming him does not by itself tell the two apart) is `TASKS.md` round SM, SM14 to SM16.
 
-## The book's own stack, read as a stack on the Field's left rail, 28 October
+## The book's own levels, read in order on the Field's left rail, 28 October
 
 His round, after the superego section landed: "the full cascade wiring of the
 Psyche stack for the field in the left menu." The Mechanics of Being numbers
 the layers a signal passes through, 4 to 10 above the body (1 to 3 sit below
 it, 9 already has its own section, Superego). This entry is the record of
 which layers this engine can honestly claim and which it cannot; the rail's
-own "The stack" section (`shell/body.html`, `data-sec="stack"`) is the same
-list, read by the owner rather than only by a seat.
+own "The book's levels" section (`shell/body.html`, `data-sec="levels"`) is
+the same list, read by the owner rather than only by a seat. It was first
+titled "The stack", which the Knowledge page already uses for the seven seats
+(`ui/knowledge.js` `KB_SECS`), and "Layers" is already the Field's own control
+for its overlays (`ui/fieldbar.js` `FB_FOLD`), so the section and its copy say
+level, under the one word per concept rule.
 
 - **4, imagination, and 5, frequency intensity: not computed.** The book
   places both before a feeling or a charge exists ("the mind simulating
@@ -3134,7 +3138,7 @@ list, read by the owner rather than only by a seat.
   the book's own words for it, "negative: attached to outcome, ignorant of
   what needs doing, avoiding. positive: aware of what needs doing, detached
   from outcome, moving with intention", are the same four words in the same
-  two pairs. Nothing new was built; the stack section names what already
+  two pairs. Nothing new was built; the levels section names what already
   exists.
 - **8, ego, nine words: real, and a real discrepancy, not merged silently.**
   The book's nine: fear, anger, shame, disgust, grief, receiving blocked,
@@ -3148,11 +3152,12 @@ list, read by the owner rather than only by a seat.
   be is. Not resolved here, the same discipline this file already holds for
   the superego's four against canon's six.
 - **10, the koshas: not computed, and not a pick between rosters.**
-  `BOOK-ERRATA.md` finding 8 already has it: the book's own chapter 10 names
-  eight, its own glossary names six, and the two sixes are not the same six.
-  A ninth term appears in neither. Building a koshas row would mean choosing
-  one of three incompatible lists the book gives for itself, which is a
-  finding for that file, not a build for this one.
+  `BOOK-ERRATA.md` finding 8, "Two koshas rosters", already has it: the
+  book's own chapter 10 names eight, its own glossary names six, and the
+  glossary's six are not six of chapter 10's eight. A ninth term appears in
+  neither list. Building a koshas row would mean choosing between the two
+  rosters the book gives for itself, and deciding where the orphan term
+  belongs, which is a finding for that file, not a build for this one.
 
 ## The Journal's Full view gets a left menu and a right menu, 2 November
 
