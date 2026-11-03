@@ -126,10 +126,15 @@ const READ=`(function(){
      .map(e=>(e.querySelector('.v,.crb-v')||{}).textContent||'');
     const pol=t('#pol2 .pol2-c');
     return {unread:!!R.unread,
-     got:{laws:t('#fbar [data-fb=laws] .fb-v'),shadow:t('#fbar [data-fb=shadow] .fb-v'),addresses:t('#fbar [data-fb=addresses] .fb-v'),
-      seats:t('#fbar [data-fb=seats] .fb-v'),archetypes:t('#fbar [data-fb=archetypes] .fb-v'),ring:t('#railtop .cr .v'),
+     /* seats and shadow left the glass bar 3 November (ui/fieldbar.js,
+        FB_LAYERS), his own red marks on the Field screenshot, so neither
+        [data-fb] circle exists to read any more; dropped from this sweep
+        rather than compared against null. pol (post-dating that round)
+        stays, unrelated to this change. */
+     got:{laws:t('#fbar [data-fb=laws] .fb-v'),addresses:t('#fbar [data-fb=addresses] .fb-v'),
+      archetypes:t('#fbar [data-fb=archetypes] .fb-v'),ring:t('#railtop .cr .v'),
       cq:cqSaid||null,dq:dock.DQ,vit:dock.Vitality,flow:dock.Flow,acc:t('#acc .cr .v'),pol:pol},
-     want:{laws:fmtPct('cq',R.CQ),shadow:fmtPct('dq',R.DQ),addresses:fmtPct('weight',R.SQm),seats:fmtPct('weight',R.darkV||0),
+     want:{laws:fmtPct('cq',R.CQ),addresses:fmtPct('weight',R.SQm),
       archetypes:fmtPct('archetype',archExpr(top.i)),ring:fmtPct('cq',R.CQ),cq:fmtPct('cq',R.CQ),dq:fmtPct('dq',R.DQ),
       vit:fmtPct('vitality',R.X),flow:fmtPct('flow',flSpeed()),acc:fmtPct('accuracy',accuracy(R).pct),pol:pol===null?null:fmtPct('cq',R.CQ)},
      node:node, core:window.__FT.indexOf(fmtPct('cq',R.CQ))>=0||Array.from(document.querySelectorAll('.frcq text')).some(e=>e.textContent.indexOf(fmtPct('cq',R.CQ))>=0)};},who);
@@ -233,7 +238,7 @@ const READ=`(function(){
   const u=await page.evaluate(async()=>{loadP(0); setTab(TAB.FIELD); render();
    await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
    const t=q=>{const e=document.querySelector(q); return e?e.textContent.trim():null;};
-   return {unread:!!compute().unread,v:[t('#fbar [data-fb=laws] .fb-v'),t('#fbar [data-fb=shadow] .fb-v'),t('#railtop .cr .v')]
+   return {unread:!!compute().unread,v:[t('#fbar [data-fb=laws] .fb-v'),t('#railtop .cr .v')]
     .concat(Array.from(document.querySelectorAll('#key .rb2-v,#keylo .rb-v')).map(e=>e.textContent.trim()))};});
   ok(u.unread&&u.v.length>=5&&u.v.every(v=>v===null||v==='–'),'S1: '+W+' blank: an unread field prints the dash everywhere, '+J(u.v));
   ok(errs.length===0,'no page error at '+W+': '+errs.slice(0,3).join(' | '));

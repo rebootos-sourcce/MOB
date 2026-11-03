@@ -7628,23 +7628,31 @@ console.log('\n=== GO: the Field lands with its column shut, two names changed, 
    energetics:!document.querySelector('[data-sec=energetics]').classList.contains('open'),
    left:document.querySelector('[data-sec=energetics] .lsec-hd').textContent.trim(),
    esum:document.querySelector('[data-sec=overlap] .lsec-hd').textContent.trim(),
-   seats:lay('seats').getAttribute('aria-label'),gates:lay('gates').getAttribute('aria-label'),
+   gates:lay('gates').getAttribute('aria-label'),
+   /* SEATS LEFT THE BAR ENTIRELY, 3 November, his own red marks on the Field
+      screenshot: not a rename this time, the circle itself. Asserted here as
+      its absence, not its name, so a regression that brings the circle back
+      under any label still fails this line. */
+   seatsGone:!lay('seats'),
    stale:names.filter(n=>/^(Seats|Gates)$/.test(n)),
    view:S.view,custom:LAYSET,ring:dv.getAttribute('stroke-dasharray'),
    togMark:F.querySelector('.fb-tog svg').innerHTML,foldMark:document.querySelector('#lfold svg').innerHTML};});
  ok(a.tab&&a.lshut&&a.stored===null,'a first visit to the Field at 1600 finds the left column shut and nothing stored, '+JSON.stringify({lshut:a.lshut,stored:a.stored}));
  ok(a.energetics&&a.left==='Root Energetics','the left rail keeps Root Energetics, closed, '+a.left);
  ok(a.esum==='Energetic summary','and the summary keeps its own name, Energetic summary, so no two sections share one, '+a.esum);
- ok(a.seats==='Assemblage points'&&a.gates==='Laws of Action'&&!a.stale.length,'the bar says Assemblage points and Laws of Action, and neither old word, '+JSON.stringify([a.seats,a.gates,a.stale]));
+ ok(a.gates==='Laws of Action'&&!a.stale.length,'the bar says Laws of Action, and no stale word, '+JSON.stringify([a.gates,a.stale]));
+ ok(a.seatsGone,'and Assemblage points is gone from the bar entirely, not renamed, his own mark on it');
  ok(a.view===3&&a.custom===null&&a.ring==='100.0 100','depth starts full, Blueprint, and its ring reads full, '+a.ring);
  ok(a.togMark!==a.foldMark,'the bar\'s fold and the column\'s fold wear two marks, since they now stand side by side');
  /* ONE PRESS ON ONE LAYER IS NOT DEPTH GOING TO NOTHING. The ring was binary,
-    a preset or empty, and a press on Seats was what emptied it for him. */
- await wide.pg.click('#fbar .fb-full [data-fb=seats]'); await wide.pg.waitForTimeout(250);
+    a preset or empty, and a press on Seats was what emptied it for him. Seats
+    itself left the bar 3 November, so the same regression is proven here on
+    Gates, still one layer of several at its depth and not the whole set. */
+ await wide.pg.click('#fbar .fb-full [data-fb=gates]'); await wide.pg.waitForTimeout(250);
  const b=await wide.pg.evaluate(()=>{const d=document.querySelector('#fbar [data-fb=depth]');
   return {custom:!!LAYSET,ring:d.querySelector('.val').getAttribute('stroke-dasharray'),on:d.classList.contains('on'),
    tip:d.getAttribute('data-tip')||d.getAttribute('aria-label')};});
- ok(b.custom&&b.ring==='100.0 100'&&!b.on,'with Assemblage Points off the set is his own, and depth still reads full, '+JSON.stringify(b));
+ ok(b.custom&&b.ring==='100.0 100'&&!b.on,'with Laws of Action off the set is his own, and depth still reads full, '+JSON.stringify(b));
  await wide.pg.evaluate(()=>{layPick(0);render();});
  const c=await wide.pg.evaluate(()=>document.querySelector('#fbar [data-fb=depth] .val').getAttribute('stroke-dasharray'));
  ok(c==='25.0 100','and at Charge it reads a quarter, one depth of four, '+c);
