@@ -1,5 +1,9 @@
 # ATÜNED Durable Source Index
 
+## V17 2026-11-03 research crosswalk
+[Compass three-realm V17 source-trace index](data/compass/integration/v17/INDEX.md) and [audited 26-scene Law/archetype path data](data/compass/integration/v17/REALM_LAYER_ARCHETYPE_LAW_CROSSWALK_V17.json). Research-only; no Canon/runtime changes. Read [V17 development log](data/compass/integration/v17/DEV_LOG_V17.md).
+
+
 > **FIRST READ (2026-10-28):** [ATUNED MASTER FILE INDEX / V14](ATUNED_MASTER_FILE_INDEX.md). This is the up-to-date Git locator gateway, with a machine-readable blob-SHA manifest; read it before broad Git searches. The existing links below are preserved as historical supporting references.
 
 
