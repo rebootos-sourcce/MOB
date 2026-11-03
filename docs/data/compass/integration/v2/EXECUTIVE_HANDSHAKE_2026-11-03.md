@@ -31,3 +31,9 @@ Not delivered: merged production build, complete symbolic archetype icons, clini
 **Do not report the full Compass complete or the new model deployed.**
 
 **Ratings:** Source model 0.96; seam selection 0.93; semantic seven-layer mapping 0.45; release verification pending.
+
+## Verified CI checkpoint — 2026-11-03
+- [Commit `7353186`: Hero Journey GitHub workflow completed green](https://github.com/rebootos-sourcce/MOB/actions/runs/41675410926), including 26-scene contract, engine, diagnostic, build, funnel and actual Chromium avatar exercise.
+- First browser run failed because test had a sandbox-only Chromium fallback; corrected by setting `CHROME` from Playwright's installed executable in GitHub workflow. This fix is verified by the green run.
+- An explicit voice-objections check was added to the workflow after that green run; [latest voice-gated CI](https://github.com/rebootos-sourcce/MOB/actions/runs/41675968087) remains pending at checkpoint. Do not misrepresent it as green.
+- Continue only after final CI readback, generated product rebuild verification, branch mainline conflict resolution and owner review of symbolic UI. Draft PR #171 must not be merged independently of its base PR #156.
