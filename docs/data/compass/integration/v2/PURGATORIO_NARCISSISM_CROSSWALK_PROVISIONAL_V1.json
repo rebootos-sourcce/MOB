@@ -1,0 +1,134 @@
+{
+  "schemaVersion": "1.0.0",
+  "created": "2026-11-03",
+  "title": "Purgatorio Seven-Terrace / Narcissism Relationship Reconciliation",
+  "status": "OWNER_DIRECTION_RECORDED_CROSSWALK_NOT_APPROVED",
+  "ownerDirection": "Narcissism has seven layers in the 40–60 middle band, where the person oscillates.",
+  "documentedCanonicalDistinction": "The seven current Purgatorio records are vice-to-capacity oscillation terraces; narcissism exists separately in the deeper psychological complex research. No verified one-to-one mapping is yet established.",
+  "boundaries": {
+    "minInclusive": 40,
+    "maxExclusive": 60,
+    "positionDriver": "EXISTING_CANONICAL_CQ_ONLY",
+    "terracePositionsAreNotDiagnoses": true
+  },
+  "sourcePaths": [
+    "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+    "docs/data/compass/avatar/v2/CQ_POSITION_26_SCENE_MAP_V1.json",
+    "docs/data/compass/gameboard/v1/GAMEBOARD_MAP_V1.json"
+  ],
+  "mappingPolicy": {
+    "preserveUserConcept": true,
+    "doNotOverwriteSevenTerraceViceCapacityRecords": true,
+    "noAutoInferenceFromCq": true,
+    "noClinicalClassification": true,
+    "approvalRequiredBeforeSemanticJoin": true,
+    "futureJoinRequirements": [
+      "specific behavioral mechanism",
+      "observable behavior and disconfirming counterexample",
+      "source citation",
+      "review status",
+      "user confirmation boundary",
+      "versioned conflict resolution"
+    ]
+  },
+  "terraces": [
+    {
+      "terraceId": "purgatorio:P01",
+      "boardSceneId": "game:purgatorio:P01",
+      "viceId": "purgatorio:P01-V",
+      "viceName": "Pride",
+      "capacityId": "purgatorio:P01-C",
+      "capacityName": "Humility",
+      "narcissismLayer": {
+        "relationship": "OWNER_HYPOTHESIS_UNRESOLVED",
+        "namedMechanism": null,
+        "evidentialSourceIds": [],
+        "isClinicalClassification": false
+      }
+    },
+    {
+      "terraceId": "purgatorio:P02",
+      "boardSceneId": "game:purgatorio:P02",
+      "viceId": "purgatorio:P02-V",
+      "viceName": "Envy",
+      "capacityId": "purgatorio:P02-C",
+      "capacityName": "Charity / Kindness",
+      "narcissismLayer": {
+        "relationship": "OWNER_HYPOTHESIS_UNRESOLVED",
+        "namedMechanism": null,
+        "evidentialSourceIds": [],
+        "isClinicalClassification": false
+      }
+    },
+    {
+      "terraceId": "purgatorio:P03",
+      "boardSceneId": "game:purgatorio:P03",
+      "viceId": "purgatorio:P03-V",
+      "viceName": "Wrath",
+      "capacityId": "purgatorio:P03-C",
+      "capacityName": "Meekness / Forbearance",
+      "narcissismLayer": {
+        "relationship": "OWNER_HYPOTHESIS_UNRESOLVED",
+        "namedMechanism": null,
+        "evidentialSourceIds": [],
+        "isClinicalClassification": false
+      }
+    },
+    {
+      "terraceId": "purgatorio:P04",
+      "boardSceneId": "game:purgatorio:P04",
+      "viceId": "purgatorio:P04-V",
+      "viceName": "Sloth / Acedia",
+      "capacityId": "purgatorio:P04-C",
+      "capacityName": "Zeal / Diligence",
+      "narcissismLayer": {
+        "relationship": "OWNER_HYPOTHESIS_UNRESOLVED",
+        "namedMechanism": null,
+        "evidentialSourceIds": [],
+        "isClinicalClassification": false
+      }
+    },
+    {
+      "terraceId": "purgatorio:P05",
+      "boardSceneId": "game:purgatorio:P05",
+      "viceId": "purgatorio:P05-V",
+      "viceName": "Avarice / Prodigality",
+      "capacityId": "purgatorio:P05-C",
+      "capacityName": "Generosity / Stewardship",
+      "narcissismLayer": {
+        "relationship": "OWNER_HYPOTHESIS_UNRESOLVED",
+        "namedMechanism": null,
+        "evidentialSourceIds": [],
+        "isClinicalClassification": false
+      }
+    },
+    {
+      "terraceId": "purgatorio:P06",
+      "boardSceneId": "game:purgatorio:P06",
+      "viceId": "purgatorio:P06-V",
+      "viceName": "Gluttony",
+      "capacityId": "purgatorio:P06-C",
+      "capacityName": "Temperance / Sufficiency",
+      "narcissismLayer": {
+        "relationship": "OWNER_HYPOTHESIS_UNRESOLVED",
+        "namedMechanism": null,
+        "evidentialSourceIds": [],
+        "isClinicalClassification": false
+      }
+    },
+    {
+      "terraceId": "purgatorio:P07",
+      "boardSceneId": "game:purgatorio:P07",
+      "viceId": "purgatorio:P07-V",
+      "viceName": "Lust",
+      "capacityId": "purgatorio:P07-C",
+      "capacityName": "Chastity / Respectful Intimacy",
+      "narcissismLayer": {
+        "relationship": "OWNER_HYPOTHESIS_UNRESOLVED",
+        "namedMechanism": null,
+        "evidentialSourceIds": [],
+        "isClinicalClassification": false
+      }
+    }
+  ]
+}
