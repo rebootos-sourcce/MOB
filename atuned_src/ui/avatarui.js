@@ -1087,6 +1087,44 @@ function avRuleHTML(st,b,x){
    the two boxes, see avSides; the story face keeps the seat, the tags and the
    rule, and the boxes stay beside the ring whichever face is pressed. */
 var AV_FACES=[['story','Your story'],['iq','Intake questions']];
+/* The Trace Graph is the evidence owner. This is one collapsed read-only door
+   from a chosen seat; it never walks the graph itself or opens another score.
+   No worked example reads an owner's private record. */
+function avGraphHTML(st){
+ if(!avOwn()||typeof AVATAR_GRAPH==='undefined')return '';
+ var b='<button type="button" data-avgraph="1" aria-expanded="'+!!AV.graphOpen+'"'
+  +' style="display:block;min-height:44px;width:100%;margin-top:10px;text-align:left"'
+  +'>Connections'+(AV.graphOpen?' −':' +')+'</button>';
+ if(!AV.graphOpen)return '<section class="avs-graph" aria-label="Connections">'+b+'</section>';
+ var rd=null;
+ try{rd=readSeenOf(CURP);}catch(err){rd=null;}
+ var e={traceFromRecord:traceFromRecord,traceNeighbors:traceNeighbors};
+ if(typeof practiceTraceIntents==='function')e.practiceTraceIntents=practiceTraceIntents;
+ var g=AVATAR_GRAPH.project({authorized:avOwn(),profile:CURP,reading:rd,
+  selection:{kind:'seat',id:st.seat},engine:e,limit:6});
+ var body='';
+ if(g.status==='no_evidence'){
+  body='<p class="av-p">No personal connections recorded at this seat.</p>';
+  if(g.graph&&g.graph.flagged)body+='<p class="av-p">Some connections were flagged and excluded.</p>';
+ }
+ else if(g.status!=='ready'&&g.status!=='partial')
+  body='<p class="av-p">Connections are unavailable for this reading.</p>';
+ else{
+  var qual=function(x){
+   if(x.type!=='pattern')return 'Inferred';
+   return x.status==='confirmed'?'Confirmed':x.status==='rejected'?'Not me':
+    x.status==='conflicted'?'Conflicting answers':'Not confirmed';
+  };
+  body='<ul class="av-graph-list" style="margin:8px 0;padding:0;list-style:none">'
+   +g.nodes.map(function(n){
+    return '<li style="padding:9px 0;border-bottom:1px solid var(--line)">'
+     +'<b>'+esc(n.label)+'</b><span class="av-pa" style="display:block">'
+     +esc(qual(n))+'</span></li>';}).join('')+'</ul>';
+  if(g.truncated)body+='<p class="av-p">More connections exist.</p>';
+  if(g.status==='partial')body+='<p class="av-p">Some connections were flagged or refused; supported connections remain visible.</p>';
+ }
+ return '<section class="avs-graph" aria-label="Connections">'+b+body+'</section>';
+}
 function avMenu(st){
  var b=st.seat, A=AV_OF[b], x=st.bySeat[b];
  var tabs='<div class="avs-subs avm-tabs" role="group" aria-label="Menu">'+AV_FACES.map(function(f){var on=AV.face===f[0];
@@ -1098,7 +1136,7 @@ function avMenu(st){
   +'<div><div class="av-pn">'+A.nm+'</div><p class="av-pa">'+AV_THE[b]+'</p></div>'
   +(x&&x.c!=null?'<span class="av-pp">'+fmtPct('complete',x.c)+'<small>Complete</small></span>':'')+'</div>';
  return '<aside class="av-card av-panel avm" style="--c:'+seatCol(b)+'">'+tabs+hd
-  +(x&&!editing?avSeatWritten(st,b,x):'')+'</aside>';}
+  +(x&&!editing?avSeatWritten(st,b,x):'')+avGraphHTML(st)+'</aside>';}
 /* what the sniffer hears while the release line is typed: where it lands,
    the person's own words that placed it, and any fetter it named, as chips.
    The sentence that said "Lands at" is gone; the seat chip carries it. */
@@ -1723,7 +1761,7 @@ function renderAvatar(){
     another profile starts them over rather than carrying one person's draft
     onto somebody else's avatar. */
  var who=S.who+'|'+(CURP&&CURP.id);
- if(AV.who!==who){AV.who=who; AV.arch=null; AV.trace=null; AV.q=null; AV.seat=null;
+ if(AV.who!==who){AV.who=who; AV.arch=null; AV.trace=null; AV.q=null; AV.seat=null; AV.graphOpen=false;
   AV.ask={}; AV.drafts={}; AV.edit=null; AV.tag=null; AV.tagOpen=false; AV.tagQ='';
   AV.idEdit=false; AV.side=null;}
  if(!AV.sub)AV.sub='becoming';
@@ -1807,9 +1845,10 @@ function avBind(host,st){
     another seat does not follow it there. */
  on('[data-avsat]',function(el){
   var A=AV_AREAS.filter(function(x){return x.k===el.dataset.avsat;})[0]; if(!A)return;
-  AV.seat=A.b; AV.edit=null; AV.face='story'; AV.tag=null; AV.tagOpen=false; AV.tagQ='';
+  AV.seat=A.b; AV.edit=null; AV.face='story'; AV.tag=null; AV.tagOpen=false; AV.tagQ=''; AV.graphOpen=false;
   renderAvatar();});
  on('[data-avface]',function(el){AV.face=el.dataset.avface==='iq'?'iq':'story'; renderAvatar();});
+ on('[data-avgraph]',function(){AV.graphOpen=!AV.graphOpen;renderAvatar();});
  /* the story row on an archetype is a door to that seat's ring */
  on('[data-avgo]',function(el){if(BANDS.indexOf(el.dataset.avgo)<0)return;
   AV.sub='becoming'; AV.seat=el.dataset.avgo; AV.face='story'; AV.edit=null; AV.tag=null; renderAvatar();});

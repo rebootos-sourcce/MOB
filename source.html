@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2742 a5910867 2026-11-01 00:52"><head><meta charset="utf-8">
+<html lang="en" data-build="v2802 73627a28 2026-11-02 15:10"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -5547,6 +5547,16 @@ body.quiet .av-pulse,body.rm .av-pulse{animation:none}
 .av-wcore-nm{font-size:16px;font-weight:600;color:var(--ink);margin-top:6px}
 /* the panel beside the ring */
 .av-panel{border-top:3px solid var(--c,var(--edge-2))}
+/* The read-only Connections door belongs to the selected seat's menu.
+   A real style (not a lint exemption); closed by default and 44px tappable. */
+.avs-graph{margin-top:14px;padding-top:9px;border-top:1px solid var(--edge);min-width:0}
+.avs-graph [data-avgraph]{min-height:44px;width:100%;display:block;text-align:left;
+ padding:10px 12px;border:1px solid var(--edge-2);border-radius:var(--r);
+ color:var(--ink);background:var(--panel-2);font:inherit;cursor:pointer}
+.avs-graph [data-avgraph]:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.av-graph-list{margin:8px 0;padding:0;list-style:none;max-width:100%}
+.av-graph-list>li{padding:9px 0;border-bottom:1px solid var(--edge);overflow-wrap:anywhere}
+.av-graph-list .av-pa{display:block}
 .av-ph{display:flex;align-items:center;gap:12px;margin-bottom:12px}
 .av-ph>div{flex:1 1 auto;min-width:0}
 .av-pic{flex:0 0 auto;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
@@ -26708,6 +26718,142 @@ function loopRead(p,reading){
  return out;}
 
 try{window.__at&&window.__at('engine/loop.js');}catch(e){}
+/* ATUNED Avatar graph projection v0.8. Pure, read-only. Canon: trace.js/read.js. */
+var AVATAR_GRAPH=(function(){
+'use strict';
+var VERSION=2,CAP=16,SEATS=['Root','Sacral','Solar','Heart','Throat','3rd Eye','Crown'];
+var CHAIN=['saboteur','complex','hyper_complex','super_complex'], TYPES=['pattern'].concat(CHAIN);
+var PROVENANCE=['known','inferred','proposed','user_confirmed','observed'];
+var REL=['supports','obstructs','reinforces','addresses','targets','implements','executes','produces','contradicts','replaces','requires','measures','occurs_in','generalizes_to','transfers_to'];
+var CANONICAL_REL=REL.concat(['causes','associated_with','precedes','follows']);
+function key(t,id){return t+':'+id;}
+function kind(k){return String(k).slice(0,String(k).indexOf(':'));}
+function own(o,k){return Object.prototype.hasOwnProperty.call(o,k);}
+function nr(s){
+ if(!s||typeof s!=='object')return null;
+ if(s.kind==='seat'&&typeof s.id==='string'){var b=SEATS.filter(function(x){return x.toLowerCase()===s.id.toLowerCase();})[0];return b?{kind:'seat',id:b}:null;}
+ if(s.kind==='pattern'&&/^(?:0|[1-9]\d{0,2})$/.test(String(s.id)))return {kind:'pattern',id:String(s.id)};
+ if(s.kind==='structure'&&CHAIN.indexOf(s.type)>=0&&typeof s.id==='string'&&s.id.length>0&&s.id.length<=120&&!/[\u0000-\u001f]/.test(s.id))return {kind:'structure',type:s.type,id:s.id};
+ return null;
+}
+function base(status,notice){return {v:VERSION,status:status,readingStatus:'not_measured',selection:null,nodes:[],edges:[],
+ evidence:{known:0,inferred:0,proposed:0,user_confirmed:0,observed:0,storyLinks:0,confirmed:0,rejected:0,conflicted:0},
+ graph:{alg:null,gaps:0,refused:0,flagged:0},truncated:false,notice:notice||'Registration is not causation. An inference is not a diagnosis.'};}
+function verdict(p,id){
+ var yes=false,no=false,arr=p&&p.story&&Array.isArray(p.story.entries)?p.story.entries:[];
+ arr.forEach(function(e){var o=e&&e.ob;if(!o)return;
+ if(Array.isArray(o.yes)&&o.yes.some(function(x){return String(x)===id;}))yes=true;
+ if(Array.isArray(o.no)&&o.no.some(function(x){return String(x)===id;}))no=true;});
+ return yes&&no?'conflicted':no?'rejected':yes?'confirmed':'not_recorded';
+}
+function personal(e,reading){
+ if(!e||e.edge==='causes'||REL.indexOf(e.edge)<0||PROVENANCE.indexOf(e.src)<0)return false;
+ if(e.src==='user_confirmed'||e.src==='observed')return true;
+ if(e.src==='inferred'&&kind(e.from)==='story'&&kind(e.to)==='pattern'&&e.edge==='supports')return true;
+ if(reading&&e.src==='inferred'&&e.edge==='supports'&&
+ ((kind(e.from)==='pattern'&&kind(e.to)==='saboteur')||
+ (CHAIN.indexOf(kind(e.from))>=0&&CHAIN.indexOf(kind(e.to))>=0)))return true;
+ return false;
+}
+function relation(e){return !!(e&&e.edge!=='causes'&&REL.indexOf(e.edge)>=0&&TYPES.indexOf(kind(e.from))>=0&&TYPES.indexOf(kind(e.to))>=0&&
+ (e.edge==='supports'||e.edge==='obstructs'||e.edge==='reinforces')&&PROVENANCE.indexOf(e.src)>=0&&e.src!=='known');}
+function safeNode(n,p){
+ var id=String(n.id),type=n.type,st=type==='pattern'?verdict(p,id):'not_recorded';
+ var label=type==='pattern'?String(n.name||n.fetter||('Address '+id)):id;
+ return {key:key(type,id),type:type,label:label.slice(0,120),seat:typeof n.seat==='string'?n.seat:null,
+ provenance:PROVENANCE.indexOf(n.src)>=0?n.src:'inferred',status:st,
+ weight:CHAIN.indexOf(type)>=0&&typeof n.w==='number'&&isFinite(n.w)?n.w:null};
+}
+function project(args){
+ args=args||{};
+ if(args.authorized!==true)return base('access_denied','No authorized active profile supplied.');
+ var p=args.profile,e=args.engine,s=nr(args.selection);
+ if(!p||typeof p!=='object'||typeof p.id!=='string'||!p.id)return base('no_record','No active record.');
+ if(!e||typeof e.traceFromRecord!=='function'||typeof e.traceNeighbors!=='function')return base('unavailable','Canonical trace engine unavailable.');
+ if(!s)return base('unsupported_selection','No canonical target for this Avatar element.');
+ var r=args.reading;
+ if(r!=null&&(typeof r!=='object'||r.rec!==p.id))return base('reading_mismatch','The reading does not belong to this record.');
+ var out=base('no_evidence');out.selection=s;out.readingStatus=r&&!r.unread?'measured':'not_measured';
+ var intents=[];
+ if(p.practice&&typeof e.practiceTraceIntents==='function'){
+  try{intents=e.practiceTraceIntents(p.practice);}catch(x){return base('unavailable','Practice graph intents could not be read.');}
+  if(!Array.isArray(intents))return base('unavailable','Invalid canonical practice graph intents.');
+ }
+ var g;
+ try{g=e.traceFromRecord(p,intents,r||undefined);}catch(x){return base('unavailable','Canonical graph read failed.');}
+ if(!g||!Array.isArray(g.nodes)||!Array.isArray(g.edges))return base('unavailable','Invalid canonical graph.');
+ out.graph={alg:typeof g.alg==='number'?g.alg:null,gaps:Array.isArray(g.gaps)?g.gaps.length:0,refused:Array.isArray(g.refused)?g.refused.length:0,flagged:0};
+ if(r&&Array.isArray(g.refused)&&g.refused.some(function(x){return x&&x.reading;})){
+ out.status='graph_refused';out.notice='The canonical engine refused this structural reading.';return out;}
+ /* Isolate noncanonical data: flag the source, not the person or whole product.
+    Invalid nodes and edges cannot become evidence; all valid connections survive. */
+ var lookup=Object.create(null),personalNodes=Object.create(null),edges=[],validNodes=[],validEdges=[];
+ g.nodes.forEach(function(n){
+  if(n&&TYPES.indexOf(n.type)>=0){
+   if(PROVENANCE.indexOf(n.src)<0){out.graph.flagged++;return;}
+   lookup[key(n.type,n.id)]=n;validNodes.push(n);}
+ });
+ g.edges.forEach(function(x){
+  if(!x||CANONICAL_REL.indexOf(x.edge)<0||PROVENANCE.indexOf(x.src)<0){out.graph.flagged++;return;}
+  validEdges.push(x);
+  if(x.edge==='causes')return;
+  if(personal(x,r&&!r.unread)){personalNodes[x.from]=true;personalNodes[x.to]=true;}
+  if(relation(x))edges.push(x);
+ });
+ var roots=[];
+ if(s.kind==='seat')roots=validNodes.filter(function(n){return n.type==='pattern'&&n.seat===s.id&&personalNodes[key(n.type,n.id)];});
+ else {var wanted=s.kind==='pattern'?key('pattern',s.id):key(s.type,s.id);
+  if(own(lookup,wanted)&&personalNodes[wanted])roots=[lookup[wanted]];}
+ function score(n){var k=key(n.type,n.id),v=verdict(p,String(n.id));
+  var story=validEdges.some(function(x){return x&&x.to===k&&kind(x.from)==='story'&&x.edge==='supports';});
+  return (v==='confirmed'?8:v==='conflicted'?4:v==='rejected'?-8:0)+(story?2:0);}
+ roots.sort(function(a,b){return score(b)-score(a)||key(a.type,a.id).localeCompare(key(b.type,b.id));});
+ var limit=Number.isInteger(args.limit)?Math.max(1,Math.min(CAP,args.limit)):10;
+ var seen=Object.create(null),picked=[];
+ function add(n){var k=key(n.type,n.id);if(!lookup[k]||seen[k])return;
+ if(picked.length>=limit){out.truncated=true;return;}seen[k]=true;picked.push(n);}
+ roots.forEach(add);
+ /* Invalid neighbor results are a provider failure, not an empty personal finding.
+    Fail closed rather than quietly dropping a relationship or throwing at the UI. */
+ var neighborFailure=false;
+ roots.forEach(function(n){
+  if(neighborFailure)return;
+  var near;
+  try{near=e.traceNeighbors(g,key(n.type,n.id));}catch(x){neighborFailure=true;return;}
+  if(!Array.isArray(near)){neighborFailure=true;return;}
+  near.forEach(function(x){if(x&&own(lookup,x.key)&&personalNodes[x.key]&&
+   edges.some(function(y){return (y.from===x.key&&y.to===key(n.type,n.id))||(y.to===x.key&&y.from===key(n.type,n.id));}))add(lookup[x.key]);});
+ });
+ if(neighborFailure)out.graph.flagged++;
+ out.nodes=picked.map(function(n){var x=safeNode(n,p);
+ if(x.status==='confirmed')out.evidence.confirmed++;
+ if(x.status==='rejected')out.evidence.rejected++;
+ if(x.status==='conflicted')out.evidence.conflicted++;
+ return x;});
+ var chosen=Object.create(null);out.nodes.forEach(function(n){chosen[n.key]=1;});
+ var edgeSeen=Object.create(null),storySeen=Object.create(null);
+ validEdges.forEach(function(x){if(x.edge==='causes')return;
+ if(chosen[x.to]&&kind(x.from)==='story'&&x.edge==='supports'){
+ var sk=JSON.stringify([x.from,x.to]);
+ if(!storySeen[sk]){storySeen[sk]=1;out.evidence.storyLinks++;}}
+ if(chosen[x.from]&&chosen[x.to]&&relation(x)){
+ var ek=JSON.stringify([x.from,x.to,x.edge,x.src]);
+ if(edgeSeen[ek])return;
+ edgeSeen[ek]=1;
+ if(out.edges.length>=64){out.truncated=true;return;}
+ if(own(out.evidence,x.src))out.evidence[x.src]++;
+ out.edges.push({from:x.from,to:x.to,relationship:x.edge,provenance:x.src});}
+ });
+ out.status=out.nodes.length?(out.graph.refused||out.graph.flagged?'partial':'ready'):'no_evidence';
+ if(out.status==='partial')out.notice='Some connections are flagged or refused; supported evidence is still shown.';
+ if(out.status==='no_evidence'&&out.graph.flagged)out.notice='Noncanonical connections flagged; no verified personal connections to show.';
+ return out;
+}
+return {version:VERSION,seats:SEATS.slice(),project:project};
+})();
+if(typeof module!=='undefined'&&module.exports&&typeof __filename!=='undefined'&&/avatargraph\.js$/.test(__filename))module.exports=AVATAR_GRAPH;
+
+try{window.__at&&window.__at('engine/avatargraph.js');}catch(e){}
 /* ============================================================
    A WORKED EXAMPLE'S HISTORY, for the practitioner page. Round QB, the
    owner's words: "The practitioner page, when I select somebody within my
@@ -34997,6 +35143,8 @@ if(typeof module!=='undefined'&&module.exports){
                   traceFromRecord:traceFromRecord, traceStoryIds:traceStoryIds, traceRitualIds:traceRitualIds,
   /* the loop read, engine/loop.js: the one read of the graph a screen asks */
                   loopRead:loopRead, LOOP_SHOW:LOOP_SHOW,
+  /* read-only avatar graph, no independent scores, no writes */
+                  avatarGraphProject:AVATAR_GRAPH.project, AVATAR_GRAPH_VERSION:AVATAR_GRAPH.version,
   /* a worked example's history, engine/pracex.js, for the practitioner page */
                   PRACEX_DAYS:PRACEX_DAYS, PRACEX_HIST:PRACEX_HIST, pracexRecord:pracexRecord,
                   pracexDays:pracexDays, pracexRead:pracexRead,
@@ -56116,6 +56264,44 @@ function avRuleHTML(st,b,x){
    the two boxes, see avSides; the story face keeps the seat, the tags and the
    rule, and the boxes stay beside the ring whichever face is pressed. */
 var AV_FACES=[['story','Your story'],['iq','Intake questions']];
+/* The Trace Graph is the evidence owner. This is one collapsed read-only door
+   from a chosen seat; it never walks the graph itself or opens another score.
+   No worked example reads an owner's private record. */
+function avGraphHTML(st){
+ if(!avOwn()||typeof AVATAR_GRAPH==='undefined')return '';
+ var b='<button type="button" data-avgraph="1" aria-expanded="'+!!AV.graphOpen+'"'
+  +' style="display:block;min-height:44px;width:100%;margin-top:10px;text-align:left"'
+  +'>Connections'+(AV.graphOpen?' −':' +')+'</button>';
+ if(!AV.graphOpen)return '<section class="avs-graph" aria-label="Connections">'+b+'</section>';
+ var rd=null;
+ try{rd=readSeenOf(CURP);}catch(err){rd=null;}
+ var e={traceFromRecord:traceFromRecord,traceNeighbors:traceNeighbors};
+ if(typeof practiceTraceIntents==='function')e.practiceTraceIntents=practiceTraceIntents;
+ var g=AVATAR_GRAPH.project({authorized:avOwn(),profile:CURP,reading:rd,
+  selection:{kind:'seat',id:st.seat},engine:e,limit:6});
+ var body='';
+ if(g.status==='no_evidence'){
+  body='<p class="av-p">No personal connections recorded at this seat.</p>';
+  if(g.graph&&g.graph.flagged)body+='<p class="av-p">Some connections were flagged and excluded.</p>';
+ }
+ else if(g.status!=='ready'&&g.status!=='partial')
+  body='<p class="av-p">Connections are unavailable for this reading.</p>';
+ else{
+  var qual=function(x){
+   if(x.type!=='pattern')return 'Inferred';
+   return x.status==='confirmed'?'Confirmed':x.status==='rejected'?'Not me':
+    x.status==='conflicted'?'Conflicting answers':'Not confirmed';
+  };
+  body='<ul class="av-graph-list" style="margin:8px 0;padding:0;list-style:none">'
+   +g.nodes.map(function(n){
+    return '<li style="padding:9px 0;border-bottom:1px solid var(--line)">'
+     +'<b>'+esc(n.label)+'</b><span class="av-pa" style="display:block">'
+     +esc(qual(n))+'</span></li>';}).join('')+'</ul>';
+  if(g.truncated)body+='<p class="av-p">More connections exist.</p>';
+  if(g.status==='partial')body+='<p class="av-p">Some connections were flagged or refused; supported connections remain visible.</p>';
+ }
+ return '<section class="avs-graph" aria-label="Connections">'+b+body+'</section>';
+}
 function avMenu(st){
  var b=st.seat, A=AV_OF[b], x=st.bySeat[b];
  var tabs='<div class="avs-subs avm-tabs" role="group" aria-label="Menu">'+AV_FACES.map(function(f){var on=AV.face===f[0];
@@ -56127,7 +56313,7 @@ function avMenu(st){
   +'<div><div class="av-pn">'+A.nm+'</div><p class="av-pa">'+AV_THE[b]+'</p></div>'
   +(x&&x.c!=null?'<span class="av-pp">'+fmtPct('complete',x.c)+'<small>Complete</small></span>':'')+'</div>';
  return '<aside class="av-card av-panel avm" style="--c:'+seatCol(b)+'">'+tabs+hd
-  +(x&&!editing?avSeatWritten(st,b,x):'')+'</aside>';}
+  +(x&&!editing?avSeatWritten(st,b,x):'')+avGraphHTML(st)+'</aside>';}
 /* what the sniffer hears while the release line is typed: where it lands,
    the person's own words that placed it, and any fetter it named, as chips.
    The sentence that said "Lands at" is gone; the seat chip carries it. */
@@ -56752,7 +56938,7 @@ function renderAvatar(){
     another profile starts them over rather than carrying one person's draft
     onto somebody else's avatar. */
  var who=S.who+'|'+(CURP&&CURP.id);
- if(AV.who!==who){AV.who=who; AV.arch=null; AV.trace=null; AV.q=null; AV.seat=null;
+ if(AV.who!==who){AV.who=who; AV.arch=null; AV.trace=null; AV.q=null; AV.seat=null; AV.graphOpen=false;
   AV.ask={}; AV.drafts={}; AV.edit=null; AV.tag=null; AV.tagOpen=false; AV.tagQ='';
   AV.idEdit=false; AV.side=null;}
  if(!AV.sub)AV.sub='becoming';
@@ -56836,9 +57022,10 @@ function avBind(host,st){
     another seat does not follow it there. */
  on('[data-avsat]',function(el){
   var A=AV_AREAS.filter(function(x){return x.k===el.dataset.avsat;})[0]; if(!A)return;
-  AV.seat=A.b; AV.edit=null; AV.face='story'; AV.tag=null; AV.tagOpen=false; AV.tagQ='';
+  AV.seat=A.b; AV.edit=null; AV.face='story'; AV.tag=null; AV.tagOpen=false; AV.tagQ=''; AV.graphOpen=false;
   renderAvatar();});
  on('[data-avface]',function(el){AV.face=el.dataset.avface==='iq'?'iq':'story'; renderAvatar();});
+ on('[data-avgraph]',function(){AV.graphOpen=!AV.graphOpen;renderAvatar();});
  /* the story row on an archetype is a door to that seat's ring */
  on('[data-avgo]',function(el){if(BANDS.indexOf(el.dataset.avgo)<0)return;
   AV.sub='becoming'; AV.seat=el.dataset.avgo; AV.face='story'; AV.edit=null; AV.tag=null; renderAvatar();});
@@ -85119,5 +85306,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005609470"></div>
+<div id="eof" hidden data-len="005621738"></div>
 </body></html>

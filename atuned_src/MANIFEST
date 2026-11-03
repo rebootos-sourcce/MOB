@@ -37,6 +37,7 @@ engine/journey.js
 engine/practice.js
 engine/valuefelt.js
 engine/loop.js
+engine/avatargraph.js
 engine/pracex.js
 engine/exdepth.js
 engine/intake.js

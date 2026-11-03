@@ -1,0 +1,74 @@
+name: Avatar stand-up candidate (no deployment)
+# Isolated engineer's build. This workflow never publishes or modifies main.
+# It has read-only contents permission and only runs on the review branch.
+on:
+  push:
+    branches:
+      - work/avatar-graph-readonly-v08-20261101
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: avatar-standup-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  candidate:
+    if: github.ref == 'refs/heads/work/avatar-graph-readonly-v08-20261101'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Read-only checkout
+        uses: actions/checkout@v4
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install delivery compiler without writing a lockfile
+        run: npm install --no-audit --no-fund --no-save typescript
+      - name: Canonical engine and self-contained app build
+        run: |
+          ./atuned_src/BUILD-engine.sh
+          ./atuned_src/BUILD.sh
+          ./funnel/BUILD-single.sh
+      - name: Read-only Avatar Graph and canonical engine acceptance
+        run: |
+          node tests/avatargraph.js
+          node tests/avatargraph-runtime.js
+          node tests/avatargraph-ui-contract.js
+          node tests/engine.js
+      - name: Assemble shareable local candidate without publishing
+        run: |
+          mkdir -p avatar-candidate
+          cp atuned-packed.html avatar-candidate/atuned.html
+          cp source.html avatar-candidate/source.html
+          cp engine.js avatar-candidate/engine.js
+          cp funnel/dist/*.html avatar-candidate/
+          cp funnel/dist/atuned-funnel.html avatar-candidate/index.html
+          {
+            echo "ATUNED Avatar standalone build candidate"
+            echo "Source commit: $(git rev-parse HEAD)"
+            echo "This artifact was built in GitHub Actions from canonical source."
+            echo "Open index.html or atuned.html in a browser to review."
+            echo "This is not a deployed production site or approval of every subsystem."
+          } > avatar-candidate/README.txt
+          cd avatar-candidate
+          sha256sum *.html engine.js > SHA256SUMS
+          test -s atuned.html
+          test -s index.html
+          test -s atuned-quiz.html
+          grep -q 'data-build=' atuned.html
+          ls -lh .
+      - name: Attach candidate only to this GitHub Actions run
+        uses: actions/upload-artifact@v4
+        with:
+          name: atuned-avatar-standup-candidate-${{ github.run_number }}
+          path: avatar-candidate/
+          if-no-files-found: error
+          retention-days: 14
