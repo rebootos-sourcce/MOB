@@ -864,7 +864,11 @@ function kbOpen(x){
   var r=computeSeen(), live=r.sabs.filter(function(s){return s.nm===x.o.nm;})[0];
   if(live){S.pin=live; runDrill(live); render(); return;}
   runSabDrill(x.o); return;}
- if(x.k==='harm'){runKbDrill('Harmonic element '+x.o.c, x.o.t, HARM_AX[x.o.a]||x.o.a, x.o.ch); return;}
+ /* the real definition, pulled from the book's own Harmonic Table entry for
+    this law. Where that extraction found no safe match (E43, Responsibility,
+    folded into Ownership/E40 in the current build) this falls back to the
+    chapter pointer exactly as before. */
+ if(x.k==='harm'){runKbDrill('Harmonic element '+x.o.c, x.o.t, HARM_AX[x.o.a]||x.o.a, x.o.d||x.o.ch); return;}
  if(x.k==='gloss'){runKbDrill('Glossary', x.o.t, '', x.o.d); return;}
  if(x.k==='dom'){runDomDrill(x.o); return;}
  /* the archetype and the mask drills live in drills.js now, because the
