@@ -61,6 +61,12 @@ for(const p of terr){
  assert.ok(row,'reconciliation slot for '+p.id);
  assert.equal(row.viceId,p.polarity.viceId,'unchanged vice ID');
  assert.equal(row.capacityId,p.polarity.virtueId,'unchanged constructive pole');
+ assert.equal(row.behavioralOscillation.defensiveMotion,p.oscillationMechanics.defaultMotion,
+  'mechanical movement copied from actual terrace source, not fabricated');
+ assert.equal(row.behavioralOscillation.constructiveMotion,p.oscillationMechanics.constructiveMotion,
+  'constructive movement copied from source');
+ assert.deepEqual(row.behavioralOscillation.observableEvidence,p.observableEvidence,
+  'vice/capacity observational counterexamples preserved exactly');
  assert.equal(row.narcissismLayer.namedMechanism,null,'do not invent medical or semantic mapping');
  assert.equal(row.narcissismLayer.isClinicalClassification,false,'no diagnosis');
  assert.ok(sceneIds.has(row.boardSceneId),'real Board scene for '+p.id);
