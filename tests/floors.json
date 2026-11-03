@@ -43,7 +43,7 @@
     "alpha-journey": 0
   },
   "floors": {
-    "engine": 6594,
+    "engine": 6612,
     "funnel-package": 44,
     "boot": 29,
     "collide": 388,
@@ -82,7 +82,7 @@
     "valuefeltui": 20,
     "record": 24,
     "paywall": 577,
-    "safepage": 94,
+    "safepage": 104,
     "allowance": 84,
     "money": 71,
     "releasechain": 48,
