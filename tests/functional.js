@@ -7803,6 +7803,15 @@ await require('./helpstamp.js').helpStampGate(browser,FILE,ok,booted);
 console.log('\n=== the left menu: r1, two families on one grammar, every word with its meaning ===');
 await require('./railmenu.js').railMenuGate(browser,FILE,ok,booted);
 
+/* THE JOURNAL'S FULL VIEW, tests/stfull.js, 2 November. His words: "use a
+   left menu and the right menu." Its first job is the precondition the plan
+   put ahead of everything else: in Full, with chat on, the crisis door is
+   still reached by real presses and the three numbers are on screen. Then
+   the left rail's Energy, the fold's own key, and Simple left as it was. A
+   file of its own so it can run alone, called here so a full run holds it. */
+console.log('\n=== the Journal\'s Full view, and the crisis door inside it ===');
+await require('./stfull.js').stFullGate(browser,FILE,ok,booted);
+
 await browser.close();
 
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');

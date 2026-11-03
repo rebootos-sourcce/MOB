@@ -746,11 +746,22 @@ var LCOL_BESIDE='(min-width:1181px)';
    read should not end in two open rails of readings. Its own key, the
    Compass's pattern, so a choice made on the Field does not open it here and
    a person who opens it here keeps it open here. */
+/* AND THE JOURNAL HAS ITS OWN, 2 November. It fell through to the Field's
+   'lcol', so the Journal and the Field fought over one fold: recorded 28
+   October at head.html's "THE LEFT COLUMN IS GONE FROM THE STORY TOO", where
+   the Field's open rail turned up over the Journal. The column comes back on
+   the Journal in the Full view only, his words "use a left menu and the right
+   menu", and there it is the Full view's own left rail (ui/stdash.js), the
+   thing a person pressed Dashboard to see. So it defaults open at every
+   width, Flow's reason: a rail that arrives shut on the view that exists to
+   show it is a control hidden with no affordance. Its own key, so a fold made
+   here never moves the Field's and the Field's never moves this one. */
 function colKey(){
  if(typeof TAB==='undefined'||!S)return 'lcol';
  if(S.tab===TAB.COMPASS)return 'lcolc';
  if(S.tab===TAB.RITUAL)return 'lcolf';
  if(S.tab===TAB.KNOW)return 'lcolk';
+ if(S.tab===TAB.STORY)return 'lcols';
  return 'lcol'; }
 function colShut(){
  var beside=true; try{beside=matchMedia(LCOL_BESIDE).matches;}catch(e){}
@@ -758,7 +769,7 @@ function colShut(){
  /* only a store with nothing in it defaults, and what it defaults to is the
     surface's own answer: shut where the column is a rail, open where it is
     the menu the surface is for, and shut at every width on Knowledge */
- var dflt=(k==='lcolf')?false:(k==='lcolk')?true:beside;
+ var dflt=(k==='lcolf'||k==='lcols')?false:(k==='lcolk')?true:beside;
  var shut=dflt;
  try{var got=STORE.get(k); shut=got?(got==='shut'):dflt;}catch(e){shut=false;}
  return shut;}

@@ -3153,3 +3153,23 @@ list, read by the owner rather than only by a seat.
   A ninth term appears in neither. Building a koshas row would mean choosing
   one of three incompatible lists the book gives for itself, which is a
   finding for that file, not a build for this one.
+
+## The Journal's Full view gets a left menu and a right menu, 2 November
+
+His words: "use a left menu and the right menu." For the Journal's Full view only. Simple is unchanged.
+
+- **It is not a new screen.** The Journal already has a Full and a Simple view: the Dashboard button (`#stdash`, `ui/storyui.js`) sets `STV.dash`, and Simple is where a person lands, his 29 October words "when I land on this page it starts off in simple mode." This ruling fills the Full view's two sides. Pressing Dashboard now also brings back the left column, carrying the Journal's own left rail (`#stleft`, drawn by `ui/stdash.js`) and nothing of the Field's.
+- **Simple keeps no left column,** exactly as ruled 28 October ("we're going to get rid of the left-hand menu"). That ruling's real fault was whose column it was: the Field's rail, under the Field's fold key. In Full the column is the Journal's, under its own fold key (`lcols`, `colKey` in `ui/ui.js`), so a fold made on the Journal never moves the Field's and the reverse.
+- **The right menu is the one the Journal already has.** The bank still opens Imprints and Selection in the right rail (`.st-rail`, `#imp`). Nothing was rebuilt for it.
+- **The left rail's first section is Energy:** all seven seats, Root to Crown, read off this story's own words (`parseStory` bands, the same per-seat scale the Journal's chart already springs to). It says "Nothing read yet" and draws no ring until a story is written.
+
+Seat defaults taken with it, recorded as decided and not asked:
+
+- **Six channels, with Say dropped.** The 26 September ruling above (item 2, "Six channels or nine. RULED SIX"): believing, perceiving, thinking, behaving, acting, feeling. Speaking, saying and doing are not channels, so no Say channel appears anywhere in the Full view.
+- **The Story's commit button keeps its name, Commit.** It is not renamed Release. Release is already taken: it is the third column's name and the release card it opens (23 October entry above), and one word per concept holds.
+- **Energy reads this story, not the whole record.** The record's Energy is the Field's, on the Field's own left rail. The Journal's says so under its heading ("What this story puts at each of the seven seats"), so one word never names two readings on one screen.
+- **The left rail is Full only.** It is hidden in Simple and on every other tab, and emptied when it is hidden, so a hidden rail never holds a stale reading.
+
+Not built yet, because each needs new engine work or a ruling first: Action, Compass, a laws grid, Channels, Patterns, Boundary, and Feelings as a cycling widget. The laws panel the Story page already has is left as it is. A kept and broken laws grid was proposed and is not taken: it needs his ruling.
+
+Held by `tests/stfull.js`, called from `tests/functional.js`. Its first job is the safety precondition: in Full, with chat on, the crisis door is still reached by real presses (profile button, "Is this a crisis?", "Reach someone now") and the three numbers (988, 741741, 911) are on screen and pressable. That was already true before this change and is now held. This is the voluntary door only; there is still no automatic reading of what a person writes.

@@ -72,6 +72,16 @@ function rmCascade(items,stagger,base,cap){
 function rmVisible(sel,scope){
  var pr=document.getElementById('lpanel').getBoundingClientRect(), out=[];
  scope.querySelectorAll(sel).forEach(function(el){
+  /* NOT THE JOURNAL'S FULL VIEW RAIL, 2 November (#stleft, ui/stdash.js).
+     It is repainted on every key and every turn by stPaintAll, so an
+     entrance aimed at it lands on an element about to be replaced, and its
+     stagger is timed against the Field's readings bars, which are not on
+     the Journal: measured at 1600, the Energy heading was drawn, went to
+     nothing about 900 ms after Dashboard was pressed, and came back by 1400.
+     A heading that blinks out after it was read is motion saying something
+     changed when nothing did, which the Journal's own chart already refuses
+     (the head of stRender in ui/storyui.js). */
+  if(el.closest&&el.closest('.st-lrail'))return;
   var r=el.getBoundingClientRect(); if(!r.width||r.bottom<=pr.top||r.top>=pr.bottom)return;
   out.push({el:el,r:r,tile:el.classList.contains('ib')||el.classList.contains('rootb')||el.classList.contains('aw-c')});});
  return out;}
