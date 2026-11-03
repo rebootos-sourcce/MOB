@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - 'atunED/teachers-poles-ascent-alpha-2026-10-25'
+      - 'work/compass-board-contract-2026-11-03'
   workflow_dispatch:
 jobs:
   validate:
@@ -24,6 +25,8 @@ jobs:
         run: sh ./atuned_src/BUILD-engine.sh
       - name: Check Hero Journey coordinates and milestones
         run: node tests/herojourney.js
+      - name: Reconcile Compass realms, archetypes, and seven terrace boundaries
+        run: node tests/compass-board-contract.js
       - name: Core 10 to full 21 self-report boundary
         run: node tests/diagnostic3.js
       - name: Existing engine contract suite
