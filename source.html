@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2817 943088f1 2026-11-04 20:43"><head><meta charset="utf-8">
+<html lang="en" data-build="v2819 792ecfa9 2026-11-04 20:44"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -9173,8 +9173,20 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
          Games template. engine/core.js has the ruling in full. -->
     <button type="button" class="vt tabtop" data-tabk="4" aria-pressed="false" title="Analytics. Follow each pattern down to what holds it in place."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 20V10M11 20V4M17.5 20v-7"/></svg><span class="n">Analytics</span></button>
    </div>
-   <div class="tabgrp" data-sec="flow" role="group" aria-label="Flow"><span class="tabgrp-hd" aria-hidden="true">Flow</span>
-    <button type="button" class="vt tabtop" data-tabk="10" aria-pressed="false" title="Ritual. Build a ritual, do it, and see what you kept."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.4c.9 2.9 4.6 4.9 4.6 9.3a4.6 4.6 0 0 1-9.2 0c0-2.3 1.1-3.7 2.3-4.8.3 1.5 1 2.4 2 2.7-.5-2.8 0-5.1.3-7.2z"/><path d="M8 21h8"/></svg><span class="n">Ritual</span></button>
+   <!-- FLOW'S ONE DOOR, 3 November. His words: "When I click on flow, it
+        should automatically take me to ritual. I shouldn't have a sub menu
+        that says ritual. Just like discover goes straight to story." Same
+        fact as Discover's block above, door:'section' in engine/core.js:
+        Flow has one real tab, Ritual, so the section button is the door and
+        the row under it shows no second door above the phone width. The
+        tabgrp-hd header is gone for the same reason Discover's never had
+        one: a word under a button already reading that section would be
+        Flow's name printed as a heading over a button that still reads
+        Ritual, which is not what he asked for either. On a phone the section
+        buttons leave the bar and this becomes the menu's line for Flow,
+        reading Ritual, same as Discover's line reads Discover. -->
+   <div class="tabgrp" data-sec="flow" data-door="section" role="group" aria-label="Flow">
+    <button type="button" class="vt tabtop" data-tabk="10" data-door="section" aria-pressed="false" title="Ritual. Build a ritual, do it, and see what you kept."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.4c.9 2.9 4.6 4.9 4.6 9.3a4.6 4.6 0 0 1-9.2 0c0-2.3 1.1-3.7 2.3-4.8.3 1.5 1 2.4 2 2.7-.5-2.8 0-5.1.3-7.2z"/><path d="M8 21h8"/></svg><span class="n">Ritual</span></button>
     <!-- ACCOUNTABILITY HAS NO BUTTON, round QF. It is the right column of the
          Ritual page, not a page beside it: "Right side of the menu is for the
          accountability tracker." Integer 14 is folded onto 10 in core.js, so
@@ -18953,7 +18965,19 @@ const TABDEF=[
     ritual, the centre is the ritual, the right column is the accountability
     tracker. DESIGN-flow-tools.md is the rulebook and every rule names its
     gate. */
- {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual',  sec:'flow'},
+ /* FLOW IS ITS OWN DOOR, 3 November, on the same rule as Discover above:
+    one real tab in the section, so the section button already is the door.
+    His words: "When I click on flow, it should automatically take me to
+    ritual. I shouldn't have a sub menu that says ritual. Just like discover
+    goes straight to story. Flow, I want going straight to ritual." Flow has
+    exactly one TABDEF entry, this one (Accountability is folded onto it,
+    TABFOLD above, not a sibling tab), so door:'section' here is the same
+    fact Discover's entry states at TAB.STORY: the section's own button is
+    the one real door, and the row under it shows no second door above the
+    phone width (the CSS rule already keyed to data-door="section" in
+    head.html, and shell/body.html's Flow group). The name stays Ritual: he
+    kept the word, unlike Discover/Story, so nothing here renames the tab. */
+ {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual',  sec:'flow',  door:'section'},
  /* "Embody is knowledge." */
  {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know',    sec:'embody'},
  /* The practitioner section's one door. Clients and not Practitioner, on the
@@ -86624,5 +86648,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005707177"></div>
+<div id="eof" hidden data-len="005708966"></div>
 </body></html>

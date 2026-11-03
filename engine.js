@@ -8532,7 +8532,19 @@ const TABDEF=[
     ritual, the centre is the ritual, the right column is the accountability
     tracker. DESIGN-flow-tools.md is the rulebook and every rule names its
     gate. */
- {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual',  sec:'flow'},
+ /* FLOW IS ITS OWN DOOR, 3 November, on the same rule as Discover above:
+    one real tab in the section, so the section button already is the door.
+    His words: "When I click on flow, it should automatically take me to
+    ritual. I shouldn't have a sub menu that says ritual. Just like discover
+    goes straight to story. Flow, I want going straight to ritual." Flow has
+    exactly one TABDEF entry, this one (Accountability is folded onto it,
+    TABFOLD above, not a sibling tab), so door:'section' here is the same
+    fact Discover's entry states at TAB.STORY: the section's own button is
+    the one real door, and the row under it shows no second door above the
+    phone width (the CSS rule already keyed to data-door="section" in
+    head.html, and shell/body.html's Flow group). The name stays Ritual: he
+    kept the word, unlike Discover/Story, so nothing here renames the tab. */
+ {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual',  sec:'flow',  door:'section'},
  /* "Embody is knowledge." */
  {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know',    sec:'embody'},
  /* The practitioner section's one door. Clients and not Practitioner, on the
