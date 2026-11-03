@@ -41,7 +41,8 @@
     "notProduction": true,
     "technicalFailureNonPenalty": true,
     "sourceGraphUnmodified": true,
-    "knownLiteraryBoundaryExceptionsBlocked": true
+    "knownLiteraryBoundaryExceptionsBlocked": true,
+    "behaviorBridgesAreTentative": true
   },
   "stats": {
     "sceneCount": 26,
@@ -62,7 +63,7 @@
     "shadowLawCandidateEdges": 49,
     "indirectLawTraceByRealm": {
       "INFERNO": {
-        "scenesWithPaths": 7,
+        "scenesWithPaths": 8,
         "sceneCount": 9,
         "distinctLaws": 21
       },
@@ -77,7 +78,8 @@
         "distinctLaws": 21
       }
     },
-    "quarantinedCandidatePaths": 6
+    "quarantinedCandidatePaths": 6,
+    "behaviorBridgedAdditionalPaths": 10
   },
   "canonicalLawIds": [
     "canon-law:Truth",
@@ -144,7 +146,538 @@
       ],
       "documentedPurgatorioTerraces": [],
       "documentedParadisoResonances": [],
-      "lawCandidateRoutes": [],
+      "lawCandidateRoutes": [
+        {
+          "lawId": "canon-law:Accountability",
+          "lawName": "Accountability",
+          "via": "LEVEL_BEHAVIOR_TERRACE_CAPACITY_PARADISO",
+          "path": [
+            {
+              "from": "inferno:L01",
+              "to": "inferno:B06",
+              "type": "level_behavior_candidate",
+              "documentedFrom": "inferno:L01",
+              "documentedTo": "inferno:B06",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "inferno:B06",
+              "to": "purgatorio:P04",
+              "type": "purgatorio_maps_to",
+              "documentedFrom": "purgatorio:P04",
+              "documentedTo": "inferno:B06",
+              "reverseTraversal": true,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "purgatorio:P04",
+              "to": "purgatorio:P04-C",
+              "type": "purgatorio_contains",
+              "documentedFrom": "purgatorio:P04",
+              "documentedTo": "purgatorio:P04-C",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "purgatorio:P04-C",
+              "to": "paradiso:PD09",
+              "type": "paradiso_constructive_resonance",
+              "documentedFrom": "paradiso:PD09",
+              "documentedTo": "purgatorio:P04-C",
+              "reverseTraversal": true,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "paradiso:PD09",
+              "to": "canon-law:Accountability",
+              "type": "paradiso_law_resonance",
+              "documentedFrom": "paradiso:PD09",
+              "documentedTo": "canon-law:Accountability",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            }
+          ],
+          "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
+        },
+        {
+          "lawId": "canon-law:Awareness",
+          "lawName": "Awareness",
+          "via": "LEVEL_BEHAVIOR_TERRACE_CAPACITY_PARADISO",
+          "path": [
+            {
+              "from": "inferno:L01",
+              "to": "inferno:B06",
+              "type": "level_behavior_candidate",
+              "documentedFrom": "inferno:L01",
+              "documentedTo": "inferno:B06",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "inferno:B06",
+              "to": "purgatorio:P04",
+              "type": "purgatorio_maps_to",
+              "documentedFrom": "purgatorio:P04",
+              "documentedTo": "inferno:B06",
+              "reverseTraversal": true,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "purgatorio:P04",
+              "to": "purgatorio:P04-C",
+              "type": "purgatorio_contains",
+              "documentedFrom": "purgatorio:P04",
+              "documentedTo": "purgatorio:P04-C",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "purgatorio:P04-C",
+              "to": "paradiso:PD07",
+              "type": "paradiso_constructive_resonance",
+              "documentedFrom": "paradiso:PD07",
+              "documentedTo": "purgatorio:P04-C",
+              "reverseTraversal": true,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "paradiso:PD07",
+              "to": "canon-law:Awareness",
+              "type": "paradiso_law_resonance",
+              "documentedFrom": "paradiso:PD07",
+              "documentedTo": "canon-law:Awareness",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            }
+          ],
+          "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
+        },
+        {
+          "lawId": "canon-law:Duty",
+          "lawName": "Duty",
+          "via": "LEVEL_BEHAVIOR_TERRACE_CAPACITY_PARADISO",
+          "path": [
+            {
+              "from": "inferno:L01",
+              "to": "inferno:B06",
+              "type": "level_behavior_candidate",
+              "documentedFrom": "inferno:L01",
+              "documentedTo": "inferno:B06",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "inferno:B06",
+              "to": "purgatorio:P04",
+              "type": "purgatorio_maps_to",
+              "documentedFrom": "purgatorio:P04",
+              "documentedTo": "inferno:B06",
+              "reverseTraversal": true,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "purgatorio:P04",
+              "to": "purgatorio:P04-C",
+              "type": "purgatorio_contains",
+              "documentedFrom": "purgatorio:P04",
+              "documentedTo": "purgatorio:P04-C",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "purgatorio:P04-C",
+              "to": "paradiso:PD01",
+              "type": "paradiso_constructive_resonance",
+              "documentedFrom": "paradiso:PD01",
+              "documentedTo": "purgatorio:P04-C",
+              "reverseTraversal": true,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "paradiso:PD01",
+              "to": "canon-law:Duty",
+              "type": "paradiso_law_resonance",
+              "documentedFrom": "paradiso:PD01",
+              "documentedTo": "canon-law:Duty",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            }
+          ],
+          "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
+        },
+        {
+          "lawId": "canon-law:Equanimity",
+          "lawName": "Equanimity",
+          "via": "LEVEL_BEHAVIOR_TERRACE_CAPACITY_PARADISO",
+          "path": [
+            {
+              "from": "inferno:L01",
+              "to": "inferno:B06",
+              "type": "level_behavior_candidate",
+              "documentedFrom": "inferno:L01",
+              "documentedTo": "inferno:B06",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "inferno:B06",
+              "to": "purgatorio:P04",
+              "type": "purgatorio_maps_to",
+              "documentedFrom": "purgatorio:P04",
+              "documentedTo": "inferno:B06",
+              "reverseTraversal": true,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "purgatorio:P04",
+              "to": "purgatorio:P04-C",
+              "type": "purgatorio_contains",
+              "documentedFrom": "purgatorio:P04",
+              "documentedTo": "purgatorio:P04-C",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "purgatorio:P04-C",
+              "to": "paradiso:PD07",
+              "type": "paradiso_constructive_resonance",
+              "documentedFrom": "paradiso:PD07",
+              "documentedTo": "purgatorio:P04-C",
+              "reverseTraversal": true,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "paradiso:PD07",
+              "to": "canon-law:Equanimity",
+              "type": "paradiso_law_resonance",
+              "documentedFrom": "paradiso:PD07",
+              "documentedTo": "canon-law:Equanimity",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            }
+          ],
+          "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
+        },
+        {
+          "lawId": "canon-law:Nature",
+          "lawName": "Nature",
+          "via": "LEVEL_BEHAVIOR_TERRACE_CAPACITY_PARADISO",
+          "path": [
+            {
+              "from": "inferno:L01",
+              "to": "inferno:B06",
+              "type": "level_behavior_candidate",
+              "documentedFrom": "inferno:L01",
+              "documentedTo": "inferno:B06",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "inferno:B06",
+              "to": "purgatorio:P04",
+              "type": "purgatorio_maps_to",
+              "documentedFrom": "purgatorio:P04",
+              "documentedTo": "inferno:B06",
+              "reverseTraversal": true,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "purgatorio:P04",
+              "to": "purgatorio:P04-C",
+              "type": "purgatorio_contains",
+              "documentedFrom": "purgatorio:P04",
+              "documentedTo": "purgatorio:P04-C",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "purgatorio:P04-C",
+              "to": "paradiso:PD09",
+              "type": "paradiso_constructive_resonance",
+              "documentedFrom": "paradiso:PD09",
+              "documentedTo": "purgatorio:P04-C",
+              "reverseTraversal": true,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "paradiso:PD09",
+              "to": "canon-law:Nature",
+              "type": "paradiso_law_resonance",
+              "documentedFrom": "paradiso:PD09",
+              "documentedTo": "canon-law:Nature",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            }
+          ],
+          "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
+        },
+        {
+          "lawId": "canon-law:Patience",
+          "lawName": "Patience",
+          "via": "LEVEL_BEHAVIOR_TERRACE_CAPACITY_PARADISO",
+          "path": [
+            {
+              "from": "inferno:L01",
+              "to": "inferno:B06",
+              "type": "level_behavior_candidate",
+              "documentedFrom": "inferno:L01",
+              "documentedTo": "inferno:B06",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "inferno:B06",
+              "to": "purgatorio:P04",
+              "type": "purgatorio_maps_to",
+              "documentedFrom": "purgatorio:P04",
+              "documentedTo": "inferno:B06",
+              "reverseTraversal": true,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "purgatorio:P04",
+              "to": "purgatorio:P04-C",
+              "type": "purgatorio_contains",
+              "documentedFrom": "purgatorio:P04",
+              "documentedTo": "purgatorio:P04-C",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "purgatorio:P04-C",
+              "to": "paradiso:PD01",
+              "type": "paradiso_constructive_resonance",
+              "documentedFrom": "paradiso:PD01",
+              "documentedTo": "purgatorio:P04-C",
+              "reverseTraversal": true,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "paradiso:PD01",
+              "to": "canon-law:Patience",
+              "type": "paradiso_law_resonance",
+              "documentedFrom": "paradiso:PD01",
+              "documentedTo": "canon-law:Patience",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            }
+          ],
+          "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
+        },
+        {
+          "lawId": "canon-law:Presence",
+          "lawName": "Presence",
+          "via": "LEVEL_BEHAVIOR_TERRACE_CAPACITY_PARADISO",
+          "path": [
+            {
+              "from": "inferno:L01",
+              "to": "inferno:B06",
+              "type": "level_behavior_candidate",
+              "documentedFrom": "inferno:L01",
+              "documentedTo": "inferno:B06",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "inferno:B06",
+              "to": "purgatorio:P04",
+              "type": "purgatorio_maps_to",
+              "documentedFrom": "purgatorio:P04",
+              "documentedTo": "inferno:B06",
+              "reverseTraversal": true,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "purgatorio:P04",
+              "to": "purgatorio:P04-C",
+              "type": "purgatorio_contains",
+              "documentedFrom": "purgatorio:P04",
+              "documentedTo": "purgatorio:P04-C",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "purgatorio:P04-C",
+              "to": "paradiso:PD07",
+              "type": "paradiso_constructive_resonance",
+              "documentedFrom": "paradiso:PD07",
+              "documentedTo": "purgatorio:P04-C",
+              "reverseTraversal": true,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "paradiso:PD07",
+              "to": "canon-law:Presence",
+              "type": "paradiso_law_resonance",
+              "documentedFrom": "paradiso:PD07",
+              "documentedTo": "canon-law:Presence",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            }
+          ],
+          "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
+        },
+        {
+          "lawId": "canon-law:Responsibility",
+          "lawName": "Responsibility",
+          "via": "LEVEL_BEHAVIOR_TERRACE_CAPACITY_PARADISO",
+          "path": [
+            {
+              "from": "inferno:L01",
+              "to": "inferno:B06",
+              "type": "level_behavior_candidate",
+              "documentedFrom": "inferno:L01",
+              "documentedTo": "inferno:B06",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "inferno:B06",
+              "to": "purgatorio:P04",
+              "type": "purgatorio_maps_to",
+              "documentedFrom": "purgatorio:P04",
+              "documentedTo": "inferno:B06",
+              "reverseTraversal": true,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "purgatorio:P04",
+              "to": "purgatorio:P04-C",
+              "type": "purgatorio_contains",
+              "documentedFrom": "purgatorio:P04",
+              "documentedTo": "purgatorio:P04-C",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "purgatorio:P04-C",
+              "to": "paradiso:PD01",
+              "type": "paradiso_constructive_resonance",
+              "documentedFrom": "paradiso:PD01",
+              "documentedTo": "purgatorio:P04-C",
+              "reverseTraversal": true,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "paradiso:PD01",
+              "to": "canon-law:Responsibility",
+              "type": "paradiso_law_resonance",
+              "documentedFrom": "paradiso:PD01",
+              "documentedTo": "canon-law:Responsibility",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            }
+          ],
+          "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
+        },
+        {
+          "lawId": "canon-law:Temperance",
+          "lawName": "Temperance",
+          "via": "LEVEL_BEHAVIOR_TERRACE_CAPACITY_PARADISO",
+          "path": [
+            {
+              "from": "inferno:L01",
+              "to": "inferno:B06",
+              "type": "level_behavior_candidate",
+              "documentedFrom": "inferno:L01",
+              "documentedTo": "inferno:B06",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "inferno:B06",
+              "to": "purgatorio:P04",
+              "type": "purgatorio_maps_to",
+              "documentedFrom": "purgatorio:P04",
+              "documentedTo": "inferno:B06",
+              "reverseTraversal": true,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "purgatorio:P04",
+              "to": "purgatorio:P04-C",
+              "type": "purgatorio_contains",
+              "documentedFrom": "purgatorio:P04",
+              "documentedTo": "purgatorio:P04-C",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "purgatorio:P04-C",
+              "to": "paradiso:PD09",
+              "type": "paradiso_constructive_resonance",
+              "documentedFrom": "paradiso:PD09",
+              "documentedTo": "purgatorio:P04-C",
+              "reverseTraversal": true,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "paradiso:PD09",
+              "to": "canon-law:Temperance",
+              "type": "paradiso_law_resonance",
+              "documentedFrom": "paradiso:PD09",
+              "documentedTo": "canon-law:Temperance",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            }
+          ],
+          "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
+        },
+        {
+          "lawId": "canon-law:Truth",
+          "lawName": "Truth",
+          "via": "LEVEL_BEHAVIOR_TERRACE_CAPACITY_PARADISO",
+          "path": [
+            {
+              "from": "inferno:L01",
+              "to": "inferno:B06",
+              "type": "level_behavior_candidate",
+              "documentedFrom": "inferno:L01",
+              "documentedTo": "inferno:B06",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "inferno:B06",
+              "to": "purgatorio:P04",
+              "type": "purgatorio_maps_to",
+              "documentedFrom": "purgatorio:P04",
+              "documentedTo": "inferno:B06",
+              "reverseTraversal": true,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "purgatorio:P04",
+              "to": "purgatorio:P04-C",
+              "type": "purgatorio_contains",
+              "documentedFrom": "purgatorio:P04",
+              "documentedTo": "purgatorio:P04-C",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "purgatorio:P04-C",
+              "to": "paradiso:PD01",
+              "type": "paradiso_constructive_resonance",
+              "documentedFrom": "paradiso:PD01",
+              "documentedTo": "purgatorio:P04-C",
+              "reverseTraversal": true,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            },
+            {
+              "from": "paradiso:PD01",
+              "to": "canon-law:Truth",
+              "type": "paradiso_law_resonance",
+              "documentedFrom": "paradiso:PD01",
+              "documentedTo": "canon-law:Truth",
+              "reverseTraversal": false,
+              "approval": "RESEARCH_ONLY_NOT_RUNTIME"
+            }
+          ],
+          "authority": "CANDIDATE_NAVIGATION_ONLY_NOT_SCORING"
+        }
+      ],
       "classificationPolicy": "Do not place users or adjust CQ from this research crosswalk",
       "candidateRoutesQuarantined": 2,
       "knownLiteraryBoundaryWarnings": [
