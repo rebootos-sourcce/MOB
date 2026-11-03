@@ -1,0 +1,83 @@
+{
+  "schema": "atuned.compass.scene-law-alignment.v19.1",
+  "date": "2026-11-03",
+  "status": "OWNER_DIRECTED_SEMANTIC_AND_DISPLAY_CANDIDATE_NOT_CANON_RUNTIME",
+  "intent": "User-selected behavioral opposites/constructive Laws. Preserve historical records and quarantines; do not create graph edges or scoring writes.",
+  "sourceRefs": {
+    "gameboard": {
+      "path": "docs/data/compass/gameboard/v1/GAMEBOARD_MAP_V1.json",
+      "blobSha": "4c97cb39cba7d93a671e571c756fcb4c4fe74fc1"
+    },
+    "crosswalk": {
+      "path": "docs/data/compass/integration/v17/REALM_LAYER_ARCHETYPE_LAW_CROSSWALK_V17.json",
+      "blobSha": "94fe41e42dda0f17d8352f16ec941a3883af9ba3"
+    },
+    "reviewQueue": {
+      "path": "docs/data/compass/integration/v17/REVIEW_QUEUE_V17.json",
+      "blobSha": "4dfb25bced47da09fcacb7fe3c66c9cd322e87c2"
+    },
+    "canonLaws": {
+      "path": "atuned_src/engine/data/canon.js",
+      "ref": "main",
+      "blobSha": "96b5961ea6b24d76788f2bd57919a0bd6aeb94c4"
+    }
+  },
+  "mappings": [
+    {
+      "sceneId": "game:inferno:L06",
+      "sourceRecordId": "inferno:L06",
+      "sourceLabel": "Epistemic Rigidity",
+      "displayLabel": "Heresy",
+      "primaryLaw": "canon-law:Humility",
+      "relation": "behavioral_counterweight",
+      "secondaryLawCandidates": [
+        "canon-law:Truth",
+        "canon-law:Awareness"
+      ],
+      "behavior": "Defensiveness and rejection of corrective evidence become openness, curiosity and willingness to revise a belief.",
+      "testableChange": "Name one concrete counterexample and what evidence could change the view.",
+      "quarantinedHistoricalRelationship": {
+        "from": "inferno:L06",
+        "to": "inferno:F06",
+        "not": "contained_in_circle",
+        "corrected": "gates_to_circle",
+        "mustRemainQuarantined": true
+      },
+      "interpretiveLimit": "Heresy is a Dantean literary term, not a judgement about religious dissent, nonbelief or disagreement."
+    },
+    {
+      "sceneId": "game:purgatorio:P06",
+      "sourceRecordId": "purgatorio:P06",
+      "sourceLabel": "Gluttony → Temperance / Sufficiency",
+      "displayLabel": "Gluttony → Temperance",
+      "primaryLaw": "canon-law:Temperance",
+      "relation": "constructive_capacity_alignment",
+      "secondaryLawCandidates": [
+        "canon-law:Detachment"
+      ],
+      "behavior": "Automatic excess becomes deliberate moderation, recognizing genuine needs and sufficiency.",
+      "testableChange": "Pause, identify the need, and choose a sufficient response without punitive deprivation.",
+      "quarantinedHistoricalRelationship": {
+        "from": "purgatorio:P06-C",
+        "to": "paradiso:PD09",
+        "not": "existing_v4_graph_edge",
+        "corrected": "proposed_only_absent_from_v4",
+        "mustRemainQuarantined": true
+      },
+      "interpretiveLimit": "Consumption and appetite do not imply a medical or moral diagnosis."
+    }
+  ],
+  "runtime": {
+    "sourceGraphMutated": false,
+    "cqWriter": false,
+    "achievementWriter": false,
+    "profilePlacement": false,
+    "approvedRuntimeEdges": 0
+  },
+  "nextSteps": [
+    "Apply scene display override and semantic links by sceneId in V19 dossier and preview; preserve source originals.",
+    "Review source graph and semantic approval provenance; do not restore invalid edges.",
+    "Retest combined V19 contracts, then authenticated E2E / CQ-read-only integration.",
+    "Reconcile draft PR #172 and Hero Board PR #156; require latest-SHA CI and independent release approval."
+  ]
+}

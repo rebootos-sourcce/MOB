@@ -1,0 +1,66 @@
+{
+  "schema": "ATUNED_COMPASS_V17_SOURCE_REVIEW_QUEUE",
+  "date": "2026-11-03",
+  "authority": "PROPOSED_NEXT_RESEARCH_NOT_APPROVED_NOT_RUNTIME",
+  "count": 2,
+  "preconditions": [
+    "Preserve original author source scope and source version.",
+    "Do not turn narrative similarity into Canon identity.",
+    "Never infer a user level or modify CQ without authoritative 21-law evidence.",
+    "Protect against historical/literary placement errors."
+  ],
+  "items": [
+    {
+      "id": "V17-GAP-INF-L06",
+      "sceneId": "game:inferno:L06",
+      "recordId": "inferno:L06",
+      "label": "Epistemic Rigidity",
+      "issue": "After quarantining the documented Furies-at-the-gates false containment route, there is no fully sourced research path from this layer to a law.",
+      "sourceKnown": "docs/data/compass/integration/v1/INFERNO_CROSS_REGISTRY_SOURCE_BRIDGE_V1.json",
+      "priorInvalidCandidate": "inferno:L06 -> inferno:F06",
+      "correctedRelationship": "gates_to_circle",
+      "suggestedNextWork": "Locate a source-qualified behavior analogy and compare it to the appropriate integrity-law behaviors; retain historical/behavioral distinctions and counterexamples.",
+      "proposedCanonicalEdge": null,
+      "requiresOwnerSemanticReview": true
+    },
+    {
+      "id": "V17-GAP-PUR-P06",
+      "sceneId": "game:purgatorio:P06",
+      "recordId": "purgatorio:P06",
+      "label": "Sufficiency / Temperance",
+      "issue": "P06-C has no currently documented Paradiso constructive-resonance edge in unified V4 graph.",
+      "sourceKnown": "docs/data/purgatorio/v1/PURGATORIO_REGISTRY_V1.json",
+      "sourceOther": "docs/data/paradiso/v0/PARADISO_REGISTRY_V0.json",
+      "candidate": {
+        "from": "purgatorio:P06-C",
+        "to": "paradiso:PD09",
+        "type": "paradiso_constructive_resonance",
+        "status": "PROPOSED_NEW_RESEARCH_EDGE_NOT_PRESENT_IN_GRAPH",
+        "reason": "P06-C describes choosing sufficiency, while PD09 has an existing candidate relation to the Temperance integrity-law name.",
+        "exactLawReference": "canon-law:Temperance"
+      },
+      "suggestedNextWork": "Compare distinctions and behavioral evidence before adding a research edge; this is not an approved mapping.",
+      "proposedCanonicalEdge": null,
+      "requiresOwnerSemanticReview": true
+    }
+  ],
+  "previouslyQuarantinedLiteraryPlacements": [
+    {
+      "candidate": "inferno:L01 -> inferno:F01",
+      "correctedRead": "threshold_before_circle"
+    },
+    {
+      "candidate": "inferno:L06 -> inferno:F06",
+      "correctedRead": "gates_to_circle"
+    },
+    {
+      "candidate": "inferno:L08 -> inferno:F09",
+      "correctedRead": "transport_to_circle"
+    },
+    {
+      "candidate": "inferno:L09 -> inferno:F10",
+      "correctedRead": "threshold_before_circle"
+    }
+  ],
+  "note": "No links from this queue are installed in V4 or application engine. Candidate paths in V17 are read-only navigation for review."
+}

@@ -1,0 +1,27 @@
+name: Compass V17 read-only crosswalk validation
+on:
+  push:
+    branches:
+      - atuned/compass-realm-law-crosswalk-20261103
+    paths:
+      - 'docs/data/compass/integration/v17/**'
+      - 'docs/data/compass/integration/v4/ATUNED_UNIFIED_RESEARCH_GRAPH_V4.json'
+      - 'docs/data/compass/integration/v1/INFERNO_CROSS_REGISTRY_SOURCE_BRIDGE_V1.json'
+      - '.github/workflows/compass-v17-crosswalk-validation.yml'
+  pull_request:
+    paths:
+      - 'docs/data/compass/integration/v17/**'
+      - '.github/workflows/compass-v17-crosswalk-validation.yml'
+jobs:
+  validate-crosswalk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate V17 source paths and quarantine
+        run: node docs/data/compass/integration/v17/validate_realm_crosswalk_v17.cjs

@@ -1,0 +1,210 @@
+{
+  "schema": "atuned.compass.v19.2.law-lens-index",
+  "date": "2026-11-03",
+  "authority": "REVIEW_CANDIDATES_NOT_RUNTIME",
+  "sourceCrosswalkBlob": "94fe41e42dda0f17d8352f16ec941a3883af9ba3",
+  "gameboardBlob": "4c97cb39cba7d93a671e571c756fcb4c4fe74fc1",
+  "canonicalLawBlob": "96b5961ea6b24d76788f2bd57919a0bd6aeb94c4",
+  "sourceGraphMutated": false,
+  "approvedCQWrites": 0,
+  "v17GraphRoutes": 168,
+  "primaryExistingRoutes": 23,
+  "secondaryExistingRoutes": 22,
+  "unapprovedCandidatePaths": 168,
+  "primaryPathGaps": [
+    "game:inferno:L06",
+    "game:inferno:L08",
+    "game:purgatorio:P06"
+  ],
+  "reason": "Transitive graph existence is not behavioral truth or scoring evidence",
+  "highPriorityReview": [
+    "L08 Fraud has no V17 Truth or Transparency path despite 12 other candidate routes",
+    "P02 Envy to L08 Fraud crosswalk needs semantic review",
+    "L06 historic figure containment remains rejected",
+    "P06 proposed Paradiso edge remains absent"
+  ],
+  "lawLensPairs": [
+    {
+      "sceneId": "game:inferno:L01",
+      "primaryLaw": "canon-law:Awareness",
+      "secondaryLaw": "canon-law:Truth",
+      "ownerApproval": "PENDING",
+      "runtime": false
+    },
+    {
+      "sceneId": "game:inferno:L02",
+      "primaryLaw": "canon-law:Non-Harm",
+      "secondaryLaw": "canon-law:Detachment",
+      "ownerApproval": "PENDING",
+      "runtime": false
+    },
+    {
+      "sceneId": "game:inferno:L03",
+      "primaryLaw": "canon-law:Temperance",
+      "secondaryLaw": "canon-law:Presence",
+      "ownerApproval": "PENDING",
+      "runtime": false
+    },
+    {
+      "sceneId": "game:inferno:L04",
+      "primaryLaw": "canon-law:Responsibility",
+      "secondaryLaw": "canon-law:Generosity",
+      "ownerApproval": "PENDING",
+      "runtime": false
+    },
+    {
+      "sceneId": "game:inferno:L05",
+      "primaryLaw": "canon-law:Equanimity",
+      "secondaryLaw": "canon-law:Non-Harm",
+      "ownerApproval": "PENDING",
+      "runtime": false
+    },
+    {
+      "sceneId": "game:inferno:L06",
+      "primaryLaw": "canon-law:Humility",
+      "secondaryLaw": "canon-law:Truth",
+      "ownerApproval": "PENDING",
+      "runtime": false
+    },
+    {
+      "sceneId": "game:inferno:L07",
+      "primaryLaw": "canon-law:Non-Harm",
+      "secondaryLaw": "canon-law:Accountability",
+      "ownerApproval": "PENDING",
+      "runtime": false
+    },
+    {
+      "sceneId": "game:inferno:L08",
+      "primaryLaw": "canon-law:Truth",
+      "secondaryLaw": "canon-law:Transparency",
+      "ownerApproval": "PENDING",
+      "runtime": false
+    },
+    {
+      "sceneId": "game:inferno:L09",
+      "primaryLaw": "canon-law:Accountability",
+      "secondaryLaw": "canon-law:Duty",
+      "ownerApproval": "PENDING",
+      "runtime": false
+    },
+    {
+      "sceneId": "game:purgatorio:P01",
+      "primaryLaw": "canon-law:Humility",
+      "secondaryLaw": "canon-law:Accountability",
+      "ownerApproval": "PENDING",
+      "runtime": false
+    },
+    {
+      "sceneId": "game:purgatorio:P02",
+      "primaryLaw": "canon-law:Generosity",
+      "secondaryLaw": "canon-law:Compassion",
+      "ownerApproval": "PENDING",
+      "runtime": false
+    },
+    {
+      "sceneId": "game:purgatorio:P03",
+      "primaryLaw": "canon-law:Equanimity",
+      "secondaryLaw": "canon-law:Non-Harm",
+      "ownerApproval": "PENDING",
+      "runtime": false
+    },
+    {
+      "sceneId": "game:purgatorio:P04",
+      "primaryLaw": "canon-law:Responsibility",
+      "secondaryLaw": "canon-law:Duty",
+      "ownerApproval": "PENDING",
+      "runtime": false
+    },
+    {
+      "sceneId": "game:purgatorio:P05",
+      "primaryLaw": "canon-law:Generosity",
+      "secondaryLaw": "canon-law:Responsibility",
+      "ownerApproval": "PENDING",
+      "runtime": false
+    },
+    {
+      "sceneId": "game:purgatorio:P06",
+      "primaryLaw": "canon-law:Temperance",
+      "secondaryLaw": "canon-law:Detachment",
+      "ownerApproval": "PENDING",
+      "runtime": false
+    },
+    {
+      "sceneId": "game:purgatorio:P07",
+      "primaryLaw": "canon-law:Non-Harm",
+      "secondaryLaw": "canon-law:Compassion",
+      "ownerApproval": "PENDING",
+      "runtime": false
+    },
+    {
+      "sceneId": "game:paradiso:PD01",
+      "primaryLaw": "canon-law:Duty",
+      "secondaryLaw": "canon-law:Responsibility",
+      "ownerApproval": "PENDING",
+      "runtime": false
+    },
+    {
+      "sceneId": "game:paradiso:PD02",
+      "primaryLaw": "canon-law:Humility",
+      "secondaryLaw": "canon-law:Generosity",
+      "ownerApproval": "PENDING",
+      "runtime": false
+    },
+    {
+      "sceneId": "game:paradiso:PD03",
+      "primaryLaw": "canon-law:Compassion",
+      "secondaryLaw": "canon-law:Non-Harm",
+      "ownerApproval": "PENDING",
+      "runtime": false
+    },
+    {
+      "sceneId": "game:paradiso:PD04",
+      "primaryLaw": "canon-law:Truth",
+      "secondaryLaw": "canon-law:Humility",
+      "ownerApproval": "PENDING",
+      "runtime": false
+    },
+    {
+      "sceneId": "game:paradiso:PD05",
+      "primaryLaw": "canon-law:Courage",
+      "secondaryLaw": "canon-law:Non-Harm",
+      "ownerApproval": "PENDING",
+      "runtime": false
+    },
+    {
+      "sceneId": "game:paradiso:PD06",
+      "primaryLaw": "canon-law:Justice",
+      "secondaryLaw": "canon-law:Accountability",
+      "ownerApproval": "PENDING",
+      "runtime": false
+    },
+    {
+      "sceneId": "game:paradiso:PD07",
+      "primaryLaw": "canon-law:Presence",
+      "secondaryLaw": "canon-law:Equanimity",
+      "ownerApproval": "PENDING",
+      "runtime": false
+    },
+    {
+      "sceneId": "game:paradiso:PD08",
+      "primaryLaw": "canon-law:Compassion",
+      "secondaryLaw": "canon-law:Unity",
+      "ownerApproval": "PENDING",
+      "runtime": false
+    },
+    {
+      "sceneId": "game:paradiso:PD09",
+      "primaryLaw": "canon-law:Responsibility",
+      "secondaryLaw": "canon-law:Temperance",
+      "ownerApproval": "PENDING",
+      "runtime": false
+    },
+    {
+      "sceneId": "game:paradiso:PD10",
+      "primaryLaw": "canon-law:Unity",
+      "secondaryLaw": "canon-law:Detachment",
+      "ownerApproval": "PENDING",
+      "runtime": false
+    }
+  ]
+}
