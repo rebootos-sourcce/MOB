@@ -42,13 +42,29 @@
      7  leaving the tab clears the rail and the class; coming back in Full
         draws both again
      8  the Journal's fold is its own key, and folding it moves nothing on the
-        Field (1600 only, where the column sits beside the stage)
+        Field (1600 only, where the column sits beside the stage), and
+        reopening it does not fade the rail from nought (3 November)
+     8c a profile change puts the last record's words down: the example's
+        rail is its own, You's words are not on its page, a recording is
+        aborted, and back on You its own draft brings the rows back
+        (3 November, the live leak on main at b6f86211)
+     8d nothing paints the rail while another tab is open
      9  Dashboard pressed again is Simple, exactly as before
    ============================================================ */
 const path=require('path');
 
 const STORY='My chest was tight and I felt scared when he shouted at me. I was angry and ashamed after.';
 const WIDTHS=[[1600,1000,'desktop'],[390,844,'phone']];
+
+/* the profile, the way a person picks one at this width: the picker where it
+   is on screen, and on a phone the loader beside help, which hands its choice
+   to the picker's own change event (ui/personas.js). Real presses both. */
+async function pickProfile(p,v,ok,what){
+ try{
+  if(await p.isVisible('#psel'))await p.selectOption('#psel',String(v),{timeout:5000});
+  else{ await p.click('#ploadbtn',{timeout:5000}); await p.click('#pload [data-pv="'+v+'"]',{timeout:5000}); }
+  await p.waitForTimeout(250); return true;}
+ catch(e){ ok(false,what+': the profile '+v+' could not be picked, '+String(e.message).split('\n')[0]); return false; }}
 
 async function press(p,sel,ok,what){
  try{ await p.click(sel,{timeout:5000}); return true; }
@@ -224,7 +240,89 @@ async function stFullGate(browser,FILE,ok,booted){
       beside the stage (GO in TASKS.md, "the field left panel starts closed") */
    const fieldWant=k0.lcol?k0.lcol==='shut':true;
    ok(k1.fieldShut===fieldWant&&k1.backShut,at+'and the Field keeps its own fold while the Journal keeps its own, '+JSON.stringify(k1));
-   await press(p,'#lfold',ok,at+'the Journal\'s fold, open again');}
+   await press(p,'#lfold',ok,at+'the Journal\'s fold, open again');
+   /* 8b. and opening it does not fade the rail out and back. Read up the
+      chain: computed opacity does not include an ancestor's, so the heading's
+      own read 1 the whole time railOpened was fading #stleft from 0 (main at
+      b6f86211, 3 November). The probe is checked against that build. */
+   await p.waitForTimeout(500);
+   await press(p,'#lfold',ok,at+'the Journal\'s fold, shut for the reopen');
+   await p.waitForTimeout(300);
+   await press(p,'#lfold',ok,at+'the Journal\'s fold, reopened');
+   const fo=await p.evaluate(async()=>{const o=[]; const t0=performance.now();
+    const eff=e=>{let v=1; for(;e&&e.nodeType===1;e=e.parentElement)v*=+getComputedStyle(e).opacity; return +v.toFixed(2);};
+    for(const ms of [0,40,100,180,300]){
+     await new Promise(r=>setTimeout(r,Math.max(0,ms-(performance.now()-t0))));
+     const h=document.getElementById('st-energy-h');
+     o.push({ms,eff:h?eff(h):-1,anims:document.getElementById('stleft').getAnimations().length});}
+    return o;});
+   ok(fo.every(x=>x.eff===1&&x.anims===0),at+'reopening the fold leaves the rail on screen, no fade from nought, '+JSON.stringify(fo));}
+
+  /* 8c. THE WORDS ARE THE OPEN RECORD'S. 3 November, a live leak on main at
+     b6f86211: a story landed on You in Full, the picker moved to a worked
+     example, and S.who named the example while ST_TEXT, all seven Energy rows
+     and the conversation bubble were You's, byte for byte. render() on the
+     Story called only stFieldPaint, which drew none of them again.
+
+     The words land the way a voice turn lands them, srcTurnCommit and then
+     stRender, because that is the Full view's door and a microphone does not
+     run headless; the profile change is the picker's own change event, the
+     one route its menu hands a choice to. A fake recogniser stands in as
+     listening, so the switch is also seen to abort it, never stop it: stop
+     delivers a last sentence, which would land in the next person's page.
+
+     The probe is checked against a known good case first: the example opened
+     on a clean Journal, nothing written, reads silent. If that read were
+     wrong, a pass below would mean nothing. */
+  const PHRASE='shouted at me';
+  const ex=await p.evaluate(()=>{const i=PEOPLE.findIndex(x=>!x.you); return {i, nm:PEOPLE[i]&&PEOPLE[i].nm};});
+  const railRead=()=>p.evaluate(ph=>({who:S.who, txt:ST_TEXT,
+   rows:document.querySelectorAll('#stleft .st-en-r').length,
+   figs:[...document.querySelectorAll('#stleft .st-en-r .cr .v')].map(e=>e.textContent).join(' '),
+   none:!!document.querySelector('#stleft #st-energy-none'),
+   html:document.getElementById('stleft').innerHTML,
+   page:(document.getElementById('story').textContent||'').indexOf(ph)>=0,
+   full:document.body.classList.contains('st-full')}),PHRASE);
+  /* clean first, so the control reads the same on a build with the leak:
+     step 4's story is still in the box here, and a control that fails on the
+     bug it guards is a second sighting of it, not a check of the probe */
+  await p.evaluate(()=>{ST_TEXT='';ST_PARSED=null;srcFresh();stDraft();stRender();});
+  await pickProfile(p,String(ex.i),ok,at+'the picker');
+  const k0=await railRead();
+  ok(k0.who===ex.i&&k0.txt===''&&k0.rows===0&&k0.none&&!k0.page,
+   at+'the probe, against a known case: '+ex.nm+' on a clean Journal reads silent, '+JSON.stringify({who:k0.who,rows:k0.rows,none:k0.none,page:k0.page}));
+  await pickProfile(p,'0',ok,at+'the picker');
+  await p.evaluate(t=>{srcTurnCommit(t); stRender();
+   window.__rec={abort:0,stop:0}; ST_REC={abort(){__rec.abort++;},stop(){__rec.stop++;},start(){}};
+   ST_LISTEN=true; ST_WANT_LISTEN=true; ST_REC_ON=true; return true;},STORY);
+  const a0=await railRead();
+  ok(a0.who===0&&a0.rows===7&&a0.page&&a0.full,at+'You, in Full, with a story landed: seven rows and the words on the page, '+a0.figs);
+  await pickProfile(p,String(ex.i),ok,at+'the picker');
+  const b0=await railRead();
+  const rec=await p.evaluate(()=>({rec:window.__rec, listen:ST_LISTEN, want:ST_WANT_LISTEN}));
+  ok(b0.who===ex.i&&b0.txt==='',at+'moving to '+ex.nm+' puts You\'s words down, ST_TEXT '+JSON.stringify(b0.txt.slice(0,40)));
+  ok(b0.rows===0&&b0.none&&b0.html!==a0.html&&b0.html===k0.html,
+   at+'and '+ex.nm+'\'s Energy rail is '+ex.nm+'\'s own, the same rail the clean case drew, not You\'s seven rows, got '+b0.rows+' rows, '+b0.figs);
+  ok(!b0.page,at+'and You\'s words are not on '+ex.nm+'\'s Journal page');
+  ok(rec.rec.abort===1&&rec.rec.stop===0&&!rec.listen&&!rec.want,at+'and a recording still running is aborted, not stopped, '+JSON.stringify(rec));
+  await p.evaluate(()=>{ST_REC=null; ST_REC_ON=false;});
+  await pickProfile(p,'0',ok,at+'the picker');
+  const a1=await railRead();
+  ok(a1.who===0&&a1.rows===7&&a1.figs===a0.figs&&a1.page,at+'back on You, You\'s own draft brings back the same seven rows, '+a1.figs);
+
+  /* 8d. AND NOTHING PAINTS THE RAIL OFF THE JOURNAL. stRender runs from a
+     voice turn landing and from stCommit while another tab is open, and it
+     reached stDashLeft through stPaintAll, which wrote a reading into the
+     host stRailClear had emptied. */
+  const off=await p.evaluate(async t=>{setTab(TAB.FIELD); render(); await new Promise(r=>setTimeout(r,200));
+   const before=document.getElementById('stleft').innerHTML;
+   srcTurnCommit('And my stomach dropped.'); stRender();
+   const o={before, after:document.getElementById('stleft').innerHTML, full:document.body.classList.contains('st-full')};
+   setTab(TAB.STORY); render(); await new Promise(r=>setTimeout(r,200));
+   o.back=document.querySelectorAll('#stleft .st-en-r').length; return o;},STORY);
+  ok(off.before===''&&off.after===''&&!off.full,at+'a turn landing while the Field is open leaves the rail empty, '+JSON.stringify({before:off.before.length,after:off.after.length,full:off.full}));
+  ok(off.back===7,at+'and back on the Journal the rail is drawn again, '+off.back+' rows');
+  await p.evaluate(()=>{ST_TEXT='';ST_PARSED=null;if(typeof srcFresh==='function')srcFresh();if(typeof stDraft==='function')stDraft();stRender();});
 
   /* 9. Dashboard again is Simple */
   await p.evaluate(()=>window.scrollTo(0,0));

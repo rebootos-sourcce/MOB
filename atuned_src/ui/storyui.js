@@ -71,6 +71,8 @@ function stRender(){
     Journal itself, because stCommit can redraw this page from another tab
     and the class must not outlive stRailClear there. */
  document.body.classList.toggle('st-full',!!STV.dash&&S.tab===TAB.STORY);
+ /* the words on this page are the open record's, or none (stOwnCheck) */
+ stOwnCheck();
  stDraftBack();
  var p=ST_PARSED;
  /* A WORKED EXAMPLE IS SHOW ONLY, ruled 16 October (engine/showonly.js). Its
@@ -816,6 +818,55 @@ function stDraftBack(){
   ST_TEXT=CURP.story.draft; ST_PARSED=ST_TEXT.trim()?parseStory(ST_TEXT):null;}
  if(!SRC_CDRAFT&&typeof CURP.story.reply==='string')SRC_CDRAFT=CURP.story.reply;}
 
+/* THE JOURNAL'S WORDS BELONG TO ONE RECORD, 3 November.
+
+   ST_TEXT, ST_PARSED and the conversation (SRC_CHAT and the rest srcFresh
+   clears) are one set of page variables and not a field of any record, and
+   nothing tied them to the record they were written on. So a profile change
+   on the Journal left them standing: measured on main at b6f86211, a story
+   landed on You, Dashboard pressed, the picker moved to Sofia, and S.who read
+   Sofia while ST_TEXT, all seven rows of the Full view's Energy rail and the
+   conversation bubble were byte for byte You's. One person's story and body
+   reading on screen under another person's name.
+
+   So the words carry their owner, the record's id, and the moment the open
+   record is not that owner they are put down: the reply line's half second
+   save is flushed first, onto the record it was typed for (stDraft already
+   wrote the words there, so this only finishes the write), a recording still
+   running is aborted, not stopped, because stop delivers its last sentence
+   and that sentence would land in the next person's journal, and Source AI's
+   spoken line is cut. Then the page variables go back to a fresh page's,
+   and stDraftBack fills them from the new record's own draft, which is the
+   same thing a reload does. Coming back to the first record therefore finds
+   its words again, off its own draft, as one turn srcChatSync rebuilds from
+   them; Source AI's own lines in between, which a reload does not keep
+   either, are not brought back.
+
+   Keyed on the id and not the object, so a record replaced by a fresh copy
+   of itself is the same owner. render() asks on every pass, whichever tab
+   is open, because every route that changes the open record ends in a
+   render(): loadP, profOpen from the Intake's switcher, a new profile, an
+   import. The Journal's own painters ask too, so a route that does not is
+   still caught before anything is drawn. Returns true when it put words
+   down, so the caller knows the page has to be drawn again. */
+var ST_OWN;
+function stOwnKey(){return (typeof CURP!=='undefined'&&CURP)?(CURP.id||CURP):null;}
+function stOwnCheck(){
+ var k=stOwnKey();
+ if(ST_OWN===undefined){ ST_OWN=k; return false; }
+ if(ST_OWN===k)return false;
+ ST_OWN=k;
+ if(STV.draftT)stDraftSave();
+ if(ST_REC&&(ST_LISTEN||ST_REC_ON||ST_WANT_LISTEN)){
+  ST_WANT_LISTEN=false;
+  try{ if(typeof ST_REC.abort==='function')ST_REC.abort(); else ST_REC.stop(); }catch(e){}}
+ ST_LISTEN=false; ST_LISTEN_T0=null; ST_LIVE='';
+ if(typeof srcVoiceStop==='function')srcVoiceStop();
+ ST_TEXT=''; ST_PARSED=null; SRC_PASSED=false;
+ if(typeof srcFresh==='function')srcFresh();
+ STV.lastFound=[]; STV.lastT=null; STV.draftFail=false;
+ return true;}
+
 /* refresh only what the text moves, so typing never loses the caret */
 function stRefresh(){
  stDraft();
@@ -859,13 +910,23 @@ function stPaintAll(){
    a release that finishes, an undo, or a profile change all change what is
    held, what the release column offers and what the vault holds, and none of
    them passes through this file. Without it the vault read 0 after a run
-   until the tab was left and entered again. */
-function stFieldPaint(){
+   until the tab was left and entered again.
+
+   AND A PROFILE CHANGE IS MORE THAN WHAT IS HELD. It also changes whose words
+   the page shows, and the patch below touches none of them: the box, the
+   conversation, the chart and the Full view's Energy rail all stayed the last
+   person's (stOwnCheck, above stRefresh). So when the open record is not the
+   one the words were written on, the whole page is drawn again from the new
+   record, through the same stRender a return to the tab uses, and the patch
+   then runs on top of it as before. moved is render()'s own answer; asking
+   again here covers a caller that did not ask. */
+function stFieldPaint(moved){
  if(!document.getElementById('stflow'))return;
  /* a lighting change arrives here too, and the chart's ink is read off it.
     Only then: reading it forces a style flush, and render() runs on every
     slider step. */
  if(STC.cv&&STC.lit!==S.theme){STC.lit=S.theme; stInk(); STC.dirty=true;}
+ if(stOwnCheck()||moved)stRender();
  stVaultCount(); stRelPanel();
  if(STV.list==='vault')stListPaint();
  /* a release moves what is running hot, so an open preview is repainted with

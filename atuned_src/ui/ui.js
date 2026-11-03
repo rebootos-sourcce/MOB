@@ -1124,6 +1124,11 @@ function probeForWho(){
 function render(){
  if(typeof paintUndo==='function')paintUndo();
  probeForWho();
+ /* WHOSE WORDS THE JOURNAL HOLDS, asked on every pass and on every tab,
+    because every route that changes the open record ends here. A change
+    puts the last record's words down (ui/storyui.js, stOwnCheck), and the
+    Story branch below draws the page again from the new one. */
+ const stMoved=typeof stOwnCheck==='function'&&stOwnCheck();
  /* THE READING A PERSON MAY SEE, not compute()'s own. Everything render hands
     down, the rails, the glass bar, the wheel and the Body, draws and lists
     only the rungs of the chain this plan can see: sightR in ui/lock.js. */
@@ -1729,7 +1734,7 @@ function renderGates(){
     release column offers and what its vault holds, and none of them passes
     through the Story's own code. Without this the vault read nought after a
     run until the tab was left and entered again. */
- else if(S.tab===TAB.STORY&&typeof stFieldPaint==='function')stFieldPaint();}
+ else if(S.tab===TAB.STORY&&typeof stFieldPaint==='function')stFieldPaint(stMoved);}
 
 /* ---- the loop ---- */
 let last=0;

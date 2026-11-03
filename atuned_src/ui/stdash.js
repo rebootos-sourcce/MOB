@@ -54,9 +54,29 @@
    disagreement stRead exists to prevent ("the sentence, the chart and the
    list cannot disagree"). The Journal's own record reader, stAnaPaint's
    Running hot list, is the part that is gated on r.unread, and it still is. */
+/* AND IT PAINTS ONLY ON THE JOURNAL, FOR THE OPEN RECORD, 3 November.
+   It trusted both. stPaintAll reaches it from stRender, and stRender runs
+   from places that are not the Journal: a voice turn landing (ST_REC's
+   onresult and onend), and stCommit, whose save failed branch keeps the
+   words on the page. So it wrote a reading into #stleft while another tab
+   was open, the static host stRailClear had just emptied, which is a hidden
+   surface asserting a reading, the thing the rule above forbids. Off the
+   Journal it now empties the host, the same as Simple, and the class test is
+   the one stRender already keeps for st-full.
+
+   And the words it reads are the open record's or none. ST_TEXT is a page
+   variable that belonged to whoever was open when it was written, and on a
+   profile change it stood as the last person's (stOwnCheck, ui/storyui.js).
+   If the record has moved under it, the words are put down and the whole
+   Journal is drawn again from the new record, which paints this rail on its
+   way through stPaintAll, so the rail is re-read and never left blank or
+   left as the last person's. */
 function stDashLeft(){
  var h=document.getElementById('stleft'); if(!h)return;
- if(!STV.dash){ if(h.innerHTML)h.innerHTML=''; return; }
+ if(!STV.dash||typeof S==='undefined'||S.tab!==TAB.STORY){ if(h.innerHTML)h.innerHTML=''; return; }
+ if(typeof stOwnCheck==='function'&&stOwnCheck()){
+  if(document.getElementById('story')){ stRender(); return; }
+  stDraftBack();}
  var p=(typeof ST_TEXT==='string'&&ST_TEXT.trim())?ST_PARSED:null;
  var o='<section class="st-en" id="st-energy" aria-labelledby="st-energy-h">'
   +'<h2 class="rblk" id="st-energy-h">Energy</h2>'

@@ -113,8 +113,15 @@ function railOpened(){
  rbPairs();
  /* a render that found the column open has just given it its first sight */
  if(rbStill()||!rmRailOpen()||performance.now()-RM.seenAt<150)return;
+ /* and not the Journal's Full view rail either, for the reason rmVisible
+    gives above. Measured 3 November on main at b6f86211, 1600 wide: a real
+    press on the Journal's fold, shut and then open, gave #stleft itself an
+    animation from opacity 0, held at 0 for the first 40 ms, a rail that was
+    already drawn going out and coming back on a press that changed nothing
+    in it. The heading's own computed opacity read 1 the whole time, because
+    an ancestor's fade is not in it, so it has to be read up the chain. */
  var kids=[]; Array.prototype.forEach.call(document.getElementById('lpanel').children,function(c){
-  if(c.classList.contains('lfold')||!c.offsetParent)return; kids.push(c);});
+  if(c.classList.contains('lfold')||c.classList.contains('st-lrail')||!c.offsetParent)return; kids.push(c);});
  kids.forEach(function(c,i){if(!c.animate)return;
   c.animate([{opacity:0,transform:'translateX(-10px)'},{opacity:1,transform:'none'}],
    {duration:260,delay:Math.min(i,6)*40,easing:RM_OUT,fill:'backwards'});});}
