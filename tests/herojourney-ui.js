@@ -16,6 +16,8 @@ const url='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1
    loadP(0);setTab(TAB.INTAKE);AV.sub='becoming';renderAvatar();
    const host=document.getElementById('avbody');
    const data={rendered:!!host.querySelector('.hj-panel'),partial:hjRead(CURP,compute()).complete};
+   const unknownPoint=host.querySelector('.hj-point');
+   data.partialHasNoLocatedPoint=!!unknownPoint&&getComputedStyle(unknownPoint).display==='none';
    const p=CURP;
    /* All actual law inputs are set, including deliberate sixes. */
    SI.forEach(l=>{p.laws[l.nm]=6;S.law[l.nm]=6;LAW_UNSET[l.nm]=false;});
@@ -30,8 +32,14 @@ const url='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1
    data.figure=!!host.querySelector('.hj-avatar-form');
    host.querySelector('[data-hjexpand]').click();
    data.nodes=host.querySelectorAll('[data-hjscene]').length;
+   const warrior=host.querySelector('[data-hjscene="game:paradiso:PD05"]');
+   if(warrior)warrior.click();
+   const archText=(host.querySelector('[data-hjarchetypes]')||{}).textContent||'';
+   data.archetypeCandidateVisible=archText.includes('Warrior')&&archText.includes('candidate');
    const sceneButton=host.querySelector('[data-hjscene="game:inferno:L08"]');
    if(sceneButton)sceneButton.click();
+   const noneText=(host.querySelector('[data-hjarchetypes]')||{}).textContent||'';
+   data.unknownArchetypeNotInvented=noneText.includes('No documented resonance');
    data.scenePersisted=CURP.avatar.activeJourneyScene;
    data.selected=hjRead(CURP,compute()).active.id;
    const copy=validateProfile(JSON.parse(JSON.stringify(CURP)));
@@ -96,12 +104,15 @@ const url='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1
   });
   assert.equal(result.rendered,true,'Board renders on existing avatar');
   assert.equal(result.partial,false,'unanswered laws cannot locate user');
+  assert.equal(result.partialHasNoLocatedPoint,true,'no fake location marker on incomplete CQ');
   assert.equal(result.save,true,'full profile saves');
   assert.equal(result.complete,true,'all 21 laws resolve CQ');
   assert.equal(result.stage,'game:paradiso:PD01','60 maps into Paradiso');
   assert.equal(result.origin,60,'baseline recorded once');
   assert.equal(result.figure,true,'avatar shows living form');
   assert.equal(result.nodes,26,'all 26 encounters are selectable');
+  assert.equal(result.archetypeCandidateVisible,true,'documented Warrior is visible as a candidate');
+  assert.equal(result.unknownArchetypeNotInvented,true,'unmapped Inferno scene is not assigned an archetype');
   assert.equal(result.scenePersisted,'game:inferno:L08');
   assert.equal(result.selected,result.scenePersisted);
   assert.equal(result.exported,true,'active encounter and CQ origin round trip');
