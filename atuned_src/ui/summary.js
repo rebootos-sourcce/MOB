@@ -557,7 +557,7 @@ function sumChips(C){
   e.hd.profile?('profile '+e.hd.profile):'unresolved',
   e.hd.unresolved?say(unpackOf('design'),'The type needs the full bodygraph and is not computed. The profile is.')
    :say(unpackOf('design'),unpackOf('profile')));
- out+=chip('gk',e.gk.gate,svgI('<circle cx="12" cy="12" r="8.4"/><path d="M12 3.6v16.8"/>'),
+ out+=chip('gk',e.gk.gate,svgI(GATE_IC),
   'Gene key',e.gk.gate+'.'+e.gk.line,say(unpackOf('gene key'),unpackOf('gate')));
  return out+'</div>';}
 function sumConverge(C){

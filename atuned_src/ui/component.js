@@ -79,6 +79,53 @@ const PLANETGLYPH={
  Uranus:'<circle cx="12" cy="15.2" r="5"/><circle cx="12" cy="15.2" r="1.1"/><path d="M12 10.2V3.8M9.4 6.4L12 3.8l2.6 2.6"/>',
  Neptune:'<path d="M5.8 5.2c0 4.8 2.6 7.2 6.2 7.2s6.2-2.4 6.2-7.2M12 4v16.6M8.8 17.4h6.4'
   +'M4.6 6.6l1.2-1.4 1.2 1.4M10.8 5.4L12 4l1.2 1.4M17 6.6l1.2-1.4 1.2 1.4"/>'};
+/* THE GATE MARK, ONE DISC SPLIT BY ONE LINE. A Human Design or Gene Keys gate
+   is an I Ching hexagram by number, drawn as a circle with a single stroke
+   through it: a figure read whole and then halved. First drawn, unnamed, for
+   the Summary's own Gene key chip (ui/summary.js); named here so every
+   caller that draws a gate reaches for the one mark rather than redrawing it. */
+const GATE_IC='<circle cx="12" cy="12" r="8.4"/><path d="M12 3.6v16.8"/>';
+/* THE SIX NUMEROLOGY ROWS IN ROOT ENERGETICS CARRIED NO MARK AT ALL, text
+   only, the one family on the rail that Western, Eastern and Design all had
+   theirs and this did not. 2026-11-03, redrawing the Root Energetics icon
+   set after the owner's own words on the Concept A mock-up: "redesign the
+   icons... review the icon symbolism and use a match the word."
+
+   EACH MARK IS FIXED TO WHAT THE NUMBER MEANS, NEVER TO ITS DIGIT. A mark
+   keyed to the value a row happens to hold repeats itself the first day two
+   of a person's six numbers reduce to the same figure, which real charts do
+   (this profile's own Expression and Personality both land on 1, read off
+   lookdev/handoff/builds/images/46.png). So the glyph is the word's own
+   picture: Path a road narrowing ahead, Master the higher charge the comment
+   on ROOT_NUMPLANET's own table already names, Expression a voice, Soul urge
+   the numerologist's own name for it, Heart's Desire, Personality the word's
+   own root, a mask, Birthday a calendar cell, Maturity a line climbing. Same
+   grammar as SYSGLYPH and PLANETGLYPH: 24 box, open stroke, no fill. */
+const NUMFIELD_IC={
+ path:'<path d="M7 20L11 4M17 20L13 4"/>',
+ /* lifePath is spNumRows's own key for the same reading when it prints
+    unaccompanied, on the no-birth-data fallback; same number, same mark */
+ lifePath:'<path d="M7 20L11 4M17 20L13 4"/>',
+ master:'<path d="M6 15l6-6 6 6M6 21l6-6 6 6"/>',
+ expression:'<path d="M4 5h16v9h-9.5l-3.5 3.5V14H4z"/>',
+ soul:'<path d="M12 19.4C7.8 16.3 5 13.3 5 9.9A4 4 0 0112 7.3a4 4 0 017 2.6c0 3.4-2.8 6.4-7 9.5z"/>',
+ personality:'<path d="M4.5 8.6c0-2.6 3-4.1 7.5-4.1s7.5 1.5 7.5 4.1c0 5-3.2 9-7.5 9s-7.5-4-7.5-9z"/>'
+  +'<circle cx="9" cy="10" r=".9"/><circle cx="15" cy="10" r=".9"/>',
+ birthday:'<path d="M4.5 5.5h15v14h-15z"/><path d="M4.5 9.5h15M8 3.5v4M16 3.5v4"/>',
+ maturity:'<path d="M4 18L10 12L14 15L20 7"/><path d="M15 7h5v5"/>'};
+/* THE TWO DESIGN ROWS A GATE MARK DOES NOT ALREADY COVER. Profile is two
+   lines, not a gate, so it draws the two lines its own row already names,
+   "personality line over design line". The personality gate's own row
+   already says what it is, "the sun at birth", so it wears the Sun's own
+   mark rather than a second invented one. The design gate and the gene key
+   are both a gate by number, so both wear GATE_IC, the one the Summary's own
+   chip already draws for Gene key: one concept, one mark, never two gates
+   drawn two ways on the same panel. */
+const DESIGNFIELD_IC={
+ profile:'<path d="M5 9h14M5 15h14"/><circle cx="8" cy="9" r="1.3"/><circle cx="16" cy="15" r="1.3"/>',
+ personality:PLANETGLYPH.Sun,
+ design:'<path d="M6 7h5M15 7h3M6 12h12M6 17h5M15 17h3"/>',
+ genekey:GATE_IC};
 /* A MARK IS EITHER PATH DATA OR FINISHED MARKUP, and the tables hold both.
    CHILD, SI, HCX_LIB, GATEGLYPH and the nineteen domains carry a bare d
    string. SEATGLYPH carries a finished <path> or <circle>, because a seat's

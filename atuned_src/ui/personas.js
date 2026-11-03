@@ -146,8 +146,8 @@ function renderSpirit(){
   +row('Element',cic,sp.celem,CE_RUNS[sp.celem]||'','celem',sp.celem,
     say(unpackOf('year element'),unpackOf(sp.celem,'year')))
   +hd('N','Number')
-  +row('Path','',String(sp.lp),sp.lpMean,'lp',String(sp.lp),say(unpackOf('life path'),unpackOf('path:'+sp.lp)))
-  +(sp.master?row('Master','',String(sp.master),'survives reduction','lp',String(sp.master),unpackOf('master number')):'')
+  +row('Path',NUMFIELD_IC.path,String(sp.lp),sp.lpMean,'lp',String(sp.lp),say(unpackOf('life path'),unpackOf('path:'+sp.lp)))
+  +(sp.master?row('Master',NUMFIELD_IC.master,String(sp.master),'survives reduction','lp',String(sp.master),unpackOf('master number')):'')
   +spNumRows(p.nm,true)
   +hd('D','Design')
   /* the personality and design gates are real and computed. the type is
@@ -155,17 +155,17 @@ function renderSpirit(){
   /* These three fell back to the word unresolved inside a drill button, with
      the explanation of a value that was not there beside it. The fallback
      could not fire until the engine learned to refuse, and now it can. */
-  +(sp.hd.profile?row('Profile','',sp.hd.profile,'personality line over design line','hd',sp.hd.profile,unpackOf('profile'))
+  +(sp.hd.profile?row('Profile',DESIGNFIELD_IC.profile,sp.hd.profile,'personality line over design line','hd',sp.hd.profile,unpackOf('profile'))
     :unres('Profile',noZone))
-  +(sp.hd.personality?row('Personality','','gate '+sp.hd.personality.gate+'.'+sp.hd.personality.line,
+  +(sp.hd.personality?row('Personality',DESIGNFIELD_IC.personality,'gate '+sp.hd.personality.gate+'.'+sp.hd.personality.line,
     'the sun at birth','gk',String(sp.hd.personality.gate),
     say(unpackOf('personality gate'),unpackOf('gate'),unpackOf('line'))):unres('Personality',noZone))
-  +(sp.hd.design?row('Design','','gate '+sp.hd.design.gate+'.'+sp.hd.design.line,
+  +(sp.hd.design?row('Design',DESIGNFIELD_IC.design,'gate '+sp.hd.design.gate+'.'+sp.hd.design.line,
     'the sun 88 degrees earlier','gk',String(sp.hd.design.gate),
     say(unpackOf('design gate'),unpackOf('gate'),unpackOf('line'))):unres('Design',noZone))
   +unres('Type','needs the full bodygraph')
   /* this printed null.null the moment the engine could return no gate */
-  +(sp.gk.gate!=null?row('Gene key','',sp.gk.gate+'.'+sp.gk.line,'the gate the sun occupied','gk',
+  +(sp.gk.gate!=null?row('Gene key',DESIGNFIELD_IC.genekey,sp.gk.gate+'.'+sp.gk.line,'the gate the sun occupied','gk',
     sp.gk.gate+'.'+sp.gk.line,say(unpackOf('gene key'),unpackOf('gate'),unpackOf('line'))):unres('Gene key',noZone))
   +hd('born','Born')
   +'<div class="sp-row static"><span class="sp-k">When</span><span class="sp-v">'
@@ -197,11 +197,12 @@ function spNumRows(nm,under){
     under it this one would be the same number twice */
  var K=(under?[]:['lifePath']).concat(['expression','soul','personality','birthday','maturity']);
  var rows=K.filter(function(k){return N[k]!==null&&N[k]!==undefined;}).map(function(k){
-  var nsay=unpackOf((NUM_LABEL[k]||k).toLowerCase());
+  var nsay=unpackOf((NUM_LABEL[k]||k).toLowerCase()), ic=NUMFIELD_IC[k]||'';
   return '<button class="sp-row" type="button" data-num="'+k+'"'
    +(nsay?' data-tip-k="'+esc(NUM_LABEL[k]||k)+'" data-tip="'+esc(nsay)+'"':'')+'>'
    +'<span class="sp-k">'+esc(NUM_LABEL[k]||k)+'</span>'
-   +'<span class="sp-v">'+esc(String(N[k]))+'</span>'
+   +'<span class="sp-v">'+(ic?'<svg class="sp-gi" viewBox="0 0 24 24" aria-hidden="true">'+ic+'</svg>':'')
+   +esc(String(N[k]))+'</span>'
    +'<span class="sp-x">'+esc(spNumSays(k,N[k]))+'</span></button>';}).join('');
  return rows?(under?'':'<div class="sp-hd"><svg class="sp-hi" viewBox="0 0 24 24" aria-hidden="true">'
   +SYSGLYPH.N+'</svg>Number</div>')+rows:'';}
