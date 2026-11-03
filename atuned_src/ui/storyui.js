@@ -457,14 +457,17 @@ function stRender(){
    ============================================================ */
 /* CHAT IS ALWAYS TRUE NOW, round of 28 October, his words: "the focus needs
    to be on two-way conversation for the journal ... this needs to be a
-   two-way conversation between me and the source." Nothing sets it false
-   again: the Talk button that used to toggle it is gone, see stWire. */
+   two-way conversation between me and the source." The Talk button that
+   used to toggle it is gone, see stWire. Two things still set it false: the
+   crisis door (crisisTalk, ui/crisis.js), and a browser on which voice
+   cannot run at all (stVoiceCant, STV.novoice), so a person always has a
+   way to say something. */
 /* DASHBOARD STARTS OFF, round of 29 October, his words: "when I land on this
    page, it starts off in simple mode." Imprints and Release are real panels,
    not removed, only shut until Dashboard is pressed; see #stdash's onclick
    at the foot of stRender. */
 var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:true,law:false,
- unsaved:null,draftT:null,draftFail:false,crisis:false,dash:false};
+ unsaved:null,draftT:null,draftFail:false,crisis:false,dash:false,novoice:false};
 /* the one width the page changes shape at is the one the product stacks its
    columns at, so the Story cannot be in three columns while the rails are
    already one. */
@@ -751,7 +754,7 @@ function stCommit(){
     conversation is the Journal's only normal state, so a finished crisis
     entry returns to it here rather than staying stuck in the write box with
     no way back. */
- STV.crisis=false; STV.chat=true;
+ STV.crisis=false; STV.chat=!STV.novoice;
  toYou();syncCh();if(typeof stRender==='function')stRender();render();
  /* A STORY KEPT WITH STARS IN IT SAYS SO, round QR. The person may choose
     not to type the hidden words, and the entry is still theirs; it is kept
@@ -3115,18 +3118,37 @@ function stMicSay(code){
   'aborted':''};
  var m=(code in M)?M[code]:('Recording stopped: '+code+'.');
  if(m)status(m,'fail');}
+/* WHEN VOICE CANNOT RUN AT ALL, THE BOX COMES BACK, 3 November. The two
+   refusals below said "Typing works." while the page had no box to type in:
+   since the reply line went, 29 October, nothing renders #sttext while
+   STV.chat is true, so a person on a browser with no speech recognition, or
+   on a page the browser will not give a microphone, could press Chat, be
+   told to type, and have no way to say anything to Source AI at all.
+   Reproduced on b6f86211 in headless Chromium, both cases, before this.
+   This is not the reply line back. It is the plain box the crisis door
+   already opens (STV.chat false, crisisTalk in ui/crisis.js), the same
+   #sttext, the same oninput into ST_TEXT and the same Commit, so nothing new
+   is drawn. Only these two, the browser has no recogniser and the page is
+   not one the browser will give a microphone to, come here: both are true
+   for as long as the page is open. Silence (no-speech) and a refused
+   permission are not, and keep their own lines in stMicSay. STV.novoice
+   holds it across a Commit, which otherwise puts chat back on (stCommit),
+   and is never saved, so the next page load tries voice again. */
+function stVoiceCant(msg){
+ ST_LISTEN=false; ST_LISTEN_T0=null; ST_WANT_LISTEN=false;
+ STV.novoice=true; STV.chat=false; STV.focus='write'; stRender();
+ var ta=document.getElementById('sttext'); if(ta)ta.focus();
+ status(msg,'fail');}
 function stMic(){
  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
  /* alert() blocks the page and is not the status region, which is the app's
     one writer for anything that can fail. */
- if(!SR){ ST_LISTEN=false; ST_LISTEN_T0=null; stRender();
-  status('This browser has no speech recognition. Typing works.','fail'); return; }
+ if(!SR){ stVoiceCant('This browser has no speech recognition. Typing works.'); return; }
  /* named before it is attempted, because this is the common case and the
     failure it produces otherwise is indistinguishable from a broken button. */
  if(typeof isSecureContext!=='undefined'&&!isSecureContext){
-  ST_LISTEN=false; ST_LISTEN_T0=null; stRender();
-  status('Recording needs a secure page. Opened from a file, the browser will '
-   +'not turn the microphone on. Typing works.','fail'); return; }
+  stVoiceCant('Recording needs a secure page. Opened from a file, the browser will '
+   +'not turn the microphone on. Typing works.'); return; }
  if(ST_REC&&ST_LISTEN){ ST_WANT_LISTEN=false; ST_REC.stop(); ST_LISTEN=false; ST_LISTEN_T0=null; stRender(); return; }
  /* a recording never starts under a line still playing from the last one,
     or the microphone would take it for the person */
