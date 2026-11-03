@@ -33,6 +33,13 @@ assert.equal(a.stats.coreArchetypeParadisoResearchLinks,12);
 assert.equal(a.stats.paradisoLevelsWithDirectCoreArchetypeResonance,8);
 assert.equal(a.stats.shadowLawCandidateEdges,49);
 assert.equal(a.stats.quarantinedCandidatePaths,6);
+assert.equal(a.stats.behaviorBridgedAdditionalPaths,10);
+assert.equal(a.policy.behaviorBridgesAreTentative,true);
+const queue=read('docs/data/compass/integration/v17/REVIEW_QUEUE_V17.json');
+assert.equal(queue.count,2);
+assert.equal(queue.items.length,2);
+for(const item of queue.items){const row=a.rows.find(x=>x.sceneId===item.sceneId);assert(row&&!row.lawCandidateRoutes.length,'review queue is not current');}
+assert(!graph.edges.some(e=>e.from==='purgatorio:P06-C'&&e.to==='paradiso:PD09'),'new P06 candidate already exists in source graph');
 for(const r of a.rows){
  assert(nodeIds.has(r.sceneId)&&nodeIds.has(r.sourceRecordId),r.sceneId+' lacks a source node');
  assert(r.sceneSourceEdge&&matches(r.sceneSourceEdge),r.sceneId+' lacks source edge');
@@ -40,7 +47,7 @@ for(const r of a.rows){
  for(const p of r.lawCandidateRoutes){
   assert(a.canonicalLawIds.includes(p.lawId),'unknown Law '+p.lawId);
   assert.equal(p.authority,'CANDIDATE_NAVIGATION_ONLY_NOT_SCORING');
-  assert(p.path.length>0&&p.path.length<=4);
+  assert(p.path.length>0&&p.path.length<=5);
   let prev=r.sourceRecordId;
   for(const step of p.path){
    assert.equal(step.from,prev,'broken chain '+r.sceneId);
@@ -56,4 +63,4 @@ for(const realm of ['INFERNO','PURGATORIO','PARADISO']){
  const rows=a.rows.filter(r=>r.realm===realm);
  assert.equal(rows.filter(r=>r.lawCandidateRoutes.length>0).length,a.stats.indirectLawTraceByRealm[realm].scenesWithPaths);
 }
-console.log('V17 PASS: 26/26 source IDs, 21/21 Law names, 12/12 core archetypes, 44 Paradiso links, 6 invalid paths quarantined.');
+console.log('V17 PASS: 26/26 source IDs, 21/21 Law names, 12/12 core archetypes, 44 Paradiso links, 6 invalid paths quarantined; 10 behavior bridges verified; 2 remaining gaps.');
