@@ -33,6 +33,8 @@ jobs:
         run: node tests/engine.js
       - name: Build complete app and its packaging
         run: PATH="$GITHUB_WORKSPACE/atuned_funnel_system/node_modules/.bin:$PATH" sh ./atuned_src/BUILD.sh
+      - name: Enforce customer-facing voice and objections contract
+        run: python3 .claude/skills/atuned-voice/check.py --objections
       - name: Verify the funnel's typed adapter suite
         run: npm test --prefix atuned_funnel_system
       - name: Install headless browser test runner
