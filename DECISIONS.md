@@ -3197,8 +3197,13 @@ PR #177 ported Reboot-OS's `canon_ARCHDOM` table and left Ruler open, because th
 table's own row reads "Ruler: Architect", and Architect is a root, not one of the
 19 domains, so the generator refused to guess which domain under that root. He
 first ruled Imperium, on the sense that Imperium and rulership read as the same
-word twice. He then asked for the real difference before trusting that, and the
-book overturns the first guess on its own words, found twice independently:
+word twice. He then reopened it himself, live, in his own words: "So it was
+Imperium and Power are they exactly the same, or what's the biggest difference?
+Because Imperium seems to suggest rulership, while Power suggests the seeking of
+power. They look alike, but they're not the same." That direct question from him,
+not a re-analysis claiming authority over his own ruling, is what this override
+answers. The book overturns the first guess on its own words, found twice
+independently:
 
 - "Power consolidated from prior Directed Force + Royal (one can be a king or a
   warrior, they are both Power)." The book's own merge note: being a king is
