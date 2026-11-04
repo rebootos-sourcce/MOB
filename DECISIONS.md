@@ -3191,16 +3191,32 @@ Not built yet, because each needs new engine work or a ruling first: Action, Com
 
 Held by `tests/stfull.js`, called from `tests/functional.js`. Its first job is the safety precondition: in Full, with chat on, the crisis door is still reached by real presses (profile button, "Is this a crisis?", "Reach someone now") and the three numbers (988, 741741, 911) are on screen and pressable. That was already true before this change and is now held. This is the voluntary door only; there is still no automatic reading of what a person writes.
 
-## Ruler's domain is Imperium, 4 November
+## Ruler's domain is Power, not Imperium. OVERRIDDEN same day, 4 November
 
 PR #177 ported Reboot-OS's `canon_ARCHDOM` table and left Ruler open, because that
 table's own row reads "Ruler: Architect", and Architect is a root, not one of the
-19 domains, so the generator refused to guess which domain under that root. His
-words: "I'm seeing something on Imperium. So you're saying Imperium and rulership
-are the same? If the definitions are the same and they're just two different
-words, then let's change it to Imperium." Ruled: Ruler's domain is Imperium, named
-as his own override for this one archetype, not a general rule for resolving a
-root-only hit.
+19 domains, so the generator refused to guess which domain under that root. He
+first ruled Imperium, on the sense that Imperium and rulership read as the same
+word twice. He then asked for the real difference before trusting that, and the
+book overturns the first guess on its own words, found twice independently:
+
+- "Power consolidated from prior Directed Force + Royal (one can be a king or a
+  warrior, they are both Power)." The book's own merge note: being a king is
+  Power, the same bucket as a warrior's force.
+- Its own worked trace example: "Power -> Sovereignty." And Royal Consciousness,
+  the book's own words, is "Sovereignty. Courage, leadership, and responsibility
+  for one's own reality... power that does not need to dominate," grouped with
+  Power, not with Imperium.
+- Imperium in the book is a different thing: "the executive layer. The capacity
+  that selects action across time, sequences decisions, and overrides impulse,"
+  grouped with Pattern and Story. Self-command, not rulership.
+- The engine's own existing seat data already seats Ruler at Solar (`ARCH[i].b`,
+  `engine/data/canon.js`), the same seat as Power and Royal Consciousness.
+  Imperium has no seat overlap with Ruler at all.
+
+Ruled: Ruler's domain is Power. Imperium was the wrong guess on the words alone,
+and is kept here, struck, for the record, the same discipline this file already
+holds for every overridden ruling.
 
 ## Archetype to root: no mechanism exists anywhere, 4 November
 
