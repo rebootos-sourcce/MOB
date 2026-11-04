@@ -32,6 +32,25 @@
         "how": "the page clock is paused once the plan is read at boot and held until it reads the same across a stretch, and the second move is read in the same task as the visibilitychange it answers",
         "verified": "gates-report (golden) green on main's own CI runs since: 41546532351 on 37c82b38 and 41563481675 on b6f86211"
       }
+    },
+    {
+      "gate": "functional",
+      "check": "desktop: permission refused: its own line, and it stops listening, {\"listen\":false,\"status\":\"Source AI's voice is ready but the browser blocked playing it.\"}",
+      "example": "desktop: permission refused: its own line, and it stops listening, {\"listen\":false,\"status\":\"Source AI's voice is ready but the browser blocked playing it.\"}",
+      "first_seen": {
+        "run": "local",
+        "commit": "6296138e8f22d45666243007ad4dd438a80a597c",
+        "date": "2026-11-04",
+        "where": "local, load 11, feat/journal-type-instead-2026-11-04 on 6296138e; tests/voicefall.js alone on the same build read 90 passed, 0 failed on four runs"
+      },
+      "last_seen": {
+        "run": "local",
+        "commit": "6296138e8f22d45666243007ad4dd438a80a597c",
+        "date": "2026-11-04",
+        "where": "local, load 11, feat/journal-type-instead-2026-11-04 on 6296138e; tests/voicefall.js alone on the same build read 90 passed, 0 failed on four runs"
+      },
+      "sightings": 1,
+      "status": "suspected"
     }
   ]
 }

@@ -4262,6 +4262,17 @@ body.quiet .st-mic.on .st-dot::after,body.rm .st-mic.on .st-dot::after{animation
 .st-ta:focus{border-color:rgba(223,204,126,.48)}
 .st-ta::placeholder{color:var(--dim)}
 .st-bar{display:flex;align-items:center;gap:10px;margin-top:11px}
+/* TYPE INSTEAD, 4 November, see #sttype in ui/storyui.js. His words: "the
+   typing panel, closed, to the bottom of the journal." Closed means out of
+   the way, so this carries none of the lift Chat and Dashboard were given
+   (no fill, no border, no glow): it is a word and an icon at the foot of the
+   panel, in the mid ink, and it reaches full ink on hover and while its box
+   is open. Still the full 44 pixel target, the floor tests/design.js holds. */
+.st-type{min-height:var(--tap);min-width:var(--tap);display:inline-flex;align-items:center;gap:7px;
+ background:none;border:0;border-radius:999px;padding:0 8px;margin-left:-8px;color:var(--mid);
+ font-family:var(--sans);font-size:13px;cursor:pointer;transition:color var(--t-micro) var(--ease-out)}
+.st-type svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.st-type:hover,.st-type[aria-expanded="true"]{color:var(--ink)}
 /* words dictation hid behind stars, said where the words are (maskedRuns) */
 .st-mask{margin:10px 0 0;padding:8px 12px;border-left:2px solid var(--accent);
  background:var(--sunk);border-radius:3px;font-size:13.5px;line-height:1.45;color:var(--mid)}
