@@ -3191,7 +3191,7 @@ Not built yet, because each needs new engine work or a ruling first: Action, Com
 
 Held by `tests/stfull.js`, called from `tests/functional.js`. Its first job is the safety precondition: in Full, with chat on, the crisis door is still reached by real presses (profile button, "Is this a crisis?", "Reach someone now") and the three numbers (988, 741741, 911) are on screen and pressable. That was already true before this change and is now held. This is the voluntary door only; there is still no automatic reading of what a person writes.
 
-## Ruler's domain is Power, not Imperium. OVERRIDDEN same day, 4 November
+## Ruler's domain: Imperium or Power, still his to close, 4 November
 
 PR #177 ported Reboot-OS's `canon_ARCHDOM` table and left Ruler open, because that
 table's own row reads "Ruler: Architect", and Architect is a root, not one of the
@@ -3200,28 +3200,31 @@ first ruled Imperium, on the sense that Imperium and rulership read as the same
 word twice. He then reopened it himself, live, in his own words: "So it was
 Imperium and Power are they exactly the same, or what's the biggest difference?
 Because Imperium seems to suggest rulership, while Power suggests the seeking of
-power. They look alike, but they're not the same." That direct question from him,
-not a re-analysis claiming authority over his own ruling, is what this override
-answers. The book overturns the first guess on its own words, found twice
-independently:
+power. They look alike, but they're not the same." That is a question, and his
+own reading of the plain English words, not a second ruling. A team member wrote
+"Ruled: Power" here on the strength of research alone, with no closing word from
+him, and that was wrong to write; corrected the same day. The two readings, so he
+can close it with his own word rather than an inference on his behalf:
 
-- "Power consolidated from prior Directed Force + Royal (one can be a king or a
-  warrior, they are both Power)." The book's own merge note: being a king is
-  Power, the same bucket as a warrior's force.
-- Its own worked trace example: "Power -> Sovereignty." And Royal Consciousness,
-  the book's own words, is "Sovereignty. Courage, leadership, and responsibility
-  for one's own reality... power that does not need to dominate," grouped with
-  Power, not with Imperium.
-- Imperium in the book is a different thing: "the executive layer. The capacity
-  that selects action across time, sequences decisions, and overrides impulse,"
-  grouped with Pattern and Story. Self-command, not rulership.
-- The engine's own existing seat data already seats Ruler at Solar (`ARCH[i].b`,
-  `engine/data/canon.js`), the same seat as Power and Royal Consciousness.
-  Imperium has no seat overlap with Ruler at all.
+- **His own plain-English reading, in the quote above: Imperium tracks with
+  rulership, Power with "the seeking of power."** On that reading Imperium is
+  the better fit for an archetype named Ruler.
+- **The book's own technical definitions point the other way, found twice
+  independently.** Its own merge note: "Power consolidated from prior Directed
+  Force + Royal (one can be a king or a warrior, they are both Power)." Its own
+  worked trace example: "Power -> Sovereignty." Royal Consciousness, the book's
+  words, is "Sovereignty. Courage, leadership, and responsibility for one's own
+  reality... power that does not need to dominate," grouped with Power, not
+  Imperium. The book's Imperium is "the executive layer. The capacity that
+  selects action across time, sequences decisions, and overrides impulse,"
+  grouped with Pattern and Story: self-command, not rulership. The engine's own
+  seat data already seats Ruler at Solar (`ARCH[i].b`, `engine/data/canon.js`),
+  the same seat as Power and Royal Consciousness; Imperium has no seat overlap
+  with Ruler at all.
 
-Ruled: Ruler's domain is Power. Imperium was the wrong guess on the words alone,
-and is kept here, struck, for the record, the same discipline this file already
-holds for every overridden ruling.
+Not resolved here. Both readings are real; they disagree because the book's own
+technical sense of these two words runs against their plain English sense. His
+call, with both readings in front of him.
 
 ## Archetype to root: no mechanism exists anywhere, 4 November
 
