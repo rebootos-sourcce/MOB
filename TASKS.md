@@ -33859,15 +33859,28 @@ His asks off the same screenshot, annotated directly on it:
 SW3 and SW5 dispatched together as one mock-up, since both are about the same
 rail's visual language. SW1, SW2, SW4 and SW6 need scoping before any build.
 
-- [ ] **SW7. P0, dispatched, urgent, real gap confirmed.** He was right: the
-  Field's "stack" panel (Child emotions, Saboteurs, Complexes, Hyper, Super
-  tabs, `railStack()` in `ui/ui.js`) still draws the old ring-icon-plus-pill
-  rows with "held"/"opposite" text headers (`cr()`). Right beside it,
-  Orientation and Balance already use the ruled dual-pole bar (`rbPair`,
-  `ui/component.js`), his own round RB words, quoted in `shell/body.html`:
-  "This stack of elements should all be bar style with the symbolic icon and
-  the text inside of the bar itself to maximize space." That ruling reached
-  Orientation and Balance and never reached this panel. Converting all 5 tabs
-  to the same `rbPair` bar, real data, same rows, same doors into each drill.
-  Not a new design decision, applying one already made. Dispatched with real
-  before/after screenshots.
+- [ ] **SW7. P0, scope expanded from his own annotated screenshot, 4
+  November. The right rail's Reading panel (to be renamed Insight) is a
+  bigger rebuild than a bar swap.** Full ruling in `DECISIONS.md`, "The
+  right rail's Reading panel, ruled from his own screenshot, 4 November".
+  Five things, together:
+  - "Reading" heading becomes "Insight".
+  - The record's own name (shown as "Marcus" on a sample) comes off the
+    panel. His words: "the person already knows who they are."
+  - The dead Field block (By Weight/By Assemblage Point duplicate text,
+    Carrying/Filled in/Heaviest/Most shut) comes off. Already covered by
+    the `stackbuild` pull (`d5db0e55`) landing this same round; confirmed
+    independently in his own words this round too.
+  - "Held"/"opposite" column headers come off; the Fear/Trust-style rows
+    at the bottom become bars.
+  - **The five tabs (Child emotions, Saboteurs, Complexes, Hyper, Super)
+    stop being five flat panes and become one nested cascade, parent
+    through children**, open or closed at each layer. This is the real
+    scope change: a tab doesn't replace the view, it opens that layer and
+    nests the next one inside it.
+  - The summary box at the top stays, and is where `traceSummary()`'s
+    narration (pulled from `stackbuild` this round, `f0f1b999`/`585ed476`)
+    actually belongs, not only the drill screens it's wired into today.
+  `stackbuild`'s own rejected, entangled nested-tier commits are reference
+  for the mechanics, not something to pull as-is. Dispatched as a fresh,
+  properly scoped build against current main once the salvage pull lands.
