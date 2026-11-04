@@ -884,7 +884,13 @@ function rbPairSide(o){
  if(!o.read)return 0;
  var lr=Math.round(clamp(+o.L.v||0,0,100)), rr=100-lr;
  return lr>rr?-1:rr>lr?1:0;}
+/* A PAIR WHOSE MARK IS NOT A SHARE NAMES ITS OWN FIGURE. The stack's child
+   emotion bars place the mark by held less installed (stkFetBar, ui/ui.js),
+   so the leaning pole's v is a position and printing it would print a share
+   nobody holds. Such a pair hands over fig, the leaning pole's own amount,
+   already formatted. Every other pair leaves it out and prints as it did. */
 function rbPairFig(o){
+ if(o.fig!==undefined)return o.fig;
  if(!o.read)return '–';
  var sd=rbPairSide(o);
  return sd<0?rbVal(o.L,o.L.v):sd>0?rbVal(o.R,o.R.v):'50%';}
@@ -1146,6 +1152,20 @@ function crPat(p,size,o){o=o||{};
 function leaves(o){if(!o||!o.parts)return o?[o]:[];
  var a=[],sn={};(function dig(x){if(x.parts)x.parts.forEach(dig);
   else if(!sn[x.i]){sn[x.i]=1;a.push(x);}})(o);return a;}
+/* THE FAMILY A PATTERN BELONGS TO, AND ITS RECORD. 4 November, his live
+   reaction to the pattern drill: the words must come "from the records", and
+   "built from 5 held addresses" is "a big no". A saboteur and a complex name
+   their family in hcx, a hyper complex is its family; the record is HCX_LIB's
+   d, the line that already prints on every hover of a hyper complex. An
+   overshoot family has no row there, and its sentence is the one compute()
+   gives the same family (engine/compute.js, FAMS), read the same way here
+   off FAM_POLE so the two cannot word it differently. */
+function patFam(o){
+ var nm=!o?'':o.kind==='hy'?o.nm:(o.hcx||''); if(!nm)return null;
+ var h=HCX_LIB.filter(function(x){return x.nm===nm;})[0];
+ if(h)return {nm:nm,d:h.d};
+ var base=Object.keys(FAM_POLE).filter(function(k){return FAM_POLE[k]===nm;})[0];
+ return base?{nm:nm,d:'the fix for '+base.toLowerCase()+', done past the point where it helps'}:null;}
 
 /* ============================================================
    CANVAS UTILITIES
