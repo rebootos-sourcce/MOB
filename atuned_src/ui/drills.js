@@ -201,6 +201,7 @@ function runDrill(o){
        :'None of it is installed yet. Release empties the address, the opposite is what fills it.')
    : 'No poled axis sits underneath this one.')+'</p>'
   +(o.kind==='sab'?kbSabBlock(o.nm):'')
+  +(o.kind==='hy'?kbHcxBlock(o.nm):'')
   /* "RUNS UNDER," SECTION 5, DESIGN-character-effects.md 5. Every read mask
      this pattern's own addresses sit under, each with how many of them
      land there, so a saboteur picked off the weave answers the question MX
@@ -937,6 +938,26 @@ function kbSabLinked(nm){
     +(x.n?', in the '+esc(String(x.n).toLowerCase()):'')+'.</p>';}).join('')
   +(fam?'<p class="ad-sub">It belongs to the <b>'+esc(fam.nm)+'</b> family: '+esc(fam.d)+'.</p>':'')
   +'</div>';}
+
+/* THE HYPER COMPLEX CARD. Round HC. A hyper complex's family line, HCX_LIB's
+   own d, was the one thing a person was ever shown, and only on hover: the
+   drill a click opens had nothing of its own. HCXCARD in
+   engine/data/hcxcard.js carries what was already researched and written for
+   each of the six and never read by this drill. Looked up by name, never by
+   position, the same KB_KEY every other card in this file is keyed by. An
+   overshoot family (Grandiosity run past the point it helps, read off
+   FAM_POLE) is not one of the six and has no row here, so it prints nothing
+   rather than a guess, the same rule kbSabLinked holds for an address nobody
+   has mapped. */
+function kbHcxBlock(nm){
+ var c=(typeof HCXCARD!=='undefined'&&HCXCARD[KB_KEY(nm)])||null; if(!c)return '';
+ return '<div class="pm-eye">What happens</div><p class="ad-p">'
+   +esc(c.triggerMechanism)+' '+esc(c.behavior)+'</p>'
+  +'<div class="pm-eye">What you might recognise</div><p class="ad-p">'+esc(c.livedExample)+'</p>'
+  +'<div class="pm-eye">What it costs</div><p class="ad-p">'+esc(c.impact)+'</p>'
+  +'<div class="pm-eye">What becomes available</div><p class="ad-p"><b>'+esc(c.inverseName)
+   +'.</b> '+esc(c.inverseDefinition)+'</p>'
+  +'<div class="pm-eye">Next move</div><p class="ad-p">'+esc(c.practice)+'</p>';}
 
 function runKbDrill(eyebrow,title,sub,body){
  rdShell('<div class="pm-eye">'+esc(eyebrow)+'</div><div class="ad-nm">'+esc(title)+'</div>'

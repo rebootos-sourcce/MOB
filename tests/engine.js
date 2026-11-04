@@ -8811,6 +8811,37 @@ g('SB · the saboteur card is the same 33 as SABDEF, and its opposites are read 
   +JSON.stringify(orphans.map(s=>s.nm)));
 }
 
+g('HC · the hyper complex card carries exactly HCX_LIB\'s six, each in full');
+/* ROUND HC. HCX_LIB's d was the one line a hyper complex ever printed, on
+   hover and nowhere else. HCXCARD in engine/data/hcxcard.js carries the rest
+   of what was already written for each of the six, in
+   proto/knowledge/src/gen-data.js's HYPERCOMPLEX_MODES, and ui/drills.js
+   reads it by name in kbHcxBlock. Coverage first: not one more row than
+   HCX_LIB names and not one fewer, the same shape SB holds SABCARD to
+   against SABDEF. Then every row actually carries the six fields the drill
+   prints, each long enough to be a sentence and not a placeholder, and none
+   of the six carries an em dash or says "you are a" anything, SABCARD's own
+   two rules, because a mode printed to a person is still never an identity. */
+{
+ const {HCX_LIB,HCXCARD,KB_KEY}=E;
+ const libKeys=HCX_LIB.map(h=>KB_KEY(h.nm)).sort(), cardKeys=Object.keys(HCXCARD).sort();
+ ok(JSON.stringify(libKeys)===JSON.stringify(cardKeys),
+  'HCXCARD carries exactly HCX_LIB\'s six, '+cardKeys.length+': missing '
+  +JSON.stringify(libKeys.filter(k=>cardKeys.indexOf(k)<0))+', extra '
+  +JSON.stringify(cardKeys.filter(k=>libKeys.indexOf(k)<0)));
+ const fields=['behavior','triggerMechanism','livedExample','impact','practice','inverseDefinition'];
+ const short=[];
+ cardKeys.forEach(k=>fields.forEach(f=>{
+  if(typeof HCXCARD[k][f]!=='string'||HCXCARD[k][f].length<=40)short.push(k+'.'+f);}));
+ ok(short.length===0,'every row carries what happens, what it might look like, what it costs, '
+  +'the opposite and the next move, each a real sentence: '+JSON.stringify(short));
+ ok(cardKeys.every(k=>typeof HCXCARD[k].inverseName==='string'&&HCXCARD[k].inverseName.length>0),
+  'every row names its coherent counterpart, never only defines it');
+ const all=cardKeys.map(k=>fields.concat('inverseName').map(f=>HCXCARD[k][f]).join(' ')).join(' ');
+ ok(!/—/.test(all),'no row carries an em dash');
+ ok(!/\byou are an? /i.test(all),'no row says you are a pattern');
+}
+
 g('SW · a range match is checked at a seat its own first charge can reach');
 /* PIECE ONE OF 22 OCTOBER, core.js SAB_SEAT. compute() names a SAB33 range
    match only when its seat holds an address at sq 3 or more. The seat was
