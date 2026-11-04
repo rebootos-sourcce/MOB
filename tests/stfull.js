@@ -47,7 +47,8 @@
     10  a profile change in Full leaves none of the last person's words, rail,
         page text or parse on screen, writes nothing onto the new
         record, brings the words back on the way home, drops the last
-        commit's credit, and the fold reopening runs no fade on the rail
+        commit's credit and its safe line, and the fold reopening runs no
+        fade on the rail
    ============================================================ */
 const path=require('path');
 
@@ -287,6 +288,33 @@ async function stFullGate(browser,FILE,ok,booted){
    s.dispatchEvent(new Event('change')); await new Promise(r=>setTimeout(r,200));
    return {before:k, lastT:STV.lastT, found:STV.lastFound.length};});
   ok(d.before.lastT!==null&&d.lastT===null&&d.found===0,at+'a commit\'s found imprints and its time do not carry to the next person, '+JSON.stringify(d));
+  /* NOR DOES THE SAFE LINE, 4 November. stCommit keeps STV.safeSaid up so
+     the line stands once the box empties (stSafe), and stOwn did not clear
+     it: a safety commit on one record, a switch, and the next record was
+     shown the line and the door, and on Talk heard the line, for words it
+     never wrote. A sample person's Journal draws no conversation at all, so
+     the picker to Tomas above cannot see it; this switch is New profile, the
+     #iqnew handler's own calls (ui/intakeui.js). srcSayNow is what a Talk
+     press speaks. The last check is the real trip on the new record, which
+     must still draw both. */
+  const SAFE='I keep thinking about killing myself.';
+  const seen=()=>p.evaluate(()=>({safeSaid:STV.safeSaid, safeUp:SRC_SAFE_UP, rec:CURP&&CURP.name, talk:srcSayNow(),
+   line:(document.querySelector('#stsafe p')||{}).textContent||null,
+   reach:document.querySelectorAll('[data-crisis="reachnow"]').length}));
+  await p.evaluate(async t=>{loadP(0); setTab(TAB.STORY); render(); await new Promise(r=>setTimeout(r,200));
+   ST_TEXT=t; ST_PARSED=parseStory(t); stRefresh(); stRender(); await new Promise(r=>setTimeout(r,200));
+   stCommit(); await new Promise(r=>setTimeout(r,250));},SAFE);
+  const e0=await seen();
+  ok(e0.safeSaid&&e0.line&&e0.reach>0&&e0.talk===e0.line,at+'a safety commit keeps the line and its door standing on the record that wrote it, '+JSON.stringify(e0));
+  await p.evaluate(async()=>{pNew('Safe switch'); loadProfile(CURP); IQ_OPEN=null; IQ_SEAT=null; IQ_ARCH=null;
+   syncCh(); syncLw(); syncSoul(); renderIntake(); render(); await new Promise(r=>setTimeout(r,250));});
+  const e1=await seen();
+  ok(e1.rec==='Safe switch'&&!e1.safeSaid&&!e1.safeUp&&e1.line===null&&e1.reach===0&&e1.talk!==e0.line,
+   at+'after a switch the next record is shown no safe line and no door, and Talk would not say the line, for words it never wrote, '+JSON.stringify(e1));
+  await p.evaluate(async t=>{ST_TEXT=t; ST_PARSED=parseStory(t); stRefresh(); stRender(); await new Promise(r=>setTimeout(r,200));},SAFE);
+  const e2=await seen();
+  ok(e2.line===e0.line&&e2.reach>0,at+'and its own words trip the line and the door on it, '+JSON.stringify(e2));
+  await p.evaluate(()=>{ST_TEXT=''; ST_PARSED=null; stDraft(); profDelete(CURP.id);});
   await p.evaluate(()=>{loadP(0); setTab(TAB.STORY); render();});
   /* the fold opening again does not fade the rail in, the rule rmVisible
      already keeps for first sight (ui/railmotion.js, railOpened) */
