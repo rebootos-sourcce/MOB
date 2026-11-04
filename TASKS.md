@@ -33784,3 +33784,14 @@ Named SU and not SQ: SQ1 to SQ5 and SR1 to SR6 are already item numbers earlier 
 - #149, #170, #164. His, as above. No seat merges any of them.
 
 **Nothing new for him, past SU1.** Round PD holds: one question, only when blocked. Nothing in SU2 to SU9 is blocked on him. SU1 needs his eyes on it before it merges, and it reaches him as the fix with its reproduction, not as a question.
+
+## Round SV, 4 November: his rulings this round, dispatched not yet landed
+
+- [ ] **SV1. P1, dispatched. Restore the Discord feedback relay.** His words: "We should still have the Discord feedback. That should not have gone away." Reboot-OS PR #2 (the relay) is broken in production, silently. An agent is finding the exact cause and fixing it if the fix is small and safe, or reporting what it needs if not. Not landed as of this entry.
+- [ ] **SV2. P1, dispatched. Validate the five unreviewed Reboot-OS psyche-hierarchy branches.** Flagged by an earlier audit, never checked. An agent is reading each one (finished code or a stub, safe to port or not, stale or active) and reporting, not porting anything yet. Not landed as of this entry.
+- [ ] **SV3. P1, dispatched. Ruler's domain is Imperium (PR #177).** His ruling, recorded in `DECISIONS.md` under "Ruler's domain is Imperium, 4 November". An agent is closing the one open item PR #177 left and pushing to that same branch. Not landed as of this entry.
+- [ ] **SV4. Needs design first. Double bind detection.** Recorded in `DECISIONS.md` under "Double bind detection and a hold button for felt versus computed, 4 November". A felt-versus-computed disagreement shown uniquely, with an icon, in the bank and the vault. Not started: needs a seat for where "bank" and "vault" mean in this product's own language, and a visual spec, before any engine work.
+- [ ] **SV5. Needs design first. A hold button for felt versus computed, at release.** Same entry in `DECISIONS.md`. Keeps a detected pattern through a release instead of letting the release clear it, then runs detection again; a pattern that keeps surfacing across runs is the one to trust. Not started: needs the release flow's own seat to decide where the button sits.
+- [ ] **SV6. His call, not ours. Archetype to root.** No mechanism exists anywhere connecting the twelve archetypes to the four roots, with the domains correctly out of that chain per his own correction. Full finding in `DECISIONS.md` under "Archetype to root: no mechanism exists anywhere, 4 November". Three ways it could go, all needing him: he writes the twelve rows himself, the seat route is adopted for the 7 it resolves with the other 5 ruled by hand, or the old 30-blueprint god-form list is finished. Nothing built pending his choice.
+
+This round is not closed until SV1 through SV3 land with real commits and SV4 through SV6 have a seat or a ruling. Written here the same round it happened, per SU9.

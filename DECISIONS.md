@@ -3190,3 +3190,69 @@ Seat defaults taken with it, recorded as decided and not asked:
 Not built yet, because each needs new engine work or a ruling first: Action, Compass, a laws grid, Channels, Patterns, Boundary, and Feelings as a cycling widget. The laws panel the Story page already has is left as it is. A kept and broken laws grid was proposed and is not taken: it needs his ruling.
 
 Held by `tests/stfull.js`, called from `tests/functional.js`. Its first job is the safety precondition: in Full, with chat on, the crisis door is still reached by real presses (profile button, "Is this a crisis?", "Reach someone now") and the three numbers (988, 741741, 911) are on screen and pressable. That was already true before this change and is now held. This is the voluntary door only; there is still no automatic reading of what a person writes.
+
+## Ruler's domain is Imperium, 4 November
+
+PR #177 ported Reboot-OS's `canon_ARCHDOM` table and left Ruler open, because that
+table's own row reads "Ruler: Architect", and Architect is a root, not one of the
+19 domains, so the generator refused to guess which domain under that root. His
+words: "I'm seeing something on Imperium. So you're saying Imperium and rulership
+are the same? If the definitions are the same and they're just two different
+words, then let's change it to Imperium." Ruled: Ruler's domain is Imperium, named
+as his own override for this one archetype, not a general rule for resolving a
+root-only hit.
+
+## Archetype to root: no mechanism exists anywhere, 4 November
+
+Asked to simulate the stack from archetype to root with the domains taken out,
+per his correction that the domains are a separate "conscious domains" layer
+("the knowledge we accumulate") and not a rung between archetype and root. The
+simulation (full report held by the team) found no table, in this app, in
+Reboot-OS, or in any edition of the book read, that says which of the four roots
+(Architect, Engine, Weaver, Witness) each of the twelve archetypes belongs to.
+
+What exists instead: a partial archetype-to-seat-to-root chain (`ARCH[i].b`
+through `ROOTSEAT`) that only resolves 7 of 12 archetypes and ties on none; the
+born-on blueprint (Summary page) that hands a person a root and an archetype
+from the same birthdate but by unrelated formulas, so knowing one tells you
+nothing about the other (measured at 0.0007 against a scale where 2.0 would mean
+they agree); and an old, 6-of-30-filled Reboot-OS table of blueprint "god forms"
+(`V25_BLUEPRINTS`) that names archetypes under a blueprint but never a root.
+
+Not resolved here. Three ways it could go, each needing his ruling: he writes
+the twelve archetype-to-root rows himself; the seat route (`ROOTSEAT`) is
+adopted as the answer for the 7 it already resolves, with the other 5 (Warrior,
+Rebel, Ruler, Jester, Everyman) ruled by hand; or the old 30-blueprint god-form
+list is finished and each form given a root. Nothing is built pending that
+choice, per the standing rule against inventing a mechanism the data does not
+support.
+
+## Double bind detection and a hold button for felt versus computed, 4 November
+
+Two new items, both his words, both scoped to the release flow and not yet
+built.
+
+- **Double bind detection.** A pattern where what a person says they feel and
+  what the engine computes from their story disagree (felt versus computed) is
+  its own detectable thing, distinct from the patterns already named
+  (minimizing, humor-deflection, numbing). His words: "it will show up unique.
+  In a person's bank and vault. It'll have an icon next to it showing that's a
+  double bind." Needs a seat (where "bank" and "vault" mean here, which this
+  product's own glossary should confirm before building) and an icon, not yet
+  designed.
+- **A hold button for felt versus computed, at release.** When that disagreement
+  is found during a release, a button keeps (holds) the pattern instead of
+  letting the release clear it, then runs the detection again. His words: "the
+  more we can find, the dense ones, those are the real ones," meaning a pattern
+  that keeps surfacing across repeated runs is the one worth trusting over a
+  single hit.
+
+Both logged to the backlog (`TASKS.md`) rather than built blind. Neither has a
+seat, a visual spec, or engine support yet.
+
+## The Discord feedback relay stays, 4 November
+
+Lance: "We should still have the Discord feedback. That should not have gone
+away." Reboot-OS PR #2 (the relay) is not to be dropped; its current broken
+state in production is a defect to fix, not a feature to retire. Status of the
+fix is tracked in `TASKS.md`, not here.
