@@ -3875,10 +3875,9 @@ var ARCHDOM_SNAPSHOT={
  },
  "words": {
   "Architect": {
-   "nm": null,
-   "root": "Architect",
-   "how": "root",
-   "open": true
+   "nm": "Imperium",
+   "how": "ruling",
+   "ruling": true
   },
   "Communication": {
    "nm": "Exchange",
@@ -3950,28 +3949,7 @@ var ARCHDOM_SNAPSHOT={
    ]
   }
  },
- "open": {
-  "Ruler": {
-   "why": "Reboot-OS gives the root Architect, not a domain, and the book points two ways",
-   "read": [
-    {
-     "nm": "Imperium",
-     "cite": [
-      "domain_list",
-      "ruler_is_a_domain"
-     ],
-     "says": "the book's Rulership and Order is the text DOMDEF files under imperium, and Imperium sits under Architect, the root Reboot-OS gives. The book's Zeus, Odin, Ra line names the archetype, and its own table files Odin under Knowledge"
-    },
-    {
-     "nm": "Power",
-     "cite": [
-      "power_took_royal"
-     ],
-     "says": "the book folds royal into Power, which DOMAINS contradicts (\"the warrior, not the king\") and which moves Ruler to the Engine root"
-    }
-   ]
-  }
- },
+ "open": {},
  "quotes": {
   "ruler_is_a_domain": "Zeus, Odin, Ra point at the same domain: Ruler.",
   "power_took_royal": "Power consolidated from prior Directed Force + Royal (one can be a king or a warrior, they are both Power)",
@@ -25985,7 +25963,7 @@ if(typeof module!=='undefined'&&module.exports){
    it is recorded in DECISIONS.md and not touched here: port, do not rebuild.
 
    WHAT IS RESOLVED, AND HOW. Every row's domain word reaches DOMAINS by one
-   of four routes, named in each answer's `how`:
+   of five routes, named in each answer's `how`:
      same   the word is a DOMAINS name. Power, Creation, Knowledge, Play,
             Mystery, Nature, Guardian, Death, Trickster.
      codex  KB_RENAME already records the domain as "called <word> in the
@@ -25996,7 +25974,12 @@ if(typeof module!=='undefined'&&module.exports){
      book   Destruction is the opening word of the book's "VI, Destruction
             and Renewal", whose clear reading opens "deliberate dissolution",
             and DOMDEF files that numeral under dissolution.
-     root   the word is a root, not a domain. Only Ruler's, below.
+     root   the word is a root, not a domain. No row is open this way any
+            more; see RULER WAS OPEN, below.
+     ruling the word is a root the first four routes could not resolve, and
+            the owner named the leaf himself. Only Ruler's, below. The
+            answer carries `ruling:true` so a caller can tell a named ruling
+            from an inference.
 
    REBEL IS OUTLAW HERE BY THE HOUSE JOIN, NOT BY A NEW RULING. ARCHDOM says
    Outlaw where ARCH says Rebel. ui/analytics.js and ui/avatarui.js already
@@ -26005,21 +25988,23 @@ if(typeof module!=='undefined'&&module.exports){
    owner's open call (engine/data/codes.js), so the answer says `upstream`
    beside `arch` and never renames either.
 
-   RULER IS OPEN. Reboot-OS gives it the root Architect, which is a family of
-   five domains and not one. The book points two ways: its Rulership and
+   RULER WAS OPEN. Reboot-OS gives it the root Architect, which is a family
+   of five domains and not one. The book pointed two ways: its Rulership and
    Order (Zeus, Jupiter, Ra) is the text DOMDEF files under Imperium, under
    Architect (its "Zeus, Odin, Ra point at the same domain: Ruler" names the
    archetype, and its own table files Odin under Knowledge, so that line
-   settles nothing); and its line beside the consolidated list folds royal into
-   Power, which DOMAINS contradicts ("the warrior, not the king") and which
-   would move the root to Engine. The answer gives the root Reboot-OS gives,
-   no domain, open:true, and both readings in `read`. Resolving it is a
-   ruling, and the gate fails if the snapshot resolves it without one.
+   settled nothing); and its line beside the consolidated list folds royal
+   into Power, which DOMAINS contradicts ("the warrior, not the king") and
+   which would have moved the root to Engine. The owner ruled it 4 November:
+   "I'm seeing something on Imperium. So you're saying Imperium and
+   rulership are the same? If the definitions are the same and they're just
+   two different words, then let's change it to Imperium." The answer now
+   carries Imperium, `how:'ruling'`, `ruling:true`, and no `open`.
 
    THE ENGINE MAY NOT TOUCH THE HOST and this file does not. It sits after
    engine/archexpr.js and adds its names to what export.js left.
    ============================================================ */
-var ARCHDOM_HOW=['same','codex','book','root'];
+var ARCHDOM_HOW=['same','codex','book','root','ruling'];
 function archDomainOf(name){
  var A=ARCHDOM_SNAPSHOT, own=Object.prototype.hasOwnProperty;
  var nm=String(name===undefined||name===null?'':name);
@@ -26031,6 +26016,7 @@ function archDomainOf(name){
  var r={arch:nm, upstream:up, word:word, nm:w.nm||null,
   root:w.nm?(d?d.r:null):(w.root||null), how:w.how, open:!!w.open};
  if(w.n){r.n=w.n; r.title=w.title;}
+ if(w.ruling)r.ruling=true;
  if(own.call(A.open,up))r.read=A.open[up].read.map(function(x){return x.nm;});
  return r;}
 /* by index into ARCH, the roster a record stores */

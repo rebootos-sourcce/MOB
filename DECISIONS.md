@@ -3251,10 +3251,9 @@ Outlaw and Rebel as two rows, so whether they are one is still open
 (`engine/data/codes.js`, and "Rebel or Outlaw, are open" above). The answer
 says `upstream: Outlaw` beside `arch: Rebel`.
 
-**Open, his call: Ruler.** Reboot-OS gives it `Architect`, which is a root,
-a family of five domains, where every other row names one domain. The
-answer is that root, no domain, and `open`. The book points two ways and
-they disagree:
+**Ruled, his call: Ruler reads Imperium.** Reboot-OS gives it `Architect`,
+which is a root, a family of five domains, where every other row names one
+domain. The book pointed two ways and they disagreed:
 
 - Imperium. The book's "IV · Rulership and Order" (templates Zeus, Jupiter,
   Ra) is the text `DOMDEF` files under `imperium`; Imperium sits under
@@ -3269,16 +3268,40 @@ they disagree:
   the warrior, not the king", and Power sits under Engine, which would move
   Ruler off the root Reboot-OS gives it.
 
-The gate fails if the snapshot resolves Ruler without a ruling.
+He ruled it Imperium. His words: "I'm seeing something on Imperium. So
+you're saying Imperium and rulership are the same? If the definitions are
+the same and they're just two different words, then let's change it to
+Imperium." `tools/regen-archetype-domain.cjs` carries this as `RULING`, a
+named override for Ruler alone and not a route any other root-only row
+inherits; the snapshot's `words.Architect` now reads `{nm:'Imperium',
+how:'ruling', ruling:true}` and `open` is empty.
+
+Power stayed raised after the first ruling: he asked, in the same
+conversation, whether Imperium and Power are exactly the same or what the
+biggest difference is, and said in his own words that they look alike but
+are not the same. That question has not yet had his own closing answer, so
+Power is kept here as open for his later call, with the extra reading
+behind it (the book's own worked trace linking Power to Sovereignty, Royal
+Consciousness sitting in Power's cluster, Imperium's own definition as
+self-command grouped with Pattern and Story, and the engine's existing seat
+data seating Ruler at Solar beside Power/Royal Consciousness with no seat
+overlap on Imperium). Imperium ships now because it is the last thing he
+actually ruled; if his answer to his own question later moves it to Power,
+that is a second named change to `RULING`, not a re-reading of this one.
+
+The gate no longer fails on an unresolved root: it fails if `RULING` is
+left pointing at a row Reboot-OS no longer leaves open, or at a reading
+`OPEN` never recorded.
 
 **Found on the way, recorded and not changed.**
 
 - **The soul map couples archetypes to domains by position, not by this
   table.** `buildSoul()` and `affinity()` lay twelve archetype arcs of thirty
-  degrees over nineteen domain arcs of 360/19. For none of the eleven
-  archetypes this table resolves is the domain under the arc, or under the
-  lobe's centre, the domain ARCHDOM names: the Warrior's arc covers Knowledge
-  and Justice, the Sage's Imperium. `tests/engine.js` recomputes it. Changing
+  degrees over nineteen domain arcs of 360/19. For none of the twelve
+  archetypes this table resolves, Ruler now included, is the domain under
+  the arc, or under the lobe's centre, the domain ARCHDOM names: the
+  Warrior's arc covers Knowledge and Justice, the Sage's Imperium.
+  `tests/engine.js` recomputes it. Changing
   it would change every reading's archetype affinity, so it is a ruling on
   the soul map and not part of a port.
 - **Reboot-OS's ARCHDOM disagrees with Reboot-OS's own register.**

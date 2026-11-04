@@ -10240,7 +10240,7 @@ g('archetype to domain, ported from Reboot-OS canon_ARCHDOM (engine/archdom.js)'
  ok(faults(SN).length===0,'the real snapshot points only into tables that exist, faults: '+JSON.stringify(faults(SN)));
  const clone=()=>JSON.parse(JSON.stringify(SN));
  [['a word resolving to a domain DOMAINS lacks',s=>{s.words.Power.nm='Might';},/Might, which is not a DOMAINS name/],
-  ['Ruler resolved with no ruling',s=>{s.words.Architect={nm:'Imperium',how:'book'};},/Ruler is recorded open and its word resolves to Imperium/],
+  ['an archetype recorded open whose word already resolves',s=>{s.open.Ruler={why:'planted',read:[{nm:'Imperium',cite:[]}]};},/Ruler is recorded open and its word resolves to Imperium/],
   ['an archetype of the roster with no row',s=>{delete s.rows.Healer;},/roster Healer reaches no row/],
   ['the Rebel alias pointing at no row',s=>{s.alias.Rebel.as='Rebellion';},/alias Rebel points at a row that does not exist/],
   ['a row naming a word with no route',s=>{s.rows.Sage='Wisdom';},/row Sage names the word Wisdom, which has no route/],
@@ -10249,18 +10249,19 @@ g('archetype to domain, ported from Reboot-OS canon_ARCHDOM (engine/archdom.js)'
   ok(r.some(x=>re.test(x)),'archDomFaults catches '+what+', reported '+JSON.stringify(r));});
  ok(archDomFaults(null).length===1&&archDomFaults({rows:{}}).length===1,'and a thing that is not a snapshot is one named fault, never a throw');
 
- /* the twelve, as the port resolves them. Ruler is the one left open. */
+ /* the twelve, as the port resolves them. Ruler was the one left open; the
+    owner ruled it Imperium 4 November, so now all twelve resolve. */
  const want={Warrior:'Power',Sage:'Knowledge',Rebel:'Dissolution',Caregiver:'Restoration',Creator:'Creation',
-  Magician:'Mystery',Ruler:null,Explorer:'Nature',Lover:'Connection',Jester:'Play',Everyman:'Exchange',Innocent:'Nature'};
+  Magician:'Mystery',Ruler:'Imperium',Explorer:'Nature',Lover:'Connection',Jester:'Play',Everyman:'Exchange',Innocent:'Nature'};
  const all=archDomainAll();
  const off=all.map((r,i)=>[ARCH[i].nm,r&&r.nm]).filter(([n,d])=>!(n in want)||want[n]!==d);
  ok(all.length===ARCH.length&&off.length===0,'every one of the '+ARCH.length+' archetypes in ARCH reads the domain the port resolved, off: '+JSON.stringify(off));
  ok(all.every((r,i)=>JSON.stringify(r)===JSON.stringify(archDomain(i))),'archDomain(i) is archDomainAll()[i]');
  ok(all.filter(r=>r.nm).every(r=>DOMAINS.filter(d=>d.nm===r.nm)[0].r===r.root),'a resolved answer carries the root DOMAINS gives its domain, never one of its own');
  const ru=archDomainOf('Ruler');
- ok(ru&&ru.nm===null&&ru.root==='Architect'&&ru.open===true&&ru.how==='root'&&JSON.stringify(ru.read)==='["Imperium","Power"]',
-  'Ruler is open: the root Reboot-OS gives, no domain, and both readings the book supports, '+JSON.stringify(ru));
- ok(all.filter(r=>r.open).length===1,'and nothing else is open');
+ ok(ru&&ru.nm==='Imperium'&&ru.root==='Architect'&&ru.open===false&&ru.how==='ruling'&&ru.ruling===true&&!('read' in ru),
+  'Ruler reads Imperium by the owner\'s own ruling, 4 November, not the open root any more, '+JSON.stringify(ru));
+ ok(all.filter(r=>r.open).length===0,'and nothing is open');
  const rb=archDomainOf('Rebel');
  ok(rb&&rb.upstream==='Outlaw'&&rb.word==='Destruction'&&rb.nm==='Dissolution'&&rb.how==='book'&&rb.n==='VI',
   'Rebel reaches Reboot-OS\'s Outlaw row by the alias, and its Destruction is the book\'s heading VI, which DOMDEF files as Dissolution');
@@ -10291,7 +10292,7 @@ g('archetype to domain, ported from Reboot-OS canon_ARCHDOM (engine/archdom.js)'
   let best=-1,bi=-1;DOMAINS.forEach((d,i)=>{const o=Math.max(0,Math.min((i+1)*DARC,j*30+30)-Math.max(i*DARC,j*30));if(o>best){best=o;bi=i;}});
   if(DOMAINS[bi].nm===r.nm)agree.arc++;
   if(DOMAINS[Math.round((j/12)*19+19/24)%19].nm===r.nm)agree.lobe++;});
- ok(resolved.length===11&&agree.arc===0&&agree.lobe===0,'the soul map\'s ring position agrees with ARCHDOM for none of the '+resolved.length+' resolved archetypes, as recorded: '+JSON.stringify(agree));
+ ok(resolved.length===12&&agree.arc===0&&agree.lobe===0,'the soul map\'s ring position agrees with ARCHDOM for none of the '+resolved.length+' resolved archetypes, as recorded: '+JSON.stringify(agree));
 }
 
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');

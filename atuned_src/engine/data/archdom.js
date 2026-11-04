@@ -67,10 +67,9 @@ var ARCHDOM_SNAPSHOT={
  },
  "words": {
   "Architect": {
-   "nm": null,
-   "root": "Architect",
-   "how": "root",
-   "open": true
+   "nm": "Imperium",
+   "how": "ruling",
+   "ruling": true
   },
   "Communication": {
    "nm": "Exchange",
@@ -142,28 +141,7 @@ var ARCHDOM_SNAPSHOT={
    ]
   }
  },
- "open": {
-  "Ruler": {
-   "why": "Reboot-OS gives the root Architect, not a domain, and the book points two ways",
-   "read": [
-    {
-     "nm": "Imperium",
-     "cite": [
-      "domain_list",
-      "ruler_is_a_domain"
-     ],
-     "says": "the book's Rulership and Order is the text DOMDEF files under imperium, and Imperium sits under Architect, the root Reboot-OS gives. The book's Zeus, Odin, Ra line names the archetype, and its own table files Odin under Knowledge"
-    },
-    {
-     "nm": "Power",
-     "cite": [
-      "power_took_royal"
-     ],
-     "says": "the book folds royal into Power, which DOMAINS contradicts (\"the warrior, not the king\") and which moves Ruler to the Engine root"
-    }
-   ]
-  }
- },
+ "open": {},
  "quotes": {
   "ruler_is_a_domain": "Zeus, Odin, Ra point at the same domain: Ruler.",
   "power_took_royal": "Power consolidated from prior Directed Force + Royal (one can be a king or a warrior, they are both Power)",

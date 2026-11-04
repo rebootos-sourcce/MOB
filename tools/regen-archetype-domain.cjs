@@ -59,7 +59,10 @@
      root    the word is one of the four roots, ROOTD. That is a different
              kind of answer from every other row: a family of domains, not
              one. It is emitted as the root with no domain, and open.
-   A word none of these reach stops the script.
+   A word none of these reach stops the script. A fifth route, ruling, is
+   RULING below: not a fifth way for the script to guess, but the owner
+   naming the leaf himself for a root the first four could not resolve. It
+   applies to the one archetype it names and to no other.
 
    AND ONE ARCHETYPE NAME. MOB's ARCH says Rebel where ARCHDOM says Outlaw.
    ui/analytics.js and ui/avatarui.js already join the two as one row, and
@@ -69,8 +72,13 @@
    open"), so the alias is carried as an alias, never as a rename. Any other
    ARCH name ARCHDOM lacks stops the script.
 
-   AND ONE OPEN ROW, RULER. Reboot-OS gives it the root Architect. The book
-   points two ways, and both quotations are verified below; see OPEN.
+   AND ONE ROW RULED BY THE OWNER, RULER. Reboot-OS gives it the root
+   Architect, a family of five domains, and the book pointed two ways; see
+   OPEN for the record of both readings. The owner ruled it 4 November: "I'm
+   seeing something on Imperium. So you're saying Imperium and rulership are
+   the same? If the definitions are the same and they're just two different
+   words, then let's change it to Imperium." RULING below names the leaf for
+   Ruler alone; no other root-only row inherits it.
    ============================================================ */
 const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),
  vm=require('node:vm'),crypto=require('node:crypto');
@@ -89,9 +97,9 @@ const Q={
  outlaw_in_the_twelve:'The system is corrupt and I must oppose it. Authority is the enemy.',
  domain_list:'Blueprint Domain Descriptions'};
 
-/* THE ONE ROW THIS DOES NOT RESOLVE. Reboot-OS's ARCHDOM gives Ruler the word
+/* THE ONE ROW THAT WAS OPEN. Reboot-OS's ARCHDOM gives Ruler the word
    Architect, which is a root here, not a domain. Two readings of the book
-   are live and they disagree, so the leaf is left for the owner:
+   were live and disagreed, kept below as the record of why:
      Imperium  the book's "IV, Rulership and Order" (templates Zeus, Jupiter,
                Ra) is the text DOMDEF files under imperium, Imperium sits under
                Architect, which is the root Reboot-OS gives, and ARCH's Ruler
@@ -105,13 +113,24 @@ const Q={
                under Engine, which would also move Ruler off the root the
                upstream table gives it.
    Each reading names the quotation that carries it, checked against the
-   book on every run. */
-const OPEN={Ruler:{why:'Reboot-OS gives the root Architect, not a domain, and the book points two ways',
- read:[{nm:'Imperium',cite:['domain_list','ruler_is_a_domain'],
-   says:'the book\'s Rulership and Order is the text DOMDEF files under imperium, and Imperium sits under Architect, the root Reboot-OS gives. The book\'s Zeus, Odin, Ra line names the archetype, and its own table files Odin under Knowledge'},
-  {nm:'Power',cite:['power_took_royal'],
-   says:'the book folds royal into Power, which DOMAINS contradicts ("the warrior, not the king") and which moves Ruler to the Engine root'}]}};
+   book on every run. OPEN itself is now empty: RULING below closes this row,
+   and this comment and Q stay only so the two readings and their quotations
+   are still checked and still on record. */
+const OPEN={};
 const ALIAS={Rebel:{as:'Outlaw',cite:['rebel_in_the_twelve','outlaw_in_the_twelve']}};
+
+/* THE OWNER'S RULING, 4 November. Not a route the script found: a leaf he
+   named for Ruler alone, after being shown the two readings above. His
+   words: "I'm seeing something on Imperium. So you're saying Imperium and
+   rulership are the same? If the definitions are the same and they're just
+   two different words, then let's change it to Imperium." Checked below
+   against the same two readings so a reading this cites must still be one
+   the record above carries, and refused if Ruler's row ever stops being the
+   open root this ruling was made for. */
+const RULING={Ruler:{nm:'Imperium',
+ why:'Reboot-OS gives the root Architect, not a domain; the owner ruled Imperium, the reading under that root, over Power',
+ read:{nm:'Imperium',cite:['domain_list','ruler_is_a_domain'],
+  says:'the book\'s Rulership and Order is the text DOMDEF files under imperium, and Imperium sits under Architect, the root Reboot-OS gives. The book\'s Zeus, Odin, Ra line names the archetype, and its own table files Odin under Knowledge'}}};
 
 /* ---------------------------------------------------------------- reading */
 function git(repo,args){return cp.execFileSync('git',['-C',repo,...args],{encoding:'utf8',maxBuffer:1<<27});}
@@ -240,6 +259,22 @@ function build(opts){
  for(const a in ALIAS)if(!(ALIAS[a].as in table))throw Error('Alias '+a+' points at '+ALIAS[a].as+', which ARCHDOM lacks');
 
  const dn=mob.DOMAINS.map(d=>d.nm);
+ /* THE RULING, APPLIED. Named for the one archetype it names, checked
+    against the same open root and the same cited reading every run, so a
+    later change upstream that resolves Ruler itself, or moves it off the
+    root this ruling was made for, is refused rather than silently doubled
+    up on. */
+ for(const a in RULING){
+  if(!(a in table))throw Error('RULING names '+a+', which ARCHDOM lacks');
+  const w=table[a],cur=words[w];
+  if(!cur||cur.how!=='root'||!cur.open)
+   throw Error('RULING names '+a+', whose word '+w+' no longer routes to an open root; the ruling may be stale, so rule it fresh');
+  const r=RULING[a];
+  if(!dn.includes(r.nm))throw Error('RULING '+a+' names '+r.nm+', which is not a DOMAINS name');
+  if(r.read.nm!==r.nm)throw Error('RULING '+a+' names '+r.nm+', its own cited reading names '+r.read.nm);
+  for(const c of r.read.cite)if(!Q[c])throw Error('RULING cites '+c+', which Q does not carry');
+  words[w]={nm:r.nm,how:'ruling',ruling:true};}
+
  for(const a in OPEN){
   if(!(a in table))throw Error('OPEN names '+a+', which ARCHDOM lacks');
   if(!words[table[a]].open)throw Error(a+' resolved to '+words[table[a]].nm+' by route; OPEN no longer applies, so rule it and remove it');
@@ -310,7 +345,7 @@ function selfTest(reboot,book){
   const m=JSON.parse(f[P.manifest]);m.tables.ARCHDOM.sha=pyHash(t);f[P.manifest]=JSON.stringify(m,null,1);})),book},/disagree: Lover/);
  /* every copy agreeing, and the word wrong */
  refused('a word nothing routes',{reboot:repo('c',up(f=>everywhere(f,{Lover:'Sovereignty'},{Lover:'Love'}))),book},/Sovereignty has no route/);
- refused('Ruler resolved upstream while OPEN still holds it',{reboot:repo('d',up(f=>everywhere(f,{Ruler:'Imperium'},{Ruler:'Architect'}))),book},/OPEN no longer applies/);
+ refused('the ruling held to a row Reboot-OS no longer leaves open',{reboot:repo('d',up(f=>everywhere(f,{Ruler:'Imperium'},{Ruler:'Architect'}))),book},/RULING names Ruler.*no longer routes to an open root/);
  /* the book */
  const html=git(book,['show','HEAD:'+BOOKFILE]);
  refused('a cited quotation missing from the book',{reboot,ref:'origin/main',book:repo('e',{[BOOKFILE]:html.replace(Q.power_took_royal,'Power')})},/should carry .*power_took_royal/);
@@ -345,4 +380,4 @@ function main(){
  else{fs.writeFileSync(full,out);console.log('REGENERATED '+OUT);}}
 
 if(require.main===module)main();
-module.exports={build,pyHash,fromSql,fromStory,bookDomains,resolveWord,mobTables,Q,OPEN,ALIAS};
+module.exports={build,pyHash,fromSql,fromStory,bookDomains,resolveWord,mobTables,Q,OPEN,ALIAS,RULING};
