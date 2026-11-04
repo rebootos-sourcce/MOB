@@ -863,7 +863,12 @@ function stDraftBack(){
    and they come back through stDraftBack when that record is opened again.
    lastFound and lastT go too: they are the last commit's, and the release
    picker credits a run to them (relPick's story_t). A recording still
-   running is stopped, because its next words would land on the next record. */
+   running is stopped, because its next words would land on the next record.
+   The safe line goes too, where the commit keeps it: STV.safeSaid and
+   SRC_SAFE_UP are the last person's, and a switch left the next person the
+   line, the door, and the line said aloud on Talk, with nothing written.
+   SRC_SAFE_UP is cleared here and not in srcFresh, which Commit also calls,
+   so the line kept standing at Commit is not said a second time. */
 function stOwn(){
  var cur=(typeof CURP!=='undefined')?CURP:null;
  if(ST_OWN===cur)return false;
@@ -874,8 +879,8 @@ function stOwn(){
  if(ST_LISTEN||ST_WANT_LISTEN){ ST_WANT_LISTEN=false; ST_LISTEN=false; ST_LISTEN_T0=null; ST_LIVE='';
   try{ if(ST_REC)ST_REC.stop(); }catch(e){} }
  ST_OWN=cur;
- ST_TEXT=''; ST_PARSED=null; SRC_PASSED=false; if(typeof srcFresh==='function')srcFresh();
- STV.lastFound=[]; STV.lastT=null; STV.unsaved=null;
+ ST_TEXT=''; ST_PARSED=null; SRC_PASSED=false; SRC_SAFE_UP=false; if(typeof srcFresh==='function')srcFresh();
+ STV.lastFound=[]; STV.lastT=null; STV.unsaved=null; STV.safeSaid=false;
  stDraftBack();
  return true;}
 
