@@ -33888,3 +33888,23 @@ rail's visual language. SW1, SW2, SW4 and SW6 need scoping before any build.
   `stackbuild`'s own rejected, entangled nested-tier commits are reference
   for the mechanics, not something to pull as-is. Dispatched as a fresh,
   properly scoped build against current main once the salvage pull lands.
+
+- [x] **SW7 closed. Built, PR #182, draft, held for his review.** All five
+  pieces above, plus every one of the voice check's bare-weight (CO-30)
+  findings inside this panel's own scope: the agent found that fixing them
+  needs a real node-state boundary it does not have yet, so it left every
+  weight bare rather than guess one, and the question below is what
+  unblocks that. Three calls it made against the ask, each with its reason
+  recorded on the PR: it kept `traceSummary()`'s own real parent/child
+  content in the summary box but dropped the paragraph's engine-talk
+  wrapper he rejected live; it moved Intention off this screen since it only
+  ever lived under Instruments, which he ruled cut; it added no bare
+  weights, 17 before and 17 after, same count as main. Tests: engine
+  6,879/0, functional 2,959/0, collide 398/0, design 193/0, locks 295/0,
+  stackname 18/0, funnel 760/0, boot 29/0, monitor clean, a 34/0 real-click
+  browser pass at both widths. The voice objections check fails the same
+  way it does on main (the 8 law-definition words PR #181 already fixes,
+  unmerged); not a regression here.
+  **Open, his call: where do the lines fall between open, impaired,
+  moderately impaired, heavily impaired and blocked?** Nothing prints those
+  words on a weight until that's ruled.
