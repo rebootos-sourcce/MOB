@@ -486,7 +486,7 @@ function ritTeachHtml(k){
  var h='<div class="pm-eye">A ritual toward '+esc(String(t.b.q).toLowerCase())+'</div>'
   +'<div class="tb-rit" data-tb="'+t.b.k+'">'
   +ritSteps({steps:t.steps}).map(function(p){
-   return '<div class="rv-step"><b>'+esc(p.nm)+' <small>'+p.min+' min</small></b><p>'+esc(p.d)+'</p></div>';}).join('');
+   return '<div class="rv-step"><b>'+esc(p.nm)+' <small>'+p.min+' min</small></b>'+(p.d?'<p>'+esc(p.d)+'</p>':'')+'</div>';}).join('');
  /* the pacing, said once, after the steps and never instead of them */
  var many=t.held.length>1;
  if(t.entry)h+='<p class="ad-p">At the charge you carry now, '+esc(nm(t.held).join(' and '))
@@ -600,7 +600,7 @@ function ritComplexHtml(k){
    +'<span class="tcx-rs">'+esc(ritTcxJoin(ritTcxNames(x.steps)))+'</span>'
    +'<span class="tcx-sd">'
    +ritSteps({steps:s.steps}).map(function(p){
-     return '<span class="tcx-st"><b>'+esc(p.nm)+' <small>'+p.min+' min</small></b><span>'+esc(p.d)+'</span></span>';}).join('')
+     return '<span class="tcx-st"><b>'+esc(p.nm)+' <small>'+p.min+' min</small></b>'+(p.d?'<span>'+esc(p.d)+'</span>':'')+'</span>';}).join('')
    +(s.held.length?'<span class="tcx-pace">'+esc(ritTcxJoin(ritTcxNames(s.held)))+(many?' open':' opens')
      +' as the charge drops.</span>':'')
    +(act?'<span class="tcx-pace"><b>Active</b>, '+esc(ritLeft(act,today).toLowerCase())+'.</span>':'')
@@ -1050,7 +1050,10 @@ function ritActiveBody(act,today,building){
     says today is clear rather than that the list failed to draw. */
  out+=due.length?'':(act.length?'<p class="rv-empty">Nothing due today.</p>':'')
   +((act.length||building)?'':'<div class="rv-acts rv-addx"><button type="button" class="btn pri" data-act="add">'+ritIc('plus')+'New ritual</button></div>');
- out+='<p class="rv-mean">A ritual is active from the day you start it until it ends or you stop it.</p>';
+ /* "A ritual is active from the day you start it until it ends or you stop
+    it." stood here and is cut, 4 November, struck in red on the live page.
+    Each row already says its own span (ritLeft), so the rule in general sat
+    above the rule in particular on every paint. */
  out+=ritRowsHtml(due,today,act);
  if(rest.length)out+='<div class="rv-h rv-h2 rv-other">Other days</div>'+ritRowsHtml(rest,today,act);
  return out;}
@@ -1214,7 +1217,7 @@ function ritBuildHtml(c,nAct){
    +'" aria-pressed="'+on+'" style="--c:'+(PTRACK[p.track]||'var(--accent)')+'">'
    +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/>'+(on?'<path d="M8 12l3 3 5-6"/>':'')+'</svg>'
    +'<span class="rv-tn">'+esc(p.nm)+'</span><span class="rv-tm">'+p.min+' min'+(call?', called for':'')+'</span>'
-   +(big?'<span class="rv-td">'+esc(p.d)+'</span>':'')+'</button>';};
+   +(big&&p.d?'<span class="rv-td">'+esc(p.d)+'</span>':'')+'</button>';};
  if(c.called&&!RIT.all&&!RIT.sel[c.called.k])out+='<div class="rv-tiles">'+tile(c.called,true)+'</div>';
  if(RIT.all){
   ['Somatic','Body','Energy','Mind'].forEach(function(tr){
@@ -1392,9 +1395,14 @@ function ritRecordHtml(plans,today){
 /* ROUND QN made the centre six cards in his slots, ui/ritstage.js. The chain
    and the Active list are two of the six; the becoming card is inside the
    Ongoing goal. The still layer sits first so it is behind everything. */
+/* THE LINE UNDER THE NAME IS CUT, 4 November, struck in red on a screenshot
+   of the live page with his words "things just to cut out". It read "A set of
+   practices you repeat on days you choose." The paragraph above gave it the
+   unpack rule's job, but the three columns already say what each is for and
+   the builder asks for the days, so it was the page reading its own heading
+   aloud, which is V1. Its style rule went with it. */
 function ritLayout(P){
- return P.live+'<div class="rv-pagehd"><span class="rv-pagenm">'+ritIc('ring','rv-nic')+'Ritual</span>'
-  +'<span class="rv-pagesay">A set of practices you repeat on days you choose.</span></div>'
+ return P.live+'<div class="rv-pagehd"><span class="rv-pagenm">'+ritIc('ring','rv-nic')+'Ritual</span></div>'
   +P.note+'<div class="rv-main">'+P.stage+'</div>';}
 
 /* WHAT BOTH TOOL SETS READ, and nothing they write. Pure: the builder's own
@@ -1639,7 +1647,6 @@ function ritCss(){
   '.rv-pagehd{display:flex;flex-direction:column;gap:3px;margin:0 0 14px}',
   '.rv-pagenm{display:flex;align-items:center;gap:9px;font-size:19px;font-weight:600;color:var(--ink)}',
   '.rv-pagenm svg{stroke:var(--sec-flow)}',
-  '.rv-pagesay{font-size:13.5px;line-height:1.5;color:var(--mid);max-width:62ch}',
   '.rv{container-type:inline-size;container-name:rv;text-align:left}',
   '.rv-note{margin:0 0 12px;font-size:14px;color:var(--mid)}',
   '.rv-lb{display:block;font-size:12.5px;color:var(--dim);font-weight:500}',

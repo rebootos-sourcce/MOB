@@ -3070,8 +3070,14 @@ var PRACTICE=[
   d:'Direct contact dissolves charge. No analysis, no escape.',
   how:'Find the resistance in the body. Do not move away from it. Stay with it until it '
    +'shifts. There is nothing to think about here.'},
+ /* NO ONE LINE, 4 November. It read "Expansion is true. Contraction is
+    distortion." and was struck in red on the live Ritual page, on the
+    Suggested card. It was the first two sentences of `how` below said a
+    second time, so it carried nothing `how` does not, wherever it printed:
+    the Suggested card, the builder's tile, the step lists and the Summary's
+    protocol card, each of which now prints nothing for an empty line. */
  {k:'truth', nm:'The Somatic Truth Check', track:'Somatic', min:2, tier:2,
-  d:'Expansion is true. Contraction is distortion.',
+  d:'',
   how:'Hold the statement and read the body. Expansion means true. Contraction means '
    +'distortion. Use it live, in the moment, as an instrument.'},
  {k:'heartpt', nm:'Heart Point Focus', track:'Energy', min:10, tier:2,
@@ -26464,6 +26470,15 @@ if(typeof module!=='undefined'&&module.exports){
    Ana stops and starts, James and Gordon say yes to nothing), so the two pages
    tell one story about one person.
 
+   AND EVERY EXAMPLE NOW RUNS ONE, 4 November, his words on a red ink
+   screenshot of the live page: "For our profiles... give them some rituals.
+   Just fill it in. So we can see what it looks like." Rosa, James and Gordon
+   had no row. Rosa is not on the practitioner page, so she gets a full
+   history. James and Gordon said yes to nothing on every day PRACEX_HIST
+   draws (PRACEX_DAYS, ending yesterday), so each starts his first one today,
+   the one day that strip does not cover, and the two pages still agree: a
+   run of no, then one ritual of his own. James has kept today; Gordon has not yet.
+
    WHAT IS AUTHORED AND WHAT IS READ, the discipline exdepth.js and pracex.js
    set. Authored, per ritual: its practices, its seat, which weekdays, how
    long it runs, how many days ago it started (and stopped, when it did), the
@@ -26521,6 +26536,11 @@ var RITEX_HIST={
   {k:'box+truth', b:'Solar', on:null, n:0, back:40, w:'6:00, before the run', at:'Garage', d:'c', td:1},
   {k:'resist', b:'Root', on:[0,2,4], n:14, back:9, w:'After the walk', at:'Back step', d:'c'},
   {k:'sysbreath', b:'Sacral', on:null, n:7, back:27, w:'Bed', at:'Bedroom', d:'c'}],
+ James:[
+  {k:'box', b:'Heart', on:null, n:7, back:0, w:'Before the first call', at:'The car, in the garage', d:'', td:1}],
+ Rosa:[
+  {k:'heartpt', b:'Heart', on:null, n:0, back:33, w:'After breakfast', at:'The garden bench', d:'ccccccm', td:1},
+  {k:'sa_hand', b:'Crown', on:[2], n:0, back:28, w:'Wednesday afternoon', at:'The community hall', d:'c'}],
  Ana:[
   {k:'heartpt', b:'Heart', on:[1,3,5], n:0, back:25, w:'Before school run', at:'The park bench', d:'ccmmcmc'},
   {k:'box', b:'Solar', on:null, n:7, back:3, w:'At three, when I wake', at:'Bed', d:'cm'},
@@ -26533,6 +26553,8 @@ var RITEX_HIST={
  Abraham:[
   {k:'noting', b:'Throat', on:null, n:0, back:60, w:'Dawn', at:'The front room', d:'ccccccccccccccm', td:1},
   {k:'observer', b:'Crown', on:[6], n:0, back:45, w:'Sunday', at:'The front room', d:'c'}],
+ Gordon:[
+  {k:'slow', b:'Solar', on:null, n:7, back:0, w:'After the partners meeting', at:'The office, door shut', d:''}],
  'Lance 15':[
   {k:'box', b:'Root', on:null, n:7, back:5, w:'Before the laptop opens', at:'Desk', d:'cmm'}],
  'Lance 50':[
@@ -26611,9 +26633,101 @@ function ritexBuild(p,now){
    because the practitioner page can make an example's record before a load */
 function ritexHas(rec){return !!rec&&((rec.rituals||[]).length>0);}
 
+/* ============================================================
+   A WORKED EXAMPLE'S AVATAR, 4 November, the same ask as the rows above. No
+   example carried a single avatar pair, so on every one the Ritual page's
+   Ritual to avatar card listed no seat, the Ongoing goal had no "Your avatar
+   wants to be", and every affirmation fell through to the held pattern's
+   line, because ritAffirm reads the person's own avatar lines first and
+   there were none. That is the empty state he struck out on the live page.
+
+   AUTHORED: per pair, the seat it is written for and the two halves the
+   Avatar page asks for (ui/avatarui.js AV_ASK), who the person is at their
+   best and one sentence about a bad day in the body. Each is drawn from the
+   example's own `says` in engine/data/people.js, so Diane's is the laptop
+   and Tomas's is the end of the street. READ, by the product: which seat a
+   bad day lands at (readSeat, ui/drills.js, off parseStory), the percent,
+   the gap and what is held there. tests/engine.js checks every bad day here
+   lands at the seat it is written for, through parseStory, because the
+   first draft of this table put more than half of them somewhere else: the
+   reader keys on the feeling word, and "my chest goes cold" with no feeling
+   word in it read as Crown.
+
+   NOTHING MOVES THE FIELD. The Avatar page applies a new pair's bad day as
+   a story only for the person's own record (avSeatAdd, S.who 0). An example
+   is show only, so the pairs are put on its scratch record and its reading
+   stays the table's.
+   ============================================================ */
+var RITEX_AV={
+ Sofia:[
+  {b:'Heart', be:'Someone who is held as well as holding.', notbe:'My chest aches and I feel lonely when the last client leaves and nobody holds me.'},
+  {b:'Throat', be:'Someone who asks for help out loud.', notbe:'My throat is tight and I am afraid when I go to ask a friend for help.'}],
+ Diane:[
+  {b:'Solar', be:'Someone who stops when the work is good enough.', notbe:'My stomach knots and I feel angry when I close the laptop with work still open.'},
+  {b:'Sacral', be:'Someone who rests on a Sunday and lets it show.', notbe:'When I rest on a Sunday, I feel exposed and I hide it from the team.'}],
+ Marcus:[
+  {b:'Solar', be:'Someone who sees what is good in the work first.', notbe:'My stomach knots up and I feel angry when I see a flaw in somebody else\'s design.'},
+  {b:'Heart', be:'Someone the team still wants in the room after the review.', notbe:'My chest goes tight and I feel alone when the team goes quiet after I speak.'}],
+ Angela:[
+  {b:'Heart', be:'Someone who lets a loss be a loss.', notbe:'My chest aches and I feel sad at a funeral, and I say it happened for a reason.'},
+  {b:'3rd Eye', be:'Someone who trusts what she already knows.', notbe:'I keep replaying which course to take next and never make the choice.'}],
+ Derek:[
+  {b:'Root', be:'Someone who rests when the body says rest.', notbe:'I feel afraid and my legs will not keep still on a rest day.'},
+  {b:'Solar', be:'Someone who races hard and lets the climb go.', notbe:'My stomach knots and I feel angry when someone passes me on the climb.'}],
+ James:[
+  {b:'Heart', be:'Someone people trust as well as follow.', notbe:'My chest aches and I feel lonely after I let someone go.'},
+  {b:'Throat', be:'Someone who says out loud what the call costs.', notbe:'My throat is tight when I tell the board the numbers and leave out the people.'}],
+ Rosa:[
+  {b:'Heart', be:'Someone who stays warm about the ones she lost.', notbe:'My chest aches and I feel sad when I think of the babies I could not save.'},
+  {b:'Crown', be:'Someone who knows what all those years were for.', notbe:'Some mornings I feel I have no purpose now the work is done.'}],
+ Ana:[
+  {b:'3rd Eye', be:'Someone who picks a way and walks it.', notbe:'I keep replaying whether to go back to teaching and never decide.'},
+  {b:'Solar', be:'Someone who stays steady in the middle of it.', notbe:'My stomach knots up and I feel angry when the school calls about my job.'}],
+ Tomas:[
+  {b:'Root', be:'Someone who drives past the end of the street.', notbe:'My legs shake and I feel afraid at the end of the street.'},
+  {b:'Heart', be:'Someone who goes out with the family again.', notbe:'My chest aches and I feel lonely when the family goes out and I stay in.'}],
+ Wren:[
+  {b:'Heart', be:'Someone who can say his brother\'s name and stay soft.', notbe:'My chest aches and I feel sad when my brother\'s name comes up.'}],
+ Abraham:[
+  {b:'Throat', be:'Someone who listens to the end before he speaks.', notbe:'My throat is tight and I want to give my verdict when my son tells me his plans.'},
+  {b:'Crown', be:'Someone who can sit still with nothing to decide.', notbe:'I feel disconnected, like my life has no purpose, when there is nothing left to decide.'}],
+ Gordon:[
+  {b:'Heart', be:'Someone people stay with.', notbe:'My chest goes tight and I feel alone when another partner hands in notice.'},
+  {b:'Solar', be:'Someone who can hear his own part in it.', notbe:'My stomach knots up and I feel angry when a client leaves.'}],
+ 'Lance 15':[
+  {b:'Solar', be:'Someone who ships by day and sleeps at night.', notbe:'I wake at six with my jaw set, my stomach knotted and angry about the release.'},
+  {b:'Root', be:'Someone who trusts what he built to hold.', notbe:'I lie awake scared the thing I built will break.'}],
+ 'Lance 50':[
+  {b:'Solar', be:'Someone who stays on the new wiring when a call lands wrong.', notbe:'My stomach knots and I feel angry when one call lands wrong.'}],
+ 'Lance 85':[
+  {b:'Throat', be:'Someone who does not need to be right in the room.', notbe:'My throat goes tight and I need to be right when someone corrects me in a meeting.'},
+  {b:'Root', be:'Someone who can wait and stay easy.', notbe:'My legs will not keep still and I feel afraid when I am kept waiting.'}],
+ 'Lance 100':[
+  {b:'Crown', be:'Someone who tells the truth at the ceiling.', notbe:'Some mornings I feel I have no purpose once the work is shipped.'}]};
+/* THE BUILD. The avatar exactly as avSeatAdd leaves it after the person adds
+   each pair in order: built, active, written ten days ago so the monthly
+   review is not yet due, and every pair with the id avatarEnsureIds reads
+   off its own words, so the same table builds the same ids on every load.
+   Null for an example with no row; throws naming the pair on anything the
+   boundary would refuse. */
+function ritexAvatar(p,now){
+ var rows=p&&RITEX_AV[p.nm]; if(!rows)return null;
+ var av=avatarBlank();
+ av.pairs=rows.map(function(x,j){
+  var pr={be:x.be, notbe:x.notbe, seat:x.b};
+  if(BANDS.indexOf(x.b)<0)throw new Error('ritex avatar '+p.nm+' '+j+': '+x.b+' is not a seat');
+  if(!avatarValid(pr))throw new Error('ritex avatar '+p.nm+' '+j+': a pair needs both halves');
+  return pr;});
+ av.built=true; av.status='active';
+ av.at=new Date(now-10*DAY_MS).toISOString();
+ return avatarEnsureIds(av);}
+/* whether a record already carries avatar pairs, asked the way ritexHas asks */
+function ritexHasAvatar(rec){return !!rec&&!!rec.avatar&&((rec.avatar.pairs||[]).length>0);}
+
 if(typeof module!=='undefined'&&module.exports){
  Object.assign(module.exports,{RITEX_HIST:RITEX_HIST, ritexBuild:ritexBuild, ritexHas:ritexHas,
-  ritexCovers:ritexCovers, ritexWd:ritexWd});}
+  ritexCovers:ritexCovers, ritexWd:ritexWd,
+  RITEX_AV:RITEX_AV, ritexAvatar:ritexAvatar, ritexHasAvatar:ritexHasAvatar});}
 /* ============================================================
    HOW FULLY AN ARCHETYPE IS EXPRESSED. Ruled 16 October, his words: "the
    archetypes themselves should be 100%. The limiting beliefs are going to drag

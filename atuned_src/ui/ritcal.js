@@ -212,18 +212,23 @@ function ritAffirm(st){
   var pr=pairs[i]; if(!pr||!pr.be)continue;
   var be=String(pr.be).trim().replace(/^"+|"+$/g,''); if(!be||seen[be])continue; seen[be]=1;
   var b=(pr.seat&&BANDS.indexOf(pr.seat)>=0)?pr.seat:((typeof readSeat==='function')?readSeat(pr.notbe||''):null);
-  out.push({id:'av:'+ritHash(be), line:be, b:b||'', own:true,
-   from:'Your own avatar line'+(b?', at '+ritThe(b):'')+'.'});}
+  out.push({id:'av:'+ritHash(be), line:be, b:b||'', own:true});}
+ /* NO LINE UNDER AN AFFIRMATION, 4 November. Every card carried a second
+    line saying where it came from: "Toward equanimity. You hold pride at the
+    solar plexus, and it runs on anger.", or "Your own avatar line, at the
+    heart.", or "Nothing is read yet, so this starts toward" a quality "near
+    the ground." He struck it in red on the live page, on every card. It was one
+    template, ritAffHtml printing a.from, so the field went from all three
+    sources here and the slot went from the card. The seat still colours the
+    ring, which is where the card says where it sits. */
  ritHeld().forEach(function(n){
   if(out.length>=3||!n.cf||cfs[n.cf]||!AFFIRM[n.cf])return; cfs[n.cf]=1;
-  var c=CHILD.filter(function(f){return f.nm===n.cf;})[0]; if(!c)return;
-  out.push({id:'ax:'+n.cf, line:AFFIRM[n.cf], b:n.b,
-   from:'Toward '+c.opp.toLowerCase()+'. You hold '+String(n.k).toLowerCase()+' at '+ritThe(n.b)+', and it runs on '+ritCfWord(n.cf)+'.'});});
+  if(!CHILD.some(function(f){return f.nm===n.cf;}))return;
+  out.push({id:'ax:'+n.cf, line:AFFIRM[n.cf], b:n.b});});
  AFFIRM_START.forEach(function(cf){
   if(out.length>=3||cfs[cf])return; cfs[cf]=1;
   var c=CHILD.filter(function(f){return f.nm===cf;})[0]; if(!c)return;
-  out.push({id:'ax:'+cf, line:AFFIRM[cf], b:c.seat,
-   from:(st.r.unread?'Nothing is read yet':'Nothing else is held at four or more')+', so this starts toward '+c.opp.toLowerCase()+', near the ground.'});});
+  out.push({id:'ax:'+cf, line:AFFIRM[cf], b:c.seat});});
  return out;}
 function ritSabKey(nm){return String(nm||'').replace(/\s+overshot$/i,'').toLowerCase().replace(/-/g,' ').trim();}
 /* the fetter an inferred saboteur runs on, read off its agent noun, the last
@@ -278,7 +283,7 @@ function ritAffHtml(st,M){
   return '<li class="rv-af1'+(on?' rv-on':'')+'" style="--c:'+col+'">'
    +'<button type="button" class="rv-log" data-act="said" data-id="'+esc(a.id)+'" aria-pressed="'+on+'" aria-label="'
    +(on?'Said today. Press to take it off':'Mark said today: '+esc(a.line))+'">'+ritTickHtml(on,col)+'</button>'
-   +'<span class="rv-aft"><span class="rv-afq">'+(a.own?'"'+esc(a.line)+'"':esc(a.line))+'</span><span class="rv-afs">'+esc(a.from)+'</span></span></li>';}).join('')+'</ul>';
+   +'<span class="rv-aft"><span class="rv-afq">'+(a.own?'"'+esc(a.line)+'"':esc(a.line))+'</span></span></li>';}).join('')+'</ul>';
  return '<div class="rv-gblk rv-aff"><div class="rv-gh"><span class="rv-gt">Affirmations</span>'
   +'<span class="rv-gs">Say each one out loud, once today, and press its ring.</span></div>'+body+'</div>';}
 function ritChalHtml(st,M){

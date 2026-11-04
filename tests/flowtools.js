@@ -121,10 +121,12 @@ async function flowGate(browser,FILE,ok,booted){
     &&o.lsec.length===0&&!o.rel,
    'FT3: '+tag+'each rail holds one panel on Flow and no rail section at all, '+JSON.stringify({l:o.lkids,r:o.rkids,lsec:o.lsec}));
   /* round RB: the two side heads lost their lines to his "Get rid of all the
-     sec[ond] third tier text", so they are their names alone; the centre
-     still says in a sentence what a ritual is */
-  ok(o.lhd.trim()==='New'&&o.rhd.trim()==='Accountability'&&/Ritual/.test(o.chd)&&o.chd.length>25,
-   'FT14: '+tag+'each side column is named by its job alone and the centre says in a sentence what it is, '+JSON.stringify([o.lhd,o.rhd,o.chd]));
+     sec[ond] third tier text", so they are their names alone. The centre kept
+     a sentence until 4 November, when he struck it in red on the live page
+     ("A set of practices you repeat on days you choose."), so it is its name
+     alone too, and this holds the cut */
+  ok(o.lhd.trim()==='New'&&o.rhd.trim()==='Accountability'&&o.chd.trim()==='Ritual',
+   'FT14: '+tag+'each column is named by its job alone, the centre included, '+JSON.stringify([o.lhd,o.rhd,o.chd]));
   ok(COLS.every(([job])=>g[job].col.l>=0&&g[job].col.r<=o.vw+1)&&o.sw<=o.cw,
    'FT12: '+tag+'every column sits inside the screen and the page does not scroll sideways, '+JSON.stringify({vw:o.vw,sw:o.sw,cw:o.cw}));
 
@@ -878,7 +880,9 @@ async function flowGate(browser,FILE,ok,booted){
     const cf=n&&n.cf?CHILD.find(f=>f.nm===n.cf):null;
     const chips=[...c.querySelectorAll('.rv-sgc')].map(e=>e.textContent);
     const btn=sel=>{const e=c.querySelector(sel); if(!e)return null; const r=e.getBoundingClientRect(); return [Math.round(r.width),Math.round(r.height)];};
-    return {nm:p.nm, desc:(c.querySelector('.rv-sgd')||{}).textContent===p.d,
+    /* a practice with no line prints none: the Truth Check's was cut on
+       4 November (engine/data/practice.js), and an empty box is not a line */
+    return {nm:p.nm, desc:p.d?(c.querySelector('.rv-sgd')||{}).textContent===p.d:!c.querySelector('.rv-sgd'),
      toward:cf?chips.indexOf('Toward '+cf.opp.toLowerCase())>=0:!chips.some(t=>/^Toward/.test(t)),
      rec:chips.indexOf(days?'Kept '+days+(days===1?' day':' days'):'Not tried yet')>=0,
      tips:[...c.querySelectorAll('.rv-sgc')].every(e=>(e.getAttribute('data-tip')||'').length>20),
@@ -1013,7 +1017,19 @@ async function flowGate(browser,FILE,ok,booted){
   ok(['Derek','Diane','Ana'].every(n=>{const x=ex[n]; return x.plans>0&&x.act>0&&x.eng&&x.page.k===x.eng.k&&x.page.m===x.eng.m&&x.week&&x.today;})
     &&new Set(['Derek','Diane','Ana'].map(n=>JSON.stringify(ex[n].page))).size===3,
    'FT33: '+tag+'Derek, Diane and Ana each open on their own running rituals, the page counts the same kept and missed days the engine wrote, and the week holds every one with today marked, '+JSON.stringify(ex));
-  ok(ex.James.plans===0&&ex.James.eng===null&&!ex.James.week,'FT33: '+tag+'James said yes to nothing, opens on nothing, and so opens on Today and not an empty week, '+JSON.stringify(ex.James));
+  /* James said yes to nothing until 4 November, when the owner asked for
+     every example to run a ritual. He starts one today (engine/ritex.js),
+     so his page counts what the engine wrote like the three above */
+  ok(ex.James.plans===1&&ex.James.act===1&&ex.James.eng&&ex.James.page.k===ex.James.eng.k&&ex.James.page.m===ex.James.eng.m&&ex.James.today,
+   'FT33: '+tag+'James starts his one ritual today and the page counts it as the engine wrote it, '+JSON.stringify(ex.James));
+  /* and a record with nothing running still opens on Today and not an empty
+     week. No example is that record now, so James's is emptied in memory,
+     the state the page meets for anyone who has started nothing */
+  const none=await pg.evaluate(()=>{loadP(PEOPLE.findIndex(x=>x.nm==='James')); CURP.rituals=[]; RIT_EX[CURP.id]=[];
+   RIT.gview=null; setTab(TAB.RITUAL); ritRender(); const st=ritRead();
+   const r={plans:st.plans.length, week:!!document.querySelector('#rit .rv-goals [data-v="week"][aria-pressed="true"]')};
+   delete PROF_BY.James; loadP(0); setTab(TAB.RITUAL); ritRender(); return r;});
+  ok(none.plans===0&&!none.week,'FT33: '+tag+'a record with nothing running opens on Today and not an empty week, '+JSON.stringify(none));
 
   /* ---- FT31: the content is real, and says where it came from ---- */
   const ct=await pg.evaluate(()=>{const miss=CHILD.filter(c=>!AFFIRM[c.nm]||!CHALLENGE[c.nm]).map(c=>c.nm);
@@ -1065,11 +1081,13 @@ async function flowGate(browser,FILE,ok,booted){
      note:pre?new RegExp(pre+' days? of this span before that are drawn blank').test(sec().innerText):!sec().querySelector('.rv-sparse'),
      cells:sec().querySelectorAll('.rv-sc').length===today-t0+1, wide:!!sec().querySelector('.rv-syr')===(today-t0+1>62), want:[kept,missed,pre], figs});}
    sec().querySelector('[data-act="rng"][data-v="1m"]').click();
-   /* James, not Marcus: since round RB Marcus runs a ritual (engine/ritex.js)
-      and James, who says yes to nothing, is the example with no record */
-   loadP(PEOPLE.findIndex(x=>x.nm==='James')); setTab(TAB.RITUAL); ritRender();
+   /* James, not Marcus: since round RB Marcus runs a ritual (engine/ritex.js).
+      Since 4 November James runs one too, as every example does, so his
+      record is emptied in memory here to be the record with nothing on it,
+      and dropped after so the next load rebuilds it */
+   loadP(PEOPLE.findIndex(x=>x.nm==='James')); CURP.rituals=[]; RIT_EX[CURP.id]=[]; setTab(TAB.RITUAL); ritRender();
    out.empty=/Nothing on your record yet/.test(sec().innerText)&&sec().querySelectorAll('.rv-sc-done,.rv-sc-miss').length===0;
-   loadP(0); setTab(TAB.RITUAL); ritRender();
+   delete PROF_BY.James; loadP(0); setTab(TAB.RITUAL); ritRender();
    return out;});
   ok(JSON.stringify(sx.chips)===JSON.stringify(['1 year','6 months','3 months','2 months','1 month','2 weeks','1 week','5 days','3 days','1 day']),
    'FT32: '+tag+'Success over time offers his ten spans in his order, '+JSON.stringify(sx.chips));

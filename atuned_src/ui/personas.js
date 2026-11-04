@@ -993,13 +993,21 @@ function loadP(i){
     Every example opened the Ritual page on zero plans and zero days. The day
     log goes on this scratch record and the plans to RIT_EX (ui/ritual.js),
     both in memory. Built once per record, asked by what the record holds,
-    the same posture as the bank and vault above. James, Gordon, Rosa and the
-    blank have no row, so they still show the page a person with nothing
-    running sees. */
+    the same posture as the bank and vault above. Since 4 November every
+    example has a row; only the blank still shows the page a person with
+    nothing running sees. */
  if(!p.you&&typeof ritexBuild==='function'&&!ritexHas(CURP)){
   try{var RX=ritexBuild(p,Date.now());
    if(RX){CURP.rituals=RX.rituals; RIT_EX[CURP.id]=RX.plans;}}
   catch(e){status('The rituals for '+p.nm+' did not load: '+((e&&e.message)||'error')+'.','fail');}}
+ /* AND ITS AVATAR, 4 November, the same ask: no example carried a pair, so
+    Ritual to avatar and the Ongoing goal sat empty on every one and each
+    affirmation fell through to a held pattern's line. The pairs go on this
+    scratch record only, asked by what it holds, and the field is not moved,
+    engine/ritex.js says why. */
+ if(!p.you&&typeof ritexAvatar==='function'&&!ritexHasAvatar(CURP)){
+  try{var AV0=ritexAvatar(p,Date.now()); if(AV0)CURP.avatar=AV0;}
+  catch(e){status('The avatar for '+p.nm+' did not load: '+((e&&e.message)||'error')+'.','fail');}}
  /* loadP fills S from the persona table rather than through loadProfile, so it
     is the one route that has to say for itself which record S now holds. */
  S.rec=CURP.id||null;
