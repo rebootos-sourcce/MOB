@@ -3252,17 +3252,27 @@ body.punch .s-readbox,body.punch .s-out{background:var(--panel-2);border-color:t
  .sg-lead2>.sg-side>.sg-todo{order:2}
  .sg-lead2>.sg-col>.sg-story{order:3}
  .sg-lead2>.sg-side>.sg-drive{order:4}}
-/* THE PLATE ON ONE LINE where there is width for it. Name, then the band,
-   then where it goes, read left to right in the order the plate means them.
-   It stood as two rows with the band pushed to the far right and the middle
-   of the row empty, which spent a quarter of the first screen at 1600 on
-   three facts. */
-@media (min-width:1101px){
- .sg-who .s-plate{grid-template-columns:auto auto minmax(0,1fr);column-gap:32px}
- .sg-who .s-pl-l{grid-column:1;grid-row:1}
- .sg-who .s-pl-r{grid-column:2;grid-row:1}
- .sg-who .s-ptoward{grid-column:3;grid-row:1;margin-top:0;padding-left:28px;
-  border-left:1px solid var(--edge)}}
+/* THE PLATE IS THE NAME AND A SMALL RING NOW, two cells, not three. Ruled 3
+   November: the band and "where it goes" moved into .s-status beside the
+   drivers card (the information side), so the three column layout built for
+   name, band, where-it-goes over-reserved a third track nothing fills any
+   more. The base rule two tracks up, grid-template-columns:1fr auto, already
+   does the whole job at every width: the name grows, the ring stays its own
+   size next to it. */
+/* .s-status CARRIES WHAT THE PLATE USED TO. The same band markup (.s-pband,
+   .s-ptoward) at the top of the drivers column, plus the gift line, both
+   read exactly as they did on the plate, just here instead. */
+/* THE PLATE'S RING KEEPS THE 44PX TAP FLOOR even small and quiet. .cr.sm's
+   own padding (2px top and bottom, component.js) draws a 24px ring at about
+   28px tall, which tests/design.js's gate 8 catches on any surface, and the
+   plate's ring is a button (act:true, opens the core drill), not a passive
+   mark. Padding only, so the visible ring and pill stay exactly .cr.sm's own
+   size; the tap target grows around them. */
+.s-pl-r .cr.act{min-height:44px;min-width:44px;padding-top:10px;padding-bottom:10px}
+.s-status{display:flex;flex-direction:column;gap:10px;margin-bottom:4px}
+.s-status .s-pband{gap:2px}
+.s-status .s-ptoward{max-width:none;margin-top:0}
+.s-status .s-src{margin:0}
 /* TEXT A PERSON READS, AT THE READING SIZE. Measured on Diane at 1600 before
    this: 80 per cent of the visible characters on this page were under 16px,
    the house floor for body text, and that included their own words, every
@@ -3296,6 +3306,10 @@ body.punch .s-readbox,body.punch .s-out{background:var(--panel-2);border-color:t
 .sg-fold[open] .sg-chev{transform:rotate(180deg)}
 .sg-fold-b{padding:4px 16px 16px}
 .sg-fold-b .s-numer,.sg-fold-b .s-spirit,.sg-fold-b .s-ig{margin:0;padding:0;border:0}
+/* NUMEROLOGY, EXPOSED RATHER THAN FOLDED, 3 November: the same rule a fold
+   gives .s-numer (no second border under the zone's own heading) applies
+   where it now sits, a card's own first child, not just inside a fold. */
+.sg-z>.s-numer:first-of-type,.sg-card>.s-numer:first-of-type{margin-top:0;padding-top:0;border-top:0}
 .sum-start{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:none;margin-top:0}
 .sg-start .sum-start{grid-template-columns:1fr}
 .sg-start .sum-hero{margin-bottom:18px}
