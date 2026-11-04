@@ -2806,7 +2806,7 @@ Ruled by the owner, 8 October: main is the one line of the product, the foundati
 ## 9 October: the crisis check waits for the MVP beta
 
 - **The 988 and 741741 crisis check is deferred to the MVP beta.** The owner, 9 October: "I don't give two shits about the emergency hotline stuff... We'll save it for the MVP beta." Built and parked, not deleted: branches `claude/b2a-crisis` and `claude/b2a-crisis2` hold the engine function, the Story page, nine more boxes and `tests/crisis.js`. Nothing of it is on main. The ten `xf` cases in `tests/engine.js` stay expected red, and the floors file caps expected red at 10, so they cannot be forgotten. This supersedes the default "crisis check is recall first" in the entry above until the beta; the phrase list still awaits clinician review (round PW).
-- **Consequence the team recorded once, for the owner's information:** until the beta, the live app shows no crisis line to a person who writes about hurting themselves.
+- **Consequence the team recorded once, for the owner's information:** until the beta, the live app shows no crisis line to a person who writes about hurting themselves. **Overtaken in part, 3 November:** that stopped being true when PR 108 merged. What shipped is the phrase stop, not this entry's automatic detector: a closed, clinician-reviewable list of exact phrases about ending a life or danger now, matched by the sniffer's existing rules (a "no" cancels it, someone else's words don't count). On a match the Story page now shows one line and a Reach someone now door; see "Words about ending a life or danger now get no release, 17 October" below for the fix itself. The automatic, behavior-based detector this entry describes is still deferred to the beta exactly as ruled 9 October.
 
 ## Profile sync, 9 October
 
@@ -3190,3 +3190,129 @@ Seat defaults taken with it, recorded as decided and not asked:
 Not built yet, because each needs new engine work or a ruling first: Action, Compass, a laws grid, Channels, Patterns, Boundary, and Feelings as a cycling widget. The laws panel the Story page already has is left as it is. A kept and broken laws grid was proposed and is not taken: it needs his ruling.
 
 Held by `tests/stfull.js`, called from `tests/functional.js`. Its first job is the safety precondition: in Full, with chat on, the crisis door is still reached by real presses (profile button, "Is this a crisis?", "Reach someone now") and the three numbers (988, 741741, 911) are on screen and pressable. That was already true before this change and is now held. This is the voluntary door only; there is still no automatic reading of what a person writes.
+
+## Ruler's domain: Imperium or Power, still his to close, 4 November
+
+PR #177 ported Reboot-OS's `canon_ARCHDOM` table and left Ruler open, because that
+table's own row reads "Ruler: Architect", and Architect is a root, not one of the
+19 domains, so the generator refused to guess which domain under that root. He
+first ruled Imperium, on the sense that Imperium and rulership read as the same
+word twice. He then reopened it himself, live, in his own words: "So it was
+Imperium and Power are they exactly the same, or what's the biggest difference?
+Because Imperium seems to suggest rulership, while Power suggests the seeking of
+power. They look alike, but they're not the same." That is a question, and his
+own reading of the plain English words, not a second ruling. A team member wrote
+"Ruled: Power" here on the strength of research alone, with no closing word from
+him, and that was wrong to write; corrected the same day. The two readings, so he
+can close it with his own word rather than an inference on his behalf:
+
+- **His own plain-English reading, in the quote above: Imperium tracks with
+  rulership, Power with "the seeking of power."** On that reading Imperium is
+  the better fit for an archetype named Ruler.
+- **The book's own technical definitions point the other way, found twice
+  independently.** Its own merge note: "Power consolidated from prior Directed
+  Force + Royal (one can be a king or a warrior, they are both Power)." Its own
+  worked trace example: "Power -> Sovereignty." Royal Consciousness, the book's
+  words, is "Sovereignty. Courage, leadership, and responsibility for one's own
+  reality... power that does not need to dominate," grouped with Power, not
+  Imperium. The book's Imperium is "the executive layer. The capacity that
+  selects action across time, sequences decisions, and overrides impulse,"
+  grouped with Pattern and Story: self-command, not rulership. The engine's own
+  seat data already seats Ruler at Solar (`ARCH[i].b`, `engine/data/canon.js`),
+  the same seat as Power and Royal Consciousness; Imperium has no seat overlap
+  with Ruler at all.
+
+Not resolved here. Both readings are real; they disagree because the book's own
+technical sense of these two words runs against their plain English sense. His
+call, with both readings in front of him.
+
+## Archetype to root: no mechanism exists anywhere, 4 November
+
+Asked to simulate the stack from archetype to root with the domains taken out,
+per his correction that the domains are a separate "conscious domains" layer
+("the knowledge we accumulate") and not a rung between archetype and root. The
+simulation (full report held by the team) found no table, in this app, in
+Reboot-OS, or in any edition of the book read, that says which of the four roots
+(Architect, Engine, Weaver, Witness) each of the twelve archetypes belongs to.
+
+What exists instead: a partial archetype-to-seat-to-root chain (`ARCH[i].b`
+through `ROOTSEAT`) that only resolves 7 of 12 archetypes and ties on none; the
+born-on blueprint (Summary page) that hands a person a root and an archetype
+from the same birthdate but by unrelated formulas, so knowing one tells you
+nothing about the other (measured at 0.0007 against a scale where 2.0 would mean
+they agree); and an old, 6-of-30-filled Reboot-OS table of blueprint "god forms"
+(`V25_BLUEPRINTS`) that names archetypes under a blueprint but never a root.
+
+Not resolved here. Two ways it could go, each needing his ruling: he writes the
+twelve archetype-to-root rows himself, or the seat route (`ROOTSEAT`) is
+adopted as the answer for the 7 it already resolves, with the other 5 (Warrior,
+Rebel, Ruler, Jester, Everyman) ruled by hand. A third option floated earlier,
+finishing the old 30-blueprint god-form list, is withdrawn: his own words, "I'm
+not finishing the 30 blueprint. Stop asking me. When you say finish the 30
+blueprint, it's because I made a comment," not a thing he ever asked built.
+Not raised again.
+
+## Archetype to root, the definitional method: 6 held, 4 changed, 2 open, 4 November
+
+He gave a fourth way to close this: "look at the definitions and the mechanics
+of being... the words, what defines them when you combine them, makes up the
+archetypes." Pulled the book's own words for each of the four roots and each
+archetype, matched them by what they actually say, then ran a second,
+adversarial pass that tried to prove every match wrong by rereading the same
+text from scratch.
+
+- **6 held under the adversarial check:** Warrior to Engine, Sage to
+  Architect, Caregiver to Weaver, Creator to Engine, Explorer to Engine, Lover
+  to Weaver.
+- **4 changed when checked harder, best current answer, not settled:** the
+  book's own Outlaw (asked about as Rebel) to Architect, Magician to Weaver,
+  Ruler to Engine, Innocent to Witness. Each of the first guesses for these
+  four leaned on `Imperium`, a term the book names once, in a different
+  taxonomy (Consciousness types, not Blueprint Domains), and never states
+  belongs to Architect. Removing that unconfirmed link changed the answer.
+- **2 are a real tie in the book's own words, not a reading problem:** Jester
+  (Weaver's Play fits, but the book's own trickster figure sits in Witness)
+  and the book's own Orphan (asked about as Everyman, whose fear points at
+  Architect and whose want points at Weaver, with neither root covering both).
+
+Cross-check: the seat route above (`ROOTSEAT`) independently flagged the
+Outlaw, Ruler, Jester and the Orphan as needing a human call, with no sight of
+this derivation. It did not flag Magician or Innocent, so those two carry the
+least independent support of the four "changed" rows.
+
+Two archetypes carry two names: what this project asks about as Rebel is the
+book's own Outlaw, and what it asks about as Everyman is the book's own Orphan.
+
+Not resolved here either. Good enough to build on, not good enough to ship by
+itself. His ruling wanted on the 4 changed rows and the 2 open ties; the 6 held
+rows can be treated as answered.
+
+## Double bind detection and a hold button for felt versus computed, 4 November
+
+Two new items, both his words, both scoped to the release flow and not yet
+built.
+
+- **Double bind detection.** A pattern where what a person says they feel and
+  what the engine computes from their story disagree (felt versus computed) is
+  its own detectable thing, distinct from the patterns already named
+  (minimizing, humor-deflection, numbing). His words: "it will show up unique.
+  In a person's bank and vault. It'll have an icon next to it showing that's a
+  double bind." Needs a seat (where "bank" and "vault" mean here, which this
+  product's own glossary should confirm before building) and an icon, not yet
+  designed.
+- **A hold button for felt versus computed, at release.** When that disagreement
+  is found during a release, a button keeps (holds) the pattern instead of
+  letting the release clear it, then runs the detection again. His words: "the
+  more we can find, the dense ones, those are the real ones," meaning a pattern
+  that keeps surfacing across repeated runs is the one worth trusting over a
+  single hit.
+
+Both logged to the backlog (`TASKS.md`) rather than built blind. Neither has a
+seat, a visual spec, or engine support yet.
+
+## The Discord feedback relay stays, 4 November
+
+Lance: "We should still have the Discord feedback. That should not have gone
+away." Reboot-OS PR #2 (the relay) is not to be dropped; its current broken
+state in production is a defect to fix, not a feature to retire. Status of the
+fix is tracked in `TASKS.md`, not here.

@@ -7812,6 +7812,24 @@ await require('./railmenu.js').railMenuGate(browser,FILE,ok,booted);
 console.log('\n=== the Journal\'s Full view, and the crisis door inside it ===');
 await require('./stfull.js').stFullGate(browser,FILE,ok,booted);
 
+/* WHEN VOICE CANNOT RUN, tests/voicefall.js, 3 November. A browser with no
+   speech recognition, or a page that is not a secure context, was told
+   "Typing works." on a Journal with nothing to type in. It opens the crisis
+   door's plain box now, for those two cases only; voice that can run, a
+   refused permission and silence draw no box, as ruled 29 October. A file of
+   its own so it can run alone, called here so a full run holds it. */
+console.log('\n=== when voice cannot run, the Journal still takes words ===');
+await require('./voicefall.js').voiceFallGate(browser,FILE,ok,booted);
+
+/* TYPE INSTEAD, tests/typein.js, 4 November. His words: "We should probably
+   just add the typing panel, closed, to the bottom of the journal. And if a
+   person wants to use it, they can just use it." The same box voicefall.js
+   holds, opened on request on a browser where voice works, and never drawn
+   beside the forced box or the crisis door's. A file of its own so it can
+   run alone, called here so a full run holds it. */
+console.log('\n=== type instead, the box on request while voice works ===');
+await require('./typein.js').typeInGate(browser,FILE,ok,booted);
+
 await browser.close();
 
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
