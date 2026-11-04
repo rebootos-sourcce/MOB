@@ -3190,3 +3190,111 @@ Seat defaults taken with it, recorded as decided and not asked:
 Not built yet, because each needs new engine work or a ruling first: Action, Compass, a laws grid, Channels, Patterns, Boundary, and Feelings as a cycling widget. The laws panel the Story page already has is left as it is. A kept and broken laws grid was proposed and is not taken: it needs his ruling.
 
 Held by `tests/stfull.js`, called from `tests/functional.js`. Its first job is the safety precondition: in Full, with chat on, the crisis door is still reached by real presses (profile button, "Is this a crisis?", "Reach someone now") and the three numbers (988, 741741, 911) are on screen and pressable. That was already true before this change and is now held. This is the voluntary door only; there is still no automatic reading of what a person writes.
+
+## Archetype to domain, ported from Reboot-OS, 4 November
+
+His words: "wire up archetype to domain... you should have all of the records
+as well... look on GitHub, look in the different repos." The table already
+existed in Reboot-OS as `ARCHDOM`, eighteen rows, archetype name to domain
+word. It is the same in three places there, and all three were read and
+compared: `atuned/data/canon_tables/ARCHDOM.json` (with its row count and
+hash in `canon_tables/manifest.json`, written by `atuned/test/tools/canon.py`),
+the `canon_ARCHDOM` table in `atuned/server/migrations/0001_canon.sql`, and
+the literal in `atuned/src/32_story.js`, all at Reboot-OS `origin/main`
+`53474153`. The canon's own lock, `atuned/data/canon.json`, orders the top of
+the stack "ARCHETYPE" then "BLUEPRINT / DOMAIN". The book's reason for the
+link is in its Archetypal Mask entry: "Zeus, Odin, Ra point at the same
+domain: Ruler. Thoth, Hermes, Horus point at the same domain: Knowledge."
+
+**Built as a port, in PR 149's shape.** `tools/regen-archetype-domain.cjs`
+reads the Reboot-OS files and the book as git blobs at a named commit and
+writes `atuned_src/engine/data/archdom.js` with every blob SHA and both
+commits in it; nothing in it is typed by hand. `engine/archdom.js` reads it:
+`archDomain(i)`, `archDomainAll()`, `archDomainOf(name)` for all eighteen
+Reboot-OS names, and `archDomFaults`, which holds the snapshot to the tables
+it points into. One difference from PR 149, on purpose: PR 149 hashes the
+working tree, and the Reboot-OS checkout here sat on a feature branch with
+another branch's `32_story.js` staged, so a working tree hash would have
+cited a state no commit holds. PR 149 is still an open draft, not merged.
+
+**It is a lookup and not an inference.** An archetype's domain is the same
+for every person and never moves with a story or a release, like
+`affinity()`. It is not a trace rung, it feeds nothing (`archExpr`,
+`affinity`, `buildSoul` and `compute` are untouched, and `tools/equiv.py`
+against main reports no body changed), and the half of Reboot-OS's influence
+layer that carries an archetype's score up to its domain
+(`39_the-influence-layer.js`, rung 7) is not ported.
+
+**How each domain word reaches MOB's DOMAINS.** Nine are the same name:
+Power, Knowledge, Creation, Mystery, Play, Nature, Guardian, Death,
+Trickster. Four are not, and none is guessed:
+
+- **Healing is Restoration, Love is Connection, Communication is Exchange.**
+  MOB already records each as one domain with two names: `KB_RENAME` in
+  `engine/data/kb.js` (the drill prints "Connection, called Love in the
+  codex"). The book's numbered headings carry both names: "VIII · Healing and
+  Restoration", "VII · Love and Connection", "II · Communication and
+  Exchange". Which name is canon stays his call, as kb.js says; the answer
+  carries Reboot-OS's word beside the engine's name and renames nothing.
+- **Destruction is Dissolution.** The book's "VI · Destruction and Renewal"
+  opens its clear reading "deliberate dissolution, clearing what is false or
+  finished", and `DOMDEF` files numeral VI under `dissolution`. It is not
+  Descent, which is the book's IX, "Sacrifice and Wisdom Through Descent",
+  and not Death, which Reboot-OS's own table gives to the Shadow.
+
+**Rebel reads Reboot-OS's Outlaw row, by the join the product already
+makes.** `ui/analytics.js` and `ui/avatarui.js` read the two as one row, and
+the book names one archetype both ways in the same slot of the same twelve:
+its library prints "06 The Outlaw" and its archetype bullets print "Explorer ·
+Rebel · Lover · Creator". canon.json's archetype register still carries
+Outlaw and Rebel as two rows, so whether they are one is still open
+(`engine/data/codes.js`, and "Rebel or Outlaw, are open" above). The answer
+says `upstream: Outlaw` beside `arch: Rebel`.
+
+**Open, his call: Ruler.** Reboot-OS gives it `Architect`, which is a root,
+a family of five domains, where every other row names one domain. The
+answer is that root, no domain, and `open`. The book points two ways and
+they disagree:
+
+- Imperium. The book's "IV · Rulership and Order" (templates Zeus, Jupiter,
+  Ra) is the text `DOMDEF` files under `imperium`; Imperium sits under
+  Architect, the root Reboot-OS gives; and ARCH's Ruler already wears
+  Imperium's glyph. The book's "Zeus, Odin, Ra point at the same domain:
+  Ruler" does not settle it: "Ruler" there is the archetype's own name, and
+  the book's domain table files Odin under I, Knowledge, not IV
+  (`.claude/skills/mob-canon` section 6 records the same contradiction).
+- Power. The book's line beside its consolidated list: "Power consolidated
+  from prior Directed Force + Royal (one can be a king or a warrior, they are
+  both Power)". MOB's DOMAINS says the opposite of Power, "directed force.
+  the warrior, not the king", and Power sits under Engine, which would move
+  Ruler off the root Reboot-OS gives it.
+
+The gate fails if the snapshot resolves Ruler without a ruling.
+
+**Found on the way, recorded and not changed.**
+
+- **The soul map couples archetypes to domains by position, not by this
+  table.** `buildSoul()` and `affinity()` lay twelve archetype arcs of thirty
+  degrees over nineteen domain arcs of 360/19. For none of the eleven
+  archetypes this table resolves is the domain under the arc, or under the
+  lobe's centre, the domain ARCHDOM names: the Warrior's arc covers Knowledge
+  and Justice, the Sage's Imperium. `tests/engine.js` recomputes it. Changing
+  it would change every reading's archetype affinity, so it is a ruling on
+  the soul map and not part of a port.
+- **Reboot-OS's ARCHDOM disagrees with Reboot-OS's own register.**
+  canon.json's `registers.domains` has no Healing, Love, Destruction or
+  Communication, and has Architect only as a root. The snapshot lists them
+  under `unregistered`. That is the gap Reboot-OS's
+  `docs/passes/pass6_foundation.md` already names ("ARCHDOM values vs a domain
+  table"), and it is theirs to close.
+- **The book's own list says "All 14" over fifteen numbered headings,** I to
+  XV.
+
+How it is held: `node tests/engine.js` runs `archDomFaults` on the real
+snapshot and on six broken copies, each caught by name.
+`node tools/regen-archetype-domain.cjs <Reboot-OS> <mob-manuscript> --check`
+holds the committed snapshot to the sources, and `--self-test` plants
+seven bad sources (an edited table, copies that disagree, a word with no
+route, Ruler resolved upstream, a missing quotation, a renamed heading, and
+KB_RENAME without Connection's codex name) and proves each is refused. It
+was shown to fail with two of its guards taken out.
