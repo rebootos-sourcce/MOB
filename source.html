@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2781 6296138e 2026-11-04 03:25"><head><meta charset="utf-8">
+<html lang="en" data-build="v2789 d32bb1eb 2026-11-04 07:00"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -4262,6 +4262,17 @@ body.quiet .st-mic.on .st-dot::after,body.rm .st-mic.on .st-dot::after{animation
 .st-ta:focus{border-color:rgba(223,204,126,.48)}
 .st-ta::placeholder{color:var(--dim)}
 .st-bar{display:flex;align-items:center;gap:10px;margin-top:11px}
+/* TYPE INSTEAD, 4 November, see #sttype in ui/storyui.js. His words: "the
+   typing panel, closed, to the bottom of the journal." Closed means out of
+   the way, so this carries none of the lift Chat and Dashboard were given
+   (no fill, no border, no glow): it is a word and an icon at the foot of the
+   panel, in the mid ink, and it reaches full ink on hover and while its box
+   is open. Still the full 44 pixel target, the floor tests/design.js holds. */
+.st-type{min-height:var(--tap);min-width:var(--tap);display:inline-flex;align-items:center;gap:7px;
+ background:none;border:0;border-radius:999px;padding:0 8px;margin-left:-8px;color:var(--mid);
+ font-family:var(--sans);font-size:13px;cursor:pointer;transition:color var(--t-micro) var(--ease-out)}
+.st-type svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.st-type:hover,.st-type[aria-expanded="true"]{color:var(--ink)}
 /* words dictation hid behind stars, said where the words are (maskedRuns) */
 .st-mask{margin:10px 0 0;padding:8px 12px;border-left:2px solid var(--accent);
  background:var(--sunk);border-radius:3px;font-size:13.5px;line-height:1.45;color:var(--mid)}
@@ -49777,6 +49788,23 @@ function stRender(){
    /* the second door, at the foot, where the person finishes: see the crisis
       line above. */
    +(STV.crisis&&!STV.chat?crisisReachBtn('st-crxbar'):'')
+   /* TYPE INSTEAD, THE BOX ON REQUEST, 4 November. His words: "We should
+      probably just add the typing panel, closed, to the bottom of the
+      journal. And if a person wants to use it, they can just use it." Since
+      29 October the box came back only when voice could not run
+      (stVoiceCant), so a person whose microphone works but who would rather
+      not speak, in an office or on a train, had no way in. This opens the
+      same box, see stType. It is not drawn beside the forced box
+      (STV.novoice), where closing it would hand the person back to a voice
+      that cannot run, nor beside the crisis door's box, which keeps the one
+      door it already has. The label stays the same open or shut, and
+      aria-expanded carries which. */
+   +(STV.novoice||STV.crisis||!(STV.chat||STV.typed)?''
+    :'<button type="button" class="st-type" id="sttype" aria-expanded="'+STV.typed+'" title="'
+    +(STV.typed?'Close the box. What you typed stays in the entry.':'Open a box to type in, in place of speaking.')+'">'
+    +'<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">'
+    +'<rect x="2.5" y="6" width="19" height="12" rx="2.2"/><path d="M6.5 10h1M10 10h1M13.5 10h1M17 10h.5M8 14h8"/></svg>'
+    +'<span>Type instead</span></button>')
    +(STV.chat&&STV.dash?'':'<span class="st-ct" aria-hidden="true"></span>'
     +'<button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
     +'Commit'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button>')
@@ -49903,6 +49931,8 @@ function stRender(){
  if(ap)ap.onclick=stCommit;
  var mic=document.getElementById('stmic');
  if(mic)mic.onclick=stMic;
+ var ty=document.getElementById('sttype');
+ if(ty)ty.onclick=stType;
  /* DASHBOARD TOGGLES, ON THIS SCREEN, round of 29 October. His words: "when
     I land on this page it starts off in simple mode... if I press it
     dashboard icon is lit up." It no longer leaves the Journal for the
@@ -49931,16 +49961,17 @@ function stRender(){
 /* CHAT IS ALWAYS TRUE NOW, round of 28 October, his words: "the focus needs
    to be on two-way conversation for the journal ... this needs to be a
    two-way conversation between me and the source." The Talk button that
-   used to toggle it is gone, see stWire. Two things still set it false: the
-   crisis door (crisisTalk, ui/crisis.js), and a browser on which voice
+   used to toggle it is gone, see stWire. Three things still set it false:
+   the crisis door (crisisTalk, ui/crisis.js), a browser on which voice
    cannot run at all (stVoiceCant, STV.novoice), so a person always has a
-   way to say something. */
+   way to say something, and a person who would rather type (stType,
+   STV.typed). */
 /* DASHBOARD STARTS OFF, round of 29 October, his words: "when I land on this
    page, it starts off in simple mode." Imprints and Release are real panels,
    not removed, only shut until Dashboard is pressed; see #stdash's onclick
    at the foot of stRender. */
 var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:true,law:false,
- unsaved:null,draftT:null,draftFail:false,crisis:false,dash:false,novoice:false};
+ unsaved:null,draftT:null,draftFail:false,crisis:false,dash:false,novoice:false,typed:false};
 /* the one width the page changes shape at is the one the product stacks its
    columns at, so the Story cannot be in three columns while the rails are
    already one. */
@@ -50254,7 +50285,11 @@ function stCommit(){
     conversation is the Journal's only normal state, so a finished crisis
     entry returns to it here rather than staying stuck in the write box with
     no way back. */
- STV.crisis=false; STV.chat=!STV.novoice;
+ /* A box opened by Type instead shuts with the entry it held, so the next
+    one starts in the conversation, which is the Journal's own state; only
+    the forced box stays (STV.novoice). Not on a refused save above: that
+    line says the words are still in the box, so the box stays to hold them. */
+ STV.crisis=false; STV.typed=false; STV.chat=!STV.novoice;
  toYou();syncCh();if(typeof stRender==='function')stRender();render();
  /* A STORY KEPT WITH STARS IN IT SAYS SO, round QR. The person may choose
     not to type the hidden words, and the entry is still theirs; it is kept
@@ -52797,9 +52832,39 @@ function stMicStartFail(err){
 function stVoiceCant(msg){
  ST_LISTEN=false; ST_LISTEN_T0=null; ST_WANT_LISTEN=false;
  SRC_VOICE.seq++; srcVoiceStop(); ST_HUSH=false;
- STV.novoice=true; STV.chat=false; STV.focus='write'; stRender();
+ /* typed goes because the box is the forced one now: Type instead is not
+    drawn beside it, and its Close would hand the person back to a voice
+    that cannot run */
+ STV.novoice=true; STV.typed=false; STV.chat=false; STV.focus='write'; stRender();
  var ta=document.getElementById('sttext'); if(ta)ta.focus();
  status(msg,'fail');}
+/* TYPE INSTEAD, 4 November, see the ruling at #sttype in stRender. It is the
+   same box stVoiceCant opens and on the same switch, STV.chat false, so the
+   words go into ST_TEXT through the box's own oninput and Commit is stCommit:
+   nothing here is a second way to write an entry. What differs is that voice
+   works, so nothing holds the box open. Commit shuts it (stCommit), Chat
+   shuts it and listens (stMic), and a second press shuts it with the words
+   still in the entry, where srcChatSync files them as the person's next turn
+   once the thread is back.
+
+   A RECORDING RUNNING WHEN IT OPENS IS STOPPED, the way Chat's own stop
+   branch stops it, stop and not abort, so the sentence being spoken is
+   handed back and lands in the box rather than being thrown away. Left
+   running, the next sentence would be written into the entry by
+   srcTurnCommit while the person typed in it, and the render that follows
+   each one rebuilds the box under their fingers. A line Source AI is
+   already speaking is let finish: ST_WANT_LISTEN false is what stops stHush
+   starting the recording again once it ends, and srcPaint speaks no new
+   reply while nobody is listening for it. */
+function stType(){
+ if(STV.typed){ STV.typed=false; STV.chat=true; stRender();
+  var b=document.getElementById('sttype'); if(b)b.focus(); return; }
+ ST_WANT_LISTEN=false;
+ if(ST_REC&&ST_LISTEN){ try{ ST_REC.stop(); }catch(e){} }
+ ST_LISTEN=false; ST_LISTEN_T0=null; ST_LIVE='';
+ STV.typed=true; STV.chat=false; STV.focus='write'; stRender();
+ var ta=document.getElementById('sttext');
+ if(ta){ ta.focus(); var n=ta.value.length; try{ ta.setSelectionRange(n,n); }catch(e){} }}
 function stMic(){
  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
  /* alert() blocks the page and is not the status region, which is the app's
@@ -52811,6 +52876,11 @@ function stMic(){
   stVoiceCant('Recording needs a secure page. Opened from a file, the browser will '
    +'not turn the microphone on. Typing works.'); return; }
  if(ST_REC&&ST_LISTEN){ ST_WANT_LISTEN=false; ST_REC.stop(); ST_LISTEN=false; ST_LISTEN_T0=null; stRender(); return; }
+ /* Chat pressed from a box Type instead opened goes back to the
+    conversation, so the two never both write the entry (see stType). Only
+    here, past the two refusals above, which put the forced box in its
+    place instead. */
+ if(STV.typed){ STV.typed=false; STV.chat=true; }
  /* a recording never starts under a line still playing from the last one,
     or the microphone would take it for the person */
  srcVoiceStop(); ST_HUSH=false;
@@ -52869,7 +52939,12 @@ function stMic(){
    var t=e.results[i][0].transcript;
    if(e.results[i].isFinal){ if(ST_REC_DONE[i])continue; ST_REC_DONE[i]=1; fin+=t; } else live+=t;}
   if(fin.trim())srcTurnCommit(fin);
-  ST_LIVE=live; stRender();
+  /* the box keeps its focus here too, 4 November: Type instead stops the
+     recording with stop, which hands back the sentence still being spoken
+     as one last final, and this render rebuilt the box it had just
+     focused. Measured in tests/typein.js at 1600 and 390: the sentence
+     landed and the keys typed after it went nowhere. */
+  ST_LIVE=live; stRenderKeep();
   var hid=maskedRuns(ST_TEXT).length;
   if(fin&&hid>hidAt){
    status('Dictation hid '+(hid-hidAt===1?'a word':(hid-hidAt)+' words')
@@ -52897,10 +52972,7 @@ function stMic(){
   if(ST_WANT_LISTEN&&ST_HUSH){ stRender(); return; }
   if(ST_WANT_LISTEN){ try{ stMicGo(); stRender(); return; }catch(err){} }
   ST_WANT_LISTEN=false; ST_LISTEN=false; ST_LISTEN_T0=null;
-  var a=document.activeElement, kept=a&&a.id==='sttext'?[a.selectionStart,a.selectionEnd]:null;
-  stRender();
-  var t=kept&&document.getElementById('sttext');
-  if(t){ t.focus(); try{ t.setSelectionRange(kept[0],kept[1]); }catch(e){} }};
+  stRenderKeep();};
  ST_REC.onerror=function(e){var code=(e&&e.error)||'unknown';
   /* no-speech is the browser noticing silence, not a failure, and onend
      follows it either way; restarting there, not here, keeps one path. */
@@ -53016,6 +53088,21 @@ function stSrcSpeak(line){
    house rule for anything that can fail, rather than leaving a button that
    says Listening over a microphone that is off. */
 var ST_HUSH=false, ST_REC_ON=false, ST_REC_DONE={};
+/* A RENDER FROM THE RECOGNISER KEEPS THE BOX'S FOCUS. stRender writes the
+   whole Journal, so #sttext is a new node after it and the focus and caret
+   stay with the old one. Lifted out of ST_REC.onend, where it went in on 3
+   November for the end that follows every error, when onresult needed the
+   same lines for Type instead (stType). Nothing moves when the box did not
+   have the focus. A caret at the end stays at the end: that sentence lands
+   after the caret stType put at the end of the entry, so a caret kept where
+   it was would have put the person's first typed words in front of the
+   words they had just said. */
+function stRenderKeep(){
+ var a=document.activeElement, kept=a&&a.id==='sttext'?[a.selectionStart,a.selectionEnd,a.selectionEnd===a.value.length]:null;
+ stRender();
+ var t=kept&&document.getElementById('sttext');
+ if(t){ t.focus(); var n=t.value.length;
+  try{ if(kept[2])t.setSelectionRange(n,n); else t.setSelectionRange(kept[0],kept[1]); }catch(e){} }}
 function stMicGo(){ ST_REC_DONE={}; ST_REC.start(); ST_REC_ON=true; }
 function stHush(on){
  if(on){ if(ST_HUSH)return; ST_HUSH=true; ST_LIVE='';
@@ -85968,5 +86055,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005666566"></div>
+<div id="eof" hidden data-len="005672506"></div>
 </body></html>
