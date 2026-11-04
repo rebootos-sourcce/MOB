@@ -131,6 +131,10 @@ BROWSER = {
 # the paywall from mockup five, 17 October (ui/paywall.js). Report only until
 # three green runs.
     'paywall':       ('node tests/paywall.js', 20),
+# words about ending a life or danger now: no release, no question, the crisis
+# door beside the entry (engine/safe.js), 17 October. Report only until three
+# green runs.
+    'safepage':      ('node tests/safepage.js', 20),
 # the allowance, five seats, 17 October (tests/allowance.js). Report only until
 # three green runs.
     'allowance':     ('node tests/allowance.js', 20),
