@@ -113,7 +113,11 @@ const FB_LAYERS=[
  {k:'gates',g:'carry',nm:'Laws of Action',ic:fbFlay('gates'),
   tip:'The Laws of Action round the core, each move of right action set across from the wrong action it stands against.'},
  {k:'shadow',g:'carry',nm:'Decoherence',ic:fbFlay('shadow'),
-  tip:'Decoherence. All the charge on your 108 addresses and 4 field anchors, shown as a tint behind everything.'},
+  /* MATCHED TO GLOSS'S OWN DQ ENTRY (engine/data/kb.js), round 28 October:
+     this tip said "all the charge... shown as a tint", which drops the
+     ceiling DQ is read against and reads as an unbounded sum rather than
+     the shadow's own share of the most those addresses could hold. */
+  tip:'Decoherence. The weight on your 108 addresses and 4 field anchors, against the most they could hold, shown as a tint behind everything.'},
  {k:'stories',g:'carry',nm:'Stories',ic:fbFlay('stories'),
   tip:'One line for each story that put charge on an address.'},
  {k:'saboteurs',g:'run',nm:'Saboteurs',ic:CHAINGLYPH.sab,

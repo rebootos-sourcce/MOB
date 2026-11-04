@@ -148,7 +148,10 @@ const FLAYS=[
   tip:'The six gates round the core. Each higher gate sits across from the lower one it stands against.'},
  {sep:true},
  {k:'shadow',nm:'Decoherence',d:frCirc(12,12,8.5)+'M7.2 16.6l3.4-3.4M10.2 19.2l6-6M14.6 19.9l4.6-4.6',
-  tip:'Decoherence. The weight on your 108 addresses and 4 field anchors, as a wash behind everything.'}];
+  /* MATCHED TO GLOSS'S OWN DQ ENTRY (engine/data/kb.js), round 28 October:
+     see fieldbar.js's own shadow tip, fixed the same round for the same
+     reason, the ceiling DQ is read against. */
+  tip:'Decoherence. The weight on your 108 addresses and 4 field anchors, against the most they could hold, as a wash behind everything.'}];
 /* THE SWITCH AND THE ROW ARE NO LONGER BUILT HERE. The layer row, #flay, is
    the glass bar now, and the switch, #fview, moved to the right rail as three
    circles; ui/fieldbar.js builds both. FLAYS stays, because its marks are the

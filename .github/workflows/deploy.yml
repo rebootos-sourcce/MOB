@@ -314,6 +314,10 @@ jobs:
           # locked ring opens it, and it sells nothing while checkout is
           # closed. New, so report only first.
           - { gate: paywall, timeout: 20, command: node tests/paywall.js }
+          # 17 October: words about ending a life or danger now get no release and
+          # no question, and the crisis door beside the entry (engine/safe.js).
+          # New, so report only first.
+          - { gate: safepage, timeout: 20, command: node tests/safepage.js }
           # 17 October: the allowance, five seats (tests/allowance.js): whole
           # addresses, no free release, the empty card's rerun first, the plan
           # sheet's day. New, so report only first.
