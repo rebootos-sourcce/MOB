@@ -14,6 +14,7 @@ engine/data/people.js
 engine/data/zones.js
 engine/data/catalog.js
 engine/data/kb.js
+engine/data/archdom.js
 engine/data/sabcard.js
 engine/data/cards.js
 engine/data/intakemore.js
@@ -64,6 +65,7 @@ engine/charfield.js
 engine/rise.js
 engine/ritex.js
 engine/archexpr.js
+engine/archdom.js
 engine/showonly.js
 ui/component.js
 ui/sound.js
