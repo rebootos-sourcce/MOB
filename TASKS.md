@@ -33858,3 +33858,16 @@ His asks off the same screenshot, annotated directly on it:
 
 SW3 and SW5 dispatched together as one mock-up, since both are about the same
 rail's visual language. SW1, SW2, SW4 and SW6 need scoping before any build.
+
+- [ ] **SW7. P0, dispatched, urgent, real gap confirmed.** He was right: the
+  Field's "stack" panel (Child emotions, Saboteurs, Complexes, Hyper, Super
+  tabs, `railStack()` in `ui/ui.js`) still draws the old ring-icon-plus-pill
+  rows with "held"/"opposite" text headers (`cr()`). Right beside it,
+  Orientation and Balance already use the ruled dual-pole bar (`rbPair`,
+  `ui/component.js`), his own round RB words, quoted in `shell/body.html`:
+  "This stack of elements should all be bar style with the symbolic icon and
+  the text inside of the bar itself to maximize space." That ruling reached
+  Orientation and Balance and never reached this panel. Converting all 5 tabs
+  to the same `rbPair` bar, real data, same rows, same doors into each drill.
+  Not a new design decision, applying one already made. Dispatched with real
+  before/after screenshots.
