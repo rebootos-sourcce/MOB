@@ -3243,13 +3243,49 @@ nothing about the other (measured at 0.0007 against a scale where 2.0 would mean
 they agree); and an old, 6-of-30-filled Reboot-OS table of blueprint "god forms"
 (`V25_BLUEPRINTS`) that names archetypes under a blueprint but never a root.
 
-Not resolved here. Three ways it could go, each needing his ruling: he writes
-the twelve archetype-to-root rows himself; the seat route (`ROOTSEAT`) is
+Not resolved here. Two ways it could go, each needing his ruling: he writes the
+twelve archetype-to-root rows himself, or the seat route (`ROOTSEAT`) is
 adopted as the answer for the 7 it already resolves, with the other 5 (Warrior,
-Rebel, Ruler, Jester, Everyman) ruled by hand; or the old 30-blueprint god-form
-list is finished and each form given a root. Nothing is built pending that
-choice, per the standing rule against inventing a mechanism the data does not
-support.
+Rebel, Ruler, Jester, Everyman) ruled by hand. A third option floated earlier,
+finishing the old 30-blueprint god-form list, is withdrawn: his own words, "I'm
+not finishing the 30 blueprint. Stop asking me. When you say finish the 30
+blueprint, it's because I made a comment," not a thing he ever asked built.
+Not raised again.
+
+## Archetype to root, the definitional method: 6 held, 4 changed, 2 open, 4 November
+
+He gave a fourth way to close this: "look at the definitions and the mechanics
+of being... the words, what defines them when you combine them, makes up the
+archetypes." Pulled the book's own words for each of the four roots and each
+archetype, matched them by what they actually say, then ran a second,
+adversarial pass that tried to prove every match wrong by rereading the same
+text from scratch.
+
+- **6 held under the adversarial check:** Warrior to Engine, Sage to
+  Architect, Caregiver to Weaver, Creator to Engine, Explorer to Engine, Lover
+  to Weaver.
+- **4 changed when checked harder, best current answer, not settled:** the
+  book's own Outlaw (asked about as Rebel) to Architect, Magician to Weaver,
+  Ruler to Engine, Innocent to Witness. Each of the first guesses for these
+  four leaned on `Imperium`, a term the book names once, in a different
+  taxonomy (Consciousness types, not Blueprint Domains), and never states
+  belongs to Architect. Removing that unconfirmed link changed the answer.
+- **2 are a real tie in the book's own words, not a reading problem:** Jester
+  (Weaver's Play fits, but the book's own trickster figure sits in Witness)
+  and the book's own Orphan (asked about as Everyman, whose fear points at
+  Architect and whose want points at Weaver, with neither root covering both).
+
+Cross-check: the seat route above (`ROOTSEAT`) independently flagged the
+Outlaw, Ruler, Jester and the Orphan as needing a human call, with no sight of
+this derivation. It did not flag Magician or Innocent, so those two carry the
+least independent support of the four "changed" rows.
+
+Two archetypes carry two names: what this project asks about as Rebel is the
+book's own Outlaw, and what it asks about as Everyman is the book's own Orphan.
+
+Not resolved here either. Good enough to build on, not good enough to ship by
+itself. His ruling wanted on the 4 changed rows and the 2 open ties; the 6 held
+rows can be treated as answered.
 
 ## Double bind detection and a hold button for felt versus computed, 4 November
 
