@@ -2899,6 +2899,17 @@ His words: "something we need to do with those user profiles where the customer 
 - **One guard, in the engine.** `showOnly` and `showRefuse` (`engine/showonly.js`) refuse every engine writer while an example is loaded, so a control added later is refused too. Held by `tests/examples-showonly.js`.
 - **Default taken, recorded as his to overrule:** the practitioner page is not affected. It reads examples and writes only its own notes to the device, never to the example.
 
+## Words about ending a life or danger now get no release, 17 October
+
+A seat decision, taken by the team on the round 3 plan's decision 1 default (a), with Emmy's wording. Not the owner's ruling. He reacts to a preview build and may revert it. The automatic crisis check he deferred on 9 October stays deferred.
+
+- **A closed phrase list, not a detector.** `SAFE_WORDS` (`engine/data/safe.js`): words about ending one's own life or hurting oneself, and danger now ("I never feel safe at home", "he threatened to kill me"). `srcSafe` (`engine/safe.js`) reads them with the sniffer's own rules: a no denies it, someone else's words do not count, a quoted line with someone else or a book or film as its speaker does not count, a short list of idioms ("I want to die laughing", "killing myself at work") does not count. It scores nothing about the person.
+- **On a match the reader reads nothing.** `parseStory` returns an empty reading, so no release is offered off that entry anywhere, Source AI asks nothing, and the laws and leans do not move. The entry is still saved exactly as written when the person presses Commit.
+- **The Story page shows one line and one door in its place.** "It is saved. If you want a person now, 988 answers by call or text, any hour." beside Reach someone now, which opens the crisis panel on the numbers. No modal, no sound, no red, no "we noticed". It shows once and nothing escalates. The release column stays reachable and is not offered.
+- **Nothing about a match is stored.** Not on the record, the draft, the export, the outbox or the server. `tests/safepage.js` holds that the export and the whole browser store are the same with and without it.
+- **How to turn it off:** set `on:false` on a family's row in `SAFE_WORDS`. One table, one line each.
+- **Taken up by the owner, 3 November.** After typing a harsh test phrase into the Journal on main and getting no safety response, his words: "let's go ahead and complete 108 and get it wired in." So whether this stays is answered. It was brought current with main that night (the Journal is a spoken conversation since 28 and 29 October, and the line now stands in the conversation in place of Source AI's reply, with the person's own turns still on the page). The automatic detector of a person's state is still deferred and still P3 (30 October); this is the phrase stop only.
+- **Still open, his:** whether the first run should draw the line too (today it only reads nothing there, and its top bar already carries the crisis button); whether the phrase list goes to a clinician (round PW ruled that "explicitly not now").
 ## The personas decide, the owner reacts, 17 October
 
 His words: "I'm a reaction person. Emmy's running these designs, and she's got Jimmy Ivy [Jony Ive] and a bunch of other people. If you're asking me stupid-ass questions that these personas should already be able to answer, then we've got a problem."
@@ -3108,6 +3119,56 @@ Checked before scoping it: the product already states the intent this ruling now
 Where the names actually live, checked by grep rather than assumed: `atuned_src/engine/data/compass.js` (797 lines, the Compass/Inferno data itself) and `atuned_src/engine/data/teachers_recipes.js` (426 lines, the teacher/inverse pairs), both real, both shipped. Not yet read in full or catalogued figure by figure; that is the next step, not done tonight. **Not executed this round.** This is a content and naming pass across a real data table, not a copy tweak, and it needs its own scoped round: read every figure name actually in `compass.js` and `teachers_recipes.js`, confirm which ones are user-facing today versus already behind the "rendered as behaviours" principle above, propose the one or two word behavioural replacement for each, and bring the list to him rather than guess forty names in one pass.
 
 **Names ruled so far, 30 October, as he works through the list.** Druj is Deception (or Deceiver, if a person-word is needed), opposite Honesty: his words, thinking it through out loud, "truth is the opposite of deceive... deception is just a lie, but you could also say transparency, or honesty. Honesty is probably more real, probably the one." Geryon is Fraud: his words, "Geryon is fraud," which also matches the one already in the research file's own table, Dante's eighth circle. Full detail and the still open structural question (Geryon shares the engine's one real two-piece pattern with Psychopathy, naming him does not by itself tell the two apart) is `TASKS.md` round SM, SM14 to SM16.
+
+## The book's own levels, read in order on the Field's left rail, 28 October
+
+His round, after the superego section landed: "the full cascade wiring of the
+Psyche stack for the field in the left menu." The Mechanics of Being numbers
+the layers a signal passes through, 4 to 10 above the body (1 to 3 sit below
+it, 9 already has its own section, Superego). This entry is the record of
+which layers this engine can honestly claim and which it cannot; the rail's
+own "The book's levels" section (`shell/body.html`, `data-sec="levels"`) is
+the same list, read by the owner rather than only by a seat. It was first
+titled "The stack", which the Knowledge page already uses for the seven seats
+(`ui/knowledge.js` `KB_SECS`), and "Layers" is already the Field's own control
+for its overlays (`ui/fieldbar.js` `FB_FOLD`), so the section and its copy say
+level, under the one word per concept rule.
+
+- **4, imagination, and 5, frequency intensity: not computed.** The book
+  places both before a feeling or a charge exists ("the mind simulating
+  possible realities from incoming data", "the energetic charge applied to
+  the signal... before the signal is labeled"). Nothing in this engine
+  measures a layer before that point; the charge shown everywhere on the app
+  already is layer 5's own result, not the layer itself. No row was built
+  rather than guess at one.
+- **6, fight or flight, and 7, action response: real, already shipped,
+  under different names.** 6 is the 27 October ruling above, read in full:
+  the fetter's own dual pole is the nerve's tilt toward freeze or flight. 7
+  is the Laws of Action section the Field's rail already carries ("the
+  awareness ignorant detach attach intentional aware", round 28 October):
+  the book's own words for it, "negative: attached to outcome, ignorant of
+  what needs doing, avoiding. positive: aware of what needs doing, detached
+  from outcome, moving with intention", are the same four words in the same
+  two pairs. Nothing new was built; the levels section names what already
+  exists.
+- **8, ego, nine words: real, and a real discrepancy, not merged silently.**
+  The book's nine: fear, anger, shame, disgust, grief, receiving blocked,
+  apathy, shock, sad. The engine's nine poled axes, `CHILD` in
+  `engine/data/canon.js`: Fear, Anger, Shame, Disgust, Apathy, Shock, Sad,
+  Surprise, Anticipation. Seven of the nine agree by name. The book's grief
+  and receiving blocked are not among the engine's nine; the engine's
+  Surprise and Anticipation are not among the book's nine, and carry their
+  own poling ruling (14 September, for Anticipation, Surprise and Shock).
+  Which seven is not an open question; which other two the full nine should
+  be is. Not resolved here, the same discipline this file already holds for
+  the superego's four against canon's six.
+- **10, the koshas: not computed, and not a pick between rosters.**
+  `BOOK-ERRATA.md` finding 8, "Two koshas rosters", already has it: the
+  book's own chapter 10 names eight, its own glossary names six, and the
+  glossary's six are not six of chapter 10's eight. A ninth term appears in
+  neither list. Building a koshas row would mean choosing between the two
+  rosters the book gives for itself, and deciding where the orphan term
+  belongs, which is a finding for that file, not a build for this one.
 
 ## The Journal's Full view gets a left menu and a right menu, 2 November
 

@@ -1122,6 +1122,10 @@ function probeForWho(){
  if(who===PROBE_WHO)return; PROBE_WHO=who;
  var pr=document.getElementById('probe'); if(pr){pr.classList.remove('on'); pr.innerHTML='';}}
 function render(){
+ /* the Journal's words are a record's (ST_OWN, ui/imprints.js), and every
+    route that moves CURP ends here, so the switch is met before anything is
+    drawn, on every tab. One identity compare when nothing moved. */
+ var stMoved=(typeof stOwn==='function')&&stOwn();
  if(typeof paintUndo==='function')paintUndo();
  probeForWho();
  /* THE READING A PERSON MAY SEE, not compute()'s own. Everything render hands
@@ -1729,7 +1733,7 @@ function renderGates(){
     release column offers and what its vault holds, and none of them passes
     through the Story's own code. Without this the vault read nought after a
     run until the tab was left and entered again. */
- else if(S.tab===TAB.STORY&&typeof stFieldPaint==='function')stFieldPaint();}
+ else if(S.tab===TAB.STORY&&typeof stFieldPaint==='function')stFieldPaint(stMoved);}
 
 /* ---- the loop ---- */
 let last=0;

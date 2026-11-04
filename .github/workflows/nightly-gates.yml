@@ -1,0 +1,139 @@
+name: nightly-gates
+# EVERY BROWSER GATE, AGAIN AND AGAIN, ON MAIN. 3 November.
+#
+# A flaky check passes most runs, so one CI run a pull request almost never
+# shows it, and when it does it reads as "that one again" and is waved
+# through. Station R of tests/golden.js failed sixteen times across the runs
+# of two pull requests before anybody counted (tests/flakes.json). It was
+# found by running it over and over, alone and four copies at once: 1 in 15
+# solo, 4 in 40 four way parallel. This is that method, every night, on
+# every browser leg deploy.yml names.
+#
+# The legs are not typed here. The first job asks tools/gates.js, which reads
+# gates-browser and gates-report out of deploy.yml, so a gate added there is
+# repeated here the next night. Each leg runs on its own runner: the build,
+# then tools/gates-repeat.js, which runs the leg's own gate step and floor
+# step from deploy.yml three times one after another and then four copies at
+# once. The last job reads every leg's result and writes one table to the
+# run page: per gate, per run, pass or FAIL with the counts the gate printed,
+# and the failing checks by name.
+#
+# It publishes nothing, reads no secret, and its token reads the code only.
+# It holds nothing back: no branch protection names it and no deploy needs
+# it. A red leg here is a lead, to be reproduced and then recorded with
+# tools/flakes.js record; wiring that in is the next step, not done here.
+#
+# COST. Every leg is a runner for its own runtime times about five (three
+# solo, then four at once, which runs slower than one). Read the real
+# figure off the run page's usage once it has run, not off this comment.
+on:
+  schedule:
+    # 10:41 UTC, 02:41 in San Diego in winter, outside the busy hours and off
+    # the top of the hour, when scheduled runs are most often delayed
+    - cron: '41 10 * * *'
+  # by hand from the Actions tab, to see a night's run without waiting
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+# One night at a time. A run still going when the next is due is let finish.
+concurrency:
+  group: nightly-gates
+  cancel-in-progress: false
+
+jobs:
+  legs:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      legs: ${{ steps.list.outputs.legs }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: main }
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: install PyYAML, which tools/gates.js reads deploy.yml with
+        run: python3 -m pip install --disable-pip-version-check --no-input pyyaml==6.0.2
+      # An empty list must fail, or a lost matrix would repeat nothing green.
+      - name: every browser leg deploy.yml names
+        id: list
+        run: |
+          legs="$(node tools/gates.js --list --json)"
+          n="$(node -e 'console.log(JSON.parse(process.argv[1]).length)' "$legs")"
+          test "$n" -gt 0 || { echo "FAIL tools/gates.js listed no browser leg, so there is nothing to repeat"; exit 1; }
+          echo "repeating $n legs"
+          echo "legs=$legs" >> "$GITHUB_OUTPUT"
+
+  repeat:
+    needs: [legs]
+    name: repeat (${{ matrix.gate }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: ${{ matrix.nightly_timeout }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.legs.outputs.legs) }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: main }
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: install PyYAML, which tools/gates.js reads deploy.yml with
+        run: python3 -m pip install --disable-pip-version-check --no-input pyyaml==6.0.2
+      - name: install typescript for the delivery build's comment stripper
+        run: npm install --no-audit --no-fund --no-save typescript
+      - name: install playwright 1.56.1 and its chromium
+        run: |
+          npm install -g --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: point the gates at that chromium
+        run: |
+          root="$(npm root -g)"
+          chrome="$(NODE_PATH="$root" node -e "console.log(require('playwright').chromium.executablePath())")"
+          test -x "$chrome" || { echo "playwright's chromium is not at '$chrome'"; exit 1; }
+          echo "NODE_PATH=$root" >> "$GITHUB_ENV"
+          echo "CHROME=$chrome" >> "$GITHUB_ENV"
+      - name: build, the engine first
+        run: ./atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh && ./funnel/BUILD-single.sh
+      - name: three solo, then four at once
+        env:
+          GATE: ${{ matrix.gate }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/results"
+          node tools/gates-repeat.js "$GATE" --solo 3 --parallel 4 --out "$RUNNER_TEMP/results/$GATE.json"
+      # the result is kept whatever the runs did, so the table below has it
+      - name: keep the result for the table
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-${{ matrix.gate }}
+          path: ${{ runner.temp }}/results/
+          if-no-files-found: warn
+          retention-days: 14
+
+  table:
+    needs: [repeat]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: main }
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: nightly-*
+          merge-multiple: true
+          path: ${{ runner.temp }}/results
+      - name: every gate, every run, on the run page
+        run: node tools/gates-repeat.js --summary "$RUNNER_TEMP/results"

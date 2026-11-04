@@ -71,7 +71,7 @@ function stRender(){
     Journal itself, because stCommit can redraw this page from another tab
     and the class must not outlive stRailClear there. */
  document.body.classList.toggle('st-full',!!STV.dash&&S.tab===TAB.STORY);
- stDraftBack();
+ stOwn(); stDraftBack();
  var p=ST_PARSED;
  /* A WORKED EXAMPLE IS SHOW ONLY, ruled 16 October (engine/showonly.js). Its
     bank, its vault and its imprints are the reading and all of them stay.
@@ -596,6 +596,23 @@ function stRead(){
  var marks=stMarks(t,ST_PARSED);
  STR={t:t,marks:marks,toks:marks.toks||(t?(t.match(/[A-Za-z']+/g)||[]).map(function(w){return {w:w};}):[]),
   heard:srcHear(t,srcPrior(ents),ST_ACTIVE)};}
+/* ============================================================
+   THE ENTRY srcSafe STOPS, 17 October (engine/safe.js). True while the words
+   in the box trip it, and after Commit of words that did, until the person
+   starts the next entry. The second is STV.safeSaid, page memory and
+   nothing else: it is not on the record, the draft, the entry, the export
+   or the outbox, so a reload forgets it and nothing about it can leave the
+   device. The engine already reads the words as nothing; this is only what
+   the page draws in place of the release and the question. Emmy's ruling,
+   17 October: the entry is saved as written, no modal, no sound, no red, no
+   "we noticed", one line and one door, once, and nothing escalates if it is
+   left alone. The release column stays reachable and is not offered. The
+   no sound part was lifted for the line alone by the owner on 3 November:
+   in the spoken conversation Source AI says it, once, see srcPaint.
+   ============================================================ */
+function stSafe(){
+ var t=ST_TEXT||'';
+ return t.trim()?srcSafe(t):!!STV.safeSaid;}
 /* the addresses this entry reaches, or the last committed entry's.
    THE ONES THE WORDS NAMED COME FIRST, and .named says how many of the head of
    the list they are, 17 October. parseStory reaches two kinds of address: the
@@ -605,6 +622,10 @@ function stRead(){
    the list so STV.lastFound keeps it once the parse is cleared at commit;
    stRelModel says what losing it cost. */
 function stFound(){
+ /* nothing off an entry srcSafe stops, and not the last entry's either: the
+    fall back below put an earlier entry's places in the release column
+    beside these words, which is a release offered on them by another door */
+ if(stSafe())return [];
  var found=[], named=0;
  [false,true].forEach(function(inf){
   if(ST_PARSED)ST_PARSED.imprints.forEach(function(im){var n=BY[im.node];
@@ -653,7 +674,10 @@ function stCommit(){
     asked, by the record's identity, and its reporter says what Commit would
     do on the person's own profile in place of the wall this was. */
  if(showRefuse('story'))return {ok:false,why:'example'};
- var kept=stFound(), k=ST_PARSED.imprints.length, bands=ST_PARSED.bands;
+ /* asked of the words, not of the page, so the tutorial's and the first
+    run's commits through here are held the same way (stSafe, above) */
+ var safe=srcSafe(ST_TEXT);
+ var kept=safe?[]:stFound(), k=ST_PARSED.imprints.length, bands=ST_PARSED.bands;
  /* A PRESS AFTER THE BROWSER REFUSED THE LAST ONE ASKS IT AGAIN, AND WRITES
     NOTHING TWICE. A refused save leaves the entry in this session and the
     words in the box (below), so the same words pressed again are the same
@@ -743,10 +767,13 @@ function stCommit(){
     not silence the next. */
  var text=ST_TEXT;
  ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;if(typeof srcFresh==='function')srcFresh();STV.lastFound=kept;STV.lastT=entT;
+ /* the line stays where it was once the box empties, see stSafe */
+ STV.safeSaid=safe;
  /* the release takes the room on a desktop. On a phone it stays the bar
     with Run on it: widening it there would push Run off the first screen,
-    which is the one thing layout H exists to stop. */
- STV.focus=stPhone()?'write':'release';
+    which is the one thing layout H exists to stop. Not after an entry
+    srcSafe stopped: the page does not walk a person to a release on it. */
+ STV.focus=(stPhone()||safe)?'write':'release';
  /* the crisis line has said what the box is for, and the box has been used.
     crisisTalk forced STV.chat false on the way in, deliberately, so a crisis
     is met in the plain box and not inside a chat bubble; nothing used to set
@@ -761,10 +788,13 @@ function stCommit(){
     as it stands. What the line may not do is report the commit as if every
     word had been read. */
  var hid=maskedRuns(text).length;
- status((k?'Committed. '+k+(k===1?' imprint':' imprints')+' written to the field.'
+ /* an entry srcSafe stopped is reported as kept and nothing else: the line
+    beside it already says so, and "nothing read as charge" would be a claim
+    about the words. And no sound, Emmy's ruling: a chime is a reward. */
+ status((safe?'Kept.':k?'Committed. '+k+(k===1?' imprint':' imprints')+' written to the field.'
   :'Kept. Nothing here read as charge, so nothing moved.')
   +(hid?' '+hid+(hid===1?' word':' words')+' hidden behind stars by dictation could not be read.':''));
- if(typeof sfx==='function')sfx('kept');
+ if(!safe&&typeof sfx==='function')sfx('kept');
  return {ok:true,k:k,kept:kept,bands:bands,text:text,t:entT,saved:true};}
 
 /* ============================================================
@@ -788,6 +818,10 @@ function stCommit(){
    CURP.story.reply beside CURP.story.draft, so a reload or a tab closed
    inside the half second keeps whichever box had words in it, or both. */
 function stDraft(){
+ /* never one person's words onto another's record: a voice turn that lands
+    after the picker moved is not the open record's (ST_OWN, ui/imprints.js) */
+ if(!stMine())return;
+ if(CURP)ST_OWN=CURP;
  if(!CURP||!CURP.story||(typeof S!=='undefined'&&S.who!==0))return;
  var v=(ST_TEXT&&ST_TEXT.trim())?ST_TEXT:null,
   r=(typeof SRC_CDRAFT==='string'&&SRC_CDRAFT.trim())?SRC_CDRAFT:null, moved=false;
@@ -814,13 +848,44 @@ if(typeof addEventListener==='function')['pagehide','visibilitychange'].forEach(
    reload can find words waiting to be sent, words already sent and not yet
    committed, both, or neither. */
 function stDraftBack(){
+ if(!stMine())return;
  if(!CURP||!CURP.story||(typeof S!=='undefined'&&S.who!==0))return;
  if(!ST_TEXT&&typeof CURP.story.draft==='string'){
-  ST_TEXT=CURP.story.draft; ST_PARSED=ST_TEXT.trim()?parseStory(ST_TEXT):null;}
- if(!SRC_CDRAFT&&typeof CURP.story.reply==='string')SRC_CDRAFT=CURP.story.reply;}
+  ST_TEXT=CURP.story.draft; ST_PARSED=ST_TEXT.trim()?parseStory(ST_TEXT):null; ST_OWN=CURP;}
+ if(!SRC_CDRAFT&&typeof CURP.story.reply==='string'){SRC_CDRAFT=CURP.story.reply; ST_OWN=CURP;}}
+/* THE OPEN RECORD CHANGED UNDER THE JOURNAL, 3 November. Called at the head
+   of render() (ui/ui.js), stRender and stFieldPaint, so every route CURP
+   moves by is met before anything is painted: loadP, the picker, an import,
+   a new record. Returns true when the words were someone else's, so the
+   caller redraws the whole Journal and not only what stFieldPaint patches.
+
+   It is the commit's own reset (stCommit), because a switch is the same
+   fact: the entry on the page is no longer this person's. The words are not
+   lost. stDraft put them on their own record as they were typed, so the
+   pending half second is written now, while they are still that record's,
+   and they come back through stDraftBack when that record is opened again.
+   lastFound and lastT go too: they are the last commit's, and the release
+   picker credits a run to them (relPick's story_t). A recording still
+   running is stopped, because its next words would land on the next record. */
+function stOwn(){
+ var cur=(typeof CURP!=='undefined')?CURP:null;
+ if(ST_OWN===cur)return false;
+ if(ST_OWN===null){ ST_OWN=cur; return false; }
+ if(STV.draftT){ stDraftStop();
+  if(typeof pPersist==='function'&&!pPersist()&&typeof status==='function')
+   status('This browser would not save. The words you left in the Journal are on this page and not on your record.','fail');}
+ if(ST_LISTEN||ST_WANT_LISTEN){ ST_WANT_LISTEN=false; ST_LISTEN=false; ST_LISTEN_T0=null; ST_LIVE='';
+  try{ if(ST_REC)ST_REC.stop(); }catch(e){} }
+ ST_OWN=cur;
+ ST_TEXT=''; ST_PARSED=null; SRC_PASSED=false; if(typeof srcFresh==='function')srcFresh();
+ STV.lastFound=[]; STV.lastT=null; STV.unsaved=null;
+ stDraftBack();
+ return true;}
 
 /* refresh only what the text moves, so typing never loses the caret */
 function stRefresh(){
+ /* the next entry has started, so the line about the last one goes */
+ if(ST_TEXT&&ST_TEXT.trim())STV.safeSaid=false;
  stDraft();
  var keep=document.getElementById('sttext'), pos=keep?keep.selectionStart:0;
  /* the counter is gone, see stRender: nothing is written into .st-ct */
@@ -863,8 +928,15 @@ function stPaintAll(){
    held, what the release column offers and what the vault holds, and none of
    them passes through this file. Without it the vault read 0 after a run
    until the tab was left and entered again. */
-function stFieldPaint(){
+function stFieldPaint(moved){
  if(!document.getElementById('stflow'))return;
+ /* A PROFILE CHANGE IS NOT A PATCH, 3 November. Everything below patches
+    the record's half of the page, and the words, the box, the conversation
+    and the Full view's Energy rail are the other half. They were never
+    refreshed here, so a switch on the Journal kept the last person's story
+    on screen under the next person's name. moved is render()'s own stOwn,
+    which has already run by the time this is reached. */
+ if(stOwn()||moved){ stRender(); return; }
  /* a lighting change arrives here too, and the chart's ink is read off it.
     Only then: reading it forces a style flush, and render() runs on every
     slider step. */
@@ -1131,11 +1203,21 @@ var SRC_VERDICTS=[], SRC_VENT=false;
    down is a choice about the conversation and never edits the record.
    Page memory, cleared with the thread by srcFresh. */
 var SRC_FROM=0;
+/* whether the last paint drew the safe line, so it is spoken once, srcPaint */
+var SRC_SAFE_UP=false;
 function srcConvText(){
  if(SRC_FROM>ST_TEXT.length)SRC_FROM=0;
  return SRC_FROM?ST_TEXT.slice(SRC_FROM):ST_TEXT;}
+/* THE STOP READS THE WHOLE ENTRY, 3 November. A change of subject moves
+   what Source AI reads, and it must never move the stop: "can we talk about
+   something else", said straight after the words, put SRC_FROM past them and
+   the line and the door went from the screen for the rest of the entry,
+   reproduced in tests/safepage.js section 10. Commit already read the whole
+   entry and kept no release; the screen did not. srcHear of the whole entry
+   is heard as safe and nothing else, the same answer the unsliced case gives. */
 function srcHeardNow(){
  if(!SRC_FROM)return STR.heard||srcHear(ST_TEXT,null);
+ if(srcSafe(ST_TEXT))return srcHear(ST_TEXT,null);
  var ents=(CURP&&CURP.story&&CURP.story.entries)||[];
  return srcHear(srcConvText(),srcPrior(ents),ST_ACTIVE);}
 function srcLedgerNow(){
@@ -1379,6 +1461,11 @@ function srcPaint(){
     as asked. Move on and venting keep their move, only the line changes. */
  var act=STV.chat?srcActNow():null;
  if(act){if(turn.move==='ask'||turn.move==='listen')turn={move:'listen'}; turn.act=act;}
+ /* after Commit the box is empty and the engine has nothing to hear, so the
+    page's own memory keeps the line up until the next entry starts. Last, so
+    no later rule (a rejected seat, venting, talk) can turn it back into a
+    question, and the whole turn is replaced, act and all. */
+ if(turn.move==='open'&&stSafe())turn={move:'safe'};
  /* THE LIVE MARK. A dot beside the name that breathes while Source AI is
     idle and holds lit while it is reading, see srcHearing. It is drawn and
     carries no word, because "thinking" printed on a scripted reader would be
@@ -1415,7 +1502,18 @@ function srcPaint(){
     the buttons that called them are cut. */
  var acts='';
  var q=turn.move==='open'||turn.move==='listen'?srcQuestion():ask;
- if(turn.move==='open')
+ /* SAFE, 17 October (stSafe above). No question and no question buttons, one
+    line and one door, in the row the Story box already uses after Talk it
+    through, so it is the same quiet weight and not a new alarm. The door is
+    crisisReachBtn, which opens the panel straight on the numbers. When Talk
+    it through already put that door beside the box, the line comes alone,
+    so there is still one door on the page. The first sentence goes when this
+    browser refused to keep the words, see CRISIS_SAY.entryNow. */
+ var safeSay=(STV.unsaved||STV.draftFail)?CRISIS_SAY.entryNow:CRISIS_SAY.entry;
+ if(turn.move==='safe')
+  o+='<div class="st-crxrow" id="stsafe"><p class="st-mask st-crisis" role="note">'+esc(safeSay)+'</p>'
+   +(STV.crisis&&!STV.chat?'':crisisReachBtn('st-crxline'))+'</div>';
+ else if(turn.move==='open')
   o+='<div class="src-ask">'+srcLand('src-open',q)+acts+'</div>';
  else if(turn.move==='ask'){
   o+=srcLand('src-q',ask,'--c:'+seatCol(turn.band))
@@ -1442,7 +1540,7 @@ function srcPaint(){
  /* the why, under whatever move was made, on every move that has heard a
     seat. It is not a question, so Move on does not silence it: moving on ends
     the asking, and the reason for a release is still true. */
- var why=turn.move==='open'?'':srcWhy(heard);
+ var why=(turn.move==='open'||turn.move==='safe')?'':srcWhy(heard);
  /* an id and no class: the shell carries no rule for it, and the design gate
     fails a class with no rule. Found by its id, the way the house finds a host. */
  if(why)o+='<div id="srcwhy" style="margin-top:14px"><span class="pm-eye">Why</span>'
@@ -1452,11 +1550,32 @@ function srcPaint(){
     what the entry keeps at commit is identical whichever way it was shown.
     Only the markup is swapped, and the wiring below finds the same ids. */
  var cur=null, fresh=false;
- if(STV.chat){cur=srcChatCur(turn,heard,q,ask); srcChatSync(); fresh=srcChatNote(cur);
+ if(STV.chat&&turn.move!=='safe'){cur=srcChatCur(turn,heard,q,ask); srcChatSync(); fresh=srcChatNote(cur);
   o=srcThread(turn,heard,cur,acts,why);}
+ /* SAFE, TALKING: THE PERSON'S OWN WORDS STAY ON THE PAGE, 3 November. The
+    conversation became the Journal's only state on 28 October, and the
+    first cut of the merge drew the safe row in place of the whole thread,
+    so a person who said it out loud watched every word they had said
+    vanish, measured: two of their own rows before, none after. The thread
+    is drawn as it stands, every Source AI row as an earlier one, and the
+    line and the door take the place of the reply. Nothing is added to
+    SRC_CHAT, so nothing reaches the entry's asked. */
+ var safeTh=STV.chat&&turn.move==='safe';
+ if(safeTh)o=srcThreadSafe(o);
+ /* AND THE LINE IS SAID OUT LOUD, owner's ruling of 3 November, his words:
+    "Source AI can speak the crisis safety line out loud. We want to take off
+    the no sound rules. Since we're now using voice speech to speech." Scoped
+    to this line alone. It goes through stSrcSpeak, the call every reply
+    below goes through, on the same rule: only while Talk is on, and once,
+    when the line first takes the reply's place, never on a repaint of it
+    and never again when Commit keeps it standing. Its own words and nothing
+    else, the words on the screen. Still nothing is added to SRC_CHAT. */
+ var safeNew=turn.move==='safe'&&!SRC_SAFE_UP;
+ SRC_SAFE_UP=turn.move==='safe';
+ if(safeNew&&safeTh&&ST_WANT_LISTEN)stSrcSpeak(safeSay);
  h.innerHTML=o;
- SRC_SHOWN=cur?cur.q:(turn.move==='pass'?'':q);
- if(cur)srcWire(h);
+ SRC_SHOWN=cur?cur.q:((turn.move==='pass'||turn.move==='safe')?'':q);
+ if(cur||safeTh)srcWire(h);
  srcHearing(h);
  /* EVERY NEW TURN SOURCE AI TAKES IS SAID OUT LOUD while Talk is on, 31
     October. stSrcSpeak had one caller, the Talk press, so the greeting was
@@ -1475,7 +1594,7 @@ function srcPaint(){
     143 to 190 over the same typed line, and that cost is gone with it. */
  /* a screen reader hears the opener, an ask, "Cool.", and while listening
     only a question the person pressed for. */
- var said=turn.move==='open'?q:(turn.move==='ask'?ask:(turn.move==='pass'?'Cool.':turn.move==='vent'?SRC_LISTENING
+ var said=turn.move==='safe'?safeSay:turn.move==='open'?q:(turn.move==='ask'?ask:(turn.move==='pass'?'Cool.':turn.move==='vent'?SRC_LISTENING
   :((SRC_DQ||SRC_QI>=0)?q:'')));
  /* talking, every turn Source AI takes is a line it says, once */
  if(cur)said=cur.q;
@@ -1953,6 +2072,15 @@ function srcThread(turn,heard,cur,acts,why){
   else o+='<div class="src-bub src-bub-src src-bub-past"><p class="src-q">'+esc(r.q)+'</p></div>';
   o+='</li>';});
  return o+'</ol>';}
+/* the thread beside an entry srcSafe stops (srcPaint above): the person's
+   rows as they are, every Source AI row as an earlier turn, and the safe
+   row, already built, where the reply would be */
+function srcThreadSafe(row){
+ var o='<ol class="src-th" aria-label="Conversation">';
+ SRC_CHAT.forEach(function(r){
+  if(r.w==='me')o+='<li class="src-tn src-tn-me"><div class="src-bub src-bub-me"><p class="src-me">'+srcMeHtml(r.a,r.b)+'</p></div></li>';
+  else o+='<li class="src-tn src-tn-past" aria-label="An earlier turn"><div class="src-bub src-bub-src src-bub-past"><p class="src-q">'+esc(r.q)+'</p></div></li>';});
+ return o+'<li class="src-tn src-tn-now">'+row+'</li></ol>';}
 /* the one live Source AI row, in the panel's own markup for each move.
    NO GAUGE AND NO WHY HERE ANY MORE, round of 28 October, his words: "I
    don't want to see the questions written out, this needs to be a two-way
@@ -3361,6 +3489,9 @@ var SRC_VOICE={seq:0, el:null, url:'', t:0};
    end must not leave the person unheard for the rest of the conversation. */
 var SRC_VOICE_MAX=30000;
 function srcSayNow(){
+ /* the safe line, while it stands in the reply's place: the line spoken is
+    the line on screen, so pressing Talk never reads an earlier question */
+ if(stSafe())return (STV.unsaved||STV.draftFail)?CRISIS_SAY.entryNow:CRISIS_SAY.entry;
  var q=''; SRC_CHAT.forEach(function(r){if(r.w==='src'&&r.q)q=r.q;});
  return q||srcOpen();}
 function srcVoiceStop(){

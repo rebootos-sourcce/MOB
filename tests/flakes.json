@@ -1,0 +1,37 @@
+{
+  "about": [
+    "The flake ledger. One entry per check that has failed and then passed again on the same code, keyed by gate and check. tools/flakes.js reads a gate's failure output, matches each failing check against this list, and either counts one more sighting of a known entry or adds a new one as suspected. It prints the ledger with no arguments.",
+    "A check is the failing line as the gate printed it, with every run of digits read as N, so 'reads the plan once more: 2 reads' and '... 1 reads' are one check. The example is one real line as printed.",
+    "status is suspected (seen failing, not yet shown to pass on the same commit, so it may be a real failure: a first failure is a failure until three runs say otherwise), open (a known flake, not fixed), resolved (root caused and fixed, with the fix named), or reopened (resolved, then seen failing again after its fix, which is the line to read first).",
+    "Added 3 November with one real entry, station R of tests/golden.js, closed. Its sightings are the CI runs found failing on that exact check in a search of the deploy runs of pull requests 163 and 164, read off each job's own log on 3 November; the local reproduction counts are in its reproduced field and are not sightings. Nothing writes this file but tools/flakes.js record, run on purpose."
+  ],
+  "flakes": [
+    {
+      "gate": "golden",
+      "check": "and coming back after an hour reads the plan once more: N reads",
+      "example": "and coming back after an hour reads the plan once more: 2 reads",
+      "first_seen": {
+        "run": "41321440234",
+        "commit": "2eca4bdf31ebb73eb3b6e11cb5622f4a70d448d4",
+        "date": "2026-11-01",
+        "where": "gates-report (golden), job 124892348270, pull request 163 (source-voice-sniffer-readonly-20261031)"
+      },
+      "last_seen": {
+        "run": "41543179752",
+        "commit": "3873a88dc1658f7220dd529640ce6f9e99c5edd8",
+        "date": "2026-11-02",
+        "where": "gates-report (golden), job 125612148618, pull request 164 (work/avatar-graph-readonly-v08-20261101)"
+      },
+      "sightings": 16,
+      "status": "resolved",
+      "cause": "Playwright's clock, not the app. Installed and left running, it fires due timers from a loop of its own; fastForward runs a second loop, and whichever finishes last sets the clock to the tick it started for (playwright-core clockSource, 1.56.1). A running loop that ended after the fast forward put the page back two hours, so station R's third plan read never came.",
+      "reproduced": "Before the fix: 1 run in 15 solo, and 4 in 40 four way parallel by the commit message (tests/floors.json says 44; the two records disagree and neither was re-run). After it: 30 of 30 solo, 60 of 60 four way parallel, and with the hold removed the new check fails 2 in 40.",
+      "resolved": {
+        "commit": "37c82b38ffe1fd8d603f63f4364d7484b2e03278",
+        "date": "2026-11-02",
+        "how": "the page clock is paused once the plan is read at boot and held until it reads the same across a stretch, and the second move is read in the same task as the visibilitychange it answers",
+        "verified": "gates-report (golden) green on main's own CI runs since: 41546532351 on 37c82b38 and 41563481675 on b6f86211"
+      }
+    }
+  ]
+}

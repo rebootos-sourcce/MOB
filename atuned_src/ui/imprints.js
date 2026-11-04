@@ -5,6 +5,16 @@
    commit.
    ============================================================ */
 var ST_TEXT='', ST_PARSED=null, ST_REC=null, ST_LISTEN=false, ST_LIVE='', ST_WANT_LISTEN=false;
+/* THE WORDS BELONG TO A RECORD, 3 November. ST_TEXT and ST_PARSED are one
+   page's variables and CURP moves under them: the picker, an import, a new
+   record. Before this nothing said whose words they were, so a profile
+   change on the Journal left one person's story, its Energy rail and its
+   pending imprints on screen under the next person's name. ST_OWN is the
+   record the words were written on. null is unclaimed, a page that has not
+   written yet, and is taken by the record open when it first writes.
+   stOwn in ui/storyui.js moves it, and every reader asks stMine first. */
+var ST_OWN=null;
+function stMine(){ return !ST_OWN||typeof CURP==='undefined'||ST_OWN===CURP; }
 var IMP_GROUP='band', IMP_PICK={};
 var IMP_GROUPS=[['band','Seat'],['charge','Charge'],['sab','Saboteur'],
                 ['story','Story'],['expr','Expression']];
@@ -13,7 +23,7 @@ function impLive(){
 /* pending imprints the sniffer has found but that are not committed yet.
    they draw as ghosts, so you can see where the text is about to land. */
 function impGhosts(){
- if(!ST_PARSED)return [];
+ if(!ST_PARSED||!stMine())return [];
  var out={},seen={},order=[];
  ST_PARSED.imprints.forEach(function(im){
   if(seen[im.node])return; seen[im.node]=1;

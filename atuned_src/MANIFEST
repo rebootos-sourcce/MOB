@@ -22,6 +22,7 @@ engine/data/onboarding.js
 engine/data/crisis.js
 engine/data/registers.js
 engine/data/codes.js
+engine/data/safe.js
 engine/pct.js
 engine/verp.js
 engine/lexicon.js
@@ -45,6 +46,7 @@ engine/sniff.js
 engine/sourceai.js
 engine/evidence.js
 engine/qcheck.js
+engine/safe.js
 engine/astro.js
 engine/birth.js
 engine/numerology.js

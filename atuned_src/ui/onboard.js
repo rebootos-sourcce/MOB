@@ -71,6 +71,16 @@
    paragraph above refuses; and it reads no word anybody writes, so J0, the
    automatic check he deferred on 9 October, is still exactly as open as this
    header says.
+
+   AND A PHRASE STOP IS NOT A DETECTOR EITHER, 17 October. srcSafe
+   (engine/safe.js) is a closed list of words about ending one's life,
+   hurting oneself and danger now, and on a match parseStory reads nothing.
+   So a first story here that carries one is kept and offered no release,
+   because obStoryDone reads it through parseStory, and that is the whole of
+   it on this sheet: no line of its own is drawn, the stage's top bar
+   already carries the crisis button, and the Story page is where the line
+   and the door stand (ui/storyui.js, stSafe). It reads words and not the
+   person, so J0 stays open; tests/onboarding2.js says both.
    ============================================================ */
 /* THE AUTOMATIC OPEN IS OFF BY ITS OWN FLAG, unchanged: ui/login.js's
    loginEnter runs this sheet on its own switch, DEV_PLAY_ONBOARDING, and
@@ -823,7 +833,7 @@ function obResume(jr){
  if(at==='mirror'){
   OB.text=w.text||'';
   if(OB.text){
-   ST_TEXT=OB.text; ST_PARSED=parseStory(OB.text);
+   ST_TEXT=OB.text; ST_PARSED=parseStory(OB.text); ST_OWN=CURP||null;
    OB.read=obReadOf(ST_PARSED,'s',{});
    w.fixes.forEach(function(v){ OB.fixes.push(v); obFixRead(v); });
    OB.ans=Object.assign({},w.ans);
@@ -1819,7 +1829,7 @@ function obStoryDone(){
  var ta=document.getElementById('obtext'); if(!ta)return;
  var v=ta.value; OB.text=v;
  if(v.trim().split(/\s+/).filter(Boolean).length<3)return;
- ST_TEXT=v; ST_PARSED=v.trim()?parseStory(v):null;
+ ST_TEXT=v; ST_PARSED=v.trim()?parseStory(v):null; ST_OWN=CURP||null;
  OB.commit=null; OB.read=obReadOf(ST_PARSED,'s',{});
  OB.fixReads=[]; OB.fixes=[]; OB.ans={}; OB.more={}; OB.plan=null;
  /* F13: that a story was given and how much it read, never its words. The
@@ -1834,7 +1844,7 @@ function obStoryDone(){
    is exactly the story the mirror showed. ---- */
 function obCommit(){
  if(!OB.text||!OB.text.trim()){ OB.step=7; obRender(); return; }
- ST_TEXT=OB.text; ST_PARSED=parseStory(OB.text); OB.plan=null;
+ ST_TEXT=OB.text; ST_PARSED=parseStory(OB.text); ST_OWN=CURP||null; OB.plan=null;
  var r=stCommit();
  OB.commit=r;
  /* THE TAPS AND THE ANSWERS WRITE TO THE REAL PROFILE THE WAY THE STORY TAB
