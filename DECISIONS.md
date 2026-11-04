@@ -3376,3 +3376,27 @@ each commit only makes sense on top of the previous one's new structures,
 not because the idea is wrong; it is now confirmed as the right direction,
 independently, by this screenshot. Worth reading as reference for the
 mechanics, not pulling as-is.
+
+## Five hard rules for the nested cascade, from his live reaction to a mock-up, 4 November
+
+He reacted live to a screen showing this same kind of parent/child cascade
+(from a parallel effort, not confirmed to be this session's own build).
+Binding on this feature wherever it is built, named plainly so it is not
+repeated:
+
+- **The selection summary reads from the real records, never from engine
+  internals.** His words, rejecting a line that read "Built from 5 held
+  addresses across Heart, Sacral, 3rd Eye, Crown. It fires when those carry
+  at once, and the output bends on the way out.": "That's a big no. We
+  don't do that." A summary names the pattern's own written content (the
+  saboteur card, the hyper-complex family record, the super-complex entry),
+  never a count of addresses or a mechanical description of how the engine
+  assembled it.
+- **No duplicate reading on one screen.** If a figure (Integrity, Intention,
+  law reach, distortion) already shows somewhere else on the same screen,
+  it does not get a second block showing it again.
+- **One visual language.** A cascade card styled differently from the rest
+  of the panel it sits in reads as "an old legacy design," his words, and
+  is wrong on sight, whatever the data inside it says.
+- **The parent-to-child nesting has to actually work**, confirmed end to
+  end, not assumed from the data being correct.
