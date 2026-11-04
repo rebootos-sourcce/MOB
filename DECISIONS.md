@@ -3400,3 +3400,11 @@ repeated:
   is wrong on sight, whatever the data inside it says.
 - **The parent-to-child nesting has to actually work**, confirmed end to
   end, not assumed from the data being correct.
+
+Three more, same screen, his own further mark-up: **no separate flat
+"Running Now" list.** His words: "I'm assuming this is also legacy. Because
+this should show parent to children as a stack. Underneath the summary."
+The nested cascade itself, directly under the summary box, is how "what's
+running" is shown; it does not also get a flat list duplicating the same
+patterns below it. **"Laws of Moral Integrity" comes off this panel.**
+**"Run a release" comes off this panel.** Neither belongs here.
