@@ -832,7 +832,7 @@ function runSabDrill(s){
    for all nineteen. Four are under a different name in the engine, and the
    drill says both rather than picking one, because that ruling is not mine. */
 function runDomDrill(d){
- var k=KB_KEY(d.nm), def=DOMDEF[k], alt=KB_RENAME[k];
+ var k=KB_KEY(d.nm), alt=KB_RENAME[k], def=DOMDEF[k]||(alt&&DOMDEF[KB_KEY(alt)]);
  var h='<div class="pm-eye">Blueprint domain</div>'
   +'<div class="ad-nm">'+esc(d.nm)+'</div>'
   +'<div class="ad-sub">'+esc(d.r)+' cluster'+(alt?', called '+esc(alt)+' in the codex':'')+'</div>';

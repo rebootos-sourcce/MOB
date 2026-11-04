@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2781 6296138e 2026-11-04 03:25"><head><meta charset="utf-8">
+<html lang="en" data-build="v2786 4c109ad1 2026-11-04 15:18"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -71116,7 +71116,7 @@ function runSabDrill(s){
    for all nineteen. Four are under a different name in the engine, and the
    drill says both rather than picking one, because that ruling is not mine. */
 function runDomDrill(d){
- var k=KB_KEY(d.nm), def=DOMDEF[k], alt=KB_RENAME[k];
+ var k=KB_KEY(d.nm), alt=KB_RENAME[k], def=DOMDEF[k]||(alt&&DOMDEF[KB_KEY(alt)]);
  var h='<div class="pm-eye">Blueprint domain</div>'
   +'<div class="ad-nm">'+esc(d.nm)+'</div>'
   +'<div class="ad-sub">'+esc(d.r)+' cluster'+(alt?', called '+esc(alt)+' in the codex':'')+'</div>';
@@ -85968,5 +85968,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005666566"></div>
+<div id="eof" hidden data-len="005666594"></div>
 </body></html>
