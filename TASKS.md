@@ -33813,6 +33813,8 @@ Named SU and not SQ: SQ1 to SQ5 and SR1 to SR6 are already item numbers earlier 
 
 This round is not closed until SV1 through SV3 land with real commits and SV4, SV6 and SV8 have a seat or a ruling. Written here the same round it happened, per SU9.
 
+- [x] **SV13 closed, 4 November. The `stackbuild` salvage pull, PR #180, merged (`57f6223b`).** 10 of `stackbuild`'s 26 commits landed, risk-ascending, each rebuilt and gated on its own: the real parent/child trace summarizer (engine and UI halves), `traceDescendants`, the dead Field summary rows cut, the Root Energetics icon set, saboteurs' real opposite word (data half only), Flow going straight to Ritual, the real law definitions (not "Chapter 19"), the Analytics and Summary CSS and rewrite. His own direct review caught one real gap before merge: the funnel package (`funnel/dist/atuned-quiz.html`) was never rebuilt against the new engine, so it still carried the old law text; fixed and verified clean by `tools/products.js` before merging. `tests/engine.js`: 6879/0. Two genuinely unaddressed pieces remain on `stackbuild` (`ff83e74`, `3751bde`), and the 10-commit right-rail rework chain plus the saboteur UI half were deliberately left out, needing his own call before anyone revives them.
+
 ## Round SW, 4 November: the Awareness left rail, from his own screenshot
 
 A real wrong answer first: asked how many "blueprints" exist, 6 was given,
