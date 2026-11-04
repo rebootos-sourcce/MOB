@@ -2910,6 +2910,7 @@ A seat decision, taken by the team on the round 3 plan's decision 1 default (a),
 - **How to turn it off:** set `on:false` on a family's row in `SAFE_WORDS`. One table, one line each.
 - **Taken up by the owner, 3 November.** After typing a harsh test phrase into the Journal on main and getting no safety response, his words: "let's go ahead and complete 108 and get it wired in." So whether this stays is answered. It was brought current with main that night (the Journal is a spoken conversation since 28 and 29 October, and the line now stands in the conversation in place of Source AI's reply, with the person's own turns still on the page). The automatic detector of a person's state is still deferred and still P3 (30 October); this is the phrase stop only.
 - **Still open, his:** whether the first run should draw the line too (today it only reads nothing there, and its top bar already carries the crisis button); whether the phrase list goes to a clinician (round PW ruled that "explicitly not now").
+
 ## The personas decide, the owner reacts, 17 October
 
 His words: "I'm a reaction person. Emmy's running these designs, and she's got Jimmy Ivy [Jony Ive] and a bunch of other people. If you're asking me stupid-ass questions that these personas should already be able to answer, then we've got a problem."
