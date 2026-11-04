@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2789 d32bb1eb 2026-11-04 07:00"><head><meta charset="utf-8">
+<html lang="en" data-build="v2802 961efbba 2026-11-04 16:34"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -15021,8 +15021,9 @@ try{window.__at&&window.__at('engine/data/intakemore.js');}catch(e){}
 
    HOW A KEY IS WRITTEN. Lower case. A family has a prefix: sign:capricorn,
    animal:tiger, path:9, law:truth, axis:light, feeling:fear, seat:root,
-   archetype:caregiver, year:fire. The Western element fire is plain fire and
-   the Chinese year element is year:fire, because one word means two things.
+   archetype:caregiver, domain:knowledge, year:fire. The Western element fire
+   is plain fire and the Chinese year element is year:fire, because one word
+   means two things.
 
    HOW IT IS BUILT. The families are written from the tables the engine already
    carries, SIGN_RUNS, LP_RUNS, CH_RUNS, CE_RUNS, IQ_STEM, CHILD, ARCH and
@@ -15274,6 +15275,60 @@ var UNPACK_BASE={
 var UNPACK_ELEM={fire:'starting things and burning hot', earth:'steady, solid and slow to move',
  air:'watching and naming what it sees', water:'finding the low route and still arriving'};
 
+/* THE NINETEEN BLUEPRINT DOMAINS, read clear and read distorted. Added,
+   audit of 4 November: every one of the twelve archetypes already had a
+   plain meaning here, keyed archetype:<name>, and none of the nineteen
+   domains did, so a domain name could print with nothing beside it, which
+   is the exact thing round PO's unpack rule forbids.
+
+   Each pair below is a short summary of the clear and the distorted reading
+   DOMDEF (engine/data/kb.js) already carries for that domain. Nothing here
+   is invented: c paraphrases DOMDEF's own "c" field and x its own "x" field,
+   kept to one plain clause each. Four domains are stored in DOMDEF under the
+   book's original name, via KB_RENAME in the same file (Descent is
+   Sacrifice, Connection is Love, Exchange is Communication, Restoration is
+   Healing), and the sentence says so by the name this product uses,
+   DOMAINS' own nm, same as runDomDrill already does. */
+var UNPACK_DOM={
+ knowledge:{c:'reading patterns and teaching what you see before anyone asks',
+  x:'thinking your way into a wall instead of a bridge'},
+ justice:{c:'telling true from false and holding people to it without cruelty',
+  x:'judging so hard it turns into control'},
+ imperium:{c:'seeing how a system should be organized and putting that order in place',
+  x:'ruling people instead of ruling the mess'},
+ duty:{c:'doing the right thing even when nobody is watching',
+  x:'doing it only to be seen, or losing yourself in the obligation'},
+ fate:{c:'reading the pattern and its timing and moving at the right moment',
+  x:'using the pattern as an excuse to never act'},
+ power:{c:'holding your ground and aiming force at what is in the way, not at people',
+  x:'violence with no purpose'},
+ creation:{c:'building and bringing a vision into a real thing',
+  x:'being stopped by perfectionism, or needing to produce to feel like somebody'},
+ dissolution:{c:'clearing what is finished to make room for what comes next',
+  x:'tearing things down with nothing rebuilt'},
+ descent:{alt:'Sacrifice',c:'choosing to go down into what is hard, because it teaches',
+  x:'going down and not coming back'},
+ death:{c:'ending things cleanly so there is room for what is next',
+  x:'refusing every ending, or using it as a weapon'},
+ connection:{alt:'Love',c:'staying close to people without needing to cling',
+  x:'needing someone else to feel complete'},
+ exchange:{alt:'Communication',c:'trading fairly, and finding words that bridge two sides',
+  x:'saying one thing and meaning another to control someone'},
+ restoration:{alt:'Healing',c:'finding what is broken and helping it mend',
+  x:'needing to rescue people to feel like somebody'},
+ provision:{c:'making sure there is enough, including for a season nobody can see yet',
+  x:'measuring your worth only by what you supply'},
+ play:{c:'finding what is alive in something, with no reason needed',
+  x:'using play to dodge what is actually going on'},
+ nature:{c:'growing at the pace a body actually grows at, in cycles rather than a straight line',
+  x:'refusing all structure to escape anything complicated'},
+ trickster:{c:'turning a fixed pattern upside down to show what it was hiding',
+  x:'lying as a way of life, mistaking instability for freedom'},
+ mystery:{c:'staying with what cannot be seen yet, without being swallowed by it',
+  x:'building your identity entirely out of the dark'},
+ guardian:{c:'holding a perimeter so what is inside it can live',
+  x:'watching so hard it smothers, building walls that choke out life'}};
+
 /* THE SIGN LIST FOR AN ELEMENT, in the order the sky counts them from Aries */
 function unpackSigns(el){
  if(typeof ZSIGN==='undefined')return [];
@@ -15337,6 +15392,17 @@ function unpackAll(){
   ARCH.forEach(function(a){
    t['archetype:'+a.nm.toLowerCase()]=a.nm+' is one of '+ARCH.length+' kinds of character, the one that '+a.v+'.';});
  t['archetype']='An archetype is one of '+(typeof ARCH!=='undefined'?ARCH.length:'twelve')+' kinds of character you are born leaning toward.';
+ /* THE NINETEEN BLUEPRINT DOMAINS. UNPACK_DOM just above carries the short
+    clear and distorted clause for each; this builds the sentence off
+    DOMAINS so the count is read from the table and never typed, same
+    precedent as archetype: just above. A domain with no entry in UNPACK_DOM
+    is left out rather than printed half built. */
+ if(typeof DOMAINS!=='undefined'){
+  DOMAINS.forEach(function(d){
+   var u=UNPACK_DOM[String(d.nm).toLowerCase()]; if(!u)return;
+   t['domain:'+d.nm.toLowerCase()]=d.nm+' is one of '+DOMAINS.length+' domains in the blueprint, '
+    +(u.alt?'called '+u.alt+' in the codex, ':'')+'from '+u.c+' to '+u.x+'.';});
+  t['domain']='A domain is one of '+DOMAINS.length+' named parts of your blueprint, each read clear and read distorted.';}
  /* THE TEN COHERENCE TIERS, round PT, added for the Practitioner page. TIERDEF
     already carries one sentence per tier in its own def field, written for
     exactly this job (tierOf, tierRange), so this is the same precedent as
@@ -53644,10 +53710,17 @@ function sumBlueprint(){
  return '<div class="pm-eye">'+unp('blueprint','Blueprint')+'</div><div class="s-sel">'
   +'<span class="s-sel-r" style="--rc:'+(rootPlain(rootNow)||'var(--accent)')+'">'
   +unp(String(rootNow).toLowerCase(),rootNow)+'</span>'
+  /* EACH DOMAIN NAME IS A TIPU CARRIER, audit of 4 November, round PO's
+     unpack rule. This printed a native title, "Knowledge. living by working
+     things out", which tip.js falls back to and makes tap reachable, but it
+     was never the product's one meaning table and it never read the
+     domain's clear and distorted expression, only its own short tagline.
+     unpAttr pulls domain:<name> from engine/data/gloss.js instead, the same
+     table and the same carrier the root chip just above already uses. */
   +S.doms.map(function(di){var d=DOMAINS[di]; if(!d)return '';
-   return '<button type="button" class="s-dom" data-dom="'+di+'" style="--rc:'+rootPlain(d.r)+'" '
-    +'title="'+esc(d.nm+'. '+d.d)+'">'+svgI('<path d="'+d.ic+'"/>')
-    +'<span>'+esc(d.nm)+'</span></button>';}).join('')+'</div>';}
+   return '<button type="button" class="s-dom" data-dom="'+di+'" style="--rc:'+rootPlain(d.r)+'">'
+    +svgI('<path d="'+d.ic+'"/>')
+    +'<span class="tipu"'+unpAttr(d.nm,'domain',d.nm)+'>'+esc(d.nm)+'</span></button>';}).join('')+'</div>';}
 function sumArch(r){
  /* the archetypes. these ARE measured: aff is a real proportion. */
  /* EVERY ARCHETYPE IN ITS OWN SEAT'S COLOUR. Ruled. Twelve named things were
@@ -86055,5 +86128,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005672506"></div>
+<div id="eof" hidden data-len="005677352"></div>
 </body></html>
