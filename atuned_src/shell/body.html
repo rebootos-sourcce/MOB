@@ -648,8 +648,20 @@
          Games template. engine/core.js has the ruling in full. -->
     <button type="button" class="vt tabtop" data-tabk="4" aria-pressed="false" title="Analytics. Follow each pattern down to what holds it in place."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 20V10M11 20V4M17.5 20v-7"/></svg><span class="n">Analytics</span></button>
    </div>
-   <div class="tabgrp" data-sec="flow" role="group" aria-label="Flow"><span class="tabgrp-hd" aria-hidden="true">Flow</span>
-    <button type="button" class="vt tabtop" data-tabk="10" aria-pressed="false" title="Ritual. Build a ritual, do it, and see what you kept."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.4c.9 2.9 4.6 4.9 4.6 9.3a4.6 4.6 0 0 1-9.2 0c0-2.3 1.1-3.7 2.3-4.8.3 1.5 1 2.4 2 2.7-.5-2.8 0-5.1.3-7.2z"/><path d="M8 21h8"/></svg><span class="n">Ritual</span></button>
+   <!-- FLOW'S ONE DOOR, 3 November. His words: "When I click on flow, it
+        should automatically take me to ritual. I shouldn't have a sub menu
+        that says ritual. Just like discover goes straight to story." Same
+        fact as Discover's block above, door:'section' in engine/core.js:
+        Flow has one real tab, Ritual, so the section button is the door and
+        the row under it shows no second door above the phone width. The
+        tabgrp-hd header is gone for the same reason Discover's never had
+        one: a word under a button already reading that section would be
+        Flow's name printed as a heading over a button that still reads
+        Ritual, which is not what he asked for either. On a phone the section
+        buttons leave the bar and this becomes the menu's line for Flow,
+        reading Ritual, same as Discover's line reads Discover. -->
+   <div class="tabgrp" data-sec="flow" data-door="section" role="group" aria-label="Flow">
+    <button type="button" class="vt tabtop" data-tabk="10" data-door="section" aria-pressed="false" title="Ritual. Build a ritual, do it, and see what you kept."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.4c.9 2.9 4.6 4.9 4.6 9.3a4.6 4.6 0 0 1-9.2 0c0-2.3 1.1-3.7 2.3-4.8.3 1.5 1 2.4 2 2.7-.5-2.8 0-5.1.3-7.2z"/><path d="M8 21h8"/></svg><span class="n">Ritual</span></button>
     <!-- ACCOUNTABILITY HAS NO BUTTON, round QF. It is the right column of the
          Ritual page, not a page beside it: "Right side of the menu is for the
          accountability tracker." Integer 14 is folded onto 10 in core.js, so

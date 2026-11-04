@@ -225,7 +225,16 @@ function runDrill(o){
    return h2+'<p class="ad-p">It runs at the '+esc(chAnd(uncov))+', where no mask is worn yet.</p>';})()
   +'<div class="pm-eye">Made of</div><div class="ad-rows">'
   +lv.slice(0,8).map(addrRow).join('')
-  +(lv.length>8?'<div class="pm-more">and '+(lv.length-8)+' more</div>':'')+'</div>';
+  +(lv.length>8?'<div class="pm-more">and '+(lv.length-8)+' more</div>':'')+'</div>'
+  /* WHAT THIS RUNG ITSELF FEEDS, never shown here before. "Made of" above is
+     the downward direction (leaves(o), every reading already had); nothing
+     said what a saboteur, complex or hyper-complex feeds UP into, or blended
+     the two directions into one read. traceSummary(g,node), PR #158, built
+     and tested, reads exactly that off the same graph loopRead already
+     builds. ui/tracesummaryui.js, tsBlockHtml. */
+  +(typeof tsBlockHtml==='function'
+   ?tsBlockHtml({sab:'saboteur',cx:'complex',hy:'hyper_complex',sup:'super_complex'}[o.kind],o.nm)
+   :'');
  rdShell(h);
  /* a "Runs under" row opens that mask's own drill, the same rail press
     chDrill is already opened by, so "does this show up here" (MX) can be
@@ -369,6 +378,16 @@ function nodeDrillHtml(n,o){
      return '<span class="pm-chip'+(o.over?' over':'')+'">'+esc(o.nm)+' '+fmtPct('chain',o.w)+'</span>';}).join('')
     :'<span class="pm-chip">nothing compounds from here</span>')+'</div>')
    :'<div class="pm-eye">Feeds</div>'+lockPanelHtml('sab',{brief:true}));
+ /* THE BLEND, for this one address. "Feeds" above already names what it
+    compounds into (owners, the chain's own four rungs); traceSummary adds
+    the one thing that did not exist anywhere: a narrated paragraph reading
+    the address together with what sits above it, hedged, never a causal
+    claim. ui/tracesummaryui.js, tsBlockHtml, PR #158's traceSummary. */
+ if(lockSees('sab')&&typeof tsBlockHtml==='function')
+  h+='<div class="pm-eye">Source AI, the blend</div><p class="ad-p ts-narr">'
+   +esc((function(){var g=tsCurrentGraph(); if(!g)return '';
+    var res=traceSummary(g,traceKey('pattern',n.i)); return res.ok?res.summary:(res.why||'');})())
+   +'</p>';
  h+=nodeStories(n);
  /* RUN THE PROTOCOL HERE. The reading ended at the reading: a person could see
     exactly which address was costing them and had no way to act on it from
