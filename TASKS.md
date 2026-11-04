@@ -33812,3 +33812,49 @@ Named SU and not SQ: SQ1 to SQ5 and SR1 to SR6 are already item numbers earlier 
 - [x] **SV12 closed, 4 November. Found: real, sound, unmerged. The completion mark was wrong as a claim about `main`.** `srcVoiceCanon` and `srcVoiceEvidenceBus` are real: commit `639f2033` ("Wire the real 96-pattern content library into the sniffer's intelligence layer", 1 November) and commit `edd64721` ("Wire the evidence bus into the engine: the sniffer's intelligence layer now has a real graph/dashboard seam", 2 November), both on branch `source-voice-sniffer-readonly-20261031`, open draft PR #163 against `main`, never merged. Not a fabricated completion: the work was done and the commit messages are the near-exact source of #88/#89's wording. The gap is that it landed on a draft branch and the tracker was marked done as if it had landed on `main`. Verified directly, not from the PR's own claims: extracted `atuned_src` from the branch tip (`aa449a80`) into an isolated scratch build, re-ran `BUILD-engine.sh`, confirmed the rebuilt `engine.js` is byte identical to the one committed on the branch (the PR's own earlier "generated products are stale" warning no longer holds at tip), ran the full `tests/engine.js` suite against it clean: 6509 passed, 0 failed, 10 expected red, same convention as `main`'s own runs. Also ran the five Source-voice-specific tests (`source-voice-intelligence.js`, `source-evidence-bus.js`, `voice-sniffer.js`, `source-voice-narrative.js`, `source-voice-charge-cycle.js`) directly against that engine: all five pass. `check.py --objections` on that tree: 18 non-blocking findings, 0 that stop a build, same as `main`'s own standard. Not run, for lack of a browser toolchain and disk headroom in this pass: `tests/functional.js`, `tests/design.js`, `tests/collide.js`, `tests/funnel.js`, `tests/boot.js`, `tools/monitor.js`. Not merged in this pass: PR #163 is 77 commits, still marked draft by its own run of authors across every one of its iterations ("This PR must remain draft until all gates and runtime wiring are verified"), carries real open items beyond #88/#89 (no live production caller wires `srcVoiceIntelligence` into the voice UI yet, ancestry and CQDQ grading explicitly deferred, real microphone/audio behaviour unverified), and reads consent-scoped personal narrative evidence, which this project's own precedent (PR #149, Celestial Avatar, "explicitly not for merge without his review") treats as needing the owner's look before it lands on `main`, not a unilateral merge to close a tracker line. #88 and #89 are corrected: they were true as commits, false as a claim about `main`. Dispatched: his call whether PR #163 goes to review and merge now that its engine half is independently confirmed sound, or stays held with the rest of Source AI voice.
 
 This round is not closed until SV1 through SV3 land with real commits and SV4, SV6 and SV8 have a seat or a ruling. Written here the same round it happened, per SU9.
+
+## Round SW, 4 November: the Awareness left rail, from his own screenshot
+
+A real wrong answer first: asked how many "blueprints" exist, 6 was given,
+read off a dead 30-slot April list in a different repo. Wrong dataset. His
+own screenshot shows the shipped left rail's own "Blueprint Domains" heading
+over the 19-entry `DOMAINS` table, already full. Corrected in `DECISIONS.md`
+under "A naming collision that caused a real wrong answer, corrected 4
+November." The real count, by the app's own label, is 19.
+
+His asks off the same screenshot, annotated directly on it:
+
+- [ ] **SW1. Declutter the left rail's own text.** Struck on his screenshot:
+  a trailing "plus all of Witness, Weaver, Engine, Architect" line under a
+  selected Blueprint Domain's tooltip, and a "Warrior + Explorer" line under
+  the Secondary archetype grid. His words: "get rid of some of the
+  unnecessary text, stop adding unnecessary junk." Needs a seat (narrative +
+  uiux) to find every such line, not only the two he happened to screenshot.
+- [ ] **SW2. Child emotions becomes questions, not a reading.** 9 go into the
+  funnel (the intake quiz); any remaining ones go into the knowledge base,
+  as part of the diagnostic. Needs scoping: which 9, what the funnel question
+  wording is, where "remaining" live in Knowledge.
+- [ ] **SW3. Mock-up requested directly: square icons with a bevel.** The
+  Blueprint Domain and archetype icons are circular today; he wants a
+  mock-up with them square, lightly bevelled. Dispatched to art-director.
+- [ ] **SW4. In the funnel, a locked archetype stays locked.** Once a
+  person's archetype is determined during onboarding, it does not change
+  later. Needs the funnel's own state machine to carry a lock flag; not
+  scoped yet.
+- [ ] **SW5. A visual on the left rail showing the chain connected, or at
+  least which are active.** His words: "a visual on the left side showing
+  these connected... somehow, or maybe just active." Needs a design pass;
+  dispatched alongside SW3.
+- [ ] **SW6. Each Blueprint Domain (and by extension each archetype) carries
+  a percent, filled in by a person's own stories.** Starts after self-report
+  (the funnel) and grows as they write. This is the same shape as
+  `archExpr()` in `engine/archexpr.js` (an archetype's percent, 100 minus the
+  mean charge at its seat), which already exists for the 12 archetypes; no
+  such formula exists yet for the 19 domains. Needs a formula ruling before
+  any build, same discipline as `archExpr.js`'s own header: port a real
+  mechanism, never invent one. Flagged to ai-director and systems-director to
+  scope whether a domain-level analog is computable from what the engine
+  already tracks, or needs new data.
+
+SW3 and SW5 dispatched together as one mock-up, since both are about the same
+rail's visual language. SW1, SW2, SW4 and SW6 need scoping before any build.

@@ -3252,6 +3252,18 @@ not finishing the 30 blueprint. Stop asking me. When you say finish the 30
 blueprint, it's because I made a comment," not a thing he ever asked built.
 Not raised again.
 
+**A naming collision that caused a real wrong answer, corrected 4 November.**
+Asked "how many blueprints are there now," the answer given was 6, read off
+`V25_BLUEPRINTS`, an old, abandoned April god-form list in a dead Reboot-OS
+build (`reboot_os_v29.html`). That was the wrong dataset. The shipped app's
+own left rail already carries a heading that reads "Blueprint Domains," over
+the 19-entry `DOMAINS` table (`engine/data/canon.js`), built and screenshotted
+by him directly. "Blueprint," in his own working vocabulary and in the app's
+own copy, already names that 19-entry table, fully filled, not the dead
+30-slot list. The two were never the same thing; citing the dead one answered
+a question nobody asked. The real count of blueprints in the app, by the
+app's own label, is 19, all filled.
+
 ## Archetype to root, the definitional method: 6 held, 4 changed, 2 open, 4 November
 
 He gave a fourth way to close this: "look at the definitions and the mechanics
