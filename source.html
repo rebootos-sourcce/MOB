@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2782 eac54e58 2026-11-04 06:18"><head><meta charset="utf-8">
+<html lang="en" data-build="v2783 1cff5243 2026-11-04 06:19"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -53065,7 +53065,18 @@ function stSrcSpeak(line){
   SRC_VOICE.t=setTimeout(done,SRC_VOICE_MAX);
   stHush(true);
   var pl=a.play();
-  if(pl&&pl.catch)pl.catch(function(){done(); status('Source AI\'s voice is ready but the browser blocked playing it.','fail');});
+  /* A LINE THIS PAGE STOPPED WAS NOT BLOCKED, 4 November. A microphone
+     error drops the greeting (SRC_VOICE.seq++ and srcVoiceStop, in
+     ST_REC.onerror), and the pause() in srcVoiceStop makes the browser
+     reject this play() with AbortError. That rejection landed after the
+     error's own line and wrote this one over it: measured on the
+     permission refused case, "Recording needs microphone permission" at
+     6880ms, then this line at 6884ms. So the same number that drops a late
+     answer drops a late refusal, and a line that is no longer the one
+     playing says nothing. A refusal for the line still playing is the
+     browser's, and is still said. */
+  if(pl&&pl.catch)pl.catch(function(){ if(seq!==SRC_VOICE.seq||SRC_VOICE.el!==a)return;
+   done(); status('Source AI\'s voice is ready but the browser blocked playing it.','fail');});
  });}
 /* THE RECORDING, HELD WHILE SOURCE AI SPEAKS. ST_HUSH is the hold.
    ST_REC_ON is whether the recogniser is running, which ST_LISTEN is not:
@@ -86044,5 +86055,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005671773"></div>
+<div id="eof" hidden data-len="005672506"></div>
 </body></html>

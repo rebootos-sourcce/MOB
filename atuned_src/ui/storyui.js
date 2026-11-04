@@ -3581,7 +3581,18 @@ function stSrcSpeak(line){
   SRC_VOICE.t=setTimeout(done,SRC_VOICE_MAX);
   stHush(true);
   var pl=a.play();
-  if(pl&&pl.catch)pl.catch(function(){done(); status('Source AI\'s voice is ready but the browser blocked playing it.','fail');});
+  /* A LINE THIS PAGE STOPPED WAS NOT BLOCKED, 4 November. A microphone
+     error drops the greeting (SRC_VOICE.seq++ and srcVoiceStop, in
+     ST_REC.onerror), and the pause() in srcVoiceStop makes the browser
+     reject this play() with AbortError. That rejection landed after the
+     error's own line and wrote this one over it: measured on the
+     permission refused case, "Recording needs microphone permission" at
+     6880ms, then this line at 6884ms. So the same number that drops a late
+     answer drops a late refusal, and a line that is no longer the one
+     playing says nothing. A refusal for the line still playing is the
+     browser's, and is still said. */
+  if(pl&&pl.catch)pl.catch(function(){ if(seq!==SRC_VOICE.seq||SRC_VOICE.el!==a)return;
+   done(); status('Source AI\'s voice is ready but the browser blocked playing it.','fail');});
  });}
 /* THE RECORDING, HELD WHILE SOURCE AI SPEAKS. ST_HUSH is the hold.
    ST_REC_ON is whether the recogniser is running, which ST_LISTEN is not:

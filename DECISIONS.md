@@ -2806,7 +2806,7 @@ Ruled by the owner, 8 October: main is the one line of the product, the foundati
 ## 9 October: the crisis check waits for the MVP beta
 
 - **The 988 and 741741 crisis check is deferred to the MVP beta.** The owner, 9 October: "I don't give two shits about the emergency hotline stuff... We'll save it for the MVP beta." Built and parked, not deleted: branches `claude/b2a-crisis` and `claude/b2a-crisis2` hold the engine function, the Story page, nine more boxes and `tests/crisis.js`. Nothing of it is on main. The ten `xf` cases in `tests/engine.js` stay expected red, and the floors file caps expected red at 10, so they cannot be forgotten. This supersedes the default "crisis check is recall first" in the entry above until the beta; the phrase list still awaits clinician review (round PW).
-- **Consequence the team recorded once, for the owner's information:** until the beta, the live app shows no crisis line to a person who writes about hurting themselves.
+- **Consequence the team recorded once, for the owner's information:** until the beta, the live app shows no crisis line to a person who writes about hurting themselves. **Overtaken in part, 3 November:** that stopped being true when PR 108 merged. What shipped is the phrase stop, not this entry's automatic detector: a closed, clinician-reviewable list of exact phrases about ending a life or danger now, matched by the sniffer's existing rules (a "no" cancels it, someone else's words don't count). On a match the Story page now shows one line and a Reach someone now door; see "Words about ending a life or danger now get no release, 17 October" below for the fix itself. The automatic, behavior-based detector this entry describes is still deferred to the beta exactly as ruled 9 October.
 
 ## Profile sync, 9 October
 
@@ -2910,6 +2910,7 @@ A seat decision, taken by the team on the round 3 plan's decision 1 default (a),
 - **How to turn it off:** set `on:false` on a family's row in `SAFE_WORDS`. One table, one line each.
 - **Taken up by the owner, 3 November.** After typing a harsh test phrase into the Journal on main and getting no safety response, his words: "let's go ahead and complete 108 and get it wired in." So whether this stays is answered. It was brought current with main that night (the Journal is a spoken conversation since 28 and 29 October, and the line now stands in the conversation in place of Source AI's reply, with the person's own turns still on the page). The automatic detector of a person's state is still deferred and still P3 (30 October); this is the phrase stop only.
 - **Still open, his:** whether the first run should draw the line too (today it only reads nothing there, and its top bar already carries the crisis button); whether the phrase list goes to a clinician (round PW ruled that "explicitly not now").
+
 ## The personas decide, the owner reacts, 17 October
 
 His words: "I'm a reaction person. Emmy's running these designs, and she's got Jimmy Ivy [Jony Ive] and a bunch of other people. If you're asking me stupid-ass questions that these personas should already be able to answer, then we've got a problem."
