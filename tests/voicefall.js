@@ -51,6 +51,9 @@
     12  start() throws once: its own line, press Chat again, no box, and no
         claim that typing works. The next press that starts listens
     13  start() throws twice in a row: the box, with the focus
+    14  the greeting's playback refused late, 4 November: after a refused
+        microphone the microphone line stays, and with voice that runs the
+        refusal is still said
    ============================================================ */
 const path=require('path');
 
@@ -64,7 +67,9 @@ const WORDS='My chest was tight and I was scared when he shouted.';
    focus away (see ST_REC.onend). The error comes on the first start of each
    recogniser only, so a silence that onend restarts goes on listening rather
    than failing in a loop. `throws` is how many presses in a row have start()
-   itself throw, the way a double start does. */
+   itself throw, the way a double start does. `afterPlay` holds the error
+   until the page has called play(), so case 14 has a fixed order and does
+   not depend on which of two timers wins. */
 const FAKE=arg=>{
  const o=typeof arg==='object'&&arg?arg:{fail:arg||''};
  function SR(){ this.on=false; this.starts=0; SR.made.push(this); }
@@ -72,11 +77,12 @@ const FAKE=arg=>{
  SR.prototype.start=function(){
   if(window.__srThrow>0){ window.__srThrow--; throw new Error('recognition has already started'); }
   this.on=true; this.starts++; const s=this;
-  if(window.__srFail&&s.starts===1)setTimeout(()=>{ if(s.onerror)s.onerror({error:window.__srFail});
-   setTimeout(()=>{ s.on=false; if(s.onend)s.onend(); },0); },30); };
+  const fire=()=>setTimeout(()=>{ if(s.onerror)s.onerror({error:window.__srFail});
+   setTimeout(()=>{ s.on=false; if(s.onend)s.onend(); },0); },30);
+  if(window.__srFail&&s.starts===1){ if(window.__srAfterPlay)window.__onPlay=fire; else fire(); } };
  SR.prototype.stop=function(){ if(!this.on)return; this.on=false; const s=this; setTimeout(()=>{ if(s.onend)s.onend(); },0); };
  SR.prototype.abort=SR.prototype.stop;
- window.__srFail=o.fail||''; window.__srThrow=o.throws||0;
+ window.__srFail=o.fail||''; window.__srThrow=o.throws||0; window.__srAfterPlay=!!o.afterPlay;
  window.SpeechRecognition=SR; window.webkitSpeechRecognition=SR; };
 const NO_SR=()=>{ try{ delete window.SpeechRecognition; delete window.webkitSpeechRecognition; }catch(e){}
  window.SpeechRecognition=undefined; window.webkitSpeechRecognition=undefined; };
@@ -96,6 +102,27 @@ const lateVoiceFail=p=>p.route(VOICE_ROUTE,route=>{
  const h={'access-control-allow-origin':'*','access-control-allow-headers':'authorization, content-type','access-control-allow-methods':'POST, OPTIONS'};
  if(route.request().method()==='OPTIONS')return route.fulfill({status:204,headers:h});
  return new Promise(r=>setTimeout(r,300)).then(()=>route.fulfill({status:500,headers:h,body:'{}'})).catch(()=>{}); });
+
+/* THE GREETING'S PLAYBACK FAILS LATE, ON PURPOSE, 4 November. The guard
+   above covers a greeting whose synthesis fails. One whose audio arrives and
+   then cannot play is a second path to the same status line: stSrcSpeak's
+   play().catch. Measured on 6296138e, the permission refused case read
+   "Source AI's voice is ready but the browser blocked playing it." over the
+   microphone line, because the error's own pause() rejects play() with
+   AbortError. That rejection's timing is the browser's, which is how the
+   case passed on some runs and not others. So this case does not wait for
+   it: every play() on the page is refused 300ms late, the way an autoplay
+   block is, and the recogniser's error is held until play() is called
+   (FAKE's afterPlay), so the order is fixed: play, then the microphone
+   error 30ms on, then the refusal. A first cut ran on two timers and, on
+   two runs in three, the error beat the greeting, the greeting was dropped
+   before play() and the case tested nothing, which its own probe line
+   caught by reading plays 0. Two sides, so the fix
+   cannot be a silenced line: with a microphone error the error keeps the
+   line, and with voice that runs the refusal is still said. */
+const LATE_PLAY_BLOCK=()=>{ window.__plays=0; HTMLMediaElement.prototype.play=function(){ window.__plays++;
+ const f=window.__onPlay; window.__onPlay=null; if(f)f();
+ return new Promise((res,rej)=>setTimeout(()=>rej(new DOMException('play() failed because the user did not interact with the document first.','NotAllowedError')),300)); }; };
 
 async function press(p,sel,ok,what){
  try{ await p.click(sel,{timeout:5000}); return true; }
@@ -174,6 +201,22 @@ async function voiceFallGate(browser,FILE,ok,booted){
     const q=await p.evaluate(async()=>{ try{ return (await navigator.permissions.query({name:'microphone'})).state; }catch(e){ return 'threw'; } });
     ok(q==='prompt',at+nm+': and the browser will ask again, the Permissions API reads prompt, which is why no box, '+q);}
    if(fail==='no-speech')ok(s.listen,at+nm+': nothing changes, it is still listening, '+JSON.stringify({listen:s.listen,status:s.status}));
+   await p.close();}
+
+  /* 14, the greeting's playback refused late: after a microphone error the
+     error keeps the line; with voice that runs, the refusal is said */
+  for(const [fail,nm] of [['not-allowed','permission refused, then playback refused late'],['','voice that can run, then playback refused late']]){
+   const p=await open(browser,w,h,[[FAKE,{fail,afterPlay:true}],[LATE_PLAY_BLOCK]],FILE,booted);
+   const errs=[]; p.on('pageerror',e=>errs.push(e.message.slice(0,160)));
+   await press(p,'#stmic',ok,at+'Chat, '+nm);
+   await p.waitForTimeout(700);
+   const s=await read(p);
+   const played=await p.evaluate(()=>window.__plays);
+   ok(played>=1,at+nm+': the probe first, the greeting reached play(), so there was a play to refuse, plays '+played);
+   if(fail==='not-allowed')ok(!s.listen&&/microphone permission/.test(s.status)&&!/blocked playing/.test(s.status),at+nm+': the microphone line is still the line after the late refusal, '+JSON.stringify(s.status));
+   else ok(/blocked playing/.test(s.status),at+nm+': nothing was on the line before it, so the refusal is said, '+JSON.stringify(s.status));
+   ok(s.chat===true&&!s.box,at+nm+': chat stays on and no box, '+JSON.stringify({chat:s.chat,box:s.box}));
+   ok(errs.length===0,at+nm+': no page errors, '+JSON.stringify(errs));
    await p.close();}
 
   /* 9 and 10, three errors that mean this device cannot be heard */
