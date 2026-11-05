@@ -5363,8 +5363,12 @@ console.log('\n=== a teacher on the compass opens the behaviour complex and adds
   /* the Active list is Goals' Today, and with a ritual running the centre
      opens on the week since round RB, so the list is asked for by its view */
   setTab(TAB.RITUAL); await wait(400);
-  o.row=[...document.querySelectorAll('#rit .rv-sub')].map(s=>s.textContent).filter(t=>/^Toward Buddha/.test(t)).length;
-  /* a worked example saves nothing, and the panel says so and offers no button */
+  o.row=[...document.querySelectorAll('#rit .rv-sub')].map(s=>s.textContent).filter(t=>/(^|, )toward Buddha/i.test(t)).length; /* SV24: the line opens on the seat now, "Third eye seat, toward Buddha" */
+  /* a worked example saves nothing, so the panel offers no button. It also
+     said so, "is a worked example, so nothing here is saved", and SV19 cut
+     that line on his words: "Get rid of Ana is worked example, so nothing is
+     saved." The picker already reads "Gordon, example", and with no button
+     there is no write to refuse, so the panel now holds neither */
   loadP(PERSON('Gordon')); setTab(TAB.COMPASS); await wait(300);
   runTeacherDrill(MIRROR[i],'up'); await wait(100);
   o.exBtn=!!document.querySelector('#rdrill [data-tcxgo]'); o.exSays=/worked example/.test((document.getElementById('rdrill')||{}).textContent||'');
@@ -5390,7 +5394,7 @@ console.log('\n=== a teacher on the compass opens the behaviour complex and adds
  ok(o.pathHits===o.pathN,'every path badge on the needle is pressable, '+o.pathHits+' of '+o.pathN);
  ok(o.pathBox===o.pathK,'a path on no axis opens its own recipe, '+o.pathBox);
  ok(o.row===1,'and the Active list names the teacher, '+o.row);
- ok(!o.exBtn&&o.exSays,'a worked example offers no button and says nothing here is saved');
+ ok(!o.exBtn&&!o.exSays,'a worked example offers no button, and no line saying it is one');
  ok(terr.length===0,'no errors, '+terr.join(' | '));
  await tp.close();
 }

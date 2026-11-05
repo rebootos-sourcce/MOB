@@ -450,5 +450,68 @@ rc, out = run('--brief', '--line',
 ok(rc == 0, '--brief --line fails the brief\'s Prefer line: %s' % out[:300])
 print('  --objections, --line and --brief --line answer as they should.')
 
+# ------------------------------------- 6. an invented answer in a field, CO-32
+#
+# scan_examples reads what no other reader in this file reads: attributes, and
+# the tables a placeholder is fed from. The known good case first, every shape
+# hint the product ships, word for word on the day this was written. Then the
+# corpses, planted in throwaway files in every shape the reader claims to
+# follow, and the shape it says it cannot follow, which must come back as a
+# review and never as clean.
+
+section('6. an invented answer in a field is caught, and a shape hint is not')
+
+import tempfile  # noqa: E402
+
+GOOD = ['Search the codex', 'Write a note', 'Who you are becoming, in your words',
+        'What you call who you are becoming',
+        'What happened. Write it the way you would say it out loud.',
+        'What happened, and where you felt it.', 'What happened, and what it was like.',
+        'What feels possible now, in your own words', 'Region/City',
+        'Paste the record, or choose the file', 'One thing you mean to do today',
+        'Find a word', 'City, region', 'A line you keep', 'A few words, if you want them',
+        'What you did, what you expected, what happened', 'The exact place, in your words',
+        'Somewhere else, in your words', 'freedom', 'financial stability', '']
+for g in GOOD:
+    ok(check.example_fault(g) is None, 'a shape hint the product ships reads as invented: %r' % g)
+BAD = ['after I put the kettle on', 'the chair by the window', 'after I finish my coffee',
+       'My chest aches and I feel lonely when my partner goes quiet.',
+       'Someone who sleeps well and pays the bills on time.', 'the desk by the door']
+for b in BAD:
+    ok(check.example_fault(b), 'an invented answer passes: %r' % b)
+print('  %d shape hints pass and %d invented answers fail, read one at a time.' % (len(GOOD), len(BAD)))
+
+tmp = tempfile.mkdtemp()
+JS = os.path.join(tmp, 'plant.js')
+open(JS, 'w').write(
+    "/* a comment quoting placeholder=\"after I put the kettle on\" is rationale, not copy */\n"
+    "var X={ex:'after I finish my coffee', ok:'City, region'};\n"
+    "function a(){return '<input placeholder=\"after I finish my coffee\">';}\n"
+    "function b(){return '<input placeholder=\"'+esc(X.ex)+'\">';}\n"
+    "function c(k){return '<input placeholder=\"'+(k?'the desk by the door':'')+'\">';}\n"
+    "function d(ph){return '<input placeholder=\"'+esc(ph)+'\">';}\n"
+    "function e(){return '<input placeholder=\"A line you keep\" value=\"\">';}\n")
+HT = os.path.join(tmp, 'plant.html')
+open(HT, 'w').write('<p>x</p>\n<!-- placeholder="the chair by the window" -->\n'
+                    '<input type="text" placeholder="the chair by the window">\n')
+got = check.scan_examples(JS) + check.scan_examples(HT)
+stops = sorted((os.path.basename(f[1]), f[2]) for f in got if f[5] == 'stop')
+revs = sorted((os.path.basename(f[1]), f[2]) for f in got if f[5] == 'review')
+ok(('plant.js', 3) in stops, 'a literal placeholder in a whole input tag was not caught')
+ok(('plant.js', 2) in stops, 'a placeholder fed from a table, X.ex, was not followed to it')
+ok(('plant.js', 5) in stops, 'a placeholder expression carrying its own words was not read')
+ok(('plant.html', 3) in stops, 'a placeholder on a static page was not caught')
+ok(revs == [('plant.js', 6)], 'a parameter the reader cannot follow did not come back as review: %s' % revs)
+ok(len(stops) == 4, 'the planted files gave stray findings, comments or good hints read as bad: %s' % stops)
+check_bad = [f for f in check.scan_literals(JS) if f[0] == 'invented-example-copy']
+ok(len(check_bad) == 3, 'check.py on the planted js does not carry the reader, a literal, a table and an expression: %d' % len(check_bad))
+print('  planted: a literal, a table, an expression and a static page fail; a parameter is review;')
+print('  a comment and a good hint are left alone.')
+
+live = [f for c in check.CORPUS for f in check.scan_examples(os.path.join(RT, c)) if f[5] == 'stop']
+ok(not live, 'the product ships an invented answer in a field: %s'
+   % ['%s:%s %s' % (os.path.relpath(f[1], RT), f[2], f[3][:40]) for f in live])
+print('  the product itself: %d invented answers in a field.' % len(live))
+
 section('done')
 print('  every section passed.')
