@@ -3252,6 +3252,18 @@ not finishing the 30 blueprint. Stop asking me. When you say finish the 30
 blueprint, it's because I made a comment," not a thing he ever asked built.
 Not raised again.
 
+**A naming collision that caused a real wrong answer, corrected 4 November.**
+Asked "how many blueprints are there now," the answer given was 6, read off
+`V25_BLUEPRINTS`, an old, abandoned April god-form list in a dead Reboot-OS
+build (`reboot_os_v29.html`). That was the wrong dataset. The shipped app's
+own left rail already carries a heading that reads "Blueprint Domains," over
+the 19-entry `DOMAINS` table (`engine/data/canon.js`), built and screenshotted
+by him directly. "Blueprint," in his own working vocabulary and in the app's
+own copy, already names that 19-entry table, fully filled, not the dead
+30-slot list. The two were never the same thing; citing the dead one answered
+a question nobody asked. The real count of blueprints in the app, by the
+app's own label, is 19, all filled.
+
 ## Archetype to root, the definitional method: 6 held, 4 changed, 2 open, 4 November
 
 He gave a fourth way to close this: "look at the definitions and the mechanics
@@ -3316,3 +3328,83 @@ Lance: "We should still have the Discord feedback. That should not have gone
 away." Reboot-OS PR #2 (the relay) is not to be dropped; its current broken
 state in production is a defect to fix, not a feature to retire. Status of the
 fix is tracked in `TASKS.md`, not here.
+
+## The right rail's Reading panel, ruled from his own screenshot, 4 November
+
+His annotated screenshot of the Field's right rail, the same panel SW7
+already targets. Specific, direct rulings, replacing the earlier, thinner
+read of "convert to bars":
+
+- **"Reading" becomes "Insight."** The panel's own heading.
+- **No person's name on the panel.** His words: "the person already knows
+  who they are." Whatever currently prints the record's own name (shown as
+  "Marcus" on a sample record) comes off.
+- **The summary box stays, and names what it is.** His words: "this is our
+  summary field... it's giving you a summary from the records, where Source
+  AI is interpreting the parent child stack of anything selected, and it's
+  giving our record structure." This is `traceSummary()`/its UI wiring
+  (`engine/tracesummary.js`, `ui/tracesummaryui.js`, pulled from `stackbuild`
+  this same round), not a separate thing: the summary box is where that
+  narration belongs, not only the drill screens it is currently wired into.
+- **The dead Field block comes off, confirmed again, in his own words this
+  round:** "we don't do anything like gaining by weight, by assemblage
+  point, field, carrying, filled in, heaviest, most shut." Matches the
+  `stackbuild` deletion already being pulled this round (`d5db0e55`); this
+  is his own confirmation of that exact cut, from a second, independent
+  direction.
+- **"Held" and "opposite" come off as column headers.** Matches SW7.
+- **The five tabs (Child emotions, Saboteurs, Complexes, Hyper, Super) are
+  not five flat, separate screens. They are one nested cascade, parent
+  through children.** His words: "if I select a super complex... I'm
+  getting the full cascade of how all those patterns are working through
+  me, as a construct. Further down, I can open up hyper complex, and
+  further down from that, I can open up complex. Or I can close them all."
+  Selecting a tab opens that layer, and each layer nests the one below it,
+  open or closed, rather than five separate tab panes a person switches
+  between. This is a bigger structural change than SW7 scoped; SW7's bar
+  conversion still holds for the bottom layer's own rows (the fetter/Child
+  emotion pairs), but the tab structure itself now needs the nested
+  cascade, not five flat panes.
+- **New bars replace the Fear/Trust-style rows at the very bottom.** Same
+  ruling as SW7, restated directly against the screenshot.
+
+Note for the record: the abandoned `stackbuild` branch (mined this round for
+salvage, see TASKS.md) has a rejected, entangled commit chain (`ff83e746`,
+`d39c3beb`, `92058145`, `c4bf8edc`, and others) building exactly this kind of
+nested-tier disclosure rail. It was rejected for pulling wholesale because
+each commit only makes sense on top of the previous one's new structures,
+not because the idea is wrong; it is now confirmed as the right direction,
+independently, by this screenshot. Worth reading as reference for the
+mechanics, not pulling as-is.
+
+## Five hard rules for the nested cascade, from his live reaction to a mock-up, 4 November
+
+He reacted live to a screen showing this same kind of parent/child cascade
+(from a parallel effort, not confirmed to be this session's own build).
+Binding on this feature wherever it is built, named plainly so it is not
+repeated:
+
+- **The selection summary reads from the real records, never from engine
+  internals.** His words, rejecting a line that read "Built from 5 held
+  addresses across Heart, Sacral, 3rd Eye, Crown. It fires when those carry
+  at once, and the output bends on the way out.": "That's a big no. We
+  don't do that." A summary names the pattern's own written content (the
+  saboteur card, the hyper-complex family record, the super-complex entry),
+  never a count of addresses or a mechanical description of how the engine
+  assembled it.
+- **No duplicate reading on one screen.** If a figure (Integrity, Intention,
+  law reach, distortion) already shows somewhere else on the same screen,
+  it does not get a second block showing it again.
+- **One visual language.** A cascade card styled differently from the rest
+  of the panel it sits in reads as "an old legacy design," his words, and
+  is wrong on sight, whatever the data inside it says.
+- **The parent-to-child nesting has to actually work**, confirmed end to
+  end, not assumed from the data being correct.
+
+Three more, same screen, his own further mark-up: **no separate flat
+"Running Now" list.** His words: "I'm assuming this is also legacy. Because
+this should show parent to children as a stack. Underneath the summary."
+The nested cascade itself, directly under the summary box, is how "what's
+running" is shown; it does not also get a flat list duplicating the same
+patterns below it. **"Laws of Moral Integrity" comes off this panel.**
+**"Run a release" comes off this panel.** Neither belongs here.

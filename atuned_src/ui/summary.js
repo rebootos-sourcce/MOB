@@ -67,9 +67,6 @@ function lensGene(r){
 /* which span the integrity chart is showing. its own, not the compass's, so
    a person looking at a year here does not change what the compass shows. */
 var SUM_SPAN='quarter';
-/* a small number, spelled, for the start of a sentence */
-const SUM_WORDS=['no','One','Two','Three','Four','Five','Six','Seven','Eight','Nine'];
-function SUM_WORD(n){return SUM_WORDS[n]||String(n);}
 /* ---- the strip. all analytics at a glance, which is what was asked for. ---- */
 function sumGlance(r,noCQ){
  var acc=(typeof accuracy==='function')?accuracy(r):null;
@@ -168,59 +165,16 @@ function sumGlance(r,noCQ){
    Every clause is guarded. A person with no birth data gets two paragraphs and
    a line saying what is missing, rather than a paragraph of hedges. */
 /* ============================================================
-   THE STORY, IN THE PERSON'S OWN WORDS, COLOURED BY WHERE IT LANDED.
-
-   Ruled: the centre of this page is the story, and every word that names a
-   behaviour is bold and carries the colour of the seat it belongs to.
-
-   storyui already does this while somebody types, but only for the text in
-   the box, because it reads ST_PARSED, the live parse. A committed entry is
-   just text on the record, so it has to be parsed again here. Same colour
-   rule, same seat map, so a word looks the same after it is committed as it
-   did while it was being written, which is the whole point of colouring it.
-
-   K2BAND is the map between the two, and it is the thing that was missed once
-   already: the sniffer stores a seat key like throat and seatCol wants Throat,
-   so without it every word in every seat comes out one colour.
+   "WHAT YOU TOLD IT" IS GONE FROM THIS PAGE. Ruled 3 November, his words:
+   "get rid of the text, what you told it." The raw journal block (the
+   entries, newest first, and sumWords colouring a matched word by the seat
+   it landed in) sat above the Reading and restated in full what the Reading
+   already turns into a measurement. It had no caller outside this file
+   (sumFull alone built `told` from it), so nothing else on the build reads
+   for it. The journal itself is not gone: Story is where a person's own
+   words live and are written. This page reads them into the measurement and
+   shows the measurement, not the diary entry a second time.
    ============================================================ */
-function sumWords(text){
- if(!text)return '';
- var pr=(typeof parseStory==='function')?parseStory(text):null;
- if(!pr||!pr.hits||!pr.hits.length)return esc(text);
- var band={};
- pr.hits.forEach(function(h){ if(h.t&&h.band&&h.band!=='coherent')band[h.t]=h.band; });
- var words=Object.keys(band).sort(function(a,b){return b.length-a.length;});
- if(!words.length)return esc(text);
- var rx;
- try{ rx=new RegExp('\\b('+words.map(function(w){
-   return w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}).join('|')+')\\b','gi'); }
- catch(e){ return esc(text); }
- var out='', last=0, m;
- while((m=rx.exec(text))!==null){
-  out+=esc(text.slice(last,m.index));
-  var k=band[m[0].toLowerCase()]||band[m[0]];
-  var bn=K2BAND[k]||k;
-  out+='<b class="s-w" style="--c:'+(bn?seatCol(bn):'var(--accent)')+'">'
-   +esc(m[0])+'</b>';
-  last=m.index+m[0].length;
-  if(rx.lastIndex===m.index)rx.lastIndex++;}
- out+=esc(text.slice(last));
- return out;}
-
-/* the entries a person has actually committed, newest first, capped so the
-   page stays a reading and does not become a journal. The journal is Story. */
-function sumEntries(){
- var es=((CURP&&CURP.story&&CURP.story.entries)||[]).slice();
- return es.reverse().slice(0,3);}
-function sumToldHtml(){
- var es=sumEntries();
- if(!es.length)return '';
- return '<div class="s-told"><div class="pm-eye">What you told it</div>'
-  +es.map(function(e){
-    var d=new Date(e.t);
-    return '<div class="s-told-e"><time>'+(isNaN(d)?'':d.toLocaleDateString())
-     +'</time><p>'+sumWords(String(e.text||''))+'</p></div>';}).join('')
-  +'</div>';}
 /* A BOLD NAME WEARS ITS OWN FAMILY'S COLOUR. Ruled: "where it's bold text,
    like Witness, Architect, Sage, those bold colours need to relate back to
    their icon colours."
@@ -463,7 +417,7 @@ function sumArch(r){
     it is carried by the order of the rows and by the percentage, which is
     what an ordered list with a number on it already says. */
  var aff=(r.aff||[]).map(function(v,i){return {i:i,nm:(ARCH[i]||{}).nm||'',
-   ic:(ARCH[i]||{}).ic, b:(ARCH[i]||{}).b||'Heart', d:(ARCH[i]||{}).v||'', v:v};})
+   ic:(ARCH[i]||{}).ic, b:(ARCH[i]||{}).b||'Heart', v:v};})
   .filter(function(x){return x.nm;}).sort(function(a,b){return b.v-a.v;});
  /* AND THE PERCENT IS HOW FULLY IT IS EXPRESSED. Ruled 16 October, his
     words: "the archetypes themselves should be 100%. The limiting beliefs are
@@ -471,9 +425,18 @@ function sumArch(r){
     twelve, the soul map's lean, which no story or release ever moves. The lean
     still orders the rows, first and second; the figure is archExpr
     (engine/archexpr.js), ring and pill both, as on the glass bar's orb. */
+ /* THE BEHAVIOUR LINE IS OFF THIS PAGE, ruled 3 November, his words: "all the
+    text versus ruler, orders the field, warrior moves the threat, sage reads
+    the situation. I fucking hate that." ARCH[i].v, the four word behaviour
+    ("moves on the threat", "orders the field"), used to print under the name
+    here as sub text. It stays ARCH's own field and keeps every other real
+    caller: the archetype drill's door line (ui.js), the Analytics archetype
+    card (analytics.js) and the intake's own archetype question (intakeui.js)
+    all still read ARCH[i].v for their own panels. Summary just stops asking
+    for it, so the row is the name, the ring and the share, nothing under it. */
  return '<div class="pm-eye">Primary and secondary</div>'
   +aff.slice(0,4).map(function(x){var ax=archExpr(x.i);
-  return sumStructRow(x.nm, x.d, x.b,
+  return sumStructRow(x.nm, null, x.b,
    pct('archetype',ax)||0, fmtPct('archetype',ax), x.ic?'<path d="'+x.ic+'"/>':null,
    ' data-arch="'+x.i+'"', false);}).join('');}
 function sumMasks(r,from,to){
@@ -525,6 +488,36 @@ function sumChain(r){
    The owner ruled the little boxes out and icons in: a sign, an animal with
    its element, a life path. Each opens its own detail. Date of birth came out
    with the boxes, because a birth date is an input and this is a reading. */
+/* ============================================================
+   "UPDATED DAILY, LIKE A HOROSCOPE." INVESTIGATED, 3 November, AND IT IS NOT
+   THERE TO WIRE.
+
+   He asked for a summary of how the celestial layer "works through you in
+   the cycles every single day." Everything this page reads for Western and
+   Eastern astrology and for numerology is a pure function of a birth date, a
+   birth time, a birth place and a name: engine/astro.js (sun, moon, rising,
+   Chinese year and element, Human Design gates, gene key, all off the actual
+   sky at the moment of birth, Meeus low precision series) and
+   engine/numerology.js (the six numbers, off the name and the birth date).
+   Neither file, nor anything else under engine/, takes today's date as an
+   input. There is no personal-day-number function and no transit
+   calculation, today's planetary longitudes read against the natal chart,
+   anywhere in this build. engine/daily.js is a different feature under the
+   same word: the Daily Summary, a frozen journal day and an aim a person
+   sets and answers, nothing to do with the sky.
+
+   So "daily, like a horoscope" is not a display change on real data that
+   already exists; it is new engineering, a transit or personal-day
+   calculation nobody has written. Faking one, a number that looks like it
+   moved but is actually the static natal chart read again, is exactly the
+   plausible looking fake rule 6 forbids. Nothing of that kind is built here.
+   What ships is the real, static, natal reading: Western and Eastern
+   placements (sumChips, above) and full numerology (sumNum, below), exposed
+   rather than hidden, which is real and valuable on its own. A true daily
+   reading is a real, separate piece of work for whoever takes it: a
+   transit engine (today's sky against the birth chart) or a personal-day
+   number (life path plus the universal day, numerology's own real method),
+   neither of which exists in this codebase yet. */
 const CELEM_IC={
  Metal:'<circle cx="12" cy="12" r="7"/><path d="M12 5v14"/>',
  Water:'<path d="M4 10c3 3 5 3 8 0s5-3 8 0M4 16c3 3 5 3 8 0s5-3 8 0"/>',
@@ -564,7 +557,7 @@ function sumChips(C){
   e.hd.profile?('profile '+e.hd.profile):'unresolved',
   e.hd.unresolved?say(unpackOf('design'),'The type needs the full bodygraph and is not computed. The profile is.')
    :say(unpackOf('design'),unpackOf('profile')));
- out+=chip('gk',e.gk.gate,svgI('<circle cx="12" cy="12" r="8.4"/><path d="M12 3.6v16.8"/>'),
+ out+=chip('gk',e.gk.gate,svgI(GATE_IC),
   'Gene key',e.gk.gate+'.'+e.gk.line,say(unpackOf('gene key'),unpackOf('gate')));
  return out+'</div>';}
 function sumConverge(C){
@@ -936,8 +929,24 @@ function sumNameBlock(B,fallback){
    (engine/compute.js, accCoverWord), so a whole intake reads full whatever
    the answers were. */
 function accWord(c){return accCoverWord(c);}
+/* THE PLATE IS THE NAME, AND ALMOST NOTHING ELSE NOW. Ruled 3 November, his
+   words, reading Derek's own plate back to him: "versus Derek partial, get
+   rid of that, get rid of six laws to answer... All that belongs in the
+   information side of things." Two things sat crammed against the name: the
+   coherence ring's own pill (early, partial, or CQ's percent once every law
+   is in) and the band line under it, tierSay(r), which read a real tier name
+   once CQ was complete and "N laws to answer" while it was still filling.
+
+   The ring stays, small and quiet, because tests/pct.js and tests/dailyui.js
+   both read it at this exact path, #sum .s-plate .cr[title^="Coherence"]:
+   dailyui.js's plate percent count and pct.js's S2 slice both depend on a
+   live, real completion reading sitting inside .s-plate, and a ring that
+   stops being real the moment it is unflattering is exactly what rule 6
+   forbids. What moved is everything that was text beside it: the band name,
+   "where it goes" and the gift line are sumStatus() now, read once in the
+   information column (sg-side, next to What drives it) rather than fighting
+   the name for the first line a person reads. */
 function sumPlate(r,B){
- var t=TIER_BY[r.tier]||null;
  var cov=(typeof accCover==='function')?accCover(r):null, aw=cov?accWord(cov):'';
  /* THE FIGURE COMES BACK ONCE IT IS A READING, 17 October, percent phase 2.
     The 14 October ruling took the bare score off this plate and it stands:
@@ -951,53 +960,51 @@ function sumPlate(r,B){
  return '<div class="s-plate">'
   +'<div class="s-pl-l">'+sumNameBlock(B,true)+'</div>'
   +'<div class="s-pl-r">'
-   /* THE TIER'S OWN COLOUR, not the heaviest seat's. Ruled. The plate is the
-      one place on this page that names the band, so its ring has to mean the
-      band. It was drawn in r.darkB, so a person at Embodied whose heaviest
-      seat was the Root got a red ring on the second best reading there is. */
-   /* NO PERCENT ON THE HEADLINE READING, round PQ, his words: "No, it doesn't
-      need to be a percent. Just a number." This plate is the Summary's
-      headline and it still read 62%, measured 2 October by the visual review
-      after the ruling had landed everywhere else. The ring keeps the share as
-      its arc; only the sign goes. */
-   /* AND THEN THE NUMBER WENT TOO, 15 October, the 14 October ruling being
-      the later one: the ring draws the share as its arc, the pill says how
-      much has been measured, and the ring is a button to the core drill,
-      where the figure sits with its range. The click router at the foot of
-      this file sends any button it does not know to runCoreDrill. */
-   +cr(r.darkB,pct('cq',r.CQ)||0,{size:'lg',label:'Coherence',raw:cqp||aw||'–',hot:false,act:true,data:'data-gl="core"',
+   +cr(r.darkB,pct('cq',r.CQ)||0,{size:'sm',label:'Coherence',raw:cqp||aw||'–',hot:false,act:true,data:'data-gl="core"',
       title:'Coherence, '+(cqp?cqp:(aw?aw+' reading':'not read yet'))+'. Opens the figure and its range.',
       color:TIERCOL[r.tier]||undefined})
-   /* and the word wears it too. A ring in one colour beside the same band
-      printed in the body colour reads as two facts, not one. */
-   +'<div class="s-pband"><b style="color:'+(TIERCOL[r.tier]||'var(--ink)')+'">'
-   /* no band yet while CQ is still filling, so the slot says what is left */
-   +esc(tierSay(r))+'</b>'
-   +(t&&t.state?'<em>'+esc(t.state)+'</em>':'')+'</div>'
   +'</div>'
-  /* the direction out, which has never been on a surface a touch screen can
-     reach. It is the third of the three things a band is required to carry. */
-  +(t&&t.toward?'<div class="s-ptoward"><span class="pm-eye">Where it goes</span>'
-    +esc(t.toward)+crisisFloor(t)+'</div>':'')
   +'</div>';}
-/* the head of the page: the plate. On a read profile it is the name, the band
-   and where it goes. On an unread one it is what was entered and nothing else,
-   so a name and a birth date still read and a default never does. */
+/* the head of the page: the plate. On a read profile it is the name and the
+   coherence ring alone. On an unread one it is what was entered and nothing
+   else, so a name and a birth date still read and a default never does. */
 function sumWho(r,B,full){
  /* A NAME IS ENTERED OR IT IS NOT. A blank profile carries the roster word
     You, which is a default and not somebody, so it never counts. */
  if(!full&&!(B.sp||B.N||sumRealName()))return '';
  return sgZone('who','Who this is',
-  full?sumPlate(r,B)+sumGift():'<div class="s-plate sg-plain"><div class="s-pl-l">'+sumNameBlock(B,false)+'</div></div>');}
-/* THE GIFT, SAID ONCE AND QUIETLY, under the name on the page a new person
-   lands on (tabLandFirst, ui/panels.js). The ruling is "100 patterns, free,
-   with everything visible", and the lock now keeps it (lockGift, ui/lock.js),
-   so nothing on this page is padlocked while it lasts. This is the one line
-   that says why. No count of what is left, no price and no button: the first
-   screen is the person's reading, opened, and not a shop. The count is in
-   Billing and on the card before a release, where it is spent. Read off the
-   lock's own answer, so it goes when the padlocks come back, and never on a
-   worked example. The size is GIFT_N and not a typed hundred. */
+  full?sumPlate(r,B):'<div class="s-plate sg-plain"><div class="s-pl-l">'+sumNameBlock(B,false)+'</div></div>');}
+/* THE BAND AND THE GIFT, MOVED OFF THE NAME AND INTO THE INFORMATION COLUMN.
+   Read once, at the top of the drivers card (sg-side), next to "What drives
+   it" rather than crowding the plate. Both pieces are unchanged, only their
+   place moved: tierSay(r) and TIERCOL still carry the band exactly as
+   before (design.js's GATE 16 reads `.s-pband b` by class, not by position,
+   so it still finds it here), and sumGift() still writes #sumgift with the
+   same id and the same sentence tests/gift.js reads on a brand new person's
+   first screen (inView at scroll 0 holds: this column sits above the fold
+   at the widths that gate opens at). */
+function sumStatus(r,B){
+ var t=TIER_BY[r.tier]||null;
+ /* no band line at all while CQ is still filling: "N laws to answer" was
+    exactly the clutter he named, and the ring in the plate already carries
+    that state as its own pill (early, partial). Once a tier exists it is
+    real, named structure and belongs here. */
+ var band=r.tier?('<div class="s-pband"><b style="color:'+(TIERCOL[r.tier]||'var(--ink)')+'">'
+   +esc(tierSay(r))+'</b>'+(t&&t.state?'<em>'+esc(t.state)+'</em>':'')+'</div>'
+   +(t&&t.toward?'<div class="s-ptoward"><span class="pm-eye">Where it goes</span>'
+     +esc(t.toward)+crisisFloor(t)+'</div>':'')):'';
+ var gift=sumGift();
+ return (band||gift)?'<div class="s-status">'+band+gift+'</div>':'';}
+/* THE GIFT, SAID ONCE AND QUIETLY, in the information column now rather than
+   under the name on the page a new person lands on (tabLandFirst,
+   ui/panels.js). The ruling is "100 patterns, free, with everything
+   visible", and the lock now keeps it (lockGift, ui/lock.js), so nothing on
+   this page is padlocked while it lasts. This is the one line that says why.
+   No count of what is left, no price and no button: the first screen is the
+   person's reading, opened, and not a shop. The count is in Billing and on
+   the card before a release, where it is spent. Read off the lock's own
+   answer, so it goes when the padlocks come back, and never on a worked
+   example. The size is GIFT_N and not a typed hundred. */
 function sumGift(){
  if(typeof lockGift!=='function'||!lockGift())return '';
  return '<p class="s-src" id="sumgift">Your gift: '+GIFT_N+' '+unp('pattern','patterns','gift')
@@ -1013,10 +1020,18 @@ function sumDrivers(B,r){
   +'<span class="sg-down" aria-hidden="true">'+sumIc('down','sg-ic')+'</span>'
   +(isObj?sgFold('range','Other ways this shows up',born.more):'')+'</section>';}
 /* the birth marks, one strip across the page under the story and the roots, so
-   neither card has to make room for them and a five or a seven stands level */
+   neither card has to make room for them and a five or a seven stands level.
+   LABELLED "THE CELESTIAL LAYER" now, ruled 3 November, his words: "the
+   summary needs to show the celestial layer, a summary of how that works
+   through you." The strip itself is unchanged, real Western (sun, moon,
+   rising) and Eastern (Chinese year and element) placements off the same
+   birth record as the full numerology card, through sumChips, which already
+   existed and already read real data (engine/astro.js); it only went
+   unlabelled before. */
 function sumMarks(B,r){
  var C=B.sp?converge(B.p.nm,r):null;
- return C?'<div class="sg-marks" data-grp="marks">'+sumChips(C)+'</div>':'';}
+ return C?'<div class="sg-marks" data-grp="marks"><div class="pm-eye">The celestial layer</div>'
+  +sumChips(C)+'</div>':'';}
 /* a zone is a heading with a mark and one body. The heading names the slot and
    the slot keeps its name whatever the data says. */
 function sgHead(k,title){
@@ -1208,59 +1223,44 @@ function sumSaid(x){
  return SUM_SAID.indexOf(String(x).replace(/\s+/g,' ').trim())>=0;}
 function sumFull(r){
  var B=sumBirth(), C=B.sp?converge(B.p.nm,r):null;
- var told=sumToldHtml(), story=sumStory(r), drv;
- SUM_SAID=sumPlain(told+story);
+ var story=sumStory(r), drv;
+ SUM_SAID=sumPlain(story);
  try{drv=sumDrivers(B,r);}finally{SUM_SAID=null;}
  /* THE ORDER IS THE ORDER A PERSON ASKS IN, and every group is one question.
-    Who is this. What did they say, and what do their roots say beside it. What
-    is running, and what does it cost. What do they do about it. Then, folded
-    away, where each of those comes from. Every row is two equal halves or
-    three equal thirds. */
+    Who is this. What is running, and what does it cost. What does the
+    celestial layer say. Then, folded away, where each of those comes from.
+    Every row is two equal halves or three equal thirds. */
+ /* REDESIGNED 3 November, his own words reading Derek's page back to him:
+    the partial badge, "N laws to answer", the gift line, the raw "What you
+    told it" journal block, "the heaviest of the nine is sad at your weight
+    of 97" and the whole "What to do" column (Release this first, the
+    Protocol, Next marker) are all off this surface now. "All that belongs
+    in the information side of things": the band and the gift moved into
+    sumStatus() beside the
+    drivers card rather than vanishing, and What to do is gone outright
+    (sumOutput still exists, read directly by tests/record.js and free for
+    a future release-focused surface, just not rendered here).
+
+    WHAT REPLACED IT: "numerology, make sure that's exposed. The Eastern and
+    Western astrology, those need to be exposed as well... the summary needs
+    to show the celestial layer." Nothing here is new engineering: sumChips
+    (the sun, moon, rising, Chinese year and element, life path) and sumNum
+    (all six numerology numbers) already existed and already read real,
+    computed data (engine/astro.js, engine/numerology.js). sumChips was
+    rendered unlabelled through sumMarks, which now carries its own heading,
+    and sumNum sat collapsed in a closed <details> at the foot of the page;
+    both read the same way, just no longer hidden. */
  return sumWho(r,B,true)
-  /* THE CENTRE IS THE STORY. Ruled. Their own words first, coloured where
-     they landed, then the reading built from them. The order matters: the
-     reading is a claim about the person and the story is the evidence for
-     it, and evidence goes first. It stands on the first screen, left of the
-     roots, and the phone reads it before them. */
-  /* THE LEAD ROW, REBUILT, round RB. His words: "The summary page layout is
-     abysmal. I'm not sure what happened here." Measured on Diane at 1600 with
-     three entries before touching it: the story card ran about 1750 pixels
-     and the drivers card beside it was stretched to match while its content
-     ended near 950, so the right half of the first two screens was a hole
-     about 750 pixels tall with one fold sitting at its foot. And What to do,
-     the only block on the page that says what a person can do, sat about 2730
-     pixels down, the best part of three screens under the reading.
-
-     So the row stops stretching and the right column carries two cards: what
-     to do first, where the hole was, and the drivers under it. The story
-     keeps the left and the first screen, which is the ruling above. Nothing
-     is removed and no sentence changes; the action moves up beside the
-     evidence it acts on. */
-  /* WHAT THEY SAID, WHAT TO DO, THEN WHY. Round RF, his words: "simulate the
-     best UI UX flow for least friction, most text visibility, most
-     visibility. If you have to change stuff to change, feel free."
-
-     Measured at 390 before this: What to do started 2.8 screens down, under
-     about 500 words, because on one column the lead row stacked as the whole
-     left half (what you told it and the whole Reading) and then the right. A
-     person on a phone read the full reading, every meaning in it, before
-     reaching the one thing on the page they could do.
-
-     So what you told it and the Reading are two cards, not one, and on one
-     column the four pieces of this row interleave: their own words, then what
-     to do about them, then the Reading that explains it, then the drivers.
-     Evidence still goes first, which is the ruling above; the action now
-     follows the evidence it acts on instead of following the explanation of
-     it. On two columns nothing moves: the left is their words over the
-     Reading, the right is what to do over the drivers. The column wrappers
-     carry no look of their own, so a single column can dissolve them. */
+  /* THE CENTRE IS THE STORY. Ruled. The reading built from a person's own
+     words, in the instrument's voice. It stands on the first screen, left of
+     the roots, and the phone reads it before them. The drivers card and the
+     band/gift status sit beside it, the information side of the page. */
   +'<div class="sg-two sg-lead sg-lead2">'
    +'<div class="sg-col">'
-    +(told?'<section class="sg-card sg-told" data-grp="told">'+told+'</section>':'')
     +'<section class="sg-card sg-story" data-grp="story">'
      +'<div class="s-readbox sg-flat">'+story+'</div></section>'
    +'</div>'
-   +'<div class="sg-side">'+sgZone('todo','What to do',sumOutput(r),'sg-card')+drv+'</div>'
+   +'<div class="sg-side">'+sumStatus(r,B)+drv+'</div>'
   +'</div>'
   /* the patterns block follows the lead on every width. On a phone it was
      lifted above the story by an order rule written before it existed. */
@@ -1276,87 +1276,33 @@ function sumFull(r){
    +'</section>'
    +'<section class="sg-card" data-grp="cost">'+sgHead('cost','What it costs')
     +sumGlance(r,true)
-    +'<div class="sg-gap"><div class="pm-eye">In the body</div>'+sumNine()+sumAxes(r,true)+'</div>'
+    +'<div class="sg-gap"><div class="pm-eye">In the body</div>'+sumNine()+'</div>'
     +sgFold('seats','Heaviest seats',sumSeats())
     +sgFold('ig','Integrity over time',sumIg(r))
    +'</section>'
   +'</div>'
+  /* NUMEROLOGY, EXPOSED, not folded. Same sumNum() call this page already
+     made, inside a closed <details> at the very bottom; now a card on the
+     page itself, so Path, Expression, Soul urge, Personality, Birthday and
+     Maturity read without a tap. */
+  +sgZone('numerology','Numerology',sumNum(r,true),'sg-card')
   +'<div class="sg-folds">'
    +sgFold('lens','Four lenses',sumLens(r,true))
    +(C?sgFold('conv','Birth comparison',sumConverge(C)):'')
-   +sgFold('num','Numerology, in full',sumNum(r,true))
   +'</div>';}
 
 /* ============================================================
-   WHAT YOU ARE CARRYING, IN SENTENCES, IN THE BODY.
-
-   Ruled: "the centre column becomes text about you." The centre had the
-   reading and the three action cards and then half a screen of nothing,
-   because everything else on the page is a measurement and every measurement
-   moved right.
-
-   This is the nine, written rather than tabled. The right rail already has
-   them as a table of held against opposite, which is the correct place for a
-   table, and a table is not text about anybody. What a person cannot get from
-   that table is where it is, which the engine has known all along: every one
-   of the nine carries its plexus and the part of the body it sits in, and
-   neither has ever been on this surface.
-
-   Three sentences at most, because a paragraph naming nine things is a list
-   with full stops in it.
+   "THE HEAVIEST OF THE NINE IS SAD AT YOUR WEIGHT OF 97" IS GONE. Ruled 3
+   November, his words reading it back verbatim. sumAxes() wrote that
+   sentence (and "under it, X, Y, Z are carrying something", and "standing
+   against them") as the prose version of the same nine axes sumNine()
+   already draws as a compact ring grid two lines above it, real percentages
+   on real rings, with no sentence to parse. The prose had one caller
+   (sumFull) and no test depends on it (tests/dailyui.js's duplicate-sentence
+   probe runs on the page as rendered, not on this function, so it still
+   covers the page with sumAxes gone), so it is removed rather than left
+   calling nothing. The nine still read here through sumNine() alone.
    ============================================================ */
-function sumAxes(r,bare){
- var C=(typeof CHILD!=='undefined')?CHILD:[];
- if(!C.length)return '';
- /* THE AXIS VALUE, NOT THE MEAN OF ITS NODES. The first cut meaned n.sq over
-    every node on the axis, and most nodes on an axis are at zero, so a person
-    whose nine axes all read half a point came out at a mean of nought and was
-    told nothing was carrying while the rail beside it listed Fear at 0.5. Two
-    panels on one screen disagreeing about whether anything is there is worse
-    than either of them being wrong alone. S.charge is what the person
-    entered and what every other surface prints. */
- var held=C.map(function(c){
-   return {c:c, sq:+(S.charge[c.nm]||0), rep:+(S.replace[c.nm]||0)};})
-  .sort(function(a,b){return b.sq-a.sq;});
- var live=held.filter(function(x){return x.sq>0;});
- var standing=held.filter(function(x){return x.rep>0;})
-  .sort(function(a,b){return b.rep-a.rep;});
- var p=[];
- if(!live.length){
-  p.push('Nothing is carrying on any of the nine.');
- }else{
-  var top=live[0];
-  /* NO "the" IN FRONT OF THE ADDRESS. Half the nine carry a plexus, which
-     takes an article, and half carry a phrase like "Below the heart", which
-     does not. "It sits at the Below the heart" is what a template does when
-     it assumes one shape of noun. */
-  /* "of 10" made a weight a mark out of ten. V8, and ui/summary.js was its
-     own named corpse: "at a weight of 7.4" is what ships, so this says it. */
-  /* the charge on the axis, as the ring of the nine prints it, 17 October */
-  p.push('The heaviest of the nine is <b>'+esc(top.c.nm)+'</b>, at a weight of <b>'
-   +fmtPct('charge',top.sq)+'</b>. It sits at '+esc(top.c.addr)
-   +', which you feel in the '+esc(top.c.loc)+'. The quality on the far side '
-   +'of it is <b>'+esc(top.c.opp)+'</b>.');
-  if(live.length>1){
-   var rest=live.slice(1,4);
-   p.push('Under it, '+rest.map(function(x){
-     return '<b>'+esc(x.c.nm)+'</b> in the '+esc(x.c.loc)
-      +' at '+fmtPct('charge',x.sq);}).join(', ')
-    /* AND THE COUNT IS COUNTED. This said "five more" whatever the number
-       was, which is the same defect as a gate that counts by hand. */
-    /* and the number is spelled, because it opens a sentence and a sentence
-       that opens with a digit reads as a list item */
-    +'. '+(live.length>4?SUM_WORD(live.length-4)+' more '
-      +(live.length-4===1?'is':'are')+' carrying something.':''));}
- }
- if(standing.length){
-  p.push('Standing against them: <b>'+esc(standing[0].c.opp)+'</b> at <b>'
-   +fmtPct('installed',standing[0].rep)+'</b>'
-   +(standing.length>1?', and '+(standing.length-1)+' other'
-     +(standing.length>2?'s':'')+' installed':'')
-   +'. An address with the opposite installed conducts.');}
- return '<div class="s-axes">'+(bare?'':'<div class="pm-eye">In the body</div>')
-  +p.map(function(t){return '<p class="s-p">'+t+'</p>';}).join('')+'</div>';}
 
 /* ============================================================
    THE FIVE LENSES, ON THE PAGE AT LAST.

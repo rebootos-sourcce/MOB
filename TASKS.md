@@ -33768,7 +33768,7 @@ Named SU and not SQ: SQ1 to SQ5 and SR1 to SR6 are already item numbers earlier 
 
 **The plan, in order, with why each sits where it does.** Sizes are agent build time, one dispatch, per the 31 October sizing ruling.
 
-- [ ] **SU1. P0, held for his own check. Clear `STV.safeSaid` in `stOwn()` on a real switch.** First because it is a wrong safety message shown to a real person on `main`, and everything else here is gate housekeeping. One assignment and one check that fails on `ec0834e7` and passes on the fix: commit a safety phrase on one profile, switch, assert no line and no door, then trip a phrase on the second profile and assert the line and the door are there. Dispatched; at 04:34 UTC no branch for it was on the remote and no pull request was open, so it is in progress and not landed. Held for a direct human check before merge, the same as #108 and #173, because it is a safety surface. Size: small.
+- [x] **SU1 closed, 4 November. `STV.safeSaid` and `SRC_SAFE_UP` cleared in `stOwn()` on a real switch, PR #175 merged, `ac3eb330`.** He gave the direct check this entry asked for. Merged after rebuilding clean against `main` (which had moved past `#176` first, both touching `storyui.js` but on non-overlapping lines; the only real conflict was the two generated files, rebuilt fresh, never hand-resolved). Verified again post-merge: `tests/engine.js` 6612/0, `tests/stfull.js` 84/0, `tests/typein.js` 58/0, `tests/functional.js` 2959/0, and a manual repro of the original leak via the second switch route (`profOpen`) confirmed clean.
 - [ ] **SU2. P1. Open a pull request for `fix/srcchat-repeated-final-flake` (`74edaa56`).** Ahead of the ledger work because it is a root caused fix already built and only waiting to be proposed. The resent sentence check is now held off Source AI's voice fetch race and asserts the resend goes into the one recording that heard the first sentence; its floor line raises srcchat 88 to 89, read off four green local runs on that branch. Merge it current with `main` first, since it branched from `b6f86211`, before tonight's four merges. Size: small.
 - [ ] **SU3. P1. Read the nightly's first run.** After 10:41 UTC today, or fired once by hand (`workflow_dispatch` is on it). Before SU4, because wiring a ledger into a workflow nobody has seen run puts two unknowns in one change. If it is red, that is a finding for this file, not a reason to change the schedule. Size: small.
 - [ ] **SU4. P1. Wire `tools/flakes.js record` into the nightly, and into CI's `gates-report` on failure.** The ledger is a record nobody writes until this lands, and its own rule ("a new failure is not a flake") only protects anything if every failure reaches it. Depends on SU3. Size: medium, because it touches `nightly-gates.yml`, `deploy.yml` and the lint rule that holds them to `tools/gates.js`, and each needs its own break checked to be caught.
@@ -33799,7 +33799,7 @@ Named SU and not SQ: SQ1 to SQ5 and SR1 to SR6 are already item numbers earlier 
 - [x] **SV6 closed, 4 November. Archetype to root, the definitional method: 6 of 12 held, 4 changed, 2 open.** Full table and reasoning in `DECISIONS.md` under "Archetype to root, the definitional method: 6 held, 4 changed, 2 open, 4 November", and on the status board. The old "finish the 30 blueprint" option is withdrawn, his own words, not raised again. His ruling wanted on the 4 that changed (the Outlaw/Rebel, Magician, Ruler, Innocent) and the 2 real ties (Jester, the Orphan/Everyman); the 6 held rows stand as answered.
 - [x] **SV7 closed, 4 November. The 108-body-location nerve branch, checked: nothing to port, nothing was missing.** He asked, urgently, to diff Reboot-OS's `framework/nerve-node-wiring-2026-10-21` against this engine's own nerve data and port whichever is newer and correct. Checked directly: MOB's `nodes.js` already has all 108 somatic addresses carrying a named nerve or plexus, full coverage of exactly the 108-plus-4 structure CLAUDE.md requires. The branch doesn't add missing data; by its own files it only regroups MOB's existing nerve names into 103 labels, every one marked `canonical: false`, `feeds_runtime: false`, `anatomical_validity: unverified`, with the one piece that would be genuinely new (nerve-to-saboteur wiring) explicitly inert, zero edges activated. The branch is also 522 commits behind Reboot-OS's own main, 13 days stale, CI never completed a run. Verdict: do not port. Nothing changed in the engine because nothing needed to change.
 - [x] **SV8 closed, 4 November. Archetype/domain records checked: his five named suspects are not missing.** All 12 archetypes (Warrior, Rebel, Ruler, Jester, Everyman included) have a complete structural row (`ARCH`, `engine/data/canon.js`) and a complete one-sentence unpack line (`gloss.js`, prints live on the Summary reading). No single ruled template ties the three disagreeing GitHub documents together (the app's own thin row, the book's richer saboteur/belief template, Reboot-OS's richer essence/gift/shadow template for its own 18-archetype roster), confirming `reviews/records-template-audit-2026-10-31.md`'s own finding. The one real, narrow gap: domains have no `domain:<name>` unpack line the way archetypes do, so a domain name can print with no plain meaning beside it, against this file's own unpack-every-symbol rule. Dispatched to fix (SV9).
-- [ ] **SV9. Dispatched. Give all 19 domains an unpack line, matching the archetype pattern.** Derived from each domain's own existing clear/distorted text in `kb.js`'s `DOMDEF`, not new content. Small, safe, directly serves an existing CLAUDE.md rule; building without waiting on a separate sign-off on the concept, flagged for his review of the wording once it lands.
+- [x] **SV9 closed, 4 November. All 19 domains now have an unpack line, PR #178.** Derived from each domain's own existing clear/distorted text in `kb.js`'s `DOMDEF`, nothing invented; wired into `ui/summary.js`'s domain chips the same way the root chip beside them already works. `engine.js` 6612/0, `check.py --objections` clean. Two smaller surfaces (`railtiles.js`, `personas.js`) still show a bare domain name with no tooltip; left alone as a separate, riskier job. Draft, flagged for his review of the 19 sentences' wording.
 - [x] **SV10 closed, 4 November. Checked, with one real thing found sitting unused and one real discrepancy flagged, not resolved.**
   - **Saboteurs** (the 33 named ones): real written content, wired. Read by `core.js`, `compute.js`, `export.js`, `codes.js`, shown via `drills.js`.
   - **Fetters** (the 108 addresses): a short theme and distortion word by design, not rich prose. Fully wired, just thin.
@@ -33808,7 +33808,130 @@ Named SU and not SQ: SQ1 to SQ5 and SR1 to SR6 are already item numbers earlier 
   - **Super-complexes** (Narcissism, Machiavellianism, Psychopathy, Sociopathy): the richest records in the engine, genuinely read by `trace.js`, `compute.js`, `export.js`, `codes.js`, `compass.js`. Wired into the graph; the screen itself still shows only name, kind and a hover title, so most of that depth still doesn't reach a person.
   - **Western/Eastern astrology, numerology:** real, rich content, held entirely on PR #149 (Celestial Avatar), explicitly not for merge without his review, 0 of 181 entries owner-approved. Not on `main`, nothing to wire there yet. Already known, already held per his own call.
   - **A real discrepancy, flagged, not resolved: `srcVoiceCanon` and `srcVoiceEvidenceBus`, marked completed on this tracker (#88, #89 above), do not exist anywhere on `main`.** Grepped the whole checkout, case insensitive, every extension, zero matches. Either that work lives on an unmerged branch or the completion mark was wrong. Dispatched to find out (SV12).
-- [ ] **SV11. Dispatched. Wire the 6 hyper-complex family records that already exist and are read nowhere.** Real, complete written content in `gen-data.js`; the live engine and the screen both only show a single clause. Safe: wiring existing content, not authoring new.
-- [ ] **SV12. Dispatched. Resolve the `srcVoiceCanon`/`srcVoiceEvidenceBus` stale-completion question.** Either recover and merge real unmerged work, or correct #88/#89 above if they were marked done wrongly. This is exactly the failure mode CLAUDE.md warns about (a stale claim standing as fact); not left alone.
+- [x] **SV11 closed, 4 November. The 6 hyper-complex family records wired in, PR #179.** New `engine/data/hcxcard.js`, same pattern as the 33 saboteur cards, read by `ui/drills.js` into five labeled sections a person already recognizes from elsewhere in the app. Nothing authored, ported as written, with 3 sentences swapped off the project's own banned-word list ("framework"). Checked live in a real browser against the source text, word for word. Engine 6617/0, full browser gate suite clean. Draft, his to merge.
+- [x] **SV12 closed, 4 November. Found: real, sound, unmerged. The completion mark was wrong as a claim about `main`.** `srcVoiceCanon` and `srcVoiceEvidenceBus` are real: commit `639f2033` ("Wire the real 96-pattern content library into the sniffer's intelligence layer", 1 November) and commit `edd64721` ("Wire the evidence bus into the engine: the sniffer's intelligence layer now has a real graph/dashboard seam", 2 November), both on branch `source-voice-sniffer-readonly-20261031`, open draft PR #163 against `main`, never merged. Not a fabricated completion: the work was done and the commit messages are the near-exact source of #88/#89's wording. The gap is that it landed on a draft branch and the tracker was marked done as if it had landed on `main`. Verified directly, not from the PR's own claims: extracted `atuned_src` from the branch tip (`aa449a80`) into an isolated scratch build, re-ran `BUILD-engine.sh`, confirmed the rebuilt `engine.js` is byte identical to the one committed on the branch (the PR's own earlier "generated products are stale" warning no longer holds at tip), ran the full `tests/engine.js` suite against it clean: 6509 passed, 0 failed, 10 expected red, same convention as `main`'s own runs. Also ran the five Source-voice-specific tests (`source-voice-intelligence.js`, `source-evidence-bus.js`, `voice-sniffer.js`, `source-voice-narrative.js`, `source-voice-charge-cycle.js`) directly against that engine: all five pass. `check.py --objections` on that tree: 18 non-blocking findings, 0 that stop a build, same as `main`'s own standard. Not run, for lack of a browser toolchain and disk headroom in this pass: `tests/functional.js`, `tests/design.js`, `tests/collide.js`, `tests/funnel.js`, `tests/boot.js`, `tools/monitor.js`. Not merged in this pass: PR #163 is 77 commits, still marked draft by its own run of authors across every one of its iterations ("This PR must remain draft until all gates and runtime wiring are verified"), carries real open items beyond #88/#89 (no live production caller wires `srcVoiceIntelligence` into the voice UI yet, ancestry and CQDQ grading explicitly deferred, real microphone/audio behaviour unverified), and reads consent-scoped personal narrative evidence, which this project's own precedent (PR #149, Celestial Avatar, "explicitly not for merge without his review") treats as needing the owner's look before it lands on `main`, not a unilateral merge to close a tracker line. #88 and #89 are corrected: they were true as commits, false as a claim about `main`. Dispatched: his call whether PR #163 goes to review and merge now that its engine half is independently confirmed sound, or stays held with the rest of Source AI voice.
 
 This round is not closed until SV1 through SV3 land with real commits and SV4, SV6 and SV8 have a seat or a ruling. Written here the same round it happened, per SU9.
+
+- [ ] **SV16. Dispatched, 5 November. The Ritual page (Flow > Ritual), a real restructure, from his own annotated screenshot.** Six things, together, all on top of PR #183 (SV15) since that PR already carries the cuts and the seeded data this one builds on:
+  1. The center panel becomes a weekly calendar, all seven days, with a way to move to the next or previous week. Under it, each day shows which rituals are due that day.
+  2. The Accountability column on the right stays as it is today.
+  3. "New ritual" opens straight into its full, usable state. Not a collapsed card that needs another press first.
+  4. The "Start from a tag" row and its seven pills come off the New ritual flow. His words: "these tags at the bottom don't do anything because I'm creating the ritual, doesn't matter what I select as a tag."
+  5. The Suggested cards: flat solid background instead of the current one. "2 min a day" becomes "2 minutes". "Add to daily practice" becomes "Add to practice". "Save for later" becomes "Save". And the heading itself is wrong: "those aren't suggested, those are pulled from your ritual selectors, it's the stuff it picks up based off your story," so the heading needs a word that says that, not "Suggested".
+  6. Ongoing goal and Ritual to avatar move off the center panel onto the right rail, alongside Accountability.
+  His own words closing the ask: "running review of this twice, strategize your plan," read as two passes against his screenshot before anything is built, not one. Dispatched as its own branch and PR off `ritual-cuts-seed-2026-11-04`, so PR #183 stays reviewable on its own narrower scope.
+
+- [x] **SV15 closed, 4 November. Ritual page cuts and sample ritual seeding, PR #183, draft.** All six struck lines gone from Flow > Ritual: the page subtitle, "Your avatar has no stories yet.", the next-mark description (moved into that mark's own tooltip instead of deleted outright, so the meaning stays one press away), the Somatic Truth Check's repeated line (cut at its source so it's gone everywhere it printed), the Rituals-section line, and the affirmation sub-line (cut at the one shared template, which also removed its two other wordings). Seeded: Rosa, James and Gordon, the three reference profiles with no rituals, each got real ones; every reference profile got real avatar story pairs, since none had any, which is what left the ritual-to-avatar line and the affirmations empty before. Noted for him, not acted on: Summary still says "Next marker" where Ritual says "Next mark", one idea under two words. Tests: engine 6894/0, the Ritual page's own gate 181/0, functional 2961/0, monitor clean, products clean. Voice objections check reads identical to main.
+- [x] **SV14 closed, 4 November. The 8 voice-check-flagged law definitions rewritten, PR #181, draft.** His direct ask. The gate that actually stopped the build (`abstract-word`, CO-29) turned out to be a fixed word list, not the suffix pattern first assumed; corrected before writing anything. One word or clause changed per entry (operate, operating condition, operation, down/up-regulates, cognitive load, operating, operating frequency of, aperture), everything else of the book's own text left exactly as it was. Law names used as cross-references inside other laws' own definitions (Presence, Temperance, Curiosity, Creativity, Play, Flow) were correctly left alone, never flagged by the gate. `check.py --objections`: abstract-word 8 to 0. `tests/engine.js`: 6879/0. One side note for him: the root `index.html` still carries the old text; `tools/products.js` doesn't check it, not touched here.
+- [x] **SV13 closed, 4 November. The `stackbuild` salvage pull, PR #180, merged (`57f6223b`).** 10 of `stackbuild`'s 26 commits landed, risk-ascending, each rebuilt and gated on its own: the real parent/child trace summarizer (engine and UI halves), `traceDescendants`, the dead Field summary rows cut, the Root Energetics icon set, saboteurs' real opposite word (data half only), Flow going straight to Ritual, the real law definitions (not "Chapter 19"), the Analytics and Summary CSS and rewrite. His own direct review caught one real gap before merge: the funnel package (`funnel/dist/atuned-quiz.html`) was never rebuilt against the new engine, so it still carried the old law text; fixed and verified clean by `tools/products.js` before merging. `tests/engine.js`: 6879/0. Two genuinely unaddressed pieces remain on `stackbuild` (`ff83e74`, `3751bde`), and the 10-commit right-rail rework chain plus the saboteur UI half were deliberately left out, needing his own call before anyone revives them.
+
+## Round SW, 4 November: the Awareness left rail, from his own screenshot
+
+A real wrong answer first: asked how many "blueprints" exist, 6 was given,
+read off a dead 30-slot April list in a different repo. Wrong dataset. His
+own screenshot shows the shipped left rail's own "Blueprint Domains" heading
+over the 19-entry `DOMAINS` table, already full. Corrected in `DECISIONS.md`
+under "A naming collision that caused a real wrong answer, corrected 4
+November." The real count, by the app's own label, is 19.
+
+His asks off the same screenshot, annotated directly on it:
+
+- [ ] **SW1. Declutter the left rail's own text.** Struck on his screenshot:
+  a trailing "plus all of Witness, Weaver, Engine, Architect" line under a
+  selected Blueprint Domain's tooltip, and a "Warrior + Explorer" line under
+  the Secondary archetype grid. His words: "get rid of some of the
+  unnecessary text, stop adding unnecessary junk." Needs a seat (narrative +
+  uiux) to find every such line, not only the two he happened to screenshot.
+- [ ] **SW2. Child emotions becomes questions, not a reading.** 9 go into the
+  funnel (the intake quiz); any remaining ones go into the knowledge base,
+  as part of the diagnostic. Needs scoping: which 9, what the funnel question
+  wording is, where "remaining" live in Knowledge.
+- [ ] **SW3. Mock-up requested directly: square icons with a bevel.** The
+  Blueprint Domain and archetype icons are circular today; he wants a
+  mock-up with them square, lightly bevelled. Dispatched to art-director.
+- [ ] **SW4. In the funnel, a locked archetype stays locked.** Once a
+  person's archetype is determined during onboarding, it does not change
+  later. Needs the funnel's own state machine to carry a lock flag; not
+  scoped yet.
+- [ ] **SW5. A visual on the left rail showing the chain connected, or at
+  least which are active.** His words: "a visual on the left side showing
+  these connected... somehow, or maybe just active." Needs a design pass;
+  dispatched alongside SW3.
+- [ ] **SW6. Each Blueprint Domain (and by extension each archetype) carries
+  a percent, filled in by a person's own stories.** Starts after self-report
+  (the funnel) and grows as they write. This is the same shape as
+  `archExpr()` in `engine/archexpr.js` (an archetype's percent, 100 minus the
+  mean charge at its seat), which already exists for the 12 archetypes; no
+  such formula exists yet for the 19 domains. Needs a formula ruling before
+  any build, same discipline as `archExpr.js`'s own header: port a real
+  mechanism, never invent one. Flagged to ai-director and systems-director to
+  scope whether a domain-level analog is computable from what the engine
+  already tracks, or needs new data.
+
+SW3 and SW5 dispatched together as one mock-up, since both are about the same
+rail's visual language. SW1, SW2, SW4 and SW6 need scoping before any build.
+
+- [ ] **SW7. P0, scope expanded from his own annotated screenshot, 4
+  November. The right rail's Reading panel (to be renamed Insight) is a
+  bigger rebuild than a bar swap.** Full ruling in `DECISIONS.md`, "The
+  right rail's Reading panel, ruled from his own screenshot, 4 November".
+  Five things, together:
+  - "Reading" heading becomes "Insight".
+  - The record's own name (shown as "Marcus" on a sample) comes off the
+    panel. His words: "the person already knows who they are."
+  - The dead Field block (By Weight/By Assemblage Point duplicate text,
+    Carrying/Filled in/Heaviest/Most shut) comes off. Already covered by
+    the `stackbuild` pull (`d5db0e55`) landing this same round; confirmed
+    independently in his own words this round too.
+  - "Held"/"opposite" column headers come off; the Fear/Trust-style rows
+    at the bottom become bars.
+  - **The five tabs (Child emotions, Saboteurs, Complexes, Hyper, Super)
+    stop being five flat panes and become one nested cascade, parent
+    through children**, open or closed at each layer. This is the real
+    scope change: a tab doesn't replace the view, it opens that layer and
+    nests the next one inside it.
+  - The summary box at the top stays, and is where `traceSummary()`'s
+    narration (pulled from `stackbuild` this round, `f0f1b999`/`585ed476`)
+    actually belongs, not only the drill screens it's wired into today.
+  `stackbuild`'s own rejected, entangled nested-tier commits are reference
+  for the mechanics, not something to pull as-is. Dispatched as a fresh,
+  properly scoped build against current main once the salvage pull lands.
+
+- [x] **SW7 closed. Built, PR #182, draft, held for his review.** All five
+  pieces above, plus every one of the voice check's bare-weight (CO-30)
+  findings inside this panel's own scope: the agent found that fixing them
+  needs a real node-state boundary it does not have yet, so it left every
+  weight bare rather than guess one, and the question below is what
+  unblocks that. Three calls it made against the ask, each with its reason
+  recorded on the PR: it kept `traceSummary()`'s own real parent/child
+  content in the summary box but dropped the paragraph's engine-talk
+  wrapper he rejected live; it moved Intention off this screen since it only
+  ever lived under Instruments, which he ruled cut; it added no bare
+  weights, 17 before and 17 after, same count as main. Tests: engine
+  6,879/0, functional 2,959/0, collide 398/0, design 193/0, locks 295/0,
+  stackname 18/0, funnel 760/0, boot 29/0, monitor clean, a 34/0 real-click
+  browser pass at both widths. The voice objections check fails the same
+  way it does on main (the 8 law-definition words PR #181 already fixes,
+  unmerged); not a regression here.
+  **Open, his call: where do the lines fall between open, impaired,
+  moderately impaired, heavily impaired and blocked?** Nothing prints those
+  words on a weight until that's ruled.
+
+- [x] **SW7 round 2, 5 November. Linear layout, same PR #182.** He looked at
+  round 1's cascade and sent back: "give me a linear layout, it's too
+  nested right now," a picture of the staircase. Fixed: every row, Super
+  through the child-emotion bars, starts at the same left edge regardless
+  of depth. Depth now shows as a fixed-width icon column next to each
+  row's open/close arrow, the same five icons the top tab bar already
+  uses for Child emotions/Saboteurs/Complexes/Hyper/Super, so a row's
+  layer is a glance, not a margin to count. Bars sit under the icon column
+  with no arrow of their own. One thing round 2 fixed along the way: a
+  bar's right-hand word was clipping at 1600 wide ("100%quanimity"); it
+  now truncates with its own ellipsis instead. Nothing else from round 1
+  moved. Tests: 36/0 real-click browser pass (the original 34 plus a new
+  check that every row in an open branch shares one left edge), engine
+  6,879/0, functional 2,959/0, collide 398/0, design 193/0, monitor
+  clean. Voice objections unchanged from main, still the 8 PR #181 words,
+  still zero new bare weights. Same open question as round 1: the five
+  node-state words' boundaries are still his to rule.

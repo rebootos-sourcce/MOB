@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2802 961efbba 2026-11-04 16:34"><head><meta charset="utf-8">
+<html lang="en" data-build="v2803 e5895b08 2026-11-05 02:04"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -3252,17 +3252,27 @@ body.punch .s-readbox,body.punch .s-out{background:var(--panel-2);border-color:t
  .sg-lead2>.sg-side>.sg-todo{order:2}
  .sg-lead2>.sg-col>.sg-story{order:3}
  .sg-lead2>.sg-side>.sg-drive{order:4}}
-/* THE PLATE ON ONE LINE where there is width for it. Name, then the band,
-   then where it goes, read left to right in the order the plate means them.
-   It stood as two rows with the band pushed to the far right and the middle
-   of the row empty, which spent a quarter of the first screen at 1600 on
-   three facts. */
-@media (min-width:1101px){
- .sg-who .s-plate{grid-template-columns:auto auto minmax(0,1fr);column-gap:32px}
- .sg-who .s-pl-l{grid-column:1;grid-row:1}
- .sg-who .s-pl-r{grid-column:2;grid-row:1}
- .sg-who .s-ptoward{grid-column:3;grid-row:1;margin-top:0;padding-left:28px;
-  border-left:1px solid var(--edge)}}
+/* THE PLATE IS THE NAME AND A SMALL RING NOW, two cells, not three. Ruled 3
+   November: the band and "where it goes" moved into .s-status beside the
+   drivers card (the information side), so the three column layout built for
+   name, band, where-it-goes over-reserved a third track nothing fills any
+   more. The base rule two tracks up, grid-template-columns:1fr auto, already
+   does the whole job at every width: the name grows, the ring stays its own
+   size next to it. */
+/* .s-status CARRIES WHAT THE PLATE USED TO. The same band markup (.s-pband,
+   .s-ptoward) at the top of the drivers column, plus the gift line, both
+   read exactly as they did on the plate, just here instead. */
+/* THE PLATE'S RING KEEPS THE 44PX TAP FLOOR even small and quiet. .cr.sm's
+   own padding (2px top and bottom, component.js) draws a 24px ring at about
+   28px tall, which tests/design.js's gate 8 catches on any surface, and the
+   plate's ring is a button (act:true, opens the core drill), not a passive
+   mark. Padding only, so the visible ring and pill stay exactly .cr.sm's own
+   size; the tap target grows around them. */
+.s-pl-r .cr.act{min-height:44px;min-width:44px;padding-top:10px;padding-bottom:10px}
+.s-status{display:flex;flex-direction:column;gap:10px;margin-bottom:4px}
+.s-status .s-pband{gap:2px}
+.s-status .s-ptoward{max-width:none;margin-top:0}
+.s-status .s-src{margin:0}
 /* TEXT A PERSON READS, AT THE READING SIZE. Measured on Diane at 1600 before
    this: 80 per cent of the visible characters on this page were under 16px,
    the house floor for body text, and that included their own words, every
@@ -3296,6 +3306,10 @@ body.punch .s-readbox,body.punch .s-out{background:var(--panel-2);border-color:t
 .sg-fold[open] .sg-chev{transform:rotate(180deg)}
 .sg-fold-b{padding:4px 16px 16px}
 .sg-fold-b .s-numer,.sg-fold-b .s-spirit,.sg-fold-b .s-ig{margin:0;padding:0;border:0}
+/* NUMEROLOGY, EXPOSED RATHER THAN FOLDED, 3 November: the same rule a fold
+   gives .s-numer (no second border under the zone's own heading) applies
+   where it now sits, a card's own first child, not just inside a fold. */
+.sg-z>.s-numer:first-of-type,.sg-card>.s-numer:first-of-type{margin-top:0;padding-top:0;border-top:0}
 .sum-start{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:none;margin-top:0}
 .sg-start .sum-start{grid-template-columns:1fr}
 .sg-start .sum-hero{margin-bottom:18px}
@@ -4837,9 +4851,16 @@ body.punch .ip.kid{background:color-mix(in srgb,var(--c) 68%,var(--panel-2))}
 .ab-cq span{font-size:11px;font-weight:600;color:var(--dim);display:block;margin-top:5px}
 .ab-say{flex:1 1 320px;font-size:16px;line-height:1.7;color:var(--mid);font-weight:300}
 .ab-say b{color:var(--ink);font-weight:600}
-.ab-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px}
-.ab-f{border:1px solid var(--edge);border-radius:var(--r);padding:14px 16px;background:var(--panel-2)}
-.ab-svg{width:100%;height:auto;display:block;margin:7px 0 4px}
+/* THE SIX CARDS AT THEIR REAL SIZE, not a box drawn for a cluster three
+   times bigger. 300px minmax put four of these on a 1476px-wide field (the
+   real measured width at a 1960px window, left rail present) and left the
+   small bubble clusters inside swimming in padding; 220px fits six, the same
+   count a wider window already showed, and the card and its svg shrink
+   together since the svg is width:100% of the card at a fixed aspect ratio.
+   Verified by measuring .ab-f and .ab-svg boxes live, not by eye. */
+.ab-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
+.ab-f{border:1px solid var(--edge);border-radius:var(--r);padding:10px 12px;background:var(--panel-2)}
+.ab-svg{width:100%;height:auto;display:block;margin:5px 0 3px}
 .ab-t{fill:var(--ink);font-family:var(--sans);font-weight:600}
 .ab-v{fill:var(--ink);font-family:var(--num);opacity:.6}
 .ab-s{font-size:12.5px;color:var(--dim);line-height:1.55}
@@ -4847,6 +4868,18 @@ body.punch .ip.kid{background:color-mix(in srgb,var(--c) 68%,var(--panel-2))}
 .ab-b{cursor:pointer}
 .ab-b:hover circle{opacity:.95}
 .ab-b.on circle{stroke-width:2.8}
+/* THE HEAVIEST LIST, 3 November, his own words on the screenshot: "this is
+   terrible layout. Compact this for to maximize space." .ad-rows is shared
+   with narrow drill cards elsewhere, where one column per row is right, so
+   this is scoped to the wide running-hot list alone and not the shared
+   class. Each row (.ad-r) is already a 3-column grid that fills whatever
+   width it is given, so putting more than one per line is the whole fix:
+   measured live, 1476px of real width held twelve 52px-tall full-width rows
+   with one address each and a blank gap most of a row wide between the name
+   and "expanding"; a 320px-minmax column puts four of those rows side by
+   side at that same width, and falls back to one column itself once the
+   field is narrower than 320px, phone included, with no breakpoint needed. */
+.ana-hot .ad-rows{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:2px 16px}
 .ana-laws{display:flex;gap:6px;align-items:flex-end;margin-top:11px;flex-wrap:wrap}
 .ana-lw{display:flex;flex-direction:column;align-items:center;gap:6px;width:44px;min-height:var(--tap)}
 .ana-lw s{text-decoration:none;display:flex;align-items:flex-end;height:60px}
@@ -4978,6 +5011,17 @@ body.punch .ip.kid{background:color-mix(in srgb,var(--c) 68%,var(--panel-2))}
 .ad-r span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
 .ad-r em{font-style:normal;font-size:12px;color:var(--heart)}
 .ad-r b{font-weight:500;color:var(--gold);font-family:var(--num);font-variant-numeric:tabular-nums}
+/* THE TRACE SUMMARY BLOCK, ui/tracesummaryui.js. "Feeds up" rows read like
+   ad-rows without the button (nothing here is clickable, it is a read, not
+   a control), and the narrated paragraph is set off as a quote so a person
+   can tell prose from the structured rows above it at a glance, the same
+   distinction the FIELD_REDESIGN_BRIEF asked the summary panel to keep. */
+.ts-rows{display:flex;flex-direction:column;gap:7px;margin:6px 0 2px}
+.ts-row{font-size:13.5px;color:var(--ink);padding:5px 6px;border-radius:var(--r-xs);background:var(--panel-2)}
+.ts-kind{font-size:11.5px;color:var(--dim);text-transform:lowercase}
+.ts-line{font-size:12.5px;color:var(--mid);margin-top:2px}
+.ts-why{font-size:12.5px;color:var(--dim);margin-top:2px;font-style:italic}
+.ad-p.ts-narr{border-left:2px solid var(--edge-2);padding-left:11px;color:var(--mid);font-style:italic}
 /* THE GATE ROWS' OWN VALUE, reached for the first time outside the gate
    drill when the Field's own Laws of Action rail section was added, 28
    October. gatesBlock (ui/drills.js) was already shipped and already
@@ -9162,8 +9206,20 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
          Games template. engine/core.js has the ruling in full. -->
     <button type="button" class="vt tabtop" data-tabk="4" aria-pressed="false" title="Analytics. Follow each pattern down to what holds it in place."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 20V10M11 20V4M17.5 20v-7"/></svg><span class="n">Analytics</span></button>
    </div>
-   <div class="tabgrp" data-sec="flow" role="group" aria-label="Flow"><span class="tabgrp-hd" aria-hidden="true">Flow</span>
-    <button type="button" class="vt tabtop" data-tabk="10" aria-pressed="false" title="Ritual. Build a ritual, do it, and see what you kept."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.4c.9 2.9 4.6 4.9 4.6 9.3a4.6 4.6 0 0 1-9.2 0c0-2.3 1.1-3.7 2.3-4.8.3 1.5 1 2.4 2 2.7-.5-2.8 0-5.1.3-7.2z"/><path d="M8 21h8"/></svg><span class="n">Ritual</span></button>
+   <!-- FLOW'S ONE DOOR, 3 November. His words: "When I click on flow, it
+        should automatically take me to ritual. I shouldn't have a sub menu
+        that says ritual. Just like discover goes straight to story." Same
+        fact as Discover's block above, door:'section' in engine/core.js:
+        Flow has one real tab, Ritual, so the section button is the door and
+        the row under it shows no second door above the phone width. The
+        tabgrp-hd header is gone for the same reason Discover's never had
+        one: a word under a button already reading that section would be
+        Flow's name printed as a heading over a button that still reads
+        Ritual, which is not what he asked for either. On a phone the section
+        buttons leave the bar and this becomes the menu's line for Flow,
+        reading Ritual, same as Discover's line reads Discover. -->
+   <div class="tabgrp" data-sec="flow" data-door="section" role="group" aria-label="Flow">
+    <button type="button" class="vt tabtop" data-tabk="10" data-door="section" aria-pressed="false" title="Ritual. Build a ritual, do it, and see what you kept."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.4c.9 2.9 4.6 4.9 4.6 9.3a4.6 4.6 0 0 1-9.2 0c0-2.3 1.1-3.7 2.3-4.8.3 1.5 1 2.4 2 2.7-.5-2.8 0-5.1.3-7.2z"/><path d="M8 21h8"/></svg><span class="n">Ritual</span></button>
     <!-- ACCOUNTABILITY HAS NO BUTTON, round QF. It is the right column of the
          Ritual page, not a page beside it: "Right side of the menu is for the
          accountability tracker." Integer 14 is folded onto 10 in core.js, so
@@ -14155,7 +14211,7 @@ var KB_RENAME={"descent":"Sacrifice","connection":"Love","exchange":"Communicati
    collapse from the other side. Intention opens on what you meant against
    what you still do, which is the reading intentionRead makes. */
 var GLOSS=[{"t":"Address","d":"One exact place in your body where a pattern sits. Every pattern has one. Release works at that place in the body, not on your thoughts."},{"t":"Allostatic load","d":"The wear on your body from stress that keeps switching on and never fully switches off. It builds up like interest on a debt nobody paid. In this model, release brings it down by working on the addresses where that stress is held. This instrument does not measure it."},{"t":"Archetype","d":"One of 12 kinds of character you are born with. Domains feed your blueprint, and your blueprint splits into the twelve archetypes, each its own step. An archetype has no address of its own, so there is nothing at one place to release. Release work changes where a pattern points, not what the archetype is."},{"t":"Ascension","d":"When the world around you, and your own feelings, stop steering you. Things lose their grip because your survival patterns have stopped giving the orders. It is a way of running, not a finish line, so no number of releases counts you in."},{"t":"Attention","d":"Where you point your mind. It comes two ways: wide, taking everything in, or narrow, fixed on one thing. Attention steers. Will pushes."},{"t":"Aura","d":"A field around the body, said to come from the state of your nerves. This instrument does not measure it, and neither does any other. Living tissue does give off a very faint light, from ordinary cell chemistry, but nobody has shown that light carries the state of your nerves. The word stays as a way to talk about how other people feel you, not as a reading."},{"t":"Awareness","d":"How far open the soul's window is. The wider it opens, the more of what is really there you take in."},{"t":"Biophoton field","d":"Very faint light given off by living tissue, too faint for your eyes to see. It is real, and labs have measured it since the 1950s. It comes from the cells' normal chemistry, not from the state of your nerves. This product does not claim it carries the aura, and nothing in the instrument reads it."},{"t":"Chakra","d":"A seat. In this model, a field you cannot touch, made by a bundle of nerves. There are seven, from the base of the spine to the top of the head, though that exact count is a modern Western idea from 1927; older traditions count five, six, eight or more. The word is kept because the work is done in it, not because anyone has measured one."},{"t":"Charge","d":"Survival energy stuck at one place in the body. It gets stuck when a stress reaction starts and never gets to finish. When your attention reaches it, it feels like heat, pressure, tingling or weight."},{"t":"Clair","d":"A sense beyond the five: seeing, hearing, feeling or knowing something without eyes, ears, skin or working it out. The names are clairvoyance, clairaudience, clairsentience and claircognizance, and there are others. Soma breaks them apart. Clear the soma and they work together."},{"t":"Coherence","d":"When what you mean, what you do and what your body does all point the same way, with fewer parts of you pulling against each other. The instrument works it out from your answers. It does not measure your body. CQ is its number."},{"t":"Replacement state","d":"The quality a pattern was blocking, installed at the same address once the charge there is released. Where fear was held, trust. It shows up in what you do, what you feel and what your body does. It is not a general good feeling. It is the one quality this pattern kept out."},{"t":"Consciousness","d":"Energy that carries information, and you meet it two ways. At its widest it has no edges and no focus: infinite consciousness. At its narrowest it is you, aware, in one place. The same thing, seen through a wide opening or a small one."},{"t":"CQ","d":"Coherence Quotient. It reads your integrity and nothing else. You answer questions on the 21 Laws of Moral Integrity, each scored 0 to 10, and CQ adds them up, out of 210. Nothing else goes into it. It starts at 0 and fills as you answer. The shadow never pulls it down. The shadow pulls on how you come across instead."},{"t":"Distortion","d":"What happens to what you mean when it passes through places in the body that carry charge. The message leaves whole and comes out bent, like a straight stick that looks bent in water. It is a word for that bending and not a separate number: it used to be the same reading as SQ under a second name."},{"t":"DQ","d":"Decoherence, the shadow number. All the weight held at the 108 addresses in the body plus the 4 field anchors just outside it, added up, against the most they could hold. A high DQ reads as energy spent holding up parts of you that pull against each other."},{"t":"Drag","d":"Everything slowing your willpower down, added together. Charge at your addresses and the saboteurs running on it pull on the link between mind, body and spirit, like a heavy bag. The instrument works it out from what you enter. It does not measure your muscles or any inflammation. In this model, drag is why willpower runs out."},{"t":"Earth Star","d":"A point just outside the body, at the centre between your feet. It holds you to the ground the way an anchor holds a boat."},{"t":"Ego","d":"The mind stuck to the body. It is never quite here: it flips between thinking and feeling to get through the day, and fear does the steering. The ego is the mask your character wears. It is your DQ, every SQ that is running, and every pattern and every kind of awareness that comes with living as a body, all added up."},{"t":"Fetter","d":"A named pattern that sits at one address and fires when something matches it. There is one at every address, 112 in all: the ones in the body, plus four just outside it, two above the head and two below the feet. It fires when the match arrives, however long ago it was put there."},{"t":"Five paths","d":"Five ways into the work, each named for a teacher. Krishna, flow. Buddha, awareness. Christ, the body. Rama, alignment. Lao Tzu, the horizontal. All five end at the same Source, and the Anchor Principle runs under all of them."},{"t":"Hardened mask","d":"The part of what life taught you that does not wear off with time or with a big change in your life. In this model, release at the address is what clears it. That is the model's claim. Nothing here has measured it. Habits you keep going by repeating them are different: a change in your life can clear those on its own."},{"t":"Hyper-complex","d":"A named group of saboteurs that run together as one. Heavier than a single saboteur, because each pattern in the group keeps the others going."},{"t":"Integrity","d":"How closely you keep the 21 Laws of Moral Integrity, and the first part of your coherence. It lifts your nervous system by keeping you inside your own moral lines, the way a ship's hull has to be whole, a hundred percent, or the water gets in. CQ is its number."},{"t":"Intention","d":"What you meant to do, and how much of it you still do when a strong feeling rises. It is part willpower, part wanting, part drive. Moving toward something feels good. If you have not picked what you want, avoiding things takes its place."},{"t":"Justification mechanic","d":"The way the body protects its own patterns. Blaming, changing the subject and making excuses are a tag fighting back, the way your body fights a germ. The body guards the pattern because the truth feels too hard to face. Narcissism is this, turned all the way up."},{"t":"Karma","d":"What your thoughts and actions send out into the world, and what comes back to you because of them. It goes round, like an echo. It comes back so you can learn the lesson, get past it, and send it on so it never comes back again. Karma is cause and effect, bouncing between you and the world."},{"t":"Kosha","d":"One of six layers that everything you live through passes through, like light through six panes of coloured glass. The six are the body, energy, the mind, wisdom, bliss and language. Each one changes what passes through it."},{"t":"Kundalini","d":"Life energy stored at the base of the spine. It rises from there to the top of the head once enough addresses along the way are cleared, the way water runs once a pipe is unblocked."},{"t":"Letting go","d":"The release protocol. It does two things, in order. First it lowers the charge at an address. Then, while that place is still open, it installs the quality the pattern was blocking. An affirmation does only the second and skips the first."},{"t":"Limiting belief","d":"A tag that squeezes something big you lived through into a small label. Every time you say I am this, you make one. That is how labels work, not a judgment on you. The label is always smaller than what happened."},{"t":"Mask","d":"Built up distortion that has started to pass for who you are. It is what most people call their personality: patterns stored at addresses in the body, firing the way life trained them to. The mask is not who you are."},{"t":"Memory","d":"What is left when a vritti is taken as yours: what came in through your senses and your feelings, named as yours and stored in the body."},{"t":"Merkaba","d":"A spinning shape made of energy, used in the release protocol. Its top half spins left and its bottom half spins right. Spinning against each other, they shake up the flow at an address, and that opens it for release."},{"t":"Node","d":"Another word for an address: one exact place on the body's energy map. There are 112. Most are in the body. Four sit just outside it: the Earth Star, centred between your feet, the Gaia Gateway below it, the Sol Star just above your head, and the Stellar Gateway above that."},{"t":"Ojas","d":"A Sanskrit word meaning vigour: life energy that builds up in meditation and wraps around you like a cocoon, spinning on its own to wake the nervous system and let stress out. It is also the protocol for an address too dense or too numb to feel, stage 4 or stage 5, bringing back enough feeling there for release to start."},{"t":"Perception","d":"How you take in what is around you and make sense of it. It turns raw energy into pictures, words and feelings you can understand."},{"t":"Plexus","d":"A bundle of nerves you could find in the body, like the solar plexus behind your stomach. The plexus is the wiring. The chakra is the field the wiring gives off. Trouble in the nerves shows up as trouble in the chakra."},{"t":"Presence","d":"How much of you other people can feel when you walk into a room."},{"t":"Primary node","d":"The main address carrying charge in a group of addresses around it. Clear it and the ones around it let go on their own. Work on the others without finding it, and only part of the charge comes out."},{"t":"Pure perception","d":"All the clairs working together, with nothing bending them. Thoughts still come. What changes is that every sense is open at once and they agree. It opens up as the soma gets lighter and the walls between the clairs come down."},{"t":"Reading-as-release","d":"Release that happens by reading. You read a Letting Go sequence, written the right way, and the body releases at the place the sequence names. Nothing to picture in your head. Reading the lines does both steps."},{"t":"Release","d":"Stored charge leaving the body through the nerves. You can feel it and see it: heat, shaking, tears, a change in your breathing. The pattern loses what was powering it."},{"t":"Resistance","d":"All the drag added together: the charge held at every address, made heavier or lighter by what your stories show, pushing back against the signal moving through you. The instrument works it out from what you enter. It does not measure inflammation or anything else in your body. Release brings it down by lowering the charge it is made of. It does not change your CQ, which is the laws alone."},{"t":"Saboteur","d":"One of 33 named patterns of behavior, each one a fetter squeezed into a habit you keep repeating. Each has its own belief, its own place in the body and its own feeling."},{"t":"Self-unraveling state","d":"When enough gates have cleared, the body starts releasing by itself. The soma lets go without you running the protocol. This is how you know a release session worked: the body keeps releasing on its own, and not only the one address you worked on."},{"t":"Signal chain","d":"The loop everything runs through, every moment. It starts in the field of awareness around you and goes through your senses, your nerves, your brain, your thinking, how it relates to you, the three axes, your feelings, the rules you were raised with, the koshas and your archetypes, then back out to the field."},{"t":"Soma","d":"The field of energy your nervous system gives off, set by the state it is in. As soma builds up it becomes load, like weight in a backpack. Where soma fields overlap they break up what you can perceive and make walls your awareness cannot see through."},{"t":"Sol Star","d":"A point just above the top of your head. It is where you reach past your body and open out to the field around you."},{"t":"Source","d":"The field as it is before any pattern is put in. The bedrock under everything else. What is left when every pattern is cleared."},{"t":"Superego","d":"The part of the mind that guards what you were told. It is made of the stories and rules an adult handed down to you. It sits on the surface and protects those beliefs. The ego goes deeper, because the ego lives in the body."},{"t":"Tag","d":"The moment something that hit you hard gets a name and gets stored at an address. The name locks it in. From then on the body watches for anything that matches, and when it finds one, the pattern stored there fires."},{"t":"Two mechanics","d":"The two steps a full release needs, in this order. First, Release: the charge at the address goes down. Second, Embodied Truth: while the address is open, the quality the pattern was blocking is installed. Do the first without the second and the address is left with nothing to run instead."},{"t":"Vritti","d":"A ripple of what you sense and what you feel, coming in from outside. It travels along your nerves to your brain, where it is put together and noticed. Once you take it as yours, the vritti is what caves in the nerve, the chakra and your field of awareness."},{"t":"Willpower","d":"How much push you have to spend, not a kind of person. It works like a battery: sleep charges it, and pushing through resistance drains it. Release the charge stuck in your body and the drag drops, so willpower goes up. It has no reading of its own; what drags on it shows up as Resistance, which is already read."}];
-var HARM=[{"c":"E01","t":"All Is One","a":"nature","ch":"Chapter 19"},{"c":"E02","t":"All Is Motion","a":"nature","ch":"Chapter 19"},{"c":"E03","t":"Polarity","a":"nature","ch":"Chapter 19"},{"c":"E04","t":"All Fields Correspond","a":"nature","ch":"Chapter 19"},{"c":"E05","t":"Like Fields Attract","a":"nature","ch":"Chapter 19"},{"c":"E06","t":"Inspired Action","a":"nature","ch":"Chapter 19"},{"c":"E07","t":"Transmutation","a":"nature","ch":"Chapter 19"},{"c":"E08","t":"Cause & Effect","a":"nature","ch":"Chapter 19"},{"c":"E09","t":"Compensation","a":"nature","ch":"Chapter 19"},{"c":"E10","t":"Potential","a":"nature","ch":"Chapter 19"},{"c":"E11","t":"Relativity","a":"nature","ch":"Chapter 19"},{"c":"E12","t":"Rhythm","a":"nature","ch":"Chapter 19"},{"c":"E13","t":"Gender","a":"nature","ch":"Chapter 19"},{"c":"E14","t":"Form","a":"human","ch":"Chapter 19"},{"c":"E15","t":"Archetype","a":"human","ch":"Chapter 19"},{"c":"E16","t":"Biofield","a":"human","ch":"Chapter 19"},{"c":"E17","t":"Attunement","a":"human","ch":"Chapter 19"},{"c":"E18","t":"Perception","a":"human","ch":"Chapter 19"},{"c":"E19","t":"Intelligence","a":"human","ch":"Chapter 19"},{"c":"E20","t":"Pleasure & Pain","a":"human","ch":"Chapter 19"},{"c":"E21","t":"The Three Axes","a":"human","ch":"Chapter 19"},{"c":"E22","t":"Symbol","a":"human","ch":"Chapter 19"},{"c":"E23","t":"Identity","a":"human","ch":"Chapter 19"},{"c":"E24","t":"Choice","a":"human","ch":"Chapter 19"},{"c":"E25","t":"Ego","a":"human","ch":"Chapter 19"},{"c":"E26","t":"Intention","a":"human","ch":"Chapter 19"},{"c":"E27","t":"Action","a":"human","ch":"Chapter 19"},{"c":"E28","t":"Memory","a":"human","ch":"Chapter 19"},{"c":"E29","t":"Truth","a":"spirit","ch":"Chapter 19"},{"c":"E30","t":"Transparency","a":"spirit","ch":"Chapter 19"},{"c":"E31","t":"Unity","a":"spirit","ch":"Chapter 19"},{"c":"E32","t":"Awareness","a":"spirit","ch":"Chapter 19"},{"c":"E33","t":"Presence","a":"spirit","ch":"Chapter 19"},{"c":"E34","t":"Equanimity","a":"spirit","ch":"Chapter 19"},{"c":"E35","t":"Compassion","a":"spirit","ch":"Chapter 19"},{"c":"E36","t":"Forgiveness","a":"spirit","ch":"Chapter 19"},{"c":"E37","t":"Courage","a":"spirit","ch":"Chapter 19"},{"c":"E38","t":"Temperance","a":"spirit","ch":"Chapter 19"},{"c":"E39","t":"Duty","a":"spirit","ch":"Chapter 19"},{"c":"E40","t":"Accountability","a":"spirit","ch":"Chapter 19"},{"c":"E41","t":"Justice","a":"spirit","ch":"Chapter 19"},{"c":"E42","t":"Non-Harm","a":"spirit","ch":"Chapter 19"},{"c":"E43","t":"Responsibility","a":"spirit","ch":"Chapter 19"},{"c":"E44","t":"Humility","a":"spirit","ch":"Chapter 19"},{"c":"E45","t":"Generosity","a":"spirit","ch":"Chapter 19"},{"c":"E46","t":"Detachment","a":"spirit","ch":"Chapter 19"},{"c":"E47","t":"Patience","a":"spirit","ch":"Chapter 19"},{"c":"E48","t":"Aesthetic Beauty","a":"spirit","ch":"Chapter 19"},{"c":"E49","t":"Nature","a":"spirit","ch":"Chapter 19"},{"c":"E50","t":"Peace","a":"express","ch":"Chapter 19"},{"c":"E51","t":"Play","a":"express","ch":"Chapter 19"},{"c":"E52","t":"Curiosity","a":"express","ch":"Chapter 19"},{"c":"E53","t":"Creativity","a":"express","ch":"Chapter 19"},{"c":"E54","t":"Flow","a":"express","ch":"Chapter 19"},{"c":"E55","t":"Wonder","a":"express","ch":"Chapter 19"},{"c":"E56","t":"Order","a":"express","ch":"Chapter 19"},{"c":"E57","t":"Love","a":"express","ch":"Chapter 19"},{"c":"E58","t":"Purpose","a":"express","ch":"Chapter 19"},{"c":"E59","t":"Will","a":"express","ch":"Chapter 19"},{"c":"E60","t":"Fear · Safety","a":"emotion","ch":"Chapter 19"},{"c":"E61","t":"Anger · Calm","a":"emotion","ch":"Chapter 19"},{"c":"E62","t":"Shame · Worth","a":"emotion","ch":"Chapter 19"},{"c":"E63","t":"Disgust · Acceptance","a":"emotion","ch":"Chapter 19"},{"c":"E64","t":"Apathy · Joy","a":"emotion","ch":"Chapter 19"},{"c":"E65","t":"Shock","a":"emotion","ch":"Chapter 19"},{"c":"E66","t":"Sad · Happy","a":"emotion","ch":"Chapter 19"},{"c":"E67","t":"Surprise","a":"emotion","ch":"Chapter 19"},{"c":"E68","t":"Anticipation","a":"emotion","ch":"Chapter 19"},{"c":"E69","t":"Physical","a":"measure","ch":"Chapter 19"},{"c":"E70","t":"Intellectual","a":"measure","ch":"Chapter 19"},{"c":"E71","t":"Emotional","a":"measure","ch":"Chapter 19"},{"c":"E72","t":"Wisdom","a":"measure","ch":"Chapter 19"},{"c":"E73","t":"Adversity","a":"measure","ch":"Chapter 19"},{"c":"E74","t":"Coherence","a":"measure","ch":"Chapter 19"},{"c":"E75","t":"Meta- Awareness","a":"meta","ch":"Chapter 19"},{"c":"E76","t":"Coherence","a":"meta","ch":"Chapter 19"}];
+var HARM=[{"c":"E01","t":"All Is One","a":"nature","ch":"Chapter 19","d":"One field. One source. Every apparent separation is a signal distortion, the field reading itself through a loaded nervous system."},{"c":"E02","t":"All Is Motion","a":"nature","ch":"Chapter 19","d":"Nothing is still. Frequency is the structural material of reality. The stillness you perceive is your nervous system's bandwidth limit."},{"c":"E03","t":"Polarity","a":"nature","ch":"Chapter 19","d":"Every peak has an equal valley. The field explores itself through contrast. There is no escaping polarity, only learning to hold both ends without being run by either."},{"c":"E04","t":"All Fields Correspond","a":"nature","ch":"Chapter 19","d":"The outer world is a readout. What you carry inside is being displayed outside. The pattern repeats at every scale."},{"c":"E05","t":"Like Fields Attract","a":"nature","ch":"Chapter 19","d":"Resonant frequencies converge. This is not motivational law of attraction. It is physics. Like organizes with like at every scale."},{"c":"E06","t":"Inspired Action","a":"nature","ch":"Chapter 19","d":"Attraction generates contact. Contact generates creation. Inspired Action is not motivation, it is what happens at the moment of genuine resonance."},{"c":"E07","t":"Transmutation","a":"nature","ch":"Chapter 19","d":"Energy doesn't disappear. It changes state. The friction that feels like obstruction is refinement in process."},{"c":"E08","t":"Cause & Effect","a":"nature","ch":"Chapter 19","d":"Every motion propagates. The body registers this before the mind admits it. Karma is not spiritual, it is mechanical."},{"c":"E09","t":"Compensation","a":"nature","ch":"Chapter 19","d":"The field self-corrects. For every deviation, an equal return toward center. This is not justice, it is equilibrium."},{"c":"E10","t":"Potential","a":"nature","ch":"Chapter 19","d":"All form exists first as possibility. Awareness selects it. Desire activates it. What you cannot see or want cannot materialize."},{"c":"E11","t":"Relativity","a":"nature","ch":"Chapter 19","d":"Nothing has meaning outside of contrast. Cold is only cold next to warm. This is not relativism, it is how perception works."},{"c":"E12","t":"Rhythm","a":"nature","ch":"Chapter 19","d":"Everything breathes. Expansion and contraction. The upward spiral and the downward. Fighting the cycle compounds the charge."},{"c":"E13","t":"Gender","a":"nature","ch":"Chapter 19","d":"Active and receptive forces generate new form. Not social identity, generative polarity. Masculine and feminine as charge and field."},{"c":"E14","t":"Form","a":"human","ch":"Chapter 19","d":"Geometry precedes biology. Structure arrives before meaning. Before the nerve fires, the template already exists."},{"c":"E15","t":"Archetype","a":"human","ch":"Chapter 19","d":"The templates precede their expressions. Tree. Rock. Planet. Warrior. Lover. Sage. These are not metaphors, they are structural blueprints the field organizes through."},{"c":"E16","t":"Biofield","a":"human","ch":"Chapter 19","d":"The cells generate a field. The nervous system organizes it. The SFN, Soma Field Network, is the continuous interior medium that carries the voltage between deep nodes and the surface. Blocked SFN attenuates the signal. Cleared SFN restores it. The dermis recharges on its own once the supply is restored."},{"c":"E17","t":"Attunement","a":"human","ch":"Chapter 19","d":"Soul attunes to the heart first. Like attracts like at the frequency level. How spirit enters a body without distorting it on arrival. Attunement is embodiment. Once attuned, fully embodied."},{"c":"E18","t":"Perception","a":"human","ch":"Chapter 19","d":"The six senses are measurement instruments. The quality of what they return depends entirely on the clarity of the field receiving the signal. A loaded node distorts the incoming read before it reaches awareness."},{"c":"E19","t":"Intelligence","a":"human","ch":"Chapter 19","d":"The mind organizes what the senses receive. When nodes are loaded, the organizing narrows. As nodes clear, intelligence expands, not from adding information, but from removing interference."},{"c":"E20","t":"Pleasure & Pain","a":"human","ch":"Chapter 19","d":"The primordial binary. Cortisol or dopamine, contract or expand, safe or unsafe. Fires before thought, before identity, before choice. Given the same stimulus and the same soma state, it fires the same way every time until the soma state changes. The switch reads binary. One or zero, expand or contract, yes or no. Not good and evil. What sets the wiring is conditioning held in the soma, which is why one stimulus reads as threat in one body and as nothing in the next. Morality is not here. Morality is the Laws of Spiritual Integrity layer, and it is mechanical there too. The switch is upstream of all of it."},{"c":"E21","t":"The Three Axes","a":"human","ch":"Chapter 19","d":"Every signal routes through three axes: Aware or Ignorant, Detached or Attached, Intentional or Avoidant. The three lower poles are pride, anger, and greed, the three poisons. They hijack the axes before clean intention can work. The three upper poles are their replacement states, installed at the same address."},{"c":"E22","t":"Symbol","a":"human","ch":"Chapter 19","d":"We name what we perceive. The name becomes the carrier. Language is compressed symbolic encoding of archetypal reality, and it cuts in both directions."},{"c":"E23","t":"Identity","a":"human","ch":"Chapter 19","d":"Which symbols you attach to. How consciousness locates itself in a story. Necessary for navigation. Distorting when it hardens into defense."},{"c":"E24","t":"Choice","a":"human","ch":"Chapter 19","d":"The first law where the pattern can be interrupted. Everything upstream, Vibration through Identity, runs largely without your permission. Here it can be redirected."},{"c":"E25","t":"Ego","a":"human","ch":"Chapter 19","d":"Ego is not prior to choice. It is built by repeated choices made through Identity. The adaptive character. Useful as instrument. Distorting as master."},{"c":"E26","t":"Intention","a":"human","ch":"Chapter 19","d":"Focused will. Tells energy where to go. One of the two main variables in the coherence formula. Without integrity pointing the same direction, it creates distortion rather than form."},{"c":"E27","t":"Action","a":"human","ch":"Chapter 19","d":"Where reality gets changed. Incoherent action generates new charge. Coherent action resolves charge and stabilizes flow. Every action registers in Memory before you take it."},{"c":"E28","t":"Memory","a":"human","ch":"Chapter 19","d":"The body's record of the quality of every action. Not psychological, biological. The nerve registers the intent before the act occurs. This is what the Release Protocol works at."},{"c":"E29","t":"Truth","a":"spirit","ch":"Chapter 19","d":"The body knows before the mind admits it. Truth maintains coherence. Deception degrades it, before the lie leaves the mouth, the nervous system is already producing the stress response."},{"c":"E30","t":"Transparency","a":"spirit","ch":"Chapter 19","d":"Nothing hidden. Hiddenness has a cost, the body maintains vigilance to protect what is concealed. That is voltage being spent on maintenance instead of signal."},{"c":"E31","t":"Unity","a":"spirit","ch":"Chapter 19","d":"The field is not divided. Division is a perception created by Identity and Ego. Unity is the accurate read. Behavior that enforces separation does so against the actual structure of reality."},{"c":"E32","t":"Awareness","a":"spirit","ch":"Chapter 19","d":"The capacity to be with what is without becoming it. Becoming it lodges it. The pattern seen is not the pattern run."},{"c":"E33","t":"Presence","a":"spirit","ch":"Chapter 19","d":"Full occupancy of the moment. The ground the other laws stand on. Rumination abandons it backward, rehearsal abandons it forward."},{"c":"E34","t":"Equanimity","a":"spirit","ch":"Chapter 19","d":"Staying level. Presence is being here. Equanimity is remaining even here. Evenness of mind as the condition you work from, not the reward."},{"c":"E35","t":"Compassion","a":"spirit","ch":"Chapter 19","d":"Recognition of suffering in self and other, and movement toward it. Equal regard as action, in both directions. Love and Compassion are synonymous in this layer."},{"c":"E36","t":"Forgiveness","a":"spirit","ch":"Chapter 19","d":"Release of stored charge against a specific person, self included. Not condoning. Unbinding. A release elevated to law."},{"c":"E37","t":"Courage","a":"spirit","ch":"Chapter 19","d":"Not the absence of fear. The act of moving through it. Each time you take the coherent action despite the contraction, the nervous system re-learns. Fear turns down. Courage turns up. Gate-governor pair with Temperance. Courage rules the aversion door."},{"c":"E38","t":"Temperance","a":"spirit","ch":"Chapter 19","d":"Self-control as the governed appetite. Regulation, not abstinence. Blocks the cascade where pleasure turns to overindulgence, then obsession. Gate-governor pair with Courage. Temperance rules the desire door."},{"c":"E39","t":"Duty","a":"spirit","ch":"Chapter 19","d":"The word you gave. To yourself or to others. When Duty breaks, self-trust fragments. When it holds, coherence stabilizes. Not moral virtue, energetic maintenance. Carries Right Relation. Each relationship given its correct form, the web of obligation kept clean."},{"c":"E40","t":"Accountability","a":"spirit","ch":"Chapter 19","d":"Claiming what is yours in both arenas. Responsibility is ownership of your own field, the patterns and the charge. Accountability is ownership of cause and consequence in the shared world. Answering for impact, not intention."},{"c":"E41","t":"Justice","a":"spirit","ch":"Chapter 19","d":"Right-dealing. Giving each their due, self included. The law-form of the Justice domain."},{"c":"E42","t":"Non-Harm","a":"spirit","ch":"Chapter 19","d":"Ahimsa. The conduct floor. Deliberate minimizing of damage in thought, word, and act. Doubles as the practitioner ethics law."},{"c":"E43","t":"Responsibility","a":"spirit","ch":"Chapter 19"},{"c":"E44","t":"Humility","a":"spirit","ch":"Chapter 19","d":"Accurate self-measure. Neither inflation nor collapse. Contains Self-Examination as its practice, the honest score faced on schedule. Carries the stance of standing before the larger."},{"c":"E45","t":"Generosity","a":"spirit","ch":"Chapter 19","d":"Giving as circuit, not transaction. Contains Gratitude as the receiving stroke. Recognition of what has been received restores flow, and the loop closes when the gift lands."},{"c":"E46","t":"Detachment","a":"spirit","ch":"Chapter 19","d":"Nishkama karma. Act fully, release the fruits. Full intention, zero clinging to outcome."},{"c":"E47","t":"Patience","a":"spirit","ch":"Chapter 19","d":"Right timing against forcing. Sustained attention against scattering. The two failure poles, the outcome demanded now and attention fragmenting."},{"c":"E48","t":"Aesthetic Beauty","a":"spirit","ch":"Chapter 19","d":"Order reduces the load on thinking. A noisy environment agitates the nervous system and drains signal. Not aesthetics as preference, aesthetics as nervous system regulation."},{"c":"E49","t":"Nature","a":"spirit","ch":"Chapter 19","d":"The body evolved inside natural rhythms. Alignment with those rhythms restores coherence. Departure introduces chronic low-level dysregulation, background noise the system cannot locate or release. Carries the stance that the real is not inventory. The world not treated as a resource."},{"c":"E50","t":"Peace","a":"express","ch":"Chapter 19","d":"The ninth law and the root. The zero point the other eight depart from. Equanimity, stillness of mind and body, the settled ground the table rises from. When peace meets resistance, will drags down, and everything above it drags with it. Every expression draws from a foundation of settled ground."},{"c":"E51","t":"Play","a":"express","ch":"Chapter 19","d":"Open exploration without agenda. The childlike state. When this law is running, you are learning from everything you touch. When it isn't, you are defending against it."},{"c":"E52","t":"Curiosity","a":"express","ch":"Chapter 19","d":"The pull toward the unknown without immediate fear collapse. What moved you before you knew what fear was. It keeps perception expanding. This is why you picked up this book."},{"c":"E53","t":"Creativity","a":"express","ch":"Chapter 19","d":"Novel pattern generation. Consciousness remixing itself. Turning raw feeling into pattern. Insight into form. Not inspiration, the nervous system doing what it does when it isn't defending."},{"c":"E54","t":"Flow","a":"express","ch":"Chapter 19","d":"Awareness and action synchronizing without excessive interference. The work and the worker become one event. Resistance drops. Productivity is a side effect."},{"c":"E55","t":"Wonder","a":"express","ch":"Chapter 19","d":"The drive to create something wonderful for another. Building a house, painting, making music, cooking food. If the work is for somebody else, the maker is trying to create wonder, and that is the whole point of beauty. Not manufactured, the natural output of Play, Curiosity, Creativity, and Flow working together."},{"c":"E56","t":"Order","a":"express","ch":"Chapter 19","d":"The metaphysical becoming physical. Without Order, Beauty stays private. With Order, it becomes something others can use. The bridge between perceiving higher pattern and making it transmissible."},{"c":"E57","t":"Love","a":"express","ch":"Chapter 19","d":"Maximum positive charge. The only frequency that transmutes all others. Not sentiment. The frequency a fully coherent system runs on. When you reach here, it is not performance."},{"c":"E58","t":"Purpose","a":"express","ch":"Chapter 19","d":"The aim a life orients around. Not what the maker produces per act, that is Wonder. Purpose is the standing vector, the target every act is aimed at across the whole. Will carries it. Intention aims it moment to moment. Purpose names what the aiming is for."},{"c":"E59","t":"Will","a":"express","ch":"Chapter 19","d":"Sustained application of directed energy through resistance over time. Not force. The reconditioned nerve responding to what is true. Two steps forward, one step back. Account for it. Do the better thing. Separate from the expressions. Always a directed force."},{"c":"E60","t":"Fear · Safety","a":"emotion","ch":"Chapter 19","d":"The most fundamental contraction. Lumbar Plexus, L1-L4. The track is: I am stuck. I am trapped. The nerve is running a survival program. The node is not a feeling, it is a structural event."},{"c":"E61","t":"Anger · Calm","a":"emotion","ch":"Chapter 19","d":"Compressed will. Solar Plexus / Celiac Plexus. The track is: This is wrong. Move. Anger is the signal that a boundary has been crossed. Calm is what remains when the compressed will finds its outlet."},{"c":"E62","t":"Shame · Worth","a":"emotion","ch":"Chapter 19","d":"The deepest collapse. Pudendal Nerve. The track is: I am not worthy. Not a thought, a nerve address. The node predates language."},{"c":"E63","t":"Disgust · Acceptance","a":"emotion","ch":"Chapter 19","d":"Sacral plexus and dermis, front-to-back. The track is: Things are not as they should be. Rejection of what is present. The coherent pole is not agreement, it is the capacity to receive without resistance."},{"c":"E64","t":"Apathy · Joy","a":"emotion","ch":"Chapter 19","d":"Shoulder girdle and throat, the coupled will system. When this axis is blocked the track is: What is the point. Not depression, resignation. Joy is not happiness. It is aliveness."},{"c":"E65","t":"Shock","a":"emotion","ch":"Chapter 19","d":"Full skin surface, the dermis. The track is: This should not be happening. The system flooded faster than it can process. Coherent pole pending confirmation."},{"c":"E66","t":"Sad · Happy","a":"emotion","ch":"Chapter 19","d":"Inferior anterior cardiac nerves, the superficial cardiac plexus. The track is: I cannot have what I want. Sad and Happy are the same axis at opposite ends. Sadness is the signal of perceived loss. Happiness is the restoration of what was already present. Grief runs on this axis. It is Sad at depth, not a separate signal."},{"c":"E67","t":"Surprise","a":"emotion","ch":"Chapter 19","d":"Distinct from Anticipation. The unexpected arriving before the system has framed it. Somatic address and coherent pole pending confirmation."},{"c":"E68","t":"Anticipation","a":"emotion","ch":"Chapter 19","d":"Distinct from Surprise. The system leaning toward what is coming. Somatic address and coherent pole pending confirmation."},{"c":"E69","t":"Physical","a":"measure","ch":"Chapter 19","d":"The body as hardware. Density, vitality, embodiment. What coherence runs through. Named. Not yet separately measured."},{"c":"E70","t":"Intellectual","a":"measure","ch":"Chapter 19","d":"Depth, clarity, structure. The capacity to organize what perception brings in. Named. Not yet separately measured."},{"c":"E71","t":"Emotional","a":"measure","ch":"Chapter 19","d":"Width and quality. Awareness and movement across the nine emotional regulation axes. Named. Not yet separately measured."},{"c":"E72","t":"Wisdom","a":"measure","ch":"Chapter 19","d":"Gradient seeing. The capacity to perceive emotions as information rather than commands. Named. Not yet separately measured."},{"c":"E73","t":"Adversity","a":"measure","ch":"Chapter 19","d":"Range navigation. Allostatic load as the measure of what has been metabolized versus what has been stored and is still running as charge."},{"c":"E74","t":"Coherence","a":"measure","ch":"Chapter 19","d":"Hull integrity. Total system alignment without resistance. The only formally developed instrument. CQ 100 = no leak. CQ 0 = complete collapse."},{"c":"E75","t":"Meta- Awareness","a":"meta","ch":"Chapter 19","d":"The 0,0,0 coordinate. No distortion, no thought, no feeling. All six senses in unison. Aware of what is present and what needs doing. The window fully open. You do not produce this state. You remove what was blocking it."},{"c":"E76","t":"Coherence","a":"meta","ch":"Chapter 19","d":"The destination state of the entire system. The hull reading across all layers simultaneously. When intention, integrity, and action align without resistance, the system self-organizes into flow. CQ is not the practice, it is what the practice reveals."}];
 var HARM_AX={nature:'Laws of Nature',human:'Laws of Human Nature',spirit:'Laws of Moral Integrity',
  express:'Laws of Expression',emotion:'The nine architectures',measure:'The instruments',meta:'The frame'};
 /* THE SEVENTY SIX HAD ONE GLYPH BETWEEN THEM, and not even their own: the
@@ -14218,6 +14274,34 @@ try{window.__at&&window.__at('engine/data/kb.js');}catch(e){}
      n  next move. SABDEF.i, same meaning, reframed as notice, separate,
         choose, because a bare command reads as an order to a person who is
         already under one.
+     op the real one-word, or tight two-word, coherent opposite the bar
+        reads (ui/ui.js's chkChainRow and chkTier, 3 November round two),
+        where a's own prose is the paragraph a bar cannot be built from.
+        Added here, not invented beside it: every op is the real CHILD opp
+        word(s) a's own sentence already names for this row (the same two
+        tables a's own comment above cites, SAB33's charges and CHILD's
+        opp), ordered by the nine axes' own fixed order (Fear, Anger, Shame,
+        Disgust, Apathy, Shock, Sad, Surprise, Anticipation) so two rows
+        that key on the exact same pair of axes always print the same op --
+        which several legitimately do (eg every saboteur keyed on fear and
+        apathy alone reads "Trust, Vitality": Negotiator, Pleaser, Hyper-
+        Achiever, Restless, Escapist, Avoider, six real rows, one real
+        pair, not six coincidences). Where a row's SAB33 line keys on a
+        third axis another row sharing its first two does not, that third
+        axis breaks the tie (Judge keys on disgust, anger AND apathy where
+        Perfectionist and Stickler key on disgust and anger alone, so Judge
+        reads "Acceptance, Vitality" and the other two share "Equanimity,
+        Acceptance"). Innocent keys on one axis only, fear, and reads the
+        bare single word "Trust" -- the one row with no second axis to
+        pair it against, not a gap, the canon's own shape. Control Freak's
+        op leads with Presence rather than the lower axis Equanimity,
+        because anticipation, the axis behind Presence, is the one SAB33
+        keys for this row alone of the 33, and leading with it is what its
+        own a text already does ("Presence becomes available here and not
+        ahead"). tests/engine.js, SABOP, checks every op's words against
+        CHILD and against this row's own SAB33 charges the same way ND
+        already checks a, and fails a row whose op names a word no axis of
+        its own supports.
 
    SABDEF.q is not copied here. It is the pattern's own sentence and the card
    prints it verbatim from SABDEF, so there is one source for it.
@@ -14241,134 +14325,167 @@ var SABCARD={
  "negotiator":{
   h:"You mean to start. In the pause before you begin, a reasonable voice speaks up. Just this once. You've earned a break. It never says stop for good, only stop for today. For a moment the easier option feels earned. Then the thing you meant to do is still waiting, and the next pause is easier to win. Reflection: What does the pause help you avoid feeling, and what would make beginning manageable?",
   a:"Everyone has a pause before starting. When the fear isn't the one talking in it, the gap between meaning to and beginning gets short. Trust becomes available that you can handle the first uncomfortable minute, and vitality goes into the thing itself.",
+  op:"Trust, Vitality",
   n:"Notice the pause between meaning to and starting. Separate the reasonable voice from the discomfort it is steering you around. Choose the first small motion before the argument finishes."},
  "micromanager":{
   h:"The future feels uncertain. Something may happen, but you cannot quite predict what. That uncertainty can produce anxiety before anything has actually gone wrong. The grip tightens in an attempt to make the outcome predictable: you check, correct, and take over. For a moment, control can feel like safety and the anxiety may ease. Then the room gets smaller: less space for the people around you to move, less room in you to trust without checking first. This is one possible pattern, not an explanation for every act of control. Reflection: When you cannot predict the outcome, what do you feel you need to take control of?",
   a:"Control isn't the problem. It works. When the fear isn't the one holding the grip, there's a beat of equanimity before you act, long enough to decide instead of react. Trust becomes available instead of something to verify first.",
+  op:"Trust, Equanimity",
   n:"Notice the moment the grip tightens. Separate the real risk from the old fear running it. Choose the next move from there."},
  "victim":{
   h:"Something goes wrong and somebody asks what part was yours. The first answer that comes is the list of what was done to you. You tell it again. People lean in. For a moment the attention feels like being held. Then nothing has moved, and the next thing that goes wrong lands on the same spot. Reflection: What happened to you, and what part of the situation is still yours to influence?",
   a:"The hurt might be real. Some of it probably was done to you. When the charge isn't telling the story, there's room to find the one part that is yours to move. Equanimity becomes available to look at it without a fight, vitality to act on it, and joy has a way back in.",
+  op:"Equanimity, Joy",
   n:"Notice the moment the story starts to replay. Separate what happened to you from what is still in your hands. Choose one thing in your hands and do it."},
  "perfectionist":{
   h:"The work is nearly done. You see one more flaw, then another, in your work and in other people's. You fix it. You hold it back a little longer. For a moment the extra pass feels like care. Then the deadline slides, the work never leaves your hands, and the people around you feel the pressure too. Reflection: Which flaw genuinely matters, and what are you asking the extra pass to protect you from?",
   a:"High standards make good work. When the charge isn't setting them, there's room to see a finished thing as finished. Acceptance becomes available for work that has flaws, and equanimity when somebody else's work does too.",
+  op:"Equanimity, Acceptance",
   n:"Notice the urge for one more pass. Separate the flaw that matters from the pressure to keep going. Choose a time to hand it over, and hand it over then."},
  "pleaser":{
   h:"Somebody might be let down. A limit is needed, and the limit could cost their approval. So you help instead. You smooth it over, pay a compliment, take on the extra job. For a moment the room stays warm. Then your own preference has gone unsaid again, and the tiredness is the kind rest doesn't fix. Reflection: What do you actually want here, and what do you fear might happen if you say it plainly?",
   a:"Helping can be generous. When the fear isn't asking for approval, there's room to say what you want once and let it stand. Trust becomes available that the relationship can hold a no, and vitality comes back to what you choose to give.",
+  op:"Trust, Vitality",
   n:"Notice the moment you reach to smooth things over. Separate what you want from what will keep them pleased. Choose to say the preference once, with no apology attached."},
  "hyper achiever":{
   h:"Rest is available. Nobody is measuring anything. Something in you won't let the time sit empty. You open the laptop. You find one more thing to finish. For a moment the output feels like proof of your worth. Then the proof wears off by evening, and the next day needs more of it. Reflection: If your output did not prove anything about your worth, what would you choose to do next?",
   a:"Real work gets done this way. When the fear isn't keeping score, there's room for an hour that produces nothing. Vitality becomes available that doesn't come from output, and trust that your worth is still there when you stop.",
+  op:"Trust, Vitality",
   n:"Notice the reach for the next task when rest is on offer. Separate what needs doing from what the output is meant to show. Choose an hour with nothing to show for it."},
  "hyper rational":{
   h:"Somebody brings a feeling into the room. You go straight to the problem. You ask for the facts, find the logic, offer the fix. The feeling gets set aside as noise. For a moment the clarity feels like help. Then the other person goes quiet, and whatever you felt yourself never got named. Reflection: What feeling might need to be heard before you try to solve the problem?",
   a:"Logic solves real things. When the charge isn't steering away from feeling, there's room to let an emotion count as information. Groundedness becomes available when a feeling shows up, and acceptance of what can't be explained yet.",
+  op:"Acceptance, Groundedness",
   n:"Notice the jump from a feeling to a fix. Separate the problem from what the person in front of you feels. Choose to name the feeling first, then think."},
  "hyper vigilant":{
   h:"Something in the room changes. Somebody asks you to trust them. Your attention goes to the exits, the risks, what could go wrong next. You scan. You plan around it. For a moment the watching feels like protection. Then the scan never switches off, and nothing gets to feel safe for long. Reflection: What is a real risk in front of you, and what is a possibility your attention keeps rehearsing?",
   a:"Watching has kept you out of real trouble. When the fear isn't running the scan, there's room to notice what is safe right now. Trust becomes available in small amounts, and equanimity when the room changes again.",
+  op:"Trust, Equanimity",
   n:"Notice the scan starting when something changes. Separate the real risk in front of you from the one that is always just ahead. Choose one thing that is safe and stay with it for a minute."},
  "restless":{
   h:"Things settle. The job, the place, the plan starts to feel familiar. An itch starts. You look for the next thing, a new project, a new place, a new plan. For a moment the new thing feels alive. Then it settles too, and the itch comes back on schedule. Reflection: Are you moving toward something meaningful, or away from the discomfort of staying?",
   a:"Curiosity moves things forward. When the charge isn't pushing you out of the moment, there's room to stay long enough for something to deepen. Vitality becomes available in the familiar thing, and trust that staying won't trap you.",
+  op:"Trust, Vitality",
   n:"Notice the itch when things go quiet and steady. Separate real curiosity from the push to leave. Choose to stay twice as long as the itch wants."},
  "stickler":{
   h:"Somebody does it differently. The dishwasher is loaded wrong, the report is out of order, the plan skipped a step. You feel the wrongness before you think about it. You correct it. You explain the right way. For a moment the order feels like relief. Then people stop doing things around you, and you end up doing everything the right way alone. Reflection: Which standard matters here, and where could another workable approach be acceptable?",
   a:"Order helps. When the charge isn't enforcing it, there's room to tell a standard you value from one that only keeps the fear down. Acceptance becomes available for another way that works, and equanimity when things are out of place.",
+  op:"Equanimity, Acceptance",
   n:"Notice the jolt when something is done another way. Separate the standard you value from the fear it is guarding. Choose which one to act on."},
  "judge":{
   h:"Somebody falls short, and sometimes that somebody is you. The verdict arrives fast. You find the fault. You replay the old failures that seem to back it up. For a moment the judgment feels like seeing clearly. Then the same eye turns on everything, and every other pattern has something to feed on. Reflection: What specifically went wrong, without turning it into a verdict about the person?",
   a:"Some things really are wrong. When the charge isn't passing the sentence, there's room to see what is also right about the same situation. Acceptance becomes available toward others and toward you, along with equanimity and the vitality the verdicts were using up.",
+  op:"Acceptance, Vitality",
   n:"Notice the verdict as it forms. Separate what actually went wrong from who you're blaming for it. Choose to find one thing that is right about it."},
  "deflector":{
   h:"Somebody asks a direct question, or something asks you to own your part. You change the subject. You explain why it wasn't really you. You make a joke. For a moment the attention moves somewhere safer. Then the question is still there, and the person asking learns less about you each time. Reflection: What part of the question feels hardest to answer directly?",
   a:"Some things can stay private. When the shame isn't steering the answer, there's room to stay with the question long enough to answer it. Worth becomes available that doesn't depend on staying unseen, and equanimity when someone looks closely.",
+  op:"Equanimity, Worth",
   n:"Notice the swerve when a direct question lands. Separate what is being asked from what you fear it shows. Choose to stay with the question for ten seconds before you answer."},
  "dramatizer":{
   h:"A strong feeling arrives and people are around. The volume goes up. You tell it bigger. The story gets sharper with each telling. For a moment the room moves and the feeling is seen. Then people start bracing when you speak, and the real size of what you felt gets lost. Reflection: What is the feeling at its actual size, before the story around it grows?",
   a:"The feeling may be big. When the charge isn't turning it up, there's room to say it at the size it actually is. Groundedness becomes available inside a strong feeling, and joy that doesn't need an audience.",
+  op:"Groundedness, Joy",
   n:"Notice the volume rising as you start to speak. Separate the size of the feeling from the size of the telling. Choose to say the next part at half the volume."},
  "worrywart":{
   h:"The future is unclear. Your mind runs ahead to what could go wrong. You picture it. You picture the next one. Then you go back and run the first one again. For a moment the worry feels like getting ready. Then nothing has been decided, and you're worn out by a day that hasn't happened. Reflection: What is one specific risk you can prepare for, and what remains uncertain rather than actionable?",
   a:"Plans need some thinking ahead. When the fear isn't running the forecast, there's room to name one real risk and one real answer to it. Trust becomes available in your ability to handle what comes, and joy in the day you're actually in.",
+  op:"Trust, Joy",
   n:"Notice the loop when a new worry starts. Separate the specific worst case from the general dread. Choose one action you would take if it happened, and stop there."},
  "loner":{
   h:"Connection is on offer. Somebody invites you in, or help would make this easier. You decline. You handle it alone, and it feels like preferring your own company. For a moment the distance feels like strength. Then the gap gets wider, and asking gets harder the longer it goes. Reflection: Do you genuinely want solitude right now, or does needing someone feel too risky?",
   a:"Solitude can be good. When the fear isn't choosing it for you, there's room to want people and to let them in. Trust becomes available in the people close to you, and joy in being with them.",
+  op:"Trust, Joy",
   n:"Notice the step back when connection is offered. Separate wanting time alone from avoiding the risk of needing someone. Choose one direct ask for company or help."},
  "people pleaser":{
   h:"You can't tell if they approve. A boundary would help, and it might cost their liking you. You adjust. You agree. You say what lands well over what's true. For a moment their warmth feels like being all right. Then you can't remember what you actually think, and the relationship is with someone you're performing. Reflection: What answer would be honest and considerate, even if it does not win approval?",
   a:"Caring what people think keeps you connected. When the shame isn't asking for approval, there's room to give the answer that's good for the relationship. Worth becomes available that doesn't hang on their face, and vitality in being yourself with them.",
+  op:"Worth, Vitality",
   n:"Notice the shift as you read their reaction. Separate what serves the relationship from what wins their approval. Choose the first one."},
  "skeptic":{
   h:"Something new arrives that doesn't fit what you already think. The doubt comes first. You look for the flaw. You find a reason it won't work. For a moment the doubt feels like protection from being fooled. Then nothing new gets in, and the picture you're holding stops matching the world. Reflection: What evidence would help you evaluate this fairly without dismissing it in advance?",
   a:"Good questions catch real mistakes. When the charge isn't guarding you against disappointment, there's room to let a new idea sit before you decide. Acceptance becomes available for what doesn't fit yet, and groundedness when it shakes something you believed.",
+  op:"Acceptance, Groundedness",
   n:"Notice the first reason to dismiss it. Separate a real flaw from the old guard against being let down. Choose to sit with it for a day before deciding."},
  "dreamer":{
   h:"You can see how good it could be, and how far away it is. The gap shows, and you go back to the picture. You refine the vision. You wait for better conditions. For a moment the dream feels close. Then the gap stays the same size, and the dream gets harder to look at. Reflection: What is one small action that would bring the vision into contact with reality?",
   a:"Vision points somewhere worth going. When the charge isn't keeping you in the picture, there's room to take the first clumsy step. Vitality becomes available in the work itself, and joy in the thing as it actually gets built.",
+  op:"Vitality, Joy",
   n:"Notice the drift back to the vision when the gap shows. Separate the picture from the next step it needs. Choose one concrete step and do it today."},
  "procrastinator":{
   h:"The important thing is clear, and nothing stands in the way of starting. So you do something else. You tidy, plan, answer messages, stay busy. For a moment the motion feels like progress. Then the deadline gets close, the pressure arrives, and the work gets done in a rush you call your style. Reflection: What makes the first step difficult, and what is the smallest useful start?",
   a:"Some things do need time. When the fear isn't pushing the start back, there's room to begin before you feel ready. Trust becomes available that a rough start is still a start, and joy in work that gets done without a panic.",
+  op:"Trust, Joy",
   n:"Notice the side task you pick up in its place. Separate getting ready from actually beginning. Choose to begin for three minutes."},
  "imposter":{
   h:"Somebody praises the work, or the work is about to be judged. A cold drop arrives. You wave the praise off. You over prepare. You wait to be found out. For a moment playing small feels safer. Then the evidence of what you can do keeps piling up, and none of it lands. Reflection: What evidence of your ability are you discounting, and what do you still need to learn?",
   a:"Humility keeps you learning. When the shame isn't grading you, there's room to count what you actually know. Worth becomes available from the evidence that's already there, and trust that you earned your place in the room.",
+  op:"Trust, Worth",
   n:"Notice the wave off as praise arrives. Separate what you know from what you fear they'll see. Choose one thing you know that the room doesn't, and say it."},
  "aggressor":{
   h:"Somebody pushes back, or the plan stalls. The heat comes up fast. You raise your voice. You push harder. You override. For a moment it works, people fall in line. Then the agreement turns out to be fear, and what they actually think goes underground. Reflection: What is the real issue beneath the heat, and how could you address it without intimidation?",
   a:"Sometimes things need pushing. When the anger isn't the one pushing, there's room for a pause long enough to see what's underneath it. Equanimity becomes available when you're challenged, and vitality that doesn't need a fight.",
+  op:"Equanimity, Vitality",
   n:"Notice the heat as somebody pushes back. Separate the anger from the fear underneath it. Choose your next words after a five second pause."},
  "martyr":{
   h:"Giving can become a way to make yourself necessary. You say yes when you mean no. You carry what somebody else could carry. You wait for the sacrifice to be noticed, and when it isn't, something in you hardens. Reflection: Would you still choose to give this if nobody noticed or owed you anything?",
   a:"The giving might be real. So might the exhaustion. What matters is whether it was freely chosen, or whether giving became the way a place got earned. When the charge isn't driving it, there's room to ask what you actually want to do. Worth becomes available instead of something to earn, with room for joy and vitality in what you choose to give.",
+  op:"Worth, Joy",
   n:"Notice the give before you've offered it. Separate what you want to do from what you feel is owed. Choose from the first one."},
  "cynic":{
   h:"Someone gets excited, or you catch yourself hoping. You get there first with the reason it won't last. You roll your eyes. You name the catch. For a moment being unimpressed feels safe from disappointment. Then the hope in the room dries up, including yours. Reflection: What is genuinely flawed here, and what might still be worthwhile?",
   a:"Some things are overhyped. When the charge isn't dismissing it in advance, there's room to see what is actually good. Acceptance becomes available for hope that might not work out, and joy in it while it's here.",
+  op:"Acceptance, Joy",
   n:"Notice the eye roll before you say it. Separate a real catch from the guard against being let down. Choose to name one good thing about it."},
  "manipulator":{
   h:"You need something, and asking straight out feels too exposed. So you go around. You hint. You hold something back until they offer. You set things up so they come to you. For a moment it works, and you never had to ask. Then people sense the angle, and trust gets thinner each time. Reflection: What do you need, and what would it look like to ask for it directly?",
   a:"Everyone has needs. When the charge isn't steering around the ask, there's room to say the need straight. Equanimity becomes available for hearing yes or no, and the vitality that went into the setup comes back.",
+  op:"Equanimity, Vitality",
   n:"Notice the angle forming before you ask. Separate the actual need from the setup around it. Choose to say the need once, directly."},
  "overthinker":{
   h:"A decision is due and the outcome is unclear. You look at it again. You weigh one more angle. You ask one more person. For a moment the thinking feels responsible. Then the loop runs past anything new to learn, and the clock makes the choice for you. Reflection: What information is still missing, and when will more thinking stop helping?",
   a:"Some choices need thinking through. When the fear isn't asking for certainty, there's room to decide with what you know. Trust becomes available in a good enough choice, and worth that doesn't depend on getting it perfect.",
+  op:"Trust, Worth",
   n:"Notice the loop once you've stopped learning anything new. Separate the information you need from the certainty you want. Choose a time to decide, and decide then."},
  "escapist":{
   h:"Something uncomfortable starts, and there's a way out. You reach for the phone, the snack, the drink, the drive. For a moment the feeling goes quiet. Then it comes back unfinished, and the exits get used more often. Reflection: Do you need a restorative break, or are you leaving before you can name what you feel?",
   a:"A break can help. When the fear isn't reaching for the exit, there's room to stay with a hard feeling until it moves. Vitality becomes available in being here, and trust that you can get through discomfort without leaving.",
+  op:"Trust, Vitality",
   n:"Notice the reach for the exit. Separate needing a real break from leaving before the feeling finishes. Choose to stay for two minutes and name what's there."},
  "avoider":{
   h:"Something needs dealing with, and leaving it costs nothing today. So it slides. You don't argue with it or run from it. You just don't look. For a moment nothing can land on you. Then the pile grows quietly, and the bill comes due all at once. Reflection: What is the real reason this can wait, or what makes it difficult to face now?",
   a:"Some things can wait. When the fear isn't keeping your eyes off it, there's room to look at the thing directly. Vitality becomes available for the smallest piece of it, and trust that you can handle what you find.",
+  op:"Trust, Vitality",
   n:"Notice the thing you keep not looking at. Separate what can wait from what you're avoiding. Choose to say it out loud, then do the smallest piece."},
  "nihilist":{
   h:"Effort needs a reason, and the reason starts to look thin. You knock it down before it can let you down. You call it pointless. You stop trying. For a moment nothing can disappoint you. Then nothing can reach you either, and the days go flat. Reflection: Even without a complete answer about meaning, what still matters enough to do?",
   a:"Big questions are worth asking. When the charge isn't answering them in advance, there's room to do something worth doing anyway. Acceptance becomes available for not having the full answer, and joy in what you do meanwhile.",
+  op:"Acceptance, Joy",
   n:"Notice the moment you call it pointless. Separate the honest question from the guard against disappointment. Choose one thing worth doing either way, and do it."},
  "innocent":{
   h:"Things get complicated. A conflict starts, or a choice carries moral weight. You step back. You don't ask. You let yourself not know. For a moment staying out of it keeps you clean. Then something you could have seen happens anyway, and staying out made you part of it. Reflection: What do you already know about this situation that you have not wanted to acknowledge?",
   a:"Not every fight is yours. When the fear isn't closing your eyes, there's room to see what you already know. Trust becomes available that you can face it, and that knowing won't sink you.",
+  op:"Trust",
   n:"Notice the step back when it gets complicated. Separate what isn't yours from what you're pretending not to see. Choose to name one thing you already know."},
  "pessimist":{
   h:"A good outcome becomes possible. You start building the case against it. You list what will go wrong. You lower your hopes before anyone else can. For a moment expecting the worst feels like protection. Then you put in less, the outcome gets smaller, and the case comes true. Reflection: What is the realistic risk, and what is the best plausible outcome worth acting toward?",
   a:"Some plans do fail. When the charge isn't writing the ending, there's room to picture the good outcome as clearly as the bad one. Trust becomes available that it might work, and joy in giving it a real try.",
+  op:"Trust, Joy",
   n:"Notice the case building against a good outcome. Separate the real risk from the guard against hope. Choose the best thing that could really happen, and act from there."},
  "catastrophizer":{
   h:"Something is unresolved. A message goes unanswered, a result is pending. In seconds it stops being an unknown and becomes the end of everything. You feel the grief of it ahead of time. For a moment you feel braced. Then the body pays for a disaster that hasn't happened, and usually never does. Reflection: What do you know right now, and what part of the outcome are you imagining?",
   a:"Some things are serious. When the fear isn't jumping to the end, there's room to see where things actually stand right now. Trust becomes available in the facts in front of you, and joy in a day that isn't a disaster.",
+  op:"Trust, Joy",
   n:"Notice the jump from not knowing to the worst. Separate what is true right now from what you're picturing. Choose to describe the situation as it is, in the present tense."},
  "enabler":{
   h:"Someone you care about is doing the harmful thing again. You see it. You don't say it. You cover for them, lend the money, make the excuse. For a moment the peace holds and they stay close. Then the pattern grows, and the silence is part of what keeps it going. Reflection: How can you care about this person without covering for behavior that is causing harm?",
   a:"Standing by people matters. When the shame isn't keeping you quiet, there's room to say what you see once and let them answer. Worth becomes available that doesn't depend on them staying, and vitality that was going into covering for them.",
+  op:"Worth, Vitality",
   n:"Notice the moment you start to cover for them. Separate keeping the peace from keeping the pattern. Choose to say what you see, once, and let them answer."},
  "control freak":{
   h:"You walk into something you didn't set up. A plan you didn't design. A silence where a yes should be. You start running it before any gap opens. You scan ahead for what could go wrong, and check that you're the one in charge. To other people it looks like competence. In the body it never lands, and the scan becomes the normal state. Reflection: What genuinely needs your attention, and what could safely remain in someone else's hands?",
   a:"People rely on what you can do. When the fear isn't running the scan, there's room for your body to land in the room you're in. Presence becomes available here and not ahead, equanimity in a plan you didn't design, and trust in other people's hands.",
+  op:"Presence, Equanimity",
   n:"Notice the jaw, the shoulders and the breath already locked. Separate the work in front of you from the scan running ahead of it. Choose to loosen them on the out breath, and see what still needs you."}};
 
 try{window.__at&&window.__at('engine/data/sabcard.js');}catch(e){}
@@ -18947,7 +19064,19 @@ const TABDEF=[
     ritual, the centre is the ritual, the right column is the accountability
     tracker. DESIGN-flow-tools.md is the rulebook and every rule names its
     gate. */
- {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual',  sec:'flow'},
+ /* FLOW IS ITS OWN DOOR, 3 November, on the same rule as Discover above:
+    one real tab in the section, so the section button already is the door.
+    His words: "When I click on flow, it should automatically take me to
+    ritual. I shouldn't have a sub menu that says ritual. Just like discover
+    goes straight to story. Flow, I want going straight to ritual." Flow has
+    exactly one TABDEF entry, this one (Accountability is folded onto it,
+    TABFOLD above, not a sibling tab), so door:'section' here is the same
+    fact Discover's entry states at TAB.STORY: the section's own button is
+    the one real door, and the row under it shows no second door above the
+    phone width (the CSS rule already keyed to data-door="section" in
+    head.html, and shell/body.html's Flow group). The name stays Ritual: he
+    kept the word, unlike Discover/Story, so nothing here renames the tab. */
+ {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual',  sec:'flow',  door:'section'},
  /* "Embody is knowledge." */
  {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know',    sec:'embody'},
  /* The practitioner section's one door. Clients and not Practitioner, on the
@@ -19743,7 +19872,22 @@ function compute(){
     now takes that row's family from either route, through SAB_LIB_BY in
     core.js. FAM_OF still answers for a range match with no library row. */
  const sabByNm={};
+ /* s.held/s.rep, 3 November, second round: the real charge and the real
+    opposite already installed, at this saboteur's own addresses, averaged
+    the identical way s.w itself already is (ALL_SAB's own route, just
+    below: "w=parts.reduce((a,n)=>a+n.sq,0)/parts.length"). Not a new
+    figure invented for the bar -- every part here is a real address node
+    (compute.js's own W, n.held and n.rep set earlier in this same
+    function), so this is the saboteur-level mean of the exact fields the
+    address-level bar already draws (pct('held',...), pct('installed',...)),
+    read one rung up. Guarded on s.parts being real nodes (every pushSab
+    caller hands it address nodes, never a cx/hy/sup's own .parts of
+    saboteurs), so a future caller that passed something else would get
+    NaN rather than a silently wrong number -- caught by tests/engine.js,
+    which checks every sab carries a real 0-10 held and rep. */
+ const meanField=function(parts,k){return parts.reduce((a,n)=>a+(n[k]||0),0)/parts.length;};
  const pushSab=function(s){
+  if(s.parts&&s.parts.length){s.held=meanField(s.parts,'held');s.rep=meanField(s.parts,'rep');}
   const id=KB_KEY(s.nm), ex=sabByNm[id];
   if(ex){if(s.w<=ex.w)return; sabs[sabs.indexOf(ex)]=s;sabByNm[id]=s;return;}
   sabByNm[id]=s;sabs.push(s);};
@@ -22008,6 +22152,41 @@ function traceNeighbors(g,node,edgeType){
  return out.sort(function(a,b){
   return a.key<b.key?-1:a.key>b.key?1:(a.edge<b.edge?-1:a.edge>b.edge?1:(a.dir<b.dir?-1:a.dir>b.dir?1:0));});}
 
+/* ALL THE CHILDREN DOWN, FLAT. The real gap neither function above closes:
+   traceNeighbors reads one hop only, by design, for one selected node's
+   own immediate parents and children; tracePath finds a path between two
+   NAMED nodes, never a subtree grown from one. "If I shift click I get
+   all the children down" needs the full descending subtree, not one hop.
+
+   Same primitive as traceNeighbors just above it: walk g.edges directly,
+   never the ix cache (traceIx is for the add/remove path's own cycle and
+   lookup checks; a reader builds nothing it does not need). Filtered to
+   the one edge type the chain itself is built from, 'supports'
+   (TRACE_RULES: pattern supports saboteur, saboteur supports complex, and
+   on up) -- no other edge type names a child built from a parent on this
+   graph, so no other edge type belongs in a descent. 'supports' runs
+   child-to-parent (e.from is the child, e.to the parent: THE CHAIN, above,
+   and traceEdgeAdd's own refusal of any other source for it), so a
+   node's children are found on e.to===the node, read off e.from.
+
+   Recurses hop by hop off the running frontier, breadth first, the same
+   discipline traceReach already uses one call up (walk, mark seen, do not
+   revisit), until nothing more is found, and returns the flat, sorted set
+   of keys reached -- never the edges, never the node itself (a node is
+   not its own descendant), the key alone, because that is the one thing
+   a shift-click selection needs to add to S.pin's array. */
+function traceDescendants(g,key){
+ if(!traceIsGraph(g))return [];
+ var k=traceRef(key);
+ if(k===null)return [];
+ var seen={}, q=[k], out=[];
+ while(q.length){
+  var cur=q.shift();
+  traceLive(g.edges).forEach(function(e){
+   if(e.edge==='supports'&&e.to===cur&&!seen[e.from]){
+    seen[e.from]=1; out.push(e.from); q.push(e.from);}});}
+ return out.sort();}
+
 /* THE SHORTEST CHAIN from one node to another, as the edges walked, or
    null. o.undirected walks edges either way, which the document's own
    example needs: a goal requires a behaviour that a protocol implements.
@@ -22672,6 +22851,298 @@ function traceFromRecord(p,intents,reading){
  return g;}
 
 try{window.__at&&window.__at('engine/trace.js');}catch(e){}
+/* ============================================================
+   TRACE SUMMARY. One blended, hedged paragraph over a graph
+   engine/trace.js already built: what a node's real parents and
+   real children actually say, read off the libraries that already
+   carry their content, never invented.
+
+   WHAT THIS ANSWERS. Lance's own words, confirmed 2026-10-29: "I
+   should be able to select anywhere in that chain, either in the
+   field or the left-hand menu, and have it show me all the
+   connections parent to child and give me a summary from source AI
+   as a blend of all those records showing me how all the patterns
+   are playing through me." traceSummary(g, node) below is that: it
+   takes the graph traceFromRecord(p, intents, reading) already built
+   for one person and a node already on it, and returns the real
+   parent(s) and real child(ren) THE CHAIN (trace.js) connects it to,
+   plus one paragraph narrating how their real content relates to the
+   selected node.
+
+   A SIBLING FILE, ON PURPOSE, NOT A NEW BLOCK INSIDE trace.js.
+   trace.js's own header says what that file is: it reads the objects
+   that exist and holds the relationships nothing else holds, plain
+   data, safe to JSON round trip. traceChainAttrs there is explicit
+   about why a rung's own display line is kept off the graph node:
+   "never d, the line a person is shown... a graph that carried them
+   would be one more place to print them from." A narrated paragraph
+   IS printing, so it is kept out of that file and reads it instead,
+   the same way engine/loop.js (the one read of the graph a screen
+   asks) already sits beside trace.js rather than inside it. Nothing
+   here adds a node, adds an edge, or changes p.trace: every function
+   below takes a graph and returns data, and never mutates the graph
+   it is handed.
+
+   WHERE A NODE'S REAL CONTENT ACTUALLY LIVES. Checked against the
+   real tables rather than assumed:
+     pattern (address)   engine/data/nodes.js's own 112-row table,
+                          its a (what becomes available) and d (the
+                          collapsed expression), by address number.
+                          A fetter pseudo-pattern (pattern:fetter:X,
+                          THE SIGNAL -> FETTER PATH in trace.js) is
+                          the classification several addresses share
+                          and carries none of that itself.
+     saboteur             engine/data/kb.js's SABDEF.q, the pattern's
+                          own sentence, what it says, and engine/data/
+                          sabcard.js's SABCARD.h and .a, the lived
+                          behaviour and what becomes available, both
+                          keyed by KB_KEY off the name with any
+                          " overshot" suffix stripped first (THE SAME
+                          CLUSTER, OVERSHOT, engine/compute.js). An
+                          unnamed cluster (chain attrs carry
+                          unnamed:true) and a TULA-only name with no
+                          SAB33 row (SABAUTH's own list in
+                          engine/data/canon.js) resolve to neither
+                          table, by design, and the paragraph says so
+                          rather than printing a blank.
+     complex              no table of its own. By THE CHAIN a complex
+                          IS its own two saboteurs compounded
+                          (engine/compute.js, cxs.push), so its real
+                          content is exactly its real children's,
+                          read below it, never guessed at from its own
+                          name (which is literally "A + B", the two
+                          saboteur names joined, not a label a card
+                          could be keyed by).
+     hyper_complex        engine/data/nodes.js's HCX_LIB.d and .sub,
+                          by the family name the rung is literally
+                          named after. An overshoot pairing can carry
+                          a pole family name HCX_LIB has no row for
+                          (FAM_POLE, engine/core.js); checked against
+                          the table by the node's own real name either
+                          way, and reported honestly when it misses
+                          rather than borrowed from the family it is
+                          the overshoot of.
+     super_complex        no table of its own either, same reason as
+                          complex: its name is its two hyper complexes
+                          joined ("A / B"), not a label. DESCENT
+                          (engine/data/compass.js) separately names
+                          Narcissism, Machiavellianism, Sociopathy and
+                          Psychopathy, but those are the dark read's
+                          own clinical register for specific rungs,
+                          held there on purpose and never pushed into
+                          a reading's real sabs/cxs/hys/sups lists
+                          (engine/compute.js says so directly), so a
+                          real super_complex node's own name does not
+                          match a DESCENT entry and this file does not
+                          pretend otherwise by matching on anything
+                          looser than the literal name.
+
+   THE RESOLVE THEN NARRATE IDIOM. The same two steps atuned/data/
+   celestial/integration/source-ai-behavioral-synthesis.cjs and
+   source-ai-reading-pipeline.cjs already run over astrology and
+   numerology records: resolve every real input's own fields first,
+   with where each one came from; find what the resolved set actually
+   shares; narrate it hedged, crediting which side said what, and say
+   plainly when nothing connects rather than forcing a sentence that
+   only sounds like it does. traceSummaryCard below is the resolve
+   half and traceSummaryNarrate the narrate half. Rule 6 (this
+   project's working rules): every number or claim shown to a person
+   is real or it does not ship, so where a side has no real content
+   on file the paragraph names that plainly instead of writing a
+   plausible-sounding line to fill the space.
+
+   WHAT THIS DOES NOT DO. It does not call compute(), does not read or
+   write CQ, DQ or SQ, does not write a release or a reframe, does not
+   write a ritual, and holds no opinion any of those could be checked
+   against. It is a pure read of a graph and a few static libraries,
+   handed back as data and one paragraph of prose.
+   ============================================================ */
+
+/* a chain node's name after compute()'s own " overshot" suffix
+   (engine/compute.js, pushSab) is stripped. Only saboteur names carry
+   that literal suffix; a hyper complex's overshoot is a different,
+   real family name (FAM_POLE), not this pattern, so this helper is
+   never applied to one. */
+function traceSummaryBase(nm){ return String(nm).replace(/ overshot$/,''); }
+
+/* ONE NODE'S REAL CONTENT, read off whichever library actually carries
+   it. Never throws, never guesses: found is false and why names the
+   reason whenever nothing resolves. attrs is the node object already
+   on the graph (traceChainAttrs' or tracePatternAttrs' own output, or
+   {} for a neighbor not found, which traceSummary below never actually
+   hands it, kept only so this function is as safe as the rest of the
+   file against a hand built graph). */
+function traceSummaryCard(type,id,attrs){
+ attrs=attrs||{};
+ if(type==='pattern'){
+  if(/^fetter:/.test(String(id)))
+   return {found:false, label:attrs.fetter||String(id).replace(/^fetter:/,''),
+    why:'a fetter is the classification several addresses share (NODES[].cf), and carries no address-level content of its own'};
+  var n=BY[+id];
+  if(!n)return {found:false, label:String(id), why:'address '+id+' is not on the 112-address table'};
+  return {found:true, label:n.k,
+   fields:{coherent:n.a, distorted:n.d, charge:n.c||null},
+   source:'the 112-address table, NODES['+n.i+'].a and .d for '+n.k};}
+ if(type==='saboteur'){
+  var over=/ overshot$/.test(String(id)), base=traceSummaryBase(id), key=KB_KEY(base),
+   def=SABDEF[key]||null, card=SABCARD[key]||null;
+  if(!def&&!card){
+   if(attrs.unnamed)
+    return {found:false, label:base, over:over,
+     why:'this is an unnamed cluster: it reached the saboteur threshold without matching one of the library\'s 33 named patterns, so no card or definition is on file for it'};
+   return {found:false, label:base, over:over,
+    why:'no saboteur card or definition is on file for '+base+(SABAUTH&&SABAUTH[base]?', though it does carry a composition of its own in SABAUTH':'')};}
+  return {found:true, label:base, over:over,
+   fields:{says:def?def.q:null, livedBehavior:card?card.h:null, becomesAvailable:card?card.a:null},
+   source:'SABDEF.q (what it says) and SABCARD.h/.a (the lived behaviour, and what becomes available) for '+base
+    +(over?', read off the base pattern: the overshoot is the same cluster run past the point it helps, not a different one':'')};}
+ if(type==='complex')
+  return {found:false, label:String(id),
+   why:'a complex has no card of its own; by THE CHAIN it is its own two saboteurs compounded, so its content is exactly its real children\'s, below'};
+ if(type==='hyper_complex'){
+  var h=null;
+  for(var i=0;i<HCX_LIB.length;i++)if(HCX_LIB[i].nm===id){h=HCX_LIB[i]; break;}
+  if(!h)return {found:false, label:String(id), why:'no family entry is on file for '+id};
+  return {found:true, label:h.nm, fields:{familyLine:h.d, clinicalCorrespondence:h.sub||null},
+   source:'HCX_LIB.d and .sub for '+h.nm};}
+ if(type==='super_complex')
+  return {found:false, label:String(id),
+   why:'a super complex has no card of its own; by THE CHAIN it is its own two hyper complexes paired, so its content is exactly its real children\'s, below'};
+ return {found:false, label:String(id), why:'no content source is wired for node type '+type};}
+
+/* THE CHAIN'S OWN DIRECTION, read off traceNeighbors and nothing else:
+   a 'supports' edge runs from the rung below to the rung above
+   (pattern -> saboteur -> complex -> hyper_complex -> super_complex,
+   THE CHAIN, trace.js), so dir:'in' on this node is a real child (a
+   part counted toward it) and dir:'out' is the real parent (the rung
+   it is itself counted toward). The same filter mockups/layer-
+   observatory/build-trace.js's realParts() uses and tests against a
+   real tracePath, not a new convention invented for this file. */
+function traceSummaryParts(g,key){
+ var all=traceNeighbors(g,key,'supports');
+ return {
+  children:all.filter(function(x){return x.dir==='in';}),
+  parents:all.filter(function(x){return x.dir==='out';})};}
+
+/* a type name as a person reads it, never the identifier. */
+var TRACE_SUMMARY_WORD={pattern:'address', saboteur:'saboteur', complex:'complex',
+ hyper_complex:'hyper complex', super_complex:'super complex'};
+function traceSummaryWord(type,id){
+ if(type==='pattern'&&/^fetter:/.test(String(id)))return 'fetter';
+ return TRACE_SUMMARY_WORD[type]||type;}
+/* 'a' or 'an', off the word's own first letter, so "a address" never ships. */
+function traceSummaryArticle(word){ return /^[aeiou]/i.test(word)?'an':'a'; }
+function traceSummaryList(labels){
+ if(!labels.length)return '';
+ if(labels.length===1)return labels[0];
+ return labels.slice(0,-1).join(', ')+' and '+labels[labels.length-1];}
+
+/* ONE NODE'S REAL FIELDS, AS A QUOTED LINE. An address and a saboteur
+   each carry a real pair, not a single line: an address's coherent
+   pole and its collapse (NODES[].a and .d) are two sides of the same
+   row, and a saboteur's own line and what becomes available (SABDEF.q
+   and SABCARD.h/.a) are the pattern and its practice. Quoting only one
+   side of a real pair would be true and still incomplete, so both are
+   named wherever the type carries a pair; a hyper complex's family
+   line (HCX_LIB.d) has no such second side on file and is quoted
+   alone. Never fabricates a joiner between two fields that were never
+   written next to each other: each quoted field stays in its own
+   quotation marks. */
+function traceSummaryOwnLine(fields){
+ fields=fields||{};
+ if(fields.coherent!=null||fields.distorted!=null)
+  return 'coherent, "'+(fields.coherent||'not named')+'"; collapsed, "'+(fields.distorted||'not named')+'"';
+ if(fields.says!=null||fields.livedBehavior!=null){
+  var line=fields.says!=null?'it says "'+fields.says+'"':null,
+   lived=fields.livedBehavior!=null?'lived out as "'+fields.livedBehavior+'"':null;
+  return [line,lived].filter(function(x){return !!x;}).join('; ');}
+ if(fields.familyLine!=null)return 'its family line is "'+fields.familyLine+'"';
+ return null;}
+
+/* ONE SIDE'S CLAUSE, hedged. Quotes a real field when one side has
+   exactly one real-content neighbor (the common case, a saboteur with
+   one complex or one hyper complex with one super complex); with more
+   than one, names each by what it is and credits each a clause rather
+   than blending their words into one borrowed sentence, which would
+   claim a connection between them this file never checked. */
+var TRACE_SUMMARY_PLURAL={child:'children', parent:'parents'};
+function traceSummaryClause(side,items){
+ var withCard=items.filter(function(x){return x.card.found;}),
+  sideWord=items.length>1?TRACE_SUMMARY_PLURAL[side]||(side+'s'):side;
+ if(!items.length)return 'no real '+side+' is on this graph yet';
+ if(!withCard.length)
+  return traceSummaryList(items.map(function(x){return traceSummaryWord(x.type,x.id)+' '+x.card.label;}))
+   +' (the real '+sideWord+', but none carries further content on file)';
+ var parts=withCard.map(function(x){
+  var line=traceSummaryOwnLine(x.card.fields);
+  return traceSummaryWord(x.type,x.id)+' '+x.card.label+(line?', read as '+line:'');});
+ var thin=items.filter(function(x){return !x.card.found;});
+ var tail=thin.length?('; '+traceSummaryList(thin.map(function(x){return traceSummaryWord(x.type,x.id)+' '+x.card.label;}))+' carries nothing further on file'):'';
+ return parts.join('; ')+tail;}
+
+/* RESOLVE THEN NARRATE, the second half. One paragraph, hedged, never
+   asserting a connection the records themselves do not carry (the
+   same discipline atuned/data/celestial/integration/source-ai-
+   behavioral-synthesis.cjs's narrateSourceAI runs over astrology and
+   numerology records). Ends on the same plain accounting those files
+   close with: what kind of statement this is and is not. */
+function traceSummaryNarrate(self,selfCard,parents,children){
+ var word=traceSummaryWord(self.type,self.id), label=selfCard.label||self.id,
+  sentences=[];
+ if(selfCard.found){
+  var own=traceSummaryOwnLine(selfCard.fields);
+  sentences.push('The selected '+word+', '+label+(own?', reads as '+own:'')+'.');}
+ else sentences.push('The selected '+word+', '+label+', carries nothing further on file beyond its own name and weight ('+selfCard.why+').');
+ if(children.length)
+  sentences.push('Below it, the real part'+(children.length>1?'s are':' is')+' '+traceSummaryClause('child',children)+'.');
+ else sentences.push('Nothing sits below it on this graph: '+traceSummaryArticle(word)+' '+word+' is the floor of the chain, or none of its own parts reached the threshold yet.');
+ if(parents.length)
+  sentences.push('Above it, the real part'+(parents.length>1?'s are':' is')+' '+traceSummaryClause('parent',parents)+'.');
+ else sentences.push('Nothing sits above it yet: either the chain stops here by design (a super complex is the top this engine reads) or this one has not compounded with another of its kind yet.');
+ var cWith=children.filter(function(x){return x.card.found;}), pWith=parents.filter(function(x){return x.card.found;});
+ if(cWith.length&&pWith.length)
+  sentences.push('Read together, '+traceSummaryWord(cWith[0].type,cWith[0].id)+' '+cWith[0].card.label+' and '+traceSummaryWord(pWith[0].type,pWith[0].id)+' '+pWith[0].card.label
+   +' are both counted toward this same '+word+' by the reading, a registration and not a claim that one causes the other or the person.');
+ sentences.push('This paragraph narrates what the graph and the library already hold. It does not compute a score, and it does not write a release, a reframe or a ritual.');
+ return sentences.join(' ');}
+
+/* ============================================================
+   traceSummary(g, node)
+
+   g is a graph traceFromRecord already built. node is a key
+   ('saboteur:Negotiator') or a {type,id} ref, the same form
+   tracePath's from/to and traceAddEdge's from/to already take
+   (traceRef). Returns {ok:false, why} by name on anything that is
+   not a real node on this graph, the same convention traceNodeAdd,
+   traceEdgeAdd and validateTrace already use; on a real node it
+   returns the node's own data, its real parents and real children
+   (traceSummaryParts, each decorated with its own real content), and
+   one narrated paragraph blending them, so a caller can show the
+   prose and the records it came from side by side rather than prose
+   alone. Pure: reads g and the static libraries above it in MANIFEST
+   order, mutates neither, and never calls compute().
+   ============================================================ */
+function traceSummary(g,node){
+ if(!traceIsGraph(g))return {ok:false, why:'there is no graph to read'};
+ var key=traceRef(node);
+ if(key===null)return {ok:false, why:'names no node: '+JSON.stringify(node)};
+ var ix=traceIx(g), self=ix.node[key];
+ if(!self)return {ok:false, why:key+' is not a node on this graph'};
+ var parts=traceSummaryParts(g,key);
+ var decorate=function(n){
+  var s=traceSplit(n.key), found=ix.node[n.key]||{};
+  return {key:n.key, type:s.type, id:s.id, edge:n.edge, src:n.src, attrs:found,
+   card:traceSummaryCard(s.type,s.id,found)};};
+ var byKey=function(a,b){return a.key<b.key?-1:a.key>b.key?1:0;};
+ var children=parts.children.map(decorate).sort(byKey);
+ var parents=parts.parents.map(decorate).sort(byKey);
+ var selfCard=traceSummaryCard(self.type,self.id,self);
+ return {ok:true,
+  node:{type:self.type, id:self.id, key:key, attrs:self, card:selfCard},
+  parents:parents, children:children,
+  summary:traceSummaryNarrate(self,selfCard,parents,children)};}
+
+try{window.__at&&window.__at('engine/tracesummary.js');}catch(e){}
 
 /* ============================================================
    SOURCE PROFILE SCHEMA v1 · the cross-compatibility contract.
@@ -35504,9 +35975,12 @@ if(typeof module!=='undefined'&&module.exports){
                   TRACE_ID_MAX:TRACE_ID_MAX, TRACE_NAMED:TRACE_NAMED,
                   traceKey:traceKey, traceSplit:traceSplit, traceNew:traceNew, traceRuleOf:traceRuleOf,
                   traceAddNode:traceAddNode, traceAddEdge:traceAddEdge, traceRemoveEdge:traceRemoveEdge,
-                  traceNeighbors:traceNeighbors, tracePath:tracePath, traceOrphans:traceOrphans,
+                  traceNeighbors:traceNeighbors, traceDescendants:traceDescendants, tracePath:tracePath, traceOrphans:traceOrphans,
                   traceCycles:traceCycles, validateTrace:validateTrace, traceApply:traceApply,
                   traceFromRecord:traceFromRecord, traceStoryIds:traceStoryIds, traceRitualIds:traceRitualIds,
+  /* the parent/child blend summarizer, engine/tracesummary.js: a sibling
+     file, never a block inside trace.js itself, see its own header */
+                  traceSummary:traceSummary,
   /* the loop read, engine/loop.js: the one read of the graph a screen asks */
                   loopRead:loopRead, LOOP_SHOW:LOOP_SHOW,
   /* a worked example's history, engine/pracex.js, for the practitioner page */
@@ -36458,6 +36932,53 @@ const PLANETGLYPH={
  Uranus:'<circle cx="12" cy="15.2" r="5"/><circle cx="12" cy="15.2" r="1.1"/><path d="M12 10.2V3.8M9.4 6.4L12 3.8l2.6 2.6"/>',
  Neptune:'<path d="M5.8 5.2c0 4.8 2.6 7.2 6.2 7.2s6.2-2.4 6.2-7.2M12 4v16.6M8.8 17.4h6.4'
   +'M4.6 6.6l1.2-1.4 1.2 1.4M10.8 5.4L12 4l1.2 1.4M17 6.6l1.2-1.4 1.2 1.4"/>'};
+/* THE GATE MARK, ONE DISC SPLIT BY ONE LINE. A Human Design or Gene Keys gate
+   is an I Ching hexagram by number, drawn as a circle with a single stroke
+   through it: a figure read whole and then halved. First drawn, unnamed, for
+   the Summary's own Gene key chip (ui/summary.js); named here so every
+   caller that draws a gate reaches for the one mark rather than redrawing it. */
+const GATE_IC='<circle cx="12" cy="12" r="8.4"/><path d="M12 3.6v16.8"/>';
+/* THE SIX NUMEROLOGY ROWS IN ROOT ENERGETICS CARRIED NO MARK AT ALL, text
+   only, the one family on the rail that Western, Eastern and Design all had
+   theirs and this did not. 2026-11-03, redrawing the Root Energetics icon
+   set after the owner's own words on the Concept A mock-up: "redesign the
+   icons... review the icon symbolism and use a match the word."
+
+   EACH MARK IS FIXED TO WHAT THE NUMBER MEANS, NEVER TO ITS DIGIT. A mark
+   keyed to the value a row happens to hold repeats itself the first day two
+   of a person's six numbers reduce to the same figure, which real charts do
+   (this profile's own Expression and Personality both land on 1, read off
+   lookdev/handoff/builds/images/46.png). So the glyph is the word's own
+   picture: Path a road narrowing ahead, Master the higher charge the comment
+   on ROOT_NUMPLANET's own table already names, Expression a voice, Soul urge
+   the numerologist's own name for it, Heart's Desire, Personality the word's
+   own root, a mask, Birthday a calendar cell, Maturity a line climbing. Same
+   grammar as SYSGLYPH and PLANETGLYPH: 24 box, open stroke, no fill. */
+const NUMFIELD_IC={
+ path:'<path d="M7 20L11 4M17 20L13 4"/>',
+ /* lifePath is spNumRows's own key for the same reading when it prints
+    unaccompanied, on the no-birth-data fallback; same number, same mark */
+ lifePath:'<path d="M7 20L11 4M17 20L13 4"/>',
+ master:'<path d="M6 15l6-6 6 6M6 21l6-6 6 6"/>',
+ expression:'<path d="M4 5h16v9h-9.5l-3.5 3.5V14H4z"/>',
+ soul:'<path d="M12 19.4C7.8 16.3 5 13.3 5 9.9A4 4 0 0112 7.3a4 4 0 017 2.6c0 3.4-2.8 6.4-7 9.5z"/>',
+ personality:'<path d="M4.5 8.6c0-2.6 3-4.1 7.5-4.1s7.5 1.5 7.5 4.1c0 5-3.2 9-7.5 9s-7.5-4-7.5-9z"/>'
+  +'<circle cx="9" cy="10" r=".9"/><circle cx="15" cy="10" r=".9"/>',
+ birthday:'<path d="M4.5 5.5h15v14h-15z"/><path d="M4.5 9.5h15M8 3.5v4M16 3.5v4"/>',
+ maturity:'<path d="M4 18L10 12L14 15L20 7"/><path d="M15 7h5v5"/>'};
+/* THE TWO DESIGN ROWS A GATE MARK DOES NOT ALREADY COVER. Profile is two
+   lines, not a gate, so it draws the two lines its own row already names,
+   "personality line over design line". The personality gate's own row
+   already says what it is, "the sun at birth", so it wears the Sun's own
+   mark rather than a second invented one. The design gate and the gene key
+   are both a gate by number, so both wear GATE_IC, the one the Summary's own
+   chip already draws for Gene key: one concept, one mark, never two gates
+   drawn two ways on the same panel. */
+const DESIGNFIELD_IC={
+ profile:'<path d="M5 9h14M5 15h14"/><circle cx="8" cy="9" r="1.3"/><circle cx="16" cy="15" r="1.3"/>',
+ personality:PLANETGLYPH.Sun,
+ design:'<path d="M6 7h5M15 7h3M6 12h12M6 17h5M15 17h3"/>',
+ genekey:GATE_IC};
 /* A MARK IS EITHER PATH DATA OR FINISHED MARKUP, and the tables hold both.
    CHILD, SI, HCX_LIB, GATEGLYPH and the nineteen domains carry a bare d
    string. SEATGLYPH carries a finished <path> or <circle>, because a seat's
@@ -50440,7 +50961,12 @@ function stDraftBack(){
    and they come back through stDraftBack when that record is opened again.
    lastFound and lastT go too: they are the last commit's, and the release
    picker credits a run to them (relPick's story_t). A recording still
-   running is stopped, because its next words would land on the next record. */
+   running is stopped, because its next words would land on the next record.
+   The safe line goes too, where the commit keeps it: STV.safeSaid and
+   SRC_SAFE_UP are the last person's, and a switch left the next person the
+   line, the door, and the line said aloud on Talk, with nothing written.
+   SRC_SAFE_UP is cleared here and not in srcFresh, which Commit also calls,
+   so the line kept standing at Commit is not said a second time. */
 function stOwn(){
  var cur=(typeof CURP!=='undefined')?CURP:null;
  if(ST_OWN===cur)return false;
@@ -50451,8 +50977,8 @@ function stOwn(){
  if(ST_LISTEN||ST_WANT_LISTEN){ ST_WANT_LISTEN=false; ST_LISTEN=false; ST_LISTEN_T0=null; ST_LIVE='';
   try{ if(ST_REC)ST_REC.stop(); }catch(e){} }
  ST_OWN=cur;
- ST_TEXT=''; ST_PARSED=null; SRC_PASSED=false; if(typeof srcFresh==='function')srcFresh();
- STV.lastFound=[]; STV.lastT=null; STV.unsaved=null;
+ ST_TEXT=''; ST_PARSED=null; SRC_PASSED=false; SRC_SAFE_UP=false; if(typeof srcFresh==='function')srcFresh();
+ STV.lastFound=[]; STV.lastT=null; STV.unsaved=null; STV.safeSaid=false;
  stDraftBack();
  return true;}
 
@@ -53341,9 +53867,6 @@ function lensGene(r){
 /* which span the integrity chart is showing. its own, not the compass's, so
    a person looking at a year here does not change what the compass shows. */
 var SUM_SPAN='quarter';
-/* a small number, spelled, for the start of a sentence */
-const SUM_WORDS=['no','One','Two','Three','Four','Five','Six','Seven','Eight','Nine'];
-function SUM_WORD(n){return SUM_WORDS[n]||String(n);}
 /* ---- the strip. all analytics at a glance, which is what was asked for. ---- */
 function sumGlance(r,noCQ){
  var acc=(typeof accuracy==='function')?accuracy(r):null;
@@ -53442,59 +53965,16 @@ function sumGlance(r,noCQ){
    Every clause is guarded. A person with no birth data gets two paragraphs and
    a line saying what is missing, rather than a paragraph of hedges. */
 /* ============================================================
-   THE STORY, IN THE PERSON'S OWN WORDS, COLOURED BY WHERE IT LANDED.
-
-   Ruled: the centre of this page is the story, and every word that names a
-   behaviour is bold and carries the colour of the seat it belongs to.
-
-   storyui already does this while somebody types, but only for the text in
-   the box, because it reads ST_PARSED, the live parse. A committed entry is
-   just text on the record, so it has to be parsed again here. Same colour
-   rule, same seat map, so a word looks the same after it is committed as it
-   did while it was being written, which is the whole point of colouring it.
-
-   K2BAND is the map between the two, and it is the thing that was missed once
-   already: the sniffer stores a seat key like throat and seatCol wants Throat,
-   so without it every word in every seat comes out one colour.
+   "WHAT YOU TOLD IT" IS GONE FROM THIS PAGE. Ruled 3 November, his words:
+   "get rid of the text, what you told it." The raw journal block (the
+   entries, newest first, and sumWords colouring a matched word by the seat
+   it landed in) sat above the Reading and restated in full what the Reading
+   already turns into a measurement. It had no caller outside this file
+   (sumFull alone built `told` from it), so nothing else on the build reads
+   for it. The journal itself is not gone: Story is where a person's own
+   words live and are written. This page reads them into the measurement and
+   shows the measurement, not the diary entry a second time.
    ============================================================ */
-function sumWords(text){
- if(!text)return '';
- var pr=(typeof parseStory==='function')?parseStory(text):null;
- if(!pr||!pr.hits||!pr.hits.length)return esc(text);
- var band={};
- pr.hits.forEach(function(h){ if(h.t&&h.band&&h.band!=='coherent')band[h.t]=h.band; });
- var words=Object.keys(band).sort(function(a,b){return b.length-a.length;});
- if(!words.length)return esc(text);
- var rx;
- try{ rx=new RegExp('\\b('+words.map(function(w){
-   return w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}).join('|')+')\\b','gi'); }
- catch(e){ return esc(text); }
- var out='', last=0, m;
- while((m=rx.exec(text))!==null){
-  out+=esc(text.slice(last,m.index));
-  var k=band[m[0].toLowerCase()]||band[m[0]];
-  var bn=K2BAND[k]||k;
-  out+='<b class="s-w" style="--c:'+(bn?seatCol(bn):'var(--accent)')+'">'
-   +esc(m[0])+'</b>';
-  last=m.index+m[0].length;
-  if(rx.lastIndex===m.index)rx.lastIndex++;}
- out+=esc(text.slice(last));
- return out;}
-
-/* the entries a person has actually committed, newest first, capped so the
-   page stays a reading and does not become a journal. The journal is Story. */
-function sumEntries(){
- var es=((CURP&&CURP.story&&CURP.story.entries)||[]).slice();
- return es.reverse().slice(0,3);}
-function sumToldHtml(){
- var es=sumEntries();
- if(!es.length)return '';
- return '<div class="s-told"><div class="pm-eye">What you told it</div>'
-  +es.map(function(e){
-    var d=new Date(e.t);
-    return '<div class="s-told-e"><time>'+(isNaN(d)?'':d.toLocaleDateString())
-     +'</time><p>'+sumWords(String(e.text||''))+'</p></div>';}).join('')
-  +'</div>';}
 /* A BOLD NAME WEARS ITS OWN FAMILY'S COLOUR. Ruled: "where it's bold text,
    like Witness, Architect, Sage, those bold colours need to relate back to
    their icon colours."
@@ -53737,7 +54217,7 @@ function sumArch(r){
     it is carried by the order of the rows and by the percentage, which is
     what an ordered list with a number on it already says. */
  var aff=(r.aff||[]).map(function(v,i){return {i:i,nm:(ARCH[i]||{}).nm||'',
-   ic:(ARCH[i]||{}).ic, b:(ARCH[i]||{}).b||'Heart', d:(ARCH[i]||{}).v||'', v:v};})
+   ic:(ARCH[i]||{}).ic, b:(ARCH[i]||{}).b||'Heart', v:v};})
   .filter(function(x){return x.nm;}).sort(function(a,b){return b.v-a.v;});
  /* AND THE PERCENT IS HOW FULLY IT IS EXPRESSED. Ruled 16 October, his
     words: "the archetypes themselves should be 100%. The limiting beliefs are
@@ -53745,9 +54225,18 @@ function sumArch(r){
     twelve, the soul map's lean, which no story or release ever moves. The lean
     still orders the rows, first and second; the figure is archExpr
     (engine/archexpr.js), ring and pill both, as on the glass bar's orb. */
+ /* THE BEHAVIOUR LINE IS OFF THIS PAGE, ruled 3 November, his words: "all the
+    text versus ruler, orders the field, warrior moves the threat, sage reads
+    the situation. I fucking hate that." ARCH[i].v, the four word behaviour
+    ("moves on the threat", "orders the field"), used to print under the name
+    here as sub text. It stays ARCH's own field and keeps every other real
+    caller: the archetype drill's door line (ui.js), the Analytics archetype
+    card (analytics.js) and the intake's own archetype question (intakeui.js)
+    all still read ARCH[i].v for their own panels. Summary just stops asking
+    for it, so the row is the name, the ring and the share, nothing under it. */
  return '<div class="pm-eye">Primary and secondary</div>'
   +aff.slice(0,4).map(function(x){var ax=archExpr(x.i);
-  return sumStructRow(x.nm, x.d, x.b,
+  return sumStructRow(x.nm, null, x.b,
    pct('archetype',ax)||0, fmtPct('archetype',ax), x.ic?'<path d="'+x.ic+'"/>':null,
    ' data-arch="'+x.i+'"', false);}).join('');}
 function sumMasks(r,from,to){
@@ -53799,6 +54288,36 @@ function sumChain(r){
    The owner ruled the little boxes out and icons in: a sign, an animal with
    its element, a life path. Each opens its own detail. Date of birth came out
    with the boxes, because a birth date is an input and this is a reading. */
+/* ============================================================
+   "UPDATED DAILY, LIKE A HOROSCOPE." INVESTIGATED, 3 November, AND IT IS NOT
+   THERE TO WIRE.
+
+   He asked for a summary of how the celestial layer "works through you in
+   the cycles every single day." Everything this page reads for Western and
+   Eastern astrology and for numerology is a pure function of a birth date, a
+   birth time, a birth place and a name: engine/astro.js (sun, moon, rising,
+   Chinese year and element, Human Design gates, gene key, all off the actual
+   sky at the moment of birth, Meeus low precision series) and
+   engine/numerology.js (the six numbers, off the name and the birth date).
+   Neither file, nor anything else under engine/, takes today's date as an
+   input. There is no personal-day-number function and no transit
+   calculation, today's planetary longitudes read against the natal chart,
+   anywhere in this build. engine/daily.js is a different feature under the
+   same word: the Daily Summary, a frozen journal day and an aim a person
+   sets and answers, nothing to do with the sky.
+
+   So "daily, like a horoscope" is not a display change on real data that
+   already exists; it is new engineering, a transit or personal-day
+   calculation nobody has written. Faking one, a number that looks like it
+   moved but is actually the static natal chart read again, is exactly the
+   plausible looking fake rule 6 forbids. Nothing of that kind is built here.
+   What ships is the real, static, natal reading: Western and Eastern
+   placements (sumChips, above) and full numerology (sumNum, below), exposed
+   rather than hidden, which is real and valuable on its own. A true daily
+   reading is a real, separate piece of work for whoever takes it: a
+   transit engine (today's sky against the birth chart) or a personal-day
+   number (life path plus the universal day, numerology's own real method),
+   neither of which exists in this codebase yet. */
 const CELEM_IC={
  Metal:'<circle cx="12" cy="12" r="7"/><path d="M12 5v14"/>',
  Water:'<path d="M4 10c3 3 5 3 8 0s5-3 8 0M4 16c3 3 5 3 8 0s5-3 8 0"/>',
@@ -53838,7 +54357,7 @@ function sumChips(C){
   e.hd.profile?('profile '+e.hd.profile):'unresolved',
   e.hd.unresolved?say(unpackOf('design'),'The type needs the full bodygraph and is not computed. The profile is.')
    :say(unpackOf('design'),unpackOf('profile')));
- out+=chip('gk',e.gk.gate,svgI('<circle cx="12" cy="12" r="8.4"/><path d="M12 3.6v16.8"/>'),
+ out+=chip('gk',e.gk.gate,svgI(GATE_IC),
   'Gene key',e.gk.gate+'.'+e.gk.line,say(unpackOf('gene key'),unpackOf('gate')));
  return out+'</div>';}
 function sumConverge(C){
@@ -54210,8 +54729,24 @@ function sumNameBlock(B,fallback){
    (engine/compute.js, accCoverWord), so a whole intake reads full whatever
    the answers were. */
 function accWord(c){return accCoverWord(c);}
+/* THE PLATE IS THE NAME, AND ALMOST NOTHING ELSE NOW. Ruled 3 November, his
+   words, reading Derek's own plate back to him: "versus Derek partial, get
+   rid of that, get rid of six laws to answer... All that belongs in the
+   information side of things." Two things sat crammed against the name: the
+   coherence ring's own pill (early, partial, or CQ's percent once every law
+   is in) and the band line under it, tierSay(r), which read a real tier name
+   once CQ was complete and "N laws to answer" while it was still filling.
+
+   The ring stays, small and quiet, because tests/pct.js and tests/dailyui.js
+   both read it at this exact path, #sum .s-plate .cr[title^="Coherence"]:
+   dailyui.js's plate percent count and pct.js's S2 slice both depend on a
+   live, real completion reading sitting inside .s-plate, and a ring that
+   stops being real the moment it is unflattering is exactly what rule 6
+   forbids. What moved is everything that was text beside it: the band name,
+   "where it goes" and the gift line are sumStatus() now, read once in the
+   information column (sg-side, next to What drives it) rather than fighting
+   the name for the first line a person reads. */
 function sumPlate(r,B){
- var t=TIER_BY[r.tier]||null;
  var cov=(typeof accCover==='function')?accCover(r):null, aw=cov?accWord(cov):'';
  /* THE FIGURE COMES BACK ONCE IT IS A READING, 17 October, percent phase 2.
     The 14 October ruling took the bare score off this plate and it stands:
@@ -54225,53 +54760,51 @@ function sumPlate(r,B){
  return '<div class="s-plate">'
   +'<div class="s-pl-l">'+sumNameBlock(B,true)+'</div>'
   +'<div class="s-pl-r">'
-   /* THE TIER'S OWN COLOUR, not the heaviest seat's. Ruled. The plate is the
-      one place on this page that names the band, so its ring has to mean the
-      band. It was drawn in r.darkB, so a person at Embodied whose heaviest
-      seat was the Root got a red ring on the second best reading there is. */
-   /* NO PERCENT ON THE HEADLINE READING, round PQ, his words: "No, it doesn't
-      need to be a percent. Just a number." This plate is the Summary's
-      headline and it still read 62%, measured 2 October by the visual review
-      after the ruling had landed everywhere else. The ring keeps the share as
-      its arc; only the sign goes. */
-   /* AND THEN THE NUMBER WENT TOO, 15 October, the 14 October ruling being
-      the later one: the ring draws the share as its arc, the pill says how
-      much has been measured, and the ring is a button to the core drill,
-      where the figure sits with its range. The click router at the foot of
-      this file sends any button it does not know to runCoreDrill. */
-   +cr(r.darkB,pct('cq',r.CQ)||0,{size:'lg',label:'Coherence',raw:cqp||aw||'–',hot:false,act:true,data:'data-gl="core"',
+   +cr(r.darkB,pct('cq',r.CQ)||0,{size:'sm',label:'Coherence',raw:cqp||aw||'–',hot:false,act:true,data:'data-gl="core"',
       title:'Coherence, '+(cqp?cqp:(aw?aw+' reading':'not read yet'))+'. Opens the figure and its range.',
       color:TIERCOL[r.tier]||undefined})
-   /* and the word wears it too. A ring in one colour beside the same band
-      printed in the body colour reads as two facts, not one. */
-   +'<div class="s-pband"><b style="color:'+(TIERCOL[r.tier]||'var(--ink)')+'">'
-   /* no band yet while CQ is still filling, so the slot says what is left */
-   +esc(tierSay(r))+'</b>'
-   +(t&&t.state?'<em>'+esc(t.state)+'</em>':'')+'</div>'
   +'</div>'
-  /* the direction out, which has never been on a surface a touch screen can
-     reach. It is the third of the three things a band is required to carry. */
-  +(t&&t.toward?'<div class="s-ptoward"><span class="pm-eye">Where it goes</span>'
-    +esc(t.toward)+crisisFloor(t)+'</div>':'')
   +'</div>';}
-/* the head of the page: the plate. On a read profile it is the name, the band
-   and where it goes. On an unread one it is what was entered and nothing else,
-   so a name and a birth date still read and a default never does. */
+/* the head of the page: the plate. On a read profile it is the name and the
+   coherence ring alone. On an unread one it is what was entered and nothing
+   else, so a name and a birth date still read and a default never does. */
 function sumWho(r,B,full){
  /* A NAME IS ENTERED OR IT IS NOT. A blank profile carries the roster word
     You, which is a default and not somebody, so it never counts. */
  if(!full&&!(B.sp||B.N||sumRealName()))return '';
  return sgZone('who','Who this is',
-  full?sumPlate(r,B)+sumGift():'<div class="s-plate sg-plain"><div class="s-pl-l">'+sumNameBlock(B,false)+'</div></div>');}
-/* THE GIFT, SAID ONCE AND QUIETLY, under the name on the page a new person
-   lands on (tabLandFirst, ui/panels.js). The ruling is "100 patterns, free,
-   with everything visible", and the lock now keeps it (lockGift, ui/lock.js),
-   so nothing on this page is padlocked while it lasts. This is the one line
-   that says why. No count of what is left, no price and no button: the first
-   screen is the person's reading, opened, and not a shop. The count is in
-   Billing and on the card before a release, where it is spent. Read off the
-   lock's own answer, so it goes when the padlocks come back, and never on a
-   worked example. The size is GIFT_N and not a typed hundred. */
+  full?sumPlate(r,B):'<div class="s-plate sg-plain"><div class="s-pl-l">'+sumNameBlock(B,false)+'</div></div>');}
+/* THE BAND AND THE GIFT, MOVED OFF THE NAME AND INTO THE INFORMATION COLUMN.
+   Read once, at the top of the drivers card (sg-side), next to "What drives
+   it" rather than crowding the plate. Both pieces are unchanged, only their
+   place moved: tierSay(r) and TIERCOL still carry the band exactly as
+   before (design.js's GATE 16 reads `.s-pband b` by class, not by position,
+   so it still finds it here), and sumGift() still writes #sumgift with the
+   same id and the same sentence tests/gift.js reads on a brand new person's
+   first screen (inView at scroll 0 holds: this column sits above the fold
+   at the widths that gate opens at). */
+function sumStatus(r,B){
+ var t=TIER_BY[r.tier]||null;
+ /* no band line at all while CQ is still filling: "N laws to answer" was
+    exactly the clutter he named, and the ring in the plate already carries
+    that state as its own pill (early, partial). Once a tier exists it is
+    real, named structure and belongs here. */
+ var band=r.tier?('<div class="s-pband"><b style="color:'+(TIERCOL[r.tier]||'var(--ink)')+'">'
+   +esc(tierSay(r))+'</b>'+(t&&t.state?'<em>'+esc(t.state)+'</em>':'')+'</div>'
+   +(t&&t.toward?'<div class="s-ptoward"><span class="pm-eye">Where it goes</span>'
+     +esc(t.toward)+crisisFloor(t)+'</div>':'')):'';
+ var gift=sumGift();
+ return (band||gift)?'<div class="s-status">'+band+gift+'</div>':'';}
+/* THE GIFT, SAID ONCE AND QUIETLY, in the information column now rather than
+   under the name on the page a new person lands on (tabLandFirst,
+   ui/panels.js). The ruling is "100 patterns, free, with everything
+   visible", and the lock now keeps it (lockGift, ui/lock.js), so nothing on
+   this page is padlocked while it lasts. This is the one line that says why.
+   No count of what is left, no price and no button: the first screen is the
+   person's reading, opened, and not a shop. The count is in Billing and on
+   the card before a release, where it is spent. Read off the lock's own
+   answer, so it goes when the padlocks come back, and never on a worked
+   example. The size is GIFT_N and not a typed hundred. */
 function sumGift(){
  if(typeof lockGift!=='function'||!lockGift())return '';
  return '<p class="s-src" id="sumgift">Your gift: '+GIFT_N+' '+unp('pattern','patterns','gift')
@@ -54287,10 +54820,18 @@ function sumDrivers(B,r){
   +'<span class="sg-down" aria-hidden="true">'+sumIc('down','sg-ic')+'</span>'
   +(isObj?sgFold('range','Other ways this shows up',born.more):'')+'</section>';}
 /* the birth marks, one strip across the page under the story and the roots, so
-   neither card has to make room for them and a five or a seven stands level */
+   neither card has to make room for them and a five or a seven stands level.
+   LABELLED "THE CELESTIAL LAYER" now, ruled 3 November, his words: "the
+   summary needs to show the celestial layer, a summary of how that works
+   through you." The strip itself is unchanged, real Western (sun, moon,
+   rising) and Eastern (Chinese year and element) placements off the same
+   birth record as the full numerology card, through sumChips, which already
+   existed and already read real data (engine/astro.js); it only went
+   unlabelled before. */
 function sumMarks(B,r){
  var C=B.sp?converge(B.p.nm,r):null;
- return C?'<div class="sg-marks" data-grp="marks">'+sumChips(C)+'</div>':'';}
+ return C?'<div class="sg-marks" data-grp="marks"><div class="pm-eye">The celestial layer</div>'
+  +sumChips(C)+'</div>':'';}
 /* a zone is a heading with a mark and one body. The heading names the slot and
    the slot keeps its name whatever the data says. */
 function sgHead(k,title){
@@ -54482,59 +55023,44 @@ function sumSaid(x){
  return SUM_SAID.indexOf(String(x).replace(/\s+/g,' ').trim())>=0;}
 function sumFull(r){
  var B=sumBirth(), C=B.sp?converge(B.p.nm,r):null;
- var told=sumToldHtml(), story=sumStory(r), drv;
- SUM_SAID=sumPlain(told+story);
+ var story=sumStory(r), drv;
+ SUM_SAID=sumPlain(story);
  try{drv=sumDrivers(B,r);}finally{SUM_SAID=null;}
  /* THE ORDER IS THE ORDER A PERSON ASKS IN, and every group is one question.
-    Who is this. What did they say, and what do their roots say beside it. What
-    is running, and what does it cost. What do they do about it. Then, folded
-    away, where each of those comes from. Every row is two equal halves or
-    three equal thirds. */
+    Who is this. What is running, and what does it cost. What does the
+    celestial layer say. Then, folded away, where each of those comes from.
+    Every row is two equal halves or three equal thirds. */
+ /* REDESIGNED 3 November, his own words reading Derek's page back to him:
+    the partial badge, "N laws to answer", the gift line, the raw "What you
+    told it" journal block, "the heaviest of the nine is sad at your weight
+    of 97" and the whole "What to do" column (Release this first, the
+    Protocol, Next marker) are all off this surface now. "All that belongs
+    in the information side of things": the band and the gift moved into
+    sumStatus() beside the
+    drivers card rather than vanishing, and What to do is gone outright
+    (sumOutput still exists, read directly by tests/record.js and free for
+    a future release-focused surface, just not rendered here).
+
+    WHAT REPLACED IT: "numerology, make sure that's exposed. The Eastern and
+    Western astrology, those need to be exposed as well... the summary needs
+    to show the celestial layer." Nothing here is new engineering: sumChips
+    (the sun, moon, rising, Chinese year and element, life path) and sumNum
+    (all six numerology numbers) already existed and already read real,
+    computed data (engine/astro.js, engine/numerology.js). sumChips was
+    rendered unlabelled through sumMarks, which now carries its own heading,
+    and sumNum sat collapsed in a closed <details> at the foot of the page;
+    both read the same way, just no longer hidden. */
  return sumWho(r,B,true)
-  /* THE CENTRE IS THE STORY. Ruled. Their own words first, coloured where
-     they landed, then the reading built from them. The order matters: the
-     reading is a claim about the person and the story is the evidence for
-     it, and evidence goes first. It stands on the first screen, left of the
-     roots, and the phone reads it before them. */
-  /* THE LEAD ROW, REBUILT, round RB. His words: "The summary page layout is
-     abysmal. I'm not sure what happened here." Measured on Diane at 1600 with
-     three entries before touching it: the story card ran about 1750 pixels
-     and the drivers card beside it was stretched to match while its content
-     ended near 950, so the right half of the first two screens was a hole
-     about 750 pixels tall with one fold sitting at its foot. And What to do,
-     the only block on the page that says what a person can do, sat about 2730
-     pixels down, the best part of three screens under the reading.
-
-     So the row stops stretching and the right column carries two cards: what
-     to do first, where the hole was, and the drivers under it. The story
-     keeps the left and the first screen, which is the ruling above. Nothing
-     is removed and no sentence changes; the action moves up beside the
-     evidence it acts on. */
-  /* WHAT THEY SAID, WHAT TO DO, THEN WHY. Round RF, his words: "simulate the
-     best UI UX flow for least friction, most text visibility, most
-     visibility. If you have to change stuff to change, feel free."
-
-     Measured at 390 before this: What to do started 2.8 screens down, under
-     about 500 words, because on one column the lead row stacked as the whole
-     left half (what you told it and the whole Reading) and then the right. A
-     person on a phone read the full reading, every meaning in it, before
-     reaching the one thing on the page they could do.
-
-     So what you told it and the Reading are two cards, not one, and on one
-     column the four pieces of this row interleave: their own words, then what
-     to do about them, then the Reading that explains it, then the drivers.
-     Evidence still goes first, which is the ruling above; the action now
-     follows the evidence it acts on instead of following the explanation of
-     it. On two columns nothing moves: the left is their words over the
-     Reading, the right is what to do over the drivers. The column wrappers
-     carry no look of their own, so a single column can dissolve them. */
+  /* THE CENTRE IS THE STORY. Ruled. The reading built from a person's own
+     words, in the instrument's voice. It stands on the first screen, left of
+     the roots, and the phone reads it before them. The drivers card and the
+     band/gift status sit beside it, the information side of the page. */
   +'<div class="sg-two sg-lead sg-lead2">'
    +'<div class="sg-col">'
-    +(told?'<section class="sg-card sg-told" data-grp="told">'+told+'</section>':'')
     +'<section class="sg-card sg-story" data-grp="story">'
      +'<div class="s-readbox sg-flat">'+story+'</div></section>'
    +'</div>'
-   +'<div class="sg-side">'+sgZone('todo','What to do',sumOutput(r),'sg-card')+drv+'</div>'
+   +'<div class="sg-side">'+sumStatus(r,B)+drv+'</div>'
   +'</div>'
   /* the patterns block follows the lead on every width. On a phone it was
      lifted above the story by an order rule written before it existed. */
@@ -54550,87 +55076,33 @@ function sumFull(r){
    +'</section>'
    +'<section class="sg-card" data-grp="cost">'+sgHead('cost','What it costs')
     +sumGlance(r,true)
-    +'<div class="sg-gap"><div class="pm-eye">In the body</div>'+sumNine()+sumAxes(r,true)+'</div>'
+    +'<div class="sg-gap"><div class="pm-eye">In the body</div>'+sumNine()+'</div>'
     +sgFold('seats','Heaviest seats',sumSeats())
     +sgFold('ig','Integrity over time',sumIg(r))
    +'</section>'
   +'</div>'
+  /* NUMEROLOGY, EXPOSED, not folded. Same sumNum() call this page already
+     made, inside a closed <details> at the very bottom; now a card on the
+     page itself, so Path, Expression, Soul urge, Personality, Birthday and
+     Maturity read without a tap. */
+  +sgZone('numerology','Numerology',sumNum(r,true),'sg-card')
   +'<div class="sg-folds">'
    +sgFold('lens','Four lenses',sumLens(r,true))
    +(C?sgFold('conv','Birth comparison',sumConverge(C)):'')
-   +sgFold('num','Numerology, in full',sumNum(r,true))
   +'</div>';}
 
 /* ============================================================
-   WHAT YOU ARE CARRYING, IN SENTENCES, IN THE BODY.
-
-   Ruled: "the centre column becomes text about you." The centre had the
-   reading and the three action cards and then half a screen of nothing,
-   because everything else on the page is a measurement and every measurement
-   moved right.
-
-   This is the nine, written rather than tabled. The right rail already has
-   them as a table of held against opposite, which is the correct place for a
-   table, and a table is not text about anybody. What a person cannot get from
-   that table is where it is, which the engine has known all along: every one
-   of the nine carries its plexus and the part of the body it sits in, and
-   neither has ever been on this surface.
-
-   Three sentences at most, because a paragraph naming nine things is a list
-   with full stops in it.
+   "THE HEAVIEST OF THE NINE IS SAD AT YOUR WEIGHT OF 97" IS GONE. Ruled 3
+   November, his words reading it back verbatim. sumAxes() wrote that
+   sentence (and "under it, X, Y, Z are carrying something", and "standing
+   against them") as the prose version of the same nine axes sumNine()
+   already draws as a compact ring grid two lines above it, real percentages
+   on real rings, with no sentence to parse. The prose had one caller
+   (sumFull) and no test depends on it (tests/dailyui.js's duplicate-sentence
+   probe runs on the page as rendered, not on this function, so it still
+   covers the page with sumAxes gone), so it is removed rather than left
+   calling nothing. The nine still read here through sumNine() alone.
    ============================================================ */
-function sumAxes(r,bare){
- var C=(typeof CHILD!=='undefined')?CHILD:[];
- if(!C.length)return '';
- /* THE AXIS VALUE, NOT THE MEAN OF ITS NODES. The first cut meaned n.sq over
-    every node on the axis, and most nodes on an axis are at zero, so a person
-    whose nine axes all read half a point came out at a mean of nought and was
-    told nothing was carrying while the rail beside it listed Fear at 0.5. Two
-    panels on one screen disagreeing about whether anything is there is worse
-    than either of them being wrong alone. S.charge is what the person
-    entered and what every other surface prints. */
- var held=C.map(function(c){
-   return {c:c, sq:+(S.charge[c.nm]||0), rep:+(S.replace[c.nm]||0)};})
-  .sort(function(a,b){return b.sq-a.sq;});
- var live=held.filter(function(x){return x.sq>0;});
- var standing=held.filter(function(x){return x.rep>0;})
-  .sort(function(a,b){return b.rep-a.rep;});
- var p=[];
- if(!live.length){
-  p.push('Nothing is carrying on any of the nine.');
- }else{
-  var top=live[0];
-  /* NO "the" IN FRONT OF THE ADDRESS. Half the nine carry a plexus, which
-     takes an article, and half carry a phrase like "Below the heart", which
-     does not. "It sits at the Below the heart" is what a template does when
-     it assumes one shape of noun. */
-  /* "of 10" made a weight a mark out of ten. V8, and ui/summary.js was its
-     own named corpse: "at a weight of 7.4" is what ships, so this says it. */
-  /* the charge on the axis, as the ring of the nine prints it, 17 October */
-  p.push('The heaviest of the nine is <b>'+esc(top.c.nm)+'</b>, at a weight of <b>'
-   +fmtPct('charge',top.sq)+'</b>. It sits at '+esc(top.c.addr)
-   +', which you feel in the '+esc(top.c.loc)+'. The quality on the far side '
-   +'of it is <b>'+esc(top.c.opp)+'</b>.');
-  if(live.length>1){
-   var rest=live.slice(1,4);
-   p.push('Under it, '+rest.map(function(x){
-     return '<b>'+esc(x.c.nm)+'</b> in the '+esc(x.c.loc)
-      +' at '+fmtPct('charge',x.sq);}).join(', ')
-    /* AND THE COUNT IS COUNTED. This said "five more" whatever the number
-       was, which is the same defect as a gate that counts by hand. */
-    /* and the number is spelled, because it opens a sentence and a sentence
-       that opens with a digit reads as a list item */
-    +'. '+(live.length>4?SUM_WORD(live.length-4)+' more '
-      +(live.length-4===1?'is':'are')+' carrying something.':''));}
- }
- if(standing.length){
-  p.push('Standing against them: <b>'+esc(standing[0].c.opp)+'</b> at <b>'
-   +fmtPct('installed',standing[0].rep)+'</b>'
-   +(standing.length>1?', and '+(standing.length-1)+' other'
-     +(standing.length>2?'s':'')+' installed':'')
-   +'. An address with the opposite installed conducts.');}
- return '<div class="s-axes">'+(bare?'':'<div class="pm-eye">In the body</div>')
-  +p.map(function(t){return '<p class="s-p">'+t+'</p>';}).join('')+'</div>';}
 
 /* ============================================================
    THE FIVE LENSES, ON THE PAGE AT LAST.
@@ -70442,6 +70914,104 @@ function ladderHtml(){
  return h+'</div>';}
 
 try{window.__at&&window.__at('ui/cone.js');}catch(e){}
+/* ============================================================
+   THE TRACE SUMMARY, WIRED INTO THE EXISTING DRILLS. Round of 2 November,
+   continuing PR #161 (the stack section on the left rail) and PR #158
+   (traceSummary(g,node), engine/tracesummary.js), on his own words after
+   seeing the rebuilt wheel: "the full cascade wiring of the Psyche stack
+   for the field... nerve to fetter, address, to saboteur, complex, hyper-
+   complex, super-complex."
+
+   WHAT WAS ALREADY REAL, CHECKED BEFORE ANYTHING WAS ADDED. A click on a
+   wheel bead already opens a real drill: runNodeDrill(n) for an address
+   (ui/drills.js, nodeDrillHtml) and runDrill(o) for a saboteur, complex,
+   hyper-complex or super-complex (ui/drills.js, runDrill), both wired from
+   hitPress in ui/ui.js, both already real and already shipped. The address
+   drill already shows what it "Feeds" upward (the saboteurs or complexes
+   built partly from it). The chain's own four rungs (runDrill) show only
+   what they are "Made of" downward; nothing on this product today shows a
+   saboteur, complex or hyper-complex what it itself feeds into, and
+   nothing on either drill blends the two directions into one read.
+
+   THE ONE REAL GAP THIS FILE CLOSES. traceSummary(g,node) already computes
+   exactly that: real parents (what a node feeds up into) and one narrated
+   paragraph, tested, never wired to a screen. This file is the one real
+   call site. tsBlockHtml(type,id) is appended to both existing drills,
+   never replacing what they already show.
+
+   THE GRAPH. The same one loopRead already builds (engine/loop.js:
+   traceFromRecord(p, practiceTraceIntents(p.practice), readSeenOf(p))),
+   rebuilt here rather than exposed from loopRead, because loopRead's own
+   contract (engine/loop.js) returns processed counts and never the graph
+   itself, and changing that return shape risks every caller and test that
+   already reads it. Memoised the same way loopOf memoises (ui/loopread.js,
+   LP), against the same two things a graph is built from: the record's own
+   signature and the reading it was handed. */
+var TSG={memo:null, sig:''};
+function tsSig(p,rd){
+ var es=(p&&p.story&&p.story.entries)||[];
+ try{return JSON.stringify([p&&p.id||null, es.map(function(e){return [e&&e.t,e&&e.text,e&&e.lex];}),
+  p&&p.practice||null, p&&p.trace||null, p&&p.soul||null, rd&&rd.CQ||null]);}
+ catch(e){return String(Math.random());}}
+function tsGraphFor(p){
+ if(!p||typeof p!=='object')return null;
+ var rd=null; try{rd=readSeenOf(p);}catch(e){rd=null;}
+ var s=tsSig(p,rd);
+ if(TSG.memo&&s===TSG.sig)return TSG.memo;
+ var P=(p.practice&&typeof p.practice==='object')?p.practice:null, g=null;
+ try{g=traceFromRecord(p,P?practiceTraceIntents(P):[],rd);}catch(e){g=null;}
+ TSG.memo=g; TSG.sig=s; return g;}
+function tsCurrentGraph(){ return tsGraphFor(typeof CURP!=='undefined'?CURP:null); }
+
+/* the human word for a graph node's type, fetter split out from pattern the
+   same way traceSummaryWord already does it (engine/tracesummary.js), kept
+   as its own small copy rather than reused directly: that function's own
+   TRACE_SUMMARY_WORD table is for a sentence's subject ("a fetter"), and a
+   drill's small kind tag wants the bare word, no article. */
+function tsWord(type,id){
+ if(type==='pattern'&&/^fetter:/.test(String(id)))return 'fetter';
+ if(type==='pattern')return 'address';
+ return {saboteur:'saboteur', complex:'complex', hyper_complex:'hyper-complex',
+  super_complex:'super-complex'}[type]||type;}
+
+/* one resolved parent or child, as a row: its name, its kind, and its own
+   real content quoted exactly as traceSummaryCard reads it (coherent and
+   collapsed for an address, says/lived for a saboteur, the family line for
+   a hyper-complex), or, honestly, why it carries nothing further. */
+function tsPartRow(part){
+ var card=part.card||{}, nm=esc(card.label!=null?card.label:String(part.id)),
+  kind=esc(tsWord(part.type,part.id)),
+  own=card.found?traceSummaryOwnLine(card.fields):null;
+ return '<div class="ts-row"><b>'+nm+'</b> <span class="ts-kind">'+kind+'</span>'
+  +(own?'<div class="ts-line">'+esc(own)+'</div>'
+    :(card.why?'<div class="ts-why">'+esc(card.why)+'</div>':''))+'</div>';}
+
+/* THE BLOCK ITSELF, appended to an existing drill. type/id are the real
+   graph key (traceKey): 'pattern'/address-number for an address,
+   'pattern'/'fetter:X' for a fetter, 'saboteur'/'complex'/'hyper_complex'/
+   'super_complex' with the node's own real .nm for the chain's four
+   rungs, the exact id traceFromRecord itself keys them by
+   (engine/trace.js, TRACE_CHAIN_OF.forEach, node(row.type,x.nm,...)).
+
+   Silent and honest on an unread record, the same idiom renderGates and
+   loopPaint already use: a cold record shows the sentence that explains
+   why, never a blank box and never an invented reading. */
+function tsBlockHtml(type,id){
+ var g=tsCurrentGraph();
+ if(!g)return '<div class="pm-eye">Feeds up, and the blend</div>'
+  +'<p class="ad-p">Nothing read yet. Write a line in the Journal and this fills in from it.</p>';
+ var res=traceSummary(g,traceKey(type,id));
+ if(!res.ok)return '<div class="pm-eye">Feeds up, and the blend</div>'
+  +'<p class="ad-p">'+esc(res.why)+'</p>';
+ var up=res.parents||[], h='';
+ h+='<div class="pm-eye">Feeds up'+(up.length?' ('+up.length+')':'')+'</div>';
+ if(up.length)h+='<div class="ts-rows">'+up.map(tsPartRow).join('')+'</div>';
+ else h+='<p class="ad-p">Nothing sits above it yet on this graph: either the chain stops here by design, or this one has not compounded with another of its kind yet.</p>';
+ h+='<div class="pm-eye">Source AI, blended from the records above and below</div>'
+  +'<p class="ad-p ts-narr">'+esc(res.summary||'')+'</p>';
+ return h;}
+
+try{window.__at&&window.__at('ui/tracesummaryui.js');}catch(e){}
 
 /* ============================================================
    THE DRILLS. Every element that carries data opens one. Same panel
@@ -70669,7 +71239,16 @@ function runDrill(o){
    return h2+'<p class="ad-p">It runs at the '+esc(chAnd(uncov))+', where no mask is worn yet.</p>';})()
   +'<div class="pm-eye">Made of</div><div class="ad-rows">'
   +lv.slice(0,8).map(addrRow).join('')
-  +(lv.length>8?'<div class="pm-more">and '+(lv.length-8)+' more</div>':'')+'</div>';
+  +(lv.length>8?'<div class="pm-more">and '+(lv.length-8)+' more</div>':'')+'</div>'
+  /* WHAT THIS RUNG ITSELF FEEDS, never shown here before. "Made of" above is
+     the downward direction (leaves(o), every reading already had); nothing
+     said what a saboteur, complex or hyper-complex feeds UP into, or blended
+     the two directions into one read. traceSummary(g,node), PR #158, built
+     and tested, reads exactly that off the same graph loopRead already
+     builds. ui/tracesummaryui.js, tsBlockHtml. */
+  +(typeof tsBlockHtml==='function'
+   ?tsBlockHtml({sab:'saboteur',cx:'complex',hy:'hyper_complex',sup:'super_complex'}[o.kind],o.nm)
+   :'');
  rdShell(h);
  /* a "Runs under" row opens that mask's own drill, the same rail press
     chDrill is already opened by, so "does this show up here" (MX) can be
@@ -70813,6 +71392,16 @@ function nodeDrillHtml(n,o){
      return '<span class="pm-chip'+(o.over?' over':'')+'">'+esc(o.nm)+' '+fmtPct('chain',o.w)+'</span>';}).join('')
     :'<span class="pm-chip">nothing compounds from here</span>')+'</div>')
    :'<div class="pm-eye">Feeds</div>'+lockPanelHtml('sab',{brief:true}));
+ /* THE BLEND, for this one address. "Feeds" above already names what it
+    compounds into (owners, the chain's own four rungs); traceSummary adds
+    the one thing that did not exist anywhere: a narrated paragraph reading
+    the address together with what sits above it, hedged, never a causal
+    claim. ui/tracesummaryui.js, tsBlockHtml, PR #158's traceSummary. */
+ if(lockSees('sab')&&typeof tsBlockHtml==='function')
+  h+='<div class="pm-eye">Source AI, the blend</div><p class="ad-p ts-narr">'
+   +esc((function(){var g=tsCurrentGraph(); if(!g)return '';
+    var res=traceSummary(g,traceKey('pattern',n.i)); return res.ok?res.summary:(res.why||'');})())
+   +'</p>';
  h+=nodeStories(n);
  /* RUN THE PROTOCOL HERE. The reading ended at the reading: a person could see
     exactly which address was costing them and had no way to act on it from
@@ -73025,7 +73614,11 @@ function kbOpen(x){
   var r=computeSeen(), live=r.sabs.filter(function(s){return s.nm===x.o.nm;})[0];
   if(live){S.pin=live; runDrill(live); render(); return;}
   runSabDrill(x.o); return;}
- if(x.k==='harm'){runKbDrill('Harmonic element '+x.o.c, x.o.t, HARM_AX[x.o.a]||x.o.a, x.o.ch); return;}
+ /* the real definition, pulled from the book's own Harmonic Table entry for
+    this law. Where that extraction found no safe match (E43, Responsibility,
+    folded into Ownership/E40 in the current build) this falls back to the
+    chapter pointer exactly as before. */
+ if(x.k==='harm'){runKbDrill('Harmonic element '+x.o.c, x.o.t, HARM_AX[x.o.a]||x.o.a, x.o.d||x.o.ch); return;}
  if(x.k==='gloss'){runKbDrill('Glossary', x.o.t, '', x.o.d); return;}
  if(x.k==='dom'){runDomDrill(x.o); return;}
  /* the archetype and the mask drills live in drills.js now, because the
@@ -79875,8 +80468,8 @@ function renderSpirit(){
   +row('Element',cic,sp.celem,CE_RUNS[sp.celem]||'','celem',sp.celem,
     say(unpackOf('year element'),unpackOf(sp.celem,'year')))
   +hd('N','Number')
-  +row('Path','',String(sp.lp),sp.lpMean,'lp',String(sp.lp),say(unpackOf('life path'),unpackOf('path:'+sp.lp)))
-  +(sp.master?row('Master','',String(sp.master),'survives reduction','lp',String(sp.master),unpackOf('master number')):'')
+  +row('Path',NUMFIELD_IC.path,String(sp.lp),sp.lpMean,'lp',String(sp.lp),say(unpackOf('life path'),unpackOf('path:'+sp.lp)))
+  +(sp.master?row('Master',NUMFIELD_IC.master,String(sp.master),'survives reduction','lp',String(sp.master),unpackOf('master number')):'')
   +spNumRows(p.nm,true)
   +hd('D','Design')
   /* the personality and design gates are real and computed. the type is
@@ -79884,17 +80477,17 @@ function renderSpirit(){
   /* These three fell back to the word unresolved inside a drill button, with
      the explanation of a value that was not there beside it. The fallback
      could not fire until the engine learned to refuse, and now it can. */
-  +(sp.hd.profile?row('Profile','',sp.hd.profile,'personality line over design line','hd',sp.hd.profile,unpackOf('profile'))
+  +(sp.hd.profile?row('Profile',DESIGNFIELD_IC.profile,sp.hd.profile,'personality line over design line','hd',sp.hd.profile,unpackOf('profile'))
     :unres('Profile',noZone))
-  +(sp.hd.personality?row('Personality','','gate '+sp.hd.personality.gate+'.'+sp.hd.personality.line,
+  +(sp.hd.personality?row('Personality',DESIGNFIELD_IC.personality,'gate '+sp.hd.personality.gate+'.'+sp.hd.personality.line,
     'the sun at birth','gk',String(sp.hd.personality.gate),
     say(unpackOf('personality gate'),unpackOf('gate'),unpackOf('line'))):unres('Personality',noZone))
-  +(sp.hd.design?row('Design','','gate '+sp.hd.design.gate+'.'+sp.hd.design.line,
+  +(sp.hd.design?row('Design',DESIGNFIELD_IC.design,'gate '+sp.hd.design.gate+'.'+sp.hd.design.line,
     'the sun 88 degrees earlier','gk',String(sp.hd.design.gate),
     say(unpackOf('design gate'),unpackOf('gate'),unpackOf('line'))):unres('Design',noZone))
   +unres('Type','needs the full bodygraph')
   /* this printed null.null the moment the engine could return no gate */
-  +(sp.gk.gate!=null?row('Gene key','',sp.gk.gate+'.'+sp.gk.line,'the gate the sun occupied','gk',
+  +(sp.gk.gate!=null?row('Gene key',DESIGNFIELD_IC.genekey,sp.gk.gate+'.'+sp.gk.line,'the gate the sun occupied','gk',
     sp.gk.gate+'.'+sp.gk.line,say(unpackOf('gene key'),unpackOf('gate'),unpackOf('line'))):unres('Gene key',noZone))
   +hd('born','Born')
   +'<div class="sp-row static"><span class="sp-k">When</span><span class="sp-v">'
@@ -79926,11 +80519,12 @@ function spNumRows(nm,under){
     under it this one would be the same number twice */
  var K=(under?[]:['lifePath']).concat(['expression','soul','personality','birthday','maturity']);
  var rows=K.filter(function(k){return N[k]!==null&&N[k]!==undefined;}).map(function(k){
-  var nsay=unpackOf((NUM_LABEL[k]||k).toLowerCase());
+  var nsay=unpackOf((NUM_LABEL[k]||k).toLowerCase()), ic=NUMFIELD_IC[k]||'';
   return '<button class="sp-row" type="button" data-num="'+k+'"'
    +(nsay?' data-tip-k="'+esc(NUM_LABEL[k]||k)+'" data-tip="'+esc(nsay)+'"':'')+'>'
    +'<span class="sp-k">'+esc(NUM_LABEL[k]||k)+'</span>'
-   +'<span class="sp-v">'+esc(String(N[k]))+'</span>'
+   +'<span class="sp-v">'+(ic?'<svg class="sp-gi" viewBox="0 0 24 24" aria-hidden="true">'+ic+'</svg>':'')
+   +esc(String(N[k]))+'</span>'
    +'<span class="sp-x">'+esc(spNumSays(k,N[k]))+'</span></button>';}).join('');
  return rows?(under?'':'<div class="sp-hd"><svg class="sp-hi" viewBox="0 0 24 24" aria-hidden="true">'
   +SYSGLYPH.N+'</svg>Number</div>')+rows:'';}
@@ -85407,8 +86001,6 @@ function render(){
   var say=rbSay(h[1]); e.setAttribute('data-tip',say); e.setAttribute('aria-label',h[1]+'. '+say);});
  /* who, and what is running hottest in them. */
  (function(){
-  function row(k,n,pc){return '<div class="tierow"><span class="tk">'+k+'</span>'
-   +'<span class="tn">'+n+'</span><span class="tp">'+pc+'</span></div>';}
   /* THE ARCHETYPES AND THE DOMAINS CAME OFF THIS CARD. Round IT in TASKS.md,
      his words: "The archetypes, the domains, that's not what's important.
      What is important is that we're tracking all the things that are the most
@@ -85473,8 +86065,6 @@ function render(){
    ?'<div class="pm-eye" style="margin-top:14px">By weight</div><div class="ad-rows">'+top+'</div>'
     +'<div class="pm-eye" style="margin-top:12px">'+unp('assemblage point','By assemblage point')+'</div><div class="ad-rows">'+per+'</div>'
    :'<div class="pm-eye" style="margin-top:14px">By weight</div><p class="rnone">Nothing is carrying charge yet.</p>';
-  var held=W.filter(function(n){return n.sq>=4;}).length;
-  var inst=W.filter(function(n){return n.pole>=4;}).length;
   /* WHERE TO START. Only while there is nothing to read, because a call to
      action that survives the action is furniture. Two doors and a line saying
      what each one is for, so nobody has to remember a term to find one. */
@@ -85540,28 +86130,14 @@ function render(){
       goes when the state is not empty. */
    +(p.says&&!(p.you&&!r.unread)?'<p class="psay">'+esc(p.says)+'</p>':'')
    +run
-   /* NOTHING READ, SO THE BLOCK IS NOT PRINTED. Four rows read "Carrying
-      nothing yet", "Filled in nothing yet", "Heaviest Root 0.0" and "Most
-      shut Truth at the throat" on a person who has entered nothing: two
-      empty states, a zero, and a verdict about a throat nobody has read,
-      drawn off the default. The four doors above already say "Nothing has
-      been read yet", so the block repeated the empty state in four rows and
-      then invented a finding under it. A value's empty state is a dash and a
-      dash four times is not a sentence. Round J13. */
-   +(r.unread?'':'<div class="pm-eye" style="margin-top:12px">Field</div>'
-   /* "nothing" was being printed over charge a person had entered themselves.
-      If something sits under the line, the row says so rather than reporting
-      a zero that is not true. */
-   /* "nothing above the line" plus "74 under it" wrapped into four lines in a
-      narrow column and read as broken text. One short value, one short note. */
-   /* SAID OUT LOUD. These read "Held nothing" and "Installed nothing", which
-      is the schema talking. A person says what is there and what is not. */
-   +row('Carrying',held?held+' addresses':'nothing yet',
-     held?'':(r.under?r.under+' sitting under the line':''))
-   +row('Filled in',inst?inst+' addresses':'nothing yet','')
-   /* percent phase 2, 17 October: the seat mean on the registry's weight kind */
-   +row('Heaviest',r.darkB,fmtPct('weight',r.darkV))
-   +row('Most shut',r.weakL.nm,'at the '+r.weakL.b.toLowerCase()));
+   /* THE FIELD EYEBROW AND ITS FOUR ROWS (Carrying/Filled in/Heaviest/Most
+      shut) ARE CUT, 2 November, his own words: "this is all nonsense, it's
+      all bullshit." They were counts with no behaviour sentence attached
+      (a dash four times is not a sentence, Round J13, the same ruling that
+      already cut this block from printing on an unread record, never
+      extended here to the read state). By weight / By assemblage point
+      above already rank the same addresses with real per-address content;
+      this block only repeated the job more thinly underneath it. */;
   var ws=$('psum'); if(ws)ws.onclick=function(){S.pin=null; runCompassDrill(); render();};})();
  railStack(r); renderBal(r);
  /* SUPERSEDED ON 2 OCTOBER, CO-31. These once said "of 10" after every
@@ -86128,5 +86704,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005677352"></div>
+<div id="eof" hidden data-len="005728878"></div>
 </body></html>
