@@ -19,7 +19,7 @@ It exits non zero on a finding at a severity that stops a build. Every
 other mode of that gate enforces the same rules, so there is one set of
 rules and one place they live.
 
-    commit efe16897, tree dirty   database md5 af4a330331a1
+    commit 590b13e8, tree dirty   database md5 af4a330331a1
     31 objections logged, 26 of them with a quotation on record
     26 rules, 12 with patterns in the database, 14 held by a gate elsewhere
     13 more objections are guidance, because no check can express them

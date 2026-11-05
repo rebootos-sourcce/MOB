@@ -6114,6 +6114,23 @@ body.tab-ritual:not(.lshut) #rit .rv-addx{display:none}
    because inputting new is what this column is for. The right menu's head
    keeps Flow's own colour above. */
 .fl-new .fl-nm svg{stroke:var(--accent)}
+/* THE STREAK STRIP, SV19, the first row of the right menu's head on the
+   Ritual page (acctStreakHtml, ui/accountability.js): "the streak should be in
+   the upper right hand side ... accountability will be underneath that". A
+   mark and its figure, three of them, each a flat chip in its own colour with
+   no outline, and each the one tooltip's carrier, so the 44 pixel floor is the
+   chip's own height. Rings, not fills, on the marks. */
+.acs-row{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px}
+/* sized to sit on one row beside the fold control at 1600, measured: at 12
+   pixels of padding the third chip wrapped under the first two */
+.acs{--c:var(--sec-play);display:inline-flex;align-items:center;gap:5px;min-height:44px;padding:0 9px 0 8px;border-radius:12px;
+ background:color-mix(in srgb,var(--c) 16%,var(--panel));color:var(--ink);cursor:help}
+.acs-miss{--c:var(--dim)} .acs-mins{--c:var(--sec-flow)}
+.acs svg{width:19px;height:19px;flex:0 0 auto;fill:none;stroke:var(--c);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.acs-miss svg{stroke:var(--mid)}
+.acs b{font-size:17px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}
+.acs small{font-size:12.5px;font-weight:400;color:var(--mid)}
+.acs:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 #cone.tabmode{position:absolute;z-index:5;background:transparent;backdrop-filter:none}
 #cone.tabmode .cone-card{width:100%;max-height:none;border:0;background:transparent;
  box-shadow:none;padding:14px 18px 18px}

@@ -298,10 +298,10 @@ function ritAvHtml(st){
    'Percent complete: how much of what your avatar\'s stories carried has gone since you wrote them. The same figure the Avatar page draws round its core.',
    all===null?'':'Complete|'+fmtPct('complete',all)+'|100%','Avatar')+'>'
   +cr('Heart',pc,{size:'hero', hot:false, color:'var(--k)', glyph:(typeof AV_IC!=='undefined'?AV_IC.person:SEATGLYPH._), raw:fmtPct('complete',all)})
-  +'<span class="rv-avhl">Avatar</span></span>';
+  +'</span>';
  var cyc='<div class="rv-avc"'+rvTip('Cycles',
    'Each day you keep a ritual turns your avatar one seat, root to crown. Seven days make a turn, and three turns make a cycle.',
-   'Kept|'+acctDays(C.days)+'|'+(AV_TURN*AV_TURNS*AV_CYCLES)+' days for three cycles','Ritual to avatar')+'>'
+   'Kept|'+acctDays(C.days)+'|'+(AV_TURN*AV_TURNS*AV_CYCLES)+' days for three cycles','Avatar')+'>'
   +'<div class="rv-cys">'+rings+'</div>'
   +'<div class="rv-avfig"><b>'+(C.days?C.days+'<small>'+(C.days===1?' day':' days')+'</small>':'–')+'</b><span>kept</span></div></div>';
  var rows=(typeof avRows==='function')?avRows():[], seat={};
@@ -325,7 +325,11 @@ function ritAvHtml(st){
     ap===null?'':'Complete|'+fmtPct('complete',ar.pct)+'|100%',A.about)+'>'
    +crBadge(b,ap||0,{size:'md', glyph:(typeof AV_IC!=='undefined'&&AV_IC[A.k])||SEATGLYPH[b], raw:ap===null?'–':fmtPct('complete',ar.pct)})
    +'<span class="rv-avn">'+esc(A.nm)+'</span><i class="rv-avd" aria-hidden="true"></i></li>';}).join('')+'</ul>';
- return '<section class="rv-sec rv-c rv-c-av" data-slot="rail"><div class="rv-hd"><span class="rv-h">Ritual to avatar</span></div>'
+ /* THE HEADING IS AVATAR, SV19, his words: "Get rid of the word ritual too,
+    just have avatar." The hero's own label under its ring read Avatar as
+    well, and with the heading saying it the label was the word twice on one
+    card, so it went; the ring keeps its name in the tooltip. */
+ return '<section class="rv-sec rv-c rv-c-av" data-slot="rail"><div class="rv-hd"><span class="rv-h">Avatar</span></div>'
   +'<p class="rv-mean">Your avatar\'s percent complete, the cycles your kept days turn, and each seat your avatar has a story at.</p>'
   +'<div class="rv-avw">'+hero+cyc+'</div>'+list+'</section>';}
 function ritClip(s,n){return s.length>n?s.slice(0,n-1).replace(/\s+\S*$/,'')+'…':s;}
@@ -334,7 +338,7 @@ function ritClip(s,n){return s.length>n?s.slice(0,n-1).replace(/\s+\S*$/,'')+'�
 function ritGoalHtml(st){
  var bc=ritBecoming(), pairs=(CURP&&CURP.avatar&&CURP.avatar.pairs)||[], last=null;
  for(var i=pairs.length-1;i>=0;i--)if(pairs[i]&&pairs[i].be&&String(pairs[i].be).trim()){last=pairs[i];break;}
- var h='<section class="rv-sec rv-c rv-c-goal" data-slot="rail"><div class="rv-hd"><span class="rv-h">Ongoing goal</span></div>'
+ var h='<section class="rv-sec rv-c rv-c-goal"><div class="rv-hd"><span class="rv-h">Ongoing goal</span></div>'
   +'<p class="rv-mean">Who your avatar is becoming, what is held in the way, and the next mark your record can earn.</p>';
  /* each branch opens and closes its own markup, because the build counts the
     divs in the source text and a shared open closed in two branches reads as
@@ -407,7 +411,9 @@ function ritOkHtml(st){
   var top=Math.max(1,x.then||0,x.now);
   return '<li class="rv-ok1" style="--c:'+ritCol(x.p)+'"><span class="rv-okn">'+esc(ritName(x.p.steps))+'</span>'
    +'<span class="rv-okk">Kept '+acctDays(x.kept)+', missed '+x.missed+'.</span>'
-   +(x.then===null?'<span class="rv-okf">No reading from before it started.</span>'
+   /* no reading from before it started prints nothing, SV19: the same line
+      under every row of a worked example was the third tier text he struck */
+   +(x.then===null?''
     :'<span class="rv-okf">Held places: '+x.then+' when it started, '+x.now+' now.</span>'
      +'<span class="rv-okb" aria-hidden="true"><i class="rv-okb0" style="width:'+(100*x.then/top).toFixed(1)+'%"></i>'
      +'<i class="rv-okb1" style="width:'+(100*x.now/top).toFixed(1)+'%"></i></span>')+'</li>';}).join('')+'</ul>';
@@ -421,6 +427,12 @@ var RIT_KEEP_AT=3;
 function ritKeepHtml(st){
  var today=st.today, rows=st.act.filter(function(p){return p.days>0&&ritStart0(p)+p.days-today<=RIT_KEEP_AT;});
  var body=(RIT.gone&&RIT.goneAt==='keep')?'<div class="rv-gone" role="status"><span>Deleted.</span><button type="button" class="btn" data-act="putback">Put back</button></div>':'';
+ /* NOTHING ENDING IS NO CARD, SV19. It drew a half width card saying
+    Nothing ends in the next 3 days beside Did it work, an empty box holding
+    a whole column, and he asked for these stacked. The card arrives when a
+    ritual reaches its last three days, which is the one time it has a job,
+    and a Put back after a delete here keeps it on screen. */
+ if(!rows.length&&!body)return '';
  if(!rows.length)body+='<p class="rv-empty">Nothing ends in the next '+RIT_KEEP_AT+' days.</p>';
  else body+='<ul class="rv-kpl">'+rows.map(function(p){var run=ritRunRead(p,today);
   return '<li class="rv-kp1" style="--c:'+ritCol(p)+'"><span class="rv-kpt"><span class="rv-okn">'+esc(ritName(p.steps))+'</span>'
@@ -470,8 +482,13 @@ function ritLiveHtml(){
    Accountability, which he ruled stays as it is. The grid keeps the name
    rv-six it had when it held his six slots: the gates, the shot tool and the
    phone order find the stage by it. */
+/* SV19: THE ONGOING GOAL COMES BACK TO THE CENTRE, his words: "Ongoing goals
+   should be in the center." That reverses his own SV16 ruling quoted above,
+   which is what shipped, and it is done because this is his current word; the
+   PR says so. It sits under Today: the week, what is due today, then what the
+   days are for. Avatar was not named this round and stays in the right menu. */
 function ritStageHtml(st,P){
- return '<div class="rv-six">'+ritWeekCalHtml(st)+ritTodayCardHtml(st,P)+ritOkHtml(st)+ritKeepHtml(st)
+ return '<div class="rv-six">'+ritWeekCalHtml(st)+ritTodayCardHtml(st,P)+ritGoalHtml(st)+ritOkHtml(st)+ritKeepHtml(st)
   +ritSuccessHtml(st,P.chain)+'</div>';}
 
 function ritStageCss(){
@@ -483,12 +500,14 @@ function ritStageCss(){
      three that read and decide. Named areas, so the order on a phone and the
      slots on a desktop are one statement. */
   '.rv-six{display:grid;gap:14px;grid-template-columns:minmax(0,1fr) minmax(0,1fr);',
-  ' grid-template-areas:"wk wk" "act act" "ok keep" "ana ana";align-items:stretch}',
+  /* Did it work and Keep or delete are stacked, SV19, his "I want these
+     stacked", and every card on the stage is now one full row */
+  ' grid-template-areas:"wk wk" "act act" "goal goal" "ok ok" "keep keep" "ana ana";align-items:stretch}',
   '.rv-six>.rv-sec{margin:0;min-width:0}',
   '.rv-six>.rv-week{grid-area:wk} .rv-six>.rv-act{grid-area:act}',
-  '.rv-six>.rv-c-ok{grid-area:ok} .rv-six>.rv-c-keep{grid-area:keep} .rv-six>.rv-c-ana{grid-area:ana}',
+  '.rv-six>.rv-c-goal{grid-area:goal} .rv-six>.rv-c-ok{grid-area:ok} .rv-six>.rv-c-keep{grid-area:keep} .rv-six>.rv-c-ana{grid-area:ana}',
   '@container (max-width:639px){.rv .rv-six{grid-template-columns:minmax(0,1fr);',
-  ' grid-template-areas:"wk" "act" "ok" "keep" "ana"}}',
+  ' grid-template-areas:"wk" "act" "goal" "ok" "keep" "ana"}}',
   /* each card takes one hue from the tokens the page already themes */
   '.rv-c-av{--k:var(--sec-embody)} .rv-c-goal{--k:var(--accent)} .rv-c-ok{--k:var(--sec-play)}',
   '.rv-c-keep{--k:var(--sec-flow)} .rv-c-ana{--k:var(--sec-discover)}',
@@ -597,7 +616,7 @@ function ritStageCss(){
   /* the folded sentence, and the heading that carries it now */
   '.rv-mean.rv-told{display:none}',
   '.rv-h.rv-hq{cursor:help;text-decoration:underline dotted color-mix(in srgb,var(--k) 70%,var(--edge-2));text-underline-offset:4px;text-decoration-thickness:1px;border-radius:4px}',
-  '.rv-h.rv-hq:focus-visible,.rv-pc:focus-visible,.rv-avs:focus-visible,.rv-avhero:focus-visible,.rv-avc:focus-visible,.rv-cb:focus-visible,.rv-m:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
+  '.rv-h.rv-hq:focus-visible,.rv-pc:focus-visible,.rv-avs:focus-visible,.rv-avhero:focus-visible,.rv-avc:focus-visible,.rv-cb:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
   /* a ritual's badge on its row: the seat's mark, percent complete, the pill */
   '.rv-pc{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;min-width:44px;min-height:44px;margin-right:6px;cursor:help;border-radius:12px}',
   '.rv-tgi{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--t);font-style:normal}',
@@ -611,7 +630,6 @@ function ritStageCss(){
   '.rv-avhero .cr.hero{--c:var(--k);margin:0 0 12px}',
   '.rv-avhero .cr.hero .v{font-size:16px;height:24px;line-height:24px;padding:0 8px;min-width:0}',
   '.rv-avhero .cr.hero .ring .gl svg{width:28px;height:28px;stroke-width:1.6}',
-  '.rv-avhl{font-size:12.5px;color:var(--mid);font-weight:600}',
   '.rv-avc{display:flex;flex-direction:column;gap:6px;cursor:help;border-radius:12px;padding:2px}',
   '.rv-c-av .rv-cys{gap:8px}',
   '.rv-c-av .rv-cy svg{width:46px;height:46px}',
@@ -658,9 +676,6 @@ function ritStageCss(){
   '.rv-sg1 .rv-sgx{background:color-mix(in srgb,var(--c) 10%,var(--panel))}',
   '.rv-sg1 .rv-tg{border-color:transparent;background:color-mix(in srgb,var(--t) 16%,var(--panel))}',
   /* the thirty days as cubes */
-  '.rv-cbf{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 16px;margin:0 0 12px;font-size:13px;color:var(--mid)}',
-  '.rv-cbf b{font-size:17px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}',
-  '.rv-cbf .rv-cbk b{font-size:30px;color:var(--k);line-height:1}',
   '.rv-cubes{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;max-width:340px;margin:0 auto 10px}',
   '.rv-cb{position:relative;aspect-ratio:1/1;border-radius:7px;background:color-mix(in srgb,var(--edge-2) 30%,transparent);cursor:help}',
   '.rv-cubes0 .rv-cb{cursor:default}',
@@ -683,8 +698,6 @@ function ritStageCss(){
   '.rv-key .rv-k-cube,.rv-key .rv-k-cplan,.rv-key .rv-k-cmiss{border-radius:3px;border:0;background:var(--sec-embody);box-shadow:inset 0 -2px 0 rgba(0,0,0,.3)}',
   '.rv-key .rv-k-cplan{background:none;box-shadow:inset 0 0 0 1.5px var(--sec-embody);opacity:1}',
   '.rv-key .rv-k-cmiss{background:none;box-shadow:none;outline:1.5px dashed var(--dim);outline-offset:-1.5px}',
-  '.rv-loopw .rv-marks{margin:14px 0 0;padding-top:12px;border-top:1px solid color-mix(in srgb,var(--k) 25%,var(--edge))}',
-  '.rv-loopw .rv-m{cursor:help;background:color-mix(in srgb,var(--c) 10%,transparent)}',
   /* motion. The cubes land as a wave that runs from the oldest corner to
      today, row plus column at 32ms, so thirty cubes read as one event and not
      thirty: a quick rise with a small overshoot, 240ms, on transform and
@@ -696,7 +709,6 @@ function ritStageCss(){
   '@keyframes rvCube{from{opacity:0;transform:translateY(6px) scale(.72)}}',
   '.rv-arrive .rv-cbm{animation:rvPin .32s cubic-bezier(.34,1.56,.64,1) both;animation-delay:calc(var(--i,0) * 32ms + 260ms + var(--k,0) * 80ms)}',
   '@keyframes rvPin{from{opacity:0;transform:scale(.2)}}',
-  '.rv-arrive .rv-m{animation:rvPin .32s cubic-bezier(.34,1.56,.64,1) both;animation-delay:calc(560ms + var(--i,0) * 70ms)}',
   '.rv-arrive .rv-avs{animation:rvCube .26s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(120ms + var(--i,0) * 70ms)}'
   /* NO REDUCED MOTION RULE HERE, and that is on purpose: shell/head.html
      already stills every animation in the product under

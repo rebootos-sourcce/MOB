@@ -299,8 +299,14 @@ function ritChalHtml(st,M){
   return '<li class="rv-af1 rv-ch1'+(on?' rv-on':'')+'" style="--c:'+col+'">'
    +'<button type="button" class="rv-log" data-act="did" data-id="'+esc(c.id)+'" aria-pressed="'+on+'" aria-label="'
    +(on?'Done today. Press to take it off':'Mark done today: '+esc(c.nm))+'">'+ritTickHtml(on,col)+'</button>'
-   +'<span class="rv-aft"><span class="rv-chn">'+esc(c.nm)+'<small>, '+esc(c.who)+'</small></span>'
-   +'<span class="rv-afq">'+esc(c.act)+'</span><span class="rv-afs">'+esc(c.when)+'</span></span></li>';}).join('')+'</ul>';
+   /* WHEN A CHALLENGE APPLIES IS ON THE PRESS, SV19. It was a third line
+      under every challenge, "When accountability is required.", the third
+      tier text he struck everywhere else on this page this round. The name
+      and its voice stay, because the voice is what the name means (the
+      unpack rule), and the action stays, because it is the challenge. The
+      when rides in the one tooltip on the text. */
+   +'<span class="rv-aft"'+rvTip(c.nm,c.when)+'><span class="rv-chn">'+esc(c.nm)+'<small>, '+esc(c.who)+'</small></span>'
+   +'<span class="rv-afq">'+esc(c.act)+'</span></span></li>';}).join('')+'</ul>';
  /* FEWER THAN THREE IS STILL NEVER PADDED with a challenge nothing points
     to, and it is no longer said. A line counted the rows aloud ("One pattern
     in your reading has a challenge, so one is shown. More come as your
@@ -384,8 +390,19 @@ function ritWeekCalHtml(st){
       sentence: seven Nothing on this day lines would be the week's loudest
       text on the emptiest week */
    :'<span class="rv-wd0" aria-label="Nothing set">–</span>';
+  /* THE DAY ITSELF IS A PRESS, SV19, his words: "If I select a day of the
+     week, I don't [get what I expect]." Measured on main before this: a sash
+     opened its ritual's sheet and a heavy day's +N opened the day's list, but
+     the weekday and the date, the part a person reads as the day, were a span
+     and did nothing, and an empty day was a dash with nothing behind it. So
+     the head of every column is a button that opens that day in the sheet,
+     the same ritDayOpen the +N uses: every ritual on it, each opening its own
+     sheet, or Nothing set. It writes nothing, so it repaints nothing. */
+  var dnm=dt.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
   return '<li class="rv-wd1'+(d===today?' rv-now':'')+(d<today?' rv-past':'')+'">'
-   +'<span class="rv-wdh"'+(d===today?' aria-current="date"':'')+'><span>'+RIT_WDN[i]+'</span><b>'+dt.getDate()+'</b></span>'+list+'</li>';}).join('')+'</ol>';
+   +'<button type="button" class="rv-wdh" data-act="wday" data-d="'+d+'"'+(d===today?' aria-current="date"':'')
+   +' aria-label="'+esc(dnm+(segs.length?', '+segs.length+(segs.length===1?' ritual':' rituals'):', nothing set'))+'">'
+   +'<span>'+RIT_WDN[i]+'</span><b>'+dt.getDate()+'</b></button>'+list+'</li>';}).join('')+'</ol>';
  return '<section class="rv-sec rv-week"><div class="rv-hd"><span class="rv-h">Week</span>'+nav+'</div>'+days
   /* Planned, the word the Record and the thirty days beside it use for the
      same state: the grid this replaced said Set, a second word for one thing
@@ -502,6 +519,7 @@ function ritSashSheet(s,d,st){
 function ritDaySheet(d,st){
  var segs=ritWeekDay(d,st);
  return '<div class="rv-sh"><div class="rv-shh"><span class="rv-sht"><span class="sh-h plain">'+esc(ritDayName(d,st.today))+'</span></span></div>'
+  +(segs.length?'':'<p class="rv-empty">Nothing set.</p>')
   +'<ul class="rv-shl">'+segs.map(function(s,k){
    return '<li><button type="button" class="rv-shr" data-sh="sash" data-d="'+d+'" data-i="'+k+'" style="--c:'+s.col+'">'
     +'<span class="rv-wch rv-wch-'+s.st+'" aria-hidden="true">'+ritSashGlyph(ritSashSeat(s))+'</span>'
@@ -628,11 +646,17 @@ function ritSuccessHtml(st,chain){
     pretend the record was empty there: those days are drawn as a blank of
     their own, said to be blank, and never counted as missed. */
  if(S.rs===null)note='<p class="rv-sparse">Nothing on your record yet. This fills in, a day at a time, as you keep rituals.</p>';
- else if(S.rs>S.t0)note='<p class="rv-sparse">Your record starts '+esc(String(ritDayName(S.rs,S.today)).replace(/^(Today|Yesterday)$/,function(m){return m.toLowerCase();}))
-  +'. The '+acctDays(S.rs-S.t0)+' of this span before that are drawn blank: there is nothing to read there, and none of them counts as missed.</p>';
+ /* A SPAN THAT REACHES BACK BEFORE THE RECORD said so in a paragraph, and
+    it is cut, SV19, on his ruling against third tier text: the days before
+    the record are drawn hatched, and the key under the grid names the hatch
+    Before your record, so the picture and its key already say it. None of
+    them is counted as missed, which is the honest part, and that is the
+    arithmetic in ritSpanRead and not a sentence. */
  var extra=[S.said?'Affirmations said on '+acctDays(S.said)+'.':'', S.did?'Challenges done '+S.did+(S.did===1?' time.':' times.'):'']
   .filter(Boolean).join(' ');
- var held=S.then===null?'<p class="rv-okf rv-shel">No reading from before this span, so there is nothing to set the held places against.</p>'
+ /* and with no reading before the span the line says nothing, SV19: a
+    sentence about a comparison that cannot be made is the third tier line */
+ var held=S.then===null?''
   :'<p class="rv-okf rv-shel">Held places: '+S.then+' at the start of this span, '+S.now+' now. A reading is taken each time you commit a story or finish a release.</p>';
  var top=Math.max.apply(null,S.bars.map(function(x){return x.n;}).concat([1]));
  var bars=!S.bars.length?'':'<div class="rv-ana1"><span class="rv-lb">Kept by seat, '+esc(R.nm)+'</span><ul class="rv-sbars">'
@@ -664,7 +688,6 @@ function ritCalCss(){
   '.rv-af1.rv-on{border-color:color-mix(in srgb,var(--c) 60%,transparent)}',
   '.rv-aft{display:flex;flex-direction:column;gap:3px;flex:1 1 auto;min-width:0;padding:9px 12px 9px 2px}',
   '.rv-afq{font-size:15.5px;line-height:1.45;color:var(--ink)}',
-  '.rv-afs{font-size:13px;line-height:1.45;color:var(--mid)}',
   '.rv-chn{font-size:14px;font-weight:600;color:var(--c)}',
   '.rv-chn small{font-weight:400;color:var(--mid);font-size:13px}',
   '.rv-ch1 .rv-afq{font-size:15px}',
@@ -688,7 +711,10 @@ function ritCalCss(){
   /* today is ringed the way a wall calendar rings a day, round RB's rule for
      the grid this replaces, and its date sits in the accent chip */
   '.rv-wd1.rv-now{box-shadow:inset 0 0 0 1.5px var(--accent);background:color-mix(in srgb,var(--accent) 7%,transparent)}',
-  '.rv-wdh{display:flex;flex-direction:column;align-items:center;gap:1px;font-size:12px;color:var(--dim)}',
+  '.rv-wdh{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:100%;min-height:44px;padding:2px 0;',
+  ' border:0;border-radius:8px;background:none;font:inherit;font-size:12px;color:var(--dim);cursor:pointer}',
+  '.rv-wdh:hover{background:color-mix(in srgb,var(--edge-2) 22%,transparent)}',
+  '.rv-wdh:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
   '.rv-wdh b{font-size:14px;font-weight:600;color:var(--mid);font-variant-numeric:tabular-nums}',
   '.rv-wd1.rv-now .rv-wdh{color:var(--ink);font-weight:600}',
   '.rv-wd1.rv-now .rv-wdh b{color:var(--on-accent);background:var(--accent);border-radius:999px;min-width:26px;height:26px;padding:0 5px;display:inline-grid;place-items:center}',
@@ -810,8 +836,15 @@ function ritCalCss(){
   '.rv-sgrec{margin:6px 0 0;padding:0;list-style:none;font-size:13px;line-height:1.5;color:var(--mid)}',
   '.rv-sga{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}',
   '.rv-sga .btn{min-height:44px}',
-  '.rv-sga .btn.pri{flex:1 1 auto}',
+  /* Add to practice no longer grows to fill the row, SV19: grown, it pushed
+     Dismiss onto a second line of its own under the other two, measured at
+     1600 on every card, which was the misalignment he named */
   '.rv-sgq{background:none;border-color:transparent;color:var(--mid)}',
+  /* the three answers on one row, SV19: measured, the three summed to 305.4
+     pixels in a 306 pixel row at 1600, so Dismiss wrapped to a line of its
+     own. It is the quiet one, text only, so it gives back its padding and
+     sits at the row's right end, where a dismiss is looked for */
+  '.rv-sga .rv-sgq{padding-left:8px;padding-right:8px;margin-left:auto}',
   '.rv-sgq:hover{color:var(--ink)}',
   '.rv-sgfoot{display:flex;justify-content:flex-end;margin-top:8px}',
   '.rv-saved{--k:var(--accent)}',
@@ -828,6 +861,32 @@ function ritCalCss(){
   '.rv-cb-ahead{background:none;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--edge-2) 55%,transparent)}',
   '.rv-cb-ahead.rv-cb-set{background:color-mix(in srgb,var(--c) 10%,transparent);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c) 60%,transparent)}',
   '.rv-cbp{aspect-ratio:1/1}',
-  '.rv-cbmo{margin:0 0 6px;text-align:center;font-size:13px;font-weight:600;color:var(--mid)}'
+  /* ---- FLAT COLOUR ON EVERY CARD, SV19 ----
+     His words: "I asked for more flat color on the cards." SV16 made the
+     Called for cards one opaque fill of their seat with nothing outlined, the
+     Punch lighting's idiom, and this carries the same treatment to every card
+     and row on the page that still had the older three: an outline in the
+     card's colour, a five percent wash, and an inset stripe or a bevel. Each
+     is now one opaque fill of its colour into the panel and no edge. Opaque
+     on purpose, as SV16 recorded, so the still layer behind the stage does
+     not show through and make a gradient of the card. State grammar is kept,
+     because it is information and not decoration: planned is still an
+     outline and missed is still dashed, on the week, the cubes and the key.
+     Last in the last sheet the page injects (ritCss, ritStageCss, then this),
+     so it wins at equal weight without an important. */
+  '.rv .rv-sec,.rvr .rv-sec{border-color:transparent;background:color-mix(in srgb,var(--k) 9%,var(--panel))}',
+  '.rv-c-ana .rv-fig,.rv-fig{border-color:transparent;background:color-mix(in srgb,var(--k) 14%,var(--panel))}',
+  '.rv-item,.rv-af1,.rv-ok1,.rv-kp1,.rv-hc,.rv-sv1{border-color:transparent;box-shadow:none;background:color-mix(in srgb,var(--c) 13%,var(--panel-2))}',
+  '.rv-item.rv-done,.rv-af1.rv-on{border-color:transparent;background:color-mix(in srgb,var(--c) 24%,var(--panel-2))}',
+  '.rv-why,.rv-nxm{border-color:transparent;background:color-mix(in srgb,var(--c) 14%,var(--panel))}',
+  '.rv-nxi{border:0;background:color-mix(in srgb,var(--c) 22%,var(--panel))}',
+  '.rv-cb-done,.rv-wch-done,.rv-sc-done{box-shadow:none}',
+  '.rv-key .rv-k-cube{box-shadow:none}',
+  '.rv-wd1.rv-past{box-shadow:none;background:color-mix(in srgb,var(--edge-2) 6%,transparent)}',
+  '.rv-gone{background:color-mix(in srgb,var(--accent) 12%,var(--panel-2))}',
+  /* History, the right menu's one press, SV19: the More practices press's own
+     look, a full width row with its chevron, and its panel under it */
+  '.rv-histt{margin:0 0 12px}',
+  '.rv-histp>.rv-sec:last-child{margin-bottom:0}'
  ].join('\n');
  document.head.appendChild(st);}

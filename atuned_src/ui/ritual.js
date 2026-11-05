@@ -489,8 +489,9 @@ function ritTeachHtml(k){
    :'Kept at the '+esc(ritSeatNm(t.seat))+', the seat this axis is read at.')+'</p>';
  if(act)h+='<p class="ad-p"><b>Active</b>, '+esc(ritLeft(act,today).toLowerCase())+'.</p>'
   +'<div class="rv-acts"><button type="button" class="btn" data-tbgo="1">Open the ritual</button></div>';
- else if(!ritOwn())h+='<p class="ad-p">'+esc(ritWhose())+' is a worked example, so nothing here is saved.</p>';
- else if(t.steps.length)h+='<div class="rv-acts">'
+ /* on a worked example the starts are not drawn, as before SV19; only the
+    line that said so is gone (ritNote says why) */
+ else if(t.steps.length&&ritOwn())h+='<div class="rv-acts">'
   +'<button type="button" class="btn pri" data-tbd="7">Start for a week</button>'
   +'<button type="button" class="btn pri" data-tbd="14">Start for two weeks</button></div>';
  return h+'</div>';}
@@ -595,8 +596,7 @@ function ritComplexHtml(k){
    +(act?'<span class="tcx-pace"><b>Active</b>, '+esc(ritLeft(act,today).toLowerCase())+'.</span>':'')
    +'</span></button>';});
  h+='</div>';
- if(!ritOwn())h+='<p class="ad-p">'+esc(ritWhose())+' is a worked example, so nothing here is saved.</p>';
- else h+='<div class="rv-acts"><button type="button" class="btn pri" data-tcxgo="1">Add to my ritual</button></div>'
+ if(ritOwn())h+='<div class="rv-acts"><button type="button" class="btn pri" data-tcxgo="1">Add to my ritual</button></div>'
   +'<p class="tcx-hint">Runs for a week from today. The Ritual page changes the span.</p>';
  if(row.draft!==false)h+='<p class="tcx-draft">First draft. These are starting behaviours and rituals, to be refined. '
   +'They describe behaviours a reading can place, not people.</p>';
@@ -920,46 +920,14 @@ function ritChainHtml(c,r,act){
   +'</div>';
  return out+'</div>';}
 
-/* TODAY. One ring per active ritual, outermost first, one dash per step. */
-function ritTodayHtml(act,today,L){
- var R=46, step=9, w=5.5, svg='<svg viewBox="0 0 120 120" class="rv-rings" aria-hidden="true">';
- if(!act.length)
-  svg+='<circle cx="60" cy="60" r="'+R+'" class="rv-s rv-s-ahead" style="stroke:var(--dim);stroke-width:'+w+'"/>';
- act.slice(0,4).forEach(function(p,i){
-  var e=ritEntryFor(p,today), d=e&&ritIsDone(e.x);
-  svg+='<circle cx="60" cy="60" r="'+(R-i*step)+'" class="rv-track" style="stroke-width:'+w+'"/>';
-  svg+=ritArcs(60,60,R-i*step,p.steps.map(function(){return {col:ritCol(p), st:d?'done':'plan'};}),w);});
- svg+='</svg>';
- /* the streak is in the middle of the rings and nowhere else, because two
-    places that print a streak are two places it can be wrong from. Kept is
-    his word from RT11: the distinct days a ritual was marked done. */
- /* BEST IS NEVER SHORTER THAN THE STREAK BESIDE IT. streakRead counts the run
-    with a grace day and the halving rule, and counts best as strictly
-    consecutive days, so on the seed the page read Streak 22 and Best 17 side
-    by side. The two rules are the ladder's, in engine/ladder.js, and the
-    mismatch is reported there. Here the longest run a person has held is at
-    least the one they are holding. */
- /* AND THAT MADE BEST A NUMBER NOBODY HELD. The sentence printed under these
-    figures says "Best is your longest run with no gap", and max(best, run)
-    put the forgiving run under that word: seven days practised every other
-    day read Best 7 days for a person whose longest run with no gap is one,
-    measured on f7188cba. Best is streakRead's best, the strict row, and when
-    it is shorter than the streak the two say different true things, which
-    the sentence under them explains. */
- /* KEPT IS THE ENGINE'S OWN COUNT. This page recounted the days with its own
-    loop and counted a day dated a month ahead as kept, beside a streak that
-    no longer did (pracSoon, engine/ladder.js). One count of days practised,
-    read in one place, cannot disagree with itself. */
- var s=L.streak, best=s.best||0;
- var kept=s.days||0;
- return '<div class="rv-today">'
-  +'<div class="rv-hero">'+svg+'<div class="rv-mid"><b>'+(s.run||'\u2013')+'</b><span>Streak</span></div></div>'
-  /* A ZERO IS A DASH, COPY.md Value. Round J13. */
-  +'<div class="rv-figs">'
-  +'<div class="rv-fig"><b>'+(best?best+'<small>'+(best===1?' day':' days')+'</small>':'\u2013')+'</b><span>Best</span></div>'
-  +'<div class="rv-fig"><b>'+(kept?kept+'<small>'+(kept===1?' day':' days')+'</small>':'\u2013')+'</b><span>Kept</span></div>'
-  +'<div class="rv-fig"><b>'+(L.ledger.minutes?L.ledger.minutes+'<small> min</small>':'\u2013')+'</b><span>Practised</span></div>'
-  +'</div></div>';}
+/* TODAY'S RING, ritTodayHtml, IS GONE, SV19. It drew a 180 pixel ring per
+   due ritual with the streak in the middle, on the Done card, and he struck
+   it: "The gigantic graphic, this is done and 14, taking up all that space by
+   itself." Today's rituals are today's column of the week, the streak is the
+   strip at the top of the right rail (acctStreakHtml, ui/accountability.js),
+   and the rules this function carried went with the figures: Kept is the
+   engine's own count, and Best is streakRead's strict row, which can be
+   shorter than the streak, so the streak's tooltip says what Best means. */
 
 /* ACTIVE. The list a person keeps, in their order. */
 function ritLeft(p,today){
@@ -1144,7 +1112,12 @@ function ritRowsHtml(list,today,act){
       and a line that wraps to three rows is what put the page past the
       screen with both rails open. Mid line it is a value and a value is
       never titled, V13: it read "20 minutes, Every day but Thu". */
-   +ritTm(p)+' minutes'+(p.on?', '+esc(ritOften(p.on).replace(/^(Every|Week)/,function(m){return m.toLowerCase();})):'')+(p.when?', '+esc(p.when):'')+'<i>'+ritLeft(p,today)+'</i>'
+   +ritTm(p)+' minutes'+(p.on?', '+esc(ritOften(p.on).replace(/^(Every|Week)/,function(m){return m.toLowerCase();})):'')
+   /* THE WHEN AND THE DAYS LEFT ARE OFF THE ROW, SV19, both struck in red on
+      the live page: "Before school run", "At three, when I wake", "4 days
+      left". Each is the third line on a row whose job is the name and the
+      press. The when and where are the row's opened sentence below (rv-if),
+      and the days left are in the sash's sheet beside the days kept. */
    /* ROUND QS: the seat is the badge beside the row now, its mark and its
       percent complete; a second seat tag is a second mark, never a word */
    +p.tags.filter(function(b){return b!==ritSeat(p);}).map(ritTagMark).join('')
@@ -1206,13 +1179,15 @@ function ritBuildHtml(c,nAct,unread){
  /* the tiles. Called first; then, one press on, every practice this state
     allows, by track, each tile the colour of its track. */
  var tile=function(p,big){
-  /* on a blank profile no seat has called for anything, so the first tile is
-     the lightest place to start and does not say called for, SV16 */
-  var on=!!RIT.sel[p.k], call=!unread&&c.called&&c.called.k===p.k;
+  var on=!!RIT.sel[p.k];
   return '<button type="button" class="rv-tile'+(on?' rv-on':'')+(big?' rv-big':'')+'" data-act="pick" data-k="'+p.k
    +'" aria-pressed="'+on+'" style="--c:'+(PTRACK[p.track]||'var(--accent)')+'">'
    +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/>'+(on?'<path d="M8 12l3 3 5-6"/>':'')+'</svg>'
-   +'<span class="rv-tn">'+esc(p.nm)+'</span><span class="rv-tm">'+p.min+' min'+(call?', called for':'')+'</span>'
+   +'<span class="rv-tn">'+esc(p.nm)+'</span><span class="rv-tm">'+p.min+' min</span>'
+   /* ", called for" is cut from the minutes, SV19, struck in red on the live
+      page. The tile is first because its seat calls for it, and the Called
+      for list under the builder says why, one press away, so the two words
+      were the third tier line he keeps striking. */
    /* THE BIG TILE CARRIED p.d UNDER ITS NAME, and it is gone, SV17. His
       reaction to the page: too much text, and the line read as one more
       paragraph on a card whose job is one press. The line is what the
@@ -1368,16 +1343,6 @@ function ritListHtml(plans,today){
  out+='</ul>';
  if(rows.length>RIT.hn)out+='<button type="button" class="rit-more" data-act="more">Show more</button>';
  return out;}
-/* the marks, which are the ladder's and drawn as its own icons. Earned ones
-   are shown and the next one is named. Never how many of how many. */
-function ritMarksHtml(L,earnedOnly){
- if(earnedOnly)L={earned:L.earned, next:null};
- if(!L.earned.length&&!L.next)return '';
- return '<div class="rv-marks"><span class="rv-h">Marks</span><div class="rv-mk">'
-  +L.earned.map(function(m){
-   return '<span class="rv-m" style="--c:'+seatCol(m.b)+'" title="'+esc(m.nm+'. '+m.d)+'">'
-    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+m.ic+'"/></svg></span>';}).join('')
-  +'</div>'+(L.next?'<p class="rv-next">Next: <b>'+esc(L.next.nm)+'</b></p>':'')+'</div>';}
 function ritRecordHtml(plans,today){
  /* A DAY OPENS WHEN IT IS PRESSED. It used to open on today, and today's
     rows repeated the Active list's own mark done controls one column over:
@@ -1437,8 +1402,14 @@ function ritRead(){
   :{streak:{run:0,best:0},ledger:{minutes:0},earned:[],next:null};
  return {r:r, c:c, today:today, plans:plans,
   act:plans.filter(function(p){return ritActive(p,today);}), L:L};}
-function ritNote(){
- return ritOwn()?'':'<p class="rv-note">'+esc(ritWhose())+' is a worked example, so nothing here is saved.</p>';}
+/* THE WORKED EXAMPLE LINE IS CUT, SV19, his words: "Get rid of Ana is worked
+   example, so nothing is saved." It printed under the page's name for every
+   example, and on the teacher and complex panels below. The profile picker
+   already reads "Ana, example", and a write on an example is still refused by
+   name, through status(), at the moment it is tried (ritWrite: "is a worked
+   example, so nothing was saved to it"), which is the one time it is news.
+   ritNote stays as the slot, empty, so P.note keeps its place in the layout. */
+function ritNote(){return '';}
 
 /* A MENU'S HEAD, one writer for both menus. It names what the column is for,
    and it leaves the right end free because each rail's fold control is pinned
@@ -1507,6 +1478,14 @@ function ritRender(){
  h.innerHTML='<div class="rel-card rit-card rv'+(arrive?' rv-arrive':'')+'">'+ritLayout(P)+'</div>';
  flowHeadAt('flownewhd','New','','plus');
  flowHead('Accountability','','check');
+ /* THE STREAK IS THE TOP RIGHT OF THE PAGE, SV19, his words: "Move the streak
+    to the upper right hand side and then accountability will be underneath
+    that." So the strip goes into the right menu's head, ahead of its name,
+    where the fold control already sits at the end of the same row. Written
+    after flowHead, which writes the head whole, and only on this tab: the
+    Compass, the release and the gate write their own heads and carry none. */
+ var fh=document.getElementById('flowhd');
+ if(fh)fh.insertAdjacentHTML('afterbegin',acctStreakHtml(st));
  /* THE INPUT AND WHAT IS SUGGESTED, BOTH, round QN. His words: "I not only want
     the input there but I want all the suggested ones." So Suggested sits under
     the input whether the builder is shut or open. The one time it goes is
@@ -1521,7 +1500,9 @@ function ritRender(){
     "Ongoing goals, and ritual to avatar move that to the right menu." After
     Accountability and not inside it: he ruled the tracker stays as it is, so
     its parts keep their order and the two cards follow them. */
- if(side)side.innerHTML=acctSideHtml(st,arrive)+ritAvHtml(st)+ritGoalHtml(st);
+ /* SV19 took the Ongoing goal back to the centre (ritStageHtml), so Avatar
+    is the one card that follows Accountability now */
+ if(side)side.innerHTML=acctSideHtml(st,arrive)+ritAvHtml(st);
  if(document.body){document.body.classList.toggle('ritbuild',building);
   /* nothing active: starting one is the page's one job, so on a phone the
      column that starts one comes first, shell/head.html, round QN */
@@ -1561,9 +1542,9 @@ function ritWire(h,c){
   var a=b.getAttribute('data-act'), id=b.getAttribute('data-id');
   /* the offer to put a deletion back lasts until the next thing that writes
      or builds. Looking around the record does not spend it. */
-  if(['putback','view','day','mo','exp','more','hmore','sgwhy','wk','rng','wsash','wday'].indexOf(a)<0)RIT.gone=null;
+  if(['putback','view','day','mo','exp','more','hmore','hist','sgwhy','wk','rng','wsash','wday'].indexOf(a)<0)RIT.gone=null;
   /* a dismissed suggestion's Put back lasts the same way, round QX */
-  if(['sug-back','sgwhy','wk','rng','exp','view','day','mo','wsash','wday'].indexOf(a)<0)RIT.sgGone=null;
+  if(['sug-back','sgwhy','wk','rng','exp','view','day','mo','hist','wsash','wday'].indexOf(a)<0)RIT.sgGone=null;
   switch(a){
    case 'go-story': if(typeof setTab==='function')setTab(TAB.STORY); return;
    /* EDIT ON A MISSED RITUAL IS NOW ONE PRESS AND NO NAVIGATION, round QF.
@@ -1649,6 +1630,8 @@ function ritWire(h,c){
    case 'del-keep': RIT.goneAt='keep'; ritDelPlan(id); return;
    case 'rot': acctRotate(+b.getAttribute('data-i')); return;
    case 'hmore': RIT.hh+=6; break;
+   /* History opens and shuts in the right menu, SV19, ui/accountability.js */
+   case 'hist': RIT.histOpen=!RIT.histOpen; break;
    case 'go-avatar': if(typeof setTab==='function')setTab(TAB.INTAKE); return;
    case 'putback': ritPutBack(); return;
    case 'view': RIT.view=b.getAttribute('data-v'); break;
@@ -1744,7 +1727,6 @@ function ritCss(){
      its own edge and its own heading, so the wrap only has to stop the last
      one hanging a margin off the foot of the rail */
   '.rvr-wrap>:last-child{margin-bottom:0}',
-  '.rvr-wrap .rv-today{margin-bottom:10px}',
   /* ---- colour, round LT: "I want color on this page to separate things,
      everything is gray." Each part takes one hue from tokens the product
      already carries and themes, as a ring before its heading, a wash behind
@@ -1778,27 +1760,19 @@ function ritCss(){
   '.rv-n-imp,.rv-n-held{border-color:color-mix(in srgb,var(--c) 32%,var(--edge));background:color-mix(in srgb,var(--c) 5%,var(--panel))}',
   '.rv-n-imp .rv-nic,.rv-n-held .rv-nic{color:var(--c)}',
   'button.rv-n-imp:hover,button.rv-n-held:hover{border-color:var(--c)}',
-  /* today */
-  '.rv-today{display:flex;align-items:center;gap:18px;margin:0 0 18px;flex-wrap:wrap}',
-  '.rv-hero{position:relative;width:180px;height:180px;flex:0 0 auto}',
-  '.rv-rings{width:100%;height:100%}',
   '.rv-track{fill:none;stroke:var(--edge-2);opacity:.6}',
   '.rv-s{fill:none;stroke-linecap:round}',
   '.rv-s-done{opacity:1}',
   '.rv-s-plan{opacity:.34}',
   '.rv-s-ahead{opacity:.5;stroke-dasharray:1.5 4}',
   '.rv-s-miss{opacity:.9;stroke:var(--dim)!important;stroke-dasharray:2 3}',
-  '.rv-mid{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}',
-  '.rv-mid b{font-size:40px;font-weight:600;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}',
-  '.rv-mid span{font-size:13px;color:var(--dim);margin-top:4px}',
   '.rv-figs{display:flex;gap:10px;flex:1 1 180px;flex-wrap:wrap}',
   '.rv-fig{flex:1 1 70px;padding:10px 12px;border-radius:12px;background:var(--panel);border:1px solid var(--edge)}',
   '.rv-fig b{display:block;font-size:22px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}',
   '.rv-fig small{font-size:13px;font-weight:400;color:var(--mid)}',
   '.rv-fig span{font-size:13px;color:var(--dim)}',
-  /* the accountability figures, the line he read as "days best kept
-     practiced": their own colour, on the figure and its edge, round LT */
-  '.rv-today{--k:var(--sec-play)}',
+  /* the figures take Play's green, round LT; since SV19 the only ones left
+     on the page are Success over time's, which set their own colour */
   '.rv-fig{border-color:color-mix(in srgb,var(--k) 40%,transparent);background:color-mix(in srgb,var(--k) 8%,var(--panel))}',
   '.rv-fig b{color:var(--k)}',
   '.rv-fig span{color:var(--mid)}',
@@ -1869,20 +1843,27 @@ function ritCss(){
   '.rv-ib:hover{color:var(--ink);background:var(--panel-2)}',
   '.rv-ib[disabled]{opacity:.3;cursor:default}',
   '.rv-ib[aria-pressed=true]{color:var(--accent)}',
-  '.rv-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:0 0 8px}',
-  '.rv-tile{display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-height:44px;padding:10px 12px;',
-  ' border:1px solid color-mix(in srgb,var(--c) 30%,var(--edge));border-radius:12px;background:var(--panel-2);',
-  ' color:var(--ink);text-align:left;font:inherit;cursor:pointer;transition:border-color var(--t-micro) var(--ease-out)}',
+  /* THE PRACTICES ARE STACKED, ONE A ROW, SV19. His words, pressing More
+     practices: "the dropdown got a bunch of somatic ... I don't want these
+     side by side, I want these stacked. They're taking up too much space side
+     by side." They were tiles two to a row, 150 pixels each, so a name like
+     The Somatic Truth Check wrapped to two lines and the minutes took a third,
+     and seventeen practices were nine rows of boxes three lines tall. The
+     seventeen are not near duplicates: each is its own practice, and seven
+     are Somatic because the library has seven. So each is one row, the ring,
+     the name, and the minutes at the right, the list grammar the Active rows
+     and the Called for cards already use. The colour is the track's, flat,
+     and nothing is outlined. */
+  '.rv-tiles{display:flex;flex-direction:column;gap:6px;margin:0 0 8px}',
+  '.rv-tile{display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;column-gap:10px;width:100%;min-height:44px;padding:8px 12px;',
+  ' border:0;border-radius:12px;background:color-mix(in srgb,var(--c) 10%,var(--panel-2));',
+  ' color:var(--ink);text-align:left;font:inherit;cursor:pointer;transition:background var(--t-micro) var(--ease-out)}',
+  '.rv-tile:hover{background:color-mix(in srgb,var(--c) 18%,var(--panel-2))}',
   '.rv-tile svg{width:22px;height:22px;fill:none;stroke:var(--c);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}',
-  '.rv-tile.rv-on{border-color:var(--c);background:color-mix(in srgb,var(--c) 12%,var(--panel-2))}',
-  '.rv-tile.rv-big{grid-column:1/-1;padding:14px}',
-  /* the called tile keeps its ring beside its name and not above it: a row
-     of its own for a 22 pixel ring was what put a tagged new ritual 42
-     pixels past the screen at 1600, measured, round LT */
-  '.rv-tile.rv-big{display:grid;grid-template-columns:22px minmax(0,1fr);column-gap:10px;row-gap:3px;align-items:center}',
-  '.rv-tile.rv-big svg{grid-row:1/span 2}',
+  '.rv-tile.rv-on{background:color-mix(in srgb,var(--c) 26%,var(--panel-2))}',
+  '.rv-tile.rv-big{padding:12px}',
   '.rv-tn{font-size:15px;font-weight:500}',
-  '.rv-tm{font-size:13px;color:var(--mid)}',
+  '.rv-tm{font-size:13px;color:var(--mid);white-space:nowrap;text-align:right}',
   '.rv-trk{margin:10px 0 6px;font-size:13px;font-weight:600;color:var(--c)}',
   '.rv-left{margin:10px 0 0;font-size:14px;color:var(--mid)}',
   '.rv-plan{margin-top:12px;padding-top:12px;border-top:1px solid var(--edge)}',
@@ -1948,16 +1929,9 @@ function ritCss(){
   '.rv-ds{font-size:13px;color:var(--mid)}',
   '.rv-gone{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px;padding:6px 6px 6px 12px;',
   ' border-radius:10px;background:var(--panel-2);font-size:14px;color:var(--ink)}',
-  '.rv-marks{margin:0 0 18px}',
-  '.rv-mk{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}',
-  '.rv-m{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;',
-  ' border:1.5px solid var(--c);color:var(--c)}',
-  '.rv-m svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}',
-  '.rv-next{margin:8px 0 0;font-size:13.5px;color:var(--mid)}',
-  '.rv-next b{color:var(--ink);font-weight:500}',
-  '@container (max-width:520px){.rv .rv-hero{width:136px;height:136px} .rv .rv-more{padding-left:14px}',
-  ' .rv .rv-today{gap:12px;flex-wrap:nowrap} .rv .rv-figs{flex-direction:column;gap:6px;flex:1 1 auto}',
+  '@container (max-width:520px){.rv .rv-more{padding-left:14px}',
+  ' .rv .rv-figs{flex-direction:column;gap:6px;flex:1 1 auto}',
   ' .rv .rv-fig{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:7px 10px;flex:0 0 auto}',
-  ' .rv .rv-fig b{font-size:18px} .rv .rv-mid b{font-size:32px}}'
+  ' .rv .rv-fig b{font-size:18px}}'
  ].join('\n');
  document.head.appendChild(st);}
