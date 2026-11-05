@@ -33943,3 +33943,76 @@ rail's visual language. SW1, SW2, SW4 and SW6 need scoping before any build.
   clean. Voice objections unchanged from main, still the 8 PR #181 words,
   still zero new bare weights. Same open question as round 1: the five
   node-state words' boundaries are still his to rule.
+
+- [x] **Four PRs merged to main, 5 November, on his word ("merge everything,
+  181 and anything else").** #181 (the 8 law-definition words, this is what
+  had been blocking every deploy since PR #180 landed the real text), #178
+  (the 19 blueprint domain unpack sentences, PR's own note: new paraphrase
+  sentences, worth a skim), #179 (the six hyper complex modes' real content,
+  wired into the drill), #183 (SV15, the Ritual page cuts and seeded
+  profiles). Each PR's branch had drifted behind main (mostly build-stamp
+  conflicts from the string of TASKS.md commits since they were opened);
+  merged main into each, rebuilt products, and for #179 resolved one real
+  textual conflict in tests/engine.js (two unrelated test groups landed at
+  the same append point, kept both). Re-ran the full gate chain on each
+  before pushing: #178 engine 6879/0, #179 engine 6884/0 (both new SABOP
+  and HC test groups intact), #183 engine 6899/0 plus its own flowtools.js
+  gate 181/0. products.js clean on all three post-rebuild.
+  **Not merged, on purpose:** #177, Ruler's domain (Imperium or Power) is
+  still genuinely open, his call, not folded into a blanket merge. #182,
+  mid-revision right now (round 3 in flight). #149 and #164 are his.
+
+- [x] **SW7 round 3, 5 November. Tiers named in words, same PR #182.** He
+  struck the three Super-level rows and said "Organize it by Super
+  Complex, Hyper Complex, Complex, Saboteur, etc." Each tier's name now
+  sits once above its own rows (Super-complex, Hyper-complex, Complex,
+  Saboteur, Child emotion), starting in the icon column so it sits over
+  the icons it names; a tier renames itself when it returns after a
+  different open branch, so a saboteur row after a closed branch never
+  sits under the wrong label with only an icon to go by. The agent had
+  no narrative-director to call on from inside its own build, so it made
+  the one wording call itself: "Super-complex"/"Hyper-complex" hyphenated,
+  not "Super complex", because the detail panel and the summary box on
+  this same screen already spell it that way, one concept keeping one
+  spelling. A sound, well-reasoned call, left as made. Tests: 40/0 real-click
+  browser pass (new: tier names read in order down an open branch, every
+  row sits under its own tier's name), engine 6,899/0, functional
+  2,961/0, collide 398/0, design 193/0, monitor clean. Voice objections
+  now passes fully, PR #181's merge fixed the law-text words that had
+  been failing it. Bare weights unchanged at 17, same as main. Rebased
+  onto main after the four PR merges; only generated build files
+  clashed, rebuilt rather than picked a side. Still open: the five
+  node-state words' boundaries, his call.
+
+- [x] **SV16 closed, 5 November. Ritual page, the centre is a week, PR
+  #184, draft.** The build started against stale state, thinking PR #183
+  was still open and stacked its branch on it; I retargeted #184 to
+  main once it landed, no content change, same diff. All six: a real
+  weekly calendar (Monday first, today ringed, each day's rituals by
+  name and state, back to the record's first week, forward four weeks,
+  a This week button, one phone row per day); New ritual opens straight
+  into the builder, no press, both tag rows gone (the left rail's
+  "Start from a tag" and the builder's own); the left cards flat-filled
+  in their seat colour, "2 minutes", "Add to practice", "Save"; heading
+  "Called for" and shelf "Saved" (narrative-director's ruling, carried
+  over from the question it couldn't ask itself); Ongoing goal and
+  Ritual to avatar moved into the right rail, under Accountability. One
+  real bug found and fixed along the way: Cancel used to leave When/
+  Where/How long filled in, invisible before because the builder used
+  to close on cancel; now that it stays open, it had to actually be
+  fixed. A new browser gate (FT34) walks every week the arrows reach and
+  checks each day's rituals against a list it computes itself from the
+  record, not from the page; both new checks were run against planted
+  defects first and caught them. Tests: engine 6899/0, functional
+  2970/0, flowtools 190/0, collide 398/0, design 193/0, funnel 760/0,
+  boot 29/0, landing 20/0, monitor clean, products clean, voice
+  objections identical to base. Two judgment calls flagged for him on
+  the PR: where exactly the two moved cards sit in the right rail (low,
+  after the whole Accountability block, a one-line change if he wants
+  them higher), and reading "flat solid color" as the card's own seat
+  colour rather than grey.
+
+- [x] **SV17 closed, 5 November. The Ritual page, round two: frictionless, the dual-pole bar restored.** Live, frustrated feedback on PR #184 itself: too much text, the calendar doesn't look like a calendar, nothing leads the eye, and the real `rbPair` dual-pole bar (round RB, already shipped, used tonight in Insight) is missing here even though this is the third time he's pointed at this exact mechanic (TASKS.md round RF, 3 October, independently described the same center-zero two-pole structure in his own words). A full review ran first: 3 research passes (a real text audit by file:line, a psychographic/demographic pass, a comparative pass against real habit-tracker and calendar apps), 7 independent director-level design proposals, one synthesis, then Emmy fact-checked every citation against the real unmerged branches and caught 3 real errors (a wrong call-site count, a fabricated skill-file citation, a missing index-vs-object wiring step) before any of it went to build. The verified spec: the week's day cells become fixed-height 44px "sashes" (replacing variable-height text pills, which is most of why the old grid didn't read as a calendar), colored and iconed from the product's own real seat-color/glyph tokens, pressing one opens the existing sheet mechanism as a popup carrying the ritual's detail, its steps, and the dual-pole bar when it has a real target pattern (never a fake one); the percent ring becomes a plain count, matching a house rule this page's own file header already states and the build was quietly violating; six exact text strings cut outright, not hidden behind a tooltip; Due Today's job moves into today's sashes, the card itself goes. One open question left for him, not decided for the build: a single practice-description line (`rv-sgd`) that round QX added on his own direct instruction now conflicts with tonight's "cut it all," flagged rather than guessed at.
+  **Built, PR #185, draft, stacked on #184 then #183.** Caught a real spec error on its own before shipping it: the synthesized spec said the ritual badge should read "3 of 7," which is itself one of his own logged, stop-severity house-voice objections (CO-05/CO-31, "every time you add that 11 of 12, why"). Fixed: the badge shows days kept alone, days set moves to its tooltip, the popup says "Kept 3 days" and "4 days left" (days left is the one count the house rule allows, since it says how much remains rather than scoring). The dual-pole bar now lives once, in `ui/component.js` as `fetBar`, shared by this page and the Insight panel rather than duplicated; shows only for a ritual aimed at a real pattern, never invented. Above-the-fold measured for real in a browser, not estimated: the week's bottom edge sits at 498 of 1000px and 754 of 844px on Diane's profile. The cards below the week were never on the cut list, so they still run below the fold, said plainly on the PR rather than overclaimed. One flaky, unrelated mic/playback test caught and logged rather than hidden. Tests: engine 6899/0, functional 2996/0, flowtools 216/0, collide 398/0, design 193/0, monitor/products/terms clean. Same open question carried to the PR for him. One follow-up noted for whoever merges PR #182: `stkFetBar` should call the now-shared `fetBar` instead of keeping its own copy.
+
+- [x] **Production deploy unblocked, 5 November. atuned.world was frozen 9+ hours, real cause found and fixed.** An uploaded handoff document flagged that atuned.world had been stuck on commit `17aa9b29` since 21:06 UTC the night before, 40+ commits behind, every `deploy.yml` run failing since PR #180's merge. Checked the document's own claims directly against the real GitHub Actions config and the live Cloudflare API rather than trusting or re-reading it: one correction found immediately, only `gates-fast` and `gates-browser` actually gate the deploy (the workflow's own comment says so), so `gates-report (record)` and `gates-report (becoming)` were never real blockers despite looking alarming, and `becoming` turned out to be a pre-existing failure predating PR #180 entirely, confirmed against the commit right before that merge. The one real blocker was `gates-browser (onboarding2)`. Root cause, confirmed on CI and reproduced locally: PR #180's own "Summary: strip the clutter" commit removed the whole "What to do" column, "Run a release" button included, per the owner's own 3 November ruling, but `tests/onboarding2.js` still compared the crisis button's size against that now-deleted button and failed every run since. The crisis button itself was always fine, 44px tall. Fixed in the test only, no product code touched: it now builds a reference button with the removed button's own style classes to measure against. Verified against a known bad case (a shrunk crisis button) before trusting the fix. Pushed as `370a748a`; confirmed green on CI, `gates-pass` and `deploy` both `success`, before calling it done. **Production is caught up: main and the last successful deploy are the same commit.** The four `gates-report` jobs that still fail (record, becoming, gift, sniffpage) don't block anything and weren't touched.
