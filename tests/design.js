@@ -89,9 +89,17 @@ console.log('  shell:',JSON.stringify(shell));
    The depth row became the glass bar's Depth circle, EV in TASKS.md, so the
    measure moved with it: every circle the bar shows at 1600 is inside the
    window, and the Depth circle is one of them. */
+/* THE BAR STARTS SHUT, SV18, 5 November, his words: "the top menu in the
+   center field left to start closed." Shut, the bar is its one circle and
+   the Depth circle is not drawn, so the measure opens it the way a person
+   does, with its own control, reads every circle, and shuts it again so the
+   checks after this one meet the page as it arrives. */
 const depthsOn=await page.evaluate(()=>{setTab(TAB.FIELD);
- return [...document.querySelectorAll('#fbar .fb-b')].filter(b=>b.offsetParent).map(b=>{const r=b.getBoundingClientRect();
-  return {nm:b.getAttribute('aria-label'),on:r.width>0&&r.left>=0&&r.right<=innerWidth+0.5};});});
+ const was=FB.classList.contains('shut'); if(was)FB_TOG.click();
+ const out=[...document.querySelectorAll('#fbar .fb-b')].filter(b=>b.offsetParent).map(b=>{const r=b.getBoundingClientRect();
+  return {nm:b.getAttribute('aria-label'),on:r.width>0&&r.left>=0&&r.right<=innerWidth+0.5};});
+ if(was)FB_TOG.click();
+ return out;});
 ok(depthsOn.some(d=>d.nm==='Depth')&&depthsOn.every(d=>d.on),
  'every circle on the glass bar is on the screen at 1600, the Depth circle among them, off it: '
  +(depthsOn.filter(d=>!d.on).map(d=>d.nm).join(', ')||'none'));
