@@ -9169,7 +9169,19 @@ g('RB · every worked example with a row runs rituals, written in the shapes the
  ok(done(Wr,'hands').every(d=>E.ritexWd(d)!==6)&&done(Wr,'na_tend').every(d=>E.ritexWd(d)===6)&&done(Wr,'na_tend').length>=4,
   'Wren\'s rituals land on their own weekdays and no other');
  ok(JSON.stringify(E.ritexBuild(E.PEOPLE.find(p=>p.nm==='Ana'),NOW))===JSON.stringify(An),'the same moment builds the same history');
- ok(E.ritexBuild({nm:'Nobody'},NOW)===null&&E.ritexBuild(E.PEOPLE.find(p=>p.nm==='James'),NOW)===null,'a person with no row has no rituals, and none is invented');
+ /* James was the example with no row here until 4 November, when the owner
+    asked for every example to run one. The roster has no row-less example
+    now, so the null case is a name the roster does not carry. */
+ ok(E.ritexBuild({nm:'Nobody'},NOW)===null,'a person with no row has no rituals, and none is invented');
+ ok(E.PEOPLE.filter(p=>!p.you).every(p=>H[p.nm]),'every worked example has a row, '+E.PEOPLE.filter(p=>!p.you&&!H[p.nm]).map(p=>p.nm).join(', '));
+ /* James and Gordon said yes to nothing for every day PRACEX_HIST draws on
+    the practitioner page (PRACEX_DAYS, ending yesterday), so each starts
+    today and has no day before it: the two pages tell one story. James kept
+    today, Gordon not. */
+ const Ja=built.James, Go=built.Gordon;
+ ok(Ja.rituals.every(x=>E.pracDay(x.t)===today)&&Go.rituals.every(x=>E.pracDay(x.t)===today)
+   &&Ja.kept===1&&Ja.missed===0&&Go.kept===0&&Go.missed===0&&!E.PRACEX_HIST.James.accept&&!E.PRACEX_HIST.Gordon.accept,
+  'James and Gordon start today and nothing before it, so the practitioner page\'s run of no still holds, '+JSON.stringify([Ja.kept,Go.kept]));
  /* known bad: a step naming no practice is refused by name */
  H.__rb={}; H.__rb=[{k:'box+nosuch', b:'Root', on:null, n:0, back:2, d:'c'}]; let thr='';
  try{E.ritexBuild({nm:'__rb'},NOW);}catch(e){thr=e.message;}
@@ -9178,6 +9190,36 @@ g('RB · every worked example with a row runs rituals, written in the shapes the
  delete H.__rb;
  ok(/nosuch names no practice/.test(thr)&&/Spleen is not a seat/.test(thr2),'a row naming no practice or no seat is refused by name, '+thr+' / '+thr2);
  ok(E.ritexHas(E.blankProfile('b'))===false&&E.ritexHas(rec)===true,'a blank record carries no day log, a built one does');
+}
+
+g('Every worked example carries avatar pairs, each landing at the seat it is written for');
+{
+ /* engine/ritex.js RITEX_AV, 4 November. readSeat (ui/drills.js) is the
+    product's own reader and is copied here because it is a renderer and
+    the engine gate cannot load one: the seat the parsed imprints weigh
+    most at. Checked against a known bad case first, below, because the
+    table's first draft put more than half its bad days at another seat. */
+ const NOW=Date.parse('2026-10-03T12:00:00Z'), A=E.RITEX_AV;
+ const seatOf=t=>{const p=E.parseStory(String(t||'')); if(!p||!p.imprints||!p.imprints.length)return null;
+  const tl={}; p.imprints.forEach(x=>{if(x&&x.band)tl[x.band]=(tl[x.band]||0)+(x.amt||1);});
+  let b=null,v=0; Object.keys(tl).forEach(k=>{if(tl[k]>v){v=tl[k];b=k;}}); return b;};
+ ok(seatOf('My chest goes cold when I let someone go and I feel nothing.')!=='Heart',
+  'known bad: a chest with no feeling word does not read at the heart, so the check below can fail');
+ ok(E.PEOPLE.filter(p=>!p.you).every(p=>A[p.nm]),'every worked example has avatar pairs, '+E.PEOPLE.filter(p=>!p.you&&!A[p.nm]).map(p=>p.nm).join(', '));
+ const off=[]; Object.keys(A).forEach(n=>A[n].forEach(x=>{const s=seatOf(x.notbe); if(s!==x.b)off.push(n+': '+x.b+' read as '+s);}));
+ ok(off.length===0,'every bad day lands at the seat it is written for, '+JSON.stringify(off));
+ const bad=[]; Object.keys(A).forEach(n=>{
+  const av=E.ritexAvatar(E.PEOPLE.find(p=>p.nm===n),NOW), rec=E.blankProfile(n); rec.avatar=av;
+  const v=E.validateProfile(JSON.parse(JSON.stringify(rec)));
+  if(!(v.ok&&v.profile.avatar.pairs.length===A[n].length&&v.profile.avatar.built&&!E.avatarDue(v.profile.avatar,NOW)))bad.push(n+': '+(v.errs||[]).join('; '));});
+ ok(bad.length===0,'every example\'s avatar passes the boundary whole, built, and not yet due its review, '+JSON.stringify(bad));
+ const a1=E.ritexAvatar(E.PEOPLE.find(p=>p.nm==='Diane'),NOW), a2=E.ritexAvatar(E.PEOPLE.find(p=>p.nm==='Diane'),NOW+3*86400000);
+ ok(a1.pairs.map(x=>x.id).join()===a2.pairs.map(x=>x.id).join(),'the ids are read off the words, so a later load keeps them');
+ ok(E.ritexAvatar({nm:'Nobody'},NOW)===null&&E.ritexHasAvatar(E.blankProfile('b'))===false,'a person with no row has no avatar, and a blank record carries none');
+ A.__av=[{b:'Spleen', be:'x', notbe:'y'}]; let thr='';
+ try{E.ritexAvatar({nm:'__av'},NOW);}catch(e){thr=e.message;}
+ delete A.__av;
+ ok(/Spleen is not a seat/.test(thr),'a pair at no seat is refused by name, '+thr);
 }
 
 g('RB · becoming S1 to S3: the avatar\'s own data on the record, its identity, and the purpose writer\'s caps');

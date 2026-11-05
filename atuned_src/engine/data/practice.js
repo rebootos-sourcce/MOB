@@ -49,8 +49,14 @@ var PRACTICE=[
   d:'Direct contact dissolves charge. No analysis, no escape.',
   how:'Find the resistance in the body. Do not move away from it. Stay with it until it '
    +'shifts. There is nothing to think about here.'},
+ /* NO ONE LINE, 4 November. It read "Expansion is true. Contraction is
+    distortion." and was struck in red on the live Ritual page, on the
+    Suggested card. It was the first two sentences of `how` below said a
+    second time, so it carried nothing `how` does not, wherever it printed:
+    the Suggested card, the builder's tile, the step lists and the Summary's
+    protocol card, each of which now prints nothing for an empty line. */
  {k:'truth', nm:'The Somatic Truth Check', track:'Somatic', min:2, tier:2,
-  d:'Expansion is true. Contraction is distortion.',
+  d:'',
   how:'Hold the statement and read the body. Expansion means true. Contraction means '
    +'distortion. Use it live, in the moment, as an instrument.'},
  {k:'heartpt', nm:'Heart Point Focus', track:'Energy', min:10, tier:2,

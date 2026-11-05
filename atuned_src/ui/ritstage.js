@@ -193,7 +193,9 @@ function ritSugHtml(st){
        Round QX made it what the practice is, his "text description", and the
        reason it is offered moved into the press, where the full why-list was
        already: the first reason was printed twice whenever a card was open. */
-    +'<p class="rv-sgd">'+esc(x.p.d||'')+'</p>'+chips
+    /* and a practice with no line prints no empty paragraph: the Truth
+       Check's was cut, engine/data/practice.js says why */
+    +(x.p.d?'<p class="rv-sgd">'+esc(x.p.d)+'</p>':'')+chips
     /* THE REASONS ARE ONE PRESS AWAY, round QS. His words: "more show less
        tell if you want tell you press on something to get information." The
        mark is the press, and it opens the reasons and what the ring measures
@@ -289,8 +291,11 @@ function ritAvHtml(st){
  rows.forEach(function(x){if(x.gap&&x.gap.seat)seat[x.gap.seat]=x;});
  var seats=BANDS.filter(function(b){return seat[b];});
  var list='';
- if(!rows.length)list='<p class="rv-empty">Your avatar has no stories yet.</p>'
-  +'<div class="rv-acts"><button type="button" class="btn" data-act="go-avatar">Open the avatar</button></div>';
+ /* "Your avatar has no stories yet." is cut, 4 November, struck in red on
+    the live page. The card's own line above already says it shows each seat
+    your avatar has a story at, so an empty list said it twice. The press
+    stays: it is the one route to writing the first story. */
+ if(!rows.length)list='<div class="rv-acts"><button type="button" class="btn" data-act="go-avatar">Open the avatar</button></div>';
  else if(!seats.length)list='<p class="rv-empty">Your avatar\'s stories do not read at a seat yet.</p>';
  else list='<ul class="rv-avl">'+seats.map(function(b,i){
   var x=seat[b], A=(typeof AV_OF!=='undefined'&&AV_OF[b])||{nm:b,about:'',k:''};
@@ -336,11 +341,20 @@ function ritGoalHtml(st){
     card's own line above already says what goes here, so the card is never
     a bare box, and the next mark below fills it whenever there is one. The
     line under the next mark, that a mark is earned and never bought, went
-    with it: the same ruling, and the mark itself says how it is earned. */
+    with it: the same ruling, and the mark itself says how it is earned.
+    AND HOW IT IS EARNED MOVED INTO THE PRESS, 4 November. The line under the
+    mark's name, "Open ten different addresses with a release. An address is
+    one exact place in your body." for Ten addresses, was struck in red on
+    the live page, and "Next mark" beside it was circled. So the visible line
+    is cut for every mark, and the same sentence, the ladder's own `to`, is
+    carried by the one tooltip (rvTip, a hover, a tap or keyboard focus), so
+    the mark keeps its meaning one press away and never stands unexplained,
+    which is the unpack rule. ui/cone.js prints the same `to` on its own
+    surface and is not touched. */
  var m=st.L.next;
- if(m)h+='<div class="rv-nxm" style="--c:'+seatCol(m.b)+'"><span class="rv-nxi" aria-hidden="true">'
+ if(m)h+='<div class="rv-nxm" style="--c:'+seatCol(m.b)+'"'+(m.to?rvTip(m.nm,m.to,null,'Next mark'):'')+'><span class="rv-nxi" aria-hidden="true">'
   +'<svg viewBox="0 0 24 24"><path d="'+m.ic+'"/></svg></span>'
-  +'<span class="rv-nxt"><span class="rv-lb">Next mark</span><b>'+esc(m.nm)+'</b><span>'+esc(m.to)+'</span></span></div>';
+  +'<span class="rv-nxt"><span class="rv-lb">Next mark</span><b>'+esc(m.nm)+'</b></span></div>';
  return h+'</section>';}
 
 /* ---------------- did it work ---------------- */
