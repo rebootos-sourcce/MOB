@@ -7830,6 +7830,14 @@ await require('./voicefall.js').voiceFallGate(browser,FILE,ok,booted);
 console.log('\n=== type instead, the box on request while voice works ===');
 await require('./typein.js').typeInGate(browser,FILE,ok,booted);
 
+/* THE NAMED ADDRESS LAYER, tests/addrlayer.js, 5 November. S.addr is what a
+   story that names a body place adds at that address, and undo, opening a
+   worked example and the practitioner roster's read of a client each swapped
+   S without it, so a story on You leaked into all three. A file of its own
+   so it can run alone, called here so a full run holds it. */
+console.log('\n=== the named address layer follows the record it belongs to ===');
+await require('./addrlayer.js').addrLayerGate(browser,FILE,ok,booted);
+
 await browser.close();
 
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
