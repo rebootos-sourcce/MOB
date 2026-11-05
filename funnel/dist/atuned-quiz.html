@@ -1,7 +1,7 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Atuned test</title>
-<meta name="description" content="A hundred questions, one at a time, scored against the 21 laws of integrity.">
+<meta name="description" content="One question at a time, scored against the 21 laws of integrity.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20fill%3D%22none%22%20stroke-linecap%3D%22butt%22%20viewBox%3D%22-3%20-3%20206%20206%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20aria-hidden%3D%22true%22%20focusable%3D%22false%22%3E%3Cpath%20d%3D%22M100.000%20181.250A81.25%2081.25%200%200%200%20163.524%20150.659%22%20style%3D%22stroke%3A%23D6524C%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M163.524%20150.659A81.25%2081.25%200%200%200%20179.213%2081.920%22%20style%3D%22stroke%3A%23D8924E%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M179.213%2081.920A81.25%2081.25%200%200%200%20135.253%2026.796%22%20style%3D%22stroke%3A%23DABF6A%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M135.253%2026.796A81.25%2081.25%200%200%200%2064.747%2026.796%22%20style%3D%22stroke%3A%235FD5A6%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M64.747%2026.796A81.25%2081.25%200%200%200%2020.787%2081.920%22%20style%3D%22stroke%3A%235EBBDB%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M20.787%2081.920A81.25%2081.25%200%200%200%2036.476%20150.659%22%20style%3D%22stroke%3A%237D93E0%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M36.476%20150.659A81.25%2081.25%200%200%200%20100.000%20181.250%22%20style%3D%22stroke%3A%23A77EDB%3Bstroke-width%3A37.50%22%2F%3E%3C%2Fsvg%3E">
 <style>
 /* tokens.css, inlined by BUILD-single.sh */
@@ -27573,6 +27573,9 @@ function load(){
  try{ var r=localStorage.getItem(KEY); if(r){ var o=JSON.parse(r)||{}; A=o.a||{}; } }
  catch(e){ A={}; }}
 function answered(){ var n=0; for(var k in A)if(A[k]!=null)n++; return n; }
+/* a count of answers with its unit, for the lines that say how many a reading
+   was taken from. One is possible on a stored visit, so it is said as one. */
+function nAnswers(n){ return n+(n===1?' answer':' answers'); }
 function firstOpen(){
  for(var i=0;i<ORDER.length;i++)if(A[ORDER[i]]==null)return i;
  return ORDER.length; }
@@ -27640,7 +27643,14 @@ function viewOpen(){
  var done=answered();
  return '<div class="open">'
  +'<span class="eye">The test</span>'
- +'<h1>A hundred questions about how you actually live.</h1>'
+ /* THE COUNT IS READ OFF THE TABLE, 5 November. This said "A hundred
+    questions" as typed words, in this heading and four other places, and the
+    owner's 42 question draft is the next table: every one of them would have
+    gone on saying a hundred to a person answering 42. QQ.length is what the
+    progress bar already divides by, so the heading and the bar cannot
+    disagree. The meta description above cannot run script, so it names no
+    count at all. */
+ +'<h1>'+QQ.length+' questions about how you actually live.</h1>'
  +'<p class="lead">One at a time. They are scored against the 21 laws of '
  +'integrity, which is the same table the instrument itself runs on.</p>'
  +'<p>Some of them will be uncomfortable to answer honestly, because they are '
@@ -27698,7 +27708,7 @@ function viewNotice(){
     +'<p class="said">'+esc(said)+'</p>'
     +'<p>A signal is what your body does when something gets to you. You found this one '
     +'yourself.</p>'
-    +'<p>The hundred questions next draw a map of where you carry load. The map comes from '
+    +'<p>The questions next draw a map of where you carry load. The map comes from '
     +'your answers. What you just noticed came from your body. Where the two disagree, go '
     +'with your body.</p>'
     +'<p class="hold">Keep your attention there for one breath.</p>'
@@ -27842,8 +27852,10 @@ function viewRead(){
   +' of them are above the line where it starts to cost.</p></div>'
   +'</div>'
   /* ---- THE SCOPE. What this read and what it did not. ---- */
-  +'<div class="scope"><b>What this is.</b> A hundred points on the 21 laws, and '
-  +'the nine charges those points imply. It has not read a story in your own words, '
+  /* the answers this reading was taken from, which is not the table's length
+    for somebody who pressed Read it from here. */
+ +'<div class="scope"><b>What this is.</b> '+nAnswers(s.answered)+' on the 21 laws, and '
+  +'the nine charges those answers imply. It has not read a story in your own words, '
   +'which is where the instrument gets its resolution, so the body locations above '
   +'are where this kind of load sits rather than a reading of your tissue. It reads '
   +'self report. A clinician reads a person, and those are different jobs.'
@@ -27902,7 +27914,7 @@ function viewRead(){
  +'<div class="door"><span class="eye">Next</span>'
  +'<h2>Write one thing that happened.</h2>'
  +'<div class="doorbd">'
- +'<p>The hundred questions read the shape of your week. One story in your own '
+ +'<p>Your answers read the shape of your week. One story in your own '
  +'words shows what is running under it, read by the same reader the app uses.</p>'
  +'<div class="acts">'
   +'<button class="act go" id="tostory">Write a story</button>'
@@ -27910,7 +27922,7 @@ function viewRead(){
   +'<button class="act" id="again">Change an answer</button>'
  +'</div></div></div>'
 
- +(s.answered<100?'<p class="foot">Some points stayed blank. The reading leans on the ones you answered.</p>':'')
+ +(s.answered<QQ.length?'<p class="foot">Some points stayed blank. The reading leans on the ones you answered.</p>':'')
  +'</div>';
  return h;
 
@@ -28377,7 +28389,11 @@ function viewDoor(){
  +'<div class="door"><span class="eye">The app</span>'
  +'<h2>Try the app to find more.</h2>'
  +'<div class="doorbd"><div>'
- +'<p>This test read a hundred answers'+(STORY_AT?' and one story':'')+'. The app reads '
+ /* IT SAID A HUNDRED TO EVERYBODY, 5 November, including somebody who
+    pressed Read it from here after the first 21, measured on 784e3098: 21
+    answered, and the door said "This test read a hundred answers." It says
+    how many this test actually read. */
+ +'<p>This test read '+nAnswers(answered())+(STORY_AT?' and one story':'')+'. The app reads '
  +'every story you write and shows where each one sits in the body. Then it runs a '
  +'release on each address that is carrying, to take the load off it. It is one file '
  +'and it runs in your browser.</p>'
