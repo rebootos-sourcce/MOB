@@ -8,7 +8,11 @@
 /* true for the length of one drill, set by a caller whose press was made
    inside the rail itself. Read by the phone half of the test in rdOpen. */
 var RD_INRAIL=false;
-function rdOpen(){var b=document.getElementById('rdrill');if(!b)return null;
+function rdOpen(){
+ /* a drill opened anywhere but Knowledge answers in the rail, so a panel
+    still lent to that page's answer layer comes home first */
+ if(typeof kbAnsHome==='function'&&typeof TAB!=='undefined'&&S.tab!==TAB.KNOW)kbAnsHome();
+ var b=document.getElementById('rdrill');if(!b)return null;
  b.style.display='block';
  var none=document.getElementById('rdrill-none'); if(none)none.style.display='none';
  /* open Selection, and leave open whatever else the person had open. */
@@ -90,6 +94,9 @@ function rdClose(){ANA_PICK=null;S.pin=null;
     pattern it had pinned, with its name beside it and the other rings
     hidden, under a Selection section that said nothing was selected. */
  PMPICK=null;
+ /* the Knowledge page lends this panel to its answer layer, and closing the
+    answer is closing the drill, so the panel goes home first */
+ if(typeof kbAnsHome==='function')kbAnsHome();
  var b=document.getElementById('rdrill');if(b){b.innerHTML='';b.style.display='none';}
  var none=document.getElementById('rdrill-none'); if(none)none.style.display='';
  render();}
@@ -303,8 +310,17 @@ function lawDrillHtml(l,o){
  /* what the instrument reads back from the answer, as a percent, percent
     phase 2 slice 4. The answer itself stays on nought to ten where it is
     given (PERCENT-FRAMEWORK-2026-10-16.md, open item 3). */
+ /* WHAT THE LAW IS, BEFORE HOW IT RUNS THROUGH YOU. This card printed the
+    person's reading of Unity and never said what Unity is: measured on main
+    at 15f6952b, every one of the 21 opened on a score and a seat, while 20 of
+    them had the book's text on file under the universal law of the same name.
+    It is the first thing now, as a definition comes first anywhere this
+    product explains a name. One card for two doors, so Analytics' trail
+    gains it too. */
+ var mean=lawMeaning(l.nm);
  var h='<div class="pm-eye plain">Law of Moral Integrity, '+l.b.toLowerCase()+'</div>'
   +'<div class="ad-nm">'+l.nm+(read?' '+fmtPct('law',v):'')+'</div>'
+  +(mean?'<div class="pm-eye">What it is</div><p class="ad-p">'+esc(mean)+'</p>':kbGap())
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
   /* V21 and pass 1. "Under 4 it is not resisting, it is closed, and
      everything seated there pays for it" read the threshold aloud, ran an
@@ -386,6 +402,9 @@ function nodeDrillHtml(n,o){
   +'<div class="ad-sub">'+esc(n.n||'just outside the body')+(n.a?' · '+esc(n.a):'')+'</div>'
   /* both ends of the pole, the same bar the codex row draws. Round JQ. */
   +(typeof poleDrillHead==='function'?poleDrillHead(n):'')
+  /* no fetter has a meaning on file, only the one word it shows up as, so in
+     the Knowledge base it says so (kbGap) */
+  +(anchorSeat(n)?'':kbGap())
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
   /* a field anchor's d is the word "field", a category and not a behaviour,
      so it never reaches "It shows up as field." */
@@ -851,6 +870,13 @@ function runFetterDrill(c){
  var at=W.filter(function(n){return n.cf===c.nm;});
  var h='<div class="pm-eye">Child emotion</div><div class="ad-nm">'+esc(c.nm)+'</div>'
   +'<div class="ad-sub">toward '+esc(c.opp)+'</div>'
+  /* the book's entry for each of the nine is on file as a universal law,
+     "Fear · Safety" and the rest. Four name a different opposite from
+     CHILD's (Fear, Anger, Apathy, Sad) and three name none and say it is
+     pending (Shock, Surprise, Anticipation), so it is not printed on a card
+     that says "toward Trust".
+     Until that is ruled the card says it has no meaning on file. */
+  +kbGap()
   +'<div class="pm-eye">Where it sits</div><p class="ad-p">'+esc(c.addr)+', at '+esc(c.loc)
   +'. Seated at the '+esc(c.seat).toLowerCase()+'.</p>'
   +'<div class="pm-eye">Both halves</div><p class="ad-p">Held <b>'+fmtPct('charge',held)+'</b>. '
@@ -888,10 +914,16 @@ function runSabDrill(s){
    for all nineteen. Four are under a different name in the engine, and the
    drill says both rather than picking one, because that ruling is not mine. */
 function runDomDrill(d){
- var k=KB_KEY(d.nm), def=DOMDEF[k], alt=KB_RENAME[k];
+ /* THE FOUR THE BOOK RENAMED NEVER PRINTED THEIR TWO READINGS. DOMDEF is
+    filed under the book's name and this looked it up under the engine's, so
+    Descent, Connection, Exchange and Restoration fell to their short line.
+    KB_RENAME already holds the book's name for each, so it is read here too.
+    And "in the codex" is "in the book": he cut the word from this page on 5
+    November, and the book is what it meant. */
+ var k=KB_KEY(d.nm), alt=KB_RENAME[k], def=DOMDEF[k]||(alt?DOMDEF[KB_KEY(alt)]:null);
  var h='<div class="pm-eye">Blueprint domain</div>'
   +'<div class="ad-nm">'+esc(d.nm)+'</div>'
-  +'<div class="ad-sub">'+esc(d.r)+' cluster'+(alt?', called '+esc(alt)+' in the codex':'')+'</div>';
+  +'<div class="ad-sub">'+esc(d.r)+' cluster'+(alt?', called '+esc(alt)+' in the book':'')+'</div>';
  if(def){
   h+='<div class="pm-eye">Read clear</div><p class="ad-p">'+esc(def.c)+'</p>'
    +'<div class="pm-eye">Read distorted</div><p class="ad-p">'+esc(def.x)+'</p>';}
@@ -911,9 +943,15 @@ function runDomDrill(d){
 function runArchDrill(a){
  if(!a)return;
  var j=ARCH.indexOf(a), r=compute(), at=(S.arcs||[]).indexOf(j);
+ /* THE SENTENCE WAS ON FILE AND NOT PRINTED. ARCH carries two lines for each
+    of the twelve, v, the four words the Knowledge row shows under the name,
+    and d, the sentence that says what the archetype does. This printed v
+    again under "What it is" and never d, so pressing Warrior answered with
+    the words already on the row. Both now, the row's words first. */
+ var said=[a.v?a.v.charAt(0).toUpperCase()+a.v.slice(1)+'.':'',a.d||''].filter(Boolean).join(' ');
  var h='<div class="pm-eye">Archetype</div><div class="ad-nm">'+esc(a.nm)+'</div>'
   +'<div class="ad-sub">how the blueprint expresses</div>'
-  +(a.v?'<div class="pm-eye">What it is</div><p class="ad-p">'+esc(a.v)+'</p>':'');
+  +(said?'<div class="pm-eye">What it is</div><p class="ad-p">'+esc(said)+'</p>':kbGap());
  if(!r.unread&&j>=0&&r.aff)
   /* HOW FULLY IT IS EXPRESSED, ruled 16 October, his words: "the archetypes
      themselves should be 100%. The limiting beliefs are going to drag it
@@ -926,9 +964,16 @@ function runArchDrill(a){
 function runMaskDrill(m){
  if(!m)return;
  var b=m.b||m.bands||[], seats=b.join(' and ');
+ /* EVERY MASK ANSWERED WITH THE SAME PARAGRAPH. It is about what a mask is
+    in general, and it was the whole of "What it is" for all five, so Child
+    and Ideological read the same. MASKS carries v, each mask's own line, the
+    one the Knowledge row prints under its name. It leads now, and the
+    general paragraph keeps its words under a label that says it is general. */
+ var own=m.v?m.v.charAt(0).toUpperCase()+m.v.slice(1)+'.':'';
  var h='<div class="pm-eye">Mask</div><div class="ad-nm">'+esc(m.nm)+'</div>'
   +'<div class="ad-sub">worn over the '+esc(seats)+'</div>'
-  +'<div class="pm-eye">What it is</div><p class="ad-p">'
+  +(own?'<div class="pm-eye">What it is</div><p class="ad-p">'+esc(own)+'</p>':kbGap())
+  +'<div class="pm-eye">What a mask is</div><p class="ad-p">'
   +'A mask is not a fault and it is not a stage you failed to leave. It is a '
   +'shape held in front of the seats it covers, and it costs what holding it '
   +'costs. This one sits over the '+esc(seats)+'. Its charge is '
@@ -970,7 +1015,9 @@ function runMaskDrill(m){
    records the day a person was handed "depression, BPD and anxiety" about
    themselves as a subtitle. */
 function kbSabBlock(nm){
- var def=SABDEF[KB_KEY(nm)]; if(!def)return '';
+ /* an inferred saboteur has no entry in the book, so in the Knowledge base it
+    says it has no meaning on file rather than printing nothing under a name */
+ var def=SABDEF[KB_KEY(nm)]; if(!def)return kbGap();
  var c=(typeof SABCARD!=='undefined'&&SABCARD[KB_KEY(nm)])||{};
  var h=c.h||def.d, n=c.n||def.i;
  return (h?'<div class="pm-eye">What happens</div><p class="ad-p">'+esc(h)+'</p>':'')
@@ -1014,6 +1061,25 @@ function kbHcxBlock(nm){
    +'.</b> '+esc(c.inverseDefinition)+'</p>'
   +'<div class="pm-eye">Next move</div><p class="ad-p">'+esc(c.practice)+'</p>';}
 
+/* WHAT A THING WITH NO TEXT SAYS, IN THE KNOWLEDGE BASE AND ONLY THERE.
+   Content Alpha, 23 October: everything has a record, and where there is no
+   record the page says so rather than padding. The 19 October restore's rule
+   is kept: a person who came to Knowledge to ask what a thing means is told
+   there is no meaning on file, and a surface that never promised a meaning
+   (the Field's rail, Analytics, the Body page) prints nothing. kbAnsOn is
+   ui/knowledge.js's: true only while an answer is open on that page. The
+   wording is the house's for a missing record, ui/summary.js. */
+var KB_NOTE='No meaning on file yet.';
+function kbGap(){
+ return (typeof kbAnsOn==='function'&&kbAnsOn())
+  ?'<div class="pm-eye">What it is</div><p class="ad-p">'+KB_NOTE+'</p>':'';}
+/* the meaning of one of the 21 laws, read off the universal law of the same
+   name. SI and HARM's spirit axis are one set by name (kbRowsOf builds the
+   Moral Integrity deck by walking one into the other), so the text is held
+   once, in engine/data/kb.js, and never copied here. '' when none is on file. */
+function lawMeaning(nm){
+ for(var i=0;i<HARM.length;i++)if(HARM[i].a==='spirit'&&HARM[i].t===nm)return HARM[i].d||'';
+ return '';}
 function runKbDrill(eyebrow,title,sub,body){
  rdShell('<div class="pm-eye">'+esc(eyebrow)+'</div><div class="ad-nm">'+esc(title)+'</div>'
   +(sub?'<div class="ad-sub">'+esc(sub)+'</div>':'')

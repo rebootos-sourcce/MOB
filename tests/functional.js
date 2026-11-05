@@ -983,7 +983,10 @@ const kb=await page.evaluate(()=>{
   KB_SEC=k; kbRender();
   if(!document.querySelectorAll('.kb-row').length){empty.push(k);return;}
   walked++;
-  {const cards=[...document.querySelectorAll('.kb-row')];
+  /* the coherence formula's row leads the two law decks (5 November, his
+     ordering ruling) and belongs to neither, so it is not one of the deck's
+     cards and its mark is not counted as one */
+  {const cards=[...document.querySelectorAll('.kb-row')].filter(c=>!c.closest('.kbs-cq'));
    /* A MARK IS NOT ALWAYS A PATH, AND THE GLYPH IS NOT THE FIRST SVG IN THE
       ROW. crBadge draws two svgs: .crb-a, the charge ring, identical shape
       on every row; .crb-g, the glyph itself. The dual-pole open state draws
@@ -1153,6 +1156,82 @@ ok(kb.opened===kb.walked,'every section opens a drill, got '+kb.opened
 ok(kb.pool===kb.held,'the deck is exactly what is held, '+kb.pool+' against '+kb.held);
 ok(kb.cardIsHeld,'a dealt card is an address that is actually carrying');
 ok(kb.rank>=1&&kb.rank<=13,'the rank is a card rank, got '+kb.rank);
+
+/* ============================================================
+   A PRESS ON KNOWLEDGE ANSWERS ON THE SCREEN. 5 November, his words: "I
+   can't click on anything and have it open up and show me what these things
+   mean." Every check above reads #rdrill's text after a press, and #rdrill
+   lives in the right column, which is shut on this page by his round RB
+   ruling. So the text was there and the gate was green while the answer
+   measured 0 by 0 at both widths for every row on the page. These presses
+   are made with the mouse, and what is asserted is what a person sees: the
+   element under the pointer is the answer.
+
+   Checked against the known bad case first, with this block lifted out and
+   run on its own: on main's committed build at 15f6952b it fails at 1600 on
+   the answer being on screen (0 by 0), on Unity's answer being on screen and
+   on Unity saying what it is, and its 390 pass then times out on a click; on
+   the fix all fifteen pass. One run of the fix on a machine at a load of 16
+   timed out on a scroll and the next passed whole, so a timeout here on a
+   loaded runner is worth a second run before it is read as a defect.
+   ============================================================ */
+console.log('\n=== a press on knowledge answers on the screen ===');
+for(const [w,h] of [[1600,1000],[390,844]]){
+ await page.setViewportSize({width:w,height:h});
+ /* the walk above presses a row in every deck and leaves the last answer
+    open, which is a modal over the page now, so it is closed the way a
+    person closes it before these presses */
+ await page.evaluate(()=>{rdClose(); loadP(PERSON('Ana')); KB_Q=''; KB_SEC='all'; KB_SEAT='Crown';
+  setTab(TAB.KNOW); render(); kbRender();});
+ await page.waitForTimeout(150);
+ const seen=async nm=>{
+  const row=page.locator('#knowbody .kb-row',{hasText:nm}).first();
+  await row.scrollIntoViewIfNeeded(); await row.click(); await page.waitForTimeout(120);
+  const r=await page.evaluate(()=>{const d=document.getElementById('rdrill'), b=d.getBoundingClientRect();
+   const x=Math.min(innerWidth-2,Math.max(1,b.left+b.width/2)), y=Math.min(innerHeight-2,Math.max(1,b.top+24));
+   const at=document.elementFromPoint(x,y);
+   return {w:Math.round(b.width),h:Math.round(b.height),hit:!!(at&&d.contains(at)),
+    text:(d.textContent||'').replace(/\s+/g,' ')};});
+  return r;};
+ const lawRow=await seen('All Is One');
+ ok(lawRow.hit&&lawRow.w>0&&lawRow.h>0,'at '+w+', a press on All Is One puts its answer on the screen, '+lawRow.w+' by '+lawRow.h);
+ ok(/One field\. One source\./.test(lawRow.text),'at '+w+', and the answer is the book\'s text for it');
+ /* escape is one of the ways a drill closes, and the panel goes home */
+ await page.keyboard.press('Escape'); await page.waitForTimeout(80);
+ const shut=await page.evaluate(()=>({layer:!!(document.getElementById('kbans')&&!document.getElementById('kbans').hidden),
+  home:!!document.getElementById('rdrill').closest('.lsec')}));
+ ok(!shut.layer&&shut.home,'at '+w+', escape closes the answer and hands the panel back to the rail, '+JSON.stringify(shut));
+ const unity=await seen('Unity');
+ ok(unity.hit,'at '+w+', a press on Unity answers on the screen');
+ ok(/What it is\s*The field is not divided\./i.test(unity.text),
+  'at '+w+', and a Law of Moral Integrity says what it is before how it runs through you');
+ await page.evaluate(()=>rdClose());}
+await page.setViewportSize({width:1600,height:1000});
+{const o=await page.evaluate(()=>{
+  loadP(PERSON('Ana')); KB_Q=''; KB_SEC='all'; KB_SEAT='Crown'; setTab(TAB.KNOW); kbRender();
+  const body=document.getElementById('knowbody');
+  const panels=[...body.querySelectorAll('[data-kbpn]')].map(e=>e.getAttribute('data-kbpn'));
+  const secs=[...body.querySelectorAll('.kb-sec')].map(e=>e.textContent.trim());
+  const hdr=(body.querySelector('.kb-hdr')||{}).textContent||'', ph=(document.getElementById('kbq')||{}).placeholder||'';
+  /* the formula's door is the core drill, and the responsibility law, the one
+     with no text on file, says so rather than printing a chapter number */
+  const cq=[...body.querySelectorAll('.kbs-cq .kb-row')][0]; if(cq)cq.click();
+  const core=document.getElementById('rdrill').textContent;
+  rdClose(); KB_SEC='harm'; kbRender();
+  const e43=kbRows('harm').filter(x=>x.o.c==='E43')[0]; kbOpen(e43);
+  const resp=document.getElementById('rdrill').textContent; rdClose();
+  KB_SEC='all'; kbRender();
+  /* a Body page press on a mask still answers in the rail, never in the layer */
+  setTab(TAB.MASKS); render(); kbOpen({k:'mask',o:MASKS[0]});
+  const inRail=!!document.getElementById('rdrill').closest('.lsec'); rdClose();
+  /* and the page is left as the knowledge block above left it */
+  loadP(PERSON('James')); setTab(TAB.KNOW); render();
+  return {panels,secs,hdr,ph,core,resp,inRail};});
+ ok(o.panels[0]==='cq'&&o.panels.indexOf('Crown')>0,'the coherence formula comes before the seat page that lists the universal laws, '+o.panels.join(','));
+ ok(!/codex/i.test(o.hdr+o.ph)&&!/Crown down to root/.test(o.hdr),'the codex label, its search wording and the seat order line are gone, header "'+o.hdr+'", search "'+o.ph+'"');
+ ok(/The 21 laws, each read from nothing to ten, added together/.test(o.core),'the formula opens the core drill, which states the ruled formula');
+ ok(/No meaning on file yet\./.test(o.resp)&&!/Chapter 19/.test(o.resp),'a universal law with no text on file says so and never answers with a chapter number');
+ ok(o.inRail,'a mask opened from the Body page still answers in the rail');}
 
 const rec=await page.evaluate(()=>{
  const p=CURP; p.history=[];

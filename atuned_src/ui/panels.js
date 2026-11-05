@@ -201,6 +201,9 @@ function setTab(i){
   if(typeof sumDayClear==='function')sumDayClear();}
  if(S.tab===TAB.ANALYTICS&&i!==TAB.ANALYTICS){
   var ab=$('ana'); if(ab)ab.innerHTML='';}
+ /* and Knowledge hands the drill panel back to the rail, which it lends to
+    its answer layer while an answer is open (ui/knowledge.js, kbAnsTake) */
+ if(S.tab===TAB.KNOW&&i!==TAB.KNOW&&typeof kbAnsHome==='function')kbAnsHome();
  /* ACCOUNTABILITY HAS NO HOST TO EMPTY, round QF. It printed a record into
     #acct while it had a page, and it is the right rail's contents now, which
     ritRender empties itself the moment Flow is not the tab: the same rule, one

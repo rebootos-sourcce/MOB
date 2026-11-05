@@ -385,7 +385,7 @@ function kbMatch(row,q){
 const KB_KIND={node:'Fetter',fetter:'Child emotion',sab:'Saboteur',
  law:'Law of Moral Integrity',dom:'Domain',arch:'Archetype',gate:'Law of Action',
  harm:'Universal law',gloss:'Term',seat:'Seat',mask:'Mask',card:'Card',
- axcard:'Card',band:'Band',kind:'Pattern',pole:'Pole'};
+ axcard:'Card',band:'Band',kind:'Pattern',pole:'Pole',cq:'Formula'};
 
 /* in order is the default, because he ruled that the universal laws go in
    order and a deck that reorders itself per person has no stable answer to
@@ -445,6 +445,29 @@ function kbSeatLine(b){
 function kbDeckOf(x){
  return ({node:'addr',fetter:'fetter',sab:'sab',law:'law',mask:'mask',dom:'dom',arch:'arch',
   gate:'gate',seat:'seat',card:'card',axcard:'card',band:'card',kind:'card',pole:'card',harm:'harm'})[x.k]||x.k;}
+/* THE COHERENCE FORMULA COMES BEFORE THE LAWS. His words, 18 October: "the
+   coherence formula should be before the universal laws." It was nowhere on
+   this page. The two universal laws named Coherence sit at the end of the
+   seventy six, and both describe the formula retired on 25 September
+   (BIBLE.md 2, intention times integrity over resistance), so neither could
+   stand in for it.
+
+   The formula stated here is the ruled one and it is read off the engine,
+   never typed: SI's own length, each law nought to ten, added up, out of ten
+   for each, which is cqSum in engine/compute.js. Pressed, it opens the core
+   drill, the one the Field's CQ key opens, so there is one card and one
+   wording for what CQ is. It belongs to no one seat, since the laws it adds
+   are seated across all seven, so it is one row above the seat's panel and
+   never a deck: a chip counting it would be a figure nobody asked for. Its
+   figure waits until a law is answered, because before that it is a zero
+   and not a reading. */
+function kbFormulaRow(){
+ var r=compute(), n=SI.length;
+ var row=kbRow('cq','The coherence formula',
+  n+' laws, each 0 to 10, added up, out of '+(n*10),'Crown',
+  (!kbUnread()&&r.answered)?pct('cq',r.CQ):null,'M18 5H6l6 7-6 7h12',{},'var(--accent)');
+ row.seats=[];
+ return row;}
 /* a seat's page lists the seat itself first, then the decks in KB_SECS order */
 function kbDeckOrder(){
  return [['seat','The stack']].concat(KB_SECS.filter(function(d){return d[0]!=='seat';}));}
@@ -475,6 +498,12 @@ function kbRender(){
   per[s[0]]=n; total+=n;});
  /* and the glossary, which is not a deck and answers above the rows */
  var gl=q?rowsOf('gloss').filter(function(x){return kbMatch(x,q);}):[];
+ /* the formula leads wherever laws are listed: every seat's page carries some,
+    the two law decks are nothing else, and a search shows it, and counts it,
+    when it matches */
+ var cqRow=kbFormulaRow();
+ var showCq=q?kbMatch(cqRow,q):(bySeat||deck==='harm'||deck==='law');
+ if(q&&showCq)total++;
  var share={};
  rowsOf('seat').forEach(function(x){share[x.t]=x.p||0;});
 
@@ -482,15 +511,21 @@ function kbRender(){
     line for it, or a deck's name and what its percent is of, or a search. */
 /* on a seat's page the panel under the map already names the seat and its
     line, so the header names the page and not the seat a second time */
+ /* THREE CUTS, 5 November, his red ink on the live page: the eyebrow "The
+    codex" over the title, the seat page's line "Crown down to root, the order
+    the Intake page reads in", and "codex" in the search field. The eyebrow
+    named the page a second time over a title that already names it, and the
+    line described the tiles' order to a person looking at the tiles. A deck's
+    own line stays: it says what that deck's percent is a percent of, which
+    nothing else on the screen says. */
  var title=q?'Search':deck?kbSecName(deck):'The seven seats';
- var scale=q?'':deck?((KB_OF[deck]&&!kbUnread())?'The percent is '+KB_OF[deck]+'.':'')
-  :'Crown down to root, the order the Intake page reads in.';
+ var scale=(!q&&deck&&KB_OF[deck]&&!kbUnread())?'The percent is '+KB_OF[deck]+'.':'';
  var h='<div class="kb-top kbs">'
-  +'<div class="kb-hdr"><div class="pm-eye">The codex</div>'
+  +'<div class="kb-hdr">'
   +'<h2 class="kb-h">'+esc(title)+'</h2>'
   +(scale?'<span class="kb-scale">'+esc(scale)+'</span>':'')+'</div>'
   +'<div class="kb-bar">'
-  +'<input type="search" id="kbq" class="kb-q" placeholder="Search the codex" '
+  +'<input type="search" id="kbq" class="kb-q" placeholder="Search" '
   +'value="'+esc(KB_Q)+'" aria-label="Search the knowledge base">'
   +(q?'<span class="kb-found">'+total+' match'+(total===1?'':'es')+'</span>':'')
   +'<span class="kb-sw" role="group" aria-label="Order">'
@@ -556,6 +591,12 @@ function kbRender(){
    +'<span class="iqa-shl">held by no one seat</span></div>'+inner+'</section>';}
 
  h+='<div class="kbs-body">';
+ if(showCq){
+  var ci=shown.length; shown.push(cqRow);
+  h+='<section class="iqa-pn kbs-pn kbs-any kbs-cq" data-kbpn="cq">'
+   +'<div class="iqa-ph"><span class="iqa-shn">Coherence</span>'
+   +'<span class="iqa-shl">what the laws add up to</span></div>'
+   +'<div class="kb-rg">'+kbRowHtml(cqRow,ci,q?KB_KIND.cq+' · '+cqRow.s:cqRow.s)+'</div></section>';}
  if(bySeat){
   /* ONE SEAT OPEN, everything filed under it, deck by deck. */
   var mine=pool.filter(function(x){return x.seats.indexOf(KB_SEAT)>=0;});
@@ -568,7 +609,7 @@ function kbRender(){
  }else{
   /* A KIND OR A SEARCH, laid out the same way: seat by seat, crown to root,
      and what belongs to no seat last. A mask worn over two seats is in both. */
-  if(!pool.length)h+='<div class="rnone">Nothing here matches. The count beside each kind says where it is.</div>';
+  if(!pool.length&&!showCq)h+='<div class="rnone">Nothing here matches. The count beside each kind says where it is.</div>';
   SEATS.forEach(function(b){
    var rs=pool.filter(function(x){return x.seats.indexOf(b)>=0;});
    if(!rs.length)return;
@@ -623,6 +664,8 @@ function kbsCss(){
   '.kbs-pn .kb-sec{color:color-mix(in srgb,var(--c) 58%,var(--dim))}',
   '.kbs-pn .iqa-ph+.kb-sec{padding-top:4px}',
   '.kbs-any{--c:var(--accent)}',
+  /* the formula is one row, so it takes the line and not a third of it */
+  '.kbs-body .kbs-cq .kb-rg{grid-template-columns:minmax(0,1fr)}',
   '.kbs-fold{border:1px solid var(--edge);border-radius:var(--r);background:var(--panel-2)}',
   '.kbs-fold>summary{display:flex;align-items:center;gap:10px;min-height:var(--tap);padding:10px 16px;cursor:pointer;',
   ' list-style:none;font-size:15px;font-weight:500;color:var(--ink)}',
@@ -653,7 +696,7 @@ function kbsCss(){
    rule this repository already carries for anything needing a tab's entry. */
 function kbSecName(k){
  for(var i=0;i<KB_SECS.length;i++)if(KB_SECS[i][0]===k)return KB_SECS[i][1];
- return 'The codex';}
+ return 'Knowledge';}
 /* ============================================================
    THE POLE ROW. Two rounds of his words, and the second sharpens
    the first.
@@ -852,9 +895,102 @@ function poleDrillHead(n){
  return '<div class="kbp-dr" style="--c:'+col+';--oc:'+oc+'">'
   +poleDualBar(n.k, c.opp, kbPct(n.held), kbPct(n.rep), col, oc, c.ic, true)
   +'</div>';}
+/* ============================================================
+   THE ANSWER OPENS WHERE THE PERSON IS LOOKING. 5 November, his words: "I
+   can't click on anything and have it open up and show me what these things
+   mean", and on 18 October, "nothing has knowledge... somewhere in the
+   process, we lost our text."
+
+   The text was never lost. Every row on this page opens a drill, a drill is
+   written into #rdrill, and #rdrill lives in the right column, which round
+   RB ruled shut on this page (railKey, rcolk, in ui/ui.js) so that all the
+   content is in the centre. So the answer was written, whole, into a column
+   nobody could see. Measured on main at 15f6952b with Ana loaded, a real
+   click on All Is One, on Unity and on Crown: the book's text was in the
+   panel every time and the panel measured 0 by 0 at 1600 and at 390. The
+   functional gate counted the panel's text and not whether it was on the
+   screen, so it read green the whole time. The same cause was found on 19
+   October (Reboot-OS 5256cce7) and that fix was never merged here.
+
+   So a press on this page lifts the panel itself into a layer of its own
+   over the centre at 1600, and up from the bottom at 390. The column's own
+   shut state is not touched: it is his ruling. It is the same node, so every
+   drill that wires itself after writing still finds its controls, and the
+   delegated handlers are bound on the document, so an address row inside a
+   saboteur's answer still opens that address, in the answer. Closing, any of
+   the ways a drill closes, hands the node back to where it came from.
+
+   Not the shared #sheet the 19 October fix borrowed: account, the ritual,
+   sound and the value check all write that sheet's markup whole, and lending
+   it out meant teaching sheetOpen and sheetShut about this page.
+
+   ONLY ON THIS PAGE. mapshelf.js opens a mask through kbOpen from the Body
+   page, where the answer belongs in the rail as it always has, so the layer
+   is taken only while Knowledge is the tab. And it is handed back on the way
+   off the tab (setTab, ui/panels.js), and by rdOpen if anything ever opens a
+   drill elsewhere while the node is still lent out.
+   ============================================================ */
+var KB_HOME=null, KB_FROM=null;
+function kbAnsOn(){return !!KB_HOME;}
+function kbAnsLayer(){
+ var l=document.getElementById('kbans'); if(l)return l;
+ l=document.createElement('div'); l.id='kbans'; l.className='kbans'; l.hidden=true;
+ l.setAttribute('role','dialog'); l.setAttribute('aria-modal','true');
+ l.setAttribute('aria-label','What this means');
+ l.innerHTML='<div class="kbans-card" id="kbans-card"></div>';
+ /* the ground around the answer closes it, as every sheet here does */
+ l.addEventListener('click',function(e){if(e.target===l)rdClose();});
+ document.body.appendChild(l);
+ return l;}
+function kbAnsTake(){
+ if(typeof TAB==='undefined'||S.tab!==TAB.KNOW)return false;
+ var d=document.getElementById('rdrill'); if(!d)return false;
+ var l=kbAnsLayer(), c=document.getElementById('kbans-card');
+ kbAnsCss();
+ if(!KB_HOME){KB_HOME={p:d.parentNode,n:d.nextSibling}; c.appendChild(d);}
+ l.hidden=false;
+ return true;}
+function kbAnsHome(){
+ if(!KB_HOME)return;
+ var h=KB_HOME, d=document.getElementById('rdrill'), l=document.getElementById('kbans');
+ KB_HOME=null;
+ if(d&&h.p)h.p.insertBefore(d,(h.n&&h.n.parentNode===h.p)?h.n:null);
+ if(l)l.hidden=true;
+ /* the press that opened it gets the focus back, so a keyboard is where it was */
+ var f=KB_FROM; KB_FROM=null;
+ if(f&&f.isConnected&&f.focus){try{f.focus({preventScroll:true});}catch(e){f.focus();}}}
+function kbAnsCss(){
+ if(document.getElementById('kbans-css'))return;
+ var st=document.createElement('style'); st.id='kbans-css';
+ st.textContent=[
+  /* the same ground the product's sheet lays over a page, .sheet in head.html */
+  '.kbans{position:fixed;inset:0;z-index:70;background:rgba(6,8,11,.62);',
+  ' display:flex;align-items:center;justify-content:center;padding:24px}',
+  '.kbans[hidden]{display:none}',
+  'body:not(.tab-know) .kbans{display:none}',
+  '.kbans-card{width:min(680px,100%);max-height:100%;overflow-y:auto;border-radius:var(--r);',
+  ' box-shadow:0 18px 60px rgba(0,0,0,.5)}',
+  /* the drill's own card is the box, so it is not boxed twice */
+  '.kbans .rd-card{background:var(--panel);margin:0}',
+  '@media (max-width:720px){.kbans{align-items:flex-end;padding:0}',
+  ' .kbans-card{width:100%;max-height:86vh;border-radius:var(--r) var(--r) 0 0}',
+  ' .kbans .rd-card{border-radius:var(--r) var(--r) 0 0}}'
+ ].join('\n');
+ document.head.appendChild(st);}
+
 /* one row, one door. every kind routes to the drill that already exists for it. */
 function kbOpen(x){
  if(!x)return;
+ var took=kbAnsTake();
+ if(took&&!KB_FROM){var a=document.activeElement; KB_FROM=(a&&a!==document.body)?a:null;}
+ kbOpenIn(x);
+ var d=document.getElementById('rdrill');
+ if(!took)return;
+ /* a row that opened nothing leaves no empty layer over the page */
+ if(!d||!d.innerHTML||d.style.display==='none'){kbAnsHome(); return;}
+ var b=document.getElementById('rdback'); if(b){try{b.focus({preventScroll:true});}catch(e){b.focus();}}
+ var c=document.getElementById('kbans-card'); if(c)c.scrollTop=0;}
+function kbOpenIn(x){
  S.pin=null; ANA_PICK=null;
  if(x.k==='node'){runNodeDrill(x.o); render(); return;}
  if(x.k==='law'){runLawDrill(x.o); render(); return;}
@@ -866,9 +1002,20 @@ function kbOpen(x){
   runSabDrill(x.o); return;}
  /* the real definition, pulled from the book's own Harmonic Table entry for
     this law. Where that extraction found no safe match (E43, Responsibility,
-    folded into Ownership/E40 in the current build) this falls back to the
-    chapter pointer exactly as before. */
- if(x.k==='harm'){runKbDrill('Harmonic element '+x.o.c, x.o.t, HARM_AX[x.o.a]||x.o.a, x.o.d||x.o.ch); return;}
+    folded into Ownership/E40 in the current build) it fell back to the
+    chapter pointer, and the drill printed "Chapter 19" under "What it is",
+    which answers the question with a page number. A law with no text on
+    file says so now, the house wording for a missing record.
+
+    A universal law on the spirit axis is one of the 21 Laws of Moral
+    Integrity by name, so it opens that law's card, which carries the same
+    text and the person's own reading: one law, one card, whichever deck the
+    press came from. */
+ if(x.k==='harm'){
+  var sl=(x.o.a==='spirit')?kbFind(SI,x.o.t):null;
+  if(sl){runLawDrill(sl); render(); return;}
+  runKbDrill('Harmonic element '+x.o.c, x.o.t, HARM_AX[x.o.a]||x.o.a, x.o.d||KB_NOTE); return;}
+ if(x.k==='cq'){runCoreDrill(); return;}
  if(x.k==='gloss'){runKbDrill('Glossary', x.o.t, '', x.o.d); return;}
  if(x.k==='dom'){runDomDrill(x.o); return;}
  /* the archetype and the mask drills live in drills.js now, because the
