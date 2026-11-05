@@ -19,11 +19,11 @@ It exits non zero on a finding at a severity that stops a build. Every
 other mode of that gate enforces the same rules, so there is one set of
 rules and one place they live.
 
-    commit 8245e7f, tree dirty   database md5 2be8e35238f8
-    30 objections logged, 25 of them with a quotation on record
-    25 rules, 11 with patterns in the database, 14 held by a gate elsewhere
+    commit 590b13e8, tree dirty   database md5 af4a330331a1
+    31 objections logged, 26 of them with a quotation on record
+    26 rules, 12 with patterns in the database, 14 held by a gate elsewhere
     13 more objections are guidance, because no check can express them
-    23 findings on this run, 0 at a severity that stops a build
+    17 findings on this run, 0 at a severity that stops a build
 
 ---
 
@@ -336,6 +336,17 @@ A refinement of CO-29 and not a second rule beside it: V21 had one reader and th
 
 The rules existed and the product broke them, because the gate read the source and he reads the screen. The strings that broke them are built at run time or held in tables and shown by a stylesheet, so a literal sweep reported zero while the Field rail printed "Heaviest Root 0.0". The answer is a second gate that reads the rendered page: tools/copy-walk.js and tools/copy-verify.py, with the counts in COPY-VERIFY.md. The Field rail block is not printed while the profile is unread, because the four doors above it already say nothing has been read.
 
+### CO-32. A field's sample text written as a whole invented answer: after I put the kettle on, the chair by the window, and on the Avatar page a made up person's day in each story box. A sample answer is a second voice on the screen, and it reads as an instruction to be that person.
+
+> All that like third tier text you keep putting in, like after I put the kettle on, is fucking stupid, and I don't know why I keep doing that. I wish it would stop. That's about the 100th time I may have asked you to do that, and you're still doing it. So figure out why you keep doing that in your code and stop it.
+
+    where    round SV19, the Ritual page, red ink on the live page
+    when     5 November, in his words
+    quoted   verbatim
+    rules    invented-example-copy
+
+Why it kept coming back, found by Emmy and checked against the tree. The two strings were never cut because no gate ever read them. The house harvest drops any literal carrying = or a quote, which is every attribute; objection_hits strips tags before it matches, which deletes a placeholder written inside a whole input tag; and CO-27, section-explains-itself, is the shape of a paragraph under a heading, which a placeholder is not. Each round cut the visible text he struck and left the attribute, because the attribute is not text on a screenshot until the field is empty. The phrase came from the Gollwitzer and Sheeran citation quoted in DESIGN-firstrun.md and RETENTION-90DAY.md, where it is design rationale, and was copied into shipped copy. TASKS.md near round FO had noted it only as a grammar bug, When after I put the kettle on.
+
 ---
 
 ## The rules, and where each one is enforced
@@ -349,6 +360,7 @@ The rules existed and the product broke them, because the gate read the source a
     serial-to-a-person    label         stop      objections                  CO-15
     two-months-free       offer         stop      objections                  CO-25
     section-explains-itself definition    stop      objections                  CO-27, CO-28, CO-16
+    invented-example-copy value         stop      objections                  CO-32
     figure-label          label         stop      check.py:figure label       CO-08
     naked-number          number        stop      check.py:naked number       CO-06, CO-07
     em-dash               punctuation   stop      check.py:emdash             CO-19
@@ -443,6 +455,16 @@ A paragraph under a heading whose only job is to explain what the section is, ho
 
 The patterns are the shapes the class actually shipped in, read off the corpses rather than imagined. How to use a control is only caught with an object in front of the verb, press a region to open, press one to trace, because a tooltip's own action line, Click to set as primary, is on demand and is the overlay he asked for; the first cut without the object fired on every canvas tooltip. Checked before it was trusted: nothing found on the product after the HS sweep; run over the tree before it, the archetype line, the Energetics subtitle and the release line he quoted all fire, and so does the BA9 caption struck on 25 September; none of the kept lines above fires. Some lines the sweep cut by reading pass these patterns, the birth moment paragraph he also quoted, the deck's description and the Settings footers among them. A paragraph that explains its section in words no pattern foresaw passes this gate, which is why the guidance entry for a legend stays in the list at the foot of this file.
 
+### invented-example-copy
+
+A placeholder, a default value or a sample answer in a field is never a whole invented sentence about a person, a scene or an action. A field names the shape of the answer, in words that talk to the person, or it stays empty. The label beside the field already says what goes in it.
+
+    fails   When [after I put the kettle on]  Where [the chair by the window]
+    fixed   When [ ]  Where [ ]
+    found   0
+
+READ BY ITS OWN READER, scan_examples in check.py, and not by a pattern in this list, because the strings it is for are attributes and tables the literal sweep cannot see. It reads every placeholder and value attribute raw, in the renderers and the static pages, and follows a placeholder built from a table, placeholder=esc(ask.notbe), to every notbe in the same file. A placeholder built from a function parameter cannot be followed and is printed as review with what to read, never passed as clean. The shape of an invented answer is read off the corpses: the first person (I, my, me, we), a scene with two definite nouns tied by a place word (the chair by the window), and the Avatar page's own opening, Someone who. A line that says you or your is caught only on the first person. Checked before it was trusted: a planted after I finish my coffee fails as a literal and as a table value, and every shape hint the product ships passes.
+
 ### plain-field-label
 
 A field is named for what goes in it and a button for what it does. A label written in the story bible's voice makes a person work out which box to type in.
@@ -467,52 +489,40 @@ A weight printed on its own says nothing to either reader. The layman needs a no
 
     fails   That reaches the body at the anterior heart, on the fear axis, at a weight of 7.4.
     fixed   That reaches the body at the anterior heart, on the fear axis, heavily impaired at a weight of 7.4.
-    found   23
-    atuned_src/ui/analytics.js:148
-        carrying, at a shadow weight of <b>
-    atuned_src/ui/analytics.js:379
-        weight
-    atuned_src/ui/component.js:790
+    found   17
+    atuned_src/ui/component.js:1177
         , weight
-    atuned_src/ui/cone.js:2922
+    atuned_src/ui/cone.js:3001
         , at a weight of
-    atuned_src/ui/drills.js:297
+    atuned_src/ui/drills.js:393
         Charge held here <b>
-    atuned_src/ui/drills.js:500
+    atuned_src/ui/drills.js:692
         </b>, shadow weight <b>
-    atuned_src/ui/fieldbar.js:177
-        Ring and number: segment depth, SQ, at a weight of
-    atuned_src/ui/fieldbar.js:180
-        , at a weight of
-    atuned_src/ui/imprints.js:77
+    atuned_src/ui/imprints.js:92
         Charge left
-    atuned_src/ui/imprints.js:260
+    atuned_src/ui/imprints.js:277
         weight
-    atuned_src/ui/knowledge.js:539
-        , weight
-    atuned_src/ui/knowledge.js:540
-        , weight
     atuned_src/ui/map.js:942
         addresses, weight
     atuned_src/ui/map.js:2157
         at a weight of
-    atuned_src/ui/map.js:2732
+    atuned_src/ui/map.js:2759
         , at a weight of
-    atuned_src/ui/map.js:3346
+    atuned_src/ui/map.js:3375
         , at a weight of
-    atuned_src/ui/rings.js:1092
+    atuned_src/ui/rings.js:1107
         Heaviest pattern. Weight
-    atuned_src/ui/summary.js:271
-        axis, at a weight of
-    atuned_src/ui/summary.js:1057
-        </b>, at a weight of <b>
-    atuned_src/ui/ui.js:53
+    atuned_src/ui/summary.js:276
+        , at a weight of
+    atuned_src/ui/ui.js:61
         <hr>charge held <b>
-    atuned_src/ui/ui.js:79
+    atuned_src/ui/ui.js:90
         <br>weight <b>
-    atuned_src/ui/ui.js:91
+    atuned_src/ui/ui.js:102
         weight <b>
-    atuned_src/ui/ui.js:1484
+    atuned_src/ui/ui.js:1730
+        weight
+    atuned_src/ui/ui.js:1793
         , weight
 
 FLAGGED AND NEVER FAILED, for three reasons, each said rather than left to be found. The ladder is real now and this entry supersedes its own first cut: round KD in TASKS.md, his words, "Yeah, we use that let's call it node state instead of band ladder. Node state would be open impaired moderately impaired heavily impaired blocked." The placeholder heavily blocked, his example from round JX, is retired, and the pattern no longer accepts it or his other examples (heavy, light, flowing, clear). It clears on impaired and on blocked when blocked is not qualified, which covers four rungs. It does not clear on open, which in this product is also a verb and a plan word, "Rerunning anything already open costs nothing", so it would clear lines on a word that means something else; a weight at open prints 0.0, which the product rarely prints. First reason: the words are ruled and the lines between them are not. He named five rungs and no figures. NODESTATE_PROPOSED in engine/data/canon.js is a proposal, named as one, and no surface calls nodeStateOf until he confirms the lines. A stop here would make every writer pick a node state per surface by eye, which is one word per concept broken and the contradiction between the two readers this rule exists to prevent. Second, the sweep reads each literal apart, so a band word written after the value in the next literal is not seen and that line is a false flag a person clears. Third, the picture half is not text, and whether the icon sits beside the figure is read off the screen. The first pattern is the template shape: a literal ending on weight, weight of, charge held or charge left, with trailing space or an open tag, which is where a run time figure lands. The second is the rendered shape, weight 6.3. Checked before it was trusted against the known good cases it must not fire on: KB_OF in ui/knowledge.js, of the mask at full weight, where the figure comes before; the By weight sort control; the Shadow weight label; the What it weighed eyebrow; No mask carries weight yet; and a band word earlier in the same literal. And against the known bad ones it must: summary.js at a weight of, rings.js Heaviest pattern. Weight, and the rendered Held at the heart, at a weight of 7.4. Heaviest is a rank and not a band, so it does not clear a line. It reaches weight and charge, the two he named. A percent match, a pain figure or Waiting to land are outside it. Read the count off the run.
@@ -621,7 +631,7 @@ The balance pill, and the last piece of the string the objection names. The stru
 
 If an empty label draws an empty box, drop the key rather than passing a space.
 
-### atuned_src/ui/ui.js:983
+### atuned_src/ui/ui.js, not found
 
     bucket  refusal
     rule    empty-state, from CO-09
@@ -630,7 +640,7 @@ If an empty label draws an empty box, drop the key rather than passing a space.
 
 The same claim in the tooltip, and the sentence directly after it already says what is true. Neither side reaches 1 is checkable on any profile. Not read yet is not.
 
-### atuned_src/ui/drills.js:601
+### atuned_src/ui/drills.js:805
 
     bucket  value
     rule    empty-state, from CO-09
