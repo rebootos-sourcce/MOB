@@ -180,20 +180,31 @@ function runDrill(o){
   +(o.kind==='sab'&&o.unnamed?'<div class="ad-sub">Inferred. The library has no name for this cluster, so it is named for its seat and its child emotion.</div>'
    :(o.kind==='sab'&&SAB_PI.indexOf(o.nm)>=0?'<div class="ad-sub">One of the ten Positive Intelligence saboteurs, after Shirzad Chamine'
      +(SAB_PI_AS[o.nm]?', who calls it the '+esc(SAB_PI_AS[o.nm]):'')+'.</div>':''))
-  +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
-  +(o.over
-   ? 'Jouissance. The coherent opposite installed past the point where it serves. The address '
-     +'will not shut, rather than will not open.'
-   : 'Built from <b>'+lv.length+'</b> held addresses across '+bs.join(', ')+'. It fires when '
-     +'those carry at once, and the output bends on the way out.')
-  /* SUBJECT FIRST, ONE SENTENCE, NO GLOSS. This was two sentences, the first
-     defining the thing by what it is not and the second deferring its subject
-     by two words and then explaining itself with a which. Same length, one
-     gloss gone, and it starts on the noun. */
-  +(o.kind==='sup'?' A super-complex costs more than it looks like it should, '
-   +'because you cannot see it as separate from you.':'')
-  +(o.score?' Matched at <b>'+o.score+'%</b>'
-    +(o.exact?', every charge inside its range.':'.'):'')+'</p>'
+  /* HOW IT RUNS THROUGH YOU, FROM THE RECORD. 4 November, his live reaction
+     to this drill: "Where it says built from 5 held addresses. That's a big
+     no. We don't do that." It read "Built from N held addresses across
+     Heart, Sacral... It fires when those carry at once, and the output bends
+     on the way out", which is the engine describing its own arithmetic to the
+     person, and the overshot form opened on Jouissance, the word round 81
+     retired everywhere else. Now the paragraph is the family's own record
+     (patFam, ui/component.js): a complex and a hyper complex say their
+     family's line, a super complex the line of each hyper complex it joins,
+     with the house sentence on what a super complex costs. A saboteur says
+     nothing here, because its own card, kbSabBlock below, opens on what
+     happens, from SABCARD; an overshot one has no card and says its
+     family's line instead. The match score went with the address count:
+     both are how the engine found the pattern, not what the pattern does. */
+  +(function(){
+   var cap=function(t){return t.charAt(0).toUpperCase()+t.slice(1);};
+   var say='';
+   if(o.kind==='sup')say=(o.parts||[]).map(function(x){var f=patFam(x);
+     return f?esc(x.nm)+': '+esc(f.d)+'.':'';}).filter(Boolean).join(' ')
+    /* SUBJECT FIRST, ONE SENTENCE, NO GLOSS, as it was written for this
+       drill: same length as the two it replaced, and it starts on the noun. */
+    +' A super-complex costs more than it looks like it should, because you cannot see it as separate from you.';
+   else if(o.kind!=='sab'||o.over){var f=patFam(o);
+    if(f)say=o.kind==='hy'?esc(cap(f.d))+'.':'Part of the '+esc(f.nm)+' family: '+esc(f.d)+'.';}
+   return say?'<div class="pm-eye">How it runs through you</div><p class="ad-p">'+say.trim()+'</p>':'';})()
   +'<div class="pm-eye">The opposite</div><p class="ad-p">'
   +(opps.length
    ? 'It runs on '+fets.join(', ')+'. The coherent opposite is <b>'+opps.join(', ')+'</b>. '
@@ -224,18 +235,43 @@ function runDrill(o){
    var uncov=bs.filter(function(b){return covered.indexOf(b)<0;})
     .map(function(b){return b==='3rd Eye'?'3rd eye':b.toLowerCase();});
    return h2+'<p class="ad-p">It runs at the '+esc(chAnd(uncov))+', where no mask is worn yet.</p>';})()
+  /* MADE OF IS THE RUNG BELOW, NOT THE ADDRESSES UNDER EVERYTHING. 4
+     November, his reaction: "the parent to children are not" right. A super
+     complex listed every address under its whole tree, so the drill skipped
+     the three layers the Insight cascade now shows between them. A
+     saboteur's children are its addresses and it lists them as before; every
+     higher rung lists its own parts, each a door into its own drill through
+     the stack's delegated handler (data-sk, ui/ui.js), so the drill walks
+     down the same tree the cascade does. */
   +'<div class="pm-eye">Made of</div><div class="ad-rows">'
-  +lv.slice(0,8).map(addrRow).join('')
-  +(lv.length>8?'<div class="pm-more">and '+(lv.length-8)+' more</div>':'')+'</div>'
-  /* WHAT THIS RUNG ITSELF FEEDS, never shown here before. "Made of" above is
-     the downward direction (leaves(o), every reading already had); nothing
-     said what a saboteur, complex or hyper-complex feeds UP into, or blended
-     the two directions into one read. traceSummary(g,node), PR #158, built
-     and tested, reads exactly that off the same graph loopRead already
-     builds. ui/tracesummaryui.js, tsBlockHtml. */
-  +(typeof tsBlockHtml==='function'
-   ?tsBlockHtml({sab:'saboteur',cx:'complex',hy:'hyper_complex',sup:'super_complex'}[o.kind],o.nm)
-   :'');
+  +(o.kind==='sab'
+   ?lv.slice(0,8).map(addrRow).join('')
+    +(lv.length>8?'<div class="pm-more">and '+(lv.length-8)+' more</div>':'')
+   :(function(){var rs=computeSeen();
+    var below={sup:'hys',hy:'cxs',cx:'sabs'}[o.kind];
+    return (o.parts||[]).map(function(x){
+     var si=(rs[below]||[]).map(function(y){return y.kind+':'+y.nm;}).indexOf(x.kind+':'+x.nm);
+     /* a rung the plan cannot see is printed but is not a door */
+     return si<0?'<div class="stk-r static"><span class="stk-l">'+crPat(x,'xs')+'<span class="stk-nm">'+esc(x.nm)+'</span></span></div>'
+      :'<button type="button" class="stk-r" data-sk="'+x.kind+'" data-si="'+si+'">'
+      +'<span class="stk-l">'+crPat(x,'xs')+'<span class="stk-nm">'+esc(x.nm+(x.over?', overshot':''))+'</span></span></button>';}).join('');})())
+  +'</div>';
+  /* WHAT THIS RUNG FEEDS, AND THE BLEND, CAME OFF THIS DRILL, 4 November.
+     Pull request 180 appended tsBlockHtml here: a Feeds up list and the
+     narrated paragraph from traceSummary. His live reaction to that screen
+     the same day: the selection "should be using the records", and "built
+     from 5 held addresses. That's a big no. We don't do that." The paragraph
+     read, on Gordon's first complex, "carries nothing further on file beyond
+     its own name and weight (a complex has no card of its own; by THE CHAIN
+     it is its own two saboteurs compounded...)" and closed on "This
+     paragraph narrates what the graph and the library already hold", in an
+     edged block he called "an old legacy design" on the Flow cards. And
+     Feeds up said a second time what the Insight box above it already says,
+     "It runs inside Predatory". So the drill ends on Made of. traceSummary
+     is not dropped: insightSay in ui/ui.js reads the stack it resolves and
+     quotes the records it finds, which is the job he gave the summary box.
+     tsBlockHtml itself is untouched; the address drill's blend in
+     nodeDrillHtml below is a different surface and is left as it landed. */
  rdShell(h);
  /* a "Runs under" row opens that mask's own drill, the same rail press
     chDrill is already opened by, so "does this show up here" (MX) can be
