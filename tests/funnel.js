@@ -58,6 +58,15 @@
         four: a real result, never a failure. Neither frame writes to
         storage.
 
+   And the question table, served and next:
+
+    12  every item says which way Always points and what it scores, and the
+        next table, QQ_42, served from a copy, answers by its own buttons to
+        a reading whose every law is the answer given, Always a law held in
+        full, kept under its own key and carried into the record. A table
+        with an item missing its direction, naming a law the engine does not
+        carry, or scoring nothing is refused by name.
+
    NO COUNT IS TYPED INTO THIS FILE. Not the number of pages, not the number
    of questions, not the number of controls, not the number of seats. Every
    one of them is read off the run and printed. This repository has been
@@ -1305,6 +1314,105 @@ const SIZE = c => '"' + c.t + '" ' + c.w + 'x' + c.h
     }
     ok(ierrs.length === 0, '@' + w + ': ' + ierrs.length + ' error(s) on the saboteur cards: ' + ierrs.slice(0, 2).join(' | '));
     await ictx.close();
+  }
+
+  /* ---------- 12. the question table, served and next ----------
+     THE NEXT TABLE HAD NO GATE, 5 November. QQ_42 in funnel/questions.js is
+     the owner's 21 law questions, written the other way round from the
+     hundred: "how often do you admit it", so Always is a law held in full.
+     It is not served yet (questions.js says why, measured), and a table that
+     nothing opens is a table that rots, so it is opened here from a copy of
+     the funnel whose questions.js ends by serving it. Each answer is pressed
+     by the page's own buttons and its index is known, so every law value is
+     known before the page computes it, and the record handed to the app is
+     read back against the same values. Then each way a table can be wrong is
+     planted on its own copy and must be refused by name.
+     Checked against a known bad case first, and it was wrong before it was
+     trusted: with Courage flipped to the hundred's direction, the first cut
+     read 21 of 21 laws equal and passed, because it took the direction it
+     expected off the same item it was checking. It expects his draft's
+     direction now, and the same plant fails on Courage at both widths. */
+  {
+    console.log('\n--- the question table ---');
+    const served = await (await browser.newContext()).newPage();
+    await served.goto('file://' + path.join(DIR, 'quiz.html'), { waitUntil: 'load' });
+    const tb = await served.evaluate(() => ({
+      n: QQ.length, keyed: QQ.every(q => q.k === '+' || q.k === '-'),
+      scores: QQ.every(q => q.l != null || q.c != null), key: KEY,
+      next: typeof QQ_42 === 'undefined' ? null : QQ_42.map(q => ({ k: q.k, l: q.l, c: q.c })),
+      sinames: SINAMES.slice(), h1: (document.querySelector('h1') || {}).textContent || '' }));
+    ok(tb.keyed && tb.scores, 'the served table has an item with no direction or nothing to score');
+    ok(tb.h1.indexOf(String(tb.n) + ' questions') === 0,
+      'the door heading does not read the served count, ' + tb.n + ': ' + JSON.stringify(tb.h1));
+    ok(tb.next && tb.next.every(q => tb.sinames.indexOf(q.l) >= 0)
+      && tb.sinames.every(l => tb.next.some(q => q.l === l)),
+      'QQ_42 does not name every law the engine carries, by its own name: ' + JSON.stringify(tb.next && tb.next.map(q => q.l)));
+    await served.context().close();
+
+    /* every staged copy is removed at the end of the section: it carries
+       engine.js, and a gate run that leaves megabytes in /tmp on every pass
+       is how a shared box fills its disk. */
+    const staged = [];
+    const stage = (tail) => {
+      const T = fs.mkdtempSync(path.join(require('os').tmpdir(), 'funnel-table-'));
+      staged.push(T);
+      fs.mkdirSync(path.join(T, 'funnel'));
+      fs.readdirSync(DIR).filter(f => /\.(html|js|css)$/.test(f))
+        .forEach(f => fs.copyFileSync(path.join(DIR, f), path.join(T, 'funnel', f)));
+      fs.copyFileSync(path.resolve(DIR, '..', 'engine.js'), path.join(T, 'engine.js'));
+      fs.appendFileSync(path.join(T, 'funnel', 'questions.js'), '\n' + tail + '\n');
+      return 'file://' + path.join(T, 'funnel', 'quiz.html'); };
+
+    for (const [w, hgt] of WIDTHS) {
+      const ctx = await browser.newContext({ viewport: { width: w, height: hgt } });
+      const pg = await ctx.newPage();
+      const errs = []; pg.on('pageerror', e => errs.push(String(e && e.message || e)));
+      await pg.goto(stage("QQ=QQ_42; QQ_KEY='atuned.quiz.v3';"), { waitUntil: 'load' });
+      const sh = await pg.evaluate(() => ({ n: QQ.length, refused: UNKNOWN.concat(MISSING), key: KEY }));
+      ok(sh.refused.length === 0, '@' + w + ': QQ_42 served is refused: ' + sh.refused.join(', '));
+      ok(sh.key !== 'atuned.quiz.v2', '@' + w + ': QQ_42 served shares the hundred\'s key, ' + sh.key);
+      await pg.click('#go'); await pg.click('#sigskip');
+      const want = {}, scale = await pg.evaluate(() => QSCALE.length);
+      for (let i = 0; i < sh.n; i++) {
+        /* the expectation comes from his draft and never from the page: every
+           law question in it asks how often you do the law, so Always is the
+           law held in full and Never is nought. The first cut read k off the
+           page to decide which way to expect, so it checked the page against
+           itself and passed a flipped item, which is the known bad case
+           below. */
+        const l = await pg.evaluate(() => QQ[ORDER[AT]].l);
+        const pick = (i * 3) % scale;
+        want[l] = pick * 10 / (scale - 1);
+        await pg.locator('.opt').nth(pick).click(); }
+      const got = await pg.evaluate(() => ({ state: STATE, laws: scored().p.laws,
+        rec: JSON.parse(recordJSON()).laws, kept: Object.keys(localStorage) }));
+      const wrong = Object.keys(want).filter(l => got.laws[l] !== want[l] || got.rec[l] !== want[l]);
+      ok(got.state === 'read', '@' + w + ': QQ_42 answered in full lands on ' + got.state + ', not the reading');
+      ok(wrong.length === 0, '@' + w + ': a law is not the answer given, page and record: '
+        + wrong.map(l => l + ' wanted ' + want[l] + ' page ' + got.laws[l] + ' record ' + got.rec[l]).join('; '));
+      ok(got.kept.some(k => k.indexOf(sh.key) === 0) && !got.kept.some(k => k.indexOf('atuned.quiz.v2') === 0),
+        '@' + w + ': QQ_42 answers kept under ' + JSON.stringify(got.kept) + ', not its own key ' + sh.key);
+      ok(errs.length === 0, '@' + w + ': ' + errs.length + ' error(s) serving QQ_42: ' + errs.slice(0, 2).join(' | '));
+      console.log('  QQ_42 @' + w + ': ' + sh.n + ' answered by its buttons, ' + (Object.keys(want).length - wrong.length)
+        + ' laws equal to the answer on the page and in the record, kept under ' + sh.key);
+      await ctx.close();
+    }
+
+    /* each planted on its own copy, and each must be named on the refusal */
+    for (const [tail, named] of [
+      ["QQ_42[3].k=undefined; QQ=QQ_42; QQ_KEY='atuned.quiz.v3';", 'which way question 4 points'],
+      ["QQ_42[5].l='Honesty'; QQ=QQ_42; QQ_KEY='atuned.quiz.v3';", 'Honesty'],
+      ["delete QQ_42[0].l; QQ=QQ_42; QQ_KEY='atuned.quiz.v3';", 'what question 1 scores'],
+      ["QQ_HUNDRED[9].k='?';", 'which way question 10 points']]) {
+      const ctx = await browser.newContext(); const pg = await ctx.newPage();
+      await pg.goto(stage(tail), { waitUntil: 'load' });
+      const t = await pg.evaluate(() => document.getElementById('app').innerText);
+      ok(/did not load completely/.test(t) && t.indexOf(named) >= 0 && await pg.locator('#go').count() === 0,
+        'a table planted with ' + JSON.stringify(tail) + ' is not refused naming "' + named + '": ' + JSON.stringify(t.slice(0, 160)));
+      await ctx.close();
+    }
+    console.log('  four planted tables, each refused by name');
+    staged.forEach(T => fs.rmSync(T, { recursive: true, force: true }));
   }
 
   /* ---------- the sendable build, if it has been made ---------- */

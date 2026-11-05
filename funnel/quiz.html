@@ -1,7 +1,7 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Atuned test</title>
-<meta name="description" content="A hundred questions, one at a time, scored against the 21 laws of integrity.">
+<meta name="description" content="One question at a time, scored against the 21 laws of integrity.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20fill%3D%22none%22%20stroke-linecap%3D%22butt%22%20viewBox%3D%22-3%20-3%20206%20206%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20aria-hidden%3D%22true%22%20focusable%3D%22false%22%3E%3Cpath%20d%3D%22M100.000%20181.250A81.25%2081.25%200%200%200%20163.524%20150.659%22%20style%3D%22stroke%3A%23D6524C%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M163.524%20150.659A81.25%2081.25%200%200%200%20179.213%2081.920%22%20style%3D%22stroke%3A%23D8924E%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M179.213%2081.920A81.25%2081.25%200%200%200%20135.253%2026.796%22%20style%3D%22stroke%3A%23DABF6A%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M135.253%2026.796A81.25%2081.25%200%200%200%2064.747%2026.796%22%20style%3D%22stroke%3A%235FD5A6%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M64.747%2026.796A81.25%2081.25%200%200%200%2020.787%2081.920%22%20style%3D%22stroke%3A%235EBBDB%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M20.787%2081.920A81.25%2081.25%200%200%200%2036.476%20150.659%22%20style%3D%22stroke%3A%237D93E0%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M36.476%20150.659A81.25%2081.25%200%200%200%20100.000%20181.250%22%20style%3D%22stroke%3A%23A77EDB%3Bstroke-width%3A37.50%22%2F%3E%3C%2Fsvg%3E">
 <link rel="stylesheet" href="tokens.css">
 <style>
@@ -363,7 +363,7 @@ button.yna:focus-visible,button.more:focus-visible{outline:2px solid var(--ink);
    holes in your integrity. And it needs to sniff out some of the stories so
    you can see what's running you. And then it invites you to try the app to
    find more." The story sat nowhere and the door invited nobody anywhere.
-   Nothing here computes a reading of its own. The hundred answers
+   Nothing here computes a reading of its own. The answers
    become 21 law values and 9 charge values, and the engine does the
    rest, because a second arithmetic that agrees with the first on
    the day it is written is a second arithmetic that drifts.
@@ -384,7 +384,7 @@ var MISSING=[];
 if(typeof SINAMES==='undefined'||typeof read!=='function'
  ||typeof relQueueOf!=='function'||typeof unpackOf!=='function'
  ||typeof asideOf!=='function'||typeof asideSay!=='function')MISSING.push('engine.js');
-if(typeof QQ==='undefined')MISSING.push('questions.js');
+if(typeof QQ==='undefined'||typeof QQ_KEY!=='string')MISSING.push('questions.js');
 if(typeof RING==='undefined')MISSING.push('ring.js');
 /* the ring's seat order is the engine's band order or it is drawing the
    wrong hue at the wrong address. Checked once, out loud. */
@@ -392,27 +392,51 @@ var SEATMISMATCH=(typeof RING!=='undefined'&&typeof BANDS!=='undefined')
  &&RING.SEATS.map(function(s){return s[0];}).join('|')!==BANDS.join('|');
 /* A law named in the questions that the engine does not carry would be scored
    on fewer points than this page claims. It is refused by name. */
+/* AN ITEM SCORES A LAW, A CHARGE, OR BOTH, AND SAYS WHICH WAY IT POINTS, 5
+   November. Every item of the hundred named both, so this refused any item
+   that left c out, and pushed undefined into the list by name. The owner's
+   42 question draft has items that score a law and load nothing, and items
+   that load a charge and score no law, so either may be absent, never both,
+   and whichever is named must be one the engine carries. k is new and has no
+   default: a law question written as "how often do you admit it" scored
+   with the hundred's direction would read a person who always admits it as
+   a law wide open, and the page would print that reading with a straight
+   face. So an item with no k, or a k that is neither way, is refused here by
+   its position, out loud, with the rest. */
 var UNKNOWN=[];
 if(!MISSING.length){
- QQ.forEach(function(q){ if(SINAMES.indexOf(q.l)<0&&UNKNOWN.indexOf(q.l)<0)UNKNOWN.push(q.l);
-  if(!CHILD.some(function(c){return c.nm===q.c;})&&UNKNOWN.indexOf(q.c)<0)UNKNOWN.push(q.c); });}
+ var unk=function(x){ if(UNKNOWN.indexOf(x)<0)UNKNOWN.push(x); };
+ QQ.forEach(function(q,i){
+  if(q.k!=='+'&&q.k!=='-')unk('which way question '+(i+1)+' points');
+  if(q.l==null&&q.c==null)unk('what question '+(i+1)+' scores');
+  if(q.l!=null&&SINAMES.indexOf(q.l)<0)unk(q.l);
+  if(q.c!=null&&!CHILD.some(function(c){return c.nm===q.c;}))unk(q.c); });}
 
 /* ---- THE ORDER. Grouped by law in the file so a reviewer can read a law's
    whole set together, served one law at a time so nobody answers five
    questions about the same thing in a row and starts pattern matching. The
    first sweep touches every law, which is what makes a reading available to
    somebody who stops early. ---- */
+/* AN ITEM WITH NO LAW IS STILL SERVED, 5 November. The sweep walks SINAMES,
+   so an item that scores only a charge was never reached by it and would have
+   been asked of nobody while the progress bar divided by it. Those follow the
+   law sweeps, in the order the file gives them. And every question is served
+   exactly once or the page refuses, because the bar, the heading and Read it
+   from here all count off QQ and ORDER together. */
 function serveOrder(){
- var byLaw={};
- QQ.forEach(function(q,i){ (byLaw[q.l]=byLaw[q.l]||[]).push(i); });
+ var byLaw={}, rest=[];
+ QQ.forEach(function(q,i){ if(q.l==null)rest.push(i); else (byLaw[q.l]=byLaw[q.l]||[]).push(i); });
  var out=[],p=0,more=true;
  while(more){ more=false;
   SINAMES.forEach(function(l){ var g=byLaw[l]||[];
    if(g[p]!=null){ out.push(g[p]); more=true; } });
   p++; }
- return out;}
+ return out.concat(rest);}
 
 var ORDER=MISSING.length?[]:serveOrder();
+if(!MISSING.length&&(ORDER.length!==QQ.length
+ ||ORDER.slice().sort(function(a,b){return a-b;}).some(function(x,i){return x!==i;})))
+ UNKNOWN.push('a place in the order for every question');
 
 /* ============================================================
    THE BAND LOADS. Mean charge per seat, read off the engine's own field
@@ -428,7 +452,9 @@ function refreshLoads(){
  LOADS=BANDS.map(function(b){
   var g=W.filter(function(n){return n.b===b;});
   return g.reduce(function(a,n){return a+n.sq;},0)/g.length;});}
-var KEY='atuned.quiz.v2';
+/* the served table's own key, questions.js, because answers are kept by
+   position and two tables under one key would read each other's answers. */
+var KEY=MISSING.length?'':QQ_KEY;
 var A={};              /* question index -> 0..4 */
 var AT=0;              /* position in ORDER */
 var STATE='open';
@@ -519,26 +545,48 @@ function load(){
  try{ var r=localStorage.getItem(KEY); if(r){ var o=JSON.parse(r)||{}; A=o.a||{}; } }
  catch(e){ A={}; }}
 function answered(){ var n=0; for(var k in A)if(A[k]!=null)n++; return n; }
+/* a count of answers with its unit, for the lines that say how many a reading
+   was taken from. One is possible on a stored visit, so it is said as one. */
+function nAnswers(n){ return n+(n===1?' answer':' answers'); }
 function firstOpen(){
  for(var i=0;i<ORDER.length;i++)if(A[ORDER[i]]==null)return i;
  return ORDER.length; }
 
 /* ============================================================
-   SCORING. A hundred points, each one a law and a charge axis.
-   Never is the law closed and nothing held. Always is the law
-   open and the axis loaded. The map is linear across the five,
-   because a five step scale has no honest curve in it.
+   SCORING. Each answer is a point on a law, on a charge axis, or on
+   both. In the hundred, Never is the law closed and nothing held and
+   Always is the law open and the axis loaded, which is k '-'. An item
+   with k '+' points the other way, Always is the law held, and the
+   axis it loads, when it loads one, is the law's complement. The map
+   is linear across the five, because a five step scale has no honest
+   curve in it.
+   held is how far the answer holds the clean end, nought to ten, so a
+   '-' item gives the law 10-a*2.5 and the axis a*2.5, which is exactly
+   what this computed for every item before k existed. An item with no
+   law adds nothing to a law and an item with no charge adds nothing to
+   an axis: before 5 November both sums ran on every item, and an item
+   without c would have kept a charge under the key "undefined".
    ============================================================ */
 function scored(){
  var lawSum={},lawN={},chgSum={},chgN={},n=0;
  QQ.forEach(function(q,i){
   var a=A[i]; if(a==null)return; n++;
-  lawSum[q.l]=(lawSum[q.l]||0)+(10-a*2.5); lawN[q.l]=(lawN[q.l]||0)+1;
-  chgSum[q.c]=(chgSum[q.c]||0)+(a*2.5);    chgN[q.c]=(chgN[q.c]||0)+1;});
+  var held=q.k==='+'?a*2.5:10-a*2.5;
+  if(q.l!=null){ lawSum[q.l]=(lawSum[q.l]||0)+held;    lawN[q.l]=(lawN[q.l]||0)+1; }
+  if(q.c!=null){ chgSum[q.c]=(chgSum[q.c]||0)+(10-held); chgN[q.c]=(chgN[q.c]||0)+1; }});
  /* THE RECORD WAS NAMED "test". blankProfile takes the profile's name and it
     was given the word the file calls this page, so a person who loaded the
     record into Atuned met a profile called test. It is the reading somebody
-    took on the web, so that is what it is called. */
+    took on the web, so that is what it is called.
+    IT IS A LABEL AND NOT A NAME, and it stays, 5 November. A brief asked for
+    it to be replaced because Summary once greeted a funnel arrival as "Web"
+    (reviews/funnel-golden-path-2026-10-31.md, F3). That was closed on 31
+    October in 99d49756 on the reading side: REC_NAMES and ownName in
+    engine/schema.js read this label as no name, and tests/golden.js station
+    4 holds the plate. The label is what the app's record list and its status
+    line say, "Loaded Web reading from the link", which tests/recordlink.js
+    holds. An empty name would be filled as "New profile" by blankProfile and
+    say less. */
  var p=blankProfile('Web reading');
  var laws=[];
  SINAMES.forEach(function(l){
@@ -586,7 +634,14 @@ function viewOpen(){
  var done=answered();
  return '<div class="open">'
  +'<span class="eye">The test</span>'
- +'<h1>A hundred questions about how you actually live.</h1>'
+ /* THE COUNT IS READ OFF THE TABLE, 5 November. This said "A hundred
+    questions" as typed words, in this heading and four other places, and the
+    owner's 42 question draft is the next table: every one of them would have
+    gone on saying a hundred to a person answering 42. QQ.length is what the
+    progress bar already divides by, so the heading and the bar cannot
+    disagree. The meta description above cannot run script, so it names no
+    count at all. */
+ +'<h1>'+QQ.length+' questions about how you actually live.</h1>'
  +'<p class="lead">One at a time. They are scored against the 21 laws of '
  +'integrity, which is the same table the instrument itself runs on.</p>'
  +'<p>Some of them will be uncomfortable to answer honestly, because they are '
@@ -644,7 +699,7 @@ function viewNotice(){
     +'<p class="said">'+esc(said)+'</p>'
     +'<p>A signal is what your body does when something gets to you. You found this one '
     +'yourself.</p>'
-    +'<p>The hundred questions next draw a map of where you carry load. The map comes from '
+    +'<p>The questions next draw a map of where you carry load. The map comes from '
     +'your answers. What you just noticed came from your body. Where the two disagree, go '
     +'with your body.</p>'
     +'<p class="hold">Keep your attention there for one breath.</p>'
@@ -788,8 +843,10 @@ function viewRead(){
   +' of them are above the line where it starts to cost.</p></div>'
   +'</div>'
   /* ---- THE SCOPE. What this read and what it did not. ---- */
-  +'<div class="scope"><b>What this is.</b> A hundred points on the 21 laws, and '
-  +'the nine charges those points imply. It has not read a story in your own words, '
+  /* the answers this reading was taken from, which is not the table's length
+    for somebody who pressed Read it from here. */
+ +'<div class="scope"><b>What this is.</b> '+nAnswers(s.answered)+' on the 21 laws, and '
+  +'the nine charges those answers imply. It has not read a story in your own words, '
   +'which is where the instrument gets its resolution, so the body locations above '
   +'are where this kind of load sits rather than a reading of your tissue. It reads '
   +'self report. A clinician reads a person, and those are different jobs.'
@@ -848,7 +905,7 @@ function viewRead(){
  +'<div class="door"><span class="eye">Next</span>'
  +'<h2>Write one thing that happened.</h2>'
  +'<div class="doorbd">'
- +'<p>The hundred questions read the shape of your week. One story in your own '
+ +'<p>Your answers read the shape of your week. One story in your own '
  +'words shows what is running under it, read by the same reader the app uses.</p>'
  +'<div class="acts">'
   +'<button class="act go" id="tostory">Write a story</button>'
@@ -856,7 +913,7 @@ function viewRead(){
   +'<button class="act" id="again">Change an answer</button>'
  +'</div></div></div>'
 
- +(s.answered<100?'<p class="foot">Some points stayed blank. The reading leans on the ones you answered.</p>':'')
+ +(s.answered<QQ.length?'<p class="foot">Some points stayed blank. The reading leans on the ones you answered.</p>':'')
  +'</div>';
  return h;
 
@@ -1323,7 +1380,11 @@ function viewDoor(){
  +'<div class="door"><span class="eye">The app</span>'
  +'<h2>Try the app to find more.</h2>'
  +'<div class="doorbd"><div>'
- +'<p>This test read a hundred answers'+(STORY_AT?' and one story':'')+'. The app reads '
+ /* IT SAID A HUNDRED TO EVERYBODY, 5 November, including somebody who
+    pressed Read it from here after the first 21, measured on 784e3098: 21
+    answered, and the door said "This test read a hundred answers." It says
+    how many this test actually read. */
+ +'<p>This test read '+nAnswers(answered())+(STORY_AT?' and one story':'')+'. The app reads '
  +'every story you write and shows where each one sits in the body. Then it runs a '
  +'release on each address that is carrying, to take the load off it. It is one file '
  +'and it runs in your browser.</p>'
