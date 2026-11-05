@@ -614,7 +614,11 @@ async function flowGate(browser,FILE,ok,booted){
    return {fig:(c.querySelector('.rv-avfig b')||{}).textContent||'', rings:c.querySelectorAll('.rv-cy').length,
     tick:c.querySelectorAll('.rv-cy-ok').length,
     hero:(c.querySelector('.rv-avhero .cr.hero .v')||{}).textContent||'', heroTip:!!c.querySelector('.rv-avhero[data-tip]'),
-    overall:A.overall,
+    overall:A.overall, lab:(c.querySelector('.rv-avhero .rv-avlab')||{}).textContent||'',
+    /* SV24: all seven areas, in seat order, the empty ones marked empty */
+    areas:[...c.querySelectorAll('.rv-avs .rv-avn')].map(x=>x.textContent),
+    wantAreas:BANDS.map(b=>AV_OF[b].nm), empty:[...c.querySelectorAll('.rv-avs.rv-avs0')].length,
+    wantEmpty:AV_AREAS.filter(a=>!A.areas[a.k].set).length,
     seats:[...c.querySelectorAll('.rv-avs')].map(x=>({n:x.getAttribute('data-tip-t')||'',f:x.getAttribute('data-tip')||'',
      glyph:!!x.querySelector('.crb .crb-g svg'), fedDot:x.classList.contains('rv-fed')}))};});
   ok(!av.none&&new RegExp('^'+seed.keptDays+' days?$').test(av.fig.trim())&&av.rings===3&&av.tick===(seed.keptDays>=21?1:0),
@@ -625,6 +629,11 @@ async function flowGate(browser,FILE,ok,booted){
   const wantHero=av.overall==null?'\u2013':(Math.round(av.overall*100)?Math.round(av.overall*100)+'%':'\u2013');
   ok(av.hero===wantHero&&av.heroTip&&(av.seats||[]).every(x=>x.glyph),
    'FT18: the hero is the Avatar page\'s own percent complete, '+wantHero+', with its meaning on the press, and every seat is a badge with a mark, '+JSON.stringify([av.hero,av.overall]));
+  /* SV24, his words: "make sure it's hooked up to the [seven] growth areas,
+     and I want to see a percent complete." The seven are AV_AREAS, one a
+     seat; every one is a tile, and the hero's pill carries its word */
+  ok(JSON.stringify(av.areas)===JSON.stringify(av.wantAreas)&&av.areas.length===7&&av.empty===av.wantEmpty&&av.lab==='Complete',
+   'FT18: the card draws all seven areas in seat order, the '+av.wantEmpty+' with no story marked empty, and the percent complete is named under its ring, '+JSON.stringify([av.areas,av.empty,av.lab]));
 
   /* ---- FT19 ---- */
   /* SV19: the goal is back in the centre, his "Ongoing goals should be in the

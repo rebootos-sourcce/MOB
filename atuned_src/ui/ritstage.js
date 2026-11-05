@@ -298,6 +298,18 @@ function ritAvHtml(st){
    'Percent complete: how much of what your avatar\'s stories carried has gone since you wrote them. The same figure the Avatar page draws round its core.',
    all===null?'':'Complete|'+fmtPct('complete',all)+'|100%','Avatar')+'>'
   +cr('Heart',pc,{size:'hero', hot:false, color:'var(--k)', glyph:(typeof AV_IC!=='undefined'?AV_IC.person:SEATGLYPH._), raw:fmtPct('complete',all)})
+  /* THE PERCENT IS NAMED, SV24, his words: "I want to see a percent
+     complete." It was wired, avState().overall in the ring's pill, and
+     nothing on the card said what the pill was: the word lived in the
+     tooltip and the card's own line is folded into its heading. So the ring
+     now carries its one word under it, the V17 label, the way the cycles
+     beside it say kept. The figure stays in the pill and is not printed a
+     second time. On Ana it is the dash, and correctly: cr prints a zero as
+     the dash, his ruling ("the hardest carrying zero percent. I don't want
+     that."), and her two stories have moved nothing, because a worked
+     example keeps no starting weight to measure against (avClosure). A
+     person whose stories have released reads a percent there. */
+  +'<span class="rv-avlab">Complete</span>'
   +'</span>';
  var cyc='<div class="rv-avc"'+rvTip('Cycles',
    'Each day you keep a ritual turns your avatar one seat, root to crown. Seven days make a turn, and three turns make a cycle.',
@@ -306,22 +318,29 @@ function ritAvHtml(st){
   +'<div class="rv-avfig"><b>'+(C.days?C.days+'<small>'+(C.days===1?' day':' days')+'</small>':'–')+'</b><span>kept</span></div></div>';
  var rows=(typeof avRows==='function')?avRows():[], seat={};
  rows.forEach(function(x){if(x.gap&&x.gap.seat)seat[x.gap.seat]=x;});
- var seats=BANDS.filter(function(b){return seat[b];});
+ /* ALL SEVEN AREAS, SV24, his words: "make sure it's hooked up to the 7th
+    growth areas". There is no seventh area anywhere in the product; there
+    are seven, AV_AREAS (ui/avatarui.js), one a seat, the seven rings the
+    Avatar page draws. This list drew only the seats a story sat at, so Ana
+    showed Drive and Clarity and five areas were missing with nothing to say
+    they exist. Every area is a tile now, in BANDS order, and one with no
+    story is an empty ring with the dash and says so in its tooltip. */
+ var seats=BANDS.filter(function(b){return typeof AV_OF!=='undefined'&&AV_OF[b];});
  var list='';
  /* "Your avatar has no stories yet." is cut, 4 November, struck in red on
     the live page. The card's own line above already says it shows each seat
     your avatar has a story at, so an empty list said it twice. The press
     stays: it is the one route to writing the first story. */
  if(!rows.length)list='<div class="rv-acts"><button type="button" class="btn" data-act="go-avatar">Open the avatar</button></div>';
- else if(!seats.length)list='<p class="rv-empty">Your avatar\'s stories do not read at a seat yet.</p>';
  else list='<ul class="rv-avl">'+seats.map(function(b,i){
   var x=seat[b], A=(typeof AV_OF!=='undefined'&&AV_OF[b])||{nm:b,about:'',k:''};
   var fed=st.act.filter(function(p){return p.band===b||p.tags.indexOf(b)>=0;});
   var ar=A0&&A0.areas&&A0.areas[A.k], ap=ar&&ar.pct!=null?Math.round(ar.pct*100):null;
-  var said=x.gap.clear?'Clear at this seat.'
+  var said=!x?(fed.length?'Fed by '+fed.map(function(p){return ritName(p.steps);}).join(', ')+'.':'')
+   :x.gap.clear?'Clear at this seat.'
    :fed.length?'Fed by '+fed.map(function(p){return ritName(p.steps);}).join(', ')+'.':'No ritual at this seat yet.';
-  return '<li class="rv-avs'+(fed.length?' rv-fed':'')+'" style="--c:'+seatCol(b)+';--i:'+i+'"'
-   +rvTip(A.nm+', at '+ritThe(b),'"'+String(x.pair.be).replace(/^"+|"+$/g,'')+'" '+said,
+  return '<li class="rv-avs'+(fed.length?' rv-fed':'')+(x?'':' rv-avs0')+'" style="--c:'+seatCol(b)+';--i:'+i+'"'
+   +rvTip(A.nm+', at '+ritThe(b),(x?'"'+String(x.pair.be).replace(/^"+|"+$/g,'')+'" ':'No avatar story at this seat yet. ')+said,
     ap===null?'':'Complete|'+fmtPct('complete',ar.pct)+'|100%',A.about)+'>'
    +crBadge(b,ap||0,{size:'md', glyph:(typeof AV_IC!=='undefined'&&AV_IC[A.k])||SEATGLYPH[b], raw:ap===null?'–':fmtPct('complete',ar.pct)})
    +'<span class="rv-avn">'+esc(A.nm)+'</span><i class="rv-avd" aria-hidden="true"></i></li>';}).join('')+'</ul>';
@@ -649,8 +668,16 @@ function ritStageCss(){
   '.rv-c-av .rv-avfig b{font-size:20px;font-weight:600;color:var(--k);font-variant-numeric:tabular-nums}',
   '.rv-c-av .rv-avfig small{font-size:13px;font-weight:400;color:var(--mid)}',
   '.rv-c-av .rv-avfig span{font-size:13px;color:var(--mid)}',
-  '.rv-c-av .rv-avl{flex-direction:row;flex-wrap:wrap;gap:6px}',
-  '.rv-c-av .rv-avs{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 6px 7px;border:0;border-radius:12px;min-width:84px;cursor:help;',
+  /* SEVEN TILES, FOUR OVER THREE, SV24. Seven at 84 pixels did not fit the
+     rail's card in one row and broke three, three and one. A quarter of the
+     row each, the last three centred under the first four, so the seven read
+     as one symmetric block on both widths. */
+  '.rv-c-av .rv-avl{display:flex;flex-direction:row;flex-wrap:wrap;justify-content:center;gap:6px}',
+  '.rv-c-av .rv-avs{box-sizing:border-box;flex:0 0 calc((100% - 18px) / 4);min-width:0}',
+  '.rv-c-av .rv-avs.rv-avs0{background:none;box-shadow:inset 0 0 0 1px var(--edge)}',
+  '.rv-c-av .rv-avs.rv-avs0 .rv-avn{color:var(--mid);font-weight:500}',
+  '.rv-c-av .rv-avlab{margin-top:-6px;font-size:13px;color:var(--mid)}',
+  '.rv-c-av .rv-avs{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 6px 7px;border:0;border-radius:12px;cursor:help;',
   ' background:color-mix(in srgb,var(--c) 8%,transparent);transition:background var(--t-micro) var(--ease-out)}',
   '.rv-c-av .rv-avs:hover{background:color-mix(in srgb,var(--c) 15%,transparent)}',
   '.rv-c-av .rv-avn{font-size:13px;font-weight:600;color:var(--ink)}',
