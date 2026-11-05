@@ -9576,7 +9576,16 @@ function undoState(){
     the empty field and takes the type off with it, and the card under the
     select never claims a seed the axes no longer hold. P0-5. */
  var sd=(typeof CURP!=='undefined'&&CURP)?(CURP.seed?JSON.parse(JSON.stringify(CURP.seed)):null):undefined;
+ /* AND THE NAMED ADDRESS LAYER IS AN INPUT TOO. Since 26 October a story
+    that names a body place adds weight at that address (S.addr, read by
+    compute beside the axis charge). This entry took the nine axes and not
+    the layer, so taking back a story put the axes back and left the words'
+    addresses carrying: measured on a blank profile, DQ 0 before the commit,
+    3.98 after, 0.204 after the undo, and 0.204 still after a reload because
+    the settle saves it to the record. Copied, because the layer is written
+    in place and a shared object would move with it. */
  return {charge:c, replace:o, law:l, work:wk, seed:sd,
+  addr:Object.assign({},S.addr||{}),
   doms:S.doms.slice(), arcs:S.arcs.slice(), roots:S.roots.slice(),
   dom:S.dom, a1:S.a1, a2:S.a2};}
 
@@ -9611,6 +9620,9 @@ function undoApply(s){
  if(s.work!=null&&typeof CURP!=='undefined'&&CURP)CURP.work=JSON.parse(JSON.stringify(s.work));
  /* and an entry taken before the seed rode with it leaves the seed alone */
  if(s.seed!==undefined&&typeof CURP!=='undefined'&&CURP)CURP.seed=s.seed?JSON.parse(JSON.stringify(s.seed)):null;
+ /* and an entry taken before the address layer rode with it leaves the layer
+    alone, which is what undo did for every entry until this */
+ if(s.addr&&typeof s.addr==='object')S.addr=Object.assign({},s.addr);
  S.doms=s.doms.slice(); S.arcs=s.arcs.slice(); S.roots=s.roots.slice();
  S.dom=s.dom; S.a1=s.a1; S.a2=s.a2;
  buildSoul();

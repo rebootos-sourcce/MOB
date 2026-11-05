@@ -1785,6 +1785,32 @@ g('18b \u00b7 undo');
  ok(seeded>0&&CHARGES.every(c=>S.charge[c]===0)&&E.current().seed===null,
   'undoing a seed puts back the empty field and takes the type off with it, Fear '+seeded+' then '+S.charge.Fear);
  E.undoClear();
+ /* A STORY IS UNDONE WITH THE ADDRESSES IT NAMED, 5 November. Since 26
+    October a story that names a body place adds weight at that address
+    (S.addr), and compute reads it beside the axis charge. The undo entry took
+    the axes and not that layer, so taking back a story left its addresses
+    carrying: measured through the app on a blank profile, DQ 0 before, 3.98
+    after the commit, 0.204 after the undo. The story names its places on
+    purpose, so the commit has a layer to take back, and the forward half is
+    held too because redo shares the same capture and restore. */
+ const recT=E.pImport(JSON.stringify(E.blankProfile('history story')));
+ ok(!!recT,'a fresh record to commit a story on');
+ const addr0=JSON.stringify(S.addr), dq0=compute().DQ;
+ const said='My chest goes tight and my throat closes when my boss shouts at me. I feel afraid and ashamed.';
+ E.undoPush('committing the story'); E.applyStory(said); E.applyStoryAddr(said);
+ const addr1=JSON.stringify(S.addr), dq1=compute().DQ;
+ ok(addr1!==addr0&&dq1>dq0,'the story named places, so the layer moved, '+addr0+' to '+addr1+', DQ '+dq0+' to '+dq1);
+ E.undoPop();
+ const dq2=compute().DQ;
+ ok(JSON.stringify(S.addr)===addr0&&Math.abs(dq2-dq0)<1e-9,
+  'undoing the story takes its addresses back with it, layer '+JSON.stringify(S.addr)+', DQ '+dq2+' against '+dq0);
+ E.redoPop();
+ ok(JSON.stringify(S.addr)===addr1&&Math.abs(compute().DQ-dq1)<1e-9,
+  'and redo puts them back, layer '+JSON.stringify(S.addr));
+ /* and back once more, because reset() below this does not touch the layer
+    and the next group reads an empty field */
+ E.undoPop();
+ E.undoClear();
 }
 
 g('19a \u00b7 the roster covers the scale');

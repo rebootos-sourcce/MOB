@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2847 a57a127f 2026-11-05 07:54"><head><meta charset="utf-8">
+<html lang="en" data-build="v369 3f9ca86 2026-11-05 09:32"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -19626,7 +19626,16 @@ function undoState(){
     the empty field and takes the type off with it, and the card under the
     select never claims a seed the axes no longer hold. P0-5. */
  var sd=(typeof CURP!=='undefined'&&CURP)?(CURP.seed?JSON.parse(JSON.stringify(CURP.seed)):null):undefined;
+ /* AND THE NAMED ADDRESS LAYER IS AN INPUT TOO. Since 26 October a story
+    that names a body place adds weight at that address (S.addr, read by
+    compute beside the axis charge). This entry took the nine axes and not
+    the layer, so taking back a story put the axes back and left the words'
+    addresses carrying: measured on a blank profile, DQ 0 before the commit,
+    3.98 after, 0.204 after the undo, and 0.204 still after a reload because
+    the settle saves it to the record. Copied, because the layer is written
+    in place and a shared object would move with it. */
  return {charge:c, replace:o, law:l, work:wk, seed:sd,
+  addr:Object.assign({},S.addr||{}),
   doms:S.doms.slice(), arcs:S.arcs.slice(), roots:S.roots.slice(),
   dom:S.dom, a1:S.a1, a2:S.a2};}
 
@@ -19661,6 +19670,9 @@ function undoApply(s){
  if(s.work!=null&&typeof CURP!=='undefined'&&CURP)CURP.work=JSON.parse(JSON.stringify(s.work));
  /* and an entry taken before the seed rode with it leaves the seed alone */
  if(s.seed!==undefined&&typeof CURP!=='undefined'&&CURP)CURP.seed=s.seed?JSON.parse(JSON.stringify(s.seed)):null;
+ /* and an entry taken before the address layer rode with it leaves the layer
+    alone, which is what undo did for every entry until this */
+ if(s.addr&&typeof s.addr==='object')S.addr=Object.assign({},s.addr);
  S.doms=s.doms.slice(); S.arcs=s.arcs.slice(); S.roots=s.roots.slice();
  S.dom=s.dom; S.a1=s.a1; S.a2=s.a2;
  buildSoul();
@@ -80388,6 +80400,13 @@ function pracRead(p){
  CHARGES.forEach(function(c){oldCharge[c]=S.charge[c];oldReplace[c]=S.replace[c];});
  SINAMES.forEach(function(l){oldLaw[l]=S.law[l];oldUnset[l]=LAW_UNSET[l];oldSeed[l]=LAW_SEED[l];});
  var oldLawRec=LAW_REC;
+ /* the named address layer is read by compute beside the charge, so it is
+    swapped with the rest. It was not, and every client's loaded list carried
+    the addresses the open record's own stories named: Derek read 20 loaded
+    on a fresh page and 22 after one story on You. An example row carries no
+    layer, so a client is read on its own row's, which is none. */
+ var oldAddr=S.addr;
+ S.addr=Object.assign({},(p.addr&&typeof p.addr==='object')?p.addr:{});
  S.dom=p.dom;S.a1=p.a1;S.a2=p.a2;
  S.doms=p.doms?p.doms.slice():[p.dom];
  S.arcs=p.arcs?p.arcs.slice():[p.a1,p.a2];
@@ -80439,7 +80458,7 @@ function pracRead(p){
  S.dom=oldDom;S.a1=oldA1;S.a2=oldA2;S.doms=oldDoms;S.arcs=oldArcs;S.roots=oldRoots;S.rec=oldRec;
  CHARGES.forEach(function(c){S.charge[c]=oldCharge[c];S.replace[c]=oldReplace[c];});
  SINAMES.forEach(function(l){S.law[l]=oldLaw[l];LAW_UNSET[l]=oldUnset[l];LAW_SEED[l]=oldSeed[l];});
- LAW_REC=oldLawRec;
+ LAW_REC=oldLawRec; S.addr=oldAddr;
  /* repair W and DOMAIN, which compute() just overwrote in place, before
     anything else in the app reads them again */
  buildSoul(); compute();
@@ -81837,6 +81856,10 @@ function mirrorYou(){
  Y.dom=S.dom;Y.a1=S.a1;Y.a2=S.a2;Y.doms=S.doms.slice();Y.arcs=S.arcs.slice();Y.roots=S.roots.slice();
  CHARGES.forEach(function(c){Y.c[c]=S.charge[c];});
  Y.rep={};CHARGES.forEach(function(c){Y.rep[c]=S.replace[c]||0;});
+ /* the named address layer rides with the charge, because loadP(0) reads it
+    back out of this row and an own record that lost it on a visit to a worked
+    example would lose what its stories named */
+ Y.addr=Object.assign({},S.addr||{});
  /* the original wrote Y.law here and lawsFor could never read it back. */
  Y.law={};SINAMES.forEach(function(l){Y.law[l]=S.law[l];});
  return true;}
@@ -81914,6 +81937,17 @@ function loadP(i){
  CHARGES.forEach(function(c){
   S.charge[c]=(p.c&&p.c[c]!==undefined)?p.c[c]:0;
   S.replace[c]=(p.rep&&p.rep[c])||0;});
+ /* AND THE NAMED ADDRESS LAYER COMES FROM THE SAME ROW, or it stays behind.
+    S.addr is what a story that names a body place adds at that address
+    (engine/compute.js, 26 October), and this was the one S field loadP never
+    set. So a worked example opened after the person wrote a story was read
+    with the person's addresses on top of its own table and saved them onto
+    its scratch record: Derek on a fresh page DQ 26.221 and 20 loaded, after
+    one story on You DQ 26.475 and 22 loaded. No example row carries a layer,
+    so an example opens on none. The person's own row carries theirs because
+    mirrorYou copies it into PEOPLE[0] beside the charge, which is how the way
+    back through loadP(0) gets it back. */
+ S.addr=Object.assign({},(p.addr&&typeof p.addr==='object')?p.addr:{});
  /* THE CUSTOM PERSONA IS NOT A DEMO AND MUST NOT BE GIVEN LAW SCORES.
 
     lawsFor falls back to the seed for anybody with no table, and "You" is the
@@ -87548,5 +87582,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005787135"></div>
+<div id="eof" hidden data-len="005789496"></div>
 </body></html>
