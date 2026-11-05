@@ -84,11 +84,19 @@ function anaField(title,sub,items,w,h){
       A name that does not fit is dropped, and the bubble carries its value
       instead. The full name is on hover and in the list beside the chart. */
    var t=(p.it.nm.length<=room)?p.it.nm:'';
+   var hasPct=p.it.f!==undefined;
    if(t){
     s+='<text x="'+p.x.toFixed(1)+'" y="'+(p.y-(fit?3:-3)).toFixed(1)+'" text-anchor="middle" '
      +'class="ab-t" style="font-size:'+fs.toFixed(1)+'px">'+esc(t)+'</text>';
-    if(fit&&p.it.f!==undefined)s+='<text x="'+p.x.toFixed(1)+'" y="'+(p.y+13).toFixed(1)+'" text-anchor="middle" '
-     +'class="ab-v" style="font-size:'+Math.max(11,p.r*0.24).toFixed(1)+'px">'+(UN?'\u2013':p.it.f)+'</text>';}}
+    if(fit&&hasPct)s+='<text x="'+p.x.toFixed(1)+'" y="'+(p.y+13).toFixed(1)+'" text-anchor="middle" '
+     +'class="ab-v" style="font-size:'+Math.max(11,p.r*0.24).toFixed(1)+'px">'+(UN?'\u2013':p.it.f)+'</text>';}
+   /* ABOVE THE FOLD, round FY: his words, "I want percents added to the
+      bubbles." The name-dropped branch above always claimed the bubble
+      "carries its value instead," but nothing printed one when the name did
+      not fit: this is that promise, kept. A bubble too small for its name
+      but big enough to not be tiny now centres its percent alone. */
+   else if(hasPct)s+='<text x="'+p.x.toFixed(1)+'" y="'+(p.y+4).toFixed(1)+'" text-anchor="middle" '
+    +'class="ab-v" style="font-size:'+Math.max(10,Math.min(13,p.r*0.32)).toFixed(1)+'px">'+(UN?'\u2013':p.it.f)+'</text>';}
   s+='</g>';});
  return s+'</svg>'+(sub?'<div class="ab-s">'+sub+'</div>':'')+'</div>';}
 function anaRender(){
@@ -222,7 +230,7 @@ function anaRender(){
      /* held, round RB: accuracy() counts addresses at 4 or more */
      +(acc.held?', '+acc.held+' address'+(acc.held===1?'':'es')+' held':'')
      +'. The needle has play in it, so a small move is not a reading.')+'</span></div>'
-  +'</div></div>'+anaHot(r)+'<div class="ab-grid">';
+  +'</div></div><div class="ab-grid">';
  /* HS SWEEP. Every chart here carried a caption under it saying how to read
     it: what the heading means and that a bigger mark is more. A bubble chart
     says bigger is more by being one, and the heading names the set. The one
@@ -264,7 +272,12 @@ function anaRender(){
   /* a count of held addresses, so it prints as a count */
   seats.map(function(s){return {k:'seat',nm:s.p.n,v:Math.max(0.3,s.hot),f:anaN(s.hot),
    c:seatCol(K2B[s.p.k])};}),300,210);
- out+='</div>';
+ /* ABOVE THE FOLD, round FY, his words: "I like the circles, the bubbles,
+    and the sizes... I want those all above the fold." The grid used to sit
+    below Running Hot; the heaviest-address list now follows the bubbles
+    instead of leading them, so the bubbles are the first thing a person
+    reaches on this tab. Nothing in anaHot() changed, only its place. */
+ out+='</div>'+anaHot(r);
  /* TELEMETRY, round RB, his words: "I want the analytics page to give me
     telemetry and have that telemetry broken out in as many dimensions as we
     can to see what's running and where." What follows is the engine's own
