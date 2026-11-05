@@ -1135,6 +1135,48 @@ g('17 · the host seam');
  bindStore(()=>null,()=>{});          /* leave it as we found it */
 }
 
+g('17a · a record loaded back while it is still held');
+{
+ /* A saved file loaded back while the original is still on the device carries
+    an id the list already holds. It was pushed as it came, so two records
+    shared one id, every id-keyed verb reached only the first, and deleting
+    the copy deleted the original and the newer work on it. Measured before
+    the fix: the copy opened as the original, and deleting the copy left the
+    stale Fear 7 and lost the newer Fear 2. */
+ const mem={};
+ E.bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
+ const keep=E.profiles().splice(0);
+ /* read through a guard, so a build without the reader fails by name here
+    rather than throwing out of the whole gate */
+ const copied=()=>typeof E.importCopied==='function'?E.importCopied():'missing';
+ const A=E.pNew('twice'); E.loadProfile(A);
+ E.S.charge.Fear=7; E.pSave();
+ const file=E.pExport();                  /* the saved file */
+ E.S.charge.Fear=2; E.pSave();            /* later work on the original */
+ const B=E.pImport(file);
+ ok(!!B,'the saved file loads back'+(B?'':', refused: '+JSON.stringify(E.importError())));
+ ok(!!B&&B.id!==A.id,'as a copy with an id of its own, A '+A.id+' copy '+(B&&B.id));
+ ok(!!B&&B.name===A.name,'and the copy keeps its name');
+ ok(copied()===true,'and the engine says it came in as a copy, so the host can say so');
+ ok(E.profiles().filter(p=>p.id===A.id).length===1,'so the list never holds one id twice');
+ E.profOpen(A.id);
+ const back=B&&E.profOpen(B.id);
+ ok(!!back&&back===B,'the copy can be opened from the list');
+ const d=B&&E.profDelete(B.id);
+ const left=E.profiles().map(p=>p.id+' Fear '+p.axes.Fear.held);
+ ok(!!d&&d.id===B.id&&E.profiles().length===1&&E.profiles()[0]===A&&A.axes.Fear.held===2,
+  'deleting the copy deletes the copy, and the original with its newer work stays: '+JSON.stringify(left));
+ /* the replace route keeps the id on purpose, ui/auth.js profileSyncImport,
+    which removes the older entry itself straight after */
+ const R=E.pImport(E.pExport(),true);
+ ok(!!R&&R.id===A.id&&copied()===false,'a caller that asks to keep the id still gets it');
+ /* a fresh id is not a copy and nothing is said */
+ const C=E.pImport(JSON.stringify(E.blankProfile('fresh')));
+ ok(!!C&&copied()===false,'a record whose id is not held is not called a copy');
+ E.profiles().splice(0,E.profiles().length,...keep);
+ E.bindStore(()=>null,()=>{});
+}
+
 g('18 · the path');
 {
  const {parseStory,scanStory,SEATXY,NERVEBR,LEX,PHRASES}=E;

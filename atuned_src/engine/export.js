@@ -178,7 +178,7 @@ if(typeof module!=='undefined'&&module.exports){
      otherwise a law set to exactly the seed reads as unanswered, which is
      saveProfile's documented blind spot and correct for a person. */
                   LAW_UNSET:LAW_UNSET, SOUL_FROM:SOUL_FROM,
-                  pExport:pExport, pImport:pImport, validateProfile:validateProfile, importError:importError,
+                  pExport:pExport, pImport:pImport, validateProfile:validateProfile, importError:importError, importCopied:importCopied,
                   importRefuse:importRefuse, linkWrap:linkWrap, linkUnwrap:linkUnwrap,
                   LINK_V:LINK_V, LINK_MAX:LINK_MAX,
                   meterRun:meterRun, meterRead:meterRead, meterKey:meterKey, meterBudget:meterBudget,

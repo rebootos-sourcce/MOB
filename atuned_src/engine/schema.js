@@ -2208,9 +2208,12 @@ function meterFirst(p,key,label,at){
    PROFILES[0] fallback, never data. */
 function profMark(p){ try{ if(p&&p.id)devSet('open',p.id); }catch(e){} }
 
-var IMPORT_ERR=null;
-function pImport(txt){
- IMPORT_ERR=null;
+var IMPORT_ERR=null, IMPORT_COPY=false;
+/* keepId is for a caller that means to REPLACE the held record with the same
+   id and removes the older one itself straight after, which is the account
+   sync (ui/auth.js profileSyncImport). Every other caller leaves it out. */
+function pImport(txt,keepId){
+ IMPORT_ERR=null; IMPORT_COPY=false;
  /* NOTHING IS LOADED WHILE A WORKED EXAMPLE IS OPEN. This pushed the new
     record and pointed CURP at it, and left S.who naming the example, so the
     person's own record then read as somebody else's to every control that
@@ -2232,6 +2235,20 @@ function pImport(txt){
     place that sets it, and the next sign in reopens the tour on a person
     who already answered it, outside this app, on the funnel. */
  v.profile.ui.onboarded=true;
+ /* A RECORD WHOSE ID IS ALREADY HELD COMES IN AS A SEPARATE COPY. A saved
+    file loaded back while the original is still on the device, or the same
+    quiz link opened twice, carries an id this list already holds, and it was
+    pushed as it came. Every verb keyed by id (profFind, profOpen, profDelete,
+    the open pointer, the undo history) reaches only the first match, so the
+    copy could never be opened, and deleting the copy deleted the original
+    and the newer work on it, for good. So the copy gets a fresh id by the
+    blankProfile recipe and keeps its name and everything else, nothing held
+    is overwritten, and importCopied() says so for the host to tell the
+    person. */
+ if(!keepId&&PROFILES.some(function(q){ return q&&q.id===v.profile.id; })){
+  var fid; do{ fid='p'+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+  while(PROFILES.some(function(q){ return q&&q.id===fid; }));
+  v.profile.id=fid; IMPORT_COPY=true; }
  var keepP=PROFILES.slice(), keepC=CURP;
  /* with no current profile there is nothing to restore to, so the rollback
     loads a blank rather than leaving the engine holding the rejected one. */
@@ -2243,6 +2260,9 @@ function pImport(txt){
  profMark(v.profile);
  return v.profile;}
 function importError(){ return IMPORT_ERR; }
+/* true when the last load that landed was given a fresh id because its own
+   was already held, so the host can say it came in as a separate copy */
+function importCopied(){ return IMPORT_COPY; }
 /* A HOST THAT STOPPED A RECORD BEFORE IT REACHED THE BOUNDARY SAYS WHY HERE.
    The record link below is unpacked by the host, because the inflate is a
    browser stream and the engine never names its host. When that step fails
