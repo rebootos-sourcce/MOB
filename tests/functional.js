@@ -5272,7 +5272,7 @@ console.log('\n=== a teacher on the compass opens the behaviour complex and adds
   o.pathBox=pb?pb.getAttribute('data-tcx'):null; o.pathK=own.k;
   /* the Active list is Goals' Today, and with a ritual running the centre
      opens on the week since round RB, so the list is asked for by its view */
-  RIT.gview='today'; setTab(TAB.RITUAL); await wait(400);
+  setTab(TAB.RITUAL); await wait(400);
   o.row=[...document.querySelectorAll('#rit .rv-sub')].map(s=>s.textContent).filter(t=>/^Toward Buddha/.test(t)).length;
   /* a worked example saves nothing, and the panel says so and offers no button */
   loadP(PERSON('Gordon')); setTab(TAB.COMPASS); await wait(300);

@@ -59,16 +59,10 @@
 /* ---------------- beside the record ---------------- */
 var RIT_MORE_KEY='atuned-ritual-more';
 var RIT_MORE_CAP=4000;
-/* THE CENTRE OPENS ON THE WEEK, round RB. His words: "The center area of the
-   ritual does not look like a calendar of what's running this week. It
-   should." The week was built in round QX and was there, one press away,
-   behind a Today that opened first and drew the same rings the right column's
-   Due today already draws. So the week is what the centre opens on whenever
-   something is running, and Today and This month stay one press away. With
-   nothing running there is no week to draw, so it opens on Today, which
-   carries the one press that starts a ritual. null is no choice made yet; a
-   press on a view is a choice and is kept. */
-RIT.gview=null;
+/* THE CENTRE OPENED ON THE WEEK, round RB, behind a three way switch, and the
+   switch is gone, SV16: the week is a card of its own at the top of the
+   centre and is never one press away. Its state is RIT.wk, at ritWeekCalHtml
+   below. */
 RIT.span='1m';
 RIT.sgGone=null;
 function ritMoreAll(){
@@ -121,7 +115,7 @@ function ritSugSave(i){
  return ritMoreWrite(function(m){
   if(m.save.some(function(s){return ritSugKey(s)===ritSugKey(x);}))return;
   m.save.push({k:x.k, rel:x.rel, b:x.seats[0]||'', why:String(x.why[0]||'').slice(0,240), t:new Date().toISOString()});},
-  'Saved for later. '+x.p.nm+' waits under Saved for later until you add it.');}
+  'Saved. '+x.p.nm+' waits under Saved until you add it.');}
 function ritSugDrop(i){
  var x=(RIT.sug||[])[i]; if(!x)return false;
  var key=ritSugKey(x);
@@ -134,7 +128,7 @@ function ritSugBack(){
  if(ok){RIT.sgGone=null; ritRender();}
  return ok;}
 function ritSugAll(){
- return ritMoreWrite(function(m){m.gone=[];},'Every dismissed suggestion is back on the list.');}
+ return ritMoreWrite(function(m){m.gone=[];},'Every dismissed practice is back on the list.');}
 /* a saved one starts the way a suggestion does, through ritStartPlan, and
    leaves the shelf only once the plan is written */
 function ritSavedStart(i){
@@ -149,7 +143,7 @@ function ritSavedStart(i){
 function ritSavedDrop(i){
  var s=ritMore().save[i]; if(!s)return false;
  return ritMoreWrite(function(m){m.save=m.save.filter(function(x){return ritSugKey(x)!==ritSugKey(s);});},
-  'Removed from Saved for later.');}
+  'Removed from Saved.');}
 
 /* ---------------- what a suggestion has done for you ----------------
    "The success of what it leads to." Searched for anything that measures how
@@ -191,16 +185,21 @@ function ritSugToward(x){
  return {opp:cf.opp, nm:cf.nm, k:n.k, b:n.b};}
 function ritCfWord(nm){return nm==='Sad'?'sadness':String(nm||'').toLowerCase();}
 
-/* ---------------- the saved shelf ---------------- */
+/* ---------------- the saved shelf ----------------
+   NAMED SAVED, SV16. The card's press became Save on his word ("Instead of
+   saying save for later, just do save"), and a shelf still called Saved for
+   later under a press called Save says one act in two wordings. Everything on
+   a shelf of things not started is for later, so the two words carried
+   nothing. Ruled by the narrative director, 5 November. */
 function ritSavedHtml(){
  var m=ritMore(); if(!m.save.length)return '';
- return '<div class="rv-sec rv-saved"><div class="rv-hd"><span class="rv-h">Saved for later</span></div>'
+ return '<div class="rv-sec rv-saved"><div class="rv-hd"><span class="rv-h">Saved</span></div>'
   +'<p class="rv-mean">Suggestions you kept without starting. Add one when you are ready; it runs each day for a week.</p>'
   +'<ul class="rv-svl">'+m.save.map(function(s,i){var p=ritPr(s.k), col=s.b?seatCol(s.b):'var(--accent)';
    return '<li class="rv-sv1" style="--c:'+col+'"><span class="rv-svt"><span class="rv-sgn">'+esc(p.nm)+'</span>'
     +'<span class="rv-sgm">'+p.min+' min'+(s.rel!=null&&BY[s.rel]?', for '+esc(String(BY[s.rel].k).toLowerCase()):'')+'</span></span>'
-    +'<span class="rv-sva"><button type="button" class="btn" data-act="sv-rm" data-i="'+i+'" aria-label="Remove '+esc(p.nm)+' from Saved for later">Remove</button>'
-    +'<button type="button" class="btn pri" data-act="sv-add" data-i="'+i+'" aria-label="Add '+esc(p.nm)+' to daily practice">Add</button></span></li>';}).join('')
+    +'<span class="rv-sva"><button type="button" class="btn" data-act="sv-rm" data-i="'+i+'" aria-label="Remove '+esc(p.nm)+' from Saved">Remove</button>'
+    +'<button type="button" class="btn pri" data-act="sv-add" data-i="'+i+'" aria-label="Add '+esc(p.nm)+' to practice">Add</button></span></li>';}).join('')
   +'</ul></div>';}
 
 /* ---------------- the day's affirmations and challenges ---------------- */
@@ -304,71 +303,96 @@ function ritChalHtml(st,M){
  return '<div class="rv-gblk rv-chal"><div class="rv-gh"><span class="rv-gt">Challenges</span>'
   +'<span class="rv-gs">One small act against each pattern running heaviest in you. Press its ring once you have done it today.</span></div>'+body+'</div>';}
 
-/* ---------------- the goals ---------------- */
-var RIT_GVIEW=[['today','Today'],['week','This week'],['month','This month']];
-function ritGoalsHtml(st,P){
- var v=RIT.gview; if(!RIT_GVIEW.some(function(x){return x[0]===v;}))v=st.act.length?'week':'today';
- var M=ritMore(), body;
- if(v==='week')body=ritWeekHtml(st,M);
- else if(v==='month')body=ritMonthHtml(st,M);
- else body='<div class="rv-gblk rv-grits"><div class="rv-gh"><span class="rv-gt">Rituals</span></div>'
-  +ritActiveBody(st.act,st.today,P.building)+'</div>'+ritAffHtml(st,M)+ritChalHtml(st,M);
- return '<section class="rv-sec rv-act rv-goals"><div class="rv-hd"><span class="rv-h">Goals</span>'
-  +'<div class="rv-seg" role="group" aria-label="Goals for">'+RIT_GVIEW.map(function(x){var on=x[0]===v;
-   return '<button type="button" class="rv-sg'+(on?' rv-on':'')+'" data-act="gview" data-v="'+x[0]+'" aria-pressed="'+on+'">'+x[1]+'</button>';}).join('')
-  +'</div></div>'
-  +'<p class="rv-mean">What you set yourself, by the day, the week and the month. Today is what to press now: your rituals, three affirmations and three challenges.</p>'
-  +body+'</section>';}
+/* ---------------- the week ----------------
+   THE CENTRE IS A WEEK, SV16, 5 November. His words, over an annotated
+   screenshot of the live page: "I'm at the center panel to look at, like a
+   calendar. A weekly calendar. All 7 days. I can cycle through. Underneath
+   it, every day shows me which rituals I need to do."
+
+   Round RB had already opened the Goals card on This week, and he still did
+   not read it as a calendar. The reason was its shape and not its place: it
+   was a row per ritual and a square per day, which is a tracker's grid, and
+   on a calendar the thing a person looks at is the day. So the day is the
+   column now, Monday first, and under each date are the rituals that day
+   carries, by name, in their seat's colour, done, set or missed. The switch
+   between Today, This week and This month went with the grid: a week one
+   press away behind a Today is the arrangement he said does not look like a
+   calendar.
+
+   ONE READ FOR A DAY. What a day carries is ritDaySegs, the read the Record's
+   month already draws one column over, so the two calendars on this page
+   cannot disagree about a day. It is the record first and then every plan
+   that covered the day, so a ritual that has ended or was stopped still
+   shows on the days it ran: a past week is a record, not a list of what is
+   running now.
+
+   THE ARROWS. RIT.wk is weeks from this one, and it is page state, never
+   kept: leaving Flow puts it back to this week (ritRender), because a person
+   who comes back to the page is asking what is due now. */
+RIT.wk=0;
+/* how far ahead the forward arrow goes. Every span the builder offers ends
+   within two weeks except No end, which runs for ever, so a week past that
+   only repeats the one before it. Back goes to the week the record starts:
+   before it every day is empty for a reason no week can show. */
+var RIT_WK_AHEAD=4;
+var RIT_DAY_SAY={done:'Done', plan:'Planned for today', ahead:'Planned', miss:'Missed'};
 /* the date of a day key, at local noon, so the number printed is the day the
    person lived and not the one UTC is on */
 function ritDateOf(d){var off=new Date().getTimezoneOffset()*60000; return new Date(d*DAY_MS+off+12*3600000);}
-/* one ritual on one day, the week's cell: the record first, then the plan */
-function ritCellSt(p,d,today){
- if(!ritCovers(p,d)){var e0=ritEntryFor(p,d); return e0&&ritIsDone(e0.x)?'done':'off';}
- var e=ritEntryFor(p,d);
- if(e&&ritIsDone(e.x))return 'done';
- return d<today?'miss':(d===today?'plan':'ahead');}
-var RIT_CELL_SAY={done:'Done', miss:'Missed', plan:'Set for today', ahead:'Set', off:'Not set for this day', none:'Nothing yet'};
-function ritWeekHtml(st,M){
- var today=st.today, mon=today-ritWd(today), days=[0,1,2,3,4,5,6].map(function(i){return mon+i;});
- var head='<span class="rv-wgn" aria-hidden="true"></span>'+days.map(function(d,i){var dt=ritDateOf(d);
-  return '<span class="rv-wgh'+(d===today?' rv-now':'')+'" aria-hidden="true">'+RIT_WDN[i]+'<b>'+dt.getDate()+'</b></span>';}).join('');
- var row=function(nm,sub,col,cell){
-  return '<span class="rv-wgn" style="--c:'+col+'"><b>'+esc(nm)+'</b>'+(sub?'<small>'+esc(sub)+'</small>':'')+'</span>'
-   +days.map(function(d,i){var s=cell(d);
-    return '<span class="rv-wc rv-wc-'+s+(d===today?' rv-now':'')+'" style="--c:'+col+'" role="img" aria-label="'
-     +esc(nm+', '+RIT_WDF[i]+' '+ritDateOf(d).getDate()+': '+RIT_CELL_SAY[s])+'"></span>';}).join('');};
- var rows=st.act.map(function(p){return row(ritName(p.steps),ritOften(p.on),ritCol(p),function(d){return ritCellSt(p,d,today);});});
- var aff=function(list){return function(d){
-  var any=list.some(function(x){return x[0]===d;}); return any?'done':(d>today?'none':'off');};};
- rows.push(row('Affirmations','Each day','var(--sec-embody)',aff(M.said)));
- rows.push(row('Challenges','Each day','var(--sec-play)',aff(M.did)));
- var first=ritDateOf(mon), last=ritDateOf(mon+6);
- return '<div class="rv-gblk"><div class="rv-gh"><span class="rv-gt">'
-  +esc(first.toLocaleDateString('en-GB',{day:'numeric',month:'short'})+' to '+last.toLocaleDateString('en-GB',{day:'numeric',month:'short'}))+'</span>'
-  +'<span class="rv-gs">Each ritual on the days it is set for. A ritual set for Tuesday, Thursday and Saturday shows on those three days and nowhere else.</span></div>'
-  +(st.act.length?'':'<p class="rv-empty">Nothing active this week yet.</p>')
-  +'<div class="rv-wg" role="group" aria-label="This week">'+head+rows.join('')+'</div>'
-  +'<div class="rv-key" aria-hidden="true"><span><i class="rv-k-cube"></i>Done</span><span><i class="rv-k-cplan"></i>Set</span>'
-  +'<span><i class="rv-k-cmiss"></i>Missed</span><span><i class="rv-k-off"></i>Not set</span></div></div>';}
-function ritMonthHtml(st,M){
- var now=new Date(), today=st.today, first=pracDay(new Date(now.getFullYear(),now.getMonth(),1,12));
- var mn=now.toLocaleDateString('en-GB',{month:'long'}), kd={};
- ((CURP&&CURP.rituals)||[]).forEach(function(x){if(!x||!ritIsDone(x))return; var d=pracDay(x.t); if(d!==null&&d>=first&&d<=today)kd[d]=1;});
- var said={}; M.said.forEach(function(x){if(x[0]>=first&&x[0]<=today)said[x[0]]=1;});
- var did=M.did.filter(function(x){return x[0]>=first&&x[0]<=today;}).length;
- var fig=function(n,u,lb){return '<div class="rv-fig"><b>'+(n?n+'<small> '+u+'</small>':'–')+'</b><span>'+lb+'</span></div>';};
- var kn=Object.keys(kd).length, sn=Object.keys(said).length;
- var list=!st.act.length?'<p class="rv-empty">Nothing active this month.</p>'
-  :'<ul class="rv-mol">'+st.act.map(function(p){
-   var end=p.days?ritStart0(p)+p.days-1:null;
-   return '<li class="rv-mo1" style="--c:'+ritCol(p)+'">'+ritPctHtml(p,today)
-    +'<span class="rv-mot"><span class="rv-nm">'+esc(ritName(p.steps))+'</span>'
-    +'<span class="rv-sub">'+esc(ritOften(p.on))+', '+(end===null?'no end':(end<=today?'ends today':'ends '+esc(ritDayName(end,today))))+'</span></span></li>';}).join('')+'</ul>';
- return '<div class="rv-gblk"><div class="rv-gh"><span class="rv-gt">'+esc(mn)+'</span>'
-  +'<span class="rv-gs">Every ritual you are running and where its span ends, and what this month holds so far. Counts of days, never a grade.</span></div>'
-  +'<div class="rv-figs rv-mofigs">'+fig(kn,kn===1?'day':'days','Kept')+fig(sn,sn===1?'day':'days','Affirmations said')
-  +fig(did,did===1?'time':'times','Challenges done')+'</div>'+list+'</div>';}
+/* the furthest week back, as a negative count of weeks from this one */
+function ritWkMin(st){
+ var rs=ritRecordStart(st); if(rs===null||rs>st.today)return 0;
+ return -Math.round(((st.today-ritWd(st.today))-(rs-ritWd(rs)))/7);}
+/* one day's rituals, once each: the record can hold the same steps twice on a
+   day, and a calendar names a ritual once on the day it carries it */
+function ritWeekDay(d,st){
+ var seen={}, out=[];
+ ritDaySegs(d,st.plans,st.today).forEach(function(s){var k=s.nm+'|'+s.st;
+  if(seen[k])return; seen[k]=1; out.push(s);});
+ return out;}
+function ritWeekCalHtml(st){
+ var today=st.today, lo=ritWkMin(st);
+ RIT.wk=Math.max(lo,Math.min(RIT_WK_AHEAD,RIT.wk|0));
+ var mon=today-ritWd(today)+7*RIT.wk, first=ritDateOf(mon), last=ritDateOf(mon+6);
+ var fmt=function(dt){return dt.toLocaleDateString('en-GB',{day:'numeric',month:'short'});};
+ var range=fmt(first)+' to '+fmt(last);
+ var nav='<div class="rv-wkn">'
+  +'<button type="button" class="rv-ib" data-act="wk" data-d="-1" aria-label="Week before"'+(RIT.wk<=lo?' disabled':'')+'>'+ritIc('back')+'</button>'
+  +'<span class="rv-wkr" aria-live="polite">'+esc(range)+'</span>'
+  +'<button type="button" class="rv-ib" data-act="wk" data-d="1" aria-label="Week after"'+(RIT.wk>=RIT_WK_AHEAD?' disabled':'')+'>'+ritIc('fwd')+'</button>'
+  /* a person who has cycled away gets one press back to now. It is drawn only
+     while away, so on this week it is not a control that does nothing. */
+  +(RIT.wk?'<button type="button" class="btn rv-wk0" data-act="wk" data-d="0">This week</button>':'')+'</div>';
+ var days='<ol class="rv-wkg" aria-label="'+esc(range)+'">'+[0,1,2,3,4,5,6].map(function(i){
+  var d=mon+i, dt=ritDateOf(d), segs=ritWeekDay(d,st);
+  var list=segs.length?'<ul class="rv-wdl">'+segs.map(function(s){
+    return '<li class="rv-wch rv-wch-'+s.st+'" style="--c:'+s.col+'"><span class="rv-wcn">'+esc(s.nm)+'</span>'
+     +'<span class="rv-wcs">, '+RIT_DAY_SAY[s.st]+'</span></li>';}).join('')+'</ul>'
+   /* a day with nothing on it is the house dash, COPY.md Value, and never a
+      sentence: seven Nothing on this day lines would be the week's loudest
+      text on the emptiest week */
+   :'<span class="rv-wd0" aria-label="Nothing set">–</span>';
+  return '<li class="rv-wd1'+(d===today?' rv-now':'')+(d<today?' rv-past':'')+'">'
+   +'<span class="rv-wdh"'+(d===today?' aria-current="date"':'')+'><span>'+RIT_WDN[i]+'</span><b>'+dt.getDate()+'</b></span>'+list+'</li>';}).join('')+'</ol>';
+ return '<section class="rv-sec rv-week"><div class="rv-hd"><span class="rv-h">Week</span>'+nav+'</div>'+days
+  /* Planned, the word the Record and the thirty days beside it use for the
+     same state, and Due today's Planned for today: the grid this replaced said
+     Set, a second word for one thing on one page */
+  +'<div class="rv-key" aria-hidden="true"><span><i class="rv-k-cube"></i>Done</span><span><i class="rv-k-cplan"></i>Planned</span>'
+  +'<span><i class="rv-k-cmiss"></i>Missed</span></div></section>';}
+
+/* ---------------- today ----------------
+   WHAT THE GOALS CARD'S TODAY HELD, UNCHANGED, as a card of its own under the
+   week, SV16. He asked for the week and said nothing of the rest, and the
+   Active list is the one place a ritual's timer, its steps, Edit, Move up and
+   Stop are reached: taking it off with the switch would have left those with
+   no route at all. So the rituals, the three affirmations and the three
+   challenges keep their markup, and only the card around them is new. */
+function ritTodayCardHtml(st,P){
+ var M=ritMore();
+ return '<section class="rv-sec rv-act rv-goals"><div class="rv-hd"><span class="rv-h">Today</span></div>'
+  +'<div class="rv-gblk rv-grits"><div class="rv-gh"><span class="rv-gt">Rituals</span></div>'
+  +ritActiveBody(st.act,st.today,P.building)+'</div>'+ritAffHtml(st,M)+ritChalHtml(st,M)+'</section>';}
 
 /* ---------------- success over time ----------------
    His ten spans, in his order. A month is a calendar month back from today,
@@ -490,37 +514,48 @@ function ritCalCss(){
   '.rv-chn{font-size:14px;font-weight:600;color:var(--c)}',
   '.rv-chn small{font-weight:400;color:var(--mid);font-size:13px}',
   '.rv-ch1 .rv-afq{font-size:15px}',
-  /* the week, a calendar row per ritual */
-  '.rv-wg{display:grid;grid-template-columns:minmax(96px,1.5fr) repeat(7,minmax(30px,1fr));gap:5px;align-items:center}',
-  '.rv-wgh{display:flex;flex-direction:column;align-items:center;font-size:12px;color:var(--dim)}',
-  '.rv-wgh b{font-size:14px;font-weight:600;color:var(--mid);font-variant-numeric:tabular-nums}',
-  /* TODAY IS FOUND BEFORE IT IS READ, round RB, his "a calendar of what's
-     running this week". Today was a bolder date and a four pixel dot under
-     each cell, which at a glance is no mark at all: in the first shot of
-     Derek's week the dot read as a stray pixel. So the date sits in a filled
-     chip, the way a wall calendar rings a day, and each of today's cells
-     carries a ring of the same accent, so the column reads as one. */
-  '.rv-wgh.rv-now{color:var(--ink);font-weight:600}',
-  '.rv-wgh.rv-now b{color:var(--on-accent);background:var(--accent);border-radius:999px;min-width:26px;height:26px;padding:0 5px;display:inline-grid;place-items:center;margin-top:2px}',
-  '.rv-wgn{display:flex;flex-direction:column;min-width:0;padding-left:8px;border-left:3px solid var(--c,transparent)}',
-  /* a name wraps rather than being cut: a row whose ritual cannot be read
-     is a row of squares */
-  '.rv-wgn b{font-size:13px;line-height:1.3;font-weight:600;color:var(--ink);overflow-wrap:anywhere}',
-  '.rv-wgn small{font-size:12px;color:var(--mid)}',
-  '.rv-wc{position:relative;aspect-ratio:1/1;max-height:40px;border-radius:7px;background:color-mix(in srgb,var(--edge-2) 22%,transparent)}',
-  '.rv-wc-done{background:var(--c);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.28),inset 0 -4px 0 rgba(0,0,0,.30)}',
-  '.rv-wc-plan,.rv-wc-ahead{background:color-mix(in srgb,var(--c) 12%,transparent);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c) 70%,transparent)}',
-  '.rv-wc-miss{background:none;outline:1.5px dashed var(--dim);outline-offset:-1.5px}',
-  '.rv-wc-off{background:none;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--edge-2) 45%,transparent)}',
-  '.rv-wc-none{background:none}',
-  '.rv-wc.rv-now::after{content:"";position:absolute;inset:-4px;border-radius:10px;border:1.5px solid var(--accent);pointer-events:none}',
-  '.rv-key .rv-k-off{border-radius:3px;border:1px solid var(--edge-2);background:none}',
-  '.rv-key .rv-k-pre{border-radius:3px;border:0;background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--edge-2) 55%,transparent) 0 2px,transparent 2px 5px)}',
-  /* the month */
-  '.rv-mofigs{margin:0 0 12px}',
-  '.rv-mol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}',
-  '.rv-mo1{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:12px;background:var(--panel-2);border:1px solid var(--edge);box-shadow:inset 3px 0 0 var(--c)}',
-  '.rv-mot{display:flex;flex-direction:column;min-width:0}',
+  /* THE WEEK, SV16. Seven day columns, and each day is a column a person reads
+     down: the weekday and the date, then that day's rituals. Under 640 of
+     stage, a phone, seven named columns are seventy pixels each and a ritual's
+     name would wrap to one word a line, so each day becomes a row instead, the
+     date at the left and its rituals beside it: the same seven days, read down
+     the page instead of across it. */
+  '.rv-week{--k:var(--sec-flow);border-color:color-mix(in srgb,var(--k) 38%,transparent);background:color-mix(in srgb,var(--k) 6%,var(--panel))}',
+  '.rv-week>.rv-hd{flex-wrap:wrap}',
+  '.rv-wkn{display:flex;align-items:center;gap:4px;flex-wrap:wrap}',
+  '.rv-wkr{min-width:9.5em;text-align:center;font-size:14px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}',
+  '.rv-wk0{min-height:44px;margin-left:4px}',
+  '.rv-wkg{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}',
+  '.rv-wd1{display:flex;flex-direction:column;gap:6px;min-width:0;min-height:120px;padding:6px 5px 8px;border-radius:10px;',
+  ' background:color-mix(in srgb,var(--edge-2) 10%,transparent)}',
+  '.rv-wd1.rv-past{background:none;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--edge-2) 30%,transparent)}',
+  /* today is ringed the way a wall calendar rings a day, round RB's rule for
+     the grid this replaces, and its date sits in the accent chip */
+  '.rv-wd1.rv-now{box-shadow:inset 0 0 0 1.5px var(--accent);background:color-mix(in srgb,var(--accent) 7%,transparent)}',
+  '.rv-wdh{display:flex;flex-direction:column;align-items:center;gap:1px;font-size:12px;color:var(--dim)}',
+  '.rv-wdh b{font-size:14px;font-weight:600;color:var(--mid);font-variant-numeric:tabular-nums}',
+  '.rv-wd1.rv-now .rv-wdh{color:var(--ink);font-weight:600}',
+  '.rv-wd1.rv-now .rv-wdh b{color:var(--on-accent);background:var(--accent);border-radius:999px;min-width:26px;height:26px;padding:0 5px;display:inline-grid;place-items:center}',
+  '.rv-wdl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:5px}',
+  /* a ritual on a day. Done is filled in its seat colour, set is outlined in
+     it, missed is the dashed outline the Record and the thirty days already
+     use for a miss, so the three read the same on every calendar here. A name
+     wraps rather than being cut: a chip whose ritual cannot be read is a
+     coloured bar. */
+  '.rv-wch{padding:5px 6px;border-radius:7px;font-size:12px;line-height:1.3;font-weight:600;color:var(--ink);overflow-wrap:anywhere;',
+  ' background:color-mix(in srgb,var(--c) 12%,transparent);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c) 70%,transparent)}',
+  '.rv-wch-done{background:var(--c);color:rgba(0,0,0,.78);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.28),inset 0 -3px 0 rgba(0,0,0,.28)}',
+  '.rv-wch-miss{background:none;box-shadow:none;outline:1.5px dashed var(--dim);outline-offset:-1.5px;color:var(--mid);font-weight:500}',
+  /* the state is said to a screen reader in words and to the eye by the fill,
+     so the word is in the document and off the screen */
+  '.rv-wcs{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}',
+  '.rv-wd0{align-self:center;margin-top:6px;color:var(--dim);font-size:14px}',
+  '@container (max-width:639px){.rv .rv-wkg{grid-template-columns:minmax(0,1fr);gap:5px}',
+  ' .rv .rv-wd1{flex-direction:row;align-items:flex-start;gap:10px;min-height:0;padding:8px 10px}',
+  ' .rv .rv-wdh{flex:0 0 40px;flex-direction:column}',
+  ' .rv .rv-wdl{flex:1 1 auto;flex-direction:row;flex-wrap:wrap}',
+  ' .rv .rv-wch{font-size:13px;padding:6px 9px}',
+  ' .rv .rv-wd0{align-self:center;margin:0}}',
   /* success over time */
   '.rv-rg{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}',
   '.rv-rgb{min-height:44px;padding:0 12px;border-radius:999px;border:1px solid var(--edge-2);background:none;color:var(--mid);font:inherit;font-size:13.5px;cursor:pointer;white-space:nowrap}',

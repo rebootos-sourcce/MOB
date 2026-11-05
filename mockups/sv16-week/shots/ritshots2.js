@@ -1,0 +1,12 @@
+const {chromium}=require('playwright'); const path=require('path');
+const SRC=path.resolve(process.argv[2]), OUT=process.argv[3];
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'}); const errs=[];
+ const go=async(W,H,nm)=>{const p=await b.newPage({viewport:{width:W,height:H}}); p.on('pageerror',e=>errs.push(e.message));
+  await p.goto('file://'+SRC+'?dev=1'); await p.waitForFunction(()=>document.body.classList.contains('booted'),null,{timeout:15000}).catch(()=>{});
+  await p.evaluate(n=>{const i=n?PEOPLE.findIndex(x=>x.nm===n):0; loadP(i); setTab(TAB.RITUAL); render&&render();},nm); await p.waitForTimeout(1500); return p;};
+ let p=await go(1600,1000,'Diane'); await p.click('#rit .rv-week [data-act="wk"][data-d="-1"]'); await p.waitForTimeout(500);
+ await (await p.$('#rit .rv-week')).screenshot({path:OUT+'/after-Diane-1600-week-back.png'}); await p.close();
+ p=await go(390,844,'Diane'); await p.evaluate(()=>document.getElementById('lcol').scrollIntoView()); await p.waitForTimeout(400);
+ await p.screenshot({path:OUT+'/after-Diane-390-new.png'}); await p.close();
+ p=await go(1600,1000,null); await p.screenshot({path:OUT+'/after-blank-1600.png'}); await p.close();
+ await b.close(); console.log(errs.length?errs.join('\n'):'no page errors');})();

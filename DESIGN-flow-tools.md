@@ -119,6 +119,18 @@ column. The Active list stays on the stage. While the builder is holding
 something the body carries `ritbuild`, which is what brings the column to the
 front on a phone.
 
+SV16, 5 November, his words over an annotated screenshot: "when I hit new
+ritual, I want its default state to be open and accessible ... These tags at
+the bottom don't do anything because I'm creating the ritual. Doesn't matter
+what I select as a tag." There is no closed state now. The builder is the
+column's resting state, opened with no press: steps, timer, how often, days,
+when, where, how long, Start. Neither row of seat tags is drawn, the closed
+card's "Start from a tag" or the builder's own Tags: a tag only put on the
+draft the practice its seat calls for, and every one of those is already a
+tile. A plan keeps its tags field, and an edit carries an older plan's tags
+through untouched. Cancel is drawn once the builder holds something, empties
+it, and leaves it open. `ritbuild` still means holding something.
+
 Gate: `tests/flowtools.js`, `FT4:`.
 
 ### FT5. The Ritual stage holds no tracker.
@@ -136,6 +148,11 @@ span he picks, not the tracker's parts, so this rule does not count them and
 FT30 and FT32 hold them. Due today, the streak, the earned marks shelf,
 Missed and the Record month are still the right column's alone.
 
+SV16 put the week at the top of the centre, his "the center panel ... like
+a calendar. A weekly calendar." It draws the plans on their days with a key
+saying what each fill means, which is the centre's job by his ruling and not
+a tracker part, so this rule does not count it and FT34 holds it.
+
 Gate: `tests/flowtools.js`, `FT5:`.
 
 ### FT6. The tracker is the right column, in one order, with no door and no host of its own.
@@ -144,6 +161,11 @@ Gate: `tests/flowtools.js`, `FT5:`.
 for 14, and there is no `#acct` in the document. The right column holds Due
 today, the Thirty day loop, Done, Missed, History and the Record, in that order, on a
 blank profile and a loaded one.
+
+SV16, his words: "Ongoing goals, and ritual to avatar move that to the
+right menu." Both cards are drawn into this column, after the Record and in
+that order, unchanged inside. After and not among: he ruled Accountability
+stays as it is, so its parts keep their order and place.
 
 Gate: `tests/flowtools.js`, `FT6:`; `tools/monitor.js`, which walks every
 surface `TABDEF` names at both widths and exits non zero on an empty one;
@@ -242,6 +264,12 @@ Streak, Best, Kept and Practised are explained under the figures. The rings on
 the month are explained under the key. This is the owner's unpack rule of 2
 October (`CLAUDE.md`, "UNPACK EVERY SYMBOL").
 
+SV16: the centre's cards are Week and Today, words a person has before they
+open the product, and neither carries a line, on his "get rid of all the
+second third tier text". What the week's fills mean is its key, in the same
+place. Ritual to avatar and Ongoing goal took their sentences to the right
+menu.
+
 Gate: `tests/flowtools.js`, `FT14:`; `python3 .claude/skills/atuned-voice/check.py
 --objections` for the voice.
 
@@ -288,6 +316,13 @@ challenge", the Active list unchanged inside it), and Practice analytics is
 Success over time, its thirty day charts now drawn for whichever span he
 picks.
 
+SV16 made it five: the week across both columns at the top, Today under it
+where Goals was (the same rituals, affirmations and challenges, without the
+switch), then Did it work beside Keep or delete, Success over time last.
+Ritual to avatar and Ongoing goal are in the right menu (FT6). The grid keeps
+the class `rv-six`, because the gates, the shot tool and the phone order find
+the stage by it. On a phone it is one column in that order.
+
 Gate: `tests/flowtools.js`, `FT17:`.
 
 ### FT18. Ritual to avatar reads the Avatar page's own cycle and the seats it is feeding.
@@ -302,6 +337,9 @@ is a tile, a `crBadge` with the Avatar page's own mark for that area (`AV_IC`)
 and the area's percent complete as its ring; its press says the line the
 person wrote and which active ritual is kept at that seat, or that none is.
 
+SV16: the card is in the right menu, FT6. What it reads and draws is
+unchanged.
+
 Gate: `tests/flowtools.js`, `FT18:`.
 
 ### FT19. The ongoing goal is the avatar's own line, the place held in its way, and the next mark.
@@ -311,6 +349,9 @@ more, quoted and never paraphrased, with that place named and a schedule for
 it offered once (A week, Two weeks). Once scheduled it says so and offers
 nothing. The next mark is the ladder's own (`ladderRead`) and is on this card
 only; the right column keeps the marks already earned.
+
+SV16: the card is in the right menu, FT6. What it reads and draws is
+unchanged.
 
 Gate: `tests/flowtools.js`, `FT19:`.
 
@@ -387,6 +428,19 @@ screen at once: 28 with the builder open on its own and no suggestion shown,
 for Angela, James and a blank profile alike; after, 10 for Angela and the blank
 profile and 12 for James, with every suggestion visible.
 
+SV16 renamed the list Called for and opened the builder by default (FT4).
+The heading is the narrative director's ruling, from his words "those aren't
+suggested, those are pulled from your ritual selectors, it's the stuff it
+picks up based off your story": called for is the house's word for a practice
+a seat asks for, and From your story was not true of every card. The empty
+lines are "Nothing called for yet. Record a story to fill it." and "Nothing
+else called for. Each one is added, saved or dismissed." On a blank profile
+nothing has called for anything, so the field's old card ("Nothing is read
+yet, so this is the lightest place to start.") is not in the list. That
+practice is the open builder's first tile, without the words called for. A
+practice picked in the builder is still not offered again under it, and a
+release schedule for a place still is.
+
 Gate: `tests/flowtools.js`, `FT24:`.
 
 ### FT25. A ritual is a symbol carrying its percent complete.
@@ -457,6 +511,17 @@ shelf has its own name. Dismiss offers Put back in place, and Bring back
 dismissed at the foot returns them all. Both are kept beside the record under
 `atuned-ritual-more`, refused on a worked example by name.
 
+SV16, his words: "For the suggested, I want flat solid color background.
+And instead of saying things like 2 min a day, just do 2 minutes. Instead of
+add to daily practice, just add to practice. Instead of saying save for later,
+just do save." Each card is one opaque fill mixed from its seat colour, with
+nothing outlined: the card, its chips, its seat tags and its buttons lose
+their borders, the Punch lighting's own idiom for solid. The minutes read as
+minutes, and the answers are Add to practice, Save and Dismiss. The shelf is
+Saved, ruled by the narrative director: everything on it is for later, and a
+press called Save beside a shelf called Saved for later is one act in two
+wordings.
+
 Gate: `tests/flowtools.js`, `FT29:`.
 
 ### FT30. Goals is today, this week and this month.
@@ -477,6 +542,14 @@ whenever a ritual is running, with today's date in a filled chip and today's
 cells ringed, and on Today when nothing is running, because an empty week
 draws nothing and Today carries the press that starts one. A view pressed is
 kept.
+
+SV16 took the switch off. The week is the centre's first card (FT34) and
+Today is its own card under it, carrying exactly what the switch's Today
+carried: the Active list, the affirmations and the challenges. This month
+went with the switch; its counts are Success over time's one month. The
+seven day walk below still holds both: Today's rows on each weekday, and the
+Tuesday, Thursday and Saturday ritual under those three days of the week and
+no other.
 
 Gate: `tests/flowtools.js`, `FT30:`.
 
@@ -520,7 +593,33 @@ on the practitioner page. The page's own kept and missed count for every plan
 is the engine's, the centre opens on the week with every running ritual in
 it, and an example with no row (James, Gordon, Rosa) still opens on nothing.
 
+SV16: the week is always drawn, so opening on the week is every running
+ritual found under a day of this week it covers. A record with nothing
+running draws seven empty days, each the house dash.
+
 Gate: `tests/flowtools.js`, `FT33:`.
+
+### FT34. The centre is a week a person can cycle through, and every day carries its own rituals.
+
+SV16, his words: "I'm at the center panel to look at, like a calendar. A
+weekly calendar. All 7 days. I can cycle through. Underneath it, every day
+shows me which rituals I need to do." The week is seven day columns, Monday
+first, each with its weekday and date, today ringed with its date in the
+accent chip. Under each date are the rituals that day carries, by name, in
+their seat's colour: done is filled, planned is outlined, missed is the
+dashed outline every calendar on the page uses for a miss. The read is
+ritDaySegs, the one the Record's month draws, so the two calendars cannot
+disagree about a day: the record first, then every plan that covered the
+day, so a ritual that ended or was stopped still shows on the days it ran. A
+day with nothing on it is the house dash. The arrows go back to the week the
+record starts and forward four weeks, because every span the builder offers
+ends within two weeks except No end, which only repeats. This week is
+offered only while away. The week is page state: leaving Flow and coming back
+opens on this week. Under 640 of stage each day is a row, date at the left
+and its rituals beside it, because seven named columns on a phone are a word
+a line.
+
+Gate: `tests/flowtools.js`, `FT34:`.
 
 ## 5. Not built, and why
 
@@ -578,7 +677,7 @@ gap is not read as an oversight.
 
 | Rule | Gate |
 |---|---|
-| FT1 to FT33 | `tests/flowtools.js` |
+| FT1 to FT34 | `tests/flowtools.js` |
 | FT1, and every TAB integer | `tests/engine.js`, `tests/functional.js` |
 | FT6, FT12 | `tests/design.js`, `tools/monitor.js` |
 | FT10 | `tests/functional.js` |

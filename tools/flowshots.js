@@ -94,7 +94,7 @@ const BLANK=()=>{loadP(0); CURP.rituals=[]; CURP.history=[]; ritPlanPut([]); CUR
   await p.setViewportSize({width:1600,height:2300}); await p.waitForTimeout(800);
   await p.screenshot({path:path.join(OUT,'flow-1600-tall.png')});
   await shot(p,'#rit .rv-six','stack-1600.png');
-  await shot(p,'#rit .rv-c-av','avatar-1600.png');
+  await shot(p,'#flowside .rv-c-av','avatar-1600.png');
   await shot(p,'#rit .rv-act','active-1600.png');
   await p.close();}
  /* 390: the page is one scroll on a phone, so it is shot whole */

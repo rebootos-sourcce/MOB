@@ -968,7 +968,7 @@ var ATM_MAP=[
  {kind:'Tab', sel:'[role=tab],.tabtop', snd:'click', hover:true},
  {kind:'Switch, checkbox or radio', sel:'[role=switch],[role=menuitemcheckbox],[role=radio],[role=menuitemradio],input[type=checkbox],input[type=radio]',
   snd:'click', hover:true},
- {kind:'Chip, pill or pressed toggle', sel:'[aria-pressed],.st-rb,.cn-sb,.kb-swb,.rv-sp,.rv-tag2,.rv-wkd', snd:'click-light', hover:true},
+ {kind:'Chip, pill or pressed toggle', sel:'[aria-pressed],.st-rb,.cn-sb,.kb-swb,.rv-sp,.rv-wkd', snd:'click-light', hover:true},
  {kind:'List row', sel:'.kb-row,.stk-r', snd:'click-light', hover:true},
  {kind:'Button, link or menu item', sel:'button,[role=button],[role=menuitem],a[href],summary', snd:'click', hover:true},
  {kind:'A press on the Field wheel, Frames or Dial', hook:'hitPress and the wheel\'s press paths in ui/ui.js', snd:'field', fitting:true},
