@@ -474,7 +474,10 @@ function seriesRead(p,spanKey,now){
   if(!s||typeof s.cq!=='number')continue;
   var ms=Date.parse(s.t);
   if(!(ms>=t0&&ms<=t1))continue;
-  pts.push({ms:ms, cq:s.cq, ig:(typeof s.jq==='number'?s.jq:null)});}
+  /* ig is the row's integrity, snapshot()'s ig, and never jq, the overshoot
+     figure, which it read until 5 November and which runs roughly opposite.
+     A row from before ig was recorded reads null, and sumIg leaves it out. */
+  pts.push({ms:ms, cq:s.cq, ig:(typeof s.ig==='number'?s.ig:null)});}
  pts.sort(function(a,b){return a.ms-b.ms;});
  /* WHAT THE SPAN CAN AND CANNOT SAY. Nothing at all is one state, one reading
     is a second, and two or more is a line. They read differently and a caller

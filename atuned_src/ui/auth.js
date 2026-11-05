@@ -303,7 +303,9 @@ function profileSyncPush(profile,version){
 }
 function profileSyncImport(remote,remoteVersion){
  var text=JSON.stringify(remote);
- var imported=pImport(text);
+ /* keepId: this is a replace of the same record, and the loop below removes
+    the older entry, so pImport must not give it a fresh id as a copy */
+ var imported=pImport(text,true);
  if(!imported)return {ok:false};
  var list=profiles();
  for(var i=list.length-1;i>=0;i--){
