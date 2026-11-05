@@ -1065,8 +1065,12 @@ const kb=await page.evaluate(()=>{
     their sliders and the right rail's stack counts them, and a word that
     moves in one place and not the others is how this product ends up with two
     vocabularies for one thing, which is what it just finished removing. */
- ok(kb.rail.indexOf('Child emotions')>=0,
-  'the left rail calls the nine child emotions, got '+kb.rail.join(', '));
+ /* AND THE LEFT RAIL'S SECTION IS GONE, 5 November, SV22: Child emotions is
+    one of the five Psyche sections he struck, sliders and all. So no rail
+    section names the nine any more, and what this holds is that none comes
+    back under another word; the stack tab below still calls them by name. */
+ ok(kb.rail.indexOf('Child emotions')<0&&!kb.rail.some(t=>/fetter|emotion/i.test(t)),
+  'the left rail has no child emotions section, under that word or another, got '+kb.rail.join(', '));
  ok(kb.rail.indexOf('Fetters')<0,
   'and the rail no longer calls the nine fetters');
  ok(/^Child emotions/.test(kb.stack[0]||''),
@@ -7114,18 +7118,15 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   const k=document.getElementById('chainkey'), r=compute();
   const pc=n=>Math.max(0,Math.min(100,Math.round((n.sq||0)*10)));
   const up=FIELD.filter(n=>n.b==='Field-Above'), dn=FIELD.filter(n=>n.b==='Field-Below');
-  return {rows:k?[...k.querySelectorAll('.chk-row')].map(x=>x.textContent):[],
-   head:(document.querySelector('.lsec[data-sec=chain] .tier1')||{}).textContent,
+  return {key:!!k, sec:!!document.querySelector('.lsec[data-sec=chain]'),
    unread:!!r.unread, above:pc(up[0]), below:pc(dn[0]),
    drill:nodeDrillHtml(up[0]), hover:frDescribe({k:'anchor',n:dn[0]},r)};});
- const ckNm=ck.rows.map(t=>t.split('.')[0]);
- ok(ck.head==='Nerve to super-complex'&&ckNm.slice(0,4).join()==='Saboteur,Complex,Hyper-complex,Super-complex',
-  'chain key: the chain is four tiers, nerve to super-complex, '+JSON.stringify([ck.head,ckNm]));
- ok(ckNm[4]==='Archetype'&&/^Archetype\. Not part of the chain\./.test(ck.rows[4])&&!ck.rows.some(t=>/points toward/.test(t)),
-  'chain key: Archetype is named a pick outside the chain, never a tier it climbs into, '+JSON.stringify(ck.rows[4]));
- ok(!ck.unread&&ckNm[5]==='Field anchors'&&ck.rows[5].indexOf('crown above at '+ck.above+'%')>=0
-  &&ck.rows[5].indexOf('root below at '+ck.below+'%')>=0&&/decoherence/.test(ck.rows[5]),
-  'chain key: the four field anchors carry their seat\'s live average and say it counts in decoherence, '+JSON.stringify([ck.above,ck.below,ck.rows[5]]));
+ /* THE CHAIN KEY CAME OFF, 5 November, SV22: The chain is one of the five
+    Psyche sections he struck on the left rail. Its rows were checked here,
+    and what is held now is that the section and its host are out of the
+    document. The anchor's drill and the renditions' hover below are not the
+    key and still carry what the key's anchor row used to say. */
+ ok(!ck.key&&!ck.sec,'the chain key section is out of the document, not folded, '+JSON.stringify({key:ck.key,sec:ck.sec}));
  ok(!/Charge held here/.test(ck.drill)&&ck.drill.indexOf('average weight of the crown seat it extends, <b>'+ck.above+'%</b>')>=0,
   'an anchor\'s drill states its seat average and never "held 0.0, left after that" more');
  ok(ck.hover.indexOf('average weight of the root seat it extends, <b>'+ck.below+'%</b>')>=0&&/decoherence/.test(ck.hover),

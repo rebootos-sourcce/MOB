@@ -56,6 +56,8 @@ const shell=await page.evaluate(()=>({
  arcs:document.querySelectorAll('#ar1 .ib').length,
  laws:document.querySelectorAll('#laws .nf').length,
  axes:document.querySelectorAll('#chg .nf').length,
+ gone:['levels','fetters','chain','superego','gates'].filter(k=>document.querySelector('.lsec[data-sec="'+k+'"]')),
+ mxsec:!!document.querySelector('#lpanel .lsec[data-sec="matrix"]'),
  mx:document.querySelectorAll('#mx button').length,
  tabdef:TABDEF.length,
  eshelf:!!document.getElementById('eshelf')}));
@@ -76,7 +78,13 @@ ok(shell.depths===shell.views&&shell.views>0,shell.views+' depths declared, '+sh
 ok(shell.doms===19,'19 domains, got '+shell.doms);
 ok(shell.arcs===12,'12 archetypes, got '+shell.arcs);
 ok(shell.laws===21,'21 law fields, got '+shell.laws);
-ok(shell.axes===18,'18 axis fields (9 held + 9 opposite), got '+shell.axes);
+/* THE AXIS FIELDS CAME OFF WITH CHILD EMOTIONS, 5 November, SV22. This
+   held 18, the nine held and nine opposite sliders in the left rail's Child
+   emotions section, and he struck that section with three others and The
+   book's levels. It holds that they are out of the document, not folded, and
+   that Matrix, the one Psyche section he kept, is still there. */
+ok(shell.axes===0&&shell.gone.length===0,'the five struck Psyche sections and the axis fields are out of the document, left: '+JSON.stringify(shell.gone)+', axes '+shell.axes);
+ok(shell.mxsec,'and Matrix, the one he kept, is still on the left rail');
 ok(shell.mx===171,'171 matrix cells, got '+shell.mx);
 ok(shell.eshelf,'#eshelf element exists');
 console.log('  shell:',JSON.stringify(shell));

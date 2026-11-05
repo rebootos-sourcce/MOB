@@ -9,10 +9,17 @@
    inside the rail itself. Read by the phone half of the test in rdOpen. */
 var RD_INRAIL=false;
 function rdOpen(){var b=document.getElementById('rdrill');if(!b)return null;
+ /* the drill stands in Insight on the Field and in Selection elsewhere, SV22,
+    so it is put where this tab keeps it before anything measures it */
+ if(typeof railSelHome==='function')railSelHome();
  b.style.display='block';
  var none=document.getElementById('rdrill-none'); if(none)none.style.display='none';
- /* open Selection, and leave open whatever else the person had open. */
- if(typeof OPENSEC==='object'&&OPENSEC&&OPENSEC.right){OPENSEC.right.sel=1;
+ /* open the section the drill stands in, and leave open whatever else the
+    person had open. It was Selection by name, and on the Field the drill is
+    in Insight now: a person who had shut Insight would press a row and see
+    nothing open. */
+ var at=b.closest?b.closest('.lsec'):null, key=(at&&at.getAttribute('data-sec'))||'sel';
+ if(typeof OPENSEC==='object'&&OPENSEC&&OPENSEC.right){OPENSEC.right[key]=1;
   if(typeof paintSections==='function')paintSections();}
  /* BRING THE DRILL INTO VIEW, BUT ONLY WHEN IT IS BESIDE THE SURFACE.
 
@@ -204,6 +211,17 @@ function runDrill(o){
     +' A super-complex costs more than it looks like it should, because you cannot see it as separate from you.';
    else if(o.kind!=='sab'||o.over){var f=patFam(o);
     if(f)say=o.kind==='hy'?esc(cap(f.d))+'.':'Part of the '+esc(f.nm)+' family: '+esc(f.d)+'.';}
+   /* WHAT IT RUNS INSIDE, moved here from the Insight box, 5 November, SV22.
+      This drill dropped its Feeds up list on 4 November because the box above
+      it already said "It runs inside Predatory". The box is gone and this
+      drill is the summary at the head of Insight now, so the sentence comes
+      with it, word for word, off compute()'s own tree: the rung above whose
+      parts hold this one, from the lists the plan lets this reading see. */
+   var up={sab:'cxs',cx:'hys',hy:'sups'}[o.kind];
+   var KW={cx:'a complex',hy:'a hyper-complex',sup:'a super-complex'};
+   if(up){var par=(computeSeen()[up]||[]).filter(function(x){
+     return (x.parts||[]).some(function(c){return c.kind===o.kind&&c.nm===o.nm;});})[0];
+    if(par)say+=' It runs inside '+esc(par.nm)+', '+KW[par.kind]+'.';}
    return say?'<div class="pm-eye">How it runs through you</div><p class="ad-p">'+say.trim()+'</p>':'';})()
   +'<div class="pm-eye">The opposite</div><p class="ad-p">'
   +(opps.length
@@ -267,10 +285,12 @@ function runDrill(o){
      paragraph narrates what the graph and the library already hold", in an
      edged block he called "an old legacy design" on the Flow cards. And
      Feeds up said a second time what the Insight box above it already says,
-     "It runs inside Predatory". So the drill ends on Made of. traceSummary
-     is not dropped: insightSay in ui/ui.js reads the stack it resolves and
-     quotes the records it finds, which is the job he gave the summary box.
-     tsBlockHtml itself is untouched; the address drill's blend in
+     "It runs inside Predatory". So the drill ends on Made of. The Insight
+     box went on 5 November, SV22, and this drill took its place at the head
+     of Insight, so "It runs inside" is said above, in How it runs through
+     you. insightSay, which read the stack traceSummary resolves, went with
+     the box; traceSummary itself is untouched and still serves the address
+     drill. tsBlockHtml itself is untouched; the address drill's blend in
      nodeDrillHtml below is a different surface and is left as it landed. */
  rdShell(h);
  /* a "Runs under" row opens that mask's own drill, the same rail press
