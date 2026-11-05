@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v403 debf8f15 2026-11-05 18:37"><head><meta charset="utf-8">
+<html lang="en" data-build="v405 865ed91e 2026-11-05 18:39"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -20400,7 +20400,13 @@ function compute(){
  let darkB=BANDS[0],darkV=-1;
  BANDS.forEach(b=>{const gp=W.filter(n=>n.b===b),v=gp.reduce((a,n)=>a+n.sq,0)/gp.length;
   if(v>darkV){darkV=v;darkB=b;}});
- let weakL=SI[0];SI.forEach(l=>{if(S.law[l.nm]<S.law[weakL.nm])weakL=l;});
+ /* THE LAW FURTHEST SHUT is chosen only from laws the person answered. An
+    unanswered law sits in S.law at its seed, so a pick over all of SI named
+    a seed the moment every answered law was above it, or before any law was
+    answered at all, and Summary printed it as the person's most shut law.
+    That is a reading nobody gave. No law answered, no weakL: null, and the
+    surfaces that print it say so rather than name a seed. */
+ let weakL=null;SI.forEach(l=>{if(lawIn(l.nm)&&(!weakL||S.law[l.nm]<S.law[weakL.nm]))weakL=l;});
  /* THE TWO REAL AXES. Shape is where what is running points. Control is how
     far it has compounded, which is what conditioning is, and not whether the
     will is winning: at low coherence the will always loses, so measuring it
@@ -54582,9 +54588,13 @@ function sumStory(r){
     :' No seat is closed, so what is held is not yet stopping flow.')
    /* ROUND RG. "Shadow weight is 54" was a bare figure under a term nobody
       on this page had been told. The term carries its sentence now. */
-   +' '+unp('shadow weight','Shadow weight')+' is '+fmtPct('dq',r.DQ)+'. The law furthest shut is '
+   +' '+unp('shadow weight','Shadow weight')+' is '+fmtPct('dq',r.DQ)+'.'
+   /* weakL is null until a law is answered: an unanswered law is a seed,
+      and naming a seed as the law furthest shut is a reading nobody gave */
+   +(r.weakL?' The law furthest shut is '
    +seatB(r.weakL.nm,r.weakL.b,r.weakL.nm.toLowerCase(),'law')+', at the '
-   +seatB(String(r.weakL.b).toLowerCase(),r.weakL.b,String(r.weakL.b).toLowerCase(),'seat')+'.');
+   +seatB(String(r.weakL.b).toLowerCase(),r.weakL.b,String(r.weakL.b).toLowerCase(),'seat')+'.'
+    :' No law is answered yet, so none is named as furthest shut.'));
  }else{
   /* ROUND RG. "The line" was never said, and "signal and not yet cost" was
      shorthand that had also stopped being true: DQ counts the charge under
@@ -70896,9 +70906,12 @@ function coneRead(){
  /* THE LAW WITH THE MOST ROOM. CQ is the laws summed (cqSum), so the lowest
     one has the most room to rise. weakL is the first of the lowest, so a tie
     is said as a tie, and a field with every law level names none. */
- var lo=S.law[r.weakL.nm], hi=Math.max.apply(null,SI.map(function(l){return S.law[l.nm];}));
+ /* weakL is null when no law is answered. The !r.complete return above
+    already keeps that out of here, and this guard keeps it out if that
+    return ever moves. */
+ var lo=r.weakL?S.law[r.weakL.nm]:0, hi=Math.max.apply(null,SI.map(function(l){return S.law[l.nm];}));
  var tied=SI.filter(function(l){return Math.abs(S.law[l.nm]-lo)<0.05;}).length;
- var weak=(hi-lo<0.05)?''
+ var weak=(!r.weakL||hi-lo<0.05)?''
   :'<p class="cone-p">'+(tied>1?'<b>'+esc(r.weakL.nm)+'</b> is one of the '+tied+' laws you keep least. '
     :'The law you keep least is <b>'+esc(r.weakL.nm)+'</b>. ')
    +unpSay(r.weakL.nm,'law')+' Your coherence is built from your answers on the laws, '
@@ -87732,5 +87745,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005799717"></div>
+<div id="eof" hidden data-len="005800606"></div>
 </body></html>
