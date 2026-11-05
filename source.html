@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2847 e058bbbc 2026-11-05 02:31"><head><meta charset="utf-8">
+<html lang="en" data-build="v2848 d833739e 2026-11-05 02:32"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -3732,14 +3732,19 @@ body.punch .card{border-color:transparent}
 .stk-l{flex:1 1 auto;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .stk-p{flex:0 0 auto;color:var(--mid);font-size:12px}
 .stk-r em{font-style:normal;color:var(--dim);font-size:11px;margin-left:4px}
-/* THE CASCADE, 4 November. ui/ui.js stkNode. A row is the chevron and the
-   door side by side, both at the tap floor, and what it is made of sits under
-   it, set in by one small step per layer. The step is small on purpose: the
-   deepest branch is four layers, and at 390 four steps of the chevron's own
-   width would leave the bars at the bottom too narrow to read. No card, no
-   coloured edge, his ruling on the old Flow cards. The chevron is the
-   section headers' own, .lsec-hd i above, so one mark means open here and on
-   the rail around it. */
+/* THE CASCADE, 4 November. ui/ui.js stkNode. A row is the chevron, the
+   layer's mark and the door side by side, and what it is made of sits right
+   under it. No card, no coloured edge, his ruling on the old Flow cards. The
+   chevron is the section headers' own, .lsec-hd i above, so one mark means
+   open here and on the rail around it.
+
+   NO STEP PER LAYER, 5 November, his words on the first cut's shots: "give
+   me a linear layout. its too nested right now." Each layer was set in by
+   12 pixels, a staircase four steps deep. Every row now starts at the same
+   left edge, and depth is the layer mark in its own fixed column, .stk-lm,
+   the same width at every depth, so the bars at the bottom of a branch are
+   as wide as the bars at the top. A bar has no chevron, so .stk-gut holds
+   that column empty and its mark lines up with every mark above it. */
 .stk-tl{display:flex;justify-content:flex-end;margin:-2px 0 2px}
 .stk-all{min-height:var(--tap);padding:0 8px;border:0;background:transparent;color:var(--dim);
  font-family:var(--sans);font-size:12px;cursor:pointer;border-radius:var(--r-xs)}
@@ -3754,7 +3759,11 @@ body.punch .card{border-color:transparent}
  transform:translateY(-2px) rotate(45deg);transition:transform var(--t-element) var(--ease-out)}
 .stk-n.open>.stk-nr>.stk-x{color:var(--gold)}
 .stk-n.open>.stk-nr>.stk-x i{transform:translateY(2px) rotate(-135deg)}
-.stk-kids{padding-left:12px}
+.stk-kids{padding-left:0}
+.stk-gut{flex:0 0 var(--tap);width:var(--tap)}
+.stk-lm{flex:0 0 20px;width:20px;display:inline-flex;align-items:center;justify-content:center;color:var(--dim)}
+.stk-lm svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.6;
+ stroke-linecap:round;stroke-linejoin:round;opacity:.8}
 /* a child emotion's bar is rbPair, the Balance bar; on the Field's dock it
    is laid out by .fdock .rb2, and here by the same rule */
 .stack .rb2{position:relative;display:block;flex:1 1 auto;width:100%;min-width:0;padding:4px 0 6px;
@@ -3767,10 +3776,13 @@ body.punch .card{border-color:transparent}
 /* and four layers down a pole's word is wider than its half of the bar, so
    it shortens with an ellipsis inside its own half rather than running under
    the figure; the full word is in the row's title and its spoken name */
-.stack .rb2-p{overflow:hidden}
+/* capped at its own half: a pole set to its end is sized to its words and
+   not to its column, so without the cap its word ran out of the half and
+   was cut from the front, "100%quanimity", once the linear layout's mark
+   column took the bar's width at 1600, 5 November */
+.stack .rb2-p{overflow:hidden;min-width:0;max-width:100%}
 .stack .rb2-n{min-width:0;flex:0 1 auto}
 .stk-b{padding:2px 6px}
-.stk-kids .stk-b{padding-left:2px}
 .rows{font-size:13.5px;line-height:1.85;color:var(--dim);margin-top:14px;padding-top:12px;
  border-top:1px solid var(--edge)}
 .rows b{color:var(--ink);font-weight:500;font-family:var(--num);font-variant-numeric:tabular-nums}
@@ -85949,9 +85961,28 @@ function railFold(){
    opposite is the bars at the bottom of every branch.
 
    ONE VISUAL LANGUAGE. A nested row is the rail's own stk-r row with its
-   ring, set in by a small step per layer, and nothing else: no card, no
-   coloured edge. He called the coloured edge cards in the Flow section "an
-   old legacy design", in the same reaction. */
+   ring, and nothing else: no card, no coloured edge. He called the coloured
+   edge cards in the Flow section "an old legacy design", in the same
+   reaction.
+
+   LINEAR, NOT A STAIRCASE, 5 November. The first cut set each layer in by a
+   step, and four layers down the rows had walked a fifth of the rail to the
+   right. His words on PR 182's shots: "give me a linear layout. its too
+   nested right now." So every row's left edge is the same at every depth,
+   and depth is said by one thing, the same on every row from Super to the
+   bars: the layer's own mark in a fixed column beside the chevron. The
+   marks are the tab strip's own (CHAINGLYPH, and the child emotions mark),
+   so a row four layers down carries the icon of the tab that lists its
+   kind, and the mark's tooltip says the layer in words. One concept, one
+   mark, and it costs the same width at every depth. */
+/* the child emotions layer's mark, the Child emotions tab's own, named once
+   so the tab and the cascade's bar rows draw one mark */
+var STK_FETGLYPH='M12 4.5a3.6 3.6 0 013.6 3.6v7.8a3.6 3.6 0 01-7.2 0V8.1A3.6 3.6 0 0112 4.5';
+var STK_LAYER={sup:'Super complex',hy:'Hyper complex',cx:'Complex',sab:'Saboteur',fet:'Child emotion'};
+/* a layer's mark for a cascade row: a picture, so its word rides on it */
+function stkMark(k){
+ return '<span class="stk-lm" title="'+esc(STK_LAYER[k])+'" aria-hidden="true">'
+  +svgI('<path d="'+(k==='fet'?STK_FETGLYPH:CHAINGLYPH[k])+'"/>')+'</span>';}
 var STACK_TAB='fet';
 /* the open rows, keyed by their path from the top of the cascade, so a row
    opened under one parent is not opened under another, and a render, which
@@ -86005,7 +86036,10 @@ function stkNode(o,path,r,depth){
  var nm=o.nm+(o.over?', overshot':'');
  var kids='';
  if(open){
-  if(o.kind==='sab')kids=stkFets(o).map(function(ci){return stkFetBar(ci,depth+1);}).join('');
+  /* a bar has nothing under it, so its chevron column is empty and its
+     mark sits in the same column as every row above it */
+  if(o.kind==='sab')kids=stkFets(o).map(function(ci){
+   return '<div class="stk-nr"><span class="stk-gut"></span>'+stkMark('fet')+stkFetBar(ci,depth+1)+'</div>';}).join('');
   /* a layer under the plan is said as locked, the same panel its own tab
      shows, and never as an empty branch */
   else kids=lockSees(below)?(o.parts||[]).map(function(x){return stkNode(x,key,r,depth+1);}).join('')
@@ -86014,6 +86048,7 @@ function stkNode(o,path,r,depth){
   +'<div class="stk-nr">'
   +'<button type="button" class="stk-x" data-sx="'+esc(key)+'" aria-expanded="'+open+'"'
    +' aria-label="'+esc((open?'Close ':'Open ')+'what '+o.nm+' is made of')+'"><i></i></button>'
+  +stkMark(o.kind)
   +'<button type="button" class="stk-r'+(stkSame(S.pin,o)?' on':'')+'" data-sk="'+o.kind+'" data-si="'+si+'">'
    +'<span class="stk-l">'+crPat(o,'xs')+'<span class="stk-nm">'+esc(nm)+'</span>'
    +(o.unnamed?'<em>inferred</em>':'')+'</span></button></div>'
@@ -86030,8 +86065,7 @@ function railStack(r){
  var TABS=[
   /* the key is 'fet' and stays 'fet': a key is identity and identity is
      never renamed here. The label is what a person reads and it moves. */
-  ['fet','Child emotions',CHILD.length,
-   'M12 4.5a3.6 3.6 0 013.6 3.6v7.8a3.6 3.6 0 01-7.2 0V8.1A3.6 3.6 0 0112 4.5'],
+  ['fet','Child emotions',CHILD.length,STK_FETGLYPH],
   /* the four tiers' marks are CHAINGLYPH in ui/component.js, shared with
      the glass bar's switches for the same four */
   ['sab','Saboteurs',r.sabs.length,CHAINGLYPH.sab],
@@ -87179,5 +87213,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005763123"></div>
+<div id="eof" hidden data-len="005765441"></div>
 </body></html>

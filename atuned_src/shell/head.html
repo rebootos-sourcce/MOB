@@ -3732,14 +3732,19 @@ body.punch .card{border-color:transparent}
 .stk-l{flex:1 1 auto;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .stk-p{flex:0 0 auto;color:var(--mid);font-size:12px}
 .stk-r em{font-style:normal;color:var(--dim);font-size:11px;margin-left:4px}
-/* THE CASCADE, 4 November. ui/ui.js stkNode. A row is the chevron and the
-   door side by side, both at the tap floor, and what it is made of sits under
-   it, set in by one small step per layer. The step is small on purpose: the
-   deepest branch is four layers, and at 390 four steps of the chevron's own
-   width would leave the bars at the bottom too narrow to read. No card, no
-   coloured edge, his ruling on the old Flow cards. The chevron is the
-   section headers' own, .lsec-hd i above, so one mark means open here and on
-   the rail around it. */
+/* THE CASCADE, 4 November. ui/ui.js stkNode. A row is the chevron, the
+   layer's mark and the door side by side, and what it is made of sits right
+   under it. No card, no coloured edge, his ruling on the old Flow cards. The
+   chevron is the section headers' own, .lsec-hd i above, so one mark means
+   open here and on the rail around it.
+
+   NO STEP PER LAYER, 5 November, his words on the first cut's shots: "give
+   me a linear layout. its too nested right now." Each layer was set in by
+   12 pixels, a staircase four steps deep. Every row now starts at the same
+   left edge, and depth is the layer mark in its own fixed column, .stk-lm,
+   the same width at every depth, so the bars at the bottom of a branch are
+   as wide as the bars at the top. A bar has no chevron, so .stk-gut holds
+   that column empty and its mark lines up with every mark above it. */
 .stk-tl{display:flex;justify-content:flex-end;margin:-2px 0 2px}
 .stk-all{min-height:var(--tap);padding:0 8px;border:0;background:transparent;color:var(--dim);
  font-family:var(--sans);font-size:12px;cursor:pointer;border-radius:var(--r-xs)}
@@ -3754,7 +3759,11 @@ body.punch .card{border-color:transparent}
  transform:translateY(-2px) rotate(45deg);transition:transform var(--t-element) var(--ease-out)}
 .stk-n.open>.stk-nr>.stk-x{color:var(--gold)}
 .stk-n.open>.stk-nr>.stk-x i{transform:translateY(2px) rotate(-135deg)}
-.stk-kids{padding-left:12px}
+.stk-kids{padding-left:0}
+.stk-gut{flex:0 0 var(--tap);width:var(--tap)}
+.stk-lm{flex:0 0 20px;width:20px;display:inline-flex;align-items:center;justify-content:center;color:var(--dim)}
+.stk-lm svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.6;
+ stroke-linecap:round;stroke-linejoin:round;opacity:.8}
 /* a child emotion's bar is rbPair, the Balance bar; on the Field's dock it
    is laid out by .fdock .rb2, and here by the same rule */
 .stack .rb2{position:relative;display:block;flex:1 1 auto;width:100%;min-width:0;padding:4px 0 6px;
@@ -3767,10 +3776,13 @@ body.punch .card{border-color:transparent}
 /* and four layers down a pole's word is wider than its half of the bar, so
    it shortens with an ellipsis inside its own half rather than running under
    the figure; the full word is in the row's title and its spoken name */
-.stack .rb2-p{overflow:hidden}
+/* capped at its own half: a pole set to its end is sized to its words and
+   not to its column, so without the cap its word ran out of the half and
+   was cut from the front, "100%quanimity", once the linear layout's mark
+   column took the bar's width at 1600, 5 November */
+.stack .rb2-p{overflow:hidden;min-width:0;max-width:100%}
 .stack .rb2-n{min-width:0;flex:0 1 auto}
 .stk-b{padding:2px 6px}
-.stk-kids .stk-b{padding-left:2px}
 .rows{font-size:13.5px;line-height:1.85;color:var(--dim);margin-top:14px;padding-top:12px;
  border-top:1px solid var(--edge)}
 .rows b{color:var(--ink);font-weight:500;font-family:var(--num);font-variant-numeric:tabular-nums}

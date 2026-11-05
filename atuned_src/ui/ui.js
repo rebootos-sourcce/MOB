@@ -866,9 +866,28 @@ function railFold(){
    opposite is the bars at the bottom of every branch.
 
    ONE VISUAL LANGUAGE. A nested row is the rail's own stk-r row with its
-   ring, set in by a small step per layer, and nothing else: no card, no
-   coloured edge. He called the coloured edge cards in the Flow section "an
-   old legacy design", in the same reaction. */
+   ring, and nothing else: no card, no coloured edge. He called the coloured
+   edge cards in the Flow section "an old legacy design", in the same
+   reaction.
+
+   LINEAR, NOT A STAIRCASE, 5 November. The first cut set each layer in by a
+   step, and four layers down the rows had walked a fifth of the rail to the
+   right. His words on PR 182's shots: "give me a linear layout. its too
+   nested right now." So every row's left edge is the same at every depth,
+   and depth is said by one thing, the same on every row from Super to the
+   bars: the layer's own mark in a fixed column beside the chevron. The
+   marks are the tab strip's own (CHAINGLYPH, and the child emotions mark),
+   so a row four layers down carries the icon of the tab that lists its
+   kind, and the mark's tooltip says the layer in words. One concept, one
+   mark, and it costs the same width at every depth. */
+/* the child emotions layer's mark, the Child emotions tab's own, named once
+   so the tab and the cascade's bar rows draw one mark */
+var STK_FETGLYPH='M12 4.5a3.6 3.6 0 013.6 3.6v7.8a3.6 3.6 0 01-7.2 0V8.1A3.6 3.6 0 0112 4.5';
+var STK_LAYER={sup:'Super complex',hy:'Hyper complex',cx:'Complex',sab:'Saboteur',fet:'Child emotion'};
+/* a layer's mark for a cascade row: a picture, so its word rides on it */
+function stkMark(k){
+ return '<span class="stk-lm" title="'+esc(STK_LAYER[k])+'" aria-hidden="true">'
+  +svgI('<path d="'+(k==='fet'?STK_FETGLYPH:CHAINGLYPH[k])+'"/>')+'</span>';}
 var STACK_TAB='fet';
 /* the open rows, keyed by their path from the top of the cascade, so a row
    opened under one parent is not opened under another, and a render, which
@@ -922,7 +941,10 @@ function stkNode(o,path,r,depth){
  var nm=o.nm+(o.over?', overshot':'');
  var kids='';
  if(open){
-  if(o.kind==='sab')kids=stkFets(o).map(function(ci){return stkFetBar(ci,depth+1);}).join('');
+  /* a bar has nothing under it, so its chevron column is empty and its
+     mark sits in the same column as every row above it */
+  if(o.kind==='sab')kids=stkFets(o).map(function(ci){
+   return '<div class="stk-nr"><span class="stk-gut"></span>'+stkMark('fet')+stkFetBar(ci,depth+1)+'</div>';}).join('');
   /* a layer under the plan is said as locked, the same panel its own tab
      shows, and never as an empty branch */
   else kids=lockSees(below)?(o.parts||[]).map(function(x){return stkNode(x,key,r,depth+1);}).join('')
@@ -931,6 +953,7 @@ function stkNode(o,path,r,depth){
   +'<div class="stk-nr">'
   +'<button type="button" class="stk-x" data-sx="'+esc(key)+'" aria-expanded="'+open+'"'
    +' aria-label="'+esc((open?'Close ':'Open ')+'what '+o.nm+' is made of')+'"><i></i></button>'
+  +stkMark(o.kind)
   +'<button type="button" class="stk-r'+(stkSame(S.pin,o)?' on':'')+'" data-sk="'+o.kind+'" data-si="'+si+'">'
    +'<span class="stk-l">'+crPat(o,'xs')+'<span class="stk-nm">'+esc(nm)+'</span>'
    +(o.unnamed?'<em>inferred</em>':'')+'</span></button></div>'
@@ -947,8 +970,7 @@ function railStack(r){
  var TABS=[
   /* the key is 'fet' and stays 'fet': a key is identity and identity is
      never renamed here. The label is what a person reads and it moves. */
-  ['fet','Child emotions',CHILD.length,
-   'M12 4.5a3.6 3.6 0 013.6 3.6v7.8a3.6 3.6 0 01-7.2 0V8.1A3.6 3.6 0 0112 4.5'],
+  ['fet','Child emotions',CHILD.length,STK_FETGLYPH],
   /* the four tiers' marks are CHAINGLYPH in ui/component.js, shared with
      the glass bar's switches for the same four */
   ['sab','Saboteurs',r.sabs.length,CHAINGLYPH.sab],
