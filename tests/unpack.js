@@ -179,7 +179,10 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
  /* ---- the axes and the laws in the left rail: the label says what it is ---- */
  const nf=await p.evaluate(()=>Array.prototype.map.call(document.querySelectorAll('#laws .nf label,#chg .nf label'),function(l){
   return {t:l.textContent,tip:l.getAttribute('data-tip')||'',dotted:l.classList.contains('tipu')};}));
- ok(nf.length===E.SI.length+2*E.CHILD.length,'the rail has a label for every law and for both ends of every axis, saw '+nf.length);
+ /* the axis labels went with the left rail's Child emotions section, SV22,
+    5 November, struck on his screenshot; the laws keep theirs, and every
+    label still on the rail is held to its sentence below */
+ ok(nf.length===E.SI.length,'the rail has a label for every law, saw '+nf.length);
  nf.forEach(l=>{
   const m=/^toward (.+)$/.exec(l.t);
   const want=m?T['opposite:'+m[1].toLowerCase()]:(T['law:'+l.t.toLowerCase()]||T['feeling:'+l.t.toLowerCase()]);

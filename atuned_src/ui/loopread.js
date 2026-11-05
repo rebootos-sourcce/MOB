@@ -4,13 +4,14 @@
    and P18b, one Next. Its home is the Field's side column, where the app
    opens; Summary's pinned card is the same component."
 
-   ONE COMPONENT, TWO HOMES, NEVER BOTH ON ONE SCREEN. loopHtml writes the
-   whole block. The Field's right column carries it as a folding section,
-   #loopside, shown on the Field only (head.html), and Summary carries it as
-   its own named zone, #sumloop, through sumLoopSlot. The rail is on every tab
-   and Summary's card is on Summary, so the rail section is hidden everywhere
-   but the Field: the same block twice on one screen would be one answer
-   asked for twice.
+   ONE HOME NOW, SUMMARY'S. loopHtml writes the whole block and Summary
+   carries it as its own named zone, #sumloop, through sumLoopSlot. It had a
+   second home, the Field's right column, #loopside, painted by loopPaint,
+   until 5 November, SV22, when he circled and crossed it there: "Get rid of
+   the section that says your patterns. I'm not quite certain what that does
+   or what it's for." The section, loopPaint and the rail's layout went. His
+   screenshots were of the Field and did not show Summary, so its zone is
+   left as it was rather than cut on a guess.
 
    A SEPARATE, NAMED BLOCK ON SUMMARY. Another seat builds the Daily Summary
    into the same page through sumDaySlot and sumDayHtml in ui/summary.js. This
@@ -168,28 +169,19 @@ var LP_IC='<circle cx="6" cy="6" r="2.6"/><circle cx="18" cy="12" r="2.6"/><circ
  +'<path d="M8.4 7.2l7.2 3.6M15.6 13.2l-7.2 3.6"/>';
 function sumLoopSlot(r){
  var body=loopHtml(r,'sum'); if(!body)return '';
+ /* loopPaint wired the block on every render, from any tab, and Summary's
+    Show all and Run a release were only ever answering because of it. It
+    went with the Field's home, so the one home left wires itself. */
+ loopWire();
  return '<section id="sumloop" class="sg-z sg-loop" data-slot="loop" data-grp="loop" aria-labelledby="sg-h-loop">'
   +'<h2 class="sg-zh" id="sg-h-loop"><svg class="sg-ic" viewBox="0 0 24 24" aria-hidden="true">'+LP_IC+'</svg>'
   +'<span>Your patterns</span></h2>'+body+'</section>';}
 
-/* THE FIELD'S SIDE COLUMN. Painted from render() on every tab, and empty
-   anywhere but the Field, so a hidden section never holds a stale reading. */
-function loopPaint(r){
- var h=document.getElementById('loopside'); if(!h)return;
- var onField=document.body.classList.contains('tab-field');
- var html=onField?loopHtml(r,'rail'):'';
- var sec=h.closest?h.closest('.lsec'):null;
- if(sec)sec.classList.toggle('lp-none',!html);
- if(h.innerHTML!==html)h.innerHTML=html;
- loopWire();}
-
 function loopRepaint(){
- var r=(typeof computeSeen==='function')?computeSeen():null;
- loopPaint(r);
  if(document.body.classList.contains('tab-summary')&&typeof sumRender==='function')sumRender();}
 
-/* WIRED ONCE, on the document, so both homes answer the same way and neither
-   host's own click handler has to know this block exists. */
+/* WIRED ONCE, on the document, so Summary's own click handler never has to
+   know this block exists. It was written for two homes and keeps the shape. */
 function loopWire(){
  if(LP.wired)return; LP.wired=true;
  document.addEventListener('toggle',function(ev){var d=ev.target;

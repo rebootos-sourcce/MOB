@@ -58,25 +58,21 @@ function numField(host,name,band,store,key,ic,tip){
  trk.addEventListener('wheel',function(e){e.preventDefault();set(store[key]+(e.deltaY<0?.5:-.5));},{passive:false});
  inp.addEventListener('wheel',function(e){e.preventDefault();set(store[key]+(e.deltaY<0?.5:-.5));},{passive:false});
  return {inp,tr,trk};}
-const CHF={},RPF={},LWF={};
-CHILD.forEach(function(cf){
- CHF[cf.nm]=numField($('chg'),cf.nm,cf.seat,S.charge,cf.nm,cf.ic,unpackOf(cf.nm,'feeling'));
- /* the opposite takes the same mark in Heart, as the stack draws it */
- RPF[cf.nm]=numField($('chg'),'toward '+cf.opp,'Heart',S.replace,cf.nm,cf.ic,unpackOf(cf.opp,'opposite'));
- RPF[cf.nm].inp.parentElement.classList.add('oppf');});
+/* THE CHILD EMOTION SLIDERS CAME OFF, 5 November, SV22, with the left rail's
+   Child emotions section he struck (body.html says what it held). They were
+   built here into #chg, and numField appends into its host, so a build left
+   behind would throw at load on a host that no longer exists and take every
+   module after this one with it. The laws keep theirs. */
+const LWF={};
 SI.forEach(function(l){LWF[l.nm]=numField($('laws'),l.nm,l.b,S.law,l.nm,l.ic,unpackOf(l.nm,'law'));});
+/* syncCh stays, and keeps the half that was never about the sliders: every
+   caller relies on it to coerce each held and opposite value to a number,
+   and a loaded record with a missing axis to a zero. */
 function syncCh(){CHILD.forEach(function(cf){
- const f=CHF[cf.nm],v=+S.charge[cf.nm]||0;S.charge[cf.nm]=v;
- f.inp.value=v.toFixed(1);f.tr.style.width=(v*10)+'%';f.trk.setAttribute('aria-valuenow',v.toFixed(1));
- const o=RPF[cf.nm],w=+S.replace[cf.nm]||0;S.replace[cf.nm]=w;
- o.inp.value=w.toFixed(1);o.tr.style.width=(w*10)+'%';o.trk.setAttribute('aria-valuenow',w.toFixed(1));});}
+ S.charge[cf.nm]=+S.charge[cf.nm]||0; S.replace[cf.nm]=+S.replace[cf.nm]||0;});}
 function syncLw(){SI.forEach(function(l){
  const f=LWF[l.nm],v=+S.law[l.nm]||0;S.law[l.nm]=v;
  f.inp.value=v.toFixed(1);f.tr.style.width=(v*10)+'%';f.trk.setAttribute('aria-valuenow',v.toFixed(1));});}
-$('allCh').addEventListener('input',function(e){toYou();
- CHARGES.forEach(function(c){S.charge[c]=+e.target.value;});syncCh();saveYou();render();});
-$('allRep').addEventListener('input',function(e){toYou();
- CHARGES.forEach(function(c){S.replace[c]=+e.target.value;});syncCh();saveYou();render();});
 /* THE BULK LAW SLIDER ANSWERS NOTHING, P2-5 of the inference audit, 24
    October. It set every law in one drag, and a law moved off its seed counts
    as answered (lawIn, saveProfile), so one gesture filled all 21 and CQ, the
@@ -959,8 +955,6 @@ function rebuildSwatches(){
  $('roots').querySelectorAll('.rootb').forEach(function(b){b.style.setProperty('--rc',rootCol(b.dataset.r));});
  ['ar1','ar2'].forEach(function(id){
   $(id).querySelectorAll('.ib').forEach(function(b,i){b.style.setProperty('--c',icCol(ARCH[i].b));});});
- CHILD.forEach(function(cf){
-  var i=CHF[cf.nm].inp.parentElement.querySelector('i');if(i)i.style.background=seatCol(cf.seat);});
  SI.forEach(function(l){
   var i=LWF[l.nm].inp.parentElement.querySelector('i');if(i)i.style.background=seatCol(l.b);});
  /* the matrix's own key is written once at boot and again only when the

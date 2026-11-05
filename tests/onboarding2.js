@@ -422,15 +422,16 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
     on each released pattern's row as what the person said, and the graph
     counts it as evidence for nothing. Every row is listed so the check does
     not depend on which four come first. */
- /* ON THE FIELD, where that rail draws: loopPaint in ui/loopread.js fills it
-    only while the Field is the tab. The app opened on the Field when this was
-    written and opens on Discover since 23 October (TABHOME, engine/core.js),
-    so the check goes to the Field the way a person does, then reads its rail. */
+ /* ON SUMMARY, the block's one home since 5 November, SV22, when he struck
+    it off the Field's rail. This read the Field's #loopside, painted by
+    loopPaint; the same block is Summary's #sumloop, so the check goes to
+    Summary the way a person does and reads it there. */
  const lp=await page.evaluate(q=>{
-  if(typeof setTab==='function')setTab(TAB.FIELD);
+  if(typeof setTab==='function')setTab(TAB.SUMMARY);
+  if(typeof render==='function')render();
   if(typeof LP!=='undefined'){LP.all=true; if(typeof loopRepaint==='function')loopRepaint();}
   const L=loopRead(CURP), rows=L.patterns.filter(x=>q.indexOf(x.address)>=0);
-  const side=document.getElementById('loopside');
+  const side=document.getElementById('sumloop');
   return {rows:rows.map(x=>({a:x.address,said:x.said||null,evFor:x.evFor,evAgainst:x.evAgainst})),
    rail:side?side.textContent:'',
    evEdges:traceFromRecord(CURP,practiceTraceIntents(CURP.practice)).edges.filter(e=>/^evidence:/.test(e.from)).length};},said.q);
@@ -438,7 +439,7 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
   'Your patterns reads the answer on every released address\'s row: '+JSON.stringify(lp.rows.map(r=>r.said)));
  ok(lp.rows.every(r=>r.evFor===0&&r.evAgainst===0),'and never counts it as evidence for or against');
  ok(lp.evEdges===0,'and the graph holds no evidence edge for it, got '+lp.evEdges);
- ok(/"Something moved" after 1 release/.test(lp.rail),'the Field rail prints it on the row, in the question\'s own words');
+ ok(/"Something moved" after 1 release/.test(lp.rail),'Summary\'s patterns zone prints it on the row, in the question\'s own words');
  await page.close();
 }
 

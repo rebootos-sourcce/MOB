@@ -2498,16 +2498,14 @@ body.punch .rt-cell{box-shadow:none;background:var(--panel-2)}
 .lsec-hd>span{display:inline-flex;align-items:center;gap:9px;min-width:0}
 .lsec-ic{width:16px;height:16px;flex:0 0 auto;fill:none;stroke:currentColor;
  stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-/* YOUR PATTERNS, ui/loopread.js. One block in two homes: the Field's right
-   column and Summary's own zone, #sumloop. The rail section is the Field's
-   only, so the same block never stands twice on one screen, and it steps out
-   of the column when there is nothing to say (an unread field). The four
-   counts are figures with a one word label each; the why chain is a line of
-   rings, one per step on the record, ring and not fill. */
-body:not(.tab-field) .lsec.lp-sec,.lsec.lp-sec.lp-none{display:none}
+/* YOUR PATTERNS, ui/loopread.js. Summary's own zone, #sumloop. It had a
+   second home in the Field's right column until 5 November, SV22, when he
+   struck it there, so the rail section's rule went with the section. The
+   four counts are figures with a one word label each; the why chain is a
+   line of rings, one per step on the record, ring and not fill. */
 .lp{display:flex;flex-direction:column;gap:12px;min-width:0}
 .lp-figs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
-.lp-rail .lp-figs,.sg-loop .lp-figs{grid-template-columns:repeat(2,minmax(0,1fr))}
+.sg-loop .lp-figs{grid-template-columns:repeat(2,minmax(0,1fr))}
 .lp-f{display:flex;flex-direction:column;gap:2px;padding:9px 11px;border:1px solid var(--edge);
  border-radius:var(--r-s);min-width:0}
 .lp-fl{font-size:12px;font-weight:600;color:var(--dim);letter-spacing:.02em}
@@ -2855,8 +2853,6 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
  cursor:ew-resize;position:relative;box-sizing:content-box}
 .nf .tr:hover{outline:1px solid var(--gold);outline-offset:2px;border-radius:3px}
 .nf .tr b{display:block;height:100%;border-radius:3px;transition: width var(--t-surface) var(--ease-out)}
-.nf.oppf label{opacity:.74;font-size:13px;padding-left:4px}
-.nf.oppf{margin-bottom:12px;margin-top:-2px}
 .bulk{display:flex;gap:10px;align-items:center;margin-bottom:11px}
 .bulk label{font-size:13.5px;color:var(--mid);flex:0 0 58px}
 .bulk input[type=range]{flex:1 1 auto;-webkit-appearance:none;appearance:none;height:var(--tap);
@@ -2876,35 +2872,6 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
 .mx button[data-sel="1"]{box-shadow:inset 0 0 0 1px var(--gold)}
 .mxk{font-size:12.5px;color:var(--dim);line-height:1.65;margin-top:10px}
 .mxk b{color:var(--ink);font-weight:600}
-
-/* THE CHAIN KEY. One row per tier, nerve to root, a swatch and a sentence.
-   The dot is the exact color the wheel paints that tier's threads and beads
-   with, set inline from bc() at render time, so a swatch here and a bead on
-   the wheel can never read as two different colors for the same tier. */
-.chk-row{display:flex;align-items:flex-start;gap:9px;margin-top:10px}
-.chk-dot{flex:0 0 auto;width:11px;height:11px;border-radius:50%;margin-top:3px;
- box-shadow:0 0 0 1px rgba(0,0,0,.25)}
-.chk-dot.varies{background:conic-gradient(from 0deg,#e06a5a,#e0a65a,#e0d85a,#6ac17a,#5ac1b8,#5a8fe0,#a05ae0,#e06a5a)}
-/* a field anchor sits at no seat and has no colour of its own yet (CB10,
-   open), and every rendition draws it as an unfilled ring, so its swatch is
-   that ring and not a dot of a colour the drawing never uses */
-.chk-dot.ring{background:transparent;box-shadow:inset 0 0 0 1.4px var(--ink);opacity:.6}
-.chk-tx{font-size:12.5px;color:var(--dim);line-height:1.5}
-.chk-tx b{color:var(--ink);font-weight:600}
-
-/* THE FOUR AMPLIFIERS. One row each, a name and the real crBadge (.crb,
-   above) reading its own address. Its own small rule rather than
-   knowledge.js's kb-row/kbp, which that file injects itself only once the
-   Knowledge tab has been opened: a press on Field alone, never Knowledge,
-   would have shown these names with no flex, no gap and no border, the
-   classes present with nothing behind them. */
-.amp-row{display:flex;align-items:center;justify-content:space-between;gap:10px;
- padding:9px 0;border-bottom:1px solid var(--edge);background:none;border-left:0;
- border-right:0;border-top:0;width:100%;text-align:left;cursor:pointer;color:inherit;
- font:inherit}
-.amp-row:last-child{border-bottom:0}
-.amp-row:hover{background:var(--sunk)}
-.amp-nm{font-size:13.5px;color:var(--ink)}
 
 /* ---------- spiritual states ---------- */
 .sp-hd{margin:14px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--edge);color:var(--gold)}
@@ -2939,15 +2906,14 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
 .rcard .sub{font-size:13px;opacity:.72;position:relative;margin:0;color:var(--mid);font-weight:300}
 .rcard .w{position:absolute;right:14px;top:12px}
 .rnone{font-size:13.5px;color:var(--dim);padding:10px 0}
-/* NO CARD AROUND THE SUMMARY BOX, 4 November. This was a gold edged card
-   carrying the person's name, and the name came off on his screenshot ("the
-   person already knows who they are"). What is left, the summary box, is a
-   box of its own, so a card around it was a box in a box with the coloured
-   edge he called "an old legacy design" on the Flow cards the same day. */
-.person{border-radius:var(--r-s)}
-.person h3{margin:0;font-size:20px;font-weight:600;letter-spacing:0}
-.prole{font-size:12.5px;color:var(--dim);margin-top:3px}
-.psay{font-size:14.5px;line-height:1.7;color:var(--mid);margin:11px 0 0;font-style:italic;font-weight:300}
+/* INSIGHT'S SUMMARY IS SELECTION, 5 November, SV22. #isel holds the
+   Selection panel's own nodes on the Field (railSelHome, ui/ui.js), and the
+   drill brings its own card, so this adds no box around it: the summary box
+   that sat here, and the card around that before it, are both gone. On the
+   Field the Selection section is then empty and steps out of the column, so
+   a person never sees a Selection heading over nothing. */
+.isel:empty{display:none}
+body.tab-field .lsec[data-rail="right"][data-sec="sel"]{display:none}
 .tierow{display:grid;grid-template-columns:72px 1fr auto;gap:10px;align-items:baseline;
  font-size:13.5px;color:var(--mid);padding:4px 0}
 .tk{font-size:11px;font-weight:600;color:var(--dim)}
@@ -3708,6 +3674,16 @@ body.punch .card{border-color:transparent}
 /* the stack tabs under the reading */
 .stack{margin-top:14px}
 .stk-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
+/* ONE ROW, ICON LED, SV22, ui/ui.js railStack says why. The five share the
+   row equally and never shrink under the tap floor; at 44 each they need
+   236 of the rail's measured 290. The word is clipped from sight and kept in
+   the button, the house's own hidden pattern (.st-lb). Wrapping is left on,
+   so a rail narrower than five floors wraps rather than hides a tab, rule
+   10. */
+.stk-tabs .stk-t{flex:1 1 0;min-width:var(--tap);justify-content:center;padding:8px 6px;gap:5px}
+.stk-t span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);
+ clip-path:inset(50%);white-space:nowrap}
+.stk-t{position:relative}
 /* THE TAP FLOOR IS A FLOOR. These two strips set 32 and 36 against a measured
    minimum of 44, and they render on every surface in the product, so one
    declaration was responsible for five of the seven failing tabs. Gate 8 now

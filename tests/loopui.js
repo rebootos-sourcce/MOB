@@ -1,10 +1,12 @@
 /* The Your patterns gate, ui/loopread.js, in a real Chromium.
 
-   One block, two homes: the Field's right column (#loopside) and Summary's
-   own zone (#sumloop). What this holds is what the person sees:
+   One home since 5 November, SV22: Summary's own zone (#sumloop). The
+   Field's right column (#loopside) was the other until he struck it there,
+   "Get rid of the section that says your patterns". What this holds is what
+   the person sees:
 
-     silent on an unread field, in both homes
-     one home per screen: the rail section is the Field's only
+     silent on an unread field
+     the Field carries no patterns block, and nothing of its section is left
      every count label carries its meaning from the gloss table, the one
        tooltip the product has, character for character (round PO)
      no day count anywhere in the block
@@ -50,8 +52,7 @@ const SETUP=function(full){
   CURP.practice=P;
   CURP.trace={v:1,nodes:[{type:'story',id:T1,src:'known'},{type:'pattern',id:'55',src:'known'}],
    edges:[{from:'story:'+T1,to:'pattern:55',edge:'supports',src:'user_confirmed',was:'inferred'}]};}
- setTab(TAB.FIELD); render();
- OPENSEC.right.loop=1; paintSections();};
+ setTab(TAB.SUMMARY); render(); if(typeof sumRender==='function')sumRender();};
 
 /* run in the page: every count label in a block carries the table's own
    sentence for its term on a tooltip carrier. Returns the bare ones. */
@@ -74,67 +75,56 @@ require('./net.js').guardBrowser(b);
   await p.goto(FILE); await booted(p);
 
   /* 1. silent on an unread field */
-  const blank=await p.evaluate(()=>{loadP(0); setTab(TAB.FIELD); render();
-   var sec=document.querySelector('.lsec.lp-sec');
-   var o={unread:computeSeen().unread, html:document.getElementById('loopside').innerHTML,
-    shown:getComputedStyle(sec).display};
-   setTab(TAB.SUMMARY); render(); if(typeof sumRender==='function')sumRender();
-   o.sum=!!document.getElementById('sumloop'); return o;});
+  const blank=await p.evaluate(()=>{loadP(0); setTab(TAB.SUMMARY); render(); if(typeof sumRender==='function')sumRender();
+   return {unread:computeSeen().unread, sum:!!document.getElementById('sumloop')};});
   ok(blank.unread===true,'the blank profile is unread');
-  ok(blank.html==='','an unread field writes nothing into the rail block, got '+blank.html.length+' characters');
-  ok(blank.shown==='none','and the rail section steps out of the column');
   ok(blank.sum===false,'and Summary carries no patterns zone');
 
-  /* 2. the Field's side column */
+  /* 2. the Field carries none of it, SV22: out of the document, not folded */
   await p.evaluate(SETUP,false); await p.waitForTimeout(300);
+  const fld=await p.evaluate(()=>{setTab(TAB.FIELD); render();
+   var o={side:!!document.getElementById('loopside'), sec:!!document.querySelector('.lsec.lp-sec,.lsec[data-sec="loop"]'),
+    visible:[].slice.call(document.querySelectorAll('.lp')).filter(function(e){return e.getClientRects().length>0;}).length};
+   setTab(TAB.SUMMARY); render(); if(typeof sumRender==='function')sumRender(); return o;});
+  ok(!fld.side&&!fld.sec&&fld.visible===0,'the Field has no Your patterns section, host or block, '+JSON.stringify(fld));
+
+  /* 3. Summary's zone, the one home */
   const f=await p.evaluate(BARE_SRC=>{
    var BARE=eval('('+BARE_SRC+')');
-   var h=document.getElementById('loopside'), sec=document.querySelector('.lsec.lp-sec');
+   var h=document.getElementById('sumloop');
    var vis=[].slice.call(document.querySelectorAll('.lp')).filter(function(e){return e.getClientRects().length>0;});
    /* the known bad case: a copy with one meaning taken off */
    var bad=h.cloneNode(true), c=bad.querySelector('.lp-fl .tipu'); if(c)c.removeAttribute('data-tip');
-   return {shown:getComputedStyle(sec).display, figs:h.querySelectorAll('.lp-f').length,
+   return {slot:h.getAttribute('data-slot'), figs:h.querySelectorAll('.lp-f').length,
     rows:h.querySelectorAll('.lp-p').length, bare:BARE(h), badBare:BARE(bad), visible:vis.length,
     text:h.innerText, next:(h.querySelector('[data-lprel]')||{}).getAttribute?h.querySelector('[data-lprel]').getAttribute('data-lprel'):null,
-    open:h.querySelectorAll('.lp-p[open]').length};},BARE.toString());
+    open:h.querySelectorAll('.lp-p[open]').length, day:!!document.getElementById('sumday'), inDay:!!h.closest('#sumday')};},BARE.toString());
   ok(f.badBare.length===1,'the label check calls a stripped label bare: the known bad case, got '+JSON.stringify(f.badBare));
-  ok(f.shown!=='none','on the Field the rail section is shown');
+  ok(f.slot==='loop','Summary carries the block as its own named zone, #sumloop');
   ok(f.figs===4,'four counts, got '+f.figs);
   ok(f.bare.length===0,'every count label carries the gloss sentence on its carrier, bare: '+JSON.stringify(f.bare));
   ok(f.rows===4,'four patterns before Show all, got '+f.rows);
   ok(f.open===1,'the first pattern opens on its chain, the rest are closed, got '+f.open);
-  ok(f.visible===1,'one patterns block on the Field screen, got '+f.visible);
+  ok(f.visible===1,'one patterns block on the Summary screen, got '+f.visible);
   ok(f.next==='46','the Next names address 46, the one the words named, got '+f.next);
   ok(!/\bday\s*\d|\d+\s*days?\b|streak/i.test(f.text),'no day count and no streak in the block');
   ok(/from your words/.test(f.text)&&/not said yes or no to this pattern yet/.test(f.text),'the chain says where the pattern came from and that it is unanswered');
+  ok(f.day&&!f.inDay,'the Daily Summary slot is still there and the patterns zone is not inside it');
 
-  /* 3. the Next acts on the address it names */
+  /* 4. the Next acts on the address it names. Summary wires the block itself
+     now: loopPaint used to, from the Field's home, on every render */
   const pressed=await p.evaluate(()=>{var got=null, keep=window.relPick;
    window.relPick=function(ids){got=ids;};
-   try{document.querySelector('#loopside [data-lprel]').click();}finally{window.relPick=keep;}
+   try{document.querySelector('#sumloop [data-lprel]').click();}finally{window.relPick=keep;}
    return got;});
   ok(JSON.stringify(pressed)==='[46]','Run a release opens the run at 46, got '+JSON.stringify(pressed));
 
-  /* 4. Show all, and back */
-  const all=await p.evaluate(()=>{document.querySelector('#loopside [data-lpall]').click();
-   var n=document.querySelectorAll('#loopside .lp-p').length;
-   document.querySelector('#loopside [data-lpall]').click();
-   return [n,document.querySelectorAll('#loopside .lp-p').length];});
+  /* 5. Show all, and back */
+  const all=await p.evaluate(()=>{document.querySelector('#sumloop [data-lpall]').click();
+   var n=document.querySelectorAll('#sumloop .lp-p').length;
+   document.querySelector('#sumloop [data-lpall]').click();
+   return [n,document.querySelectorAll('#sumloop .lp-p').length];});
   ok(all[0]===5&&all[1]===4,'Show all lists every pattern and the second press goes back to four, got '+all);
-
-  /* 5. Summary's own zone, and only one home on screen */
-  const s=await p.evaluate(BARE_SRC=>{var BARE=eval('('+BARE_SRC+')');
-   setTab(TAB.SUMMARY); render(); if(typeof sumRender==='function')sumRender();
-   var z=document.getElementById('sumloop'), sec=document.querySelector('.lsec.lp-sec');
-   var vis=[].slice.call(document.querySelectorAll('.lp')).filter(function(e){return e.getClientRects().length>0;});
-   return {z:!!z, slot:z&&z.getAttribute('data-slot'), railShown:getComputedStyle(sec).display,
-    visible:vis.length, bare:z?BARE(z):['no zone'], day:!!document.getElementById('sumday'),
-    inDay:z?!!z.closest('#sumday'):false};},BARE.toString());
-  ok(s.z&&s.slot==='loop','Summary carries the block as its own named zone, #sumloop');
-  ok(s.railShown==='none','the rail section is hidden on Summary, so the block is not shown twice');
-  ok(s.visible===1,'one patterns block on the Summary screen, got '+s.visible);
-  ok(s.bare.length===0,'and its labels carry their meanings too');
-  ok(s.day&&!s.inDay,'the Daily Summary slot is still there and the patterns zone is not inside it');
 
   /* 6. a record with practice on it */
   await p.evaluate(SETUP,true); await p.waitForTimeout(300);
@@ -148,7 +138,7 @@ require('./net.js').guardBrowser(b);
      done false none, so the figure is those days plus the one event. It
      read 18 against the typed 1 at b2b7a03. SETUP resets practice and trace
      and leaves the log, which is the record a person sees on Angela. */
-  const q=await p.evaluate(()=>{var h=document.getElementById('loopside');
+  const q=await p.evaluate(()=>{var h=document.getElementById('sumloop');
    var fig={}; h.querySelectorAll('.lp-f').forEach(function(x){fig[x.querySelector('.lp-fl').textContent.trim()]=x.querySelector('.lp-fv').textContent.trim();});
    var days=(CURP.rituals||[]).filter(function(x){return x&&typeof x==='object'&&x.done!==false;}).length;
    return {fig:fig, days:days, text:h.innerText, conf:h.querySelectorAll('.lp-st.lp-confirmed').length};});
