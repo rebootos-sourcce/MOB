@@ -6602,8 +6602,8 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
     it, which a regression that brings a switch back would still fail. */
  const drawn=async v=>{
   /* the bar opens shut since SV18, so it is opened with its own control to be
-     measured; the switches it carries are the model's less the two he took
-     off it, FB_OFFBAR in ui/fieldbar.js */
+     measured; the switches it carries are FB_LAYERS, the model's less the
+     three entries he took off it entirely */
   await fp.evaluate(v=>{loadP(PERSON('James'));setTab(TAB.FIELD);layPick(3);fviewSet(v);
    if(FB.classList.contains('shut'))FB_TOG.click();},v);
   await frame(fp);
@@ -6612,7 +6612,7 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
    const lays=[...document.querySelectorAll('#fbar .fb-full [data-fb]')];
    return {svg:!!fr.querySelector('svg.frsvg'),cv:d('cv'),fbar:d('fbar'),frend:d('frend'),subbar:d('subbar'),
     w:fr.clientWidth,h:fr.clientHeight,
-    lays:lays.map(b=>b.getAttribute('data-fb')).sort().join(','),want:[].concat(...LAYADD).filter(k=>!FB_OFFBAR[k]).sort().join(','),
+    lays:lays.map(b=>b.getAttribute('data-fb')).sort().join(','),want:FB_LAYERS.map(l=>l.k).sort().join(','),
     layOn:lays.every(b=>b.getAttribute('aria-pressed')==='true'),
     laySizes:lays.map(b=>{const r=b.getBoundingClientRect();return [Math.round(r.width),Math.round(r.height)];}),
     counts:L.map(k=>[k,fr.querySelectorAll('.L-'+k+' [data-h], .L-'+k+' rect, .L-'+k+' path, .L-'+k+' circle').length]),
@@ -7274,9 +7274,11 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  /* measured on this fresh page, because everything above has pressed the bar */
  const on=await fp.evaluate(()=>{const lays=[...document.querySelectorAll('#fbar .fb-full [data-fb]')];
   return {view:S.view,custom:LAYSET,off:lays.filter(b=>b.getAttribute('aria-pressed')!=='true').map(b=>b.getAttribute('data-fb')),
-   /* less the two circles SV18 took off the bar, FB_OFFBAR; their layers are
-      still on, which LAYSET null and view 3 already say */
-   n:lays.length,want:[].concat(...LAYADD).filter(k=>!FB_OFFBAR[k]).length};});
+   /* read against FB_LAYERS, not LAYADD: seats, shadow and stories left the
+      bar's own switch row entirely (his red marks, both rounds), though
+      LAYADD and the frames/dial pictures still carry and draw them when on,
+      which LAYSET null and view 3 already say */
+   n:lays.length,want:FB_LAYERS.length};});
  const fold2=await fp.evaluate(async()=>{const kept=document.body.classList.contains('lshut');
   document.getElementById('lfold').click(); await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
   return {kept,open:!document.body.classList.contains('lshut')&&!!document.getElementById('fdock').offsetParent,
@@ -7664,16 +7666,19 @@ console.log('\n=== GO: the Field lands with its column shut, two names changed, 
    energetics:!document.querySelector('[data-sec=energetics]').classList.contains('open'),
    left:document.querySelector('[data-sec=energetics] .lsec-hd').textContent.trim(),
    esum:document.querySelector('[data-sec=overlap] .lsec-hd').textContent.trim(),
-   /* Assemblage points left the bar at SV18, FB_OFFBAR, so its name is read
-      off the table the bar draws from; Laws of Action is still a circle */
-   seats:FB_BYK.seats.nm,onbar:!!lay('seats'),gates:lay('gates').getAttribute('aria-label'),
+   /* SEATS LEFT THE BAR ENTIRELY, not a rename: the FB_LAYERS entry itself is
+      gone (fieldbar.js), so FB_BYK.seats no longer exists to read a name
+      off. Asserted here as its absence, not its name, so a regression that
+      brings the circle back under any label still fails this line. Gates
+      (Laws of Action) is still a circle and still named. */
+   seatsGone:!lay('seats')&&!FB_BYK.seats,gates:lay('gates').getAttribute('aria-label'),
    stale:names.filter(n=>/^(Seats|Gates)$/.test(n)),
    view:S.view,custom:LAYSET,ring:dv.getAttribute('stroke-dasharray'),
    togMark:F.querySelector('.fb-tog svg').innerHTML,foldMark:document.querySelector('#lfold svg').innerHTML};});
  ok(a.tab&&a.lshut&&a.stored===null,'a first visit to the Field at 1600 finds the left column shut and nothing stored, '+JSON.stringify({lshut:a.lshut,stored:a.stored}));
  ok(a.energetics&&a.left==='Root Energetics','the left rail keeps Root Energetics, closed, '+a.left);
  ok(a.esum==='Energetic summary','and the summary keeps its own name, Energetic summary, so no two sections share one, '+a.esum);
- ok(a.seats==='Assemblage points'&&!a.onbar&&a.gates==='Laws of Action'&&!a.stale.length,'the names are Assemblage points and Laws of Action, neither old word, and Assemblage points is off the bar, '+JSON.stringify([a.seats,a.onbar,a.gates,a.stale]));
+ ok(a.seatsGone&&a.gates==='Laws of Action'&&!a.stale.length,'the bar says Laws of Action, and Assemblage points is gone from the bar entirely, not renamed, '+JSON.stringify([a.seatsGone,a.gates,a.stale]));
  ok(a.view===3&&a.custom===null&&a.ring==='100.0 100','depth starts full, Blueprint, and its ring reads full, '+a.ring);
  ok(a.togMark!==a.foldMark,'the bar\'s fold and the column\'s fold wear two marks, since they now stand side by side');
  /* ONE PRESS ON ONE LAYER IS NOT DEPTH GOING TO NOTHING. The ring was binary,
