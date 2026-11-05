@@ -87,7 +87,10 @@
             A tag creates the ritual by drafting the practice that seat calls
             for, ritFor's own answer, so a tag carries no second library.
      on     the weekdays it is due, Monday 0 to Sunday 6, the week starting
-            Monday as RU2 ruled. Missing is every day, which is what every plan
+            Monday as RU2 ruled. SV24 reversed RU2 for what is drawn, his words
+            "start with Sunday", and not for what is stored: every calendar
+            shows Sunday first through ritWc, and this index does not move,
+            because every saved plan is written in it. Missing is every day, which is what every plan
             written before this round meant, so an older plan reads unchanged.
             One day is weekly and any set is custom: one shape for all three.
      tm     the timer, whole minutes. Missing is the minutes its steps add up
@@ -289,6 +292,20 @@ function ritActive(p,today){
 function ritWd(day){return ((day%7)+7+3)%7;}
 var RIT_WDN=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 var RIT_WDF=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+/* EVERY CALENDAR HERE STARTS ON SUNDAY, SV24, his words: "The whole column,
+   Monday through Sunday, start with Sunday." ritWd above is NOT moved to do
+   it, because it is not a display index: it is the number a plan's on list
+   is stored under (on:[5,6] is a weekend ritual on every saved record), and
+   engine/ritex.js ritexWd carries the same arithmetic for the worked
+   examples. Turning ritWd to Sunday 0 would have moved every saved weekday
+   ritual one day to the left with nothing failing. So the stored weekday
+   stays Monday 0 and the calendars ask a second question: which column a day
+   sits in on a Sunday first week (ritWc), and which stored weekday each
+   column carries (RIT_WCOL). Every calendar on the page reads these two, so
+   the Week, the thirty days, Success over time, the Record month and the
+   builder's day picker cannot start on different days. */
+function ritWc(day){return (ritWd(day)+1)%7;}
+var RIT_WCOL=[6,0,1,2,3,4,5];
 /* DUE IS NOT ACTIVE. Active is whether a ritual is still running at all;
    due is whether today is one of its days. A ritual kept on Mondays is active
    all week and due on one day of it, and a Tuesday is not a missed Monday. */
@@ -299,7 +316,9 @@ function ritOften(on){
  if(on.join()==='5,6')return 'Weekends';
  /* six of seven is said by the one it leaves out, not by listing six */
  if(on.length===6)return 'Every day but '+RIT_WDN.filter(function(n,d){return on.indexOf(d)<0;})[0];
- return on.map(function(d){return RIT_WDN[d];}).join(', ');}
+ /* listed in the calendars' order, so a Sunday and Monday ritual reads Sun,
+    Mon the way its two columns sit, and not Mon, Sun */
+ return RIT_WCOL.filter(function(d){return on.indexOf(d)>=0;}).map(function(d){return RIT_WDN[d];}).join(', ');}
 /* the timer a ritual runs for, its own when one was set */
 function ritTm(p){return (p&&p.tm)||ritMin(p&&p.steps)||1;}
 function ritCovers(p,day){
@@ -1284,13 +1303,13 @@ function ritDayName(day,today){
 function ritCalHtml(plans,today,empty){
  var now=new Date(), y=now.getFullYear(), m=now.getMonth()+RIT.mo;
  var first=new Date(y,m,1,12), yy=first.getFullYear(), mm=first.getMonth();
- var nd=new Date(yy,mm+1,0).getDate(), lead=(first.getDay()+6)%7;
+ var nd=new Date(yy,mm+1,0).getDate(), lead=first.getDay();
  var mon='<span class="rv-mon">'+first.toLocaleDateString('en-GB',{month:'long',year:'numeric'})+'</span>';
  var out='<div class="rv-cal"><div class="rv-calh">'
   +(empty?mon:'<button type="button" class="rv-ib" data-act="mo" data-d="-1" aria-label="Month before">'+ritIc('back')+'</button>'
    +mon+'<button type="button" class="rv-ib" data-act="mo" data-d="1" aria-label="Month after"'+(RIT.mo>=1?' disabled':'')+'>'+ritIc('fwd')+'</button>')
   +'</div><div class="rv-grid">';
- RIT_WD.forEach(function(w){out+='<span class="rv-wd" aria-hidden="true">'+w+'</span>';});
+ RIT_WCOL.forEach(function(w){out+='<span class="rv-wd" aria-hidden="true">'+RIT_WD[w]+'</span>';});
  for(var i=0;i<lead;i++)out+='<span class="rv-blank"></span>';
  for(var d=1;d<=nd;d++){
   var day=pracDay(new Date(yy,mm,d,12)), segs=ritDaySegs(day,plans,today);

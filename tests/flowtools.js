@@ -45,7 +45,8 @@ async function flowGate(browser,FILE,ok,booted){
     Tuesday, Thursday and Saturday, and the check asked the real clock what day
     it was, so the gate answered for the weekday it was run on and not for the
     product. Monday 23 February 2026 at local noon: a Monday so the week loop
-    in the QX group walks Monday to Sunday in order, in a 28 day month so that
+    in the QX group walks Monday to Sunday in order, and since SV24 put
+    Sunday first its last day opens the next week, in a 28 day month so that
     week runs across a month end into 1 March, and noon so a run of a few
     minutes never crosses midnight. install and not setFixedTime, so the clock
     still runs from there: the release's settle count (ui/release.js) is two
@@ -701,9 +702,10 @@ async function flowGate(browser,FILE,ok,booted){
    const cb=all.filter(e=>!e.classList.contains('rv-cb-ahead')), ah=all.filter(e=>e.classList.contains('rv-cb-ahead'));
    const pos=e=>{const st=getComputedStyle(e); return [+st.gridRowStart,+st.gridColumnStart];};
    const now=cb.filter(e=>e.classList.contains('rv-cb-now'))[0];
-   /* the weekday and the date, worked out here: Monday is column one */
+   /* the weekday and the date, worked out here: Sunday is column one since
+      SV24, his words "start with Sunday" */
    const DAY=86400000, off=new Date().getTimezoneOffset()*60000, today=Math.floor((Date.now()-off)/DAY);
-   const wd=d=>(new Date(d*DAY).getUTCDay()+6)%7, date=d=>new Date(d*DAY+off+12*3600000).getDate();
+   const wd=d=>new Date(d*DAY).getUTCDay(), date=d=>new Date(d*DAY+off+12*3600000).getDate();
    const dates=cb.map(e=>+(e.querySelector('.rv-cbd')||{textContent:''}).textContent.replace(/^\D+/,''));
    const want=[]; for(let d=today-29;d<=today;d++)want.push(date(d));
    return {n:cb.length, done:cb.filter(e=>e.classList.contains('rv-cb-done')).length,
@@ -718,9 +720,9 @@ async function flowGate(browser,FILE,ok,booted){
   /* the expected count of done cubes is worked out from the seed's days: a day
      in the thirty with anything marked done */
   const doneDays=seed.keptDays;
-  ok(lp.n===30&&lp.done===doneDays&&lp.nowAt&&lp.nowAt[1]===lp.wantCol&&lp.firstCol===lp.wantFirst&&lp.heads==='MTWTFSS'
+  ok(lp.n===30&&lp.done===doneDays&&lp.nowAt&&lp.nowAt[1]===lp.wantCol&&lp.firstCol===lp.wantFirst&&lp.heads==='SMTWTFS'
     &&lp.datesOk&&lp.ahead===lp.wantAhead&&/\d{4}$/.test(lp.mo)&&lp.tips&&lp.oldRing===0,
-   'FT21: thirty days as a calendar, Monday first under the weekday letters, each cube its own date, today in its weekday column, the rest of the week ahead, the '+doneDays+' kept days solid, '+JSON.stringify(lp));
+   'FT21: thirty days as a calendar, Sunday first under the weekday letters, each cube its own date, today in its weekday column, the rest of the week ahead, the '+doneDays+' kept days solid, '+JSON.stringify(lp));
   ok(!lp.loopWord&&lp.figs===0,
    'FT21: the card no longer says Thirty day loop and carries no figures over the cubes, '+JSON.stringify([lp.mo,lp.loopWord,lp.figs]));
 
@@ -1132,14 +1134,18 @@ async function flowGate(browser,FILE,ok,booted){
     /* SV16: the week is day columns, each carrying its rituals by name, so
        the Tuesday, Thursday and Saturday ritual is read as the days whose
        column holds it */
-    const k=document.querySelector('#rit .rv-week .rv-wkg'), mon=today-wd;
+    /* SV24: the columns run Sunday first, so the week this day sits in starts
+       on its Sunday, and the Sunday of the walk opens the next week. The
+       stored weekday, wd and the page's ritWd, is still Monday 0 and is held
+       to i above, because every saved plan's on list is written in it. */
+    const col=(wd+1)%7, k=document.querySelector('#rit .rv-week .rv-wkg'), sun=today-col;
     const cols=[...k.querySelectorAll(':scope>.rv-wd1')];
-    const want=[0,1,2,3,4,5,6].map(i=>['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][i]+new Date((mon+i)*DAY+off+12*3600000).getDate());
+    const want=[0,1,2,3,4,5,6].map(i=>['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][i]+new Date((sun+i)*DAY+off+12*3600000).getDate());
     /* SV17: a sash names its ritual in data-nm, and a heavy day's rest is on its +N */
     const names=c=>[...c.querySelectorAll('button.rv-wch[data-nm]')].map(b=>b.getAttribute('data-nm'))
      .concat([...c.querySelectorAll('.rv-wmore')].flatMap(m=>m.getAttribute('data-more').split(';').map(x=>x.split('|')[0])));
     const setOn=cols.map((c,i)=>names(c).some(n=>n==='Box Breathing')?i:-1).filter(i=>i>=0);
-    return {page:new Date().toDateString(), pwd:ritWd(ritToday0()), wd, rows, run:run.length, due, rest, above, below,
+    return {page:new Date().toDateString(), pwd:ritWd(ritToday0()), wd, col, rows, run:run.length, due, rest, above, below,
      heads:cols.map(c=>c.querySelector('.rv-wdh').textContent), want, now:cols.findIndex(c=>c.classList.contains('rv-now')), setOn};});
    seen.push(d.page);
    ok(d.wd===i&&d.pwd===i,
@@ -1147,8 +1153,8 @@ async function flowGate(browser,FILE,ok,booted){
    ok(d.rows===d.run&&d.due.length>0&&JSON.stringify(d.above)===JSON.stringify(d.due)&&JSON.stringify(d.below)===JSON.stringify(d.rest),
     'FT30: '+tag+'on '+WDF[i]+' Today holds every active ritual, the ones due today first and the rest under Other days, '
     +JSON.stringify({page:d.page,rows:d.rows,run:d.run,due:d.due,rest:d.rest,above:d.above,below:d.below}));
-   ok(JSON.stringify(d.heads)===JSON.stringify(d.want)&&d.now===i&&JSON.stringify(d.setOn)===JSON.stringify([1,3,5]),
-    'FT30: '+tag+'on '+WDF[i]+' the week is a calendar week, Monday first with each date and today marked, and a ritual set for Tuesday, Thursday and Saturday is under those three days and no other, '+JSON.stringify(d));
+   ok(JSON.stringify(d.heads)===JSON.stringify(d.want)&&d.now===d.col&&JSON.stringify(d.setOn)===JSON.stringify([2,4,6]),
+    'FT30: '+tag+'on '+WDF[i]+' the week is a calendar week, Sunday first with each date and today marked, and a ritual set for Tuesday, Thursday and Saturday is under those three days and no other, '+JSON.stringify(d));
   }
   console.log('  FT30 '+tag+'the page read its clock as '+seen.join(', '));
   await pg.clock.setSystemTime(AT);
@@ -1180,7 +1186,9 @@ async function flowGate(browser,FILE,ok,booted){
     .map(e=>e.getAttribute('data-nm')+'|'+e.className.match(/rv-wch-(\w+)/)[1])
     .concat([...c.querySelectorAll('.rv-wmore')].flatMap(m=>m.getAttribute('data-more').split(';'))).sort());
    const press=async d=>{const b=card().querySelector('[data-act="wk"][data-d="'+d+'"]'); if(!b||b.disabled)return false; b.click(); await w(); return true;};
-   const mon0=today-wd(today), rs=Math.min(...CURP.rituals.map(x=>dk(x.t)),...plans.map(p=>dk(p.from)));
+   /* SV24: the week opens on its Sunday. wd stays Monday 0 above, because
+      it is the coverage rule's stored weekday and not a column */
+   const mon0=today-(wd(today)+1)%7, rs=Math.min(...CURP.rituals.map(x=>dk(x.t)),...plans.map(p=>dk(p.from)));
    const out={weeks:[], bad:[]};
    const check=()=>{const mon=mon0+7*RIT.wk, got=read();
     const range=card().querySelector('.rv-wkr').textContent;
@@ -1222,7 +1230,7 @@ async function flowGate(browser,FILE,ok,booted){
     /* SV16: the week is its own card and always drawn, so "opens on the
        week" is every running ritual found under a day of this week that it
        covers */
-    const mon=st.today-ritWd(st.today), names=new Set([...document.querySelectorAll('#rit .rv-week button.rv-wch[data-nm]')].map(b=>b.getAttribute('data-nm'))
+    const mon=st.today-ritWc(st.today), names=new Set([...document.querySelectorAll('#rit .rv-week button.rv-wch[data-nm]')].map(b=>b.getAttribute('data-nm'))
      .concat([...document.querySelectorAll('#rit .rv-week .rv-wmore')].flatMap(m=>m.getAttribute('data-more').split(';').map(x=>x.split('|')[0]))));
     const thisWk=st.act.filter(q=>[0,1,2,3,4,5,6].some(i=>ritCovers(q,mon+i)));
     out[nm]={plans:st.plans.length, act:st.act.length, page, eng:R?{k:R.kept,m:R.missed}:null,
@@ -1386,10 +1394,11 @@ async function flowGate(browser,FILE,ok,booted){
    out.plain={i, nm:(c.querySelector('.rv-sht .sh-h')||{}).textContent, want:segs[i].nm, bars:c.querySelectorAll('.rb2').length};
    document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true})); await w();
    out.shut=document.getElementById('sheet').hidden;
-   /* the gate's clock is a Monday, so the older days are last week's: the
-      arrow back, and the first day there that carries anything */
+   /* the gate's clock is a Monday, the second day of a Sunday first week, so
+      the older days are mostly last week's: the arrow back, and the first day
+      there that carries anything */
    RIT.wk=-1; ritRender(); out.past=null;
-   const mon=st.today-ritWd(st.today)-7;
+   const mon=st.today-ritWc(st.today)-7;
    for(let d=mon;d<mon+7;d++){const sg=ritWeekDay(d,st); if(!sg.length)continue;
     document.querySelector('#rit .rv-week button.rv-wch[data-d="'+d+'"][data-i="0"]').click(); await w();
     out.past={d, want:sg[0].nm, got:(c.querySelector('.rv-sht .sh-h')||{}).textContent, done:!!c.querySelector('[data-sh="log"]')}; sheetShut(); break;}
@@ -1420,7 +1429,7 @@ async function flowGate(browser,FILE,ok,booted){
    const got={rows:[...c().querySelectorAll('.rv-shr .rv-shrn')].map(x=>x.textContent), want:ritWeekDay(st.today,st).map(x=>x.nm),
     open:!document.getElementById('sheet').hidden};
    sheetShut(); await w();
-   const mon=st.today-ritWd(st.today); let empty=null;
+   const mon=st.today-ritWc(st.today); let empty=null;
    for(let d=mon;d<mon+7;d++){if(ritWeekDay(d,st).length)continue; head(d).click(); await w();
     empty={d, said:(c().querySelector('.rv-empty')||{}).textContent||'', rows:c().querySelectorAll('.rv-shr').length}; sheetShut(); await w(); break;}
    return {tagName, h, got, empty};});

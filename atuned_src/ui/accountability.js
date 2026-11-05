@@ -160,7 +160,7 @@ var ACCT_COLS=7;
    counted back from today, so a row began on whatever weekday that was and the
    grid had no weekday a person could read off it: a progress chart in a
    calendar's clothes. Now the columns are the days of the week, Monday first
-   as RU2 ruled, with their letters over them; each cube carries its date; the
+   as RU2 ruled and Sunday first since SV24 reversed it (ritWc), with their letters over them; each cube carries its date; the
    first day of a month carries the month; and the rest of this week is drawn
    ahead of today, so a ritual set for Tuesday, Thursday and Saturday shows on
    the days it is still to come. The thirty are still the read: the miss count
@@ -179,11 +179,11 @@ function acctCubeRead(st){
   out.push(X);}
  /* the rest of this week, ahead: what is set for it, and nothing else */
  var ahead=[];
- for(var e=today+1;e<=today+6-ritWd(today);e++){
+ for(var e=today+1;e<=today+6-ritWc(today);e++){
   var Y={d:e, done:[], miss:[], plan:[], marks:[], st:'ahead'}, seen2={};
   ritDaySegs(e,st.plans,today).forEach(function(s){if(s.st!=='ahead'||seen2[s.nm])return; seen2[s.nm]=1; Y.plan.push(s);});
   ahead.push(Y);}
- return {days:out, ahead:ahead, pad:ritWd(t0), md:md};}
+ return {days:out, ahead:ahead, pad:ritWc(t0), md:md};}
 function acctCubeHtml(X,k,today,empty){
  var row=Math.floor(k/ACCT_COLS)+2, col=k%ACCT_COLS+1;
  var nm=function(a){return a.map(function(s){return s.nm;}).join(', ');};
@@ -226,10 +226,10 @@ function acctLoopHtml(st){
  var mo=a.getMonth()===z.getMonth()?a.toLocaleDateString('en-GB',{month:'long',year:'numeric'})
   :a.toLocaleDateString('en-GB',{month:'long'})+' to '+z.toLocaleDateString('en-GB',{month:'long',year:'numeric'});
  return '<div class="rv-sec rv-loopw"><div class="rv-hd"><span class="rv-h">'+esc(mo)+'</span></div>'
-  +'<p class="rv-mean">The last thirty days, Monday to Sunday, with the rest of this week ahead. '
+  +'<p class="rv-mean">The last thirty days, Sunday to Saturday, with the rest of this week ahead. '
   +'A solid cube is a day you kept a ritual, in the colour of its seat; an outline is planned; dashed is missed. A mark on a cube is one you earned that day.</p>'
-  +'<div class="rv-cubes'+(empty?' rv-cubes0':'')+'" role="group" aria-label="The last thirty days, Monday first">'
-  +RIT_WD.map(function(w){return '<span class="rv-cbw" aria-hidden="true">'+w+'</span>';}).join('')
+  +'<div class="rv-cubes'+(empty?' rv-cubes0':'')+'" role="group" aria-label="The last thirty days, Sunday first">'
+  +RIT_WCOL.map(function(w){return '<span class="rv-cbw" aria-hidden="true">'+RIT_WD[w]+'</span>';}).join('')
   +Q.days.map(function(X,i){return acctCubeHtml(X,Q.pad+i,st.today,empty);}).join('')
   +Q.ahead.map(function(X,i){return acctCubeHtml(X,Q.pad+Q.days.length+i,st.today,empty);}).join('')+'</div>'
   +'<div class="rv-key" aria-hidden="true"><span><i class="rv-k-cube"></i>Done</span><span><i class="rv-k-cplan"></i>Planned</span>'

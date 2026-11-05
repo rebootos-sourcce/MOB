@@ -19,8 +19,8 @@
 
      the goals      one card, Goals, three views of one set. Today is the
                     Active list (ritActiveBody, unchanged), three affirmations
-                    and three challenges. This week is a calendar week, Monday
-                    first, one row per active ritual, so a ritual set for
+                    and three challenges. This week is a calendar week, Sunday
+                    first since SV24, one row per active ritual, so a ritual set for
                     Tuesday, Thursday and Saturday is drawn on those three days
                     and nowhere else. This month is each ritual with where its
                     span ends, and the month's counts.
@@ -325,7 +325,7 @@ function ritChalHtml(st,M){
    not read it as a calendar. The reason was its shape and not its place: it
    was a row per ritual and a square per day, which is a tracker's grid, and
    on a calendar the thing a person looks at is the day. So the day is the
-   column now, Monday first, and under each date are the rituals that day
+   column now, Sunday first since SV24, and under each date are the rituals that day
    carries, by name, in their seat's colour, done, set or missed. The switch
    between Today, This week and This month went with the grid: a week one
    press away behind a Today is the arrangement he said does not look like a
@@ -354,7 +354,7 @@ function ritDateOf(d){var off=new Date().getTimezoneOffset()*60000; return new D
 /* the furthest week back, as a negative count of weeks from this one */
 function ritWkMin(st){
  var rs=ritRecordStart(st); if(rs===null||rs>st.today)return 0;
- return -Math.round(((st.today-ritWd(st.today))-(rs-ritWd(rs)))/7);}
+ return -Math.round(((st.today-ritWc(st.today))-(rs-ritWc(rs)))/7);}
 /* one day's rituals, once each: the record can hold the same steps twice on a
    day, and a calendar names a ritual once on the day it carries it */
 function ritWeekDay(d,st){
@@ -365,7 +365,8 @@ function ritWeekDay(d,st){
 function ritWeekCalHtml(st){
  var today=st.today, lo=ritWkMin(st);
  RIT.wk=Math.max(lo,Math.min(RIT_WK_AHEAD,RIT.wk|0));
- var mon=today-ritWd(today)+7*RIT.wk, first=ritDateOf(mon), last=ritDateOf(mon+6);
+ /* the week opens on its Sunday, ritWc (ui/ritual.js), SV24 */
+ var sun=today-ritWc(today)+7*RIT.wk, first=ritDateOf(sun), last=ritDateOf(sun+6);
  var fmt=function(dt){return dt.toLocaleDateString('en-GB',{day:'numeric',month:'short'});};
  var range=fmt(first)+' to '+fmt(last);
  var nav='<div class="rv-wkn">'
@@ -377,9 +378,9 @@ function ritWeekCalHtml(st){
   +(RIT.wk?'<button type="button" class="btn rv-wk0" data-act="wk" data-d="0">This week</button>':'')+'</div>';
  /* THE WEEK HOLDS TODAY or it does not, and only a week that holds it sets
     the other six back: on a week cycled away no day is the one to look at */
- var hasNow=today>=mon&&today<=mon+6;
+ var hasNow=today>=sun&&today<=sun+6;
  var days='<ol class="rv-wkg'+(hasNow?' rv-wkg-now':'')+'" aria-label="'+esc(range)+'">'+[0,1,2,3,4,5,6].map(function(i){
-  var d=mon+i, dt=ritDateOf(d), segs=ritWeekDay(d,st);
+  var d=sun+i, dt=ritDateOf(d), segs=ritWeekDay(d,st);
   /* MORE THAN THREE IS TWO AND A +N, never four squeezed into three slots:
      a day can carry rituals, and each is its own sash, so a heavy day would
      otherwise grow its cell and the grid would stop being a grid */
@@ -402,7 +403,7 @@ function ritWeekCalHtml(st){
   return '<li class="rv-wd1'+(d===today?' rv-now':'')+(d<today?' rv-past':'')+'">'
    +'<button type="button" class="rv-wdh" data-act="wday" data-d="'+d+'"'+(d===today?' aria-current="date"':'')
    +' aria-label="'+esc(dnm+(segs.length?', '+segs.length+(segs.length===1?' ritual':' rituals'):', nothing set'))+'">'
-   +'<span>'+RIT_WDN[i]+'</span><b>'+dt.getDate()+'</b></button>'+list+'</li>';}).join('')+'</ol>';
+   +'<span>'+RIT_WDN[RIT_WCOL[i]]+'</span><b>'+dt.getDate()+'</b></button>'+list+'</li>';}).join('')+'</ol>';
  return '<section class="rv-sec rv-week"><div class="rv-hd"><span class="rv-h">Week</span>'+nav+'</div>'+days
   /* Planned, the word the Record and the thirty days beside it use for the
      same state: the grid this replaced said Set, a second word for one thing
@@ -617,22 +618,22 @@ function ritSpanCell(X,today,small){
  var day=ritDayName(X.d,today);
  return {c:c, bg:bg, tip:small?'':rvTip(day,said)+' aria-label="'+esc(day+'. '+said)+'"'};}
 function ritSpanGrid(S){
- var today=S.today, wide=S.n>62, pad=ritWd(S.t0), out='';
+ var today=S.today, wide=S.n>62, pad=ritWc(S.t0), out='';
  if(!wide){
   out='<div class="rv-scal" role="group" aria-label="'+esc(S.R.nm)+', a day to a square">'
-   +RIT_WD.map(function(w){return '<span class="rv-scw" aria-hidden="true">'+w+'</span>';}).join('');
+   +RIT_WCOL.map(function(w){return '<span class="rv-scw" aria-hidden="true">'+RIT_WD[w]+'</span>';}).join('');
   S.days.forEach(function(X,i){var k=pad+i, Q=ritSpanCell(X,today,S.n>31), dt=ritDateOf(X.d);
    out+='<span class="rv-sc rv-sc-'+X.st+(X.d===today?' rv-now':'')+'" style="grid-row:'+(Math.floor(k/7)+2)+';grid-column:'+(k%7+1)
     +';--c:'+Q.c+Q.bg+'"'+(S.n>31?' aria-hidden="true"':Q.tip)+'><b>'+(dt.getDate()===1?dt.toLocaleDateString('en-GB',{month:'short'})+' ':'')+dt.getDate()+'</b></span>';});
   return out+'</div>';}
- /* a year is weeks as columns, Monday at the top, the way a wall planner
+ /* a year is weeks as columns, Sunday at the top (SV24), the way a wall planner
     folds a year onto one sheet. One picture and not 365 presses: the
     figures beside it are the read, and the grid is described once. */
  var cols=Math.floor((pad+S.n-1)/7)+1, mon='', lastM=-1;
  for(var w=0;w<cols;w++){var d=S.t0-pad+w*7, dt=ritDateOf(Math.max(d,S.t0));
   if(dt.getMonth()!==lastM){lastM=dt.getMonth(); mon+='<span class="rv-sym" style="grid-column:'+(w+2)+'">'+dt.toLocaleDateString('en-GB',{month:'short'})+'</span>';}}
  out='<div class="rv-syr" role="img" style="--cols:'+cols+'" aria-label="'+esc(S.R.nm+': '+acctDays(S.kept)+' kept and '+S.missed+' missed, a square a day, a column a week.')+'">'+mon
-  +['M','','W','','F','','S'].map(function(w,i){return '<span class="rv-syw" style="grid-row:'+(i+2)+'">'+w+'</span>';}).join('');
+  +['','M','','W','','F',''].map(function(w,i){return '<span class="rv-syw" style="grid-row:'+(i+2)+'">'+w+'</span>';}).join('');
  S.days.forEach(function(X,i){var k=pad+i, Q=ritSpanCell(X,today,true);
   out+='<i class="rv-sc rv-sc-'+X.st+(X.d===today?' rv-now':'')+'" style="grid-column:'+(Math.floor(k/7)+2)+';grid-row:'+(k%7+2)+';--c:'+Q.c+Q.bg+'"></i>';});
  return out+'</div>';}
@@ -705,19 +706,34 @@ function ritCalCss(){
   '.rv-wkg{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}',
   /* THE CELL IS FIXED, SV17: the date, then a body three sashes tall whether
      the day carries none, one or three, so seven cells are one grid */
+  /* THE DAY TAG IS INVERTED, SV24, his words: "Days of the week ... they're
+     not legible, make those tags at the very top stand out, same with the
+     date" and "instead of it being a lighter gray background, for each day
+     of the week, invert the color." Measured before this on Ana at 1600: the
+     cell was a one percent white wash over the card, about rgb(31,42,49), the
+     weekday --dim at 12 pixels, near 4.4 to 1 against it and under the 4.5
+     floor the --dim token itself was raised to meet, and the date --mid. So
+     the grey wash leaves the cell, and the head of each column becomes a
+     solid tag in --ink with --bg type, the same two tokens the page's text
+     and ground already are, the other way round: about 17 to 1 in Dark, and
+     the light themes invert themselves with no second rule. */
   '.rv-wd1{display:grid;grid-template-rows:auto calc(3 * 44px + 2 * 6px);gap:6px;min-width:0;padding:6px 5px 8px;border-radius:10px;',
-  ' background:color-mix(in srgb,var(--edge-2) 10%,transparent)}',
-  '.rv-wd1.rv-past{background:none;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--edge-2) 30%,transparent)}',
+  ' background:none}',
+  '.rv-wd1.rv-past{background:none;box-shadow:none}',
   /* today is ringed the way a wall calendar rings a day, round RB's rule for
      the grid this replaces, and its date sits in the accent chip */
   '.rv-wd1.rv-now{box-shadow:inset 0 0 0 1.5px var(--accent);background:color-mix(in srgb,var(--accent) 7%,transparent)}',
-  '.rv-wdh{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:100%;min-height:44px;padding:2px 0;',
-  ' border:0;border-radius:8px;background:none;font:inherit;font-size:12px;color:var(--dim);cursor:pointer}',
-  '.rv-wdh:hover{background:color-mix(in srgb,var(--edge-2) 22%,transparent)}',
+  '.rv-wdh{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:100%;min-height:44px;padding:4px 0;',
+  ' border:0;border-radius:8px;background:var(--ink);font:inherit;font-size:13px;font-weight:600;color:var(--bg);cursor:pointer}',
+  '.rv-wdh:hover{background:color-mix(in srgb,var(--ink) 84%,var(--bg))}',
   '.rv-wdh:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
-  '.rv-wdh b{font-size:14px;font-weight:600;color:var(--mid);font-variant-numeric:tabular-nums}',
-  '.rv-wd1.rv-now .rv-wdh{color:var(--ink);font-weight:600}',
-  '.rv-wd1.rv-now .rv-wdh b{color:var(--on-accent);background:var(--accent);border-radius:999px;min-width:26px;height:26px;padding:0 5px;display:inline-grid;place-items:center}',
+  '.rv-wdh b{font-size:15px;font-weight:700;color:var(--bg);font-variant-numeric:tabular-nums}',
+  /* today keeps its two marks: the accent ring round the column, and now the
+     whole tag in the accent, where before only the date sat in an accent
+     chip. A chip inside a solid tag would be a fill on a fill. */
+  '.rv-wd1.rv-now .rv-wdh,.rv-wd1.rv-now .rv-wdh b{background:var(--accent);color:var(--on-accent)}',
+  '.rv-wd1.rv-now .rv-wdh:hover{background:color-mix(in srgb,var(--accent) 84%,var(--bg))}',
+  '.rv-wd1.rv-now .rv-wdh:hover b{background:none}',
   '.rv-wdl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;min-width:0}',
   '.rv-wdl>li{display:block;min-width:0}',
   /* the stagger, 6 pixels a sash, so three on a day read as a stack laid
@@ -747,11 +763,11 @@ function ritCalCss(){
   '.rv-wkg-now .rv-wd1:not(.rv-now) .rv-wch:hover,.rv-wkg-now .rv-wd1:not(.rv-now) .rv-wch:focus-visible{opacity:1}',
   '.rv-wd0{align-self:center;justify-self:center;color:var(--dim);font-size:14px}',
   '@container (max-width:639px){.rv .rv-wkg{grid-template-columns:minmax(0,1fr);gap:5px}',
-  /* a row is one sash tall and padded, and today's date chip is drawn a
-     size smaller here: at 26 it made today's row three pixels taller than
-     the other six, measured, which is the uneven grid this round removes */
-  ' .rv .rv-wd1{box-sizing:border-box;height:56px;grid-template-rows:none;grid-template-columns:40px minmax(0,1fr);align-items:center;gap:10px;padding:6px 10px}',
-  ' .rv .rv-wd1.rv-now .rv-wdh b{min-width:22px;height:22px}',
+  /* a row is one sash tall and padded. Today's date chip, which was drawn a
+     size smaller here because at 26 it made today's row three pixels taller
+     than the other six, went with SV24: the whole tag is today's mark now,
+     the same size as the other six. */
+  ' .rv .rv-wd1{box-sizing:border-box;height:56px;grid-template-rows:none;grid-template-columns:44px minmax(0,1fr);align-items:center;gap:10px;padding:6px 10px}',
   ' .rv .rv-wdh{flex-direction:column}',
   ' .rv .rv-wdl{flex-direction:row;height:44px}',
   ' .rv .rv-wdl>li{flex:1 1 0;max-width:120px;--o:0px}',
@@ -882,7 +898,7 @@ function ritCalCss(){
   '.rv-nxi{border:0;background:color-mix(in srgb,var(--c) 22%,var(--panel))}',
   '.rv-cb-done,.rv-wch-done,.rv-sc-done{box-shadow:none}',
   '.rv-key .rv-k-cube{box-shadow:none}',
-  '.rv-wd1.rv-past{box-shadow:none;background:color-mix(in srgb,var(--edge-2) 6%,transparent)}',
+  '.rv-wd1.rv-past{box-shadow:none;background:none}',
   '.rv-gone{background:color-mix(in srgb,var(--accent) 12%,var(--panel-2))}',
   /* History, the right menu's one press, SV19: the More practices press's own
      look, a full width row with its chevron, and its panel under it */
