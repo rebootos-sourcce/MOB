@@ -73,7 +73,10 @@ async function lockGate(browser,FILE,ok,booted){
     CURP.plan={tier:tier,status:status===undefined?(tier==='free'?'':'active'):status,
      granted:0,carried:0,base:null,since:null,until:null};
     S.view=3; try{LAYSET=null;}catch(e){}
-    setTab(TAB.FIELD); fviewSet('wheel'); render();},[tier,status]);
+    setTab(TAB.FIELD); fviewSet('wheel'); render();
+    /* the glass bar arrives shut since SV18, his "start closed", so the
+       rungs on it are measured with it opened, the way a person sees them */
+    if(FB.classList.contains('shut'))FB_TOG.click();},[tier,status]);
    await pg.waitForTimeout(700);};
   const G=await pg.evaluate(()=>({SIGHT:SIGHT.map(g=>({k:g.k,nm:g.nm,need:g.need,layer:!!g.layer,built:g.built!==false})),
    tiers:TIER_KEYS.slice(),tierNm:Object.fromEntries(PLANS.map(p=>[p.k,p.nm]))}));
