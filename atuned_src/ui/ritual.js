@@ -380,17 +380,6 @@ function ritPick(k){
  RIT.sel[k]=!RIT.sel[k];
  if(RIT.sel[k]){RIT.order=RIT.order.filter(function(x){return x!==k;}); RIT.order.push(k);}
  else RIT.order=RIT.order.filter(function(x){return x!==k;});}
-/* A TAG CREATES THE RITUAL. His words, round LT: "add tags that create new
-   rituals". Pressing a seat's tag puts on the draft the practice ritFor calls
-   for at that seat, at the tier the person's load allows today, so a tag
-   hands a heavy field nothing ritFor would not. Taking the tag off leaves the
-   step where it is: a person who kept it has already said so by keeping it,
-   and the step's own cross is the one way a step comes off. */
-function ritTagOn(b){
- if(BANDS.indexOf(b)<0||RIT.tags.indexOf(b)>=0)return;
- RIT.tags.push(b);
- var q=ritFor({darkB:b, DQ:compute().DQ}).called;
- if(q&&!RIT.sel[q.k])ritPick(q.k);}
 /* START. The plan is written beside the record and today goes on the record as
    set and not done, which is exactly what Save ritual wrote before: said is
    what intentionRead counts, and ritToday is what the avatar reads back. */
@@ -1164,28 +1153,20 @@ function ritTagNm(b){return b==='3rd Eye'?'Third eye':String(b||'');}
 /* THE BUILDER. New and edit are one card. The steps a person picked sit at
    the top in their order, the practice the state calls for is the first tile,
    and the rest of the library is one press away rather than nineteen rows. */
-/* THE SEVEN TAGS, one per seat, each in its seat's colour. The same row sits
-   on the closed panel, where a press starts a new ritual from that seat, and
-   in the builder, where a press adds or takes off the tag. */
-function ritTagsHtml(act,on){
- return '<div class="rv-tags" role="group" aria-label="Tags">'+BANDS.map(function(b){
-  var p=on.indexOf(b)>=0;
-  return '<button type="button" class="rv-tag2'+(p?' rv-on':'')+'" data-act="'+act+'" data-b="'+esc(b)+'" aria-pressed="'+p
-   +'" style="--t:'+seatCol(b)+'"><i></i>'+esc(ritTagNm(b))+'</button>';}).join('')+'</div>';}
-/* THE NEW RITUAL, CLOSED. Round LT: "the new ritual needs to be on the upper
-   right hand side so it's front and center". It was a small New button in the
-   Active heading, which is where he looked and did not see it, and it became
-   the first panel of a right hand column inside the page. On 2 October he
-   moved it again: "Move the new ritual to the right menu." It is the first
-   thing in Flow's right menu now, the app's own right column, and it is the
-   builder's own slot, so pressing it opens the builder in the same place. */
-function ritNewHtml(){
- /* no heading: the press is the heading, and a heading reading New ritual
-    over a button reading New ritual said it twice */
- return '<div class="rv-sec rv-new rv-shut">'
-  +'<button type="button" class="btn pri rv-add" data-act="add">'+ritIc('plus')+'New ritual</button>'
-  +'<span class="rv-fl">Start from a tag</span>'+ritTagsHtml('newtag',[])+'</div>';}
-function ritBuildHtml(c,nAct){
+/* THE SEVEN TAGS AND THE CLOSED NEW RITUAL ARE GONE, SV16. His words, on an
+   annotated screenshot of this page: "when I hit new ritual, I want its
+   default state to be open and accessible. These tags at the bottom don't do
+   anything because I'm creating the ritual. Doesn't matter what I select as a
+   tag." The closed card was a New ritual press over "Start from a tag" and
+   seven seat pills, and the builder opened on its own row of the same seven.
+   A tag did one thing, put on the draft the practice its seat calls for, and
+   every one of those practices is already a tile one press away. So the
+   builder is the column's resting state, ritRender, and neither row is drawn.
+   A plan keeps its tags field: rituals made before this keep theirs, an edit
+   carries them through untouched (ritEditOpen, ritSaveEdit), and the Called
+   for cards still write the seats they were offered for, which is what the
+   avatar card's fed dot reads. */
+function ritBuildHtml(c,nAct,unread){
  var draft=ritDraft(), editing=!!RIT.edit, mins=ritMin(draft);
  /* the minutes the steps add up to used to sit in this heading. The timer
     below starts at that figure and prints it, so it is said once, there. */
@@ -1199,9 +1180,6 @@ function ritBuildHtml(c,nAct){
  if(RIT.from&&RIT.from.length)
   out+='<p class="rit-from">After releasing '+esc(RIT.from.slice(0,3).map(function(x){return x.name;}).join(', '))
    +(RIT.from.length>3?' and '+(RIT.from.length-3)+' more':'')+'</p>';
- /* tags first, because a tag is what creates the ritual: his order, "add
-    tags to create the ritual, put a timer for it, how often" */
- out+='<span class="rv-fl">Tags</span>'+ritTagsHtml('tag',RIT.tags);
  if(draft.length){
   out+='<ol class="rv-steps">';
   draft.forEach(function(k,i){var p=ritPr(k);
@@ -1212,7 +1190,9 @@ function ritBuildHtml(c,nAct){
  /* the tiles. Called first; then, one press on, every practice this state
     allows, by track, each tile the colour of its track. */
  var tile=function(p,big){
-  var on=!!RIT.sel[p.k], call=c.called&&c.called.k===p.k;
+  /* on a blank profile no seat has called for anything, so the first tile is
+     the lightest place to start and does not say called for, SV16 */
+  var on=!!RIT.sel[p.k], call=!unread&&c.called&&c.called.k===p.k;
   return '<button type="button" class="rv-tile'+(on?' rv-on':'')+(big?' rv-big':'')+'" data-act="pick" data-k="'+p.k
    +'" aria-pressed="'+on+'" style="--c:'+(PTRACK[p.track]||'var(--accent)')+'">'
    +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/>'+(on?'<path d="M8 12l3 3 5-6"/>':'')+'</svg>'
@@ -1266,16 +1246,21 @@ function ritBuildHtml(c,nAct){
   +'</div>';
  out+='<div class="rv-acts">'
   +(editing?'<button type="button" class="btn" data-act="del-plan" data-id="'+RIT.edit+'">Delete</button>':'')
-  /* CANCEL IS ALWAYS THERE NOW, round QN. It was left off when nothing was
-     active, because the builder then opened itself and was the page. It no
-     longer opens itself (FT24): a person opens it with a press, and a thing
-     opened with a press closes with one, or the left column is a room with no
-     door. Over another tab it reads Close. */
-  +'<button type="button" class="btn" id="ritx" data-act="cancel">'+(ritTab()?'Cancel':'Close')+'</button>'
+  /* CANCEL WHEN THERE IS SOMETHING TO CANCEL, SV16. Round QN put it on every
+     paint because the builder was opened with a press and a thing opened
+     with a press closes with one. The builder is the column's resting state
+     now and cannot be shut, so on an empty draft Cancel would be a press that
+     does nothing. It is drawn while editing, while a step, a day, a timer or
+     a field is set, and over another tab, where it reads Close and is the way
+     back. */
+  +((editing||!ritTab()||ritDirty())?'<button type="button" class="btn" id="ritx" data-act="cancel">'+(ritTab()?'Cancel':'Close')+'</button>':'')
   +'<button type="button" class="btn pri" id="ritsave" data-act="save"'+(draft.length?'':' disabled')+'>'+(editing?'Save':'Start')+'</button>'
   +'</div>';
  return out+'</div>';}
 
+/* whether the builder holds anything a Cancel would empty */
+function ritDirty(){
+ return ritDraft().length>0||!!RIT.on||!!RIT.tm||!!RIT.when||!!RIT.where||RIT.days!==7||!!(RIT.from&&RIT.from.length);}
 /* THE RECORD AS A MONTH. Each day is a ring cut into what it carried. */
 var RIT_WD=['M','T','W','T','F','S','S'];
 function ritDayName(day,today){
@@ -1458,8 +1443,8 @@ function ritRender(){
  if(!onR){
   if(left)left.innerHTML=''; if(side)side.innerHTML='';
   if(document.body){document.body.classList.remove('ritbuild'); document.body.classList.remove('ritnone');}
-  /* the next arrival draws in again, round QN */
-  RIT.arrive=true;
+  /* the next arrival draws in again, round QN, and opens on this week, SV16 */
+  RIT.arrive=true; RIT.wk=0;
   return;}
  ritCss(); ritStageCss(); if(typeof ritCalCss==='function')ritCalCss();
  if(!h||!RIT.open)return;
@@ -1489,8 +1474,16 @@ function ritRender(){
     the input whether the builder is shut or open. The one time it goes is
     while an existing ritual is being edited, which is a different job, and a
     Start pressed there would leave the edit half done. */
- if(left)left.innerHTML=(building?ritBuildHtml(c,act.length):ritNewHtml())+(RIT.edit?'':ritSugHtml(st));
- if(side)side.innerHTML=acctSideHtml(st,arrive);
+ /* THE BUILDER IS ALWAYS OPEN, SV16, his "default state to be open and
+    accessible". building above still means a person is holding something in
+    it, which is what brings the column to the front on a phone; the builder
+    itself is drawn either way. */
+ if(left)left.innerHTML=ritBuildHtml(c,act.length,r.unread)+(RIT.edit?'':ritSugHtml(st));
+ /* RITUAL TO AVATAR AND ONGOING GOAL IN THE RIGHT MENU, SV16, his words:
+    "Ongoing goals, and ritual to avatar move that to the right menu." After
+    Accountability and not inside it: he ruled the tracker stays as it is, so
+    its parts keep their order and the two cards follow them. */
+ if(side)side.innerHTML=acctSideHtml(st,arrive)+ritAvHtml(st)+ritGoalHtml(st);
  if(document.body){document.body.classList.toggle('ritbuild',building);
   /* nothing active: starting one is the page's one job, so on a phone the
      column that starts one comes first, shell/head.html, round QN */
@@ -1530,9 +1523,9 @@ function ritWire(h,c){
   var a=b.getAttribute('data-act'), id=b.getAttribute('data-id');
   /* the offer to put a deletion back lasts until the next thing that writes
      or builds. Looking around the record does not spend it. */
-  if(['putback','view','day','mo','exp','more','hmore','sgwhy','gview','rng'].indexOf(a)<0)RIT.gone=null;
+  if(['putback','view','day','mo','exp','more','hmore','sgwhy','wk','rng'].indexOf(a)<0)RIT.gone=null;
   /* a dismissed suggestion's Put back lasts the same way, round QX */
-  if(['sug-back','sgwhy','gview','rng','exp','view','day','mo'].indexOf(a)<0)RIT.sgGone=null;
+  if(['sug-back','sgwhy','wk','rng','exp','view','day','mo'].indexOf(a)<0)RIT.sgGone=null;
   switch(a){
    case 'go-story': if(typeof setTab==='function')setTab(TAB.STORY); return;
    /* EDIT ON A MISSED RITUAL IS NOW ONE PRESS AND NO NAVIGATION, round QF.
@@ -1547,12 +1540,6 @@ function ritWire(h,c){
     if(typeof stBank==='function'&&typeof STV!=='undefined'&&!STV.bank)stBank(); return;
    case 'add': RIT.add=true; RIT.edit=null; RIT.sel={}; RIT.order=[]; RIT.tags=[]; RIT.on=null; RIT.tm=null;
     if(c.called)ritPick(c.called.k); break;
-   /* a tag on the closed panel is a new ritual from that seat: the builder
-      opens holding the tag and the practice that seat calls for */
-   case 'newtag': RIT.add=true; RIT.edit=null; RIT.sel={}; RIT.order=[]; RIT.on=null; RIT.tm=null; RIT.tags=[];
-    ritTagOn(b.getAttribute('data-b')); break;
-   case 'tag': {var tb=b.getAttribute('data-b');
-    if(RIT.tags.indexOf(tb)>=0)RIT.tags=RIT.tags.filter(function(x){return x!==tb;}); else ritTagOn(tb); break;}
    case 'tm': {var t0=RIT.tm||ritMin(ritDraft())||1, st=+b.getAttribute('data-d');
     var t1=st<0?(t0<=10?t0-1:t0-5):(t0<10?t0+1:t0+5);
     RIT.tm=Math.max(1,Math.min(RIT_TM_MAX,t1)); break;}
@@ -1573,6 +1560,11 @@ function ritWire(h,c){
       is the close as well, because there is a tab behind it to go back to. */
    case 'cancel': RIT.add=false; RIT.edit=null; RIT.sel={}; RIT.order=[]; RIT.all=false; RIT.from=null;
     RIT.tags=[]; RIT.on=null; RIT.tm=null;
+    /* AND THE THREE FIELDS, SV16. While Cancel shut the builder, a When, a
+       Where or a How long left behind was never seen. The builder stays open
+       now, so a Cancel that left them would be a press that cleared half the
+       card and stayed on screen, since ritDirty still counts them. */
+    RIT.when=''; RIT.where=''; RIT.days=7;
     if(!ritTab()){ritClose();return;} break;
    case 'save': if(RIT.edit)ritSaveEdit(); else ritStart(c); return;
    case 'why': {var bc=ritBecoming(); if(bc)ritStartFor(bc,+b.getAttribute('data-d')); return;}
@@ -1601,7 +1593,9 @@ function ritWire(h,c){
    case 'sug-all': ritSugAll(); return;
    case 'sv-add': ritSavedStart(+b.getAttribute('data-i')); return;
    case 'sv-rm': ritSavedDrop(+b.getAttribute('data-i')); return;
-   case 'gview': RIT.gview=b.getAttribute('data-v'); break;
+   /* the week's arrows, and This week, which is 0. ritWeekCalHtml keeps it
+      inside the record's first week and RIT_WK_AHEAD. */
+   case 'wk': {var wd0=+b.getAttribute('data-d'); RIT.wk=wd0?RIT.wk+wd0:0; break;}
    case 'rng': RIT.span=b.getAttribute('data-v'); break;
    case 'said': ritDayMark('said',id); return;
    case 'did': ritDayMark('did',id); return;
@@ -1766,7 +1760,6 @@ function ritCss(){
   '.rv-fig b{color:var(--k)}',
   '.rv-fig span{color:var(--mid)}',
   /* active */
-  '.rv-add{display:inline-flex;align-items:center;gap:6px}',
   '.rv-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}',
   '.rv-item{border-radius:12px;background:var(--panel-2);border:1px solid var(--edge)}',
   '.rv-item.rv-done{border-color:color-mix(in srgb,var(--c) 55%,transparent)}',
@@ -1858,19 +1851,11 @@ function ritCss(){
   '.rv-sp.rv-on,.rv-sg.rv-on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}',
   '.rv-seg{margin-top:0}',
   /* the new ritual: the closed panel, its tags, the timer, and the week */
-  '.rv-new .rv-add{width:100%;justify-content:center;min-height:48px;font-size:15px}',
   /* the last part in a column ends the column; its gap was 18 pixels of
      scroll with nothing under it */
   '.rv-col>:last-child{margin-bottom:0}',
   '.rv-fl{display:block;margin:10px 0 5px;font-size:12.5px;font-weight:500;color:var(--dim)}',
   '.rv .rit-f{margin:7px 0}',
-  '.rv-tags{display:flex;flex-wrap:wrap;gap:6px}',
-  '.rv-tag2{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0 12px;border-radius:999px;',
-  ' border:1px solid color-mix(in srgb,var(--t) 45%,transparent);background:none;color:var(--mid);font:inherit;font-size:14px;cursor:pointer}',
-  '.rv-tag2 i{width:9px;height:9px;border-radius:50%;border:2px solid var(--t);flex:0 0 auto}',
-  '.rv-tag2:hover{border-color:var(--t);color:var(--ink)}',
-  '.rv-tag2.rv-on{border-color:var(--t);background:color-mix(in srgb,var(--t) 18%,transparent);color:var(--ink)}',
-  '.rv-tag2.rv-on i{background:var(--t)}',
   '.rv-row2{display:flex;flex-wrap:wrap;gap:0 16px}',
   '.rv-fld{flex:0 0 auto}',
   '.rv-stp{display:flex;align-items:center;gap:2px;border:1px solid var(--edge-2);border-radius:999px}',

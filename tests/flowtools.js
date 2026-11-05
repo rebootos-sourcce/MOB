@@ -130,24 +130,28 @@ async function flowGate(browser,FILE,ok,booted){
   ok(COLS.every(([job])=>g[job].col.l>=0&&g[job].col.r<=o.vw+1)&&o.sw<=o.cw,
    'FT12: '+tag+'every column sits inside the screen and the page does not scroll sideways, '+JSON.stringify({vw:o.vw,sw:o.sw,cw:o.cw}));
 
-  /* FT17, the six in his slots, measured off the boxes */
+  /* FT17, the centre's cards, measured off the boxes. SV16: the week is
+     first and across both columns, Today under it where Goals was, and
+     Ritual to avatar and Ongoing goal are in the right menu (FT6 holds them
+     there), his "move that to the right menu" */
   const six=await pg.evaluate(()=>{
    const b=sel=>{const e=document.querySelector('#rit .rv-six>'+sel); if(!e)return null; const r=e.getBoundingClientRect();
     return {l:Math.round(r.left),r:Math.round(r.right),t:Math.round(r.top),b:Math.round(r.bottom),
      h:(e.querySelector('.rv-h')||{}).textContent};};
    const w=document.querySelector('#rit .rv-six'), wr=w?w.getBoundingClientRect():null;
-   return {av:b('.rv-c-av'),goal:b('.rv-c-goal'),act:b('.rv-act'),ok:b('.rv-c-ok'),keep:b('.rv-c-keep'),ana:b('.rv-c-ana'),
+   return {wk:b('.rv-week'),act:b('.rv-act'),ok:b('.rv-c-ok'),keep:b('.rv-c-keep'),ana:b('.rv-c-ana'),
+    av:b('.rv-c-av'),goal:b('.rv-c-goal'),
     w:wr&&{l:Math.round(wr.left),r:Math.round(wr.right)}, n:w?w.children.length:0};});
-  const S6=six, names=S6.av&&[S6.av.h,S6.goal.h,S6.act.h,S6.ok.h,S6.keep.h,S6.ana.h];
-  ok(S6.n===6&&JSON.stringify(names)===JSON.stringify(['Ritual to avatar','Ongoing goal','Goals','Did it work','Keep or delete','Success over time']),
-   'FT17: '+tag+'the centre is six cards, named for his slots, '+JSON.stringify([S6.n,names]));
-  const across6=S6.av&&S6.av.r<=S6.goal.l+1&&Math.abs(S6.av.t-S6.goal.t)<=2&&S6.act.t>=Math.max(S6.av.b,S6.goal.b)
-   &&S6.act.l-S6.w.l<=2&&S6.w.r-S6.act.r<=2&&S6.ok.t>=S6.act.b&&S6.ok.r<=S6.keep.l+1&&Math.abs(S6.ok.t-S6.keep.t)<=2
-   &&S6.ana.t>=Math.max(S6.ok.b,S6.keep.b)&&S6.ana.r-S6.ana.l>=S6.w.r-S6.w.l-2;
-  const down6=S6.av&&[S6.av,S6.goal,S6.act,S6.ok,S6.keep,S6.ana].every((x,i,a)=>i===0||a[i-1].b<=x.t+1);
+  const S6=six, names=S6.wk&&S6.act&&[S6.wk.h,S6.act.h,S6.ok.h,S6.keep.h,S6.ana.h];
+  ok(S6.n===5&&!S6.av&&!S6.goal&&JSON.stringify(names)===JSON.stringify(['Week','Today','Did it work','Keep or delete','Success over time']),
+   'FT17: '+tag+'the centre is five cards, the week first, and neither Ritual to avatar nor Ongoing goal is on it, '+JSON.stringify([S6.n,names]));
+  const full=x=>x.l-S6.w.l<=2&&S6.w.r-x.r<=2;
+  const across6=!!names&&full(S6.wk)&&full(S6.act)&&S6.act.t>=S6.wk.b&&S6.ok.t>=S6.act.b&&S6.ok.r<=S6.keep.l+1&&Math.abs(S6.ok.t-S6.keep.t)<=2
+   &&S6.ana.t>=Math.max(S6.ok.b,S6.keep.b)&&full(S6.ana);
+  const down6=!!names&&[S6.wk,S6.act,S6.ok,S6.keep,S6.ana].every((x,i,a)=>i===0||a[i-1].b<=x.t+1);
   ok(W>1180?across6:down6,
-   'FT17: '+tag+(W>1180?'Ritual to avatar top left, Ongoing goal top right, Goals the middle across both, then Did it work beside Keep or delete, Success over time last'
-    :'stacked in his order, top left, top right, middle, then the rest')+', '+JSON.stringify(S6));
+   'FT17: '+tag+(W>1180?'the week across both columns at the top, Today under it, then Did it work beside Keep or delete, Success over time last'
+    :'stacked, the week first, then Today, then the rest')+', '+JSON.stringify(S6));
 
   /* off Flow the columns are the product's own again */
   await pg.evaluate(()=>setTab(TAB.FIELD)); await wait(400);
@@ -179,35 +183,44 @@ async function flowGate(browser,FILE,ok,booted){
        They are reads over a span he picks, not the tracker's parts, so they are
        left out here and FT32 holds them; anything else of the tracker's still
        fails this */
-    acc:[...rit.querySelectorAll('.rv-rec,.rv-today,.rv-marks,.rv-cal,.rv-key,.rv-hero,.rv-figs')].filter(e=>!e.closest('.rv-c-ana,.rv-goals')).length,
+    /* and the week, SV16: his "the center panel ... like a calendar. A
+       weekly calendar." It draws the plans on their days and its key says
+       what the fills mean, which is the centre's job by his ruling and not a
+       tracker part moved over */
+    acc:[...rit.querySelectorAll('.rv-rec,.rv-today,.rv-marks,.rv-cal,.rv-key,.rv-hero,.rv-figs')].filter(e=>!e.closest('.rv-c-ana,.rv-goals,.rv-week')).length,
     stage:[...rit.querySelectorAll('.rv-h')].map(x=>x.textContent)};});
   ok(nr.inLeft>0&&nr.inRight===0&&nr.inStage===0&&nr.when,
    'FT4: '+tag+'the builder, its tags, timer, days and when and where fields are in the left column and nowhere else, '+JSON.stringify(nr));
   ok(nr.acc===0,'FT5: '+tag+'the Ritual stage holds no streak, rings, marks or record, '+nr.acc+' found, '+nr.stage.join(', '));
 
-  /* with one ritual active the menu is closed, and pressing New ritual opens the builder in the same place */
+  /* with one ritual active the builder is open with no press, SV16, his
+     "when I hit new ritual, I want its default state to be open and
+     accessible", and neither row of seat tags is anywhere in the column, his
+     "these tags at the bottom don't do anything because I'm creating the
+     ritual". Picking a step is what makes it a builder holding something,
+     which is what brings the column forward on a phone (ritbuild). */
   const closed=await pg.evaluate(async()=>{
    const k=PRACTICE.filter(p=>!p.tc)[0].k;
    ritStartPlan({steps:[k],band:'',track:'',days:7,when:'',where:''},'Started.');
    /* a start through the builder's own button clears its draft, so this does
-      what that press does before it looks at the closed menu. (The builder
-      no longer opens itself on a first visit, round QN; FT24 holds that.) */
-   /* the Active list is Goals' Today; with a ritual running the centre opens
-      on the week since round RB, so the list is asked for by its view */
-   RIT.sel={}; RIT.order=[]; RIT.add=false; RIT.gview='today'; ritRender();
+      what that press does before it looks at the builder at rest */
+   RIT.sel={}; RIT.order=[]; RIT.add=false; ritRender();
    await new Promise(r=>setTimeout(r,200));
    const lc=document.getElementById('lcol');
-   const shut=!!lc.querySelector('.rv-shut .rv-add')&&!lc.querySelector('#ritwhen');
+   const rest={open:!!lc.querySelector('#ritwhen')&&!!lc.querySelector('.rv-build'), press:lc.querySelectorAll('[data-act="add"]').length,
+    tags:lc.querySelectorAll('.rv-tag2,[data-act="tag"],[data-act="newtag"]').length, word:/Start from a tag|\bTags\b/.test(lc.innerText),
+    cancel:!!lc.querySelector('#ritx'), build:document.body.classList.contains('ritbuild')};
    const stageAdd=document.querySelectorAll('#rit [data-act="add"]').length;
-   const add=lc.querySelector('.rv-add'); if(add)add.click(); await new Promise(r=>setTimeout(r,200));
+   const tile=lc.querySelector('.rv-tile[data-act="pick"]'); if(tile)tile.click(); await new Promise(r=>setTimeout(r,200));
    const wk=lc.querySelector('.rv-wk'), rl=document.getElementById('flownew'), rr=rl?rl.getBoundingClientRect():{left:0,right:0};
    const wr=wk?wk.getBoundingClientRect():null;
-   return {shut, stageAdd, open:!!lc.querySelector('#ritwhen'), tags:lc.querySelectorAll('.rv-tag2').length, bands:BANDS.length,
+   return {rest, stageAdd, picked:ritDraft().length, cancel:!!lc.querySelector('#ritx'),
     weekFits:!!wr&&wr.right<=rr.right+0.5&&wr.left>=rr.left-0.5,
     build:document.body.classList.contains('ritbuild'),
     listed:document.querySelectorAll('#rit .rv-item').length};});
-  ok(closed.shut&&closed.stageAdd===0&&closed.open&&closed.tags===closed.bands&&closed.build,
-   'FT4: '+tag+'with a ritual active, New ritual is one press in the left column and opens the builder in the same place, '+JSON.stringify(closed));
+  ok(closed.rest.open&&closed.rest.press===0&&closed.rest.tags===0&&!closed.rest.word&&!closed.rest.cancel&&!closed.rest.build
+    &&closed.stageAdd===0&&closed.picked===1&&closed.cancel&&closed.build,
+   'FT4: '+tag+'with a ritual active the builder is open with no press, carries no seat tags, offers Cancel only once a step is picked, and a pick brings it forward, '+JSON.stringify(closed));
   ok(closed.weekFits,'FT12: '+tag+'the builder\'s seven day row fits inside the left column, '+JSON.stringify(closed));
   ok(closed.listed===1,'FT4: '+tag+'the Active list stays on the stage, '+closed.listed);
   await pg.evaluate(()=>{ritWrite(function(){CURP.rituals=[];return [];},null);});
@@ -228,6 +241,12 @@ async function flowGate(browser,FILE,ok,booted){
   const order=['Due today','Thirty day loop','Done','Missed','History','Record'];
   ok(order.every(h=>open.heads.indexOf(h)>=0)&&order.every((h,i)=>i===0||open.heads.indexOf(order[i-1])<open.heads.indexOf(h)),
    'FT6: '+tag+'the right column holds Due today, the Thirty day loop, Done, Missed, History and the Record, in that order, '+JSON.stringify(open.heads));
+  /* SV16, his words: "Ongoing goals, and ritual to avatar move that to the
+     right menu." After the tracker's parts and not among them, because he
+     ruled Accountability stays as it is */
+  const tail=open.heads.slice(open.heads.indexOf('Record')+1);
+  ok(JSON.stringify(tail)===JSON.stringify(['Ritual to avatar','Ongoing goal']),
+   'FT6: '+tag+'Ritual to avatar and Ongoing goal are in the right menu, after the Record, '+JSON.stringify(open.heads));
   }catch(e){ok(false,'FT6: '+tag+'the columns group threw, '+String(e.message).split('\n')[0]);}
   await pg.close();
   ok(err.length===0,tag+'no page errors across the Flow page, '+err.join(' | '));
@@ -323,8 +342,13 @@ async function flowGate(browser,FILE,ok,booted){
     const h=(s.querySelector('.rv-h')||{}).textContent, m=s.querySelector('.rv-mean');
     out[h]=m?m.textContent.length:0;});
    return out;});
-  ok(['Done','Record','Due today','Missed','Goals','Success over time'].every(h=>mean[h]>30),
-   'FT14: Done, Record, Due today, Missed, Goals and Success over time each carry a sentence saying what they mean, '+JSON.stringify(mean));
+  /* Goals and its sentence went with its three views, SV16. Week and Today
+     are words a person had before they opened the product and carry no line,
+     on his "get rid of all the second third tier text"; what the week's fills
+     mean is its key, which is in the same place (FT34). The two cards that
+     moved to the right menu took their sentences with them. */
+  ok(['Done','Record','Due today','Missed','Success over time','Ritual to avatar','Ongoing goal'].every(h=>mean[h]>30),
+   'FT14: Done, Record, Due today, Missed, Success over time, Ritual to avatar and Ongoing goal each carry a sentence saying what they mean, '+JSON.stringify(mean));
 
   /* FT9: a mark is one press, through the one writer, and it says so */
   const mk=await pg.evaluate(async()=>{
@@ -425,7 +449,7 @@ async function flowGate(browser,FILE,ok,booted){
    if(go)go.click(); await wait(400);
    const plan=ritPlans().filter(p=>p.tc==='PE')[0]||null;
    const said=(document.getElementById('status')||{}).textContent||'';
-   RIT.gview='today'; setTab(TAB.RITUAL); await wait(400);
+   setTab(TAB.RITUAL); await wait(400);
    const due=[...document.querySelectorAll('#flowside .rv-act .rv-nm')].map(x=>x.textContent);
    const act=[...document.querySelectorAll('#rit .rv-item .rv-sub')].map(x=>x.textContent).filter(t=>/Toward Buddha/.test(t)).length;
    return {label, plan:!!plan, said, name:plan?ritName(plan.steps):'', due, act};});
@@ -508,7 +532,10 @@ async function flowGate(browser,FILE,ok,booted){
   const sug=await pg.evaluate(()=>[...document.querySelectorAll('#lcol .rv-sg1')].map(x=>({nm:x.querySelector('.rv-sgn').textContent,
    tags:[...x.querySelectorAll('.rv-tg')].map(t=>t.textContent), why:[...x.querySelectorAll('.rv-sgw li')].map(l=>l.textContent)})));
   /* ---- FT18 ---- */
-  const av=await pg.evaluate(()=>{const c=document.querySelector('#rit .rv-c-av'); if(!c)return {none:true};
+  /* the card is in the right menu since SV16, his "move that to the right
+     menu"; what it reads and prints is unchanged, so only where it is looked
+     for moved */
+  const av=await pg.evaluate(()=>{const c=document.querySelector('#flowside .rv-c-av'); if(!c)return {none:true};
    /* ROUND QS: a seat is a tile and what it says is on its press, so the
       seat and the ritual feeding it are read off the carrier */
    const A=avState();
@@ -528,7 +555,7 @@ async function flowGate(browser,FILE,ok,booted){
    'FT18: the hero is the Avatar page\'s own percent complete, '+wantHero+', with its meaning on the press, and every seat is a badge with a mark, '+JSON.stringify([av.hero,av.overall]));
 
   /* ---- FT19 ---- */
-  const goal=await pg.evaluate(()=>{const c=document.querySelector('#rit .rv-c-goal');
+  const goal=await pg.evaluate(()=>{const c=document.querySelector('#flowside .rv-c-goal');
    return {be:(c.querySelector('.rv-why-be')||{}).textContent||'', held:(c.querySelector('.rv-why-p b')||{}).textContent||'',
     seat:(c.querySelector('.rv-why-p')||{}).textContent||'', btns:c.querySelectorAll('[data-act="why"]').length,
     next:(c.querySelector('.rv-nxt b')||{}).textContent||'', railNext:!!document.querySelector('#flowside .rv-next'),
@@ -536,8 +563,8 @@ async function flowGate(browser,FILE,ok,booted){
   ok(/^"I feel safe in my own body"$/.test(goal.be)&&(seed.heldBy.Root||[]).indexOf(goal.held)>=0&&/the root/.test(goal.seat)&&goal.btns===2,
    'FT19: the goal quotes the avatar line whose seat holds a place, names a place held there and offers the schedule once, '+JSON.stringify(goal));
   ok(goal.next&&goal.next===goal.ladder&&!goal.railNext,'FT19: the next mark is on the goal card and not in the right column, '+JSON.stringify(goal));
-  const sch=await pg.evaluate(async()=>{document.querySelector('#rit .rv-c-goal [data-act="why"][data-d="7"]').click();
-   await new Promise(r=>setTimeout(r,300)); const c=document.querySelector('#rit .rv-c-goal');
+  const sch=await pg.evaluate(async()=>{document.querySelector('#flowside .rv-c-goal [data-act="why"][data-d="7"]').click();
+   await new Promise(r=>setTimeout(r,300)); const c=document.querySelector('#flowside .rv-c-goal');
    return {said:(document.getElementById('status')||{}).textContent||'', active:/is active/.test(c.textContent),
     btns:c.querySelectorAll('[data-act="why"]').length, rel:ritPlans().some(p=>p.rel!=null&&p.band==='Root')};});
   ok(/^Set\./.test(sch.said)&&sch.active&&sch.btns===0&&sch.rel,'FT19: once scheduled it says so and offers nothing, '+JSON.stringify(sch));
@@ -623,7 +650,7 @@ async function flowGate(browser,FILE,ok,booted){
   /* ---- FT25: a ritual's badge, its percent complete worked out here ---- */
   /* Today is first sight for these rings since round RB, so they tween in
      from empty (crMotion) and are read once they have landed */
-  const pc=await pg.evaluate(async()=>{RIT.gview='today'; ritRender(); await new Promise(r=>setTimeout(r,1500)); const rows=[...document.querySelectorAll('#rit .rv-act .rv-item')];
+  const pc=await pg.evaluate(async()=>{ritRender(); await new Promise(r=>setTimeout(r,1500)); const rows=[...document.querySelectorAll('#rit .rv-act .rv-item')];
    return rows.map(r=>({id:r.querySelector('.rv-log').getAttribute('data-id'), pill:(r.querySelector('.rv-pc .crb-v')||{}).textContent,
     glyph:!!r.querySelector('.rv-pc .crb-g svg'), tip:(r.querySelector('.rv-pc')||{getAttribute:()=>''}).getAttribute('data-tip')||'',
     word:[...r.querySelectorAll('.rv-sub .rv-tg')].length}));});
@@ -732,16 +759,24 @@ async function flowGate(browser,FILE,ok,booted){
   const fresh=()=>pg.evaluate(who=>{loadP(who==null?0:PEOPLE.findIndex(x=>x.nm===who)); CURP.rituals=[]; ritPlanPut([]);
    RIT.sel={}; RIT.order=[]; RIT.add=false; RIT.edit=null; setTab(TAB.RITUAL); ritRender();},null);
   await fresh(); await pg.waitForTimeout(300);
-  const first=await pg.evaluate(()=>{const L=document.getElementById('lcol'), s=L.querySelector('.rv-sug'), n=L.querySelector('.rv-new');
-   const called=ritRead().c.called;
-   return {building:document.body.classList.contains('ritbuild'), builder:!!L.querySelector('.rv-build'), sug:!!s,
+  /* SV16: the builder is open with no press, his "default state to be open
+     and accessible", and on a blank profile the list says nothing is called
+     for. The narrative director's ruling: the old field card, "Nothing is
+     read yet, so this is the lightest place to start.", sat under a heading
+     it contradicts, so it is gone from the list and that practice is the
+     builder's first tile, without the words called for. */
+  const first=await pg.evaluate(()=>{const L=document.getElementById('lcol'), s=L.querySelector('.rv-sug'), n=L.querySelector('.rv-build');
+   const called=ritRead().c.called, t=L.querySelector('.rv-tile');
+   return {building:document.body.classList.contains('ritbuild'), builder:!!n, sug:!!s,
+    head:s?(s.querySelector('.rv-h')||{}).textContent:'', empty:s?(s.querySelector('.rv-empty')||{}).textContent:'',
     cards:[...L.querySelectorAll('.rv-sg1 .rv-sgn')].map(x=>x.textContent), called:called&&called.nm,
+    tile:t?(t.querySelector('.rv-tn')||{}).textContent:'', tileSays:t?(t.querySelector('.rv-tm')||{}).textContent:'',
     below:!!(s&&n)&&s.getBoundingClientRect().top>=n.getBoundingClientRect().bottom-1};});
-  ok(!first.building&&!first.builder&&first.sug&&first.cards[0]===first.called&&first.below,
-   'FT24: a first visit with nothing running shows the input shut and Suggested under it, the called practice first, '+JSON.stringify(first));
-  /* the centre's own New ritual is not a second copy of the left column's on
-     one screen; folded shut, the left column is one control and the centre's
-     press is back */
+  ok(!first.building&&first.builder&&first.sug&&first.head==='Called for'&&first.cards.length===0
+    &&first.empty==='Nothing called for yet. Record a story to fill it.'&&first.tile===first.called&&!/called for/.test(first.tileSays)&&first.below,
+   'FT24: a first visit with nothing read shows the builder open, the lightest practice as its first tile and not called for, and Called for under it with nothing in it, '+JSON.stringify(first));
+  /* the centre's own New ritual is for a folded left column only: open, the
+     left column is the builder itself and carries no press at all */
   const dup=await pg.evaluate(async()=>{
    const shown=sel=>[...document.querySelectorAll(sel)].filter(e=>{const r=e.getBoundingClientRect(); return r.width>0&&r.height>0;}).length;
    const open={left:shown('#lcol [data-act="add"]'), centre:shown('#rit [data-act="add"]')};
@@ -749,35 +784,44 @@ async function flowGate(browser,FILE,ok,booted){
    const folded={left:shown('#lcol [data-act="add"]'), centre:shown('#rit [data-act="add"]')};
    document.getElementById('lfold').click(); await new Promise(r=>setTimeout(r,200));
    return {open, folded};});
-  ok(dup.open.left===1&&dup.open.centre===0&&dup.folded.centre===1,
-   'FT24: with the left column open its New ritual is the one in the centre and left, and folded the centre carries it, '+JSON.stringify(dup));
-  /* New ritual: the builder opens with the called practice picked, and the
-     list under it does not offer that same practice a second time */
-  const open=await pg.evaluate(async()=>{document.querySelector('#lcol [data-act="add"]').click(); await new Promise(r=>setTimeout(r,250));
-   const L=document.getElementById('lcol'), picked=Object.keys(RIT.sel).filter(k=>RIT.sel[k]).map(k=>ritPr(k).nm);
-   const out={builder:!!L.querySelector('.rv-build'), picked, sugText:(L.querySelector('.rv-sug')||{innerText:''}).innerText,
-    cards:[...L.querySelectorAll('.rv-sg1 .rv-sgn')].map(x=>x.textContent)};
-   /* opened with a press, it closes with one, even with nothing active */
-   const c=L.querySelector('[data-act="cancel"]'); out.cancel=!!c;
+  ok(dup.open.left===0&&dup.open.centre===0&&dup.folded.centre===1,
+   'FT24: with the left column open the builder is there and no New ritual press is drawn, and folded the centre carries it, '+JSON.stringify(dup));
+  /* a step picked makes Cancel appear, and Cancel empties the builder and
+     leaves it open: it is the column's resting state and has no shut one */
+  const open=await pg.evaluate(async()=>{const L=document.getElementById('lcol');
+   const before=!!L.querySelector('[data-act="cancel"]');
+   const t=L.querySelector('.rv-tile[data-act="pick"]'); if(t)t.click(); await new Promise(r=>setTimeout(r,250));
+   const picked=ritDraft().map(k=>ritPr(k).nm);
+   /* and the fields under the steps, which Cancel must empty as well: a
+      Cancel that left a How long or a When behind would stay on screen */
+   const one=L.querySelector('[data-act="span"][data-d="1"]'); if(one)one.click(); await new Promise(r=>setTimeout(r,200));
+   RIT.when='after the kettle'; ritRender();
+   const c=L.querySelector('[data-act="cancel"]'), out={before, picked, cancel:!!c, span:RIT.days};
    if(c){c.click(); await new Promise(r=>setTimeout(r,250));}
-   out.shutAgain=!L.querySelector('.rv-build')&&!!L.querySelector('.rv-sug .rv-sg1');
+   out.after={open:!!L.querySelector('.rv-build'), draft:ritDraft().length, sug:!!L.querySelector('.rv-sug'),
+    days:RIT.days, when:RIT.when, gone:!L.querySelector('[data-act="cancel"]')};
    return out;});
-  ok(open.builder&&open.picked.length>0&&open.cards.every(n=>open.picked.indexOf(n)<0)&&!/Nothing to suggest/.test(open.sugText),
-   'FT24: with the builder open the practice it holds is not offered again beneath, and the list never says there is nothing while the builder holds it, '+JSON.stringify(open));
-  ok(open.cancel&&open.shutAgain,'FT24: a builder opened on a first visit has Cancel, and Cancel shuts it with Suggested back, '+JSON.stringify(open));
-  /* on a record whose list is longer, Suggested stays under the open builder */
+  ok(!open.before&&open.picked.length===1&&open.cancel&&open.span===1&&open.after.open&&open.after.draft===0&&open.after.sug
+    &&open.after.days===7&&open.after.when===''&&open.after.gone,
+   'FT24: Cancel is drawn only once the builder holds something, and it empties the builder and leaves it open, '+JSON.stringify(open));
+  /* on a record whose list is longer, Called for stays under the open
+     builder, and a practice picked in the builder is not offered again under
+     it unless the card is a release schedule, which is a different choice */
   await pg.evaluate(()=>{loadP(PEOPLE.findIndex(x=>x.nm==='James')); RIT.sel={}; RIT.order=[]; RIT.add=false; RIT.edit=null; setTab(TAB.RITUAL); ritRender();});
   await pg.waitForTimeout(250);
   const jm=await pg.evaluate(async()=>{const L=document.getElementById('lcol');
    const cards=[...L.querySelectorAll('.rv-sg1')].map(c=>({nm:c.querySelector('.rv-sgn').textContent,
     tags:[...c.querySelectorAll('.rv-tg')].map(t=>t.textContent).join('/'), why:[...c.querySelectorAll('.rv-sgw li')].map(l=>l.textContent)}));
    const rel=(RIT.sug||[]).map(x=>x.rel!=null);
-   L.querySelector('[data-act="add"]').click(); await new Promise(r=>setTimeout(r,250));
    const b=L.querySelector('.rv-build'), s=L.querySelector('.rv-sug');
-   return {cards, rel, underBuilder:!!(b&&s)&&s.getBoundingClientRect().top>=b.getBoundingClientRect().bottom-1};});
+   const under=!!(b&&s)&&s.getBoundingClientRect().top>=b.getBoundingClientRect().bottom-1;
+   const t=L.querySelector('.rv-tile[data-act="pick"]'); if(t)t.click(); await new Promise(r=>setTimeout(r,250));
+   const twice=(RIT.sug||[]).filter(x=>x.rel==null&&RIT.sel[x.k]).map(x=>x.p.nm);
+   RIT.sel={}; RIT.order=[]; ritRender();
+   return {cards, rel, underBuilder:under, twice};});
   const pairs=jm.cards.map(c=>c.nm+'@'+c.tags), both=jm.cards.filter(c=>c.why.length>1);
-  ok(jm.cards.length>1&&new Set(pairs).size===pairs.length&&jm.underBuilder,
-   'FT24: no practice is offered twice at one seat, and Suggested stays under the open builder, '+JSON.stringify(jm));
+  ok(jm.cards.length>1&&new Set(pairs).size===pairs.length&&jm.underBuilder&&jm.twice.length===0,
+   'FT24: no practice is offered twice at one seat or a second time under the builder that holds it, and Called for stays under the open builder, '+JSON.stringify(jm));
   ok(both.length>0&&both.every(c=>/^You hold .+ release schedule/.test(c.why[c.why.length-1]))&&jm.rel[jm.cards.indexOf(both[0])]===true,
    'FT24: a seat that carries the most and holds a place is one card with both reasons, and it starts the schedule for that place, '+JSON.stringify({both,rel:jm.rel}));
   /* editing an existing ritual is a different job, and Suggested steps aside */
@@ -802,7 +846,7 @@ async function flowGate(browser,FILE,ok,booted){
   await pg.goto(FILE,{waitUntil:'load'}); await booted(pg); await pg.waitForTimeout(400);
   try{
   const top=()=>pg.evaluate(()=>{const t=id=>Math.round(document.getElementById(id).getBoundingClientRect().top);
-   return {lcol:t('lcol'), rit:t('rit'), rcol:t('rcol'), sug:!!document.querySelector('#lcol .rv-sg1')};});
+   return {lcol:t('lcol'), rit:t('rit'), rcol:t('rcol'), sug:!!document.querySelector('#lcol .rv-sug')};});
   await pg.evaluate(()=>{loadP(0); CURP.rituals=[]; ritPlanPut([]); RIT.sel={}; RIT.order=[]; RIT.add=false; RIT.edit=null; setTab(TAB.RITUAL); ritRender();});
   await pg.waitForTimeout(400);
   const none=await top();
@@ -812,7 +856,7 @@ async function flowGate(browser,FILE,ok,booted){
   const one=await top();
   await pg.evaluate(()=>{ritWrite(function(){CURP.rituals=[];return [];},null);});
   ok(none.sug&&none.lcol<none.rit&&none.lcol<none.rcol&&one.rit<one.rcol&&one.rcol<one.lcol,
-   'FT24: @390 with nothing active New and Suggested come first, and with one running the order is the ritual, the tracker, then new, '+JSON.stringify({none,one}));
+   'FT24: @390 with nothing active the builder and Called for come first, and with one running the order is the ritual, the tracker, then new, '+JSON.stringify({none,one}));
   }catch(e){ok(false,'FT24: the phone group threw, '+String(e.message).split('\n')[0]);}
   await pg.close();
  }
@@ -866,7 +910,7 @@ async function flowGate(browser,FILE,ok,booted){
    CURP.rituals.sort((a,b)=>Date.parse(a.t)-Date.parse(b.t));
    const wrote=ritPlanPut(plans)&&pSave();
    try{STORE.set('atuned-ritual-more','{}');}catch(e){}
-   RIT.sel={}; RIT.order=[]; RIT.add=false; RIT.edit=null; RIT.gview='today'; RIT.span='1m'; setTab(TAB.RITUAL); ritRender();
+   RIT.sel={}; RIT.order=[]; RIT.add=false; RIT.edit=null; RIT.span='1m'; setTab(TAB.RITUAL); ritRender();
    return {wrote, today, done, rs:today-40};});
   await pg.waitForTimeout(500);
   ok(seed.wrote,'FT29: '+tag+'the QX seed was written through the store and the record');
@@ -887,11 +931,20 @@ async function flowGate(browser,FILE,ok,booted){
      rec:chips.indexOf(days?'Kept '+days+(days===1?' day':' days'):'Not tried yet')>=0,
      tips:[...c.querySelectorAll('.rv-sgc')].every(e=>(e.getAttribute('data-tip')||'').length>20),
      add:btn('[data-act="sug"]'), save:btn('[data-act="sug-save"]'), drop:btn('[data-act="sug-x"]'),
+     /* SV16, his words, each: "2 minutes", "Add to practice", "Save" */
+     words:[(c.querySelector('.rv-sgm')||{}).textContent, (c.querySelector('[data-act="sug"]')||{}).textContent,
+      (c.querySelector('[data-act="sug-save"]')||{}).textContent], min:p.min,
+     /* and flat: one opaque fill, nothing outlined, his "flat solid color
+        background". Read off the computed style, not the stylesheet */
+     flat:(()=>{const cs=getComputedStyle(c), bg=cs.backgroundColor, a=/rgba\([^)]*,\s*([\d.]+)\)$/.exec(bg);
+      return (!a||+a[1]===1)&&!/gradient/.test(cs.backgroundImage)&&(cs.borderTopColor==='rgba(0, 0, 0, 0)'||cs.borderTopWidth==='0px')&&cs.boxShadow==='none';})(),
      noRate:!/%|\brate\b|\bscore\b/i.test(c.innerText)};});});
   ok(sg.length>0&&sg.every(c=>c.desc&&c.toward&&c.rec&&c.tips&&c.noRate),
    'FT29: '+tag+'each suggestion shows what the practice is, what it is for when a held place gives it one, and your own record with it, counted here, with no rate, '+JSON.stringify(sg));
+  ok(sg.length>0&&sg.every(c=>JSON.stringify(c.words)===JSON.stringify([c.min+(c.min===1?' minute':' minutes'),'Add to practice','Save'])&&c.flat),
+   'FT29: '+tag+'each card says its minutes as minutes, Add to practice and Save, and is one flat opaque fill with nothing outlined, '+JSON.stringify(sg.map(c=>[c.words,c.flat])));
   ok(sg.every(c=>[c.add,c.save,c.drop].every(b=>b&&b[0]>=44&&b[1]>=44)),
-   'FT29: '+tag+'every suggestion carries Add to daily practice, Save for later and Dismiss, each at least 44 by 44, '+JSON.stringify(sg.map(c=>[c.add,c.save,c.drop])));
+   'FT29: '+tag+'every card carries Add to practice, Save and Dismiss, each at least 44 by 44, '+JSON.stringify(sg.map(c=>[c.add,c.save,c.drop])));
   const ans=await pg.evaluate(async()=>{const L=document.getElementById('flowleft'), w=()=>new Promise(r=>setTimeout(r,250));
    const names=()=>[...L.querySelectorAll('.rv-sug .rv-sg1 .rv-sgn')].map(x=>x.textContent);
    const shelf=()=>[...L.querySelectorAll('.rv-saved .rv-sv1 .rv-sgn')].map(x=>x.textContent);
@@ -907,35 +960,42 @@ async function flowGate(browser,FILE,ok,booted){
    out.drop.all=!!L.querySelector('[data-act="sug-all"]');
    if(out.drop.all){L.querySelector('[data-act="sug-all"]').click(); await w(); out.drop.allBack=names().indexOf(nm1)>=0;}
    const nm0=names()[0]; L.querySelector('[data-act="sug-save"][data-i="0"]').click(); await w();
-   out.save={said:said(), gone:names().indexOf(nm0)<0, shelf:shelf(), stored:JSON.parse(STORE.get('atuned-ritual-more'))[CURP.id].save.length};
+   out.save={said:said(), gone:names().indexOf(nm0)<0, shelf:shelf(), stored:JSON.parse(STORE.get('atuned-ritual-more'))[CURP.id].save.length,
+    head:(L.querySelector('.rv-saved .rv-h')||{}).textContent};
    ritRender(); out.save.kept=shelf().indexOf(nm0)>=0;
    const r0=CURP.rituals.length; L.querySelector('[data-act="sv-add"][data-i="0"]').click(); await w();
    out.add={said:said(), plan:ritPlans().some(p=>ritName(p.steps)===nm0&&ritActive(p,ritToday0())&&p.days===7), shelf:shelf(), r:CURP.rituals.length-r0};
    return out;});
-  ok(/^Saved for later\./.test(ans.save.said)&&ans.save.gone&&ans.save.kept&&ans.save.stored===1,
-   'FT29: '+tag+'Save for later takes it off Suggested, puts it under Saved for later, keeps it across a repaint, and says so, '+JSON.stringify(ans.save));
+  ok(/^Saved\. .+ waits under Saved until you add it\.$/.test(ans.save.said)&&ans.save.gone&&ans.save.kept&&ans.save.stored===1
+    &&ans.save.head==='Saved',
+   'FT29: '+tag+'Save takes it off Called for, puts it under Saved, keeps it across a repaint, and says so, '+JSON.stringify(ans.save));
   ok(ans.drop&&ans.drop.gone&&ans.drop.back&&ans.drop.again&&ans.drop.all&&ans.drop.allBack,
    'FT29: '+tag+'Dismiss takes it off with Put back in the same place, and Bring back dismissed returns every one, '+JSON.stringify(ans.drop));
   ok(/^(Started|Set)\./.test(ans.add.said)&&ans.add.plan&&ans.add.shelf.length===0,
-   'FT29: '+tag+'Add from Saved for later starts it each day for a week and it leaves the shelf, '+JSON.stringify(ans.add));
+   'FT29: '+tag+'Add from Saved starts it each day for a week and it leaves the shelf, '+JSON.stringify(ans.add));
   const we=await pg.evaluate(()=>{loadP(PEOPLE.findIndex(x=>x.nm==='James')); setTab(TAB.RITUAL); ritRender();
    const b=document.querySelector('#flowleft [data-act="sug-save"]'); if(b)b.click();
    const r={said:(document.getElementById('status')||{}).textContent||'', btn:!!b};
    loadP(0); setTab(TAB.RITUAL); ritRender(); return r;});
   ok(we.btn&&/worked example, so nothing was saved/.test(we.said),'FT29: '+tag+'on a worked example the answer is refused by name, '+JSON.stringify(we));
 
-  /* ---- FT30: Goals, today, the week and the month ---- */
-  const gl=await pg.evaluate(()=>{RIT.gview='today'; ritRender(); const g=document.querySelector('#rit .rv-goals');
+  /* ---- FT30: the week, and Today under it ----
+     SV16 took the switch off: the week is its own card at the top of the
+     centre and Today is the card under it, carrying what the switch's Today
+     carried. So there are no views to press, and the old This month went
+     with them (its counts are Success over time's one month). */
+  const gl=await pg.evaluate(()=>{ritRender(); const g=document.querySelector('#rit .rv-goals');
    const af=[...g.querySelectorAll('.rv-aff .rv-af1')].map(x=>x.querySelector('.rv-afq').textContent);
    const ch=[...g.querySelectorAll('.rv-chal .rv-af1')].map(x=>({nm:x.querySelector('.rv-chn').childNodes[0].textContent, act:x.querySelector('.rv-afq').textContent}));
-   return {views:[...g.querySelectorAll('[data-act="gview"]')].map(b=>b.textContent),
+   return {views:document.querySelectorAll('#rit [data-act="gview"]').length, head:(g.querySelector('.rv-h')||{}).textContent,
+    week:!!document.querySelector('#rit .rv-six>.rv-week:first-child'),
     af, ch, pairs:CURP.avatar.pairs.map(p=>p.be).reverse()};});
   const wantAf=gl.pairs.map(b=>'"'+b+'"');
   /* the Active rows are held on all seven days in the loop below, not here,
      because here is one day and the rows turn on which day it is */
-  ok(JSON.stringify(gl.views)===JSON.stringify(['Today','This week','This month'])&&gl.af.length===3
+  ok(gl.views===0&&gl.head==='Today'&&gl.week&&gl.af.length===3
     &&JSON.stringify(gl.af.slice(0,2))===JSON.stringify(wantAf)&&gl.ch.length>=1,
-   'FT30: '+tag+'Goals is Today, This week and This month; Today holds three affirmations with your own avatar lines first, newest first, and the challenges, '+JSON.stringify(gl));
+   'FT30: '+tag+'the week is the centre\'s first card and Today is its own card under it with no view switch; Today holds three affirmations with your own avatar lines first, newest first, and the challenges, '+JSON.stringify(gl));
   const sd=await pg.evaluate(async()=>{const r0=CURP.rituals.length, k0=ladderRead(CURP,Date.now()).streak.run;
    const b=document.querySelector('#rit .rv-aff [data-act="said"]'); b.click(); await new Promise(r=>setTimeout(r,250));
    const on=document.querySelector('#rit .rv-aff [data-act="said"]').getAttribute('aria-pressed');
@@ -958,7 +1018,7 @@ async function flowGate(browser,FILE,ok,booted){
   const WDF=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'], seen=[];
   for(let i=0;i<7;i++){
    await pg.clock.setSystemTime(new Date(AT.getFullYear(),AT.getMonth(),AT.getDate()+i,12));
-   const d=await pg.evaluate(()=>{RIT.gview='today'; ritRender(); const g=document.querySelector('#rit .rv-goals');
+   const d=await pg.evaluate(()=>{ritRender(); const g=document.querySelector('#rit .rv-goals');
     const DAY=86400000, off=new Date().getTimezoneOffset()*60000, today=Math.floor((Date.now()-off)/DAY), wd=(new Date(today*DAY).getUTCDay()+6)%7;
     /* EVERY ACTIVE RITUAL, AND NOT ONLY THE ONES DUE TODAY. This counted the
        rituals due today against every row drawn, so it failed on each day the
@@ -976,16 +1036,15 @@ async function flowGate(browser,FILE,ok,booted){
     const seq=[...g.querySelectorAll('.rv-item .rv-nm, .rv-other')].map(e=>e.classList.contains('rv-other')?'|':e.textContent);
     const cut=seq.indexOf('|'), rows=g.querySelectorAll('.rv-item').length;
     const above=(cut<0?seq:seq.slice(0,cut)).sort(), below=(cut<0?[]:seq.slice(cut+1)).sort();
-    RIT.gview='week'; ritRender(); const k=document.querySelector('#rit .rv-goals .rv-wg'), mon=today-wd;
-    const hd=[...k.querySelectorAll('.rv-wgh')];
+    /* SV16: the week is day columns, each carrying its rituals by name, so
+       the Tuesday, Thursday and Saturday ritual is read as the days whose
+       column holds it */
+    const k=document.querySelector('#rit .rv-week .rv-wkg'), mon=today-wd;
+    const cols=[...k.querySelectorAll(':scope>.rv-wd1')];
     const want=[0,1,2,3,4,5,6].map(i=>['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][i]+new Date((mon+i)*DAY+off+12*3600000).getDate());
-    /* the Tuesday, Thursday and Saturday row: set on exactly those three */
-    const st=[...k.querySelectorAll('.rv-wc')].filter(c=>/^Box Breathing,/.test(c.getAttribute('aria-label')))
-     .map(c=>c.className.match(/rv-wc-(\w+)/)[1]);
-    RIT.gview='today'; ritRender();
+    const setOn=cols.map((c,i)=>[...c.querySelectorAll('.rv-wcn')].some(n=>n.textContent==='Box Breathing')?i:-1).filter(i=>i>=0);
     return {page:new Date().toDateString(), pwd:ritWd(ritToday0()), wd, rows, run:run.length, due, rest, above, below,
-     heads:hd.map(h=>h.textContent), want, now:hd.findIndex(h=>h.classList.contains('rv-now')),
-     setOn:st.map((s,i)=>s==='off'?-1:i).filter(i=>i>=0)};});
+     heads:cols.map(c=>c.querySelector('.rv-wdh').textContent), want, now:cols.findIndex(c=>c.classList.contains('rv-now')), setOn};});
    seen.push(d.page);
    ok(d.wd===i&&d.pwd===i,
     'FT30: '+tag+'the clock is on '+WDF[i]+' for the page and for this test alike, '+JSON.stringify({page:d.page,pwd:d.pwd,wd:d.wd}));
@@ -993,10 +1052,62 @@ async function flowGate(browser,FILE,ok,booted){
     'FT30: '+tag+'on '+WDF[i]+' Today holds every active ritual, the ones due today first and the rest under Other days, '
     +JSON.stringify({page:d.page,rows:d.rows,run:d.run,due:d.due,rest:d.rest,above:d.above,below:d.below}));
    ok(JSON.stringify(d.heads)===JSON.stringify(d.want)&&d.now===i&&JSON.stringify(d.setOn)===JSON.stringify([1,3,5]),
-    'FT30: '+tag+'on '+WDF[i]+' This week is a calendar week, Monday first with each date and today marked, and a ritual set for Tuesday, Thursday and Saturday is drawn on those three days and no other, '+JSON.stringify(d));
+    'FT30: '+tag+'on '+WDF[i]+' the week is a calendar week, Monday first with each date and today marked, and a ritual set for Tuesday, Thursday and Saturday is under those three days and no other, '+JSON.stringify(d));
   }
   console.log('  FT30 '+tag+'the page read its clock as '+seen.join(', '));
   await pg.clock.setSystemTime(AT);
+
+  /* ---- FT34, SV16: the week cycles, and every day carries its own rituals ----
+     His words: "A weekly calendar. All 7 days. I can cycle through.
+     Underneath it, every day shows me which rituals I need to do." Each week
+     the arrows reach is read off the page and held against a count made here
+     off the plans and the record directly, with its own copy of the coverage
+     rule, so a page that drew the right shape with the wrong days fails. A
+     day's ritual is its name and its state: done when the record holds it
+     done, missed before today, planned today and ahead. Then the bounds: back
+     stops at the week the record starts, forward at four weeks, This week is
+     offered only while away and brings the week back, and leaving Flow and
+     coming back opens on this week. */
+  const cy=await pg.evaluate(async()=>{const DAY=86400000, off=new Date().getTimezoneOffset()*60000, today=Math.floor((Date.now()-off)/DAY);
+   const wd=d=>(new Date(d*DAY).getUTCDay()+6)%7, dk=t=>Math.floor((Date.parse(t)-off)/DAY), w=()=>new Promise(r=>setTimeout(r,150));
+   const plans=ritPlans(), nm=steps=>steps.map(k=>PRACTICE.find(p=>p.k===k).nm).join(', ');
+   const covers=(p,d)=>{const s0=dk(p.from); if(d<s0)return false; if(p.on&&p.on.indexOf(wd(d))<0)return false; if(p.days&&d>=s0+p.days)return false; if(p.stop&&d>=dk(p.stop))return false; return true;};
+   const want=d=>{const out=new Set(), seen=new Set();
+    CURP.rituals.forEach(x=>{if(dk(x.t)!==d)return; const n=nm(x.steps); seen.add(n);
+     out.add(n+'|'+(x.done!==false?'done':(d<today?'miss':'plan')));});
+    plans.forEach(p=>{const n=nm(p.steps); if(seen.has(n)||!covers(p,d))return; out.add(n+'|'+(d<today?'miss':(d===today?'plan':'ahead')));});
+    return [...out].sort();};
+   const card=()=>document.querySelector('#rit .rv-week');
+   const read=()=>[...card().querySelectorAll('.rv-wkg>.rv-wd1')].map(c=>[...c.querySelectorAll('.rv-wch')]
+    .map(e=>e.querySelector('.rv-wcn').textContent+'|'+e.className.match(/rv-wch-(\w+)/)[1]).sort());
+   const press=async d=>{const b=card().querySelector('[data-act="wk"][data-d="'+d+'"]'); if(!b||b.disabled)return false; b.click(); await w(); return true;};
+   const mon0=today-wd(today), rs=Math.min(...CURP.rituals.map(x=>dk(x.t)),...plans.map(p=>dk(p.from)));
+   const out={weeks:[], bad:[]};
+   const check=()=>{const mon=mon0+7*RIT.wk, got=read();
+    const range=card().querySelector('.rv-wkr').textContent;
+    const f=d=>new Date(d*DAY+off+12*3600000).toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+    const ok1=range===f(mon)+' to '+f(mon+6)&&got.length===7&&got.every((g,i)=>JSON.stringify(g)===JSON.stringify(want(mon+i)));
+    out.weeks.push(RIT.wk); if(!ok1)out.bad.push({wk:RIT.wk, range, got, want:[0,1,2,3,4,5,6].map(i=>want(mon+i))});
+    return got;};
+   ritRender(); check(); out.home={zero:RIT.wk===0, back0:!!card().querySelector('[data-act="wk"][data-d="0"]')};
+   let n=0; while(await press(1)){check(); n++; if(n>20)break;}
+   out.ahead=n; out.fwdOff=card().querySelector('[data-act="wk"][data-d="1"]').disabled;
+   out.backHere=!!card().querySelector('[data-act="wk"][data-d="0"]');
+   await press(0); out.home2={zero:RIT.wk===0, now:!!card().querySelector('.rv-wd1.rv-now')};
+   n=0; while(await press(-1)){check(); n++; if(n>40)break;}
+   out.behind=n; out.backOff=card().querySelector('[data-act="wk"][data-d="-1"]').disabled;
+   out.firstHasStart=mon0+7*RIT.wk<=rs&&rs<=mon0+7*RIT.wk+6;
+   setTab(TAB.FIELD); await w(); setTab(TAB.RITUAL); await w();
+   out.reopen={zero:RIT.wk===0, now:!!card().querySelector('.rv-wd1.rv-now')};
+   /* a day with nothing set is the house dash, never a sentence */
+   out.dash=[...card().querySelectorAll('.rv-wd1')].filter(c=>!c.querySelector('.rv-wch')).every(c=>(c.querySelector('.rv-wd0')||{}).textContent==='–');
+   return out;});
+  ok(cy.bad.length===0&&cy.weeks.length===cy.ahead+cy.behind+1,
+   'FT34: '+tag+'every week the arrows reach, '+cy.weeks.length+' of them, prints its own dates and each day carries exactly the rituals worked out here, by name and state, '+JSON.stringify(cy.bad.slice(0,2)));
+  ok(cy.home.zero&&!cy.home.back0&&cy.ahead===4&&cy.fwdOff&&cy.backHere&&cy.home2.zero&&cy.home2.now,
+   'FT34: '+tag+'forward stops at four weeks, This week is offered only while away and brings today back, '+JSON.stringify(cy));
+  ok(cy.behind>0&&cy.backOff&&cy.firstHasStart&&cy.reopen.zero&&cy.reopen.now&&cy.dash,
+   'FT34: '+tag+'back stops at the week the record starts, leaving Flow and coming back opens on this week, and an empty day is a dash, '+JSON.stringify(cy));
 
   /* ---- FT33, round RB: a worked example runs rituals, and the page reads them ----
      engine/ritex.js builds each example's plans and days with its own copy of
@@ -1006,12 +1117,16 @@ async function flowGate(browser,FILE,ok,booted){
      it. Then the person's own record is put back. */
   const ex=await pg.evaluate(()=>{const out={};
    ['Derek','Diane','Ana','James'].forEach(nm=>{
-    const p=PEOPLE.find(x=>x.nm===nm); loadP(PEOPLE.indexOf(p)); RIT.gview=null; setTab(TAB.RITUAL); ritRender();
+    const p=PEOPLE.find(x=>x.nm===nm); loadP(PEOPLE.indexOf(p)); setTab(TAB.RITUAL); ritRender();
     const st=ritRead(), R=ritexBuild(p,Date.now());
     const page=st.plans.reduce((a,q)=>{const r=ritRunRead(q,st.today); return {k:a.k+r.kept, m:a.m+r.missed};},{k:0,m:0});
-    const rows=[...document.querySelectorAll('#rit .rv-goals .rv-wg .rv-wgn b')].map(b=>b.textContent);
+    /* SV16: the week is its own card and always drawn, so "opens on the
+       week" is every running ritual found under a day of this week that it
+       covers */
+    const mon=st.today-ritWd(st.today), names=new Set([...document.querySelectorAll('#rit .rv-week .rv-wcn')].map(b=>b.textContent));
+    const thisWk=st.act.filter(q=>[0,1,2,3,4,5,6].some(i=>ritCovers(q,mon+i)));
     out[nm]={plans:st.plans.length, act:st.act.length, page, eng:R?{k:R.kept,m:R.missed}:null,
-     week:!!document.querySelector('#rit .rv-goals [data-v="week"][aria-pressed="true"]')&&st.act.every(q=>rows.indexOf(ritName(q.steps))>=0), today:!!document.querySelector('#rit .rv-wgh.rv-now'),
+     week:thisWk.length>0&&thisWk.every(q=>names.has(ritName(q.steps))), today:!!document.querySelector('#rit .rv-week .rv-wd1.rv-now'),
      due:document.querySelectorAll('#flowside .rv-act .rv-log').length};});
    loadP(0); setTab(TAB.RITUAL); ritRender(); return out;});
   ok(['Derek','Diane','Ana'].every(n=>{const x=ex[n]; return x.plans>0&&x.act>0&&x.eng&&x.page.k===x.eng.k&&x.page.m===x.eng.m&&x.week&&x.today;})
@@ -1022,14 +1137,16 @@ async function flowGate(browser,FILE,ok,booted){
      so his page counts what the engine wrote like the three above */
   ok(ex.James.plans===1&&ex.James.act===1&&ex.James.eng&&ex.James.page.k===ex.James.eng.k&&ex.James.page.m===ex.James.eng.m&&ex.James.today,
    'FT33: '+tag+'James starts his one ritual today and the page counts it as the engine wrote it, '+JSON.stringify(ex.James));
-  /* and a record with nothing running still opens on Today and not an empty
-     week. No example is that record now, so James's is emptied in memory,
-     the state the page meets for anyone who has started nothing */
+  /* and a record with nothing running draws the week empty, seven dashes and
+     no ritual, rather than a week of something. No example is that record
+     now, so James's is emptied in memory, the state the page meets for
+     anyone who has started nothing */
   const none=await pg.evaluate(()=>{loadP(PEOPLE.findIndex(x=>x.nm==='James')); CURP.rituals=[]; RIT_EX[CURP.id]=[];
-   RIT.gview=null; setTab(TAB.RITUAL); ritRender(); const st=ritRead();
-   const r={plans:st.plans.length, week:!!document.querySelector('#rit .rv-goals [data-v="week"][aria-pressed="true"]')};
+   setTab(TAB.RITUAL); ritRender(); const st=ritRead();
+   const r={plans:st.plans.length, chips:document.querySelectorAll('#rit .rv-week .rv-wch').length,
+    dashes:document.querySelectorAll('#rit .rv-week .rv-wd0').length};
    delete PROF_BY.James; loadP(0); setTab(TAB.RITUAL); ritRender(); return r;});
-  ok(none.plans===0&&!none.week,'FT33: '+tag+'a record with nothing running opens on Today and not an empty week, '+JSON.stringify(none));
+  ok(none.plans===0&&none.chips===0&&none.dashes===7,'FT33: '+tag+'a record with nothing running draws the week as seven empty days, '+JSON.stringify(none));
 
   /* ---- FT31: the content is real, and says where it came from ---- */
   const ct=await pg.evaluate(()=>{const miss=CHILD.filter(c=>!AFFIRM[c.nm]||!CHALLENGE[c.nm]).map(c=>c.nm);

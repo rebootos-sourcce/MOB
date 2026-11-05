@@ -106,12 +106,16 @@ function ritSuggest(st){
   if(x){if(seat&&x.seats.indexOf(seat)<0)x.seats.push(seat);
    if(x.why.indexOf(why)<0)x.why.push(why); return;}
   out.push(by[key]={k:k, p:p, seats:seat?[seat]:[], why:[why], rel:(rel==null?null:rel)});};
- /* the field. Nothing read yet is said as that, and the practice is the
-    lightest place to start, not something a seat called for. */
- if(c.called&&!actKey[c.called.k])
-  add(c.called.k,r.unread?'':c.band,r.unread
-   ?'Nothing is read yet, so this is the lightest place to start.'
-   :ritCap(ritThe(c.band))+' carries the most charge in your field.');
+ /* the field. NOT WHILE NOTHING IS READ, SV16. This card used to say
+    "Nothing is read yet, so this is the lightest place to start." and sat
+    under the list's heading, which is Called for now, and on a blank profile
+    no seat has called for anything. The narrative director ruled that a card
+    the heading contradicts does not stay under it. The practice is not lost:
+    the builder is open by default now and its first tile is this same
+    practice, ritFor's lightest, so a blank person's one start is the first
+    thing in the column. */
+ if(c.called&&!actKey[c.called.k]&&!r.unread)
+  add(c.called.k,c.band,ritCap(ritThe(c.band))+' carries the most charge in your field.');
  /* the avatar */
  if(typeof avRituals==='function'&&typeof avRows==='function'&&typeof avSide==='function'){
   var rows=avRows();
@@ -167,7 +171,7 @@ function ritSugHtml(st){
     would be untrue */
  if(!list.length&&all.length&&!undo)return saved;
  RIT.sgw=RIT.sgw||{};
- var body=!list.length?'<p class="rv-empty">'+(all0.length?'Nothing else to suggest. Each one is started, saved for later or dismissed.':'Nothing to suggest yet.')+'</p>'
+ var body=!list.length?'<p class="rv-empty">'+(all0.length?'Nothing else called for. Each one is added, saved or dismissed.':'Nothing called for yet. Record a story to fill it.')+'</p>'
   :'<ul class="rv-sugl">'+list.map(function(x,i){
    var b=x.seats[0]||'', col=b?seatCol(b):'var(--accent)', M=ritSugMark(x,b), open=!!RIT.sgw[x.k+'|'+x.rel];
    /* ROUND QX, "add a text description. And the success of what it leads
@@ -187,8 +191,8 @@ function ritSugHtml(st){
      +(R.kept?'Kept '+acctDays(R.kept):'Not tried yet')+'</span></div>';
    return '<li class="rv-sg1'+(open?' rv-open':'')+'" style="--c:'+col+'">'
     +'<div class="rv-sgh"><button type="button" class="rv-sgs" data-act="sgwhy" data-i="'+i+'" aria-expanded="'+open
-     +'" aria-label="Why '+esc(x.p.nm)+' is suggested">'+M.badge+'</button>'
-    +'<span class="rv-sgt0"><span class="rv-sgn">'+esc(x.p.nm)+'</span><span class="rv-sgm">'+x.p.min+' min a day</span></span></div>'
+     +'" aria-label="Why '+esc(x.p.nm)+' is called for">'+M.badge+'</button>'
+    +'<span class="rv-sgt0"><span class="rv-sgn">'+esc(x.p.nm)+'</span><span class="rv-sgm">'+x.p.min+(x.p.min===1?' minute':' minutes')+'</span></span></div>'
     /* ONE LINE STAYS VISIBLE, round QV, "with suggested add a little text".
        Round QX made it what the practice is, his "text description", and the
        reason it is offered moved into the press, where the full why-list was
@@ -212,11 +216,24 @@ function ritSugHtml(st){
        imprints held and what has been released, so a third meaning for either
        word would be one word for two concepts. Dismiss takes it off the list,
        with Put back in the same place. */
-    +'<div class="rv-sga"><button type="button" class="btn pri" data-act="sug" data-i="'+i+'" aria-label="Add '+esc(x.p.nm)+' to daily practice, each day for a week">Add to daily practice</button>'
-    +'<button type="button" class="btn" data-act="sug-save" data-i="'+i+'" aria-label="Save '+esc(x.p.nm)+' for later">Save for later</button>'
+    /* SV16, his words: "Instead of add to daily practice, just add to
+       practice. Instead of saying save for later, just do save." The
+       accessible name keeps the span the press sets, because a button that
+       starts a week of practice should say so to a person who cannot see the
+       card's other lines. */
+    +'<div class="rv-sga"><button type="button" class="btn pri" data-act="sug" data-i="'+i+'" aria-label="Add '+esc(x.p.nm)+' to practice, each day for a week">Add to practice</button>'
+    +'<button type="button" class="btn" data-act="sug-save" data-i="'+i+'" aria-label="Save '+esc(x.p.nm)+'">Save</button>'
     +'<button type="button" class="btn rv-sgq" data-act="sug-x" data-i="'+i+'" aria-label="Dismiss '+esc(x.p.nm)+'">Dismiss</button></div></li>';}).join('')+'</ul>';
- return '<div class="rv-sec rv-sug"><div class="rv-hd"><span class="rv-h">Suggested</span></div>'
-  +'<p class="rv-mean">Read from your avatar\'s stories and from the places your field holds the most charge. '
+ /* CALLED FOR, NOT SUGGESTED, SV16. His words: "the suggested aren't
+    suggested, those are pulled from your ritual selectors. It's the stuff it
+    picks up based off your story." True of the code: every card is one of
+    the three reads above, and none is a guess. The narrative director ruled
+    the word: called for is already the house's word for a practice a seat
+    asks for (the builder's tile prints it, ritFor names it), and From your
+    story was not true of every card, since the field can carry charge from
+    the quiz. Where the cards come from is said in the line under it. */
+ return '<div class="rv-sec rv-sug"><div class="rv-hd"><span class="rv-h">Called for</span></div>'
+  +'<p class="rv-mean">Read from your story, your avatar\'s stories and the places you hold the most charge. '
   +'Each is the practice that seat calls for at the charge you carry now. Its mark is the seat, or the pattern it releases.</p>'+undo+body+foot+'</div>'+saved;}
 /* A SUGGESTION'S MARK, round QS. His words: "the cards that come from the
    ritual builder they should be colorized and related to the color of the
@@ -308,7 +325,7 @@ function ritAvHtml(st){
     ap===null?'':'Complete|'+fmtPct('complete',ar.pct)+'|100%',A.about)+'>'
    +crBadge(b,ap||0,{size:'md', glyph:(typeof AV_IC!=='undefined'&&AV_IC[A.k])||SEATGLYPH[b], raw:ap===null?'–':fmtPct('complete',ar.pct)})
    +'<span class="rv-avn">'+esc(A.nm)+'</span><i class="rv-avd" aria-hidden="true"></i></li>';}).join('')+'</ul>';
- return '<section class="rv-sec rv-c rv-c-av" data-slot="top-left"><div class="rv-hd"><span class="rv-h">Ritual to avatar</span></div>'
+ return '<section class="rv-sec rv-c rv-c-av" data-slot="rail"><div class="rv-hd"><span class="rv-h">Ritual to avatar</span></div>'
   +'<p class="rv-mean">Your avatar\'s percent complete, the cycles your kept days turn, and each seat your avatar has a story at.</p>'
   +'<div class="rv-avw">'+hero+cyc+'</div>'+list+'</section>';}
 function ritClip(s,n){return s.length>n?s.slice(0,n-1).replace(/\s+\S*$/,'')+'…':s;}
@@ -317,7 +334,7 @@ function ritClip(s,n){return s.length>n?s.slice(0,n-1).replace(/\s+\S*$/,'')+'�
 function ritGoalHtml(st){
  var bc=ritBecoming(), pairs=(CURP&&CURP.avatar&&CURP.avatar.pairs)||[], last=null;
  for(var i=pairs.length-1;i>=0;i--)if(pairs[i]&&pairs[i].be&&String(pairs[i].be).trim()){last=pairs[i];break;}
- var h='<section class="rv-sec rv-c rv-c-goal" data-slot="top-right"><div class="rv-hd"><span class="rv-h">Ongoing goal</span></div>'
+ var h='<section class="rv-sec rv-c rv-c-goal" data-slot="rail"><div class="rv-hd"><span class="rv-h">Ongoing goal</span></div>'
   +'<p class="rv-mean">Who your avatar is becoming, what is held in the way, and the next mark your record can earn.</p>';
  /* each branch opens and closes its own markup, because the build counts the
     divs in the source text and a shared open closed in two branches reads as
@@ -444,8 +461,17 @@ function ritLiveHtml(){
 /* ROUND QX: the middle slot is Goals, the Active list as its Today with the
    week and the month beside it, and the last slot is Success over time, his
    ten spans. Both are ui/ritcal.js. */
+/* SV16: THE WEEK FIRST, AND TWO CARDS GONE TO THE RIGHT MENU. His words:
+   "I'm at the center panel to look at, like a calendar ... Ongoing goals, and
+   ritual to avatar move that to the right menu." So the top of the stage is
+   the week, across both columns, Today under it where Goals was, and the
+   three that read and decide where they were. Ritual to avatar and Ongoing
+   goal keep their markup and are drawn into #flowside by ritRender, after
+   Accountability, which he ruled stays as it is. The grid keeps the name
+   rv-six it had when it held his six slots: the gates, the shot tool and the
+   phone order find the stage by it. */
 function ritStageHtml(st,P){
- return '<div class="rv-six">'+ritAvHtml(st)+ritGoalHtml(st)+ritGoalsHtml(st,P)+ritOkHtml(st)+ritKeepHtml(st)
+ return '<div class="rv-six">'+ritWeekCalHtml(st)+ritTodayCardHtml(st,P)+ritOkHtml(st)+ritKeepHtml(st)
   +ritSuccessHtml(st,P.chain)+'</div>';}
 
 function ritStageCss(){
@@ -457,12 +483,12 @@ function ritStageCss(){
      three that read and decide. Named areas, so the order on a phone and the
      slots on a desktop are one statement. */
   '.rv-six{display:grid;gap:14px;grid-template-columns:minmax(0,1fr) minmax(0,1fr);',
-  ' grid-template-areas:"av goal" "act act" "ok keep" "ana ana";align-items:stretch}',
+  ' grid-template-areas:"wk wk" "act act" "ok keep" "ana ana";align-items:stretch}',
   '.rv-six>.rv-sec{margin:0;min-width:0}',
-  '.rv-six>.rv-c-av{grid-area:av} .rv-six>.rv-c-goal{grid-area:goal} .rv-six>.rv-act{grid-area:act}',
+  '.rv-six>.rv-week{grid-area:wk} .rv-six>.rv-act{grid-area:act}',
   '.rv-six>.rv-c-ok{grid-area:ok} .rv-six>.rv-c-keep{grid-area:keep} .rv-six>.rv-c-ana{grid-area:ana}',
   '@container (max-width:639px){.rv .rv-six{grid-template-columns:minmax(0,1fr);',
-  ' grid-template-areas:"av" "goal" "act" "ok" "keep" "ana"}}',
+  ' grid-template-areas:"wk" "act" "ok" "keep" "ana"}}',
   /* each card takes one hue from the tokens the page already themes */
   '.rv-c-av{--k:var(--sec-embody)} .rv-c-goal{--k:var(--accent)} .rv-c-ok{--k:var(--sec-play)}',
   '.rv-c-keep{--k:var(--sec-flow)} .rv-c-ana{--k:var(--sec-discover)}',
@@ -601,7 +627,15 @@ function ritStageCss(){
   '.rv-avd{width:7px;height:7px;border-radius:50%;border:1.5px solid var(--c);opacity:.7}',
   '.rv-avs.rv-fed .rv-avd{background:var(--c);opacity:1}',
   /* the suggestions, coloured by the seat or the pattern they are for */
-  '.rv-sg1{background:color-mix(in srgb,var(--c) 9%,var(--panel-2));border-color:color-mix(in srgb,var(--c) 40%,var(--edge));box-shadow:none}',
+  /* FLAT AND SOLID, SV16. His words: "For the suggested, I want flat solid
+     color background." The card was a nine percent wash of its seat with a
+     forty percent outline, a tinted chip under it and buttons ringed in the
+     seat, so it read as layers of the same colour at four strengths. It is one
+     opaque fill of its seat now and nothing outlined: the Punch lighting's
+     own idiom (shell/head.html, body.punch .cr), a solid mix of the colour
+     into the panel, borders gone. Opaque on purpose: a mix into transparent
+     would let the still layer's pools show through and be a gradient again. */
+  '.rv-sg1{background:color-mix(in srgb,var(--c) 22%,var(--panel-2));border-color:transparent;box-shadow:none}',
   '.rv-sgh{align-items:center;justify-content:flex-start;gap:8px}',
   '.rv-sgs{flex:0 0 auto;display:inline-flex;min-width:44px;min-height:44px;padding:0;border:0;border-radius:12px;background:none;cursor:pointer;color:inherit}',
   '.rv-sgs:hover .crb-a circle:first-child{stroke:color-mix(in srgb,var(--c) 40%,transparent)}',
@@ -617,7 +651,12 @@ function ritStageCss(){
   '.rv-sgf{margin-top:8px}',
   '.rv-sg1 .rv-tg{gap:5px;padding:2px 9px 2px 6px;color:var(--ink);background:color-mix(in srgb,var(--t) 12%,transparent)}',
   '.rv-tg svg{width:12px;height:12px;fill:none;stroke:var(--t);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}',
-  '.rv-sg1 .btn{border-color:color-mix(in srgb,var(--c) 45%,var(--edge-2))}',
+  '.rv-sg1 .btn{border-color:transparent}',
+  '.rv-sg1 .btn:not(.pri):not(.rv-sgq){background:color-mix(in srgb,var(--c) 14%,var(--panel))}',
+  '.rv-sg1 .rv-sgc{border-color:transparent;background:color-mix(in srgb,var(--c) 16%,var(--panel))}',
+  '.rv-sg1 .rv-sgc.rv-sgc0{border-style:solid;color:var(--mid)}',
+  '.rv-sg1 .rv-sgx{background:color-mix(in srgb,var(--c) 10%,var(--panel))}',
+  '.rv-sg1 .rv-tg{border-color:transparent;background:color-mix(in srgb,var(--t) 16%,var(--panel))}',
   /* the thirty days as cubes */
   '.rv-cbf{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 16px;margin:0 0 12px;font-size:13px;color:var(--mid)}',
   '.rv-cbf b{font-size:17px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}',
