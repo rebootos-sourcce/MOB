@@ -269,14 +269,40 @@ function zonePoint(z){
 /* a birth record to a Julian Day in UT, and the offset that was applied.
    returns null when the record cannot support it, rather than guessing.
    d is the date, t the local clock time, p the place, z the time zone. */
+/* A BIRTH DATE IS A REAL DAY OR IT IS NOTHING. This read y, m and d off
+   any string and checked only that they were not zero, so 2001-02-30 was
+   handed to julianDay and rolled to 2 March, month 13 day 45 rolled into the
+   next year while the life path and the Chinese year still read the digits
+   as typed, and a date in day/month/year form read as no date at all and
+   then fell through to an invented sun and moon. A date is four digits, two
+   and two, and the day has to exist in that month of that year. Returns
+   [y,m,d] or null. No Date object, so the answer is the same in any host. */
+function bornYMD(s){
+ if(typeof s!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(s))return null;
+ var p=s.split('-'), y=+p[0], m=+p[1], d=+p[2];
+ if(y<1||m<1||m>12||d<1)return null;
+ var leap=(y%4===0&&y%100!==0)||y%400===0;
+ var dim=[31,leap?29:28,31,30,31,30,31,31,30,31,30,31][m-1];
+ return d<=dim?[y,m,d]:null;}
+/* A clock time on a 24 hour face. 25:30 was read as a timed birth an hour
+   and a half into the next day and 99:99 four days later. Hours 0 to 23,
+   minutes 0 to 59, seconds allowed because a time field can carry them and
+   nothing here reads them. Returns [h,mi] or null. */
+function bornHM(s){
+ var q=typeof s==='string'&&/^(\d{1,2}):(\d{2})(?::\d{2})?$/.exec(s);
+ if(!q)return null;
+ var h=+q[1], mi=+q[2];
+ return (h<24&&mi<60)?[h,mi]:null;}
 function birthJD(bt){
  if(!bt||!bt.d)return null;
- var p=bt.d.split('-'), y=+p[0], m=+p[1], d=+p[2];
- if(!y||!m||!d)return null;
+ var ymd=bornYMD(bt.d); if(!ymd)return null;
+ var y=ymd[0], m=ymd[1], d=ymd[2];
  var pl=PLACE[bt.p]||null;
  var hrs=12, timed=false;               /* no time given, take local noon */
- if(bt.t&&/^\d{1,2}:\d{2}/.test(bt.t)){
-  var q=bt.t.split(':'); hrs=+q[0]+(+q[1])/60; timed=true;}
+ /* a time that is there and is not a clock time is refused, rather than
+    read as untimed: the person said when, and noon is not what they said */
+ if(bt.t){var hm=bornHM(bt.t); if(!hm)return null;
+  hrs=hm[0]+hm[1]/60; timed=true;}
  var off=pl?pl.tz:0, dst=false;
  if(pl&&pl.dst==='us')dst=usDST(y,m,d);
  if(pl&&pl.dst==='eu')dst=euDST(y,m,d);

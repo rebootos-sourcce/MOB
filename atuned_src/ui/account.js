@@ -754,9 +754,15 @@ function accWire(){
  /* a device setting and not a profile write: see pracOn in ui/practitioner.js */
  if(pr)pr.onclick=function(){pracSwitch(!pracOn()); renderAccount();};
  var ex=$('acexp');
+ /* THE CLIPBOARD ANSWERS LATER. writeText returns a promise, and this said
+    "copied" the moment it was asked, so a refused write (permission denied,
+    or the page not focused) read as a backup the person did not have, and the
+    rejection fell out as a page error. The line waits for the answer now. A
+    missing clipboard throws inside the promise and lands in the same refusal. */
  if(ex)ex.onclick=function(){var t=pExport(); if(t==null)return;
-  try{navigator.clipboard.writeText(t); status('Record copied to the clipboard.','ok');}
-  catch(e){status('Could not reach the clipboard. Nothing was copied.','fail');}};
+  new Promise(function(res){res(navigator.clipboard.writeText(t));}).then(
+   function(){status('Record copied to the clipboard.','ok');},
+   function(){status('Could not reach the clipboard. Nothing was copied.','fail');});};
  var dl=$('acdel');
  if(dl)dl.onclick=function(){accDelete();};
  /* the same importer the profile sheet draws, under its own ids, and the page

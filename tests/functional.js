@@ -1456,11 +1456,19 @@ ok(/How it shows up/i.test(lab.drill),'says how it shows up in a life');
 ok(/Where it goes/i.test(lab.drill),'and where it goes next');
 /* and the definition has to be reachable by TAP, not only by hover. It lived
    in a title attribute, and the audience arrives on phones. */
+/* WHERE THE TAP IS, SV18, 5 November. The corner that held #tier came off
+   the Field on his words, "get rid of the graphic that says incoherent", and
+   #tier is still written into it, so measuring it measured a hidden button
+   at 0px. The band word a person can see and tap is the Insight panel's
+   summary card, #psum, which leads with it and opens the same
+   runCompassDrill. The floor and the three things the drill owes are
+   unchanged; only the control measured moved to where the word is. */
 const tapPg=await browser.newPage({viewport:{width:390,height:844}});
 await tapPg.goto(FILE,{waitUntil:'load'}); await booted(tapPg); await tapPg.waitForTimeout(700);
 const tapped=await tapPg.evaluate(()=>{
  loadP(PERSON('Tomas')); setTab(TAB.FIELD); render();
- const el=document.getElementById('tier');
+ S.pin=null; render();
+ const el=document.getElementById('psum');
  const h=Math.round(el.getBoundingClientRect().height);
  el.click();
  const d=(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ');
@@ -2219,7 +2227,10 @@ console.log('\n=== settings does not take the rail with it when it leaves ===');
    Asserted on the class and on the measured rail, because the class is the
    cause and the rail is what a person loses. */
 const stuck=await page.evaluate(()=>{
- const railW=()=>{const r=document.querySelector('[data-rail]');
+ /* the first rail section that is on the page, by what it is and not by
+    where it sits: SV18 hid Energetic summary, the first [data-rail] in the
+    document, and the first by position then measured a hidden section at 0 */
+ const railW=()=>{const r=[...document.querySelectorAll('[data-rail]')].find(x=>x.getClientRects().length);
   return r?Math.round(r.getBoundingClientRect().width):-1;};
  const o={};
  setTab(TAB.FIELD); render(); o.before=railW();
@@ -5273,8 +5284,12 @@ console.log('\n=== a teacher on the compass opens the behaviour complex and adds
   /* the Active list is Goals' Today, and with a ritual running the centre
      opens on the week since round RB, so the list is asked for by its view */
   setTab(TAB.RITUAL); await wait(400);
-  o.row=[...document.querySelectorAll('#rit .rv-sub')].map(s=>s.textContent).filter(t=>/^Toward Buddha/.test(t)).length;
-  /* a worked example saves nothing, and the panel says so and offers no button */
+  o.row=[...document.querySelectorAll('#rit .rv-sub')].map(s=>s.textContent).filter(t=>/(^|, )toward Buddha/i.test(t)).length; /* SV24: the line opens on the seat now, "Third eye seat, toward Buddha" */
+  /* a worked example saves nothing, so the panel offers no button. It also
+     said so, "is a worked example, so nothing here is saved", and SV19 cut
+     that line on his words: "Get rid of Ana is worked example, so nothing is
+     saved." The picker already reads "Gordon, example", and with no button
+     there is no write to refuse, so the panel now holds neither */
   loadP(PERSON('Gordon')); setTab(TAB.COMPASS); await wait(300);
   runTeacherDrill(MIRROR[i],'up'); await wait(100);
   o.exBtn=!!document.querySelector('#rdrill [data-tcxgo]'); o.exSays=/worked example/.test((document.getElementById('rdrill')||{}).textContent||'');
@@ -5300,7 +5315,7 @@ console.log('\n=== a teacher on the compass opens the behaviour complex and adds
  ok(o.pathHits===o.pathN,'every path badge on the needle is pressable, '+o.pathHits+' of '+o.pathN);
  ok(o.pathBox===o.pathK,'a path on no axis opens its own recipe, '+o.pathBox);
  ok(o.row===1,'and the Active list names the teacher, '+o.row);
- ok(!o.exBtn&&o.exSays,'a worked example offers no button and says nothing here is saved');
+ ok(!o.exBtn&&!o.exSays,'a worked example offers no button, and no line saying it is one');
  ok(terr.length===0,'no errors, '+terr.join(' | '));
  await tp.close();
 }
@@ -6546,26 +6561,18 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
    folded:fb.classList.contains('folded'),zoomIn:zm.right<=s.right&&zm.bottom<=s.bottom&&zm.width>0,
    words:(sw.innerText||'').trim(),
    sizes:btns.map(x=>{const r=x.getBoundingClientRect();return [Math.round(r.width),Math.round(r.height)];}),
-   cv:d('cv'),fbar:d('fbar'),frend:d('frend'),subbar:d('subbar'),
+   cv:d('cv'),fbar:d('fbar'),frend:d('frend'),subbar:d('subbar'),fview:d('fview'),
    retired:['vbar','flay'].filter(id=>document.getElementById(id))};});
- ok(place.keys==='wheel,frames,dial','three positions, wheel, frames and dial, got '+place.keys);
- ok(place.pressed==='wheel','the wheel is the default, so nobody who has not pressed it sees a change, got '+place.pressed);
- /* THE OVERLAY IN THE UPPER RIGHT, EZ in TASKS.md, which reverses DY's right
-    rail: "where are my three fucking styles? On my right hand side overlay
-    ... This should be opposite of the overlay items that you have on the
-    upper left." DY put it under the rail's top line, EV found it only in a
-    prototype, and EZ is the owner looking straight at the rail and asking
-    where it was. So it is held to the mirror: on the picture, the same
-    distance in from the right as the bar's first circle is from the left,
-    and on the bar's own centre line. */
- ok(place.inStage&&Math.abs(place.rightGap-place.leftGap)<=6,'the switch lies on the stage, as far in from its right edge as the bar is from its left, '
-  +Math.round(place.rightGap)+' against '+Math.round(place.leftGap));
- ok(place.mid<=2,'and level with the glass bar, centre lines off by '+place.mid.toFixed(1));
- ok(!place.folded&&place.barRight<=place.swLeft,'at 1600 the bar keeps its full row beside it, bar ends '
-  +Math.round(place.barRight)+', switch starts '+Math.round(place.swLeft));
+ /* THE SWITCH IS OFF, SV18, 5 November, his words with Frames struck through
+    in red: "the other ways of displaying the field, let's turn those off."
+    EZ's placement checks, the mirror of the bar's first circle and the bar's
+    centre line, measured a switch that is no longer on the page, so they go
+    with it, and what is held instead is that it is not on the page and that
+    the picture is the wheel. The renditions stay drawable by fviewSet, and
+    every check below that drives them by name still runs. */
+ ok(place.fview==='none','the Wheel, Frames and Dial switch is not on the page, display '+place.fview);
+ ok(place.pressed==='wheel','and the picture is the wheel, got '+place.pressed);
  ok(place.zoomIn,'and zoom, which left the bar to make that room, is on the stage');
- ok(place.words==='','icon only: "I don\'t need the text, just make it the icon", got "'+place.words+'"');
- ok(place.sizes.every(s=>s[0]>=44&&s[1]>=44),'every position clears the 44 pixel tap floor, '+JSON.stringify(place.sizes));
  ok(place.cv==='block'&&place.fbar==='flex'&&place.frend==='none'&&place.subbar==='none',
   'on the wheel the canvas and the glass bar are up, no rendition, and no sub bar: "I don\'t want that secondary navigation"');
  ok(place.retired.length===0,'the depth row and the layer row the bar replaced are not in the document, found: '
@@ -6590,14 +6597,18 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
     Patterns, so the layers past it are off until someone turns them on;
     what this holds is that every layer draws when it is on. */
  const drawn=async v=>{
-  await fp.evaluate(v=>{loadP(PERSON('James'));setTab(TAB.FIELD);layPick(3);fviewSet(v);},v);
+  /* the bar opens shut since SV18, so it is opened with its own control to be
+     measured; the switches it carries are the model's less the two he took
+     off it, FB_OFFBAR in ui/fieldbar.js */
+  await fp.evaluate(v=>{loadP(PERSON('James'));setTab(TAB.FIELD);layPick(3);fviewSet(v);
+   if(FB.classList.contains('shut'))FB_TOG.click();},v);
   await frame(fp);
   return fp.evaluate(L=>{const fr=document.getElementById('frend'),d=id=>getComputedStyle(document.getElementById(id)).display;
    const texts=[...fr.querySelectorAll('text')];
    const lays=[...document.querySelectorAll('#fbar .fb-full [data-fb]')];
    return {svg:!!fr.querySelector('svg.frsvg'),cv:d('cv'),fbar:d('fbar'),frend:d('frend'),subbar:d('subbar'),
     w:fr.clientWidth,h:fr.clientHeight,
-    lays:lays.map(b=>b.getAttribute('data-fb')).sort().join(','),want:[].concat(...LAYADD).sort().join(','),
+    lays:lays.map(b=>b.getAttribute('data-fb')).sort().join(','),want:[].concat(...LAYADD).filter(k=>!FB_OFFBAR[k]).sort().join(','),
     layOn:lays.every(b=>b.getAttribute('aria-pressed')==='true'),
     laySizes:lays.map(b=>{const r=b.getBoundingClientRect();return [Math.round(r.width),Math.round(r.height)];}),
     counts:L.map(k=>[k,fr.querySelectorAll('.L-'+k+' [data-h], .L-'+k+' rect, .L-'+k+' path, .L-'+k+' circle').length]),
@@ -7183,8 +7194,13 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
    says:[...host.querySelectorAll('.rs-say')].every(p=>p.textContent.trim().length>10),
    range:host.querySelectorAll('.rs-r').length, wantRange:R.range.length,
    noFigure:!/0\.\d{2}|\d%/.test(host.textContent),
-   tinted:['energetics','overlap'].every(k=>{const e=document.querySelector('.lsec[data-sec='+k+']');
-    return e.classList.contains('re')&&getComputedStyle(e).backgroundColor!=='rgba(0, 0, 0, 0)';}),
+   /* SV18 reversed FV's set apart panel for Root Energetics, "this design
+      element looks nothing like the left side of the menu", and hid the
+      summary, "Just hide it". Held: Root Energetics is a section like the
+      rail's others, untinted, and the summary is not on the page. */
+   tinted:(()=>{const e=document.querySelector('.lsec[data-sec=energetics]'),o=document.querySelector('.lsec[data-sec=overlap]');
+    return !e.classList.contains('re')&&getComputedStyle(e).backgroundColor==='rgba(0, 0, 0, 0)'
+     &&getComputedStyle(o).display==='none';})(),
    bare:[...document.querySelectorAll('.lsec-hd')].filter(h=>!h.querySelector('svg')).map(h=>h.textContent.trim()),
    mx:/Architect|Engine|Weaver|Witness/.test(document.getElementById('mxk').textContent),
    run:[...document.querySelectorAll('#fire .it[data-i]')].map(e=>!!e.querySelector('.crb .crb-v')&&!!e.querySelector('.crb-g path')),
@@ -7219,7 +7235,7 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  ok(fv.says&&fv.range===fv.wantRange,'each meeting says what it means, and the range carries every other reading, '+fv.range);
  ok(fv.noFigure,'and no probability or percentage is printed at the person');
  ok(/No birth data/.test(fv.blank)&&fv.blankGo,'a blank profile is told what unlocks it, with the door, '+fv.blank);
- ok(fv.tinted,'Root Energetics and Energetic summary both carry the tinted panel');
+ ok(fv.tinted,'Root Energetics wears no panel of its own, and Energetic summary is off the page');
  ok(!fv.bare.length,'every section header carries its mark, bare: '+fv.bare.join(', '));
  ok(fv.heads,'and every Root Energetics heading its system\'s');
  ok(!fv.mx,'the matrix carries no root names');
@@ -7252,7 +7268,9 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  /* measured on this fresh page, because everything above has pressed the bar */
  const on=await fp.evaluate(()=>{const lays=[...document.querySelectorAll('#fbar .fb-full [data-fb]')];
   return {view:S.view,custom:LAYSET,off:lays.filter(b=>b.getAttribute('aria-pressed')!=='true').map(b=>b.getAttribute('data-fb')),
-   n:lays.length,want:[].concat(...LAYADD).length};});
+   /* less the two circles SV18 took off the bar, FB_OFFBAR; their layers are
+      still on, which LAYSET null and view 3 already say */
+   n:lays.length,want:[].concat(...LAYADD).filter(k=>!FB_OFFBAR[k]).length};});
  const fold2=await fp.evaluate(async()=>{const kept=document.body.classList.contains('lshut');
   document.getElementById('lfold').click(); await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
   return {kept,open:!document.body.classList.contains('lshut')&&!!document.getElementById('fdock').offsetParent,
@@ -7287,14 +7305,18 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   +JSON.stringify(on));
  await fp.evaluate(()=>{layPick(1);render();});
 
- /* THE CHOICE IS KEPT, and a reload opens the Field the way it was left. */
+ /* THE CHOICE WAS KEPT, and a reload opened the Field the way it was left.
+    SV18 turned the other pictures off, so the reverse is held now: a browser
+    whose store still says dial, from before the switch went, opens on the
+    wheel, because a picture with no switch on the page is a picture with no
+    way back from it. */
  await fp.evaluate(()=>fviewSet('dial'));
  await fp.reload({waitUntil:'load'}); await booted(fp); await frame(fp);
  const kept=await fp.evaluate(()=>{const on=document.querySelector('#fview [aria-pressed="true"]');
   return {stored:STORE.get('fview'),view:FVIEW,pressed:on?on.getAttribute('data-fview'):null,
-   frend:getComputedStyle(document.getElementById('frend')).display,svg:!!document.querySelector('#frend svg.frsvg')};});
- ok(kept.stored==='dial'&&kept.view==='dial'&&kept.pressed==='dial','the switch is kept in the store and read back, '+JSON.stringify(kept));
- ok(kept.frend==='block'&&kept.svg,'and the Field opens drawn as the dial');
+   frend:getComputedStyle(document.getElementById('frend')).display};});
+ ok(kept.stored==='dial'&&kept.view==='wheel'&&kept.pressed==='wheel','a stored dial opens on the wheel now, '+JSON.stringify(kept));
+ ok(kept.frend==='none','and no rendition is drawn over it');
  /* and back to the wheel, which has to be measured again: hidden behind a
     rendition it had a box of nothing */
  const back=await fp.evaluate(async()=>{loadP(PERSON('James'));fviewSet('wheel');
@@ -7419,7 +7441,9 @@ console.log('\n=== FJ: words with the zoom, layers that move, one dial in two de
  /* A LAYER MOVES. A press on the bar starts the sweep on the wheel: the layer
     is mid arrival two frames later, pressable at once, and whole by 450ms */
  await fj.evaluate(()=>{fviewSet('wheel');layPick(3);}); await fr2();
- const lm=await fj.evaluate(async()=>{const b=document.querySelector('#fbar .fb-full [data-fb="archetypes"]');
+ /* the bar opens shut since SV18, so it is opened first, as a person must */
+ const lm=await fj.evaluate(async()=>{if(FB.classList.contains('shut'))FB_TOG.click();
+  const b=document.querySelector('#fbar .fb-full [data-fb="archetypes"]');
   const two=()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
   b.click(); await two(); const out={offV:LAYF.archetypes.v,offHits:HIT.filter(h=>h.k==='arch').length};
   await new Promise(r=>setTimeout(r,400));
@@ -7565,26 +7589,32 @@ console.log('\n=== GB: the glass bar closes and opens, and accuracy takes no box
    lead:vis[0]&&vis[0].getAttribute('aria-label'),next:vis[1]&&vis[1].getAttribute('aria-label'),
    x:r.left-st.left,y:r.top-st.top,w:r.width,h:r.height,
    exp:T.getAttribute('aria-expanded'),label:T.getAttribute('aria-label'),stored:STORE.get('fbar')};});
+ /* IT ARRIVES SHUT, SV18, 5 November, his words: "I want that top middle, the
+    top menu in the center field left to start closed." It arrived open and a
+    press was stored, so the order here was open, shut, reload shut, open.
+    Now it is shut, open, shut, and a reload is shut again whatever was
+    pressed, with nothing written to the store, because a stored open from
+    one press on another day is how this change would not have reached him. */
+ const first=await bar();
+ ok(first.shut&&first.n===1&&first.lead==='Open the tools'&&first.exp==='false'&&first.stored===null,
+  'it arrives shut, the one circle saying it opens, and nothing stored, '+JSON.stringify(first));
+ ok(first.w>=44&&first.h>=44,'the fold clears the 44 pixel tap floor, '+first.w+' by '+first.h);
+ await gp.click('#fbar .fb-tog'); await gp.waitForTimeout(200);
  const open=await bar();
  /* THE FOLD LEADS THE ROW NOW, GO: "the first left, upper left icon. Expand,
     close." Addresses is the first layer, one along. */
- ok(!open.shut&&!open.folded&&open.lead==='Close the tools'&&open.next==='Addresses'&&open.exp==='true',
-  'open at 1600, the full row stands with the fold at its head and Addresses next, '+JSON.stringify(open));
- ok(open.w>=44&&open.h>=44,'the fold clears the 44 pixel tap floor, '+open.w+' by '+open.h);
+ ok(!open.shut&&!open.folded&&open.lead==='Close the tools'&&open.next==='Addresses'&&open.exp==='true'&&open.stored===null,
+  'one press opens the full row at 1600, the fold at its head and Addresses next, and the store keeps nothing, '+JSON.stringify(open));
+ ok(Math.abs(first.x-open.x)<=1&&Math.abs(first.y-open.y)<=1,'open or shut, the fold stays where it was, the upper left corner, at '
+  +Math.round(open.x)+','+Math.round(open.y));
  await gp.click('#fbar .fb-tog'); await gp.waitForTimeout(200);
  const shut=await bar();
- ok(shut.shut&&shut.n===1&&shut.lead==='Open the tools'&&shut.exp==='false'&&shut.stored==='shut',
-  'one press shuts it to the one circle, which now says it opens, and the store keeps it, '+JSON.stringify(shut));
- ok(Math.abs(shut.x-open.x)<=1&&Math.abs(shut.y-open.y)<=1,'shut, it stays where it was, the upper left corner, at '
-  +Math.round(shut.x)+','+Math.round(shut.y));
+ ok(shut.shut&&shut.n===1&&shut.lead==='Open the tools'&&shut.exp==='false','a second press shuts it to the one circle again, '+JSON.stringify(shut));
+ await gp.click('#fbar .fb-tog'); await gp.waitForTimeout(200);
  await gp.reload({waitUntil:'load'}); await booted(gp);
  await gp.evaluate(()=>{loadP(PERSON('James'));setTab(TAB.FIELD);render();});
  const kept=await bar();
- ok(kept.shut&&kept.n===1,'a reload keeps it shut, '+JSON.stringify(kept));
- await gp.click('#fbar .fb-tog'); await gp.waitForTimeout(200);
- const back=await bar();
- ok(!back.shut&&!back.folded&&back.lead==='Close the tools'&&back.n===open.n&&back.stored==='open',
-  'and a second press brings back the whole row at 1600, measured afresh, '+JSON.stringify(back));
+ ok(kept.shut&&kept.n===1&&kept.stored===null,'left open and reloaded, it arrives shut again, '+JSON.stringify(kept));
  /* the checks below press DQ, which is in the column. Accuracy is on the
     stage since round LR and is pressed where it lies. */
  await gp.click('#lfold'); await gp.waitForTimeout(250);
@@ -7628,23 +7658,30 @@ console.log('\n=== GO: the Field lands with its column shut, two names changed, 
    energetics:!document.querySelector('[data-sec=energetics]').classList.contains('open'),
    left:document.querySelector('[data-sec=energetics] .lsec-hd').textContent.trim(),
    esum:document.querySelector('[data-sec=overlap] .lsec-hd').textContent.trim(),
-   seats:lay('seats').getAttribute('aria-label'),gates:lay('gates').getAttribute('aria-label'),
+   /* Assemblage points left the bar at SV18, FB_OFFBAR, so its name is read
+      off the table the bar draws from; Laws of Action is still a circle */
+   seats:FB_BYK.seats.nm,onbar:!!lay('seats'),gates:lay('gates').getAttribute('aria-label'),
    stale:names.filter(n=>/^(Seats|Gates)$/.test(n)),
    view:S.view,custom:LAYSET,ring:dv.getAttribute('stroke-dasharray'),
    togMark:F.querySelector('.fb-tog svg').innerHTML,foldMark:document.querySelector('#lfold svg').innerHTML};});
  ok(a.tab&&a.lshut&&a.stored===null,'a first visit to the Field at 1600 finds the left column shut and nothing stored, '+JSON.stringify({lshut:a.lshut,stored:a.stored}));
  ok(a.energetics&&a.left==='Root Energetics','the left rail keeps Root Energetics, closed, '+a.left);
  ok(a.esum==='Energetic summary','and the summary keeps its own name, Energetic summary, so no two sections share one, '+a.esum);
- ok(a.seats==='Assemblage points'&&a.gates==='Laws of Action'&&!a.stale.length,'the bar says Assemblage points and Laws of Action, and neither old word, '+JSON.stringify([a.seats,a.gates,a.stale]));
+ ok(a.seats==='Assemblage points'&&!a.onbar&&a.gates==='Laws of Action'&&!a.stale.length,'the names are Assemblage points and Laws of Action, neither old word, and Assemblage points is off the bar, '+JSON.stringify([a.seats,a.onbar,a.gates,a.stale]));
  ok(a.view===3&&a.custom===null&&a.ring==='100.0 100','depth starts full, Blueprint, and its ring reads full, '+a.ring);
  ok(a.togMark!==a.foldMark,'the bar\'s fold and the column\'s fold wear two marks, since they now stand side by side');
  /* ONE PRESS ON ONE LAYER IS NOT DEPTH GOING TO NOTHING. The ring was binary,
     a preset or empty, and a press on Seats was what emptied it for him. */
- await wide.pg.click('#fbar .fb-full [data-fb=seats]'); await wide.pg.waitForTimeout(250);
+ /* Seats was the layer he pressed, and it is off the bar since SV18, so the
+    one press is on Laws of Action, which holds the same thing: one layer off
+    is a set of his own and not depth going to nothing. The bar is opened
+    first with its own control, because it arrives shut. */
+ await wide.pg.click('#fbar .fb-tog'); await wide.pg.waitForTimeout(200);
+ await wide.pg.click('#fbar .fb-full [data-fb=gates]'); await wide.pg.waitForTimeout(250);
  const b=await wide.pg.evaluate(()=>{const d=document.querySelector('#fbar [data-fb=depth]');
   return {custom:!!LAYSET,ring:d.querySelector('.val').getAttribute('stroke-dasharray'),on:d.classList.contains('on'),
    tip:d.getAttribute('data-tip')||d.getAttribute('aria-label')};});
- ok(b.custom&&b.ring==='100.0 100'&&!b.on,'with Assemblage Points off the set is his own, and depth still reads full, '+JSON.stringify(b));
+ ok(b.custom&&b.ring==='100.0 100'&&!b.on,'with Laws of Action off the set is his own, and depth still reads full, '+JSON.stringify(b));
  await wide.pg.evaluate(()=>{layPick(0);render();});
  const c=await wide.pg.evaluate(()=>document.querySelector('#fbar [data-fb=depth] .val').getAttribute('stroke-dasharray'));
  ok(c==='25.0 100','and at Charge it reads a quarter, one depth of four, '+c);
@@ -7680,7 +7717,8 @@ console.log('\n=== GO: the Field lands with its column shut, two names changed, 
  const g=await narrow.pg.evaluate(()=>({lshut:document.body.classList.contains('lshut'),stored:STORE.get('lcol'),
   dock:!!document.getElementById('fdock').offsetParent,
   lead:[...document.querySelectorAll('#fbar .fb-b')].filter(x=>x.offsetParent).map(x=>x.getAttribute('aria-label'))[0]}));
- ok(!g.lshut&&g.stored===null&&g.dock&&g.lead==='Close the tools','at 390 the column lands open with the readings in view, and the fold leads the bar, '+JSON.stringify(g));
+ /* and the bar arrives shut there too, SV18, so the fold is its only circle */
+ ok(!g.lshut&&g.stored===null&&g.dock&&g.lead==='Open the tools','at 390 the column lands open with the readings in view, and the bar arrives shut to its fold, '+JSON.stringify(g));
  ok(narrow.err.length===0,'GO at 390: no errors, '+narrow.err.join(' | '));
  await narrow.cx.close();
 }
@@ -7829,6 +7867,22 @@ await require('./voicefall.js').voiceFallGate(browser,FILE,ok,booted);
    run alone, called here so a full run holds it. */
 console.log('\n=== type instead, the box on request while voice works ===');
 await require('./typein.js').typeInGate(browser,FILE,ok,booted);
+
+/* THE NAMED ADDRESS LAYER, tests/addrlayer.js, 5 November. S.addr is what a
+   story that names a body place adds at that address, and undo, opening a
+   worked example and the practitioner roster's read of a client each swapped
+   S without it, so a story on You leaked into all three. A file of its own
+   so it can run alone, called here so a full run holds it. */
+console.log('\n=== the named address layer follows the record it belongs to ===');
+await require('./addrlayer.js').addrLayerGate(browser,FILE,ok,booted);
+
+/* A CONTROL SAYS WHAT HAPPENED TO THE SAVE, tests/honeststatus.js, 5
+   November. Both Exports said copied before the clipboard answered, Undo and
+   Redo said Took back as ok over a refused save, and an intake answer press
+   said nothing at all. A file of its own so it can run alone, called here so
+   a full run holds it. */
+console.log('\n=== a control says what happened to the save ===');
+await require('./honeststatus.js').honestStatusGate(browser,FILE,ok,booted);
 
 await browser.close();
 

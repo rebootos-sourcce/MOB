@@ -86,15 +86,18 @@ function renderSpirit(){
     engine/data/gloss.js, as the one tooltip: reachable by tap on a phone and by
     keyboard, and said the same on every surface that shows the same sign. */
  function say(){return Array.prototype.slice.call(arguments).filter(Boolean).join(' ');}
- function row(k,glyph,v,x,dk,dv,tip){
-  return '<button class="sp-row" data-sp="'+dk+'" data-spv="'+esc(dv||v)+'"'
-   +(tip?' data-tip-k="'+esc(k)+'" data-tip="'+esc(tip)+'"':'')+'>'
-   +'<span class="sp-k">'+k+'</span>'
-   /* a glyph that starts with a tag is a drawn mark, the element's, and a
-      character is the sign's own, which the rail has always set as text */
-   +'<span class="sp-v">'+(glyph?(glyph.charAt(0)==='<'?'<svg class="sp-gi" viewBox="0 0 24 24" aria-hidden="true">'
-     +glyph+'</svg>':'<em class="sp-g">'+glyph+'</em>'):'')+esc(v)+'</span>'
-   +'<span class="sp-x">'+esc(x||'')+'</span></button>';}
+ /* ICONS, NO TEXT, SV18, 5 November. His words on the live panel: "For the
+    root energetics, this just needs to be visual only. Icons, no text. Except
+    for the numerology keep the numerology numbers." Every row printed three
+    columns, Sun, Taurus, earth, and the rail around it prints none: its bars
+    are a mark and a figure, its Awareness line a ring of circles. So a row is
+    one circle now, reTile below, and the three words it printed ride in the
+    tooltip, where round PO already put the meaning, and in the document for a
+    screen reader and the gates, the way .rb-sub keeps Flow's caption. The
+    meaning is still one tap away, which is V23's third shape: a line with no
+    room makes the mark the carrier of its sentence. */
+ function row(k,glyph,v,x,dk,dv,tip){return reTile(k,glyph,v,x,dk,dv,tip,false);}
+ function nrow(k,glyph,v,x,dk,dv,tip,pill){return reTile(k,glyph,v,x,dk,dv,tip,true,pill);}
  /* ONE SHAPE FOR EVERY READING THE RECORD CANNOT SETTLE. Rising was the only
     row that said so, and the moon, both gates and the gene key beside it were
     printed off an instant the engine had guessed by reading an unlocated
@@ -105,9 +108,15 @@ function renderSpirit(){
     for a time zone, which the owner ruled is how a person supplies it. With a
     zone given the only thing left open is a clock reading that the clocks
     going back or forward made happen twice or not at all. */
+ /* the tile keeps this shape: static, a dash where the mark would be, which is
+    the honest glyph for a value nobody read (V19), and the reason in its
+    tooltip and in its spoken name */
  function unres(k,x){
-  return '<div class="sp-row static"><span class="sp-k">'+k+'</span>'
-   +'<span class="sp-v">unresolved</span><span class="sp-x">'+x+'</span></div>';}
+  return '<div class="sp-row static sp-tile" tabindex="0" data-tip-k="'+esc(k)+'" data-tip-t="unresolved"'
+   +' data-tip="'+esc(x.charAt(0).toUpperCase()+x.slice(1)+'.')+'" aria-label="'+esc(k+', unresolved, '+x+'.')+'">'
+   +'<span class="sp-tg sp-tdash" aria-hidden="true">–</span>'
+   +'<span class="sp-said"><span class="sp-k">'+k+'</span> <span class="sp-v">unresolved</span> '
+   +'<span class="sp-x">'+x+'</span></span></div>';}
  var noPlace='needs a birthplace the instrument can locate';
  /* short when nothing was given, because it sits beside five rows in a rail
     264 wide and the long form wrapped to four lines on every one of them */
@@ -120,17 +129,58 @@ function renderSpirit(){
  /* EVERY HEADING CARRIES ITS SYSTEM'S MARK, FV: "everything should have an
     icon." SYSGLYPH in ui/component.js, the same four the summary on the right
     rail lights in its band, so a system reads as the same thing on both. */
- function hd(k,t){return '<div class="sp-hd"><svg class="sp-hi" viewBox="0 0 24 24" aria-hidden="true">'
-  +SYSGLYPH[k]+'</svg>'+unp(t.toLowerCase(),t)+'</div>';}
+ /* AND THE FOUR HEADINGS ARE THE CHOICE NOW, SV18. His words: "Any of these
+    groups I select, like if I select Western, I get the combination of sun,
+    moon, rising in my summary. If I select Eastern, I get the combination
+    Earth and goat." The four systems were drawn twice, as circles in a
+    picture nobody could press (rlMeetHtml, role img) and as headings over
+    rows that were always all open, so nothing he pressed chose anything. The
+    heading is the press: one circle per system in the rail's own ring, and a
+    pressed one shows its line of tiles. Each line closes its own heading's
+    tiles, so a system's mark leads the line it chose. */
+ function hd(k,t){var on=!!RE_SEL[k];
+  return '<button type="button" class="sp-hd sp-sys'+(on?' on':'')+'" data-sys="'+k+'" aria-pressed="'+on+'"'
+   +' data-tip-t="'+esc(t)+'" data-tip="'+esc(unpackOf(t.toLowerCase())||t)+'"'
+   +' aria-label="'+esc(t+'. Shows or hides its readings.')+'">'
+   +'<svg class="sp-hi" viewBox="0 0 24 24" aria-hidden="true">'+SYSGLYPH[k]+'</svg>'
+   +'<span class="sp-said">'+esc(t)+'</span></button>';}
+ /* the tiles wrap inside their own column, so Number's seven circles break
+    onto a second row that starts under the first tile and not under the
+    system's mark, where it read as a second system with no mark */
+ function line(k,tiles){return '<div class="sp-line" data-sys="'+k+'"'+(RE_SEL[k]?'':' hidden')+'>'
+  +'<svg class="sp-lm" viewBox="0 0 24 24" aria-hidden="true">'+SYSGLYPH[k]+'</svg>'
+  +'<span class="sp-tiles">'+tiles+'</span></div>';}
  /* THE EASTERN ROWS SAY WHAT THEY DO, as the number rows beside them always
     have. Their third column was empty, so the only two rows on the rail with
     nothing to say were the two whose behaviour lines, CH_RUNS and CE_RUNS,
     were already written and opening in their drills. And the year carries the
     element's own mark, the one the Summary's chip for the same year uses. */
  var cic=(typeof CELEM_IC!=='undefined'&&CELEM_IC[sp.celem])||'';
- el.innerHTML=rlMeetHtml(sp,p.nm)
-  +hd('W','Western')
-  +(sp.sun?row('Sun',ZGLYPH[sp.sun],sp.sun,sp.sunEl,'sign',null,say(unpackOf('sun sign'),unpackOf(sp.sun,'sign'))):unres('Sun',noZone))
+ /* THE PICTURE OF WHAT MEETS WHAT CAME OFF THE HEAD OF THIS SECTION, SV18:
+    "this design element looks nothing like the left side of the menu."
+    rlMeetHtml in ui/railtiles.js drew it, and it is left there unchanged,
+    unread, so the call is one line to put back. What the four systems say
+    together was the Energetic summary's job, and he hid that the same day. */
+ reSelRead();
+ /* the birth itself, which no system owns: one mark, the pin SYSGLYPH
+    already carries, with the day and the place in its tooltip and the two
+    rows the gates read kept in the document beside it. Every part is escaped,
+    main's rule from the row this replaced: all of it comes from the record,
+    and a record can arrive by link or paste carrying markup the boundary did
+    not write. */
+ var bornSay=[sp.birth.d,sp.birth.t].filter(Boolean).join(' ')+(sp.birth.p?', '+sp.birth.p:'')+(sp.birth.z?', '+sp.birth.z:'');
+ var born='<div class="sp-tile sp-born" tabindex="0" data-tip-t="Born" data-tip="'+esc(bornSay)+'" aria-label="'+esc('Born, '+bornSay)+'">'
+  +'<span class="sp-tg" aria-hidden="true"><svg class="sp-gi" viewBox="0 0 24 24">'+SYSGLYPH.born+'</svg></span>'
+  +'<span class="sp-said"><span class="sp-row static"><span class="sp-k">When</span> <span class="sp-v">'
+  +esc(sp.birth.d)+'</span> <span class="sp-x">'+esc(sp.birth.t||'')+'</span></span>'
+  +'<span class="sp-row static"><span class="sp-k">Where</span> <span class="sp-v">'
+  +esc(sp.birth.p)+'</span> <span class="sp-x">'+esc(sp.birth.z||'')+'</span></span></span></div>';
+ /* a gate is printed as "gate 23.4" in its spoken name and as 23.4 in its
+    pill: the pill has no room for the word, and the tooltip's kicker says it */
+ var gnum=function(g){return g.gate+'.'+g.line;};
+ el.innerHTML='<div class="sp-sysrow">'+hd('W','Western')+hd('E','Eastern')+hd('N','Number')+hd('D','Design')+born+'</div>'
+  +line('W',
+  (sp.sun?row('Sun',ZGLYPH[sp.sun],sp.sun,sp.sunEl,'sign',null,say(unpackOf('sun sign'),unpackOf(sp.sun,'sign'))):unres('Sun',noZone))
   +(sp.moon?row('Moon',ZGLYPH[sp.moon],sp.moon,sp.moonEl,'sign',null,say(unpackOf('moon sign'),unpackOf(sp.moon,'sign'))):unres('Moon',noZone))
   /* The ascendant is the one reading that needs a place, because it is the
      degree rising on the horizon and that depends on where the horizon was.
@@ -139,42 +189,87 @@ function renderSpirit(){
     ? row('Rising',ZGLYPH[sp.rising],sp.rising,sp.risingEl,'sign',null,say(unpackOf('rising sign'),unpackOf(sp.rising,'sign')))
     /* a zone gives a horizon now, so a timed Rising with one that is still
        refused is the clock change and not a missing place */
-    : unres('Rising',sp.needsTime?'needs a birth time':sp.needsPlace?noPlace:noZone))
-  +hd('E','Eastern')
-  +row('Year',cic,sp.celem+' '+sp.chinese,CH_RUNS[sp.chinese]||'','chinese',sp.chinese,
-    say(unpackOf('year animal'),unpackOf(sp.chinese,'animal')))
-  +row('Element',cic,sp.celem,CE_RUNS[sp.celem]||'','celem',sp.celem,
-    say(unpackOf('year element'),unpackOf(sp.celem,'year')))
-  +hd('N','Number')
-  +row('Path',NUMFIELD_IC.path,String(sp.lp),sp.lpMean,'lp',String(sp.lp),say(unpackOf('life path'),unpackOf('path:'+sp.lp)))
-  +(sp.master?row('Master',NUMFIELD_IC.master,String(sp.master),'survives reduction','lp',String(sp.master),unpackOf('master number')):'')
-  +spNumRows(p.nm,true)
-  +hd('D','Design')
+    : unres('Rising',sp.needsTime?'needs a birth time':sp.needsPlace?noPlace:noZone)))
+  /* EARTH AND GOAT IS ONE TILE, SV18. They are one reading, the year, its
+     element and its animal, and as two rows they both wore the element's
+     mark, which as two circles side by side is one picture twice. The year
+     animals have no drawn mark in this product, so the tile wears the
+     element's and its tooltip says both halves, from the same two gloss
+     entries the two rows carried. The element's own drill is still the
+     Summary's chip for it (sumChips, ui/summary.js). */
+  +line('E',
+   row('Year',cic,sp.celem+' '+sp.chinese,CH_RUNS[sp.chinese]||'','chinese',sp.chinese,
+    say(unpackOf('year animal'),unpackOf(sp.chinese,'animal'),unpackOf('year element'),unpackOf(sp.celem,'year'))))
+  +line('N',
+   nrow('Path',NUMFIELD_IC.path,String(sp.lp),sp.lpMean,'lp',String(sp.lp),say(unpackOf('life path'),unpackOf('path:'+sp.lp)))
+  +(sp.master?nrow('Master',NUMFIELD_IC.master,String(sp.master),'survives reduction','lp',String(sp.master),unpackOf('master number')):'')
+  +spNumRows(p.nm,true))
   /* the personality and design gates are real and computed. the type is
-     not, and says so, rather than printing one that sounds right. */
+     not, and it was a row that said so on every birth there is; it is a
+     tile nobody could ever fill, so it is not drawn, and the drill for the
+     profile still says the type needs the full bodygraph. */
   /* These three fell back to the word unresolved inside a drill button, with
      the explanation of a value that was not there beside it. The fallback
      could not fire until the engine learned to refuse, and now it can. */
-  +(sp.hd.profile?row('Profile',DESIGNFIELD_IC.profile,sp.hd.profile,'personality line over design line','hd',sp.hd.profile,unpackOf('profile'))
+  +line('D',
+   (sp.hd.profile?nrow('Profile',DESIGNFIELD_IC.profile,sp.hd.profile,'personality line over design line','hd',sp.hd.profile,unpackOf('profile'))
     :unres('Profile',noZone))
-  +(sp.hd.personality?row('Personality',DESIGNFIELD_IC.personality,'gate '+sp.hd.personality.gate+'.'+sp.hd.personality.line,
+  +(sp.hd.personality?nrow('Personality',DESIGNFIELD_IC.personality,'gate '+gnum(sp.hd.personality),
     'the sun at birth','gk',String(sp.hd.personality.gate),
-    say(unpackOf('personality gate'),unpackOf('gate'),unpackOf('line'))):unres('Personality',noZone))
-  +(sp.hd.design?row('Design',DESIGNFIELD_IC.design,'gate '+sp.hd.design.gate+'.'+sp.hd.design.line,
+    say(unpackOf('personality gate'),unpackOf('gate'),unpackOf('line')),gnum(sp.hd.personality)):unres('Personality',noZone))
+  +(sp.hd.design?nrow('Design',DESIGNFIELD_IC.design,'gate '+gnum(sp.hd.design),
     'the sun 88 degrees earlier','gk',String(sp.hd.design.gate),
-    say(unpackOf('design gate'),unpackOf('gate'),unpackOf('line'))):unres('Design',noZone))
-  +unres('Type','needs the full bodygraph')
+    say(unpackOf('design gate'),unpackOf('gate'),unpackOf('line')),gnum(sp.hd.design)):unres('Design',noZone))
   /* this printed null.null the moment the engine could return no gate */
-  +(sp.gk.gate!=null?row('Gene key',DESIGNFIELD_IC.genekey,sp.gk.gate+'.'+sp.gk.line,'the gate the sun occupied','gk',
-    sp.gk.gate+'.'+sp.gk.line,say(unpackOf('gene key'),unpackOf('gate'),unpackOf('line'))):unres('Gene key',noZone))
-  +hd('born','Born')
-  +'<div class="sp-row static"><span class="sp-k">When</span><span class="sp-v">'
-  +sp.birth.d+'</span><span class="sp-x">'+sp.birth.t+'</span></div>'
-  +'<div class="sp-row static"><span class="sp-k">Where</span><span class="sp-v">'
-  +esc(sp.birth.p)+'</span><span class="sp-x">'+esc(sp.birth.z||'')+'</span></div>';
+  +(sp.gk.gate!=null?nrow('Gene key',DESIGNFIELD_IC.genekey,gnum(sp.gk),'the gate the sun occupied','gk',
+    gnum(sp.gk),say(unpackOf('gene key'),unpackOf('gate'),unpackOf('line'))):unres('Gene key',noZone)));
  el.querySelectorAll('[data-sp]').forEach(function(btn){
   btn.onclick=function(){runSpDrill(btn.getAttribute('data-sp'),btn.getAttribute('data-spv'));};});
+ reSelWire(el);
  spNumWire(el);}
+/* WHICH OF THE FOUR SYSTEMS ARE CHOSEN. Western on arrival, because it is
+   the one he named first and a section that opens on nothing chosen is a row
+   of four circles and an empty space. Kept in the browser store as a
+   convenience, the way the Field's own view is (fviewGet, ui/rings.js): it is
+   how this person likes to look, not a reading about them, so it is never on
+   the profile, and a store that cannot be read gives Western. */
+var RE_SEL={W:1}, RE_SEL_READ=false;
+function reSelRead(){
+ if(RE_SEL_READ)return; RE_SEL_READ=true;
+ try{var v=STORE.get('resel');
+  if(typeof v==='string'&&/^[WEND]*$/.test(v)){RE_SEL={}; v.split('').forEach(function(k){RE_SEL[k]=1;});}}
+ catch(e){}}
+/* a press shows or hides that system's line and nothing else: no render, so
+   a tooltip open on another tile stays where it is */
+function reSelWire(el){
+ el.querySelectorAll('.sp-sys').forEach(function(b){
+  b.onclick=function(){
+   var k=b.getAttribute('data-sys'), on=!RE_SEL[k];
+   if(on)RE_SEL[k]=1; else delete RE_SEL[k];
+   b.classList.toggle('on',on); b.setAttribute('aria-pressed',String(on));
+   var ln=el.querySelector('.sp-line[data-sys="'+k+'"]'); if(ln)ln.hidden=!on;
+   try{STORE.set('resel',Object.keys(RE_SEL).join(''));}catch(e){}};});}
+/* ONE READING, ONE CIRCLE. The rail's own object: a ring with the mark
+   inside it, 38 across inside the 44 target, which is what the Awareness
+   line's domain and archetype already are (awC, ui/railtiles.js), and where
+   the reading is a number it rides in a pill at the lower right, which is
+   the glass bar's grammar (fbOrb, ui/fieldbar.js). The kicker, the title and
+   the meaning are the tooltip's; the same three words are kept in the
+   document, clipped off the screen, for the spoken name and for the gates
+   that read a row by its label. A sign is the sign's own character, forced
+   to its text form with VS15 so a device does not paint it as a coloured
+   emoji, which is what it was doing beside ring icons. */
+function reTile(k,glyph,v,x,dk,dv,tip,num,pill){
+ var mark=glyph?(glyph.charAt(0)==='<'?'<svg class="sp-gi" viewBox="0 0 24 24">'+glyph+'</svg>'
+  :'<em class="sp-g">'+glyph+'︎</em>'):'';
+ var pv=num?(pill!=null?pill:v):'';
+ return '<button type="button" class="sp-row sp-tile'+(num?' sp-num':'')+'" data-sp="'+dk+'" data-spv="'+esc(dv||v)+'"'
+  +' data-tip-k="'+esc(k)+'" data-tip-t="'+esc(v+(x?', '+x:''))+'" data-tip="'+esc(tip||v)+'"'
+  +' aria-label="'+esc(k+', '+v+(x?', '+x:'')+'. Opens the reading.')+'">'
+  +'<span class="sp-tg" aria-hidden="true">'+mark+'</span>'
+  +(pv?'<b class="sp-tn" aria-hidden="true">'+esc(pv)+'</b>':'')
+  +'<span class="sp-said"><span class="sp-k">'+esc(k)+'</span> <span class="sp-v">'+esc(v)+'</span> '
+  +'<span class="sp-x">'+esc(x||'')+'</span></span></button>';}
 /* ALL HIS NUMEROLOGY, IN ROOT ENERGETICS. EZ in TASKS.md: "I need all my
    numerology stuff." This section carried the life path and a master and
    nothing else, while the name's own numbers, expression, soul urge,
@@ -196,16 +291,18 @@ function spNumRows(nm,under){
  /* the life path row above is spiritual's own and drills on its own terms, so
     under it this one would be the same number twice */
  var K=(under?[]:['lifePath']).concat(['expression','soul','personality','birthday','maturity']);
+ /* each number is reTile's circle, SV18, the number in its pill: "Except for
+    the numerology keep the numerology numbers." Its door is still runNumDrill
+    by data-num, so the attribute the tile is built with is swapped in, and
+    the spoken value is the number alone, which is what .sp-v has always held */
  var rows=K.filter(function(k){return N[k]!==null&&N[k]!==undefined;}).map(function(k){
-  var nsay=unpackOf((NUM_LABEL[k]||k).toLowerCase()), ic=NUMFIELD_IC[k]||'';
-  return '<button class="sp-row" type="button" data-num="'+k+'"'
-   +(nsay?' data-tip-k="'+esc(NUM_LABEL[k]||k)+'" data-tip="'+esc(nsay)+'"':'')+'>'
-   +'<span class="sp-k">'+esc(NUM_LABEL[k]||k)+'</span>'
-   +'<span class="sp-v">'+(ic?'<svg class="sp-gi" viewBox="0 0 24 24" aria-hidden="true">'+ic+'</svg>':'')
-   +esc(String(N[k]))+'</span>'
-   +'<span class="sp-x">'+esc(spNumSays(k,N[k]))+'</span></button>';}).join('');
- return rows?(under?'':'<div class="sp-hd"><svg class="sp-hi" viewBox="0 0 24 24" aria-hidden="true">'
-  +SYSGLYPH.N+'</svg>Number</div>')+rows:'';}
+  var lab=NUM_LABEL[k]||k, nsay=unpackOf(lab.toLowerCase()), n=String(N[k]);
+  return reTile(lab,NUMFIELD_IC[k]||'',n,spNumSays(k,N[k]),'','',nsay||lab+' '+n,true)
+   .replace(/ data-sp="" data-spv="[^"]*"/,' data-num="'+k+'"');}).join('');
+ /* with no birth data this line stands alone under the refusal, with no
+    choice of systems above it, so it carries its own system's mark */
+ return rows?(under?rows:'<div class="sp-line" data-sys="N"><svg class="sp-lm" viewBox="0 0 24 24" aria-hidden="true">'
+  +SYSGLYPH.N+'</svg><span class="sp-tiles">'+rows+'</span></div>'):'';}
 /* ONE KIND OF NOTE IN ONE COLUMN. The path row beside these says its number
    by the verb, moves, and so do expression, soul urge and personality by
    theirs. Maturity printed the number's title, "The one who tends", capital
@@ -791,6 +888,10 @@ function mirrorYou(){
  Y.dom=S.dom;Y.a1=S.a1;Y.a2=S.a2;Y.doms=S.doms.slice();Y.arcs=S.arcs.slice();Y.roots=S.roots.slice();
  CHARGES.forEach(function(c){Y.c[c]=S.charge[c];});
  Y.rep={};CHARGES.forEach(function(c){Y.rep[c]=S.replace[c]||0;});
+ /* the named address layer rides with the charge, because loadP(0) reads it
+    back out of this row and an own record that lost it on a visit to a worked
+    example would lose what its stories named */
+ Y.addr=Object.assign({},S.addr||{});
  /* the original wrote Y.law here and lawsFor could never read it back. */
  Y.law={};SINAMES.forEach(function(l){Y.law[l]=S.law[l];});
  return true;}
@@ -868,6 +969,17 @@ function loadP(i){
  CHARGES.forEach(function(c){
   S.charge[c]=(p.c&&p.c[c]!==undefined)?p.c[c]:0;
   S.replace[c]=(p.rep&&p.rep[c])||0;});
+ /* AND THE NAMED ADDRESS LAYER COMES FROM THE SAME ROW, or it stays behind.
+    S.addr is what a story that names a body place adds at that address
+    (engine/compute.js, 26 October), and this was the one S field loadP never
+    set. So a worked example opened after the person wrote a story was read
+    with the person's addresses on top of its own table and saved them onto
+    its scratch record: Derek on a fresh page DQ 26.221 and 20 loaded, after
+    one story on You DQ 26.475 and 22 loaded. No example row carries a layer,
+    so an example opens on none. The person's own row carries theirs because
+    mirrorYou copies it into PEOPLE[0] beside the charge, which is how the way
+    back through loadP(0) gets it back. */
+ S.addr=Object.assign({},(p.addr&&typeof p.addr==='object')?p.addr:{});
  /* THE CUSTOM PERSONA IS NOT A DEMO AND MUST NOT BE GIVEN LAW SCORES.
 
     lawsFor falls back to the seed for anybody with no table, and "You" is the

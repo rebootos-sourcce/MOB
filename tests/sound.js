@@ -1080,6 +1080,9 @@ async function atmGate(browser,FILE,ok,booted){
   const b=await row(); await pg.waitForTimeout(350);
   return {before:before, first:a, second:b};};
  const hz=await pg.evaluate(()=>({Root:seatHz('Root'),Sacral:seatHz('Sacral'),Crown:seatHz('Crown')}));
+ /* the glass bar arrives shut since SV18, his "start closed", so its circles
+    are pressed after it is opened, the way a person reaches them */
+ await pg.evaluate(()=>{ if(FB.classList.contains('shut'))FB_TOG.click(); }); await pg.waitForTimeout(200);
  const f1=await ov('#fbar [data-fb=shadow]');
  ok(f1.first&&f1.second&&f1.first.k===(f1.before==='true'?'overlay-off':'overlay-on')&&f1.second.k===(f1.before==='true'?'overlay-on':'overlay-off')
   &&f1.first.hz===hz.Root&&f1.second.hz===hz.Root,'the Field\'s Decoherence circle rises going on and falls going off, at the Root\'s tone, '+JSON.stringify(f1));
@@ -1119,7 +1122,9 @@ async function atmGate(browser,FILE,ok,booted){
  /* ---------- hover, through the real pointer ---------- */
  const hv=async fn=>{ await fresh(); await pg.evaluate(()=>{ window.__h0=atmState().played; });
   await fn(); await pg.waitForTimeout(60); return pg.evaluate(()=>({n:atmState().played-window.__h0, row:atmState().row&&atmState().row.k})); };
- await pg.evaluate(()=>{ setTab(TAB.FIELD); }); await pg.waitForTimeout(400);
+ /* open, for the reason above: the fold checks just before this leave it as
+    they found it, which is shut on arrival */
+ await pg.evaluate(()=>{ setTab(TAB.FIELD); if(FB.classList.contains('shut'))FB_TOG.click(); }); await pg.waitForTimeout(400);
  const box=async sel=>{ const b=await (await pg.$(sel)).boundingBox(); return {x:b.x+b.width/2,y:b.y+b.height/2}; };
  const sh0=await box('#fbar [data-fb=shadow]');
  const one_=await hv(async()=>{ await pg.mouse.move(cc.x,cc.y); await pg.waitForTimeout(300); await pg.evaluate(()=>{ ATM_HOV=[]; ATM_AT=0; });

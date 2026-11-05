@@ -34,40 +34,25 @@
    Ritual's menu, and Edit on a missed ritual sends the person there with the
    ritual already open.
 
-   WHERE EACH THING SITS, and the order is what a person came for. The
-   thirty day loop first, which is whether it is holding at a glance. Done
-   next, the streak and the figures. Missed third. The record last, because a
-   month is a thing to read once the day is marked and not before. Due today
-   stood first until SV17; the press it carried is today's column of the
-   week in the centre now, below.
+   WHERE EACH THING SITS, and the order is what a person came for. Since
+   SV19: the streak strip at the top of the rail, above the menu's name; the
+   thirty days; then History, one press, which opens the rituals as cards and
+   the Record. Done and Missed are no longer cards, below, and Due today went
+   to the week in SV17.
 
    A MISS IS NOT A VERDICT. engine/practice.js says it in PR_MISS_AT and the
    TDD says it in section 24: "Repeated failure should trigger investigation
-   rather than punishment." So a ritual missed PR_MISS_AT days or more in the
-   window offers Edit and says what editing is for, and a ritual missed fewer
-   times is only counted. The reason a day was missed is not asked here: the
+   rather than punishment." So a miss is counted and never coloured as a
+   failure, and Edit is one press from the ritual's own row. The reason a day was missed is not asked here: the
    practice domain has the classes (PR_MISS) and the profile has nowhere to
    keep one yet, and a control that took an answer and dropped it would be
    the status lie. Reported, not built.
    ============================================================ */
 
-/* how far back a miss is counted. Two weeks is the longest span the builder
-   offers (RIT_SPANS), so a ritual still running was started inside the window
-   or earlier, and what was missed in it is what a person can still change. */
-var ACCT_SPAN=14;
-
-/* THE DAYS A RITUAL WAS DUE AND NOT DONE, read off ritDaySegs and not worked
-   out a second way. The month on this same page draws a dashed ring for a
-   missed piece and this counts exactly those, so the number and the picture
-   cannot disagree about a day. A day counts once however many entries it
-   holds for the same steps. */
-function acctMissed(p,today){
- var k=ritKey(p.steps), n=0;
- for(var d=today-ACCT_SPAN;d<today;d++){
-  var hit=ritDaySegs(d,[p],today).some(function(s){
-   return s.st==='miss'&&ritKey(s.x?s.x.steps:s.p.steps)===k;});
-  if(hit)n++;}
- return n;}
+/* THE PER RITUAL MISS COUNT, ACCT_SPAN AND acctMissed, WENT WITH THE MISSED
+   CARD, SV19. The one miss figure left is the strip's, the thirty days'
+   own count, the dashed cubes (acctCubeRead), so the number and the cubes
+   under it cannot disagree about a day. */
 
 function acctDays(n){return n+(n===1?' day':' days');}
 
@@ -82,81 +67,62 @@ function acctDays(n){return n+(n===1?' day':' days');}
    in the centre keeps its own ring as well, so the press is never further
    than it was. */
 
-/* MISSED. Active rituals only: one that has ended or been stopped is not a
-   thing a person can still change. Most missed first, because that is the one
-   that wants looking at. */
-function acctMissHtml(st){
- var rows=st.act.map(function(p){return {p:p, n:acctMissed(p,st.today)};})
-  .filter(function(x){return x.n>0;}).sort(function(a,b){return b.n-a.n;});
- var body='', again=false;
- if(!rows.length)
-  body='<p class="rv-empty">'+(st.act.length?'Nothing missed in the last '+ACCT_SPAN+' days.':'Nothing to miss yet.')+'</p>';
- else{
-  body='<ul class="rv-days">';
-  rows.forEach(function(x){
-   var edit=x.n>=PR_MISS_AT; if(edit)again=true;
-   body+='<li class="rv-dr" style="--c:'+ritCol(x.p)+'"><i class="rv-dot rv-s-miss"></i>'
-    +'<span class="rv-dn">'+esc(ritName(x.p.steps))+' <small>'+acctDays(x.n)+' missed</small></span>'
-    +(edit?'<button type="button" class="btn" data-act="miss-edit" data-id="'+x.p.id+'" aria-label="Edit '
-      +esc(ritName(x.p.steps))+'">Edit</button>':'')
-    +'</li>';});
-  body+='</ul>';
-  /* said once under the list, and only when a row offers Edit: what editing
-     is for. Mechanical, and it blames nobody. */
-  if(again)body+='<p class="rv-mean">A ritual missed this often does not fit your days. Edit it: make it shorter, or move its days.</p>';}
- return '<div class="rv-sec rv-miss"><div class="rv-hd"><span class="rv-h">Missed</span></div>'
-  +'<p class="rv-mean">Days a ritual was due and not marked done, in the last '+ACCT_SPAN+' days.</p>'+body+'</div>';}
+/* MISSED AND DONE ARE GONE AS CARDS, SV19, 5 November. His words, on the
+   live page: "Where it says streak missed, make the symbolic icons, the
+   streak should be in the upper right hand side ... Get rid of the missed
+   section." And of Done, "The gigantic graphic, this is done and 14, taking
+   up all that space by itself. Clean that up."
 
-/* DONE, on the stage. The rings are what is due today and the figures are the
-   ladder's own: the streak is the product's one streak, and the same numbers
-   are printed by the Summary because the same function reads them. What each
-   figure means is said under them in the same place, the unpack rule. */
-function acctDoneHtml(st){
- return '<div class="rv-sec rv-done"><div class="rv-hd"><span class="rv-h">Done</span></div>'
-  +ritTodayHtml(st.act.filter(function(p){return ritDue(p,st.today);}),st.today,st.L)
-  +'<p class="rv-mean">'+esc(STREAK_MEANS)+' '
-  +'Best is your longest run with no gap. Kept is the days you marked a ritual done. Practised is the minutes you put in.</p>'
-  /* the earned marks stay here, with the record that earned them. The next one
-     moved to the Ongoing goal card in the centre, round QN, because the next
-     mark is a goal and that card is where he asked the goal to sit. */
-  /* ROUND QS: the earned marks moved to the cubes, pinned to the day each was
-     earned, his "achievements and badges ... attached to it". Shown once. */
-  +'</div>';}
+   DONE WAS A 180 PIXEL RING FOR ONE NUMBER. The rings round it were today's
+   due rituals, which today's column of the week already draws and presses,
+   and the number in the middle was the streak. Best, Kept and Practised sat
+   under it as three more boxes. The brief asked whether it was the same ring
+   drawn twice with the Thirty day loop: it was not, the loop had become cubes
+   in round QS, but the rail did print 14 three times for Ana, the loop's days
+   kept, Done's streak and Done's Kept, three different counts reading as one
+   figure printed three ways.
 
-/* ---------------- THE THIRTY DAY LOOP, round QN ----------------
-   His words: "on the accountability tracker slide on the right hand side the
-   thirty day loop." A loop and not a list, which is his standing ruling for
-   anything that turns ("we're showing a core game loop mechanic"): thirty
-   days round one circle, the oldest just after the top and running clockwise,
-   and today closing it at the top. One track round the loop per ritual,
-   outermost first, the same ring grammar the month and the Active row already
-   use, so solid is done, faint is planned and dashed is missed everywhere on
-   the page. A small mark outside the loop falls every seven days back from
-   today, because seven kept days are one turn of the avatar (avCycles).
+   MISSED WAS A LIST WITH EDIT ON IT. Edit is on the ritual's own row in the
+   centre and in its sash's sheet, so nothing lost a route; the line advising
+   an edit went with the card, third tier text by his own ruling.
 
-   It reads ritDaySegs, the month's own read of a day, and nothing else, so
-   the loop and the month cannot disagree about a day. The summary under it is
-   counts of days and minutes, never a rate: the ruling for every surface that
-   shows a record. */
-var ACCT_LOOP=30, ACCT_RINGS=4;
-var ACCT_RANK={done:4, plan:3, miss:2, ahead:1};
-function acctLoopRead(st){
- var today=st.today, t0=today-ACCT_LOOP+1, by={}, keys=[];
- var get=function(k,col,nm){
-  if(!by[k]){by[k]={k:k, col:col, nm:nm, days:{}, last:-1, act:false}; keys.push(by[k]);}
-  return by[k];};
- st.act.forEach(function(p){get(ritKey(p.steps),ritCol(p),ritName(p.steps)).act=true;});
- var kept={}, miss={}, mins=0;
- for(var d=t0;d<=today;d++)ritDaySegs(d,st.plans,today).forEach(function(s){
-  var R=get(ritKey(s.x?s.x.steps:s.p.steps),s.col,s.nm), was=R.days[d];
-  if(!was||ACCT_RANK[s.st]>ACCT_RANK[was])R.days[d]=s.st;
-  if(s.st!=='ahead'&&d>R.last)R.last=d;
-  if(s.st==='done'){kept[d]=1; mins+=(s.x&&+s.x.min)||0;}
-  if(s.st==='miss')miss[d]=1;});
- var used=keys.filter(function(R){return R.last>=0;})
-  .sort(function(a,b){return (b.act-a.act)||(b.last-a.last);});
- return {t0:t0, today:today, rings:used.slice(0,ACCT_RINGS), more:Math.max(0,used.length-ACCT_RINGS),
-  n:used.length, kept:Object.keys(kept).length, miss:Object.keys(miss).length, mins:mins};}
+   WHAT IS LEFT IS ONE STRIP AT THE TOP OF THE RAIL, above the menu's name,
+   acctStreakHtml below, written into #flowhd by ritRender. Each figure is a
+   mark and its number, and the word is the mark's accessible name and the
+   tooltip's title, the unpack rule met in the same place without a word on
+   the screen (CLAUDE.md, round PO). */
+var ACCT_IC={
+ /* the streak is a run that keeps turning: the avatar page's own cycle arrow */
+ streak:'<path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4.5h-4.5"/>',
+ /* a miss is the dashed ring every calendar on this page draws for one */
+ miss:'<circle cx="12" cy="12" r="8" stroke-dasharray="3 3.3"/>',
+ mins:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2 M10 3h4"/>'};
+function acctStreakHtml(st){
+ var L=st.L, s=L.streak||{}, run=s.run||0, best=s.best||0, kept=s.days||0, mins=(L.ledger&&L.ledger.minutes)||0;
+ var miss=acctCubeRead(st).days.filter(function(X){return X.st==='miss';}).length;
+ /* A ZERO IS A DASH, COPY.md Value, and the unit rides on the figure (V17) */
+ var fig=function(k,n,u,nm,tip,fl){
+  return '<span class="acs acs-'+k+'"'+rvTip(nm,tip,fl)+' aria-label="'+esc(nm+', '+(n?n+' '+u:'none'))+'">'
+   +'<svg viewBox="0 0 24 24" aria-hidden="true">'+ACCT_IC[k]+'</svg>'
+   +'<b>'+(n?n+'<small> '+u+'</small>':'\u2013')+'</b></span>';};
+ /* Best and Kept ride in the streak's tooltip: Best is the longest run with
+    no gap, which can be shorter than the streak (streakRead's grace day, the
+    mismatch recorded at ritTodayHtml's old home), and the sentence says so */
+ return '<div class="acs-row" role="group" aria-label="Streak">'
+  +fig('streak',run,run===1?'day':'days','Streak',STREAK_MEANS+' Best is your longest run with no gap. Kept is the days you marked a ritual done.',
+    'Best|'+(best?acctDays(best):'\u2013')+';Kept|'+(kept?acctDays(kept):'\u2013'))
+  +fig('miss',miss,miss===1?'day':'days','Missed','Days in the last thirty a ritual was due and nothing was marked done: the dashed cubes below.')
+  +fig('mins',mins,'min','Practised','The minutes you have put in.')+'</div>';}
+
+/* THE THIRTY DAY LOOP OF ROUND QN, one ring round thirty days, became the
+   cubes in round QS, below, and its read, acctLoopRead, went in SV19 with the
+   figures it fed. It counted a day missed when any ritual on it was missed,
+   so on Ana the strip said 10 days missed while Success over time, on the
+   same page, said 7: a day with one ritual kept and one missed is a kept day
+   on the cubes and in Success, and a missed day in the loop's count. The
+   strip counts the dashed cubes now (acctCubeRead's own state), so the number
+   and the picture under it cannot disagree. ACCT_LOOP is the thirty. */
+var ACCT_LOOP=30;
 /* ---------------- THE THIRTY DAYS AS CUBES, round QS ----------------
    His words, 3 October: "the accountability should have the the 30 days of
    cubes showing my progression and my achievements and badges and whatnot
@@ -166,7 +132,8 @@ function acctLoopRead(st){
    ring of round QN and these cubes are two drawings of one read, and one page
    says a thing once, so the picture changed and the read did not: every cube
    is ritDaySegs for its day, the month's own read, exactly as each piece of
-   the ring was. The heading stays his name for it, Thirty day loop.
+   the ring was. The heading was his name for it, Thirty day loop, until SV19
+   cut the words; below.
 
    ONE CUBE A DAY, seven to a row and today last, at the lower right, so the
    page reads oldest to newest the way a person reads, and a row is a week
@@ -179,24 +146,26 @@ function acctLoopRead(st){
    THE MARKS ARE PINNED TO THE DAY THAT EARNED THEM. markDays (engine/ladder.js)
    dates each earned practice mark off the record, and a mark whose day falls
    in the thirty sits on that cube, in its own seat colour with its own icon.
-   Every earned mark is on the shelf under the cubes, each with its meaning and
-   its date on the press. Only earned marks: the next one is the Ongoing goal
+   The shelf under the cubes that drew every earned mark a second time was cut
+   in SV19, below. Only earned marks: the next one is the Ongoing goal
    card's, and the rest are never listed (engine/ladder.js, "never how many of
    how many").
 
-   Nothing here is a rate. The figures over the cubes are counts of days and
-   minutes, the ruling for every surface that shows a record. */
+   Nothing here is a rate. The figures that sat over the cubes are the streak
+   strip's now, counts of days and minutes, the ruling for every surface that
+   shows a record. */
 var ACCT_COLS=7;
 /* ROUND QX, A CALENDAR AND NOT A CHART. His words: "the whole thing should
    look effectively like a calendar." Round QS laid the thirty a week to a row
    counted back from today, so a row began on whatever weekday that was and the
    grid had no weekday a person could read off it: a progress chart in a
    calendar's clothes. Now the columns are the days of the week, Monday first
-   as RU2 ruled, with their letters over them; each cube carries its date; the
+   as RU2 ruled and Sunday first since SV24 reversed it (ritWc), with their letters over them; each cube carries its date; the
    first day of a month carries the month; and the rest of this week is drawn
    ahead of today, so a ritual set for Tuesday, Thursday and Saturday shows on
-   the days it is still to come. The thirty are still the read: the figures
-   count those thirty and nothing ahead, and a day ahead is never a miss. */
+   the days it is still to come. The thirty are still the read: the miss count
+   in the strip counts those thirty and nothing ahead, and a day ahead is never
+   a miss. */
 function acctCubeRead(st){
  var today=st.today, t0=today-ACCT_LOOP+1, out=[];
  var md=(typeof markDays==='function')?markDays(CURP,Date.now()):{}, pin={};
@@ -210,11 +179,11 @@ function acctCubeRead(st){
   out.push(X);}
  /* the rest of this week, ahead: what is set for it, and nothing else */
  var ahead=[];
- for(var e=today+1;e<=today+6-ritWd(today);e++){
+ for(var e=today+1;e<=today+6-ritWc(today);e++){
   var Y={d:e, done:[], miss:[], plan:[], marks:[], st:'ahead'}, seen2={};
   ritDaySegs(e,st.plans,today).forEach(function(s){if(s.st!=='ahead'||seen2[s.nm])return; seen2[s.nm]=1; Y.plan.push(s);});
   ahead.push(Y);}
- return {days:out, ahead:ahead, pad:ritWd(t0), md:md};}
+ return {days:out, ahead:ahead, pad:ritWc(t0), md:md};}
 function acctCubeHtml(X,k,today,empty){
  var row=Math.floor(k/ACCT_COLS)+2, col=k%ACCT_COLS+1;
  var nm=function(a){return a.map(function(s){return s.nm;}).join(', ');};
@@ -238,42 +207,33 @@ function acctCubeHtml(X,k,today,empty){
   +'<i class="rv-cbd" aria-hidden="true">'+date+'</i>'
   +X.marks.map(function(m,j){return '<i class="rv-cbm" style="--c:'+seatCol(m.b)+';--k:'+j+'" aria-hidden="true">'
    +'<svg viewBox="0 0 24 24"><path d="'+m.ic+'"/></svg></i>';}).join('')+'</span>';}
-/* the earned marks, each a carrier: its name, its meaning, and its date when
-   the record dates it. The shelf is ritMarksHtml's circle, the ladder's own
-   icon in its family's seat colour, ring not fill. */
-function acctShelfHtml(L,md,today){
- /* NO MARKS IS NO SHELF, round RB. The line under the label went on his "Get
-    rid of all the sec[ond] third tier text", and a label with nothing under
-    it reads as a shelf that failed to draw, so the shelf goes with it until
-    the first mark is earned. The cubes above still pin a mark on its day. */
- if(!L.earned.length)return '';
- return '<div class="rv-marks"><span class="rv-lb">Marks</span><div class="rv-mk">'
-  +L.earned.map(function(m,i){var d=md[m.k];
-   return '<span class="rv-m" style="--c:'+seatCol(m.b)+';--i:'+i+'"'
-    +rvTip(m.nm,m.d+(d!=null?' Earned '+String(ritDayName(d,today)).replace(/^(Today|Yesterday)$/,function(x){return x.toLowerCase();})+'.':''),'',m.fam)+'>'
-    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+m.ic+'"/></svg></span>';}).join('')+'</div></div>';}
-/* NAMED IN HIS WORDS, "the thirty day loop", round QN. It read Thirty days,
-   which is also the name of a ladder mark (thirty in a row) shown on the
-   Ongoing goal card on the same screen: one word for two things. */
+/* THE MARKS SHELF IS GONE, SV19, his words: "Get rid of the section that
+   says marks." The earned marks are still on the cubes, each pinned to the
+   day that earned it with its name on the press, so a mark is not lost, only
+   its second drawing in a row of seven circles under the calendar. */
+/* AND "THIRTY DAY LOOP" IS GONE AS A HEADING, SV19, his words: "Get rid of
+   the text that says 30-day loop." A blank heading over a calendar would be a
+   box that failed to draw, and a new name would be a narrative director's
+   word chosen by an engineer, so the heading is what a calendar is headed by
+   anyway: its month, October to November 2026, which was already printed one
+   line down. What the cubes mean rides on it as the one tooltip (ritTell).
+   The figures that sat over the cubes went up to the streak strip, and the
+   count of days kept with them: the cubes draw those days. */
 function acctLoopHtml(st){
- var L=acctLoopRead(st), Q=acctCubeRead(st);
+ var Q=acctCubeRead(st);
  var empty=!st.plans.length&&!((CURP&&CURP.rituals)||[]).length;
- var figs='<div class="rv-cbf"><span class="rv-cbk"><b>'+(L.kept||'–')+'</b> '+(L.kept===1?'day':'days')+' kept</span>'
-  +'<span><b>'+(L.miss||'–')+'</b> missed</span><span><b>'+(L.mins||'–')+'</b> min</span></div>';
  var all=Q.days.concat(Q.ahead), a=ritDateOf(all[0].d), z=ritDateOf(all[all.length-1].d);
  var mo=a.getMonth()===z.getMonth()?a.toLocaleDateString('en-GB',{month:'long',year:'numeric'})
   :a.toLocaleDateString('en-GB',{month:'long'})+' to '+z.toLocaleDateString('en-GB',{month:'long',year:'numeric'});
- return '<div class="rv-sec rv-loopw"><div class="rv-hd"><span class="rv-h">Thirty day loop</span></div>'
-  +'<p class="rv-mean">The last thirty days as a calendar, Monday to Sunday, a week to a row, with the rest of this week ahead. '
+ return '<div class="rv-sec rv-loopw"><div class="rv-hd"><span class="rv-h">'+esc(mo)+'</span></div>'
+  +'<p class="rv-mean">The last thirty days, Sunday to Saturday, with the rest of this week ahead. '
   +'A solid cube is a day you kept a ritual, in the colour of its seat; an outline is planned; dashed is missed. A mark on a cube is one you earned that day.</p>'
-  +figs+'<p class="rv-cbmo">'+esc(mo)+'</p>'
-  +'<div class="rv-cubes'+(empty?' rv-cubes0':'')+'" role="group" aria-label="The last thirty days, Monday first">'
-  +RIT_WD.map(function(w){return '<span class="rv-cbw" aria-hidden="true">'+w+'</span>';}).join('')
+  +'<div class="rv-cubes'+(empty?' rv-cubes0':'')+'" role="group" aria-label="The last thirty days, Sunday first">'
+  +RIT_WCOL.map(function(w){return '<span class="rv-cbw" aria-hidden="true">'+RIT_WD[w]+'</span>';}).join('')
   +Q.days.map(function(X,i){return acctCubeHtml(X,Q.pad+i,st.today,empty);}).join('')
   +Q.ahead.map(function(X,i){return acctCubeHtml(X,Q.pad+Q.days.length+i,st.today,empty);}).join('')+'</div>'
   +'<div class="rv-key" aria-hidden="true"><span><i class="rv-k-cube"></i>Done</span><span><i class="rv-k-cplan"></i>Planned</span>'
-  +'<span><i class="rv-k-cmiss"></i>Missed</span></div>'
-  +acctShelfHtml(st.L,Q.md,st.today)+'</div>';}
+  +'<span><i class="rv-k-cmiss"></i>Missed</span></div></div>';}
 
 /* ---------------- HISTORY, round QN ----------------
    His words: "I want to be able to track my accountability history. I want my
@@ -330,7 +290,10 @@ function acctHistHtml(st){
      :'<button type="button" class="btn" data-act="rot" data-i="'+i+'" aria-label="Put '+esc(H.nm)+' back in rotation">Back in rotation</button>')
     +'</li>';}).join('')+'</ul>';
   if(list.length>RIT.hh)body+='<button type="button" class="rit-more" data-act="hmore">Show more</button>';}
- return '<div class="rv-sec rv-hist"><div class="rv-hd"><span class="rv-h">History</span></div>'
+ /* the heading is Rituals and not History, SV19: History is the press that
+    opens this, and a heading reading the press's own name back under it is
+    the same word twice */
+ return '<div class="rv-sec rv-hist"><div class="rv-hd"><span class="rv-h">Rituals</span></div>'
   +'<p class="rv-mean">Every ritual you have run, active first and then the most recent, with the days you kept it. '
   +'One that has ended goes back into rotation with one press, from today, for the span it ran last.</p>'+body+'</div>';}
 function acctRotate(i){
@@ -345,17 +308,42 @@ function acctRotate(i){
 
 /* THE WHOLE COLUMN, AS ONE STRING, and ritRender writes it. It returns markup
    rather than painting a host of its own, because there is no host of its own
-   any more: the four parts are the right rail's contents and the rail is a
+   any more: the parts are the right rail's contents and the rail is a
    sibling of the stage, so the stage's paint cannot delete them. The read is
    handed in, so this column and the centre cannot disagree about the day.
 
-   The worked example note is not repeated here. The centre already carries it
-   once, ritNote in ui/ritual.js, and one page says a thing once. */
-/* ROUND QN put two parts in it, and the order is still what a person came for:
-   the thirty day loop with its summary, which is the answer to whether it is
-   holding at a glance; Done and Missed, the figures under it; History, the
-   rituals as cards; the Record last, the month and the list a person reads
-   day by day. Due today led it until SV17, and went to the week. */
+   The worked example note is not repeated here, and since SV19 it is not on
+   the page at all: the profile picker says "Ana, example", and a write on an
+   example is refused by name through status() at the moment it is tried. */
+/* SV19 is the order now. The streak strip sits above the menu's name, in the
+   rail's head (ritRender). Under the name, the thirty days. Then History, one
+   press, his words: "Get rid of the history on the right-hand side. There
+   should be a button and if I press it, it shows me the history on my
+   right-hand menu." The press opens, in this same rail and under itself, the
+   rituals as cards and the Record, because the Record is the history too: the
+   month a day at a time, and every entry, with its delete.
+
+   WHY THE RECORD WENT BEHIND THE SAME PRESS, his question: "You have
+   something called record, and 30-day loop. How are these different?" Read
+   off the code, both draw ritDaySegs, the one read of a day, as a calendar.
+   The thirty days are this month at a glance, one picture, with the marks
+   pinned on the days that earned them, and nothing on it to press but a
+   tooltip. The Record is the whole history: any month back, a list of every
+   entry, and a day opened to mark yesterday done or delete an entry. So they
+   differ in reach and not in what they say, and two calendars of one read
+   stacked in one rail was the page saying a thing twice. The glance stays;
+   the history is the press. The press keeps one label and its chevron
+   carries the state, the Practices press's rule (UX rule 2). */
 function acctSideHtml(st,arrive){
- return '<div class="rvr-wrap'+(arrive?' rv-arrive':'')+'">'+acctLoopHtml(st)+acctDoneHtml(st)+acctMissHtml(st)
-  +acctHistHtml(st)+ritRecordHtml(st.plans,st.today)+'</div>';}
+ var open=!!RIT.histOpen;
+ return '<div class="rvr-wrap'+(arrive?' rv-arrive':'')+'">'+acctLoopHtml(st)
+  /* PUT BACK IS OFFERED WHERE A PERSON CAN SEE IT. A delete from a sash's
+     sheet or the Record offers it in the Record (ritRecordHtml), and with
+     History shut the Record is not drawn, so the offer would be a status
+     nobody could reach. It sits over the press instead until History opens,
+     and then the Record carries it as it always did. */
+  +(!open&&RIT.gone&&RIT.goneAt!=='keep'?'<div class="rv-gone" role="status"><span>Deleted.</span>'
+   +'<button type="button" class="btn" data-act="putback">Put back</button></div>':'')
+  +'<button type="button" class="rit-more rv-more-t rv-histt" data-act="hist" aria-expanded="'+open+'" aria-controls="rvhist">'
+  +'<span>History</span>'+ritIc('down')+'</button>'
+  +(open?'<div class="rv-histp" id="rvhist">'+acctHistHtml(st)+ritRecordHtml(st.plans,st.today)+'</div>':'')+'</div>';}

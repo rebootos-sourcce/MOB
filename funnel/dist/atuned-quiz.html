@@ -3770,7 +3770,11 @@ function recipeSteps(ritual,tier){
    (ui/ritcal.js, ritAffirm):
      first   the person's own avatar lines, the "who I want to be" half of
              each pair, newest first. These are theirs and are quoted, never
-             paraphrased. The avatar page already asks for one of them to be
+             paraphrased, with one exception since SV24 ("Affirmations are I
+             am statements"): a line written as who to become, "Someone who
+             picks a way and walks it", is said as I am that, "I am someone
+             who picks a way and walks it", by ritIAm in ui/ritcal.js. Two
+             words go in front and none of theirs change. The avatar page already asks for one of them to be
              said out loud once a day (its "Say it" rule), so this is the same
              act, offered on the Ritual page.
      then    one line per pattern held at four or more, heaviest first, read
@@ -3790,15 +3794,21 @@ function recipeSteps(ritual,tier){
    is CHILD's nm, so a renamed axis is a line that stops being found, which
    the flowtools gate (FT31) checks.
    ============================================================ */
+/* I AM STATEMENTS, SV24, his ruling: "Affirmations are I am statements."
+   Measured before this: seven of these nine opened on My, The, What or
+   There is, and only Anticipation opened on I am. Each line keeps its own
+   place in the body and its own posture, the reason above, and is said from
+   I am: the weight and the floor, open hands in the heat, the skin, the arms,
+   both feet, the chest, the shoulders. */
 var AFFIRM={
- 'Fear':'My weight is down. The floor holds it.',
- 'Anger':'The heat moves through. My hands stay open.',
- 'Shame':'I take up the space I am standing in.',
- 'Disgust':'What is here can stay here. My skin stays soft.',
- 'Apathy':'There is charge in my arms, and I can spend it.',
- 'Shock':'My feet are on the ground, and the ground is still.',
- 'Sad':'My chest is open. What I lost made room.',
- 'Surprise':'My shoulders are down. I can meet what comes.',
+ 'Fear':'I am down in my weight, and the floor holds it.',
+ 'Anger':'I am open handed while the heat moves through.',
+ 'Shame':'I am taking up the space I stand in.',
+ 'Disgust':'I am soft in my skin, and what is here can stay here.',
+ 'Apathy':'I am carrying charge in my arms, and I can spend it.',
+ 'Shock':'I am standing on still ground, with both feet down.',
+ 'Sad':'I am open in the chest. What I lost made room.',
+ 'Surprise':'I am loose in the shoulders, and I can meet what comes.',
  'Anticipation':'I am here, below the heart, on this breath.'};
 /* where a person with nothing held starts: the three axes nearest the ground,
    the same posture ritFor takes when nothing is read, the lightest place */
@@ -9576,7 +9586,16 @@ function undoState(){
     the empty field and takes the type off with it, and the card under the
     select never claims a seed the axes no longer hold. P0-5. */
  var sd=(typeof CURP!=='undefined'&&CURP)?(CURP.seed?JSON.parse(JSON.stringify(CURP.seed)):null):undefined;
+ /* AND THE NAMED ADDRESS LAYER IS AN INPUT TOO. Since 26 October a story
+    that names a body place adds weight at that address (S.addr, read by
+    compute beside the axis charge). This entry took the nine axes and not
+    the layer, so taking back a story put the axes back and left the words'
+    addresses carrying: measured on a blank profile, DQ 0 before the commit,
+    3.98 after, 0.204 after the undo, and 0.204 still after a reload because
+    the settle saves it to the record. Copied, because the layer is written
+    in place and a shared object would move with it. */
  return {charge:c, replace:o, law:l, work:wk, seed:sd,
+  addr:Object.assign({},S.addr||{}),
   doms:S.doms.slice(), arcs:S.arcs.slice(), roots:S.roots.slice(),
   dom:S.dom, a1:S.a1, a2:S.a2};}
 
@@ -9611,6 +9630,9 @@ function undoApply(s){
  if(s.work!=null&&typeof CURP!=='undefined'&&CURP)CURP.work=JSON.parse(JSON.stringify(s.work));
  /* and an entry taken before the seed rode with it leaves the seed alone */
  if(s.seed!==undefined&&typeof CURP!=='undefined'&&CURP)CURP.seed=s.seed?JSON.parse(JSON.stringify(s.seed)):null;
+ /* and an entry taken before the address layer rode with it leaves the layer
+    alone, which is what undo did for every entry until this */
+ if(s.addr&&typeof s.addr==='object')S.addr=Object.assign({},s.addr);
  S.doms=s.doms.slice(); S.arcs=s.arcs.slice(); S.roots=s.roots.slice();
  S.dom=s.dom; S.a1=s.a1; S.a2=s.a2;
  buildSoul();
@@ -10336,7 +10358,13 @@ function compute(){
  let darkB=BANDS[0],darkV=-1;
  BANDS.forEach(b=>{const gp=W.filter(n=>n.b===b),v=gp.reduce((a,n)=>a+n.sq,0)/gp.length;
   if(v>darkV){darkV=v;darkB=b;}});
- let weakL=SI[0];SI.forEach(l=>{if(S.law[l.nm]<S.law[weakL.nm])weakL=l;});
+ /* THE LAW FURTHEST SHUT is chosen only from laws the person answered. An
+    unanswered law sits in S.law at its seed, so a pick over all of SI named
+    a seed the moment every answered law was above it, or before any law was
+    answered at all, and Summary printed it as the person's most shut law.
+    That is a reading nobody gave. No law answered, no weakL: null, and the
+    surfaces that print it say so rather than name a seed. */
+ let weakL=null;SI.forEach(l=>{if(lawIn(l.nm)&&(!weakL||S.law[l.nm]<S.law[weakL.nm]))weakL=l;});
  /* THE TWO REAL AXES. Shape is where what is running points. Control is how
     far it has compounded, which is what conditioning is, and not whether the
     will is winning: at low coherence the will always loses, so measuring it
@@ -13699,13 +13727,20 @@ function saveProfile(p){
    ch IS THE SUPER COMPLEX COUNT, r.sups. The key is from when that rung was
    called character, which the owner retired for it on 23 October. It stays
    ch, because it is on every history row a record already holds and a key
-   is identity; only the label a person reads beside it moved. */
+   is identity; only the label a person reads beside it moved.
+
+   ig IS INTEGRITY, r.Ig, 0 to 10, and it is what Summary's "Integrity over
+   time" graph plots. Until 5 November no row carried it and seriesRead read
+   jq in its place, which is the overshoot of installed opposites past 6: a
+   person with every law at 10 was drawn at nothing, and one with every law
+   at 2 who overshot their opposites was drawn at 44%. jq stays on the row
+   under its own name; ig is the second key beside it, not a rename. */
 function snapshot(p){
  var r=compute();
  return {t:new Date().toISOString(), m:CQ_MODEL, cq:Math.round(r.CQ*10)/10,
   dq:Math.round(r.DQ*100)/100,
   sq:Math.round(r.SQm*100)/100, pole:Math.round(r.poleMean*100)/100,
-  jq:Math.round(r.JQ*100)/100, rad:Math.round(r.radiance*1000)/1000,
+  jq:Math.round(r.JQ*100)/100, ig:Math.round(r.Ig*100)/100, rad:Math.round(r.radiance*1000)/1000,
   loaded:r.loaded.length, sab:r.sabs.length, cx:r.cxs.length, hy:r.hys.length, ch:r.sups.length,
   dark:r.darkB, tier:r.tier, arch:ARCH[r.pi].nm, lawNow:snapLaws()};}
 /* ============================================================
@@ -13873,7 +13908,7 @@ function pStore(){
  if(!Array.isArray(raw)) return storeSetAside(String(txt),'it is not a list of profiles');
  var out=[];
  for(var i=0;i<raw.length;i++){
-  var v=validateProfile(raw[i]);
+  var v=validateProfile(raw[i],{stored:true});
   if(v.ok){ out.push(v.profile); }
   else {
    STORE_REFUSED.push({i:i, name:(raw[i]&&raw[i].name)||'unnamed',
@@ -14427,8 +14462,13 @@ function avatarFill(av){
   if(!av[k]||typeof av[k]!=='object'||Array.isArray(av[k]))av[k]={};});
  if(AV_STATUS.indexOf(av.status)<0)av.status=avatarStatus(av);
  return avatarEnsureIds(av);}
-function validateProfile(o){
- var errs=[];
+/* ctx is optional. ctx.stored says the record is this device's own, read back
+   at boot or reopened from the list, and not an import: the summaries and the
+   journey then keep a date the device clock wrote ahead of today rather than
+   refusing the whole record over it (dlyValidate and journeyValidate say why).
+   Every other rule holds the same either way. */
+function validateProfile(o,ctx){
+ var errs=[], stored=!!(ctx&&ctx.stored);
  if(!o||typeof o!=='object'||Array.isArray(o))return {ok:false, errs:['not an object']};
  if(!NUM(o.v)||o.v<1||o.v>SCHEMA_V)errs.push('schema version '+o.v+' is not 1 to '+SCHEMA_V);
  var p=blankProfile(typeof o.name==='string'?o.name:'Imported');
@@ -14546,6 +14586,18 @@ function validateProfile(o){
       reads unresolved rather than being refused on the way in. */
    ['date','time','place','zone'].forEach(function(k){
     if(typeof o.who.born[k]==='string')p.who.born[k]=o.who.born[k].slice(0,200);});
+   /* DATE AND TIME HAVE A SHAPE, AND ONE THAT IS NOT IT IS REFUSED BY NAME.
+      These two were copied as any string, so a record link carrying markup
+      in the date ran it in the page, and a date of 2001-02-30 or 14/07/1988
+      was read as a sky for some other day or for none. The date and time
+      fields in Intake can only write these shapes or the empty string, so
+      this refuses nothing the app wrote. bornYMD and bornHM are in
+      engine/astro.js, the same checks birthJD reads by. */
+   var bd=o.who.born.date, bh=o.who.born.time;
+   if(typeof bd==='string'&&bd!==''&&!bornYMD(bd))
+    errs.push('who.born.date is not a real calendar day in year-month-day form');
+   if(typeof bh==='string'&&bh!==''&&!bornHM(bh))
+    errs.push('who.born.time is not a clock time between 00:00 and 23:59');
    p.who.born.timeUnknown=!!o.who.born.timeUnknown;}}
  /* ui preferences. booleans only, and an older profile without them is filled
     from the blank rather than refused. */
@@ -14874,6 +14926,14 @@ function validateProfile(o){
    ['loaded',0,1e4],['sab',0,1e4],['cx',0,1e4],['hy',0,1e4],['ch',0,1e4]].forEach(function(f){
    var v=vRange(errs,'history['+i+'].'+f[0],x[f[0]],f[1],f[2]);
    q[f[0]]=v===null?0:v;});
+  /* INTEGRITY ON THE ROW (snapshot's ig). Not in the list above, because
+     that list fills an absent field with 0, and an absent ig is a row
+     written before integrity was recorded: filled, it would be drawn on the
+     integrity graph as integrity of nothing. Absent or null stays absent.
+     Present, it is 0 to 10 and refused by name otherwise, never clamped. */
+  if(x.ig!==undefined&&x.ig!==null){
+   var igv=vRange(errs,'history['+i+'].ig',x.ig,0,10);
+   if(igv!==null)q.ig=igv;}
   /* THE TWENTY ONE ON THE ROW (snapLaws). This whitelist is why the field
      needed a line here and not only in snapshot(): every row is rebuilt from
      it, so a key snapshot() writes and this does not name survives until the
@@ -14929,14 +14989,14 @@ function validateProfile(o){
     record and pImport stays atomic. Missing or null is an older record and
     keeps the blank. The name is handed in for the one rule about it. */
  if(o.summaries!==undefined&&o.summaries!==null)
-  p.summaries=dlyValidate(errs,o.summaries,'summaries',{names:dlyNamesOf(p)});
+  p.summaries=dlyValidate(errs,o.summaries,'summaries',{names:dlyNamesOf(p), stored:stored});
  /* THE JOURNEY, F13, through its own boundary (journeyValidate, engine/journey.js),
     into the same errs, so one bad log line or one bad walk refuses the whole
     record and pImport stays atomic. It is not in the blank: a record that never
     walked the first run carries none and gains none here, so every such record
     reads back exactly as it went in. */
  if(o.journey!==undefined&&o.journey!==null)
-  p.journey=journeyValidate(errs,o.journey,'journey');
+  p.journey=journeyValidate(errs,o.journey,'journey',{stored:stored});
  return errs.length?{ok:false, errs:errs}:{ok:true, profile:p};}
 
 /* Atomic. Nothing is pushed and CURP is not moved until the profile has
@@ -15470,9 +15530,12 @@ function meterFirst(p,key,label,at){
    PROFILES[0] fallback, never data. */
 function profMark(p){ try{ if(p&&p.id)devSet('open',p.id); }catch(e){} }
 
-var IMPORT_ERR=null;
-function pImport(txt){
- IMPORT_ERR=null;
+var IMPORT_ERR=null, IMPORT_COPY=false;
+/* keepId is for a caller that means to REPLACE the held record with the same
+   id and removes the older one itself straight after, which is the account
+   sync (ui/auth.js profileSyncImport). Every other caller leaves it out. */
+function pImport(txt,keepId){
+ IMPORT_ERR=null; IMPORT_COPY=false;
  /* NOTHING IS LOADED WHILE A WORKED EXAMPLE IS OPEN. This pushed the new
     record and pointed CURP at it, and left S.who naming the example, so the
     person's own record then read as somebody else's to every control that
@@ -15494,6 +15557,20 @@ function pImport(txt){
     place that sets it, and the next sign in reopens the tour on a person
     who already answered it, outside this app, on the funnel. */
  v.profile.ui.onboarded=true;
+ /* A RECORD WHOSE ID IS ALREADY HELD COMES IN AS A SEPARATE COPY. A saved
+    file loaded back while the original is still on the device, or the same
+    quiz link opened twice, carries an id this list already holds, and it was
+    pushed as it came. Every verb keyed by id (profFind, profOpen, profDelete,
+    the open pointer, the undo history) reaches only the first match, so the
+    copy could never be opened, and deleting the copy deleted the original
+    and the newer work on it, for good. So the copy gets a fresh id by the
+    blankProfile recipe and keeps its name and everything else, nothing held
+    is overwritten, and importCopied() says so for the host to tell the
+    person. */
+ if(!keepId&&PROFILES.some(function(q){ return q&&q.id===v.profile.id; })){
+  var fid; do{ fid='p'+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+  while(PROFILES.some(function(q){ return q&&q.id===fid; }));
+  v.profile.id=fid; IMPORT_COPY=true; }
  var keepP=PROFILES.slice(), keepC=CURP;
  /* with no current profile there is nothing to restore to, so the rollback
     loads a blank rather than leaving the engine holding the rejected one. */
@@ -15505,6 +15582,9 @@ function pImport(txt){
  profMark(v.profile);
  return v.profile;}
 function importError(){ return IMPORT_ERR; }
+/* true when the last load that landed was given a fresh id because its own
+   was already held, so the host can say it came in as a separate copy */
+function importCopied(){ return IMPORT_COPY; }
 /* A HOST THAT STOPPED A RECORD BEFORE IT REACHED THE BOUNDARY SAYS WHY HERE.
    The record link below is unpacked by the host, because the inflate is a
    browser stream and the engine never names its host. When that step fails
@@ -15654,10 +15734,12 @@ function jyInt(errs,path,v,lo,hi){
  return v;}
 /* A DATE THAT PARSES, AND IS NOT FROM THE FUTURE. A day of slack, because a
    phone's clock and a laptop's differ by minutes and a zone is not a fault, and
-   no more than that: a stamp a week ahead was written by something else. */
+   no more than that: a stamp a week ahead was written by something else.
+   A nowMs of null is the boot read of this device's own store
+   (journeyValidate, ctx.stored), where the date is checked but not the clock. */
 function jyDate(errs,path,t,nowMs){
  if(vDate(errs,path,t)===null)return null;
- if(new Date(t).getTime()>nowMs+JY_DAY){errs.push(path+' is ahead of the clock'); return null;}
+ if(nowMs!==null&&new Date(t).getTime()>nowMs+JY_DAY){errs.push(path+' is ahead of the clock'); return null;}
  return t;}
 
 /* ---------------- one log line ---------------- */
@@ -15777,9 +15859,18 @@ function jyWalk(errs,w,nowMs){
 /* ---------------- the boundary ---------------- */
 /* THE JOURNEY'S OWN BOUNDARY, into the same errs as every other part, so one bad
    field refuses the whole record and pImport stays atomic. ctx may carry the
-   clock a gate wants the dates read against. */
+   clock a gate wants the dates read against.
+
+   ctx.stored IS THE BOOT READ OF THIS DEVICE'S OWN STORE, and there a stamp
+   ahead of the clock is kept and never refused. journeyLog and journeyWalk
+   check a new stamp against Date.now(), the same clock that wrote it, so a
+   line logged while the device clock ran ahead passed and was saved, and the
+   next boot on a corrected clock refused it and the whole record with it.
+   Measured, a line logged at now plus three days: loaded 0. A stamp this
+   build wrote is a clock error and not a forgery, the rule pracSoon
+   (engine/ladder.js) carries. An import keeps the check. */
 function journeyValidate(errs,o,path,ctx){
- var P=journeyBlank(), c=ctx||{}, nowMs=jyMs(c.now), base=path||'journey';
+ var P=journeyBlank(), c=ctx||{}, nowMs=c.stored?null:jyMs(c.now), base=path||'journey';
  if(o===undefined||o===null)return P;
  if(typeof o!=='object'||Array.isArray(o)){errs.push(base+' is not an object'); return P;}
  vKeys(errs,base,o,['v','walk','gift','log']);
@@ -22149,14 +22240,40 @@ function zonePoint(z){
 /* a birth record to a Julian Day in UT, and the offset that was applied.
    returns null when the record cannot support it, rather than guessing.
    d is the date, t the local clock time, p the place, z the time zone. */
+/* A BIRTH DATE IS A REAL DAY OR IT IS NOTHING. This read y, m and d off
+   any string and checked only that they were not zero, so 2001-02-30 was
+   handed to julianDay and rolled to 2 March, month 13 day 45 rolled into the
+   next year while the life path and the Chinese year still read the digits
+   as typed, and a date in day/month/year form read as no date at all and
+   then fell through to an invented sun and moon. A date is four digits, two
+   and two, and the day has to exist in that month of that year. Returns
+   [y,m,d] or null. No Date object, so the answer is the same in any host. */
+function bornYMD(s){
+ if(typeof s!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(s))return null;
+ var p=s.split('-'), y=+p[0], m=+p[1], d=+p[2];
+ if(y<1||m<1||m>12||d<1)return null;
+ var leap=(y%4===0&&y%100!==0)||y%400===0;
+ var dim=[31,leap?29:28,31,30,31,30,31,31,30,31,30,31][m-1];
+ return d<=dim?[y,m,d]:null;}
+/* A clock time on a 24 hour face. 25:30 was read as a timed birth an hour
+   and a half into the next day and 99:99 four days later. Hours 0 to 23,
+   minutes 0 to 59, seconds allowed because a time field can carry them and
+   nothing here reads them. Returns [h,mi] or null. */
+function bornHM(s){
+ var q=typeof s==='string'&&/^(\d{1,2}):(\d{2})(?::\d{2})?$/.exec(s);
+ if(!q)return null;
+ var h=+q[1], mi=+q[2];
+ return (h<24&&mi<60)?[h,mi]:null;}
 function birthJD(bt){
  if(!bt||!bt.d)return null;
- var p=bt.d.split('-'), y=+p[0], m=+p[1], d=+p[2];
- if(!y||!m||!d)return null;
+ var ymd=bornYMD(bt.d); if(!ymd)return null;
+ var y=ymd[0], m=ymd[1], d=ymd[2];
  var pl=PLACE[bt.p]||null;
  var hrs=12, timed=false;               /* no time given, take local noon */
- if(bt.t&&/^\d{1,2}:\d{2}/.test(bt.t)){
-  var q=bt.t.split(':'); hrs=+q[0]+(+q[1])/60; timed=true;}
+ /* a time that is there and is not a clock time is refused, rather than
+    read as untimed: the person said when, and noon is not what they said */
+ if(bt.t){var hm=bornHM(bt.t); if(!hm)return null;
+  hrs=hm[0]+hm[1]/60; timed=true;}
  var off=pl?pl.tz:0, dst=false;
  if(pl&&pl.dst==='us')dst=usDST(y,m,d);
  if(pl&&pl.dst==='eu')dst=euDST(y,m,d);
@@ -22268,12 +22385,15 @@ function sunSign(d,bt){
  if(b){var i=atSpan(b,function(jd){return signOf(sunLon(jd));});
   if(i===null)return null;
   var z=ZSIGN[ZI[i]]; return {nm:z[2], el:z[3], mode:z[4]};}
- var p=d.split('-'), m=+p[1], day=+p[2];
+ /* a date that is not a day has no sun. This fell through the calendar
+    loop to Capricorn and printed it as settled. */
+ var ymd=bornYMD(d); if(!ymd)return null;
+ var m=ymd[1], day=ymd[2];
  for(var j=0;j<ZSIGN.length;j++){
   var a=ZSIGN[j], c=ZSIGN[(j+1)%12];
   if((m===a[0]&&day>=a[1])||(m===c[0]&&day<c[1]))
    return {nm:a[2], el:a[3], mode:a[4]};}
- return {nm:ZSIGN[11][2], el:ZSIGN[11][3], mode:ZSIGN[11][4]};}
+ return null;}
 
 /* The moon moves about thirteen degrees a day, so the birth time is not
    a refinement here, it is most of the answer. Without one the record is
@@ -22284,7 +22404,9 @@ function sunSign(d,bt){
    than whichever side Greenwich happened to put it on. On the same 5840
    births as the sun above that was 2777, close to half. */
 function moonSign(bt){
- var b=birthJD(bt); if(!b)return ZSIGN[0];
+ /* no readable birth is no moon. This returned ZSIGN[0], an Aquarius moon
+    for a record that had no date in it. */
+ var b=birthJD(bt); if(!b)return null;
  var i=atSpan(b,function(jd){return signOf(moonLon(jd));});
  return i===null?null:ZSIGN[ZI[i]];}
 
@@ -22308,6 +22430,9 @@ function risingSign(bt){
  var P=b.place, i=atSpan(b,function(jd){return signOf(ascendant(jd,P.lat,P.lon));});
  return i===null?null:ZSIGN[ZI[i]];}
 function lifePath(d){
+ /* a date that is not a day has no path. '14/07/1988' summed a slash and
+    printed Path NaN. */
+ if(!bornYMD(d))return null;
  var v=d.replace(/-/g,'').split('').reduce(function(a,c){return a+ +c;},0);
  while(v>9&&v!==11&&v!==22&&v!==33)
   v=String(v).split('').reduce(function(a,c){return a+ +c;},0);
@@ -22319,6 +22444,8 @@ function chineseElement(y){ return CELEM[y%10]; }
    first of January hands the wrong animal to everyone born in the first
    five weeks of a year, which is about a tenth of all births. */
 function chineseYear(bt){
+ /* no day, no year: this returned NaN and the panel printed undefined */
+ if(!bornYMD(bt.d))return null;
  var y=+bt.d.split('-')[0], b=birthJD(bt);
  if(!b)return y;
  var lc=julianDay(y,2,4,0), guard=0;
@@ -22380,6 +22507,11 @@ function spiritual(name){
    reference case is, rather than only through the BIRTH table. */
 function spiritualOf(bt){
  if(!bt||!bt.d)return null;
+ /* A DATE THAT IS NOT A DAY IS NO BIRTH. The boundary refuses one on the
+    way in, and this holds for a record stored before it did: the panel
+    shows what it shows for no date, and never a sky, a year and a path read
+    off three different guesses at what the digits meant. */
+ if(!bornYMD(bt.d))return null;
  /* the sun and the moon are null for an unlocated birth whose window
     crosses a cusp, and every field hung off them is null with them, so a
     root or a mode is never derived from a sign that was not read. */
@@ -23546,7 +23678,10 @@ function seriesRead(p,spanKey,now){
   if(!s||typeof s.cq!=='number')continue;
   var ms=Date.parse(s.t);
   if(!(ms>=t0&&ms<=t1))continue;
-  pts.push({ms:ms, cq:s.cq, ig:(typeof s.jq==='number'?s.jq:null)});}
+  /* ig is the row's integrity, snapshot()'s ig, and never jq, the overshoot
+     figure, which it read until 5 November and which runs roughly opposite.
+     A row from before ig was recorded reads null, and sumIg leaves it out. */
+  pts.push({ms:ms, cq:s.cq, ig:(typeof s.ig==='number'?s.ig:null)});}
  pts.sort(function(a,b){return a.ms-b.ms;});
  /* WHAT THE SPAN CAN AND CANNOT SAY. Nothing at all is one state, one reading
     is a second, and two or more is a line. They read differently and a caller
@@ -23910,8 +24045,10 @@ function dlyDayValid(errs,path,x,names,now,seen){
  if(!dlyDateOk(x.d))errs.push(path+'.d is not a calendar day: '+JSON.stringify(x.d));
  else{
   /* one day of slack, because a person who crossed a date line is in the
-     document's own "context transfer" and a bank must survive the flight home */
-  var lim=dlyDay(Date.parse(now)+DAY_MS);
+     document's own "context transfer" and a bank must survive the flight home.
+     A now of null is the boot read of this device's own store (dlyValidate,
+     ctx.stored), where the check is skipped: see there for why. */
+  var lim=now===null?null:dlyDay(Date.parse(now)+DAY_MS);
   if(lim&&x.d>lim)errs.push(path+'.d is '+x.d+', after the day of this import');
   if(seen[x.d])errs.push(path+' repeats day '+x.d+', a sealed day is never replaced');
   seen[x.d]=1;}
@@ -23986,11 +24123,22 @@ function dlyEvValid(errs,path,x,i,days,state){
   else o.note='';}
  return errs.length>n0?null:o;}
 /* the whole bank, through every rule above. now is the moment of the import
-   and names is the person's own name, both from the caller, never read here. */
+   and names is the person's own name, both from the caller, never read here.
+
+   ctx.stored IS THE BOOT READ OF THIS DEVICE'S OWN STORE, and there a day
+   dated after today is kept and never refused. dlySeal stamps a day with the
+   device clock and checks it against that same clock, so a day sealed while
+   the clock ran two days ahead passed and was saved, and the next boot, on a
+   corrected clock, refused it and with it the whole record: every story and
+   reading set aside until the calendar caught up. Measured, a day sealed at
+   now plus two days: records loaded 0. A date this build wrote is a clock
+   error and not a forgery, and refusing it sets the whole record aside over
+   one clock error, which is the rule pracSoon (engine/ladder.js) already
+   carries. An import is not this device's own write and keeps the check. */
 function dlyValidate(errs,o,base,ctx){
  var path=base||'summaries', S=dlyBlank();
  ctx=ctx||{};
- var now=ctx.now||new Date().toISOString(), names=ctx.names||[];
+ var now=ctx.stored?null:(ctx.now||new Date().toISOString()), names=ctx.names||[];
  if(!o||typeof o!=='object'||Array.isArray(o)){errs.push(path+' is not an object'); return S;}
  dlyKeys(errs,path,o,['v','days','events']);
  if(o.v!==undefined&&(!NUM(o.v)||o.v<1||o.v%1!==0||o.v>DLY_SCHEMA_V))
@@ -25094,7 +25242,9 @@ function profOpen(id){
  PROF_ERR=null;
  var p=profFind(id);
  if(!p){PROF_ERR=['no profile with that id is on this device'];return null;}
- var v=validateProfile(JSON.parse(JSON.stringify(p)));
+ /* stored: this record is already on the device, so a date its own clock
+    wrote ahead does not lock the person out of switching to it */
+ var v=validateProfile(JSON.parse(JSON.stringify(p)),{stored:true});
  if(!v.ok){PROF_ERR=(v.errs||['it did not validate']).slice(0,3);return null;}
  if(p===CURP&&S.rec===p.id)return p;
  profHold();
@@ -25829,7 +25979,7 @@ if(typeof module!=='undefined'&&module.exports){
                  medianRange:medianRange, tierTop:tierTop, tierRange:tierRange,
   /* astro */     julianDay:julianDay, sunLon:sunLon, moonLon:moonLon, gmst:gmst,
                   ascendant:ascendant, signOf:signOf, degInSign:degInSign,
-                  gateOf:gateOf, designJD:designJD, birthJD:birthJD, PLACE:PLACE,
+                  gateOf:gateOf, designJD:designJD, birthJD:birthJD, bornYMD:bornYMD, bornHM:bornHM, PLACE:PLACE,
                   usDST:usDST, euDST:euDST, zoneOffsets:zoneOffsets, zonePoint:zonePoint, ZONEPT:ZONEPT,
                   GATE_WHEEL:GATE_WHEEL, GATE_ARC:GATE_ARC,
                   chineseYear:chineseYear, spiritualOf:spiritualOf,
@@ -25926,7 +26076,7 @@ if(typeof module!=='undefined'&&module.exports){
      otherwise a law set to exactly the seed reads as unanswered, which is
      saveProfile's documented blind spot and correct for a person. */
                   LAW_UNSET:LAW_UNSET, SOUL_FROM:SOUL_FROM,
-                  pExport:pExport, pImport:pImport, validateProfile:validateProfile, importError:importError,
+                  pExport:pExport, pImport:pImport, validateProfile:validateProfile, importError:importError, importCopied:importCopied,
                   importRefuse:importRefuse, linkWrap:linkWrap, linkUnwrap:linkUnwrap,
                   LINK_V:LINK_V, LINK_MAX:LINK_MAX,
                   meterRun:meterRun, meterRead:meterRead, meterKey:meterKey, meterBudget:meterBudget,
