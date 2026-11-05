@@ -169,7 +169,9 @@ function renderSpirit(){
     sp.gk.gate+'.'+sp.gk.line,say(unpackOf('gene key'),unpackOf('gate'),unpackOf('line'))):unres('Gene key',noZone))
   +hd('born','Born')
   +'<div class="sp-row static"><span class="sp-k">When</span><span class="sp-v">'
-  +sp.birth.d+'</span><span class="sp-x">'+sp.birth.t+'</span></div>'
+  /* escaped like the place below: both come from the record, and a record
+     can arrive by link or paste carrying markup the boundary did not write */
+  +esc(sp.birth.d)+'</span><span class="sp-x">'+esc(sp.birth.t||'')+'</span></div>'
   +'<div class="sp-row static"><span class="sp-k">Where</span><span class="sp-v">'
   +esc(sp.birth.p)+'</span><span class="sp-x">'+esc(sp.birth.z||'')+'</span></div>';
  el.querySelectorAll('[data-sp]').forEach(function(btn){

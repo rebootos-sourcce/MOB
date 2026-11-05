@@ -81,7 +81,7 @@ if(typeof module!=='undefined'&&module.exports){
                  medianRange:medianRange, tierTop:tierTop, tierRange:tierRange,
   /* astro */     julianDay:julianDay, sunLon:sunLon, moonLon:moonLon, gmst:gmst,
                   ascendant:ascendant, signOf:signOf, degInSign:degInSign,
-                  gateOf:gateOf, designJD:designJD, birthJD:birthJD, PLACE:PLACE,
+                  gateOf:gateOf, designJD:designJD, birthJD:birthJD, bornYMD:bornYMD, bornHM:bornHM, PLACE:PLACE,
                   usDST:usDST, euDST:euDST, zoneOffsets:zoneOffsets, zonePoint:zonePoint, ZONEPT:ZONEPT,
                   GATE_WHEEL:GATE_WHEEL, GATE_ARC:GATE_ARC,
                   chineseYear:chineseYear, spiritualOf:spiritualOf,

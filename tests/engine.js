@@ -10372,5 +10372,40 @@ g('RC · a code for every row of the ported registers, and the door reads each o
  }
 }
 
+/* ============================================================
+   THE BIRTH DATE AND TIME HAVE A SHAPE. validateProfile copied both as any
+   string under 200 characters, so a record link carried markup into the
+   page, and a date that is not a day was read anyway: 2001-02-30 rolled to
+   2 March, month 13 day 45 rolled into the next year while the path and the
+   animal read the digits as typed, and 14/07/1988 fell through to a
+   Capricorn sun, an Aquarius moon, Path NaN and the year undefined. A time
+   of 25:30 was read as a timed birth the next day. Refused by name at the
+   boundary, and null rather than a guess in the engine for a record stored
+   before the boundary checked.
+   ============================================================ */
+console.log('\nBORN · a birth date that is not a day is no birth');
+{
+ const bornIn=(d,t)=>{const o=JSON.parse(JSON.stringify(E.saveProfile(E.blankProfile('t'))));
+  o.who.born={date:d,time:t,place:'',zone:'Europe/London',timeUnknown:false};return E.validateProfile(o);};
+ const good=bornIn('1988-07-14','09:00'), blank=bornIn('',''), secs=bornIn('2000-02-29','23:59:30');
+ ok(good.ok&&blank.ok&&secs.ok,'a real day and clock time, the empty pair, and a leap day with seconds all pass: '
+  +JSON.stringify([good.errs,blank.errs,secs.errs]));
+ const badD=['2001-02-30','1990-13-45','1990-00-10','14/07/1988','1900-02-29','<img src=x onerror=1>','1988-7-14'];
+ const offD=badD.filter(d=>{const v=bornIn(d,'');return v.ok||!(v.errs||[]).some(e=>/^who\.born\.date /.test(e));});
+ ok(offD.length===0,'a date that is not a real day in year-month-day form is refused by name, let through: '+JSON.stringify(offD));
+ const badT=['25:30','99:99','12:60','<b>','9am'];
+ const offT=badT.filter(t=>{const v=bornIn('1988-07-14',t);return v.ok||!(v.errs||[]).some(e=>/^who\.born\.time /.test(e));});
+ ok(offT.length===0,'a time that is not on a 24 hour clock is refused by name, let through: '+JSON.stringify(offT));
+ /* the engine, for a record that never passes the boundary again */
+ const offE=badD.filter(d=>E.birthJD({d:d})!==null||E.spiritualOf({d:d,t:'09:00',z:'Europe/London'})!==null
+  ||E.sunSign(d,{d:d})!==null||E.lifePath(d)!==null||E.chineseYear({d:d})!==null);
+ ok(offE.length===0,'and the engine reads no julian day, sky, sun, path or year off one, read: '+JSON.stringify(offE));
+ ok(E.moonSign({d:'14/07/1988'})===null,'a moon with no readable birth is null, where it was an Aquarius moon');
+ ok(E.birthJD({d:'1988-07-14',t:'25:30'})===null&&E.birthJD({d:'1988-07-14',t:'23:59'})!==null,
+  'a time past 23:59 gives no julian day, where it was the next day read as timed');
+ const sp=E.spiritualOf({d:'1988-07-14'});
+ ok(sp&&sp.sun==='Cancer'&&sp.lp===11&&sp.chinese==='Dragon','and a real day still reads as it did, '+JSON.stringify(sp&&[sp.sun,sp.lp,sp.chinese]));
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');
 process.exit(F?1:0);
