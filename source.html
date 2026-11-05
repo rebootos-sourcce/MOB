@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2847 a57a127f 2026-11-05 07:54"><head><meta charset="utf-8">
+<html lang="en" data-build="v375 33be3c3 2026-11-05 15:08"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -60540,7 +60540,10 @@ function renderIntake(){
      reporter it bound says what the press would do on the person's own */
   if(!iqAnswer(CURP,+el.dataset.a,+el.dataset.v))return;
   IQ_PULSE={li:li,a:+el.dataset.a,fresh:iqGot(CURP,li)>was};
-  iqApply(CURP); pSave(); syncLw(); renderIntake(); render();};});
+  /* the press reports its save like the other intake writes, so a refused
+     write is said and not left for a reload to discover, and the answer
+     stays on screen either way, the same as [data-ixb] above */
+  iqApply(CURP); pSave(); statusSaved(); syncLw(); renderIntake(); render();};});
  /* THE NESTED ROWS. Both write the whole host like every other press, and
     both keep their place by the focus rule above. */
  var wb=document.getElementById('iqwho');
@@ -60620,9 +60623,13 @@ function renderIntake(){
   setTimeout(function(){sb.textContent='Save';},ok?900:2600);};
  var eb=document.getElementById('iqexp');
  if(eb)eb.onclick=function(){var t=pExport(); if(t==null)return;
-  try{navigator.clipboard.writeText(t);eb.textContent='Copied';status('Profile copied to the clipboard.');}
-  catch(e){eb.textContent=t.length+' bytes';}
-  setTimeout(function(){eb.textContent='Export';},1200);};}
+  /* the button and the line both wait for the clipboard's answer, for the
+     reason the account page's Export gives (ui/account.js, #acexp) */
+  new Promise(function(res){res(navigator.clipboard.writeText(t));}).then(
+   function(){eb.textContent='Copied';status('Profile copied to the clipboard.','ok');
+    setTimeout(function(){eb.textContent='Export';},1200);},
+   function(){eb.textContent='Not copied';status('Could not reach the clipboard. Nothing was copied.','fail');
+    setTimeout(function(){eb.textContent='Export';},2600);});};}
 /* THE ROW AND THE SEAL FOLLOW WHAT IS TYPED, in place. The form is open while
    it is being filled, and rewriting the host on every change would take focus
    from the next field, so the row's rings and the seal button are brought up
@@ -76538,8 +76545,15 @@ function paintUndo(){
  function settle(msg){
   syncCh(); if(typeof syncLw==='function')syncLw();
   if(typeof syncSoul==='function')syncSoul();
-  saveYou(); if(typeof pSave==='function')pSave();
-  render(); paintUndo(); status(msg,'ok');}
+  /* AND IT SAYS WHETHER THE MOVE WAS SAVED. The save's answer was thrown
+     away and the line was always ok, so on a store that refused the write
+     the person read "Took back" and a reload brought the change back. */
+  saveYou(); var saved=(typeof pSave==='function')?pSave():true;
+  render(); paintUndo();
+  if(saved){status(msg,'ok');return;}
+  var st=(typeof saveState==='function')?saveState():{};
+  status(msg+(st.err==='NotARecord'?' Nothing saved on a worked example.'
+   :' Not saved. Storage is full or blocked, so a reload brings it back.'),'fail');}
  var b=$('undobtn');
  if(b)b.onclick=function(){
   var u=undoPop();
@@ -79031,9 +79045,15 @@ function accWire(){
  /* a device setting and not a profile write: see pracOn in ui/practitioner.js */
  if(pr)pr.onclick=function(){pracSwitch(!pracOn()); renderAccount();};
  var ex=$('acexp');
+ /* THE CLIPBOARD ANSWERS LATER. writeText returns a promise, and this said
+    "copied" the moment it was asked, so a refused write (permission denied,
+    or the page not focused) read as a backup the person did not have, and the
+    rejection fell out as a page error. The line waits for the answer now. A
+    missing clipboard throws inside the promise and lands in the same refusal. */
  if(ex)ex.onclick=function(){var t=pExport(); if(t==null)return;
-  try{navigator.clipboard.writeText(t); status('Record copied to the clipboard.','ok');}
-  catch(e){status('Could not reach the clipboard. Nothing was copied.','fail');}};
+  new Promise(function(res){res(navigator.clipboard.writeText(t));}).then(
+   function(){status('Record copied to the clipboard.','ok');},
+   function(){status('Could not reach the clipboard. Nothing was copied.','fail');});};
  var dl=$('acdel');
  if(dl)dl.onclick=function(){accDelete();};
  /* the same importer the profile sheet draws, under its own ids, and the page
@@ -87548,5 +87568,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005787135"></div>
+<div id="eof" hidden data-len="005788610"></div>
 </body></html>

@@ -1664,8 +1664,15 @@ function paintUndo(){
  function settle(msg){
   syncCh(); if(typeof syncLw==='function')syncLw();
   if(typeof syncSoul==='function')syncSoul();
-  saveYou(); if(typeof pSave==='function')pSave();
-  render(); paintUndo(); status(msg,'ok');}
+  /* AND IT SAYS WHETHER THE MOVE WAS SAVED. The save's answer was thrown
+     away and the line was always ok, so on a store that refused the write
+     the person read "Took back" and a reload brought the change back. */
+  saveYou(); var saved=(typeof pSave==='function')?pSave():true;
+  render(); paintUndo();
+  if(saved){status(msg,'ok');return;}
+  var st=(typeof saveState==='function')?saveState():{};
+  status(msg+(st.err==='NotARecord'?' Nothing saved on a worked example.'
+   :' Not saved. Storage is full or blocked, so a reload brings it back.'),'fail');}
  var b=$('undobtn');
  if(b)b.onclick=function(){
   var u=undoPop();
