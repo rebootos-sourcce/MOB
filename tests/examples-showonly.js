@@ -19,7 +19,9 @@
    never counted here, the defect this repository keeps paying for):
      1  every surface TABDEF names still opens on the example, by its host's
         id, at the render watch's own floors (tools/monitor.js)
-     2  the Story journal and both release Run controls are the preview line
+     2  the Story journal is the example's own entries and the Story
+        release column's controls are drawn shut, with no preview line
+        (5 November); the release card's Run is still the preview line
         and not a control, and the Intake's answers are drawn disabled
      3  every write path is refused, through the control where there is one
         and by name where there is not: the Story commit, the release Begin
@@ -125,9 +127,18 @@ const TEXT='I was furious and ashamed and I could not stop going over it. I said
     setTab(TAB.STORY); await wait(30);
     out.ctl.story=!document.getElementById('sttext')&&!document.getElementById('stapply')
      &&!document.getElementById('stcin')&&!document.getElementById('stmic')&&!document.getElementById('sttalk')
-     &&((document.querySelector('#story .st-colw .show-note')||{}).textContent||'')===line('story');
-    out.ctl.strun=!document.getElementById('strun')
-     &&((document.querySelector('#strel .show-note')||{}).textContent||'')===line('release');
+     /* the preview line is gone from Discover, 5 November, his words: "Get
+        rid of the text that says a worked example shows every reading and
+        runs nothing." The example's own journal stands in its place, one
+        bubble per seeded entry, and nothing in it is a control. */
+     &&!document.querySelector('#story .show-note')
+     &&document.querySelectorAll('#stexth .src-tn-me').length===((CURP.story&&CURP.story.entries)||[]).filter(e=>e&&e.text).length
+     &&!document.querySelector('#stexth button,#stexth textarea,#stexth input');
+    /* and the release column draws its controls shut, so an example runs
+       nothing and says so by the disabled state, with no line printed */
+    const rg=document.getElementById('strun'), rp=document.getElementById('strpace'), rd=document.getElementById('strdose');
+    out.ctl.strun=!!rg&&rg.disabled&&!!rp&&rp.disabled&&!!rd&&rd.disabled
+     &&!document.querySelector('#strel .show-note');
     /* 3 . the story commit, the way the button calls it */
     clear(); ST_TEXT=TEXT; ST_PARSED=parseStory(TEXT);
     const sc=stCommit(); out.refused.commit=!!sc&&sc.ok===false&&sc.why==='example'; heard('story','commit');
@@ -184,8 +195,8 @@ const TEXT='I was furious and ashamed and I could not stop going over it. I said
    const empty=r.surf.filter(s=>s[2]<FLOOR);
    ok(empty.length===0,tier+' / '+r.nm+': every surface opens, '+r.surf.length+' read, empty: '+JSON.stringify(empty));
    /* 2 */
-   ok(r.ctl.story,tier+' / '+r.nm+': the Story journal is the preview line, with no box, Talk, Record or Commit');
-   ok(r.ctl.strun,tier+' / '+r.nm+': the Story release column has the preview line where Run release was');
+   ok(r.ctl.story,tier+' / '+r.nm+': the Story journal is the example\'s own entries, with no box, Talk, Record, Commit or preview line');
+   ok(r.ctl.strun,tier+' / '+r.nm+': the Story release column draws Run speed, Patterns and Release shut, with no preview line');
    ok(r.ctl.card&&r.ctl.begin,tier+' / '+r.nm+': the release card opens as a reading and offers no Begin, '+JSON.stringify({card:r.ctl.card,begin:r.ctl.begin}));
    ok(r.ctl.intake,tier+' / '+r.nm+': the Intake answers are drawn disabled under the preview line');
    /* 3 */
