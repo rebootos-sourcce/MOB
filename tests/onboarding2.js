@@ -1072,15 +1072,28 @@ console.log('\n=== the floor band says where to go and gives the door to it (16 
   if(!who.floor||!who.above){ await page.close(); continue; }
   await page.evaluate(i=>{loadP(i);setTab(TAB.SUMMARY);render();},who.floor.i);
   await page.waitForTimeout(500);
+  /* THE REFERENCE LEFT THE PAGE, NOT THE RULE. This read the page's own Run a
+     release off .s-oact, and on 3 November (b5065767, PR 180) the whole What to
+     do column was taken off Summary on his ruling, so rel came back null and
+     this row failed on every run from bc5f08c4 on, which is what froze the
+     deploy at 17aa9b29. The crisis button's style was written to match that
+     button and still claims to, so the reference is now a probe carrying the
+     release button's own classes, set in the same host so it takes the same
+     cascade, measured and removed. A drift in either style still fails here. */
   const plate=await page.evaluate(()=>{const tw=document.querySelector('.s-ptoward'),
-    b=tw&&tw.querySelector('[data-crisis="open"]'), rel=document.querySelector('.s-oact');
+    b=tw&&tw.querySelector('[data-crisis="open"]');
+   let rel=document.querySelector('.s-oact'), probe=null;
+   if(!rel&&tw){probe=document.createElement('button'); probe.className='btn s-oact';
+    probe.textContent='Run a release'; tw.parentNode.appendChild(probe); rel=probe;}
    const box=e=>{if(!e)return null; const r=e.getBoundingClientRect(), cs=getComputedStyle(e);
     return {h:Math.round(r.height),fs:cs.fontSize,c:cs.color,top:Math.round(r.top),
      on:r.width>0&&r.height>0&&cs.visibility!=='hidden'};};
-   return {text:tw?tw.textContent:'', btn:b?b.textContent:null, near:!!b&&b.classList.contains('crx-near'),
+   const out={text:tw?tw.textContent:'', btn:b?b.textContent:null, near:!!b&&b.classList.contains('crx-near'),
     under:!!b&&tw.textContent.indexOf(TIER_BY.Contracted.toward)>=0
      &&tw.innerHTML.indexOf(TIER_BY.Contracted.toward)<tw.innerHTML.indexOf('data-crisis'),
-    b:box(b), rel:box(rel)};});
+    b:box(b), rel:box(rel), probe:!!probe};
+   if(probe)probe.remove();
+   return out;});
   ok(plate.btn==='Is this a crisis?'&&plate.near&&plate.under,
    'on the floor band the crisis button sits directly under "Where it goes"'+at+', '+JSON.stringify(plate.text));
   ok(plate.b&&plate.b.on&&plate.b.h>=44&&plate.rel&&plate.b.fs===plate.rel.fs&&plate.b.c===plate.rel.c,
