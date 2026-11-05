@@ -33935,3 +33935,21 @@ rail's visual language. SW1, SW2, SW4 and SW6 need scoping before any build.
   clean. Voice objections unchanged from main, still the 8 PR #181 words,
   still zero new bare weights. Same open question as round 1: the five
   node-state words' boundaries are still his to rule.
+
+- [x] **Four PRs merged to main, 5 November, on his word ("merge everything,
+  181 and anything else").** #181 (the 8 law-definition words, this is what
+  had been blocking every deploy since PR #180 landed the real text), #178
+  (the 19 blueprint domain unpack sentences, PR's own note: new paraphrase
+  sentences, worth a skim), #179 (the six hyper complex modes' real content,
+  wired into the drill), #183 (SV15, the Ritual page cuts and seeded
+  profiles). Each PR's branch had drifted behind main (mostly build-stamp
+  conflicts from the string of TASKS.md commits since they were opened);
+  merged main into each, rebuilt products, and for #179 resolved one real
+  textual conflict in tests/engine.js (two unrelated test groups landed at
+  the same append point, kept both). Re-ran the full gate chain on each
+  before pushing: #178 engine 6879/0, #179 engine 6884/0 (both new SABOP
+  and HC test groups intact), #183 engine 6899/0 plus its own flowtools.js
+  gate 181/0. products.js clean on all three post-rebuild.
+  **Not merged, on purpose:** #177, Ruler's domain (Imperium or Power) is
+  still genuinely open, his call, not folded into a blanket merge. #182,
+  mid-revision right now (round 3 in flight). #149 and #164 are his.
