@@ -571,6 +571,30 @@ claim(E,ok){
  ok(bc.ok===false&&bc.errs.some(e=>e.indexOf('axes.Fear.held')>=0),'a record the boundary refuses makes no claim, and says why: '+J(bc.errs));
  ok(E.journeyClaim(null,at(0)).ok===false,'no record makes none');
  ok(!/fetch|XMLHttpRequest/.test(E.journeyClaim.toString()),'the packet is built and nothing here sends it');
+},
+
+/* A LINE WRITTEN WHILE THE DEVICE CLOCK RAN AHEAD, read back once it is right.
+   journeyLog and journeyWalk check a stamp against Date.now(), the clock that
+   wrote it, so the write passed and was saved, and the boot read on the
+   corrected clock refused the whole record. Measured before the fix, a line
+   logged at now plus three days: loaded 0. The stamps here are set to three
+   days ahead after the write, because that is exactly what jyAt writes under a
+   clock three days ahead, and a copy of the engine in its own context does not
+   see a Date.now moved out here. */
+clock(E,ok){
+ const o=clone(walked(E).p), ahead=at(3);
+ o.journey.log[0].at=ahead; o.journey.walk.at=ahead; o.journey.gift.at=ahead;
+ const st=E.validateProfile(clone(o),{stored:true});
+ ok(st.ok,'the boot read of this device\'s own record keeps a log line, a walk and a gift stamped three days ahead: '+J((st.errs||[]).slice(0,2)));
+ ok(st.ok&&st.profile.journey.log[0].at===ahead&&st.profile.journey.walk.at===ahead&&st.profile.journey.gift.at===ahead,
+  'and keeps the stamps as written, never clamped to today');
+ /* an import is not this device's own write, and keeps the day of slack */
+ const imp=verdict(E,clone(o));
+ ok(!imp.ok&&imp.errs.indexOf('journey.log[0].at is ahead of the clock')>=0,'while an import of the same record is refused by name: '+J(imp.errs.slice(0,1)));
+ /* the other rules hold on the stored read exactly as on an import */
+ const bad=clone(o); bad.journey.log[0].d={note:'I cried at the board meeting'};
+ const sb=E.validateProfile(bad,{stored:true});
+ ok(!sb.ok&&sb.errs.some(e=>e.indexOf('is free text')>=0),'and the stored read still refuses free text in the log: '+J((sb.errs||[]).slice(0,1)));
 }};
 
 /* ============================================================
@@ -613,7 +637,7 @@ const MUTANTS=[
  {suite:'tables', what:'an event is renamed',
   from:"'funnel_started','ground_selected',", to:"'funnel_began','ground_selected',"},
  {suite:'boundary', what:'the record skips the journey boundary',
-  from:"p.journey=journeyValidate(errs,o.journey,'journey');", to:"p.journey=o.journey;"},
+  from:"p.journey=journeyValidate(errs,o.journey,'journey',{stored:stored});", to:"p.journey=o.journey;"},
  {suite:'boundary', what:'a log may skip a number',
   from:"if(x.seq!==i+1)errs.push(path+'.seq is not the next number');", to:""},
  {suite:'boundary', what:'a log line may be any event',
@@ -646,6 +670,10 @@ const MUTANTS=[
   from:"var JOURNEY_CLAIM_SEND=['soul',", to:"var JOURNEY_CLAIM_SEND=['who','soul',"},
  {suite:'claim', what:'a claim takes a body part it never carries',
   from:"if(JOURNEY_CLAIM_NEVER.indexOf(k)>=0)errs.push('claim.body.'+k+' is not carried by a claim');", to:"if(false)errs.push('x');"},
+ {suite:'clock', what:'the stored read refuses a stamp the device clock wrote ahead',
+  from:"nowMs=c.stored?null:jyMs(c.now)", to:"nowMs=jyMs(c.now)"},
+ {suite:'clock', what:'validateProfile drops the stored flag on the way to the journey',
+  from:"journeyValidate(errs,o.journey,'journey',{stored:stored})", to:"journeyValidate(errs,o.journey,'journey')"},
  {suite:'claim', what:'a claim skips the profile boundary',
   from:"var rec=Object.assign({v:c.schema},c.body);\n var v=validateProfile(rec);", to:"var rec=Object.assign({v:c.schema},c.body);\n var v={ok:true,profile:rec};"}];
 

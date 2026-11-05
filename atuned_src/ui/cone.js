@@ -2669,9 +2669,12 @@ function coneRead(){
  /* THE LAW WITH THE MOST ROOM. CQ is the laws summed (cqSum), so the lowest
     one has the most room to rise. weakL is the first of the lowest, so a tie
     is said as a tie, and a field with every law level names none. */
- var lo=S.law[r.weakL.nm], hi=Math.max.apply(null,SI.map(function(l){return S.law[l.nm];}));
+ /* weakL is null when no law is answered. The !r.complete return above
+    already keeps that out of here, and this guard keeps it out if that
+    return ever moves. */
+ var lo=r.weakL?S.law[r.weakL.nm]:0, hi=Math.max.apply(null,SI.map(function(l){return S.law[l.nm];}));
  var tied=SI.filter(function(l){return Math.abs(S.law[l.nm]-lo)<0.05;}).length;
- var weak=(hi-lo<0.05)?''
+ var weak=(!r.weakL||hi-lo<0.05)?''
   :'<p class="cone-p">'+(tied>1?'<b>'+esc(r.weakL.nm)+'</b> is one of the '+tied+' laws you keep least. '
     :'The law you keep least is <b>'+esc(r.weakL.nm)+'</b>. ')
    +unpSay(r.weakL.nm,'law')+' Your coherence is built from your answers on the laws, '

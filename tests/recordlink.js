@@ -103,6 +103,11 @@ async function openLink(pg, url) {
 /* a link with the given payload after r= */
 const withPayload = (file, payload, dev) => 'file://' + file + (dev ? '?dev=1' : '') + '#r=' + payload;
 const gz = txt => E.linkWrap(new Uint8Array(zlib.gzipSync(Buffer.from(txt, 'utf8'))));
+/* a record with its birth date and time set, and a payload that counts its
+   own runs, so a check can tell the script ran rather than guess */
+const XSS = '<img src=x onerror="window.__xss=(window.__xss||0)+1">';
+const bornAs = (json, d, t) => { const p = JSON.parse(json); p.who = p.who || {};
+  p.who.born = { date: d, time: t, place: 'London', zone: '', timeUnknown: false }; return JSON.stringify(p); };
 
 /* the success case against an app file. Returns what a check needs. */
 async function loadCase(browser, file, payload, w, h, nm) {
@@ -258,7 +263,12 @@ require('./net.js').guardBrowser(browser);
     ['carrying characters a link never has', E.LINK_V + '.' + payload.slice(2, 40) + '!!' + payload.slice(40), /damaged/],
     ['not JSON once unpacked', gz('this is not a record'), /not valid JSON/],
     ['a record the boundary refuses', gz('{"v":2,"name":"broken","avatar":"not an object"}'), /avatar/],
-    ['a record with a charge of 9999', gz((() => { const p = JSON.parse(q.json); p.axes.Fear.held = 9999; return JSON.stringify(p); })()), /9999/]];
+    ['a record with a charge of 9999', gz((() => { const p = JSON.parse(q.json); p.axes.Fear.held = 9999; return JSON.stringify(p); })()), /9999/],
+    /* the birth date and time have a shape, and markup or an impossible day
+       in either is refused at the boundary before it is stored or drawn */
+    ['a record whose birth date is markup', gz(bornAs(q.json, XSS, '10:00')), /who\.born\.date/],
+    ['a record whose birth date is 30 February', gz(bornAs(q.json, '2001-02-30', '')), /who\.born\.date/],
+    ['a record whose birth time is 25:30', gz(bornAs(q.json, '1988-07-14', '25:30')), /who\.born\.time/]];
   for (const [nm, pl, want] of cases) {
     const r = await refuseCase(browser, SRC, pl);
     ok(r.name === null && !r.moved,
@@ -268,6 +278,35 @@ require('./net.js').guardBrowser(browser);
       && ln.shown.indexOf(String(r.st.err).slice(0, 20)) > 0,
       '  and it says why by name, the importError reason on screen, ' + JSON.stringify((ln.shown || '').slice(0, 110)));
     ok(r.st.hash === '', '  and the bad link is off the address too');
+  }
+
+  console.log('\n=== markup in the birth date or time never runs ===');
+  {
+    /* The record link put who.born.date and .time straight into the Born
+       row of the spirit panel, which draws during boot, so a link carrying
+       an img with an onerror ran its script on arrival with no click. Two
+       holds: the boundary refuses the link, and a record already stored
+       before the boundary checked the shape is drawn as text. The second is
+       reached by writing the record in place, which is what an older stored
+       profile is: it never passes the boundary again. */
+    const cx = await browser.newContext({ viewport: { width: 1600, height: 1000 } });
+    const pg = await cx.newPage();
+    await pg.goto('file://' + SRC + '?dev=1', { waitUntil: 'load' }); await booted(pg);
+    const r = await openLink(pg, withPayload(SRC, gz(bornAs(q.json, XSS, XSS)), true));
+    await pg.waitForTimeout(800);
+    const ran = await pg.evaluate(() => window.__xss || 0);
+    ok(r.name === null && ran === 0, 'a link with markup in the birth date is not loaded and its script never ran, ran ' + ran);
+    const drawn = await pg.evaluate(x => {
+      CURP.who.born.date = '1988-07-14'; CURP.who.born.time = x; CURP.who.born.timeUnknown = false;
+      renderSpirit();
+      const el = document.getElementById('spirit');
+      return { has: !!el, text: el ? el.textContent : '', img: el ? el.querySelectorAll('img').length : -1 };
+    }, XSS);
+    await pg.waitForTimeout(400);
+    const ran2 = await pg.evaluate(() => window.__xss || 0);
+    ok(drawn.has && drawn.img === 0 && ran2 === 0 && drawn.text.indexOf('onerror') >= 0,
+      'a stored birth time carrying markup is drawn as text in the Born row, no img made, script ran ' + ran2);
+    await cx.close();
   }
 
   console.log('\n=== a browser without the streams says so, on both pages ===');

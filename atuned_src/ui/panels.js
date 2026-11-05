@@ -1077,6 +1077,8 @@ function recordImportWire(p,after){
   var np=pImport(txt);
   if(!np){ var e=(typeof importError==='function'&&importError())||['it was refused'];
    impSay('Not loaded. '+e.join('. ')+'.',1); return; }
+  /* read now, before the redraws below can run anything else */
+  var copied=importCopied();
   recordLanded();
   /* a record put back answers a cleared store, ui/keep.js */
   if(typeof keepLanded==='function')keepLanded();
@@ -1089,7 +1091,7 @@ function recordImportWire(p,after){
      first and the message goes onto whatever element is on the screen when it
      is read, which is what impSay does by looking the id up at call time. */
   if(typeof after==='function')after(np);
-  impSay('Loaded '+(np.name||'the record')+'. Nothing else was touched.');};
+  impSay('Loaded '+(np.name||'the record')+(copied?' as a second copy, since this record is already on this device':'')+'. Nothing else was touched.');};
  var ig;
  if((ig=$(p+'keepsave'))&&typeof keepFile==='function')ig.onclick=function(){keepFile();};
  if((ig=$(p+'impgo')))ig.onclick=function(){impRun(($(p+'imp')||{}).value||'');};
@@ -1198,6 +1200,8 @@ function recordLinkBoot(){
       the field path axes.Fear.held into a name the record does not have */
    recordLinkSay('Not loaded from the link: '+e+'. Nothing else was touched.'+still,'fail');
    return null;}
+  /* read now, before the redraws below can run anything else */
+  var copied=importCopied();
   /* the record has landed and been saved by now, so a redraw that throws is a
      drawing fault and not a refused load, and the line still says it loaded */
   try{ recordLanded(); }
@@ -1212,7 +1216,7 @@ function recordLinkBoot(){
      random journey id, reuses an existing session, and never sends the story
      or name; the app still owns the record and the release itself. */
   if(typeof authFunnelStart==='function')authFunnelStart();
-  recordLinkSay('Loaded '+(np.name||'the record')+' from the link. Nothing else was touched.'+still,
+  recordLinkSay('Loaded '+(np.name||'the record')+' from the link'+(copied?' as a second copy, since this record is already on this device':'')+'. Nothing else was touched.'+still,
    still?'fail':'');
   return np;});}
 function profileSheet(){
@@ -1658,8 +1662,15 @@ function paintUndo(){
  function settle(msg){
   syncCh(); if(typeof syncLw==='function')syncLw();
   if(typeof syncSoul==='function')syncSoul();
-  saveYou(); if(typeof pSave==='function')pSave();
-  render(); paintUndo(); status(msg,'ok');}
+  /* AND IT SAYS WHETHER THE MOVE WAS SAVED. The save's answer was thrown
+     away and the line was always ok, so on a store that refused the write
+     the person read "Took back" and a reload brought the change back. */
+  saveYou(); var saved=(typeof pSave==='function')?pSave():true;
+  render(); paintUndo();
+  if(saved){status(msg,'ok');return;}
+  var st=(typeof saveState==='function')?saveState():{};
+  status(msg+(st.err==='NotARecord'?' Nothing saved on a worked example.'
+   :' Not saved. Storage is full or blocked, so a reload brings it back.'),'fail');}
  var b=$('undobtn');
  if(b)b.onclick=function(){
   var u=undoPop();
