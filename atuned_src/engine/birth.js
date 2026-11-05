@@ -51,12 +51,15 @@ function sunSign(d,bt){
  if(b){var i=atSpan(b,function(jd){return signOf(sunLon(jd));});
   if(i===null)return null;
   var z=ZSIGN[ZI[i]]; return {nm:z[2], el:z[3], mode:z[4]};}
- var p=d.split('-'), m=+p[1], day=+p[2];
+ /* a date that is not a day has no sun. This fell through the calendar
+    loop to Capricorn and printed it as settled. */
+ var ymd=bornYMD(d); if(!ymd)return null;
+ var m=ymd[1], day=ymd[2];
  for(var j=0;j<ZSIGN.length;j++){
   var a=ZSIGN[j], c=ZSIGN[(j+1)%12];
   if((m===a[0]&&day>=a[1])||(m===c[0]&&day<c[1]))
    return {nm:a[2], el:a[3], mode:a[4]};}
- return {nm:ZSIGN[11][2], el:ZSIGN[11][3], mode:ZSIGN[11][4]};}
+ return null;}
 
 /* The moon moves about thirteen degrees a day, so the birth time is not
    a refinement here, it is most of the answer. Without one the record is
@@ -67,7 +70,9 @@ function sunSign(d,bt){
    than whichever side Greenwich happened to put it on. On the same 5840
    births as the sun above that was 2777, close to half. */
 function moonSign(bt){
- var b=birthJD(bt); if(!b)return ZSIGN[0];
+ /* no readable birth is no moon. This returned ZSIGN[0], an Aquarius moon
+    for a record that had no date in it. */
+ var b=birthJD(bt); if(!b)return null;
  var i=atSpan(b,function(jd){return signOf(moonLon(jd));});
  return i===null?null:ZSIGN[ZI[i]];}
 
@@ -91,6 +96,9 @@ function risingSign(bt){
  var P=b.place, i=atSpan(b,function(jd){return signOf(ascendant(jd,P.lat,P.lon));});
  return i===null?null:ZSIGN[ZI[i]];}
 function lifePath(d){
+ /* a date that is not a day has no path. '14/07/1988' summed a slash and
+    printed Path NaN. */
+ if(!bornYMD(d))return null;
  var v=d.replace(/-/g,'').split('').reduce(function(a,c){return a+ +c;},0);
  while(v>9&&v!==11&&v!==22&&v!==33)
   v=String(v).split('').reduce(function(a,c){return a+ +c;},0);
@@ -102,6 +110,8 @@ function chineseElement(y){ return CELEM[y%10]; }
    first of January hands the wrong animal to everyone born in the first
    five weeks of a year, which is about a tenth of all births. */
 function chineseYear(bt){
+ /* no day, no year: this returned NaN and the panel printed undefined */
+ if(!bornYMD(bt.d))return null;
  var y=+bt.d.split('-')[0], b=birthJD(bt);
  if(!b)return y;
  var lc=julianDay(y,2,4,0), guard=0;
@@ -163,6 +173,11 @@ function spiritual(name){
    reference case is, rather than only through the BIRTH table. */
 function spiritualOf(bt){
  if(!bt||!bt.d)return null;
+ /* A DATE THAT IS NOT A DAY IS NO BIRTH. The boundary refuses one on the
+    way in, and this holds for a record stored before it did: the panel
+    shows what it shows for no date, and never a sky, a year and a path read
+    off three different guesses at what the digits meant. */
+ if(!bornYMD(bt.d))return null;
  /* the sun and the moon are null for an unlocated birth whose window
     crosses a cusp, and every field hung off them is null with them, so a
     root or a mode is never derived from a sign that was not read. */

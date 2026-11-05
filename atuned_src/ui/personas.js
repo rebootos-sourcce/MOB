@@ -164,12 +164,15 @@ function renderSpirit(){
  reSelRead();
  /* the birth itself, which no system owns: one mark, the pin SYSGLYPH
     already carries, with the day and the place in its tooltip and the two
-    rows the gates read kept in the document beside it */
+    rows the gates read kept in the document beside it. Every part is escaped,
+    main's rule from the row this replaced: all of it comes from the record,
+    and a record can arrive by link or paste carrying markup the boundary did
+    not write. */
  var bornSay=[sp.birth.d,sp.birth.t].filter(Boolean).join(' ')+(sp.birth.p?', '+sp.birth.p:'')+(sp.birth.z?', '+sp.birth.z:'');
  var born='<div class="sp-tile sp-born" tabindex="0" data-tip-t="Born" data-tip="'+esc(bornSay)+'" aria-label="'+esc('Born, '+bornSay)+'">'
   +'<span class="sp-tg" aria-hidden="true"><svg class="sp-gi" viewBox="0 0 24 24">'+SYSGLYPH.born+'</svg></span>'
   +'<span class="sp-said"><span class="sp-row static"><span class="sp-k">When</span> <span class="sp-v">'
-  +esc(sp.birth.d)+'</span> <span class="sp-x">'+esc(sp.birth.t)+'</span></span>'
+  +esc(sp.birth.d)+'</span> <span class="sp-x">'+esc(sp.birth.t||'')+'</span></span>'
   +'<span class="sp-row static"><span class="sp-k">Where</span> <span class="sp-v">'
   +esc(sp.birth.p)+'</span> <span class="sp-x">'+esc(sp.birth.z||'')+'</span></span></span></div>';
  /* a gate is printed as "gate 23.4" in its spoken name and as 23.4 in its
@@ -885,6 +888,10 @@ function mirrorYou(){
  Y.dom=S.dom;Y.a1=S.a1;Y.a2=S.a2;Y.doms=S.doms.slice();Y.arcs=S.arcs.slice();Y.roots=S.roots.slice();
  CHARGES.forEach(function(c){Y.c[c]=S.charge[c];});
  Y.rep={};CHARGES.forEach(function(c){Y.rep[c]=S.replace[c]||0;});
+ /* the named address layer rides with the charge, because loadP(0) reads it
+    back out of this row and an own record that lost it on a visit to a worked
+    example would lose what its stories named */
+ Y.addr=Object.assign({},S.addr||{});
  /* the original wrote Y.law here and lawsFor could never read it back. */
  Y.law={};SINAMES.forEach(function(l){Y.law[l]=S.law[l];});
  return true;}
@@ -962,6 +969,17 @@ function loadP(i){
  CHARGES.forEach(function(c){
   S.charge[c]=(p.c&&p.c[c]!==undefined)?p.c[c]:0;
   S.replace[c]=(p.rep&&p.rep[c])||0;});
+ /* AND THE NAMED ADDRESS LAYER COMES FROM THE SAME ROW, or it stays behind.
+    S.addr is what a story that names a body place adds at that address
+    (engine/compute.js, 26 October), and this was the one S field loadP never
+    set. So a worked example opened after the person wrote a story was read
+    with the person's addresses on top of its own table and saved them onto
+    its scratch record: Derek on a fresh page DQ 26.221 and 20 loaded, after
+    one story on You DQ 26.475 and 22 loaded. No example row carries a layer,
+    so an example opens on none. The person's own row carries theirs because
+    mirrorYou copies it into PEOPLE[0] beside the charge, which is how the way
+    back through loadP(0) gets it back. */
+ S.addr=Object.assign({},(p.addr&&typeof p.addr==='object')?p.addr:{});
  /* THE CUSTOM PERSONA IS NOT A DEMO AND MUST NOT BE GIVEN LAW SCORES.
 
     lawsFor falls back to the seed for anybody with no table, and "You" is the

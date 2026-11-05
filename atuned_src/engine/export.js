@@ -81,7 +81,7 @@ if(typeof module!=='undefined'&&module.exports){
                  medianRange:medianRange, tierTop:tierTop, tierRange:tierRange,
   /* astro */     julianDay:julianDay, sunLon:sunLon, moonLon:moonLon, gmst:gmst,
                   ascendant:ascendant, signOf:signOf, degInSign:degInSign,
-                  gateOf:gateOf, designJD:designJD, birthJD:birthJD, PLACE:PLACE,
+                  gateOf:gateOf, designJD:designJD, birthJD:birthJD, bornYMD:bornYMD, bornHM:bornHM, PLACE:PLACE,
                   usDST:usDST, euDST:euDST, zoneOffsets:zoneOffsets, zonePoint:zonePoint, ZONEPT:ZONEPT,
                   GATE_WHEEL:GATE_WHEEL, GATE_ARC:GATE_ARC,
                   chineseYear:chineseYear, spiritualOf:spiritualOf,
@@ -178,7 +178,7 @@ if(typeof module!=='undefined'&&module.exports){
      otherwise a law set to exactly the seed reads as unanswered, which is
      saveProfile's documented blind spot and correct for a person. */
                   LAW_UNSET:LAW_UNSET, SOUL_FROM:SOUL_FROM,
-                  pExport:pExport, pImport:pImport, validateProfile:validateProfile, importError:importError,
+                  pExport:pExport, pImport:pImport, validateProfile:validateProfile, importError:importError, importCopied:importCopied,
                   importRefuse:importRefuse, linkWrap:linkWrap, linkUnwrap:linkUnwrap,
                   LINK_V:LINK_V, LINK_MAX:LINK_MAX,
                   meterRun:meterRun, meterRead:meterRead, meterKey:meterKey, meterBudget:meterBudget,

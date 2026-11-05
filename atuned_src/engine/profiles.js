@@ -89,7 +89,9 @@ function profOpen(id){
  PROF_ERR=null;
  var p=profFind(id);
  if(!p){PROF_ERR=['no profile with that id is on this device'];return null;}
- var v=validateProfile(JSON.parse(JSON.stringify(p)));
+ /* stored: this record is already on the device, so a date its own clock
+    wrote ahead does not lock the person out of switching to it */
+ var v=validateProfile(JSON.parse(JSON.stringify(p)),{stored:true});
  if(!v.ok){PROF_ERR=(v.errs||['it did not validate']).slice(0,3);return null;}
  if(p===CURP&&S.rec===p.id)return p;
  profHold();
