@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2847 a57a127f 2026-11-05 07:54"><head><meta charset="utf-8">
+<html lang="en" data-build="v2874 e06b68c7 2026-11-05 16:15"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -18918,6 +18918,20 @@ const W=[];BANDS.forEach(b=>SOM.filter(n=>n.b===b).forEach(n=>W.push(n)));
 W.forEach((n,i)=>{n.slot=i;n.ang=(i/108)*Math.PI*2-Math.PI/2;
  n.cf = ANTKEY.test(n.k)?'Anticipation' : SURPKEY.test(n.k)?'Surprise'
       : HEARTKEY.test(n.k)?'Sad' : (REROUTE[n.c]||null);});
+/* THE FETTERS GET A RING POSITION TOO, the real floor the chain runs on
+   (engine/trace.js: "a fetter is the classification several addresses
+   share... and carries no address-level content of its own"). Set once,
+   here, beside W's own .ang above and for the same reason: a stable
+   position computed from real data rather than redrawn every frame. Each
+   fetter sits at the mean angle of the real addresses it classifies
+   (n.cf===c.nm), so the wheel's new fetter ring sits where its own
+   addresses actually cluster, never at an arbitrary even spacing. kind is
+   set here and not in engine/data/canon.js, because canon.js is the ported
+   table (SNIFFER_SPEC's own) and this is wiring: the one property every
+   wheel bead needs so hitPress (ui/ui.js) can tell what it hit, the same
+   way a saboteur, complex, hyper or super complex already carries .kind. */
+CHILD.forEach(c=>{var parts=W.filter(n=>n.cf===c.nm);
+ c.kind='fet'; c.ang=parts.length?meanAng(parts.map(n=>n.ang)):-Math.PI/2;});
 const BY={};NODES.forEach(n=>BY[n.i]=n);
 const NAMED=new Set();SAB_LIB.forEach(s=>s.nids.forEach(i=>NAMED.add(i)));
 /* the six families are poled. collapsed on the left, overshot on the right.
@@ -39815,8 +39829,15 @@ var ATM_BY={}; ATM.forEach(function(x){ATM_BY[x.k]=x;});
    The Compass's seat shells are not here: each rings the seat it is, read
    off BANDS, so a seat is never a table of its own. */
 var ATM_SEAT={
- fb:{addresses:'Root', seats:'Sacral', laws:'Crown', gates:'Heart', shadow:'Root', stories:'Throat',
-  saboteurs:'Solar', complexes:'Heart', hyper:'3rd Eye', character:'Crown', archetypes:'Throat', domains:'3rd Eye'},
+ /* seats, shadow and stories left this table 3 November with their own
+    circles off the glass bar (ui/fieldbar.js, FB_LAYERS): tests/sound.js's
+    own map-completeness check (block A) refuses a seat with no layer to
+    pitch, by:'fb'&&!FB_BYK[k], so a pitch for a circle that no longer
+    exists would fail that check rather than sit unread. fetters (2
+    November, ff83e74) takes Sacral, the same seat the fieldbar's own
+    fetHi/fetMean reading colours its ring from. */
+ fb:{addresses:'Root', laws:'Crown', gates:'Heart',
+  fetters:'Sacral', saboteurs:'Solar', complexes:'Heart', hyper:'3rd Eye', character:'Crown', archetypes:'Throat', domains:'3rd Eye'},
  bm:{addr:'Root', masks:'Throat', pain:'Root', flow:'Sacral', sab:'Solar', cx:'Heart', hy:'3rd Eye'},
  cn:{top:'Crown', shells:'Heart', flat:'Sacral', reg:'Throat', well:'Root', heat:'Solar', layers:'3rd Eye'}};
 /* THE MAP. First row a control matches wins. sel is what it matches, snd is
@@ -41644,8 +41665,8 @@ function verpArrows(cr0){
 const VIEWS=[
  {k:'A',nm:'Charge',    layers:'the core, 108 addresses and 4 field anchors, the wash',
   tip:'What you are carrying, and where. The core is coherence, the ring is your 108 addresses and 4 field anchors, the wash is shadow weight.'},
- {k:'B',nm:'Patterns',  layers:'charge, plus the seats named and the saboteurs',
-  tip:'The saboteurs running on top of the charge. Each bead is one, and the threads show which addresses built it.'},
+ {k:'B',nm:'Patterns',  layers:'charge, plus the seats named, the fetters and the saboteurs',
+  tip:'The nine fetters and the saboteurs running on top of the charge. Each bead is one, and the threads show which addresses built it.'},
  {k:'C',nm:'Chains',    layers:'patterns, plus complexes, hyper, super, archetypes',
   tip:'How a pattern compounds. Saboteur into complex into hyper complex into super complex, inward, each built from the one outside it.'},
  {k:'D',nm:'Blueprint', layers:'chains, plus 19 domains, 21 laws',
@@ -41701,7 +41722,7 @@ const WHEEL_ZOOM_MAX=7;
    The key character is the super complexes' switch. It kept the rung's old
    name on 23 October, when the owner gave the word Character to the whole
    of it, because a key is identity; ui/fieldbar.js says why in full. */
-const LAYADD=[['addresses','laws','gates','shadow','stories'],['seats','saboteurs'],
+const LAYADD=[['addresses','laws','gates','shadow','stories'],['seats','saboteurs','fetters'],
  ['complexes','hyper','character','archetypes'],['domains']];
 var LAYSET=null;
 function layPreset(i){var s={};for(var j=0;j<=i&&j<LAYADD.length;j++)LAYADD[j].forEach(function(k){s[k]=1;});return s;}
@@ -42195,6 +42216,12 @@ function drawWheel0(r,L){
     do not fly out of the core */
  const R={shell:shellR,arch:U*.60,sab:lAt([U*.56,U*.56,U*.545,U*.50],LF),cx:U*.425,hy:U*.335,
   sup:U*.255,dom:U*.93};
+ /* FETTER SITS BETWEEN THE SHELL AND THE SABOTEUR RING, the real floor the
+    chain above it runs on (engine/trace.js), so its radius is simply the
+    midpoint of the two real radii either side of it rather than a new
+    constant, and it moves with them at every depth without needing its own
+    entry in lGeo. */
+ R.fet=(R.shell+R.sab)/2;
  const coreBase=lAt([U*.30,U*.26,U*.20,U*.155],LF);
  /* THE RING'S OWN EDGE, the one line nothing may cross, ruled 26 September.
     The shell, or at Blueprint the domain ring outside it. Published for the
@@ -42205,6 +42232,24 @@ function drawWheel0(r,L){
 
  /* --- chain chords, C and D --- */
  PUL.length=0;
+ /* FETTER CHORDS, drawn before the compounding web below so they sit
+    underneath it: fetter is the floor, not a link in the compounding chain
+    (trace.js: "a fetter is the classification several addresses share...
+    and carries no address-level content of its own"), so it gets the plain
+    style the saboteur-to-address line already uses at L===1 below, one
+    thread per real address into its own fetter, never the heavier
+    weight/tension tier() machinery built for a thing that compounds. D
+    gates it the same way lay() gates everything else: drawn only while
+    fetters or their fade is still live. */
+ if(D.fetters&&D.addresses){
+  var fetA2=LA.fetters.v;
+  CHILD.forEach(function(c){
+   var held=Math.min(1,(S.charge[c.nm]||0)/10), al=(0.14+held*0.34)*fetA2;
+   if(al<=0.003)return;
+   W.filter(function(n){return n.cf===c.nm;}).forEach(function(n){
+    g.beginPath();g.moveTo(CX+Math.cos(n.ang)*R.shell*.92,CY+Math.sin(n.ang)*R.shell*.92);
+    g.lineTo(CX+Math.cos(c.ang)*R.fet,CY+Math.sin(c.ang)*R.fet);
+    g.strokeStyle=rgba(bc(c.seat),al);g.lineWidth=1;g.stroke();});});}
  /* the curved web holds while any tier that needs it is still leaving, so the
     threads fade with their beads instead of straightening under them */
  if(L>=2||D.complexes||D.hyper||D.character||D.archetypes){
@@ -42634,6 +42679,19 @@ function drawWheel0(r,L){
  /* no depth test on the beads: a tier is on only at a depth that has its
     ring, which layNeeds guarantees, and a tier on its way out has to be drawn
     at the depth it is leaving from */
+ /* THE NINE FETTERS, one bead each, same tap as a saboteur's. c.kind='fet'
+    and c.ang are set once in engine/core.js, so bead()'s own on/hover check
+    (S.hover===o||S.pin===o) compares the same real singleton every frame,
+    unlike a saboteur's own object which compute() rebuilds each call; CHILD
+    needs no such rebuild because it carries no per-frame reading of its
+    own, only S.charge beside it. Size reads real held charge, same pattern
+    every other bead already scales by its own weight. All nine draw always
+    (there are only nine, and a fetter has nothing to be "not running":
+    trace.js's own words, "carries no address-level content of its own", so
+    there is no running/not-running split to draw here the way a saboteur
+    has one). */
+ lay('fetters',()=>{CHILD.forEach(c=>bead(c,R.fet,4.2+Math.min(1,(S.charge[c.nm]||0)/10)*2.4,bc(c.seat)));
+  if(L===1)CHILD.forEach(c=>nameplate(c,R.fet,bc(c.seat),5.4));});
  lay('saboteurs',()=>{r.sabs.forEach(s=>bead(s,R.sab,5.4,bc(s.parts[0].b)));
   /* B names the saboteurs, because they are the layer. C and D name only the
      heaviest things: the wheel is showing structure by then, and the right rail
@@ -44120,20 +44178,35 @@ const VICON=[
 const FB_LAYERS=[
  {k:'addresses',g:'carry',nm:'Addresses',ic:FB_IC_ADDR,
   tip:'Your 108 addresses, plus 4 field anchors above and below the body. Each mark is the charge held at one place.'},
- {k:'seats',g:'carry',nm:'Assemblage points',ic:FB_IC_SEAT,
-  tip:'The seven seats, from the base of your spine to the top of your head.'},
+ /* SEATS, SHADOW AND STORIES ARE OFF THE BAR, 3 November, his own red marks
+    on the Field screenshot: three of the glass bar's own circles individually
+    X'd, not the bar itself. Matched to his marks by percent, not by guess:
+    the Assemblage points circle read 37%, the same figure the reading panel's
+    own "Heaviest: Sacral 37%" prints; Decoherence read 27%, at the Root's
+    colour, DQ's own seat; Stories read a dash, the same as a carry with
+    nothing traced. All three stay real underneath: 'seats' is still in
+    LAYADD (ui/wheel.js), still drawn at Patterns and deeper, still reached
+    from the depth ladder and the four presets; 'shadow' still tints the
+    wash and DQ is still read on the rail, in Summary, Character, Analytics
+    and the drills; 'stories' still draws once a depth reaches it. Only this
+    bar's own single-layer switch for each of the three is gone, because
+    that circle is what he marked. */
  {k:'laws',g:'carry',nm:'Laws of Moral Integrity',ic:fbFlay('laws'),
   tip:'The '+SI.length+' Laws of Moral Integrity, each set at its assemblage point. Their sum is the number at the centre.'},
  {k:'gates',g:'carry',nm:'Laws of Action',ic:fbFlay('gates'),
   tip:'The Laws of Action round the core, each move of right action set across from the wrong action it stands against.'},
- {k:'shadow',g:'carry',nm:'Decoherence',ic:fbFlay('shadow'),
-  /* MATCHED TO GLOSS'S OWN DQ ENTRY (engine/data/kb.js), round 28 October:
-     this tip said "all the charge... shown as a tint", which drops the
-     ceiling DQ is read against and reads as an unbounded sum rather than
-     the shadow's own share of the most those addresses could hold. */
-  tip:'Decoherence. The weight on your 108 addresses and 4 field anchors, against the most they could hold, shown as a tint behind everything.'},
- {k:'stories',g:'carry',nm:'Stories',ic:fbFlay('stories'),
-  tip:'One line for each story that put charge on an address.'},
+ /* FETTER, THE ONE TIER MISSING FROM THIS BAR, added 2 November. It
+    classifies addresses (CHILD, 'carry' above), but engine/trace.js is
+    explicit that a saboteur IS "a configuration of fetters at specific
+    intensities" (engine/data/canon.js, sabFetters): it is the floor the
+    'run' group above it actually runs on, not a second thing you carry. So
+    it joins 'run', first, ahead of the saboteurs it is the floor under,
+    matching where ui/wheel.js now puts it in LAYADD. Child emotions is the
+    name the stack rail (railStack, ui/ui.js) and the drill (runFetterDrill,
+    ui/drills.js) already use for this tier; the bar says the same word, one
+    concept one mark, one concept one name. */
+ {k:'fetters',g:'run',nm:'Child emotions',ic:CHAINGLYPH.fet,
+  tip:'The nine child emotions. Each saboteur is a configuration of these at a given intensity: the floor the chain above it runs on.'},
  {k:'saboteurs',g:'run',nm:'Saboteurs',ic:CHAINGLYPH.sab,
   tip:'The saboteurs running on the charge, threaded to the addresses that built them.'},
  {k:'complexes',g:'run',nm:'Complexes',ic:CHAINGLYPH.cx,
@@ -44212,13 +44285,16 @@ function fbValues(r){
     wide, we need to convert those numbers into percent." Nought is the dash,
     so a pill never prints 0% beside a tooltip that says nothing carries. */
  var P=function(k,x){return {p:pct(k,x)||0,v:fmtPct(k,x)};};
- var sqm=P('weight',r.SQm), dk=P('weight',r.darkV||0), cq=P('cq',r.CQ), dqv=P('dq',r.DQ);
+ /* V.seats, V.shadow and V.stories went with their circles, 3 November:
+    computing a reading nothing on the bar prints any more is the exact
+    thing rule 2 warns against, defined with no caller left to read it.
+    dk (the heaviest assemblage point) and the atom-index trace share stay
+    gone with them; r.darkV and atomIndex() are still read wherever the
+    product shows them for real, Summary, Character, Analytics, the rail. */
+ var sqm=P('weight',r.SQm), cq=P('cq',r.CQ);
  V.addresses={p:sqm.p,v:sqm.v,c:seatCol(r.darkB),
   m:sqm.v!==dash?'Ring and number: segment depth, SQ, at '+sqm.v+'. How deep the held charge sits.'
    :'Ring and number: segment depth, SQ. Nothing is carrying yet.'};
- V.seats={p:dk.p,v:dk.v,c:seatCol(r.darkB),
-  m:dk.v!==dash?'Ring and number: the heaviest assemblage point, '+r.darkB+', at '+dk.v+'.'
-   :'Ring and number: the heaviest assemblage point. Nothing is carrying yet.'};
  V.laws={p:cq.p,v:cq.v,c:seatCol('Crown'),
   m:'Ring and number: CQ, the Laws of Moral Integrity added up.'};
  var G=verpRead(), hi=G.filter(function(g){return g.side==='higher';}).reduce(function(a,g){return a+g.pct;},0),
@@ -44226,12 +44302,17 @@ function fbValues(r){
  V.gates={p:anyG?pct('gate',hi):0,v:anyG?fmtPct('gate',hi):dash,c:seatCol('Heart'),
   m:anyG?'Ring and number: right action, its share of every Law of Action read in your stories.'
    :'Nothing read yet, so none of your stories has run through the Laws of Action.'};
- V.shadow={p:dqv.p,v:dqv.v,c:seatCol('Root'),
-  m:'Ring and number: shadow weight, DQ, the weight on your 108 addresses and 4 field anchors.'};
- var ai=atomIndex()||{}, traced=carry.length?carry.filter(function(n){return (ai[n.i]||[]).length;}).length/carry.length*100:0;
- V.stories={p:pct('portion',traced/100)||0,v:carry.length?fmtPct('portion',traced/100):dash,c:'var(--accent)',
-  m:carry.length?'Ring and number: the share of your carrying addresses a story you wrote reached.'
-   :'Nothing is carrying charge yet.'};
+ /* THE FETTER RING READS THE MEAN HELD ACROSS THE NINE, the same real
+    S.charge the stack rail's own 'Child emotions' tab already prints
+    (railStack, ui/ui.js) and runFetterDrill already drills into. Its colour
+    is the heaviest one's own seat, the same pattern addresses above already
+    takes off r.darkB: the ring paints the axis actually pulling hardest. */
+ var fetHi=CHILD.reduce(function(a,c){return (S.charge[c.nm]||0)>(S.charge[a.nm]||0)?c:a;},CHILD[0]);
+ var fetMean=CHILD.reduce(function(a,c){return a+(S.charge[c.nm]||0);},0)/CHILD.length;
+ var fm=P('charge',fetMean);
+ V.fetters={p:fm.p,v:fm.v,c:seatCol(fetHi.seat),
+  m:fm.v!==dash?'Ring and number: the mean charge held across the nine child emotions, heaviest at '+fetHi.nm+'.'
+   :'Ring and number: the mean charge held across the nine child emotions. Nothing is held yet.'};
  [['saboteurs',r.sabs,r.sabs[0]&&r.sabs[0].parts[0]?r.sabs[0].parts[0].b:r.darkB],
   ['complexes',r.cxs,'Solar'],['hyper',r.hys,'Sacral'],['character',r.sups,'Root']].forEach(function(t){
   var p=fbReach(t[1],carry);
@@ -44273,8 +44354,8 @@ function fbCluster(g,label){
  return c;}
 /* A PINNED THING WHOSE LAYER HAS GONE OFF IS LET GO, or the rest of the web
    would stay dimmed around something no longer drawn */
-const FB_PINK={node:'addresses',seat:'seats',law:'laws',gate:'gates',atom:'stories',sab:'saboteurs',
- cx:'complexes',hy:'hyper',sup:'character',arch:'archetypes',dom:'domains'};
+const FB_PINK={node:'addresses',seat:'seats',law:'laws',gate:'gates',atom:'stories',fet:'fetters',
+ sab:'saboteurs',cx:'complexes',hy:'hyper',sup:'character',arch:'archetypes',dom:'domains'};
 function fbUnpin(){var p=S.pin;if(!p)return;
  var k=FB_PINK[p.kind]||(p.sq!==undefined&&p.b?'addresses':null);
  if(k&&!layerOn(k))S.pin=null;}
@@ -72547,7 +72628,16 @@ function runFetterDrill(c){
   +'is this nerve pulled to that side. Level between them is the centre, where it is not pulled either way.</p>'
   +'<div class="pm-eye">It runs '+at.length+' addresses</div><div class="ad-rows">'
   +at.slice(0,10).map(addrRow).join('')
-  +(at.length>10?'<div class="pm-more">and '+(at.length-10)+' more</div>':'')+'</div>';
+  +(at.length>10?'<div class="pm-more">and '+(at.length-10)+' more</div>':'')+'</div>'
+  /* WHAT THIS FETTER ITSELF FEEDS, the identical gap runDrill's own tsBlockHtml
+     call already closed for a saboteur, complex, hyper or super complex (the
+     comment above runDrill, this file): "Made of" above is the downward
+     direction (the addresses it classifies); nothing said what a fetter
+     itself feeds UP into until this line. traceKey's real id for a fetter is
+     'fetter:'+its own CHILD name (engine/trace.js, TRACE_FETTER, the exact
+     spelling practice.js already writes), confirmed against the real graph
+     builder before this was wired, not guessed. */
+  +(typeof tsBlockHtml==='function'?tsBlockHtml('pattern','fetter:'+c.nm):'');
  rdShell(h);}
 
 /* a saboteur the reading is not currently carrying. it still has a definition. */
@@ -87548,5 +87638,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005787135"></div>
+<div id="eof" hidden data-len="005793300"></div>
 </body></html>
