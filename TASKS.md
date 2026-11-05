@@ -8843,6 +8843,11 @@ never applies at boot. The theme is not saved at all.
 **AV12. Seven writes report success without checking the save**, or ignore
 it outright: story commit, release commit, intake answer, both ritual writes,
 undo and redo, both clipboard exports.
+5 November, branch fix/honest-status-2026-11-05: the intake answer, undo and
+redo, and both clipboard exports now report what the save or the clipboard
+actually did, held by `tests/honeststatus.js`. Story commit, release commit
+and the two ritual writes were not in that group and were not re-checked
+there.
 
 **AV13. `tools/equiv.py` is weaker than the record here says.** It exits
 clean when a whole declaration is deleted, and cannot see any top level code
