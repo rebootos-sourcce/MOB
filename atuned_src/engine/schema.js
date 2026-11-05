@@ -1252,6 +1252,18 @@ function validateProfile(o){
       reads unresolved rather than being refused on the way in. */
    ['date','time','place','zone'].forEach(function(k){
     if(typeof o.who.born[k]==='string')p.who.born[k]=o.who.born[k].slice(0,200);});
+   /* DATE AND TIME HAVE A SHAPE, AND ONE THAT IS NOT IT IS REFUSED BY NAME.
+      These two were copied as any string, so a record link carrying markup
+      in the date ran it in the page, and a date of 2001-02-30 or 14/07/1988
+      was read as a sky for some other day or for none. The date and time
+      fields in Intake can only write these shapes or the empty string, so
+      this refuses nothing the app wrote. bornYMD and bornHM are in
+      engine/astro.js, the same checks birthJD reads by. */
+   var bd=o.who.born.date, bh=o.who.born.time;
+   if(typeof bd==='string'&&bd!==''&&!bornYMD(bd))
+    errs.push('who.born.date is not a real calendar day in year-month-day form');
+   if(typeof bh==='string'&&bh!==''&&!bornHM(bh))
+    errs.push('who.born.time is not a clock time between 00:00 and 23:59');
    p.who.born.timeUnknown=!!o.who.born.timeUnknown;}}
  /* ui preferences. booleans only, and an older profile without them is filled
     from the blank rather than refused. */
