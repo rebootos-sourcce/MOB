@@ -34,7 +34,7 @@ function lawAnswers(spec, offset, law, rng) {
 function runPerson(spec, idx, opt) {
  opt = opt || {};
  const rng = mulberry(seedOf(opt.seed || 20261105, idx));
- const costK = opt.costScale || 1;
+ const costK = opt.costScale !== undefined ? opt.costScale : 1;
  const rerunTake = opt.rerunTake !== undefined ? opt.rerunTake : RERUN_TAKE;
  clock.set(clock.START);
  const p = D.begin('You');

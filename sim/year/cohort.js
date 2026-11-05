@@ -15,7 +15,9 @@
      cost+      sensitivity of the judgement layer, the most important caveat.
      habit      drift scaled by the Lally fragility term from tools/ritualsim.js,
                 so a person with kept practice stops drifting away. The harness
-                has no habituation term and a year is long enough to need one. */
+                has no habituation term and a year is long enough to need one.
+     nofriction every friction cost set to zero. A control, not a product: it
+                shows what the drift rule alone does to a year. */
 'use strict';
 const { SHOWUP } = require('./model.js');
 const N = 10000;
@@ -29,5 +31,6 @@ function cohort(n) {
  return out;
 }
 const ARMS = { built: {}, paid: { paid: 'one' }, norerun: { rerunTake: 0 },
- 'cost-': { costScale: 0.75 }, 'cost+': { costScale: 1.25 }, habit: { habit: true } };
+ 'cost-': { costScale: 0.75 }, 'cost+': { costScale: 1.25 }, habit: { habit: true },
+ nofriction: { costScale: 0 }, 'nofriction+habit': { costScale: 0, habit: true } };
 module.exports = { cohort, N, ARMS };
