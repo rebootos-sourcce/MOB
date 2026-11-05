@@ -3715,8 +3715,15 @@ body.punch .card{border-color:transparent}
 .stk-t{background:var(--sunk);border:0;color:var(--mid);border-radius:var(--r-xs);
  padding:8px 11px;font-family:var(--sans);font-size:12px;cursor:pointer;
  min-height:var(--tap);display:inline-flex;align-items:center;gap:6px}
-.stk-t svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.6;
- stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;opacity:.75}
+/* THE FIVE GLYPHS CARRY MORE WEIGHT, 5 November, his words: "make icons for
+   child emotion saboteurs complexes hypercomplexes supercomplexes." The
+   glyphs already existed (STK_FETGLYPH, CHAINGLYPH, ui/ui.js) -- one ring
+   a fetter, two locked rings a saboteur, three a complex, a lattice a
+   hyper complex, a ring in a ring the super complex -- just drawn too
+   quiet to read as icons. Bigger and closer to full opacity, same tap
+   floor (min-height:var(--tap) on .stk-t is untouched). */
+.stk-t svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.5;
+ stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;opacity:.92}
 .stk-t.on svg{opacity:1;stroke:var(--accent)}
 .stk-t b{font-family:var(--num);font-weight:500;color:var(--dim);margin-left:2px}
 .stk-t.on{background:transparent;color:var(--accent);font-weight:500}
@@ -4920,6 +4927,11 @@ body.punch .ip.kid{background:color-mix(in srgb,var(--c) 68%,var(--panel-2))}
    ============================================================ */
 .ab-hero{display:flex;gap:20px;align-items:center;padding:18px 22px;border-radius:var(--r);
  background:var(--panel-2);border:1px solid var(--edge);margin-bottom:12px;flex-wrap:wrap}
+/* CQ, DQ, SQ, three rings and nothing else, 5 November: the paragraph that
+   used to fill the rest of this row is gone, so the row centres its three
+   rings instead of pinning them to the left edge of empty space. */
+.ab-hero3{justify-content:center;gap:36px}
+.ab-hero3 .cr.lg{flex:0 0 auto}
 .ab-cq{text-align:center;flex:0 0 auto}
 .ab-cq b{display:block;font-family:var(--num);font-size:46px;font-weight:400;line-height:1;
  color:var(--gold);font-variant-numeric:tabular-nums}

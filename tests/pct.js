@@ -191,7 +191,12 @@ const READ=`(function(){
    const dec=v=>/^\d+\.\d+$/.test(v);
    ok(!s.badges.some(dec),'S3: '+tag+'no badge on Analytics prints a decimal, '+J(s.badges.filter(dec).slice(0,6)));
    ok(!s.bubbles.some(dec),'S3: '+tag+'no bubble prints a decimal or its size floor, '+J(s.bubbles.filter(dec).slice(0,6)));
-   ok(s.accFig===s.accWant,'S3: '+tag+'identification prints the registry\'s form, '+J(s.accFig)+' against '+J(s.accWant));
+   /* THE .ab-acc IDENTIFICATION BLOCK LEFT THE HERO, 5 November, his words
+      on the screenshot, struck by hand along with the paragraph above it:
+      "get rid of the text underneath it." s.accFig is '' now because the
+      node is gone by design, not a regression -- check that explicitly
+      instead of comparing it to a percent that no longer prints there. */
+   ok(s.accFig==='','S3: '+tag+'identification no longer prints on the hero (moved off, 5 November), got '+J(s.accFig));
    ok(!/\bCQ (?:up|down) \d/.test(s.t)&&!/ per cent\b/.test(s.t),'S3: '+tag+'no change in CQ is a signed move and no figure says per cent');
    const cardDec=s.cards.map(c=>(c.match(/(?<![\d.×])\b\d+\.\d{1,2}\b(?!\s*(?:Hz|×))/g)||[])).reduce((a,b)=>a.concat(b),[]);
    ok(cardDec.length===0,'S3: '+tag+'the six reading cards print no decimal figure, '+J(cardDec.slice(0,6)));

@@ -1355,7 +1355,13 @@ const virgin=await blank.evaluate(()=>{
  o.profile=(document.getElementById('sheet-card').textContent||'').replace(/\s+/g,' ');
  sheetShut();
  setTab(TAB.ANALYTICS); anaRender();
- o.ana=(document.querySelector('.ab-hero .pm-eye')||{}).textContent||'';
+ /* THE HERO'S OWN TEXT MOVED INTO THE RINGS, 5 November: CQ/DQ/SQ now carry
+    their label in each ring's title attribute (ruled: "the letters are the
+    icon"), not a .pm-eye node the paragraph used to sit under -- that
+    paragraph is gone. Read the titles so this still checks real words
+    instead of silently passing on an empty string once .pm-eye stopped
+    existing here. */
+ o.ana=[...document.querySelectorAll('.ab-hero .cr')].map(e=>e.getAttribute('title')||'').join(' ');
  setTab(TAB.FIELD); render();
  /* the whole first screen, not only the surfaces I remembered to guard. The
     right rail was missed on the first pass and a screenshot caught it. This

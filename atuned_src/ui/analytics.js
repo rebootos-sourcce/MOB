@@ -91,8 +91,27 @@ function anaField(title,sub,items,w,h){
      +'class="ab-v" style="font-size:'+Math.max(11,p.r*0.24).toFixed(1)+'px">'+(UN?'\u2013':p.it.f)+'</text>';}}
   s+='</g>';});
  return s+'</svg>'+(sub?'<div class="ab-s">'+sub+'</div>':'')+'</div>';}
+/* THE LEFT RAIL COMES OFF ANALYTICS, 5 November, his words on the screenshot:
+   "get rid of the left-hand panel entirely." Same mechanism ui/practitioner.js
+   already uses for its own left-shut page (body.tab-prac .mid>#lcol), not a
+   new one: a scoped style tag keyed to this tab's own body class, tab-
+   analytics (engine/core.js TABDEF). Root Energetics and the other left-rail
+   sections stay exactly as they are on every page that still uses them; only
+   Analytics stops reserving the column. */
+function anaCss(){
+ if(document.getElementById('ana-css'))return;
+ var st=document.createElement('style'); st.id='ana-css';
+ st.textContent=[
+  'body.tab-analytics .mid>#lcol{display:none}',
+  '@media (min-width:1181px){body.tab-analytics .mid,body.lshut.tab-analytics .mid'
+   +'{grid-template-columns:minmax(0,1fr) 336px}'
+   +'body.rshut.tab-analytics .mid,body.lshut.rshut.tab-analytics .mid'
+   +'{grid-template-columns:minmax(0,1fr) 58px}}'
+ ].join('\n');
+ document.head.appendChild(st);}
 function anaRender(){
  var el=document.getElementById('ana'); if(!el)return;
+ anaCss();
  /* the reading this plan may see, ui/lock.js: the biggest thing compounding,
     the What is running chart and the masks chart are the tier's */
  var r=computeSeen(),H=anaHist(),prev=H.length>1?H[H.length-2]:null;
@@ -117,112 +136,28 @@ function anaRender(){
     anyway once, which is the exact failure the ruling about the opening
     screen exposed. The ring holds a dash and the arc holds nothing. Same
     rule as everywhere else: a percentage is never printed off a default. */
- out+='<div class="ab-hero">'
-  /* the ring opens coherence in the trail, round RB: the laws that make it,
-     weakest first */
-  +cr(r.darkB,r.unread?0:r.CQ,{size:'lg',label:'Coherence',act:!r.unread,data:r.unread?'':'data-ana="met|cq"',
-    /* HIGH COHERENCE IS THE GOOD END, so it never prints red. cr reddens
-       anything past ninety, which is right for a charge and backwards for
-       every reading whose high end is the one a person is working toward. */
-    raw:r.unread?'\u2013':null, hot:false,
-    color:r.unread?'var(--dim)':null})
-  /* ONE SLOT, ONE LABEL. This read "Coherence, corrupt, 0 to 100" and it was
-     doing three jobs: naming the slot, printing the tier and stating the
-     range. The label changed identity with the data, which is the thing a
-     person has to re-parse every time the reading moves, and "0 to 100" is the
-     phrasing the owner struck: if you cannot use regular words to describe it,
-     do not describe it. The regular words for a coherence number are the tier
-     word itself, so the tier moves to the front of the reading where a value
-     belongs and the label stays put. */
-  +'<div><div class="pm-eye">Coherence</div>'
-  +'<div class="ab-say">'
-  +(r.unread?'Nothing has been entered, so none of this is measured yet. Every figure '
-    +'below is drawn from the '+unp('blueprint')+' you have selected and not from a reading.'
-   /* THE TIER WORD, which used to live in the label. It is the reading in
-      plain words and it goes first, because it is the one thing on this
-      surface a person reads before anything else.
-
-      It is attached and not left standing. "Corrupt." alone, bold, with a full
-      stop after it, is a band word with nothing on it, which is a judgement
-      and not a reading. The subject is the field, which is the right distance:
-      a person at level 3 who is defended reads a verdict in a bare label and
-      a measurement in a sentence about their field. */
-   /* and while CQ is still filling there is no word yet, so the sentence says
-      what is left rather than naming a band off laws nobody answered */
-   /* ROUND RG. The band word stood alone, bold, with nothing on it, which
-      is V9's judgement and not a reading. The tier's own first sentence
-      rides after it, the same one Clients carries on its tooltip. */
-   :(r.tier?'Your energy reads <b>'+esc(r.tier.toLowerCase())+'</b>. '+unpSay(r.tier,'tier')+' '
-     :'Coherence is still filling, with <b>'+esc(tierSay(r))+'</b>. ')
-   +(loud?'<b>'+esc(loud.nm)+'</b> is the biggest thing running. '
-     /* "Nothing is compounding" is a claim about somebody's chain, and a plan
-        that cannot see the chain has no grounds to make it */
-     :(r.locked&&r.locked.length===SEE_ORDER.length?'':'Nothing is compounding. '))
-   /* a count against a total is a score, and this is not a score */
-   +(stop?'Flow stops at the <b>'+stop.p.n.toLowerCase()+'</b>. ':'Every seat is passing. ')
-   /* HELD, NOT CARRYING, round RB. The count is of addresses at 4 or more,
-      which this product calls held; carrying is anything above nothing
-      (engine/compute.js, CARRYING IS NOT THE SAME AS HELD), so the word was
-      wrong for the number beside it. And the shadow is a share of all 112,
-      not a weight those held addresses make between them, so the sentence
-      no longer says they make it. The Shadow tile below says what it is. */
-   +(held.length?'<b>'+held.length+'</b> address'+(held.length===1?' is':'es are')
-     +' held, and the shadow across all '+NODES.length+' reads <b>'+fmtPct('dq',r.DQ)+'</b>.'
-   /* Held above the line and carrying anything at all are two different facts
-      and this said the second when it only knew the first. A field with load
-      spread under the line reported "Nothing is carrying" beside a tier word
-      earned by that same load. It now says which of the two is true. */
-    /* the feeling and not the address's name, P0-3 of the inference audit:
-       words never name an address, and the address names are character
-       labels the node table chose. The place is left out with it, because
-       the place comes from the same table. */
-    :(r.heaviest?'Nothing is above '+unp('the line')+'. The heaviest address is carrying <b>'
-      +esc((typeof ritCfWord==='function')?ritCfWord(r.heaviest.cf):String(r.heaviest.cf||'').toLowerCase())
-      +'</b>.':'Nothing is carrying.'))
-   /* only against a row the same arithmetic wrote. A row from before 25
-      September holds It*Ig/Rz, and the gap to the laws over 210 is the
-      formula changing, not the person moving. */
-   /* a move that prints as 0.0 is no move, round RB: "CQ up 0.0" read as
-      a change and was a rounding. 16 October: and a move of 0.1 beside a
-      figure the page shows as a whole number is a decimal nobody can find on
-      the screen, which is the raw score the 14 October ruling took off every
-      daily surface. The change is said against the figure the person sees:
-      whole numbers, and "has not moved" until the shown figure has. */
-   /* AND IT IS SAID AS BEFORE AND AFTER, 17 October, percent phase 2: "CQ
-      up 3" was a move in a unit the person cannot see. pctMove reads both
-      ends off the registry, so "has not moved" is still the shown figure not
-      moving (engine/pct.js). */
-   +(prev&&prev.m===CQ_MODEL?(function(mv){return !mv?'':!mv.moved?' CQ has not moved since last session, at '+mv.to+'.'
-     :' CQ moved from '+mv.from+' to '+mv.to+' since last session.';}(pctMove('cq',prev.cq,r.CQ,{unread:r.unread}))):''))
-  +'</div>'
-  /* THE FIGURE STAYS ON THE TAB WHOSE JOB IS SAYING WHAT THE INSTRUMENT
-     KNOWS. The tolerance beside it does not. It printed "58% plus or minus
-     11" and then a line telling a person to compare their own movement
-     against that eleven, which is a lab readout and a conversion exercise.
-     Ruled: "100 plus minus 12, swing 11, that shit has to all go."
-
-     What the line owed was never the number, it was the warning. The
-     coverage facts underneath are what actually widen it, they are stated by
-     name, and they are the things a person can go and change. So the note
-     keeps the warning in plain words and drops the arithmetic.
-
-     AND THE EMPTY STATE IS SAID THE ONE WAY. This read "Nothing measured",
-     which is one of the five phrasings of one state the product was carrying,
-     and the copy seat's sweep names it. The wording is not read yet, as a
-     value, and "Nothing read yet, so what is absent" as a sentence. */
-  /* a press opens the identification drill that already exists
-     (ui/personas.js runAccDrill), round RB */
-  +'<div class="ab-acc"'+(r.unread?'':' data-ana="met|id" role="button" tabindex="0"')+'><span class="pm-eye">Identification</span>'
-  +'<b>'+fmtPct('accuracy',acc.pct,{unread:r.unread})+'</b>'
-  +'<span class="ab-note">'+(r.unread
-    ?'Nothing read yet. Write what happened and this fills in.'
-    /* the coverage as a fact and a remainder, not as a fraction of the person */
-    :acc.cov+' law'+(acc.cov===1?'':'s')+' measured'
-     +(acc.cov<21?', '+(21-acc.cov)+' still at the default':'')
-     /* held, round RB: accuracy() counts addresses at 4 or more */
-     +(acc.held?', '+acc.held+' address'+(acc.held===1?'':'es')+' held':'')
-     +'. The needle has play in it, so a small move is not a reading.')+'</span></div>'
-  +'</div></div>'+anaHot(r)+'<div class="ab-grid">';
+ /* THE HERO CARRIES CQ, DQ AND SQ, his words on the screenshot, 5 November:
+    "at the very top it went CQ DQ SQ. We're going to get rid of the text
+    underneath it." All three are compute()'s own figures (ANA_MET.cq/dq/
+    lawsq), the same registry anaTele already draws its tiles from below;
+    nothing here is a new number. Ruled earlier, component.js's own note on
+    cr(): "CQ, DQ, SQ is essentially an icon, make this a centre ring
+    element instead of a pill" -- the letters are the icon (o.text), so no
+    new glyph was drawn here. The explanatory paragraph and Identification
+    are gone, struck on the same screenshot; their real drills (met|cq,
+    met|dq, met|lawsq) stay reachable from the rings themselves. */
+ out+='<div class="ab-hero ab-hero3">'
+  +cr(ANA_MET.cq.seat,r.unread?0:pct('cq',r.CQ)||0,{size:'lg',text:'CQ',label:ANA_MET.cq.nm,
+    act:!r.unread,data:r.unread?'':'data-ana="met|cq"',raw:r.unread?'\u2013':fmtPct('cq',r.CQ),
+    hot:false,color:r.unread?'var(--dim)':null})
+  +cr(ANA_MET.dq.seat,r.unread?0:pct('dq',r.DQ)||0,{size:'lg',text:'DQ',label:ANA_MET.dq.nm,
+    act:!r.unread,data:r.unread?'':'data-ana="met|dq"',raw:r.unread?'\u2013':fmtPct('dq',r.DQ),
+    hot:false})
+  +cr(ANA_MET.lawsq.seat,(r.unread||r.lawSQ===null)?0:pct('lawsq',r.lawSQ)||0,{size:'lg',text:'SQ',
+    label:ANA_MET.lawsq.nm,act:!r.unread&&r.lawSQ!==null,
+    data:(!r.unread&&r.lawSQ!==null)?'data-ana="met|lawsq"':'',
+    raw:(r.unread||r.lawSQ===null)?'\u2013':fmtPct('lawsq',r.lawSQ), hot:false})
+  +'</div><div class="ab-grid">';
  /* HS SWEEP. Every chart here carried a caption under it saying how to read
     it: what the heading means and that a bigger mark is more. A bubble chart
     says bigger is more by being one, and the heading names the set. The one
@@ -265,6 +200,11 @@ function anaRender(){
   seats.map(function(s){return {k:'seat',nm:s.p.n,v:Math.max(0.3,s.hot),f:anaN(s.hot),
    c:seatCol(K2B[s.p.k])};}),300,210);
  out+='</div>';
+ /* RUNNING HOT MOVED BELOW THE BUBBLES, 5 November, his words: "move all
+    of our analytic bubbles up... needs to be a fixed size all the time."
+    The bubbles are the first thing after CQ/DQ/SQ now; this text list
+    still exists, just after them instead of before. */
+ out+=anaHot(r);
  /* TELEMETRY, round RB, his words: "I want the analytics page to give me
     telemetry and have that telemetry broken out in as many dimensions as we
     can to see what's running and where." What follows is the engine's own
@@ -896,10 +836,19 @@ function anaGo(k,nm,fromPage){
    page for a press made on the page (ui/drills.js, BRING THE DRILL INTO
    VIEW). A press made in the card is the other case it names: without this
    a row pressed near the foot of a long card left the new card's top a
-   screen above. RD_INRAIL is that file's own seam, held for one drill. */
+   screen above. RD_INRAIL is that file's own seam, held for one drill.
+
+   ANALYTICS' OWN BUBBLES NEVER REACHED SELECTION, 5 November: anaRedraw
+   called anaRender alone on this tab and anaDrill everywhere else, so a
+   bubble here only toggled its own highlight, with no card and no cascade
+   anywhere on the screen -- the drill rdrill.js already built for "every
+   element that carries data." Analytics is read into that same panel now,
+   same as Field's S.pin and Body's PMPICK (rdClose's own comment names
+   both), so a mask, a domain, an archetype or a What is running bubble
+   answers in Selection exactly as an address or a saboteur already does. */
 function anaRedraw(inRail){
  var was=RD_INRAIL; RD_INRAIL=!!inRail;
- try{if(S.tab===TAB.ANALYTICS)anaRender(); else anaDrill();}finally{RD_INRAIL=was;}}
+ try{if(S.tab===TAB.ANALYTICS)anaRender(); anaDrill();}finally{RD_INRAIL=was;}}
 addEventListener('click',function(e){
  var t=e.target&&e.target.closest?e.target.closest('[data-ana],[data-anacrumb]'):null;
  if(!t)return;
