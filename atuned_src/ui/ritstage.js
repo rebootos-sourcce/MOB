@@ -619,10 +619,20 @@ function ritStageCss(){
   '.rv-mean.rv-told{display:none}',
   '.rv-h.rv-hq{cursor:help;text-decoration:underline dotted color-mix(in srgb,var(--k) 70%,var(--edge-2));text-underline-offset:4px;text-decoration-thickness:1px;border-radius:4px}',
   '.rv-h.rv-hq:focus-visible,.rv-pc:focus-visible,.rv-avs:focus-visible,.rv-avhero:focus-visible,.rv-avc:focus-visible,.rv-cb:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
-  /* a ritual's badge on its row: the seat's mark, percent complete, the pill */
-  '.rv-pc{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;min-width:44px;min-height:44px;margin-right:6px;cursor:help;border-radius:12px}',
-  '.rv-tgi{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--t);font-style:normal}',
-  '.rv-tgi svg{width:11px;height:11px;fill:none;stroke:var(--t);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}',
+  /* a ritual's days kept on its row, SV24: the figure and its one word, set
+     the way the Avatar card sets "14 days kept" (.rv-avfig), in place of the
+     seat mark, the empty ring and the pill. The seat marks in the line
+     (.rv-tgi) went with it, said in words now. */
+  '.rv-pc{display:inline-flex;align-items:baseline;justify-content:flex-end;gap:5px;flex:0 0 auto;min-width:44px;min-height:44px;margin-right:8px;padding:0 4px;cursor:help;border-radius:12px;line-height:44px;white-space:nowrap}',
+  '.rv-pc b{font-size:15px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}',
+  '.rv-pc b small{font-size:13px;font-weight:400;color:var(--mid)}',
+  '.rv-pc span{font-size:13px;color:var(--mid)}',
+  /* under 640 of stage, a phone, the figure and the timer take their own line
+     under the name: measured at 390, beside the name they left it about 70
+     pixels and Heart Point Focus broke one word a line. The figure lines up
+     with the name, past the 56 pixel ring, and the timer ends the line. */
+  '@container (max-width:639px){.rv .rv-row{flex-wrap:wrap} .rv .rv-open{flex:1 1 calc(100% - 64px)}',
+  ' .rv .rv-row>.rv-pc{margin-left:60px;margin-right:auto}}',
   /* the builder\'s rituals wear their seat: a wash and an edge in its colour,
      not only the stripe at the left */
   '.rv-item{background:color-mix(in srgb,var(--c) 7%,var(--panel-2));border-color:color-mix(in srgb,var(--c) 30%,var(--edge))}',

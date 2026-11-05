@@ -523,7 +523,7 @@ async function flowGate(browser,FILE,ok,booted){
    const now=document.querySelector('#rit .rv-week .rv-wd1.rv-now');
    const due=now?[...now.querySelectorAll('button.rv-wch[data-nm]')].map(x=>x.getAttribute('data-nm'))
     .concat([...now.querySelectorAll('.rv-wmore')].flatMap(m=>m.getAttribute('data-more').split(';').map(x=>x.split('|')[0]))):[];
-   const act=[...document.querySelectorAll('#rit .rv-item .rv-sub')].map(x=>x.textContent).filter(t=>/Toward Buddha/.test(t)).length;
+   const act=[...document.querySelectorAll('#rit .rv-item .rv-sub')].map(x=>x.textContent).filter(t=>/toward Buddha/i.test(t)).length; /* SV24: mid line after the seat now, so lower case */
    return {label, plan:!!plan, said, name:plan?ritName(plan.steps):'', due, act};});
   ok(!cmp.noRow&&cmp.label==='Add to my ritual'&&cmp.plan&&/^Added/.test(cmp.said),
    'FT10: Add to my ritual on the Compass teacher panel still writes the plan and says Added, '+JSON.stringify(cmp));
@@ -730,9 +730,14 @@ async function flowGate(browser,FILE,ok,booted){
   /* Today is first sight for these rings since round RB, so they tween in
      from empty (crMotion) and are read once they have landed */
   const pc=await pg.evaluate(async()=>{ritRender(); await new Promise(r=>setTimeout(r,1500)); const rows=[...document.querySelectorAll('#rit .rv-act .rv-item')];
-   return rows.map(r=>({id:r.querySelector('.rv-log').getAttribute('data-id'), pill:(r.querySelector('.rv-pc .crb-v')||{}).textContent,
-    glyph:!!r.querySelector('.rv-pc .crb-g svg'), tip:(r.querySelector('.rv-pc')||{getAttribute:()=>''}).getAttribute('data-tip')||'',
-    word:[...r.querySelectorAll('.rv-sub .rv-tg')].length}));});
+   /* SV24: the badge is a figure and its word, "6 days kept", and the seat
+      is said in words at the start of the row's line, since he could not
+      tell what the mark, the empty ring and the pill were for */
+   return rows.map(r=>({id:r.querySelector('.rv-log').getAttribute('data-id'), pill:((r.querySelector('.rv-pc b')||{}).textContent||'').replace(/\s*days?$/,''),
+    said:(r.querySelector('.rv-pc')||{textContent:''}).textContent, glyph:!!r.querySelector('.rv-pc svg,.rv-sub .rv-tgi'),
+    tip:(r.querySelector('.rv-pc')||{getAttribute:()=>''}).getAttribute('data-tip')||'',
+    seat:/^(Root|Sacral|Solar|Heart|Throat|Third eye|Crown)( and [A-Za-z ]+)? seats?, /.test((r.querySelector('.rv-sub')||{textContent:''}).textContent),
+    timer:((r.querySelector('.rv-tmr span')||{}).textContent||'')}));});
   const by=Object.fromEntries(pc.map(x=>[x.id,x]));
   /* the percent each span ritual should read, worked out here from its plan
      and the entries, not by asking the page: days in its span on its days of
@@ -748,13 +753,8 @@ async function flowGate(browser,FILE,ok,booted){
    return out;});
   const spans=pc.filter(x=>want[x.id]!=null);
   ok(spans.length>0&&spans.every(x=>x.pill===want[x.id]&&/The days you have kept it/.test(x.tip)&&!/percent/i.test(x.tip))&&/The days you have kept it/.test(by.qb.tip)&&by.qa&&by.qa.pill===String(seed.qaKept)
-   &&by.qd&&by.qd.pill==='\u2013'&&pc.every(x=>x.glyph&&x.word===0),
-   'FT25: a span ritual reads its days kept, never a share and never kept of set, '+JSON.stringify(want)+', one with no end its days kept, none kept a dash, each with its seat mark and no seat word, '+JSON.stringify(pc));
-  /* the ring fills no share now: a badge's arc is the seat's mark and an empty
-     track, on every row, which is what the no end branch always drew */
-  const ring=await pg.evaluate(()=>[...document.querySelectorAll('#rit .rv-act .rv-pc .crb-a circle:nth-of-type(2)')]
-   .map(c=>{const C=2*Math.PI*+c.getAttribute('r'); return Math.abs((+c.getAttribute('stroke-dashoffset')||0)-C)<0.5||c.getAttribute('stroke-dasharray')===null;}));
-  ok(ring.length>0&&ring.every(Boolean),'FT25: no ritual badge fills its ring to a share, '+JSON.stringify(ring));
+   &&by.qd&&by.qd.pill==='\u2013'&&pc.every(x=>!x.glyph&&x.seat&&/kept$/.test(x.said)&&x.timer==='Timer'),
+   'FT25: a span ritual reads its days kept, never a share and never kept of set, '+JSON.stringify(want)+', one with no end its days kept, none kept a dash, each said as days kept with its seat in words and its timer named, and no mark left standing alone, '+JSON.stringify(pc));
 
   /* ---- FT26: the tell is on the press ---- */
   const tell=await pg.evaluate(()=>{const out=[];

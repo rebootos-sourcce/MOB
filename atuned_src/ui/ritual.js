@@ -968,7 +968,11 @@ function ritTimerHtml(p){
     time is up. Only then does it take the width a figure needs. */
  return '<button type="button" class="rv-tmr'+(run?' rv-run':'')+(rang?' rv-rang':'')+'" data-act="timer" data-id="'+p.id+'" aria-label="'+esc(lab)+'" title="'+esc(lab)+'">'
   +ritIc(run?'stop':'clock')
-  +'<span data-tmr="'+p.id+'">'+(run?ritClock((RIT.run.end-Date.now())/1000):(rang?'Time is up':''))+'</span></button>';}
+  /* AT REST IT SAYS TIMER, SV24: the clock alone was one of the marks he
+     could not read ("icons ... with numbers and pills, I don't know what
+     that's for"), and its only words were its accessible name. Counting it
+     still prints what is left, and at zero that the time is up. */
+  +'<span data-tmr="'+p.id+'">'+(run?ritClock((RIT.run.end-Date.now())/1000):(rang?'Time is up':'Timer'))+'</span></button>';}
 function ritTimer(id){
  var p=ritPlans().filter(function(x){return x.id===id;})[0]; if(!p)return;
  var was=RIT.run&&RIT.run.id; RIT.rang=null;
@@ -1094,19 +1098,38 @@ function ritPctHtml(p,today,size){
     CO-31 to any scale and held as a stop. The days set ride in the tooltip's
     figure line, where they already were. ritPct still does the counting;
     only the percent it returned is no longer printed. */
- if(P){
-  badge=crBadge(b,0,Object.assign(o,{raw:String(P.kept)}));
-  body='The days you have kept it. A kept day stays kept.';
+ /* THE BADGE IS A FIGURE WITH ITS WORD NOW, SV24. His words, on the live
+    page: "Next to the ritual, where there's a heart, there's a bunch of icons
+    on the right-hand side with numbers and pills, I don't know what that's
+    for." Read off this function before changing it: the heart was the seat's
+    mark (SEATGLYPH, the Heart seat; the bolt is Solar), the ring round it was
+    the percent complete ring SV17 stopped filling, so it drew an empty track
+    on every row, and the pill was the days kept, 6 and 2 on Ana. All three
+    were explained only by the tooltip, a hover he never made. The empty ring
+    was the one piece saying nothing, so it is gone, and the mark and the
+    pill went with it: the count is printed as the Avatar card prints its own,
+    "14 days kept", the unit on the figure and one word for what it counts
+    (V17), and the seat is said in words on the row's own line
+    (ritRowSeats). The tooltip stays on the figure for the days set. */
+ var k=P?P.kept:ritRunRead(p,today).kept;
+ if(P){body='The days you have kept it. A kept day stays kept.';
   n='Kept|'+acctDays(P.kept)+'|'+P.due+' set';}
- else{var k=ritRunRead(p,today).kept;
-  badge=crBadge(b,0,Object.assign(o,{raw:String(k)}));
-  body='No end, so nothing to complete. The number is the days you have kept it.';}
+ else body='No end, so nothing to complete. The number is the days you have kept it.';
+ /* none kept is the house dash, the value the pill printed for a zero */
+ badge='<b>'+(k?k+'<small>'+(k===1?' day':' days')+'</small>':'\u2013')+'</b><span>kept</span>';
  return '<span class="rv-pc" style="--c:'+col+'"'+rvTip(nm,body,n,where)+'>'+badge+'</span>';}
-/* a seat tag as its mark, for the tags past the first on a row. The first is
-   the badge; a second seat is a second mark and not a second word. */
-function ritTagMark(b){
- return '<em class="rv-tgi" style="--t:'+seatCol(b)+'" title="'+esc(ritTagNm(b))+' seat">'
-  +'<svg viewBox="0 0 24 24" aria-hidden="true">'+(SEATGLYPH[b]||SEATGLYPH._)+'</svg></em>';}
+/* THE SEATS A RITUAL SITS AT, IN WORDS, SV24. Round QS drew them as marks,
+   the first inside the badge and any more as small rings in the line, "a
+   second seat is a second mark and not a second word". Neither mark carried
+   its meaning anywhere a person could see it (a title, and the tooltip), and
+   UNPACK EVERY SYMBOL (round PO, CLAUDE.md) fails a mark that stands alone.
+   With the badge now a figure, the seat is said once, where the row already
+   says how long and how often: "Heart seat", or "Heart and Throat seats". */
+function ritRowSeats(p){
+ var b=ritSeat(p), all=(b?[b]:[]).concat(((p&&p.tags)||[]).filter(function(t){return t!==b&&BANDS.indexOf(t)>=0;}));
+ if(!all.length)return '';
+ var nm=all.map(ritTagNm);
+ return (nm.length===1?nm[0]+' seat':nm.slice(0,-1).join(', ')+' and '+nm[nm.length-1]+' seats')+', ';}
 function ritRingHtml(p,d,col){
  return '<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="14" class="rv-track" style="stroke-width:4"/>'
   +ritArcs(20,20,14,p.steps.map(function(){return {col:col, st:d?'done':'plan'};}),4)
@@ -1123,8 +1146,10 @@ function ritRowsHtml(list,today,act){
    +(d?'Done today. Press to take it off':'Mark '+esc(ritName(p.steps))+' done today')+'">'+ring+'</button>'
    +'<button type="button" class="rv-open" data-act="exp" data-id="'+p.id+'" aria-expanded="'+open+'">'
    +'<span class="rv-nm">'+esc(ritName(p.steps))+'</span>'
-   +'<span class="rv-sub">'+(p.rel!=null&&BY[p.rel]?'For '+esc(String(BY[p.rel].k).toLowerCase())+', ':'')
-   +(p.tc&&becomingOf(p.tc)?'Toward '+esc(becomingOf(p.tc).who)+', ':'')
+   /* the line is one sentence, so whichever part opens it takes the capital:
+      the seats, or For or Toward on a ritual with no seat */
+   +'<span class="rv-sub">'+esc(ritCap(ritRowSeats(p)+(p.rel!=null&&BY[p.rel]?'for '+String(BY[p.rel].k).toLowerCase()+', ':'')
+   +(p.tc&&becomingOf(p.tc)?'toward '+becomingOf(p.tc).who+', ':'')))
    /* the minutes are the timer's, so a timer set longer than the steps reads
       here as what it is set to. How often is said only when it is not every
       day, because every day is what a ritual is unless it says otherwise,
@@ -1137,9 +1162,9 @@ function ritRowsHtml(list,today,act){
       left". Each is the third line on a row whose job is the name and the
       press. The when and where are the row's opened sentence below (rv-if),
       and the days left are in the sash's sheet beside the days kept. */
-   /* ROUND QS: the seat is the badge beside the row now, its mark and its
-      percent complete; a second seat tag is a second mark, never a word */
-   +p.tags.filter(function(b){return b!==ritSeat(p);}).map(ritTagMark).join('')
+   /* ROUND QS put the seat in the badge as a mark and any second seat tag as
+      a second mark, never a word. SV24 says them in words at the start of
+      this line instead (ritRowSeats), because neither mark said what it was. */
    +'</span></button>'+ritPctHtml(p,today)+ritTimerHtml(p)+'</div>';
   if(open){
    out+='<div class="rv-more">'
