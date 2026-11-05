@@ -934,6 +934,32 @@ function rbPair(k,o){
    +(drift?'<i class="rb2-hold rb2-gh" style="transform:translateX('+x.toFixed(2)+'%)"><i></i></i>':'')
    +'<i class="rb2-hold rb2-nd" style="transform:translateX('+x.toFixed(2)+'%)"><i></i></i></i>':'')+'</span>'
   +key(L,'l')+key(R,'r')+'</span>';}
+/* ONE CHILD EMOTION AS ITS TWO POLES, the held pattern and its coherent
+   opposite, for any surface. SV17, 5 November: he has asked for this bar by
+   name three times, round RF on 3 October ("two opposing forces... the
+   termination line between the two is data-driven"), the Insight cascade on
+   4 November, and the Ritual popup now. The Insight cascade drew it first, as
+   stkFetBar in ui/ui.js on PR 182, and these are that function's lines
+   lifted out unchanged, so a ritual's bar and the cascade's are one drawing
+   and not two. stkFetBar keeps its button and its words and should call this
+   for the bar once both are merged; until then the two bodies are the same
+   six lines, which is the one copy this file is allowed to carry for a day.
+
+   THE LEAN IS THE DIFFERENCE, NOT THE SHARE. Held and installed are two
+   amounts on the same nought to ten, so the mark sits at the centre less five
+   points per unit of held over installed, and the figure over the line is the
+   leaning pole's own amount through the registry. A share would pin Fear held
+   at 0.5 and Fear held at 9 to the same end, both "100%". rbPair takes the
+   figure as fig. k is the pair's key, unique on the page. */
+function fetBar(ci,k){
+ var c=CHILD[ci], v=S.charge[c.nm]||0, p=S.replace[c.nm]||0, read=v>0||p>0;
+ var lean=clamp(50+(v-p)*5,0,100), fv=fmtPct('charge',v), fp=fmtPct('installed',p);
+ var side=!read?0:Math.round(lean)>50?-1:Math.round(lean)<50?1:0;
+ var ic='<path d="'+c.ic+'"/>';
+ var spec={read:read, whole:true, fig:!read?'–':side>0?fp:fv,
+  L:{nm:c.nm,ic:ic,c:seatCol(c.seat),v:lean},
+  R:{nm:c.opp,ic:ic,c:'var(--accent)',v:100-lean}};
+ return rbPair(k,spec);}
 /* WHAT A HOST CARRIES for a pair that is one reading: its own sentence, then
    each pole's word and sentence, then the lean in words, never as a score.
    The same string is the tooltip's body and, with the figures said first, the

@@ -284,7 +284,11 @@ function ritAffHtml(st,M){
    +(on?'Said today. Press to take it off':'Mark said today: '+esc(a.line))+'">'+ritTickHtml(on,col)+'</button>'
    +'<span class="rv-aft"><span class="rv-afq">'+(a.own?'"'+esc(a.line)+'"':esc(a.line))+'</span></span></li>';}).join('')+'</ul>';
  return '<div class="rv-gblk rv-aff"><div class="rv-gh"><span class="rv-gt">Affirmations</span>'
-  +'<span class="rv-gs">Say each one out loud, once today, and press its ring.</span></div>'+body+'</div>';}
+  /* "Say each one out loud, once today, and press its ring." stood under this
+     heading and is cut, SV17. His word for a line that tells a person how to
+     use a ring was insult, so it is not moved into a tooltip either: the ring
+     carries a press and an accessible name, and that is the instruction. */
+  +'</div>'+body+'</div>';}
 function ritChalHtml(st,M){
  var C=ritChallenge(st), today=st.today, body;
  if(!C.length)body='<p class="rv-empty">'+(st.r.unread
@@ -297,11 +301,13 @@ function ritChalHtml(st,M){
    +(on?'Done today. Press to take it off':'Mark done today: '+esc(c.nm))+'">'+ritTickHtml(on,col)+'</button>'
    +'<span class="rv-aft"><span class="rv-chn">'+esc(c.nm)+'<small>, '+esc(c.who)+'</small></span>'
    +'<span class="rv-afq">'+esc(c.act)+'</span><span class="rv-afs">'+esc(c.when)+'</span></span></li>';}).join('')+'</ul>';
- /* fewer than three is said, never padded with a challenge nothing points to */
- if(C.length&&C.length<3)body+='<p class="rv-afs rv-few">'+(C.length===1?'One pattern':'Two patterns')
-  +' in your reading have a challenge, so '+(C.length===1?'one is':'two are')+' shown. More come as your stories show more.</p>';
- return '<div class="rv-gblk rv-chal"><div class="rv-gh"><span class="rv-gt">Challenges</span>'
-  +'<span class="rv-gs">One small act against each pattern running heaviest in you. Press its ring once you have done it today.</span></div>'+body+'</div>';}
+ /* FEWER THAN THREE IS STILL NEVER PADDED with a challenge nothing points
+    to, and it is no longer said. A line counted the rows aloud ("One pattern
+    in your reading has a challenge, so one is shown. More come as your
+    stories show more.") over a list a person can count, and the heading's own
+    line said how to press a ring. Both are cut, SV17, on the same ruling as
+    the affirmations above. */
+ return '<div class="rv-gblk rv-chal"><div class="rv-gh"><span class="rv-gt">Challenges</span></div>'+body+'</div>';}
 
 /* ---------------- the week ----------------
    THE CENTRE IS A WEEK, SV16, 5 November. His words, over an annotated
@@ -363,11 +369,17 @@ function ritWeekCalHtml(st){
   /* a person who has cycled away gets one press back to now. It is drawn only
      while away, so on this week it is not a control that does nothing. */
   +(RIT.wk?'<button type="button" class="btn rv-wk0" data-act="wk" data-d="0">This week</button>':'')+'</div>';
- var days='<ol class="rv-wkg" aria-label="'+esc(range)+'">'+[0,1,2,3,4,5,6].map(function(i){
+ /* THE WEEK HOLDS TODAY or it does not, and only a week that holds it sets
+    the other six back: on a week cycled away no day is the one to look at */
+ var hasNow=today>=mon&&today<=mon+6;
+ var days='<ol class="rv-wkg'+(hasNow?' rv-wkg-now':'')+'" aria-label="'+esc(range)+'">'+[0,1,2,3,4,5,6].map(function(i){
   var d=mon+i, dt=ritDateOf(d), segs=ritWeekDay(d,st);
-  var list=segs.length?'<ul class="rv-wdl">'+segs.map(function(s){
-    return '<li class="rv-wch rv-wch-'+s.st+'" style="--c:'+s.col+'"><span class="rv-wcn">'+esc(s.nm)+'</span>'
-     +'<span class="rv-wcs">, '+RIT_DAY_SAY[s.st]+'</span></li>';}).join('')+'</ul>'
+  /* MORE THAN THREE IS TWO AND A +N, never four squeezed into three slots:
+     a day can carry rituals, and each is its own sash, so a heavy day would
+     otherwise grow its cell and the grid would stop being a grid */
+  var show=segs.length>RIT_SASH_MAX?segs.slice(0,RIT_SASH_MAX-1):segs, rest=segs.slice(show.length);
+  var list=segs.length?'<ul class="rv-wdl">'+show.map(function(s,k){return '<li>'+ritSashHtml(s,d,k)+'</li>';}).join('')
+    +(rest.length?'<li>'+ritSashMoreHtml(rest,d)+'</li>':'')+'</ul>'
    /* a day with nothing on it is the house dash, COPY.md Value, and never a
       sentence: seven Nothing on this day lines would be the week's loudest
       text on the emptiest week */
@@ -376,10 +388,153 @@ function ritWeekCalHtml(st){
    +'<span class="rv-wdh"'+(d===today?' aria-current="date"':'')+'><span>'+RIT_WDN[i]+'</span><b>'+dt.getDate()+'</b></span>'+list+'</li>';}).join('')+'</ol>';
  return '<section class="rv-sec rv-week"><div class="rv-hd"><span class="rv-h">Week</span>'+nav+'</div>'+days
   /* Planned, the word the Record and the thirty days beside it use for the
-     same state, and Due today's Planned for today: the grid this replaced said
-     Set, a second word for one thing on one page */
+     same state: the grid this replaced said Set, a second word for one thing
+     on one page */
   +'<div class="rv-key" aria-hidden="true"><span><i class="rv-k-cube"></i>Done</span><span><i class="rv-k-cplan"></i>Planned</span>'
   +'<span><i class="rv-k-cmiss"></i>Missed</span></div></section>';}
+
+/* ---------------- a sash ----------------
+   THE DAY'S RITUALS ARE SASHES, SV17, 5 November. He looked at the week this
+   file drew for SV16 and said it does not look like a calendar, that there is
+   too much text, and that nothing leads the eye. The cause was the chip: a
+   ritual's full name at 12 pixels, wrapping to five lines in a column ninety
+   pixels wide, so every day was a different height and the grid was a wall
+   of words. Its padding was 5 by 6, so as a press it also sat under the 44
+   pixel floor (atuned-ux, measured floors), which is the other half of why
+   it read as text and not as a control.
+
+   So a ritual on a day is one 44 pixel button, filled in its seat colour
+   (ritCol, the colour every other drawing of the ritual already wears), with
+   the seat's own mark from SEATGLYPH inside it and no word on it. Its name and
+   its state are the accessible name and the tooltip, RIT_DAY_SAY's word for
+   the state, so the unpack rule is met in the same place without a sentence
+   on the screen. A ritual with no seat draws no mark: a generic one would be
+   a second name for nothing. The three states are the three the chip had,
+   kept by class: done filled, planned outlined on a faint tint, missed
+   dashed. The press opens the ritual in the sheet, ritSashSheet below.
+
+   THE CELL IS FIXED. Three sashes and two gaps is the height of every day,
+   empty or full, which is what makes seven cells read as a week. */
+var RIT_SASH_MAX=3;
+/* the state word where the day is already named, a sheet's heading or its
+   line: today's is Planned and not Planned for today said under Today */
+function ritSashWord(s){return s.st==='plan'?'Planned':RIT_DAY_SAY[s.st];}
+function ritSashSeat(s){return ritSeat(s.p||s.x);}
+function ritSashGlyph(b){
+ return b&&SEATGLYPH[b]?'<svg viewBox="0 0 24 24" aria-hidden="true">'+SEATGLYPH[b]+'</svg>':'';}
+function ritSashHtml(s,d,k){
+ var say=s.nm+', '+RIT_DAY_SAY[s.st];
+ return '<button type="button" class="rv-wch rv-wch-'+s.st+'" data-act="wsash" data-d="'+d+'" data-i="'+k+'" data-nm="'+esc(s.nm)+'"'
+  +' style="--c:'+s.col+'" aria-label="'+esc(say)+'" data-tip-t="'+esc(s.nm)+'" data-tip="'+esc(RIT_DAY_SAY[s.st])+'">'
+  +ritSashGlyph(ritSashSeat(s))+'</button>';}
+/* the rest of a heavy day, one sash that names how many and opens the day's
+   list. It carries what it holds for a screen reader, and for the gate, which
+   reads a day's rituals off the sashes and has to see these too. */
+function ritSashMoreHtml(rest,d){
+ var say=rest.map(function(s){return s.nm+', '+RIT_DAY_SAY[s.st];});
+ return '<button type="button" class="rv-wch rv-wmore" data-act="wday" data-d="'+d+'"'
+  +' data-more="'+esc(rest.map(function(s){return s.nm+'|'+s.st;}).join(';'))+'"'
+  +' aria-label="'+esc(rest.length+' more: '+say.join('; '))+'" data-tip-t="'+rest.length+' more" data-tip="'+esc(say.join('. ')+'.')+'">'
+  +'+'+rest.length+'</button>';}
+
+/* ---------------- the sheet a sash opens ----------------
+   What Due today carried and the tile's line carried, in one place one press
+   away, through the product's one sheet (sheetOpen, ui/panels.js) and not a
+   second modal. Top to bottom: the ritual's mark and name, with the day and
+   its state; the two pole bar, only for a ritual aimed at a real pattern;
+   the days kept, as a count, and the days left; each step, what it is and how it is done; then
+   Done, Edit and Delete.
+
+   THE BAR IS DRAWN ONLY WHEN THERE IS A REAL OPPOSITE. A release schedule
+   carries rel, an address in BY, and that address's cf names the CHILD
+   pattern it releases: Anger against Equanimity, read off the person's own
+   field by fetBar (ui/component.js), the bar the Insight cascade draws. A
+   ritual started from the builder has a seat and no pattern, so it has no
+   second pole, and a bar invented for it would be a reading nobody took.
+   There is no weekly average bar either, for the same reason: nothing in the
+   engine computes a week's pattern.
+
+   THE PLAN BEHIND A SASH. A sash drawn from the record carries the entry and
+   not the plan, so the plan is found by its steps, the key the record and
+   the plans already share (ritKey). An entry whose plan was deleted has no
+   plan, and its sheet offers Delete on the entry and nothing that needs one. */
+function ritSashPlan(s,d,st){
+ if(s.p)return s.p;
+ var k=ritKey(s.x&&s.x.steps), all=st.plans.filter(function(p){return ritKey(p.steps)===k;});
+ return all.filter(function(p){return ritCovers(p,d);})[0]||all[0]||null;}
+function ritFetIndex(p){
+ var n=(p&&p.rel!=null&&BY[p.rel])?BY[p.rel]:null; if(!n||!n.cf)return -1;
+ return CHILD.map(function(c){return c.nm;}).indexOf(n.cf);}
+function ritSashSheet(s,d,st){
+ var today=st.today, p=ritSashPlan(s,d,st), b=ritSashSeat(s), col=s.col;
+ var steps=ritSteps({steps:p?p.steps:(s.x&&s.x.steps)});
+ var out='<div class="rv-sh" style="--c:'+col+'">'
+  +'<div class="rv-shh"><span class="rv-shg">'+ritSashGlyph(b)+'</span>'
+  +'<span class="rv-sht"><span class="sh-h plain">'+esc(s.nm)+'</span>'
+  +'<span class="rv-shs">'+esc(ritDayName(d,today)+', '+ritSashWord(s).toLowerCase())+'</span></span></div>';
+ var ci=ritFetIndex(p);
+ if(ci>=0)out+='<div class="rv-shb">'+fetBar(ci,'rvsh-'+ci)+'</div>';
+ if(p){var P=ritPct(p,today);
+  /* the days kept and, for a ritual with an end, the days left, the one
+     count against a span the house allows because it says how much is left
+     (CO-05's ruling). Kept of set would be a mark out of seven. */
+  var kept=P?P.kept:ritRunRead(p,today).kept;
+  out+='<p class="rv-shk">Kept '+acctDays(kept)+(p.days&&ritActive(p,today)?'<span>'+esc(ritLeft(p,today))+'</span>':'')+'</p>';}
+ out+=steps.map(function(x){
+  return '<div class="rv-step"><b>'+esc(x.nm)+' <small>'+x.min+' min</small></b>'
+   +(x.d?'<p class="rv-shd">'+esc(x.d)+'</p>':'')+'<p>'+esc(x.how)+'</p></div>';}).join('');
+ /* Done is ritLog's press, which takes today and yesterday and nothing
+    older, so the ring is offered on those two days and not on a day it would
+    refuse. Edit is for a ritual still running, which is what the builder
+    edits. */
+ var acts='';
+ if(p&&(d===today||d===today-1)&&ritCovers(p,d)){
+  var e=ritEntryFor(p,d), on=!!(e&&ritIsDone(e.x));
+  acts+='<button type="button" class="btn rv-shdone'+(on?' rv-on':'')+'" data-sh="log" data-id="'+p.id+'" data-d="'+d+'" aria-pressed="'+on+'" aria-label="'
+   +esc(on?'Done '+ritDayName(d,today).toLowerCase()+'. Press to take it off':'Mark '+s.nm+' done '+ritDayName(d,today).toLowerCase())+'">'
+   +ritRingHtml(p,on,col)+'Done</button>';}
+ if(p&&ritActive(p,today))acts+='<button type="button" class="btn" data-sh="edit" data-id="'+p.id+'">'+ritIc('edit')+'Edit</button>';
+ if(p)acts+='<button type="button" class="btn" data-sh="del-plan" data-id="'+p.id+'">Delete</button>';
+ else if(s.x)acts+='<button type="button" class="btn" data-sh="del-entry" data-i="'+s.i+'">Delete</button>';
+ acts+='<button type="button" class="btn rv-shx" data-sh="close">Close</button>';
+ return out+'<div class="sh-act rv-sha">'+acts+'</div></div>';}
+/* a heavy day's list: every ritual on it, each a row that opens its own sheet */
+function ritDaySheet(d,st){
+ var segs=ritWeekDay(d,st);
+ return '<div class="rv-sh"><div class="rv-shh"><span class="rv-sht"><span class="sh-h plain">'+esc(ritDayName(d,st.today))+'</span></span></div>'
+  +'<ul class="rv-shl">'+segs.map(function(s,k){
+   return '<li><button type="button" class="rv-shr" data-sh="sash" data-d="'+d+'" data-i="'+k+'" style="--c:'+s.col+'">'
+    +'<span class="rv-wch rv-wch-'+s.st+'" aria-hidden="true">'+ritSashGlyph(ritSashSeat(s))+'</span>'
+    +'<span class="rv-shrn">'+esc(s.nm)+'</span><span class="rv-shs">'+esc(ritSashWord(s))+'</span></button></li>';}).join('')+'</ul>'
+  +'<div class="sh-act rv-sha"><button type="button" class="btn rv-shx" data-sh="close">Close</button></div></div>';}
+function ritSashOpen(d,i){
+ var st=ritRead(), s=ritWeekDay(d,st)[i]; if(!s||typeof sheetOpen!=='function')return false;
+ ritCalCss(); sheetOpen(ritSashSheet(s,d,st)); ritSheetWire(); return true;}
+function ritDayOpen(d){
+ if(typeof sheetOpen!=='function')return false;
+ ritCalCss(); sheetOpen(ritDaySheet(d,ritRead())); ritSheetWire(); return true;}
+/* a press in the sheet does its one thing through the page's own writers and
+   then redraws the sheet from a fresh read, so the ring a person pressed
+   shows what the record now holds. A sash is found again by its name: a
+   planned day that is marked done becomes a record entry and moves to the
+   front of the day, so its place in the list is not its identity. */
+function ritSheetWire(){
+ var c=document.getElementById('sheet-card'); if(!c)return;
+ c.onclick=function(ev){
+  var b=ev.target.closest&&ev.target.closest('[data-sh]'); if(!b||!c.contains(b)||b.disabled)return;
+  var a=b.getAttribute('data-sh'), id=b.getAttribute('data-id'), d=+b.getAttribute('data-d');
+  switch(a){
+   case 'log': {var nm=(c.querySelector('.rv-sht .sh-h')||{}).textContent||'';
+    ritLog(id,d);
+    var st=ritRead(), segs=ritWeekDay(d,st), k=-1;
+    segs.forEach(function(s,j){if(k<0&&s.nm===nm)k=j;});
+    if(k>=0){c.innerHTML=ritSashSheet(segs[k],d,st); var f=c.querySelector('[data-sh="log"]'); if(f)f.focus();}
+    return;}
+   case 'edit': sheetShut(); ritEditOpen(id); return;
+   case 'del-plan': sheetShut(); RIT.goneAt='record'; ritDelPlan(id); return;
+   case 'del-entry': sheetShut(); RIT.goneAt='record'; ritDelEntry(+b.getAttribute('data-i')); return;
+   case 'sash': ritSashOpen(d,+b.getAttribute('data-i')); return;
+   case 'close': sheetShut(); return;}};}
 
 /* ---------------- today ----------------
    WHAT THE GOALS CARD'S TODAY HELD, UNCHANGED, as a card of its own under the
@@ -503,7 +658,6 @@ function ritCalCss(){
   '.rv-gblk:first-of-type{margin-top:4px}',
   '.rv-gh{display:flex;flex-direction:column;gap:2px;margin:0 0 8px}',
   '.rv-gt{font-size:14.5px;font-weight:600;color:var(--ink)}',
-  '.rv-gs{font-size:13px;line-height:1.5;color:var(--mid);max-width:62ch}',
   '.rv-afl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}',
   '.rv-af1{display:flex;align-items:center;gap:6px;border-radius:12px;background:color-mix(in srgb,var(--c) 6%,var(--panel-2));',
   ' border:1px solid color-mix(in srgb,var(--c) 26%,var(--edge));box-shadow:inset 3px 0 0 var(--c)}',
@@ -526,7 +680,9 @@ function ritCalCss(){
   '.rv-wkr{min-width:9.5em;text-align:center;font-size:14px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}',
   '.rv-wk0{min-height:44px;margin-left:4px}',
   '.rv-wkg{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}',
-  '.rv-wd1{display:flex;flex-direction:column;gap:6px;min-width:0;min-height:120px;padding:6px 5px 8px;border-radius:10px;',
+  /* THE CELL IS FIXED, SV17: the date, then a body three sashes tall whether
+     the day carries none, one or three, so seven cells are one grid */
+  '.rv-wd1{display:grid;grid-template-rows:auto calc(3 * 44px + 2 * 6px);gap:6px;min-width:0;padding:6px 5px 8px;border-radius:10px;',
   ' background:color-mix(in srgb,var(--edge-2) 10%,transparent)}',
   '.rv-wd1.rv-past{background:none;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--edge-2) 30%,transparent)}',
   /* today is ringed the way a wall calendar rings a day, round RB's rule for
@@ -536,26 +692,79 @@ function ritCalCss(){
   '.rv-wdh b{font-size:14px;font-weight:600;color:var(--mid);font-variant-numeric:tabular-nums}',
   '.rv-wd1.rv-now .rv-wdh{color:var(--ink);font-weight:600}',
   '.rv-wd1.rv-now .rv-wdh b{color:var(--on-accent);background:var(--accent);border-radius:999px;min-width:26px;height:26px;padding:0 5px;display:inline-grid;place-items:center}',
-  '.rv-wdl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:5px}',
-  /* a ritual on a day. Done is filled in its seat colour, set is outlined in
-     it, missed is the dashed outline the Record and the thirty days already
-     use for a miss, so the three read the same on every calendar here. A name
-     wraps rather than being cut: a chip whose ritual cannot be read is a
-     coloured bar. */
-  '.rv-wch{padding:5px 6px;border-radius:7px;font-size:12px;line-height:1.3;font-weight:600;color:var(--ink);overflow-wrap:anywhere;',
-  ' background:color-mix(in srgb,var(--c) 12%,transparent);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c) 70%,transparent)}',
+  '.rv-wdl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;min-width:0}',
+  '.rv-wdl>li{display:block;min-width:0}',
+  /* the stagger, 6 pixels a sash, so three on a day read as a stack laid
+     down and not as three rows of a table. Desktop only: under 640 a day is
+     a row and the sashes sit side by side, where a step would mean nothing. */
+  '.rv-wdl>li:nth-child(2){--o:6px} .rv-wdl>li:nth-child(3){--o:12px}',
+  /* A SASH. 44 by 44 at the least, the tap floor; done is filled in its seat
+     colour, planned is the faint tint outlined in it, missed is the dashed
+     edge the Record and the thirty days use for a miss, so the three read the
+     same on every calendar here. The dash is a border and not an outline, so
+     the keyboard ring has the outline to itself. */
+  '.rv-wch{box-sizing:border-box;display:grid;place-items:center;width:calc(100% - var(--o,0px));min-width:44px;height:44px;min-height:44px;',
+  ' margin:0 0 0 var(--o,0px);padding:0;border:0;border-radius:9px;font:inherit;cursor:pointer;color:var(--c);',
+  ' background:color-mix(in srgb,var(--c) 12%,transparent);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c) 70%,transparent);',
+  ' transition:opacity var(--t-micro) var(--ease-out),transform var(--t-micro) var(--ease-out)}',
+  '.rv-wch svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}',
   '.rv-wch-done{background:var(--c);color:rgba(0,0,0,.78);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.28),inset 0 -3px 0 rgba(0,0,0,.28)}',
-  '.rv-wch-miss{background:none;box-shadow:none;outline:1.5px dashed var(--dim);outline-offset:-1.5px;color:var(--mid);font-weight:500}',
-  /* the state is said to a screen reader in words and to the eye by the fill,
-     so the word is in the document and off the screen */
-  '.rv-wcs{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}',
-  '.rv-wd0{align-self:center;margin-top:6px;color:var(--dim);font-size:14px}',
+  '.rv-wch-miss{background:none;box-shadow:none;border:1.5px dashed var(--dim);color:var(--dim)}',
+  '.rv-wmore{background:color-mix(in srgb,var(--edge-2) 18%,transparent);box-shadow:inset 0 0 0 1.5px var(--edge-2);color:var(--ink);font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}',
+  'button.rv-wch:hover{transform:translateY(-1px)}',
+  'button.rv-wch:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
+  /* THE EYE LANDS ON TODAY, SV17. On the week that holds today every other
+     day's sashes sit back, so the one column at full strength is the one a
+     person came to press; a hover or a focus brings any of them forward. On a
+     week cycled away nothing is today and nothing sits back. */
+  '.rv-wkg-now .rv-wd1:not(.rv-now) .rv-wch{opacity:.5}',
+  '.rv-wkg-now .rv-wd1:not(.rv-now) .rv-wch:hover,.rv-wkg-now .rv-wd1:not(.rv-now) .rv-wch:focus-visible{opacity:1}',
+  '.rv-wd0{align-self:center;justify-self:center;color:var(--dim);font-size:14px}',
   '@container (max-width:639px){.rv .rv-wkg{grid-template-columns:minmax(0,1fr);gap:5px}',
-  ' .rv .rv-wd1{flex-direction:row;align-items:flex-start;gap:10px;min-height:0;padding:8px 10px}',
-  ' .rv .rv-wdh{flex:0 0 40px;flex-direction:column}',
-  ' .rv .rv-wdl{flex:1 1 auto;flex-direction:row;flex-wrap:wrap}',
-  ' .rv .rv-wch{font-size:13px;padding:6px 9px}',
-  ' .rv .rv-wd0{align-self:center;margin:0}}',
+  /* a row is one sash tall and padded, and today's date chip is drawn a
+     size smaller here: at 26 it made today's row three pixels taller than
+     the other six, measured, which is the uneven grid this round removes */
+  ' .rv .rv-wd1{box-sizing:border-box;height:56px;grid-template-rows:none;grid-template-columns:40px minmax(0,1fr);align-items:center;gap:10px;padding:6px 10px}',
+  ' .rv .rv-wd1.rv-now .rv-wdh b{min-width:22px;height:22px}',
+  ' .rv .rv-wdh{flex-direction:column}',
+  ' .rv .rv-wdl{flex-direction:row;height:44px}',
+  ' .rv .rv-wdl>li{flex:1 1 0;max-width:120px;--o:0px}',
+  ' .rv .rv-wd0{justify-self:start;margin:0}}',
+  /* the sheet a sash opens, inside the product's one sheet */
+  '.rv-sh{display:flex;flex-direction:column;gap:12px;text-align:left}',
+  '.rv-shh{display:flex;align-items:center;gap:12px}',
+  '.rv-shg{flex:0 0 44px;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:var(--c);',
+  ' background:color-mix(in srgb,var(--c) 16%,transparent);box-shadow:inset 0 0 0 1.5px var(--c)}',
+  '.rv-shg svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}',
+  '.rv-shg:empty{display:none}',
+  '.rv-sht{display:flex;flex-direction:column;gap:2px;min-width:0}',
+  '.rv-sht .sh-h{margin:0}',
+  '.rv-shs{font-size:13px;color:var(--mid)}',
+  /* the bar's own layout lives under .fdock in shell/head.html and does not
+     reach a sheet, so the same frame and its tap floor are given here */
+  '.rv-shb .rb2{position:relative;display:block;width:100%;min-width:0;min-height:var(--tap);padding:6px 2px 8px;white-space:nowrap;text-align:left}',
+  '.rv-shk{display:flex;flex-wrap:wrap;gap:4px 12px;margin:0;font-size:14.5px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}',
+  '.rv-shk span{font-weight:400;color:var(--mid)}',
+  '.rv-sh .rv-step{margin:0}',
+  '.rv-sh .rv-step b{display:block;font-size:14.5px;color:var(--ink)}',
+  '.rv-sh .rv-step b small{font-weight:400;color:var(--mid)}',
+  '.rv-sh .rv-step p{margin:4px 0 0;font-size:14px;line-height:1.5;color:var(--mid)}',
+  '.rv-sh .rv-step p.rv-shd{color:var(--ink)}',
+  '.rv-sha{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 0}',
+  '.rv-sha .btn{min-height:44px;display:inline-flex;align-items:center;gap:6px}',
+  '.rv-shdone svg{width:28px;height:28px;margin-left:-4px}',
+  '.rv-shx{margin-left:auto}',
+  '.rv-shl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}',
+  '.rv-shr{display:flex;align-items:center;gap:10px;width:100%;min-height:52px;padding:4px 10px 4px 4px;border:1px solid var(--edge);border-radius:12px;',
+  ' background:none;color:var(--ink);font:inherit;text-align:left;cursor:pointer}',
+  '.rv-shr:hover{border-color:var(--accent)}',
+  '.rv-shr:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
+  '.rv-shr .rv-wch{flex:0 0 44px;width:44px;cursor:inherit}',
+  '.rv-shrn{flex:1 1 auto;min-width:0;font-size:15px}',
+  /* More practices keeps its one label; the chevron turns when it is open */
+  '.rv-more-t{display:flex;align-items:center;justify-content:space-between;gap:8px}',
+  '.rv-more-t .rv-ic{transition:transform var(--t-micro) var(--ease-out)}',
+  '.rv-more-t[aria-expanded="true"] .rv-ic{transform:rotate(180deg)}',
   /* success over time */
   '.rv-rg{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}',
   '.rv-rgb{min-height:44px;padding:0 12px;border-radius:999px;border:1px solid var(--edge-2);background:none;color:var(--mid);font:inherit;font-size:13.5px;cursor:pointer;white-space:nowrap}',
