@@ -72,7 +72,7 @@ function stMark(k,word,term,cls,tail){
    journal: round QD (engine/exdepth.js, 2 October) seeded each one with
    dated entries in its own words, replayed through the writers stCommit
    uses, so CURP.story.entries is real and the Imprints page already groups
-   by it. Diane carries ten. This page never drew one. Built from main on 15,
+   by it. Diane carries five, and her Archive ten. This page never drew one. Built from main on 15,
    17, 27 and 31 October and opened on Diane, the centre column read only the
    preview line on every build from 16 October, when show only landed, and
    an empty box before that. What did leave the page is the Analytics
