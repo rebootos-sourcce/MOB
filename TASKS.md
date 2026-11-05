@@ -33953,3 +33953,25 @@ rail's visual language. SW1, SW2, SW4 and SW6 need scoping before any build.
   **Not merged, on purpose:** #177, Ruler's domain (Imperium or Power) is
   still genuinely open, his call, not folded into a blanket merge. #182,
   mid-revision right now (round 3 in flight). #149 and #164 are his.
+
+- [x] **SW7 round 3, 5 November. Tiers named in words, same PR #182.** He
+  struck the three Super-level rows and said "Organize it by Super
+  Complex, Hyper Complex, Complex, Saboteur, etc." Each tier's name now
+  sits once above its own rows (Super-complex, Hyper-complex, Complex,
+  Saboteur, Child emotion), starting in the icon column so it sits over
+  the icons it names; a tier renames itself when it returns after a
+  different open branch, so a saboteur row after a closed branch never
+  sits under the wrong label with only an icon to go by. The agent had
+  no narrative-director to call on from inside its own build, so it made
+  the one wording call itself: "Super-complex"/"Hyper-complex" hyphenated,
+  not "Super complex", because the detail panel and the summary box on
+  this same screen already spell it that way, one concept keeping one
+  spelling. A sound, well-reasoned call, left as made. Tests: 40/0 real-click
+  browser pass (new: tier names read in order down an open branch, every
+  row sits under its own tier's name), engine 6,899/0, functional
+  2,961/0, collide 398/0, design 193/0, monitor clean. Voice objections
+  now passes fully, PR #181's merge fixed the law-text words that had
+  been failing it. Bare weights unchanged at 17, same as main. Rebased
+  onto main after the four PR merges; only generated build files
+  clashed, rebuilt rather than picked a side. Still open: the five
+  node-state words' boundaries, his call.
