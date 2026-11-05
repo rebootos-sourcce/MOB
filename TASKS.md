@@ -33813,6 +33813,14 @@ Named SU and not SQ: SQ1 to SQ5 and SR1 to SR6 are already item numbers earlier 
 
 This round is not closed until SV1 through SV3 land with real commits and SV4, SV6 and SV8 have a seat or a ruling. Written here the same round it happened, per SU9.
 
+- [ ] **SV17. Built, 5 November, draft PR stacked on PR #184. The Ritual page week becomes a calendar of sashes, and the two pole bar reaches the page.** His reaction to SV16's week: too much text, it does not look like a calendar, nothing leads the eye, and the dual pole bar he has asked for three times (round RF 3 October, the Insight cascade 4 November, now) is missing. Built from the design review's verified spec:
+  1. Each ritual on a day is a 44 pixel sash, seat colour fill, seat mark, no word; every day cell one height; at most three a day, then two and a +N; today at full strength, the other days set back. Gate FT35.
+  2. A sash opens the product's one sheet: mark and name, the two pole bar (`fetBar`, `ui/component.js`, the Insight cascade's own lines) only for a release schedule with a real pattern, the days kept, each step with what the practice is and how, then Done, Edit, Delete.
+  3. Due today is gone from the right rail; its rituals are today's column, its ring is the sheet's Done. Three instruction lines cut outright (affirmations, challenges, the "One pattern ... More come" line). The big tile's practice line moved into the sheet. More practices keeps one label, the chevron and `aria-expanded` carry open and shut.
+  4. A ritual's badge carries the days kept, not a percent. Not "kept of set" either, which the brief asked for: that is his own stop objection CO-05 ("every time you add that 11 of 12, why."), so the days set stay in the tooltip.
+  Open, his call: the Called for card's practice line (`ritstage.js`, `rv-sgd`) was added on his round QX word "add a text description" and tonight's message says cut lines like it. Left as is and asked on the PR.
+  Follow on: once PR #182 merges, `stkFetBar` in `ui/ui.js` should call `fetBar` for its bar so the six shared lines live once.
+
 - [ ] **SV16. Dispatched, 5 November. The Ritual page (Flow > Ritual), a real restructure, from his own annotated screenshot.** Six things, together, all on top of PR #183 (SV15) since that PR already carries the cuts and the seeded data this one builds on:
   1. The center panel becomes a weekly calendar, all seven days, with a way to move to the next or previous week. Under it, each day shows which rituals are due that day.
   2. The Accountability column on the right stays as it is today.

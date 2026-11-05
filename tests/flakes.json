@@ -32,6 +32,25 @@
         "how": "the page clock is paused once the plan is read at boot and held until it reads the same across a stretch, and the second move is read in the same task as the visibilitychange it answers",
         "verified": "gates-report (golden) green on main's own CI runs since: 41546532351 on 37c82b38 and 41563481675 on b6f86211"
       }
+    },
+    {
+      "gate": "functional",
+      "check": "desktop: permission refused, then playback refused late: the microphone line is still the line after the late refusal, \"Listening. Press again to stop.\"",
+      "example": "desktop: permission refused, then playback refused late: the microphone line is still the line after the late refusal, \"Listening. Press again to stop.\"",
+      "first_seen": {
+        "run": "local",
+        "commit": "931b409072ab8da44016362179a918d6881d40a0",
+        "date": "2026-11-05",
+        "where": "local, SV17 branch off 931b4090, passed twice in tests/voicefall.js on the same build"
+      },
+      "last_seen": {
+        "run": "local",
+        "commit": "931b409072ab8da44016362179a918d6881d40a0",
+        "date": "2026-11-05",
+        "where": "local, SV17 branch off 931b4090, passed twice in tests/voicefall.js on the same build"
+      },
+      "sightings": 1,
+      "status": "suspected"
     }
   ]
 }

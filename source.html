@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2845 86f18488 2026-11-05 02:34"><head><meta charset="utf-8">
+<html lang="en" data-build="v2846 931b4090 2026-11-05 05:30"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -37981,7 +37981,13 @@ function rbPairSide(o){
  if(!o.read)return 0;
  var lr=Math.round(clamp(+o.L.v||0,0,100)), rr=100-lr;
  return lr>rr?-1:rr>lr?1:0;}
+/* A PAIR WHOSE MARK IS NOT A SHARE NAMES ITS OWN FIGURE. The stack's child
+   emotion bars place the mark by held less installed (stkFetBar, ui/ui.js),
+   so the leaning pole's v is a position and printing it would print a share
+   nobody holds. Such a pair hands over fig, the leaning pole's own amount,
+   already formatted. Every other pair leaves it out and prints as it did. */
 function rbPairFig(o){
+ if(o.fig!==undefined)return o.fig;
  if(!o.read)return '–';
  var sd=rbPairSide(o);
  return sd<0?rbVal(o.L,o.L.v):sd>0?rbVal(o.R,o.R.v):'50%';}
@@ -38025,6 +38031,32 @@ function rbPair(k,o){
    +(drift?'<i class="rb2-hold rb2-gh" style="transform:translateX('+x.toFixed(2)+'%)"><i></i></i>':'')
    +'<i class="rb2-hold rb2-nd" style="transform:translateX('+x.toFixed(2)+'%)"><i></i></i></i>':'')+'</span>'
   +key(L,'l')+key(R,'r')+'</span>';}
+/* ONE CHILD EMOTION AS ITS TWO POLES, the held pattern and its coherent
+   opposite, for any surface. SV17, 5 November: he has asked for this bar by
+   name three times, round RF on 3 October ("two opposing forces... the
+   termination line between the two is data-driven"), the Insight cascade on
+   4 November, and the Ritual popup now. The Insight cascade drew it first, as
+   stkFetBar in ui/ui.js on PR 182, and these are that function's lines
+   lifted out unchanged, so a ritual's bar and the cascade's are one drawing
+   and not two. stkFetBar keeps its button and its words and should call this
+   for the bar once both are merged; until then the two bodies are the same
+   six lines, which is the one copy this file is allowed to carry for a day.
+
+   THE LEAN IS THE DIFFERENCE, NOT THE SHARE. Held and installed are two
+   amounts on the same nought to ten, so the mark sits at the centre less five
+   points per unit of held over installed, and the figure over the line is the
+   leaning pole's own amount through the registry. A share would pin Fear held
+   at 0.5 and Fear held at 9 to the same end, both "100%". rbPair takes the
+   figure as fig. k is the pair's key, unique on the page. */
+function fetBar(ci,k){
+ var c=CHILD[ci], v=S.charge[c.nm]||0, p=S.replace[c.nm]||0, read=v>0||p>0;
+ var lean=clamp(50+(v-p)*5,0,100), fv=fmtPct('charge',v), fp=fmtPct('installed',p);
+ var side=!read?0:Math.round(lean)>50?-1:Math.round(lean)<50?1:0;
+ var ic='<path d="'+c.ic+'"/>';
+ var spec={read:read, whole:true, fig:!read?'–':side>0?fp:fv,
+  L:{nm:c.nm,ic:ic,c:seatCol(c.seat),v:lean},
+  R:{nm:c.opp,ic:ic,c:'var(--accent)',v:100-lean}};
+ return rbPair(k,spec);}
 /* WHAT A HOST CARRIES for a pair that is one reading: its own sentence, then
    each pole's word and sentence, then the lean in words, never as a score.
    The same string is the tooltip's body and, with the figures said first, the
@@ -64937,7 +64969,7 @@ var RIT_IC={
  edit:'<path d="M4 20h4L19 9l-4-4L4 16z"/>',
  up:'<path d="M12 19V5 M6 11l6-6 6 6"/>',
  x:'<path d="M6 6l12 12 M18 6L6 18"/>',
- back:'<path d="M15 5l-7 7 7 7"/>', fwd:'<path d="M9 5l7 7-7 7"/>',
+ back:'<path d="M15 5l-7 7 7 7"/>', fwd:'<path d="M9 5l7 7-7 7"/>', down:'<path d="M6 9l6 6 6-6"/>',
  plus:'<path d="M12 5v14 M5 12h14"/>', check:'<path d="M5 12l5 5 9-10"/>',
  clock:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2 M10 3h4"/>',
  stop:'<circle cx="12" cy="12" r="8"/><path d="M9.5 9.5h5v5h-5z"/>',
@@ -65146,8 +65178,9 @@ function ritActiveBody(act,today,building){
  if(rest.length)out+='<div class="rv-h rv-h2 rv-other">Other days</div>'+ritRowsHtml(rest,today,act);
  return out;}
 /* one ritual's ring for one day, a dash per step, ticked when the day is done.
-   The Active list and Accountability's due list draw the same ring, so the
-   press means the same thing in both places and there is one drawing of it. */
+   The Active list and the week's sheet draw the same ring (Accountability's
+   due list drew it until SV17), so the press means the same thing in both
+   places and there is one drawing of it. */
 /* ---------------- ROUND QS: THE SYMBOL, THE PERCENT AND THE PRESS ----------------
    His words, 3 October, on a screenshot of this page: "for the ritual
    everything like the rest of the app has to be visually symbolic it's also a
@@ -65167,7 +65200,8 @@ function ritActiveBody(act,today,building){
    not a rate and not a grade: a missed day does not empty it, it just does not
    fill it. A ritual with no end has nothing to complete, so its ring stays
    empty and the pill carries the days kept, a count, which is what every
-   other record figure on the page already is.
+   other record figure on the page already is. SUPERSEDED, SV17: neither
+   branch fills the ring now, and both pills carry a count, at ritPctHtml.
 
    THE TELL IS ON THE PRESS. The badge is a carrier for the one tooltip
    (ui/tip.js): a hover on a desk, a tap on a phone, and the sentence says what
@@ -65190,9 +65224,23 @@ function ritPctHtml(p,today,size){
  var b=ritSeat(p), col=ritCol(p), P=ritPct(p,today), nm=ritName(p.steps);
  var where=b?ritTagNm(b)+' seat':'No seat';
  var o={size:size||'sm', color:col, glyph:SEATGLYPH[b]||SEATGLYPH._}, badge, body, n='';
+ /* A COUNT, NOT A PERCENT, SV17. This printed the share kept as a percent
+    and filled the ring to it, and accountability.js's own header rules the
+    page: "There is no percent, no score and no rate on this page ... a person
+    who missed three days of fourteen is told three days, never a grade." The
+    no end branch below already printed a plain count on an empty ring, so
+    both branches now read the same way: the days kept, and the ring is the
+    seat's mark with nothing filled.
+
+    AND NOT KEPT OF SET. The brief for this round asked for "3 of 7" in the
+    pill, and that is a count against a total, his objection CO-05 in the
+    voice database ("every time you add that 11 of 12, why."), widened by
+    CO-31 to any scale and held as a stop. The days set ride in the tooltip's
+    figure line, where they already were. ritPct still does the counting;
+    only the percent it returned is no longer printed. */
  if(P){
-  badge=crBadge(b,P.pct,Object.assign(o,{raw:fmtPct('kept',P.pct)}));
-  body='Percent complete: the days you kept it, of the days it is set for. A kept day stays kept, so the ring only fills.';
+  badge=crBadge(b,0,Object.assign(o,{raw:String(P.kept)}));
+  body='The days you have kept it. A kept day stays kept.';
   n='Kept|'+acctDays(P.kept)+'|'+P.due+' set';}
  else{var k=ritRunRead(p,today).kept;
   badge=crBadge(b,0,Object.assign(o,{raw:String(k)}));
@@ -65296,14 +65344,26 @@ function ritBuildHtml(c,nAct,unread){
    +'" aria-pressed="'+on+'" style="--c:'+(PTRACK[p.track]||'var(--accent)')+'">'
    +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/>'+(on?'<path d="M8 12l3 3 5-6"/>':'')+'</svg>'
    +'<span class="rv-tn">'+esc(p.nm)+'</span><span class="rv-tm">'+p.min+' min'+(call?', called for':'')+'</span>'
-   +(big&&p.d?'<span class="rv-td">'+esc(p.d)+'</span>':'')+'</button>';};
+   /* THE BIG TILE CARRIED p.d UNDER ITS NAME, and it is gone, SV17. His
+      reaction to the page: too much text, and the line read as one more
+      paragraph on a card whose job is one press. The line is what the
+      practice is, so it was not cut: it is the first line under each step in
+      the sash's popup (ritSashSheet, ui/ritcal.js), one press away. */
+   +'</button>';};
  if(c.called&&!RIT.all&&!RIT.sel[c.called.k])out+='<div class="rv-tiles">'+tile(c.called,true)+'</div>';
  if(RIT.all){
   ['Somatic','Body','Energy','Mind'].forEach(function(tr){
    var set=c.all.filter(function(p){return p.track===tr;}); if(!set.length)return;
    out+='<div class="rv-trk" style="--c:'+(PTRACK[tr]||'var(--accent)')+'">'+tr+'</div><div class="rv-tiles">'
     +set.map(function(p){return tile(p,false);}).join('')+'</div>';});}
- out+='<button type="button" class="rit-more" id="ritall" data-act="all">'+(RIT.all?'Fewer practices':'More practices')+'</button>';
+ /* ONE LABEL, AND THE CHEVRON CARRIES THE STATE, SV17. It read More
+    practices shut and Fewer practices open, so the press changed its name
+    under the finger, and a slot keeps its label while the value carries the
+    state (UX rule 2). Open and shut are aria-expanded, the attribute the
+    Active list's rows and the Called for marks already carry, and the
+    chevron's turn, which is the attribute drawn. */
+ out+='<button type="button" class="rit-more rv-more-t" id="ritall" data-act="all" aria-expanded="'+!!RIT.all+'">'
+  +'<span>More practices</span>'+ritIc('down')+'</button>';
  /* THE TIMER AND HOW OFTEN. The timer starts at the minutes the steps add
     up to and a press moves it a minute at a time under ten and five at a
     time above, which is the size of the difference at each end. How often is
@@ -65523,7 +65583,7 @@ function flowHead(nm,says,ic){flowHeadAt('flowhd',nm,says,ic);}
 
      left    inputting new. One press and the seven tags, or the builder.
      centre  the ritual. The chain, and the Active list.
-     right   the accountability tracker. Due today, Done, Missed, the record.
+     right   the accountability tracker. The loop, Done, Missed, the record.
 
    ritbuild on the body says the builder is holding something. It only drives
    the phone stack, where it brings the left column to the front: a person who
@@ -65622,9 +65682,9 @@ function ritWire(h,c){
   var a=b.getAttribute('data-act'), id=b.getAttribute('data-id');
   /* the offer to put a deletion back lasts until the next thing that writes
      or builds. Looking around the record does not spend it. */
-  if(['putback','view','day','mo','exp','more','hmore','sgwhy','wk','rng'].indexOf(a)<0)RIT.gone=null;
+  if(['putback','view','day','mo','exp','more','hmore','sgwhy','wk','rng','wsash','wday'].indexOf(a)<0)RIT.gone=null;
   /* a dismissed suggestion's Put back lasts the same way, round QX */
-  if(['sug-back','sgwhy','wk','rng','exp','view','day','mo'].indexOf(a)<0)RIT.sgGone=null;
+  if(['sug-back','sgwhy','wk','rng','exp','view','day','mo','wsash','wday'].indexOf(a)<0)RIT.sgGone=null;
   switch(a){
    case 'go-story': if(typeof setTab==='function')setTab(TAB.STORY); return;
    /* EDIT ON A MISSED RITUAL IS NOW ONE PRESS AND NO NAVIGATION, round QF.
@@ -65695,6 +65755,11 @@ function ritWire(h,c){
    /* the week's arrows, and This week, which is 0. ritWeekCalHtml keeps it
       inside the record's first week and RIT_WK_AHEAD. */
    case 'wk': {var wd0=+b.getAttribute('data-d'); RIT.wk=wd0?RIT.wk+wd0:0; break;}
+   /* a sash on the week opens its ritual in the sheet, and a day's +N opens
+      that day's list, SV17, ui/ritcal.js. Neither writes, so neither repaints
+      the page under the sheet. */
+   case 'wsash': ritSashOpen(+b.getAttribute('data-d'),+b.getAttribute('data-i')); return;
+   case 'wday': ritDayOpen(+b.getAttribute('data-d')); return;
    case 'rng': RIT.span=b.getAttribute('data-v'); break;
    case 'said': ritDayMark('said',id); return;
    case 'did': ritDayMark('did',id); return;
@@ -65937,10 +66002,8 @@ function ritCss(){
      pixels past the screen at 1600, measured, round LT */
   '.rv-tile.rv-big{display:grid;grid-template-columns:22px minmax(0,1fr);column-gap:10px;row-gap:3px;align-items:center}',
   '.rv-tile.rv-big svg{grid-row:1/span 2}',
-  '.rv-tile.rv-big .rv-td{grid-column:1/-1}',
   '.rv-tn{font-size:15px;font-weight:500}',
   '.rv-tm{font-size:13px;color:var(--mid)}',
-  '.rv-td{font-size:14px;color:var(--mid);line-height:1.5}',
   '.rv-trk{margin:10px 0 6px;font-size:13px;font-weight:600;color:var(--c)}',
   '.rv-left{margin:10px 0 0;font-size:14px;color:var(--mid)}',
   '.rv-plan{margin-top:12px;padding-top:12px;border-top:1px solid var(--edge)}',
@@ -66057,11 +66120,12 @@ try{window.__at&&window.__at('ui/ritual.js');}catch(e){}
    Ritual's menu, and Edit on a missed ritual sends the person there with the
    ritual already open.
 
-   WHERE EACH THING SITS, and the order is what a person came for. Due today
-   first, because the one thing they open this page to do is press a ring.
-   Done second, the streak and the figures, which is the answer to whether it
-   is holding. Missed third. The record last, because a month is a thing to
-   read once the day is marked and not before.
+   WHERE EACH THING SITS, and the order is what a person came for. The
+   thirty day loop first, which is whether it is holding at a glance. Done
+   next, the streak and the figures. Missed third. The record last, because a
+   month is a thing to read once the day is marked and not before. Due today
+   stood first until SV17; the press it carried is today's column of the
+   week in the centre now, below.
 
    A MISS IS NOT A VERDICT. engine/practice.js says it in PR_MISS_AT and the
    TDD says it in section 24: "Repeated failure should trigger investigation
@@ -66093,40 +66157,16 @@ function acctMissed(p,today){
 
 function acctDays(n){return n+(n===1?' day':' days');}
 
-/* DUE TODAY. The rituals whose day this is, each with the ring that marks it
-   done, the same press and the same writer as the ring on the Active list. A
-   ritual kept on other days is active but is not due, and a Tuesday is not a
-   missed Monday, so it is not listed. */
-function acctDueHtml(st){
- var due=st.act.filter(function(p){return ritDue(p,st.today);}), body='';
- /* one exit and the body built in branches, because the build's div balance
-    check counts the markup in the source text and a function that closes its
-    card on three different returns reads as three closes for one open */
- /* NOTHING ACTIVE, AND THE WAY OUT IS ONE PRESS AND NOT A PAGE. This offered
-    Open Ritual while Accountability was a page of its own. The builder is the
-    left column of this same page now, so the press opens it where it stands:
-    naming a column would have been wrong anyway, because on a phone the
-    columns stack and the left one is not on the left. */
- /* and the press stands alone, round RB: Nothing active yet went on his "Get
-    rid of all the sec[ond] third tier text", because the card's own line
-    above already says what is listed here and an empty list says the rest */
- if(!st.act.length)
-  body='<div class="rv-acts"><button type="button" class="btn" data-act="add">New ritual</button></div>';
- else if(!due.length)body='<p class="rv-empty">Nothing due today.</p>';
- else{
-  body='<ol class="rv-list">';
-  due.forEach(function(p){
-   var e=ritEntryFor(p,st.today), d=!!(e&&ritIsDone(e.x)), col=ritCol(p);
-   body+='<li class="rv-item'+(d?' rv-done':'')+'" style="--c:'+col+'"><div class="rv-row">'
-    +'<button type="button" class="rv-log" data-act="log" data-id="'+p.id+'" aria-pressed="'+d+'" aria-label="'
-    +(d?'Done today. Press to take it off':'Mark '+esc(ritName(p.steps))+' done today')+'">'+ritRingHtml(p,d,col)+'</button>'
-    +'<span class="rv-txt"><span class="rv-nm">'+esc(ritName(p.steps))+'</span>'
-    +'<span class="rv-sub">'+(d?'Done today':'Planned for today')+'<i>'+esc(ritLeft(p,st.today))+'</i></span></span>'
-    +ritPctHtml(p,st.today)+'</div></li>';});
-  body+='</ol>';}
- return '<div class="rv-sec rv-act"><div class="rv-hd"><span class="rv-h">Due today</span>'
-  +(due.length?'<span class="rv-min">'+due.length+(due.length===1?' ritual':' rituals')+'</span>':'')+'</div>'
-  +'<p class="rv-mean">Rituals set for today. Press the ring when you have done one.</p>'+body+'</div>';}
+/* DUE TODAY IS GONE, SV17, 5 November. His reaction to the page was too
+   much text, and this card said the week's own today a second time: the
+   rituals set for today, each with a ring, under a line telling the person to
+   press it. Its two jobs went to the two places that already carry them.
+   Which rituals are due today is today's column of the week (ritWeekCalHtml,
+   ui/ritcal.js), ringed and at full strength while the other days sit back.
+   Marking one done is the Done ring in that sash's sheet (ritSashSheet), the
+   same ritLog press and the same writer this card's ring was. The Active list
+   in the centre keeps its own ring as well, so the press is never further
+   than it was. */
 
 /* MISSED. Active rituals only: one that has ended or been stopped is not a
    thing a person can still change. Most missed first, because that is the one
@@ -66398,12 +66438,12 @@ function acctRotate(i){
    The worked example note is not repeated here. The centre already carries it
    once, ritNote in ui/ritual.js, and one page says a thing once. */
 /* ROUND QN put two parts in it, and the order is still what a person came for:
-   Due today first, the press; then the thirty day loop with its summary, which
-   is the answer to whether it is holding at a glance; Done and Missed, the
-   figures under it; History, the rituals as cards; the Record last, the month
-   and the list a person reads day by day. */
+   the thirty day loop with its summary, which is the answer to whether it is
+   holding at a glance; Done and Missed, the figures under it; History, the
+   rituals as cards; the Record last, the month and the list a person reads
+   day by day. Due today led it until SV17, and went to the week. */
 function acctSideHtml(st,arrive){
- return '<div class="rvr-wrap'+(arrive?' rv-arrive':'')+'">'+acctDueHtml(st)+acctLoopHtml(st)+acctDoneHtml(st)+acctMissHtml(st)
+ return '<div class="rvr-wrap'+(arrive?' rv-arrive':'')+'">'+acctLoopHtml(st)+acctDoneHtml(st)+acctMissHtml(st)
   +acctHistHtml(st)+ritRecordHtml(st.plans,st.today)+'</div>';}
 
 try{window.__at&&window.__at('ui/accountability.js');}catch(e){}
@@ -67401,7 +67441,11 @@ function ritAffHtml(st,M){
    +(on?'Said today. Press to take it off':'Mark said today: '+esc(a.line))+'">'+ritTickHtml(on,col)+'</button>'
    +'<span class="rv-aft"><span class="rv-afq">'+(a.own?'"'+esc(a.line)+'"':esc(a.line))+'</span></span></li>';}).join('')+'</ul>';
  return '<div class="rv-gblk rv-aff"><div class="rv-gh"><span class="rv-gt">Affirmations</span>'
-  +'<span class="rv-gs">Say each one out loud, once today, and press its ring.</span></div>'+body+'</div>';}
+  /* "Say each one out loud, once today, and press its ring." stood under this
+     heading and is cut, SV17. His word for a line that tells a person how to
+     use a ring was insult, so it is not moved into a tooltip either: the ring
+     carries a press and an accessible name, and that is the instruction. */
+  +'</div>'+body+'</div>';}
 function ritChalHtml(st,M){
  var C=ritChallenge(st), today=st.today, body;
  if(!C.length)body='<p class="rv-empty">'+(st.r.unread
@@ -67414,11 +67458,13 @@ function ritChalHtml(st,M){
    +(on?'Done today. Press to take it off':'Mark done today: '+esc(c.nm))+'">'+ritTickHtml(on,col)+'</button>'
    +'<span class="rv-aft"><span class="rv-chn">'+esc(c.nm)+'<small>, '+esc(c.who)+'</small></span>'
    +'<span class="rv-afq">'+esc(c.act)+'</span><span class="rv-afs">'+esc(c.when)+'</span></span></li>';}).join('')+'</ul>';
- /* fewer than three is said, never padded with a challenge nothing points to */
- if(C.length&&C.length<3)body+='<p class="rv-afs rv-few">'+(C.length===1?'One pattern':'Two patterns')
-  +' in your reading have a challenge, so '+(C.length===1?'one is':'two are')+' shown. More come as your stories show more.</p>';
- return '<div class="rv-gblk rv-chal"><div class="rv-gh"><span class="rv-gt">Challenges</span>'
-  +'<span class="rv-gs">One small act against each pattern running heaviest in you. Press its ring once you have done it today.</span></div>'+body+'</div>';}
+ /* FEWER THAN THREE IS STILL NEVER PADDED with a challenge nothing points
+    to, and it is no longer said. A line counted the rows aloud ("One pattern
+    in your reading has a challenge, so one is shown. More come as your
+    stories show more.") over a list a person can count, and the heading's own
+    line said how to press a ring. Both are cut, SV17, on the same ruling as
+    the affirmations above. */
+ return '<div class="rv-gblk rv-chal"><div class="rv-gh"><span class="rv-gt">Challenges</span></div>'+body+'</div>';}
 
 /* ---------------- the week ----------------
    THE CENTRE IS A WEEK, SV16, 5 November. His words, over an annotated
@@ -67480,11 +67526,17 @@ function ritWeekCalHtml(st){
   /* a person who has cycled away gets one press back to now. It is drawn only
      while away, so on this week it is not a control that does nothing. */
   +(RIT.wk?'<button type="button" class="btn rv-wk0" data-act="wk" data-d="0">This week</button>':'')+'</div>';
- var days='<ol class="rv-wkg" aria-label="'+esc(range)+'">'+[0,1,2,3,4,5,6].map(function(i){
+ /* THE WEEK HOLDS TODAY or it does not, and only a week that holds it sets
+    the other six back: on a week cycled away no day is the one to look at */
+ var hasNow=today>=mon&&today<=mon+6;
+ var days='<ol class="rv-wkg'+(hasNow?' rv-wkg-now':'')+'" aria-label="'+esc(range)+'">'+[0,1,2,3,4,5,6].map(function(i){
   var d=mon+i, dt=ritDateOf(d), segs=ritWeekDay(d,st);
-  var list=segs.length?'<ul class="rv-wdl">'+segs.map(function(s){
-    return '<li class="rv-wch rv-wch-'+s.st+'" style="--c:'+s.col+'"><span class="rv-wcn">'+esc(s.nm)+'</span>'
-     +'<span class="rv-wcs">, '+RIT_DAY_SAY[s.st]+'</span></li>';}).join('')+'</ul>'
+  /* MORE THAN THREE IS TWO AND A +N, never four squeezed into three slots:
+     a day can carry rituals, and each is its own sash, so a heavy day would
+     otherwise grow its cell and the grid would stop being a grid */
+  var show=segs.length>RIT_SASH_MAX?segs.slice(0,RIT_SASH_MAX-1):segs, rest=segs.slice(show.length);
+  var list=segs.length?'<ul class="rv-wdl">'+show.map(function(s,k){return '<li>'+ritSashHtml(s,d,k)+'</li>';}).join('')
+    +(rest.length?'<li>'+ritSashMoreHtml(rest,d)+'</li>':'')+'</ul>'
    /* a day with nothing on it is the house dash, COPY.md Value, and never a
       sentence: seven Nothing on this day lines would be the week's loudest
       text on the emptiest week */
@@ -67493,10 +67545,153 @@ function ritWeekCalHtml(st){
    +'<span class="rv-wdh"'+(d===today?' aria-current="date"':'')+'><span>'+RIT_WDN[i]+'</span><b>'+dt.getDate()+'</b></span>'+list+'</li>';}).join('')+'</ol>';
  return '<section class="rv-sec rv-week"><div class="rv-hd"><span class="rv-h">Week</span>'+nav+'</div>'+days
   /* Planned, the word the Record and the thirty days beside it use for the
-     same state, and Due today's Planned for today: the grid this replaced said
-     Set, a second word for one thing on one page */
+     same state: the grid this replaced said Set, a second word for one thing
+     on one page */
   +'<div class="rv-key" aria-hidden="true"><span><i class="rv-k-cube"></i>Done</span><span><i class="rv-k-cplan"></i>Planned</span>'
   +'<span><i class="rv-k-cmiss"></i>Missed</span></div></section>';}
+
+/* ---------------- a sash ----------------
+   THE DAY'S RITUALS ARE SASHES, SV17, 5 November. He looked at the week this
+   file drew for SV16 and said it does not look like a calendar, that there is
+   too much text, and that nothing leads the eye. The cause was the chip: a
+   ritual's full name at 12 pixels, wrapping to five lines in a column ninety
+   pixels wide, so every day was a different height and the grid was a wall
+   of words. Its padding was 5 by 6, so as a press it also sat under the 44
+   pixel floor (atuned-ux, measured floors), which is the other half of why
+   it read as text and not as a control.
+
+   So a ritual on a day is one 44 pixel button, filled in its seat colour
+   (ritCol, the colour every other drawing of the ritual already wears), with
+   the seat's own mark from SEATGLYPH inside it and no word on it. Its name and
+   its state are the accessible name and the tooltip, RIT_DAY_SAY's word for
+   the state, so the unpack rule is met in the same place without a sentence
+   on the screen. A ritual with no seat draws no mark: a generic one would be
+   a second name for nothing. The three states are the three the chip had,
+   kept by class: done filled, planned outlined on a faint tint, missed
+   dashed. The press opens the ritual in the sheet, ritSashSheet below.
+
+   THE CELL IS FIXED. Three sashes and two gaps is the height of every day,
+   empty or full, which is what makes seven cells read as a week. */
+var RIT_SASH_MAX=3;
+/* the state word where the day is already named, a sheet's heading or its
+   line: today's is Planned and not Planned for today said under Today */
+function ritSashWord(s){return s.st==='plan'?'Planned':RIT_DAY_SAY[s.st];}
+function ritSashSeat(s){return ritSeat(s.p||s.x);}
+function ritSashGlyph(b){
+ return b&&SEATGLYPH[b]?'<svg viewBox="0 0 24 24" aria-hidden="true">'+SEATGLYPH[b]+'</svg>':'';}
+function ritSashHtml(s,d,k){
+ var say=s.nm+', '+RIT_DAY_SAY[s.st];
+ return '<button type="button" class="rv-wch rv-wch-'+s.st+'" data-act="wsash" data-d="'+d+'" data-i="'+k+'" data-nm="'+esc(s.nm)+'"'
+  +' style="--c:'+s.col+'" aria-label="'+esc(say)+'" data-tip-t="'+esc(s.nm)+'" data-tip="'+esc(RIT_DAY_SAY[s.st])+'">'
+  +ritSashGlyph(ritSashSeat(s))+'</button>';}
+/* the rest of a heavy day, one sash that names how many and opens the day's
+   list. It carries what it holds for a screen reader, and for the gate, which
+   reads a day's rituals off the sashes and has to see these too. */
+function ritSashMoreHtml(rest,d){
+ var say=rest.map(function(s){return s.nm+', '+RIT_DAY_SAY[s.st];});
+ return '<button type="button" class="rv-wch rv-wmore" data-act="wday" data-d="'+d+'"'
+  +' data-more="'+esc(rest.map(function(s){return s.nm+'|'+s.st;}).join(';'))+'"'
+  +' aria-label="'+esc(rest.length+' more: '+say.join('; '))+'" data-tip-t="'+rest.length+' more" data-tip="'+esc(say.join('. ')+'.')+'">'
+  +'+'+rest.length+'</button>';}
+
+/* ---------------- the sheet a sash opens ----------------
+   What Due today carried and the tile's line carried, in one place one press
+   away, through the product's one sheet (sheetOpen, ui/panels.js) and not a
+   second modal. Top to bottom: the ritual's mark and name, with the day and
+   its state; the two pole bar, only for a ritual aimed at a real pattern;
+   the days kept, as a count, and the days left; each step, what it is and how it is done; then
+   Done, Edit and Delete.
+
+   THE BAR IS DRAWN ONLY WHEN THERE IS A REAL OPPOSITE. A release schedule
+   carries rel, an address in BY, and that address's cf names the CHILD
+   pattern it releases: Anger against Equanimity, read off the person's own
+   field by fetBar (ui/component.js), the bar the Insight cascade draws. A
+   ritual started from the builder has a seat and no pattern, so it has no
+   second pole, and a bar invented for it would be a reading nobody took.
+   There is no weekly average bar either, for the same reason: nothing in the
+   engine computes a week's pattern.
+
+   THE PLAN BEHIND A SASH. A sash drawn from the record carries the entry and
+   not the plan, so the plan is found by its steps, the key the record and
+   the plans already share (ritKey). An entry whose plan was deleted has no
+   plan, and its sheet offers Delete on the entry and nothing that needs one. */
+function ritSashPlan(s,d,st){
+ if(s.p)return s.p;
+ var k=ritKey(s.x&&s.x.steps), all=st.plans.filter(function(p){return ritKey(p.steps)===k;});
+ return all.filter(function(p){return ritCovers(p,d);})[0]||all[0]||null;}
+function ritFetIndex(p){
+ var n=(p&&p.rel!=null&&BY[p.rel])?BY[p.rel]:null; if(!n||!n.cf)return -1;
+ return CHILD.map(function(c){return c.nm;}).indexOf(n.cf);}
+function ritSashSheet(s,d,st){
+ var today=st.today, p=ritSashPlan(s,d,st), b=ritSashSeat(s), col=s.col;
+ var steps=ritSteps({steps:p?p.steps:(s.x&&s.x.steps)});
+ var out='<div class="rv-sh" style="--c:'+col+'">'
+  +'<div class="rv-shh"><span class="rv-shg">'+ritSashGlyph(b)+'</span>'
+  +'<span class="rv-sht"><span class="sh-h plain">'+esc(s.nm)+'</span>'
+  +'<span class="rv-shs">'+esc(ritDayName(d,today)+', '+ritSashWord(s).toLowerCase())+'</span></span></div>';
+ var ci=ritFetIndex(p);
+ if(ci>=0)out+='<div class="rv-shb">'+fetBar(ci,'rvsh-'+ci)+'</div>';
+ if(p){var P=ritPct(p,today);
+  /* the days kept and, for a ritual with an end, the days left, the one
+     count against a span the house allows because it says how much is left
+     (CO-05's ruling). Kept of set would be a mark out of seven. */
+  var kept=P?P.kept:ritRunRead(p,today).kept;
+  out+='<p class="rv-shk">Kept '+acctDays(kept)+(p.days&&ritActive(p,today)?'<span>'+esc(ritLeft(p,today))+'</span>':'')+'</p>';}
+ out+=steps.map(function(x){
+  return '<div class="rv-step"><b>'+esc(x.nm)+' <small>'+x.min+' min</small></b>'
+   +(x.d?'<p class="rv-shd">'+esc(x.d)+'</p>':'')+'<p>'+esc(x.how)+'</p></div>';}).join('');
+ /* Done is ritLog's press, which takes today and yesterday and nothing
+    older, so the ring is offered on those two days and not on a day it would
+    refuse. Edit is for a ritual still running, which is what the builder
+    edits. */
+ var acts='';
+ if(p&&(d===today||d===today-1)&&ritCovers(p,d)){
+  var e=ritEntryFor(p,d), on=!!(e&&ritIsDone(e.x));
+  acts+='<button type="button" class="btn rv-shdone'+(on?' rv-on':'')+'" data-sh="log" data-id="'+p.id+'" data-d="'+d+'" aria-pressed="'+on+'" aria-label="'
+   +esc(on?'Done '+ritDayName(d,today).toLowerCase()+'. Press to take it off':'Mark '+s.nm+' done '+ritDayName(d,today).toLowerCase())+'">'
+   +ritRingHtml(p,on,col)+'Done</button>';}
+ if(p&&ritActive(p,today))acts+='<button type="button" class="btn" data-sh="edit" data-id="'+p.id+'">'+ritIc('edit')+'Edit</button>';
+ if(p)acts+='<button type="button" class="btn" data-sh="del-plan" data-id="'+p.id+'">Delete</button>';
+ else if(s.x)acts+='<button type="button" class="btn" data-sh="del-entry" data-i="'+s.i+'">Delete</button>';
+ acts+='<button type="button" class="btn rv-shx" data-sh="close">Close</button>';
+ return out+'<div class="sh-act rv-sha">'+acts+'</div></div>';}
+/* a heavy day's list: every ritual on it, each a row that opens its own sheet */
+function ritDaySheet(d,st){
+ var segs=ritWeekDay(d,st);
+ return '<div class="rv-sh"><div class="rv-shh"><span class="rv-sht"><span class="sh-h plain">'+esc(ritDayName(d,st.today))+'</span></span></div>'
+  +'<ul class="rv-shl">'+segs.map(function(s,k){
+   return '<li><button type="button" class="rv-shr" data-sh="sash" data-d="'+d+'" data-i="'+k+'" style="--c:'+s.col+'">'
+    +'<span class="rv-wch rv-wch-'+s.st+'" aria-hidden="true">'+ritSashGlyph(ritSashSeat(s))+'</span>'
+    +'<span class="rv-shrn">'+esc(s.nm)+'</span><span class="rv-shs">'+esc(ritSashWord(s))+'</span></button></li>';}).join('')+'</ul>'
+  +'<div class="sh-act rv-sha"><button type="button" class="btn rv-shx" data-sh="close">Close</button></div></div>';}
+function ritSashOpen(d,i){
+ var st=ritRead(), s=ritWeekDay(d,st)[i]; if(!s||typeof sheetOpen!=='function')return false;
+ ritCalCss(); sheetOpen(ritSashSheet(s,d,st)); ritSheetWire(); return true;}
+function ritDayOpen(d){
+ if(typeof sheetOpen!=='function')return false;
+ ritCalCss(); sheetOpen(ritDaySheet(d,ritRead())); ritSheetWire(); return true;}
+/* a press in the sheet does its one thing through the page's own writers and
+   then redraws the sheet from a fresh read, so the ring a person pressed
+   shows what the record now holds. A sash is found again by its name: a
+   planned day that is marked done becomes a record entry and moves to the
+   front of the day, so its place in the list is not its identity. */
+function ritSheetWire(){
+ var c=document.getElementById('sheet-card'); if(!c)return;
+ c.onclick=function(ev){
+  var b=ev.target.closest&&ev.target.closest('[data-sh]'); if(!b||!c.contains(b)||b.disabled)return;
+  var a=b.getAttribute('data-sh'), id=b.getAttribute('data-id'), d=+b.getAttribute('data-d');
+  switch(a){
+   case 'log': {var nm=(c.querySelector('.rv-sht .sh-h')||{}).textContent||'';
+    ritLog(id,d);
+    var st=ritRead(), segs=ritWeekDay(d,st), k=-1;
+    segs.forEach(function(s,j){if(k<0&&s.nm===nm)k=j;});
+    if(k>=0){c.innerHTML=ritSashSheet(segs[k],d,st); var f=c.querySelector('[data-sh="log"]'); if(f)f.focus();}
+    return;}
+   case 'edit': sheetShut(); ritEditOpen(id); return;
+   case 'del-plan': sheetShut(); RIT.goneAt='record'; ritDelPlan(id); return;
+   case 'del-entry': sheetShut(); RIT.goneAt='record'; ritDelEntry(+b.getAttribute('data-i')); return;
+   case 'sash': ritSashOpen(d,+b.getAttribute('data-i')); return;
+   case 'close': sheetShut(); return;}};}
 
 /* ---------------- today ----------------
    WHAT THE GOALS CARD'S TODAY HELD, UNCHANGED, as a card of its own under the
@@ -67620,7 +67815,6 @@ function ritCalCss(){
   '.rv-gblk:first-of-type{margin-top:4px}',
   '.rv-gh{display:flex;flex-direction:column;gap:2px;margin:0 0 8px}',
   '.rv-gt{font-size:14.5px;font-weight:600;color:var(--ink)}',
-  '.rv-gs{font-size:13px;line-height:1.5;color:var(--mid);max-width:62ch}',
   '.rv-afl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}',
   '.rv-af1{display:flex;align-items:center;gap:6px;border-radius:12px;background:color-mix(in srgb,var(--c) 6%,var(--panel-2));',
   ' border:1px solid color-mix(in srgb,var(--c) 26%,var(--edge));box-shadow:inset 3px 0 0 var(--c)}',
@@ -67643,7 +67837,9 @@ function ritCalCss(){
   '.rv-wkr{min-width:9.5em;text-align:center;font-size:14px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}',
   '.rv-wk0{min-height:44px;margin-left:4px}',
   '.rv-wkg{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}',
-  '.rv-wd1{display:flex;flex-direction:column;gap:6px;min-width:0;min-height:120px;padding:6px 5px 8px;border-radius:10px;',
+  /* THE CELL IS FIXED, SV17: the date, then a body three sashes tall whether
+     the day carries none, one or three, so seven cells are one grid */
+  '.rv-wd1{display:grid;grid-template-rows:auto calc(3 * 44px + 2 * 6px);gap:6px;min-width:0;padding:6px 5px 8px;border-radius:10px;',
   ' background:color-mix(in srgb,var(--edge-2) 10%,transparent)}',
   '.rv-wd1.rv-past{background:none;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--edge-2) 30%,transparent)}',
   /* today is ringed the way a wall calendar rings a day, round RB's rule for
@@ -67653,26 +67849,79 @@ function ritCalCss(){
   '.rv-wdh b{font-size:14px;font-weight:600;color:var(--mid);font-variant-numeric:tabular-nums}',
   '.rv-wd1.rv-now .rv-wdh{color:var(--ink);font-weight:600}',
   '.rv-wd1.rv-now .rv-wdh b{color:var(--on-accent);background:var(--accent);border-radius:999px;min-width:26px;height:26px;padding:0 5px;display:inline-grid;place-items:center}',
-  '.rv-wdl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:5px}',
-  /* a ritual on a day. Done is filled in its seat colour, set is outlined in
-     it, missed is the dashed outline the Record and the thirty days already
-     use for a miss, so the three read the same on every calendar here. A name
-     wraps rather than being cut: a chip whose ritual cannot be read is a
-     coloured bar. */
-  '.rv-wch{padding:5px 6px;border-radius:7px;font-size:12px;line-height:1.3;font-weight:600;color:var(--ink);overflow-wrap:anywhere;',
-  ' background:color-mix(in srgb,var(--c) 12%,transparent);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c) 70%,transparent)}',
+  '.rv-wdl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;min-width:0}',
+  '.rv-wdl>li{display:block;min-width:0}',
+  /* the stagger, 6 pixels a sash, so three on a day read as a stack laid
+     down and not as three rows of a table. Desktop only: under 640 a day is
+     a row and the sashes sit side by side, where a step would mean nothing. */
+  '.rv-wdl>li:nth-child(2){--o:6px} .rv-wdl>li:nth-child(3){--o:12px}',
+  /* A SASH. 44 by 44 at the least, the tap floor; done is filled in its seat
+     colour, planned is the faint tint outlined in it, missed is the dashed
+     edge the Record and the thirty days use for a miss, so the three read the
+     same on every calendar here. The dash is a border and not an outline, so
+     the keyboard ring has the outline to itself. */
+  '.rv-wch{box-sizing:border-box;display:grid;place-items:center;width:calc(100% - var(--o,0px));min-width:44px;height:44px;min-height:44px;',
+  ' margin:0 0 0 var(--o,0px);padding:0;border:0;border-radius:9px;font:inherit;cursor:pointer;color:var(--c);',
+  ' background:color-mix(in srgb,var(--c) 12%,transparent);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c) 70%,transparent);',
+  ' transition:opacity var(--t-micro) var(--ease-out),transform var(--t-micro) var(--ease-out)}',
+  '.rv-wch svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}',
   '.rv-wch-done{background:var(--c);color:rgba(0,0,0,.78);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.28),inset 0 -3px 0 rgba(0,0,0,.28)}',
-  '.rv-wch-miss{background:none;box-shadow:none;outline:1.5px dashed var(--dim);outline-offset:-1.5px;color:var(--mid);font-weight:500}',
-  /* the state is said to a screen reader in words and to the eye by the fill,
-     so the word is in the document and off the screen */
-  '.rv-wcs{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}',
-  '.rv-wd0{align-self:center;margin-top:6px;color:var(--dim);font-size:14px}',
+  '.rv-wch-miss{background:none;box-shadow:none;border:1.5px dashed var(--dim);color:var(--dim)}',
+  '.rv-wmore{background:color-mix(in srgb,var(--edge-2) 18%,transparent);box-shadow:inset 0 0 0 1.5px var(--edge-2);color:var(--ink);font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}',
+  'button.rv-wch:hover{transform:translateY(-1px)}',
+  'button.rv-wch:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
+  /* THE EYE LANDS ON TODAY, SV17. On the week that holds today every other
+     day's sashes sit back, so the one column at full strength is the one a
+     person came to press; a hover or a focus brings any of them forward. On a
+     week cycled away nothing is today and nothing sits back. */
+  '.rv-wkg-now .rv-wd1:not(.rv-now) .rv-wch{opacity:.5}',
+  '.rv-wkg-now .rv-wd1:not(.rv-now) .rv-wch:hover,.rv-wkg-now .rv-wd1:not(.rv-now) .rv-wch:focus-visible{opacity:1}',
+  '.rv-wd0{align-self:center;justify-self:center;color:var(--dim);font-size:14px}',
   '@container (max-width:639px){.rv .rv-wkg{grid-template-columns:minmax(0,1fr);gap:5px}',
-  ' .rv .rv-wd1{flex-direction:row;align-items:flex-start;gap:10px;min-height:0;padding:8px 10px}',
-  ' .rv .rv-wdh{flex:0 0 40px;flex-direction:column}',
-  ' .rv .rv-wdl{flex:1 1 auto;flex-direction:row;flex-wrap:wrap}',
-  ' .rv .rv-wch{font-size:13px;padding:6px 9px}',
-  ' .rv .rv-wd0{align-self:center;margin:0}}',
+  /* a row is one sash tall and padded, and today's date chip is drawn a
+     size smaller here: at 26 it made today's row three pixels taller than
+     the other six, measured, which is the uneven grid this round removes */
+  ' .rv .rv-wd1{box-sizing:border-box;height:56px;grid-template-rows:none;grid-template-columns:40px minmax(0,1fr);align-items:center;gap:10px;padding:6px 10px}',
+  ' .rv .rv-wd1.rv-now .rv-wdh b{min-width:22px;height:22px}',
+  ' .rv .rv-wdh{flex-direction:column}',
+  ' .rv .rv-wdl{flex-direction:row;height:44px}',
+  ' .rv .rv-wdl>li{flex:1 1 0;max-width:120px;--o:0px}',
+  ' .rv .rv-wd0{justify-self:start;margin:0}}',
+  /* the sheet a sash opens, inside the product's one sheet */
+  '.rv-sh{display:flex;flex-direction:column;gap:12px;text-align:left}',
+  '.rv-shh{display:flex;align-items:center;gap:12px}',
+  '.rv-shg{flex:0 0 44px;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:var(--c);',
+  ' background:color-mix(in srgb,var(--c) 16%,transparent);box-shadow:inset 0 0 0 1.5px var(--c)}',
+  '.rv-shg svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}',
+  '.rv-shg:empty{display:none}',
+  '.rv-sht{display:flex;flex-direction:column;gap:2px;min-width:0}',
+  '.rv-sht .sh-h{margin:0}',
+  '.rv-shs{font-size:13px;color:var(--mid)}',
+  /* the bar's own layout lives under .fdock in shell/head.html and does not
+     reach a sheet, so the same frame and its tap floor are given here */
+  '.rv-shb .rb2{position:relative;display:block;width:100%;min-width:0;min-height:var(--tap);padding:6px 2px 8px;white-space:nowrap;text-align:left}',
+  '.rv-shk{display:flex;flex-wrap:wrap;gap:4px 12px;margin:0;font-size:14.5px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}',
+  '.rv-shk span{font-weight:400;color:var(--mid)}',
+  '.rv-sh .rv-step{margin:0}',
+  '.rv-sh .rv-step b{display:block;font-size:14.5px;color:var(--ink)}',
+  '.rv-sh .rv-step b small{font-weight:400;color:var(--mid)}',
+  '.rv-sh .rv-step p{margin:4px 0 0;font-size:14px;line-height:1.5;color:var(--mid)}',
+  '.rv-sh .rv-step p.rv-shd{color:var(--ink)}',
+  '.rv-sha{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 0}',
+  '.rv-sha .btn{min-height:44px;display:inline-flex;align-items:center;gap:6px}',
+  '.rv-shdone svg{width:28px;height:28px;margin-left:-4px}',
+  '.rv-shx{margin-left:auto}',
+  '.rv-shl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}',
+  '.rv-shr{display:flex;align-items:center;gap:10px;width:100%;min-height:52px;padding:4px 10px 4px 4px;border:1px solid var(--edge);border-radius:12px;',
+  ' background:none;color:var(--ink);font:inherit;text-align:left;cursor:pointer}',
+  '.rv-shr:hover{border-color:var(--accent)}',
+  '.rv-shr:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
+  '.rv-shr .rv-wch{flex:0 0 44px;width:44px;cursor:inherit}',
+  '.rv-shrn{flex:1 1 auto;min-width:0;font-size:15px}',
+  /* More practices keeps its one label; the chevron turns when it is open */
+  '.rv-more-t{display:flex;align-items:center;justify-content:space-between;gap:8px}',
+  '.rv-more-t .rv-ic{transition:transform var(--t-micro) var(--ease-out)}',
+  '.rv-more-t[aria-expanded="true"] .rv-ic{transform:rotate(180deg)}',
   /* success over time */
   '.rv-rg{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}',
   '.rv-rgb{min-height:44px;padding:0 12px;border-radius:999px;border:1px solid var(--edge-2);background:none;color:var(--mid);font:inherit;font-size:13.5px;cursor:pointer;white-space:nowrap}',
@@ -87057,5 +87306,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005755636"></div>
+<div id="eof" hidden data-len="005772610"></div>
 </body></html>

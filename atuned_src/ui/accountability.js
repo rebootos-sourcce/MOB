@@ -34,11 +34,12 @@
    Ritual's menu, and Edit on a missed ritual sends the person there with the
    ritual already open.
 
-   WHERE EACH THING SITS, and the order is what a person came for. Due today
-   first, because the one thing they open this page to do is press a ring.
-   Done second, the streak and the figures, which is the answer to whether it
-   is holding. Missed third. The record last, because a month is a thing to
-   read once the day is marked and not before.
+   WHERE EACH THING SITS, and the order is what a person came for. The
+   thirty day loop first, which is whether it is holding at a glance. Done
+   next, the streak and the figures. Missed third. The record last, because a
+   month is a thing to read once the day is marked and not before. Due today
+   stood first until SV17; the press it carried is today's column of the
+   week in the centre now, below.
 
    A MISS IS NOT A VERDICT. engine/practice.js says it in PR_MISS_AT and the
    TDD says it in section 24: "Repeated failure should trigger investigation
@@ -70,40 +71,16 @@ function acctMissed(p,today){
 
 function acctDays(n){return n+(n===1?' day':' days');}
 
-/* DUE TODAY. The rituals whose day this is, each with the ring that marks it
-   done, the same press and the same writer as the ring on the Active list. A
-   ritual kept on other days is active but is not due, and a Tuesday is not a
-   missed Monday, so it is not listed. */
-function acctDueHtml(st){
- var due=st.act.filter(function(p){return ritDue(p,st.today);}), body='';
- /* one exit and the body built in branches, because the build's div balance
-    check counts the markup in the source text and a function that closes its
-    card on three different returns reads as three closes for one open */
- /* NOTHING ACTIVE, AND THE WAY OUT IS ONE PRESS AND NOT A PAGE. This offered
-    Open Ritual while Accountability was a page of its own. The builder is the
-    left column of this same page now, so the press opens it where it stands:
-    naming a column would have been wrong anyway, because on a phone the
-    columns stack and the left one is not on the left. */
- /* and the press stands alone, round RB: Nothing active yet went on his "Get
-    rid of all the sec[ond] third tier text", because the card's own line
-    above already says what is listed here and an empty list says the rest */
- if(!st.act.length)
-  body='<div class="rv-acts"><button type="button" class="btn" data-act="add">New ritual</button></div>';
- else if(!due.length)body='<p class="rv-empty">Nothing due today.</p>';
- else{
-  body='<ol class="rv-list">';
-  due.forEach(function(p){
-   var e=ritEntryFor(p,st.today), d=!!(e&&ritIsDone(e.x)), col=ritCol(p);
-   body+='<li class="rv-item'+(d?' rv-done':'')+'" style="--c:'+col+'"><div class="rv-row">'
-    +'<button type="button" class="rv-log" data-act="log" data-id="'+p.id+'" aria-pressed="'+d+'" aria-label="'
-    +(d?'Done today. Press to take it off':'Mark '+esc(ritName(p.steps))+' done today')+'">'+ritRingHtml(p,d,col)+'</button>'
-    +'<span class="rv-txt"><span class="rv-nm">'+esc(ritName(p.steps))+'</span>'
-    +'<span class="rv-sub">'+(d?'Done today':'Planned for today')+'<i>'+esc(ritLeft(p,st.today))+'</i></span></span>'
-    +ritPctHtml(p,st.today)+'</div></li>';});
-  body+='</ol>';}
- return '<div class="rv-sec rv-act"><div class="rv-hd"><span class="rv-h">Due today</span>'
-  +(due.length?'<span class="rv-min">'+due.length+(due.length===1?' ritual':' rituals')+'</span>':'')+'</div>'
-  +'<p class="rv-mean">Rituals set for today. Press the ring when you have done one.</p>'+body+'</div>';}
+/* DUE TODAY IS GONE, SV17, 5 November. His reaction to the page was too
+   much text, and this card said the week's own today a second time: the
+   rituals set for today, each with a ring, under a line telling the person to
+   press it. Its two jobs went to the two places that already carry them.
+   Which rituals are due today is today's column of the week (ritWeekCalHtml,
+   ui/ritcal.js), ringed and at full strength while the other days sit back.
+   Marking one done is the Done ring in that sash's sheet (ritSashSheet), the
+   same ritLog press and the same writer this card's ring was. The Active list
+   in the centre keeps its own ring as well, so the press is never further
+   than it was. */
 
 /* MISSED. Active rituals only: one that has ended or been stopped is not a
    thing a person can still change. Most missed first, because that is the one
@@ -375,10 +352,10 @@ function acctRotate(i){
    The worked example note is not repeated here. The centre already carries it
    once, ritNote in ui/ritual.js, and one page says a thing once. */
 /* ROUND QN put two parts in it, and the order is still what a person came for:
-   Due today first, the press; then the thirty day loop with its summary, which
-   is the answer to whether it is holding at a glance; Done and Missed, the
-   figures under it; History, the rituals as cards; the Record last, the month
-   and the list a person reads day by day. */
+   the thirty day loop with its summary, which is the answer to whether it is
+   holding at a glance; Done and Missed, the figures under it; History, the
+   rituals as cards; the Record last, the month and the list a person reads
+   day by day. Due today led it until SV17, and went to the week. */
 function acctSideHtml(st,arrive){
- return '<div class="rvr-wrap'+(arrive?' rv-arrive':'')+'">'+acctDueHtml(st)+acctLoopHtml(st)+acctDoneHtml(st)+acctMissHtml(st)
+ return '<div class="rvr-wrap'+(arrive?' rv-arrive':'')+'">'+acctLoopHtml(st)+acctDoneHtml(st)+acctMissHtml(st)
   +acctHistHtml(st)+ritRecordHtml(st.plans,st.today)+'</div>';}

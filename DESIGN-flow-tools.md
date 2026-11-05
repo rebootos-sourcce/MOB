@@ -188,13 +188,19 @@ nowhere in running text, where the only word for it is "percent complete". The g
 counts out from the days and the entries and does not ask the page's own
 function.
 
+SV17, 5 November: a ritual's pill is a count now, the days kept (FT25),
+because the tracker's own rule above already said no percent on
+this page. What is due today is no longer a card in this column: it is
+today's column of the week (FT35), and the gate reads it there.
+
 Gate: `tests/flowtools.js`, `FT7:`.
 
 ### FT8. Empty states say what is empty and offer the one press, never a second builder.
 
-Nothing active: Due today says "Nothing active yet" and offers New ritual,
-which opens the builder in the left column and goes nowhere, because there is
-nowhere to go. Missed says "Nothing to miss yet". The streak reads a real 0 as
+Nothing active: the builder is open in the left column, its resting state
+since SV16, and the tracker offers no second press to it. Due today carried
+that press until SV17 and went with the card. Missed says "Nothing to miss
+yet". The streak reads a real 0 as
 the house dash. The tracker carries no Start and no field of its own, and it
 names no column by its side, because on a phone the columns stack and neither
 of them is on a side.
@@ -204,7 +210,9 @@ Gate: `tests/flowtools.js`, `FT8:`.
 ### FT9. Every write goes through the one writer, and says how it went.
 
 Marking a day done, taking it off, deleting an entry and putting it back are
-`ritWrite`. Success says Done or Taken off through `status()`. A save that fails
+`ritWrite`. SV17: the day's Done ring is in the sheet a sash on the week
+opens, the same `ritLog` press Due today carried, and the sheet redraws from
+the record after it. Success says Done or Taken off through `status()`. A save that fails
 says "Could not save that. Nothing changed.", keeps nothing, and leaves the ring
 open. A worked example is refused by name, and the page says once, in the
 centre, that nothing there is saved. Edit on a missed ritual opens that ritual
@@ -215,8 +223,9 @@ Gate: `tests/flowtools.js`, `FT9:`.
 ### FT10. Add to my ritual on the Compass teacher panel still lands, and the ritual shows in two columns at once.
 
 The button writes the plan through `ritStartPlan`, says Added, and the ritual
-is on the centre's Active list (as "Toward" the teacher) and on the tracker's
-Due today, on one screen.
+is on the centre's Active list (as "Toward" the teacher) and in today's
+column of the week, on one screen. Until SV17 the second place was the
+tracker's Due today.
 
 Gate: `tests/flowtools.js`, `FT10:`; `tests/functional.js`, the group named "a
 teacher on the compass opens the behaviour complex and adds a starter ritual".
@@ -443,7 +452,14 @@ release schedule for a place still is.
 
 Gate: `tests/flowtools.js`, `FT24:`.
 
-### FT25. A ritual is a symbol carrying its percent complete.
+### FT25. A ritual is a symbol carrying its days kept.
+
+SV17, 5 November: the pill is a count, the days kept, and the ring fills no
+share. Not kept of set: that is a count against a total, his objection CO-05,
+and the days set stay in the tooltip's figure line. The house rule at the head of `ui/accountability.js` is
+no percent, no score and no rate on this page, and the no end branch already
+printed a plain count, so both branches now read the same way. What follows
+is the round QS rule this amends, kept for the record.
 
 Every ritual row, in Active today and in Due today, carries a `crBadge`: its
 seat's mark (`SEATGLYPH`) inside, a ring in its seat's colour, the figure in a
@@ -619,7 +635,40 @@ opens on this week. Under 640 of stage each day is a row, date at the left
 and its rituals beside it, because seven named columns on a phone are a word
 a line.
 
+SV17: a day's rituals are sashes now (FT35), so a ritual is read off a sash's
+`data-nm` and its state off its class, and a day past three carries the rest
+on its +N as `data-more`. Nothing about which rituals a day carries moved.
+
 Gate: `tests/flowtools.js`, `FT34:`.
+
+### FT35. A day's rituals are sashes, and a sash opens the ritual in the sheet.
+
+SV17, 5 November. His reaction to the SV16 week: too much text, it does not
+look like a calendar, nothing leads the eye, and the two pole bar he has
+asked for three times is missing from the page. A ritual on a day is one
+button at least 44 by 44, filled in `ritCol`, with its seat's `SEATGLYPH`
+mark inside and no word; no seat draws no mark. Its name and state are its
+accessible name and tooltip, `RIT_DAY_SAY`'s word. Done is filled, planned is
+the faint tint outlined, missed is the dashed edge. Every day cell is one
+height, three sashes and two gaps, empty or full, staggered six pixels a sash
+at desktop width and side by side in a row under 640. A day past three draws
+two sashes and a +N, which opens the day's list. On the week that holds
+today the other days' sashes sit back. The whole week is on the first screen
+at 1600 by 1000 and at 390 by 844.
+
+A sash opens `sheetOpen`, the product's one sheet: the ritual's mark and
+name with the day and its state; the two pole bar, `fetBar` in
+`ui/component.js`, the bar the Insight cascade draws, only when the ritual is
+a release schedule whose address names a `CHILD` pattern, and never for a
+ritual with no real opposite; the days kept as a count, with the days left
+for a ritual that has an end; each step, what the
+practice is (`p.d`, which left the builder's big tile) and how it is done;
+Done for today and yesterday, the two days `ritLog` takes; Edit while it
+runs; Delete. Due today went from the right column, and the three lines that
+told a person how to press a ring went from the page. More practices keeps
+one label and says open and shut in `aria-expanded`.
+
+Gate: `tests/flowtools.js`, `FT35:`.
 
 ## 5. Not built, and why
 
@@ -677,7 +726,7 @@ gap is not read as an oversight.
 
 | Rule | Gate |
 |---|---|
-| FT1 to FT34 | `tests/flowtools.js` |
+| FT1 to FT35 | `tests/flowtools.js` |
 | FT1, and every TAB integer | `tests/engine.js`, `tests/functional.js` |
 | FT6, FT12 | `tests/design.js`, `tools/monitor.js` |
 | FT10 | `tests/functional.js` |
