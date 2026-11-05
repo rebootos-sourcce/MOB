@@ -204,6 +204,25 @@ function ritSavedHtml(){
 
 /* ---------------- the day's affirmations and challenges ---------------- */
 function ritHash(s){var h=0; s=String(s); for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))|0; return (h>>>0).toString(36);}
+/* AN AVATAR LINE, SAID AS I AM, SV24. His ruling: "Affirmations are I am
+   statements." The two lines he pointed at, "Someone who stays steady in the
+   middle of it" and "Someone who picks a way and walks it", are Ana's own
+   avatar lines (RITEX_AV, engine/ritex.js), the answer to who she wants to
+   become, and all 29 of that table's lines open the same way, as a person
+   writing their own avatar would. The line is right where it is asked for,
+   and on the Ongoing goal card ("Your avatar wants to be"), so it is not
+   rewritten at its source. Here, where it is said as an affirmation, a line
+   that names who to be is said as being it: "I am " in front of their words,
+   and nothing of theirs changes. Only a line that opens on who, Someone,
+   Somebody, A or An, a person or the one, takes it, because any other
+   opening would not read as a sentence after I am; those, and a line that
+   already opens on I, are quoted as written. The said record stays keyed by
+   the line as written (ritHash(be)), so a tick from before this survives. */
+var RIT_IAM_RX=/^(someone|somebody|a|an|the one|the person|the kind of person)\b/i;
+function ritIAm(be){
+ be=String(be||'').trim();
+ if(!RIT_IAM_RX.test(be))return null;
+ return 'I am '+be.charAt(0).toLowerCase()+be.slice(1);}
 function ritAffirm(st){
  var out=[], seen={}, cfs={};
  var pairs=(CURP&&CURP.avatar&&CURP.avatar.pairs)||[];
@@ -211,7 +230,8 @@ function ritAffirm(st){
   var pr=pairs[i]; if(!pr||!pr.be)continue;
   var be=String(pr.be).trim().replace(/^"+|"+$/g,''); if(!be||seen[be])continue; seen[be]=1;
   var b=(pr.seat&&BANDS.indexOf(pr.seat)>=0)?pr.seat:((typeof readSeat==='function')?readSeat(pr.notbe||''):null);
-  out.push({id:'av:'+ritHash(be), line:be, b:b||'', own:true});}
+  var iam=ritIAm(be);
+  out.push({id:'av:'+ritHash(be), line:iam||be, b:b||'', own:!iam});}
  /* NO LINE UNDER AN AFFIRMATION, 4 November. Every card carried a second
     line saying where it came from: "Toward equanimity. You hold pride at the
     solar plexus, and it runs on anger.", or "Your own avatar line, at the
