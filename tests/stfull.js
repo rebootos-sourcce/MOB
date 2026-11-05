@@ -201,7 +201,10 @@ async function stFullGate(browser,FILE,ok,booted){
       is read with the fold set aside for the one measurement */
    o.fieldShut=document.body.classList.contains('lshut');
    document.body.classList.remove('lshut');
-   o.fieldSec=getComputedStyle(document.querySelector('#lpanel .lsec[data-sec="overlap"]')).display;
+   /* Root Energetics and not Energetic summary: SV18 hid the summary on his
+      words, "Just hide it", so it reads none on every tab and can no longer
+      say whether the Field's rail came back. Root Energetics leads it now. */
+   o.fieldSec=getComputedStyle(document.querySelector('#lpanel .lsec[data-sec="energetics"]')).display;
    if(o.fieldShut)document.body.classList.add('lshut');
    setTab(TAB.STORY); render(); await new Promise(r=>setTimeout(r,260));
    o.backFull=document.body.classList.contains('st-full'); o.backDash=STV.dash;
