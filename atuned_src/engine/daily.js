@@ -345,8 +345,10 @@ function dlyDayValid(errs,path,x,names,now,seen){
  if(!dlyDateOk(x.d))errs.push(path+'.d is not a calendar day: '+JSON.stringify(x.d));
  else{
   /* one day of slack, because a person who crossed a date line is in the
-     document's own "context transfer" and a bank must survive the flight home */
-  var lim=dlyDay(Date.parse(now)+DAY_MS);
+     document's own "context transfer" and a bank must survive the flight home.
+     A now of null is the boot read of this device's own store (dlyValidate,
+     ctx.stored), where the check is skipped: see there for why. */
+  var lim=now===null?null:dlyDay(Date.parse(now)+DAY_MS);
   if(lim&&x.d>lim)errs.push(path+'.d is '+x.d+', after the day of this import');
   if(seen[x.d])errs.push(path+' repeats day '+x.d+', a sealed day is never replaced');
   seen[x.d]=1;}
@@ -421,11 +423,22 @@ function dlyEvValid(errs,path,x,i,days,state){
   else o.note='';}
  return errs.length>n0?null:o;}
 /* the whole bank, through every rule above. now is the moment of the import
-   and names is the person's own name, both from the caller, never read here. */
+   and names is the person's own name, both from the caller, never read here.
+
+   ctx.stored IS THE BOOT READ OF THIS DEVICE'S OWN STORE, and there a day
+   dated after today is kept and never refused. dlySeal stamps a day with the
+   device clock and checks it against that same clock, so a day sealed while
+   the clock ran two days ahead passed and was saved, and the next boot, on a
+   corrected clock, refused it and with it the whole record: every story and
+   reading set aside until the calendar caught up. Measured, a day sealed at
+   now plus two days: records loaded 0. A date this build wrote is a clock
+   error and not a forgery, and refusing it sets the whole record aside over
+   one clock error, which is the rule pracSoon (engine/ladder.js) already
+   carries. An import is not this device's own write and keeps the check. */
 function dlyValidate(errs,o,base,ctx){
  var path=base||'summaries', S=dlyBlank();
  ctx=ctx||{};
- var now=ctx.now||new Date().toISOString(), names=ctx.names||[];
+ var now=ctx.stored?null:(ctx.now||new Date().toISOString()), names=ctx.names||[];
  if(!o||typeof o!=='object'||Array.isArray(o)){errs.push(path+' is not an object'); return S;}
  dlyKeys(errs,path,o,['v','days','events']);
  if(o.v!==undefined&&(!NUM(o.v)||o.v<1||o.v%1!==0||o.v>DLY_SCHEMA_V))

@@ -13371,7 +13371,7 @@ function pStore(){
  if(!Array.isArray(raw)) return storeSetAside(String(txt),'it is not a list of profiles');
  var out=[];
  for(var i=0;i<raw.length;i++){
-  var v=validateProfile(raw[i]);
+  var v=validateProfile(raw[i],{stored:true});
   if(v.ok){ out.push(v.profile); }
   else {
    STORE_REFUSED.push({i:i, name:(raw[i]&&raw[i].name)||'unnamed',
@@ -13925,8 +13925,13 @@ function avatarFill(av){
   if(!av[k]||typeof av[k]!=='object'||Array.isArray(av[k]))av[k]={};});
  if(AV_STATUS.indexOf(av.status)<0)av.status=avatarStatus(av);
  return avatarEnsureIds(av);}
-function validateProfile(o){
- var errs=[];
+/* ctx is optional. ctx.stored says the record is this device's own, read back
+   at boot or reopened from the list, and not an import: the summaries and the
+   journey then keep a date the device clock wrote ahead of today rather than
+   refusing the whole record over it (dlyValidate and journeyValidate say why).
+   Every other rule holds the same either way. */
+function validateProfile(o,ctx){
+ var errs=[], stored=!!(ctx&&ctx.stored);
  if(!o||typeof o!=='object'||Array.isArray(o))return {ok:false, errs:['not an object']};
  if(!NUM(o.v)||o.v<1||o.v>SCHEMA_V)errs.push('schema version '+o.v+' is not 1 to '+SCHEMA_V);
  var p=blankProfile(typeof o.name==='string'?o.name:'Imported');
@@ -14427,14 +14432,14 @@ function validateProfile(o){
     record and pImport stays atomic. Missing or null is an older record and
     keeps the blank. The name is handed in for the one rule about it. */
  if(o.summaries!==undefined&&o.summaries!==null)
-  p.summaries=dlyValidate(errs,o.summaries,'summaries',{names:dlyNamesOf(p)});
+  p.summaries=dlyValidate(errs,o.summaries,'summaries',{names:dlyNamesOf(p), stored:stored});
  /* THE JOURNEY, F13, through its own boundary (journeyValidate, engine/journey.js),
     into the same errs, so one bad log line or one bad walk refuses the whole
     record and pImport stays atomic. It is not in the blank: a record that never
     walked the first run carries none and gains none here, so every such record
     reads back exactly as it went in. */
  if(o.journey!==undefined&&o.journey!==null)
-  p.journey=journeyValidate(errs,o.journey,'journey');
+  p.journey=journeyValidate(errs,o.journey,'journey',{stored:stored});
  return errs.length?{ok:false, errs:errs}:{ok:true, profile:p};}
 
 /* Atomic. Nothing is pushed and CURP is not moved until the profile has
@@ -15152,10 +15157,12 @@ function jyInt(errs,path,v,lo,hi){
  return v;}
 /* A DATE THAT PARSES, AND IS NOT FROM THE FUTURE. A day of slack, because a
    phone's clock and a laptop's differ by minutes and a zone is not a fault, and
-   no more than that: a stamp a week ahead was written by something else. */
+   no more than that: a stamp a week ahead was written by something else.
+   A nowMs of null is the boot read of this device's own store
+   (journeyValidate, ctx.stored), where the date is checked but not the clock. */
 function jyDate(errs,path,t,nowMs){
  if(vDate(errs,path,t)===null)return null;
- if(new Date(t).getTime()>nowMs+JY_DAY){errs.push(path+' is ahead of the clock'); return null;}
+ if(nowMs!==null&&new Date(t).getTime()>nowMs+JY_DAY){errs.push(path+' is ahead of the clock'); return null;}
  return t;}
 
 /* ---------------- one log line ---------------- */
@@ -15275,9 +15282,18 @@ function jyWalk(errs,w,nowMs){
 /* ---------------- the boundary ---------------- */
 /* THE JOURNEY'S OWN BOUNDARY, into the same errs as every other part, so one bad
    field refuses the whole record and pImport stays atomic. ctx may carry the
-   clock a gate wants the dates read against. */
+   clock a gate wants the dates read against.
+
+   ctx.stored IS THE BOOT READ OF THIS DEVICE'S OWN STORE, and there a stamp
+   ahead of the clock is kept and never refused. journeyLog and journeyWalk
+   check a new stamp against Date.now(), the same clock that wrote it, so a
+   line logged while the device clock ran ahead passed and was saved, and the
+   next boot on a corrected clock refused it and the whole record with it.
+   Measured, a line logged at now plus three days: loaded 0. A stamp this
+   build wrote is a clock error and not a forgery, the rule pracSoon
+   (engine/ladder.js) carries. An import keeps the check. */
 function journeyValidate(errs,o,path,ctx){
- var P=journeyBlank(), c=ctx||{}, nowMs=jyMs(c.now), base=path||'journey';
+ var P=journeyBlank(), c=ctx||{}, nowMs=c.stored?null:jyMs(c.now), base=path||'journey';
  if(o===undefined||o===null)return P;
  if(typeof o!=='object'||Array.isArray(o)){errs.push(base+' is not an object'); return P;}
  vKeys(errs,base,o,['v','walk','gift','log']);
@@ -23408,8 +23424,10 @@ function dlyDayValid(errs,path,x,names,now,seen){
  if(!dlyDateOk(x.d))errs.push(path+'.d is not a calendar day: '+JSON.stringify(x.d));
  else{
   /* one day of slack, because a person who crossed a date line is in the
-     document's own "context transfer" and a bank must survive the flight home */
-  var lim=dlyDay(Date.parse(now)+DAY_MS);
+     document's own "context transfer" and a bank must survive the flight home.
+     A now of null is the boot read of this device's own store (dlyValidate,
+     ctx.stored), where the check is skipped: see there for why. */
+  var lim=now===null?null:dlyDay(Date.parse(now)+DAY_MS);
   if(lim&&x.d>lim)errs.push(path+'.d is '+x.d+', after the day of this import');
   if(seen[x.d])errs.push(path+' repeats day '+x.d+', a sealed day is never replaced');
   seen[x.d]=1;}
@@ -23484,11 +23502,22 @@ function dlyEvValid(errs,path,x,i,days,state){
   else o.note='';}
  return errs.length>n0?null:o;}
 /* the whole bank, through every rule above. now is the moment of the import
-   and names is the person's own name, both from the caller, never read here. */
+   and names is the person's own name, both from the caller, never read here.
+
+   ctx.stored IS THE BOOT READ OF THIS DEVICE'S OWN STORE, and there a day
+   dated after today is kept and never refused. dlySeal stamps a day with the
+   device clock and checks it against that same clock, so a day sealed while
+   the clock ran two days ahead passed and was saved, and the next boot, on a
+   corrected clock, refused it and with it the whole record: every story and
+   reading set aside until the calendar caught up. Measured, a day sealed at
+   now plus two days: records loaded 0. A date this build wrote is a clock
+   error and not a forgery, and refusing it sets the whole record aside over
+   one clock error, which is the rule pracSoon (engine/ladder.js) already
+   carries. An import is not this device's own write and keeps the check. */
 function dlyValidate(errs,o,base,ctx){
  var path=base||'summaries', S=dlyBlank();
  ctx=ctx||{};
- var now=ctx.now||new Date().toISOString(), names=ctx.names||[];
+ var now=ctx.stored?null:(ctx.now||new Date().toISOString()), names=ctx.names||[];
  if(!o||typeof o!=='object'||Array.isArray(o)){errs.push(path+' is not an object'); return S;}
  dlyKeys(errs,path,o,['v','days','events']);
  if(o.v!==undefined&&(!NUM(o.v)||o.v<1||o.v%1!==0||o.v>DLY_SCHEMA_V))
@@ -24592,7 +24621,9 @@ function profOpen(id){
  PROF_ERR=null;
  var p=profFind(id);
  if(!p){PROF_ERR=['no profile with that id is on this device'];return null;}
- var v=validateProfile(JSON.parse(JSON.stringify(p)));
+ /* stored: this record is already on the device, so a date its own clock
+    wrote ahead does not lock the person out of switching to it */
+ var v=validateProfile(JSON.parse(JSON.stringify(p)),{stored:true});
  if(!v.ok){PROF_ERR=(v.errs||['it did not validate']).slice(0,3);return null;}
  if(p===CURP&&S.rec===p.id)return p;
  profHold();
