@@ -32,5 +32,9 @@ function cohort(n) {
 }
 const ARMS = { built: {}, paid: { paid: 'one' }, norerun: { rerunTake: 0 },
  'cost-': { costScale: 0.75 }, 'cost+': { costScale: 1.25 }, habit: { habit: true },
- nofriction: { costScale: 0 }, 'nofriction+habit': { costScale: 0, habit: true } };
+ nofriction: { costScale: 0 }, 'nofriction+habit': { costScale: 0, habit: true },
+ /* one friction off at a time, so a cause is ranked by the people it costs and
+    not by which friction happened to be heaviest on the day somebody left */
+ 'off-F1': { off: ['F1'] }, 'off-F4': { off: ['F4'] }, 'off-F7': { off: ['F7'] }, 'off-F12': { off: ['F12'] },
+ 'off-F14': { off: ['F14'] }, 'off-WALL': { off: ['WALL'] }, 'off-WANT': { off: ['WANT'] } };
 module.exports = { cohort, N, ARMS };

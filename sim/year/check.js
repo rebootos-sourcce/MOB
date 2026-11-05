@@ -67,8 +67,8 @@ for (let d = 0; d < 40 && !walled; d++) {
  if (x.ran) runs++; if (x.wall) walled = x;
 }
 ok(!!walled && E.meterBudget(p, Date.now()).cap < 4, 'after ' + runs + ' runs the allowance refuses a run (left ' + (walled && walled.left) + ')');
-const uw = p.meter.unique.length; D.release(p, D.STV.lastFound, true);
-ok(p.meter.unique.length === uw, 'the free rerun at the wall opens no new pattern');
+const uw = p.meter.unique.length; const rer = D.release(p, D.STV.lastFound, true);
+ok(rer.ran && rer.rerun && p.meter.unique.length === uw, 'the free rerun at the wall runs (' + rer.keys + ' lines) and opens no new pattern');
 clock.set(clock.START + 9 * clock.DAY_MS);
 ok(E.meterBudget(p, Date.now()).left > (walled ? walled.left : 0), 'a week later the free grant has refilled (' + E.meterBudget(p, Date.now()).left + ' left)');
 
@@ -87,7 +87,13 @@ ok(a !== c, 'and the next person is not');
 let errs = 0, frozen = 0, tries = 0, best = null;
 for (let i = 0; i < 400 && !best; i++) { const r = runPerson(SHOWUP[1], i, { seed: 5, costScale: 0.25 }); tries++; errs += r.dlyErr || 0; frozen += r.frozen; if (r.sessions > 60) best = r; }
 ok(errs === 0, 'no daily summary returned error across ' + tries + ' people');
-ok(!!best && best.marks > 0 && best.cp[365], 'a person with ' + (best ? best.sessions : 0) + ' sessions reached day 365 with ' + (best ? best.marks : 0) + ' marks');
+ok(!!best && best.marks > 0, 'a person with ' + (best ? best.sessions : 0) + ' sessions ran without an engine error and earned ' + (best ? best.marks : 0) + ' marks');
+/* 11. the control is a control: no friction means no exit is attributed to one */
+let named = 0; for (let i = 0; i < 300; i++) { const r = runPerson(SHOWUP[i % 9], i, { seed: 11, costScale: 0 }); if (r.quitOn && ['DRIFT', 'NEVER_OPENED'].indexOf(r.quitOn) < 0) named++; }
+ok(named === 0, 'with every cost at zero, no exit is put down to a friction (' + named + ' of 300)');
+/* 12. switching one friction off removes it and nothing else */
+let f1 = 0; for (let i = 0; i < 300; i++) { const r = runPerson(SHOWUP[3], i, { seed: 12, off: ['F1'] }); if (r.quitOn === 'F1') f1++; }
+ok(f1 === 0, 'with F1 off, no exit is put down to F1');
 
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

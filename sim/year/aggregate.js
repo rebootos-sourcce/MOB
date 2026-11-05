@@ -26,15 +26,32 @@ const wilson = (k, n) => { if (!n) return [0, 0]; const z = 1.96, p = k / n, d =
  const c = (p + z * z / (2 * n)) / d, h = z * Math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / d; return [Math.max(0, c - h), Math.min(1, c + h)]; };
 const act = (r, d) => { for (let i = Math.max(1, d - 6); i <= d; i++) if (r.open[i - 1] === '1') return true; return false; };
 const alive = (r, d) => r.quitDay === null || r.quitDay > d;
-const q = (a, f) => { if (!a.length) return null; const s = a.slice().sort((x, y) => x - y); return s[Math.min(s.length - 1, Math.floor(f * s.length))]; };
+/* ACTIVE AND STILL GOING. The review of 5 November caught this: "active" alone
+   counts a seven day window that can hold the week somebody quit in, so some
+   of "active at day 30" had already quit by day 30 (built, as first measured:
+   1,109 of 4,075, 27 percent). This is the number that means "still here",
+   and it is reported beside the plain active count rather than replacing it,
+   so a reader can see the gap. */
+const actAlive = (r, d) => act(r, d) && alive(r, d);
+/* THE LAST DAY THEY OPENED, separate from quitDay. quitDay is the day the
+   model's own exit roll fired, which for a drift exit comes after a run of
+   days spent not opening the app, so it reads later than when the person
+   was last actually seen. lastOpen is the harder fact. */
+const lastOpenOf = r => { for (let d = 364; d >= 0; d--) if (r.open[d] === '1') return d + 1; return 0; };
+const q = (a, f) => { if (!a.length) return null; const s = a.slice().sort((x, y) => x - y);
+ const i = f * (s.length - 1), lo = Math.floor(i), hi = Math.ceil(i);
+ return lo === hi ? s[lo] : r1((s[lo] + s[hi]) / 2); };
 const r1 = v => Math.round(v * 10) / 10, r2 = v => Math.round(v * 100) / 100;
 
 function summarise(rows) {
  const n = rows.length, arr = rows.filter(r => r.arrived);
- const o = { n, arrived: arr.length, openedDay1: rows.filter(r => r.open[0] === '1').length, active: {}, alive: {} };
- DAYS.forEach(d => { o.active[d] = rows.filter(r => act(r, d)).length; o.alive[d] = rows.filter(r => r.arrived && alive(r, d)).length; });
+ const o = { n, arrived: arr.length, openedDay1: rows.filter(r => r.open[0] === '1').length, active: {}, alive: {}, activeAlive: {} };
+ DAYS.forEach(d => { o.active[d] = rows.filter(r => act(r, d)).length; o.alive[d] = rows.filter(r => r.arrived && alive(r, d)).length;
+  o.activeAlive[d] = rows.filter(r => actAlive(r, d)).length; });
  const qd = arr.filter(r => r.quitDay !== null).map(r => r.quitDay);
  o.quitDay = { p25: q(qd, .25), median: q(qd, .5), p75: q(qd, .75), p90: q(qd, .9), max: q(qd, 1) };
+ const lo = arr.filter(r => r.quitDay !== null).map(lastOpenOf);
+ o.lastOpen = { median: q(lo, .5), p75: q(lo, .75) };
  o.exits = {}; rows.forEach(r => { const k = r.quitOn || 'STAYED'; o.exits[k] = (o.exits[k] || 0) + 1; });
  const mean = f => arr.length ? r2(arr.reduce((a, r) => a + f(r), 0) / arr.length) : 0;
  o.perArrival = { sessions: mean(r => r.sessions), minutes: mean(r => r.minutes), stories: mean(r => r.stories),
@@ -88,4 +105,14 @@ for (const arm of Object.keys(agg.arms)) {
  const row = (nm, P) => console.log(`| ${nm} | ${P.perSeedN} | ${pct(P.arrived, P.n)}% | ` +
   [7, 14, 30, 60, 90, 120, 180, 365].map(d => pct(P.active[d], P.n) + '%').join(' | ') + ` | ${P.quitDay.median} |`);
  row('**All**', A.all); SHOWUP.forEach(sp => row(sp.nm, A.icp[sp.nm]));
+ /* active AND still going, at day 30 and day 90, beside the plain active
+    figure. The gap between the two is people a 7 day window still counts
+    though the model has already closed their record. */
+ console.log(`
+### ${arm}, active and not yet gone`);
+ console.log('| Who | Active d30 | ...and not yet gone | Active d90 | ...and not yet gone | Last day opened, median |');
+ console.log('|---|---|---|---|---|---|');
+ const row2 = (nm, P) => console.log(`| ${nm} | ${pct(P.active[30], P.n)}% | ${pct(P.activeAlive[30], P.n)}% | ` +
+  `${pct(P.active[90], P.n)}% | ${pct(P.activeAlive[90], P.n)}% | ${P.lastOpen.median} |`);
+ row2('**All**', A.all); SHOWUP.forEach(sp => row2(sp.nm, A.icp[sp.nm]));
 }

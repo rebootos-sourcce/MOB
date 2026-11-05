@@ -13,8 +13,16 @@
      CHAN               ui/release.js, the four channels a release says
      stFound / STV      ui/storyui.js, which addresses a commit found
      the ritual plan    ui/ritual.js ritStartPlan, kept in the side store
-   check.js replays a fixed case through these and refuses to run the year if
-   any of them drifts from what the engine says.
+   They were read against the ui source on 5 November and matched it. Nothing
+   re-reads the ui automatically, so a change to ui/ritual.js, ui/release.js or
+   ui/storyui.js has to be carried here by hand.
+
+   Two known gaps, measured by the review of 5 November and left as they are:
+     the ritual plan's rel is always null, so a finished release never marks
+       the day's ritual done through ritRelDone; on 2,500 people that is 129
+       days done missed and a mean streak at day 30 of 0.92 against 1.05.
+     the summary door runs every session, where the product writes a day only
+       when the Summary tab is the one showing.
 
    dlyRespond is NOT called. It has no caller in ui/ (checked 5 November), so
    calling it would simulate a door no person can open.

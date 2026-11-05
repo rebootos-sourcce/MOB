@@ -50,7 +50,8 @@ function runPerson(spec, idx, opt) {
  let fsurv = 1, worst = null, worstC = 0;
  const hit = (k, w) => { rec.hits[k] = (rec.hits[k] || 0) + 1;
   const hard = (FRICTION[k].hard || {})[spec.nm] || 1;
-  const c = clamp(FRICTION[k].cost * costK * hard * (w === undefined ? 1 : w), 0, 0.95);
+  const off = opt.off && opt.off.indexOf(k) >= 0;
+  const c = off ? 0 : clamp(FRICTION[k].cost * costK * hard * (w === undefined ? 1 : w), 0, 0.95);
   fsurv *= (1 - c); if (c > worstC) { worstC = c; worst = k; } };
 
  const snapCp = (day, alive) => {
@@ -92,6 +93,11 @@ function runPerson(spec, idx, opt) {
     return; }
    /* ---------------- a session ---------------- */
    opened = true; gapDays = 0; openDays[day] = 1; rec.sessions++;
+   /* STV.lastFound is page memory in ui/storyui.js, forgotten on reload, and
+      every session after the first is a fresh page. The first cut kept it all
+      year, so a story that found nothing released an address found weeks
+      before. Caught by the review of 5 November. */
+   D.STV.lastFound = null;
    let budget = spec.minutes[0] + rng() * (spec.minutes[1] - spec.minutes[0]);
    rec.minutes += budget;
    fsurv = 1; worst = null; worstC = 0; const delivered = {};
@@ -160,7 +166,11 @@ function runPerson(spec, idx, opt) {
    else if (spec.wants.indexOf('delta') >= 0) hit('F4');
 
    if (rec.stories > 0 && rec.releases > 0 && rec.ritualsDone > 0) rec.loopClosed++;
-   spec.wants.forEach(w => { if (!delivered[w] && (w === 'delta' || w === 'cost')) fsurv *= 0.96; });
+   /* the harness's 0.96 for a want not delivered. It is a cost like any other
+      and scales with costScale; the first cut left it out, so the zero friction
+      control still lost 5 percent of its people to it. */
+   if (!(opt.off && opt.off.indexOf('WANT') >= 0))
+    spec.wants.forEach(w => { if (!delivered[w] && (w === 'delta' || w === 'cost')) fsurv *= 1 - 0.04 * costK; });
    if (spec.refers && rng() < 0.35) hit('F12');
    if (rng() < 0.5) hit('F10', 0.5);
    const L = E.ladderRead(p, Date.now());

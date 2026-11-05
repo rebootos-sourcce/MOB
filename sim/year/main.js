@@ -19,7 +19,7 @@ const OUT = path.join(__dirname, 'out');
 fs.mkdirSync(OUT, { recursive: true });
 const SEEDS = [20261105, 20261106, 20261107, 20261108, 20261109];
 const arms = process.argv[2] ? [process.argv[2]] : Object.keys(ARMS);
-const seeds = process.argv[3] ? [+process.argv[3]] : SEEDS;
+const seeds = process.argv[3] ? [+process.argv[3]] : SEEDS.slice(0, +(process.env.SEEDS || 5));
 const CORES = Math.max(1, os.cpus().length);
 const ENV = Object.assign({}, process.env, { TZ: 'America/New_York' });
 try { execFileSync(process.execPath, [path.join(__dirname, 'check.js')], { stdio: 'inherit', env: ENV }); }
